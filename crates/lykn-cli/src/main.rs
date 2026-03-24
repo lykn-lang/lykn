@@ -1,6 +1,3 @@
-mod reader;
-mod formatter;
-
 use std::env;
 use std::fs;
 use std::process;
@@ -38,8 +35,8 @@ fn cmd_fmt(args: &[String]) {
             process::exit(1);
         });
 
-        let exprs = reader::read(&source);
-        let formatted = formatter::format_exprs(&exprs, 0);
+        let exprs = lykn_cli::reader::read(&source);
+        let formatted = lykn_cli::formatter::format_exprs(&exprs, 0);
 
         if args.iter().any(|a| a == "--write" || a == "-w") {
             fs::write(path, &formatted).unwrap_or_else(|e| {
@@ -65,7 +62,7 @@ fn cmd_check(args: &[String]) {
             process::exit(1);
         });
 
-        let exprs = reader::read(&source);
+        let exprs = lykn_cli::reader::read(&source);
         if exprs.is_empty() && !source.trim().is_empty() {
             eprintln!("{}: parse warning — no expressions found", path);
         } else {

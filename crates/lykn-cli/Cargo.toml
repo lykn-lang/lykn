@@ -1,12 +1,16 @@
 [package]
 name = "lykn-cli"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2024"
 description = "S-expression syntax for JavaScript — linter, formatter, and REPL"
 license = "Apache-2.0"
 repository = "https://github.com/oxur/lykn"
 keywords = ["lisp", "javascript", "s-expression", "compiler", "formatter"]
 categories = ["compilers", "development-tools", "command-line-utilities"]
+
+[lib]
+name = "lykn_cli"
+path = "src/lib.rs"
 
 [[bin]]
 name = "lykn"

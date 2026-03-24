@@ -3,5 +3,12 @@
 version = 4
 
 [[package]]
+name = "lykn"
+version = "0.0.1"
+dependencies = [
+ "lykn-cli",
+]
+
+[[package]]
 name = "lykn-cli"
 version = "0.0.1"
