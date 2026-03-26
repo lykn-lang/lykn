@@ -56,6 +56,15 @@ function buildExportNames(namesNode, sourceNode) {
   };
 }
 
+/** Build a TemplateElement node for template literals. */
+function makeTemplateElement(raw, tail) {
+  return {
+    type: 'TemplateElement',
+    value: { raw, cooked: raw },
+    tail,
+  };
+}
+
 /** Convert lisp-case to camelCase via single-pass character walk. */
 function toCamelCase(str) {
   let out = '';
@@ -720,22 +729,167 @@ const macros = {
     };
   },
 
-  // Object literal: (object key1 val1 key2 val2)
+  // Template literal: (template "Hello, " name "!")
+  'template'(args) {
+    if (args.length === 0) {
+      return {
+        type: 'TemplateLiteral',
+        quasis: [makeTemplateElement('', true)],
+        expressions: [],
+      };
+    }
+
+    const quasis = [];
+    const expressions = [];
+    let currentSegment = '';
+
+    for (let i = 0; i < args.length; i++) {
+      if (args[i].type === 'string') {
+        currentSegment += args[i].value;
+      } else {
+        quasis.push(makeTemplateElement(currentSegment, false));
+        currentSegment = '';
+        expressions.push(compileExpr(args[i]));
+      }
+    }
+
+    quasis.push(makeTemplateElement(currentSegment, true));
+
+    return {
+      type: 'TemplateLiteral',
+      quasis,
+      expressions,
+    };
+  },
+
+  // Tagged template literal: (tag fn (template ...))
+  'tag'(args) {
+    if (args.length !== 2) {
+      throw new Error('tag requires exactly 2 arguments: (tag function (template ...))');
+    }
+    if (args[1].type !== 'list' || args[1].values.length === 0 ||
+        args[1].values[0].type !== 'atom' || args[1].values[0].value !== 'template') {
+      throw new Error('tag: second argument must be a (template ...) form');
+    }
+    const tag = compileExpr(args[0]);
+    const quasi = compileExpr(args[1]);
+    return {
+      type: 'TaggedTemplateExpression',
+      tag,
+      quasi,
+    };
+  },
+
+  // Spread element: (spread expr)
+  'spread'(args) {
+    if (args.length !== 1) {
+      throw new Error('spread takes exactly one argument');
+    }
+    return {
+      type: 'SpreadElement',
+      argument: compileExpr(args[0]),
+    };
+  },
+
+  // Default parameter value: (default name value)
+  'default'(args) {
+    if (args.length !== 2) {
+      throw new Error('default requires exactly 2 arguments: (default name value)');
+    }
+    return {
+      type: 'AssignmentPattern',
+      left: compileExpr(args[0]),
+      right: compileExpr(args[1]),
+    };
+  },
+
+  // Object literal: (object (name "Duncan") (age 42)) — grouped pairs
   'object'(args) {
     const properties = [];
-    for (let i = 0; i < args.length; i += 2) {
-      properties.push({
-        type: 'Property',
-        key: args[i].type === 'atom'
-          ? { type: 'Identifier', name: args[i].value }
-          : compileExpr(args[i]),
-        value: compileExpr(args[i + 1]),
-        kind: 'init',
-        computed: false,
-        shorthand: false,
-        method: false,
-      });
+
+    for (const child of args) {
+      if (child.type === 'atom') {
+        // Bare atom → shorthand property
+        const name = toCamelCase(child.value);
+        properties.push({
+          type: 'Property',
+          key: { type: 'Identifier', name },
+          value: { type: 'Identifier', name },
+          kind: 'init',
+          computed: false,
+          shorthand: true,
+          method: false,
+        });
+      } else if (child.type === 'list') {
+        if (child.values.length === 0) {
+          throw new Error('object: empty sub-list is not allowed');
+        }
+
+        // Check for (spread expr)
+        if (child.values[0].type === 'atom' && child.values[0].value === 'spread') {
+          if (child.values.length !== 2) {
+            throw new Error('spread takes exactly one argument');
+          }
+          properties.push({
+            type: 'SpreadElement',
+            argument: compileExpr(child.values[1]),
+          });
+          continue;
+        }
+
+        // Check for ((computed key-expr) value)
+        if (child.values[0].type === 'list') {
+          const innerList = child.values[0];
+          if (innerList.values.length === 2 &&
+              innerList.values[0].type === 'atom' &&
+              innerList.values[0].value === 'computed') {
+            if (child.values.length !== 2) {
+              throw new Error('object: computed property requires a value: ((computed key) value)');
+            }
+            properties.push({
+              type: 'Property',
+              key: compileExpr(innerList.values[1]),
+              value: compileExpr(child.values[1]),
+              kind: 'init',
+              computed: true,
+              shorthand: false,
+              method: false,
+            });
+            continue;
+          }
+        }
+
+        // Single-element sub-list → error
+        if (child.values.length === 1) {
+          throw new Error(
+            'object: single-element sub-list (' +
+            (child.values[0].type === 'atom' ? child.values[0].value : '...') +
+            ') is ambiguous — use a bare atom for shorthand'
+          );
+        }
+
+        if (child.values.length !== 2) {
+          throw new Error('object: each property must be (key value), got ' + child.values.length + ' elements');
+        }
+
+        // Regular (key value) pair
+        const keyNode = child.values[0];
+        properties.push({
+          type: 'Property',
+          key: keyNode.type === 'atom'
+            ? { type: 'Identifier', name: toCamelCase(keyNode.value) }
+            : compileExpr(keyNode),
+          value: compileExpr(child.values[1]),
+          kind: 'init',
+          computed: false,
+          shorthand: false,
+          method: false,
+        });
+      } else {
+        throw new Error('object: each element must be an atom (shorthand) or a list (key value)');
+      }
     }
+
     return { type: 'ObjectExpression', properties };
   },
 };
