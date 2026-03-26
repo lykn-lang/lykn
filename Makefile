@@ -318,6 +318,14 @@ push:
 
 publish: publish-jsr publish-npm publish-crates
 
+publish-jsr:
+	@echo "$(BLUE)Publishing to JavaScript Registry...$(RESET)"
+	@deno task publish:jsr
+
+publish-npm:
+	@echo "$(BLUE)Publishing to npm...$(RESET)"
+	@npm login && deno task publish:npm
+
 # Crates in dependency order (leaf crates first, dependent crates later)
 PUBLISH_ORDER := $(CODE_NAME)
 # crates.io rate limit delay (seconds)

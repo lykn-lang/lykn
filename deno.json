@@ -8,6 +8,10 @@
     },
     "tasks": {
         "build:browser": "deno run -A build.js",
-        "test": "deno test test/"
+        "test": "deno test test/",
+        "publish:jsr": "deno publish",
+        "publish:jsr:dry": "deno publish --dry-run",
+        "publish:npm": "npm publish --access public",
+        "publish:npm:dry": "npm pack --dry-run"
     }
 }
