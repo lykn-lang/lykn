@@ -6,6 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0011 | Designing a macro system for lykn | Final | 2026-03-26 |
 | 0010 | Lykn v0.1.0 — Implementation Plan | Active | 2026-03-24 |
 | 0009 | DD-09: v0.1.0 Scope and Phasing | Active | 2026-03-24 |
 | 0008 | DD-08: Special Atoms, Update Operators, and Miscellaneous Forms | Active | 2026-03-24 |
@@ -18,6 +19,10 @@ This index is automatically generated. Do not edit manually.
 | 0001 | DD-01: Colon Syntax and camelCase Conversion | Active | 2026-03-24 |
 
 ## Documents by State
+
+### Final
+
+- [0011 - Designing a macro system for lykn](06-final/0011-designing-a-macro-system-for-lykn.md)
 
 ### Active
 
