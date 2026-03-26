@@ -56,6 +56,15 @@ function buildExportNames(namesNode, sourceNode) {
   };
 }
 
+/** Convert a class member name to Identifier or PrivateIdentifier. */
+function toClassKey(name) {
+  const converted = toCamelCase(name);
+  if (name.startsWith('-')) {
+    return { type: 'PrivateIdentifier', name: converted };
+  }
+  return { type: 'Identifier', name: converted };
+}
+
 /** Build a TemplateElement node for template literals. */
 function makeTemplateElement(raw, tail) {
   return {
@@ -812,6 +821,54 @@ const macros = {
     };
   },
 
+  // Class declaration: (class Name (Super) body...)
+  'class'(args) {
+    if (args.length < 2) {
+      throw new Error('class requires a name and superclass list: (class Name (Super) body...)');
+    }
+    if (args[0].type !== 'atom') {
+      throw new Error('class name must be an identifier');
+    }
+    if (args[1].type !== 'list') {
+      throw new Error('class superclass must be a list: () for no extends, (Super) for extends');
+    }
+    const name = { type: 'Identifier', name: toCamelCase(args[0].value) };
+    const superClass = args[1].values.length > 0
+      ? compileExpr(args[1].values[0])
+      : null;
+    return {
+      type: 'ClassDeclaration',
+      id: name,
+      superClass,
+      body: {
+        type: 'ClassBody',
+        body: compileClassBody(args.slice(2)),
+      },
+    };
+  },
+
+  // Class expression: (class-expr (Super) body...)
+  'class-expr'(args) {
+    if (args.length < 1) {
+      throw new Error('class-expr requires a superclass list: (class-expr (Super) body...)');
+    }
+    if (args[0].type !== 'list') {
+      throw new Error('class-expr superclass must be a list');
+    }
+    const superClass = args[0].values.length > 0
+      ? compileExpr(args[0].values[0])
+      : null;
+    return {
+      type: 'ClassExpression',
+      id: null,
+      superClass,
+      body: {
+        type: 'ClassBody',
+        body: compileClassBody(args.slice(1)),
+      },
+    };
+  },
+
   // Rest element: (rest x) — for function params
   'rest'(args) {
     if (args.length !== 1) {
@@ -1034,10 +1091,15 @@ export function compileExpr(node) {
         }
 
         for (let i = 1; i < segments.length; i++) {
+          const seg = segments[i];
+          const isPrivate = seg.startsWith('-');
+          const propName = toCamelCase(seg);
           result = {
             type: 'MemberExpression',
             object: result,
-            property: { type: 'Identifier', name: toCamelCase(segments[i]) },
+            property: isPrivate
+              ? { type: 'PrivateIdentifier', name: propName }
+              : { type: 'Identifier', name: propName },
             computed: false,
           };
         }
@@ -1302,6 +1364,153 @@ function compileArrayPattern(children) {
   }
 
   return { type: 'ArrayPattern', elements };
+}
+
+// Compile class body elements into MethodDefinition/PropertyDefinition nodes
+function compileClassBody(elements) {
+  return elements.map(el => compileClassMember(el, false));
+}
+
+function compileClassMember(node, isStatic) {
+  if (node.type !== 'list' || node.values.length === 0) {
+    throw new Error('Class body element must be a non-empty list');
+  }
+
+  const head = node.values[0];
+  if (head.type !== 'atom') {
+    throw new Error('Class body element must start with an atom');
+  }
+
+  const headVal = head.value;
+
+  // static wrapper: (static (...))
+  if (headVal === 'static') {
+    if (node.values.length !== 2) {
+      throw new Error('static wraps exactly one class member: (static (member ...))');
+    }
+    return compileClassMember(node.values[1], true);
+  }
+
+  // async wrapper: (async (method-name (params) body...))
+  if (headVal === 'async') {
+    if (node.values.length !== 2) {
+      throw new Error('async in class body wraps exactly one method');
+    }
+    const inner = node.values[1];
+    if (inner.type !== 'list' || inner.values.length === 0) {
+      throw new Error('async must wrap a method definition');
+    }
+    const innerHead = inner.values[0];
+    if (innerHead.type === 'atom' && (innerHead.value === 'get' || innerHead.value === 'set')) {
+      const member = compileAccessorMethod(inner, innerHead.value, isStatic);
+      member.value.async = true;
+      return member;
+    }
+    const member = compileMethod(inner, isStatic);
+    member.value.async = true;
+    return member;
+  }
+
+  // field: (field name) or (field name value)
+  if (headVal === 'field') {
+    if (node.values.length < 2 || node.values.length > 3) {
+      throw new Error('field: (field name) or (field name value)');
+    }
+    const fieldName = node.values[1].value;
+    const key = toClassKey(fieldName);
+    const value = node.values.length === 3 ? compileExpr(node.values[2]) : null;
+    return {
+      type: 'PropertyDefinition',
+      key,
+      value,
+      computed: false,
+      static: isStatic,
+    };
+  }
+
+  // get/set accessor: (get name (params) body...) or (set name (params) body...)
+  if (headVal === 'get' || headVal === 'set') {
+    return compileAccessorMethod(node, headVal, isStatic);
+  }
+
+  // Regular method (or constructor)
+  return compileMethod(node, isStatic);
+}
+
+function compileMethod(node, isStatic) {
+  if (node.values.length < 3) {
+    throw new Error('Method requires name, params, and body: (name (params) body...)');
+  }
+  const nameAtom = node.values[0];
+  if (nameAtom.type !== 'atom') {
+    throw new Error('Method name must be an atom');
+  }
+  const methodName = nameAtom.value;
+  const key = toClassKey(methodName);
+  const isConstructor = methodName === 'constructor';
+
+  const paramsList = node.values[1];
+  if (paramsList.type !== 'list') {
+    throw new Error('Method params must be a list');
+  }
+  const params = paramsList.values.map(compilePattern);
+  const bodyExprs = node.values.slice(2);
+
+  return {
+    type: 'MethodDefinition',
+    key,
+    value: {
+      type: 'FunctionExpression',
+      id: null,
+      params,
+      body: {
+        type: 'BlockStatement',
+        body: bodyExprs.map(e => toStatement(compileExpr(e))),
+      },
+      async: false,
+      generator: false,
+    },
+    kind: isConstructor ? 'constructor' : 'method',
+    computed: false,
+    static: isStatic,
+  };
+}
+
+function compileAccessorMethod(node, accessorKind, isStatic) {
+  if (node.values.length < 4) {
+    throw new Error(accessorKind + ' accessor: (' + accessorKind + ' name (params) body...)');
+  }
+  const nameAtom = node.values[1];
+  if (nameAtom.type !== 'atom') {
+    throw new Error('Accessor name must be an atom');
+  }
+  const key = toClassKey(nameAtom.value);
+
+  const paramsList = node.values[2];
+  if (paramsList.type !== 'list') {
+    throw new Error('Accessor params must be a list');
+  }
+  const params = paramsList.values.map(compilePattern);
+  const bodyExprs = node.values.slice(3);
+
+  return {
+    type: 'MethodDefinition',
+    key,
+    value: {
+      type: 'FunctionExpression',
+      id: null,
+      params,
+      body: {
+        type: 'BlockStatement',
+        body: bodyExprs.map(e => toStatement(compileExpr(e))),
+      },
+      async: false,
+      generator: false,
+    },
+    kind: accessorKind,
+    computed: false,
+    static: isStatic,
+  };
 }
 
 // Compile an array of top-level s-expressions to a JS program string
