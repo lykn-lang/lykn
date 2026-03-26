@@ -4,6 +4,37 @@
 
 import { generate } from 'astring';
 
+/** Convert lisp-case to camelCase via single-pass character walk. */
+function toCamelCase(str) {
+  let out = '';
+  let leadingHyphens = true;
+  let upperNext = false;
+
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+
+    if (ch === '-') {
+      if (leadingHyphens) {
+        out += '_';
+      } else if (i === str.length - 1) {
+        out += '_';
+      } else {
+        upperNext = true;
+      }
+    } else {
+      leadingHyphens = false;
+      if (upperNext) {
+        out += ch.toUpperCase();
+        upperNext = false;
+      } else {
+        out += ch;
+      }
+    }
+  }
+
+  return out;
+}
+
 // Built-in macros: maps s-expression forms to ESTree AST nodes
 const macros = {
   // Variable declaration: (var x 1)
@@ -46,42 +77,17 @@ const macros = {
     };
   },
 
-  // Property access: (. obj prop1 prop2)
-  '.'(args) {
-    let result = compileExpr(args[0]);
-    for (let i = 1; i < args.length; i++) {
-      const prop = args[i];
-      if (prop.type === 'atom') {
-        result = {
-          type: 'MemberExpression',
-          object: result,
-          property: { type: 'Identifier', name: prop.value },
-          computed: false,
-        };
-      } else if (prop.type === 'number') {
-        result = {
-          type: 'MemberExpression',
-          object: result,
-          property: { type: 'Literal', value: prop.value },
-          computed: true,
-        };
-      } else if (prop.type === 'string') {
-        result = {
-          type: 'MemberExpression',
-          object: result,
-          property: { type: 'Literal', value: prop.value },
-          computed: true,
-        };
-      } else {
-        result = {
-          type: 'MemberExpression',
-          object: result,
-          property: compileExpr(prop),
-          computed: true,
-        };
-      }
+  // Computed member access: (get obj key)
+  'get'(args) {
+    if (args.length !== 2) {
+      throw new Error('get requires exactly 2 arguments: (get object key)');
     }
-    return result;
+    return {
+      type: 'MemberExpression',
+      object: compileExpr(args[0]),
+      property: compileExpr(args[1]),
+      computed: true,
+    };
   },
 
   // Arrow function: (=> (a b) (+ a b))
@@ -251,12 +257,68 @@ export function compileExpr(node) {
       return { type: 'Literal', value: node.value };
     case 'string':
       return { type: 'Literal', value: node.value };
-    case 'atom':
-      if (node.value === 'true') return { type: 'Literal', value: true };
-      if (node.value === 'false') return { type: 'Literal', value: false };
-      if (node.value === 'null') return { type: 'Literal', value: null };
-      if (node.value === 'undefined') return { type: 'Identifier', name: 'undefined' };
-      return { type: 'Identifier', name: node.value };
+    case 'atom': {
+      const val = node.value;
+
+      // 1. Literal atoms
+      if (val === 'true') return { type: 'Literal', value: true };
+      if (val === 'false') return { type: 'Literal', value: false };
+      if (val === 'null') return { type: 'Literal', value: null };
+      if (val === 'undefined') return { type: 'Identifier', name: 'undefined' };
+
+      // 2. Special keyword atoms
+      if (val === 'this') return { type: 'ThisExpression' };
+      if (val === 'super') return { type: 'Super' };
+
+      // 3. Colon syntax → MemberExpression chain
+      if (val.includes(':')) {
+        if (val === ':') {
+          throw new Error('Bare colon is not a valid identifier');
+        }
+        if (val.startsWith(':')) {
+          throw new Error('Leading colon syntax is reserved for future use');
+        }
+        if (val.endsWith(':')) {
+          throw new Error('Trailing colon in member expression');
+        }
+
+        const segments = val.split(':');
+        for (const seg of segments) {
+          if (seg === '') {
+            throw new Error('Empty segment in colon syntax (consecutive colons)');
+          }
+          if (/^\d/.test(seg)) {
+            throw new Error(
+              `Numeric segment "${seg}" in colon syntax — use (get obj ${seg}) for computed access`
+            );
+          }
+        }
+
+        const first = segments[0];
+        let result;
+        if (first === 'this') {
+          result = { type: 'ThisExpression' };
+        } else if (first === 'super') {
+          result = { type: 'Super' };
+        } else {
+          result = { type: 'Identifier', name: toCamelCase(first) };
+        }
+
+        for (let i = 1; i < segments.length; i++) {
+          result = {
+            type: 'MemberExpression',
+            object: result,
+            property: { type: 'Identifier', name: toCamelCase(segments[i]) },
+            computed: false,
+          };
+        }
+
+        return result;
+      }
+
+      // 4. Regular identifier with camelCase
+      return { type: 'Identifier', name: toCamelCase(val) };
+    }
     case 'list': {
       if (node.values.length === 0) {
         return { type: 'ArrayExpression', elements: [] };
