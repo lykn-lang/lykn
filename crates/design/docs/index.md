@@ -6,6 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0012 | Macro System Research for lykn | Final | 2026-03-26 |
 | 0011 | Designing a macro system for lykn | Final | 2026-03-26 |
 | 0010 | Lykn v0.1.0 — Implementation Plan | Active | 2026-03-24 |
 | 0009 | DD-09: v0.1.0 Scope and Phasing | Active | 2026-03-24 |
@@ -22,6 +23,7 @@ This index is automatically generated. Do not edit manually.
 
 ### Final
 
+- [0012 - Macro System Research for lykn](06-final/0012-macro-system-research-for-lykn.md)
 - [0011 - Designing a macro system for lykn](06-final/0011-designing-a-macro-system-for-lykn.md)
 
 ### Active
