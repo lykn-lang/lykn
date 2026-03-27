@@ -1,0 +1,7 @@
+;; advanced-control.lykn — imports from basic-control, exports when-not
+;; when-not expands to core forms directly (no dependency on when at call site)
+
+(import-macros "./basic-control.lykn" (when))
+
+(export (macro when-not (test (rest body))
+  `(if (! ,test) (block ,@body))))

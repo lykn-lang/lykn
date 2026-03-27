@@ -1,0 +1,7 @@
+;; basic-control.lykn — test fixture exporting when and unless macros
+
+(export (macro when (test (rest body))
+  `(if ,test (block ,@body))))
+
+(export (macro unless (test (rest body))
+  `(if (! ,test) (block ,@body))))

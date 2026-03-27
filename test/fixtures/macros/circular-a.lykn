@@ -1,0 +1,3 @@
+;; circular-a.lykn — imports from circular-b (creates circular dependency)
+(import-macros "./circular-b.lykn" (bar))
+(export (macro foo () `null))

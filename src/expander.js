@@ -6,6 +6,8 @@
  */
 
 import { compile } from './compiler.js';
+import { read } from './reader.js';
+import { resolve, dirname } from "node:path";
 
 // --- AST Node API ---
 
@@ -14,6 +16,9 @@ let gensymCounter = 0;
 
 /** @type {Map<string, Function>} */
 const macroEnv = new Map();
+
+/** @type {Map<string, { mtime: number, exports: Map<string, Function> }>} */
+const moduleCache = new Map();
 
 const MAX_EXPAND_ITERATIONS = 1000;
 
@@ -498,6 +503,10 @@ export function resetMacros() {
   macroEnv.clear();
 }
 
+export function resetModuleCache() {
+  moduleCache.clear();
+}
+
 export { formatSExpr };
 
 // --- Quasiquote Expansion (Bawden's Algorithm) ---
@@ -921,31 +930,206 @@ function pass2ExpandAll(forms) {
 }
 
 /**
- * Pass 0: Scan for import-macros. Stub in Phase 4 — errors if found.
+ * Pass 0: Process import-macros forms. Load, compile, and register
+ * macros from external .lykn modules.
  * @param {*[]} forms - All top-level forms
- * @returns {*[]} Forms unchanged (import-macros not yet supported)
- * @throws {Error} If import-macros is encountered
+ * @param {string | null} filePath - Path of the importing file (for resolution)
+ * @param {string[]} compilationStack - Stack for circular dep detection
+ * @returns {*[]} Forms with import-macros removed
  */
-function pass0ImportMacros(forms) {
+function pass0ImportMacros(forms, filePath, compilationStack) {
+  const remaining = [];
+  const importedPaths = new Set();
+
   for (const form of forms) {
-    if (form.type === 'list' && form.values.length >= 1 &&
-        form.values[0].type === 'atom' && form.values[0].value === 'import-macros') {
-      throw new Error('import-macros not yet implemented (Phase 5)');
+    if (form.type !== 'list' || form.values.length < 1 ||
+        form.values[0].type !== 'atom' || form.values[0].value !== 'import-macros') {
+      remaining.push(form);
+      continue;
+    }
+
+    // (import-macros "path" (bindings...))
+    const args = form.values.slice(1);
+    if (args.length < 2) {
+      throw new Error('import-macros requires a path and binding list');
+    }
+    if (args[0].type !== 'string') {
+      throw new Error('import-macros: first argument must be a module path string');
+    }
+    if (args[1].type !== 'list') {
+      throw new Error('import-macros requires a binding list');
+    }
+
+    const modulePath = args[0].value;
+
+    // Validate path
+    if (!modulePath.startsWith('./') && !modulePath.startsWith('../')) {
+      throw new Error(`import-macros path must be relative (./ or ../): "${modulePath}"`);
+    }
+    if (!modulePath.endsWith('.lykn')) {
+      throw new Error(`import-macros path must end with .lykn: "${modulePath}"`);
+    }
+
+    // Resolve path
+    const baseDir = filePath ? dirname(filePath) : Deno.cwd();
+    const resolvedPath = resolve(baseDir, modulePath);
+
+    // Duplicate check
+    if (importedPaths.has(resolvedPath)) {
+      throw new Error(`duplicate import-macros for ${modulePath}`);
+    }
+    importedPaths.add(resolvedPath);
+
+    // Load module
+    const moduleExports = loadMacroModule(resolvedPath, modulePath, compilationStack);
+
+    // Register requested bindings
+    const bindings = args[1].values;
+    for (const binding of bindings) {
+      let importedName;
+      let localName;
+
+      if (binding.type === 'atom') {
+        importedName = binding.value;
+        localName = binding.value;
+      } else if (binding.type === 'list' && binding.values.length >= 2 &&
+                 binding.values[0].type === 'atom' && binding.values[0].value === 'as') {
+        importedName = binding.values[1].value;
+        localName = binding.values[2].value;
+      } else {
+        throw new Error(`import-macros: invalid binding form`);
+      }
+
+      if (!moduleExports.has(importedName)) {
+        const available = [...moduleExports.keys()].join(', ');
+        throw new Error(
+          `macro '${importedName}' not exported by ${modulePath}` +
+          (available ? ` (available: ${available})` : '')
+        );
+      }
+
+      if (macroEnv.has(localName)) {
+        throw new Error(`macro '${localName}' already defined (imported from ${modulePath})`);
+      }
+
+      macroEnv.set(localName, moduleExports.get(importedName));
     }
   }
-  return forms;
+
+  return remaining;
+}
+
+/**
+ * Load and compile a macro module, returning its exported macro functions.
+ * @param {string} resolvedPath - Absolute path to the .lykn file
+ * @param {string} displayPath - Original relative path for error messages
+ * @param {string[]} compilationStack - For circular dep detection
+ * @returns {Map<string, Function>} Map of exported macro name → function
+ */
+function loadMacroModule(resolvedPath, displayPath, compilationStack) {
+  // Circular dependency check
+  if (compilationStack.includes(resolvedPath)) {
+    const cycle = [...compilationStack, resolvedPath].map((p) => p.split('/').pop()).join(' → ');
+    throw new Error(`circular macro module dependency: ${cycle}`);
+  }
+
+  // Cache check
+  let mtime;
+  try {
+    mtime = Deno.statSync(resolvedPath).mtime?.getTime() ?? 0;
+  } catch {
+    throw new Error(`macro module not found: ${displayPath}`);
+  }
+
+  const cached = moduleCache.get(resolvedPath);
+  if (cached && cached.mtime === mtime) {
+    return cached.exports;
+  }
+
+  // Read and parse
+  let source;
+  try {
+    source = Deno.readTextFileSync(resolvedPath);
+  } catch {
+    throw new Error(`macro module not found: ${displayPath}`);
+  }
+
+  const forms = read(source);
+
+  // Save and clear current macro env (module gets its own scope)
+  const savedMacroEnv = new Map(macroEnv);
+  macroEnv.clear();
+
+  const newStack = [...compilationStack, resolvedPath];
+
+  try {
+    // Run three-pass pipeline on module (recursive)
+    const afterPass0 = pass0ImportMacros(forms, resolvedPath, newStack);
+
+    // Pass 1: register macros, track which are exported
+    const exportedMacroNames = new Set();
+    const macroForms = [];
+    const otherForms = [];
+
+    for (const form of afterPass0) {
+      // (export (macro name params body...))
+      if (form.type === 'list' && form.values.length === 2 &&
+          form.values[0].type === 'atom' && form.values[0].value === 'export' &&
+          form.values[1].type === 'list' && form.values[1].values.length >= 3 &&
+          form.values[1].values[0].type === 'atom' && form.values[1].values[0].value === 'macro') {
+        const macroForm = form.values[1];
+        const macroName = macroForm.values[1].value;
+        exportedMacroNames.add(macroName);
+        macroForms.push(macroForm);
+      } else if (form.type === 'list' && form.values.length >= 3 &&
+                 form.values[0].type === 'atom' && form.values[0].value === 'macro') {
+        macroForms.push(form);
+      } else {
+        otherForms.push(form);
+      }
+    }
+
+    // Register all macros (exported and unexported)
+    for (const form of macroForms) {
+      const name = form.values[1];
+      const params = form.values[2];
+      const body = form.values.slice(3);
+      registerMacroForm(name, params, body);
+    }
+
+    // Collect exported macro functions
+    const exports = new Map();
+    for (const name of exportedMacroNames) {
+      if (macroEnv.has(name)) {
+        exports.set(name, macroEnv.get(name));
+      }
+    }
+
+    // Cache the result
+    moduleCache.set(resolvedPath, { mtime, exports });
+
+    return exports;
+  } finally {
+    // Restore parent macro env
+    macroEnv.clear();
+    for (const [k, v] of savedMacroEnv) {
+      macroEnv.set(k, v);
+    }
+  }
 }
 
 /**
  * Expand all top-level forms. Three-pass pipeline:
- * Pass 0: process import-macros (stub — errors if found)
+ * Pass 0: process import-macros (load external macro modules)
  * Pass 1: register macros (iterative fixed-point)
  * Pass 2: expand all remaining forms
  * @param {*[]} forms - Array of reader AST nodes
+ * @param {{ filePath?: string, compilationStack?: string[] }} [context]
  * @returns {*[]} Expanded forms ready for the compiler
  */
-export function expand(forms) {
-  const afterPass0 = pass0ImportMacros(forms);
+export function expand(forms, context = {}) {
+  const { filePath = null, compilationStack = [] } = context;
+  const afterPass0 = pass0ImportMacros(forms, filePath, compilationStack);
   const afterPass1 = pass1RegisterMacros(afterPass0);
   return pass2ExpandAll(afterPass1);
 }

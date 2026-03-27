@@ -1,0 +1,3 @@
+;; unexported.lykn — macro that is NOT exported
+(macro internal-only () `null)
+(export (macro public-one () `null))

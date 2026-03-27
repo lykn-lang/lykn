@@ -17,8 +17,9 @@ function ex(source) {
 
 // --- Three-pass pipeline ---
 
-Deno.test("pipeline: pass 0 rejects import-macros", () => {
-  assertThrows(() => ex('(import-macros "./foo.lykn" (bar))'), Error, "not yet implemented");
+Deno.test("pipeline: pass 0 processes import-macros", () => {
+  // import-macros now works — file not found is the expected error for a bad path
+  assertThrows(() => ex('(import-macros "./nonexistent.lykn" (bar))'), Error, "not found");
 });
 
 Deno.test("pipeline: pass 1 processes macros before pass 2", () => {
