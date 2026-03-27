@@ -6,6 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0017 | DD-14: Macro Modules and ESM Interaction | Draft | 2026-03-26 |
 | 0016 | DD-13: Macro Expansion Pipeline | Draft | 2026-03-26 |
 | 0015 | DD-12: Reader `#` Dispatch, Data Literals, and Cons Lists | Draft | 2026-03-26 |
 | 0014 | DD-11: Macro Definition, `as` Pattern Form, and Hygiene | Draft | 2026-03-26 |
@@ -27,6 +28,7 @@ This index is automatically generated. Do not edit manually.
 
 ### Draft
 
+- [0017 - DD-14: Macro Modules and ESM Interaction](01-draft/0017-dd-14-macro-modules-and-esm-interaction.md)
 - [0016 - DD-13: Macro Expansion Pipeline](01-draft/0016-dd-13-macro-expansion-pipeline.md)
 - [0015 - DD-12: Reader `#` Dispatch, Data Literals, and Cons Lists](01-draft/0015-dd-12-reader-dispatch-data-literals-and-cons-lists.md)
 - [0014 - DD-11: Macro Definition, `as` Pattern Form, and Hygiene](01-draft/0014-dd-11-macro-definition-as-pattern-form-and-hygiene.md)
