@@ -7,7 +7,10 @@
 
 import { compile } from './compiler.js';
 import { read } from './reader.js';
-import { resolve, dirname } from "node:path";
+
+// node:path is needed for import-macros file resolution.
+// In browser builds, esbuild replaces this with stubs via the define/inject mechanism.
+import { resolve as _resolve, dirname as _dirname } from "node:path";
 
 // --- AST Node API ---
 
@@ -970,9 +973,12 @@ function pass0ImportMacros(forms, filePath, compilationStack) {
       throw new Error(`import-macros path must end with .lykn: "${modulePath}"`);
     }
 
-    // Resolve path
-    const baseDir = filePath ? dirname(filePath) : Deno.cwd();
-    const resolvedPath = resolve(baseDir, modulePath);
+    // Resolve path (requires node:path — not available in browser)
+    if (!_resolve || !_dirname) {
+      throw new Error('import-macros requires Deno/Node file system access — not available in browser');
+    }
+    const baseDir = filePath ? _dirname(filePath) : (typeof Deno !== 'undefined' ? Deno.cwd() : '.');
+    const resolvedPath = _resolve(baseDir, modulePath);
 
     // Duplicate check
     if (importedPaths.has(resolvedPath)) {
