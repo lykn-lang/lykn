@@ -6,6 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0018 | Lykn v0.2.0 — Implementation Plan | Active | 2026-03-26 |
 | 0017 | DD-14: Macro Modules and ESM Interaction | Draft | 2026-03-26 |
 | 0016 | DD-13: Macro Expansion Pipeline | Draft | 2026-03-26 |
 | 0015 | DD-12: Reader `#` Dispatch, Data Literals, and Cons Lists | Draft | 2026-03-26 |
@@ -25,6 +26,10 @@ This index is automatically generated. Do not edit manually.
 | 0001 | DD-01: Colon Syntax and camelCase Conversion | Final | 2026-03-26 |
 
 ## Documents by State
+
+### Active
+
+- [0018 - Lykn v0.2.0 — Implementation Plan](05-active/0018-lykn-v0.2.0-implementation-plan.md)
 
 ### Draft
 
