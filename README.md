@@ -16,18 +16,26 @@ squint at the Icelandic — *closure*.
 
 ## Status
 
-**v0.1.0** — Feature-complete compiler covering core JS: functions, classes, modules, destructuring, template literals, async/await, and more. 38KB browser bundle. 196 tests.
+**v0.2.0** — Full macro system with quasiquote, auto-gensym hygiene, and cross-module macro imports. 56KB browser bundle. 423 tests.
 
 ## Quick taste
 
 ```lisp
-(import "node:fs" (read-file-sync))
+;; Define macros with quasiquote templates
+(macro when (test (rest body))
+  `(if ,test (block ,@body)))
 
-(const greet (=> (name)
-  (console:log (template "hello, " name "!"))))
+(macro unless (test (rest body))
+  `(if (! ,test) (block ,@body)))
 
-(greet "world")
+;; Import macros from other files
+(import-macros "./control-flow.lykn" (when unless))
 
+;; Use them like built-in forms
+(when (> x 0)
+  (console:log "positive"))
+
+;; Classes, destructuring, template literals — all the JS you need
 (class Dog (Animal)
   (field -name)
   (constructor (name)
@@ -42,9 +50,9 @@ squint at the Icelandic — *closure*.
 Compiles to:
 
 ```js
-import {readFileSync} from "node:fs";
-const greet = name => console.log(`hello, ${name}!`);
-greet("world");
+if (x > 0) {
+  console.log("positive");
+}
 class Dog extends Animal {
   #_name;
   constructor(name) {
@@ -60,15 +68,26 @@ const {name, age = 0} = getUser();
 
 ## Architecture
 
-lykn has two implementations that share a common s-expression syntax:
+```
+.lykn source → reader → expander → compiler → astring → JavaScript
+```
 
-- **JS compiler** (`src/`) — reads `.lykn` files, emits ESTree AST, generates
-  JS via [astring](https://github.com/davidbonnet/astring). Publishable to
-  npm and jsr.io. Also targets in-browser compilation for `<script
-  type="text/lykn">` workflows.
+- **Reader** (`src/reader.js`) — parses s-expressions, handles `#` dispatch
+  (`` ` ``, `,`, `,@`, `#a(...)`, `#o(...)`, `#NNr`, `#;`, `#|...|#`),
+  dotted pairs
 
-- **Rust tools** (`crates/lykn-cli/`) — linter, formatter, syntax checker, and
-  eventually a REPL. Single binary, no runtime dependencies. Publishable to crates.io.
+- **Expander** (`src/expander.js`) — three-pass macro expansion pipeline.
+  Resolves quasiquote (Bawden's algorithm), sugar forms (`cons`/`list`/
+  `car`/`cdr`), user-defined macros, `import-macros`, `as` patterns
+
+- **Compiler** (`src/compiler.js`) — transforms core forms to ESTree AST,
+  generates JS via [astring](https://github.com/davidbonnet/astring)
+
+- **Browser shim** (`src/lykn-browser.js`) — 56KB bundle with `<script
+  type="text/lykn">` support and `window.lykn` API
+
+- **Rust tools** (`crates/lykn-cli/`) — linter, formatter, syntax checker.
+  Single binary, no runtime dependencies. Publishable to crates.io.
 
 ## Toolchain
 
@@ -101,11 +120,10 @@ cargo fmt
 ### Test
 
 ```sh
-# JS
-deno test
-
-# Rust
-cargo test
+deno task test              # all tests
+deno task test:unit         # unit tests only
+deno task test:integration  # integration tests only
+cargo test                  # Rust tests
 ```
 
 ## Usage
@@ -115,8 +133,13 @@ cargo test
 ```html
 <script src="dist/lykn-browser.js"></script>
 <script type="text/lykn">
+  ;; Macros work inline in the browser!
+  (macro when (test (rest body))
+    `(if ,test (block ,@body)))
+
   (const el (document:query-selector "#output"))
-  (= el:text-content "Hello from lykn!")
+  (when el
+    (= el:text-content "Hello from lykn!"))
 </script>
 ```
 
@@ -128,10 +151,13 @@ lykn.run('(+ 1 2)')       // → 3
 await lykn.load('/app.lykn')
 ```
 
+> **Note:** `import-macros` is not available in the browser (no file system
+> access). Inline `macro` definitions work.
+
 ### Build Browser Bundle
 
 ```sh
-deno task build:browser
+deno task build
 ```
 
 ### Format (Rust)
@@ -238,14 +264,38 @@ cargo build --release && cp ./target/release/lykn ./bin
 | `(** base exp)` | `base ** exp` |
 | `(?? a b)` | `a ?? b` |
 
+### Macros
+
+| lykn | What it does |
+|---|---|
+| `` (macro when (test (rest body)) `(if ,test (block ,@body))) `` | Define a macro with quasiquote template |
+| `(import-macros "./lib.lykn" (when unless))` | Import macros from another file |
+| `` `(if ,test ,@body) `` | Quasiquote with unquote and splicing |
+| `temp#gen` | Auto-gensym (hygienic binding) |
+| `(gensym "prefix")` | Programmatic gensym |
+
+### Data literals and sugar
+
+| lykn | JS |
+|---|---|
+| `#a(1 2 3)` | `[1, 2, 3]` |
+| `#o((name "x") (age 42))` | `{name: "x", age: 42}` |
+| `#16rff` | `255` (radix literal) |
+| `#2r11110000` | `240` (binary) |
+| `(cons 1 2)` | `[1, 2]` |
+| `(list 1 2 3)` | `[1, [2, [3, null]]]` |
+| `(car x)` / `(cdr x)` | `x[0]` / `x[1]` |
+| `#; expr` | Expression comment (discards next form) |
+| `#\| ... \|#` | Nestable block comment |
+
 ## Design principles
 
 - **Thin skin over JS.** lykn is not a new language. It's a syntax for the
   language you already have. The output should look like code you'd write.
 - **No runtime.** Compiled lykn is just JS. Nothing extra ships to the
   browser.
-- **Small tools.** The compiler is ~1,500 lines. The browser bundle is 38KB
-  minified. The formatter is ~80 lines.
+- **Small tools.** The full pipeline (reader + expander + compiler) is ~3,000
+  lines. The browser bundle is 56KB minified. You can read the whole thing.
 - **Two worlds.** Use Rust for dev-side tooling (fast, single binary). Use JS
   for the compiler (because it targets JS and can run in the browser).
 
@@ -255,6 +305,10 @@ cargo build --release && cp ./target/release/lykn ./bin
   targets
 - [astring](https://github.com/davidbonnet/astring) — ESTree to JS code
   generation
+- [Bawden 1999](https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=bc26d7c81e2db498dce94bd79fa5b6a8d68f3e45) — "Quasiquotation in Lisp", the algorithm
+  behind lykn's macro expansion
+- [Fennel](https://fennel-lang.org/) — inspiration for enforced gensym
+  hygiene model
 - [eslisp](https://github.com/anko/eslisp) — spiritual ancestor; reference
   implementation
 - [BiwaScheme](https://www.biwascheme.org/) — inspiration for the in-browser
