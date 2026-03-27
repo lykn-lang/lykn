@@ -49,8 +49,10 @@ Deno.test("walk: macro form is consumed in pass 1", () => {
   assertEquals(result[0].values[0].value, "const");
 });
 
-Deno.test("walk: macroexpand errors in phase 2", () => {
-  assertThrows(() => ex("(macroexpand (foo))"), Error, "not yet implemented");
+Deno.test("walk: macroexpand erased from output", () => {
+  const result = ex("(macroexpand '(+ 1 2)) (const x 1)");
+  assertEquals(result.length, 1);
+  assertEquals(result[0].values[0].value, "const");
 });
 
 Deno.test("walk: quote stops recursion", () => {

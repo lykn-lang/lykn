@@ -123,6 +123,23 @@ export function nth(arr, n) {
   return arr.values[n];
 }
 
+/**
+ * Format an AST node as an s-expression string (for debug output).
+ * @param {*} node
+ * @returns {string}
+ */
+function formatSExpr(node) {
+  if (node === null || node === undefined) return 'null';
+  if (node.type === 'atom') return node.value;
+  if (node.type === 'string') return `"${node.value}"`;
+  if (node.type === 'number') return String(node.value);
+  if (node.type === 'cons') return `(${formatSExpr(node.car)} . ${formatSExpr(node.cdr)})`;
+  if (node.type === 'list') {
+    return `(${node.values.map(formatSExpr).join(' ')})`;
+  }
+  return String(node);
+}
+
 // --- Sugar Transforms ---
 
 function desugarCons(args) {
@@ -481,6 +498,8 @@ export function resetMacros() {
   macroEnv.clear();
 }
 
+export { formatSExpr };
+
 // --- Quasiquote Expansion (Bawden's Algorithm) ---
 
 function expandQuasiquote(form, depth) {
@@ -632,8 +651,9 @@ const dispatchTable = {
   "const":       { walk: "expand-binding", keyword: "const" },
   "let":         { walk: "expand-binding", keyword: "let" },
   "var":         { walk: "expand-binding", keyword: "var" },
-  "macroexpand":   { walk: "debug-expand" },
-  "macroexpand-1": { walk: "debug-expand" },
+  "import-macros": { walk: "import-macros" },
+  "macroexpand":   { walk: "debug-expand", mode: "full" },
+  "macroexpand-1": { walk: "debug-expand", mode: "once" },
 };
 
 // --- Expansion Walk ---
@@ -736,8 +756,42 @@ export function expandExpr(form) {
           return { type: 'list', values: form.values.map((sub) => expandExpr(sub)) };
         }
 
-        case 'debug-expand':
-          throw new Error(`${head.value} not yet implemented (requires macro system)`);
+        case 'import-macros':
+          throw new Error('import-macros not yet implemented (Phase 5)');
+
+        case 'debug-expand': {
+          const debugArgs = form.values.slice(1);
+          if (debugArgs.length !== 1) {
+            throw new Error(`${head.value} requires exactly one argument (quoted form)`);
+          }
+          let targetForm = debugArgs[0];
+          // Strip (quote ...) wrapper if present
+          if (targetForm.type === 'list' && targetForm.values.length === 2 &&
+              targetForm.values[0].type === 'atom' && targetForm.values[0].value === 'quote') {
+            targetForm = targetForm.values[1];
+          }
+
+          let result;
+          if (entry.mode === 'once') {
+            // macroexpand-1: one expansion step only
+            if (targetForm.type === 'list' && targetForm.values.length > 0 &&
+                targetForm.values[0].type === 'atom' && macroEnv.has(targetForm.values[0].value)) {
+              const macroName = targetForm.values[0].value;
+              const macroArgs = targetForm.values.slice(1);
+              result = macroEnv.get(macroName)(...macroArgs);
+            } else {
+              result = targetForm;
+            }
+          } else {
+            // macroexpand: full expansion
+            result = expandExpr(targetForm);
+          }
+
+          // Print to stderr
+          console.error(formatSExpr(result));
+          // Erase from output
+          return null;
+        }
 
         default:
           throw new Error(`unknown dispatch walk strategy: '${entry.walk}'`);
@@ -856,8 +910,9 @@ function pass2ExpandAll(forms) {
   const result = [];
   for (const form of forms) {
     const expanded = expandExpr(form);
+    if (expanded === null || expanded === undefined) continue;
     if (Array.isArray(expanded)) {
-      result.push(...expanded);
+      result.push(...expanded.filter((e) => e !== null && e !== undefined));
     } else {
       result.push(expanded);
     }
@@ -866,13 +921,31 @@ function pass2ExpandAll(forms) {
 }
 
 /**
- * Expand all top-level forms. Two-pass pipeline:
+ * Pass 0: Scan for import-macros. Stub in Phase 4 — errors if found.
+ * @param {*[]} forms - All top-level forms
+ * @returns {*[]} Forms unchanged (import-macros not yet supported)
+ * @throws {Error} If import-macros is encountered
+ */
+function pass0ImportMacros(forms) {
+  for (const form of forms) {
+    if (form.type === 'list' && form.values.length >= 1 &&
+        form.values[0].type === 'atom' && form.values[0].value === 'import-macros') {
+      throw new Error('import-macros not yet implemented (Phase 5)');
+    }
+  }
+  return forms;
+}
+
+/**
+ * Expand all top-level forms. Three-pass pipeline:
+ * Pass 0: process import-macros (stub — errors if found)
  * Pass 1: register macros (iterative fixed-point)
  * Pass 2: expand all remaining forms
  * @param {*[]} forms - Array of reader AST nodes
  * @returns {*[]} Expanded forms ready for the compiler
  */
 export function expand(forms) {
-  const remaining = pass1RegisterMacros(forms);
-  return pass2ExpandAll(remaining);
+  const afterPass0 = pass0ImportMacros(forms);
+  const afterPass1 = pass1RegisterMacros(afterPass0);
+  return pass2ExpandAll(afterPass1);
 }
