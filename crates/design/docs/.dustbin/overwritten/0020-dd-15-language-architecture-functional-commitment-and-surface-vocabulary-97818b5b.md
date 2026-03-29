@@ -1,17 +1,16 @@
 ---
 number: 20
 title: "DD-15: Language Architecture, Functional Commitment, and Surface Vocabulary"
-author: "Duncan McGreggor"
+author: "the existing"
 component: All
 tags: [change-me]
 created: 2026-03-27
 updated: 2026-03-28
-state: Draft
+state: Overwritten
 supersedes: null
 superseded-by: null
-version: 1.1
+version: 1.0
 ---
-
 
 # DD-15: Language Architecture, Functional Commitment, and Surface Vocabulary
 
@@ -134,68 +133,6 @@ for a Lisp compiling to JavaScript. The shallow-copy cost (O(n) in
 object size via spread operators) is acceptable for the vast majority
 of use cases. When it isn't, a persistent data structure library can
 be imported.
-
-### `bind` type annotations
-
-**Decision**: `bind` supports optional type annotations. When
-present, the type keyword appears between `bind` and the name.
-Type annotations are optional for primitive literal initializers
-(numbers, strings, booleans, keywords, `null`, `undefined`) because
-the type is self-evident from the literal. For non-literal
-initializers (variable references, function calls, operator
-expressions, constructor calls, `obj` construction), whether a type
-annotation is required is an open question (see Open Questions —
-deferred to the Rust compiler design session).
-
-**Syntax**:
-
-```lisp
-;; Primitive literals — type optional, self-evident
-(bind name "Duncan")
-(bind age 42)
-(bind active true)
-
-;; Primitive literals — type annotation available but redundant
-(bind :string name "Duncan")
-(bind :number age 42)
-
-;; Non-literal initializers — type annotation recommended/required
-(bind :number b (parse-float a))
-(bind :string c a)
-(bind :Option d (find-user id))
-(bind :object e (obj :x 1 :y 2))
-(bind :number f (+ 1 2))
-(bind :array g (map double items))
-```
-
-```javascript
-// All compile to const — type annotations are dev-mode checks
-const name = "Duncan";
-const age = 42;
-const active = true;
-const b = parseFloat(a);      // + dev-mode typeof check
-const c = a;                   // + dev-mode typeof check
-const d = findUser(id);        // + dev-mode tag check
-const e = { x: 1, y: 2 };     // + dev-mode typeof check
-const f = 1 + 2;               // + dev-mode typeof check
-const g = items.map(double);   // + dev-mode Array.isArray check
-```
-
-**ESTree nodes**: `VariableDeclaration` with `kind: "const"` (always).
-Type annotations → `IfStatement` + `ThrowStatement` before value use
-(same pattern as `func` type checks, stripped by `--strip-assertions`).
-
-**Rationale**: Primitive literals are self-typing — writing
-`:string` next to `"Duncan"` is redundant noise. But when the
-initializer is a variable reference, function call, or expression,
-the type is not visible at the binding site. The developer (and the
-compiler) must trace through the code to determine what type flows
-into the binding. Type annotations at these sites make the data flow
-explicit and enable dev-mode assertions. This creates a natural
-spectrum across the surface language: `type` constructor fields
-require annotations (strictest — data definitions), `func`/`fn`
-parameters require annotations (interfaces), `bind` with literals
-is optional (self-evident).
 
 ### Controlled mutation via cells
 
@@ -427,33 +364,31 @@ lykn/surface. It includes optional type annotations and optional
 function form, not a separate `func/c` variant.
 
 ```lisp
-;; Minimal: zero-arg positional shorthand
-(func make-timestamp
-  (Date:now))
+;; Minimal: no types, no contracts
+(func greet (name)
+  (str "Hello, " name))
 ```
 
 ```javascript
-function makeTimestamp() {
-  return Date.now();
+function greet(name) {
+  return "Hello, " + name;
 }
 ```
 
 ```lisp
-;; With type annotations (keyword-labeled, all params typed)
-(func add
-  :args (:number a :number b)
-  :returns :number
-  :body (+ a b))
+;; With type annotations
+(func add (:number a :number b) :number
+  (+ a b))
 ```
 
 ```javascript
 // Dev mode: runtime type assertions emitted
 function add(a, b) {
-  if (typeof a !== "number" || Number.isNaN(a))
-    throw new TypeError("add: arg 'a' expected number, got " + typeof a);
-  if (typeof b !== "number" || Number.isNaN(b))
-    throw new TypeError("add: arg 'b' expected number, got " + typeof b);
-  return a + b;
+  if (typeof a !== "number") throw new TypeError("add: param 'a' expected number");
+  if (typeof b !== "number") throw new TypeError("add: param 'b' expected number");
+  const _result = a + b;
+  if (typeof _result !== "number") throw new TypeError("add: return expected number");
+  return _result;
 }
 
 // Production mode (--strip-assertions): assertions elided
@@ -463,48 +398,44 @@ function add(a, b) {
 ```
 
 ```lisp
-;; With contracts (single expression, and/or composition)
-(func withdraw
-  :args (:number amount :account acct)
-  :returns :account
-  :pre (and (> amount 0)
-            (<= amount (express (get acct :balance))))
-  :post (>= (express (get ~ :balance)) 0)
-  :body
+;; With contracts
+(func withdraw (:number amount :account acct) :account
+  :pre  [(> amount 0)
+         (<= amount (express (get acct :balance)))]
+  :post [(>= (express (get % :balance)) 0)]
   (assoc acct :balance (- (express (get acct :balance)) amount)))
 ```
 
 ```javascript
 // Dev mode
 function withdraw(amount, acct) {
-  if (typeof amount !== "number" || Number.isNaN(amount))
-    throw new TypeError("withdraw: arg 'amount' expected number, got " + typeof amount);
-  if (!(amount > 0 && amount <= acct.balance.value))
-    throw new Error("withdraw: pre-condition failed: (and (> amount 0) (<= amount (express (get acct :balance)))) — caller blame");
+  if (typeof amount !== "number") throw new TypeError("withdraw: param 'amount' expected number");
+  if (!(amount > 0)) throw new ContractError("withdraw: pre-condition failed: (> amount 0) — caller blame");
+  if (!(amount <= acct.balance.value)) throw new ContractError("withdraw: pre-condition failed — caller blame");
   const _result = { ...acct, balance: acct.balance.value - amount };
-  if (!(_result.balance.value >= 0))
-    throw new Error("withdraw: post-condition failed: (>= (express (get ~ :balance)) 0) — callee blame");
+  if (!(_result.balance.value >= 0)) throw new ContractError("withdraw: post-condition failed — callee blame");
   return _result;
 }
 ```
 
 Type annotations in parameters use keyword-type-name pairs:
 `(:number a :string b)`. The keyword names the type, the following
-symbol names the parameter. All parameters require type annotations
-— bare symbols are a compile error. Use `:any` to explicitly opt out
-of type checking.
+symbol names the parameter. Untyped parameters are bare symbols:
+`(a b c)`. Mixed is allowed: `(:number a b :string c)` — `a` is
+typed number, `b` is untyped, `c` is typed string.
 
-Return type uses `:returns` keyword. If absent, the function returns
-nothing (void).
+Return type follows the parameter list as a keyword: `:number`,
+`:string`, `:boolean`, `:void`, `:promise`, or a user-defined type
+name.
 
-`:pre` and `:post` are optional keyword clauses. Each takes a single
-boolean expression. Multiple conditions are composed explicitly with
-`and`/`or`. In `:post`, `~` refers to the return value.
+`:pre` and `:post` are optional keyword clauses before the function
+body. `:pre` contains a vector of expressions that must be truthy
+on entry. `:post` contains a vector of expressions that must be
+truthy on exit, where `%` refers to the return value.
 
 **ESTree nodes**: `FunctionDeclaration`. Type assertions →
-`IfStatement` + `ThrowStatement` + `NewExpression` (`TypeError` for
-type violations, `Error` for contract violations). Body →
-`BlockStatement`.
+`IfStatement` + `ThrowStatement` + `NewExpression` (`TypeError` /
+`ContractError`). Body → `BlockStatement`.
 
 **Rationale**: Making contracts part of the standard function form
 means the cheapest thing to write is the safe thing. Developers
@@ -754,16 +685,11 @@ introduce a second namespace separator with different semantics.
 | `swap!` on non-cell | Runtime error | `(swap! 42 inc)` → `(42).value = inc(...)` → TypeError |
 | Nested cells | Supported but discouraged | `(bind c (cell (cell 0)))` → `{ value: { value: 0 } }` |
 | `cell` with no initial value | Compile error | `(cell)` → error: cell requires an initial value |
-| `func` with `:pre` but `:any` types | Valid — contracts work alongside `:any` | `(func f :args (:any x) :pre (> x 0) :body ...)` |
-| `func` with types but no `:pre` | Valid — type checks only | `(func f :args (:number x) :body ...)` |
-| `func` with bare param (no type) | Compile error | `(func f :args (x) :body ...)` → error: parameter 'x' missing type annotation |
-| `fn` with types | Required — all params must have types | `(fn (:number x) (+ x 1))` |
-| `fn` with bare param (no type) | Compile error | `(fn (x) (+ x 1))` → error: parameter 'x' missing type annotation |
-| `fn` with contracts | Not supported — contracts require a name for error messages | `(fn (:any x) :pre ...)` → error |
-| `lambda` anywhere `fn` works | Identical behavior | `(lambda (:number x) (+ x 1))` = `(fn (:number x) (+ x 1))` |
-| `bind` with type on literal | Valid but redundant | `(bind :string name "Duncan")` |
-| `bind` without type on literal | Valid — literal is self-typing | `(bind name "Duncan")` |
-| `bind` without type on variable ref | Open question — compiler error or linter warning | `(bind b a)` — see open questions |
+| `func` with `:pre` but no types | Valid — contracts work without types | `(func f (x) :pre [(> x 0)] ...)` |
+| `func` with types but no `:pre` | Valid — type checks only | `(func f (:number x) ...)` |
+| `fn` with types | Supported | `(fn (:number x) (+ x 1))` |
+| `fn` with contracts | Not supported — contracts require a name for error messages | `(fn (x) :pre [...] ...)` → error |
+| `lambda` anywhere `fn` works | Identical behavior | `(lambda (x) (+ x 1))` = `(fn (x) (+ x 1))` |
 | Surface form used in kernel context | Works if macro expansion is active | Kernel compiler alone does not recognize surface forms |
 | Kernel form used in surface context | Permitted — surface is a superset of kernel | `(const x 42)` compiles normally through surface compiler |
 
@@ -792,19 +718,15 @@ introduce a second namespace separator with different semantics.
   a future DD. Available if community demand emerges.
 - [ ] Deref syntax in quasiquote context — does `@` conflict with
   `,@` (unquote-splicing)?  Needs investigation if `@` is activated.
-- [x] Type annotation syntax for `bind` — resolved in DD-15 v1.1.
-  `(bind :type name value)` with type keyword between `bind` and
-  the name. Optional for primitive literal initializers, open
-  question for non-literal initializers (see below).
-- [x] `func` detailed parameter parsing — resolved in DD-16 v1.2.
-  All parameters require type keywords. Bare symbols are a compile
-  error. `:any` is the explicit opt-out.
-- [x] `%` in `:post` contracts — resolved in DD-16. `~` is the
-  return-value placeholder (not `%`). `%` was rejected as easily
-  confused with modulo.
-- [x] `ContractError` — resolved in DD-16. Contract violations use
-  standard `Error` with structured message format. No custom class,
-  no runtime dependency. Type violations use `TypeError`.
+- [ ] Type annotation syntax for `bind` — `(bind x :number 42)` vs
+  `(bind x 42)` with type inferred. Detailed design in DD-16.
+- [ ] `func` detailed parameter parsing — how mixed typed/untyped
+  params are parsed. Detailed design in DD-16.
+- [ ] `%` in `:post` contracts — how the return-value placeholder
+  interacts with macro expansion. Detailed design in DD-19.
+- [ ] `ContractError` — is this a custom error class (runtime
+  dependency) or does it use standard `Error`? Detailed design in
+  DD-19.
 - [ ] Cell interop — should `express`, `swap!`, `reset!` work on
   any object with a `.value` property, or only on objects created
   by `cell`? Affects interop with reactive frameworks.
@@ -812,35 +734,17 @@ introduce a second namespace separator with different semantics.
   an `obj` form. `(obj :name "Duncan" (spread defaults))`?
 - [ ] `assoc`/`dissoc`/`conj` detailed semantics — shallow copy
   depth, nested updates, array operations. Needs own DD or section
-  in a future DD.
+  in DD-16.
 - [ ] Rust surface compiler architecture — module structure, AST
   representation, interface with JS kernel compiler. Needs DD-20.
 - [ ] How kernel forms in surface context interact with surface
   analysis — does the Rust compiler pass kernel forms through
   unanalyzed, or does it understand them?
-- [x] Production vs dev mode — resolved in DD-16. `--strip-assertions`
-  CLI flag. Default is dev mode (assertions enabled).
-- [ ] `bind` type annotation enforcement for non-literal initializers —
-  should `(bind b a)` (variable reference without type) be a compile
-  error or a linter warning? Compile error is consistent with `func`
-  and `type` (every value crossing a boundary has a type). Linter
-  warning is less friction for local bindings. Deferred to Rust
-  compiler design session (DD-20).
+- [ ] Production vs dev mode — how the compiler determines whether
+  to emit type assertions and contract checks. CLI flag
+  (`--strip-assertions`)? Environment variable? File pragma?
 
 ## Version History
-
-### v1.1 — 2026-03-28
-
-Added `bind` type annotation decision. Type annotations optional for
-primitive literal initializers (self-typing), syntax is
-`(bind :type name value)`. Whether non-literal initializers require
-type annotations deferred as open question to Rust compiler design
-session. Edge cases updated to reflect DD-16 v1.2 (required types on
-`func`/`fn`/`lambda` params, no bare symbols) and DD-19 (single
-expression `:pre`/`:post`, no vectors). Resolved open questions
-marked with `[x]`: type annotation syntax for `bind`, `func`
-parameter parsing, `%` → `~` placeholder, `ContractError` → standard
-`Error`, `--strip-assertions` CLI flag.
 
 ### v1.0 — 2026-03-27
 
