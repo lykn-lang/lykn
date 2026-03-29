@@ -9,7 +9,7 @@ This index is automatically generated. Do not edit manually.
 | 0024 | DD-19: Contracts — Detailed Semantics | Draft | 2026-03-28 |
 | 0023 | DD-18: Threading Macros and Conditional Binding | Draft | 2026-03-28 |
 | 0022 | DD-17: `type` + `match` — Algebraic Data Types and Pattern Matching | Draft | 2026-03-27 |
-| 0021 | DD-16: `func` — Function Definition with Contracts and Polymorphic Dispatch | Draft | 2026-03-27 |
+| 0021 | DD-16: `func` — Function Definition with Contracts and Polymorphic Dispatch | Draft | 2026-03-28 |
 | 0020 | DD-15: Language Architecture, Functional Commitment, and Surface Vocabulary | Draft | 2026-03-27 |
 | 0019 | JavaScript's hazard landscape and syntactic mitigations for a Lisp-to-JS compiler | Final | 2026-03-27 |
 | 0018 | Lykn v0.2.0 — Implementation Plan | Active | 2026-03-26 |

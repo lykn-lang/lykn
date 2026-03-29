@@ -1,17 +1,16 @@
 ---
 number: 21
 title: "DD-16: `func` — Function Definition with Contracts and Polymorphic Dispatch"
-author: "Duncan McGreggor"
+author: "checking whether"
 component: All
 tags: [change-me]
 created: 2026-03-27
 updated: 2026-03-28
-state: Draft
+state: Overwritten
 supersedes: null
 superseded-by: null
-version: 1.1
+version: 1.0
 ---
-
 
 # DD-16: `func` — Function Definition with Contracts and Polymorphic Dispatch
 
@@ -79,9 +78,9 @@ function add(a, b) {
 (func withdraw
   :args (:number amount :account acct)
   :returns :account
-  :pre (and (> amount 0)
-            (<= amount (express (get acct :balance))))
-  :post (>= (express (get ~ :balance)) 0)
+  :pre [(> amount 0)
+        (<= amount (express (get acct :balance)))]
+  :post [(>= (express (get ~ :balance)) 0)]
   :body
   (assoc acct :balance (- (express (get acct :balance)) amount)))
 ```
@@ -91,11 +90,13 @@ function add(a, b) {
 function withdraw(amount, acct) {
   if (typeof amount !== "number" || Number.isNaN(amount))
     throw new TypeError("withdraw: arg 'amount' expected number");
-  if (!(amount > 0 && amount <= acct.balance.value))
-    throw new Error("withdraw: pre-condition failed: (and (> amount 0) (<= amount (express (get acct :balance)))) — caller blame");
+  if (!(amount > 0))
+    throw new ContractError("withdraw: pre-condition failed: (> amount 0) — caller blame");
+  if (!(amount <= acct.balance.value))
+    throw new ContractError("withdraw: pre-condition failed: (<= amount balance) — caller blame");
   const _result = { ...acct, balance: acct.balance.value - amount };
   if (!(_result.balance.value >= 0))
-    throw new Error("withdraw: post-condition failed: (>= (express (get ~ :balance)) 0) — callee blame");
+    throw new ContractError("withdraw: post-condition failed — callee blame");
   return _result;
 }
 
@@ -107,7 +108,7 @@ function withdraw(amount, acct) {
 
 **ESTree nodes**: `FunctionDeclaration`, `BlockStatement`. Type
 assertions → `IfStatement` + `ThrowStatement` + `NewExpression`.
-Contract assertions → same structure with `Error` message.
+Contract assertions → same structure with `ContractError` message.
 
 **Rationale**: Keyword-labeled clauses provide a consistent,
 self-documenting structure. Every parameterized function has the
@@ -350,7 +351,7 @@ function add(...args) {
 (func divide
   (:args (:number a :number b)
    :returns :number
-   :pre (not= b 0)
+   :pre [(not= b 0)]
    :body (/ a b))
 
   (:args (:number a)
@@ -364,7 +365,7 @@ function divide(...args) {
     const a = args[0];
     const b = args[1];
     if (!(b !== 0))
-      throw new Error("divide: pre-condition failed: (not= b 0) — caller blame");
+      throw new ContractError("divide: pre-condition failed: (not= b 0) — caller blame");
     return a / b;
   }
   if (args.length === 1 && typeof args[0] === "number") {
@@ -459,9 +460,9 @@ ones to short-circuit the dispatch chain.
 in other contexts (anonymous function shorthand, format strings).
 
 ```lisp
-:post (and (number? ~)
-           (>= ~ 0)
-           (< ~ 100))
+:post [(number? ~)
+       (>= ~ 0)
+       (< ~ 100)]
 ```
 
 The surface compiler replaces `~` in `:post` expressions with a
@@ -472,15 +473,17 @@ gensym'd binding that captures the return value:
 (func clamp
   :args (:number x)
   :returns :number
-  :post (and (>= ~ 0) (<= ~ 100))
+  :post [(>= ~ 0) (<= ~ 100)]
   :body (Math:max 0 (Math:min 100 x)))
 ```
 
 ```javascript
 function clamp(x) {
   const _result = Math.max(0, Math.min(100, x));
-  if (!(_result >= 0 && _result <= 100))
-    throw new Error("clamp: post-condition failed: (and (>= ~ 0) (<= ~ 100)) — callee blame");
+  if (!(_result >= 0))
+    throw new ContractError("clamp: post-condition failed: (>= ~ 0) — callee blame");
+  if (!(_result <= 100))
+    throw new ContractError("clamp: post-condition failed: (<= ~ 100) — callee blame");
   return _result;
 }
 ```
@@ -777,9 +780,9 @@ via `:any` or `js:typeof`.
 | Zero-arg with `:args ()` | Valid keyword mode, empty arg list | `(func f :args () :returns :number :body 42)` |
 | `:body` with single expression | No `do` needed | `:body (+ a b)` |
 | `:body` with zero expressions | Compile error | `:body` → error: empty body |
-| `:pre` with empty `and` | Compile error — `:pre` requires a non-trivial expression | `:pre (and)` → error |
-| `:post` without `:returns` | Compile error — `:post` requires a return value to check | `:post (> ~ 0)` without `:returns` → error |
-| `~` outside `:post` | Compile error — `~` only valid in `:post` context | `:pre (> ~ 0)` → error: `~` not available in `:pre` |
+| `:pre` with empty vector | Valid, no checks emitted | `:pre []` |
+| `:post` without `:returns` | Compile error — `:post` requires a return value to check | `:post [(> ~ 0)]` without `:returns` → error |
+| `~` outside `:post` | Compile error — `~` only valid in `:post` context | `:pre [(> ~ 0)]` → error: `~` not available in `:pre` |
 | `~` in zero-arg positional form | Not applicable — zero-arg has no contract clauses | N/A |
 | Multi-clause with mixed `:returns` | Compile error — all clauses must agree | One clause with `:returns`, one without → error |
 | Multi-clause all void | Valid — all clauses omit `:returns` | Side-effectful dispatch |
@@ -807,11 +810,9 @@ via `:any` or `js:typeof`.
 
 ## Open Questions
 
-- [x] Higher-order contracts — resolved in DD-19. Contracts live at
-  the definition site and fire when the function is called, regardless
-  of call context. No special wrapping mechanism. Stack traces
-  provide blame attribution. Racket-style contract wrapping deferred
-  to v0.4.0+.
+- [ ] Higher-order contracts — when a contracted function is passed
+  as an argument to another function, should the contract travel
+  with it? Deferred to DD-19.
 - [ ] `declare` form for library documentation — separate type
   signature (Coalton-style) that the surface compiler checks against
   the `func` definition. Deferred to type system DD (v0.4.0+).
@@ -832,16 +833,6 @@ via `:any` or `js:typeof`.
   reserved but not defined. Future DD.
 
 ## Version History
-
-### v1.1 — 2026-03-28
-
-Amended by DD-19. `:pre` and `:post` each take a single expression
-(not a vector). Multiple conditions are composed explicitly with
-`and`/`or`. Vector syntax (`[...]`) removed — lykn has no vector
-literal syntax. `ContractError` references in code examples
-corrected to `Error` (matching the "ContractError is a standard
-Error" decision in this document). JS output examples updated to
-emit single combined checks instead of per-condition checks.
 
 ### v1.0 — 2026-03-27
 
