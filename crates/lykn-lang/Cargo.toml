@@ -5,4 +5,6 @@ edition = "2024"
 description = "lykn language toolchain library — reader, AST, classifier, diagnostics"
 
 [dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 thiserror = "2"
