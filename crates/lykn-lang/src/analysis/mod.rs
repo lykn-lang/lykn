@@ -170,7 +170,7 @@ mod tests {
     use super::*;
     use crate::ast::sexpr::SExpr;
     use crate::ast::surface::{
-        Constructor, FuncClause, MatchClause, Pattern, SurfaceForm, TypeAnnotation, TypedParam,
+        Constructor, MatchClause, Pattern, SurfaceForm,
     };
     use crate::reader::source_loc::Span;
 

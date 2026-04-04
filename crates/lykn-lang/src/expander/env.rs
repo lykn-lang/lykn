@@ -479,7 +479,7 @@ mod tests {
             "cdr": { "type": "number", "value": 1 },
         });
         let expr = protocol_json_to_sexpr(&json).unwrap();
-        if let SExpr::Cons { car, cdr, .. } = &expr {
+        if let SExpr::Cons { car, cdr: _, .. } = &expr {
             assert_eq!(car.as_atom(), Some("a"));
         } else {
             panic!("expected cons");

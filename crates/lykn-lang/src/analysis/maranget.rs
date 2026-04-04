@@ -246,7 +246,7 @@ fn is_complete_signature(ctors: &[(String, String, usize)], registry: &TypeRegis
 mod tests {
     use super::*;
     use crate::analysis::prelude::register_prelude_types;
-    use crate::analysis::type_registry::{ConstructorDef, FieldDef, TypeDef, TypeRegistry};
+    use crate::analysis::type_registry::{ConstructorDef, TypeDef, TypeRegistry};
     use crate::reader::source_loc::Span;
 
     fn span() -> Span {
