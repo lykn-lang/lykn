@@ -54,6 +54,64 @@ fn bool_lit(b: bool) -> SExpr {
 }
 
 // ---------------------------------------------------------------------------
+// Await detection
+// ---------------------------------------------------------------------------
+
+/// Recursively scan an `SExpr` tree for `(await ...)` forms.
+fn contains_await(expr: &SExpr) -> bool {
+    match expr {
+        SExpr::List { values, .. } => {
+            if let Some(SExpr::Atom { value, .. }) = values.first()
+                && value == "await"
+            {
+                return true;
+            }
+            values.iter().any(contains_await)
+        }
+        _ => false,
+    }
+}
+
+/// Check whether any expression in a slice contains an `(await ...)` form.
+fn any_contains_await(exprs: &[SExpr]) -> bool {
+    exprs.iter().any(contains_await)
+}
+
+/// Check whether a `ThreadingStep` contains an `(await ...)` form.
+fn step_contains_await(step: &ThreadingStep) -> bool {
+    match step {
+        ThreadingStep::Bare(expr) => {
+            // Bare symbol "await" or a list containing await
+            expr.as_atom() == Some("await") || contains_await(expr)
+        }
+        ThreadingStep::Call(exprs) => {
+            // Check if the call head is "await" or if any subexpression contains await
+            if let Some(head) = exprs.first()
+                && head.as_atom() == Some("await")
+            {
+                return true;
+            }
+            any_contains_await(exprs)
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// IIFE async wrapping helpers
+// ---------------------------------------------------------------------------
+
+/// Wrap an IIFE `((=> () ...))` in `(await ((async (=> () ...))))`.
+///
+/// Takes the inner arrow body (the `vec![atom("=>"), list(vec![]), ...]`)
+/// and returns the fully wrapped expression.
+fn wrap_iife_async(arrow_body: Vec<SExpr>) -> SExpr {
+    let arrow_fn = list(arrow_body);
+    let async_arrow = list(vec![atom("async"), arrow_fn]);
+    let call = list(vec![async_arrow]);
+    list(vec![atom("await"), call])
+}
+
+// ---------------------------------------------------------------------------
 // Top-level form dispatch
 // ---------------------------------------------------------------------------
 
@@ -414,14 +472,27 @@ fn emit_some_thread(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    // Await detection
+    let initial_has_await = contains_await(initial);
+    let steps_have_await = steps.iter().any(step_contains_await);
+
+    // Strategy 1: hoist initial if it contains await
+    let (hoist_stmt, init_expr) = if initial_has_await {
+        let hoisted_var = ctx.gensym.next("await");
+        let hoist = list(vec![
+            atom("const"),
+            atom(&hoisted_var),
+            emit_expr(initial, ctx, registry),
+        ]);
+        (Some(hoist), atom(&hoisted_var))
+    } else {
+        (None, emit_expr(initial, ctx, registry))
+    };
+
     // Build as IIFE: ((=> () body...))
     let mut body = Vec::new();
     let t0 = ctx.gensym.next("t");
-    body.push(list(vec![
-        atom("const"),
-        atom(&t0),
-        emit_expr(initial, ctx, registry),
-    ]));
+    body.push(list(vec![atom("const"), atom(&t0), init_expr]));
 
     let mut prev = t0;
     for (i, step) in steps.iter().enumerate() {
@@ -459,10 +530,22 @@ fn emit_some_thread(
         body.push(list(vec![atom("return"), atom(&prev)]));
     }
 
-    // Wrap in IIFE
+    // Wrap in IIFE, with async wrapping if steps contain await
     let mut arrow = vec![atom("=>"), list(vec![])];
     arrow.extend(body);
-    list(vec![list(arrow)])
+
+    let iife = if steps_have_await {
+        wrap_iife_async(arrow)
+    } else {
+        list(vec![list(arrow)])
+    };
+
+    // Combine: if we hoisted, emit block with hoist + iife
+    if let Some(hoist) = hoist_stmt {
+        list(vec![atom("block"), hoist, iife])
+    } else {
+        iife
+    }
 }
 
 fn emit_some_thread_first(
@@ -910,16 +993,31 @@ fn emit_match(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    // Await detection
+    let target_has_await = contains_await(target);
+    let body_has_await = clauses
+        .iter()
+        .any(|clause| any_contains_await(&clause.body));
+
+    // Strategy 1: hoist target if it contains await
+    let (hoist_stmt, target_init_expr) = if target_has_await {
+        let hoisted_var = ctx.gensym.next("await");
+        let hoist = list(vec![
+            atom("const"),
+            atom(&hoisted_var),
+            emit_expr(target, ctx, registry),
+        ]);
+        (Some(hoist), atom(&hoisted_var))
+    } else {
+        (None, emit_expr(target, ctx, registry))
+    };
+
     // Always IIFE: ((=> () (const _t expr) [if-chains] [throw]))
     let target_var = ctx.gensym.next("target");
     let mut body = vec![
         atom("=>"),
         list(vec![]),
-        list(vec![
-            atom("const"),
-            atom(&target_var),
-            emit_expr(target, ctx, registry),
-        ]),
+        list(vec![atom("const"), atom(&target_var), target_init_expr]),
     ];
 
     let mut has_wildcard = false;
@@ -977,8 +1075,19 @@ fn emit_match(
         ]));
     }
 
-    // Wrap in IIFE
-    list(vec![list(body)])
+    // Strategy 2: wrap IIFE in async + await if body contains await
+    let iife = if body_has_await {
+        wrap_iife_async(body)
+    } else {
+        list(vec![list(body)])
+    };
+
+    // Combine: if we hoisted, emit block with hoist + iife
+    if let Some(hoist) = hoist_stmt {
+        list(vec![atom("block"), hoist, iife])
+    } else {
+        iife
+    }
 }
 
 /// Compile a pattern to a (condition, bindings) pair.
@@ -1091,16 +1200,29 @@ fn emit_if_let(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    // Await detection
+    let expr_has_await = contains_await(expr);
+    let body_has_await = contains_await(then_body) || else_body.is_some_and(contains_await);
+
+    // Strategy 1: hoist expr if it contains await
+    let (hoist_stmt, init_expr) = if expr_has_await {
+        let hoisted_var = ctx.gensym.next("await");
+        let hoist = list(vec![
+            atom("const"),
+            atom(&hoisted_var),
+            emit_expr(expr, ctx, registry),
+        ]);
+        (Some(hoist), atom(&hoisted_var))
+    } else {
+        (None, emit_expr(expr, ctx, registry))
+    };
+
     // IIFE: ((=> () (const _t expr) (if <check> (block [bindings] (return then)) (block (return else)))))
     let t = ctx.gensym.next("t");
     let mut body = vec![
         atom("=>"),
         list(vec![]),
-        list(vec![
-            atom("const"),
-            atom(&t),
-            emit_expr(expr, ctx, registry),
-        ]),
+        list(vec![atom("const"), atom(&t), init_expr]),
     ];
 
     let (condition, bindings) = compile_let_pattern(pattern, &t, registry);
@@ -1127,7 +1249,19 @@ fn emit_if_let(
         body.push(list(vec![atom("if"), condition, list(then_block)]));
     }
 
-    list(vec![list(body)])
+    // Strategy 2: wrap IIFE in async + await if body contains await
+    let iife = if body_has_await {
+        wrap_iife_async(body)
+    } else {
+        list(vec![list(body)])
+    };
+
+    // Combine: if we hoisted, emit block with hoist + iife
+    if let Some(hoist) = hoist_stmt {
+        list(vec![atom("block"), hoist, iife])
+    } else {
+        iife
+    }
 }
 
 fn emit_when_let(
@@ -1137,16 +1271,29 @@ fn emit_when_let(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    // Await detection
+    let expr_has_await = contains_await(expr);
+    let body_has_await = any_contains_await(body_exprs);
+
+    // Strategy 1: hoist expr if it contains await
+    let (hoist_stmt, init_expr) = if expr_has_await {
+        let hoisted_var = ctx.gensym.next("await");
+        let hoist = list(vec![
+            atom("const"),
+            atom(&hoisted_var),
+            emit_expr(expr, ctx, registry),
+        ]);
+        (Some(hoist), atom(&hoisted_var))
+    } else {
+        (None, emit_expr(expr, ctx, registry))
+    };
+
     // IIFE: ((=> () (const _t expr) (if <check> (block [bindings] (return body)))))
     let t = ctx.gensym.next("t");
     let mut body = vec![
         atom("=>"),
         list(vec![]),
-        list(vec![
-            atom("const"),
-            atom(&t),
-            emit_expr(expr, ctx, registry),
-        ]),
+        list(vec![atom("const"), atom(&t), init_expr]),
     ];
 
     let (condition, bindings) = compile_let_pattern(pattern, &t, registry);
@@ -1165,7 +1312,19 @@ fn emit_when_let(
 
     body.push(list(vec![atom("if"), condition, list(then_block)]));
 
-    list(vec![list(body)])
+    // Strategy 2: wrap IIFE in async + await if body contains await
+    let iife = if body_has_await {
+        wrap_iife_async(body)
+    } else {
+        list(vec![list(body)])
+    };
+
+    // Combine: if we hoisted, emit block with hoist + iife
+    if let Some(hoist) = hoist_stmt {
+        list(vec![atom("block"), hoist, iife])
+    } else {
+        iife
+    }
 }
 
 /// Compile a pattern for `if-let` / `when-let`.
@@ -1956,5 +2115,356 @@ mod tests {
         let lambda_result = emit_form(&lambda_form, &mut c2, &r);
 
         assert_eq!(fn_result, lambda_result);
+    }
+
+    // --- contains_await detection ---
+
+    #[test]
+    fn test_contains_await_simple_atom() {
+        assert!(!contains_await(&atom("x")));
+        assert!(!contains_await(&num(42.0)));
+        assert!(!contains_await(&str_lit("hello")));
+    }
+
+    #[test]
+    fn test_contains_await_direct() {
+        let expr = list(vec![atom("await"), list(vec![atom("fetch"), atom("url")])]);
+        assert!(contains_await(&expr));
+    }
+
+    #[test]
+    fn test_contains_await_nested() {
+        let inner = list(vec![atom("await"), atom("p")]);
+        let outer = list(vec![atom("then"), inner, atom("callback")]);
+        assert!(contains_await(&outer));
+    }
+
+    #[test]
+    fn test_contains_await_absent() {
+        let expr = list(vec![atom("fetch"), atom("url")]);
+        assert!(!contains_await(&expr));
+    }
+
+    #[test]
+    fn test_contains_await_deeply_nested() {
+        let deep = list(vec![
+            atom("+"),
+            num(1.0),
+            list(vec![
+                atom("*"),
+                num(2.0),
+                list(vec![atom("await"), list(vec![atom("get-value")])]),
+            ]),
+        ]);
+        assert!(contains_await(&deep));
+    }
+
+    // --- Match with await in target (Strategy 1) ---
+
+    #[test]
+    fn test_match_with_await_in_target() {
+        let form = SurfaceForm::Match {
+            target: list(vec![atom("await"), list(vec![atom("fetch"), atom("url")])]),
+            clauses: vec![MatchClause {
+                pattern: Pattern::Wildcard(s()),
+                guard: None,
+                body: vec![str_lit("done")],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be (block (const await__gensymN ...) ((=> () ...)))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("block"));
+            // Second element: (const await__gensym0 (await (fetch url)))
+            if let SExpr::List { values: hoist, .. } = &values[1] {
+                assert_eq!(hoist[0].as_atom(), Some("const"));
+                assert!(
+                    hoist[1].as_atom().unwrap().starts_with("await__gensym"),
+                    "hoisted var should start with await__gensym"
+                );
+            } else {
+                panic!("expected hoist const");
+            }
+            // Third element: IIFE ((=> () ...))
+            if let SExpr::List { values: iife, .. } = &values[2] {
+                if let SExpr::List { values: arrow, .. } = &iife[0] {
+                    assert_eq!(arrow[0].as_atom(), Some("=>"));
+                } else {
+                    panic!("expected arrow inside IIFE");
+                }
+            } else {
+                panic!("expected IIFE");
+            }
+        } else {
+            panic!("expected block wrapping hoist + IIFE");
+        }
+    }
+
+    // --- Match with await in body (Strategy 2) ---
+
+    #[test]
+    fn test_match_with_await_in_body() {
+        let form = SurfaceForm::Match {
+            target: atom("response"),
+            clauses: vec![MatchClause {
+                pattern: Pattern::Wildcard(s()),
+                guard: None,
+                body: vec![list(vec![
+                    atom("await"),
+                    list(vec![atom("fetch"), atom("url")]),
+                ])],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be (await ((async (=> () ...))))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("await"), "outer should be await");
+            // values[1] should be ((async (=> () ...)))
+            if let SExpr::List { values: call, .. } = &values[1] {
+                if let SExpr::List {
+                    values: async_arrow,
+                    ..
+                } = &call[0]
+                {
+                    assert_eq!(async_arrow[0].as_atom(), Some("async"));
+                } else {
+                    panic!("expected async arrow");
+                }
+            } else {
+                panic!("expected call expression");
+            }
+        } else {
+            panic!("expected await expression");
+        }
+    }
+
+    // --- Match with await in both target and body ---
+
+    #[test]
+    fn test_match_with_await_in_both() {
+        let form = SurfaceForm::Match {
+            target: list(vec![atom("await"), list(vec![atom("fetch"), atom("url")])]),
+            clauses: vec![MatchClause {
+                pattern: Pattern::Wildcard(s()),
+                guard: None,
+                body: vec![list(vec![atom("await"), list(vec![atom("process")])])],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be (block (const await__gensym ...) (await ((async (=> () ...)))))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("block"));
+            // Hoist
+            if let SExpr::List { values: hoist, .. } = &values[1] {
+                assert_eq!(hoist[0].as_atom(), Some("const"));
+            } else {
+                panic!("expected hoist");
+            }
+            // Async IIFE
+            if let SExpr::List {
+                values: await_expr, ..
+            } = &values[2]
+            {
+                assert_eq!(await_expr[0].as_atom(), Some("await"));
+            } else {
+                panic!("expected await-wrapped IIFE");
+            }
+        } else {
+            panic!("expected block");
+        }
+    }
+
+    // --- some-> with await in initial (Strategy 1) ---
+
+    #[test]
+    fn test_some_thread_with_await_in_initial() {
+        let form = SurfaceForm::SomeThreadFirst {
+            initial: list(vec![atom("await"), list(vec![atom("fetch"), atom("url")])]),
+            steps: vec![ThreadingStep::Bare(atom("inc"))],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be (block (const await__gensym ...) ((=> () ...)))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("block"));
+            if let SExpr::List { values: hoist, .. } = &values[1] {
+                assert_eq!(hoist[0].as_atom(), Some("const"));
+                assert!(hoist[1].as_atom().unwrap().starts_with("await__gensym"));
+            } else {
+                panic!("expected hoist const");
+            }
+        } else {
+            panic!("expected block");
+        }
+    }
+
+    // --- some-> with await in steps (Strategy 2) ---
+
+    #[test]
+    fn test_some_thread_with_await_in_steps() {
+        let form = SurfaceForm::SomeThreadFirst {
+            initial: atom("x"),
+            steps: vec![ThreadingStep::Call(vec![
+                atom("await"),
+                list(vec![atom("fetch")]),
+            ])],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be (await ((async (=> () ...))))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("await"));
+        } else {
+            panic!("expected await-wrapped IIFE");
+        }
+    }
+
+    // --- if-let with await in expr (Strategy 1) ---
+
+    #[test]
+    fn test_if_let_with_await_in_expr() {
+        let form = SurfaceForm::IfLet {
+            pattern: Pattern::Binding {
+                name: "v".into(),
+                span: s(),
+            },
+            expr: list(vec![atom("await"), list(vec![atom("fetch"), atom("url")])]),
+            then_body: atom("v"),
+            else_body: Some(num(0.0)),
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be (block (const await__gensym ...) ((=> () ...)))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("block"));
+            if let SExpr::List { values: hoist, .. } = &values[1] {
+                assert_eq!(hoist[0].as_atom(), Some("const"));
+            } else {
+                panic!("expected hoist");
+            }
+        } else {
+            panic!("expected block");
+        }
+    }
+
+    // --- if-let with await in body (Strategy 2) ---
+
+    #[test]
+    fn test_if_let_with_await_in_body() {
+        let form = SurfaceForm::IfLet {
+            pattern: Pattern::Binding {
+                name: "v".into(),
+                span: s(),
+            },
+            expr: atom("x"),
+            then_body: list(vec![atom("await"), list(vec![atom("process"), atom("v")])]),
+            else_body: None,
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be (await ((async (=> () ...))))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("await"));
+        } else {
+            panic!("expected await-wrapped IIFE");
+        }
+    }
+
+    // --- when-let with await in expr (Strategy 1) ---
+
+    #[test]
+    fn test_when_let_with_await_in_expr() {
+        let form = SurfaceForm::WhenLet {
+            pattern: Pattern::Binding {
+                name: "v".into(),
+                span: s(),
+            },
+            expr: list(vec![atom("await"), list(vec![atom("fetch"), atom("url")])]),
+            body: vec![atom("v")],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("block"));
+        } else {
+            panic!("expected block");
+        }
+    }
+
+    // --- when-let with await in body (Strategy 2) ---
+
+    #[test]
+    fn test_when_let_with_await_in_body() {
+        let form = SurfaceForm::WhenLet {
+            pattern: Pattern::Binding {
+                name: "v".into(),
+                span: s(),
+            },
+            expr: atom("x"),
+            body: vec![list(vec![
+                atom("await"),
+                list(vec![atom("process"), atom("v")]),
+            ])],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("await"));
+        } else {
+            panic!("expected await-wrapped IIFE");
+        }
+    }
+
+    // --- No-await cases still produce plain IIFEs ---
+
+    #[test]
+    fn test_match_without_await_unchanged() {
+        let form = SurfaceForm::Match {
+            target: atom("x"),
+            clauses: vec![MatchClause {
+                pattern: Pattern::Wildcard(s()),
+                guard: None,
+                body: vec![str_lit("done")],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        // Should be plain IIFE: ((=> () ...))
+        if let SExpr::List { values, .. } = &result[0] {
+            if let SExpr::List { values: arrow, .. } = &values[0] {
+                assert_eq!(arrow[0].as_atom(), Some("=>"));
+            } else {
+                panic!("expected arrow inside IIFE");
+            }
+        } else {
+            panic!("expected IIFE");
+        }
     }
 }
