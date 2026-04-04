@@ -190,9 +190,10 @@ pub fn emit_form(
         } => {
             // Check for js: namespace interop
             if let Some(name) = head.as_atom()
-                && name.starts_with("js:") {
-                    return vec![emit_js_interop(name, args, ctx, registry)];
-                }
+                && name.starts_with("js:")
+            {
+                return vec![emit_js_interop(name, args, ctx, registry)];
+            }
             vec![emit_function_call(head, args, ctx, registry)]
         }
         SurfaceForm::Conj { arr, value, .. } => vec![emit_conj(arr, value, ctx, registry)],

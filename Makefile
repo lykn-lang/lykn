@@ -131,9 +131,9 @@ build: clean $(BIN_DIR)
 	@echo "$(BLUE)Building $(PROJECT_NAME) in $(MODE) mode...$(RESET)"
 	@echo "$(CYAN)• Compiling workspace...$(RESET)"
 	@if [ "$(MODE)" = "release" ]; then \
-		cargo build --release --features demo; \
+		cargo build --release; \
 	else \
-		cargo build --features demo; \
+		cargo build; \
 	fi
 	@echo "$(CYAN)• Copying binaries to $(BIN_DIR)/$(RESET)"
 	@for bin in $(BINARIES); do \
@@ -153,7 +153,7 @@ build-release: TARGET = ./target/$(MODE)
 build-release: clean $(BIN_DIR)
 	@echo "$(BLUE)Building $(PROJECT_NAME) in release mode...$(RESET)"
 	@echo "$(CYAN)• Compiling optimized workspace...$(RESET)"
-	@cargo build --release --features demo
+	@cargo build --release
 	@echo "$(CYAN)• Copying binaries to $(BIN_DIR)/$(RESET)"
 	@for bin in $(BINARIES); do \
 		if [ -f $(TARGET)/$$bin ]; then \
@@ -207,18 +207,18 @@ format:
 .PHONY: coverage
 coverage:
 	@echo "$(BLUE)Generating test coverage report...$(RESET)"
-	@echo "$(CYAN)• Running tests with coverage ($(CODE_NAME) crate only)...$(RESET)"
-	@cd tools && cargo llvm-cov --lib --no-default-features
+	@echo "$(CYAN)• Running tests with coverage ...$(RESET)"
+	@cargo llvm-cov --workspace --no-default-features
 	@echo "$(GREEN)✓ Coverage report generated$(RESET)"
-	@echo "$(YELLOW)→ For detailed HTML report, run: cd tools && cargo llvm-cov --html --lib --no-default-features$(RESET)"
+	@echo "$(YELLOW)→ For detailed HTML report, run: cargo llvm-cov --html --workspace --no-default-features$(RESET)"
 
 .PHONY: coverage-html
 coverage-html:
 	@echo "$(BLUE)Generating HTML coverage report...$(RESET)"
-	@echo "$(CYAN)• Running tests with coverage ($(CODE_NAME) crate only)...$(RESET)"
-	@cd tools && cargo llvm-cov --html --lib --no-default-features
+	@echo "$(CYAN)• Running tests with coverage ...$(RESET)"
+	@cargo llvm-cov --html --workspace --no-default-features
 	@echo "$(GREEN)✓ HTML coverage report generated$(RESET)"
-	@echo "$(CYAN)→ Report: tools/target/llvm-cov/html/index.html$(RESET)"
+	@echo "$(CYAN)→ Report: target/llvm-cov/html/index.html$(RESET)"
 
 # Common checks
 .PHONY: common-checks
