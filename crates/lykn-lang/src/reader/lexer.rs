@@ -30,17 +30,17 @@ pub fn tokenize(source: &str) -> Result<Vec<SpannedToken>, LyknError> {
     lexer.tokenize_all()
 }
 
-struct Lexer<'a> {
-    source: &'a [u8],
+struct Lexer {
+    chars: Vec<char>,
     pos: usize,
     line: u32,
     column: u32,
 }
 
-impl<'a> Lexer<'a> {
-    fn new(source: &'a str) -> Self {
+impl Lexer {
+    fn new(source: &str) -> Self {
         Self {
-            source: source.as_bytes(),
+            chars: source.chars().collect(),
             pos: 0,
             line: 1,
             column: 1,
@@ -51,7 +51,7 @@ impl<'a> Lexer<'a> {
         let mut tokens = Vec::new();
         loop {
             self.skip_whitespace_and_comments();
-            if self.pos >= self.source.len() {
+            if self.pos >= self.chars.len() {
                 break;
             }
             tokens.push(self.next_token()?);
@@ -66,14 +66,14 @@ impl<'a> Lexer<'a> {
         }
     }
 
-    fn peek(&self) -> Option<u8> {
-        self.source.get(self.pos).copied()
+    fn peek(&self) -> Option<char> {
+        self.chars.get(self.pos).copied()
     }
 
-    fn advance(&mut self) -> Option<u8> {
-        let ch = self.source.get(self.pos).copied()?;
+    fn advance(&mut self) -> Option<char> {
+        let ch = self.chars.get(self.pos).copied()?;
         self.pos += 1;
-        if ch == b'\n' {
+        if ch == '\n' {
             self.line += 1;
             self.column = 1;
         } else {
@@ -85,17 +85,17 @@ impl<'a> Lexer<'a> {
     fn skip_whitespace_and_comments(&mut self) {
         loop {
             // Skip whitespace
-            while self.pos < self.source.len() {
-                let ch = self.source[self.pos];
-                if ch == b' ' || ch == b'\t' || ch == b'\n' || ch == b'\r' {
+            while self.pos < self.chars.len() {
+                let ch = self.chars[self.pos];
+                if ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' {
                     self.advance();
                 } else {
                     break;
                 }
             }
             // Skip line comments
-            if self.pos < self.source.len() && self.source[self.pos] == b';' {
-                while self.pos < self.source.len() && self.source[self.pos] != b'\n' {
+            if self.pos < self.chars.len() && self.chars[self.pos] == ';' {
+                while self.pos < self.chars.len() && self.chars[self.pos] != '\n' {
                     self.advance();
                 }
                 continue;
@@ -109,24 +109,24 @@ impl<'a> Lexer<'a> {
         let ch = self.advance().unwrap();
 
         match ch {
-            b'(' => Ok(SpannedToken {
+            '(' => Ok(SpannedToken {
                 token: Token::LParen,
                 span: Span::new(start, self.loc()),
             }),
-            b')' => Ok(SpannedToken {
+            ')' => Ok(SpannedToken {
                 token: Token::RParen,
                 span: Span::new(start, self.loc()),
             }),
-            b'\'' => Ok(SpannedToken {
+            '\'' => Ok(SpannedToken {
                 token: Token::Quote,
                 span: Span::new(start, self.loc()),
             }),
-            b'`' => Ok(SpannedToken {
+            '`' => Ok(SpannedToken {
                 token: Token::Quasiquote,
                 span: Span::new(start, self.loc()),
             }),
-            b',' => {
-                if self.peek() == Some(b'@') {
+            ',' => {
+                if self.peek() == Some('@') {
                     self.advance();
                     Ok(SpannedToken {
                         token: Token::UnquoteSplice,
@@ -139,12 +139,12 @@ impl<'a> Lexer<'a> {
                     })
                 }
             }
-            b'#' => Ok(SpannedToken {
+            '#' => Ok(SpannedToken {
                 token: Token::Hash,
                 span: Span::new(start, self.loc()),
             }),
-            b'"' => self.read_string(start),
-            b':' => {
+            '"' => self.read_string(start),
+            ':' => {
                 // Keyword: read the atom part after :
                 if self.peek().is_some_and(|c| !is_delimiter(c)) {
                     let value = self.read_atom_chars();
@@ -163,9 +163,9 @@ impl<'a> Lexer<'a> {
             _ => {
                 // Atom or number
                 let mut value = String::new();
-                value.push(ch as char);
+                value.push(ch);
                 while self.peek().is_some_and(|c| !is_delimiter(c)) {
-                    value.push(self.advance().unwrap() as char);
+                    value.push(self.advance().unwrap());
                 }
 
                 // Check for special atoms
@@ -208,13 +208,13 @@ impl<'a> Lexer<'a> {
                         location: start,
                     });
                 }
-                Some(b'"') => break,
-                Some(b'\\') => match self.advance() {
-                    Some(b'n') => value.push('\n'),
-                    Some(b't') => value.push('\t'),
-                    Some(b'\\') => value.push('\\'),
-                    Some(b'"') => value.push('"'),
-                    Some(c) => value.push(c as char),
+                Some('"') => break,
+                Some('\\') => match self.advance() {
+                    Some('n') => value.push('\n'),
+                    Some('t') => value.push('\t'),
+                    Some('\\') => value.push('\\'),
+                    Some('"') => value.push('"'),
+                    Some(c) => value.push(c),
                     None => {
                         return Err(LyknError::Read {
                             message: "unterminated escape in string".to_string(),
@@ -222,7 +222,7 @@ impl<'a> Lexer<'a> {
                         });
                     }
                 },
-                Some(c) => value.push(c as char),
+                Some(c) => value.push(c),
             }
         }
         Ok(SpannedToken {
@@ -234,16 +234,16 @@ impl<'a> Lexer<'a> {
     fn read_atom_chars(&mut self) -> String {
         let mut value = String::new();
         while self.peek().is_some_and(|c| !is_delimiter(c)) {
-            value.push(self.advance().unwrap() as char);
+            value.push(self.advance().unwrap());
         }
         value
     }
 }
 
-fn is_delimiter(ch: u8) -> bool {
+fn is_delimiter(ch: char) -> bool {
     matches!(
         ch,
-        b' ' | b'\t' | b'\n' | b'\r' | b'(' | b')' | b';' | b'`' | b'\'' | b','
+        ' ' | '\t' | '\n' | '\r' | '(' | ')' | ';' | '`' | '\'' | ','
     )
 }
 
@@ -318,5 +318,26 @@ mod tests {
         assert_eq!(tokens[0].span.start.column, 1);
         assert_eq!(tokens[1].span.start.line, 2);
         assert_eq!(tokens[1].span.start.column, 1);
+    }
+
+    #[test]
+    fn tokenize_utf8_em_dash() {
+        let tokens = tokenize("\"Good luck \u{2014} lykn\"").unwrap();
+        assert_eq!(tokens.len(), 1);
+        assert_eq!(
+            tokens[0].token,
+            Token::String("Good luck \u{2014} lykn".to_string())
+        );
+    }
+
+    #[test]
+    fn tokenize_utf8_multibyte_chars() {
+        // Test various multi-byte UTF-8 characters in strings
+        let tokens = tokenize("\"caf\u{00e9} \u{1f600} \u{4e16}\u{754c}\"").unwrap();
+        assert_eq!(tokens.len(), 1);
+        assert_eq!(
+            tokens[0].token,
+            Token::String("caf\u{00e9} \u{1f600} \u{4e16}\u{754c}".to_string())
+        );
     }
 }

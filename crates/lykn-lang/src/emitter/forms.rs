@@ -275,6 +275,28 @@ fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) 
     body.iter().map(|e| emit_expr(e, ctx, registry)).collect()
 }
 
+/// Convert a kernel `(if cond then else)` form to a ternary `(? cond then else)`.
+///
+/// In JavaScript, `if` is a statement and cannot appear in expression position
+/// (e.g. `const x = if (...) ...` is invalid). When we need to assign the result
+/// of a conditional to a variable, we must use a ternary expression instead.
+///
+/// If the expression is not an `(if ...)` form, it is returned unchanged.
+fn if_to_ternary(expr: SExpr) -> SExpr {
+    if let SExpr::List { values, span } = &expr {
+        if values.len() >= 3 && values[0].as_atom() == Some("if") {
+            // (if cond then) or (if cond then else)
+            let mut new_values = vec![atom("?")];
+            new_values.extend(values[1..].iter().cloned());
+            return SExpr::List {
+                values: new_values,
+                span: *span,
+            };
+        }
+    }
+    expr
+}
+
 // ---------------------------------------------------------------------------
 // js: namespace interop (DD-15)
 // ---------------------------------------------------------------------------
@@ -471,7 +493,7 @@ fn emit_assoc(
 /// ```text
 /// ((=> ()
 ///   (const (object (alias k1 _discard0) (alias k2 _discard1) (rest _rest0)) obj)
-///   _rest0))
+///   (return _rest0)))
 /// ```
 fn emit_dissoc(
     obj: &SExpr,
@@ -489,7 +511,8 @@ fn emit_dissoc(
 
     let pattern = list(pattern_items);
     let binding = list(vec![atom("const"), pattern, emit_expr(obj, ctx, registry)]);
-    let arrow = list(vec![atom("=>"), list(vec![]), binding, atom(&rest_var)]);
+    let ret = list(vec![atom("return"), atom(&rest_var)]);
+    let arrow = list(vec![atom("=>"), list(vec![]), binding, ret]);
     list(vec![arrow])
 }
 
@@ -831,7 +854,11 @@ fn emit_func_single(
             }
             body[body.len() - 1].clone()
         };
-        items.push(list(vec![atom("const"), atom(&result_var), last_expr]));
+        items.push(list(vec![
+            atom("const"),
+            atom(&result_var),
+            if_to_ternary(last_expr),
+        ]));
         if let Some(ref post) = clause.post {
             items.push(emit_post_check(name, post, &result_var, clause.span));
         }
@@ -855,7 +882,7 @@ fn emit_func_single(
         if !ctx.strip_assertions {
             if let Some(ref ret) = clause.returns {
                 let result_var = ctx.gensym.next("result");
-                items.push(list(vec![atom("const"), atom(&result_var), last]));
+                items.push(list(vec![atom("const"), atom(&result_var), if_to_ternary(last)]));
                 // Use "return value" in the error message instead of the
                 // gensym variable name for a user-friendly message, but
                 // still reference the gensym var for the typeof check.
@@ -994,7 +1021,11 @@ fn emit_func_multi(
             } else {
                 body[body.len() - 1].clone()
             };
-            block_items.push(list(vec![atom("const"), atom(&result_var), last]));
+            block_items.push(list(vec![
+                atom("const"),
+                atom(&result_var),
+                if_to_ternary(last),
+            ]));
             if let Some(ref post) = clause.post {
                 block_items.push(emit_post_check(name, post, &result_var, clause.span));
             }
@@ -1734,6 +1765,36 @@ mod tests {
 
     fn reg() -> TypeRegistry {
         TypeRegistry::default()
+    }
+
+    // --- if_to_ternary ---
+
+    #[test]
+    fn test_if_to_ternary_converts_if_form() {
+        let expr = list(vec![atom("if"), atom("cond"), atom("a"), atom("b")]);
+        let result = if_to_ternary(expr);
+        if let SExpr::List { values, .. } = &result {
+            assert_eq!(values[0].as_atom(), Some("?"));
+            assert_eq!(values[1].as_atom(), Some("cond"));
+            assert_eq!(values[2].as_atom(), Some("a"));
+            assert_eq!(values[3].as_atom(), Some("b"));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_if_to_ternary_passes_through_non_if() {
+        let expr = list(vec![atom("foo"), atom("bar")]);
+        let result = if_to_ternary(expr.clone());
+        assert_eq!(result, expr);
+    }
+
+    #[test]
+    fn test_if_to_ternary_passes_through_atom() {
+        let expr = atom("x");
+        let result = if_to_ternary(expr.clone());
+        assert_eq!(result, expr);
     }
 
     // --- Bind ---
@@ -3117,7 +3178,7 @@ mod tests {
         let mut c = ctx();
         let result = emit_form(&form, &mut c, &reg());
         assert_eq!(result.len(), 1);
-        // Should be IIFE: ((=> () (const (object ...) m) rest_var))
+        // Should be IIFE: ((=> () (const (object ...) m) (return rest_var)))
         if let SExpr::List { values, .. } = &result[0] {
             if let SExpr::List { values: arrow, .. } = &values[0] {
                 assert_eq!(arrow[0].as_atom(), Some("=>"));
@@ -3129,6 +3190,15 @@ mod tests {
                     assert_eq!(const_form[0].as_atom(), Some("const"));
                 } else {
                     panic!("expected const form in arrow body");
+                }
+                // Last element should be (return rest_var)
+                if let SExpr::List {
+                    values: ret_form, ..
+                } = &arrow[3]
+                {
+                    assert_eq!(ret_form[0].as_atom(), Some("return"));
+                } else {
+                    panic!("expected return form in arrow body");
                 }
             } else {
                 panic!("expected arrow inside IIFE");
@@ -3573,6 +3643,59 @@ mod tests {
                 }
             });
             assert!(has_return, "post-condition path should return");
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_func_with_post_and_if_body_uses_ternary() {
+        // When the body is an (if ...) form and the function has a :post condition,
+        // the result capture must use a ternary (? ...) instead of an if statement,
+        // because `const x = if (...)` is invalid JavaScript.
+        let form = SurfaceForm::Func {
+            name: "abs-val".into(),
+            name_span: s(),
+            clauses: vec![FuncClause {
+                args: vec![tp("number", "x")],
+                returns: None,
+                pre: None,
+                post: Some(list(vec![atom(">="), atom("%"), num(0.0)])),
+                body: vec![list(vec![
+                    atom("if"),
+                    list(vec![atom("<"), atom("x"), num(0.0)]),
+                    list(vec![atom("-"), num(0.0), atom("x")]),
+                    atom("x"),
+                ])],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            // Find the const assignment: (const result__gensymN ...)
+            let const_form = values.iter().find(|v| {
+                if let SExpr::List { values, .. } = v {
+                    values.first().and_then(|f| f.as_atom()) == Some("const")
+                } else {
+                    false
+                }
+            });
+            assert!(const_form.is_some(), "should have a const binding");
+            if let SExpr::List { values: cv, .. } = const_form.unwrap() {
+                // The third element (the value) should be (? ...) not (if ...)
+                if let SExpr::List { values: val, .. } = &cv[2] {
+                    assert_eq!(
+                        val[0].as_atom(),
+                        Some("?"),
+                        "if-form in value position should be converted to ternary"
+                    );
+                } else {
+                    panic!("expected list as const value");
+                }
+            }
         } else {
             panic!("expected list");
         }
