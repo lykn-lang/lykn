@@ -75,12 +75,12 @@ const expanded = expand(read(source));
 // Serialize expanded AST to JSON
 function toJson(node) {{
     if (!node) return null;
-    if (node.type === 'atom') return node.value;
-    if (node.type === 'keyword') return node.value;
-    if (node.type === 'string') return node.value;
-    if (node.type === 'number') return node.value;
-    if (node.type === 'list') return node.values.map(toJson);
-    if (typeof node === 'boolean') return node;
+    if (node.type === 'atom') return {{ type: "atom", value: node.value }};
+    if (node.type === 'keyword') return {{ type: "string", value: node.value }};
+    if (node.type === 'string') return {{ type: "string", value: node.value }};
+    if (node.type === 'number') return {{ type: "number", value: node.value }};
+    if (node.type === 'list') return {{ type: "list", values: node.values.map(toJson) }};
+    if (typeof node === 'boolean') return {{ type: "atom", value: String(node) }};
     return null;
 }}
 const json = expanded.filter(x => x !== null).map(toJson);

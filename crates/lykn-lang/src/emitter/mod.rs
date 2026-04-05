@@ -96,10 +96,16 @@ mod tests {
         assert!(parsed.is_array());
         let arr = parsed.as_array().unwrap();
         assert_eq!(arr.len(), 1);
-        // ["const", "x", 42.0]
-        assert_eq!(arr[0][0], "const");
-        assert_eq!(arr[0][1], "x");
-        assert_eq!(arr[0][2], 42.0);
+        // {"type": "list", "values": [{"type": "atom", "value": "const"}, ...]}
+        let form = &arr[0];
+        assert_eq!(form["type"], "list");
+        let values = form["values"].as_array().unwrap();
+        assert_eq!(values[0]["type"], "atom");
+        assert_eq!(values[0]["value"], "const");
+        assert_eq!(values[1]["type"], "atom");
+        assert_eq!(values[1]["value"], "x");
+        assert_eq!(values[2]["type"], "number");
+        assert_eq!(values[2]["value"], 42.0);
     }
 
     #[test]

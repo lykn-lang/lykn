@@ -56,6 +56,12 @@ const kernelJson = Deno.readTextFileSync("{tmp_path}");
 const kernel = JSON.parse(kernelJson);
 
 function fromJson(val) {{
+    if (val && typeof val === "object" && !Array.isArray(val)) {{
+        if (val.type === "list") return {{ type: "list", values: val.values.map(fromJson) }};
+        if (val.type === "cons") return {{ type: "cons", car: fromJson(val.car), cdr: fromJson(val.cdr) }};
+        return val; // atom, string, number already in correct format
+    }}
+    // Fallback for any legacy flat format
     if (Array.isArray(val)) return {{ type: "list", values: val.map(fromJson) }};
     if (typeof val === "string") return {{ type: "atom", value: val }};
     if (typeof val === "number") return {{ type: "number", value: val }};
