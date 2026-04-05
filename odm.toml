@@ -2,10 +2,10 @@
 # This configuration is specific to the project's repository structure
 
 # Documentation directory (workspace-specific)
-docs_directory = "./crates/design/docs"
+docs_directory = "./docs/design"
 
 # Development documents directory (workspace-specific)
-dev_directory = "./crates/design/dev"
+dev_directory = "./docs/dev"
 
 # Preserve state directory structure in dustbin
 preserve_dustbin_structure = true
