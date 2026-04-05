@@ -522,7 +522,7 @@ export function resetModuleCache() {
   moduleCache.clear();
 }
 
-export { formatSExpr };
+export { formatSExpr, extractParamNames, compileMacroBody };
 
 // --- Quasiquote Expansion (Bawden's Algorithm) ---
 
