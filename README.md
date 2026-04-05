@@ -194,6 +194,21 @@ cargo build --release && cp ./target/release/lykn ./bin
 ./target/release/lykn check main.lykn
 ```
 
+### Run Examples
+
+```sh
+# Compile and run the CLI example
+deno eval "import {lykn} from './src/index.js'; \
+  const src = await Deno.readTextFile('examples/surface/main.lykn'); \
+  eval(lykn(src))"
+
+# Serve the browser examples (needs a local server for external .lykn files)
+deno run --allow-net --allow-read jsr:@std/http@1/file-server
+# Then open http://localhost:8000/examples/surface/browser.html
+```
+
+Both `examples/surface/` (recommended) and `examples/kernel/` are available.
+
 ## Supported forms
 
 ### Surface forms
