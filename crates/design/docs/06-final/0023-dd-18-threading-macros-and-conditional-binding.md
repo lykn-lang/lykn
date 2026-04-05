@@ -6,8 +6,8 @@ top"
 component: All
 tags: [change-me]
 created: 2026-03-28
-updated: 2026-03-28
-state: Draft
+updated: 2026-04-04
+state: Final
 supersedes: null
 superseded-by: null
 version: 1.0
