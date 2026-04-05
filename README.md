@@ -21,7 +21,11 @@ squint at the Icelandic — *closure*.
 
 ## Status
 
-**v0.3.0-dev** — Surface syntax with typed functions, ADTs, pattern matching, cells, threading macros. Full macro system with quasiquote, auto-gensym hygiene, and cross-module macro imports. 56KB browser bundle. 555 tests.
+**v0.3.0** — Two-layer language design lands. **Surface syntax** is now the
+recommended way to write lykn: typed functions with contracts, algebraic data
+types, exhaustive pattern matching, immutable-by-default bindings with `cell`
+for controlled mutation, and threading macros. Kernel syntax remains available
+for low-level control and JS interop. 73KB browser bundle. 555 tests.
 
 ## Quick taste
 
