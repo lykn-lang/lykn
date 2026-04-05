@@ -633,8 +633,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         let forms = vec![atom("x"), num(42.0)];
@@ -648,8 +647,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         let forms = vec![
@@ -679,8 +677,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         let cons = SExpr::Cons {
@@ -704,8 +701,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         let empty = list(vec![]);
@@ -719,8 +715,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         let form = list(vec![
@@ -738,8 +733,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         // (cons a b) should desugar to (array a b)
@@ -759,8 +753,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         // (car xs) should desugar to (get xs 0)
@@ -781,8 +774,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         // (cdr xs) should desugar to (get xs 1)
@@ -803,8 +795,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         // (list a b) desugars to nested (array ...) forms
@@ -824,11 +815,13 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
-        let quoted = list(vec![atom("quote"), list(vec![atom("cons"), atom("a"), atom("b")])]);
+        let quoted = list(vec![
+            atom("quote"),
+            list(vec![atom("cons"), atom("a"), atom("b")]),
+        ]);
         let result = expand_all(vec![quoted.clone()], &mut deno, &env).unwrap();
         // quote should suppress expansion — returned unchanged
         assert_eq!(result, vec![quoted]);
@@ -840,8 +833,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         let form = list(vec![
@@ -864,8 +856,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno =
-            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let env = super::super::MacroEnv::new();
 
         let result = expand_all(vec![], &mut deno, &env).unwrap();

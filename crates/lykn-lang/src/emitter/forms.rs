@@ -3863,10 +3863,7 @@ mod tests {
                     returns: None,
                     pre: None,
                     post: None,
-                    body: vec![
-                        list(vec![atom("console:log"), atom("x")]),
-                        atom("x"),
-                    ],
+                    body: vec![list(vec![atom("console:log"), atom("x")]), atom("x")],
                     span: s(),
                 },
                 FuncClause {
@@ -3926,10 +3923,7 @@ mod tests {
                     returns: None,
                     pre: None,
                     post: Some(list(vec![atom(">"), atom("%"), num(0.0)])),
-                    body: vec![
-                        list(vec![atom("console:log"), atom("x")]),
-                        atom("x"),
-                    ],
+                    body: vec![list(vec![atom("console:log"), atom("x")]), atom("x")],
                     span: s(),
                 },
                 FuncClause {
@@ -4422,10 +4416,7 @@ mod tests {
 
     #[test]
     fn test_step_contains_await_call_nested() {
-        let step = ThreadingStep::Call(vec![
-            atom("process"),
-            list(vec![atom("await"), atom("p")]),
-        ]);
+        let step = ThreadingStep::Call(vec![atom("process"), list(vec![atom("await"), atom("p")])]);
         assert!(step_contains_await(&step));
     }
 
@@ -4441,10 +4432,7 @@ mod tests {
 
     #[test]
     fn test_any_contains_await_true() {
-        let exprs = vec![
-            atom("x"),
-            list(vec![atom("await"), atom("p")]),
-        ];
+        let exprs = vec![atom("x"), list(vec![atom("await"), atom("p")])];
         assert!(any_contains_await(&exprs));
     }
 
@@ -4581,10 +4569,7 @@ mod tests {
             clauses: vec![MatchClause {
                 pattern: Pattern::Wildcard(s()),
                 guard: None,
-                body: vec![
-                    list(vec![atom("console:log"), atom("x")]),
-                    str_lit("done"),
-                ],
+                body: vec![list(vec![atom("console:log"), atom("x")]), str_lit("done")],
                 span: s(),
             }],
             span: s(),
@@ -4662,10 +4647,7 @@ mod tests {
                 span: s(),
             },
             expr: atom("x"),
-            body: vec![
-                list(vec![atom("console:log"), atom("v")]),
-                atom("v"),
-            ],
+            body: vec![list(vec![atom("console:log"), atom("v")]), atom("v")],
             span: s(),
         };
         let mut c = ctx_value();
@@ -4759,7 +4741,8 @@ mod tests {
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("const"));
             if let SExpr::List {
-                values: typeof_form, ..
+                values: typeof_form,
+                ..
             } = &values[2]
             {
                 assert_eq!(typeof_form[0].as_atom(), Some("typeof"));
@@ -4841,7 +4824,10 @@ mod tests {
         if let SExpr::List { values, .. } = &result[0] {
             // Find the first if block
             for v in values.iter() {
-                if let SExpr::List { values: if_vals, .. } = v {
+                if let SExpr::List {
+                    values: if_vals, ..
+                } = v
+                {
                     if if_vals.first().and_then(|f| f.as_atom()) == Some("if") {
                         // The condition should be (=== args:length N) directly
                         if let SExpr::List {

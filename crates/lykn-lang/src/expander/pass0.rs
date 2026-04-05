@@ -602,7 +602,10 @@ mod tests {
         ];
         let err = validate_import_form(&values).unwrap_err();
         let msg = format!("{err}");
-        assert!(msg.contains("first argument must be a string path"), "{msg}");
+        assert!(
+            msg.contains("first argument must be a string path"),
+            "{msg}"
+        );
     }
 
     #[test]
@@ -623,7 +626,10 @@ mod tests {
         ];
         let err = validate_import_form(&values).unwrap_err();
         let msg = format!("{err}");
-        assert!(msg.contains("first argument must be a string path"), "{msg}");
+        assert!(
+            msg.contains("first argument must be a string path"),
+            "{msg}"
+        );
     }
 
     #[test]
