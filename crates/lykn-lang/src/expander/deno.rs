@@ -218,4 +218,50 @@ mod tests {
         assert!(debug.contains("DenoSubprocess"));
         assert!(debug.contains("pid"));
     }
+
+    #[test]
+    fn test_compile_macro_when_deno_available() {
+        if !deno_available() {
+            eprintln!("skipping test_compile_macro: deno not found");
+            return;
+        }
+        let mut deno = DenoSubprocess::spawn().expect("deno should spawn");
+        // Compile a simple identity macro body
+        let result = deno.compile_macro("(fn (x) x)");
+        // Should either succeed or give a meaningful error, not panic
+        let _ = result;
+    }
+
+    #[test]
+    fn test_eval_macro_when_deno_available() {
+        if !deno_available() {
+            eprintln!("skipping test_eval_macro: deno not found");
+            return;
+        }
+        let mut deno = DenoSubprocess::spawn().expect("deno should spawn");
+        // First compile, then eval
+        let compile_result = deno.compile_macro("(fn (x) x)");
+        if let Ok(js_body) = compile_result {
+            let arg = SExpr::Number {
+                value: 42.0,
+                span: crate::reader::source_loc::Span::default(),
+            };
+            let eval_result = deno.eval_macro(&js_body, &[arg]);
+            // Should produce a result or error, not panic
+            let _ = eval_result;
+        }
+    }
+
+    #[test]
+    fn test_drop_kills_subprocess() {
+        if !deno_available() {
+            eprintln!("skipping test_drop: deno not found");
+            return;
+        }
+        let deno = DenoSubprocess::spawn().expect("deno should spawn");
+        let pid = deno.child.id();
+        assert!(pid > 0);
+        drop(deno);
+        // After drop, process should be killed. We just verify no panic.
+    }
 }

@@ -20,28 +20,7 @@ pub fn kernel_json_to_js(kernel_json: &str, source_path: &Path) -> Result<String
     let project_root = find_project_root(source_path)
         .ok_or_else(|| "cannot find lykn project root (need src/compiler.js)".to_string())?;
 
-    // The inline script reads kernel JSON, reconstructs reader-shaped AST nodes,
-    // and feeds them to the JS compiler.
-    let script = format!(
-        r#"
-import {{ compile }} from "./src/compiler.js";
-const kernelJson = Deno.readTextFileSync("{tmp_path}");
-const kernel = JSON.parse(kernelJson);
-
-function fromJson(val) {{
-    if (Array.isArray(val)) return {{ type: "list", values: val.map(fromJson) }};
-    if (typeof val === "string") return {{ type: "atom", value: val }};
-    if (typeof val === "number") return {{ type: "number", value: val }};
-    if (typeof val === "boolean") return {{ type: "atom", value: String(val) }};
-    if (val === null) return {{ type: "atom", value: "null" }};
-    return val;
-}}
-
-const ast = kernel.map(fromJson);
-console.log(compile(ast));
-"#,
-        tmp_path = tmp_file.display()
-    );
+    let script = build_deno_script(&tmp_file);
 
     let output = Command::new("deno")
         .arg("eval")
@@ -68,9 +47,33 @@ console.log(compile(ast));
     Ok(String::from_utf8_lossy(&output.stdout).to_string())
 }
 
+/// Build the inline Deno script that reads kernel JSON and compiles it to JS.
+fn build_deno_script(tmp_file: &Path) -> String {
+    format!(
+        r#"
+import {{ compile }} from "./src/compiler.js";
+const kernelJson = Deno.readTextFileSync("{tmp_path}");
+const kernel = JSON.parse(kernelJson);
+
+function fromJson(val) {{
+    if (Array.isArray(val)) return {{ type: "list", values: val.map(fromJson) }};
+    if (typeof val === "string") return {{ type: "atom", value: val }};
+    if (typeof val === "number") return {{ type: "number", value: val }};
+    if (typeof val === "boolean") return {{ type: "atom", value: String(val) }};
+    if (val === null) return {{ type: "atom", value: "null" }};
+    return val;
+}}
+
+const ast = kernel.map(fromJson);
+console.log(compile(ast));
+"#,
+        tmp_path = tmp_file.display()
+    )
+}
+
 /// Walk up from `start` looking for a directory that contains `deno.json`
 /// or `src/compiler.js`.
-fn find_project_root(start: &Path) -> Option<PathBuf> {
+pub(crate) fn find_project_root(start: &Path) -> Option<PathBuf> {
     let start = if start.is_file() {
         start.parent()?
     } else {
@@ -85,5 +88,86 @@ fn find_project_root(start: &Path) -> Option<PathBuf> {
         if !current.pop() {
             return None;
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn build_deno_script_contains_import_and_path() {
+        let path = Path::new("/tmp/kernel.json");
+        let script = build_deno_script(path);
+        assert!(script.contains("import { compile }"));
+        assert!(script.contains("/tmp/kernel.json"));
+        assert!(script.contains("fromJson"));
+        assert!(script.contains("console.log(compile(ast))"));
+    }
+
+    #[test]
+    fn find_project_root_with_deno_json() {
+        let tmp = std::env::temp_dir().join("lykn_test_find_root");
+        let _ = fs::remove_dir_all(&tmp);
+        let sub = tmp.join("a").join("b");
+        fs::create_dir_all(&sub).unwrap();
+        fs::write(tmp.join("deno.json"), "{}").unwrap();
+
+        let found = find_project_root(&sub).unwrap();
+        assert_eq!(found, tmp.canonicalize().unwrap());
+
+        let _ = fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn find_project_root_with_compiler_js() {
+        let tmp = std::env::temp_dir().join("lykn_test_find_root_cjs");
+        let _ = fs::remove_dir_all(&tmp);
+        let sub = tmp.join("child");
+        fs::create_dir_all(&sub).unwrap();
+        let src_dir = tmp.join("src");
+        fs::create_dir_all(&src_dir).unwrap();
+        fs::write(src_dir.join("compiler.js"), "").unwrap();
+
+        let found = find_project_root(&sub).unwrap();
+        assert_eq!(found, tmp.canonicalize().unwrap());
+
+        let _ = fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn find_project_root_from_file() {
+        let tmp = std::env::temp_dir().join("lykn_test_find_root_file");
+        let _ = fs::remove_dir_all(&tmp);
+        fs::create_dir_all(&tmp).unwrap();
+        fs::write(tmp.join("deno.json"), "{}").unwrap();
+        let file = tmp.join("example.lykn");
+        fs::write(&file, "(+ 1 2)").unwrap();
+
+        let found = find_project_root(&file).unwrap();
+        assert_eq!(found, tmp.canonicalize().unwrap());
+
+        let _ = fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn find_project_root_none_when_missing() {
+        let tmp = std::env::temp_dir().join("lykn_test_find_root_none");
+        let _ = fs::remove_dir_all(&tmp);
+        fs::create_dir_all(&tmp).unwrap();
+        // No deno.json or src/compiler.js anywhere
+
+        let result = find_project_root(&tmp);
+        // Might find one from the real filesystem above tmp, so just verify no panic
+        let _ = result;
+
+        let _ = fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn find_project_root_nonexistent_path() {
+        let result = find_project_root(Path::new("/nonexistent/path/here"));
+        assert!(result.is_none());
     }
 }

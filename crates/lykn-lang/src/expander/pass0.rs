@@ -399,4 +399,113 @@ mod tests {
             .collect();
         assert_eq!(remaining.len(), 2);
     }
+
+    #[test]
+    fn test_extract_binding_names_ignores_non_atom_non_list() {
+        // Keywords and numbers in the binding list should be skipped
+        let bindings = SExpr::List {
+            values: vec![
+                SExpr::Keyword {
+                    value: "name".to_string(),
+                    span: s(),
+                },
+                SExpr::Number {
+                    value: 42.0,
+                    span: s(),
+                },
+            ],
+            span: s(),
+        };
+        let names = extract_binding_names(&bindings);
+        assert!(names.is_empty());
+    }
+
+    #[test]
+    fn test_extract_binding_names_short_inner_list_ignored() {
+        // An inner list with only 2 elements (not a valid `as` form) should be skipped
+        let bindings = SExpr::List {
+            values: vec![SExpr::List {
+                values: vec![
+                    SExpr::Atom {
+                        value: "as".to_string(),
+                        span: s(),
+                    },
+                    SExpr::Atom {
+                        value: "original".to_string(),
+                        span: s(),
+                    },
+                ],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let names = extract_binding_names(&bindings);
+        assert!(names.is_empty());
+    }
+
+    #[test]
+    fn test_is_import_macros_empty_list() {
+        let form = SExpr::List {
+            values: vec![],
+            span: s(),
+        };
+        assert!(!is_import_macros(&form));
+    }
+
+    #[test]
+    fn test_is_import_macros_non_atom_head() {
+        let form = SExpr::List {
+            values: vec![SExpr::Number {
+                value: 1.0,
+                span: s(),
+            }],
+            span: s(),
+        };
+        assert!(!is_import_macros(&form));
+    }
+
+    #[test]
+    fn test_import_macros_filtering_with_mixed_forms() {
+        let import = SExpr::List {
+            values: vec![
+                SExpr::Atom {
+                    value: "import-macros".to_string(),
+                    span: s(),
+                },
+                SExpr::String {
+                    value: "./m.lykn".to_string(),
+                    span: s(),
+                },
+                SExpr::List {
+                    values: vec![SExpr::Atom {
+                        value: "when".to_string(),
+                        span: s(),
+                    }],
+                    span: s(),
+                },
+            ],
+            span: s(),
+        };
+        let define = SExpr::List {
+            values: vec![
+                SExpr::Atom {
+                    value: "define".to_string(),
+                    span: s(),
+                },
+                SExpr::Atom {
+                    value: "x".to_string(),
+                    span: s(),
+                },
+            ],
+            span: s(),
+        };
+        let forms = vec![import, define.clone()];
+        let remaining: Vec<_> = forms
+            .iter()
+            .filter(|f| !is_import_macros(f))
+            .cloned()
+            .collect();
+        assert_eq!(remaining.len(), 1);
+        assert_eq!(remaining[0], define);
+    }
 }

@@ -519,4 +519,97 @@ mod tests {
         let result = crate::expander::expand(forms, None).unwrap();
         assert_eq!(result, vec![quoted]);
     }
+
+    // ---------------------------------------------------------------
+    // try_desugar — additional edge cases
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_desugar_car_wrong_arity() {
+        assert!(try_desugar("car", &[], s()).is_none());
+        assert!(try_desugar("car", &[atom("a"), atom("b")], s()).is_none());
+    }
+
+    #[test]
+    fn test_desugar_cdr_wrong_arity() {
+        assert!(try_desugar("cdr", &[], s()).is_none());
+        assert!(try_desugar("cdr", &[atom("a"), atom("b")], s()).is_none());
+    }
+
+    #[test]
+    fn test_desugar_cadr_wrong_arity() {
+        assert!(try_desugar("cadr", &[], s()).is_none());
+    }
+
+    #[test]
+    fn test_desugar_cddr_wrong_arity() {
+        assert!(try_desugar("cddr", &[], s()).is_none());
+    }
+
+    #[test]
+    fn test_desugar_as_wrong_arity() {
+        assert!(try_desugar("as", &[atom("a")], s()).is_none());
+        assert!(try_desugar("as", &[atom("a"), atom("b"), atom("c")], s()).is_none());
+    }
+
+    #[test]
+    fn test_desugar_list_three_elements() {
+        // (list a b c) -> (array a (array b (array c null)))
+        let result = try_desugar("list", &[atom("a"), atom("b"), atom("c")], s()).unwrap();
+        if let SExpr::List { values, .. } = result {
+            assert_eq!(values[0].as_atom(), Some("array"));
+            assert_eq!(values[1].as_atom(), Some("a"));
+            // Rest is nested
+            assert!(matches!(&values[2], SExpr::List { .. }));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // expand via top-level — no macros passthrough
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_expand_empty_list_passthrough() {
+        let forms = vec![list(vec![])];
+        let result = crate::expander::expand(forms.clone(), None).unwrap();
+        assert_eq!(result, forms);
+    }
+
+    #[test]
+    fn test_expand_cons_pair_passthrough() {
+        let cons = SExpr::Cons {
+            car: Box::new(atom("a")),
+            cdr: Box::new(atom("b")),
+            span: s(),
+        };
+        let forms = vec![cons.clone()];
+        let result = crate::expander::expand(forms, None).unwrap();
+        assert_eq!(result.len(), 1);
+        assert!(matches!(&result[0], SExpr::Cons { .. }));
+    }
+
+    #[test]
+    fn test_expand_leaf_types_passthrough() {
+        let forms = vec![
+            SExpr::String {
+                value: "hello".into(),
+                span: s(),
+            },
+            SExpr::Keyword {
+                value: "key".into(),
+                span: s(),
+            },
+            SExpr::Bool {
+                value: true,
+                span: s(),
+            },
+            SExpr::Null { span: s() },
+            num(42.0),
+            atom("x"),
+        ];
+        let result = crate::expander::expand(forms.clone(), None).unwrap();
+        assert_eq!(result, forms);
+    }
 }

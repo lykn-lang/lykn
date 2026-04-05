@@ -77,3 +77,121 @@ fn escape_string(s: &str) -> String {
         .replace('\n', "\\n")
         .replace('\t', "\\t")
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::reader::SExpr;
+
+    #[test]
+    fn format_single_atom() {
+        let exprs = vec![SExpr::Atom("hello".into())];
+        assert_eq!(format_exprs(&exprs, 0), "hello\n");
+    }
+
+    #[test]
+    fn format_integer_number() {
+        let exprs = vec![SExpr::Num(42.0)];
+        assert_eq!(format_exprs(&exprs, 0), "42\n");
+    }
+
+    #[test]
+    fn format_float_number() {
+        let exprs = vec![SExpr::Num(3.14)];
+        assert_eq!(format_exprs(&exprs, 0), "3.14\n");
+    }
+
+    #[test]
+    fn format_string_simple() {
+        let exprs = vec![SExpr::Str("hello".into())];
+        assert_eq!(format_exprs(&exprs, 0), "\"hello\"\n");
+    }
+
+    #[test]
+    fn format_string_with_escapes() {
+        let exprs = vec![SExpr::Str("a\nb\t\"c\\".into())];
+        assert_eq!(format_exprs(&exprs, 0), "\"a\\nb\\t\\\"c\\\\\"\n");
+    }
+
+    #[test]
+    fn format_empty_list() {
+        let exprs = vec![SExpr::List(vec![])];
+        assert_eq!(format_exprs(&exprs, 0), "()\n");
+    }
+
+    #[test]
+    fn format_short_list() {
+        let exprs = vec![SExpr::List(vec![
+            SExpr::Atom("+".into()),
+            SExpr::Num(1.0),
+            SExpr::Num(2.0),
+        ])];
+        assert_eq!(format_exprs(&exprs, 0), "(+ 1 2)\n");
+    }
+
+    #[test]
+    fn format_long_list_wraps() {
+        // Build a list that exceeds 80 chars
+        let mut vals = vec![SExpr::Atom("function-with-a-very-long-name".into())];
+        for _ in 0..5 {
+            vals.push(SExpr::Str("some-really-long-argument-value".into()));
+        }
+        let exprs = vec![SExpr::List(vals)];
+        let result = format_exprs(&exprs, 0);
+        assert!(result.contains('\n'));
+        assert!(result.starts_with("(function-with-a-very-long-name"));
+    }
+
+    #[test]
+    fn format_multiple_top_level_exprs() {
+        let exprs = vec![
+            SExpr::Atom("a".into()),
+            SExpr::Atom("b".into()),
+        ];
+        let result = format_exprs(&exprs, 0);
+        // Top-level forms separated by blank line
+        assert_eq!(result, "a\n\nb\n");
+    }
+
+    #[test]
+    fn format_nested_list() {
+        let inner = SExpr::List(vec![
+            SExpr::Atom("+".into()),
+            SExpr::Num(1.0),
+            SExpr::Num(2.0),
+        ]);
+        let outer = SExpr::List(vec![
+            SExpr::Atom("define".into()),
+            SExpr::Atom("x".into()),
+            inner,
+        ]);
+        let result = format_exprs(&vec![outer], 0);
+        assert_eq!(result, "(define x (+ 1 2))\n");
+    }
+
+    #[test]
+    fn format_indented_children() {
+        let exprs = vec![SExpr::List(vec![
+            SExpr::Atom("define".into()),
+            SExpr::Atom("x".into()),
+        ])];
+        // With indent > 0, shouldn't add blank line separator
+        let result = format_exprs(&exprs, 4);
+        assert_eq!(result, "(define x)\n");
+    }
+
+    #[test]
+    fn escape_string_empty() {
+        assert_eq!(escape_string(""), "");
+    }
+
+    #[test]
+    fn escape_string_no_special() {
+        assert_eq!(escape_string("hello"), "hello");
+    }
+
+    #[test]
+    fn escape_string_all_special() {
+        assert_eq!(escape_string("\\\"\n\t"), "\\\\\\\"\\n\\t");
+    }
+}

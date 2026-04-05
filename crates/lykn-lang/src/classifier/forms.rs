@@ -779,3 +779,1754 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<TypedParam>, D
     }
     Ok(params)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // ---------------------------------------------------------------
+    // Helpers
+    // ---------------------------------------------------------------
+
+    fn s() -> Span {
+        Span::default()
+    }
+
+    fn atom(name: &str) -> SExpr {
+        SExpr::Atom {
+            value: name.to_string(),
+            span: s(),
+        }
+    }
+
+    fn kw(name: &str) -> SExpr {
+        SExpr::Keyword {
+            value: name.to_string(),
+            span: s(),
+        }
+    }
+
+    fn num(n: f64) -> SExpr {
+        SExpr::Number { value: n, span: s() }
+    }
+
+    fn string(v: &str) -> SExpr {
+        SExpr::String {
+            value: v.to_string(),
+            span: s(),
+        }
+    }
+
+    fn boolean(v: bool) -> SExpr {
+        SExpr::Bool { value: v, span: s() }
+    }
+
+    fn list(vals: Vec<SExpr>) -> SExpr {
+        SExpr::List {
+            values: vals,
+            span: s(),
+        }
+    }
+
+    /// Shorthand: builds `(head arg0 arg1 ...)` and runs `classify_form`.
+    fn form(head: &str, args: Vec<SExpr>) -> Result<SurfaceForm, Diagnostic> {
+        let mut vals = vec![atom(head)];
+        vals.extend(args);
+        classify_form(&list(vals))
+    }
+
+    // ---------------------------------------------------------------
+    // classify_form -- top-level dispatch
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_form_non_list_is_kernel_passthrough() {
+        let expr = atom("x");
+        let result = classify_form(&expr).unwrap();
+        assert!(matches!(result, SurfaceForm::KernelPassthrough { .. }));
+    }
+
+    #[test]
+    fn test_classify_form_empty_list_is_kernel_passthrough() {
+        let expr = list(vec![]);
+        let result = classify_form(&expr).unwrap();
+        assert!(matches!(result, SurfaceForm::KernelPassthrough { .. }));
+    }
+
+    #[test]
+    fn test_classify_form_kernel_form_head() {
+        // "const" is a kernel form
+        let expr = list(vec![atom("const"), atom("x"), num(1.0)]);
+        let result = classify_form(&expr).unwrap();
+        assert!(matches!(result, SurfaceForm::KernelPassthrough { .. }));
+    }
+
+    #[test]
+    fn test_classify_form_function_call() {
+        // "my-fn" is not a surface or kernel form
+        let result = form("my-fn", vec![num(1.0), num(2.0)]).unwrap();
+        match result {
+            SurfaceForm::FunctionCall { head, args, .. } => {
+                assert_eq!(head.as_atom(), Some("my-fn"));
+                assert_eq!(args.len(), 2);
+            }
+            other => panic!("expected FunctionCall, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_form_computed_head() {
+        // Head is a list (not an atom) -- computed function call
+        let expr = list(vec![list(vec![atom("get-fn")]), num(42.0)]);
+        let result = classify_form(&expr).unwrap();
+        match result {
+            SurfaceForm::FunctionCall { head, args, .. } => {
+                assert!(matches!(head, SExpr::List { .. }));
+                assert_eq!(args.len(), 1);
+            }
+            other => panic!("expected FunctionCall, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_form_number_is_kernel_passthrough() {
+        let result = classify_form(&num(42.0)).unwrap();
+        assert!(matches!(result, SurfaceForm::KernelPassthrough { .. }));
+    }
+
+    #[test]
+    fn test_classify_form_string_is_kernel_passthrough() {
+        let result = classify_form(&string("hello")).unwrap();
+        assert!(matches!(result, SurfaceForm::KernelPassthrough { .. }));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_bind
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_bind_two_args() {
+        let result = form("bind", vec![atom("x"), num(42.0)]).unwrap();
+        match result {
+            SurfaceForm::Bind {
+                name,
+                type_ann,
+                value,
+                ..
+            } => {
+                assert_eq!(name.as_atom(), Some("x"));
+                assert!(type_ann.is_none());
+                assert!(matches!(value, SExpr::Number { value: v, .. } if v == 42.0));
+            }
+            other => panic!("expected Bind, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_bind_three_args_with_type() {
+        let result =
+            form("bind", vec![kw("string"), atom("name"), string("alice")]).unwrap();
+        match result {
+            SurfaceForm::Bind {
+                name,
+                type_ann,
+                value,
+                ..
+            } => {
+                assert_eq!(name.as_atom(), Some("name"));
+                assert_eq!(type_ann.unwrap().name, "string");
+                assert!(matches!(value, SExpr::String { .. }));
+            }
+            other => panic!("expected Bind, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_bind_three_args_non_keyword_type_error() {
+        let result = form("bind", vec![atom("bad"), atom("name"), num(1.0)]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("type keyword as first argument"));
+    }
+
+    #[test]
+    fn test_classify_bind_wrong_arg_count() {
+        let result = form("bind", vec![atom("x")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("2 or 3 arguments"));
+
+        let result = form("bind", vec![atom("a"), atom("b"), atom("c"), atom("d")]);
+        assert!(result.is_err());
+    }
+
+    // ---------------------------------------------------------------
+    // classify_obj
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_obj_valid_pairs() {
+        let result =
+            form("obj", vec![kw("name"), string("alice"), kw("age"), num(30.0)]).unwrap();
+        match result {
+            SurfaceForm::Obj { pairs, .. } => {
+                assert_eq!(pairs.len(), 2);
+                assert_eq!(pairs[0].0, "name");
+                assert_eq!(pairs[1].0, "age");
+            }
+            other => panic!("expected Obj, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_obj_empty() {
+        let result = form("obj", vec![]).unwrap();
+        match result {
+            SurfaceForm::Obj { pairs, .. } => assert!(pairs.is_empty()),
+            other => panic!("expected Obj, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_obj_odd_count_error() {
+        let result = form("obj", vec![kw("name"), string("alice"), kw("age")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("even number"));
+    }
+
+    #[test]
+    fn test_classify_obj_non_keyword_error() {
+        let result = form("obj", vec![atom("name"), string("alice")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("expected keyword"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_cell
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_cell_valid() {
+        let result = form("cell", vec![num(0.0)]).unwrap();
+        assert!(matches!(result, SurfaceForm::Cell { .. }));
+    }
+
+    #[test]
+    fn test_classify_cell_zero_args_error() {
+        let result = form("cell", vec![]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 1"));
+    }
+
+    #[test]
+    fn test_classify_cell_too_many_args_error() {
+        let result = form("cell", vec![num(1.0), num(2.0)]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 1"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_express
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_express_valid() {
+        let result = form("express", vec![atom("my-cell")]).unwrap();
+        match result {
+            SurfaceForm::Express { target, .. } => {
+                assert_eq!(target.as_atom(), Some("my-cell"));
+            }
+            other => panic!("expected Express, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_express_zero_args_error() {
+        let result = form("express", vec![]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 1"));
+    }
+
+    #[test]
+    fn test_classify_express_too_many_args_error() {
+        let result = form("express", vec![atom("a"), atom("b")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 1"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_swap
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_swap_two_args() {
+        let result = form("swap!", vec![atom("c"), atom("inc")]).unwrap();
+        match result {
+            SurfaceForm::Swap {
+                target,
+                func,
+                extra_args,
+                ..
+            } => {
+                assert_eq!(target.as_atom(), Some("c"));
+                assert_eq!(func.as_atom(), Some("inc"));
+                assert!(extra_args.is_empty());
+            }
+            other => panic!("expected Swap, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_swap_with_extra_args() {
+        let result = form("swap!", vec![atom("c"), atom("add"), num(5.0)]).unwrap();
+        match result {
+            SurfaceForm::Swap { extra_args, .. } => {
+                assert_eq!(extra_args.len(), 1);
+            }
+            other => panic!("expected Swap, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_swap_too_few_args() {
+        let result = form("swap!", vec![atom("c")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least 2"));
+    }
+
+    #[test]
+    fn test_classify_swap_zero_args_error() {
+        let result = form("swap!", vec![]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least 2"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_reset
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_reset_valid() {
+        let result = form("reset!", vec![atom("c"), num(42.0)]).unwrap();
+        match result {
+            SurfaceForm::Reset { target, value, .. } => {
+                assert_eq!(target.as_atom(), Some("c"));
+                assert!(matches!(value, SExpr::Number { value: v, .. } if v == 42.0));
+            }
+            other => panic!("expected Reset, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_reset_one_arg_error() {
+        let result = form("reset!", vec![atom("c")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 2"));
+    }
+
+    #[test]
+    fn test_classify_reset_three_args_error() {
+        let result = form("reset!", vec![atom("c"), num(1.0), num(2.0)]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 2"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_threading -- all four variants
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_thread_first() {
+        let result = form("->", vec![atom("x"), atom("inc"), atom("double")]).unwrap();
+        match result {
+            SurfaceForm::ThreadFirst {
+                initial, steps, ..
+            } => {
+                assert_eq!(initial.as_atom(), Some("x"));
+                assert_eq!(steps.len(), 2);
+                assert!(matches!(&steps[0], ThreadingStep::Bare(_)));
+            }
+            other => panic!("expected ThreadFirst, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_thread_last() {
+        let result =
+            form("->>", vec![atom("x"), list(vec![atom("map"), atom("f")])]).unwrap();
+        match result {
+            SurfaceForm::ThreadLast { steps, .. } => {
+                assert_eq!(steps.len(), 1);
+                assert!(matches!(&steps[0], ThreadingStep::Call(_)));
+            }
+            other => panic!("expected ThreadLast, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_some_thread_first() {
+        let result = form("some->", vec![atom("x"), atom("f")]).unwrap();
+        assert!(matches!(result, SurfaceForm::SomeThreadFirst { .. }));
+    }
+
+    #[test]
+    fn test_classify_some_thread_last() {
+        let result = form("some->>", vec![atom("x"), atom("f")]).unwrap();
+        assert!(matches!(result, SurfaceForm::SomeThreadLast { .. }));
+    }
+
+    #[test]
+    fn test_classify_threading_too_few_args() {
+        let result = form("->", vec![atom("x")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least 2"));
+    }
+
+    #[test]
+    fn test_classify_threading_zero_args_error() {
+        let result = form("->>", vec![]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least 2"));
+    }
+
+    #[test]
+    fn test_classify_threading_mixed_steps() {
+        let result = form(
+            "->",
+            vec![
+                atom("x"),
+                atom("inc"),
+                list(vec![atom("add"), num(5.0)]),
+                atom("double"),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::ThreadFirst { steps, .. } => {
+                assert_eq!(steps.len(), 3);
+                assert!(matches!(&steps[0], ThreadingStep::Bare(_)));
+                assert!(matches!(&steps[1], ThreadingStep::Call(_)));
+                assert!(matches!(&steps[2], ThreadingStep::Bare(_)));
+            }
+            other => panic!("expected ThreadFirst, got {other:?}"),
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // classify_type
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_type_atom_constructors() {
+        let result =
+            form("type", vec![atom("Color"), atom("Red"), atom("Green"), atom("Blue")]).unwrap();
+        match result {
+            SurfaceForm::Type {
+                name, constructors, ..
+            } => {
+                assert_eq!(name, "Color");
+                assert_eq!(constructors.len(), 3);
+                assert_eq!(constructors[0].name, "Red");
+                assert!(constructors[0].fields.is_empty());
+            }
+            other => panic!("expected Type, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_type_list_constructor_with_fields() {
+        let result = form(
+            "type",
+            vec![
+                atom("Shape"),
+                list(vec![atom("Circle"), kw("number"), atom("radius")]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Type { constructors, .. } => {
+                assert_eq!(constructors.len(), 1);
+                assert_eq!(constructors[0].name, "Circle");
+                assert_eq!(constructors[0].fields.len(), 1);
+                assert_eq!(constructors[0].fields[0].name, "radius");
+                assert_eq!(constructors[0].fields[0].type_ann.name, "number");
+            }
+            other => panic!("expected Type, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_type_too_few_args() {
+        let result = form("type", vec![atom("Color")]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("at least one constructor"));
+    }
+
+    #[test]
+    fn test_classify_type_zero_args_error() {
+        let result = form("type", vec![]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_type_non_atom_name() {
+        let result = form("type", vec![num(42.0), atom("X")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("type name"));
+    }
+
+    #[test]
+    fn test_classify_type_empty_list_constructor_error() {
+        let result = form("type", vec![atom("T"), list(vec![])]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("constructor must be an atom or list"));
+    }
+
+    #[test]
+    fn test_classify_type_non_atom_constructor_name_error() {
+        let result = form("type", vec![atom("T"), list(vec![num(1.0)])]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("constructor name must be an atom"));
+    }
+
+    #[test]
+    fn test_classify_type_invalid_constructor_form() {
+        // A keyword as a constructor is neither atom nor list-with-values
+        let result = form("type", vec![atom("T"), kw("bad")]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("constructor must be an atom or list"));
+    }
+
+    #[test]
+    fn test_classify_type_mixed_constructors() {
+        let result = form(
+            "type",
+            vec![
+                atom("Result"),
+                atom("Loading"),
+                list(vec![atom("Ok"), kw("any"), atom("value")]),
+                list(vec![atom("Err"), kw("string"), atom("msg")]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Type { constructors, .. } => {
+                assert_eq!(constructors.len(), 3);
+                assert!(constructors[0].fields.is_empty());
+                assert_eq!(constructors[1].fields.len(), 1);
+                assert_eq!(constructors[2].fields.len(), 1);
+                assert_eq!(constructors[2].fields[0].type_ann.name, "string");
+            }
+            other => panic!("expected Type, got {other:?}"),
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // classify_func
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_func_zero_arg_shorthand() {
+        let result = form(
+            "func",
+            vec![atom("main"), list(vec![atom("console.log"), string("hi")])],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Func {
+                name, clauses, ..
+            } => {
+                assert_eq!(name, "main");
+                assert_eq!(clauses.len(), 1);
+                assert!(clauses[0].args.is_empty());
+                assert_eq!(clauses[0].body.len(), 1);
+            }
+            other => panic!("expected Func, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_func_single_clause_keyword_mode() {
+        let result = form(
+            "func",
+            vec![
+                atom("add"),
+                kw("args"),
+                list(vec![kw("number"), atom("a"), kw("number"), atom("b")]),
+                kw("body"),
+                list(vec![atom("+"), atom("a"), atom("b")]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Func {
+                name, clauses, ..
+            } => {
+                assert_eq!(name, "add");
+                assert_eq!(clauses.len(), 1);
+                assert_eq!(clauses[0].args.len(), 2);
+                assert_eq!(clauses[0].args[0].name, "a");
+                assert_eq!(clauses[0].args[1].name, "b");
+            }
+            other => panic!("expected Func, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_func_multi_clause() {
+        let result = form(
+            "func",
+            vec![
+                atom("greet"),
+                list(vec![kw("args"), list(vec![]), kw("body"), atom("a")]),
+                list(vec![
+                    kw("args"),
+                    list(vec![kw("string"), atom("name")]),
+                    kw("body"),
+                    atom("b"),
+                ]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Func { clauses, .. } => {
+                assert_eq!(clauses.len(), 2);
+            }
+            other => panic!("expected Func, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_func_with_returns_pre_post() {
+        let result = form(
+            "func",
+            vec![
+                atom("double"),
+                kw("args"),
+                list(vec![kw("number"), atom("x")]),
+                kw("returns"),
+                kw("number"),
+                kw("pre"),
+                list(vec![atom(">"), atom("x"), num(0.0)]),
+                kw("post"),
+                list(vec![atom(">"), atom("result"), atom("x")]),
+                kw("body"),
+                list(vec![atom("*"), atom("x"), num(2.0)]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Func { clauses, .. } => {
+                let c = &clauses[0];
+                assert!(c.returns.is_some());
+                assert_eq!(c.returns.as_ref().unwrap().name, "number");
+                assert!(c.pre.is_some());
+                assert!(c.post.is_some());
+            }
+            other => panic!("expected Func, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_func_no_name_error() {
+        let result = form("func", vec![]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least a name"));
+    }
+
+    #[test]
+    fn test_classify_func_non_atom_name_error() {
+        let result = form("func", vec![num(1.0)]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("function name"));
+    }
+
+    #[test]
+    fn test_classify_func_name_only_no_body_error() {
+        let result = form("func", vec![atom("f")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("body"));
+    }
+
+    #[test]
+    fn test_classify_func_clause_missing_body_error() {
+        let result = form("func", vec![atom("f"), kw("args"), list(vec![])]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains(":body"));
+    }
+
+    #[test]
+    fn test_classify_func_multi_clause_non_list_error() {
+        let result = form(
+            "func",
+            vec![
+                atom("f"),
+                list(vec![kw("args"), list(vec![]), kw("body"), atom("a")]),
+                atom("not-a-clause"),
+            ],
+        );
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("clause must be a list"));
+    }
+
+    #[test]
+    fn test_classify_func_zero_arg_multiple_body_exprs() {
+        let result =
+            form("func", vec![atom("main"), atom("expr1"), atom("expr2")]).unwrap();
+        match result {
+            SurfaceForm::Func { clauses, .. } => {
+                assert_eq!(clauses[0].body.len(), 2);
+                assert!(clauses[0].args.is_empty());
+                assert!(clauses[0].returns.is_none());
+                assert!(clauses[0].pre.is_none());
+                assert!(clauses[0].post.is_none());
+            }
+            other => panic!("expected Func, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_func_single_clause_returns_non_keyword_ignored() {
+        // :returns followed by a non-keyword should yield None for returns
+        let result = form(
+            "func",
+            vec![
+                atom("f"),
+                kw("args"),
+                list(vec![]),
+                kw("returns"),
+                atom("not-a-keyword"),
+                kw("body"),
+                atom("x"),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Func { clauses, .. } => {
+                assert!(clauses[0].returns.is_none());
+            }
+            other => panic!("expected Func, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_func_single_clause_args_not_list() {
+        // :args followed by a non-list should yield empty args
+        let result = form(
+            "func",
+            vec![atom("f"), kw("args"), atom("not-a-list"), kw("body"), atom("x")],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Func { clauses, .. } => {
+                assert!(clauses[0].args.is_empty());
+            }
+            other => panic!("expected Func, got {other:?}"),
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // classify_match
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_match_basic() {
+        let result = form(
+            "match",
+            vec![
+                atom("x"),
+                list(vec![num(1.0), string("one")]),
+                list(vec![num(2.0), string("two")]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Match {
+                target, clauses, ..
+            } => {
+                assert_eq!(target.as_atom(), Some("x"));
+                assert_eq!(clauses.len(), 2);
+                assert!(matches!(&clauses[0].pattern, Pattern::Literal(_)));
+            }
+            other => panic!("expected Match, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_match_with_guard() {
+        let result = form(
+            "match",
+            vec![
+                atom("x"),
+                list(vec![
+                    atom("n"),
+                    kw("when"),
+                    list(vec![atom(">"), atom("n"), num(0.0)]),
+                    string("positive"),
+                ]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Match { clauses, .. } => {
+                assert_eq!(clauses.len(), 1);
+                assert!(clauses[0].guard.is_some());
+                assert!(
+                    matches!(&clauses[0].pattern, Pattern::Binding { name, .. } if name == "n")
+                );
+            }
+            other => panic!("expected Match, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_match_too_few_args() {
+        let result = form("match", vec![atom("x")]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("at least one clause"));
+    }
+
+    #[test]
+    fn test_classify_match_zero_args_error() {
+        let result = form("match", vec![]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_match_clause_not_list() {
+        let result = form("match", vec![atom("x"), atom("bad")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("must be a list"));
+    }
+
+    #[test]
+    fn test_classify_match_clause_too_short() {
+        let result = form("match", vec![atom("x"), list(vec![atom("y")])]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_match_guard_no_body_error() {
+        // (match x (n :when guard)) -- guard consumes positions, no body left
+        let result = form(
+            "match",
+            vec![
+                atom("x"),
+                list(vec![atom("n"), kw("when"), atom("guard")]),
+            ],
+        );
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("must have a body"));
+    }
+
+    #[test]
+    fn test_classify_match_multiple_body_exprs() {
+        let result = form(
+            "match",
+            vec![
+                atom("x"),
+                list(vec![atom("n"), atom("body1"), atom("body2")]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Match { clauses, .. } => {
+                assert_eq!(clauses[0].body.len(), 2);
+                assert!(clauses[0].guard.is_none());
+            }
+            other => panic!("expected Match, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_match_nested_constructor_pattern() {
+        let result = form(
+            "match",
+            vec![
+                atom("x"),
+                list(vec![
+                    list(vec![atom("Some"), list(vec![atom("Just"), atom("v")])]),
+                    atom("body"),
+                ]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Match { clauses, .. } => {
+                match &clauses[0].pattern {
+                    Pattern::Constructor {
+                        name, bindings, ..
+                    } => {
+                        assert_eq!(name, "Some");
+                        assert_eq!(bindings.len(), 1);
+                        assert!(matches!(
+                            &bindings[0],
+                            Pattern::Constructor { name, .. } if name == "Just"
+                        ));
+                    }
+                    other => panic!("expected Constructor, got {other:?}"),
+                }
+            }
+            other => panic!("expected Match, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_match_wildcard_pattern() {
+        let result = form(
+            "match",
+            vec![atom("x"), list(vec![atom("_"), string("default")])],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Match { clauses, .. } => {
+                assert!(matches!(&clauses[0].pattern, Pattern::Wildcard(_)));
+            }
+            other => panic!("expected Match, got {other:?}"),
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // classify_pattern
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_pattern_wildcard() {
+        let pat = classify_pattern(&atom("_")).unwrap();
+        assert!(matches!(pat, Pattern::Wildcard(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_binding() {
+        let pat = classify_pattern(&atom("x")).unwrap();
+        assert!(matches!(pat, Pattern::Binding { name, .. } if name == "x"));
+    }
+
+    #[test]
+    fn test_classify_pattern_literal_true() {
+        let pat = classify_pattern(&atom("true")).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_literal_false() {
+        let pat = classify_pattern(&atom("false")).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_literal_null() {
+        let pat = classify_pattern(&atom("null")).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_literal_undefined() {
+        let pat = classify_pattern(&atom("undefined")).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_number_literal() {
+        let pat = classify_pattern(&num(42.0)).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_string_literal() {
+        let pat = classify_pattern(&string("hi")).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_keyword_literal() {
+        let pat = classify_pattern(&kw("status")).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_bool_literal() {
+        let pat = classify_pattern(&boolean(true)).unwrap();
+        assert!(matches!(pat, Pattern::Literal(_)));
+    }
+
+    #[test]
+    fn test_classify_pattern_zero_field_constructor() {
+        let pat = classify_pattern(&atom("None")).unwrap();
+        match pat {
+            Pattern::Constructor {
+                name, bindings, ..
+            } => {
+                assert_eq!(name, "None");
+                assert!(bindings.is_empty());
+            }
+            other => panic!("expected Constructor, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_pattern_constructor_with_bindings() {
+        let pat = classify_pattern(&list(vec![atom("Some"), atom("x")])).unwrap();
+        match pat {
+            Pattern::Constructor {
+                name, bindings, ..
+            } => {
+                assert_eq!(name, "Some");
+                assert_eq!(bindings.len(), 1);
+                assert!(
+                    matches!(&bindings[0], Pattern::Binding { name, .. } if name == "x")
+                );
+            }
+            other => panic!("expected Constructor, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_pattern_constructor_multiple_bindings() {
+        // (Pair a b)
+        let pat =
+            classify_pattern(&list(vec![atom("Pair"), atom("a"), atom("b")])).unwrap();
+        match pat {
+            Pattern::Constructor { bindings, .. } => {
+                assert_eq!(bindings.len(), 2);
+            }
+            other => panic!("expected Constructor, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_pattern_obj() {
+        let pat = classify_pattern(&list(vec![
+            atom("obj"),
+            kw("name"),
+            atom("n"),
+            kw("age"),
+            atom("a"),
+        ]))
+        .unwrap();
+        match pat {
+            Pattern::Obj { pairs, .. } => {
+                assert_eq!(pairs.len(), 2);
+                assert_eq!(pairs[0].0, "name");
+                assert_eq!(pairs[1].0, "age");
+            }
+            other => panic!("expected Obj pattern, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_pattern_obj_odd_count_error() {
+        let pat = classify_pattern(&list(vec![atom("obj"), kw("name")]));
+        assert!(pat.is_err());
+        assert!(pat.unwrap_err().message.contains("keyword-binding pairs"));
+    }
+
+    #[test]
+    fn test_classify_pattern_obj_non_keyword_error() {
+        let pat =
+            classify_pattern(&list(vec![atom("obj"), atom("bad"), atom("x")]));
+        assert!(pat.is_err());
+        assert!(pat.unwrap_err().message.contains("expected keyword"));
+    }
+
+    #[test]
+    fn test_classify_pattern_unrecognized_list_error() {
+        let pat = classify_pattern(&list(vec![atom("foo"), atom("bar")]));
+        assert!(pat.is_err());
+        assert!(pat.unwrap_err().message.contains("unrecognized pattern"));
+    }
+
+    #[test]
+    fn test_classify_pattern_empty_list_error() {
+        let pat = classify_pattern(&list(vec![]));
+        assert!(pat.is_err());
+        assert!(pat.unwrap_err().message.contains("invalid pattern"));
+    }
+
+    #[test]
+    fn test_classify_pattern_null_sexpr() {
+        let expr = SExpr::Null { span: s() };
+        let pat = classify_pattern(&expr);
+        assert!(pat.is_err());
+        assert!(pat.unwrap_err().message.contains("invalid pattern"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_if_let
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_if_let_two_args() {
+        let result = form(
+            "if-let",
+            vec![list(vec![atom("x"), atom("val")]), string("then")],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::IfLet {
+                pattern,
+                then_body,
+                else_body,
+                ..
+            } => {
+                assert!(
+                    matches!(pattern, Pattern::Binding { name, .. } if name == "x")
+                );
+                assert!(matches!(then_body, SExpr::String { .. }));
+                assert!(else_body.is_none());
+            }
+            other => panic!("expected IfLet, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_if_let_three_args() {
+        let result = form(
+            "if-let",
+            vec![
+                list(vec![atom("x"), atom("val")]),
+                string("then"),
+                string("else"),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::IfLet { else_body, .. } => {
+                assert!(else_body.is_some());
+            }
+            other => panic!("expected IfLet, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_if_let_too_few_args() {
+        let result = form("if-let", vec![list(vec![atom("x"), atom("v")])]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("2-3 arguments"));
+    }
+
+    #[test]
+    fn test_classify_if_let_too_many_args() {
+        let result = form(
+            "if-let",
+            vec![
+                list(vec![atom("x"), atom("v")]),
+                atom("a"),
+                atom("b"),
+                atom("c"),
+            ],
+        );
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("2-3 arguments"));
+    }
+
+    #[test]
+    fn test_classify_if_let_non_list_binding_error() {
+        let result = form("if-let", vec![atom("bad"), atom("body")]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("first argument must be (pattern expr)"));
+    }
+
+    #[test]
+    fn test_classify_if_let_binding_wrong_length_error() {
+        let result = form("if-let", vec![list(vec![atom("x")]), atom("body")]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("first argument must be (pattern expr)"));
+    }
+
+    #[test]
+    fn test_classify_if_let_binding_three_elements_error() {
+        let result = form(
+            "if-let",
+            vec![list(vec![atom("x"), atom("y"), atom("z")]), atom("body")],
+        );
+        assert!(result.is_err());
+    }
+
+    // ---------------------------------------------------------------
+    // classify_when_let
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_when_let_valid() {
+        let result = form(
+            "when-let",
+            vec![
+                list(vec![atom("x"), atom("val")]),
+                atom("body1"),
+                atom("body2"),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::WhenLet {
+                pattern, body, ..
+            } => {
+                assert!(
+                    matches!(pattern, Pattern::Binding { name, .. } if name == "x")
+                );
+                assert_eq!(body.len(), 2);
+            }
+            other => panic!("expected WhenLet, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_when_let_too_few_args() {
+        let result = form("when-let", vec![list(vec![atom("x"), atom("v")])]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least 2"));
+    }
+
+    #[test]
+    fn test_classify_when_let_non_list_binding_error() {
+        let result = form("when-let", vec![atom("bad"), atom("body")]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("first argument must be (pattern expr)"));
+    }
+
+    #[test]
+    fn test_classify_when_let_zero_args_error() {
+        let result = form("when-let", vec![]);
+        assert!(result.is_err());
+    }
+
+    // ---------------------------------------------------------------
+    // classify_fn
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_fn_valid() {
+        let result = form(
+            "fn",
+            vec![
+                list(vec![kw("number"), atom("x")]),
+                list(vec![atom("*"), atom("x"), num(2.0)]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Fn { params, body, .. } => {
+                assert_eq!(params.len(), 1);
+                assert_eq!(params[0].name, "x");
+                assert_eq!(body.len(), 1);
+            }
+            other => panic!("expected Fn, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_fn_empty_params() {
+        let result = form("fn", vec![list(vec![]), atom("body")]).unwrap();
+        match result {
+            SurfaceForm::Fn { params, body, .. } => {
+                assert!(params.is_empty());
+                assert_eq!(body.len(), 1);
+            }
+            other => panic!("expected Fn, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_fn_multiple_body_exprs() {
+        let result =
+            form("fn", vec![list(vec![]), atom("a"), atom("b"), atom("c")]).unwrap();
+        match result {
+            SurfaceForm::Fn { body, .. } => {
+                assert_eq!(body.len(), 3);
+            }
+            other => panic!("expected Fn, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_fn_too_few_args() {
+        let result = form("fn", vec![list(vec![])]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("params and body"));
+    }
+
+    #[test]
+    fn test_classify_fn_zero_args_error() {
+        let result = form("fn", vec![]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_fn_non_list_params_error() {
+        let result = form("fn", vec![atom("bad"), atom("body")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("parameter list"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_lambda
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_lambda_valid() {
+        let result = form(
+            "lambda",
+            vec![
+                list(vec![kw("string"), atom("s")]),
+                list(vec![atom("console.log"), atom("s")]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Lambda { params, body, .. } => {
+                assert_eq!(params.len(), 1);
+                assert_eq!(params[0].name, "s");
+                assert_eq!(body.len(), 1);
+            }
+            other => panic!("expected Lambda, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_lambda_empty_params() {
+        let result = form("lambda", vec![list(vec![]), atom("body")]).unwrap();
+        match result {
+            SurfaceForm::Lambda { params, .. } => {
+                assert!(params.is_empty());
+            }
+            other => panic!("expected Lambda, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_lambda_too_few_args() {
+        let result = form("lambda", vec![list(vec![])]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("params and body"));
+    }
+
+    #[test]
+    fn test_classify_lambda_zero_args_error() {
+        let result = form("lambda", vec![]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_lambda_non_list_params_error() {
+        let result = form("lambda", vec![atom("bad"), atom("body")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("parameter list"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_conj
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_conj_valid() {
+        let result = form("conj", vec![atom("arr"), num(42.0)]).unwrap();
+        match result {
+            SurfaceForm::Conj { arr, value, .. } => {
+                assert_eq!(arr.as_atom(), Some("arr"));
+                assert!(matches!(value, SExpr::Number { value: v, .. } if v == 42.0));
+            }
+            other => panic!("expected Conj, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_conj_one_arg_error() {
+        let result = form("conj", vec![atom("arr")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 2"));
+    }
+
+    #[test]
+    fn test_classify_conj_three_args_error() {
+        let result = form("conj", vec![atom("a"), atom("b"), atom("c")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("exactly 2"));
+    }
+
+    #[test]
+    fn test_classify_conj_zero_args_error() {
+        let result = form("conj", vec![]);
+        assert!(result.is_err());
+    }
+
+    // ---------------------------------------------------------------
+    // classify_assoc
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_assoc_valid() {
+        let result =
+            form("assoc", vec![atom("obj"), kw("name"), string("alice")]).unwrap();
+        match result {
+            SurfaceForm::Assoc { obj, pairs, .. } => {
+                assert_eq!(obj.as_atom(), Some("obj"));
+                assert_eq!(pairs.len(), 1);
+                assert_eq!(pairs[0].0, "name");
+            }
+            other => panic!("expected Assoc, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_assoc_multiple_pairs() {
+        let result = form(
+            "assoc",
+            vec![atom("o"), kw("a"), num(1.0), kw("b"), num(2.0)],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Assoc { pairs, .. } => assert_eq!(pairs.len(), 2),
+            other => panic!("expected Assoc, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_assoc_too_few_args() {
+        let result = form("assoc", vec![atom("obj"), kw("k")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least 3"));
+    }
+
+    #[test]
+    fn test_classify_assoc_zero_args_error() {
+        let result = form("assoc", vec![]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_assoc_odd_pair_count_error() {
+        let result = form(
+            "assoc",
+            vec![atom("obj"), kw("a"), num(1.0), kw("b")],
+        );
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("keyword-value pairs"));
+    }
+
+    #[test]
+    fn test_classify_assoc_non_keyword_error() {
+        let result = form("assoc", vec![atom("obj"), atom("bad"), num(1.0)]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("expected keyword"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_dissoc
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_dissoc_valid() {
+        let result = form("dissoc", vec![atom("obj"), kw("name")]).unwrap();
+        match result {
+            SurfaceForm::Dissoc { obj, keys, .. } => {
+                assert_eq!(obj.as_atom(), Some("obj"));
+                assert_eq!(keys, vec!["name"]);
+            }
+            other => panic!("expected Dissoc, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_dissoc_multiple_keys() {
+        let result =
+            form("dissoc", vec![atom("obj"), kw("a"), kw("b"), kw("c")]).unwrap();
+        match result {
+            SurfaceForm::Dissoc { keys, .. } => assert_eq!(keys.len(), 3),
+            other => panic!("expected Dissoc, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_dissoc_too_few_args() {
+        let result = form("dissoc", vec![atom("obj")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("at least 2"));
+    }
+
+    #[test]
+    fn test_classify_dissoc_zero_args_error() {
+        let result = form("dissoc", vec![]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_dissoc_non_keyword_key_error() {
+        let result = form("dissoc", vec![atom("obj"), atom("bad")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("expected keyword"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_macro_def
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_macro_def_valid() {
+        let result = form("macro", vec![atom("my-macro"), atom("body")]).unwrap();
+        match result {
+            SurfaceForm::MacroDef { name, raw, .. } => {
+                assert_eq!(name, "my-macro");
+                if let SExpr::List { values, .. } = &raw {
+                    assert_eq!(values[0].as_atom(), Some("macro"));
+                    assert_eq!(values.len(), 3);
+                } else {
+                    panic!("expected raw to be a list");
+                }
+            }
+            other => panic!("expected MacroDef, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_macro_def_name_only() {
+        let result = form("macro", vec![atom("m")]).unwrap();
+        match result {
+            SurfaceForm::MacroDef { name, .. } => assert_eq!(name, "m"),
+            other => panic!("expected MacroDef, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_macro_def_no_name_error() {
+        let result = form("macro", vec![]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("requires a name"));
+    }
+
+    #[test]
+    fn test_classify_macro_def_non_atom_name_error() {
+        let result = form("macro", vec![num(1.0)]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("name must be an atom"));
+    }
+
+    // ---------------------------------------------------------------
+    // classify_import_macros
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_import_macros_valid() {
+        let result =
+            form("import-macros", vec![string("./macros.lykn")]).unwrap();
+        match result {
+            SurfaceForm::ImportMacros { raw, .. } => {
+                if let SExpr::List { values, .. } = &raw {
+                    assert_eq!(values[0].as_atom(), Some("import-macros"));
+                    assert_eq!(values.len(), 2);
+                } else {
+                    panic!("expected raw to be a list");
+                }
+            }
+            other => panic!("expected ImportMacros, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_import_macros_empty() {
+        let result = form("import-macros", vec![]).unwrap();
+        match result {
+            SurfaceForm::ImportMacros { raw, .. } => {
+                if let SExpr::List { values, .. } = &raw {
+                    assert_eq!(values.len(), 1);
+                } else {
+                    panic!("expected raw to be a list");
+                }
+            }
+            other => panic!("expected ImportMacros, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_import_macros_multiple_args() {
+        let result = form(
+            "import-macros",
+            vec![string("./a.lykn"), string("./b.lykn")],
+        )
+        .unwrap();
+        assert!(matches!(result, SurfaceForm::ImportMacros { .. }));
+    }
+
+    // ---------------------------------------------------------------
+    // parse_typed_params (exercised through fn/lambda/type)
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_typed_params_odd_count_error() {
+        let result = form("fn", vec![list(vec![kw("number")]), atom("body")]);
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("keyword-name pairs"));
+    }
+
+    #[test]
+    fn test_typed_params_non_keyword_type_error() {
+        let result = form(
+            "fn",
+            vec![list(vec![atom("badtype"), atom("x")]), atom("body")],
+        );
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("expected type keyword"));
+    }
+
+    #[test]
+    fn test_typed_params_non_atom_name_error() {
+        let result = form(
+            "fn",
+            vec![list(vec![kw("number"), num(42.0)]), atom("body")],
+        );
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("parameter name must be an atom"));
+    }
+
+    #[test]
+    fn test_typed_params_multiple_params() {
+        let result = form(
+            "fn",
+            vec![
+                list(vec![
+                    kw("number"),
+                    atom("x"),
+                    kw("string"),
+                    atom("y"),
+                    kw("bool"),
+                    atom("z"),
+                ]),
+                atom("body"),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Fn { params, .. } => {
+                assert_eq!(params.len(), 3);
+                assert_eq!(params[0].type_ann.name, "number");
+                assert_eq!(params[0].name, "x");
+                assert_eq!(params[1].type_ann.name, "string");
+                assert_eq!(params[1].name, "y");
+                assert_eq!(params[2].type_ann.name, "bool");
+                assert_eq!(params[2].name, "z");
+            }
+            other => panic!("expected Fn, got {other:?}"),
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // classify_surface_form -- unknown surface form
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_unknown_surface_form_error() {
+        let result =
+            classify_surface_form("definitely-unknown", &[], Span::default());
+        assert!(result.is_err());
+        assert!(result
+            .unwrap_err()
+            .message
+            .contains("unknown surface form"));
+    }
+
+    // ---------------------------------------------------------------
+    // Computed head edge cases
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_form_keyword_head_is_function_call() {
+        let expr = list(vec![kw("dynamic"), atom("arg")]);
+        let result = classify_form(&expr).unwrap();
+        match result {
+            SurfaceForm::FunctionCall { head, .. } => {
+                assert!(matches!(head, SExpr::Keyword { .. }));
+            }
+            other => panic!("expected FunctionCall, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_form_number_head_is_function_call() {
+        let expr = list(vec![num(42.0), atom("arg")]);
+        let result = classify_form(&expr).unwrap();
+        assert!(matches!(result, SurfaceForm::FunctionCall { .. }));
+    }
+
+    #[test]
+    fn test_classify_form_computed_head_no_args() {
+        let expr = list(vec![list(vec![atom("get-fn")])]);
+        let result = classify_form(&expr).unwrap();
+        match result {
+            SurfaceForm::FunctionCall { args, .. } => {
+                assert!(args.is_empty());
+            }
+            other => panic!("expected FunctionCall, got {other:?}"),
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // Kernel form passthrough variants
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_form_various_kernel_forms() {
+        for kf in &["let", "if", "while", "for", "class", "import", "+", "==="] {
+            let expr = list(vec![atom(kf), atom("x")]);
+            let result = classify_form(&expr).unwrap();
+            assert!(
+                matches!(result, SurfaceForm::KernelPassthrough { .. }),
+                "expected KernelPassthrough for {kf}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_classify_form_bool_is_kernel_passthrough() {
+        let result = classify_form(&boolean(true)).unwrap();
+        assert!(matches!(result, SurfaceForm::KernelPassthrough { .. }));
+    }
+
+    #[test]
+    fn test_classify_form_keyword_is_kernel_passthrough() {
+        let result = classify_form(&kw("something")).unwrap();
+        assert!(matches!(result, SurfaceForm::KernelPassthrough { .. }));
+    }
+}

@@ -403,4 +403,212 @@ mod tests {
             _ => panic!("expected list"),
         }
     }
+
+    #[test]
+    fn parse_empty_input() {
+        let forms = parse_str("");
+        assert!(forms.is_empty());
+    }
+
+    #[test]
+    fn parse_boolean_true() {
+        let forms = parse_str("true");
+        assert_eq!(forms.len(), 1);
+        assert!(matches!(&forms[0], SExpr::Bool { value: true, .. }));
+    }
+
+    #[test]
+    fn parse_boolean_false() {
+        let forms = parse_str("false");
+        assert_eq!(forms.len(), 1);
+        assert!(matches!(&forms[0], SExpr::Bool { value: false, .. }));
+    }
+
+    #[test]
+    fn parse_null() {
+        let forms = parse_str("null");
+        assert_eq!(forms.len(), 1);
+        assert!(matches!(&forms[0], SExpr::Null { .. }));
+    }
+
+    #[test]
+    fn parse_quasiquote() {
+        let forms = parse_str("`foo");
+        assert_eq!(forms.len(), 1);
+        match &forms[0] {
+            SExpr::List { values, .. } => {
+                assert_eq!(values.len(), 2);
+                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "quasiquote"));
+                assert!(matches!(&values[1], SExpr::Atom { value, .. } if value == "foo"));
+            }
+            _ => panic!("expected quasiquote list"),
+        }
+    }
+
+    #[test]
+    fn parse_unquote() {
+        let forms = parse_str(",x");
+        assert_eq!(forms.len(), 1);
+        match &forms[0] {
+            SExpr::List { values, .. } => {
+                assert_eq!(values.len(), 2);
+                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "unquote"));
+                assert!(matches!(&values[1], SExpr::Atom { value, .. } if value == "x"));
+            }
+            _ => panic!("expected unquote list"),
+        }
+    }
+
+    #[test]
+    fn parse_unquote_splice() {
+        let forms = parse_str(",@xs");
+        assert_eq!(forms.len(), 1);
+        match &forms[0] {
+            SExpr::List { values, .. } => {
+                assert_eq!(values.len(), 2);
+                assert!(
+                    matches!(&values[0], SExpr::Atom { value, .. } if value == "unquote-splicing")
+                );
+                assert!(matches!(&values[1], SExpr::Atom { value, .. } if value == "xs"));
+            }
+            _ => panic!("expected unquote-splicing list"),
+        }
+    }
+
+    #[test]
+    fn parse_hash_array() {
+        let forms = parse_str("#a(1 2 3)");
+        assert_eq!(forms.len(), 1);
+        match &forms[0] {
+            SExpr::List { values, .. } => {
+                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "array"));
+                assert_eq!(values.len(), 4);
+            }
+            _ => panic!("expected array list"),
+        }
+    }
+
+    #[test]
+    fn parse_hash_object() {
+        let forms = parse_str("#o(:name \"x\")");
+        assert_eq!(forms.len(), 1);
+        match &forms[0] {
+            SExpr::List { values, .. } => {
+                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "object"));
+            }
+            _ => panic!("expected object list"),
+        }
+    }
+
+    #[test]
+    fn parse_radix_hex() {
+        let forms = parse_str("#16rff");
+        assert_eq!(forms.len(), 1);
+        assert!(matches!(&forms[0], SExpr::Number { value, .. } if *value == 255.0));
+    }
+
+    #[test]
+    fn parse_radix_binary() {
+        let forms = parse_str("#2r1010");
+        assert_eq!(forms.len(), 1);
+        assert!(matches!(&forms[0], SExpr::Number { value, .. } if *value == 10.0));
+    }
+
+    #[test]
+    fn parse_cons_dotted_pair() {
+        let forms = parse_str("(a . b)");
+        assert_eq!(forms.len(), 1);
+        match &forms[0] {
+            SExpr::Cons { car, cdr, .. } => {
+                assert!(matches!(car.as_ref(), SExpr::Atom { value, .. } if value == "a"));
+                assert!(matches!(cdr.as_ref(), SExpr::Atom { value, .. } if value == "b"));
+            }
+            _ => panic!("expected cons pair"),
+        }
+    }
+
+    fn parse_err(s: &str) -> crate::error::LyknError {
+        let tokens = tokenize(s).unwrap();
+        parse(&tokens).unwrap_err()
+    }
+
+    #[test]
+    fn error_unexpected_rparen() {
+        let err = parse_err(")");
+        let msg = format!("{err}");
+        assert!(msg.contains("unexpected ')'"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_unterminated_list() {
+        let err = parse_err("(a b");
+        let msg = format!("{err}");
+        assert!(msg.contains("unterminated list"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_dotted_pair_multiple_before_dot() {
+        let err = parse_err("(a b . c)");
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("exactly one element before the dot"),
+            "got: {msg}"
+        );
+    }
+
+    #[test]
+    fn error_dotted_pair_missing_rparen() {
+        let err = parse_err("(a . b c)");
+        let msg = format!("{err}");
+        assert!(msg.contains("expected ')' after dotted pair"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_hash_a_non_list() {
+        let err = parse_err("#a foo");
+        let msg = format!("{err}");
+        assert!(msg.contains("#a must be followed by a list"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_hash_o_non_list() {
+        let err = parse_err("#o foo");
+        let msg = format!("{err}");
+        assert!(msg.contains("#o must be followed by a list"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_unknown_dispatch() {
+        let err = parse_err("#z");
+        let msg = format!("{err}");
+        assert!(msg.contains("unknown dispatch"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_radix_out_of_range() {
+        let err = parse_err("#99r10");
+        let msg = format!("{err}");
+        assert!(msg.contains("radix base must be 2-36"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_radix_invalid_digits() {
+        let err = parse_err("#2rzzz");
+        let msg = format!("{err}");
+        assert!(msg.contains("invalid digits"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_radix_invalid_base() {
+        let err = parse_err("#xxr10");
+        let msg = format!("{err}");
+        assert!(msg.contains("invalid radix base"), "got: {msg}");
+    }
+
+    #[test]
+    fn error_unexpected_dot() {
+        let err = parse_err(".");
+        let msg = format!("{err}");
+        assert!(msg.contains("unexpected '.'"), "got: {msg}");
+    }
 }
