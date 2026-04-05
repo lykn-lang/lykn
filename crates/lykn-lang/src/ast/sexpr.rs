@@ -100,9 +100,30 @@ mod tests {
             crate::reader::source_loc::SourceLoc { line: 1, column: 5 },
         );
 
-        assert_eq!(SExpr::Atom { value: "x".into(), span }.span(), span);
-        assert_eq!(SExpr::Keyword { value: "k".into(), span }.span(), span);
-        assert_eq!(SExpr::String { value: "s".into(), span }.span(), span);
+        assert_eq!(
+            SExpr::Atom {
+                value: "x".into(),
+                span
+            }
+            .span(),
+            span
+        );
+        assert_eq!(
+            SExpr::Keyword {
+                value: "k".into(),
+                span
+            }
+            .span(),
+            span
+        );
+        assert_eq!(
+            SExpr::String {
+                value: "s".into(),
+                span
+            }
+            .span(),
+            span
+        );
         assert_eq!(SExpr::Number { value: 1.0, span }.span(), span);
         assert_eq!(SExpr::Bool { value: true, span }.span(), span);
         assert_eq!(SExpr::Null { span }.span(), span);
@@ -127,63 +148,129 @@ mod tests {
 
     #[test]
     fn is_atom() {
-        assert!(SExpr::Atom { value: "x".into(), span: s() }.is_atom());
-        assert!(!SExpr::Number { value: 1.0, span: s() }.is_atom());
-        assert!(!SExpr::List { values: vec![], span: s() }.is_atom());
+        assert!(
+            SExpr::Atom {
+                value: "x".into(),
+                span: s()
+            }
+            .is_atom()
+        );
+        assert!(
+            !SExpr::Number {
+                value: 1.0,
+                span: s()
+            }
+            .is_atom()
+        );
+        assert!(
+            !SExpr::List {
+                values: vec![],
+                span: s()
+            }
+            .is_atom()
+        );
     }
 
     #[test]
     fn is_keyword() {
-        assert!(SExpr::Keyword { value: "k".into(), span: s() }.is_keyword());
-        assert!(!SExpr::Atom { value: "x".into(), span: s() }.is_keyword());
+        assert!(
+            SExpr::Keyword {
+                value: "k".into(),
+                span: s()
+            }
+            .is_keyword()
+        );
+        assert!(
+            !SExpr::Atom {
+                value: "x".into(),
+                span: s()
+            }
+            .is_keyword()
+        );
     }
 
     #[test]
     fn is_list() {
-        assert!(SExpr::List { values: vec![], span: s() }.is_list());
-        assert!(!SExpr::Atom { value: "x".into(), span: s() }.is_list());
+        assert!(
+            SExpr::List {
+                values: vec![],
+                span: s()
+            }
+            .is_list()
+        );
+        assert!(
+            !SExpr::Atom {
+                value: "x".into(),
+                span: s()
+            }
+            .is_list()
+        );
     }
 
     #[test]
     fn as_atom_some() {
-        let expr = SExpr::Atom { value: "hello".into(), span: s() };
+        let expr = SExpr::Atom {
+            value: "hello".into(),
+            span: s(),
+        };
         assert_eq!(expr.as_atom(), Some("hello"));
     }
 
     #[test]
     fn as_atom_none() {
-        let expr = SExpr::Number { value: 42.0, span: s() };
+        let expr = SExpr::Number {
+            value: 42.0,
+            span: s(),
+        };
         assert_eq!(expr.as_atom(), None);
     }
 
     #[test]
     fn as_keyword_some() {
-        let expr = SExpr::Keyword { value: "name".into(), span: s() };
+        let expr = SExpr::Keyword {
+            value: "name".into(),
+            span: s(),
+        };
         assert_eq!(expr.as_keyword(), Some("name"));
     }
 
     #[test]
     fn as_keyword_none() {
-        let expr = SExpr::Atom { value: "x".into(), span: s() };
+        let expr = SExpr::Atom {
+            value: "x".into(),
+            span: s(),
+        };
         assert_eq!(expr.as_keyword(), None);
     }
 
     #[test]
     fn as_list_some() {
-        let inner = vec![SExpr::Atom { value: "a".into(), span: s() }];
-        let expr = SExpr::List { values: inner, span: s() };
+        let inner = vec![SExpr::Atom {
+            value: "a".into(),
+            span: s(),
+        }];
+        let expr = SExpr::List {
+            values: inner,
+            span: s(),
+        };
         assert_eq!(expr.as_list().unwrap().len(), 1);
     }
 
     #[test]
     fn as_list_none() {
-        let expr = SExpr::Atom { value: "x".into(), span: s() };
+        let expr = SExpr::Atom {
+            value: "x".into(),
+            span: s(),
+        };
         assert_eq!(expr.as_list(), None);
     }
 
     #[test]
     fn as_list_empty() {
-        let expr = SExpr::List { values: vec![], span: s() };
+        let expr = SExpr::List {
+            values: vec![],
+            span: s(),
+        };
         assert_eq!(expr.as_list().unwrap().len(), 0);
     }
 }

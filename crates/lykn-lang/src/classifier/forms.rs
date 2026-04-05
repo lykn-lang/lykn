@@ -807,7 +807,10 @@ mod tests {
     }
 
     fn num(n: f64) -> SExpr {
-        SExpr::Number { value: n, span: s() }
+        SExpr::Number {
+            value: n,
+            span: s(),
+        }
     }
 
     fn string(v: &str) -> SExpr {
@@ -818,7 +821,10 @@ mod tests {
     }
 
     fn boolean(v: bool) -> SExpr {
-        SExpr::Bool { value: v, span: s() }
+        SExpr::Bool {
+            value: v,
+            span: s(),
+        }
     }
 
     fn list(vals: Vec<SExpr>) -> SExpr {
@@ -924,8 +930,7 @@ mod tests {
 
     #[test]
     fn test_classify_bind_three_args_with_type() {
-        let result =
-            form("bind", vec![kw("string"), atom("name"), string("alice")]).unwrap();
+        let result = form("bind", vec![kw("string"), atom("name"), string("alice")]).unwrap();
         match result {
             SurfaceForm::Bind {
                 name,
@@ -945,10 +950,12 @@ mod tests {
     fn test_classify_bind_three_args_non_keyword_type_error() {
         let result = form("bind", vec![atom("bad"), atom("name"), num(1.0)]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("type keyword as first argument"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("type keyword as first argument")
+        );
     }
 
     #[test]
@@ -967,8 +974,11 @@ mod tests {
 
     #[test]
     fn test_classify_obj_valid_pairs() {
-        let result =
-            form("obj", vec![kw("name"), string("alice"), kw("age"), num(30.0)]).unwrap();
+        let result = form(
+            "obj",
+            vec![kw("name"), string("alice"), kw("age"), num(30.0)],
+        )
+        .unwrap();
         match result {
             SurfaceForm::Obj { pairs, .. } => {
                 assert_eq!(pairs.len(), 2);
@@ -1140,9 +1150,7 @@ mod tests {
     fn test_classify_thread_first() {
         let result = form("->", vec![atom("x"), atom("inc"), atom("double")]).unwrap();
         match result {
-            SurfaceForm::ThreadFirst {
-                initial, steps, ..
-            } => {
+            SurfaceForm::ThreadFirst { initial, steps, .. } => {
                 assert_eq!(initial.as_atom(), Some("x"));
                 assert_eq!(steps.len(), 2);
                 assert!(matches!(&steps[0], ThreadingStep::Bare(_)));
@@ -1153,8 +1161,7 @@ mod tests {
 
     #[test]
     fn test_classify_thread_last() {
-        let result =
-            form("->>", vec![atom("x"), list(vec![atom("map"), atom("f")])]).unwrap();
+        let result = form("->>", vec![atom("x"), list(vec![atom("map"), atom("f")])]).unwrap();
         match result {
             SurfaceForm::ThreadLast { steps, .. } => {
                 assert_eq!(steps.len(), 1);
@@ -1219,8 +1226,11 @@ mod tests {
 
     #[test]
     fn test_classify_type_atom_constructors() {
-        let result =
-            form("type", vec![atom("Color"), atom("Red"), atom("Green"), atom("Blue")]).unwrap();
+        let result = form(
+            "type",
+            vec![atom("Color"), atom("Red"), atom("Green"), atom("Blue")],
+        )
+        .unwrap();
         match result {
             SurfaceForm::Type {
                 name, constructors, ..
@@ -1260,10 +1270,12 @@ mod tests {
     fn test_classify_type_too_few_args() {
         let result = form("type", vec![atom("Color")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("at least one constructor"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("at least one constructor")
+        );
     }
 
     #[test]
@@ -1283,20 +1295,24 @@ mod tests {
     fn test_classify_type_empty_list_constructor_error() {
         let result = form("type", vec![atom("T"), list(vec![])]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("constructor must be an atom or list"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("constructor must be an atom or list")
+        );
     }
 
     #[test]
     fn test_classify_type_non_atom_constructor_name_error() {
         let result = form("type", vec![atom("T"), list(vec![num(1.0)])]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("constructor name must be an atom"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("constructor name must be an atom")
+        );
     }
 
     #[test]
@@ -1304,10 +1320,12 @@ mod tests {
         // A keyword as a constructor is neither atom nor list-with-values
         let result = form("type", vec![atom("T"), kw("bad")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("constructor must be an atom or list"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("constructor must be an atom or list")
+        );
     }
 
     #[test]
@@ -1346,9 +1364,7 @@ mod tests {
         )
         .unwrap();
         match result {
-            SurfaceForm::Func {
-                name, clauses, ..
-            } => {
+            SurfaceForm::Func { name, clauses, .. } => {
                 assert_eq!(name, "main");
                 assert_eq!(clauses.len(), 1);
                 assert!(clauses[0].args.is_empty());
@@ -1372,9 +1388,7 @@ mod tests {
         )
         .unwrap();
         match result {
-            SurfaceForm::Func {
-                name, clauses, ..
-            } => {
+            SurfaceForm::Func { name, clauses, .. } => {
                 assert_eq!(name, "add");
                 assert_eq!(clauses.len(), 1);
                 assert_eq!(clauses[0].args.len(), 2);
@@ -1479,16 +1493,17 @@ mod tests {
             ],
         );
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("clause must be a list"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("clause must be a list")
+        );
     }
 
     #[test]
     fn test_classify_func_zero_arg_multiple_body_exprs() {
-        let result =
-            form("func", vec![atom("main"), atom("expr1"), atom("expr2")]).unwrap();
+        let result = form("func", vec![atom("main"), atom("expr1"), atom("expr2")]).unwrap();
         match result {
             SurfaceForm::Func { clauses, .. } => {
                 assert_eq!(clauses[0].body.len(), 2);
@@ -1530,7 +1545,13 @@ mod tests {
         // :args followed by a non-list should yield empty args
         let result = form(
             "func",
-            vec![atom("f"), kw("args"), atom("not-a-list"), kw("body"), atom("x")],
+            vec![
+                atom("f"),
+                kw("args"),
+                atom("not-a-list"),
+                kw("body"),
+                atom("x"),
+            ],
         )
         .unwrap();
         match result {
@@ -1599,10 +1620,7 @@ mod tests {
     fn test_classify_match_too_few_args() {
         let result = form("match", vec![atom("x")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("at least one clause"));
+        assert!(result.unwrap_err().message.contains("at least one clause"));
     }
 
     #[test]
@@ -1629,10 +1647,7 @@ mod tests {
         // (match x (n :when guard)) -- guard consumes positions, no body left
         let result = form(
             "match",
-            vec![
-                atom("x"),
-                list(vec![atom("n"), kw("when"), atom("guard")]),
-            ],
+            vec![atom("x"), list(vec![atom("n"), kw("when"), atom("guard")])],
         );
         assert!(result.is_err());
         assert!(result.unwrap_err().message.contains("must have a body"));
@@ -1671,21 +1686,17 @@ mod tests {
         )
         .unwrap();
         match result {
-            SurfaceForm::Match { clauses, .. } => {
-                match &clauses[0].pattern {
-                    Pattern::Constructor {
-                        name, bindings, ..
-                    } => {
-                        assert_eq!(name, "Some");
-                        assert_eq!(bindings.len(), 1);
-                        assert!(matches!(
-                            &bindings[0],
-                            Pattern::Constructor { name, .. } if name == "Just"
-                        ));
-                    }
-                    other => panic!("expected Constructor, got {other:?}"),
+            SurfaceForm::Match { clauses, .. } => match &clauses[0].pattern {
+                Pattern::Constructor { name, bindings, .. } => {
+                    assert_eq!(name, "Some");
+                    assert_eq!(bindings.len(), 1);
+                    assert!(matches!(
+                        &bindings[0],
+                        Pattern::Constructor { name, .. } if name == "Just"
+                    ));
                 }
-            }
+                other => panic!("expected Constructor, got {other:?}"),
+            },
             other => panic!("expected Match, got {other:?}"),
         }
     }
@@ -1773,9 +1784,7 @@ mod tests {
     fn test_classify_pattern_zero_field_constructor() {
         let pat = classify_pattern(&atom("None")).unwrap();
         match pat {
-            Pattern::Constructor {
-                name, bindings, ..
-            } => {
+            Pattern::Constructor { name, bindings, .. } => {
                 assert_eq!(name, "None");
                 assert!(bindings.is_empty());
             }
@@ -1787,14 +1796,10 @@ mod tests {
     fn test_classify_pattern_constructor_with_bindings() {
         let pat = classify_pattern(&list(vec![atom("Some"), atom("x")])).unwrap();
         match pat {
-            Pattern::Constructor {
-                name, bindings, ..
-            } => {
+            Pattern::Constructor { name, bindings, .. } => {
                 assert_eq!(name, "Some");
                 assert_eq!(bindings.len(), 1);
-                assert!(
-                    matches!(&bindings[0], Pattern::Binding { name, .. } if name == "x")
-                );
+                assert!(matches!(&bindings[0], Pattern::Binding { name, .. } if name == "x"));
             }
             other => panic!("expected Constructor, got {other:?}"),
         }
@@ -1803,8 +1808,7 @@ mod tests {
     #[test]
     fn test_classify_pattern_constructor_multiple_bindings() {
         // (Pair a b)
-        let pat =
-            classify_pattern(&list(vec![atom("Pair"), atom("a"), atom("b")])).unwrap();
+        let pat = classify_pattern(&list(vec![atom("Pair"), atom("a"), atom("b")])).unwrap();
         match pat {
             Pattern::Constructor { bindings, .. } => {
                 assert_eq!(bindings.len(), 2);
@@ -1842,8 +1846,7 @@ mod tests {
 
     #[test]
     fn test_classify_pattern_obj_non_keyword_error() {
-        let pat =
-            classify_pattern(&list(vec![atom("obj"), atom("bad"), atom("x")]));
+        let pat = classify_pattern(&list(vec![atom("obj"), atom("bad"), atom("x")]));
         assert!(pat.is_err());
         assert!(pat.unwrap_err().message.contains("expected keyword"));
     }
@@ -1888,9 +1891,7 @@ mod tests {
                 else_body,
                 ..
             } => {
-                assert!(
-                    matches!(pattern, Pattern::Binding { name, .. } if name == "x")
-                );
+                assert!(matches!(pattern, Pattern::Binding { name, .. } if name == "x"));
                 assert!(matches!(then_body, SExpr::String { .. }));
                 assert!(else_body.is_none());
             }
@@ -1943,20 +1944,24 @@ mod tests {
     fn test_classify_if_let_non_list_binding_error() {
         let result = form("if-let", vec![atom("bad"), atom("body")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("first argument must be (pattern expr)"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("first argument must be (pattern expr)")
+        );
     }
 
     #[test]
     fn test_classify_if_let_binding_wrong_length_error() {
         let result = form("if-let", vec![list(vec![atom("x")]), atom("body")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("first argument must be (pattern expr)"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("first argument must be (pattern expr)")
+        );
     }
 
     #[test]
@@ -1984,12 +1989,8 @@ mod tests {
         )
         .unwrap();
         match result {
-            SurfaceForm::WhenLet {
-                pattern, body, ..
-            } => {
-                assert!(
-                    matches!(pattern, Pattern::Binding { name, .. } if name == "x")
-                );
+            SurfaceForm::WhenLet { pattern, body, .. } => {
+                assert!(matches!(pattern, Pattern::Binding { name, .. } if name == "x"));
                 assert_eq!(body.len(), 2);
             }
             other => panic!("expected WhenLet, got {other:?}"),
@@ -2007,10 +2008,12 @@ mod tests {
     fn test_classify_when_let_non_list_binding_error() {
         let result = form("when-let", vec![atom("bad"), atom("body")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("first argument must be (pattern expr)"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("first argument must be (pattern expr)")
+        );
     }
 
     #[test]
@@ -2057,8 +2060,7 @@ mod tests {
 
     #[test]
     fn test_classify_fn_multiple_body_exprs() {
-        let result =
-            form("fn", vec![list(vec![]), atom("a"), atom("b"), atom("c")]).unwrap();
+        let result = form("fn", vec![list(vec![]), atom("a"), atom("b"), atom("c")]).unwrap();
         match result {
             SurfaceForm::Fn { body, .. } => {
                 assert_eq!(body.len(), 3);
@@ -2184,8 +2186,7 @@ mod tests {
 
     #[test]
     fn test_classify_assoc_valid() {
-        let result =
-            form("assoc", vec![atom("obj"), kw("name"), string("alice")]).unwrap();
+        let result = form("assoc", vec![atom("obj"), kw("name"), string("alice")]).unwrap();
         match result {
             SurfaceForm::Assoc { obj, pairs, .. } => {
                 assert_eq!(obj.as_atom(), Some("obj"));
@@ -2224,15 +2225,9 @@ mod tests {
 
     #[test]
     fn test_classify_assoc_odd_pair_count_error() {
-        let result = form(
-            "assoc",
-            vec![atom("obj"), kw("a"), num(1.0), kw("b")],
-        );
+        let result = form("assoc", vec![atom("obj"), kw("a"), num(1.0), kw("b")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("keyword-value pairs"));
+        assert!(result.unwrap_err().message.contains("keyword-value pairs"));
     }
 
     #[test]
@@ -2260,8 +2255,7 @@ mod tests {
 
     #[test]
     fn test_classify_dissoc_multiple_keys() {
-        let result =
-            form("dissoc", vec![atom("obj"), kw("a"), kw("b"), kw("c")]).unwrap();
+        let result = form("dissoc", vec![atom("obj"), kw("a"), kw("b"), kw("c")]).unwrap();
         match result {
             SurfaceForm::Dissoc { keys, .. } => assert_eq!(keys.len(), 3),
             other => panic!("expected Dissoc, got {other:?}"),
@@ -2329,10 +2323,7 @@ mod tests {
     fn test_classify_macro_def_non_atom_name_error() {
         let result = form("macro", vec![num(1.0)]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("name must be an atom"));
+        assert!(result.unwrap_err().message.contains("name must be an atom"));
     }
 
     // ---------------------------------------------------------------
@@ -2341,8 +2332,7 @@ mod tests {
 
     #[test]
     fn test_classify_import_macros_valid() {
-        let result =
-            form("import-macros", vec![string("./macros.lykn")]).unwrap();
+        let result = form("import-macros", vec![string("./macros.lykn")]).unwrap();
         match result {
             SurfaceForm::ImportMacros { raw, .. } => {
                 if let SExpr::List { values, .. } = &raw {
@@ -2389,10 +2379,7 @@ mod tests {
     fn test_typed_params_odd_count_error() {
         let result = form("fn", vec![list(vec![kw("number")]), atom("body")]);
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("keyword-name pairs"));
+        assert!(result.unwrap_err().message.contains("keyword-name pairs"));
     }
 
     #[test]
@@ -2402,10 +2389,12 @@ mod tests {
             vec![list(vec![atom("badtype"), atom("x")]), atom("body")],
         );
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("expected type keyword"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("expected type keyword")
+        );
     }
 
     #[test]
@@ -2415,10 +2404,12 @@ mod tests {
             vec![list(vec![kw("number"), num(42.0)]), atom("body")],
         );
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("parameter name must be an atom"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("parameter name must be an atom")
+        );
     }
 
     #[test]
@@ -2458,13 +2449,9 @@ mod tests {
 
     #[test]
     fn test_unknown_surface_form_error() {
-        let result =
-            classify_surface_form("definitely-unknown", &[], Span::default());
+        let result = classify_surface_form("definitely-unknown", &[], Span::default());
         assert!(result.is_err());
-        assert!(result
-            .unwrap_err()
-            .message
-            .contains("unknown surface form"));
+        assert!(result.unwrap_err().message.contains("unknown surface form"));
     }
 
     // ---------------------------------------------------------------

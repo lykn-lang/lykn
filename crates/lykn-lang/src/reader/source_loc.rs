@@ -41,14 +41,20 @@ mod tests {
 
     #[test]
     fn source_loc_display() {
-        let loc = SourceLoc { line: 5, column: 12 };
+        let loc = SourceLoc {
+            line: 5,
+            column: 12,
+        };
         assert_eq!(format!("{loc}"), "5:12");
     }
 
     #[test]
     fn span_new() {
         let start = SourceLoc { line: 1, column: 1 };
-        let end = SourceLoc { line: 1, column: 10 };
+        let end = SourceLoc {
+            line: 1,
+            column: 10,
+        };
         let span = Span::new(start, end);
         assert_eq!(span.start, start);
         assert_eq!(span.end, end);

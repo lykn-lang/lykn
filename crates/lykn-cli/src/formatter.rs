@@ -144,10 +144,7 @@ mod tests {
 
     #[test]
     fn format_multiple_top_level_exprs() {
-        let exprs = vec![
-            SExpr::Atom("a".into()),
-            SExpr::Atom("b".into()),
-        ];
+        let exprs = vec![SExpr::Atom("a".into()), SExpr::Atom("b".into())];
         let result = format_exprs(&exprs, 0);
         // Top-level forms separated by blank line
         assert_eq!(result, "a\n\nb\n");

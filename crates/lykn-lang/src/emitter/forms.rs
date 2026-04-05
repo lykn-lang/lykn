@@ -1399,12 +1399,7 @@ fn emit_if_let_statement(
 
     let if_form = if let Some(else_expr) = else_body {
         let else_block = list(vec![atom("block"), emit_expr(else_expr, ctx, registry)]);
-        list(vec![
-            atom("if"),
-            condition,
-            list(then_block),
-            else_block,
-        ])
+        list(vec![atom("if"), condition, list(then_block), else_block])
     } else {
         list(vec![atom("if"), condition, list(then_block)])
     };
@@ -1490,9 +1485,7 @@ fn emit_when_let(
     registry: &TypeRegistry,
 ) -> SExpr {
     match ctx.expr_context {
-        ExprContext::Statement => {
-            emit_when_let_statement(pattern, expr, body_exprs, ctx, registry)
-        }
+        ExprContext::Statement => emit_when_let_statement(pattern, expr, body_exprs, ctx, registry),
         _ => emit_when_let_iife(pattern, expr, body_exprs, ctx, registry),
     }
 }
@@ -2135,13 +2128,19 @@ mod tests {
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("block"));
             // Second element: (const target__gensymN x)
-            if let SExpr::List { values: binding, .. } = &values[1] {
+            if let SExpr::List {
+                values: binding, ..
+            } = &values[1]
+            {
                 assert_eq!(binding[0].as_atom(), Some("const"));
             } else {
                 panic!("expected const binding");
             }
             // Third element: (if ...)
-            if let SExpr::List { values: if_form, .. } = &values[2] {
+            if let SExpr::List {
+                values: if_form, ..
+            } = &values[2]
+            {
                 assert_eq!(if_form[0].as_atom(), Some("if"));
             } else {
                 panic!("expected if form");

@@ -169,9 +169,7 @@ fn introduce_pattern_bindings(pat: &crate::ast::surface::Pattern, scope: &mut Sc
 mod tests {
     use super::*;
     use crate::ast::sexpr::SExpr;
-    use crate::ast::surface::{
-        Constructor, MatchClause, Pattern, SurfaceForm,
-    };
+    use crate::ast::surface::{Constructor, MatchClause, Pattern, SurfaceForm};
     use crate::reader::source_loc::Span;
 
     fn span() -> Span {
