@@ -386,11 +386,7 @@ fn emit_cell(value: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -
 ///
 /// For atoms, returns `name:value` directly. For complex expressions,
 /// emits the expression and appends `:value` via property access.
-fn resolve_cell_target(
-    target: &SExpr,
-    ctx: &mut EmitterContext,
-    registry: &TypeRegistry,
-) -> SExpr {
+fn resolve_cell_target(target: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
     if let SExpr::Atom { value, .. } = target {
         atom(&format!("{value}:value"))
     } else {
@@ -403,11 +399,7 @@ fn resolve_cell_target(
     }
 }
 
-fn emit_express(
-    target: &SExpr,
-    ctx: &mut EmitterContext,
-    registry: &TypeRegistry,
-) -> SExpr {
+fn emit_express(target: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
     resolve_cell_target(target, ctx, registry)
 }
 
@@ -435,11 +427,7 @@ fn emit_reset(
     registry: &TypeRegistry,
 ) -> SExpr {
     let target_val = resolve_cell_target(target, ctx, registry);
-    list(vec![
-        atom("="),
-        target_val,
-        emit_expr(value, ctx, registry),
-    ])
+    list(vec![atom("="), target_val, emit_expr(value, ctx, registry)])
 }
 
 // ---------------------------------------------------------------------------
@@ -871,12 +859,8 @@ fn emit_func_single(
                 // Use "return value" in the error message instead of the
                 // gensym variable name for a user-friendly message, but
                 // still reference the gensym var for the typeof check.
-                if let Some(check) = emit_return_type_check(
-                    &result_var,
-                    &ret.name,
-                    name,
-                    ret.span,
-                ) {
+                if let Some(check) = emit_return_type_check(&result_var, &ret.name, name, ret.span)
+                {
                     items.push(check);
                 }
                 items.push(list(vec![atom("return"), atom(&result_var)]));

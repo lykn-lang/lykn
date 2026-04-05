@@ -170,4 +170,95 @@ mod tests {
         let result = find_project_root(Path::new("/nonexistent/path/here"));
         assert!(result.is_none());
     }
+
+    // ---------------------------------------------------------------
+    // kernel_json_to_js integration tests
+    // ---------------------------------------------------------------
+
+    /// Returns true if `deno` is available on PATH.
+    fn deno_available() -> bool {
+        Command::new("deno")
+            .arg("--version")
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()
+            .is_ok()
+    }
+
+    #[test]
+    fn test_kernel_json_to_js_simple() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        // CARGO_MANIFEST_DIR is crates/lykn-cli; go up two levels to workspace root.
+        // Use deno.json as the source_path since it exists and find_project_root
+        // needs a real path for canonicalize().
+        let workspace_root = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .and_then(|p| p.parent())
+            .expect("should have workspace root");
+        let source_path = workspace_root.join("deno.json");
+
+        // A minimal valid kernel JSON — empty module produces empty JS.
+        let kernel_json = "[]";
+        let result = kernel_json_to_js(kernel_json, &source_path);
+        // Should either produce JS output or a meaningful error from Deno.
+        match &result {
+            Ok(js) => {
+                // Empty kernel may produce empty or minimal output.
+                let _ = js;
+            }
+            Err(e) => {
+                assert!(
+                    e.contains("JS kernel compiler error"),
+                    "expected JS compiler error, got: {e}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_kernel_json_to_js_no_project_root() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        // Use a temp directory with no deno.json or src/compiler.js.
+        let tmp = std::env::temp_dir().join("lykn_test_bridge_no_root");
+        let _ = fs::remove_dir_all(&tmp);
+        fs::create_dir_all(&tmp).unwrap();
+
+        let source_path = tmp.join("test.lykn");
+        fs::write(&source_path, "").unwrap();
+
+        let result = kernel_json_to_js("[]", &source_path);
+        assert!(result.is_err());
+        let err = result.unwrap_err();
+        assert!(
+            err.contains("cannot find lykn project root"),
+            "expected project root error, got: {err}"
+        );
+
+        let _ = fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn test_kernel_json_to_js_invalid_json() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let workspace_root = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .and_then(|p| p.parent())
+            .expect("should have workspace root");
+        let source_path = workspace_root.join("deno.json");
+
+        // Invalid JSON — Deno's JSON.parse may fail, producing a JS error,
+        // or the compiler may handle it differently. Just verify no Rust panic.
+        let result = kernel_json_to_js("{{{not valid json", &source_path);
+        // Either an error or some output — the point is we don't panic.
+        let _ = result;
+    }
 }

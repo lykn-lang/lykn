@@ -31,11 +31,7 @@ pub struct AnalysisResult {
 trait Analyze {
     /// Phase 1: Register types and constructors into the type registry
     /// and scope. Called once per form before any checks run.
-    fn collect(
-        &self,
-        _registry: &mut TypeRegistry,
-        _scope: &mut ScopeTracker,
-    ) -> Vec<Diagnostic> {
+    fn collect(&self, _registry: &mut TypeRegistry, _scope: &mut ScopeTracker) -> Vec<Diagnostic> {
         vec![]
     }
 
@@ -49,11 +45,7 @@ trait Analyze {
 }
 
 impl Analyze for SurfaceForm {
-    fn collect(
-        &self,
-        registry: &mut TypeRegistry,
-        scope: &mut ScopeTracker,
-    ) -> Vec<Diagnostic> {
+    fn collect(&self, registry: &mut TypeRegistry, scope: &mut ScopeTracker) -> Vec<Diagnostic> {
         let mut diagnostics = Vec::new();
         if let SurfaceForm::Type {
             name,

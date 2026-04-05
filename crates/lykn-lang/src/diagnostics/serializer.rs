@@ -73,4 +73,64 @@ mod tests {
         };
         assert_eq!(serialize_sexpr(&expr), "(+ 1 2)");
     }
+
+    #[test]
+    fn serialize_string() {
+        let expr = SExpr::String {
+            value: "hello world".to_string(),
+            span: s(),
+        };
+        assert_eq!(serialize_sexpr(&expr), "\"hello world\"");
+    }
+
+    #[test]
+    fn serialize_number_non_integer_float() {
+        let expr = SExpr::Number {
+            value: 3.14,
+            span: s(),
+        };
+        assert_eq!(serialize_sexpr(&expr), "3.14");
+    }
+
+    #[test]
+    fn serialize_bool_true() {
+        let expr = SExpr::Bool {
+            value: true,
+            span: s(),
+        };
+        assert_eq!(serialize_sexpr(&expr), "true");
+    }
+
+    #[test]
+    fn serialize_bool_false() {
+        let expr = SExpr::Bool {
+            value: false,
+            span: s(),
+        };
+        assert_eq!(serialize_sexpr(&expr), "false");
+    }
+
+    #[test]
+    fn serialize_null() {
+        let expr = SExpr::Null { span: s() };
+        assert_eq!(serialize_sexpr(&expr), "null");
+    }
+
+    #[test]
+    fn serialize_cons() {
+        let car = SExpr::Atom {
+            value: "a".to_string(),
+            span: s(),
+        };
+        let cdr = SExpr::Atom {
+            value: "b".to_string(),
+            span: s(),
+        };
+        let expr = SExpr::Cons {
+            car: Box::new(car),
+            cdr: Box::new(cdr),
+            span: s(),
+        };
+        assert_eq!(serialize_sexpr(&expr), "(a . b)");
+    }
 }

@@ -106,15 +106,7 @@ impl DenoSubprocess {
                 location: SourceLoc::default(),
             })?;
 
-        if response.get("ok").and_then(|v| v.as_bool()) == Some(true) {
-            Ok(response["result"].clone())
-        } else {
-            let error_msg = response["error"].as_str().unwrap_or("unknown error");
-            Err(LyknError::Read {
-                message: format!("macro expansion error: {error_msg}"),
-                location: SourceLoc::default(),
-            })
-        }
+        parse_deno_response(&response)
     }
 
     /// Compile a macro definition (in lykn source form) to a JavaScript
@@ -130,13 +122,7 @@ impl DenoSubprocess {
             "source": macro_source,
         });
         let result = self.request(req)?;
-        result
-            .as_str()
-            .map(|s| s.to_string())
-            .ok_or_else(|| LyknError::Read {
-                message: "macro compilation returned non-string result".to_string(),
-                location: SourceLoc::default(),
-            })
+        validate_compile_result(&result)
     }
 
     /// Evaluate a previously compiled macro with the given arguments.
@@ -161,6 +147,37 @@ impl DenoSubprocess {
         self.request(req)?;
         Ok(())
     }
+}
+
+/// Parse a JSON response from the Deno subprocess.
+///
+/// Expects an object with an `"ok"` boolean. When `ok` is `true`, returns
+/// the `"result"` field. Otherwise wraps the `"error"` message in a
+/// [`LyknError`].
+fn parse_deno_response(response: &serde_json::Value) -> Result<serde_json::Value, LyknError> {
+    if response.get("ok").and_then(|v| v.as_bool()) == Some(true) {
+        Ok(response["result"].clone())
+    } else {
+        let error_msg = response["error"].as_str().unwrap_or("unknown error");
+        Err(LyknError::Read {
+            message: format!("macro expansion error: {error_msg}"),
+            location: SourceLoc::default(),
+        })
+    }
+}
+
+/// Validate that a compile result is a string and return it.
+///
+/// The Deno `compileMacroBody` action should always return a string. If the
+/// result is not a string, this returns a descriptive error.
+fn validate_compile_result(result: &serde_json::Value) -> Result<String, LyknError> {
+    result
+        .as_str()
+        .map(|s| s.to_string())
+        .ok_or_else(|| LyknError::Read {
+            message: "macro compilation returned non-string result".to_string(),
+            location: SourceLoc::default(),
+        })
 }
 
 impl Drop for DenoSubprocess {
@@ -263,5 +280,89 @@ mod tests {
         assert!(pid > 0);
         drop(deno);
         // After drop, process should be killed. We just verify no panic.
+    }
+
+    // --- Tests for extracted pure functions ---
+
+    #[test]
+    fn test_parse_deno_response_ok_returns_result() {
+        let response = serde_json::json!({
+            "ok": true,
+            "result": {"type": "number", "value": 42}
+        });
+        let result = parse_deno_response(&response).expect("should succeed");
+        assert_eq!(result, serde_json::json!({"type": "number", "value": 42}));
+    }
+
+    #[test]
+    fn test_parse_deno_response_ok_false_returns_error() {
+        let response = serde_json::json!({
+            "ok": false,
+            "error": "something went wrong"
+        });
+        let err = parse_deno_response(&response).unwrap_err();
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("something went wrong"),
+            "error should contain the message from Deno, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn test_parse_deno_response_missing_ok_field_returns_error() {
+        let response = serde_json::json!({"result": "data"});
+        let err = parse_deno_response(&response).unwrap_err();
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("unknown error"),
+            "missing ok field should produce unknown error, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn test_parse_deno_response_ok_true_with_null_result() {
+        let response = serde_json::json!({"ok": true});
+        let result = parse_deno_response(&response).expect("should succeed even with null result");
+        assert_eq!(result, serde_json::Value::Null);
+    }
+
+    #[test]
+    fn test_validate_compile_result_with_string() {
+        let value = serde_json::json!("function(x) { return x; }");
+        let result = validate_compile_result(&value).expect("should succeed for string");
+        assert_eq!(result, "function(x) { return x; }");
+    }
+
+    #[test]
+    fn test_validate_compile_result_with_non_string() {
+        let value = serde_json::json!(42);
+        let err = validate_compile_result(&value).unwrap_err();
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("non-string result"),
+            "should report non-string result, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn test_validate_compile_result_with_null() {
+        let value = serde_json::Value::Null;
+        let err = validate_compile_result(&value).unwrap_err();
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("non-string result"),
+            "null should be rejected as non-string, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn test_validate_compile_result_with_object() {
+        let value = serde_json::json!({"type": "something"});
+        let err = validate_compile_result(&value).unwrap_err();
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("non-string result"),
+            "object should be rejected as non-string, got: {msg}"
+        );
     }
 }

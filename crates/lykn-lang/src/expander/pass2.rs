@@ -612,4 +612,263 @@ mod tests {
         let result = crate::expander::expand(forms.clone(), None).unwrap();
         assert_eq!(result, forms);
     }
+
+    // ---------------------------------------------------------------
+    // expand_all / expand_expr via live DenoSubprocess (empty MacroEnv)
+    // ---------------------------------------------------------------
+
+    /// Returns true if `deno` is available on PATH.
+    fn deno_available() -> bool {
+        std::process::Command::new("deno")
+            .arg("--version")
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()
+            .is_ok()
+    }
+
+    #[test]
+    fn test_expand_all_leaf_atoms_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let forms = vec![atom("x"), num(42.0)];
+        let result = expand_all(forms.clone(), &mut deno, &env).unwrap();
+        assert_eq!(result, forms);
+    }
+
+    #[test]
+    fn test_expand_all_all_leaf_types_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let forms = vec![
+            SExpr::String {
+                value: "hello".into(),
+                span: s(),
+            },
+            SExpr::Keyword {
+                value: "key".into(),
+                span: s(),
+            },
+            SExpr::Bool {
+                value: true,
+                span: s(),
+            },
+            SExpr::Null { span: s() },
+            num(3.14),
+            atom("y"),
+        ];
+        let result = expand_all(forms.clone(), &mut deno, &env).unwrap();
+        assert_eq!(result, forms);
+    }
+
+    #[test]
+    fn test_expand_all_cons_pair_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let cons = SExpr::Cons {
+            car: Box::new(atom("a")),
+            cdr: Box::new(num(1.0)),
+            span: s(),
+        };
+        let result = expand_all(vec![cons.clone()], &mut deno, &env).unwrap();
+        assert_eq!(result.len(), 1);
+        if let SExpr::Cons { car, cdr, .. } = &result[0] {
+            assert_eq!(car.as_atom(), Some("a"));
+            assert_eq!(**cdr, num(1.0));
+        } else {
+            panic!("expected Cons");
+        }
+    }
+
+    #[test]
+    fn test_expand_all_empty_list_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let empty = list(vec![]);
+        let result = expand_all(vec![empty.clone()], &mut deno, &env).unwrap();
+        assert_eq!(result, vec![empty]);
+    }
+
+    #[test]
+    fn test_expand_all_nested_non_macro_lists_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let form = list(vec![
+            atom("define"),
+            atom("x"),
+            list(vec![atom("+"), num(1.0), num(2.0)]),
+        ]);
+        let result = expand_all(vec![form.clone()], &mut deno, &env).unwrap();
+        assert_eq!(result, vec![form]);
+    }
+
+    #[test]
+    fn test_expand_all_sugar_cons_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        // (cons a b) should desugar to (array a b)
+        let form = list(vec![atom("cons"), atom("a"), atom("b")]);
+        let result = expand_all(vec![form], &mut deno, &env).unwrap();
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("array"));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_expand_all_sugar_car_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        // (car xs) should desugar to (get xs 0)
+        let form = list(vec![atom("car"), atom("xs")]);
+        let result = expand_all(vec![form], &mut deno, &env).unwrap();
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("get"));
+            assert_eq!(values[2], num(0.0));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_expand_all_sugar_cdr_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        // (cdr xs) should desugar to (get xs 1)
+        let form = list(vec![atom("cdr"), atom("xs")]);
+        let result = expand_all(vec![form], &mut deno, &env).unwrap();
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("get"));
+            assert_eq!(values[2], num(1.0));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_expand_all_sugar_list_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        // (list a b) desugars to nested (array ...) forms
+        let form = list(vec![atom("list"), atom("a"), atom("b")]);
+        let result = expand_all(vec![form], &mut deno, &env).unwrap();
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("array"));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_expand_all_quote_suppresses_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let quoted = list(vec![atom("quote"), list(vec![atom("cons"), atom("a"), atom("b")])]);
+        let result = expand_all(vec![quoted.clone()], &mut deno, &env).unwrap();
+        // quote should suppress expansion — returned unchanged
+        assert_eq!(result, vec![quoted]);
+    }
+
+    #[test]
+    fn test_expand_all_macro_in_pass2_errors_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let form = list(vec![
+            atom("macro"),
+            atom("my-macro"),
+            list(vec![atom("x")]),
+            atom("x"),
+        ]);
+        let err = expand_all(vec![form], &mut deno, &env).unwrap_err();
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("unexpected macro definition"),
+            "expected macro error, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn test_expand_all_empty_input_with_deno() {
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno =
+            super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let env = super::super::MacroEnv::new();
+
+        let result = expand_all(vec![], &mut deno, &env).unwrap();
+        assert!(result.is_empty());
+    }
 }

@@ -52,6 +52,33 @@ fn is_import_macros(form: &SExpr) -> bool {
     false
 }
 
+/// Validate an `(import-macros "path" (name1 name2 ...))` form and extract
+/// the module path string and binding names.
+///
+/// Returns `(module_path, binding_names)` on success.
+fn validate_import_form(values: &[SExpr]) -> Result<(String, Vec<String>), LyknError> {
+    if values.len() < 3 {
+        return Err(LyknError::Read {
+            message: "import-macros requires a path and a binding list".to_string(),
+            location: SourceLoc::default(),
+        });
+    }
+
+    let module_path = match &values[1] {
+        SExpr::String { value, .. } => value.clone(),
+        _ => {
+            return Err(LyknError::Read {
+                message: "import-macros: first argument must be a string path".to_string(),
+                location: SourceLoc::default(),
+            });
+        }
+    };
+
+    let binding_names = extract_binding_names(&values[2]);
+
+    Ok((module_path, binding_names))
+}
+
 /// Process a single `(import-macros "path" (name1 name2 ...))` form.
 fn process_single_import(
     form: &SExpr,
@@ -66,23 +93,7 @@ fn process_single_import(
         location: SourceLoc::default(),
     })?;
 
-    if values.len() < 3 {
-        return Err(LyknError::Read {
-            message: "import-macros requires a path and a binding list".to_string(),
-            location: SourceLoc::default(),
-        });
-    }
-
-    // Extract the module path string.
-    let module_path = match &values[1] {
-        SExpr::String { value, .. } => value.clone(),
-        _ => {
-            return Err(LyknError::Read {
-                message: "import-macros: first argument must be a string path".to_string(),
-                location: SourceLoc::default(),
-            });
-        }
-    };
+    let (module_path, binding_names) = validate_import_form(values)?;
 
     // Resolve relative to the importing file's directory.
     let resolved = if let Some(fp) = file_path {
@@ -105,8 +116,6 @@ fn process_single_import(
             location: SourceLoc::default(),
         });
     }
-
-    let binding_names = extract_binding_names(&values[2]);
 
     // If the module is already cached, pull from the cache.
     if let Some(cached_macros) = cache.get(&resolved) {
@@ -507,5 +516,178 @@ mod tests {
             .collect();
         assert_eq!(remaining.len(), 1);
         assert_eq!(remaining[0], define);
+    }
+
+    // ---------------------------------------------------------------
+    // validate_import_form
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_validate_import_form_valid() {
+        let values = vec![
+            SExpr::Atom {
+                value: "import-macros".to_string(),
+                span: s(),
+            },
+            SExpr::String {
+                value: "./macros.lykn".to_string(),
+                span: s(),
+            },
+            SExpr::List {
+                values: vec![
+                    SExpr::Atom {
+                        value: "when".to_string(),
+                        span: s(),
+                    },
+                    SExpr::Atom {
+                        value: "unless".to_string(),
+                        span: s(),
+                    },
+                ],
+                span: s(),
+            },
+        ];
+        let (path, names) = validate_import_form(&values).unwrap();
+        assert_eq!(path, "./macros.lykn");
+        assert_eq!(names, vec!["when", "unless"]);
+    }
+
+    #[test]
+    fn test_validate_import_form_too_few_elements() {
+        // Only the head atom and a path — missing binding list.
+        let values = vec![
+            SExpr::Atom {
+                value: "import-macros".to_string(),
+                span: s(),
+            },
+            SExpr::String {
+                value: "./macros.lykn".to_string(),
+                span: s(),
+            },
+        ];
+        let err = validate_import_form(&values).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("requires a path and a binding list"), "{msg}");
+    }
+
+    #[test]
+    fn test_validate_import_form_single_element() {
+        let values = vec![SExpr::Atom {
+            value: "import-macros".to_string(),
+            span: s(),
+        }];
+        let err = validate_import_form(&values).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("requires a path and a binding list"), "{msg}");
+    }
+
+    #[test]
+    fn test_validate_import_form_non_string_path() {
+        let values = vec![
+            SExpr::Atom {
+                value: "import-macros".to_string(),
+                span: s(),
+            },
+            SExpr::Atom {
+                value: "not-a-string".to_string(),
+                span: s(),
+            },
+            SExpr::List {
+                values: vec![SExpr::Atom {
+                    value: "when".to_string(),
+                    span: s(),
+                }],
+                span: s(),
+            },
+        ];
+        let err = validate_import_form(&values).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("first argument must be a string path"), "{msg}");
+    }
+
+    #[test]
+    fn test_validate_import_form_number_path() {
+        let values = vec![
+            SExpr::Atom {
+                value: "import-macros".to_string(),
+                span: s(),
+            },
+            SExpr::Number {
+                value: 42.0,
+                span: s(),
+            },
+            SExpr::List {
+                values: vec![],
+                span: s(),
+            },
+        ];
+        let err = validate_import_form(&values).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("first argument must be a string path"), "{msg}");
+    }
+
+    #[test]
+    fn test_validate_import_form_extracts_aliased_bindings() {
+        let values = vec![
+            SExpr::Atom {
+                value: "import-macros".to_string(),
+                span: s(),
+            },
+            SExpr::String {
+                value: "./m.lykn".to_string(),
+                span: s(),
+            },
+            SExpr::List {
+                values: vec![SExpr::List {
+                    values: vec![
+                        SExpr::Atom {
+                            value: "as".to_string(),
+                            span: s(),
+                        },
+                        SExpr::Atom {
+                            value: "original".to_string(),
+                            span: s(),
+                        },
+                        SExpr::Atom {
+                            value: "alias".to_string(),
+                            span: s(),
+                        },
+                    ],
+                    span: s(),
+                }],
+                span: s(),
+            },
+        ];
+        let (path, names) = validate_import_form(&values).unwrap();
+        assert_eq!(path, "./m.lykn");
+        assert_eq!(names, vec!["alias"]);
+    }
+
+    #[test]
+    fn test_extract_binding_names_inner_list_non_atom_last() {
+        // An inner list with 3 elements but the last element is NOT an atom
+        // should be skipped by the guard.
+        let bindings = SExpr::List {
+            values: vec![SExpr::List {
+                values: vec![
+                    SExpr::Atom {
+                        value: "as".to_string(),
+                        span: s(),
+                    },
+                    SExpr::Atom {
+                        value: "original".to_string(),
+                        span: s(),
+                    },
+                    SExpr::Number {
+                        value: 99.0,
+                        span: s(),
+                    },
+                ],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let names = extract_binding_names(&bindings);
+        assert!(names.is_empty());
     }
 }
