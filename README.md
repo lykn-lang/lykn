@@ -24,8 +24,8 @@ squint at the Icelandic — *closure*.
 **v0.3.0** — Two-layer language design lands. **Surface syntax** is now the
 recommended way to write lykn: typed functions with contracts, algebraic data
 types, exhaustive pattern matching, immutable-by-default bindings with `cell`
-for controlled mutation, and threading macros. Kernel syntax remains available
-for low-level control and JS interop. 73KB browser bundle. 555 tests.
+for controlled mutation, and threading macros. Self-contained Rust compiler
+(no runtime dependencies). 73KB browser bundle. 1,372 tests.
 
 ## Quick taste
 
@@ -65,18 +65,13 @@ const greeting = "hello, world";
 function greet(name) {
   if (typeof name !== "string") throw new TypeError("greet: arg 'name' expected string, got " + typeof name);
   const result__gensym0 = greeting + ", " + name + "!";
-  if (typeof result__gensym0 !== "string") throw new TypeError("greet: return 'result__gensym0' expected string, got " + typeof result__gensym0);
+  if (typeof result__gensym0 !== "string") throw new TypeError("greet: return value expected string, got " + typeof result__gensym0);
   return result__gensym0;
 }
 const result = (5 + 3) * 2;
-const user = {
-  name: "lykn",
-  version: "0.3.0"
-};
-const counter = {
-  value: 0
-};
-counter.value = (n => n + 1)(counter.value);
+const user = {name: "lykn", version: "0.3.0"};
+const counter = {value: 0};
+counter.value = ((n) => n + 1)(counter.value);
 console.log(counter.value);
 if (result > 0) {
   console.log("positive");
@@ -85,30 +80,44 @@ if (result > 0) {
 
 ## Architecture
 
+lykn has two compiler implementations sharing the same syntax and semantics:
+
+**Rust compiler** (standalone binary, no runtime dependencies):
+
+```
+.lykn source → reader → expander → classifier → analyzer → emitter → codegen → JavaScript
+```
+
+**JS compiler** (browser bundle + Deno):
+
 ```
 .lykn source → reader → surface macros → expander → compiler → astring → JavaScript
 ```
 
+### Rust pipeline (`crates/`)
+
+- **Reader** (`lykn-lang/reader`) — S-expression parser with source locations
+- **Expander** (`lykn-lang/expander`) — macro expansion (user macros via Deno subprocess)
+- **Classifier** (`lykn-lang/classifier`) — S-expressions → typed surface AST
+- **Analyzer** (`lykn-lang/analysis`) — type registry, exhaustiveness checking,
+  scope tracking, unused binding detection
+- **Emitter** (`lykn-lang/emitter`) — surface forms → kernel S-expressions
+- **Codegen** (`lykn-lang/codegen`) — kernel S-expressions → JavaScript text
+  (pure Rust, no external dependencies)
+
+### JS pipeline (`src/`)
+
 - **Reader** (`src/reader.js`) — parses s-expressions, handles `#` dispatch
   (`` ` ``, `,`, `,@`, `#a(...)`, `#o(...)`, `#NNr`, `#;`, `#|...|#`),
   dotted pairs
-
 - **Surface macros** (`src/surface.js`) — transforms high-level surface forms
-  (`bind`, `func`, `type`, `match`, `obj`, `cell`, threading macros) to
-  kernel forms before macro expansion
-
-- **Expander** (`src/expander.js`) — three-pass macro expansion pipeline.
-  Resolves quasiquote (Bawden's algorithm), sugar forms (`cons`/`list`/
-  `car`/`cdr`), user-defined macros, `import-macros`, `as` patterns
-
-- **Compiler** (`src/compiler.js`) — transforms core forms to ESTree AST,
-  generates JS via [astring](https://github.com/davidbonnet/astring)
-
-- **Browser shim** (`src/lykn-browser.js`) — 56KB bundle with `<script
+  to kernel forms
+- **Expander** (`src/expander.js`) — three-pass macro expansion pipeline
+  (Bawden's quasiquote algorithm)
+- **Compiler** (`src/compiler.js`) — kernel forms → ESTree AST → JS via
+  [astring](https://github.com/davidbonnet/astring)
+- **Browser shim** (`src/lykn-browser.js`) — 73KB bundle with `<script
   type="text/lykn">` support and `window.lykn` API
-
-- **Rust tools** (`crates/lykn-cli/`) — linter, formatter, syntax checker.
-  Single binary, no runtime dependencies. Publishable to crates.io.
 
 ## Toolchain
 
@@ -181,30 +190,32 @@ await lykn.load('/app.lykn')
 deno task build
 ```
 
-### Format (Rust)
+### Rust CLI
 
 ```sh
 # Build from source
 mkdir -p ./bin
 cargo build --release && cp ./target/release/lykn ./bin
 
-# Format a file (stdout)
-./target/release/lykn fmt main.lykn
+# Compile .lykn to JavaScript
+lykn compile main.lykn                    # output to stdout
+lykn compile main.lykn -o main.js         # output to file
+lykn compile main.lykn --strip-assertions # omit type checks / contracts
+lykn compile main.lykn --kernel-json      # output kernel JSON (debug)
 
-# Format in place
-./target/release/lykn fmt -w main.lykn
+# Format
+lykn fmt main.lykn                        # stdout
+lykn fmt -w main.lykn                     # in place
 
 # Syntax check
-./target/release/lykn check main.lykn
+lykn check main.lykn
 ```
 
 ### Run Examples
 
 ```sh
-# Compile and run the CLI example
-deno eval "import {lykn} from './src/index.js'; \
-  const src = await Deno.readTextFile('examples/surface/main.lykn'); \
-  eval(lykn(src))"
+# Compile to JS and run with any JS runtime
+lykn compile examples/surface/main.lykn -o /tmp/main.js && deno run /tmp/main.js
 
 # Serve the browser examples (needs a local server for external .lykn files)
 deno run --allow-net --allow-read jsr:@std/http@1/file-server --port 5099
@@ -262,7 +273,8 @@ kernel forms at compile time.
 |---|---|
 | `(-> x (+ 3) (* 2))` | `(x + 3) * 2` |
 | `(->> items (filter even?) (map double))` | `map(filter(items, even), double)` |
-| `(some-> user (get :name) (str:to-upper-case))` | IIFE with null checks at each step |
+| `(-> user (get :name) (:to-upper-case))` | `user["name"].toUpperCase()` |
+| `(some-> user (get :name) (:to-upper-case))` | IIFE with null checks + method call |
 
 ### Kernel forms
 
@@ -385,10 +397,10 @@ doesn't cover a specific JS feature.
   language you already have. The output should look like code you'd write.
 - **No runtime.** Compiled lykn is just JS. Nothing extra ships to the
   browser.
-- **Small tools.** The full pipeline (reader + expander + compiler) is ~3,000
-  lines. The browser bundle is 56KB minified. You can read the whole thing.
-- **Two worlds.** Use Rust for dev-side tooling (fast, single binary). Use JS
-  for the compiler (because it targets JS and can run in the browser).
+- **Self-contained.** The Rust compiler is a single binary with no runtime
+  dependencies. The browser bundle is 73KB. You can read the whole thing.
+- **Two worlds.** Rust for the compiler and dev-side tooling (fast, single
+  binary). JS for the browser bundle and in-browser `<script>` workflow.
 
 ## References
 
