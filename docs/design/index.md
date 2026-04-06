@@ -6,6 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0030 | Pure Rust Kernel→JS Codegen | Active | 2026-04-05 |
 | 0029 | DD-18.1: Method Calls in Threading Macros | Active | 2026-04-05 |
 | 0028 | Fix `lykn compile` Rust CLI Bugs | Draft | 2026-04-05 |
 | 0027 | lykn v0.3.0 — Implementation Plan | Final | 2026-04-04 |
@@ -40,6 +41,7 @@ This index is automatically generated. Do not edit manually.
 
 ### Active
 
+- [0030 - Pure Rust Kernel→JS Codegen](05-active/0030-pure-rust-kerneljs-codegen.md)
 - [0029 - DD-18.1: Method Calls in Threading Macros](05-active/0029-dd-18.1-method-calls-in-threading-macros.md)
 
 ### Draft

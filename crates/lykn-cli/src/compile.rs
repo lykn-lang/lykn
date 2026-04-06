@@ -1,17 +1,16 @@
 //! Compilation pipeline — reads lykn source and emits kernel JSON or JavaScript.
 //!
-//! The pipeline is: read -> expand -> classify -> analyze -> emit -> (bridge to JS).
+//! The pipeline is: read -> expand -> classify -> analyze -> emit -> codegen.
 
 use std::path::Path;
 
 use lykn_lang::analysis;
 use lykn_lang::classifier;
+use lykn_lang::codegen;
 use lykn_lang::diagnostics::Severity;
 use lykn_lang::emitter;
 use lykn_lang::expander;
 use lykn_lang::reader;
-
-use super::bridge;
 
 /// Compile a `.lykn` source file through the full pipeline.
 ///
@@ -85,8 +84,7 @@ pub fn compile_source(
     if kernel_json_only {
         Ok(emitter::json::emit_module_json(&kernel))
     } else {
-        let kernel_json = emitter::json::emit_module_json(&kernel);
-        bridge::kernel_json_to_js(&kernel_json, file_path.unwrap_or(Path::new(".")))
+        Ok(codegen::emit_module_js(&kernel))
     }
 }
 

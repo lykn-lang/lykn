@@ -1,6 +1,7 @@
 pub mod analysis;
 pub mod ast;
 pub mod classifier;
+pub mod codegen;
 pub mod diagnostics;
 pub mod emitter;
 pub mod error;

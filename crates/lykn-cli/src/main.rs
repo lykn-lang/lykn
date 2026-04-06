@@ -2,7 +2,6 @@ use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use std::process;
 
-mod bridge;
 mod compile;
 
 #[derive(Parser)]
