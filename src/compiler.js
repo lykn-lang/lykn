@@ -160,6 +160,29 @@ const macros = {
     };
   },
 
+  // Method call: (. obj method arg1 arg2 ...) → obj.method(arg1, arg2, ...)
+  '.'(args) {
+    if (args.length < 2) {
+      throw new Error('. requires at least 2 arguments: (. object method ...)');
+    }
+    const obj = compileExpr(args[0]);
+    const methodName = args[1].type === 'atom' ? toCamelCase(args[1].value)
+                     : args[1].type === 'string' ? args[1].value
+                     : (() => { throw new Error('. method name must be an atom or string'); })();
+    const methodArgs = args.slice(2).map(compileExpr);
+    return {
+      type: 'CallExpression',
+      callee: {
+        type: 'MemberExpression',
+        object: obj,
+        property: { type: 'Identifier', name: methodName },
+        computed: false,
+      },
+      arguments: methodArgs,
+      optional: false,
+    };
+  },
+
   // Arrow function: (=> (a b) (+ a b))
   '=>'(args) {
     const params = args[0].type === 'list'

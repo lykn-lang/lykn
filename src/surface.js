@@ -495,7 +495,14 @@ export function registerSurfaceMacros(macroEnv) {
 		let threaded = args[0];
 		for (let i = 1; i < args.length; i++) {
 			const step = args[i];
-			if (isArray(step)) {
+			if (isKeyword(step)) {
+				// Bare keyword: method call on threaded value — (:method) → (. acc method)
+				threaded = array(sym("."), threaded, sym(step.value));
+			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
+				// Keyword-headed list: method call — (:method a b) → (. acc method a b)
+				const [kw, ...rest] = step.values;
+				threaded = array(sym("."), threaded, sym(kw.value), ...rest);
+			} else if (isArray(step)) {
 				const [fn, ...rest] = step.values;
 				threaded = array(fn, threaded, ...rest);
 			} else {
@@ -513,7 +520,12 @@ export function registerSurfaceMacros(macroEnv) {
 		let threaded = args[0];
 		for (let i = 1; i < args.length; i++) {
 			const step = args[i];
-			if (isArray(step)) {
+			if (isKeyword(step)) {
+				threaded = array(sym("."), threaded, sym(step.value));
+			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
+				const [kw, ...rest] = step.values;
+				threaded = array(sym("."), threaded, sym(kw.value), ...rest);
+			} else if (isArray(step)) {
 				threaded = array(...step.values, threaded);
 			} else {
 				threaded = array(step, threaded);
@@ -1304,7 +1316,12 @@ export function registerSurfaceMacros(macroEnv) {
 		for (let i = 1; i < args.length; i++) {
 			const step = args[i];
 			let callExpr;
-			if (isArray(step)) {
+			if (isKeyword(step)) {
+				callExpr = array(sym("."), prevVar, sym(step.value));
+			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
+				const [kw, ...rest] = step.values;
+				callExpr = array(sym("."), prevVar, sym(kw.value), ...rest);
+			} else if (isArray(step)) {
 				const [fn, ...rest] = step.values;
 				callExpr = array(fn, prevVar, ...rest);
 			} else {
@@ -1351,7 +1368,12 @@ export function registerSurfaceMacros(macroEnv) {
 		for (let i = 1; i < args.length; i++) {
 			const step = args[i];
 			let callExpr;
-			if (isArray(step)) {
+			if (isKeyword(step)) {
+				callExpr = array(sym("."), prevVar, sym(step.value));
+			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
+				const [kw, ...rest] = step.values;
+				callExpr = array(sym("."), prevVar, sym(kw.value), ...rest);
+			} else if (isArray(step)) {
 				callExpr = array(...step.values, prevVar);
 			} else {
 				callExpr = array(step, prevVar);

@@ -528,10 +528,27 @@ fn apply_threading_step(
     registry: &TypeRegistry,
 ) -> SExpr {
     match step {
-        ThreadingStep::Bare(expr) => list(vec![emit_expr(expr, ctx, registry), acc]),
+        ThreadingStep::Bare(expr) => {
+            if let SExpr::Keyword { value, .. } = expr {
+                // Bare keyword: method call on acc — :method → (. acc method)
+                list(vec![atom("."), acc, atom(value)])
+            } else {
+                list(vec![emit_expr(expr, ctx, registry), acc])
+            }
+        }
         ThreadingStep::Call(exprs) => {
             if exprs.is_empty() {
                 return acc;
+            }
+            // Check for keyword-headed step: (:method args...) → (. acc method args...)
+            if let SExpr::Keyword { value, .. } = &exprs[0] {
+                let rest: Vec<SExpr> = exprs[1..]
+                    .iter()
+                    .map(|e| emit_expr(e, ctx, registry))
+                    .collect();
+                let mut items = vec![atom("."), acc, atom(value)];
+                items.extend(rest);
+                return list(items);
             }
             let func = emit_expr(&exprs[0], ctx, registry);
             let rest: Vec<SExpr> = exprs[1..]
