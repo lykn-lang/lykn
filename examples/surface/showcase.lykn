@@ -36,5 +36,5 @@
 
 ;; --- Objects with Keyword Syntax ---
 
-(bind user (obj :name "lykn" :version "0.3.0" :compiled true))
+(bind user (obj :name "lykn" :version "0.4.0" :compiled true))
 (console:log "user:" user)

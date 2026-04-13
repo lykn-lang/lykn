@@ -21,11 +21,11 @@ squint at the Icelandic — *closure*.
 
 ## Status
 
-**v0.3.0** — Two-layer language design lands. **Surface syntax** is now the
-recommended way to write lykn: typed functions with contracts, algebraic data
-types, exhaustive pattern matching, immutable-by-default bindings with `cell`
-for controlled mutation, and threading macros. Self-contained Rust compiler
-(no runtime dependencies). 73KB browser bundle. 1,372 tests.
+**v0.4.0** — Safe operators land. **`=` is now strict equality** in surface
+syntax (`a === b`), matching every Lisp dialect. `and`/`or`/`not` are
+short-circuit logical operators, not function calls. All mutation goes through
+named forms (`bind`, `reset!`, `swap!`). See DD-22. Self-contained Rust
+compiler (no runtime dependencies). 73KB browser bundle.
 
 ## Quick taste
 
@@ -43,7 +43,7 @@ for controlled mutation, and threading macros. Self-contained Rust compiler
 (bind result (-> 5 (+ 3) (* 2)))
 
 ;; Objects with keyword syntax
-(bind user (obj :name "lykn" :version "0.3.0"))
+(bind user (obj :name "lykn" :version "0.4.0"))
 
 ;; Controlled mutation via cells
 (bind counter (cell 0))
@@ -69,7 +69,7 @@ function greet(name) {
   return result__gensym0;
 }
 const result = (5 + 3) * 2;
-const user = {name: "lykn", version: "0.3.0"};
+const user = {name: "lykn", version: "0.4.0"};
 const counter = {value: 0};
 counter.value = ((n) => n + 1)(counter.value);
 console.log(counter.value);
@@ -276,6 +276,17 @@ kernel forms at compile time.
 | `(-> user (get :name) (:to-upper-case))` | `user["name"].toUpperCase()` |
 | `(some-> user (get :name) (:to-upper-case))` | IIFE with null checks + method call |
 
+#### Equality & logic
+
+| lykn | JS |
+|---|---|
+| `(= a b)` | `a === b` (strict equality, not assignment) |
+| `(!= a b)` | `a !== b` |
+| `(= a b c)` | `a === b && b === c` (variadic pairwise) |
+| `(and x y)` | `x && y` (short-circuit) |
+| `(or x y)` | `x \|\| y` (short-circuit) |
+| `(not x)` | `!x` |
+
 ### Kernel forms
 
 Kernel forms are the compilation targets for surface macros. You can use
@@ -359,13 +370,15 @@ doesn't cover a specific JS feature.
 
 ### Operators
 
-| lykn | JS |
-|---|---|
-| `(+ a b c)` | `a + b + c` |
-| `(++ x)` | `++x` |
-| `(+= x 1)` | `x += 1` |
-| `(** base exp)` | `base ** exp` |
-| `(?? a b)` | `a ?? b` |
+| lykn | JS | Notes |
+|---|---|---|
+| `(+ a b c)` | `a + b + c` | Arithmetic |
+| `(++ x)` | `++x` | Prefix increment |
+| `(+= x 1)` | `x += 1` | Compound assignment |
+| `(** base exp)` | `base ** exp` | Exponentiation |
+| `(?? a b)` | `a ?? b` | Nullish coalescing |
+| `(=== a b)` | `a === b` | Kernel strict equality |
+| `(= x 1)` | `x = 1` | Kernel assignment (surface `=` is equality) |
 
 ### Macros
 

@@ -43,5 +43,5 @@ counter.value = ((n) => n + 1)(counter.value);
 console.log("counter:", counter.value);
 const result = (5 + 3) * 2;
 console.log("threaded:", result);
-const user = {name: "lykn", version: "0.3.0", compiled: true};
+const user = {name: "lykn", version: "0.4.0", compiled: true};
 console.log("user:", user);

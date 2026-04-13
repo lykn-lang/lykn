@@ -1,0 +1,594 @@
+---
+name: lykn-language-guidelines
+description: |
+  lykn (Lisp Flavoured JavaScript) best practices, idioms, and anti-patterns.
+  Use when: writing new lykn code, converting JS to lykn, reviewing lykn for
+  issues, designing lykn module APIs, working with surface forms (bind, func,
+  type, match, cell, threading macros), handling errors in lykn, writing tests
+  for lykn code, understanding kernel vs surface syntax, using the lykn CLI
+  (compile, check, fmt), configuring the lykn toolchain, or answering lykn
+  design questions. lykn compiles to clean, readable JS with no runtime
+  dependencies. All code uses lykn/surface syntax targeting Deno with
+  ESM-only modules and Biome for linting/formatting on compiled output.
+---
+
+# lykn Skill — Language Reference
+
+lykn is a Lisp-flavoured JavaScript — s-expression syntax compiling to clean, readable JS with no runtime dependencies. lykn has two syntax layers: **surface syntax** (the recommended authoring language) and **kernel syntax** (the compilation target). All examples in this skill use surface syntax unless explicitly marked otherwise.
+
+**Design principles**: thin skin over JS (no runtime, no invented semantics), JS-aligned naming over Lisp conventions, lisp-case→camelCase auto-conversion, functional by default (immutable bindings, controlled mutation), required type annotations on all boundaries, clean compiled output.
+
+**Toolchain**: Deno (not Node.js), Biome (Rust binary) on compiled JS output, ESM-only modules, strictly no npm in development workflows.
+
+**Strength indicators** used throughout:
+
+| Indicator | Meaning | Action |
+|-----------|---------|--------|
+| **MUST** | Required / compiler-enforced | Always follow |
+| **SHOULD** | Strong convention | Follow unless specific reason not to |
+| **CONSIDER** | Context-dependent | Evaluate for situation |
+| **AVOID** | Anti-pattern | Do not use |
+
+---
+
+## Document Selection Guide
+
+The inline content below is enough to write correct lykn code. Load the full guide files when you need deeper rationale, edge cases, or comprehensive examples.
+
+Note: document paths are relative to the lykn project root.
+
+| Task | Load These Guides |
+|------|-------------------|
+| **Any lykn code** | `docs/guides/09-anti-patterns.md` (always load first) |
+| **New module from scratch** | `docs/guides/01-core-idioms.md`, `docs/guides/10-project-structure.md`, `docs/guides/02-api-design.md` |
+| **Learning surface syntax** | `docs/guides/00-lykn-surface-forms.md`, `docs/guides/01-core-idioms.md` |
+| **API design** | `docs/guides/02-api-design.md`, `docs/guides/06-functions-closures.md`, `docs/guides/05-type-discipline.md` |
+| **Error handling** | `docs/guides/03-error-handling.md`, `docs/guides/07-async-concurrency.md` |
+| **Refactoring JS to lykn** | `docs/guides/00-lykn-surface-forms.md`, `docs/guides/01-core-idioms.md`, `docs/guides/09-anti-patterns.md` |
+| **Code review / quality audit** | `docs/guides/09-anti-patterns.md`, `docs/guides/01-core-idioms.md`, `docs/guides/08-performance.md` |
+| **Writing tests** | `docs/guides/12-deno/12-02-testing.md`, `docs/guides/03-error-handling.md` |
+| **Type system & contracts** | `docs/guides/05-type-discipline.md`, `docs/guides/06-functions-closures.md` |
+| **Values, mutation, immutability** | `docs/guides/04-values-references.md`, `docs/guides/01-core-idioms.md` |
+| **Async & concurrency** | `docs/guides/07-async-concurrency.md`, `docs/guides/03-error-handling.md` |
+| **Performance review** | `docs/guides/08-performance.md`, `docs/guides/07-async-concurrency.md` |
+| **Documentation** | `docs/guides/11-documentation.md`, `docs/guides/05-type-discipline.md` |
+| **Deno runtime** | `docs/guides/12-deno/12-01-runtime-basics.md` |
+| **Biome lint/format** | `docs/guides/13-biome/13-01-setup.md`, `docs/guides/13-biome/13-02-lint-rules.md` |
+| **No-Node boundary** | `docs/guides/14-no-node-boundary.md`, `docs/guides/12-deno/12-01-runtime-basics.md` |
+
+---
+
+## Workflows
+
+### Writing New lykn Code
+
+1. **Load anti-patterns first**: Read `docs/guides/09-anti-patterns.md` — know what to avoid
+2. **Load core idioms**: Read `docs/guides/01-core-idioms.md` for `bind`, naming, control flow
+3. **Load topic-specific docs**: Based on what you're building (API design, async, etc.)
+4. **Structure the module**: Named exports, `bind` for all values, `func` for named functions
+5. **Write code**: Type annotations on all `func` params, contracts for validation, `match` for branching on tagged data, threading macros for transformation pipelines
+6. **Verify**: `lykn check <file>` for syntax, `lykn compile <file>` to inspect output
+7. **Self-review**: Check against anti-patterns table before finishing
+
+### Converting JS to lykn
+
+1. **Load surface forms reference**: `docs/guides/00-lykn-surface-forms.md`
+2. **Map declarations**: `const` → `bind`, `let` → `bind` + `cell`, remove all `var`
+3. **Map functions**: `function` → `func` (add type annotations, contracts), arrows → `fn`/`lambda`
+4. **Map control flow**: `if/else` → `(if ...)`, ternary → `(? ...)`, `switch` on tagged data → `match`
+5. **Map objects**: `{ key: val }` → `(obj :key val)`, `{ ...a, key: val }` → `(assoc a :key val)`
+6. **Map member access**: `obj.prop` → `obj:prop`, `obj[expr]` → `(get obj expr)`
+7. **Eliminate `this`**: Restructure as pure functions or use `cell` for state
+8. **Verify**: `lykn check`, `lykn compile`, inspect JS output for correctness
+
+### Code Review / Quality Audit
+
+1. **Scan for anti-patterns**: kernel forms where surface forms exist, missing type annotations, unnecessary `cell`, overuse of `js:` interop
+2. **Check error handling**: No empty catches, errors wrapped with context, rejections handled
+3. **Check API surfaces**: All `func` params typed, contracts for validation, consistent return types
+4. **Check mutation discipline**: `cell` only where genuinely needed, `!` suffix on all mutating ops
+5. **Check compiled output**: `lykn compile <file>` — output should be clean, readable JS
+
+---
+
+## Bindings & Mutation
+
+- **`bind` for all values** — immutable by default. No `const`/`let`/`var` in surface syntax. **MUST**
+- **Type annotation on `bind`**: `(bind :number age 42)`. Note: `bind` annotations are documentation-only — they do NOT generate runtime checks. Only `func`/`fn` annotations generate checks. **SHOULD**
+- **`cell` for controlled mutation**: `(bind counter (cell 0))`. **MUST** use `cell` when mutation is needed — never reach for kernel `let`.
+- **`swap!` to update**: `(swap! counter (fn (:number n) (+ n 1)))`. The `!` suffix signals mutation. **MUST**
+- **`reset!` to replace**: `(reset! counter 0)`. **MUST**
+- **`express` to read**: `(express counter)` reads the cell's current value. **MUST**
+- **Keywords for string values**: `:name` compiles to `"name"`. Use keywords as object keys, enum-like values, and form labels. **MUST**
+- **lisp-case for all identifiers**: `my-function` → compiles to `myFunction`. **MUST**
+
+```lykn
+;; Immutable binding — no type annotation needed for literals
+(bind greeting "hello")
+(bind max-retries 3)
+
+;; Type annotation (documentation-only, no runtime check on bind)
+(bind :number result (compute-something))
+
+;; Mutation via cell
+(bind counter (cell 0))
+(swap! counter (=> (n) (+ n 1)))
+(console:log (express counter))  ;; => 1
+(reset! counter 0)
+```
+
+Compiles to:
+
+```js
+const greeting = "hello";
+const maxRetries = 3;
+const result = computeSomething();
+const counter = {value: 0};
+counter.value = ((n) => n + 1)(counter.value);
+console.log(counter.value);
+counter.value = 0;
+```
+
+> **Note:** `bind` type annotations do NOT generate runtime checks.
+> Only `func` and `fn` type annotations produce type-checking code.
+> Use `func` with `:args` for enforced type safety.
+
+---
+
+## Functions
+
+- **`func` for named functions**: keyword-labeled clauses, required type annotations, optional contracts. **MUST**
+- **`fn` for anonymous functions**: positional typed params, arrow function output. **SHOULD**
+- **`lambda` for anonymous functions**: same as `fn` but emits `function` expression. **CONSIDER**
+- **All params require type annotations**: bare symbols in param lists are compile errors. `:any` is the explicit opt-out. **MUST**
+- **Contracts with `:pre` / `:post`**: runtime validation, stripped by `--strip-assertions`. **SHOULD**
+- **`:returns` for return type checking**: runtime check on return value. **SHOULD**
+- **Multi-clause `func`**: arity + type dispatch. Overlap is a compile error. **CONSIDER**
+- **Zero-arg shorthand**: `(func name (body-expr))` for simple functions. **SHOULD**
+
+```lykn
+;; Full func with contracts
+(func divide
+  :args (:number a :number b)
+  :returns :number
+  :pre ((!= b 0) "division by zero")
+  :body (/ a b))
+
+;; Zero-arg shorthand
+(func now (Date:now))
+
+;; Anonymous function
+(bind doubled (fn (:number x) (* x 2)))
+
+;; Multi-clause dispatch
+(func describe
+  :args (:string s)
+  :body (template "string: " s))
+(func describe
+  :args (:number n)
+  :body (template "number: " n))
+```
+
+**Built-in type keywords**: `:number` (excludes NaN), `:string`, `:boolean`, `:function`, `:object`, `:array`, `:symbol`, `:bigint`, `:any`, `:void`, `:promise`.
+
+---
+
+## Types & Pattern Matching
+
+- **`type` for algebraic data types**: tagged objects with named fields, constructor validation. **SHOULD**
+- **`match` for exhaustive pattern matching**: compiler verifies all constructors covered. **MUST** include all variants or a wildcard `_`.
+- **`match` is an expression**: returns a value. **SHOULD** use as expression rather than statement when possible.
+- **`if-let` / `when-let`**: conditional binding — test a pattern and bind in one step. **SHOULD**
+- **Constructor patterns**: `(Some v)` matches `{ tag: "Some", value: v }`. **MUST** use constructor syntax in patterns, not raw object checks.
+
+```lykn
+;; Define a type
+(type Option
+  (Some :any value)
+  None)
+
+;; Construct values
+(bind found (Some 42))
+(bind missing None)
+
+;; Exhaustive pattern matching
+(bind result
+  (match found
+    ((Some v) (+ v 1))
+    (None 0)))
+
+;; Conditional binding
+(if-let ((Some user) (find-user id))
+  (greet user)
+  "not found")
+
+;; when-let (no else branch)
+(when-let ((Some user) (find-user id))
+  (console:log user:name))
+```
+
+---
+
+## Objects & Immutable Updates
+
+- **`obj` for object construction**: keyword-value pairs. **MUST**
+- **`assoc` for immutable field update**: spread-based, original unchanged. **MUST**
+- **`dissoc` for immutable field removal**: original unchanged. **SHOULD**
+- **`conj` for immutable collection append**: works with arrays. **SHOULD**
+- **Keywords as keys**: `:name` compiles to `"name"` — use keywords, not quoted strings. **MUST**
+
+```lykn
+;; Object construction
+(bind user (obj :name "Alice" :age 30))
+
+;; Immutable update — original unchanged
+(bind updated (assoc user :age 31))
+
+;; Remove a field
+(bind safe (dissoc user :password))
+
+;; Append to array
+(bind items #a(1 2 3))
+(bind more (conj items 4))
+```
+
+Compiles to:
+
+```js
+const user = {name: "Alice", age: 30};
+const updated = {...user, age: 31};
+```
+
+---
+
+## Threading Macros
+
+- **`->` (thread-first)**: pipes a value through a series of transformations, inserting as first argument. **SHOULD**
+- **`->>` (thread-last)**: inserts as last argument. **SHOULD**
+- **`some->` / `some->>` (nil-safe threading)**: short-circuits on `null`/`undefined`. Replaces `?.` chaining. **SHOULD**
+- **Method calls in threading**: `(:method-name)` calls a method on the threaded value. **MUST** use this syntax for method calls in threading position.
+
+```lykn
+;; Thread-first: x is inserted as first arg at each step
+(-> 5 (+ 3) (* 2))   ;; => (5 + 3) * 2 = 16
+
+;; Thread-last: items inserted as last arg
+(->> items (filter even?) (map double))
+
+;; Method call in threading position
+(-> user (get :name) (:to-upper-case))
+
+;; Nil-safe threading (replaces ?. chains)
+(some-> user (get :address) (get :street))
+```
+
+---
+
+## Colon Syntax & Member Access
+
+- **Colon for member access**: `console:log` → `console.log`. **MUST**
+- **Chained access**: `a:b:c` → `a.b.c`. **MUST**
+- **`get` for computed access**: `(get obj expr)` → `obj[expr]`. **MUST**
+- **Leading colon = keyword**: `:name` → `"name"`. Reader-level type. **MUST**
+- **`js:` namespace for JS interop**: escape hatch for JS features not in surface syntax. Greppable, auditable. **SHOULD** use sparingly.
+
+```lykn
+;; Member access
+(console:log "hello")           ;; => console.log("hello")
+(bind len my-array:length)      ;; => const len = myArray.length
+
+;; Computed access
+(bind item (get my-array 0))    ;; => const item = myArray[0]
+
+;; JS interop escape hatch
+(js:eq value null)              ;; => value == null (loose equality)
+```
+
+---
+
+## Modules
+
+- **ESM only**: `import`/`export` forms. No `require()`, no CommonJS. **MUST**
+- **Named exports**: `(export (func ...))` or `(export (bind ...))`. **MUST**
+- **Import with binding list**: `(import (name1 name2) "./module.js")`. **MUST**
+- **`alias` for rename**: `(import ((alias original renamed)) "./module.js")`. **SHOULD**
+- **File extensions required** on local imports. **MUST**
+- **No `export *` or namespace imports**: banned by design. **MUST**
+
+```lykn
+;; Import
+(import (join) "@std/path")
+(import (login logout) "./auth/mod.js")
+
+;; Export
+(export (func greet
+  :args (:string name)
+  :returns :string
+  :body (template "Hello, " name)))
+
+;; Export a binding
+(export (bind VERSION "0.4.0"))
+```
+
+---
+
+## Error Handling
+
+- **`throw` only `Error` instances**: `(throw (new Error "message"))`. **MUST**
+- **`try`/`catch`/`finally`**: kernel forms used directly in surface code. **MUST**
+- **`Error.cause` for chaining**: `(throw (new Error "msg" (obj :cause err)))`. **SHOULD**
+- **Never empty catches**: handle, rethrow, or both. **MUST**
+- **`match` for error dispatch**: pattern match on error type for typed error handling. **CONSIDER**
+
+```lykn
+;; Error handling
+(try
+  (bind raw (await (Deno:read-text-file path)))
+  (JSON:parse raw)
+  (catch err
+    (throw (new Error
+      (template "Failed to load config from " path)
+      (obj :cause err)))))
+
+;; Guard clause with contract
+(func fetch-user
+  :args (:string id)
+  :pre ((not (js:eq id null)) "id is required")
+  :body (await (fetch (template "/api/users/" id))))
+```
+
+---
+
+## Async & Concurrency
+
+- **`(async ...)` wrapper**: wraps any form to make it async. **MUST**
+- **`(await expr)` unary**: await a promise. **MUST**
+- **Top-level `await`**: works directly in ESM modules. **SHOULD**
+- **`Promise:all` for parallel ops**: never sequential `await` on independent calls. **SHOULD**
+- **`AbortController` for cancellation**: every `fetch` in production should accept a signal. **SHOULD**
+
+```lykn
+;; Async function
+(export (async (func fetch-data
+  :args (:string url)
+  :returns :promise
+  :body (bind response (await (fetch url)))
+        (if (not response:ok)
+          (throw (new Error (template "HTTP " response:status)))
+          (await (response:json))))))
+
+;; Parallel operations
+(bind #a(users posts)
+  (await (Promise:all #a((fetch-users) (fetch-posts)))))
+```
+
+---
+
+## Classes
+
+Classes are available but de-emphasized in surface lykn. Prefer `type` + `func` for new designs. Use `class` for JS interop, framework requirements, or when `instanceof` checking is needed.
+
+- **`class` form**: kernel form used directly. **CONSIDER**
+- **Private fields via `-` prefix**: `-count` compiles to `#_count`. **MUST** for encapsulation
+- **No `this` in surface language**: surface forms eliminate `this`. Inside `class` bodies (kernel territory), `this` is available. **MUST** understand the boundary.
+
+```lykn
+;; Class with private fields
+(class Counter ()
+  (field -count 0)
+  (increment () (+= this:-count 1))
+  (get value () (return this:-count)))
+
+;; Prefer type + func for new designs
+(type Counter
+  (Counter :number count))
+
+(func increment
+  :args ((Counter c))
+  :body (Counter (+ c:count 1)))
+```
+
+---
+
+## Data Literals & Sugar
+
+| lykn | JS | Notes |
+|------|-----|-------|
+| `#a(1 2 3)` | `[1, 2, 3]` | Array literal |
+| `#o((name "x") (age 42))` | `{name: "x", age: 42}` | Object literal (kernel-style) |
+| `#16rff` | `255` | Hex radix literal |
+| `#2r11110000` | `240` | Binary radix literal |
+| `#; expr` | *(discarded)* | Expression comment |
+| `#\| ... \|#` | *(discarded)* | Nestable block comment |
+| `(template "hi " name)` | `` `hi ${name}` `` | Template literal |
+| `(tag html (template ...))` | `` html`...` `` | Tagged template |
+| `(regex "^hello" "gi")` | `/^hello/gi` | Regular expression |
+
+---
+
+## Anti-Patterns to AVOID
+
+These are the most common mistakes in lykn code, especially when converting from JS or in AI-generated output.
+
+| Anti-Pattern | Fix |
+|---|---|
+| Using kernel forms when surface forms exist (`const` instead of `bind`, `function` instead of `func`) | Always use surface forms for new code |
+| Missing type annotations on `func`/`fn` params | All params require type keywords; `:any` is the opt-out |
+| Forgetting `express` when reading a cell | `(express counter)`, not just `counter` (which is the cell object) |
+| Using `cell` when immutability works | Prefer `bind` + `assoc`/`dissoc`/`conj` for data transforms |
+| Overusing `js:` interop | `js:` is an escape hatch, not a primary tool; keep it greppable and rare |
+| camelCase in lykn source | Use lisp-case: `my-function`, not `myFunction`. Compiler auto-converts. |
+| Quoted strings as object keys | Use keywords: `(obj :name "x")`, not `(obj "name" "x")` |
+| Using `===`/`==` kernel operators directly | Use `(= a b)` for equality — it compiles to `===`. Use `(js:eq x null)` for the `== null` idiom. |
+| Using `&&`/`\|\|`/`!` kernel operators directly | Use `(and a b)`, `(or a b)`, `(not x)` — the surface operators. They compile to `&&`/`\|\|`/`!`. |
+| Sequential `await` on independent ops | `(await (Promise:all #a(...)))` for parallel |
+| Empty `catch` blocks | Handle, rethrow, or both |
+| `import-macros` without explicit binding list | Always specify which macros you're importing |
+| Bare symbols in destructuring without type context | Add type annotations where the compiler expects them |
+| Using `object` (kernel) instead of `obj` (surface) for construction | `obj` uses keyword syntax; `object` is the kernel form |
+| Assuming `bind` type annotations are enforced | `bind` annotations are documentation-only; use `func`/`fn` for runtime type checks |
+
+---
+
+## Naming Conventions
+
+| Element | Convention | Example |
+|---------|-----------|---------|
+| Bindings, functions | lisp-case | `get-user-name`, `max-retries` |
+| Type constructors | PascalCase | `Some`, `None`, `HttpError` |
+| Type names | PascalCase | `Option`, `Result` |
+| Keywords | lisp-case with `:` prefix | `:first-name` → `"firstName"` |
+| Mutation ops | `!` suffix | `swap!`, `reset!` |
+| Predicate functions | `?` suffix | `even?`, `valid?` |
+| Private class fields | `-` prefix | `-count` → `#_count` |
+| Module files | kebab-case `.lykn` | `http-client.lykn` |
+
+**AVOID** weasel names: `Manager`, `Service`, `Handler`, `Utils`, `Data`, `process`, `handle`.
+
+---
+
+## lykn CLI
+
+The `lykn` binary is the primary tool for compilation, syntax checking, and formatting.
+
+```sh
+# Compile to JS (stdout)
+lykn compile main.lykn
+
+# Compile to file
+lykn compile main.lykn -o main.js
+
+# Strip type checks and contracts (production)
+lykn compile main.lykn --strip-assertions -o main.js
+
+# Output kernel JSON (debug)
+lykn compile main.lykn --kernel-json
+
+# Syntax check
+lykn check main.lykn
+
+# Format (stdout)
+lykn fmt main.lykn
+
+# Format (in-place)
+lykn fmt -w main.lykn
+```
+
+### Build from source
+
+```sh
+mkdir -p ./bin
+cargo build --release && cp ./target/release/lykn ./bin
+```
+
+### Compile and run
+
+```sh
+lykn compile examples/surface/main.lykn -o /tmp/main.js && deno run /tmp/main.js
+```
+
+---
+
+## Deno Runtime & Testing
+
+lykn targets Deno exclusively. The compiled JS output runs in Deno with ESM-only modules.
+
+- **Deno APIs**: `Deno.readTextFile`, `Deno.serve`, `Deno.env.get()`, etc. **MUST**
+- **Web Platform APIs**: `fetch`, `Request`, `Response`, `URL`, `AbortController`, `structuredClone`. **SHOULD**
+- **Permissions**: `--allow-net`, `--allow-read`, etc. Never `--allow-all` in production. **MUST**
+- **Testing**: `Deno.test()` + `@std/assert`. Test files named `*_test.js` (on compiled output) or `*_test.lykn`. **MUST**
+
+---
+
+## Biome (Linting & Formatting on Compiled Output)
+
+Biome operates on the compiled JS output, not on `.lykn` source files. The lykn formatter (`lykn fmt`) handles `.lykn` formatting.
+
+- **Pipeline**: `.lykn` → `lykn compile` → `.js` → `biome check` → lint/format results. **MUST**
+- **Install standalone**: `brew install biome` (not via npm). **MUST**
+- **`biome.json`**: single config file for lint + format. **MUST**
+- **Key rules**: `noVar` (MUST — but lykn never emits `var`), `useConst` (SHOULD), `noDoubleEquals` (MUST — lykn only emits `===`).
+
+---
+
+## No-Node Boundary
+
+lykn targets Deno exclusively. The same no-Node boundary from the JS guides applies:
+
+| Node.js Pattern | Replacement |
+|----------------|-------------|
+| `require()` | ESM `import` (lykn: `(import ...)`) |
+| `module.exports` | ESM `export` (lykn: `(export ...)`) |
+| `package.json` | `deno.json` |
+| `node_modules` | Global cache via `jsr:`/`npm:` specifiers |
+| `process.env` | `Deno:env:get` in lykn |
+| `__dirname` | `import:meta:dirname` in lykn |
+| `Buffer` | `Uint8Array` + `TextEncoder`/`TextDecoder` |
+| Jest / Mocha | `Deno.test()` + `@std/assert` |
+| ESLint + Prettier | Biome on compiled output, `lykn fmt` on source |
+
+---
+
+## Kernel vs Surface: When to Use Kernel Forms
+
+Surface syntax covers the vast majority of use cases. Drop to kernel forms only when:
+
+1. **JS interop requires it**: a JS construct with no surface equivalent
+2. **Class bodies**: `class` is a kernel form; method bodies use kernel syntax
+3. **Low-level control flow**: `switch`, `for`, `do-while`, `label` — kernel forms
+4. **Debugging**: `(debugger)` is a kernel form
+5. **The `js:` escape hatch isn't enough**: very rare
+
+When mixing, surface forms can contain kernel forms freely. The compiler handles the boundary.
+
+---
+
+## Worked Examples
+
+### Task: "Write a module that fetches and caches API responses"
+
+1. **Load**: `docs/guides/09-anti-patterns.md`, `docs/guides/01-core-idioms.md`, `docs/guides/07-async-concurrency.md`
+2. **Apply**:
+   - `(bind cache (new Map))` for the cache
+   - `(export (async (func fetch-cached ...)))` with `:string url` param, typed
+   - Contract: `:pre ((not (js:eq url null)) "url is required")`
+   - `(if-let ((Some cached) (find-in-cache url)) cached (do-fetch url))` pattern
+   - `(await ...)` for async, `AbortSignal` via options parameter
+   - `(try ... (catch err (throw (new Error msg (obj :cause err)))))` for error chaining
+
+### Task: "Define a result type with success/failure handling"
+
+1. **Load**: `docs/guides/05-type-discipline.md`, `docs/guides/06-functions-closures.md`
+2. **Apply**:
+   - `(type Result (Ok :any value) (Err :string message))` — algebraic data type
+   - `(func map-result :args ((Result r) :function f) :body (match r ((Ok v) (Ok (f v))) ((Err e) (Err e))))` — exhaustive match
+   - `(func unwrap :args ((Result r)) :body (match r ((Ok v) v) ((Err e) (throw (new Error e)))))` — unwrap or throw
+
+### Task: "Convert a JS options-object API to lykn"
+
+1. **Load**: `docs/guides/00-lykn-surface-forms.md`, `docs/guides/02-api-design.md`
+2. **Apply**:
+   - JS `function createServer({ port = 8080, host = "localhost" } = {})` → lykn `(func create-server :args (:object opts) :body ...)` with `(bind :number port (?? opts:port 8080))`
+   - Or use kernel destructuring for the options object
+   - Named exports: `(export (func create-server ...))`
+   - Type annotations on all parameters
+
+### Task: "Refactor imperative JS with mutable state to lykn"
+
+1. **Load**: `docs/guides/04-values-references.md`, `docs/guides/01-core-idioms.md`
+2. **Apply**:
+   - Replace `let count = 0; count++` → `(bind counter (cell 0)) (swap! counter (fn (:number n) (+ n 1)))`
+   - Replace `arr.push(x)` → `(bind new-arr (conj arr x))` (immutable append)
+   - Replace `obj.key = val` → `(bind updated (assoc obj :key val))` (immutable update)
+   - Only use `cell` when the value genuinely needs to change over time
+   - Thread pipelines replace intermediate mutable variables: `(-> data (transform-a) (transform-b) (transform-c))`
+
+### Task: "Set up Biome linting on lykn compiled output"
+
+1. **Load**: `docs/guides/13-biome/13-01-setup.md`
+2. **Apply**:
+   - Install Biome standalone (`brew install biome`)
+   - `biome.json` at project root
+   - Compile lykn → JS, then run `biome check` on the JS output
+   - Many JS anti-patterns (like `var`, `==`) are structurally impossible in lykn's output
+   - Biome catches issues in hand-written JS helpers or edge cases in compiled output
