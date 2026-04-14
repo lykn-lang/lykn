@@ -7,8 +7,9 @@ pub mod scope;
 pub mod type_registry;
 
 use crate::ast::sexpr::SExpr;
-use crate::ast::surface::{Pattern, SurfaceForm, ThreadingStep};
+use crate::ast::surface::{Pattern, SurfaceForm, ThreadingStep, TypeAnnotation};
 use crate::diagnostics::{Diagnostic, Severity};
+use crate::reader::source_loc::Span;
 use scope::ScopeTracker;
 use type_registry::TypeRegistry;
 
@@ -98,6 +99,12 @@ impl Analyze for SurfaceForm {
             SurfaceForm::Func { clauses, .. } if clauses.len() > 1 => {
                 func_check::check_func_overlap(self, registry)
             }
+            SurfaceForm::Bind {
+                name,
+                type_ann: Some(ann),
+                value,
+                span,
+            } => check_bind_literal_type(name, ann, value, *span),
             _ => vec![],
         }
     }
@@ -312,6 +319,81 @@ pub fn analyze(forms: &[SurfaceForm]) -> AnalysisResult {
         diagnostics,
         type_registry: registry,
         has_errors,
+    }
+}
+
+/// Check whether a `bind` form's literal value is compatible with its type
+/// annotation. Returns a diagnostic error when there is a mismatch.
+fn check_bind_literal_type(
+    name: &SExpr,
+    ann: &TypeAnnotation,
+    value: &SExpr,
+    span: Span,
+) -> Vec<Diagnostic> {
+    // :any matches everything
+    if ann.name == "any" {
+        return vec![];
+    }
+
+    let lit_type = match literal_js_type(value) {
+        Some(t) => t,
+        None => return vec![], // not a literal — nothing to check statically
+    };
+
+    // Special case: NaN is typeof "number" in JS, but it should fail :number
+    let is_nan = matches!(value, SExpr::Atom { value, .. } if value == "NaN");
+
+    let compatible = if is_nan {
+        // NaN fails :number (and every other type annotation)
+        false
+    } else {
+        lit_type == ann.name
+    };
+
+    if compatible {
+        vec![]
+    } else {
+        let binding_name = name.as_atom().unwrap_or("<expr>");
+        vec![Diagnostic {
+            severity: Severity::Error,
+            message: format!(
+                "bind '{}': type annotation :{} is incompatible with {} literal",
+                binding_name, ann.name, lit_type,
+            ),
+            span,
+            suggestion: Some(format!(
+                "change the type annotation to :{} or use a different value",
+                lit_type,
+            )),
+        }]
+    }
+}
+
+/// Return the JS type name for literal S-expressions.
+///
+/// Returns `None` for non-literal expressions (function calls, atoms that
+/// aren't boolean/null/NaN, etc.).
+fn literal_js_type(expr: &SExpr) -> Option<&'static str> {
+    match expr {
+        SExpr::Number { .. } => Some("number"),
+        SExpr::String { .. } => Some("string"),
+        SExpr::Bool { .. } => Some("boolean"),
+        SExpr::Null { .. } => Some("null"),
+        SExpr::Atom { value, .. } => match value.as_str() {
+            "true" | "false" => Some("boolean"),
+            "null" => Some("null"),
+            "NaN" => Some("number"),
+            _ => None,
+        },
+        SExpr::List { values, .. } => {
+            let head = values.first().and_then(|v| v.as_atom())?;
+            match head {
+                "array" => Some("array"),
+                "obj" | "object" => Some("object"),
+                _ => None,
+            }
+        }
+        _ => None,
     }
 }
 
@@ -672,5 +754,193 @@ mod tests {
                 .iter()
                 .any(|d| d.message.contains("None"))
         );
+    }
+
+    // --- Bind literal type mismatch tests ---
+
+    #[test]
+    fn test_bind_number_literal_matches_number_annotation() {
+        let forms = vec![SurfaceForm::Bind {
+            name: SExpr::Atom {
+                value: "x".into(),
+                span: span(),
+            },
+            type_ann: Some(TypeAnnotation {
+                name: "number".into(),
+                span: span(),
+            }),
+            value: SExpr::Number {
+                value: 42.0,
+                span: span(),
+            },
+            span: span(),
+        }];
+        let result = analyze(&forms);
+        let errors: Vec<_> = result
+            .diagnostics
+            .iter()
+            .filter(|d| d.severity == Severity::Error)
+            .collect();
+        assert!(
+            errors.is_empty(),
+            "matching literal should not error: {errors:?}"
+        );
+    }
+
+    #[test]
+    fn test_bind_string_literal_mismatches_number_annotation() {
+        let forms = vec![SurfaceForm::Bind {
+            name: SExpr::Atom {
+                value: "x".into(),
+                span: span(),
+            },
+            type_ann: Some(TypeAnnotation {
+                name: "number".into(),
+                span: span(),
+            }),
+            value: SExpr::String {
+                value: "hello".into(),
+                span: span(),
+            },
+            span: span(),
+        }];
+        let result = analyze(&forms);
+        assert!(result.has_errors, "mismatch should produce an error");
+        assert!(
+            result
+                .diagnostics
+                .iter()
+                .any(|d| d.message.contains("bind 'x'")
+                    && d.message.contains(":number")
+                    && d.message.contains("string")),
+            "error message should mention bind name, annotation, and literal type"
+        );
+    }
+
+    #[test]
+    fn test_bind_any_annotation_accepts_any_literal() {
+        let forms = vec![SurfaceForm::Bind {
+            name: SExpr::Atom {
+                value: "x".into(),
+                span: span(),
+            },
+            type_ann: Some(TypeAnnotation {
+                name: "any".into(),
+                span: span(),
+            }),
+            value: SExpr::String {
+                value: "hello".into(),
+                span: span(),
+            },
+            span: span(),
+        }];
+        let result = analyze(&forms);
+        let errors: Vec<_> = result
+            .diagnostics
+            .iter()
+            .filter(|d| d.severity == Severity::Error)
+            .collect();
+        assert!(
+            errors.is_empty(),
+            ":any should accept any literal: {errors:?}"
+        );
+    }
+
+    #[test]
+    fn test_bind_nan_fails_number_annotation() {
+        let forms = vec![SurfaceForm::Bind {
+            name: SExpr::Atom {
+                value: "x".into(),
+                span: span(),
+            },
+            type_ann: Some(TypeAnnotation {
+                name: "number".into(),
+                span: span(),
+            }),
+            value: SExpr::Atom {
+                value: "NaN".into(),
+                span: span(),
+            },
+            span: span(),
+        }];
+        let result = analyze(&forms);
+        assert!(result.has_errors, "NaN should fail :number annotation");
+    }
+
+    #[test]
+    fn test_bind_non_literal_no_static_check() {
+        // (bind :number x (compute)) — non-literal, no static error
+        let forms = vec![SurfaceForm::Bind {
+            name: SExpr::Atom {
+                value: "x".into(),
+                span: span(),
+            },
+            type_ann: Some(TypeAnnotation {
+                name: "number".into(),
+                span: span(),
+            }),
+            value: SExpr::List {
+                values: vec![SExpr::Atom {
+                    value: "compute".into(),
+                    span: span(),
+                }],
+                span: span(),
+            },
+            span: span(),
+        }];
+        let result = analyze(&forms);
+        let errors: Vec<_> = result
+            .diagnostics
+            .iter()
+            .filter(|d| d.severity == Severity::Error)
+            .collect();
+        assert!(
+            errors.is_empty(),
+            "non-literal should not produce static error: {errors:?}"
+        );
+    }
+
+    #[test]
+    fn test_bind_null_fails_number_annotation() {
+        let forms = vec![SurfaceForm::Bind {
+            name: SExpr::Atom {
+                value: "y".into(),
+                span: span(),
+            },
+            type_ann: Some(TypeAnnotation {
+                name: "number".into(),
+                span: span(),
+            }),
+            value: SExpr::Null { span: span() },
+            span: span(),
+        }];
+        let result = analyze(&forms);
+        assert!(result.has_errors, "null should fail :number annotation");
+    }
+
+    #[test]
+    fn test_bind_bool_matches_boolean_annotation() {
+        let forms = vec![SurfaceForm::Bind {
+            name: SExpr::Atom {
+                value: "flag".into(),
+                span: span(),
+            },
+            type_ann: Some(TypeAnnotation {
+                name: "boolean".into(),
+                span: span(),
+            }),
+            value: SExpr::Bool {
+                value: true,
+                span: span(),
+            },
+            span: span(),
+        }];
+        let result = analyze(&forms);
+        let errors: Vec<_> = result
+            .diagnostics
+            .iter()
+            .filter(|d| d.severity == Severity::Error)
+            .collect();
+        assert!(errors.is_empty(), "bool should match :boolean: {errors:?}");
     }
 }

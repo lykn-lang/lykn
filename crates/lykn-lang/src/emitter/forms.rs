@@ -1,7 +1,8 @@
 use crate::analysis::type_registry::TypeRegistry;
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::{
-    Constructor, FuncClause, MatchClause, Pattern, SurfaceForm, ThreadingStep, TypedParam,
+    Constructor, FuncClause, MatchClause, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation,
+    TypedParam,
 };
 use crate::reader::source_loc::Span;
 
@@ -122,7 +123,12 @@ pub fn emit_form(
     registry: &TypeRegistry,
 ) -> Vec<SExpr> {
     match form {
-        SurfaceForm::Bind { name, value, .. } => emit_bind(name, value, ctx, registry),
+        SurfaceForm::Bind {
+            name,
+            type_ann,
+            value,
+            span,
+        } => emit_bind(name, type_ann.as_ref(), value, *span, ctx, registry),
         SurfaceForm::Obj { pairs, .. } => vec![emit_obj(pairs, ctx, registry)],
         SurfaceForm::Cell { value, .. } => vec![emit_cell(value, ctx, registry)],
         SurfaceForm::Express { target, .. } => vec![emit_express(target, ctx, registry)],
@@ -392,15 +398,74 @@ fn emit_js_interop(
 
 fn emit_bind(
     name: &SExpr,
+    type_ann: Option<&TypeAnnotation>,
     value: &SExpr,
+    span: Span,
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> Vec<SExpr> {
-    vec![list(vec![
+    let const_form = list(vec![
         atom("const"),
         name.clone(),
         emit_expr(value, ctx, registry),
-    ])]
+    ]);
+
+    let type_kw = match type_ann {
+        Some(ta) => &ta.name,
+        None => return vec![const_form],
+    };
+
+    // :any → no runtime check
+    if type_kw == "any" {
+        return vec![const_form];
+    }
+
+    // When strip_assertions is set, skip the runtime check
+    if ctx.strip_assertions {
+        return vec![const_form];
+    }
+
+    // If the value is a literal whose type matches, no check needed.
+    // If it's a literal that mismatches, the analysis pass should have
+    // caught it, but we still skip the check (the code won't reach codegen
+    // in a well-formed pipeline).
+    if literal_type_name(value).is_some() {
+        return vec![const_form];
+    }
+
+    // Non-literal value: emit const + runtime type check
+    let name_str = name.as_atom().unwrap_or("<expr>");
+    if let Some(check) = emit_type_check(name_str, type_kw, "bind", "binding", span) {
+        vec![const_form, check]
+    } else {
+        vec![const_form]
+    }
+}
+
+/// Return the JS type name for a literal `SExpr`, or `None` if it is not a
+/// literal.
+fn literal_type_name(expr: &SExpr) -> Option<&'static str> {
+    match expr {
+        SExpr::Number { .. } => Some("number"),
+        SExpr::String { .. } => Some("string"),
+        SExpr::Bool { .. } => Some("boolean"),
+        SExpr::Null { .. } => Some("null"),
+        SExpr::Atom { value, .. } => match value.as_str() {
+            "true" | "false" => Some("boolean"),
+            "null" => Some("null"),
+            "NaN" => Some("number"), // NaN is type "number" in JS but fails :number check
+            _ => None,
+        },
+        SExpr::List { values, .. } => {
+            let head = values.first().and_then(|v| v.as_atom())?;
+            match head {
+                "array" => Some("array"),
+                "obj" | "object" => Some("object"),
+                _ => None,
+            }
+        }
+        _ => None,
+    }
 }
 
 fn emit_obj(pairs: &[(String, SExpr)], ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
@@ -1931,6 +1996,148 @@ mod tests {
             assert_eq!(values[1].as_atom(), Some("x"));
         } else {
             panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_emit_bind_typed_literal_match_no_check() {
+        // (bind :number x 42) — literal matches → just const, no type check
+        let form = SurfaceForm::Bind {
+            name: atom("x"),
+            type_ann: Some(ta("number")),
+            value: num(42.0),
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1, "literal match should produce only const");
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("const"));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_emit_bind_typed_non_literal_emits_check() {
+        // (bind :number x (compute)) — non-literal → const + type check
+        let form = SurfaceForm::Bind {
+            name: atom("x"),
+            type_ann: Some(ta("number")),
+            value: list(vec![atom("compute")]),
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 2, "non-literal should produce const + check");
+        // First: const
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("const"));
+        } else {
+            panic!("expected const form");
+        }
+        // Second: if (type check)
+        if let SExpr::List { values, .. } = &result[1] {
+            assert_eq!(values[0].as_atom(), Some("if"));
+        } else {
+            panic!("expected if form for type check");
+        }
+    }
+
+    #[test]
+    fn test_emit_bind_any_no_check() {
+        // (bind :any x (compute)) — :any → no check
+        let form = SurfaceForm::Bind {
+            name: atom("x"),
+            type_ann: Some(ta("any")),
+            value: list(vec![atom("compute")]),
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1, ":any should not emit type check");
+    }
+
+    #[test]
+    fn test_emit_bind_strip_assertions_no_check() {
+        // (bind :number x (compute)) with strip_assertions → no check
+        let form = SurfaceForm::Bind {
+            name: atom("x"),
+            type_ann: Some(ta("number")),
+            value: list(vec![atom("compute")]),
+            span: s(),
+        };
+        let mut c = EmitterContext::new(true);
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1, "strip_assertions should omit type check");
+    }
+
+    #[test]
+    fn test_emit_bind_typed_string_literal_no_check() {
+        // (bind :string name "Alice") — literal matches → just const
+        let form = SurfaceForm::Bind {
+            name: atom("name"),
+            type_ann: Some(ta("string")),
+            value: str_lit("Alice"),
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+    }
+
+    #[test]
+    fn test_emit_bind_typed_boolean_literal_no_check() {
+        // (bind :boolean flag true) — literal matches → just const
+        let form = SurfaceForm::Bind {
+            name: atom("flag"),
+            type_ann: Some(ta("boolean")),
+            value: SExpr::Bool {
+                value: true,
+                span: s(),
+            },
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+    }
+
+    #[test]
+    fn test_emit_bind_typed_mismatched_literal_still_just_const() {
+        // (bind :number x "hello") — mismatch literal; emitter just emits const
+        // (analysis pass catches the error)
+        let form = SurfaceForm::Bind {
+            name: atom("x"),
+            type_ann: Some(ta("number")),
+            value: str_lit("hello"),
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(
+            result.len(),
+            1,
+            "mismatched literal should still only emit const (analysis catches error)"
+        );
+    }
+
+    #[test]
+    fn test_emit_bind_typed_array_check() {
+        // (bind :array xs (get-items)) — non-literal → const + array check
+        let form = SurfaceForm::Bind {
+            name: atom("xs"),
+            type_ann: Some(ta("array")),
+            value: list(vec![atom("get-items")]),
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 2);
+        if let SExpr::List { values, .. } = &result[1] {
+            assert_eq!(values[0].as_atom(), Some("if"));
+        } else {
+            panic!("expected type check");
         }
     }
 

@@ -190,4 +190,49 @@ mod tests {
         assert!(result.is_ok());
         assert!(result.unwrap().contains("const"));
     }
+
+    #[test]
+    fn compile_typed_bind_literal_match() {
+        // (bind :number x 42) — literal matches, just const
+        let source = "(bind :number x 42)";
+        let result = compile_source(source, None, false, true).unwrap();
+        assert!(result.contains("const"));
+        // Should NOT contain a type check (literal matches)
+        assert!(
+            !result.contains("TypeError"),
+            "no type check for matching literal"
+        );
+    }
+
+    #[test]
+    fn compile_typed_bind_literal_mismatch_errors() {
+        // (bind :number x "hello") — mismatch → compile error
+        let source = r#"(bind :number x "hello")"#;
+        let result = compile_source(source, None, false, true);
+        assert!(result.is_err(), "mismatch should produce error");
+        let err = result.unwrap_err();
+        assert!(
+            err.contains("bind 'x'"),
+            "error should mention binding name"
+        );
+    }
+
+    #[test]
+    fn compile_typed_bind_any_no_check() {
+        // (bind :any x 42) — :any, no check
+        let source = "(bind :any x 42)";
+        let result = compile_source(source, None, false, true).unwrap();
+        assert!(result.contains("const"));
+        assert!(!result.contains("TypeError"));
+    }
+
+    #[test]
+    fn compile_typed_bind_strip_assertions() {
+        // (bind :number x (compute)) with strip_assertions — no type check
+        let source = "(bind :number x (compute))";
+        let with = compile_source(source, None, false, true).unwrap();
+        let without = compile_source(source, None, true, true).unwrap();
+        // Stripped version should be shorter (no type check)
+        assert!(without.len() <= with.len());
+    }
 }

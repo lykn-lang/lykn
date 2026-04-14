@@ -31,8 +31,26 @@ Deno.test("bind: with type annotation", () => {
   assertEquals(lykn("(bind :number age 42)"), "const age = 42;");
 });
 
-Deno.test("bind: with type annotation and expression", () => {
-  assertEquals(lykn("(bind :string name (get-name user))"), "const name = getName(user);");
+Deno.test("bind: with type annotation and expression — emits runtime check", () => {
+  const result = lykn("(bind :string name (get-name user))");
+  assertEquals(result.includes("const name = getName(user);"), true);
+  assertEquals(result.includes("typeof name !== \"string\""), true);
+  assertEquals(result.includes("TypeError"), true);
+});
+
+Deno.test("bind: type annotation on literal — no runtime check", () => {
+  assertEquals(lykn('(bind :string name "hello")'), 'const name = "hello";');
+});
+
+Deno.test("bind: :any annotation — no runtime check", () => {
+  assertEquals(lykn("(bind :any x (compute))"), "const x = compute();");
+});
+
+Deno.test("bind: type mismatch on literal — compile error", () => {
+  let error;
+  try { lykn('(bind :number x "hello")'); } catch (e) { error = e; }
+  assertEquals(error instanceof Error, true);
+  assertEquals(error.message.includes("type annotation is :number but initializer is a string"), true);
 });
 
 Deno.test("bind: expansion produces const form", () => {

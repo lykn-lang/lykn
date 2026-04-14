@@ -48,6 +48,47 @@ function isPascalCase(name) {
 }
 
 /**
+ * Determine the static type of a literal AST node, or null if not a literal.
+ */
+function getLiteralType(node) {
+	if (node.type === "number") return "number";
+	if (node.type === "string") return "string";
+	if (node.type === "atom") {
+		if (node.value === "true" || node.value === "false") return "boolean";
+		if (node.value === "null") return "null";
+		if (node.value === "undefined") return "undefined";
+		if (node.value === "NaN") return "NaN";
+	}
+	// #a(...) array literal — classified as a list with head "array"
+	if (
+		node.type === "list" &&
+		node.values.length > 0 &&
+		node.values[0].type === "atom" &&
+		node.values[0].value === "array"
+	)
+		return "array";
+	// (obj ...) — classified as a list with head "obj"
+	if (
+		node.type === "list" &&
+		node.values.length > 0 &&
+		node.values[0].type === "atom" &&
+		node.values[0].value === "obj"
+	)
+		return "object";
+	return null;
+}
+
+/**
+ * Check if a type annotation matches a statically known literal type.
+ */
+function typeMatchesLiteral(typeName, literalType) {
+	if (literalType === "NaN") return false; // NaN fails :number
+	if (literalType === "null") return false; // null fails :object
+	if (literalType === "undefined") return false; // undefined fails everything
+	return typeName === literalType;
+}
+
+/**
  * Build a type check assertion for a parameter.
  * Returns a kernel (if (check) (throw (new TypeError msg))) form, or null for :any.
  */
@@ -56,9 +97,12 @@ function buildTypeCheck(paramNode, typeKw, funcName, label) {
 	if (typeName === "any") return null;
 
 	const paramName = paramNode.value;
+	const msgText = label
+		? `${funcName}: ${label} '${paramName}' expected ${typeName}, got `
+		: `${funcName} '${paramName}': expected ${typeName}, got `;
 	const msg = {
 		type: "string",
-		value: `${funcName}: ${label} '${paramName}' expected ${typeName}, got `,
+		value: msgText,
 	};
 	const typeofParam = array(sym("typeof"), paramNode);
 	const errorMsg = array(sym("+"), msg, typeofParam);
@@ -411,7 +455,7 @@ function andChain(checks) {
 export function registerSurfaceMacros(macroEnv) {
 	// --- bind ---
 	// (bind name value) → (const name value)
-	// (bind :type name value) → (const name value)
+	// (bind :type name value) → (const name value) + type check
 	macroEnv.set("bind", (...args) => {
 		if (args.length < 2) {
 			throw new Error("bind requires at least 2 arguments: (bind name value)");
@@ -422,7 +466,35 @@ export function registerSurfaceMacros(macroEnv) {
 					"bind with type annotation requires 3 arguments: (bind :type name value)",
 				);
 			}
-			return array(sym("const"), args[1], args[2]);
+			const typeKw = args[0];
+			const nameNode = args[1];
+			const valueNode = args[2];
+			const typeName = typeKw.value;
+			const constDecl = array(sym("const"), nameNode, valueNode);
+
+			// :any — no check
+			if (typeName === "any") {
+				return constDecl;
+			}
+
+			// Static check: literal initializer
+			const literalType = getLiteralType(valueNode);
+			if (literalType !== null) {
+				if (!typeMatchesLiteral(typeName, literalType)) {
+					throw new Error(
+						`bind '${nameNode.value}': type annotation is :${typeName} but initializer is a ${literalType} literal. Remove the annotation or fix the type.`,
+					);
+				}
+				// Type-compatible literal — no runtime check needed
+				return constDecl;
+			}
+
+			// Non-literal — emit runtime check
+			const check = buildTypeCheck(nameNode, typeKw, "bind", "");
+			if (check === null) {
+				return constDecl;
+			}
+			return array(sym("block"), constDecl, check);
 		}
 		return array(sym("const"), args[0], args[1]);
 	});
