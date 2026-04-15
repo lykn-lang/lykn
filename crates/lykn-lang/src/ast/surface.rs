@@ -342,6 +342,10 @@ pub enum SurfaceForm {
         operand: SExpr,
         span: Span,
     },
+    Async {
+        inner: Box<SurfaceForm>,
+        span: Span,
+    },
     Export {
         inner: Box<SurfaceForm>,
         /// Remaining raw args after the inner form (e.g., nothing for

@@ -16,6 +16,8 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                     classify_surface_form(head_name, args, *span)
                 } else if head_name == "export" {
                     classify_export(args, *span, expr)
+                } else if head_name == "async" {
+                    classify_async(args, *span, expr)
                 } else if dispatch::is_kernel_form(head_name) {
                     Ok(SurfaceForm::KernelPassthrough {
                         raw: expr.clone(),
@@ -58,12 +60,11 @@ fn classify_export(
         return Err(err("export requires at least one argument", span));
     }
 
-    // Check if the first arg is a list with a surface-form head
+    // Check if the first arg is a list with a head that needs recursive classification
     if let SExpr::List { values, .. } = &args[0]
         && let Some(head) = values.first().and_then(|e| e.as_atom())
-        && dispatch::is_surface_form(head)
+        && (dispatch::is_surface_form(head) || head == "async")
     {
-        // Recursively classify the inner surface form
         let inner = classify_form(&args[0])?;
         return Ok(SurfaceForm::Export {
             inner: Box::new(inner),
@@ -72,10 +73,34 @@ fn classify_export(
         });
     }
 
-    // Check for bare atom export: (export name) → should produce export { name }
-    // For now, fall through to kernel passthrough — the codegen handles it
-
     // Not a surface form inside — treat entire export as kernel passthrough
+    Ok(SurfaceForm::KernelPassthrough {
+        raw: raw_expr.clone(),
+        span,
+    })
+}
+
+/// Classify `(async ...)`. If the inner form is a surface form, classify it
+/// recursively and wrap it in `SurfaceForm::Async`. Otherwise treat the whole
+/// thing as a `KernelPassthrough`.
+fn classify_async(args: &[SExpr], span: Span, raw_expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
+    if args.is_empty() {
+        return Err(err("async requires at least one argument", span));
+    }
+
+    // Check if the first arg is a list with a surface-form head
+    if let SExpr::List { values, .. } = &args[0]
+        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && dispatch::is_surface_form(head)
+    {
+        let inner = classify_form(&args[0])?;
+        return Ok(SurfaceForm::Async {
+            inner: Box::new(inner),
+            span,
+        });
+    }
+
+    // Not a surface form inside — treat as kernel passthrough
     Ok(SurfaceForm::KernelPassthrough {
         raw: raw_expr.clone(),
         span,
@@ -955,12 +980,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                     is_rest: false,
                                 }));
                             }
-                            _ => {
-                                return Err(err(
-                                    "(default) expected :type name value",
-                                    *lspan,
-                                ))
-                            }
+                            _ => return Err(err("(default) expected :type name value", *lspan)),
                         }
                     }
                     "rest" => {
@@ -993,9 +1013,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                     is_rest: true,
                                 }));
                             }
-                            _ => {
-                                return Err(err("(rest) expected :type name", *lspan))
-                            }
+                            _ => return Err(err("(rest) expected :type name", *lspan)),
                         }
                     }
                     _ => {
@@ -4162,11 +4180,7 @@ mod tests {
             vec![
                 atom("f"),
                 kw("args"),
-                list(vec![list(vec![
-                    atom("default"),
-                    kw("number"),
-                    atom("x"),
-                ])]),
+                list(vec![list(vec![atom("default"), kw("number"), atom("x")])]),
                 kw("body"),
                 atom("x"),
             ],

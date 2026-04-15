@@ -196,6 +196,14 @@ pub fn emit_form(
         SurfaceForm::Match {
             target, clauses, ..
         } => vec![emit_match(target, clauses, ctx, registry)],
+        SurfaceForm::Async { inner, .. } => {
+            // Emit the inner surface form to kernel, then wrap in (async ...)
+            let inner_kernel = emit_form(inner, ctx, registry);
+            inner_kernel
+                .into_iter()
+                .map(|k| list(vec![atom("async"), k]))
+                .collect()
+        }
         SurfaceForm::Export {
             inner, extra_args, ..
         } => {

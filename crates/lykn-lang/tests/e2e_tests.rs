@@ -229,15 +229,54 @@ fn e2e_export_func() {
     assert_eq!(arr.len(), 1);
     let export_list = arr[0]["values"].as_array().expect("expected export list");
     assert_eq!(export_list[0]["value"], "export");
-    let func_list = export_list[1]["values"].as_array().expect("expected function list");
+    let func_list = export_list[1]["values"]
+        .as_array()
+        .expect("expected function list");
     assert_eq!(func_list[0]["value"], "function");
     assert_eq!(func_list[1]["value"], "add");
 }
-e2e_test!(
-    e2e_export_bind,
-    r#"(export (bind VERSION "0.4.0"))"#
-);
+e2e_test!(e2e_export_bind, r#"(export (bind VERSION "0.4.0"))"#);
 e2e_test!(
     e2e_export_func_destructured,
     "(export (func connect :args ((object :string host :number port (default :boolean ssl true))) :body (open-connection host port ssl)))"
 );
+
+// --- Async wrapping surface forms ---
+
+#[test]
+fn e2e_async_func() {
+    let json = rust_pipeline(
+        r#"(async (func fetch-user :args (:string id) :body (await (fetch (template "/api/users/" id)))))"#,
+    );
+    let val = normalize_json(&json);
+    let arr = val.as_array().expect("expected array");
+    assert_eq!(arr.len(), 1);
+    let async_list = arr[0]["values"].as_array().expect("expected async list");
+    assert_eq!(async_list[0]["value"], "async");
+    let func_list = async_list[1]["values"]
+        .as_array()
+        .expect("expected function list");
+    assert_eq!(func_list[0]["value"], "function");
+    assert_eq!(func_list[1]["value"], "fetch-user");
+}
+
+#[test]
+fn e2e_export_async_func() {
+    let json = rust_pipeline(
+        r#"(export (async (func fetch-user :args (:string id) :body (await (fetch (template "/api/users/" id))))))"#,
+    );
+    let val = normalize_json(&json);
+    let arr = val.as_array().expect("expected array");
+    assert_eq!(arr.len(), 1);
+    let export_list = arr[0]["values"].as_array().expect("expected export list");
+    assert_eq!(export_list[0]["value"], "export");
+    let async_list = export_list[1]["values"]
+        .as_array()
+        .expect("expected async list");
+    assert_eq!(async_list[0]["value"], "async");
+    let func_list = async_list[1]["values"]
+        .as_array()
+        .expect("expected function list");
+    assert_eq!(func_list[0]["value"], "function");
+    assert_eq!(func_list[1]["value"], "fetch-user");
+}
