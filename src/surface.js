@@ -253,13 +253,58 @@ function parseObjectDestructure(values, parentNode) {
 			const headVal = cur.values[0];
 			const headName = headVal?.type === "atom" ? headVal.value : "";
 			if (headName === "default") {
-				throw new Error(
-					"default values in destructured params are not yet supported — use a typed param with body destructuring and default",
-				);
+				if (cur.values.length !== 4) {
+					throw new Error(
+						"default in destructured params requires 3 arguments: (default :type name value)",
+					);
+				}
+				const defTypeKw = cur.values[1];
+				const defName = cur.values[2];
+				const defValue = cur.values[3];
+				if (!isKeyword(defTypeKw)) {
+					throw new Error("default: first argument must be a type keyword");
+				}
+				if (defName.type !== "atom") {
+					throw new Error("default: second argument must be a parameter name");
+				}
+				fields.push({ typeKw: defTypeKw, name: defName, defaultValue: defValue });
+				i += 1;
+				continue;
 			}
-			if (headName === "object" || headName === "array" || headName === "alias") {
+			if (headName === "alias") {
+				// (alias :type alias-name (object/array ...))
+				if (cur.values.length < 4) {
+					throw new Error(
+						"alias in destructured params requires: (alias :type name (object/array ...))",
+					);
+				}
+				const aliasTypeKw = cur.values[1];
+				const aliasName = cur.values[2];
+				const innerPattern = cur.values[3];
+				if (!isKeyword(aliasTypeKw)) {
+					throw new Error("alias: first argument must be a type keyword");
+				}
+				if (aliasName.type !== "atom") {
+					throw new Error("alias: second argument must be a name");
+				}
+				if (!isArray(innerPattern)) {
+					throw new Error(
+						"alias: third argument must be a destructuring pattern (object/array ...)",
+					);
+				}
+				const nestedParam = parseDestructuredParam(innerPattern);
+				fields.push({
+					nested: true,
+					alias: aliasName,
+					typeKw: aliasTypeKw,
+					pattern: nestedParam,
+				});
+				i += 1;
+				continue;
+			}
+			if (headName === "object" || headName === "array") {
 				throw new Error(
-					"nested destructuring in func/fn params is not yet supported — use a typed param with body destructuring",
+					"nested pattern in object destructuring must use alias to specify the property name: (alias :type name (object/array ...))",
 				);
 			}
 			throw new Error(
@@ -282,15 +327,7 @@ function parseObjectDestructure(values, parentNode) {
 			);
 		}
 		const nameNode = values[i + 1];
-		// Check for nested destructuring in name position
 		if (isArray(nameNode)) {
-			const headVal = nameNode.values[0];
-			const headName = headVal?.type === "atom" ? headVal.value : "";
-			if (headName === "object" || headName === "array" || headName === "alias") {
-				throw new Error(
-					"nested destructuring in func/fn params is not yet supported — use a typed param with body destructuring",
-				);
-			}
 			throw new Error("field name must be an atom");
 		}
 		if (nameNode.type !== "atom") {
@@ -338,14 +375,65 @@ function parseArrayDestructure(values, parentNode) {
 				continue;
 			}
 			if (headName === "default") {
-				throw new Error(
-					"default values in destructured params are not yet supported — use a typed param with body destructuring and default",
-				);
+				if (cur.values.length !== 4) {
+					throw new Error(
+						"default in destructured params requires 3 arguments: (default :type name value)",
+					);
+				}
+				const defTypeKw = cur.values[1];
+				const defName = cur.values[2];
+				const defValue = cur.values[3];
+				if (!isKeyword(defTypeKw)) {
+					throw new Error("default: first argument must be a type keyword");
+				}
+				if (defName.type !== "atom") {
+					throw new Error("default: second argument must be a parameter name");
+				}
+				fields.push({ typeKw: defTypeKw, name: defName, defaultValue: defValue });
+				i += 1;
+				continue;
 			}
-			if (headName === "object" || headName === "array" || headName === "alias") {
-				throw new Error(
-					"nested destructuring in func/fn params is not yet supported — use a typed param with body destructuring",
-				);
+			if (headName === "object" || headName === "array") {
+				// Positional nested pattern — no alias needed in array context
+				const nestedParam = parseDestructuredParam(cur);
+				fields.push({
+					nested: true,
+					alias: null,
+					typeKw: null,
+					pattern: nestedParam,
+				});
+				i += 1;
+				continue;
+			}
+			if (headName === "alias") {
+				if (cur.values.length < 4) {
+					throw new Error(
+						"alias in destructured params requires: (alias :type name (object/array ...))",
+					);
+				}
+				const aliasTypeKw = cur.values[1];
+				const aliasName = cur.values[2];
+				const innerPattern = cur.values[3];
+				if (!isKeyword(aliasTypeKw)) {
+					throw new Error("alias: first argument must be a type keyword");
+				}
+				if (aliasName.type !== "atom") {
+					throw new Error("alias: second argument must be a name");
+				}
+				if (!isArray(innerPattern)) {
+					throw new Error(
+						"alias: third argument must be a destructuring pattern (object/array ...)",
+					);
+				}
+				const nestedParam = parseDestructuredParam(innerPattern);
+				fields.push({
+					nested: true,
+					alias: aliasName,
+					typeKw: aliasTypeKw,
+					pattern: nestedParam,
+				});
+				i += 1;
+				continue;
 			}
 			throw new Error(
 				`unexpected list in array destructuring at position ${i}`,
@@ -385,12 +473,34 @@ function parseArrayDestructure(values, parentNode) {
 function paramNameNodes(p) {
 	if (p.destructured) {
 		if (p.kind === "object") {
-			return [array(sym("object"), ...p.fields.map((f) => f.name))];
+			const elems = p.fields.map((f) => {
+				if (f.nested) {
+					const innerKernel = paramNameNodes(f.pattern)[0];
+					if (f.alias) {
+						return array(sym("alias"), f.alias, innerKernel);
+					}
+					return innerKernel;
+				}
+				if (f.defaultValue) {
+					return array(sym("default"), f.name, f.defaultValue);
+				}
+				return f.name;
+			});
+			return [array(sym("object"), ...elems)];
 		}
 		if (p.kind === "array") {
-			const elems = p.fields.map((f) =>
-				f.skip ? sym("_") : f.name,
-			);
+			const elems = p.fields.map((f) => {
+				if (f.skip) return sym("_");
+				if (f.nested) {
+					const innerKernel = paramNameNodes(f.pattern)[0];
+					if (f.alias) {
+						return array(sym("alias"), f.alias, innerKernel);
+					}
+					return innerKernel;
+				}
+				if (f.defaultValue) return array(sym("default"), f.name, f.defaultValue);
+				return f.name;
+			});
 			if (p.rest) {
 				elems.push(array(sym("rest"), p.rest.name));
 			}
@@ -409,6 +519,16 @@ function paramTypeChecks(p, funcName) {
 			...(p.rest ? [p.rest] : []),
 		];
 		for (const f of allFields) {
+			if (f.nested) {
+				// Recurse into nested pattern for leaf-level checks
+				checks.push(...paramTypeChecks(f.pattern, funcName));
+				// Type-check the alias binding itself if not :any
+				if (f.typeKw && f.typeKw.value !== "any") {
+					const check = buildTypeCheck(f.alias, f.typeKw, funcName, "arg");
+					if (check) checks.push(check);
+				}
+				continue;
+			}
 			const check = buildTypeCheck(f.name, f.typeKw, funcName, "arg");
 			if (check) checks.push(check);
 		}
@@ -427,7 +547,16 @@ function paramDispatchType(p) {
 /** Get all bound name nodes for a param. */
 function paramBoundNames(p) {
 	if (p.destructured) {
-		const names = p.fields.filter((f) => !f.skip).map((f) => f.name);
+		const names = [];
+		for (const f of p.fields) {
+			if (f.skip) continue;
+			if (f.nested) {
+				if (f.alias) names.push(f.alias);
+				names.push(...paramBoundNames(f.pattern));
+				continue;
+			}
+			names.push(f.name);
+		}
 		if (p.rest) names.push(p.rest.name);
 		return names;
 	}

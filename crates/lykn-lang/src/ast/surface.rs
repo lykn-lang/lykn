@@ -12,6 +12,19 @@ pub struct TypedParam {
     pub type_ann: TypeAnnotation,
     pub name: String,
     pub name_span: Span,
+    pub default_value: Option<SExpr>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum DestructuredField {
+    Simple(TypedParam),
+    Nested {
+        alias_name: String,
+        alias_name_span: Span,
+        type_ann: TypeAnnotation,
+        pattern: Box<ParamShape>,
+        span: Span,
+    },
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -19,13 +32,24 @@ pub enum ArrayParamElement {
     Typed(TypedParam),
     Rest(TypedParam),
     Skip(Span),
+    Nested {
+        pattern: Box<ParamShape>,
+        span: Span,
+    },
+    NestedWithAlias {
+        alias_name: String,
+        alias_name_span: Span,
+        type_ann: TypeAnnotation,
+        pattern: Box<ParamShape>,
+        span: Span,
+    },
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParamShape {
     Simple(TypedParam),
     DestructuredObject {
-        fields: Vec<TypedParam>,
+        fields: Vec<DestructuredField>,
         span: Span,
     },
     DestructuredArray {
@@ -41,27 +65,69 @@ impl From<TypedParam> for ParamShape {
 }
 
 impl ParamShape {
-    /// All typed params — flattened.
+    /// All typed params — flattened, recursing into nested patterns.
     pub fn typed_params(&self) -> Vec<&TypedParam> {
         match self {
             Self::Simple(tp) => vec![tp],
-            Self::DestructuredObject { fields, .. } => fields.iter().collect(),
+            Self::DestructuredObject { fields, .. } => fields
+                .iter()
+                .flat_map(|f| match f {
+                    DestructuredField::Simple(tp) => vec![tp],
+                    DestructuredField::Nested { pattern, .. } => pattern.typed_params(),
+                })
+                .collect(),
             Self::DestructuredArray { elements, .. } => elements
                 .iter()
-                .filter_map(|e| match e {
-                    ArrayParamElement::Typed(tp) | ArrayParamElement::Rest(tp) => Some(tp),
-                    ArrayParamElement::Skip(_) => None,
+                .flat_map(|e| match e {
+                    ArrayParamElement::Typed(tp) | ArrayParamElement::Rest(tp) => vec![tp],
+                    ArrayParamElement::Skip(_) => vec![],
+                    ArrayParamElement::Nested { pattern, .. }
+                    | ArrayParamElement::NestedWithAlias { pattern, .. } => pattern.typed_params(),
                 })
                 .collect(),
         }
     }
 
     /// All bound names — for scope tracking.
+    /// Includes alias names AND leaf names from nested patterns.
     pub fn bound_names(&self) -> Vec<&str> {
-        self.typed_params()
-            .iter()
-            .map(|tp| tp.name.as_str())
-            .collect()
+        match self {
+            Self::Simple(tp) => vec![tp.name.as_str()],
+            Self::DestructuredObject { fields, .. } => fields
+                .iter()
+                .flat_map(|f| match f {
+                    DestructuredField::Simple(tp) => vec![tp.name.as_str()],
+                    DestructuredField::Nested {
+                        alias_name,
+                        pattern,
+                        ..
+                    } => {
+                        let mut names = vec![alias_name.as_str()];
+                        names.extend(pattern.bound_names());
+                        names
+                    }
+                })
+                .collect(),
+            Self::DestructuredArray { elements, .. } => elements
+                .iter()
+                .flat_map(|e| match e {
+                    ArrayParamElement::Typed(tp) | ArrayParamElement::Rest(tp) => {
+                        vec![tp.name.as_str()]
+                    }
+                    ArrayParamElement::Skip(_) => vec![],
+                    ArrayParamElement::Nested { pattern, .. } => pattern.bound_names(),
+                    ArrayParamElement::NestedWithAlias {
+                        alias_name,
+                        pattern,
+                        ..
+                    } => {
+                        let mut names = vec![alias_name.as_str()];
+                        names.extend(pattern.bound_names());
+                        names
+                    }
+                })
+                .collect(),
+        }
     }
 
     /// The type keyword for dispatch purposes.

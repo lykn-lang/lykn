@@ -151,25 +151,145 @@ Deno.test("func: error on bare name without type in object", () => {
   );
 });
 
-Deno.test("func: error on nested destructuring", () => {
+// --- Nested destructuring ---
+
+Deno.test("func: nested object with alias", () => {
+  const result = lykn(
+    "(func f :args ((object :string id (alias :any c (object :string name :string email)))) :body (console:log id name email))",
+  );
+  assertEquals(result.includes("{id, c: {name, email}}"), true);
+  assertEquals(result.includes('typeof id !== "string"'), true);
+  assertEquals(result.includes('typeof name !== "string"'), true);
+  assertEquals(result.includes('typeof email !== "string"'), true);
+});
+
+Deno.test("func: nested object in array (positional)", () => {
+  const result = lykn(
+    "(func f :args ((array (object :string name) :number score)) :body (console:log name score))",
+  );
+  assertEquals(result.includes("[{name}, score]"), true);
+  assertEquals(result.includes('typeof name !== "string"'), true);
+  assertEquals(result.includes('typeof score !== "number"'), true);
+});
+
+Deno.test("func: two levels deep nesting", () => {
+  const result = lykn(
+    "(func f :args ((object (alias :any a (object :string city (alias :any g (object :number lat :number lng)))))) :body (console:log city lat lng))",
+  );
+  assertEquals(result.includes("{a: {city, g: {lat, lng}}}"), true);
+  assertEquals(result.includes('typeof city !== "string"'), true);
+  assertEquals(result.includes('typeof lat !== "number"'), true);
+});
+
+Deno.test("func: nested + default combined", () => {
+  const result = lykn(
+    '(func f :args ((object (default :string name "anon") (alias :any addr (object :string city)))) :body (console:log name city))',
+  );
+  assertEquals(result.includes('{name = "anon", addr: {city}}'), true);
+});
+
+Deno.test("fn: nested destructuring", () => {
+  const result = lykn(
+    "(bind f (fn ((object (alias :any c (object :string name)))) (console:log name)))",
+  );
+  assertEquals(result.includes("{c: {name}}"), true);
+  assertEquals(result.includes('typeof name !== "string"'), true);
+});
+
+Deno.test("func: error on nested without alias in object", () => {
   assertThrows(
-    () =>
-      lykn(
-        "(func f :args ((object :string name (alias :any addr (object :string city)))) :body 1)",
-      ),
+    () => lykn("(func f :args ((object (object :string name))) :body 1)"),
     Error,
-    "nested destructuring",
+    "must use alias",
   );
 });
 
-Deno.test("func: error on default in destructured", () => {
+Deno.test("func: error on alias missing inner pattern", () => {
   assertThrows(
-    () =>
-      lykn(
-        '(func f :args ((object (default :string name "anon") :number age)) :body 1)',
-      ),
+    () => lykn("(func f :args ((object (alias :any name))) :body 1)"),
     Error,
-    "default values in destructured params",
+    "requires",
+  );
+});
+
+// --- Default values in destructured params ---
+
+Deno.test("func: object destructuring with default", () => {
+  const result = lykn(
+    '(func f :args ((object :string name (default :number age 0))) :body (console:log name age))',
+  );
+  assertEquals(result.includes("{name, age = 0}"), true);
+  assertEquals(result.includes('typeof name !== "string"'), true);
+  assertEquals(result.includes('typeof age !== "number"'), true);
+});
+
+Deno.test("func: object destructuring with multiple defaults", () => {
+  const result = lykn(
+    '(func f :args ((object (default :string name "anon") (default :number age 0))) :body (console:log name age))',
+  );
+  assertEquals(result.includes('{name = "anon", age = 0}'), true);
+});
+
+Deno.test("func: mixed default + non-default fields", () => {
+  const result = lykn(
+    '(func f :args ((object :string name (default :number age 0) :string email)) :body 1)',
+  );
+  assertEquals(result.includes("{name, age = 0, email}"), true);
+});
+
+Deno.test("func: default with :any — no type check", () => {
+  const result = lykn(
+    '(func f :args ((object (default :any name "anon") :number age)) :body (console:log name age))',
+  );
+  assertEquals(result.includes('{name = "anon", age}'), true);
+  // :any default — no type check for name
+  assertEquals(result.includes('typeof name'), false);
+  // :number still checked
+  assertEquals(result.includes('typeof age !== "number"'), true);
+});
+
+Deno.test("func: array destructuring with default", () => {
+  const result = lykn(
+    "(func f :args ((array :number first (default :number second 0))) :body (+ first second))",
+  );
+  assertEquals(result.includes("[first, second = 0]"), true);
+});
+
+Deno.test("func: default value is expression", () => {
+  const result = lykn(
+    "(func f :args ((object (default :number x (+ 1 2)))) :body x)",
+  );
+  assertEquals(result.includes("x = 1 + 2"), true);
+});
+
+Deno.test("fn: with default in destructured", () => {
+  const result = lykn(
+    '(bind f (fn ((object :string name (default :number age 0))) (console:log name age)))',
+  );
+  assertEquals(result.includes("{name, age = 0}"), true);
+  assertEquals(result.includes('typeof name !== "string"'), true);
+});
+
+Deno.test("func: default + rest in array", () => {
+  const result = lykn(
+    "(func f :args ((array (default :number first 0) (rest :number others))) :body (console:log first others))",
+  );
+  assertEquals(result.includes("[first = 0, ...others]"), true);
+});
+
+Deno.test("func: error on default missing value", () => {
+  assertThrows(
+    () => lykn("(func f :args ((object (default :number age))) :body 1)"),
+    Error,
+    "requires 3 arguments",
+  );
+});
+
+Deno.test("func: error on default missing type", () => {
+  assertThrows(
+    () => lykn("(func f :args ((object (default age 0 1))) :body 1)"),
+    Error,
+    "must be a type keyword",
   );
 });
 

@@ -100,7 +100,9 @@ mod tests {
     use super::*;
     use crate::analysis::prelude::register_prelude_types;
     use crate::analysis::type_registry::TypeRegistry;
-    use crate::ast::surface::{FuncClause, ParamShape, SurfaceForm, TypeAnnotation, TypedParam};
+    use crate::ast::surface::{
+        DestructuredField, FuncClause, ParamShape, SurfaceForm, TypeAnnotation, TypedParam,
+    };
     use crate::reader::source_loc::Span;
 
     fn span() -> Span {
@@ -121,6 +123,7 @@ mod tests {
             },
             name: name.into(),
             name_span: span(),
+            default_value: None,
         }
     }
 
@@ -245,11 +248,14 @@ mod tests {
             "f",
             vec![
                 func_clause_with_shapes(vec![ParamShape::DestructuredObject {
-                    fields: vec![typed_param("name", "string"), typed_param("age", "number")],
+                    fields: vec![
+                        DestructuredField::Simple(typed_param("name", "string")),
+                        DestructuredField::Simple(typed_param("age", "number")),
+                    ],
                     span: span(),
                 }]),
                 func_clause_with_shapes(vec![ParamShape::DestructuredObject {
-                    fields: vec![typed_param("label", "string")],
+                    fields: vec![DestructuredField::Simple(typed_param("label", "string"))],
                     span: span(),
                 }]),
             ],
@@ -269,7 +275,7 @@ mod tests {
             "f",
             vec![
                 func_clause_with_shapes(vec![ParamShape::DestructuredObject {
-                    fields: vec![typed_param("name", "string")],
+                    fields: vec![DestructuredField::Simple(typed_param("name", "string"))],
                     span: span(),
                 }]),
                 func_clause(vec![typed_param("s", "string")]),
@@ -289,7 +295,7 @@ mod tests {
             "f",
             vec![
                 func_clause_with_shapes(vec![ParamShape::DestructuredObject {
-                    fields: vec![typed_param("name", "string")],
+                    fields: vec![DestructuredField::Simple(typed_param("name", "string"))],
                     span: span(),
                 }]),
                 func_clause_with_shapes(vec![ParamShape::DestructuredArray {
@@ -321,5 +327,58 @@ mod tests {
         let diags = check_func_overlap(&form, &reg);
         assert!(!diags.is_empty());
         assert!(diags[0].message.contains("clauses 0 and 2"));
+    }
+
+    // ---------------------------------------------------------------
+    // DD-25: default values do not affect dispatch overlap detection
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_no_overlap_default_doesnt_affect_dispatch() {
+        // Two clauses with the same type but different defaults still overlap,
+        // because defaults don't affect dispatch — only type keywords do.
+        let reg = registry();
+        let form = func_form(
+            "f",
+            vec![
+                func_clause_with_shapes(vec![ParamShape::DestructuredObject {
+                    fields: vec![DestructuredField::Simple(TypedParam {
+                        type_ann: TypeAnnotation {
+                            name: "string".into(),
+                            span: span(),
+                        },
+                        name: "name".into(),
+                        name_span: span(),
+                        default_value: Some(crate::ast::sexpr::SExpr::String {
+                            value: "alice".into(),
+                            span: span(),
+                        }),
+                    })],
+                    span: span(),
+                }]),
+                func_clause_with_shapes(vec![ParamShape::DestructuredObject {
+                    fields: vec![DestructuredField::Simple(TypedParam {
+                        type_ann: TypeAnnotation {
+                            name: "string".into(),
+                            span: span(),
+                        },
+                        name: "label".into(),
+                        name_span: span(),
+                        default_value: Some(crate::ast::sexpr::SExpr::String {
+                            value: "bob".into(),
+                            span: span(),
+                        }),
+                    })],
+                    span: span(),
+                }]),
+            ],
+        );
+        let diags = check_func_overlap(&form, &reg);
+        assert!(
+            !diags.is_empty(),
+            "two object destructures with different defaults should still overlap \
+             (defaults do not affect dispatch)"
+        );
+        assert!(diags[0].message.contains("overlap"));
     }
 }

@@ -1,8 +1,8 @@
 use crate::analysis::type_registry::TypeRegistry;
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::{
-    ArrayParamElement, Constructor, FuncClause, MatchClause, ParamShape, Pattern, SurfaceForm,
-    ThreadingStep, TypeAnnotation,
+    ArrayParamElement, Constructor, DestructuredField, FuncClause, MatchClause, ParamShape,
+    Pattern, SurfaceForm, ThreadingStep, TypeAnnotation,
 };
 use crate::reader::source_loc::Span;
 
@@ -922,18 +922,72 @@ fn emit_type(
 /// Convert a ParamShape to kernel parameter name nodes.
 fn param_to_kernel_names(p: &ParamShape) -> Vec<SExpr> {
     match p {
-        ParamShape::Simple(tp) => vec![atom(&tp.name)],
+        ParamShape::Simple(tp) => {
+            if let Some(ref val) = tp.default_value {
+                vec![list(vec![atom("default"), atom(&tp.name), val.clone()])]
+            } else {
+                vec![atom(&tp.name)]
+            }
+        }
         ParamShape::DestructuredObject { fields, .. } => {
             let mut items = vec![atom("object")];
-            items.extend(fields.iter().map(|f| atom(&f.name)));
+            items.extend(fields.iter().map(|f| match f {
+                DestructuredField::Simple(tp) => {
+                    if let Some(ref val) = tp.default_value {
+                        list(vec![atom("default"), atom(&tp.name), val.clone()])
+                    } else {
+                        atom(&tp.name)
+                    }
+                }
+                DestructuredField::Nested {
+                    alias_name,
+                    pattern,
+                    ..
+                } => {
+                    let inner = param_to_kernel_names(pattern);
+                    let inner_node = if inner.len() == 1 {
+                        inner.into_iter().next().unwrap()
+                    } else {
+                        list(inner)
+                    };
+                    list(vec![atom("alias"), atom(alias_name), inner_node])
+                }
+            }));
             vec![list(items)]
         }
         ParamShape::DestructuredArray { elements, .. } => {
             let mut items = vec![atom("array")];
             items.extend(elements.iter().map(|e| match e {
-                ArrayParamElement::Typed(tp) => atom(&tp.name),
+                ArrayParamElement::Typed(tp) => {
+                    if let Some(ref val) = tp.default_value {
+                        list(vec![atom("default"), atom(&tp.name), val.clone()])
+                    } else {
+                        atom(&tp.name)
+                    }
+                }
                 ArrayParamElement::Rest(tp) => list(vec![atom("rest"), atom(&tp.name)]),
                 ArrayParamElement::Skip(_) => atom("_"),
+                ArrayParamElement::Nested { pattern, .. } => {
+                    let inner = param_to_kernel_names(pattern);
+                    if inner.len() == 1 {
+                        inner.into_iter().next().unwrap()
+                    } else {
+                        list(inner)
+                    }
+                }
+                ArrayParamElement::NestedWithAlias {
+                    alias_name,
+                    pattern,
+                    ..
+                } => {
+                    let inner = param_to_kernel_names(pattern);
+                    let inner_node = if inner.len() == 1 {
+                        inner.into_iter().next().unwrap()
+                    } else {
+                        list(inner)
+                    };
+                    list(vec![atom("alias"), atom(alias_name), inner_node])
+                }
             }));
             vec![list(items)]
         }
@@ -1940,8 +1994,8 @@ mod tests {
     use super::*;
     use crate::analysis::type_registry::{ConstructorDef, FieldDef, TypeDef, TypeRegistry};
     use crate::ast::surface::{
-        Constructor, FuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
-        TypeAnnotation, TypedParam,
+        Constructor, DestructuredField, FuncClause, MatchClause, ParamShape, Pattern, SurfaceForm,
+        ThreadingStep, TypeAnnotation, TypedParam,
     };
     use crate::emitter::context::EmitterContext;
 
@@ -1961,6 +2015,7 @@ mod tests {
             type_ann: ta(type_name),
             name: param_name.to_string(),
             name_span: s(),
+            default_value: None,
         }
     }
 
@@ -5821,7 +5876,10 @@ mod tests {
             name_span: s(),
             clauses: vec![FuncClause {
                 args: vec![ParamShape::DestructuredObject {
-                    fields: vec![tp("string", "name"), tp("number", "age")],
+                    fields: vec![
+                        DestructuredField::Simple(tp("string", "name")),
+                        DestructuredField::Simple(tp("number", "age")),
+                    ],
                     span: s(),
                 }],
                 returns: None,
@@ -5875,7 +5933,10 @@ mod tests {
     fn test_emit_fn_object_destructure() {
         let form = SurfaceForm::Fn {
             params: vec![ParamShape::DestructuredObject {
-                fields: vec![tp("string", "name"), tp("number", "age")],
+                fields: vec![
+                    DestructuredField::Simple(tp("string", "name")),
+                    DestructuredField::Simple(tp("number", "age")),
+                ],
                 span: s(),
             }],
             body: vec![atom("name")],
@@ -5915,7 +5976,7 @@ mod tests {
             clauses: vec![
                 FuncClause {
                     args: vec![ParamShape::DestructuredObject {
-                        fields: vec![tp("string", "name")],
+                        fields: vec![DestructuredField::Simple(tp("string", "name"))],
                         span: s(),
                     }],
                     returns: None,
@@ -6026,6 +6087,272 @@ mod tests {
             // Both sides should be emitted (cell → object with value)
             assert!(matches!(values[1], SExpr::List { .. }));
             assert!(matches!(values[2], SExpr::List { .. }));
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // DD-25: default values in emitter output
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_emit_func_single_clause_object_default() {
+        // Build a func with a DestructuredObject containing a field with a default value.
+        let form = SurfaceForm::Func {
+            name: "greet".into(),
+            name_span: s(),
+            clauses: vec![FuncClause {
+                args: vec![ParamShape::DestructuredObject {
+                    fields: vec![
+                        DestructuredField::Simple(tp("string", "name")),
+                        DestructuredField::Simple(TypedParam {
+                            type_ann: ta("number"),
+                            name: "age".into(),
+                            name_span: s(),
+                            default_value: Some(num(0.0)),
+                        }),
+                    ],
+                    span: s(),
+                }],
+                returns: None,
+                pre: None,
+                post: None,
+                body: vec![atom("name")],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("function"));
+            assert_eq!(values[1].as_atom(), Some("greet"));
+            // Param list should contain (object name (default age 0))
+            if let SExpr::List { values: params, .. } = &values[2] {
+                assert_eq!(params.len(), 1);
+                if let SExpr::List {
+                    values: obj_param, ..
+                } = &params[0]
+                {
+                    assert_eq!(obj_param[0].as_atom(), Some("object"));
+                    assert_eq!(obj_param[1].as_atom(), Some("name"));
+                    // Third element should be (default age 0)
+                    if let SExpr::List {
+                        values: default_node,
+                        ..
+                    } = &obj_param[2]
+                    {
+                        assert_eq!(default_node[0].as_atom(), Some("default"));
+                        assert_eq!(default_node[1].as_atom(), Some("age"));
+                        assert!(
+                            matches!(&default_node[2], SExpr::Number { value, .. } if *value == 0.0)
+                        );
+                    } else {
+                        panic!("expected default list node, got: {:?}", obj_param[2]);
+                    }
+                } else {
+                    panic!("expected object destructuring list");
+                }
+            } else {
+                panic!("expected params list");
+            }
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_emit_fn_object_default() {
+        // Arrow function with default: (fn ((object (default :string name "anon"))) x)
+        let form = SurfaceForm::Fn {
+            params: vec![ParamShape::DestructuredObject {
+                fields: vec![DestructuredField::Simple(TypedParam {
+                    type_ann: ta("string"),
+                    name: "name".into(),
+                    name_span: s(),
+                    default_value: Some(str_lit("anon")),
+                })],
+                span: s(),
+            }],
+            body: vec![atom("x")],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("=>"));
+            if let SExpr::List { values: params, .. } = &values[1] {
+                assert_eq!(params.len(), 1);
+                if let SExpr::List {
+                    values: obj_param, ..
+                } = &params[0]
+                {
+                    assert_eq!(obj_param[0].as_atom(), Some("object"));
+                    // Should be (default name "anon")
+                    if let SExpr::List {
+                        values: default_node,
+                        ..
+                    } = &obj_param[1]
+                    {
+                        assert_eq!(default_node[0].as_atom(), Some("default"));
+                        assert_eq!(default_node[1].as_atom(), Some("name"));
+                        assert!(
+                            matches!(&default_node[2], SExpr::String { value, .. } if value == "anon")
+                        );
+                    } else {
+                        panic!("expected default list node, got: {:?}", obj_param[1]);
+                    }
+                } else {
+                    panic!("expected object destructuring list");
+                }
+            } else {
+                panic!("expected params list");
+            }
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // DD-25: nested destructuring in emitter output
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_emit_func_nested_object_with_alias() {
+        // Build with DestructuredField::Nested. Verify kernel output contains
+        // (alias c (object name)).
+        let form = SurfaceForm::Func {
+            name: "f".into(),
+            name_span: s(),
+            clauses: vec![FuncClause {
+                args: vec![ParamShape::DestructuredObject {
+                    fields: vec![DestructuredField::Nested {
+                        alias_name: "c".into(),
+                        alias_name_span: s(),
+                        type_ann: ta("any"),
+                        pattern: Box::new(ParamShape::DestructuredObject {
+                            fields: vec![DestructuredField::Simple(tp("string", "name"))],
+                            span: s(),
+                        }),
+                        span: s(),
+                    }],
+                    span: s(),
+                }],
+                returns: None,
+                pre: None,
+                post: None,
+                body: vec![atom("x")],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("function"));
+            assert_eq!(values[1].as_atom(), Some("f"));
+            if let SExpr::List { values: params, .. } = &values[2] {
+                assert_eq!(params.len(), 1);
+                if let SExpr::List {
+                    values: obj_param, ..
+                } = &params[0]
+                {
+                    assert_eq!(obj_param[0].as_atom(), Some("object"));
+                    // Should be (alias c (object name))
+                    if let SExpr::List {
+                        values: alias_node, ..
+                    } = &obj_param[1]
+                    {
+                        assert_eq!(alias_node[0].as_atom(), Some("alias"));
+                        assert_eq!(alias_node[1].as_atom(), Some("c"));
+                        // Third element should be (object name)
+                        if let SExpr::List {
+                            values: inner_obj, ..
+                        } = &alias_node[2]
+                        {
+                            assert_eq!(inner_obj[0].as_atom(), Some("object"));
+                            assert_eq!(inner_obj[1].as_atom(), Some("name"));
+                        } else {
+                            panic!("expected inner object list, got: {:?}", alias_node[2]);
+                        }
+                    } else {
+                        panic!("expected alias list node, got: {:?}", obj_param[1]);
+                    }
+                } else {
+                    panic!("expected object destructuring list");
+                }
+            } else {
+                panic!("expected params list");
+            }
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_emit_func_nested_in_array() {
+        // Build with ArrayParamElement::Nested. Verify kernel output contains
+        // (object name) directly inside (array ...).
+        let form = SurfaceForm::Func {
+            name: "f".into(),
+            name_span: s(),
+            clauses: vec![FuncClause {
+                args: vec![ParamShape::DestructuredArray {
+                    elements: vec![
+                        ArrayParamElement::Nested {
+                            pattern: Box::new(ParamShape::DestructuredObject {
+                                fields: vec![DestructuredField::Simple(tp("string", "name"))],
+                                span: s(),
+                            }),
+                            span: s(),
+                        },
+                        ArrayParamElement::Typed(tp("number", "score")),
+                    ],
+                    span: s(),
+                }],
+                returns: None,
+                pre: None,
+                post: None,
+                body: vec![atom("x")],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("function"));
+            assert_eq!(values[1].as_atom(), Some("f"));
+            if let SExpr::List { values: params, .. } = &values[2] {
+                assert_eq!(params.len(), 1);
+                if let SExpr::List {
+                    values: arr_param, ..
+                } = &params[0]
+                {
+                    assert_eq!(arr_param[0].as_atom(), Some("array"));
+                    // First element should be (object name) — the nested pattern
+                    if let SExpr::List {
+                        values: inner_obj, ..
+                    } = &arr_param[1]
+                    {
+                        assert_eq!(inner_obj[0].as_atom(), Some("object"));
+                        assert_eq!(inner_obj[1].as_atom(), Some("name"));
+                    } else {
+                        panic!("expected nested object list, got: {:?}", arr_param[1]);
+                    }
+                    // Second element should be plain atom "score"
+                    assert_eq!(arr_param[2].as_atom(), Some("score"));
+                } else {
+                    panic!("expected array destructuring list");
+                }
+            } else {
+                panic!("expected params list");
+            }
         } else {
             panic!("expected list");
         }
