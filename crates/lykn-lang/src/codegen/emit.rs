@@ -444,24 +444,39 @@ fn emit_function(w: &mut JsWriter, args: &[SExpr]) {
 }
 
 fn emit_function_star(w: &mut JsWriter, args: &[SExpr]) {
-    // (function* name (params...) body...)
+    // (function* name (params...) body...) — named
+    // (function* (params...) body...)      — anonymous
     if args.is_empty() {
         w.write("function*() {}");
         w.newline();
         return;
     }
-    w.write("function* ");
-    emit_expr(w, &args[0], 0);
-    if args.len() >= 2 {
-        emit_params(w, &args[1]);
+    // Check if first arg is a param list (anonymous) or a name (named)
+    if args[0].is_list() {
+        // Anonymous: (function* (params) body...)
+        w.write("function*");
+        emit_params(w, &args[0]);
+        w.write(" ");
+        if args.len() >= 2 {
+            emit_block_body(w, &args[1..]);
+        } else {
+            w.write("{}");
+        }
     } else {
-        w.write("()");
-    }
-    w.write(" ");
-    if args.len() >= 3 {
-        emit_block_body(w, &args[2..]);
-    } else {
-        w.write("{}");
+        // Named: (function* name (params) body...)
+        w.write("function* ");
+        emit_expr(w, &args[0], 0);
+        if args.len() >= 2 {
+            emit_params(w, &args[1]);
+        } else {
+            w.write("()");
+        }
+        w.write(" ");
+        if args.len() >= 3 {
+            emit_block_body(w, &args[2..]);
+        } else {
+            w.write("{}");
+        }
     }
     w.newline();
 }
