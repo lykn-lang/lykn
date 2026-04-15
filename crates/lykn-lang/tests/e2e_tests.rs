@@ -213,3 +213,31 @@ fn e2e_analysis_catches_errors() {
     let result = analysis::analyze(&forms);
     assert!(!result.has_errors, "simple bind should not produce errors");
 }
+
+// --- Export wrapping surface forms ---
+
+// Note: export_func uses a Rust-only test because :returns generates
+// gensym'd result variables that differ between JS and Rust compilers.
+#[test]
+fn e2e_export_func() {
+    let json = rust_pipeline(
+        "(export (func add :args (:number a :number b) :returns :number :body (+ a b)))",
+    );
+    let val = normalize_json(&json);
+    // Should be [(export (function add ...))]
+    let arr = val.as_array().expect("expected array");
+    assert_eq!(arr.len(), 1);
+    let export_list = arr[0]["values"].as_array().expect("expected export list");
+    assert_eq!(export_list[0]["value"], "export");
+    let func_list = export_list[1]["values"].as_array().expect("expected function list");
+    assert_eq!(func_list[0]["value"], "function");
+    assert_eq!(func_list[1]["value"], "add");
+}
+e2e_test!(
+    e2e_export_bind,
+    r#"(export (bind VERSION "0.4.0"))"#
+);
+e2e_test!(
+    e2e_export_func_destructured,
+    "(export (func connect :args ((object :string host :number port (default :boolean ssl true))) :body (open-connection host port ssl)))"
+);

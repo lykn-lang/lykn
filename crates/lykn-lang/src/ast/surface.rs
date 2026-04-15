@@ -342,6 +342,13 @@ pub enum SurfaceForm {
         operand: SExpr,
         span: Span,
     },
+    Export {
+        inner: Box<SurfaceForm>,
+        /// Remaining raw args after the inner form (e.g., nothing for
+        /// `(export (func ...))`, but could be present for other export patterns)
+        extra_args: Vec<SExpr>,
+        span: Span,
+    },
     KernelPassthrough {
         raw: SExpr,
         span: Span,

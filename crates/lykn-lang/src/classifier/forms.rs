@@ -14,6 +14,8 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                 let args = &values[1..];
                 if dispatch::is_surface_form(head_name) {
                     classify_surface_form(head_name, args, *span)
+                } else if head_name == "export" {
+                    classify_export(args, *span, expr)
                 } else if dispatch::is_kernel_form(head_name) {
                     Ok(SurfaceForm::KernelPassthrough {
                         raw: expr.clone(),
@@ -42,6 +44,42 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
             span: expr.span(),
         }),
     }
+}
+
+/// Classify `(export ...)`. If the inner form is a surface form, classify it
+/// recursively and wrap it in `SurfaceForm::Export`. Otherwise treat the whole
+/// thing as a `KernelPassthrough`.
+fn classify_export(
+    args: &[SExpr],
+    span: Span,
+    raw_expr: &SExpr,
+) -> Result<SurfaceForm, Diagnostic> {
+    if args.is_empty() {
+        return Err(err("export requires at least one argument", span));
+    }
+
+    // Check if the first arg is a list with a surface-form head
+    if let SExpr::List { values, .. } = &args[0]
+        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && dispatch::is_surface_form(head)
+    {
+        // Recursively classify the inner surface form
+        let inner = classify_form(&args[0])?;
+        return Ok(SurfaceForm::Export {
+            inner: Box::new(inner),
+            extra_args: args[1..].to_vec(),
+            span,
+        });
+    }
+
+    // Check for bare atom export: (export name) → should produce export { name }
+    // For now, fall through to kernel passthrough — the codegen handles it
+
+    // Not a surface form inside — treat entire export as kernel passthrough
+    Ok(SurfaceForm::KernelPassthrough {
+        raw: raw_expr.clone(),
+        span,
+    })
 }
 
 fn classify_surface_form(

@@ -1344,6 +1344,16 @@ fn emit_export(w: &mut JsWriter, args: &[SExpr]) {
         return;
     }
 
+    // (export name) → export { name };
+    // Bare atom export — wrap in named export braces
+    if let SExpr::Atom { .. } = &args[0] {
+        w.write("{ ");
+        emit_expr(w, &args[0], 0);
+        w.write(" }");
+        w.semicolon();
+        return;
+    }
+
     emit_expr(w, &args[0], 0);
     w.semicolon();
 }
@@ -1979,6 +1989,12 @@ mod tests {
     fn test_export_default() {
         let expr = list(vec![atom("export"), atom("default"), atom("x")]);
         assert_eq!(stmt_to_string(&expr), "export default x;\n");
+    }
+
+    #[test]
+    fn test_export_bare_name() {
+        let expr = list(vec![atom("export"), atom("add")]);
+        assert_eq!(stmt_to_string(&expr), "export { add };\n");
     }
 
     #[test]

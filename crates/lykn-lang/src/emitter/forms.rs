@@ -196,6 +196,20 @@ pub fn emit_form(
         SurfaceForm::Match {
             target, clauses, ..
         } => vec![emit_match(target, clauses, ctx, registry)],
+        SurfaceForm::Export {
+            inner, extra_args, ..
+        } => {
+            // Emit the inner surface form to kernel, then wrap in (export ...)
+            let inner_kernel = emit_form(inner, ctx, registry);
+            inner_kernel
+                .into_iter()
+                .map(|k| {
+                    let mut items = vec![atom("export"), k];
+                    items.extend(extra_args.iter().cloned());
+                    list(items)
+                })
+                .collect()
+        }
         SurfaceForm::KernelPassthrough { raw, .. } => vec![raw.clone()],
         SurfaceForm::FunctionCall {
             head,
@@ -6536,5 +6550,82 @@ mod tests {
             "expected for-of type check in output, got: {:?}",
             result[0]
         );
+    }
+
+    // --- Export wrapping surface forms ---
+
+    #[test]
+    fn test_emit_export_func() {
+        let form = SurfaceForm::Export {
+            inner: Box::new(SurfaceForm::Func {
+                name: "add".into(),
+                name_span: s(),
+                clauses: vec![FuncClause {
+                    args: vec![sp("number", "a"), sp("number", "b")],
+                    returns: Some(ta("number")),
+                    pre: None,
+                    post: None,
+                    body: vec![list(vec![atom("+"), atom("a"), atom("b")])],
+                    span: s(),
+                }],
+                span: s(),
+            }),
+            extra_args: vec![],
+            span: s(),
+        };
+        let mut ctx = ctx();
+        let registry = TypeRegistry::default();
+        let result = emit_form(&form, &mut ctx, &registry);
+        // Should produce (export (function add (a b) ...))
+        assert_eq!(result.len(), 1);
+        match &result[0] {
+            SExpr::List { values, .. } => {
+                assert_eq!(values[0].as_atom(), Some("export"));
+                // Inner should be a (function add ...) form
+                if let SExpr::List { values: inner, .. } = &values[1] {
+                    assert_eq!(inner[0].as_atom(), Some("function"));
+                    assert_eq!(inner[1].as_atom(), Some("add"));
+                } else {
+                    panic!("expected list inside export, got: {:?}", values[1]);
+                }
+            }
+            _ => panic!("expected list, got: {:?}", result[0]),
+        }
+    }
+
+    #[test]
+    fn test_emit_export_bind() {
+        let form = SurfaceForm::Export {
+            inner: Box::new(SurfaceForm::Bind {
+                name: SExpr::Atom {
+                    value: "VERSION".into(),
+                    span: s(),
+                },
+                type_ann: None,
+                value: SExpr::String {
+                    value: "0.4.0".into(),
+                    span: s(),
+                },
+                span: s(),
+            }),
+            extra_args: vec![],
+            span: s(),
+        };
+        let mut ctx = ctx();
+        let registry = TypeRegistry::default();
+        let result = emit_form(&form, &mut ctx, &registry);
+        // Should produce (export (const VERSION "0.4.0"))
+        assert_eq!(result.len(), 1);
+        match &result[0] {
+            SExpr::List { values, .. } => {
+                assert_eq!(values[0].as_atom(), Some("export"));
+                if let SExpr::List { values: inner, .. } = &values[1] {
+                    assert_eq!(inner[0].as_atom(), Some("const"));
+                } else {
+                    panic!("expected list inside export");
+                }
+            }
+            _ => panic!("expected list"),
+        }
     }
 }

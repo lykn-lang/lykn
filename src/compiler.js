@@ -434,7 +434,22 @@ const macros = {
       return buildExportNames(args[0], null);
     }
 
-    // Case 4: (export (const/let/var/function ...)) → export declaration
+    // Case 4: (export name) → export { name };
+    if (args.length === 1 && args[0].type === 'atom') {
+      const name = toCamelCase(args[0].value);
+      return {
+        type: 'ExportNamedDeclaration',
+        declaration: null,
+        specifiers: [{
+          type: 'ExportSpecifier',
+          local: { type: 'Identifier', name },
+          exported: { type: 'Identifier', name },
+        }],
+        source: null,
+      };
+    }
+
+    // Case 5: (export (const/let/var/function ...)) → export declaration
     if (args.length === 1) {
       const decl = compileExpr(args[0]);
       return {

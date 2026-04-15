@@ -95,7 +95,7 @@ Note: document paths are relative to the lykn project root.
 ## Bindings & Mutation
 
 - **`bind` for all values** — immutable by default. No `const`/`let`/`var` in surface syntax. **MUST**
-- **Type annotation on `bind`**: `(bind :number age 42)`. Note: `bind` annotations are documentation-only — they do NOT generate runtime checks. Only `func`/`fn` annotations generate checks. **SHOULD**
+- **Type annotation on `bind`** (DD-24): `(bind :number result (compute))`. Non-literal initializers get runtime type checks (same checks as `func`/`fn`). Literal initializers are verified at compile time (no runtime check). Type-incompatible literals are compile errors. Stripped by `--strip-assertions`. **SHOULD**
 - **`cell` for controlled mutation**: `(bind counter (cell 0))`. **MUST** use `cell` when mutation is needed — never reach for kernel `let`.
 - **`swap!` to update**: `(swap! counter (fn (:number n) (+ n 1)))`. The `!` suffix signals mutation. **MUST**
 - **`reset!` to replace**: `(reset! counter 0)`. **MUST**
@@ -108,7 +108,7 @@ Note: document paths are relative to the lykn project root.
 (bind greeting "hello")
 (bind max-retries 3)
 
-;; Type annotation (documentation-only, no runtime check on bind)
+;; Type annotation — runtime check on non-literal (DD-24)
 (bind :number result (compute-something))
 
 ;; Mutation via cell
@@ -124,6 +124,9 @@ Compiles to:
 const greeting = "hello";
 const maxRetries = 3;
 const result = computeSomething();
+if (typeof result !== "number" || Number.isNaN(result))
+  throw new TypeError("bind: binding 'result' expected number, got " + typeof result);
+
 const counter = {value: 0};
 counter.value = ((n) => {
   if (typeof n !== "number" || Number.isNaN(n))
@@ -134,9 +137,10 @@ console.log(counter.value);
 counter.value = 0;
 ```
 
-> **Note:** `bind` type annotations do NOT generate runtime checks.
-> Only `func` and `fn` type annotations produce type-checking code.
-> Use `func` with `:args` for enforced type safety.
+> **Note (DD-24):** `bind` type annotations are enforced at runtime for
+> non-literal initializers. Literal initializers are verified at compile
+> time (no runtime check emitted). Type-incompatible literals are compile
+> errors. All `bind` type checks are stripped by `--strip-assertions`.
 
 ---
 
@@ -440,7 +444,7 @@ These are the most common mistakes in lykn code, especially when converting from
 | `import-macros` without explicit binding list | Always specify which macros you're importing |
 | Bare symbols in destructuring without type context | Add type annotations where the compiler expects them |
 | Using `object` (kernel) instead of `obj` (surface) for construction | `obj` uses keyword syntax; `object` is the kernel form |
-| Assuming `bind` type annotations are enforced | `bind` annotations are documentation-only; use `func`/`fn` for runtime type checks |
+| Assuming `bind` type annotations on literals generate runtime checks | Literal annotations are verified at compile time — no runtime check emitted. Non-literal annotations DO generate runtime checks (DD-24). |
 
 ---
 
