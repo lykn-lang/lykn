@@ -6,6 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0035 | DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters | Active | 2026-04-14 |
 | 0034 | DD-25: Destructured Parameters in Surface `func` and `fn` | Active | 2026-04-14 |
 | 0033 | DD-24: `bind` Type Enforcement | Final | 2026-04-14 |
 | 0032 | DD-23: `set!` — External Property Mutation | Final | 2026-04-13 |
@@ -49,6 +50,7 @@ This index is automatically generated. Do not edit manually.
 
 ### Active
 
+- [0035 - DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters](05-active/0035-dd-25.1-nested-destructuring-and-defaults-in-funcfn-parameters.md)
 - [0034 - DD-25: Destructured Parameters in Surface `func` and `fn`](05-active/0034-dd-25-destructured-parameters-in-surface-func-and-fn.md)
 - [0030 - Pure Rust Kernel→JS Codegen](05-active/0030-pure-rust-kerneljs-codegen.md)
 - [0029 - DD-18.1: Method Calls in Threading Macros](05-active/0029-dd-18.1-method-calls-in-threading-macros.md)
