@@ -1,5 +1,5 @@
 {
-    "workspace": ["./packages/lykn"],
+    "workspace": ["./packages/lykn", "./packages/lykn-browser"],
     "lint": {
         "rules": {
             "exclude": ["no-slow-types"]

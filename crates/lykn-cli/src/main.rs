@@ -539,7 +539,7 @@ const nodePathShimPlugin = {
   },
 };
 const shared = {
-  entryPoints: ["packages/lykn/browser.js"],
+  entryPoints: ["packages/lykn-browser/mod.js"],
   bundle: true, format: "iife", globalName: "lykn",
   alias: { "astring": astringPkg },
   plugins: [nodePathShimPlugin],
@@ -608,7 +608,6 @@ fn build_npm_package() {
         "compiler.js",
         "expander.js",
         "surface.js",
-        "browser.js",
     ];
     for file in &source_files {
         let src = Path::new("packages/lykn").join(file);
