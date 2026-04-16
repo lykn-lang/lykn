@@ -69,6 +69,15 @@ enum Commands {
         #[arg(long)]
         path: Option<PathBuf>,
     },
+    /// Build browser bundle or npm package
+    Build {
+        /// Build the browser bundle (dist/lykn-browser.js)
+        #[arg(long)]
+        browser: bool,
+        /// Build the npm package (dist/npm/)
+        #[arg(long)]
+        npm: bool,
+    },
     /// Publish package(s)
     Publish {
         /// Publish to JSR (JavaScript Registry)
@@ -99,6 +108,7 @@ fn main() {
         Commands::Test { patterns } => cmd_test(&patterns),
         Commands::Lint { paths } => cmd_lint(&paths),
         Commands::New { name, path } => cmd_new(&name, path.as_deref()),
+        Commands::Build { browser, npm } => cmd_build(browser, npm),
         Commands::Publish { jsr, npm, dry_run } => cmd_publish(jsr, npm, dry_run),
     }
 }
@@ -300,19 +310,8 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool) {
     }
 
     if do_npm {
-        // Build npm package via dnt
-        eprintln!("Building npm package via dnt...");
-        let build_status = Command::new("deno")
-            .args(["run", "-A", "build_npm.ts"])
-            .status()
-            .unwrap_or_else(|e| {
-                eprintln!("failed to run deno: {e}");
-                process::exit(1);
-            });
-        if !build_status.success() {
-            eprintln!("npm build failed");
-            process::exit(build_status.code().unwrap_or(1));
-        }
+        // Build npm package natively
+        build_npm_package();
 
         // Publish from dist/npm/
         if dry_run {
@@ -497,4 +496,162 @@ fn cmd_new(name: &str, path: Option<&Path>) {
     eprintln!("  lykn run packages/{name}/mod.lykn");
     eprintln!();
     eprintln!("Happy hacking!");
+}
+
+// ---------------------------------------------------------------------------
+// lykn build — build artifacts
+// ---------------------------------------------------------------------------
+
+fn cmd_build(browser: bool, npm: bool) {
+    if !browser && !npm {
+        eprintln!("Usage: lykn build --browser or lykn build --npm");
+        process::exit(1);
+    }
+    if browser {
+        build_browser_bundle();
+    }
+    if npm {
+        build_npm_package();
+    }
+}
+
+/// Build the browser bundle by invoking esbuild via Deno.
+/// The build script is embedded in the binary.
+fn build_browser_bundle() {
+    eprintln!("Building browser bundle...");
+
+    let script = r#"
+import * as esbuild from "npm:esbuild";
+const astringMeta = import.meta.resolve("astring");
+const astringPkg = astringMeta.replace("file://", "").replace(/\/dist\/.*$/, "");
+const nodePathShimPlugin = {
+  name: "node-path-shim",
+  setup(build) {
+    build.onResolve({ filter: /^node:path$/ }, () => ({
+      path: "node:path", namespace: "node-path-shim",
+    }));
+    build.onLoad({ filter: /.*/, namespace: "node-path-shim" }, () => ({
+      contents: `
+        export function resolve() { throw new Error("import-macros not available in browser"); }
+        export function dirname() { throw new Error("import-macros not available in browser"); }
+      `, loader: "js",
+    }));
+  },
+};
+const shared = {
+  entryPoints: ["packages/lykn/browser.js"],
+  bundle: true, format: "iife", globalName: "lykn",
+  alias: { "astring": astringPkg },
+  plugins: [nodePathShimPlugin],
+};
+await Deno.mkdir("dist", { recursive: true });
+await esbuild.build({ ...shared, outfile: "dist/lykn-browser.js", minify: true });
+await esbuild.build({ ...shared, outfile: "dist/lykn-browser.dev.js", minify: false });
+console.log("Build complete: dist/lykn-browser.js and dist/lykn-browser.dev.js");
+esbuild.stop();
+"#;
+
+    let config = find_config();
+    let status = Command::new("deno")
+        .args(["eval", "--config", &config, "--ext=js", script])
+        .status()
+        .unwrap_or_else(|e| {
+            eprintln!("failed to run deno: {e}");
+            process::exit(1);
+        });
+    if !status.success() {
+        eprintln!("Browser build failed");
+        process::exit(status.code().unwrap_or(1));
+    }
+}
+
+/// Build the npm package: copy JS source + generate package.json in dist/npm/.
+fn build_npm_package() {
+    eprintln!("Building npm package...");
+
+    // Read version from package config
+    let deno_json_path = Path::new("packages/lykn/deno.json");
+    let deno_json_str = fs::read_to_string(deno_json_path).unwrap_or_else(|e| {
+        eprintln!("error reading {}: {e}", deno_json_path.display());
+        process::exit(1);
+    });
+
+    // Simple JSON version extraction (avoid adding serde dependency to CLI)
+    let version = deno_json_str
+        .lines()
+        .find(|l| l.contains("\"version\""))
+        .and_then(|l| {
+            let start = l.find('"')? + 1;
+            let rest = &l[start..];
+            let end = rest.find('"')?;
+            let after_colon = &rest[end + 1..];
+            let v_start = after_colon.find('"')? + 1;
+            let v_rest = &after_colon[v_start..];
+            let v_end = v_rest.find('"')?;
+            Some(v_rest[..v_end].to_string())
+        })
+        .unwrap_or_else(|| "0.0.0".to_string());
+
+    let dist = Path::new("dist/npm");
+
+    // Clean and create
+    let _ = fs::remove_dir_all(dist);
+    fs::create_dir_all(dist).unwrap_or_else(|e| {
+        eprintln!("error creating dist/npm: {e}");
+        process::exit(1);
+    });
+
+    // Copy source files
+    let source_files = [
+        "mod.js",
+        "reader.js",
+        "compiler.js",
+        "expander.js",
+        "surface.js",
+        "browser.js",
+    ];
+    for file in &source_files {
+        let src = Path::new("packages/lykn").join(file);
+        let dst = dist.join(file);
+        fs::copy(&src, &dst).unwrap_or_else(|e| {
+            eprintln!("error copying {}: {e}", src.display());
+            process::exit(1);
+        });
+    }
+
+    // Generate package.json
+    let package_json = format!(
+        r#"{{
+  "name": "@lykn/lykn",
+  "version": "{version}",
+  "description": "S-expression syntax for JavaScript. A lightweight Lisp that compiles to clean JS.",
+  "type": "module",
+  "main": "./mod.js",
+  "exports": {{
+    ".": "./mod.js",
+    "./reader": "./reader.js",
+    "./compiler": "./compiler.js",
+    "./expander": "./expander.js"
+  }},
+  "files": ["*.js", "README.md", "LICENSE"],
+  "keywords": ["lisp", "s-expression", "compiler", "javascript", "estree", "sexp", "lykn"],
+  "author": "Duncan McGreggor",
+  "license": "Apache-2.0",
+  "repository": {{
+    "type": "git",
+    "url": "https://github.com/oxur/lykn"
+  }},
+  "dependencies": {{
+    "astring": "^1.9.0"
+  }}
+}}
+"#
+    );
+    write_file(&dist.join("package.json"), &package_json);
+
+    // Copy README and LICENSE
+    let _ = fs::copy("README.md", dist.join("README.md"));
+    let _ = fs::copy("LICENSE", dist.join("LICENSE"));
+
+    eprintln!("npm package built in dist/npm/ (v{version})");
 }

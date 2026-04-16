@@ -12,7 +12,6 @@
     "tasks": {
         "test": "deno test -A test/",
         "test:unit": "deno test test/forms/ test/reader/ test/expander/",
-        "test:integration": "deno test -A test/integration/",
-        "build:browser": "deno run -A build.js"
+        "test:integration": "deno test -A test/integration/"
     }
 }

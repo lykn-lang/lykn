@@ -40,10 +40,13 @@ impl DenoSubprocess {
     pub fn spawn() -> Result<Self, LyknError> {
         let script = format!("{}\n{}", env::MACRO_ENV_JS, env::DENO_EVALUATOR_JS);
 
-        let mut child = Command::new("deno")
-            .arg("eval")
-            .arg("--config")
-            .arg("project.json")
+        let mut cmd = Command::new("deno");
+        cmd.arg("eval");
+        // Add --config if project.json exists (may not when running from crate tests)
+        if std::path::Path::new("project.json").exists() {
+            cmd.args(["--config", "project.json"]);
+        }
+        let mut child = cmd
             .arg("--ext=js")
             .arg(&script)
             .stdin(Stdio::piped())
