@@ -46,8 +46,10 @@ help:
 	@echo "  $(YELLOW)make build MODE=release$(RESET) - Build with custom mode"
 	@echo ""
 	@echo "$(GREEN)Testing & Quality:$(RESET)"
-	@echo "  $(YELLOW)make test$(RESET)             - Run all tests"
-	@echo "  $(YELLOW)make lint$(RESET)             - Run clippy and format check"
+	@echo "  $(YELLOW)make test$(RESET)             - Run all tests (Rust + JS)"
+	@echo "  $(YELLOW)make test-rust$(RESET)        - Run Rust tests only"
+	@echo "  $(YELLOW)make test-js$(RESET)          - Run JS tests only"
+	@echo "  $(YELLOW)make lint$(RESET)             - Run clippy, format check, and JS lint"
 	@echo "  $(YELLOW)make format$(RESET)           - Format all code with rustfmt"
 	@echo "  $(YELLOW)make coverage$(RESET)         - Generate test coverage report"
 	@echo "  $(YELLOW)make check$(RESET)            - Build + lint + test"
@@ -59,7 +61,7 @@ help:
 	@echo ""
 	@echo "$(GREEN)Utilities:$(RESET)"
 	@echo "  $(YELLOW)make push$(RESET)             - Pushes to Codeberg and Github"
-	@echo "  $(YELLOW)make publish$(RESET)          - WIP: Publishes all crates to crates.io"
+	@echo "  $(YELLOW)make publish$(RESET)          - Publish to JSR, npm, and crates.io"
 	@echo "  $(YELLOW)make tracked-files$(RESET)    - Save list of tracked files"
 	@echo ""
 	@echo "$(GREEN)Information:$(RESET)"
@@ -183,9 +185,23 @@ clean-all: clean
 .PHONY: test
 test:
 	@echo "$(BLUE)Running tests...$(RESET)"
-	@echo "$(CYAN)• Running all workspace tests...$(RESET)"
+	@echo "$(CYAN)• Running Rust workspace tests...$(RESET)"
 	@cargo test --all-features --workspace
+	@echo "$(CYAN)• Running JS tests...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) test
 	@echo "$(GREEN)✓ All tests passed$(RESET)"
+
+.PHONY: test-rust
+test-rust:
+	@echo "$(BLUE)Running Rust tests...$(RESET)"
+	@cargo test --all-features --workspace
+	@echo "$(GREEN)✓ Rust tests passed$(RESET)"
+
+.PHONY: test-js
+test-js:
+	@echo "$(BLUE)Running JS tests...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) test
+	@echo "$(GREEN)✓ JS tests passed$(RESET)"
 
 .PHONY: lint
 lint:
@@ -196,6 +212,9 @@ lint:
 	@echo "$(CYAN)• Checking code formatting...$(RESET)"
 	@cargo fmt --all -- --check
 	@echo "$(GREEN)✓ Format check passed$(RESET)"
+	@echo "$(CYAN)• Linting JS packages...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) lint packages/
+	@echo "$(GREEN)✓ JS lint passed$(RESET)"
 
 .PHONY: format
 format:
