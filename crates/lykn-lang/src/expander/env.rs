@@ -80,8 +80,8 @@ while (true) {
         const request = JSON.parse(line);
 
         if (request.action === "compile") {
-            const { read } = await import("./src/reader.js");
-            const { compileMacroBody, extractParamNames } = await import("./src/expander.js");
+            const { read } = await import("./packages/lykn/reader.js");
+            const { compileMacroBody, extractParamNames } = await import("./packages/lykn/expander.js");
 
             const forms = read(request.source);
             const macroForm = forms[0];

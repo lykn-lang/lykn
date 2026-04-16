@@ -18,7 +18,7 @@ pub fn kernel_json_to_js(kernel_json: &str, source_path: &Path) -> Result<String
     std::fs::write(&tmp_file, kernel_json).map_err(|e| format!("error writing temp file: {e}"))?;
 
     let project_root = find_project_root(source_path)
-        .ok_or_else(|| "cannot find lykn project root (need src/compiler.js)".to_string())?;
+        .ok_or_else(|| "cannot find lykn project root (need packages/lykn/compiler.js or project.json)".to_string())?;
 
     let script = build_deno_script(&tmp_file);
 

@@ -42,6 +42,8 @@ impl DenoSubprocess {
 
         let mut child = Command::new("deno")
             .arg("eval")
+            .arg("--config")
+            .arg("project.json")
             .arg("--ext=js")
             .arg(&script)
             .stdin(Stdio::piped())
