@@ -358,16 +358,52 @@ about. When you need `this` (e.g., in class methods), use the kernel
 
 **Strength**: SHOULD
 
-**Summary**: In lykn `class` forms, methods use method shorthand
-syntax. This is a kernel form used when you need JS class interop.
+**Summary**: `class` bodies expand surface forms (DD-27). `bind`
+produces `const`, `=` is equality (`===`), `set!` does property
+mutation, threading macros work, and all other surface forms expand
+normally inside methods, constructors, getters, and setters.
+
+Use `assign` for `this`-property assignment in constructors:
 
 ```lykn
-(class Stack ()
-  (field -items #a())
-  (push ((item)) (this:-items:push item))
-  (pop () (return (this:-items:pop)))
-  (get size () (return this:-items:length)))
+(class Dog (Animal)
+  (constructor (name breed)
+    (super name)
+    (assign this:breed breed))
+
+  (speak ()
+    (bind greeting (template this:name " says woof"))
+    (if (= this:breed "poodle")
+      (return (template greeting " (fancy)"))
+      (return greeting)))
+
+  (fetch-toy (toy-name)
+    (return (template this:name " fetches " toy-name))))
 ```
+
+```js
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);
+    this.breed = breed;
+  }
+  speak() {
+    const greeting = `${this.name} says woof`;
+    if (this.breed === "poodle") return `${greeting} (fancy)`;
+    return greeting;
+  }
+  fetchToy(toyName) {
+    return `${this.name} fetches ${toyName}`;
+  }
+}
+```
+
+**Key forms inside class bodies**:
+- `assign` — explicit assignment (`this.prop = value`)
+- `bind` → `const` — immutable binding
+- `=` → `===` — equality (not assignment)
+- `set!` → property mutation (`obj.prop = value`)
+- All surface forms (`obj`, threading macros, `match`, etc.) work
 
 **Rationale**: `class` is available in lykn but de-emphasized. Prefer
 `type` + `func` for data and operations. Use `class` when you need

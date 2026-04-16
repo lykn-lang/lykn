@@ -421,16 +421,22 @@ const updated = {...user, age: 31};
 
 Classes are available but de-emphasized in surface lykn. Prefer `type` + `func` for new designs. Use `class` for JS interop, framework requirements, or when `instanceof` checking is needed.
 
-- **`class` form**: kernel form used directly. **CONSIDER**
-- **Private fields via `-` prefix**: `-count` compiles to `#_count`. **MUST** for encapsulation
-- **No `this` in surface language**: surface forms eliminate `this`. Inside `class` bodies (kernel territory), `this` is available. **MUST** understand the boundary.
+- **Surface forms expand in class bodies** (DD-27): `bind`, `=` (equality), `set!`, threading macros, `obj`, and all other surface forms work inside methods and constructors. **MUST** understand this.
+- **`assign` for this-property assignment**: `(assign this:x value)` → `this.x = value`. Use in constructors. **MUST** (not `=`, which is equality).
+- **Private fields via `-` prefix**: `-count` compiles to `#_count`. **MUST** for encapsulation.
+- **`this` available inside class bodies**: surface forms eliminate `this` elsewhere, but inside `class` bodies it's available for property access.
 
 ```lykn
-;; Class with private fields
-(class Counter ()
-  (field -count 0)
-  (increment () (+= this:-count 1))
-  (get value () (return this:-count)))
+;; Class with surface forms in methods (DD-27)
+(class Dog (Animal)
+  (constructor (name breed)
+    (super name)
+    (assign this:breed breed))
+  (speak ()
+    (bind greeting (template this:name " says woof"))
+    (if (= this:breed "poodle")
+      (return (template greeting " (fancy)"))
+      (return greeting))))
 
 ;; Prefer type + func for new designs
 (type Counter

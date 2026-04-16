@@ -1379,6 +1379,30 @@ to the kernel compiler unchanged.
 | `(yield* other)` | `yield* other` | Delegate to iterable |
 | `(for-await-of item stream (process item))` | `for await (const item of stream) { process(item); }` | Async iteration |
 | `(async (function* gen () ...))` | `async function* gen() { ... }` | Async generator |
+| `(assign this:x value)` | `this.x = value` | Explicit assignment (DD-27) |
+
+**Class bodies** (DD-27): Surface forms expand inside `class`
+method and constructor bodies. `=` is equality, `bind` produces
+`const`, `set!` works, threading macros work. Use `assign` for
+`this`-property assignment in constructors.
+
+```lykn
+(class Dog ()
+  (constructor (name)
+    (assign this:name name))
+  (greet ()
+    (bind msg (template "Hi, I'm " this:name))
+    (return msg)))
+```
+```js
+class Dog {
+  constructor(name) { this.name = name; }
+  greet() {
+    const msg = `Hi, I'm ${this.name}`;
+    return msg;
+  }
+}
+```
 
 ---
 
