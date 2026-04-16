@@ -310,35 +310,40 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool) {
     }
 
     if do_npm {
-        // Build npm package natively
+        // Build both npm packages natively
         build_npm_package();
 
-        // Publish from dist/npm/
-        if dry_run {
-            eprintln!("npm dry run — checking package...");
-            let status = Command::new("npm")
-                .args(["pack", "--dry-run"])
-                .current_dir("dist/npm")
-                .status()
-                .unwrap_or_else(|e| {
-                    eprintln!("failed to run npm: {e}");
-                    process::exit(1);
-                });
-            if !status.success() {
-                process::exit(status.code().unwrap_or(1));
+        // Publish both packages
+        for dir in &["dist/npm", "dist/npm-browser"] {
+            if !Path::new(dir).exists() {
+                continue;
             }
-        } else {
-            eprintln!("Publishing to npm...");
-            let status = Command::new("npm")
-                .args(["publish", "--access", "public"])
-                .current_dir("dist/npm")
-                .status()
-                .unwrap_or_else(|e| {
-                    eprintln!("failed to run npm: {e}");
-                    process::exit(1);
-                });
-            if !status.success() {
-                process::exit(status.code().unwrap_or(1));
+            if dry_run {
+                eprintln!("npm dry run — checking {dir}...");
+                let status = Command::new("npm")
+                    .args(["pack", "--dry-run"])
+                    .current_dir(dir)
+                    .status()
+                    .unwrap_or_else(|e| {
+                        eprintln!("failed to run npm: {e}");
+                        process::exit(1);
+                    });
+                if !status.success() {
+                    process::exit(status.code().unwrap_or(1));
+                }
+            } else {
+                eprintln!("Publishing {dir} to npm...");
+                let status = Command::new("npm")
+                    .args(["publish", "--access", "public"])
+                    .current_dir(dir)
+                    .status()
+                    .unwrap_or_else(|e| {
+                        eprintln!("failed to run npm: {e}");
+                        process::exit(1);
+                    });
+                if !status.success() {
+                    process::exit(status.code().unwrap_or(1));
+                }
             }
         }
     }
@@ -538,11 +543,20 @@ const nodePathShimPlugin = {
     }));
   },
 };
+const lyknImportPlugin = {
+  name: "lykn-import-map",
+  setup(build) {
+    build.onResolve({ filter: /^lykn\// }, (args) => {
+      const rel = args.path.replace(/^lykn\//, "packages/lykn/");
+      return { path: Deno.cwd() + "/" + rel };
+    });
+  },
+};
 const shared = {
   entryPoints: ["packages/lykn-browser/mod.js"],
   bundle: true, format: "iife", globalName: "lykn",
   alias: { "astring": astringPkg },
-  plugins: [nodePathShimPlugin],
+  plugins: [nodePathShimPlugin, lyknImportPlugin],
 };
 await Deno.mkdir("dist", { recursive: true });
 await esbuild.build({ ...shared, outfile: "dist/lykn-browser.js", minify: true });
@@ -652,5 +666,63 @@ fn build_npm_package() {
     let _ = fs::copy("README.md", dist.join("README.md"));
     let _ = fs::copy("LICENSE", dist.join("LICENSE"));
 
-    eprintln!("npm package built in dist/npm/ (v{version})");
+    eprintln!("@lykn/lykn npm package built in dist/npm/ (v{version})");
+
+    // Also build @lykn/browser npm package
+    build_npm_browser_package(&version);
+}
+
+/// Build the @lykn/browser npm package in dist/npm-browser/.
+fn build_npm_browser_package(version: &str) {
+    let dist = Path::new("dist/npm-browser");
+
+    let _ = fs::remove_dir_all(dist);
+    fs::create_dir_all(dist).unwrap_or_else(|e| {
+        eprintln!("error creating dist/npm-browser: {e}");
+        process::exit(1);
+    });
+
+    // Copy source files — rewrite lykn/ imports to @lykn/lykn/ for npm
+    let source_files = ["mod.js", "compiler.js", "scripts.js"];
+    for file in &source_files {
+        let src = Path::new("packages/lykn-browser").join(file);
+        let content = fs::read_to_string(&src).unwrap_or_else(|e| {
+            eprintln!("error reading {}: {e}", src.display());
+            process::exit(1);
+        });
+        // Replace import map paths with npm package paths
+        let content = content.replace("from 'lykn/", "from '@lykn/lykn/");
+        write_file(&dist.join(file), &content);
+    }
+
+    let package_json = format!(
+        r#"{{
+  "name": "@lykn/browser",
+  "version": "{version}",
+  "description": "Browser runtime for lykn — compile and run lykn in the browser.",
+  "type": "module",
+  "main": "./mod.js",
+  "exports": {{
+    ".": "./mod.js"
+  }},
+  "files": ["*.js", "README.md", "LICENSE"],
+  "keywords": ["lisp", "s-expression", "browser", "lykn"],
+  "author": "Duncan McGreggor",
+  "license": "Apache-2.0",
+  "repository": {{
+    "type": "git",
+    "url": "https://github.com/oxur/lykn"
+  }},
+  "dependencies": {{
+    "@lykn/lykn": "^{version}"
+  }}
+}}
+"#
+    );
+    write_file(&dist.join("package.json"), &package_json);
+
+    let _ = fs::copy("README.md", dist.join("README.md"));
+    let _ = fs::copy("LICENSE", dist.join("LICENSE"));
+
+    eprintln!("@lykn/browser npm package built in dist/npm-browser/ (v{version})");
 }
