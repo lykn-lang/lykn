@@ -320,11 +320,11 @@ publish: publish-jsr publish-npm publish-crates
 
 publish-jsr:
 	@echo "$(BLUE)Publishing to JavaScript Registry...$(RESET)"
-	@deno task publish:jsr
+	@$(BIN_DIR)/$(CODE_NAME) publish --jsr
 
 publish-npm:
 	@echo "$(BLUE)Publishing to npm...$(RESET)"
-	@NPM_CONFIG__AUTH=$(cat ~/.lykn/npm.token) deno task publish:npm
+	@$(BIN_DIR)/$(CODE_NAME) publish --npm
 
 # Crates in dependency order (leaf crates first, dependent crates later)
 PUBLISH_ORDER := lykn-lang lykn-cli $(CODE_NAME)

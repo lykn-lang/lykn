@@ -60,6 +60,18 @@ enum Commands {
         #[arg(default_value = "packages/")]
         paths: Vec<String>,
     },
+    /// Publish package(s)
+    Publish {
+        /// Publish to JSR (JavaScript Registry)
+        #[arg(long)]
+        jsr: bool,
+        /// Build and publish to npm
+        #[arg(long)]
+        npm: bool,
+        /// Dry run (don't actually publish)
+        #[arg(long)]
+        dry_run: bool,
+    },
 }
 
 fn main() {
@@ -77,6 +89,11 @@ fn main() {
         Commands::Run { file, args } => cmd_run(&file, &args),
         Commands::Test { patterns } => cmd_test(&patterns),
         Commands::Lint { paths } => cmd_lint(&paths),
+        Commands::Publish {
+            jsr,
+            npm,
+            dry_run,
+        } => cmd_publish(jsr, npm, dry_run),
     }
 }
 
@@ -249,4 +266,77 @@ fn cmd_lint(paths: &[String]) {
     let refs: Vec<&str> = paths.iter().map(|s| s.as_str()).collect();
     deno_args.extend(refs);
     exec_deno(&deno_args);
+}
+
+fn cmd_publish(jsr: bool, npm: bool, dry_run: bool) {
+    // Default to JSR if no flags specified
+    let do_jsr = jsr || !npm;
+    let do_npm = npm;
+
+    if do_jsr {
+        let config = find_config();
+        let mut args = vec!["publish", "--config", &config];
+        if dry_run {
+            args.push("--dry-run");
+        }
+        eprintln!("Publishing to JSR...");
+        let status = Command::new("deno")
+            .args(&args)
+            .status()
+            .unwrap_or_else(|e| {
+                eprintln!("failed to run deno: {e}");
+                process::exit(1);
+            });
+        if !status.success() {
+            eprintln!("JSR publish failed");
+            process::exit(status.code().unwrap_or(1));
+        }
+    }
+
+    if do_npm {
+        // Build npm package via dnt
+        eprintln!("Building npm package via dnt...");
+        let build_status = Command::new("deno")
+            .args(["run", "-A", "build_npm.ts"])
+            .status()
+            .unwrap_or_else(|e| {
+                eprintln!("failed to run deno: {e}");
+                process::exit(1);
+            });
+        if !build_status.success() {
+            eprintln!("npm build failed");
+            process::exit(build_status.code().unwrap_or(1));
+        }
+
+        // Publish from dist/npm/
+        if dry_run {
+            eprintln!("npm dry run — checking package...");
+            let status = Command::new("npm")
+                .args(["pack", "--dry-run"])
+                .current_dir("dist/npm")
+                .status()
+                .unwrap_or_else(|e| {
+                    eprintln!("failed to run npm: {e}");
+                    process::exit(1);
+                });
+            if !status.success() {
+                process::exit(status.code().unwrap_or(1));
+            }
+        } else {
+            eprintln!("Publishing to npm...");
+            let status = Command::new("npm")
+                .args(["publish", "--access", "public"])
+                .current_dir("dist/npm")
+                .status()
+                .unwrap_or_else(|e| {
+                    eprintln!("failed to run npm: {e}");
+                    process::exit(1);
+                });
+            if !status.success() {
+                process::exit(status.code().unwrap_or(1));
+            }
+        }
+    }
+
+    eprintln!("Done.");
 }
