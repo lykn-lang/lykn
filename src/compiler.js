@@ -274,6 +274,19 @@ const macros = {
     };
   },
 
+  // Explicit assignment: (assign target value) — always assignment, never equality
+  'assign'(args) {
+    if (args.length !== 2) {
+      throw new Error('assign requires exactly 2 arguments');
+    }
+    return {
+      type: 'AssignmentExpression',
+      operator: '=',
+      left: compileExpr(args[0]),
+      right: compileExpr(args[1]),
+    };
+  },
+
   // New: (new Thing arg1 arg2)
   'new'(args) {
     return {

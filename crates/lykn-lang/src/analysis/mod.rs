@@ -7,7 +7,7 @@ pub mod scope;
 pub mod type_registry;
 
 use crate::ast::sexpr::SExpr;
-use crate::ast::surface::{Pattern, SurfaceForm, ThreadingStep, TypeAnnotation};
+use crate::ast::surface::{ClassMemberForm, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 use scope::ScopeTracker;
@@ -321,6 +321,13 @@ impl Analyze for SurfaceForm {
             SurfaceForm::Not { operand, .. } => {
                 track_references_in_expr(operand, scope);
             }
+            SurfaceForm::Class { name, members, .. } => {
+                track_references_in_expr(name, scope);
+                track_class_member_scopes(members, scope);
+            }
+            SurfaceForm::ClassExpr { members, .. } => {
+                track_class_member_scopes(members, scope);
+            }
             // Type, MacroDef, ImportMacros, KernelPassthrough — no user
             // references to track beyond what `collect` already handles.
             _ => {}
@@ -456,6 +463,38 @@ fn introduce_pattern_bindings(pat: &Pattern, scope: &mut ScopeTracker) {
             }
         }
         _ => {}
+    }
+}
+
+/// Track scope for classified class members.
+///
+/// For each method body, enters a new scope, walks the classified body forms,
+/// then exits the scope.
+fn track_class_member_scopes(members: &[ClassMemberForm], scope: &mut ScopeTracker) {
+    for member in members {
+        match member {
+            ClassMemberForm::Method { prefix, body, .. } => {
+                for expr in prefix {
+                    track_references_in_expr(expr, scope);
+                }
+                scope.enter_scope();
+                for expr in body {
+                    track_references_in_expr(expr, scope);
+                }
+                scope.exit_scope();
+            }
+            ClassMemberForm::Field { prefix, init, .. } => {
+                for expr in prefix {
+                    track_references_in_expr(expr, scope);
+                }
+                if let Some(init_expr) = init {
+                    track_references_in_expr(init_expr, scope);
+                }
+            }
+            ClassMemberForm::Raw(raw) => {
+                track_references_in_expr(raw, scope);
+            }
+        }
     }
 }
 

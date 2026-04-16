@@ -18,6 +18,10 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                     classify_export(args, *span, expr)
                 } else if head_name == "async" {
                     classify_async(args, *span, expr)
+                } else if head_name == "class" {
+                    classify_class(args, *span)
+                } else if head_name == "class-expr" {
+                    classify_class_expr(args, *span)
                 } else if dispatch::is_kernel_form(head_name) {
                     Ok(SurfaceForm::KernelPassthrough {
                         raw: expr.clone(),
@@ -63,7 +67,10 @@ fn classify_export(
     // Check if the first arg is a list with a head that needs recursive classification
     if let SExpr::List { values, .. } = &args[0]
         && let Some(head) = values.first().and_then(|e| e.as_atom())
-        && (dispatch::is_surface_form(head) || head == "async")
+        && (dispatch::is_surface_form(head)
+            || head == "async"
+            || head == "class"
+            || head == "class-expr")
     {
         let inner = classify_form(&args[0])?;
         return Ok(SurfaceForm::Export {
@@ -1638,6 +1645,179 @@ fn parse_rest_element(values: &[SExpr], span: Span) -> Result<TypedParam, Diagno
     }
 }
 
+// ---------------------------------------------------------------------------
+// Class / class-expr
+// ---------------------------------------------------------------------------
+
+/// Classify `(class Name (Super) members...)`.
+///
+/// Each member's body expressions are recursively classified through the
+/// surface pipeline so that surface forms like `bind`, `set!`, threading
+/// macros, etc. are expanded inside class method and constructor bodies.
+fn classify_class(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+    if args.len() < 2 {
+        return Err(err(
+            "class requires at least a name and superclass list: (class Name () ...)",
+            span,
+        ));
+    }
+    let name = args[0].clone();
+    let superclass = args[1].clone();
+    let members = classify_class_members(&args[2..], span)?;
+    Ok(SurfaceForm::Class {
+        name,
+        superclass,
+        members,
+        span,
+    })
+}
+
+/// Classify `(class-expr (Super) members...)`.
+fn classify_class_expr(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+    if args.is_empty() {
+        return Ok(SurfaceForm::ClassExpr {
+            superclass: SExpr::List {
+                values: vec![],
+                span,
+            },
+            members: vec![],
+            span,
+        });
+    }
+    let superclass = args[0].clone();
+    let members = classify_class_members(&args[1..], span)?;
+    Ok(SurfaceForm::ClassExpr {
+        superclass,
+        members,
+        span,
+    })
+}
+
+/// Classify a slice of class member S-expressions.
+fn classify_class_members(
+    members: &[SExpr],
+    _span: Span,
+) -> Result<Vec<ClassMemberForm>, Diagnostic> {
+    let mut result = Vec::new();
+    for member in members {
+        result.push(classify_class_member(member)?);
+    }
+    Ok(result)
+}
+
+/// Classify a single class member, peeling off `static` and `async` wrappers,
+/// then dispatching on the member kind (constructor, get, set, field, or
+/// regular method).
+fn classify_class_member(member: &SExpr) -> Result<ClassMemberForm, Diagnostic> {
+    classify_class_member_inner(member, false, false)
+}
+
+fn classify_class_member_inner(
+    member: &SExpr,
+    is_static: bool,
+    is_async: bool,
+) -> Result<ClassMemberForm, Diagnostic> {
+    let values = match member {
+        SExpr::List { values, .. } if !values.is_empty() => values,
+        _ => return Ok(ClassMemberForm::Raw(member.clone())),
+    };
+
+    let head = match values[0].as_atom() {
+        Some(h) => h,
+        None => return Ok(ClassMemberForm::Raw(member.clone())),
+    };
+
+    match head {
+        "static" => {
+            // (static (...inner...))
+            if values.len() >= 2 {
+                classify_class_member_inner(&values[1], true, is_async)
+            } else {
+                Ok(ClassMemberForm::Raw(member.clone()))
+            }
+        }
+        "async" => {
+            // (async (...inner...))
+            if values.len() >= 2 {
+                classify_class_member_inner(&values[1], is_static, true)
+            } else {
+                Ok(ClassMemberForm::Raw(member.clone()))
+            }
+        }
+        "constructor" => {
+            // (constructor (params) body...)
+            if values.len() < 2 {
+                return Ok(ClassMemberForm::Raw(member.clone()));
+            }
+            let prefix = vec![values[0].clone(), values[1].clone()];
+            let body = values[2..].to_vec();
+            Ok(ClassMemberForm::Method {
+                prefix,
+                body,
+                is_static,
+                is_async,
+            })
+        }
+        "get" => {
+            // (get name () body...)
+            if values.len() < 3 {
+                return Ok(ClassMemberForm::Raw(member.clone()));
+            }
+            let prefix = vec![values[0].clone(), values[1].clone(), values[2].clone()];
+            let body = values[3..].to_vec();
+            Ok(ClassMemberForm::Method {
+                prefix,
+                body,
+                is_static,
+                is_async,
+            })
+        }
+        "set" => {
+            // (set name (param) body...)
+            if values.len() < 3 {
+                return Ok(ClassMemberForm::Raw(member.clone()));
+            }
+            let prefix = vec![values[0].clone(), values[1].clone(), values[2].clone()];
+            let body = values[3..].to_vec();
+            Ok(ClassMemberForm::Method {
+                prefix,
+                body,
+                is_static,
+                is_async,
+            })
+        }
+        "field" => {
+            // (field name) or (field name init-expr)
+            let prefix = vec![values[0].clone(), values[1].clone()];
+            let init = if values.len() >= 3 {
+                Some(values[2].clone())
+            } else {
+                None
+            };
+            Ok(ClassMemberForm::Field {
+                prefix,
+                init,
+                is_static,
+            })
+        }
+        _ => {
+            // Regular method: (method-name (params) body...)
+            if values.len() < 2 {
+                return Ok(ClassMemberForm::Raw(member.clone()));
+            }
+            let prefix = vec![values[0].clone(), values[1].clone()];
+            let body = values[2..].to_vec();
+            Ok(ClassMemberForm::Method {
+                prefix,
+                body,
+                is_static,
+                is_async,
+            })
+        }
+    }
+}
+
+/// Classify each body expression through the surface pipeline.
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -3773,7 +3953,7 @@ mod tests {
 
     #[test]
     fn test_classify_form_various_kernel_forms() {
-        for kf in &["let", "if", "while", "for", "class", "import", "+", "==="] {
+        for kf in &["let", "if", "while", "for", "import", "+", "==="] {
             let expr = list(vec![atom(kf), atom("x")]);
             let result = classify_form(&expr).unwrap();
             assert!(
@@ -4501,5 +4681,437 @@ mod tests {
             msg.contains("default"),
             "expected error about default arity, got: {msg}"
         );
+    }
+
+    // ---------------------------------------------------------------
+    // Class tests
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_classify_class_basic() {
+        // (class Foo () (constructor (x) (bind y 42)))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![
+                    atom("constructor"),
+                    list(vec![atom("x")]),
+                    list(vec![atom("bind"), atom("y"), num(42.0)]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class {
+                name,
+                superclass,
+                members,
+                ..
+            } => {
+                assert_eq!(name.as_atom(), Some("Foo"));
+                assert!(matches!(superclass, SExpr::List { values, .. } if values.is_empty()));
+                assert_eq!(members.len(), 1);
+                match &members[0] {
+                    ClassMemberForm::Method {
+                        prefix,
+                        body,
+                        is_static,
+                        is_async,
+                    } => {
+                        assert_eq!(prefix[0].as_atom(), Some("constructor"));
+                        assert!(!is_static);
+                        assert!(!is_async);
+                        assert_eq!(body.len(), 1);
+                        if let SExpr::List { values, .. } = &body[0] {
+                            assert_eq!(values[0].as_atom(), Some("bind"));
+                        } else {
+                            panic!("expected list");
+                        }
+                    }
+                    other => panic!("expected Method, got {other:?}"),
+                }
+            }
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_with_superclass() {
+        // (class Dog (Animal) (constructor () (bind x 1)))
+        let result = form(
+            "class",
+            vec![
+                atom("Dog"),
+                list(vec![atom("Animal")]),
+                list(vec![
+                    atom("constructor"),
+                    list(vec![]),
+                    list(vec![atom("bind"), atom("x"), num(1.0)]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class {
+                superclass,
+                members,
+                ..
+            } => {
+                if let SExpr::List { values, .. } = superclass {
+                    assert_eq!(values.len(), 1);
+                    assert_eq!(values[0].as_atom(), Some("Animal"));
+                }
+                assert_eq!(members.len(), 1);
+            }
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_method_with_surface_forms() {
+        // (class Foo () (greet (name) (set! this:name name)))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![
+                    atom("greet"),
+                    list(vec![atom("name")]),
+                    list(vec![atom("set!"), atom("this:name"), atom("name")]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => {
+                assert_eq!(members.len(), 1);
+                match &members[0] {
+                    ClassMemberForm::Method { body, .. } => {
+                        assert_eq!(body.len(), 1);
+                        if let SExpr::List { values, .. } = &body[0] {
+                            assert_eq!(values[0].as_atom(), Some("set!"));
+                        } else {
+                            panic!("expected list");
+                        }
+                    }
+                    other => panic!("expected Method, got {other:?}"),
+                }
+            }
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_static_method() {
+        // (class Foo () (static (create () (bind x 1))))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![
+                    atom("static"),
+                    list(vec![
+                        atom("create"),
+                        list(vec![]),
+                        list(vec![atom("bind"), atom("x"), num(1.0)]),
+                    ]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => match &members[0] {
+                ClassMemberForm::Method {
+                    is_static,
+                    is_async,
+                    body,
+                    ..
+                } => {
+                    assert!(is_static);
+                    assert!(!is_async);
+                    if let SExpr::List { values, .. } = &body[0] {
+                        assert_eq!(values[0].as_atom(), Some("bind"));
+                    } else {
+                        panic!("expected list");
+                    }
+                }
+                other => panic!("expected Method, got {other:?}"),
+            },
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_async_method() {
+        // (class Foo () (async (fetch-data () (bind x 1))))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![
+                    atom("async"),
+                    list(vec![
+                        atom("fetch-data"),
+                        list(vec![]),
+                        list(vec![atom("bind"), atom("x"), num(1.0)]),
+                    ]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => match &members[0] {
+                ClassMemberForm::Method {
+                    is_static,
+                    is_async,
+                    ..
+                } => {
+                    assert!(!is_static);
+                    assert!(is_async);
+                }
+                other => panic!("expected Method, got {other:?}"),
+            },
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_static_async_method() {
+        // (class Foo () (static (async (create () (bind x 1)))))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![
+                    atom("static"),
+                    list(vec![
+                        atom("async"),
+                        list(vec![
+                            atom("create"),
+                            list(vec![]),
+                            list(vec![atom("bind"), atom("x"), num(1.0)]),
+                        ]),
+                    ]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => match &members[0] {
+                ClassMemberForm::Method {
+                    is_static,
+                    is_async,
+                    ..
+                } => {
+                    assert!(is_static);
+                    assert!(is_async);
+                }
+                other => panic!("expected Method, got {other:?}"),
+            },
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_field() {
+        // (class Foo () (field name))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![atom("field"), atom("name")]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => match &members[0] {
+                ClassMemberForm::Field {
+                    prefix,
+                    init,
+                    is_static,
+                } => {
+                    assert_eq!(prefix[0].as_atom(), Some("field"));
+                    assert_eq!(prefix[1].as_atom(), Some("name"));
+                    assert!(init.is_none());
+                    assert!(!is_static);
+                }
+                other => panic!("expected Field, got {other:?}"),
+            },
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_field_with_init() {
+        // (class Foo () (field count (bind x 0)))
+        // — field init is classified
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![atom("field"), atom("count"), num(42.0)]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => {
+                match &members[0] {
+                    ClassMemberForm::Field { init, .. } => {
+                        assert!(init.is_some());
+                        // 42.0 is stored as raw SExpr
+                        assert!(matches!(init.as_ref().unwrap(), SExpr::Number { .. }));
+                    }
+                    other => panic!("expected Field, got {other:?}"),
+                }
+            }
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_getter_setter() {
+        // (class Foo () (get value () (bind x 1)) (set value (v) (set! this:v v)))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![
+                    atom("get"),
+                    atom("value"),
+                    list(vec![]),
+                    list(vec![atom("bind"), atom("x"), num(1.0)]),
+                ]),
+                list(vec![
+                    atom("set"),
+                    atom("value"),
+                    list(vec![atom("v")]),
+                    list(vec![atom("set!"), atom("this:v"), atom("v")]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => {
+                assert_eq!(members.len(), 2);
+                // getter
+                match &members[0] {
+                    ClassMemberForm::Method { prefix, body, .. } => {
+                        assert_eq!(prefix[0].as_atom(), Some("get"));
+                        assert_eq!(prefix[1].as_atom(), Some("value"));
+                        if let SExpr::List { values, .. } = &body[0] {
+                            assert_eq!(values[0].as_atom(), Some("bind"));
+                        } else {
+                            panic!("expected list");
+                        }
+                    }
+                    other => panic!("expected Method for getter, got {other:?}"),
+                }
+                // setter
+                match &members[1] {
+                    ClassMemberForm::Method { prefix, body, .. } => {
+                        assert_eq!(prefix[0].as_atom(), Some("set"));
+                        if let SExpr::List { values, .. } = &body[0] {
+                            assert_eq!(values[0].as_atom(), Some("set!"));
+                        } else {
+                            panic!("expected list");
+                        }
+                    }
+                    other => panic!("expected Method for setter, got {other:?}"),
+                }
+            }
+            other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_expr() {
+        // (class-expr () (constructor () (bind x 1)))
+        let result = form(
+            "class-expr",
+            vec![
+                list(vec![]),
+                list(vec![
+                    atom("constructor"),
+                    list(vec![]),
+                    list(vec![atom("bind"), atom("x"), num(1.0)]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::ClassExpr { members, .. } => {
+                assert_eq!(members.len(), 1);
+                match &members[0] {
+                    ClassMemberForm::Method { body, .. } => {
+                        if let SExpr::List { values, .. } = &body[0] {
+                            assert_eq!(values[0].as_atom(), Some("bind"));
+                        } else {
+                            panic!("expected list");
+                        }
+                    }
+                    other => panic!("expected Method, got {other:?}"),
+                }
+            }
+            other => panic!("expected ClassExpr, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_class_error_too_few_args() {
+        // (class Foo) — missing superclass list
+        let result = form("class", vec![atom("Foo")]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_classify_class_threading_in_body() {
+        // (class Foo () (process (x) (-> x (+ 1))))
+        let result = form(
+            "class",
+            vec![
+                atom("Foo"),
+                list(vec![]),
+                list(vec![
+                    atom("process"),
+                    list(vec![atom("x")]),
+                    list(vec![atom("->"), atom("x"), list(vec![atom("+"), num(1.0)])]),
+                ]),
+            ],
+        )
+        .unwrap();
+
+        match &result {
+            SurfaceForm::Class { members, .. } => match &members[0] {
+                ClassMemberForm::Method { body, .. } => {
+                    assert_eq!(body.len(), 1);
+                    if let SExpr::List { values, .. } = &body[0] {
+                        assert_eq!(values[0].as_atom(), Some("->"));
+                    } else {
+                        panic!("expected list");
+                    }
+                }
+                other => panic!("expected Method, got {other:?}"),
+            },
+            other => panic!("expected Class, got {other:?}"),
+        }
     }
 }

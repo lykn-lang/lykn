@@ -1,8 +1,8 @@
 use crate::analysis::type_registry::TypeRegistry;
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::{
-    ArrayParamElement, Constructor, DestructuredField, FuncClause, GenfuncClause, MatchClause,
-    ParamShape, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation,
+    ArrayParamElement, ClassMemberForm, Constructor, DestructuredField, FuncClause, GenfuncClause,
+    MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation,
 };
 use crate::reader::source_loc::Span;
 
@@ -237,6 +237,23 @@ pub fn emit_form(
                 })
                 .collect()
         }
+        SurfaceForm::Class {
+            name,
+            superclass,
+            members,
+            ..
+        } => vec![emit_class_form(
+            Some(name),
+            superclass,
+            members,
+            ctx,
+            registry,
+        )],
+        SurfaceForm::ClassExpr {
+            superclass,
+            members,
+            ..
+        } => vec![emit_class_form(None, superclass, members, ctx, registry)],
         SurfaceForm::KernelPassthrough { raw, .. } => vec![raw.clone()],
         SurfaceForm::FunctionCall {
             head,
@@ -282,7 +299,10 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                 if head_name.starts_with("js:") {
                     return emit_js_interop(head_name, &values[1..], ctx, registry);
                 }
-                if crate::classifier::dispatch::is_surface_form(head_name) {
+                if crate::classifier::dispatch::is_surface_form(head_name)
+                    || head_name == "class"
+                    || head_name == "class-expr"
+                {
                     // This subexpression is a surface form — classify and emit it.
                     // Nested surface forms are always in Value position (they need
                     // to produce a result for the enclosing expression).
@@ -2212,6 +2232,96 @@ fn emit_function_call(
         items.push(emit_expr(arg, ctx, registry));
     }
     list(items)
+}
+
+// ---------------------------------------------------------------------------
+// Class emission
+// ---------------------------------------------------------------------------
+
+/// Emit a `(class ...)` or `(class-expr ...)` kernel form.
+///
+/// For `class`, `name` is `Some(name_expr)`.
+/// For `class-expr`, `name` is `None`.
+fn emit_class_form(
+    name: Option<&SExpr>,
+    superclass: &SExpr,
+    members: &[ClassMemberForm],
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let head_atom = if name.is_some() {
+        "class"
+    } else {
+        "class-expr"
+    };
+    let mut items = vec![atom(head_atom)];
+
+    if let Some(n) = name {
+        items.push(emit_expr(n, ctx, registry));
+    }
+
+    items.push(emit_expr(superclass, ctx, registry));
+
+    for member in members {
+        items.push(emit_class_member_form(member, ctx, registry));
+    }
+
+    list(items)
+}
+
+/// Emit a single classified class member back to kernel S-expression form.
+fn emit_class_member_form(
+    member: &ClassMemberForm,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    match member {
+        ClassMemberForm::Method {
+            prefix,
+            body,
+            is_static,
+            is_async,
+        } => {
+            let mut member_items: Vec<SExpr> =
+                prefix.iter().map(|e| emit_expr(e, ctx, registry)).collect();
+
+            for expr in body {
+                member_items.push(emit_expr(expr, ctx, registry));
+            }
+
+            let mut result = list(member_items);
+
+            if *is_async {
+                result = list(vec![atom("async"), result]);
+            }
+            if *is_static {
+                result = list(vec![atom("static"), result]);
+            }
+
+            result
+        }
+        ClassMemberForm::Field {
+            prefix,
+            init,
+            is_static,
+        } => {
+            let mut member_items: Vec<SExpr> =
+                prefix.iter().map(|e| emit_expr(e, ctx, registry)).collect();
+
+            if let Some(init_expr) = init {
+                member_items.push(emit_expr(init_expr, ctx, registry));
+            }
+
+            let mut result = list(member_items);
+
+            if *is_static {
+                result = list(vec![atom("static"), result]);
+            }
+
+            result
+        }
+        ClassMemberForm::Raw(raw) => emit_expr(raw, ctx, registry),
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -7030,6 +7140,192 @@ mod tests {
             assert!(has_yield, "expected yield in body");
         } else {
             panic!("expected list");
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // Class emission tests
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_emit_class_with_bind_in_constructor() {
+        // Class with bind in constructor body should emit (const y 42) in kernel
+        let form = SurfaceForm::Class {
+            name: atom("Foo"),
+            superclass: list(vec![]),
+            members: vec![ClassMemberForm::Method {
+                prefix: vec![atom("constructor"), list(vec![atom("x")])],
+                body: vec![list(vec![atom("bind"), atom("y"), num(42.0)])],
+                is_static: false,
+                is_async: false,
+            }],
+            span: s(),
+        };
+
+        let registry = TypeRegistry::default();
+        let mut ctx = EmitterContext::new(false);
+        let result = emit_form(&form, &mut ctx, &registry);
+        assert_eq!(result.len(), 1);
+
+        // (class Foo () (constructor (x) (const y 42)))
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("class"));
+            assert_eq!(values[1].as_atom(), Some("Foo"));
+            // values[2] is the superclass list
+            // values[3] is the constructor member
+            if let SExpr::List { values: member, .. } = &values[3] {
+                assert_eq!(member[0].as_atom(), Some("constructor"));
+                // member[2] should be (const y 42)
+                if let SExpr::List {
+                    values: bind_vals, ..
+                } = &member[2]
+                {
+                    assert_eq!(bind_vals[0].as_atom(), Some("const"));
+                    assert_eq!(bind_vals[1].as_atom(), Some("y"));
+                } else {
+                    panic!("expected list for const binding");
+                }
+            } else {
+                panic!("expected list for constructor");
+            }
+        } else {
+            panic!("expected list for class");
+        }
+    }
+
+    #[test]
+    fn test_emit_class_static_method() {
+        let form = SurfaceForm::Class {
+            name: atom("Foo"),
+            superclass: list(vec![]),
+            members: vec![ClassMemberForm::Method {
+                prefix: vec![atom("create"), list(vec![])],
+                body: vec![list(vec![atom("bind"), atom("x"), num(1.0)])],
+                is_static: true,
+                is_async: false,
+            }],
+            span: s(),
+        };
+
+        let registry = TypeRegistry::default();
+        let mut ctx = EmitterContext::new(false);
+        let result = emit_form(&form, &mut ctx, &registry);
+
+        // The member should be wrapped in (static ...)
+        if let SExpr::List { values, .. } = &result[0] {
+            // values[3] is the member
+            if let SExpr::List { values: member, .. } = &values[3] {
+                assert_eq!(member[0].as_atom(), Some("static"));
+                // Inner should be (create () (const x 1))
+                if let SExpr::List { values: inner, .. } = &member[1] {
+                    assert_eq!(inner[0].as_atom(), Some("create"));
+                } else {
+                    panic!("expected inner list");
+                }
+            } else {
+                panic!("expected member list");
+            }
+        } else {
+            panic!("expected class list");
+        }
+    }
+
+    #[test]
+    fn test_emit_class_field_with_init() {
+        let form = SurfaceForm::Class {
+            name: atom("Foo"),
+            superclass: list(vec![]),
+            members: vec![ClassMemberForm::Field {
+                prefix: vec![atom("field"), atom("count")],
+                init: Some(num(0.0)),
+                is_static: false,
+            }],
+            span: s(),
+        };
+
+        let registry = TypeRegistry::default();
+        let mut ctx = EmitterContext::new(false);
+        let result = emit_form(&form, &mut ctx, &registry);
+
+        if let SExpr::List { values, .. } = &result[0] {
+            if let SExpr::List { values: member, .. } = &values[3] {
+                assert_eq!(member[0].as_atom(), Some("field"));
+                assert_eq!(member[1].as_atom(), Some("count"));
+                // member[2] is the init value
+                assert!(matches!(&member[2], SExpr::Number { value, .. } if *value == 0.0));
+            } else {
+                panic!("expected member list");
+            }
+        } else {
+            panic!("expected class list");
+        }
+    }
+
+    #[test]
+    fn test_emit_class_expr() {
+        let form = SurfaceForm::ClassExpr {
+            superclass: list(vec![]),
+            members: vec![ClassMemberForm::Method {
+                prefix: vec![atom("constructor"), list(vec![])],
+                body: vec![list(vec![atom("bind"), atom("x"), num(1.0)])],
+                is_static: false,
+                is_async: false,
+            }],
+            span: s(),
+        };
+
+        let registry = TypeRegistry::default();
+        let mut ctx = EmitterContext::new(false);
+        let result = emit_form(&form, &mut ctx, &registry);
+
+        if let SExpr::List { values, .. } = &result[0] {
+            assert_eq!(values[0].as_atom(), Some("class-expr"));
+            // No name for class-expr — values[1] is the superclass list
+            // values[2] is the constructor member
+        } else {
+            panic!("expected class-expr list");
+        }
+    }
+
+    #[test]
+    fn test_emit_class_set_in_method() {
+        // set! in method body should emit (= target value)
+        let form = SurfaceForm::Class {
+            name: atom("Dog"),
+            superclass: list(vec![]),
+            members: vec![ClassMemberForm::Method {
+                prefix: vec![atom("constructor"), list(vec![atom("name")])],
+                body: vec![list(vec![atom("set!"), atom("this:name"), atom("name")])],
+                is_static: false,
+                is_async: false,
+            }],
+            span: s(),
+        };
+
+        let registry = TypeRegistry::default();
+        let mut ctx = EmitterContext::new(false);
+        let result = emit_form(&form, &mut ctx, &registry);
+
+        if let SExpr::List { values, .. } = &result[0] {
+            if let SExpr::List { values: member, .. } = &values[3] {
+                assert_eq!(member[0].as_atom(), Some("constructor"));
+                // member[2] should be (= this:name name)
+                if let SExpr::List {
+                    values: assign_vals,
+                    ..
+                } = &member[2]
+                {
+                    assert_eq!(assign_vals[0].as_atom(), Some("="));
+                    assert_eq!(assign_vals[1].as_atom(), Some("this:name"));
+                    assert_eq!(assign_vals[2].as_atom(), Some("name"));
+                } else {
+                    panic!("expected assignment list");
+                }
+            } else {
+                panic!("expected member list");
+            }
+        } else {
+            panic!("expected class list");
         }
     }
 }

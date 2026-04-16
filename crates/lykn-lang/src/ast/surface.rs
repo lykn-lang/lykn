@@ -212,6 +212,32 @@ pub enum ThreadingStep {
     Call(Vec<SExpr>),
 }
 
+/// A classified class member whose body expressions have been run through the
+/// surface pipeline.
+#[derive(Debug, Clone, PartialEq)]
+pub enum ClassMemberForm {
+    /// Constructor or method with body as raw S-expressions.
+    /// The emitter processes body through `emit_expr` which recursively
+    /// expands surface forms at any nesting depth.
+    Method {
+        /// Everything before the body: head atom, name, params.
+        prefix: Vec<SExpr>,
+        /// Body expressions — raw S-expressions, expanded by the emitter.
+        body: Vec<SExpr>,
+        is_static: bool,
+        is_async: bool,
+    },
+    /// Field declaration with optional initializer.
+    Field {
+        prefix: Vec<SExpr>,
+        /// Optional initializer — raw S-expression, expanded by the emitter.
+        init: Option<SExpr>,
+        is_static: bool,
+    },
+    /// Unrecognized member — pass through as-is.
+    Raw(SExpr),
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum SurfaceForm {
     Bind {
@@ -374,6 +400,24 @@ pub enum SurfaceForm {
         /// Remaining raw args after the inner form (e.g., nothing for
         /// `(export (func ...))`, but could be present for other export patterns)
         extra_args: Vec<SExpr>,
+        span: Span,
+    },
+    Class {
+        /// The class name atom.
+        name: SExpr,
+        /// The superclass list (possibly empty `()`).
+        superclass: SExpr,
+        /// Members with body expressions classified through the surface
+        /// pipeline.
+        members: Vec<ClassMemberForm>,
+        span: Span,
+    },
+    ClassExpr {
+        /// The superclass list (possibly empty `()`).
+        superclass: SExpr,
+        /// Members with body expressions classified through the surface
+        /// pipeline.
+        members: Vec<ClassMemberForm>,
         span: Span,
     },
     KernelPassthrough {
