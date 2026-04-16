@@ -359,6 +359,13 @@
   "workspace": {
     "dependencies": [
       "npm:astring@^1.9.0"
-    ]
+    ],
+    "members": {
+      "packages/lykn": {
+        "dependencies": [
+          "npm:astring@^1.9.0"
+        ]
+      }
+    }
   }
 }

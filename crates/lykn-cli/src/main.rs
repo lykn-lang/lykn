@@ -466,10 +466,7 @@ fn cmd_new(name: &str, path: Option<&Path>) {
         &project_json_template(name),
     );
     write_file(
-        &project_dir
-            .join("packages")
-            .join(name)
-            .join("deno.json"),
+        &project_dir.join("packages").join(name).join("deno.json"),
         &deno_json_template(name),
     );
     write_file(

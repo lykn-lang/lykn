@@ -251,7 +251,7 @@ check: common-checks test
 	@echo ""
 
 .PHONY: check-all
-check-all: common-checks coverage
+check-all: common-checks coverage test-js
 	@echo ""
 	@echo "$(GREEN)✓ Full validation complete (build + lint + coverage)$(RESET)"
 	@echo ""

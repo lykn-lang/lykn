@@ -6,6 +6,8 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0039 | DD-29: `lykn new` — Project Template Generation | Active | 2026-04-16 |
+| 0038 | DD-28: Project Restructure, Workspace Convention, and CLI Wrapper | Active | 2026-04-15 |
 | 0037 | DD-27: Surface Form Expansion Inside `class` Bodies | Active | 2026-04-15 |
 | 0036 | DD-26: Generator Functions and Async Iteration | Active | 2026-04-15 |
 | 0035 | DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters | Active | 2026-04-14 |
@@ -52,6 +54,8 @@ This index is automatically generated. Do not edit manually.
 
 ### Active
 
+- [0039 - DD-29: `lykn new` — Project Template Generation](05-active/0039-dd-29-lykn-new-project-template-generation.md)
+- [0038 - DD-28: Project Restructure, Workspace Convention, and CLI Wrapper](05-active/0038-dd-28-project-restructure-workspace-convention-and-cli-wrapper.md)
 - [0037 - DD-27: Surface Form Expansion Inside `class` Bodies](05-active/0037-dd-27-surface-form-expansion-inside-class-bodies.md)
 - [0036 - DD-26: Generator Functions and Async Iteration](05-active/0036-dd-26-generator-functions-and-async-iteration.md)
 - [0035 - DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters](05-active/0035-dd-25.1-nested-destructuring-and-defaults-in-funcfn-parameters.md)
