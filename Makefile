@@ -43,6 +43,7 @@ help:
 	@echo "$(GREEN)Building:$(RESET)"
 	@echo "  $(YELLOW)make build$(RESET)            - Build all binaries ($(BINARIES))"
 	@echo "  $(YELLOW)make build-release$(RESET)    - Build optimized release binaries"
+	@echo "  $(YELLOW)make build-dist$(RESET)       - Stage packages into dist/ for publishing"
 	@echo "  $(YELLOW)make build MODE=release$(RESET) - Build with custom mode"
 	@echo ""
 	@echo "$(GREEN)Testing & Quality:$(RESET)"
@@ -168,6 +169,12 @@ build-release: clean $(BIN_DIR)
 	done
 	@echo "$(GREEN)✓ Release build complete$(RESET)"
 	@echo "$(CYAN)→ Optimized binaries in $(BIN_DIR)/$(RESET)"
+
+.PHONY: build-dist
+build-dist:
+	@echo "$(BLUE)Staging packages into dist/ for publishing...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) build --dist
+	@echo "$(GREEN)✓ Dist staging complete$(RESET)"
 
 # Cleaning targets
 .PHONY: clean

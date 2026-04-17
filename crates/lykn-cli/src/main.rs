@@ -4,6 +4,8 @@ use std::path::{Path, PathBuf};
 use std::process::{self, Command};
 
 mod compile;
+mod config;
+mod dist;
 mod doctest;
 
 #[derive(Parser)]
@@ -82,14 +84,17 @@ enum Commands {
         #[arg(long)]
         path: Option<PathBuf>,
     },
-    /// Build browser bundle or npm package
+    /// Build browser bundle, npm package, or dist staging
     Build {
         /// Build the browser bundle (dist/lykn-browser.js)
         #[arg(long)]
         browser: bool,
-        /// Build the npm package (dist/npm/)
+        /// Build the npm package (dist/npm/) [deprecated: use --dist]
         #[arg(long)]
         npm: bool,
+        /// Stage all workspace packages into dist/ for publishing
+        #[arg(long)]
+        dist: bool,
     },
     /// Publish package(s)
     Publish {
@@ -102,6 +107,9 @@ enum Commands {
         /// Dry run (don't actually publish)
         #[arg(long)]
         dry_run: bool,
+        /// Skip the build step (assume dist/ is already staged)
+        #[arg(long)]
+        no_build: bool,
     },
 }
 
@@ -127,8 +135,13 @@ fn main() {
         } => cmd_test(&patterns, docs.as_deref(), out_dir.as_deref(), compile_only, &deno_args),
         Commands::Lint { paths } => cmd_lint(&paths),
         Commands::New { name, path } => cmd_new(&name, path.as_deref()),
-        Commands::Build { browser, npm } => cmd_build(browser, npm),
-        Commands::Publish { jsr, npm, dry_run } => cmd_publish(jsr, npm, dry_run),
+        Commands::Build { browser, npm, dist } => cmd_build(browser, npm, dist),
+        Commands::Publish {
+            jsr,
+            npm,
+            dry_run,
+            no_build,
+        } => cmd_publish(jsr, npm, dry_run, no_build),
     }
 }
 
@@ -503,13 +516,28 @@ fn cmd_lint(paths: &[String]) {
     exec_deno(&deno_args);
 }
 
-fn cmd_publish(jsr: bool, npm: bool, dry_run: bool) {
+fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
     // Default to JSR if no flags specified
     let do_jsr = jsr || !npm;
     let do_npm = npm;
 
+    // Build dist/ unless --no-build was passed
+    if !no_build && (do_jsr || do_npm) {
+        match dist::build_dist(Path::new(".")) {
+            Ok(packages) => {
+                for pkg in &packages {
+                    eprintln!("{} staged in dist/{}/", pkg.name, pkg.short_name);
+                }
+            }
+            Err(e) => {
+                eprintln!("error: {e}");
+                process::exit(1);
+            }
+        }
+    }
+
     if do_jsr {
-        let config = find_config();
+        let config = "dist/project.json".to_string();
         let mut args = vec!["publish", "--config", &config];
         if dry_run {
             args.push("--dry-run");
@@ -529,23 +557,20 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool) {
     }
 
     if do_npm {
-        // Build both npm packages natively
-        build_npm_package();
-
-        // Publish all built npm packages (dist/npm-*)
+        // Find all subdirectories of dist/ that contain package.json
         let npm_dirs: Vec<_> = fs::read_dir("dist")
             .into_iter()
             .flatten()
             .flatten()
             .filter(|e| {
                 e.file_type().is_ok_and(|t| t.is_dir())
-                    && e.file_name().to_string_lossy().starts_with("npm-")
+                    && e.path().join("package.json").exists()
             })
             .map(|e| e.path().to_string_lossy().into_owned())
             .collect();
         for dir in &npm_dirs {
             if dry_run {
-                eprintln!("npm dry run — checking {dir}...");
+                eprintln!("npm dry run -- checking {dir}...");
                 let status = Command::new("npm")
                     .args(["pack", "--dry-run"])
                     .current_dir(dir)
@@ -631,7 +656,10 @@ fn deno_json_template(name: &str) -> String {
         r#"{{
     "name": "@{name}/{name}",
     "version": "0.1.0",
-    "exports": "./mod.lykn"
+    "exports": "./mod.js",
+    "lykn": {{
+        "kind": "runtime"
+    }}
 }}
 "#
     )
@@ -733,16 +761,29 @@ fn cmd_new(name: &str, path: Option<&Path>) {
 // lykn build — build artifacts
 // ---------------------------------------------------------------------------
 
-fn cmd_build(browser: bool, npm: bool) {
-    if !browser && !npm {
-        eprintln!("Usage: lykn build --browser or lykn build --npm");
+fn cmd_build(browser: bool, npm: bool, dist_flag: bool) {
+    if !browser && !npm && !dist_flag {
+        eprintln!("Usage: lykn build --browser | --npm | --dist");
         process::exit(1);
     }
     if browser {
         build_browser_bundle();
     }
     if npm {
-        build_npm_package();
+        eprintln!("warning: --npm is deprecated; use --dist instead");
+    }
+    if npm || dist_flag {
+        match dist::build_dist(Path::new(".")) {
+            Ok(packages) => {
+                for pkg in &packages {
+                    eprintln!("{} staged in dist/{}/", pkg.name, pkg.short_name);
+                }
+            }
+            Err(e) => {
+                eprintln!("error: {e}");
+                process::exit(1);
+            }
+        }
     }
 }
 
@@ -805,194 +846,3 @@ esbuild.stop();
     }
 }
 
-/// Build npm packages for all workspace members.
-/// Reads project.json → workspace array → each package's deno.json.
-fn build_npm_package() {
-    eprintln!("Building npm packages...");
-
-    let workspace_members = read_workspace_members();
-    if workspace_members.is_empty() {
-        eprintln!("error: no workspace members found in project.json");
-        process::exit(1);
-    }
-
-    for pkg_dir in &workspace_members {
-        build_npm_for_package(pkg_dir);
-    }
-}
-
-/// Read the workspace member directories from project.json.
-fn read_workspace_members() -> Vec<String> {
-    let config_str = fs::read_to_string("project.json").unwrap_or_else(|e| {
-        eprintln!("error reading project.json: {e}");
-        process::exit(1);
-    });
-    // Extract workspace array entries: "workspace": ["./packages/foo", "./packages/bar"]
-    let mut members = Vec::new();
-    if let Some(start) = config_str.find("\"workspace\"") {
-        let rest = &config_str[start..];
-        if let Some(arr_start) = rest.find('[') {
-            let arr_rest = &rest[arr_start + 1..];
-            if let Some(arr_end) = arr_rest.find(']') {
-                let arr_content = &arr_rest[..arr_end];
-                for item in arr_content.split(',') {
-                    let trimmed = item.trim().trim_matches('"').trim_matches('\'');
-                    if !trimmed.is_empty() {
-                        // Normalize: "./packages/lykn" → "packages/lykn"
-                        let cleaned = trimmed.strip_prefix("./").unwrap_or(trimmed);
-                        members.push(cleaned.to_string());
-                    }
-                }
-            }
-        }
-    }
-    members
-}
-
-/// Extract a string value for a key from a JSON string (simple, no serde).
-fn json_extract(json: &str, key: &str) -> Option<String> {
-    let pattern = format!("\"{}\"", key);
-    let line = json.lines().find(|l| l.contains(&pattern))?;
-    // Find value after the colon: "key": "value"
-    let colon_pos = line.find(':')?;
-    let after_colon = &line[colon_pos + 1..];
-    let v_start = after_colon.find('"')? + 1;
-    let v_rest = &after_colon[v_start..];
-    let v_end = v_rest.find('"')?;
-    Some(v_rest[..v_end].to_string())
-}
-
-/// Extract npm dependencies from deno.json "imports" field.
-/// Maps "astring": "npm:astring@^1.9.0" → "astring": "^1.9.0"
-/// Maps workspace imports like "lykn/": "./..." → "@lykn/lykn": "^version"
-fn extract_npm_deps(json: &str, version: &str) -> Vec<(String, String)> {
-    let mut deps = Vec::new();
-    let mut in_imports = false;
-    for line in json.lines() {
-        if line.contains("\"imports\"") {
-            in_imports = true;
-            continue;
-        }
-        if in_imports {
-            if line.contains('}') {
-                break;
-            }
-            // Parse "pkg": "npm:pkg@^version"
-            if let Some(colon) = line.find(':') {
-                let key = line[..colon]
-                    .trim()
-                    .trim_matches('"')
-                    .trim_matches(',')
-                    .to_string();
-                let val = line[colon + 1..]
-                    .trim()
-                    .trim_matches('"')
-                    .trim_matches(',')
-                    .to_string();
-                if let Some(npm_spec) = val.strip_prefix("npm:") {
-                    // npm:astring@^1.9.0 → astring, ^1.9.0
-                    // strip "npm:"
-                    if let Some(at) = npm_spec.rfind('@') {
-                        let npm_name = &npm_spec[..at];
-                        let npm_ver = &npm_spec[at + 1..];
-                        deps.push((npm_name.to_string(), npm_ver.to_string()));
-                    }
-                } else if key.ends_with('/') && val.starts_with("./packages/") {
-                    // Workspace import: "lykn/": "./packages/lang/"
-                    // → depends on @lykn/<name>
-                    let pkg_name = key.trim_end_matches('/');
-                    deps.push((format!("@lykn/{pkg_name}"), format!("^{version}")));
-                }
-            }
-        }
-    }
-    deps
-}
-
-/// Build an npm package for a single workspace member.
-fn build_npm_for_package(pkg_dir: &str) {
-    let deno_json_path = Path::new(pkg_dir).join("deno.json");
-    let deno_json = fs::read_to_string(&deno_json_path).unwrap_or_else(|e| {
-        eprintln!("error reading {}: {e}", deno_json_path.display());
-        process::exit(1);
-    });
-
-    let name = json_extract(&deno_json, "name").unwrap_or_else(|| {
-        eprintln!("error: no \"name\" in {}", deno_json_path.display());
-        process::exit(1);
-    });
-    let version = json_extract(&deno_json, "version").unwrap_or("0.0.0".into());
-
-    // npm package name: @lykn/lykn → dist dir: dist/npm-lykn
-    // @lykn/browser → dist dir: dist/npm-browser
-    let short_name = name.strip_prefix("@lykn/").unwrap_or(&name);
-    let dist_name = format!("dist/npm-{short_name}");
-    let dist = Path::new(&dist_name);
-
-    // Clean and create
-    let _ = fs::remove_dir_all(dist);
-    fs::create_dir_all(dist).unwrap_or_else(|e| {
-        eprintln!("error creating {}: {e}", dist.display());
-        process::exit(1);
-    });
-
-    // Copy all .js files from the package directory
-    let pkg_path = Path::new(pkg_dir);
-    if let Ok(entries) = fs::read_dir(pkg_path) {
-        for entry in entries.flatten() {
-            let path = entry.path();
-            if path.extension().is_some_and(|e| e == "js") {
-                let filename = path.file_name().unwrap();
-                // Read, rewrite workspace imports for npm, write
-                let content = fs::read_to_string(&path).unwrap_or_else(|e| {
-                    eprintln!("error reading {}: {e}", path.display());
-                    process::exit(1);
-                });
-                // Rewrite import map paths: from 'lang/...' → from '@lykn/lang/...'
-                let content = content.replace("from 'lang/", "from '@lykn/lang/");
-                let content = content.replace("from \"lang/", "from \"@lykn/lang/");
-                write_file(&dist.join(filename), &content);
-            }
-        }
-    }
-
-    // Build dependencies from deno.json imports
-    let deps = extract_npm_deps(&deno_json, &version);
-    let deps_json = if deps.is_empty() {
-        "{}".to_string()
-    } else {
-        let pairs: Vec<String> = deps
-            .iter()
-            .map(|(k, v)| format!("    \"{k}\": \"{v}\""))
-            .collect();
-        format!("{{\n{}\n  }}", pairs.join(",\n"))
-    };
-
-    let package_json = format!(
-        r#"{{
-  "name": "{name}",
-  "version": "{version}",
-  "type": "module",
-  "main": "./mod.js",
-  "exports": {{
-    ".": "./mod.js"
-  }},
-  "files": ["*.js", "README.md", "LICENSE"],
-  "keywords": ["lisp", "s-expression", "lykn"],
-  "author": "Duncan McGreggor",
-  "license": "Apache-2.0",
-  "repository": {{
-    "type": "git",
-    "url": "https://github.com/oxur/lykn"
-  }},
-  "dependencies": {deps_json}
-}}
-"#
-    );
-    write_file(&dist.join("package.json"), &package_json);
-
-    let _ = fs::copy("README.md", dist.join("README.md"));
-    let _ = fs::copy("LICENSE", dist.join("LICENSE"));
-
-    eprintln!("{name} npm package built in {dist_name}/ (v{version})");
-}

@@ -1,5 +1,8 @@
 {
     "name": "@lykn/testing",
     "version": "0.5.0",
-    "exports": "./mod.lykn"
+    "exports": "./mod.lykn",
+    "lykn": {
+        "kind": "macro-module"
+    }
 }

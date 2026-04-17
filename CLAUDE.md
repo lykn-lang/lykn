@@ -103,9 +103,17 @@ The JS reader and Rust reader are parallel implementations of the same S-express
 
 ## Publishing
 
-- **crates.io**: `make publish` (publishes in dependency order with rate-limit delays) or `make publish-one CRATE=lykn-cli`
-- **jsr.io**: `deno publish --allow-slow-types` (config in `deno.json`)
-- **npm**: `npm publish --access public` (scoped as `@lykn/lang` in `package.json`)
+All JS packages publish from `dist/` (never directly from source). `lykn build --dist` stages each workspace member into `dist/<name>/` with generated `deno.json` and `package.json`. Three package kinds: `runtime` (compile .lykn → .js), `macro-module` (copy .lykn + .js, generate stub), `tooling` (copy .js).
+
+```sh
+lykn build --dist              # stage all packages into dist/
+lykn publish --jsr             # publish to JSR from dist/
+lykn publish --npm             # publish to npm from dist/
+lykn publish --jsr --dry-run   # verify without publishing
+make publish                   # publishes to JSR, npm, and crates.io
+```
+
+- **crates.io**: `make publish-crates` (publishes in dependency order with rate-limit delays) or `make publish-one CRATE=lykn-cli`
 
 ## Git remotes
 
