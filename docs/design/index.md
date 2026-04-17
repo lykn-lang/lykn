@@ -6,6 +6,9 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0042 | DD-32: Test Suite Migration — JS Tests to lykn | Active | 2026-04-17 |
+| 0041 | DD-31: Test Runner CLI and Markdown/Literate Testing | Active | 2026-04-17 |
+| 0040 | DD-30: Testing DSL — Forms, Assertions, and Macro Design | Active | 2026-04-17 |
 | 0039 | DD-29: `lykn new` — Project Template Generation | Active | 2026-04-16 |
 | 0038 | DD-28: Project Restructure, Workspace Convention, and CLI Wrapper | Active | 2026-04-15 |
 | 0037 | DD-27: Surface Form Expansion Inside `class` Bodies | Active | 2026-04-15 |
@@ -54,6 +57,9 @@ This index is automatically generated. Do not edit manually.
 
 ### Active
 
+- [0042 - DD-32: Test Suite Migration — JS Tests to lykn](05-active/0042-dd-32-test-suite-migration-js-tests-to-lykn.md)
+- [0041 - DD-31: Test Runner CLI and Markdown/Literate Testing](05-active/0041-dd-31-test-runner-cli-and-markdownliterate-testing.md)
+- [0040 - DD-30: Testing DSL — Forms, Assertions, and Macro Design](05-active/0040-dd-30-testing-dsl-forms-assertions-and-macro-design.md)
 - [0039 - DD-29: `lykn new` — Project Template Generation](05-active/0039-dd-29-lykn-new-project-template-generation.md)
 - [0038 - DD-28: Project Restructure, Workspace Convention, and CLI Wrapper](05-active/0038-dd-28-project-restructure-workspace-convention-and-cli-wrapper.md)
 - [0037 - DD-27: Surface Form Expansion Inside `class` Bodies](05-active/0037-dd-27-surface-form-expansion-inside-class-bodies.md)

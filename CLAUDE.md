@@ -19,7 +19,7 @@ This project does not use Node.js.
 
 **For JavaScript Code Quality:**
 
-1. **`assets/ai/ai-design/skills/nodeless-js/SKILL.md`** - Advanced Rust programming skill (**use this**)
+1. **`assets/ai/ai-design/skills/nodeless-js/SKILL.md`** - Advanced JavaScript programming skill (**use this**)
 2. **`assets/ai/ai-design/guides/js/*.md`** - Comprehensive JavaScript guidelines referenced by the skill
 
 **Important:** Note that `assets/ai/ai-design` may be a synlink; check to be sure, before assuming there's no directory if a directory check failes. If a symlink check fails and you have confirmed that `assets/ai/ai-design` does not exist on the file system, ask permission to clone it:
@@ -42,6 +42,13 @@ git clone https://github.com/cnbb-design/ai-design assets/ai/ai-design
 ```bash
 git clone https://github.com/oxur/ai-rust assets/ai/ai-rust
 ```
+
+### Lykn
+
+**For Lykn Code Quality:**
+
+1. **`assets/ai/SKILL.md`** - Advanced Lykn programming skill (**use this**)
+2. **`docs/guides/*`** - Comprehensive Lykn guidelines referenced by the skill
 
 ## Build commands
 

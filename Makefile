@@ -46,9 +46,10 @@ help:
 	@echo "  $(YELLOW)make build MODE=release$(RESET) - Build with custom mode"
 	@echo ""
 	@echo "$(GREEN)Testing & Quality:$(RESET)"
-	@echo "  $(YELLOW)make test$(RESET)             - Run all tests (Rust + JS)"
+	@echo "  $(YELLOW)make test$(RESET)             - Run all tests (Rust + JS + lykn)"
 	@echo "  $(YELLOW)make test-rust$(RESET)        - Run Rust tests only"
 	@echo "  $(YELLOW)make test-js$(RESET)          - Run JS tests only"
+	@echo "  $(YELLOW)make test-lykn$(RESET)        - Run lykn tests only"
 	@echo "  $(YELLOW)make lint$(RESET)             - Run clippy, format check, and JS lint"
 	@echo "  $(YELLOW)make format$(RESET)           - Format all code with rustfmt"
 	@echo "  $(YELLOW)make coverage$(RESET)         - Generate test coverage report"
@@ -183,13 +184,7 @@ clean-all: clean
 
 # Testing & Quality targets
 .PHONY: test
-test:
-	@echo "$(BLUE)Running tests...$(RESET)"
-	@echo "$(CYAN)• Running Rust workspace tests...$(RESET)"
-	@cargo test --all-features --workspace
-	@echo "$(CYAN)• Running JS tests...$(RESET)"
-	@$(BIN_DIR)/$(CODE_NAME) test
-	@echo "$(GREEN)✓ All tests passed$(RESET)"
+test: test-rust test-js test-lykn
 
 .PHONY: test-rust
 test-rust:
@@ -202,6 +197,12 @@ test-js:
 	@echo "$(BLUE)Running JS tests...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test
 	@echo "$(GREEN)✓ JS tests passed$(RESET)"
+
+.PHONY: test-lykn
+test-lykn:
+	@echo "$(BLUE)Running lykn tests...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) test test/surface/
+	@echo "$(GREEN)✓ lykn tests passed$(RESET)"
 
 .PHONY: lint
 lint:
