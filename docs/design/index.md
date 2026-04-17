@@ -6,6 +6,8 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0044 | DD-34: Cross-Package `import-macros` Resolution | Final | 2026-04-17 |
+| 0043 | DD-33: Package Publishing and the `dist/` Boundary | Final | 2026-04-17 |
 | 0042 | DD-32: Test Suite Migration — JS Tests to lykn | Active | 2026-04-17 |
 | 0041 | DD-31: Test Runner CLI and Markdown/Literate Testing | Active | 2026-04-17 |
 | 0040 | DD-30: Testing DSL — Forms, Assertions, and Macro Design | Active | 2026-04-17 |
@@ -71,6 +73,8 @@ This index is automatically generated. Do not edit manually.
 
 ### Final
 
+- [0044 - DD-34: Cross-Package `import-macros` Resolution](06-final/0044-dd-34-cross-package-import-macros-resolution.md)
+- [0043 - DD-33: Package Publishing and the `dist/` Boundary](06-final/0043-dd-33-package-publishing-and-the-dist-boundary.md)
 - [0033 - DD-24: `bind` Type Enforcement](06-final/0033-dd-24-bind-type-enforcement.md)
 - [0032 - DD-23: `set!` — External Property Mutation](06-final/0032-dd-23-set-external-property-mutation.md)
 - [0031 - DD-22: Surface Equality and Logical Operators](06-final/0031-dd-22-surface-equality-and-logical-operators.md)

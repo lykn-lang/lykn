@@ -46,7 +46,8 @@ Note: document paths are relative to the lykn project root.
 | **Error handling** | `docs/guides/03-error-handling.md`, `docs/guides/07-async-concurrency.md` |
 | **Refactoring JS to lykn** | `docs/guides/00-lykn-surface-forms.md`, `docs/guides/01-core-idioms.md`, `docs/guides/09-anti-patterns.md` |
 | **Code review / quality audit** | `docs/guides/09-anti-patterns.md`, `docs/guides/01-core-idioms.md`, `docs/guides/08-performance.md` |
-| **Writing tests** | `docs/guides/12-deno/12-02-testing.md`, `docs/guides/03-error-handling.md` |
+| **Writing tests (lykn DSL)** | `docs/guides/16-testing.md`, `docs/guides/03-error-handling.md` |
+| **Writing tests (JS on compiled output)** | `docs/guides/12-deno/12-02-testing.md`, `docs/guides/03-error-handling.md` |
 | **Type system & contracts** | `docs/guides/05-type-discipline.md`, `docs/guides/06-functions-closures.md` |
 | **Values, mutation, immutability** | `docs/guides/04-values-references.md`, `docs/guides/01-core-idioms.md` |
 | **Async & concurrency** | `docs/guides/07-async-concurrency.md`, `docs/guides/03-error-handling.md` |
@@ -562,7 +563,7 @@ lykn targets Deno exclusively. The compiled JS output runs in Deno with ESM-only
 - **Deno APIs**: `Deno.readTextFile`, `Deno.serve`, `Deno.env.get()`, etc. **MUST**
 - **Web Platform APIs**: `fetch`, `Request`, `Response`, `URL`, `AbortController`, `structuredClone`. **SHOULD**
 - **Permissions**: `--allow-net`, `--allow-read`, etc. Never `--allow-all` in production. **MUST**
-- **Testing**: `Deno.test()` + `@std/assert`. Test files named `*_test.js` (on compiled output) or `*_test.lykn`. **MUST**
+- **Testing**: `Deno.test()` + `@std/assert`. Test files named `*_test.js` (on compiled output) or `*_test.lykn`. The lykn testing DSL (`import-macros "testing"`) provides `test`, `suite`, `step`, and assertion macros that compile to `Deno.test()` + `@std/assert`. See `docs/guides/16-testing.md`. **MUST**
 
 ---
 
