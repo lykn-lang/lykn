@@ -466,8 +466,8 @@ Apache-2.0
 
 [logo]: assets/images/logo/v1-y250.png
 [logo-large]: assets/images/logo/v1.png
-[build]: https://github.com/oxur/lykn/actions/workflows/cicd.yml
-[build-badge]: https://github.com/oxur/lykn/actions/workflows/cicd.yml/badge.svg
+[build]: https://github.com/oxur/lykn/actions/workflows/ci.yml
+[build-badge]: https://github.com/oxur/lykn/actions/workflows/ci.yml/badge.svg
 [crate]: https://crates.io/crates/lykn
 [crate-badge]: https://img.shields.io/crates/v/lykn.svg
 [docs]: https://docs.rs/lykn/
