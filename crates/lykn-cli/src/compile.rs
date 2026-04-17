@@ -44,10 +44,8 @@ pub fn compile_source(
 
     // 2. Expand macros (with project-level import map if available)
     let imports: Option<HashMap<String, String>> =
-        crate::config::read_project_config_optional()
-            .map(|c| c.imports.into_iter().collect());
-    let forms =
-        expander::expand(forms, file_path, imports.as_ref()).map_err(|e| format!("{e}"))?;
+        crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
+    let forms = expander::expand(forms, file_path, imports.as_ref()).map_err(|e| format!("{e}"))?;
 
     // 3. Classify into surface forms
     let classified = classifier::classify(&forms).map_err(|diags| {

@@ -132,7 +132,13 @@ fn main() {
             out_dir,
             compile_only,
             deno_args,
-        } => cmd_test(&patterns, docs.as_deref(), out_dir.as_deref(), compile_only, &deno_args),
+        } => cmd_test(
+            &patterns,
+            docs.as_deref(),
+            out_dir.as_deref(),
+            compile_only,
+            &deno_args,
+        ),
         Commands::Lint { paths } => cmd_lint(&paths),
         Commands::New { name, path } => cmd_new(&name, path.as_deref()),
         Commands::Build { browser, npm, dist } => cmd_build(browser, npm, dist),
@@ -320,8 +326,10 @@ fn cmd_test(
                 // Still run doc tests below (compile_only only affects .lykn files)
             } else {
                 // Run .lykn tests first, then doc tests
-                let test_paths: Vec<String> =
-                    compiled.iter().map(|p| p.to_string_lossy().into_owned()).collect();
+                let test_paths: Vec<String> = compiled
+                    .iter()
+                    .map(|p| p.to_string_lossy().into_owned())
+                    .collect();
                 run_deno_test(&config, &test_paths, extra_deno_args);
             }
         }
@@ -418,9 +426,7 @@ fn is_lykn_test_file(path: &Path) -> bool {
     if name.ends_with(".lykn")
         && let Some(parent) = path.parent()
     {
-        return parent
-            .components()
-            .any(|c| c.as_os_str() == "__tests__");
+        return parent.components().any(|c| c.as_os_str() == "__tests__");
     }
     false
 }
@@ -451,9 +457,7 @@ fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<Pat
     for lykn_path in files {
         let js_path = if let Some(od) = out_dir {
             // Mirror directory structure under out_dir
-            let relative = lykn_path
-                .strip_prefix(".")
-                .unwrap_or(lykn_path);
+            let relative = lykn_path.strip_prefix(".").unwrap_or(lykn_path);
             let dest = od.join(relative).with_extension("js");
             if let Some(parent) = dest.parent()
                 && let Err(e) = fs::create_dir_all(parent)
@@ -563,8 +567,7 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
             .flatten()
             .flatten()
             .filter(|e| {
-                e.file_type().is_ok_and(|t| t.is_dir())
-                    && e.path().join("package.json").exists()
+                e.file_type().is_ok_and(|t| t.is_dir()) && e.path().join("package.json").exists()
             })
             .map(|e| e.path().to_string_lossy().into_owned())
             .collect();
@@ -845,4 +848,3 @@ esbuild.stop();
         process::exit(status.code().unwrap_or(1));
     }
 }
-

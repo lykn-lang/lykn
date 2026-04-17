@@ -146,12 +146,7 @@ pub fn workspace_members(config: &ProjectConfig) -> Vec<String> {
     config
         .workspace
         .iter()
-        .map(|entry| {
-            entry
-                .strip_prefix("./")
-                .unwrap_or(entry)
-                .to_string()
-        })
+        .map(|entry| entry.strip_prefix("./").unwrap_or(entry).to_string())
         .collect()
 }
 
@@ -189,9 +184,10 @@ pub fn extract_npm_deps(
 /// If there is no `@scope/` prefix, the name is returned as-is.
 pub fn short_name(name: &str) -> &str {
     if let Some(slash_pos) = name.find('/')
-        && name.starts_with('@') {
-            return &name[slash_pos + 1..];
-        }
+        && name.starts_with('@')
+    {
+        return &name[slash_pos + 1..];
+    }
     name
 }
 
@@ -287,10 +283,7 @@ mod tests {
             "npm:@scope/pkg@^2.0.0".to_string(),
         );
         let deps = extract_npm_deps(&imports, "1.0.0");
-        assert_eq!(
-            deps,
-            vec![("@scope/pkg".to_string(), "^2.0.0".to_string())]
-        );
+        assert_eq!(deps, vec![("@scope/pkg".to_string(), "^2.0.0".to_string())]);
     }
 
     #[test]
@@ -298,10 +291,7 @@ mod tests {
         let mut imports = IndexMap::new();
         imports.insert("lang/".to_string(), "./packages/lang/".to_string());
         let deps = extract_npm_deps(&imports, "0.5.0");
-        assert_eq!(
-            deps,
-            vec![("@lykn/lang".to_string(), "^0.5.0".to_string())]
-        );
+        assert_eq!(deps, vec![("@lykn/lang".to_string(), "^0.5.0".to_string())]);
     }
 
     #[test]
@@ -345,10 +335,7 @@ mod tests {
         let config: ProjectConfig = serde_json::from_str(json).unwrap();
         assert_eq!(config.workspace.len(), 2);
         assert_eq!(config.imports.len(), 2);
-        assert_eq!(
-            config.imports.get("astring").unwrap(),
-            "npm:astring@^1.9.0"
-        );
+        assert_eq!(config.imports.get("astring").unwrap(), "npm:astring@^1.9.0");
     }
 
     #[test]
@@ -486,11 +473,7 @@ mod tests {
     #[test]
     fn test_read_package_config_from_tempfile() {
         let tmp = std::env::temp_dir().join("lykn_test_pkg.json");
-        std::fs::write(
-            &tmp,
-            r#"{ "name": "@lykn/foo", "version": "1.2.3" }"#,
-        )
-        .unwrap();
+        std::fs::write(&tmp, r#"{ "name": "@lykn/foo", "version": "1.2.3" }"#).unwrap();
         let config = read_package_config(&tmp).unwrap();
         let _ = std::fs::remove_file(&tmp);
         assert_eq!(config.name, "@lykn/foo");

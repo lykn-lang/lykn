@@ -291,17 +291,12 @@ pub fn generate_test_file(
 
     // Compute the absolute path to packages/lang/mod.js based on the config
     // file location (e.g., /project/project.json -> /project/packages/lang/mod.js)
-    let project_root = config_path
-        .parent()
-        .unwrap_or(Path::new("."));
+    let project_root = config_path.parent().unwrap_or(Path::new("."));
     let lang_mod = project_root.join("packages/lang/mod.js");
     let lang_mod_str = lang_mod.to_string_lossy();
 
     out.push_str("import { assertEquals } from \"jsr:@std/assert\";\n");
-    out.push_str(&format!(
-        "import {{ lykn }} from \"{}\";\n\n",
-        lang_mod_str
-    ));
+    out.push_str(&format!("import {{ lykn }} from \"{}\";\n\n", lang_mod_str));
 
     // Assign sections for continue-block accumulation
     let sections = assign_sections(md_source, blocks);
@@ -452,8 +447,7 @@ fn collect_md_files(dir: &Path, results: &mut Vec<PathBuf>) {
 /// Replaces path separators and dots (except the final extension) with
 /// underscores.
 fn sanitize_filename(path: &str) -> String {
-    path.replace(['/', '\\'], "__")
-        .replace('.', "_")
+    path.replace(['/', '\\'], "__").replace('.', "_")
 }
 
 /// Run documentation tests for Markdown files matching the given pattern.
@@ -470,7 +464,10 @@ pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
         if path.extension().is_some_and(|e| e == "md") {
             vec![path.to_path_buf()]
         } else {
-            eprintln!("error: --docs path is not a Markdown file: {}", path.display());
+            eprintln!(
+                "error: --docs path is not a Markdown file: {}",
+                path.display()
+            );
             process::exit(1);
         }
     } else if path.is_dir() {
@@ -486,9 +483,7 @@ pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
     }
 
     let config_path = Path::new(config);
-    let config_dir = config_path
-        .parent()
-        .unwrap_or(Path::new("."));
+    let config_dir = config_path.parent().unwrap_or(Path::new("."));
 
     let out_dir = config_dir.join(".lykn-test-out");
     if let Err(e) = fs::create_dir_all(&out_dir) {
@@ -916,7 +911,12 @@ Some prose here.
             expected_js: None,
         }];
         let config = Path::new("/project/project.json");
-        let result = generate_test_file("test.md", &blocks, "```lykn,compile-fail\n(bind)\n```", config);
+        let result = generate_test_file(
+            "test.md",
+            &blocks,
+            "```lykn,compile-fail\n(bind)\n```",
+            config,
+        );
         assert!(result.contains("threw"));
         assert!(result.contains("expected compilation to fail"));
     }

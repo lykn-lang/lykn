@@ -123,34 +123,34 @@ fn resolve_specifier(
     // Tier 2: Import-map lookup (bare name or prefix match)
     if let Some(map) = imports
         && !module_path.starts_with("./")
-            && !module_path.starts_with("../")
-            && !module_path.starts_with('/')
-        {
-            // Try exact match first
-            if let Some(target) = map.get(module_path) {
-                // Re-resolve the target (it may be scheme-prefixed)
-                return resolve_specifier(target, file_path, None, deno);
-            }
-            // Try prefix match: find longest key ending in '/' that matches
-            let mut best_match: Option<(&str, &str)> = None;
-            for (key, value) in map {
-                if key.ends_with('/')
-                    && module_path.starts_with(key.as_str())
-                    && (best_match.is_none() || key.len() > best_match.unwrap().0.len())
-                {
-                    best_match = Some((key.as_str(), value.as_str()));
-                }
-            }
-            if let Some((prefix, target)) = best_match {
-                let suffix = &module_path[prefix.len()..];
-                if target.starts_with("./") || target.starts_with("../") {
-                    // Relative to project root (where project.json is)
-                    return Ok(PathBuf::from(target).join(suffix));
-                }
-                // Scheme-prefixed target
-                return resolve_specifier(&format!("{target}{suffix}"), file_path, None, deno);
+        && !module_path.starts_with("../")
+        && !module_path.starts_with('/')
+    {
+        // Try exact match first
+        if let Some(target) = map.get(module_path) {
+            // Re-resolve the target (it may be scheme-prefixed)
+            return resolve_specifier(target, file_path, None, deno);
+        }
+        // Try prefix match: find longest key ending in '/' that matches
+        let mut best_match: Option<(&str, &str)> = None;
+        for (key, value) in map {
+            if key.ends_with('/')
+                && module_path.starts_with(key.as_str())
+                && (best_match.is_none() || key.len() > best_match.unwrap().0.len())
+            {
+                best_match = Some((key.as_str(), value.as_str()));
             }
         }
+        if let Some((prefix, target)) = best_match {
+            let suffix = &module_path[prefix.len()..];
+            if target.starts_with("./") || target.starts_with("../") {
+                // Relative to project root (where project.json is)
+                return Ok(PathBuf::from(target).join(suffix));
+            }
+            // Scheme-prefixed target
+            return resolve_specifier(&format!("{target}{suffix}"), file_path, None, deno);
+        }
+    }
 
     // Tier 3: Filesystem path (current behavior)
     if let Some(fp) = file_path {
@@ -172,13 +172,14 @@ fn find_macro_entry(pkg_dir: &Path) -> Result<PathBuf, LyknError> {
     // Check deno.json for lykn.macroEntry
     if deno_json.exists()
         && let Ok(content) = std::fs::read_to_string(&deno_json)
-            && let Ok(parsed) = serde_json::from_str::<serde_json::Value>(&content)
-                && let Some(entry) = parsed.pointer("/lykn/macroEntry").and_then(|v| v.as_str()) {
-                    let entry_path = pkg_dir.join(entry);
-                    if entry_path.exists() {
-                        return Ok(entry_path);
-                    }
-                }
+        && let Ok(parsed) = serde_json::from_str::<serde_json::Value>(&content)
+        && let Some(entry) = parsed.pointer("/lykn/macroEntry").and_then(|v| v.as_str())
+    {
+        let entry_path = pkg_dir.join(entry);
+        if entry_path.exists() {
+            return Ok(entry_path);
+        }
+    }
 
     // Fallback chain
     for candidate in &["mod.lykn", "macros.lykn", "index.lykn"] {
@@ -191,14 +192,15 @@ fn find_macro_entry(pkg_dir: &Path) -> Result<PathBuf, LyknError> {
     // Check if exports points to a .lykn file
     if deno_json.exists()
         && let Ok(content) = std::fs::read_to_string(&deno_json)
-            && let Ok(parsed) = serde_json::from_str::<serde_json::Value>(&content)
-                && let Some(exports) = parsed.get("exports").and_then(|v| v.as_str())
-                    && exports.ends_with(".lykn") {
-                        let path = pkg_dir.join(exports);
-                        if path.exists() {
-                            return Ok(path);
-                        }
-                    }
+        && let Ok(parsed) = serde_json::from_str::<serde_json::Value>(&content)
+        && let Some(exports) = parsed.get("exports").and_then(|v| v.as_str())
+        && exports.ends_with(".lykn")
+    {
+        let path = pkg_dir.join(exports);
+        if path.exists() {
+            return Ok(path);
+        }
+    }
 
     Err(LyknError::Read {
         message: format!(
@@ -996,8 +998,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let file = Path::new("/some/project/src/main.lykn");
         let result = resolve_specifier("./macros.lykn", Some(file), None, &mut deno).unwrap();
         assert_eq!(result, PathBuf::from("/some/project/src/macros.lykn"));
@@ -1009,8 +1010,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let file = Path::new("/some/project/src/main.lykn");
         let result = resolve_specifier("../lib/macros.lykn", Some(file), None, &mut deno).unwrap();
         assert_eq!(
@@ -1025,8 +1025,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let result = resolve_specifier("./macros.lykn", None, None, &mut deno).unwrap();
         assert_eq!(result, PathBuf::from("./macros.lykn"));
     }
@@ -1037,8 +1036,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let result =
             resolve_specifier("file:///usr/local/lib/macros.lykn", None, None, &mut deno).unwrap();
         assert_eq!(result, PathBuf::from("/usr/local/lib/macros.lykn"));
@@ -1050,15 +1048,13 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let mut map = HashMap::new();
         map.insert(
             "my-macros".to_string(),
             "./packages/macros/mod.lykn".to_string(),
         );
-        let result =
-            resolve_specifier("my-macros", None, Some(&map), &mut deno).unwrap();
+        let result = resolve_specifier("my-macros", None, Some(&map), &mut deno).unwrap();
         assert_eq!(result, PathBuf::from("./packages/macros/mod.lykn"));
     }
 
@@ -1068,15 +1064,10 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let mut map = HashMap::new();
-        map.insert(
-            "macros/".to_string(),
-            "./packages/macros/".to_string(),
-        );
-        let result =
-            resolve_specifier("macros/utils.lykn", None, Some(&map), &mut deno).unwrap();
+        map.insert("macros/".to_string(), "./packages/macros/".to_string());
+        let result = resolve_specifier("macros/utils.lykn", None, Some(&map), &mut deno).unwrap();
         assert_eq!(
             result,
             PathBuf::from("./packages/macros/").join("utils.lykn")
@@ -1089,21 +1080,15 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let mut map = HashMap::new();
         map.insert("macros/".to_string(), "./pkg/macros/".to_string());
         map.insert(
             "macros/testing/".to_string(),
             "./pkg/test-macros/".to_string(),
         );
-        let result = resolve_specifier(
-            "macros/testing/assert.lykn",
-            None,
-            Some(&map),
-            &mut deno,
-        )
-        .unwrap();
+        let result =
+            resolve_specifier("macros/testing/assert.lykn", None, Some(&map), &mut deno).unwrap();
         assert_eq!(
             result,
             PathBuf::from("./pkg/test-macros/").join("assert.lykn")
@@ -1116,15 +1101,13 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let mut map = HashMap::new();
         map.insert("other".to_string(), "./somewhere.lykn".to_string());
         // "my-macros" is a bare specifier but has no import map match and
         // no ./ prefix, so it falls through to tier 3.
         let file = Path::new("/project/src/main.lykn");
-        let result =
-            resolve_specifier("my-macros", Some(file), Some(&map), &mut deno).unwrap();
+        let result = resolve_specifier("my-macros", Some(file), Some(&map), &mut deno).unwrap();
         // Tier 3: resolved relative to file_path's parent
         assert_eq!(result, PathBuf::from("/project/src/my-macros"));
     }
@@ -1135,8 +1118,7 @@ mod tests {
             eprintln!("skipping: deno not found");
             return;
         }
-        let mut deno = super::super::deno::DenoSubprocess::spawn()
-            .expect("deno should spawn");
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         // This will either resolve or error depending on the specifier.
         // We just verify it reaches deno (tier 1) rather than panicking.
         let result = resolve_specifier("jsr:@lykn/nonexistent", None, None, &mut deno);

@@ -123,10 +123,7 @@ fn build_macro_module(
     copy_all_files(&pkg_path, &dist_dir)?;
 
     // Generate mod.js stub
-    let stub = format!(
-        "export const VERSION = \"{}\";\n",
-        pkg_config.version
-    );
+    let stub = format!("export const VERSION = \"{}\";\n", pkg_config.version);
     write_text(&dist_dir.join("mod.js"), &stub)?;
 
     copy_root_files(project_root, &dist_dir);
@@ -175,14 +172,15 @@ fn copy_js_files(
     for entry in entries.flatten() {
         let path = entry.path();
         if path.extension().is_some_and(|e| e == "js")
-            && let Some(filename) = path.file_name() {
-                let content = fs::read_to_string(&path).map_err(|e| DistError::Io {
-                    path: path.clone(),
-                    source: e,
-                })?;
-                let rewritten = rewrite_imports(&content, project_imports);
-                write_text(&dst.join(filename), &rewritten)?;
-            }
+            && let Some(filename) = path.file_name()
+        {
+            let content = fs::read_to_string(&path).map_err(|e| DistError::Io {
+                path: path.clone(),
+                source: e,
+            })?;
+            let rewritten = rewrite_imports(&content, project_imports);
+            write_text(&dst.join(filename), &rewritten)?;
+        }
     }
     Ok(())
 }
@@ -197,16 +195,17 @@ fn copy_all_files(src: &Path, dst: &Path) -> Result<(), DistError> {
     for entry in entries.flatten() {
         let path = entry.path();
         if path.is_file()
-            && let Some(filename) = path.file_name() {
-                // Skip deno.json — we generate our own
-                if filename == "deno.json" {
-                    continue;
-                }
-                fs::copy(&path, dst.join(filename)).map_err(|e| DistError::Io {
-                    path: path.clone(),
-                    source: e,
-                })?;
+            && let Some(filename) = path.file_name()
+        {
+            // Skip deno.json — we generate our own
+            if filename == "deno.json" {
+                continue;
             }
+            fs::copy(&path, dst.join(filename)).map_err(|e| DistError::Io {
+                path: path.clone(),
+                source: e,
+            })?;
+        }
     }
     Ok(())
 }
@@ -308,10 +307,7 @@ fn write_package_json(
 }
 
 /// Generate the top-level `dist/project.json` workspace config.
-fn write_dist_project_json(
-    project_root: &Path,
-    short_names: &[String],
-) -> Result<(), DistError> {
+fn write_dist_project_json(project_root: &Path, short_names: &[String]) -> Result<(), DistError> {
     let members: Vec<serde_json::Value> = short_names
         .iter()
         .map(|n| serde_json::Value::String(format!("./{n}")))
@@ -406,10 +402,7 @@ mod tests {
 
         let source = "import { read } from 'lang/reader.js';";
         let result = rewrite_imports(source, &imports);
-        assert_eq!(
-            result,
-            "import { read } from '@lykn/lang/reader.js';"
-        );
+        assert_eq!(result, "import { read } from '@lykn/lang/reader.js';");
     }
 
     #[test]
@@ -419,10 +412,7 @@ mod tests {
 
         let source = "import { read } from \"lang/reader.js\";";
         let result = rewrite_imports(source, &imports);
-        assert_eq!(
-            result,
-            "import { read } from \"@lykn/lang/reader.js\";"
-        );
+        assert_eq!(result, "import { read } from \"@lykn/lang/reader.js\";");
     }
 
     #[test]
@@ -431,7 +421,8 @@ mod tests {
         imports.insert("lang/".to_string(), "./packages/lang/".to_string());
         imports.insert("testing/".to_string(), "./packages/testing/".to_string());
 
-        let source = "import { read } from 'lang/reader.js';\nimport { assert } from 'testing/assert.js';";
+        let source =
+            "import { read } from 'lang/reader.js';\nimport { assert } from 'testing/assert.js';";
         let result = rewrite_imports(source, &imports);
         assert!(result.contains("from '@lykn/lang/reader.js'"));
         assert!(result.contains("from '@lykn/testing/assert.js'"));
