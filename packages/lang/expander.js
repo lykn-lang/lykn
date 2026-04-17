@@ -947,6 +947,42 @@ function pass2ExpandAll(forms) {
 }
 
 /**
+ * Resolve a bare package name to a macro module path by walking up to find
+ * project.json and looking in packages/<name>/mod.lykn.
+ * @param {string} packageName - Bare package name (e.g., "testing")
+ * @param {string | null} filePath - Path of the importing file
+ * @returns {string} Resolved absolute path to mod.lykn
+ */
+function resolvePackageMacroModule(packageName, filePath) {
+  const startDir = filePath ? _dirname(filePath) : (typeof Deno !== 'undefined' ? Deno.cwd() : '.');
+  let dir = startDir;
+  const root = _resolve('/');
+
+  while (dir !== root) {
+    const projectJson = _resolve(dir, 'project.json');
+    try {
+      Deno.statSync(projectJson);
+      const modPath = _resolve(dir, 'packages', packageName, 'mod.lykn');
+      try {
+        Deno.statSync(modPath);
+        return modPath;
+      } catch {
+        throw new Error(
+          `import-macros: package "${packageName}" not found at packages/${packageName}/mod.lykn`
+        );
+      }
+    } catch (e) {
+      if (e.message?.startsWith('import-macros:')) throw e;
+      dir = _dirname(dir);
+    }
+  }
+
+  throw new Error(
+    `import-macros: could not resolve package "${packageName}" — no project.json found above ${startDir}`
+  );
+}
+
+/**
  * Pass 0: Process import-macros forms. Load, compile, and register
  * macros from external .lykn modules.
  * @param {*[]} forms - All top-level forms
@@ -979,20 +1015,23 @@ function pass0ImportMacros(forms, filePath, compilationStack) {
 
     const modulePath = args[0].value;
 
-    // Validate path
-    if (!modulePath.startsWith('./') && !modulePath.startsWith('../')) {
-      throw new Error(`import-macros path must be relative (./ or ../): "${modulePath}"`);
-    }
-    if (!modulePath.endsWith('.lykn')) {
-      throw new Error(`import-macros path must end with .lykn: "${modulePath}"`);
-    }
-
     // Resolve path (requires node:path — not available in browser)
     if (!_resolve || !_dirname) {
       throw new Error('import-macros requires Deno/Node file system access — not available in browser');
     }
-    const baseDir = filePath ? _dirname(filePath) : (typeof Deno !== 'undefined' ? Deno.cwd() : '.');
-    const resolvedPath = _resolve(baseDir, modulePath);
+
+    let resolvedPath;
+    if (modulePath.startsWith('./') || modulePath.startsWith('../')) {
+      // Relative path — must end with .lykn
+      if (!modulePath.endsWith('.lykn')) {
+        throw new Error(`import-macros path must end with .lykn: "${modulePath}"`);
+      }
+      const baseDir = filePath ? _dirname(filePath) : (typeof Deno !== 'undefined' ? Deno.cwd() : '.');
+      resolvedPath = _resolve(baseDir, modulePath);
+    } else {
+      // Bare package name — resolve via workspace packages/<name>/mod.lykn
+      resolvedPath = resolvePackageMacroModule(modulePath, filePath);
+    }
 
     // Duplicate check
     if (importedPaths.has(resolvedPath)) {
@@ -1001,7 +1040,7 @@ function pass0ImportMacros(forms, filePath, compilationStack) {
     importedPaths.add(resolvedPath);
 
     // Load module
-    const moduleExports = loadMacroModule(resolvedPath, modulePath, compilationStack);
+    const { macros: moduleMacros, runtimeImports } = loadMacroModule(resolvedPath, modulePath, compilationStack);
 
     // Register requested bindings
     const bindings = args[1].values;
@@ -1020,8 +1059,8 @@ function pass0ImportMacros(forms, filePath, compilationStack) {
         throw new Error(`import-macros: invalid binding form`);
       }
 
-      if (!moduleExports.has(importedName)) {
-        const available = [...moduleExports.keys()].join(', ');
+      if (!moduleMacros.has(importedName)) {
+        const available = [...moduleMacros.keys()].join(', ');
         throw new Error(
           `macro '${importedName}' not exported by ${modulePath}` +
           (available ? ` (available: ${available})` : '')
@@ -1032,19 +1071,23 @@ function pass0ImportMacros(forms, filePath, compilationStack) {
         throw new Error(`macro '${localName}' already defined (imported from ${modulePath})`);
       }
 
-      macroEnv.set(localName, moduleExports.get(importedName));
+      macroEnv.set(localName, moduleMacros.get(importedName));
     }
+
+    // Emit runtime imports declared by the macro module
+    remaining.push(...runtimeImports);
   }
 
   return remaining;
 }
 
 /**
- * Load and compile a macro module, returning its exported macro functions.
+ * Load and compile a macro module, returning its exported macro functions
+ * and any runtime import declarations.
  * @param {string} resolvedPath - Absolute path to the .lykn file
  * @param {string} displayPath - Original relative path for error messages
  * @param {string[]} compilationStack - For circular dep detection
- * @returns {Map<string, Function>} Map of exported macro name → function
+ * @returns {{ macros: Map<string, Function>, runtimeImports: *[] }}
  */
 function loadMacroModule(resolvedPath, displayPath, compilationStack) {
   // Circular dependency check
@@ -1063,7 +1106,7 @@ function loadMacroModule(resolvedPath, displayPath, compilationStack) {
 
   const cached = moduleCache.get(resolvedPath);
   if (cached && cached.mtime === mtime) {
-    return cached.exports;
+    return { macros: cached.macros, runtimeImports: cached.runtimeImports };
   }
 
   // Read and parse
@@ -1089,6 +1132,7 @@ function loadMacroModule(resolvedPath, displayPath, compilationStack) {
     // Pass 1: register macros, track which are exported
     const exportedMacroNames = new Set();
     const macroForms = [];
+    const runtimeImports = [];
     const otherForms = [];
 
     for (const form of afterPass0) {
@@ -1104,6 +1148,35 @@ function loadMacroModule(resolvedPath, displayPath, compilationStack) {
       } else if (form.type === 'list' && form.values.length >= 3 &&
                  form.values[0].type === 'atom' && form.values[0].value === 'macro') {
         macroForms.push(form);
+      } else if (form.type === 'list' && form.values.length >= 2 &&
+                 form.values[0].type === 'atom' && form.values[0].value === 'runtime-import') {
+        // (runtime-import "path" (bindings...)) → emitted as (import ...) in consuming file
+        const riArgs = form.values.slice(1);
+        if (riArgs[0]?.type !== 'string') {
+          throw new Error('runtime-import: first argument must be a module path string');
+        }
+        runtimeImports.push(array(sym('import'), ...riArgs));
+      } else if (form.type === 'list' && form.values.length === 2 &&
+                 form.values[0].type === 'atom' && form.values[0].value === 'surface-macros' &&
+                 form.values[1].type === 'string') {
+        // (surface-macros "macros.js") → load JS companion that registers surface macros
+        const jsFile = form.values[1].value;
+        const jsPath = _resolve(_dirname(resolvedPath), jsFile);
+        let jsSource;
+        try { jsSource = Deno.readTextFileSync(jsPath); }
+        catch { throw new Error(`surface-macros: file not found: ${jsFile}`); }
+        const SURFACE_PARAMS = ['macroEnv', 'sym', 'array', 'gensym', 'isArray', 'isSymbol', 'isNumber', 'isString', 'isKeyword', 'first', 'rest', 'nth', 'length', 'append', 'formatSExpr'];
+        const SURFACE_VALUES = [macroEnv, sym, array, gensym, isArray, isSymbol, isNumber, isString, isKeyword, first, rest, nth, length, append, formatSExpr];
+        const beforeKeys = new Set(macroEnv.keys());
+        try {
+          const loader = new Function(...SURFACE_PARAMS, jsSource);
+          loader(...SURFACE_VALUES);
+        } catch (err) {
+          throw new Error(`surface-macros: failed to load ${jsFile}: ${err.message}`, { cause: err });
+        }
+        for (const k of macroEnv.keys()) {
+          if (!beforeKeys.has(k)) exportedMacroNames.add(k);
+        }
       } else {
         otherForms.push(form);
       }
@@ -1118,17 +1191,17 @@ function loadMacroModule(resolvedPath, displayPath, compilationStack) {
     }
 
     // Collect exported macro functions
-    const exports = new Map();
+    const macros = new Map();
     for (const name of exportedMacroNames) {
       if (macroEnv.has(name)) {
-        exports.set(name, macroEnv.get(name));
+        macros.set(name, macroEnv.get(name));
       }
     }
 
     // Cache the result
-    moduleCache.set(resolvedPath, { mtime, exports });
+    moduleCache.set(resolvedPath, { mtime, macros, runtimeImports });
 
-    return exports;
+    return { macros, runtimeImports };
   } finally {
     // Restore parent macro env
     macroEnv.clear();

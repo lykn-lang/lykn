@@ -1,0 +1,19 @@
+;; mod.lykn — lykn testing DSL entry point (DD-30)
+;;
+;; Usage:
+;;   (import-macros "testing"
+;;     (test test-async suite step
+;;      is is-equal is-not-equal is-strict-equal
+;;      ok is-thrown is-thrown-async
+;;      matches includes has obj-matches
+;;      test-compiles))
+
+;; Runtime dependency — emitted as import in consuming file
+(runtime-import "jsr:@std/assert"
+  (assert assert-equals assert-not-equals assert-strict-equals
+   assert-exists assert-throws assert-rejects
+   assert-match assert-string-includes assert-array-includes
+   assert-object-match))
+
+;; All macros (assertions + test forms) implemented as surface macros
+(surface-macros "macros.js")

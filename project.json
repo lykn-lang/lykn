@@ -1,5 +1,5 @@
 {
-    "workspace": ["./packages/lang", "./packages/browser"],
+    "workspace": ["./packages/lang", "./packages/browser", "./packages/testing"],
     "lint": {
         "rules": {
             "exclude": ["no-slow-types"]
