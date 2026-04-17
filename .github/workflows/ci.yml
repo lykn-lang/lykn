@@ -58,7 +58,7 @@ jobs:
           deno-version: v2.x
       - uses: Swatinem/rust-cache@v2
       - run: cargo build
-      - run: cp target/debug/lykn bin/lykn
+      - run: mkdir -p bin && cp target/debug/lykn bin/lykn
       - run: bin/lykn test
       - run: bin/lykn test test/surface/
 
