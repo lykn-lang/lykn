@@ -122,20 +122,6 @@ constraint makes the fix obvious.
         (obj :cause err)))))))
 ```
 
-Compiles to:
-
-```js
-async function loadConfig(path) {
-  /* type check ... */
-  try {
-    const raw = await Deno.readTextFile(path);
-    return JSON.parse(raw);
-  } catch (err) {
-    throw new Error(`Failed to load config from ${path}`, {cause: err});
-  }
-}
-```
-
 **Rationale**: `Error:cause` (ES2022) preserves the original error and
 its stack trace while adding higher-level context. Without it,
 rethrowing loses the root cause.
@@ -643,16 +629,17 @@ public API entry points. Inside validated boundaries, trust the data.
   (template "User: " name))
 ```
 
-Compiles to:
+```lykn
+(func format-user-line :args (:string name) :returns :string :body
+  (template "User: " name))
 
-```js
-export function createUser(name, email) {
-  if (typeof name !== "string") throw new TypeError(/* ... */);
-  if (typeof email !== "string") throw new TypeError(/* ... */);
-  if (!(name.length > 0 && email.includes("@")))
-    throw new Error("create-user: pre-condition failed: ...");
-  return {id: generateId(), name, email};
-}
+(console:log (format-user-line "Alice"))
+(console:log (format-user-line "Bob"))
+```
+
+```
+User: Alice
+User: Bob
 ```
 
 **Rationale**: `func` type annotations and `:pre` contracts replace
@@ -843,6 +830,32 @@ This is safer than `instanceof` chains.
     ((ServerError s m)
       (console:error (template "Server error " s ": " m))
       (show-500))))
+```
+
+```lykn
+(type AppError
+  (NotFound :string resource)
+  (Forbidden :string reason)
+  (ServerError :number status :string message))
+
+(func handle-error :args (:any err) :returns :void :body
+  (match err
+    ((NotFound r)
+      (console:log (template "Not found: " r)))
+    ((Forbidden r)
+      (console:log (template "Forbidden: " r)))
+    ((ServerError s m)
+      (console:log (template "Server error " s ": " m)))))
+
+(handle-error (NotFound "user/42"))
+(handle-error (Forbidden "admin only"))
+(handle-error (ServerError 500 "internal"))
+```
+
+```
+Not found: user/42
+Forbidden: admin only
+Server error 500: internal
 ```
 
 **Rationale**: `instanceof` chains are not exhaustive — you can forget
