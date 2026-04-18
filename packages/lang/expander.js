@@ -9,8 +9,21 @@ import { compile } from './compiler.js';
 import { read } from './reader.js';
 import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 
-// node:path is needed for import-macros file resolution.
-// In browser builds, esbuild replaces this with stubs via the define/inject mechanism.
+// node:path is used intentionally here and CANNOT be replaced with jsr:@std/path.
+//
+// Why node:path: The browser build (lykn build --browser) uses esbuild with a
+// nodePathShimPlugin (defined in crates/lykn-cli/src/main.rs) that intercepts
+// "node:path" imports and replaces resolve/dirname with stubs that throw
+// "import-macros not available in browser". This is how the 73KB browser bundle
+// avoids shipping filesystem path logic.
+//
+// Why not jsr:@std/path: If this import were changed to jsr:@std/path, the
+// esbuild plugin would NOT intercept it. The browser bundle would either fail
+// to build (can't resolve JSR specifiers in esbuild) or would bundle the full
+// @std/path module unnecessarily. The node:path import is the hook that the
+// browser build uses to provide its shim.
+//
+// In Deno, node:path works via the built-in Node.js compatibility layer.
 import { resolve as _resolve, dirname as _dirname } from "node:path";
 
 // --- AST Node API ---
@@ -225,6 +238,208 @@ const MACRO_API_VALUES = [
   append,
 ];
 
+// --- Quasiquote Strategies ---
+//
+// compileQuasiquote (Pass 1, macro body compilation) and expandQuasiquote
+// (Pass 2, macro expansion) share the same recursive structure but differ in
+// how they construct nodes.  The two strategy objects capture those differences
+// so a single walker can serve both passes.
+
+/**
+ * Strategy for compileQuasiquote (Pass 1): emits $-prefixed API calls that,
+ * when compiled to JS and executed, build AST nodes at macro-expand time.
+ */
+const compileStrategy = {
+  /** Wrap an atom as an API call that creates a symbol node at runtime. */
+  quoteAtom(form) {
+    return array(sym('$sym'), { type: 'string', value: form.value });
+  },
+  /** Build a list/cons node via the $array API. */
+  makeArray(...items) {
+    return array(sym('$array'), ...items);
+  },
+  /** Quote a symbol name for embedding in a nested quasiquote/unquote form. */
+  quoteSymbol(name) {
+    return array(sym('$sym'), { type: 'string', value: name });
+  },
+  /** Concatenate spliced and non-spliced parts via $concat. */
+  makeConcat(...args) {
+    return array(sym('$concat'), ...args);
+  },
+  /** Empty list representation. */
+  emptyList() {
+    return array(sym('$array'));
+  },
+  /** Whether this strategy tracks literal elements (for quoteLiteral opt). */
+  tracksLiterals: false,
+  /** Wrap an atom element in the element walker. */
+  wrapAtomElement(element) {
+    return array(sym('$sym'), { type: 'string', value: element.value });
+  },
+};
+
+/**
+ * Strategy for expandQuasiquote (Pass 2): emits resolved AST nodes using
+ * array/quote/append — the forms are directly usable without further compilation.
+ */
+const expandStrategy = {
+  quoteAtom(form) {
+    return array(sym('quote'), form);
+  },
+  makeArray(...items) {
+    return array(sym('array'), ...items);
+  },
+  quoteSymbol(name) {
+    return array(sym('quote'), sym(name));
+  },
+  makeConcat(...args) {
+    return array(sym('append'), ...args);
+  },
+  emptyList(form) {
+    return form;
+  },
+  tracksLiterals: true,
+  wrapAtomElement(element) {
+    return array(sym('quote'), element);
+  },
+};
+
+/**
+ * Unified quasiquote walker: recursively processes a quasiquote template,
+ * using the provided strategy to construct the output nodes.
+ * @param {*} form - The quasiquote body
+ * @param {number} depth - Nesting depth (0 = outermost quasiquote)
+ * @param {object} strategy - compileStrategy or expandStrategy
+ * @returns {*} Transformed AST
+ */
+function walkQuasiquote(form, depth, strategy) {
+  // Self-evaluating types pass through unchanged
+  if (form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
+    return form;
+  }
+
+  // Atoms: wrap via strategy
+  if (form.type === 'atom') {
+    return strategy.quoteAtom(form);
+  }
+
+  // Cons node: recurse on car and cdr, wrap as array
+  if (form.type === 'cons') {
+    const car = walkQuasiquote(form.car, depth, strategy);
+    const cdr = walkQuasiquote(form.cdr, depth, strategy);
+    return strategy.makeArray(car, cdr);
+  }
+
+  if (form.type !== 'list') {
+    throw new Error(`walkQuasiquote: unexpected node type '${form.type}'`);
+  }
+
+  const values = form.values;
+
+  // Empty list
+  if (values.length === 0) {
+    return strategy.emptyList(form);
+  }
+
+  const head = values[0];
+
+  // Nested quasiquote: increment depth
+  if (head.type === 'atom' && head.value === 'quasiquote') {
+    if (values.length !== 2) throw new Error('quasiquote requires exactly one argument');
+    const inner = walkQuasiquote(values[1], depth + 1, strategy);
+    return strategy.makeArray(strategy.quoteSymbol('quasiquote'), inner);
+  }
+
+  // Unquote
+  if (head.type === 'atom' && head.value === 'unquote') {
+    if (values.length !== 2) throw new Error('unquote requires exactly one argument');
+    if (depth === 0) {
+      return values[1];
+    }
+    const inner = walkQuasiquote(values[1], depth - 1, strategy);
+    return strategy.makeArray(strategy.quoteSymbol('unquote'), inner);
+  }
+
+  // Unquote-splicing as direct child of quasiquote (not in list)
+  if (head.type === 'atom' && head.value === 'unquote-splicing') {
+    if (depth === 0) {
+      throw new Error('unquote-splicing not inside a list');
+    }
+    if (values.length !== 2) throw new Error('unquote-splicing requires exactly one argument');
+    const inner = walkQuasiquote(values[1], depth - 1, strategy);
+    return strategy.makeArray(strategy.quoteSymbol('unquote-splicing'), inner);
+  }
+
+  // General list: walk each element
+  const parts = values.map((el) => walkQQElement(el, depth, strategy));
+
+  // All-literal optimization (expand strategy only)
+  if (strategy.tracksLiterals && parts.every((p) => p.isLiteral)) {
+    return quoteLiteral(form);
+  }
+
+  // No splices → wrap all elements directly
+  if (!parts.some((p) => p.isSplice)) {
+    return strategy.makeArray(...parts.map((p) => p.node));
+  }
+
+  // General case with splices: use concat/append
+  const concatArgs = parts.map((p) => {
+    if (p.isSplice) return p.node;
+    return strategy.makeArray(p.node);
+  });
+  return strategy.makeConcat(...concatArgs);
+}
+
+/**
+ * Unified element walker for quasiquote list elements.
+ * @param {*} element - A single element within a quasiquoted list
+ * @param {number} depth - Current nesting depth
+ * @param {object} strategy - compileStrategy or expandStrategy
+ * @returns {{ node: *, isSplice: boolean, isLiteral?: boolean }}
+ */
+function walkQQElement(element, depth, strategy) {
+  // Unquote
+  if (element.type === 'list' && element.values.length === 2 &&
+      element.values[0].type === 'atom' && element.values[0].value === 'unquote') {
+    if (depth === 0) {
+      return { node: element.values[1], isSplice: false, isLiteral: false };
+    }
+    return { node: walkQuasiquote(element, depth, strategy), isSplice: false, isLiteral: false };
+  }
+
+  // Unquote-splicing
+  if (element.type === 'list' && element.values.length === 2 &&
+      element.values[0].type === 'atom' && element.values[0].value === 'unquote-splicing') {
+    if (depth === 0) {
+      return { node: element.values[1], isSplice: true, isLiteral: false };
+    }
+    return { node: walkQuasiquote(element, depth, strategy), isSplice: false, isLiteral: false };
+  }
+
+  // Nested list: recurse
+  if (element.type === 'list') {
+    return { node: walkQuasiquote(element, depth, strategy), isSplice: false, isLiteral: false };
+  }
+
+  // Self-evaluating literals
+  if (element.type === 'number' || element.type === 'string') {
+    return { node: element, isSplice: false, isLiteral: true };
+  }
+
+  // Atom: wrap via strategy
+  if (element.type === 'atom') {
+    return { node: strategy.wrapAtomElement(element), isSplice: false, isLiteral: true };
+  }
+
+  // Cons node
+  if (element.type === 'cons') {
+    return { node: walkQuasiquote(element, depth, strategy), isSplice: false, isLiteral: false };
+  }
+
+  return { node: element, isSplice: false, isLiteral: true };
+}
+
 /**
  * Compile a quasiquote template into s-expression AST that, when compiled
  * to JS and executed, constructs the template with unquoted values filled in.
@@ -234,108 +449,11 @@ const MACRO_API_VALUES = [
  * @returns {*} S-expression AST representing API calls
  */
 function compileQuasiquote(form, depth) {
-  if (form.type === 'number') {
-    return form;
-  }
-  if (form.type === 'string') {
-    return form;
-  }
-  if (form.type === 'keyword') {
-    return form;
-  }
-  if (form.type === 'atom') {
-    return array(sym('$sym'), { type: 'string', value: form.value });
-  }
-
-  if (form.type === 'cons') {
-    const car = compileQuasiquote(form.car, depth);
-    const cdr = compileQuasiquote(form.cdr, depth);
-    return array(sym('$array'), car, cdr);
-  }
-
-  if (form.type !== 'list') {
-    throw new Error(`compileQuasiquote: unexpected node type '${form.type}'`);
-  }
-
-  const values = form.values;
-  if (values.length === 0) {
-    return array(sym('$array'));
-  }
-
-  const head = values[0];
-
-  if (head.type === 'atom' && head.value === 'quasiquote') {
-    if (values.length !== 2) throw new Error('quasiquote requires exactly one argument');
-    const inner = compileQuasiquote(values[1], depth + 1);
-    return array(sym('$array'), array(sym('$sym'), { type: 'string', value: 'quasiquote' }), inner);
-  }
-
-  if (head.type === 'atom' && head.value === 'unquote') {
-    if (values.length !== 2) throw new Error('unquote requires exactly one argument');
-    if (depth === 0) {
-      return values[1];
-    }
-    const inner = compileQuasiquote(values[1], depth - 1);
-    return array(sym('$array'), array(sym('$sym'), { type: 'string', value: 'unquote' }), inner);
-  }
-
-  if (head.type === 'atom' && head.value === 'unquote-splicing') {
-    if (depth === 0) {
-      throw new Error('unquote-splicing not inside a list');
-    }
-    if (values.length !== 2) throw new Error('unquote-splicing requires exactly one argument');
-    const inner = compileQuasiquote(values[1], depth - 1);
-    return array(sym('$array'), array(sym('$sym'), { type: 'string', value: 'unquote-splicing' }), inner);
-  }
-
-  const parts = values.map((el) => compileQQElementForMacro(el, depth));
-  const hasSplice = parts.some((p) => p.isSplice);
-
-  if (!hasSplice) {
-    return array(sym('$array'), ...parts.map((p) => p.node));
-  }
-
-  const concatArgs = parts.map((p) => {
-    if (p.isSplice) return p.node;
-    return array(sym('$array'), p.node);
-  });
-  return array(sym('$concat'), ...concatArgs);
+  return walkQuasiquote(form, depth, compileStrategy);
 }
 
-function compileQQElementForMacro(element, depth) {
-  if (element.type === 'list' && element.values.length === 2 &&
-      element.values[0].type === 'atom' && element.values[0].value === 'unquote') {
-    if (depth === 0) {
-      return { node: element.values[1], isSplice: false };
-    }
-    return { node: compileQuasiquote(element, depth), isSplice: false };
-  }
-
-  if (element.type === 'list' && element.values.length === 2 &&
-      element.values[0].type === 'atom' && element.values[0].value === 'unquote-splicing') {
-    if (depth === 0) {
-      return { node: element.values[1], isSplice: true };
-    }
-    return { node: compileQuasiquote(element, depth), isSplice: false };
-  }
-
-  if (element.type === 'list') {
-    return { node: compileQuasiquote(element, depth), isSplice: false };
-  }
-
-  if (element.type === 'number' || element.type === 'string') {
-    return { node: element, isSplice: false };
-  }
-
-  if (element.type === 'atom') {
-    return { node: array(sym('$sym'), { type: 'string', value: element.value }), isSplice: false };
-  }
-
-  if (element.type === 'cons') {
-    return { node: compileQuasiquote(element, depth), isSplice: false };
-  }
-
-  return { node: element, isSplice: false };
+function _compileQQElementForMacro(element, depth) {
+  return walkQQElement(element, depth, compileStrategy);
 }
 
 /**
@@ -525,126 +643,14 @@ export function resetModuleCache() {
 export { formatSExpr, extractParamNames, compileMacroBody };
 
 // --- Quasiquote Expansion (Bawden's Algorithm) ---
+// Now implemented via walkQuasiquote/walkQQElement + expandStrategy (above).
 
 function expandQuasiquote(form, depth) {
-  // Self-evaluating
-  if (form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
-    return form;
-  }
-
-  // Atoms: quote them
-  if (form.type === 'atom') {
-    return array(sym('quote'), form);
-  }
-
-  // Cons node: expand car and cdr, wrap as array
-  if (form.type === 'cons') {
-    const expandedCar = expandQuasiquote(form.car, depth);
-    const expandedCdr = expandQuasiquote(form.cdr, depth);
-    return array(sym('array'), expandedCar, expandedCdr);
-  }
-
-  if (form.type !== 'list') {
-    throw new Error(`expandQuasiquote: unexpected node type '${form.type}'`);
-  }
-
-  const values = form.values;
-
-  // Empty list
-  if (values.length === 0) {
-    return form;
-  }
-
-  const head = values[0];
-
-  // Nested quasiquote: increment depth
-  if (head.type === 'atom' && head.value === 'quasiquote') {
-    if (values.length !== 2) throw new Error('quasiquote requires exactly one argument');
-    const expanded = expandQuasiquote(values[1], depth + 1);
-    return array(sym('array'), array(sym('quote'), sym('quasiquote')), expanded);
-  }
-
-  // Unquote
-  if (head.type === 'atom' && head.value === 'unquote') {
-    if (values.length !== 2) throw new Error('unquote requires exactly one argument');
-    if (depth === 0) {
-      return values[1];
-    }
-    const expanded = expandQuasiquote(values[1], depth - 1);
-    return array(sym('array'), array(sym('quote'), sym('unquote')), expanded);
-  }
-
-  // Unquote-splicing as direct child of quasiquote (not in list)
-  if (head.type === 'atom' && head.value === 'unquote-splicing') {
-    if (depth === 0) {
-      throw new Error('unquote-splicing not inside a list');
-    }
-    if (values.length !== 2) throw new Error('unquote-splicing requires exactly one argument');
-    const expanded = expandQuasiquote(values[1], depth - 1);
-    return array(sym('array'), array(sym('quote'), sym('unquote-splicing')), expanded);
-  }
-
-  // General list: expand each element
-  const parts = values.map((el) => expandQQElement(el, depth));
-
-  // Optimization: all literal → return form as direct structure
-  if (parts.every((p) => p.isLiteral)) {
-    return quoteLiteral(form);
-  }
-
-  // Optimization: no splices → use array directly
-  if (!parts.some((p) => p.isSplice)) {
-    return array(sym('array'), ...parts.map((p) => p.node));
-  }
-
-  // General case with splices: use append
-  const appendArgs = parts.map((p) => {
-    if (p.isSplice) return p.node;
-    return array(sym('array'), p.node);
-  });
-  return array(sym('append'), ...appendArgs);
+  return walkQuasiquote(form, depth, expandStrategy);
 }
 
-function expandQQElement(element, depth) {
-  // Unquote
-  if (element.type === 'list' && element.values.length === 2 &&
-      element.values[0].type === 'atom' && element.values[0].value === 'unquote') {
-    if (depth === 0) {
-      return { node: element.values[1], isSplice: false, isLiteral: false };
-    }
-    return { node: expandQuasiquote(element, depth), isSplice: false, isLiteral: false };
-  }
-
-  // Unquote-splicing
-  if (element.type === 'list' && element.values.length === 2 &&
-      element.values[0].type === 'atom' && element.values[0].value === 'unquote-splicing') {
-    if (depth === 0) {
-      return { node: element.values[1], isSplice: true, isLiteral: false };
-    }
-    return { node: expandQuasiquote(element, depth), isSplice: false, isLiteral: false };
-  }
-
-  // Nested list: recurse
-  if (element.type === 'list') {
-    return { node: expandQuasiquote(element, depth), isSplice: false, isLiteral: false };
-  }
-
-  // Self-evaluating literals
-  if (element.type === 'number' || element.type === 'string') {
-    return { node: element, isSplice: false, isLiteral: true };
-  }
-
-  // Atom: quote it
-  if (element.type === 'atom') {
-    return { node: array(sym('quote'), element), isSplice: false, isLiteral: true };
-  }
-
-  // Cons node
-  if (element.type === 'cons') {
-    return { node: expandQuasiquote(element, depth), isSplice: false, isLiteral: false };
-  }
-
-  return { node: element, isSplice: false, isLiteral: true };
+function _expandQQElement(element, depth) {
+  return walkQQElement(element, depth, expandStrategy);
 }
 
 function quoteLiteral(form) {
@@ -957,14 +963,12 @@ function findProjectImports(filePath) {
   const root = _resolve('/');
 
   while (dir !== root) {
-    const projectJson = _resolve(dir, 'project.json');
-    try {
-      const content = Deno.readTextFileSync(projectJson);
-      const config = JSON.parse(content);
-      return { projectRoot: dir, imports: config.imports || {} };
-    } catch {
-      dir = _dirname(dir);
-    }
+    const configPath = _resolve(dir, 'project.json');
+    let content;
+    try { content = Deno.readTextFileSync(configPath); } catch { dir = _dirname(dir); continue; }
+    let config;
+    try { config = JSON.parse(content); } catch { dir = _dirname(dir); continue; }
+    return { projectRoot: dir, imports: config.imports || {} };
   }
   return null;
 }

@@ -891,6 +891,145 @@ function andChain(checks) {
  * @param {Map<string, Function>} macroEnv
  */
 export function registerSurfaceMacros(macroEnv) {
+	// --- Shared helpers (scoped to registerSurfaceMacros for access to sym, array, etc.) ---
+
+	/**
+	 * Wrap body forms so the last expression is returned.
+	 * Empty → [], single → [(return expr)], multiple → [...init, (return last)].
+	 */
+	function wrapReturnLast(bodyForms) {
+		if (bodyForms.length === 0) return [];
+		if (bodyForms.length === 1) return [array(sym("return"), bodyForms[0])];
+		return [...bodyForms.slice(0, -1), array(sym("return"), bodyForms[bodyForms.length - 1])];
+	}
+
+	/**
+	 * Build a threading expression (thread-first or thread-last).
+	 * position: 'first' — insert threaded as first arg after fn
+	 * position: 'last'  — insert threaded as last arg
+	 */
+	function buildThread(args, position) {
+		if (args.length < 2) {
+			const name = position === "first" ? "->" : "->>";
+			throw new Error(`${name} requires at least 2 arguments: (${name} value step...)`);
+		}
+		let threaded = args[0];
+		for (let i = 1; i < args.length; i++) {
+			const step = args[i];
+			if (isKeyword(step)) {
+				threaded = array(sym("."), threaded, sym(step.value));
+			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
+				const [kw, ...rest] = step.values;
+				threaded = array(sym("."), threaded, sym(kw.value), ...rest);
+			} else if (isArray(step)) {
+				if (position === "first") {
+					const [fn, ...rest] = step.values;
+					threaded = array(fn, threaded, ...rest);
+				} else {
+					threaded = array(...step.values, threaded);
+				}
+			} else {
+				threaded = array(step, threaded);
+			}
+		}
+		return threaded;
+	}
+
+	/**
+	 * Build a nil-safe threading expression (some-> or some->>).
+	 * position: 'first' or 'last' — same insertion semantics as buildThread.
+	 */
+	function buildSomeThread(args, position) {
+		const name = position === "first" ? "some->" : "some->>";
+		if (args.length < 2) {
+			throw new Error(`${name} requires at least 2 arguments`);
+		}
+		const stmts = [];
+		let prevVar = gensym("t");
+		stmts.push(array(sym("const"), prevVar, args[0]));
+		stmts.push(
+			array(
+				sym("if"),
+				array(sym("=="), prevVar, sym("null")),
+				array(sym("return"), prevVar),
+			),
+		);
+
+		for (let i = 1; i < args.length; i++) {
+			const step = args[i];
+			let callExpr;
+			if (isKeyword(step)) {
+				callExpr = array(sym("."), prevVar, sym(step.value));
+			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
+				const [kw, ...rest] = step.values;
+				callExpr = array(sym("."), prevVar, sym(kw.value), ...rest);
+			} else if (isArray(step)) {
+				if (position === "first") {
+					const [fn, ...rest] = step.values;
+					callExpr = array(fn, prevVar, ...rest);
+				} else {
+					callExpr = array(...step.values, prevVar);
+				}
+			} else {
+				callExpr = array(step, prevVar);
+			}
+
+			if (i === args.length - 1) {
+				stmts.push(array(sym("return"), callExpr));
+			} else {
+				const nextVar = gensym("t");
+				stmts.push(array(sym("const"), nextVar, callExpr));
+				stmts.push(
+					array(
+						sym("if"),
+						array(sym("=="), nextVar, sym("null")),
+						array(sym("return"), nextVar),
+					),
+				);
+				prevVar = nextVar;
+			}
+		}
+
+		const arrowFn = array(sym("=>"), array(), ...stmts);
+		return array(arrowFn);
+	}
+
+	/**
+	 * Compile a let-binding pattern (for if-let / when-let).
+	 * Detects ADT constructor patterns (PascalCase), obj patterns, and simple bindings.
+	 * Returns { condition, bindings } where condition is the test AST node
+	 * and bindings is an array of (const ...) forms.
+	 */
+	function compileLetPattern(pattern, tempVar) {
+		if (
+			isArray(pattern) &&
+			pattern.values.length > 0 &&
+			pattern.values[0].type === "atom" &&
+			isPascalCase(pattern.values[0].value)
+		) {
+			// ADT constructor pattern
+			const { checks, bindings } = compilePattern(pattern, tempVar);
+			return { condition: andChain(checks), bindings };
+		}
+		if (
+			isArray(pattern) &&
+			pattern.values.length > 0 &&
+			pattern.values[0].type === "atom" &&
+			pattern.values[0].value === "obj"
+		) {
+			// Structural obj pattern
+			const { checks, bindings } = compilePattern(pattern, tempVar);
+			return { condition: andChain(checks), bindings };
+		}
+		if (pattern.type === "atom" && !isPascalCase(pattern.value)) {
+			// Simple binding — nil check (loose != to catch null and undefined)
+			const condition = kernelArray(sym("!="), tempVar, sym("null"));
+			const bindings = [array(sym("const"), pattern, tempVar)];
+			return { condition, bindings };
+		}
+		return null; // unrecognized
+	}
+
 	// --- bind ---
 	// (bind name value) → (const name value)
 	// (bind :type name value) → (const name value) + type check
@@ -1097,51 +1236,10 @@ export function registerSurfaceMacros(macroEnv) {
 	});
 
 	// --- -> (thread-first) ---
-	macroEnv.set("->", (...args) => {
-		if (args.length < 2) {
-			throw new Error("-> requires at least 2 arguments: (-> value step...)");
-		}
-		let threaded = args[0];
-		for (let i = 1; i < args.length; i++) {
-			const step = args[i];
-			if (isKeyword(step)) {
-				// Bare keyword: method call on threaded value — (:method) → (. acc method)
-				threaded = array(sym("."), threaded, sym(step.value));
-			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
-				// Keyword-headed list: method call — (:method a b) → (. acc method a b)
-				const [kw, ...rest] = step.values;
-				threaded = array(sym("."), threaded, sym(kw.value), ...rest);
-			} else if (isArray(step)) {
-				const [fn, ...rest] = step.values;
-				threaded = array(fn, threaded, ...rest);
-			} else {
-				threaded = array(step, threaded);
-			}
-		}
-		return threaded;
-	});
+	macroEnv.set("->", (...args) => buildThread(args, "first"));
 
 	// --- ->> (thread-last) ---
-	macroEnv.set("->>", (...args) => {
-		if (args.length < 2) {
-			throw new Error("->> requires at least 2 arguments: (->> value step...)");
-		}
-		let threaded = args[0];
-		for (let i = 1; i < args.length; i++) {
-			const step = args[i];
-			if (isKeyword(step)) {
-				threaded = array(sym("."), threaded, sym(step.value));
-			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
-				const [kw, ...rest] = step.values;
-				threaded = array(sym("."), threaded, sym(kw.value), ...rest);
-			} else if (isArray(step)) {
-				threaded = array(...step.values, threaded);
-			} else {
-				threaded = array(step, threaded);
-			}
-		}
-		return threaded;
-	});
+	macroEnv.set("->>", (...args) => buildThread(args, "last"));
 
 	// --- assoc ---
 	macroEnv.set("assoc", (...args) => {
@@ -1289,10 +1387,7 @@ export function registerSurfaceMacros(macroEnv) {
 		// When type checks are present, the arrow gets a block body, so we must
 		// wrap the last body expression in (return ...) to preserve the return value.
 		if (typeChecks.length > 0) {
-			const allBody = [...typeChecks, ...bodyForms.slice(0, -1)];
-			const lastExpr = bodyForms[bodyForms.length - 1];
-			allBody.push(array(sym("return"), lastExpr));
-			return array(sym("=>"), array(...pNames), ...allBody);
+			return array(sym("=>"), array(...pNames), ...typeChecks, ...wrapReturnLast(bodyForms));
 		}
 		return array(sym("=>"), array(...pNames), ...typeChecks, ...bodyForms);
 	};
@@ -1575,22 +1670,11 @@ export function registerSurfaceMacros(macroEnv) {
 		// Zero-arg shorthand: (func name body-exprs...)
 		// Last expression is implicit return
 		const bodyForms = restArgs;
-		if (bodyForms.length === 1) {
-			return array(
-				sym("function"),
-				funcNameNode,
-				array(),
-				array(sym("return"), bodyForms[0]),
-			);
-		}
-		const init = bodyForms.slice(0, -1);
-		const last = bodyForms[bodyForms.length - 1];
 		return array(
 			sym("function"),
 			funcNameNode,
 			array(),
-			...init,
-			array(sym("return"), last),
+			...wrapReturnLast(bodyForms),
 		);
 	});
 
@@ -1708,25 +1792,13 @@ export function registerSurfaceMacros(macroEnv) {
 				bodyStmts.push(array(sym("return"), resultVar));
 			} else {
 				// :any return — no check
-				if (bodyClause.length === 1) {
-					bodyStmts.push(array(sym("return"), bodyClause[0]));
-				} else {
-					bodyStmts.push(...bodyClause.slice(0, -1));
-					bodyStmts.push(
-						array(sym("return"), bodyClause[bodyClause.length - 1]),
-					);
-				}
+				bodyStmts.push(...wrapReturnLast(bodyClause));
 			}
 		} else if (isVoid) {
 			bodyStmts.push(...bodyClause);
 		} else {
 			// No :returns — treat body forms as statements, implicit return of last
-			if (bodyClause.length === 1) {
-				bodyStmts.push(array(sym("return"), bodyClause[0]));
-			} else {
-				bodyStmts.push(...bodyClause.slice(0, -1));
-				bodyStmts.push(array(sym("return"), bodyClause[bodyClause.length - 1]));
-			}
+			bodyStmts.push(...wrapReturnLast(bodyClause));
 		}
 
 		return array(
@@ -1919,14 +1991,7 @@ export function registerSurfaceMacros(macroEnv) {
 				);
 				clauseBody.push(array(sym("return"), resultVar));
 			} else if (hasReturns) {
-				if (bodyClause.length === 1) {
-					clauseBody.push(array(sym("return"), bodyClause[0]));
-				} else {
-					clauseBody.push(...bodyClause.slice(0, -1));
-					clauseBody.push(
-						array(sym("return"), bodyClause[bodyClause.length - 1]),
-					);
-				}
+				clauseBody.push(...wrapReturnLast(bodyClause));
 			} else {
 				clauseBody.push(...bodyClause);
 			}
@@ -2004,14 +2069,11 @@ export function registerSurfaceMacros(macroEnv) {
 				const innerBlock = [...bindings];
 
 				// Guard check with nested if
+				const wrapped = wrapReturnLast(bodyForms);
 				const guardedBody =
-					bodyForms.length === 1
-						? array(sym("return"), bodyForms[0])
-						: array(
-								sym("block"),
-								...bodyForms.slice(0, -1),
-								array(sym("return"), bodyForms[bodyForms.length - 1]),
-							);
+					wrapped.length === 1
+						? wrapped[0]
+						: array(sym("block"), ...wrapped);
 
 				innerBlock.push(array(sym("if"), guard, guardedBody));
 
@@ -2036,23 +2098,11 @@ export function registerSurfaceMacros(macroEnv) {
 
 				if (isWildcard || isSimpleBinding) {
 					// Default / catch-all — no condition check
-					const block = [...bindings];
-					if (bodyForms.length === 1) {
-						block.push(array(sym("return"), bodyForms[0]));
-					} else {
-						block.push(...bodyForms.slice(0, -1));
-						block.push(array(sym("return"), bodyForms[bodyForms.length - 1]));
-					}
+					const block = [...bindings, ...wrapReturnLast(bodyForms)];
 					stmts.push(array(sym("block"), ...block));
 				} else {
 					const condition = andChain(checks);
-					const block = [...bindings];
-					if (bodyForms.length === 1) {
-						block.push(array(sym("return"), bodyForms[0]));
-					} else {
-						block.push(...bodyForms.slice(0, -1));
-						block.push(array(sym("return"), bodyForms[bodyForms.length - 1]));
-					}
+					const block = [...bindings, ...wrapReturnLast(bodyForms)];
 					stmts.push(
 						array(sym("if"), condition, array(sym("block"), ...block)),
 					);
@@ -2092,106 +2142,10 @@ export function registerSurfaceMacros(macroEnv) {
 
 	// --- some-> (nil-safe thread-first) ---
 	// (some-> x (f a) (g b)) → IIFE with null checks
-	macroEnv.set("some->", (...args) => {
-		if (args.length < 2) {
-			throw new Error("some-> requires at least 2 arguments");
-		}
-		const stmts = [];
-		let prevVar = gensym("t");
-		stmts.push(array(sym("const"), prevVar, args[0]));
-		stmts.push(
-			array(
-				sym("if"),
-				array(sym("=="), prevVar, sym("null")),
-				array(sym("return"), prevVar),
-			),
-		);
-
-		for (let i = 1; i < args.length; i++) {
-			const step = args[i];
-			let callExpr;
-			if (isKeyword(step)) {
-				callExpr = array(sym("."), prevVar, sym(step.value));
-			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
-				const [kw, ...rest] = step.values;
-				callExpr = array(sym("."), prevVar, sym(kw.value), ...rest);
-			} else if (isArray(step)) {
-				const [fn, ...rest] = step.values;
-				callExpr = array(fn, prevVar, ...rest);
-			} else {
-				callExpr = array(step, prevVar);
-			}
-
-			if (i === args.length - 1) {
-				// Last step — just return
-				stmts.push(array(sym("return"), callExpr));
-			} else {
-				const nextVar = gensym("t");
-				stmts.push(array(sym("const"), nextVar, callExpr));
-				stmts.push(
-					array(
-						sym("if"),
-						array(sym("=="), nextVar, sym("null")),
-						array(sym("return"), nextVar),
-					),
-				);
-				prevVar = nextVar;
-			}
-		}
-
-		const arrowFn = array(sym("=>"), array(), ...stmts);
-		return array(arrowFn);
-	});
+	macroEnv.set("some->", (...args) => buildSomeThread(args, "first"));
 
 	// --- some->> (nil-safe thread-last) ---
-	macroEnv.set("some->>", (...args) => {
-		if (args.length < 2) {
-			throw new Error("some->> requires at least 2 arguments");
-		}
-		const stmts = [];
-		let prevVar = gensym("t");
-		stmts.push(array(sym("const"), prevVar, args[0]));
-		stmts.push(
-			array(
-				sym("if"),
-				array(sym("=="), prevVar, sym("null")),
-				array(sym("return"), prevVar),
-			),
-		);
-
-		for (let i = 1; i < args.length; i++) {
-			const step = args[i];
-			let callExpr;
-			if (isKeyword(step)) {
-				callExpr = array(sym("."), prevVar, sym(step.value));
-			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
-				const [kw, ...rest] = step.values;
-				callExpr = array(sym("."), prevVar, sym(kw.value), ...rest);
-			} else if (isArray(step)) {
-				callExpr = array(...step.values, prevVar);
-			} else {
-				callExpr = array(step, prevVar);
-			}
-
-			if (i === args.length - 1) {
-				stmts.push(array(sym("return"), callExpr));
-			} else {
-				const nextVar = gensym("t");
-				stmts.push(array(sym("const"), nextVar, callExpr));
-				stmts.push(
-					array(
-						sym("if"),
-						array(sym("=="), nextVar, sym("null")),
-						array(sym("return"), nextVar),
-					),
-				);
-				prevVar = nextVar;
-			}
-		}
-
-		const arrowFn = array(sym("=>"), array(), ...stmts);
-		return array(arrowFn);
-	});
+	macroEnv.set("some->>", (...args) => buildSomeThread(args, "last"));
 
 	// --- if-let ---
 	// (if-let (pattern expr) then else)
@@ -2218,78 +2172,26 @@ export function registerSurfaceMacros(macroEnv) {
 
 		const stmts = [array(sym("const"), tempVar, expr)];
 
-		// Determine pattern type
-		if (
-			isArray(pattern) &&
-			pattern.values.length > 0 &&
-			pattern.values[0].type === "atom" &&
-			isPascalCase(pattern.values[0].value)
-		) {
-			// ADT constructor pattern
-			const { checks, bindings } = compilePattern(pattern, tempVar);
-			const condition = andChain(checks);
-			const thenBlock = [...bindings, array(sym("return"), thenBody)];
-			if (elseBody) {
-				stmts.push(
-					array(
-						sym("if"),
-						condition,
-						array(sym("block"), ...thenBlock),
-						array(sym("block"), array(sym("return"), elseBody)),
-					),
-				);
-			} else {
-				stmts.push(
-					array(sym("if"), condition, array(sym("block"), ...thenBlock)),
-				);
-			}
-		} else if (
-			isArray(pattern) &&
-			pattern.values.length > 0 &&
-			pattern.values[0].type === "atom" &&
-			pattern.values[0].value === "obj"
-		) {
-			// Structural obj pattern
-			const { checks, bindings } = compilePattern(pattern, tempVar);
-			const condition = andChain(checks);
-			const thenBlock = [...bindings, array(sym("return"), thenBody)];
-			if (elseBody) {
-				stmts.push(
-					array(
-						sym("if"),
-						condition,
-						array(sym("block"), ...thenBlock),
-						array(sym("block"), array(sym("return"), elseBody)),
-					),
-				);
-			} else {
-				stmts.push(
-					array(sym("if"), condition, array(sym("block"), ...thenBlock)),
-				);
-			}
-		} else if (pattern.type === "atom" && !isPascalCase(pattern.value)) {
-			// Simple binding — nil check (loose != to catch null and undefined)
-			const condition = kernelArray(sym("!="), tempVar, sym("null"));
-			const thenBlock = [
-				array(sym("const"), pattern, tempVar),
-				array(sym("return"), thenBody),
-			];
-			if (elseBody) {
-				stmts.push(
-					array(
-						sym("if"),
-						condition,
-						array(sym("block"), ...thenBlock),
-						array(sym("block"), array(sym("return"), elseBody)),
-					),
-				);
-			} else {
-				stmts.push(
-					array(sym("if"), condition, array(sym("block"), ...thenBlock)),
-				);
-			}
-		} else {
+		const result = compileLetPattern(pattern, tempVar);
+		if (!result) {
 			throw new Error(`if-let: unrecognized pattern: ${formatSExpr(pattern)}`);
+		}
+
+		const { condition, bindings } = result;
+		const thenBlock = [...bindings, array(sym("return"), thenBody)];
+		if (elseBody) {
+			stmts.push(
+				array(
+					sym("if"),
+					condition,
+					array(sym("block"), ...thenBlock),
+					array(sym("block"), array(sym("return"), elseBody)),
+				),
+			);
+		} else {
+			stmts.push(
+				array(sym("if"), condition, array(sym("block"), ...thenBlock)),
+			);
 		}
 
 		const arrowFn = array(sym("=>"), array(), ...stmts);
@@ -2318,64 +2220,27 @@ export function registerSurfaceMacros(macroEnv) {
 
 		const stmts = [array(sym("const"), tempVar, expr)];
 
-		const returnBody =
-			bodyForms.length === 1
-				? array(sym("return"), bodyForms[0])
-				: array(
-						sym("block"),
-						...bodyForms.slice(0, -1),
-						array(sym("return"), bodyForms[bodyForms.length - 1]),
-					);
-
-		if (
-			isArray(pattern) &&
-			pattern.values.length > 0 &&
-			pattern.values[0].type === "atom" &&
-			isPascalCase(pattern.values[0].value)
-		) {
-			const { checks, bindings } = compilePattern(pattern, tempVar);
-			const condition = andChain(checks);
-			stmts.push(
-				array(
-					sym("if"),
-					condition,
-					array(sym("block"), ...bindings, returnBody),
-				),
-			);
-		} else if (
-			isArray(pattern) &&
-			pattern.values.length > 0 &&
-			pattern.values[0].type === "atom" &&
-			pattern.values[0].value === "obj"
-		) {
-			const { checks, bindings } = compilePattern(pattern, tempVar);
-			const condition = andChain(checks);
-			stmts.push(
-				array(
-					sym("if"),
-					condition,
-					array(sym("block"), ...bindings, returnBody),
-				),
-			);
-		} else if (pattern.type === "atom" && !isPascalCase(pattern.value)) {
-			// Loose != to catch null and undefined
-			const condition = kernelArray(sym("!="), tempVar, sym("null"));
-			stmts.push(
-				array(
-					sym("if"),
-					condition,
-					array(
-						sym("block"),
-						array(sym("const"), pattern, tempVar),
-						returnBody,
-					),
-				),
-			);
-		} else {
+		const result = compileLetPattern(pattern, tempVar);
+		if (!result) {
 			throw new Error(
 				`when-let: unrecognized pattern: ${formatSExpr(pattern)}`,
 			);
 		}
+
+		const { condition, bindings } = result;
+		const wrapped = wrapReturnLast(bodyForms);
+		const returnBody =
+			wrapped.length === 1
+				? wrapped[0]
+				: array(sym("block"), ...wrapped);
+
+		stmts.push(
+			array(
+				sym("if"),
+				condition,
+				array(sym("block"), ...bindings, returnBody),
+			),
+		);
 
 		const arrowFn = array(sym("=>"), array(), ...stmts);
 		return array(arrowFn);

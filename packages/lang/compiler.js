@@ -105,47 +105,51 @@ function toCamelCase(str) {
   return out;
 }
 
-// Built-in macros: maps s-expression forms to ESTree AST nodes
-const macros = {
-  // Variable declaration: (var x 1)
-  'var'(args) {
-    const decl = {
-      type: 'VariableDeclaration',
-      kind: 'var',
-      declarations: [{
-        type: 'VariableDeclarator',
-        id: compilePattern(args[0]),
-        init: args[1] ? compileExpr(args[1]) : null,
-      }],
-    };
-    return decl;
-  },
+/** Build a VariableDeclaration node (var/const/let). */
+function makeVarDecl(kind, args) {
+  return {
+    type: 'VariableDeclaration',
+    kind,
+    declarations: [{
+      type: 'VariableDeclarator',
+      id: compilePattern(args[0]),
+      init: args[1] ? compileExpr(args[1]) : null,
+    }],
+  };
+}
 
-  // Const declaration: (const x 1)
-  'const'(args) {
-    return {
+/** Build a ForOfStatement node, optionally with await. */
+function makeForOf(isAwait, args) {
+  if (args.length < 3) {
+    throw new Error(`${isAwait ? 'for-await-of' : 'for-of'} requires binding, iterable, and body`);
+  }
+  const binding = compilePattern(args[0]);
+  return {
+    type: 'ForOfStatement',
+    left: {
       type: 'VariableDeclaration',
       kind: 'const',
       declarations: [{
         type: 'VariableDeclarator',
-        id: compilePattern(args[0]),
-        init: args[1] ? compileExpr(args[1]) : null,
+        id: binding,
+        init: null,
       }],
-    };
-  },
+    },
+    right: compileExpr(args[1]),
+    body: {
+      type: 'BlockStatement',
+      body: args.slice(2).map(e => toStatement(compileExpr(e))),
+    },
+    await: isAwait,
+  };
+}
 
-  // Let declaration: (let x 1)
-  'let'(args) {
-    return {
-      type: 'VariableDeclaration',
-      kind: 'let',
-      declarations: [{
-        type: 'VariableDeclarator',
-        id: compilePattern(args[0]),
-        init: args[1] ? compileExpr(args[1]) : null,
-      }],
-    };
-  },
+// Built-in macros: maps s-expression forms to ESTree AST nodes
+const macros = {
+  // Variable declarations: (var x 1), (const x 1), (let x 1)
+  'var'(args) { return makeVarDecl('var', args); },
+  'const'(args) { return makeVarDecl('const', args); },
+  'let'(args) { return makeVarDecl('let', args); },
 
   // Computed member access: (get obj key)
   'get'(args) {
@@ -315,7 +319,7 @@ const macros = {
       throw new Error('function requires a name, params list, and body: (function name (params) body...)');
     }
     if (args[0].type !== 'atom') {
-      throw new Error('function name must be an identifier, not a ' + args[0].type);
+      throw new Error(`function name must be an identifier, not a ${args[0].type}`);
     }
     if (args[1].type !== 'list') {
       throw new Error('function params must be a list: (function name (params) body...)');
@@ -391,8 +395,7 @@ const macros = {
     const head = child.values[0];
     if (head.type !== 'atom' || !['function', 'function*', 'lambda', '=>'].includes(head.value)) {
       throw new Error(
-        'async can only wrap function, function*, lambda, or =>: got ' +
-        (head.type === 'atom' ? head.value : head.type)
+        `async can only wrap function, function*, lambda, or =>: got ${head.type === 'atom' ? head.value : head.type}`
       );
     }
     const compiled = compileExpr(child);
@@ -678,57 +681,9 @@ const macros = {
     };
   },
 
-  // For-of: (for-of binding iterable body...)
-  'for-of'(args) {
-    if (args.length < 3) {
-      throw new Error('for-of requires binding, iterable, and body');
-    }
-    const binding = compilePattern(args[0]);
-    return {
-      type: 'ForOfStatement',
-      left: {
-        type: 'VariableDeclaration',
-        kind: 'const',
-        declarations: [{
-          type: 'VariableDeclarator',
-          id: binding,
-          init: null,
-        }],
-      },
-      right: compileExpr(args[1]),
-      body: {
-        type: 'BlockStatement',
-        body: args.slice(2).map(e => toStatement(compileExpr(e))),
-      },
-      await: false,
-    };
-  },
-
-  // For-await-of: (for-await-of binding iterable body...)
-  'for-await-of'(args) {
-    if (args.length < 3) {
-      throw new Error('for-await-of requires binding, iterable, and body');
-    }
-    const binding = compilePattern(args[0]);
-    return {
-      type: 'ForOfStatement',
-      left: {
-        type: 'VariableDeclaration',
-        kind: 'const',
-        declarations: [{
-          type: 'VariableDeclarator',
-          id: binding,
-          init: null,
-        }],
-      },
-      right: compileExpr(args[1]),
-      body: {
-        type: 'BlockStatement',
-        body: args.slice(2).map(e => toStatement(compileExpr(e))),
-      },
-      await: true,
-    };
-  },
+  // For-of / for-await-of: (for-of binding iterable body...) / (for-await-of binding iterable body...)
+  'for-of'(args) { return makeForOf(false, args); },
+  'for-await-of'(args) { return makeForOf(true, args); },
 
   // For-in: (for-in binding object body...)
   'for-in'(args) {
@@ -1086,14 +1041,12 @@ const macros = {
         // Single-element sub-list → error
         if (child.values.length === 1) {
           throw new Error(
-            'object: single-element sub-list (' +
-            (child.values[0].type === 'atom' ? child.values[0].value : '...') +
-            ') is ambiguous — use a bare atom for shorthand'
+            `object: single-element sub-list (${child.values[0].type === 'atom' ? child.values[0].value : '...'}) is ambiguous — use a bare atom for shorthand`
           );
         }
 
         if (child.values.length !== 2) {
-          throw new Error('object: each property must be (key value), got ' + child.values.length + ' elements');
+          throw new Error(`object: each property must be (key value), got ${child.values.length} elements`);
         }
 
         // Regular (key value) pair
@@ -1162,7 +1115,7 @@ const compoundAssignOps = [
 for (const op of compoundAssignOps) {
   macros[op] = (args) => {
     if (args.length !== 2) {
-      throw new Error(op + ' takes exactly 2 arguments');
+      throw new Error(`${op} takes exactly 2 arguments`);
     }
     return {
       type: 'AssignmentExpression',
@@ -1440,13 +1393,11 @@ function compileObjectPattern(children) {
       }
 
       throw new Error(
-        'object pattern: each element must be an atom (shorthand), ' +
-        '(alias ...), (default ...), or (rest ...). Got: (' +
-        (head.type === 'atom' ? head.value : head.type) + ' ...)'
+        `object pattern: each element must be an atom (shorthand), (alias ...), (default ...), or (rest ...). Got: (${head.type === 'atom' ? head.value : head.type} ...)`
       );
 
     } else {
-      throw new Error('object pattern: unexpected ' + child.type);
+      throw new Error(`object pattern: unexpected ${child.type}`);
     }
   }
 
@@ -1549,11 +1500,11 @@ function compileClassMember(node, isStatic) {
     }
     const innerHead = inner.values[0];
     if (innerHead.type === 'atom' && (innerHead.value === 'get' || innerHead.value === 'set')) {
-      const member = compileAccessorMethod(inner, innerHead.value, isStatic);
+      const member = compileMethodDef(inner, innerHead.value, isStatic);
       member.value.async = true;
       return member;
     }
-    const member = compileMethod(inner, isStatic);
+    const member = compileMethodDef(inner, 'method', isStatic);
     member.value.async = true;
     return member;
   }
@@ -1577,68 +1528,46 @@ function compileClassMember(node, isStatic) {
 
   // get/set accessor: (get name (params) body...) or (set name (params) body...)
   if (headVal === 'get' || headVal === 'set') {
-    return compileAccessorMethod(node, headVal, isStatic);
+    return compileMethodDef(node, headVal, isStatic);
   }
 
   // Regular method (or constructor)
-  return compileMethod(node, isStatic);
+  return compileMethodDef(node, 'method', isStatic);
 }
 
-function compileMethod(node, isStatic) {
-  if (node.values.length < 3) {
-    throw new Error('Method requires name, params, and body: (name (params) body...)');
+function compileMethodDef(node, kind, isStatic) {
+  const isAccessor = kind === 'get' || kind === 'set';
+  // Accessors: (get name (params) body...) — name at [1], params at [2], body from [3]
+  // Methods:   (name (params) body...)     — name at [0], params at [1], body from [2]
+  const nameIdx = isAccessor ? 1 : 0;
+  const paramsIdx = isAccessor ? 2 : 1;
+  const bodyIdx = isAccessor ? 3 : 2;
+  const minLen = isAccessor ? 4 : 3;
+
+  if (node.values.length < minLen) {
+    const label = isAccessor ? `${kind} accessor` : 'Method';
+    const form = isAccessor
+      ? `(${kind} name (params) body...)`
+      : '(name (params) body...)';
+    throw new Error(`${label} requires name, params, and body: ${form}`);
   }
-  const nameAtom = node.values[0];
+
+  const nameAtom = node.values[nameIdx];
   if (nameAtom.type !== 'atom') {
-    throw new Error('Method name must be an atom');
-  }
-  const methodName = nameAtom.value;
-  const key = toClassKey(methodName);
-  const isConstructor = methodName === 'constructor';
-
-  const paramsList = node.values[1];
-  if (paramsList.type !== 'list') {
-    throw new Error('Method params must be a list');
-  }
-  const params = paramsList.values.map(compilePattern);
-  const bodyExprs = node.values.slice(2);
-
-  return {
-    type: 'MethodDefinition',
-    key,
-    value: {
-      type: 'FunctionExpression',
-      id: null,
-      params,
-      body: {
-        type: 'BlockStatement',
-        body: bodyExprs.map(e => toStatement(compileExpr(e))),
-      },
-      async: false,
-      generator: false,
-    },
-    kind: isConstructor ? 'constructor' : 'method',
-    computed: false,
-    static: isStatic,
-  };
-}
-
-function compileAccessorMethod(node, accessorKind, isStatic) {
-  if (node.values.length < 4) {
-    throw new Error(accessorKind + ' accessor: (' + accessorKind + ' name (params) body...)');
-  }
-  const nameAtom = node.values[1];
-  if (nameAtom.type !== 'atom') {
-    throw new Error('Accessor name must be an atom');
+    throw new Error(`${isAccessor ? 'Accessor' : 'Method'} name must be an atom`);
   }
   const key = toClassKey(nameAtom.value);
 
-  const paramsList = node.values[2];
+  const paramsList = node.values[paramsIdx];
   if (paramsList.type !== 'list') {
-    throw new Error('Accessor params must be a list');
+    throw new Error(`${isAccessor ? 'Accessor' : 'Method'} params must be a list`);
   }
   const params = paramsList.values.map(compilePattern);
-  const bodyExprs = node.values.slice(3);
+  const bodyExprs = node.values.slice(bodyIdx);
+
+  const resolvedKind = !isAccessor && nameAtom.value === 'constructor'
+    ? 'constructor'
+    : kind;
 
   return {
     type: 'MethodDefinition',
@@ -1654,7 +1583,7 @@ function compileAccessorMethod(node, accessorKind, isStatic) {
       async: false,
       generator: false,
     },
-    kind: accessorKind,
+    kind: resolvedKind,
     computed: false,
     static: isStatic,
   };
