@@ -30,18 +30,8 @@ state, wrap the initial value in `cell` and mutate via `swap!` or
 (console:log (express counter))
 ```
 
-Compiles to:
-
-```js
-const maxRetries = 3;
-const users = [];
-const counter = {value: 0};
-counter.value = ((n) => {
-  if (typeof n !== "number" || Number.isNaN(n))
-    throw new TypeError("anonymous: arg 'n' expected number, got " + typeof n);
-  return n + 1;
-})(counter.value);
-console.log(counter.value);
+```
+1
 ```
 
 **Rationale**: lykn eliminates JS's `const`/`let`/`var` distinction
@@ -87,15 +77,6 @@ Use `or` only for boolean logic.
 (bind timeout (or options:timeout 5000))
 ```
 
-Compiles to:
-
-```js
-const timeout = options.timeout ?? 5000;
-const title = options.title ?? "Untitled";
-const verbose = options.verbose ?? true;
-const timeout = options.timeout || 5000;
-```
-
 **Rationale**: `or` compiles to `||`, which returns the right-hand side
 for any falsy value (including `0`, `""`, `false`, `NaN`). `??` returns
 the right-hand side only for `null` or `undefined`. When `0`, `""`, or
@@ -116,23 +97,6 @@ potentially nullish values. Combine with `??` for defaults.
 ;; Good — nil-safe threading
 (bind street (?? (some-> person :address :street) "(unknown)"))
 (bind len (some-> arr :length))
-```
-
-Compiles to:
-
-```js
-const street = (() => {
-  const t__gensym0 = person;
-  if (t__gensym0 == null) return t__gensym0;
-  const t__gensym1 = t__gensym0.address;
-  if (t__gensym1 == null) return t__gensym1;
-  return t__gensym1.street;
-})() ?? "(unknown)";
-const len = (() => {
-  const t__gensym2 = arr;
-  if (t__gensym2 == null) return t__gensym2;
-  return t__gensym2.length;
-})();
 ```
 
 ```lykn
@@ -173,16 +137,20 @@ expressions. Use plain strings for static text.
 (bind greeting "Hello, world")
 ```
 
-Compiles to:
-
-```js
-const msg = `Hello, ${name}! You have ${count} items.`;
-const greeting = "Hello, world";
-```
-
 ```lykn
 ;; Bad — string concatenation via +
 (bind msg (+ "Hello, " name "! You have " count " items."))
+```
+
+```lykn
+(bind name "world")
+(bind count 3)
+(bind msg (template "Hello, " name "! You have " count " items."))
+(console:log msg)
+```
+
+```
+Hello, world! You have 3 items.
 ```
 
 **Rationale**: `template` compiles to JS template literals, which are
@@ -209,18 +177,8 @@ numeric addition) and harder to scan visually.
 (const (array first (rest tail)) items)
 
 ;; Good — destructure in loop
-(for-of (const (array index value) (arr:entries))
+(for-of (array index value) (arr:entries)
   (console:log (template index ": " value)))
-```
-
-Compiles to:
-
-```js
-const {name, email, role = "member"} = user;
-const [first, ...tail] = items;
-for (const [index, value] of arr.entries()) {
-  console.log(`${index}: ${value}`);
-}
 ```
 
 ```lykn
@@ -267,18 +225,6 @@ modules with a single, obvious purpose.
 (export (bind DATE-FORMAT "YYYY-MM-DD"))
 ```
 
-Compiles to:
-
-```js
-export function formatDate(d) {
-  return d.toISOString();
-}
-export function parseDate(s) {
-  return new Date(s);
-}
-export const DATE_FORMAT = "YYYY-MM-DD";
-```
-
 ```lykn
 ;; Bad — default export
 (export default format-date)
@@ -305,17 +251,6 @@ refactoring harder.
 
 (bind data (await (Deno:readTextFile (join "config" "app.json"))))
 (export (func process-data :args (:any input) :returns :any :body input))
-```
-
-Compiles to:
-
-```js
-import {formatDate} from "./utils.js";
-import {join} from "@std/path";
-const data = await Deno.readTextFile(join("config", "app.json"));
-export function processData(input) {
-  return input;
-}
 ```
 
 **Module characteristics**:
@@ -352,26 +287,6 @@ annotations and contracts. Use `fn` (or `lambda`) for inline callbacks.
   (fn (:any e) (handle-click e)))
 ```
 
-Compiles to:
-
-```js
-function parseConfig(raw) {
-  if (typeof raw !== "string")
-    throw new TypeError("parse-config: arg 'raw' expected string, got " + typeof raw);
-  const result__gensym0 = JSON.parse(raw);
-  /* return type check ... */
-  return result__gensym0;
-}
-const doubled = items.map((x) => {
-  if (typeof x !== "number" || Number.isNaN(x))
-    throw new TypeError("anonymous: arg 'x' expected number, got " + typeof x);
-  return x * 2;
-});
-button.addEventListener("click", (e) => {
-  return handleClick(e);
-});
-```
-
 **Function forms** (`00-lykn-surface-forms.md`):
 
 | Form | Use for | Output |
@@ -380,6 +295,23 @@ button.addEventListener("click", (e) => {
 | `fn` | Typed anonymous functions | Arrow function |
 | `lambda` | Alias for `fn` | Arrow function |
 | `=>` (kernel) | Untyped anonymous functions | Arrow function |
+
+```lykn
+(func double
+  :args (:number x)
+  :returns :number
+  :body (* x 2))
+(console:log (double 21))
+
+(bind items #a(1 2 3 4))
+(bind doubled (items:map (fn (:number x) (* x 2))))
+(console:log doubled)
+```
+
+```
+42
+[ 2, 4, 6, 8 ]
+```
 
 **Rationale**: `func` provides runtime type checking, contracts
 (`:pre`/`:post`), and multi-clause dispatch. `fn` is concise for
@@ -424,14 +356,6 @@ self-evident must be named via `bind`.
 
 (if (= response:status TOO-MANY-REQUESTS)
   (await (backoff attempt MAX-RETRIES)))
-```
-
-Compiles to:
-
-```js
-const MAX_RETRIES = 3;
-const TOO_MANY_REQUESTS = 429;
-if (response.status === TOO_MANY_REQUESTS) await backoff(attempt, MAX_RETRIES);
 ```
 
 ```lykn
@@ -537,20 +461,6 @@ state, use `cell` explicitly.
 (bind updated-config (assoc config :debug true))
 ```
 
-Compiles to:
-
-```js
-const config = {debug: false};
-const counter = {value: 0};
-counter.value = ((n) => {
-  if (typeof n !== "number" || Number.isNaN(n))
-    throw new TypeError("anonymous: arg 'n' expected number, got " + typeof n);
-  return n + 1;
-})(counter.value);
-console.log(counter.value);
-const updatedConfig = {...config, debug: true};
-```
-
 **Three strategies for state**:
 
 | Strategy | Form | When to use |
@@ -585,12 +495,6 @@ modified at runtime, use `Object:freeze`.
   :base-url "https://api.example.com")))
 ```
 
-Compiles to:
-
-```js
-const CONFIG = Object.freeze({maxRetries: 3, timeout: 5000, baseUrl: "https://api.example.com"});
-```
-
 **Rationale**: `bind` prevents reassignment of the binding, but the
 underlying JS object can still be mutated by code that receives it.
 `Object:freeze` prevents property modification at the JS level. Note
@@ -621,17 +525,6 @@ unique-value collections when keys are dynamic or non-string.
 (if (visited:has url) (console:log "skip"))
 ```
 
-Compiles to:
-
-```js
-const cache = new Map();
-cache.set(userObj, computeExpensiveResult(userObj));
-cache.set(42, "forty-two");
-const visited = new Set();
-visited.add(url);
-if (visited.has(url)) console.log("skip");
-```
-
 **When to use `obj`**: For fixed-shape records with known string keys
 (configuration, DTOs, JSON-compatible data).
 
@@ -656,18 +549,6 @@ The `arguments` object does not exist in lykn.
     (if (> n (express result))
       (reset! result n)))
   (return (express result)))
-```
-
-Compiles to:
-
-```js
-function findMax(first, ...others) {
-  const result = {value: first};
-  for (const n of others) {
-    if (n > result.value) result.value = n;
-  }
-  return result.value;
-}
 ```
 
 **Rationale**: Rest parameters produce a real `Array`, are visible in
@@ -696,16 +577,6 @@ expansion.
 
 ;; Good — merge arrays via kernel spread
 (bind merged (array (spread arr1) (spread arr2)))
-```
-
-Compiles to:
-
-```js
-const defaults = {timeout: 5000, retries: 3};
-const config = {...defaults, timeout: 10000, debug: true};
-const items = [1, 2, 3];
-const moreItems = [...items, 4];
-const merged = [...arr1, ...arr2];
 ```
 
 **Rationale**: `assoc` and `conj` are the idiomatic surface forms for
@@ -740,31 +611,6 @@ returned. Do not add explicit `return` — it is a kernel form.
   lower)
 ```
 
-Compiles to:
-
-```js
-const double = (x) => {
-  if (typeof x !== "number" || Number.isNaN(x))
-    throw new TypeError("anonymous: arg 'x' expected number, got " + typeof x);
-  return x * 2;
-};
-const isEven = (n) => {
-  if (typeof n !== "number" || Number.isNaN(n))
-    throw new TypeError("anonymous: arg 'n' expected number, got " + typeof n);
-  return n % 2 === 0;
-};
-function getName(user) {
-  return user.name;
-}
-function processItem(item) {
-  if (typeof item !== "string")
-    throw new TypeError("process-item: arg 'item' expected string, got " + typeof item);
-  const normalized = item.trim();
-  const lower = normalized.toLowerCase();
-  return lower;
-}
-```
-
 **Rationale**: lykn's surface functions handle returns automatically.
 The last expression in `:body` becomes the return value. In `fn`, the
 body expression(s) are placed in the arrow function body. Explicit
@@ -784,14 +630,6 @@ body expression(s) are placed in the arrow function body. Explicit
 (bind response (await (fetch "https://api.example.com/data")))
 (bind text (await (Deno:readTextFile "./config.json")))
 (bind url (new URL "/path" "https://example.com"))
-```
-
-Compiles to:
-
-```js
-const response = await fetch("https://api.example.com/data");
-const text = await Deno.readTextFile("./config.json");
-const url = new URL("/path", "https://example.com");
 ```
 
 **Deno-specific conventions**:
@@ -872,18 +710,11 @@ discards them. Use `??` or explicit `(= x null)` checks instead.
 spread for shallow copies.
 
 ```lykn
-;; Good — shallow copy via assoc (new object)
-(bind copy (assoc original))
+;; Good — shallow copy via spread
+(bind copy (object (spread original)))
 
 ;; Good — deep copy
 (bind deep (structuredClone original))
-```
-
-Compiles to:
-
-```js
-const copy = {...original};
-const deep = structuredClone(original);
 ```
 
 **Shallow vs. deep**:
@@ -891,7 +722,7 @@ const deep = structuredClone(original);
 ```lykn
 ;; Shallow — nested objects are shared
 (bind original (obj :work (obj :employer "Acme")))
-(bind shallow (assoc original))
+(bind shallow (object (spread original)))
 ;; shallow:work is the same reference as original:work
 
 ;; Deep — fully independent
@@ -899,8 +730,8 @@ const deep = structuredClone(original);
 ```
 
 **Rationale**: `structuredClone` handles circular references, `Date`,
-`RegExp`, `Map`, `Set`, and more. `assoc` with no extra key-value
-pairs produces a shallow copy via spread.
+`RegExp`, `Map`, `Set`, and more. `(object (spread obj))` produces a
+shallow copy via spread.
 
 **See also**: ID-24, `04-values-references.md`
 
@@ -923,18 +754,6 @@ pairs produces a shallow copy via spread.
 
 ;; Good — append without mutation
 (bind with-new (conj items new-item))
-```
-
-Compiles to:
-
-```js
-const original = {city: "Berlin", country: "Germany"};
-const updated = {...original, city: "Munich"};
-const sanitized = (() => {
-  const {password: ___gensym0, ...rest__gensym1} = user;
-  return rest__gensym1;
-})();
-const withNew = [...items, newItem];
 ```
 
 **When mutation is appropriate**: Use `cell` for counters,
@@ -966,28 +785,12 @@ cannot be silently modified.
   (process item))
 
 ;; Good — for-of with index via entries
-(for-of (const (array i item) (items:entries))
+(for-of (array i item) (items:entries)
   (console:log (template i ": " item)))
 
 ;; Good — for-of with await (sequential execution)
 (for-of item items
   (await (process item)))
-```
-
-Compiles to:
-
-```js
-for (const item of items) {
-  if (item.skip) continue;
-  if (item.done) break;
-  process(item);
-}
-for (const [i, item] of items.entries()) {
-  console.log(`${i}: ${item}`);
-}
-for (const item of items) {
-  await process(item);
-}
 ```
 
 **Rationale**: `for-of` is a statement, not a method call — it supports
@@ -1012,18 +815,6 @@ at the top, keeping the main logic at a low nesting level.
   (if (not user:email) null)
   (bind normalized (user:email:to-lower-case))
   (send-welcome normalized))
-```
-
-Compiles to:
-
-```js
-function processUser(user) {
-  if (!user) throw new Error("user is required");
-  if (!user.active) return null;
-  if (!user.email) return null;
-  const normalized = user.email.toLowerCase();
-  return sendWelcome(normalized);
-}
 ```
 
 ```lykn
@@ -1054,21 +845,19 @@ the top level of indentation.
 ```lykn
 ;; Good — keywords for keys
 (bind user (obj :first-name "Alice" :last-name "Smith" :age 30))
+(console:log user:first-name)
 (bind updated (assoc user :age 31))
+(console:log updated:age)
 (bind public (dissoc user :age))
-
-;; The keyword :first-name becomes the JS key "firstName"
+(console:log public:first-name)
+(console:log public:age)
 ```
 
-Compiles to:
-
-```js
-const user = {firstName: "Alice", lastName: "Smith", age: 30};
-const updated = {...user, age: 31};
-const public = (() => {
-  const {age: ___gensym0, ...rest__gensym1} = user;
-  return rest__gensym1;
-})();
+```
+Alice
+31
+Alice
+undefined
 ```
 
 **Rationale**: Keywords are compile-time markers, not runtime values.
@@ -1097,17 +886,6 @@ compiles to `.` access with automatic camelCase conversion.
 ;; For computed access, use get
 (bind item (get items 0))
 (bind val (get obj key))
-```
-
-Compiles to:
-
-```js
-console.log("hello");
-const len = items.length;
-const name = user.firstName;
-const result = Math.floor(Math.random() * 100);
-const item = items[0];
-const val = obj[key];
 ```
 
 **Rationale**: Colon syntax is lykn's replacement for JS's `.` operator.
@@ -1141,15 +919,6 @@ are short-circuit operators, not function calls.
   (console:log "all truthy"))
 ```
 
-Compiles to:
-
-```js
-if (x > 0 && x < 100) console.log("in range");
-const result = cachedValue || computeFresh();
-if (!valid?(input)) throw new Error("invalid input");
-if (((a && b) && c) && d) console.log("all truthy");
-```
-
 **Rationale**: Every Lisp dialect uses `and`/`or`/`not` for logical
 operations. These compile to `&&`/`||`/`!` with proper short-circuit
 semantics. The kernel operators `&&`, `||`, `!` remain available but
@@ -1179,36 +948,6 @@ exhaustive pattern matching.
     ((Err msg) (template "Error: " msg))))
 ```
 
-Compiles to:
-
-```js
-{
-  function Ok(value) {
-    return {tag: "Ok", value: value};
-  }
-  function Err(message) {
-    if (typeof message !== "string")
-      throw new TypeError("Err: field 'message' expected string, got " + typeof message);
-    return {tag: "Err", message: message};
-  }
-}
-function handleResult(r) {
-  const result__gensym1 = (() => {
-    const target__gensym0 = r;
-    if (target__gensym0.tag === "Ok") {
-      const v = target__gensym0.value;
-      return `Success: ${v}`;
-    }
-    if (target__gensym0.tag === "Err") {
-      const msg = target__gensym0.message;
-      return `Error: ${msg}`;
-    }
-    throw new Error("match: no matching pattern");
-  })();
-  return result__gensym1;
-}
-```
-
 **Pattern types** (`00-lykn-surface-forms.md`):
 
 | Pattern | Example | Matches |
@@ -1219,6 +958,25 @@ function handleResult(r) {
 | ADT | `(Ok v)` | Tagged value, binds fields |
 | Structural | `(obj :ok true :data d)` | Object shape, binds fields |
 | Guard | `((Ok v) :when (> v 0) ...)` | ADT + condition |
+
+```lykn
+(type Result
+  (Ok :any value)
+  (Err :string message))
+
+(func handle-result :args (:any r) :returns :string :body
+  (match r
+    ((Ok v) (template "Success: " v))
+    ((Err msg) (template "Error: " msg))))
+
+(console:log (handle-result (Ok 42)))
+(console:log (handle-result (Err "not found")))
+```
+
+```
+Success: 42
+Error: not found
+```
 
 **Rationale**: `type` + `match` replaces the common JS pattern of
 switch-on-string or if-chains with runtime-checked, exhaustive
