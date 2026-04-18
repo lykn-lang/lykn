@@ -265,13 +265,13 @@ comments for complex APIs.
 ;;   (bind search (debounce handle-search 300))
 ;;   (search "hello")  ;; fires 300ms after last call
 (func debounce
-  :args (:function fn :number wait)
+  :args (:function f :number wait)
   :returns :function
   :body
   (bind timer (cell null))
   (fn (:any args)
     (clearTimeout (express timer))
-    (reset! timer (setTimeout (fn () (fn args)) wait))))
+    (reset! timer (setTimeout (fn () (f args)) wait))))
 ```
 
 ---

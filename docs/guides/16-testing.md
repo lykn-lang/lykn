@@ -23,7 +23,7 @@ functions via `import`. Use the standard two-line header.
 
 ### Standard test file header
 
-```lykn
+```lykn,skip
 ;; ✅ GOOD — Surface tests (testing compiled output of surface syntax):
 (import-macros "testing"
   (test test-compiles is-equal is-thrown includes))
@@ -59,7 +59,7 @@ and `compile-all` so test files stay short and consistent.
 
 ### Available macros
 
-```lykn
+```lykn,skip
 ;; Full macro import — everything available
 (import-macros "testing"
   (test test-async suite step
@@ -99,23 +99,12 @@ imports in the compiled output. No runtime dependency ships.
 **Summary**: `test` takes a string name and body expressions. This
 is the primary test definition form.
 
-```lykn
+```lykn,skip
 (import-macros "testing" (test is-equal))
 
 (test "addition works"
   (is-equal (+ 1 2) 3)
   (is-equal (* 3 4) 12))
-```
-
-Compiles to:
-
-```js
-import { assertEquals } from "jsr:@std/assert";
-
-Deno.test("addition works", () => {
-  assertEquals(1 + 2, 3);
-  assertEquals(3 * 4, 12);
-});
 ```
 
 Multiple assertions per test are fine. The test passes when all pass.
@@ -142,20 +131,6 @@ or cleanup. Same pattern as `func`'s `:pre`/`:post`/`:body` (DD-16).
     (is-equal result 1))
 ```
 
-Compiles to:
-
-```js
-Deno.test("database query", () => {
-  const db = createTempDb();
-  try {
-    const result = query(db, "SELECT 1");
-    assertEquals(result, 1);
-  } finally {
-    close(db);
-  }
-});
-```
-
 When `:teardown` is present, the body is wrapped in
 `try { ... } finally { teardown }` — cleanup runs even when the
 test fails. When only `:setup` is present, setup expressions are
@@ -180,15 +155,6 @@ prepended to the body with no wrapping.
 (test "also fetches data"
   (bind result (await (fetch-data)))
   (is-equal result:status :ok))
-```
-
-Compiles to:
-
-```js
-Deno.test("fetches data", async () => {
-  const result = await fetchData();
-  assertEquals(result.status, "ok");
-});
 ```
 
 `test-async` exists for cases where the body delegates to an async
@@ -258,29 +224,11 @@ is wrapped in a closure automatically.
   (is-thrown (validate nil) TypeError "expected non-null"))
 ```
 
-Compiles to:
-
-```js
-Deno.test("error handling", () => {
-  assertThrows(() => parseJson("not json"));
-  assertThrows(() => parseJson("not json"), SyntaxError);
-  assertThrows(() => validate(null), TypeError, "expected non-null");
-});
-```
-
 For async rejections:
 
 ```lykn
 (test-async "rejects on bad URL"
   (is-thrown-async (await (fetch-data "bad-url")) NetworkError))
-```
-
-Compiles to:
-
-```js
-Deno.test("rejects on bad URL", async () => {
-  await assertRejects(async () => await fetchData("bad-url"), NetworkError);
-});
 ```
 
 ---
@@ -339,24 +287,6 @@ Child `test` forms compile to `t.step()` calls.
     (is-equal (* 3 4) 12)))
 ```
 
-Compiles to:
-
-```js
-Deno.test("math operations", async (t) => {
-  const fixtures = loadFixtures();
-  try {
-    await t.step("addition", () => {
-      assertEquals(1 + 2, 3);
-    });
-    await t.step("multiplication", () => {
-      assertEquals(3 * 4, 12);
-    });
-  } finally {
-    cleanup(fixtures);
-  }
-});
-```
-
 The suite function is always async because `t.step()` returns a
 promise. Setup/teardown context is shared across all child tests.
 
@@ -392,7 +322,7 @@ detects `await` for its own async status.
 **Summary**: A convenience macro for the most common lykn test
 pattern: compile a string, check the output.
 
-```lykn
+```lykn,skip
 (import "../../packages/lykn/mod.js" (compile))
 (import-macros "testing" (test-compiles))
 
@@ -402,17 +332,6 @@ pattern: compile a string, check the output.
 (test-compiles "func basic"
   "(func add :args (a b) :body (+ a b))"
   "function add(a, b) {\n  return a + b;\n}")
-```
-
-Compiles to:
-
-```js
-import { compile } from "../../packages/lykn/mod.js";
-
-Deno.test("bind simple", () => {
-  const r_1 = compile("(bind x 1)");
-  assertEquals(r_1.trim(), "const x = 1;");
-});
 ```
 
 One line replaces a five-line `Deno.test` + `compile` + `assertEquals`

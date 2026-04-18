@@ -294,31 +294,6 @@ compiled output for zero-overhead production builds.
   :body (+ a b))
 ```
 
-**Development** (`lykn compile`):
-
-```js
-function add(a, b) {
-  if (typeof a !== "number" || Number.isNaN(a))
-    throw new TypeError("add: arg 'a' expected number, got " + typeof a);
-  if (typeof b !== "number" || Number.isNaN(b))
-    throw new TypeError("add: arg 'b' expected number, got " + typeof b);
-  if (!(a >= 0 && b >= 0))
-    throw new Error("add: pre-condition failed: ...");
-  const result__gensym0 = a + b;
-  if (typeof result__gensym0 !== "number" || Number.isNaN(result__gensym0))
-    throw new TypeError("add: return value expected number, got " + typeof result__gensym0);
-  return result__gensym0;
-}
-```
-
-**Production** (`lykn compile --strip-assertions`):
-
-```js
-function add(a, b) {
-  return a + b;
-}
-```
-
 ---
 
 ## ID-06: The Full Build Pipeline

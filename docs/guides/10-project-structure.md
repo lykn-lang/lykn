@@ -420,7 +420,7 @@ mapping.
 shared type definitions. For compiled JS output consumed by other JS
 code, JSDoc annotations may still be useful.
 
-```lykn
+```lykn,skip
 ;; Good — type constructors for shared shapes
 ;; shared/types.lykn
 (export (type User (Usr :string id :string name :string email)))

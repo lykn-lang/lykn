@@ -106,17 +106,6 @@ requests at runtime.
 (import "@std/path" (join))              ;; import map specifier
 ```
 
-### ID-11: Import Maps in `deno.json`
-
-```json
-{
-  "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.0",
-    "@shared/": "./shared/"
-  }
-}
-```
-
 ### ID-12: `import:meta` for Module Metadata
 
 ```lykn
