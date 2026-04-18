@@ -42,3 +42,60 @@
   (includes result "function Err(error)")
   (includes result "tag: \"Ok\"")
   (includes result "tag: \"Err\""))
+
+;; --- Runtime tests ---
+;; These verify that type constructors are accessible at runtime
+;; (not trapped inside a block scope).
+
+(type Color Red Green Blue)
+
+(test "type runtime: zero-field constructors are accessible"
+  (is-equal Red:tag "Red")
+  (is-equal Green:tag "Green")
+  (is-equal Blue:tag "Blue"))
+
+(type Option (Some :any value) None)
+
+(test "type runtime: constructor with field"
+  (bind s (Some 42))
+  (is-equal s:tag "Some")
+  (is-equal s:value 42))
+
+(test "type runtime: zero-field constructor value"
+  (is-equal None:tag "None"))
+
+(test "type runtime: match on ADT"
+  (bind result (match (Some 10)
+    ((Some v) (+ v 1))
+    (None 0)))
+  (is-equal result 11))
+
+(test "type runtime: match on zero-field"
+  (bind result (match None
+    ((Some v) v)
+    (None "empty")))
+  (is-equal result "empty"))
+
+(type Shape
+  (Circle :number radius)
+  (Rect :number width :number height))
+
+(test "type runtime: typed fields"
+  (bind c (Circle 5))
+  (is-equal c:tag "Circle")
+  (is-equal c:radius 5))
+
+(test "type runtime: multi-field constructor"
+  (bind r (Rect 3 4))
+  (is-equal r:width 3)
+  (is-equal r:height 4))
+
+(test "type runtime: match with multiple constructors"
+  (func area
+    :args (:any shape)
+    :returns :number
+    :body (match shape
+      ((Circle r) (* 3 r r))
+      ((Rect w h) (* w h))))
+  (is-equal (area (Circle 10)) 300)
+  (is-equal (area (Rect 3 4)) 12))

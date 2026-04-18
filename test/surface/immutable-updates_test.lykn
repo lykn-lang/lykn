@@ -68,6 +68,34 @@
   (bind arrow-head (get arrow:values 0))
   (is-equal arrow-head:value "=>"))
 
+;; --- Runtime tests ---
+
+(test "assoc runtime: returns new object with updated field"
+  (bind user (obj :name "Duncan" :age 42))
+  (bind updated (assoc user :age 43))
+  (is-equal updated:age 43)
+  (is-equal user:age 42))
+
+(test "dissoc runtime: returns object without removed key"
+  (bind user (obj :name "Duncan" :age 42 :password "secret"))
+  (bind clean (dissoc user :password))
+  (is-equal clean:name "Duncan")
+  (is-equal clean:age 42)
+  (is-equal clean:password undefined))
+
+(test "dissoc runtime: removes multiple keys"
+  (bind data (obj :a 1 :b 2 :c 3))
+  (bind result (dissoc data :a :b))
+  (is-equal result:c 3)
+  (is-equal result:a undefined)
+  (is-equal result:b undefined))
+
+(test "conj runtime: appends to array"
+  (bind items #a(1 2 3))
+  (bind result (conj items 4))
+  (is-equal result #a(1 2 3 4))
+  (is-equal items #a(1 2 3)))
+
 (test "conj: expansion produces array with spread"
   (reset-macros)
   (reset-gensym)

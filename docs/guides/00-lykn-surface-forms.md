@@ -136,6 +136,27 @@ points.
 (reset! counter 0)
 ```
 
+**Putting it together:**
+
+```lykn
+(bind x 42)
+(console:log x)
+
+(bind counter (cell 0))
+(console:log (express counter))
+(swap! counter (=> (n) (+ n 1)))
+(console:log (express counter))
+(reset! counter 99)
+(console:log (express counter))
+```
+
+```
+42
+0
+1
+99
+```
+
 ---
 
 ## Functions
@@ -369,6 +390,34 @@ Without `:yields`:
 (bind gen (genfn () (yield 1) (yield 2)))
 ```
 
+**Putting it together:**
+
+```lykn
+(func add
+  :args (:number a :number b)
+  :returns :number
+  :body (+ a b))
+(console:log (add 3 4))
+
+(func greet
+  :args (:string name)
+  :returns :void
+  :body (console:log (template "Hello, " name "!")))
+(greet "world")
+
+(func double
+  :args (:number x) :returns :number
+  :post (> ~ x)
+  :body (* x 2))
+(console:log (double 5))
+```
+
+```
+7
+Hello, world!
+10
+```
+
 ---
 
 ## Types & Pattern Matching
@@ -480,6 +529,19 @@ ADT pattern:
   (greet user))
 ```
 
+**Putting it together:**
+
+```lykn
+(console:log (match 404
+  (200 "ok")
+  (404 "not found")
+  (_ "unknown")))
+```
+
+```
+not found
+```
+
 ---
 
 ## Objects & Immutable Updates
@@ -547,6 +609,27 @@ With an expression:
 (conj items (+ 1 2))
 ```
 
+**Putting it together:**
+
+```lykn
+(bind user (obj :name "Duncan" :age 42))
+(console:log user:name)
+(console:log user:age)
+
+(bind updated (assoc user :age 43))
+(console:log updated:age)
+
+(bind items #a(1 2 3))
+(console:log (conj items 4))
+```
+
+```
+Duncan
+42
+43
+[ 1, 2, 3, 4 ]
+```
+
 ---
 
 ## Threading Macros
@@ -601,6 +684,18 @@ an IIFE with null checks at each step.
 
 The null check uses `== null` (loose equality), which catches both
 `null` and `undefined`.
+
+**Putting it together:**
+
+```lykn
+(console:log (-> 5 (+ 3) (* 2)))
+(console:log (-> "hello world" (:to-upper-case)))
+```
+
+```
+16
+HELLO WORLD
+```
 
 ---
 
@@ -768,6 +863,20 @@ Strings become literal text segments; everything else becomes
 
 Radix literals are evaluated at read time and compiled as plain numbers.
 
+**Putting it together:**
+
+```lykn
+(console:log #a(1 2 3))
+(console:log #16rff)
+(console:log #2r11110000)
+```
+
+```
+[ 1, 2, 3 ]
+255
+240
+```
+
 ---
 
 ## Operators
@@ -815,6 +924,24 @@ For the rare `== null` idiom, use the `js:eq` escape hatch:
 
 `and`/`or` are short-circuit operators (not function calls). `not`
 accepts exactly one argument.
+
+**Putting it together:**
+
+```lykn
+(console:log (= 1 1))
+(console:log (!= 1 2))
+(console:log (and true true false))
+(console:log (or false false 42))
+(console:log (not false))
+```
+
+```
+true
+true
+false
+42
+true
+```
 
 ### Comparison (kernel)
 
@@ -865,9 +992,18 @@ Define compile-time macros with quasiquote templates:
 After definition, `when` expands at compile time:
 
 ```lykn
-(when (> x 0)
-  (console:log "positive")
-  (console:log "very positive"))
+(macro when (test (rest body))
+  `(if ,test (block ,@body)))
+
+(when true
+  (console:log "it works"))
+
+(when false
+  (console:log "you should not see this"))
+```
+
+```
+it works
 ```
 
 ### import-macros

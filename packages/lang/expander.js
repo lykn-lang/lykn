@@ -745,6 +745,9 @@ export function expandExpr(form) {
         throw new Error(`expansion limit (${MAX_EXPAND_ITERATIONS}) exceeded expanding '${form.values[0].value}'`);
       }
     }
+    if (Array.isArray(current)) {
+      return current.map((r) => expandExpr(r));
+    }
     return expandExpr(current);
   }
 

@@ -998,13 +998,7 @@ fn emit_type(
         }
     }
 
-    if forms.len() > 1 {
-        let mut block = vec![atom("block")];
-        block.extend(forms);
-        vec![list(block)]
-    } else {
-        forms
-    }
+    forms
 }
 
 // ---------------------------------------------------------------------------
@@ -2822,7 +2816,7 @@ mod tests {
     }
 
     #[test]
-    fn test_emit_type_multiple_constructors_wrapped_in_block() {
+    fn test_emit_type_multiple_constructors_no_block_wrapper() {
         let form = SurfaceForm::Type {
             name: "Color".into(),
             name_span: s(),
@@ -2844,13 +2838,19 @@ mod tests {
         };
         let mut c = ctx();
         let result = emit_form(&form, &mut c, &reg());
-        assert_eq!(result.len(), 1);
-        // Should be wrapped in (block ...)
+        // Each constructor is a separate top-level form (no block wrapper)
+        assert_eq!(result.len(), 2);
         if let SExpr::List { values, .. } = &result[0] {
-            assert_eq!(values[0].as_atom(), Some("block"));
-            assert_eq!(values.len(), 3); // block + 2 constructors
+            assert_eq!(values[0].as_atom(), Some("const"));
+            assert_eq!(values[1].as_atom(), Some("Red"));
         } else {
-            panic!("expected block list");
+            panic!("expected const Red");
+        }
+        if let SExpr::List { values, .. } = &result[1] {
+            assert_eq!(values[0].as_atom(), Some("const"));
+            assert_eq!(values[1].as_atom(), Some("Green"));
+        } else {
+            panic!("expected const Green");
         }
     }
 

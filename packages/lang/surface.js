@@ -1289,7 +1289,7 @@ export function registerSurfaceMacros(macroEnv) {
 			array(sym("rest"), restVar),
 		);
 		const binding = array(sym("const"), pattern, obj);
-		const arrowBody = array(sym("=>"), array(), binding, restVar);
+		const arrowBody = array(sym("=>"), array(), binding, array(sym("return"), restVar));
 		return array(arrowBody);
 	});
 
@@ -1632,7 +1632,7 @@ export function registerSurfaceMacros(macroEnv) {
 		}
 
 		if (forms.length === 1) return forms[0];
-		return array(sym("block"), ...forms);
+		return forms;
 	});
 
 	// --- func ---
