@@ -1,15 +1,6 @@
 (import-macros "testing"
   (test test-compiles is-equal is-thrown includes))
-(import "../../packages/lang/mod.js" (lykn))
-(import "../../packages/lang/expander.js" (reset-gensym reset-macros reset-module-cache))
-
-(func compile-all
-  :args (:string source)
-  :body
-  (reset-macros)
-  (reset-gensym)
-  (reset-module-cache)
-  (lykn source))
+(import "testing/helpers.js" (compile-all))
 
 (test "integration: cons/list/car/cdr desugaring"
   (bind result (compile-all "

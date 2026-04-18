@@ -1,6 +1,5 @@
 (import-macros "testing" (test is-equal))
-(import "../../packages/lang/reader.js" (read))
-(import "../../packages/lang/expander.js" (expand reset-gensym reset-macros reset-module-cache))
+(import "testing/helpers.js" (read expand reset-gensym reset-macros reset-module-cache))
 (import "../../packages/lang/compiler.js" (compile))
 (import "node:path" (resolve))
 

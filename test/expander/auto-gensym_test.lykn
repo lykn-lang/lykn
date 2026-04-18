@@ -1,15 +1,5 @@
 (import-macros "testing" (test is-equal ok))
-(import "../../packages/lang/reader.js" (read))
-(import "../../packages/lang/expander.js" (expand reset-gensym reset-macros))
-(import "../../packages/lang/compiler.js" (compile))
-
-(func lykn
-  :args (:string source)
-  :body
-  (reset-macros)
-  (reset-gensym)
-  (bind raw (compile (expand (read source))))
-  (raw:trim))
+(import "testing/helpers.js" (compile-all read expand reset-gensym reset-macros))
 
 (func ex
   :args (:string source)
@@ -19,7 +9,7 @@
   (expand (read source)))
 
 (test "auto-gensym: temp#gen in let binding"
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro swap (a b)
       `(block
         (let temp#gen ,a)
@@ -31,7 +21,7 @@
   (is-equal (result:includes "temp__gensym0") true))
 
 (test "auto-gensym: same prefix -> same name within template"
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro swap (a b)
       `(block
         (let temp#gen ,a)
@@ -44,7 +34,7 @@
   (is-equal (and (!= matches null) (>= matches:length 2)) true))
 
 (test "auto-gensym: different prefixes -> different names"
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro two-lets (x y)
       `(block
         (let a#gen ,x)

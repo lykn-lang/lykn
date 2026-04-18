@@ -7,6 +7,7 @@
     },
     "imports": {
         "lang/": "./packages/lang/",
+        "testing/": "./packages/testing/",
         "astring": "npm:astring@^1.9.0"
     },
     "tasks": {

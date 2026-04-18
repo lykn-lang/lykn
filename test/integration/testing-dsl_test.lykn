@@ -1,8 +1,7 @@
 (import-macros "testing"
   (test test-compiles is-equal is-thrown includes))
-(import "../../packages/lang/mod.js" (compile))
-(import "../../packages/lang/expander.js" (expand reset-gensym reset-macros reset-module-cache))
-(import "../../packages/lang/reader.js" (read))
+(import "testing/helpers.js" (read expand reset-gensym reset-macros reset-module-cache))
+(import "lang/mod.js" (compile))
 (import "node:path" (resolve))
 
 (bind testing-dir (resolve import:meta:dirname "../../packages/testing"))

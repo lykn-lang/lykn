@@ -1,15 +1,5 @@
 (import-macros "testing" (test is-equal is-thrown))
-(import "../../packages/lang/reader.js" (read))
-(import "../../packages/lang/expander.js" (expand reset-gensym reset-macros))
-(import "../../packages/lang/compiler.js" (compile))
-
-(func lykn
-  :args (:string source)
-  :body
-  (reset-macros)
-  (reset-gensym)
-  (bind raw (compile (expand (read source))))
-  (raw:trim))
+(import "testing/helpers.js" (compile-all read expand reset-gensym reset-macros))
 
 (func ex
   :args (:string source)
@@ -25,7 +15,7 @@
   (is-thrown (ex "(import-macros \"./nonexistent.lykn\" (bar))") Error "not found"))
 
 (test "pipeline: pass 1 processes macros before pass 2"
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro double (x) `(+ ,x ,x))
     (double 21)
   "))
@@ -40,7 +30,7 @@
 
 (test "pipeline: order-independent macro compilation"
   ;; unless depends on when, but is defined before it
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro unless (test (rest body))
       `(when (! ,test) ,@body))
     (macro when (test (rest body))
@@ -64,11 +54,11 @@
   ") Error "duplicate"))
 
 (test "pipeline: sugar forms expanded in pass 2"
-  (bind result (lykn "(car (cons 1 2))"))
+  (bind result (compile-all "(car (cons 1 2))"))
   (is-equal result "[1, 2][0];"))
 
 (test "pipeline: full end-to-end with all features"
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro when (test (rest body))
       `(if ,test (block ,@body)))
 

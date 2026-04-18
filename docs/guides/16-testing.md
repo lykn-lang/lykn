@@ -18,11 +18,49 @@ Target environment: **Deno**, **ESM-only**, lykn/surface syntax.
 
 **Strength**: MUST
 
-**Summary**: Import test forms and assertions via `import-macros`.
-Import only what you need.
+**Summary**: Import test macros via `import-macros` and helper
+functions via `import`. Use the standard two-line header.
+
+### Standard test file header
 
 ```lykn
-;; Full import — everything available
+;; ✅ GOOD — Surface tests (testing compiled output of surface syntax):
+(import-macros "testing"
+  (test test-compiles is-equal is-thrown includes))
+(import "testing/helpers.js" (compile))
+
+;; ✅ GOOD — Kernel form tests (testing kernel syntax without surface expansion):
+(import-macros "testing"
+  (test test-compiles is-equal is-thrown includes))
+(import "testing/helpers.js" ((alias compile-kernel compile)))
+
+;; ✅ GOOD — Integration tests (with macro state reset between tests):
+(import-macros "testing"
+  (test test-compiles is-equal is-thrown includes))
+(import "testing/helpers.js" (compile-all))
+```
+
+```lykn
+;; ❌ BAD — Do not define compile helpers inline in test files:
+(import "../../packages/lang/compiler.js" ((alias compile raw-compile)))
+(import "../../packages/lang/reader.js" (read))
+(func compile :args (:string source) :body ...)
+
+;; ❌ BAD — Do not use relative paths to lang packages:
+(import "../../packages/lang/mod.js" ((alias lykn compile)))
+
+;; ❌ BAD — Do not define compile-all inline:
+(func compile-all :args (:string source) :body
+  (reset-macros) (reset-gensym) (reset-module-cache) ...)
+```
+
+Use `"testing/helpers.js"` — it provides `compile`, `compile-kernel`,
+and `compile-all` so test files stay short and consistent.
+
+### Available macros
+
+```lykn
+;; Full macro import — everything available
 (import-macros "testing"
   (test test-async suite step
    is is-equal is-not-equal is-strict-equal
@@ -33,6 +71,21 @@ Import only what you need.
 ;; Typical import — most tests need just these
 (import-macros "testing" (test is-equal ok))
 ```
+
+### Available helper functions
+
+Import from `"testing/helpers.js"`:
+
+| Function | What it does |
+|----------|-------------|
+| `compile` | Full surface pipeline: `lykn(source).trim()` |
+| `compile-kernel` | Kernel-only: `rawCompile(read(source)).trim()` |
+| `compile-all` | Surface + state reset: resets macros/gensym/cache first |
+| `read` | Re-export of `lang/reader.js` `read` |
+| `expand` | Re-export of `lang/expander.js` `expand` |
+| `reset-gensym` | Re-export of `lang/expander.js` `resetGensym` |
+| `reset-macros` | Re-export of `lang/expander.js` `resetMacros` |
+| `reset-module-cache` | Re-export of `lang/expander.js` `resetModuleCache` |
 
 The macros expand at compile time and emit standard `@std/assert`
 imports in the compiled output. No runtime dependency ships.

@@ -1,9 +1,6 @@
 (import-macros "testing"
   (test test-compiles is-equal is-thrown includes))
-(import "../../packages/lang/compiler.js" ((alias compile raw-compile)))
-(import "../../packages/lang/reader.js" (read))
-
-(func compile :args (:string source) :body (bind r (raw-compile (read source))) (r:trim))
+(import "testing/helpers.js" ((alias compile-kernel compile)))
 
 (test "while: basic"
   (bind result (compile "(while (> x 0) (-= x 1))"))

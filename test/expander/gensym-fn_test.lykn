@@ -1,18 +1,8 @@
 (import-macros "testing" (test is-equal))
-(import "../../packages/lang/reader.js" (read))
-(import "../../packages/lang/expander.js" (expand reset-gensym reset-macros))
-(import "../../packages/lang/compiler.js" (compile))
-
-(func lykn
-  :args (:string source)
-  :body
-  (reset-macros)
-  (reset-gensym)
-  (bind raw (compile (expand (read source))))
-  (raw:trim))
+(import "testing/helpers.js" (compile-all))
 
 (test "gensym function: available in macro body"
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro with-temp (val (rest body))
       (const tmp ($gensym \"tmp\"))
       `(block (let ,tmp ,val) ,@body))
@@ -21,7 +11,7 @@
   (is-equal (result:includes "tmp__gensym") true))
 
 (test "gensym function: default prefix"
-  (bind result (lykn "
+  (bind result (compile-all "
     (macro with-gen (val)
       (const tmp ($gensym))
       `(let ,tmp ,val))

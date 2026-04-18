@@ -1,6 +1,6 @@
 (import-macros "testing"
   (test test-compiles is-equal is-thrown includes))
-(import "../../packages/lang/mod.js" ((alias lykn compile)))
+(import "testing/helpers.js" (compile))
 
 (test-compiles "integration: bind + obj"
   "(bind user (obj :name \"Duncan\" :age 42))" "const user = {\n  name: \"Duncan\",\n  age: 42\n};")

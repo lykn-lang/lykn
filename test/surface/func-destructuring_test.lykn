@@ -1,6 +1,6 @@
 (import-macros "testing"
   (test test-compiles is-equal is-thrown includes))
-(import "../../packages/lang/mod.js" ((alias lykn compile)))
+(import "testing/helpers.js" (compile))
 
 ;; --- Object destructuring ---
 
