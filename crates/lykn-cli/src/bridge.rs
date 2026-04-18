@@ -85,27 +85,20 @@ console.log(compile(ast));
     )
 }
 
-/// Walk up from `start` looking for a directory that contains `deno.json`
-/// or `src/compiler.js`.
+/// Walk up from `start` looking for a directory that contains `project.json`,
+/// `deno.json`, or `packages/lang/compiler.js`.
 pub(crate) fn find_project_root(start: &Path) -> Option<PathBuf> {
     let start = if start.is_file() {
         start.parent()?
     } else {
         start
     };
-
-    let mut current = start.canonicalize().ok()?;
-    loop {
-        if current.join("project.json").exists()
-            || current.join("deno.json").exists()
-            || current.join("packages/lang/compiler.js").exists()
-        {
-            return Some(current);
-        }
-        if !current.pop() {
-            return None;
-        }
-    }
+    let canonical = start.canonicalize().ok()?;
+    crate::util::walk_up_find(&canonical, |dir| {
+        dir.join("project.json").exists()
+            || dir.join("deno.json").exists()
+            || dir.join("packages/lang/compiler.js").exists()
+    })
 }
 
 #[cfg(test)]

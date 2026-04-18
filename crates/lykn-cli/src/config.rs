@@ -112,26 +112,12 @@ pub struct ProjectConfig {
 
 /// Read and parse a `project.json` file.
 pub fn read_project_config(path: &Path) -> Result<ProjectConfig, ConfigError> {
-    let content = std::fs::read_to_string(path).map_err(|e| ConfigError::Io {
-        path: path.to_path_buf(),
-        source: e,
-    })?;
-    serde_json::from_str(&content).map_err(|e| ConfigError::Parse {
-        path: path.to_path_buf(),
-        source: e,
-    })
+    crate::util::read_json_file(path)
 }
 
 /// Read and parse a per-package `deno.json` file.
 pub fn read_package_config(path: &Path) -> Result<PackageConfig, ConfigError> {
-    let content = std::fs::read_to_string(path).map_err(|e| ConfigError::Io {
-        path: path.to_path_buf(),
-        source: e,
-    })?;
-    serde_json::from_str(&content).map_err(|e| ConfigError::Parse {
-        path: path.to_path_buf(),
-        source: e,
-    })
+    crate::util::read_json_file(path)
 }
 
 // ---------------------------------------------------------------------------
@@ -197,14 +183,8 @@ pub fn short_name(name: &str) -> &str {
 /// macro expansion — it simply means no import map is available).
 pub fn read_project_config_optional() -> Option<ProjectConfig> {
     let cwd = std::env::current_dir().ok()?;
-    let mut dir = cwd.as_path();
-    loop {
-        let path = dir.join("project.json");
-        if path.exists() {
-            return read_project_config(&path).ok();
-        }
-        dir = dir.parent()?;
-    }
+    let dir = crate::util::walk_up_find(&cwd, |d| d.join("project.json").exists())?;
+    read_project_config(&dir.join("project.json")).ok()
 }
 
 // ---------------------------------------------------------------------------

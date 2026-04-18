@@ -243,19 +243,9 @@ fn cmd_compile(
 
 /// Find the project config path by walking up from the current directory.
 fn find_config_in(start: &Path, filenames: &[&str]) -> Option<PathBuf> {
-    let mut dir = start;
-    loop {
-        for name in filenames {
-            let candidate = dir.join(name);
-            if candidate.exists() {
-                return Some(candidate);
-            }
-        }
-        match dir.parent() {
-            Some(parent) => dir = parent,
-            None => return None,
-        }
-    }
+    let fnames = filenames.to_vec();
+    lykn_cli::util::walk_up_find(start, |dir| fnames.iter().any(|f| dir.join(f).exists()))
+        .and_then(|dir| filenames.iter().map(|f| dir.join(f)).find(|p| p.exists()))
 }
 
 fn find_config() -> String {
@@ -281,7 +271,7 @@ fn exec_deno(args: &[&str]) {
 fn cmd_run(file: &std::path::Path, args: &[String]) {
     let config = find_config();
 
-    if file.extension().is_some_and(|e| e == "lykn" || e == "lyk") {
+    if file.extension().is_some_and(lykn_cli::util::is_lykn_ext) {
         // Compile .lykn/.lyk to temp .js, then run
         let temp = std::env::temp_dir().join("lykn_run.js");
         match compile::compile_file(file, false, false) {
@@ -410,7 +400,9 @@ fn discover_lykn_test_files(patterns: &[String]) -> Vec<PathBuf> {
                 results.push(path.to_path_buf());
             }
         } else if path.is_dir() {
-            collect_lykn_test_files(path, &mut results);
+            results.extend(lykn_cli::util::collect_files_recursive(path, |p| {
+                is_lykn_test_file(p)
+            }));
         }
     }
     results.sort();
@@ -430,29 +422,12 @@ fn is_lykn_test_file(path: &Path) -> bool {
     {
         return true;
     }
-    if (name.ends_with(".lykn") || name.ends_with(".lyk"))
+    if lykn_cli::util::has_lykn_ext(path)
         && let Some(parent) = path.parent()
     {
         return parent.components().any(|c| c.as_os_str() == "__tests__");
     }
     false
-}
-
-/// Recursively collect lykn test files from a directory.
-fn collect_lykn_test_files(dir: &Path, results: &mut Vec<PathBuf>) {
-    let entries = match fs::read_dir(dir) {
-        Ok(entries) => entries,
-        Err(_) => return,
-    };
-
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            collect_lykn_test_files(&path, results);
-        } else if is_lykn_test_file(&path) {
-            results.push(path);
-        }
-    }
 }
 
 /// Compile a list of `.lykn` test files to JavaScript.

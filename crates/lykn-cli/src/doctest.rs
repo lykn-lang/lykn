@@ -413,29 +413,9 @@ pub fn generate_test_file(
 
 /// Recursively find all `.md` files under a directory.
 fn find_md_files(dir: &Path) -> Vec<PathBuf> {
-    let mut results = Vec::new();
-    collect_md_files(dir, &mut results);
-    results.sort();
-    results
-}
-
-fn collect_md_files(dir: &Path, results: &mut Vec<PathBuf>) {
-    let entries = match fs::read_dir(dir) {
-        Ok(entries) => entries,
-        Err(e) => {
-            eprintln!("warning: cannot read directory {}: {e}", dir.display());
-            return;
-        }
-    };
-
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            collect_md_files(&path, results);
-        } else if path.extension().is_some_and(|e| e == "md") {
-            results.push(path);
-        }
-    }
+    lykn_cli::util::collect_files_recursive(dir, |p: &Path| {
+        p.extension().is_some_and(|e| e == "md")
+    })
 }
 
 // ---------------------------------------------------------------------------
