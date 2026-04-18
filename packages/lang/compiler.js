@@ -190,7 +190,7 @@ const macros = {
   // Arrow function: (=> (a b) (+ a b))
   '=>'(args) {
     const params = args[0].type === 'list'
-      ? args[0].values.map(compilePattern)
+      ? args[0].values.map(compileParam)
       : [];
     const bodyExprs = args.slice(1);
     if (bodyExprs.length === 1) {
@@ -218,7 +218,7 @@ const macros = {
   // Lambda: (lambda (a b) (return (+ a b)))
   'lambda'(args) {
     const params = args[0].type === 'list'
-      ? args[0].values.map(compilePattern)
+      ? args[0].values.map(compileParam)
       : [];
     const bodyExprs = args.slice(1);
     return {
@@ -324,7 +324,7 @@ const macros = {
     if (args[1].type !== 'list') {
       throw new Error('function params must be a list: (function name (params) body...)');
     }
-    const params = args[1].values.map(compilePattern);
+    const params = args[1].values.map(compileParam);
     const bodyExprs = args.slice(2);
     return {
       type: 'FunctionDeclaration',
@@ -349,7 +349,7 @@ const macros = {
       if (args.length < 3 || args[1].type !== 'list') {
         throw new Error('function* requires a name, params list, and body: (function* name (params) body...)');
       }
-      const params = args[1].values.map(compilePattern);
+      const params = args[1].values.map(compileParam);
       const bodyExprs = args.slice(2);
       return {
         type: 'FunctionDeclaration',
@@ -368,7 +368,7 @@ const macros = {
     if (args[paramIdx].type !== 'list') {
       throw new Error('function* params must be a list');
     }
-    const params = args[paramIdx].values.map(compilePattern);
+    const params = args[paramIdx].values.map(compileParam);
     const bodyExprs = args.slice(paramIdx + 1);
     return {
       type: 'FunctionExpression',
@@ -1236,6 +1236,14 @@ export function compileExpr(node) {
 }
 
 // Compile a reader AST node as a destructuring pattern
+function compileParam(node) {
+  if (!node) return null;
+  if (node.type === 'atom') {
+    return { type: 'Identifier', name: toCamelCase(node.value) };
+  }
+  return compilePattern(node);
+}
+
 function compilePattern(node) {
   if (!node) return null;
 
@@ -1562,7 +1570,7 @@ function compileMethodDef(node, kind, isStatic) {
   if (paramsList.type !== 'list') {
     throw new Error(`${isAccessor ? 'Accessor' : 'Method'} params must be a list`);
   }
-  const params = paramsList.values.map(compilePattern);
+  const params = paramsList.values.map(compileParam);
   const bodyExprs = node.values.slice(bodyIdx);
 
   const resolvedKind = !isAccessor && nameAtom.value === 'constructor'

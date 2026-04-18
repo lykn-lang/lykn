@@ -197,7 +197,7 @@ repeated array resizing.
 
 ```lykn
 ;; Good — pre-allocate dense array
-(bind result (Array:from (obj :length n) (fn (:any _v :number i) (compute i))))
+(bind result (Array:from (obj :length n) (fn (:any _ :number i) (compute i))))
 ```
 
 ---

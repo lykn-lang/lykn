@@ -58,3 +58,17 @@
 
 (test-compiles "fn: :any fn still uses concise arrow"
   "(bind f (fn (:any x) x))" "const f = x => x;")
+
+;; _ as a parameter name (not a destructuring skip)
+
+(test "fn: _ as parameter name compiles"
+  (bind result (compile "(fn (:any _) 42)"))
+  (includes result "_ => 42"))
+
+(test "fn: _ with other typed params"
+  (bind result (compile "(fn (:any _ :number i) (+ i 1))"))
+  (includes result "(_, i)"))
+
+(test "fn: _ as parameter at runtime"
+  (bind f (fn (:any _ :number i) (* i 10)))
+  (is-equal (f "ignored" 3) 30))
