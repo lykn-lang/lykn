@@ -1,0 +1,56 @@
+; lykn kernel syntax — async/await, promises, and modules
+; Kernel forms for asynchronous JavaScript patterns.
+
+;; --- Basic async function ---
+
+(async (function delay (ms)
+  (return (new Promise (=> (resolve)
+    (set-timeout (=> () (resolve ms)) ms))))))
+
+;; --- Async/await with error handling ---
+
+(async (function fetch-data (url)
+  (try
+    (const response (await (fetch url)))
+    (const data (await (response:json)))
+    (return data)
+    (catch (err)
+      (console:log "fetch error:" err:message)
+      (return null)))))
+
+;; --- Promise chaining ---
+
+(const process-pipeline
+  (=> (input)
+    (Promise:resolve input)
+      :then (=> (x) (* x 2))
+      :then (=> (x) (+ x 1))
+      :then (=> (x) (console:log "result:" x))))
+
+;; --- Async with sequential awaits ---
+
+(async (function run-tasks ()
+  (console:log "starting tasks")
+  (const a (await (delay 100)))
+  (console:log "task 1 done after" a "ms")
+  (const b (await (delay 200)))
+  (console:log "task 2 done after" b "ms")
+  (return (+ a b))))
+
+;; --- Parallel execution with Promise.all ---
+
+(async (function run-parallel ()
+  (const results (await (Promise:all (array
+    (delay 100)
+    (delay 200)
+    (delay 150)))))
+  (console:log "all done:" results)
+  (return results)))
+
+;; --- Export functions for module use ---
+
+(export (async (function main ()
+  (const total (await (run-tasks)))
+  (console:log "total delay:" total "ms")
+  (const parallel (await (run-parallel)))
+  (console:log "parallel results:" parallel))))

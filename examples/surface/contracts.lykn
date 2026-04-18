@@ -1,0 +1,89 @@
+; lykn surface syntax — contracts, typed functions, and controlled mutation
+; Demonstrates func with :pre/:post, cell, swap!, and express.
+
+;; --- Simple contracted function ---
+
+(func clamp
+  :args (:number x :number lo :number hi)
+  :returns :number
+  :pre (<= lo hi)
+  :post (and (>= ~ lo) (<= ~ hi))
+  :body (Math:max lo (Math:min hi x)))
+
+(console:log "clamp 15 to [0,10]:" (clamp 15 0 10))
+(console:log "clamp -5 to [0,10]:" (clamp -5 0 10))
+(console:log "clamp 5 to [0,10]:" (clamp 5 0 10))
+
+;; --- Function with full contract and multi-expression body ---
+
+(func safe-divide
+  :args (:number numerator :number denominator)
+  :returns :number
+  :pre (not= denominator 0)
+  :post (number? ~)
+  :body
+  (bind result (/ numerator denominator))
+  (console:log "dividing" numerator "by" denominator)
+  result)
+
+(console:log "result:" (safe-divide 10 3))
+
+;; --- Multi-clause polymorphic dispatch ---
+
+(func format-value
+  (:args (:string s)
+   :returns :string
+   :body (+ "\"" s "\""))
+
+  (:args (:number n)
+   :returns :string
+   :body (+ "" n))
+
+  (:args (:boolean b)
+   :returns :string
+   :body (if b "true" "false")))
+
+(console:log (format-value "hello"))
+(console:log (format-value 42))
+(console:log (format-value true))
+
+;; --- Typed bindings and zero-arg functions ---
+
+(bind pi 3.14159265)
+
+(func make-timestamp
+  (Date:now))
+
+(console:log "pi:" pi)
+(console:log "timestamp:" (make-timestamp))
+
+;; --- Controlled mutation with cells ---
+
+(bind counter (cell 0))
+
+(func increment
+  :args (:number amount)
+  :returns :void
+  :pre (> amount 0)
+  :body (swap! counter (fn (:number n) (+ n amount))))
+
+(increment 1)
+(increment 5)
+(increment 10)
+(console:log "counter:" (express counter))
+
+;; --- Cell with accumulator pattern ---
+
+(bind log-entries (cell #a()))
+
+(func add-entry
+  :args (:string msg)
+  :returns :void
+  :body
+  (swap! log-entries (fn (:array entries)
+    (entries:concat #a(msg)))))
+
+(add-entry "started")
+(add-entry "processing")
+(add-entry "done")
+(console:log "log:" (express log-entries))

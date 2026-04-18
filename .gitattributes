@@ -1,0 +1,6 @@
+# Tell GitHub Linguist to treat these as the lykn language
+*.lykn linguist-language=lykn
+*.lyk  linguist-language=lykn
+
+# Prevent vendored/generated files from distorting language stats
+src/astring.js linguist-vendored

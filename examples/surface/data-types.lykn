@@ -1,0 +1,86 @@
+; lykn surface syntax — algebraic data types and pattern matching
+; Demonstrates type, match, and :keyword literals.
+
+;; --- Option (auto-imported from lykn/core) ---
+
+(func unwrap-or
+  :args (:any opt :any fallback)
+  :returns :any
+  :body (match opt
+    ((Some v) v)
+    (None fallback)))
+
+(console:log "unwrap Some:" (unwrap-or (Some 42) 0))
+(console:log "unwrap None:" (unwrap-or None 0))
+
+;; --- Result ---
+
+(type Outcome
+  (Success :string message)
+  (Failure :string reason :number code))
+
+(func describe-outcome
+  :args (:any outcome)
+  :returns :string
+  :body (match outcome
+    ((Success msg) (+ "OK: " msg))
+    ((Failure reason code) (+ "FAIL(" code "): " reason))))
+
+(console:log (describe-outcome (Success "saved")))
+(console:log (describe-outcome (Failure "not found" 404)))
+
+;; --- Tree (recursive ADT) ---
+
+(type Tree
+  (Leaf :any value)
+  (Node :any left :any right))
+
+(func tree-sum
+  :args (:any tree)
+  :returns :number
+  :body (match tree
+    ((Leaf v) v)
+    ((Node l r) (+ (tree-sum l) (tree-sum r)))))
+
+(bind my-tree
+  (Node
+    (Node (Leaf 1) (Leaf 2))
+    (Leaf 3)))
+
+(console:log "tree sum:" (tree-sum my-tree))
+
+;; --- Pattern matching with guards ---
+
+(func classify
+  :args (:any opt)
+  :returns :string
+  :body (match opt
+    ((Some v) :when (> v 0) "positive")
+    ((Some v) :when (= v 0) "zero")
+    ((Some v) "negative")
+    (None "absent")))
+
+(console:log (classify (Some 5)))
+(console:log (classify (Some 0)))
+(console:log (classify (Some -3)))
+(console:log (classify None))
+
+;; --- Keyword literals as field names ---
+
+(bind config (obj :host "localhost" :port 8080 :debug true))
+(console:log "host:" (get config :host))
+(console:log "port:" (get config :port))
+
+;; --- Nested pattern matching ---
+
+(func extract-name
+  :args (:any result)
+  :returns :string
+  :body (match result
+    ((Ok (Some name)) name)
+    ((Ok None) "anonymous")
+    ((Err e) (+ "error: " e))))
+
+(console:log (extract-name (Ok (Some "Duncan"))))
+(console:log (extract-name (Ok None)))
+(console:log (extract-name (Err "timeout")))

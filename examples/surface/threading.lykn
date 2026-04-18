@@ -1,0 +1,120 @@
+; lykn surface syntax — threading macros and conditional binding
+; Demonstrates ->, ->>, some->, some->>, if-let, and when-let.
+
+;; --- Thread-first: -> ---
+
+(bind greeting
+  (-> "  hello, world  "
+    (str:trim)
+    (str:toUpperCase)
+    (str:slice 0 5)))
+
+(console:log "thread-first:" greeting)
+
+;; --- Thread-first with function calls ---
+
+(func add
+  :args (:number a :number b)
+  :returns :number
+  :body (+ a b))
+
+(func multiply
+  :args (:number a :number b)
+  :returns :number
+  :body (* a b))
+
+(bind computed (-> 5 (add 3) (multiply 2)))
+(console:log "5 + 3 then * 2:" computed)
+
+;; --- Thread-last: ->> ---
+
+(bind numbers #a(1 2 3 4 5 6 7 8 9 10))
+
+(bind total
+  (->> numbers
+    (filter (fn (:number n) (= (% n 2) 0)))
+    (map (fn (:number n) (* n 10)))
+    (reduce (fn (:number acc :number n) (+ acc n)) 0)))
+
+(console:log "sum of evens*10:" total)
+
+;; --- Nil-safe threading: some-> ---
+
+(bind user (obj :name "Duncan" :address (obj :city "Tulsa" :zip "74101")))
+(bind no-address (obj :name "Ghost"))
+
+(bind city
+  (some-> user
+    (get :address)
+    (get :city)
+    (str:toUpperCase)))
+
+(bind missing-city
+  (some-> no-address
+    (get :address)
+    (get :city)
+    (str:toUpperCase)))
+
+(console:log "city:" city)
+(console:log "missing:" missing-city)
+
+;; --- Nil-safe thread-last: some->> ---
+
+(bind items #a(1 2 null 4 5))
+
+(func find-first
+  :args (:function pred :array arr)
+  :returns :any
+  :body (arr:find pred))
+
+(bind result
+  (some->> items
+    (find-first (fn (:any x) (> x 3)))
+    (multiply 10)))
+
+(console:log "some->> result:" result)
+
+;; --- if-let with ADT patterns ---
+
+(type UserResult
+  (Found :string name :number age)
+  (NotFound))
+
+(func lookup
+  :args (:number id)
+  :returns :any
+  :body (if (= id 1)
+    (Found "Duncan" 42)
+    NotFound))
+
+(if-let ((Found name age) (lookup 1))
+  (console:log "found:" name "age:" age)
+  (console:log "not found"))
+
+(if-let ((Found name age) (lookup 99))
+  (console:log "found:" name "age:" age)
+  (console:log "not found"))
+
+;; --- if-let with simple binding (nil check) ---
+
+(func maybe-name
+  :args (:number id)
+  :returns :any
+  :body (if (= id 1) "Duncan" null))
+
+(if-let (name (maybe-name 1))
+  (console:log "got name:" name)
+  (console:log "no name"))
+
+(if-let (name (maybe-name 99))
+  (console:log "got name:" name)
+  (console:log "no name"))
+
+;; --- when-let for side effects ---
+
+(when-let ((Some v) (Some 42))
+  (console:log "value present:" v)
+  (console:log "doubled:" (* v 2)))
+
+(when-let ((Some v) None)
+  (console:log "this will not print:" v))

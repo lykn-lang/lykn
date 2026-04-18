@@ -1,0 +1,66 @@
+; lykn kernel syntax — destructuring, functions, error handling, modules
+; Kernel forms map directly to JavaScript constructs.
+
+;; --- Destructuring with const ---
+
+(const point (object (x 10) (y 20) (z 30)))
+(const (object (x px) (y py)) point)
+(console:log "x:" px "y:" py)
+
+;; --- Array destructuring ---
+
+(const coords (array 1 2 3 4 5))
+(const (array first second ...rest) coords)
+(console:log "first:" first "second:" second "rest:" rest)
+
+;; --- Function declarations with default params ---
+
+(function greet (name (greeting "Hello"))
+  (return (+ greeting ", " name "!")))
+
+(console:log (greet "lykn"))
+(console:log (greet "lykn" "Hola"))
+
+;; --- Arrow functions ---
+
+(const double (=> (x) (* x 2)))
+(const add (=> (a b) (+ a b)))
+(console:log "double 5:" (double 5))
+(console:log "3 + 4:" (add 3 4))
+
+;; --- try / catch / finally ---
+
+(function safe-parse (json-str)
+  (try
+    (const result (JSON:parse json-str))
+    (return result)
+    (catch (err)
+      (console:log "parse error:" err:message)
+      (return null))
+    (finally
+      (console:log "parse attempt complete"))))
+
+(console:log "valid:" (safe-parse "{\"a\": 1}"))
+(console:log "invalid:" (safe-parse "not json"))
+
+;; --- Nested destructuring ---
+
+(const config (object
+  (server (object (host "localhost") (port 8080)))
+  (debug true)))
+
+(const (object (server (object (host h) (port p)))) config)
+(console:log "server:" h ":" p)
+
+;; --- Computed property access ---
+
+(const user (object (name "Duncan") (role "admin")))
+(const key "name")
+(console:log "by key:" (get user key))
+
+;; --- let with mutation ---
+
+(let counter 0)
+(= counter (+ counter 1))
+(= counter (+ counter 1))
+(console:log "counter:" counter)
