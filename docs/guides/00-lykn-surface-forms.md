@@ -532,6 +532,19 @@ ADT pattern:
 **Putting it together:**
 
 ```lykn
+(type Option (Some :any value) None)
+
+(bind a (Some 42))
+(bind b None)
+
+(console:log (match a
+  ((Some v) v)
+  (None "nothing")))
+
+(console:log (match b
+  ((Some v) v)
+  (None "nothing")))
+
 (console:log (match 404
   (200 "ok")
   (404 "not found")
@@ -539,6 +552,8 @@ ADT pattern:
 ```
 
 ```
+42
+nothing
 not found
 ```
 
@@ -992,9 +1007,6 @@ Define compile-time macros with quasiquote templates:
 After definition, `when` expands at compile time:
 
 ```lykn
-(macro when (test (rest body))
-  `(if ,test (block ,@body)))
-
 (when true
   (console:log "it works"))
 

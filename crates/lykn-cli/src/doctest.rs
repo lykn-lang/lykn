@@ -398,7 +398,7 @@ pub fn generate_test_file(
                             "  const js = lykn(`{src}`);\n",
                             "  const __logs = [];\n",
                             "  const __origLog = console.log;\n",
-                            "  console.log = (...args) => __logs.push(args.map(String).join(\" \"));\n",
+                            "  console.log = (...args) => __logs.push(args.map(a => typeof a === \"string\" ? a : Deno.inspect(a)).join(\" \"));\n",
                             "  let __result;\n",
                             "  try {{\n",
                             "    __result = (0, eval)(js);\n",
