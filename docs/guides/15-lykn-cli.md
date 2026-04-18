@@ -23,12 +23,14 @@ lykn run packages/my-app/mod.lykn
 ```
 my-app/
 ├── project.json              ← workspace root
+├── README.md
+├── LICENSE                    ← Apache-2.0
 ├── packages/
 │   └── my-app/
-│       ├── deno.json          ← package config
+│       ├── deno.json          ← package config (name, version, exports, lykn.kind)
 │       └── mod.lykn           ← entry point
 ├── test/
-│   └── mod.test.js            ← starter test
+│   └── mod_test.lykn          ← starter test (using @lykn/testing DSL)
 └── .gitignore
 ```
 

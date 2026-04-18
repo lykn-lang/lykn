@@ -88,14 +88,17 @@ compilation output, co-located tests, and centralized configuration.
 ```
 my-project/
 ├── project.json             ;; workspace root (lykn CLI reads this)
+├── README.md
+├── LICENSE
 ├── deno.lock
 ├── Makefile                 ;; lykn commands + make tasks
+├── .gitignore
 ├── bin/
 │   └── lykn                 ;; lykn CLI binary
 ├── packages/
 │   └── my-project/          ;; lykn source (workspace member)
-│       ├── deno.json        ;; package config (name, version, exports)
-│       ├── mod.lykn         ;; library entry point
+│       ├── deno.json        ;; package config (name, version, exports, lykn.kind)
+│       ├── mod.lykn         ;; library entry point (surface syntax)
 │       ├── auth/
 │       │   ├── mod.lykn
 │       │   ├── login.lykn
@@ -106,19 +109,20 @@ my-project/
 │       │   └── validation.lykn
 │       └── shared/
 │           ├── http.lykn
-│           └── constants.lykn
-├── dist/                    ;; compiled JS output
-│   ├── mod.js
-│   ├── auth/
+│           └── constants.lyk  ;; kernel syntax
+├── dist/                    ;; staged output (lykn build --dist)
+│   ├── my-project/
 │   │   ├── mod.js
-│   │   ├── login.js
-│   │   └── session.js
-│   └── ...
+│   │   ├── deno.json
+│   │   ├── package.json
+│   │   ├── README.md
+│   │   └── LICENSE
+│   └── project.json
 ├── test/
 │   ├── auth/
-│   │   └── login_test.js    ;; tests run on compiled JS
+│   │   └── login_test.lykn  ;; tests in lykn (using @lykn/testing DSL)
 │   └── users/
-│       └── repository_test.js
+│       └── repository_test.lykn
 └── docs/
     └── guides/              ;; lykn guides
 ```

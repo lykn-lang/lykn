@@ -708,14 +708,50 @@ fn mod_lykn_template(name: &str) -> String {
 
 fn test_template(name: &str) -> String {
     format!(
-        r#"import {{ assertEquals }} from "https://deno.land/std/assert/mod.ts";
+        r#"(import-macros "jsr:@lykn/testing" (test is-equal))
 
-Deno.test("{name}: placeholder test", () => {{
-  assertEquals(1 + 1, 2);
-}});
+(test "{name}: placeholder test"
+  (is-equal (+ 1 1) 2))
 "#
     )
 }
+
+fn readme_template(name: &str) -> String {
+    format!(
+        r#"# {name}
+
+A [lykn](https://github.com/lykn-lang/lykn) project.
+
+## Quick Start
+
+```sh
+lykn run packages/{name}/mod.lykn
+lykn test
+```
+
+## License
+
+Apache-2.0
+"#
+    )
+}
+
+const LICENSE_TEMPLATE: &str = "\
+                                 Apache License\n\
+                           Version 2.0, January 2004\n\
+                        http://www.apache.org/licenses/\n\
+\n\
+   Licensed under the Apache License, Version 2.0 (the \"License\");\n\
+   you may not use this file except in compliance with the License.\n\
+   You may obtain a copy of the License at\n\
+\n\
+       http://www.apache.org/licenses/LICENSE-2.0\n\
+\n\
+   Unless required by applicable law or agreed to in writing, software\n\
+   distributed under the License is distributed on an \"AS IS\" BASIS,\n\
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\
+   See the License for the specific language governing permissions and\n\
+   limitations under the License.\n";
 
 const GITIGNORE_TEMPLATE: &str = ".DS_Store
 node_modules/
@@ -763,9 +799,11 @@ fn cmd_new(name: &str, path: Option<&Path>) {
         &mod_lykn_template(name),
     );
     write_file(
-        &project_dir.join("test").join("mod.test.js"),
+        &project_dir.join("test").join("mod_test.lykn"),
         &test_template(name),
     );
+    write_file(&project_dir.join("README.md"), &readme_template(name));
+    write_file(&project_dir.join("LICENSE"), LICENSE_TEMPLATE);
     write_file(&project_dir.join(".gitignore"), GITIGNORE_TEMPLATE);
 
     // Git init (silent failure if git not installed)
