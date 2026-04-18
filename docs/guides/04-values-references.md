@@ -136,13 +136,6 @@ original is unchanged.
 ;; updated has :name "Bob", shares :scores reference
 ```
 
-Compiles to:
-
-```js
-const original = {name: "Alice", scores: [90, 85]};
-const updated = {...original, name: "Bob"};
-```
-
 **What `assoc` copies**: All own enumerable properties via spread. It
 is a shallow copy — nested objects are shared with the original.
 
@@ -184,7 +177,7 @@ with the original.
 
 ```lykn
 (bind original (obj :user (obj :name "Alice") :tags #a("admin")))
-(bind copy (assoc original))
+(bind copy (object (spread original)))
 
 ;; Top-level: independent
 ;; But nested :user object is shared — same reference
@@ -213,13 +206,6 @@ copy of nested data.
 ;; Good — deep copy, all nesting independent
 (bind original (obj :user (obj :name "Alice") :tags #a("admin")))
 (bind deep (structuredClone original))
-```
-
-Compiles to:
-
-```js
-const original = {user: {name: "Alice"}, tags: ["admin"]};
-const deep = structuredClone(original);
 ```
 
 **Limitations**: Cannot clone functions, Symbol-keyed properties, or
@@ -264,15 +250,6 @@ object.
 ;; original is completely unchanged
 ;; updated:tags is the same reference (shared, unmodified)
 ;; updated:user is a new object (modified branch)
-```
-
-Compiles to:
-
-```js
-const original = {user: {name: "Alice", prefs: {theme: "dark"}}, tags: ["admin"]};
-const updated = {...original,
-  user: {...original.user,
-    prefs: {...original.user.prefs, theme: "light"}}};
 ```
 
 **Rationale**: Deep copying clones everything. Non-destructive updates
@@ -349,15 +326,28 @@ non-destructive data updates.
 (bind with-new (conj items new-item))
 ```
 
-Compiles to:
+```lykn
+(bind defaults (obj :timeout 3000 :retries 1))
+(bind config (assoc defaults :timeout 5000))
+(console:log config:timeout)
+(console:log defaults:timeout)
 
-```js
-const config = {...defaults, timeout: 5000};
-const publicUser = (() => {
-  const {password: ___gensym0, ssn: ___gensym1, ...rest__gensym2} = user;
-  return rest__gensym2;
-})();
-const withNew = [...items, newItem];
+(bind user (obj :name "Alice" :password "secret" :ssn "123"))
+(bind public-user (dissoc user :password :ssn))
+(console:log public-user)
+
+(bind items #a(1 2 3))
+(bind with-new (conj items 4))
+(console:log with-new)
+(console:log items)
+```
+
+```
+5000
+3000
+{ name: "Alice" }
+[ 1, 2, 3, 4 ]
+[ 1, 2, 3 ]
 ```
 
 **Override order**: `assoc` places new values after the spread, so
@@ -497,19 +487,19 @@ mutation explicit, auditable, and contained.
 (console:log (express counter))   ;; 0
 ```
 
-Compiles to:
+```lykn
+(bind counter (cell 0))
+(console:log (express counter))
+(swap! counter (fn (:number n) (+ n 1)))
+(console:log (express counter))
+(reset! counter 0)
+(console:log (express counter))
+```
 
-```js
-const counter = {value: 0};
-console.log(counter.value);
-counter.value = ((n) => {
-  if (typeof n !== "number" || Number.isNaN(n))
-    throw new TypeError("anonymous: arg 'n' expected number, got " + typeof n);
-  return n + 1;
-})(counter.value);
-console.log(counter.value);
-counter.value = 0;
-console.log(counter.value);
+```
+0
+1
+0
 ```
 
 **When to use `cell`**: Counters, accumulators, caches, and state that
@@ -586,6 +576,21 @@ identity (same reference) and primitive value (same content).
 (= (obj) (obj))     ;; false — different objects
 (bind a (obj))
 (= a a)             ;; true — same reference
+```
+
+```lykn
+(console:log (= 1 1))
+(console:log (= "abc" "abc"))
+(console:log (= (obj) (obj)))
+(bind a (obj))
+(console:log (= a a))
+```
+
+```
+true
+true
+false
+true
 ```
 
 **Rationale**: `=` answers "are these the same object?" not "do these
