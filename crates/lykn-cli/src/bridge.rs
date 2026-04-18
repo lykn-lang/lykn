@@ -7,18 +7,23 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+use crate::compile::CompileError;
+
 /// Convert kernel JSON to JavaScript source via the JS kernel compiler.
 ///
 /// The kernel JSON is written to a temporary file, then a small Deno script
 /// reads it, reconstitutes the AST, and feeds it to `compile()` from
 /// `src/compiler.js`.
-pub fn kernel_json_to_js(kernel_json: &str, source_path: &Path) -> Result<String, String> {
+pub fn kernel_json_to_js(kernel_json: &str, source_path: &Path) -> Result<String, CompileError> {
     let tmp_dir = std::env::temp_dir();
     let tmp_file = tmp_dir.join("lykn_kernel.json");
-    std::fs::write(&tmp_file, kernel_json).map_err(|e| format!("error writing temp file: {e}"))?;
+    std::fs::write(&tmp_file, kernel_json).map_err(|e| CompileError::Io {
+        path: tmp_file.clone(),
+        source: e,
+    })?;
 
     let project_root = find_project_root(source_path)
-        .ok_or_else(|| "cannot find lykn project root (need packages/lang/compiler.js or project.json)".to_string())?;
+        .ok_or_else(|| CompileError::Analysis("cannot find lykn project root (need packages/lang/compiler.js or project.json)".to_string()))?;
 
     let script = build_deno_script(&tmp_file);
 
@@ -30,9 +35,12 @@ pub fn kernel_json_to_js(kernel_json: &str, source_path: &Path) -> Result<String
         .output()
         .map_err(|e| {
             if e.kind() == std::io::ErrorKind::NotFound {
-                "lykn compile requires Deno — install from https://deno.land".to_string()
+                CompileError::Analysis("lykn compile requires Deno — install from https://deno.land".to_string())
             } else {
-                format!("error running Deno: {e}")
+                CompileError::Io {
+                    path: PathBuf::from("deno"),
+                    source: e,
+                }
             }
         })?;
 
@@ -41,7 +49,7 @@ pub fn kernel_json_to_js(kernel_json: &str, source_path: &Path) -> Result<String
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(format!("JS kernel compiler error:\n{stderr}"));
+        return Err(CompileError::Analysis(format!("JS kernel compiler error:\n{stderr}")));
     }
 
     Ok(String::from_utf8_lossy(&output.stdout).to_string())
@@ -243,7 +251,7 @@ mod tests {
 
         let result = kernel_json_to_js("[]", &source_path);
         assert!(result.is_err());
-        let err = result.unwrap_err();
+        let err = result.unwrap_err().to_string();
         assert!(
             err.contains("cannot find lykn project root"),
             "expected project root error, got: {err}"

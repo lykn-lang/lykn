@@ -36,6 +36,30 @@ pub enum SExpr {
     },
 }
 
+impl std::fmt::Display for SExpr {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            SExpr::Atom { value, .. } => write!(f, "{value}"),
+            SExpr::String { value, .. } => write!(f, "\"{value}\""),
+            SExpr::Number { value, .. } => write!(f, "{value}"),
+            SExpr::Bool { value, .. } => write!(f, "{value}"),
+            SExpr::Keyword { value, .. } => write!(f, ":{value}"),
+            SExpr::Null { .. } => write!(f, "null"),
+            SExpr::List { values, .. } => {
+                write!(f, "(")?;
+                for (i, v) in values.iter().enumerate() {
+                    if i > 0 {
+                        write!(f, " ")?;
+                    }
+                    write!(f, "{v}")?;
+                }
+                write!(f, ")")
+            }
+            SExpr::Cons { car, cdr, .. } => write!(f, "({car} . {cdr})"),
+        }
+    }
+}
+
 impl SExpr {
     pub fn span(&self) -> Span {
         match self {

@@ -2,7 +2,7 @@
 ///
 /// Parses lykn source text into a tree of SExpr nodes.
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum SExpr {
     Atom(String),
     Str(String),

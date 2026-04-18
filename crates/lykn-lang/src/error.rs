@@ -2,6 +2,7 @@ use crate::diagnostics::Diagnostic;
 use crate::reader::source_loc::SourceLoc;
 
 #[derive(Debug, thiserror::Error)]
+#[non_exhaustive]
 pub enum LyknError {
     #[error("{message} at {location}")]
     Read {

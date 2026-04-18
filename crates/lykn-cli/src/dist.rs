@@ -28,6 +28,10 @@ pub enum DistError {
         source: std::io::Error,
     },
 
+    /// A JSON serialization error occurred.
+    #[error("JSON serialization error: {0}")]
+    Serialize(#[from] serde_json::Error),
+
     /// No workspace members were found in project.json.
     #[error("no workspace members found in project.json")]
     EmptyWorkspace,
@@ -39,7 +43,6 @@ pub enum DistError {
 
 /// Information about a successfully built package.
 #[derive(Debug, Clone)]
-#[allow(dead_code)]
 pub struct BuiltPackage {
     /// The full package name (e.g. `"@lykn/lang"`).
     pub name: String,
@@ -268,13 +271,10 @@ fn write_deno_json(
     map.insert("exports".to_string(), exports);
 
     if let Some(meta) = lykn_meta {
-        map.insert(
-            "lykn".to_string(),
-            serde_json::to_value(meta).unwrap_or_default(),
-        );
+        map.insert("lykn".to_string(), serde_json::to_value(meta)?);
     }
 
-    let json = serde_json::to_string_pretty(&map).unwrap_or_default();
+    let json = serde_json::to_string_pretty(&map)?;
     write_text(&dist_dir.join("deno.json"), &format!("{json}\n"))
 }
 
@@ -313,7 +313,7 @@ fn write_package_json(
         "dependencies": deps_map,
     });
 
-    let json = serde_json::to_string_pretty(&package).unwrap_or_default();
+    let json = serde_json::to_string_pretty(&package)?;
     write_text(&dist_dir.join("package.json"), &format!("{json}\n"))
 }
 
@@ -328,7 +328,7 @@ fn write_dist_project_json(project_root: &Path, short_names: &[String]) -> Resul
         "workspace": members,
     });
 
-    let json = serde_json::to_string_pretty(&config).unwrap_or_default();
+    let json = serde_json::to_string_pretty(&config)?;
     write_text(
         &project_root.join("dist").join("project.json"),
         &format!("{json}\n"),

@@ -13,6 +13,25 @@ use lykn_lang::emitter;
 use lykn_lang::expander;
 use lykn_lang::reader;
 
+/// Errors that can occur during compilation.
+#[derive(Debug, thiserror::Error)]
+pub enum CompileError {
+    /// An I/O error occurred while reading a source file.
+    #[error("error reading {}: {source}", path.display())]
+    Io {
+        path: std::path::PathBuf,
+        source: std::io::Error,
+    },
+
+    /// A language-level error (reader or expander).
+    #[error("{0}")]
+    Lang(#[from] lykn_lang::error::LyknError),
+
+    /// A classification or static-analysis error.
+    #[error("{0}")]
+    Analysis(String),
+}
+
 /// Compile a `.lykn` source file through the full pipeline.
 ///
 /// Returns the compiled output as a string: either kernel JSON (when
@@ -21,9 +40,11 @@ pub fn compile_file(
     path: &Path,
     strip_assertions: bool,
     kernel_json_only: bool,
-) -> Result<String, String> {
-    let source = std::fs::read_to_string(path)
-        .map_err(|e| format!("error reading {}: {e}", path.display()))?;
+) -> Result<String, CompileError> {
+    let source = std::fs::read_to_string(path).map_err(|e| CompileError::Io {
+        path: path.to_path_buf(),
+        source: e,
+    })?;
 
     compile_source(&source, Some(path), strip_assertions, kernel_json_only)
 }
@@ -38,22 +59,24 @@ pub fn compile_source(
     file_path: Option<&Path>,
     strip_assertions: bool,
     kernel_json_only: bool,
-) -> Result<String, String> {
+) -> Result<String, CompileError> {
     // 1. Parse S-expressions
-    let forms = reader::read(source).map_err(|e| format!("{e}"))?;
+    let forms = reader::read(source)?;
 
     // 2. Expand macros (with project-level import map if available)
     let imports: Option<HashMap<String, String>> =
         crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
-    let forms = expander::expand(forms, file_path, imports.as_ref()).map_err(|e| format!("{e}"))?;
+    let forms = expander::expand(forms, file_path, imports.as_ref())?;
 
     // 3. Classify into surface forms
     let classified = classifier::classify(&forms).map_err(|diags| {
-        diags
-            .iter()
-            .map(|d| format!("{d}"))
-            .collect::<Vec<_>>()
-            .join("\n")
+        CompileError::Analysis(
+            diags
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        )
     })?;
 
     // 4. Run static analysis (builds its own type registry internally)
@@ -66,7 +89,7 @@ pub fn compile_source(
             .filter(|d| d.severity == Severity::Error)
             .map(|d| format!("{d}"))
             .collect();
-        return Err(msgs.join("\n"));
+        return Err(CompileError::Analysis(msgs.join("\n")));
     }
 
     // Print warnings to stderr
@@ -181,7 +204,7 @@ mod tests {
     fn compile_file_nonexistent_errors() {
         let result = compile_file(Path::new("/nonexistent/file.lykn"), false, true);
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("error reading"));
+        assert!(result.unwrap_err().to_string().contains("error reading"));
     }
 
     #[test]
@@ -213,7 +236,7 @@ mod tests {
         let source = r#"(bind :number x "hello")"#;
         let result = compile_source(source, None, false, true);
         assert!(result.is_err(), "mismatch should produce error");
-        let err = result.unwrap_err();
+        let err = result.unwrap_err().to_string();
         assert!(
             err.contains("bind 'x'"),
             "error should mention binding name"
