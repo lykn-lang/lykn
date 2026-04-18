@@ -1167,6 +1167,20 @@ export function registerSurfaceMacros(macroEnv) {
 		return kernelArray(sym("="), target, args[1]);
 	});
 
+	// --- set-symbol! ---
+	// (set-symbol! obj key value) → (= (get obj key) value) [kernel assignment]
+	// For Symbol-keyed property mutation. Reading uses (get obj key) directly.
+	// TODO: deprecate when surface/kernel syntaxes are separated; remove the release after that.
+	macroEnv.set("set-symbol!", (...args) => {
+		if (args.length !== 3) {
+			throw new Error(
+				"set-symbol! requires exactly 3 arguments: (set-symbol! obj key value)",
+			);
+		}
+		const target = array(sym("get"), args[0], args[1]);
+		return kernelArray(sym("="), target, args[2]);
+	});
+
 	// --- = (strict equality) ---
 	// (= a b) → (=== a b)
 	// (= a b c) → (&& (=== a b) (=== b c))

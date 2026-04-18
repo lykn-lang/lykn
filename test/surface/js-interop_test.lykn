@@ -50,6 +50,23 @@
 (test-compiles "js:typeof: nested in bind"
   "(bind t (js:typeof x))" "const t = typeof x;")
 
+;; --- set-symbol! ---
+
+(test "set-symbol!: compiles to bracket assignment"
+  (bind result (compile "(set-symbol! obj key 42)"))
+  (includes result "obj[key] = 42"))
+
+(test "set-symbol!: runtime — set and get Symbol-keyed property"
+  (bind META (Symbol "test-meta"))
+  (bind item (obj :name "widget"))
+  (set-symbol! item META (obj :version 1))
+  (is-equal (Object:keys item) #a("name"))
+  (bind meta-val (get item META))
+  (is-equal meta-val:version 1))
+
+(test "set-symbol!: wrong arg count throws"
+  (is-thrown (compile "(set-symbol! obj key)") Error "3 arguments"))
+
 ;; --- Error cases ---
 
 (test "js:call: no args throws"

@@ -34,20 +34,6 @@ typed positional args for required parameters.
 (create-server (obj))
 ```
 
-Compiles to:
-
-```js
-function createServer(opts) {
-  /* type check ... */
-  const port = opts.port ?? 8080;
-  const host = opts.host ?? "localhost";
-  const tls = opts.tls ?? false;
-  return {port, host, tls};
-}
-createServer({port: 3000, tls: true});
-createServer({});
-```
-
 ```lykn
 ;; Bad — positional args are unreadable at the call site
 (func create-server
@@ -81,17 +67,13 @@ to provide defaults per-property.
   :returns :array
   :body (array (?? opts:x 0) (?? opts:y 0)))
 
-(move (obj :x 3))   ;; [3, 0]
-(move (obj))         ;; [0, 0]
+(console:log (move (obj :x 3)))
+(console:log (move (obj)))
 ```
 
-Compiles to:
-
-```js
-function move(opts) {
-  /* type check ... */
-  return [opts.x ?? 0, opts.y ?? 0];
-}
+```
+[ 3, 0 ]
+[ 0, 0 ]
 ```
 
 **Rationale**: `??` only triggers on `null`/`undefined`, preserving
@@ -163,20 +145,6 @@ different kinds of results.
     (Found (db:query query))))
 ```
 
-Compiles to:
-
-```js
-function findUser(id) {
-  /* type check ... */
-  return users.get(id) ?? undefined;
-}
-function search(query) {
-  /* type check ... */
-  if (!query) return Empty;
-  return Found(db.query(query));
-}
-```
-
 **Rationale**: Mixed return types force callers to check the type
 before using the value. `type` makes the variants explicit and
 `match` makes consuming them exhaustive.
@@ -207,6 +175,20 @@ via `for-of`. When it returns a collection, return a concrete array.
     (if (pred item)
       (swap! result (fn (:array r) (conj r item)))))
   (express result))
+```
+
+```lykn
+(func sum :args (:any items) :returns :number :body
+  (bind total (cell 0))
+  (for-of n items
+    (swap! total (fn (:number t) (+ t n))))
+  (express total))
+
+(console:log (sum #a(1 2 3 4 5)))
+```
+
+```
+15
 ```
 
 **Rationale**: Accepting iterables makes APIs composable with arrays,
@@ -278,14 +260,6 @@ used.
 (export "./stats/mean.js" (names mean))
 (export "./stats/stddev.js" (names stddev))
 (export "./stats/median.js" (names median))
-```
-
-Compiles to:
-
-```js
-export {mean} from "./stats/mean.js";
-export {stddev} from "./stats/stddev.js";
-export {median} from "./stats/median.js";
 ```
 
 **Rules**:
@@ -373,20 +347,6 @@ values, field validation, and work with `match`.
     ((Rect w h) (* w h))))
 ```
 
-Compiles to:
-
-```js
-function Pt(x, y) {
-  if (typeof x !== "number" || Number.isNaN(x))
-    throw new TypeError("Pt: field 'x' expected number, got " + typeof x);
-  if (typeof y !== "number" || Number.isNaN(y))
-    throw new TypeError("Pt: field 'y' expected number, got " + typeof y);
-  return {tag: "Pt", x, y};
-}
-const origin = Pt(0, 0);
-const p = Pt(3, 4);
-```
-
 **When to use `class` instead**: When you need `instanceof` checks,
 shared prototype methods across many instances, `Symbol.iterator`,
 or JS interop with APIs that expect class instances.
@@ -411,27 +371,11 @@ fields. This compiles to JS `#_` private fields.
   (field -data #a())
   (field -size 0)
 
-  (push ((item))
+  (push (item)
     (this:-data:push item)
     (++ this:-size))
 
   (get size () (return this:-size)))
-```
-
-Compiles to:
-
-```js
-class Buffer {
-  #_data = [];
-  #_size = 0;
-  push(item) {
-    this.#_data.push(item);
-    ++this.#_size;
-  }
-  get size() {
-    return this.#_size;
-  }
-}
 ```
 
 **Rationale**: The `-` prefix compiles to true `#_` private fields —
@@ -452,11 +396,11 @@ primary constructor.
 ```lykn
 ;; Good — named factory methods
 (class Point ()
-  (constructor ((x) (y))
-    (= this:x (?? x 0))
-    (= this:y (?? y 0)))
+  (constructor (x y)
+    (assign this:x (?? x 0))
+    (assign this:y (?? y 0)))
 
-  (static (from-polar ((radius) (angle))
+  (static (from-polar (radius angle)
     (return (new Point
       (* radius (Math:cos angle))
       (* radius (Math:sin angle)))))))
@@ -488,14 +432,14 @@ method for objects that require asynchronous setup.
 (class DataStore ()
   (field -connection null)
 
-  (static (async (create ((url))
+  (static (async (create (url)
     (bind conn (await (connect url)))
     (return (new DataStore conn)))))
 
-  (constructor ((connection))
-    (= this:-connection connection))
+  (constructor (connection)
+    (assign this:-connection connection))
 
-  (async (query ((sql))
+  (async (query (sql)
     (return (this:-connection:execute sql)))))
 
 (bind store (await (DataStore:create "postgres://localhost/mydb")))
@@ -520,18 +464,6 @@ or manual checks in the constructor.
 
 (Rng 0 10)        ;; ok
 (Rng "a" 10)      ;; TypeError: Rng: field 'start' expected number
-```
-
-Compiles to:
-
-```js
-function Rng(start, end) {
-  if (typeof start !== "number" || Number.isNaN(start))
-    throw new TypeError("Rng: field 'start' expected number, got " + typeof start);
-  if (typeof end !== "number" || Number.isNaN(end))
-    throw new TypeError("Rng: field 'end' expected number, got " + typeof end);
-  return {tag: "Rng", start, end};
-}
 ```
 
 For additional constraints beyond type checking, use `func` with
@@ -571,10 +503,10 @@ constraints (start <= end), wrap the constructor in a `func` with
   (get size () (return this:-items:length))
   (get empty? () (return (= this:-items:length 0)))
 
-  (add ((item)) (this:-items:push item))
-  (remove ((item)) (this:-items:splice
+  (add (item) (this:-items:push item))
+  (remove (item) (this:-items:splice
     (this:-items:indexOf item) 1))
-  (contains? ((item)) (return (this:-items:includes item)))
+  (contains? (item) (return (this:-items:includes item)))
   (serialize () (return (JSON:stringify this:-items))))
 ```
 
@@ -607,14 +539,6 @@ prefixes.
   :body (and (input:includes "@") (input:includes ".")))
 ```
 
-Compiles to:
-
-```js
-if (active?(user)) showDashboard(user);
-if (empty?(collection)) showPlaceholder();
-if (canUndo?(editor)) enableUndoButton();
-```
-
 **Convention**:
 - `active?` — state predicate (replaces JS `isActive`)
 - `has-items?` — possession predicate (replaces JS `hasItems`)
@@ -637,15 +561,15 @@ and reads naturally: `(if (valid? x) ...)` reads as "if valid? x".
 ```lykn
 ;; Good — to-x for conversion, from-x for construction
 (class Color ()
-  (constructor ((r) (g) (b))
-    (= this:r r)
-    (= this:g g)
-    (= this:b b))
+  (constructor (r g b)
+    (assign this:r r)
+    (assign this:g g)
+    (assign this:b b))
 
   (to-string () (return (template "rgb(" this:r ", " this:g ", " this:b ")")))
   (to-json () (return (obj :r this:r :g this:g :b this:b)))
 
-  (static (from-hex ((hex))
+  (static (from-hex (hex)
     (bind m (hex:match (regex "^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$" "i")))
     (if (not m) (throw (new Error (template "Invalid hex color: " hex))))
     (return (new Color
@@ -675,15 +599,15 @@ classes. Do not expose implementation details.
   (field -input "")
   (field -pos 0)
 
-  (constructor ((input))
-    (= this:-input input))
+  (constructor (input)
+    (assign this:-input input))
 
   (parse ()
     (bind tokens (this:-tokenize))
     (return (this:-build-ast tokens)))
 
   (-tokenize () (return #a()))
-  (-build-ast ((tokens)) (return tokens)))
+  (-build-ast (tokens) (return tokens)))
 ```
 
 **Rationale**: `-` prefix methods compile to `#_` private methods —
@@ -705,9 +629,9 @@ external code.
 ```lykn
 ;; Good — class with Symbol.iterator via generator
 (class NumberRange ()
-  (constructor ((from) (to))
-    (= this:from from)
-    (= this:to to))
+  (constructor (from to)
+    (assign this:from from)
+    (assign this:to to))
 
   ;; Generator method for iteration
   (* (Symbol:iterator) ()
@@ -734,8 +658,8 @@ eliminate manual state management.
 
 ```lykn
 ;; Good — standalone generator for lazy transformation
-(function* lazy-map (iterable fn)
-  (for-of x iterable (yield (fn x))))
+(function* lazy-map (iterable f)
+  (for-of x iterable (yield (f x))))
 
 ;; Good — compose generators
 (function* lazy-filter (iterable pred)
@@ -760,8 +684,8 @@ boilerplate.
 ```lykn
 ;; Good — many-times iterable (generator method on class)
 (class Evens ()
-  (constructor ((limit))
-    (= this:limit limit))
+  (constructor (limit)
+    (assign this:limit limit))
   (* (Symbol:iterator) ()
     (for (let i 0) (< i this:limit) (+= i 2)
       (yield i))))
@@ -869,11 +793,16 @@ should not appear in `Object:keys`, `for-in`, or `JSON:stringify`.
 ```lykn
 ;; Good — Symbol key for internal metadata
 (bind META (Symbol "meta"))
+(bind item (obj :name "widget" :price 10))
+(set-symbol! item META (obj :version 1))
 
-(class Collection ()
-  (constructor ((items))
-    (= this:items items)
-    (= (get this META) (obj :version 1 :created (Date:now)))))
+(console:log (Object:keys item))
+(console:log (get item META))
+```
+
+```
+[ "name", "price" ]
+{ version: 1 }
 ```
 
 **Rationale**: Symbol-keyed properties are non-enumerable by default,
@@ -897,21 +826,6 @@ code.
   :pre (and (> name:length 0) (email:includes "@"))
   :post (not (= ~ null))
   :body (obj :name name :email email :id (crypto:randomUUID)))
-```
-
-Compiles to:
-
-```js
-function createUser(name, email) {
-  if (typeof name !== "string") throw new TypeError(/* ... */);
-  if (typeof email !== "string") throw new TypeError(/* ... */);
-  if (!(name.length > 0 && email.includes("@")))
-    throw new Error("create-user: pre-condition failed: (and (> name:length 0) (email:includes \"@\")) — caller blame");
-  const result__gensym0 = {name, email, id: crypto.randomUUID()};
-  if (!(result__gensym0 !== null))
-    throw new Error("create-user: post-condition failed: (not (= ~ null)) — callee blame");
-  return result__gensym0;
-}
 ```
 
 **Contract types**:
