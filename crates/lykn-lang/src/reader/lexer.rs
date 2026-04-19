@@ -172,7 +172,7 @@ impl Lexer {
                 let token = match value.as_str() {
                     "true" => Token::Bool(true),
                     "false" => Token::Bool(false),
-                    "null" | "undefined" => Token::Null,
+                    "null" => Token::Null,
                     "." => Token::Dot,
                     _ => {
                         // Try number parse
@@ -299,9 +299,14 @@ mod tests {
 
     #[test]
     fn tokenize_null() {
-        let tokens = tokenize("null undefined").unwrap();
+        let tokens = tokenize("null").unwrap();
         assert_eq!(tokens[0].token, Token::Null);
-        assert_eq!(tokens[1].token, Token::Null);
+    }
+
+    #[test]
+    fn tokenize_undefined_is_atom() {
+        let tokens = tokenize("undefined").unwrap();
+        assert_eq!(tokens[0].token, Token::Atom("undefined".to_string()));
     }
 
     #[test]
