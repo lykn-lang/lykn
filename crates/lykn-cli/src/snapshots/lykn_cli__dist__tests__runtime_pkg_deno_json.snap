@@ -4,6 +4,13 @@ expression: value
 ---
 {
   "exports": "./mod.js",
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-slow-types"
+      ]
+    }
+  },
   "name": "@lykn/lang",
   "version": "0.5.0"
 }

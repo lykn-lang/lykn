@@ -104,6 +104,7 @@ fn build_runtime(
 
     prepare_dist_dir(&dist_dir)?;
     copy_js_files(&pkg_path, &dist_dir, project_imports)?;
+    generate_dts_stubs(&dist_dir)?;
     copy_root_files(project_root, &dist_dir);
     write_deno_json(&dist_dir, pkg_config, None)?;
     write_package_json(&dist_dir, pkg_config)?;
@@ -129,6 +130,7 @@ fn build_macro_module(
     // Generate mod.js stub
     let stub = format!("export const VERSION = \"{}\";\n", pkg_config.version);
     write_text(&dist_dir.join("mod.js"), &stub)?;
+    generate_dts_stubs(&dist_dir)?;
 
     copy_root_files(project_root, &dist_dir);
     write_deno_json(&dist_dir, pkg_config, Some(&pkg_config.lykn))?;
@@ -214,6 +216,32 @@ fn copy_all_files(src: &Path, dst: &Path) -> Result<(), DistError> {
     Ok(())
 }
 
+/// Generate `.d.ts` stub files for each `.js` file in the dist directory.
+///
+/// Each stub contains `export * from "./file.js";` which tells TypeScript
+/// to infer types from the JS source. This satisfies JSR's requirement for
+/// type declarations on JavaScript entrypoints.
+fn generate_dts_stubs(dist_dir: &Path) -> Result<(), DistError> {
+    let entries = fs::read_dir(dist_dir).map_err(|e| DistError::Io {
+        path: dist_dir.to_path_buf(),
+        source: e,
+    })?;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().is_some_and(|e| e == "js") {
+            if let Some(stem) = path.file_stem() {
+                let dts_name = format!("{}.d.ts", stem.to_string_lossy());
+                let js_name = path.file_name().unwrap().to_string_lossy();
+                write_text(
+                    &dist_dir.join(&dts_name),
+                    &format!("export * from \"./{js_name}\";\n"),
+                )?;
+            }
+        }
+    }
+    Ok(())
+}
+
 /// Copy README.md and LICENSE from the project root into the dist package.
 fn copy_root_files(project_root: &Path, dist_dir: &Path) {
     let _ = fs::copy(project_root.join("README.md"), dist_dir.join("README.md"));
@@ -273,6 +301,12 @@ fn write_deno_json(
     if let Some(meta) = lykn_meta {
         map.insert("lykn".to_string(), serde_json::to_value(meta)?);
     }
+
+    let mut lint_rules = serde_json::Map::new();
+    lint_rules.insert("exclude".to_string(), serde_json::json!(["no-slow-types"]));
+    let mut lint = serde_json::Map::new();
+    lint.insert("rules".to_string(), serde_json::Value::Object(lint_rules));
+    map.insert("lint".to_string(), serde_json::Value::Object(lint));
 
     let json = serde_json::to_string_pretty(&map)?;
     write_text(&dist_dir.join("deno.json"), &format!("{json}\n"))

@@ -4,6 +4,13 @@ expression: value
 ---
 {
   "exports": "./mod.js",
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-slow-types"
+      ]
+    }
+  },
   "lykn": {
     "kind": "macro-module",
     "macroEntry": "mod.lykn"

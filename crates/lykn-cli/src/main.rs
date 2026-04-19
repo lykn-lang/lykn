@@ -575,7 +575,7 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
 
     if do_jsr {
         let config = "dist/project.json".to_string();
-        let mut args = vec!["publish", "--config", &config];
+        let mut args = vec!["publish", "--config", &config, "--allow-slow-types"];
         if dry_run {
             args.push("--dry-run");
         }
