@@ -342,7 +342,7 @@ fn write_package_json(
         "license": "Apache-2.0",
         "repository": {
             "type": "git",
-            "url": "https://github.com/oxur/lykn"
+            "url": "git+https://github.com/oxur/lykn.git"
         },
         "dependencies": deps_map,
     });
