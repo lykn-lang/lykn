@@ -23,6 +23,7 @@ jobs:
         with:
           deno-version: v2.x
       - uses: Swatinem/rust-cache@v2
+      - run: make build
       - run: make lint
 
   tests:
