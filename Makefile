@@ -54,6 +54,7 @@ help:
 	@echo "  $(YELLOW)make test-docs$(RESET)        - Run all documentation tests"
 	@echo "  $(YELLOW)make test-docs-guides$(RESET) - Test lykn blocks in docs/guides/"
 	@echo "  $(YELLOW)make test-docs-readme$(RESET) - Test lykn blocks in README.md"
+	@echo "  $(YELLOW)make test-docs-examples$(RESET) - Test lykn in HTML examples"
 	@echo "  $(YELLOW)make test-publishing$(RESET)  - Run publishing pipeline tests"
 	@echo "  $(YELLOW)make lint$(RESET)             - Run clippy, format check, and JS lint"
 	@echo "  $(YELLOW)make format$(RESET)           - Format all code with rustfmt"
@@ -195,7 +196,7 @@ clean-all: clean
 
 # Testing & Quality targets
 .PHONY: test
-test: test-rust test-js test-lykn
+test: test-rust test-js test-lykn test-docs
 
 .PHONY: test-rust
 test-rust:
@@ -216,7 +217,7 @@ test-lykn:
 	@echo "$(GREEN)✓ lykn tests passed$(RESET)"
 
 .PHONY: test-docs
-test-docs: test-docs-guides test-docs-readme
+test-docs: test-docs-guides test-docs-readme test-docs-examples
 
 .PHONY: test-docs-guides
 test-docs-guides:
@@ -229,6 +230,13 @@ test-docs-readme:
 	@echo "$(BLUE)Running documentation tests (README)...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test --docs README.md
 	@echo "$(GREEN)✓ README documentation tests passed$(RESET)"
+
+.PHONY: test-docs-examples
+test-docs-examples:
+	@echo "$(BLUE)Running documentation tests (examples)...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) test --docs examples/surface/
+	@$(BIN_DIR)/$(CODE_NAME) test --docs examples/kernel/
+	@echo "$(GREEN)✓ Example documentation tests passed$(RESET)"
 
 .PHONY: test-publishing
 test-publishing:

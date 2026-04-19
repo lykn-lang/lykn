@@ -450,13 +450,52 @@ pub fn generate_test_file(
 }
 
 // ---------------------------------------------------------------------------
+// HTML lykn extraction
+// ---------------------------------------------------------------------------
+
+/// Extract lykn source from `<script type="text/lykn">` tags in HTML content.
+///
+/// Returns compile-check-only blocks (no output matching). Used for both
+/// standalone `.html` files and ```` ```html ```` blocks in Markdown.
+fn extract_lykn_from_html(html: &str, block_offset: usize) -> Vec<CodeBlock> {
+    let mut blocks = Vec::new();
+    let mut block_number = block_offset;
+    let mut search_from = 0;
+
+    while let Some(open_pos) = html[search_from..].find("<script type=\"text/lykn\">") {
+        let abs_open = search_from + open_pos;
+        let content_start = abs_open + "<script type=\"text/lykn\">".len();
+
+        if let Some(close_pos) = html[content_start..].find("</script>") {
+            let content = &html[content_start..content_start + close_pos];
+            let trimmed = content.trim();
+            if !trimmed.is_empty() {
+                block_number += 1;
+                blocks.push(CodeBlock {
+                    number: block_number,
+                    annotation: Annotation::Compile,
+                    source: trimmed.to_string(),
+                    expected_js: None,
+                    expected_output: None,
+                });
+            }
+            search_from = content_start + close_pos + "</script>".len();
+        } else {
+            break;
+        }
+    }
+
+    blocks
+}
+
+// ---------------------------------------------------------------------------
 // File discovery
 // ---------------------------------------------------------------------------
 
-/// Recursively find all `.md` files under a directory.
-fn find_md_files(dir: &Path) -> Vec<PathBuf> {
+/// Recursively find all `.md` and `.html` files under a directory.
+fn find_doc_files(dir: &Path) -> Vec<PathBuf> {
     lykn_cli::util::collect_files_recursive(dir, |p: &Path| {
-        p.extension().is_some_and(|e| e == "md")
+        p.extension().is_some_and(|e| e == "md" || e == "html")
     })
 }
 
@@ -472,35 +511,37 @@ fn sanitize_filename(path: &str) -> String {
     path.replace(['/', '\\'], "__").replace('.', "_")
 }
 
-/// Run documentation tests for Markdown files matching the given pattern.
+/// Run documentation tests for Markdown and HTML files matching the given path.
 ///
 /// This function:
-/// 1. Finds `.md` files in the given path (file or directory).
-/// 2. Extracts lykn code blocks from each.
+/// 1. Finds `.md` and `.html` files in the given path (file or directory).
+/// 2. Extracts lykn code blocks from each (fenced blocks from Markdown,
+///    `<script type="text/lykn">` tags from HTML).
 /// 3. Generates temporary Deno test files under `target/test/doctest/`.
 /// 4. Invokes `deno test` on the generated files.
 /// 5. Exits with Deno's exit code.
 pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
     let path = Path::new(docs_path);
-    let md_files = if path.is_file() {
-        if path.extension().is_some_and(|e| e == "md") {
+    let doc_files = if path.is_file() {
+        let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
+        if ext == "md" || ext == "html" {
             vec![path.to_path_buf()]
         } else {
             eprintln!(
-                "error: --docs path is not a Markdown file: {}",
+                "error: --docs path is not a Markdown or HTML file: {}",
                 path.display()
             );
             process::exit(1);
         }
     } else if path.is_dir() {
-        find_md_files(path)
+        find_doc_files(path)
     } else {
         eprintln!("error: --docs path does not exist: {}", path.display());
         process::exit(1);
     };
 
-    if md_files.is_empty() {
-        eprintln!("No Markdown files found in {}", docs_path);
+    if doc_files.is_empty() {
+        eprintln!("No Markdown or HTML files found in {}", docs_path);
         process::exit(0);
     }
 
@@ -520,22 +561,26 @@ pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
     let mut total_blocks: usize = 0;
     let mut total_skipped: usize = 0;
 
-    for md_file in &md_files {
-        let md_source = match fs::read_to_string(md_file) {
+    for doc_file in &doc_files {
+        let source = match fs::read_to_string(doc_file) {
             Ok(s) => s,
             Err(e) => {
-                eprintln!("error reading {}: {e}", md_file.display());
+                eprintln!("error reading {}: {e}", doc_file.display());
                 continue;
             }
         };
 
-        // Normalize CRLF to LF
-        let md_source = md_source.replace("\r\n", "\n");
+        let source = source.replace("\r\n", "\n");
 
-        let blocks = extract_blocks(&md_source);
+        let is_html = doc_file.extension().is_some_and(|e| e == "html");
+        let blocks = if is_html {
+            extract_lykn_from_html(&source, 0)
+        } else {
+            extract_blocks(&source)
+        };
 
         if blocks.is_empty() {
-            eprintln!("info: no lykn blocks in {}", md_file.display());
+            eprintln!("info: no lykn blocks in {}", doc_file.display());
             continue;
         }
 
@@ -547,10 +592,10 @@ pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
         total_blocks += testable_count;
         total_skipped += skip_count;
 
-        let md_path_str = md_file.to_string_lossy();
-        let test_content = generate_test_file(&md_path_str, &blocks, &md_source, config_path);
+        let doc_path_str = doc_file.to_string_lossy();
+        let test_content = generate_test_file(&doc_path_str, &blocks, &source, config_path);
 
-        let test_filename = format!("{}.test.js", sanitize_filename(&md_path_str));
+        let test_filename = format!("{}.test.js", sanitize_filename(&doc_path_str));
         let test_path = out_dir.join(&test_filename);
 
         if let Err(e) = fs::write(&test_path, &test_content) {
@@ -562,7 +607,7 @@ pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
     }
 
     if generated_files.is_empty() {
-        eprintln!("No testable lykn blocks found in Markdown files.");
+        eprintln!("No testable lykn blocks found.");
         process::exit(0);
     }
 
@@ -1228,5 +1273,95 @@ const x = 1;
         assert!(result.contains("eval"));
         assert!(result.contains("__logs"));
         assert!(result.contains("`6`"));
+    }
+
+    // ---------------------------------------------------------------
+    // HTML lykn extraction
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_extract_lykn_from_html_single_script() {
+        let html = r#"<script type="text/lykn">
+(bind x 42)
+</script>"#;
+        let blocks = extract_lykn_from_html(html, 0);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].number, 1);
+        assert_eq!(blocks[0].source, "(bind x 42)");
+        assert_eq!(blocks[0].annotation, Annotation::Compile);
+    }
+
+    #[test]
+    fn test_extract_lykn_from_html_multiple_scripts() {
+        let html = r#"<script type="text/lykn">
+(bind x 1)
+</script>
+<script src="app.js"></script>
+<script type="text/lykn">
+(bind y 2)
+</script>"#;
+        let blocks = extract_lykn_from_html(html, 0);
+        assert_eq!(blocks.len(), 2);
+        assert_eq!(blocks[0].source, "(bind x 1)");
+        assert_eq!(blocks[1].source, "(bind y 2)");
+    }
+
+    #[test]
+    fn test_extract_lykn_from_html_empty_script() {
+        let html = r#"<script type="text/lykn">
+</script>"#;
+        let blocks = extract_lykn_from_html(html, 0);
+        assert!(blocks.is_empty());
+    }
+
+    #[test]
+    fn test_extract_lykn_from_html_no_lykn_scripts() {
+        let html = r#"<script src="app.js"></script>
+<script type="text/javascript">console.log("hi")</script>"#;
+        let blocks = extract_lykn_from_html(html, 0);
+        assert!(blocks.is_empty());
+    }
+
+    #[test]
+    fn test_extract_lykn_from_html_with_offset() {
+        let html = r#"<script type="text/lykn">(bind x 1)</script>"#;
+        let blocks = extract_lykn_from_html(html, 5);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].number, 6);
+    }
+
+    #[test]
+    fn test_extract_blocks_html_fence_in_markdown_ignored() {
+        let md = r#"# Example
+
+```html
+<script type="text/lykn">
+(bind greeting "hello")
+</script>
+```
+"#;
+        let blocks = extract_blocks(md);
+        // HTML fences in Markdown are not extracted — they're documentation
+        // examples that may use browser APIs. Only standalone .html files
+        // get HTML extraction.
+        assert!(blocks.is_empty());
+    }
+
+    #[test]
+    fn test_extract_blocks_mixed_lykn_and_html() {
+        let md = r#"```lykn
+(bind x 1)
+```
+
+```html
+<script type="text/lykn">
+(bind y 2)
+</script>
+```
+"#;
+        let blocks = extract_blocks(md);
+        // Only the lykn block is extracted, not the HTML block
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].source, "(bind x 1)");
     }
 }
