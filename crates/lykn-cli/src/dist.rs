@@ -344,6 +344,9 @@ fn write_package_json(
             "type": "git",
             "url": "git+https://github.com/oxur/lykn.git"
         },
+        "publishConfig": {
+            "access": "public"
+        },
         "dependencies": deps_map,
     });
 
