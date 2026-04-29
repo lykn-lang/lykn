@@ -6,7 +6,7 @@ error flows, custom error types, contracts, and validation discipline —
 leveraging lykn's surface language for safer error handling than raw
 JavaScript allows.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

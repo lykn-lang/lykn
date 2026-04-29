@@ -6,7 +6,7 @@ contracts, type constructors, iteration, return conventions, and naming —
 leveraging lykn's surface language for safer, more expressive APIs than
 raw JavaScript allows.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

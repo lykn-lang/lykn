@@ -7,7 +7,7 @@ lykn's built-in type annotations (`:number`, `:string`, `:pre`/`:post`)
 serve as machine-readable documentation that the compiler enforces —
 reducing the need for separate annotation layers like JSDoc.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

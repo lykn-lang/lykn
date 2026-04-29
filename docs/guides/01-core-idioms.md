@@ -6,7 +6,7 @@ type annotations, controlled mutation via cells, strict equality by
 default, and short-circuit logical operators — to produce clean, safe
 JavaScript with no runtime dependencies.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

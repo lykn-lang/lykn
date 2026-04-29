@@ -7,7 +7,7 @@ semantics apply — single-threaded, run-to-completion, microtask/
 macrotask ordering. This guide covers lykn syntax for async patterns.
 Async error handling is covered in `03-error-handling.md`.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

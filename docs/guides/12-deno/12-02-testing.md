@@ -6,7 +6,7 @@ test the `.js`.
 
 For the full treatment, see the JS guide `12-deno/12-02-testing.md`.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output.
 
 ---

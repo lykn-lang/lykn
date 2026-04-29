@@ -7,7 +7,7 @@ files (`.lykn`) compile to JavaScript (`.js`), adding a compilation
 step to the development workflow. Module API design is in Guide 02;
 Deno runtime details are in Guide 12.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---
@@ -63,7 +63,7 @@ and entry points. Source code goes in feature directories.
 project/
 ├── deno.json               ;; config
 ├── deno.lock               ;; lockfile (auto-generated)
-├── biome.json              ;; Biome config
+├── .gitignore              ;; ignore dist/, bin/
 ├── Makefile                ;; build tasks
 ├── README.md
 ├── bin/                    ;; compiled binary (lykn CLI)
@@ -342,7 +342,7 @@ the edges.
 **Strength**: SHOULD
 
 **Summary**: Centralize imports, tasks, and compiler options in
-`deno.json`. Biome config goes in `biome.json`.
+`deno.json`. Lint and format config also goes in `deno.json`.
 
 ```json
 {
@@ -493,14 +493,14 @@ from workspace organization.
 
 **Summary**: lykn source (`.lykn`) must be compiled to JavaScript
 (`.js`) before execution. The compilation step fits into the build
-pipeline alongside Biome formatting.
+pipeline alongside `deno fmt` formatting.
 
 ```sh
 # Compile lykn source to JavaScript
 lykn compile src/main.lykn -o dist/main.js
 
-# Format compiled output with Biome
-biome format --write dist/
+# Format compiled output
+deno fmt dist/
 
 # Run with Deno
 deno run --allow-net dist/main.js
@@ -513,18 +513,18 @@ make check    # compile + lint + test
 
 **Pipeline**:
 ```
-.lykn source → lykn compile → .js output → biome format → deno run/test
+.lykn source → lykn compile → .js output → deno fmt → deno run/test
 ```
 
 **Development workflow**:
 1. Write `.lykn` source files
 2. `lykn compile` to produce `.js` output
-3. `biome format --write` on compiled output
+3. `deno fmt` on compiled output
 4. `deno test` to run tests against compiled JS
 5. `deno run` to execute the application
 
 **Rationale**: lykn compiles to clean, readable JavaScript. The
-compiled output is the artifact that Deno runs, Biome formats, and
+compiled output is the artifact that Deno runs, `deno fmt` formats, and
 tests exercise. The `.lykn` source is the authoritative code.
 
 ---

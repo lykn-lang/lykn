@@ -6,35 +6,50 @@ published.
 
 For the full treatment, see the JS guide `12-deno/12-04-publishing.md`.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output.
 
 ---
 
-## ID-01: Publish to JSR with `deno publish`
+## ID-01: Publish to JSR
 
 **Strength**: SHOULD
 
-```sh
-# Dry run first
-deno publish --dry-run
+**Use `lykn publish --jsr`** — the lykn CLI wraps `deno publish` and
+runs `lykn build --dist` first to stage compiled output, generated
+`jsr.json`, and copied `LICENSE`/`README.md` into `dist/`. See
+[`15-lykn-cli.md`](../15-lykn-cli.md) ID-04e for the full publish
+workflow.
 
-# Publish (opens browser for auth)
-deno publish
+> **Counter-cue:** if you are tempted to run `deno publish` directly
+> in a lykn project, stop. The raw command bypasses `lykn build
+> --dist` staging and produces a broken package.
+
+```sh
+lykn publish --jsr --dry-run
+lykn publish --jsr
 ```
 
 ---
 
-## ID-02: Publish to npm with `npm publish`
+## ID-02: Publish to npm
 
 **Strength**: CONSIDER
 
-```sh
-# For npm consumers
-npm publish --access public
-```
+**Use `lykn publish --npm`** — the lykn CLI wraps `npm publish` and
+runs `lykn build --dist` first to stage compiled output, generated
+`package.json`, and copied `LICENSE`/`README.md` into `dist/`. See
+[`15-lykn-cli.md`](../15-lykn-cli.md) ID-04e for the full publish
+workflow.
 
-Requires `package.json` with the compiled `.js` entry point.
+> **Counter-cue:** if you are tempted to run `npm publish` directly
+> in a lykn project, stop. The raw command bypasses `lykn build
+> --dist` staging and produces a broken package.
+
+```sh
+lykn publish --npm --dry-run
+lykn publish --npm
+```
 
 ---
 
@@ -55,18 +70,16 @@ The `exports` field points to compiled `.js`, not `.lykn` source.
 ## ID-04: The lykn Publishing Pipeline
 
 ```sh
-# 1. Compile all source
-make build
+# 1. Build and stage for publishing
+lykn build --dist
 
-# 2. Format compiled output
-biome format --write dist/
+# 2. Dry-run to verify
+lykn publish --jsr --dry-run
+lykn publish --npm --dry-run
 
-# 3. Run tests
-deno test --allow-all
-
-# 4. Publish
-deno publish          # to JSR
-npm publish           # to npm (if configured)
+# 3. Publish
+lykn publish --jsr
+lykn publish --npm
 ```
 
 ---

@@ -6,7 +6,7 @@ macros (lykn's native pipe/compose), partial application, generators,
 and pure function discipline. lykn eliminates `this` from the surface
 language entirely, removing an entire category of JavaScript bugs.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

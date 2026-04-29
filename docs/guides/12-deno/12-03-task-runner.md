@@ -5,7 +5,7 @@ Using `deno task` for lykn project scripts. Tasks are defined in
 
 For the full treatment, see the JS guide `12-deno/12-03-task-runner.md`.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output.
 
 ---
@@ -20,9 +20,9 @@ output.
     "build": "make build",
     "dev": "deno run --watch --allow-net dist/main.js",
     "test": "make build && deno test --allow-all",
-    "check": "make build && biome check dist/ && deno test --allow-all",
+    "check": "make build && deno lint dist/ && deno test --allow-all",
     "bench": "make build && deno bench",
-    "fmt": "biome format --write dist/"
+    "fmt": "deno fmt dist/"
   }
 }
 ```
@@ -47,13 +47,13 @@ A typical Makefile for lykn projects:
 ```makefile
 build:
 	lykn compile src/main.lykn -o dist/main.js
-	biome format --write dist/
+	deno fmt dist/
 
 test: build
 	deno test --allow-all
 
 check: build
-	biome check dist/
+	deno lint dist/
 	deno test --allow-all
 ```
 

@@ -8,7 +8,7 @@ so all Deno runtime features apply to compiled output.
 This is a condensed reference. For the full treatment of each topic,
 see the JS guide `12-deno/12-01-runtime-basics.md`.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---
@@ -150,7 +150,7 @@ lykn source compiles to JavaScript before Deno runs it.
 lykn compile src/main.lykn -o dist/main.js
 
 # Format compiled output
-biome format --write dist/
+deno fmt dist/
 
 # Run
 deno run --allow-net dist/main.js

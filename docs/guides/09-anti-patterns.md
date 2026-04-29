@@ -10,7 +10,7 @@ and how lykn prevents it. The remaining entries cover traps that still
 exist in lykn (inherited from JS runtime semantics) plus new lykn-
 specific anti-patterns.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

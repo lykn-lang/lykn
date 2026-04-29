@@ -6,7 +6,7 @@ and equality. lykn's surface language enforces immutability by default —
 `bind` is always `const`, mutation requires `cell`, and `assoc`/`dissoc`/
 `conj` produce new values instead of modifying existing ones.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

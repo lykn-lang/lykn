@@ -7,7 +7,7 @@ apply. The most damaging performance anti-pattern is premature
 optimization. This guide establishes "measure first" before any
 optimization technique.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

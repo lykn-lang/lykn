@@ -10,7 +10,7 @@ that is stricter than JS+JSDoc without requiring TypeScript.
 This guide covers lykn's type system, runtime type checking, coercion
 traps (inherited from JS), number edge cases, and typed collections.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---

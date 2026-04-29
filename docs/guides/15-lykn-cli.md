@@ -127,7 +127,7 @@ lykn fmt -w packages/myapp/auth/*.lykn
 
 The formatter handles S-expression indentation with 80-character line
 width. This formats the `.lykn` source — for formatting compiled JS
-output, use `biome format`.
+output, use \`deno fmt\`.
 
 **See also**: `13-biome/13-03-formatting.md` for JS output formatting.
 
@@ -311,10 +311,10 @@ lykn check packages/myapp/main.lykn
 lykn compile packages/myapp/main.lykn -o dist/main.js
 
 # 4. Format compiled JS
-biome format --write dist/
+deno fmt dist/
 
 # 5. Lint compiled JS
-biome lint dist/
+deno lint dist/
 
 # 6. Run tests
 deno test test/
@@ -330,18 +330,18 @@ A typical `Makefile`:
 
 build:
 	lykn compile packages/myapp/main.lykn -o dist/main.js
-	biome format --write dist/
+	deno fmt dist/
 
 test: build
 	deno test --allow-all
 
 check: build
-	biome check dist/
+	deno lint dist/
 	deno test --allow-all
 
 fmt:
 	lykn fmt -w packages/myapp/*.lykn
-	biome format --write dist/
+	deno fmt dist/
 ```
 
 ---

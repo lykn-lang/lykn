@@ -3,7 +3,7 @@
 The complete catalog of lykn syntax. Every form compiles to
 kernel forms, which compile to JavaScript. No runtime dependencies.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 All examples verified by `lykn test --docs`.

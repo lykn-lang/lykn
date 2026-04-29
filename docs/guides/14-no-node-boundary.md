@@ -7,7 +7,7 @@ Node.js pattern, names the Deno replacement, and cross-references the
 guide that covers it in detail. lykn compiles to Deno-native ESM — all
 these boundaries apply equally to lykn's compiled output.
 
-Target environment: **Deno**, **ESM-only**, **Biome** on compiled
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
 
 ---
@@ -69,7 +69,7 @@ guessing, no `index.js` resolution.
 **Strength**: MUST-AVOID
 
 **Summary**: `deno.json` replaces `package.json`, `tsconfig.json`,
-`.eslintrc`, and `.prettierrc`. Biome config goes in `biome.json`.
+`.eslintrc`, and `.prettierrc`. Lint and format config goes in `deno.json`.
 
 **See also**: `10-project-structure.md` ID-15
 
@@ -89,7 +89,7 @@ guessing, no `index.js` resolution.
 
 ---
 
-## ID-08: No `.eslintrc` / `.prettierrc` — Use `biome.json`
+## ID-08: No `.eslintrc` / `.prettierrc` — Use `deno.json`
 
 **Strength**: MUST-AVOID
 
@@ -245,7 +245,7 @@ Requires `--allow-run`.
 
 ---
 
-## ID-22: No ESLint / No Prettier — Use Biome
+## ID-22: No ESLint / No Prettier — Use `deno lint` + `deno fmt`
 
 **Strength**: MUST-AVOID
 
@@ -308,7 +308,8 @@ Deno/Web APIs for new code.
 | 05 | `package.json` | MUST-AVOID | `deno.json` |
 | 06 | `node_modules` | MUST-AVOID | Global cache |
 | 07 | `npm install`/`npm run` | MUST-AVOID | `deno add`/`deno task` |
-| 08 | `.eslintrc`/`.prettierrc` | MUST-AVOID | `biome.json` |
+| 27 | `npm publish` | MUST-AVOID | `lykn publish --npm` |
+| 08 | `.eslintrc`/`.prettierrc` | MUST-AVOID | `deno.json` |
 | 09 | `tsconfig.json` | MUST-AVOID | `deno.json` |
 | 10 | `process.env` | SHOULD-AVOID | `Deno:env:get` |
 | 11 | `process.argv` | SHOULD-AVOID | `Deno:args` |
@@ -322,7 +323,7 @@ Deno/Web APIs for new code.
 | 19 | Error-first callbacks | MUST-AVOID | `async`/`await` |
 | 20 | `process.nextTick` | SHOULD-AVOID | `queueMicrotask` |
 | 21 | Jest/Mocha/Vitest | MUST-AVOID | `Deno:test` |
-| 22 | ESLint + Prettier | MUST-AVOID | Biome |
+| 22 | ESLint + Prettier | MUST-AVOID | `deno lint` + `deno fmt` |
 | 23 | `npx` | SHOULD-AVOID | `deno run npm:tool` |
 | 24 | `npm:` (when JSR exists) | CONSIDER-AVOIDING | `jsr:` |
 | 25 | `node:` built-ins | CONSIDER-AVOIDING | Deno/Web APIs |
@@ -337,7 +338,7 @@ Deno/Web APIs for new code.
 | | `index.js` | `mod.js` / `mod.lykn` |
 | **Config** | `package.json` | `deno.json` |
 | | `tsconfig.json` | `deno.json` `compilerOptions` |
-| | `.eslintrc` + `.prettierrc` | `biome.json` |
+| | `.eslintrc` + `.prettierrc` | `deno.json` |
 | | `node_modules` | Global cache |
 | | `npm install` | `deno add` |
 | | `npm run` | `deno task` |
@@ -352,8 +353,8 @@ Deno/Web APIs for new code.
 | **Streams** | Node `Readable`/`Writable` | `ReadableStream`/`WritableStream` |
 | **Events** | `EventEmitter` | `EventTarget` + `CustomEvent` |
 | **Testing** | Jest / Mocha / Vitest | `Deno:test` + `@std/assert` |
-| **Linting** | ESLint | Biome |
-| **Formatting** | Prettier | Biome |
+| **Linting** | ESLint | `deno lint` |
+| **Formatting** | Prettier | `deno fmt` |
 | **Registry** | npm | JSR (`jsr:`) preferred |
 
 ---
@@ -368,6 +369,6 @@ Deno/Web APIs for new code.
 - **Project Structure**: See `10-project-structure.md` for `deno.json`
   (ID-15), `mod.js` (ID-08)
 - **Deno**: See `12-deno/01-runtime-basics.md` for Deno API details
-- **Biome**: See `13-biome/01-setup.md` for Biome replacing ESLint +
-  Prettier
+- **Linting/Formatting**: Deno's built-in `deno lint` + `deno fmt` on
+  compiled output. See also `13-biome/01-setup.md` for legacy Biome docs
 - **lykn CLI**: See `15-lykn-cli.md` for the lykn compilation step
