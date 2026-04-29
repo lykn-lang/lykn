@@ -51,6 +51,9 @@ These three rules are load-bearing — violating any of them produces broken bui
 > | `npm install <x>` | add to `project.json` `imports`, let Deno cache it |
 > | `cargo build` (in a lykn user project) | `lykn build --dist` |
 > | `deno run main.lykn` | `lykn run main.lykn` |
+> | `deno test` | `lykn test` |
+> | `deno fmt main.lykn` | `lykn fmt main.lykn` |
+> | `deno fmt dist/` or `deno lint dist/` | don't run these — compiler ensures output is formatted and lint-clean (Principle 3) |
 >
 > **2. Generated files are generated. Don't hand-write them. (MUST)**
 >
@@ -69,6 +72,11 @@ These three rules are load-bearing — violating any of them produces broken bui
 > top-level `src/` subdirectory are silently skipped. The dist will
 > appear to build successfully but ship a package with no code. This
 > is **not** stylistic — it is a load-bearing structural requirement.
+>
+> The user does not run `deno fmt` or `deno lint` against compiled
+> output. The compiler is the only validator; bugs in compiled JS
+> (malformed, ugly, or unidiomatic) are reported as compiler defects,
+> not papered over post-hoc.
 
 ---
 
@@ -137,9 +145,11 @@ Note: document paths are relative to the lykn project root.
 
 ### Publishing a Package
 
-1. **Confirm `deno.json` has the publish-required fields**: `name`,
-   `version`, `exports`, `license`, and `lykn.kind`. Without `license`,
-   JSR will reject the package.
+1. **Confirm `deno.json` has the required fields**: `name`,
+   `version`, `exports`, and `lykn.kind`. Either a `license` field
+   in `deno.json` *or* a `LICENSE` file at the package root is
+   required for JSR; `lykn new` generates the LICENSE file by
+   default, so adding a `license` field is optional.
 2. **Run `lykn build --dist`**: stages compiled `.js`, generated
    `package.json`, generated `jsr.json`, and copied `README.md`/
    `LICENSE` into `dist/<pkg>/`. Do **not** hand-write any file in

@@ -243,7 +243,7 @@ Example package `deno.json` with lykn metadata:
 ```json
 {
     "name": "@lykn/testing",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "exports": "./mod.lykn",
     "lykn": {
         "kind": "macro-module",
@@ -276,6 +276,24 @@ lykn publish --npm --dry-run
 lykn publish --jsr --no-build
 ```
 
+### Note: `dist/` and the JSR publishing flow
+
+JSR's `deno publish` operates on git-tracked files; gitignored files
+are excluded from the published package. This can create tension:
+a developer may want compiled `.js` artifacts gitignored to keep
+`git status` clean, but JSR needs them tracked.
+
+The scaffold's `.gitignore` resolves this by ignoring the build-
+artifact directory (`dist/`) — the directory `lykn build --dist`
+stages into. `lykn publish --jsr` reads from `dist/` directly via
+the filesystem, not via git, so the gitignore exclusion does not
+affect publishing. Source `.lykn` and other config files remain
+tracked normally.
+
+See [`docs/philosophy.md`](../../docs/philosophy.md) Principle 1 and the
+0.6.0 commitments for the longer-term direction (build artifacts
+moving to `target/lykn/build/` and `target/lykn/dist/`).
+
 ---
 
 ## ID-05: `--strip-assertions` for Production Builds
@@ -307,20 +325,14 @@ lykn fmt -w packages/myapp/main.lykn
 # 2. Check syntax
 lykn check packages/myapp/main.lykn
 
-# 3. Compile to JS
-lykn compile packages/myapp/main.lykn -o dist/main.js
+# 3. Build for distribution
+lykn build --dist
 
-# 4. Format compiled JS
-deno fmt dist/
+# 4. Run tests
+lykn test
 
-# 5. Lint compiled JS
-deno lint dist/
-
-# 6. Run tests
-deno test test/
-
-# 7. Run
-deno run --allow-net dist/main.js
+# 5. Run
+lykn run packages/myapp/main.lykn
 ```
 
 A typical `Makefile`:
@@ -329,19 +341,16 @@ A typical `Makefile`:
 .PHONY: build test check fmt
 
 build:
-	lykn compile packages/myapp/main.lykn -o dist/main.js
-	deno fmt dist/
+	lykn build --dist
 
 test: build
-	deno test --allow-all
+	lykn test
 
 check: build
-	deno lint dist/
-	deno test --allow-all
+	lykn test
 
 fmt:
 	lykn fmt -w packages/myapp/*.lykn
-	deno fmt dist/
 ```
 
 ---

@@ -59,11 +59,16 @@ lykn publish --npm
 {
   "name": "@lykn/my-lib",
   "version": "1.0.0",
-  "exports": "./dist/mod.js"
+  "exports": "./mod.js"
 }
 ```
 
-The `exports` field points to compiled `.js`, not `.lykn` source.
+The `exports` field points to compiled `.js`, relative to the source
+`deno.json`'s location. In the current toolchain, `lykn compile`
+produces `mod.js` alongside `mod.lykn` in the package source
+directory, so the path is `./mod.js`. (Note: in 0.6.0, the compiler
+output target reorganization may shift this path — see
+[`docs/philosophy.md`](../../docs/philosophy.md) §0.6.0 commitments.)
 
 ---
 

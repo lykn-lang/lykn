@@ -1,5 +1,6 @@
 ---
 source: crates/lykn-cli/src/dist.rs
+assertion_line: 898
 expression: value
 ---
 {
@@ -23,9 +24,12 @@ expression: value
   "license": "Apache-2.0",
   "main": "./mod.js",
   "name": "@lykn/testing",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/oxur/lykn"
+    "url": "git+https://github.com/oxur/lykn.git"
   },
   "type": "module",
   "version": "0.5.0"

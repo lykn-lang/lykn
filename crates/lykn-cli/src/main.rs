@@ -543,12 +543,14 @@ fn run_deno_test(config: &str, paths: &[String], extra_args: &[String]) {
     }
 }
 
-fn cmd_lint(paths: &[String]) {
-    let config = find_config();
-    let mut deno_args = vec!["lint", "--config", &config];
-    let refs: Vec<&str> = paths.iter().map(|s| s.as_str()).collect();
-    deno_args.extend(refs);
-    exec_deno(&deno_args);
+fn cmd_lint(_paths: &[String]) {
+    eprintln!("Lykn-source linting is not yet implemented. Tracked for the 0.6.0");
+    eprintln!("release — see https://github.com/lykn-lang/lykn/issues/1.");
+    eprintln!();
+    eprintln!("For now, lykn check <file>.lykn performs syntax checking. Anti-pattern");
+    eprintln!("and idiom checks documented in docs/guides/09-anti-patterns.md will");
+    eprintln!("be enforced by lykn lint when implemented.");
+    process::exit(1);
 }
 
 fn resolve_publish_targets(jsr: bool, npm: bool) -> (bool, bool) {
@@ -830,16 +832,19 @@ fn cmd_new(name: &str, path: Option<&Path>) {
         .stderr(process::Stdio::null())
         .status();
 
-    eprintln!(
-        "Created lykn project '{}' in {}",
-        name,
-        project_dir.display()
-    );
+    eprintln!("Created Lykn project: {name}");
     eprintln!();
+    eprintln!("Next steps:");
     eprintln!("  cd {name}");
-    eprintln!("  lykn run packages/{name}/mod.lykn");
+    eprintln!("  lykn run packages/{name}/mod.lykn   # run the program");
+    eprintln!("  lykn test                            # run the test suite");
     eprintln!();
-    eprintln!("Happy hacking!");
+    eprintln!("To prepare for publishing:");
+    eprintln!("  git add .");
+    eprintln!("  git commit -m \"Initial commit\"");
+    eprintln!("  lykn build --dist");
+    eprintln!("  lykn publish --jsr --dry-run");
+    eprintln!("  lykn publish --jsr");
 }
 
 // ---------------------------------------------------------------------------
