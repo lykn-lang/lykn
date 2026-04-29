@@ -580,6 +580,7 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
         let mut args = vec!["publish", "--config", &config, "--allow-slow-types"];
         if dry_run {
             args.push("--dry-run");
+            args.push("--allow-dirty");
         }
         eprintln!("Publishing to JSR...");
         let status = Command::new("deno")
