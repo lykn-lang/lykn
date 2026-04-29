@@ -1,4 +1,4 @@
-# lykn
+# Lykn
 
 [![][build-badge]][build]
 [![][crate-badge]][crate]
@@ -7,14 +7,24 @@
 
 [![][logo]][logo-large]
 
-*S-expression syntax for JavaScript*
+*A modern Lisp for ECMAScript, the browser, and the Deno JavaScript runtime*
 
-**lykn** is a lightweight Lisp that compiles to clean, readable JavaScript. No runtime, no dependencies in the output — just JS you'd write by hand, but expressed in s-expressions.
+**Lykn** is a Lisp designed for the modern web. Source is `.lykn` — typed
+functions, algebraic data types, pattern matching, immutable bindings, and a
+hygienic macro system. The `lykn` CLI is the language's surface: project
+scaffolding, build, test, format, and publish are all `lykn <subcommand>`.
+Compiled output (ECMAScript-conformant JavaScript) is an implementation
+detail; users work in Lykn at the source level.
 
-lykn has two syntax layers: **surface syntax** for everyday code (typed
-functions, algebraic data types, pattern matching, immutable bindings) and
-**kernel syntax** for low-level control. Both are s-expressions; surface forms
-compile to kernel forms, which compile to JavaScript.
+Lykn has two syntax layers. **Surface syntax** is what you write — the
+language proper, with types, contracts, pattern matching, and macros.
+**Kernel syntax** is the IR the surface compiles into; it's a thin
+JavaScript dialect that exists for compiler maintainers and language
+internals, not for end-user code. This README focuses on surface; for the
+full surface reference, see [`assets/ai/SKILL.md`](assets/ai/SKILL.md).
+
+For the design principles that govern Lykn's user experience, see
+[`docs/philosophy.md`](docs/philosophy.md).
 
 The name means *good luck* in Norwegian, *luck* in Swedish, and — if you
 squint at the Icelandic — *closure*.
@@ -138,34 +148,38 @@ lykn has two compiler implementations sharing the same syntax and semantics:
 ## Toolchain
 
 ```sh
-brew install deno
-cargo install lykn
+brew install deno         # runtime — needed to run compiled output
+cargo install lykn        # the lykn CLI
 ```
 
-### Test
+### User commands (working on a Lykn project)
 
 ```sh
-lykn test                   # discover and run .lykn/.lyk tests
-lykn test test/surface/     # test a specific directory
-cargo test                  # Rust tests
+lykn new my-app           # scaffold a new project
+lykn run main.lykn        # run a Lykn program
+lykn test                 # discover and run .lykn/.lyk tests
+lykn test test/surface/   # test a specific directory
+lykn fmt main.lykn        # format Lykn source
+lykn check main.lykn      # syntax check
+lykn build --dist         # stage all packages into dist/
+lykn publish --jsr        # publish to JSR
+lykn publish --npm        # publish to npm
+lykn publish --jsr --dry-run   # verify without publishing
 ```
 
-### Lint & Format
+`lykn lint` for Lykn-source linting is planned for 0.6.0 — see
+[`docs/philosophy.md`](docs/philosophy.md) §0.6.0 commitments.
+
+### Contributor commands (working on Lykn itself)
+
+These commands are for people working on the Lykn compiler and CLI, not
+for everyday Lykn users.
 
 ```sh
-lykn lint packages/         # lint compiled JS via Deno
-cargo clippy                # lint Rust
-cargo fmt                   # format Rust
-lykn fmt main.lykn          # format lykn source
-```
-
-### Build & Publish
-
-```sh
-lykn build --dist           # stage all packages into dist/
-lykn publish --jsr          # publish to JSR
-lykn publish --npm          # publish to npm
-lykn publish --jsr --dry-run  # verify without publishing
+cargo build --release     # build the lykn compiler binary
+cargo test                # Rust tests
+cargo clippy              # lint Rust
+cargo fmt                 # format Rust
 ```
 
 ## Usage
@@ -231,14 +245,11 @@ cargo build --release && cp ./target/release/lykn ./bin
 ### Run Examples
 
 ```sh
-# Run a lykn file directly
+# Run a Lykn file directly
 lykn run examples/surface/main.lykn
 
-# Or compile and run separately
-lykn compile examples/surface/main.lykn -o /tmp/main.js && deno run /tmp/main.js
-
-# Serve the browser examples
-deno run --allow-net --allow-read jsr:@std/http@1/file-server --port 5099
+# Serve the browser examples — any static file server works
+python3 -m http.server 5099
 # Then open http://localhost:5099/examples/surface/browser.html
 ```
 
@@ -457,14 +468,27 @@ Test files use `*_test.lykn` / `*.test.lykn` (or `.lyk`) naming. Run with
 
 ## Design principles
 
-- **Thin skin over JS.** lykn is not a new language. It's a syntax for the
-  language you already have. The output should look like code you'd write.
-- **No runtime.** Compiled lykn is just JS. Nothing extra ships to the
-  browser.
+These are summarized here; see [`docs/philosophy.md`](docs/philosophy.md)
+for the full doc with rationale, implications, and audit checklist.
+
+- **Source-only tree.** A Lykn project's source tree contains only
+  `.lykn`/`.lyk` files (plus configuration). Compiled output lives in a
+  build-artifact directory, gitignored. The pattern matches Rust, Go, and
+  other cleanly-compiled languages.
+- **Lykn-only tooling.** Every project operation is `lykn <command>`. The
+  `lykn` CLI is the language's surface; underlying tools do their work
+  invisibly. Users don't reach around the CLI.
+- **Compiler-owned output quality.** The compiler is responsible for
+  producing JavaScript that's properly formatted, lint-clean, and
+  behaviorally correct. Errors in compiled JS are compiler bugs, not
+  user-facing issues.
+- **No runtime.** Compiled Lykn is just JavaScript — no runtime library
+  shipped to the browser, nothing extra in published packages.
 - **Self-contained.** The Rust compiler is a single binary with no runtime
-  dependencies. The browser bundle is 73KB. You can read the whole thing.
-- **Two worlds.** Rust for the compiler and dev-side tooling (fast, single
-  binary). JS for the browser bundle and in-browser `<script>` workflow.
+  dependencies. The browser bundle is 73KB and inspectable.
+- **Two implementations.** Rust for the compiler and dev-side tooling
+  (fast, single binary). JS for the browser bundle and in-browser
+  `<script>` workflow.
 
 ## References
 
