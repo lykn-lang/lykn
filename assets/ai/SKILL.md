@@ -31,6 +31,47 @@ lykn is a Lisp-flavoured JavaScript — s-expression syntax compiling to clean, 
 
 ---
 
+## Before You Do Anything
+
+These three rules are load-bearing — violating any of them produces broken builds, broken packages, or silent data loss.
+
+> **1. Use the lykn CLI for everything. Never reach around it. (MUST)**
+>
+> Run `lykn <command>` for every project operation: build, test, lint,
+> format, run, publish. **Never** invoke `npm`, `deno publish`,
+> `deno add`, `cargo build` (for the project), or `node` directly. The
+> lykn CLI wraps these. If the wrapper seems to be missing something,
+> ask before reaching around it. Common bypass patterns and the correct
+> lykn equivalents:
+>
+> | Tempted to run | Use instead |
+> |----------------|-------------|
+> | `npm publish` | `lykn publish --npm` |
+> | `deno publish` | `lykn publish --jsr` |
+> | `npm install <x>` | add to `project.json` `imports`, let Deno cache it |
+> | `cargo build` (in a lykn user project) | `lykn build --dist` |
+> | `deno run main.lykn` | `lykn run main.lykn` |
+>
+> **2. Generated files are generated. Don't hand-write them. (MUST)**
+>
+> Never hand-write `package.json`, `jsr.json`, or any file inside
+> `dist/`. These are produced by `lykn build --dist` from the source
+> `deno.json`. Hand-written versions get overwritten on the next build
+> and create silent divergence between what you committed and what
+> ships. If you find yourself opening one of these in an editor, you
+> are about to fight the build.
+>
+> **3. Source files at the package root. No `src/`. (MUST)**
+>
+> Place `.lykn` source files directly in the package directory:
+> `packages/my-pkg/mod.lykn`, not `packages/my-pkg/src/mod.lykn`.
+> `lykn build --dist` stages from the package root; files inside a
+> top-level `src/` subdirectory are silently skipped. The dist will
+> appear to build successfully but ship a package with no code. This
+> is **not** stylistic — it is a load-bearing structural requirement.
+
+---
+
 ## Document Selection Guide
 
 The inline content below is enough to write correct lykn code. Load the full guide files when you need deeper rationale, edge cases, or comprehensive examples.
@@ -57,6 +98,7 @@ Note: document paths are relative to the lykn project root.
 | **Lint/format (Deno built-in)** | `docs/guides/12-deno/12-01-runtime-basics.md` |
 | **No-Node boundary** | `docs/guides/14-no-node-boundary.md`, `docs/guides/12-deno/12-01-runtime-basics.md` |
 | **lykn CLI (compile, fmt, check)** | `docs/guides/15-lykn-cli.md` |
+| **Publishing a package** | `docs/guides/15-lykn-cli.md` (ID-04d, ID-04e), `docs/guides/10-project-structure.md` (package layout for publishing) |
 
 ---
 
@@ -72,6 +114,7 @@ Note: document paths are relative to the lykn project root.
 5. **Write code**: Type annotations on all `func` params, contracts for validation, `match` for branching on tagged data, threading macros for transformation pipelines
 6. **Verify**: `lykn check <file>` for syntax, `lykn compile <file>` to inspect output
 7. **Self-review**: Check against anti-patterns table before finishing
+8. **When ready to publish**: see the **Publishing a Package** workflow below.
 
 ### Converting JS to lykn
 
@@ -91,6 +134,25 @@ Note: document paths are relative to the lykn project root.
 3. **Check API surfaces**: All `func` params typed, contracts for validation, consistent return types
 4. **Check mutation discipline**: `cell` only where genuinely needed, `!` suffix on all mutating ops
 5. **Check compiled output**: `lykn compile <file>` — output should be clean, readable JS
+
+### Publishing a Package
+
+1. **Confirm `deno.json` has the publish-required fields**: `name`,
+   `version`, `exports`, `license`, and `lykn.kind`. Without `license`,
+   JSR will reject the package.
+2. **Run `lykn build --dist`**: stages compiled `.js`, generated
+   `package.json`, generated `jsr.json`, and copied `README.md`/
+   `LICENSE` into `dist/<pkg>/`. Do **not** hand-write any file in
+   `dist/`.
+3. **Dry-run first**: `lykn publish --jsr --dry-run` then
+   `lykn publish --npm --dry-run`. Read the output — JSR in particular
+   has strict requirements that surface here.
+4. **Publish**: `lykn publish --jsr` then `lykn publish --npm`.
+5. **Counter-cue (read this if you're tempted to bypass):** if you
+   reach for `npm publish` or `deno publish` directly, stop. Those
+   commands skip `lykn build --dist` staging and produce a broken
+   package. The lykn CLI wraps both — there is no scenario in normal
+   project work where calling them directly is correct.
 
 ---
 
