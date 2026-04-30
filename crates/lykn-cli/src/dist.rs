@@ -91,7 +91,7 @@ fn rewrite_imports(source: &str, import_map: &IndexMap<String, String>) -> Strin
 // Per-kind builders
 // ---------------------------------------------------------------------------
 
-/// Build a runtime package: copy `.js` files and generate configs.
+/// Build a runtime package: compile `.lykn` sources, copy `.js` files, generate configs.
 fn build_runtime(
     project_root: &Path,
     pkg_dir: &str,
@@ -102,6 +102,7 @@ fn build_runtime(
     let dist_dir = project_root.join("dist").join(sname);
     let pkg_path = project_root.join(pkg_dir);
 
+    compile_lykn_sources(&pkg_path)?;
     prepare_dist_dir(&dist_dir)?;
     copy_js_files(&pkg_path, &dist_dir, project_imports)?;
     generate_dts_stubs(&dist_dir)?;
@@ -153,6 +154,76 @@ fn build_tooling(
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+/// Compile any `.lykn` source files in the package directory that don't
+/// have a corresponding `.js` file (or whose `.js` is older than the source).
+fn compile_lykn_sources(pkg_path: &Path) -> Result<(), DistError> {
+    let entries = fs::read_dir(pkg_path).map_err(|e| DistError::Io {
+        path: pkg_path.to_path_buf(),
+        source: e,
+    })?;
+
+    let imports: Option<std::collections::HashMap<String, String>> =
+        config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
+
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().is_some_and(|e| e == "lykn" || e == "lyk") {
+            let js_path = path.with_extension("js");
+            let needs_compile = !js_path.exists()
+                || fs::metadata(&path)
+                    .and_then(|src| fs::metadata(&js_path).map(|dst| (src, dst)))
+                    .and_then(|(src, dst)| {
+                        Ok(src.modified()? > dst.modified()?)
+                    })
+                    .unwrap_or(true);
+
+            if needs_compile {
+                let source = fs::read_to_string(&path).map_err(|e| DistError::Io {
+                    path: path.clone(),
+                    source: e,
+                })?;
+                let forms = lykn_lang::reader::read(&source).map_err(|e| DistError::Io {
+                    path: path.clone(),
+                    source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
+                })?;
+                let expanded = lykn_lang::expander::expand(forms, Some(&path), imports.as_ref())
+                    .map_err(|e| DistError::Io {
+                        path: path.clone(),
+                        source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
+                    })?;
+                let classified = lykn_lang::classifier::classify(&expanded).map_err(|diags| {
+                    let msg = diags.iter().map(|d| format!("{d}")).collect::<Vec<_>>().join("\n");
+                    DistError::Io {
+                        path: path.clone(),
+                        source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
+                    }
+                })?;
+                let analysis_result = lykn_lang::analysis::analyze(&classified);
+                if analysis_result.has_errors {
+                    let msg = analysis_result.diagnostics.iter()
+                        .filter(|d| d.severity == lykn_lang::diagnostics::Severity::Error)
+                        .map(|d| format!("{d}")).collect::<Vec<_>>().join("\n");
+                    return Err(DistError::Io {
+                        path: path.clone(),
+                        source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
+                    });
+                }
+                let kernel = lykn_lang::emitter::emit(
+                    &classified,
+                    &analysis_result.type_registry,
+                    false,
+                );
+                let js = lykn_lang::codegen::emit_module_js(&kernel);
+                fs::write(&js_path, js).map_err(|e| DistError::Io {
+                    path: js_path,
+                    source: e,
+                })?;
+            }
+        }
+    }
+    Ok(())
+}
 
 /// Remove and recreate the dist directory for a package.
 fn prepare_dist_dir(dist_dir: &Path) -> Result<(), DistError> {

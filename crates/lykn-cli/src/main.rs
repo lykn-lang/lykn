@@ -1,5 +1,6 @@
 use clap::{Parser, Subcommand};
 use std::fs;
+use std::io::IsTerminal;
 use std::path::{Path, PathBuf};
 use std::process::{self, Command};
 
@@ -259,6 +260,10 @@ fn cmd_compile(
                     process::exit(1);
                 }
             } else {
+                if std::io::stdout().is_terminal() {
+                    eprintln!("note: compiled output is going to stdout. Use `-o <file>` to write");
+                    eprintln!("to disk, or use `lykn build --dist` to stage for publishing.");
+                }
                 print!("{result}");
             }
         }
@@ -491,30 +496,19 @@ fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<Pat
             process::exit(1);
         }
 
-        // Use the JS compiler via Deno (supports surface-macros, testing DSL, etc.)
-        let config = find_config();
-        let lykn_str = lykn_path.to_string_lossy();
-        let js_str = js_path.to_string_lossy();
-        let script = format!(
-            "import {{ lykn }} from 'lang/mod.js';\n\
-             const source = Deno.readTextFileSync({:?});\n\
-             const js = lykn(source);\n\
-             Deno.writeTextFileSync({:?}, js);\n",
-            lykn_str, js_str,
-        );
-        let status = Command::new("deno")
-            .args(["eval", "--config", &config, &script])
-            .status()
-            .unwrap_or_else(|e| {
-                eprintln!("failed to run deno: {e}");
+        match compile::compile_file(lykn_path, false, false) {
+            Ok(js) => {
+                if let Err(e) = fs::write(&js_path, js) {
+                    eprintln!("error writing {}: {e}", js_path.display());
+                    process::exit(1);
+                }
+                eprintln!("  {} -> {}", lykn_path.display(), js_path.display());
+                compiled.push(js_path);
+            }
+            Err(e) => {
+                eprintln!("error compiling {}: {e}", lykn_path.display());
                 process::exit(1);
-            });
-        if status.success() {
-            eprintln!("  {} -> {}", lykn_path.display(), js_path.display());
-            compiled.push(js_path);
-        } else {
-            eprintln!("error compiling {}", lykn_path.display());
-            process::exit(status.code().unwrap_or(1));
+            }
         }
     }
 
@@ -557,6 +551,54 @@ fn resolve_publish_targets(jsr: bool, npm: bool) -> (bool, bool) {
     (jsr || !npm, npm)
 }
 
+fn validate_dist_exports() {
+    let dist = Path::new("dist");
+    if !dist.exists() {
+        return;
+    }
+    let entries = match fs::read_dir(dist) {
+        Ok(e) => e,
+        Err(_) => return,
+    };
+    for entry in entries.flatten() {
+        let pkg_dir = entry.path();
+        if !pkg_dir.is_dir() {
+            continue;
+        }
+        let deno_json = pkg_dir.join("deno.json");
+        if !deno_json.exists() {
+            continue;
+        }
+        let content = match fs::read_to_string(&deno_json) {
+            Ok(c) => c,
+            Err(_) => continue,
+        };
+        let parsed: serde_json::Value = match serde_json::from_str(&content) {
+            Ok(v) => v,
+            Err(_) => continue,
+        };
+        let exports_files: Vec<String> = match &parsed["exports"] {
+            serde_json::Value::String(s) => vec![s.clone()],
+            serde_json::Value::Object(map) => map.values().filter_map(|v| v.as_str().map(String::from)).collect(),
+            _ => continue,
+        };
+        for export_path in &exports_files {
+            let target = pkg_dir.join(export_path.trim_start_matches("./"));
+            if !target.exists() {
+                let pkg_name = pkg_dir.file_name().unwrap_or_default().to_string_lossy();
+                eprintln!(
+                    "lykn publish: dist/{}/{} not found.\n\
+                     Did `lykn build --dist` complete successfully? The exports field\n\
+                     in {}'s deno.json points to {} but no such file was staged.",
+                    pkg_name, export_path.trim_start_matches("./"),
+                    pkg_name, export_path,
+                );
+                process::exit(1);
+            }
+        }
+    }
+}
+
 fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
     let (do_jsr, do_npm) = resolve_publish_targets(jsr, npm);
 
@@ -574,6 +616,8 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
             }
         }
     }
+
+    validate_dist_exports();
 
     if do_jsr {
         let config = "dist/project.json".to_string();
@@ -726,10 +770,11 @@ fn mod_lykn_template(name: &str) -> String {
 
 fn test_template(name: &str) -> String {
     format!(
-        r#"(import-macros "jsr:@lykn/testing" (test is-equal))
+        r#"(import "jsr:@std/assert" (assert-equals))
 
-(test "{name}: placeholder test"
-  (is-equal (+ 1 1) 2))
+(Deno:test "{name}: placeholder test"
+  (fn ()
+    (assert-equals (+ 1 1) 2)))
 "#
     )
 }
