@@ -2,7 +2,7 @@
 name = "lykn-cli"
 version = "0.5.1"
 edition = "2024"
-description = "S-expression syntax for JavaScript — linter, formatter, and REPL"
+description = "Lykn language CLI — scaffolding, building, testing, and publishing for Lykn projects"
 license = "Apache-2.0"
 repository = "https://github.com/lykn-lang/lykn"
 keywords = ["lisp", "javascript", "s-expression", "compiler", "formatter"]

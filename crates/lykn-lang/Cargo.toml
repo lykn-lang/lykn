@@ -2,7 +2,7 @@
 name = "lykn-lang"
 version = "0.5.1"
 edition = "2024"
-description = "lykn language toolchain library — reader, AST, classifier, diagnostics"
+description = "Lykn language toolchain library — reader, AST, classifier, diagnostics"
 license = "Apache-2.0"
 repository = "https://github.com/lykn-lang/lykn"
 

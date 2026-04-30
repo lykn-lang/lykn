@@ -2,7 +2,7 @@
 name = "lykn"
 version = "0.5.1"
 edition = "2024"
-description = "S-expression syntax for JavaScript"
+description = "A modern Lisp for ECMAScript, the browser, and the Deno JavaScript runtime"
 license = "Apache-2.0"
 repository = "https://github.com/lykn-lang/lykn"
 keywords = ["lisp", "javascript", "s-expression", "compiler", "formatter"]
