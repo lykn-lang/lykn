@@ -485,6 +485,14 @@ fn compute_compiled_path(lykn_path: &Path, out_dir: Option<&Path>) -> PathBuf {
 fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<PathBuf> {
     let mut compiled = Vec::new();
 
+    // Determine the compiler import: use local packages/lang if available
+    // (lykn project itself), otherwise use the published JSR package
+    let compiler_import = if Path::new("packages/lang/mod.js").exists() {
+        "lang/mod.js"
+    } else {
+        "jsr:@lykn/lang"
+    };
+
     for lykn_path in files {
         let js_path = compute_compiled_path(lykn_path, out_dir);
         if let Some(parent) = js_path.parent()
@@ -496,19 +504,29 @@ fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<Pat
             process::exit(1);
         }
 
-        match compile::compile_file(lykn_path, false, false) {
-            Ok(js) => {
-                if let Err(e) = fs::write(&js_path, js) {
-                    eprintln!("error writing {}: {e}", js_path.display());
-                    process::exit(1);
-                }
-                eprintln!("  {} -> {}", lykn_path.display(), js_path.display());
-                compiled.push(js_path);
-            }
-            Err(e) => {
-                eprintln!("error compiling {}: {e}", lykn_path.display());
+        let config = find_config();
+        let lykn_str = lykn_path.to_string_lossy();
+        let js_str = js_path.to_string_lossy();
+        let script = format!(
+            "import {{ lykn }} from '{compiler_import}';\n\
+             const source = Deno.readTextFileSync({:?});\n\
+             const js = lykn(source);\n\
+             Deno.writeTextFileSync({:?}, js);\n",
+            lykn_str, js_str,
+        );
+        let status = Command::new("deno")
+            .args(["eval", "--config", &config, &script])
+            .status()
+            .unwrap_or_else(|e| {
+                eprintln!("failed to run deno: {e}");
                 process::exit(1);
-            }
+            });
+        if status.success() {
+            eprintln!("  {} -> {}", lykn_path.display(), js_path.display());
+            compiled.push(js_path);
+        } else {
+            eprintln!("error compiling {}", lykn_path.display());
+            process::exit(status.code().unwrap_or(1));
         }
     }
 
