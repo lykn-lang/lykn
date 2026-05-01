@@ -1011,6 +1011,150 @@ function findMacroEntry(pkgDir) {
   );
 }
 
+function _getMacroCacheDir() {
+  const xdg = typeof Deno !== 'undefined' ? Deno.env.get('XDG_CACHE_HOME') : null;
+  const home = typeof Deno !== 'undefined' ? Deno.env.get('HOME') : null;
+  const base = xdg || (home ? `${home}/.cache` : '/tmp');
+  return `${base}/lykn/macros`;
+}
+
+function _specifierCacheKey(specifier) {
+  let key = specifier.replace(/[^a-zA-Z0-9._@-]/g, '_');
+  if (key.length > 200) key = key.slice(0, 200);
+  return key;
+}
+
+function resolveRegistryMacroSource(specifier) {
+  const cacheDir = _getMacroCacheDir();
+  const cacheKey = _specifierCacheKey(specifier);
+  const pkgCacheDir = `${cacheDir}/${cacheKey}`;
+
+  // Check if package directory is already cached (has a .lykn entry)
+  try {
+    const entry = findMacroEntry(pkgCacheDir);
+    return entry;
+  } catch { /* not cached yet */ }
+
+  // Run deno info --json to get the redirect/resolution
+  let infoJson;
+  try {
+    const proc = new Deno.Command('deno', {
+      args: ['info', '--json', specifier],
+      stdout: 'piped',
+      stderr: 'piped',
+    }).outputSync();
+    if (!proc.success) {
+      const stderr = new TextDecoder().decode(proc.stderr);
+      throw new Error(
+        `cannot resolve macro module '${specifier}': network unreachable or registry error.\n` +
+        `  Try \`deno cache ${specifier}\` to prefetch, or check connectivity.\n` +
+        `  Detail: ${stderr.trim()}`
+      );
+    }
+    infoJson = JSON.parse(new TextDecoder().decode(proc.stdout));
+  } catch (e) {
+    if (e.message?.startsWith('cannot resolve')) throw e;
+    throw new Error(
+      `cannot resolve macro module '${specifier}': deno info failed.\n` +
+      `  Try \`deno cache ${specifier}\` to prefetch, or check connectivity.`
+    );
+  }
+
+  try { Deno.mkdirSync(pkgCacheDir, { recursive: true }); } catch { /* exists */ }
+
+  // JSR path: use redirects to get HTTPS URL, fetch all package files
+  if (specifier.startsWith('jsr:')) {
+    const redirectUrl = infoJson.redirects?.[specifier];
+    if (!redirectUrl) {
+      throw new Error(`macro module '${specifier}' not found on JSR. Check the specifier name and try again.`);
+    }
+    const baseUrl = redirectUrl.replace(/\/[^/]+$/, '/');
+
+    // Fetch package metadata to get file list
+    const metaUrl = baseUrl.replace(/\/$/, '_meta.json');
+    const metaText = await_fetch(metaUrl);
+    let filesToFetch = ['mod.lykn', 'macros.js', 'deno.json'];
+    if (metaText) {
+      try {
+        const meta = JSON.parse(metaText);
+        if (meta.manifest) {
+          filesToFetch = Object.keys(meta.manifest)
+            .map(f => f.replace(/^\//, ''))
+            .filter(f => f.endsWith('.lykn') || f.endsWith('.lyk') || f.endsWith('.js') || f === 'deno.json');
+        }
+      } catch { /* use defaults */ }
+    }
+
+    // Fetch each relevant file into the cache directory
+    for (const file of filesToFetch) {
+      const content = await_fetch(`${baseUrl}${file}`);
+      if (content !== null) {
+        Deno.writeTextFileSync(`${pkgCacheDir}/${file}`, content);
+      }
+    }
+
+    try {
+      return findMacroEntry(pkgCacheDir);
+    } catch {
+      throw new Error(
+        `macro module '${specifier}' has no \`lykn.macroEntry\` field and no \`mod.lykn\` fallback.\n` +
+        `  Cannot expand macros. Verify the package was published with \`lykn build --dist\`.`
+      );
+    }
+  }
+
+  // npm path: use deno info's local cache path (filesystem-based)
+  if (specifier.startsWith('npm:')) {
+    const modules = infoJson.modules || [];
+    let pkgDir = null;
+    for (const mod of modules) {
+      if (mod.local) {
+        let dir = mod.local;
+        if (/\.[a-z]+$/i.test(dir)) dir = _dirname(dir);
+        pkgDir = dir;
+        break;
+      }
+    }
+    if (!pkgDir) {
+      throw new Error(
+        `macro module '${specifier}' does not appear to be a Lykn macro module (no .lykn files found).\n` +
+        `  Verify the package was published with \`lykn build --dist\`.`
+      );
+    }
+    try {
+      return findMacroEntry(pkgDir);
+    } catch {
+      throw new Error(
+        `macro module '${specifier}' does not appear to be a Lykn macro module (no .lykn files found).\n` +
+        `  Verify the package was published with \`lykn build --dist\`.`
+      );
+    }
+  }
+
+  // https: specifiers — fetch the file directly
+  const source = await_fetch(specifier);
+  if (!source) {
+    throw new Error(`cannot fetch macro module '${specifier}': HTTP error.`);
+  }
+  const singleFile = `${pkgCacheDir}/fetched.lykn`;
+  Deno.writeTextFileSync(singleFile, source);
+  return singleFile;
+}
+
+function await_fetch(url) {
+  try {
+    const proc = new Deno.Command('deno', {
+      args: ['eval', '--ext=js', `const r = await fetch("${url}"); if (!r.ok) { Deno.exit(1); } const t = await r.text(); Deno.stdout.write(new TextEncoder().encode(t));`],
+      stdout: 'piped',
+      stderr: 'piped',
+    }).outputSync();
+    if (!proc.success) return null;
+    return new TextDecoder().decode(proc.stdout);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Three-tier specifier resolution for import-macros.
  * Tier 1: scheme-prefixed (jsr:, npm:, https:, file:) → Deno's resolver
@@ -1027,15 +1171,15 @@ function resolveImportMacrosSpecifier(specifier, filePath) {
       const resolved = import.meta.resolve(specifier);
       if (resolved.startsWith('file://')) {
         let fsPath = new URL(resolved).pathname;
-        // If it points to a file, get the directory
         if (/\.[a-z]+$/i.test(fsPath)) {
           fsPath = _dirname(fsPath);
         }
         return findMacroEntry(fsPath);
       }
-      throw new Error(`import-macros: resolved ${specifier} to non-file URL: ${resolved}`);
+      // Non-file URL (jsr:, npm:, https:) — resolve via deno info + fetch
+      return resolveRegistryMacroSource(specifier);
     } catch (e) {
-      if (e.message?.startsWith('import-macros:')) throw e;
+      if (e.message?.startsWith('import-macros:') || e.message?.startsWith('cannot ') || e.message?.startsWith('macro module')) throw e;
       throw new Error(`import-macros: could not resolve "${specifier}": ${e.message}`);
     }
   }

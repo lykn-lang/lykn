@@ -18,6 +18,16 @@ use super::MacroEnv;
 use super::cache::ModuleCache;
 use super::deno::DenoSubprocess;
 
+fn macro_cache_dir() -> PathBuf {
+    if let Ok(xdg) = std::env::var("XDG_CACHE_HOME") {
+        PathBuf::from(xdg).join("lykn/macros")
+    } else if let Ok(home) = std::env::var("HOME") {
+        PathBuf::from(home).join(".cache/lykn/macros")
+    } else {
+        PathBuf::from("/tmp/lykn-macros")
+    }
+}
+
 /// Process all `import-macros` forms, loading and compiling external macro
 /// modules as needed.
 ///
@@ -106,13 +116,29 @@ fn resolve_specifier(
     imports: Option<&HashMap<String, String>>,
     deno: &mut DenoSubprocess,
 ) -> Result<PathBuf, LyknError> {
-    // Tier 1: Scheme-prefixed — delegate to Deno
+    // Tier 1: Scheme-prefixed — resolve via Deno
     if module_path.starts_with("jsr:")
         || module_path.starts_with("npm:")
         || module_path.starts_with("https:")
         || module_path.starts_with("http:")
     {
-        return deno.resolve_specifier(module_path);
+        // Try filesystem resolution first (works for file:// results)
+        if let Ok(path) = deno.resolve_specifier(module_path)
+            && path.exists()
+        {
+            return Ok(path);
+        }
+        // Fetch macro source text via the Deno subprocess protocol
+        let source = deno.resolve_macro_source(module_path)?;
+        let cache_dir = macro_cache_dir();
+        let _ = std::fs::create_dir_all(&cache_dir);
+        let cache_key = module_path.replace(
+            |c: char| !c.is_alphanumeric() && c != '.' && c != '-' && c != '_' && c != '@',
+            "_",
+        );
+        let cache_path = cache_dir.join(format!("{cache_key}.lykn"));
+        std::fs::write(&cache_path, &source).map_err(LyknError::Io)?;
+        return Ok(cache_path);
     }
 
     // file: scheme — convert to path directly

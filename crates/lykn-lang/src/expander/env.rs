@@ -126,6 +126,74 @@ while (true) {
             } catch (e) {
                 writeLine(JSON.stringify({ ok: false, error: "resolve failed for " + request.specifier + ": " + e.message }));
             }
+        } else if (request.action === "resolve-macro-source") {
+            try {
+                const spec = request.specifier;
+                const proc = new Deno.Command("deno", {
+                    args: ["info", "--json", spec],
+                    stdout: "piped", stderr: "piped",
+                }).outputSync();
+                if (!proc.success) {
+                    writeLine(JSON.stringify({ ok: false, error: "cannot resolve macro module '" + spec + "': deno info failed. Try `deno cache " + spec + "` to prefetch." }));
+                    continue;
+                }
+                const info = JSON.parse(new TextDecoder().decode(proc.stdout));
+                let source = null;
+
+                if (spec.startsWith("jsr:")) {
+                    const redirectUrl = (info.redirects || {})[spec];
+                    if (!redirectUrl) {
+                        writeLine(JSON.stringify({ ok: false, error: "macro module '" + spec + "' not found on JSR." }));
+                        continue;
+                    }
+                    const baseUrl = redirectUrl.replace(/\/[^/]+$/, "/");
+                    let macroEntry = "mod.lykn";
+                    try {
+                        const djResp = await fetch(baseUrl + "deno.json");
+                        if (djResp.ok) {
+                            const dj = await djResp.json();
+                            if (dj.lykn?.macroEntry) macroEntry = dj.lykn.macroEntry;
+                        }
+                    } catch {}
+                    const srcResp = await fetch(baseUrl + macroEntry);
+                    if (!srcResp.ok) {
+                        writeLine(JSON.stringify({ ok: false, error: "macro module '" + spec + "' has no mod.lykn. Verify it was published with `lykn build --dist`." }));
+                        continue;
+                    }
+                    source = await srcResp.text();
+                } else if (spec.startsWith("npm:")) {
+                    const modules = info.modules || [];
+                    let localDir = null;
+                    for (const mod of modules) {
+                        if (mod.local) {
+                            localDir = mod.local.replace(/\/[^/]+$/, "");
+                            break;
+                        }
+                    }
+                    if (!localDir) {
+                        writeLine(JSON.stringify({ ok: false, error: "macro module '" + spec + "' not found in npm cache." }));
+                        continue;
+                    }
+                    for (const candidate of ["mod.lykn", "mod.lyk", "macros.lykn", "index.lykn"]) {
+                        try {
+                            source = Deno.readTextFileSync(localDir + "/" + candidate);
+                            break;
+                        } catch {}
+                    }
+                    if (!source) {
+                        writeLine(JSON.stringify({ ok: false, error: "macro module '" + spec + "' has no .lykn files. Verify it was published with `lykn build --dist`." }));
+                        continue;
+                    }
+                }
+
+                if (source) {
+                    writeLine(JSON.stringify({ ok: true, result: source }));
+                } else {
+                    writeLine(JSON.stringify({ ok: false, error: "unsupported specifier scheme for '" + spec + "'." }));
+                }
+            } catch (e) {
+                writeLine(JSON.stringify({ ok: false, error: "resolve-macro-source failed: " + e.message }));
+            }
         } else if (request.action === "ping") {
             writeLine(JSON.stringify({ ok: true, result: "pong" }));
         } else {

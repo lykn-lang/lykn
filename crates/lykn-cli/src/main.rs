@@ -793,11 +793,10 @@ fn mod_lykn_template(name: &str) -> String {
 
 fn test_template(name: &str) -> String {
     format!(
-        r#"(import "jsr:@std/assert" (assert-equals))
+        r#"(import-macros "jsr:@lykn/testing" (test is-equal))
 
-(Deno:test "{name}: placeholder test"
-  (fn ()
-    (assert-equals (+ 1 1) 2)))
+(test "{name}: placeholder test"
+  (is-equal (+ 1 1) 2))
 "#
     )
 }

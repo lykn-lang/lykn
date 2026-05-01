@@ -174,6 +174,18 @@ impl DenoSubprocess {
         })?;
         Ok(PathBuf::from(path_str))
     }
+
+    pub fn resolve_macro_source(&mut self, specifier: &str) -> Result<String, LyknError> {
+        let req = serde_json::json!({ "action": "resolve-macro-source", "specifier": specifier });
+        let result = self.request(req)?;
+        result
+            .as_str()
+            .map(|s| s.to_string())
+            .ok_or_else(|| LyknError::Read {
+                message: format!("resolve-macro-source returned non-string for {specifier}"),
+                location: SourceLoc::default(),
+            })
+    }
 }
 
 /// Parse a JSON response from the Deno subprocess.
