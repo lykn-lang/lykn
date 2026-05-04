@@ -7,7 +7,7 @@
 use crate::ast::sexpr::SExpr;
 
 use super::format::JsWriter;
-use super::names::{emit_atom, to_camel_case};
+use super::names::{emit_atom, to_js_identifier};
 use super::precedence::precedence;
 
 // ── Statement vs expression context ────────────────────────────────────
@@ -61,7 +61,7 @@ pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) {
         SExpr::Keyword { value, .. } => {
             // Keywords emit as string literals with camelCase conversion.
             w.write("\"");
-            w.write(&to_camel_case(value));
+            w.write(&to_js_identifier(value));
             w.write("\"");
         }
         SExpr::List { values, .. } => emit_list(w, values, parent_prec),
@@ -280,7 +280,7 @@ fn emit_pattern(w: &mut JsWriter, expr: &SExpr) {
         SExpr::Atom { value, .. } => {
             if value == "_" {
                 // empty slot marker — but in object patterns _ is just an ident
-                w.write(&to_camel_case(value));
+                w.write(&to_js_identifier(value));
             } else {
                 emit_atom(w, value);
             }
@@ -304,7 +304,7 @@ fn emit_object_pattern(w: &mut JsWriter, members: &[SExpr]) {
             w.write(", ");
         }
         match member {
-            SExpr::Atom { value, .. } => w.write(&to_camel_case(value)),
+            SExpr::Atom { value, .. } => w.write(&to_js_identifier(value)),
             SExpr::List { values, .. } if !values.is_empty() => {
                 match values[0].as_atom() {
                     Some("default") => {
@@ -913,7 +913,7 @@ fn emit_method_call(w: &mut JsWriter, args: &[SExpr]) {
     emit_expr(w, &args[0], 20);
     w.write(".");
     if let SExpr::Atom { value, .. } = &args[1] {
-        w.write(&to_camel_case(value));
+        w.write(&to_js_identifier(value));
     } else {
         emit_expr(w, &args[1], 20);
     }
@@ -1012,7 +1012,7 @@ fn emit_object(w: &mut JsWriter, args: &[SExpr]) {
         match arg {
             SExpr::Atom { value, .. } => {
                 // Shorthand property.
-                w.write(&to_camel_case(value));
+                w.write(&to_js_identifier(value));
             }
             SExpr::List { values, .. } if !values.is_empty() => {
                 match values[0].as_atom() {
@@ -1312,10 +1312,10 @@ fn emit_field_name(w: &mut JsWriter, expr: &SExpr) {
     if let SExpr::Atom { value, .. } = expr {
         if let Some(rest) = value.strip_prefix('-') {
             w.write("#_");
-            w.write(&to_camel_case(rest));
+            w.write(&to_js_identifier(rest));
             return;
         }
-        w.write(&to_camel_case(value));
+        w.write(&to_js_identifier(value));
     } else {
         emit_expr(w, expr, 0);
     }

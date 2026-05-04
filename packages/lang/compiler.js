@@ -7,7 +7,7 @@ import { generate } from 'astring';
 /** Build an ImportSpecifier from a reader node (atom or alias list). */
 function buildImportSpecifier(node) {
   if (node.type === 'atom') {
-    const name = toCamelCase(node.value);
+    const name = toJsIdentifier(node.value);
     return {
       type: 'ImportSpecifier',
       imported: { type: 'Identifier', name },
@@ -18,8 +18,8 @@ function buildImportSpecifier(node) {
       node.values[0].type === 'atom' && node.values[0].value === 'alias') {
     return {
       type: 'ImportSpecifier',
-      imported: { type: 'Identifier', name: toCamelCase(node.values[1].value) },
-      local: { type: 'Identifier', name: toCamelCase(node.values[2].value) },
+      imported: { type: 'Identifier', name: toJsIdentifier(node.values[1].value) },
+      local: { type: 'Identifier', name: toJsIdentifier(node.values[2].value) },
     };
   }
   throw new Error('import: each specifier must be a name or (alias original local)');
@@ -30,7 +30,7 @@ function buildExportNames(namesNode, sourceNode) {
   const items = namesNode.values.slice(1); // skip the 'names' head
   const specifiers = items.map(item => {
     if (item.type === 'atom') {
-      const name = toCamelCase(item.value);
+      const name = toJsIdentifier(item.value);
       return {
         type: 'ExportSpecifier',
         local: { type: 'Identifier', name },
@@ -41,8 +41,8 @@ function buildExportNames(namesNode, sourceNode) {
         item.values[0].type === 'atom' && item.values[0].value === 'alias') {
       return {
         type: 'ExportSpecifier',
-        local: { type: 'Identifier', name: toCamelCase(item.values[1].value) },
-        exported: { type: 'Identifier', name: toCamelCase(item.values[2].value) },
+        local: { type: 'Identifier', name: toJsIdentifier(item.values[1].value) },
+        exported: { type: 'Identifier', name: toJsIdentifier(item.values[2].value) },
       };
     }
     throw new Error('export names: each item must be a name or (alias local exported)');
@@ -58,7 +58,7 @@ function buildExportNames(namesNode, sourceNode) {
 
 /** Convert a class member name to Identifier or PrivateIdentifier. */
 function toClassKey(name) {
-  const converted = toCamelCase(name);
+  const converted = toJsIdentifier(name);
   if (name.startsWith('-')) {
     return { type: 'PrivateIdentifier', name: converted };
   }
@@ -74,34 +74,133 @@ function makeTemplateElement(raw, tail) {
   };
 }
 
-/** Convert lisp-case to camelCase via single-pass character walk. */
-function toCamelCase(str) {
-  let out = '';
-  let leadingHyphens = true;
-  let upperNext = false;
+// ── DD-49 data tables ──────────────────────────────────────────────────
 
-  for (let i = 0; i < str.length; i++) {
-    const ch = str[i];
+const MACRO_OVERRIDES = new Map([["->", "threadFirst"], ["->>", "threadLast"]]);
+const PREDICATE_PREFIXES = ["is-", "has-", "can-", "should-", "will-", "does-", "was-", "had-"];
+const MULTI_CHAR_ESCAPES = [["->", "To"], ["<-", "From"]];
+const PUNCTUATION_TABLE = new Map([
+  ["?", "QMARK"], ["!", "BANG"], ["*", "STAR"], ["+", "PLUS"],
+  ["=", "EQ"], ["<", "LT"], [">", "GT"], ["&", "AMP"],
+  ["%", "PCT"], ["/", "SLASH"],
+]);
 
-    if (ch === '-') {
-      if (leadingHyphens) {
-        out += '_';
-      } else if (i === str.length - 1) {
-        out += '_';
-      } else {
-        upperNext = true;
-      }
-    } else {
-      leadingHyphens = false;
-      if (upperNext) {
-        out += ch.toUpperCase();
-        upperNext = false;
-      } else {
-        out += ch;
-      }
-    }
+/** Map a lykn identifier to a valid JS identifier per DD-49. */
+function toJsIdentifier(str) {
+  // Step 1: macro-override check (whole-identifier match)
+  const override = MACRO_OVERRIDES.get(str);
+  if (override !== undefined) return override;
+
+  const len = str.length;
+  if (len === 0) return '';
+
+  // Step 2: trailing-rule phase
+  let predicateMode = false;
+  const last = str[len - 1];
+  let working;
+  if (last === '?' && len > 1) {
+    predicateMode = true;
+    working = str.slice(0, len - 1);
+  } else if (last === '!' && len > 1) {
+    working = str.slice(0, len - 1);
+  } else {
+    working = str;
   }
 
+  // Step 3: prefix-detection (if predicate mode, may prepend "is-")
+  if (predicateMode) {
+    let hasPrefix = false;
+    for (let p = 0; p < PREDICATE_PREFIXES.length; p++) {
+      if (working.startsWith(PREDICATE_PREFIXES[p])) {
+        hasPrefix = true;
+        break;
+      }
+    }
+    if (!hasPrefix) working = 'is-' + working;
+  }
+
+  // Step 4: walk phase (left-to-right with capNext flag)
+  let out = '';
+  let i = 0;
+  let capNext = false;
+  const wLen = working.length;
+
+  // Leading hyphens → underscores
+  while (i < wLen && working[i] === '-') {
+    out += '_';
+    i++;
+  }
+  if (i === wLen) return out;
+
+  // Trailing hyphens count
+  let trailingHyphens = 0;
+  {
+    let j = wLen;
+    while (j > i && working[j - 1] === '-') {
+      trailingHyphens++;
+      j--;
+    }
+  }
+  const bodyEnd = wLen - trailingHyphens;
+
+  while (i < bodyEnd) {
+    // Try multi-char escapes
+    let matchedMulti = false;
+    for (let m = 0; m < MULTI_CHAR_ESCAPES.length; m++) {
+      const [pattern, abbrev] = MULTI_CHAR_ESCAPES[m];
+      if (working.startsWith(pattern, i)) {
+        for (let a = 0; a < abbrev.length; a++) {
+          if (capNext) {
+            out += abbrev[a].toUpperCase();
+            capNext = false;
+          } else {
+            out += abbrev[a];
+          }
+        }
+        capNext = true;
+        i += pattern.length;
+        matchedMulti = true;
+        break;
+      }
+    }
+    if (matchedMulti) continue;
+
+    const ch = working[i];
+
+    // Try single-char punctuation table
+    const abbrev = PUNCTUATION_TABLE.get(ch);
+    if (abbrev !== undefined) {
+      for (let a = 0; a < abbrev.length; a++) {
+        if (capNext) {
+          out += abbrev[a].toUpperCase();
+          capNext = false;
+        } else {
+          out += abbrev[a];
+        }
+      }
+      capNext = true;
+      i++;
+      continue;
+    }
+
+    // Hyphen → set capNext
+    if (ch === '-') {
+      capNext = true;
+      i++;
+      continue;
+    }
+
+    // Alphanumeric
+    if (capNext) {
+      out += ch.toUpperCase();
+      capNext = false;
+    } else {
+      out += ch;
+    }
+    i++;
+  }
+
+  for (let t = 0; t < trailingHyphens; t++) out += '_';
   return out;
 }
 
@@ -170,7 +269,7 @@ const macros = {
       throw new Error('. requires at least 2 arguments: (. object method ...)');
     }
     const obj = compileExpr(args[0]);
-    const methodName = args[1].type === 'atom' ? toCamelCase(args[1].value)
+    const methodName = args[1].type === 'atom' ? toJsIdentifier(args[1].value)
                      : args[1].type === 'string' ? args[1].value
                      : (() => { throw new Error('. method name must be an atom or string'); })();
     const methodArgs = args.slice(2).map(compileExpr);
@@ -328,7 +427,7 @@ const macros = {
     const bodyExprs = args.slice(2);
     return {
       type: 'FunctionDeclaration',
-      id: { type: 'Identifier', name: toCamelCase(args[0].value) },
+      id: { type: 'Identifier', name: toJsIdentifier(args[0].value) },
       params,
       body: {
         type: 'BlockStatement',
@@ -353,7 +452,7 @@ const macros = {
       const bodyExprs = args.slice(2);
       return {
         type: 'FunctionDeclaration',
-        id: { type: 'Identifier', name: toCamelCase(args[0].value) },
+        id: { type: 'Identifier', name: toJsIdentifier(args[0].value) },
         params,
         body: {
           type: 'BlockStatement',
@@ -453,7 +552,7 @@ const macros = {
         // (import "mod" name) → default import
         specifiers.push({
           type: 'ImportDefaultSpecifier',
-          local: { type: 'Identifier', name: toCamelCase(args[1].value) },
+          local: { type: 'Identifier', name: toJsIdentifier(args[1].value) },
         });
       } else if (args[1].type === 'list') {
         // (import "mod" (a b)) → named imports
@@ -473,7 +572,7 @@ const macros = {
       }
       specifiers.push({
         type: 'ImportDefaultSpecifier',
-        local: { type: 'Identifier', name: toCamelCase(args[1].value) },
+        local: { type: 'Identifier', name: toJsIdentifier(args[1].value) },
       });
       for (const spec of args[2].values) {
         specifiers.push(buildImportSpecifier(spec));
@@ -522,7 +621,7 @@ const macros = {
 
     // Case 4: (export name) → export { name };
     if (args.length === 1 && args[0].type === 'atom') {
-      const name = toCamelCase(args[0].value);
+      const name = toJsIdentifier(args[0].value);
       return {
         type: 'ExportNamedDeclaration',
         declaration: null,
@@ -715,7 +814,7 @@ const macros = {
     return {
       type: 'BreakStatement',
       label: args.length > 0
-        ? { type: 'Identifier', name: toCamelCase(args[0].value) }
+        ? { type: 'Identifier', name: toJsIdentifier(args[0].value) }
         : null,
     };
   },
@@ -725,7 +824,7 @@ const macros = {
     return {
       type: 'ContinueStatement',
       label: args.length > 0
-        ? { type: 'Identifier', name: toCamelCase(args[0].value) }
+        ? { type: 'Identifier', name: toJsIdentifier(args[0].value) }
         : null,
     };
   },
@@ -804,7 +903,7 @@ const macros = {
     }
     return {
       type: 'LabeledStatement',
-      label: { type: 'Identifier', name: toCamelCase(args[0].value) },
+      label: { type: 'Identifier', name: toJsIdentifier(args[0].value) },
       body: toStatement(compileExpr(args[1])),
     };
   },
@@ -934,7 +1033,7 @@ const macros = {
     if (args[1].type !== 'list') {
       throw new Error('class superclass must be a list: () for no extends, (Super) for extends');
     }
-    const name = { type: 'Identifier', name: toCamelCase(args[0].value) };
+    const name = { type: 'Identifier', name: toJsIdentifier(args[0].value) };
     const superClass = args[1].values.length > 0
       ? compileExpr(args[1].values[0])
       : null;
@@ -989,7 +1088,7 @@ const macros = {
     for (const child of args) {
       if (child.type === 'atom') {
         // Bare atom → shorthand property
-        const name = toCamelCase(child.value);
+        const name = toJsIdentifier(child.value);
         properties.push({
           type: 'Property',
           key: { type: 'Identifier', name },
@@ -1054,7 +1153,7 @@ const macros = {
         properties.push({
           type: 'Property',
           key: keyNode.type === 'atom'
-            ? { type: 'Identifier', name: toCamelCase(keyNode.value) }
+            ? { type: 'Identifier', name: toJsIdentifier(keyNode.value) }
             : compileExpr(keyNode),
           value: compileExpr(child.values[1]),
           kind: 'init',
@@ -1145,7 +1244,7 @@ export function compileExpr(node) {
     case 'string':
       return { type: 'Literal', value: node.value };
     case 'keyword':
-      return { type: 'Literal', value: toCamelCase(node.value) };
+      return { type: 'Literal', value: toJsIdentifier(node.value) };
     case 'atom': {
       const val = node.value;
 
@@ -1187,13 +1286,13 @@ export function compileExpr(node) {
         } else if (first === 'super') {
           result = { type: 'Super' };
         } else {
-          result = { type: 'Identifier', name: toCamelCase(first) };
+          result = { type: 'Identifier', name: toJsIdentifier(first) };
         }
 
         for (let i = 1; i < segments.length; i++) {
           const seg = segments[i];
           const isPrivate = seg.startsWith('-');
-          const propName = toCamelCase(seg);
+          const propName = toJsIdentifier(seg);
           result = {
             type: 'MemberExpression',
             object: result,
@@ -1208,7 +1307,7 @@ export function compileExpr(node) {
       }
 
       // 4. Regular identifier with camelCase
-      return { type: 'Identifier', name: toCamelCase(val) };
+      return { type: 'Identifier', name: toJsIdentifier(val) };
     }
     case 'list': {
       if (node.values.length === 0) {
@@ -1239,7 +1338,7 @@ export function compileExpr(node) {
 function compileParam(node) {
   if (!node) return null;
   if (node.type === 'atom') {
-    return { type: 'Identifier', name: toCamelCase(node.value) };
+    return { type: 'Identifier', name: toJsIdentifier(node.value) };
   }
   return compilePattern(node);
 }
@@ -1254,7 +1353,7 @@ function compilePattern(node) {
       if (val === 'true' || val === 'false' || val === 'null' || val === 'undefined') {
         return compileExpr(node);
       }
-      return { type: 'Identifier', name: toCamelCase(val) };
+      return { type: 'Identifier', name: toJsIdentifier(val) };
     }
 
     case 'list': {
@@ -1316,7 +1415,7 @@ function compileObjectPattern(children) {
     const child = children[i];
 
     if (child.type === 'atom') {
-      const name = toCamelCase(child.value);
+      const name = toJsIdentifier(child.value);
       properties.push({
         type: 'Property',
         key: { type: 'Identifier', name },
@@ -1354,7 +1453,7 @@ function compileObjectPattern(children) {
         if (child.values.length !== 3) {
           throw new Error('default in object pattern: (default name value)');
         }
-        const propName = toCamelCase(child.values[1].value);
+        const propName = toJsIdentifier(child.values[1].value);
         properties.push({
           type: 'Property',
           key: { type: 'Identifier', name: propName },
@@ -1377,7 +1476,7 @@ function compileObjectPattern(children) {
           throw new Error('alias: (alias key local) or (alias key local default)');
         }
 
-        const key = toCamelCase(child.values[1].value);
+        const key = toJsIdentifier(child.values[1].value);
         let valueNode = compilePattern(child.values[2]);
 
         if (child.values.length === 4) {
@@ -1423,7 +1522,7 @@ function compileArrayPattern(children) {
       if (child.value === '_') {
         elements.push(null);
       } else {
-        elements.push({ type: 'Identifier', name: toCamelCase(child.value) });
+        elements.push({ type: 'Identifier', name: toJsIdentifier(child.value) });
       }
 
     } else if (child.type === 'list') {

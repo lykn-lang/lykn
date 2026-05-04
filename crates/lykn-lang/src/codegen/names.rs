@@ -1,56 +1,168 @@
 //! Identifier transformation for JavaScript output.
 //!
-//! Provides lisp-case to camelCase conversion and colon-separated member chain
-//! emission (e.g. `console:log` → `console.log`).
+//! Implements DD-49's composite identifier-mapping rule: lykn surface names
+//! (which may contain `?`, `!`, `*`, `->`, and other Lisp-tradition punctuation)
+//! are transformed to valid JavaScript identifiers via predicate naming, bang
+//! stripping, uppercase abbreviation escapes, and macro-name overrides.
+//!
+//! Also provides colon-separated member chain emission (`console:log` → `console.log`).
 
 use super::format::JsWriter;
 
-/// Convert a lisp-case identifier to camelCase.
+// ── DD-49 data tables ──────────────────────────────────────────────────
+
+const MACRO_OVERRIDES: &[(&str, &str)] = &[("->", "threadFirst"), ("->>", "threadLast")];
+
+const PREDICATE_PREFIXES: &[&str] = &[
+    "is-", "has-", "can-", "should-", "will-", "does-", "was-", "had-",
+];
+
+const MULTI_CHAR_ESCAPES: &[(&str, &str)] = &[("->", "To"), ("<-", "From")];
+
+const PUNCTUATION_TABLE: &[(char, &str)] = &[
+    ('?', "QMARK"),
+    ('!', "BANG"),
+    ('*', "STAR"),
+    ('+', "PLUS"),
+    ('=', "EQ"),
+    ('<', "LT"),
+    ('>', "GT"),
+    ('&', "AMP"),
+    ('%', "PCT"),
+    // `$` is a valid JS identifier character — not escaped (DD-49 refinement)
+    ('/', "SLASH"),
+];
+
+// ── Core transformation ────────────────────────────────────────────────
+
+/// Map a lykn identifier to a valid JavaScript identifier per DD-49.
 ///
-/// Rules:
-/// - Leading hyphens become underscores (`-private` → `_private`).
-/// - Trailing hyphens become underscores (`trailing-` → `trailing_`).
-/// - Interior hyphens capitalise the following character (`my-func` → `myFunc`).
-/// - No hyphens → returned unchanged.
-pub fn to_camel_case(s: &str) -> String {
-    if !s.contains('-') {
-        return s.to_string();
+/// Implements the composite rule:
+/// - Rule 1: trailing `?` → `is`-prefix predicate naming
+/// - Rule 2: trailing `!` → strip
+/// - Rule 3: embedded/leading punctuation → uppercase abbreviations
+/// - Rule 4: macro-name override registry (whole-identifier match)
+/// - Rule 5: doubled trailing punctuation
+///
+/// Hyphen-only identifiers (the previous `to_camel_case` behaviour) are a
+/// subset: interior `-` → capitalise next char, leading/trailing `-` → `_`.
+pub fn to_js_identifier(s: &str) -> String {
+    // Step 1: macro-override check (whole-identifier match)
+    for &(form, js_name) in MACRO_OVERRIDES {
+        if s == form {
+            return js_name.to_string();
+        }
     }
 
+    // Step 2: trailing-rule phase
     let chars: Vec<char> = s.chars().collect();
     let len = chars.len();
-    let mut out = String::with_capacity(len);
+    if len == 0 {
+        return String::new();
+    }
 
-    // Count leading hyphens.
+    let mut predicate_mode = false;
+    let last = chars[len - 1];
+    let working: Vec<char> = if last == '?' && len > 1 {
+        predicate_mode = true;
+        chars[..len - 1].to_vec()
+    } else if last == '!' && len > 1 {
+        chars[..len - 1].to_vec()
+    } else {
+        chars.clone()
+    };
+
+    // Step 3: prefix-detection (if predicate mode, may prepend "is-")
+    let working_str: String = if predicate_mode {
+        let remainder: String = working.iter().collect();
+        let has_prefix = PREDICATE_PREFIXES.iter().any(|p| remainder.starts_with(p));
+        if has_prefix {
+            remainder
+        } else {
+            format!("is-{remainder}")
+        }
+    } else {
+        working.iter().collect()
+    };
+
+    // Step 4: walk phase (left-to-right with cap_next flag)
+    let walk_chars: Vec<char> = working_str.chars().collect();
+    let walk_len = walk_chars.len();
+    let mut out = String::with_capacity(walk_len + 8);
     let mut i = 0;
-    while i < len && chars[i] == '-' {
+    let mut cap_next = false;
+
+    // Count leading hyphens → underscores
+    while i < walk_len && walk_chars[i] == '-' {
         out.push('_');
         i += 1;
     }
 
-    // If the entire string is hyphens, we are done.
-    if i == len {
+    if i == walk_len {
         return out;
     }
 
-    // Count trailing hyphens (from the end, not overlapping leading).
-    let mut trailing = 0;
+    // Count trailing hyphens
+    let mut trailing_hyphens = 0;
     {
-        let mut j = len;
-        while j > i && chars[j - 1] == '-' {
-            trailing += 1;
+        let mut j = walk_len;
+        while j > i && walk_chars[j - 1] == '-' {
+            trailing_hyphens += 1;
             j -= 1;
         }
     }
-
-    let body_end = len - trailing;
-    let mut cap_next = false;
+    let body_end = walk_len - trailing_hyphens;
 
     while i < body_end {
-        let ch = chars[i];
+        // Try multi-char escapes (longest first — `->` is 2 chars)
+        let remaining: String = walk_chars[i..body_end].iter().collect();
+        let mut matched_multi = false;
+        for &(pattern, abbrev) in MULTI_CHAR_ESCAPES {
+            if remaining.starts_with(pattern) {
+                for ch in abbrev.chars() {
+                    if cap_next {
+                        out.extend(ch.to_uppercase());
+                        cap_next = false;
+                    } else {
+                        out.push(ch);
+                    }
+                }
+                cap_next = true;
+                i += pattern.len();
+                matched_multi = true;
+                break;
+            }
+        }
+        if matched_multi {
+            continue;
+        }
+
+        let ch = walk_chars[i];
+
+        // Try single-char punctuation table
+        if let Some(&(_, abbrev)) = PUNCTUATION_TABLE.iter().find(|&&(c, _)| c == ch) {
+            for ac in abbrev.chars() {
+                if cap_next {
+                    out.extend(ac.to_uppercase());
+                    cap_next = false;
+                } else {
+                    out.push(ac);
+                }
+            }
+            cap_next = true;
+            i += 1;
+            continue;
+        }
+
+        // Hyphen → set cap_next
         if ch == '-' {
             cap_next = true;
-        } else if cap_next {
+            i += 1;
+            continue;
+        }
+
+        // Alphanumeric
+        if cap_next {
             out.push(ch.to_ascii_uppercase());
             cap_next = false;
         } else {
@@ -59,11 +171,17 @@ pub fn to_camel_case(s: &str) -> String {
         i += 1;
     }
 
-    for _ in 0..trailing {
+    for _ in 0..trailing_hyphens {
         out.push('_');
     }
 
     out
+}
+
+/// Convert a lisp-case identifier to camelCase.
+#[deprecated(note = "use to_js_identifier — DD-49 supersedes this function")]
+pub fn to_camel_case(s: &str) -> String {
+    to_js_identifier(s)
 }
 
 /// Emit a single atom value to the writer.
@@ -74,7 +192,8 @@ pub fn emit_atom(w: &mut JsWriter, value: &str) {
     match value {
         "true" | "false" | "null" | "undefined" | "this" | "super" => w.write(value),
         _ if value.contains(':') => emit_member_chain(w, value),
-        _ => w.write(&to_camel_case(value)),
+        #[allow(deprecated)]
+        _ => w.write(&to_js_identifier(value)),
     }
 }
 
@@ -91,7 +210,7 @@ fn emit_member_chain(w: &mut JsWriter, value: &str) {
     match first {
         "this" => w.write("this"),
         "super" => w.write("super"),
-        _ => w.write(&to_camel_case(first)),
+        _ => w.write(&to_js_identifier(first)),
     }
 
     // Subsequent segments.
@@ -99,10 +218,10 @@ fn emit_member_chain(w: &mut JsWriter, value: &str) {
         if let Some(rest) = seg.strip_prefix('-') {
             // Private field: `-name` → `.#_name`
             w.write(".#_");
-            w.write(&to_camel_case(rest));
+            w.write(&to_js_identifier(rest));
         } else {
             w.write(".");
-            w.write(&to_camel_case(seg));
+            w.write(&to_js_identifier(seg));
         }
     }
 }
@@ -113,49 +232,234 @@ mod tests {
 
     // ── to_camel_case ──────────────────────────────────────────────
 
+    // ── Regression: existing camelCase behaviour preserved ──────
+
     #[test]
-    fn test_to_camel_case_no_hyphens() {
-        assert_eq!(to_camel_case("hello"), "hello");
+    fn camel_no_hyphens() {
+        assert_eq!(to_js_identifier("hello"), "hello");
     }
 
     #[test]
-    fn test_to_camel_case_simple() {
-        assert_eq!(to_camel_case("my-function"), "myFunction");
+    fn camel_simple() {
+        assert_eq!(to_js_identifier("my-function"), "myFunction");
     }
 
     #[test]
-    fn test_to_camel_case_multiple_segments() {
-        assert_eq!(to_camel_case("a-b-c"), "aBC");
+    fn camel_multiple_segments() {
+        assert_eq!(to_js_identifier("a-b-c"), "aBC");
     }
 
     #[test]
-    fn test_to_camel_case_leading_hyphen() {
-        assert_eq!(to_camel_case("-private"), "_private");
+    fn camel_leading_hyphen() {
+        assert_eq!(to_js_identifier("-private"), "_private");
     }
 
     #[test]
-    fn test_to_camel_case_trailing_hyphen() {
-        assert_eq!(to_camel_case("trailing-"), "trailing_");
+    fn camel_trailing_hyphen() {
+        assert_eq!(to_js_identifier("trailing-"), "trailing_");
     }
 
     #[test]
-    fn test_to_camel_case_double_leading() {
-        assert_eq!(to_camel_case("--double"), "__double");
+    fn camel_double_leading() {
+        assert_eq!(to_js_identifier("--double"), "__double");
     }
 
     #[test]
-    fn test_to_camel_case_all_hyphens() {
-        assert_eq!(to_camel_case("---"), "___");
+    fn camel_all_hyphens() {
+        assert_eq!(to_js_identifier("---"), "___");
     }
 
     #[test]
-    fn test_to_camel_case_single_char() {
-        assert_eq!(to_camel_case("x"), "x");
+    fn camel_single_char() {
+        assert_eq!(to_js_identifier("x"), "x");
     }
 
     #[test]
-    fn test_to_camel_case_get_user() {
-        assert_eq!(to_camel_case("get-user"), "getUser");
+    fn camel_get_user() {
+        assert_eq!(to_js_identifier("get-user"), "getUser");
+    }
+
+    // ── Rule 1: trailing ? → predicate naming ────────────────
+
+    #[test]
+    fn rule1_valid_question() {
+        assert_eq!(to_js_identifier("valid?"), "isValid");
+    }
+
+    #[test]
+    fn rule1_empty_question() {
+        assert_eq!(to_js_identifier("empty?"), "isEmpty");
+    }
+
+    #[test]
+    fn rule1_even_question() {
+        assert_eq!(to_js_identifier("even?"), "isEven");
+    }
+
+    #[test]
+    fn rule1_has_items_question() {
+        assert_eq!(to_js_identifier("has-items?"), "hasItems");
+    }
+
+    #[test]
+    fn rule1_is_void_question() {
+        assert_eq!(to_js_identifier("is-void?"), "isVoid");
+    }
+
+    #[test]
+    fn rule1_can_edit_question() {
+        assert_eq!(to_js_identifier("can-edit?"), "canEdit");
+    }
+
+    #[test]
+    fn rule1_should_retry_question() {
+        assert_eq!(to_js_identifier("should-retry?"), "shouldRetry");
+    }
+
+    #[test]
+    fn rule1_will_succeed_question() {
+        assert_eq!(to_js_identifier("will-succeed?"), "willSucceed");
+    }
+
+    #[test]
+    fn rule1_does_match_question() {
+        assert_eq!(to_js_identifier("does-match?"), "doesMatch");
+    }
+
+    #[test]
+    fn rule1_was_modified_question() {
+        assert_eq!(to_js_identifier("was-modified?"), "wasModified");
+    }
+
+    #[test]
+    fn rule1_had_error_question() {
+        assert_eq!(to_js_identifier("had-error?"), "hadError");
+    }
+
+    // ── Rule 2: trailing ! → strip ───────────────────────────
+
+    #[test]
+    fn rule2_swap_bang() {
+        assert_eq!(to_js_identifier("swap!"), "swap");
+    }
+
+    #[test]
+    fn rule2_reset_bang() {
+        assert_eq!(to_js_identifier("reset!"), "reset");
+    }
+
+    #[test]
+    fn rule2_set_bang() {
+        assert_eq!(to_js_identifier("set!"), "set");
+    }
+
+    // ── Rule 3: embedded punctuation → abbreviation ──────────
+
+    #[test]
+    fn rule3_star_globals_star() {
+        assert_eq!(to_js_identifier("*globals*"), "STARGlobalsSTAR");
+    }
+
+    #[test]
+    fn rule3_string_arrow_json() {
+        assert_eq!(to_js_identifier("string->json"), "stringToJson");
+    }
+
+    #[test]
+    fn rule3_json_from_string() {
+        assert_eq!(to_js_identifier("json<-string"), "jsonFromString");
+    }
+
+    #[test]
+    fn rule3_embedded_qmark() {
+        assert_eq!(to_js_identifier("func?-thing"), "funcQMARKThing");
+    }
+
+    #[test]
+    fn rule3_plus_constant_plus() {
+        assert_eq!(to_js_identifier("+constant+"), "PLUSConstantPLUS");
+    }
+
+    #[test]
+    fn rule3_eq_prefix() {
+        assert_eq!(to_js_identifier("=val"), "EQVal");
+    }
+
+    #[test]
+    fn rule3_amp_rest() {
+        assert_eq!(to_js_identifier("&rest"), "AMPRest");
+    }
+
+    #[test]
+    fn rule3_pct_scratch() {
+        assert_eq!(to_js_identifier("%scratch"), "PCTScratch");
+    }
+
+    #[test]
+    fn rule3_dollar_ref_passthrough() {
+        // `$` is a valid JS identifier char — passes through unchanged
+        assert_eq!(to_js_identifier("$ref"), "$ref");
+    }
+
+    #[test]
+    fn rule3_slash_embedded() {
+        assert_eq!(to_js_identifier("path/to"), "pathSLASHTo");
+    }
+
+    // ── Rule 4: macro-name overrides ─────────────────────────
+
+    #[test]
+    fn rule4_thread_first() {
+        assert_eq!(to_js_identifier("->"), "threadFirst");
+    }
+
+    #[test]
+    fn rule4_thread_last() {
+        assert_eq!(to_js_identifier("->>"), "threadLast");
+    }
+
+    // ── Rule 5: doubled trailing punctuation ─────────────────
+
+    #[test]
+    fn rule5_valid_double_qmark() {
+        assert_eq!(to_js_identifier("valid??"), "isValidQMARK");
+    }
+
+    #[test]
+    fn rule5_swap_double_bang() {
+        assert_eq!(to_js_identifier("swap!!"), "swapBANG");
+    }
+
+    // ── Edge cases: degenerate identifiers ───────────────────
+
+    #[test]
+    fn edge_lone_qmark() {
+        assert_eq!(to_js_identifier("?"), "QMARK");
+    }
+
+    #[test]
+    fn edge_lone_bang() {
+        assert_eq!(to_js_identifier("!"), "BANG");
+    }
+
+    #[test]
+    fn edge_lone_star() {
+        assert_eq!(to_js_identifier("*"), "STAR");
+    }
+
+    #[test]
+    fn edge_single_hyphen() {
+        assert_eq!(to_js_identifier("-"), "_");
+    }
+
+    #[test]
+    fn edge_double_hyphen() {
+        assert_eq!(to_js_identifier("--"), "__");
+    }
+
+    #[test]
+    fn edge_empty_string() {
+        assert_eq!(to_js_identifier(""), "");
     }
 
     // ── emit_atom ──────────────────────────────────────────────────
