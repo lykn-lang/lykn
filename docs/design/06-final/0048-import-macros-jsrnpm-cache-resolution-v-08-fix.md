@@ -5,8 +5,8 @@ author: "the current"
 component: All
 tags: [change-me]
 created: 2026-04-30
-updated: 2026-04-30
-state: Active
+updated: 2026-05-03
+state: Final
 supersedes: null
 superseded-by: null
 version: 1.0

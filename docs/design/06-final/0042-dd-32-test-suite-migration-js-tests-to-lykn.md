@@ -5,8 +5,8 @@ author: "bootstrapping risk"
 component: All
 tags: [change-me]
 created: 2026-04-17
-updated: 2026-04-17
-state: Active
+updated: 2026-05-03
+state: Final
 supersedes: null
 superseded-by: null
 version: 1.0

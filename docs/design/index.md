@@ -6,21 +6,24 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
-| 0048 | Import-Macros JSR/npm Cache Resolution (V-08 fix) | Active | 2026-04-30 |
+| 0051 | `deno add` Adjudication — Guide 14 vs SKILL Contradiction | Active | 2026-05-03 |
+| 0050 | Position-Aware Compilation of Conditional and Block Forms | Active | 2026-05-03 |
+| 0049 | Identifier Mapping (lykn → JS) | Active | 2026-05-03 |
+| 0048 | Import-Macros JSR/npm Cache Resolution (V-08 fix) | Final | 2026-05-03 |
 | 0047 | DD-37: JS Surface Compiler Architecture | Draft | 2026-04-18 |
 | 0046 | DD-36: Kernel / Surface Compiler Split | Draft | 2026-04-18 |
-| 0045 | DD-35: Testing Strategy for the Publishing Pipeline | Active | 2026-04-17 |
+| 0045 | DD-35: Testing Strategy for the Publishing Pipeline | Final | 2026-05-03 |
 | 0044 | DD-34: Cross-Package `import-macros` Resolution | Final | 2026-04-17 |
 | 0043 | DD-33: Package Publishing and the `dist/` Boundary | Final | 2026-04-17 |
-| 0042 | DD-32: Test Suite Migration — JS Tests to lykn | Active | 2026-04-17 |
-| 0041 | DD-31: Test Runner CLI and Markdown/Literate Testing | Active | 2026-04-17 |
-| 0040 | DD-30: Testing DSL — Forms, Assertions, and Macro Design | Active | 2026-04-17 |
-| 0039 | DD-29: `lykn new` — Project Template Generation | Active | 2026-04-16 |
-| 0038 | DD-28: Project Restructure, Workspace Convention, and CLI Wrapper | Active | 2026-04-15 |
-| 0037 | DD-27: Surface Form Expansion Inside `class` Bodies | Active | 2026-04-15 |
-| 0036 | DD-26: Generator Functions and Async Iteration | Active | 2026-04-15 |
-| 0035 | DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters | Active | 2026-04-14 |
-| 0034 | DD-25: Destructured Parameters in Surface `func` and `fn` | Active | 2026-04-14 |
+| 0042 | DD-32: Test Suite Migration — JS Tests to lykn | Final | 2026-05-03 |
+| 0041 | DD-31: Test Runner CLI and Markdown/Literate Testing | Final | 2026-05-03 |
+| 0040 | DD-30: Testing DSL — Forms, Assertions, and Macro Design | Final | 2026-05-03 |
+| 0039 | DD-29: `lykn new` — Project Template Generation | Final | 2026-05-03 |
+| 0038 | DD-28: Project Restructure, Workspace Convention, and CLI Wrapper | Final | 2026-05-03 |
+| 0037 | DD-27: Surface Form Expansion Inside `class` Bodies | Final | 2026-05-03 |
+| 0036 | DD-26: Generator Functions and Async Iteration | Final | 2026-05-03 |
+| 0035 | DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters | Final | 2026-05-03 |
+| 0034 | DD-25: Destructured Parameters in Surface `func` and `fn` | Final | 2026-05-03 |
 | 0033 | DD-24: `bind` Type Enforcement | Final | 2026-04-14 |
 | 0032 | DD-23: `set!` — External Property Mutation | Final | 2026-04-13 |
 | 0031 | DD-22: Surface Equality and Logical Operators | Final | 2026-04-12 |
@@ -65,24 +68,27 @@ This index is automatically generated. Do not edit manually.
 
 ### Active
 
-- [0048 - Import-Macros JSR/npm Cache Resolution (V-08 fix)](05-active/0048-import-macros-jsrnpm-cache-resolution-v-08-fix.md)
-- [0045 - DD-35: Testing Strategy for the Publishing Pipeline](05-active/0045-dd-35-testing-strategy-for-the-publishing-pipeline.md)
-- [0042 - DD-32: Test Suite Migration — JS Tests to lykn](05-active/0042-dd-32-test-suite-migration-js-tests-to-lykn.md)
-- [0041 - DD-31: Test Runner CLI and Markdown/Literate Testing](05-active/0041-dd-31-test-runner-cli-and-markdownliterate-testing.md)
-- [0040 - DD-30: Testing DSL — Forms, Assertions, and Macro Design](05-active/0040-dd-30-testing-dsl-forms-assertions-and-macro-design.md)
-- [0039 - DD-29: `lykn new` — Project Template Generation](05-active/0039-dd-29-lykn-new-project-template-generation.md)
-- [0038 - DD-28: Project Restructure, Workspace Convention, and CLI Wrapper](05-active/0038-dd-28-project-restructure-workspace-convention-and-cli-wrapper.md)
-- [0037 - DD-27: Surface Form Expansion Inside `class` Bodies](05-active/0037-dd-27-surface-form-expansion-inside-class-bodies.md)
-- [0036 - DD-26: Generator Functions and Async Iteration](05-active/0036-dd-26-generator-functions-and-async-iteration.md)
-- [0035 - DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters](05-active/0035-dd-25.1-nested-destructuring-and-defaults-in-funcfn-parameters.md)
-- [0034 - DD-25: Destructured Parameters in Surface `func` and `fn`](05-active/0034-dd-25-destructured-parameters-in-surface-func-and-fn.md)
+- [0051 - `deno add` Adjudication — Guide 14 vs SKILL Contradiction](05-active/0051-deno-add-adjudication-guide-14-vs-skill-contradiction.md)
+- [0050 - Position-Aware Compilation of Conditional and Block Forms](05-active/0050-position-aware-compilation-of-conditional-and-block-forms.md)
+- [0049 - Identifier Mapping (lykn → JS)](05-active/0049-identifier-mapping-lykn-js.md)
 - [0030 - Pure Rust Kernel→JS Codegen](05-active/0030-pure-rust-kerneljs-codegen.md)
 - [0029 - DD-18.1: Method Calls in Threading Macros](05-active/0029-dd-18.1-method-calls-in-threading-macros.md)
 
 ### Final
 
+- [0048 - Import-Macros JSR/npm Cache Resolution (V-08 fix)](06-final/0048-import-macros-jsrnpm-cache-resolution-v-08-fix.md)
+- [0045 - DD-35: Testing Strategy for the Publishing Pipeline](06-final/0045-dd-35-testing-strategy-for-the-publishing-pipeline.md)
 - [0044 - DD-34: Cross-Package `import-macros` Resolution](06-final/0044-dd-34-cross-package-import-macros-resolution.md)
 - [0043 - DD-33: Package Publishing and the `dist/` Boundary](06-final/0043-dd-33-package-publishing-and-the-dist-boundary.md)
+- [0042 - DD-32: Test Suite Migration — JS Tests to lykn](06-final/0042-dd-32-test-suite-migration-js-tests-to-lykn.md)
+- [0041 - DD-31: Test Runner CLI and Markdown/Literate Testing](06-final/0041-dd-31-test-runner-cli-and-markdownliterate-testing.md)
+- [0040 - DD-30: Testing DSL — Forms, Assertions, and Macro Design](06-final/0040-dd-30-testing-dsl-forms-assertions-and-macro-design.md)
+- [0039 - DD-29: `lykn new` — Project Template Generation](06-final/0039-dd-29-lykn-new-project-template-generation.md)
+- [0038 - DD-28: Project Restructure, Workspace Convention, and CLI Wrapper](06-final/0038-dd-28-project-restructure-workspace-convention-and-cli-wrapper.md)
+- [0037 - DD-27: Surface Form Expansion Inside `class` Bodies](06-final/0037-dd-27-surface-form-expansion-inside-class-bodies.md)
+- [0036 - DD-26: Generator Functions and Async Iteration](06-final/0036-dd-26-generator-functions-and-async-iteration.md)
+- [0035 - DD-25.1: Nested Destructuring and Defaults in `func`/`fn` Parameters](06-final/0035-dd-25.1-nested-destructuring-and-defaults-in-funcfn-parameters.md)
+- [0034 - DD-25: Destructured Parameters in Surface `func` and `fn`](06-final/0034-dd-25-destructured-parameters-in-surface-func-and-fn.md)
 - [0033 - DD-24: `bind` Type Enforcement](06-final/0033-dd-24-bind-type-enforcement.md)
 - [0032 - DD-23: `set!` — External Property Mutation](06-final/0032-dd-23-set-external-property-mutation.md)
 - [0031 - DD-22: Surface Equality and Logical Operators](06-final/0031-dd-22-surface-equality-and-logical-operators.md)
