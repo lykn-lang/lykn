@@ -86,7 +86,7 @@ const PUNCTUATION_TABLE = new Map([
 ]);
 
 /** Map a lykn identifier to a valid JS identifier per DD-49. */
-function toJsIdentifier(str) {
+export function toJsIdentifier(str) {
   // Step 1: macro-override check (whole-identifier match)
   const override = MACRO_OVERRIDES.get(str);
   if (override !== undefined) return override;

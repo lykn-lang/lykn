@@ -3,6 +3,7 @@
 
 use std::collections::HashMap;
 
+use crate::codegen::names::to_js_identifier;
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 
@@ -19,6 +20,7 @@ pub struct Binding {
 #[derive(Debug)]
 struct ScopeLevel {
     bindings: HashMap<String, Binding>,
+    js_names: HashMap<String, String>,
 }
 
 /// Tracks lexical scopes, detecting unused bindings and shadowing.
@@ -40,6 +42,7 @@ impl ScopeTracker {
         Self {
             stack: vec![ScopeLevel {
                 bindings: HashMap::new(),
+                js_names: HashMap::new(),
             }],
             diagnostics: Vec::new(),
         }
@@ -49,6 +52,7 @@ impl ScopeTracker {
     pub fn enter_scope(&mut self) {
         self.stack.push(ScopeLevel {
             bindings: HashMap::new(),
+            js_names: HashMap::new(),
         });
     }
 
@@ -84,6 +88,25 @@ impl ScopeTracker {
             });
         }
         if let Some(level) = self.stack.last_mut() {
+            // DD-49 Rule 6: collision detection — two different lykn names
+            // mapping to the same JS identifier within the same scope.
+            let js_name = to_js_identifier(name);
+            if let Some(existing) = level.js_names.get(&js_name)
+                && existing != name
+            {
+                self.diagnostics.push(Diagnostic {
+                    severity: Severity::Error,
+                    message: format!(
+                        "identifier collision: '{name}' and '{existing}' both compile to '{js_name}'"
+                    ),
+                    span,
+                    suggestion: Some(
+                        "rename one of the bindings to avoid the collision".to_string(),
+                    ),
+                });
+            }
+            level.js_names.insert(js_name, name.to_string());
+
             level.bindings.insert(
                 name.to_string(),
                 Binding {
@@ -302,6 +325,68 @@ mod tests {
             diags
                 .iter()
                 .any(|d| d.message.contains("unused binding 'leaked'"))
+        );
+    }
+
+    // ── DD-49 Rule 6: collision detection ─────────────────────
+
+    #[test]
+    fn collision_valid_question_and_is_valid() {
+        let mut tracker = ScopeTracker::new();
+        tracker.introduce("valid?", span(), false, false);
+        tracker.introduce("is-valid", span(), false, false);
+        let diags = tracker.collect_diagnostics();
+        assert!(
+            diags
+                .iter()
+                .any(|d| d.message.contains("identifier collision")),
+            "expected collision error, got: {diags:?}"
+        );
+    }
+
+    #[test]
+    fn collision_has_items_question_and_has_items() {
+        let mut tracker = ScopeTracker::new();
+        tracker.introduce("has-items?", span(), false, false);
+        tracker.introduce("has-items", span(), false, false);
+        let diags = tracker.collect_diagnostics();
+        assert!(
+            diags
+                .iter()
+                .any(|d| d.message.contains("identifier collision")),
+            "expected collision error, got: {diags:?}"
+        );
+    }
+
+    #[test]
+    fn no_collision_different_js_names() {
+        let mut tracker = ScopeTracker::new();
+        tracker.introduce("valid?", span(), false, false);
+        tracker.introduce("empty?", span(), false, false);
+        let diags = tracker.collect_diagnostics();
+        assert!(
+            !diags
+                .iter()
+                .any(|d| d.message.contains("identifier collision")),
+            "unexpected collision: {diags:?}"
+        );
+    }
+
+    #[test]
+    fn no_collision_different_scopes() {
+        let mut tracker = ScopeTracker::new();
+        tracker.introduce("valid?", span(), false, false);
+        tracker.reference("valid?", span());
+        tracker.enter_scope();
+        tracker.introduce("is-valid", span(), false, false);
+        tracker.reference("is-valid", span());
+        tracker.exit_scope();
+        let diags = tracker.collect_diagnostics();
+        assert!(
+            !diags
+                .iter()
+                .any(|d| d.message.contains("identifier collision")),
+            "expected no collision across scopes, got: {diags:?}"
         );
     }
 }

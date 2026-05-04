@@ -1,7 +1,17 @@
 use crate::ast::sexpr::SExpr;
+use crate::codegen::names::to_js_identifier;
 use crate::reader::source_loc::Span;
 
 use super::forms::{atom, list, str_lit};
+
+fn display_name(lykn_name: &str) -> String {
+    let js_name = to_js_identifier(lykn_name);
+    if js_name != lykn_name {
+        format!("{js_name} ({lykn_name})")
+    } else {
+        js_name
+    }
+}
 
 /// Emit a runtime type-check assertion for a parameter.
 ///
@@ -119,7 +129,8 @@ pub fn emit_return_type_check(
     let message = list(vec![
         atom("+"),
         str_lit(&format!(
-            "{func_name}: return value expected {type_keyword}, got "
+            "{}: return value expected {type_keyword}, got ",
+            display_name(func_name)
         )),
         list(vec![atom("typeof"), atom(result_var)]),
     ]);
@@ -146,7 +157,9 @@ fn build_error_message(
     list(vec![
         atom("+"),
         str_lit(&format!(
-            "{func_name}: {label} '{param_name}' expected {type_keyword}, got "
+            "{}: {label} '{}' expected {type_keyword}, got ",
+            display_name(func_name),
+            display_name(param_name)
         )),
         list(vec![atom("typeof"), atom(param_name)]),
     ])

@@ -14,6 +14,7 @@ import {
 	isArray,
 	formatSExpr,
 } from "./expander.js";
+import { toJsIdentifier } from "./compiler.js";
 
 /**
  * Create a kernel-level AST node that won't be re-intercepted by surface
@@ -97,9 +98,13 @@ function buildTypeCheck(paramNode, typeKw, funcName, label) {
 	if (typeName === "any") return null;
 
 	const paramName = paramNode.value;
+	const jsFuncName = toJsIdentifier(funcName);
+	const dispFunc = jsFuncName !== funcName ? `${jsFuncName} (${funcName})` : jsFuncName;
+	const jsParamName = toJsIdentifier(paramName);
+	const dispParam = jsParamName !== paramName ? `${jsParamName} (${paramName})` : jsParamName;
 	const msgText = label
-		? `${funcName}: ${label} '${paramName}' expected ${typeName}, got `
-		: `${funcName} '${paramName}': expected ${typeName}, got `;
+		? `${dispFunc}: ${label} '${dispParam}' expected ${typeName}, got `
+		: `${dispFunc} '${dispParam}': expected ${typeName}, got `;
 	const msg = {
 		type: "string",
 		value: msgText,
