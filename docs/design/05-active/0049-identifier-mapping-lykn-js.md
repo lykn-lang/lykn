@@ -238,6 +238,8 @@ The committed abbreviation table:
 | `&`       | `AMP`        |                                             |
 | `%`       | `PCT`        |                                             |
 | `/`       | `SLASH`      |                                             |
+| `->`      | `To`         | longest-match before per-char escape        |
+| `<-`      | `From`       | longest-match before per-char escape        |
 
 **Note on `$`:** `$` is a valid JavaScript identifier character (per
 ECMAScript identifier-name production: identifiers may include letters,
@@ -246,8 +248,6 @@ identifiers; no escape is applied. This is a refinement applied during
 the initial implementation of DD-49 — the original abbreviation table
 listed `$ → DOLLAR`, but escaping `$` would have broken lykn's internal
 macro API (`$array`, `$sym`, `$gensym`).
-| `->`      | `To`         | longest-match before per-char escape        |
-| `<-`      | `From`       | longest-match before per-char escape        |
 
 Multi-character combinations (`->`, `<-`) match longest-first. So
 `string->json` matches `->` as `To` rather than per-char `GT`. The
@@ -370,6 +370,23 @@ export {isValid};
 The format applies to **all** compiler-emitted runtime error strings
 that name a binding or function: type-check assertions, `assert`
 macro outputs, contract messages, and similar.
+
+**Bridging guard:** the parenthesized `js_name (lykn_name)` form
+is rendered only when the source identifier contains non-hyphen
+punctuation (`?`, `!`, `*`, `+`, `=`, `<`, `>`, `&`, `%`, `/`, or
+arrow combinations like `->`, `<-`). Pure lisp-case → camelCase
+transformations (`my-func` → `myFunc`, `get-element-by-id` →
+`getElementById`) do not trigger bridging — the rule prevents
+error-message noise for the common case where the transformation
+is mechanically obvious (every lisp-case name → camelCase). The
+bridging is reserved for transformations where the source name
+and JS name diverge non-trivially: `valid?` → `isValid` (suffix
+flips to prefix), `swap!` → `swap` (character stripped),
+`*globals*` → `STARGlobalsSTAR` (escape-substituted), etc.
+
+Contrasting example: `(func my-func :args (:number n) :body n)`
+produces `"myFunc: arg 'n' expected number, got "` — no
+parenthesized form, since `my-func` → `myFunc` is pure camelCase.
 
 **Rationale:** until source maps are wired up, lykn users debugging
 compiled JS need both the JS-side name (which they see in stack
@@ -574,3 +591,14 @@ macro API (`$array`, `$sym`, `$gensym`), and `$` is a valid JS
 identifier character per the ECMAScript spec. `$` was removed from the
 table; identifiers containing `$` pass through unchanged. See note
 under Rule 3.
+
+**2026-05-05** — Rule 7 bridging-guard refinement (iteration 2,
+commit `404ce0e`). The original Rule 7 specified that the
+parenthesized `js_name (lykn_name)` form should render whenever
+`js_name != lykn_name`. During implementation testing, this was
+found to produce noisy error messages for the common case of
+pure lisp-case → camelCase transformations (e.g., every
+`my-func` becomes `"myFunc (my-func): …"`). The rule was
+tightened to render parens only when the source identifier
+contains non-hyphen punctuation. Pure hyphen-only transformations
+render the JS name alone. See Rule 7 "Bridging guard."

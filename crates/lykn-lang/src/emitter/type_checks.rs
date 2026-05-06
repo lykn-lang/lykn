@@ -360,7 +360,7 @@ mod tests {
     }
 
     #[test]
-    fn rule7_no_parens_when_names_match() {
+    fn rule7_no_parens_for_pure_camel_case_transformation() {
         let result = emit_type_check("x", "string", "my-func", "arg", Span::default()).unwrap();
         let s = extract_error_msg_str(&result);
         assert!(s.contains("myFunc:"), "got: {s}");
