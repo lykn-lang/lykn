@@ -6,6 +6,6 @@ target/
 /workbench
 /.claude
 /assets/images/logo/drafts
-/assets/ai/ai-*
+/assets/ai
 /dist
 /.npmrc

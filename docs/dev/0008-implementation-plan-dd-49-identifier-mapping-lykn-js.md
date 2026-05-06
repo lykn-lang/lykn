@@ -18,7 +18,7 @@ Above `to_camel_case` (line 15), add:
 
 - `MACRO_OVERRIDES: &[(&str, &str)]` — `[("->", "threadFirst"), ("->>", "threadLast")]`
 - `PREDICATE_PREFIXES: &[&str]` — `["is-", "has-", "can-", "should-", "will-", "does-", "was-", "had-"]`
-- `MULTI_CHAR_ESCAPES: &[(&str, &str)]` — `[("->>", "ThreadLast"), ("->", "To"), ("<-", "From")]` — longest-first ordering (the `->>`/`->` overlap requires this)
+- `MULTI_CHAR_ESCAPES: &[(&str, &str)]` — `[("->", "To"), ("<-", "From")]` — embedded-position arrows only. `->>` is **not** in this table; it appears only in `MACRO_OVERRIDES` (whole-identifier match, checked first). Per DD-49 Rule 3, the embedded-arrow table only contains `->` and `<-`. (Same intent as the JS-side note in §2a.)
 - `PUNCTUATION_TABLE: &[(char, &str)]` — 11 entries: `('?', "QMARK")`, `('!', "BANG")`, `('*', "STAR")`, `('+', "PLUS")`, `('=', "EQ")`, `('<', "LT")`, `('>', "GT")`, `('&', "AMP")`, `('%', "PCT")`, `('$', "DOLLAR")`, `('/', "SLASH")`
 
 Per Rust API guidelines (ID-04 naming, AP-02 parameter types): use `&str` slices in const arrays. Per core idioms: `const` over `static` for compile-time-known data with no interior mutability.
@@ -44,9 +44,9 @@ Keep a thin deprecated wrapper: `pub fn to_camel_case(s: &str) -> String { to_js
 
 ### 1c. Update call sites
 
-- `emit_atom` (line 73): change `to_camel_case(value)` → `to_js_identifier(value)`
-- `emit_member_chain` (line 86): each segment through `to_js_identifier`
-- `emit.rs` direct calls (lines 64, 283, 307, 916, 1015, 1315, 1318): update import and calls
+- `crates/lykn-lang/src/codegen/names.rs` `emit_atom` (line 73): change `to_camel_case(value)` → `to_js_identifier(value)`
+- `crates/lykn-lang/src/codegen/names.rs` `emit_member_chain` (line 86): each segment through `to_js_identifier`
+- `crates/lykn-lang/src/codegen/emit.rs` direct calls — verified: `use super::names::{emit_atom, to_camel_case};` at line 10 plus 7 call sites at lines 64, 283, 307, 916, 1015, 1315, 1318. Update both the `use` statement and the call sites.
 
 ### 1d. Unit tests in `names.rs`
 
@@ -146,7 +146,13 @@ After the existing shadowing check (line 78) and before the `insert` (line 87):
 
 ### 4a. Rust side
 
-**Files:** `crates/lykn-lang/src/emitter/` (find the type-check emission functions)
+**File:** `crates/lykn-lang/src/emitter/type_checks.rs`. Three format strings to update:
+
+- `build_error_message` (line 140) — the format at line 149: `"{func_name}: {label} '{param_name}' expected {type_keyword}, got "`. Used by `emit_type_check` for argument checks.
+- `emit_return_type_check` (line 112) — the format at line 122: `"{func_name}: return value expected {type_keyword}, got "`. Used for return-type checks.
+- (`build_error_message` is the only helper; `emit_type_check` delegates to it. No other format strings in this file.)
+
+`crates/lykn-lang/src/emitter/contracts.rs` does **not** contain `expected … got` strings — confirmed via grep. No edits needed there.
 
 Update runtime error-message strings from:
 ```
@@ -157,13 +163,24 @@ to:
 "isValid (valid?): arg 'x' expected string, got "
 ```
 
-The pattern: compute `js_name = to_js_identifier(lykn_name)`. If `js_name != lykn_name`, format as `"{js_name} ({lykn_name}): ..."`. If equal, format as `"{js_name}: ..."` (no parenthesized redundancy).
+The pattern: `func_name` arrives as the lykn source name (verified — callers at `forms.rs:544, 992, 1110, 1124, 1268, 1629` pass source-side names). Compute `js_name = to_js_identifier(func_name)`. If `js_name != func_name`, format as `"{js_name} ({func_name}): ..."`. If equal (no punctuation stripping), format as `"{func_name}: ..."` — no parenthesized redundancy.
+
+`param_name` is also a lykn source name and could in principle contain punctuation (e.g., a parameter named `valid?`). Apply the same `js_name (source_name)` treatment to `param_name` when they differ. Keeps the bridging consistent across the message.
 
 ### 4b. JS side
 
-**File:** `packages/lang/surface.js` — `buildTypeCheck` function (line 95)
+**File:** `packages/lang/surface.js` — `buildTypeCheck` function (line 95).
 
-Same format change. Import `toJsIdentifier` from `compiler.js` (or extract to a shared identifiers module if circular-import issues arise).
+Two format paths in the function (lines 100–102):
+```js
+const msgText = label
+    ? `${funcName}: ${label} '${paramName}' expected ${typeName}, got `
+    : `${funcName} '${paramName}': expected ${typeName}, got `;
+```
+
+Both need updating. The `funcName` parameter is the lykn source name (verified — call sites at lines 534, 539, 548 pass source-side names from the surrounding `func` definition). Apply the same pattern as Rust (4a): compute `jsName = toJsIdentifier(funcName)`; if different, render `${jsName} (${funcName})`; otherwise render `${funcName}`. Same treatment for `paramName`.
+
+Import `toJsIdentifier` from `compiler.js`. **Check for circular imports up front** — if `compiler.js` imports from `surface.js` (or transitively), extract `toJsIdentifier` into a new shared module (e.g., `packages/lang/identifiers.js`) before starting Phase 4. A circular-import failure mid-Phase-4 would force the extraction with rework; doing it proactively avoids the churn.
 
 ### 4c. Tests
 
@@ -184,10 +201,11 @@ make test     # all: rust, js, lykn surface, doctests
 ### 5b. Check for existing tests using `?` or `!` in identifiers
 
 ```sh
-grep -r '[?!]' test/surface/ test/forms/ --include='*.lykn' | grep -v '^#'
+# Lykn comments are `;;`, not `#` — filter those out.
+grep -rE '\b[a-zA-Z_][a-zA-Z0-9_-]*[?!]' test/ --include='*.lykn' | grep -v ';;'
 ```
 
-Any existing test that used `valid?` expecting `valid?` in output needs updating to expect `isValid`.
+Cast wider than `test/surface/ test/forms/` — any test directory with `.lykn` files. Any existing test that used `valid?` expecting `valid?` in output needs updating to expect `isValid`. Likewise `swap!` → `swap`, etc.
 
 ### 5c. Check insta snapshots
 
@@ -199,10 +217,31 @@ If any snapshots contain `?`/`!` identifiers in compiled output, they need `carg
 
 ### 5d. V-02/V-03 regression verification
 
-Compile the M6 repro files through both compilers and verify:
+The M6 repro inputs and captured outputs live in `workbench/verify/m6/` (see `v02-*`, `v03-*` files). Re-run those inputs through both compilers and verify:
+
 - `valid?` → `isValid` (not `valid?`)
-- `import {isValid}` (not `import {valid?}`)
+- `import {isValid}` from V-03 (not `import {valid?}`)
 - Error messages contain `"isValid (valid?):"` format
+- Update or annotate the captured `*-js-output.txt` / `*-rust-output.txt` files in `workbench/verify/m6/` to reflect the new expected output (or note them as stale references to the pre-fix V-rows). Coordinate this with M8's closing report.
+
+### 5e. Rule 8 (import-binding emission) verification
+
+Implicit in Phase 2c (the global `toCamelCase` → `toJsIdentifier` rename) — `buildImportSpecifier` and `buildExportNames` already route through the central transformer. But verify explicitly with a focused test:
+
+```lykn
+;; Source
+(import "./x.js" (valid?))
+(export (func valid? :args (:any x) :body x))
+```
+
+Expected JS output:
+```js
+import { isValid } from "./x.js";
+function isValid(x) { ... }
+export { isValid };
+```
+
+Same test in Rust. Confirms Rule 8 (DD-49) survived Phase 2c's mechanical rename without regression.
 
 ---
 
@@ -214,18 +253,30 @@ Compile the M6 repro files through both compilers and verify:
 | `crates/lykn-lang/src/codegen/emit.rs` | 1 | Call site updates (~7) |
 | `packages/lang/compiler.js` | 2 | Core function replacement + call sites (~30) |
 | `crates/lykn-lang/src/analysis/scope.rs` | 3 | Collision detection |
-| `crates/lykn-lang/src/emitter/` | 4 | Error-message format |
-| `packages/lang/surface.js` | 4 | Error-message format |
+| `crates/lykn-lang/src/emitter/type_checks.rs` | 4 | Error-message format (2 strings: `build_error_message` line 149, `emit_return_type_check` line 122) |
+| `packages/lang/surface.js` | 4 | Error-message format (2 paths in `buildTypeCheck` line 100–102) |
 | `test/forms/camel-case_test.lykn` | 2, 5 | Surface tests |
 
 ## Sequencing
 
 ```
-Phase 1 (Rust core) ──→ Phase 3 (Collision) ──→ Phase 5 (Integration)
-Phase 2 (JS core)   ──→ Phase 4 (Error msgs) ──↗
+Phase 1 (Rust core) ─┬─→ Phase 3 (Collision) ──→ Phase 5 (Integration)
+                     └─→ Phase 4 (Error msgs) ──↗
+Phase 2 (JS core)   ───→ Phase 4 (Error msgs) ──↗
 ```
 
-Phases 1 and 2 are independent (different files/languages). Phase 3 depends on Phase 1 (imports `to_js_identifier`). Phase 4 depends on both. Phase 5 is the final sweep.
+Phases 1 and 2 are independent (different files/languages). Phase 3 depends on Phase 1 (imports `to_js_identifier` from `codegen::names`). **Phase 4 depends on both Phases 1 and 2** — the error-message format change calls `to_js_identifier` (Rust) and `toJsIdentifier` (JS). Phase 5 is the final sweep.
+
+## Cross-compiler byte-identical convergence
+
+Per the M5 context-aware split: the Rust and JS implementations diverge in mechanism but **must converge in user-visible output**. Specifically, the following must be byte-identical across compilers for any input identifier:
+
+- The abbreviation table (Rule 3) — same characters, same all-caps escapes
+- The macro-override registry (Rule 4) — same form names, same JS-side names
+- The predicate-prefix list (Rule 1) — same eight prefixes, same order doesn't matter, same set
+- The error-message format (Rule 7) — same parenthesization shape
+
+Phase 2d's cross-compiler convergence test is the gate. If the Rust and JS outputs ever diverge for a tested input, that's a bug in one of the implementations, not a design difference.
 
 ## Key Rust Quality Checks (per SKILL guides)
 
