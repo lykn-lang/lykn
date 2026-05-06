@@ -6,7 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
-| 0051 | `deno add` Adjudication — Guide 14 vs SKILL Contradiction | Active | 2026-05-03 |
+| 0051 | Deno-Native Tool Boundaries (`deno add`, `deno task`, `deno cache`, `lykn add`) | Draft | 2026-05-05 |
 | 0050 | Position-Aware Compilation of Conditional and Block Forms | Active | 2026-05-03 |
 | 0049 | Identifier Mapping (lykn → JS) | Active | 2026-05-03 |
 | 0048 | Import-Macros JSR/npm Cache Resolution (V-08 fix) | Final | 2026-05-03 |
@@ -62,13 +62,13 @@ This index is automatically generated. Do not edit manually.
 
 ### Draft
 
+- [0051 - Deno-Native Tool Boundaries (`deno add`, `deno task`, `deno cache`, `lykn add`)](01-draft/0051-deno-native-tool-boundaries-deno-add-deno-task-deno-cache-lykn-add.md)
 - [0047 - DD-37: JS Surface Compiler Architecture](01-draft/0047-dd-37-js-surface-compiler-architecture.md)
 - [0046 - DD-36: Kernel / Surface Compiler Split](01-draft/0046-dd-36-kernel-surface-compiler-split.md)
 - [0028 - Fix `lykn compile` Rust CLI Bugs](01-draft/0028-fix-lykn-compile-rust-cli-bugs.md)
 
 ### Active
 
-- [0051 - `deno add` Adjudication — Guide 14 vs SKILL Contradiction](05-active/0051-deno-add-adjudication-guide-14-vs-skill-contradiction.md)
 - [0050 - Position-Aware Compilation of Conditional and Block Forms](05-active/0050-position-aware-compilation-of-conditional-and-block-forms.md)
 - [0049 - Identifier Mapping (lykn → JS)](05-active/0049-identifier-mapping-lykn-js.md)
 - [0030 - Pure Rust Kernel→JS Codegen](05-active/0030-pure-rust-kerneljs-codegen.md)
