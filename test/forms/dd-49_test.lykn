@@ -1,0 +1,121 @@
+(import-macros "testing" (test test-compiles is-equal ok includes))
+(import "testing/helpers.js" (compile))
+
+;; ── V-02 / V-03 regressions ─────────────────────────────────────
+
+(test
+  "DD-49 V-02: ?-suffix in func name compiles to is-prefix"
+  (bind r (compile "(func valid? :args (:any x) :returns :boolean :body true)\n(export valid?)"))
+  (includes r "function isValid(x) {"))
+
+(test
+  "DD-49 V-02: export uses transformed name"
+  (bind result (compile "(func valid? :args (:any x) :returns :boolean :body true)\n(export valid?)"))
+  (includes result "export {isValid}"))
+
+(test
+  "DD-49 V-03: import binding uses transformed name"
+  (bind result (compile "(import \"./x.js\" (valid?))\n(bind r (valid? 42))"))
+  (includes result "import {isValid}")
+  (includes result "isValid(42)"))
+
+;; ── Rule 1: every predicate prefix ──────────────────────────────
+
+(test
+  "DD-49 Rule 1: has-items? → hasItems"
+  (bind r (compile "(func has-items? :args (:any x) :body x)"))
+  (includes r "function hasItems("))
+
+(test
+  "DD-49 Rule 1: is-void? → isVoid"
+  (bind r (compile "(func is-void? :args (:any x) :body x)"))
+  (includes r "function isVoid("))
+
+(test
+  "DD-49 Rule 1: can-edit? → canEdit"
+  (bind r (compile "(func can-edit? :args (:any x) :body x)"))
+  (includes r "function canEdit("))
+
+(test
+  "DD-49 Rule 1: should-retry? → shouldRetry"
+  (bind r (compile "(func should-retry? :args (:any x) :body x)"))
+  (includes r "function shouldRetry("))
+
+(test
+  "DD-49 Rule 1: will-succeed? → willSucceed"
+  (bind r (compile "(func will-succeed? :args (:any x) :body x)"))
+  (includes r "function willSucceed("))
+
+(test
+  "DD-49 Rule 1: does-match? → doesMatch"
+  (bind r (compile "(func does-match? :args (:any x) :body x)"))
+  (includes r "function doesMatch("))
+
+(test
+  "DD-49 Rule 1: was-modified? → wasModified"
+  (bind r (compile "(func was-modified? :args (:any x) :body x)"))
+  (includes r "function wasModified("))
+
+(test
+  "DD-49 Rule 1: had-error? → hadError"
+  (bind r (compile "(func had-error? :args (:any x) :body x)"))
+  (includes r "function hadError("))
+
+;; ── Rule 2: trailing ! → strip ──────────────────────────────────
+
+(test
+  "DD-49 Rule 2: my-update! → myUpdate"
+  (bind r (compile "(func my-update! :args (:any x) :body x)"))
+  (includes r "function myUpdate("))
+
+;; ── Rule 3: embedded punctuation ────────────────────────────────
+
+(test
+  "DD-49 Rule 3: *globals* → STARGlobalsSTAR"
+  (bind r (compile "(bind *globals* 1)"))
+  (includes r "const STARGlobalsSTAR = 1"))
+
+(test
+  "DD-49 Rule 3: string->json → stringToJson"
+  (bind r (compile "(func string->json :args (:any x) :body x)"))
+  (includes r "function stringToJson("))
+
+(test
+  "DD-49 Rule 3: json<-string → jsonFromString"
+  (bind r (compile "(func json<-string :args (:any x) :body x)"))
+  (includes r "function jsonFromString("))
+
+(test
+  "DD-49 Rule 3: +constant+ → PLUSConstantPLUS"
+  (bind r (compile "(bind +constant+ 42)"))
+  (includes r "const PLUSConstantPLUS = 42"))
+
+(test
+  "DD-49 Rule 3: path/to-thing → pathSLASHToThing"
+  (bind r (compile "(bind path/to-thing 1)"))
+  (includes r "const pathSLASHToThing = 1"))
+
+;; ── Rule 5: doubled trailing punctuation ────────────────────────
+
+(test
+  "DD-49 Rule 5: valid?? → isValidQMARK"
+  (bind r (compile "(func valid?? :args (:any x) :body x)"))
+  (includes r "function isValidQMARK("))
+
+(test
+  "DD-49 Rule 5: swap!! → swapBANG"
+  (bind r (compile "(func swap!! :args (:any x) :body x)"))
+  (includes r "function swapBANG("))
+
+;; ── Rule 7: error-message bridging ──────────────────────────────
+
+(test
+  "DD-49 Rule 7: error message bridges JS name and lykn name (arg check)"
+  (bind r (compile "(func valid? :args (:string x) :returns :string :body x)"))
+  (includes r "isValid (valid?): arg 'x' expected string"))
+
+(test
+  "DD-49 Rule 7: error message bridges JS name and lykn name (return check)"
+  (bind r (compile "(func valid? :args (:any x) :returns :boolean :body true)"))
+  (includes r "isValid (valid?): return")
+  (includes r "expected boolean"))

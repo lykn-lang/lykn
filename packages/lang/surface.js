@@ -98,10 +98,11 @@ function buildTypeCheck(paramNode, typeKw, funcName, label) {
 	if (typeName === "any") return null;
 
 	const paramName = paramNode.value;
+	const hasPunct = (s) => /[^a-zA-Z0-9_-]/.test(s);
 	const jsFuncName = toJsIdentifier(funcName);
-	const dispFunc = jsFuncName !== funcName ? `${jsFuncName} (${funcName})` : jsFuncName;
+	const dispFunc = jsFuncName !== funcName && hasPunct(funcName) ? `${jsFuncName} (${funcName})` : jsFuncName;
 	const jsParamName = toJsIdentifier(paramName);
-	const dispParam = jsParamName !== paramName ? `${jsParamName} (${paramName})` : jsParamName;
+	const dispParam = jsParamName !== paramName && hasPunct(paramName) ? `${jsParamName} (${paramName})` : jsParamName;
 	const msgText = label
 		? `${dispFunc}: ${label} '${dispParam}' expected ${typeName}, got `
 		: `${dispFunc} '${dispParam}': expected ${typeName}, got `;

@@ -237,8 +237,15 @@ The committed abbreviation table:
 | `>`       | `GT`         |                                             |
 | `&`       | `AMP`        |                                             |
 | `%`       | `PCT`        |                                             |
-| `$`       | `DOLLAR`     |                                             |
 | `/`       | `SLASH`      |                                             |
+
+**Note on `$`:** `$` is a valid JavaScript identifier character (per
+ECMAScript identifier-name production: identifiers may include letters,
+digits, `$`, and `_`). Lykn passes `$` through unchanged in
+identifiers; no escape is applied. This is a refinement applied during
+the initial implementation of DD-49 — the original abbreviation table
+listed `$ → DOLLAR`, but escaping `$` would have broken lykn's internal
+macro API (`$array`, `$sym`, `$gensym`).
 | `->`      | `To`         | longest-match before per-char escape        |
 | `<-`      | `From`       | longest-match before per-char escape        |
 
@@ -268,7 +275,7 @@ json<-string     → jsonFromString
 =val             → EQVal
 &rest            → AMPRest
 %scratch         → PCTScratch
-$ref             → DOLLARRef
+$ref             → $ref              ($-passthrough; see note above)
 path/to          → pathSLASHTo
 ```
 
@@ -555,3 +562,15 @@ from.
 - **Formatter behaviour for doubled trailing punctuation.** Whether
   `lykn fmt` should warn on `valid??` or `swap!!` is out of scope
   for this DD; tracked as a fast-follow.
+
+---
+
+## Refinement log
+
+**2026-05-05** — `$` passthrough refinement (initial implementation,
+commit `49defbf`). The original abbreviation table listed `$ → DOLLAR`.
+During implementation, escaping `$` was found to break lykn's internal
+macro API (`$array`, `$sym`, `$gensym`), and `$` is a valid JS
+identifier character per the ECMAScript spec. `$` was removed from the
+table; identifiers containing `$` pass through unchanged. See note
+under Rule 3.

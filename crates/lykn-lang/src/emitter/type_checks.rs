@@ -4,9 +4,14 @@ use crate::reader::source_loc::Span;
 
 use super::forms::{atom, list, str_lit};
 
+fn has_non_hyphen_punctuation(s: &str) -> bool {
+    s.chars()
+        .any(|c| !c.is_alphanumeric() && c != '-' && c != '_')
+}
+
 fn display_name(lykn_name: &str) -> String {
     let js_name = to_js_identifier(lykn_name);
-    if js_name != lykn_name {
+    if js_name != lykn_name && has_non_hyphen_punctuation(lykn_name) {
         format!("{js_name} ({lykn_name})")
     } else {
         js_name
@@ -317,5 +322,61 @@ mod tests {
         } else {
             panic!("expected if expression");
         }
+    }
+
+    // ── DD-49 Rule 7: error-message bridging format ──────────
+
+    fn extract_error_msg_str(expr: &SExpr) -> String {
+        // Find the string literal that contains "expected" — the error message
+        let mut result = String::new();
+        fn walk(expr: &SExpr, out: &mut String) {
+            match expr {
+                SExpr::String { value, .. } => {
+                    if value.contains("expected") || value.len() > out.len() {
+                        *out = value.clone();
+                    }
+                }
+                SExpr::List { values, .. } => {
+                    for v in values {
+                        walk(v, out);
+                    }
+                }
+                _ => {}
+            }
+        }
+        walk(expr, &mut result);
+        result
+    }
+
+    #[test]
+    fn rule7_arg_check_with_qmark_func() {
+        let result = emit_type_check("x", "string", "valid?", "arg", Span::default()).unwrap();
+        let s = extract_error_msg_str(&result);
+        assert!(
+            s.contains("isValid (valid?):"),
+            "expected bridged format, got: {s}"
+        );
+        assert!(s.contains("arg 'x' expected string"), "got: {s}");
+    }
+
+    #[test]
+    fn rule7_no_parens_when_names_match() {
+        let result = emit_type_check("x", "string", "my-func", "arg", Span::default()).unwrap();
+        let s = extract_error_msg_str(&result);
+        assert!(s.contains("myFunc:"), "got: {s}");
+        assert!(
+            !s.contains('('),
+            "expected no parens when names match, got: {s}"
+        );
+    }
+
+    #[test]
+    fn rule7_return_check_with_qmark_func() {
+        let result =
+            emit_return_type_check("result__gensym0", "boolean", "valid?", Span::default())
+                .unwrap();
+        let s = extract_error_msg_str(&result);
+        assert!(s.contains("isValid (valid?):"), "got: {s}");
+        assert!(s.contains("return value expected boolean"), "got: {s}");
     }
 }
