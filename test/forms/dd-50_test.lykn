@@ -1,0 +1,33 @@
+(import-macros "testing" (test test-compiles is-equal ok includes is-thrown))
+(import "testing/helpers.js" (compile))
+
+;; ── V-04 / V-05 regressions ─────────────────────────────────────
+
+(test
+  "DD-50 V-05: if in bind → ternary"
+  (bind r (compile "(bind n 5)\n(bind size (if (> n 0) \"big\" \"small\"))"))
+  (includes r "const size = n > 0 ? \"big\" : \"small\""))
+
+(test
+  "DD-50 V-04: nested if as func body → nested ternary"
+  (bind r (compile "(func classify :args (:any x) :returns :string :body (if (= (js:typeof x) \"string\") \"string\" (if (= (js:typeof x) \"number\") \"number\" \"other\")))"))
+  (includes r "typeof x === \"string\" ? \"string\" : typeof x === \"number\" ? \"number\" : \"other\""))
+
+;; ── Position-aware behaviour ─────────────────────────────────────
+
+(test
+  "DD-50: if in statement position unchanged"
+  (bind r (compile "(if true (console:log \"x\"))"))
+  (includes r "if (true)"))
+
+(test
+  "DD-50: if in bind with pure expression branches → ternary"
+  (bind r (compile "(bind x (if true 1 2))"))
+  (includes r "const x = true ? 1 : 2"))
+
+;; ── Regression: match/if-let/when-let unchanged ─────────────────
+
+(test
+  "DD-50 regression: match still works"
+  (bind r (compile "(type Option (Some :any value) None)\n(bind x (match (Some 1) ((Some v) v) (None 0)))"))
+  (includes r "const x ="))
