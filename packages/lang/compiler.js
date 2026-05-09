@@ -212,7 +212,7 @@ function makeVarDecl(kind, args) {
     declarations: [{
       type: 'VariableDeclarator',
       id: compilePattern(args[0]),
-      init: args[1] ? compileExpr(args[1]) : null,
+      init: args[1] ? compileExpr(args[1], 'expression') : null,
     }],
   };
 }
@@ -340,11 +340,27 @@ const macros = {
     };
   },
 
-  // If: (if cond then else)
-  'if'(args) {
+  // If: (if cond then else) — DD-50 position-aware
+  'if'(args, position) {
+    if (position === 'expression') {
+      // Rule 2: no else in expression position → compile error
+      if (!args[2]) {
+        throw new Error('if in expression position requires an else branch — add an else branch, or restructure as a statement');
+      }
+      const test = compileExpr(args[0], 'expression');
+      const consequent = compileExpr(args[1], 'expression');
+      const alternate = compileExpr(args[2], 'expression');
+      // Both branches pure expressions → ternary
+      if (isExpressionNode(consequent) && isExpressionNode(alternate)) {
+        return { type: 'ConditionalExpression', test, consequent, alternate };
+      }
+      // Statement branch → IIFE
+      return buildIfIIFE(test, consequent, alternate);
+    }
+    // Statement position: unchanged
     return {
       type: 'IfStatement',
-      test: compileExpr(args[0]),
+      test: compileExpr(args[0], 'expression'),
       consequent: toStatement(compileExpr(args[1])),
       alternate: args[2] ? toStatement(compileExpr(args[2])) : null,
     };
@@ -1225,6 +1241,39 @@ for (const op of compoundAssignOps) {
   };
 }
 
+// DD-50 helpers: position-aware if compilation
+function isExpressionNode(node) {
+  if (!node) return false;
+  return !node.type.endsWith('Statement') && !node.type.endsWith('Declaration');
+}
+
+function buildIfIIFE(test, consequent, alternate) {
+  return {
+    type: 'CallExpression',
+    callee: {
+      type: 'ArrowFunctionExpression',
+      params: [],
+      body: {
+        type: 'BlockStatement',
+        body: [{
+          type: 'IfStatement',
+          test,
+          consequent: { type: 'BlockStatement', body: [
+            { type: 'ReturnStatement', argument: consequent },
+          ]},
+          alternate: { type: 'BlockStatement', body: [
+            { type: 'ReturnStatement', argument: alternate },
+          ]},
+        }],
+      },
+      expression: false,
+      async: false,
+    },
+    arguments: [],
+    optional: false,
+  };
+}
+
 // Ensure a node is wrapped as a statement
 function toStatement(node) {
   if (!node) return { type: 'EmptyStatement' };
@@ -1235,7 +1284,7 @@ function toStatement(node) {
 }
 
 // Compile a single s-expression node to an ESTree node
-export function compileExpr(node) {
+export function compileExpr(node, position = 'statement') {
   if (!node) return { type: 'Literal', value: null };
 
   switch (node.type) {
@@ -1318,14 +1367,14 @@ export function compileExpr(node) {
 
       // Check if head matches a macro
       if (head.type === 'atom' && macros[head.value]) {
-        return macros[head.value](rest);
+        return macros[head.value](rest, position);
       }
 
       // Otherwise it's a function call
       return {
         type: 'CallExpression',
         callee: compileExpr(head),
-        arguments: rest.map(compileExpr),
+        arguments: rest.map(a => compileExpr(a, 'expression')),
         optional: false,
       };
     }
