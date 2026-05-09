@@ -374,6 +374,40 @@ const macros = {
     };
   },
 
+  // Do block: (do stmt1 stmt2 ... final) — DD-50 Rule 4
+  'do'(args, position) {
+    if (args.length === 0) {
+      return position === 'expression'
+        ? { type: 'Identifier', name: 'undefined' }
+        : { type: 'EmptyStatement' };
+    }
+    if (position === 'expression') {
+      // IIFE: (() => { stmt1; stmt2; return final; })()
+      const stmts = args.slice(0, -1).map(e => toStatement(compileExpr(e)));
+      const last = compileExpr(args[args.length - 1], 'expression');
+      return {
+        type: 'CallExpression',
+        callee: {
+          type: 'ArrowFunctionExpression',
+          params: [],
+          body: {
+            type: 'BlockStatement',
+            body: [...stmts, { type: 'ReturnStatement', argument: last }],
+          },
+          expression: false,
+          async: false,
+        },
+        arguments: [],
+        optional: false,
+      };
+    }
+    // Statement position: plain block
+    return {
+      type: 'BlockStatement',
+      body: args.map(e => toStatement(compileExpr(e))),
+    };
+  },
+
   // Assignment: (= x 5) or (= (object a b) obj)
   '='(args) {
     if (args.length !== 2) {

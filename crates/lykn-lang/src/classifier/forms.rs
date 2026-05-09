@@ -151,6 +151,10 @@ fn classify_surface_form(
         "and" => classify_and(args, span),
         "or" => classify_or(args, span),
         "not" => classify_not(args, span),
+        "do" => Ok(SurfaceForm::Do {
+            body: args.to_vec(),
+            span,
+        }),
         _ => Err(Diagnostic {
             severity: Severity::Error,
             message: format!("unknown surface form: {name}"),

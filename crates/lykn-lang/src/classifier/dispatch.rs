@@ -32,6 +32,7 @@ pub fn is_surface_form(name: &str) -> bool {
             | "and"
             | "or"
             | "not"
+            | "do"
     )
 }
 

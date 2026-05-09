@@ -25,6 +25,19 @@
   (bind r (compile "(bind x (if true 1 2))"))
   (includes r "const x = true ? 1 : 2"))
 
+;; ── do block (DD-50 Rule 4) ───────────────────────────────────────
+
+(test
+  "DD-50 Rule 4: do in expression position → IIFE"
+  (bind r (compile "(bind x (do 1 2 3))"))
+  (includes r "(() =>")
+  (includes r "return 3"))
+
+(test
+  "DD-50 Rule 4: do in statement position → block"
+  (bind r (compile "(do (console:log 1) (console:log 2))"))
+  (includes r "console.log(1)"))
+
 ;; ── Regression: match/if-let/when-let unchanged ─────────────────
 
 (test

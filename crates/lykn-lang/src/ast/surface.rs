@@ -436,6 +436,10 @@ pub enum SurfaceForm {
         args: Vec<SExpr>,
         span: Span,
     },
+    Do {
+        body: Vec<SExpr>,
+        span: Span,
+    },
 }
 
 #[cfg(test)]

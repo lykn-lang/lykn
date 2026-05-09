@@ -268,6 +268,7 @@ pub fn emit_form(
             members,
             ..
         } => vec![emit_class_form(None, superclass, members, ctx, registry)],
+        SurfaceForm::Do { body, .. } => vec![emit_do(body, ctx, registry)],
         SurfaceForm::KernelPassthrough { raw, .. } => vec![raw.clone()],
         SurfaceForm::FunctionCall { head, args, span } => {
             // Check for js: namespace interop
@@ -2446,6 +2447,39 @@ fn emit_if_iife(cond: SExpr, then_branch: SExpr, else_branch: SExpr) -> SExpr {
     let arrow = list(vec![atom("=>"), list(vec![]), if_stmt]);
     // ((() => { ... })())
     list(vec![arrow])
+}
+
+fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
+    if body.is_empty() {
+        return atom("undefined");
+    }
+
+    let emitted: Vec<SExpr> = body.iter().map(|e| emit_expr(e, ctx, registry)).collect();
+
+    match ctx.expr_context {
+        ExprContext::Statement => {
+            let mut items = vec![atom("block")];
+            items.extend(emitted);
+            list(items)
+        }
+        _ => {
+            // Expression position: IIFE-wrap with last expression returned
+            let mut arrow_body = vec![atom("=>"), list(vec![])];
+            if emitted.len() == 1 {
+                arrow_body.push(list(vec![atom("return"), emitted[0].clone()]));
+            } else {
+                for expr in &emitted[..emitted.len() - 1] {
+                    arrow_body.push(expr.clone());
+                }
+                arrow_body.push(list(vec![
+                    atom("return"),
+                    emitted[emitted.len() - 1].clone(),
+                ]));
+            }
+            // ((() => { ... })())
+            list(vec![list(arrow_body)])
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------
