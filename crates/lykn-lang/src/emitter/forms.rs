@@ -371,6 +371,11 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                     };
                     ctx.expr_context = saved_ctx;
                     result
+                } else if head_name == "if"
+                    && matches!(ctx.expr_context, ExprContext::Value | ExprContext::Tail)
+                {
+                    // DD-50: if in expression position → position-aware emission
+                    emit_if_expression(&values[1..], *span, ctx, registry)
                 } else {
                     // Not a surface form — recursively process all subexpressions
                     let new_values: Vec<SExpr> =
@@ -412,11 +417,16 @@ fn if_to_ternary(expr: SExpr) -> SExpr {
         && values.len() >= 3
         && values[0].as_atom() == Some("if")
     {
-        // (if cond then) or (if cond then else)
-        let mut new_values = vec![atom("?")];
-        new_values.extend(values[1..].iter().cloned());
+        // Recursively convert nested if branches to ternary
+        let cond = values[1].clone();
+        let then_branch = if_to_ternary(values[2].clone());
+        let else_branch = if values.len() > 3 {
+            if_to_ternary(values[3].clone())
+        } else {
+            atom("undefined")
+        };
         return SExpr::List {
-            values: new_values,
+            values: vec![atom("?"), cond, then_branch, else_branch],
             span: *span,
         };
     }
@@ -510,11 +520,14 @@ fn emit_bind(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> Vec<SExpr> {
+    let saved_ctx = ctx.expr_context;
+    ctx.expr_context = ExprContext::Value;
     let const_form = list(vec![
         atom("const"),
         name.clone(),
         emit_expr(value, ctx, registry),
     ]);
+    ctx.expr_context = saved_ctx;
 
     let type_kw = match type_ann {
         Some(ta) => &ta.name,
@@ -2364,6 +2377,75 @@ fn emit_class_member_form(
         }
         ClassMemberForm::Raw(raw) => emit_expr(raw, ctx, registry),
     }
+}
+
+// ---------------------------------------------------------------------------
+// DD-50: Position-aware `if` emission
+// ---------------------------------------------------------------------------
+
+const STATEMENT_FORM_HEADS: &[&str] = &[
+    "if", "while", "for", "for-of", "for-in", "do-while", "switch", "throw", "return", "break",
+    "continue", "label", "debugger", "block", "try", "catch", "finally", "var", "const", "let",
+    "func", "fn", "class", "type", "export", "import",
+];
+
+fn is_statement_form(expr: &SExpr) -> bool {
+    if let SExpr::List { values, .. } = expr
+        && let Some(head) = values.first().and_then(|e| e.as_atom())
+    {
+        return STATEMENT_FORM_HEADS.contains(&head);
+    }
+    false
+}
+
+fn emit_if_expression(
+    args: &[SExpr],
+    span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    if args.is_empty() {
+        return atom("undefined");
+    }
+
+    let cond = emit_expr(&args[0], ctx, registry);
+
+    // DD-50 Rule 2: no else in expression position → compile error
+    if args.len() < 3 {
+        return list(vec![
+            atom("throw"),
+            list(vec![
+                atom("new"),
+                atom("TypeError"),
+                SExpr::String {
+                    value: "COMPILE_ERROR: if in expression position requires an else branch \
+                            — add an else branch, or restructure as a statement"
+                        .into(),
+                    span,
+                },
+            ]),
+        ]);
+    }
+
+    let then_branch = emit_expr(&args[1], ctx, registry);
+    let else_branch = emit_expr(&args[2], ctx, registry);
+
+    if !is_statement_form(&then_branch) && !is_statement_form(&else_branch) {
+        // Both branches are pure expressions → ternary
+        list(vec![atom("?"), cond, then_branch, else_branch])
+    } else {
+        // One or both branches are statement forms → IIFE
+        emit_if_iife(cond, then_branch, else_branch)
+    }
+}
+
+fn emit_if_iife(cond: SExpr, then_branch: SExpr, else_branch: SExpr) -> SExpr {
+    let then_block = list(vec![atom("block"), list(vec![atom("return"), then_branch])]);
+    let else_block = list(vec![atom("block"), list(vec![atom("return"), else_branch])]);
+    let if_stmt = list(vec![atom("if"), cond, then_block, else_block]);
+    let arrow = list(vec![atom("=>"), list(vec![]), if_stmt]);
+    // ((() => { ... })())
+    list(vec![arrow])
 }
 
 // ---------------------------------------------------------------------------
