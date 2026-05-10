@@ -38,9 +38,59 @@
   (bind r (compile "(do (console:log 1) (console:log 2))"))
   (includes r "console.log(1)"))
 
+;; ── Rule 2: no-else compile error ────────────────────────────────
+
+(test
+  "DD-50 Rule 2: if with no else in expression position triggers compile error"
+  (is-thrown (compile "(bind x (if true 1))") Error "if in expression position requires an else branch"))
+
+;; ── Statement-branch IIFE ───────────────────────────────────────
+
+(test
+  "DD-50 Rule 1c: statement-branch in if expression-position triggers IIFE"
+  (bind r (compile "(func test :args (:any x) :body (bind y (if (= x 1) \"a\" (throw (new Error \"e\")))) y)"))
+  (includes r "(() =>")
+  (includes r "throw"))
+
+;; ── Compile-then-check ──────────────────────────────────────────
+
+(test
+  "DD-50: nested do-block branch in if compiles via compile-then-check"
+  (bind r (compile "(bind x (if true (do 1 2 3) 4))"))
+  (includes r " ? ")
+  (includes r "(() =>"))
+
+;; ── Iteration 2: adjacent-bug regressions ───────────────────────
+
+(test "DD-50 Iter2: if in return arg → ternary"
+  (bind r (compile "(func test :args (:any x) :returns :string :body (return (if (= x 1) \"a\" \"b\")))"))
+  (includes r " ? "))
+
+(test "DD-50 Iter2: if in assignment RHS → ternary"
+  (bind r (compile "(func test :args (:any x) :body (bind y (cell 0)) (= y:value (if (= x 1) \"a\" \"b\")))"))
+  (includes r " ? "))
+
+(test "DD-50 Iter2: if in object value → ternary"
+  (bind r (compile "(bind x (obj :v (if true 1 2)))"))
+  (includes r " ? "))
+
+(test "DD-50 Iter2: if in ternary operand → nested ternary"
+  (bind r (compile "(bind x (? true (if false 1 2) 3))"))
+  (includes r " ? "))
+
 ;; ── Regression: match/if-let/when-let unchanged ─────────────────
 
 (test
   "DD-50 regression: match still works"
   (bind r (compile "(type Option (Some :any value) None)\n(bind x (match (Some 1) ((Some v) v) (None 0)))"))
   (includes r "const x ="))
+
+(test
+  "DD-50 regression: if-let still IIFE-wrapped"
+  (bind r (compile "(if-let (v 42) v 0)"))
+  (includes r "(() =>"))
+
+(test
+  "DD-50 regression: when-let still IIFE-wrapped"
+  (bind r (compile "(when-let (v 42) v)"))
+  (includes r "(() =>"))
