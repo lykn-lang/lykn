@@ -234,7 +234,7 @@ function makeForOf(isAwait, args) {
         init: null,
       }],
     },
-    right: compileExpr(args[1]),
+    right: compileExpr(args[1], 'expression'),
     body: {
       type: 'BlockStatement',
       body: args.slice(2).map(e => toStatement(compileExpr(e))),
@@ -257,8 +257,8 @@ const macros = {
     }
     return {
       type: 'MemberExpression',
-      object: compileExpr(args[0]),
-      property: compileExpr(args[1]),
+      object: compileExpr(args[0], 'expression'),
+      property: compileExpr(args[1], 'expression'),
       computed: true,
     };
   },
@@ -268,7 +268,7 @@ const macros = {
     if (args.length < 2) {
       throw new Error('. requires at least 2 arguments: (. object method ...)');
     }
-    const obj = compileExpr(args[0]);
+    const obj = compileExpr(args[0], 'expression');
     const methodName = args[1].type === 'atom' ? toJsIdentifier(args[1].value)
                      : args[1].type === 'string' ? args[1].value
                      : (() => { throw new Error('. method name must be an atom or string'); })();
@@ -293,7 +293,7 @@ const macros = {
       : [];
     const bodyExprs = args.slice(1);
     if (bodyExprs.length === 1) {
-      const compiled = compileExpr(bodyExprs[0]);
+      const compiled = compileExpr(bodyExprs[0], 'expression');
       return {
         type: 'ArrowFunctionExpression',
         params,
@@ -336,7 +336,7 @@ const macros = {
   'return'(args) {
     return {
       type: 'ReturnStatement',
-      argument: args[0] ? compileExpr(args[0]) : null,
+      argument: args[0] ? compileExpr(args[0], 'expression') : null,
     };
   },
 
@@ -422,8 +422,8 @@ const macros = {
     return {
       type: 'AssignmentExpression',
       operator: '=',
-      left: isPattern ? compilePattern(leftNode) : compileExpr(leftNode),
-      right: compileExpr(args[1]),
+      left: isPattern ? compilePattern(leftNode) : compileExpr(leftNode, 'expression'),
+      right: compileExpr(args[1], 'expression'),
     };
   },
 
@@ -440,8 +440,8 @@ const macros = {
     return {
       type: 'AssignmentExpression',
       operator: '=',
-      left: compileExpr(args[0]),
-      right: compileExpr(args[1]),
+      left: compileExpr(args[0], 'expression'),
+      right: compileExpr(args[1], 'expression'),
     };
   },
 
@@ -449,7 +449,7 @@ const macros = {
   'new'(args) {
     return {
       type: 'NewExpression',
-      callee: compileExpr(args[0]),
+      callee: compileExpr(args[0], 'expression'),
       arguments: args.slice(1).map(compileExpr),
     };
   },
@@ -547,7 +547,7 @@ const macros = {
         `async can only wrap function, function*, lambda, or =>: got ${head.type === 'atom' ? head.value : head.type}`
       );
     }
-    const compiled = compileExpr(child);
+    const compiled = compileExpr(child, 'expression');
     compiled.async = true;
     return compiled;
   },
@@ -559,7 +559,7 @@ const macros = {
     }
     return {
       type: 'AwaitExpression',
-      argument: compileExpr(args[0]),
+      argument: compileExpr(args[0], 'expression'),
     };
   },
 
@@ -567,7 +567,7 @@ const macros = {
   'yield'(args) {
     return {
       type: 'YieldExpression',
-      argument: args.length > 0 ? compileExpr(args[0]) : null,
+      argument: args.length > 0 ? compileExpr(args[0], 'expression') : null,
       delegate: false,
     };
   },
@@ -579,7 +579,7 @@ const macros = {
     }
     return {
       type: 'YieldExpression',
-      argument: compileExpr(args[0]),
+      argument: compileExpr(args[0], 'expression'),
       delegate: true,
     };
   },
@@ -651,7 +651,7 @@ const macros = {
       }
       return {
         type: 'ExportDefaultDeclaration',
-        declaration: compileExpr(args[1]),
+        declaration: compileExpr(args[1], 'expression'),
       };
     }
 
@@ -686,7 +686,7 @@ const macros = {
 
     // Case 5: (export (const/let/var/function ...)) → export declaration
     if (args.length === 1) {
-      const decl = compileExpr(args[0]);
+      const decl = compileExpr(args[0], 'expression');
       return {
         type: 'ExportNamedDeclaration',
         declaration: decl,
@@ -705,7 +705,7 @@ const macros = {
     }
     return {
       type: 'ImportExpression',
-      source: compileExpr(args[0]),
+      source: compileExpr(args[0], 'expression'),
     };
   },
 
@@ -716,7 +716,7 @@ const macros = {
     }
     return {
       type: 'ThrowStatement',
-      argument: compileExpr(args[0]),
+      argument: compileExpr(args[0], 'expression'),
     };
   },
 
@@ -781,7 +781,7 @@ const macros = {
     }
     return {
       type: 'WhileStatement',
-      test: compileExpr(args[0]),
+      test: compileExpr(args[0], 'expression'),
       body: {
         type: 'BlockStatement',
         body: args.slice(1).map(e => toStatement(compileExpr(e))),
@@ -796,7 +796,7 @@ const macros = {
     }
     return {
       type: 'DoWhileStatement',
-      test: compileExpr(args[0]),
+      test: compileExpr(args[0], 'expression'),
       body: {
         type: 'BlockStatement',
         body: args.slice(1).map(e => toStatement(compileExpr(e))),
@@ -811,13 +811,13 @@ const macros = {
     }
     const init = args[0].type === 'list' && args[0].values.length === 0
       ? null
-      : compileExpr(args[0]);
+      : compileExpr(args[0], 'expression');
     const test = args[1].type === 'list' && args[1].values.length === 0
       ? null
-      : compileExpr(args[1]);
+      : compileExpr(args[1], 'expression');
     const update = args[2].type === 'list' && args[2].values.length === 0
       ? null
-      : compileExpr(args[2]);
+      : compileExpr(args[2], 'expression');
     return {
       type: 'ForStatement',
       init,
@@ -851,7 +851,7 @@ const macros = {
           init: null,
         }],
       },
-      right: compileExpr(args[1]),
+      right: compileExpr(args[1], 'expression'),
       body: {
         type: 'BlockStatement',
         body: args.slice(2).map(e => toStatement(compileExpr(e))),
@@ -884,14 +884,14 @@ const macros = {
     if (args.length < 2) {
       throw new Error('switch requires a discriminant and at least one case');
     }
-    const discriminant = compileExpr(args[0]);
+    const discriminant = compileExpr(args[0], 'expression');
     const cases = args.slice(1).map(caseNode => {
       if (caseNode.type !== 'list' || caseNode.values.length === 0) {
         throw new Error('switch: each case must be a list (test body...)');
       }
       const headNode = caseNode.values[0];
       const isDefault = headNode.type === 'atom' && headNode.value === 'default';
-      const test = isDefault ? null : compileExpr(headNode);
+      const test = isDefault ? null : compileExpr(headNode, 'expression');
       const consequent = caseNode.values.slice(1)
         .map(e => toStatement(compileExpr(e)));
       return {
@@ -914,9 +914,9 @@ const macros = {
     }
     return {
       type: 'ConditionalExpression',
-      test: compileExpr(args[0]),
-      consequent: compileExpr(args[1]),
-      alternate: compileExpr(args[2]),
+      test: compileExpr(args[0], 'expression'),
+      consequent: compileExpr(args[1], 'expression'),
+      alternate: compileExpr(args[2], 'expression'),
     };
   },
 
@@ -928,7 +928,7 @@ const macros = {
     return {
       type: 'UpdateExpression',
       operator: '++',
-      argument: compileExpr(args[0]),
+      argument: compileExpr(args[0], 'expression'),
       prefix: true,
     };
   },
@@ -941,7 +941,7 @@ const macros = {
     return {
       type: 'UpdateExpression',
       operator: '--',
-      argument: compileExpr(args[0]),
+      argument: compileExpr(args[0], 'expression'),
       prefix: true,
     };
   },
@@ -1018,7 +1018,7 @@ const macros = {
       } else {
         quasis.push(makeTemplateElement(currentSegment, false));
         currentSegment = '';
-        expressions.push(compileExpr(args[i]));
+        expressions.push(compileExpr(args[i], 'expression'));
       }
     }
 
@@ -1040,8 +1040,8 @@ const macros = {
         args[1].values[0].type !== 'atom' || args[1].values[0].value !== 'template') {
       throw new Error('tag: second argument must be a (template ...) form');
     }
-    const tag = compileExpr(args[0]);
-    const quasi = compileExpr(args[1]);
+    const tag = compileExpr(args[0], 'expression');
+    const quasi = compileExpr(args[1], 'expression');
     return {
       type: 'TaggedTemplateExpression',
       tag,
@@ -1056,7 +1056,7 @@ const macros = {
     }
     return {
       type: 'SpreadElement',
-      argument: compileExpr(args[0]),
+      argument: compileExpr(args[0], 'expression'),
     };
   },
 
@@ -1067,8 +1067,8 @@ const macros = {
     }
     return {
       type: 'AssignmentPattern',
-      left: compileExpr(args[0]),
-      right: compileExpr(args[1]),
+      left: compileExpr(args[0], 'expression'),
+      right: compileExpr(args[1], 'expression'),
     };
   },
 
@@ -1085,7 +1085,7 @@ const macros = {
     }
     const name = { type: 'Identifier', name: toJsIdentifier(args[0].value) };
     const superClass = args[1].values.length > 0
-      ? compileExpr(args[1].values[0])
+      ? compileExpr(args[1].values[0], 'expression')
       : null;
     return {
       type: 'ClassDeclaration',
@@ -1107,7 +1107,7 @@ const macros = {
       throw new Error('class-expr superclass must be a list');
     }
     const superClass = args[0].values.length > 0
-      ? compileExpr(args[0].values[0])
+      ? compileExpr(args[0].values[0], 'expression')
       : null;
     return {
       type: 'ClassExpression',
@@ -1127,7 +1127,7 @@ const macros = {
     }
     return {
       type: 'RestElement',
-      argument: compileExpr(args[0]),
+      argument: compileExpr(args[0], 'expression'),
     };
   },
 
@@ -1160,7 +1160,7 @@ const macros = {
           }
           properties.push({
             type: 'SpreadElement',
-            argument: compileExpr(child.values[1]),
+            argument: compileExpr(child.values[1], 'expression'),
           });
           continue;
         }
@@ -1176,8 +1176,8 @@ const macros = {
             }
             properties.push({
               type: 'Property',
-              key: compileExpr(innerList.values[1]),
-              value: compileExpr(child.values[1]),
+              key: compileExpr(innerList.values[1], 'expression'),
+              value: compileExpr(child.values[1], 'expression'),
               kind: 'init',
               computed: true,
               shorthand: false,
@@ -1204,8 +1204,8 @@ const macros = {
           type: 'Property',
           key: keyNode.type === 'atom'
             ? { type: 'Identifier', name: toJsIdentifier(keyNode.value) }
-            : compileExpr(keyNode),
-          value: compileExpr(child.values[1]),
+            : compileExpr(keyNode, 'expression'),
+          value: compileExpr(child.values[1], 'expression'),
           kind: 'init',
           computed: false,
           shorthand: false,
@@ -1233,12 +1233,12 @@ for (const op of binaryOps) {
     let result = {
       type,
       operator: op,
-      left: compileExpr(args[0]),
-      right: compileExpr(args[1]),
+      left: compileExpr(args[0], 'expression'),
+      right: compileExpr(args[1], 'expression'),
     };
     // Support n-ary: (+ a b c) => a + b + c
     for (let i = 2; i < args.length; i++) {
-      result = { type, operator: op, left: result, right: compileExpr(args[i]) };
+      result = { type, operator: op, left: result, right: compileExpr(args[i], 'expression') };
     }
     return result;
   };
@@ -1250,7 +1250,7 @@ for (const op of ['!', '~', 'typeof', 'void', 'delete']) {
     type: 'UnaryExpression',
     operator: op,
     prefix: true,
-    argument: compileExpr(args[0]),
+    argument: compileExpr(args[0], 'expression'),
   });
 }
 
@@ -1269,8 +1269,8 @@ for (const op of compoundAssignOps) {
     return {
       type: 'AssignmentExpression',
       operator: op,
-      left: compileExpr(args[0]),
-      right: compileExpr(args[1]),
+      left: compileExpr(args[0], 'expression'),
+      right: compileExpr(args[1], 'expression'),
     };
   };
 }
@@ -1407,7 +1407,7 @@ export function compileExpr(node, position = 'statement') {
       // Otherwise it's a function call
       return {
         type: 'CallExpression',
-        callee: compileExpr(head),
+        callee: compileExpr(head, 'expression'),
         arguments: rest.map(a => compileExpr(a, 'expression')),
         optional: false,
       };
@@ -1465,7 +1465,7 @@ function compilePattern(node) {
           return {
             type: 'AssignmentPattern',
             left: compilePattern(rest[0]),
-            right: compileExpr(rest[1]),
+            right: compileExpr(rest[1], 'expression'),
           };
 
         case 'rest':
@@ -1543,7 +1543,7 @@ function compileObjectPattern(children) {
           value: {
             type: 'AssignmentPattern',
             left: { type: 'Identifier', name: propName },
-            right: compileExpr(child.values[2]),
+            right: compileExpr(child.values[2], 'expression'),
           },
           kind: 'init',
           computed: false,
@@ -1566,7 +1566,7 @@ function compileObjectPattern(children) {
           valueNode = {
             type: 'AssignmentPattern',
             left: valueNode,
-            right: compileExpr(child.values[3]),
+            right: compileExpr(child.values[3], 'expression'),
           };
         }
 
@@ -1638,7 +1638,7 @@ function compileArrayPattern(children) {
         elements.push({
           type: 'AssignmentPattern',
           left: compilePattern(child.values[1]),
-          right: compileExpr(child.values[2]),
+          right: compileExpr(child.values[2], 'expression'),
         });
         continue;
       }

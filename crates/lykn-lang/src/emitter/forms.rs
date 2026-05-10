@@ -378,9 +378,17 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                     // DD-50: if in expression position → position-aware emission
                     emit_if_expression(&values[1..], *span, ctx, registry)
                 } else {
-                    // Not a surface form — recursively process all subexpressions
-                    let new_values: Vec<SExpr> =
-                        values.iter().map(|v| emit_expr(v, ctx, registry)).collect();
+                    // Not a surface form — recursively process all subexpressions.
+                    // DD-50: children of expression-producing kernel forms are in
+                    // Value context so nested `if` is intercepted correctly.
+                    let saved_ctx = ctx.expr_context;
+                    let mut new_values = Vec::with_capacity(values.len());
+                    new_values.push(values[0].clone()); // head atom unchanged
+                    ctx.expr_context = ExprContext::Value;
+                    for v in &values[1..] {
+                        new_values.push(emit_expr(v, ctx, registry));
+                    }
+                    ctx.expr_context = saved_ctx;
                     SExpr::List {
                         values: new_values,
                         span: *span,
@@ -413,25 +421,51 @@ fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) 
 /// of a conditional to a variable, we must use a ternary expression instead.
 ///
 /// If the expression is not an `(if ...)` form, it is returned unchanged.
-fn if_to_ternary(expr: SExpr) -> SExpr {
+/// Convert an already-emitted kernel form to expression position per DD-50.
+///
+/// Applied to the last expression of a function body when it needs to be
+/// used as a value (e.g., assigned to a result variable for `:returns` check).
+/// Uses the same classification logic as `emit_if_expression` to ensure
+/// uniform Rule 1 (ternary vs IIFE) and Rule 2 (no-else compile error)
+/// enforcement across all expression-position contexts.
+fn convert_to_expression(expr: SExpr) -> SExpr {
     if let SExpr::List { values, span } = &expr
-        && values.len() >= 3
+        && !values.is_empty()
         && values[0].as_atom() == Some("if")
     {
-        // Recursively convert nested if branches to ternary
-        let cond = values[1].clone();
-        let then_branch = if_to_ternary(values[2].clone());
-        let else_branch = if values.len() > 3 {
-            if_to_ternary(values[3].clone())
+        let args = &values[1..];
+
+        // DD-50 Rule 2: no else in expression position → compile error
+        if args.len() < 3 {
+            return list(vec![
+                atom("throw"),
+                list(vec![
+                    atom("new"),
+                    atom("TypeError"),
+                    SExpr::String {
+                        value: "COMPILE_ERROR: if in expression position requires an else branch \
+                                — add an else branch, or restructure as a statement"
+                            .into(),
+                        span: *span,
+                    },
+                ]),
+            ]);
+        }
+
+        let cond = args[0].clone();
+        let then_branch = convert_to_expression(args[1].clone());
+        let else_branch = convert_to_expression(args[2].clone());
+
+        if !is_statement_form(&then_branch) && !is_statement_form(&else_branch) {
+            // Both branches are pure expressions → ternary
+            list(vec![atom("?"), cond, then_branch, else_branch])
         } else {
-            atom("undefined")
-        };
-        return SExpr::List {
-            values: vec![atom("?"), cond, then_branch, else_branch],
-            span: *span,
-        };
+            // Statement-form branches → IIFE
+            emit_if_iife(cond, then_branch, else_branch)
+        }
+    } else {
+        expr
     }
-    expr
 }
 
 // ---------------------------------------------------------------------------
@@ -589,18 +623,25 @@ fn literal_type_name(expr: &SExpr) -> Option<&'static str> {
 }
 
 fn emit_obj(pairs: &[(String, SExpr)], ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
+    let saved_ctx = ctx.expr_context;
+    ctx.expr_context = ExprContext::Value;
     let mut items = vec![atom("object")];
     for (key, val) in pairs {
         items.push(list(vec![atom(key), emit_expr(val, ctx, registry)]));
     }
+    ctx.expr_context = saved_ctx;
     list(items)
 }
 
 fn emit_cell(value: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
-    list(vec![
+    let saved_ctx = ctx.expr_context;
+    ctx.expr_context = ExprContext::Value;
+    let result = list(vec![
         atom("object"),
         list(vec![atom("value"), emit_expr(value, ctx, registry)]),
-    ])
+    ]);
+    ctx.expr_context = saved_ctx;
+    result
 }
 
 /// Resolve a cell target to a `:value` accessor.
@@ -1246,7 +1287,7 @@ fn emit_func_single(
         items.push(list(vec![
             atom("const"),
             atom(&result_var),
-            if_to_ternary(last_expr),
+            convert_to_expression(last_expr),
         ]));
         if let Some(ref post) = clause.post {
             items.push(emit_post_check(name, post, &result_var, clause.span));
@@ -1274,7 +1315,7 @@ fn emit_func_single(
                 items.push(list(vec![
                     atom("const"),
                     atom(&result_var),
-                    if_to_ternary(last),
+                    convert_to_expression(last),
                 ]));
                 // Use "return value" in the error message instead of the
                 // gensym variable name for a user-friendly message, but
@@ -1421,7 +1462,7 @@ fn emit_func_multi(
             block_items.push(list(vec![
                 atom("const"),
                 atom(&result_var),
-                if_to_ternary(last),
+                convert_to_expression(last),
             ]));
             if let Some(ref post) = clause.post {
                 block_items.push(emit_post_check(name, post, &result_var, clause.span));
@@ -2280,10 +2321,13 @@ fn emit_function_call(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    let saved_ctx = ctx.expr_context;
     let mut items = vec![emit_expr(head, ctx, registry)];
+    ctx.expr_context = ExprContext::Value;
     for arg in args {
         items.push(emit_expr(arg, ctx, registry));
     }
+    ctx.expr_context = saved_ctx;
     list(items)
 }
 
@@ -2535,12 +2579,12 @@ mod tests {
         TypeRegistry::default()
     }
 
-    // --- if_to_ternary ---
+    // --- convert_to_expression ---
 
     #[test]
-    fn test_if_to_ternary_converts_if_form() {
+    fn test_convert_to_expression_converts_if_form() {
         let expr = list(vec![atom("if"), atom("cond"), atom("a"), atom("b")]);
-        let result = if_to_ternary(expr);
+        let result = convert_to_expression(expr);
         if let SExpr::List { values, .. } = &result {
             assert_eq!(values[0].as_atom(), Some("?"));
             assert_eq!(values[1].as_atom(), Some("cond"));
@@ -2552,16 +2596,16 @@ mod tests {
     }
 
     #[test]
-    fn test_if_to_ternary_passes_through_non_if() {
+    fn test_convert_to_expression_passes_through_non_if() {
         let expr = list(vec![atom("foo"), atom("bar")]);
-        let result = if_to_ternary(expr.clone());
+        let result = convert_to_expression(expr.clone());
         assert_eq!(result, expr);
     }
 
     #[test]
-    fn test_if_to_ternary_passes_through_atom() {
+    fn test_convert_to_expression_passes_through_atom() {
         let expr = atom("x");
-        let result = if_to_ternary(expr.clone());
+        let result = convert_to_expression(expr.clone());
         assert_eq!(result, expr);
     }
 
