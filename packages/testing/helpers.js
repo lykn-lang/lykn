@@ -50,6 +50,58 @@ export function compileAll(source) {
   return lykn(source).trim();
 }
 
+/**
+ * Compile via BOTH compilers (JS and Rust) and verify convergence.
+ * The Rust compiler is invoked via the `lykn` binary. If the binary is
+ * not available, throws a clear error.
+ * @param {string} source - lykn source text
+ * @returns {string} compiled JavaScript (from JS compiler; Rust verified to match)
+ */
+export function compileBoth(source) {
+  const jsOut = lykn(source).trim();
+
+  // Write source to temp file for the Rust compiler
+  const tmpPath = Deno.makeTempFileSync({ suffix: ".lykn" });
+  try {
+    Deno.writeTextFileSync(tmpPath, source);
+    const proc = new Deno.Command("lykn", {
+      args: ["compile", tmpPath],
+      stdout: "piped",
+      stderr: "piped",
+    }).outputSync();
+
+    if (!proc.success) {
+      const stderr = new TextDecoder().decode(proc.stderr);
+      throw new Error(
+        `Rust compiler failed:\n${stderr}\n--- JS output was ---\n${jsOut}`
+      );
+    }
+
+    let rustOut = new TextDecoder().decode(proc.stdout).trim();
+    // Strip Rust-side warnings (lines containing ": warning:" or "  suggestion:")
+    rustOut = rustOut
+      .split("\n")
+      .filter((l) => !l.includes(": warning:") && !l.startsWith("  suggestion:"))
+      .join("\n")
+      .trim();
+
+    // Normalize whitespace for comparison: collapse runs of whitespace,
+    // strip trailing semicolons differences, etc.
+    const normalize = (s) =>
+      s.replace(/\s+/g, " ").replace(/;\s*}/g, "; }").trim();
+
+    if (normalize(jsOut) !== normalize(rustOut)) {
+      throw new Error(
+        `cross-compiler divergence:\n--- JS ---\n${jsOut}\n--- Rust ---\n${rustOut}`
+      );
+    }
+  } finally {
+    try { Deno.removeSync(tmpPath); } catch { /* ignore */ }
+  }
+
+  return jsOut;
+}
+
 // Re-export commonly needed functions so test files don't need
 // separate imports from lang/*.js
 export { read } from "lang/reader.js";

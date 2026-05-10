@@ -2538,8 +2538,12 @@ enum KernelChildProfile {
     /// like `block`, `for` body, etc.) — effectively Statement.
     AllParent,
     /// Per-position contexts: each entry is the context for that child index.
-    /// Children beyond the list length use the default (Value).
+    /// Children beyond the array length default to Value.
     Positional(&'static [ExprContext]),
+    /// Per-position contexts for fixed-prefix forms with a variable-length
+    /// trailing sequence of Statement-context children (e.g., `switch`:
+    /// discriminant=Value, then variable case sub-lists=Statement).
+    PositionalThenStatement(&'static [ExprContext]),
 }
 
 impl KernelChildProfile {
@@ -2551,6 +2555,10 @@ impl KernelChildProfile {
                 .get(child_index)
                 .copied()
                 .unwrap_or(ExprContext::Value),
+            KernelChildProfile::PositionalThenStatement(positions) => positions
+                .get(child_index)
+                .copied()
+                .unwrap_or(ExprContext::Statement),
         }
     }
 }
@@ -2580,8 +2588,8 @@ fn kernel_child_profile(head: &str) -> KernelChildProfile {
         "for-of" | "for-in" | "for-await-of" => KernelChildProfile::Positional(&[S, V, S]),
         // try: body=Statement, catch-clause=Statement, finally=Statement
         "try" => KernelChildProfile::AllParent,
-        // switch: discriminant=Value, then case bodies=Statement
-        "switch" => KernelChildProfile::Positional(&[V]),
+        // switch: discriminant=Value, then variable-length case sub-lists=Statement
+        "switch" => KernelChildProfile::PositionalThenStatement(&[V]),
         // if: already specially handled at line 375; include for completeness
         "if" => KernelChildProfile::AllValue,
 

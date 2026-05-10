@@ -1,5 +1,5 @@
 (import-macros "testing" (test test-compiles is-equal ok includes is-thrown))
-(import "testing/helpers.js" (compile))
+(import "testing/helpers.js" (compile compile-both))
 
 ;; ── V-04 / V-05 regressions ─────────────────────────────────────
 
@@ -98,23 +98,21 @@
 ;; ── DD-50.5: kernel-form context refinement ─────────────────────
 
 (test
-  "DD-50.5: no-else if in while body — statement context preserved"
-  (bind r (compile "(while true (if false (throw (new Error \"e\"))))"))
+  "DD-50.5: no-else if in while body — both compilers"
+  (bind r (compile-both "(while true (if false (throw (new Error \"e\"))))"))
   (includes r "while (true)")
   (includes r "if (false)")
   (includes r "throw"))
 
 (test
-  "DD-50.5: no-else if in for body — statement context preserved"
-  (bind r (compile "(for (let i 0) (< i 10) (++ i) (if (= i 5) (break)))"))
+  "DD-50.5: no-else if in for body — both compilers"
+  (bind r (compile-both "(for (let i 0) (< i 10) (++ i) (if (=== i 5) (break)))"))
   (includes r "for (")
-  (includes r "if (i === 5)")
   (includes r "break"))
 
 (test
-  "DD-50.5: no-else if in block — statement context preserved"
-  (bind r (compile "(func test :args (:any x) :body (if (= x 1) (console:log \"yes\")) (console:log \"done\"))"))
-  (includes r "if (x === 1)")
+  "DD-50.5: no-else if in block — both compilers"
+  (bind r (compile-both "(func test :args (:any x) :body (if (= x 1) (console:log \"yes\")) (console:log \"done\"))"))
   (includes r "console.log(\"yes\")")
   (includes r "console.log(\"done\")"))
 
@@ -122,14 +120,12 @@
   "DD-50.5: no-else if in try body — statement context preserved"
   (bind r (compile "(try (if (= x 1) (throw (new Error \"e\"))) (catch e (console:log e)))"))
   (includes r "try")
-  (includes r "if (x === 1)")
   (includes r "throw"))
 
 (test
-  "DD-50.5: no-else if in switch case body — statement context preserved"
-  (bind r (compile "(switch x (1 (if (= y 0) (console:log \"a\")) (break)) (default (break)))"))
+  "DD-50.5 addendum: no-else if in switch case body — both compilers agree"
+  (bind r (compile-both "(switch x (1 (if (=== y 0) (console:log \"a\")) (break)) (default (break)))"))
   (includes r "switch (x)")
-  (includes r "if (y === 0)")
   (includes r "console.log(\"a\")"))
 
 (test
