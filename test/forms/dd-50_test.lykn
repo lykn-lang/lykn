@@ -106,7 +106,7 @@
 
 (test
   "DD-50.5: no-else if in for body — both compilers"
-  (bind r (compile-both "(for (let i 0) (< i 10) (++ i) (if (=== i 5) (break)))"))
+  (bind r (compile-both "(for (let i 0) (< i 10) (++ i) (if (= i 5) (break)))"))
   (includes r "for (")
   (includes r "break"))
 
@@ -124,7 +124,7 @@
 
 (test
   "DD-50.5 addendum: no-else if in switch case body — both compilers agree"
-  (bind r (compile-both "(switch x (1 (if (=== y 0) (console:log \"a\")) (break)) (default (break)))"))
+  (bind r (compile-both "(switch x (1 (if (= y 0) (console:log \"a\")) (break)) (default (break)))"))
   (includes r "switch (x)")
   (includes r "console.log(\"a\")"))
 

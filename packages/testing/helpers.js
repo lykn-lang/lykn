@@ -64,7 +64,8 @@ export function compileBoth(source) {
   const tmpPath = Deno.makeTempFileSync({ suffix: ".lykn" });
   try {
     Deno.writeTextFileSync(tmpPath, source);
-    const proc = new Deno.Command("lykn", {
+    const lyknBin = Deno.env.get("LYKN_BIN") || "./bin/lykn";
+    const proc = new Deno.Command(lyknBin, {
       args: ["compile", tmpPath],
       stdout: "piped",
       stderr: "piped",

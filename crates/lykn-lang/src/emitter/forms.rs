@@ -269,7 +269,7 @@ pub fn emit_form(
             ..
         } => vec![emit_class_form(None, superclass, members, ctx, registry)],
         SurfaceForm::Do { body, .. } => vec![emit_do(body, ctx, registry)],
-        SurfaceForm::KernelPassthrough { raw, .. } => vec![raw.clone()],
+        SurfaceForm::KernelPassthrough { raw, .. } => vec![emit_expr(raw, ctx, registry)],
         SurfaceForm::FunctionCall { head, args, span } => {
             // Check for js: namespace interop
             if let Some(name) = head.as_atom() {
