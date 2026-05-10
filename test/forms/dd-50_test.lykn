@@ -94,3 +94,50 @@
   "DD-50 regression: when-let still IIFE-wrapped"
   (bind r (compile "(when-let (v 42) v)"))
   (includes r "(() =>"))
+
+;; ── DD-50.5: kernel-form context refinement ─────────────────────
+
+(test
+  "DD-50.5: no-else if in while body — statement context preserved"
+  (bind r (compile "(while true (if false (throw (new Error \"e\"))))"))
+  (includes r "while (true)")
+  (includes r "if (false)")
+  (includes r "throw"))
+
+(test
+  "DD-50.5: no-else if in for body — statement context preserved"
+  (bind r (compile "(for (let i 0) (< i 10) (++ i) (if (= i 5) (break)))"))
+  (includes r "for (")
+  (includes r "if (i === 5)")
+  (includes r "break"))
+
+(test
+  "DD-50.5: no-else if in block — statement context preserved"
+  (bind r (compile "(func test :args (:any x) :body (if (= x 1) (console:log \"yes\")) (console:log \"done\"))"))
+  (includes r "if (x === 1)")
+  (includes r "console.log(\"yes\")")
+  (includes r "console.log(\"done\")"))
+
+(test
+  "DD-50.5: no-else if in try body — statement context preserved"
+  (bind r (compile "(try (if (= x 1) (throw (new Error \"e\"))) (catch e (console:log e)))"))
+  (includes r "try")
+  (includes r "if (x === 1)")
+  (includes r "throw"))
+
+(test
+  "DD-50.5: no-else if in switch case body — statement context preserved"
+  (bind r (compile "(switch x (1 (if (= y 0) (console:log \"a\")) (break)) (default (break)))"))
+  (includes r "switch (x)")
+  (includes r "if (y === 0)")
+  (includes r "console.log(\"a\")"))
+
+(test
+  "DD-50.5: if in while test — still intercepted in Value context"
+  (bind r (compile "(while (if cond true false) (console:log \"loop\"))"))
+  (includes r "while (cond ? true : false)"))
+
+(test
+  "DD-50.5: if in return arg — still intercepted in Value context"
+  (bind r (compile "(func test :returns :any :body (return (if cond \"a\" \"b\")))"))
+  (includes r "return cond ? \"a\" : \"b\""))

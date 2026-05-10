@@ -378,14 +378,14 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                     // DD-50: if in expression position → position-aware emission
                     emit_if_expression(&values[1..], *span, ctx, registry)
                 } else {
-                    // Not a surface form — recursively process all subexpressions.
-                    // DD-50: children of expression-producing kernel forms are in
-                    // Value context so nested `if` is intercepted correctly.
+                    // Not a surface form — recursively process subexpressions
+                    // with per-form child context profile (DD-50.5).
                     let saved_ctx = ctx.expr_context;
+                    let profile = kernel_child_profile(head_name);
                     let mut new_values = Vec::with_capacity(values.len());
                     new_values.push(values[0].clone()); // head atom unchanged
-                    ctx.expr_context = ExprContext::Value;
-                    for v in &values[1..] {
+                    for (i, v) in values[1..].iter().enumerate() {
+                        ctx.expr_context = profile.context_for(i, saved_ctx);
                         new_values.push(emit_expr(v, ctx, registry));
                     }
                     ctx.expr_context = saved_ctx;
@@ -2523,6 +2523,81 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
             // ((() => { ... })())
             list(vec![list(arrow_body)])
         }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// DD-50.5: Kernel-form child context profile
+// ---------------------------------------------------------------------------
+
+/// Describes how a kernel form's children should inherit expression context.
+enum KernelChildProfile {
+    /// All non-head children are in Value context (expression-producing forms).
+    AllValue,
+    /// All non-head children inherit the parent's context (statement-bodied forms
+    /// like `block`, `for` body, etc.) — effectively Statement.
+    AllParent,
+    /// Per-position contexts: each entry is the context for that child index.
+    /// Children beyond the list length use the default (Value).
+    Positional(&'static [ExprContext]),
+}
+
+impl KernelChildProfile {
+    fn context_for(&self, child_index: usize, parent_ctx: ExprContext) -> ExprContext {
+        match self {
+            KernelChildProfile::AllValue => ExprContext::Value,
+            KernelChildProfile::AllParent => parent_ctx,
+            KernelChildProfile::Positional(positions) => positions
+                .get(child_index)
+                .copied()
+                .unwrap_or(ExprContext::Value),
+        }
+    }
+}
+
+/// Return the child context profile for a kernel form.
+///
+/// Categories:
+/// - AllValue: expression-producing forms (operators, literals, etc.)
+/// - AllParent: statement-bodied forms whose children inherit parent context
+/// - Positional: mixed forms with specific per-child semantics
+fn kernel_child_profile(head: &str) -> KernelChildProfile {
+    use ExprContext::Statement as S;
+    use ExprContext::Value as V;
+
+    match head {
+        // Category B: statement-bodied forms — body children stay in parent context
+        "block" => KernelChildProfile::AllParent,
+        "label" => KernelChildProfile::AllParent,
+
+        // while: test=Value, body=Statement
+        "while" => KernelChildProfile::Positional(&[V, S]),
+        // do-while: body=Statement, test=Value
+        "do-while" => KernelChildProfile::Positional(&[S, V]),
+        // for: init=Value, test=Value, update=Value, body=Statement
+        "for" => KernelChildProfile::Positional(&[V, V, V, S]),
+        // for-of/for-in/for-await-of: binding=Statement, iterable=Value, body=Statement
+        "for-of" | "for-in" | "for-await-of" => KernelChildProfile::Positional(&[S, V, S]),
+        // try: body=Statement, catch-clause=Statement, finally=Statement
+        "try" => KernelChildProfile::AllParent,
+        // switch: discriminant=Value, then case bodies=Statement
+        "switch" => KernelChildProfile::Positional(&[V]),
+        // if: already specially handled at line 375; include for completeness
+        "if" => KernelChildProfile::AllValue,
+
+        // Category C: declarations — name=Statement (binding), initializer=Value
+        "const" | "let" | "var" => KernelChildProfile::Positional(&[S, V]),
+        // function/function*/=>: complex body semantics handled by their own emitters;
+        // at the kernel fallthrough level, treat children as parent context
+        "function" | "function*" | "=>" => KernelChildProfile::AllParent,
+
+        // Category B: statement forms with expression args
+        "throw" | "return" => KernelChildProfile::AllValue,
+        "break" | "continue" | "debugger" => KernelChildProfile::AllParent,
+        "import" | "export" => KernelChildProfile::AllParent,
+
+        // Category A: all-Value (operators, literals, expression-producing forms)
+        _ => KernelChildProfile::AllValue,
     }
 }
 

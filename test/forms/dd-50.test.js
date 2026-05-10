@@ -44,3 +44,34 @@ Deno.test("DD-50 cross-compiler: statement-form branch classification", () => {
   const out = lykn('(bind x (if true (throw (new Error "e")) 1))');
   assertStringIncludes(out, "(() =>");
 });
+
+// DD-50.5: kernel-form context refinement
+
+Deno.test("DD-50.5: no-else if in while body preserved as statement", () => {
+  const out = lykn('(while true (if false (throw (new Error "e"))))');
+  assertStringIncludes(out, "while (true)");
+  assertStringIncludes(out, "if (false)");
+  assertStringIncludes(out, "throw");
+});
+
+Deno.test("DD-50.5: no-else if in for body preserved as statement", () => {
+  const out = lykn('(for (let i 0) (< i 10) (++ i) (if (= i 5) (break)))');
+  assertStringIncludes(out, "for (");
+  assertStringIncludes(out, "break");
+});
+
+Deno.test("DD-50.5: no-else if in block preserved as statement", () => {
+  const out = lykn('(func test :args (:any x) :body (if (= x 1) (console:log "yes")) (console:log "done"))');
+  assertStringIncludes(out, "if (x === 1)");
+});
+
+Deno.test("DD-50.5: no-else if in try body preserved as statement", () => {
+  const out = lykn('(try (if (= x 1) (throw (new Error "e"))) (catch e (console:log e)))');
+  assertStringIncludes(out, "try");
+  assertStringIncludes(out, "if (x === 1)");
+});
+
+Deno.test("DD-50.5: positive — if in return arg still intercepted", () => {
+  const out = lykn('(func test :returns :any :body (return (if cond "a" "b")))');
+  assertStringIncludes(out, 'return cond ? "a" : "b"');
+});
