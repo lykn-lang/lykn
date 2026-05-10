@@ -137,3 +137,60 @@
   "DD-50.5: if in return arg — still intercepted in Value context"
   (bind r (compile "(func test :returns :any :body (return (if cond \"a\" \"b\")))"))
   (includes r "return cond ? \"a\" : \"b\""))
+
+;; ── DD-50.5 iter 3: surface-form-in-kernel-form regression coverage ─────
+
+(test
+  "DD-50.5 iter3: surface = inside if condition"
+  (bind r (compile-both "(if (= x 1) (console:log \"yes\"))"))
+  (includes r "x === 1"))
+
+(test
+  "DD-50.5 iter3: surface != inside if condition"
+  (bind r (compile-both "(if (!= x 1) (console:log \"no\"))"))
+  (includes r "x !== 1"))
+
+(test
+  "DD-50.5 iter3: surface and inside if condition"
+  (bind r (compile-both "(if (and x y) (console:log \"both\"))"))
+  (includes r "x && y"))
+
+(test
+  "DD-50.5 iter3: surface or inside if condition"
+  (bind r (compile-both "(if (or x y) (console:log \"either\"))"))
+  (includes r "x || y"))
+
+(test
+  "DD-50.5 iter3: surface not inside if condition"
+  (bind r (compile-both "(if (not x) (console:log \"falsy\"))"))
+  (includes r "!x"))
+
+(test
+  "DD-50.5 iter3: surface = inside while test"
+  (bind r (compile-both "(while (= state 0) (console:log \"waiting\"))"))
+  (includes r "while (state === 0)"))
+
+(test
+  "DD-50.5 iter3: surface and inside while test"
+  (bind r (compile-both "(while (and active running) (console:log \"loop\"))"))
+  (includes r "while (active && running)"))
+
+(test
+  "DD-50.5 iter3: surface != inside for test"
+  (bind r (compile-both "(for (let i 0) (!= i 10) (++ i) (console:log i))"))
+  (includes r "i !== 10"))
+
+(test
+  "DD-50.5 iter3: surface and inside block body"
+  (bind r (compile-both "(block (and x y) (console:log \"done\"))"))
+  (includes r "x && y"))
+
+(test
+  "DD-50.5 iter3: surface or inside switch case body"
+  (bind r (compile-both "(switch state (1 (if (or a b) (console:log \"x\")) (break)) (default (break)))"))
+  (includes r "a || b"))
+
+(test
+  "DD-50.5 iter3: surface not inside try body"
+  (bind r (compile-both "(try (if (not ready) (throw (new Error \"e\"))) (catch e (console:log e)))"))
+  (includes r "!ready"))
