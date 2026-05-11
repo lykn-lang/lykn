@@ -83,9 +83,53 @@ guessing, no `index.js` resolution.
 
 ---
 
-## ID-07: No `npm install` / `npm run` — Use `deno add` / `deno task`
+## ID-07: No `npm install` — Use `project.json` `imports`
 
 **Strength**: MUST-AVOID
+
+**Summary**: Lykn projects manage dependencies via the workspace-level
+`project.json` `imports` map, not Deno's per-package `deno.json` or
+`deno add`. The latter writes to a file Lykn's workspace resolver
+doesn't read.
+
+**Adding a dependency** — edit `project.json` directly:
+
+```json
+{
+  "imports": {
+    "@std/path": "jsr:@std/path@^1.0.0",
+    "lodash": "npm:lodash@^4.17.21"
+  }
+}
+```
+
+Online builds: Deno auto-caches on first import. No prefetch needed.
+
+Offline builds: prefetch the new dependency once before going
+offline, using Deno's cache infrastructure command:
+
+```sh
+deno cache jsr:@std/path
+```
+
+`deno cache` is acceptable in lykn projects (per DD-51 Rule 3) — it's
+infrastructure, not project configuration. `deno add` is **not**
+acceptable (it writes to the wrong file).
+
+**Counter-cue (read this if you're tempted to bypass):** `deno add`
+is a real Deno command, but its target is `deno.json` per-package
+imports, which lykn's workspace resolver doesn't honour. Editing
+`project.json` directly is the correct workflow.
+
+---
+
+## ID-28: No `deno add` — Edit `project.json` `imports` Directly
+
+**Strength**: MUST-AVOID
+
+**Summary**: `deno add` writes to `deno.json` per-package imports,
+which lykn's workspace resolver does not read. Edit `project.json`
+`imports` directly. See ID-07 for the workflow.
 
 ---
 
@@ -307,8 +351,9 @@ Deno/Web APIs for new code.
 | 04 | `index.js` | SHOULD-AVOID | `mod.js` |
 | 05 | `package.json` | MUST-AVOID | `deno.json` |
 | 06 | `node_modules` | MUST-AVOID | Global cache |
-| 07 | `npm install`/`npm run` | MUST-AVOID | `deno add`/`deno task` |
+| 07 | `npm install` | MUST-AVOID | edit `project.json` `imports`; `deno cache` to prefetch for offline |
 | 27 | `npm publish` | MUST-AVOID | `lykn publish --npm` |
+| 28 | `deno add` | MUST-AVOID | edit `project.json` `imports` |
 | 08 | `.eslintrc`/`.prettierrc` | MUST-AVOID | `deno.json` |
 | 09 | `tsconfig.json` | MUST-AVOID | `deno.json` |
 | 10 | `process.env` | SHOULD-AVOID | `Deno:env:get` |
@@ -340,7 +385,7 @@ Deno/Web APIs for new code.
 | | `tsconfig.json` | `deno.json` `compilerOptions` |
 | | `.eslintrc` + `.prettierrc` | `deno.json` |
 | | `node_modules` | Global cache |
-| | `npm install` | `deno add` |
+| | `npm install` | edit `project.json` `imports` (offline: `deno cache <spec>`) |
 | | `npm run` | `deno task` |
 | **Globals** | `process.env.X` | `(Deno:env:get "X")` |
 | | `process.argv.slice(2)` | `Deno:args` |

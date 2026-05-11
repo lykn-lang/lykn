@@ -48,7 +48,7 @@ These three rules are load-bearing — violating any of them produces broken bui
 > |----------------|-------------|
 > | `npm publish` | `lykn publish --npm` |
 > | `deno publish` | `lykn publish --jsr` |
-> | `npm install <x>` | add to `project.json` `imports`, let Deno cache it |
+> | `npm install <x>` | add to `project.json` `imports` — Deno auto-caches online; for offline use `deno cache <spec>` |
 > | `cargo build` (in a lykn user project) | `lykn build --dist` |
 > | `deno run main.lykn` | `lykn run main.lykn` |
 > | `deno test` | `lykn test` |

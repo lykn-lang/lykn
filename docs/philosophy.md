@@ -317,10 +317,9 @@ them and either fix or explicitly defer.
 
 ## Decided design questions
 
-The five questions raised in the v0.1 draft were resolved on
-2026-04-29. Each is recorded here — both the resolution and the
-reasoning — so the audit checklist and the remediation milestones can
-reference them.
+The questions below were resolved during CDC review. Each is recorded
+here — both the resolution and the reasoning — so the audit checklist
+and the remediation milestones can reference them.
 
 1. **Build-artifact directory name (and Deno conflict question).**
    _Decision:_ `dist/` for now (current convention; matches npm
@@ -375,6 +374,14 @@ reference them.
    that surfaces compiled-JS state would violate Principle 1
    (exposes the compilation pipeline) and arguably Principle 2
    (introduces a non-Lykn tool surface).
+
+6. **`deno add` is banned in lykn projects; `deno task`/`deno cache`
+   are acceptable.** _Decision:_ Lykn projects use `project.json`
+   workspace-level imports, not Deno's per-package `deno.json`
+   mechanism. `deno cache` is the offline-prefetch tool (per DD-48).
+   `lykn add` is tracked as future work for ergonomic dependency
+   addition; the absence of `lykn add` does not block the `deno add`
+   ban. See DD-51 for full rationale.
 
 ---
 
