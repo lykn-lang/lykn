@@ -89,18 +89,20 @@ enum Commands {
         #[arg(long)]
         path: Option<PathBuf>,
     },
-    /// Build browser bundle, npm package, or dist staging
+    /// Build all workspace packages to target/lykn/build/
     Build {
         /// Build the browser bundle (dist/lykn-browser.js)
         #[arg(long)]
         browser: bool,
-        /// Build the npm package (dist/npm/) [deprecated: use --dist]
+        /// Build the npm package [deprecated: use lykn dist]
         #[arg(long)]
         npm: bool,
-        /// Stage all workspace packages into dist/ for publishing
+        /// Stage all workspace packages for publishing [deprecated: use lykn dist]
         #[arg(long)]
         dist: bool,
     },
+    /// Stage all workspace packages into target/lykn/dist/ for publishing
+    Dist,
     /// Publish package(s)
     Publish {
         /// Publish to JSR (JavaScript Registry)
@@ -112,9 +114,12 @@ enum Commands {
         /// Dry run (don't actually publish)
         #[arg(long)]
         dry_run: bool,
-        /// Skip the build step (assume dist/ is already staged)
+        /// Skip the build step (assume target/lykn/dist/ is already staged)
         #[arg(long)]
         no_build: bool,
+        /// Proceed even if the working tree has uncommitted changes
+        #[arg(long)]
+        allow_dirty: bool,
     },
 }
 
@@ -151,12 +156,14 @@ fn main() {
         Commands::Lint { paths } => cmd_lint(&paths),
         Commands::New { name, path } => cmd_new(&name, path.as_deref()),
         Commands::Build { browser, npm, dist } => cmd_build(browser, npm, dist),
+        Commands::Dist => cmd_dist(),
         Commands::Publish {
             jsr,
             npm,
             dry_run,
             no_build,
-        } => cmd_publish(jsr, npm, dry_run, no_build),
+            allow_dirty,
+        } => cmd_publish(jsr, npm, dry_run, no_build, allow_dirty),
     }
 }
 
@@ -262,7 +269,7 @@ fn cmd_compile(
             } else {
                 if std::io::stdout().is_terminal() {
                     eprintln!("note: compiled output is going to stdout. Use `-o <file>` to write");
-                    eprintln!("to disk, or use `lykn build --dist` to stage for publishing.");
+                    eprintln!("to disk, or use `lykn dist` to stage for publishing.");
                 }
                 print!("{result}");
             }
@@ -570,7 +577,7 @@ fn resolve_publish_targets(jsr: bool, npm: bool) -> (bool, bool) {
 }
 
 fn validate_dist_exports() {
-    let dist = Path::new("dist");
+    let dist = Path::new("target/lykn/dist");
     if !dist.exists() {
         return;
     }
@@ -622,15 +629,48 @@ fn validate_dist_exports() {
     }
 }
 
-fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
+fn check_working_tree_clean() -> Result<(), String> {
+    let output = Command::new("git").args(["status", "--porcelain"]).output();
+    match output {
+        Ok(out) if out.status.success() => {
+            let status_output = String::from_utf8_lossy(&out.stdout);
+            if status_output.is_empty() {
+                Ok(())
+            } else {
+                Err(status_output.to_string())
+            }
+        }
+        Ok(_) => Ok(()),
+        Err(_) => Ok(()),
+    }
+}
+
+fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool, allow_dirty: bool) {
+    if !allow_dirty
+        && let Err(dirty_files) = check_working_tree_clean()
+    {
+        eprintln!("error: lykn publish: working tree has uncommitted changes");
+        eprintln!();
+        eprintln!("The following files have uncommitted modifications:");
+        eprintln!();
+        for line in dirty_files.lines() {
+            eprintln!("  {line}");
+        }
+        eprintln!();
+        eprintln!("Commit or stash these changes, or pass --allow-dirty to proceed anyway.");
+        process::exit(1);
+    }
+
     let (do_jsr, do_npm) = resolve_publish_targets(jsr, npm);
 
-    // Build dist/ unless --no-build was passed
     if !no_build && (do_jsr || do_npm) {
         match dist::build_dist(Path::new(".")) {
             Ok(packages) => {
                 for pkg in &packages {
-                    eprintln!("{} staged in dist/{}/", pkg.name, pkg.short_name);
+                    eprintln!(
+                        "{} staged in target/lykn/dist/{}/",
+                        pkg.name, pkg.short_name
+                    );
                 }
             }
             Err(e) => {
@@ -643,7 +683,7 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
     validate_dist_exports();
 
     if do_jsr {
-        let config = "dist/project.json".to_string();
+        let config = "target/lykn/dist/project.json".to_string();
         let mut args = vec!["publish", "--config", &config, "--allow-slow-types"];
         if dry_run {
             args.push("--dry-run");
@@ -663,8 +703,7 @@ fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool) {
     }
 
     if do_npm {
-        // Find all subdirectories of dist/ that contain package.json
-        let npm_dirs: Vec<_> = fs::read_dir("dist")
+        let npm_dirs: Vec<_> = fs::read_dir("target/lykn/dist")
             .into_iter()
             .flatten()
             .flatten()
@@ -746,7 +785,7 @@ fn project_json_template(name: &str) -> String {
         r#"{{
     "workspace": ["./packages/{name}"],
     "imports": {{
-        "{name}/": "./packages/{name}/",
+        "{name}/": "./target/lykn/build/{name}/",
         "lang/": "jsr:@lykn/lang/",
         "testing": "jsr:@lykn/testing",
         "testing/": "jsr:@lykn/testing/",
@@ -909,7 +948,7 @@ fn cmd_new(name: &str, path: Option<&Path>) {
     eprintln!("To prepare for publishing:");
     eprintln!("  git add .");
     eprintln!("  git commit -m \"Initial commit\"");
-    eprintln!("  lykn build --dist");
+    eprintln!("  lykn dist");
     eprintln!("  lykn publish --jsr --dry-run");
     eprintln!("  lykn publish --jsr");
 }
@@ -919,27 +958,52 @@ fn cmd_new(name: &str, path: Option<&Path>) {
 // ---------------------------------------------------------------------------
 
 fn cmd_build(browser: bool, npm: bool, dist_flag: bool) {
-    if !browser && !npm && !dist_flag {
-        eprintln!("Usage: lykn build --browser | --npm | --dist");
-        process::exit(1);
-    }
     if browser {
         build_browser_bundle();
+        return;
     }
     if npm {
-        eprintln!("warning: --npm is deprecated; use --dist instead");
+        eprintln!("warning: --npm is deprecated; use `lykn dist` instead");
+        cmd_dist();
+        return;
     }
-    if npm || dist_flag {
-        match dist::build_dist(Path::new(".")) {
-            Ok(packages) => {
-                for pkg in &packages {
-                    eprintln!("{} staged in dist/{}/", pkg.name, pkg.short_name);
-                }
+    if dist_flag {
+        eprintln!(
+            "warning: `lykn build --dist` is deprecated; use `lykn dist` instead.\n\
+             \x20        This alias will be removed in lykn 0.7.0."
+        );
+        cmd_dist();
+        return;
+    }
+    match dist::build_project(Path::new(".")) {
+        Ok(packages) => {
+            for pkg in &packages {
+                eprintln!(
+                    "{} built in target/lykn/build/{}/",
+                    pkg.name, pkg.short_name
+                );
             }
-            Err(e) => {
-                eprintln!("error: {e}");
-                process::exit(1);
+        }
+        Err(e) => {
+            eprintln!("error: {e}");
+            process::exit(1);
+        }
+    }
+}
+
+fn cmd_dist() {
+    match dist::build_dist(Path::new(".")) {
+        Ok(packages) => {
+            for pkg in &packages {
+                eprintln!(
+                    "{} staged in target/lykn/dist/{}/",
+                    pkg.name, pkg.short_name
+                );
             }
+        }
+        Err(e) => {
+            eprintln!("error: {e}");
+            process::exit(1);
         }
     }
 }

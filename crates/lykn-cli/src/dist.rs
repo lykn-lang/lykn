@@ -64,12 +64,14 @@ pub struct BuiltPackage {
 /// value starting with `./packages/`), rewrites bare imports to use the
 /// scoped `@lykn/` prefix.
 ///
-/// For example, with an import map entry `"lang/": "./packages/lang/"`,
+/// For example, with an import map entry `"lang/": "./target/lykn/build/lang/"`,
 /// this rewrites `from 'lang/reader.js'` to `from '@lykn/lang/reader.js'`.
 fn rewrite_imports(source: &str, import_map: &IndexMap<String, String>) -> String {
     let mut result = source.to_string();
     for (key, value) in import_map {
-        if key.ends_with('/') && value.starts_with("./packages/") {
+        let is_workspace = key.ends_with('/')
+            && (value.starts_with("./packages/") || value.starts_with("./target/lykn/build/"));
+        if is_workspace {
             let pkg_name = key.trim_end_matches('/');
             let scoped = format!("@lykn/{pkg_name}/");
 
@@ -91,20 +93,25 @@ fn rewrite_imports(source: &str, import_map: &IndexMap<String, String>) -> Strin
 // Per-kind builders
 // ---------------------------------------------------------------------------
 
-/// Build a runtime package: compile `.lykn` sources, copy `.js` files, generate configs.
-fn build_runtime(
+/// Stage a runtime package into `target/lykn/dist/<pkg>/` for publishing.
+///
+/// Reads compiled JS from `target/lykn/build/<pkg>/` (populated by
+/// `build_project`), rewrites workspace imports, generates metadata files.
+fn stage_runtime(
     project_root: &Path,
     pkg_dir: &str,
     pkg_config: &config::PackageConfig,
     project_imports: &IndexMap<String, String>,
 ) -> Result<(), DistError> {
     let sname = config::short_name(&pkg_config.name);
-    let dist_dir = project_root.join("dist").join(sname);
+    let dist_dir = project_root.join("target/lykn/dist").join(sname);
+    let build_dir = project_root.join("target/lykn/build").join(sname);
     let pkg_path = project_root.join(pkg_dir);
 
-    compile_lykn_sources(&pkg_path)?;
+    compile_lykn_sources(&pkg_path, &build_dir)?;
+    copy_js_to_build(&pkg_path, &build_dir)?;
     prepare_dist_dir(&dist_dir)?;
-    copy_js_files(&pkg_path, &dist_dir, project_imports)?;
+    copy_js_files(&build_dir, &dist_dir, project_imports)?;
     generate_dts_stubs(&dist_dir)?;
     copy_root_files(project_root, &dist_dir);
     write_deno_json(&dist_dir, pkg_config, None)?;
@@ -114,21 +121,26 @@ fn build_runtime(
     Ok(())
 }
 
-/// Build a macro module package: copy ALL files (`.lykn` + `.js`) and
-/// generate a `mod.js` stub.
-fn build_macro_module(
+/// Stage a macro module package into `target/lykn/dist/<pkg>/` for publishing.
+///
+/// Copies ALL files (`.lykn` + `.js`) from source and generates a `mod.js` stub.
+fn stage_macro_module(
     project_root: &Path,
     pkg_dir: &str,
     pkg_config: &config::PackageConfig,
 ) -> Result<(), DistError> {
     let sname = config::short_name(&pkg_config.name);
-    let dist_dir = project_root.join("dist").join(sname);
+    let dist_dir = project_root.join("target/lykn/dist").join(sname);
     let pkg_path = project_root.join(pkg_dir);
 
     prepare_dist_dir(&dist_dir)?;
     copy_all_files(&pkg_path, &dist_dir)?;
 
-    // Generate mod.js stub
+    let build_dir = project_root.join("target/lykn/build").join(sname);
+    if build_dir.exists() {
+        copy_js_to_dist_from_build(&build_dir, &dist_dir)?;
+    }
+
     let stub = format!("export const VERSION = \"{}\";\n", pkg_config.version);
     write_text(&dist_dir.join("mod.js"), &stub)?;
     generate_dts_stubs(&dist_dir)?;
@@ -141,14 +153,14 @@ fn build_macro_module(
     Ok(())
 }
 
-/// Build a tooling package (same behavior as runtime).
-fn build_tooling(
+/// Stage a tooling package (same behavior as runtime).
+fn stage_tooling(
     project_root: &Path,
     pkg_dir: &str,
     pkg_config: &config::PackageConfig,
     project_imports: &IndexMap<String, String>,
 ) -> Result<(), DistError> {
-    build_runtime(project_root, pkg_dir, pkg_config, project_imports)
+    stage_runtime(project_root, pkg_dir, pkg_config, project_imports)
 }
 
 // ---------------------------------------------------------------------------
@@ -156,8 +168,9 @@ fn build_tooling(
 // ---------------------------------------------------------------------------
 
 /// Compile any `.lykn` source files in the package directory that don't
-/// have a corresponding `.js` file (or whose `.js` is older than the source).
-fn compile_lykn_sources(pkg_path: &Path) -> Result<(), DistError> {
+/// have a corresponding `.js` file in `build_dir` (or whose `.js` is older
+/// than the source). Compiled output goes to `build_dir`, not next to source.
+fn compile_lykn_sources(pkg_path: &Path, build_dir: &Path) -> Result<(), DistError> {
     let entries = fs::read_dir(pkg_path).map_err(|e| DistError::Io {
         path: pkg_path.to_path_buf(),
         source: e,
@@ -166,10 +179,16 @@ fn compile_lykn_sources(pkg_path: &Path) -> Result<(), DistError> {
     let imports: Option<std::collections::HashMap<String, String>> =
         config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
 
+    fs::create_dir_all(build_dir).map_err(|e| DistError::Io {
+        path: build_dir.to_path_buf(),
+        source: e,
+    })?;
+
     for entry in entries.flatten() {
         let path = entry.path();
         if path.extension().is_some_and(|e| e == "lykn" || e == "lyk") {
-            let js_path = path.with_extension("js");
+            let filename = path.file_stem().unwrap();
+            let js_path = build_dir.join(filename).with_extension("js");
             let needs_compile = !js_path.exists()
                 || fs::metadata(&path)
                     .and_then(|src| fs::metadata(&js_path).map(|dst| (src, dst)))
@@ -228,6 +247,42 @@ fn compile_lykn_sources(pkg_path: &Path) -> Result<(), DistError> {
     Ok(())
 }
 
+/// Copy handwritten `.js` files from the package directory into `build_dir`.
+/// Uses mtime-based staleness: only copies when source is newer than target.
+fn copy_js_to_build(pkg_path: &Path, build_dir: &Path) -> Result<(), DistError> {
+    let entries = fs::read_dir(pkg_path).map_err(|e| DistError::Io {
+        path: pkg_path.to_path_buf(),
+        source: e,
+    })?;
+
+    fs::create_dir_all(build_dir).map_err(|e| DistError::Io {
+        path: build_dir.to_path_buf(),
+        source: e,
+    })?;
+
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().is_some_and(|e| e == "js")
+            && let Some(filename) = path.file_name()
+        {
+            let target = build_dir.join(filename);
+            let needs_copy = !target.exists()
+                || fs::metadata(&path)
+                    .and_then(|src| fs::metadata(&target).map(|dst| (src, dst)))
+                    .and_then(|(src, dst)| Ok(src.modified()? > dst.modified()?))
+                    .unwrap_or(true);
+
+            if needs_copy {
+                fs::copy(&path, &target).map_err(|e| DistError::Io {
+                    path: path.clone(),
+                    source: e,
+                })?;
+            }
+        }
+    }
+    Ok(())
+}
+
 /// Remove and recreate the dist directory for a package.
 fn prepare_dist_dir(dist_dir: &Path) -> Result<(), DistError> {
     let _ = fs::remove_dir_all(dist_dir);
@@ -260,6 +315,29 @@ fn copy_js_files(
             })?;
             let rewritten = rewrite_imports(&content, project_imports);
             write_text(&dst.join(filename), &rewritten)?;
+        }
+    }
+    Ok(())
+}
+
+/// Copy compiled `.js` files from the build directory into the dist directory.
+fn copy_js_to_dist_from_build(build_dir: &Path, dist_dir: &Path) -> Result<(), DistError> {
+    let entries = fs::read_dir(build_dir).map_err(|e| DistError::Io {
+        path: build_dir.to_path_buf(),
+        source: e,
+    })?;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().is_some_and(|e| e == "js")
+            && let Some(filename) = path.file_name()
+        {
+            let target = dist_dir.join(filename);
+            if !target.exists() {
+                fs::copy(&path, &target).map_err(|e| DistError::Io {
+                    path: path.clone(),
+                    source: e,
+                })?;
+            }
         }
     }
     Ok(())
@@ -428,7 +506,7 @@ fn write_package_json(
     write_text(&dist_dir.join("package.json"), &format!("{json}\n"))
 }
 
-/// Generate the top-level `dist/project.json` workspace config.
+/// Generate the top-level `target/lykn/dist/project.json` workspace config.
 fn write_dist_project_json(project_root: &Path, short_names: &[String]) -> Result<(), DistError> {
     let members: Vec<serde_json::Value> = short_names
         .iter()
@@ -441,7 +519,7 @@ fn write_dist_project_json(project_root: &Path, short_names: &[String]) -> Resul
 
     let json = serde_json::to_string_pretty(&config)?;
     write_text(
-        &project_root.join("dist").join("project.json"),
+        &project_root.join("target/lykn/dist").join("project.json"),
         &format!("{json}\n"),
     )
 }
@@ -450,12 +528,48 @@ fn write_dist_project_json(project_root: &Path, short_names: &[String]) -> Resul
 // Main entry point
 // ---------------------------------------------------------------------------
 
-/// Stage all workspace packages into `dist/` for publishing.
+/// Compile all workspace packages into `target/lykn/build/<pkg>/`.
+///
+/// For each workspace member, compiles `.lykn` sources and copies handwritten
+/// `.js` files into the build directory. This is the local-dev compile-all
+/// step that makes `lykn test` and `lykn run` work after a fresh clone.
+pub fn build_project(project_root: &Path) -> Result<Vec<BuiltPackage>, DistError> {
+    let project_config = config::read_project_config(&project_root.join("project.json"))?;
+    let members = config::workspace_members(&project_config);
+
+    if members.is_empty() {
+        return Err(DistError::EmptyWorkspace);
+    }
+
+    let mut built = Vec::new();
+
+    for member in &members {
+        let pkg_path = project_root.join(member);
+        let deno_json_path = pkg_path.join("deno.json");
+        let pkg_config = config::read_package_config(&deno_json_path)?;
+        let sname = config::short_name(&pkg_config.name).to_string();
+        let build_dir = project_root.join("target/lykn/build").join(&sname);
+
+        compile_lykn_sources(&pkg_path, &build_dir)?;
+        copy_js_to_build(&pkg_path, &build_dir)?;
+
+        built.push(BuiltPackage {
+            name: pkg_config.name.clone(),
+            short_name: sname,
+            version: pkg_config.version.clone(),
+            kind: pkg_config.lykn.kind,
+        });
+    }
+
+    Ok(built)
+}
+
+/// Stage all workspace packages into `target/lykn/dist/` for publishing.
 ///
 /// Reads `project.json` from `project_root`, iterates each workspace member,
-/// and dispatches to the appropriate builder based on `lykn.kind` metadata.
+/// and dispatches to the appropriate staging builder based on `lykn.kind`.
 ///
-/// Returns a list of successfully built packages.
+/// Returns a list of successfully staged packages.
 pub fn build_dist(project_root: &Path) -> Result<Vec<BuiltPackage>, DistError> {
     let project_config = config::read_project_config(&project_root.join("project.json"))?;
     let members = config::workspace_members(&project_config);
@@ -464,8 +578,7 @@ pub fn build_dist(project_root: &Path) -> Result<Vec<BuiltPackage>, DistError> {
         return Err(DistError::EmptyWorkspace);
     }
 
-    // Clean and recreate dist/ to remove stale artifacts
-    let dist_root = project_root.join("dist");
+    let dist_root = project_root.join("target/lykn/dist");
     let _ = fs::remove_dir_all(&dist_root);
     fs::create_dir_all(&dist_root).map_err(|e| DistError::Io {
         path: dist_root.clone(),
@@ -482,13 +595,13 @@ pub fn build_dist(project_root: &Path) -> Result<Vec<BuiltPackage>, DistError> {
 
         match pkg_config.lykn.kind {
             PackageKind::Runtime => {
-                build_runtime(project_root, member, &pkg_config, &project_config.imports)?;
+                stage_runtime(project_root, member, &pkg_config, &project_config.imports)?;
             }
             PackageKind::MacroModule => {
-                build_macro_module(project_root, member, &pkg_config)?;
+                stage_macro_module(project_root, member, &pkg_config)?;
             }
             PackageKind::Tooling => {
-                build_tooling(project_root, member, &pkg_config, &project_config.imports)?;
+                stage_tooling(project_root, member, &pkg_config, &project_config.imports)?;
             }
         }
 
@@ -730,8 +843,8 @@ mod tests {
         assert_eq!(built.len(), 2);
 
         // Check that dist directories exist
-        assert!(root.join("dist/lang").is_dir());
-        assert!(root.join("dist/browser").is_dir());
+        assert!(root.join("target/lykn/dist/lang").is_dir());
+        assert!(root.join("target/lykn/dist/browser").is_dir());
     }
 
     #[test]
@@ -740,7 +853,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let project_json_path = root.join("dist/project.json");
+        let project_json_path = root.join("target/lykn/dist/project.json");
         assert!(project_json_path.exists());
 
         let content = fs::read_to_string(&project_json_path).unwrap();
@@ -755,8 +868,8 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        assert!(root.join("dist/lang/mod.js").exists());
-        assert!(root.join("dist/browser/mod.js").exists());
+        assert!(root.join("target/lykn/dist/lang/mod.js").exists());
+        assert!(root.join("target/lykn/dist/browser/mod.js").exists());
     }
 
     #[test]
@@ -765,7 +878,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let content = fs::read_to_string(root.join("dist/browser/mod.js")).unwrap();
+        let content = fs::read_to_string(root.join("target/lykn/dist/browser/mod.js")).unwrap();
         assert!(
             content.contains("from '@lykn/lang/mod.js'"),
             "expected rewritten import, got: {content}"
@@ -778,7 +891,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let deno_json = fs::read_to_string(root.join("dist/lang/deno.json")).unwrap();
+        let deno_json = fs::read_to_string(root.join("target/lykn/dist/lang/deno.json")).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&deno_json).unwrap();
         assert_eq!(parsed["name"], "@lykn/lang");
         assert_eq!(parsed["version"], "0.5.0");
@@ -791,7 +904,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let pkg_json = fs::read_to_string(root.join("dist/lang/package.json")).unwrap();
+        let pkg_json = fs::read_to_string(root.join("target/lykn/dist/lang/package.json")).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&pkg_json).unwrap();
         assert_eq!(parsed["name"], "@lykn/lang");
         assert_eq!(parsed["version"], "0.5.0");
@@ -810,10 +923,10 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        assert!(root.join("dist/lang/README.md").exists());
-        assert!(root.join("dist/lang/LICENSE").exists());
-        assert!(root.join("dist/browser/README.md").exists());
-        assert!(root.join("dist/browser/LICENSE").exists());
+        assert!(root.join("target/lykn/dist/lang/README.md").exists());
+        assert!(root.join("target/lykn/dist/lang/LICENSE").exists());
+        assert!(root.join("target/lykn/dist/browser/README.md").exists());
+        assert!(root.join("target/lykn/dist/browser/LICENSE").exists());
     }
 
     #[test]
@@ -822,11 +935,11 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        assert!(root.join("dist/lang/.build-stamp").exists());
-        assert!(root.join("dist/browser/.build-stamp").exists());
+        assert!(root.join("target/lykn/dist/lang/.build-stamp").exists());
+        assert!(root.join("target/lykn/dist/browser/.build-stamp").exists());
 
         // Verify it is a numeric timestamp
-        let stamp = fs::read_to_string(root.join("dist/lang/.build-stamp")).unwrap();
+        let stamp = fs::read_to_string(root.join("target/lykn/dist/lang/.build-stamp")).unwrap();
         assert!(stamp.parse::<u64>().is_ok());
     }
 
@@ -865,19 +978,21 @@ mod tests {
         assert_eq!(result[0].short_name, "testing");
 
         // Check that .lykn file was copied
-        assert!(root.join("dist/testing/mod.lykn").exists());
+        assert!(root.join("target/lykn/dist/testing/mod.lykn").exists());
 
         // Check that mod.js stub was generated
-        let stub = fs::read_to_string(root.join("dist/testing/mod.js")).unwrap();
+        let stub = fs::read_to_string(root.join("target/lykn/dist/testing/mod.js")).unwrap();
         assert!(stub.contains("export const VERSION = \"0.5.0\""));
 
         // Check deno.json preserves lykn metadata
-        let deno_json = fs::read_to_string(root.join("dist/testing/deno.json")).unwrap();
+        let deno_json =
+            fs::read_to_string(root.join("target/lykn/dist/testing/deno.json")).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&deno_json).unwrap();
         assert!(parsed.get("lykn").is_some());
 
         // Check package.json includes .lykn and .lyk in files
-        let pkg_json = fs::read_to_string(root.join("dist/testing/package.json")).unwrap();
+        let pkg_json =
+            fs::read_to_string(root.join("target/lykn/dist/testing/package.json")).unwrap();
         assert!(pkg_json.contains("*.lykn"));
         assert!(pkg_json.contains("*.lyk"));
     }
@@ -904,7 +1019,8 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let pkg_json = fs::read_to_string(root.join("dist/browser/package.json")).unwrap();
+        let pkg_json =
+            fs::read_to_string(root.join("target/lykn/dist/browser/package.json")).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&pkg_json).unwrap();
         let deps = parsed["dependencies"].as_object().unwrap();
         assert!(
@@ -934,7 +1050,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let content = fs::read_to_string(root.join("dist/lang/deno.json")).unwrap();
+        let content = fs::read_to_string(root.join("target/lykn/dist/lang/deno.json")).unwrap();
         let value: serde_json::Value = serde_json::from_str(&content).unwrap();
         insta::assert_json_snapshot!("runtime_pkg_deno_json", value);
     }
@@ -945,7 +1061,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let content = fs::read_to_string(root.join("dist/lang/package.json")).unwrap();
+        let content = fs::read_to_string(root.join("target/lykn/dist/lang/package.json")).unwrap();
         let value: serde_json::Value = serde_json::from_str(&content).unwrap();
         insta::assert_json_snapshot!("runtime_pkg_package_json", value);
     }
@@ -956,7 +1072,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let content = fs::read_to_string(root.join("dist/testing/deno.json")).unwrap();
+        let content = fs::read_to_string(root.join("target/lykn/dist/testing/deno.json")).unwrap();
         let value: serde_json::Value = serde_json::from_str(&content).unwrap();
         insta::assert_json_snapshot!("macro_module_deno_json", value);
     }
@@ -967,7 +1083,8 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let content = fs::read_to_string(root.join("dist/testing/package.json")).unwrap();
+        let content =
+            fs::read_to_string(root.join("target/lykn/dist/testing/package.json")).unwrap();
         let value: serde_json::Value = serde_json::from_str(&content).unwrap();
         insta::assert_json_snapshot!("macro_module_package_json", value);
     }
@@ -978,7 +1095,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let content = fs::read_to_string(root.join("dist/testing/mod.js")).unwrap();
+        let content = fs::read_to_string(root.join("target/lykn/dist/testing/mod.js")).unwrap();
         insta::assert_snapshot!("macro_module_mod_js_stub", content);
     }
 
@@ -988,7 +1105,7 @@ mod tests {
         let root = tmp.path();
         build_dist(root).unwrap();
 
-        let content = fs::read_to_string(root.join("dist/project.json")).unwrap();
+        let content = fs::read_to_string(root.join("target/lykn/dist/project.json")).unwrap();
         let value: serde_json::Value = serde_json::from_str(&content).unwrap();
         insta::assert_json_snapshot!("workspace_project_json", value);
     }

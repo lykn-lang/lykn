@@ -6,8 +6,8 @@
         }
     },
     "imports": {
-        "lang/": "./packages/lang/",
-        "testing/": "./packages/testing/",
+        "lang/": "./target/lykn/build/lang/",
+        "testing/": "./target/lykn/build/testing/",
         "astring": "npm:astring@^1.9.0"
     },
     "tasks": {

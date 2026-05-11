@@ -5,9 +5,12 @@
 
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::sync::Mutex;
 
 use lykn_cli::config::PackageKind;
 use lykn_cli::dist::build_dist;
+
+static DIST_LOCK: Mutex<()> = Mutex::new(());
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -40,6 +43,7 @@ fn npm_available() -> bool {
 
 #[test]
 fn real_packages_build_dist_succeeds() {
+    let _lock = DIST_LOCK.lock().unwrap();
     let root = project_root();
 
     let built = build_dist(&root).expect("build_dist should succeed on the real workspace");
@@ -76,7 +80,7 @@ fn real_packages_build_dist_succeeds() {
     assert_eq!(testing.kind, PackageKind::MacroModule);
 
     // Verify dist directories were created
-    let dist = root.join("dist");
+    let dist = root.join("target/lykn/dist");
     assert!(dist.join("lang").is_dir(), "dist/lang/ should exist");
     assert!(dist.join("browser").is_dir(), "dist/browser/ should exist");
     assert!(dist.join("testing").is_dir(), "dist/testing/ should exist");
@@ -88,6 +92,7 @@ fn real_packages_build_dist_succeeds() {
 
 #[test]
 fn real_packages_dry_run_jsr() {
+    let _lock = DIST_LOCK.lock().unwrap();
     if !deno_available() {
         eprintln!("SKIP: deno not found on PATH");
         return;
@@ -103,8 +108,8 @@ fn real_packages_dry_run_jsr() {
         .arg("--dry-run")
         .arg("--allow-dirty")
         .arg("--config")
-        .arg(root.join("dist/project.json"))
-        .current_dir(root.join("dist"))
+        .arg(root.join("target/lykn/dist/project.json"))
+        .current_dir(root.join("target/lykn/dist"))
         .output()
         .expect("failed to run deno publish --dry-run");
 
@@ -118,6 +123,7 @@ fn real_packages_dry_run_jsr() {
 
 #[test]
 fn real_packages_dry_run_npm() {
+    let _lock = DIST_LOCK.lock().unwrap();
     if !npm_available() {
         eprintln!("SKIP: npm not found on PATH");
         return;
@@ -129,7 +135,7 @@ fn real_packages_dry_run_npm() {
     let built = build_dist(&root).expect("build_dist should succeed");
 
     for pkg in &built {
-        let dist_pkg = root.join("dist").join(&pkg.short_name);
+        let dist_pkg = root.join("target/lykn/dist").join(&pkg.short_name);
         assert!(
             dist_pkg.join("package.json").exists(),
             "dist/{}/package.json should exist",

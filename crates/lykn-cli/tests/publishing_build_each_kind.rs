@@ -93,11 +93,14 @@ fn build_runtime_minimal_produces_correct_dist() {
     assert_eq!(built[0].name, "@lykn/fixture-runtime");
     assert_eq!(built[0].version, "0.0.1");
 
-    let dist = root.join("dist/fixture-runtime");
+    let dist = root.join("target/lykn/dist/fixture-runtime");
 
     // mod.js exists and contains the original content
     let mod_js = dist.join("mod.js");
-    assert!(mod_js.exists(), "dist/fixture-runtime/mod.js should exist");
+    assert!(
+        mod_js.exists(),
+        "target/lykn/dist/fixture-runtime/mod.js should exist"
+    );
     let mod_content = fs::read_to_string(&mod_js).unwrap();
     assert!(
         mod_content.contains("VERSION"),
@@ -139,7 +142,8 @@ fn build_runtime_with_imports_rewrites_correctly() {
     assert_eq!(built[0].kind, PackageKind::Runtime);
 
     // Verify import rewriting: `from 'lang/reader.js'` -> `from '@lykn/lang/reader.js'`
-    let mod_js = fs::read_to_string(root.join("dist/fixture-runtime-imports/mod.js")).unwrap();
+    let mod_js =
+        fs::read_to_string(root.join("target/lykn/dist/fixture-runtime-imports/mod.js")).unwrap();
     assert!(
         mod_js.contains("@lykn/"),
         "imports should be rewritten to use @lykn/ prefix, got: {mod_js}"
@@ -165,13 +169,13 @@ fn build_macro_module_produces_correct_dist() {
     assert_eq!(built[0].kind, PackageKind::MacroModule);
     assert_eq!(built[0].short_name, "fixture-macros");
 
-    let dist = root.join("dist/fixture-macros");
+    let dist = root.join("target/lykn/dist/fixture-macros");
 
     // .lykn source files are copied
     let mod_lykn = dist.join("mod.lykn");
     assert!(
         mod_lykn.exists(),
-        "dist/fixture-macros/mod.lykn should exist"
+        "target/lykn/dist/fixture-macros/mod.lykn should exist"
     );
     let lykn_content = fs::read_to_string(&mod_lykn).unwrap();
     assert!(
@@ -221,7 +225,7 @@ fn build_tooling_produces_correct_dist() {
     assert_eq!(built[0].kind, PackageKind::Tooling);
     assert_eq!(built[0].short_name, "fixture-tools");
 
-    let dist = root.join("dist/fixture-tools");
+    let dist = root.join("target/lykn/dist/fixture-tools");
 
     // Same shape as runtime: mod.js, deno.json, package.json
     assert!(dist.join("mod.js").exists());

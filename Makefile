@@ -178,8 +178,8 @@ build-release: clean $(BIN_DIR)
 
 .PHONY: build-dist
 build-dist:
-	@echo "$(BLUE)Staging packages into dist/ for publishing...$(RESET)"
-	@$(BIN_DIR)/$(CODE_NAME) build --dist
+	@echo "$(BLUE)Staging packages into target/lykn/dist/ for publishing...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) dist
 	@echo "$(GREEN)✓ Dist staging complete$(RESET)"
 
 # Cleaning targets

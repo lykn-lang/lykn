@@ -103,8 +103,8 @@ fn jsr_dry_run_accepts_runtime_fixture() {
         .arg("publish")
         .arg("--dry-run")
         .arg("--config")
-        .arg(root.join("dist/project.json"))
-        .current_dir(root.join("dist"))
+        .arg(root.join("target/lykn/dist/project.json"))
+        .current_dir(root.join("target/lykn/dist"))
         .output()
         .expect("failed to run deno publish --dry-run");
 
@@ -133,8 +133,8 @@ fn jsr_dry_run_accepts_macro_module_fixture() {
         .arg("publish")
         .arg("--dry-run")
         .arg("--config")
-        .arg(root.join("dist/project.json"))
-        .current_dir(root.join("dist"))
+        .arg(root.join("target/lykn/dist/project.json"))
+        .current_dir(root.join("target/lykn/dist"))
         .output()
         .expect("failed to run deno publish --dry-run");
 
@@ -163,8 +163,8 @@ fn jsr_dry_run_accepts_tooling_fixture() {
         .arg("publish")
         .arg("--dry-run")
         .arg("--config")
-        .arg(root.join("dist/project.json"))
-        .current_dir(root.join("dist"))
+        .arg(root.join("target/lykn/dist/project.json"))
+        .current_dir(root.join("target/lykn/dist"))
         .output()
         .expect("failed to run deno publish --dry-run");
 
@@ -189,7 +189,7 @@ fn npm_dry_run_produces_expected_file_list() {
 
     build_dist(root).expect("build_dist should succeed");
 
-    let dist_pkg = root.join("dist/fixture-runtime");
+    let dist_pkg = root.join("target/lykn/dist/fixture-runtime");
     let output = Command::new("npm")
         .arg("pack")
         .arg("--dry-run")
