@@ -561,6 +561,8 @@ These are the most common mistakes in lykn code, especially when converting from
 | Using `object` (kernel) instead of `obj` (surface) for construction | `obj` uses keyword syntax; `object` is the kernel form |
 | Assuming `bind` type annotations on literals generate runtime checks | Literal annotations are verified at compile time — no runtime check emitted. Non-literal annotations DO generate runtime checks (DD-24). |
 
+**`?` vs `if` (DD-50 Rule 5):** prefer `?` for expression position; prefer `if` for statement position. The compiler treats them as functionally equivalent in expression position; the explicit form communicates intent at source level. For LLM-generated code, treat this as a hard rule (always use `?` in expression position, always use `if` in statement position).
+
 ---
 
 ## Naming Conventions
@@ -577,6 +579,32 @@ These are the most common mistakes in lykn code, especially when converting from
 | Module files | kebab-case `.lykn` | `http-client.lykn` |
 
 **AVOID** weasel names: `Manager`, `Service`, `Handler`, `Utils`, `Data`, `process`, `handle`.
+
+### Identifier Mapping Details (DD-49)
+
+**Predicate prefix detection:** when a `?`-suffix identifier already starts with `is-`, `has-`, `can-`, `should-`, `will-`, `does-`, `was-`, or `had-`, the compiler strips the `?` and emits the camelCase form without prepending `is-`. So `has-items?` → `hasItems` (not `isHasItems`). Otherwise, the compiler prepends `is-` then camelCases: `valid?` → `isValid`.
+
+**Embedded punctuation abbreviations:**
+
+| Character | Abbreviation | Example |
+|---|---|---|
+| `?` (mid/leading) | `QMARK` | `func?-thing` → `funcQMARKThing` |
+| `!` (mid/leading) | `BANG` | `set!-state` → `setBANGState` |
+| `*` | `STAR` | `*globals*` → `STARGlobalsSTAR` |
+| `+` | `PLUS` | `+constant+` → `PLUSConstantPLUS` |
+| `=` (mid/leading) | `EQ` | (rare) |
+| `<` / `>` | `LT` / `GT` | (rare in identifiers) |
+| `&` | `AMP` | `&rest` → `AMPRest` |
+| `%` | `PCT` | (rare) |
+| `/` | `SLASH` | `path/to` → `pathSLASHTo` |
+| `->` | `To` | `string->json` → `stringToJson` |
+| `<-` | `From` | `json<-string` → `jsonFromString` |
+
+Note: `$` is NOT in the abbreviation table — it's a valid JS identifier character (per ECMAScript spec) and passes through unchanged.
+
+**Macro-name overrides:** the threading macros `->` and `->>` (the language-primitive forms, not embedded in longer identifiers) compile to `threadFirst` and `threadLast` respectively. These are language-design names rather than mechanical-rule outputs.
+
+See DD-49 (`docs/design/05-active/0049-identifier-mapping-lykn-js.md`) for full rationale.
 
 ---
 

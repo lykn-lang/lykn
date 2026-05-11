@@ -137,8 +137,6 @@ which lykn's workspace resolver does not read. Edit `project.json`
 
 **Strength**: MUST-AVOID
 
-**See also**: `13-biome/01-setup.md`
-
 ---
 
 ## ID-09: No `tsconfig.json` — Use `compilerOptions` in `deno.json`
@@ -293,8 +291,6 @@ Requires `--allow-run`.
 
 **Strength**: MUST-AVOID
 
-**See also**: `13-biome/01-setup.md`
-
 ---
 
 ## ID-23: No `npx` — Use `deno run` with Specifiers
@@ -415,5 +411,5 @@ Deno/Web APIs for new code.
   (ID-15), `mod.js` (ID-08)
 - **Deno**: See `12-deno/01-runtime-basics.md` for Deno API details
 - **Linting/Formatting**: Deno's built-in `deno lint` + `deno fmt` on
-  compiled output. See also `13-biome/01-setup.md` for legacy Biome docs
+  compiled output
 - **lykn CLI**: See `15-lykn-cli.md` for the lykn compilation step

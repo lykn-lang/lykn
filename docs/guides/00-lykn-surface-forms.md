@@ -750,6 +750,36 @@ Default export:
 
 ## Control Flow (kernel forms)
 
+### do — sequence of expressions, position-aware
+
+`(do expr1 expr2 ... final)` evaluates each expression in order and
+yields the value of the final expression.
+
+**Position-aware:**
+- **Statement position:** emits a block. The final expression's value
+  is discarded.
+- **Expression position:** IIFE-wrapped, with the final expression
+  returned.
+
+```lykn
+;; Statement position — sequence with no value flow
+(do
+  (console:log "step 1")
+  (console:log "step 2"))
+
+;; Expression position — value of `(+ a b)` flows out
+(bind result
+  (do
+    (validate! a)
+    (validate! b)
+    (+ a b)))
+```
+
+**Not to be confused with `do-while`** — that's a separate kernel
+loop form (see "Control flow" section below).
+
+See DD-50.5 for full position-aware emission rules.
+
 ### if / ? (ternary)
 
 ```lykn
@@ -763,6 +793,24 @@ Ternary expression:
 ```lykn
 (? (> x 0) "yes" "no")
 ```
+
+**Position-aware compilation (DD-50):** `if` in expression position
+compiles to a ternary `cond ? then : else` when both branches are
+pure expressions, or an IIFE when a branch is a statement form
+(`throw`, `return`, etc.). `if` in statement position emits a
+standard `if`-statement. A no-else `if` in expression position is
+a compile error — use `?` explicitly or restructure.
+
+**Style:** Prefer `?` for expression position; prefer `if` for
+statement position. The compiler treats them as functionally
+equivalent in expression position, but explicit forms communicate
+intent at the source level.
+
+For LLM-generated code, treat this preference as a hard rule
+(always use `?` in expression position, always use `if` in
+statement position). LLMs flatten soft style preferences toward
+uniform compliance, so explicit phrasing makes the convention
+reliable in generated output.
 
 ### for-of / while / for / do-while
 

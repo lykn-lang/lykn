@@ -575,7 +575,6 @@ tests exercise. The `.lykn` source is the authoritative code.
   scope (ID-15), pure functions (ID-28-29)
 - **Performance**: See `08-performance.md` for tree shaking (ID-30)
 - **Deno**: See `12-deno/01-runtime-basics.md` for runtime details
-- **Biome**: See `13-biome/01-setup.md` for formatting configuration
 - **No-Node Boundary**: See `14-no-node-boundary.md`
 - **lykn CLI**: See `15-lykn-cli.md` for compiler usage
 - **Surface Forms Reference**: See `00-lykn-surface-forms.md` for

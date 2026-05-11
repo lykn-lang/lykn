@@ -129,8 +129,6 @@ The formatter handles S-expression indentation with 80-character line
 width. This formats the `.lykn` source — for formatting compiled JS
 output, use \`deno fmt\`.
 
-**See also**: `13-biome/13-03-formatting.md` for JS output formatting.
-
 ---
 
 ## ID-04: `lykn check` — Syntax Check
