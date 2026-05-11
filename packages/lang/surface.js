@@ -899,14 +899,36 @@ function andChain(checks) {
 export function registerSurfaceMacros(macroEnv) {
 	// --- Shared helpers (scoped to registerSurfaceMacros for access to sym, array, etc.) ---
 
+	const STATEMENT_ONLY_HEADS = [
+		"while", "for", "for-of", "for-in", "do-while", "switch",
+		"label", "debugger",
+		"block", "try", "catch", "finally",
+		"var", "const", "let",
+		"func", "fn", "class", "type", "export", "import",
+	];
+
+	function isStatementOnlyForm(expr) {
+		if (!isArray(expr) || expr.values.length === 0) return false;
+		const head = expr.values[0];
+		if (!head || head.type !== "atom") return false;
+		const name = head.value;
+		if (name === "if") return expr.values.length < 4;
+		return STATEMENT_ONLY_HEADS.includes(name);
+	}
+
 	/**
 	 * Wrap body forms so the last expression is returned.
 	 * Empty → [], single → [(return expr)], multiple → [...init, (return last)].
+	 * DD-50.6: skips wrapping when the last expression is a statement-only form.
 	 */
 	function wrapReturnLast(bodyForms) {
 		if (bodyForms.length === 0) return [];
+		const lastExpr = bodyForms[bodyForms.length - 1];
+		if (isStatementOnlyForm(lastExpr)) {
+			return [...bodyForms];
+		}
 		if (bodyForms.length === 1) return [array(sym("return"), bodyForms[0])];
-		return [...bodyForms.slice(0, -1), array(sym("return"), bodyForms[bodyForms.length - 1])];
+		return [...bodyForms.slice(0, -1), array(sym("return"), lastExpr)];
 	}
 
 	/**
@@ -1749,6 +1771,19 @@ export function registerSurfaceMacros(macroEnv) {
 		const hasPost = postClause && postClause.length > 0;
 
 		if (hasPost) {
+			const lastBodyExpr = bodyClause[bodyClause.length - 1];
+			if (lastBodyExpr && isStatementOnlyForm(lastBodyExpr)) {
+				const headName = isArray(lastBodyExpr) && lastBodyExpr.values.length > 0
+					? lastBodyExpr.values[0].value || "<unknown>"
+					: "<unknown>";
+				const retType = returnsType ? returnsType.value : "<unknown>";
+				throw new Error(
+					`function \`${funcName}\` declared \`:returns :${retType}\` but body ends with \`${headName}\` ` +
+					`(a statement-only form which cannot produce a value). ` +
+					`Either: (a) add a return-typed expression after the form, ` +
+					`or (b) remove \`:returns :${retType}\` from the function declaration.`
+				);
+			}
 			const resultVar = gensym("result");
 			// Body: capture result
 			if (bodyClause.length === 1) {
@@ -1792,6 +1827,18 @@ export function registerSurfaceMacros(macroEnv) {
 		} else if (hasReturns && !isVoid) {
 			// Returns type check
 			if (returnsType.value !== "any") {
+				const lastBodyExpr = bodyClause[bodyClause.length - 1];
+				if (lastBodyExpr && isStatementOnlyForm(lastBodyExpr)) {
+					const headName = isArray(lastBodyExpr) && lastBodyExpr.values.length > 0
+						? lastBodyExpr.values[0].value || "<unknown>"
+						: "<unknown>";
+					throw new Error(
+						`function \`${funcName}\` declared \`:returns :${returnsType.value}\` but body ends with \`${headName}\` ` +
+						`(a statement-only form which cannot produce a value). ` +
+						`Either: (a) add a return-typed expression after the form, ` +
+						`or (b) remove \`:returns :${returnsType.value}\` from the function declaration.`
+					);
+				}
 				const resultVar = gensym("result");
 				if (bodyClause.length === 1) {
 					bodyStmts.push(array(sym("const"), resultVar, bodyClause[0]));

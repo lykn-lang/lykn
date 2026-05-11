@@ -428,6 +428,46 @@ fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) 
 /// Uses the same classification logic as `emit_if_expression` to ensure
 /// uniform Rule 1 (ternary vs IIFE) and Rule 2 (no-else compile error)
 /// enforcement across all expression-position contexts.
+fn is_valueless_last_expr(expr: &SExpr) -> bool {
+    if let SExpr::List { values, .. } = expr
+        && let Some(head) = values.first().and_then(|e| e.as_atom())
+    {
+        if head == "if" {
+            return values.len() < 4;
+        }
+        if matches!(head, "return" | "throw" | "break" | "continue") {
+            return false;
+        }
+        return STATEMENT_FORM_HEADS.contains(&head);
+    }
+    false
+}
+
+fn emit_returns_mismatch_error(
+    func_name: &str,
+    returns_type: &str,
+    head_name: &str,
+    span: Span,
+) -> SExpr {
+    list(vec![
+        atom("throw"),
+        list(vec![
+            atom("new"),
+            atom("TypeError"),
+            SExpr::String {
+                value: format!(
+                    "COMPILE_ERROR: function `{func_name}` declared `:returns :{returns_type}` \
+                     but body ends with `{head_name}` \
+                     (a statement-only form which cannot produce a value). \
+                     Either: (a) add a return-typed expression after the form, \
+                     or (b) remove `:returns :{returns_type}` from the function declaration."
+                ),
+                span,
+            },
+        ]),
+    ])
+}
+
 fn convert_to_expression(expr: SExpr) -> SExpr {
     if let SExpr::List { values, span } = &expr
         && !values.is_empty()
@@ -1213,7 +1253,13 @@ fn emit_fn_expr(
     if has_type_checks && !emitted_body.is_empty() {
         items.extend(emitted_body[..emitted_body.len() - 1].iter().cloned());
         let last = emitted_body.last().unwrap().clone();
-        items.push(list(vec![atom("return"), last]));
+        // DD-50.6: skip return wrap for statement-only last expressions
+        if is_valueless_last_expr(&last) {
+            items.push(last);
+        } else {
+            let converted = convert_to_expression(last);
+            items.push(list(vec![atom("return"), converted]));
+        }
     } else {
         items.extend(emitted_body);
     }
@@ -1284,15 +1330,32 @@ fn emit_func_single(
             }
             body[body.len() - 1].clone()
         };
-        items.push(list(vec![
-            atom("const"),
-            atom(&result_var),
-            convert_to_expression(last_expr),
-        ]));
-        if let Some(ref post) = clause.post {
-            items.push(emit_post_check(name, post, &result_var, clause.span));
+        // DD-50.6: check if last expression can't produce a value
+        if is_valueless_last_expr(&last_expr) {
+            let head_name = last_expr
+                .as_list()
+                .and_then(|v| v.first())
+                .and_then(|e| e.as_atom())
+                .unwrap_or("<unknown>");
+            let ret_name = clause
+                .returns
+                .as_ref()
+                .map(|r| r.name.as_str())
+                .unwrap_or("<unknown>");
+            items.push(emit_returns_mismatch_error(
+                name,
+                ret_name,
+                head_name,
+                clause.span,
+            ));
+        } else {
+            let converted = convert_to_expression(last_expr);
+            items.push(list(vec![atom("const"), atom(&result_var), converted]));
+            if let Some(ref post) = clause.post {
+                items.push(emit_post_check(name, post, &result_var, clause.span));
+            }
+            items.push(list(vec![atom("return"), atom(&result_var)]));
         }
-        items.push(list(vec![atom("return"), atom(&result_var)]));
     } else if returns_void {
         // Void: just body, no return
         items.extend(body);
@@ -1309,17 +1372,29 @@ fn emit_func_single(
             body[body.len() - 1].clone()
         };
 
-        if !ctx.strip_assertions {
+        // DD-50.6: check if last expression can't produce a value
+        if is_valueless_last_expr(&last) {
+            let head_name = last
+                .as_list()
+                .and_then(|v| v.first())
+                .and_then(|e| e.as_atom())
+                .unwrap_or("<unknown>");
+            let ret_name = clause
+                .returns
+                .as_ref()
+                .map(|r| r.name.as_str())
+                .unwrap_or("<unknown>");
+            items.push(emit_returns_mismatch_error(
+                name,
+                ret_name,
+                head_name,
+                clause.span,
+            ));
+        } else if !ctx.strip_assertions {
             if let Some(ref ret) = clause.returns {
                 let result_var = ctx.gensym.next("result");
-                items.push(list(vec![
-                    atom("const"),
-                    atom(&result_var),
-                    convert_to_expression(last),
-                ]));
-                // Use "return value" in the error message instead of the
-                // gensym variable name for a user-friendly message, but
-                // still reference the gensym var for the typeof check.
+                let converted = convert_to_expression(last);
+                items.push(list(vec![atom("const"), atom(&result_var), converted]));
                 if let Some(check) = emit_return_type_check(&result_var, &ret.name, name, ret.span)
                 {
                     items.push(check);
@@ -1341,7 +1416,13 @@ fn emit_func_single(
         } else {
             body[body.len() - 1].clone()
         };
-        items.push(list(vec![atom("return"), last]));
+        // DD-50.6: skip return wrap for statement-only last expressions
+        if is_valueless_last_expr(&last) {
+            items.push(last);
+        } else {
+            let converted = convert_to_expression(last);
+            items.push(list(vec![atom("return"), converted]));
+        }
     }
 
     list(items)
@@ -1459,15 +1540,31 @@ fn emit_func_multi(
             } else {
                 body[body.len() - 1].clone()
             };
-            block_items.push(list(vec![
-                atom("const"),
-                atom(&result_var),
-                convert_to_expression(last),
-            ]));
-            if let Some(ref post) = clause.post {
-                block_items.push(emit_post_check(name, post, &result_var, clause.span));
+            if is_valueless_last_expr(&last) {
+                let head_name = last
+                    .as_list()
+                    .and_then(|v| v.first())
+                    .and_then(|e| e.as_atom())
+                    .unwrap_or("<unknown>");
+                let ret_name = clause
+                    .returns
+                    .as_ref()
+                    .map(|r| r.name.as_str())
+                    .unwrap_or("<unknown>");
+                block_items.push(emit_returns_mismatch_error(
+                    name,
+                    ret_name,
+                    head_name,
+                    clause.span,
+                ));
+            } else {
+                let converted = convert_to_expression(last);
+                block_items.push(list(vec![atom("const"), atom(&result_var), converted]));
+                if let Some(ref post) = clause.post {
+                    block_items.push(emit_post_check(name, post, &result_var, clause.span));
+                }
+                block_items.push(list(vec![atom("return"), atom(&result_var)]));
             }
-            block_items.push(list(vec![atom("return"), atom(&result_var)]));
         } else {
             if body.len() > 1 {
                 block_items.extend(body[..body.len() - 1].to_vec());
@@ -1477,7 +1574,13 @@ fn emit_func_multi(
             } else {
                 body[body.len() - 1].clone()
             };
-            block_items.push(list(vec![atom("return"), last]));
+            // DD-50.6: skip return wrap for statement-only last expressions
+            if is_valueless_last_expr(&last) {
+                block_items.push(last);
+            } else {
+                let converted = convert_to_expression(last);
+                block_items.push(list(vec![atom("return"), converted]));
+            }
         }
 
         items.push(list(vec![atom("if"), condition, list(block_items)]));

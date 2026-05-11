@@ -1,0 +1,62 @@
+(import-macros "testing" (test test-compiles is-equal ok includes is-thrown))
+(import "testing/helpers.js" (compile compile-both))
+
+;; ── DD-50.6: implicit-return-of-statement bug fix ─────────────────
+
+(test
+  "DD-50.6: func without :returns ending in while emits valid JS"
+  (bind r (compile-both "(func tick :args (:any state) :body (while (alive? state) (advance! state)))"))
+  (includes r "function tick(state)")
+  (includes r "while ("))
+
+(test
+  "DD-50.6: func without :returns ending in no-else if emits valid JS"
+  (bind r (compile-both "(func note :args (:any x) :body (if (= x 1) (console:log \"yes\")))"))
+  (includes r "function note(x)")
+  (includes r "if (x === 1)")
+  (includes r "console.log(\"yes\")"))
+
+(test
+  "DD-50.6: func without :returns ending in for emits valid JS"
+  (bind r (compile-both "(func count :args (:any n) :body (for (let i 0) (< i n) (++ i) (console:log i)))"))
+  (includes r "function count(n)")
+  (includes r "for ("))
+
+(test
+  "DD-50.6: func without :returns ending in block emits valid JS"
+  (bind r (compile-both "(func setup :args (:any x) :body (block (console:log \"a\") (console:log \"b\")))"))
+  (includes r "function setup(x)")
+  (includes r "console.log(\"a\")")
+  (includes r "console.log(\"b\")"))
+
+;; Q2=A: compile-error for :returns + statement-only last
+
+(test
+  "DD-50.6: func with :returns ending in while triggers compile error"
+  (is-thrown
+    (compile "(func bad :args (:any x) :returns :boolean :body (while cond (work)))")
+    Error
+    "declared `:returns :boolean` but body ends with `while`"))
+
+(test
+  "DD-50.6: func with :returns ending in no-else if triggers compile error"
+  (is-thrown
+    (compile "(func bad :args (:any x) :returns :boolean :body (if (= x 1) (console:log \"yes\")))")
+    Error
+    "declared `:returns :boolean` but body ends with `if`"))
+
+;; Regression: DD-50 machinery still works for both-branch if
+
+(test
+  "DD-50.6 regression: func with both-branch if as last still ternaries"
+  (bind r (compile "(func classify :args (:any x) :returns :string :body (if (= x 1) \"one\" \"other\"))"))
+  (includes r "function classify(x)")
+  (includes r " ? "))
+
+;; Regression: value-typed last expression still wraps
+
+(test
+  "DD-50.6 regression: func with value-typed last still wraps in return"
+  (bind r (compile "(func add :args (:number a :number b) :returns :number :body (+ a b))"))
+  (includes r "function add(a, b)")
+  (includes r "return "))
