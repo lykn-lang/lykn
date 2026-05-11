@@ -144,7 +144,7 @@ lykn check       # syntax
 lykn lint        # idiom / style / anti-patterns (when implemented; see Open Questions)
 
 # Build for distribution
-lykn build --dist
+lykn dist
 
 # Publish
 lykn publish --jsr
@@ -161,14 +161,16 @@ internally calls the underlying tools as needed — that is hidden.
 For Principle 1 to hold:
 
 - `lykn compile` writes its output to a build-artifact directory
-  (`dist/`, `target/`, or equivalent), not alongside source.
-- `lykn build --dist` operates on `.lykn` source directly, producing
-  a `dist/` tree without intermediate `.js` files in the source tree.
+  (`target/lykn/build/`), not alongside source.
+- `lykn dist` operates on `.lykn` source directly, producing
+  a `target/lykn/dist/` tree without intermediate `.js` files in
+  the source tree.
 - The `lykn new` scaffold's `.gitignore` includes the build-artifact
   directory and any `*.js` patterns that would catch stray compiled
   output.
-- Source `deno.json`'s `exports` field references the _built_ path
-  (e.g., `./dist/mod.js`), not a source-tree sibling.
+- Source `deno.json`'s `exports` field is a template for the staged
+  tree (e.g., `./mod.js` relative to `target/lykn/dist/<pkg>/`).
+  Local-dev resolution uses `project.json` `imports`.
 
 For Principle 2 to hold:
 
@@ -208,9 +210,9 @@ consumer sees:
   detail of resolution.
 
 The publishing pipeline (`lykn publish --jsr`, `lykn publish --npm`)
-operates on the `dist/` build artifacts directly — not through `git`
-— so the source repo's gitignore can correctly exclude `dist/` and
-the publish flow still works.
+operates on the `target/lykn/dist/` build artifacts directly — not
+through `git` — so the source repo's gitignore can correctly exclude
+`target/` and the publish flow still works.
 
 ---
 
@@ -222,17 +224,17 @@ specifically as the spec for any "philosophy alignment" milestone.
 
 ### Principle 1 checks
 
-- **No `.js` or `.ts` files in `packages/<name>/`** (other than
-  intentional hand-written JS shims, which should be flagged
-  explicitly):
-  `find packages -name "*.js" -o -name "*.ts" | grep -v dist`
-  should return nothing in a freshly-built project.
+- **No compiled `.js` artifacts in `packages/<name>/`** after a
+  fresh `lykn build`:
+  `find packages -name "*.js" -newer target/lykn/build -type f`
+  should return nothing. (Handwritten JS source for the compiler
+  itself is expected to remain in `packages/lang/` etc.)
 - **`.gitignore` includes build-artifact directories**:
-  `grep -E "^(dist|target|build)/" <scaffold>/.gitignore` returns matches.
-- **Source `deno.json` `exports` field references built path**:
-  `grep -E '"exports".*"\./mod\.js"' packages/*/deno.json` (without
-  `dist/`) should return _no_ matches; `grep -E '"exports".*"\./dist/'`
-  should return matches in a properly-aligned scaffold.
+  `grep -E "^target/$" <scaffold>/.gitignore` returns a match.
+- **Source `deno.json` `exports` field is a staging template**:
+  `grep -E '"exports".*"\./mod\.js"' packages/*/deno.json`
+  returns matches — `./mod.js` is relative to the staged tree
+  (`target/lykn/dist/<pkg>/`), not the source location.
 
 ### Principle 2 checks
 
@@ -252,9 +254,9 @@ specifically as the spec for any "philosophy alignment" milestone.
 
 ### Principle 3 checks
 
-- **`lykn build --dist` produces valid JS without external
-  validation**: a fresh `lykn new && lykn build --dist` in a scratch
-  dir produces a `dist/` tree that passes `deno lint` and
+- **`lykn dist` produces valid JS without external
+  validation**: a fresh `lykn new && lykn dist` in a scratch
+  dir produces a `target/lykn/dist/` tree that passes `deno lint` and
   `deno fmt --check` _without any user invocation_. (The check is
   internal to compiler verification; the user never runs it.)
 - **Compiler test suite includes formatting / lint cases**:
@@ -273,21 +275,6 @@ them and either fix or explicitly defer.
 
 ### From Phase 1 work
 
-- **`lykn compile` writes `.js` next to `.lykn` source.** The compiler's
-  default output target is the source directory, producing
-  `mod.js` next to `mod.lykn`. Should write to `dist/` (or `target/`)
-  by default.
-- **`.gitignore` does not exclude `*.js` from source tree.** Currently
-  excludes `dist/`, `bin/`, `*.js.map` but not `*.js`. Under
-  Principle 1, `.js` should not appear in the source tree, so
-  ignoring `*.js` is defensive (catches stray output from misconfigured
-  builds).
-- **Source `deno.json` `exports` references `./mod.js`** (a source-tree
-  sibling), not `./dist/mod.js`. The current scaffold and the `lykn
-  build --dist` pipeline are calibrated to the misaligned state. The
-  M3 work _aligned the scaffold to current behavior_; aligning to
-  philosophy will require adjusting both the compiler's output target
-  and the exports-field convention.
 - **`lykn lint` lints compiled JS via `deno lint`.** Under Principle 3,
   this is exactly the operation the user should never need to perform
   — compiler-produced JS should already be lint-clean. The command
@@ -310,8 +297,39 @@ them and either fix or explicitly defer.
 - **Some guides and SKILL.md sections** still describe the toolchain
   in the language of "compile → format → lint → test" as if those
   were _user-facing_ steps. They should describe a single
-  `lykn build --dist` (or similar) where the underlying steps are
-  invisible.
+  `lykn dist` (or similar) where the underlying steps are invisible.
+
+### Resolved by M11
+
+The following entries were resolved by the M11 build-dir reorganization
+milestone (0.6.0). Original text preserved as historical record.
+
+- **`lykn compile` writes `.js` next to `.lykn` source.** The compiler's
+  default output target is the source directory, producing
+  `mod.js` next to `mod.lykn`. Should write to `dist/` (or `target/`)
+  by default.
+  _Resolved:_ `lykn build` now writes compiled output to
+  `target/lykn/build/<pkg>/`. Source tree stays clean of `.js` artifacts.
+- **`.gitignore` does not exclude `*.js` from source tree.** Currently
+  excludes `dist/`, `bin/`, `*.js.map` but not `*.js`. Under
+  Principle 1, `.js` should not appear in the source tree, so
+  ignoring `*.js` is defensive (catches stray output from misconfigured
+  builds).
+  _Resolved:_ With compile output relocated to `target/lykn/build/`,
+  no `.js` is generated in the source tree. The `target/` directory
+  is already gitignored. The defensive `*.js` ignore is no longer
+  needed but harmless if retained.
+- **Source `deno.json` `exports` references `./mod.js`** (a source-tree
+  sibling), not `./dist/mod.js`. The current scaffold and the `lykn
+  build --dist` pipeline are calibrated to the misaligned state. The
+  M3 work _aligned the scaffold to current behavior_; aligning to
+  philosophy will require adjusting both the compiler's output target
+  and the exports-field convention.
+  _Resolved:_ Source `deno.json` `exports` field is now documented as
+  a staging template — `./mod.js` is relative to the staged tree
+  (`target/lykn/dist/<pkg>/`), not the source location. Local-dev
+  resolution uses `project.json` `imports` pointing at
+  `./target/lykn/build/<pkg>/`.
 
 ---
 

@@ -646,9 +646,7 @@ fn check_working_tree_clean() -> Result<(), String> {
 }
 
 fn cmd_publish(jsr: bool, npm: bool, dry_run: bool, no_build: bool, allow_dirty: bool) {
-    if !allow_dirty
-        && let Err(dirty_files) = check_working_tree_clean()
-    {
+    if !allow_dirty && let Err(dirty_files) = check_working_tree_clean() {
         eprintln!("error: lykn publish: working tree has uncommitted changes");
         eprintln!();
         eprintln!("The following files have uncommitted modifications:");
