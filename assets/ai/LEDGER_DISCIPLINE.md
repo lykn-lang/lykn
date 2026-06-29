@@ -1,1 +1,1 @@
-/Users/oubiwann/lab/billosys/ai-engineering/templates/LEDGER_DISCIPLINE.md
+/Users/oubiwann/lab/billosys/ai-engineering/templates/LEDGER-DISCIPLINE.md
