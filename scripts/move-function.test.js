@@ -6,9 +6,11 @@
 
 import { assertEquals } from "https://deno.land/std/assert/mod.ts";
 import {
+  addNamedImport,
   insertDeclaration,
   locateDeclaration,
   removeDeclaration,
+  stripReExport,
 } from "./move-function.js";
 
 // ── F-1: scaffold + first failing locate test ──────────────────────────
@@ -101,4 +103,47 @@ Deno.test("byte-identity invariant (§2): moved declaration bytes === source byt
   const to = insertDeclaration(`const x = 0;\n`, `export ${declBytes}`);
   const locTo = locateDeclaration(to, "foo");
   assertEquals(to.slice(locTo.start, locTo.end), declBytes);
+});
+
+// ── F-4: addNamedImport + stripReExport ────────────────────────────────
+
+Deno.test("addNamedImport: merges into an existing import from the same specifier", () => {
+  const t = `import { a } from "./x.js";\nconst y = 1;\n`;
+  assertEquals(
+    addNamedImport(t, "b", "./x.js"),
+    `import { a, b } from "./x.js";\nconst y = 1;\n`,
+  );
+});
+
+Deno.test("addNamedImport: idempotent when already imported", () => {
+  const t = `import { a, b } from "./x.js";\n`;
+  assertEquals(addNamedImport(t, "b", "./x.js"), t);
+});
+
+Deno.test("addNamedImport: new import line after the last import", () => {
+  const t = `import { a } from "./x.js";\nconst y = 1;\n`;
+  assertEquals(
+    addNamedImport(t, "b", "./z.js"),
+    `import { a } from "./x.js";\nimport { b } from "./z.js";\nconst y = 1;\n`,
+  );
+});
+
+Deno.test("addNamedImport: new import at top when no imports exist", () => {
+  const t = `const y = 1;\n`;
+  assertEquals(addNamedImport(t, "b", "./z.js"), `import { b } from "./z.js";\nconst y = 1;\n`);
+});
+
+Deno.test("stripReExport: removes one name, keeps the rest", () => {
+  const t = `export { a, b, c } from "./x.js";\n`;
+  assertEquals(stripReExport(t, "b", "./x.js"), `export { a, c } from "./x.js";\n`);
+});
+
+Deno.test("stripReExport: deletes the statement when its list empties", () => {
+  const t = `export { only } from "./x.js";\nconst z = 1;\n`;
+  assertEquals(stripReExport(t, "only", "./x.js"), `const z = 1;\n`);
+});
+
+Deno.test("stripReExport: leaves a re-export from a different specifier intact", () => {
+  const t = `export { a } from "./x.js";\nexport { a } from "./y.js";\n`;
+  assertEquals(stripReExport(t, "a", "./x.js"), `export { a } from "./y.js";\n`);
 });
