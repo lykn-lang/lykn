@@ -41,24 +41,63 @@ export function parseModule(text) {
  *   extent). `null` when no such top-level declaration exists.
  */
 export function locateDeclaration(sourceText, name) {
-  const { program } = parseModule(sourceText);
+  const { program, comments } = parseModule(sourceText);
+
+  const build = (outer, inner, kind) => ({
+    start: inner.start,
+    end: inner.end,
+    exported: outer.type === "ExportNamedDeclaration",
+    kind,
+    spanWithComments: {
+      start: leadingCommentStart(sourceText, comments, outer.start),
+      end: outer.end,
+    },
+  });
 
   for (const node of program.body) {
     const inner = node.type === "ExportNamedDeclaration" ? node.declaration : node;
     if (!inner) continue;
 
     if (inner.type === "FunctionDeclaration" && inner.id?.name === name) {
-      const exported = node.type === "ExportNamedDeclaration";
-      return {
-        start: inner.start,
-        end: inner.end,
-        exported,
-        kind: "function",
-        spanWithComments: { start: node.start, end: node.end },
-      };
+      return build(node, inner, inner.generator ? "function*" : "function");
+    }
+    if (inner.type === "VariableDeclaration" && inner.declarations.length === 1) {
+      const decl = inner.declarations[0];
+      if (decl.id?.type === "Identifier" && decl.id.name === name) {
+        return build(node, inner, inner.kind);
+      }
     }
   }
   return null;
+}
+
+/**
+ * Walk backward from `declStart` through any comment block separated from it by
+ * whitespace only, returning the offset where that contiguous comment block
+ * begins (or `declStart` if there is none). This is what carries a helper's doc
+ * comment along with it during a move.
+ * @param {string} text
+ * @param {Array<{start: number, end: number}>} comments
+ * @param {number} declStart
+ * @returns {number}
+ */
+function leadingCommentStart(text, comments, declStart) {
+  let start = declStart;
+  let extended = true;
+  while (extended) {
+    extended = false;
+    for (const comment of comments) {
+      if (
+        comment.end <= start &&
+        comment.start < start &&
+        /^\s*$/.test(text.slice(comment.end, start))
+      ) {
+        start = comment.start;
+        extended = true;
+      }
+    }
+  }
+  return start;
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────
