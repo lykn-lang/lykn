@@ -129,9 +129,13 @@ pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     } else {
         false
     };
-    if needs_parens { w.write("("); }
+    if needs_parens {
+        w.write("(");
+    }
     emit_expr(w, expr, 0)?;
-    if needs_parens { w.write(")"); }
+    if needs_parens {
+        w.write(")");
+    }
     w.semicolon();
     Ok(())
 }
@@ -1143,7 +1147,8 @@ fn emit_object(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
                         if values[0].is_list() {
                             w.write("[");
                             if let SExpr::List { values: inner, .. } = &values[0] {
-                                let key_expr = if inner.first().and_then(|e| e.as_atom()) == Some("computed")
+                                let key_expr = if inner.first().and_then(|e| e.as_atom())
+                                    == Some("computed")
                                     && inner.len() >= 2
                                 {
                                     &inner[1]
