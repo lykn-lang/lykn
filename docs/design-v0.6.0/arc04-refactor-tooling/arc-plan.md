@@ -19,7 +19,7 @@ of the CLAUDE.md safety gates (never silently bypass its own verify step).
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · move-function-core** | M22.5-T1a: verbatim-move core — edits only the two named files, validated on a zero-external-consumer helper | Open (prompt written; no closing report) |
+| **slice01 · move-function-core** | M22.5-T1a: verbatim-move core — edits only the two named files, validated on a zero-external-consumer helper | **Open — scoped** (ledger + CDC handoff ready for CC; incl. fmt Step 0) |
 | **slice02 · move-function-rewiring** | M22.5-T1b: cross-file consumer rewiring + batch mode, validated on the real `andChain` move with the full suite green | Open (prompt written; no closing report) |
 
 Both slices currently hold only `cc-prompt.md` (the open-set assignment). Their

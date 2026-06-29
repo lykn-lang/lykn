@@ -1,8 +1,33 @@
+> ## CDC handoff — 2026-06-28 (arc04 / slice01, refreshed)
+>
+> This is the original M22.5-T1a spec, now homed as **arc03→arc04 slice01**.
+> The spec body below is authoritative and unchanged; these notes override the
+> stale header/context:
+>
+> - **Branch:** work off **`release/0.6.x`** (use a fresh branch or the
+>   `cdc/compiler-coherence` worktree — Duncan decides; git ops on the host).
+> - **Step 0 (separate commit, before any arc04 work):** land the standing
+>   `cargo fmt` drive-by — `cargo fmt --all` then
+>   `cargo fmt --all -- --check` (exit 0), commit as its own
+>   `"drive-by: cargo fmt --all"`. This clears the pre-existing `make check`
+>   lint red (project-ledger P-7/P-8). If already done, skip.
+> - **The contract is `ledger.md`** in this slice dir (the canonical lift of §8
+>   + §11 below). Walk it row by row at close.
+> - **Path updates:** the M22 audit referenced in §0.1 now lives at
+>   `../design/m22.5-audit-prompt.md` and `./design/` of arc03/slice08
+>   (`m22-audit-report.md`); the combined superseded spec is at
+>   `../design/move-function-tool-spec-SUPERSEDED.md`. Read
+>   `LEDGER-DISCIPLINE.md` from the collaboration-framework skill (the repo
+>   `assets/ai/LEDGER_DISCIPLINE.md` symlink was fixed in `1ef8744`).
+> - **Close set:** write `closing-report.md` (per-row walk + **bubble-up to
+>   arc04**) and hand back for CDC verification → `cdc-verification.md`.
+>   slice02 (cross-file rewiring / batch) stays unplanned until slice01 closes.
+
 # M22.5-T1a Implementation Prompt: `move-function.js` — Verbatim-Move Core
 
 **From:** CDC (Cowork Claude, cdc/compiler-coherence thread)
 **To:** CC (Claude Code, fresh session)
-**Date:** 2026-05-23
+**Date:** 2026-05-23 (refreshed for arc04/slice01 on 2026-06-28 — see CDC handoff above)
 **Branch:** `cdc/compiler-coherence` (worktree at `.worktrees/compiler-coherence/`)
 **Re:** Build the byte-exact function-move tool — **core only** (the two
 named files). Cross-file consumer rewiring and batch mode are a separate
