@@ -334,3 +334,71 @@ Deno.test("importResolvesTo: ./surface.js and ../lang/surface.js resolve to the 
     false,
   );
 });
+
+// ── slice02 F-2: consumer discovery + rewire + atomic multi-file revert ─
+
+/** Run `fn` with a temp dir populated from a {filename: content} map. */
+async function withTempProject(files, fn) {
+  const dir = await Deno.makeTempDir({ prefix: "movefn-proj-" });
+  for (const [fileName, content] of Object.entries(files)) {
+    await Deno.writeTextFile(`${dir}/${fileName}`, content);
+  }
+  try {
+    return await fn(dir);
+  } finally {
+    await Deno.remove(dir, { recursive: true });
+  }
+}
+
+Deno.test("moveFunction: rewires a consumer importing the moved name from FROM", async () => {
+  await withTempProject({
+    "from.js": `export function widget() {\n  return 1;\n}\n`,
+    "to.js": `export const TAG = 1;\n`,
+    "consumer.js": `import { widget, other } from "./from.js";\nexport const w = widget() + other;\n`,
+    "reexporter-consumer.js": `import { widget } from "./helpers.js";\nexport const r = widget;\n`,
+  }, async (dir) => {
+    await moveFunction({ from: `${dir}/from.js`, to: `${dir}/to.js`, name: "widget", consumerDir: dir });
+
+    // byte-identity preserved in TO
+    const newTo = await Deno.readTextFile(`${dir}/to.js`);
+    const locTo = locateDeclaration(newTo, "widget");
+    assertEquals(newTo.slice(locTo.start, locTo.end), "function widget() {\n  return 1;\n}");
+
+    // consumer rewired FROM→TO; its other import untouched
+    const consumer = await Deno.readTextFile(`${dir}/consumer.js`);
+    assertStringIncludes(consumer, `from "./to.js"`);
+    assertStringIncludes(consumer, `other`);
+    assertEquals(consumer.includes(`widget } from "./from.js"`), false);
+
+    // a consumer importing from a re-exporter (not FROM) is left alone
+    assertStringIncludes(
+      await Deno.readTextFile(`${dir}/reexporter-consumer.js`),
+      `import { widget } from "./helpers.js";`,
+    );
+  });
+});
+
+Deno.test("moveFunction: failing verify reverts FROM, TO, and all rewired consumers", async () => {
+  const fromSrc = `export function widget() {\n  return 1;\n}\n`;
+  const toSrc = `export const TAG = 1;\n`;
+  const c1 = `import { widget } from "./from.js";\nexport const a = widget;\n`;
+  const c2 = `import { widget } from "./from.js";\nexport const b = widget;\n`;
+  await withTempProject({ "from.js": fromSrc, "to.js": toSrc, "c1.js": c1, "c2.js": c2 }, async (dir) => {
+    await assertRejects(
+      () =>
+        moveFunction({
+          from: `${dir}/from.js`,
+          to: `${dir}/to.js`,
+          name: "widget",
+          consumerDir: dir,
+          verify: () => Promise.resolve({ success: false, output: "boom" }),
+        }),
+      Error,
+      "verify failed",
+    );
+    assertEquals(await Deno.readTextFile(`${dir}/from.js`), fromSrc);
+    assertEquals(await Deno.readTextFile(`${dir}/to.js`), toSrc);
+    assertEquals(await Deno.readTextFile(`${dir}/c1.js`), c1);
+    assertEquals(await Deno.readTextFile(`${dir}/c2.js`), c2);
+  });
+});
