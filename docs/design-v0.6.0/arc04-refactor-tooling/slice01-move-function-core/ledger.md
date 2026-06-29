@@ -37,8 +37,9 @@ to the source bytes — that byte-identity is what makes the move verifiable.
 
 ## Closure
 
-Closed on 2026-06-28. Verified by: CC (attested, all 9 rows); awaiting CDC
-reproduction → `cdc-verification.md`.
+Closed on 2026-06-28. Verified by: CC (attested, all 9 rows) + CDC
+(`cdc-verification.md`: git-confirmed TDD pairs + fmt; code-reviewed the F-3
+byte-identity invariant and F-6 verify gate; F-7/F-8/F-9 runtime deferred to host).
 Rows: 9. Done: 9. Deferred: 0. No-op: 0.
 
 TDD pairs (test→fix): F-1 `c7d050c`→`db7c45e` · F-2 `ff634c8`→`f7f828c` ·

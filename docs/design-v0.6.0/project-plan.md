@@ -64,8 +64,8 @@ Arcs in dependency order. Each delivers one coherent capability.
 - **Done / closed:** arc01, arc02, **arc03** (composition reproduced, 0 semantic
   divergences; slice11 took the corpus green, 1293/0 — host re-run recommended to
   reconcile the runtime rows).
-- **Next in planned order:** arc04 (`move-function` tooling) — implementation
-  prompts written 2026-05-23 (T1a core, T1b rewiring), no closing reports yet.
+- **In flight:** arc04 — slice01 (`move-function-core`) **closed** (byte-exact
+  tool, TDD-first, 9/9); slice02 (cross-file rewiring + batch) next.
 - **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
   arc07 (docs; seeded).
 - **Gated:** arc08 (release) waits on the open arcs.
@@ -103,6 +103,14 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.4 — 2026-06-28 (arc04 slice01 closed; fmt blocker cleared)
+arc04 slice01 (`move-function-core`) closed — byte-exact move tool, TDD-first,
+byte-identity invariant verified. The standing **`cargo fmt` drive-by landed**
+(`401e2bd`, the 5 files), clearing the `make check` lint-red blocker noted in
+v1.1 (P-7/P-8 clean-toolchain demos are now unblocked, though still pending a
+host run). slice01 bubble-up refined slice02's scope (extraction target +
+rebuild-first verify). Next: arc04 slice02.
 
 ### v1.3 — 2026-06-28 (arc03 closed)
 slice11 greened the cross-compiler corpus (**1293 / 0**); **arc03 closed**.
