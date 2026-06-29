@@ -1,0 +1,59 @@
+=== M16 Baseline State Capture ===
+Date: 2026-05-15
+Branch: cdc/compiler-coherence
+HEAD: 786e174 (Updated compiler arch doc.)
+
+=== compileBoth test count ===
+Total compile-both calls in test/forms/*_test.lykn: 19
+  dd-50_test.lykn: 15
+  dd-50.6_test.lykn: 4
+
+=== compile call count ===
+Total (compile "...") calls in test/forms/*_test.lykn: 168
+Files with compile calls: 40
+
+=== Line-356 blanket Value override (M16-5 target) ===
+forms.rs:356: ctx.expr_context = ExprContext::Value;
+  Context: surface-form-handler dispatch site, sets Value for all nested
+  surface form emission. This is the blanket override M16-5 will remove.
+
+=== Line-375 if special-case intercept (M16-4 target) ===
+forms.rs:375: else if head_name == "if"
+  Context: special-case intercept for `if` form in Value/Tail context.
+  One of the kernel forms with head_name-based context intercepts.
+
+=== All head_name intercept sites in emitter/forms.rs ===
+forms.rs:328: head_name == "assign"
+forms.rs:349: head_name == "class"
+forms.rs:350: head_name == "class-expr"
+forms.rs:375: head_name == "if"
+
+=== DD-50.7 Cluster 2 save/restore sites (9 total) ===
+forms.rs:1254: ctx.expr_context = ExprContext::Statement  (emit_fn_expr)
+forms.rs:1319: ctx.expr_context = ExprContext::Statement  (emit_func_single)
+forms.rs:1539: ctx.expr_context = ExprContext::Statement  (emit_func_multi)
+forms.rs:1715: ctx.expr_context = ExprContext::Statement  (emit_genfunc_single)
+forms.rs:1760: ctx.expr_context = ExprContext::Statement  (emit_genfn_expr)
+forms.rs:1881: ctx.expr_context = ExprContext::Statement  (emit_match_statement)
+forms.rs:1969: ctx.expr_context = ExprContext::Statement  (emit_match_iife)
+forms.rs:2284: ctx.expr_context = ExprContext::Statement  (emit_when_let_statement)
+forms.rs:2334: ctx.expr_context = ExprContext::Statement  (emit_when_let_iife)
+
+=== JS gensym-leak in error messages (M16-3 target) ===
+surface.js:96-108: buildTypeCheck() uses paramNode.value for message text.
+  When called with a gensym resultVar (lines 1802, 1852), the error
+  message leaks the internal name (e.g., "return 'result__gensym0'
+  expected boolean"). Rust uses "return value" label instead.
+No grep hits for literal "result__gensym" in surface.js (the gensym is
+generated at runtime, not as a literal string).
+
+=== Rust test pass count (cargo test -p lykn-lang) ===
+test result: ok. 1000 passed; 0 failed; 0 ignored (unit tests)
+test result: ok. 22 passed; 0 failed; 0 ignored (integration tests)
+test result: ok. 18 passed; 0 failed; 0 ignored (snapshot tests)
+test result: ok. 25 passed; 0 failed; 0 ignored (cli tests)
+test result: ok. 5 passed; 0 failed; 0 ignored (doc tests)
+Total: 1070 passed, 0 failed
+
+=== make test-lykn pass count ===
+292 passed | 0 failed (823ms)

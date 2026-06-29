@@ -11,6 +11,23 @@ lykn is a lightweight Lisp that compiles S-expressions to clean, readable JavaSc
 
 Zero runtime dependencies in compiled output.
 
+## Planning & project management
+
+Planning artifacts for 0.6.0 live under **`docs/design-v0.6.0/`** in the
+canonical project/arc/slice layout, per
+`collaboration-framework/docs/PROJECT-MANAGEMENT.md` (v2.1):
+`project-plan.md` (arc roadmap + project ledger), then `arcNN-<slug>/arc-plan.md`
+and `arcNN-<slug>/sliceNN-<slug>/{slice-doc,ledger,cc-prompt,closing-report,cdc-verification}.md`.
+Start at `docs/design-v0.6.0/README.md`.
+
+This layout was confirmed with the operator on 2026-06-28 (canonical layout;
+lang-repo-only scope). It was **reconstructed retroactively** from the prior
+milestone (M-series) tracking that lived in the gitignored `workbench/` tree;
+`workbench/` is retained until verified, then deletable. The 0.1.0–0.5.x
+history remains in `workbench/old/` (a future `docs/design-v0.5.x/` retro pass).
+Design decisions (DDs) remain odm-managed in `docs/design/`; the v0.6.0 tree
+references them.
+
 ## Writing Code
 
 ### JavaScript
