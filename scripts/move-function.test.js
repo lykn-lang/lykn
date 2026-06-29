@@ -19,6 +19,7 @@ import {
   parseArgs,
   removeDeclaration,
   rewriteImportSource,
+  runVerifyCommand,
   stripReExport,
 } from "./move-function.js";
 
@@ -441,4 +442,16 @@ Deno.test("batchMove: keeps green moves, reverts + stops on the first red", asyn
     assertStringIncludes(newFrom, "function b()");
     assertEquals(locateDeclaration(newFrom, "a"), null);
   });
+});
+
+// ── slice02 F-7: rebuild-first verify (compound shell command support) ──
+
+Deno.test("runVerifyCommand: honors shell operators so a rebuild-first verify works", async () => {
+  // `echo … && false` must fail; a whitespace-split exec would echo and exit 0.
+  const r = await runVerifyCommand("echo rebuilding && false");
+  assertEquals(r.success, false);
+  // a passing compound command succeeds and captures output
+  const ok = await runVerifyCommand("echo built && true");
+  assertEquals(ok.success, true);
+  assertStringIncludes(ok.output, "built");
 });
