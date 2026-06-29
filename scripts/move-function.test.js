@@ -235,3 +235,51 @@ Deno.test("moveFunction: aborts on ambiguous (two top-level declarations)", asyn
     assertEquals(await Deno.readTextFile(from), fromSrc);
   });
 });
+
+// ── F-6: verify gate + auto-revert + dry-run ───────────────────────────
+
+const MOVE_FROM = `function helper(x) {\n  return x * 2;\n}\n\nexport function useIt(n) {\n  return helper(n);\n}\n`;
+const MOVE_TO = `export const TAG = "to";\n`;
+
+Deno.test("dry-run: writes nothing, returns the computed plan", async () => {
+  await withTempFiles(MOVE_FROM, MOVE_TO, async ({ from, to }) => {
+    const result = await moveFunction({ from, to, name: "helper", dryRun: true });
+    assertEquals(result.written, false);
+    assertStringIncludes(result.newTo, "function helper(x)");
+    // disk unchanged
+    assertEquals(await Deno.readTextFile(from), MOVE_FROM);
+    assertEquals(await Deno.readTextFile(to), MOVE_TO);
+  });
+});
+
+Deno.test("verify gate: failing verify reverts both files byte-exactly and throws", async () => {
+  await withTempFiles(MOVE_FROM, MOVE_TO, async ({ from, to }) => {
+    await assertRejects(
+      () =>
+        moveFunction({
+          from,
+          to,
+          name: "helper",
+          verify: () => Promise.resolve({ success: false, output: "boom" }),
+        }),
+      Error,
+      "verify failed",
+    );
+    assertEquals(await Deno.readTextFile(from), MOVE_FROM);
+    assertEquals(await Deno.readTextFile(to), MOVE_TO);
+  });
+});
+
+Deno.test("verify gate: passing verify keeps the move", async () => {
+  await withTempFiles(MOVE_FROM, MOVE_TO, async ({ from, to }) => {
+    const result = await moveFunction({
+      from,
+      to,
+      name: "helper",
+      verify: () => Promise.resolve({ success: true, output: "" }),
+    });
+    assertEquals(result.written, true);
+    assertEquals(locateDeclaration(await Deno.readTextFile(from), "helper"), null);
+    assertStringIncludes(await Deno.readTextFile(to), "function helper(x)");
+  });
+});
