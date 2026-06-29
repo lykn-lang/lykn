@@ -4,14 +4,35 @@
 // TDD-first paired commits: each ledger row adds a test-only commit (red)
 // before the fix-only commit (green). See arc04/slice01 ledger.
 
-import { assertEquals } from "https://deno.land/std/assert/mod.ts";
+import {
+  assertEquals,
+  assertRejects,
+  assertStringIncludes,
+} from "https://deno.land/std/assert/mod.ts";
 import {
   addNamedImport,
   insertDeclaration,
   locateDeclaration,
+  moveFunction,
   removeDeclaration,
   stripReExport,
 } from "./move-function.js";
+
+/**
+ * Run `fn` with a temp dir holding from.js / to.js, cleaning up afterward.
+ */
+async function withTempFiles(fromContent, toContent, fn) {
+  const dir = await Deno.makeTempDir({ prefix: "movefn-" });
+  const from = `${dir}/from.js`;
+  const to = `${dir}/to.js`;
+  await Deno.writeTextFile(from, fromContent);
+  await Deno.writeTextFile(to, toContent);
+  try {
+    return await fn({ dir, from, to });
+  } finally {
+    await Deno.remove(dir, { recursive: true });
+  }
+}
 
 // ── F-1: scaffold + first failing locate test ──────────────────────────
 
@@ -146,4 +167,71 @@ Deno.test("stripReExport: deletes the statement when its list empties", () => {
 Deno.test("stripReExport: leaves a re-export from a different specifier intact", () => {
   const t = `export { a } from "./x.js";\nexport { b } from "./y.js";\n`;
   assertEquals(stripReExport(t, "a", "./x.js"), `export { b } from "./y.js";\n`);
+});
+
+// ── F-5: moveFunction orchestration (Layer 2) + abort conditions ───────
+
+Deno.test("moveFunction: e2e move, internal ref → back-import; TO byte-identical, exported once", async () => {
+  const fromSrc =
+    `function helper(x) {\n  return x * 2;\n}\n\nexport function useIt(n) {\n  return helper(n);\n}\n`;
+  await withTempFiles(fromSrc, `export const TAG = "to";\n`, async ({ from, to }) => {
+    await moveFunction({ from, to, name: "helper" });
+    const newFrom = await Deno.readTextFile(from);
+    const newTo = await Deno.readTextFile(to);
+
+    assertEquals(locateDeclaration(newFrom, "helper"), null);
+    assertStringIncludes(newFrom, `import { helper } from "./to.js";`);
+
+    const locTo = locateDeclaration(newTo, "helper");
+    assertEquals(locTo.exported, true);
+    assertEquals(newTo.slice(locTo.start, locTo.end), "function helper(x) {\n  return x * 2;\n}");
+  });
+});
+
+Deno.test("moveFunction: no internal reference → no back-import added", async () => {
+  const fromSrc = `function helper(x) {\n  return x * 2;\n}\n\nexport const other = 1;\n`;
+  await withTempFiles(fromSrc, `export const TAG = "to";\n`, async ({ from, to }) => {
+    await moveFunction({ from, to, name: "helper" });
+    const newFrom = await Deno.readTextFile(from);
+    assertEquals(locateDeclaration(newFrom, "helper"), null);
+    assertEquals(newFrom.includes("import"), false);
+  });
+});
+
+Deno.test("moveFunction: strips a pre-existing alias re-export in TO", async () => {
+  const fromSrc = `export function widget() {\n  return 1;\n}\n`;
+  const toSrc = `export { widget } from "./from.js";\nexport const TAG = 1;\n`;
+  await withTempFiles(fromSrc, toSrc, async ({ from, to }) => {
+    await moveFunction({ from, to, name: "widget" });
+    const newTo = await Deno.readTextFile(to);
+    const locTo = locateDeclaration(newTo, "widget");
+    assertEquals(newTo.slice(locTo.start, locTo.end), "function widget() {\n  return 1;\n}");
+    assertEquals(newTo.includes(`from "./from.js"`), false); // alias re-export gone
+  });
+});
+
+Deno.test("moveFunction: aborts when name not found, writes nothing", async () => {
+  const fromSrc = `export function foo() {}\n`;
+  await withTempFiles(fromSrc, `export const TAG = 1;\n`, async ({ from, to }) => {
+    await assertRejects(() => moveFunction({ from, to, name: "nope" }), Error, "not found");
+    assertEquals(await Deno.readTextFile(from), fromSrc);
+  });
+});
+
+Deno.test("moveFunction: aborts on collision (name already in TO), writes nothing", async () => {
+  const fromSrc = `export function helper() {}\n`;
+  const toSrc = `export function helper() {}\n`;
+  await withTempFiles(fromSrc, toSrc, async ({ from, to }) => {
+    await assertRejects(() => moveFunction({ from, to, name: "helper" }), Error, "collision");
+    assertEquals(await Deno.readTextFile(from), fromSrc);
+    assertEquals(await Deno.readTextFile(to), toSrc);
+  });
+});
+
+Deno.test("moveFunction: aborts on ambiguous (two top-level declarations)", async () => {
+  const fromSrc = `var thing = 1;\nvar thing = 2;\n`;
+  await withTempFiles(fromSrc, `export const TAG = 1;\n`, async ({ from, to }) => {
+    await assertRejects(() => moveFunction({ from, to, name: "thing" }), Error, "ambiguous");
+    assertEquals(await Deno.readTextFile(from), fromSrc);
+  });
 });
