@@ -129,6 +129,70 @@ export function insertDeclaration(targetText, unitText) {
   return `${trimmed}\n\n${unitText}\n`;
 }
 
+/**
+ * Add `import { name } from "<specifier>";`, merging into an existing import
+ * from the same specifier when present (idempotent if already imported), else
+ * inserting a new import line after the last import (or at the top).
+ * @param {string} text
+ * @param {string} name
+ * @param {string} specifier
+ * @returns {string}
+ */
+export function addNamedImport(text, name, specifier) {
+  const { program } = parseModule(text);
+  const imports = program.body.filter((n) => n.type === "ImportDeclaration");
+  const named = (node) => node.specifiers.filter((s) => s.type === "ImportSpecifier");
+
+  const existing = imports.find(
+    (n) => n.source.value === specifier && named(n).length > 0,
+  );
+  if (existing) {
+    const specs = named(existing);
+    if (specs.some((s) => s.imported.name === name)) return text;
+    const at = specs[specs.length - 1].end;
+    return `${text.slice(0, at)}, ${name}${text.slice(at)}`;
+  }
+
+  const line = `import { ${name} } from ${JSON.stringify(specifier)};`;
+  if (imports.length > 0) {
+    const at = imports[imports.length - 1].end;
+    return `${text.slice(0, at)}\n${line}${text.slice(at)}`;
+  }
+  return `${line}\n${text}`;
+}
+
+/**
+ * Remove `name` from any `export { … } from "<fromSpecifier>"` statement,
+ * deleting the statement entirely if its list becomes empty. Aliases are
+ * preserved; re-exports from other specifiers are left intact.
+ * @param {string} text
+ * @param {string} name
+ * @param {string} fromSpecifier
+ * @returns {string}
+ */
+export function stripReExport(text, name, fromSpecifier) {
+  const { program } = parseModule(text);
+  const node = program.body.find(
+    (n) =>
+      n.type === "ExportNamedDeclaration" &&
+      n.source?.value === fromSpecifier &&
+      n.specifiers.some((s) => s.exported.name === name),
+  );
+  if (!node) return text;
+
+  const remaining = node.specifiers.filter((s) => s.exported.name !== name);
+  if (remaining.length === 0) {
+    return removeDeclaration(text, { start: node.start, end: node.end });
+  }
+  const names = remaining.map((s) =>
+    s.local.name === s.exported.name
+      ? s.exported.name
+      : `${s.local.name} as ${s.exported.name}`
+  );
+  const rebuilt = `export { ${names.join(", ")} } from ${JSON.stringify(node.source.value)};`;
+  return text.slice(0, node.start) + rebuilt + text.slice(node.end);
+}
+
 // ── CLI ────────────────────────────────────────────────────────────────
 
 /**

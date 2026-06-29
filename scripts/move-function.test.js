@@ -144,6 +144,6 @@ Deno.test("stripReExport: deletes the statement when its list empties", () => {
 });
 
 Deno.test("stripReExport: leaves a re-export from a different specifier intact", () => {
-  const t = `export { a } from "./x.js";\nexport { a } from "./y.js";\n`;
-  assertEquals(stripReExport(t, "a", "./x.js"), `export { a } from "./y.js";\n`);
+  const t = `export { a } from "./x.js";\nexport { b } from "./y.js";\n`;
+  assertEquals(stripReExport(t, "a", "./x.js"), `export { b } from "./y.js";\n`);
 });
