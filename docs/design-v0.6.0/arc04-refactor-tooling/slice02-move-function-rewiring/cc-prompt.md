@@ -1,11 +1,41 @@
+> ## CDC handoff — 2026-06-28 (arc04 / slice02, refreshed)
+>
+> The original M22.5-T1b spec, now homed as **arc04 slice02**. The spec body
+> below is authoritative and unchanged; these notes override the stale header:
+>
+> - **slice01 (T1a core) is closed and green** — the dependency is satisfied.
+>   Build on `scripts/move-function.js` as it stands on `release/0.6.x`.
+> - **Branch:** work off **`release/0.6.x`** (fresh branch or worktree —
+>   Duncan's call; git ops on the host).
+> - **The contract is `ledger.md`** in this slice dir (the canonical lift of §4
+>   + §7, plus **F-7: rebuild-first verify**). Walk it row by row at close.
+> - **F-7 / slice01 bubble-up (important):** the Layer-4 `andChain` acceptance
+>   runs the full suite against **built `lang/`** (`target/lykn/build/`). After
+>   moving `andChain` in source you MUST rebuild before the suite — use a
+>   `--verify-cmd` like `lykn build && deno test -A test/`, or reuse arc03/
+>   slice11's freshness guard. A stale build dir manufactures false green/red
+>   (the exact trap slice11 caught). Don't run the acceptance against stale `lang/`.
+> - **Scope:** slice02 proves the rewiring + batch *capability* on a **scratch**
+>   `andChain` move (nothing lands). The real **M22.5-2** (10-helper extraction,
+>   starting with `andChain` for real) and **M22.5-3** (4 complex forms) are
+>   **separate later slices** — do not perform a real extraction here.
+> - **Path note:** read `LEDGER-DISCIPLINE.md` from the collaboration-framework
+>   skill (the repo `assets/ai/LEDGER_DISCIPLINE.md` symlink was fixed in
+>   `1ef8744`); the M22 audit referenced in §0 is at
+>   `../../arc03-compiler-coherence/slice08-dd37-per-form-migration/design/m22-audit-report.md`.
+> - **Close set:** write `closing-report.md` (per-row walk + **bubble-up to
+>   arc04**, esp. any import shapes the real M22.5-2/-3 moves will need to
+>   handle) → hand back for CDC `cdc-verification.md`. Closing slice02 closes
+>   arc04's tool-build; the extraction campaigns follow.
+
 # M22.5-T1b Implementation Prompt: `move-function.js` — Cross-File Rewiring + Batch
 
 **From:** CDC (Cowork Claude, cdc/compiler-coherence thread)
 **To:** CC (Claude Code, fresh session)
-**Date:** 2026-05-23
+**Date:** 2026-05-23 (refreshed for arc04/slice02 on 2026-06-28 — see CDC handoff above)
 **Branch:** `cdc/compiler-coherence` (worktree at `.worktrees/compiler-coherence/`)
-**Depends on:** `M22.5-T1a` (the verbatim-move core) — **must be complete
-and green before starting this.**
+**Depends on:** `M22.5-T1a` (the verbatim-move core) — **complete and green
+(arc04/slice01 closed 2026-06-28).**
 **Re:** Extend `scripts/move-function.js` so a move also rewires the
 *other* modules that import the moved name, plus batch mode. This is what
 makes the tool usable on the real M22.5-2/-3 corpus.

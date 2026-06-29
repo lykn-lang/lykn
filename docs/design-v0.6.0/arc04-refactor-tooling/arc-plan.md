@@ -22,11 +22,15 @@ of the CLAUDE.md safety gates (never silently bypass its own verify step).
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · move-function-core** | M22.5-T1a: verbatim-move core — edits only the two named files, validated on a zero-external-consumer helper | **Closed** (9/9; `scripts/move-function.js` TDD-first; byte-identity invariant verified) |
-| **slice02 · move-function-rewiring** | M22.5-T1b: cross-file consumer rewiring + batch mode. **Refined by slice01 bubble-up:** must (a) pick/create the real extraction target (no `surface-helpers.js` exists yet) and (b) use a **rebuild-first** `--verify-cmd` (built `lang/` staleness — reuse arc03/slice11's freshness guard) | Open (prompt written; not yet scoped/run) |
+| **slice02 · move-function-rewiring** | M22.5-T1b: cross-file consumer rewiring + batch mode + atomic multi-file revert + rebuild-first verify | **Closed** (7/7, F-4 adapted; TDD-first; rewiring proven on the real `toJsIdentifier` consumer since the M22 andChain/classifier split doesn't exist on `release/0.6.x`) |
 
-slice02 holds its `cc-prompt.md` (open-set) plus the two scope refinements above;
-its `ledger.md` / close set are written when it becomes active (plan late, plan
-deep).
+slice02 is the last tool-build slice; closing it completes arc04's `move-function`
+tool. The **real extraction campaigns** then follow as their own slices: **M22.5-2**
+(10 helpers, ~500 lines — start with `andChain`), then **M22.5-3** (4 complex
+forms: `match`/`type`/`genfunc`/`func`, ~470 lines; depends on M22.5-2), then
+**M22.5-4** (dead-code + `_kernel` cleanup). See the M22 audit
+(`../arc03-compiler-coherence/slice08-dd37-per-form-migration/design/m22-audit-report.md`)
+§"Suggested workstream segmentation".
 
 ## 3. Dependencies
 
