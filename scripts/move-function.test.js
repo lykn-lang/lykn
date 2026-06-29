@@ -11,10 +11,12 @@ import {
 } from "https://deno.land/std/assert/mod.ts";
 import {
   addNamedImport,
+  importResolvesTo,
   insertDeclaration,
   locateDeclaration,
   moveFunction,
   removeDeclaration,
+  rewriteImportSource,
   stripReExport,
 } from "./move-function.js";
 
@@ -282,4 +284,53 @@ Deno.test("verify gate: passing verify keeps the move", async () => {
     assertEquals(locateDeclaration(await Deno.readTextFile(from), "helper"), null);
     assertStringIncludes(await Deno.readTextFile(to), "function helper(x)");
   });
+});
+
+// ── slice02 F-1: rewriteImportSource + path resolution ─────────────────
+
+Deno.test("rewriteImportSource: moves a name from one import source to another", () => {
+  const t = `import { a } from "./old.js";\nimport { z } from "./other.js";\n`;
+  assertEquals(
+    rewriteImportSource(t, "a", "./old.js", "./new.js"),
+    `import { z } from "./other.js";\nimport { a } from "./new.js";\n`,
+  );
+});
+
+Deno.test("rewriteImportSource: merges into a pre-existing destination import", () => {
+  const t = `import { a } from "./old.js";\nimport { z } from "./new.js";\n`;
+  assertEquals(
+    rewriteImportSource(t, "a", "./old.js", "./new.js"),
+    `import { z, a } from "./new.js";\n`,
+  );
+});
+
+Deno.test("rewriteImportSource: keeps other names in the origin import", () => {
+  const t = `import { a, b } from "./old.js";\n`;
+  assertEquals(
+    rewriteImportSource(t, "a", "./old.js", "./new.js"),
+    `import { b } from "./old.js";\nimport { a } from "./new.js";\n`,
+  );
+});
+
+Deno.test("rewriteImportSource: no-op when name is not imported from oldSpecifier", () => {
+  const t = `import { a } from "./elsewhere.js";\n`;
+  assertEquals(rewriteImportSource(t, "a", "./old.js", "./new.js"), t);
+});
+
+Deno.test("importResolvesTo: ./surface.js and ../lang/surface.js resolve to the same module", () => {
+  // consumer in packages/lang importing "./surface.js"
+  assertEquals(
+    importResolvesTo("packages/lang/classifier.js", "./surface.js", "packages/lang/surface.js"),
+    true,
+  );
+  // consumer in packages/other importing "../lang/surface.js" — same target
+  assertEquals(
+    importResolvesTo("packages/other/x.js", "../lang/surface.js", "packages/lang/surface.js"),
+    true,
+  );
+  // a different module does not match
+  assertEquals(
+    importResolvesTo("packages/lang/classifier.js", "./helpers.js", "packages/lang/surface.js"),
+    false,
+  );
 });
