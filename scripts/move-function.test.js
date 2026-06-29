@@ -11,10 +11,12 @@ import {
 } from "https://deno.land/std/assert/mod.ts";
 import {
   addNamedImport,
+  batchMove,
   importResolvesTo,
   insertDeclaration,
   locateDeclaration,
   moveFunction,
+  parseArgs,
   removeDeclaration,
   rewriteImportSource,
   stripReExport,
@@ -400,5 +402,43 @@ Deno.test("moveFunction: failing verify reverts FROM, TO, and all rewired consum
     assertEquals(await Deno.readTextFile(`${dir}/to.js`), toSrc);
     assertEquals(await Deno.readTextFile(`${dir}/c1.js`), c1);
     assertEquals(await Deno.readTextFile(`${dir}/c2.js`), c2);
+  });
+});
+
+// ── slice02 F-3: batch mode (atomic-per-name, stop-on-failure) ─────────
+
+Deno.test("parseArgs: --names parses a comma-separated list", () => {
+  const opts = parseArgs(["--from", "a.js", "--to", "b.js", "--names", "x, y ,z"]);
+  assertEquals(opts.names, ["x", "y", "z"]);
+});
+
+Deno.test("batchMove: keeps green moves, reverts + stops on the first red", async () => {
+  const fromSrc = `export function a() {\n  return 1;\n}\nexport function b() {\n  return 2;\n}\n`;
+  const toSrc = `export const TAG = 1;\n`;
+  await withTempProject({ "from.js": fromSrc, "to.js": toSrc }, async (dir) => {
+    let calls = 0;
+    const verify = () => {
+      calls += 1;
+      return Promise.resolve({ success: calls === 1, output: calls === 1 ? "" : "b broke" });
+    };
+    const result = await batchMove({
+      from: `${dir}/from.js`,
+      to: `${dir}/to.js`,
+      names: ["a", "b"],
+      consumerDir: dir,
+      verify,
+    });
+
+    assertEquals(result.moved, ["a"]);
+    assertEquals(result.failed, "b");
+
+    // a kept: in TO, gone from FROM
+    const newTo = await Deno.readTextFile(`${dir}/to.js`);
+    const newFrom = await Deno.readTextFile(`${dir}/from.js`);
+    assertStringIncludes(newTo, "function a()");
+    assertEquals(newTo.includes("function b()"), false);
+    // b reverted: still declared in FROM
+    assertStringIncludes(newFrom, "function b()");
+    assertEquals(locateDeclaration(newFrom, "a"), null);
   });
 });
