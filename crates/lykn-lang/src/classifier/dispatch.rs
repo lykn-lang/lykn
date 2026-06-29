@@ -36,84 +36,69 @@ pub fn is_surface_form(name: &str) -> bool {
     )
 }
 
-pub fn is_kernel_form(name: &str) -> bool {
+/// DD-58 strict-mode surface namespace (closed).
+/// Returns true for atoms in DD-58's surface namespace:
+/// flavor (a) rich-unique, flavor (b) passthrough, flavor (c) namesake-sharing.
+/// Per DD-58 §"Per-layer form enumeration" (2026-05-17 design decisions).
+pub fn is_surface_form_strict(name: &str) -> bool {
     matches!(
         name,
-        "const"
-            | "let"
-            | "var"
-            | "function"
-            | "function*"
-            | "=>"
-            | "if"
-            | "block"
-            | "return"
-            | "throw"
-            | "try"
-            | "while"
-            | "do-while"
-            | "for"
-            | "for-of"
-            | "for-in"
-            | "for-await-of"
-            | "switch"
-            | "break"
-            | "continue"
-            | "new"
-            | "delete"
-            | "typeof"
-            | "instanceof"
-            | "in"
-            | "void"
-            | "yield"
-            | "yield*"
-            | "label"
-            | "seq"
-            | "debugger"
-            | "import"
-            | "export"
-            | "dynamic-import"
-            | "async"
-            | "await"
-            | "get"
-            | "="
-            | "array"
-            | "object"
-            | "spread"
-            | "rest"
-            | "default"
-            | "alias"
-            | "template"
-            | "tag"
-            | "regex"
-            | "?"
-            | "quote"
-            | "quasiquote"
+        // ── Flavor (a) — Rich, surface-unique ──
+        "bind"
+            | "func"
+            | "genfunc"
+            | "genfn"
+            | "fn"
+            | "lambda"
+            | "match"
+            | "type"
+            | "obj"
+            | "cell"
+            | "express"
+            | "swap!"
+            | "reset!"
+            | "set!"
+            | "set-symbol!"
+            | "->"
+            | "->>"
+            | "some->"
+            | "some->>"
+            | "if-let"
+            | "when-let"
+            | "conj"
+            | "assoc"
+            | "dissoc"
+            | "macro"
+            | "import-macros"
+            | "do"
+            | "and"
+            | "or"
+            | "not"
+            // ── Flavor (b) — Passthrough surface forms ──
+            // Arithmetic
             | "+"
             | "-"
             | "*"
             | "/"
             | "%"
             | "**"
+            // Strict comparison
             | "==="
             | "!=="
-            | "=="
-            | "!="
+            // Order comparison
             | "<"
             | ">"
             | "<="
             | ">="
-            | "&&"
-            | "||"
-            | "??"
+            // Bitwise
             | "&"
             | "|"
             | "^"
             | "<<"
             | ">>"
             | ">>>"
-            | "!"
             | "~"
+            // Update/compound assignment
             | "++"
             | "--"
             | "+="
@@ -131,5 +116,122 @@ pub fn is_kernel_form(name: &str) -> bool {
             | "&&="
             | "||="
             | "??="
+            // Logical (kernel passthrough for raw JS short-circuit)
+            | "&&"
+            | "||"
+            | "??"
+            // Literal constructors
+            | "array"
+            | "object"
+            | "get"
+            | "template"
+            | "tag"
+            | "regex"
+            // Destructuring helpers
+            | "spread"
+            | "rest"
+            | "default"
+            | "alias"
+            // Type/identity ops
+            | "new"
+            | "delete"
+            | "typeof"
+            | "instanceof"
+            | "in"
+            | "void"
+            // Async ops
+            | "await"
+            | "yield"
+            | "yield*"
+            // Module forms
+            | "import"
+            | "export"
+            // Control flow
+            | "block"
+            | "while"
+            | "do-while"
+            | "for"
+            | "for-of"
+            | "for-in"
+            | "for-await-of"
+            | "switch"
+            | "break"
+            | "continue"
+            | "return"
+            | "throw"
+            | "label"
+            | "seq"
+            | "debugger"
+            // Arrow function (lexical this)
+            | "=>"
+            // Ternary (kernel passthrough)
+            | "?"
+            // Async wrapper
+            | "async"
+            // Dynamic import
+            | "dynamic-import"
+            // Macro / quoting — produced by reader macros 'expr and `expr.
+            // unquote / unquote-splicing are reader-emitted from ,expr / ,@expr
+            // but are only meaningful inside quasiquote; at top level they
+            // fall through to FunctionCall path (same as lax mode).
+            // (DD-58 refinement log 2026-05-17 quote/quasiquote correction)
+            | "quote"
+            | "quasiquote"
+            // ── Flavor (c) — Rich, namesake-sharing ──
+            | "if"
+            | "try"
+            | "="
+            | "!="
+            | "class"
+            | "class-expr"
     )
+}
+
+/// DD-58 kernel-only forms — reachable only via `kernel:` escape.
+/// Per DD-58 §"Kernel-only namespace" (2026-05-17 design decisions, with
+/// 2026-05-17 quote/quasiquote correction moving those two forms to
+/// flavor (b) passthrough — see DD-58 refinement log).
+pub fn is_kernel_only_form(name: &str) -> bool {
+    matches!(
+        name,
+        "function" | "function*" | "const" | "let" | "var"
+    )
+}
+
+/// All kernel-form atoms recognised by the Rust codegen. Single source of
+/// truth consumed by both `is_kernel_form` and `closest_kernel_form`.
+pub const KERNEL_FORMS: &[&str] = &[
+    "const", "let", "var", "function", "function*", "=>",
+    "if", "block", "return", "throw", "try",
+    "while", "do-while", "for", "for-of", "for-in", "for-await-of",
+    "switch", "break", "continue",
+    "new", "delete", "typeof", "instanceof", "in", "void",
+    "yield", "yield*", "label", "seq", "debugger",
+    "import", "export", "dynamic-import", "async", "await", "get",
+    "=", "array", "object", "spread", "rest", "default", "alias",
+    "template", "tag", "regex", "?", "quote", "quasiquote",
+    "+", "-", "*", "/", "%", "**",
+    "===", "!==", "==", "!=", "<", ">", "<=", ">=",
+    "&&", "||", "??", "&", "|", "^", "<<", ">>", ">>>", "!", "~",
+    "++", "--", "+=", "-=", "*=", "/=", "%=", "**=",
+    "<<=", ">>=", ">>>=", "&=", "|=", "^=", "&&=", "||=", "??=",
+];
+
+pub fn is_kernel_form(name: &str) -> bool {
+    KERNEL_FORMS.contains(&name)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn kernel_forms_consistency_with_is_kernel_form() {
+        for &form in KERNEL_FORMS {
+            assert!(
+                is_kernel_form(form),
+                "KERNEL_FORMS contains '{form}' but is_kernel_form(\"{form}\") returns false"
+            );
+        }
+    }
 }

@@ -7,11 +7,69 @@ use crate::reader::source_loc::Span;
 
 use super::dispatch;
 
+fn levenshtein(a: &str, b: &str) -> usize {
+    let n = b.len();
+    let mut prev: Vec<usize> = (0..=n).collect();
+    let mut curr = vec![0; n + 1];
+    for (i, ca) in a.chars().enumerate() {
+        curr[0] = i + 1;
+        for (j, cb) in b.chars().enumerate() {
+            let cost = if ca == cb { 0 } else { 1 };
+            curr[j + 1] = (prev[j] + cost).min(prev[j + 1] + 1).min(curr[j] + 1);
+        }
+        std::mem::swap(&mut prev, &mut curr);
+    }
+    prev[n]
+}
+
+fn closest_kernel_form(name: &str) -> Option<&'static str> {
+    let (mut best, mut best_dist) = (None, usize::MAX);
+    for &form in dispatch::KERNEL_FORMS {
+        let d = levenshtein(name, form);
+        if d < best_dist {
+            best_dist = d;
+            best = Some(form);
+        }
+    }
+    if best_dist <= 2 { best } else { None }
+}
+
 pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
             if let Some(head_name) = values[0].as_atom() {
                 let args = &values[1..];
+                // DD-58: kernel: prefix escape — strip prefix, validate
+                // against kernel whitelist, emit KernelPassthrough with
+                // the stripped form. Takes precedence over all other dispatch.
+                if let Some(kernel_form) = head_name.strip_prefix("kernel:") {
+                    if dispatch::is_kernel_form(kernel_form) {
+                        let mut stripped_values = Vec::with_capacity(values.len());
+                        stripped_values.push(SExpr::Atom {
+                            value: kernel_form.to_string(),
+                            span: values[0].span(),
+                        });
+                        stripped_values.extend(values[1..].iter().cloned());
+                        return Ok(SurfaceForm::KernelPassthrough {
+                            raw: SExpr::List {
+                                values: stripped_values,
+                                span: *span,
+                            },
+                            span: *span,
+                        });
+                    }
+                    let hint = closest_kernel_form(kernel_form)
+                        .map(|s| format!("; did you mean '{s}'?"))
+                        .unwrap_or_default();
+                    return Err(Diagnostic {
+                        message: format!(
+                            "unknown kernel form '{kernel_form}' in (kernel:{kernel_form} ...){hint}"
+                        ),
+                        severity: Severity::Error,
+                        span: *span,
+                        suggestion: closest_kernel_form(kernel_form).map(|s| format!("kernel:{s}")),
+                    });
+                }
                 if dispatch::is_surface_form(head_name) {
                     classify_surface_form(head_name, args, *span)
                 } else if head_name == "export" {
@@ -45,6 +103,166 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
             }
         }
         // Non-list top-level forms are kernel passthroughs
+        _ => Ok(SurfaceForm::KernelPassthrough {
+            raw: expr.clone(),
+            span: expr.span(),
+        }),
+    }
+}
+
+/// DD-58 strict-mode classification. Uses the closed-namespace dispatch
+/// tables (is_surface_form_strict, is_kernel_only_form) instead of the
+/// lax tables. Kernel-only forms without the kernel: prefix produce a
+/// structured diagnostic.
+pub fn classify_form_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
+    match expr {
+        SExpr::List { values, span } if !values.is_empty() => {
+            if let Some(head_name) = values[0].as_atom() {
+                let args = &values[1..];
+                // DD-58 §"The kernel: escape syntax" — same logic as lax mode (M17)
+                if let Some(kernel_form) = head_name.strip_prefix("kernel:") {
+                    if dispatch::is_kernel_form(kernel_form) {
+                        let mut stripped_values = Vec::with_capacity(values.len());
+                        stripped_values.push(SExpr::Atom {
+                            value: kernel_form.to_string(),
+                            span: values[0].span(),
+                        });
+                        stripped_values.extend(values[1..].iter().cloned());
+                        return Ok(SurfaceForm::KernelPassthrough {
+                            raw: SExpr::List {
+                                values: stripped_values,
+                                span: *span,
+                            },
+                            span: *span,
+                        });
+                    }
+                    let hint = closest_kernel_form(kernel_form)
+                        .map(|s| format!("; did you mean '{s}'?"))
+                        .unwrap_or_default();
+                    return Err(Diagnostic {
+                        message: format!(
+                            "unknown kernel form '{kernel_form}' in (kernel:{kernel_form} ...){hint}"
+                        ),
+                        severity: Severity::Error,
+                        span: *span,
+                        suggestion: closest_kernel_form(kernel_form).map(|s| format!("kernel:{s}")),
+                    });
+                }
+                // DD-58 §"Per-layer form enumeration" — kernel-only namespace.
+                // Strict-mode rejection: kernel-only forms without prefix.
+                // Diagnostic is specialized per form-class.
+                if dispatch::is_kernel_only_form(head_name) {
+                    // Per DD-58 refinement log 2026-05-17 (quote/quasiquote
+                    // correction), the kernel-only set is exhaustively
+                    // {const, let, var, function, function*}. The two
+                    // arms below cover the set; the fallback `_` arm is
+                    // retained for forward-compatibility but is currently
+                    // unreachable given the matches!() in is_kernel_only_form.
+                    let msg = match head_name {
+                        "const" | "let" | "var" => format!(
+                            "'{head_name}' is a kernel-only form; use 'bind' for surface binding, \
+                             or '(kernel:{head_name} ...)' to access the kernel form explicitly"
+                        ),
+                        "function" | "function*" => format!(
+                            "'{head_name}' is a kernel-only form; use 'func', 'fn', or 'lambda' \
+                             for surface functions, or '(kernel:{head_name} ...)' to access the \
+                             kernel form explicitly"
+                        ),
+                        _ => format!(
+                            "'{head_name}' is a kernel-only form; \
+                             use '(kernel:{head_name} ...)' to access it explicitly"
+                        ),
+                    };
+                    return Err(Diagnostic {
+                        message: msg,
+                        severity: Severity::Error,
+                        span: *span,
+                        suggestion: Some(format!("(kernel:{head_name} ...)")),
+                    });
+                }
+                // DD-58 §"Per-layer form enumeration" — closed surface namespace.
+                // Strict surface dispatch: route to typed classifier or kernel passthrough.
+                if dispatch::is_surface_form_strict(head_name) {
+                    if dispatch::is_surface_form(head_name) {
+                        classify_surface_form(head_name, args, *span)
+                    } else if head_name == "export" {
+                        classify_export(args, *span, expr)
+                    } else if head_name == "async" {
+                        classify_async(args, *span, expr)
+                    } else if head_name == "class" {
+                        classify_class(args, *span)
+                    } else if head_name == "class-expr" {
+                        classify_class_expr(args, *span)
+                    } else {
+                        // Passthrough surface form — route to kernel
+                        Ok(SurfaceForm::KernelPassthrough {
+                            raw: expr.clone(),
+                            span: *span,
+                        })
+                    }
+                } else {
+                    // Unknown in strict mode — function call / macro invocation
+                    Ok(SurfaceForm::FunctionCall {
+                        head: values[0].clone(),
+                        args: args.to_vec(),
+                        span: *span,
+                    })
+                }
+            } else {
+                Ok(SurfaceForm::FunctionCall {
+                    head: values[0].clone(),
+                    args: values[1..].to_vec(),
+                    span: *span,
+                })
+            }
+        }
+        _ => Ok(SurfaceForm::KernelPassthrough {
+            raw: expr.clone(),
+            span: expr.span(),
+        }),
+    }
+}
+
+/// DD-58 kernel-only classification for `.lyk` files. Post-expansion,
+/// only `is_kernel_form()` atoms are accepted as form heads. Surface forms
+/// produce a diagnostic suggesting the `.lykn` extension or kernel equivalent.
+pub fn classify_form_kernel_only(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
+    match expr {
+        SExpr::List { values, span } if !values.is_empty() => {
+            if let Some(head_name) = values[0].as_atom() {
+                if dispatch::is_kernel_form(head_name) {
+                    Ok(SurfaceForm::KernelPassthrough {
+                        raw: expr.clone(),
+                        span: *span,
+                    })
+                } else if dispatch::is_surface_form(head_name)
+                    || dispatch::is_surface_form_strict(head_name)
+                {
+                    Err(Diagnostic {
+                        message: format!(
+                            "'{head_name}' is a surface form; use .lykn for surface code, \
+                             or use the equivalent kernel form in .lyk files"
+                        ),
+                        severity: Severity::Error,
+                        span: *span,
+                        suggestion: None,
+                    })
+                } else {
+                    // Function call (user-defined or runtime)
+                    Ok(SurfaceForm::FunctionCall {
+                        head: values[0].clone(),
+                        args: values[1..].to_vec(),
+                        span: *span,
+                    })
+                }
+            } else {
+                Ok(SurfaceForm::FunctionCall {
+                    head: values[0].clone(),
+                    args: values[1..].to_vec(),
+                    span: *span,
+                })
+            }
+        }
         _ => Ok(SurfaceForm::KernelPassthrough {
             raw: expr.clone(),
             span: expr.span(),
@@ -5198,6 +5416,298 @@ mod tests {
                 other => panic!("expected Method, got {other:?}"),
             },
             other => panic!("expected Class, got {other:?}"),
+        }
+    }
+
+    // ── DD-58 strict mode tests (M18) ────────────────────────────
+
+    #[test]
+    fn test_strict_mode_rejects_kernel_only_form() {
+        // (const x 42) in strict mode should produce a diagnostic
+        let expr = list(vec![atom("const"), atom("x"), num(42.0)]);
+        let result = super::classify_form_strict(&expr);
+        assert!(result.is_err(), "strict mode should reject bare 'const'");
+        let diag = result.unwrap_err();
+        assert!(
+            diag.message.contains("const"),
+            "diagnostic should name the form, got: {}",
+            diag.message
+        );
+        assert!(
+            diag.message.contains("kernel:const") || diag.message.contains("bind"),
+            "diagnostic should suggest alternative, got: {}",
+            diag.message
+        );
+    }
+
+    #[test]
+    fn test_strict_mode_accepts_surface_form() {
+        // (bind x 42) should classify correctly under strict mode
+        let expr = list(vec![atom("bind"), atom("x"), num(42.0)]);
+        let result = super::classify_form_strict(&expr);
+        assert!(result.is_ok(), "strict mode should accept 'bind'");
+    }
+
+    #[test]
+    fn test_strict_mode_accepts_passthrough_form() {
+        // (+ a b) should classify as KernelPassthrough under strict mode
+        let expr = list(vec![atom("+"), atom("a"), atom("b")]);
+        let result = super::classify_form_strict(&expr);
+        assert!(result.is_ok(), "strict mode should accept '+'");
+    }
+
+    #[test]
+    fn test_strict_mode_kernel_escape_still_works() {
+        // (kernel:const x 42) should work under strict mode
+        let expr = list(vec![atom("kernel:const"), atom("x"), num(42.0)]);
+        let result = super::classify_form_strict(&expr);
+        assert!(result.is_ok(), "kernel: escape should work under strict");
+        match result.unwrap() {
+            SurfaceForm::KernelPassthrough { raw, .. } => {
+                if let SExpr::List { values, .. } = &raw {
+                    assert_eq!(values[0].as_atom(), Some("const"));
+                } else {
+                    panic!("expected list");
+                }
+            }
+            other => panic!("expected KernelPassthrough, got {other:?}"),
+        }
+    }
+
+    // ── DD-58 Phase 1 polish tests (A-1..A-5, B-1..B-3) ────────────
+
+    // A-1: form-class-specific diagnostics
+    #[test]
+    fn test_strict_mode_diagnostic_const_class() {
+        let expr = list(vec![atom("const"), atom("x"), num(42.0)]);
+        let diag = super::classify_form_strict(&expr).unwrap_err();
+        assert!(
+            diag.message.contains("bind"),
+            "const should suggest bind, got: {}",
+            diag.message
+        );
+    }
+
+    #[test]
+    fn test_strict_mode_diagnostic_function_class() {
+        let expr = list(vec![
+            atom("function"),
+            atom("f"),
+            list(vec![]),
+            atom("body"),
+        ]);
+        let diag = super::classify_form_strict(&expr).unwrap_err();
+        assert!(
+            diag.message.contains("'func'")
+                || diag.message.contains("'fn'")
+                || diag.message.contains("'lambda'"),
+            "function should suggest 'func'/'fn'/'lambda', got: {}",
+            diag.message
+        );
+    }
+
+    // Per DD-58 refinement log 2026-05-17 quote/quasiquote correction:
+    // quote and quasiquote are flavor (b) passthrough, NOT kernel-only.
+    // The reader macros 'expr and `expr produce them from surface source;
+    // they must classify cleanly under strict mode, not be rejected.
+    // (The pre-correction test asserting "no surface alternative"
+    // diagnostic for quote is inverted here — quote must pass strict.)
+    #[test]
+    fn test_strict_mode_quote_passes_as_surface_form() {
+        let expr = list(vec![atom("quote"), atom("x")]);
+        let result = super::classify_form_strict(&expr);
+        assert!(
+            result.is_ok(),
+            "quote must pass strict mode (it is flavor (b) passthrough \
+             per DD-58 refinement log 2026-05-17 correction); got: {:?}",
+            result
+        );
+    }
+
+    #[test]
+    fn test_strict_mode_quasiquote_passes_as_surface_form() {
+        let expr = list(vec![atom("quasiquote"), atom("x")]);
+        let result = super::classify_form_strict(&expr);
+        assert!(
+            result.is_ok(),
+            "quasiquote must pass strict mode (it is flavor (b) passthrough \
+             per DD-58 refinement log 2026-05-17 correction); got: {:?}",
+            result
+        );
+    }
+
+    // A-2: did-you-mean for invalid kernel: forms
+    #[test]
+    fn test_kernel_prefix_did_you_mean_close_match() {
+        let expr = list(vec![atom("kernel:functoin"), atom("x")]);
+        let diag = classify_form(&expr).unwrap_err();
+        assert!(
+            diag.message.contains("function"),
+            "should suggest 'function' for typo 'functoin', got: {}",
+            diag.message
+        );
+    }
+
+    #[test]
+    fn test_kernel_prefix_did_you_mean_no_close_match() {
+        let expr = list(vec![atom("kernel:absolutelynothing"), atom("x")]);
+        let diag = classify_form(&expr).unwrap_err();
+        assert!(
+            !diag.message.contains("did you mean"),
+            "should NOT suggest for very distant form, got: {}",
+            diag.message
+        );
+    }
+
+    // A-3: async under strict mode — must NOT classify as FunctionCall
+    #[test]
+    fn test_strict_mode_async_classifies_correctly() {
+        let inner = list(vec![
+            atom("function"),
+            atom("f"),
+            list(vec![]),
+            list(vec![atom("return"), num(1.0)]),
+        ]);
+        let expr = list(vec![atom("async"), inner]);
+        let result = super::classify_form_strict(&expr);
+        assert!(
+            result.is_ok(),
+            "strict mode should accept (async ...), got: {:?}",
+            result.err()
+        );
+        assert!(
+            !matches!(result.as_ref().unwrap(), SurfaceForm::FunctionCall { .. }),
+            "async should NOT be classified as FunctionCall under strict; got FunctionCall"
+        );
+    }
+
+    // A-4: ternary (?) under strict mode — must route to KernelPassthrough
+    #[test]
+    fn test_strict_mode_ternary_classifies_correctly() {
+        let expr = list(vec![atom("?"), atom("cond"), atom("t"), atom("e")]);
+        let result = super::classify_form_strict(&expr);
+        assert!(
+            result.is_ok(),
+            "strict mode should accept (? ...), got: {:?}",
+            result.err()
+        );
+        assert!(
+            matches!(
+                result.as_ref().unwrap(),
+                SurfaceForm::KernelPassthrough { .. }
+            ),
+            "? should classify as KernelPassthrough under strict, got: {:?}",
+            result.unwrap()
+        );
+    }
+
+    // A-5: dynamic-import under strict mode — must route to KernelPassthrough
+    #[test]
+    fn test_strict_mode_dynamic_import_classifies_correctly() {
+        let expr = list(vec![
+            atom("dynamic-import"),
+            SExpr::String {
+                value: "module-path".to_string(),
+                span: s(),
+            },
+        ]);
+        let result = super::classify_form_strict(&expr);
+        assert!(
+            result.is_ok(),
+            "strict mode should accept (dynamic-import ...), got: {:?}",
+            result.err()
+        );
+        assert!(
+            matches!(
+                result.as_ref().unwrap(),
+                SurfaceForm::KernelPassthrough { .. }
+            ),
+            "dynamic-import should classify as KernelPassthrough under strict, got: {:?}",
+            result.unwrap()
+        );
+    }
+
+    // B-1: empty kernel: form name
+    #[test]
+    fn test_kernel_prefix_empty_form_name() {
+        let expr = list(vec![atom("kernel:"), atom("x")]);
+        let result = classify_form(&expr);
+        assert!(result.is_err(), "empty kernel: form name should error");
+    }
+
+    // B-2: kernel:if routes to kernel, not surface if
+    #[test]
+    fn test_kernel_if_routes_to_kernel_both_modes() {
+        let expr = list(vec![atom("kernel:if"), atom("c"), atom("t"), atom("e")]);
+        // Lax mode
+        let lax = classify_form(&expr).unwrap();
+        assert!(
+            matches!(lax, SurfaceForm::KernelPassthrough { .. }),
+            "lax: expected KernelPassthrough"
+        );
+        // Strict mode
+        let strict = super::classify_form_strict(&expr).unwrap();
+        assert!(
+            matches!(strict, SurfaceForm::KernelPassthrough { .. }),
+            "strict: expected KernelPassthrough"
+        );
+    }
+
+    // B-3: user macro invocation under strict mode (unknown head → FunctionCall, not rejection)
+    #[test]
+    fn test_strict_mode_unknown_head_is_function_call_not_rejection() {
+        let expr = list(vec![atom("my-custom-macro"), atom("arg1"), atom("arg2")]);
+        let result = super::classify_form_strict(&expr);
+        assert!(
+            result.is_ok(),
+            "unknown head in strict mode should be FunctionCall, not error"
+        );
+        match result.unwrap() {
+            SurfaceForm::FunctionCall { .. } => {}
+            other => panic!("expected FunctionCall for unknown head, got: {other:?}"),
+        }
+    }
+
+    // ── DD-58 kernel: prefix tests (M17-3, M17-4) ──────────────────
+
+    #[test]
+    fn test_kernel_prefix_invalid_form_produces_diagnostic() {
+        // (kernel:nonexistent ...) should produce a diagnostic error
+        let expr = list(vec![atom("kernel:nonexistent"), atom("x")]);
+        let result = classify_form(&expr);
+        assert!(result.is_err(), "expected error for invalid kernel form");
+        let diag = result.unwrap_err();
+        assert!(
+            diag.message.contains("nonexistent"),
+            "diagnostic should name the invalid form, got: {}",
+            diag.message
+        );
+        assert!(
+            diag.message.contains("kernel"),
+            "diagnostic should mention kernel, got: {}",
+            diag.message
+        );
+    }
+
+    #[test]
+    fn test_kernel_prefix_routes_to_kernel_passthrough() {
+        // (kernel:if c t e) should classify as KernelPassthrough with
+        // the prefix stripped — the raw SExpr has "if" as head, not "kernel:if"
+        let expr = list(vec![atom("kernel:if"), atom("c"), atom("t"), atom("e")]);
+        let result = classify_form(&expr).unwrap();
+        match result {
+            SurfaceForm::KernelPassthrough { raw, .. } => {
+                if let SExpr::List { values, .. } = &raw {
+                    assert_eq!(
+                        values[0].as_atom(),
+                        Some("if"),
+                        "kernel: prefix should be stripped from head"
+                    );
+                } else {
+                    panic!("expected list in KernelPassthrough.raw");
+                }
+            }
+            other => panic!("expected KernelPassthrough, got {other:?}"),
         }
     }
 }

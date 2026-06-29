@@ -8,6 +8,7 @@
 import { compile } from './compiler.js';
 import { read } from './reader.js';
 import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
+import { classifySurfaceForm, emitSurfaceForm } from './classifier.js';
 
 // node:path is used intentionally here and CANNOT be replaced with jsr:@std/path.
 //
@@ -727,6 +728,20 @@ export function expandExpr(form) {
   }
 
   // Fixed-point macro expansion
+  // DD-37: try the new classifier first. If it handles the form, emit
+  // the kernel form directly and skip macro expansion.
+  if (head.type === 'atom' && !form._kernel) {
+    const astNode = classifySurfaceForm(head.value, form.values.slice(1));
+    if (astNode) {
+      const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword });
+      if (Array.isArray(kernel)) {
+        return kernel.map(k => { k._kernel = true; return expandExpr(k); });
+      }
+      kernel._kernel = true;
+      return expandExpr(kernel);
+    }
+  }
+
   // Skip re-expansion of forms marked as kernel output by surface macros
   if (head.type === 'atom' && macroEnv.has(head.value) && !form._kernel) {
     let current = form;

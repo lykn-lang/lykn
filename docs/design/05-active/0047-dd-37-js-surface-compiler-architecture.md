@@ -1319,3 +1319,67 @@ What's *not* changed by these amendments:
 - The Alt C ("classifier-only") fallback is unchanged; it remains
   the escape valve if Phase 0's pilot pushes the architecture past
   the +20KB band.
+
+### 2026-05-17 — Phase 0 bundle baseline (M21)
+
+Reproducible baseline measurement via `make bundle-size` (esbuild,
+ESM bundle of `packages/browser/mod.js` with full transitive
+resolution):
+
+| Metric | Value |
+|--------|-------|
+| Raw | 217,672 bytes (212.6 KB) |
+| Minified | 105,439 bytes (103.0 KB) |
+| Gzipped | 27,630 bytes (27.0 KB) |
+
+This satisfies Phase 0 criterion #1 (baseline measurement landed).
+The gzipped baseline (27.0 KB) is the reference point for the pilot
+delta and CI threshold checks (+2KB warning, +5KB hard fail).
+
+### 2026-05-17 — Phase 0 `not` pilot delta + extrapolation (M21)
+
+Post-pilot measurement (after `not` extracted through classifier.js):
+
+| Metric | Baseline | Post-pilot | Delta |
+|--------|----------|------------|-------|
+| Raw | 217,672 | 218,410 | +738 bytes (+0.7 KB) |
+| Minified | 105,439 | 105,752 | +313 bytes (+0.3 KB) |
+| Gzipped | 27,630 | 27,739 | +109 bytes (+0.1 KB) |
+
+**Extrapolation (~20 forms):**
+
+- Lower bound: 109 bytes × 20 = **+2.2 KB gzipped** (assumes all
+  forms are comparable to `not`).
+- Upper bound: 109 bytes × 20 × 3 = **+6.5 KB gzipped** (scaling
+  factor 3× for `func`, `match`, `bind` being substantially larger
+  than the unary `not`).
+- Midpoint estimate: ~4 KB gzipped total growth.
+
+**Budget check:** DD-37's total budget is +20 KB gzipped. Even the
+upper bound (6.5 KB) is well within budget. The pilot's per-form
+cost is encouraging — the full migration should land comfortably
+within the band.
+
+**Go/no-go: GO.** The per-form migration (DD-37 step 3 for
+remaining ~19 forms) may proceed. No Alt C escalation needed.
+
+This satisfies Phase 0 criterion #3 (one full-pipeline migration
+prototyped, delta measured, extrapolated).
+
+### 2026-05-18 — M22 step 3 completion (all 27 forms migrated)
+
+All 27 surface forms migrated from `surface.js` macro registration
+to `surface-ast.js` + `classifier.js` pipeline. Final measurements:
+
+| Metric | M21 Baseline | M22 Final | Delta |
+|--------|-------------|-----------|-------|
+| Raw | 217,672 | 222,759 | +5,087 (+5.0 KB) |
+| Minified | 105,439 | 109,977 | +4,538 (+4.4 KB) |
+| Gzipped | 27,630 | 28,574 | +944 (+0.9 KB) |
+
+Cumulative gzipped delta: **+944 bytes** — 4.7% of the +20 KB budget.
+The pilot's upper-bound extrapolation (+6.5 KB) was conservative;
+actual cost is well below even the lower bound (+2.2 KB).
+
+DD-37 step 3 is complete. `_kernel` marker and `kernelArray()` helper
+remain (step 4-5, M23 scope).
