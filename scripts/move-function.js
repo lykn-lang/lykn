@@ -12,6 +12,14 @@
 // inserts it unchanged. No code generator ever touches the moved body.
 
 import * as acorn from "npm:acorn";
+import { dirname, relative } from "https://deno.land/std/path/mod.ts";
+
+/** Raised when a move cannot be performed safely; the tool writes nothing. */
+export class MoveError extends Error {
+  get name() {
+    return "MoveError";
+  }
+}
 
 /**
  * Parse module source into an ESTree Program, collecting comment nodes.
@@ -191,6 +199,131 @@ export function stripReExport(text, name, fromSpecifier) {
   );
   const rebuilt = `export { ${names.join(", ")} } from ${JSON.stringify(node.source.value)};`;
   return text.slice(0, node.start) + rebuilt + text.slice(node.end);
+}
+
+// ── Orchestration ──────────────────────────────────────────────────────
+
+/**
+ * Walk an ESTree node, invoking `visit(node, parent, key)` for every node.
+ * @param {object} node
+ * @param {(node: object, parent: object|null, key: string|null) => void} visit
+ */
+function walkAst(node, visit, parent = null, key = null) {
+  if (!node || typeof node.type !== "string") return;
+  visit(node, parent, key);
+  for (const childKey of Object.keys(node)) {
+    if (childKey === "type" || childKey === "start" || childKey === "end") continue;
+    const child = node[childKey];
+    if (Array.isArray(child)) {
+      for (const item of child) walkAst(item, visit, node, childKey);
+    } else if (child && typeof child.type === "string") {
+      walkAst(child, visit, node, childKey);
+    }
+  }
+}
+
+/** Whether `name` appears in value position (a real reference, not a key). */
+function referencesName(text, name) {
+  const { program } = parseModule(text);
+  let found = false;
+  walkAst(program, (node, parent, key) => {
+    if (found || node.type !== "Identifier" || node.name !== name) return;
+    if (parent?.type === "MemberExpression" && key === "property" && !parent.computed) return;
+    if (parent?.type === "Property" && key === "key" && !parent.computed) return;
+    found = true;
+  });
+  return found;
+}
+
+/** Count top-level declarations of `name` (function / variable, export-wrapped). */
+function countTopLevelDeclarations(text, name) {
+  const { program } = parseModule(text);
+  let count = 0;
+  for (const node of program.body) {
+    const inner = node.type === "ExportNamedDeclaration" ? node.declaration : node;
+    if (!inner) continue;
+    if (inner.type === "FunctionDeclaration" && inner.id?.name === name) {
+      count += 1;
+    } else if (inner.type === "VariableDeclaration") {
+      for (const decl of inner.declarations) {
+        if (decl.id?.type === "Identifier" && decl.id.name === name) count += 1;
+      }
+    }
+  }
+  return count;
+}
+
+/** Whether `name` is locally declared or locally imported (not a re-export). */
+function isDeclaredOrImported(text, name) {
+  if (countTopLevelDeclarations(text, name) > 0) return true;
+  const { program } = parseModule(text);
+  return program.body.some(
+    (n) =>
+      n.type === "ImportDeclaration" &&
+      n.specifiers.some((s) => s.local.name === name),
+  );
+}
+
+/** ESM relative specifier from `fromFile`'s directory to `toFile` (with "./"). */
+function relativeSpecifier(fromFile, toFile) {
+  const rel = relative(dirname(fromFile), toFile);
+  return rel.startsWith(".") ? rel : `./${rel}`;
+}
+
+/**
+ * Move a single named top-level declaration from `opts.from` to `opts.to`,
+ * byte-exactly. Aborts (writing nothing) when the move cannot be guaranteed
+ * correct. Returns the would-be file contents and a summary; the caller decides
+ * whether to write, verify, and revert (see the CLI / F-6 verify gate).
+ *
+ * @param {{ from: string, to: string, name: string }} opts
+ * @returns {Promise<{ name: string, from: string, to: string, newFrom: string,
+ *   newTo: string, addedBackImport: boolean, strippedReExport: boolean }>}
+ * @throws {MoveError} on not-found, ambiguous, collision, or conflicting binding.
+ */
+export async function moveFunction(opts) {
+  const { from, to, name } = opts;
+  const fromOrig = await Deno.readTextFile(from);
+  const toOrig = await Deno.readTextFile(to);
+
+  const loc = locateDeclaration(fromOrig, name);
+  if (!loc) {
+    throw new MoveError(`'${name}' not found as a top-level declaration in ${from}`);
+  }
+  if (countTopLevelDeclarations(fromOrig, name) > 1) {
+    throw new MoveError(`'${name}' is declared more than once in ${from} (ambiguous)`);
+  }
+  if (isDeclaredOrImported(toOrig, name)) {
+    throw new MoveError(`'${name}' is already declared or imported in ${to} (collision)`);
+  }
+
+  // Extract the verbatim unit — the declaration bytes are never regenerated.
+  const declBytes = fromOrig.slice(loc.start, loc.end);
+  const unit = loc.exported
+    ? fromOrig.slice(loc.spanWithComments.start, loc.end)
+    : `${fromOrig.slice(loc.spanWithComments.start, loc.start)}export ${declBytes}`;
+
+  let newFrom = removeDeclaration(fromOrig, loc.spanWithComments);
+
+  let addedBackImport = false;
+  if (referencesName(newFrom, name)) {
+    if (isDeclaredOrImported(newFrom, name)) {
+      throw new MoveError(
+        `'${name}' still has a conflicting binding in ${from} after removal`,
+      );
+    }
+    newFrom = addNamedImport(newFrom, name, relativeSpecifier(from, to));
+    addedBackImport = true;
+  }
+
+  let newTo = stripReExport(toOrig, name, relativeSpecifier(to, from));
+  const strippedReExport = newTo !== toOrig;
+  newTo = insertDeclaration(newTo, unit);
+
+  await Deno.writeTextFile(from, newFrom);
+  await Deno.writeTextFile(to, newTo);
+
+  return { name, from, to, newFrom, newTo, addedBackImport, strippedReExport };
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────
