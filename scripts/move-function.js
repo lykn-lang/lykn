@@ -100,6 +100,35 @@ function leadingCommentStart(text, comments, declStart) {
   return start;
 }
 
+/**
+ * Delete a declaration span (the `spanWithComments` extent — comments + any
+ * `export` wrapper + body) plus exactly one adjoining newline, leaving no blank
+ * gap. Everything outside the removed range is byte-identical.
+ * @param {string} sourceText
+ * @param {{ start: number, end: number }} span
+ * @returns {string}
+ */
+export function removeDeclaration(sourceText, span) {
+  let { start, end } = span;
+  if (sourceText[end] === "\n") end += 1;
+  else if (sourceText[start - 1] === "\n") start -= 1;
+  return sourceText.slice(0, start) + sourceText.slice(end);
+}
+
+/**
+ * Append a fully-formed declaration unit after the last top-level statement,
+ * separated by one blank line, with a trailing newline. `unitText` is inserted
+ * verbatim — the caller composes any `export` keyword and leading comments so
+ * the moved bytes stay byte-identical to the source.
+ * @param {string} targetText
+ * @param {string} unitText
+ * @returns {string}
+ */
+export function insertDeclaration(targetText, unitText) {
+  const trimmed = targetText.replace(/\s+$/, "");
+  return `${trimmed}\n\n${unitText}\n`;
+}
+
 // ── CLI ────────────────────────────────────────────────────────────────
 
 /**
