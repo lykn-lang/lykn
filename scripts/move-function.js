@@ -11,13 +11,20 @@
 // declaration; the move extracts sourceText.slice(start, end) verbatim and
 // inserts it unchanged. No code generator ever touches the moved body.
 
-import * as acorn from "npm:acorn";
+import * as acorn from "npm:acorn@^8";
 import { dirname, relative } from "https://deno.land/std/path/mod.ts";
 
 /** Raised when a move cannot be performed safely; the tool writes nothing. */
 export class MoveError extends Error {
   get name() {
     return "MoveError";
+  }
+}
+
+/** Raised when the post-move verify command fails; the move is reverted first. */
+export class VerifyError extends Error {
+  get name() {
+    return "VerifyError";
   }
 }
 
@@ -271,30 +278,27 @@ function relativeSpecifier(fromFile, toFile) {
 }
 
 /**
- * Move a single named top-level declaration from `opts.from` to `opts.to`,
- * byte-exactly. Aborts (writing nothing) when the move cannot be guaranteed
- * correct. Returns the would-be file contents and a summary; the caller decides
- * whether to write, verify, and revert (see the CLI / F-6 verify gate).
+ * Compute (purely) the new FROM/TO contents for moving `name` from `fromPath`
+ * to `toPath`. Aborts via MoveError when the move cannot be guaranteed correct.
  *
- * @param {{ from: string, to: string, name: string }} opts
- * @returns {Promise<{ name: string, from: string, to: string, newFrom: string,
- *   newTo: string, addedBackImport: boolean, strippedReExport: boolean }>}
+ * @param {string} fromOrig
+ * @param {string} toOrig
+ * @param {string} name
+ * @param {string} fromPath
+ * @param {string} toPath
+ * @returns {{ newFrom: string, newTo: string, addedBackImport: boolean, strippedReExport: boolean }}
  * @throws {MoveError} on not-found, ambiguous, collision, or conflicting binding.
  */
-export async function moveFunction(opts) {
-  const { from, to, name } = opts;
-  const fromOrig = await Deno.readTextFile(from);
-  const toOrig = await Deno.readTextFile(to);
-
+export function planMove(fromOrig, toOrig, name, fromPath, toPath) {
   const loc = locateDeclaration(fromOrig, name);
   if (!loc) {
-    throw new MoveError(`'${name}' not found as a top-level declaration in ${from}`);
+    throw new MoveError(`'${name}' not found as a top-level declaration in ${fromPath}`);
   }
   if (countTopLevelDeclarations(fromOrig, name) > 1) {
-    throw new MoveError(`'${name}' is declared more than once in ${from} (ambiguous)`);
+    throw new MoveError(`'${name}' is declared more than once in ${fromPath} (ambiguous)`);
   }
   if (isDeclaredOrImported(toOrig, name)) {
-    throw new MoveError(`'${name}' is already declared or imported in ${to} (collision)`);
+    throw new MoveError(`'${name}' is already declared or imported in ${toPath} (collision)`);
   }
 
   // Extract the verbatim unit — the declaration bytes are never regenerated.
@@ -309,21 +313,61 @@ export async function moveFunction(opts) {
   if (referencesName(newFrom, name)) {
     if (isDeclaredOrImported(newFrom, name)) {
       throw new MoveError(
-        `'${name}' still has a conflicting binding in ${from} after removal`,
+        `'${name}' still has a conflicting binding in ${fromPath} after removal`,
       );
     }
-    newFrom = addNamedImport(newFrom, name, relativeSpecifier(from, to));
+    newFrom = addNamedImport(newFrom, name, relativeSpecifier(fromPath, toPath));
     addedBackImport = true;
   }
 
-  let newTo = stripReExport(toOrig, name, relativeSpecifier(to, from));
+  let newTo = stripReExport(toOrig, name, relativeSpecifier(toPath, fromPath));
   const strippedReExport = newTo !== toOrig;
   newTo = insertDeclaration(newTo, unit);
 
-  await Deno.writeTextFile(from, newFrom);
-  await Deno.writeTextFile(to, newTo);
+  return { newFrom, newTo, addedBackImport, strippedReExport };
+}
 
-  return { name, from, to, newFrom, newTo, addedBackImport, strippedReExport };
+/**
+ * Move a single named top-level declaration from `opts.from` to `opts.to`,
+ * byte-exactly. Aborts (writing nothing) when the move cannot be guaranteed
+ * correct. With `dryRun`, computes the result and writes nothing. Otherwise
+ * writes both files and, if `verify` is supplied, runs it — reverting both
+ * files to their byte-exact originals and throwing if verification fails.
+ *
+ * @param {{ from: string, to: string, name: string, dryRun?: boolean,
+ *   verify?: () => Promise<{ success: boolean, output: string }> }} opts
+ * @returns {Promise<{ name: string, from: string, to: string, newFrom: string,
+ *   newTo: string, addedBackImport: boolean, strippedReExport: boolean,
+ *   written: boolean }>}
+ * @throws {MoveError} on an unsafe move; {VerifyError} when verify fails.
+ */
+export async function moveFunction(opts) {
+  const { from, to, name, dryRun = false, verify } = opts;
+  const fromOrig = await Deno.readTextFile(from);
+  const toOrig = await Deno.readTextFile(to);
+
+  const plan = planMove(fromOrig, toOrig, name, from, to);
+  const summary = { name, from, to, ...plan };
+
+  if (dryRun) {
+    return { ...summary, written: false };
+  }
+
+  await Deno.writeTextFile(from, plan.newFrom);
+  await Deno.writeTextFile(to, plan.newTo);
+
+  if (verify) {
+    const result = await verify();
+    if (!result.success) {
+      await Deno.writeTextFile(from, fromOrig);
+      await Deno.writeTextFile(to, toOrig);
+      throw new VerifyError(
+        `verify failed; reverted ${from} and ${to}\n${result.output}`,
+      );
+    }
+  }
+
+  return { ...summary, written: true };
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────
@@ -353,12 +397,61 @@ export function parseArgs(argv) {
   return opts;
 }
 
+/**
+ * Run a verify command verbatim and report success + combined output. The tool
+ * never injects skip-gate flags (no --no-verify, --allow-dirty, etc.) — the
+ * command runs exactly as given. Whitespace-split argv (the default
+ * `deno test -A test/` and similar simple commands).
+ * @param {string} command
+ * @returns {Promise<{ success: boolean, output: string }>}
+ */
+export async function runVerifyCommand(command) {
+  const parts = command.trim().split(/\s+/);
+  const cmd = new Deno.Command(parts[0], {
+    args: parts.slice(1),
+    stdout: "piped",
+    stderr: "piped",
+  });
+  const { success, stdout, stderr } = await cmd.output();
+  const decoder = new TextDecoder();
+  return { success, output: decoder.decode(stdout) + decoder.decode(stderr) };
+}
+
+/** Minimal before/after print for a dry run — the resulting file contents. */
+function printDryRun(plan) {
+  console.log(`# dry-run: move '${plan.name}' ${plan.from} → ${plan.to}`);
+  console.log(`# back-import added to FROM: ${plan.addedBackImport}`);
+  console.log(`# alias re-export stripped in TO: ${plan.strippedReExport}`);
+  console.log(`\n--- ${plan.from} (after) ---\n${plan.newFrom}`);
+  console.log(`--- ${plan.to} (after) ---\n${plan.newTo}`);
+}
+
 if (import.meta.main) {
-  // Scaffold: parse + validate the move plan. The move orchestration and
-  // verify gate are wired in F-5/F-6.
   const opts = parseArgs(Deno.args);
-  console.log(
-    `move-function: ${opts.name}  ${opts.from} → ${opts.to}` +
-      (opts.dryRun ? "  (dry-run)" : ""),
-  );
+  try {
+    if (opts.dryRun) {
+      const plan = await moveFunction({
+        from: opts.from,
+        to: opts.to,
+        name: opts.name,
+        dryRun: true,
+      });
+      printDryRun(plan);
+    } else {
+      const result = await moveFunction({
+        from: opts.from,
+        to: opts.to,
+        name: opts.name,
+        verify: () => runVerifyCommand(opts.verifyCmd),
+      });
+      console.log(
+        `moved '${result.name}' ${result.from} → ${result.to}` +
+          ` (back-import: ${result.addedBackImport}, re-export stripped: ${result.strippedReExport})` +
+          `\nverified with: ${opts.verifyCmd}`,
+      );
+    }
+  } catch (err) {
+    console.error(err.message);
+    Deno.exit(1);
+  }
 }
