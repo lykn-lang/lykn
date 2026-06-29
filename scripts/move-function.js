@@ -12,7 +12,7 @@
 // inserts it unchanged. No code generator ever touches the moved body.
 
 import * as acorn from "npm:acorn@^8";
-import { dirname, relative } from "https://deno.land/std/path/mod.ts";
+import { dirname, relative, resolve } from "https://deno.land/std/path/mod.ts";
 
 /** Raised when a move cannot be performed safely; the tool writes nothing. */
 export class MoveError extends Error {
@@ -206,6 +206,48 @@ export function stripReExport(text, name, fromSpecifier) {
   );
   const rebuilt = `export { ${names.join(", ")} } from ${JSON.stringify(node.source.value)};`;
   return text.slice(0, node.start) + rebuilt + text.slice(node.end);
+}
+
+/**
+ * Move `name` from the `import { … } from "<oldSpecifier>"` statement to an
+ * `import { … } from "<newSpecifier>"` (merging into an existing one, else
+ * creating a new import line). Deletes the origin import when its list empties.
+ * No-op when `text` does not import `name` from `oldSpecifier`.
+ * @param {string} text
+ * @param {string} name
+ * @param {string} oldSpecifier
+ * @param {string} newSpecifier
+ * @returns {string}
+ */
+export function rewriteImportSource(text, name, oldSpecifier, newSpecifier) {
+  const { program } = parseModule(text);
+  const node = program.body.find(
+    (n) =>
+      n.type === "ImportDeclaration" &&
+      n.source.value === oldSpecifier &&
+      n.specifiers.some((s) => s.type === "ImportSpecifier" && s.imported.name === name),
+  );
+  if (!node) return text;
+
+  const keptNamed = node.specifiers
+    .filter((s) => s.type === "ImportSpecifier" && s.imported.name !== name)
+    .map((s) =>
+      s.imported.name === s.local.name ? s.imported.name : `${s.imported.name} as ${s.local.name}`
+    );
+
+  let withoutName;
+  if (keptNamed.length === 0) {
+    withoutName = removeDeclaration(text, { start: node.start, end: node.end });
+  } else {
+    const rebuilt = `import { ${keptNamed.join(", ")} } from ${JSON.stringify(node.source.value)};`;
+    withoutName = text.slice(0, node.start) + rebuilt + text.slice(node.end);
+  }
+  return addNamedImport(withoutName, name, newSpecifier);
+}
+
+/** Whether `importSource` (relative to `consumerPath`'s dir) resolves to `targetPath`. */
+export function importResolvesTo(consumerPath, importSource, targetPath) {
+  return resolve(dirname(consumerPath), importSource) === resolve(targetPath);
 }
 
 // ── Orchestration ──────────────────────────────────────────────────────
