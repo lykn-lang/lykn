@@ -536,17 +536,18 @@ export function parseArgs(argv) {
 }
 
 /**
- * Run a verify command verbatim and report success + combined output. The tool
- * never injects skip-gate flags (no --no-verify, --allow-dirty, etc.) — the
- * command runs exactly as given. Whitespace-split argv (the default
- * `deno test -A test/` and similar simple commands).
+ * Run a verify command verbatim (via `sh -c`) and report success + combined
+ * output. Running through the shell lets the caller pass a compound,
+ * rebuild-first command — e.g. `lykn build && deno test -A test/` — which the
+ * stale-build-dir trap (arc03/slice11, slice01 bubble-up) makes mandatory when
+ * tests run against built output. The tool never injects skip-gate flags
+ * (no --no-verify, --allow-dirty, etc.); the command runs exactly as given.
  * @param {string} command
  * @returns {Promise<{ success: boolean, output: string }>}
  */
 export async function runVerifyCommand(command) {
-  const parts = command.trim().split(/\s+/);
-  const cmd = new Deno.Command(parts[0], {
-    args: parts.slice(1),
+  const cmd = new Deno.Command("sh", {
+    args: ["-c", command],
     stdout: "piped",
     stderr: "piped",
   });
