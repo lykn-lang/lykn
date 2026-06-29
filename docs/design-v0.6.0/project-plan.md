@@ -61,15 +61,14 @@ Arcs in dependency order. Each delivers one coherent capability.
 
 ## 3. Current status (2026-06-28)
 
-- **Done:** arc01, arc02. arc03 substantially delivered (every constituent
-  slice has a closing report and CDC review) but has not had a formal
-  **arc-level composition check** — see arc03 `closing-report.md` (to be
-  written) and the arc-ledger section in its `arc-plan.md`.
-- **Active / warmest thread:** arc04 (`move-function` tooling) — implementation
+- **Done / closed:** arc01, arc02, **arc03** (composition reproduced, 0 semantic
+  divergences; slice11 took the corpus green, 1293/0 — host re-run recommended to
+  reconcile the runtime rows).
+- **Next in planned order:** arc04 (`move-function` tooling) — implementation
   prompts written 2026-05-23 (T1a core, T1b rewiring), no closing reports yet.
-- **Not started:** arc05 (linter), arc06 (dep ergonomics).
-- **Gated:** arc08 (release) waits on the open arcs and on arc03's composition
-  check.
+- **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
+  arc07 (docs; seeded).
+- **Gated:** arc08 (release) waits on the open arcs.
 
 Per **plan late, plan deep**: arc-plans for the closed arcs (01–03) are
 *reconstructed* from shipped work; arc04 is planned to the depth its in-flight
@@ -88,13 +87,13 @@ inherited from arc attestations.
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | P-1 | arc01 closed + composed | ptr: arc01 closing-report | correctness | project-plan | done | M11+M13 closing report | attested (reconstructed) |
 | P-2 | arc02 closed + composed | ptr: arc02 closing-report | correctness | project-plan | done | M10 closing report + CDC | attested (reconstructed) |
-| P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | open | composition reproduced (0 semantic divergences) | **close gated on remediation slice11** (corpus red: 6 non-semantic) |
+| P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | composition reproduced (0 semantic divergences); slice11 corpus **green 1293/0** | CC-attested + CDC code-verified; host re-run to reconcile |
 | P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | open | | in flight |
 | P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | open | | not started |
 | P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | open | slice01 (exports-gap) closed | main work (`lykn add`, mycelium audit) not started |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
 | P-8 | `lykn publish` fails on a dirty tree; `--allow-dirty` overrides, never auto-injected | end-to-end publish dry-run on dirty + clean tree | serious | DoD | open | | reproduce at project scale |
-| P-9 | same surface input → same output across Rust + JS for the migrated corpus (`compileBoth`) | run `compileBoth` corpus; divergences documented or zero | serious | DoD | open | **reproduced** (CC 2026-06-28): 1287/6, 0 semantic divergences over 146 assertions | form-codegen only (~11%); 6 non-semantic residuals → arc03 slice11 |
+| P-9 | same surface input → same output across Rust + JS for the migrated corpus (`compileBoth`) | run `compileBoth` corpus; divergences documented or zero | serious | DoD | **done** | corpus **green: 1293 passed / 0 failed** (slice11); 0 semantic divergences | form-codegen only (~11%) remains a documented coverage bound |
 | P-10 | `.d.ts` generated from `:type` annotations | end-to-end: compile a typed module, inspect emitted `.d.ts` | correctness | DoD | open | | reproduce at project scale |
 | P-11 | `lykn lint` lints Lykn source (not compiled JS) | end-to-end: `lykn lint` on a fixture with seeded anti-patterns | correctness | DoD | open | | blocked on arc05 |
 | P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc08 |
@@ -104,6 +103,15 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.3 — 2026-06-28 (arc03 closed)
+slice11 greened the cross-compiler corpus (**1293 / 0**); **arc03 closed**.
+P-3 and P-9 → done. Recorded correction: the only genuine residual codegen
+divergence was the cosmetic async trailing-`;` (fixed in `emit.rs`); the gensym
+and import-macros "divergences" were a **stale-build-dir** trap (now guarded
+alongside the stale-binary trap, F-7). Next in planned order: arc04. CDC verified
+by code review + git; runtime rows CC-attested — **operator host re-run
+recommended** to reconcile P-3/P-9/P-7.
 
 ### v1.2 — 2026-06-28 (docs arc added)
 
