@@ -12,7 +12,7 @@
 // inserts it unchanged. No code generator ever touches the moved body.
 
 import * as acorn from "npm:acorn@^8";
-import { dirname, relative, resolve } from "https://deno.land/std/path/mod.ts";
+import { dirname, join, relative, resolve } from "https://deno.land/std/path/mod.ts";
 
 /** Raised when a move cannot be performed safely; the tool writes nothing. */
 export class MoveError extends Error {
@@ -313,6 +313,51 @@ function isDeclaredOrImported(text, name) {
   );
 }
 
+/**
+ * Rewrite a single consumer's import of `name` from FROM to TO, by resolved
+ * path. Returns the consumer text unchanged when it does not import `name` from
+ * (a specifier resolving to) FROM — including the case where it imports `name`
+ * from a re-exporter.
+ * @param {string} text
+ * @param {string} consumerPath
+ * @param {string} name
+ * @param {string} fromPath
+ * @param {string} toPath
+ * @returns {string}
+ */
+function rewireConsumer(text, consumerPath, name, fromPath, toPath) {
+  const { program } = parseModule(text);
+  const node = program.body.find(
+    (n) =>
+      n.type === "ImportDeclaration" &&
+      n.specifiers.some((s) => s.type === "ImportSpecifier" && s.imported.name === name) &&
+      importResolvesTo(consumerPath, n.source.value, fromPath),
+  );
+  if (!node) return text;
+  return rewriteImportSource(text, name, node.source.value, relativeSpecifier(consumerPath, toPath));
+}
+
+/**
+ * Discover and compute import rewrites for every `*.js` consumer in `dir`
+ * (excluding FROM and TO) that imports `name` from FROM.
+ * @returns {Promise<Array<{ path: string, orig: string, rewritten: string }>>}
+ */
+async function discoverConsumerRewrites(dir, fromPath, toPath, name) {
+  const fromResolved = resolve(fromPath);
+  const toResolved = resolve(toPath);
+  const edits = [];
+  for (const entry of Deno.readDirSync(dir)) {
+    if (!entry.isFile || !entry.name.endsWith(".js")) continue;
+    const path = join(dir, entry.name);
+    if (resolve(path) === fromResolved || resolve(path) === toResolved) continue;
+    const orig = await Deno.readTextFile(path);
+    const rewritten = rewireConsumer(orig, path, name, fromPath, toPath);
+    if (rewritten !== orig) edits.push({ path, orig, rewritten });
+  }
+  edits.sort((a, b) => (a.path < b.path ? -1 : 1));
+  return edits;
+}
+
 /** ESM relative specifier from `fromFile`'s directory to `toFile` (with "./"). */
 function relativeSpecifier(fromFile, toFile) {
   const rel = relative(dirname(fromFile), toFile);
@@ -371,25 +416,33 @@ export function planMove(fromOrig, toOrig, name, fromPath, toPath) {
 
 /**
  * Move a single named top-level declaration from `opts.from` to `opts.to`,
- * byte-exactly. Aborts (writing nothing) when the move cannot be guaranteed
- * correct. With `dryRun`, computes the result and writes nothing. Otherwise
- * writes both files and, if `verify` is supplied, runs it — reverting both
- * files to their byte-exact originals and throwing if verification fails.
+ * byte-exactly, **rewiring every `*.js` consumer in `consumerDir` (default
+ * FROM's directory) that imports the name from FROM** to import it from TO.
+ * Aborts (writing nothing) when the move cannot be guaranteed correct. With
+ * `dryRun`, computes the result and writes nothing. Otherwise writes FROM, TO,
+ * and every rewired consumer; if `verify` is supplied, runs it and — on failure
+ * — reverts **all** touched files to their byte-exact originals before throwing.
  *
  * @param {{ from: string, to: string, name: string, dryRun?: boolean,
- *   verify?: () => Promise<{ success: boolean, output: string }> }} opts
+ *   verify?: () => Promise<{ success: boolean, output: string }>,
+ *   consumerDir?: string }} opts
  * @returns {Promise<{ name: string, from: string, to: string, newFrom: string,
  *   newTo: string, addedBackImport: boolean, strippedReExport: boolean,
- *   written: boolean }>}
+ *   rewiredConsumers: string[], written: boolean }>}
  * @throws {MoveError} on an unsafe move; {VerifyError} when verify fails.
  */
 export async function moveFunction(opts) {
-  const { from, to, name, dryRun = false, verify } = opts;
+  const { from, to, name, dryRun = false, verify, consumerDir } = opts;
   const fromOrig = await Deno.readTextFile(from);
   const toOrig = await Deno.readTextFile(to);
 
   const plan = planMove(fromOrig, toOrig, name, from, to);
-  const summary = { name, from, to, ...plan };
+
+  // Discover consumers that import `name` from FROM and rewire them to TO.
+  const dir = consumerDir ?? dirname(from);
+  const consumers = await discoverConsumerRewrites(dir, from, to, name);
+
+  const summary = { name, from, to, ...plan, rewiredConsumers: consumers.map((c) => c.path) };
 
   if (dryRun) {
     return { ...summary, written: false };
@@ -397,14 +450,20 @@ export async function moveFunction(opts) {
 
   await Deno.writeTextFile(from, plan.newFrom);
   await Deno.writeTextFile(to, plan.newTo);
+  for (const consumer of consumers) {
+    await Deno.writeTextFile(consumer.path, consumer.rewritten);
+  }
 
   if (verify) {
     const result = await verify();
     if (!result.success) {
       await Deno.writeTextFile(from, fromOrig);
       await Deno.writeTextFile(to, toOrig);
+      for (const consumer of consumers) {
+        await Deno.writeTextFile(consumer.path, consumer.orig);
+      }
       throw new VerifyError(
-        `verify failed; reverted ${from} and ${to}\n${result.output}`,
+        `verify failed; reverted ${from}, ${to}, and ${consumers.length} consumer(s)\n${result.output}`,
       );
     }
   }
