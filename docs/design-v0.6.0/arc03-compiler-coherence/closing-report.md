@@ -6,6 +6,27 @@
 > `collaboration-framework/docs/PROJECT-MANAGEMENT.md` Part V and
 > `templates/LEDGER-DISCIPLINE.md` §B.
 
+## Correction / update — 2026-06-28 (arc CLOSED via slice11)
+
+The verdict below (written when the A-2 run left the corpus red on 6) is
+**superseded**: slice11 took the corpus to **green — 1293 passed / 0 failed**, so
+arc03 is **closed** (A-6 done). Two corrections to §3/§5, surfaced by slice11:
+
+- **Of the 6 residuals, only the async trailing-`;` (3 failures, one root cause)
+  was a real codegen divergence** — and cosmetic. It is fixed in `emit.rs`
+  (`is_async_declaration`: async `function`/`function*` now emit as declarations,
+  no trailing `;`).
+- **F-3 (gensym) and F-4 (import-macros) were NOT compiler defects** — both were a
+  *stale `target/lykn/build/` directory* running the corpus against an out-of-date
+  `helpers.js` normalizer. This is a **second staleness trap** beyond the stale
+  *binary* named in §5 #5. F-7 now guards both (binary vs `crates/`, build-dir vs
+  `packages/`). The "0 semantic divergences" finding stands and is sharpened.
+
+The coverage bound (~11%, form-codegen only; §3) is unchanged and remains a
+documented limitation. Evidence: slice11 `closing-report.md` + `cdc-verification.md`
+(CC-attested runtime; CDC code-verified; operator host re-run recommended to
+reconcile). Original verdict retained below for history.
+
 ## 1. Capability restated + verdict
 
 **Capability:** the Rust and JS compilers produce the same output for the same

@@ -35,8 +35,9 @@ binary** (`cargo build --release && export LYKN_BIN="$(pwd)/target/release/lykn"
 
 ## Closure
 
-Closed at commit <pending — Duncan does git ops on host> on 2026-06-28.
-Verified by: CC (attested); awaiting CDC reproduction.
+Closed at commit `f37cf49` (slice11) + `1ef8744` (symlink drive-by) on 2026-06-28.
+Verified by: CC (attested, all 9 rows) + CDC (`cdc-verification.md`: code-reviewed
+F-1/F-2/F-5/F-7, git-verified F-8; F-6/F-9 runtime deferred to operator host re-run).
 Rows: 9. Done: 9. Deferred: 0. No-op: 0.
 
 Changes (4 files, all in scope): `crates/lykn-lang/src/codegen/emit.rs` (F-1/F-2),

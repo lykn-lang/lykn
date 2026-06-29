@@ -1,16 +1,15 @@
 # arc03 — Compiler Architecture Coherence
 
-> **Status: Composition demonstrated (0 semantic divergences); clean close
-> gated on remediation slice11.** Reconstructed retroactively (2026-06-28) from
-> milestones M16–M22, the DD-58/DD-37 phase work, and the cross-compiler
-> fast-follows. The arc-scale composition demonstration (row A-2) has now been
-> **run end-to-end** by an independent context (CC, 2026-06-28): 146
-> cross-compiler assertions, **1287 passed / 6 failed, 0 semantic divergences**.
-> The 6 residuals are non-semantic (3 share one async trailing-`;` root cause);
-> the corpus is therefore *red* and a formal close is gated on **slice11**
-> (corpus-green remediation). See `closing-report.md` for the full per-row walk
-> and bubble-up, and `design/` for the originating thread, DD drafts, readiness
-> review, and phase catalogs.
+> **Status: CLOSED (2026-06-28).** Composition reproduced with **0 semantic
+> divergences**, and slice11 took the cross-compiler corpus to **green
+> (1293 passed / 0 failed)**. The one genuine codegen divergence (async
+> declarations' trailing `;`) was fixed in `emit.rs`; the rest were stale-artifact
+> or environment, now guarded (F-7). Reconstructed retroactively (2026-06-28)
+> from milestones M16–M22, the DD-58/DD-37 phase work, and the cross-compiler
+> fast-follows. See `closing-report.md` (incl. the slice11 Correction addendum)
+> for the per-row walk and bubble-up, and `design/` for the originating thread,
+> DD drafts, readiness review, and phase catalogs. *Operator host re-run
+> recommended to reconcile the runtime rows.*
 
 ## 1. Capability
 
@@ -38,7 +37,7 @@ with a bundle-size guard). `compileBoth` is the gating tool throughout.
 | **slice08 · dd37-per-form-migration** | M22: per-form migration + CI integration (DD-37 Step 3); incl. mid-flight Option C directive + M22 audit | DD-37 | Closed |
 | **slice09 · cross-compiler-fast-follows** | Grouped drive-by coherence fixes: compileBoth `--source-context-path`; import-macros output divergence; drive-by cleanups; wishlist cleanup; `closest_kernel_form` refactor | — | Closed |
 | **slice10 · icu-doctest-fences** | W-4d: ICU error-block fence annotations (`lykn,compile-fail`) in guide 17; closes D-3 doctest failures (round-2 migration) | DD-55 | Closed |
-| **slice11 · cross-compiler-corpus-green** | Remediation: clear the 6 red `compile-both` failures — fix async trailing-`;` codegen (clears 3), confirm import-macros temp-path, canonicalize gensym/blank-line, disposition the JSR/network test; add a stale-`bin/lykn` guard | — | **Open — scoped** (open set written; ready for CC) |
+| **slice11 · cross-compiler-corpus-green** | Remediation: cleared the residual `compile-both` failures — fixed async trailing-`;` codegen (the only real divergence), reclassified gensym + import-macros as stale-build-dir artifacts, dispositioned the JSR/network test; added a binary+build-dir staleness guard | — | **Closed** (corpus green 1293/0) |
 
 `slice09` groups five small, independently-shipped fast-follows under one slice
 directory (each in `fast-follows/<item>/` with its own cc-prompt / closing /
@@ -63,17 +62,25 @@ discipline arc05 (linter) will lint against.
 | A-3 | DD-58 kernel/surface separation landed (classifier, `kernel:` escape, strict mode, corpus) | slices 02–06 closing reports | serious | arc-plan | done | reproduced at slice scale |
 | A-4 | DD-37 JS surface compiler architecture landed (bundle guard + per-form migration) | slices 07–08 closing reports | serious | arc-plan | done | reproduced at slice scale |
 | A-5 | intentional divergences documented (incl. the newly characterized async trailing-`;` class) | closing-report §3/§5 + `helpers.js:104-109` | correctness | bubble-up | done | documented; async class routed to slice11 |
-| A-6 | **cross-compiler corpus green** — 6 residual non-semantic failures fixed or skip-listed-with-rationale | `lykn test` exits 0 | serious | bubble-up | **open** | routed to slice11 (remediation) |
+| A-6 | **cross-compiler corpus green** — residual failures fixed or dispositioned | `lykn test` exits 0 | serious | bubble-up | **done** | slice11: **1293 passed / 0 failed** (CC-attested; CDC code-verified the fixes; host re-run to reconcile) |
 
-**The open close.** Composition (A-2) is reproduced with **0 semantic
-divergences** — the substantive coherence claim holds. The arc is *not yet
-clean-closed* only because the corpus is red (A-6): 6 non-semantic failures, 3
-sharing one async trailing-`;` root cause. Per LEDGER-DISCIPLINE §B this is
-**remediation-not-iteration** — A-6 is routed to **slice11**, and the arc closes
-when slice11 closes. Full per-row walk, dispositions, and project bubble-up are
-in `closing-report.md`.
+**The close.** Composition (A-2) reproduced with **0 semantic divergences**, and
+slice11 took the corpus to **green (1293/0)** — A-6 done. The arc is closed.
+slice11 also corrected the residual classification: only the async trailing-`;`
+was a real (cosmetic) codegen divergence; the gensym and import-macros "failures"
+were a stale-build-dir artifact, now guarded. Full per-row walk and bubble-ups
+are in `closing-report.md`.
 
 ## 5. Version History
+
+### v1.2 — 2026-06-28 (arc CLOSED via slice11)
+slice11 greened the corpus (**1293/0**); A-6 done, arc closed. Codegen fix:
+async function declarations no longer emit a trailing `;` (`emit.rs`
+`is_async_declaration`). Correction recorded: F-3/F-4 were a **stale-build-dir**
+artifact (a second staleness trap beyond the binary), not codegen defects —
+so the only genuine residual divergence was the cosmetic async `;`. Staleness
+guard added covering both binary and build-dir (F-7). CDC verified by code review
++ git; runtime rows CC-attested, host re-run recommended to reconcile.
 
 ### v1.1 — 2026-06-28 (composition check run)
 A-2 reproduced end-to-end for the first time by an independent context (CC):
