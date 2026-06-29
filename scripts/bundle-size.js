@@ -2,7 +2,7 @@
 // Produces raw / minified / gzipped numbers for the full @lykn/browser payload.
 // Invoked via: deno run -A --config project.json scripts/bundle-size.js
 
-import * as esbuild from "npm:esbuild";
+import * as esbuild from "npm:esbuild@^0.27";
 
 const astringMeta = import.meta.resolve("astring");
 const astringPkg = astringMeta.replace("file://", "").replace(/\/dist\/.*$/, "");
