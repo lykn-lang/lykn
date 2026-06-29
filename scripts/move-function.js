@@ -471,29 +471,66 @@ export async function moveFunction(opts) {
   return { ...summary, written: true };
 }
 
+/**
+ * Move several names left-to-right, each as an atomic move+verify. Keeps every
+ * green move; on the first failure, the failing name is already reverted (by
+ * `moveFunction`) and the batch stops, reporting which name failed.
+ *
+ * @param {{ from: string, to: string, names: string[], verify?: () =>
+ *   Promise<{ success: boolean, output: string }>, consumerDir?: string }} opts
+ * @returns {Promise<{ moved: string[], failed: string|null, error: string|null }>}
+ */
+export async function batchMove(opts) {
+  const { names, ...rest } = opts;
+  const moved = [];
+  for (const name of names) {
+    try {
+      await moveFunction({ ...rest, name });
+      moved.push(name);
+    } catch (err) {
+      return { moved, failed: name, error: err.message };
+    }
+  }
+  return { moved, failed: null, error: null };
+}
+
 // ── CLI ────────────────────────────────────────────────────────────────
 
 /**
  * Parse argv into move options. Throws on missing required flags.
  * @param {string[]} argv
- * @returns {{ from: string, to: string, name: string, dryRun: boolean, verifyCmd: string }}
+ * @returns {{ from: string, to: string, name: string, names: string[],
+ *   dryRun: boolean, verifyCmd: string }}
  */
 export function parseArgs(argv) {
-  const opts = { from: "", to: "", name: "", dryRun: false, verifyCmd: "deno test -A test/" };
+  const opts = {
+    from: "",
+    to: "",
+    name: "",
+    names: [],
+    dryRun: false,
+    verifyCmd: "deno test -A test/",
+  };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     switch (arg) {
       case "--from": opts.from = argv[++i] ?? ""; break;
       case "--to": opts.to = argv[++i] ?? ""; break;
       case "--name": opts.name = argv[++i] ?? ""; break;
+      case "--names":
+        opts.names = (argv[++i] ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+        break;
       case "--dry-run": opts.dryRun = true; break;
       case "--verify-cmd": opts.verifyCmd = argv[++i] ?? ""; break;
       default:
         throw new Error(`unknown argument: ${arg}`);
     }
   }
-  for (const required of ["from", "to", "name"]) {
+  for (const required of ["from", "to"]) {
     if (!opts[required]) throw new Error(`missing required --${required}`);
+  }
+  if (!opts.name && opts.names.length === 0) {
+    throw new Error("missing required --name or --names");
   }
   return opts;
 }
@@ -530,7 +567,19 @@ function printDryRun(plan) {
 if (import.meta.main) {
   const opts = parseArgs(Deno.args);
   try {
-    if (opts.dryRun) {
+    if (opts.names.length > 0) {
+      const result = await batchMove({
+        from: opts.from,
+        to: opts.to,
+        names: opts.names,
+        verify: () => runVerifyCommand(opts.verifyCmd),
+      });
+      console.log(`moved: ${result.moved.join(", ") || "(none)"}`);
+      if (result.failed) {
+        console.error(`failed at '${result.failed}': ${result.error}`);
+        Deno.exit(1);
+      }
+    } else if (opts.dryRun) {
       const plan = await moveFunction({
         from: opts.from,
         to: opts.to,
@@ -547,7 +596,8 @@ if (import.meta.main) {
       });
       console.log(
         `moved '${result.name}' ${result.from} → ${result.to}` +
-          ` (back-import: ${result.addedBackImport}, re-export stripped: ${result.strippedReExport})` +
+          ` (back-import: ${result.addedBackImport}, re-export stripped: ${result.strippedReExport},` +
+          ` consumers rewired: ${result.rewiredConsumers.length})` +
           `\nverified with: ${opts.verifyCmd}`,
       );
     }
