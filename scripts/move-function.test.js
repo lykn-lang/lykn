@@ -5,7 +5,11 @@
 // before the fix-only commit (green). See arc04/slice01 ledger.
 
 import { assertEquals } from "https://deno.land/std/assert/mod.ts";
-import { locateDeclaration } from "./move-function.js";
+import {
+  insertDeclaration,
+  locateDeclaration,
+  removeDeclaration,
+} from "./move-function.js";
 
 // ── F-1: scaffold + first failing locate test ──────────────────────────
 
@@ -59,4 +63,42 @@ Deno.test("locateDeclaration: leading doc comment travels in spanWithComments", 
     src.slice(loc.spanWithComments.start, loc.spanWithComments.end),
     "/**\n * doc for baz\n */\nexport function baz() {\n  return 2;\n}",
   );
+});
+
+// ── F-3: remove / insert + byte-identity invariant ─────────────────────
+
+Deno.test("removeDeclaration: rest byte-identical, one adjoining newline gone", () => {
+  const src = `const a = 1;\nfunction foo() {\n  return 2;\n}\nconst b = 3;\n`;
+  const loc = locateDeclaration(src, "foo");
+  assertEquals(
+    removeDeclaration(src, loc.spanWithComments),
+    `const a = 1;\nconst b = 3;\n`,
+  );
+});
+
+Deno.test("removeDeclaration: takes the export wrapper and the doc comment", () => {
+  const src = `const a = 1;\n\n/** doc */\nexport function foo() {\n  return 2;\n}\nconst b = 3;\n`;
+  const loc = locateDeclaration(src, "foo");
+  assertEquals(
+    removeDeclaration(src, loc.spanWithComments),
+    `const a = 1;\n\nconst b = 3;\n`,
+  );
+});
+
+Deno.test("insertDeclaration: appends after last statement, one blank line, trailing newline", () => {
+  const target = `const x = 0;\n`;
+  const unit = `export function foo() {\n  return 2;\n}`;
+  assertEquals(
+    insertDeclaration(target, unit),
+    `const x = 0;\n\nexport function foo() {\n  return 2;\n}\n`,
+  );
+});
+
+Deno.test("byte-identity invariant (§2): moved declaration bytes === source bytes", () => {
+  const from = `export function foo() {\n  return 41 + 1;\n}\n`;
+  const loc = locateDeclaration(from, "foo");
+  const declBytes = from.slice(loc.start, loc.end);
+  const to = insertDeclaration(`const x = 0;\n`, `export ${declBytes}`);
+  const locTo = locateDeclaration(to, "foo");
+  assertEquals(to.slice(locTo.start, locTo.end), declBytes);
 });
