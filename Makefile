@@ -199,6 +199,22 @@ clean-all: clean
 .PHONY: test
 test: test-rust test-js test-lykn test-docs
 
+# F-7 (arc03/slice11): the JS/lykn/docs suites shell out to bin/lykn and import
+# the built packages from target/lykn/build/. A stale binary or build dir makes
+# the cross-compiler corpus report phantom divergences (16 false failures during
+# the arc03 A-2 run), and `lykn test` now refuses to run against stale artifacts.
+# Refresh both before any suite that uses them. (rm-then-cp gives bin/lykn a new
+# inode, avoiding the macOS arm64 ad-hoc-signature invalidation that a cp-in-place
+# triggers — "Killed: 9".) Make dedups this prerequisite to one run per invocation.
+.PHONY: fresh-artifacts
+fresh-artifacts:
+	@echo "$(CYAN)• Refreshing test artifacts (release binary + build dir)...$(RESET)"
+	@cargo build --release
+	@rm -f $(BIN_DIR)/$(CODE_NAME)
+	@cp target/release/$(CODE_NAME) $(BIN_DIR)/$(CODE_NAME)
+	@$(BIN_DIR)/$(CODE_NAME) build
+	@echo "$(GREEN)✓ Test artifacts fresh$(RESET)"
+
 .PHONY: test-rust
 test-rust:
 	@echo "$(BLUE)Running Rust tests...$(RESET)"
@@ -206,13 +222,13 @@ test-rust:
 	@echo "$(GREEN)✓ Rust tests passed$(RESET)"
 
 .PHONY: test-js
-test-js:
+test-js: fresh-artifacts
 	@echo "$(BLUE)Running JS tests...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test
 	@echo "$(GREEN)✓ JS tests passed$(RESET)"
 
 .PHONY: test-lykn
-test-lykn:
+test-lykn: fresh-artifacts
 	@echo "$(BLUE)Running lykn tests...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test test/surface/
 	@echo "$(GREEN)✓ lykn tests passed$(RESET)"
@@ -221,19 +237,19 @@ test-lykn:
 test-docs: test-docs-guides test-docs-readme test-docs-examples
 
 .PHONY: test-docs-guides
-test-docs-guides:
+test-docs-guides: fresh-artifacts
 	@echo "$(BLUE)Running documentation tests (guides)...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test --docs docs/guides/
 	@echo "$(GREEN)✓ Guide documentation tests passed$(RESET)"
 
 .PHONY: test-docs-readme
-test-docs-readme:
+test-docs-readme: fresh-artifacts
 	@echo "$(BLUE)Running documentation tests (README)...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test --docs README.md
 	@echo "$(GREEN)✓ README documentation tests passed$(RESET)"
 
 .PHONY: test-docs-examples
-test-docs-examples:
+test-docs-examples: fresh-artifacts
 	@echo "$(BLUE)Running documentation tests (examples)...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test --docs examples/surface/
 	@$(BIN_DIR)/$(CODE_NAME) test --docs examples/kernel/

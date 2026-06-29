@@ -455,6 +455,14 @@ fn cmd_test(
         deno_args.extend(extra_refs);
         exec_deno(&deno_args);
     } else {
+        // F-7 (slice11): the cross-compiler corpus is about to run. Refuse to
+        // run against stale artifacts (binary / build dir) — they manufacture
+        // false divergences.
+        if !compile_only && let Err(msg) = check_cross_compiler_freshness() {
+            eprintln!("\nerror: {msg}\n");
+            process::exit(1);
+        }
+
         // Compile .lykn files next to sources, run, then clean up
         let compiled = compile_lykn_test_files(&lykn_files, None);
         eprintln!("Compiled {} .lykn test file(s).", compiled.len());
@@ -494,6 +502,72 @@ fn clean_compiled_test_files(compiled: &[PathBuf]) {
     for path in compiled {
         let _ = fs::remove_file(path);
     }
+}
+
+/// Newest modification time of files under `dir` matching `pred`.
+fn newest_mtime<F>(dir: &Path, pred: F) -> Option<std::time::SystemTime>
+where
+    F: Fn(&Path) -> bool,
+{
+    lykn_cli::util::collect_files_recursive(dir, pred)
+        .iter()
+        .filter_map(|p| fs::metadata(p).and_then(|m| m.modified()).ok())
+        .max()
+}
+
+/// F-7 (arc03/slice11): guard against the stale-artifact trap. The
+/// cross-compiler `compile-both` corpus shells out to the Rust binary
+/// (`LYKN_BIN` / `./bin/lykn`) and imports the built JS packages from
+/// `target/lykn/build/` (the test import map points there). If either is older
+/// than its sources, the run reports phantom divergences — a stale binary plus a
+/// stale build dir produced 16 false failures during the arc03 A-2 run. Fail
+/// loudly with remediation rather than silently testing stale artifacts.
+///
+/// Returns an error message when a staleness is detected; `Ok(())` when fresh or
+/// when not run from the workspace root (where `crates/` and `packages/` live).
+fn check_cross_compiler_freshness() -> Result<(), String> {
+    if !Path::new("crates").is_dir() || !Path::new("packages").is_dir() {
+        return Ok(());
+    }
+
+    // (1) Rust binary (the one compile-both invokes) vs crates/**/*.rs
+    let bin = std::env::var("LYKN_BIN").unwrap_or_else(|_| "./bin/lykn".to_string());
+    let bin_mtime = fs::metadata(&bin).and_then(|m| m.modified()).ok();
+    let rust_src_mtime = newest_mtime(Path::new("crates"), |p| {
+        p.extension().is_some_and(|e| e == "rs")
+    });
+    if let (Some(bin_t), Some(src_t)) = (bin_mtime, rust_src_mtime)
+        && bin_t < src_t
+    {
+        return Err(format!(
+            "stale compiler binary: {bin} is older than crates/ sources.\n  \
+             The compile-both corpus would report phantom divergences.\n  \
+             Rebuild: cargo build --release && cp target/release/lykn bin/lykn\n  \
+             (or run with LYKN_BIN=\"$(pwd)/target/release/lykn\")"
+        ));
+    }
+
+    // (2) Built JS packages vs packages/**/*.{js,lykn}
+    let build_dir = Path::new("target/lykn/build");
+    if build_dir.is_dir() {
+        let build_mtime = newest_mtime(build_dir, |_| true);
+        let pkg_src_mtime = newest_mtime(Path::new("packages"), |p| {
+            p.extension().is_some_and(|e| e == "js" || e == "lykn")
+        });
+        if let (Some(build_t), Some(pkg_t)) = (build_mtime, pkg_src_mtime)
+            && build_t < pkg_t
+        {
+            return Err(
+                "stale build dir: target/lykn/build/ is older than packages/ sources.\n  \
+                 The test import map ('lang/', 'testing/') resolves there, so the corpus\n  \
+                 would run against stale JS (e.g. an out-of-date compile-both normalizer).\n  \
+                 Rebuild: lykn build"
+                    .to_string(),
+            );
+        }
+    }
+
+    Ok(())
 }
 
 /// Discover `.lykn` test files matching `*_test.lykn` or `*.test.lykn` in the

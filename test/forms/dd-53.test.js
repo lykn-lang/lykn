@@ -132,6 +132,24 @@ Deno.test({
       console.log("  (skipped — network permission for jsr.io not granted)");
       return;
     }
+    // F-5 (slice11): permission granted ≠ jsr.io reachable. Under `-A` the
+    // permission check above never trips, so probe actual reachability and skip
+    // cleanly offline instead of hard-failing the JSR fetch below. This is a
+    // network/environment gate, not a Rust↔JS coherence defect.
+    let jsrReachable = false;
+    try {
+      const resp = await fetch("https://jsr.io/@lykn/testing/meta.json", {
+        signal: AbortSignal.timeout(5000),
+      });
+      await resp.body?.cancel();
+      jsrReachable = resp.ok;
+    } catch {
+      jsrReachable = false;
+    }
+    if (!jsrReachable) {
+      console.log("  (skipped — jsr.io not reachable)");
+      return;
+    }
 
     const tempProject = Deno.makeTempDirSync({ prefix: "lykn-r5-r3-" });
     try {

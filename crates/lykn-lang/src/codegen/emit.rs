@@ -47,6 +47,26 @@ fn is_statement_form(name: &str) -> bool {
     STATEMENT_FORMS.contains(&name)
 }
 
+/// `(async (function ...))` and `(async (function* ...))` are async function
+/// *declarations* — statement forms that must not take a trailing semicolon,
+/// exactly like their sync `function` / `function*` counterparts. `(async (=>
+/// ...))` and `(async (lambda ...))` are async function *expressions* and stay
+/// expression statements (terminated by `;`). Mirrors the parens distinction in
+/// `emit_statement`.
+fn is_async_declaration(values: &[SExpr]) -> bool {
+    values.first().and_then(|e| e.as_atom()) == Some("async")
+        && matches!(
+            values
+                .get(1)
+                .and_then(|e| if let SExpr::List { values: inner, .. } = e {
+                    inner.first().and_then(|h| h.as_atom())
+                } else {
+                    None
+                }),
+            Some("function" | "function*")
+        )
+}
+
 // ── Public entry points ────────────────────────────────────────────────
 
 /// Emit an expression. `parent_prec` is the precedence of the enclosing
@@ -80,7 +100,7 @@ pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), 
 pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     if let SExpr::List { values, .. } = expr
         && let Some(head) = values.first().and_then(|e| e.as_atom())
-        && is_statement_form(head)
+        && (is_statement_form(head) || is_async_declaration(values))
     {
         emit_list(w, values, 0)?;
         return Ok(());
