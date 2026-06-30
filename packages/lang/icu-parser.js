@@ -156,7 +156,7 @@ class IcuParser {
 
   // Parse { ... } — could be a simple slot, plural, or select.
   parseBlock() {
-    const startPos = this.pos;
+    const _startPos = this.pos;
     this.expect("{");
     this.skipWhitespace();
 

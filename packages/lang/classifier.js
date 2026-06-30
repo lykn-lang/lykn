@@ -4,8 +4,8 @@
 // existing surface macro path in expander.js/surface.js.
 
 import { Not, Swap, Reset, SetProp, SetSymbol, Conj, Assoc, Dissoc, Thread, SomeThread, IfLet, WhenLet, Fn, And, Or, Express, Obj, Cell, Bind, Eq, Neq, Func, GenFunc, GenFn, Match, TypeDef } from "./surface-ast.js";
-import { compileLetPattern, wrapReturnLast, formatSExpr, parseTypedParams, paramNameNodes, paramTypeChecks, isStatementOnlyForm, kernelArray } from "./surface-helpers.js";
-import { buildSingleClauseFunc, buildMultiClauseFunc, instrumentYields, compilePattern, andChain, isPascalCase, buildTypeCheck, typeRegistry, getLiteralType, typeMatchesLiteral, parseKeywordClauses, emitMatchMacro, emitTypeMacro, emitGenfuncMacro } from "./surface.js";
+import { compileLetPattern, wrapReturnLast, formatSExpr, parseTypedParams, paramNameNodes, paramTypeChecks, getLiteralType, typeMatchesLiteral, buildTypeCheck } from "./surface-helpers.js";
+import { buildSingleClauseFunc, buildMultiClauseFunc, instrumentYields, typeRegistry, parseKeywordClauses, emitMatchMacro, emitTypeMacro, emitGenfuncMacro } from "./surface.js";
 
 /**
  * Classify a surface form head atom. Returns a typed AST node if the
