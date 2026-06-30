@@ -70,13 +70,13 @@ Arcs in dependency order. Each delivers one coherent capability.
   close is **restored**; DD-55 added as **arc08**; M22.5-2/-3 unblocked.
 - **Done / closed:** arc01, arc02, **arc03** (architecture landed), **arc08**
   (DD-55 template/ICU/i18n).
-- **Tool built, proven & delivering:** arc04 — slices 01–03 **closed**.
-  slice03 (M22.5-2) landed the **first real extraction** (10 helpers out of
-  `surface.js`, byte-identical, 1345/0); A-3 done. Remaining: slice04 (M22.5-3
-  complex forms), slice05 (M22.5-4 cleanup).
-- **Standing debt:** `deno lint packages/` ≠ 0 (4 residuals: dead funcs/imports
-  for the M22.5-3/4 forms) — clears with slice04+slice05. Blocks a fully-clean JS
-  lint for arc07/arc09 until then.
+- **Tool built, proven & delivering:** arc04 — slices 01–04 **closed**.
+  slice03 (M22.5-2, 10 helpers) + slice04 (M22.5-3, the 4 complex forms,
+  byte-identical incl. `emitMatchMacro`) finished **DD-37's implementation
+  migration**: `surface.js` 2,315→540 lines, `classifier.js` self-contained.
+  Remaining: slice05 (M22.5-4 dead-code cleanup).
+- **Standing debt (shrinking):** `deno lint packages/` now **2** residuals
+  (`buildThread`/`buildSomeThread` dead funcs) — clears with slice05 → exit 0.
 - **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
   arc07 (docs; seeded).
 - **Gated:** arc09 (release) waits on the open arcs.
@@ -99,7 +99,7 @@ inherited from arc attestations.
 | P-1 | arc01 closed + composed | ptr: arc01 closing-report | correctness | project-plan | done | M11+M13 closing report | attested (reconstructed) |
 | P-2 | arc02 closed + composed | ptr: arc02 closing-report | correctness | project-plan | done | M10 closing report + CDC | attested (reconstructed) |
 | P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | architecture merged to release (`6aa3724`); corpus 1345/0; classifier.js/surface-helpers.js present | restored after the 2026-06-29 reconciliation |
-| P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **partial** | slice01–03 closed; A-3 done (slice03: first real extraction, 10 helpers, 1345/0) | remaining: slice04 (M22.5-3 complex forms), slice05 (M22.5-4 cleanup) |
+| P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **partial** | slice01–04 closed; DD-37 impl migration finished (surface.js 2315→540; emitMatchMacro byte-identical) | remaining: slice05 (M22.5-4 cleanup) |
 | P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | open | | not started |
 | P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | open | slice01 (exports-gap) closed | main work (`lykn add`, mycelium audit) not started |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
@@ -115,6 +115,16 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.9 — 2026-06-29 (M22.5-3 landed — DD-37 implementation migration finished)
+arc04 slice04 (M22.5-3) closed: the 4 complex-form emitters moved to
+`classifier.js` byte-identical — `emitMatchMacro` (the function M22 broke by
+reimplementing) verbatim-confirmed by CDC byte-diff. `typeRegistry` relocated to
+`surface-helpers.js` as a single shared instance. **DD-37's implementation
+migration is finished**: `surface.js` 2,315→540 lines, `classifier.js` imports
+nothing from it. The tool gained a TDD'd TO-as-consumer import-prune capability.
+`deno lint packages/` 4→2. Next in planned order: slice05 = M22.5-4 (dead-code →
+clears the last 2 lint residuals).
 
 ### v1.8 — 2026-06-29 (M22.5-2 landed — first real extraction)
 arc04 slice03 (M22.5-2) closed: the `move-function` tool drove its first real

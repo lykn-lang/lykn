@@ -1,13 +1,15 @@
 # arc04 — Refactor Tooling (`move-function`)
 
-> **Status: Tool built, proven, and delivering — slices 01–03 closed (A-1/A-2/A-3
-> done).** The `move-function` tool is complete (core + rewiring + batch + atomic
-> revert) and has now driven its **first real extraction**: slice03 (M22.5-2)
-> moved 10 helpers out of `surface.js` byte-identically, committed (`266ff3d`),
-> corpus 1345/0. The extraction campaign continues: **slice04 = M22.5-3** (4
-> complex forms), **slice05 = M22.5-4** (dead-code + `_kernel` cleanup — also
-> clears the residual `deno lint packages/` debt). Reconstructed retroactively
-> (2026-06-28) from the M22.5 tooling track.
+> **Status: Tool built, proven, and delivering — slices 01–04 closed.** The
+> `move-function` tool drove the full surface extraction: slice03 (M22.5-2, 10
+> helpers) and slice04 (M22.5-3, the 4 complex-form emitters, byte-identical incl.
+> `emitMatchMacro`). **DD-37's implementation migration is finished** — all
+> complex-form emit logic is in `classifier.js`; `surface.js` is down to ~540
+> lines (was 2,315 pre-DD-37) and `classifier.js` imports nothing from it. Only
+> **slice05 = M22.5-4** remains (dead-code `buildThread`/`buildSomeThread` +
+> `_kernel` cleanup — clears the last 2 `deno lint packages/` residuals → exit 0).
+> The tool also gained a tested **TO-as-consumer import-prune** capability in
+> slice04. Reconstructed retroactively (2026-06-28) from the M22.5 tooling track.
 >
 > **Follow-up (slice02):** the F-7 freshness guard is **too broad** — it fires
 > for *any* `lykn test` over `.lykn` files (it broke the `lyk_runner_kernel_only`
@@ -31,7 +33,7 @@ of the CLAUDE.md safety gates (never silently bypass its own verify step).
 | **slice01 · move-function-core** | M22.5-T1a: verbatim-move core — edits only the two named files, validated on a zero-external-consumer helper | **Closed** (9/9; `scripts/move-function.js` TDD-first; byte-identity invariant verified) |
 | **slice02 · move-function-rewiring** | M22.5-T1b: cross-file consumer rewiring + batch mode + atomic multi-file revert + rebuild-first verify | **Closed** (7/7, F-4 adapted; TDD-first; rewiring proven on the real `toJsIdentifier` consumer since the M22 andChain/classifier split doesn't exist on `release/0.6.x`) |
 | **slice03 · helper-extraction** (M22.5-2) | First **real** extraction: move the 10 aliased helpers `surface.js`→`surface-helpers.js` (dependency-ordered, byte-exact, via the tool), rewire consumers, drop the alias | **Closed** (`266ff3d`; 10/10 byte-identical via the tool; corpus 1345/0; F-8 deno-lint-packages residual = pre-existing M22.5-3/4 debt) |
-| **slice04 · complex-form-extraction** (M22.5-3) | Move the 4 complex-form emitters (`emitMatch/Type/GenfuncMacro` + `buildSingle/MultiClauseFunc`, ~470 lines) `surface.js`→`classifier.js` byte-exact; relocate shared `typeRegistry` to `surface-helpers.js` (single instance) | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
+| **slice04 · complex-form-extraction** (M22.5-3) | Move the 4 complex-form emitters (`emitMatch/Type/GenfuncMacro` + `buildSingle/MultiClauseFunc`, +5 support) `surface.js`→`classifier.js` byte-exact; relocate shared `typeRegistry` to `surface-helpers.js` (single instance) | **Closed** (`ff481b4`; 10/10 byte-identical incl. `emitMatchMacro`; `typeRegistry` single instance; no surface↔classifier cycle; corpus 1345/0; deno-lint 4→2). **DD-37 impl migration FINISHED** |
 
 slices 01–02 built the tool; **slice03 onward use it** for the real surface
 extraction. slice03 (M22.5-2) landed the helpers; **slice04 = M22.5-3** (the 4
@@ -59,6 +61,17 @@ state. Enables: the remaining M22.5 surface-extraction workstreams.
 | A-3 | `move-function` performs a real move with the full suite green, end-to-end | run the move + rebuild-first `lykn test` | serious | arc-plan | **done** | **slice03 (M22.5-2): 10 real moves, byte-identical, corpus 1345/0** — the tool proven on the real corpus, committed (`266ff3d`) |
 
 ## 5. Version History
+
+### v1.4 — 2026-06-29 (slice04 closed; DD-37 impl migration finished)
+slice04 (M22.5-3) closed — the 4 complex-form emitters + 5 support symbols moved
+`surface.js`→`classifier.js` byte-identical (incl. `emitMatchMacro`, the function
+M22 broke by reimplementing), `typeRegistry` relocated to `surface-helpers.js` as
+a single shared instance (ADT round-trip verified), `classifier.js` imports
+nothing from `surface.js` (DD-37 dependency inversion complete). Commits
+`3ed5e6a`/`ff481b4`. **DD-37's implementation migration is finished**; `surface.js`
+540 lines (was 2,315). The split anticipated in CC's Part 1 proved unnecessary
+once a **TDD'd tool enhancement** (`fdde09f`→`20748a5`, TO-as-consumer import
+prune) made the moves clean. deno-lint 4→2. Next: slice05 = M22.5-4 (cleanup).
 
 ### v1.3 — 2026-06-29 (slice03 closed; A-3 done; first real extraction)
 slice03 (M22.5-2) closed — the **first real `move-function` extraction**: 10
