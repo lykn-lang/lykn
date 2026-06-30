@@ -9,7 +9,6 @@
 import {
 	sym,
 	array,
-	gensym,
 	isKeyword,
 	isArray,
 } from "./expander.js";
@@ -366,97 +365,6 @@ export function registerSurfaceMacros(macroEnv) {
 
 	// DD-37 M22-3b: STATEMENT_ONLY_HEADS, isStatementOnlyForm, wrapReturnLast
 	// extracted to surface-helpers.js (imported at module level).
-
-	/**
-	 * Build a threading expression (thread-first or thread-last).
-	 * position: 'first' — insert threaded as first arg after fn
-	 * position: 'last'  — insert threaded as last arg
-	 */
-	function buildThread(args, position) {
-		if (args.length < 2) {
-			const name = position === "first" ? "->" : "->>";
-			throw new Error(`${name} requires at least 2 arguments: (${name} value step...)`);
-		}
-		let threaded = args[0];
-		for (let i = 1; i < args.length; i++) {
-			const step = args[i];
-			if (isKeyword(step)) {
-				threaded = array(sym("."), threaded, sym(step.value));
-			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
-				const [kw, ...rest] = step.values;
-				threaded = array(sym("."), threaded, sym(kw.value), ...rest);
-			} else if (isArray(step)) {
-				if (position === "first") {
-					const [fn, ...rest] = step.values;
-					threaded = array(fn, threaded, ...rest);
-				} else {
-					threaded = array(...step.values, threaded);
-				}
-			} else {
-				threaded = array(step, threaded);
-			}
-		}
-		return threaded;
-	}
-
-	/**
-	 * Build a nil-safe threading expression (some-> or some->>).
-	 * position: 'first' or 'last' — same insertion semantics as buildThread.
-	 */
-	function buildSomeThread(args, position) {
-		const name = position === "first" ? "some->" : "some->>";
-		if (args.length < 2) {
-			throw new Error(`${name} requires at least 2 arguments`);
-		}
-		const stmts = [];
-		let prevVar = gensym("t");
-		stmts.push(array(sym("const"), prevVar, args[0]));
-		stmts.push(
-			array(
-				sym("if"),
-				array(sym("=="), prevVar, sym("null")),
-				array(sym("return"), prevVar),
-			),
-		);
-
-		for (let i = 1; i < args.length; i++) {
-			const step = args[i];
-			let callExpr;
-			if (isKeyword(step)) {
-				callExpr = array(sym("."), prevVar, sym(step.value));
-			} else if (isArray(step) && step.values.length > 0 && isKeyword(step.values[0])) {
-				const [kw, ...rest] = step.values;
-				callExpr = array(sym("."), prevVar, sym(kw.value), ...rest);
-			} else if (isArray(step)) {
-				if (position === "first") {
-					const [fn, ...rest] = step.values;
-					callExpr = array(fn, prevVar, ...rest);
-				} else {
-					callExpr = array(...step.values, prevVar);
-				}
-			} else {
-				callExpr = array(step, prevVar);
-			}
-
-			if (i === args.length - 1) {
-				stmts.push(array(sym("return"), callExpr));
-			} else {
-				const nextVar = gensym("t");
-				stmts.push(array(sym("const"), nextVar, callExpr));
-				stmts.push(
-					array(
-						sym("if"),
-						array(sym("=="), nextVar, sym("null")),
-						array(sym("return"), nextVar),
-					),
-				);
-				prevVar = nextVar;
-			}
-		}
-
-		const arrowFn = array(sym("=>"), array(), ...stmts);
-		return array(arrowFn);
-	}
 
 	/**
 	 * Compile a let-binding pattern (for if-let / when-let).
