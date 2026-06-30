@@ -11,9 +11,6 @@ import {
   formatSExpr,
 } from "./expander.js";
 import { toJsIdentifier } from "./compiler.js";
-// typeRegistry is a shared mutable Map (single instance via ESM live binding);
-// compilePattern reads it. Imported so the helper can move out of surface.js.
-import { typeRegistry } from "./surface.js";
 // Param-shape sub-parsers (still in surface.js, not in this extraction set);
 // parseTypedParams delegates to them, so import them to satisfy the move.
 import {
@@ -571,3 +568,8 @@ export function parseTypedParams(paramList) {
 	}
 	return params;
 }
+
+// --- Type Registry ---
+// Maps constructor names to their field names, populated by `type` macro.
+// Used by `match` and `if-let`/`when-let` to resolve ADT pattern field bindings.
+export const typeRegistry = new Map();

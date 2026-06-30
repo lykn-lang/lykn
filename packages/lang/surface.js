@@ -16,13 +16,9 @@ import {
 } from "./expander.js";
 import {
 	isStatementOnlyForm,
-	wrapReturnLast, isPascalCase, andChain, buildTypeCheck, paramNameNodes, paramTypeChecks, compilePattern, parseTypedParams,
+	wrapReturnLast, isPascalCase, andChain, buildTypeCheck, paramNameNodes, paramTypeChecks, compilePattern, parseTypedParams, typeRegistry,
 } from "./surface-helpers.js";
 
-// --- Type Registry ---
-// Maps constructor names to their field names, populated by `type` macro.
-// Used by `match` and `if-let`/`when-let` to resolve ADT pattern field bindings.
-export const typeRegistry = new Map();
 
 export function resetTypeRegistry() {
 	typeRegistry.clear();
