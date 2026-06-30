@@ -455,3 +455,32 @@ Deno.test("runVerifyCommand: honors shell operators so a rebuild-first verify wo
   assertEquals(ok.success, true);
   assertStringIncludes(ok.output, "built");
 });
+
+// ── slice04 enhancement: TO-as-consumer (move into a file that imports the name) ─
+
+Deno.test("moveFunction: moving into a file that imports the name from FROM prunes that import", async () => {
+  await withTempProject({
+    "from.js": `export function widget() {\n  return 1;\n}\n`,
+    "to.js": `import { widget } from "./from.js";\nexport const w = widget;\n`,
+  }, async (dir) => {
+    await moveFunction({ from: `${dir}/from.js`, to: `${dir}/to.js`, name: "widget", consumerDir: dir });
+    const newTo = await Deno.readTextFile(`${dir}/to.js`);
+    const locTo = locateDeclaration(newTo, "widget");
+    assertEquals(newTo.slice(locTo.start, locTo.end), "function widget() {\n  return 1;\n}");
+    assertEquals(newTo.includes(`import { widget } from "./from.js"`), false);
+    assertStringIncludes(newTo, "w = widget");
+  });
+});
+
+Deno.test("moveFunction: a genuine TO collision (local declaration) still aborts", async () => {
+  await withTempProject({
+    "from.js": `export function widget() {\n  return 1;\n}\n`,
+    "to.js": `function widget() {\n  return 99;\n}\nexport const w = widget;\n`,
+  }, async (dir) => {
+    await assertRejects(
+      () => moveFunction({ from: `${dir}/from.js`, to: `${dir}/to.js`, name: "widget", consumerDir: dir }),
+      Error,
+      "collision",
+    );
+  });
+});
