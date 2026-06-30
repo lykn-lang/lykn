@@ -31,14 +31,18 @@ of the CLAUDE.md safety gates (never silently bypass its own verify step).
 |-------|-------|--------|
 | **slice01 · move-function-core** | M22.5-T1a: verbatim-move core — edits only the two named files, validated on a zero-external-consumer helper | **Closed** (9/9; `scripts/move-function.js` TDD-first; byte-identity invariant verified) |
 | **slice02 · move-function-rewiring** | M22.5-T1b: cross-file consumer rewiring + batch mode + atomic multi-file revert + rebuild-first verify | **Closed** (7/7, F-4 adapted; TDD-first; rewiring proven on the real `toJsIdentifier` consumer since the M22 andChain/classifier split doesn't exist on `release/0.6.x`) |
+| **slice03 · helper-extraction** (M22.5-2) | First **real** extraction: move the 10 aliased helpers `surface.js`→`surface-helpers.js` (dependency-ordered, byte-exact, via the tool), rewire consumers, drop the alias | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
 
-slice02 is the last tool-build slice; closing it completes arc04's `move-function`
-tool. The **real extraction campaigns** then follow as their own slices: **M22.5-2**
-(10 helpers, ~500 lines — start with `andChain`), then **M22.5-3** (4 complex
-forms: `match`/`type`/`genfunc`/`func`, ~470 lines; depends on M22.5-2), then
-**M22.5-4** (dead-code + `_kernel` cleanup). See the M22 audit
+slices 01–02 built the tool; **slice03 onward use it** for the real surface
+extraction. After slice03 (M22.5-2 helpers): **slice04 = M22.5-3** (4 complex
+forms `match`/`type`/`genfunc`/`func`, ~470 lines; depends on slice03), then
+**slice05 = M22.5-4** (dead-code + `_kernel` cleanup). This expands arc04's scope
+from "build the tool" to "the move-function refactor end-to-end (build + drive the
+surface extraction)." See the M22 audit
 (`../arc03-compiler-coherence/slice08-dd37-per-form-migration/design/m22-audit-report.md`)
-§"Suggested workstream segmentation".
+§"Suggested workstream segmentation". *(If you'd rather these extraction campaigns
+be their own arc rather than arc04 slices, say so — I kept them here to avoid
+another renumber.)*
 
 ## 3. Dependencies
 
