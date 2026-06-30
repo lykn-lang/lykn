@@ -70,13 +70,13 @@ Arcs in dependency order. Each delivers one coherent capability.
   close is **restored**; DD-55 added as **arc08**; M22.5-2/-3 unblocked.
 - **Done / closed:** arc01, arc02, **arc03** (architecture landed), **arc08**
   (DD-55 template/ICU/i18n).
-- **Tool built, proven & delivering:** arc04 — slices 01–04 **closed**.
-  slice03 (M22.5-2, 10 helpers) + slice04 (M22.5-3, the 4 complex forms,
-  byte-identical incl. `emitMatchMacro`) finished **DD-37's implementation
-  migration**: `surface.js` 2,315→540 lines, `classifier.js` self-contained.
-  Remaining: slice05 (M22.5-4 dead-code cleanup).
-- **Standing debt (shrinking):** `deno lint packages/` now **2** residuals
-  (`buildThread`/`buildSomeThread` dead funcs) — clears with slice05 → exit 0.
+- **arc04 CLOSED** (5/5 slices) — the `move-function` tool built *and* drove the
+  complete surface extraction; **DD-37's implementation migration finished**:
+  `surface.js` 2,315→448 lines, `classifier.js` self-contained, byte-identity held
+  throughout (incl. `emitMatchMacro`). `deno lint packages/` **exit 0** — the
+  standing JS-lint debt is closed.
+- **Surfaced follow-up (not yet scoped):** **DD-37 step 4** — remove the `_kernel`
+  marker (an `expander.js`-core change). A candidate future arc/slice/DD.
 - **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
   arc07 (docs; seeded).
 - **Gated:** arc09 (release) waits on the open arcs.
@@ -99,7 +99,7 @@ inherited from arc attestations.
 | P-1 | arc01 closed + composed | ptr: arc01 closing-report | correctness | project-plan | done | M11+M13 closing report | attested (reconstructed) |
 | P-2 | arc02 closed + composed | ptr: arc02 closing-report | correctness | project-plan | done | M10 closing report + CDC | attested (reconstructed) |
 | P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | architecture merged to release (`6aa3724`); corpus 1345/0; classifier.js/surface-helpers.js present | restored after the 2026-06-29 reconciliation |
-| P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **partial** | slice01–04 closed; DD-37 impl migration finished (surface.js 2315→540; emitMatchMacro byte-identical) | remaining: slice05 (M22.5-4 cleanup) |
+| P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **done** | arc04 closed (5/5 slices); `closing-report.md` composition check; surface.js 2315→448; emitMatchMacro byte-identical; lint green | DD-37 step 4 (`_kernel`) surfaced as follow-up |
 | P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | open | | not started |
 | P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | open | slice01 (exports-gap) closed | main work (`lykn add`, mycelium audit) not started |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
@@ -115,6 +115,16 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.10 — 2026-06-29 (M22.5-4 landed — **arc04 CLOSED**)
+slice05 (M22.5-4) closed and **arc04 closed** (arc-level `closing-report.md`
+written; composition check reproduced at arc scale). Dead code removed; **`deno
+lint packages/` exit 0** (standing JS-lint debt closed); `surface.js` 2,315→448.
+P-4 → done. The `move-function` campaign is complete: tool built (01–02) + full
+surface extraction (03–05), every move byte-identical by the tool incl.
+`emitMatchMacro`. **New surfaced follow-up:** DD-37 step 4 (`_kernel` marker
+removal) — candidate future work, not yet scoped. Remaining 0.6.0 work: arc05
+(linter), arc06 (dep-ergonomics main), arc07 (docs), arc09 (release).
 
 ### v1.9 — 2026-06-29 (M22.5-3 landed — DD-37 implementation migration finished)
 arc04 slice04 (M22.5-3) closed: the 4 complex-form emitters moved to
