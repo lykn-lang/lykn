@@ -21,12 +21,13 @@
 |-----|-----------|--------|
 | [arc01 · build-publish-toolchain](./arc01-build-publish-toolchain/arc-plan.md) | `target/lykn/{build,dist}` reorg + `lykn publish` dirty-check | **Closed** (M11+M13) |
 | [arc02 · type-dts-generation](./arc02-type-dts-generation/arc-plan.md) | `.d.ts` from `:type` annotations (DD-56) | **Closed** (M10) |
-| [arc03 · compiler-coherence](./arc03-compiler-coherence/arc-plan.md) | Rust + JS coherent; DD-58 kernel/surface + DD-37 surface compiler | **Closed** — corpus green (1293/0), 0 semantic divergences |
-| [arc04 · refactor-tooling](./arc04-refactor-tooling/arc-plan.md) | `move-function` byte-exact code-move tool | **In flight** — slice01 closed; slice02 next |
+| [arc03 · compiler-coherence](./arc03-compiler-coherence/arc-plan.md) | Rust + JS coherent; DD-58 kernel/surface + DD-37 surface compiler | **Closed** — architecture landed on release 2026-06-29; corpus 1345/0 |
+| [arc04 · refactor-tooling](./arc04-refactor-tooling/arc-plan.md) | `move-function` byte-exact code-move tool | **Tool built & proven** (slice01+02 closed); A-3 real-extraction → M22.5-2 (unblocked) |
 | [arc05 · lykn-source-linter](./arc05-lykn-source-linter/arc-plan.md) | `lykn lint` over Lykn source | **Open** (not started) |
 | [arc06 · cross-project-dep-ergonomics](./arc06-cross-project-dep-ergonomics/arc-plan.md) | `lykn add`, downstream-blocker audit | **Open** (slice01 exports-gap closed; main work not started) |
 | [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Open** (seeded, not slice-planned) |
-| [arc08 · release-0.6.0](./arc08-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** |
+| [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
+| [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** |
 
 ## Layout conventions
 

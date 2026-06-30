@@ -33,7 +33,7 @@ Version History v1.0.)
 
 Consumes: nothing earlier (foundational). Leaves for later arcs: the
 `target/lykn/build/` layout that arc03 (compiler-coherence) and arc06
-(dep-ergonomics) build on; the `lykn publish` gate that arc08 (release) relies
+(dep-ergonomics) build on; the `lykn publish` gate that arc09 (release) relies
 on.
 
 ## 4. Arc ledger

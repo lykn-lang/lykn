@@ -12,7 +12,7 @@ language and toolchain — eliminate guide drift (content that no longer matches
 what the compiler/CLI actually do) and land the discoverability-gap additions
 that surfaced when the first real downstream project (mycelium) was bootstrapped.
 The aim is that a reader following the guides/SKILL gets advice that matches
-shipped 0.6.0 behaviour, so docs are release-ready before arc08 cuts 0.6.0.
+shipped 0.6.0 behaviour, so docs are release-ready before arc09 cuts 0.6.0.
 
 **Relationship to neighbouring arcs.** Distinct from arc03's W-4d doctest-fence
 work (that was compiler-coherence: making doctests compile correctly). This arc
@@ -37,7 +37,7 @@ files) live in `workbench/old/` and are out of 0.6.0 scope.
 
 Consumes: the shipped behaviour of arc01–arc06 (docs describe what those landed).
 Best sequenced **after** the language/toolchain arcs stabilize (so docs aren't
-chasing a moving target) and **before** arc08 (release ships release-ready docs).
+chasing a moving target) and **before** arc09 (release ships release-ready docs).
 Feeds arc05 (linter rule corpus).
 
 ## 4. Arc ledger

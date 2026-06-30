@@ -52,23 +52,31 @@ Arcs in dependency order. Each delivers one coherent capability.
 |-----|-----------|-----------|--------|
 | **arc01 · build-publish-toolchain** | `target/lykn/{build,dist}` reorg + `lykn publish` dirty-check gate | — | **Closed** (M11+M13) |
 | **arc02 · type-dts-generation** | `.d.ts` declarations generated from `:type` annotations (DD-56) | — | **Closed** (M10) |
-| **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Substantially delivered** (M16–M22 + fast-follows); arc-level composition check pending |
-| **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **In flight** (M22.5; slices open) |
+| **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Closed** (M16–M22; architecture landed on release 2026-06-29) |
+| **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03 | **Open** (not started; was M12) |
-| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (not started) |
-| **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
-| **arc08 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above incl. arc07 docs | **Future** (was M14/M15) |
+| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
+| **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
+| **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
+| **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
 
 ## 3. Current status (2026-06-28)
 
-- **Done / closed:** arc01, arc02, **arc03** (composition reproduced, 0 semantic
-  divergences; slice11 took the corpus green, 1293/0 — host re-run recommended to
-  reconcile the runtime rows).
-- **In flight:** arc04 — slice01 (`move-function-core`) **closed** (byte-exact
-  tool, TDD-first, 9/9); slice02 (cross-file rewiring + batch) next.
+- **✅ Reconciliation RESOLVED (2026-06-29) — see [`_reconciliation-2026-06-29.md`](./_reconciliation-2026-06-29.md):**
+  both stranded bodies are now merged to `release/0.6.x` and verified green
+  (corpus 1345/0, clippy/fmt/lint clean). `cdc/compiler-coherence` (DD-58+DD-37)
+  via merge `6aa3724`; `feature/template-update` (DD-55) via `7a552ca`. **All
+  worktree branches are now 0-ahead of release — zero stranded work.** arc03's
+  close is **restored**; DD-55 added as **arc08**; M22.5-2/-3 unblocked.
+- **Done / closed:** arc01, arc02, **arc03** (architecture landed), **arc08**
+  (DD-55 template/ICU/i18n).
+- **Tool built & proven:** arc04 — slice01 + slice02 **closed**
+  (`move-function`: verbatim core + cross-file rewiring + batch + atomic revert).
+  A-3 (real green extraction) deferred to **M22.5-2** — now unblocked (the
+  architecture it extracts from is on the branch).
 - **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
   arc07 (docs; seeded).
-- **Gated:** arc08 (release) waits on the open arcs.
+- **Gated:** arc09 (release) waits on the open arcs.
 
 Per **plan late, plan deep**: arc-plans for the closed arcs (01–03) are
 *reconstructed* from shipped work; arc04 is planned to the depth its in-flight
@@ -87,8 +95,8 @@ inherited from arc attestations.
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | P-1 | arc01 closed + composed | ptr: arc01 closing-report | correctness | project-plan | done | M11+M13 closing report | attested (reconstructed) |
 | P-2 | arc02 closed + composed | ptr: arc02 closing-report | correctness | project-plan | done | M10 closing report + CDC | attested (reconstructed) |
-| P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | composition reproduced (0 semantic divergences); slice11 corpus **green 1293/0** | CC-attested + CDC code-verified; host re-run to reconcile |
-| P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | open | | in flight |
+| P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | architecture merged to release (`6aa3724`); corpus 1345/0; classifier.js/surface-helpers.js present | restored after the 2026-06-29 reconciliation |
+| P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **partial** | slice01+02 closed (tool built & proven) | A-3 real green extraction → M22.5-2 (now unblocked) |
 | P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | open | | not started |
 | P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | open | slice01 (exports-gap) closed | main work (`lykn add`, mycelium audit) not started |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
@@ -96,13 +104,54 @@ inherited from arc attestations.
 | P-9 | same surface input → same output across Rust + JS for the migrated corpus (`compileBoth`) | run `compileBoth` corpus; divergences documented or zero | serious | DoD | **done** | corpus **green: 1293 passed / 0 failed** (slice11); 0 semantic divergences | form-codegen only (~11%) remains a documented coverage bound |
 | P-10 | `.d.ts` generated from `:type` annotations | end-to-end: compile a typed module, inspect emitted `.d.ts` | correctness | DoD | open | | reproduce at project scale |
 | P-11 | `lykn lint` lints Lykn source (not compiled JS) | end-to-end: `lykn lint` on a fixture with seeded anti-patterns | correctness | DoD | open | | blocked on arc05 |
-| P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc08 |
+| P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc09 |
 | P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo | correctness | project-plan | open | | blocked on arc07 |
+| P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.7 — 2026-06-29 (integration complete; arc03 restored; arc08 added)
+Both stranded bodies merged to `release/0.6.x` and verified green (corpus 1345/0,
+deno 658/0, clippy/fmt/lint clean; the slice11 async + D-2 backslash invariants
+held): `cdc/compiler-coherence` (DD-58+DD-37) via `6aa3724`, `feature/template-update`
+(DD-55) via `7a552ca`. Re-ran the ancestry audit: **all worktree branches 0-ahead
+— zero stranded.** Reconciliation: **arc03 close restored** (P-3 done), **DD-55
+added as arc08** (template-i18n, closed; P-14 done), **release renumbered arc08→arc09**,
+arc04 A-3 / M22.5-2 unblocked. Three findings from the merge (recorded below).
+**Findings:** (1) `cdc/compiler-coherence` had landed without `make check` passing
+— 2 clippy + 1 deno-lint debt fixed by CC, bundled into merge `6aa3724` (Duncan may
+split if desired); (2) DD-55 was largely already on release in parallel, so the
+merge mainly records history convergence; (3) **slice02's F-7 freshness guard is
+too broad** — it fires for *any* `lykn test` over `.lykn` files (broke the
+`lyk_runner_kernel_only` cargo tests until a rebuild), and should be scoped to the
+cross-compiler corpus — a **slice02 follow-up** (tracked in arc04).
+
+### v1.6 — 2026-06-29 (full branch-ancestry audit)
+Ran the operator-requested full audit — [`_reconciliation-2026-06-29.md`](./_reconciliation-2026-06-29.md).
+Confirmed landed: arc01, arc02, arc06/slice01, arc03 slices 01/09/10/11 (and no
+stranded linter work — arc05 genuinely not started). Confirmed **stranded**: (a)
+DD-58+DD-37 on `cdc/compiler-coherence` (47 commits, arc03 slices 02–08); (b)
+**DD-55 ICU/i18n on `feature/template-update`** (11 commits) — a body of 0.6.0
+work the reconstruction never mapped to an arc. Both await merge + post-merge
+re-verification; then DD-55 needs an arc (or fold-in) and arc03's close can be
+un-qualified.
+
+### v1.5 — 2026-06-29 (arc04 slice02 closed; ⚠ unmerged-architecture finding)
+arc04 slice02 closed — the `move-function` tool is built and proven (cross-file
+rewiring + batch + atomic multi-file revert). Its `andChain` acceptance surfaced
+a **major reconciliation finding**, CDC-confirmed: the DD-58 + DD-37 architecture
+(arc03 slices 02–05, 07–08; M17–M22) **is not on `release/0.6.x`** — it lives on
+`cdc/compiler-coherence` (fork `e462a67`). `classifier.js`/`surface-helpers.js`
+don't exist on release; `surface.js` still registers 36 macros. **arc03's close
+is downgraded to qualified** (P-3); arc04 A-3 deferred; M22.5-2/-3 blocked.
+**Root cause:** the retroactive migration + arc closes treated workbench
+milestone closure as "landed on release" without a branch-ancestry check (a CDC
+verification gap, now named). **Resolution requires an operator decision**: merge
+`cdc/compiler-coherence` → `release/0.6.x`, or otherwise reconcile the branches.
+A full per-slice branch-ancestry audit is the recommended immediate follow-up.
 
 ### v1.4 — 2026-06-28 (arc04 slice01 closed; fmt blocker cleared)
 arc04 slice01 (`move-function-core`) closed — byte-exact move tool, TDD-first,

@@ -36,8 +36,10 @@ executed *with* this tool.
 
 ## Closure
 
-Closed on 2026-06-29. Verified by: CC (attested, 7 rows: 6 done, 1 done-adapted);
-awaiting CDC reproduction → `cdc-verification.md`.
+Closed on 2026-06-29. Verified by: CC (attested, 7 rows: 6 done, 1 done-adapted)
++ CDC (`cdc-verification.md`: git-confirmed commits on release/0.6.x;
+code-reviewed atomic multi-file revert + rewiring + sh-c verify; F-4 adaptation
+accepted; runtime deferred to host).
 Rows: 7. Done: 7 (F-4 adapted, green-extraction deferred to M22.5-2). Deferred: 0
 rows (1 sub-item: `--batch-verify-once`). No-op: 0.
 

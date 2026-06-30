@@ -1,8 +1,42 @@
 # arc03 — Compiler Architecture Coherence
 
-> **Status: CLOSED (2026-06-28).** Composition reproduced with **0 semantic
-> divergences**, and slice11 took the cross-compiler corpus to **green
-> (1293 passed / 0 failed)**. The one genuine codegen divergence (async
+> ## ✅ Reconciliation RESOLVED — 2026-06-29 (architecture landed; close restored)
+>
+> **Resolved the same day.** The DD-58 + DD-37 architecture was merged into
+> `release/0.6.x` (merge `6aa3724`), then verified green (corpus 1345/0,
+> clippy/fmt/lint clean). `cdc/compiler-coherence` is now 0-ahead of release;
+> `classifier.js`/`surface-helpers.js`/`surface-ast.js` exist on the branch. The
+> close below is **restored to a true CLOSED** — slices 02–08 are now genuinely
+> on release. The finding history is retained for the record:
+>
+> *Original finding (now resolved):* a branch-ancestry check (triggered by
+> arc04/slice02's `andChain` finding) showed that most of arc03's architecture
+> work was **not on `release/0.6.x`** — it lived only on `cdc/compiler-coherence`
+> (fork `e462a67`, D-2):
+>
+> | arc03 slice | milestone | on `release/0.6.x`? |
+> |---|---|---|
+> | slice01 cross-compiler-hygiene | M16 | **yes** |
+> | slice02–05 (DD-58 kernel/surface) | M17–M20 | **NO** |
+> | slice07–08 (DD-37 classifier) | M21–M22 | **NO** |
+> | slice11 corpus-green | (this session) | **yes** |
+>
+> Evidence: `packages/lang/` on release has no `classifier.js`/`surface-helpers.js`;
+> `surface.js` still registers 36 macros (pre-DD-37); `f94c2a1`, `91e54a5`,
+> `bdbe2a6`, `72cfe53` are not ancestors of `release/0.6.x`. **Root cause:** the
+> retroactive migration treated each workbench milestone's closing report as
+> "landed," and the arc03 close inherited that without a branch-ancestry check —
+> a CDC verification gap. The slice11 corpus *did* pass on release/0.6.x because
+> the language is correct via `surface.js`; the DD-58/DD-37 *architecture refactor*
+> is what's unmerged. **Resolution pending an operator merge/branch decision**
+> (see project-plan). Until then, arc03 is: *coherence behaviour verified on
+> release; DD-58/DD-37 architecture implemented on `cdc/compiler-coherence`, not
+> merged.*
+
+> **Status: CLOSED — architecture landed on `release/0.6.x` 2026-06-29.**
+> Composition reproduced with **0 semantic divergences**; slice11 took the
+> cross-compiler corpus to **green (1293/0; now 1345/0 post-merges)**, and the
+> DD-58/DD-37 architecture is merged to release (see resolution above). The one genuine codegen divergence (async
 > declarations' trailing `;`) was fixed in `emit.rs`; the rest were stale-artifact
 > or environment, now guarded (F-7). Reconstructed retroactively (2026-06-28)
 > from milestones M16–M22, the DD-58/DD-37 phase work, and the cross-compiler

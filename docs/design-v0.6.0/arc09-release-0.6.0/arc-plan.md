@@ -1,8 +1,9 @@
-# arc08 — Release 0.6.0
+# arc09 — Release 0.6.0
 
 > **Status: Future — gated on all preceding arcs.** Planned at capability depth
-> only. Was tracked as the M14/M15 release milestones. (Renumbered from arc07 on
-> 2026-06-28 when arc07-docs was inserted ahead of release — see Version History.)
+> only. Was tracked as the M14/M15 release milestones. (Renumbered arc07→08→09 as
+> arc07-docs then arc08-template-i18n were inserted ahead of release — see
+> Version History.)
 
 ## 1. Capability
 
@@ -20,9 +21,10 @@ manual publishes; this arc scopes the preparation and verification.
 
 ## 3. Dependencies
 
-Gated on: arc03 closed (composition check run + slice11 corpus-green), arc04
-closed, the 0.6.0-committed arcs (05 linter, 06 dep-ergonomics) reaching their
-intended 0.6.0 state, and **arc07 (docs) — release ships release-ready docs**.
+Gated on: arc03 closed (✓ landed), arc04 closed (tool built), arc08
+(template-i18n ✓ landed), the 0.6.0-committed arcs (05 linter, 06 dep-ergonomics)
+reaching their intended 0.6.0 state, and **arc07 (docs) — release ships
+release-ready docs**.
 Relies on arc01's publish gate. This arc's close is the **project gate**
 (go / adjust / kill against the 0.6.0 DoD — project-plan §4).
 
@@ -33,6 +35,11 @@ publish dry-run reproduced across all three registries, then the published
 artifacts verified installable.
 
 ## 5. Version History
+
+### v1.2 — 2026-06-29 (renumbered arc08 → arc09)
+Renumbered again when **arc08-template-i18n** (DD-55, un-stranded from
+`feature/template-update`) was inserted ahead of release. Added arc08 to the
+gating dependencies (now landed). Release stays terminal.
 
 ### v1.1 — 2026-06-28 (renumbered arc07 → arc08)
 Renumbered when **arc07-docs** was inserted ahead of release to preserve

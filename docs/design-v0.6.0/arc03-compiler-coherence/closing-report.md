@@ -136,7 +136,7 @@ coherence and bounded there.
    demo (affects P-7/P-9); (b) `make check` is **red on `release/0.6.x`** —
    `cargo fmt --check` fails on 5 committed files (pre-existing, independent of
    coherence) — which blocks the P-7/P-8 clean-toolchain demos and must be
-   cleaned before arc08; (c) cross-compiler coverage beyond form codegen is a
+   cleaned before arc09; (c) cross-compiler coverage beyond form codegen is a
    latent gap. All three recorded in project-plan Version History.
 3. **Silent-drop diff at arc scale, rolled up:** none. The roadmap expected
    compiler coherence from arc03; it is delivered (form codegen) with the
