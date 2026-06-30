@@ -228,21 +228,37 @@ export function rewriteImportSource(text, name, oldSpecifier, newSpecifier) {
       n.specifiers.some((s) => s.type === "ImportSpecifier" && s.imported.name === name),
   );
   if (!node) return text;
+  return addNamedImport(removeNamedImport(text, name), name, newSpecifier);
+}
+
+/**
+ * Remove `name` from whichever `import { … } from "…"` statement names it,
+ * deleting the statement entirely if its list empties. No-op if `name` is not a
+ * named import. (You cannot import the same name twice, so the single match is
+ * unambiguous.)
+ * @param {string} text
+ * @param {string} name
+ * @returns {string}
+ */
+export function removeNamedImport(text, name) {
+  const { program } = parseModule(text);
+  const node = program.body.find(
+    (n) =>
+      n.type === "ImportDeclaration" &&
+      n.specifiers.some((s) => s.type === "ImportSpecifier" && s.imported.name === name),
+  );
+  if (!node) return text;
 
   const keptNamed = node.specifiers
     .filter((s) => s.type === "ImportSpecifier" && s.imported.name !== name)
     .map((s) =>
       s.imported.name === s.local.name ? s.imported.name : `${s.imported.name} as ${s.local.name}`
     );
-
-  let withoutName;
   if (keptNamed.length === 0) {
-    withoutName = removeDeclaration(text, { start: node.start, end: node.end });
-  } else {
-    const rebuilt = `import { ${keptNamed.join(", ")} } from ${JSON.stringify(node.source.value)};`;
-    withoutName = text.slice(0, node.start) + rebuilt + text.slice(node.end);
+    return removeDeclaration(text, { start: node.start, end: node.end });
   }
-  return addNamedImport(withoutName, name, newSpecifier);
+  const rebuilt = `import { ${keptNamed.join(", ")} } from ${JSON.stringify(node.source.value)};`;
+  return text.slice(0, node.start) + rebuilt + text.slice(node.end);
 }
 
 /** Whether `importSource` (relative to `consumerPath`'s dir) resolves to `targetPath`. */
@@ -364,6 +380,17 @@ function relativeSpecifier(fromFile, toFile) {
   return rel.startsWith(".") ? rel : `./${rel}`;
 }
 
+/** Whether `text` imports `name` from a specifier that resolves to `targetPath`. */
+function importsNameFrom(text, name, consumerPath, targetPath) {
+  const { program } = parseModule(text);
+  return program.body.some(
+    (n) =>
+      n.type === "ImportDeclaration" &&
+      n.specifiers.some((s) => s.type === "ImportSpecifier" && s.imported.name === name) &&
+      importResolvesTo(consumerPath, n.source.value, targetPath),
+  );
+}
+
 /**
  * Compute (purely) the new FROM/TO contents for moving `name` from `fromPath`
  * to `toPath`. Aborts via MoveError when the move cannot be guaranteed correct.
@@ -384,7 +411,14 @@ export function planMove(fromOrig, toOrig, name, fromPath, toPath) {
   if (countTopLevelDeclarations(fromOrig, name) > 1) {
     throw new MoveError(`'${name}' is declared more than once in ${fromPath} (ambiguous)`);
   }
-  if (isDeclaredOrImported(toOrig, name)) {
+  // TO-as-consumer: if TO imports `name` from FROM, the moved definition
+  // replaces that import — prune it (below) rather than abort. A *local*
+  // declaration in TO, or an import from some other module, is a real collision.
+  const toImportsFromFrom = importsNameFrom(toOrig, name, toPath, fromPath);
+  if (
+    countTopLevelDeclarations(toOrig, name) > 0 ||
+    (isDeclaredOrImported(toOrig, name) && !toImportsFromFrom)
+  ) {
     throw new MoveError(`'${name}' is already declared or imported in ${toPath} (collision)`);
   }
 
@@ -409,9 +443,12 @@ export function planMove(fromOrig, toOrig, name, fromPath, toPath) {
 
   let newTo = stripReExport(toOrig, name, relativeSpecifier(toPath, fromPath));
   const strippedReExport = newTo !== toOrig;
+  if (toImportsFromFrom) {
+    newTo = removeNamedImport(newTo, name);
+  }
   newTo = insertDeclaration(newTo, unit);
 
-  return { newFrom, newTo, addedBackImport, strippedReExport };
+  return { newFrom, newTo, addedBackImport, strippedReExport, prunedImport: toImportsFromFrom };
 }
 
 /**
