@@ -4,6 +4,11 @@
 > slice02) was built for. Unlike slice01/02 (scratch, nothing landed), this one
 > **lands**: it physically moves the 10 aliased helpers out of `surface.js`,
 > completing the helper half of DD-37's surface migration.
+>
+> **Closed 2026-06-29** (CC-attested; awaiting CDC verification). All 10 moved
+> by the tool, byte-identical; consumers rewired; alias gone; corpus 1345/0 +
+> deno test 658/0. F-8 exception: `deno lint packages/` blocked by pre-existing
+> cdc/compiler-coherence debt that is M22.5-3/4 scope — see closing-report §4.
 
 ## Goal
 

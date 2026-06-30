@@ -1,14 +1,13 @@
 # arc04 — Refactor Tooling (`move-function`)
 
-> **Status: Tool built & proven (slice01 + slice02 closed); A-3 deferred to
-> M22.5-2 (now unblocked).** The `move-function` tool is complete — verbatim-move
-> core + cross-file rewiring + batch + atomic multi-file revert, all TDD-first and
-> proven on real code (the verify gate caught a real free-var entanglement and
-> reverted cleanly). A-3 (a *real green extraction*) is deferred to the M22.5-2
-> campaign — **now unblocked**: the M22 DD-37 architecture (`classifier.js`,
-> `surface-helpers.js`) was merged to `release/0.6.x` on 2026-06-29 (the §5
-> finding is resolved). Reconstructed retroactively (2026-06-28) from the M22.5
-> tooling track.
+> **Status: Tool built, proven, and delivering — slices 01–03 closed (A-1/A-2/A-3
+> done).** The `move-function` tool is complete (core + rewiring + batch + atomic
+> revert) and has now driven its **first real extraction**: slice03 (M22.5-2)
+> moved 10 helpers out of `surface.js` byte-identically, committed (`266ff3d`),
+> corpus 1345/0. The extraction campaign continues: **slice04 = M22.5-3** (4
+> complex forms), **slice05 = M22.5-4** (dead-code + `_kernel` cleanup — also
+> clears the residual `deno lint packages/` debt). Reconstructed retroactively
+> (2026-06-28) from the M22.5 tooling track.
 >
 > **Follow-up (slice02):** the F-7 freshness guard is **too broad** — it fires
 > for *any* `lykn test` over `.lykn` files (it broke the `lyk_runner_kernel_only`
@@ -31,12 +30,14 @@ of the CLAUDE.md safety gates (never silently bypass its own verify step).
 |-------|-------|--------|
 | **slice01 · move-function-core** | M22.5-T1a: verbatim-move core — edits only the two named files, validated on a zero-external-consumer helper | **Closed** (9/9; `scripts/move-function.js` TDD-first; byte-identity invariant verified) |
 | **slice02 · move-function-rewiring** | M22.5-T1b: cross-file consumer rewiring + batch mode + atomic multi-file revert + rebuild-first verify | **Closed** (7/7, F-4 adapted; TDD-first; rewiring proven on the real `toJsIdentifier` consumer since the M22 andChain/classifier split doesn't exist on `release/0.6.x`) |
-| **slice03 · helper-extraction** (M22.5-2) | First **real** extraction: move the 10 aliased helpers `surface.js`→`surface-helpers.js` (dependency-ordered, byte-exact, via the tool), rewire consumers, drop the alias | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
+| **slice03 · helper-extraction** (M22.5-2) | First **real** extraction: move the 10 aliased helpers `surface.js`→`surface-helpers.js` (dependency-ordered, byte-exact, via the tool), rewire consumers, drop the alias | **Closed** (`266ff3d`; 10/10 byte-identical via the tool; corpus 1345/0; F-8 deno-lint-packages residual = pre-existing M22.5-3/4 debt) |
+| **slice04 · complex-form-extraction** (M22.5-3) | Move the 4 complex-form emitters (`emitMatch/Type/GenfuncMacro` + `buildSingle/MultiClauseFunc`, ~470 lines) `surface.js`→`classifier.js` byte-exact; relocate shared `typeRegistry` to `surface-helpers.js` (single instance) | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
 
 slices 01–02 built the tool; **slice03 onward use it** for the real surface
-extraction. After slice03 (M22.5-2 helpers): **slice04 = M22.5-3** (4 complex
-forms `match`/`type`/`genfunc`/`func`, ~470 lines; depends on slice03), then
-**slice05 = M22.5-4** (dead-code + `_kernel` cleanup). This expands arc04's scope
+extraction. slice03 (M22.5-2) landed the helpers; **slice04 = M22.5-3** (the 4
+complex forms — the hardest, with the shared-`typeRegistry` hazard); then
+**slice05 = M22.5-4** (dead-code + `_kernel` cleanup, also clears the last
+`deno lint packages/` residuals). This expands arc04's scope
 from "build the tool" to "the move-function refactor end-to-end (build + drive the
 surface extraction)." See the M22 audit
 (`../arc03-compiler-coherence/slice08-dd37-per-form-migration/design/m22-audit-report.md`)
@@ -55,9 +56,21 @@ state. Enables: the remaining M22.5 surface-extraction workstreams.
 |----|-----------|--------|--------------|--------|--------|----------|
 | A-1 | slice01 (verbatim-move core) closed | ptr: slice01 closing-report + cdc-verification | correctness | arc-plan | **done** | slice01 closed 9/9 (CC-attested + CDC code/git-verified) |
 | A-2 | slice02 (rewiring + batch) closed | ptr: slice02 closing-report + cdc-verification | correctness | arc-plan | **done** | slice02 closed (CC-attested + CDC git/code-verified) |
-| A-3 | `move-function` performs a real move with the full suite green, end-to-end | run the move + rebuild-first `lykn test` | serious | arc-plan | **deferred** | deferred to the **M22.5-2** campaign — **now unblocked** (the architecture it extracts from landed on release 2026-06-29). Re-entry: scope M22.5-2 |
+| A-3 | `move-function` performs a real move with the full suite green, end-to-end | run the move + rebuild-first `lykn test` | serious | arc-plan | **done** | **slice03 (M22.5-2): 10 real moves, byte-identical, corpus 1345/0** — the tool proven on the real corpus, committed (`266ff3d`) |
 
 ## 5. Version History
+
+### v1.3 — 2026-06-29 (slice03 closed; A-3 done; first real extraction)
+slice03 (M22.5-2) closed — the **first real `move-function` extraction**: 10
+aliased helpers moved `surface.js`→`surface-helpers.js`, byte-identical, entirely
+by the tool, dependency-ordered (acorn free-var scan; 2 importable hazards
+satisfied, no deferrals), committed `266ff3d`, corpus 1345/0. **A-3 done** (the
+tool proven on the real corpus). Disclosed: `deno lint packages/` ≠ 0 from 4
+pre-existing residuals (`buildThread`/`buildSomeThread` → M22.5-4;
+`typeRegistry`/`parseKeywordClauses` → M22.5-3) — slice03 cut packages/ errors
+10+→4 and introduced none. Transitional `surface↔surface-helpers` import cycle
+noted (safe; reduces with M22.5-3/4). Tool-enhancement candidate: prune unused
+FROM imports post-move. Next: **slice04 = M22.5-3** (4 complex forms).
 
 ### v1.2 — 2026-06-29 (slice02 closed; tool done; A-3 deferred; architecture finding)
 slice02 closed — cross-file rewiring + batch + atomic multi-file revert + sh-c
