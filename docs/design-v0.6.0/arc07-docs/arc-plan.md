@@ -1,9 +1,11 @@
 # arc07 — Documentation & Guide Alignment
 
-> **Status: Open — seeded, not slice-planned.** Created 2026-06-28 to give the
-> 0.6.0-era docs/SKILL hygiene work a home (it was un-arc'd backlog in
-> `workbench/`). Planned at capability depth per *plan late, plan deep*. Seed
-> material in `design/`.
+> **Status: Open — near-term (red CI).** Created 2026-06-28 to give the 0.6.0-era
+> docs/SKILL hygiene work a home. **2026-06-30: the first CI run on `release/0.6.x`
+> went red on 8 guide doctest blocks** (DD-50.6 return-type drift) — see
+> slice01 below. That makes arc07's first slice **the path to green CI**, an
+> argument to pull this arc forward ahead of arc05/06. Otherwise planned at
+> capability depth per *plan late, plan deep*.
 
 ## 1. Capability
 
@@ -22,16 +24,27 @@ clearing guide drift first makes the linter's seed corpus trustworthy.
 
 ## 2. Slice breakdown
 
-_Not yet planned._ Likely slices when active, seeded by `design/`:
-- a **guide-drift audit + cleanup** pass over `docs/guides/` (the
-  `guide-drift-cleanup-plan` seed), sized per the drift inventory;
-- a **SKILL/guide additions** slice landing the discoverability gaps
-  (`proposed-skill-and-guide-additions` seed);
-- possibly a **guide↔SKILL consistency** pass (align the two surfaces).
+| Slice | Scope | Status |
+|-------|-------|--------|
+| **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (bind-and-return, or drop `:returns`) + 6 `fn`-closure cases (**use `=>`**, the value-producing form — design call settled 2026-06-30, docs-only). Takes `release/0.6.x` CI green. Pure docs; no compiler change. | **Planned** (ready to scope; near-term) |
 
-Size each per the sizing judgment (PROJECT-MANAGEMENT.md Part I) when the arc
-becomes active. Note: 0.5.x-era guide-drift sessions (the `CC-prompt-guide-drift-*`
-files) live in `workbench/old/` and are out of 0.6.0 scope.
+The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
+`06-functions-closures.md` (`create-logger`, `create-filter` — `fn`),
+`07-async-concurrency.md` (`debounce` — `fn`), `08-performance.md` (`memoize`,
+`memoize-lru` — `fn`), `11-documentation.md` (`debounce` — `fn`). Verify with
+`make test-docs` (the surface that catches this — see the process note below).
+
+_Later slices (still capability-depth):_ the broader **guide-drift audit**
+(`guide-drift-cleanup-plan` seed), **SKILL/guide additions**
+(`proposed-skill-and-guide-additions` seed), and a possible **guide↔SKILL
+consistency** pass. Size each when the arc is active. 0.5.x-era guide-drift
+sessions (`workbench/old/`) are out of 0.6.0 scope.
+
+> **Process note (applies arc-wide and beyond):** the standing slice "green" bar
+> (`lykn test` + `deno test test/`) **does not run `make test-docs`**, which is
+> why this drift sat latent until CI caught it. Slice ledgers touching guides/docs
+> (and arc-composition checks) must include `make test-docs` (or `make check`) in
+> their verification. Recorded as a project-level process fix.
 
 ## 3. Dependencies
 
@@ -48,6 +61,15 @@ actual compiler/CLI behaviour with zero unreconciled drift, reproduced at arc
 scale.
 
 ## 5. Version History
+
+### v1.1 — 2026-06-30 (slice01 added — red-CI doctest drift)
+The first CI run on `release/0.6.x` (the commit enabling release/* CI) went red on
+8 guide doctest blocks failing DD-50.6's return-type check — accumulated guide
+drift, newly exposed (compiler correct; not an arc04 regression). Added **slice01
+· doctest-drift-fix** (the path to green CI). Design call settled (CC report):
+**docs-only — closure returns use `=>`**, not a `fn`/`lambda` value-position tweak.
+Recorded the process gap (slice green-bar omits `make test-docs`). Arc flagged
+near-term.
 
 ### v1.0 — 2026-06-28 (created)
 Arc created to home the 0.6.0 docs/SKILL hygiene backlog (`guide-drift-cleanup-plan`,

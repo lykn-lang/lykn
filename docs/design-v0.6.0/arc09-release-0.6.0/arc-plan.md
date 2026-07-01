@@ -19,6 +19,12 @@ _Not yet planned._ Likely slices: version-bump + release-notes authoring →
 publish dry-runs (JSR/npm/crates) → the actual publish + tag. Duncan handles
 manual publishes; this arc scopes the preparation and verification.
 
+**Release-prep checklist items captured along the way:**
+- **Green CI on `release/0.6.x`** (gated on arc07 slice01 — the 8-block doctest
+  drift fix) + a clean `make check` / `make test-docs`.
+- **CI maintenance:** bump `actions/checkout@v4 → v5` (and any Node-20 actions)
+  in `.github/workflows/*` — Node-20 deprecation; non-blocking drive-by.
+
 ## 3. Dependencies
 
 Gated on: arc03 closed (✓ landed), arc04 closed (tool built), arc08

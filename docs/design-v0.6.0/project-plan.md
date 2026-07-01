@@ -77,6 +77,17 @@ Arcs in dependency order. Each delivers one coherent capability.
   standing JS-lint debt is closed.
 - **Surfaced follow-up (not yet scoped):** **DD-37 step 4** — remove the `_kernel`
   marker (an `expander.js`-core change). A candidate future arc/slice/DD.
+- **⚠ Red CI on `release/0.6.x` (2026-06-30):** first CI run on the branch caught
+  **8 guide doctest blocks** with DD-50.6 return-type drift (guide drift, compiler
+  correct). Planned as **arc07 slice01** (docs-only fix; closure returns use `=>`,
+  per the settled design call) — the path to green CI, an argument to pull arc07
+  forward. Plus a **process fix** (below) and a CI-maintenance drive-by
+  (`actions/checkout@v4→v5`, fold into arc09).
+- **Process standard (new):** the slice "green" bar must include **`make
+  test-docs`** (or `make check`) whenever a slice touches guides/docs, and at
+  arc-composition checks — doctest/guide drift is invisible to `lykn test` +
+  `deno test test/` (which is why this sat latent). Apply in slice ledgers going
+  forward.
 - **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
   arc07 (docs; seeded).
 - **Gated:** arc09 (release) waits on the open arcs.
@@ -108,13 +119,24 @@ inherited from arc attestations.
 | P-10 | `.d.ts` generated from `:type` annotations | end-to-end: compile a typed module, inspect emitted `.d.ts` | correctness | DoD | open | | reproduce at project scale |
 | P-11 | `lykn lint` lints Lykn source (not compiled JS) | end-to-end: `lykn lint` on a fixture with seeded anti-patterns | correctness | DoD | open | | blocked on arc05 |
 | P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc09 |
-| P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo | correctness | project-plan | open | | blocked on arc07 |
+| P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | open | red on release/0.6.x: 8 guide doctest blocks (DD-50.6 drift) | arc07 slice01 takes CI green |
 | P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.11 — 2026-06-30 (CI finding planned into arc07)
+First CI run on `release/0.6.x` (the commit enabling release/* CI) went red: **8
+guide doctest blocks** fail DD-50.6's return-type check — accumulated guide drift,
+newly exposed (compiler correct; not an arc04 regression; README/examples clean).
+Planned, not hotfixed: → **arc07 slice01 · doctest-drift-fix** (docs-only;
+closure returns use `=>` per the settled design call; takes CI green) — flagged
+near-term / arc07 candidate to pull forward. **Process fix** added: slice/arc
+green-bar must include `make test-docs` for guide/doc-touching work. CI
+maintenance (`actions/checkout@v4→v5`) folded into arc09. Surfaced by: CC's CI
+report 28421983093.
 
 ### v1.10 — 2026-06-29 (M22.5-4 landed — **arc04 CLOSED**)
 slice05 (M22.5-4) closed and **arc04 closed** (arc-level `closing-report.md`
