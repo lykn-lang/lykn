@@ -5,11 +5,11 @@ author: "** CDC (cdc/compiler-coherence thread)"
 component: All
 tags: [change-me]
 created: 2026-05-16
-updated: 2026-05-16
+updated: 2026-06-30
 state: Active
 supersedes: null
 superseded-by: null
-version: 1.0
+version: 1.1
 ---
 
 # DD-58: Kernel/Surface Separation — Closed Surface Namespace with `(kernel:<form> ...)` Escape
@@ -1001,3 +1001,50 @@ was authored by me (CDC). The error was caught by Duncan during
 M20 audit-walk review. This refinement-log entry records the
 correction and the methodology learning for future kernel/surface
 design work.
+
+---
+
+## Version History
+
+### v1.1 — 2026-06-30 (strict enforcement is default-on, not tests-only)
+
+**What changed:** this DD's closed-surface-namespace enforcement is now
+**default-on for ordinary `.lykn` compilation** — not just the test runner.
+
+**Why:** a 2026-06-30 compiler-verified audit (of `docs/guides/09-anti-patterns.md`)
+found that DD-58's strict mode, as landed in M17–M20, was wired **only** to the
+Lykn test runner (`lykn-cli` `cmd_test`: `strict: !is_lyk` inside the
+`is_lykn_test_file` path). `lykn compile` / `lykn build` and the doctest surface
+use the JS compiler with **no strict gate**. As a result, bare kernel/JS forms
+leaked straight through the surface compiler and emitted directly — e.g.
+`(var x 1)` → `var x = 1`, `(== a b)` → `a == b`, `(function f () this:x)` → a
+real non-arrow `this`, plus `arguments`, `require`, and IIFEs. Of the anti-patterns
+guide's twelve "eliminated by language design" claims, only **two** were actually
+eliminated; the other ten were expressible. So DD-58's closed-namespace intent
+(and `philosophy.md`'s "surface *prevents* this" language) was **half-enforced**.
+
+**The decision (operator, 2026-06-30):** *complete* DD-58 — make strict mode the
+default for `.lykn` compilation, so bare kernel-only forms in surface become
+compile errors resolvable via the `(kernel:<form> …)` escape. This turns the
+design intent into an enforced guarantee: the language becomes what this DD and
+the philosophy describe. This clarifies the earlier plan note that "strict
+enforcement turns on once DD-37's classifier lands" — it means *default* strict
+compilation, not test-runner-only.
+
+**Scope / consequences:** a breaking change for any surface code using bare kernel
+forms (guides, examples, downstream e.g. mycelium) — a migration pass is part of
+the work. It also subsumes the `(require …)` → invalid-ESM output issue. Scheduled
+as a compiler-completion arc (with DD-37 step 4, `_kernel` marker removal),
+sequenced before the `lykn lint` work (the linter's corpus shrinks accordingly —
+the compiler now owns kernel-form enforcement). Tracked in
+`docs/design-v0.6.0/`.
+
+### v1.0 — 2026-05-16 (first landed revision)
+
+The kernel/surface separation as designed and implemented across M17–M20: a
+closed surface namespace with the `(kernel:<form> …)` escape, the Rust
+classifier's strict mode (flag + test-runner enforcement), the kernel-only set
+(`function`, `function*`, `const`, `let`, `var`), and the flavor-(b) passthrough
+including the quote/quasiquote correction recorded in the refinement log above.
+(Metadata `version` field introduced retroactively at v1.1; this entry names the
+prior state.)

@@ -59,6 +59,14 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
+| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **Open — next up** (sequences *before* arc05 — see note) |
+
+> **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
+> strict dependency order (we stopped renumbering on each mid-stream insert).
+> **Dependency/sequence** is carried by the *Depends on* column and the arcs'
+> Dependencies sections. Current dependency sequence of the open arcs:
+> **arc10 → arc05 → arc06 → arc07 → arc09.** (arc10's high number belies that it
+> runs next.)
 
 ## 3. Current status (2026-06-28)
 
@@ -88,6 +96,33 @@ Arcs in dependency order. Each delivers one coherent capability.
   arc-composition checks — doctest/guide drift is invisible to `lykn test` +
   `deno test test/` (which is why this sat latent). Apply in slice ledgers going
   forward.
+- **Investigation resolved + DECIDED (2026-06-30):** CC verified `09-anti-patterns.md`
+  against the compiler (report in `workbench/cc-anti-patterns-verification-2026-06-30.md`).
+  **Finding:** only **2 of 12 `ELIMINATED` entries are truly eliminated**; the other
+  10 **leak** — bare kernel/JS forms (`var`, `==`, `function`-with-`this`,
+  `arguments`, `require`, IIFE, `const`, `===`, `&&`) pass through the surface
+  compiler and emit directly (`(var x 1)` → `var x = 1`). Root cause: **DD-58
+  strict mode is wired to `lykn test` only** (`main.rs:675 strict: !is_lyk`), not
+  to `lykn compile`/`build`. So the guide's + philosophy's "eliminated by design"
+  is *intent*, currently **half-enforced**.
+  **Decision (operator):** **complete DD-58 — strict mode default-on for `.lykn`
+  compilation.** Consequences:
+  - **New compiler work (high priority, gates arc05):** DD-58-strict-default —
+    turn strict on for normal compilation; bare kernel forms in surface become
+    compile errors (use `kernel:` escape). Potentially breaking; needs a migration
+    check of surface code. Also resolves the `(require …)`→invalid-ESM finding.
+  - **arc05 (linter) SHRINKS:** the compiler now catches kernel-form leaks, so the
+    linter focuses on genuine idiom/style rules (`or`-vs-`??`, `:sort`, `for-in`,
+    boolean-params, catch-and-log, `cell`-when-pure, `js:`-overuse …), not the
+    kernel-form family. Cleaner corpus.
+  - **arc07 guide-fix SHRINKS:** once strict lands, the "ELIMINATED" claims become
+    *true* (enforced) — minimal guide change; the guide is ahead of the compiler,
+    not wrong.
+  - **Structure/sequencing (decided 2026-06-30):** created **arc10 ·
+    compiler-completion** (DD-58 strict-default + DD-37 step-4 `_kernel`),
+    appended by creation order, sequenced **before arc05** (it gates the corpus).
+    DD-58 doc updated to v1.1 with the decision + Version History. **arc10 is
+    next up.**
 - **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
   arc07 (docs; seeded).
 - **Gated:** arc09 (release) waits on the open arcs.
@@ -126,6 +161,17 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.12 — 2026-06-30 (anti-patterns verified; DD-58 strict-default decided)
+CC's compiler-verified anti-patterns report found the guide's "12 ELIMINATED" is
+really **2** — the other 10 are *leaks* (bare kernel/JS forms pass through the
+surface compiler; DD-58 strict mode is `lykn test`-only). **Operator decided:
+complete DD-58 (strict default-on).** Routing: a new **compiler-completion arc**
+(DD-58 strict-default + DD-37 step-4 `_kernel` removal), **sequenced before arc05**
+(it gates the linter corpus); arc05 and the arc07 guide-fix both **shrink** as a
+result; the `(require …)`→invalid-ESM issue is subsumed. Worth capturing the
+strict-default decision in DD-58 (odm) canonically. Surfaced by: CC anti-patterns
+report + the ID-38 thread.
 
 ### v1.11 — 2026-06-30 (CI finding planned into arc07)
 First CI run on `release/0.6.x` (the commit enabling release/* CI) went red: **8
