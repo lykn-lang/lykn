@@ -26,7 +26,7 @@ clearing guide drift first makes the linter's seed corpus trustworthy.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (bind-and-return, or drop `:returns`) + 6 `fn`-closure cases (**use `=>`**, the value-producing form — design call settled 2026-06-30, docs-only). Takes `release/0.6.x` CI green. Pure docs; no compiler change. | **Planned** (ready to scope; near-term) |
+| **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (explicit return / drop `:returns`) + the `fn`-closure cases (value-producing return — **bind-then-return `fn`** to keep typed params, or untyped `=>`; docs-only, settled). Takes `release/0.6.x` CI green. No compiler change. | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
 
 The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
 `06-functions-closures.md` (`create-logger`, `create-filter` — `fn`),
