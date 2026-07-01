@@ -269,9 +269,10 @@ comments for complex APIs.
   :returns :function
   :body
   (bind timer (cell null))
-  (fn (:any args)
+  (bind debounced (fn (:any args)
     (clearTimeout (express timer))
     (reset! timer (setTimeout (fn () (f args)) wait))))
+  debounced)
 ```
 
 ---

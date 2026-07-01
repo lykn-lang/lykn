@@ -538,8 +538,10 @@ captured configuration.
 (func create-logger
   :args (:string prefix)
   :returns :function
-  :body (fn (:string message)
+  :body
+  (bind logger (fn (:string message)
     (console:log (template "[" prefix "] " message))))
+  logger)
 
 (bind db-log (create-logger "DB"))
 (bind api-log (create-logger "API"))
@@ -550,12 +552,21 @@ captured configuration.
 (func create-multiplier
   :args (:number factor)
   :returns :function
-  :body (fn (:number x) (* x factor)))
+  :body
+  (bind multiplier (fn (:number x) (* x factor)))
+  multiplier)
 
 (bind double (create-multiplier 2))
 (bind triple (create-multiplier 3))
 (#a(1 2 3):map double)  ;; [2, 4, 6]
 ```
+
+> **Returning a closure:** end the factory body in a *value-producing* form.
+> A bare `fn`/`lambda` is a statement-only declaration and cannot be implicitly
+> returned — bind it and return it by name (`(bind logger (fn …)) logger`, which
+> keeps the closure's typed params), or use `=>`, the value-producing arrow
+> (untyped — no param type checks). A `:returns :function` whose body ends in a
+> bare `fn` is a compile error.
 
 ---
 
@@ -905,7 +916,9 @@ lykn's `fn` makes this concise.
 (func create-filter
   :args (:function predicate)
   :returns :function
-  :body (fn (:array items) (items:filter predicate)))
+  :body
+  (bind filterer (fn (:array items) (items:filter predicate)))
+  filterer)
 
 (bind get-adults (create-filter (fn (:any u) (>= u:age 18))))
 (get-adults users)

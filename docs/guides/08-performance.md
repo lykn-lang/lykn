@@ -444,12 +444,13 @@ reuse from a pool. Only for extreme scenarios.
 ```lykn
 (func memoize :args (:function f) :returns :function :body
   (bind cache (new Map))
-  (fn (:any arg)
+  (bind memoized (fn (:any arg)
     (if (cache:has arg) (cache:get arg)
       (block
         (bind result (f arg))
         (cache:set arg result)
         result))))
+  memoized)
 
 (bind expensive-calc (memoize (fn (:number n)
   (bind result (cell 0))
@@ -469,7 +470,7 @@ reuse from a pool. Only for extreme scenarios.
 ```lykn
 (func memoize-lru :args (:function f :number max-size) :returns :function :body
   (bind cache (new Map))
-  (fn (:any arg)
+  (bind memoized (fn (:any arg)
     (if (cache:has arg)
       (block
         (bind value (cache:get arg))
@@ -482,6 +483,7 @@ reuse from a pool. Only for extreme scenarios.
         (bind result (f arg))
         (cache:set arg result)
         result))))
+  memoized)
 ```
 
 ---

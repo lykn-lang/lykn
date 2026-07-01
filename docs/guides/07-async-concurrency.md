@@ -581,20 +581,22 @@ throttle patterns require.
 ;; Good — debounce: fire after events stop for wait ms
 (func debounce :args (:function f :number wait) :returns :function :body
   (bind timer (cell null))
-  (fn (:any args)
+  (bind debounced (fn (:any args)
     (clearTimeout (express timer))
     (reset! timer (setTimeout (fn () (f args)) wait))))
+  debounced)
 
 ;; Good — throttle: fire at most once per interval ms
 (func throttle :args (:function f :number interval) :returns :function :body
   (bind last-event (cell null))
   (bind timer-id (cell null))
-  (fn (:any args)
+  (bind throttled (fn (:any args)
     (reset! last-event args)
     (if (= (express timer-id) null)
       (reset! timer-id (setTimeout (fn ()
         (f (express last-event))
         (reset! timer-id null)) interval)))))
+  throttled)
 ```
 
 **Rationale**: Debounce/throttle require mutable state (the timer ID).

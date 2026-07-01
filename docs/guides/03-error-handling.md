@@ -111,11 +111,10 @@ constraint makes the fix obvious.
 ;; Good — chain preserves the original error and its stack trace
 (async (func load-config
   :args (:string path)
-  :returns :object
   :body
   (try
     (bind raw (await (Deno:readTextFile path)))
-    (JSON:parse raw)
+    (return (JSON:parse raw))
     (catch err
       (throw (new Error
         (template "Failed to load config from " path)
@@ -340,8 +339,8 @@ what it was, use `catch` without a parameter.
   (try (JSON:parse s) (catch undefined)))
 
 ;; Good — boolean "does it throw?" check
-(func valid-json? :args (:string s) :returns :boolean :body
-  (try (block (JSON:parse s) true) (catch false)))
+(func valid-json? :args (:string s) :body
+  (try (block (JSON:parse s) (return true)) (catch (return false))))
 ```
 
 **Rationale**: Omitting the catch binding signals to readers that the
