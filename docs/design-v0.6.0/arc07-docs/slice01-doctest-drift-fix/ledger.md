@@ -21,8 +21,10 @@ _(At slice close.)_
 
 ## Closure
 
-Closed at commit <SHA> on <date>. Verified by: <name/session>.
-Rows: 7. Done: _. Deferred: _. No-op: _.
+Closed 2026-06-30 (commit `0731048`). Verified by: CC (attested) + CDC
+(`cdc-verification.md`: git-confirmed docs-only; read-confirmed the try/fn fixes +
+F-7 note; F-4/F-6 attested — CI re-run pending).
+Rows: 7. Done: 7. Deferred: 0. No-op: 0. Guide doctests 464/8 → **472/0**.
 
 > Docs-only, intent-preserving. The one judgment call is `=>` (untyped) vs
 > bind-then-return `fn` (keeps types) per example — `make test-docs` is the gate.

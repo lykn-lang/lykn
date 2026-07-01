@@ -1,11 +1,12 @@
 # arc07 — Documentation & Guide Alignment
 
-> **Status: Open — near-term (red CI).** Created 2026-06-28 to give the 0.6.0-era
-> docs/SKILL hygiene work a home. **2026-06-30: the first CI run on `release/0.6.x`
-> went red on 8 guide doctest blocks** (DD-50.6 return-type drift) — see
-> slice01 below. That makes arc07's first slice **the path to green CI**, an
-> argument to pull this arc forward ahead of arc05/06. Otherwise planned at
-> capability depth per *plan late, plan deep*.
+> **Status: Open — slice01 closed (CI-green item done); broader work pending.**
+> Created 2026-06-28 for the 0.6.0-era docs/SKILL hygiene work. The red-CI finding
+> (2026-06-30: 8 guide doctest blocks, DD-50.6 drift) is **fixed and landed** in
+> **slice01** (`0731048`; guide doctests 472/0) — the release-branch doctests are
+> green (CI re-run pending). The rest of arc07 (guide-drift audit, SKILL additions,
+> guide↔SKILL consistency) stays capability-depth per *plan late, plan deep*, to
+> be scheduled in full later.
 
 ## 1. Capability
 
@@ -26,7 +27,7 @@ clearing guide drift first makes the linter's seed corpus trustworthy.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (explicit return / drop `:returns`) + the `fn`-closure cases (value-producing return — **bind-then-return `fn`** to keep typed params, or untyped `=>`; docs-only, settled). Takes `release/0.6.x` CI green. No compiler change. | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
+| **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (explicit return / drop `:returns`) + the `fn`-closure cases (bind-then-return to keep typed params) + a preventive style note. | **Closed** (`0731048`; docs-only; guide doctests 464/8→472/0; `make check` green; CI re-run pending) |
 
 The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
 `06-functions-closures.md` (`create-logger`, `create-filter` — `fn`),
@@ -61,6 +62,13 @@ actual compiler/CLI behaviour with zero unreconciled drift, reproduced at arc
 scale.
 
 ## 5. Version History
+
+### v1.2 — 2026-06-30 (slice01 closed — CI-green)
+slice01 landed (`0731048`): the 8 drifted blocks fixed docs-only — `try` cases via
+explicit `(return …)` + dropped `:returns`; `fn` closures via **bind-then-return**
+(kept typed params); preventive note added. Guide doctests **464/8→472/0**,
+`make check` green. Red-CI item resolved (CI re-run pending). arc07 stays open for
+the broader guide-drift work.
 
 ### v1.1 — 2026-06-30 (slice01 added — red-CI doctest drift)
 The first CI run on `release/0.6.x` (the commit enabling release/* CI) went red on
