@@ -14,6 +14,10 @@
 
 - **[`project-plan.md`](./project-plan.md)** — the arc roadmap, current status,
   and the project ledger (the 0.6.0 definition of done as checkable rows).
+- **[`status.html`](./status.html)** — standalone dashboard (open in a browser);
+  edit its `DATA` object to update as items land.
+- **[`BOOTSTRAP.md`](./BOOTSTRAP.md)** — onboarding for a fresh CDC session,
+  including the **issues & learnings log** (the workflow-evolution record).
 
 ## The arcs
 
