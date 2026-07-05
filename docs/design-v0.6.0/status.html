@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-05 (arc10 CLOSING — 3/3 slices done; operator gate pending)",
+  updated: "2026-07-05 (arc10 gate pending; arc11 source-only-test-build created + slice01 scoped)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -168,8 +168,11 @@ const DATA = {
     { id:"arc10", name:"compiler-completion", status:"active",
       cap:"DD-58 strict-default + JS parity + macro-boundary enforcement + DD-37 step-4 (_kernel removed). 3/3 slices closed; CLOSING — operator composition gate pending (closing-report §5 runbook).",
       slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"closed"},{n:"kernel-removal",s:"closed"}] },
+    { id:"arc11", name:"source-only-test-build", status:"open",
+      cap:"lykn test compiles to target/lykn/test/ (never the source tree) — finishes philosophy #1 for the last emitter — plus a buried-intent audit (sweep + disposition every deferred-then-lost stub). Gates arc09 (P-7).",
+      slices:[{n:"test-out-dir",s:"open"},{n:"buried-intent-audit",s:"open"}] },
   ],
-  sequence: ["arc10","arc05","arc06","arc07","arc09"],
+  sequence: ["arc10","arc11","arc05","arc06","arc07","arc09"],
   now: {
     arc:"arc10 — composition gate (operator host run), then arc05",
     desc:"All three arc10 slices are closed: DD-58 is enforced on every compile path — Rust CLI, JS API, doctests, browser, JSR, and (as of slice03) the macro boundary — with _kernel retired for the sanctioned-kernel registry and both regression guards standing. The arc closing-report is written; the formal close is the operator's host composition run (§5 runbook: rebuild, 5-form demo, make check, 1365/0, 673/0) + gate sign-off. Two one-line cosmetic drive-bys ride the next commit. Then arc05 (lykn lint) scopes against a now-sharp corpus division."
@@ -213,6 +216,8 @@ const DATA = {
       lesson:"slice01 landed strict on the Rust CLI, but the JS compiler (which doctests + deno test use) enforced neither strict nor the kernel: escape — <code>(kernel:const x 42)</code> even mis-compiled there. <b>Learning:</b> 'the compiler enforces X' must be checked on <i>every</i> compile path, not one. <b>Fixed in slice02</b> (feb056c) — both compilers now enforce." },
     { t:"Strict semantics diverge at the macro boundary", tag:"fixed",
       lesson:"Found in slice02 CDC review: Rust enforced strict <i>post</i>-macro-expansion, JS <i>pre</i>-expansion — a user macro expanding to a top-level bare kernel decl compiled on JS but errored on Rust. <b>Learning:</b> behavioural parity claims need checking at the <i>boundaries</i> (macro output), not just direct input. <b>Fixed in slice03</b> (runtime-confirmed first, then a post-pass2 sweep; operator-decided Rust semantics, recorded in DD-58)." },
+    { t:"Reserved-but-never-wired: lykn test's --out-dir", tag:"open",
+      lesson:"lykn test compiles _test.js siblings into test/ (transient: run-then-clean, April design) while a hidden --out-dir flag sits 'reserved for future use', received as _out_dir and ignored — intent captured, never wired, no row watching it. Third instance of one signature this cycle (stranded branches; DD-58 half-wired; this). <b>Learning:</b> the signature is grep-able — arc11 wires the flag (slice01) and sweeps the whole buried-intent inventory (slice02, ~10 marker hits incl. a TODO whose DD-58 trigger already fired)." },
     { t:"CDC 'appears dead' recon was a grep artifact", tag:"fixed",
       lesson:"The slice03 slice-doc claimed kernelArray was dead (2 grep hits read as definition+export without opening the second — it was the call site). CC's gated recon caught it and kept the function. <b>Learning:</b> issues-log #4 cuts both ways — CDC claims need grounding to the artifact too, and recon-gates-implementation earns its keep in both directions." },
     { t:"require → invalid ESM output", tag:"open",

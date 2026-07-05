@@ -91,7 +91,10 @@ inserts.
   host composition run + gate** (runbook in the report §5). Final numbers:
   `lykn test` 1365/0, deno 673/0, `make check` ✓.
 - **Future:** arc09 (release).
-- **Dependency sequence:** **arc10 → arc05 → arc06 → arc07 → arc09.**
+- **Dependency sequence:** **arc10-gate → (arc11 ∥ arc05) → arc06 → arc07 →
+  arc09.** (arc11 · source-only-test-build added 2026-07-05: `lykn test` →
+  `target/lykn/test/` + the buried-intent audit; slice01 scoped, ready for
+  CC; gates arc09's P-7 demo.)
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 

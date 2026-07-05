@@ -33,8 +33,9 @@
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
 | [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** |
 | [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal) | **CLOSING** — 3/3 slices closed; [closing-report](./arc10-compiler-completion/closing-report.md) written; composition + operator gate pending (host runbook §5); arc05 unblocks on the gate |
+| [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **Open — scoped** (slice01 open set written); parallel-OK with arc05; gates arc09 (P-7) |
 
-_Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc10 → arc05 → arc06 → arc07 → arc09**._
+_Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc10-gate → (arc11 ∥ arc05) → arc06 → arc07 → arc09**._
 
 ## Layout conventions
 

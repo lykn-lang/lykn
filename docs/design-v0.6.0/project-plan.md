@@ -60,13 +60,14 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
 | **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **CLOSING** — 3/3 slices closed; composition + operator gate pending (host runbook: arc10 `closing-report.md` §5); arc05 unblocks on the gate |
+| **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Open — scoped** (slice01 open set written 2026-07-05); independent of arc05 (parallel OK); **gates arc09** (P-7 demo) |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
 > **Dependency/sequence** is carried by the *Depends on* column and the arcs'
 > Dependencies sections. Current dependency sequence of the open arcs:
-> **arc10 → arc05 → arc06 → arc07 → arc09.** (arc10's high number belies that it
-> runs next.)
+> **arc10-gate → (arc11 ∥ arc05) → arc06 → arc07 → arc09.** (High numbers
+> belie the order: arc10 ran first; arc11 may run parallel to arc05.)
 
 ## 3. Current status (2026-06-28)
 
@@ -164,11 +165,30 @@ inherited from arc attestations.
 | P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | open | **doctests now green (472/0)** via arc07 slice01 | broader guide-drift audit + SKILL additions still pending (arc07) |
 | P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
 | P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **closing** | 3/3 slices closed (`faee8a1`/`feb056c`/`2f6a84d`); arc closing-report written; **composition + gate = operator host run** (runbook in the closing-report §5) | added per the arc10 bubble-up: P-1…P-14 had no row for this arc |
+| P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | open | | unblocks P-7's demo from its "at rest only" caveat |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.16 — 2026-07-05 (arc11 created: source-only test build + buried-intent audit)
+Operator observation during the arc10 composition run: compiled `_test.js`
+siblings visible in `test/`. CDC ground-truthing: **transient by design**
+(April interim, `a640398` — compile-sibling, run, clean) but with real gaps
+(SIGINT strands debris; `--compile-only` leaves it; `.gitignore` misses
+`*_test.js`; P-7's demo holds only at rest). The `--out-dir` flag exists,
+**hidden + "reserved for future use" + received-and-ignored** — the intent
+was captured, never wired; doctests already do it right
+(`target/test/doctest`, wiped per run). **Created arc11 ·
+source-only-test-build** (slice01 test-out-dir, open set written; slice02
+buried-intent-audit, planned): wire the flag → `target/lykn/test/` and sweep
+the buried-intent inventory (~10 marker hits, incl. `surface.rs:294` whose
+DD-58 deprecation trigger fired at arc10's close). **P-16 added.** Sequences
+parallel-to-or-before arc05; **gates arc09**. Systemic note (operator): this
+is the named pre-framework failure mode — *features delayed, deferred, or
+buried, then lost*; arc11 A-4 is the 0.6.0 countermeasure. Surfaced by:
+operator observation + CDC investigation, 2026-07-05.
 
 ### v1.15 — 2026-07-05 (arc10 slice03 closed; arc10 → CLOSING; P-15 added)
 arc10 slice03 closed (`2f6a84d`, CDC-verified): `_kernel` retired for the
