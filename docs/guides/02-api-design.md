@@ -658,11 +658,11 @@ eliminate manual state management.
 
 ```lykn
 ;; Good — standalone generator for lazy transformation
-(function* lazy-map (iterable f)
+(genfunc lazy-map :args (:any iterable :function f) :body
   (for-of x iterable (yield (f x))))
 
 ;; Good — compose generators
-(function* lazy-filter (iterable pred)
+(genfunc lazy-filter :args (:any iterable :function pred) :body
   (for-of x iterable
     (if (pred x) (yield x))))
 ```

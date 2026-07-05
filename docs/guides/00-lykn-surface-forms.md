@@ -1175,36 +1175,39 @@ method and constructor bodies. `=` is equality, `bind` produces
 
 ---
 
-## Destructuring (kernel forms)
+## Destructuring
+
+Surface destructuring is written with `bind` (the underlying kernel form
+is `const`; reach it explicitly with `(kernel:const …)` when needed).
 
 ### Object patterns
 
 ```lykn
-(const (object name age) person)
+(bind (object name age) person)
 ```
 
 ### Alias
 
 ```lykn
-(const (object (alias data items)) obj)
+(bind (object (alias data items)) obj)
 ```
 
 ### Default
 
 ```lykn
-(const (object (default x 0)) point)
+(bind (object (default x 0)) point)
 ```
 
 ### Array patterns
 
 ```lykn
-(const (array first (rest tail)) list)
+(bind (array first (rest tail)) list)
 ```
 
 ### Skip with _
 
 ```lykn
-(const (array _ _ third) arr)
+(bind (array _ _ third) arr)
 ```
 
 ---

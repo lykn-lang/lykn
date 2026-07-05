@@ -122,7 +122,12 @@ export function compileBoth(source) {
     const lyknBin = Deno.env.get("LYKN_BIN") || "./bin/lykn";
     const projectRoot = Deno.cwd();
     const proc = new Deno.Command(lyknBin, {
-      args: ["compile", "--source-context-path", projectRoot, tmpPath],
+      // --no-strict: compileBoth is a codegen-coherence harness that
+      // compares Rust vs JS output for raw kernel forms too. The JS
+      // compiler has no DD-58 strict mode, so both backends must run lax
+      // for a meaningful comparison. (DD-58 strict for authored .lykn is
+      // enforced by lykn compile/build/check/test — not by this harness.)
+      args: ["compile", "--no-strict", "--source-context-path", projectRoot, tmpPath],
       stdout: "piped",
       stderr: "piped",
     }).outputSync();

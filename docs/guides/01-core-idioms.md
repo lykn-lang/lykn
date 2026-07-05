@@ -167,14 +167,14 @@ numeric addition) and harder to scan visually.
 **Strength**: SHOULD
 
 **Summary**: Extract needed properties using destructuring patterns in
-`const` (kernel) or in function parameters.
+`bind` or in function parameters.
 
 ```lykn
 ;; Good — destructure in binding
-(const (object name email (default role "member")) user)
+(bind (object name email (default role "member")) user)
 
 ;; Good — destructure array
-(const (array first (rest tail)) items)
+(bind (array first (rest tail)) items)
 
 ;; Good — destructure in loop
 (for-of (array index value) (arr:entries)
@@ -543,12 +543,12 @@ The `arguments` object does not exist in lykn.
 
 ```lykn
 ;; Good — rest parameter produces a real Array
-(function find-max (first (rest others))
+(func find-max :args (:number first (rest :number others)) :body
   (bind result (cell first))
   (for-of n others
     (if (> n (express result))
       (reset! result n)))
-  (return (express result)))
+  (express result))
 ```
 
 **Rationale**: Rest parameters produce a real `Array`, are visible in
@@ -1176,7 +1176,7 @@ level compiles to `x === 5` (equality), but inside function bodies,
 `for` loops, `if` blocks, and `(block ...)` wrappers it compiles to
 `x = 5` (assignment). Wrap top-level assignments in `(block ...)`.
 
-```lykn
+```lykn,skip
 ;; Bad — top-level = is equality
 (let x 0)
 (= x 42)          ;; x === 42 (no-op comparison)
@@ -1189,6 +1189,9 @@ level compiles to `x === 5` (equality), but inside function bodies,
 (function init ()
   (= x 42))       ;; x = 42
 ```
+
+(Kernel-form reference: `let`/`function` are kernel-only in surface —
+this block documents kernel `=` semantics and is not surface-idiomatic.)
 
 **Rationale**: The kernel compiler's top-level context treats `=` as
 equality to match the surface compiler's behavior. Assignment only
@@ -1211,7 +1214,7 @@ declarations, then reference them by name in the object literal.
   (show (function (x) ...))))
 ```
 
-```lykn
+```lykn,skip
 ;; Good — separate functions, assemble object
 (function _show (x) (return x))
 (function _hide () (return null))
@@ -1253,14 +1256,14 @@ treats the first symbol after `function` as the name.
 **Summary**: Method calls cannot be chained directly on `(get ...)`
 results in kernel. `(get obj key):method` compiles to
 `obj[key]("method")` (function call with string arg), not
-`obj[key].method()`. Use an intermediate `const` binding.
+`obj[key].method()`. Use an intermediate `bind` binding.
 
 ```lykn
 ;; Bad — method call on (get ...) result
 ((get obj key):push 4)      ;; obj[key]("push", 4) — wrong
 
 ;; Good — intermediate binding
-(const arr (get obj key))
+(bind arr (get obj key))
 (arr:push 4)                ;; arr.push(4) — correct
 ```
 
@@ -1274,7 +1277,7 @@ results in kernel. `(get obj key):method` compiles to
 surface forms and do NOT work in kernel (`.lyk`) files. In kernel
 files, use intermediate `const` bindings for method chaining.
 
-```lykn
+```lykn,skip
 ;; Bad — threading macro in .lyk file compiles to _>(expr, ...)
 (-> str (:replace re1 "") (:replace re2 ""))
 

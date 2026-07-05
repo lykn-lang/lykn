@@ -240,13 +240,13 @@ repeated array resizing.
 
 ```lykn
 ;; Good — lazy: only computes what's consumed
-(function* lazy-filter (pred iterable)
+(genfunc lazy-filter :args (:function pred :any iterable) :body
   (for-of x iterable (if (pred x) (yield x))))
 
-(function* lazy-map (f iterable)
+(genfunc lazy-map :args (:function f :any iterable) :body
   (for-of x iterable (yield (f x))))
 
-(function* take (n iterable)
+(genfunc take :args (:number n :any iterable) :body
   (for-of x iterable
     (if (<= n 0) (return))
     (yield x)

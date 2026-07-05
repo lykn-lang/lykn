@@ -32,6 +32,22 @@ pub enum CompileError {
     Analysis(String),
 }
 
+/// DD-58 classifier mode for a source file, keyed on its extension.
+///
+/// `.lykn` surface files (and in-memory sources with no path) compile under
+/// **strict** mode: the 5 kernel-only declaration forms (`const`/`let`/`var`/
+/// `function`/`function*`) without the `kernel:` prefix are rejected. `.lyk`
+/// kernel files are **exempt** — strict is a surface-only rule.
+fn classifier_options_for(file_path: Option<&Path>) -> classifier::ClassifierOptions {
+    let is_lyk = file_path
+        .and_then(Path::extension)
+        .is_some_and(|e| e == "lyk");
+    classifier::ClassifierOptions {
+        strict: !is_lyk,
+        kernel_only: false,
+    }
+}
+
 /// Compile a `.lykn` source file through the full pipeline.
 ///
 /// Returns the compiled output as a string: either kernel JSON (when
@@ -49,16 +65,77 @@ pub fn compile_file(
     compile_source(&source, Some(path), strip_assertions, kernel_json_only)
 }
 
+/// Validate lykn source through read → expand → classify under the DD-58 mode
+/// for `file_path` (strict for `.lykn`, exempt `.lyk`), without codegen.
+///
+/// Used by `lykn check` so the validation compiler enforces the same
+/// closed-namespace rule as `lykn compile`/`build`.
+pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> {
+    let forms = reader::read(source)?;
+    let imports: Option<HashMap<String, String>> =
+        crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
+    let forms = expander::expand(forms, Some(file_path), imports.as_ref())?;
+    classifier::classify_with_options(&forms, classifier_options_for(Some(file_path))).map_err(
+        |diags| {
+            CompileError::Analysis(
+                diags
+                    .iter()
+                    .map(|d| format!("{d}"))
+                    .collect::<Vec<_>>()
+                    .join("\n"),
+            )
+        },
+    )?;
+    Ok(())
+}
+
 /// Compile lykn source text through the full pipeline.
 ///
 /// This is the core compilation function. `file_path` is used for macro
 /// import resolution and Deno bridging; it may be `None` for in-memory
-/// compilation with `kernel_json_only`.
+/// compilation with `kernel_json_only`. DD-58 mode is derived from the
+/// file extension (strict for `.lykn`, exempt for `.lyk`).
 pub fn compile_source(
     source: &str,
     file_path: Option<&Path>,
     strip_assertions: bool,
     kernel_json_only: bool,
+) -> Result<String, CompileError> {
+    compile_source_inner(
+        source,
+        file_path,
+        strip_assertions,
+        kernel_json_only,
+        classifier_options_for(file_path),
+    )
+}
+
+/// Compile lykn source with DD-58 strict enforcement **disabled** (lax mode:
+/// neither strict nor kernel-only). Used by the cross-compiler coherence
+/// harness (`compileBoth`) and `lykn compile --no-strict`, which must compile
+/// raw kernel forms to compare Rust vs JS codegen — the JS compiler has no
+/// strict concept, so the comparison runs both backends lax.
+pub fn compile_source_lax(
+    source: &str,
+    file_path: Option<&Path>,
+    strip_assertions: bool,
+    kernel_json_only: bool,
+) -> Result<String, CompileError> {
+    compile_source_inner(
+        source,
+        file_path,
+        strip_assertions,
+        kernel_json_only,
+        classifier::ClassifierOptions::default(),
+    )
+}
+
+fn compile_source_inner(
+    source: &str,
+    file_path: Option<&Path>,
+    strip_assertions: bool,
+    kernel_json_only: bool,
+    classify_opts: classifier::ClassifierOptions,
 ) -> Result<String, CompileError> {
     // 1. Parse S-expressions
     let forms = reader::read(source)?;
@@ -68,8 +145,8 @@ pub fn compile_source(
         crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
 
-    // 3. Classify into surface forms
-    let classified = classifier::classify(&forms).map_err(|diags| {
+    // 3. Classify into surface forms (DD-58 strict for `.lykn`, exempt `.lyk`)
+    let classified = classifier::classify_with_options(&forms, classify_opts).map_err(|diags| {
         CompileError::Analysis(
             diags
                 .iter()
@@ -136,7 +213,8 @@ pub fn compile_source_with_dts(
         crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
 
-    let classified = classifier::classify(&forms).map_err(|diags| {
+    let classified = classifier::classify_with_options(&forms, classifier_options_for(file_path))
+        .map_err(|diags| {
         CompileError::Analysis(
             diags
                 .iter()
@@ -354,5 +432,83 @@ mod tests {
         let result = compile_source(source, Some(&synthetic), false, true).unwrap();
         assert!(result.contains("const"));
         assert!(result.contains("42"));
+    }
+
+    // --- DD-58 strict-mode default-on for .lykn (arc10/slice01) ---
+
+    #[test]
+    fn compile_source_strict_rejects_bare_kernel_in_lykn() {
+        // A `.lykn` surface file must reject the 5 kernel-only declaration
+        // forms without the `kernel:` prefix.
+        for form in ["(const x 1)", "(let x 1)", "(var x 1)", "(function f () 1)"] {
+            let path = Path::new("surface.lykn");
+            let result = compile_source(form, Some(path), false, false);
+            assert!(
+                result.is_err(),
+                "bare {form} in .lykn must be rejected under strict"
+            );
+            let msg = format!("{}", result.unwrap_err());
+            assert!(
+                msg.contains("kernel-only"),
+                "expected DD-58 kernel-only diagnostic for {form}, got: {msg}"
+            );
+        }
+    }
+
+    #[test]
+    fn compile_source_strict_kernel_escape_compiles_in_lykn() {
+        // The `(kernel:<form> …)` escape is the sanctioned resolution.
+        let path = Path::new("surface.lykn");
+        let result = compile_source("(kernel:var x 1)", Some(path), false, false);
+        assert!(
+            result.is_ok(),
+            "(kernel:var …) must compile under strict: {:?}",
+            result.err()
+        );
+        assert!(result.unwrap().contains("var x = 1"));
+    }
+
+    #[test]
+    fn compile_source_none_path_is_strict() {
+        // In-memory compilation (no path) defaults to strict surface mode.
+        let result = compile_source("(var x 1)", None, false, false);
+        assert!(
+            result.is_err(),
+            "bare (var …) with no path must be strict-rejected"
+        );
+    }
+
+    #[test]
+    fn compile_source_lyk_exempt_from_strict() {
+        // `.lyk` kernel files are exempt — bare kernel forms compile.
+        let path = Path::new("kernel.lyk");
+        let result = compile_source("(var x 1)", Some(path), false, false);
+        assert!(
+            result.is_ok(),
+            "bare (var …) in .lyk must compile (strict exemption): {:?}",
+            result.err()
+        );
+        assert!(result.unwrap().contains("var x = 1"));
+    }
+
+    #[test]
+    fn compile_source_strict_allows_operators_and_surface() {
+        // DD-58 strict rejects ONLY the 5 declaration forms; operators
+        // (`===`/`&&`/`==`) and surface forms stay legal.
+        let path = Path::new("surface.lykn");
+        for form in [
+            "(bind x 1)",
+            "(= 1 1)",
+            "(=== 1 1)",
+            "(&& 1 1)",
+            "(fn (:number x) x)",
+        ] {
+            let result = compile_source(form, Some(path), false, false);
+            assert!(
+                result.is_ok(),
+                "{form} must compile under strict (not kernel-only): {:?}",
+                result.err()
+            );
+        }
     }
 }

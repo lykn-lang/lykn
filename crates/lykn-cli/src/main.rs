@@ -54,6 +54,13 @@ enum Commands {
         /// imports relative to the project root.
         #[arg(long, value_name = "PATH")]
         source_context_path: Option<PathBuf>,
+        /// Disable DD-58 strict-mode enforcement (lax: accept bare kernel
+        /// forms). For the cross-compiler coherence harness (compileBoth),
+        /// which must compile raw kernel forms to compare Rust vs JS codegen
+        /// — the JS compiler has no strict concept. Not for authoring
+        /// surface `.lykn`; the sanctioned per-form escape is `(kernel:… )`.
+        #[arg(long)]
+        no_strict: bool,
     },
     /// Run a .lykn or .js file
     Run {
@@ -145,12 +152,14 @@ fn main() {
             strip_assertions,
             kernel_json,
             source_context_path,
+            no_strict,
         } => cmd_compile(
             &file,
             output.as_deref(),
             strip_assertions,
             kernel_json,
             source_context_path.as_deref(),
+            no_strict,
         ),
         Commands::Run { file, args } => cmd_run(&file, &args),
         Commands::Test {
@@ -245,6 +254,12 @@ fn cmd_check(files: &[PathBuf]) {
 
         match lykn_cli::reader::read(&source) {
             Ok(exprs) => {
+                // DD-58 strict validation for `.lykn` surface files (`.lyk`
+                // exempt): reject bare kernel-only declaration forms.
+                if let Err(e) = compile::check_strict(&source, path) {
+                    eprintln!("{}: error: {e}", path.display());
+                    process::exit(1);
+                }
                 if exprs.is_empty() && !source.trim().is_empty() {
                     eprintln!(
                         "{}: warning: source is non-empty but parsed to zero expressions",
@@ -272,6 +287,7 @@ fn cmd_compile(
     strip_assertions: bool,
     kernel_json: bool,
     source_context_path: Option<&std::path::Path>,
+    no_strict: bool,
 ) {
     // Synthetic-path routing for --source-context-path.
     //
@@ -336,7 +352,12 @@ fn cmd_compile(
                 process::exit(1);
             }
         };
-        match compile::compile_source(&source, Some(&resolve_path), strip_assertions, kernel_json) {
+        let compiled = if no_strict {
+            compile::compile_source_lax(&source, Some(&resolve_path), strip_assertions, kernel_json)
+        } else {
+            compile::compile_source(&source, Some(&resolve_path), strip_assertions, kernel_json)
+        };
+        match compiled {
             Ok(result) => {
                 if std::io::stdout().is_terminal() {
                     eprintln!("note: compiled output is going to stdout. Use `-o <file>` to write");

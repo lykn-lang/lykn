@@ -434,9 +434,10 @@ Anonymous generators via `genfn`:
 ```
 
 Kernel `function*` is still available when you don't need type
-annotations:
+annotations (a kernel form — reach it in surface via `(kernel:function* …)`;
+shown here as reference, not surface-idiomatic):
 
-```lykn
+```lykn,skip
 (function* simple () (yield 1) (yield 2) (yield 3))
 ```
 

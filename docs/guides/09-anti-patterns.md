@@ -637,29 +637,40 @@ expects a number.
 
 ## ID-38: Using Kernel Forms When Surface Forms Exist
 
-**Strength**: SHOULD-AVOID
+**Strength**: SHOULD-AVOID (operators) · **compile error** (declaration forms)
 
-**Summary**: Writing `(const x 42)` instead of `(bind x 42)`, or
-`(=== a b)` instead of `(= a b)`, or `(&& x y)` instead of `(and x y)`.
-Surface forms are the idiomatic layer.
+**Summary**: Prefer surface forms over their kernel equivalents. Under
+DD-58 strict mode (default for `.lykn`) the two kinds differ:
 
-```lykn
-;; Anti-pattern — kernel forms in surface code
-(const x 42)
-(=== a b)
-(&& x y)
+- **Declaration forms** — `const`, `let`, `var`, `function`, `function*` —
+  are **kernel-only**. Writing them bare in a surface `.lykn` file is a
+  **compile error**. Use `bind` / `func` / `fn` / `genfunc`, or the
+  explicit `(kernel:const …)` escape.
+- **Operators** — `===`, `!==`, `&&`, `||`, `==` — are **legal surface
+  passthrough** forms. They compile fine; `=`, `and`, `or` are just the
+  idiomatic surface spellings (a lint preference, not an error).
 
-;; Fix — surface forms
-(bind x 42)
-(= a b)
-(and x y)
+```lykn,skip
+;; Compile error under strict — const is kernel-only in surface
+(const x 42)          ;; use (bind x 42), or (kernel:const x 42)
 ```
 
-**Why it's wrong**: Kernel forms bypass surface semantics. `(const x 42)`
-works but doesn't communicate "this is an immutable binding" the way
-`(bind x 42)` does. `(=== a b)` works but doesn't benefit from DD-22's
-design. Mixing kernel and surface forms makes code harder to read and
-harder for tools to analyze.
+```lykn
+;; Legal, but non-idiomatic — operators are surface passthrough
+(bind a 1) (bind b 2) (bind p true) (bind q false)
+(=== a b)             ;; prefer (= a b)
+(&& p q)              ;; prefer (and p q)
+
+;; Idiomatic surface spellings
+(= a b)
+(and p q)
+```
+
+**Why it matters**: `const`/`function`/etc. bypass the surface layer and
+are now rejected by the compiler in `.lykn` files — `bind` also
+communicates "immutable binding" that `const` does not. The operators
+still work, but mixing kernel and surface spellings makes code harder to
+read and for tools to analyze.
 
 **Fix**: `00-lykn-surface-forms.md` for the complete surface vocabulary.
 

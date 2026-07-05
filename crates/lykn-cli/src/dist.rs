@@ -214,17 +214,25 @@ fn compile_lykn_sources(
                         path: path.clone(),
                         source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
                     })?;
-                let classified = lykn_lang::classifier::classify(&expanded).map_err(|diags| {
-                    let msg = diags
-                        .iter()
-                        .map(|d| format!("{d}"))
-                        .collect::<Vec<_>>()
-                        .join("\n");
-                    DistError::Io {
-                        path: path.clone(),
-                        source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
-                    }
-                })?;
+                // DD-58 strict for `.lykn` surface packages; `.lyk` exempt.
+                let is_lyk = path.extension().is_some_and(|e| e == "lyk");
+                let classify_opts = lykn_lang::classifier::ClassifierOptions {
+                    strict: !is_lyk,
+                    kernel_only: false,
+                };
+                let classified =
+                    lykn_lang::classifier::classify_with_options(&expanded, classify_opts)
+                        .map_err(|diags| {
+                            let msg = diags
+                                .iter()
+                                .map(|d| format!("{d}"))
+                                .collect::<Vec<_>>()
+                                .join("\n");
+                            DistError::Io {
+                                path: path.clone(),
+                                source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
+                            }
+                        })?;
                 let analysis_result = lykn_lang::analysis::analyze(&classified);
                 if analysis_result.has_errors {
                     let msg = analysis_result
