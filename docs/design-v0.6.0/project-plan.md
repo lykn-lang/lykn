@@ -124,10 +124,12 @@ Arcs in dependency order. Each delivers one coherent capability.
     *true* (enforced) — minimal guide change; the guide is ahead of the compiler,
     not wrong.
   - **Structure/sequencing (decided 2026-06-30):** created **arc10 ·
-    compiler-completion** (DD-58 strict-default + DD-37 step-4 `_kernel`),
-    appended by creation order, sequenced **before arc05** (it gates the corpus).
-    DD-58 doc updated to v1.1 with the decision + Version History. **arc10 is
-    next up.**
+    compiler-completion**, appended by creation order, sequenced **before arc05**.
+    DD-58 doc → v1.1. **slice01 (Rust-CLI strict-default) is CLOSED** (`faee8a1`).
+    slice01's bubble-up: the **JS compiler has no strict / `kernel:` parity** →
+    **slice02 · js-dd58-parity** is next (arc10 A-3 met on Rust path only until
+    then; doctests/`deno test` stay lax); `_kernel` removal → slice03. **arc10 is
+    still next up in the sequence.**
 - **Open / not started:** arc05 (linter), arc06 (dep ergonomics; slice01 closed),
   arc07 (docs; seeded).
 - **Gated:** arc09 (release) waits on the open arcs.
@@ -166,6 +168,17 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.13 — 2026-06-30 (arc10 slice01 closed; JS-parity finding)
+arc10 slice01 (`dd58-strict-default`) closed (`faee8a1`): DD-58 strict default-on
+for `.lykn` on the **Rust CLI** (5 kernel-only heads error; `kernel:` resolves;
+`.lyk` exempt; `lykn check` now strict; `--no-strict` harness-only). Guides
+migrated (15 `lykn,skip`; ID-38 operators reframed). `make check` ✓, corpus
+1345/0, guide docs 468/0. **Major bubble-up:** the JS compiler (`packages/lang/`)
+implements neither strict nor the `kernel:` escape — so doctests/`deno test` stay
+lax and `(kernel:const …)` mis-compiles. → **arc10 slice02 · js-dd58-parity**
+(next; gates arc10 A-3); `_kernel` removal → slice03. DD-58 is complete on the
+Rust CLI but not yet at the *language* level.
 
 ### v1.12 — 2026-06-30 (anti-patterns verified; DD-58 strict-default decided)
 CC's compiler-verified anti-patterns report found the guide's "12 ELIMINATED" is

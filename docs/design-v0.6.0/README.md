@@ -32,7 +32,7 @@
 | [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Open** — slice01 (CI-green doctest fix) closed; broader guide-drift work pending |
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
 | [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** |
-| [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + DD-37 step-4 (`_kernel` removal) | **Open — next up** (runs before arc05) |
+| [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal) | **In flight** — slice01 (Rust CLI strict) closed; slice02 (JS parity) next; runs before arc05 |
 
 _Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc10 → arc05 → arc06 → arc07 → arc09**._
 

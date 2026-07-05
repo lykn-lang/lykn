@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-06-30",
+  updated: "2026-06-30 (arc10 slice01 closed)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -166,19 +166,19 @@ const DATA = {
       cap:"Version bumps, release notes, publish to JSR/npm/crates.io.",
       slices:[] },
     { id:"arc10", name:"compiler-completion", status:"active",
-      cap:"DD-58 strict-default (surface prevents bare const/let/var/function/function*) + DD-37 step-4 (_kernel removal).",
-      slices:[{n:"strict-default",s:"active"},{n:"kernel-removal",s:"open"}] },
+      cap:"DD-58 strict-default (surface prevents bare const/let/var/function/function*) + JS-compiler parity + DD-37 step-4 (_kernel removal). slice01 landed on the Rust CLI.",
+      slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"active"},{n:"kernel-removal",s:"open"}] },
   ],
   sequence: ["arc10","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc10 · slice01 — dd58-strict-default",
-    desc:"Wire classify_form_strict into normal .lykn compilation (today it's tests-only) so bare kernel-only declaration forms become compile errors; repo-only migration. Doc-set scoped + corrected; ready for CC."
+    arc:"arc10 · slice02 — js-dd58-parity (next)",
+    desc:"slice01 landed DD-58 strict on the Rust CLI. But the JS compiler (packages/lang) enforces neither strict nor the kernel: escape — so doctests/deno test stay lax. Next: bring the JS compiler to parity so DD-58 holds at the language level, not just the Rust CLI."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
     {n:"1345 / 0", l:"cross-compiler corpus", s:"compile-both, 0 semantic div"},
     {n:"658 / 0", l:"deno test suite", s:"JS test/"},
-    {n:"472 / 0", l:"guide doctests", s:"was 464/8 — CI green"},
+    {n:"468 / 0", l:"guide doctests", s:"green (4 kernel demos now skip)"},
     {n:"exit 0", l:"deno lint packages/", s:"standing debt cleared"},
     {n:"~20", l:"functions relocated", s:"byte-exact, by the tool"},
   ],
@@ -190,6 +190,7 @@ const DATA = {
     "Closed arc08 (DD-55 template ICU/i18n) after un-stranding + a 6-conflict merge (D-2 backslash + slice11 async invariants held).",
     "Fixed the first release-branch CI failure (guide doctest drift) — docs-only, CI green.",
     "Decided + documented DD-58 strict-default (the language will now enforce what philosophy.md claims).",
+    "Landed DD-58 strict-default on the Rust CLI — bare kernel-only declaration forms in .lykn are now compile errors, with a kernel: escape; guides migrated.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
@@ -204,8 +205,10 @@ const DATA = {
       lesson:"The doctest fix nearly swapped typed fn closures for =>, silently dropping type annotations. Grounding in the code caught it → bind-then-return keeps types. <b>Learning:</b> ground fixes in actual language behavior, not the obvious token swap." },
     { t:"Import-collision moving into a consumer file", tag:"guard",
       lesson:"Moving the complex-form emitters into classifier.js collided with its existing imports. Rather than hand-edit the highest-stakes file, CC TDD'd a TO-as-consumer import-prune tool capability. <b>Learning:</b> fix the tool, not the move — it left the tool permanently better." },
-    { t:"DD-58 strict enforcement was half-landed (tests-only)", tag:"open",
-      lesson:"Strict mode shipped wired to lykn test only; normal compile/build had no gate, so surface silently accepted bare kernel forms — the philosophy's 'prevents' was aspirational. <b>Learning:</b> 'design intent' and 'enforced' are different claims; arc10 closes the gap." },
+    { t:"DD-58 strict enforcement was half-landed (tests-only)", tag:"fixed",
+      lesson:"Strict mode shipped wired to lykn test only; normal compile/build had no gate, so surface silently accepted bare kernel forms — the philosophy's 'prevents' was aspirational. <b>Fixed on the Rust CLI (arc10 slice01);</b> 'design intent' and 'enforced' are different claims." },
+    { t:"…and it was only half-fixed: JS compiler has no parity", tag:"open",
+      lesson:"slice01 landed strict on the Rust CLI, but the JS compiler (which doctests + deno test use) enforces neither strict nor the kernel: escape — <code>(kernel:const x 42)</code> even mis-compiles there. <b>Learning:</b> 'the compiler enforces X' must be checked on <i>every</i> compile path, not one. → next slice (JS parity)." },
     { t:"require → invalid ESM output", tag:"open",
       lesson:"(require \"fs\") compiles to an un-runnable require(...) call. Not a closed-namespace violation → routed to arc05 lint (+ a Principle-3 note). <b>Learning:</b> compiles ≠ valid output." },
     { t:"Arc-numbering churn", tag:"fixed",

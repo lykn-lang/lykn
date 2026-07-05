@@ -1,10 +1,12 @@
 # arc10 — Compiler Completion (DD-58 strict-default + DD-37 `_kernel` removal)
 
-> **Status: Open — next up (gates arc05).** Created 2026-06-30. Appended as
-> arc10 by **creation order** (project convention as of 2026-06-30: NN =
-> creation order; *dependency* order is carried by the Dependencies field and the
-> project roadmap, not by NN). Despite the high number, this arc **sequences
-> before arc05** — see Dependencies.
+> **Status: Open — in flight (gates arc05).** Created 2026-06-30. **slice01
+> (Rust-CLI strict-default) closed** (`faee8a1`); slice01's bubble-up surfaced
+> that the **JS compiler has no strict / `kernel:` parity** → **slice02 ·
+> js-dd58-parity** is next (arc10's A-3 composition is met on the Rust path only
+> until it lands). Then slice03 (`_kernel` removal). Appended as arc10 by
+> **creation order** (NN = creation order; dependency order via Dependencies).
+> Despite the high number, this arc **sequences before arc05**.
 
 ## 1. Capability
 
@@ -34,8 +36,9 @@ arc10 slice01.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · dd58-strict-default** | Wire `classify_form_strict` into normal `.lykn` compilation (today it's `lykn test`-only). Bare kernel-only forms (`var`/`const`/`let`/`function`/`function*` — the 5 heads, per CC's finding) in surface → compile error; `kernel:` escape resolves; `.lyk` exempt. **Repo-only migration** of those 5 forms in guides/tests/examples (or `compile-fail`/`kernel:`-mark doc examples). Downstream (mycelium) + the operator/expression anti-patterns (→ arc05 lint) = filed follow-ups. | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
-| **slice02 · dd37-step4-kernel-removal** | Remove the `_kernel` marker: `expander.js` dispatch (~733–751), `classifier.js:297`, `surface-helpers.js` `kernelArray`. An expander-core change — assess reachability, keep behaviour identical. | **Open** (capability-depth; plan when slice01 lands) |
+| **slice01 · dd58-strict-default** | Wire `classify_form_strict` into normal `.lykn` compilation on the **Rust CLI** (`compile`/`build`/`check`). The 5 kernel-only heads (`const`/`let`/`var`/`function`/`function*`) → compile error; `kernel:` resolves; `.lyk` exempt; `--no-strict` harness-only. Guides migrated (15 `lykn,skip` fences; ID-38 operators reframed as legal passthrough). | **Closed** (`faee8a1`; Rust CLI strict; `make check` ✓, corpus 1345/0, guide docs 468/0) |
+| **slice02 · js-dd58-parity** (NEW — from slice01 bubble-up) | The JS compiler (`packages/lang/`) implements **neither** strict **nor** the `kernel:` escape — so doctests/`deno test` stay lax and `(kernel:const x 42)` mis-compiles (`kernel.const(x,42)`). Add strict + `kernel:` handling to the JS compiler so DD-58 holds at the *language* level, not just the Rust CLI. Then guide kernel demos can go `skip`→`compile-fail`. | **Open — next** (recommended by CC; gates arc10 A-3) |
+| **slice03 · dd37-step4-kernel-removal** | Remove the `_kernel` marker: `expander.js` dispatch (~733–751), `classifier.js:297`, `surface-helpers.js` `kernelArray`. An expander-core change — assess reachability, keep behaviour identical. | **Open** (capability-depth) |
 
 ## 3. Dependencies
 
@@ -56,10 +59,20 @@ this is the dependency order.)
 |----|-----------|--------|--------------|--------|--------|----------|
 | A-1 | slice01 (strict-default) closed | ptr: slice01 closing-report | serious | arc-plan | open | |
 | A-2 | slice02 (`_kernel` removal) closed | ptr: slice02 closing-report | correctness | arc-plan | open | |
-| A-3 | **surface prevents bare kernel-only *declaration* forms** — `const`/`let`/`var`/`function`/`function*` in a `.lykn` file are compile errors | compile each of the 5 → errors; `kernel:` escape resolves | serious | anti-patterns finding | open | reproduce at arc scale. (The operator/expression anti-patterns `==`/`this`/`arguments`/`require`/IIFE are legal under DD-58 → arc05 lint, not here) |
+| A-3 | **surface prevents bare kernel-only *declaration* forms** — `const`/`let`/`var`/`function`/`function*` in a `.lykn` file are compile errors, on **both** compilers | compile each of the 5 → errors on Rust CLI **and** JS path; `kernel:` escape resolves on both | serious | anti-patterns finding | **partial** | **met on Rust CLI (slice01); JS-compiler parity pending slice02** — until then doctests/`deno test` stay lax. (Operator/expression anti-patterns → arc05 lint.) |
 | A-4 | whole tree still compiles + green after migration | `make check` green; doctests green; downstream (mycelium) builds | serious | arc-plan | open | reproduce at arc scale |
 
 ## 5. Version History
+
+### v1.1 — 2026-06-30 (slice01 closed; JS-parity finding → slice02)
+slice01 (`dd58-strict-default`) closed (`faee8a1`): DD-58 strict default-on for
+`.lykn` on the **Rust CLI** (`compile`/`build`/`check`); the 5 kernel-only heads
+error, `kernel:` resolves, `.lyk` exempt, `--no-strict` harness-only; guides
+migrated (15 `lykn,skip` fences; ID-38 operators reframed as legal passthrough);
+`make check` ✓, corpus 1345/0, guide docs 468/0. **Bubble-up:** the JS compiler
+(`packages/lang/`) has **no strict + no `kernel:` escape** → **added slice02 ·
+js-dd58-parity** (next; gates A-3), pushed `_kernel` removal to slice03. A-3 →
+*partial* (Rust-only) until slice02.
 
 ### v1.0 — 2026-06-30 (created)
 Created from the DD-58 strict-mode finding (anti-patterns verification, CC report

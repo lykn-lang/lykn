@@ -82,19 +82,24 @@ inserts.
 - **Open / partial:** arc06 (dep-ergonomics — slice01 closed), arc07 (docs —
   slice01 CI-green closed; broader drift audit pending), arc05 (linter — not
   started).
-- **Active / next up:** **arc10 (compiler-completion)** — slice01
-  (`dd58-strict-default`) is **scoped + corrected, ready for CC**; slice02
-  (`dd37-step4-kernel-removal`) pending.
+- **Active / in flight:** **arc10 (compiler-completion)** — slice01
+  (`dd58-strict-default`) **CLOSED** (`faee8a1`; DD-58 strict default-on for
+  `.lykn` on the **Rust CLI**). Its bubble-up surfaced that the **JS compiler has
+  no strict / `kernel:` parity**, so **slice02 (`js-dd58-parity`) is NEXT** and
+  gates the arc's composition (A-3 is met on the Rust path only). slice03
+  (`dd37-step4-kernel-removal`) after.
 - **Future:** arc09 (release).
 - **Dependency sequence:** **arc10 → arc05 → arc06 → arc07 → arc09.**
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
-  guide doctests 472/0; `deno lint packages/` exit 0.
+  guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** hand the **arc10/slice01** cc-prompt to CC (wire
-`classify_form_strict` into normal `.lykn` compilation — the **5 kernel-only
-declaration forms only**: `const`/`let`/`var`/`function`/`function*`; `.lyk`
-exempt; repo-only migration). When CC reports, verify the 5-form A-3 demo + the
-`.lyk` exemption, close slice01, then scope slice02.
+**Immediate next action:** **scope arc10/slice02 (`js-dd58-parity`)** — bring the
+JS compiler (`packages/lang/`) to DD-58 parity: implement strict classification +
+proper `kernel:` escape handling so bare kernel-only forms error and
+`(kernel:const x 42)` compiles to `const x = 42` (today it mis-compiles to
+`kernel.const(x,42)`). This is what makes DD-58 hold at the *language* level
+(doctests / `deno test` run through the JS compiler), not just the Rust CLI. Then
+slice03 (`_kernel` removal), then arc05.
 
 ## 6. How we work — the rhythm & the disciplines
 
@@ -173,12 +178,17 @@ learning / what changed.* (Also rendered in `status.html`.)
    → **Learning:** when a mechanical task hits a wall on a high-stakes file, invest
    in the tool; it leaves the tool permanently better and keeps the move verbatim.
 
-7. **DD-58 strict was half-landed (tests-only).**
-   Strict enforcement shipped wired to `lykn test` only; `lykn compile`/`build`
-   had no gate, so surface silently accepted bare kernel forms — `philosophy.md`'s
-   "surface *prevents* this" was aspirational, not enforced.
-   → **Learning:** "design intent" and "enforced guarantee" are different claims;
-   audit whether the compiler actually does what the docs say. arc10 closes it.
+7. **DD-58 strict was half-landed — twice (the same shape recurred).**
+   First: strict shipped wired to `lykn test` only; `lykn compile`/`build` had no
+   gate, so surface silently accepted bare kernel forms — `philosophy.md`'s
+   "surface *prevents* this" was aspirational. arc10/slice01 fixed that **on the
+   Rust CLI**. Then slice01's bubble-up found the **JS compiler** (which doctests
+   and `deno test` use) enforces neither strict nor the `kernel:` escape — so that
+   path is still lax, and `(kernel:const …)` mis-compiles there. lykn has *two*
+   backends; a claim can be enforced on one and lax on the other.
+   → **Learning:** "design intent" ≠ "enforced," **and** "enforced" must be
+   verified on *every* compile path, not one. arc10 slice02 (JS parity) closes
+   the second gap.
 
 8. **Numbering churn.**
    Arcs were renumbered twice to keep `NN` = dependency order (inserting docs, then
@@ -202,8 +212,11 @@ learning / what changed.* (Also rendered in `status.html`.)
 
 ## 8. Open follow-ups (surfaced, not yet fully scoped)
 
-- **arc10 slice01** — ready for CC (next action).
-- **arc10 slice02** — DD-37 step-4 `_kernel` removal (expander-core change).
+- **arc10 slice01** — DONE (Rust-CLI strict-default, `faee8a1`).
+- **arc10 slice02 · js-dd58-parity** — NEXT: strict + `kernel:` escape in the JS
+  compiler (`packages/lang/`) so DD-58 holds at the language level. Gates arc10 A-3.
+  Follow-up after it: guide kernel demos can go `lykn,skip`→`compile-fail`.
+- **arc10 slice03** — DD-37 step-4 `_kernel` removal (expander-core change).
 - **arc05 corpus** — after arc10 lands: the linter owns idiom/style (incl. the
   re-homed `==`/`&&`/`require`/IIFE anti-patterns); the compiler owns the closed
   declaration-form namespace. `09-anti-patterns.md` is the seed (needs the
@@ -216,7 +229,8 @@ learning / what changed.* (Also rendered in `status.html`.)
 
 ## 9. One-line cheat-sheet
 
-Read project-plan + README + status.html → next is **arc10/slice01** (strict for
-the **5** declaration forms, `.lyk` exempt, repo-only) → verify via git+review,
-runtime attested → close + bubble-up + update plan docs + status.html → then
-slice02, then arc05.
+Read project-plan + README + status.html → **arc10/slice01 is closed** (Rust-CLI
+strict) → next is **arc10/slice02 · js-dd58-parity** (strict + `kernel:` escape in
+the JS compiler, so DD-58 holds on the doctest/`deno test` path too) → scope it
+for CC → verify via git+review, runtime attested → close + bubble-up + update plan
+docs + status.html → then slice03 (`_kernel`), then arc05.

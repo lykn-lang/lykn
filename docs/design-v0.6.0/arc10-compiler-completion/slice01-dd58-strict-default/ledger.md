@@ -23,8 +23,11 @@ _(At slice close.)_
 
 ## Closure
 
-Closed at commit <SHA> on <date>. Verified by: <name/session>.
-Rows: 8. Done: _. Deferred: _. No-op: _.
+Closed 2026-06-30 (commit `faee8a1`). Verified by: CC (attested) + CDC
+(`cdc-verification.md`: git/code-verified the Rust strict wiring + guide migration;
+runtime attested). Rows: 8. Done: 8 (F-8 as `skip` pending JS parity). Deferred: 0.
+No-op: 0. **Major bubble-up:** JS compiler lacks DD-58 strict + `kernel:` escape →
+routed to arc10 slice02 (js-dd58-parity).
 
 > Breaking change — the migration (F-3/F-4) is the bulk. Surface design calls
 > (does `check` go strict; any `--no-strict`) go in the closing report, not
