@@ -5,6 +5,7 @@
 
 import { Not, Swap, Reset, SetProp, SetSymbol, Conj, Assoc, Dissoc, Thread, SomeThread, IfLet, WhenLet, Fn, And, Or, Express, Obj, Cell, Bind, Eq, Neq, Func, GenFunc, GenFn, Match, TypeDef } from "./surface-ast.js";
 import { compileLetPattern, wrapReturnLast, formatSExpr, parseTypedParams, paramNameNodes, paramTypeChecks, getLiteralType, typeMatchesLiteral, buildTypeCheck, typeRegistry, isArray, array, sym, isKeyword, isStatementOnlyForm, gensym, andChain, compilePattern, isPascalCase } from "./surface-helpers.js";
+import { markKernel } from "./kernel-mark.js";
 
 /**
  * Classify a surface form head atom. Returns a typed AST node if the
@@ -293,9 +294,9 @@ export function emitSurfaceForm(node, h) {
       return sym(`${node.cell.value}:value`);
     case "Obj": {
       const objPairs = node.pairs.map(p => {
-        const pair = array(sym(p.key), p.value);
-        pair._kernel = true;
-        return pair;
+        // Sanctioned kernel: an object key/value pair must not be re-read as a
+        // macro call. (DD-37 step 4 — was a mutated kernel marker on the pair.)
+        return markKernel(array(sym(p.key), p.value));
       });
       return array(sym("object"), ...objPairs);
     }

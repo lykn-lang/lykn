@@ -1,0 +1,27 @@
+(import-macros "testing" (test includes))
+(import "testing/helpers.js" (compile-both))
+
+;; A-8 (arc10/slice03): (kernel:<form> …) escape convergence. The escape must
+;; produce identical JS on BOTH compilers for each kernel-only declaration
+;; head — regression-protecting the slice02 F-7 manual transcript. compile-both
+;; throws on any cross-compiler divergence, so a passing row is convergent.
+
+(test "kernel: escape — const converges"
+  (bind result (compile-both "(kernel:const x 42)"))
+  (includes result "const x = 42"))
+
+(test "kernel: escape — let converges"
+  (bind result (compile-both "(kernel:let x 1)"))
+  (includes result "let x = 1"))
+
+(test "kernel: escape — var converges"
+  (bind result (compile-both "(kernel:var x 1)"))
+  (includes result "var x = 1"))
+
+(test "kernel: escape — function converges"
+  (bind result (compile-both "(kernel:function f () (return 1))"))
+  (includes result "function f"))
+
+(test "kernel: escape — function* converges"
+  (bind result (compile-both "(kernel:function* g () (yield 1))"))
+  (includes result "function* g"))

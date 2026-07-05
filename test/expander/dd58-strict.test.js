@@ -78,3 +78,46 @@ Deno.test("dd58 kernel: escape is available for every kernel-only head", () => {
     lykn(src); // must not throw
   }
 });
+
+// --- A-6: macro-boundary enforcement (Rust semantics, DD-37 step 4) ---
+// A user macro that expands to a top-level bare kernel-only decl is rejected
+// (Rust already rejects it via post-expansion classification); the sanctioned
+// authoring path is (kernel:<form> …) in the template.
+
+// Distinct macro names per test — `lykn()` (the public API) does not reset the
+// module-global macroEnv between calls, so reusing a name collides.
+
+Deno.test("dd58 A-6: macro emitting top-level bare const throws", () => {
+  assertThrows(
+    () => lykn("(macro dcBad (n v) `(const ,n ,v))\n(dcBad x 1)"),
+    Error,
+    "'const' is a kernel-only form",
+  );
+});
+
+Deno.test("dd58 A-6: macro emitting top-level (kernel:const …) compiles", () => {
+  assertEquals(
+    lykn("(macro dcEsc (n v) `(kernel:const ,n ,v))\n(dcEsc x 1)").trim(),
+    "const x = 1;",
+  );
+});
+
+Deno.test("dd58 A-6: macro emitting a NESTED bare kernel-only decl is legal", () => {
+  // Top-level-only (Rust parity): the emitted `const` is nested inside `block`,
+  // so it compiles even though it is bare (unsanctioned) — only top-level
+  // kernel-only heads are swept.
+  const js = lykn("(macro dcNest (n v) `(bind r (block (const ,n ,v) ,n)))\n(dcNest x 1)");
+  assertEquals(js.includes("const x = 1"), true);
+});
+
+Deno.test("dd58 A-6: sanctioned surface output is never re-rejected", () => {
+  // bind→const, func→function, obj pairs, genfunc→function* all compile
+  for (const src of [
+    "(bind x 1)",
+    "(func f :args () :body 1)",
+    "(genfunc g :body (yield 1))",
+    "(bind o (obj :a 1 :b 2))",
+  ]) {
+    lykn(src); // must not throw
+  }
+});

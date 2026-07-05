@@ -1002,6 +1002,40 @@ M20 audit-walk review. This refinement-log entry records the
 correction and the methodology learning for future kernel/surface
 design work.
 
+### 2026-07-05 (A-6 — macro-boundary enforcement; operator decision)
+
+**Decision (operator, 2026-07-05): Rust semantics.** A user macro whose
+template expands to a **top-level bare kernel-only declaration**
+(`const`/`let`/`var`/`function`/`function*`) is a **compile error** — on both
+compilers. Rust already enforces this by construction: it classifies
+**post-expansion** (`compile.rs`: read → expand → classify-strict), so
+macro-emitted bare kernel-only decls are rejected exactly like
+user-written ones. The JS compiler previously did **not** — macro output was
+unmarked and re-entered the expander's dispatch, compiling straight through
+(runtime-confirmed 2026-07-05). arc10/slice03 brings JS to parity: DD-58 strict
+now runs as a **post-expansion top-level sweep** that rejects **unsanctioned**
+kernel-only heads, where *sanctioned* = compiler-produced kernel (the surface
+classifier's `bind`→`const` etc., the `(kernel:…)` escape, `Obj` pairs), tracked
+by a sanctioned-kernel registry (the DD-37-step-4 replacement for the transitional
+`_kernel` marker).
+
+**Semantics:**
+- **Sanctioned** kernel output — surface-form desugaring, the `(kernel:…)`
+  escape, object-literal pairs — is never rejected (e.g. `bind`→`const`,
+  `func`→`function` remain legal though their heads are kernel-only).
+- **Unsanctioned** top-level kernel-only heads — user-written bare decls *and*
+  user-macro-emitted ones — are rejected with the standard kernel-only
+  diagnostic.
+- **Top-level only**, matching Rust: kernel-only forms nested inside surface /
+  sanctioned bodies compile.
+- **The sanctioned authoring path for macro templates is `(kernel:<form> …)`** —
+  it compiles on both compilers (since slice02) and is exempt from the sweep.
+
+**Scope / consequences:** breaking for macro authors who emit bare kernel-only
+decls at top level (they already errored on Rust; now on JS too) — the fix is
+`(kernel:…)` in the template. Recorded here per operator decision; Duncan
+reconciles odm versioning.
+
 ---
 
 ## Version History

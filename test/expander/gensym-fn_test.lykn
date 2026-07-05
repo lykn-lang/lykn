@@ -14,7 +14,7 @@
   (bind result (compile-all "
     (macro with-gen (val)
       (const tmp ($gensym))
-      `(let ,tmp ,val))
+      `(kernel:let ,tmp ,val))
     (with-gen 99)
   "))
   (is-equal (result:includes "g__gensym") true))

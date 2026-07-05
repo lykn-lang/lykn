@@ -23,7 +23,7 @@ Deno.test("gensym function: default prefix", () => {
   const result = lykn(`
     (macro with-gen (val)
       (const tmp ($gensym))
-      \`(let ,tmp ,val))
+      \`(kernel:let ,tmp ,val))
     (with-gen 99)
   `);
   assertEquals(result.includes("g__gensym"), true);

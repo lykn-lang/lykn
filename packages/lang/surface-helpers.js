@@ -11,6 +11,7 @@ import {
   formatSExpr,
 } from "./expander.js";
 import { toJsIdentifier } from "./compiler.js";
+import { markKernel } from "./kernel-mark.js";
 // Param-shape sub-parsers (still in surface.js, not in this extraction set);
 // parseTypedParams delegates to them, so import them to satisfy the move.
 import {
@@ -49,10 +50,15 @@ export function wrapReturnLast(bodyForms) {
   return [...bodyForms.slice(0, -1), array(sym("return"), lastExpr)];
 }
 
+/**
+ * Build a list node marked as sanctioned kernel output (so it is not
+ * re-classified/re-expanded and is exempt from DD-58 strict). Used by
+ * `compileLetPattern`. (DD-37 step 4 — was a mutated per-node kernel marker.)
+ * @param {...*} items
+ * @returns {object}
+ */
 export function kernelArray(...items) {
-  const node = array(...items);
-  node._kernel = true;
-  return node;
+  return markKernel(array(...items));
 }
 
 // --- Shared Helpers ---
