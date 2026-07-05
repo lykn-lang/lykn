@@ -1,12 +1,13 @@
 # arc10 — Compiler Completion (DD-58 strict-default + DD-37 `_kernel` removal)
 
-> **Status: Open — in flight (gates arc05).** Created 2026-06-30. **slice01
-> (Rust-CLI strict-default) closed** (`faee8a1`); slice01's bubble-up surfaced
-> that the **JS compiler has no strict / `kernel:` parity** → **slice02 ·
-> js-dd58-parity** is next (arc10's A-3 composition is met on the Rust path only
-> until it lands). Then slice03 (`_kernel` removal). Appended as arc10 by
-> **creation order** (NN = creation order; dependency order via Dependencies).
-> Despite the high number, this arc **sequences before arc05**.
+> **Status: CLOSING — all 3 slices closed (2026-07-05); composition + gate
+> pending the operator host run.** Created 2026-06-30. slice01 (Rust-CLI
+> strict, `faee8a1`) → slice02 (JS parity, `feb056c`) → slice03 (`_kernel`
+> removal + A-6/A-7/A-8 closeout, `2f6a84d`). See
+> [`closing-report.md`](./closing-report.md) — the arc closes formally when
+> the composition rows (A-3/A-4) are **reproduced at arc scale on the host**
+> and the operator gates it (CDC assembled the close and cannot sign it off
+> alone). Appended as arc10 by **creation order**; sequences before arc05.
 
 ## 1. Capability
 
@@ -38,7 +39,7 @@ arc10 slice01.
 |-------|-------|--------|
 | **slice01 · dd58-strict-default** | Wire `classify_form_strict` into normal `.lykn` compilation on the **Rust CLI** (`compile`/`build`/`check`). The 5 kernel-only heads (`const`/`let`/`var`/`function`/`function*`) → compile error; `kernel:` resolves; `.lyk` exempt; `--no-strict` harness-only. Guides migrated (15 `lykn,skip` fences; ID-38 operators reframed as legal passthrough). | **Closed** (`faee8a1`; Rust CLI strict; `make check` ✓, corpus 1345/0, guide docs 468/0) |
 | **slice02 · js-dd58-parity** (NEW — from slice01 bubble-up) | The JS compiler (`packages/lang/`) implements **neither** strict **nor** the `kernel:` escape — so doctests/`deno test` stay lax and `(kernel:const x 42)` mis-compiles (`kernel.const(x,42)`). Add strict + `kernel:` handling to the JS compiler so DD-58 holds at the *language* level, not just the Rust CLI. Then guide kernel demos can go `skip`→`compile-fail`. | **Closed** (`feb056c`; strict default-on + `kernel:` escape in JS; A-3 partial→met; 26-site migration; guide fences flipped; `make check` ✓, `lykn test` 1354/0, deno 667/0) |
-| **slice03 · dd37-step4-kernel-removal** | Remove the `_kernel` marker (expander-core; replacement sanctioned-kernel signal; behavior identical) **+ the arc-close closeout, bundled (operator, 2026-07-05):** A-6 macro-boundary enforcement on JS (Rust semantics — decided), A-7 kernel-form parity guard, A-8 `kernel:` compileBoth corpus rows. Bundled because A-6's enforcement shares the `_kernel`-replacement signal. arc10's last slice. | **Scoped — open set written 2026-07-05** (`slice03-dd37-step4-kernel-removal/{slice-doc,ledger,cc-prompt}.md`) |
+| **slice03 · dd37-step4-kernel-removal** | Remove the `_kernel` marker (expander-core; replacement sanctioned-kernel signal; behavior identical) **+ the arc-close closeout, bundled (operator, 2026-07-05):** A-6 macro-boundary enforcement on JS (Rust semantics — decided), A-7 kernel-form parity guard, A-8 `kernel:` compileBoth corpus rows. Bundled because A-6's enforcement shares the `_kernel`-replacement signal. arc10's last slice. | **Closed** (`2f6a84d`; `_kernel` → WeakSet sanctioned-kernel registry; A-6 enforced via post-pass2 sweep; guards landed; `lykn test` 1365/0, deno 673/0, `make check` ✓) |
 
 ## 3. Dependencies
 
@@ -59,14 +60,31 @@ this is the dependency order.)
 |----|-----------|--------|--------------|--------|--------|----------|
 | A-1 | slice01 (strict-default) closed | ptr: slice01 closing-report | serious | arc-plan | **done** | slice01 `cdc-verification.md` (accepted 2026-06-30; commit `faee8a1`) — attested (pointer to closed child ledger) |
 | A-2 | slice02 (js-dd58-parity) closed | ptr: slice02 closing-report | serious | arc-plan (re-pointed v1.2; was: "slice02 (`_kernel` removal)" — the v1.1 re-slicing moved `_kernel` removal to slice03, now row A-5) | **done** | slice02 `cdc-verification.md` (accepted 2026-07-05; commit `feb056c`) — attested (pointer to closed child ledger) |
-| A-5 | slice03 (dd37-step4-kernel-removal) closed | ptr: slice03 closing-report | correctness | arc-plan (v1.2; carries the criterion A-2 held before the v1.1 re-slicing) | open | |
-| A-6 | **macro-boundary strict asymmetry dispositioned** — Rust enforces strict *post*-expansion, JS *pre*-expansion (architecturally forced); a user macro emitting a top-level bare kernel-only decl compiles on JS, errors on Rust. Needs a DD-58 refinement note (intended semantics) + decision/test | ptr: DD-58 refinement entry + slice03 closing-report (F-4) | correctness | slice02 CDC finding (bubble-up) | open | | **DECIDED (operator, 2026-07-05): Rust semantics** — macro-emitted top-level bare kernel-only decls error everywhere; macro authors use `(kernel:…)` in templates; Rust unchanged, JS enforces. Implementation = slice03 F-4 (gated on F-1 empirical recon — the Rust-side claim is code-read) |
-| A-7 | **kernel-form set duplication mitigated** — JS `kernel-forms.js` mirrors Rust `dispatch.rs` (reconciled at slice02, 92=92; cross-ref comments both sides); shared/generated source or a CI parity check filed | ptr: follow-up disposition (this arc or routed) | polish | slice02 bubble-up | open | | a cheap CI set-diff (like CDC's) may be enough |
-| A-8 | **`kernel:` compileBoth corpus rows added** — escape convergence regression-protected cross-compiler | corpus contains `(kernel:…)` rows; `lykn test` green | polish | slice02 CDC finding | open | | slice03 drive-by candidate |
+| A-5 | slice03 (dd37-step4-kernel-removal) closed | ptr: slice03 closing-report | correctness | arc-plan (v1.2; carries the criterion A-2 held before the v1.1 re-slicing) | **done** | slice03 `cdc-verification.md` (accepted 2026-07-05; commit `2f6a84d`) — attested (pointer to closed child ledger); `_kernel` zero-grep CDC-reproduced |
+| A-6 | **macro-boundary strict asymmetry dispositioned** — Rust enforces strict *post*-expansion, JS *pre*-expansion (architecturally forced); a user macro emitting a top-level bare kernel-only decl compiles on JS, errors on Rust. Needs a DD-58 refinement note (intended semantics) + decision/test | ptr: DD-58 refinement entry + slice03 closing-report (F-4) | correctness | slice02 CDC finding (bubble-up) | **done** | slice03 F-1 (divergence runtime-confirmed) + F-4 (post-pass2 sweep; 4 tests both directions; sweep design CDC-code-reviewed); DD-58 refinement entry at `0059-…md:1005` (CDC grep-reproduced) | **DECIDED (operator, 2026-07-05): Rust semantics** — macro-emitted top-level bare kernel-only decls error everywhere; macro authors use `(kernel:…)` in templates; Rust unchanged, JS enforces |
+| A-7 | **kernel-form set duplication mitigated** — JS `kernel-forms.js` mirrors Rust `dispatch.rs` (reconciled at slice02, 92=92; cross-ref comments both sides); shared/generated source or a CI parity check filed | ptr: follow-up disposition (this arc or routed) | polish | slice02 bubble-up | **done** | slice03 F-5: `kernel-forms-parity.test.js` (parses both sources, symmetric-diff failure; in `make check` via deno test); seeded-mismatch demo attested | duplication now *guarded*; shared-generated source remains an optional future nicety |
+| A-8 | **`kernel:` compileBoth corpus rows added** — escape convergence regression-protected cross-compiler | corpus contains `(kernel:…)` rows; `lykn test` green | polish | slice02 CDC finding | **done** | slice03 F-6: `test/forms/kernel-escape_test.lykn` (5 rows, one per kernel-only head); green attested (1365/0) | |
 | A-3 | **surface prevents bare kernel-only *declaration* forms** — `const`/`let`/`var`/`function`/`function*` in a `.lykn` file are compile errors, on **both** compilers | compile each of the 5 → errors on Rust CLI **and** JS path; `kernel:` escape resolves on both | serious | anti-patterns finding | **met (attested)** | Rust CLI: slice01 (`faee8a1`); JS path: slice02 (`feb056c`) — 9 committed JS tests + convergence transcript; whitelist parity CDC-reproduced (92=92 set-diff). Class-(b) row: **reproduce at arc scale on host at arc close** per LEDGER-DISCIPLINE §B. (Was: *partial*, Rust-only.) |
-| A-4 | whole tree still compiles + green after migration | `make check` green; doctests green; downstream (mycelium) builds | serious | arc-plan | open | reproduce at arc scale |
+| A-4 | whole tree still compiles + green after migration | `make check` green; doctests green; ~~downstream (mycelium) builds~~ *(clause deferred — see Notes)* | serious | arc-plan | **met (attested)** | per-slice greens attested at each close (final: `make check` ✓, `lykn test` 1365/0, deno 673/0, doctests 0 failed, clippy ✓). **Reproduce at arc scale on host at close.** | mycelium clause **deferred** per the operator's repo-only boundary (2026-06-30); re-entry = the downstream-migration follow-up (bare kernel forms there will break under a strict consumer) |
 
 ## 5. Version History
+
+### v1.5 — 2026-07-05 (slice03 closed; arc → CLOSING, gate pending)
+slice03 closed (`2f6a84d`, CDC-verified): `_kernel` → WeakSet sanctioned-kernel
+registry (`kernel-mark.js`; mark-propagation wrapper; zero-grep
+CDC-reproduced); A-6 enforced via a post-pass2 top-level sweep (JS now
+structurally congruent with Rust's post-expansion classification;
+divergence runtime-confirmed first per F-1; DD-58 refinement entry landed);
+A-7 parity guard in `make check`; A-8 five `kernel:` corpus rows. **Arc-ledger:
+A-5/A-6/A-7/A-8 → done.** Rows corrected during recon: CDC's "kernelArray
+appears dead" disconfirmed by CC (call site `surface-helpers.js:518`; kept).
+Two cosmetic defects routed for a one-line drive-by: stale `kernel-mark.js:10`
+comment ("removed as dead" — it wasn't); stale `macroEnv.has('bind')`
+idempotence guard (pre-existing, arc04 vintage). Arc-level
+`closing-report.md` written; **composition (A-3/A-4) + gate = operator host
+run** — arc closes formally on that reconciliation. Bubble-up to project
+recorded there (incl. the project-ledger gap: arc10 has no P-row → P-15
+proposed).
 
 ### v1.4 — 2026-07-05 (slice03 scoped; A-6 decided; closeout bundled)
 slice03 open set written (`slice-doc`/`ledger`[7 rows]/`cc-prompt`), grounded

@@ -59,7 +59,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
-| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **In flight** — slice01+02 closed (Rust CLI + JS parity; A-3 met); slice03 (`_kernel`) next (sequences *before* arc05 — see note) |
+| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **CLOSING** — 3/3 slices closed; composition + operator gate pending (host runbook: arc10 `closing-report.md` §5); arc05 unblocks on the gate |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
@@ -163,11 +163,28 @@ inherited from arc attestations.
 | P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc09 |
 | P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | open | **doctests now green (472/0)** via arc07 slice01 | broader guide-drift audit + SKILL additions still pending (arc07) |
 | P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
+| P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **closing** | 3/3 slices closed (`faee8a1`/`feb056c`/`2f6a84d`); arc closing-report written; **composition + gate = operator host run** (runbook in the closing-report §5) | added per the arc10 bubble-up: P-1…P-14 had no row for this arc |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.15 — 2026-07-05 (arc10 slice03 closed; arc10 → CLOSING; P-15 added)
+arc10 slice03 closed (`2f6a84d`, CDC-verified): `_kernel` retired for the
+WeakSet sanctioned-kernel registry; **A-6 enforced** (operator decision, Rust
+semantics: macro-emitted top-level bare kernel decls error everywhere — the
+divergence was runtime-confirmed before implementation; DD-58 refinement
+entry landed); A-7 kernel-form parity guard now runs in `make check`; A-8
+`kernel:` corpus rows green. Final numbers: `lykn test` 1365/0, deno 673/0,
+`make check` ✓. **arc10 → CLOSING**: arc-level `closing-report.md` written
+(slice walk 3/3; composition rows A-3/A-4 met-attested; silent-drop diff
+clean); formal close = **operator host composition run + gate** (runbook in
+the report). **P-15 added** — the arc10 bubble-up found the project ledger
+predated arc10 and had no row for it. Release-notes obligations accumulated
+→ arc09. Cosmetic drive-bys routed: stale `kernel-mark.js:10` comment; stale
+`macroEnv.has('bind')` guard. On the gate: arc05 (linter) is next. Surfaced
+by: arc10 close (slice03 CC report + CDC verification + arc bubble-up).
 
 ### v1.14 — 2026-07-05 (arc10 slice02 closed — DD-58 at the language level)
 arc10 slice02 (`js-dd58-parity`) closed (`feb056c`, CDC-verified): the JS

@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-05 (arc10 slice02 closed — DD-58 at the language level)",
+  updated: "2026-07-05 (arc10 CLOSING — 3/3 slices done; operator gate pending)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -166,18 +166,18 @@ const DATA = {
       cap:"Version bumps, release notes, publish to JSR/npm/crates.io.",
       slices:[] },
     { id:"arc10", name:"compiler-completion", status:"active",
-      cap:"DD-58 strict-default (surface prevents bare const/let/var/function/function*) + JS-compiler parity + DD-37 step-4 (_kernel removal). slice01 landed on the Rust CLI.",
-      slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"closed"},{n:"kernel-removal",s:"active"}] },
+      cap:"DD-58 strict-default + JS parity + macro-boundary enforcement + DD-37 step-4 (_kernel removed). 3/3 slices closed; CLOSING — operator composition gate pending (closing-report §5 runbook).",
+      slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"closed"},{n:"kernel-removal",s:"closed"}] },
   ],
   sequence: ["arc10","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc10 · slice03 — dd37-step4-kernel-removal (scoped — ready for CC)",
-    desc:"arc10's last slice, scoped 2026-07-05 with the closeout bundled (operator call): remove the _kernel marker via a sanctioned-kernel signal, enforce DD-58 at the macro boundary on JS (A-6 — decided: Rust semantics; macro authors use kernel: in templates), add the kernel-form parity guard (A-7) and kernel: corpus rows (A-8). F-1 empirically confirms the A-6 divergence before any enforcement code (the finding is code-read). Then the arc closing-report + host composition run, and arc05 unblocks."
+    arc:"arc10 — composition gate (operator host run), then arc05",
+    desc:"All three arc10 slices are closed: DD-58 is enforced on every compile path — Rust CLI, JS API, doctests, browser, JSR, and (as of slice03) the macro boundary — with _kernel retired for the sanctioned-kernel registry and both regression guards standing. The arc closing-report is written; the formal close is the operator's host composition run (§5 runbook: rebuild, 5-form demo, make check, 1365/0, 673/0) + gate sign-off. Two one-line cosmetic drive-bys ride the next commit. Then arc05 (lykn lint) scopes against a now-sharp corpus division."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
-    {n:"1354 / 0", l:"lykn test", s:"incl. cross-compiler corpus"},
-    {n:"667 / 0", l:"deno test suite", s:"JS test/ (+9 DD-58 parity tests)"},
+    {n:"1365 / 0", l:"lykn test", s:"incl. kernel: escape corpus rows"},
+    {n:"673 / 0", l:"deno test suite", s:"incl. A-6 + kernel-form parity guard"},
     {n:"468 / 0", l:"guide doctests", s:"green; 09/06 kernel demos now enforce"},
     {n:"exit 0", l:"deno lint packages/", s:"standing debt cleared"},
     {n:"~20", l:"functions relocated", s:"byte-exact, by the tool"},
@@ -192,6 +192,7 @@ const DATA = {
     "Decided + documented DD-58 strict-default (the language will now enforce what philosophy.md claims).",
     "Landed DD-58 strict-default on the Rust CLI — bare kernel-only declaration forms in .lykn are now compile errors, with a kernel: escape; guides migrated.",
     "Brought the JS compiler to full DD-58 parity (strict default-on + the kernel: escape, Rust-verbatim diagnostics) — the closed surface namespace now holds on every compile path: Rust CLI, JS API, doctests, browser, JSR.",
+    "Retired the transitional _kernel marker (DD-37 step 4) for a WeakSet sanctioned-kernel registry, and closed the macro boundary: macro-emitted bare kernel decls now error on both compilers (operator-decided Rust semantics, recorded in DD-58) — with a kernel-form parity guard and kernel: corpus rows standing watch.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
@@ -210,8 +211,10 @@ const DATA = {
       lesson:"Strict mode shipped wired to lykn test only; normal compile/build had no gate, so surface silently accepted bare kernel forms — the philosophy's 'prevents' was aspirational. <b>Fixed on the Rust CLI (arc10 slice01);</b> 'design intent' and 'enforced' are different claims." },
     { t:"…and it was only half-fixed: JS compiler has no parity", tag:"fixed",
       lesson:"slice01 landed strict on the Rust CLI, but the JS compiler (which doctests + deno test use) enforced neither strict nor the kernel: escape — <code>(kernel:const x 42)</code> even mis-compiled there. <b>Learning:</b> 'the compiler enforces X' must be checked on <i>every</i> compile path, not one. <b>Fixed in slice02</b> (feb056c) — both compilers now enforce." },
-    { t:"Strict semantics diverge at the macro boundary", tag:"open",
-      lesson:"Found in slice02 CDC review: Rust enforces strict <i>post</i>-macro-expansion, JS <i>pre</i>-expansion (architecturally forced by DD-37's split). A user macro that expands to a top-level bare kernel decl compiles on JS but errors on Rust. Latent — neither suite exercises it. <b>Learning:</b> behavioural parity claims need checking at the <i>boundaries</i> (macro output), not just direct input. → DD-58 refinement + slice03 assessment (arc10 A-6)." },
+    { t:"Strict semantics diverge at the macro boundary", tag:"fixed",
+      lesson:"Found in slice02 CDC review: Rust enforced strict <i>post</i>-macro-expansion, JS <i>pre</i>-expansion — a user macro expanding to a top-level bare kernel decl compiled on JS but errored on Rust. <b>Learning:</b> behavioural parity claims need checking at the <i>boundaries</i> (macro output), not just direct input. <b>Fixed in slice03</b> (runtime-confirmed first, then a post-pass2 sweep; operator-decided Rust semantics, recorded in DD-58)." },
+    { t:"CDC 'appears dead' recon was a grep artifact", tag:"fixed",
+      lesson:"The slice03 slice-doc claimed kernelArray was dead (2 grep hits read as definition+export without opening the second — it was the call site). CC's gated recon caught it and kept the function. <b>Learning:</b> issues-log #4 cuts both ways — CDC claims need grounding to the artifact too, and recon-gates-implementation earns its keep in both directions." },
     { t:"require → invalid ESM output", tag:"open",
       lesson:"(require \"fs\") compiles to an un-runnable require(...) call. Not a closed-namespace violation → routed to arc05 lint (+ a Principle-3 note). <b>Learning:</b> compiles ≠ valid output." },
     { t:"Arc-numbering churn", tag:"fixed",

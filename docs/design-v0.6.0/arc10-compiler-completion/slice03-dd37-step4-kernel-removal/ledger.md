@@ -20,11 +20,27 @@ Rebuild-first verify. Per
 
 ## What Worked
 
-_(At slice close.)_
+- **F-1-gates-F-4 earned its keep in both directions**: the recon confirmed
+  the CDC divergence claim *and* disconfirmed the CDC "kernelArray appears
+  dead" claim before either could do damage — grounding beats inference on
+  both sides of the peer frame.
+- **The WeakSet registry + mark-propagation wrapper** localized an
+  expander-core rework to eight known sites plus one wrapper — the
+  "assess reachability, keep behavior identical" framing kept the diff
+  reviewable (+280/−38 for four deliverables).
+- **Unifying slice02's pre-pass into the post-pass sweep** made the JS
+  enforcement structurally congruent with Rust's post-expansion
+  classification — parity by shape, not just by test assertions.
 
 ## Closure
 
-_(At slice close: commit SHA, date, verifier, row disposition counts.)_
+Closed 2026-07-05 (commit `2f6a84d`). Verified by: CC (attested) + CDC
+(`cdc-verification.md`: git/code/grep-verified; surface-macro map and
+`_kernel`-zero reproduced; runtime attested). Rows: 7. Done: 7. Deferred: 0.
+No-op: 0. **Bubble-up:** arc10 ready to close — A-5/A-6/A-7/A-8 done; two
+cosmetic defects routed (stale `kernel-mark.js:10` comment; stale
+`macroEnv.has('bind')` guard, pre-existing); arc09 release-notes item
+(macro authors → `kernel:` templates).
 
 > F-1 gates F-4: recon before enforcement, self-stop on disconfirmation.
 > Expander-core work — if the `_kernel` rework exceeds the slice (scope
