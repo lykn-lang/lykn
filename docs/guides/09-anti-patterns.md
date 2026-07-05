@@ -650,7 +650,7 @@ DD-58 strict mode (default for `.lykn`) the two kinds differ:
   passthrough** forms. They compile fine; `=`, `and`, `or` are just the
   idiomatic surface spellings (a lint preference, not an error).
 
-```lykn,skip
+```lykn,compile-fail
 ;; Compile error under strict — const is kernel-only in surface
 (const x 42)          ;; use (bind x 42), or (kernel:const x 42)
 ```

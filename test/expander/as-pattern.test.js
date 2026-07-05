@@ -3,7 +3,7 @@ import { read } from "lang/reader.js";
 import { expand, expandExpr } from "lang/expander.js";
 
 function ex(source) {
-  return expand(read(source));
+  return expand(read(source), { strict: false }); // expander mechanics; DD-58 strict tested in dd58-strict.test.js
 }
 
 Deno.test("as: simple rename", () => {

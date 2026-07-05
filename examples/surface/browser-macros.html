@@ -20,12 +20,12 @@
   (bind el (document:get-element-by-id "output"))
   (bind items #a("macros" "quasiquote" "auto-gensym" "sugar forms"))
 
-  (let html "")
+  (bind html (cell ""))
   (for-of item items
     (when item
-      (+= html (template "<li>" item "</li>"))))
+      (swap! html (=> (h) (+ h (template "<li>" item "</li>"))))))
 
-  (set! el:inner-HTML (template "<ul>" html "</ul>"))
+  (set! el:inner-HTML (template "<ul>" (express html) "</ul>"))
   </script>
 
   <p>If you see a list of features above, inline macros work in the browser bundle.</p>

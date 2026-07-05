@@ -9,6 +9,7 @@ import { compile } from './compiler.js';
 import { read } from './reader.js';
 import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm } from './classifier.js';
+import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 
 // node:path is used intentionally here and CANNOT be replaced with jsr:@std/path.
 //
@@ -725,6 +726,29 @@ export function expandExpr(form) {
   }
   if (head.type === 'atom' && head.value === 'unquote-splicing') {
     throw new Error('unquote-splicing outside of quasiquote');
+  }
+
+  // DD-58: (kernel:<form> …) escape — strip the prefix, validate the form
+  // against the kernel whitelist, and pass the raw kernel form through
+  // (marked `_kernel` so it is neither re-classified nor macro-expanded).
+  // Mirrors the Rust classifier's kernel: handling (forms.rs); works in both
+  // lax and strict modes and at any nesting depth. Takes precedence over all
+  // other dispatch.
+  if (head.type === 'atom' && head.value.startsWith('kernel:') && !form._kernel) {
+    const kernelForm = head.value.slice('kernel:'.length);
+    if (!KERNEL_FORMS.has(kernelForm)) {
+      const hint = closestKernelForm(kernelForm);
+      throw new Error(
+        `unknown kernel form '${kernelForm}' in (kernel:${kernelForm} ...)` +
+        (hint ? `; did you mean '${hint}'?` : ''),
+      );
+    }
+    const stripped = {
+      type: 'list',
+      values: [{ type: 'atom', value: kernelForm }, ...form.values.slice(1)],
+    };
+    stripped._kernel = true;
+    return expandExpr(stripped);
   }
 
   // Fixed-point macro expansion
@@ -1502,13 +1526,41 @@ function loadMacroModule(resolvedPath, displayPath, compilationStack) {
  * @param {{ filePath?: string, compilationStack?: string[] }} [context]
  * @returns {*[]} Expanded forms ready for the compiler
  */
+/**
+ * DD-58 strict enforcement: reject bare kernel-only declaration forms
+ * (`const`/`let`/`var`/`function`/`function*`) at the **top level** of a
+ * surface file. Mirrors the Rust classifier's `classify_form_strict`
+ * (top-level-only; nested kernel forms inside surface bodies still compile).
+ * Runs before `pass2ExpandAll`, so surface forms like `bind` are still
+ * `bind` (not yet desugared to `const`) and macro invocations are still
+ * invocations — only user-written bare kernel heads are seen. Independent of
+ * the `_kernel` marker.
+ * @param {Array} forms - top-level forms (post pass0/pass1)
+ */
+function enforceStrictTopLevel(forms) {
+  for (const form of forms) {
+    if (form && form.type === 'list' && form.values.length > 0) {
+      const head = form.values[0];
+      if (head && head.type === 'atom' && KERNEL_ONLY_FORMS.has(head.value)) {
+        throw new Error(kernelOnlyMessage(head.value));
+      }
+    }
+  }
+}
+
 export function expand(forms, context = {}) {
   // Ensure surface macros are registered (idempotent — skips if already present)
   if (!macroEnv.has('bind')) {
     registerSurfaceMacros(macroEnv);
   }
-  const { filePath = null, compilationStack = [] } = context;
+  const { filePath = null, compilationStack = [], strict = true } = context;
   const afterPass0 = pass0ImportMacros(forms, filePath, compilationStack);
   const afterPass1 = pass1RegisterMacros(afterPass0);
+  // DD-58 strict (default-on): reject bare kernel-only declaration forms at
+  // the top level. Explicit `{ strict: false }` opt-out for the coherence
+  // harness and kernel-form testing paths only — no silent blanket bypass.
+  if (strict) {
+    enforceStrictTopLevel(afterPass1);
+  }
   return pass2ExpandAll(afterPass1);
 }

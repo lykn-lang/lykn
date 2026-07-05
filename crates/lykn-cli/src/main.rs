@@ -713,10 +713,22 @@ fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<Pat
         let config = find_config();
         let lykn_str = lykn_path.to_string_lossy();
         let js_str = js_path.to_string_lossy();
+        // DD-58: the JS `lykn()` is strict-default. `.lyk` kernel files carry
+        // top-level kernel forms, so the codegen call must run lax for them —
+        // thread the mode by extension so the exemption is structural, not an
+        // accident of today's `.lyk` fixtures having no kernel-only heads.
+        // (This changes what the script passes to the JS API, not the Rust
+        // compiler.)
+        let is_lyk = lykn_path.extension().is_some_and(|e| e == "lyk");
+        let lykn_call = if is_lyk {
+            "lykn(source, { strict: false })"
+        } else {
+            "lykn(source)"
+        };
         let script = format!(
             "import {{ lykn }} from '{compiler_import}';\n\
              const source = Deno.readTextFileSync({:?});\n\
-             const js = lykn(source);\n\
+             const js = {lykn_call};\n\
              Deno.writeTextFileSync({:?}, js);\n",
             lykn_str, js_str,
         );

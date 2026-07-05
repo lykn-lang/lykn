@@ -434,11 +434,11 @@ Anonymous generators via `genfn`:
 ```
 
 Kernel `function*` is still available when you don't need type
-annotations (a kernel form — reach it in surface via `(kernel:function* …)`;
-shown here as reference, not surface-idiomatic):
+annotations — reach it in surface via the `(kernel:function* …)` escape
+(a bare `function*` is a compile error in surface):
 
-```lykn,skip
-(function* simple () (yield 1) (yield 2) (yield 3))
+```lykn
+(kernel:function* simple () (yield 1) (yield 2) (yield 3))
 ```
 
 **Key rules**: `yield` cannot appear inside nested callbacks —

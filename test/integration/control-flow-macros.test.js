@@ -5,7 +5,7 @@ import { compile } from "lang/compiler.js";
 
 function lykn(source) {
   resetMacros(); resetGensym(); resetModuleCache();
-  return compile(expand(read(source))).trim();
+  return compile(expand(read(source), { strict: false })).trim();
 }
 
 Deno.test("integration: control flow macros (when, unless)", () => {

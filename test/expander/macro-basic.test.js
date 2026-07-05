@@ -6,13 +6,13 @@ import { compile } from "lang/compiler.js";
 function ex(source) {
   resetMacros();
   resetGensym();
-  return expand(read(source));
+  return expand(read(source), { strict: false });
 }
 
 function lykn(source) {
   resetMacros();
   resetGensym();
-  return compile(expand(read(source))).trim();
+  return compile(expand(read(source), { strict: false })).trim();
 }
 
 Deno.test("macro: simple when macro", () => {

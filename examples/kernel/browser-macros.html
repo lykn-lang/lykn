@@ -17,10 +17,10 @@
   (macro unless (test (rest body))
     `(if (! ,test) (block ,@body)))
 
-  (const el (document:get-element-by-id "output"))
-  (const items #a("macros" "quasiquote" "auto-gensym" "sugar forms"))
+  (kernel:const el (document:get-element-by-id "output"))
+  (kernel:const items #a("macros" "quasiquote" "auto-gensym" "sugar forms"))
 
-  (let html "")
+  (kernel:let html "")
   (for-of item items
     (when item
       (+= html (template "<li>" item "</li>"))))

@@ -12,7 +12,7 @@ function lykn(source, filePath) {
   resetMacros();
   resetGensym();
   resetModuleCache();
-  return compile(expand(read(source), { filePath })).trim();
+  return compile(expand(read(source), { filePath, strict: false })).trim();
 }
 
 Deno.test("import-macros: basic import and use", () => {

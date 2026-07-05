@@ -10,9 +10,9 @@
   <div id="output"></div>
 
   <script type="text/lykn">
-  (const el (document:get-element-by-id "output"))
-  (const items (array "one" "two" "three"))
-  (const html (items:map (=> (item i)
+  (kernel:const el (document:get-element-by-id "output"))
+  (kernel:const items (array "one" "two" "three"))
+  (kernel:const html (items:map (=> (item i)
     (template "<p>" (+ i 1) ". " item "</p>"))))
   (= el:inner-HTML (html:join ""))
   </script>

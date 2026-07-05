@@ -197,6 +197,10 @@ pub fn is_kernel_only_form(name: &str) -> bool {
 
 /// All kernel-form atoms recognised by the Rust codegen. Single source of
 /// truth consumed by both `is_kernel_form` and `closest_kernel_form`.
+///
+/// ⚠ DIVERGENCE RISK: the JS compiler keeps a parallel copy of this set (and
+/// of `is_kernel_only_form`) in `packages/lang/kernel-forms.js` for DD-58
+/// parity. Any change here MUST be mirrored there. (arc10/slice02)
 pub const KERNEL_FORMS: &[&str] = &[
     "const",
     "let",

@@ -17,11 +17,18 @@ import {
   resetModuleCache,
 } from "lang/expander.js";
 
-// Local `lykn(source)` — same definition as @lykn/lang's mod.js.
-// Reconstructed here to decouple from the @lykn/lang sub-path exports
-// (Finding D — see workbench/finding-d-lang-exports-gap-2026-05-12.md).
+// Local `lykn(source)` — same pipeline as @lykn/lang's mod.js, but run
+// **lax** (DD-58 strict disabled). These helpers are internal compiler-testing
+// tools that deliberately compile raw kernel forms (`function*`, `const`,
+// destructuring, generators, …) to verify codegen; strict enforcement for
+// authored `.lykn` lives in the public API (`@lykn/lang` `lykn()`, the CLI,
+// doctests). `compileBoth` especially must run lax to stay a meaningful
+// raw-codegen comparison with the Rust side (which uses `--no-strict` — see
+// its `Deno.Command` below).
+// (Reconstructed here to decouple from the @lykn/lang sub-path exports —
+// Finding D, workbench/finding-d-lang-exports-gap-2026-05-12.md.)
 function lykn(source) {
-  return rawCompile(expand(read(source)));
+  return rawCompile(expand(read(source), { strict: false }));
 }
 
 /**

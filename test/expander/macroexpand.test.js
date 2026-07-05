@@ -5,7 +5,7 @@ import { expand, resetGensym, resetMacros, formatSExpr, sym, array } from "lang/
 function ex(source) {
   resetMacros();
   resetGensym();
-  return expand(read(source));
+  return expand(read(source), { strict: false }); // expander mechanics; DD-58 strict tested in dd58-strict.test.js
 }
 
 // --- formatSExpr ---

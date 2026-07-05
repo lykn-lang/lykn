@@ -11,7 +11,9 @@
   (reset-macros)
   (reset-gensym)
   (reset-module-cache)
-  (bind raw (compile (expand (read source) (obj :file-path file-path))))
+  ;; lax: expander-mechanics suite on kernel-form inputs (DD-58 strict tested
+  ;; via the JS API in test/expander/dd58-strict.test.js)
+  (bind raw (compile (expand (read source) (obj :file-path file-path :strict false))))
   (raw:trim))
 
 (test "import-macros: basic import and use"

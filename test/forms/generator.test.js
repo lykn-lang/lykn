@@ -6,7 +6,7 @@ import { compile } from "lang/compiler.js";
 function lykn(source) {
   resetMacros();
   resetGensym();
-  return compile(expand(read(source))).trim();
+  return compile(expand(read(source), { strict: false })).trim(); // kernel function*/yield codegen
 }
 
 // --- function* ---

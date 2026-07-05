@@ -6,7 +6,9 @@
   :body
   (reset-macros)
   (reset-gensym)
-  (expand (read source)))
+  ;; lax: expander-mechanics suite on kernel-form inputs (DD-58 strict tested
+  ;; via the JS API in test/expander/dd58-strict.test.js)
+  (expand (read source) (obj :strict false)))
 
 ;; --- Three-pass pipeline ---
 
