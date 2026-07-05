@@ -83,23 +83,29 @@ inserts.
   slice01 CI-green closed; broader drift audit pending), arc05 (linter — not
   started).
 - **Active / in flight:** **arc10 (compiler-completion)** — slice01
-  (`dd58-strict-default`) **CLOSED** (`faee8a1`; DD-58 strict default-on for
-  `.lykn` on the **Rust CLI**). Its bubble-up surfaced that the **JS compiler has
-  no strict / `kernel:` parity**, so **slice02 (`js-dd58-parity`) is NEXT** and
-  gates the arc's composition (A-3 is met on the Rust path only). slice03
-  (`dd37-step4-kernel-removal`) after.
+  (`dd58-strict-default`, `faee8a1`) and **slice02 (`js-dd58-parity`,
+  `feb056c`) both CLOSED** (2026-07-05). DD-58 now holds at the **language
+  level**: strict default-on + the `kernel:` escape on both compilers —
+  **A-3 met** (attested; arc-scale host reproduction at arc close). **slice03
+  (`dd37-step4-kernel-removal`) is NEXT** — it carries three routed items:
+  the macro-boundary strict asymmetry (A-6: Rust enforces post-expansion, JS
+  pre-expansion — needs a DD-58 refinement), `kernel:` compileBoth corpus
+  rows (A-8), and replacing the escape's `_kernel` don't-re-expand signal.
 - **Future:** arc09 (release).
 - **Dependency sequence:** **arc10 → arc05 → arc06 → arc07 → arc09.**
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** **scope arc10/slice02 (`js-dd58-parity`)** — bring the
-JS compiler (`packages/lang/`) to DD-58 parity: implement strict classification +
-proper `kernel:` escape handling so bare kernel-only forms error and
-`(kernel:const x 42)` compiles to `const x = 42` (today it mis-compiles to
-`kernel.const(x,42)`). This is what makes DD-58 hold at the *language* level
-(doctests / `deno test` run through the JS compiler), not just the Rust CLI. Then
-slice03 (`_kernel` removal), then arc05.
+**Immediate next action:** **scope arc10/slice03
+(`dd37-step4-kernel-removal`)** — remove the transitional `_kernel` marker
+(`expander.js` dispatch ~733–751, `classifier.js:297`, `surface-helpers.js`
+`kernelArray`, **and** the `kernel:` escape's use added in slice02 —
+`expandExpr` marks stripped forms `_kernel`; the removal must provide an
+equivalent "already kernel, don't re-expand" signal for both surface-macro
+output and escape output). Carry the slice02 bubble-up items: assess the
+macro-boundary strict asymmetry (arc10 A-6, DD-58 refinement) and add
+`kernel:` rows to the compileBoth corpus (A-8, drive-by). Then arc10 closes
+(arc closing-report + composition reproduced on host), then arc05.
 
 ## 6. How we work — the rhythm & the disciplines
 
@@ -213,10 +219,19 @@ learning / what changed.* (Also rendered in `status.html`.)
 ## 8. Open follow-ups (surfaced, not yet fully scoped)
 
 - **arc10 slice01** — DONE (Rust-CLI strict-default, `faee8a1`).
-- **arc10 slice02 · js-dd58-parity** — NEXT: strict + `kernel:` escape in the JS
-  compiler (`packages/lang/`) so DD-58 holds at the language level. Gates arc10 A-3.
-  Follow-up after it: guide kernel demos can go `lykn,skip`→`compile-fail`.
-- **arc10 slice03** — DD-37 step-4 `_kernel` removal (expander-core change).
+- **arc10 slice02 · js-dd58-parity** — DONE (`feb056c`; strict + `kernel:` in
+  the JS compiler; guide fences 09/06 flipped; A-3 met).
+- **arc10 slice03** — NEXT: DD-37 step-4 `_kernel` removal (expander-core),
+  carrying: A-6 macro-boundary strict asymmetry (DD-58 refinement — Rust
+  post-expansion vs JS pre-expansion enforcement), A-7 kernel-form set
+  duplication (JS `kernel-forms.js` mirrors Rust `dispatch.rs`; CI set-diff
+  candidate), A-8 `kernel:` compileBoth corpus rows.
+- **arc07 (docs/examples)** — new item routed from slice02: the kernel browser
+  examples use top-level `(= el:inner-HTML …)` (equality → runtime no-op,
+  pre-existing latent bug).
+- **arc09 (release notes)** — breaking items from slice02: bare kernel forms
+  via JS API/browser now throw; `(kernel:…)` changed meaning in JS (bogus
+  member call → real escape).
 - **arc05 corpus** — after arc10 lands: the linter owns idiom/style (incl. the
   re-homed `==`/`&&`/`require`/IIFE anti-patterns); the compiler owns the closed
   declaration-form namespace. `09-anti-patterns.md` is the seed (needs the
@@ -229,8 +244,9 @@ learning / what changed.* (Also rendered in `status.html`.)
 
 ## 9. One-line cheat-sheet
 
-Read project-plan + README + status.html → **arc10/slice01 is closed** (Rust-CLI
-strict) → next is **arc10/slice02 · js-dd58-parity** (strict + `kernel:` escape in
-the JS compiler, so DD-58 holds on the doctest/`deno test` path too) → scope it
-for CC → verify via git+review, runtime attested → close + bubble-up + update plan
-docs + status.html → then slice03 (`_kernel`), then arc05.
+Read project-plan + README + status.html → **arc10 slices 01+02 are closed**
+(DD-58 strict + `kernel:` on BOTH compilers; A-3 met) → next is **arc10/slice03
+· dd37-step4-kernel-removal** (expander-core; carries A-6 macro-boundary
+asymmetry + A-8 `kernel:` corpus rows) → scope it for CC → verify via
+git+review, runtime attested → close + bubble-up → then the **arc10 close**
+(arc closing-report; composition A-3/A-4 reproduced on host) → then arc05.

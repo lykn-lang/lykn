@@ -21,11 +21,27 @@ guides are touched, so `make test-docs` is in the green bar. Per
 
 ## What Worked
 
-_(At slice close.)_
+- **Grounding the open set in the actual code paid off again**: the two
+  CDC-ground-truthed breakage paths (`main.rs` codegen script, browser
+  loader) were real and landed as clean, small fixes instead of surprises.
+- **Empirical migration sizing beat both grep estimates** (26 actual vs
+  38/59 estimated) because the shared-helper fix covered call sites
+  wholesale — the audit-then-classify discipline surfaced *why* the numbers
+  differed instead of leaving them in tension.
+- **Behavior-parity-not-structure-parity** as the porting rule kept the JS
+  implementation idiomatic (a pre-pass fits the JS expander architecture)
+  while the whitelist/diagnostics stayed byte-faithful.
 
 ## Closure
 
-_(At slice close: commit SHA, date, verifier, row disposition counts.)_
+Closed 2026-07-05 (commit `feb056c`). Verified by: CC (attested) + CDC
+(`cdc-verification.md`: git/code/grep-verified; whitelist parity
+independently reproduced by set-diff; runtime attested). Rows: 8. Done: 8.
+Deferred: 0. No-op: 0. **Bubble-ups:** A-3 partial → met; two CDC findings
+routed (macro-boundary strict asymmetry → slice03 scope assessment;
+`kernel:` compileBoth corpus gap → slice03 drive-by); CC follow-ups filed
+(kernel-form set duplication, strict|strict harness, browser-example
+equality bug → arc07, release notes → arc09).
 
 > Breaking change (JS API + browser inline scripts): flagged for the 0.6.0
 > release notes (arc09). Design sub-questions (API option shape; check

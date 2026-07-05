@@ -59,7 +59,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
-| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **Open — next up** (sequences *before* arc05 — see note) |
+| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **In flight** — slice01+02 closed (Rust CLI + JS parity; A-3 met); slice03 (`_kernel`) next (sequences *before* arc05 — see note) |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
@@ -168,6 +168,23 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.14 — 2026-07-05 (arc10 slice02 closed — DD-58 at the language level)
+arc10 slice02 (`js-dd58-parity`) closed (`feb056c`, CDC-verified): the JS
+compiler (`packages/lang/`) now enforces DD-58 — strict default-on
+(`{strict:false}` opt-out) + the `kernel:` escape (whitelist parity with Rust
+CDC-reproduced, 92=92; Rust-verbatim diagnostics). Browser loader + `lykn test`
+codegen script extension-aware (`.lyk`→lax). 26-site migration; guide fences
+09/06 flipped `skip`→`compile-fail`/runnable-`kernel:`. Metrics: `lykn test`
+**1354/0**, deno **667/0**, `make check` ✓, doctests green both example trees.
+**arc10 A-3 partial → met** — DD-58 now holds on every compile path. Findings
+routed: macro-boundary strict asymmetry (Rust post-expansion vs JS
+pre-expansion; DD-58 refinement — arc10 A-6, assess in slice03); kernel-form
+set duplication follow-up (A-7); `kernel:` compileBoth corpus rows (A-8);
+browser-example `(= el:inner-HTML …)` equality no-op → **arc07**;
+breaking-change release-notes items → **arc09**. Next: arc10 slice03
+(`dd37-step4-kernel-removal`), then arc10 close (composition on host), then
+arc05. Surfaced by: slice02 close (CC report + CDC verification).
 
 ### v1.13 — 2026-06-30 (arc10 slice01 closed; JS-parity finding)
 arc10 slice01 (`dd58-strict-default`) closed (`faee8a1`): DD-58 strict default-on
