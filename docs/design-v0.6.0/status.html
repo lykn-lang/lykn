@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-06-30 (arc10 slice01 closed)",
+  updated: "2026-07-05 (arc10 slice02 scoped — open set written)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -171,8 +171,8 @@ const DATA = {
   ],
   sequence: ["arc10","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc10 · slice02 — js-dd58-parity (next)",
-    desc:"slice01 landed DD-58 strict on the Rust CLI. But the JS compiler (packages/lang) enforces neither strict nor the kernel: escape — so doctests/deno test stay lax. Next: bring the JS compiler to parity so DD-58 holds at the language level, not just the Rust CLI."
+    arc:"arc10 · slice02 — js-dd58-parity (scoped — ready for CC)",
+    desc:"slice01 landed DD-58 strict on the Rust CLI; the JS compiler (packages/lang) enforces neither strict nor the kernel: escape. slice02's open set is written (slice-doc/ledger/cc-prompt, grounded 2026-07-05): strict default-on + kernel: escape in the JS compiler, ~38–59 call-site migration, parity-gap skip-fence flips. Grounding also surfaced two extra breakage paths now in scope: the lykn-test codegen script calls lykn() for .lyk files, and the browser script-tag loader compiles kernel .lyk examples."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},

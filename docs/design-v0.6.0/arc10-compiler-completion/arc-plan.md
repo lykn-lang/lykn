@@ -37,7 +37,7 @@ arc10 slice01.
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · dd58-strict-default** | Wire `classify_form_strict` into normal `.lykn` compilation on the **Rust CLI** (`compile`/`build`/`check`). The 5 kernel-only heads (`const`/`let`/`var`/`function`/`function*`) → compile error; `kernel:` resolves; `.lyk` exempt; `--no-strict` harness-only. Guides migrated (15 `lykn,skip` fences; ID-38 operators reframed as legal passthrough). | **Closed** (`faee8a1`; Rust CLI strict; `make check` ✓, corpus 1345/0, guide docs 468/0) |
-| **slice02 · js-dd58-parity** (NEW — from slice01 bubble-up) | The JS compiler (`packages/lang/`) implements **neither** strict **nor** the `kernel:` escape — so doctests/`deno test` stay lax and `(kernel:const x 42)` mis-compiles (`kernel.const(x,42)`). Add strict + `kernel:` handling to the JS compiler so DD-58 holds at the *language* level, not just the Rust CLI. Then guide kernel demos can go `skip`→`compile-fail`. | **Open — next** (recommended by CC; gates arc10 A-3) |
+| **slice02 · js-dd58-parity** (NEW — from slice01 bubble-up) | The JS compiler (`packages/lang/`) implements **neither** strict **nor** the `kernel:` escape — so doctests/`deno test` stay lax and `(kernel:const x 42)` mis-compiles (`kernel.const(x,42)`). Add strict + `kernel:` handling to the JS compiler so DD-58 holds at the *language* level, not just the Rust CLI. Then guide kernel demos can go `skip`→`compile-fail`. | **Scoped — open set written 2026-07-05** (`slice02-js-dd58-parity/{slice-doc,ledger,cc-prompt}.md`); gates arc10 A-3 |
 | **slice03 · dd37-step4-kernel-removal** | Remove the `_kernel` marker: `expander.js` dispatch (~733–751), `classifier.js:297`, `surface-helpers.js` `kernelArray`. An expander-core change — assess reachability, keep behaviour identical. | **Open** (capability-depth) |
 
 ## 3. Dependencies
@@ -57,12 +57,26 @@ this is the dependency order.)
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence |
 |----|-----------|--------|--------------|--------|--------|----------|
-| A-1 | slice01 (strict-default) closed | ptr: slice01 closing-report | serious | arc-plan | open | |
-| A-2 | slice02 (`_kernel` removal) closed | ptr: slice02 closing-report | correctness | arc-plan | open | |
+| A-1 | slice01 (strict-default) closed | ptr: slice01 closing-report | serious | arc-plan | **done** | slice01 `cdc-verification.md` (accepted 2026-06-30; commit `faee8a1`) — attested (pointer to closed child ledger) |
+| A-2 | slice02 (js-dd58-parity) closed | ptr: slice02 closing-report | serious | arc-plan (re-pointed v1.2; was: "slice02 (`_kernel` removal)" — the v1.1 re-slicing moved `_kernel` removal to slice03, now row A-5) | open | |
+| A-5 | slice03 (dd37-step4-kernel-removal) closed | ptr: slice03 closing-report | correctness | arc-plan (v1.2; carries the criterion A-2 held before the v1.1 re-slicing) | open | |
 | A-3 | **surface prevents bare kernel-only *declaration* forms** — `const`/`let`/`var`/`function`/`function*` in a `.lykn` file are compile errors, on **both** compilers | compile each of the 5 → errors on Rust CLI **and** JS path; `kernel:` escape resolves on both | serious | anti-patterns finding | **partial** | **met on Rust CLI (slice01); JS-compiler parity pending slice02** — until then doctests/`deno test` stay lax. (Operator/expression anti-patterns → arc05 lint.) |
 | A-4 | whole tree still compiles + green after migration | `make check` green; doctests green; downstream (mycelium) builds | serious | arc-plan | open | reproduce at arc scale |
 
 ## 5. Version History
+
+### v1.2 — 2026-07-05 (slice02 scoped; arc-ledger reconciled)
+Wrote the slice02 (`js-dd58-parity`) open set (`slice-doc.md` / `ledger.md` /
+`cc-prompt.md`), grounded in `packages/lang/` + the Rust strict reference
+(`classify_form_strict`): strict default-on for the JS surface pipeline +
+`kernel:` escape (both modes), migration of ~38–59 JS-path call sites,
+parity-gap `lykn,skip` fence flips (15 fences grounded: 14 guides + 1 README).
+**Arc-ledger reconciliation** (drift found while scoping; surfaced by CDC, not
+a slice): A-1 → done (slice01 closed 2026-06-30, evidence pointer added — the
+v1.1 entry recorded the close but never updated the row); A-2 re-pointed to
+slice02 · js-dd58-parity (was: "slice02 (`_kernel` removal)" — stale after the
+v1.1 re-slicing); added A-5 for slice03 (carries A-2's former criterion), so
+each slice in the breakdown has its class-(a) row.
 
 ### v1.1 — 2026-06-30 (slice01 closed; JS-parity finding → slice02)
 slice01 (`dd58-strict-default`) closed (`faee8a1`): DD-58 strict default-on for
