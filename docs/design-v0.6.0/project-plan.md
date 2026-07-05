@@ -108,13 +108,18 @@ Arcs in dependency order. Each delivers one coherent capability.
   **Decision (operator):** **complete DD-58 — strict mode default-on for `.lykn`
   compilation.** Consequences:
   - **New compiler work (high priority, gates arc05):** DD-58-strict-default —
-    turn strict on for normal compilation; bare kernel forms in surface become
-    compile errors (use `kernel:` escape). Potentially breaking; needs a migration
-    check of surface code. Also resolves the `(require …)`→invalid-ESM finding.
-  - **arc05 (linter) SHRINKS:** the compiler now catches kernel-form leaks, so the
-    linter focuses on genuine idiom/style rules (`or`-vs-`??`, `:sort`, `for-in`,
-    boolean-params, catch-and-log, `cell`-when-pure, `js:`-overuse …), not the
-    kernel-form family. Cleaner corpus.
+    turn strict on for normal compilation; bare **kernel-only declaration forms**
+    become compile errors (use `kernel:` escape). **Scope narrowed by CC 2026-06-30:
+    `classify_form_strict` rejects exactly `const`/`let`/`var`/`function`/`function*`
+    — NOT `==`/`===`/`&&` (legal surface passthrough) or `this`/`arguments`/
+    `require`/IIFE (ordinary expressions).** So strict does *not* subsume the
+    `require`→invalid-ESM issue (that + the operator/expression anti-patterns route
+    to arc05). Potentially breaking; migration is the 5 forms only.
+  - **arc05 (linter) — the division sharpened:** the compiler owns the closed
+    *declaration-form* namespace; the linter owns the **idiom/style** anti-patterns,
+    including the report's non-kernel-form "leaks" (`==`-vs-`===`, `&&`-vs-`and`,
+    `require`, IIFE) plus the converted JS-runtime traps (`or`-vs-`??`, `:sort`,
+    `for-in`, boolean-params, catch-and-log, `cell`-when-pure, `js:`-overuse …).
   - **arc07 guide-fix SHRINKS:** once strict lands, the "ELIMINATED" claims become
     *true* (enforced) — minimal guide change; the guide is ahead of the compiler,
     not wrong.

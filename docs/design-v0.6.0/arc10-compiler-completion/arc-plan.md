@@ -18,15 +18,23 @@ Two pieces:
 2. **DD-37 step 4** — remove the transitional `_kernel` marker (the last piece of
    DD-37's migration, surfaced at arc04's close).
 
-Together: surface prevents `var`/`==`/`this`-functions/`arguments`/`require`/IIFE
-(currently they leak through and emit directly), and the `_kernel` scaffolding is
-gone.
+Together: surface prevents bare **kernel-only declaration forms** —
+`const`/`let`/`var`/`function`/`function*` (currently they leak through and emit
+directly, e.g. `(var x 1)`→`var x = 1`), and the `_kernel` scaffolding is gone.
+(Scope note per CC's 2026-06-30 finding: DD-58 closes *exactly* these 5 heads;
+the operator/expression anti-patterns `==`/`this`/`arguments`/`require`/IIFE are
+legal surface and belong to arc05's linter, not this arc.)
+
+**Scope note (operator, 2026-06-30):** the strict-default migration is
+**repo-only** for now — downstream projects (e.g. mycelium) that use bare kernel
+forms will break under strict and are handled as a **separate follow-up**, not in
+arc10 slice01.
 
 ## 2. Slice breakdown
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · dd58-strict-default** | Enable DD-58 strict mode for `.lykn` `compile`/`build` (today it's wired to `lykn test` only — `main.rs` `strict: !is_lyk`). Bare kernel-only forms (`var`/`const`/`let`/`function`/`function*`) in surface → compile error with the `kernel:` escape as the resolution. **Migration audit**: find + convert bare kernel/JS forms across the tree (guides, examples, scaffolds, downstream e.g. mycelium) to surface forms or `kernel:` escapes so everything still compiles. Verify the guide's "ELIMINATED" claims now hold + all doctests/`make check` green. Subsumes the `(require …)`→invalid-ESM issue. | **Open — priority** (near-specified; scope a CC prompt next) |
+| **slice01 · dd58-strict-default** | Wire `classify_form_strict` into normal `.lykn` compilation (today it's `lykn test`-only). Bare kernel-only forms (`var`/`const`/`let`/`function`/`function*` — the 5 heads, per CC's finding) in surface → compile error; `kernel:` escape resolves; `.lyk` exempt. **Repo-only migration** of those 5 forms in guides/tests/examples (or `compile-fail`/`kernel:`-mark doc examples). Downstream (mycelium) + the operator/expression anti-patterns (→ arc05 lint) = filed follow-ups. | **Open — scoped** (slice-doc + ledger + cc-prompt ready for CC) |
 | **slice02 · dd37-step4-kernel-removal** | Remove the `_kernel` marker: `expander.js` dispatch (~733–751), `classifier.js:297`, `surface-helpers.js` `kernelArray`. An expander-core change — assess reachability, keep behaviour identical. | **Open** (capability-depth; plan when slice01 lands) |
 
 ## 3. Dependencies
@@ -48,7 +56,7 @@ this is the dependency order.)
 |----|-----------|--------|--------------|--------|--------|----------|
 | A-1 | slice01 (strict-default) closed | ptr: slice01 closing-report | serious | arc-plan | open | |
 | A-2 | slice02 (`_kernel` removal) closed | ptr: slice02 closing-report | correctness | arc-plan | open | |
-| A-3 | **surface prevents the kernel-form leaks** — bare `var`/`==`/`function`-`this`/`require`/IIFE in a `.lykn` file are compile errors | compile the 10 leak snippets from the anti-patterns report → each errors (kernel: escape resolves) | serious | anti-patterns finding | open | reproduce at arc scale |
+| A-3 | **surface prevents bare kernel-only *declaration* forms** — `const`/`let`/`var`/`function`/`function*` in a `.lykn` file are compile errors | compile each of the 5 → errors; `kernel:` escape resolves | serious | anti-patterns finding | open | reproduce at arc scale. (The operator/expression anti-patterns `==`/`this`/`arguments`/`require`/IIFE are legal under DD-58 → arc05 lint, not here) |
 | A-4 | whole tree still compiles + green after migration | `make check` green; doctests green; downstream (mycelium) builds | serious | arc-plan | open | reproduce at arc scale |
 
 ## 5. Version History

@@ -1031,6 +1031,18 @@ the philosophy describe. This clarifies the earlier plan note that "strict
 enforcement turns on once DD-37's classifier lands" — it means *default* strict
 compilation, not test-runner-only.
 
+**Precise coverage (important — `classify_form_strict`, `forms.rs`
+`is_kernel_only_form`):** the closed namespace this DD enforces is **exactly the 5
+kernel-only declaration/binding heads** — `const`, `let`, `var`, `function`,
+`function*` (the JS constructs that have surface equivalents `bind`/`fn`).
+Operators such as `==`/`===`/`&&`/`||` are **legal surface passthrough** (not
+closed off), and `this`/`arguments`/`require`/IIFE are ordinary expressions — none
+of those are closed-namespace violations, so strict does **not** reject them. The
+anti-patterns among *those* (e.g. prefer `=` over `===`, `and` over `&&`, avoid
+`require`) are **idiom/style** matters for `lykn lint`, not this DD. (The
+2026-06-30 anti-patterns audit initially over-scoped this; the correction is
+recorded here to keep the closed-namespace rule honest.)
+
 **Scope / consequences:** a breaking change for any surface code using bare kernel
 forms (guides, examples, downstream e.g. mycelium) — a migration pass is part of
 the work. It also subsumes the `(require …)` → invalid-ESM output issue. Scheduled
