@@ -1036,9 +1036,45 @@ decls at top level (they already errored on Rust; now on JS too) — the fix is
 `(kernel:…)` in the template. Recorded here per operator decision; Duncan
 reconciles odm versioning.
 
+### 2026-07-06 (DD-60 cross-refinement — the escape's name slot is validity-checked)
+
+**Decision (operator, 2026-07-06, via DD-60 D2):** the `(kernel:<form> …)`
+escape remains a raw passthrough for *form semantics*, but its **name slot
+does not bypass name validity**: a JS reserved word in a binding name
+position — e.g. `(kernel:const if 0)`, which today emits the unparseable
+`const if = 0;` at rc=0 — is a **compile error on both backends**, exactly
+as it is outside the escape. Rationale (DD-60): *validity is not a macro
+concern*; Principle 3 forbids silent invalid output regardless of the
+authoring path. This narrows the escape's contract from "raw passthrough"
+to **"raw passthrough of forms; names must still be legal lykn names."**
+Nothing else about the escape changes (whitelist validation, did-you-mean,
+sanctioned-kernel marking all stand).
+
+**Where it lives:** the semantics and per-cell targets are DD-60's
+(`Name-Binding Semantics`, odm 0062); the implementation lands in
+arc13/slice02 (Rust) and slice03 (JS + the name-binding conformance
+corpus). Recorded here because it amends this DD's escape section — a
+cross-reference, not a duplicate specification.
+
 ---
 
 ## Version History
+
+### v1.2 — 2026-07-06 (two refinements: macro-boundary enforcement; escape name-validity)
+
+**What changed:** (1) the 2026-07-05 refinement (A-6 — macro-boundary
+enforcement, operator-decided Rust semantics: macro-emitted top-level bare
+kernel-only decls error on both backends; JS gained the post-expansion
+sweep + sanctioned-kernel registry) is now carried in this version marker —
+it landed in the refinement log at arc10/slice03 close with versioning
+deferred; this entry closes that loop. (2) the 2026-07-06 DD-60
+cross-refinement: the `kernel:` escape's name slot is validity-checked
+(reserved words rejected; no invalid output at rc=0 through any authoring
+path).
+
+**Which children surfaced it:** arc10/slice03 (macro boundary) and
+arc13/slice01's conformance matrix + DD-60 (escape name slot), both
+operator-confirmed.
 
 ### v1.1 — 2026-06-30 (strict enforcement is default-on, not tests-only)
 

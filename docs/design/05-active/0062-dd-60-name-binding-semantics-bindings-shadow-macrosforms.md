@@ -1,6 +1,6 @@
 ---
 number: 62
-title: "DD-60 — Name-Binding Semantics (bindings shadow macros/forms) — DRAFT"
+title: "DD-60 — Name-Binding Semantics (bindings shadow macros/forms)"
 author: "Duncan McGreggor"
 component: All
 tags: [change-me]
@@ -12,7 +12,7 @@ superseded-by: null
 version: 1.0
 ---
 
-# DD-60 — Name-Binding Semantics (bindings shadow macros/forms) — DRAFT
+# DD-60 — Name-Binding Semantics (bindings shadow macros/forms)
 
 > **Status: DRAFT — for odm promotion (Duncan).** Drafted by CC 2026-07-06 from
 > the arc13/slice01 conformance matrix (`tools/conformance-matrix.js`, 885

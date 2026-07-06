@@ -6,7 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
-| 0062 | DD-60 — Name-Binding Semantics (bindings shadow macros/forms) — DRAFT | Active | 2026-07-06 |
+| 0062 | DD-60 — Name-Binding Semantics (bindings shadow macros/forms) | Active | 2026-07-06 |
 | 0061 | DD-59 — The Lykn-Source Linter (`lykn lint`) | Accepted | 2026-07-06 |
 | 0060 | DD-56 — Canonical Form Specification and Language Catalog | Draft | 2026-07-06 |
 | 0059 | Kernel/Surface Separation | Active | 2026-06-30 |
@@ -81,8 +81,8 @@ This index is automatically generated. Do not edit manually.
 
 ### Active
 
-- [0062 - DD-60 — Name-Binding Semantics (bindings shadow macros/forms) — DRAFT](05-active/0062-dd-60-name-binding-semantics-bindings-shadow-macrosforms-draft.md)
-- [0059 - Kernel/Surface Separation](05-active/0059-dd-58-kernelsurface-separation-closed-surface-namespace-with-kernelform-.-escape.md)
+- [0062 - DD-60 — Name-Binding Semantics (bindings shadow macros/forms)](05-active/0062-dd-60-name-binding-semantics-bindings-shadow-macrosforms.md)
+- [0059 - Kernel/Surface Separation](05-active/0059-dd-58-kernelsurface-separation-closed-surface-namespace.md)
 - [0058 - Compiler Architecture Coherence — Thread Opening](05-active/0058-compiler-architecture-coherence-thread-opening.md)
 - [0057 - Cohesive Fix Across Compiler, Docs, Guides, Book, Skill](05-active/0057-cohesive-fix-across-compiler-docs-guides-book-skill.md)
 - [0056 - `.d.ts` Generation from `:type` Annotations](05-active/0056-m10-pre-dd-inventory-.d.ts-generation-from-type-annotations.md)

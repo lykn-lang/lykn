@@ -1,5 +1,12 @@
 # DD-58: Kernel/Surface Separation — Closed Surface Namespace with `(kernel:<form> ...)` Escape
 
+> **HISTORICAL DRAFT — superseded.** The canonical, living DD-58 is
+> odm-managed at `docs/design/05-active/0059-dd-58-kernelsurface-separation…`
+> (**odm 0059**, at v1.2 as of 2026-07-06 with refinement entries through
+> the DD-60 cross-refinement). This file is the migration-era pre-promotion
+> draft, retained for provenance only — do not update it. *(Pointer added
+> 2026-07-06 during the odm reconciliation.)*
+
 **Status:** Draft (CDC, 2026-05-17). Second revision incorporating
 Duncan's 2026-05-17 calls on the open design questions.
 **Author:** CDC (cdc/compiler-coherence thread)

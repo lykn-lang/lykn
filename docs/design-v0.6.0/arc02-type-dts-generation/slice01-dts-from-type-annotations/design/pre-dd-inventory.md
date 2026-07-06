@@ -1,5 +1,9 @@
 # M10 Pre-DD Inventory — `.d.ts` Generation from `:type` Annotations
 
+> **Tracked in odm** as **odm 0056** (same title, `docs/design/05-active/
+> 0056-m10-pre-dd-inventory-…`). This design-tree copy is migration
+> provenance. *(Pointer added 2026-07-06 during the odm reconciliation.)*
+
 **Status:** Resolved — calls landed 2026-05-13. Ready for implementation.
 **Thread:** cdc/dep-ergonomics
 **Phase 2 plan reference:** M10 in `workbench/phase-2-plan.md` (2–4 iterations estimated)
