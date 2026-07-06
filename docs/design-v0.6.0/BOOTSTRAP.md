@@ -100,18 +100,20 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** **hand arc05/slice01 (`lint-infra`) to CC.**
-arc05 is **ACTIVE** (slice-planned 2026-07-06; arc-plan v1.2): design
-settled via **DD-59 draft** (`arc05/design/dd-59-…-DRAFT.md` — Broad rule
-set, Rust over pre-expansion SExpr, hardcoded dispatch, text+JSON,
-error/warn, exit 0/1/2; odm promotion = Duncan). slice01 = machinery + 3
-pilots + the **rule-inventory compiler-verification pass** (arc10 lesson
-#4, proactive — its table is slice02's contract). Then slice02 (shape
-corpus + repo dogfood), slice03 (context rules + guide-09 enforcement
-labels → closes the reclassification debt). Standing: **`make check` is
-the canonical bar** (~1m04s); demos use **`./bin/lykn`**, never bare
-`lykn`. Post-0.6.0 routed items: project-plan §1. After arc05: arc06 →
-arc07 → arc09.
+**Immediate next action:** **two threads.** (1) **CC commits arc05/slice02
+source** (approved — single commit, closing report stays untracked); on
+the SHA, CDC verifies + closes it (15 rules live; ID-44 fixed both
+backends; ID-03 = warn, operator-confirmed; the ID-42 self-stop accepted).
+(2) **Hand arc13/slice01 (`conformance-matrix + DD-60`) to CC** — arc05 is
+**PAUSED at 2/3** (operator blocker call): slice02's recon exposed the
+**expander param-vs-macro shadowing divergence** (Rust calls the param
+where JS throws; Rust fires macros for 7 macro-named params — wrong code;
+JS reserved words → invalid JS at rc=0). arc13 = matrix + DD-60 semantics
+(recon-only slice01) → Rust → JS + permanent conformance corpus. **DD-60
+goes to the operator for confirmation before slice02 there is scoped.**
+arc05 slice03 (+ the shrunken ID-42 lint question, arc13 A-6) resumes
+after. Sequence: **arc13 → arc05(resume) → arc06 → arc07 → arc09.**
+Standing: `make check` is the bar; `./bin/lykn` never bare `lykn`.
 
 ## 6. How we work — the rhythm & the disciplines
 

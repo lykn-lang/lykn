@@ -27,7 +27,8 @@
 | [arc02 · type-dts-generation](./arc02-type-dts-generation/arc-plan.md) | `.d.ts` from `:type` annotations (DD-56) | **Closed** (M10) |
 | [arc03 · compiler-coherence](./arc03-compiler-coherence/arc-plan.md) | Rust + JS coherent; DD-58 kernel/surface + DD-37 surface compiler | **Closed** — architecture landed on release 2026-06-29; corpus 1345/0 |
 | [arc04 · refactor-tooling](./arc04-refactor-tooling/arc-plan.md) | `move-function` tool + the surface-extraction it drives | **Closed** — 5/5 slices; tool built + full extraction; surface.js 2315→448; lint green; `_kernel`→DD-37 step 4 follow-up |
-| [arc05 · lykn-source-linter](./arc05-lykn-source-linter/arc-plan.md) | `lykn lint` over Lykn source | **ACTIVE** — slice-planned (3 slices; DD-59 drafted; slice01 ready for CC) |
+| [arc05 · lykn-source-linter](./arc05-lykn-source-linter/arc-plan.md) | `lykn lint` over Lykn source | **PAUSED at 2/3** — 15 rules live; blocked on arc13 (slice02's recon exposed the expander divergence) |
+| [arc13 · expander-coherence](./arc13-expander-coherence/arc-plan.md) | Lexical bindings shadow macros on both backends; reserved words rejected; conformance corpus | **Open — scoped** (slice01 recon+DD-60 ready for CC); blocks arc05 slice03 |
 | [arc06 · cross-project-dep-ergonomics](./arc06-cross-project-dep-ergonomics/arc-plan.md) | `lykn add`, downstream-blocker audit | **Open** (slice01 exports-gap closed; main work not started) |
 | [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Open** — slice01 (CI-green doctest fix) closed; broader guide-drift work pending |
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
@@ -36,7 +37,7 @@
 | [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **Closed** — gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked |
 | [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
 
-_Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc05 → arc06 → arc07 → arc09**._
+_Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc13 → arc05(resume) → arc06 → arc07 → arc09**._
 
 ## Layout conventions
 

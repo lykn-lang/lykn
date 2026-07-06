@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-06 (arc05 ACTIVE — the linter slice-planned; slice01 ready for CC)",
+  updated: "2026-07-06 (arc05 paused on an expander-coherence blocker — arc13 created, recon+DD-60 ready for CC)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -150,9 +150,12 @@ const DATA = {
       slices:[
         {n:"move-core",s:"closed"},{n:"rewiring",s:"closed"},{n:"helper-extract",s:"closed"},
         {n:"complex-forms",s:"closed"},{n:"cleanup",s:"closed"}] },
-    { id:"arc05", name:"lykn-source-linter", status:"active",
-      cap:"lykn lint over Lykn source — idiom/style. Broad v1 (15 shape rules + 2 context + 2 conventions); DD-59 drafted; the compiler owns the 5-form namespace, the linter owns everything the guide can name.",
-      slices:[{n:"lint-infra",s:"active"},{n:"shape-rule-corpus",s:"open"},{n:"context-rules+docs",s:"open"}] },
+    { id:"arc05", name:"lykn-source-linter", status:"open",
+      cap:"lykn lint over Lykn source — 15 rules live, ID-44 compiler bug fixed both backends, honest dogfood. PAUSED at 2/3 (operator): slice02's recon exposed the expander divergence → arc13 blocks slice03.",
+      slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
+    { id:"arc13", name:"expander-coherence", status:"active",
+      cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
+      slices:[{n:"matrix+DD-60",s:"active"},{n:"rust-shadowing",s:"open"},{n:"js-shadowing+corpus",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -175,10 +178,10 @@ const DATA = {
       cap:"Every test runs exactly once per make check; make test-docs tests docs. 1m52s → 2.6s (test-docs), >2m → 1m04s (check), corpus 1×/0×. Created, delivered, and gated in one day.",
       slices:[{n:"run-once-topology",s:"closed"}] },
   ],
-  sequence: ["arc05","arc06","arc07","arc09"],
+  sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc05 · slice01 — lint-infra (ready for CC)",
-    desc:"The linter — lykn's oldest public promise (the stub cites issue #1) — is finally in flight. Design settled (DD-59 draft, operator-confirmed): Rust over the pre-expansion SExpr, hardcoded dispatch, text + JSON, error/warn, exit 0/1/2. slice01 builds the machinery end-to-end with 3 pilot rules (no-require, sort-without-comparator, parseint-radix) AND compiler-verifies all 19 rule candidates before slice02 scopes against them — the arc10 lesson applied proactively. Then slice02 (shape corpus + repo dogfood), slice03 (context rules + guide-09 enforcement labels), the P-11 demo, and on to arc06/07/09."
+    arc:"arc13 · slice01 — conformance matrix + DD-60 (ready for CC)",
+    desc:"arc05/slice02 delivered big (15 rules live; the ID-44 compiler bug fixed on BOTH backends — the JS-first recon found the JS compiler shared it; honest dogfood incl. a rule bug the corpus exposed), and its ID-42 self-stop uncovered the disease behind the symptom: the Rust and JS expanders resolve param-vs-macro shadowing differently — same source compiles on one, throws on the other; Rust emits wrong code for 7 macro-named params; reserved words yield invalid JS at rc=0. Operator: blocker. arc05 pauses at 2/3; arc13 fixes it properly — full name-binding conformance matrix + DD-60 semantics (recon-only slice01), then Rust, then JS + a permanent cross-compiler conformance corpus. Then arc05 resumes and 'does the right thing' instead of warning broadly."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
@@ -229,6 +232,8 @@ const DATA = {
       lesson:"The first arc10/arc11 gate run used bare <code>lykn</code>, which resolved to a stale cargo-installed binary — it sibling-emitted 97 _test.js files into test/ (old behavior), while ./bin/lykn in the same session behaved correctly. And the new *_test.js gitignore <i>masked</i> the debris from git. <b>Learning:</b> issues-log #3 guarded bin/ and the build dir; PATH is a third staleness channel. Runbooks now say <code>which lykn</code> + <code>./bin/lykn</code> explicitly; a warn-on-foreign-binary guard is filed. Bonus finding: unscoped deno test also walks .worktrees/ (stale checkouts, 0-ahead, deletable)." },
     { t:"Deno config 'exclude' filters even explicitly-passed paths", tag:"guard",
       lesson:"slice01's planned project.json target/ exclude turned out to break the very runs it was protecting (Deno returns 'No test' even for explicitly-passed excluded paths) — CC demonstrated it empirically and declined the mechanism; the row's goal (no unscoped TS2307 abort) was already met by the fossil deletion + bare specifiers. <b>Learning:</b> a ledger row's mechanism can be invalidated while its goal stands — amend the row (was:-note), don't force the mechanism. The supported test command remains deno test --config project.json -A test/." },
+    { t:"The expanders disagree on what a name means", tag:"open",
+      lesson:"arc05's ID-42 recon self-stopped and exposed it: a param named after a surface macro compiles as a call on Rust but throws on JS; Rust fires macros for 7 macro-named params (wrong code); JS reserved words emit invalid JS at rc=0. A P-9-class semantic divergence the cross-compiler corpus never covered — form-codegen coverage (~11%) was a documented latent gap since arc03, and this is what lived in it. <b>Learning:</b> the self-stop + recon-gate discipline turned a would-be lint rule into the discovery of the real disease. → arc13 (DD-60 semantics + both expanders + a permanent name-binding conformance corpus)." },
     { t:"CDC 'appears dead' recon was a grep artifact", tag:"fixed",
       lesson:"The slice03 slice-doc claimed kernelArray was dead (2 grep hits read as definition+export without opening the second — it was the call site). CC's gated recon caught it and kept the function. <b>Learning:</b> issues-log #4 cuts both ways — CDC claims need grounding to the artifact too, and recon-gates-implementation earns its keep in both directions." },
     { t:"require → invalid ESM output", tag:"open",

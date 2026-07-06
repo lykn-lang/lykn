@@ -5,6 +5,7 @@
 //! directly.
 
 use crate::ast::sexpr::SExpr;
+use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
 
 use super::format::JsWriter;
@@ -761,11 +762,38 @@ fn emit_declaration_bare(w: &mut JsWriter, kind: &str, args: &[SExpr]) -> Result
     Ok(())
 }
 
+/// A loop already binds its variable with `const` — wrapping the binding in a
+/// declaration form (`(const …)` / `(let …)` / `(var …)`) makes the emitter
+/// produce `for (const const …`, which no JS engine can parse. Reject it with a
+/// diagnostic pointing at the bare binding. (ID-44; guide-09's "Throws" claim
+/// is true again, and the JS backend already rejects this — DD-58 parity.)
+fn check_loop_binding(binding: &SExpr) -> Result<(), LyknError> {
+    if let SExpr::List { values, .. } = binding
+        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && matches!(head, "const" | "let" | "var")
+    {
+        let inner = values
+            .get(1)
+            .map(|b| b.to_string())
+            .unwrap_or_else(|| "binding".to_string());
+        return Err(LyknError::Codegen(Diagnostic {
+            severity: Severity::Error,
+            message: format!(
+                "loop binding must not be wrapped in `{head}` — the loop already binds with `const`"
+            ),
+            span: binding.span(),
+            suggestion: Some(format!("use the bare binding: `{inner}`")),
+        }));
+    }
+    Ok(())
+}
+
 fn emit_for_of(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     // (for-of binding iterable body...)
     if args.len() < 2 {
         return Ok(());
     }
+    check_loop_binding(&args[0])?;
     w.write("for (const ");
     emit_pattern(w, &args[0])?;
     w.write(" of ");
@@ -781,6 +809,7 @@ fn emit_for_in(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     if args.len() < 2 {
         return Ok(());
     }
+    check_loop_binding(&args[0])?;
     w.write("for (const ");
     emit_pattern(w, &args[0])?;
     w.write(" in ");
@@ -796,6 +825,7 @@ fn emit_for_await_of(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> 
     if args.len() < 2 {
         return Ok(());
     }
+    check_loop_binding(&args[0])?;
     w.write("for await (const ");
     emit_pattern(w, &args[0])?;
     w.write(" of ");
@@ -1951,6 +1981,45 @@ mod tests {
             stmt_to_string(&expr),
             "for (const x of items) {\n  f(x);\n}\n"
         );
+    }
+
+    /// ID-44 regression: a loop binding wrapped in `(const …)` / `(let …)` /
+    /// `(var …)` used to emit `for (const const … of …)` at rc=0, which no JS
+    /// engine can parse. All three loop forms must now reject it.
+    #[test]
+    fn for_loop_binding_rejects_declaration_wrapper() {
+        for head in ["for-of", "for-in", "for-await-of"] {
+            for kind in ["const", "let", "var"] {
+                let expr = list(vec![
+                    atom(head),
+                    list(vec![atom(kind), atom("x")]),
+                    atom("items"),
+                    list(vec![atom("f"), atom("x")]),
+                ]);
+                let mut w = JsWriter::new();
+                assert!(
+                    emit_statement(&mut w, &expr).is_err(),
+                    "{head} with a ({kind} …) binding must be rejected"
+                );
+            }
+        }
+        // the bare and destructuring bindings still emit fine.
+        let bare = list(vec![
+            atom("for-of"),
+            atom("x"),
+            atom("items"),
+            list(vec![atom("f"), atom("x")]),
+        ]);
+        let mut w = JsWriter::new();
+        assert!(emit_statement(&mut w, &bare).is_ok());
+        let destructure = list(vec![
+            atom("for-of"),
+            list(vec![atom("array"), atom("i"), atom("v")]),
+            atom("items"),
+            list(vec![atom("f"), atom("i")]),
+        ]);
+        let mut w2 = JsWriter::new();
+        assert!(emit_statement(&mut w2, &destructure).is_ok());
     }
 
     #[test]

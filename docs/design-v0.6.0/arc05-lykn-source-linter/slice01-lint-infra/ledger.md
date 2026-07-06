@@ -18,11 +18,24 @@ compiler-verification pass. Per DD-59 draft (operator-confirmed) and
 
 ## What Worked
 
-_(At slice close.)_
+- **F-1-as-first-class-deliverable caught three drifts before anyone built
+  on them** — one rule already compiler-owned, one stale guide rationale,
+  one genuine compiler bug. The verify-against-ground-truth gate keeps
+  paying for itself (fourth consecutive slice).
+- **Disclosed forward-API** — the parent-context stack shipped ahead of its
+  consumers with an `allow(dead_code)` + named re-entry comment, applying
+  the arc11 buried-intent lesson at write time instead of audit time.
+- **Shape-diverse pilots** (call-head / method-arity / call-arity) proved
+  the walk generalizes before the corpus lands on it.
 
 ## Closure
 
-_(At slice close: commit SHA, date, verifier, row disposition counts.)_
+Closed 2026-07-06 (commit `1989138`). Verified by: CC (attested, measured)
++ CDC (`cdc-verification.md`: trait/context/stub/snapshots code-reproduced;
+runtime attested). Rows: 6. Done: 6. Deferred: 0. No-op: 0.
+**Operator decisions at close:** ID-44 → compiler fix (Principle 3); ID-42
+→ compile-time disallow, recon-gated (semantic shadowing of a special
+form). Slice02 corpus: **12 lint rules + 2 recon-gated compiler fixes.**
 
 > F-1 informs slice02's contract — deliver the table even if some pilot
 > work runs long. Design sub-questions (walk context, `.lyk` exemption,

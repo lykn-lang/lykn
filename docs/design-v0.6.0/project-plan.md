@@ -83,7 +83,8 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc02 · type-dts-generation** | `.d.ts` declarations generated from `:type` annotations (DD-56) | — | **Closed** (M10) |
 | **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Closed** (M16–M22; architecture landed on release 2026-06-29) |
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
-| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10 (corpus division), arc11 (conventions rules) | **ACTIVE** — slice-planned 2026-07-06 (3 slices; DD-59 drafted; slice01 open set ready for CC) |
+| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, **arc13 (blocker)** | **PAUSED at 2/3** — 15 rules live; slice02's recon exposed the expander divergence; slice03 resumes post-arc13 |
+| **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocks arc05 slice03 | **Open — scoped** (slice01 recon+DD-60 open set ready for CC) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
@@ -197,11 +198,44 @@ inherited from arc attestations.
 | P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **done** | 3/3 slices (`faee8a1`/`feb056c`/`2f6a84d`); **operator gate GO 2026-07-05 23:29** (5-form demo verbatim; `kernel:` resolves; suites reconciled) — reproduced at arc scale | |
 | P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **done** | 2/2 slices (`75c9cc2`/`4f2a628`); **operator gate GO 2026-07-05 23:31** (three-moment demo 0/0 with `./bin/lykn`, destination proven by the compile message; sweep + hygiene from the earlier session) | P-7's demo unconditional; tracked candidates instantiated |
 | P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | **done** | slice01 (`3612cad`); 1m52s→2.6s / >2m→1m04s; **operator gate GO 2026-07-05** (suite run green; census grep 3 line-mentions ≈ 1 compile + 1 execution — once, vs ~16 before); `lykn test` in 13s during the arc11 demo | the verification cost that was blocking the gates is gone |
+| P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | open | | blocks arc05 slice03 / P-11; a P-9-class semantic divergence found outside the corpus's coverage — the conformance corpus closes that coverage gap permanently |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.23 — 2026-07-06 (arc05 PAUSED on an expander-coherence blocker; arc13 created)
+arc05/slice02 delivered (CDC verification pending commit): 12 rules → 15
+live; **ID-44 fixed on both backends** (the JS-first recon found the JS
+compiler shared the bug); ID-03 → warn (measured 0/10 FP,
+operator-confirmed); honest dogfood (a rule bug fixed — `!=` is already
+surface; 2 findings acknowledged). **The ID-42 recon self-stopped and
+exposed the real disease: the Rust and JS expanders resolve param-vs-macro
+shadowing differently** — same source compiles on Rust, throws on JS; Rust
+emits wrong code for 7 macro-named params; JS reserved words produce
+invalid JS at rc=0. A P-9-class semantic divergence outside the corpus's
+coverage. **Operator: blocker — "pause arc05, fix the expander divergence…
+then we can just do the right thing." Created arc13 · expander-coherence**
+(CDC LoE: arc-worthy — DD-60 semantics + both expanders + a conformance
+corpus; 3 slices, recon-first). **P-18 added.** Sequence: **arc13 → arc05
+slice03 → arc06 → arc07 → arc09.** Also filed: lint-suppression mechanism
+(arc05 slice03 candidate). Surfaced by: arc05/slice02 close + operator
+decisions.
+
+### v1.22 — 2026-07-06 (arc05 slice01 closed; two compiler-enforcement promotions decided)
+`lykn lint` exists (`1989138`: machinery, CLI replacing the issue-#1 stub,
+3 pilots, insta snapshots; smoke dogfood 117 files clean). The F-1
+compiler-verification of all 19 rule candidates caught three drifts:
+ID-39 already compiler-enforced; ID-42's guide "Throws" claim void (but a
+param named `fn` semantically shadows the special form); **ID-44 a
+compiler bug — rc=0 with unparseable JS emitted** (Principle 3 violation).
+**Operator decisions:** ID-44 → fix the compiler (both backends; guide
+claim becomes true); ID-42 → compile-time disallow of reserved param
+names, recon-gated (set + blast radius measured; lint-warn fallback).
+Both are **breaking-change items for arc09**. slice02 scoped: 12 verified
+rules + the 2 gated fixes + ID-03 severity-by-measurement + real dogfood.
+Surfaced by: arc05 slice01 close.
 
 ### v1.21 — 2026-07-06 (arc05 ACTIVE — the linter, at last)
 arc05 slice-planned with the operator's design calls: **Broad v1 rule set**

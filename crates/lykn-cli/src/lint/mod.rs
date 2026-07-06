@@ -23,22 +23,22 @@ pub struct LintFinding {
 /// Read-only context handed to each rule: the ancestor stack (outermost first,
 /// immediate parent last) and the file/source for context queries.
 ///
-/// The slice01 pilots are node-local and don't read these, but the walk builds
-/// them **now** (F-2) because the ancestry-dependent rules land next:
-/// `for-in-on-arrays` and the two arc11 conventions rules (slice02), and
-/// `shadowing` (slice03) — see the closing-report bubble-up. Marked
-/// `allow(dead_code)` as disclosed forward-API with that re-entry condition,
-/// not buried intent.
-#[allow(dead_code)]
+/// `file` is read by the slice02 conventions rules (path-scoping). `ancestors`,
+/// `source`, and `parent()` are the ancestry API the slice03 `shadowing` rule
+/// (scope tracking) will consume; they're built by the walk **now** and marked
+/// `allow(dead_code)` as disclosed forward-API with that re-entry condition, not
+/// buried intent — see the closing-report bubble-up.
 pub struct LintContext<'a> {
+    #[allow(dead_code)]
     pub ancestors: &'a [&'a SExpr],
     pub file: &'a str,
+    #[allow(dead_code)]
     pub source: &'a str,
 }
 
-#[allow(dead_code)]
 impl LintContext<'_> {
     /// The immediate parent form, if any.
+    #[allow(dead_code)]
     pub fn parent(&self) -> Option<&SExpr> {
         self.ancestors.last().copied()
     }
@@ -58,9 +58,24 @@ pub trait LintRule {
 /// stateful rules reset between files.
 fn registry() -> Vec<Box<dyn LintRule>> {
     vec![
+        // slice01 pilots
         Box::new(rules::NoRequire),
         Box::new(rules::SortWithoutComparator),
         Box::new(rules::ParseintRadix),
+        // slice02 tier-1 shape rules
+        Box::new(rules::NoEval),
+        Box::new(rules::NoNewWrappers),
+        Box::new(rules::GlobalIsnan),
+        Box::new(rules::NoArguments),
+        Box::new(rules::NoIife),
+        Box::new(rules::NoDeleteOnArray),
+        Box::new(rules::NoJsonDeepCopy),
+        Box::new(rules::PreferSurfaceOperators),
+        Box::new(rules::OrForDefaults),
+        Box::new(rules::ForInOnArrays),
+        // slice02 conventions rules (path-scoped to test files)
+        Box::new(rules::NoRelativeSourceImports),
+        Box::new(rules::NoDirnameFixtures),
     ]
 }
 
@@ -282,6 +297,166 @@ mod tests {
         assert!(lint("(func add :args (:number a :number b) :body (+ a b))").is_empty());
     }
 
+    // --- slice02: the 12 shape/conventions rules, both directions ---
+
+    /// Lint a snippet as a specific file (for path-scoped conventions rules).
+    fn lint_as(src: &str, file: &str) -> Vec<LintFinding> {
+        lint_source(src, file).expect("fixture must parse")
+    }
+
+    fn only_rule(f: &[LintFinding], rule: &str) -> bool {
+        !f.is_empty() && f.iter().all(|x| x.rule == rule)
+    }
+
+    #[test]
+    fn no_eval_flags_eval_and_js_eval() {
+        assert!(only_rule(&lint("(bind r (eval \"1+1\"))"), "no-eval"));
+        assert!(only_rule(&lint("(bind r (js:eval \"1+1\"))"), "no-eval"));
+        assert_eq!(
+            lint("(bind r (eval \"x\"))")[0].diagnostic.severity,
+            Severity::Error
+        );
+    }
+    #[test]
+    fn no_eval_silent_on_normal_call() {
+        assert!(lint("(bind r (evaluate x))").is_empty());
+    }
+
+    #[test]
+    fn no_new_wrappers_flags_boxed_primitives() {
+        assert!(only_rule(&lint("(new Boolean false)"), "no-new-wrappers"));
+        assert!(only_rule(&lint("(new String x)"), "no-new-wrappers"));
+        assert!(only_rule(&lint("(new Number 1)"), "no-new-wrappers"));
+    }
+    #[test]
+    fn no_new_wrappers_silent_on_real_class() {
+        assert!(lint("(new Dog \"Rex\")").is_empty());
+    }
+
+    #[test]
+    fn global_isnan_flags_bare_isnan() {
+        assert!(only_rule(&lint("(bind r (isNaN x))"), "global-isnan"));
+    }
+    #[test]
+    fn global_isnan_silent_on_number_isnan() {
+        assert!(lint("(bind r (Number:isNaN x))").is_empty());
+    }
+
+    #[test]
+    fn no_arguments_flags_the_atom() {
+        assert!(only_rule(&lint("(bind a arguments)"), "no-arguments"));
+    }
+    #[test]
+    fn no_arguments_silent_on_rest() {
+        assert!(lint("(func f :args ((rest xs)) :body xs)").is_empty());
+    }
+
+    #[test]
+    fn no_iife_flags_immediately_invoked_fn() {
+        assert!(only_rule(&lint("((fn () 1))"), "no-iife"));
+        assert!(only_rule(&lint("((lambda () 1))"), "no-iife"));
+    }
+    #[test]
+    fn no_iife_silent_on_named_call() {
+        assert!(lint("(f 1)").is_empty());
+    }
+
+    #[test]
+    fn no_delete_on_array_flags_numeric_index() {
+        assert!(only_rule(&lint("(delete arr 0)"), "no-delete-on-array"));
+    }
+    #[test]
+    fn no_delete_on_array_silent_on_property_delete() {
+        // deleting a named property is a different (legitimate) shape.
+        assert!(lint("(delete obj:key)").is_empty());
+    }
+
+    #[test]
+    fn no_json_deep_copy_flags_roundtrip() {
+        assert!(only_rule(
+            &lint("(bind c (JSON:parse (JSON:stringify x)))"),
+            "no-json-deep-copy"
+        ));
+    }
+    #[test]
+    fn no_json_deep_copy_silent_on_plain_parse() {
+        assert!(lint("(bind c (JSON:parse raw))").is_empty());
+    }
+
+    #[test]
+    fn prefer_surface_operators_flags_kernel_ops() {
+        assert!(only_rule(&lint("(=== a b)"), "prefer-surface-operators"));
+        assert!(only_rule(&lint("(!== a b)"), "prefer-surface-operators"));
+        assert!(only_rule(&lint("(&& p q)"), "prefer-surface-operators"));
+        assert!(only_rule(&lint("(|| p q)"), "prefer-surface-operators"));
+    }
+    #[test]
+    fn prefer_surface_operators_silent_on_surface_forms() {
+        assert!(lint("(= a b)").is_empty());
+        assert!(lint("(and p q)").is_empty());
+        assert!(lint("(or p q)").is_empty()); // (or x y) with non-literal → not or-for-defaults either
+        // `!=` already IS the surface spelling (compiles to `!==`) — not flagged.
+        assert!(lint("(!= a b)").is_empty());
+    }
+
+    #[test]
+    fn or_for_defaults_flags_literal_default() {
+        assert!(only_rule(&lint("(bind y (or x 5))"), "or-for-defaults"));
+        assert!(only_rule(&lint("(bind y (or x \"d\"))"), "or-for-defaults"));
+    }
+    #[test]
+    fn or_for_defaults_silent_on_boolean_logic() {
+        // (or a b) with two non-literal operands is genuine boolean logic.
+        assert!(lint("(bind y (or a b))").is_empty());
+    }
+
+    #[test]
+    fn for_in_on_arrays_flags_array_literal() {
+        assert!(only_rule(
+            &lint("(for-in k #a(1 2) (console:log k))"),
+            "for-in-on-arrays"
+        ));
+    }
+    #[test]
+    fn for_in_on_arrays_silent_on_object_and_ambiguous() {
+        // conservative: object literal and bare bindings are not flagged.
+        assert!(lint("(for-in k #o(:a 1) (console:log k))").is_empty());
+        assert!(lint("(for-in k obj (console:log k))").is_empty());
+    }
+
+    // conventions rules — path-scoped to test files
+
+    #[test]
+    fn no_relative_source_imports_flags_in_test_file() {
+        let f = lint_as("(import \"./foo.js\" (bar))", "a_test.lykn");
+        assert!(only_rule(&f, "no-relative-source-imports"));
+        assert_eq!(f[0].diagnostic.severity, Severity::Error);
+    }
+    #[test]
+    fn no_relative_source_imports_silent_outside_test_files_and_on_bare() {
+        // same relative import in a non-test file → not this rule's concern.
+        assert!(lint_as("(import \"./foo.js\" (bar))", "src.lykn").is_empty());
+        // bare specifier in a test file → silent.
+        assert!(lint_as("(import \"lang/compiler.js\" (compile))", "a_test.lykn").is_empty());
+    }
+
+    #[test]
+    fn no_dirname_fixtures_flags_in_test_file() {
+        let f = lint_as("(resolve import.meta:dirname \"f.json\")", "a_test.lykn");
+        assert!(only_rule(&f, "no-dirname-fixtures"));
+        assert_eq!(f[0].diagnostic.severity, Severity::Error);
+        // the `import:meta:dirname` spelling too.
+        assert!(only_rule(
+            &lint_as("(resolve import:meta:dirname \"f.json\")", "a_test.lykn"),
+            "no-dirname-fixtures"
+        ));
+    }
+    #[test]
+    fn no_dirname_fixtures_silent_outside_test_and_on_cwd() {
+        assert!(lint_as("(resolve import.meta:dirname \"f.json\")", "src.lykn").is_empty());
+        assert!(lint_as("(resolve (Deno:cwd) \"test/fixtures\")", "a_test.lykn").is_empty());
+    }
+
     // --- F-5: snapshots (text + JSON) ---
 
     /// A fixture exercising all three pilots at once, for stable snapshots.
@@ -305,5 +480,33 @@ mod tests {
         let value: serde_json::Value =
             serde_json::from_str(&to_json(&findings)).expect("valid JSON");
         insta::assert_json_snapshot!("lint_json_all_three", value);
+    }
+
+    /// The full slice02 shape + conventions corpus, one finding per rule, in a
+    /// `_test.lykn` file so the path-scoped conventions rules fire. Locks every
+    /// rule's message, span, and suggestion for review.
+    const SHAPE_CORPUS: &str = "\
+(bind r (eval \"1+1\"))
+(bind b (new Boolean false))
+(bind n (isNaN x))
+(bind a arguments)
+((fn () 1))
+(delete arr 0)
+(bind c (JSON:parse (JSON:stringify x)))
+(=== a b)
+(bind y (or x 5))
+(for-in k #a(1 2) (console:log k))
+(import \"./foo.js\" (bar))
+(bind p (resolve import.meta:dirname \"f.json\"))";
+
+    #[test]
+    fn snapshot_shape_corpus_text() {
+        let findings = lint_as(SHAPE_CORPUS, "corpus_test.lykn");
+        let text = findings
+            .iter()
+            .map(render_text)
+            .collect::<Vec<_>>()
+            .join("\n");
+        insta::assert_snapshot!("lint_text_shape_corpus", text);
     }
 }

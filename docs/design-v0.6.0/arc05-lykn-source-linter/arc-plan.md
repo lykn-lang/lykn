@@ -1,12 +1,14 @@
 # arc05 — Lykn-Source Linter (`lykn lint`)
 
-> **Status: ACTIVE — slice-planned 2026-07-06.** The arc became the next
-> work after the arc10/11/12 gate (2026-07-05); the operator's design calls
-> (Broad rule set; architecture package; DD drafted) are recorded in
-> [`design/dd-59-lykn-source-linter-DRAFT.md`](./design/dd-59-lykn-source-linter-DRAFT.md)
-> (odm promotion = Duncan). Originating thread: `design/kickoff-thread.md`
-> (M12; its Q0 naming collision resolved by history — the JS-lint wrapper is
-> gone, `lykn lint` is the reserved stub citing issue #1).
+> **Status: PAUSED at 2/3 slices (operator, 2026-07-06) — blocked on
+> arc13 · expander-coherence.** slice02's F-4 recon found the Rust and JS
+> expanders resolve param-vs-macro shadowing **differently** (and each is
+> internally inconsistent); the operator ruled it a blocker: *"pause arc05
+> and fix the expander divergence… then we won't have to warn on all macro
+> names — we can just do the right thing."* slice03 (+ the ID-42 lint
+> question, re-answered from the fixed state per arc13 A-6) resumes when
+> arc13 closes. Design: [`design/dd-59-…-DRAFT.md`](./design/dd-59-lykn-source-linter-DRAFT.md);
+> kickoff: `design/kickoff-thread.md`.
 
 ## 1. Capability
 
@@ -43,8 +45,8 @@ already handles it); LSP server work (Phase 3+).
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · lint-infra** | The machinery, end-to-end: rule trait + hardcoded match-dispatch registry over a spanned SExpr walk (pre-expansion); diagnostics reusing the `Diagnostic` machinery (error/warn); CLI wiring **replacing the stub** (`lykn lint <paths>`, exit 0/1/2, `--format=json`); per-rule fixture harness + `insta` snapshots; **3 pilot rules** proving the shapes (no-require [error], sort-without-comparator [warn], parseint-radix [warn]); **the rule-inventory compiler-verification pass** — compile every DD-59 candidate's bad-example against the current compiler; anything that already errors is reclassified out. The resulting table is slice02's authoritative corpus. | **Open — scoped** (open set written) |
-| **slice02 · shape-rule-corpus** | The remaining tier-1 shape rules from slice01's verified table (~12) + the 2 conventions rules (path-scoped to test files); per-rule fixtures (bad flagged / good silent); or-for-defaults' false-positive rate measured on the repo corpus before its severity is finalized; **dogfood pass**: `lykn lint` over the repo's own `.lykn` sources, findings fixed or acknowledged. | Open (scope after slice01's bubble-up) |
+| **slice01 · lint-infra** | The machinery, end-to-end: rule trait + hardcoded match-dispatch registry over a spanned SExpr walk (pre-expansion); diagnostics reusing the `Diagnostic` machinery (error/warn); CLI wiring **replacing the stub** (`lykn lint <paths>`, exit 0/1/2, `--format=json`); per-rule fixture harness + `insta` snapshots; **3 pilot rules** proving the shapes (no-require [error], sort-without-comparator [warn], parseint-radix [warn]); **the rule-inventory compiler-verification pass** — compile every DD-59 candidate's bad-example against the current compiler; anything that already errors is reclassified out. The resulting table is slice02's authoritative corpus. | **Closed** (`1989138`; F-1 caught: ID-39 already compiler-owned, ID-42 stale guide claim, ID-44 **compiler bug** [rc=0, unparseable JS]; smoke dogfood 117 files clean; `make check` ✓) |
+| **slice02 · shape-rule-corpus** | The **12 remaining verified lint rules** (F-1 table minus pilots, shadowing→slice03, and ID-42/ID-44→compiler) + **2 recon-gated compiler fixes** (operator, 2026-07-06): ID-44 for-of binding validation → compile error (Principle 3; both compilers checked) and ID-42 reserved-param-names → compile-time disallow (recon: reserved set + blast radius on both compilers; lint-warn fallback if large); or-for-defaults' false-positive rate measured on the repo corpus before its severity is finalized; **real dogfood pass**: the full corpus over the repo's `.lykn` sources, findings fixed or acknowledged. | **Open — scoped** (open set written 2026-07-06) |
 | **slice03 · context-rules + docs** | Tier-2: missing-type-annotations (shape-checkable) + shadowing (reuses `analysis/scope.rs`); **guide-09 reclassification** (every entry labeled: compiler-enforced / linted-as-`<rule>` / documented-only — the ELIMINATED cleanup the CC audit demanded); guide-15 CLI docs + SKILL note; `make lint` integration decision; P-11 demo prep. | Open (scope after slice02) |
 
 ## 3. Dependencies
@@ -67,6 +69,36 @@ Feeds **P-11**. Independent of arc06/arc07; must land before arc09.
 | A-6 | **guide-09 is aligned** — every entry carries its enforcement label (compiler-enforced / linted / documented-only); doctests green | grep the labels; `make check` | correctness | CC anti-patterns audit (2026-06-30) | open | | closes the reclassification debt that spawned arc10 |
 
 ## 5. Version History
+
+### v1.4 — 2026-07-06 (slice02 delivered; ARC PAUSED — arc13 created)
+slice02 delivered (CDC verification pending CC's commit): 12 rules landed
+(15 total live); **ID-44 fixed on both backends** (the JS-first recon found
+the JS compiler shared the latent bug — masked by an arg-count coincidence;
+`check_loop_binding` guards all three loop forms; +3 corpus rows, 1368/0);
+**ID-03 measured 0/10 FP → warn (operator-confirmed)**; dogfood 5 findings
+= 3 fixed (a rule bug: `!=` is already surface — contract corrected) + 2
+acknowledged; **ID-42 SELF-STOPPED as designed** — the recon exposed the
+expander param-vs-macro shadowing **divergence** (Rust calls the param
+where JS throws; Rust fires macros for `cell`/`express`/`get`/`not`/
+`lambda`/`template`/`new` params — wrong code; JS reserved words → invalid
+JS at rc=0). **Operator: blocker — arc PAUSED; arc13 · expander-coherence
+created** (matrix + DD-60 → Rust → JS + conformance corpus). slice03 and
+the reserved-param-name question resume post-arc13 (A-6 there). Also
+surfaced: lint-suppression mechanism wanted (slice03 candidate).
+
+### v1.3 — 2026-07-06 (slice01 closed; corpus reshaped by F-1 + operator calls)
+slice01 closed (`1989138`, CDC-verified): machinery + pilots + the F-1
+compiler-verification of all 19 DD-59 candidates. F-1's catches: **ID-39
+already compiler-enforced** (out); **ID-42's guide rationale void** (it
+compiles — but the transcript shows a param named `fn` *semantically
+shadows the special form*); **ID-44 is a compiler bug** (rc=0 +
+unparseable `for (const const …)` JS — Principle 3 violation). **Operator
+decisions:** ID-44 → fix the compiler (guide's "Throws" becomes true; both
+compilers checked); ID-42 → **compile-time disallow, recon-gated**
+(reserved set + blast radius to be measured; lint-warn fallback). Slice02
+re-scoped: **12 lint rules + 2 recon-gated compiler fixes + ID-03
+severity-by-measurement + real dogfood.** DD-59 addendum due at arc close.
+Surfaced by: slice01 close (F-1 table).
 
 ### v1.2 — 2026-07-06 (arc ACTIVE; slice-planned; DD-59 drafted)
 Operator design calls (2026-07-06): **Broad v1 rule set** (tier-1 shape

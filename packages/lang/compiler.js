@@ -522,10 +522,31 @@ function makeVarDecl(kind, args) {
   };
 }
 
+/**
+ * A loop already binds its variable with `const`; wrapping the binding in a
+ * declaration form (`(const …)`/`(let …)`/`(var …)`) emits `for (const const …`,
+ * which no JS engine can parse. Reject it with a targeted message. (ID-44 —
+ * matches the Rust backend's `check_loop_binding`; DD-58 per-backend parity.)
+ */
+function checkLoopBinding(binding, form) {
+  if (binding && binding.type === 'list' && binding.values.length > 0 &&
+      binding.values[0].type === 'atom' &&
+      (binding.values[0].value === 'const' ||
+       binding.values[0].value === 'let' ||
+       binding.values[0].value === 'var')) {
+    const kind = binding.values[0].value;
+    throw new Error(
+      `${form} binding must not be wrapped in \`${kind}\` — ` +
+      `the loop already binds with \`const\`; use the bare binding`);
+  }
+}
+
 /** Build a ForOfStatement node, optionally with await. */
 function makeForOf(isAwait, args) {
+  const form = isAwait ? 'for-await-of' : 'for-of';
+  checkLoopBinding(args[0], form);
   if (args.length < 3) {
-    throw new Error(`${isAwait ? 'for-await-of' : 'for-of'} requires binding, iterable, and body`);
+    throw new Error(`${form} requires binding, iterable, and body`);
   }
   const binding = compilePattern(args[0]);
   return {
@@ -1141,6 +1162,7 @@ const macros = {
 
   // For-in: (for-in binding object body...)
   'for-in'(args) {
+    checkLoopBinding(args[0], 'for-in');
     if (args.length < 3) {
       throw new Error('for-in requires binding, object, and body');
     }

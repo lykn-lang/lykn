@@ -8,3 +8,20 @@
 
 (test "for-of: missing args throws"
   (is-thrown (compile "(for-of item)") Error))
+
+;; ID-44 — a loop binding wrapped in `(const …)` used to emit
+;; `for (const const … of …)`, which no JS engine can parse. Both backends now
+;; reject it (Rust: crates/lykn-lang emit_for_of; JS: makeForOf). The Rust side
+;; is covered by a regression test in compile.rs; these rows pin the JS backend.
+(test "for-of: const-wrapped binding throws (ID-44)"
+  (is-thrown (compile "(for-of (const x) items (console:log x))") Error
+    "binding must not be wrapped"))
+
+(test "for-in: const-wrapped binding throws (ID-44)"
+  (is-thrown (compile "(for-in (const k) obj (console:log k))") Error
+    "binding must not be wrapped"))
+
+(test "for-of: bare destructuring binding still compiles"
+  (bind result
+    (compile-both "(for-of (array i v) (items:entries) (console:log i))"))
+  (includes result "for (const [i, v] of items.entries())"))

@@ -1,0 +1,28 @@
+---
+source: crates/lykn-cli/src/lint/mod.rs
+expression: text
+---
+corpus_test.lykn:1:10: error [no-eval]: `eval` executes arbitrary code (security + deopt risk)
+  suggestion: remove it; use `obj:key` indexing or `JSON:parse` for the real intent
+corpus_test.lykn:2:14: warning [no-new-wrappers]: `new Boolean` creates an object wrapper, not a primitive
+  suggestion: call `Boolean` without `new` to convert, e.g. `(Boolean x)`
+corpus_test.lykn:3:10: warning [global-isnan]: global `isNaN` coerces its argument before testing
+  suggestion: use `Number:isNaN`, which never coerces
+corpus_test.lykn:4:9: warning [no-arguments]: `arguments` is a legacy object with no place in surface lykn
+  suggestion: declare a `(rest …)` parameter and use it by name
+corpus_test.lykn:5:1: warning [no-iife]: IIFE adds no isolation — ESM modules are already scoped
+  suggestion: hoist the body to module scope, or name it with `bind`/`func`
+corpus_test.lykn:6:2: warning [no-delete-on-array]: `delete` on an array index leaves a hole, not a shorter array
+  suggestion: use `(arr:toSpliced i 1)` (non-destructive) or `(arr:splice i 1)`
+corpus_test.lykn:7:10: warning [no-json-deep-copy]: JSON round-trip deep-copy drops undefined, functions, and symbols
+  suggestion: use `(structuredClone x)` for a faithful deep copy
+corpus_test.lykn:8:2: warning [prefer-surface-operators]: `===` is a kernel operator; surface lykn spells it `=`
+  suggestion: prefer the surface spelling `=`
+corpus_test.lykn:9:10: warning [or-for-defaults]: `or` for a default swallows `0`, `""`, and `false`
+  suggestion: use `??`-style nullish defaulting, e.g. `(js:eq x null)` guard or `(?? x d)`
+corpus_test.lykn:10:2: warning [for-in-on-arrays]: `for-in` over an array iterates keys (incl. inherited), not values
+  suggestion: use `(for-of v arr …)`, or `(for-of (array i v) (arr:entries) …)` for indices
+corpus_test.lykn:11:9: error [no-relative-source-imports]: relative import `./foo.js` dangles when the test compiles into `target/`
+  suggestion: use a bare import-map specifier, e.g. `"lang/compiler.js"`
+corpus_test.lykn:12:18: error [no-dirname-fixtures]: `import.meta:dirname` encodes the source location; it dangles under `target/`
+  suggestion: anchor fixtures at project root, e.g. `(resolve (Deno:cwd) "test/fixtures")`
