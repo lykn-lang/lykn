@@ -6,7 +6,10 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
-| 0059 | DD-58: Kernel/Surface Separation — Closed Surface Namespace with `(kernel:<form> ...)` Escape | Active | 2026-05-16 |
+| 0062 | DD-60 — Name-Binding Semantics (bindings shadow macros/forms) — DRAFT | Active | 2026-07-06 |
+| 0061 | DD-59 — The Lykn-Source Linter (`lykn lint`) | Accepted | 2026-07-06 |
+| 0060 | DD-56 — Canonical Form Specification and Language Catalog | Draft | 2026-07-06 |
+| 0059 | Kernel/Surface Separation | Active | 2026-06-30 |
 | 0058 | Compiler Architecture Coherence — Thread Opening | Active | 2026-05-15 |
 | 0057 | Cohesive Fix Across Compiler, Docs, Guides, Book, Skill | Active | 2026-05-14 |
 | 0056 | `.d.ts` Generation from `:type` Annotations | Active | 2026-05-13 |
@@ -68,12 +71,21 @@ This index is automatically generated. Do not edit manually.
 
 ## Documents by State
 
+### Accepted
+
+- [0061 - DD-59 — The Lykn-Source Linter (`lykn lint`) — DRAFT](04-accepted/0061-dd-59-the-lykn-source-linter-lykn-lint-draft.md)
+
+### Draft
+
+- [0060 - DD-56 — Canonical Form Specification and Language Catalog](01-draft/0060-dd-56-canonical-form-specification-and-language-catalog.md)
+
 ### Active
 
-- [0059 - DD-58: Kernel/Surface Separation — Closed Surface Namespace with `(kernel:<form> ...)` Escape](05-active/0059-dd-58-kernelsurface-separation-closed-surface-namespace-with-kernelform-.-escape.md)
+- [0062 - DD-60 — Name-Binding Semantics (bindings shadow macros/forms) — DRAFT](05-active/0062-dd-60-name-binding-semantics-bindings-shadow-macrosforms-draft.md)
+- [0059 - Kernel/Surface Separation](05-active/0059-dd-58-kernelsurface-separation-closed-surface-namespace-with-kernelform-.-escape.md)
 - [0058 - Compiler Architecture Coherence — Thread Opening](05-active/0058-compiler-architecture-coherence-thread-opening.md)
 - [0057 - Cohesive Fix Across Compiler, Docs, Guides, Book, Skill](05-active/0057-cohesive-fix-across-compiler-docs-guides-book-skill.md)
-- [0056 - M10 Pre-DD Inventory — `.d.ts` Generation from `:type` Annotations](05-active/0056-m10-pre-dd-inventory-.d.ts-generation-from-type-annotations.md)
+- [0056 - `.d.ts` Generation from `:type` Annotations](05-active/0056-m10-pre-dd-inventory-.d.ts-generation-from-type-annotations.md)
 - [0047 - DD-37: JS Surface Compiler Architecture](05-active/0047-dd-37-js-surface-compiler-architecture.md)
 - [0046 - DD-36: Kernel / Surface Compiler Split](05-active/0046-dd-36-kernel-surface-compiler-split.md)
 - [0030 - Pure Rust Kernel→JS Codegen](05-active/0030-pure-rust-kerneljs-codegen.md)
@@ -82,10 +94,10 @@ This index is automatically generated. Do not edit manually.
 
 ### Final
 
-- [0055 - DD-55: `template` Macro Redesign — ICU MessageFormat & i18n Foundation](06-final/0055-dd-55-template-macro-redesign-icu-messageformat-i18n-foundation.md)
-- [0054 - DD-54 — Binary Self-Containment: Embed `packages/lang/` in the Lykn Binary](06-final/0054-dd-54-binary-self-containment-embed-packageslang-in-the-lykn-binary.md)
-- [0053 - DD-53 — V-08 Sibling-Fetch for Surface-macros (0.6.0 ship-gate)](06-final/0053-dd-53-v-08-sibling-fetch-for-surface-macros-0.6.0-ship-gate.md)
-- [0052 - DD-52 — Surface-macros JS-loading in the Rust expander](06-final/0052-dd-52-surface-macros-js-loading-in-the-rust-expander.md)
+- [0055 - `template` Macro Redesign — ICU MessageFormat & i18n Foundation](06-final/0055-dd-55-template-macro-redesign-icu-messageformat-i18n-foundation.md)
+- [0054 - Binary Self-Containment: Embed `packages/lang/` in the Lykn Binary](06-final/0054-dd-54-binary-self-containment-embed-packageslang-in-the-lykn-binary.md)
+- [0053 - V-08 Sibling-Fetch for Surface-macros](06-final/0053-dd-53-v-08-sibling-fetch-for-surface-macros-0.6.0-ship-gate.md)
+- [0052 - Surface-macros JS-loading in the Rust expander](06-final/0052-dd-52-surface-macros-js-loading-in-the-rust-expander.md)
 - [0051 - Deno-Native Tool Boundaries (`deno add`, `deno task`, `deno cache`, `lykn add`)](06-final/0051-deno-native-tool-boundaries-deno-add-deno-task-deno-cache-lykn-add.md)
 - [0050 - Position-Aware Compilation of Conditional and Block Forms](06-final/0050-position-aware-compilation-of-conditional-and-block-forms.md)
 - [0049 - Identifier Mapping (lykn → JS)](06-final/0049-identifier-mapping-lykn-js.md)
