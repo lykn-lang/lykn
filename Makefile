@@ -49,8 +49,8 @@ help:
 	@echo "$(GREEN)Testing & Quality:$(RESET)"
 	@echo "  $(YELLOW)make test$(RESET)             - Run all tests (Rust + JS + lykn)"
 	@echo "  $(YELLOW)make test-rust$(RESET)        - Run Rust tests only"
-	@echo "  $(YELLOW)make test-js$(RESET)          - Run JS tests only"
-	@echo "  $(YELLOW)make test-lykn$(RESET)        - Run lykn tests only"
+	@echo "  $(YELLOW)make test-suite$(RESET)       - Run the full suite (*.test.js + .lykn corpus)"
+	@echo "  $(YELLOW)make test-lykn$(RESET)        - Run lykn surface subset (dev convenience)"
 	@echo "  $(YELLOW)make test-docs$(RESET)        - Run all documentation tests"
 	@echo "  $(YELLOW)make test-docs-guides$(RESET) - Test lykn blocks in docs/guides/"
 	@echo "  $(YELLOW)make test-docs-readme$(RESET) - Test lykn blocks in README.md"
@@ -197,7 +197,7 @@ clean-all: clean
 
 # Testing & Quality targets
 .PHONY: test
-test: test-rust test-js test-lykn test-docs
+test: test-rust test-suite test-docs
 
 # F-7 (arc03/slice11): the JS/lykn/docs suites shell out to bin/lykn and import
 # the built packages from target/lykn/build/. A stale binary or build dir makes
@@ -221,20 +221,33 @@ test-rust:
 	@cargo test --all-features --workspace
 	@echo "$(GREEN)✓ Rust tests passed$(RESET)"
 
-.PHONY: test-js
-test-js: fresh-artifacts
-	@echo "$(BLUE)Running JS tests...$(RESET)"
+# `lykn test` (bare) runs the FULL suite: hand-written *.test.js AND the
+# compiled .lykn cross-compiler corpus (~1365 tests). This is the whole
+# non-doc suite in one Deno startup — not "JS only" (arc12/slice01 renamed
+# `test-js` → `test-suite` to match behavior).
+.PHONY: test-suite
+test-suite: fresh-artifacts
+	@echo "$(BLUE)Running the full test suite (*.test.js + .lykn corpus)...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test
-	@echo "$(GREEN)✓ JS tests passed$(RESET)"
+	@echo "$(GREEN)✓ Test suite passed$(RESET)"
 
+# Convenience alias for a surface-focused subset run during dev. NOT part of
+# `test`/`check` — `test-suite` already covers these (arc12/slice01 removed the
+# duplicate subset re-run from the chain).
 .PHONY: test-lykn
 test-lykn: fresh-artifacts
-	@echo "$(BLUE)Running lykn tests...$(RESET)"
+	@echo "$(BLUE)Running lykn surface tests (subset — dev convenience)...$(RESET)"
 	@$(BIN_DIR)/$(CODE_NAME) test test/surface/
-	@echo "$(GREEN)✓ lykn tests passed$(RESET)"
+	@echo "$(GREEN)✓ lykn surface tests passed$(RESET)"
 
+# All doc suites under ONE Deno startup (arc12/slice01) — bare `--docs` no
+# longer runs the corpus, so this is doc-only and fast. The granular
+# `test-docs-*` targets remain for focused dev runs.
 .PHONY: test-docs
-test-docs: test-docs-guides test-docs-readme test-docs-examples
+test-docs: fresh-artifacts
+	@echo "$(BLUE)Running documentation tests (guides + README + examples)...$(RESET)"
+	@$(BIN_DIR)/$(CODE_NAME) test --docs docs/guides/ --docs README.md --docs examples/surface/ --docs examples/kernel/
+	@echo "$(GREEN)✓ Documentation tests passed$(RESET)"
 
 .PHONY: test-docs-guides
 test-docs-guides: fresh-artifacts
@@ -304,9 +317,12 @@ coverage-html:
 	@echo "$(GREEN)✓ HTML coverage report generated$(RESET)"
 	@echo "$(CYAN)→ Report: target/llvm-cov/html/index.html$(RESET)"
 
-# Common checks
+# Common checks. build-release BEFORE lint: lint runs `lykn check` (needs
+# bin/lykn), and using the release profile means the workspace compiles once —
+# `fresh-artifacts` (in `test`) reuses cargo's release cache instead of adding a
+# separate debug build (arc12/slice01 F-5).
 .PHONY: common-checks
-common-checks: check-deps lint build
+common-checks: check-deps build-release lint
 
 # Combined check targets
 .PHONY: check
@@ -316,7 +332,7 @@ check: common-checks test
 	@echo ""
 
 .PHONY: check-all
-check-all: common-checks coverage test-js test-docs test-publishing
+check-all: common-checks coverage test-suite test-docs test-publishing
 	@echo ""
 	@echo "$(GREEN)✓ Full validation complete (build + lint + coverage + publishing)$(RESET)"
 	@echo ""

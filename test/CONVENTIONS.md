@@ -6,7 +6,13 @@ repo's* tests.)
 
 ## Running the tests
 
-**Canonical command:**
+**The canonical verification bar is `make check`** — it runs Rust tests, the
+full lykn+JS suite, and the doc tests, each exactly once. It already includes
+the doc tests, so do **not** run `make check && make test-docs`. `make
+test-docs` on its own is the doc-focused iteration tool (docs only, no corpus —
+~seconds).
+
+**Canonical command (the JS/lykn suite directly):**
 
 ```sh
 deno test --config project.json -A test/

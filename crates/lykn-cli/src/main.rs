@@ -72,12 +72,14 @@ enum Commands {
     },
     /// Run tests via Deno
     Test {
-        /// Test file/directory patterns (default: test/)
-        #[arg(default_value = "test/")]
+        /// Test file/directory patterns. Default when omitted: `test/` — but
+        /// with `--docs` and no patterns, only the docs are tested (no corpus).
         patterns: Vec<String>,
-        /// Test lykn code blocks in Markdown files
+        /// Test lykn code blocks in Markdown/HTML docs. Repeatable — all paths
+        /// run under a single Deno invocation (e.g. `--docs docs/guides/
+        /// --docs README.md`).
         #[arg(long)]
-        docs: Option<String>,
+        docs: Vec<String>,
         /// Directory for compiled JS test output (default: target/lykn/test/).
         /// Compiled `*_test.lykn`/`.lyk` files land here (wiped per run), never
         /// in the source tree.
@@ -172,7 +174,7 @@ fn main() {
             deno_args,
         } => cmd_test(
             &patterns,
-            docs.as_deref(),
+            &docs,
             out_dir.as_deref(),
             compile_only,
             &deno_args,
@@ -452,7 +454,7 @@ const DEFAULT_TEST_OUT_DIR: &str = "target/lykn/test";
 
 fn cmd_test(
     patterns: &[String],
-    docs: Option<&str>,
+    docs: &[String],
     out_dir: Option<&Path>,
     compile_only: bool,
     extra_deno_args: &[String],
@@ -462,32 +464,46 @@ fn cmd_test(
         .map(|p| p.to_path_buf())
         .unwrap_or_else(|| PathBuf::from(DEFAULT_TEST_OUT_DIR));
 
-    // Handle --docs mode: extract and test Markdown code blocks
-    if let Some(docs_path) = docs {
-        // If there are also .lykn patterns, compile them first
-        let lykn_files = discover_lykn_test_files(patterns);
-        if !lykn_files.is_empty() {
-            wipe_test_out_dir(&out_dir);
-            let compiled = compile_lykn_test_files(&lykn_files, Some(&out_dir));
-            if compile_only {
-                eprintln!(
-                    "Compiled {} .lykn test file(s) to {}.",
-                    compiled.len(),
-                    out_dir.display()
-                );
-            } else {
-                let test_paths: Vec<String> = compiled
-                    .iter()
-                    .map(|p| p.to_string_lossy().into_owned())
-                    .collect();
-                run_deno_test(&config, &test_paths, extra_deno_args);
+    // arc12/slice01: `patterns` is un-defaulted. Bare `lykn test` → `test/`;
+    // bare `lykn test --docs X` → docs only (no corpus run — the redundancy
+    // fix). Explicit patterns are honored in both modes.
+    let has_explicit_patterns = !patterns.is_empty();
+
+    // Handle --docs mode: extract and test Markdown/HTML code blocks
+    if !docs.is_empty() {
+        // Only compile + run the `.lykn` corpus when the user explicitly passed
+        // test patterns alongside `--docs`. Bare `--docs` tests docs only.
+        if has_explicit_patterns {
+            let lykn_files = discover_lykn_test_files(patterns);
+            if !lykn_files.is_empty() {
+                wipe_test_out_dir(&out_dir);
+                let compiled = compile_lykn_test_files(&lykn_files, Some(&out_dir));
+                if compile_only {
+                    eprintln!(
+                        "Compiled {} .lykn test file(s) to {}.",
+                        compiled.len(),
+                        out_dir.display()
+                    );
+                } else {
+                    let test_paths: Vec<String> = compiled
+                        .iter()
+                        .map(|p| p.to_string_lossy().into_owned())
+                        .collect();
+                    run_deno_test(&config, &test_paths, extra_deno_args);
+                }
             }
-            // No source-tree cleanup: output lives under gitignored `target/`,
-            // wiped at the start of the next run.
         }
-        // run_doc_tests exits the process
-        doctest::run_doc_tests(docs_path, &config, extra_deno_args);
+        // All doc paths run under one Deno invocation. run_doc_tests exits.
+        doctest::run_doc_tests(docs, &config, extra_deno_args);
     }
+
+    // Non-docs path: default to `test/` when no patterns were given.
+    let default_patterns = [String::from("test/")];
+    let patterns: &[String] = if has_explicit_patterns {
+        patterns
+    } else {
+        &default_patterns
+    };
 
     // Discover .lykn test files in the given patterns
     let lykn_files = discover_lykn_test_files(patterns);

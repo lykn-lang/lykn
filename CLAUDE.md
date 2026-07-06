@@ -167,6 +167,14 @@ discipline of not silently rewriting safety-relevant defaults).
 
 `make help` lists all targets. Key ones: `make build`, `make build-release`, `make test`, `make lint`, `make format`, `make check` (build+lint+test), `make push` (pushes to all remotes).
 
+**`make check` is the canonical verification bar** — it already runs the doc
+tests (`test-docs`), so do **not** chain `make check && make test-docs` (that
+re-runs the whole doc phase). Use `make test-docs` on its own only for
+doc-focused iteration; it now tests docs only (no corpus), so it's ~seconds.
+`make test-suite` runs the full non-doc suite (`*.test.js` + the `.lykn`
+corpus); `make test-lykn` is a surface-focused dev subset (not part of
+`check`).
+
 ## Architecture
 
 ### JS compiler pipeline (`packages/lang/`)

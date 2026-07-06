@@ -522,28 +522,33 @@ fn sanitize_filename(path: &str) -> String {
 /// 3. Generates temporary Deno test files under `target/lykn/test/doctest/`.
 /// 4. Invokes `deno test` on the generated files.
 /// 5. Exits with Deno's exit code.
-pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
-    let path = Path::new(docs_path);
-    let doc_files = if path.is_file() {
-        let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
-        if ext == "md" || ext == "html" {
-            vec![path.to_path_buf()]
+pub fn run_doc_tests(docs_paths: &[String], config: &str, deno_args: &[String]) -> ! {
+    // Accumulate doc files across all `--docs` paths, so guides + README +
+    // examples run under a single Deno invocation (arc12/slice01).
+    let mut doc_files: Vec<PathBuf> = Vec::new();
+    for docs_path in docs_paths {
+        let path = Path::new(docs_path);
+        if path.is_file() {
+            let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
+            if ext == "md" || ext == "html" {
+                doc_files.push(path.to_path_buf());
+            } else {
+                eprintln!(
+                    "error: --docs path is not a Markdown or HTML file: {}",
+                    path.display()
+                );
+                process::exit(1);
+            }
+        } else if path.is_dir() {
+            doc_files.extend(find_doc_files(path));
         } else {
-            eprintln!(
-                "error: --docs path is not a Markdown or HTML file: {}",
-                path.display()
-            );
+            eprintln!("error: --docs path does not exist: {}", path.display());
             process::exit(1);
         }
-    } else if path.is_dir() {
-        find_doc_files(path)
-    } else {
-        eprintln!("error: --docs path does not exist: {}", path.display());
-        process::exit(1);
-    };
+    }
 
     if doc_files.is_empty() {
-        eprintln!("No Markdown or HTML files found in {}", docs_path);
+        eprintln!("No Markdown or HTML files found in {docs_paths:?}");
         process::exit(0);
     }
 
