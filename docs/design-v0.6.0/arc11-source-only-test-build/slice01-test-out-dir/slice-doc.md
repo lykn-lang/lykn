@@ -43,14 +43,31 @@ stray debris.
 - **Suffix separation is clean** (verified): generated files are always
   `*_test.js` (from `*_test.lykn`/`.lyk`); all 81 tracked hand-written tests
   are `*.test.js`; **zero** tracked `*_test.js`.
-- **The likely reason for the April sibling design (F-1 recon target):**
-  compiled tests import via the project import map (`"testing/helpers.js"`,
-  `"lang/…"`) under `--config project.json`; import-map keys are
-  project-root-relative, so running from `target/` *should* resolve — but
-  any **relative** imports in generated output, and `Deno.cwd()`-dependent
-  helpers (`compileBoth` asserts callers invoke from the project root — it
-  uses `Deno.cwd()` as `--source-context-path`), must be verified from the
-  new location before the switch.
+- **The April blocker, found fossilized (CC deno-test investigation,
+  2026-07-05):** `target/test/lykn/` holds **orphaned compiled tests from
+  Apr 18, 2026** — a prior target-dir emission mechanism that no longer
+  writes there. Their imports are **relative**
+  (`../../packages/lang/mod.js`), which broke when relocated — almost
+  certainly why the sibling design won in April. **That blocker has since
+  dissolved**: today's test sources import bare **import-map specifiers**
+  (`"testing/helpers.js"`, `"lang/…"` → `target/lykn/build/…`), which are
+  location-independent under `--config project.json`. F-1's recon prior is
+  therefore *should work now* — verify it (plus `Deno.cwd()` assumptions:
+  `compileBoth` requires project-root cwd), don't assume it.
+- **Test-discovery gap (same investigation):** `project.json` has **no
+  `exclude`**, and Deno does not honor `.gitignore` — so an **unscoped**
+  `deno test --config project.json` walks `target/`, trips over the April
+  orphans (TS2307 on their dead relative imports), and aborts before
+  running anything. Two consequences for this slice: (a) the orphaned
+  `target/test/lykn/` dir must be removed; (b) `project.json` needs
+  `target/` excluded from test discovery — otherwise the *new*
+  `target/lykn/test/` output (which persists between runs under
+  wipe-per-run) recreates the same unscoped-discovery failure we're
+  deleting. (Footnote, out of scope: even scoped `deno test … test/` needs
+  `-A` — 67 permission failures without it, incl. tests writing temp files
+  and the A-7 guard reading `dispatch.rs`. The documented command already
+  uses `-A`; least-privilege tightening is a slice02-audit candidate note,
+  not this slice.)
 
 ## Scope (in)
 
@@ -65,6 +82,11 @@ stray debris.
    inconsistency resolved (surfaced, not silently chosen).
 4. **F-4 demo**: the A-3 arc criterion at slice scale — mid-run, post-
    interrupt, post-compile-only: `test/` stays clean.
+5. **F-7 discovery hygiene**: delete the orphaned `target/test/lykn/`
+   fossil; exclude `target/` from Deno test discovery in `project.json`
+   (mechanism — top-level `exclude` vs `test.exclude` — CC's call); the
+   generated specifiers in new output are import-map bare (not relative),
+   so the orphan failure mode cannot recur.
 
 ## Scope (out)
 

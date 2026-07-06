@@ -11,8 +11,11 @@ demo.
 
 ## 0. Read first
 
-- `…/slice01-test-out-dir/ledger.md` (6 rows) and `slice-doc.md` (the full
-  grounded map — flag, stub, call sites, precedent, gaps, with line numbers).
+- `…/slice01-test-out-dir/ledger.md` (7 rows) and `slice-doc.md` (the full
+  grounded map — flag, stub, call sites, precedent, gaps, with line numbers —
+  **including your own deno-test investigation's findings**, folded in
+  2026-07-05: the `target/test/lykn/` fossil, the missing `project.json`
+  exclude, and the import-map dissolution of the April blocker).
 - The in-repo precedent: `doctest.rs:553–558` (`target/test/doctest/`,
   `remove_dir_all` + recreate per run, Deno pointed at the dir).
 - The interim design you're replacing: `main.rs:498–537` + commit `a640398`
@@ -21,16 +24,18 @@ demo.
 
 ## 1. The work (MUST), in order
 
-1. **F-1 — recon first; it gates F-2.** The April sibling design may exist
-   *because* running from another directory broke something. Compile a
-   representative set into `target/lykn/test/` and run it from there under
-   `--config project.json`: surface tests, kernel `.lyk` tests,
-   `import-macros` users, `compileBoth` corpus rows (note its
-   `Deno.cwd()`-is-project-root contract). Enumerate anything that resolves
-   differently (import map, relative specifiers, cwd assumptions, the
-   freshness guard). **If you hit a real blocker, stop and surface** —
-   fallback designs (import-map shim, adjusted generated specifiers) are
-   design calls, not silent hacks.
+1. **F-1 — recon first; it gates F-2.** The April sibling design existed
+   for a reason and you've already found its fossil: `target/test/lykn/`
+   orphans (Apr 18) whose **relative** imports
+   (`../../packages/lang/mod.js`) broke off-site. Today's sources compile
+   to **import-map bare specifiers** — location-independent — so the prior
+   is *works now*. Verify it: compile a representative set into
+   `target/lykn/test/` and run from there under `--config project.json`:
+   surface tests, kernel `.lyk` tests, `import-macros` users, `compileBoth`
+   corpus rows (its `Deno.cwd()`-is-project-root contract), the freshness
+   guard. **Confirm no relative specifiers exist in current generated
+   output** (that's the recurrence check). If you hit a real blocker, stop
+   and surface — fallback designs are design calls, not silent hacks.
 2. **F-2 — wire it.** Default `Some(target/lykn/test/)` at both call sites
    (`main.rs:458`, `:499`); wipe-per-run like the doctest dir; point the
    Deno run at the target paths; `--compile-only` writes there and prints
@@ -45,6 +50,13 @@ demo.
 4. **F-4 — `.gitignore` gains `*_test.js`.** Safe: zero tracked files match
    (all 81 hand-written tests are `.test.js`). Do **not** ignore
    `*.test.js`.
+5. **F-7 — discovery hygiene.** Delete the orphaned `target/test/lykn/`
+   fossil. Exclude `target/` from Deno test discovery in `project.json`
+   (top-level `exclude` vs `test.exclude` — your call, say why): without
+   it, your new `target/lykn/test/` output (which persists between runs)
+   recreates for the next person exactly the unscoped-`deno test` TS2307
+   abort you just diagnosed. Demo: unscoped
+   `deno test --config project.json` no longer trips on `target/**`.
 
 ## 2. Verify (rebuild-first, all green)
 
@@ -73,7 +85,7 @@ Transcript in the closing report.
 
 ## 4. Close
 
-`closing-report.md`: per-row walk (6 rows, no silent drops) + the F-1 trace
+`closing-report.md`: per-row walk (7 rows, no silent drops) + the F-1 trace
 + the three-moment transcript + design-call rationales + **bubble-up to
 arc11** (does slice02's audit inherit anything you found — e.g. more
 reserved/dead plumbing in `main.rs`?) → hand back for CDC
