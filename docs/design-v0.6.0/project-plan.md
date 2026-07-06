@@ -83,7 +83,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc02 · type-dts-generation** | `.d.ts` declarations generated from `:type` annotations (DD-56) | — | **Closed** (M10) |
 | **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Closed** (M16–M22; architecture landed on release 2026-06-29) |
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
-| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03 | **Open** (not started; was M12) |
+| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10 (corpus division), arc11 (conventions rules) | **ACTIVE** — slice-planned 2026-07-06 (3 slices; DD-59 drafted; slice01 open set ready for CC) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
@@ -202,6 +202,20 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.21 — 2026-07-06 (arc05 ACTIVE — the linter, at last)
+arc05 slice-planned with the operator's design calls: **Broad v1 rule set**
+(15 tier-1 shape rules + missing-type-annotations + shadowing + the 2 arc11
+conventions rules), **architecture package** (Rust over pre-expansion SExpr;
+hardcoded dispatch; text + `--format=json`; error/warn; read-only; exit
+0/1/2; insta snapshots), **DD-59 drafted** (`arc05/design/…-DRAFT.md`, odm
+= Duncan). Kickoff Q0 resolved by history (the JS-lint wrapper is gone;
+`lykn lint` = the issue-#1 stub, replaced in slice01). Three slices:
+infra + 3 pilots + **rule-inventory compiler-verification pass** (arc10
+lesson #4, proactive) → shape corpus + repo dogfood → context rules +
+guide-09 enforcement labels. Arc ledger opens with the P-11 demo (A-4),
+the dogfood row (A-5), and guide-09 alignment (A-6 — closes the
+reclassification debt that spawned arc10). Surfaced by: operator go-ahead.
 
 ### v1.20 — 2026-07-05 (GATE GO — arc10, arc11, arc12 all CLOSED)
 Operator gate session (23:29–23:33, `./bin/lykn` per the PATH lesson):

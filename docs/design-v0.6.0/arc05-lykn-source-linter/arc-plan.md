@@ -1,9 +1,12 @@
 # arc05 — Lykn-Source Linter (`lykn lint`)
 
-> **Status: Open — not started.** Planned at capability depth only, per *plan
-> late, plan deep*: no slice breakdown until the arc becomes active. The
-> originating thread is preserved at `design/kickoff-thread.md` (was tracked as
-> M12, "the most substantive Phase 2 open milestone").
+> **Status: ACTIVE — slice-planned 2026-07-06.** The arc became the next
+> work after the arc10/11/12 gate (2026-07-05); the operator's design calls
+> (Broad rule set; architecture package; DD drafted) are recorded in
+> [`design/dd-59-lykn-source-linter-DRAFT.md`](./design/dd-59-lykn-source-linter-DRAFT.md)
+> (odm promotion = Duncan). Originating thread: `design/kickoff-thread.md`
+> (M12; its Q0 naming collision resolved by history — the JS-lint wrapper is
+> gone, `lykn lint` is the reserved stub citing issue #1).
 
 ## 1. Capability
 
@@ -38,26 +41,45 @@ already handles it); LSP server work (Phase 3+).
 
 ## 2. Slice breakdown
 
-_Not yet planned._ The thread estimates 3–5 iterations of substantial new work.
-When this arc becomes active, break it into slices (e.g.: lint-pass
-infrastructure over the reader AST → an initial rule corpus from
-`09-anti-patterns.md` → `lykn lint` CLI wiring + "not implemented yet" surface
-removal → rule expansion) and write each slice's open set then. Apply the
-sizing judgment (PROJECT-MANAGEMENT.md Part I) per slice.
+| Slice | Scope | Status |
+|-------|-------|--------|
+| **slice01 · lint-infra** | The machinery, end-to-end: rule trait + hardcoded match-dispatch registry over a spanned SExpr walk (pre-expansion); diagnostics reusing the `Diagnostic` machinery (error/warn); CLI wiring **replacing the stub** (`lykn lint <paths>`, exit 0/1/2, `--format=json`); per-rule fixture harness + `insta` snapshots; **3 pilot rules** proving the shapes (no-require [error], sort-without-comparator [warn], parseint-radix [warn]); **the rule-inventory compiler-verification pass** — compile every DD-59 candidate's bad-example against the current compiler; anything that already errors is reclassified out. The resulting table is slice02's authoritative corpus. | **Open — scoped** (open set written) |
+| **slice02 · shape-rule-corpus** | The remaining tier-1 shape rules from slice01's verified table (~12) + the 2 conventions rules (path-scoped to test files); per-rule fixtures (bad flagged / good silent); or-for-defaults' false-positive rate measured on the repo corpus before its severity is finalized; **dogfood pass**: `lykn lint` over the repo's own `.lykn` sources, findings fixed or acknowledged. | Open (scope after slice01's bubble-up) |
+| **slice03 · context-rules + docs** | Tier-2: missing-type-annotations (shape-checkable) + shadowing (reuses `analysis/scope.rs`); **guide-09 reclassification** (every entry labeled: compiler-enforced / linted-as-`<rule>` / documented-only — the ELIMINATED cleanup the CC audit demanded); guide-15 CLI docs + SKILL note; `make lint` integration decision; P-11 demo prep. | Open (scope after slice02) |
 
 ## 3. Dependencies
 
-Consumes: arc03's coherent surface + canonical-form discipline (lint rules
-reason about surface forms). Independent of arc04. Feeds project-ledger row
-P-11.
+Consumes: arc03's coherent surface + canonical-form discipline; **arc10's
+corpus division** (the compiler owns the closed 5-form namespace everywhere,
+so every lint rule is idiom/style by construction); arc11's conventions
+rules + `test/CONVENTIONS.md`; the existing `analysis/scope.rs` (slice03).
+Feeds **P-11**. Independent of arc06/arc07; must land before arc09.
 
 ## 4. Arc ledger
 
-_Opens when the arc-plan is detailed._ The class-(b) composition row will be
-"`lykn lint` flags seeded anti-patterns in a fixture and stays silent on clean
-idiomatic source," reproduced at arc scale.
+| ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
+|----|-----------|--------|--------------|--------|--------|----------|-------|
+| A-1 | slice01 (lint-infra) closed | ptr: slice01 cdc-verification | serious | arc-plan | open | | |
+| A-2 | slice02 (shape-rule-corpus) closed | ptr: slice02 cdc-verification | serious | arc-plan | open | | |
+| A-3 | slice03 (context-rules + docs) closed | ptr: slice03 cdc-verification | correctness | arc-plan | open | | |
+| A-4 | **`lykn lint` flags every v1 rule's seeded anti-pattern in a fixture corpus and stays silent on clean idiomatic source** (the P-11 demo) | end-to-end run over the seeded + clean fixtures; every rule fires exactly where seeded; exit 1 dirty / 0 clean | serious | arc-plan / P-11 | open | | reproduce at arc scale on host |
+| A-5 | **the linter is dogfooded** — `lykn lint` over the repo's own `.lykn` sources returns zero findings, or every finding is fixed/acknowledged with rationale | run it on `test/`, `examples/`, `packages/`; triage table | serious | arc-plan | open | | a linter the repo itself can't pass is a lie detector pointed backwards |
+| A-6 | **guide-09 is aligned** — every entry carries its enforcement label (compiler-enforced / linted / documented-only); doctests green | grep the labels; `make check` | correctness | CC anti-patterns audit (2026-06-30) | open | | closes the reclassification debt that spawned arc10 |
 
 ## 5. Version History
+
+### v1.2 — 2026-07-06 (arc ACTIVE; slice-planned; DD-59 drafted)
+Operator design calls (2026-07-06): **Broad v1 rule set** (tier-1 shape
+rules + missing-type-annotations + shadowing + the 2 conventions rules);
+**architecture package confirmed** (Rust over pre-expansion SExpr; hardcoded
+dispatch; text + `--format=json`; error/warn; read-only; exit 0/1/2; insta
+snapshots); **DD-59 drafted** (`design/dd-59-lykn-source-linter-DRAFT.md`,
+odm promotion = Duncan). Kickoff Q0 (naming collision) resolved by history.
+Three slices planned (infra+pilots+verification-pass → shape corpus +
+dogfood → context rules + guide alignment); arc ledger opened with the
+dogfood row (A-5) and the guide-09 alignment row (A-6) alongside the P-11
+composition demo (A-4). slice01 open set written. Surfaced by: operator
+go-ahead post the arc10/11/12 gate.
 
 ### v1.1 — 2026-07-05 (corpus division settled; arc11 seed additions)
 Recorded the arc10-settled corpus division (compiler owns the closed 5-form

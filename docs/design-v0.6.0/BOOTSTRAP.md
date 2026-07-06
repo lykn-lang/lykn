@@ -100,19 +100,18 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** **scope arc05 (lykn-source-linter).** The
-combined gate went **GO 2026-07-05** — arc10, arc11, and arc12 are
-**CLOSED** (P-15/P-16/P-17 done; gate records in each arc's
-closing-report). arc05's arc-plan is at **v1.1** with the settled corpus
-division (compiler owns the closed 5-form namespace everywhere incl. the
-macro boundary; linter owns idiom/style) + two test-conventions rules
-seeded from the arc11 audit. `09-anti-patterns.md` is the rule-set seed
-(needs the ELIMINATED reclassification per the CC audit + slice01's ID-38
-reframe). Remember: **`make check` is the canonical bar** (arc12; ~1m04s);
-gate demos use **`./bin/lykn`**, never bare `lykn` (the PATH-binary
-lesson). Post-0.6.0 routed items: project-plan §1 "Post-0.6.0 tracked
-candidates" (incl. the `set-symbol!` 0.7.0 decision, the batch-compile
-lever, and the hardening trio). After arc05: arc06 → arc07 → arc09.
+**Immediate next action:** **hand arc05/slice01 (`lint-infra`) to CC.**
+arc05 is **ACTIVE** (slice-planned 2026-07-06; arc-plan v1.2): design
+settled via **DD-59 draft** (`arc05/design/dd-59-…-DRAFT.md` — Broad rule
+set, Rust over pre-expansion SExpr, hardcoded dispatch, text+JSON,
+error/warn, exit 0/1/2; odm promotion = Duncan). slice01 = machinery + 3
+pilots + the **rule-inventory compiler-verification pass** (arc10 lesson
+#4, proactive — its table is slice02's contract). Then slice02 (shape
+corpus + repo dogfood), slice03 (context rules + guide-09 enforcement
+labels → closes the reclassification debt). Standing: **`make check` is
+the canonical bar** (~1m04s); demos use **`./bin/lykn`**, never bare
+`lykn`. Post-0.6.0 routed items: project-plan §1. After arc05: arc06 →
+arc07 → arc09.
 
 ## 6. How we work — the rhythm & the disciplines
 

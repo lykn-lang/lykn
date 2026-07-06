@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-05 (GATE GO — arc10, arc11, arc12 all CLOSED; next: arc05, the linter)",
+  updated: "2026-07-06 (arc05 ACTIVE — the linter slice-planned; slice01 ready for CC)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -150,9 +150,9 @@ const DATA = {
       slices:[
         {n:"move-core",s:"closed"},{n:"rewiring",s:"closed"},{n:"helper-extract",s:"closed"},
         {n:"complex-forms",s:"closed"},{n:"cleanup",s:"closed"}] },
-    { id:"arc05", name:"lykn-source-linter", status:"open",
-      cap:"lykn lint over Lykn source — idiom/style anti-patterns (corpus curation decided).",
-      slices:[] },
+    { id:"arc05", name:"lykn-source-linter", status:"active",
+      cap:"lykn lint over Lykn source — idiom/style. Broad v1 (15 shape rules + 2 context + 2 conventions); DD-59 drafted; the compiler owns the 5-form namespace, the linter owns everything the guide can name.",
+      slices:[{n:"lint-infra",s:"active"},{n:"shape-rule-corpus",s:"open"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -177,8 +177,8 @@ const DATA = {
   ],
   sequence: ["arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc05 · lykn-source-linter — scoping next",
-    desc:"The combined gate went GO on 2026-07-05 (23:29–23:33): arc10's 5-form demo verbatim, kernel: resolving, arc11's three-moment demo clean with ./bin/lykn, arc12's census at once-per-check — arc10, arc11, and arc12 are all CLOSED (P-15/16/17 done). Three compiler/toolchain arcs landed in six days. Next: scope arc05 (lykn lint) from its v1.1 seed — the corpus division is sharp (compiler owns the closed 5-form namespace everywhere; linter owns idiom/style), with two test-conventions rules already seeded from the arc11 audit. Then arc06, arc07, arc09 — the release."
+    arc:"arc05 · slice01 — lint-infra (ready for CC)",
+    desc:"The linter — lykn's oldest public promise (the stub cites issue #1) — is finally in flight. Design settled (DD-59 draft, operator-confirmed): Rust over the pre-expansion SExpr, hardcoded dispatch, text + JSON, error/warn, exit 0/1/2. slice01 builds the machinery end-to-end with 3 pilot rules (no-require, sort-without-comparator, parseint-radix) AND compiler-verifies all 19 rule candidates before slice02 scopes against them — the arc10 lesson applied proactively. Then slice02 (shape corpus + repo dogfood), slice03 (context rules + guide-09 enforcement labels), the P-11 demo, and on to arc06/07/09."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
