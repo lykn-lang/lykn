@@ -40,7 +40,7 @@ instance exemplifies:
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · test-out-dir** | Wire `--out-dir` (default `target/lykn/test/`): compile `.lykn`/`.lyk` test files there, run Deno against it, wipe-per-run like the doctest dir; `--compile-only` writes there too; interrupt debris lands in gitignored `target/`, never `test/`; add `*_test.js` to `.gitignore` as belt-and-suspenders for pre-existing stray debris; un-hide the flag + document. Recon-first: compiled tests' relative/import-map resolution when run from `target/` (the likely reason for the April sibling design). | **Closed** (`75c9cc2`; recon caught 7 location-dependence items in 5 files, fixed; fossil deleted; exclude declined w/ rationale; three-moment demo clean; 1365/0 · 673/0 · `make check` ✓) |
-| **slice02 · buried-intent-audit** | Sweep the marker inventory (TODO/FIXME/"for now"/"reserved"/`hide = true`/underscore-silenced params/`allow(dead_code)`) + doc-claims-vs-code spot-checks; produce a disposition table: every hit **wired, retired, or given a tracked row**; includes the `surface.rs:294` deprecation whose DD-58 trigger has fired. **Inherits from slice01's bubble-up:** reserved-plumbing sweep of `main.rs`; test-source location-dependence conventions note + arc05 lint-rule candidate; canonical-test-command documentation (`-A test/` is supported; unscoped is not); doctest-dir harmonization (`target/test/doctest` → `target/lykn/`, filed with reason). | **Open** (planned; scope next — arc11's last slice) |
+| **slice02 · buried-intent-audit** | Sweep the marker inventory (TODO/FIXME/"for now"/"reserved"/`hide = true`/underscore-silenced params/`allow(dead_code)`) + doc-claims-vs-code spot-checks; produce a disposition table: every hit **wired, retired, or given a tracked row**; includes the `surface.rs:294` deprecation whose DD-58 trigger has fired. **Inherits from slice01's bubble-up:** reserved-plumbing sweep of `main.rs`; test-source location-dependence conventions note + arc05 lint-rule candidate; canonical-test-command documentation (`-A test/` is supported; unscoped is not); doctest-dir harmonization (`target/test/doctest` → `target/lykn/`, filed with reason). | **Scoped — open set written 2026-07-05** (`slice02-buried-intent-audit/{slice-doc,ledger,cc-prompt}.md`; 9-item seeded inventory + benign filter; audit-then-fix; F-4 SetSymbol = assess-and-route) |
 
 ## 3. Dependencies
 
@@ -61,6 +61,17 @@ just at rest, before the release cut. Sequence of open work: arc10-gate →
 | A-5 | **unscoped `deno test --config project.json` does not abort on generated or orphaned artifacts** — the April fossil is gone and generated output resolves cleanly (bare specifiers) | run it unscoped; no TS2307 from `target/**` | correctness | operator deno-test issue + CC investigation 2026-07-05 | **met (attested)** | slice01: fossil deleted (CDC-reproduced) + 0 target errors unscoped (attested). **Amended (v1.2; was: "discovery excludes `target/`")** — the exclude mechanism was empirically invalidated (Deno's config `exclude` filters even explicitly-passed paths, which would break `lykn test`'s own out-dir run); goal met without it. Residual: unscoped runs double-run the corpus + need `-A` — not a supported invocation; canonical-command doc → slice02 |
 
 ## 5. Version History
+
+### v1.3 — 2026-07-05 (slice02 scoped)
+slice02 (`buried-intent-audit`) open set written, grounded in a fresh
+post-slice01 sweep: **9-item seeded inventory** (surface.rs:294 SetSymbol
+TODO [trigger fired at arc10 close — F-4 assess-and-route, operator
+decides]; icu.rs:696; the two arc10-routed cosmetic defects [kernel-mark
+comment, macroEnv guard — F-3, ending their drive-by limbo]; the cmd_lint
+stub [tracked, arc05]; slice01's four bubble-up items) + a **benign-filter
+rule** (describes-now = noise; should-someday = inventory). A-4's closure
+evidence = the sweep-rerun diff at slice close. arc11's last slice.
+Surfaced by: operator go-ahead + slice01 bubble-up.
 
 ### v1.2 — 2026-07-05 (slice01 closed; A-5 amended)
 slice01 closed (`75c9cc2`, CDC-verified): `--out-dir` live (default
