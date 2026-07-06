@@ -447,7 +447,7 @@ fn cmd_run(file: &std::path::Path, args: &[String]) {
 /// `target/lykn/` (arc01-aligned with `build`/`dist`), gitignored, and wiped
 /// per run — so generated `.js` never lands in the source tree at any moment
 /// (philosophy.md commitment #1; mirrors the doctest runner's
-/// `target/test/doctest` discipline).
+/// `target/lykn/test/doctest` discipline).
 const DEFAULT_TEST_OUT_DIR: &str = "target/lykn/test";
 
 fn cmd_test(

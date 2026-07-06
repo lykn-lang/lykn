@@ -1578,8 +1578,12 @@ function enforceStrictTopLevel(forms) {
 }
 
 export function expand(forms, context = {}) {
-  // Ensure surface macros are registered (idempotent — skips if already present)
-  if (!macroEnv.has('bind')) {
+  // Ensure the surface macros are registered (idempotent). Key on a name the
+  // registration actually installs: since DD-37 moved `bind` (and the rest) to
+  // the classifier, `registerSurfaceMacros` only registers the `js:*` interop
+  // macros — `macroEnv.has('bind')` was permanently false, so the guard never
+  // skipped. Key on `js:eq` instead. (arc11/slice02)
+  if (!macroEnv.has('js:eq')) {
     registerSurfaceMacros(macroEnv);
   }
   const { filePath = null, compilationStack = [], strict = true } = context;

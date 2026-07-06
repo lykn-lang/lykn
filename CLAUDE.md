@@ -81,9 +81,15 @@ cargo publish --dry-run      # verify crates.io packaging
 
 ```sh
 deno lint packages/          # lint JS
-deno test --config project.json -A test/  # test JS
+deno test --config project.json -A test/  # test JS (canonical — scope to test/)
 deno publish                 # publish to jsr.io
 ```
+
+Always scope `deno test` to `test/` and pass `-A`. Unscoped `deno test --config
+project.json` is **not supported** — it also walks `target/` (compiled
+`*_test.js`), which double-runs the corpus and fails on permissions. Test
+authoring conventions (bare import-map specifiers; `Deno.cwd()`-anchored
+fixtures, never `import.meta.dirname`) are in `test/CONVENTIONS.md`.
 
 ### Snapshot testing (insta)
 

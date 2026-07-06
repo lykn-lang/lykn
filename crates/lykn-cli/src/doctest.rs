@@ -519,7 +519,7 @@ fn sanitize_filename(path: &str) -> String {
 /// 1. Finds `.md` and `.html` files in the given path (file or directory).
 /// 2. Extracts lykn code blocks from each (fenced blocks from Markdown,
 ///    `<script type="text/lykn">` tags from HTML).
-/// 3. Generates temporary Deno test files under `target/test/doctest/`.
+/// 3. Generates temporary Deno test files under `target/lykn/test/doctest/`.
 /// 4. Invokes `deno test` on the generated files.
 /// 5. Exits with Deno's exit code.
 pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
@@ -550,7 +550,7 @@ pub fn run_doc_tests(docs_path: &str, config: &str, deno_args: &[String]) -> ! {
     let config_path = Path::new(config);
     let config_dir = config_path.parent().unwrap_or(Path::new("."));
 
-    let out_dir = config_dir.join("target/test/doctest");
+    let out_dir = config_dir.join("target/lykn/test/doctest");
     if out_dir.exists() {
         let _ = fs::remove_dir_all(&out_dir);
     }

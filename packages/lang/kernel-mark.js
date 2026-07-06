@@ -7,7 +7,7 @@
 //   1. the surface-form classifier (bind → const, func → function, …),
 //   2. the `(kernel:<form> …)` escape,
 //   3. Obj-literal key/value pairs (so a pair is not read as a macro call),
-//   4. (formerly `kernelArray` — removed as dead in this slice).
+//   4. `kernelArray` (`surface-helpers.js`), used by `compileLetPattern`.
 //
 // The signal is a module-level `WeakSet` keyed on the AST node, not a mutated
 // marker property on the node: no node-shape change, GC-friendly, and —

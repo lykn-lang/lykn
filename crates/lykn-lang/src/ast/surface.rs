@@ -291,7 +291,12 @@ pub enum SurfaceForm {
         value: SExpr,
         span: Span,
     },
-    // TODO: deprecate when surface/kernel syntaxes are separated; remove the release after that.
+    // `SetSymbol` (`set-symbol!`) deprecation: the surface/kernel-separation
+    // trigger fired at arc10's close (DD-58 complete). Assessed + routed in
+    // arc11/slice02 as a 0.7.0 breaking-change candidate (operator decision) —
+    // see that slice's disposition table / the 0.7.0 project-plan row. It is a
+    // live surface form today (computed-key assignment; used by guide-02 + 2
+    // tests). Do NOT remove before the routed decision.
     SetSymbol {
         obj: SExpr,
         key: SExpr,
