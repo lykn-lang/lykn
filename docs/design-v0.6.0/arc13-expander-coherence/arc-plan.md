@@ -35,10 +35,11 @@ corpus** pins all of it cross-compiler, permanently.
 |-------|-------|--------|
 | **slice01 · conformance-matrix + DD** | Systematically extend the F-4 probe: name classes (surface macros, classifier forms, kernel heads, `kernel:`-prefixed, JS reserved words, ordinary names) × binding positions (func/fn/genfunc params, `bind`, destructuring, loop bindings, class fields) × reference positions (call-head, argument, nested-fn body) × both backends. Output: the full matrix (ground truth) + **DD-60 draft**: the intended semantics — *lexical bindings shadow macros/forms within their scope; JS reserved words are invalid names; kernel-only heads stay closed (DD-58 untouched)* — with per-cell target behavior and the migration/breaking analysis. Recon-only slice: **no compiler changes.** | **Closed** (885-cell matrix, `tools/conformance-matrix.js`; 35% backend disagreement; Rust's "shadowing" exposed as shape-coincidence; **DD-60 operator-confirmed in full 2026-07-06** incl. export + `kernel:` name-slot coverage; recon-only CDC-reproduced) |
 | **slice02 · rust-shadowing + name-validation** | ~~DD-60 on the Rust backend via scope-threading~~ | **SELF-STOPPED → superseded** (2026-07-06): implementation contact found **four** independent name-dispatch subsystems (expander / classifier / emitter / codegen — kernel heads dispatch in codegen, `emit.rs:224/248/270`), not the recon's one path. Tree reverted clean; the four-site map + the validated EmitterContext mechanism carried into the re-slice; all 5 ledger rows deferred with homes. |
-| **slice03 · binding-walker + d2-validation** (re-slice) | **DD-61 §A2's binding-position walker on both backends** — the single per-backend component that knows what binds — **+ the D2 reserved-word validator riding it** (every binding position, `export`, the `kernel:` name slot; list-parity test against the probe). Ships first: resolution-independent, kills the ID-44 genus, and builds D1's chassis. | **Open — scoped** (open set written 2026-07-06) |
-| **slice04 · rust-resolution** | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline: expander light binding-scan (shared walker) → classifier hosts the env + tags atoms → emitter and codegen become **read-only consumers**. Rust matrix columns → DD-60 targets. | Open (scope after slice03) |
-| **slice05 · js-resolution** | Same through the JS pipeline: env threads the `expandExpr` walk (binding-position atoms are never dispatched — kills the throws-at-binding-site rows); `compiler.js` consumes tags for kernel heads. JS matrix columns → targets. | Open (scope after slice04) |
-| **slice06 · conformance-corpus + arc close** | The permanent cross-backend name-binding corpus generated from the matrix; A-4/A-5 reproduced; DD-60 refinement entry recording the resolve-once architecture. | Open |
+| **slice03 · binding-walker + d2-validation** (re-slice) | **DD-61 §A2's binding-position walker on both backends** — the single per-backend component that knows what binds — **+ the D2 reserved-word validator riding it** (every binding position, `export`, the `kernel:` name slot; list-parity test against the probe). Ships first: resolution-independent, kills the ID-44 genus, and builds D1's chassis. | **Closed** (commit pending on staged source; `binding.rs`/`binding.js` + 16 parity fixtures; D2 both backends; matrix: only D2 rows moved, disagreement 312→208; suites 1387/0; **finding: DD-60 list missed 3 binding positions** → refinement confirmed → slice04) |
+| **slice04 · walker-extension** (from slice03's finding; operator packaging call) | +3 binding positions (`if-let`/`when-let` patterns, `match` clause patterns — live ID-44-genus leaks) through walker + D2 + matrix probe, both backends. | **Open — scoped** (open set written 2026-07-06) |
+| **slice05 · rust-resolution** (was 04) | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline: expander light binding-scan (shared walker) → classifier hosts the env + tags atoms → emitter and codegen become **read-only consumers** via the `as_form_head()` accessor swap (DD-61 §A6 rows pinned here). Rust matrix columns → DD-60 targets. | Open (scope after slice04) |
+| **slice06 · js-resolution** (was 05) | Same through the JS pipeline: env threads the `expandExpr` walk (binding-position atoms are never dispatched); `formHead()` + the static grep-conformance check (DD-61 §A6). JS matrix columns → targets. | Open (scope after slice05) |
+| **slice07 · conformance-corpus + arc close** (was 06) | The permanent cross-backend name-binding corpus generated from the matrix; A-4/A-5 reproduced; DD-60 cross-ref entry recording DD-61's architecture as-built. | Open |
 
 *(Architecture per **DD-61 · Resolve-Once** —
 [`design/dd-61-resolve-once-resolution-architecture.md`](./design/dd-61-resolve-once-resolution-architecture.md):
@@ -68,6 +69,21 @@ slice03 → arc06 → arc07 → arc09.**
 | A-6 | arc05's ID-42 question re-answered from the fixed state | arc05 slice03 scoping note: reserved-param-name rule shrunk/dropped with rationale | correctness | operator decision 2026-07-06 | open | | the point of pausing: do the right thing instead of warning broadly |
 
 ## 5. Version History
+
+### v1.4 — 2026-07-06 (slice03 closed; DD-60 +3 refinement; slice04 inserted, tail renumbered)
+slice03 closed (staged; CDC content-verified): walkers on both backends
+(`binding.rs`/`binding.js`, `ParamShape` reuse, 16 parity fixtures), D2
+everywhere (ID-44 genus dead at the confirmed positions), three-way list
+parity in `make check`, matrix disagreement **312→208** with only-D2
+movement, suites 1387/0. **Finding:** the walker build exposed DD-60's
+binding-position list as incomplete (`if-let`/`when-let`/`match` patterns —
+live rc=0 leaks). **Operator: refinement confirmed, packaged as its own
+small slice** → **slice04 · walker-extension** (created now; open set
+written). Un-created tail entries renumbered: rust-resolution → slice05,
+js-resolution → slice06, corpus+close → slice07 (no dirs existed; the
+no-bisection rule respected — new work takes the next creation number).
+DD-60 refinement log updated (which-child-surfaced: slice03). DD-61 §A6
+enforcement rows explicitly pinned into the 05/06 table lines.
 
 ### v1.3 — 2026-07-06 (architecture doc renumbered: "DD-60 Appendix A" → DD-61)
 Operator catch: a separate file carrying DD-weight decisions under another

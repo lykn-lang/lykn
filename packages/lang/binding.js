@@ -63,6 +63,13 @@ export function bindingsIntroduced(form) {
       return args.length > 0 ? patternNames(args[0], "loop-binding") : [];
     case "class":
       return classMethodParamNames(args);
+    // DD-60 refinement (2026-07-06): if-let/when-let binding patterns and match
+    // clause patterns bind names too.
+    case "if-let":
+    case "when-let":
+      return ifLetPatternNames(args);
+    case "match":
+      return matchClauseNames(args);
     default: {
       const kernel = name.startsWith("kernel:")
         ? name.slice("kernel:".length)
@@ -157,6 +164,60 @@ function classMethodParamNames(args) {
   return out;
 }
 
+/** if-let/when-let: `(if-let (BINDING expr) …)` — BINDING is a match-pattern. */
+function ifLetPatternNames(args) {
+  const pair = args[0];
+  if (pair?.type !== "list" || pair.values.length === 0) return [];
+  return matchPatternNames(pair.values[0]);
+}
+
+/** match: `(match target (PAT body…) …)` — each clause's pattern binds. */
+function matchClauseNames(args) {
+  const out = [];
+  for (const clause of args.slice(1)) {
+    if (clause?.type === "list" && clause.values.length > 0) {
+      out.push(...matchPatternNames(clause.values[0]));
+    }
+  }
+  return out;
+}
+
+/**
+ * Names bound by a match/if-let/when-let pattern — mirrors the Rust
+ * `classify_pattern`: `_`, `true`/`false`/`null`/`undefined`, PascalCase heads,
+ * and literals bind nothing; lowercase atoms bind; constructor and `obj`
+ * sub-patterns recurse.
+ */
+function matchPatternNames(pat) {
+  if (pat?.type === "atom") {
+    const v = pat.value;
+    if (
+      v === "_" || v === "true" || v === "false" || v === "null" ||
+      v === "undefined"
+    ) {
+      return [];
+    }
+    if (/^[A-Z]/.test(v)) return []; // PascalCase — nullary constructor
+    return [{ name: v, kind: "pattern" }];
+  }
+  if (pat?.type !== "list" || pat.values.length === 0) return [];
+  const head = pat.values[0];
+  if (head.type !== "atom") return [];
+  if (head.value === "obj") {
+    const out = [];
+    for (let i = 1; i + 1 < pat.values.length; i += 2) {
+      out.push(...matchPatternNames(pat.values[i + 1]));
+    }
+    return out;
+  }
+  if (/^[A-Z]/.test(head.value)) {
+    const out = [];
+    for (const sub of pat.values.slice(1)) out.push(...matchPatternNames(sub));
+    return out;
+  }
+  return [];
+}
+
 /** Leaf names bound by a pattern: an atom or an (array …)/(object …) form. */
 function patternNames(pat, kind) {
   if (pat?.type === "atom") {
@@ -190,6 +251,7 @@ const KIND_PHRASE = {
   "bind": "binding name",
   "loop-binding": "loop binding",
   "class-method-param": "class method parameter",
+  "pattern": "pattern binding",
 };
 
 /**

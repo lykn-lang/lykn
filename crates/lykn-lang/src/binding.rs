@@ -13,7 +13,7 @@
 //! default) is reused from the classifier, so the walker never re-derives it.
 
 use crate::ast::sexpr::SExpr;
-use crate::ast::surface::{ParamShape, SurfaceForm};
+use crate::ast::surface::{ParamShape, Pattern, SurfaceForm};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 
@@ -108,6 +108,9 @@ pub enum BindingKind {
     LoopBinding,
     /// A class method/constructor parameter.
     ClassMethodParam,
+    /// An `if-let`/`when-let` binding pattern or a `match` clause pattern
+    /// (DD-60 refinement, 2026-07-06).
+    Pattern,
 }
 
 impl BindingKind {
@@ -118,6 +121,7 @@ impl BindingKind {
             BindingKind::Bind => "binding name",
             BindingKind::LoopBinding => "loop binding",
             BindingKind::ClassMethodParam => "class method parameter",
+            BindingKind::Pattern => "pattern binding",
         }
     }
 }
@@ -168,6 +172,10 @@ pub fn bindings_introduced(form: &SExpr) -> Vec<BindingSite> {
         "func" | "genfunc" | "fn" | "lambda" | "genfn" => param_names(form),
         "for-of" | "for-in" | "for-await-of" => loop_names(args),
         "class" => class_method_param_names(args),
+        // DD-60 refinement (2026-07-06): if-let/when-let binding patterns and
+        // match clause patterns bind names too.
+        "if-let" | "when-let" => if_let_names(form),
+        "match" => match_clause_names(form),
         // `kernel:` declaration escapes bind their name slot (D2 edge case 3).
         _ => {
             if let Some(kernel) = head.strip_prefix("kernel:") {
@@ -257,6 +265,55 @@ fn param_names(form: &SExpr) -> Vec<BindingSite> {
         _ => {}
     }
     out
+}
+
+/// `if-let`/`when-let` binding pattern. Reuse the classifier so the
+/// binding-vs-constructor distinction (uppercase = constructor) is not
+/// re-derived.
+fn if_let_names(form: &SExpr) -> Vec<BindingSite> {
+    let mut out = Vec::new();
+    match crate::classifier::classify_expr(form) {
+        Ok(SurfaceForm::IfLet { pattern, .. }) | Ok(SurfaceForm::WhenLet { pattern, .. }) => {
+            collect_pattern(&pattern, &mut out);
+        }
+        _ => {}
+    }
+    out
+}
+
+/// `match` clause patterns — every clause's pattern binds its variables.
+fn match_clause_names(form: &SExpr) -> Vec<BindingSite> {
+    let mut out = Vec::new();
+    if let Ok(SurfaceForm::Match { clauses, .. }) = crate::classifier::classify_expr(form) {
+        for clause in &clauses {
+            collect_pattern(&clause.pattern, &mut out);
+        }
+    }
+    out
+}
+
+/// Collect the names a `match`/`if-let`/`when-let` `Pattern` binds — recursing
+/// into constructor sub-patterns and object patterns. Wildcards, literals, and
+/// constructor *heads* bind nothing.
+fn collect_pattern(pat: &Pattern, out: &mut Vec<BindingSite>) {
+    match pat {
+        Pattern::Binding { name, span } => out.push(BindingSite {
+            name: name.clone(),
+            kind: BindingKind::Pattern,
+            span: *span,
+        }),
+        Pattern::Constructor { bindings, .. } => {
+            for b in bindings {
+                collect_pattern(b, out);
+            }
+        }
+        Pattern::Obj { pairs, .. } => {
+            for (_, p) in pairs {
+                collect_pattern(p, out);
+            }
+        }
+        Pattern::Wildcard(_) | Pattern::Literal(_) => {}
+    }
 }
 
 /// Class-method (and constructor) params. Methods are stored raw as
@@ -447,6 +504,38 @@ mod tests {
     #[test]
     fn export_wrapped_binding_is_found() {
         assert_eq!(names("(export (bind x 1))"), vec!["x"]);
+    }
+
+    // DD-60 refinement (2026-07-06): if-let / when-let / match patterns.
+
+    #[test]
+    fn if_let_binding() {
+        assert_eq!(
+            sites("(if-let (x expr) (f x))"),
+            vec![("x".into(), BindingKind::Pattern)]
+        );
+    }
+
+    #[test]
+    fn when_let_binding() {
+        assert_eq!(
+            sites("(when-let (y expr) (f y))"),
+            vec![("y".into(), BindingKind::Pattern)]
+        );
+    }
+
+    #[test]
+    fn match_clause_patterns_bind_constructor_vars() {
+        // constructor sub-patterns bind; the constructor head and wildcard don't.
+        assert_eq!(
+            names("(match v ((Some x) x) ((Pair a b) (+ a b)) (_ 0))"),
+            vec!["x", "a", "b"]
+        );
+    }
+
+    #[test]
+    fn match_literal_and_wildcard_bind_nothing() {
+        assert!(names("(match v (0 \"zero\") (_ \"other\"))").is_empty());
     }
 
     #[test]

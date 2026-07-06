@@ -55,12 +55,18 @@ const BINDS_IF = [
   ["class method param", "(class C () (m (if) 5))"],
   ["export bind", "(export (bind if 0))"],
   ["kernel:const name slot", "(kernel:const if 0)"],
+  // DD-60 refinement (2026-07-06, slice04): if-let/when-let/match patterns.
+  ["if-let binding", "(if-let (if x) (g if))"],
+  ["when-let binding", "(when-let (if x) (g if))"],
+  ["match constructor pattern", "(match v ((Some if) if) (_ 0))"],
 ];
 
 // `if` NOT in a binding position (it is a real form / call) → both accept.
 const IF_NOT_A_BINDING = [
   ["if form", "(if true 1 2)"],
   ["bind value uses if-form", "(bind ok (if true 1 2))"],
+  // a match literal / constructor head is not a binding.
+  ["match literal true clause", "(match v (true 1) (_ 0))"],
 ];
 
 for (const [label, src] of BINDS_IF) {
