@@ -6,6 +6,7 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0063 | DD-61 — Resolve-Once: Name-Resolution Architecture (implements DD-60) | Active | 2026-07-06 |
 | 0062 | DD-60 — Name-Binding Semantics (bindings shadow macros/forms) | Active | 2026-07-06 |
 | 0061 | DD-59 — The Lykn-Source Linter (`lykn lint`) | Accepted | 2026-07-06 |
 | 0060 | DD-56 — Canonical Form Specification and Language Catalog | Draft | 2026-07-06 |
@@ -81,6 +82,7 @@ This index is automatically generated. Do not edit manually.
 
 ### Active
 
+- [0063 - DD-61 — Resolve-Once: Name-Resolution Architecture (implements DD-60)](05-active/0063-dd-61-resolve-once-name-resolution-architecture.md)
 - [0062 - DD-60 — Name-Binding Semantics (bindings shadow macros/forms)](05-active/0062-dd-60-name-binding-semantics-bindings-shadow-macrosforms.md)
 - [0059 - Kernel/Surface Separation](05-active/0059-dd-58-kernelsurface-separation-closed-surface-namespace.md)
 - [0058 - Compiler Architecture Coherence — Thread Opening](05-active/0058-compiler-architecture-coherence-thread-opening.md)

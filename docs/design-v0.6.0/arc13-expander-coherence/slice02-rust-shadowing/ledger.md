@@ -18,11 +18,27 @@ spec = the matrix's Rust columns at DD-60 target. Per
 
 ## What Worked
 
-_(At slice close.)_
+- **The self-stop-on-scope-explosion clause fired on contact with ground
+  truth** — before a risky four-subsystem change, with the tree reverted
+  clean and the validated mechanism (EmitterContext scope frames) preserved
+  in the hand-off notes rather than lost.
+- **The stop carried data, not vibes**: the four-site dispatch table
+  (expander / classifier / emitter / codegen) is the map the re-slice is
+  built from.
 
 ## Closure
 
-_(At slice close: commit SHA, date, verifier, row disposition counts.)_
+**Closed 2026-07-06 as SELF-STOPPED → SUPERSEDED BY RE-SLICE** (no commit;
+`crates/`+`packages/` pristine — CDC-verifiable by clean tree). Rows: 5.
+Done: 0. **Deferred: 5** — all five rows carry forward into the re-sliced
+plan (arc-plan v1.2): F-2/F-3 (D2 validator + parity) → **slice03 ·
+d2-name-validation**; F-1/F-4 (D1 scope + matrix targets) → **slice04/05**
+(shared scope-core, then remaining sites); F-5 (green bar) → every
+successor. No silent drops — the scope was wrong, not the work.
+**Root cause (owned jointly):** slice01's F-3 recon sketched the happy
+path ("thread the classify path, medium LoE") and missed the emitter and
+codegen dispatch sites; CDC accepted it without demanding an exhaustive
+dispatch-site enumeration. Learning → issues log.
 
 > Scope-threading is expander/classifier core: the five-iteration cap and
 > the self-stop-on-scope-explosion clause both apply. Any DD-60 cell the

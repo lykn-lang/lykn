@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-06 (DD-60 confirmed — 885-cell matrix in; arc13/slice02 rust-shadowing ready for CC)",
+  updated: "2026-07-06 (★ Resolve-Once architecture confirmed — arc13 re-sliced; slice03 walker+D2 ready for CC)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -155,7 +155,7 @@ const DATA = {
       slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc13", name:"expander-coherence", status:"active",
       cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
-      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing",s:"active"},{n:"js-shadowing+corpus",s:"open"}] },
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"active"},{n:"rust-resolution",s:"open"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -180,8 +180,8 @@ const DATA = {
   ],
   sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc13 · slice02 — rust-shadowing (ready for CC)",
-    desc:"The 885-cell conformance matrix is in and it corrected the record: NEITHER backend has binding awareness (Rust's apparent shadowing was a shape-check coincidence; 35% of cells disagree; reserved words are ID-44 at scale — const if = 0 at rc=0). DD-60 is operator-confirmed in full: lexical bindings shadow macros whole-scope (incl. user macros), reserved words are invalid names everywhere (empirical legality test, covering export and the kernel: name slot), DD-58 untouched. Breaking analysis verified against the matrix: nothing currently-correct breaks. slice02 implements it on Rust (scope-threaded dispatch + name validator + a list-parity test); slice03 does JS + the permanent conformance corpus; then arc05 resumes."
+    arc:"arc13 · slice03 — binding-walker + D2 (ready for CC), under the Resolve-Once architecture",
+    desc:"slice02 self-stopped with data — name dispatch lives in FOUR subsystems, not one — and the stop bought the right architecture instead of a risky patch. Operator + CDC hammered it out against the canon (Racket scope-sets, GHC's Renamer, rustc RFC-1560): Resolve-Once — resolved-atom flags carried in the IR, one binding-position walker per backend, every dispatch site demoted to a read-only consumer (DD-61 · Resolve-Once, operator-confirmed incl. the flags-vs-renaming-vs-new-construct call). Re-sliced: 03 walker+D2 both backends (ships first, kills the ID-44 genus, builds D1's chassis) → 04 rust-resolution → 05 js-resolution → 06 the permanent conformance corpus. Then arc05 resumes with the right thing simply true."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
@@ -204,6 +204,7 @@ const DATA = {
     "Retired the transitional _kernel marker (DD-37 step 4) for a WeakSet sanctioned-kernel registry, and closed the macro boundary: macro-emitted bare kernel decls now error on both compilers (operator-decided Rust semantics, recorded in DD-58) — with a kernel-form parity guard and kernel: corpus rows standing watch.",
     "Finished philosophy #1's last mile: lykn test now compiles to target/lykn/test/ (wiped per run) — no generated JS ever touches the source tree (mid-run, post-SIGINT, post-compile-only all clean) — wiring a flag that had sat 'reserved for future use' since April and deleting the fossil that broke unscoped deno test.",
     "Ran the buried-intent audit: 13 items dispositioned (wired / retired / tracked-with-watchers), 4 previously-unknown functional deferrals surfaced (incl. genfunc's silent clause-drop), the SetSymbol deprecation routed to a real 0.7.0 decision row, and a reproducible sweep-diff proving zero silently-deferred intent remains — the anti-'delayed, deferred, buried, lost' countermeasure, now evidenced.",
+    "★ RESOLVE-ONCE: adopted a single name-resolution authority for the language (arc13, DD-60 semantics + DD-61 architecture) — the pattern that carries Racket's hygienic expander (Flatt's scope-sets: macro dispatch and variable reference are ONE lookup), GHC's Renamer, and rustc's resolution phase (RFC 1560), sized to lykn as resolved-atom flags + one binding-position walker per backend, with every former dispatch site demoted to a read-only consumer. Born from an 885-cell conformance matrix that proved neither backend had real binding awareness (35% of cells diverged; 'shadowing' on Rust was a shape-check accident). lykn gets true lexical scoping — bindings shadow macros and forms, by construction, on both compilers, pinned forever by a conformance corpus. Likely the pivotal language-semantics feature of 0.6.0.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
@@ -232,6 +233,8 @@ const DATA = {
       lesson:"The first arc10/arc11 gate run used bare <code>lykn</code>, which resolved to a stale cargo-installed binary — it sibling-emitted 97 _test.js files into test/ (old behavior), while ./bin/lykn in the same session behaved correctly. And the new *_test.js gitignore <i>masked</i> the debris from git. <b>Learning:</b> issues-log #3 guarded bin/ and the build dir; PATH is a third staleness channel. Runbooks now say <code>which lykn</code> + <code>./bin/lykn</code> explicitly; a warn-on-foreign-binary guard is filed. Bonus finding: unscoped deno test also walks .worktrees/ (stale checkouts, 0-ahead, deletable)." },
     { t:"Deno config 'exclude' filters even explicitly-passed paths", tag:"guard",
       lesson:"slice01's planned project.json target/ exclude turned out to break the very runs it was protecting (Deno returns 'No test' even for explicitly-passed excluded paths) — CC demonstrated it empirically and declined the mechanism; the row's goal (no unscoped TS2307 abort) was already met by the fossil deletion + bare specifiers. <b>Learning:</b> a ledger row's mechanism can be invalidated while its goal stands — amend the row (was:-note), don't force the mechanism. The supported test command remains deno test --config project.json -A test/." },
+    { t:"★ Resolve-Once: stringly dispatch at four sites → one resolution authority", tag:"guard",
+      lesson:"The deep lesson under the expander divergence: lykn's kernel IR was <i>stringly at the head position</i> — <code>(array 1 2)</code> couldn't say whether array was the form or a bound variable — so FOUR phases (expander, classifier, emitter, codegen) each re-decided what every name meant. Four independent deciders mathematically guarantees divergence; an oracle consulted at four sites just hides it better. The established cure, drawn from Racket's hygienic expander (Flatt's scope-sets — macro dispatch and variable lookup are the same resolution), GHC's Renamer, and rustc's RFC-1560 resolution phase: <b>resolve once, make the resolution part of the data, and demote every dispatch site to a read-only consumer.</b> lykn's sizing: resolved-atom flags (the enrich-the-identifier canon — Racket syntax objects, rustc Res fields) over alpha-renaming (would break readable-JS output) or a new kernel construct (the grammar is user-facing, dual-implemented, macro-visible). <b>Learning:</b> when N sites must agree on a judgment, the fix is never N careful implementations — it's making the judgment once and representing it so the question can't be re-asked. Same shape as kernel-mark (arc10) and the sanctioned-kernel registry, at full language scale." },
     { t:"The expanders disagree on what a name means", tag:"open",
       lesson:"arc05's ID-42 recon self-stopped and exposed it: a param named after a surface macro compiles as a call on Rust but throws on JS; Rust fires macros for 7 macro-named params (wrong code); JS reserved words emit invalid JS at rc=0. A P-9-class semantic divergence the cross-compiler corpus never covered — form-codegen coverage (~11%) was a documented latent gap since arc03, and this is what lived in it. <b>Learning:</b> the self-stop + recon-gate discipline turned a would-be lint rule into the discovery of the real disease. → arc13 (DD-60 semantics + both expanders + a permanent name-binding conformance corpus)." },
     { t:"CDC 'appears dead' recon was a grep artifact", tag:"fixed",

@@ -34,11 +34,18 @@ corpus** pins all of it cross-compiler, permanently.
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · conformance-matrix + DD** | Systematically extend the F-4 probe: name classes (surface macros, classifier forms, kernel heads, `kernel:`-prefixed, JS reserved words, ordinary names) × binding positions (func/fn/genfunc params, `bind`, destructuring, loop bindings, class fields) × reference positions (call-head, argument, nested-fn body) × both backends. Output: the full matrix (ground truth) + **DD-60 draft**: the intended semantics — *lexical bindings shadow macros/forms within their scope; JS reserved words are invalid names; kernel-only heads stay closed (DD-58 untouched)* — with per-cell target behavior and the migration/breaking analysis. Recon-only slice: **no compiler changes.** | **Closed** (885-cell matrix, `tools/conformance-matrix.js`; 35% backend disagreement; Rust's "shadowing" exposed as shape-coincidence; **DD-60 operator-confirmed in full 2026-07-06** incl. export + `kernel:` name-slot coverage; recon-only CDC-reproduced) |
-| **slice02 · rust-shadowing + name-validation** | Implement DD-60 on the **Rust** backend: binding-aware macro/form dispatch (the `cell`/`express`/`get`/`not`/`lambda`/`template`/`new` rows stop firing macros for bound names); reserved-word name validator (proper diagnostic, all binding positions); regression tests per matrix cell. | Open (scope after slice01/DD-60) |
-| **slice03 · js-shadowing + conformance corpus** | Implement DD-60 on the **JS** backend (the throws become param-calls per the matrix); the **conformance corpus**: cross-compiler `compileBoth` rows covering the matrix's live cells, so divergence in this class can never again be silent; full green. | Open (scope after slice02) |
+| **slice02 · rust-shadowing + name-validation** | ~~DD-60 on the Rust backend via scope-threading~~ | **SELF-STOPPED → superseded** (2026-07-06): implementation contact found **four** independent name-dispatch subsystems (expander / classifier / emitter / codegen — kernel heads dispatch in codegen, `emit.rs:224/248/270`), not the recon's one path. Tree reverted clean; the four-site map + the validated EmitterContext mechanism carried into the re-slice; all 5 ledger rows deferred with homes. |
+| **slice03 · binding-walker + d2-validation** (re-slice) | **DD-61 §A2's binding-position walker on both backends** — the single per-backend component that knows what binds — **+ the D2 reserved-word validator riding it** (every binding position, `export`, the `kernel:` name slot; list-parity test against the probe). Ships first: resolution-independent, kills the ID-44 genus, and builds D1's chassis. | **Open — scoped** (open set written 2026-07-06) |
+| **slice04 · rust-resolution** | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline: expander light binding-scan (shared walker) → classifier hosts the env + tags atoms → emitter and codegen become **read-only consumers**. Rust matrix columns → DD-60 targets. | Open (scope after slice03) |
+| **slice05 · js-resolution** | Same through the JS pipeline: env threads the `expandExpr` walk (binding-position atoms are never dispatched — kills the throws-at-binding-site rows); `compiler.js` consumes tags for kernel heads. JS matrix columns → targets. | Open (scope after slice04) |
+| **slice06 · conformance-corpus + arc close** | The permanent cross-backend name-binding corpus generated from the matrix; A-4/A-5 reproduced; DD-60 refinement entry recording the resolve-once architecture. | Open |
 
-*(Slices 02/03 may merge if slice01's matrix shows the fixes are smaller
-than feared — sizing judgment re-applied at DD-60 close.)*
+*(Architecture per **DD-61 · Resolve-Once** —
+[`design/dd-61-resolve-once-resolution-architecture.md`](./design/dd-61-resolve-once-resolution-architecture.md):
+**resolved-atom flags** [operator-confirmed 2026-07-06 over alpha-renaming
+and a new kernel construct — the enrich-the-identifier pattern of Racket
+syntax objects / rustc `Res` fields], one binding-walker per backend,
+dispatch sites become consumers.)*
 
 ## 3. Dependencies
 
@@ -61,6 +68,39 @@ slice03 → arc06 → arc07 → arc09.**
 | A-6 | arc05's ID-42 question re-answered from the fixed state | arc05 slice03 scoping note: reserved-param-name rule shrunk/dropped with rationale | correctness | operator decision 2026-07-06 | open | | the point of pausing: do the right thing instead of warning broadly |
 
 ## 5. Version History
+
+### v1.3 — 2026-07-06 (architecture doc renumbered: "DD-60 Appendix A" → DD-61)
+Operator catch: a separate file carrying DD-weight decisions under another
+DD's number is a numbering collision waiting to confuse odm. Renamed to
+**DD-61 — Resolve-Once: Name-Resolution Architecture (implements DD-60)**
+(`design/dd-61-resolve-once-resolution-architecture.md`), per the house
+implements-pattern (DD-37 implements DD-36). Internal §A1–A6 labels kept;
+live references updated to "DD-61 §An" style (historical entries left
+verbatim). Also this session, DD-61 gained **§A6** — the operator's
+mandatory-tooling refinement (the `as_form_head()` accessor swap that
+withholds the name from dispatch for binding-refs; the JS `formHead()` +
+static grep-conformance test; three enforcement layers + a recorded
+revisit-trigger) — and the **tooling accounting** (lint must consume
+resolution → arc05 v1.5; fmt = documented no-op; no new slices needed;
+§A6 rows pinned in slices 04/05 ledgers at scoping). For odm: DD-61 is
+ready to add.
+
+### v1.2 — 2026-07-06 (slice02 self-stopped; architecture hammered out; re-sliced 03–06)
+slice02 **self-stopped with data** (the clause working as designed): name
+dispatch lives in **four** subsystems — the slice01 F-3 recon missed the
+emitter and codegen sites (miss owned jointly: CC's sketch, CDC's
+acceptance without an exhaustive dispatch-site enumeration → issues log).
+**Architecture session (operator + CDC, drawing on Racket scope-sets /
+GHC's Renamer / rustc RFC-1560):** root cause is the *stringly head
+position* in the kernel IR; cure is **resolve once, consume everywhere**
+— Appendix A drafted and operator-confirmed: **resolved-atom flags** (the
+enrich-the-identifier canon; chosen over alpha-renaming [would need
+un-renaming to keep readable-JS output] and a new kernel construct [the
+grammar is user-facing, dual-implemented, and macro-visible]); **one
+binding-position walker per backend** (D2's home and D1's chassis).
+**Re-slice:** 03 walker+D2 (both backends, dispatched) → 04 rust-resolution
+→ 05 js-resolution → 06 conformance corpus + close. slice02's five rows
+deferred into 03–06 with named homes; no silent drops.
 
 ### v1.1 — 2026-07-06 (slice01 closed; DD-60 CONFIRMED; slice02 scoped)
 slice01 closed (commit pending for `tools/`+`design/`; content

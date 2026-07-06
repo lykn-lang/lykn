@@ -47,7 +47,7 @@ already handles it); LSP server work (Phase 3+).
 |-------|-------|--------|
 | **slice01 · lint-infra** | The machinery, end-to-end: rule trait + hardcoded match-dispatch registry over a spanned SExpr walk (pre-expansion); diagnostics reusing the `Diagnostic` machinery (error/warn); CLI wiring **replacing the stub** (`lykn lint <paths>`, exit 0/1/2, `--format=json`); per-rule fixture harness + `insta` snapshots; **3 pilot rules** proving the shapes (no-require [error], sort-without-comparator [warn], parseint-radix [warn]); **the rule-inventory compiler-verification pass** — compile every DD-59 candidate's bad-example against the current compiler; anything that already errors is reclassified out. The resulting table is slice02's authoritative corpus. | **Closed** (`1989138`; F-1 caught: ID-39 already compiler-owned, ID-42 stale guide claim, ID-44 **compiler bug** [rc=0, unparseable JS]; smoke dogfood 117 files clean; `make check` ✓) |
 | **slice02 · shape-rule-corpus** | The **12 remaining verified lint rules** (F-1 table minus pilots, shadowing→slice03, and ID-42/ID-44→compiler) + **2 recon-gated compiler fixes** (operator, 2026-07-06): ID-44 for-of binding validation → compile error (Principle 3; both compilers checked) and ID-42 reserved-param-names → compile-time disallow (recon: reserved set + blast radius on both compilers; lint-warn fallback if large); or-for-defaults' false-positive rate measured on the repo corpus before its severity is finalized; **real dogfood pass**: the full corpus over the repo's `.lykn` sources, findings fixed or acknowledged. | **Open — scoped** (open set written 2026-07-06) |
-| **slice03 · context-rules + docs** | Tier-2: missing-type-annotations (shape-checkable) + shadowing (reuses `analysis/scope.rs`); **guide-09 reclassification** (every entry labeled: compiler-enforced / linted-as-`<rule>` / documented-only — the ELIMINATED cleanup the CC audit demanded); guide-15 CLI docs + SKILL note; `make lint` integration decision; P-11 demo prep. | Open (scope after slice02) |
+| **slice03 · context-rules + docs** (resumes post-arc13) | Tier-2: shadowing (via arc13's resolution machinery, superseding the `analysis/scope.rs` sketch); **linter resolution-awareness** (added 2026-07-06, arc13/A6 consequence: head-matching rules must consult the binding walker/env so bound-name calls — e.g. a param named `parseInt` — don't false-positive; the linter becomes a resolution *consumer* like every dispatch site); the ID-42 `reserved-param-name` question re-answered from the fixed state (arc13 A-6); **guide-09 reclassification** (every entry labeled: compiler-enforced / linted-as-`<rule>` / documented-only); guide-15 CLI docs + SKILL note; lint-suppression mechanism decision; `make lint` integration decision; P-11 demo prep. | Open — **blocked on arc13** |
 
 ## 3. Dependencies
 
@@ -69,6 +69,18 @@ Feeds **P-11**. Independent of arc06/arc07; must land before arc09.
 | A-6 | **guide-09 is aligned** — every entry carries its enforcement label (compiler-enforced / linted / documented-only); doctests green | grep the labels; `make check` | correctness | CC anti-patterns audit (2026-06-30) | open | | closes the reclassification debt that spawned arc10 |
 
 ## 5. Version History
+
+### v1.5 — 2026-07-06 (slice03 scope grows: linter becomes a resolution consumer)
+Per the arc13 DD-61 §A6 tooling accounting (operator question: which
+tools must read the resolution flags): the linter's head-matching rules
+would false-positive on bound-name calls post-arc13 (e.g. a param named
+`parseInt`), so slice03 gains **linter resolution-awareness** — it threads
+arc13's binding walker/env and skips bound heads, becoming a resolution
+consumer like every dispatch site. Also folded into slice03's line:
+shadowing now rides arc13's machinery (supersedes the `analysis/scope.rs`
+sketch); the lint-suppression decision. `lykn fmt` = documented no-op
+(formats by shape, pre-resolution — correct). Surfaced by: operator
+tooling question during the arc13 architecture session.
 
 ### v1.4 — 2026-07-06 (slice02 delivered; ARC PAUSED — arc13 created)
 slice02 delivered (CDC verification pending CC's commit): 12 rules landed
