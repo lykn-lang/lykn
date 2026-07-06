@@ -11,6 +11,7 @@ import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
+import { validateReservedNames } from './binding.js';
 
 // node:path is used intentionally here and CANNOT be replaced with jsr:@std/path.
 //
@@ -1587,6 +1588,12 @@ export function expand(forms, context = {}) {
     registerSurfaceMacros(macroEnv);
   }
   const { filePath = null, compilationStack = [], strict = true } = context;
+  // DD-60 D2 (via DD-61 §A2's binding walker): a JS reserved word in any
+  // binding position is a compile error — checked on the surface forms before
+  // lowering, so `func`/`fn` params are still visible (the JS expander lowers
+  // surface forms to kernel during expansion). Covers `export`ed names and the
+  // `kernel:` name slot.
+  validateReservedNames(forms);
   const afterPass0 = pass0ImportMacros(forms, filePath, compilationStack);
   const afterPass1 = pass1RegisterMacros(afterPass0);
   const expanded = pass2ExpandAll(afterPass1);

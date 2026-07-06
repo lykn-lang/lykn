@@ -16,7 +16,18 @@ DD-61 §A2's walker (both backends) + the D2 validator riding it. Per
 
 ## What Worked / Closure
 
-_(At slice close.)_
+- **The walker found a hole in its own spec** — enumerating "what binds" in
+  one place exposed that DD-60's confirmed list missed `if-let`/`when-let`/
+  `match` patterns (live ID-44-genus leaks). Single-source components audit
+  their specifications for free.
+- **Reusing `ParamShape`** kept the walker from re-deriving grammar — the
+  divergence-avoidance discipline applied inside one backend.
+
+Closed 2026-07-06 (commit pending on the staged 8 files; content
+CDC-verified from tree). Rows: 5/5 done. Matrix: only D2 rows moved;
+disagreement 312→208; suites 1387/0 (+19). **Finding routed:** DD-60 +3
+binding positions (operator-confirmed) → **slice04 · walker-extension**;
+resolution slices renumber 05/06, corpus 07.
 
 > Bubble-up must carry the walker's env-extension hook points for slices
 > 04/05, and the arc09 breaking note.

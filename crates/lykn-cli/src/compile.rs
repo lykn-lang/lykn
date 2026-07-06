@@ -145,6 +145,21 @@ fn compile_source_inner(
         crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
 
+    // 2b. DD-60 D2 (via DD-61 §A2's binding walker): a JS reserved word in any
+    // binding position is a compile error — before codegen can emit invalid JS
+    // at rc=0 (the ID-44 genus). Runs on the expanded forms so macro-introduced
+    // bindings are covered too.
+    let reserved = lykn_lang::binding::validate_reserved_names(&forms);
+    if !reserved.is_empty() {
+        return Err(CompileError::Analysis(
+            reserved
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
+
     // 3. Classify into surface forms (DD-58 strict for `.lykn`, exempt `.lyk`)
     let classified = classifier::classify_with_options(&forms, classify_opts).map_err(|diags| {
         CompileError::Analysis(

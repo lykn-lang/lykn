@@ -1,5 +1,6 @@
 pub mod analysis;
 pub mod ast;
+pub mod binding;
 pub mod classifier;
 pub mod codegen;
 pub mod diagnostics;

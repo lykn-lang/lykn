@@ -143,6 +143,21 @@ zero occurrences in-tree.
    (`kernel:if` is not a legal identifier; you cannot bind it). Documented; no
    action.
 
+## Refinement log
+
+### 2026-07-06 (binding-position list +3 — surfaced by arc13/slice03)
+
+The confirmed binding-position list (D1) was incomplete: **`if-let` /
+`when-let` bindings and `match` clause patterns** also introduce lexical
+bindings, and — evidence from the slice03 walker build — they leak the
+ID-44 genus today (`(if-let (if x) …)` compiles at rc=0 to the invalid
+`const if`). **Operator-confirmed 2026-07-06:** the three positions join
+D1's binding-position list (and therefore D2's validation coverage and the
+matrix's binding-position dimension). Landed as **arc13/slice04 ·
+walker-extension** (its own small slice, per the operator's packaging
+call). Which-child-surfaced: arc13/slice03 (CC surfaced with evidence
+rather than silently extending this confirmed DD).
+
 ## Design sub-questions (for operator confirmation)
 
 1. **Shadowing granularity** — D1 proposes whole-lexical-scope shadowing
