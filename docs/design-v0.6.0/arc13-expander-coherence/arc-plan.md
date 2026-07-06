@@ -36,10 +36,15 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice01 · conformance-matrix + DD** | Systematically extend the F-4 probe: name classes (surface macros, classifier forms, kernel heads, `kernel:`-prefixed, JS reserved words, ordinary names) × binding positions (func/fn/genfunc params, `bind`, destructuring, loop bindings, class fields) × reference positions (call-head, argument, nested-fn body) × both backends. Output: the full matrix (ground truth) + **DD-60 draft**: the intended semantics — *lexical bindings shadow macros/forms within their scope; JS reserved words are invalid names; kernel-only heads stay closed (DD-58 untouched)* — with per-cell target behavior and the migration/breaking analysis. Recon-only slice: **no compiler changes.** | **Closed** (885-cell matrix, `tools/conformance-matrix.js`; 35% backend disagreement; Rust's "shadowing" exposed as shape-coincidence; **DD-60 operator-confirmed in full 2026-07-06** incl. export + `kernel:` name-slot coverage; recon-only CDC-reproduced) |
 | **slice02 · rust-shadowing + name-validation** | ~~DD-60 on the Rust backend via scope-threading~~ | **SELF-STOPPED → superseded** (2026-07-06): implementation contact found **four** independent name-dispatch subsystems (expander / classifier / emitter / codegen — kernel heads dispatch in codegen, `emit.rs:224/248/270`), not the recon's one path. Tree reverted clean; the four-site map + the validated EmitterContext mechanism carried into the re-slice; all 5 ledger rows deferred with homes. |
 | **slice03 · binding-walker + d2-validation** (re-slice) | **DD-61 §A2's binding-position walker on both backends** — the single per-backend component that knows what binds — **+ the D2 reserved-word validator riding it** (every binding position, `export`, the `kernel:` name slot; list-parity test against the probe). Ships first: resolution-independent, kills the ID-44 genus, and builds D1's chassis. | **Closed** (commit pending on staged source; `binding.rs`/`binding.js` + 16 parity fixtures; D2 both backends; matrix: only D2 rows moved, disagreement 312→208; suites 1387/0; **finding: DD-60 list missed 3 binding positions** → refinement confirmed → slice04) |
-| **slice04 · walker-extension** (from slice03's finding; operator packaging call) | +3 binding positions (`if-let`/`when-let` patterns, `match` clause patterns — live ID-44-genus leaks) through walker + D2 + matrix probe, both backends. | **Open — scoped** (open set written 2026-07-06) |
-| **slice05 · rust-resolution** (was 04) | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline: expander light binding-scan (shared walker) → classifier hosts the env + tags atoms → emitter and codegen become **read-only consumers** via the `as_form_head()` accessor swap (DD-61 §A6 rows pinned here). Rust matrix columns → DD-60 targets. | Open (scope after slice04) |
-| **slice06 · js-resolution** (was 05) | Same through the JS pipeline: env threads the `expandExpr` walk (binding-position atoms are never dispatched); `formHead()` + the static grep-conformance check (DD-61 §A6). JS matrix columns → targets. | Open (scope after slice05) |
-| **slice07 · conformance-corpus + arc close** (was 06) | The permanent cross-backend name-binding corpus generated from the matrix; A-4/A-5 reproduced; DD-60 cross-ref entry recording DD-61's architecture as-built. | Open |
+| **slice04 · walker-extension** (from slice03's finding; operator packaging call) | +3 binding positions (`if-let`/`when-let` patterns, `match` clause patterns — live ID-44-genus leaks) through walker + D2 + matrix probe, both backends. | **Closed** (matrix 5→8 position columns, originals byte-identical; fixtures 16→20; suites 1391/0; **finding #2: 3 more leaking positions** — catch/import-local/label → refinement #2 + the method change → slice05) |
+| **slice05 · position-sweep + walker-completion** | Refinement #2's positions (catch/import-local D1+D2; label D2-only) **+ the derived-exhaustiveness sweep** (enumerate identifier-emitting binding slots from the grammar/codegen per backend; diff vs walker = a **standing test** in `make check`). Ends discovery-by-leak: the list becomes complete by construction. | **Open — scoped** (open set written 2026-07-06) |
+| *(next, numbered at creation)* · rust-resolution | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline; emitter/codegen → read-only consumers via the `as_form_head()` swap (DD-61 §A6 rows pinned at scoping). | Future |
+| *(next)* · js-resolution | Same through `expandExpr`; `formHead()` + the static grep-conformance check (§A6). | Future |
+| *(next)* · conformance-corpus + arc close | The permanent cross-backend corpus; A-4/A-5 reproduced; DD-60 cross-ref recording DD-61 as-built. | Future |
+
+*(Future entries carry **no numbers** — numbered at creation per the
+creation-order convention; the v1.4 tail-renumber was a CDC slip, corrected
+here.)*
 
 *(Architecture per **DD-61 · Resolve-Once** —
 [`design/dd-61-resolve-once-resolution-architecture.md`](./design/dd-61-resolve-once-resolution-architecture.md):
@@ -69,6 +74,20 @@ slice03 → arc06 → arc07 → arc09.**
 | A-6 | arc05's ID-42 question re-answered from the fixed state | arc05 slice03 scoping note: reserved-param-name rule shrunk/dropped with rationale | correctness | operator decision 2026-07-06 | open | | the point of pausing: do the right thing instead of warning broadly |
 
 ## 5. Version History
+
+### v1.5 — 2026-07-06 (slice04 closed; refinement #2 + the method change; slice05 scoped)
+slice04 closed (both walkers cover the +3 via existing hook points —
+pattern-grammar reuse held; matrix 5→8 columns, originals byte-identical;
+fixtures 20; suites 1391/0). **Finding #2 (probe-for-a-fourth found
+three):** `catch` bindings, `import` local names (lexical — D1+D2),
+`label` names (own namespace — D2-only rc=0 leak). **Operator: refinement
+confirmed + method change** — two leak-discovered rounds means the list
+must be **derived**: **slice05 · position-sweep + walker-completion**
+(the 3 positions + a grammar/codegen-derived position inventory per
+backend, diffed against the walker as a standing `make check` test —
+complete by construction). DD-60 refinement log entry #2 written.
+**Convention correction (owned):** the v1.4 tail-renumber violated
+stop-renumbering; future entries are now un-numbered until creation.
 
 ### v1.4 — 2026-07-06 (slice03 closed; DD-60 +3 refinement; slice04 inserted, tail renumbered)
 slice03 closed (staged; CDC content-verified): walkers on both backends

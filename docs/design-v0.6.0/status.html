@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-06 (arc13 slice03 closed — walkers live, matrix 312→208; the walker found DD-60's list incomplete → slice04)",
+  updated: "2026-07-06 (arc13 slice04 closed; round-2 finding → slice05: derive the position list, end discovery-by-leak)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -155,7 +155,7 @@ const DATA = {
       slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc13", name:"expander-coherence", status:"active",
       cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
-      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"active"},{n:"rust-resolution",s:"open"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"active"},{n:"rust-resolution",s:"open"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -180,8 +180,8 @@ const DATA = {
   ],
   sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc13 · slice04 — walker-extension (ready for CC)",
-    desc:"The Resolve-Once chassis is real: binding walkers on both backends (16 parity fixtures), the D2 reserved-word validator killing the ID-44 genus (invalid JS at rc=0), three-way list parity in make check, and matrix disagreement down 312→208 with movement in exactly the permitted rows. Best part: the walker audited its own spec — DD-60's confirmed binding-position list missed if-let/when-let/match patterns (live rc=0 leaks), surfaced with evidence rather than silently folded in. Operator confirmed the refinement as its own small slice: slice04 extends walkers + D2 + the probe for the 3 positions; then slice05 rust-resolution (the as_form_head() accessor swap), slice06 js-resolution, slice07 the permanent corpus. Then arc05 resumes."
+    arc:"arc13 · slice05 — position-sweep + walker-completion (ready for CC)",
+    desc:"Round two of the walker auditing its spec: slice04 landed the first +3 positions (matrix 5→8 columns, originals untouched, 1391/0) and its probe-for-a-fourth found THREE more rc=0 leaks — catch bindings, import local names, label names. Operator confirmed the refinement with a method change: two leak-discovered rounds means the binding-position list must be DERIVED, not accumulated. slice05 adds the three AND performs the exhaustiveness sweep — enumerate every identifier-emitting binding slot from the grammar/codegen per backend, diff against the walker, and make the diff a standing make-check test. After it, the list is complete by construction; a future grammar addition that binds a name fails CI until the walker knows it. Then the resolution slices proper, the corpus, and arc05 resumes."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
