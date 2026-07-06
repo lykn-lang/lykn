@@ -1,0 +1,10 @@
+---
+source: crates/lykn-cli/src/lint/mod.rs
+expression: text
+---
+fixture.lykn:1:11: error [no-require]: `require` compiles to a CommonJS call that fails in the ESM output
+  suggestion: use `(import "module" (names))` for ES-module imports
+fixture.lykn:2:10: warning [sort-without-comparator]: `sort` with no comparator sorts by string order and mutates in place
+  suggestion: pass a comparator, e.g. `(xs:sort (fn (:number a :number b) (- a b)))`, or use `:toSorted` for a non-mutating sort
+fixture.lykn:3:10: warning [parseint-radix]: `parseInt` without an explicit radix is error-prone
+  suggestion: pass a radix, e.g. `(parseInt s 10)`

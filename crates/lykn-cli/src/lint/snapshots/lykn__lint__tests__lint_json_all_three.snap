@@ -1,0 +1,57 @@
+---
+source: crates/lykn-cli/src/lint/mod.rs
+expression: value
+---
+[
+  {
+    "file": "fixture.lykn",
+    "message": "`require` compiles to a CommonJS call that fails in the ESM output",
+    "rule": "no-require",
+    "severity": "error",
+    "span": {
+      "end": {
+        "column": 18,
+        "line": 1
+      },
+      "start": {
+        "column": 11,
+        "line": 1
+      }
+    },
+    "suggestion": "use `(import \"module\" (names))` for ES-module imports"
+  },
+  {
+    "file": "fixture.lykn",
+    "message": "`sort` with no comparator sorts by string order and mutates in place",
+    "rule": "sort-without-comparator",
+    "severity": "warning",
+    "span": {
+      "end": {
+        "column": 19,
+        "line": 2
+      },
+      "start": {
+        "column": 10,
+        "line": 2
+      }
+    },
+    "suggestion": "pass a comparator, e.g. `(xs:sort (fn (:number a :number b) (- a b)))`, or use `:toSorted` for a non-mutating sort"
+  },
+  {
+    "file": "fixture.lykn",
+    "message": "`parseInt` without an explicit radix is error-prone",
+    "rule": "parseint-radix",
+    "severity": "warning",
+    "span": {
+      "end": {
+        "column": 18,
+        "line": 3
+      },
+      "start": {
+        "column": 10,
+        "line": 3
+      }
+    },
+    "suggestion": "pass a radix, e.g. `(parseInt s 10)`"
+  }
+]

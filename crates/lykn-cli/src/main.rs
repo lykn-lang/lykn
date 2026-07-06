@@ -6,6 +6,7 @@ use std::process::{self, Command};
 
 mod compile;
 mod doctest;
+mod lint;
 
 use lykn_cli::config;
 use lykn_cli::dist;
@@ -92,11 +93,14 @@ enum Commands {
         #[arg(last = true)]
         deno_args: Vec<String>,
     },
-    /// Lint compiled JS via Deno
+    /// Lint lykn source (.lykn) for idiom/style issues
     Lint {
-        /// Paths to lint (default: packages/)
-        #[arg(default_value = "packages/")]
+        /// Files or directories to lint (`.lykn` discovered recursively;
+        /// `.lyk` kernel files are exempt)
         paths: Vec<String>,
+        /// Output format: `json` for machine-readable findings (default: text)
+        #[arg(long)]
+        format: Option<String>,
     },
     /// Create a new lykn project
     New {
@@ -179,7 +183,7 @@ fn main() {
             compile_only,
             &deno_args,
         ),
-        Commands::Lint { paths } => cmd_lint(&paths),
+        Commands::Lint { paths, format } => cmd_lint(&paths, format.as_deref()),
         Commands::New { name, path } => cmd_new(&name, path.as_deref()),
         Commands::Build { browser, npm, dist } => cmd_build(browser, npm, dist),
         Commands::Dist => cmd_dist(),
@@ -818,14 +822,91 @@ fn run_deno_test(config: &str, paths: &[String], extra_args: &[String]) {
     }
 }
 
-fn cmd_lint(_paths: &[String]) {
-    eprintln!("Lykn-source linting is not yet implemented. Tracked for the 0.6.0");
-    eprintln!("release — see https://github.com/lykn-lang/lykn/issues/1.");
-    eprintln!();
-    eprintln!("For now, lykn check <file>.lykn performs syntax checking. Anti-pattern");
-    eprintln!("and idiom checks documented in docs/guides/09-anti-patterns.md will");
-    eprintln!("be enforced by lykn lint when implemented.");
-    process::exit(1);
+/// `lykn lint <paths…>` — idiom/style linting over `.lykn` source (DD-59).
+/// Exit: 0 clean · 1 findings · 2 usage/IO error.
+fn cmd_lint(paths: &[String], format: Option<&str>) {
+    if paths.is_empty() {
+        eprintln!("usage: lykn lint <paths…>  (files or directories; --format=json)");
+        process::exit(2);
+    }
+    let json = match format {
+        None | Some("text") => false,
+        Some("json") => true,
+        Some(other) => {
+            eprintln!("error: unknown --format '{other}' (expected 'text' or 'json')");
+            process::exit(2);
+        }
+    };
+
+    // Discover `.lykn` files (recurse dirs). `.lyk` kernel files are exempt —
+    // kernel style is its own idiom (DD-59; slice01 default, recorded).
+    let mut files: Vec<PathBuf> = Vec::new();
+    for p in paths {
+        let path = Path::new(p);
+        if path.is_file() {
+            if path.extension().is_some_and(|e| e == "lykn") {
+                files.push(path.to_path_buf());
+            } else if path.extension().is_some_and(|e| e == "lyk") {
+                // exempt; skip silently
+            } else {
+                eprintln!("error: not a .lykn file: {}", path.display());
+                process::exit(2);
+            }
+        } else if path.is_dir() {
+            files.extend(lykn_cli::util::collect_files_recursive(path, |p: &Path| {
+                p.extension().is_some_and(|e| e == "lykn")
+            }));
+        } else {
+            eprintln!("error: path does not exist: {}", path.display());
+            process::exit(2);
+        }
+    }
+    files.sort();
+
+    let mut findings: Vec<lint::LintFinding> = Vec::new();
+    for file in &files {
+        let source = match std::fs::read_to_string(file) {
+            Ok(s) => s,
+            Err(e) => {
+                eprintln!("error reading {}: {e}", file.display());
+                process::exit(2);
+            }
+        };
+        let file_str = file.to_string_lossy();
+        match lint::lint_source(&source, &file_str) {
+            Ok(fs) => findings.extend(fs),
+            Err(e) => {
+                // Unparseable source is not lintable (run `lykn check` first).
+                eprintln!("{}: cannot lint (parse error): {e}", file.display());
+                process::exit(2);
+            }
+        }
+    }
+
+    if json {
+        println!("{}", lint::to_json(&findings));
+    } else {
+        for f in &findings {
+            println!("{}", lint::render_text(f));
+        }
+        let errors = findings
+            .iter()
+            .filter(|f| f.diagnostic.severity == lykn_lang::diagnostics::Severity::Error)
+            .count();
+        let warnings = findings.len() - errors;
+        if findings.is_empty() {
+            eprintln!("✓ no lint findings ({} file(s))", files.len());
+        } else {
+            eprintln!(
+                "\n{} finding(s): {} error(s), {} warning(s)",
+                findings.len(),
+                errors,
+                warnings
+            );
+        }
+    }
+
+    process::exit(if findings.is_empty() { 0 } else { 1 });
 }
 
 fn resolve_publish_targets(jsr: bool, npm: bool) -> (bool, bool) {
