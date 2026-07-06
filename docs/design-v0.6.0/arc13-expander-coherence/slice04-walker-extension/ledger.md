@@ -12,7 +12,14 @@ probe, both backends. Per LEDGER-DISCIPLINE. Rebuild-first. 4 rows.
 
 ## What Worked / Closure
 
-_(At slice close.)_
+- **The probe-for-a-fourth clause found three** — asking "what else did we
+  miss" as a ledgered obligation, not a virtue, keeps paying.
+- **Pattern-grammar reuse on both sides** (Rust `classify_expr` `Pattern`;
+  JS mirroring `classify_pattern`) kept bind/don't-bind judgments
+  (`_`/literals/PascalCase constructors) single-sourced per backend.
 
-> If the extension surfaces a *fourth* missed binding position: surface it
-> (a further DD-60 refinement), don't fold it silently.
+Closed 2026-07-06. Rows: 4/4 done. Matrix 5→8 position columns, originals
+byte-identical; fixtures 16→20; suites 1391/0. **Finding routed
+(operator-confirmed):** `catch`/`import`-local/`label` + the
+derived-exhaustiveness sweep → **slice05 · position-sweep +
+walker-completion**; DD-60 refinement log entry #2.

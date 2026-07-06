@@ -158,6 +158,21 @@ walker-extension** (its own small slice, per the operator's packaging
 call). Which-child-surfaced: arc13/slice03 (CC surfaced with evidence
 rather than silently extending this confirmed DD).
 
+### 2026-07-06 (binding-position list +3, round two — and the method change)
+
+arc13/slice04's probe-for-more found **three further** rc=0 leaks:
+**`catch` clause bindings** and **`import` local names** (genuine lexical
+bindings — join D1's list and D2's coverage) and **`label` names** (a
+separate namespace — labels do not shadow variables, so D1 does not apply,
+but a reserved-word label emits invalid JS at rc=0, so **D2 validates the
+label name slot**). **Operator-confirmed 2026-07-06, with a method
+change:** two rounds of discovery-by-leak means the list must be
+**derived, not accumulated** — arc13/slice05 performs the exhaustiveness
+sweep (enumerate every identifier-emitting binding/declaration position
+from the grammar/codegen, per backend; diff against the walker; the diff
+becomes a standing test), after which this list is complete by
+construction. Which-child-surfaced: arc13/slice04.
+
 ## Design sub-questions (for operator confirmation)
 
 1. **Shadowing granularity** — D1 proposes whole-lexical-scope shadowing
