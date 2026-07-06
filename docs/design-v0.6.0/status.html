@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-05 (arc12 created — kill the ×12 corpus re-runs, then one combined gate for all three arcs)",
+  updated: "2026-07-05 (GATE GO — arc10, arc11, arc12 all CLOSED; next: arc05, the linter)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -165,20 +165,20 @@ const DATA = {
     { id:"arc09", name:"release-0.6.0", status:"future",
       cap:"Version bumps, release notes, publish to JSR/npm/crates.io.",
       slices:[] },
-    { id:"arc10", name:"compiler-completion", status:"active",
-      cap:"DD-58 strict-default + JS parity + macro-boundary enforcement + DD-37 step-4 (_kernel removed). 3/3 slices closed; CLOSING — operator composition gate pending (closing-report §5 runbook).",
+    { id:"arc10", name:"compiler-completion", status:"closed",
+      cap:"DD-58 strict-default + JS parity + macro-boundary enforcement + DD-37 step-4 (_kernel removed). Gated 2026-07-05: the closed surface namespace holds on every compile path.",
       slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"closed"},{n:"kernel-removal",s:"closed"}] },
-    { id:"arc11", name:"source-only-test-build", status:"active",
-      cap:"lykn test compiles to target/lykn/test/ (never the source tree — philosophy #1's last emitter, done) + a buried-intent audit (sweep + disposition every deferred-then-lost stub). Gates arc09 (P-7).",
+    { id:"arc11", name:"source-only-test-build", status:"closed",
+      cap:"lykn test compiles to target/lykn/test/ (never the source tree — philosophy #1's last emitter) + the buried-intent audit (inventory empty-or-tracked). Gated 2026-07-05; P-7's demo unconditional.",
       slices:[{n:"test-out-dir",s:"closed"},{n:"buried-intent-audit",s:"closed"}] },
-    { id:"arc12", name:"test-topology", status:"active",
-      cap:"Every test runs exactly once per make check; make test-docs tests docs. Kills the ×12 corpus re-runs (--docs corpus-default bug, 4× Deno startups, test-lykn subset re-run, double builds). Lands before the combined gate.",
-      slices:[{n:"run-once-topology",s:"active"}] },
+    { id:"arc12", name:"test-topology", status:"closed",
+      cap:"Every test runs exactly once per make check; make test-docs tests docs. 1m52s → 2.6s (test-docs), >2m → 1m04s (check), corpus 1×/0×. Created, delivered, and gated in one day.",
+      slices:[{n:"run-once-topology",s:"closed"}] },
   ],
-  sequence: ["arc12","arc10","arc11","arc05","arc06","arc07","arc09"],
+  sequence: ["arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc12 · run-once-topology (ready for CC) → one combined gate (arc10+11+12) → arc05",
-    desc:"The gate attempt surfaced two things: a stale PATH binary invalidated the first A-3 run (runbooks amended: which lykn + ./bin/lykn), and the operator's repeated-tests observation — CC-quantified as the corpus executing ~12× across make check && make test-docs (the --docs corpus-default CLI bug ×4, test-lykn ⊂ test-js, the && habit, double builds; make test-docs = 1m53s of which ~90% is corpus). arc12/slice01 implements CC's A–D fixes with a sentinel-census proof (corpus: exactly 1× per make check, 0× per make test-docs) and makes make check the canonical bar. Then one cheap gate session closes arc10, arc11, and arc12 together."
+    arc:"arc05 · lykn-source-linter — scoping next",
+    desc:"The combined gate went GO on 2026-07-05 (23:29–23:33): arc10's 5-form demo verbatim, kernel: resolving, arc11's three-moment demo clean with ./bin/lykn, arc12's census at once-per-check — arc10, arc11, and arc12 are all CLOSED (P-15/16/17 done). Three compiler/toolchain arcs landed in six days. Next: scope arc05 (lykn lint) from its v1.1 seed — the corpus division is sharp (compiler owns the closed 5-form namespace everywhere; linter owns idiom/style), with two test-conventions rules already seeded from the arc11 audit. Then arc06, arc07, arc09 — the release."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
@@ -223,8 +223,8 @@ const DATA = {
       lesson:"Found in slice02 CDC review: Rust enforced strict <i>post</i>-macro-expansion, JS <i>pre</i>-expansion — a user macro expanding to a top-level bare kernel decl compiled on JS but errored on Rust. <b>Learning:</b> behavioural parity claims need checking at the <i>boundaries</i> (macro output), not just direct input. <b>Fixed in slice03</b> (runtime-confirmed first, then a post-pass2 sweep; operator-decided Rust semantics, recorded in DD-58)." },
     { t:"Reserved-but-never-wired: lykn test's --out-dir", tag:"fixed",
       lesson:"lykn test compiled _test.js siblings into test/ (transient: run-then-clean, April design) while a hidden --out-dir flag sat 'reserved for future use', received as _out_dir and ignored — intent captured, never wired, no row watching it. Third instance of one signature this cycle (stranded branches; DD-58 half-wired; this). <b>Fixed in arc11/slice01</b> (75c9cc2): the flag is live, output goes to target/lykn/test/ (wiped per run), the April fossil (target/test/lykn orphans — the TS2307 cause) is deleted, and the F-1 recon caught + fixed 7 location-dependence items before wiring. <b>Learning:</b> the signature is grep-able — slice02 sweeps the full buried-intent inventory." },
-    { t:"The corpus ran ~12× per verification pass", tag:"open",
-      lesson:"The operator's repeated-tests observation, CC-quantified: lykn test --docs re-runs the entire 88-file corpus before testing any docs (patterns default to test/ even under --docs) ×4 sub-targets; make check ⊇ test-docs so the habitual && doubles the doc phase; test-lykn re-runs a subset of test-js. make test-docs = 1m53s, 85–94% corpus. <b>Learning:</b> make-target names that were honest once silently became lies when lykn test grew — same drift genus as the buried-intent items, at the toolchain layer. → arc12 (A–D fixes + sentinel-census proof + make check as the canonical bar)." },
+    { t:"The corpus ran ~12× per verification pass", tag:"fixed",
+      lesson:"The operator's repeated-tests observation, CC-quantified: lykn test --docs re-ran the entire 88-file corpus before testing any docs ×4 sub-targets; make check ⊇ test-docs so the habitual && doubled the doc phase; test-lykn re-ran a subset of test-js. <b>Fixed same-day (arc12, 3612cad):</b> make test-docs 1m52s → 2.6s, make check >2m → 1m04s, corpus exactly 1×/0×, counts unchanged — operator-reproduced. <b>Learning:</b> make-target names that were honest once silently became lies when lykn test grew — the same drift genus as the buried-intent items, at the toolchain layer; the sentinel census makes 'runs once' a checkable claim." },
     { t:"Staleness trap, third costume: the PATH binary", tag:"guard",
       lesson:"The first arc10/arc11 gate run used bare <code>lykn</code>, which resolved to a stale cargo-installed binary — it sibling-emitted 97 _test.js files into test/ (old behavior), while ./bin/lykn in the same session behaved correctly. And the new *_test.js gitignore <i>masked</i> the debris from git. <b>Learning:</b> issues-log #3 guarded bin/ and the build dir; PATH is a third staleness channel. Runbooks now say <code>which lykn</code> + <code>./bin/lykn</code> explicitly; a warn-on-foreign-binary guard is filed. Bonus finding: unscoped deno test also walks .worktrees/ (stale checkouts, 0-ahead, deletable)." },
     { t:"Deno config 'exclude' filters even explicitly-passed paths", tag:"guard",

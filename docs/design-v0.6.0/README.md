@@ -32,11 +32,11 @@
 | [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Open** — slice01 (CI-green doctest fix) closed; broader guide-drift work pending |
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
 | [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** |
-| [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal) | **CLOSING** — 3/3 slices closed; [closing-report](./arc10-compiler-completion/closing-report.md) written; composition + operator gate pending (host runbook §5); arc05 unblocks on the gate |
-| [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **CLOSING** — 2/2 slices closed; [closing-report](./arc11-source-only-test-build/closing-report.md) written; gate pending (host runbook §5, combinable with arc10's); gates arc09 (P-7) |
-| [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (kills the ×12 corpus re-runs) | **Open — scoped** (slice01 ready for CC); lands before the combined arc10/arc11/arc12 gate |
+| [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal) | **Closed** — gated 2026-07-05; DD-58 enforced on every compile path incl. the macro boundary; `_kernel` retired |
+| [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **Closed** — gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked |
+| [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
 
-_Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc10-gate → (arc11 ∥ arc05) → arc06 → arc07 → arc09**._
+_Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc05 → arc06 → arc07 → arc09**._
 
 ## Layout conventions
 

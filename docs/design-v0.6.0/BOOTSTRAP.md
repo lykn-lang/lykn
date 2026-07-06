@@ -91,30 +91,28 @@ inserts.
   host composition run + gate** (runbook in the report §5). Final numbers:
   `lykn test` 1365/0, deno 673/0, `make check` ✓.
 - **Future:** arc09 (release).
-- **Dependency sequence:** **(arc10-gate + arc11-gate, one host session) →
-  arc05 → arc06 → arc07 → arc09.** arc11 · source-only-test-build (added +
-  fully executed 2026-07-05): both slices closed — `lykn test` →
-  `target/lykn/test/`; buried-intent inventory empty-or-tracked; P-7's demo
-  unconditional. **Both arcs CLOSING, awaiting the operator's combined host
-  composition run** (runbooks: each arc's `closing-report.md` §5).
+- **Dependency sequence of the open arcs:** **arc05 → arc06 → arc07 →
+  arc09.** arc10 (compiler-completion), arc11 (source-only-test-build), and
+  arc12 (test-topology) are all **CLOSED — operator-gated 2026-07-05**
+  (gate records in each arc's `closing-report.md`; the day also produced
+  the PATH-binary staleness lesson and the ×12-corpus fix — `make check`
+  now ~1m04s and is the canonical bar).
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** **arc12/slice01 (run-once-topology) → then ONE
-combined gate for arc10+arc11+arc12 → then arc05.**
-(1) Hand `arc12-test-topology/slice01-run-once-topology/cc-prompt.md` to CC:
-CC's own A–D fixes (the `--docs` corpus-default CLI bug; one Deno startup
-for docs; kill the `test-lykn` subset re-run; one build pass) + the
-canonical bar becomes `make check`. The first gate attempt was invalidated
-by a **stale PATH binary** (use `./bin/lykn`, `which lykn` first — runbooks
-amended) and made painful by the ×12 corpus re-runs arc12 kills.
-(2) Combined gate session (now cheap): arc10 §5 + arc11 §5 + arc12
-A-2/A-3 → sign off → flip all three Closed (P-15/P-16/P-17), reconcile
-rows. (3) Then **scope arc05** — arc-plan v1.1 has the settled corpus
-division + the arc11 seed additions; `09-anti-patterns.md` is the seed.
-Post-0.6.0 routed items: project-plan §1 "Post-0.6.0 tracked candidates"
-(incl. the `set-symbol!` 0.7.0 decision and the batch-compile speed lever
-if arc12 files it).
+**Immediate next action:** **scope arc05 (lykn-source-linter).** The
+combined gate went **GO 2026-07-05** — arc10, arc11, and arc12 are
+**CLOSED** (P-15/P-16/P-17 done; gate records in each arc's
+closing-report). arc05's arc-plan is at **v1.1** with the settled corpus
+division (compiler owns the closed 5-form namespace everywhere incl. the
+macro boundary; linter owns idiom/style) + two test-conventions rules
+seeded from the arc11 audit. `09-anti-patterns.md` is the rule-set seed
+(needs the ELIMINATED reclassification per the CC audit + slice01's ID-38
+reframe). Remember: **`make check` is the canonical bar** (arc12; ~1m04s);
+gate demos use **`./bin/lykn`**, never bare `lykn` (the PATH-binary
+lesson). Post-0.6.0 routed items: project-plan §1 "Post-0.6.0 tracked
+candidates" (incl. the `set-symbol!` 0.7.0 decision, the batch-compile
+lever, and the hardening trio). After arc05: arc06 → arc07 → arc09.
 
 ## 6. How we work — the rhythm & the disciplines
 

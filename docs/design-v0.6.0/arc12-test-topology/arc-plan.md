@@ -1,12 +1,14 @@
 # arc12 — Test Topology (each test runs once)
 
-> **Status: Open — scoped 2026-07-05.** Created from the operator's
-> repeated-tests/slow-runs observation during the arc10/arc11 gate attempt +
-> CC's quantified investigation (the corpus executes **~12×** across
-> `make check && make test-docs`; `make test-docs` is 85–94% corpus, not
-> docs). Appended by **creation order**; sequences **immediately** — it
-> makes the pending arc10/arc11 gate runbooks (and all future verification)
-> cheap. One slice.
+> **Status: CLOSED — gated by the operator 2026-07-05** (suite bars
+> reproduced; census operator-observed; see
+> [`closing-report.md`](./closing-report.md) §5). Created same day from the operator's repeated-tests
+> observation + CC's quantified investigation (corpus ×~12); delivered same
+> day: `make test-docs` **1m52s → 2.6s**, `make check` **>2m → 1m04s**,
+> corpus **1× / 0×**, counts unchanged — and the operator's own
+> `make check && make test-docs` run reproduced the after-state green. See
+> [`closing-report.md`](./closing-report.md) §4 for the (now tiny)
+> consolidated three-arc gate.
 
 ## 1. Capability
 
@@ -47,9 +49,9 @@ session at the end covers everything, cheaply). Independent of arc05.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
-| A-1 | slice01 closed | ptr: slice01 cdc-verification | serious | arc-plan | open | | |
-| A-2 | **corpus executes exactly once per `make check`; zero times per `make test-docs`** | sentinel census (e.g. `surface/bind_test`): count = 1 in `make check`, 0 in `make test-docs`; doc suites run once each | serious | CC redundancy report 2026-07-05 | open | | reproduce at arc scale on host (it's fast now — that's the point) |
-| A-3 | suite + doctest counts unchanged; wall-clock materially reduced (before: `make test-docs` ≈ 1m53s, corpus ~12× across the pair) | `lykn test` 1365/0; deno 673/0; doctest counts unchanged; recorded before/after times | serious | arc-plan | open | | the win is measured, not asserted |
+| A-1 | slice01 closed | ptr: slice01 cdc-verification | serious | arc-plan | **done** | slice01 `cdc-verification.md` (accepted 2026-07-05; `3612cad`) — attested (pointer) | |
+| A-2 | **corpus executes exactly once per `make check`; zero times per `make test-docs`** | sentinel census (e.g. `surface/bind_test`): count = 1 in `make check`, 0 in `make test-docs`; doc suites run once each | serious | CC redundancy report 2026-07-05 | **met (attested + operator-observed)** | CC census (1× / 0×) + operator host run 2026-07-05 (`make check && make test-docs` green, single-run observed) | formal census grep once at the gate if wanted — one command now |
+| A-3 | suite + doctest counts unchanged; wall-clock materially reduced (before: `make test-docs` ≈ 1m53s, corpus ~12× across the pair) | `lykn test` 1365/0; deno 673/0; doctest counts unchanged; recorded before/after times | serious | arc-plan | **met (attested + operator-reproduced)** | 1365/0 · 673/0 · docs 475/0; `make test-docs` 1m52s → **2.6s**; `make check` >2m → **1m04s**; operator run green | minor: 473-vs-475 doc-count reconciliation, one glance |
 
 ## 5. Version History
 

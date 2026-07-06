@@ -63,6 +63,15 @@ list is the "watcher" that keeps routed items from re-burying)*:
   (`emitter/forms.rs:2074`). Source: arc11/slice02 #2, N2–N4.
 - **Downstream (mycelium) DD-58 migration** — standing follow-up (bare
   kernel forms there break under a strict consumer). Source: arc10.
+- **Batch-compile the test corpus** — `compile_lykn_test_files` spawns ~97
+  per-file `deno eval` processes; batching into one Deno process is the
+  next big verification speed win. Source: arc12/slice01 bubble-up.
+- **Toolchain hardening trio** (small tidies, re-entry when the CLI is next
+  touched): stray-sibling double-run guard (`lykn test` should run `test/`'s
+  hand-written `*.test.js` explicitly + corpus only from `target/`, so stray
+  `*_test.js` can't be discovered); freshness-guard scoped to `src/` (newer
+  `tests/*.rs` false-positives it); `--compile-only`+`--docs` honored by
+  `run_doc_tests`. Source: arc12/slice01 bubble-up.
 
 ## 2. The arc roadmap
 
@@ -79,9 +88,9 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
-| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **CLOSING** — 3/3 slices closed; composition + operator gate pending (host runbook: arc10 `closing-report.md` §5); arc05 unblocks on the gate |
-| **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **CLOSING** — 2/2 slices closed; composition + operator gate pending (host runbook: arc11 `closing-report.md` §5, combinable with arc10's); **gates arc09** (P-7 demo, now unconditional) |
-| **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (kills the ×12 corpus re-runs: the `--docs` corpus-default bug, the 4× Deno startups, the `test-lykn` subset re-run, the double builds) | arc11 slice01 (out-dir layout) | **Open — scoped** (slice01 open set written 2026-07-05); **lands before the arc10/arc11 gate re-run** (cheapens all verification) |
+| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **Closed** (gated 2026-07-05; DD-58 on every compile path incl. the macro boundary; `_kernel` retired) |
+| **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
+| **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
@@ -185,14 +194,41 @@ inherited from arc attestations.
 | P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc09 |
 | P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | open | **doctests now green (472/0)** via arc07 slice01 | broader guide-drift audit + SKILL additions still pending (arc07) |
 | P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
-| P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **closing** | 3/3 slices closed (`faee8a1`/`feb056c`/`2f6a84d`); arc closing-report written; **composition + gate = operator host run** (runbook in the closing-report §5) | added per the arc10 bubble-up: P-1…P-14 had no row for this arc |
-| P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **closing** | 2/2 slices closed (`75c9cc2`/`4f2a628`); closing-report written; **composition + gate = operator host run** (§5 runbook) | P-7's demo now unconditionally runnable; tracked candidates instantiated (§1 Post-0.6.0 list) |
-| P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | open | | the manual-verification cost was blocking the arc10/arc11 gates |
+| P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **done** | 3/3 slices (`faee8a1`/`feb056c`/`2f6a84d`); **operator gate GO 2026-07-05 23:29** (5-form demo verbatim; `kernel:` resolves; suites reconciled) — reproduced at arc scale | |
+| P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **done** | 2/2 slices (`75c9cc2`/`4f2a628`); **operator gate GO 2026-07-05 23:31** (three-moment demo 0/0 with `./bin/lykn`, destination proven by the compile message; sweep + hygiene from the earlier session) | P-7's demo unconditional; tracked candidates instantiated |
+| P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | **done** | slice01 (`3612cad`); 1m52s→2.6s / >2m→1m04s; **operator gate GO 2026-07-05** (suite run green; census grep 3 line-mentions ≈ 1 compile + 1 execution — once, vs ~16 before); `lykn test` in 13s during the arc11 demo | the verification cost that was blocking the gates is gone |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.20 — 2026-07-05 (GATE GO — arc10, arc11, arc12 all CLOSED)
+Operator gate session (23:29–23:33, `./bin/lykn` per the PATH lesson):
+arc10's 5-form demo produced all five kernel-only errors verbatim +
+`kernel:` resolved (`var x = 1;`); arc11's three-moment demo 0/0 with the
+destination proven by the compile message (mid-run count elided in the
+transcript, structurally covered — calibration noted in the gate record);
+arc12's census grep = 3 line-mentions ≈ once (vs ~16 before); suites
+reconciled across the day (`make check` ✓, 1365/0, 673/0, docs green,
+`lykn test` in 13s). **P-15, P-16, P-17 → done; arc10/arc11/arc12 →
+Closed.** Remaining 0.6.0 work: **arc05 (linter — next, seed at arc05
+arc-plan v1.1), arc06 (dep ergonomics), arc07 (docs), arc09 (release)**.
+Sequence: arc05 → arc06 → arc07 → arc09. Surfaced by: the combined gate.
+
+### v1.19 — 2026-07-05 (arc12 delivered same-day; three arcs at one gate)
+arc12/slice01 closed (`3612cad`, CDC-verified, **operator host-run green
+same day**): `--docs` no longer runs the corpus (TDD'd); one Deno startup
+for the doc phase; `test-js`→`test-suite` (honest), `test-lykn` out of the
+chain (kept as dev alias); one release build per `make check` (plus a latent
+lint-ordering fix). **Measured: `make test-docs` 1m52s → 2.6s; `make check`
+>2m → 1m04s; corpus 8×/4× → 1×/0×; counts unchanged.** §Post-0.6.0 gains
+the batch-compile lever + the toolchain-hardening trio (stray-sibling
+guard, freshness-guard scoping, `--compile-only`+`--docs` tidy). **arc10,
+arc11, arc12 all CLOSING — one combined gate** (arc12 closing-report §4:
+the operator's green suite run + three short demo blocks) flips
+P-15/P-16/P-17. Minor open query: 473-vs-475 doc-count reconciliation.
+Surfaced by: arc12 slice01 close + operator run.
 
 ### v1.18 — 2026-07-05 (arc12 created: test topology — each test runs once)
 The arc10/arc11 gate attempt surfaced two things: (a) a **stale PATH

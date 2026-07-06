@@ -17,11 +17,25 @@ docs. CC's A–D, with the sentinel census as the proof. Rebuild-first. Per
 
 ## What Worked
 
-_(At slice close.)_
+- **The implementer wrote the audit, then implemented it under a ledger** —
+  CC's report became F-1's baseline verbatim, so the win was measured
+  against numbers nobody could quietly soften (1m52s → 2.6s; 8×/4× → 1×/0×).
+- **The census sentinel made "runs once" checkable** — a single grep-able
+  claim instead of "it feels faster."
+- **The fix surfaced two latent defects for free**: lint ran before the
+  binary it needs was built (F-5 caught the ordering), and stray sibling
+  `*_test.js` double-run via deno discovery (filed as hardening).
 
 ## Closure
 
-_(At slice close: commit SHA, date, verifier, row disposition counts.)_
+Closed 2026-07-05 (commit `3612cad`). Verified by: CC (attested, measured)
++ CDC (`cdc-verification.md`: A–D all reproduced by code; census/timing
+attested) + **operator host run same day** (`make check && make test-docs`
+green, single-run observed — the after-state reproduced where it matters).
+Rows: 6. Done: 6. Deferred: 0. No-op: 0. **Filed + instantiated:**
+batch-compile lever; stray-sibling hardening; freshness-guard scoping;
+`--compile-only`+`--docs` tidy (project-plan §Post-0.6.0). Minor open
+query: doc-count 473-vs-475 reconciliation (one glance at the gate).
 
 > The batch-compile speed lever (97 per-file `deno eval` spawns → one
 > process) is explicitly out of scope — file it in the bubble-up as a

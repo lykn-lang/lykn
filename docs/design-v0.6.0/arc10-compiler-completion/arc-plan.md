@@ -1,13 +1,12 @@
 # arc10 — Compiler Completion (DD-58 strict-default + DD-37 `_kernel` removal)
 
-> **Status: CLOSING — all 3 slices closed (2026-07-05); composition + gate
-> pending the operator host run.** Created 2026-06-30. slice01 (Rust-CLI
-> strict, `faee8a1`) → slice02 (JS parity, `feb056c`) → slice03 (`_kernel`
-> removal + A-6/A-7/A-8 closeout, `2f6a84d`). See
-> [`closing-report.md`](./closing-report.md) — the arc closes formally when
-> the composition rows (A-3/A-4) are **reproduced at arc scale on the host**
-> and the operator gates it (CDC assembled the close and cannot sign it off
-> alone). Appended as arc10 by **creation order**; sequences before arc05.
+> **Status: CLOSED — gated by the operator 2026-07-05** (host run 23:29:
+> 5-form demo verbatim, `kernel:` resolves, suites reconciled; see
+> [`closing-report.md`](./closing-report.md) §7). Created 2026-06-30; all 3
+> slices closed 2026-06-30…07-05 (slice01 Rust-CLI strict `faee8a1` →
+> slice02 JS parity `feb056c` → slice03 `_kernel` removal + A-6/A-7/A-8
+> closeout `2f6a84d`). DD-58 holds on every compile path incl. the macro
+> boundary; `_kernel` retired. Appended as arc10 by creation order.
 
 ## 1. Capability
 

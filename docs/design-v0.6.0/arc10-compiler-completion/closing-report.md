@@ -113,6 +113,13 @@ migration → project follow-up.
 
 ## 7. Gate
 
-**Gate: PENDING** — operator (Duncan): host composition run (§5) + go/adjust
-sign-off. Slices: 3/3 (matches breakdown). Findings dispositioned: 8 arc-ledger
-rows walked; slice-level bubble-ups all routed (see §3/§6).
+**GATE: GO — signed off by the operator, 2026-07-05** (host run 23:29–23:32
+with `./bin/lykn`, post the stale-PATH-binary lesson): the 5-form demo
+produced all five kernel-only errors verbatim with suggestions; the
+`kernel:` escape resolved (`var x = 1;`); suites reproduced across the day's
+sessions (`make check` ✓, `lykn test` 1365/0, deno 673/0, doctests green).
+A-3/A-4 → **reconciled**. Slices: 3/3. Findings dispositioned: 8 arc-ledger
+rows walked; bubble-ups all routed (§3/§6). **arc10 CLOSED.**
+
+*(First run, 2026-07-05 22:05, was partially invalid — stale PATH binary;
+preserved above for the record.)*

@@ -1,12 +1,12 @@
 # arc11 — Source-Only Test Build (+ buried-intent closeout)
 
-> **Status: CLOSING — both slices closed (2026-07-05); composition + gate
-> pending the operator host run.** Created from an operator observation
-> during the arc10 composition run + CDC ground-truthing; slice01
-> (`75c9cc2`, test-out-dir) and slice02 (`4f2a628`, buried-intent-audit)
-> closed same day. See [`closing-report.md`](./closing-report.md) — the arc
-> closes formally when A-3/A-4/A-5 are **reproduced at arc scale on the
-> host** and the operator gates it. Gates arc09 (P-7).
+> **Status: CLOSED — gated by the operator 2026-07-05** (host runs: A-3
+> three-moment with `./bin/lykn` at 23:31; A-4 sweep + A-5 from the earlier
+> session; see [`closing-report.md`](./closing-report.md) §7). Created and
+> fully executed same day from an operator observation: slice01 (`75c9cc2`,
+> test-out-dir) + slice02 (`4f2a628`, buried-intent-audit). No compiled JS
+> in the source tree at any moment; buried-intent inventory empty-or-
+> tracked. P-7's demo unconditional — arc09 unblocked on this front.
 
 ## 1. Capability
 

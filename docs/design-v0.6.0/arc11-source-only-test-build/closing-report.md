@@ -101,8 +101,17 @@ Green + operator sign-off = the gate. On sign-off: flip arc11 to **Closed**
 
 ## 7. Gate
 
-**Gate: PENDING — first run (2026-07-05 22:05) partially invalid; A-3
-re-run required.** The operator's first gate run was made with a **stale
+**GATE: GO — signed off by the operator, 2026-07-05 23:31 host run with
+`./bin/lykn`.** Three-moment demo: post-run **0**, post-`--compile-only`
+**0** (and the compile message itself proves the destination: "Compiled 97
+.lykn test file(s) **to target/lykn/test**"); the mid-run count was elided
+in the transcript but is structurally covered — nothing writes to `test/`
+anymore (code-verified mechanism + the destination demo). A-4 sweep and
+A-5 were already reproduced/valid from the earlier session. A-3/A-4/A-5 →
+**reconciled** (A-3 with the stated mid-run calibration). **arc11 CLOSED.**
+
+*(Prior state, preserved:)* first run (2026-07-05 22:05) partially invalid; A-3
+re-run was required. The operator's first gate run was made with a **stale
 PATH binary** (bare `lykn` ≠ `./bin/lykn`; the old binary sibling-emitted →
 mid-run 5, post-`--compile-only` 97 files in `test/` — while the fresh
 `./bin/lykn` used by `make check` in the same session correctly wrote 97
