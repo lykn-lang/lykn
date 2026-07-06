@@ -100,20 +100,22 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** **two threads.** (1) **CC commits arc05/slice02
-source** (approved — single commit, closing report stays untracked); on
-the SHA, CDC verifies + closes it (15 rules live; ID-44 fixed both
-backends; ID-03 = warn, operator-confirmed; the ID-42 self-stop accepted).
-(2) **Hand arc13/slice01 (`conformance-matrix + DD-60`) to CC** — arc05 is
-**PAUSED at 2/3** (operator blocker call): slice02's recon exposed the
-**expander param-vs-macro shadowing divergence** (Rust calls the param
-where JS throws; Rust fires macros for 7 macro-named params — wrong code;
-JS reserved words → invalid JS at rc=0). arc13 = matrix + DD-60 semantics
-(recon-only slice01) → Rust → JS + permanent conformance corpus. **DD-60
-goes to the operator for confirmation before slice02 there is scoped.**
-arc05 slice03 (+ the shrunken ID-42 lint question, arc13 A-6) resumes
-after. Sequence: **arc13 → arc05(resume) → arc06 → arc07 → arc09.**
-Standing: `make check` is the bar; `./bin/lykn` never bare `lykn`.
+**Immediate next action:** **hand arc13/slice02 (`rust-shadowing`) to CC**
+(and have CC commit the slice01 artifacts — `tools/conformance-matrix.js`
++ `arc13/design/dd-60…` — first if not yet done). State: arc05/slice02
+closed (`038c23c`; 15 rules live; ID-44 fixed both backends; ID-03 =
+warn); arc13/slice01 closed (885-cell matrix — **neither backend has
+binding awareness**; Rust's "shadowing" was shape-coincidence; 35% of
+cells disagree); **DD-60 operator-CONFIRMED in full 2026-07-06** (D1
+whole-scope lexical shadowing incl. user macros; D2 empirical
+reserved-word validation incl. `export` + the `kernel:` name slot; D3
+DD-58 untouched; odm promotion = Duncan). slice02 = DD-60 on Rust
+(scope-threaded dispatch + name validator + list-parity test + matrix
+re-probe with JS baseline untouched); slice03 = JS + the permanent
+conformance corpus; then **arc05 resumes** (slice03 + the ID-42 question
+re-answered from the fixed state, arc13 A-6). Sequence: **arc13 →
+arc05(resume) → arc06 → arc07 → arc09.** Standing: `make check` is the
+bar; `./bin/lykn` never bare `lykn`.
 
 ## 6. How we work — the rhythm & the disciplines
 

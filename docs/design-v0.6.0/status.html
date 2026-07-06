@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-06 (arc05 paused on an expander-coherence blocker — arc13 created, recon+DD-60 ready for CC)",
+  updated: "2026-07-06 (DD-60 confirmed — 885-cell matrix in; arc13/slice02 rust-shadowing ready for CC)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -155,7 +155,7 @@ const DATA = {
       slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc13", name:"expander-coherence", status:"active",
       cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
-      slices:[{n:"matrix+DD-60",s:"active"},{n:"rust-shadowing",s:"open"},{n:"js-shadowing+corpus",s:"open"}] },
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing",s:"active"},{n:"js-shadowing+corpus",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -180,8 +180,8 @@ const DATA = {
   ],
   sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc13 · slice01 — conformance matrix + DD-60 (ready for CC)",
-    desc:"arc05/slice02 delivered big (15 rules live; the ID-44 compiler bug fixed on BOTH backends — the JS-first recon found the JS compiler shared it; honest dogfood incl. a rule bug the corpus exposed), and its ID-42 self-stop uncovered the disease behind the symptom: the Rust and JS expanders resolve param-vs-macro shadowing differently — same source compiles on one, throws on the other; Rust emits wrong code for 7 macro-named params; reserved words yield invalid JS at rc=0. Operator: blocker. arc05 pauses at 2/3; arc13 fixes it properly — full name-binding conformance matrix + DD-60 semantics (recon-only slice01), then Rust, then JS + a permanent cross-compiler conformance corpus. Then arc05 resumes and 'does the right thing' instead of warning broadly."
+    arc:"arc13 · slice02 — rust-shadowing (ready for CC)",
+    desc:"The 885-cell conformance matrix is in and it corrected the record: NEITHER backend has binding awareness (Rust's apparent shadowing was a shape-check coincidence; 35% of cells disagree; reserved words are ID-44 at scale — const if = 0 at rc=0). DD-60 is operator-confirmed in full: lexical bindings shadow macros whole-scope (incl. user macros), reserved words are invalid names everywhere (empirical legality test, covering export and the kernel: name slot), DD-58 untouched. Breaking analysis verified against the matrix: nothing currently-correct breaks. slice02 implements it on Rust (scope-threaded dispatch + name validator + a list-parity test); slice03 does JS + the permanent conformance corpus; then arc05 resumes."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
