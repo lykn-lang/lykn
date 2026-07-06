@@ -14,6 +14,24 @@ Option A) and **not** mere syntax errors (`lykn check` already covers those).
 The rule-set seed is `docs/guides/09-anti-patterns.md` plus the surface-forms
 reference.
 
+**Corpus division (settled by arc10, 2026-07-05):** the **compiler** owns the
+closed declaration-form namespace — the 5 kernel-only heads are compile
+errors on both compilers, incl. via macros (DD-58 strict + the macro-boundary
+sweep) — so the linter owns **idiom/style only**: the operator/expression
+anti-patterns (`==`/`===`-vs-`=`, `&&`/`||`-vs-`and`/`or`, `require`→invalid
+ESM, IIFE, `or`-vs-`??`, `:sort`, `for-in`, boolean params, catch-and-log,
+`cell`-when-pure, `js:`-overuse, …). `09-anti-patterns.md` needs the
+"ELIMINATED" reclassification per the CC audit + slice01's ID-38 reframe.
+
+**Seed additions from arc11/slice02 (2026-07-05, buried-intent audit):**
+repo-test-suite conventions the compiler can't enforce (`test/CONVENTIONS.md`
+is the spec):
+- reject **relative source imports** in `.lykn` test files (require bare
+  import-map specifiers) — the April-fossil failure class;
+- reject **`import.meta.dirname`-anchored fixture paths** in test files
+  (require `Deno.cwd()`-anchored) — the location-dependence class slice01
+  fixed 5 instances of.
+
 **Explicitly out of scope** (from the thread): `deno lint` integration;
 `lykn fmt` (separate command); typechecking/inference (Rust analysis layer
 already handles it); LSP server work (Phase 3+).
@@ -40,6 +58,14 @@ _Opens when the arc-plan is detailed._ The class-(b) composition row will be
 idiomatic source," reproduced at arc scale.
 
 ## 5. Version History
+
+### v1.1 — 2026-07-05 (corpus division settled; arc11 seed additions)
+Recorded the arc10-settled corpus division (compiler owns the closed 5-form
+namespace everywhere incl. the macro boundary; linter owns idiom/style) and
+added two rule candidates from arc11/slice02's buried-intent audit
+(relative-source-imports and `import.meta.dirname` fixture anchoring in test
+files — enforcing `test/CONVENTIONS.md`). Surfaced by: arc10 close + arc11
+slice02 bubble-up.
 
 ### v1.0 — 2026-06-28 (reconstructed)
 Capability statement recovered from the linter kickoff thread; arc seeded, not

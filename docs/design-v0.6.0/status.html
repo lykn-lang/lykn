@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-05 (arc11 slice01 closed — source-only test build; arc10 gate pending)",
+  updated: "2026-07-05 (arc12 created — kill the ×12 corpus re-runs, then one combined gate for all three arcs)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -170,12 +170,15 @@ const DATA = {
       slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"closed"},{n:"kernel-removal",s:"closed"}] },
     { id:"arc11", name:"source-only-test-build", status:"active",
       cap:"lykn test compiles to target/lykn/test/ (never the source tree — philosophy #1's last emitter, done) + a buried-intent audit (sweep + disposition every deferred-then-lost stub). Gates arc09 (P-7).",
-      slices:[{n:"test-out-dir",s:"closed"},{n:"buried-intent-audit",s:"active"}] },
+      slices:[{n:"test-out-dir",s:"closed"},{n:"buried-intent-audit",s:"closed"}] },
+    { id:"arc12", name:"test-topology", status:"active",
+      cap:"Every test runs exactly once per make check; make test-docs tests docs. Kills the ×12 corpus re-runs (--docs corpus-default bug, 4× Deno startups, test-lykn subset re-run, double builds). Lands before the combined gate.",
+      slices:[{n:"run-once-topology",s:"active"}] },
   ],
-  sequence: ["arc10","arc11","arc05","arc06","arc07","arc09"],
+  sequence: ["arc12","arc10","arc11","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc10 gate (operator host run) · arc11 slice02 (buried-intent audit) · then arc05",
-    desc:"Two things in flight. arc10 (DD-58 everywhere + _kernel retired) awaits the operator's host composition run + gate sign-off (closing-report §5 runbook). arc11 slice01 just closed (75c9cc2): lykn test now compiles to target/lykn/test/ — wiped per run, never the source tree — the reserved --out-dir wired, the April fossil deleted, and P-7's demo unconditionally runnable. Next: arc11 slice02, the buried-intent audit (~10 marker hits + 4 items inherited from slice01's bubble-up), then arc05 (lykn lint)."
+    arc:"arc12 · run-once-topology (ready for CC) → one combined gate (arc10+11+12) → arc05",
+    desc:"The gate attempt surfaced two things: a stale PATH binary invalidated the first A-3 run (runbooks amended: which lykn + ./bin/lykn), and the operator's repeated-tests observation — CC-quantified as the corpus executing ~12× across make check && make test-docs (the --docs corpus-default CLI bug ×4, test-lykn ⊂ test-js, the && habit, double builds; make test-docs = 1m53s of which ~90% is corpus). arc12/slice01 implements CC's A–D fixes with a sentinel-census proof (corpus: exactly 1× per make check, 0× per make test-docs) and makes make check the canonical bar. Then one cheap gate session closes arc10, arc11, and arc12 together."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
@@ -197,6 +200,7 @@ const DATA = {
     "Brought the JS compiler to full DD-58 parity (strict default-on + the kernel: escape, Rust-verbatim diagnostics) — the closed surface namespace now holds on every compile path: Rust CLI, JS API, doctests, browser, JSR.",
     "Retired the transitional _kernel marker (DD-37 step 4) for a WeakSet sanctioned-kernel registry, and closed the macro boundary: macro-emitted bare kernel decls now error on both compilers (operator-decided Rust semantics, recorded in DD-58) — with a kernel-form parity guard and kernel: corpus rows standing watch.",
     "Finished philosophy #1's last mile: lykn test now compiles to target/lykn/test/ (wiped per run) — no generated JS ever touches the source tree (mid-run, post-SIGINT, post-compile-only all clean) — wiring a flag that had sat 'reserved for future use' since April and deleting the fossil that broke unscoped deno test.",
+    "Ran the buried-intent audit: 13 items dispositioned (wired / retired / tracked-with-watchers), 4 previously-unknown functional deferrals surfaced (incl. genfunc's silent clause-drop), the SetSymbol deprecation routed to a real 0.7.0 decision row, and a reproducible sweep-diff proving zero silently-deferred intent remains — the anti-'delayed, deferred, buried, lost' countermeasure, now evidenced.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
@@ -219,6 +223,10 @@ const DATA = {
       lesson:"Found in slice02 CDC review: Rust enforced strict <i>post</i>-macro-expansion, JS <i>pre</i>-expansion — a user macro expanding to a top-level bare kernel decl compiled on JS but errored on Rust. <b>Learning:</b> behavioural parity claims need checking at the <i>boundaries</i> (macro output), not just direct input. <b>Fixed in slice03</b> (runtime-confirmed first, then a post-pass2 sweep; operator-decided Rust semantics, recorded in DD-58)." },
     { t:"Reserved-but-never-wired: lykn test's --out-dir", tag:"fixed",
       lesson:"lykn test compiled _test.js siblings into test/ (transient: run-then-clean, April design) while a hidden --out-dir flag sat 'reserved for future use', received as _out_dir and ignored — intent captured, never wired, no row watching it. Third instance of one signature this cycle (stranded branches; DD-58 half-wired; this). <b>Fixed in arc11/slice01</b> (75c9cc2): the flag is live, output goes to target/lykn/test/ (wiped per run), the April fossil (target/test/lykn orphans — the TS2307 cause) is deleted, and the F-1 recon caught + fixed 7 location-dependence items before wiring. <b>Learning:</b> the signature is grep-able — slice02 sweeps the full buried-intent inventory." },
+    { t:"The corpus ran ~12× per verification pass", tag:"open",
+      lesson:"The operator's repeated-tests observation, CC-quantified: lykn test --docs re-runs the entire 88-file corpus before testing any docs (patterns default to test/ even under --docs) ×4 sub-targets; make check ⊇ test-docs so the habitual && doubles the doc phase; test-lykn re-runs a subset of test-js. make test-docs = 1m53s, 85–94% corpus. <b>Learning:</b> make-target names that were honest once silently became lies when lykn test grew — same drift genus as the buried-intent items, at the toolchain layer. → arc12 (A–D fixes + sentinel-census proof + make check as the canonical bar)." },
+    { t:"Staleness trap, third costume: the PATH binary", tag:"guard",
+      lesson:"The first arc10/arc11 gate run used bare <code>lykn</code>, which resolved to a stale cargo-installed binary — it sibling-emitted 97 _test.js files into test/ (old behavior), while ./bin/lykn in the same session behaved correctly. And the new *_test.js gitignore <i>masked</i> the debris from git. <b>Learning:</b> issues-log #3 guarded bin/ and the build dir; PATH is a third staleness channel. Runbooks now say <code>which lykn</code> + <code>./bin/lykn</code> explicitly; a warn-on-foreign-binary guard is filed. Bonus finding: unscoped deno test also walks .worktrees/ (stale checkouts, 0-ahead, deletable)." },
     { t:"Deno config 'exclude' filters even explicitly-passed paths", tag:"guard",
       lesson:"slice01's planned project.json target/ exclude turned out to break the very runs it was protecting (Deno returns 'No test' even for explicitly-passed excluded paths) — CC demonstrated it empirically and declined the mechanism; the row's goal (no unscoped TS2307 abort) was already met by the fossil deletion + bare specifiers. <b>Learning:</b> a ledger row's mechanism can be invalidated while its goal stands — amend the row (was:-note), don't force the mechanism. The supported test command remains deno test --config project.json -A test/." },
     { t:"CDC 'appears dead' recon was a grep artifact", tag:"fixed",

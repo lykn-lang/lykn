@@ -1,10 +1,12 @@
 # arc11 — Source-Only Test Build (+ buried-intent closeout)
 
-> **Status: Open — scoped 2026-07-05.** Created from an operator observation
-> during the arc10 composition run (compiled `_test.js` siblings visible in
-> `test/` mid-run) + CDC ground-truthing. Appended as arc11 by **creation
-> order**; dependency-wise it is independent of arc05 (may run parallel or
-> before) and **must land before arc09** (it gates the P-7 DoD demo).
+> **Status: CLOSING — both slices closed (2026-07-05); composition + gate
+> pending the operator host run.** Created from an operator observation
+> during the arc10 composition run + CDC ground-truthing; slice01
+> (`75c9cc2`, test-out-dir) and slice02 (`4f2a628`, buried-intent-audit)
+> closed same day. See [`closing-report.md`](./closing-report.md) — the arc
+> closes formally when A-3/A-4/A-5 are **reproduced at arc scale on the
+> host** and the operator gates it. Gates arc09 (P-7).
 
 ## 1. Capability
 
@@ -40,7 +42,7 @@ instance exemplifies:
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · test-out-dir** | Wire `--out-dir` (default `target/lykn/test/`): compile `.lykn`/`.lyk` test files there, run Deno against it, wipe-per-run like the doctest dir; `--compile-only` writes there too; interrupt debris lands in gitignored `target/`, never `test/`; add `*_test.js` to `.gitignore` as belt-and-suspenders for pre-existing stray debris; un-hide the flag + document. Recon-first: compiled tests' relative/import-map resolution when run from `target/` (the likely reason for the April sibling design). | **Closed** (`75c9cc2`; recon caught 7 location-dependence items in 5 files, fixed; fossil deleted; exclude declined w/ rationale; three-moment demo clean; 1365/0 · 673/0 · `make check` ✓) |
-| **slice02 · buried-intent-audit** | Sweep the marker inventory (TODO/FIXME/"for now"/"reserved"/`hide = true`/underscore-silenced params/`allow(dead_code)`) + doc-claims-vs-code spot-checks; produce a disposition table: every hit **wired, retired, or given a tracked row**; includes the `surface.rs:294` deprecation whose DD-58 trigger has fired. **Inherits from slice01's bubble-up:** reserved-plumbing sweep of `main.rs`; test-source location-dependence conventions note + arc05 lint-rule candidate; canonical-test-command documentation (`-A test/` is supported; unscoped is not); doctest-dir harmonization (`target/test/doctest` → `target/lykn/`, filed with reason). | **Scoped — open set written 2026-07-05** (`slice02-buried-intent-audit/{slice-doc,ledger,cc-prompt}.md`; 9-item seeded inventory + benign filter; audit-then-fix; F-4 SetSymbol = assess-and-route) |
+| **slice02 · buried-intent-audit** | Sweep the marker inventory (TODO/FIXME/"for now"/"reserved"/`hide = true`/underscore-silenced params/`allow(dead_code)`) + doc-claims-vs-code spot-checks; produce a disposition table: every hit **wired, retired, or given a tracked row**; includes the `surface.rs:294` deprecation whose DD-58 trigger has fired. **Inherits from slice01's bubble-up:** reserved-plumbing sweep of `main.rs`; test-source location-dependence conventions note + arc05 lint-rule candidate; canonical-test-command documentation (`-A test/` is supported; unscoped is not); doctest-dir harmonization (`target/test/doctest` → `target/lykn/`, filed with reason). | **Closed** (`4f2a628`; 13-item disposition table; 3 wired fixes; SetSymbol routed; `test/CONVENTIONS.md` + CLAUDE.md; doctest dir → `target/lykn/test/doctest`; sweep-diff clean, CDC-reproduced; 1365/0 · 673/0 ✓) |
 
 ## 3. Dependencies
 
@@ -55,12 +57,25 @@ just at rest, before the release cut. Sequence of open work: arc10-gate →
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | slice01 (test-out-dir) closed | ptr: slice01 cdc-verification | serious | arc-plan | **done** | slice01 `cdc-verification.md` (accepted 2026-07-05; commit `75c9cc2`) — attested (pointer to closed child ledger) | |
-| A-2 | slice02 (buried-intent-audit) closed | ptr: slice02 cdc-verification | correctness | arc-plan | open | | |
+| A-2 | slice02 (buried-intent-audit) closed | ptr: slice02 cdc-verification | correctness | arc-plan | **done** | slice02 `cdc-verification.md` (accepted 2026-07-05; commit `4f2a628`) — attested (pointer to closed child ledger) | |
 | A-3 | **source tree is `.js`-free at every moment** — during a `lykn test` run, after Ctrl-C mid-run, and after `--compile-only` (tracked hand-written `.test.js` files excepted) | arc-scale demo: start `lykn test`, interrupt it, then `git status --porcelain test/` + `find test -name '*_test.js'` → empty; repeat with `--compile-only` | serious | operator observation 2026-07-05 | open | | reproduce at arc scale on host |
-| A-4 | **buried-intent inventory is empty-or-tracked** — the marker sweep returns only hits with a written disposition (wired / retired / tracked row) | slice02 disposition table; re-run the sweep, diff against the table | correctness | CDC systemic finding | open | | the anti-"delayed, deferred, buried, lost" row; the `target/test/lykn/` orphans join the exhibit list (dead artifacts of a retired mechanism) |
+| A-4 | **buried-intent inventory is empty-or-tracked** — the marker sweep returns only hits with a written disposition (wired / retired / tracked row) | slice02 disposition table; re-run the sweep, diff against the table | correctness | CDC systemic finding | **met (CDC-reproduced)** | slice02 table (13 items) + CC's close-of-slice sweep-diff + **CDC's independent re-run (8 remaining hits, all dispositioned, zero orphans)**; tracked homes instantiated (project-plan §Post-0.6.0; arc05 seed). Re-run once more at arc close on host | the anti-"delayed, deferred, buried, lost" row — now evidenced, not asserted |
 | A-5 | **unscoped `deno test --config project.json` does not abort on generated or orphaned artifacts** — the April fossil is gone and generated output resolves cleanly (bare specifiers) | run it unscoped; no TS2307 from `target/**` | correctness | operator deno-test issue + CC investigation 2026-07-05 | **met (attested)** | slice01: fossil deleted (CDC-reproduced) + 0 target errors unscoped (attested). **Amended (v1.2; was: "discovery excludes `target/`")** — the exclude mechanism was empirically invalidated (Deno's config `exclude` filters even explicitly-passed paths, which would break `lykn test`'s own out-dir run); goal met without it. Residual: unscoped runs double-run the corpus + need `-A` — not a supported invocation; canonical-command doc → slice02 |
 
 ## 5. Version History
+
+### v1.4 — 2026-07-05 (slice02 closed; arc → CLOSING)
+slice02 closed (`4f2a628`, CDC-verified): 13-item disposition table (9 seed
++ 4 new — genfunc multi-clause silent drop, reader block-comment stub,
+doctest nested-fence limit, nested-destructure deferral — all tracked with
+homes + re-entry); 3 fixes wired (kernel-mark comment, `js:eq` guard re-key,
+SetSymbol TODO → tracked-home comment); `test/CONVENTIONS.md` + CLAUDE.md
+docs; doctest dir → `target/lykn/test/doctest`. **A-4 met — CDC
+independently reproduced the sweep-diff** (8 hits, zero orphans). Tracked
+homes instantiated: project-plan §Post-0.6.0 candidates (v1.17); arc05 seed
+(2 lint rules). A-2 → done; **arc → CLOSING** (closing-report written;
+host composition run + operator gate = the formal close). Surfaced by:
+slice02 close.
 
 ### v1.3 — 2026-07-05 (slice02 scoped)
 slice02 (`buried-intent-audit`) open set written, grounded in a fresh

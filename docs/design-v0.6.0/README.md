@@ -33,7 +33,8 @@
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
 | [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** |
 | [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal) | **CLOSING** — 3/3 slices closed; [closing-report](./arc10-compiler-completion/closing-report.md) written; composition + operator gate pending (host runbook §5); arc05 unblocks on the gate |
-| [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **Open — scoped** (slice01 open set written); parallel-OK with arc05; gates arc09 (P-7) |
+| [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **CLOSING** — 2/2 slices closed; [closing-report](./arc11-source-only-test-build/closing-report.md) written; gate pending (host runbook §5, combinable with arc10's); gates arc09 (P-7) |
+| [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (kills the ×12 corpus re-runs) | **Open — scoped** (slice01 ready for CC); lands before the combined arc10/arc11/arc12 gate |
 
 _Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc10-gate → (arc11 ∥ arc05) → arc06 → arc07 → arc09**._
 

@@ -91,28 +91,30 @@ inserts.
   host composition run + gate** (runbook in the report §5). Final numbers:
   `lykn test` 1365/0, deno 673/0, `make check` ✓.
 - **Future:** arc09 (release).
-- **Dependency sequence:** **arc10-gate → (arc11 ∥ arc05) → arc06 → arc07 →
-  arc09.** (arc11 · source-only-test-build added 2026-07-05: `lykn test` →
-  `target/lykn/test/` + the buried-intent audit; slice01 scoped, ready for
-  CC; gates arc09's P-7 demo.)
+- **Dependency sequence:** **(arc10-gate + arc11-gate, one host session) →
+  arc05 → arc06 → arc07 → arc09.** arc11 · source-only-test-build (added +
+  fully executed 2026-07-05): both slices closed — `lykn test` →
+  `target/lykn/test/`; buried-intent inventory empty-or-tracked; P-7's demo
+  unconditional. **Both arcs CLOSING, awaiting the operator's combined host
+  composition run** (runbooks: each arc's `closing-report.md` §5).
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** **the arc10 gate, then arc05.** (1) Operator runs
-the host composition runbook (arc10 `closing-report.md` §5: rebuild, the
-5-form error demo on the Rust CLI, `make check`, `make test-docs`,
-`lykn test` 1365/0, deno 673/0) and signs off → flip arc10 to **Closed**
-(arc-plan header, README table, status.html, P-15) and mark the attested
-rows *reconciled*. (2) Two one-line cosmetic drive-bys can ride any next
-commit: fix the stale `kernel-mark.js:10` comment ("removed as dead" —
-`kernelArray` was kept, call site `surface-helpers.js:518`); fix the stale
-`macroEnv.has('bind')` idempotence guard in `expander.js` (arc04 vintage —
-key on a `js:*` name). (3) Then **scope arc05 (lykn-source-linter)** — the
-corpus division is now sharp: compiler owns the closed declaration-form
-namespace (enforced everywhere); linter owns idiom/style
-(`==`/`&&`/`require`/IIFE, `or`-vs-`??`, `:sort`, `for-in`, catch-and-log,
-`cell`-when-pure, …); `09-anti-patterns.md` is the seed (needs the
-ELIMINATED reclassification per the CC audit + the slice01 ID-38 reframe).
+**Immediate next action:** **arc12/slice01 (run-once-topology) → then ONE
+combined gate for arc10+arc11+arc12 → then arc05.**
+(1) Hand `arc12-test-topology/slice01-run-once-topology/cc-prompt.md` to CC:
+CC's own A–D fixes (the `--docs` corpus-default CLI bug; one Deno startup
+for docs; kill the `test-lykn` subset re-run; one build pass) + the
+canonical bar becomes `make check`. The first gate attempt was invalidated
+by a **stale PATH binary** (use `./bin/lykn`, `which lykn` first — runbooks
+amended) and made painful by the ×12 corpus re-runs arc12 kills.
+(2) Combined gate session (now cheap): arc10 §5 + arc11 §5 + arc12
+A-2/A-3 → sign off → flip all three Closed (P-15/P-16/P-17), reconcile
+rows. (3) Then **scope arc05** — arc-plan v1.1 has the settled corpus
+division + the arc11 seed additions; `09-anti-patterns.md` is the seed.
+Post-0.6.0 routed items: project-plan §1 "Post-0.6.0 tracked candidates"
+(incl. the `set-symbol!` 0.7.0 decision and the batch-compile speed lever
+if arc12 files it).
 
 ## 6. How we work — the rhythm & the disciplines
 

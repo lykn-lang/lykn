@@ -19,11 +19,25 @@ trivial fixes; route the design questions. Audit-then-fix. Doc-touching →
 
 ## What Worked
 
-_(At slice close.)_
+- **The benign-filter rule kept the audit honest in both directions** — it
+  prevented noise-inflation (7 describes-now comments documented, not
+  dispositioned) *and* forced the real should-someday items into the table.
+- **Audit-before-fix meant the 4 new findings got dispositions, not
+  patches** — a fix-first pass would have one-linered the easy ones and
+  silently re-buried N1 (the genfunc clause-drop, a real functional gap).
+- **"Tracked = named home + re-entry condition" with CDC instantiating the
+  rows** closes the loop the old TODOs never had: every routed item now has
+  a watcher.
 
 ## Closure
 
-_(At slice close: commit SHA, date, verifier, row disposition counts.)_
+Closed 2026-07-05 (commit `4f2a628`). Verified by: CC (attested) + CDC
+(`cdc-verification.md`: fixes + docs + dir-move reproduced by code/read;
+**A-4 sweep-diff independently reproduced — 8 hits, all dispositioned, zero
+orphans**; runtime attested). Rows: 7. Done: 7. Deferred: 0. No-op: 0.
+**Tracked homes instantiated by CDC**: project-plan §Post-0.6.0 candidates
+(set-symbol! decision, genfunc multi-clause, 4-item polish backlog); arc05
+seed (2 lint rules). arc11's slice work complete → arc closing-report.
 
 > Audit-then-fix: F-1/F-2 before any code lands. F-4 is assess-and-route,
 > not remove. Doc-touching slice → `make test-docs` mandatory. This is
