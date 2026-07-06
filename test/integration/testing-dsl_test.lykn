@@ -4,7 +4,8 @@
 (import "lang/mod.js" (compile))
 (import "node:path" (resolve))
 
-(bind testing-dir (resolve import:meta:dirname "../../packages/testing"))
+;; Project-root-relative (Deno.cwd()), location-independent (arc11/slice01).
+(bind testing-dir (resolve (Deno:cwd) "packages/testing"))
 
 (func compile-all
   :args (:string source)

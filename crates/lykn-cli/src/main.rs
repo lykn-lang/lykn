@@ -78,8 +78,10 @@ enum Commands {
         /// Test lykn code blocks in Markdown files
         #[arg(long)]
         docs: Option<String>,
-        /// Directory for compiled JS test output (reserved for future use)
-        #[arg(long, hide = true)]
+        /// Directory for compiled JS test output (default: target/lykn/test/).
+        /// Compiled `*_test.lykn`/`.lyk` files land here (wiped per run), never
+        /// in the source tree.
+        #[arg(long)]
         out_dir: Option<PathBuf>,
         /// Compile .lykn files but don't run tests
         #[arg(long)]
@@ -441,23 +443,38 @@ fn cmd_run(file: &std::path::Path, args: &[String]) {
     }
 }
 
+/// Default directory for compiled `.lykn`/`.lyk` test output. Under
+/// `target/lykn/` (arc01-aligned with `build`/`dist`), gitignored, and wiped
+/// per run — so generated `.js` never lands in the source tree at any moment
+/// (philosophy.md commitment #1; mirrors the doctest runner's
+/// `target/test/doctest` discipline).
+const DEFAULT_TEST_OUT_DIR: &str = "target/lykn/test";
+
 fn cmd_test(
     patterns: &[String],
     docs: Option<&str>,
-    _out_dir: Option<&Path>,
+    out_dir: Option<&Path>,
     compile_only: bool,
     extra_deno_args: &[String],
 ) {
     let config = find_config();
+    let out_dir: PathBuf = out_dir
+        .map(|p| p.to_path_buf())
+        .unwrap_or_else(|| PathBuf::from(DEFAULT_TEST_OUT_DIR));
 
     // Handle --docs mode: extract and test Markdown code blocks
     if let Some(docs_path) = docs {
         // If there are also .lykn patterns, compile them first
         let lykn_files = discover_lykn_test_files(patterns);
         if !lykn_files.is_empty() {
-            let compiled = compile_lykn_test_files(&lykn_files, None);
+            wipe_test_out_dir(&out_dir);
+            let compiled = compile_lykn_test_files(&lykn_files, Some(&out_dir));
             if compile_only {
-                eprintln!("Compiled {} .lykn test file(s).", compiled.len());
+                eprintln!(
+                    "Compiled {} .lykn test file(s) to {}.",
+                    compiled.len(),
+                    out_dir.display()
+                );
             } else {
                 let test_paths: Vec<String> = compiled
                     .iter()
@@ -465,7 +482,8 @@ fn cmd_test(
                     .collect();
                 run_deno_test(&config, &test_paths, extra_deno_args);
             }
-            clean_compiled_test_files(&compiled);
+            // No source-tree cleanup: output lives under gitignored `target/`,
+            // wiped at the start of the next run.
         }
         // run_doc_tests exits the process
         doctest::run_doc_tests(docs_path, &config, extra_deno_args);
@@ -495,27 +513,35 @@ fn cmd_test(
             process::exit(1);
         }
 
-        // Compile .lykn files next to sources, run, then clean up
-        let compiled = compile_lykn_test_files(&lykn_files, None);
-        eprintln!("Compiled {} .lykn test file(s).", compiled.len());
+        // Compile .lykn test files into the (wiped) out-dir — never the source
+        // tree (arc11/slice01; philosophy.md #1).
+        wipe_test_out_dir(&out_dir);
+        let compiled = compile_lykn_test_files(&lykn_files, Some(&out_dir));
+        eprintln!(
+            "Compiled {} .lykn test file(s) to {}.",
+            compiled.len(),
+            out_dir.display()
+        );
 
         if compile_only {
             return;
         }
 
-        // Run tests from the original directories
-        let mut paths: Vec<String> = Vec::new();
-        for pattern in patterns {
-            let p = Path::new(pattern);
-            if p.is_dir() {
-                paths.push(pattern.clone());
-            }
-        }
+        // Run paths: the original directory patterns (hand-written `*.test.js`)
+        // plus the out-dir (compiled `*_test.js`). For specific-file patterns,
+        // run just the compiled outputs.
+        let mut paths: Vec<String> = patterns
+            .iter()
+            .filter(|p| Path::new(p).is_dir())
+            .cloned()
+            .collect();
         if paths.is_empty() {
             paths = compiled
                 .iter()
                 .map(|p| p.to_string_lossy().into_owned())
                 .collect();
+        } else {
+            paths.push(out_dir.to_string_lossy().into_owned());
         }
 
         let path_refs: Vec<&str> = paths.iter().map(|s| s.as_str()).collect();
@@ -524,15 +550,18 @@ fn cmd_test(
         let extra_refs: Vec<&str> = extra_deno_args.iter().map(|s| s.as_str()).collect();
         deno_args.extend(extra_refs);
         let exit_code = run_deno(&deno_args);
-
-        clean_compiled_test_files(&compiled);
         process::exit(exit_code);
     }
 }
 
-fn clean_compiled_test_files(compiled: &[PathBuf]) {
-    for path in compiled {
-        let _ = fs::remove_file(path);
+/// Wipe and recreate the compiled-test output directory (doctest-runner
+/// pattern, `doctest.rs`): each run starts from a clean dir, so a crashed or
+/// interrupted prior run leaves no stale `.js` to be discovered or re-run.
+fn wipe_test_out_dir(out_dir: &Path) {
+    let _ = fs::remove_dir_all(out_dir);
+    if let Err(e) = fs::create_dir_all(out_dir) {
+        eprintln!("error creating {}: {e}", out_dir.display());
+        process::exit(1);
     }
 }
 

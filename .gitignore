@@ -2,6 +2,10 @@
 node_modules/
 target/
 *.js.map
+# Compiled lykn test output (`*_test.lykn`/`.lyk` → `*_test.js`). Now emitted to
+# target/lykn/test/, but belt-and-suspenders against stray pre-existing debris.
+# Hand-written tests are `*.test.js` (tracked) — do NOT ignore those.
+*_test.js
 /bin
 /workbench
 /.claude
