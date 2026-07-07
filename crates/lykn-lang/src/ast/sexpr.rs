@@ -26,6 +26,21 @@ pub enum NameRes {
     BindingRef,
 }
 
+/// The payload of an [`SExpr::Atom`] — its name, source span, and resolution
+/// tag. **The fields are private to `ast::sexpr`** (DD-61 §A6 by-construction,
+/// arc13/slice09): outside this module there is no destructure path to the raw
+/// name — the accessors ([`SExpr::as_atom`], [`SExpr::as_form_head`],
+/// [`SExpr::span`], [`SExpr::name_res`], [`SExpr::atom_parts`]) are the only
+/// door, and `as_form_head` is the only dispatch-purpose one. Construct via
+/// [`SExpr::atom`]; retag via [`SExpr::with_name_res`].
+#[derive(Debug, Clone)]
+pub struct AtomData {
+    value: String,
+    span: Span,
+    /// Resolution tag (DD-61 §A1). Reader → [`NameRes::Unresolved`].
+    binding: NameRes,
+}
+
 /// `SExpr` derives no `PartialEq` — the `binding` tag is dispatch metadata, not
 /// structural identity, so equality is **tag-insensitive** (a manual impl
 /// below). This keeps every pre-existing `SExpr` comparison stable across the
@@ -34,12 +49,8 @@ pub enum NameRes {
 /// derive did.
 #[derive(Debug, Clone)]
 pub enum SExpr {
-    Atom {
-        value: String,
-        span: Span,
-        /// Resolution tag (DD-61 §A1). Reader → [`NameRes::Unresolved`].
-        binding: NameRes,
-    },
+    /// A bare name; payload private (see [`AtomData`]).
+    Atom(AtomData),
     Keyword {
         value: String,
         span: Span,
@@ -78,14 +89,8 @@ pub enum SExpr {
 impl PartialEq for SExpr {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            (
-                SExpr::Atom {
-                    value: a, span: sa, ..
-                },
-                SExpr::Atom {
-                    value: b, span: sb, ..
-                },
-            ) => a == b && sa == sb,
+            // Tag-insensitive: compare value + span, skip `binding`.
+            (SExpr::Atom(a), SExpr::Atom(b)) => a.value == b.value && a.span == b.span,
             (SExpr::Keyword { value: a, span: sa }, SExpr::Keyword { value: b, span: sb }) => {
                 a == b && sa == sb
             }
@@ -129,7 +134,7 @@ impl PartialEq for SExpr {
 impl std::fmt::Display for SExpr {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            SExpr::Atom { value, .. } => write!(f, "{value}"),
+            SExpr::Atom(a) => write!(f, "{}", a.value),
             SExpr::String { value, .. } => write!(f, "\"{value}\""),
             SExpr::Number { value, .. } => write!(f, "{value}"),
             SExpr::Bool { value, .. } => write!(f, "{value}"),
@@ -153,21 +158,20 @@ impl std::fmt::Display for SExpr {
 impl SExpr {
     /// Construct an unresolved atom — the single §A4 invariant point: an atom
     /// enters the tree [`NameRes::Unresolved`] and is tagged only by the
-    /// resolver pass. Prefer this over an `SExpr::Atom { … }` literal so the
-    /// invariant lives in one place (and to pre-stage the future
-    /// atom-payload-privacy slice).
+    /// resolver pass. This is the **only** construction door for an atom now
+    /// that [`AtomData`]'s fields are private (arc13/slice09).
     pub fn atom(value: impl Into<String>, span: Span) -> Self {
-        SExpr::Atom {
+        SExpr::Atom(AtomData {
             value: value.into(),
             span,
             binding: NameRes::Unresolved,
-        }
+        })
     }
 
     /// The resolution tag on this node ([`NameRes::Unresolved`] for non-atoms).
     pub fn name_res(&self) -> NameRes {
         match self {
-            SExpr::Atom { binding, .. } => *binding,
+            SExpr::Atom(a) => a.binding,
             _ => NameRes::Unresolved,
         }
     }
@@ -176,16 +180,16 @@ impl SExpr {
     /// by the resolver pass to stamp def/ref tags.
     #[must_use]
     pub fn with_name_res(mut self, res: NameRes) -> Self {
-        if let SExpr::Atom { binding, .. } = &mut self {
-            *binding = res;
+        if let SExpr::Atom(a) = &mut self {
+            a.binding = res;
         }
         self
     }
 
     pub fn span(&self) -> Span {
         match self {
-            SExpr::Atom { span, .. }
-            | SExpr::Keyword { span, .. }
+            SExpr::Atom(a) => a.span,
+            SExpr::Keyword { span, .. }
             | SExpr::String { span, .. }
             | SExpr::Number { span, .. }
             | SExpr::Bool { span, .. }
@@ -196,7 +200,7 @@ impl SExpr {
     }
 
     pub fn is_atom(&self) -> bool {
-        matches!(self, SExpr::Atom { .. })
+        matches!(self, SExpr::Atom(_))
     }
 
     pub fn is_keyword(&self) -> bool {
@@ -213,7 +217,7 @@ impl SExpr {
     /// [`SExpr::as_form_head`], which honours the resolution tag.
     pub fn as_atom(&self) -> Option<&str> {
         match self {
-            SExpr::Atom { value, .. } => Some(value),
+            SExpr::Atom(a) => Some(&a.value),
             _ => None,
         }
     }
@@ -224,7 +228,7 @@ impl SExpr {
     /// atom-payload-privacy restructure (arc13). `None` for non-atoms.
     pub fn atom_parts(&self) -> Option<(&str, Span)> {
         match self {
-            SExpr::Atom { value, span, .. } => Some((value, *span)),
+            SExpr::Atom(a) => Some((&a.value, a.span)),
             _ => None,
         }
     }
@@ -237,11 +241,12 @@ impl SExpr {
     #[must_use]
     pub fn as_form_head(&self) -> Option<&str> {
         match self {
-            SExpr::Atom {
+            // In-module destructure of the private payload is allowed.
+            SExpr::Atom(AtomData {
                 value,
                 binding: NameRes::Unresolved,
                 ..
-            } => Some(value),
+            }) => Some(value),
             _ => None,
         }
     }
