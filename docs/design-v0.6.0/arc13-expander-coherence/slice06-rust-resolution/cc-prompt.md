@@ -49,3 +49,34 @@ Self-stop beats working around. Closing report untracked
 closing-report with the per-row walk + bubble-up (js-resolution hook
 notes — what the JS slice mirrors, where the asymmetries are — and the
 silent-drop diff).
+
+## Handoff addendum (2026-07-06 — fresh-context pickup)
+
+The prior session **self-stopped cleanly** mid-slice (context exhaustion
+at the tail of a very long day; a byte-offset fix script corrupted files
+on nested braces → full revert; **tree green at `0055ba1`, nothing
+committed**). Its design work stands — re-derive nothing; details in the
+outgoing session's handoff report (workbench):
+
+- **`NameRes {Unresolved, BindingDef, BindingRef}`**, `#[non_exhaustive]`,
+  `Default = Unresolved`.
+- **Tension #2 DECIDED** by the outgoing session: manual
+  **tag-insensitive `PartialEq`** (the tag is dispatch metadata, not
+  structural identity — keeps every existing `SExpr` comparison stable
+  across the pass). Keep it; state it in the closing report.
+- **`as_form_head()`**: `#[must_use]`, returns `None` for any
+  **non-`Unresolved`** atom (defs *and* refs — a def-site name must never
+  dispatch either); plus `name_res()` / `with_name_res()` helpers.
+- **Census:** the field add breaks only **~59 sites** (31 struct-literal
+  constructions + 28 non-`..` patterns); the other ~200 `..`-patterns
+  absorb it silently.
+- **Method that works:** rustc's own machine-applicable suggestions /
+  `cargo fix` for the E0027 pattern fixes; the 31 constructions by hand —
+  or better, via a **central `SExpr::atom(value, span)` constructor**
+  (→ `Unresolved`), which centralizes the §A4 invariant and pre-does
+  step (1) of the phased atom-payload-privacy slice (CDC recommendation,
+  operator-aware; your call on contact — surface it). **No byte-offset
+  scripting** (the outgoing session's crash report; don't repeat it).
+- Land the foundation as a **first green increment**, then the
+  incremental chain: F-1 resolver → F-2 scan → F-3 swap → F-4 check →
+  F-5 matrix, verifying at each step.

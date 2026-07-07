@@ -66,7 +66,10 @@ docs/design-v0.6.0/
   arcNN-<slug>/
     arc-plan.md, closing-report.md
     sliceNN-<slug>/{slice-doc, ledger, cc-prompt, closing-report, cdc-verification}.md
-docs/design/           ← odm-managed DDs (DD-58 = 05-active/0059-…; Duncan owns odm)
+docs/design/           ← odm-managed DDs (DD-58 = 05-active/0059-…; DD-60 = 05-active/0062-…
+                         [CANONICAL — the arc13/design copy was retired 2026-07-06; amendments
+                         land in 0062 only]; DD-61 still arc13/design-only, odm add pending;
+                         Duncan owns odm)
 docs/guides/           ← the guides (doctested; 09-anti-patterns.md seeds arc05)
 ```
 
@@ -100,11 +103,16 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action (updated 2026-07-06, same day): slice06 ·
-rust-resolution is SCOPED** (open set written; §A6 privacy phased per
-operator — accessor + static check now, an *atom-payload-privacy* slice
-later; DD-61 refinement logged) — **hand its `cc-prompt.md` to CC, then
-verify the close.**
+**Immediate next action (updated 2026-07-06, end of day): slice06 ·
+rust-resolution is DELIVERED and CDC content-verified** (arc-plan v1.9;
+DD-60 D1 holds on Rust; matrix at targets, JS + corpus byte-identical;
+the fresh-context recycle worked — the first session's clean self-stop
++ handoff addendum is the pattern to reuse). **Formal close: CC commits
+source-only on `release/0.6.x` → record the SHA in the ledger Closure
+line → ancestry-check → flip arc A-9.** Then **slice07 ·
+atom-privacy-recon** (scoped, recon-only) → its report scopes the
+*atom-payload-privacy* implementation slice → js-resolution (MUST mirror
+slice06's `scope_plan` region model — hook notes in its closing report).
 
 **Where arc13 stands** (read its `arc-plan.md` [v1.6] + both design docs
 first): the **binding layer is complete by construction**. Slices 03/04/05

@@ -9,15 +9,22 @@ updated: 2026-07-06
 state: Active
 supersedes: null
 superseded-by: null
-version: 1.0
+version: 1.1
 ---
 
 # DD-60 — Name-Binding Semantics (bindings shadow macros/forms)
 
-> **Status: DRAFT — for odm promotion (Duncan).** Drafted by CC 2026-07-06 from
-> the arc13/slice01 conformance matrix (`tools/conformance-matrix.js`, 885
-> cells, both backends). Lives in `arc13/design/` until promoted into
-> `docs/design/`. Slices 02 (Rust) and 03 (JS + corpus) implement it.
+> **Status: CONFIRMED (operator, 2026-07-06, in full — D1–D3 + both
+> edge-case coverages). This odm copy (0062) is CANONICAL — amendments
+> land here** (refinement-log pattern, per DD-58/odm-0059 practice); the
+> `arc13/design/` provenance copy was retired 2026-07-06 (operator call:
+> one edit history). Drafted by CC 2026-07-06 from the arc13/slice01
+> conformance matrix (`tools/conformance-matrix.js`, 885 cells, both
+> backends). Implemented by arc13's re-sliced sequence: slices 03–05
+> (binding walkers + D2, complete by construction), slice 06 (Rust
+> resolution — **landed 2026-07-06**), then js-resolution and the
+> conformance corpus. Architecture: DD-61 · Resolve-Once (implements
+> this DD).
 
 ## Context
 
@@ -107,6 +114,18 @@ the kernel namespace.
 † `import` is a reserved word → rejected (D2). Listed to show the classifier
 uses identifier-legality, not a curated form list.
 
+‡ **Label exception (refinement, 2026-07-06 — added; the table above is
+unchanged):** the `calls-binding` target applies at every binding position
+where `shadows_values() == true`. At the **`label` position** D1 does not
+apply — labels are their own namespace and do not shadow values (slice05's
+`BindingKind::Label.shadows_values() == false`), so a form-named legal
+ident used as a label leaves references to that name meaning the
+macro/form, and the matrix's label column correctly stays `macro-fires`.
+D2 still validates label names (a reserved word as a label is a compile
+error). This was always the confirmed semantics (refinement #2); the
+target table just never stated it as the one exception to the
+`calls-binding` column.
+
 ## Breaking-change analysis (verified against the matrix, not asserted)
 
 Claim to verify: *"wrong-code rows become correct; nothing currently-correct
@@ -152,6 +171,67 @@ zero occurrences in-tree.
 4. **Shadowing an actual `kernel:`-prefixed *atom* as a name** — unrepresentable
    (`kernel:if` is not a legal identifier; you cannot bind it). Documented; no
    action.
+
+## Refinement log
+
+*(Mirrored in full from the arc13 provenance copy on 2026-07-06, when this
+odm copy became the single edit history — the first three entries had
+accrued there before the mirror.)*
+
+### 2026-07-06 (binding-position list +3 — surfaced by arc13/slice03)
+
+The confirmed binding-position list (D1) was incomplete: **`if-let` /
+`when-let` bindings and `match` clause patterns** also introduce lexical
+bindings, and — evidence from the slice03 walker build — they leak the
+ID-44 genus today (`(if-let (if x) …)` compiles at rc=0 to the invalid
+`const if`). **Operator-confirmed 2026-07-06:** the three positions join
+D1's binding-position list (and therefore D2's validation coverage and the
+matrix's binding-position dimension). Landed as **arc13/slice04 ·
+walker-extension** (its own small slice, per the operator's packaging
+call). Which-child-surfaced: arc13/slice03 (CC surfaced with evidence
+rather than silently extending this confirmed DD).
+
+### 2026-07-06 (binding-position list +3, round two — and the method change)
+
+arc13/slice04's probe-for-more found **three further** rc=0 leaks:
+**`catch` clause bindings** and **`import` local names** (genuine lexical
+bindings — join D1's list and D2's coverage) and **`label` names** (a
+separate namespace — labels do not shadow variables, so D1 does not apply,
+but a reserved-word label emits invalid JS at rc=0, so **D2 validates the
+label name slot**). **Operator-confirmed 2026-07-06, with a method
+change:** two rounds of discovery-by-leak means the list must be
+**derived, not accumulated** — arc13/slice05 performs the exhaustiveness
+sweep (enumerate every identifier-emitting binding/declaration position
+from the grammar/codegen, per backend; diff against the walker; the diff
+becomes a standing test), after which this list is complete by
+construction. Which-child-surfaced: arc13/slice04.
+
+### 2026-07-06 (name-slot addendum + the list is now derived, not accumulated)
+
+arc13/slice05's exhaustiveness sweep (enumerating the codegen's
+identifier-emission sites — the operator-directed method change) found the
+**name-slot class**: `func`/`genfunc`/`class` names, `type` constructor
+names and constructor params — all emitting invalid JS at rc=0 for
+reserved words. Folded mechanically (D2 coverage of name slots on forms
+already in the walker — no semantics change; hence an addendum, not a
+numbered refinement). `catch` bindings and `import` locals landed at full
+D1+D2 footing; `label` names are D2-validated with
+`shadows_values() = false` (labels do not enter the value environment).
+**The binding-position list is now complete by construction**: the derived
+per-backend inventories (with codegen citations) live in the slice05
+closing report, and a standing `make check` coverage test (one fixture per
+derived binder position, both backends) keeps the walker honest against
+the grammar permanently. Which-child-surfaced: arc13/slice05.
+
+### 2026-07-06 (label exception stated in the per-cell target table — surfaced by arc13/slice06)
+
+Textual refinement, no semantics change: the per-cell target table's
+`calls-binding` column now carries the ‡ footnote naming the **label
+position** as its one exception (labels are a separate namespace; D1 does
+not apply; D2 does). Surfaced when slice06's matrix re-probe left exactly
+the 22 label-column cells at `macro-fires` — correct behaviour that the
+target table, read literally, called a miss. **Operator-confirmed
+2026-07-06.** Which-child-surfaced: arc13/slice06.
 
 ## Design sub-questions (for operator confirmation)
 

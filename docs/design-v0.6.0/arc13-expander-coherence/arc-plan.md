@@ -38,9 +38,10 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice03 · binding-walker + d2-validation** (re-slice) | **DD-61 §A2's binding-position walker on both backends** — the single per-backend component that knows what binds — **+ the D2 reserved-word validator riding it** (every binding position, `export`, the `kernel:` name slot; list-parity test against the probe). Ships first: resolution-independent, kills the ID-44 genus, and builds D1's chassis. | **Closed** (commit pending on staged source; `binding.rs`/`binding.js` + 16 parity fixtures; D2 both backends; matrix: only D2 rows moved, disagreement 312→208; suites 1387/0; **finding: DD-60 list missed 3 binding positions** → refinement confirmed → slice04) |
 | **slice04 · walker-extension** (from slice03's finding; operator packaging call) | +3 binding positions (`if-let`/`when-let` patterns, `match` clause patterns — live ID-44-genus leaks) through walker + D2 + matrix probe, both backends. | **Closed** (matrix 5→8 position columns, originals byte-identical; fixtures 16→20; suites 1391/0; **finding #2: 3 more leaking positions** — catch/import-local/label → refinement #2 + the method change → slice05) |
 | **slice05 · position-sweep + walker-completion** | Refinement #2's positions (catch/import-local D1+D2; label D2-only) **+ the derived-exhaustiveness sweep** (enumerate identifier-emitting binding slots from the grammar/codegen per backend; diff vs walker = a **standing test** in `make check`). Ends discovery-by-leak: the list becomes complete by construction. | **Closed** (catch/import/label + the **name-slot class the sweep found** [func/genfunc/class/type names + ctor params — invalid JS at rc=0, all folded]; coverage test standing w/ seeded-gap demo; matrix 8→11, originals byte-identical; suites 1401/0; **exhaustiveness by construction**) |
-| **slice06 · rust-resolution** | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline (classifier hosts the env; expander gets the light binding-scan); emitter/codegen → read-only consumers via the `as_form_head()` swap (**DD-61 §A6 rows pinned at scoping**: zero dispatch-purpose raw-head reads [F-3] + a standing static check [F-4]; JS matrix columns + corpus outputs byte-identical [F-5] — movement = leak = stop). §A6 *privacy* is phased per the operator call (2026-07-06): this slice lands accessor + `#[must_use]` + check; the `Atom` payload restructure is a follow-up slice. | **Open** (open set written 2026-07-06) |
-| *(next)* · js-resolution | Same through `expandExpr`; `formHead()` + the static grep-conformance check (§A6). | Future |
-| *(next)* · atom-payload-privacy | The §A6 by-construction layer (operator phasing call, 2026-07-06): restructure `SExpr::Atom` to a private-field struct payload (~259 mechanical sites) so the `binding` field is truly private. Any time after slice06; lands before arc close. | Future |
+| **slice06 · rust-resolution** | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline (classifier hosts the env; expander gets the light binding-scan); emitter/codegen → read-only consumers via the `as_form_head()` swap (**DD-61 §A6 rows pinned at scoping**: zero dispatch-purpose raw-head reads [F-3] + a standing static check [F-4]; JS matrix columns + corpus outputs byte-identical [F-5] — movement = leak = stop). §A6 *privacy* is phased per the operator call (2026-07-06): this slice lands accessor + `#[must_use]` + check; the `Atom` payload restructure is a follow-up slice. | **Delivered — CDC content-verified 2026-07-06; commit pending** (all 6 rows met; `make check` ✓, suites 1401/0, docs 475/0; Rust matrix at DD-60 targets — macro-fires 182→22, residue = the label column by design; JS + corpus byte-identical; resolver = standalone pass [`resolver.rs`, §A3 as-built deviation, surfaced]; central `SExpr::atom()` landed. Formal close = source-only commit + ancestry check → A-9 flips. First session self-stopped cleanly same day → fresh-context recycle, findings carried via the cc-prompt handoff addendum) |
+| **slice07 · atom-privacy-recon** | Recon-only investigation for the atom-payload-privacy layer: construction + pattern censuses (privacy breaks every pattern **naming** a field, `..` or not — the class the field-add's 28 only floors), design proposal with options for the operator, LoE + sizing judgment, blast radius. Empty diff at close. **Depends on: slice06 closed.** | **Open** (open set written 2026-07-06) |
+| *(next)* · js-resolution | Same through `expandExpr`; `formHead()` + the static grep-conformance check (§A6). **Must mirror slice06's `scope_plan` region model** (bindings not in scope over initializer/iterable/scrutinee — a naive whole-subtree push miscompiles; hook notes in slice06's closing report) and keep the label exception (labels don't shadow — do not "fix" the label column). | Future |
+| *(next)* · atom-payload-privacy | The §A6 by-construction layer (operator phasing call, 2026-07-06): restructure `SExpr::Atom` to a private-field struct payload so the `binding` field is truly private. Open set written from slice07's closing report; lands before arc close. | Future |
 | *(next)* · conformance-corpus + arc close | The permanent cross-backend corpus; A-4/A-5 reproduced; DD-60 cross-ref recording DD-61 as-built. | Future |
 
 *(Future entries carry **no numbers** — numbered at creation per the
@@ -79,8 +80,48 @@ slice03 → arc06 → arc07 → arc09.**
 | A-10 | js-resolution slice closed | ptr: cdc-verification | serious | arc-plan v1.7 | open | | slice un-numbered until creation |
 | A-11 | atom-payload-privacy slice closed (§A6 by-construction layer) | ptr: cdc-verification | correctness | operator phasing call 2026-07-06 | open | | un-numbered until creation; lands before arc close |
 | A-12 | DD-60 refinements #1/#2/addendum dispositioned (routed, confirmed, landed) | DD-60 refinement log (3 entries) + v1.4/v1.5/v1.6 change-log entries | correctness | bubble-ups: slices 03/04/05 | done | DD-60 §Refinement log; slices 04/05 closed | class-(c) rows, accrued at v1.7 catch-up |
+| A-13 | slice07 (atom-privacy-recon) closed | ptr: cdc-verification | correctness | arc-plan v1.8 | open | | recon-only; empty diff |
 
 ## 5. Version History
+
+### v1.9 — 2026-07-06 (slice06 delivered; CDC content-verified; commit pending)
+Fresh-context pickup delivered all 6 rows same day. **CDC verification:
+accepted** (structure reproduced by code review — `NameRes` +
+`SExpr::atom()` + tag-insensitive `PartialEq` to spec; `ScopePlan`
+regions; one `bound` gate over desugar + macros; `as_form_head()` honors
+the tag; A6 conformance test with seeded demo; runtime rows attested).
+**Formal close = source-only commit + ancestry check → A-9.** Bubble-up
+findings routed: §A3 as-built deviation (standalone resolver pass — same
+resolve-once substance) → the corpus+close slice's DD-61 as-built
+record; the **`scope_plan` region model** (bindings not in scope over
+initializer/iterable/scrutinee — naive push miscompiles) → pinned into
+the js-resolution row above; label cells stay `macro-fires` by design →
+DD-60 textual refinement **confirmed + folded same day** (label
+exception now stated in the per-cell target table, ‡ footnote +
+refinement-log entry; odm 0062 mirror = Duncan); two disclosed
+simplifications (decl self-reference → `Sequence`; multi-clause param
+over-approximation) recorded, blast radius 0, corpus-pinned. The central
+constructor landed → the *atom-payload-privacy* follow-up shrinks to the
+field-visibility step, as planned. Which-child-surfaced: slice06.
+
+### v1.8 — 2026-07-06 (slice07 · atom-privacy-recon scoped; slice06 self-stop → fresh-context recycle)
+**slice07 created** (operator call: a research pass before the privacy
+restructure — the slice02 lesson applied proactively): recon-only open
+set written (censuses / design options / LoE + sizing / blast radius /
+empty-diff guard); A-13 opened; the un-numbered *atom-payload-privacy*
+entry now explicitly consumes slice07's closing report. **slice06
+self-stop (same day, in-flight):** the first session reverted cleanly at
+`0055ba1` after a byte-offset fix script corrupted files — context
+exhaustion named honestly at the tail of a long session; per
+LEDGER-DISCIPLINE this is a **fresh-context recycle, not an iteration**
+(nothing delivered; open set unchanged; ledger rows untouched).
+Findings carried (cc-prompt handoff addendum): the field add breaks only
+**~59 sites** (31 constructions + 28 non-`..` patterns — the ~259 was
+the total site population, most absorb via `..`); `NameRes` designed
+(`#[non_exhaustive]`, `Default = Unresolved`); tension #2 decided by CC
+= **tag-insensitive `PartialEq`**; `as_form_head()` returns `None` for
+*any* non-`Unresolved` atom (defs and refs). Which-child-surfaced:
+slice06 (in-flight CC census + self-stop report).
 
 ### v1.7 — 2026-07-06 (slice06 · rust-resolution scoped; §A6 privacy finding + operator phasing call)
 slice06 open set written (slice-doc / ledger [6 rows] / cc-prompt),
