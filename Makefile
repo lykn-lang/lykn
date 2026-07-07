@@ -206,8 +206,12 @@ test: test-rust test-suite test-docs
 # Refresh both before any suite that uses them. (rm-then-cp gives bin/lykn a new
 # inode, avoiding the macOS arm64 ad-hoc-signature invalidation that a cp-in-place
 # triggers — "Killed: 9".) Make dedups this prerequisite to one run per invocation.
+# Depends on $(BIN_DIR): the `cp` below targets ./bin/, which is gitignored and
+# created by the $(BIN_DIR) target. `build`/`build-release` create it, but a job
+# that calls fresh-artifacts directly (CI Layer 2 / a clean checkout) hasn't —
+# so make it a prerequisite (mkdir -p) or the cp fails "No such file or dir".
 .PHONY: fresh-artifacts
-fresh-artifacts:
+fresh-artifacts: $(BIN_DIR)
 	@echo "$(CYAN)• Refreshing test artifacts (release binary + build dir)...$(RESET)"
 	@cargo build --release
 	@rm -f $(BIN_DIR)/$(CODE_NAME)
