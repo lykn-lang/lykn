@@ -239,7 +239,7 @@ mod tests {
 
     fn collect(e: &SExpr, out: &mut Vec<(String, NameRes)>) {
         match e {
-            SExpr::Atom { value, binding, .. } => out.push((value.clone(), *binding)),
+            a @ SExpr::Atom { .. } => out.push((a.as_atom().unwrap().to_string(), a.name_res())),
             SExpr::List { values, .. } => {
                 for v in values {
                     collect(v, out);
@@ -269,7 +269,7 @@ mod tests {
         let last = resolved.last().expect("a form");
         match last {
             SExpr::List { values, .. } => match &values[0] {
-                SExpr::Atom { value, binding, .. } => (value.clone(), *binding),
+                a @ SExpr::Atom { .. } => (a.as_atom().unwrap().to_string(), a.name_res()),
                 _ => panic!("head not an atom"),
             },
             _ => panic!("last form not a list"),
@@ -282,13 +282,11 @@ mod tests {
     fn call_head_tag(src: &str, name: &str) -> Option<NameRes> {
         fn find(e: &SExpr, name: &str) -> Option<NameRes> {
             if let SExpr::List { values, .. } = e {
-                if let (
-                    Some(SExpr::Atom { value, binding, .. }),
-                    Some(SExpr::Number { value: 987.0, .. }),
-                ) = (values.first(), values.get(1))
-                    && value == name
+                if let (Some(a @ SExpr::Atom { .. }), Some(SExpr::Number { value: 987.0, .. })) =
+                    (values.first(), values.get(1))
+                    && a.as_atom() == Some(name)
                 {
-                    return Some(*binding);
+                    return Some(a.name_res());
                 }
                 for v in values {
                     if let Some(r) = find(v, name) {

@@ -59,6 +59,12 @@ fn bool_lit(b: bool) -> SExpr {
 fn contains_await(expr: &SExpr) -> bool {
     match expr {
         SExpr::List { values, .. } => {
+            // Byte-identical accessor conversion (slice08) of a pre-existing
+            // *destructure* head-read that slice06's F-4 could not see. Whether
+            // this await-detection scan should honour resolution (`as_form_head`,
+            // so a bound `await` param is not counted) is a slice08 bubble-up —
+            // a behaviour change deferred out of this byte-identical sweep.
+            // A6-exempt: see the note above.
             if let Some(value) = values.first().and_then(|e| e.as_atom())
                 && value == "await"
             {

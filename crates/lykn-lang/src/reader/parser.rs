@@ -290,7 +290,7 @@ mod tests {
     fn parse_atom() {
         let forms = parse_str("foo");
         assert_eq!(forms.len(), 1);
-        assert!(matches!(&forms[0], SExpr::Atom { value, .. } if value == "foo"));
+        assert_eq!(forms[0].as_atom(), Some("foo"));
     }
 
     #[test]
@@ -300,7 +300,7 @@ mod tests {
         match &forms[0] {
             SExpr::List { values, .. } => {
                 assert_eq!(values.len(), 3);
-                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "+"));
+                assert_eq!(values[0].as_atom(), Some("+"));
                 assert!(matches!(&values[1], SExpr::Number { value, .. } if *value == 1.0));
                 assert!(matches!(&values[2], SExpr::Number { value, .. } if *value == 2.0));
             }
@@ -335,7 +335,7 @@ mod tests {
         match &forms[0] {
             SExpr::List { values, .. } => {
                 assert_eq!(values.len(), 2);
-                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "quote"));
+                assert_eq!(values[0].as_atom(), Some("quote"));
             }
             _ => panic!("expected quoted form"),
         }
@@ -402,8 +402,8 @@ mod tests {
         match &forms[0] {
             SExpr::List { values, .. } => {
                 assert_eq!(values.len(), 2);
-                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "quasiquote"));
-                assert!(matches!(&values[1], SExpr::Atom { value, .. } if value == "foo"));
+                assert_eq!(values[0].as_atom(), Some("quasiquote"));
+                assert_eq!(values[1].as_atom(), Some("foo"));
             }
             _ => panic!("expected quasiquote list"),
         }
@@ -416,8 +416,8 @@ mod tests {
         match &forms[0] {
             SExpr::List { values, .. } => {
                 assert_eq!(values.len(), 2);
-                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "unquote"));
-                assert!(matches!(&values[1], SExpr::Atom { value, .. } if value == "x"));
+                assert_eq!(values[0].as_atom(), Some("unquote"));
+                assert_eq!(values[1].as_atom(), Some("x"));
             }
             _ => panic!("expected unquote list"),
         }
@@ -430,10 +430,8 @@ mod tests {
         match &forms[0] {
             SExpr::List { values, .. } => {
                 assert_eq!(values.len(), 2);
-                assert!(
-                    matches!(&values[0], SExpr::Atom { value, .. } if value == "unquote-splicing")
-                );
-                assert!(matches!(&values[1], SExpr::Atom { value, .. } if value == "xs"));
+                assert_eq!(values[0].as_atom(), Some("unquote-splicing"));
+                assert_eq!(values[1].as_atom(), Some("xs"));
             }
             _ => panic!("expected unquote-splicing list"),
         }
@@ -445,7 +443,7 @@ mod tests {
         assert_eq!(forms.len(), 1);
         match &forms[0] {
             SExpr::List { values, .. } => {
-                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "array"));
+                assert_eq!(values[0].as_atom(), Some("array"));
                 assert_eq!(values.len(), 4);
             }
             _ => panic!("expected array list"),
@@ -458,7 +456,7 @@ mod tests {
         assert_eq!(forms.len(), 1);
         match &forms[0] {
             SExpr::List { values, .. } => {
-                assert!(matches!(&values[0], SExpr::Atom { value, .. } if value == "object"));
+                assert_eq!(values[0].as_atom(), Some("object"));
             }
             _ => panic!("expected object list"),
         }
@@ -484,8 +482,8 @@ mod tests {
         assert_eq!(forms.len(), 1);
         match &forms[0] {
             SExpr::Cons { car, cdr, .. } => {
-                assert!(matches!(car.as_ref(), SExpr::Atom { value, .. } if value == "a"));
-                assert!(matches!(cdr.as_ref(), SExpr::Atom { value, .. } if value == "b"));
+                assert_eq!(car.as_atom(), Some("a"));
+                assert_eq!(cdr.as_atom(), Some("b"));
             }
             _ => panic!("expected cons pair"),
         }
@@ -585,8 +583,9 @@ mod tests {
         assert_eq!(forms.len(), 1);
         if let SExpr::List { values, .. } = &forms[0] {
             assert_eq!(values.len(), 4);
-            assert!(
-                matches!(&values[0], SExpr::Atom { value, .. } if value == "kernel:if"),
+            assert_eq!(
+                values[0].as_atom(),
+                Some("kernel:if"),
                 "head should be single atom 'kernel:if', got: {:?}",
                 &values[0]
             );

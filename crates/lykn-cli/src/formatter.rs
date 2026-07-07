@@ -22,7 +22,7 @@ pub fn format_exprs(exprs: &[SExpr], indent: usize) -> String {
 
 fn format_expr(expr: &SExpr, indent: usize) -> String {
     match expr {
-        SExpr::Atom { value, .. } => value.clone(),
+        a @ SExpr::Atom { .. } => a.as_atom().unwrap().to_string(),
         SExpr::String { value, .. } => format!("\"{}\"", escape_string(value)),
         SExpr::Number { value, .. } => {
             if *value == (*value as i64) as f64 {
