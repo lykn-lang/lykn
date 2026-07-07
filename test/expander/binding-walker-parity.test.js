@@ -1,12 +1,21 @@
 // DD-61 §A2 — shared fixture corpus proving the Rust and JS binding-position
-// walkers agree on WHAT BINDS (slice03 F-2). The walkers are observed through
-// D2: a reserved word in a binding position must be rejected by BOTH backends;
-// the same word in a non-binding position must be accepted by BOTH. If the two
-// walkers disagreed about a position, one backend would reject and the other
-// wouldn't — this test fails on exactly that.
+// walkers agree on WHAT BINDS (slice03 F-2), AND the standing binding-position
+// COVERAGE test (slice05 F-3). The walkers are observed through D2: a reserved
+// word in a binding position must be rejected by BOTH backends; the same word in
+// a non-binding position must be accepted by BOTH. If the two walkers disagreed
+// about a position, one backend would reject and the other wouldn't — this test
+// fails on exactly that.
+//
+// COVERAGE / authority inversion (slice05): the `BINDS_IF` list below is the
+// **derived** binder-position inventory — one fixture per place the codegen
+// emits an identifier into a JS binding/declaration/label slot (the F-2 sweep;
+// emission-site citations in the slice05 closing report). Each entry asserts
+// both backends reject a reserved name there; if the walker stops covering a
+// position (or a future grammar addition binds a name the walker doesn't know),
+// its fixture fails — the seeded-gap demo. Empty failures = complete coverage.
 //
 // Runs in `make check` (test-suite). JS via the `lykn` API; Rust via the CLI
-// (the `compileBoth` shell-out pattern). Reserved word used: `if`.
+// (the `compileBoth` shell-out pattern). Reserved word used: `if` (and `for`).
 
 import { assert, assertEquals } from "https://deno.land/std/assert/mod.ts";
 import { lykn } from "lang/mod.js";
@@ -59,6 +68,19 @@ const BINDS_IF = [
   ["if-let binding", "(if-let (if x) (g if))"],
   ["when-let binding", "(when-let (if x) (g if))"],
   ["match constructor pattern", "(match v ((Some if) if) (_ 0))"],
+  // DD-60 refinement #2 (slice05): catch / import-local / label.
+  ["catch binding", "(try (f) (catch if (g)))"],
+  ["import named local", '(import "m" (if))'],
+  ["import default local", '(import "m" if)'],
+  ["import alias local", '(import "m" ((alias orig for)))'],
+  ["label name", "(label if (block))"],
+  // slice05 sweep finds — name slots the leak-discovery missed (codegen emits
+  // `function if` / `class if` / `function* if` / a `function CtorName`):
+  ["func name", "(func if :args () :body 1)"],
+  ["genfunc name", "(genfunc if :args () :body (yield 1))"],
+  ["class name", "(class if () (m () 5))"],
+  ["type constructor name", "(type T (if :number x))"],
+  ["type constructor field", "(type T (Ctor :number if))"],
 ];
 
 // `if` NOT in a binding position (it is a real form / call) → both accept.

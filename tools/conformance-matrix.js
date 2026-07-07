@@ -151,6 +151,10 @@ const BIND_POS = {
   "if-let": (n, ref) => `(if-let (${n} 1) ${ref})`,
   "when-let": (n, ref) => `(when-let (${n} 1) ${ref})`,
   "match": (n, ref) => `(match v ((Some ${n}) ${ref}) (_ 0))`,
+  // DD-60 refinement #2 (2026-07-06, slice05): catch/import/label.
+  "catch": (n, ref) => `(try (h) (catch ${n} ${ref}))`,
+  "import": (n, ref) => `(import "m" (${n}))\n${ref}`,
+  "label": (n, ref) => `(label ${n} (block ${ref}))`,
 };
 
 const REF_ORDER = ["call-head", "argument", "nested-fn"];
@@ -163,6 +167,9 @@ const BIND_ORDER = [
   "if-let",
   "when-let",
   "match",
+  "catch",
+  "import",
+  "label",
 ];
 
 // ── Compile shims ───────────────────────────────────────────────────────────

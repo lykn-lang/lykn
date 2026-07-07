@@ -62,7 +62,9 @@ export function bindingsIntroduced(form) {
     case "for-await-of":
       return args.length > 0 ? patternNames(args[0], "loop-binding") : [];
     case "class":
-      return classMethodParamNames(args);
+      return classNames(args);
+    case "type":
+      return typeConstructorNames(args);
     // DD-60 refinement (2026-07-06): if-let/when-let binding patterns and match
     // clause patterns bind names too.
     case "if-let":
@@ -70,6 +72,15 @@ export function bindingsIntroduced(form) {
       return ifLetPatternNames(args);
     case "match":
       return matchClauseNames(args);
+    // DD-60 refinement #2 (2026-07-06): catch bindings, import locals, labels.
+    case "catch":
+      return args.length > 0 ? patternNames(args[0], "catch-binding") : [];
+    case "import":
+      return importLocalNames(args);
+    case "label":
+      return args[0]?.type === "atom" && args[0].value !== "_"
+        ? [{ name: args[0].value, kind: "label" }]
+        : [];
     default: {
       const kernel = name.startsWith("kernel:")
         ? name.slice("kernel:".length)
@@ -100,9 +111,13 @@ const FUNC_CLAUSE_KEYS = new Set([
   "body",
 ]);
 
-/** func/genfunc: locate every `:args (…)` clause (single- or multi-clause). */
+/** func/genfunc: the function NAME (a binder — sweep finding) + every param. */
 function funcClauseParamNames(args) {
   const out = [];
+  // `(func NAME …)` / `(genfunc NAME …)` — NAME lowers to `function NAME`.
+  if (args[0]?.type === "atom" && args[0].value !== "_") {
+    out.push({ name: args[0].value, kind: "bind" });
+  }
   // Multi-clause: each clause is a list whose head is a func-clause *key*
   // keyword (`:args`/`:body`/…) — not a mere keyword (a type like `:any` in a
   // single-clause param list must not be mistaken for a clause).
@@ -147,10 +162,18 @@ function paramListNames(list) {
   return out;
 }
 
-/** Class methods: (mname (param…) body…) — param list is the 2nd element. */
-function classMethodParamNames(args) {
+/**
+ * Class binders: the class NAME (`class NAME` — a binder, sweep finding) + every
+ * method/constructor param. Field/method names are property names (reserved
+ * words legal), so not binders.
+ */
+function classNames(args) {
   const out = [];
-  for (const member of args) {
+  // (class NAME (bases) member…) — NAME is args[0].
+  if (args[0]?.type === "atom" && args[0].value !== "_") {
+    out.push({ name: args[0].value, kind: "bind" });
+  }
+  for (const member of args.slice(1)) {
     if (member?.type !== "list") continue;
     const params = member.values[1];
     if (params?.type === "list") {
@@ -158,6 +181,63 @@ function classMethodParamNames(args) {
         if (p.type === "atom" && p.value !== "_") {
           out.push({ name: p.value, kind: "class-method-param" });
         }
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * import local names — the default-import name and every named-specifier local.
+ * Mirrors the Rust `import_local_names` and codegen `emit_import`: `(import "m")`
+ * none, `(import "m" name)` default, `(import "m" (spec…))` named,
+ * `(import "m" name (spec…))` default+named. A spec is an atom (local = name)
+ * or `(alias original local)` (local = 3rd element).
+ */
+function importLocalNames(args) {
+  const out = [];
+  const second = args[1];
+  if (!second) return out; // side-effect import
+  if (second.type === "list") {
+    importSpecs(second.values, out);
+  } else if (second.type === "atom" && second.value !== "_") {
+    out.push({ name: second.value, kind: "import-local" }); // default import
+    if (args[2]?.type === "list") importSpecs(args[2].values, out);
+  }
+  return out;
+}
+
+function importSpecs(specs, out) {
+  for (const spec of specs) {
+    if (spec.type === "atom") {
+      if (spec.value !== "_") {
+        out.push({ name: spec.value, kind: "import-local" });
+      }
+    } else if (
+      spec.type === "list" && spec.values[0]?.type === "atom" &&
+      spec.values[0].value === "alias" && spec.values[2]?.type === "atom"
+    ) {
+      out.push({ name: spec.values[2].value, kind: "import-local" });
+    }
+  }
+}
+
+/**
+ * type: `(type NAME (CtorName :type field…) …)` lowers to `function CtorName(
+ * field…)` per constructor — the constructor name and every field are binders
+ * (sweep finding). The type name itself is erased (not a runtime binder).
+ */
+function typeConstructorNames(args) {
+  const out = [];
+  for (const ctor of args.slice(1)) {
+    if (ctor?.type !== "list" || ctor.values.length === 0) continue;
+    const head = ctor.values[0];
+    if (head.type === "atom" && head.value !== "_") {
+      out.push({ name: head.value, kind: "bind" }); // constructor name
+    }
+    for (const field of ctor.values.slice(1)) {
+      if (field.type === "atom" && field.value !== "_") {
+        out.push({ name: field.value, kind: "param" }); // field param
       }
     }
   }
@@ -252,6 +332,9 @@ const KIND_PHRASE = {
   "loop-binding": "loop binding",
   "class-method-param": "class method parameter",
   "pattern": "pattern binding",
+  "catch-binding": "catch binding",
+  "import-local": "imported name",
+  "label": "label",
 };
 
 /**

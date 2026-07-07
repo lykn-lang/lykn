@@ -173,6 +173,23 @@ from the grammar/codegen, per backend; diff against the walker; the diff
 becomes a standing test), after which this list is complete by
 construction. Which-child-surfaced: arc13/slice04.
 
+### 2026-07-06 (name-slot addendum + the list is now derived, not accumulated)
+
+arc13/slice05's exhaustiveness sweep (enumerating the codegen's
+identifier-emission sites — the operator-directed method change) found the
+**name-slot class**: `func`/`genfunc`/`class` names, `type` constructor
+names and constructor params — all emitting invalid JS at rc=0 for
+reserved words. Folded mechanically (D2 coverage of name slots on forms
+already in the walker — no semantics change; hence an addendum, not a
+numbered refinement). `catch` bindings and `import` locals landed at full
+D1+D2 footing; `label` names are D2-validated with
+`shadows_values() = false` (labels do not enter the value environment).
+**The binding-position list is now complete by construction**: the derived
+per-backend inventories (with codegen citations) live in the slice05
+closing report, and a standing `make check` coverage test (one fixture per
+derived binder position, both backends) keeps the walker honest against
+the grammar permanently. Which-child-surfaced: arc13/slice05.
+
 ## Design sub-questions (for operator confirmation)
 
 1. **Shadowing granularity** — D1 proposes whole-lexical-scope shadowing

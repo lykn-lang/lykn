@@ -13,4 +13,16 @@ standing coverage-diff test. Per LEDGER-DISCIPLINE. Rebuild-first. 5 rows.
 
 ## What Worked / Closure
 
-_(At slice close.)_
+- **Inverting the discovery direction found a class probing couldn't** —
+  name slots don't look like "binding positions" from the input side; from
+  the emission side they're unmissable. Derive-from-outputs beat
+  probe-inputs on its first outing.
+- **`shadows_values()` in the API** — the label-namespace distinction
+  shipped as a walker property the resolution slices consume, not a
+  comment they must remember.
+
+Closed 2026-07-06. Rows: 5/5 done. Suites 1401/0; matrix 8→11 positions,
+originals byte-identical; coverage test standing in `make check`
+(seeded-gap demo'd). **Exhaustiveness: by construction + test-pinned; the
+discover-by-leak loop is closed.** Next: rust-resolution (numbered at
+creation).

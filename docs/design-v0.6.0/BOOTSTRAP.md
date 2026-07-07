@@ -100,22 +100,46 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action:** **hand arc13/slice02 (`rust-shadowing`) to CC**
-(and have CC commit the slice01 artifacts — `tools/conformance-matrix.js`
-+ `arc13/design/dd-60…` — first if not yet done). State: arc05/slice02
-closed (`038c23c`; 15 rules live; ID-44 fixed both backends; ID-03 =
-warn); arc13/slice01 closed (885-cell matrix — **neither backend has
-binding awareness**; Rust's "shadowing" was shape-coincidence; 35% of
-cells disagree); **DD-60 operator-CONFIRMED in full 2026-07-06** (D1
-whole-scope lexical shadowing incl. user macros; D2 empirical
-reserved-word validation incl. `export` + the `kernel:` name slot; D3
-DD-58 untouched; odm promotion = Duncan). slice02 = DD-60 on Rust
-(scope-threaded dispatch + name validator + list-parity test + matrix
-re-probe with JS baseline untouched); slice03 = JS + the permanent
-conformance corpus; then **arc05 resumes** (slice03 + the ID-42 question
-re-answered from the fixed state, arc13 A-6). Sequence: **arc13 →
-arc05(resume) → arc06 → arc07 → arc09.** Standing: `make check` is the
-bar; `./bin/lykn` never bare `lykn`.
+**Immediate next action (fresh-session handoff, 2026-07-06): scope
+arc13's `rust-resolution` slice** — numbered at creation (next = slice06).
+
+**Where arc13 stands** (read its `arc-plan.md` [v1.6] + both design docs
+first): the **binding layer is complete by construction**. Slices 03/04/05
+built the per-backend binding-position walkers
+(`crates/lykn-lang/src/binding.rs` + `packages/lang/binding.js`; shared
+parity fixtures; `shadows_values()` distinguishes the label namespace),
+killed the ID-44 genus everywhere a name binds (D2: reserved words →
+compile errors — incl. `export`, the `kernel:` name slot, and the
+name-slot class the slice05 sweep found), and pinned it with a **standing
+coverage-diff test in `make check`** (grammar-derived position list vs
+walker: a future binding construct fails CI until the walker knows it).
+Matrix: 11 position columns; suites **1401/0**. Three DD-60 refinements
+arrived by CC surfacing findings rather than folding them — keep that
+discipline.
+
+**The rust-resolution slice implements DD-60 D1 on Rust per DD-61**
+(`arc13/design/dd-61-resolve-once-resolution-architecture.md`,
+operator-confirmed): thread the lexical env via the walkers'
+`bindings_introduced` hooks (expander gets a light binding-scan; classifier
+hosts the env and **tags atoms** — resolved-atom flags, §A1); demote
+emitter + codegen to **read-only consumers via the `as_form_head()`
+accessor swap** (§A6 — returns `None` for binding-refs so an unaware site
+*cannot* misdispatch; field private, `#[must_use]`, `#[non_exhaustive]`).
+**Pin the §A6 rows in the ledger** at scoping (zero dispatch sites read
+raw head names; JS matrix baseline byte-identical — movement = leak =
+stop). Acceptance = the matrix: Rust columns → DD-60 targets. Hook-point
+notes: CC's slice03 + slice05 closing reports. After it: js-resolution
+(`formHead()` + the static grep-conformance check, §A6), then
+conformance-corpus + arc close, then **arc05 resumes** (its slice03:
+shadowing via the resolution machinery, linter resolution-awareness
+[arc05 v1.5], the ID-42 re-answer [arc13 A-6], guide-09 enforcement
+labels, lint-suppression + `make lint` decisions, P-11 demo).
+
+**Standing:** `make check` is the canonical bar (~1m); **`./bin/lykn`**,
+never bare `lykn` (the PATH-binary trap); doc-touching slices add
+`make test-docs`; odm = Duncan (DD-59/60/61 tracked; DD-58 @ v1.2;
+DD-60's refinement log has 3 entries). Sequence: **arc13 → arc05(resume)
+→ arc06 → arc07 → arc09.** Post-0.6.0 candidates: project-plan §1.
 
 ## 6. How we work — the rhythm & the disciplines
 

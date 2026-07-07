@@ -37,7 +37,7 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice02 · rust-shadowing + name-validation** | ~~DD-60 on the Rust backend via scope-threading~~ | **SELF-STOPPED → superseded** (2026-07-06): implementation contact found **four** independent name-dispatch subsystems (expander / classifier / emitter / codegen — kernel heads dispatch in codegen, `emit.rs:224/248/270`), not the recon's one path. Tree reverted clean; the four-site map + the validated EmitterContext mechanism carried into the re-slice; all 5 ledger rows deferred with homes. |
 | **slice03 · binding-walker + d2-validation** (re-slice) | **DD-61 §A2's binding-position walker on both backends** — the single per-backend component that knows what binds — **+ the D2 reserved-word validator riding it** (every binding position, `export`, the `kernel:` name slot; list-parity test against the probe). Ships first: resolution-independent, kills the ID-44 genus, and builds D1's chassis. | **Closed** (commit pending on staged source; `binding.rs`/`binding.js` + 16 parity fixtures; D2 both backends; matrix: only D2 rows moved, disagreement 312→208; suites 1387/0; **finding: DD-60 list missed 3 binding positions** → refinement confirmed → slice04) |
 | **slice04 · walker-extension** (from slice03's finding; operator packaging call) | +3 binding positions (`if-let`/`when-let` patterns, `match` clause patterns — live ID-44-genus leaks) through walker + D2 + matrix probe, both backends. | **Closed** (matrix 5→8 position columns, originals byte-identical; fixtures 16→20; suites 1391/0; **finding #2: 3 more leaking positions** — catch/import-local/label → refinement #2 + the method change → slice05) |
-| **slice05 · position-sweep + walker-completion** | Refinement #2's positions (catch/import-local D1+D2; label D2-only) **+ the derived-exhaustiveness sweep** (enumerate identifier-emitting binding slots from the grammar/codegen per backend; diff vs walker = a **standing test** in `make check`). Ends discovery-by-leak: the list becomes complete by construction. | **Open — scoped** (open set written 2026-07-06) |
+| **slice05 · position-sweep + walker-completion** | Refinement #2's positions (catch/import-local D1+D2; label D2-only) **+ the derived-exhaustiveness sweep** (enumerate identifier-emitting binding slots from the grammar/codegen per backend; diff vs walker = a **standing test** in `make check`). Ends discovery-by-leak: the list becomes complete by construction. | **Closed** (catch/import/label + the **name-slot class the sweep found** [func/genfunc/class/type names + ctor params — invalid JS at rc=0, all folded]; coverage test standing w/ seeded-gap demo; matrix 8→11, originals byte-identical; suites 1401/0; **exhaustiveness by construction**) |
 | *(next, numbered at creation)* · rust-resolution | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline; emitter/codegen → read-only consumers via the `as_form_head()` swap (DD-61 §A6 rows pinned at scoping). | Future |
 | *(next)* · js-resolution | Same through `expandExpr`; `formHead()` + the static grep-conformance check (§A6). | Future |
 | *(next)* · conformance-corpus + arc close | The permanent cross-backend corpus; A-4/A-5 reproduced; DD-60 cross-ref recording DD-61 as-built. | Future |
@@ -88,6 +88,24 @@ backend, diffed against the walker as a standing `make check` test —
 complete by construction). DD-60 refinement log entry #2 written.
 **Convention correction (owned):** the v1.4 tail-renumber violated
 stop-renumbering; future entries are now un-numbered until creation.
+
+### v1.6 — 2026-07-06 (slice05 closed — the binding layer is complete by construction)
+slice05 closed: catch/import-locals at D1+D2, labels D2-only with
+`shadows_values()=false` in the API; **the sweep found the name-slot class**
+(func/genfunc/class/type names + ctor params → invalid JS at rc=0 — a class
+two rounds of leak-probing structurally couldn't see; folded mechanically);
+derived per-backend inventories with codegen citations; **the coverage-diff
+test stands in `make check`** (seeded-gap demo'd). Matrix 8→11 positions,
+originals byte-identical; suites 1401/0. DD-60 refinement log: name-slot
+addendum; the position list is **derived + test-pinned**. Session handoff
+prepared (BOOTSTRAP refreshed): **next = scope rust-resolution** (D1 env +
+tags; `as_form_head()` §A6 rows; hook notes in CC's slice03/05 reports).
+
+### v1.5 — 2026-07-06 (slice04 closed; refinement #2; method change → slice05)
+slice04 closed (matrix 5→8, originals intact; fixtures 20; 1391/0); its
+probe found catch/import-local/label leaking; operator confirmed refinement
+#2 **with the derive-don't-accumulate method change**; slice05 scoped;
+future entries de-numbered (correcting the v1.4 tail-renumber slip).
 
 ### v1.4 — 2026-07-06 (slice03 closed; DD-60 +3 refinement; slice04 inserted, tail renumbered)
 slice03 closed (staged; CDC content-verified): walkers on both backends

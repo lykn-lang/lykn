@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-06 (arc13 slice04 closed; round-2 finding → slice05: derive the position list, end discovery-by-leak)",
+  updated: "2026-07-06 (arc13 slice05 closed — binding layer complete BY CONSTRUCTION; next session: the resolution slices)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -155,7 +155,7 @@ const DATA = {
       slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc13", name:"expander-coherence", status:"active",
       cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
-      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"active"},{n:"rust-resolution",s:"open"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"open"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -180,13 +180,13 @@ const DATA = {
   ],
   sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc13 · slice05 — position-sweep + walker-completion (ready for CC)",
-    desc:"Round two of the walker auditing its spec: slice04 landed the first +3 positions (matrix 5→8 columns, originals untouched, 1391/0) and its probe-for-a-fourth found THREE more rc=0 leaks — catch bindings, import local names, label names. Operator confirmed the refinement with a method change: two leak-discovered rounds means the binding-position list must be DERIVED, not accumulated. slice05 adds the three AND performs the exhaustiveness sweep — enumerate every identifier-emitting binding slot from the grammar/codegen per backend, diff against the walker, and make the diff a standing make-check test. After it, the list is complete by construction; a future grammar addition that binds a name fails CI until the walker knows it. Then the resolution slices proper, the corpus, and arc05 resumes."
+    arc:"Next session: scope arc13's rust-resolution slice — D1 lands on a complete, test-pinned foundation",
+    desc:"The binding layer is DONE and done right: walkers on both backends covering every derived position (the slice05 sweep found the name-slot class that two rounds of leak-probing structurally couldn't — func/class/type names emitting invalid JS at rc=0); D2 rejecting reserved words everywhere a name binds (the ID-44 genus is dead); a standing make-check coverage test so a future grammar addition that binds a name fails CI until the walker knows it; matrix at 11 position columns; suites 1401/0. What remains in arc13: rust-resolution (D1 env + resolved-atom tags; emitter/codegen demoted to consumers via the as_form_head() swap — DD-61 §A6), js-resolution (formHead() + the static grep-check), then the permanent conformance corpus and arc close. Then arc05 (the linter) resumes with true lexical scoping simply in place. Fresh session starts at BOOTSTRAP.md as always."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
-    {n:"1365 / 0", l:"lykn test", s:"incl. kernel: escape corpus rows"},
-    {n:"673 / 0", l:"deno test suite", s:"incl. A-6 + kernel-form parity guard"},
+    {n:"1401 / 0", l:"lykn test", s:"incl. binding-layer + kernel: corpus rows"},
+    {n:"11", l:"matrix binding positions", s:"derived + coverage-test-pinned"},
     {n:"468 / 0", l:"guide doctests", s:"green; 09/06 kernel demos now enforce"},
     {n:"exit 0", l:"deno lint packages/", s:"standing debt cleared"},
     {n:"~20", l:"functions relocated", s:"byte-exact, by the tool"},
