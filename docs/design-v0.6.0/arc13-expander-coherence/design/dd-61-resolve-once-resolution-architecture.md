@@ -140,6 +140,24 @@ signal to escalate to the structural options (a wrapped reference construct
 or nanopass-grade IR separation) rather than adding a fourth layer of
 vigilance. Until then, A6 + A5 buy wrapper-grade safety at flag-grade cost.
 
+## Refinement log
+
+### 2026-07-06 (§A6 Rust privacy — phased; surfaced by arc13/slice06 scoping)
+
+§A6's "the `binding` field is private" cannot hold literally: Rust enum
+variant fields inherit the enum's visibility (no per-field privacy on a
+`pub enum`). By-construction privacy requires restructuring `SExpr::Atom`
+to carry a private-field struct payload (~259 construction/pattern sites,
+mechanical). **Operator-confirmed 2026-07-06: phase it.** The
+rust-resolution slice lands the accessor (`as_form_head()`, `#[must_use]`,
+`#[non_exhaustive]` `NameRes`) with **all** dispatch sites converted plus a
+standing static conformance check (the JS-backstop pattern applied to Rust)
+— so the §A6 consumer rule holds check-enforced immediately; the payload
+restructure lands as its own slice (arc13, numbered at creation) and
+upgrades it to visibility-enforced. The three-layer story is unchanged;
+only the first layer's mechanism arrives in two steps.
+Which-child-surfaced: arc13/slice06 (scoping-time grounding, CDC).
+
 ## Slice impact (the re-slice this appendix implies)
 
 | Slice | Scope |

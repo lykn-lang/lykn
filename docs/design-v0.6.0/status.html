@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-06 (arc13 slice05 closed — binding layer complete BY CONSTRUCTION; next session: the resolution slices)",
+  updated: "2026-07-06 (arc13 slice06 · rust-resolution SCOPED — open set written; §A6 privacy phased per operator; ready for CC)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -155,7 +155,7 @@ const DATA = {
       slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc13", name:"expander-coherence", status:"active",
       cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
-      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"open"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"active"},{n:"js-resolution",s:"open"},{n:"atom-payload-privacy",s:"open"},{n:"corpus+close",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -180,8 +180,8 @@ const DATA = {
   ],
   sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"Next session: scope arc13's rust-resolution slice — D1 lands on a complete, test-pinned foundation",
-    desc:"The binding layer is DONE and done right: walkers on both backends covering every derived position (the slice05 sweep found the name-slot class that two rounds of leak-probing structurally couldn't — func/class/type names emitting invalid JS at rc=0); D2 rejecting reserved words everywhere a name binds (the ID-44 genus is dead); a standing make-check coverage test so a future grammar addition that binds a name fails CI until the walker knows it; matrix at 11 position columns; suites 1401/0. What remains in arc13: rust-resolution (D1 env + resolved-atom tags; emitter/codegen demoted to consumers via the as_form_head() swap — DD-61 §A6), js-resolution (formHead() + the static grep-check), then the permanent conformance corpus and arc close. Then arc05 (the linter) resumes with true lexical scoping simply in place. Fresh session starts at BOOTSTRAP.md as always."
+    arc:"arc13 slice06 · rust-resolution is scoped — hand the cc-prompt to CC",
+    desc:"The open set is written (slice-doc / 6-row ledger / cc-prompt), grounded in the tree at current line numbers: the resolver (env via the walker's bindings_introduced, resolved-atom tags on SExpr::Atom), the expander's light binding-scan (user macros AND pass2 desugar shadowed by bound names), and the DD-61 §A6 accessor swap (as_form_head() returns None for binding-refs) across all four dispatch subsystems, backed by a standing static conformance check in make check. Scoping caught a real DD-61 issue before CC could hit it: Rust pub-enum-variant fields can't be private, so §A6's by-construction privacy needs an Atom payload restructure (~259 sites) — operator call: PHASE IT (accessor+check now; an atom-payload-privacy slice later; DD-61 refinement logged). Acceptance: Rust matrix columns hit DD-60 targets; JS columns + corpus outputs byte-identical (movement = leak = stop). After slice06: js-resolution, then the conformance corpus + arc close; then arc05 (the linter) resumes with true lexical scoping simply in place. Fresh session starts at BOOTSTRAP.md as always."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},

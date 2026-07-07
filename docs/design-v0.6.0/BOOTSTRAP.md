@@ -100,8 +100,11 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action (fresh-session handoff, 2026-07-06): scope
-arc13's `rust-resolution` slice** — numbered at creation (next = slice06).
+**Immediate next action (updated 2026-07-06, same day): slice06 ·
+rust-resolution is SCOPED** (open set written; §A6 privacy phased per
+operator — accessor + static check now, an *atom-payload-privacy* slice
+later; DD-61 refinement logged) — **hand its `cc-prompt.md` to CC, then
+verify the close.**
 
 **Where arc13 stands** (read its `arc-plan.md` [v1.6] + both design docs
 first): the **binding layer is complete by construction**. Slices 03/04/05

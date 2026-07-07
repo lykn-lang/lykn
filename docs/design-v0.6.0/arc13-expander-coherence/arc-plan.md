@@ -38,8 +38,9 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice03 · binding-walker + d2-validation** (re-slice) | **DD-61 §A2's binding-position walker on both backends** — the single per-backend component that knows what binds — **+ the D2 reserved-word validator riding it** (every binding position, `export`, the `kernel:` name slot; list-parity test against the probe). Ships first: resolution-independent, kills the ID-44 genus, and builds D1's chassis. | **Closed** (commit pending on staged source; `binding.rs`/`binding.js` + 16 parity fixtures; D2 both backends; matrix: only D2 rows moved, disagreement 312→208; suites 1387/0; **finding: DD-60 list missed 3 binding positions** → refinement confirmed → slice04) |
 | **slice04 · walker-extension** (from slice03's finding; operator packaging call) | +3 binding positions (`if-let`/`when-let` patterns, `match` clause patterns — live ID-44-genus leaks) through walker + D2 + matrix probe, both backends. | **Closed** (matrix 5→8 position columns, originals byte-identical; fixtures 16→20; suites 1391/0; **finding #2: 3 more leaking positions** — catch/import-local/label → refinement #2 + the method change → slice05) |
 | **slice05 · position-sweep + walker-completion** | Refinement #2's positions (catch/import-local D1+D2; label D2-only) **+ the derived-exhaustiveness sweep** (enumerate identifier-emitting binding slots from the grammar/codegen per backend; diff vs walker = a **standing test** in `make check`). Ends discovery-by-leak: the list becomes complete by construction. | **Closed** (catch/import/label + the **name-slot class the sweep found** [func/genfunc/class/type names + ctor params — invalid JS at rc=0, all folded]; coverage test standing w/ seeded-gap demo; matrix 8→11, originals byte-identical; suites 1401/0; **exhaustiveness by construction**) |
-| *(next, numbered at creation)* · rust-resolution | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline; emitter/codegen → read-only consumers via the `as_form_head()` swap (DD-61 §A6 rows pinned at scoping). | Future |
+| **slice06 · rust-resolution** | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline (classifier hosts the env; expander gets the light binding-scan); emitter/codegen → read-only consumers via the `as_form_head()` swap (**DD-61 §A6 rows pinned at scoping**: zero dispatch-purpose raw-head reads [F-3] + a standing static check [F-4]; JS matrix columns + corpus outputs byte-identical [F-5] — movement = leak = stop). §A6 *privacy* is phased per the operator call (2026-07-06): this slice lands accessor + `#[must_use]` + check; the `Atom` payload restructure is a follow-up slice. | **Open** (open set written 2026-07-06) |
 | *(next)* · js-resolution | Same through `expandExpr`; `formHead()` + the static grep-conformance check (§A6). | Future |
+| *(next)* · atom-payload-privacy | The §A6 by-construction layer (operator phasing call, 2026-07-06): restructure `SExpr::Atom` to a private-field struct payload (~259 mechanical sites) so the `binding` field is truly private. Any time after slice06; lands before arc close. | Future |
 | *(next)* · conformance-corpus + arc close | The permanent cross-backend corpus; A-4/A-5 reproduced; DD-60 cross-ref recording DD-61 as-built. | Future |
 
 *(Future entries carry **no numbers** — numbered at creation per the
@@ -66,14 +67,47 @@ slice03 → arc06 → arc07 → arc09.**
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
-| A-1 | slice01 (matrix + DD-60) closed | ptr: cdc-verification | serious | arc-plan | open | | |
-| A-2 | slice02 (Rust) closed | ptr: cdc-verification | serious | arc-plan | open | | |
-| A-3 | slice03 (JS + corpus) closed | ptr: cdc-verification | serious | arc-plan | open | | |
+| A-1 | slice01 (matrix + DD-60) closed | ptr: cdc-verification | serious | arc-plan | done | slice01/cdc-verification.md (attested) | |
+| A-2 | slice02 (rust-shadowing) — self-stopped; superseded by the v1.2 re-slice, all 5 rows deferred with homes | ptr: slice02 closing docs | serious | arc-plan | no-op | slice02/closing-report.md + cdc-verification.md | was: "slice02 (Rust) closed" — the Rust work moved to slice06 |
+| A-3 | slice03 (binding-walker + D2) closed | ptr: cdc-verification | serious | arc-plan | done | slice03/cdc-verification.md (attested) | was: "slice03 (JS + corpus)" — the v1.2 re-slice renamed the slice map; JS resolution + corpus have their own rows below |
 | A-4 | **the matrix converges** — every live cell behaves per DD-60 on both backends; zero cells where the backends disagree | run the conformance corpus; matrix re-probe transcript | serious | arc05 F-4 recon | open | | reproduce at arc scale on host |
 | A-5 | **no invalid output at rc=0 for any name class** — reserved-word (and any matrix-surfaced) name misuse is a compile error with a diagnostic, both backends | the validator demos; `deno check` on emitted corpus output | serious | Principle 3 / ID-44 genus | open | | |
 | A-6 | arc05's ID-42 question re-answered from the fixed state | arc05 slice03 scoping note: reserved-param-name rule shrunk/dropped with rationale | correctness | operator decision 2026-07-06 | open | | the point of pausing: do the right thing instead of warning broadly |
+| A-7 | slice04 (walker-extension) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice04/cdc-verification.md (attested) | |
+| A-8 | slice05 (position-sweep) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice05/cdc-verification.md (attested) | binding layer complete by construction; coverage test standing |
+| A-9 | slice06 (rust-resolution) closed | ptr: cdc-verification | serious | arc-plan v1.7 | open | | |
+| A-10 | js-resolution slice closed | ptr: cdc-verification | serious | arc-plan v1.7 | open | | slice un-numbered until creation |
+| A-11 | atom-payload-privacy slice closed (§A6 by-construction layer) | ptr: cdc-verification | correctness | operator phasing call 2026-07-06 | open | | un-numbered until creation; lands before arc close |
+| A-12 | DD-60 refinements #1/#2/addendum dispositioned (routed, confirmed, landed) | DD-60 refinement log (3 entries) + v1.4/v1.5/v1.6 change-log entries | correctness | bubble-ups: slices 03/04/05 | done | DD-60 §Refinement log; slices 04/05 closed | class-(c) rows, accrued at v1.7 catch-up |
 
 ## 5. Version History
+
+### v1.7 — 2026-07-06 (slice06 · rust-resolution scoped; §A6 privacy finding + operator phasing call)
+slice06 open set written (slice-doc / ledger [6 rows] / cc-prompt),
+grounded in the tree: the four dispatch sites re-cited at current lines
+(pass2 `expand_expr` :39/:100/:157; classifier `classify_form{,_strict,
+_kernel_only}` :37/:117/:232; emitter `emit_expr` :319/:348; codegen
+`emit_list` :198/:214 + `emit_class_member` :1394 + three inline checks).
+**Scoping finding (which-child-surfaced: slice06 scoping, CDC):** DD-61
+§A6's "the `binding` field is private" is unimplementable as written —
+Rust pub-enum-variant fields cannot be private; by-construction privacy
+requires an `Atom` struct-payload restructure (~259 sites). **Operator
+call: phase it** — slice06 lands `as_form_head()` + `#[must_use]` +
+`#[non_exhaustive]` + a standing static conformance check (the §A6 pin
+holds: zero dispatch-purpose raw-head reads); the payload restructure is
+a new future slice (*atom-payload-privacy*, un-numbered until creation).
+DD-61 carries the matching refinement note. Also named at scoping, for
+CC to surface not decide: the `PartialEq`-includes-the-tag question and
+the `has_macros` short-circuit exposure check. **Arc-ledger catch-up
+(disclosed):** the class-(a) accrual missed three slice closes — A-1
+marked done (attested), A-2 no-op'd as superseded (was "slice02 (Rust)
+closed"), A-3 repointed to the re-sliced slice03 (was "slice03 (JS +
+corpus)"), A-7/A-8 added done-attested for slices 04/05, A-9/A-10/A-11
+opened for slice06 / js-resolution / atom-payload-privacy, A-12 added as
+the class-(c) disposition row for the three DD-60 refinements.
+(Housekeeping: the v1.5 entry was recorded twice — long and short forms
+of the same event; the short duplicate below v1.6 is marked as such
+rather than deleted.)
 
 ### v1.5 — 2026-07-06 (slice04 closed; refinement #2 + the method change; slice05 scoped)
 slice04 closed (both walkers cover the +3 via existing hook points —
@@ -101,7 +135,7 @@ addendum; the position list is **derived + test-pinned**. Session handoff
 prepared (BOOTSTRAP refreshed): **next = scope rust-resolution** (D1 env +
 tags; `as_form_head()` §A6 rows; hook notes in CC's slice03/05 reports).
 
-### v1.5 — 2026-07-06 (slice04 closed; refinement #2; method change → slice05)
+### v1.5 — 2026-07-06 (duplicate entry — same event as the fuller v1.5 above; kept for history, marked per v1.7)
 slice04 closed (matrix 5→8, originals intact; fixtures 20; 1391/0); its
 probe found catch/import-local/label leaking; operator confirmed refinement
 #2 **with the derive-don't-accumulate method change**; slice05 scoped;
