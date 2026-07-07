@@ -215,8 +215,14 @@ fresh-artifacts:
 	@$(BIN_DIR)/$(CODE_NAME) build
 	@echo "$(GREEN)✓ Test artifacts fresh$(RESET)"
 
+# Depends on fresh-artifacts: the workspace integration tests (e.g.
+# docs_pattern_gating) shell out to `lykn test`, which resolves the built
+# packages from target/lykn/build/. Without this, `make test` ran cargo test
+# before the build dir existed (it was only refreshed by test-suite, which runs
+# later) — a clean checkout / CI failed on the missing dir. Make dedups
+# fresh-artifacts to one run per invocation.
 .PHONY: test-rust
-test-rust:
+test-rust: fresh-artifacts
 	@echo "$(BLUE)Running Rust tests...$(RESET)"
 	@cargo test --all-features --workspace
 	@echo "$(GREEN)✓ Rust tests passed$(RESET)"
@@ -269,7 +275,10 @@ test-docs-examples: fresh-artifacts
 	@echo "$(GREEN)✓ Example documentation tests passed$(RESET)"
 
 .PHONY: test-publishing
-test-publishing:
+# fresh-artifacts: the integration tests (`cargo test -p lykn-cli --tests`)
+# include ones that shell out to `lykn test` (target/lykn/build/). Populate the
+# build dir first so a clean checkout / CI doesn't fail on the missing dir.
+test-publishing: fresh-artifacts
 	@echo "$(BLUE)Running publishing pipeline tests (Layers 1-3)...$(RESET)"
 	@cargo test -p lykn-cli --lib -- dist::tests
 	@echo "$(GREEN)✓ Unit + snapshot tests passed$(RESET)"
