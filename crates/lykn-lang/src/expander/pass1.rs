@@ -182,25 +182,13 @@ mod tests {
     fn test_is_macro_def_true() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "macro".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "when".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("macro".to_string(), s()),
+                SExpr::atom("when".to_string(), s()),
                 SExpr::List {
-                    values: vec![SExpr::Atom {
-                        value: "test".to_string(),
-                        span: s(),
-                    }],
+                    values: vec![SExpr::atom("test".to_string(), s())],
                     span: s(),
                 },
-                SExpr::Atom {
-                    value: "body".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("body".to_string(), s()),
             ],
             span: s(),
         };
@@ -211,14 +199,8 @@ mod tests {
     fn test_is_macro_def_false() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "define".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "x".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("define".to_string(), s()),
+                SExpr::atom("x".to_string(), s()),
             ],
             span: s(),
         };
@@ -227,10 +209,7 @@ mod tests {
 
     #[test]
     fn test_is_macro_def_non_list() {
-        let form = SExpr::Atom {
-            value: "macro".to_string(),
-            span: s(),
-        };
+        let form = SExpr::atom("macro".to_string(), s());
         assert!(!is_macro_def(&form));
     }
 
@@ -238,14 +217,8 @@ mod tests {
     fn test_macro_name_extraction() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "macro".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "when".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("macro".to_string(), s()),
+                SExpr::atom("when".to_string(), s()),
                 SExpr::List {
                     values: vec![],
                     span: s(),
@@ -259,10 +232,7 @@ mod tests {
     #[test]
     fn test_macro_name_none_for_short_list() {
         let form = SExpr::List {
-            values: vec![SExpr::Atom {
-                value: "macro".to_string(),
-                span: s(),
-            }],
+            values: vec![SExpr::atom("macro".to_string(), s())],
             span: s(),
         };
         assert_eq!(macro_name(&form), None);
@@ -272,10 +242,7 @@ mod tests {
     fn test_macro_name_none_for_non_atom_name() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "macro".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("macro".to_string(), s()),
                 SExpr::Number {
                     value: 42.0,
                     span: s(),
@@ -290,23 +257,14 @@ mod tests {
     fn test_collect_atoms() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "if".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "test".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("if".to_string(), s()),
+                SExpr::atom("test".to_string(), s()),
                 SExpr::Number {
                     value: 1.0,
                     span: s(),
                 },
                 SExpr::List {
-                    values: vec![SExpr::Atom {
-                        value: "nested".to_string(),
-                        span: s(),
-                    }],
+                    values: vec![SExpr::atom("nested".to_string(), s())],
                     span: s(),
                 },
             ],
@@ -322,38 +280,20 @@ mod tests {
         // (macro my-when (test body) (other-macro test body))
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "macro".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "my-when".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("macro".to_string(), s()),
+                SExpr::atom("my-when".to_string(), s()),
                 SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "test".to_string(),
-                            span: s(),
-                        },
-                        SExpr::Atom {
-                            value: "body".to_string(),
-                            span: s(),
-                        },
+                        SExpr::atom("test".to_string(), s()),
+                        SExpr::atom("body".to_string(), s()),
                     ],
                     span: s(),
                 },
                 // body references "other-macro"
                 SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "other-macro".to_string(),
-                            span: s(),
-                        },
-                        SExpr::Atom {
-                            value: "test".to_string(),
-                            span: s(),
-                        },
+                        SExpr::atom("other-macro".to_string(), s()),
+                        SExpr::atom("test".to_string(), s()),
                     ],
                     span: s(),
                 },
@@ -371,23 +311,14 @@ mod tests {
     fn test_find_local_deps_already_compiled() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "macro".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "my-when".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("macro".to_string(), s()),
+                SExpr::atom("my-when".to_string(), s()),
                 SExpr::List {
                     values: vec![],
                     span: s(),
                 },
                 SExpr::List {
-                    values: vec![SExpr::Atom {
-                        value: "other-macro".to_string(),
-                        span: s(),
-                    }],
+                    values: vec![SExpr::atom("other-macro".to_string(), s())],
                     span: s(),
                 },
             ],
@@ -417,14 +348,8 @@ mod tests {
         let forms = vec![
             SExpr::List {
                 values: vec![
-                    SExpr::Atom {
-                        value: "define".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "x".to_string(),
-                        span: s(),
-                    },
+                    SExpr::atom("define".to_string(), s()),
+                    SExpr::atom("x".to_string(), s()),
                 ],
                 span: s(),
             },

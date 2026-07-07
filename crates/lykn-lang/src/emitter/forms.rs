@@ -16,10 +16,7 @@ use super::type_checks::{emit_return_type_check, emit_type_check};
 
 /// Create an `Atom` with a default span.
 pub fn atom(s: &str) -> SExpr {
-    SExpr::Atom {
-        value: s.to_string(),
-        span: Span::default(),
-    }
+    SExpr::atom(s, Span::default())
 }
 
 /// Create a `String` literal with a default span.
@@ -271,8 +268,10 @@ pub fn emit_form(
         SurfaceForm::Do { body, .. } => vec![emit_do(body, ctx, registry)],
         SurfaceForm::KernelPassthrough { raw, .. } => vec![emit_expr(raw, ctx, registry)],
         SurfaceForm::FunctionCall { head, args, span } => {
-            // Check for js: namespace interop
-            if let Some(name) = head.as_atom() {
+            // Check for js: namespace interop. DD-61 §A6: dispatch on the form
+            // head — a lexically bound `assign`/`js:…` head is a plain call, not
+            // the special form, so `as_form_head` (not `as_atom`) gates these.
+            if let Some(name) = head.as_form_head() {
                 if name.starts_with("js:") {
                     return vec![emit_js_interop(name, args, ctx, registry)];
                 }
@@ -319,7 +318,11 @@ pub fn emit_form(
 fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
-            if let Some(head_name) = values[0].as_atom() {
+            // DD-61 §A6: dispatch on the *form head*. A lexically bound head
+            // (`as_form_head` → `None`) is a call to the binding — it skips every
+            // surface/kernel/inline dispatch below and is recursed as a plain
+            // list, so codegen emits the readable call.
+            if let Some(head_name) = values[0].as_form_head() {
                 // js: namespace interop (DD-15) — handle before surface form check
                 if head_name.starts_with("js:") {
                     return emit_js_interop(head_name, &values[1..], ctx, registry);
@@ -426,8 +429,10 @@ fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) 
 /// uniform Rule 1 (ternary vs IIFE) and Rule 2 (no-else compile error)
 /// enforcement across all expression-position contexts.
 fn is_valueless_last_expr(expr: &SExpr) -> bool {
+    // DD-61 §A6: dispatch on the form head — a bound head is a call, not a
+    // valueless statement form.
     if let SExpr::List { values, .. } = expr
-        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && let Some(head) = values.first().and_then(|e| e.as_form_head())
     {
         if head == "if" {
             return values.len() < 4;
@@ -469,6 +474,7 @@ fn convert_to_expression(expr: SExpr) -> SExpr {
     if let SExpr::List { values, span } = &expr
         && !values.is_empty()
         && values[0].as_atom() == Some("if")
+    // A6-exempt: `if` is reserved (never bound); transforms an already-identified if-form (DD-50)
     {
         let args = &values[1..];
 
@@ -648,7 +654,9 @@ fn literal_type_name(expr: &SExpr) -> Option<&'static str> {
             _ => None,
         },
         SExpr::List { values, .. } => {
-            let head = values.first().and_then(|v| v.as_atom())?;
+            // DD-61 §A6: a bound `array`/`obj` head is a call — its literal type
+            // is unknown, so `as_form_head` (bound → `None`) yields `None` here.
+            let head = values.first().and_then(|v| v.as_form_head())?;
             match head {
                 "array" => Some("array"),
                 "obj" | "object" => Some("object"),
@@ -1791,7 +1799,8 @@ fn instrument_yields(
 ) -> SExpr {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
-            let head = values[0].as_atom();
+            // DD-61 §A6: a bound `yield` head is a call, not the yield form.
+            let head = values[0].as_form_head();
 
             // (yield expr) -> instrument with type check IIFE
             if head == Some("yield") && values.len() >= 2 {
@@ -2568,8 +2577,10 @@ const STATEMENT_FORM_HEADS: &[&str] = &[
 ];
 
 fn is_statement_form(expr: &SExpr) -> bool {
+    // DD-61 §A6: a lexically bound head (e.g. `block`) is a call, not a
+    // statement form — `as_form_head` returns `None`, so it is not misclassified.
     if let SExpr::List { values, .. } = expr
-        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && let Some(head) = values.first().and_then(|e| e.as_form_head())
     {
         return STATEMENT_FORM_HEADS.contains(&head);
     }
@@ -7417,10 +7428,7 @@ mod tests {
     fn test_emit_export_bind() {
         let form = SurfaceForm::Export {
             inner: Box::new(SurfaceForm::Bind {
-                name: SExpr::Atom {
-                    value: "VERSION".into(),
-                    span: s(),
-                },
+                name: SExpr::atom("VERSION", s()),
                 type_ann: None,
                 value: SExpr::String {
                     value: "0.4.0".into(),

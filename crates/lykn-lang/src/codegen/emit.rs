@@ -55,11 +55,14 @@ fn is_statement_form(name: &str) -> bool {
 /// expression statements (terminated by `;`). Mirrors the parens distinction in
 /// `emit_statement`.
 fn is_async_declaration(values: &[SExpr]) -> bool {
-    values.first().and_then(|e| e.as_atom()) == Some("async")
+    // DD-61 §A6: a bound `async` head is a call, not the async form.
+    values.first().and_then(|e| e.as_form_head()) == Some("async")
         && matches!(
             values
                 .get(1)
                 .and_then(|e| if let SExpr::List { values: inner, .. } = e {
+                    // A6-exempt: structural — the async payload's head (a nested
+                    // declaration form), not a call-dispatch position.
                     inner.first().and_then(|h| h.as_atom())
                 } else {
                     None
@@ -99,8 +102,9 @@ pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), 
 /// Emit an expression in statement position: appends a semicolon + newline for
 /// expression statements, or just a newline for statement forms.
 pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
+    // DD-61 §A6: dispatch on the form head — a bound head is an expression call.
     if let SExpr::List { values, .. } = expr
-        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && let Some(head) = values.first().and_then(|e| e.as_form_head())
         && (is_statement_form(head) || is_async_declaration(values))
     {
         emit_list(w, values, 0)?;
@@ -113,7 +117,8 @@ pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     // - "async" wrapping "=>": async arrow expression needs parens;
     //   async function declarations do NOT (they're unambiguous)
     let needs_parens = if let SExpr::List { values, .. } = expr {
-        match values.first().and_then(|e| e.as_atom()) {
+        // DD-61 §A6: a bound head is a plain call — never needs statement-parens.
+        match values.first().and_then(|e| e.as_form_head()) {
             Some("object" | "=>") => true,
             Some("async") => {
                 // async wrapping an arrow needs parens; async function does not
@@ -195,15 +200,24 @@ fn emit_list(w: &mut JsWriter, values: &[SExpr], parent_prec: u8) -> Result<(), 
         return Ok(());
     }
 
-    let head = match values[0].as_atom() {
+    // DD-61 §A6: dispatch on the *form head*. A lexically bound head
+    // (`as_form_head` → `None` while still an atom) is a call to the binding,
+    // not a kernel form — emit the readable **plain call** `name(args)`, never
+    // the parenthesized computed-callee shape reserved for non-atom heads.
+    let head = match values[0].as_form_head() {
         Some(h) => h,
         None => {
-            // Head is not an atom — could be an IIFE like ((=> () body)) or
-            // computed call like ((get-fn) arg). Wrap in parens to ensure the
-            // callee is parsed as an expression (e.g. (() => 42)() not () => 42()).
-            w.write("(");
-            emit_expr(w, &values[0], 0)?;
-            w.write(")");
+            if values[0].is_atom() {
+                // Binding reference in head position → plain call.
+                emit_expr(w, &values[0], 0)?;
+            } else {
+                // Non-atom head — IIFE like ((=> () body)) or computed call like
+                // ((get-fn) arg). Wrap in parens so the callee parses as an
+                // expression (e.g. (() => 42)() not () => 42()).
+                w.write("(");
+                emit_expr(w, &values[0], 0)?;
+                w.write(")");
+            }
             emit_call_args(w, &values[1..])?;
             return Ok(());
         }
@@ -344,6 +358,8 @@ fn emit_pattern(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
                 emit_atom(w, value);
             }
         }
+        // A6-exempt: destructuring-pattern grammar (binding position), not a
+        // call-dispatch head — the markers here are never lexically bound.
         SExpr::List { values, .. } if !values.is_empty() => match values[0].as_atom() {
             Some("object") => emit_object_pattern(w, &values[1..])?,
             Some("array") => emit_array_pattern(w, &values[1..])?,
@@ -366,6 +382,7 @@ fn emit_object_pattern(w: &mut JsWriter, members: &[SExpr]) -> Result<(), LyknEr
         match member {
             SExpr::Atom { value, .. } => w.write(&to_js_identifier(value)),
             SExpr::List { values, .. } if !values.is_empty() => {
+                // A6-exempt: object-pattern member grammar, not a call head.
                 match values[0].as_atom() {
                     Some("default") => {
                         // (default name val)
@@ -409,6 +426,7 @@ fn emit_array_pattern(w: &mut JsWriter, elements: &[SExpr]) -> Result<(), LyknEr
             }
             SExpr::List { values, .. }
                 if !values.is_empty() && values[0].as_atom() == Some("rest") =>
+            // A6-exempt: rest-pattern marker (destructuring grammar), not a call head
             {
                 emit_rest_pattern(w, &values[1..])?;
             }
@@ -455,6 +473,7 @@ fn emit_arrow(w: &mut JsWriter, args: &[SExpr], is_async: bool) -> Result<(), Ly
     if let SExpr::List { values, .. } = &args[0]
         && values.len() == 1
         && values[0].as_atom().is_some()
+    // A6-exempt: single-element arrow-param shorthand shape check, not a call head
     {
         emit_expr(w, &values[0], 0)?;
     } else {
@@ -464,9 +483,10 @@ fn emit_arrow(w: &mut JsWriter, args: &[SExpr], is_async: bool) -> Result<(), Ly
 
     let body = &args[1..];
     if body.len() == 1 {
-        // Single expression body — check if it is a block.
+        // Single expression body — check if it is a block. DD-61 §A6: a
+        // lexically bound `block` head is a call, not the block form.
         if let SExpr::List { values, .. } = &body[0]
-            && values.first().and_then(|e| e.as_atom()) == Some("block")
+            && values.first().and_then(|e| e.as_form_head()) == Some("block")
         {
             emit_block_body(w, &values[1..])?;
             return Ok(());
@@ -563,6 +583,7 @@ fn emit_async(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     let inner = &args[0];
     if let SExpr::List { values, .. } = inner
         && let Some(head) = values.first().and_then(|e| e.as_atom())
+    // A6-exempt: async payload form (`=>`/`function`), non-bindable operator/reserved, not a call head
     {
         match head {
             "=>" => {
@@ -668,8 +689,9 @@ fn emit_if(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
 
 /// Emit a single statement as either a block `{ ... }` or inline `stmt;`.
 fn emit_stmt_or_block(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
+    // DD-61 §A6: a lexically bound `block` head is a call, not the block form.
     if let SExpr::List { values, .. } = expr
-        && values.first().and_then(|e| e.as_atom()) == Some("block")
+        && values.first().and_then(|e| e.as_form_head()) == Some("block")
     {
         emit_block_body(w, &values[1..])?;
         return Ok(());
@@ -736,6 +758,7 @@ fn emit_for_clause(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
         }
         // Special handling for declarations in for-init: emit without
         // trailing semicolon.
+        // A6-exempt: declaration keyword (reserved word) in for-init, not a call head.
         if let Some(head) = values.first().and_then(|e| e.as_atom())
             && matches!(head, "const" | "let" | "var")
         {
@@ -769,7 +792,7 @@ fn emit_declaration_bare(w: &mut JsWriter, kind: &str, args: &[SExpr]) -> Result
 /// is true again, and the JS backend already rejects this — DD-58 parity.)
 fn check_loop_binding(binding: &SExpr) -> Result<(), LyknError> {
     if let SExpr::List { values, .. } = binding
-        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && let Some(head) = values.first().and_then(|e| e.as_atom()) // A6-exempt: loop-binding declaration keyword (reserved), not a call head
         && matches!(head, "const" | "let" | "var")
     {
         let inner = values
@@ -852,7 +875,7 @@ fn emit_switch(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
             if values.is_empty() {
                 continue;
             }
-            let is_default = values[0].as_atom() == Some("default");
+            let is_default = values[0].as_atom() == Some("default"); // A6-exempt: param-default marker, not a call head
             if is_default {
                 w.write("default:");
             } else {
@@ -925,6 +948,7 @@ fn emit_try(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     for arg in args {
         if let SExpr::List { values, .. } = arg
             && let Some(head) = values.first().and_then(|e| e.as_atom())
+        // A6-exempt: try-clause marker (`catch`/`finally`, reserved), not a call head
         {
             if head == "catch" {
                 catch_clause = Some(&values[1..]);
@@ -1162,6 +1186,8 @@ fn emit_object(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
                 w.write(&to_js_identifier(value));
             }
             SExpr::List { values, .. } if !values.is_empty() => {
+                // A6-exempt: object-literal property grammar (spread/computed
+                // markers), not a call-dispatch head.
                 match values[0].as_atom() {
                     Some("spread") => {
                         w.write("...");
@@ -1213,6 +1239,7 @@ fn emit_array(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
         }
         if let SExpr::List { values, .. } = arg
             && values.first().and_then(|e| e.as_atom()) == Some("spread")
+        // A6-exempt: array-element spread marker, not a call head
         {
             w.write("...");
             if values.len() >= 2 {
@@ -1266,6 +1293,7 @@ fn emit_tagged_template(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknErro
         // The second arg should be a template form — emit it directly.
         if let SExpr::List { values, .. } = &args[1]
             && values.first().and_then(|e| e.as_atom()) == Some("template")
+        // A6-exempt: template-literal marker, not a call head
         {
             emit_template(w, &values[1..])?;
             return Ok(());
@@ -1391,6 +1419,8 @@ fn emit_class_member(w: &mut JsWriter, member: &SExpr, prefix: &str) -> Result<(
         _ => return Ok(()),
     };
 
+    // A6-exempt: a class-member name is a property (own namespace), read raw
+    // even if a value binding shadows it.
     let head = match values[0].as_atom() {
         Some(h) => h,
         None => return Ok(()),
@@ -1565,6 +1595,7 @@ fn emit_import_specifiers(w: &mut JsWriter, specs: &[SExpr]) -> Result<(), LyknE
         match spec {
             SExpr::List { values, .. }
                 if values.first().and_then(|e| e.as_atom()) == Some("alias") =>
+            // A6-exempt: import/export alias marker, not a call head
             {
                 // (alias original local) → original as local
                 if values.len() >= 3 {
@@ -1600,6 +1631,7 @@ fn emit_export(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     // (export (const x 1)) — export a declaration
     if let SExpr::List { values, .. } = &args[0]
         && let Some(head) = values.first().and_then(|e| e.as_atom())
+    // A6-exempt: export sub-form grammar (`names`/declaration keyword), not a call head
     {
         if head == "names" {
             // (export (names a b))
@@ -1617,6 +1649,7 @@ fn emit_export(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
         && args.len() >= 2
         && let SExpr::List { values, .. } = &args[1]
         && values.first().and_then(|e| e.as_atom()) == Some("names")
+    // A6-exempt: export names-list marker, not a call head
     {
         emit_export_names(w, &values[1..])?;
         w.write(" from ");
@@ -1649,6 +1682,7 @@ fn emit_export_names(w: &mut JsWriter, specs: &[SExpr]) -> Result<(), LyknError>
         match spec {
             SExpr::List { values, .. }
                 if values.first().and_then(|e| e.as_atom()) == Some("alias") =>
+            // A6-exempt: import/export alias marker, not a call head
             {
                 // (alias local exported) → local as exported
                 if values.len() >= 3 {
@@ -1687,10 +1721,7 @@ mod tests {
     }
 
     fn atom(v: &str) -> SExpr {
-        SExpr::Atom {
-            value: v.to_string(),
-            span: s(),
-        }
+        SExpr::atom(v.to_string(), s())
     }
 
     fn num(v: f64) -> SExpr {

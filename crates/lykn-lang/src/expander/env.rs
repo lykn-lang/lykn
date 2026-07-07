@@ -344,7 +344,7 @@ pub fn protocol_json_to_sexpr(val: &Value) -> Result<SExpr, LyknError> {
     match val.get("type").and_then(|t| t.as_str()) {
         Some("atom") => {
             let value = val["value"].as_str().unwrap_or("").to_string();
-            Ok(SExpr::Atom { value, span })
+            Ok(SExpr::atom(value, span))
         }
         Some("keyword") => {
             let value = val["value"].as_str().unwrap_or("").to_string();
@@ -390,10 +390,7 @@ pub fn protocol_json_to_sexpr(val: &Value) -> Result<SExpr, LyknError> {
             if val.is_null() {
                 Ok(SExpr::Null { span })
             } else if let Some(s) = val.as_str() {
-                Ok(SExpr::Atom {
-                    value: s.to_string(),
-                    span,
-                })
+                Ok(SExpr::atom(s, span))
             } else if let Some(n) = val.as_f64() {
                 Ok(SExpr::Number { value: n, span })
             } else if let Some(b) = val.as_bool() {
@@ -422,10 +419,7 @@ mod tests {
 
     #[test]
     fn test_atom_to_json() {
-        let expr = SExpr::Atom {
-            value: "foo".to_string(),
-            span: s(),
-        };
+        let expr = SExpr::atom("foo".to_string(), s());
         let json = sexpr_to_protocol_json(&expr);
         assert_eq!(json["type"], "atom");
         assert_eq!(json["value"], "foo");
@@ -498,10 +492,7 @@ mod tests {
     fn test_list_to_json() {
         let expr = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "+".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("+".to_string(), s()),
                 SExpr::Number {
                     value: 1.0,
                     span: s(),
@@ -524,10 +515,7 @@ mod tests {
     #[test]
     fn test_cons_to_json() {
         let expr = SExpr::Cons {
-            car: Box::new(SExpr::Atom {
-                value: "a".to_string(),
-                span: s(),
-            }),
+            car: Box::new(SExpr::atom("a".to_string(), s())),
             cdr: Box::new(SExpr::Number {
                 value: 1.0,
                 span: s(),
@@ -543,20 +531,11 @@ mod tests {
     #[test]
     fn test_nested_list_to_json() {
         let inner = SExpr::List {
-            values: vec![SExpr::Atom {
-                value: "x".to_string(),
-                span: s(),
-            }],
+            values: vec![SExpr::atom("x".to_string(), s())],
             span: s(),
         };
         let expr = SExpr::List {
-            values: vec![
-                SExpr::Atom {
-                    value: "fn".to_string(),
-                    span: s(),
-                },
-                inner,
-            ],
+            values: vec![SExpr::atom("fn".to_string(), s()), inner],
             span: s(),
         };
         let json = sexpr_to_protocol_json(&expr);
@@ -573,13 +552,7 @@ mod tests {
     fn test_json_atom_to_sexpr() {
         let json = serde_json::json!({ "type": "atom", "value": "foo" });
         let expr = protocol_json_to_sexpr(&json).unwrap();
-        assert_eq!(
-            expr,
-            SExpr::Atom {
-                value: "foo".to_string(),
-                span: s()
-            }
-        );
+        assert_eq!(expr, SExpr::atom("foo".to_string(), s()));
     }
 
     #[test]
@@ -678,13 +651,7 @@ mod tests {
     fn test_raw_string_to_sexpr() {
         let json = serde_json::json!("hello");
         let expr = protocol_json_to_sexpr(&json).unwrap();
-        assert_eq!(
-            expr,
-            SExpr::Atom {
-                value: "hello".to_string(),
-                span: s()
-            }
-        );
+        assert_eq!(expr, SExpr::atom("hello".to_string(), s()));
     }
 
     #[test]
@@ -739,13 +706,7 @@ mod tests {
         match &expr {
             SExpr::Null { .. } => {
                 // Null serializes as atom "null", so round-trip produces Atom.
-                assert_eq!(
-                    back,
-                    SExpr::Atom {
-                        value: "null".to_string(),
-                        span: s()
-                    }
-                );
+                assert_eq!(back, SExpr::atom("null".to_string(), s()));
             }
             _ => assert_eq!(back, expr),
         }
@@ -753,10 +714,7 @@ mod tests {
 
     #[test]
     fn test_round_trip_atom() {
-        assert_round_trip(SExpr::Atom {
-            value: "define".to_string(),
-            span: s(),
-        });
+        assert_round_trip(SExpr::atom("define".to_string(), s()));
     }
 
     #[test]
@@ -804,10 +762,7 @@ mod tests {
     fn test_round_trip_list() {
         assert_round_trip(SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "if".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("if".to_string(), s()),
                 SExpr::Bool {
                     value: true,
                     span: s(),
@@ -828,14 +783,8 @@ mod tests {
     #[test]
     fn test_round_trip_cons() {
         assert_round_trip(SExpr::Cons {
-            car: Box::new(SExpr::Atom {
-                value: "a".to_string(),
-                span: s(),
-            }),
-            cdr: Box::new(SExpr::Atom {
-                value: "b".to_string(),
-                span: s(),
-            }),
+            car: Box::new(SExpr::atom("a".to_string(), s())),
+            cdr: Box::new(SExpr::atom("b".to_string(), s())),
             span: s(),
         });
     }
@@ -851,24 +800,15 @@ mod tests {
     #[test]
     fn test_round_trip_deeply_nested() {
         let inner = SExpr::List {
-            values: vec![SExpr::Atom {
-                value: "x".to_string(),
-                span: s(),
-            }],
+            values: vec![SExpr::atom("x".to_string(), s())],
             span: s(),
         };
         let outer = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "lambda".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("lambda".to_string(), s()),
                 inner,
                 SExpr::List {
-                    values: vec![SExpr::Atom {
-                        value: "x".to_string(),
-                        span: s(),
-                    }],
+                    values: vec![SExpr::atom("x".to_string(), s())],
                     span: s(),
                 },
             ],

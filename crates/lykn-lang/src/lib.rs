@@ -8,3 +8,4 @@ pub mod emitter;
 pub mod error;
 pub mod expander;
 pub mod reader;
+pub mod resolver;

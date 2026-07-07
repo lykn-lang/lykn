@@ -120,10 +120,7 @@ fn is_runtime_import(form: &SExpr) -> bool {
 fn convert_runtime_import(form: SExpr) -> SExpr {
     if let SExpr::List { values, span } = form {
         let mut new_values = Vec::with_capacity(values.len());
-        new_values.push(SExpr::Atom {
-            value: "import".to_string(),
-            span,
-        });
+        new_values.push(SExpr::atom("import", span));
         new_values.extend(values.into_iter().skip(1));
         SExpr::List {
             values: new_values,
@@ -548,19 +545,13 @@ mod tests {
     fn test_is_import_macros_true() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "import-macros".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("import-macros".to_string(), s()),
                 SExpr::String {
                     value: "./macros.lykn".to_string(),
                     span: s(),
                 },
                 SExpr::List {
-                    values: vec![SExpr::Atom {
-                        value: "when".to_string(),
-                        span: s(),
-                    }],
+                    values: vec![SExpr::atom("when".to_string(), s())],
                     span: s(),
                 },
             ],
@@ -573,14 +564,8 @@ mod tests {
     fn test_is_import_macros_false() {
         let form = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "define".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "x".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("define".to_string(), s()),
+                SExpr::atom("x".to_string(), s()),
             ],
             span: s(),
         };
@@ -589,10 +574,7 @@ mod tests {
 
     #[test]
     fn test_is_import_macros_non_list() {
-        let form = SExpr::Atom {
-            value: "import-macros".to_string(),
-            span: s(),
-        };
+        let form = SExpr::atom("import-macros".to_string(), s());
         assert!(!is_import_macros(&form));
     }
 
@@ -600,14 +582,8 @@ mod tests {
     fn test_extract_binding_names_simple() {
         let bindings = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "when".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "unless".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("when".to_string(), s()),
+                SExpr::atom("unless".to_string(), s()),
             ],
             span: s(),
         };
@@ -620,18 +596,9 @@ mod tests {
         let bindings = SExpr::List {
             values: vec![SExpr::List {
                 values: vec![
-                    SExpr::Atom {
-                        value: "as".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "original-name".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "my-alias".to_string(),
-                        span: s(),
-                    },
+                    SExpr::atom("as".to_string(), s()),
+                    SExpr::atom("original-name".to_string(), s()),
+                    SExpr::atom("my-alias".to_string(), s()),
                 ],
                 span: s(),
             }],
@@ -645,24 +612,12 @@ mod tests {
     fn test_extract_binding_names_mixed() {
         let bindings = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "when".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("when".to_string(), s()),
                 SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "as".to_string(),
-                            span: s(),
-                        },
-                        SExpr::Atom {
-                            value: "unless".to_string(),
-                            span: s(),
-                        },
-                        SExpr::Atom {
-                            value: "my-unless".to_string(),
-                            span: s(),
-                        },
+                        SExpr::atom("as".to_string(), s()),
+                        SExpr::atom("unless".to_string(), s()),
+                        SExpr::atom("my-unless".to_string(), s()),
                     ],
                     span: s(),
                 },
@@ -685,10 +640,7 @@ mod tests {
 
     #[test]
     fn test_extract_binding_names_non_list() {
-        let bindings = SExpr::Atom {
-            value: "foo".to_string(),
-            span: s(),
-        };
+        let bindings = SExpr::atom("foo".to_string(), s());
         let names = extract_binding_names(&bindings);
         assert!(names.is_empty());
     }
@@ -699,14 +651,8 @@ mod tests {
         let forms = vec![
             SExpr::List {
                 values: vec![
-                    SExpr::Atom {
-                        value: "define".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "x".to_string(),
-                        span: s(),
-                    },
+                    SExpr::atom("define".to_string(), s()),
+                    SExpr::atom("x".to_string(), s()),
                     SExpr::Number {
                         value: 1.0,
                         span: s(),
@@ -716,14 +662,8 @@ mod tests {
             },
             SExpr::List {
                 values: vec![
-                    SExpr::Atom {
-                        value: "define".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "y".to_string(),
-                        span: s(),
-                    },
+                    SExpr::atom("define".to_string(), s()),
+                    SExpr::atom("y".to_string(), s()),
                     SExpr::Number {
                         value: 2.0,
                         span: s(),
@@ -771,14 +711,8 @@ mod tests {
         let bindings = SExpr::List {
             values: vec![SExpr::List {
                 values: vec![
-                    SExpr::Atom {
-                        value: "as".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "original".to_string(),
-                        span: s(),
-                    },
+                    SExpr::atom("as".to_string(), s()),
+                    SExpr::atom("original".to_string(), s()),
                 ],
                 span: s(),
             }],
@@ -813,19 +747,13 @@ mod tests {
     fn test_import_macros_filtering_with_mixed_forms() {
         let import = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "import-macros".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("import-macros".to_string(), s()),
                 SExpr::String {
                     value: "./m.lykn".to_string(),
                     span: s(),
                 },
                 SExpr::List {
-                    values: vec![SExpr::Atom {
-                        value: "when".to_string(),
-                        span: s(),
-                    }],
+                    values: vec![SExpr::atom("when".to_string(), s())],
                     span: s(),
                 },
             ],
@@ -833,14 +761,8 @@ mod tests {
         };
         let define = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "define".to_string(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "x".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("define".to_string(), s()),
+                SExpr::atom("x".to_string(), s()),
             ],
             span: s(),
         };
@@ -861,24 +783,15 @@ mod tests {
     #[test]
     fn test_validate_import_form_valid() {
         let values = vec![
-            SExpr::Atom {
-                value: "import-macros".to_string(),
-                span: s(),
-            },
+            SExpr::atom("import-macros".to_string(), s()),
             SExpr::String {
                 value: "./macros.lykn".to_string(),
                 span: s(),
             },
             SExpr::List {
                 values: vec![
-                    SExpr::Atom {
-                        value: "when".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "unless".to_string(),
-                        span: s(),
-                    },
+                    SExpr::atom("when".to_string(), s()),
+                    SExpr::atom("unless".to_string(), s()),
                 ],
                 span: s(),
             },
@@ -892,10 +805,7 @@ mod tests {
     fn test_validate_import_form_too_few_elements() {
         // Only the head atom and a path — missing binding list.
         let values = vec![
-            SExpr::Atom {
-                value: "import-macros".to_string(),
-                span: s(),
-            },
+            SExpr::atom("import-macros".to_string(), s()),
             SExpr::String {
                 value: "./macros.lykn".to_string(),
                 span: s(),
@@ -908,10 +818,7 @@ mod tests {
 
     #[test]
     fn test_validate_import_form_single_element() {
-        let values = vec![SExpr::Atom {
-            value: "import-macros".to_string(),
-            span: s(),
-        }];
+        let values = vec![SExpr::atom("import-macros".to_string(), s())];
         let err = validate_import_form(&values).unwrap_err();
         let msg = format!("{err}");
         assert!(msg.contains("requires a path and a binding list"), "{msg}");
@@ -920,19 +827,10 @@ mod tests {
     #[test]
     fn test_validate_import_form_non_string_path() {
         let values = vec![
-            SExpr::Atom {
-                value: "import-macros".to_string(),
-                span: s(),
-            },
-            SExpr::Atom {
-                value: "not-a-string".to_string(),
-                span: s(),
-            },
+            SExpr::atom("import-macros".to_string(), s()),
+            SExpr::atom("not-a-string".to_string(), s()),
             SExpr::List {
-                values: vec![SExpr::Atom {
-                    value: "when".to_string(),
-                    span: s(),
-                }],
+                values: vec![SExpr::atom("when".to_string(), s())],
                 span: s(),
             },
         ];
@@ -947,10 +845,7 @@ mod tests {
     #[test]
     fn test_validate_import_form_number_path() {
         let values = vec![
-            SExpr::Atom {
-                value: "import-macros".to_string(),
-                span: s(),
-            },
+            SExpr::atom("import-macros".to_string(), s()),
             SExpr::Number {
                 value: 42.0,
                 span: s(),
@@ -971,10 +866,7 @@ mod tests {
     #[test]
     fn test_validate_import_form_extracts_aliased_bindings() {
         let values = vec![
-            SExpr::Atom {
-                value: "import-macros".to_string(),
-                span: s(),
-            },
+            SExpr::atom("import-macros".to_string(), s()),
             SExpr::String {
                 value: "./m.lykn".to_string(),
                 span: s(),
@@ -982,18 +874,9 @@ mod tests {
             SExpr::List {
                 values: vec![SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "as".to_string(),
-                            span: s(),
-                        },
-                        SExpr::Atom {
-                            value: "original".to_string(),
-                            span: s(),
-                        },
-                        SExpr::Atom {
-                            value: "alias".to_string(),
-                            span: s(),
-                        },
+                        SExpr::atom("as".to_string(), s()),
+                        SExpr::atom("original".to_string(), s()),
+                        SExpr::atom("alias".to_string(), s()),
                     ],
                     span: s(),
                 }],
@@ -1012,14 +895,8 @@ mod tests {
         let bindings = SExpr::List {
             values: vec![SExpr::List {
                 values: vec![
-                    SExpr::Atom {
-                        value: "as".to_string(),
-                        span: s(),
-                    },
-                    SExpr::Atom {
-                        value: "original".to_string(),
-                        span: s(),
-                    },
+                    SExpr::atom("as".to_string(), s()),
+                    SExpr::atom("original".to_string(), s()),
                     SExpr::Number {
                         value: 99.0,
                         span: s(),

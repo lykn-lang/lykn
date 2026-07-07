@@ -13,8 +13,8 @@
 //! let forms = vec![
 //!     SExpr::List {
 //!         values: vec![
-//!             SExpr::Atom { value: "const".into(), span: Span::default() },
-//!             SExpr::Atom { value: "x".into(), span: Span::default() },
+//!             SExpr::atom("const", Span::default()),
+//!             SExpr::atom("x", Span::default()),
 //!             SExpr::Number { value: 1.0, span: Span::default() },
 //!         ],
 //!         span: Span::default(),
@@ -58,10 +58,7 @@ mod tests {
     }
 
     fn atom(v: &str) -> SExpr {
-        SExpr::Atom {
-            value: v.to_string(),
-            span: s(),
-        }
+        SExpr::atom(v.to_string(), s())
     }
 
     fn num(v: f64) -> SExpr {

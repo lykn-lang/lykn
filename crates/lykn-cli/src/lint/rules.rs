@@ -15,7 +15,7 @@ use super::{LintContext, LintRule};
 /// head text, its args, and its span.
 fn atom_call(node: &SExpr) -> Option<(&str, &[SExpr], Span)> {
     if let SExpr::List { values, .. } = node
-        && let Some(SExpr::Atom { value, span }) = values.first()
+        && let Some(SExpr::Atom { value, span, .. }) = values.first()
     {
         return Some((value.as_str(), &values[1..], *span));
     }
@@ -156,7 +156,9 @@ impl LintRule for NoNewWrappers {
     fn enter(&mut self, node: &SExpr, _ctx: &LintContext, out: &mut Vec<Diagnostic>) {
         if let Some((head, args, _span)) = atom_call(node)
             && head == "new"
-            && let Some(SExpr::Atom { value: ctor, span }) = args.first()
+            && let Some(SExpr::Atom {
+                value: ctor, span, ..
+            }) = args.first()
             && matches!(ctor.as_str(), "String" | "Number" | "Boolean")
         {
             out.push(Diagnostic {
@@ -200,7 +202,7 @@ impl LintRule for NoArguments {
         "no-arguments"
     }
     fn enter(&mut self, node: &SExpr, _ctx: &LintContext, out: &mut Vec<Diagnostic>) {
-        if let SExpr::Atom { value, span } = node
+        if let SExpr::Atom { value, span, .. } = node
             && value == "arguments"
         {
             out.push(Diagnostic {
@@ -446,7 +448,7 @@ impl LintRule for NoDirnameFixtures {
         if !is_test_file(ctx.file) {
             return;
         }
-        if let SExpr::Atom { value, span } = node
+        if let SExpr::Atom { value, span, .. } = node
             && (value == "import.meta:dirname" || value == "import:meta:dirname")
         {
             out.push(Diagnostic {

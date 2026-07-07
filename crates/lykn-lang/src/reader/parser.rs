@@ -46,7 +46,7 @@ impl<'a> Parser<'a> {
 
         match token {
             Token::LParen => self.parse_list(span.start),
-            Token::Atom(s) => Ok(SExpr::Atom { value: s, span }),
+            Token::Atom(s) => Ok(SExpr::atom(s, span)),
             Token::Keyword(s) => Ok(SExpr::Keyword { value: s, span }),
             Token::String(s) => Ok(SExpr::String { value: s, span }),
             Token::Number(n) => Ok(SExpr::Number { value: n, span }),
@@ -56,13 +56,7 @@ impl<'a> Parser<'a> {
                 let inner = self.parse_expr()?;
                 let end_span = inner.span();
                 Ok(SExpr::List {
-                    values: vec![
-                        SExpr::Atom {
-                            value: "quote".to_string(),
-                            span,
-                        },
-                        inner,
-                    ],
+                    values: vec![SExpr::atom("quote", span), inner],
                     span: Span::new(span.start, end_span.end),
                 })
             }
@@ -70,13 +64,7 @@ impl<'a> Parser<'a> {
                 let inner = self.parse_expr()?;
                 let end_span = inner.span();
                 Ok(SExpr::List {
-                    values: vec![
-                        SExpr::Atom {
-                            value: "quasiquote".to_string(),
-                            span,
-                        },
-                        inner,
-                    ],
+                    values: vec![SExpr::atom("quasiquote", span), inner],
                     span: Span::new(span.start, end_span.end),
                 })
             }
@@ -84,13 +72,7 @@ impl<'a> Parser<'a> {
                 let inner = self.parse_expr()?;
                 let end_span = inner.span();
                 Ok(SExpr::List {
-                    values: vec![
-                        SExpr::Atom {
-                            value: "unquote".to_string(),
-                            span,
-                        },
-                        inner,
-                    ],
+                    values: vec![SExpr::atom("unquote", span), inner],
                     span: Span::new(span.start, end_span.end),
                 })
             }
@@ -98,13 +80,7 @@ impl<'a> Parser<'a> {
                 let inner = self.parse_expr()?;
                 let end_span = inner.span();
                 Ok(SExpr::List {
-                    values: vec![
-                        SExpr::Atom {
-                            value: "unquote-splicing".to_string(),
-                            span,
-                        },
-                        inner,
-                    ],
+                    values: vec![SExpr::atom("unquote-splicing", span), inner],
                     span: Span::new(span.start, end_span.end),
                 })
             }
@@ -202,13 +178,7 @@ impl<'a> Parser<'a> {
                         mut values,
                         span: inner_span,
                     } => {
-                        values.insert(
-                            0,
-                            SExpr::Atom {
-                                value: "array".to_string(),
-                                span: Span::new(start, next_span.end),
-                            },
-                        );
+                        values.insert(0, SExpr::atom("array", Span::new(start, next_span.end)));
                         Ok(SExpr::List {
                             values,
                             span: Span::new(start, inner_span.end),
@@ -227,13 +197,7 @@ impl<'a> Parser<'a> {
                         mut values,
                         span: inner_span,
                     } => {
-                        values.insert(
-                            0,
-                            SExpr::Atom {
-                                value: "object".to_string(),
-                                span: Span::new(start, next_span.end),
-                            },
-                        );
+                        values.insert(0, SExpr::atom("object", Span::new(start, next_span.end)));
                         Ok(SExpr::List {
                             values,
                             span: Span::new(start, inner_span.end),

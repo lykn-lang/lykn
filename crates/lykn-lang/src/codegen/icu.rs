@@ -571,10 +571,7 @@ pub fn try_emit_template_icu(w: &mut JsWriter, args: &[SExpr]) -> Result<IcuDisp
         );
         if refs > 1 && !trivial {
             let local_name = format!("_{}", to_js_identifier(&key));
-            let placeholder = SExpr::Atom {
-                value: local_name.clone(),
-                span: Span::default(),
-            };
+            let placeholder = SExpr::atom(local_name.clone(), Span::default());
             hoisted.push((local_name, expr));
             final_kwargs.insert(key, placeholder);
         } else {
@@ -791,10 +788,7 @@ fn emit_plural_iife(
     counter: &mut usize,
 ) -> Result<(), LyknError> {
     let var_name = fresh_icu_var(counter);
-    let var_expr = SExpr::Atom {
-        value: var_name.clone(),
-        span: Span::default(),
-    };
+    let var_expr = SExpr::atom(var_name.clone(), Span::default());
 
     w.write("(() => {");
     w.write(&format!(" const {} = ", var_name));
@@ -850,10 +844,7 @@ fn emit_select_iife(
     counter: &mut usize,
 ) -> Result<(), LyknError> {
     let var_name = fresh_icu_var(counter);
-    let var_expr = SExpr::Atom {
-        value: var_name.clone(),
-        span: Span::default(),
-    };
+    let var_expr = SExpr::atom(var_name.clone(), Span::default());
 
     w.write("(() => {");
     w.write(&format!(" const {} = ", var_name));
@@ -1098,10 +1089,7 @@ mod tests {
     // ── Emitter tests ─────────────────────────────────────────────
 
     fn mk(name: &str) -> SExpr {
-        SExpr::Atom {
-            value: name.into(),
-            span: Span::default(),
-        }
+        SExpr::atom(name, Span::default())
     }
 
     fn emit_mft_str(mft: &[MftNode], kwargs: &HashMap<String, SExpr>) -> String {

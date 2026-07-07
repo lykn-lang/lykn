@@ -47,10 +47,7 @@ pub fn emit_post_check(func_name: &str, post_expr: &SExpr, result_var: &str, _sp
 /// Recursively replace `~` atoms with the given variable name.
 fn replace_tilde(expr: &SExpr, var: &str) -> SExpr {
     match expr {
-        SExpr::Atom { value, span } if value == "~" => SExpr::Atom {
-            value: var.to_string(),
-            span: *span,
-        },
+        SExpr::Atom { value, span, .. } if value == "~" => SExpr::atom(var, *span),
         SExpr::List { values, span } => SExpr::List {
             values: values.iter().map(|v| replace_tilde(v, var)).collect(),
             span: *span,

@@ -261,10 +261,7 @@ mod tests {
     #[test]
     fn test_atom_true_becomes_bool() {
         let reg = registry();
-        let pat = Pattern::Literal(SExpr::Atom {
-            value: "true".into(),
-            span: span(),
-        });
+        let pat = Pattern::Literal(SExpr::atom("true", span()));
         let dp = deconstruct_pattern(&pat, &reg).unwrap();
         assert_eq!(dp, DeconPattern::Literal(LiteralKind::Bool(true)));
     }
@@ -272,10 +269,7 @@ mod tests {
     #[test]
     fn test_atom_null_becomes_null() {
         let reg = registry();
-        let pat = Pattern::Literal(SExpr::Atom {
-            value: "null".into(),
-            span: span(),
-        });
+        let pat = Pattern::Literal(SExpr::atom("null", span()));
         let dp = deconstruct_pattern(&pat, &reg).unwrap();
         assert_eq!(dp, DeconPattern::Literal(LiteralKind::Null));
     }
@@ -283,10 +277,7 @@ mod tests {
     #[test]
     fn test_atom_variable_becomes_wildcard() {
         let reg = registry();
-        let pat = Pattern::Literal(SExpr::Atom {
-            value: "x".into(),
-            span: span(),
-        });
+        let pat = Pattern::Literal(SExpr::atom("x", span()));
         let dp = deconstruct_pattern(&pat, &reg).unwrap();
         assert_eq!(dp, DeconPattern::Wildcard);
     }

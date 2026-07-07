@@ -72,10 +72,7 @@ mod tests {
 
     #[test]
     fn test_atom_to_json() {
-        let expr = SExpr::Atom {
-            value: "foo".into(),
-            span: s(),
-        };
+        let expr = SExpr::atom("foo", s());
         assert_eq!(
             sexpr_to_json(&expr),
             serde_json::json!({"type": "atom", "value": "foo"})
@@ -151,10 +148,7 @@ mod tests {
     fn test_list_to_json() {
         let expr = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "+".into(),
-                    span: s(),
-                },
+                SExpr::atom("+", s()),
                 SExpr::Number {
                     value: 1.0,
                     span: s(),
@@ -182,14 +176,8 @@ mod tests {
     #[test]
     fn test_cons_to_json() {
         let expr = SExpr::Cons {
-            car: Box::new(SExpr::Atom {
-                value: "a".into(),
-                span: s(),
-            }),
-            cdr: Box::new(SExpr::Atom {
-                value: "b".into(),
-                span: s(),
-            }),
+            car: Box::new(SExpr::atom("a", s())),
+            cdr: Box::new(SExpr::atom("b", s())),
             span: s(),
         };
         assert_eq!(
@@ -206,14 +194,8 @@ mod tests {
     fn test_emit_module_json() {
         let forms = vec![SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "const".into(),
-                    span: s(),
-                },
-                SExpr::Atom {
-                    value: "x".into(),
-                    span: s(),
-                },
+                SExpr::atom("const", s()),
+                SExpr::atom("x", s()),
                 SExpr::Number {
                     value: 42.0,
                     span: s(),
@@ -243,20 +225,14 @@ mod tests {
     fn test_nested_list_to_json() {
         let expr = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "if".into(),
-                    span: s(),
-                },
+                SExpr::atom("if", s()),
                 SExpr::Bool {
                     value: true,
                     span: s(),
                 },
                 SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "+".into(),
-                            span: s(),
-                        },
+                        SExpr::atom("+", s()),
                         SExpr::Number {
                             value: 1.0,
                             span: s(),

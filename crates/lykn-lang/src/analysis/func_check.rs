@@ -218,10 +218,7 @@ mod tests {
     fn test_non_func_form_returns_empty() {
         let reg = registry();
         let form = SurfaceForm::KernelPassthrough {
-            raw: crate::ast::sexpr::SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            raw: crate::ast::sexpr::SExpr::atom("x", span()),
             span: span(),
         };
         assert!(check_func_overlap(&form, &reg).is_empty());

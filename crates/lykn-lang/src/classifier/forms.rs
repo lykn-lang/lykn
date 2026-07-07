@@ -37,7 +37,9 @@ fn closest_kernel_form(name: &str) -> Option<&'static str> {
 pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
-            if let Some(head_name) = values[0].as_atom() {
+            // DD-61 §A6: dispatch on the *form head* — a lexically bound head
+            // (`as_form_head` → `None`) falls through to the plain-call path.
+            if let Some(head_name) = values[0].as_form_head() {
                 let args = &values[1..];
                 // DD-58: kernel: prefix escape — strip prefix, validate
                 // against kernel whitelist, emit KernelPassthrough with
@@ -45,10 +47,7 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                 if let Some(kernel_form) = head_name.strip_prefix("kernel:") {
                     if dispatch::is_kernel_form(kernel_form) {
                         let mut stripped_values = Vec::with_capacity(values.len());
-                        stripped_values.push(SExpr::Atom {
-                            value: kernel_form.to_string(),
-                            span: values[0].span(),
-                        });
+                        stripped_values.push(SExpr::atom(kernel_form, values[0].span()));
                         stripped_values.extend(values[1..].iter().cloned());
                         return Ok(SurfaceForm::KernelPassthrough {
                             raw: SExpr::List {
@@ -117,16 +116,15 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
 pub fn classify_form_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
-            if let Some(head_name) = values[0].as_atom() {
+            // DD-61 §A6: dispatch on the *form head* — a lexically bound head
+            // (`as_form_head` → `None`) falls through to the plain-call path.
+            if let Some(head_name) = values[0].as_form_head() {
                 let args = &values[1..];
                 // DD-58 §"The kernel: escape syntax" — same logic as lax mode (M17)
                 if let Some(kernel_form) = head_name.strip_prefix("kernel:") {
                     if dispatch::is_kernel_form(kernel_form) {
                         let mut stripped_values = Vec::with_capacity(values.len());
-                        stripped_values.push(SExpr::Atom {
-                            value: kernel_form.to_string(),
-                            span: values[0].span(),
-                        });
+                        stripped_values.push(SExpr::atom(kernel_form, values[0].span()));
                         stripped_values.extend(values[1..].iter().cloned());
                         return Ok(SurfaceForm::KernelPassthrough {
                             raw: SExpr::List {
@@ -229,7 +227,9 @@ pub fn classify_form_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
 pub fn classify_form_kernel_only(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
-            if let Some(head_name) = values[0].as_atom() {
+            // DD-61 §A6: dispatch on the *form head* — a lexically bound head
+            // (`as_form_head` → `None`) falls through to the plain-call path.
+            if let Some(head_name) = values[0].as_form_head() {
                 if dispatch::is_kernel_form(head_name) {
                     Ok(SurfaceForm::KernelPassthrough {
                         raw: expr.clone(),
@@ -282,9 +282,11 @@ fn classify_export(
         return Err(err("export requires at least one argument", span));
     }
 
-    // Check if the first arg is a list with a head that needs recursive classification
+    // Check if the first arg is a list with a head that needs recursive
+    // classification. DD-61 §A6: a lexically bound inner head is a call, so
+    // `as_form_head` (bound → `None`) keeps the export a plain passthrough.
     if let SExpr::List { values, .. } = &args[0]
-        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && let Some(head) = values.first().and_then(|e| e.as_form_head())
         && (dispatch::is_surface_form(head)
             || head == "async"
             || head == "class"
@@ -313,9 +315,10 @@ fn classify_async(args: &[SExpr], span: Span, raw_expr: &SExpr) -> Result<Surfac
         return Err(err("async requires at least one argument", span));
     }
 
-    // Check if the first arg is a list with a surface-form head
+    // Check if the first arg is a list with a surface-form head. DD-61 §A6: a
+    // lexically bound inner head is a call → `as_form_head` keeps it passthrough.
     if let SExpr::List { values, .. } = &args[0]
-        && let Some(head) = values.first().and_then(|e| e.as_atom())
+        && let Some(head) = values.first().and_then(|e| e.as_form_head())
         && dispatch::is_surface_form(head)
     {
         let inner = classify_form(&args[0])?;
@@ -578,14 +581,18 @@ fn classify_type(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
         ));
     }
     let name = match &args[0] {
-        SExpr::Atom { value, span: nspan } => (value.clone(), *nspan),
+        SExpr::Atom {
+            value, span: nspan, ..
+        } => (value.clone(), *nspan),
         _ => return Err(err("type: first argument must be a type name", span)),
     };
 
     let mut constructors = Vec::new();
     for ctor in &args[1..] {
         match ctor {
-            SExpr::Atom { value, span: cspan } => {
+            SExpr::Atom {
+                value, span: cspan, ..
+            } => {
                 constructors.push(Constructor {
                     name: value.clone(),
                     name_span: *cspan,
@@ -598,7 +605,9 @@ fn classify_type(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
                 span: cspan,
             } if !values.is_empty() => {
                 let ctor_name = match &values[0] {
-                    SExpr::Atom { value, span: nspan } => (value.clone(), *nspan),
+                    SExpr::Atom {
+                        value, span: nspan, ..
+                    } => (value.clone(), *nspan),
                     _ => return Err(err("constructor name must be an atom", *cspan)),
                 };
                 let fields = parse_simple_typed_params(&values[1..], *cspan)?;
@@ -626,7 +635,9 @@ fn classify_func(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
         return Err(err("func requires at least a name", span));
     }
     let name = match &args[0] {
-        SExpr::Atom { value, span: nspan } => (value.clone(), *nspan),
+        SExpr::Atom {
+            value, span: nspan, ..
+        } => (value.clone(), *nspan),
         _ => return Err(err("func: first argument must be a function name", span)),
     };
 
@@ -778,7 +789,9 @@ fn classify_genfunc(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnosti
         return Err(err("genfunc requires at least a name", span));
     }
     let name = match &args[0] {
-        SExpr::Atom { value, span: nspan } => (value.clone(), *nspan),
+        SExpr::Atom {
+            value, span: nspan, ..
+        } => (value.clone(), *nspan),
         _ => return Err(err("genfunc: first argument must be a function name", span)),
     };
 
@@ -1000,13 +1013,13 @@ fn classify_match(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic>
 
 fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
     match expr {
-        SExpr::Atom { value, span } if value == "_" => Ok(Pattern::Wildcard(*span)),
+        SExpr::Atom { value, span, .. } if value == "_" => Ok(Pattern::Wildcard(*span)),
         SExpr::Atom { value, .. }
             if value == "true" || value == "false" || value == "null" || value == "undefined" =>
         {
             Ok(Pattern::Literal(expr.clone()))
         }
-        SExpr::Atom { value, span } => {
+        SExpr::Atom { value, span, .. } => {
             if value.starts_with(|c: char| c.is_uppercase()) {
                 // PascalCase — zero-field constructor
                 Ok(Pattern::Constructor {
@@ -1241,12 +1254,9 @@ fn classify_macro_def(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnos
     };
     // Store the entire original expression as raw
     let raw = SExpr::List {
-        values: std::iter::once(SExpr::Atom {
-            value: "macro".to_string(),
-            span,
-        })
-        .chain(args.iter().cloned())
-        .collect(),
+        values: std::iter::once(SExpr::atom("macro", span))
+            .chain(args.iter().cloned())
+            .collect(),
         span,
     };
     Ok(SurfaceForm::MacroDef { name, raw, span })
@@ -1254,12 +1264,9 @@ fn classify_macro_def(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnos
 
 fn classify_import_macros(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
     let raw = SExpr::List {
-        values: std::iter::once(SExpr::Atom {
-            value: "import-macros".to_string(),
-            span,
-        })
-        .chain(args.iter().cloned())
-        .collect(),
+        values: std::iter::once(SExpr::atom("import-macros", span))
+            .chain(args.iter().cloned())
+            .collect(),
         span,
     };
     Ok(SurfaceForm::ImportMacros { raw, span })
@@ -1335,6 +1342,7 @@ fn parse_simple_typed_params(values: &[SExpr], span: Span) -> Result<Vec<TypedPa
                 SExpr::Atom {
                     value: name,
                     span: nspan,
+                    ..
                 } => {
                     params.push(TypedParam {
                         type_ann: TypeAnnotation {
@@ -1392,6 +1400,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                 SExpr::Atom {
                                     value: name,
                                     span: nspan,
+                                    ..
                                 },
                             ) => {
                                 params.push(ParamShape::Simple(TypedParam {
@@ -1425,6 +1434,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                 SExpr::Atom {
                                     value: name,
                                     span: nspan,
+                                    ..
                                 },
                             ) => {
                                 params.push(ParamShape::Simple(TypedParam {
@@ -1468,6 +1478,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                     SExpr::Atom {
                         value: name,
                         span: nspan,
+                        ..
                     } => {
                         params.push(ParamShape::Simple(TypedParam {
                             type_ann: TypeAnnotation {
@@ -1640,6 +1651,7 @@ fn parse_object_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, 
                     SExpr::Atom {
                         value: name,
                         span: nspan,
+                        ..
                     } => {
                         fields.push(DestructuredField::Simple(TypedParam {
                             type_ann: TypeAnnotation {
@@ -1688,6 +1700,7 @@ fn parse_type_and_name(
             SExpr::Atom {
                 value: name,
                 span: nspan,
+                ..
             },
         ) => Ok((
             TypeAnnotation {
@@ -1713,7 +1726,9 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
     while i < values.len() {
         match &values[i] {
             // Skip element: _
-            SExpr::Atom { value, span: aspan } if value == "_" => {
+            SExpr::Atom {
+                value, span: aspan, ..
+            } if value == "_" => {
                 elements.push(ArrayParamElement::Skip(*aspan));
                 i += 1;
             }
@@ -1822,6 +1837,7 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
                     SExpr::Atom {
                         value: name,
                         span: nspan,
+                        ..
                     } => {
                         elements.push(ArrayParamElement::Typed(TypedParam {
                             type_ann: TypeAnnotation {
@@ -1868,6 +1884,7 @@ fn parse_rest_element(values: &[SExpr], span: Span) -> Result<TypedParam, Diagno
             SExpr::Atom {
                 value: name,
                 span: nspan,
+                ..
             },
         ) => Ok(TypedParam {
             type_ann: TypeAnnotation {
@@ -1960,6 +1977,8 @@ fn classify_class_member_inner(
         _ => return Ok(ClassMemberForm::Raw(member.clone())),
     };
 
+    // A6-exempt: a class-member name is a property (its own namespace), not a
+    // value-call head — it must be read raw even if a value binding shadows it.
     let head = match values[0].as_atom() {
         Some(h) => h,
         None => return Ok(ClassMemberForm::Raw(member.clone())),
@@ -2069,10 +2088,7 @@ mod tests {
     }
 
     fn atom(name: &str) -> SExpr {
-        SExpr::Atom {
-            value: name.to_string(),
-            span: s(),
-        }
+        SExpr::atom(name.to_string(), s())
     }
 
     fn kw(name: &str) -> SExpr {

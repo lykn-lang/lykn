@@ -355,7 +355,7 @@ fn catch_names(args: &[SExpr]) -> Vec<BindingSite> {
 /// (D2-only; labels do not shadow value bindings).
 fn label_names(args: &[SExpr]) -> Vec<BindingSite> {
     match args.first() {
-        Some(SExpr::Atom { value, span }) if value != "_" => vec![BindingSite {
+        Some(SExpr::Atom { value, span, .. }) if value != "_" => vec![BindingSite {
             name: value.clone(),
             kind: BindingKind::Label,
             span: *span,
@@ -378,7 +378,7 @@ fn import_local_names(args: &[SExpr]) -> Vec<BindingSite> {
         // (import "m" (spec…))
         SExpr::List { values, .. } => import_specs(values, &mut out),
         // (import "m" name …) — default import name
-        SExpr::Atom { value, span } if value != "_" => {
+        SExpr::Atom { value, span, .. } if value != "_" => {
             out.push(BindingSite {
                 name: value.clone(),
                 kind: BindingKind::ImportLocal,
@@ -397,7 +397,7 @@ fn import_local_names(args: &[SExpr]) -> Vec<BindingSite> {
 fn import_specs(specs: &[SExpr], out: &mut Vec<BindingSite>) {
     for spec in specs {
         match spec {
-            SExpr::Atom { value, span } if value != "_" => out.push(BindingSite {
+            SExpr::Atom { value, span, .. } if value != "_" => out.push(BindingSite {
                 name: value.clone(),
                 kind: BindingKind::ImportLocal,
                 span: *span,
@@ -406,7 +406,7 @@ fn import_specs(specs: &[SExpr], out: &mut Vec<BindingSite>) {
             SExpr::List { values, .. }
                 if values.first().and_then(|e| e.as_atom()) == Some("alias") =>
             {
-                if let Some(SExpr::Atom { value, span }) = values.get(2) {
+                if let Some(SExpr::Atom { value, span, .. }) = values.get(2) {
                     out.push(BindingSite {
                         name: value.clone(),
                         kind: BindingKind::ImportLocal,
@@ -475,7 +475,7 @@ fn collect_pattern(pat: &Pattern, out: &mut Vec<BindingSite>) {
 fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
     let mut out = Vec::new();
     // (class NAME (bases) member…) — NAME is args[0].
-    if let Some(SExpr::Atom { value, span }) = args.first()
+    if let Some(SExpr::Atom { value, span, .. }) = args.first()
         && value != "_"
     {
         out.push(BindingSite {
@@ -493,7 +493,7 @@ fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
         // shapes have no bare param list in slot 1.
         if let Some(SExpr::List { values: params, .. }) = values.get(1) {
             for p in params {
-                if let SExpr::Atom { value, span } = p
+                if let SExpr::Atom { value, span, .. } = p
                     && value != "_"
                 {
                     out.push(BindingSite {
@@ -513,7 +513,7 @@ fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
 /// structure are handled; `(rest x)` binds `x`.
 fn pattern_names(pat: &SExpr, kind: BindingKind, out: &mut Vec<BindingSite>) {
     match pat {
-        SExpr::Atom { value, span } if value != "_" => out.push(BindingSite {
+        SExpr::Atom { value, span, .. } if value != "_" => out.push(BindingSite {
             name: value.clone(),
             kind,
             span: *span,
@@ -545,11 +545,13 @@ fn pattern_names(pat: &SExpr, kind: BindingKind, out: &mut Vec<BindingSite>) {
                                     _ => {}
                                 }
                             }
-                            SExpr::Atom { value, span } if value != "_" => out.push(BindingSite {
-                                name: value.clone(),
-                                kind,
-                                span: *span,
-                            }),
+                            SExpr::Atom { value, span, .. } if value != "_" => {
+                                out.push(BindingSite {
+                                    name: value.clone(),
+                                    kind,
+                                    span: *span,
+                                })
+                            }
                             _ => {}
                         }
                     }

@@ -97,10 +97,7 @@ mod tests {
     }
 
     fn atom(name: &str) -> SExpr {
-        SExpr::Atom {
-            value: name.into(),
-            span: s(),
-        }
+        SExpr::atom(name, s())
     }
 
     fn num(n: f64) -> SExpr {

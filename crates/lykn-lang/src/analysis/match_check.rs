@@ -257,10 +257,7 @@ mod tests {
 
     fn match_form(clauses: Vec<MatchClause>) -> SurfaceForm {
         SurfaceForm::Match {
-            target: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            target: SExpr::atom("x", span()),
             clauses,
             span: span(),
         }
@@ -270,10 +267,7 @@ mod tests {
         MatchClause {
             pattern,
             guard,
-            body: vec![SExpr::Atom {
-                value: "body".into(),
-                span: span(),
-            }],
+            body: vec![SExpr::atom("body", span())],
             span: span(),
         }
     }
@@ -435,10 +429,7 @@ mod tests {
                     bindings: vec![Pattern::Wildcard(span())],
                     span: span(),
                 },
-                Some(SExpr::Atom {
-                    value: "guard".into(),
-                    span: span(),
-                }),
+                Some(SExpr::atom("guard", span())),
             ),
             clause(
                 Pattern::Constructor {
@@ -549,10 +540,7 @@ mod tests {
     fn test_non_match_form_returns_empty() {
         let reg = registry_with_option();
         let form = SurfaceForm::KernelPassthrough {
-            raw: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            raw: SExpr::atom("x", span()),
             span: span(),
         };
         assert!(check_match(&form, &reg).is_empty());

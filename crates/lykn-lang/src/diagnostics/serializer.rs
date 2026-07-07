@@ -36,10 +36,7 @@ mod tests {
 
     #[test]
     fn serialize_atom() {
-        let expr = SExpr::Atom {
-            value: "foo".to_string(),
-            span: s(),
-        };
+        let expr = SExpr::atom("foo".to_string(), s());
         assert_eq!(serialize_sexpr(&expr), "foo");
     }
 
@@ -56,10 +53,7 @@ mod tests {
     fn serialize_list() {
         let expr = SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "+".to_string(),
-                    span: s(),
-                },
+                SExpr::atom("+".to_string(), s()),
                 SExpr::Number {
                     value: 1.0,
                     span: s(),
@@ -118,14 +112,8 @@ mod tests {
 
     #[test]
     fn serialize_cons() {
-        let car = SExpr::Atom {
-            value: "a".to_string(),
-            span: s(),
-        };
-        let cdr = SExpr::Atom {
-            value: "b".to_string(),
-            span: s(),
-        };
+        let car = SExpr::atom("a".to_string(), s());
+        let cdr = SExpr::atom("b".to_string(), s());
         let expr = SExpr::Cons {
             car: Box::new(car),
             cdr: Box::new(cdr),

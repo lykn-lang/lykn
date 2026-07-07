@@ -12,6 +12,7 @@ use lykn_lang::diagnostics::Severity;
 use lykn_lang::emitter;
 use lykn_lang::expander;
 use lykn_lang::reader;
+use lykn_lang::resolver;
 
 /// Errors that can occur during compilation.
 #[derive(Debug, thiserror::Error)]
@@ -75,6 +76,9 @@ pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> 
     let imports: Option<HashMap<String, String>> =
         crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, Some(file_path), imports.as_ref())?;
+    // DD-61 §A1/§A3: resolve names (tag atoms) so dispatch sites consume the
+    // tag via `as_form_head` — a lexically bound head is no longer a form.
+    let forms = resolver::resolve(&forms);
     classifier::classify_with_options(&forms, classifier_options_for(Some(file_path))).map_err(
         |diags| {
             CompileError::Analysis(
@@ -144,6 +148,11 @@ fn compile_source_inner(
     let imports: Option<HashMap<String, String>> =
         crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
+
+    // 2a. DD-61 §A1/§A3 — resolve once: tag every atom (BindingDef/BindingRef/
+    // Unresolved). Downstream dispatch reads the tag via `as_form_head`, so a
+    // lexically bound head resolves to a plain call (DD-60 D1), not a macro/form.
+    let forms = resolver::resolve(&forms);
 
     // 2b. DD-60 D2 (via DD-61 §A2's binding walker): a JS reserved word in any
     // binding position is a compile error — before codegen can emit invalid JS
@@ -227,6 +236,8 @@ pub fn compile_source_with_dts(
     let imports: Option<HashMap<String, String>> =
         crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
+    // DD-61 §A1/§A3 — resolve names before classification (see compile path).
+    let forms = resolver::resolve(&forms);
 
     let classified = classifier::classify_with_options(&forms, classifier_options_for(file_path))
         .map_err(|diags| {

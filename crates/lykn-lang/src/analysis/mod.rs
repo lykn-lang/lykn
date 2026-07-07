@@ -510,7 +510,7 @@ fn track_class_member_scopes(members: &[ClassMemberForm], scope: &mut ScopeTrack
 /// node that matches an in-scope binding marks that binding as used.
 fn track_references_in_expr(expr: &SExpr, scope: &mut ScopeTracker) {
     match expr {
-        SExpr::Atom { value, span } => {
+        SExpr::Atom { value, span, .. } => {
             scope.reference(value, *span);
         }
         SExpr::List { values, .. } => {
@@ -549,10 +549,7 @@ mod tests {
         // (console:log greeting)
         let forms = vec![
             SurfaceForm::Bind {
-                name: SExpr::Atom {
-                    value: "greeting".into(),
-                    span: span(),
-                },
+                name: SExpr::atom("greeting", span()),
                 type_ann: None,
                 value: SExpr::String {
                     value: "hello".into(),
@@ -561,14 +558,8 @@ mod tests {
                 span: span(),
             },
             SurfaceForm::FunctionCall {
-                head: SExpr::Atom {
-                    value: "console:log".into(),
-                    span: span(),
-                },
-                args: vec![SExpr::Atom {
-                    value: "greeting".into(),
-                    span: span(),
-                }],
+                head: SExpr::atom("console:log", span()),
+                args: vec![SExpr::atom("greeting", span())],
                 span: span(),
             },
         ];
@@ -588,10 +579,7 @@ mod tests {
     fn test_bind_without_reference_warns_unused() {
         // (bind x 1) — with no reference anywhere
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            name: SExpr::atom("x", span()),
             type_ann: None,
             value: SExpr::Number {
                 value: 1.0,
@@ -648,18 +636,9 @@ mod tests {
                     post: None,
                     body: vec![SExpr::List {
                         values: vec![
-                            SExpr::Atom {
-                                value: "+".into(),
-                                span: span(),
-                            },
-                            SExpr::Atom {
-                                value: "a".into(),
-                                span: span(),
-                            },
-                            SExpr::Atom {
-                                value: "b".into(),
-                                span: span(),
-                            },
+                            SExpr::atom("+", span()),
+                            SExpr::atom("a", span()),
+                            SExpr::atom("b", span()),
                         ],
                         span: span(),
                     }],
@@ -668,16 +647,10 @@ mod tests {
                 span: span(),
             },
             SurfaceForm::FunctionCall {
-                head: SExpr::Atom {
-                    value: "console:log".into(),
-                    span: span(),
-                },
+                head: SExpr::atom("console:log", span()),
                 args: vec![SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "add".into(),
-                            span: span(),
-                        },
+                        SExpr::atom("add", span()),
                         SExpr::Number {
                             value: 1.0,
                             span: span(),
@@ -737,19 +710,13 @@ mod tests {
                     returns: None,
                     pre: None,
                     post: None,
-                    body: vec![SExpr::Atom {
-                        value: "a".into(),
-                        span: span(),
-                    }],
+                    body: vec![SExpr::atom("a", span())],
                     span: span(),
                 }],
                 span: span(),
             },
             SurfaceForm::FunctionCall {
-                head: SExpr::Atom {
-                    value: "f".into(),
-                    span: span(),
-                },
+                head: SExpr::atom("f", span()),
                 args: vec![SExpr::Number {
                     value: 1.0,
                     span: span(),
@@ -823,10 +790,7 @@ mod tests {
     fn test_analyze_detects_non_exhaustive_match() {
         // Register Option type via prelude, then match only Some
         let forms = vec![SurfaceForm::Match {
-            target: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            target: SExpr::atom("x", span()),
             clauses: vec![MatchClause {
                 pattern: Pattern::Constructor {
                     name: "Some".into(),
@@ -835,10 +799,7 @@ mod tests {
                     span: span(),
                 },
                 guard: None,
-                body: vec![SExpr::Atom {
-                    value: "1".into(),
-                    span: span(),
-                }],
+                body: vec![SExpr::atom("1", span())],
                 span: span(),
             }],
             span: span(),
@@ -858,10 +819,7 @@ mod tests {
     #[test]
     fn test_bind_number_literal_matches_number_annotation() {
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            name: SExpr::atom("x", span()),
             type_ann: Some(TypeAnnotation {
                 name: "number".into(),
                 span: span(),
@@ -887,10 +845,7 @@ mod tests {
     #[test]
     fn test_bind_string_literal_mismatches_number_annotation() {
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            name: SExpr::atom("x", span()),
             type_ann: Some(TypeAnnotation {
                 name: "number".into(),
                 span: span(),
@@ -917,10 +872,7 @@ mod tests {
     #[test]
     fn test_bind_any_annotation_accepts_any_literal() {
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            name: SExpr::atom("x", span()),
             type_ann: Some(TypeAnnotation {
                 name: "any".into(),
                 span: span(),
@@ -946,18 +898,12 @@ mod tests {
     #[test]
     fn test_bind_nan_fails_number_annotation() {
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            name: SExpr::atom("x", span()),
             type_ann: Some(TypeAnnotation {
                 name: "number".into(),
                 span: span(),
             }),
-            value: SExpr::Atom {
-                value: "NaN".into(),
-                span: span(),
-            },
+            value: SExpr::atom("NaN", span()),
             span: span(),
         }];
         let result = analyze(&forms);
@@ -968,19 +914,13 @@ mod tests {
     fn test_bind_non_literal_no_static_check() {
         // (bind :number x (compute)) — non-literal, no static error
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "x".into(),
-                span: span(),
-            },
+            name: SExpr::atom("x", span()),
             type_ann: Some(TypeAnnotation {
                 name: "number".into(),
                 span: span(),
             }),
             value: SExpr::List {
-                values: vec![SExpr::Atom {
-                    value: "compute".into(),
-                    span: span(),
-                }],
+                values: vec![SExpr::atom("compute", span())],
                 span: span(),
             },
             span: span(),
@@ -1000,10 +940,7 @@ mod tests {
     #[test]
     fn test_bind_null_fails_number_annotation() {
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "y".into(),
-                span: span(),
-            },
+            name: SExpr::atom("y", span()),
             type_ann: Some(TypeAnnotation {
                 name: "number".into(),
                 span: span(),
@@ -1018,10 +955,7 @@ mod tests {
     // --- Scope tracking for additional form variants ---
 
     fn atom(name: &str) -> SExpr {
-        SExpr::Atom {
-            value: name.into(),
-            span: span(),
-        }
+        SExpr::atom(name, span())
     }
 
     fn num(n: f64) -> SExpr {
@@ -1199,10 +1133,7 @@ mod tests {
     #[test]
     fn test_bind_bool_matches_boolean_annotation() {
         let forms = vec![SurfaceForm::Bind {
-            name: SExpr::Atom {
-                value: "flag".into(),
-                span: span(),
-            },
+            name: SExpr::atom("flag", span()),
             type_ann: Some(TypeAnnotation {
                 name: "boolean".into(),
                 span: span(),

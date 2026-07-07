@@ -25,21 +25,33 @@ pub fn expand_all(
     deno: &mut DenoSubprocess,
     env: &MacroEnv,
 ) -> Result<Vec<SExpr>, LyknError> {
+    // DD-61 §A3 — the light binding-scan. The expander runs *before* the
+    // resolver, so it cannot read resolution tags; instead it carries a scope
+    // set of lexically bound names (built from the shared binding walker, via
+    // `resolver::scope_plan`/`hoisted_names`) so a bound head fires neither a
+    // desugar nor a user macro — DD-60 D1, applied at expansion time.
+    let mut scope: Vec<String> = Vec::new();
     let mut result = Vec::new();
     for form in forms {
-        if let Some(expr) = expand_expr(form, deno, env)? {
+        let hoist = crate::resolver::hoisted_names(&form);
+        if let Some(expr) = expand_expr(form, deno, env, &mut scope)? {
             result.push(expr);
         }
+        // Top-level declarations (`bind`, `import` locals) shadow in the forms
+        // that follow them.
+        scope.extend(hoist);
     }
     Ok(result)
 }
 
 /// Expand a single S-expression, returning `None` if the form should be
-/// elided (currently all forms produce output).
+/// elided (currently all forms produce output). `scope` is the DD-61 §A3 set
+/// of lexically bound names in effect at this point.
 fn expand_expr(
     form: SExpr,
     deno: &mut DenoSubprocess,
     env: &MacroEnv,
+    scope: &mut Vec<String>,
 ) -> Result<Option<SExpr>, LyknError> {
     match &form {
         // Leaf nodes — no expansion needed.
@@ -52,8 +64,8 @@ fn expand_expr(
 
         // Cons pairs — expand both halves.
         SExpr::Cons { car, cdr, span } => {
-            let expanded_car = expand_expr(*car.clone(), deno, env)?;
-            let expanded_cdr = expand_expr(*cdr.clone(), deno, env)?;
+            let expanded_car = expand_expr(*car.clone(), deno, env, scope)?;
+            let expanded_cdr = expand_expr(*cdr.clone(), deno, env, scope)?;
             match (expanded_car, expanded_cdr) {
                 (Some(c), Some(d)) => Ok(Some(SExpr::Cons {
                     car: Box::new(c),
@@ -91,13 +103,18 @@ fn expand_expr(
                     });
                 }
 
+                // DD-61 §A3 light binding-scan: a lexically bound head is
+                // neither a desugar nor a user macro — it is a plain call to the
+                // binding (DD-60 D1). Skip both dispatch paths when bound.
+                let bound = scope.iter().any(|n| n == head_name);
+
                 // Sugar form desugaring.
-                if let Some(desugared) = try_desugar(head_name, &values[1..], *span) {
-                    return expand_expr(desugared, deno, env);
+                if !bound && let Some(desugared) = try_desugar(head_name, &values[1..], *span) {
+                    return expand_expr(desugared, deno, env, scope);
                 }
 
                 // User-defined macro expansion (fixed-point).
-                if env.contains_key(head_name.as_str()) {
+                if !bound && env.contains_key(head_name.as_str()) {
                     let mut current = form.clone();
                     let mut count: usize = 0;
 
@@ -131,23 +148,75 @@ fn expand_expr(
                     }
 
                     // Recursively expand the result.
-                    return expand_expr(current, deno, env);
+                    return expand_expr(current, deno, env, scope);
                 }
             }
 
-            // Default: recursively expand all sub-forms.
-            let mut expanded_values = Vec::new();
-            for sub in values.iter() {
-                if let Some(expanded) = expand_expr(sub.clone(), deno, env)? {
-                    expanded_values.push(expanded);
-                }
-            }
+            // Default: recursively expand sub-forms, extending the scope over
+            // exactly the child positions each binding is lexically visible in
+            // (DD-61 §A3, via the shared `resolver::scope_plan`).
+            let expanded_values = expand_children_scoped(&form, values, deno, env, scope)?;
             Ok(Some(SExpr::List {
                 values: expanded_values,
                 span: *span,
             }))
         }
     }
+}
+
+/// Expand a list's children with the scope extended per the form's
+/// [`crate::resolver::ScopePlan`] — mirroring the resolver so the expander's
+/// light scan and the resolver's tagging agree on what is in scope where. `form`
+/// is the enclosing list (for the plan); `values` are its children.
+fn expand_children_scoped(
+    form: &SExpr,
+    values: &[SExpr],
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    scope: &mut Vec<String>,
+) -> Result<Vec<SExpr>, LyknError> {
+    match crate::resolver::scope_plan(form) {
+        crate::resolver::ScopePlan::Sequence => expand_seq(values, deno, env, scope),
+        crate::resolver::ScopePlan::Body { names, body_start } => {
+            let split = body_start.min(values.len());
+            let mut out = Vec::with_capacity(values.len());
+            // Pre-body children (initializer / iterable / scrutinee): the
+            // binding is not yet in scope.
+            for sub in &values[..split] {
+                if let Some(e) = expand_expr(sub.clone(), deno, env, scope)? {
+                    out.push(e);
+                }
+            }
+            if split < values.len() {
+                let mark = scope.len();
+                scope.extend(names);
+                out.extend(expand_seq(&values[split..], deno, env, scope)?);
+                scope.truncate(mark);
+            }
+            Ok(out)
+        }
+    }
+}
+
+/// Expand a run of sibling forms, hoisting each one's enclosing-scope
+/// declarations (`bind`, `import` locals) into scope for the forms that follow.
+fn expand_seq(
+    values: &[SExpr],
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    scope: &mut Vec<String>,
+) -> Result<Vec<SExpr>, LyknError> {
+    let mark = scope.len();
+    let mut out = Vec::with_capacity(values.len());
+    for sub in values {
+        let hoist = crate::resolver::hoisted_names(sub);
+        if let Some(e) = expand_expr(sub.clone(), deno, env, scope)? {
+            out.push(e);
+        }
+        scope.extend(hoist);
+    }
+    scope.truncate(mark);
+    Ok(out)
 }
 
 /// Attempt to desugar a known sugar form.
@@ -158,23 +227,13 @@ fn try_desugar(head: &str, args: &[SExpr], span: Span) -> Option<SExpr> {
     let s = Span::default();
     match head {
         "cons" if args.len() == 2 => Some(SExpr::List {
-            values: vec![
-                SExpr::Atom {
-                    value: "array".to_string(),
-                    span: s,
-                },
-                args[0].clone(),
-                args[1].clone(),
-            ],
+            values: vec![SExpr::atom("array", s), args[0].clone(), args[1].clone()],
             span,
         }),
 
         "car" if args.len() == 1 => Some(SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "get".to_string(),
-                    span: s,
-                },
+                SExpr::atom("get", s),
                 args[0].clone(),
                 SExpr::Number {
                     value: 0.0,
@@ -186,10 +245,7 @@ fn try_desugar(head: &str, args: &[SExpr], span: Span) -> Option<SExpr> {
 
         "cdr" if args.len() == 1 => Some(SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "get".to_string(),
-                    span: s,
-                },
+                SExpr::atom("get", s),
                 args[0].clone(),
                 SExpr::Number {
                     value: 1.0,
@@ -201,16 +257,10 @@ fn try_desugar(head: &str, args: &[SExpr], span: Span) -> Option<SExpr> {
 
         "cadr" if args.len() == 1 => Some(SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "get".to_string(),
-                    span: s,
-                },
+                SExpr::atom("get", s),
                 SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "get".to_string(),
-                            span: s,
-                        },
+                        SExpr::atom("get", s),
                         args[0].clone(),
                         SExpr::Number {
                             value: 1.0,
@@ -229,16 +279,10 @@ fn try_desugar(head: &str, args: &[SExpr], span: Span) -> Option<SExpr> {
 
         "cddr" if args.len() == 1 => Some(SExpr::List {
             values: vec![
-                SExpr::Atom {
-                    value: "get".to_string(),
-                    span: s,
-                },
+                SExpr::atom("get", s),
                 SExpr::List {
                     values: vec![
-                        SExpr::Atom {
-                            value: "get".to_string(),
-                            span: s,
-                        },
+                        SExpr::atom("get", s),
                         args[0].clone(),
                         SExpr::Number {
                             value: 1.0,
@@ -255,27 +299,14 @@ fn try_desugar(head: &str, args: &[SExpr], span: Span) -> Option<SExpr> {
             span,
         }),
 
-        "list" if args.is_empty() => Some(SExpr::Atom {
-            value: "null".to_string(),
-            span,
-        }),
+        "list" if args.is_empty() => Some(SExpr::atom("null", span)),
 
         "list" => {
             // (list a b c) desugars to (array a (array b (array c null)))
-            let mut result = SExpr::Atom {
-                value: "null".to_string(),
-                span: s,
-            };
+            let mut result = SExpr::atom("null", s);
             for arg in args.iter().rev() {
                 result = SExpr::List {
-                    values: vec![
-                        SExpr::Atom {
-                            value: "array".to_string(),
-                            span: s,
-                        },
-                        arg.clone(),
-                        result,
-                    ],
+                    values: vec![SExpr::atom("array", s), arg.clone(), result],
                     span: s,
                 };
             }
@@ -285,14 +316,7 @@ fn try_desugar(head: &str, args: &[SExpr], span: Span) -> Option<SExpr> {
         "as" if args.len() == 2 => {
             if args[0].is_atom() {
                 Some(SExpr::List {
-                    values: vec![
-                        SExpr::Atom {
-                            value: "alias".to_string(),
-                            span: s,
-                        },
-                        args[0].clone(),
-                        args[1].clone(),
-                    ],
+                    values: vec![SExpr::atom("alias", s), args[0].clone(), args[1].clone()],
                     span,
                 })
             } else {
@@ -314,10 +338,7 @@ mod tests {
     }
 
     fn atom(name: &str) -> SExpr {
-        SExpr::Atom {
-            value: name.to_string(),
-            span: s(),
-        }
+        SExpr::atom(name, s())
     }
 
     fn num(n: f64) -> SExpr {
