@@ -40,7 +40,7 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice05 · position-sweep + walker-completion** | Refinement #2's positions (catch/import-local D1+D2; label D2-only) **+ the derived-exhaustiveness sweep** (enumerate identifier-emitting binding slots from the grammar/codegen per backend; diff vs walker = a **standing test** in `make check`). Ends discovery-by-leak: the list becomes complete by construction. | **Closed** (catch/import/label + the **name-slot class the sweep found** [func/genfunc/class/type names + ctor params — invalid JS at rc=0, all folded]; coverage test standing w/ seeded-gap demo; matrix 8→11, originals byte-identical; suites 1401/0; **exhaustiveness by construction**) |
 | **slice06 · rust-resolution** | Env + resolved-atom tags (DD-61 §A1) through the Rust pipeline (classifier hosts the env; expander gets the light binding-scan); emitter/codegen → read-only consumers via the `as_form_head()` swap (**DD-61 §A6 rows pinned at scoping**: zero dispatch-purpose raw-head reads [F-3] + a standing static check [F-4]; JS matrix columns + corpus outputs byte-identical [F-5] — movement = leak = stop). §A6 *privacy* is phased per the operator call (2026-07-06): this slice lands accessor + `#[must_use]` + check; the `Atom` payload restructure is a follow-up slice. | **Closed** (`dc37ae9`; all 6 rows met; `make check` ✓, suites 1401/0, docs 475/0; Rust matrix at DD-60 targets — macro-fires 182→22, residue = the label column by design; JS + corpus byte-identical; resolver = standalone pass [`resolver.rs`, §A3 as-built deviation, surfaced]; central `SExpr::atom()` landed. First session self-stopped cleanly same day → fresh-context recycle; delivery by the fresh session) |
 | **slice07 · atom-privacy-recon** | Recon-only investigation for the atom-payload-privacy layer: construction + pattern censuses, design proposal, LoE + sizing, blast radius. Empty diff at close. | **Closed** (2026-07-07, empty diff; **construction class already retired** by slice06's constructor — 170 calls, 1 bare literal; real blast radius = **~85 field-naming pattern sites across TWO crates** — lead finding: `lykn-cli` has **no separate `SExpr`**, it imports lykn-lang's [phasing-plan premise corrected]; design = `Atom(AtomData)` Option A; **operator 2026-07-07: two slices; `as_atom()` stays as-is**) |
-| **slice08 · accessor-sweep** | Privacy pair, step 1 (from slice07's report): `atom_parts()` + convert all ~85 field-naming `Atom` pattern sites to accessors **while fields stay public** — green throughout, behavior byte-identical, both crates (incl. the 5 `lykn-cli` sites); completion gate = zero field-naming patterns outside `ast/sexpr.rs` (slice09's precondition). **Depends on: slice06 (landed).** | **Open** (open set written 2026-07-07) |
+| **slice08 · accessor-sweep** | Privacy pair, step 1 (from slice07's report): `atom_parts()` + convert all ~85 field-naming `Atom` pattern sites to accessors **while fields stay public** — green throughout, behavior byte-identical, both crates (incl. the 5 `lykn-cli` sites); completion gate = zero field-naming patterns outside `ast/sexpr.rs` (slice09's precondition). **Depends on: slice06 (landed).** | **Closed** (`7d86703` + `dab4405`; 6/6 rows; byte-identical, counts unchanged; **F-5 gate CDC-reproduced**; finding: `contains_await` destructure head-read — F-4's blind spot, self-closed by the sweep; behavior question routed → corpus+close scoping) |
 | **slice09 · privacy-flip** | Privacy pair, step 2 — the atomic restructure: `Atom(AtomData)`, fields private to `ast::sexpr`; seeded compile-fail demos both crates; `as_atom()` public/unrenamed (operator call), slice06 A6 check stays load-bearing; the DD-61 §A6 by-construction layer lands. **Depends on: slice08.** | **Open** (open set written 2026-07-07) |
 | *(next)* · js-resolution | Same through `expandExpr`; `formHead()` + the static grep-conformance check (§A6). **Must mirror slice06's `scope_plan` region model** (bindings not in scope over initializer/iterable/scrutinee — a naive whole-subtree push miscompiles; hook notes in slice06's closing report) and keep the label exception (labels don't shadow — do not "fix" the label column). | Future |
 | *(next)* · conformance-corpus + arc close | The permanent cross-backend corpus; A-4/A-5 reproduced; DD-60 cross-ref recording DD-61 as-built. | Future |
@@ -84,6 +84,24 @@ slice03 → arc06 → arc07 → arc09.**
 | A-13 | slice07 (atom-privacy-recon) closed | ptr: cdc-verification | correctness | arc-plan v1.8 | done | slice07/cdc-verification.md (empty diff; lead finding CDC-reproduced) | recon-only; empty diff |
 
 ## 5. Version History
+
+### v1.11 — 2026-07-07 (slice08 closed — the sweep is done; slice09 is GO)
+slice08 closed (`7d86703` + `dab4405`, two green increments; 6/6 rows;
+behavior byte-identical, counts unchanged 1401/0 + 475/0 + 1136/0).
+**The F-5 completion gate — zero field-naming `Atom` patterns outside
+`ast/sexpr.rs`, both crates — was independently reproduced by CDC**, so
+slice09's precondition is verified twice. **Finding (surfaced, not
+folded): `contains_await`** (`emitter/forms.rs:59`) — a
+destructure-shaped head-dispatch read the slice06 F-4 check was
+structurally blind to (it greps `as_atom()` calls); converted
+byte-identical + `A6-exempt`-noted; the *behavior* question (should
+async-ness detection honour resolution? a bound `await` param arguably
+shouldn't mark a body async) is **routed to the corpus+close slice's
+scoping** as a probe row + decision. Structural note: the sweep
+self-closes that blind-spot class — destructure dispatch reads no
+longer exist, and post-flip they cannot compile. Emergent conversion
+idioms recorded in the closing report for slice09/js-resolution
+reviewers. Which-child-surfaced: slice08.
 
 ### v1.10 — 2026-07-07 (slice06 formally closed; slice07 closed; privacy split into slices 08/09)
 **slice06 CLOSED** — source landed (`dc37ae9`; A-9 done, attested; host

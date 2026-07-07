@@ -103,8 +103,11 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action (updated 2026-07-07): hand slice08 ·
-accessor-sweep's `cc-prompt.md` to CC.** State: slice06 (rust-resolution)
+**Immediate next action (updated 2026-07-07, later): hand slice09 ·
+privacy-flip's `cc-prompt.md` to CC** — slice08 (accessor-sweep) is
+CLOSED (`7d86703`+`dab4405`; byte-identical; the zero-pattern gate
+CDC-reproduced; `contains_await` finding routed → corpus+close scoping).
+Prior state: State: slice06 (rust-resolution)
 CLOSED @ `dc37ae9` — DD-60 D1 holds on Rust; slice07 (recon) CLOSED,
 empty diff — lead finding: **`lykn-cli` shares the one `SExpr`** (no
 separate type; CLAUDE.md's architecture note is stale → routed to
