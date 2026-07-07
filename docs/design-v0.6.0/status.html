@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-06 (arc13 slice06 DELIVERED + CDC content-verified — DD-60 D1 holds on Rust; commit pending → then slice07 recon unblocks)",
+  updated: "2026-07-07 (arc13: slice06 CLOSED @ dc37ae9, slice07 recon CLOSED — lykn-cli shares the one SExpr; privacy split into slice08 sweep + slice09 flip, open sets ready)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -155,7 +155,7 @@ const DATA = {
       slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc13", name:"expander-coherence", status:"active",
       cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
-      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"active"},{n:"atom-privacy-recon",s:"open"},{n:"js-resolution",s:"open"},{n:"atom-payload-privacy",s:"open"},{n:"corpus+close",s:"open"}] },
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"closed"},{n:"atom-privacy-recon",s:"closed"},{n:"accessor-sweep",s:"open"},{n:"privacy-flip",s:"open"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -180,8 +180,8 @@ const DATA = {
   ],
   sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc13 slice06 delivered + content-verified — CC commits source-only, ancestry check, A-9 flips; then slice07 recon",
-    desc:"The open set is written (slice-doc / 6-row ledger / cc-prompt), grounded in the tree at current line numbers: the resolver (env via the walker's bindings_introduced, resolved-atom tags on SExpr::Atom), the expander's light binding-scan (user macros AND pass2 desugar shadowed by bound names), and the DD-61 §A6 accessor swap (as_form_head() returns None for binding-refs) across all four dispatch subsystems, backed by a standing static conformance check in make check. Scoping caught a real DD-61 issue before CC could hit it: Rust pub-enum-variant fields can't be private, so §A6's by-construction privacy needs an Atom payload restructure (~259 sites) — operator call: PHASE IT (accessor+check now; an atom-payload-privacy slice later; DD-61 refinement logged). Acceptance: Rust matrix columns hit DD-60 targets; JS columns + corpus outputs byte-identical (movement = leak = stop). After slice06: js-resolution, then the conformance corpus + arc close; then arc05 (the linter) resumes with true lexical scoping simply in place. Fresh session starts at BOOTSTRAP.md as always."
+    arc:"arc13: hand slice08 · accessor-sweep to CC (then slice09 · privacy-flip, then js-resolution)",
+    desc:"DD-60 D1 HOLDS ON RUST (slice06, closed @ dc37ae9): one resolver pass tags every atom; expander light-scan shadows user macros AND desugars; as_form_head() makes misdispatch structurally impossible; matrix macro-fires 182→22 (the 22 = the label column, correct by design — DD-60 now states the label exception); JS + corpus byte-identical throughout. The slice07 recon (closed, empty diff) then corrected a phasing premise: lykn-cli has NO separate SExpr — one type, two crates — and slice06's constructor already retired the construction class, so the privacy work is ~85 field-naming pattern sites. Operator: split it — slice08 converts every site to accessors while fields stay public (green throughout, byte-identical), slice09 flips Atom(AtomData) private atomically with seeded compile-fail proof. After the pair: js-resolution (must mirror slice06's scope_plan region model — bindings are NOT in scope over their own initializer/iterable), then the permanent conformance corpus + arc close, then arc05 (the linter) resumes with true lexical scoping simply in place. Fresh session starts at BOOTSTRAP.md as always."
   },
   metrics: [
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},

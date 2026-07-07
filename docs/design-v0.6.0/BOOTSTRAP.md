@@ -103,16 +103,21 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action (updated 2026-07-06, end of day): slice06 ·
-rust-resolution is DELIVERED and CDC content-verified** (arc-plan v1.9;
-DD-60 D1 holds on Rust; matrix at targets, JS + corpus byte-identical;
-the fresh-context recycle worked — the first session's clean self-stop
-+ handoff addendum is the pattern to reuse). **Formal close: CC commits
-source-only on `release/0.6.x` → record the SHA in the ledger Closure
-line → ancestry-check → flip arc A-9.** Then **slice07 ·
-atom-privacy-recon** (scoped, recon-only) → its report scopes the
-*atom-payload-privacy* implementation slice → js-resolution (MUST mirror
-slice06's `scope_plan` region model — hook notes in its closing report).
+**Immediate next action (updated 2026-07-07): hand slice08 ·
+accessor-sweep's `cc-prompt.md` to CC.** State: slice06 (rust-resolution)
+CLOSED @ `dc37ae9` — DD-60 D1 holds on Rust; slice07 (recon) CLOSED,
+empty diff — lead finding: **`lykn-cli` shares the one `SExpr`** (no
+separate type; CLAUDE.md's architecture note is stale → routed to
+arc07), and slice06's constructor already retired the construction
+class. The privacy work = ~85 field-naming pattern sites, split per
+operator (2026-07-07) into **slice08 · accessor-sweep** (convert while
+fields public; green; both crates) → **slice09 · privacy-flip** (atomic
+`Atom(AtomData)`; seeded compile-fail proof; `as_atom()` stays public —
+the slice06 A6 check stays load-bearing). After the pair:
+**js-resolution** (MUST mirror slice06's `scope_plan` region model —
+bindings are NOT in scope over their own initializer/iterable/scrutinee;
+hook notes in slice06's closing report; keep the label exception) →
+conformance corpus + arc close → arc05 resumes.
 
 **Where arc13 stands** (read its `arc-plan.md` [v1.6] + both design docs
 first): the **binding layer is complete by construction**. Slices 03/04/05

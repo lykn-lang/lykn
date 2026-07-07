@@ -158,6 +158,24 @@ upgrades it to visibility-enforced. The three-layer story is unchanged;
 only the first layer's mechanism arrives in two steps.
 Which-child-surfaced: arc13/slice06 (scoping-time grounding, CDC).
 
+### 2026-07-07 (§A6 Rust end-state as-built — surfaced by arc13/slice07)
+
+Two as-built confirmations from the privacy recon, operator-decided
+2026-07-07: **(1)** the phased privacy layer lands as **two slices**
+(accessor-sweep, then the atomic `Atom(AtomData)` flip) — the recon
+found the construction class already retired by slice06's central
+constructor and the real blast radius to be ~85 field-naming pattern
+sites across **two crates** (`lykn-cli` consumes lykn-lang's `SExpr`;
+there is no separate one). **(2)** **`as_atom()` remains public under
+its current name** — privacy removes the destructure path to the raw
+name but `as_atom()` still returns it, so the slice06 static
+conformance check **remains load-bearing**; §A6's "conspicuous name"
+language for the raw accessor is satisfied by the doc-comment +
+check regime rather than a rename (~350-site churn declined for
+marginal gain). On Rust the three §A6 layers land as **visibility
+(post-flip) + static check + corpus**. Which-child-surfaced:
+arc13/slice07.
+
 ## Slice impact (the re-slice this appendix implies)
 
 | Slice | Scope |

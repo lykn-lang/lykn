@@ -16,7 +16,10 @@ Per LEDGER-DISCIPLINE. Rebuild-first. 6 rows.
 ## What Worked / Closure
 
 **Closed 2026-07-06 — all six rows met, `make check` green** (test-suite
-1401/0, doc tests 475/0, clippy + fmt clean). See `closing-report.md` for the
+1401/0, doc tests 475/0, clippy + fmt clean). **Landed at commit `dc37ae9`
+on `release/0.6.x`** (CDC finalization 2026-07-07: SHA recorded, A-9
+flipped; ancestry attested — host reconcile at the arc-close gate).
+Verified by: CDC (cdc-verification.md). See `closing-report.md` for the
 per-row walk, the three tension resolutions (equality = tag-insensitive manual
 `PartialEq`; §A6 privacy phased; `has_macros` short-circuit verified — no
 no-macro exposure), the js-resolution hook notes, and the silent-drop diff
