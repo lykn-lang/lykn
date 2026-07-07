@@ -68,7 +68,7 @@ pub fn expand(
     // Quick scan: do any forms contain macro definitions or import directives?
     let has_macros = forms.iter().any(|f| {
         if let SExpr::List { values, .. } = f
-            && let Some(SExpr::Atom { value, .. }) = values.first()
+            && let Some(value) = values.first().and_then(|e| e.as_atom())
         {
             return value == "macro" || value == "import-macros";
         }

@@ -108,7 +108,7 @@ pub fn compile_local_macros(
 /// Check whether a form is a `(macro ...)` definition.
 fn is_macro_def(form: &SExpr) -> bool {
     if let SExpr::List { values, .. } = form
-        && let Some(SExpr::Atom { value, .. }) = values.first()
+        && let Some(value) = values.first().and_then(|e| e.as_atom())
     {
         return value == "macro";
     }
@@ -119,9 +119,9 @@ fn is_macro_def(form: &SExpr) -> bool {
 fn macro_name(form: &SExpr) -> Option<String> {
     if let SExpr::List { values, .. } = form
         && values.len() >= 2
-        && let SExpr::Atom { value: name, .. } = &values[1]
+        && let Some(name) = values[1].as_atom()
     {
-        return Some(name.clone());
+        return Some(name.to_string());
     }
     None
 }
@@ -155,7 +155,7 @@ fn find_local_deps(form: &SExpr, all_local_names: &[String], env: &MacroEnv) -> 
 /// Recursively collect all atom values from an S-expression tree.
 fn collect_atoms(form: &SExpr, atoms: &mut Vec<String>) {
     match form {
-        SExpr::Atom { value, .. } => atoms.push(value.clone()),
+        a @ SExpr::Atom { .. } => atoms.push(a.as_atom().unwrap().to_string()),
         SExpr::List { values, .. } => {
             for v in values {
                 collect_atoms(v, atoms);

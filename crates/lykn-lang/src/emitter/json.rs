@@ -19,8 +19,8 @@ use crate::ast::sexpr::SExpr;
 /// - `Cons`    -> `{"type": "cons",   "car": ..., "cdr": ...}`
 pub fn sexpr_to_json(expr: &SExpr) -> Value {
     match expr {
-        SExpr::Atom { value, .. } => {
-            serde_json::json!({"type": "atom", "value": value})
+        a @ SExpr::Atom { .. } => {
+            serde_json::json!({"type": "atom", "value": a.as_atom().unwrap()})
         }
         SExpr::Keyword { value, .. } => {
             serde_json::json!({"type": "string", "value": value})

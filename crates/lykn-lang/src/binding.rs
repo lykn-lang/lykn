@@ -354,11 +354,11 @@ fn catch_names(args: &[SExpr]) -> Vec<BindingSite> {
 /// `label` name: `(label NAME body)` — NAME binds in the *label* namespace
 /// (D2-only; labels do not shadow value bindings).
 fn label_names(args: &[SExpr]) -> Vec<BindingSite> {
-    match args.first() {
-        Some(SExpr::Atom { value, span, .. }) if value != "_" => vec![BindingSite {
-            name: value.clone(),
+    match args.first().and_then(|e| e.atom_parts()) {
+        Some((value, span)) if value != "_" => vec![BindingSite {
+            name: value.to_string(),
             kind: BindingKind::Label,
-            span: *span,
+            span,
         }],
         _ => Vec::new(),
     }
@@ -378,11 +378,12 @@ fn import_local_names(args: &[SExpr]) -> Vec<BindingSite> {
         // (import "m" (spec…))
         SExpr::List { values, .. } => import_specs(values, &mut out),
         // (import "m" name …) — default import name
-        SExpr::Atom { value, span, .. } if value != "_" => {
+        a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
+            let (value, span) = a.atom_parts().unwrap();
             out.push(BindingSite {
-                name: value.clone(),
+                name: value.to_string(),
                 kind: BindingKind::ImportLocal,
-                span: *span,
+                span,
             });
             // (import "m" name (spec…)) — default + named
             if let Some(SExpr::List { values, .. }) = args.get(2) {
@@ -397,20 +398,23 @@ fn import_local_names(args: &[SExpr]) -> Vec<BindingSite> {
 fn import_specs(specs: &[SExpr], out: &mut Vec<BindingSite>) {
     for spec in specs {
         match spec {
-            SExpr::Atom { value, span, .. } if value != "_" => out.push(BindingSite {
-                name: value.clone(),
-                kind: BindingKind::ImportLocal,
-                span: *span,
-            }),
+            a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
+                let (value, span) = a.atom_parts().unwrap();
+                out.push(BindingSite {
+                    name: value.to_string(),
+                    kind: BindingKind::ImportLocal,
+                    span,
+                })
+            }
             // (alias original local) → local binding is the 3rd element
             SExpr::List { values, .. }
                 if values.first().and_then(|e| e.as_atom()) == Some("alias") =>
             {
-                if let Some(SExpr::Atom { value, span, .. }) = values.get(2) {
+                if let Some((value, span)) = values.get(2).and_then(|e| e.atom_parts()) {
                     out.push(BindingSite {
-                        name: value.clone(),
+                        name: value.to_string(),
                         kind: BindingKind::ImportLocal,
-                        span: *span,
+                        span,
                     });
                 }
             }
@@ -475,13 +479,13 @@ fn collect_pattern(pat: &Pattern, out: &mut Vec<BindingSite>) {
 fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
     let mut out = Vec::new();
     // (class NAME (bases) member…) — NAME is args[0].
-    if let Some(SExpr::Atom { value, span, .. }) = args.first()
+    if let Some((value, span)) = args.first().and_then(|e| e.atom_parts())
         && value != "_"
     {
         out.push(BindingSite {
-            name: value.clone(),
+            name: value.to_string(),
             kind: BindingKind::Bind,
-            span: *span,
+            span,
         });
     }
     // members start after name + bases list.
@@ -493,13 +497,13 @@ fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
         // shapes have no bare param list in slot 1.
         if let Some(SExpr::List { values: params, .. }) = values.get(1) {
             for p in params {
-                if let SExpr::Atom { value, span, .. } = p
+                if let Some((value, span)) = p.atom_parts()
                     && value != "_"
                 {
                     out.push(BindingSite {
-                        name: value.clone(),
+                        name: value.to_string(),
                         kind: BindingKind::ClassMethodParam,
-                        span: *span,
+                        span,
                     });
                 }
             }
@@ -513,11 +517,14 @@ fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
 /// structure are handled; `(rest x)` binds `x`.
 fn pattern_names(pat: &SExpr, kind: BindingKind, out: &mut Vec<BindingSite>) {
     match pat {
-        SExpr::Atom { value, span, .. } if value != "_" => out.push(BindingSite {
-            name: value.clone(),
-            kind,
-            span: *span,
-        }),
+        a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
+            let (value, span) = a.atom_parts().unwrap();
+            out.push(BindingSite {
+                name: value.to_string(),
+                kind,
+                span,
+            })
+        }
         SExpr::List { values, .. } => {
             let head = values.first().and_then(|e| e.as_atom()).unwrap_or("");
             match head {
@@ -545,11 +552,12 @@ fn pattern_names(pat: &SExpr, kind: BindingKind, out: &mut Vec<BindingSite>) {
                                     _ => {}
                                 }
                             }
-                            SExpr::Atom { value, span, .. } if value != "_" => {
+                            a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
+                                let (value, span) = a.atom_parts().unwrap();
                                 out.push(BindingSite {
-                                    name: value.clone(),
+                                    name: value.to_string(),
                                     kind,
-                                    span: *span,
+                                    span,
                                 })
                             }
                             _ => {}

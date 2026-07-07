@@ -500,7 +500,7 @@ fn classify_set(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
     }
     // Target must be colon-syntax (member expression)
     match &args[0] {
-        SExpr::Atom { value, .. } if value.contains(':') => {}
+        a @ SExpr::Atom { .. } if a.as_atom().unwrap().contains(':') => {}
         _ => {
             return Err(err(
                 "set! requires a property path (e.g., obj:prop), not a bare binding. \
@@ -580,35 +580,30 @@ fn classify_type(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
             span,
         ));
     }
-    let name = match &args[0] {
-        SExpr::Atom {
-            value, span: nspan, ..
-        } => (value.clone(), *nspan),
-        _ => return Err(err("type: first argument must be a type name", span)),
+    let name = match args[0].atom_parts() {
+        Some((value, nspan)) => (value.to_string(), nspan),
+        None => return Err(err("type: first argument must be a type name", span)),
     };
 
     let mut constructors = Vec::new();
     for ctor in &args[1..] {
         match ctor {
-            SExpr::Atom {
-                value, span: cspan, ..
-            } => {
+            a @ SExpr::Atom { .. } => {
+                let (value, cspan) = a.atom_parts().unwrap();
                 constructors.push(Constructor {
-                    name: value.clone(),
-                    name_span: *cspan,
+                    name: value.to_string(),
+                    name_span: cspan,
                     fields: Vec::new(),
-                    span: *cspan,
+                    span: cspan,
                 });
             }
             SExpr::List {
                 values,
                 span: cspan,
             } if !values.is_empty() => {
-                let ctor_name = match &values[0] {
-                    SExpr::Atom {
-                        value, span: nspan, ..
-                    } => (value.clone(), *nspan),
-                    _ => return Err(err("constructor name must be an atom", *cspan)),
+                let ctor_name = match values[0].atom_parts() {
+                    Some((value, nspan)) => (value.to_string(), nspan),
+                    None => return Err(err("constructor name must be an atom", *cspan)),
                 };
                 let fields = parse_simple_typed_params(&values[1..], *cspan)?;
                 constructors.push(Constructor {
@@ -634,11 +629,9 @@ fn classify_func(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
     if args.is_empty() {
         return Err(err("func requires at least a name", span));
     }
-    let name = match &args[0] {
-        SExpr::Atom {
-            value, span: nspan, ..
-        } => (value.clone(), *nspan),
-        _ => return Err(err("func: first argument must be a function name", span)),
+    let name = match args[0].atom_parts() {
+        Some((value, nspan)) => (value.to_string(), nspan),
+        None => return Err(err("func: first argument must be a function name", span)),
     };
 
     let rest = &args[1..];
@@ -788,11 +781,9 @@ fn classify_genfunc(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnosti
     if args.is_empty() {
         return Err(err("genfunc requires at least a name", span));
     }
-    let name = match &args[0] {
-        SExpr::Atom {
-            value, span: nspan, ..
-        } => (value.clone(), *nspan),
-        _ => return Err(err("genfunc: first argument must be a function name", span)),
+    let name = match args[0].atom_parts() {
+        Some((value, nspan)) => (value.to_string(), nspan),
+        None => return Err(err("genfunc: first argument must be a function name", span)),
     };
 
     let rest = &args[1..];
@@ -1013,26 +1004,30 @@ fn classify_match(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic>
 
 fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
     match expr {
-        SExpr::Atom { value, span, .. } if value == "_" => Ok(Pattern::Wildcard(*span)),
-        SExpr::Atom { value, .. }
-            if value == "true" || value == "false" || value == "null" || value == "undefined" =>
+        a @ SExpr::Atom { .. } if a.as_atom() == Some("_") => Ok(Pattern::Wildcard(a.span())),
+        SExpr::Atom { .. }
+            if matches!(
+                expr.as_atom(),
+                Some("true" | "false" | "null" | "undefined")
+            ) =>
         {
             Ok(Pattern::Literal(expr.clone()))
         }
-        SExpr::Atom { value, span, .. } => {
+        SExpr::Atom { .. } => {
+            let (value, span) = expr.atom_parts().unwrap();
             if value.starts_with(|c: char| c.is_uppercase()) {
                 // PascalCase — zero-field constructor
                 Ok(Pattern::Constructor {
-                    name: value.clone(),
-                    name_span: *span,
+                    name: value.to_string(),
+                    name_span: span,
                     bindings: Vec::new(),
-                    span: *span,
+                    span,
                 })
             } else {
                 // lowercase — binding
                 Ok(Pattern::Binding {
-                    name: value.clone(),
-                    span: *span,
+                    name: value.to_string(),
+                    span,
                 })
             }
         }
@@ -1043,7 +1038,7 @@ fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
         SExpr::List { values, span } if !values.is_empty() => {
             let head = &values[0];
             // Structural obj pattern
-            if let SExpr::Atom { value, .. } = head {
+            if let Some(value) = head.as_atom() {
                 if value == "obj" {
                     return classify_obj_pattern(&values[1..], *span);
                 }
@@ -1054,7 +1049,7 @@ fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
                         .map(classify_pattern)
                         .collect::<Result<Vec<_>, _>>()?;
                     return Ok(Pattern::Constructor {
-                        name: value.clone(),
+                        name: value.to_string(),
                         name_span: head.span(),
                         bindings,
                         span: *span,
@@ -1249,7 +1244,7 @@ fn classify_macro_def(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnos
         return Err(err("macro requires a name", span));
     }
     let name = match &args[0] {
-        SExpr::Atom { value, .. } => value.clone(),
+        a @ SExpr::Atom { .. } => a.as_atom().unwrap().to_string(),
         _ => return Err(err("macro: name must be an atom", span)),
     };
     // Store the entire original expression as raw
@@ -1338,24 +1333,20 @@ fn parse_simple_typed_params(values: &[SExpr], span: Span) -> Result<Vec<TypedPa
             SExpr::Keyword {
                 value: type_name,
                 span: kspan,
-            } => match &values[i + 1] {
-                SExpr::Atom {
-                    value: name,
-                    span: nspan,
-                    ..
-                } => {
+            } => match values[i + 1].atom_parts() {
+                Some((name, nspan)) => {
                     params.push(TypedParam {
                         type_ann: TypeAnnotation {
                             name: type_name.clone(),
                             span: *kspan,
                         },
-                        name: name.clone(),
-                        name_span: *nspan,
+                        name: name.to_string(),
+                        name_span: nspan,
                         default_value: None,
                         is_rest: false,
                     });
                 }
-                _ => return Err(err("parameter name must be an atom", span)),
+                None => return Err(err("parameter name must be an atom", span)),
             },
             _ => {
                 return Err(err(format!("expected type keyword at position {i}"), span));
@@ -1397,19 +1388,16 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                     value: type_name,
                                     span: kspan,
                                 },
-                                SExpr::Atom {
-                                    value: name,
-                                    span: nspan,
-                                    ..
-                                },
+                                atom @ SExpr::Atom { .. },
                             ) => {
+                                let (name, nspan) = atom.atom_parts().unwrap();
                                 params.push(ParamShape::Simple(TypedParam {
                                     type_ann: TypeAnnotation {
                                         name: type_name.clone(),
                                         span: *kspan,
                                     },
-                                    name: name.clone(),
-                                    name_span: *nspan,
+                                    name: name.to_string(),
+                                    name_span: nspan,
                                     default_value: Some(inner[3].clone()),
                                     is_rest: false,
                                 }));
@@ -1431,19 +1419,16 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                     value: type_name,
                                     span: kspan,
                                 },
-                                SExpr::Atom {
-                                    value: name,
-                                    span: nspan,
-                                    ..
-                                },
+                                atom @ SExpr::Atom { .. },
                             ) => {
+                                let (name, nspan) = atom.atom_parts().unwrap();
                                 params.push(ParamShape::Simple(TypedParam {
                                     type_ann: TypeAnnotation {
                                         name: type_name.clone(),
                                         span: *kspan,
                                     },
-                                    name: name.clone(),
-                                    name_span: *nspan,
+                                    name: name.to_string(),
+                                    name_span: nspan,
                                     default_value: None,
                                     is_rest: true,
                                 }));
@@ -1474,24 +1459,20 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                         span,
                     ));
                 }
-                match &values[i + 1] {
-                    SExpr::Atom {
-                        value: name,
-                        span: nspan,
-                        ..
-                    } => {
+                match values[i + 1].atom_parts() {
+                    Some((name, nspan)) => {
                         params.push(ParamShape::Simple(TypedParam {
                             type_ann: TypeAnnotation {
                                 name: type_name.clone(),
                                 span: *kspan,
                             },
-                            name: name.clone(),
-                            name_span: *nspan,
+                            name: name.to_string(),
+                            name_span: nspan,
                             default_value: None,
                             is_rest: false,
                         }));
                     }
-                    _ => return Err(err("parameter name must be an atom", span)),
+                    None => return Err(err("parameter name must be an atom", span)),
                 }
                 i += 2;
             }
@@ -1531,7 +1512,7 @@ fn parse_destructured_param(values: &[SExpr], span: Span) -> Result<ParamShape, 
         ));
     }
     let head = match &values[0] {
-        SExpr::Atom { value, .. } => value.as_str(),
+        a @ SExpr::Atom { .. } => a.as_atom().unwrap(),
         _ => {
             return Err(err(
                 "destructuring pattern must start with 'object' or 'array'",
@@ -1647,28 +1628,25 @@ fn parse_object_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, 
                         span,
                     ));
                 }
-                match &values[i + 1] {
-                    SExpr::Atom {
-                        value: name,
-                        span: nspan,
-                        ..
-                    } => {
+                match values[i + 1].atom_parts() {
+                    Some((name, nspan)) => {
                         fields.push(DestructuredField::Simple(TypedParam {
                             type_ann: TypeAnnotation {
                                 name: type_name.clone(),
                                 span: *kspan,
                             },
-                            name: name.clone(),
-                            name_span: *nspan,
+                            name: name.to_string(),
+                            name_span: nspan,
                             default_value: None,
                             is_rest: false,
                         }));
                     }
-                    _ => return Err(err("field name must be an atom", span)),
+                    None => return Err(err("field name must be an atom", span)),
                 }
                 i += 2;
             }
-            SExpr::Atom { value: name, .. } => {
+            a @ SExpr::Atom { .. } => {
+                let name = a.as_atom().unwrap();
                 return Err(err(
                     format!("field '{name}' missing type annotation (use :any to opt out)"),
                     span,
@@ -1697,19 +1675,18 @@ fn parse_type_and_name(
                 value: type_name,
                 span: kspan,
             },
-            SExpr::Atom {
-                value: name,
-                span: nspan,
-                ..
-            },
-        ) => Ok((
-            TypeAnnotation {
-                name: type_name.clone(),
-                span: *kspan,
-            },
-            name.clone(),
-            *nspan,
-        )),
+            atom @ SExpr::Atom { .. },
+        ) => {
+            let (name, nspan) = atom.atom_parts().unwrap();
+            Ok((
+                TypeAnnotation {
+                    name: type_name.clone(),
+                    span: *kspan,
+                },
+                name.to_string(),
+                nspan,
+            ))
+        }
         _ => Err(err("expected :type name pair", span)),
     }
 }
@@ -1726,10 +1703,8 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
     while i < values.len() {
         match &values[i] {
             // Skip element: _
-            SExpr::Atom {
-                value, span: aspan, ..
-            } if value == "_" => {
-                elements.push(ArrayParamElement::Skip(*aspan));
+            a @ SExpr::Atom { .. } if a.as_atom() == Some("_") => {
+                elements.push(ArrayParamElement::Skip(a.span()));
                 i += 1;
             }
             // Rest or deferred feature list
@@ -1833,29 +1808,26 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
                         span,
                     ));
                 }
-                match &values[i + 1] {
-                    SExpr::Atom {
-                        value: name,
-                        span: nspan,
-                        ..
-                    } => {
+                match values[i + 1].atom_parts() {
+                    Some((name, nspan)) => {
                         elements.push(ArrayParamElement::Typed(TypedParam {
                             type_ann: TypeAnnotation {
                                 name: type_name.clone(),
                                 span: *kspan,
                             },
-                            name: name.clone(),
-                            name_span: *nspan,
+                            name: name.to_string(),
+                            name_span: nspan,
                             default_value: None,
                             is_rest: false,
                         }));
                     }
-                    _ => return Err(err("element name must be an atom", span)),
+                    None => return Err(err("element name must be an atom", span)),
                 }
                 i += 2;
             }
             // Bare name without type keyword
-            SExpr::Atom { value: name, .. } => {
+            a @ SExpr::Atom { .. } => {
+                let name = a.as_atom().unwrap();
                 return Err(err(
                     format!("field '{name}' missing type annotation (use :any to opt out)"),
                     span,
@@ -1881,21 +1853,20 @@ fn parse_rest_element(values: &[SExpr], span: Span) -> Result<TypedParam, Diagno
                 value: type_name,
                 span: kspan,
             },
-            SExpr::Atom {
-                value: name,
-                span: nspan,
-                ..
-            },
-        ) => Ok(TypedParam {
-            type_ann: TypeAnnotation {
-                name: type_name.clone(),
-                span: *kspan,
-            },
-            name: name.clone(),
-            name_span: *nspan,
-            default_value: None,
-            is_rest: true,
-        }),
+            atom @ SExpr::Atom { .. },
+        ) => {
+            let (name, nspan) = atom.atom_parts().unwrap();
+            Ok(TypedParam {
+                type_ann: TypeAnnotation {
+                    name: type_name.clone(),
+                    span: *kspan,
+                },
+                name: name.to_string(),
+                name_span: nspan,
+                default_value: None,
+                is_rest: true,
+            })
+        }
         _ => Err(err("rest element must be (rest :type name)", span)),
     }
 }

@@ -83,7 +83,7 @@ pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), 
             w.write(if *value { "true" } else { "false" });
         }
         SExpr::Null { .. } => w.write("null"),
-        SExpr::Atom { value, .. } => emit_atom(w, value),
+        a @ SExpr::Atom { .. } => emit_atom(w, a.as_atom().unwrap()),
         SExpr::Keyword { value, .. } => {
             // Keywords emit as string literals with camelCase conversion.
             w.write("\"");
@@ -350,7 +350,8 @@ fn emit_block_body(w: &mut JsWriter, stmts: &[SExpr]) -> Result<(), LyknError> {
 
 fn emit_pattern(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     match expr {
-        SExpr::Atom { value, .. } => {
+        a @ SExpr::Atom { .. } => {
+            let value = a.as_atom().unwrap();
             if value == "_" {
                 // empty slot marker — but in object patterns _ is just an ident
                 w.write(&to_js_identifier(value));
@@ -380,7 +381,7 @@ fn emit_object_pattern(w: &mut JsWriter, members: &[SExpr]) -> Result<(), LyknEr
             w.write(", ");
         }
         match member {
-            SExpr::Atom { value, .. } => w.write(&to_js_identifier(value)),
+            a @ SExpr::Atom { .. } => w.write(&to_js_identifier(a.as_atom().unwrap())),
             SExpr::List { values, .. } if !values.is_empty() => {
                 // A6-exempt: object-pattern member grammar, not a call head.
                 match values[0].as_atom() {
@@ -421,7 +422,7 @@ fn emit_array_pattern(w: &mut JsWriter, elements: &[SExpr]) -> Result<(), LyknEr
             w.write(", ");
         }
         match elem {
-            SExpr::Atom { value, .. } if value == "_" => {
+            a @ SExpr::Atom { .. } if a.as_atom() == Some("_") => {
                 // empty slot — just leave blank
             }
             SExpr::List { values, .. }
@@ -1066,7 +1067,7 @@ fn emit_method_call(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     }
     emit_expr(w, &args[0], 20)?;
     w.write(".");
-    if let SExpr::Atom { value, .. } = &args[1] {
+    if let Some(value) = args[1].as_atom() {
         w.write(&to_js_identifier(value));
     } else {
         emit_expr(w, &args[1], 20)?;
@@ -1181,9 +1182,9 @@ fn emit_object(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
         }
         w.write(" ");
         match arg {
-            SExpr::Atom { value, .. } => {
+            a @ SExpr::Atom { .. } => {
                 // Shorthand property.
-                w.write(&to_js_identifier(value));
+                w.write(&to_js_identifier(a.as_atom().unwrap()));
             }
             SExpr::List { values, .. } if !values.is_empty() => {
                 // A6-exempt: object-literal property grammar (spread/computed
@@ -1520,7 +1521,7 @@ fn emit_class_member(w: &mut JsWriter, member: &SExpr, prefix: &str) -> Result<(
 
 /// Emit a field/method name, handling private fields (leading hyphen → `#_`).
 fn emit_field_name(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
-    if let SExpr::Atom { value, .. } = expr {
+    if let Some(value) = expr.as_atom() {
         if let Some(rest) = value.strip_prefix('-') {
             w.write("#_");
             w.write(&to_js_identifier(rest));

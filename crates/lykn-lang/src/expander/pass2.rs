@@ -83,10 +83,7 @@ fn expand_expr(
         SExpr::List { values, span } => {
             let head = &values[0];
 
-            if let SExpr::Atom {
-                value: head_name, ..
-            } = head
-            {
+            if let Some(head_name) = head.as_atom() {
                 // `(quote ...)` suppresses all expansion.
                 if head_name == "quote" {
                     return Ok(Some(form));
@@ -106,7 +103,7 @@ fn expand_expr(
                 // DD-61 §A3 light binding-scan: a lexically bound head is
                 // neither a desugar nor a user macro — it is a plain call to the
                 // binding (DD-60 D1). Skip both dispatch paths when bound.
-                let bound = scope.iter().any(|n| n == head_name);
+                let bound = scope.iter().any(|n| n.as_str() == head_name);
 
                 // Sugar form desugaring.
                 if !bound && let Some(desugared) = try_desugar(head_name, &values[1..], *span) {
@@ -114,14 +111,14 @@ fn expand_expr(
                 }
 
                 // User-defined macro expansion (fixed-point).
-                if !bound && env.contains_key(head_name.as_str()) {
+                if !bound && env.contains_key(head_name) {
                     let mut current = form.clone();
                     let mut count: usize = 0;
 
                     loop {
                         if let SExpr::List { values: ref cv, .. } = current
-                            && let Some(SExpr::Atom { value: name, .. }) = cv.first()
-                            && let Some(macro_def) = env.get(name.as_str())
+                            && let Some(name) = cv.first().and_then(|e| e.as_atom())
+                            && let Some(macro_def) = env.get(name)
                         {
                             let args = &cv[1..];
                             // DD-52: surface macros use eval-surface-macro action

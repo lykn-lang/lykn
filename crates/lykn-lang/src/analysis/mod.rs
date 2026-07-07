@@ -397,7 +397,7 @@ fn check_bind_literal_type(
     };
 
     // Special case: NaN is typeof "number" in JS, but it should fail :number
-    let is_nan = matches!(value, SExpr::Atom { value, .. } if value == "NaN");
+    let is_nan = value.as_atom() == Some("NaN");
 
     let compatible = if is_nan {
         // NaN fails :number (and every other type annotation)
@@ -435,7 +435,7 @@ fn literal_js_type(expr: &SExpr) -> Option<&'static str> {
         SExpr::String { .. } => Some("string"),
         SExpr::Bool { .. } => Some("boolean"),
         SExpr::Null { .. } => Some("null"),
-        SExpr::Atom { value, .. } => match value.as_str() {
+        a @ SExpr::Atom { .. } => match a.as_atom().unwrap() {
             "true" | "false" => Some("boolean"),
             "null" => Some("null"),
             "NaN" => Some("number"),
@@ -510,8 +510,9 @@ fn track_class_member_scopes(members: &[ClassMemberForm], scope: &mut ScopeTrack
 /// node that matches an in-scope binding marks that binding as used.
 fn track_references_in_expr(expr: &SExpr, scope: &mut ScopeTracker) {
     match expr {
-        SExpr::Atom { value, span, .. } => {
-            scope.reference(value, *span);
+        a @ SExpr::Atom { .. } => {
+            let (value, span) = a.atom_parts().unwrap();
+            scope.reference(value, span);
         }
         SExpr::List { values, .. } => {
             for v in values {

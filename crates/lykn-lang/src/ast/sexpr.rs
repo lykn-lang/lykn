@@ -218,6 +218,17 @@ impl SExpr {
         }
     }
 
+    /// The atom's name **and** span together — the multi-field companion to
+    /// [`SExpr::as_atom`], for the (common) sites that read both. Reads through
+    /// accessors rather than destructuring the payload, so it survives the
+    /// atom-payload-privacy restructure (arc13). `None` for non-atoms.
+    pub fn atom_parts(&self) -> Option<(&str, Span)> {
+        match self {
+            SExpr::Atom { value, span, .. } => Some((value, *span)),
+            _ => None,
+        }
+    }
+
     /// The head name **for dispatch purposes** (DD-61 §A6): `Some(name)` only
     /// for an [`NameRes::Unresolved`] atom; `None` for a resolved binding (def
     /// *or* ref) and for every non-atom. A dispatch site that gets `None` falls
@@ -361,6 +372,36 @@ mod tests {
             span: s(),
         };
         assert_eq!(expr.as_atom(), None);
+    }
+
+    #[test]
+    fn atom_parts_some() {
+        let span = Span::new(
+            crate::reader::source_loc::SourceLoc { line: 2, column: 3 },
+            crate::reader::source_loc::SourceLoc { line: 2, column: 8 },
+        );
+        let expr = SExpr::atom("hello", span);
+        assert_eq!(expr.atom_parts(), Some(("hello", span)));
+    }
+
+    #[test]
+    fn atom_parts_none() {
+        assert_eq!(
+            SExpr::Number {
+                value: 1.0,
+                span: s()
+            }
+            .atom_parts(),
+            None
+        );
+        assert_eq!(
+            SExpr::List {
+                values: vec![],
+                span: s()
+            }
+            .atom_parts(),
+            None
+        );
     }
 
     #[test]

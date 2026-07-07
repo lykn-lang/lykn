@@ -300,7 +300,7 @@ fn emit_constructor_fn_dts(
 fn format_sexpr_brief(expr: &crate::ast::sexpr::SExpr) -> String {
     use crate::ast::sexpr::SExpr;
     match expr {
-        SExpr::Atom { value, .. } => value.clone(),
+        a @ SExpr::Atom { .. } => a.as_atom().unwrap().to_string(),
         SExpr::String { value, .. } => format!("\"{value}\""),
         SExpr::Number { value, .. } => value.to_string(),
         SExpr::Bool { value, .. } => value.to_string(),

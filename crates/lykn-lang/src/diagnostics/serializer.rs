@@ -2,7 +2,7 @@ use crate::ast::sexpr::SExpr;
 
 pub fn serialize_sexpr(expr: &SExpr) -> String {
     match expr {
-        SExpr::Atom { value, .. } => value.clone(),
+        SExpr::Atom { .. } => expr.as_atom().unwrap().to_string(),
         SExpr::Keyword { value, .. } => format!(":{value}"),
         SExpr::String { value, .. } => format!("\"{value}\""),
         SExpr::Number { value, .. } => {

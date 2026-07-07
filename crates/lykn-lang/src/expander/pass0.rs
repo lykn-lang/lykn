@@ -71,7 +71,7 @@ enum SurfaceMacrosDirective {
 
 fn extract_surface_macros_directive(form: &SExpr) -> SurfaceMacrosDirective {
     if let SExpr::List { values, span } = form
-        && let Some(SExpr::Atom { value: head, .. }) = values.first()
+        && let Some(head) = values.first().and_then(|e| e.as_atom())
         && head == "surface-macros"
     {
         if values.len() != 2 {
@@ -100,7 +100,7 @@ fn extract_surface_macros_directive(form: &SExpr) -> SurfaceMacrosDirective {
 /// Check whether a form is an `(import-macros ...)` directive.
 fn is_import_macros(form: &SExpr) -> bool {
     if let SExpr::List { values, .. } = form
-        && let Some(SExpr::Atom { value, .. }) = values.first()
+        && let Some(value) = values.first().and_then(|e| e.as_atom())
     {
         return value == "import-macros";
     }
@@ -109,7 +109,7 @@ fn is_import_macros(form: &SExpr) -> bool {
 
 fn is_runtime_import(form: &SExpr) -> bool {
     if let SExpr::List { values, .. } = form
-        && let Some(SExpr::Atom { value, .. }) = values.first()
+        && let Some(value) = values.first().and_then(|e| e.as_atom())
     {
         return value == "runtime-import";
     }
@@ -516,13 +516,13 @@ fn extract_binding_names(bindings: &SExpr) -> Vec<String> {
     if let SExpr::List { values, .. } = bindings {
         for val in values {
             match val {
-                SExpr::Atom { value, .. } => names.push(value.clone()),
+                a @ SExpr::Atom { .. } => names.push(a.as_atom().unwrap().to_string()),
                 SExpr::List { values: inner, .. } => {
                     // (as original alias) — extract the alias name.
                     if inner.len() == 3
-                        && let Some(SExpr::Atom { value, .. }) = inner.last()
+                        && let Some(value) = inner.last().and_then(|e| e.as_atom())
                     {
-                        names.push(value.clone());
+                        names.push(value.to_string());
                     }
                 }
                 _ => {}

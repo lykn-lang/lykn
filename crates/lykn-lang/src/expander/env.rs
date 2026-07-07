@@ -305,7 +305,9 @@ while (true) {
 /// appropriate value field(s). Lists become `{ type: "list", values: [...] }`.
 pub fn sexpr_to_protocol_json(expr: &SExpr) -> Value {
     match expr {
-        SExpr::Atom { value, .. } => serde_json::json!({ "type": "atom", "value": value }),
+        a @ SExpr::Atom { .. } => {
+            serde_json::json!({ "type": "atom", "value": a.as_atom().unwrap() })
+        }
         SExpr::Keyword { value, .. } => {
             serde_json::json!({ "type": "keyword", "value": value })
         }

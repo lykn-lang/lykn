@@ -107,7 +107,7 @@ fn deconstruct_literal(sexpr: &SExpr) -> Result<DeconPattern, Diagnostic> {
         SExpr::Keyword { value, .. } => {
             Ok(DeconPattern::Literal(LiteralKind::Keyword(value.clone())))
         }
-        SExpr::Atom { value, .. } => match value.as_str() {
+        a @ SExpr::Atom { .. } => match a.as_atom().unwrap() {
             "true" => Ok(DeconPattern::Literal(LiteralKind::Bool(true))),
             "false" => Ok(DeconPattern::Literal(LiteralKind::Bool(false))),
             "null" | "undefined" => Ok(DeconPattern::Literal(LiteralKind::Null)),

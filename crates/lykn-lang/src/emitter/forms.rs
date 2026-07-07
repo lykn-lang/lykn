@@ -59,7 +59,7 @@ fn bool_lit(b: bool) -> SExpr {
 fn contains_await(expr: &SExpr) -> bool {
     match expr {
         SExpr::List { values, .. } => {
-            if let Some(SExpr::Atom { value, .. }) = values.first()
+            if let Some(value) = values.first().and_then(|e| e.as_atom())
                 && value == "await"
             {
                 return true;
@@ -535,7 +535,7 @@ fn emit_js_interop(
         }
         "js:bind" => {
             // (js:bind obj:method obj) → (obj:method:bind obj)
-            if let Some(SExpr::Atom { value: method, .. }) = args.first() {
+            if let Some(method) = args.first().and_then(|e| e.as_atom()) {
                 let this_arg = if args.len() > 1 {
                     emit_expr(&args[1], ctx, registry)
                 } else {
@@ -647,7 +647,7 @@ fn literal_type_name(expr: &SExpr) -> Option<&'static str> {
         SExpr::String { .. } => Some("string"),
         SExpr::Bool { .. } => Some("boolean"),
         SExpr::Null { .. } => Some("null"),
-        SExpr::Atom { value, .. } => match value.as_str() {
+        a @ SExpr::Atom { .. } => match a.as_atom().unwrap() {
             "true" | "false" => Some("boolean"),
             "null" => Some("null"),
             "NaN" => Some("number"), // NaN is type "number" in JS but fails :number check
@@ -694,7 +694,7 @@ fn emit_cell(value: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -
 /// For atoms, returns `name:value` directly. For complex expressions,
 /// emits the expression and appends `:value` via property access.
 fn resolve_cell_target(target: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
-    if let SExpr::Atom { value, .. } = target {
+    if let Some(value) = target.as_atom() {
         atom(&format!("{value}:value"))
     } else {
         // Complex expression: emit and access :value property

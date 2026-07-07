@@ -132,12 +132,13 @@ fn resolve_seq(forms: &[SExpr], scope: &mut Vec<String>, def_spans: &[Span]) -> 
 /// evaluated *outside* the binding's scope.
 fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SExpr {
     match form {
-        SExpr::Atom { value, span, .. } => {
-            let res = if def_spans.contains(span) {
+        SExpr::Atom { .. } => {
+            let (value, span) = form.atom_parts().unwrap();
+            let res = if def_spans.contains(&span) {
                 // A binding definition site never dispatches, even if its name
                 // also happens to be in scope (def takes priority over ref).
                 NameRes::BindingDef
-            } else if scope.iter().any(|n| n == value) {
+            } else if scope.iter().any(|n| n.as_str() == value) {
                 NameRes::BindingRef
             } else {
                 NameRes::Unresolved
