@@ -42,7 +42,7 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice07 · atom-privacy-recon** | Recon-only investigation for the atom-payload-privacy layer: construction + pattern censuses, design proposal, LoE + sizing, blast radius. Empty diff at close. | **Closed** (2026-07-07, empty diff; **construction class already retired** by slice06's constructor — 170 calls, 1 bare literal; real blast radius = **~85 field-naming pattern sites across TWO crates** — lead finding: `lykn-cli` has **no separate `SExpr`**, it imports lykn-lang's [phasing-plan premise corrected]; design = `Atom(AtomData)` Option A; **operator 2026-07-07: two slices; `as_atom()` stays as-is**) |
 | **slice08 · accessor-sweep** | Privacy pair, step 1 (from slice07's report): `atom_parts()` + convert all ~85 field-naming `Atom` pattern sites to accessors **while fields stay public** — green throughout, behavior byte-identical, both crates (incl. the 5 `lykn-cli` sites); completion gate = zero field-naming patterns outside `ast/sexpr.rs` (slice09's precondition). **Depends on: slice06 (landed).** | **Closed** (`7d86703` + `dab4405`; 6/6 rows; byte-identical, counts unchanged; **F-5 gate CDC-reproduced**; finding: `contains_await` destructure head-read — F-4's blind spot, self-closed by the sweep; behavior question routed → corpus+close scoping) |
 | **slice09 · privacy-flip** | Privacy pair, step 2 — the atomic restructure: `Atom(AtomData)`, fields private to `ast::sexpr`; seeded compile-fail demos both crates; `as_atom()` public/unrenamed (operator call), slice06 A6 check stays load-bearing; the DD-61 §A6 by-construction layer lands. **Depends on: slice08.** | **Closed** (`4c12301` — a **single-file** change; 5/5 rows; E0451 proof both crates; size 48→48; finding: `{ .. }` valid on tuple variants → the `Atom(_)` conversions were unnecessary, left minimal; §A6 as-built = visibility + static check + corpus) |
-| *(next)* · js-resolution | Same through `expandExpr`; `formHead()` + the static grep-conformance check (§A6). **Must mirror slice06's `scope_plan` region model** (bindings not in scope over initializer/iterable/scrutinee — a naive whole-subtree push miscompiles; hook notes in slice06's closing report) and keep the label exception (labels don't shadow — do not "fix" the label column). | Future |
+| **slice10 · js-resolution** | The JS mirror of slice06: one env inside the `expandExpr` walk (the JS expander lowers during expansion, so resolution lives in-walk — §A3); binding-position atoms never dispatched; bound heads skip classifier + macro dispatch; `formHead()` (null for defs AND refs) converts `compiler.js`; the §A6 JS static check. **Mirrors the `scope_plan` region model** (naive whole-subtree push miscompiles the iterable) and **keeps the label exception** (DD-60 ‡ — do not "fix" the label column). Acceptance: JS matrix columns → DD-60 targets; **Rust columns + corpus byte-identical** (leak = stop). | **Open** (open set written 2026-07-07) |
 | *(next)* · conformance-corpus + arc close | The permanent cross-backend corpus; A-4/A-5 reproduced; DD-60 cross-ref recording DD-61 as-built. | Future |
 
 *(Future entries carry **no numbers** — numbered at creation per the
@@ -78,12 +78,30 @@ slice03 → arc06 → arc07 → arc09.**
 | A-7 | slice04 (walker-extension) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice04/cdc-verification.md (attested) | |
 | A-8 | slice05 (position-sweep) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice05/cdc-verification.md (attested) | binding layer complete by construction; coverage test standing |
 | A-9 | slice06 (rust-resolution) closed | ptr: cdc-verification | serious | arc-plan v1.7 | done | slice06/cdc-verification.md; landed `dc37ae9` (attested — host ancestry reconcile at arc close) | |
-| A-10 | js-resolution slice closed | ptr: cdc-verification | serious | arc-plan v1.7 | open | | slice un-numbered until creation |
+| A-10 | slice10 (js-resolution) closed | ptr: cdc-verification | serious | arc-plan v1.7 | open | | numbered at creation 2026-07-07 (was: un-numbered) |
 | A-11 | atom-payload-privacy landed — **slices 08 (accessor-sweep) + 09 (privacy-flip) closed** (§A6 by-construction layer) | ptr: both cdc-verifications | correctness | operator phasing call 2026-07-06; two-slice packaging 2026-07-07 | done | slice08/cdc-verification.md (`7d86703`+`dab4405`) + slice09/cdc-verification.md (`4c12301`); E0451 proof both crates | was: "atom-payload-privacy slice" (single, un-numbered) — split per slice07's recon + operator call |
 | A-12 | DD-60 refinements #1/#2/addendum dispositioned (routed, confirmed, landed) | DD-60 refinement log (3 entries) + v1.4/v1.5/v1.6 change-log entries | correctness | bubble-ups: slices 03/04/05 | done | DD-60 §Refinement log; slices 04/05 closed | class-(c) rows, accrued at v1.7 catch-up |
 | A-13 | slice07 (atom-privacy-recon) closed | ptr: cdc-verification | correctness | arc-plan v1.8 | done | slice07/cdc-verification.md (empty diff; lead finding CDC-reproduced) | recon-only; empty diff |
 
 ## 5. Version History
+
+### v1.13 — 2026-07-07 (slice10 · js-resolution scoped)
+Open set written (slice-doc / 6-row ledger / cc-prompt), grounded in
+`packages/lang` at current lines: **two** dispatch sites on JS (vs
+Rust's four) — `expandExprInner` :718 (quasiquote → `kernel:` escape
+:757 → DD-37 classifier :777 → user macros :788) and `compiler.js`
+kernel-head dispatch (:1802 + ~54 `.value ===` reads, most structural —
+the Rust A6-exempt lesson transfers). Resolution lives **in-walk** (§A3:
+the JS expander lowers surface→kernel during expansion — no post-pass
+option), which also makes scan-and-tagger one thing on this backend.
+Slice06's hook notes lifted into the rows: the **region model** (F-1,
+with the iterable probe non-negotiable), the **label exception** (F-5 —
+DD-60 ‡, do not "fix"), `formHead()` null for defs AND refs (F-3),
+the JS static check (F-4). Tensions named: D2-timing unification
+(decide-and-surface), tag survival through rebuilds (test-pinned),
+JS suite migrations = behavior changes (list → arc09). A-10 updated:
+js-resolution = slice10 (numbered at creation).
+Which-child-surfaced: slices 06/09 (hook notes + as-built).
 
 ### v1.12 — 2026-07-07 (slice09 closed — the privacy pair is complete; A-11 done; next: scope js-resolution)
 slice09 closed (`4c12301` — **one file**, `ast/sexpr.rs`, exactly the

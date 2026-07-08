@@ -103,20 +103,19 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action (updated 2026-07-07, evening): scope the
-js-resolution slice** (numbered at creation — next = slice10). The Rust
-side of arc13 is DONE: slices 06–09 all closed (rust-resolution
-`dc37ae9`; recon; accessor-sweep `7d86703`+`dab4405`; privacy-flip
-`4c12301` — single-file, E0451 proof both crates). Scope js-resolution
-from **slice06's closing-report hook notes**: mirror the `scope_plan`
-region model (bindings NOT in scope over their own
-initializer/iterable/scrutinee — a naive whole-subtree push
-miscompiles); keep the label exception (do not "fix" the label column);
-`formHead()` returns null for defs *and* refs; the JS static
-grep-conformance check (`.value ===` in dispatch position) per DD-61
-§A6. After it: conformance-corpus + arc close (pinned there:
-`contains_await` behavior row, DD-61 as-built record, host ancestry
-reconciles for `dc37ae9`/`7d86703`/`dab4405`/`4c12301`). Prior state: State: slice06 (rust-resolution)
+**Immediate next action (updated 2026-07-07, evening): hand slice10 ·
+js-resolution's `cc-prompt.md` to CC.** The Rust side of arc13 is DONE:
+slices 06–09 all closed (rust-resolution `dc37ae9`; recon;
+accessor-sweep `7d86703`+`dab4405`; privacy-flip `4c12301` —
+single-file, E0451 proof both crates). slice10 (open set written
+2026-07-07) is the JS mirror of slice06: env **in** the `expandExpr`
+walk (§A3 — the JS expander lowers during expansion), the `scope_plan`
+region model, the label exception (DD-60 ‡ — do not "fix" the label
+column), `formHead()` null for defs *and* refs, the JS static check.
+Acceptance: JS matrix columns → DD-60 targets; **Rust columns + corpus
+byte-identical**. After it: conformance-corpus + arc close (pinned
+there: `contains_await` behavior row, DD-61 as-built record, host
+ancestry reconciles for the four SHAs). Prior state: State: slice06 (rust-resolution)
 CLOSED @ `dc37ae9` — DD-60 D1 holds on Rust; slice07 (recon) CLOSED,
 empty diff — lead finding: **`lykn-cli` shares the one `SExpr`** (no
 separate type; CLAUDE.md's architecture note is stale → routed to
