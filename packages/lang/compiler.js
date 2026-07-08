@@ -5,6 +5,23 @@
 import { generate } from 'astring';
 import { parseIcu, collectSlotNames, IcuParseError } from './icu-parser.js';
 
+// DD-61 §A6 — the resolution-aware dispatch accessor (JS twin of Rust's
+// `SExpr::as_form_head`). Returns a head atom's name ONLY when the atom is
+// unresolved (`binding` absent); returns `null` for a resolved binding
+// definition (`def`) or reference (`ref`). A dispatch site that reads through
+// `formHead` therefore never receives the name of a lexically bound head — it
+// falls through to the plain-call path, which is DD-60 D1 ("lexical bindings
+// shadow macro/form dispatch"). Every FORM-HEAD dispatch read in this file must
+// go through `formHead`; raw `.value` reads survive only for STRUCTURAL grammar
+// markers (destructuring/pattern/param keywords, member-access names, known
+// kernel-form sub-structure), each marked `A6-exempt`. Enforced by the
+// `make check` static check `test/expander/a6-dispatch-conformance.test.js`.
+export function formHead(node) {
+  return node && node.type === 'atom' && node.binding === undefined
+    ? node.value
+    : null;
+}
+
 /** Build an ImportSpecifier from a reader node (atom or alias list). */
 function buildImportSpecifier(node) {
   if (node.type === 'atom') {
@@ -15,6 +32,7 @@ function buildImportSpecifier(node) {
       local: { type: 'Identifier', name },
     };
   }
+  // A6-exempt: structural — import-specifier `alias` grammar, not a form head.
   if (node.type === 'list' && node.values.length >= 2 &&
       node.values[0].type === 'atom' && node.values[0].value === 'alias') {
     return {
@@ -38,6 +56,7 @@ function buildExportNames(namesNode, sourceNode) {
         exported: { type: 'Identifier', name },
       };
     }
+    // A6-exempt: structural — export-specifier `alias` grammar, not a form head.
     if (item.type === 'list' && item.values.length >= 2 &&
         item.values[0].type === 'atom' && item.values[0].value === 'alias') {
       return {
@@ -531,6 +550,8 @@ function makeVarDecl(kind, args) {
 function checkLoopBinding(binding, form) {
   if (binding && binding.type === 'list' && binding.values.length > 0 &&
       binding.values[0].type === 'atom' &&
+      // A6-exempt: structural — a kernel declaration wrapper (const/let/var) in
+      // a loop-binding slot, not a form-vs-call head dispatch.
       (binding.values[0].value === 'const' ||
        binding.values[0].value === 'let' ||
        binding.values[0].value === 'var')) {
@@ -740,6 +761,8 @@ const macros = {
       throw new Error('= requires exactly 2 arguments');
     }
     const leftNode = args[0];
+    // A6-exempt: structural — is the assignment target a destructuring pattern
+    // (object/array literal shape), not a form-vs-call head dispatch.
     const isPattern = leftNode.type === 'list' &&
       leftNode.values.length > 0 &&
       leftNode.values[0].type === 'atom' &&
@@ -990,6 +1013,7 @@ const macros = {
     }
 
     // Case 3: (export (names ...)) → export existing bindings
+    // A6-exempt: structural — `names` re-export grammar, not a form head.
     if (args[0].type === 'list' && args[0].values.length > 0 &&
         args[0].values[0].type === 'atom' && args[0].values[0].value === 'names') {
       return buildExportNames(args[0], null);
@@ -1057,6 +1081,7 @@ const macros = {
     let bodyEnd = args.length;
 
     // Check last arg for finally
+    // A6-exempt: structural — `try` clause grammar (`finally`), not a form head.
     const lastArg = args[args.length - 1];
     if (lastArg.type === 'list' && lastArg.values.length > 0 &&
         lastArg.values[0].type === 'atom' && lastArg.values[0].value === 'finally') {
@@ -1069,6 +1094,7 @@ const macros = {
 
     // Check the (possibly new) last arg for catch
     if (bodyEnd > 0) {
+      // A6-exempt: structural — `try` clause grammar (`catch`), not a form head.
       const catchArg = args[bodyEnd - 1];
       if (catchArg.type === 'list' && catchArg.values.length > 0 &&
           catchArg.values[0].type === 'atom' && catchArg.values[0].value === 'catch') {
@@ -1217,6 +1243,7 @@ const macros = {
         throw new Error('switch: each case must be a list (test body...)');
       }
       const headNode = caseNode.values[0];
+      // A6-exempt: structural — `switch` clause grammar (`default`), not a head.
       const isDefault = headNode.type === 'atom' && headNode.value === 'default';
       const test = isDefault ? null : compileExpr(headNode, 'expression');
       const consequent = caseNode.values.slice(1)
@@ -1501,6 +1528,7 @@ const macros = {
         }
 
         // Check for (spread expr)
+        // A6-exempt: structural — object-literal element `spread`, not a head.
         if (child.values[0].type === 'atom' && child.values[0].value === 'spread') {
           if (child.values.length !== 2) {
             throw new Error('spread takes exactly one argument');
@@ -1515,6 +1543,7 @@ const macros = {
         // Check for ((computed key-expr) value)
         if (child.values[0].type === 'list') {
           const innerList = child.values[0];
+          // A6-exempt: structural — object-literal `computed` key grammar.
           if (innerList.values.length === 2 &&
               innerList.values[0].type === 'atom' &&
               innerList.values[0].value === 'computed') {
@@ -1747,9 +1776,12 @@ export function compileExpr(node, position = 'statement') {
       const head = node.values[0];
       const rest = node.values.slice(1);
 
-      // Check if head matches a macro
-      if (head.type === 'atom' && macros[head.value]) {
-        return macros[head.value](rest, position);
+      // Check if head matches a kernel form / macro — the single form-vs-call
+      // dispatch door. Read through `formHead` (DD-61 §A6): a resolved binding
+      // head (`ref`) returns null here and falls through to the plain call.
+      const headName = formHead(head);
+      if (headName !== null && macros[headName]) {
+        return macros[headName](rest, position);
       }
 
       // Otherwise it's a function call
@@ -1865,6 +1897,7 @@ function compileObjectPattern(children) {
       const head = child.values[0];
 
       // (rest others) → RestElement
+      // A6-exempt: structural — object-pattern element grammar, not a form head.
       if (head.type === 'atom' && head.value === 'rest') {
         if (child.values.length !== 2) {
           throw new Error('rest requires exactly 1 argument');
@@ -1880,6 +1913,7 @@ function compileObjectPattern(children) {
       }
 
       // (default name value) → Property with AssignmentPattern value
+      // A6-exempt: structural — object-pattern element grammar, not a form head.
       if (head.type === 'atom' && head.value === 'default') {
         if (child.values.length !== 3) {
           throw new Error('default in object pattern: (default name value)');
@@ -1902,6 +1936,7 @@ function compileObjectPattern(children) {
       }
 
       // (alias key local) or (alias key local default-val)
+      // A6-exempt: structural — object-pattern element grammar, not a form head.
       if (head.type === 'atom' && head.value === 'alias') {
         if (child.values.length < 3 || child.values.length > 4) {
           throw new Error('alias: (alias key local) or (alias key local default)');
@@ -1964,6 +1999,7 @@ function compileArrayPattern(children) {
       const head = child.values[0];
 
       // (rest name) → RestElement (must be last)
+      // A6-exempt: structural — array-pattern element grammar, not a form head.
       if (head.type === 'atom' && head.value === 'rest') {
         if (child.values.length !== 2) {
           throw new Error('rest requires exactly 1 argument');
@@ -1979,6 +2015,7 @@ function compileArrayPattern(children) {
       }
 
       // (default name value) → AssignmentPattern
+      // A6-exempt: structural — array-pattern element grammar, not a form head.
       if (head.type === 'atom' && head.value === 'default') {
         if (child.values.length !== 3) {
           throw new Error('default in array pattern: (default name value)');
@@ -2037,6 +2074,7 @@ function compileClassMember(node, isStatic) {
       throw new Error('async must wrap a method definition');
     }
     const innerHead = inner.values[0];
+    // A6-exempt: structural — class accessor grammar (get/set), not a form head.
     if (innerHead.type === 'atom' && (innerHead.value === 'get' || innerHead.value === 'set')) {
       const member = compileMethodDef(inner, innerHead.value, isStatic);
       member.value.async = true;

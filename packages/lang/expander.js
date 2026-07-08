@@ -11,7 +11,7 @@ import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
-import { validateReservedNames } from './binding.js';
+import { validateReservedNames, bindingsIntroduced } from './binding.js';
 
 // node:path is used intentionally here and CANNOT be replaced with jsr:@std/path.
 //
@@ -690,21 +690,176 @@ const dispatchTable = Object.assign(Object.create(null), {
   "macroexpand-1": { walk: "debug-expand", mode: "once" },
 });
 
+// --- Name resolution (DD-60 D1 / DD-61 §A1/§A3) ---
+//
+// On JS the scan and the tagger are the SAME walk: the expander lowers
+// surface→kernel during expansion, so resolution lives inside `expandExpr`.
+// A value environment (`env`, an immutable Set of in-scope names) is threaded
+// through the walk; a head atom that is lexically bound is tagged `ref` and
+// emitted as a plain call (the ref gate below), and `compiler.js` reads the tag
+// through `formHead`. The env is consulted only at head position — arguments
+// and values always compile to identifiers/literals regardless of tag.
+//
+// Where the env is extended is asymmetric, forced by monolithic lowering (a
+// binding form is lowered as a whole, then its kernel result is re-walked):
+//   • Function-family heads (`func`/`genfunc`/`fn`/`lambda`/`genfn`) lower to
+//     `function`/`=>`/`function*`, whose param lists are NOT re-exposed by
+//     `bindingsIntroduced`. Their bindings are added to the env at the SURFACE
+//     level (the classifier branch), before lowering. bodyStart is 0 (whole
+//     body in scope) so there is no out-of-scope region to protect.
+//   • Every other binding form re-exposes its binders at the kernel level
+//     (`for-of` stays `for-of`; `bind`→`const`; `if-let`/`match`→inner `const`
+//     decls), where the uniform `scopePlan` walk (the default branch) extends
+//     the env region-correctly — keeping a loop iterable / scrutinee OUTSIDE
+//     the binding's scope. The two mechanisms are mutually exclusive per form
+//     (double-extension would wrongly shadow a `for-of` iterable).
+
+/** Shared empty environment (never mutated — `extendEnv` copies). */
+const EMPTY_ENV = new Set();
+
+/** Surface heads whose lowering hides their params — env-extended at surface. */
+const FUNCTION_FAMILY = new Set(["func", "genfunc", "fn", "lambda", "genfn"]);
+
+/** Kernel declaration heads (mirror of binding.js `DECL_HEADS`). */
+const DECL_HEADS = new Set(["const", "let", "var", "function", "function*"]);
+
+/** Binding kinds that declare into the enclosing sibling scope (hoist forward). */
+const ENCLOSING_KINDS = new Set(["bind", "import-local"]);
+
+const SEQUENCE = { kind: "seq" };
+
+/** Extend an env with `names`; returns a new Set (immutable threading). */
+function extendEnv(env, names) {
+  if (names.length === 0) return env;
+  const next = new Set(env);
+  for (const n of names) next.add(n);
+  return next;
+}
+
+/**
+ * Tag every binder atom this form introduces with `binding: 'def'` (mirror of
+ * Rust's `NameRes::BindingDef`). Consumes `bindingsIntroduced` only. Def sites
+ * sit in declaration/pattern positions the compiler reads structurally, never at
+ * the dispatch door, so the tag is inert for output — it exists so `formHead`
+ * returns null for a binder atom, matching Rust `as_form_head`.
+ */
+function tagDefSites(form) {
+  for (const site of bindingsIntroduced(form)) {
+    if (site.node && site.node.type === "atom") site.node.binding = "def";
+  }
+}
+
+/** Value-env names a form introduces — every binding kind except `label`. */
+function bodyScopeNames(form) {
+  return bindingsIntroduced(form)
+    .filter((s) => s.kind !== "label")
+    .map((s) => s.name);
+}
+
+/** Names a form declares to FOLLOWING siblings (`bind` / import locals). */
+function hoistedNames(form) {
+  return bindingsIntroduced(form)
+    .filter((s) => s.kind !== "label" && ENCLOSING_KINDS.has(s.kind))
+    .map((s) => s.name);
+}
+
+/** Whether a head is a declaration whose name is NOT in its own value scope. */
+function isDeclHead(h) {
+  if (h === null) return false;
+  if (h === "bind") return true;
+  const kernel = h.startsWith("kernel:") ? h.slice("kernel:".length) : h;
+  return DECL_HEADS.has(kernel);
+}
+
+/**
+ * How a list form distributes its body-scoped bindings over its children —
+ * mirror of Rust `resolver::scope_plan`. `Sequence` = plain sibling sequence
+ * (enclosing decls hoist between siblings; values stay outside their own scope);
+ * `Body { names, bodyStart }` = `names` are in scope from `bodyStart` onward,
+ * while earlier children (a loop iterable / `if-let` scrutinee / `match`
+ * subject) are evaluated OUTSIDE the binding's scope. Head dispatch works on
+ * both surface and kernel heads.
+ * @returns {{kind:'seq'} | {kind:'body', names: string[], bodyStart: number}}
+ */
+function scopePlan(form) {
+  if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
+  const head = form.values[0];
+  const h = head?.type === "atom" ? head.value : null;
+  switch (h) {
+    case "for-of":
+    case "for-in":
+    case "for-await-of":
+      return { kind: "body", names: bodyScopeNames(form), bodyStart: 3 };
+    case "if-let":
+    case "when-let":
+    case "match":
+      return { kind: "body", names: bodyScopeNames(form), bodyStart: 2 };
+    default: {
+      if (isDeclHead(h)) return SEQUENCE; // name scopes over siblings, not value
+      const names = bodyScopeNames(form);
+      if (names.length === 0) return SEQUENCE;
+      return { kind: "body", names, bodyStart: 0 };
+    }
+  }
+}
+
+/** Push an expandExpr result (single, array, or null) preserving old semantics. */
+function pushExpanded(out, result) {
+  if (Array.isArray(result)) out.push(...result);
+  else out.push(result);
+}
+
+/**
+ * Resolve+expand `children` as a sibling SEQUENCE: each child's enclosing-scope
+ * declarations (`bind`/import locals) become visible to the FOLLOWING siblings.
+ * Mirror of Rust `resolver::resolve_seq`.
+ */
+function expandChildrenSeq(children, env) {
+  const out = [];
+  let cur = env;
+  for (const child of children) {
+    pushExpanded(out, expandExpr(child, cur));
+    const hoist = child?.type === "list" ? hoistedNames(child) : [];
+    if (hoist.length) cur = extendEnv(cur, hoist);
+  }
+  return out;
+}
+
+/**
+ * Resolve+expand a form's children under its `scopePlan`: pre-body children with
+ * the outer env, then body children (from `bodyStart`) under the extended env as
+ * a sequence. Mirror of Rust `resolver::resolve_split_at` + `resolve_seq`.
+ */
+function expandChildrenPlan(form, env) {
+  const plan = scopePlan(form);
+  const children = form.values;
+  if (plan.kind === "seq") return expandChildrenSeq(children, env);
+  const split = Math.min(plan.bodyStart, children.length);
+  const out = [];
+  for (let i = 0; i < split; i++) pushExpanded(out, expandExpr(children[i], env));
+  if (split < children.length) {
+    const bodyEnv = extendEnv(env, plan.names);
+    for (const v of expandChildrenSeq(children.slice(split), bodyEnv)) out.push(v);
+  }
+  return out;
+}
+
 // --- Expansion Walk ---
 
 /**
  * Expand a single AST form, resolving sugar, quasiquote, and quote.
  * @param {*} form - A reader AST node
+ * @param {Set<string>} [env] - in-scope value names (DD-60 D1); defaults empty
  * @returns {* | *[]} Expanded form(s)
  */
-export function expandExpr(form) {
+export function expandExpr(form, env = EMPTY_ENV) {
   // Propagate the sanctioned-kernel mark across expansion: if the input was
   // sanctioned (compiler-produced kernel), so is the output — even though the
   // inner walk rebuilds nodes (e.g. `expand-binding` returns a fresh list).
   // This is what lets the post-pass2 DD-58 sweep tell compiler-emitted kernel
   // (`bind`→`const`, the `kernel:` escape) from user-macro-emitted kernel.
   const sanctioned = isKernel(form);
-  const result = expandExprInner(form);
+  const result = expandExprInner(form, env);
   if (sanctioned) {
     if (Array.isArray(result)) {
       for (const r of result) markKernel(r);
@@ -715,14 +870,14 @@ export function expandExpr(form) {
   return result;
 }
 
-function expandExprInner(form) {
+function expandExprInner(form, env) {
   if (form === null || form === undefined) return form;
   if (form.type === 'atom' || form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
     return form;
   }
 
   if (form.type === 'cons') {
-    return { type: 'cons', car: expandExpr(form.car), cdr: expandExpr(form.cdr) };
+    return { type: 'cons', car: expandExpr(form.car, env), cdr: expandExpr(form.cdr, env) };
   }
 
   if (form.type !== 'list') {
@@ -733,11 +888,15 @@ function expandExprInner(form) {
 
   const head = form.values[0];
 
+  // Tag this form's binder atoms `def` (no-op for non-binding forms). Inert for
+  // output — def sites are read structurally, never at the dispatch door.
+  tagDefSites(form);
+
   // Quasiquote
   if (head.type === 'atom' && head.value === 'quasiquote') {
     if (form.values.length !== 2) throw new Error('quasiquote requires exactly one argument');
     const expanded = expandQuasiquote(form.values[1], 0);
-    return expandExpr(expanded);
+    return expandExpr(expanded, env);
   }
 
   // Unquote/splice outside quasiquote
@@ -767,7 +926,25 @@ function expandExprInner(form) {
       type: 'list',
       values: [{ type: 'atom', value: kernelForm }, ...form.values.slice(1)],
     });
-    return expandExpr(stripped);
+    return expandExpr(stripped, env);
+  }
+
+  // Resolution gate (DD-60 D1 / DD-61 §A3). A head atom that is lexically bound
+  // in `env` (or already tagged `ref`) is a reference to the binding, not a
+  // macro/form/kernel head: tag it `ref`, emit a plain call, and skip classifier
+  // + user-macro + kernel dispatch entirely (F-2). Binding-position atoms thus
+  // never reach a dispatch site — the throws-from-the-binding-site rows resolve
+  // to ordinary calls. Sanctioned kernel (`isKernel`) is the compiler's own
+  // output and is never re-read as a bound reference (e.g. a `conj`-emitted
+  // `(array …)` stays an array literal even when `array` is bound).
+  if (head.type === 'atom' && !isKernel(form) &&
+      (head.binding === 'ref' || env.has(head.value))) {
+    head.binding = 'ref';
+    const values = [head];
+    for (const sub of form.values.slice(1)) {
+      pushExpanded(values, expandExpr(sub, env));
+    }
+    return { type: 'list', values };
   }
 
   // Fixed-point macro expansion
@@ -776,11 +953,18 @@ function expandExprInner(form) {
   if (head.type === 'atom' && !isKernel(form)) {
     const astNode = classifySurfaceForm(head.value, form.values.slice(1));
     if (astNode) {
+      // Function-family bindings vanish into `=>`/`function` param lists at the
+      // kernel level, so extend the value env at the surface level, before
+      // lowering. All other binding forms re-expose their binders at the kernel
+      // level (handled by the default branch's `scopePlan`).
+      const childEnv = FUNCTION_FAMILY.has(head.value)
+        ? extendEnv(env, bodyScopeNames(form))
+        : env;
       const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword });
       if (Array.isArray(kernel)) {
-        return kernel.map(k => expandExpr(markKernel(k)));
+        return kernel.map(k => expandExpr(markKernel(k), childEnv));
       }
-      return expandExpr(markKernel(kernel));
+      return expandExpr(markKernel(kernel), childEnv);
     }
   }
 
@@ -803,9 +987,9 @@ function expandExprInner(form) {
       }
     }
     if (Array.isArray(current)) {
-      return current.map((r) => expandExpr(r));
+      return current.map((r) => expandExpr(r, env));
     }
-    return expandExpr(current);
+    return expandExpr(current, env);
   }
 
   // Dispatch table
@@ -823,9 +1007,9 @@ function expandExprInner(form) {
           const args = form.values.slice(1);
           const result = entry.transform(args);
           if (Array.isArray(result)) {
-            return result.map((r) => expandExpr(r));
+            return result.map((r) => expandExpr(r, env));
           }
-          return expandExpr(result);
+          return expandExpr(result, env);
         }
 
         case 'expand-binding': {
@@ -839,13 +1023,15 @@ function expandExprInner(form) {
               const whole = asArgs[1];
               const initExpr = args[1];
               return [
-                expandExpr(array(sym(entry.keyword), whole, initExpr)),
-                expandExpr(array(sym(entry.keyword), pattern, whole)),
+                expandExpr(array(sym(entry.keyword), whole, initExpr), env),
+                expandExpr(array(sym(entry.keyword), pattern, whole), env),
               ];
             }
           }
-          // No as pattern — default recursive expansion
-          return { type: 'list', values: form.values.map((sub) => expandExpr(sub)) };
+          // No as pattern — default recursive expansion. The declared name is
+          // not in scope over its own value (the value sees `env` unchanged);
+          // it hoists to following siblings via the enclosing sequence walk.
+          return { type: 'list', values: form.values.map((sub) => expandExpr(sub, env)) };
         }
 
         case 'import-macros':
@@ -876,7 +1062,7 @@ function expandExprInner(form) {
             }
           } else {
             // macroexpand: full expansion
-            result = expandExpr(targetForm);
+            result = expandExpr(targetForm, env);
           }
 
           // Print to stderr
@@ -891,17 +1077,11 @@ function expandExprInner(form) {
     }
   }
 
-  // Default: expand all sub-forms
-  const expandedValues = [];
-  for (const sub of form.values) {
-    const result = expandExpr(sub);
-    if (Array.isArray(result)) {
-      expandedValues.push(...result);
-    } else {
-      expandedValues.push(result);
-    }
-  }
-  return { type: 'list', values: expandedValues };
+  // Default: expand all sub-forms, region-aware. `scopePlan` places each
+  // introduced binding over exactly the child positions where it is lexically
+  // visible (never an initializer / iterable / scrutinee) and hoists enclosing
+  // declarations across siblings — the kernel-level half of resolution.
+  return { type: 'list', values: expandChildrenPlan(form, env) };
 }
 
 /**
@@ -1000,14 +1180,22 @@ function findSymbolRefs(forms, names) {
  */
 function pass2ExpandAll(forms) {
   const result = [];
+  // Top-level forms are a sibling SEQUENCE: a `bind`/`import` at top level is in
+  // scope for the following top-level forms (mirror of Rust's outermost
+  // `resolve_seq`), so a later `(array 987)` after `(bind array 0)` resolves to
+  // the binding.
+  let env = EMPTY_ENV;
   for (const form of forms) {
-    const expanded = expandExpr(form);
-    if (expanded === null || expanded === undefined) continue;
-    if (Array.isArray(expanded)) {
-      result.push(...expanded.filter((e) => e !== null && e !== undefined));
-    } else {
-      result.push(expanded);
+    const expanded = expandExpr(form, env);
+    if (expanded !== null && expanded !== undefined) {
+      if (Array.isArray(expanded)) {
+        result.push(...expanded.filter((e) => e !== null && e !== undefined));
+      } else {
+        result.push(expanded);
+      }
     }
+    const hoist = form?.type === "list" ? hoistedNames(form) : [];
+    if (hoist.length) env = extendEnv(env, hoist);
   }
   return result;
 }

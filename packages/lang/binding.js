@@ -14,7 +14,12 @@
 import { RESERVED_WORDS } from "./reserved-words.js";
 
 /** @typedef {'param'|'bind'|'loop-binding'|'class-method-param'} BindingKind */
-/** @typedef {{ name: string, kind: BindingKind }} BindingSite */
+/**
+ * @typedef {{ name: string, kind: BindingKind, node?: object }} BindingSite
+ * `node` is the binder's atom node (present for leaf name sites) — the
+ * resolution pass (slice10) tags it `def`. D2 (`validateReservedNames`) reads
+ * only `name`/`kind`, so `node` is purely additive.
+ */
 
 const DECL_HEADS = new Set(["const", "let", "var", "function", "function*"]);
 
@@ -79,7 +84,7 @@ export function bindingsIntroduced(form) {
       return importLocalNames(args);
     case "label":
       return args[0]?.type === "atom" && args[0].value !== "_"
-        ? [{ name: args[0].value, kind: "label" }]
+        ? [{ name: args[0].value, kind: "label", node: args[0] }]
         : [];
     default: {
       const kernel = name.startsWith("kernel:")
@@ -116,7 +121,7 @@ function funcClauseParamNames(args) {
   const out = [];
   // `(func NAME …)` / `(genfunc NAME …)` — NAME lowers to `function NAME`.
   if (args[0]?.type === "atom" && args[0].value !== "_") {
-    out.push({ name: args[0].value, kind: "bind" });
+    out.push({ name: args[0].value, kind: "bind", node: args[0] });
   }
   // Multi-clause: each clause is a list whose head is a func-clause *key*
   // keyword (`:args`/`:body`/…) — not a mere keyword (a type like `:any` in a
@@ -147,7 +152,7 @@ function paramListNames(list) {
   for (const el of list.values) {
     if (el.type === "keyword") continue; // type annotation
     if (el.type === "atom") {
-      if (el.value !== "_") out.push({ name: el.value, kind: "param" });
+      if (el.value !== "_") out.push({ name: el.value, kind: "param", node: el });
     } else if (el.type === "list") {
       const h = el.values[0]?.type === "atom" ? el.values[0].value : "";
       if (h === "rest" && el.values[1]) {
@@ -171,7 +176,7 @@ function classNames(args) {
   const out = [];
   // (class NAME (bases) member…) — NAME is args[0].
   if (args[0]?.type === "atom" && args[0].value !== "_") {
-    out.push({ name: args[0].value, kind: "bind" });
+    out.push({ name: args[0].value, kind: "bind", node: args[0] });
   }
   for (const member of args.slice(1)) {
     if (member?.type !== "list") continue;
@@ -179,7 +184,7 @@ function classNames(args) {
     if (params?.type === "list") {
       for (const p of params.values) {
         if (p.type === "atom" && p.value !== "_") {
-          out.push({ name: p.value, kind: "class-method-param" });
+          out.push({ name: p.value, kind: "class-method-param", node: p });
         }
       }
     }
@@ -201,7 +206,7 @@ function importLocalNames(args) {
   if (second.type === "list") {
     importSpecs(second.values, out);
   } else if (second.type === "atom" && second.value !== "_") {
-    out.push({ name: second.value, kind: "import-local" }); // default import
+    out.push({ name: second.value, kind: "import-local", node: second }); // default import
     if (args[2]?.type === "list") importSpecs(args[2].values, out);
   }
   return out;
@@ -211,13 +216,13 @@ function importSpecs(specs, out) {
   for (const spec of specs) {
     if (spec.type === "atom") {
       if (spec.value !== "_") {
-        out.push({ name: spec.value, kind: "import-local" });
+        out.push({ name: spec.value, kind: "import-local", node: spec });
       }
     } else if (
       spec.type === "list" && spec.values[0]?.type === "atom" &&
       spec.values[0].value === "alias" && spec.values[2]?.type === "atom"
     ) {
-      out.push({ name: spec.values[2].value, kind: "import-local" });
+      out.push({ name: spec.values[2].value, kind: "import-local", node: spec.values[2] });
     }
   }
 }
@@ -233,11 +238,11 @@ function typeConstructorNames(args) {
     if (ctor?.type !== "list" || ctor.values.length === 0) continue;
     const head = ctor.values[0];
     if (head.type === "atom" && head.value !== "_") {
-      out.push({ name: head.value, kind: "bind" }); // constructor name
+      out.push({ name: head.value, kind: "bind", node: head }); // constructor name
     }
     for (const field of ctor.values.slice(1)) {
       if (field.type === "atom" && field.value !== "_") {
-        out.push({ name: field.value, kind: "param" }); // field param
+        out.push({ name: field.value, kind: "param", node: field }); // field param
       }
     }
   }
@@ -278,7 +283,7 @@ function matchPatternNames(pat) {
       return [];
     }
     if (/^[A-Z]/.test(v)) return []; // PascalCase — nullary constructor
-    return [{ name: v, kind: "pattern" }];
+    return [{ name: v, kind: "pattern", node: pat }];
   }
   if (pat?.type !== "list" || pat.values.length === 0) return [];
   const head = pat.values[0];
@@ -301,7 +306,7 @@ function matchPatternNames(pat) {
 /** Leaf names bound by a pattern: an atom or an (array …)/(object …) form. */
 function patternNames(pat, kind) {
   if (pat?.type === "atom") {
-    return pat.value === "_" ? [] : [{ name: pat.value, kind }];
+    return pat.value === "_" ? [] : [{ name: pat.value, kind, node: pat }];
   }
   if (pat?.type !== "list") return [];
   const h = pat.values[0]?.type === "atom" ? pat.values[0].value : "";
@@ -310,7 +315,7 @@ function patternNames(pat, kind) {
   for (const el of pat.values.slice(1)) {
     if (el.type === "keyword") continue;
     if (el.type === "atom") {
-      if (el.value !== "_") out.push({ name: el.value, kind });
+      if (el.value !== "_") out.push({ name: el.value, kind, node: el });
     } else if (el.type === "list") {
       const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
       if (ih === "rest" && el.values[1]) {
