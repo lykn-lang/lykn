@@ -59,15 +59,15 @@ fn bool_lit(b: bool) -> SExpr {
 fn contains_await(expr: &SExpr) -> bool {
     match expr {
         SExpr::List { values, .. } => {
-            // Byte-identical accessor conversion (slice08) of a pre-existing
-            // *destructure* head-read that slice06's F-4 could not see. Whether
-            // this await-detection scan should honour resolution (`as_form_head`,
-            // so a bound `await` param is not counted) is a slice08 bubble-up —
-            // a behaviour change deferred out of this byte-identical sweep.
-            // A6-exempt: see the note above.
-            if let Some(value) = values.first().and_then(|e| e.as_atom())
-                && value == "await"
-            {
+            // DD-60 D1 (arc13/slice11 F-5): async detection honours resolution.
+            // A lexically bound `await` (a param/binder) is a plain call to the
+            // binding, not the `await` operator, so it must NOT async-wrap the
+            // enclosing form — `as_form_head` (bound → `None`) gates the head,
+            // where slice08's byte-identical sweep left a raw `as_atom` read.
+            // Probe: `(func p (:any await) (if-let (x 1) (await 987) 0))` was
+            // async-wrapped on Rust (and `await(987)` reinterpreted as the
+            // operator) while JS kept it a sync call — this closes that gap.
+            if values.first().and_then(|e| e.as_form_head()) == Some("await") {
                 return true;
             }
             values.iter().any(contains_await)
@@ -85,13 +85,15 @@ fn any_contains_await(exprs: &[SExpr]) -> bool {
 fn step_contains_await(step: &ThreadingStep) -> bool {
     match step {
         ThreadingStep::Bare(expr) => {
-            // Bare symbol "await" or a list containing await
-            expr.as_atom() == Some("await") || contains_await(expr)
+            // Bare symbol "await" or a list containing await. Resolution-honoured
+            // (F-5): a bound `await` is a value, not the operator (`as_form_head`).
+            expr.as_form_head() == Some("await") || contains_await(expr)
         }
         ThreadingStep::Call(exprs) => {
-            // Check if the call head is "await" or if any subexpression contains await
+            // Check if the call head is "await" or if any subexpression contains
+            // await — bound `await` is a plain call, not the operator (F-5).
             if let Some(head) = exprs.first()
-                && head.as_atom() == Some("await")
+                && head.as_form_head() == Some("await")
             {
                 return true;
             }
@@ -3770,6 +3772,24 @@ mod tests {
     fn test_contains_await_absent() {
         let expr = list(vec![atom("fetch"), atom("url")]);
         assert!(!contains_await(&expr));
+    }
+
+    #[test]
+    fn test_contains_await_honours_resolution() {
+        // arc13/slice11 F-5 (DD-60 D1): a lexically bound `await` head is a
+        // plain call to the binding, not the operator, so it must NOT be
+        // counted (else the enclosing if-let/match/threading form is wrongly
+        // async-wrapped). An unresolved `await` head still counts.
+        use crate::ast::sexpr::NameRes;
+        let bound_await = atom("await").with_name_res(NameRes::BindingRef);
+        let bound_call = list(vec![bound_await, num(987.0)]);
+        assert!(
+            !contains_await(&bound_call),
+            "a bound `await` call head must not trigger async detection"
+        );
+        // The unresolved twin (the genuine operator) still counts.
+        let operator = list(vec![atom("await"), num(987.0)]);
+        assert!(contains_await(&operator));
     }
 
     #[test]

@@ -29,13 +29,22 @@ pub fn compile_local_macros(
 ) -> Result<Vec<SExpr>, LyknError> {
     let mut macro_forms = Vec::new();
     let mut other_forms = Vec::new();
+    // DD-60 D1 / DD-61 §A3: a `(macro …)` head that is lexically shadowed by a
+    // preceding top-level binding (`(bind macro …)`, a destructuring binder, an
+    // `import` local) is a plain call to that binding, not a macro definition —
+    // mirror pass 2's light binding-scan so the two passes agree on scope.
+    let mut shadowed: Vec<String> = Vec::new();
 
     for form in forms {
-        if is_macro_def(&form) {
+        let is_def = is_macro_def(&form) && !shadowed.iter().any(|n| n == "macro");
+        // Names this top-level form declares for the siblings that follow it.
+        let hoist = crate::resolver::hoisted_names(&form);
+        if is_def {
             macro_forms.push(form);
         } else {
             other_forms.push(form);
         }
+        shadowed.extend(hoist);
     }
 
     if macro_forms.is_empty() {

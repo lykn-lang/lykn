@@ -89,9 +89,21 @@ fn expand_expr(
                     return Ok(Some(form));
                 }
 
-                // A `(macro ...)` in pass 2 is an error — they should have
-                // been consumed in pass 1.
-                if head_name == "macro" {
+                // DD-61 §A3 light binding-scan: a lexically bound head is
+                // neither a desugar, a user macro, nor the `macro` definition
+                // form — it is a plain call to the binding (DD-60 D1). Skip all
+                // three dispatch paths when bound.
+                let bound = scope.iter().any(|n| n.as_str() == head_name);
+
+                // A leaked `(macro name …)` definition in pass 2 is an error —
+                // they should have been consumed in pass 1. The guard is narrow
+                // on purpose: it fires only for genuine *definition shape* (a
+                // `macro` head with an atom name), so a bound `macro` call
+                // (`(macro 987)`, DD-60 D1) and a `macro` binder atom in a
+                // declaration list (`(import "m" (macro))`) both fall through to
+                // the default branch as plain forms rather than erroring.
+                let is_macro_def_shape = values.len() >= 2 && values[1].as_atom().is_some();
+                if !bound && head_name == "macro" && is_macro_def_shape {
                     return Err(LyknError::Read {
                         message: "unexpected macro definition in expansion pass \
                                   (macros should be processed in Pass 1)"
@@ -99,11 +111,6 @@ fn expand_expr(
                         location: span.start,
                     });
                 }
-
-                // DD-61 §A3 light binding-scan: a lexically bound head is
-                // neither a desugar nor a user macro — it is a plain call to the
-                // binding (DD-60 D1). Skip both dispatch paths when bound.
-                let bound = scope.iter().any(|n| n.as_str() == head_name);
 
                 // Sugar form desugaring.
                 if !bound && let Some(desugared) = try_desugar(head_name, &values[1..], *span) {
