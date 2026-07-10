@@ -28,6 +28,14 @@ history remains in `workbench/old/` (a future `docs/design-v0.5.x/` retro pass).
 Design decisions (DDs) remain odm-managed in `docs/design/`; the v0.6.0 tree
 references them.
 
+Post-0.6.0 planning lives under **`docs/design-v0.7.0/`**, same canonical
+layout (confirmed with the operator 2026-07-07). `project-plan.md` there is
+deliberately deferred until the 0.7.0 project definition; current units
+(both single slice, arc wrapper collapsed) are `01-treeshake-audit/`
+(compiled-output tree-shakeability) and `02-packaging-strategy/`
+(Homebrew custom-tap + Debian self-hosted-APT-repo packaging strategy,
+opened 2026-07-07).
+
 ## Writing Code
 
 ### JavaScript

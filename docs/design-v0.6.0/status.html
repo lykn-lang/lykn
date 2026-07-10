@@ -128,7 +128,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-07-07 (arc13 slice10 · js-resolution SCOPED — the JS mirror of slice06; region model + label exception + formHead() + the JS static check; ready for CC)",
+  updated: "2026-07-07 (arc13 slice11 · conformance-corpus + dispositions SCOPED — the arc's last slice; ready for CC; the arc close-set follows it)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -155,7 +155,7 @@ const DATA = {
       slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"context-rules+docs",s:"open"}] },
     { id:"arc13", name:"expander-coherence", status:"active",
       cap:"Lexical bindings shadow macros on BOTH backends (today: Rust calls the param where JS throws; Rust emits wrong code for 7 macro-named params; reserved words → invalid JS at rc=0). Matrix + DD-60 → Rust → JS + conformance corpus.",
-      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"closed"},{n:"atom-privacy-recon",s:"closed"},{n:"accessor-sweep",s:"closed"},{n:"privacy-flip",s:"closed"},{n:"js-resolution",s:"open"},{n:"corpus+close",s:"open"}] },
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"closed"},{n:"atom-privacy-recon",s:"closed"},{n:"accessor-sweep",s:"closed"},{n:"privacy-flip",s:"closed"},{n:"js-resolution",s:"closed"},{n:"corpus+dispositions",s:"active"}] },
     { id:"arc06", name:"cross-project-dep-ergonomics", status:"open",
       cap:"lykn add + downstream-blocker audit. slice01 (exports-gap) closed.",
       slices:[{n:"exports-gap",s:"closed"}] },
@@ -180,7 +180,7 @@ const DATA = {
   ],
   sequence: ["arc13","arc05","arc06","arc07","arc09"],
   now: {
-    arc:"arc13: hand slice10 · js-resolution to CC — the JS mirror of slice06; then the conformance corpus + arc close",
+    arc:"arc13: hand slice11 · conformance-corpus + dispositions to CC (the LAST slice); then the arc close-set (CDC + operator gate)",
     desc:"The Rust side of arc13 is DONE. DD-60 D1 holds (slice06 @ dc37ae9): one resolver pass tags every atom; the expander light-scan shadows user macros AND desugars; as_form_head() makes misdispatch structurally impossible; matrix macro-fires 182→22 (the 22 = the label column, correct by design — DD-60 states the label exception). And DD-61 §A6 is fully landed (slices 07–09): the recon corrected the two-crate blast radius (lykn-cli shares the ONE SExpr), slice08 swept all ~85 field-naming pattern sites to accessors (byte-identical; the zero-pattern gate CC-verified AND CDC-reproduced; bonus find: contains_await, the destructure-shaped dispatch read the static check couldn't see — behavior question routed to corpus+close scoping), and slice09 flipped Atom(AtomData) private in a SINGLE-FILE commit (4c12301; E0451 proof in both crates; size 48→48). Rust's three §A6 layers: visibility + static check + corpus. Remaining: js-resolution (must mirror slice06's scope_plan region model — bindings are NOT in scope over their own initializer/iterable; keep the label exception; formHead() + the JS grep check), then the permanent conformance corpus + arc close (incl. the contains_await row, DD-61 as-built record, and host ancestry reconciles), then arc05 (the linter) resumes with true lexical scoping simply in place. Fresh session starts at BOOTSTRAP.md as always."
   },
   metrics: [

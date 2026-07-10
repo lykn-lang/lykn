@@ -42,8 +42,8 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice07 · atom-privacy-recon** | Recon-only investigation for the atom-payload-privacy layer: construction + pattern censuses, design proposal, LoE + sizing, blast radius. Empty diff at close. | **Closed** (2026-07-07, empty diff; **construction class already retired** by slice06's constructor — 170 calls, 1 bare literal; real blast radius = **~85 field-naming pattern sites across TWO crates** — lead finding: `lykn-cli` has **no separate `SExpr`**, it imports lykn-lang's [phasing-plan premise corrected]; design = `Atom(AtomData)` Option A; **operator 2026-07-07: two slices; `as_atom()` stays as-is**) |
 | **slice08 · accessor-sweep** | Privacy pair, step 1 (from slice07's report): `atom_parts()` + convert all ~85 field-naming `Atom` pattern sites to accessors **while fields stay public** — green throughout, behavior byte-identical, both crates (incl. the 5 `lykn-cli` sites); completion gate = zero field-naming patterns outside `ast/sexpr.rs` (slice09's precondition). **Depends on: slice06 (landed).** | **Closed** (`7d86703` + `dab4405`; 6/6 rows; byte-identical, counts unchanged; **F-5 gate CDC-reproduced**; finding: `contains_await` destructure head-read — F-4's blind spot, self-closed by the sweep; behavior question routed → corpus+close scoping) |
 | **slice09 · privacy-flip** | Privacy pair, step 2 — the atomic restructure: `Atom(AtomData)`, fields private to `ast::sexpr`; seeded compile-fail demos both crates; `as_atom()` public/unrenamed (operator call), slice06 A6 check stays load-bearing; the DD-61 §A6 by-construction layer lands. **Depends on: slice08.** | **Closed** (`4c12301` — a **single-file** change; 5/5 rows; E0451 proof both crates; size 48→48; finding: `{ .. }` valid on tuple variants → the `Atom(_)` conversions were unnecessary, left minimal; §A6 as-built = visibility + static check + corpus) |
-| **slice10 · js-resolution** | The JS mirror of slice06: one env inside the `expandExpr` walk (the JS expander lowers during expansion, so resolution lives in-walk — §A3); binding-position atoms never dispatched; bound heads skip classifier + macro dispatch; `formHead()` (null for defs AND refs) converts `compiler.js`; the §A6 JS static check. **Mirrors the `scope_plan` region model** (naive whole-subtree push miscompiles the iterable) and **keeps the label exception** (DD-60 ‡ — do not "fix" the label column). Acceptance: JS matrix columns → DD-60 targets; **Rust columns + corpus byte-identical** (leak = stop). | **Open** (open set written 2026-07-07) |
-| *(next)* · conformance-corpus + arc close | The permanent cross-backend corpus; A-4/A-5 reproduced; DD-60 cross-ref recording DD-61 as-built. | Future |
+| **slice10 · js-resolution** | The JS mirror of slice06: one env inside the `expandExpr` walk (the JS expander lowers during expansion, so resolution lives in-walk — §A3); binding-position atoms never dispatched; bound heads skip classifier + macro dispatch; `formHead()` (null for defs AND refs) converts `compiler.js`; the §A6 JS static check. **Mirrors the `scope_plan` region model** (naive whole-subtree push miscompiles the iterable) and **keeps the label exception** (DD-60 ‡ — do not "fix" the label column). Acceptance: JS matrix columns → DD-60 targets; **Rust columns + corpus byte-identical** (leak = stop). | **Closed** (`c19a1fb`; 6/6 rows; JS calls-binding 323→874, macro 120→12, **divergence 601→56** — all 56 explained, none a leak: label asymmetry [pre-existing] + `macro` row [JS ahead of a Rust gap] + `kernel:if` [strict]; Rust + corpus byte-identical; migration list EMPTY; the two-mechanism surface-level/scopePlan design surfaced + accepted; staleness trap #4 found [import-map artifacts]) |
+| **slice11 · conformance-corpus + dispositions** | The permanent cross-backend corpus in `make check` (≥1 test per name-class × position equivalence class; seeded-divergence demo; matrix stays the audit tool) + recorded dispositions for every residual: the `macro`-row Rust gap (converge), label asymmetry + `kernel:if` (fix-or-document), `contains_await` (probe → decide), the D2-timing constructed-name residual (document). Output feeds A-4. **The arc close is NOT in this slice** — the arc closing-report, arc-scale A-4/A-5 reproduction, ancestry reconciles ×6, DD-61 as-built record, and the operator gate follow as the arc close-set (the old "corpus + arc close" bundling was a mis-label, corrected 2026-07-07). **Depends on: slice10.** | **Open** (open set written 2026-07-07) |
 
 *(Future entries carry **no numbers** — numbered at creation per the
 creation-order convention; the v1.4 tail-renumber was a CDC slip, corrected
@@ -78,12 +78,70 @@ slice03 → arc06 → arc07 → arc09.**
 | A-7 | slice04 (walker-extension) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice04/cdc-verification.md (attested) | |
 | A-8 | slice05 (position-sweep) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice05/cdc-verification.md (attested) | binding layer complete by construction; coverage test standing |
 | A-9 | slice06 (rust-resolution) closed | ptr: cdc-verification | serious | arc-plan v1.7 | done | slice06/cdc-verification.md; landed `dc37ae9` (attested — host ancestry reconcile at arc close) | |
-| A-10 | slice10 (js-resolution) closed | ptr: cdc-verification | serious | arc-plan v1.7 | open | | numbered at creation 2026-07-07 (was: un-numbered) |
+| A-10 | slice10 (js-resolution) closed | ptr: cdc-verification | serious | arc-plan v1.7 | done | slice10/cdc-verification.md (`c19a1fb`; structure CDC-reproduced) | numbered at creation 2026-07-07 (was: un-numbered) |
 | A-11 | atom-payload-privacy landed — **slices 08 (accessor-sweep) + 09 (privacy-flip) closed** (§A6 by-construction layer) | ptr: both cdc-verifications | correctness | operator phasing call 2026-07-06; two-slice packaging 2026-07-07 | done | slice08/cdc-verification.md (`7d86703`+`dab4405`) + slice09/cdc-verification.md (`4c12301`); E0451 proof both crates | was: "atom-payload-privacy slice" (single, un-numbered) — split per slice07's recon + operator call |
 | A-12 | DD-60 refinements #1/#2/addendum dispositioned (routed, confirmed, landed) | DD-60 refinement log (3 entries) + v1.4/v1.5/v1.6 change-log entries | correctness | bubble-ups: slices 03/04/05 | done | DD-60 §Refinement log; slices 04/05 closed | class-(c) rows, accrued at v1.7 catch-up |
 | A-13 | slice07 (atom-privacy-recon) closed | ptr: cdc-verification | correctness | arc-plan v1.8 | done | slice07/cdc-verification.md (empty diff; lead finding CDC-reproduced) | recon-only; empty diff |
+| A-14 | slice11 (conformance-corpus + dispositions) closed | ptr: cdc-verification | serious | arc-plan v1.16 | open | | its F-7 snapshot is A-4's evidence input |
+| A-15 | slice08/10 routed findings dispositioned (`contains_await`; D2-timing residual; 56-cell classes) | slice11 ledger rows F-3..F-6 closed | correctness | bubble-ups: slices 08, 10 | open | | class-(c) rows, accrued at slice11 scoping |
 
 ## 5. Version History
+
+### v1.16 — 2026-07-07 (slice11 scoped — the arc's last slice; the "corpus + arc close" bundling corrected)
+**Operator question at scoping ("sounds like a new arc?") answered: no**
+— this is arc13's own recomposition (the corpus is in the capability
+statement; the dispositions are the arc's bubble-up findings); a new arc
+would close arc13 by fiat. But the instinct caught a real mis-label:
+**the arc close is not slice work** — the old "conformance-corpus + arc
+close" row bundled the arc close-set (closing-report, arc-scale A-4/A-5
+reproduction, ancestry reconciles ×6, DD-61 as-built record, operator
+gate) into a slice; corrected — those follow slice11 as the close-set
+per LEDGER-DISCIPLINE §B. **slice11 · conformance-corpus + dispositions
+scoped** (7-row open set): the standing corpus (≥1 test per equivalence
+class; vehicle on timing evidence; seeded-divergence demo) + the five
+dispositions (the `macro`-row Rust gap; label asymmetry; `kernel:if`;
+`contains_await`; the D2-timing residual — each probe → decision →
+recorded). A-14 (slice11 closed) + A-15 (routed findings dispositioned)
+accrued. Which-child-surfaced: slice10 (the baseline) + operator
+(the structure catch).
+
+### v1.15 — 2026-07-07 (slice10 closed — DD-60 D1 holds on BOTH backends; A-10 done)
+slice10 closed (`c19a1fb`; 6/6; the second fresh-context recycle
+delivered same-day again). JS: calls-binding 323→874, macro 120→12,
+throws 1453→1010; **divergence 601→56, every residual explained**;
+Rust columns + corpus byte-identical; migration list empty. The design
+decision surfaced + accepted: **two mechanisms that must agree** —
+function-family params env-extend at the surface level (lowered param
+lists don't survive to `bindingsIntroduced`), everything else through
+the uniform `scopePlan` walk (extending at both would double-shadow a
+`for-of` iterable). Dispositions: `ref`-not-`def` on simple params =
+disclosed, inert; **D2 timing = documented, not unified** (JS catches
+lexically-visible macro-emitted reserved binders; the constructed-name
+residual → corpus+close); **the 56-cell baseline = A-4's input, three
+classes each needing a corpus+close disposition** (label asymmetry /
+the `macro` row — a *Rust-side* gap JS is now ahead of / `kernel:if`
+strict); **staleness trap #4** (import-map artifacts —
+`target/lykn/build/lang/`; `./bin/lykn build` before probes) → issues
+log. Which-child-surfaced: slice10.
+
+### v1.14 — 2026-07-07 (slice10 recon done in-session; self-stop → second fresh-context recycle)
+CC ran a recon-only pass on slice10 (tree clean at `a9a5131`) and
+self-stopped with a recommendation rather than pushing through at the
+tail of a six-slice session — operator + CDC concur: **fresh-context
+handoff** (the slice06 pattern, second use; it delivered same-day last
+time). Recon findings sharpen the open set: **(1) `bindingsIntroduced`
+dispatches on *surface* heads** → the env must extend at the surface
+level, *before* lowering; **(2) the monolithic lowering**
+(`classifySurfaceForm` → `emitSurfaceForm` → one recursive `expandExpr`
+on the emitted kernel) is in tension with per-region env control — the
+region model must hold across *both* surface and kernel shapes; this is
+the slice's real design work; **(3)** `formHead` doesn't exist yet;
+`compiler.js` has 21 `.value ===` dispatch/structural reads; no
+`.binding` property in use (clean to add); 16 `expandExpr` call sites to
+thread; ~126 test files touch throw-assertions (migration triage).
+CC writes the handoff as a **Recon addendum** in slice10's
+`cc-prompt.md` (the proven mechanism). Not an iteration — no delivery
+attempted; ledger untouched. Which-child-surfaced: slice10 (recon).
 
 ### v1.13 — 2026-07-07 (slice10 · js-resolution scoped)
 Open set written (slice-doc / 6-row ledger / cc-prompt), grounded in

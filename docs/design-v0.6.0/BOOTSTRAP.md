@@ -103,8 +103,25 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action (updated 2026-07-07, evening): hand slice10 ·
-js-resolution's `cc-prompt.md` to CC.** The Rust side of arc13 is DONE:
+**Immediate next action (updated 2026-07-07, night): hand slice11 ·
+conformance-corpus + dispositions' `cc-prompt.md` to CC** — the arc's
+LAST slice, scoped (7-row open set; arc-plan v1.16). slice10 CLOSED
+(`c19a1fb`): **DD-60 D1 holds on BOTH backends**; divergence 601→56,
+all explained. slice11 = the standing corpus (≥1 test per name-class ×
+position equivalence class; vehicle on timing evidence;
+seeded-divergence demo) + five dispositions (the `macro`-row Rust gap
+→ converge; label asymmetry → fix-or-document; `kernel:if` → document;
+`contains_await` → probe-then-decide; D2-timing residual → document).
+**Structure correction (operator catch):** the arc close is NOT in the
+slice — after slice11 closes, CDC runs the **arc close-set**: the
+arc closing-report (slice walk ×11 + A-row walk), **A-4/A-5 reproduced
+at arc scale on host** (operator gate), **ancestry reconciles** for
+`dc37ae9`/`7d86703`/`dab4405`/`4c12301`/`c19a1fb`/+slice11's SHA, the
+**DD-61 as-built record** (standalone Rust resolver; in-walk JS
+resolver; two-mechanism split; as_atom retained), and the bubble-up to
+the project. After arc13 closes: **arc05 resumes** (slice03: shadowing
+rule via the resolution machinery, the ID-42 re-answer [arc A-6], lint
+resolution-awareness). The Rust side of arc13 is DONE:
 slices 06–09 all closed (rust-resolution `dc37ae9`; recon;
 accessor-sweep `7d86703`+`dab4405`; privacy-flip `4c12301` —
 single-file, E0451 proof both crates). slice10 (open set written
