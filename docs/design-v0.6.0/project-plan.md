@@ -83,7 +83,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc02 · type-dts-generation** | `.d.ts` declarations generated from `:type` annotations (DD-56) | — | **Closed** (M10) |
 | **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Closed** (M16–M22; architecture landed on release 2026-06-29) |
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
-| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, **arc13 (blocker)** | **PAUSED at 2/3** — 15 rules live; slice02's recon exposed the expander divergence; slice03 resumes post-arc13 |
+| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **RESUMED** — 15 rules live; **slice03 scoped 2026-07-21** as a 1→2 split (slice03 = resolution-consumer + shadowing + ID-42 re-answer + dogfood; slice04 = suppression + `make lint` + guide align + P-11 + arc close); arc13 A-6 closed at scoping |
 | **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
@@ -204,6 +204,23 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.26 — 2026-07-21 (arc05 RESUMED; slice03 scoped as a 1→2 split; arc13 A-6 closed)
+Fresh CDC session resumed arc05 after the 07-09 gate (confirmed: nothing
+landed on `release/0.6.x` since — tip `ff0e72e`; only untracked item is the
+separate `docs/design-v0.7.0/` tree). Grounding slice03 against the actual
+code found the resolution-consumer work small (`resolver::resolve` is `pub`
++ structural; `as_form_head()` gates all head-matching rules through the one
+shared `atom_call` helper) but the v1.4/v1.5 "slice03" bundle too large for
+one context — **split 1→2** (arc05 arc-plan v1.6): slice03 = resolution-
+awareness + shadowing + the ID-42 re-answer + dogfood; **slice04** =
+suppression + `make lint` wiring + guide-09/15 + SKILL + the P-11 demo +
+arc close. **arc13 A-6 closed** at this scoping (its Verify was the scoping
+note): the ID-42 re-answer is **no lint rule** — reserved words are D2
+compile errors, form-named params legally shadow via D1 (operator steer).
+slice03 open set written; P-11/P-5 still gated on slice04/arc05 close.
+Sequence unchanged: arc05 → arc06 → arc07 → arc09. Which-child: the
+slice03 scoping session (CDC).
 
 ### v1.25 — 2026-07-09 (GATE GO — arc13 CLOSED; P-18 reconciled; arc05 UNPAUSED)
 The operator ran the full arc13 gate (closing-report §5 record):

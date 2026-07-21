@@ -112,35 +112,37 @@ inserts.
   guide doctests **475/0**; `surface.js` 448 (was 2,315);
   `size_of::<SExpr>()` 48→48 across the whole resolution+privacy layer.
 
-**Immediate next action (2026-07-09, post-gate): SCOPE ARC05 SLICE03 —
-the resume.** ★ **ARC13 IS CLOSED**: the operator ran the full gate
-same day (ancestry ×6 ok; `make check` 100%; matrix **1947/53 exact** —
-CDC recounted the divergent set from the transcript, precisely the two
-documented classes; D2/D1 demos verbatim; gate record in the arc
-closing-report §5). P-18 reconciled (project-plan v1.25); A-4/A-5
-reconciled; **A-6 is arc13's one open row, by design — arc05 slice03's
-scoping note closes it.** All plan docs flipped.
+**Immediate next action (2026-07-21): HAND ARC05 SLICE03 TO CC.** arc13
+is closed (gate GO 2026-07-09) *and* fully discharged — **A-6 closed
+2026-07-21** at slice03 scoping (the ID-42 re-answer: **no lint rule** —
+reserved words are D2 compile errors, form-named params legally shadow
+via D1). **arc05 slice03 is SCOPED** — open set written at
+`arc05-lykn-source-linter/slice03-resolution-consumer/`
+(slice-doc/ledger/cc-prompt). The cc-prompt is ready to hand to CC.
 
-**Then: arc05 slice03 — the resume this whole detour was for** (read
-`arc05-lykn-source-linter/arc-plan.md` [v1.5 tooling notes] + arc13's
-closing-report §6 bubble-up first). What it consumes from arc13:
+**The 1→2 split (arc05 arc-plan v1.6; project-plan v1.26).** Scoping-time
+grounding found the resolution-consumer work small (`resolver::resolve`
+is `pub` + structural, already called in `compile.rs`; `as_form_head()`
+returns `None` for bound heads → route the linter's one shared
+`atom_call` head accessor through it and every head-matching rule stops
+false-positiving on bound names at once) but the old "slice03" bundle too
+large. Split:
 
-- **The resolution machinery is simply there now.** The linter's rules
-  head-match the pre-expansion reader SExpr; a bound-name head would
-  false-positive — **`lykn lint` must consume resolution** (DD-61's
-  tooling accounting: thread the same walker/env or consume tags).
-- **The ID-42 re-answer = arc13 A-6's close** (the one arc13 ledger row
-  left open *by design* — its Verify is the arc05 slice03 scoping
-  note). The original question — "warn on reserved/macro param names?"
-  — is re-answered from the fixed state: bindings genuinely shadow
-  (D1), reserved words are compile errors (D2), so the rule likely
-  shrinks to a small style-warning or nothing. Write the re-answer with
-  rationale; that closes A-6.
-- The rest of the slice03 backlog: shadowing-rule via the resolution
-  machinery (reuses `analysis/scope.rs` per the arc05 plan), guide-09
-  enforcement labels (the "ELIMINATED" reclassification), the
-  lint-suppression mechanism (motivated by slice02's dogfood),
-  `make lint` wiring decisions, and the P-11 demo.
+- **slice03 · resolution-consumer + context rules** (scoped, ready for
+  CC): resolution-awareness; the shadowing rule (ID-12 — **MUST reuse the
+  resolver's scope model, no second decider** — the arc13 lesson turned on
+  itself; the `analysis/scope.rs` sketch is superseded); the ID-42
+  re-answer (already written — closes arc13 A-6); the dogfood re-run
+  (arc05 A-5). 9 ledger rows.
+- **slice04 · suppression + integration + guide alignment + arc close**
+  (planned, not yet opened): the lint-suppression mechanism (depends on
+  the reader preserving comments — size honestly); `make lint`/`make
+  check` wiring; guide-09 reclassification (arc05 A-6) + guide-15 + SKILL;
+  the P-11 demo (arc05 A-4) → arc close.
+
+**After CC delivers slice03:** verify + close + bubble up, then open
+slice04. Read `arc05-lykn-source-linter/arc-plan.md` (v1.6) + the slice03
+open set first.
 
 **Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never
 bare `lykn`; **`./bin/lykn build` before any deno/matrix probe** (trap
@@ -307,15 +309,17 @@ learning / what changed.* (Also rendered in `status.html`.)
 
 ## 8. Open follow-ups (surfaced, not yet fully scoped)
 
-- **arc13 gate** — ★ **GO, complete 2026-07-09** (record in the arc
-  closing-report §5). P-18 reconciled; only A-6 remains, closing at
-  arc05 slice03 scoping.
-- **arc05 slice03** (the resume — scope next): lint consumes resolution
-  (DD-61 tooling accounting); the ID-42 re-answer closes arc13 A-6;
-  shadowing rule; guide-09 "ELIMINATED" reclassification; lint
-  suppression; `make lint`; P-11 demo. Corpus division stands: compiler
-  owns the closed declaration-form namespace + name binding; linter owns
-  idiom/style (`==`/`&&`/`require`/IIEF-class anti-patterns).
+- **arc13 gate** — ★ **GO, complete 2026-07-09**; **A-6 closed
+  2026-07-21** at slice03 scoping — arc13 fully discharged.
+- **arc05 slice03** (SCOPED 2026-07-21 — hand to CC): resolution-consumer
+  (`resolve()` + `as_form_head`); shadowing rule (reuse the resolver's
+  scope model — no second decider); ID-42 re-answer = no rule (closed A-6);
+  dogfood. Open set at `slice03-resolution-consumer/`.
+- **arc05 slice04** (planned, from the 1→2 split): lint-suppression
+  mechanism; `make lint` wiring; guide-09 "ELIMINATED" reclassification +
+  guide-15 + SKILL; P-11 demo → arc close. Corpus division stands:
+  compiler owns the closed declaration-form namespace + name binding;
+  linter owns idiom/style (`==`/`&&`/`require`/IIFE-class anti-patterns).
 - **odm (Duncan):** DD-61 promotion pending (mirror its refinement log
   IN FULL — the DD-60 drift lesson); DD-60 0062 frontmatter v1.1 vs
   `state.json` reconcile if tracked; the old DD-58 v1.1 reconcile item
@@ -335,10 +339,12 @@ learning / what changed.* (Also rendered in `status.html`.)
 
 ## 9. One-line cheat-sheet
 
-Read project-plan + README + status.html → **★ arc13 is CLOSED** (gate
-GO 2026-07-09; DD-60 D1/D2 hold on both backends; matrix 1947/53 exact;
-corpus standing with teeth; P-18 reconciled) → **scope arc05 slice03**
-— the resume the whole arc13 detour was for: the linter on true lexical
-scoping (lint consumes resolution per DD-61's tooling accounting), and
-the **ID-42 re-answer that closes arc13's A-6** — then arc06 → arc07 →
-arc09, and 0.6.0 is in sight.
+Read project-plan + README + status.html → **★ arc13 is CLOSED and fully
+discharged** (gate GO 2026-07-09; A-6 closed 2026-07-21) → **arc05 slice03
+is SCOPED** (1→2 split, arc-plan v1.6; open set at
+`slice03-resolution-consumer/`): the linter on true lexical scoping
+(resolution-consumer via `resolver::resolve` + `as_form_head`; shadowing
+rule reusing the resolver's scope model; ID-42 re-answer = no rule, closed
+arc13 A-6; dogfood) → **hand slice03's cc-prompt to CC**; slice04
+(suppression + `make lint` + guide-09/15 + P-11 + arc close) follows →
+then arc06 → arc07 → arc09, and 0.6.0 is in sight.

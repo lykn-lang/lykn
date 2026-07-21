@@ -3,7 +3,9 @@
 **By:** CDC (Cowork) · **Date:** 2026-07-09 · **Branch:** `release/0.6.x`
 **Status: CLOSED — gate GO 2026-07-09 (operator; full runbook, §5 gate
 record).** All eleven slices CDC-closed; A-4/A-5 reproduced at arc
-scale and reconciled; A-6 hands off to arc05 slice03 by design.
+scale and reconciled; A-6 handed off to arc05 slice03 by design and
+**closed there 2026-07-21** (the ID-42 re-answer — §3). Ledger fully
+discharged.
 
 ## 1. The capability, restated — and the verdict
 
@@ -56,7 +58,7 @@ every insertion carries a Version History entry; see §4.)
 | A-3 (slice03 closed) | done | cdc-verification (attested) |
 | **A-4 (the matrix converges per DD-60, both backends)** | **evidence assembled — reproduce at arc scale (§5)** | slice11 F-7 snapshot: 1947/53, both residual classes documented-as-intended; corpus green in `make check` |
 | **A-5 (no invalid output at rc=0 for any name class)** | **evidence assembled — reproduce at arc scale (§5)** | D2 everywhere (slices 03–05); slice11: only `invalid-output` cells are the `kernel:`-prefixed unbindables — never a real reserved word |
-| A-6 (arc05's ID-42 re-answered from the fixed state) | **open — hands off to arc05 slice03** | the machinery exists (bindings genuinely shadow; reserved words compile-error); the re-answer is written *at arc05 slice03 scoping* — this row closes there by design |
+| A-6 (arc05's ID-42 re-answered from the fixed state) | **done (2026-07-21, at arc05 slice03 scoping)** | the re-answer, written from the fixed state: **no lint rule** — reserved words at binding positions are D2 compile errors (ID-44 genus dead), form-named params legally shadow via D1, so the linter says nothing about param names (operator steer: "do the right thing instead of warning broadly"). Ptr: `arc05/slice03-resolution-consumer/slice-doc.md` §1/§4 + ledger F-7; arc05 arc-plan v1.6 |
 | A-7 (slice04 closed) | done | cdc-verification (attested) |
 | A-8 (slice05 closed) | done | cdc-verification (attested) |
 | A-9 (slice06 closed) | done | cdc-verification; `dc37ae9` |
@@ -67,10 +69,11 @@ every insertion carries a Version History entry; see §4.)
 | A-14 (slice11 closed) | done | cdc-verification; `a0b24b9` |
 | A-15 (routed findings dispositioned) | done | slice11 F-3..F-6 (two fixed, three documented) |
 
-**Composition verdict: the slices recompose into the capability**, with
-A-4/A-5 pending their arc-scale reproduction (§5) and A-6 correctly
-remaining open as arc05's hand-off (its Verify *is* the arc05 slice03
-scoping note — closing it here would be premature by its own criterion).
+**Composition verdict: the slices recompose into the capability.**
+A-4/A-5 were reproduced at arc scale + reconciled at the gate (§5). **A-6
+closed 2026-07-21** at arc05 slice03 scoping — its Verify *was* that scoping
+note, now written (disposition: no lint rule; see the row above). With A-6
+closed, the arc13 ledger is fully discharged.
 
 ## 4. The accumulated change log (drift made visible)
 

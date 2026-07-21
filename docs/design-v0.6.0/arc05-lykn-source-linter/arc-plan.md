@@ -1,14 +1,19 @@
 # arc05 — Lykn-Source Linter (`lykn lint`)
 
-> **Status: PAUSED at 2/3 slices (operator, 2026-07-06) — blocked on
-> arc13 · expander-coherence.** slice02's F-4 recon found the Rust and JS
-> expanders resolve param-vs-macro shadowing **differently** (and each is
-> internally inconsistent); the operator ruled it a blocker: *"pause arc05
-> and fix the expander divergence… then we won't have to warn on all macro
-> names — we can just do the right thing."* slice03 (+ the ID-42 lint
-> question, re-answered from the fixed state per arc13 A-6) resumes when
-> arc13 closes. Design: [`design/dd-59-…-DRAFT.md`](./design/dd-59-lykn-source-linter-DRAFT.md);
+> **Status: RESUMED (arc13 gate GO 2026-07-09) — slice03 scoped 2026-07-21
+> as a 1→2 split (see v1.6).** 15 rules live at 2/3. slice03 is now the
+> **resolution-consumer + context-rules** half (resolution-awareness,
+> shadowing, the ID-42 re-answer, dogfood); the productionization + docs +
+> arc-close half is **slice04**. Design:
+> [`design/dd-59-…-DRAFT.md`](./design/dd-59-lykn-source-linter-DRAFT.md);
 > kickoff: `design/kickoff-thread.md`.
+>
+> _Was (through 2026-07-09): **PAUSED at 2/3, blocked on arc13** — slice02's
+> F-4 recon found the Rust and JS expanders resolved param-vs-macro
+> shadowing **differently**; the operator ruled it a blocker (*"pause arc05
+> and fix the expander divergence… then we won't have to warn on all macro
+> names — we can just do the right thing."*). arc13 closed that divergence;
+> the resume is this slice03._
 
 ## 1. Capability
 
@@ -47,15 +52,19 @@ already handles it); LSP server work (Phase 3+).
 |-------|-------|--------|
 | **slice01 · lint-infra** | The machinery, end-to-end: rule trait + hardcoded match-dispatch registry over a spanned SExpr walk (pre-expansion); diagnostics reusing the `Diagnostic` machinery (error/warn); CLI wiring **replacing the stub** (`lykn lint <paths>`, exit 0/1/2, `--format=json`); per-rule fixture harness + `insta` snapshots; **3 pilot rules** proving the shapes (no-require [error], sort-without-comparator [warn], parseint-radix [warn]); **the rule-inventory compiler-verification pass** — compile every DD-59 candidate's bad-example against the current compiler; anything that already errors is reclassified out. The resulting table is slice02's authoritative corpus. | **Closed** (`1989138`; F-1 caught: ID-39 already compiler-owned, ID-42 stale guide claim, ID-44 **compiler bug** [rc=0, unparseable JS]; smoke dogfood 117 files clean; `make check` ✓) |
 | **slice02 · shape-rule-corpus** | The **12 remaining verified lint rules** (F-1 table minus pilots, shadowing→slice03, and ID-42/ID-44→compiler) + **2 recon-gated compiler fixes** (operator, 2026-07-06): ID-44 for-of binding validation → compile error (Principle 3; both compilers checked) and ID-42 reserved-param-names → compile-time disallow (recon: reserved set + blast radius on both compilers; lint-warn fallback if large); or-for-defaults' false-positive rate measured on the repo corpus before its severity is finalized; **real dogfood pass**: the full corpus over the repo's `.lykn` sources, findings fixed or acknowledged. | **Open — scoped** (open set written 2026-07-06) |
-| **slice03 · context-rules + docs** (resumes post-arc13) | Tier-2: shadowing (via arc13's resolution machinery, superseding the `analysis/scope.rs` sketch); **linter resolution-awareness** (added 2026-07-06, arc13/A6 consequence: head-matching rules must consult the binding walker/env so bound-name calls — e.g. a param named `parseInt` — don't false-positive; the linter becomes a resolution *consumer* like every dispatch site); the ID-42 `reserved-param-name` question re-answered from the fixed state (arc13 A-6); **guide-09 reclassification** (every entry labeled: compiler-enforced / linted-as-`<rule>` / documented-only); guide-15 CLI docs + SKILL note; lint-suppression mechanism decision; `make lint` integration decision; P-11 demo prep. | Open — **blocked on arc13** |
+| **slice03 · resolution-consumer + context rules** (resumes post-arc13) | **Linter resolution-awareness** (arc13/§A6 consequence: resolve the pre-expansion forms + route the shared head accessor through `as_form_head()` so bound-name calls — a param named `parseInt` — don't false-positive; the linter becomes a resolution *consumer* like every dispatch site); the **shadowing rule** (ID-12, via arc13's resolution machinery, superseding the `analysis/scope.rs` sketch — reuse the resolver's scope model, no parallel decider); the **ID-42 re-answer** from the fixed state closing **arc13 A-6** (disposition: no rule — reserved words are D2 compile errors, form-named params legally shadow via D1); the **dogfood** re-run (A-5). | **Open — scoped** (open set written 2026-07-21) |
+| **slice04 · suppression + integration + guide alignment + arc close** | The **lint-suppression mechanism** (comment/directive-based; depends on the reader preserving comments — sized here, not in slice03); `make lint` / `make check` **wiring** of `lykn lint`; **guide-09 reclassification** (every entry labeled compiler-enforced / linted-as-`<rule>` / documented-only — closes A-6); guide-15 CLI docs + SKILL note; the **P-11 demo** (A-4) → **arc close**. | Open — planned (deferred from the slice03 1→2 split, v1.6) |
 
 ## 3. Dependencies
 
 Consumes: arc03's coherent surface + canonical-form discipline; **arc10's
 corpus division** (the compiler owns the closed 5-form namespace everywhere,
 so every lint rule is idiom/style by construction); arc11's conventions
-rules + `test/CONVENTIONS.md`; the existing `analysis/scope.rs` (slice03).
-Feeds **P-11**. Independent of arc06/arc07; must land before arc09.
+rules + `test/CONVENTIONS.md`; **arc13's Resolve-Once machinery** (DD-61:
+`resolver::resolve`, `SExpr::as_form_head`, `crate::binding::bindings_introduced`
+— slice03's resolution-awareness + shadowing consume it, superseding the
+never-built `analysis/scope.rs` sketch). Feeds **P-11**. Independent of
+arc06/arc07; must land before arc09.
 
 ## 4. Arc ledger
 
@@ -63,12 +72,34 @@ Feeds **P-11**. Independent of arc06/arc07; must land before arc09.
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | slice01 (lint-infra) closed | ptr: slice01 cdc-verification | serious | arc-plan | open | | |
 | A-2 | slice02 (shape-rule-corpus) closed | ptr: slice02 cdc-verification | serious | arc-plan | open | | |
-| A-3 | slice03 (context-rules + docs) closed | ptr: slice03 cdc-verification | correctness | arc-plan | open | | |
-| A-4 | **`lykn lint` flags every v1 rule's seeded anti-pattern in a fixture corpus and stays silent on clean idiomatic source** (the P-11 demo) | end-to-end run over the seeded + clean fixtures; every rule fires exactly where seeded; exit 1 dirty / 0 clean | serious | arc-plan / P-11 | open | | reproduce at arc scale on host |
-| A-5 | **the linter is dogfooded** — `lykn lint` over the repo's own `.lykn` sources returns zero findings, or every finding is fixed/acknowledged with rationale | run it on `test/`, `examples/`, `packages/`; triage table | serious | arc-plan | open | | a linter the repo itself can't pass is a lie detector pointed backwards |
-| A-6 | **guide-09 is aligned** — every entry carries its enforcement label (compiler-enforced / linted / documented-only); doctests green | grep the labels; `make check` | correctness | CC anti-patterns audit (2026-06-30) | open | | closes the reclassification debt that spawned arc10 |
+| A-3 | slice03 (resolution-consumer + context rules) closed | ptr: slice03 cdc-verification | correctness | arc-plan | open | | narrowed by the v1.6 split |
+| A-4 | **`lykn lint` flags every v1 rule's seeded anti-pattern in a fixture corpus and stays silent on clean idiomatic source** (the P-11 demo) | end-to-end run over the seeded + clean fixtures; every rule fires exactly where seeded; exit 1 dirty / 0 clean | serious | arc-plan / P-11 | open | | reproduce at arc scale on host; **delivered in slice04** |
+| A-5 | **the linter is dogfooded** — `lykn lint` over the repo's own `.lykn` sources returns zero findings, or every finding is fixed/acknowledged with rationale | run it on `test/`, `examples/`, `packages/`; triage table | serious | arc-plan | open | | a linter the repo itself can't pass is a lie detector pointed backwards; **slice03** (resolution-aware finding set) |
+| A-6 | **guide-09 is aligned** — every entry carries its enforcement label (compiler-enforced / linted / documented-only); doctests green | grep the labels; `make check` | correctness | CC anti-patterns audit (2026-06-30) | open | | closes the reclassification debt that spawned arc10; **slice04** |
+| A-7 | slice04 (suppression + integration + guide alignment + arc close) closed | ptr: slice04 cdc-verification | correctness | arc-plan (v1.6 split) | open | | the productionization/docs/demo half |
 
 ## 5. Version History
+
+### v1.6 — 2026-07-21 (arc05 RESUMED; slice03 scoped as a 1→2 split)
+Resuming after the arc13 gate GO (2026-07-09; nothing landed on
+`release/0.6.x` since — tip `ff0e72e`). Scoping slice03 against the actual
+code (grounding pass, CDC) surfaced two things: **(1) the resolution-consumer
+work is small** — `resolver::resolve` is `pub` and structural (already called
+in `compile.rs`), and `as_form_head()` returns `None` for bound heads, so
+routing the linter's single shared `atom_call` helper through it gates every
+head-matching rule at once; **(2) the v1.4/v1.5 "slice03" bundled ~8
+workstreams** across code + an open-ended suppression feature + a ~26-label
+guide pass + the arc-close demo — too large for one context with iteration
+headroom (PROJECT-MANAGEMENT.md sizing). **Split 1→2:** slice03 = the
+code-correctness half (resolution-awareness, shadowing, the ID-42 re-answer,
+dogfood); **slice04** (new) = suppression + `make lint` wiring + guide-09/15
++ SKILL + the P-11 demo + arc close. Arc ledger gains **A-7** (slice04
+closed); A-4/A-6 re-homed to slice04, A-5 to slice03 (Notes). **ID-42
+re-answer (operator steer confirmed):** no lint rule — reserved words are D2
+compile errors, form-named params legally shadow via D1; this closes **arc13
+A-6** (its Verify was this scoping note). slice03 open set written. Sequence
+unchanged: arc05 → arc06 → arc07 → arc09. Which-child-surfaced: the slice03
+scoping/grounding session (CDC, 2026-07-21).
 
 ### v1.5 — 2026-07-06 (slice03 scope grows: linter becomes a resolution consumer)
 Per the arc13 DD-61 §A6 tooling accounting (operator question: which
