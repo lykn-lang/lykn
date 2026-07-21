@@ -5,19 +5,39 @@
 //! (10 tier-1 shape rules + 2 path-scoped conventions rules), sourced from
 //! slice01's compiler-verified F-1 table (not DD-59's superseded list).
 
-use lykn_lang::ast::sexpr::SExpr;
+use lykn_lang::ast::sexpr::{NameRes, SExpr};
 use lykn_lang::diagnostics::{Diagnostic, Severity};
 use lykn_lang::reader::source_loc::Span;
 
 use super::{LintContext, LintRule};
 
-/// If `node` is a call form `(head args…)` with an **atom** head, return the
-/// head text, its args, and its span.
+/// An **atom in value position** whose name is not a lexical binding — the
+/// dispatch-honouring companion to `atom_call` for the two rules that match a
+/// bare atom (`no-arguments`, `no-dirname-fixtures`). Returns `Some((name, span))`
+/// only for an `Unresolved` atom; a `bind`/param named the same (`BindingDef`/
+/// `BindingRef`) returns `None`, so the rule stays silent on the binding.
+fn unresolved_atom(node: &SExpr) -> Option<(&str, Span)> {
+    match node.name_res() {
+        NameRes::Unresolved => node.atom_parts(),
+        _ => None,
+    }
+}
+
+/// If `node` is a call form `(head args…)` **dispatching** on an atom head,
+/// return the head text, its args, and its span.
+///
+/// The head is read through [`SExpr::as_form_head`] (DD-61 §A6), which yields the
+/// name **only for an `Unresolved` atom** — a lexically-bound head (`BindingDef`/
+/// `BindingRef`) returns `None`, so every head-matching rule funnelling through
+/// here falls through silently on a bound name (e.g. a param named `parseInt` is
+/// a call to the binding, not the global). This is the single dispatch gate for
+/// the whole rule set. (Argument reads use `atom_parts`, which are non-dispatch.)
 fn atom_call(node: &SExpr) -> Option<(&str, &[SExpr], Span)> {
     if let SExpr::List { values, .. } = node
-        && let Some((value, span)) = values.first().and_then(|e| e.atom_parts())
+        && let Some(head) = values.first()
+        && let Some(value) = head.as_form_head()
     {
-        return Some((value, &values[1..], span));
+        return Some((value, &values[1..], head.span()));
     }
     None
 }
@@ -200,7 +220,7 @@ impl LintRule for NoArguments {
         "no-arguments"
     }
     fn enter(&mut self, node: &SExpr, _ctx: &LintContext, out: &mut Vec<Diagnostic>) {
-        if let Some((value, span)) = node.atom_parts()
+        if let Some((value, span)) = unresolved_atom(node)
             && value == "arguments"
         {
             out.push(Diagnostic {
@@ -400,6 +420,45 @@ impl LintRule for ForInOnArrays {
 }
 
 // ---------------------------------------------------------------------------
+// slice03 — context rule: shadowing (consumes the resolver's scope model)
+// ---------------------------------------------------------------------------
+
+/// shadowing (guide ID-12, warn): a lexical binding whose name is already bound
+/// in an **enclosing** lexical scope (an inner `bind`/param reusing an outer
+/// name) — the confusing-reuse case where an update to the inner name silently
+/// leaves the outer one unchanged.
+///
+/// The decision is **not** made here: the def-site spans come from
+/// [`lykn_lang::resolver::shadowing_sites`] (precomputed into
+/// `ctx.shadow_spans`), so there is a single scope model shared with the
+/// compiler — no parallel scope decider in `lint/` (the arc13 lesson). This rule
+/// only fires the diagnostic at the matching def-site node. A param shadowing a
+/// built-in *form* (e.g. `array`) is **not** flagged — DD-60 D1 made that legal,
+/// and a form is not an enclosing binding, so the resolver never reports it.
+pub struct Shadowing;
+impl LintRule for Shadowing {
+    fn id(&self) -> &'static str {
+        "shadowing"
+    }
+    fn enter(&mut self, node: &SExpr, ctx: &LintContext, out: &mut Vec<Diagnostic>) {
+        // Fire at each binding def-site atom the resolver flagged as shadowing.
+        if let Some((name, span)) = node.atom_parts()
+            && ctx.shadow_spans.contains(&span)
+        {
+            out.push(Diagnostic {
+                severity: Severity::Warning,
+                message: format!("`{name}` shadows a binding of the same name in an enclosing scope"),
+                span,
+                suggestion: Some(
+                    "rename the inner binding — a distinct name avoids silently masking the outer one"
+                        .to_string(),
+                ),
+            });
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
 // slice02 — conventions rules (path-scoped to this repo's test files)
 // ---------------------------------------------------------------------------
 
@@ -446,7 +505,7 @@ impl LintRule for NoDirnameFixtures {
         if !is_test_file(ctx.file) {
             return;
         }
-        if let Some((value, span)) = node.atom_parts()
+        if let Some((value, span)) = unresolved_atom(node)
             && (value == "import.meta:dirname" || value == "import:meta:dirname")
         {
             out.push(Diagnostic {

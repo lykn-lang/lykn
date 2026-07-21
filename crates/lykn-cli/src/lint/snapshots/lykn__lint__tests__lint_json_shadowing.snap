@@ -1,0 +1,23 @@
+---
+source: crates/lykn-cli/src/lint/mod.rs
+expression: value
+---
+[
+  {
+    "file": "fixture.lykn",
+    "message": "`total` shadows a binding of the same name in an enclosing scope",
+    "rule": "shadowing",
+    "severity": "warning",
+    "span": {
+      "end": {
+        "column": 26,
+        "line": 2
+      },
+      "start": {
+        "column": 21,
+        "line": 2
+      }
+    },
+    "suggestion": "rename the inner binding — a distinct name avoids silently masking the outer one"
+  }
+]

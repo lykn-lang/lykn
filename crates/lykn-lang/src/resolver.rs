@@ -22,7 +22,7 @@
 //! binding is visible in, and sequential visibility across siblings.
 
 use crate::ast::sexpr::{NameRes, SExpr};
-use crate::binding::{BindingKind, bindings_introduced};
+use crate::binding::{BindingKind, BindingSite, bindings_introduced};
 use crate::reader::source_loc::Span;
 
 /// Resolve a slice of top-level forms: return the same tree with every atom's
@@ -217,6 +217,108 @@ fn is_decl_head(head: Option<&str>) -> bool {
             "const" | "let" | "var" | "function" | "function*"
         ),
         None => false,
+    }
+}
+
+// ── Shadow detection (DD-59 ID-12), a second consumer of the scope model ────
+
+/// Find every binding whose name is already bound in an **enclosing** lexical
+/// scope — the ID-12 accidental-shadowing set. Returns the *inner* (shadowing)
+/// binding's own site, so a caller (the `shadowing` lint rule) can point at the
+/// def that hides the outer name.
+///
+/// This walks the tree **exactly** as [`resolve`] and the expander's
+/// `expand_children_scoped` do, reusing the single scope model — [`scope_plan`],
+/// [`hoisted_names`], and [`bindings_introduced`]. It is the "one decider, many
+/// consumers" shape the whole arc13 resolution work exists to enforce: a lint
+/// consumer must **not** re-derive scoping. The traversal below mirrors
+/// `resolve_seq`/`resolve_form`/`resolve_split_at` (collecting shadows instead
+/// of tagging atoms); the `resolve_shadow_parity` test pins the two walks to the
+/// same scope decisions.
+pub fn shadowing_sites(forms: &[SExpr]) -> Vec<BindingSite> {
+    let mut scope: Vec<String> = Vec::new();
+    let mut out: Vec<BindingSite> = Vec::new();
+    shadow_seq(forms, &mut scope, &mut out);
+    out
+}
+
+/// The sites a form declares into the **enclosing** sibling scope (the
+/// site-level companion to [`hoisted_names`] — same filter, kept in lockstep).
+fn hoisted_sites(form: &SExpr) -> Vec<BindingSite> {
+    bindings_introduced(form)
+        .into_iter()
+        .filter(|s| s.kind.shadows_values() && declares_in_enclosing(s.kind))
+        .collect()
+}
+
+/// The **pure body-scoped** binding sites a form introduces (params, loop,
+/// pattern, catch, class-method params) — the complement of the enclosing-scope
+/// declarations. These enter a *deeper* frame, so any collision with the
+/// enclosing scope is a shadow. (The enclosing-scope kinds — `bind`/import
+/// locals/`func`|`class` names — are checked at the hoist point instead, so each
+/// binding is checked exactly once.)
+fn body_shadow_sites(form: &SExpr) -> Vec<BindingSite> {
+    bindings_introduced(form)
+        .into_iter()
+        .filter(|s| {
+            s.kind.shadows_values() && !is_enclosing_only(s.kind) && !declares_in_enclosing(s.kind)
+        })
+        .collect()
+}
+
+/// Walk a sibling sequence, mirroring [`resolve_seq`]: resolve each form's
+/// subtree, then hoist its enclosing declarations to the following siblings. A
+/// hoisted name already present in an **ancestor** frame (`scope[..mark]`, never
+/// a preceding sibling in this same sequence) shadows it.
+fn shadow_seq(forms: &[SExpr], scope: &mut Vec<String>, out: &mut Vec<BindingSite>) {
+    let mark = scope.len();
+    for form in forms {
+        shadow_form(form, scope, out);
+        for site in hoisted_sites(form) {
+            if scope[..mark].iter().any(|n| n == &site.name) {
+                out.push(site.clone());
+            }
+            scope.push(site.name);
+        }
+    }
+    scope.truncate(mark);
+}
+
+/// Walk one form, mirroring [`resolve_form`]/[`resolve_split_at`]: distribute the
+/// form's body-scoped bindings over the child positions where they are visible
+/// (via [`scope_plan`]), and flag a body binding whose name is already in the
+/// enclosing scope.
+fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>) {
+    match form {
+        SExpr::List { values, .. } => match scope_plan(form) {
+            ScopePlan::Sequence => shadow_seq(values, scope, out),
+            ScopePlan::Body { names, body_start } => {
+                let split = body_start.min(values.len());
+                // Pre-body children (initializer / iterable / scrutinee): the
+                // binding is not yet in scope.
+                for child in &values[..split] {
+                    shadow_form(child, scope, out);
+                }
+                if split < values.len() {
+                    // The body binding shadows if its name is already bound
+                    // anywhere in the enclosing scope (a deeper frame opens).
+                    for site in body_shadow_sites(form) {
+                        if scope.iter().any(|n| n == &site.name) {
+                            out.push(site);
+                        }
+                    }
+                    let mark = scope.len();
+                    scope.extend(names);
+                    shadow_seq(&values[split..], scope, out);
+                    scope.truncate(mark);
+                }
+            }
+        },
+        SExpr::Cons { car, cdr, .. } => {
+            shadow_form(car, scope, out);
+            shadow_form(cdr, scope, out);
+        }
+        _ => {}
     }
 }
 
@@ -446,5 +548,122 @@ mod tests {
     #[test]
     fn unbound_name_stays_unresolved() {
         assert_eq!(first("(array 1 2)", "array"), Some(NameRes::Unresolved));
+    }
+
+    // ── Shadow detection (ID-12) ────────────────────────────────────────────
+
+    /// The names flagged as shadowing an enclosing binding, in source order.
+    fn shadows(src: &str) -> Vec<String> {
+        let forms = read(src).expect("parse");
+        shadowing_sites(&forms)
+            .into_iter()
+            .map(|s| s.name)
+            .collect()
+    }
+
+    #[test]
+    fn id12_inner_bind_shadows_outer() {
+        // The guide's canonical ID-12: a `bind` in an inner block shadows the
+        // outer `bind` of the same name.
+        let src = "(bind result 1)\n(if c (block (bind result 2) (log result)))";
+        assert_eq!(shadows(src), vec!["result"]);
+    }
+
+    #[test]
+    fn nested_param_shadows_outer_param() {
+        // inner fn param `x` inside an outer fn param `x`.
+        let src = "(func f :args (:any x) :body (func g :args (:any x) :body x))";
+        assert_eq!(shadows(src), vec!["x"]);
+    }
+
+    #[test]
+    fn param_shadows_enclosing_bind() {
+        // a param `x` inside a function shadows the module-level `bind x`.
+        let src = "(bind x 1)\n(func f :args (:any x) :body x)";
+        assert_eq!(shadows(src), vec!["x"]);
+    }
+
+    #[test]
+    fn form_shadowing_is_not_a_shadow() {
+        // a param named after a built-in form (`array`) is DD-60 D1 legal
+        // shadowing — the form is not an enclosing *binding*, so no warning.
+        assert!(shadows("(func f :args (:any array) :body (array 1))").is_empty());
+    }
+
+    #[test]
+    fn distinct_sibling_binds_are_not_shadows() {
+        assert!(shadows("(bind x 1)\n(bind y 2)").is_empty());
+    }
+
+    #[test]
+    fn sibling_rebind_is_not_enclosing_shadow() {
+        // `(bind x 1)(bind x 2)` is same-scope redeclaration (a compile error in
+        // its own right), not the ID-12 inner-hides-outer shape — no shadow.
+        assert!(shadows("(bind x 1)\n(bind x 2)").is_empty());
+    }
+
+    #[test]
+    fn loop_binding_shadows_outer() {
+        let src = "(bind i 0)\n(for-of i #a(1 2) (log i))";
+        assert_eq!(shadows(src), vec!["i"]);
+    }
+
+    #[test]
+    fn iterable_outside_scope_is_not_shadowed_by_its_own_binding() {
+        // the loop binding `x` is not in scope over the iterable, so a same-named
+        // form in the iterable is not a shadow of the binding.
+        assert!(shadows("(for-of x #a(1) (log x))").is_empty());
+    }
+
+    #[test]
+    fn shadow_detection_ends_at_scope_exit() {
+        // `x` bound in the fn body; a sibling `bind x` afterwards is a new
+        // top-level binding, not a shadow (the fn's `x` is out of scope).
+        assert!(shadows("(fn (:any x) x)\n(bind x 1)").is_empty());
+    }
+
+    #[test]
+    fn resolve_shadow_parity() {
+        // The two walks share one scope model: every span `shadowing_sites`
+        // reports must be a definition site `resolve` independently tags
+        // `BindingDef` (a shadow is always a real binding, never a stray span).
+        for src in [
+            "(bind result 1)\n(if c (block (bind result 2) (log result)))",
+            "(func f :args (:any x) :body (func g :args (:any x) :body x))",
+            "(bind x 1)\n(func f :args (:any x) :body x)",
+            "(bind i 0)\n(for-of i #a(1 2) (log i))",
+            "(func f :args (:any array) :body (array 1))", // no shadow at all
+        ] {
+            let forms = read(src).expect("parse");
+            let resolved = resolve(&forms);
+            let mut def_spans = Vec::new();
+            for f in &resolved {
+                collect_def_spans(f, &mut def_spans);
+            }
+            for site in shadowing_sites(&forms) {
+                assert!(
+                    def_spans.contains(&site.span),
+                    "shadow site {:?} in {src:?} is not a BindingDef span per resolve()",
+                    site.name
+                );
+            }
+        }
+    }
+
+    /// Spans of every atom `resolve` tagged [`NameRes::BindingDef`].
+    fn collect_def_spans(e: &SExpr, out: &mut Vec<Span>) {
+        match e {
+            a @ SExpr::Atom { .. } if a.name_res() == NameRes::BindingDef => out.push(a.span()),
+            SExpr::List { values, .. } => {
+                for v in values {
+                    collect_def_spans(v, out);
+                }
+            }
+            SExpr::Cons { car, cdr, .. } => {
+                collect_def_spans(car, out);
+                collect_def_spans(cdr, out);
+            }
+            _ => {}
+        }
     }
 }

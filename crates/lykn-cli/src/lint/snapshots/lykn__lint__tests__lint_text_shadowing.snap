@@ -1,0 +1,6 @@
+---
+source: crates/lykn-cli/src/lint/mod.rs
+expression: text
+---
+fixture.lykn:2:21: warning [shadowing]: `total` shadows a binding of the same name in an enclosing scope
+  suggestion: rename the inner binding — a distinct name avoids silently masking the outer one
