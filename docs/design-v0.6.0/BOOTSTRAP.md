@@ -103,25 +103,22 @@ inserts.
 - Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
   guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
 
-**Immediate next action (updated 2026-07-07, night): hand slice11 ·
-conformance-corpus + dispositions' `cc-prompt.md` to CC** — the arc's
-LAST slice, scoped (7-row open set; arc-plan v1.16). slice10 CLOSED
-(`c19a1fb`): **DD-60 D1 holds on BOTH backends**; divergence 601→56,
-all explained. slice11 = the standing corpus (≥1 test per name-class ×
-position equivalence class; vehicle on timing evidence;
-seeded-divergence demo) + five dispositions (the `macro`-row Rust gap
-→ converge; label asymmetry → fix-or-document; `kernel:if` → document;
-`contains_await` → probe-then-decide; D2-timing residual → document).
-**Structure correction (operator catch):** the arc close is NOT in the
-slice — after slice11 closes, CDC runs the **arc close-set**: the
-arc closing-report (slice walk ×11 + A-row walk), **A-4/A-5 reproduced
-at arc scale on host** (operator gate), **ancestry reconciles** for
-`dc37ae9`/`7d86703`/`dab4405`/`4c12301`/`c19a1fb`/+slice11's SHA, the
-**DD-61 as-built record** (standalone Rust resolver; in-walk JS
-resolver; two-mechanism split; as_atom retained), and the bubble-up to
-the project. After arc13 closes: **arc05 resumes** (slice03: shadowing
-rule via the resolution machinery, the ID-42 re-answer [arc A-6], lint
-resolution-awareness). The Rust side of arc13 is DONE:
+**Immediate next action (updated 2026-07-09): RUN THE ARC13 GATE** —
+all 11 slices are CDC-closed (slice11 `a0b24b9`: the corpus stands in
+`make check` with demonstrated teeth; final matrix **1947/53**, every
+residual documented-as-intended; two probe-caught fixes: the `macro`
+row converged on Rust, `contains_await` honours resolution). The
+close-set is written: arc `closing-report.md` (slice walk 11/11; A-row
+walk; **§5 = the operator host runbook** — ancestry sweep over
+`dc37ae9`/`7d86703`/`dab4405`/`4c12301`/`c19a1fb`/`a0b24b9`, rebuild,
+`make check`, the 1947/53 matrix reproduction, D2 spot-demos); DD-60
+canonical (0062) has the label-residual note; DD-61 carries the full
+as-built record (+ the dispatch-vs-heuristics caution); project-plan
+v1.24 has the bubble-up (P-18 flips on GO). **On gate GO:** flip arc13
+Closed everywhere, reconcile attested→reconciled, then **scope arc05
+slice03** (the resume: shadowing rule via the resolution machinery; the
+ID-42 re-answer = arc13 A-6's close; lint resolution-awareness per
+arc05 v1.5; guide-09 labels; lint-suppression; P-11 demo). The Rust side of arc13 is DONE:
 slices 06–09 all closed (rust-resolution `dc37ae9`; recon;
 accessor-sweep `7d86703`+`dab4405`; privacy-flip `4c12301` —
 single-file, E0451 proof both crates). slice10 (open set written

@@ -1,6 +1,9 @@
 # arc13 — Expander Coherence (bindings shadow macros, everywhere)
 
-> **Status: Open — scoped 2026-07-06.** Created from arc05/slice02's F-4
+> **Status: CLOSING — all 11 slices CDC-closed 2026-07-09; formal close
+> = the operator host gate (closing-report §5 runbook: ancestry sweep ×6,
+> `make check`, the 1947/53 matrix reproduction, D2 spot-demos).**
+> Originally: Created from arc05/slice02's F-4
 > recon (the ID-42 self-stop): the Rust and JS expanders **resolve
 > param-vs-macro shadowing differently**, and each is also internally
 > inconsistent. Operator call (2026-07-06): *"pause arc05 and fix the
@@ -43,7 +46,7 @@ corpus** pins all of it cross-compiler, permanently.
 | **slice08 · accessor-sweep** | Privacy pair, step 1 (from slice07's report): `atom_parts()` + convert all ~85 field-naming `Atom` pattern sites to accessors **while fields stay public** — green throughout, behavior byte-identical, both crates (incl. the 5 `lykn-cli` sites); completion gate = zero field-naming patterns outside `ast/sexpr.rs` (slice09's precondition). **Depends on: slice06 (landed).** | **Closed** (`7d86703` + `dab4405`; 6/6 rows; byte-identical, counts unchanged; **F-5 gate CDC-reproduced**; finding: `contains_await` destructure head-read — F-4's blind spot, self-closed by the sweep; behavior question routed → corpus+close scoping) |
 | **slice09 · privacy-flip** | Privacy pair, step 2 — the atomic restructure: `Atom(AtomData)`, fields private to `ast::sexpr`; seeded compile-fail demos both crates; `as_atom()` public/unrenamed (operator call), slice06 A6 check stays load-bearing; the DD-61 §A6 by-construction layer lands. **Depends on: slice08.** | **Closed** (`4c12301` — a **single-file** change; 5/5 rows; E0451 proof both crates; size 48→48; finding: `{ .. }` valid on tuple variants → the `Atom(_)` conversions were unnecessary, left minimal; §A6 as-built = visibility + static check + corpus) |
 | **slice10 · js-resolution** | The JS mirror of slice06: one env inside the `expandExpr` walk (the JS expander lowers during expansion, so resolution lives in-walk — §A3); binding-position atoms never dispatched; bound heads skip classifier + macro dispatch; `formHead()` (null for defs AND refs) converts `compiler.js`; the §A6 JS static check. **Mirrors the `scope_plan` region model** (naive whole-subtree push miscompiles the iterable) and **keeps the label exception** (DD-60 ‡ — do not "fix" the label column). Acceptance: JS matrix columns → DD-60 targets; **Rust columns + corpus byte-identical** (leak = stop). | **Closed** (`c19a1fb`; 6/6 rows; JS calls-binding 323→874, macro 120→12, **divergence 601→56** — all 56 explained, none a leak: label asymmetry [pre-existing] + `macro` row [JS ahead of a Rust gap] + `kernel:if` [strict]; Rust + corpus byte-identical; migration list EMPTY; the two-mechanism surface-level/scopePlan design surfaced + accepted; staleness trap #4 found [import-map artifacts]) |
-| **slice11 · conformance-corpus + dispositions** | The permanent cross-backend corpus in `make check` (≥1 test per name-class × position equivalence class; seeded-divergence demo; matrix stays the audit tool) + recorded dispositions for every residual: the `macro`-row Rust gap (converge), label asymmetry + `kernel:if` (fix-or-document), `contains_await` (probe → decide), the D2-timing constructed-name residual (document). Output feeds A-4. **The arc close is NOT in this slice** — the arc closing-report, arc-scale A-4/A-5 reproduction, ancestry reconciles ×6, DD-61 as-built record, and the operator gate follow as the arc close-set (the old "corpus + arc close" bundling was a mis-label, corrected 2026-07-07). **Depends on: slice10.** | **Open** (open set written 2026-07-07) |
+| **slice11 · conformance-corpus + dispositions** | The permanent cross-backend corpus in `make check` (≥1 test per name-class × position equivalence class; seeded-divergence demo; matrix stays the audit tool) + recorded dispositions for every residual: the `macro`-row Rust gap (converge), label asymmetry + `kernel:if` (fix-or-document), `contains_await` (probe → decide), the D2-timing constructed-name residual (document). Output feeds A-4. **The arc close is NOT in this slice** — the arc closing-report, arc-scale A-4/A-5 reproduction, ancestry reconciles ×6, DD-61 as-built record, and the operator gate follow as the arc close-set (the old "corpus + arc close" bundling was a mis-label, corrected 2026-07-07). **Depends on: slice10.** | **Closed** (`a0b24b9`, 2026-07-09; 7/7 rows; corpus standing ~1 s w/ seeded-teeth transcript; two fixes — the `macro` row converged on Rust, `contains_await` honours resolution [a latent Rust misfire the probe caught, matrix-invisible]; three documented dispositions; final matrix **1947/53**, every residual documented-as-intended) |
 
 *(Future entries carry **no numbers** — numbered at creation per the
 creation-order convention; the v1.4 tail-renumber was a CDC slip, corrected
@@ -82,10 +85,27 @@ slice03 → arc06 → arc07 → arc09.**
 | A-11 | atom-payload-privacy landed — **slices 08 (accessor-sweep) + 09 (privacy-flip) closed** (§A6 by-construction layer) | ptr: both cdc-verifications | correctness | operator phasing call 2026-07-06; two-slice packaging 2026-07-07 | done | slice08/cdc-verification.md (`7d86703`+`dab4405`) + slice09/cdc-verification.md (`4c12301`); E0451 proof both crates | was: "atom-payload-privacy slice" (single, un-numbered) — split per slice07's recon + operator call |
 | A-12 | DD-60 refinements #1/#2/addendum dispositioned (routed, confirmed, landed) | DD-60 refinement log (3 entries) + v1.4/v1.5/v1.6 change-log entries | correctness | bubble-ups: slices 03/04/05 | done | DD-60 §Refinement log; slices 04/05 closed | class-(c) rows, accrued at v1.7 catch-up |
 | A-13 | slice07 (atom-privacy-recon) closed | ptr: cdc-verification | correctness | arc-plan v1.8 | done | slice07/cdc-verification.md (empty diff; lead finding CDC-reproduced) | recon-only; empty diff |
-| A-14 | slice11 (conformance-corpus + dispositions) closed | ptr: cdc-verification | serious | arc-plan v1.16 | open | | its F-7 snapshot is A-4's evidence input |
-| A-15 | slice08/10 routed findings dispositioned (`contains_await`; D2-timing residual; 56-cell classes) | slice11 ledger rows F-3..F-6 closed | correctness | bubble-ups: slices 08, 10 | open | | class-(c) rows, accrued at slice11 scoping |
+| A-14 | slice11 (conformance-corpus + dispositions) closed | ptr: cdc-verification | serious | arc-plan v1.16 | done | slice11/cdc-verification.md (`a0b24b9`) | its F-7 snapshot is A-4's evidence input |
+| A-15 | slice08/10 routed findings dispositioned (`contains_await`; D2-timing residual; 56-cell classes) | slice11 ledger rows F-3..F-6 closed | correctness | bubble-ups: slices 08, 10 | done | slice11 F-3..F-6 (two fixed, three documented, all probe-grounded) | class-(c) rows, accrued at slice11 scoping |
 
 ## 5. Version History
+
+### v1.17 — 2026-07-09 (slice11 closed — ALL SLICES DONE; arc → CLOSING; closing-report written)
+slice11 closed (`a0b24b9`; 7/7; the corpus stands in `make check` ~1 s
+with demonstrated teeth; final matrix **1947/53**, both residual classes
+documented-as-intended). Two probe-grounded fixes: the **`macro` row
+converged** on Rust (pass1/pass2 binding-aware macro-def detection,
+reusing `hoisted_names`) and **`contains_await` honours resolution**
+(a latent, matrix-invisible Rust misfire — bound `await` in an
+async-gated wrapper was reinterpreted as the operator; the slice08
+routing paid off exactly as designed). Three documented dispositions
+(form-named-label shape asymmetry → DD-60 refinement note written by
+CDC; `kernel:if` edge 4; D2-timing constructed-name residual —
+diagnostic quality only, probe-pinned). A-14/A-15 done. **The arc
+closing-report is written** (slice walk 11/11; A-row walk; the §5
+operator gate runbook; bubble-up to project). DD-61 as-built record
+complete (incl. the dispatch-vs-heuristics caution). Formal close =
+the host gate. Which-child-surfaced: slice11.
 
 ### v1.16 — 2026-07-07 (slice11 scoped — the arc's last slice; the "corpus + arc close" bundling corrected)
 **Operator question at scoping ("sounds like a new arc?") answered: no**

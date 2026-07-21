@@ -84,7 +84,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Closed** (M16–M22; architecture landed on release 2026-06-29) |
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, **arc13 (blocker)** | **PAUSED at 2/3** — 15 rules live; slice02's recon exposed the expander divergence; slice03 resumes post-arc13 |
-| **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocks arc05 slice03 | **Open — scoped** (slice01 recon+DD-60 open set ready for CC) |
+| **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocks arc05 slice03 | **CLOSING** — all 11 slices CDC-closed 2026-07-09 (grew 3→11 via tracked re-slices: the Resolve-Once architecture [DD-61], the §A6 privacy pair, two recon slices); DD-60 D1/D2 hold on both backends; corpus standing in `make check`; final matrix 1947/53 documented-as-intended; **formal close = operator host gate** (arc closing-report §5) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
@@ -204,6 +204,28 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.24 — 2026-07-09 (arc13 → CLOSING; the arc bubble-up received)
+All 11 arc13 slices CDC-closed (2026-07-06 → 07-09; six source SHAs
+`dc37ae9`/`7d86703`/`dab4405`/`4c12301`/`c19a1fb`/`a0b24b9`); arc
+closing-report written with the §5 host-gate runbook — **P-18 flips on
+gate GO** (its Verify = the closing-report + corpus/matrix run,
+exactly §5 steps 3–5). The bubble-up (which-child: arc13): **(a)** the
+**Resolve-Once architecture (DD-61)** is a durable structural asset —
+resolved-atom tags, per-backend walkers, `as_form_head()`/`formHead()`
+doors, by-construction payload privacy, four standing CI checks —
+later arcs inherit it (operator: a pivotal 0.6.0 feature); **(b)** odm:
+DD-61 promotion pending; DD-60 canonical (0062) current through
+07-09 (5 refinement entries + label footnote); **(c)** arc09 gains
+breaking notes (D1: bound macro-named params resolve, blast radius 0;
+D2: reserved-word names error); **(d)** **arc05 unpauses on gate GO**
+— its slice03 scope shrinks as intended (arc13 A-6 hands off: the
+ID-42 reserved-param-name lint question is re-answered at scoping from
+the fixed state, likely a much smaller rule or none); **(e)** standing
+caution recorded in DD-61 as-built: the A6 layers bound *dispatch*,
+not emit-time *heuristics* (the `contains_await` lesson). No arc-scale
+silent drops. Sequence unchanged: **arc05-resume → arc06 → arc07 →
+arc09.**
 
 ### v1.23 — 2026-07-06 (arc05 PAUSED on an expander-coherence blocker; arc13 created)
 arc05/slice02 delivered (CDC verification pending commit): 12 rules → 15

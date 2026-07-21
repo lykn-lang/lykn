@@ -223,6 +223,24 @@ closing report, and a standing `make check` coverage test (one fixture per
 derived binder position, both backends) keeps the walker honest against
 the grammar permanently. Which-child-surfaced: arc13/slice05.
 
+### 2026-07-09 (the ‡ residual named: form-named-label shape-mismatch asymmetry — surfaced by arc13/slice11)
+
+Documentation note, no semantics change. With D1/D2 implemented on both
+backends and the conformance corpus standing, the matrix's only
+remaining divergences (53 of 1947 cells) are **(a)** 38 *form-named
+label* cells and **(b)** 15 `kernel:if` cells (edge case 4,
+unbindable). Class (a) is the documented residual of the ‡ label
+exception: a label does **not** shadow values (settled), so on *both*
+backends a form-named reference near a label means the **form**; the
+backends then differ only in how a form invoked with the wrong *shape*
+fails (`(fn 987)`: Rust falls through to a plain call, JS raises a
+form-arity error) — the pre-existing accidental-shadowing asymmetry
+named in §Context, orthogonal to name-binding semantics and out of this
+DD's scope. Pinned as *expected divergence* by corpus rows; neither
+output is invalid at rc=0. Probe evidence in the arc13/slice11 closing
+report. Which-child-surfaced: arc13/slice11 (probe → document
+disposition, operator-confirmed via the slice's F-4 close).
+
 ### 2026-07-06 (label exception stated in the per-cell target table — surfaced by arc13/slice06)
 
 Textual refinement, no semantics change: the per-cell target table's

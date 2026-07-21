@@ -176,6 +176,43 @@ marginal gain). On Rust the three §A6 layers land as **visibility
 (post-flip) + static check + corpus**. Which-child-surfaced:
 arc13/slice07.
 
+### 2026-07-09 (as-built record, complete — arc13 delivered; surfaced by arc13/slices 10/11)
+
+The architecture is landed on both backends; the as-built record for
+odm promotion:
+
+- **Rust:** a **standalone resolver pass** (`resolver.rs`, after expand
+  — §A3's classifier-hosting adjusted on grounded contact: the
+  classifier is shallow/emitter-driven) + the expander's light
+  binding-scan; both consume one `scope_plan`/`hoisted_names` scoping
+  source. §A6 = `as_form_head()` (`#[must_use]`) + **by-construction
+  payload privacy** (`Atom(AtomData)`, fields private; E0451-proven) +
+  the static conformance check + the corpus.
+- **JS:** resolution lives **inside the `expandExpr` walk** (§A3 as
+  specified — the JS expander lowers during expansion; no post-pass
+  exists); **two mechanisms that must agree**: function-family params
+  env-extend at the surface level (lowered param lists don't survive to
+  `bindingsIntroduced`), everything else through the uniform
+  `scopePlan` walk. §A6 = `formHead()` (null for def *and* ref — defs
+  must not dispatch either) + the static check (the dispatch idiom is
+  the `macros[…]` indexing door, not `.value ===`) + the corpus.
+  Own-property tags; no privacy layer (no visibility system — as
+  anticipated).
+- **The §A5 gate is standing:** `test/expander/conformance-corpus.test.js`
+  in `make check` (~1 s; ≥1 test per equivalence class; seeded-divergence
+  teeth demonstrated), with `tools/conformance-matrix.js` (1947 cells)
+  as the on-demand audit. End state: 53 documented-as-intended residual
+  cells (form-named-label shape asymmetry; `kernel:if` unbindables).
+- **A standing caution from slice11's F-5:** the A6 layers bound the
+  *dispatch* surface, not emit-time *heuristics* — `contains_await` read
+  raw names and misfired on bound `await` (fixed: async detection now
+  honours resolution via `as_form_head`). Future structural reads that
+  *behave* on a name (not just render it) should honour resolution;
+  the exemption bar for `A6-exempt` marks is "renders, never behaves."
+
+Which-child-surfaced: arc13/slice10 (JS as-built) + slice11 (the
+corpus, the contains_await fix, the residual record).
+
 ## Slice impact (the re-slice this appendix implies)
 
 | Slice | Scope |
