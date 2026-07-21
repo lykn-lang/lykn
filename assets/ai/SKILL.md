@@ -562,6 +562,16 @@ These are the most common mistakes in lykn code, especially when converting from
 | Using `object` (kernel) instead of `obj` (surface) for construction | `obj` uses keyword syntax; `object` is the kernel form |
 | Assuming `bind` type annotations on literals generate runtime checks | Literal annotations are verified at compile time — no runtime check emitted. Non-literal annotations DO generate runtime checks (DD-24). |
 
+**Run the linter.** `lykn lint <paths>` catches many of these on lykn **source**
+(not the compiled JS): the anti-pattern rules above (`no-require`, `no-eval`,
+`parseint-radix`, `prefer-surface-operators`, `for-in-on-arrays`, `no-arguments`,
+…) plus `shadowing` (a binding that shadows an enclosing one). It is
+resolution-aware — a param named after a form (`parseInt`, `array`) is a call to
+your binding, not a false positive. Exit `0` clean / `1` findings / `2` usage;
+`.lyk` kernel files are exempt. Each rule maps to a `09-anti-patterns.md` entry
+labelled **Linted (`rule`)**. (This is separate from `deno lint`, which lints
+the compiled JS output.)
+
 **`?` vs `if` (DD-50 Rule 5):** prefer `?` for expression position; prefer `if` for statement position. The compiler treats them as functionally equivalent in expression position; the explicit form communicates intent at source level. For LLM-generated code, treat this as a hard rule (always use `?` in expression position, always use `if` in statement position).
 
 ---
@@ -629,8 +639,8 @@ lykn run packages/myapp/main.lykn
 # Run tests
 lykn test
 
-# Lint compiled JS
-lykn lint
+# Lint lykn SOURCE for anti-patterns (not the compiled JS)
+lykn lint packages/ examples/ test/
 
 # Syntax check
 lykn check main.lykn

@@ -1,0 +1,40 @@
+;; P-11 seeded anti-pattern corpus (arc05 slice04).
+;; One deliberate instance per live `lykn lint` rule. Named `_test.lykn` so the
+;; path-scoped conventions rules (no-relative-source-imports, no-dirname-fixtures)
+;; fire too. `lykn lint` over this file MUST report every rule id, exit 1.
+;;
+;; This is source the linter judges pre-expansion; it is NOT meant to compile.
+
+;; no-require
+(bind fs (require "fs"))
+;; no-eval
+(bind ev (eval "1+1"))
+;; no-new-wrappers
+(bind flag (new Boolean false))
+;; global-isnan
+(bind bad (isNaN x))
+;; no-arguments
+(bind legacy arguments)
+;; no-iife
+((fn () 1))
+;; no-delete-on-array
+(delete arr 0)
+;; no-json-deep-copy
+(bind clone (JSON:parse (JSON:stringify original)))
+;; prefer-surface-operators
+(=== a b)
+;; or-for-defaults
+(bind vol (or level 5))
+;; for-in-on-arrays
+(for-in k #a(1 2) (console:log k))
+;; parseint-radix
+(bind num (parseInt s))
+;; sort-without-comparator
+(bind ordered (nums:sort))
+;; shadowing — inner param `dup` shadows the outer binding of the same name
+(bind dup 1)
+(func shadow-demo :args (:any dup) :body dup)
+;; no-relative-source-imports (test-file convention)
+(import "./helper.js" (helper))
+;; no-dirname-fixtures (test-file convention)
+(bind fixture (resolve import.meta:dirname "data.json"))

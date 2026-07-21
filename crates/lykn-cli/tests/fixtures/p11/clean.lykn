@@ -1,0 +1,34 @@
+;; P-11 clean idiomatic corpus (arc05 slice04).
+;; Every construct here has an anti-pattern twin in `seeded_test.lykn`, written
+;; the idiomatic way. `lykn lint` over this file MUST report zero findings,
+;; exit 0.
+
+;; import the idiomatic way (bare specifier, named binding)
+(import "std/assert" (assertEquals))
+
+;; a well-typed, descriptively-named function — no `fn`/reserved param names
+(func add :args (:number a :number b) :returns :number :body (+ a b))
+
+;; surface equality, surface boolean ops
+(bind same (= a b))
+(bind both (and p q))
+
+;; ?? for defaults (preserves 0/""/false), not `or`
+(bind volume (?? level 5))
+
+;; explicit radix
+(bind parsed (parseInt "42" 10))
+
+;; non-destructive sort with a comparator
+(bind nums #a(3 1 2))
+(bind ordered (nums:toSorted (fn (:number x :number y) (- x y))))
+
+;; for-of over values, not for-in over an array
+(for-of value ordered (console:log value))
+
+;; distinct names — no accidental shadowing
+(bind total 0)
+(func tally :args (:number amount) :returns :number :body (+ total amount))
+
+;; structuredClone for a deep copy, not JSON round-trip
+(bind snapshot (structuredClone (obj :name "x")))

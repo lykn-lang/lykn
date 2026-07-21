@@ -4,11 +4,12 @@ A catalog of what NOT to do in lykn — mistakes that span multiple
 guides, patterns common in AI-generated code, and subtle traps that need
 deeper treatment. Every entry includes a fix with a cross-reference.
 
-lykn eliminates many JS anti-patterns at the language level. These are
-documented as ELIMINATED entries — brief notes explaining the JS hazard
-and how lykn prevents it. The remaining entries cover traps that still
-exist in lykn (inherited from JS runtime semantics) plus new lykn-
-specific anti-patterns.
+Each entry carries a **Status** naming how the anti-pattern is *enforced*:
+**Compiler-enforced** (the compiler hard-errors it), **Linted (`rule-id`)**
+(a live `lykn lint` rule catches it — run `lykn lint <paths>`), or
+**Documented-only** (neither mechanically prevents it; the guide is the
+guardrail). Many entries lykn once labelled "eliminated by language design"
+are in fact linted or documented-only — the Status says which.
 
 Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
 output, lykn/surface syntax throughout.
@@ -17,7 +18,7 @@ output, lykn/surface syntax throughout.
 
 ## ID-01: Using `==` Instead of `===`
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Linted (`prefer-surface-operators`)
 
 **Summary**: In JS, `==` applies a multi-step coercion cascade.
 
@@ -30,6 +31,8 @@ the `== null` idiom.
 ## ID-02: Trusting `js:typeof` for All Type Checks
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Documented-only
 
 **Summary**: `js:typeof` returns misleading results for `null`, arrays,
 and `NaN`.
@@ -56,6 +59,8 @@ automatically. Manual `js:typeof` checks are rarely needed.
 
 **Strength**: MUST-AVOID
 
+**Status**: Linted (`or-for-defaults`)
+
 **Summary**: `(or level 50)` compiles to `level || 50`, which swallows
 `0`, `""`, `false`, and `NaN`.
 
@@ -76,6 +81,8 @@ automatically. Manual `js:typeof` checks are rarely needed.
 ## ID-04: Global `isNaN` vs `Number:isNaN`
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Linted (`global-isnan`)
 
 **Summary**: The global `isNaN` coerces its argument first, producing
 false positives.
@@ -100,6 +107,8 @@ NaN at the boundary.
 
 **Strength**: SHOULD-AVOID
 
+**Status**: Linted (`parseint-radix`)
+
 **Summary**: `parseInt` without a radix infers the base from the string
 prefix.
 
@@ -117,6 +126,8 @@ prefix.
 
 **Strength**: SHOULD-AVOID
 
+**Status**: Linted (`no-new-wrappers`)
+
 **Summary**: `(new Boolean false)` creates a truthy object.
 
 ```lykn
@@ -133,7 +144,7 @@ prefix.
 
 ## ID-07: Method Extraction Loses `this`
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Documented-only
 
 **Summary**: In JS, storing a method in a variable loses `this`.
 
@@ -145,7 +156,7 @@ are values — extracting them always works. For class methods that need
 
 ## ID-08: Regular Functions as Callbacks When `this` Matters
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Documented-only
 
 **Summary**: In JS, ordinary functions as callbacks lose `this` in
 strict mode.
@@ -157,7 +168,7 @@ in surface code to lose.
 
 ## ID-09: Arrow Functions as Object Methods
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Documented-only
 
 **Summary**: In JS, arrow functions as object methods inherit `this`
 from the enclosing scope instead of the object.
@@ -170,7 +181,7 @@ method syntax.
 
 ## ID-10: `var` in Loops with Closures
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Compiler-enforced
 
 **Summary**: In JS, `var` creates one binding per function scope.
 Closures in a loop all share the same variable.
@@ -182,7 +193,7 @@ an immutable binding per iteration.
 
 ## ID-11: Accidental Globals — Missing `bind`
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Documented-only
 
 **Summary**: In JS, assigning to an undeclared variable creates a
 global property.
@@ -196,6 +207,8 @@ additional safety net.
 ## ID-12: Shadowing Outer Variables Accidentally
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Linted (`shadowing`)
 
 **Summary**: An inner `bind` can shadow an outer one of the same name.
 
@@ -222,7 +235,7 @@ additional safety net.
 
 ## ID-13: Relying on `var` Hoisting
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Compiler-enforced
 
 **Summary**: In JS, `var` hoists to `undefined`.
 
@@ -234,6 +247,8 @@ which has a TDZ that catches early access with `ReferenceError`.
 ## ID-14: Mutating Function Arguments
 
 **Strength**: MUST-AVOID
+
+**Status**: Documented-only
 
 **Summary**: Objects and arrays are passed by identity. Mutating a
 parameter mutates the caller's data.
@@ -264,7 +279,7 @@ parameter mutates the caller's data.
 
 ## ID-15: Assuming `bind` Prevents Deep Mutation
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Documented-only
 
 **Summary**: In JS, `const` freezes the binding but not the value.
 
@@ -279,6 +294,8 @@ language provides no way to mutate via `=`. For object updates, use
 ## ID-16: Shallow Copy Surprise — `assoc` Doesn't Copy Nested Objects
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Documented-only
 
 **Summary**: `assoc` is a shallow copy. Nested objects are shared.
 
@@ -302,6 +319,8 @@ language provides no way to mutate via `=`. For object updates, use
 ## ID-17: `:sort` Mutates in Place and Defaults to String Comparison
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Linted (`sort-without-comparator`)
 
 **Summary**: `:sort` mutates the original array AND defaults to
 lexicographic comparison.
@@ -327,6 +346,8 @@ lexicographic comparison.
 
 **Strength**: MUST-AVOID
 
+**Status**: Documented-only
+
 **Summary**: Consecutive `await` on unrelated operations serializes
 them. Use `Promise:all`.
 
@@ -349,6 +370,8 @@ them. Use `Promise:all`.
 
 **Strength**: MUST-AVOID
 
+**Status**: Documented-only
+
 **Summary**: `:map` with an async function returns `Promise[]`, not
 resolved values.
 
@@ -365,6 +388,8 @@ resolved values.
 ## ID-20: Fire-and-Forget Promises
 
 **Strength**: MUST-AVOID
+
+**Status**: Documented-only
 
 **Summary**: Calling an async function without `await` loses rejections.
 In Deno, this terminates the process.
@@ -388,6 +413,8 @@ In Deno, this terminates the process.
 
 **Strength**: SHOULD-AVOID
 
+**Status**: Documented-only
+
 **Summary**: A function that returns a Promise must not throw
 synchronously. Use `async` — sync throws become rejections.
 
@@ -399,6 +426,8 @@ synchronously. Use `async` — sync throws become rejections.
 
 **Strength**: SHOULD-AVOID
 
+**Status**: Documented-only
+
 **Summary**: Nesting `:then` inside `:then` recreates callback hell.
 Use `async`/`await` or flat chains.
 
@@ -409,6 +438,8 @@ Use `async`/`await` or flat chains.
 ## ID-23: `fetch` Without `signal`
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Documented-only
 
 **Summary**: A `fetch` without an `AbortSignal` cannot be cancelled.
 
@@ -426,6 +457,8 @@ Use `async`/`await` or flat chains.
 
 **Strength**: MUST-AVOID
 
+**Status**: Documented-only
+
 **Summary**: Use one error channel. Don't return `null` on some
 failures and throw on others. In lykn, consider using `type` with
 `Some`/`None` or `Ok`/`Err` for explicit result modeling.
@@ -437,6 +470,8 @@ failures and throw on others. In lykn, consider using `type` with
 ## ID-25: Boolean Parameters — Unreadable Call Sites
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Documented-only
 
 **Summary**: `(create-user "Alice" true false true)` is unreadable.
 Use `obj` with keyword keys.
@@ -457,6 +492,8 @@ Use `obj` with keyword keys.
 
 **Strength**: SHOULD-AVOID
 
+**Status**: Documented-only
+
 **Summary**: Returning a non-primitive from a constructor breaks
 `instanceof`. Use static factory methods.
 
@@ -465,6 +502,8 @@ Use `obj` with keyword keys.
 ## ID-27: Overloaded Functions — Use Multi-Clause `func`
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Documented-only
 
 **Summary**: Functions that change behavior based on argument count or
 type are hard to reason about. In lykn, use multi-clause `func` for
@@ -485,7 +524,7 @@ clean overloading.
 
 ## ID-28: `var` in Any Code
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Compiler-enforced
 
 **Summary**: `var` does not exist in lykn.
 
@@ -494,6 +533,8 @@ clean overloading.
 ## ID-29: `for-in` on Arrays
 
 **Strength**: MUST-AVOID
+
+**Status**: Linted (`for-in-on-arrays`)
 
 **Summary**: `for-in` iterates enumerable string keys, including
 inherited ones. Use `for-of`.
@@ -513,7 +554,7 @@ inherited ones. Use `for-of`.
 
 ## ID-30: Using the `arguments` Object
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Linted (`no-arguments`)
 
 **Summary**: `arguments` does not exist in lykn. Use `(rest ...)` in
 parameter lists.
@@ -524,6 +565,8 @@ parameter lists.
 
 **Strength**: MUST-AVOID
 
+**Status**: Linted (`no-eval`)
+
 **Summary**: `eval` executes arbitrary code. It is a security
 vulnerability and prevents engine optimization. In lykn, `js:eval`
 exists as an escape hatch but should never be used in application code.
@@ -532,7 +575,7 @@ exists as an escape hatch but should never be used in application code.
 
 ## ID-32: IIFEs in ESM Code
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Linted (`no-iife`)
 
 **Summary**: Module scope is already isolated in ESM. IIFEs add
 complexity with zero benefit. lykn modules are always ESM.
@@ -541,7 +584,7 @@ complexity with zero benefit. lykn modules are always ESM.
 
 ## ID-33: CommonJS `require()` in ESM Context
 
-**Status**: ELIMINATED BY LANGUAGE DESIGN
+**Status**: Linted (`no-require`)
 
 **Summary**: lykn only produces ESM output. `require()` does not
 exist.
@@ -551,6 +594,8 @@ exist.
 ## ID-34: `delete` on Array Elements
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Linted (`no-delete-on-array`)
 
 **Summary**: Kernel `delete` on arrays creates holes. Use `:toSpliced`
 (non-destructive) or `:splice` (destructive).
@@ -568,6 +613,8 @@ exist.
 
 **Strength**: SHOULD-AVOID
 
+**Status**: Linted (`no-json-deep-copy`)
+
 **Summary**: The JSON round-trip silently drops `undefined`, functions,
 and symbols.
 
@@ -583,6 +630,8 @@ and symbols.
 ## ID-36: Catching Errors and Only Logging
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Documented-only
 
 **Summary**: Catching an error and only logging it converts a failure
 into silent success. Handle, rethrow, or both.
@@ -614,6 +663,8 @@ The following anti-patterns are unique to lykn and have no JS parallel.
 
 **Strength**: MUST-AVOID
 
+**Status**: Documented-only
+
 **Summary**: A `cell` wraps its value in `{ value: ... }`. Reading the
 cell without `express` gives you the wrapper object, not the value.
 
@@ -638,6 +689,8 @@ expects a number.
 ## ID-38: Using Kernel Forms When Surface Forms Exist
 
 **Strength**: SHOULD-AVOID (operators) · **compile error** (declaration forms)
+
+**Status**: Compiler-enforced (declaration forms) · Linted (`prefer-surface-operators`) (operators)
 
 **Summary**: Prefer surface forms over their kernel equivalents. Under
 DD-58 strict mode (default for `.lykn`) the two kinds differ:
@@ -680,6 +733,8 @@ read and for tools to analyze.
 
 **Strength**: MUST-AVOID
 
+**Status**: Compiler-enforced
+
 **Summary**: Every parameter in `func` and `fn` requires a type keyword.
 Using bare symbols is a compile error. Using `:any` everywhere defeats
 the purpose.
@@ -707,6 +762,8 @@ and reserve `:any` for genuinely polymorphic parameters.
 
 **Strength**: SHOULD-AVOID
 
+**Status**: Documented-only
+
 **Summary**: The `js:` namespace is an escape hatch for JS interop.
 It should be rare and greppable.
 
@@ -730,6 +787,8 @@ surface language.
 ## ID-41: Using `cell` When a Pure Approach Works
 
 **Strength**: SHOULD-AVOID
+
+**Status**: Documented-only
 
 **Summary**: Reaching for `cell` + `swap!` when `assoc`, `conj`, or
 `:reduce` would produce cleaner, safer code.
@@ -761,16 +820,31 @@ are clearer, safer, and more composable.
 
 **Strength**: MUST-AVOID
 
-**Summary**: `fn` is a surface macro in lykn. Using it as a parameter
-name causes the expander to interpret it as a macro invocation rather
-than a variable reference.
+**Status**: Compiler-enforced (reserved-word params, D2)
+
+**Summary**: A parameter's name interacts with lykn's name resolution
+(arc13, DD-60/DD-61). Two distinct cases — one a hard error, one a style
+choice:
+
+- **JS reserved words** (`if`, `for`, `class`, `return`, …) are **rejected at
+  every binding position**: a param named `if` is a **compile error** (D2 —
+  *"'if' is a JavaScript reserved word and cannot be used as a lykn function
+  parameter"*). This is the compiler-enforced part.
+- **Surface-macro / form names** (`fn`, `array`, `cell`, …) are **legal**: a
+  lexically-bound param shadows the macro/form on both backends (DD-60 D1), so
+  `(:any fn)` resolves to the parameter, not the `fn` macro — it compiles
+  correctly. Reusing a well-known form name is a **readability** concern, not
+  an error.
 
 ```lykn
-;; Bad — fn is a surface macro name
-;; (func apply-to-all :args (:array items :function fn) ...)
-;; Throws: "fn requires at least 2 arguments"
+;; Compile error (D2) — a JS reserved word cannot be a binding name:
+;; (func f :args (:any if) :body 1)
 
-;; Good — use f, callback, transform, etc.
+;; Legal but discouraged — `fn` shadows the macro here (D1); it works, but a
+;; descriptive name reads better:
+;; (func apply-to-all :args (:array items :function fn) :body (items:map fn))
+
+;; Good — a descriptive name
 (func apply-to-all
   :args (:array items :function f)
   :returns :array
@@ -783,10 +857,13 @@ than a variable reference.
 [ 2, 4, 6 ]
 ```
 
-**Other reserved names**: All surface macro names are reserved as
-identifiers: `fn`, `func`, `bind`, `type`, `match`, `cell`,
-`express`, `obj`, `assoc`, `dissoc`, `conj`, `set!`, `reset!`,
-`swap!`, `and`, `or`, `not`, `lambda`, `genfunc`, `genfn`.
+**What's actually reserved**: only the JS reserved words (D2) — `if`, `for`,
+`while`, `class`, `const`, `return`, `function`, `import`, `export`, `new`,
+`delete`, `typeof`, `void`, … — error at a binding position. Surface-macro
+names (`fn`, `func`, `bind`, `array`, `cell`, …) are **not** reserved as
+identifiers since arc13; they legally shadow. (Accidentally shadowing an
+*enclosing binding* is a separate concern, caught by the `shadowing` lint rule
+— ID-12.)
 
 **Fix**: Use descriptive names: `f`, `callback`, `predicate`,
 `transform`, `handler`.
@@ -796,6 +873,8 @@ identifiers: `fn`, `func`, `bind`, `type`, `match`, `cell`,
 ## ID-43: Using `assoc` for Shallow Copies (No Key-Value Pairs)
 
 **Strength**: MUST-AVOID
+
+**Status**: Documented-only
 
 **Summary**: `assoc` requires at least one key-value pair. Calling
 `(assoc obj)` with no updates throws an error.
@@ -828,6 +907,8 @@ identifiers: `fn`, `func`, `bind`, `type`, `match`, `cell`,
 
 **Strength**: MUST-AVOID
 
+**Status**: Compiler-enforced
+
 **Summary**: `for-of` already creates `const` bindings. Wrapping
 the binding in `(const ...)` causes a compilation error.
 
@@ -855,6 +936,8 @@ the binding in `(const ...)` causes a compilation error.
 ## ID-45: Double Parens in Class Method Parameters
 
 **Strength**: MUST-AVOID
+
+**Status**: Documented-only
 
 **Summary**: In class methods, parameters use a single paren list:
 `(method-name (param1 param2) body)`. Double parens `((param))` make
@@ -888,6 +971,8 @@ Rex says woof
 ## ID-46: Using `=` for Assignment in Class Bodies
 
 **Strength**: MUST-AVOID
+
+**Status**: Documented-only
 
 **Summary**: In surface lykn, `(= a b)` is strict equality (`===`),
 not assignment. Inside class constructors, use `assign` for property
@@ -926,55 +1011,61 @@ assignment.
 
 | ID | Anti-Pattern | Strength | Status |
 |----|-------------|----------|--------|
-| 01 | `==` instead of `===` | MUST-AVOID | ELIMINATED |
-| 02 | Trusting `js:typeof` | SHOULD-AVOID | Converted |
-| 03 | `or` for defaults | MUST-AVOID | Converted |
-| 04 | Global `isNaN` | SHOULD-AVOID | Converted |
-| 05 | `parseInt` without radix | SHOULD-AVOID | Converted |
-| 06 | `new Boolean/String/Number` | SHOULD-AVOID | Converted |
-| 07 | Method extraction loses `this` | MUST-AVOID | ELIMINATED |
-| 08 | Regular function as callback | SHOULD-AVOID | ELIMINATED |
-| 09 | Arrow as method | SHOULD-AVOID | ELIMINATED |
-| 10 | `var` in loops | MUST-AVOID | ELIMINATED |
-| 11 | Accidental globals | MUST-AVOID | ELIMINATED |
-| 12 | Accidental shadowing | SHOULD-AVOID | Converted |
-| 13 | `var` hoisting | SHOULD-AVOID | ELIMINATED |
-| 14 | Mutating function arguments | MUST-AVOID | Converted |
-| 15 | `const` = immutable | SHOULD-AVOID | ELIMINATED |
-| 16 | Shallow copy surprise | SHOULD-AVOID | Converted |
-| 17 | `:sort` mutates + string default | SHOULD-AVOID | Converted |
-| 18 | Sequential `await` (independent) | MUST-AVOID | Converted |
-| 19 | `:map(async fn)` without `all` | MUST-AVOID | Converted |
-| 20 | Fire-and-forget promises | MUST-AVOID | Converted |
-| 21 | Sync throws in Promise functions | SHOULD-AVOID | Converted |
-| 22 | `:then` nesting | SHOULD-AVOID | Converted |
-| 23 | `fetch` without `signal` | SHOULD-AVOID | Converted |
-| 24 | Mixed return/throw | MUST-AVOID | Converted |
-| 25 | Boolean parameters | SHOULD-AVOID | Converted |
-| 26 | Return object from constructor | SHOULD-AVOID | Converted |
-| 27 | Overloaded functions | SHOULD-AVOID | Converted |
-| 28 | `var` in any code | MUST-AVOID | ELIMINATED |
-| 29 | `for-in` on arrays | MUST-AVOID | Converted |
-| 30 | `arguments` object | SHOULD-AVOID | ELIMINATED |
-| 31 | `eval` | MUST-AVOID | Converted |
-| 32 | IIFEs in ESM | CONSIDER-AVOIDING | ELIMINATED |
-| 33 | CommonJS `require()` | MUST-AVOID | ELIMINATED |
-| 34 | `delete` on arrays | SHOULD-AVOID | Converted |
-| 35 | JSON deep copy | SHOULD-AVOID | Converted |
-| 36 | Catch-and-log only | SHOULD-AVOID | Converted |
-| 37 | Forgetting `express` | MUST-AVOID | **lykn-specific** |
-| 38 | Kernel forms in surface code | SHOULD-AVOID | **lykn-specific** |
-| 39 | `:any` everywhere | MUST-AVOID | **lykn-specific** |
-| 40 | Overusing `js:` interop | SHOULD-AVOID | **lykn-specific** |
-| 41 | `cell` when pure works | SHOULD-AVOID | **lykn-specific** |
-| 42 | `fn` as parameter name | MUST-AVOID | **lykn-specific** |
-| 43 | `assoc` for shallow copy | MUST-AVOID | **lykn-specific** |
-| 44 | `(const ...)` in `for-of` | MUST-AVOID | **lykn-specific** |
-| 45 | `((param))` in class methods | MUST-AVOID | **lykn-specific** |
-| 46 | `=` for assignment in classes | MUST-AVOID | **lykn-specific** |
+| 01 | `==` instead of `===` | MUST-AVOID | Linted (`prefer-surface-operators`) |
+| 02 | Trusting `js:typeof` | SHOULD-AVOID | Documented-only |
+| 03 | `or` for defaults | MUST-AVOID | Linted (`or-for-defaults`) |
+| 04 | Global `isNaN` | SHOULD-AVOID | Linted (`global-isnan`) |
+| 05 | `parseInt` without radix | SHOULD-AVOID | Linted (`parseint-radix`) |
+| 06 | `new Boolean/String/Number` | SHOULD-AVOID | Linted (`no-new-wrappers`) |
+| 07 | Method extraction loses `this` | MUST-AVOID | Documented-only |
+| 08 | Regular function as callback | SHOULD-AVOID | Documented-only |
+| 09 | Arrow as method | SHOULD-AVOID | Documented-only |
+| 10 | `var` in loops | MUST-AVOID | Compiler-enforced |
+| 11 | Accidental globals | MUST-AVOID | Documented-only |
+| 12 | Accidental shadowing | SHOULD-AVOID | Linted (`shadowing`) |
+| 13 | `var` hoisting | SHOULD-AVOID | Compiler-enforced |
+| 14 | Mutating function arguments | MUST-AVOID | Documented-only |
+| 15 | `const` = immutable | SHOULD-AVOID | Documented-only |
+| 16 | Shallow copy surprise | SHOULD-AVOID | Documented-only |
+| 17 | `:sort` mutates + string default | SHOULD-AVOID | Linted (`sort-without-comparator`) |
+| 18 | Sequential `await` (independent) | MUST-AVOID | Documented-only |
+| 19 | `:map(async fn)` without `all` | MUST-AVOID | Documented-only |
+| 20 | Fire-and-forget promises | MUST-AVOID | Documented-only |
+| 21 | Sync throws in Promise functions | SHOULD-AVOID | Documented-only |
+| 22 | `:then` nesting | SHOULD-AVOID | Documented-only |
+| 23 | `fetch` without `signal` | SHOULD-AVOID | Documented-only |
+| 24 | Mixed return/throw | MUST-AVOID | Documented-only |
+| 25 | Boolean parameters | SHOULD-AVOID | Documented-only |
+| 26 | Return object from constructor | SHOULD-AVOID | Documented-only |
+| 27 | Overloaded functions | SHOULD-AVOID | Documented-only |
+| 28 | `var` in any code | MUST-AVOID | Compiler-enforced |
+| 29 | `for-in` on arrays | MUST-AVOID | Linted (`for-in-on-arrays`) |
+| 30 | `arguments` object | SHOULD-AVOID | Linted (`no-arguments`) |
+| 31 | `eval` | MUST-AVOID | Linted (`no-eval`) |
+| 32 | IIFEs in ESM | CONSIDER-AVOIDING | Linted (`no-iife`) |
+| 33 | CommonJS `require()` | MUST-AVOID | Linted (`no-require`) |
+| 34 | `delete` on arrays | SHOULD-AVOID | Linted (`no-delete-on-array`) |
+| 35 | JSON deep copy | SHOULD-AVOID | Linted (`no-json-deep-copy`) |
+| 36 | Catch-and-log only | SHOULD-AVOID | Documented-only |
+| 37 | Forgetting `express` | MUST-AVOID | Documented-only |
+| 38 | Kernel forms in surface code | SHOULD-AVOID | Compiler / Linted |
+| 39 | `:any` everywhere | MUST-AVOID | Compiler-enforced |
+| 40 | Overusing `js:` interop | SHOULD-AVOID | Documented-only |
+| 41 | `cell` when pure works | SHOULD-AVOID | Documented-only |
+| 42 | `fn` as parameter name | MUST-AVOID | Compiler-enforced |
+| 43 | `assoc` for shallow copy | MUST-AVOID | Documented-only |
+| 44 | `(const ...)` in `for-of` | MUST-AVOID | Compiler-enforced |
+| 45 | `((param))` in class methods | MUST-AVOID | Documented-only |
+| 46 | `=` for assignment in classes | MUST-AVOID | Documented-only |
 
-**12 ELIMINATED** by language design. **24 converted** from JS. **10 new**
-lykn-specific anti-patterns.
+**Enforcement** (verified against `lykn lint`'s `registry()` + the compiler,
+arc05 slice04): **6 compiler-enforced** (ID-10/13/28 `var`, ID-39 untyped
+param, ID-42 reserved-word param, ID-44 `const` loop binding), **14 linted**
+(a live `lykn lint` rule), **25 documented-only** (the guide is the guardrail),
+and **ID-38 split** (declaration forms compiler-enforced; operators linted).
+The former blanket "ELIMINATED BY LANGUAGE DESIGN" was accurate as a
+*mechanical* guarantee for only a few — most "eliminated" entries are in
+fact linted or documented-only.
 
 ---
 

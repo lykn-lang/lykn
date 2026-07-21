@@ -303,6 +303,16 @@ lint:
 	@find test/surface -name '*.lykn' | xargs $(BIN_DIR)/$(CODE_NAME) check
 	@find packages -name '*.lykn' | xargs $(BIN_DIR)/$(CODE_NAME) check 2>/dev/null || true
 	@echo "$(GREEN)✓ lykn syntax check passed$(RESET)"
+	@echo "$(CYAN)• Running lykn lint (source anti-patterns)...$(RESET)"
+	@# Path-scope out the kernel-in-surface fixture: its `===` uses are
+	@# intentional test material (kernel forms in surface), not defects. This is
+	@# path exclusion, NOT inline suppression — comment-directive suppression is
+	@# deferred to arc14 (comment-retention, DD-62). (The P-11 seeded corpus lives
+	@# under crates/.../tests/fixtures/, outside this scan, so it needs no exclusion.)
+	@find packages examples test -name '*.lykn' \
+		! -path 'test/surface/kernel-in-surface_test.lykn' \
+		| sort | xargs $(BIN_DIR)/$(CODE_NAME) lint
+	@echo "$(GREEN)✓ lykn lint passed$(RESET)"
 
 .PHONY: format
 format:

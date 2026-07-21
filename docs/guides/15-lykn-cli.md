@@ -198,21 +198,42 @@ Wraps `deno test --config project.json --no-check -A`.
 
 ---
 
-## ID-04c: `lykn lint` — Lint Compiled JS
+## ID-04c: `lykn lint` — Lint lykn Source (anti-patterns)
 
 **Strength**: SHOULD
 
-**Summary**: Lint JavaScript files via Deno's built-in linter.
+**Summary**: Lint `.lykn` **source** for anti-patterns and non-idiomatic
+style — it judges what you *wrote* (pre-expansion), not the compiled JS.
+Findings map to the `09-anti-patterns.md` catalog: every entry there labelled
+**Linted (`rule`)** is a rule here.
 
 ```sh
-# Lint all packages
-lykn lint
+# Lint files or directories (recurses; .lykn only)
+lykn lint packages/ examples/ test/
 
-# Lint specific directory
-lykn lint packages/myapp/
+# JSON output, for editors / tooling
+lykn lint --format=json src/app.lykn
 ```
 
-Wraps `deno lint --config project.json`.
+**Rule set** (16 rules; see `09-anti-patterns.md` for each rule's fix):
+`no-require`, `no-eval`, `no-new-wrappers`, `global-isnan`, `no-arguments`,
+`no-iife`, `no-delete-on-array`, `no-json-deep-copy`,
+`prefer-surface-operators`, `or-for-defaults`, `for-in-on-arrays`,
+`parseint-radix`, `sort-without-comparator`, `shadowing` (accidental shadowing
+of an enclosing binding), plus two test-file conventions
+(`no-relative-source-imports`, `no-dirname-fixtures`). The linter is
+**resolution-aware**: a lexically-bound name that matches a rule's trigger (a
+param named `parseInt`) is a call to your binding, not a finding.
+
+**Exit codes**: `0` clean · `1` findings · `2` usage / I-O error (a path that
+doesn't exist, or a `.lykn` file that fails to parse — run `lykn check` first).
+`.lyk` kernel files are **exempt** (kernel style is its own idiom).
+
+> Per-finding inline suppression (a `; disable` comment) is not yet available —
+> it needs source comment retention. Scope with paths in the meantime.
+
+> **Not** `deno lint`: that lints the *compiled JS* and is run separately
+> (`make lint` invokes both). `lykn lint` is the lykn-source linter.
 
 ---
 
@@ -383,7 +404,7 @@ that the JS codegen consumes.
 | `lykn check FILE` | Syntax check |
 | `lykn run FILE` | Run .lykn or .js file |
 | `lykn test [PATTERNS]` | Run tests via Deno |
-| `lykn lint [PATHS]` | Lint JS via Deno |
+| `lykn lint [PATHS]` | Lint lykn **source** for anti-patterns (see `09-anti-patterns.md`) |
 | `lykn publish --jsr` | Publish to JSR |
 | `lykn publish --npm` | Build + publish to npm |
 | `lykn publish --dry-run` | Check without publishing |
