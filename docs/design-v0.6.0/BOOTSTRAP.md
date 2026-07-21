@@ -112,13 +112,21 @@ inserts.
   guide doctests **475/0**; `surface.js` 448 (was 2,315);
   `size_of::<SExpr>()` 48→48 across the whole resolution+privacy layer.
 
-**Immediate next action (2026-07-21): HAND ARC05 SLICE03 TO CC.** arc13
-is closed (gate GO 2026-07-09) *and* fully discharged — **A-6 closed
-2026-07-21** at slice03 scoping (the ID-42 re-answer: **no lint rule** —
-reserved words are D2 compile errors, form-named params legally shadow
-via D1). **arc05 slice03 is SCOPED** — open set written at
-`arc05-lykn-source-linter/slice03-resolution-consumer/`
-(slice-doc/ledger/cc-prompt). The cc-prompt is ready to hand to CC.
+**Immediate next action (2026-07-21): HAND SLICE04 TO CC — arc05's last slice.** **slice03 is CLOSED** (`ea429e2`, CDC-verified — see
+`slice03-resolution-consumer/cdc-verification.md`): `lykn lint` is a
+resolution consumer (`resolver::resolve` + the `as_form_head` funnel gates
+every head-matching rule on bound names) and gained the ID-12 shadowing
+rule riding the resolver's single scope model (grep-confirmed zero scope
+logic in `lint/` — the arc13 lesson held). arc13 is fully discharged
+(A-6 closed). arc05 arc-ledger A-1/A-2/A-3/A-5 done; A-4/A-6 close in slice04,
+A-7 is slice04 itself. **slice04 is SCOPED** — open set at
+`slice04-integration-and-docs/` (make lint wiring + guide-09/15 + SKILL +
+P-11 → arc close). **The suppression mechanism is deferred to the new
+arc14 · comment-retention** (DD-62): it needs reader comment-retention,
+which no backend has (readers drop comments; no `SExpr` trivia). arc14 is
+seeded; release boundary 0.6.0-vs-0.7.0 is the operator's call (CDC leans
+0.7.0). The 2 kernel-interop dogfood findings are path-scoped in slice04,
+not suppressed, so `make lint` is green without arc14.**
 
 **The 1→2 split (arc05 arc-plan v1.6; project-plan v1.26).** Scoping-time
 grounding found the resolution-consumer work small (`resolver::resolve`
@@ -128,21 +136,24 @@ returns `None` for bound heads → route the linter's one shared
 false-positiving on bound names at once) but the old "slice03" bundle too
 large. Split:
 
-- **slice03 · resolution-consumer + context rules** (scoped, ready for
-  CC): resolution-awareness; the shadowing rule (ID-12 — **MUST reuse the
-  resolver's scope model, no second decider** — the arc13 lesson turned on
-  itself; the `analysis/scope.rs` sketch is superseded); the ID-42
-  re-answer (already written — closes arc13 A-6); the dogfood re-run
-  (arc05 A-5). 9 ledger rows.
+- **slice03 · resolution-consumer + context rules** — **CLOSED**
+  `ea429e2` (CDC-verified): resolution-awareness (the `as_form_head`
+  funnel), the ID-12 shadowing rule (reuses the resolver's scope model —
+  no second decider; F-6 grep-clean), the ID-42 re-answer (closed arc13
+  A-6), dogfood clean (118 files, 2 benign fixtures triaged). 9/9 rows.
 - **slice04 · suppression + integration + guide alignment + arc close**
   (planned, not yet opened): the lint-suppression mechanism (depends on
   the reader preserving comments — size honestly); `make lint`/`make
   check` wiring; guide-09 reclassification (arc05 A-6) + guide-15 + SKILL;
   the P-11 demo (arc05 A-4) → arc close.
 
-**After CC delivers slice03:** verify + close + bubble up, then open
-slice04. Read `arc05-lykn-source-linter/arc-plan.md` (v1.6) + the slice03
-open set first.
+**Now: hand slice04's cc-prompt to CC.** Read
+`arc05-lykn-source-linter/arc-plan.md` (v1.7) + slice03's
+`closing-report.md` / `cdc-verification.md` bubble-up first — it routes
+three things into slice04: the now-orphaned `LintContext` ancestry API
+(delete-or-keep), the `prefer-surface-operators` fixture noise that
+motivates the suppression mechanism, and the stale-`bin/lykn` guard that
+bites a bare `cargo test` (rebuild first).
 
 **Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never
 bare `lykn`; **`./bin/lykn build` before any deno/matrix probe** (trap
@@ -345,6 +356,8 @@ is SCOPED** (1→2 split, arc-plan v1.6; open set at
 `slice03-resolution-consumer/`): the linter on true lexical scoping
 (resolution-consumer via `resolver::resolve` + `as_form_head`; shadowing
 rule reusing the resolver's scope model; ID-42 re-answer = no rule, closed
-arc13 A-6; dogfood) → **hand slice03's cc-prompt to CC**; slice04
-(suppression + `make lint` + guide-09/15 + P-11 + arc close) follows →
-then arc06 → arc07 → arc09, and 0.6.0 is in sight.
+arc13 A-6; dogfood) is **CLOSED** (`ea429e2`, CDC-verified) → slice04
+**SCOPED** → **hand to CC** (`make lint` + guide-09/15 + SKILL + P-11 →
+arc close; suppression deferred → arc14 · comment-retention/DD-62) → then
+arc06 → arc07 → arc09, and 0.6.0 is in
+sight.

@@ -76,3 +76,26 @@ it); flow analysis (cell-when-pure, sequential-await — tracked candidates);
 Config-driven rule selection (Q2-C); `--fix` for the mechanical rules;
 promotion of tier-2 flow rules as the analysis layer grows; doctest/guide
 integration (lint the guide examples in CI).
+
+## Addendum — ID-42 disposition (2026-07-21, arc05 slice03; closes arc13 A-6)
+
+The ID-42 question — *should the linter warn on reserved-word or form-named
+parameters?* — is re-answered from arc13's fixed state. **Disposition: no lint
+rule.**
+
+- **Reserved words at binding positions are already D2 compile errors**
+  (`binding::validate_reserved_names`, both backends; the ID-44 genus is dead at
+  the root). A lint warning would be redundant with — and weaker than — a
+  compile error.
+- **Form-named parameters legally shadow (DD-60 D1).** A param named
+  `array`/`cell`/`parseInt` genuinely shadows the form/global on both backends;
+  the compiler emits a call to the binding. Warning would contradict the
+  semantics arc13 was run to establish.
+
+This is the operator steer — *"do the right thing instead of warning broadly"* —
+vindicated by the fixed compiler; the slice03 dogfood surfaced no case where the
+linter's silence on a param name is harmful. The **shadowing rule (ID-12)**
+covers the one genuinely-confusing param-name case that remains — shadowing an
+*enclosing binding* (not a form) — which is orthogonal to the reserved/form
+question. Landed in slice03 (`ea429e2`); closes arc13 A-6.
+
