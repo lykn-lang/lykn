@@ -84,7 +84,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Closed** (M16–M22; architecture landed on release 2026-06-29) |
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, **arc13 (blocker)** | **PAUSED at 2/3** — 15 rules live; slice02's recon exposed the expander divergence; slice03 resumes post-arc13 |
-| **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocks arc05 slice03 | **CLOSING** — all 11 slices CDC-closed 2026-07-09 (grew 3→11 via tracked re-slices: the Resolve-Once architecture [DD-61], the §A6 privacy pair, two recon slices); DD-60 D1/D2 hold on both backends; corpus standing in `make check`; final matrix 1947/53 documented-as-intended; **formal close = operator host gate** (arc closing-report §5) |
+| **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
@@ -198,12 +198,23 @@ inherited from arc attestations.
 | P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **done** | 3/3 slices (`faee8a1`/`feb056c`/`2f6a84d`); **operator gate GO 2026-07-05 23:29** (5-form demo verbatim; `kernel:` resolves; suites reconciled) — reproduced at arc scale | |
 | P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **done** | 2/2 slices (`75c9cc2`/`4f2a628`); **operator gate GO 2026-07-05 23:31** (three-moment demo 0/0 with `./bin/lykn`, destination proven by the compile message; sweep + hygiene from the earlier session) | P-7's demo unconditional; tracked candidates instantiated |
 | P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | **done** | slice01 (`3612cad`); 1m52s→2.6s / >2m→1m04s; **operator gate GO 2026-07-05** (suite run green; census grep 3 line-mentions ≈ 1 compile + 1 execution — once, vs ~16 before); `lykn test` in 13s during the arc11 demo | the verification cost that was blocking the gates is gone |
-| P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | open | | blocks arc05 slice03 / P-11; a P-9-class semantic divergence found outside the corpus's coverage — the conformance corpus closes that coverage gap permanently |
+| P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | done | **reconciled** — gate GO 2026-07-09 (arc13 closing-report §5 gate record: ancestry ×6, `make check` 100%, matrix 1947/53 exact = the two documented classes, D2 demos verbatim) | arc05 slice03 / P-11 unblocked; the corpus closes the coverage gap permanently |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.25 — 2026-07-09 (GATE GO — arc13 CLOSED; P-18 reconciled; arc05 UNPAUSED)
+The operator ran the full arc13 gate (closing-report §5 record):
+ancestry ×6 ok, `make check` 100%, **matrix 1947/53 exact** (the two
+documented classes precisely, CDC-recounted), D2/D1 demos verbatim.
+**P-18 → done/reconciled. arc05 unpauses** — its slice03 (the resume)
+is the next work: lint consumes resolution (DD-61 tooling accounting),
+the ID-42 re-answer (which closes arc13's A-6, left open by design),
+shadowing rule, guide-09 reclassification, lint-suppression,
+`make lint`, P-11 demo. Sequence: **arc05 → arc06 → arc07 → arc09.**
+Which-child-surfaced: arc13 (gate).
 
 ### v1.24 — 2026-07-09 (arc13 → CLOSING; the arc bubble-up received)
 All 11 arc13 slices CDC-closed (2026-07-06 → 07-09; six source SHAs

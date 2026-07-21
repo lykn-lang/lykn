@@ -77,110 +77,80 @@ Numbering convention (from 2026-06-30): **`NN` = creation order, not dependency
 order.** Sequence is carried by each arc's Dependencies. Stop renumbering on
 inserts.
 
-## 5. Current state (2026-06-30)
+## 5. Current state (2026-07-09)
 
-- **Closed:** arc01 (build-publish), arc02 (type-dts), arc03 (compiler-coherence),
-  arc04 (refactor-tooling — move-function + full surface extraction), arc08 (DD-55
-  template i18n).
-- **Open / partial:** arc06 (dep-ergonomics — slice01 closed), arc07 (docs —
-  slice01 CI-green closed; broader drift audit pending), arc05 (linter — not
-  started).
-- **CLOSING:** **arc10 (compiler-completion)** — all 3 slices closed
-  2026-06-30…07-05 (slice01 `faee8a1` Rust strict; slice02 `feb056c` JS
-  parity; slice03 `2f6a84d` `_kernel`→WeakSet registry + A-6 macro-boundary
-  enforcement [operator-decided Rust semantics] + A-7 parity guard + A-8
-  `kernel:` corpus rows). DD-58 holds on **every** compile path, incl. the
-  macro boundary. Arc `closing-report.md` written; **formal close = operator
-  host composition run + gate** (runbook in the report §5). Final numbers:
-  `lykn test` 1365/0, deno 673/0, `make check` ✓.
-- **Future:** arc09 (release).
-- **Dependency sequence of the open arcs:** **arc05 → arc06 → arc07 →
-  arc09.** arc10 (compiler-completion), arc11 (source-only-test-build), and
-  arc12 (test-topology) are all **CLOSED — operator-gated 2026-07-05**
-  (gate records in each arc's `closing-report.md`; the day also produced
-  the PATH-binary staleness lesson and the ×12-corpus fix — `make check`
-  now ~1m04s and is the canonical bar).
-- Headline metrics: `surface.js` 2,315→448 lines; corpus 1345/0; deno 658/0;
-  guide doctests 468/0 (4 kernel demos now `skip`); `deno lint packages/` exit 0.
+- **Closed (gated):** arc01, arc02, arc03, arc04, arc08, arc10, arc11,
+  arc12 — see the arc table in `README.md`; gate records in each arc's
+  `closing-report.md`.
+- **CLOSING:** **arc13 (expander-coherence)** — **all 11 slices
+  CDC-closed 2026-07-06…07-09** (3 planned → 11 delivered via tracked
+  re-slices: the Resolve-Once architecture [DD-61], the §A6 privacy
+  pair, two recon slices). **DD-60 D1/D2 hold on both backends**: a
+  lexically-bound name means the binding everywhere (labels excepted by
+  design, DD-60 ‡); reserved words rejected at every derived binding
+  position (ID-44 genus dead). Pinned by a standing conformance corpus
+  in `make check` (~1 s, seeded-teeth demo'd) + 4 other standing checks.
+  Final matrix: **1947 cells · 53 divergent, every one
+  documented-as-intended** (38 form-named-label shape asymmetry + 15
+  `kernel:if` unbindables). Source SHAs: `dc37ae9` (06), `7d86703` +
+  `dab4405` (08), `4c12301` (09), `c19a1fb` (10), `a0b24b9` (11).
+  **Formal close = operator host gate** (runbook: arc closing-report
+  §5). **Gate progress: `make check` 100% operator-reproduced
+  2026-07-09** (runbook step 3 ✓); remaining: the ancestry sweep ×6,
+  the 1947/53 matrix reproduction, the D2 spot-demos.
+- **Open / partial:** arc05 (linter — PAUSED at 2/3, **unpauses on the
+  arc13 gate GO**; 15 rules live), arc06 (dep-ergonomics — slice01
+  closed), arc07 (docs — slice01 closed; drift audit pending; holds the
+  stale-CLAUDE.md-architecture fix + kernel-browser-examples items).
+- **Future:** arc09 (release — holds the accumulated breaking notes:
+  DD-58 strict, kernel: JS semantics, D1 bound-names-resolve, D2
+  reserved-words-error).
+- **Dependency sequence of the open arcs:** **arc05(resume) → arc06 →
+  arc07 → arc09.**
+- Headline metrics: matrix divergence 601→**53/1947**
+  (documented-as-intended); conformance corpus ~1 s in `make check`;
+  guide doctests **475/0**; `surface.js` 448 (was 2,315);
+  `size_of::<SExpr>()` 48→48 across the whole resolution+privacy layer.
 
-**Immediate next action (updated 2026-07-09): RUN THE ARC13 GATE** —
-all 11 slices are CDC-closed (slice11 `a0b24b9`: the corpus stands in
-`make check` with demonstrated teeth; final matrix **1947/53**, every
-residual documented-as-intended; two probe-caught fixes: the `macro`
-row converged on Rust, `contains_await` honours resolution). The
-close-set is written: arc `closing-report.md` (slice walk 11/11; A-row
-walk; **§5 = the operator host runbook** — ancestry sweep over
-`dc37ae9`/`7d86703`/`dab4405`/`4c12301`/`c19a1fb`/`a0b24b9`, rebuild,
-`make check`, the 1947/53 matrix reproduction, D2 spot-demos); DD-60
-canonical (0062) has the label-residual note; DD-61 carries the full
-as-built record (+ the dispatch-vs-heuristics caution); project-plan
-v1.24 has the bubble-up (P-18 flips on GO). **On gate GO:** flip arc13
-Closed everywhere, reconcile attested→reconciled, then **scope arc05
-slice03** (the resume: shadowing rule via the resolution machinery; the
-ID-42 re-answer = arc13 A-6's close; lint resolution-awareness per
-arc05 v1.5; guide-09 labels; lint-suppression; P-11 demo). The Rust side of arc13 is DONE:
-slices 06–09 all closed (rust-resolution `dc37ae9`; recon;
-accessor-sweep `7d86703`+`dab4405`; privacy-flip `4c12301` —
-single-file, E0451 proof both crates). slice10 (open set written
-2026-07-07) is the JS mirror of slice06: env **in** the `expandExpr`
-walk (§A3 — the JS expander lowers during expansion), the `scope_plan`
-region model, the label exception (DD-60 ‡ — do not "fix" the label
-column), `formHead()` null for defs *and* refs, the JS static check.
-Acceptance: JS matrix columns → DD-60 targets; **Rust columns + corpus
-byte-identical**. After it: conformance-corpus + arc close (pinned
-there: `contains_await` behavior row, DD-61 as-built record, host
-ancestry reconciles for the four SHAs). Prior state: State: slice06 (rust-resolution)
-CLOSED @ `dc37ae9` — DD-60 D1 holds on Rust; slice07 (recon) CLOSED,
-empty diff — lead finding: **`lykn-cli` shares the one `SExpr`** (no
-separate type; CLAUDE.md's architecture note is stale → routed to
-arc07), and slice06's constructor already retired the construction
-class. The privacy work = ~85 field-naming pattern sites, split per
-operator (2026-07-07) into **slice08 · accessor-sweep** (convert while
-fields public; green; both crates) → **slice09 · privacy-flip** (atomic
-`Atom(AtomData)`; seeded compile-fail proof; `as_atom()` stays public —
-the slice06 A6 check stays load-bearing). After the pair:
-**js-resolution** (MUST mirror slice06's `scope_plan` region model —
-bindings are NOT in scope over their own initializer/iterable/scrutinee;
-hook notes in slice06's closing report; keep the label exception) →
-conformance corpus + arc close → arc05 resumes.
+**Immediate next action (2026-07-09, post-gate): SCOPE ARC05 SLICE03 —
+the resume.** ★ **ARC13 IS CLOSED**: the operator ran the full gate
+same day (ancestry ×6 ok; `make check` 100%; matrix **1947/53 exact** —
+CDC recounted the divergent set from the transcript, precisely the two
+documented classes; D2/D1 demos verbatim; gate record in the arc
+closing-report §5). P-18 reconciled (project-plan v1.25); A-4/A-5
+reconciled; **A-6 is arc13's one open row, by design — arc05 slice03's
+scoping note closes it.** All plan docs flipped.
 
-**Where arc13 stands** (read its `arc-plan.md` [v1.6] + both design docs
-first): the **binding layer is complete by construction**. Slices 03/04/05
-built the per-backend binding-position walkers
-(`crates/lykn-lang/src/binding.rs` + `packages/lang/binding.js`; shared
-parity fixtures; `shadows_values()` distinguishes the label namespace),
-killed the ID-44 genus everywhere a name binds (D2: reserved words →
-compile errors — incl. `export`, the `kernel:` name slot, and the
-name-slot class the slice05 sweep found), and pinned it with a **standing
-coverage-diff test in `make check`** (grammar-derived position list vs
-walker: a future binding construct fails CI until the walker knows it).
-Matrix: 11 position columns; suites **1401/0**. Three DD-60 refinements
-arrived by CC surfacing findings rather than folding them — keep that
-discipline.
+**Then: arc05 slice03 — the resume this whole detour was for** (read
+`arc05-lykn-source-linter/arc-plan.md` [v1.5 tooling notes] + arc13's
+closing-report §6 bubble-up first). What it consumes from arc13:
 
-**The rust-resolution slice implements DD-60 D1 on Rust per DD-61**
-(`arc13/design/dd-61-resolve-once-resolution-architecture.md`,
-operator-confirmed): thread the lexical env via the walkers'
-`bindings_introduced` hooks (expander gets a light binding-scan; classifier
-hosts the env and **tags atoms** — resolved-atom flags, §A1); demote
-emitter + codegen to **read-only consumers via the `as_form_head()`
-accessor swap** (§A6 — returns `None` for binding-refs so an unaware site
-*cannot* misdispatch; field private, `#[must_use]`, `#[non_exhaustive]`).
-**Pin the §A6 rows in the ledger** at scoping (zero dispatch sites read
-raw head names; JS matrix baseline byte-identical — movement = leak =
-stop). Acceptance = the matrix: Rust columns → DD-60 targets. Hook-point
-notes: CC's slice03 + slice05 closing reports. After it: js-resolution
-(`formHead()` + the static grep-conformance check, §A6), then
-conformance-corpus + arc close, then **arc05 resumes** (its slice03:
-shadowing via the resolution machinery, linter resolution-awareness
-[arc05 v1.5], the ID-42 re-answer [arc13 A-6], guide-09 enforcement
-labels, lint-suppression + `make lint` decisions, P-11 demo).
+- **The resolution machinery is simply there now.** The linter's rules
+  head-match the pre-expansion reader SExpr; a bound-name head would
+  false-positive — **`lykn lint` must consume resolution** (DD-61's
+  tooling accounting: thread the same walker/env or consume tags).
+- **The ID-42 re-answer = arc13 A-6's close** (the one arc13 ledger row
+  left open *by design* — its Verify is the arc05 slice03 scoping
+  note). The original question — "warn on reserved/macro param names?"
+  — is re-answered from the fixed state: bindings genuinely shadow
+  (D1), reserved words are compile errors (D2), so the rule likely
+  shrinks to a small style-warning or nothing. Write the re-answer with
+  rationale; that closes A-6.
+- The rest of the slice03 backlog: shadowing-rule via the resolution
+  machinery (reuses `analysis/scope.rs` per the arc05 plan), guide-09
+  enforcement labels (the "ELIMINATED" reclassification), the
+  lint-suppression mechanism (motivated by slice02's dogfood),
+  `make lint` wiring decisions, and the P-11 demo.
 
-**Standing:** `make check` is the canonical bar (~1m); **`./bin/lykn`**,
-never bare `lykn` (the PATH-binary trap); doc-touching slices add
-`make test-docs`; odm = Duncan (DD-59/60/61 tracked; DD-58 @ v1.2;
-DD-60's refinement log has 3 entries). Sequence: **arc13 → arc05(resume)
-→ arc06 → arc07 → arc09.** Post-0.6.0 candidates: project-plan §1.
+**Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never
+bare `lykn`; **`./bin/lykn build` before any deno/matrix probe** (trap
+#4 — the `lang/` import map resolves to `target/lykn/build/lang/`);
+doc-touching slices add `make test-docs`; odm = Duncan (**DD-61
+promotion pending** — mirror its refinement log in full when promoting,
+the DD-60 lesson; DD-60 canonical = `docs/design/05-active/0062-…`,
+current through 07-09). Sequence: **arc05(resume) → arc06 → arc07 →
+arc09.** Post-0.6.0 candidates: project-plan §1 (+ the `Atom(_)`
+cosmetic normalization from slice09).
 
 ## 6. How we work — the rhythm & the disciplines
 
@@ -194,6 +164,11 @@ DD-60's refinement log has 3 entries). Sequence: **arc13 → arc05(resume)
   `cdc-verification.md`. Then **bubble up** (did the slice deliver its arc piece;
   what it revealed; the silent-drop diff) and **update the plan docs**
   (arc-plan, project-plan Version History, README, `status.html`, memory).
+  **`status.html` means the whole DATA object** — not just the
+  `updated`/`arcs`/`now` state fields but the *narrative* sections
+  (metrics, accomplishments, issues log): they drift silently if only
+  the state fields get touched (caught 2026-07-09 — doctest count and
+  an "open" tag on a fixed issue were both stale).
 - **Commit hygiene:** CC commits *source only*; the `docs/design-v0.6.0/**`
   planning edits are CDC's and land as a separate commit (tell CC to leave them).
 - **Standing verification bar:** any slice touching guides/docs must run
@@ -291,38 +266,79 @@ learning / what changed.* (Also rendered in `status.html`.)
     → **Learning:** disclose-and-route every incidental finding into the plan
     (version histories / bubble-ups); never silently drop.
 
+11. **The expanders disagreed on what a name meant — and it took an arc.**
+    arc05's ID-42 recon self-stop exposed a P-9-class semantic divergence
+    (35% of an 885-cell probe matrix); the fix was arc13: DD-60 semantics,
+    the DD-61 Resolve-Once architecture (resolved-atom tags, one walker
+    per backend, dispatch sites demoted to consumers), and a standing
+    corpus. 3 slices planned → 11 delivered; 5 DD refinements, every one
+    child-surfaced; end state 53/1947 documented-as-intended.
+    → **Learning:** when N sites must agree on a judgment, don't write N
+    careful implementations — make the judgment once and represent it so
+    the question can't be re-asked. And: a would-be lint rule that
+    self-stops on a recon gate can be the discovery of the real disease.
+
+12. **The fresh-context recycle is now a named move.**
+    Twice in arc13 (slices 06, 10) a long session hit its ceiling
+    mid-slice, self-stopped cleanly (tree green/reverted, nothing
+    half-landed), and wrote a handoff addendum into the slice's cc-prompt;
+    both fresh sessions delivered same-day, re-deriving nothing.
+    → **Learning:** a recycle is not an iteration (nothing was delivered;
+    the ledger stands). The honest self-stop is the enabling move; the
+    addendum is what makes it cheap. Standard for tail-of-session slices.
+
+13. **Staleness trap, fourth costume: import-map artifacts.**
+    The `lang/` import map resolves to `target/lykn/build/lang/` — deno
+    and matrix runs exercise the last *build*, not the source edit.
+    → **Learning:** `./bin/lykn build` before any deno/matrix probe. The
+    costume changes (bin/, build-dir, PATH, import-map); the rule
+    doesn't: rebuild-first, every channel.
+
+14. **The A6 layers bound dispatch, not emit-time heuristics.**
+    `contains_await` read raw names to decide async-ness — a
+    destructure-shaped read the static check was blind to (slice08 found
+    it); the probe (slice11) then caught the real bug: a bound `await`
+    inside an async-gated wrapper reinterpreted as the operator on Rust.
+    → **Learning:** the `A6-exempt` bar is **"renders, never behaves"** —
+    any structural read that changes emitted behavior based on a name
+    must honour resolution. And: decide dispositions **with the probe in
+    hand**, never in the abstract — the probe caught what both the matrix
+    and the corpus's coverage bar structurally couldn't.
+
 ## 8. Open follow-ups (surfaced, not yet fully scoped)
 
-- **arc10 slice01** — DONE (Rust-CLI strict-default, `faee8a1`).
-- **arc10 slice02 · js-dd58-parity** — DONE (`feb056c`; strict + `kernel:` in
-  the JS compiler; guide fences 09/06 flipped; A-3 met).
-- **arc10 slice03** — DONE (`2f6a84d`; `_kernel` → `kernel-mark.js` WeakSet
-  registry; A-6 enforced [Rust semantics, DD-58 refinement recorded]; A-7
-  parity guard in `make check`; A-8 corpus rows). **arc10 gate pending**
-  (host composition runbook in the arc closing-report §5). Cosmetic
-  drive-bys open: `kernel-mark.js:10` stale comment; `macroEnv.has('bind')`
-  stale guard.
-- **arc07 (docs/examples)** — new item routed from slice02: the kernel browser
-  examples use top-level `(= el:inner-HTML …)` (equality → runtime no-op,
-  pre-existing latent bug).
-- **arc09 (release notes)** — breaking items from slice02: bare kernel forms
-  via JS API/browser now throw; `(kernel:…)` changed meaning in JS (bogus
-  member call → real escape).
-- **arc05 corpus** — after arc10 lands: the linter owns idiom/style (incl. the
-  re-homed `==`/`&&`/`require`/IIFE anti-patterns); the compiler owns the closed
-  declaration-form namespace. `09-anti-patterns.md` is the seed (needs the
-  "ELIMINATED" reclassification per the CC audit).
-- **Downstream migration** (mycelium) under DD-58 strict — deferred (repo-only for
-  now).
-- **arc07** — broader guide-drift audit + SKILL additions (slice01 done).
-- **`actions/checkout@v4→v5`** CI maintenance → arc09.
-- Duncan to reconcile **DD-58 odm `state.json` version** with the doc's v1.1 bump.
+- **arc13 gate** — ★ **GO, complete 2026-07-09** (record in the arc
+  closing-report §5). P-18 reconciled; only A-6 remains, closing at
+  arc05 slice03 scoping.
+- **arc05 slice03** (the resume — scope next): lint consumes resolution
+  (DD-61 tooling accounting); the ID-42 re-answer closes arc13 A-6;
+  shadowing rule; guide-09 "ELIMINATED" reclassification; lint
+  suppression; `make lint`; P-11 demo. Corpus division stands: compiler
+  owns the closed declaration-form namespace + name binding; linter owns
+  idiom/style (`==`/`&&`/`require`/IIEF-class anti-patterns).
+- **odm (Duncan):** DD-61 promotion pending (mirror its refinement log
+  IN FULL — the DD-60 drift lesson); DD-60 0062 frontmatter v1.1 vs
+  `state.json` reconcile if tracked; the old DD-58 v1.1 reconcile item
+  still open.
+- **arc07 (docs):** stale CLAUDE.md architecture note ("lykn-cli …
+  SExpr enum" — false since the re-export); kernel browser examples'
+  `(= el:inner-HTML …)` no-op; broader guide-drift audit + SKILL
+  additions (incl. the `(export (func …))` invalid-form fix noted in
+  memory).
+- **arc09 (release):** breaking-notes accumulator — DD-58 strict; JS
+  `kernel:` semantics change; **D1** (bound macro-named params now
+  resolve — blast radius 0 in-tree); **D2** (reserved-word names now
+  compile errors); `actions/checkout@v4→v5`.
+- **Post-0.6.0** (project-plan §1): + the `Atom(_)` cosmetic
+  normalization (slice09); the mycelium migration under DD-58 strict
+  (deferred, repo-only for now).
 
 ## 9. One-line cheat-sheet
 
-Read project-plan + README + status.html → **arc10 is CLOSING** (3/3 slices
-done; DD-58 enforced everywhere incl. the macro boundary; `_kernel` retired)
-→ the gate is the **operator host composition run** (closing-report §5
-runbook) → on sign-off flip arc10 Closed + reconcile rows + land the two
-one-line comment/guard drive-bys → then **scope arc05 (linter)** — the first
-post-arc10 arc, corpus division per project-plan v1.12.
+Read project-plan + README + status.html → **★ arc13 is CLOSED** (gate
+GO 2026-07-09; DD-60 D1/D2 hold on both backends; matrix 1947/53 exact;
+corpus standing with teeth; P-18 reconciled) → **scope arc05 slice03**
+— the resume the whole arc13 detour was for: the linter on true lexical
+scoping (lint consumes resolution per DD-61's tooling accounting), and
+the **ID-42 re-answer that closes arc13's A-6** — then arc06 → arc07 →
+arc09, and 0.6.0 is in sight.

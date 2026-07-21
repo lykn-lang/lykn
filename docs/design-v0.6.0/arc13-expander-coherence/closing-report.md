@@ -1,9 +1,9 @@
 # Arc 13: expander-coherence — Closing Report
 
 **By:** CDC (Cowork) · **Date:** 2026-07-09 · **Branch:** `release/0.6.x`
-**Status: CLOSING — formal close = the operator host gate (§5).**
-All eleven slices CDC-closed; the composition rows (A-4/A-5) have their
-evidence assembled and await arc-scale reproduction on the host.
+**Status: CLOSED — gate GO 2026-07-09 (operator; full runbook, §5 gate
+record).** All eleven slices CDC-closed; A-4/A-5 reproduced at arc
+scale and reconciled; A-6 hands off to arc05 slice03 by design.
 
 ## 1. The capability, restated — and the verdict
 
@@ -108,7 +108,32 @@ Run on the host, from a clean tree at `a0b24b9` or later:
    reconcile A-4/A-5 (and the attested slice rows) `attested → 
    reconciled`; record the gate here with date + observed numbers.
 
-**Gate record:** _(pending — operator fills on run)_
+**Gate record: GO — 2026-07-09, operator (Duncan), full runbook
+executed.** Observed:
+
+1. **Ancestry sweep ✓** — all six SHAs
+   (`dc37ae9 7d86703 dab4405 4c12301 c19a1fb a0b24b9`) reported "ok"
+   against `release/0.6.x`.
+2. **Rebuild ✓** — `make build-release` + `./bin/lykn build` (all three
+   packages staged).
+3. **`make check` ✓** — 100% ("passes 100%", operator-run).
+4. **Matrix reproduction ✓ — EXACT:** `1947 cells · 53 divergent (3%)`;
+   tallies byte-identical to the slice11 snapshot (rust 902/22/957/66 ·
+   js 874/12/1010/51). CDC independently recounted the divergent set
+   from the operator's transcript: **38 form-named-label** (14 surface
+   names × {call-head, nested-fn} as `✓bind/✗throw` + lambda/express/
+   get/assign/async as `✗macro/✗throw`) **+ 15 `kernel:if`** = 53, no
+   other cell diverges — the two documented classes precisely.
+5. **D2/D1 spot-demos ✓ verbatim** — `(bind if 0)`, `(func f :args
+   (:any if) …)`, `(label if …)` all clean diagnostics with rename
+   suggestions; `(bind array 1)(array 2)` → `const array = 1;
+   array(2);` (the plain call).
+
+**A-4 and A-5 are hereby reproduced at arc scale and reconciled** (the
+matrix run + `make check` green across the workspace = the reconciled
+strength); the attested slice rows (A-1, A-3, A-7…A-11, A-13, A-14)
+reconcile via the ancestry sweep + workspace-green. **A-6 remains open
+by design** — it closes at arc05 slice03 scoping. **ARC13 IS CLOSED.**
 
 ## 6. Bubble-up to the project
 

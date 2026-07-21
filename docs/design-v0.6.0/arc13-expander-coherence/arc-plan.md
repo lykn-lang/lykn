@@ -1,9 +1,10 @@
 # arc13 — Expander Coherence (bindings shadow macros, everywhere)
 
-> **Status: CLOSING — all 11 slices CDC-closed 2026-07-09; formal close
-> = the operator host gate (closing-report §5 runbook: ancestry sweep ×6,
-> `make check`, the 1947/53 matrix reproduction, D2 spot-demos).**
-> Originally: Created from arc05/slice02's F-4
+> **Status: CLOSED — gate GO 2026-07-09** (operator ran the full §5
+> runbook: ancestry ×6 ok; `make check` 100%; matrix **1947/53 exact**
+> with the divergent set = precisely the two documented classes;
+> D2/D1 demos verbatim — gate record in `closing-report.md` §5).
+> A-4/A-5 reconciled; A-6 hands off to arc05 slice03. Originally: Created from arc05/slice02's F-4
 > recon (the ID-42 self-stop): the Rust and JS expanders **resolve
 > param-vs-macro shadowing differently**, and each is also internally
 > inconsistent. Operator call (2026-07-06): *"pause arc05 and fix the
@@ -75,8 +76,8 @@ slice03 → arc06 → arc07 → arc09.**
 | A-1 | slice01 (matrix + DD-60) closed | ptr: cdc-verification | serious | arc-plan | done | slice01/cdc-verification.md (attested) | |
 | A-2 | slice02 (rust-shadowing) — self-stopped; superseded by the v1.2 re-slice, all 5 rows deferred with homes | ptr: slice02 closing docs | serious | arc-plan | no-op | slice02/closing-report.md + cdc-verification.md | was: "slice02 (Rust) closed" — the Rust work moved to slice06 |
 | A-3 | slice03 (binding-walker + D2) closed | ptr: cdc-verification | serious | arc-plan | done | slice03/cdc-verification.md (attested) | was: "slice03 (JS + corpus)" — the v1.2 re-slice renamed the slice map; JS resolution + corpus have their own rows below |
-| A-4 | **the matrix converges** — every live cell behaves per DD-60 on both backends; zero cells where the backends disagree | run the conformance corpus; matrix re-probe transcript | serious | arc05 F-4 recon | open | | reproduce at arc scale on host |
-| A-5 | **no invalid output at rc=0 for any name class** — reserved-word (and any matrix-surfaced) name misuse is a compile error with a diagnostic, both backends | the validator demos; `deno check` on emitted corpus output | serious | Principle 3 / ID-44 genus | open | | |
+| A-4 | **the matrix converges** — every live cell behaves per DD-60 on both backends; zero cells where the backends disagree | run the conformance corpus; matrix re-probe transcript | serious | arc05 F-4 recon | done | **reconciled** — gate GO 2026-07-09: operator matrix run 1947/53 exact (53 = the two documented-as-intended classes, CDC-recounted from the transcript); corpus green in `make check` | criterion met as-refined: convergence everywhere D1/D2 apply; the 53 residuals are documented intended divergence (DD-60 ‡ + edge 4), pinned by corpus rows |
+| A-5 | **no invalid output at rc=0 for any name class** — reserved-word (and any matrix-surfaced) name misuse is a compile error with a diagnostic, both backends | the validator demos; `deno check` on emitted corpus output | serious | Principle 3 / ID-44 genus | done | **reconciled** — gate GO 2026-07-09: D2 spot-demos verbatim (clean diagnostics + rename suggestions); matrix: only `invalid-output` cells are the `kernel:`-prefixed unbindables, never a real name | |
 | A-6 | arc05's ID-42 question re-answered from the fixed state | arc05 slice03 scoping note: reserved-param-name rule shrunk/dropped with rationale | correctness | operator decision 2026-07-06 | open | | the point of pausing: do the right thing instead of warning broadly |
 | A-7 | slice04 (walker-extension) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice04/cdc-verification.md (attested) | |
 | A-8 | slice05 (position-sweep) closed | ptr: cdc-verification | serious | accrued at slice close (v1.7 catch-up) | done | slice05/cdc-verification.md (attested) | binding layer complete by construction; coverage test standing |
@@ -89,6 +90,16 @@ slice03 → arc06 → arc07 → arc09.**
 | A-15 | slice08/10 routed findings dispositioned (`contains_await`; D2-timing residual; 56-cell classes) | slice11 ledger rows F-3..F-6 closed | correctness | bubble-ups: slices 08, 10 | done | slice11 F-3..F-6 (two fixed, three documented, all probe-grounded) | class-(c) rows, accrued at slice11 scoping |
 
 ## 5. Version History
+
+### v1.18 — 2026-07-09 (GATE GO — ARC13 CLOSED)
+Operator ran the full §5 runbook same day: ancestry ×6 ok; rebuild;
+`make check` 100%; **matrix 1947/53 exact** (tallies byte-identical to
+slice11's snapshot; CDC recounted the divergent set from the transcript
+— 38 form-named-label + 15 `kernel:if`, nothing else); D2/D1 demos
+verbatim. A-4/A-5 → done/**reconciled**; attested slice rows reconciled
+via ancestry + workspace-green; **A-6 stays open by design** (closes at
+arc05 slice03 scoping — its Verify is that scoping note). P-18 flipped
+in project-plan (v1.25); arc05 UNPAUSED. Which-child-surfaced: the gate.
 
 ### v1.17 — 2026-07-09 (slice11 closed — ALL SLICES DONE; arc → CLOSING; closing-report written)
 slice11 closed (`a0b24b9`; 7/7; the corpus stands in `make check` ~1 s
