@@ -78,6 +78,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)] // 3.14 is a sample float, not π
     fn serialize_number_non_integer_float() {
         let expr = SExpr::Number {
             value: 3.14,

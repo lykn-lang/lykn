@@ -635,7 +635,7 @@ mod tests {
             "cdr": { "type": "number", "value": 1 },
         });
         let expr = protocol_json_to_sexpr(&json).unwrap();
-        if let SExpr::Cons { car, cdr: _, .. } = &expr {
+        if let SExpr::Cons { car, .. } = &expr {
             assert_eq!(car.as_atom(), Some("a"));
         } else {
             panic!("expected cons");
@@ -657,6 +657,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)] // 3.14 is a sample float, not π
     fn test_raw_number_to_sexpr() {
         let json = serde_json::json!(3.14);
         let expr = protocol_json_to_sexpr(&json).unwrap();
@@ -736,6 +737,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)] // -3.14 is a sample float, not π
     fn test_round_trip_number() {
         assert_round_trip(SExpr::Number {
             value: -3.14,

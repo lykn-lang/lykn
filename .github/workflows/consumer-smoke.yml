@@ -18,7 +18,7 @@ jobs:
         with:
           repository: lykn-lang/lykn-consumer-tests
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.97.0
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x

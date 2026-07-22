@@ -132,6 +132,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)] // 3.14 is a sample float, not π
     fn format_float_number() {
         assert_eq!(format_exprs(&[num(3.14)], 0), "3.14\n");
     }

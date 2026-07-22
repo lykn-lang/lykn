@@ -6350,21 +6350,20 @@ mod tests {
                 if let SExpr::List {
                     values: if_vals, ..
                 } = v
+                    && if_vals.first().and_then(|f| f.as_atom()) == Some("if")
                 {
-                    if if_vals.first().and_then(|f| f.as_atom()) == Some("if") {
-                        // The condition should be (=== args:length N) directly
-                        if let SExpr::List {
-                            values: cond_vals, ..
-                        } = &if_vals[1]
-                        {
-                            assert_eq!(
-                                cond_vals[0].as_atom(),
-                                Some("==="),
-                                "single condition should be ==="
-                            );
-                        }
-                        break;
+                    // The condition should be (=== args:length N) directly
+                    if let SExpr::List {
+                        values: cond_vals, ..
+                    } = &if_vals[1]
+                    {
+                        assert_eq!(
+                            cond_vals[0].as_atom(),
+                            Some("==="),
+                            "single condition should be ==="
+                        );
                     }
+                    break;
                 }
             }
         }
@@ -6473,23 +6472,19 @@ mod tests {
         let result = emit_form(&form, &mut c, &reg());
         assert_eq!(result.len(), 1);
         // IIFE with destructuring pattern that has 2 alias entries + rest
-        if let SExpr::List { values, .. } = &result[0] {
-            if let SExpr::List { values: arrow, .. } = &values[0] {
-                // arrow[2] should be the const with object pattern
-                if let SExpr::List {
-                    values: const_form, ..
-                } = &arrow[2]
-                {
-                    if let SExpr::List {
-                        values: pattern, ..
-                    } = &const_form[1]
-                    {
-                        assert_eq!(pattern[0].as_atom(), Some("object"));
-                        // 2 alias + 1 rest = 3 entries + "object" head = 4
-                        assert_eq!(pattern.len(), 4);
-                    }
-                }
-            }
+        if let SExpr::List { values, .. } = &result[0]
+            && let SExpr::List { values: arrow, .. } = &values[0]
+            // arrow[2] should be the const with object pattern
+            && let SExpr::List {
+                values: const_form, ..
+            } = &arrow[2]
+            && let SExpr::List {
+                values: pattern, ..
+            } = &const_form[1]
+        {
+            assert_eq!(pattern[0].as_atom(), Some("object"));
+            // 2 alias + 1 rest = 3 entries + "object" head = 4
+            assert_eq!(pattern.len(), 4);
         }
     }
 
@@ -7543,17 +7538,14 @@ mod tests {
             // Find the yield form — it should be wrapped
             let body_exprs = &values[3..]; // skip function*, name, params, type-check
             let has_instrumented_yield = body_exprs.iter().any(|expr| {
-                if let SExpr::List { values, .. } = expr {
-                    if values.first().and_then(|v| v.as_atom()) == Some("yield") {
-                        // The second element should be an IIFE (a list containing
-                        // an arrow function), not just a plain atom
-                        if let Some(SExpr::List { values: iife, .. }) = values.get(1) {
-                            // IIFE is ((=> () ...))
-                            if let Some(SExpr::List { values: arrow, .. }) = iife.first() {
-                                return arrow.first().and_then(|v| v.as_atom()) == Some("=>");
-                            }
-                        }
-                    }
+                // The second element should be an IIFE (a list containing an
+                // arrow function `((=> () ...))`), not just a plain atom.
+                if let SExpr::List { values, .. } = expr
+                    && values.first().and_then(|v| v.as_atom()) == Some("yield")
+                    && let Some(SExpr::List { values: iife, .. }) = values.get(1)
+                    && let Some(SExpr::List { values: arrow, .. }) = iife.first()
+                {
+                    return arrow.first().and_then(|v| v.as_atom()) == Some("=>");
                 }
                 false
             });

@@ -535,7 +535,7 @@ mod tests {
         assert_eq!(params.len(), 2);
         assert_eq!(params[0].name, "first");
         assert_eq!(params[1].name, "tail");
-        assert!(params[1].is_rest == false);
+        assert!(!params[1].is_rest);
     }
 
     // -- bound_names --

@@ -354,7 +354,7 @@ mod tests {
     fn test_compile_local_macros_no_macros() {
         // When there are no macro forms, all forms pass through unchanged.
         // We don't need deno for this case since the early return fires.
-        let forms = vec![
+        let forms = [
             SExpr::List {
                 values: vec![
                     SExpr::atom("define".to_string(), s()),

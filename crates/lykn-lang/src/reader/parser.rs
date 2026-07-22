@@ -587,7 +587,7 @@ mod tests {
                 values[0].as_atom(),
                 Some("kernel:if"),
                 "head should be single atom 'kernel:if', got: {:?}",
-                &values[0]
+                values[0]
             );
         } else {
             panic!("expected list");

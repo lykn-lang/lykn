@@ -1,0 +1,10 @@
+# Pin the Rust toolchain so local dev and CI agree (added 2026-07-22).
+#
+# Origin: CI's stable channel floated 1.93 → 1.97 and clippy::question_mark
+# (fatal under `-D warnings`) started failing `make lint` in CI while local
+# `make check` — on an older stable — stayed green. Pinning removes that drift:
+# rustup honours this file locally, and the CI workflows install the same
+# version explicitly (dtolnay/rust-toolchain@1.97.0). Bump both together.
+[toolchain]
+channel = "1.97.0"
+components = ["clippy", "rustfmt"]

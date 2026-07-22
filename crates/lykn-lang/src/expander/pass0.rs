@@ -648,7 +648,7 @@ mod tests {
     #[test]
     fn test_process_import_macros_no_imports() {
         // When there are no import-macros forms, all forms pass through.
-        let forms = vec![
+        let forms = [
             SExpr::List {
                 values: vec![
                     SExpr::atom("define".to_string(), s()),
@@ -766,7 +766,7 @@ mod tests {
             ],
             span: s(),
         };
-        let forms = vec![import, define.clone()];
+        let forms = [import, define.clone()];
         let remaining: Vec<_> = forms
             .iter()
             .filter(|f| !is_import_macros(f))

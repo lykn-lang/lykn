@@ -672,6 +672,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)] // 3.14 is a sample float, not π
     fn test_expand_all_all_leaf_types_with_deno() {
         if !deno_available() {
             eprintln!("skipping: deno not found");

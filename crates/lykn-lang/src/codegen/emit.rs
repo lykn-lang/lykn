@@ -1784,6 +1784,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)] // 3.14 is a sample float, not π
     fn test_emit_number_float() {
         assert_eq!(emit_to_string(&num(3.14)), "3.14");
     }
