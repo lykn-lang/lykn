@@ -112,7 +112,7 @@ inserts.
   guide doctests **475/0**; `surface.js` 448 (was 2,315);
   `size_of::<SExpr>()` 48→48 across the whole resolution+privacy layer.
 
-**Immediate next action (2026-07-21): SCOPE ARC06 — arc05 is CLOSED.** **★ arc05 CLOSED** — gate GO 2026-07-21 (operator: `make check` green; the P-11 demo reproduced — `seeded_test.lykn` → 16 findings / all 16 rules / exit 1, `clean.lykn` → 0 / exit 0). The 0.6.0 linter ships: `lykn lint` over Lykn source, 16 rules, resolution-aware, in `make check`, guides aligned; **P-5/P-11 reconciled.** arc05 spawned **arc13** (expander-coherence, closed) and **arc14** (comment-retention, seeded — the suppression home, DD-62) by the self-stop-into-its-own-arc discipline. **Next: scope arc06 (cross-project-dep-ergonomics)** → arc07 → arc09, and 0.6.0 is in sight. (arc14 · comment-retention is a **0.7.0** capability — operator-decided 2026-07-21; it holds the deferred lint-suppression mechanism, DD-62.)
+**Immediate next action (2026-07-21): HAND ARC06 SLICE02 TO CC — arc06 is ACTIVE.** **★ arc05 CLOSED** — gate GO 2026-07-21 (operator: `make check` green; the P-11 demo reproduced — `seeded_test.lykn` → 16 findings / all 16 rules / exit 1, `clean.lykn` → 0 / exit 0). The 0.6.0 linter ships: `lykn lint` over Lykn source, 16 rules, resolution-aware, in `make check`, guides aligned; **P-5/P-11 reconciled.** arc05 spawned **arc13** (expander-coherence, closed) and **arc14** (comment-retention, seeded — the suppression home, DD-62) by the self-stop-into-its-own-arc discipline. **Next: hand arc06 slice02 (mycelium re-audit) to CC — it runs on the HOST** (mycelium isn't a Cowork folder). It's **recon-only**: re-audit the 14-issue April-2026 mycelium report against current `release/0.6.x`, disposition each fixed/partial/open, route the rest, and read out `lykn add`'s requirements. Then **DD-63 + `lykn add` (slice03)** + the **external-project path (slice04)** → arc07 → arc09. arc06 unblocks arc07 (the guide pass can't document the dependency/publish/external-test workflows until they work — the whole point). (arc14 · comment-retention is a **0.7.0** capability — operator-decided 2026-07-21; it holds the deferred lint-suppression mechanism, DD-62.)
 
 **The 1→2 split (arc05 arc-plan v1.6; project-plan v1.26).** Scoping-time
 grounding found the resolution-consumer work small (`resolver::resolve`
@@ -133,7 +133,7 @@ large. Split:
   ID-42 body fixed to the D1/D2 truth); guide-15 ID-04c rewritten (was a
   stale `deno lint` wrapper) + SKILL; the P-11 corpus. Suppression → arc14.
 
-**Now: scope arc06 (cross-project-dep-ergonomics).** For reference read
+**Now: hand arc06 slice02's cc-prompt to CC (host-run — mycelium).** For reference read
 `arc05-lykn-source-linter/arc-plan.md` (v1.7) + slice03's
 `closing-report.md` / `cdc-verification.md` bubble-up first — it routes
 three things into slice04: the now-orphaned `LintContext` ancestry API

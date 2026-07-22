@@ -90,7 +90,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0); `lykn lint` (16 rules, resolution-aware) ships. Inline suppression deferred → arc14/DD-62 |
 | **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
-| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
+| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Active** — slice-planned 2026-07-21 (recon-first): slice02 mycelium re-audit (host-run) → DD-63 + slice03 `lykn add` → slice04 external-project path → close. slice01 (exports-gap) closed |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
@@ -210,6 +210,20 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.32 — 2026-07-21 (arc06 ACTIVE — slice-planned recon-first)
+arc06 (the 0.6.0 dive's original motivation) resumed after arc05 closed.
+Grounding: `lykn add` does **not** exist (net-new; the DD-51 replacement); the
+`lykn new` scaffold is monorepo-shaped (breaks external projects); mycelium is
+host-only (not a Cowork folder → the audit is CC-run). The April-2026 mycelium
+report (14 issues) is largely stale post-0.6.0, so the arc opens **recon-first**:
+**slice02 · mycelium re-audit** (recon-only, host-run) re-establishes ground
+truth before slices 03/04 are detailed — the arc10 "verify the contract" lesson
+at arc scale. Then **DD-63 + slice03 (`lykn add`)** and **slice04 (external
+scaffold + resolution hardening)**, arc close = a mycelium end-to-end demo. arc06
+**unblocks arc07** (the guide pass can't document the dependency/publish/
+external-test workflows until they work). arc-plan v1.2; arc ledger opened
+(A-1…A-7). Sequence: **arc06 → arc07 → arc09.** Which-child: arc06 activation.
 
 ### v1.31 — 2026-07-21 (arc14 · comment-retention scheduled 0.7.0)
 Operator decided the arc14 release boundary: **comment-retention → 0.7.0**
