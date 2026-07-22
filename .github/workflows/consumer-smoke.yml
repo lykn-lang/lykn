@@ -2,8 +2,12 @@ name: "Layer 4: Consumer smoke tests"
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 6 * * 1"  # weekly, Monday 6am UTC
+  # Scheduled runs disabled 2026-07-22: the `lykn-lang/lykn-consumer-tests`
+  # repo and `ci/run-smoke.sh` this job checks out do not exist yet, so every
+  # scheduled run fails at checkout (404). Re-enable once that consumer-tests
+  # repo is created. Manual runs stay available via workflow_dispatch.
+  # schedule:
+  #   - cron: "0 6 * * 1"  # weekly, Monday 6am UTC
 
 jobs:
   smoke:
