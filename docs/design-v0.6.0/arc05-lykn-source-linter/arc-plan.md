@@ -1,10 +1,10 @@
 # arc05 — Lykn-Source Linter (`lykn lint`)
 
-> **Status: RESUMED — slice03 CLOSED 2026-07-21 (`ea429e2`, CDC-verified);
-> slice04 next (see v1.7).** 15 rules live at 2/3. slice03 is now the
-> **resolution-consumer + context-rules** half (resolution-awareness,
-> shadowing, the ID-42 re-answer, dogfood); the productionization + docs +
-> arc-close half is **slice04**. Design:
+> **Status: CLOSED — gate GO 2026-07-21 (operator; `make check` green, P-11 demo
+> 16/16 seeded → exit 1, clean → exit 0). All 4 slices CDC-closed; A-1…A-7 compose.**
+> `lykn lint` ships: 16 rules, resolution-aware, in `make check` green; guide-09
+> reclassified (accurate labels); the P-11 corpus proves the set. slice04
+> delivered `2feb5fd`; inline suppression deferred → arc14 (DD-62). Design:
 > [`design/dd-59-…-DRAFT.md`](./design/dd-59-lykn-source-linter-DRAFT.md);
 > kickoff: `design/kickoff-thread.md`.
 >
@@ -53,7 +53,7 @@ already handles it); LSP server work (Phase 3+).
 | **slice01 · lint-infra** | The machinery, end-to-end: rule trait + hardcoded match-dispatch registry over a spanned SExpr walk (pre-expansion); diagnostics reusing the `Diagnostic` machinery (error/warn); CLI wiring **replacing the stub** (`lykn lint <paths>`, exit 0/1/2, `--format=json`); per-rule fixture harness + `insta` snapshots; **3 pilot rules** proving the shapes (no-require [error], sort-without-comparator [warn], parseint-radix [warn]); **the rule-inventory compiler-verification pass** — compile every DD-59 candidate's bad-example against the current compiler; anything that already errors is reclassified out. The resulting table is slice02's authoritative corpus. | **Closed** (`1989138`; F-1 caught: ID-39 already compiler-owned, ID-42 stale guide claim, ID-44 **compiler bug** [rc=0, unparseable JS]; smoke dogfood 117 files clean; `make check` ✓) |
 | **slice02 · shape-rule-corpus** | The **12 remaining verified lint rules** (F-1 table minus pilots, shadowing→slice03, and ID-42/ID-44→compiler) + **2 recon-gated compiler fixes** (operator, 2026-07-06): ID-44 for-of binding validation → compile error (Principle 3; both compilers checked) and ID-42 reserved-param-names → compile-time disallow (recon: reserved set + blast radius on both compilers; lint-warn fallback if large); or-for-defaults' false-positive rate measured on the repo corpus before its severity is finalized; **real dogfood pass**: the full corpus over the repo's `.lykn` sources, findings fixed or acknowledged. | **Open — scoped** (open set written 2026-07-06) |
 | **slice03 · resolution-consumer + context rules** (resumes post-arc13) | **Linter resolution-awareness** (arc13/§A6 consequence: resolve the pre-expansion forms + route the shared head accessor through `as_form_head()` so bound-name calls — a param named `parseInt` — don't false-positive; the linter becomes a resolution *consumer* like every dispatch site); the **shadowing rule** (ID-12, via arc13's resolution machinery, superseding the `analysis/scope.rs` sketch — reuse the resolver's scope model, no parallel decider); the **ID-42 re-answer** from the fixed state closing **arc13 A-6** (disposition: no rule — reserved words are D2 compile errors, form-named params legally shadow via D1); the **dogfood** re-run (A-5). | **Closed** 2026-07-21 (`ea429e2`; CDC-verified) |
-| **slice04 · integration + guide alignment** (arc05's last slice) | `make lint` / `make check` **wiring** of `lykn lint` (the 2 kernel-interop dogfood findings **path-scoped** green, not suppressed); **guide-09 reclassification** (every entry labeled compiler-enforced / linted-as-`<rule>` / documented-only — closes A-6); guide-15 CLI docs + SKILL note; the **P-11 demo** (A-4). **Suppression deferred → arc14 · comment-retention** (DD-62 — reader comment-retention doesn't exist yet). arc05 close = CDC close-set after slice04. | **Open — scoped** (open set written 2026-07-21) |
+| **slice04 · integration + guide alignment** (arc05's last slice) | `make lint` / `make check` **wiring** of `lykn lint` (the 2 kernel-interop dogfood findings **path-scoped** green, not suppressed); **guide-09 reclassification** (every entry labeled compiler-enforced / linted-as-`<rule>` / documented-only — closes A-6); guide-15 CLI docs + SKILL note; the **P-11 demo** (A-4). **Suppression deferred → arc14 · comment-retention** (DD-62 — reader comment-retention doesn't exist yet). arc05 close = CDC close-set after slice04. | **Closed** 2026-07-21 (`2feb5fd`; CDC-verified) |
 
 ## 3. Dependencies
 
@@ -73,12 +73,27 @@ arc06/arc07; must land before arc09.
 | A-1 | slice01 (lint-infra) closed | ptr: slice01 cdc-verification | serious | arc-plan | done | slice01 cdc-verification (attested) | |
 | A-2 | slice02 (shape-rule-corpus) closed | ptr: slice02 cdc-verification | serious | arc-plan | done | slice02 cdc-verification (attested) | |
 | A-3 | slice03 (resolution-consumer + context rules) closed | ptr: slice03 cdc-verification | correctness | arc-plan | done | `ea429e2`; cdc-verification.md (code-review + grep; runtime host-reconcile) | narrowed by the v1.6 split |
-| A-4 | **`lykn lint` flags every v1 rule's seeded anti-pattern in a fixture corpus and stays silent on clean idiomatic source** (the P-11 demo) | end-to-end run over the seeded + clean fixtures; every rule fires exactly where seeded; exit 1 dirty / 0 clean | serious | arc-plan / P-11 | open | | reproduce at arc scale on host; **delivered in slice04** |
+| A-4 | **`lykn lint` flags every v1 rule's seeded anti-pattern in a fixture corpus and stays silent on clean idiomatic source** (the P-11 demo) | end-to-end run over the seeded + clean fixtures; every rule fires exactly where seeded; exit 1 dirty / 0 clean | serious | arc-plan / P-11 | done | `2feb5fd` `p11_lint_corpus` (seeded→16 rules/exit1, clean→exit0) in `make check`; host §5 | reproduced at arc scale (attested; host reconcile) |
 | A-5 | **the linter is dogfooded** — `lykn lint` over the repo's own `.lykn` sources returns zero findings, or every finding is fixed/acknowledged with rationale | run it on `test/`, `examples/`, `packages/`; triage table | serious | arc-plan | done | `ea429e2` dogfood: 118 `.lykn` files, 2 benign fixtures triaged, 0 shadowing FPs (CC-attested; host-reconcile) | closed by slice03 |
-| A-6 | **guide-09 is aligned** — every entry carries its enforcement label (compiler-enforced / linted / documented-only); doctests green | grep the labels; `make check` | correctness | CC anti-patterns audit (2026-06-30) | open | | closes the reclassification debt that spawned arc10; **slice04** |
-| A-7 | slice04 (integration + guide alignment) closed | ptr: slice04 cdc-verification | correctness | arc-plan (v1.6 split) | open | | suppression deferred → arc14; arc05 close follows |
+| A-6 | **guide-09 is aligned** — every entry carries its enforcement label (compiler-enforced / linted / documented-only); doctests green | grep the labels; `make check` | correctness | CC anti-patterns audit (2026-06-30) | done | `2feb5fd`: 46 entries labelled (7 compiler-enforced/14 linted/25 documented-only); all 12 formerly-ELIMINATED reclassified; `make test-docs` 475/0 | closes the reclassification debt that spawned arc10 |
+| A-7 | slice04 (integration + guide alignment) closed | ptr: slice04 cdc-verification | correctness | arc-plan (v1.6 split) | done | slice04 cdc-verification; `2feb5fd` | suppression deferred → arc14 |
 
 ## 5. Version History
+
+### v1.9 — 2026-07-21 (slice04 CLOSED; arc05 CLOSING — composition verified)
+CC delivered slice04 at `2feb5fd` (source+docs); CDC-verified (F-1/F-2/F-3/F-5/
+F-6/F-7 reproduced-by-code+grep; F-4/F-8 attested). `lykn lint` is in `make
+check` green (path-scoped, one `find` exclusion — not suppression); guide-09
+reclassified accurately (all 12 formerly-ELIMINATED corrected, **ID-42's body
+fixed** too, not just relabelled); guide-15 ID-04c rewritten (was stale — the
+old `deno lint` wrapper) + SKILL; the P-11 seeded/clean corpus (`p11_lint_corpus`)
+proves 16 rules fire/silent. **Arc ledger A-4/A-6/A-7 → done; A-1…A-7 all
+done — the 4 slices compose.** `closing-report.md` written (slice walk 4/4,
+composition check, project bubble-up). **Formal close = operator host reconcile**
+(§5: `make check` + the 2 P-11 demo commands). Findings routed: guide-15
+stale-tool drift → arc07; the `_test.lykn` predicate coupling → hardening
+backlog; orphaned `LintContext` API → cleanup; suppression → arc14. Which-child:
+slice04 close.
 
 ### v1.8 — 2026-07-21 (slice04 SCOPED; suppression deferred to arc14)
 Scoping slice04 hit the reader-comment-retention question flagged at slice03

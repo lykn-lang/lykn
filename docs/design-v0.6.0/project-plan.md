@@ -72,6 +72,11 @@ list is the "watcher" that keeps routed items from re-burying)*:
   `*_test.js` can't be discovered); freshness-guard scoped to `src/` (newer
   `tests/*.rs` false-positives it); `--compile-only`+`--docs` honored by
   `run_doc_tests`. Source: arc12/slice01 bubble-up.
+- **Comment retention + lint suppression (arc14 · comment-retention, DD-62)** —
+  scheduled **0.7.0** (operator, 2026-07-21). Reader comment-retention (→
+  surface→kernel provenance → strip-or-preserve at JS emit) unblocks inline
+  `lykn lint` suppression; deferred out of 0.6.0 as additive capability, not
+  toolchain alignment. Source: arc05/slice04 (the suppression deferral).
 
 ## 2. The arc roadmap
 
@@ -83,7 +88,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc02 · type-dts-generation** | `.d.ts` declarations generated from `:type` annotations (DD-56) | — | **Closed** (M10) |
 | **arc03 · compiler-coherence** | Rust + JS compilers coherent by construction; kernel/surface split (DD-58) + JS surface compiler arch (DD-37) | arc01 (build) | **Closed** (M16–M22; architecture landed on release 2026-06-29) |
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
-| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **RESUMED** — slice03 **CLOSED** 2026-07-21 (`ea429e2`, CDC-verified); **slice04 SCOPED** (integration + guide-09/15 + SKILL + P-11 → arc close; **suppression deferred → arc14/DD-62**); arc13 A-6 closed |
+| **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0); `lykn lint` (16 rules, resolution-aware) ships. Inline suppression deferred → arc14/DD-62 |
 | **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Open** (slice01 exports-gap closed; main work not started) |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
@@ -92,7 +97,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **Closed** (gated 2026-07-05; DD-58 on every compile path incl. the macro boundary; `_kernel` retired) |
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
-| **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded** (2026-07-21; **release boundary 0.6.0-vs-0.7.0 = operator's call**, CDC leans 0.7.0; not slice-planned) |
+| **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded → 0.7.0** (2026-07-21; **release boundary decided 0.7.0**, operator; not slice-planned — post-0.6.0 capability) |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
@@ -186,13 +191,13 @@ inherited from arc attestations.
 | P-2 | arc02 closed + composed | ptr: arc02 closing-report | correctness | project-plan | done | M10 closing report + CDC | attested (reconstructed) |
 | P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | architecture merged to release (`6aa3724`); corpus 1345/0; classifier.js/surface-helpers.js present | restored after the 2026-06-29 reconciliation |
 | P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **done** | arc04 closed (5/5 slices); `closing-report.md` composition check; surface.js 2315→448; emitMatchMacro byte-identical; lint green | DD-37 step 4 (`_kernel`) surfaced as follow-up |
-| P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | open | | not started |
+| P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | **done** | 4 slices closed; arc05 closing-report composition A-1…A-7; **gate GO 2026-07-21** (`make check` + P-11 demo) | **reconciled** |
 | P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | open | slice01 (exports-gap) closed | main work (`lykn add`, mycelium audit) not started |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
 | P-8 | `lykn publish` fails on a dirty tree; `--allow-dirty` overrides, never auto-injected | end-to-end publish dry-run on dirty + clean tree | serious | DoD | open | | reproduce at project scale |
 | P-9 | same surface input → same output across Rust + JS for the migrated corpus (`compileBoth`) | run `compileBoth` corpus; divergences documented or zero | serious | DoD | **done** | corpus **green: 1293 passed / 0 failed** (slice11); 0 semantic divergences | form-codegen only (~11%) remains a documented coverage bound |
 | P-10 | `.d.ts` generated from `:type` annotations | end-to-end: compile a typed module, inspect emitted `.d.ts` | correctness | DoD | open | | reproduce at project scale |
-| P-11 | `lykn lint` lints Lykn source (not compiled JS) | end-to-end: `lykn lint` on a fixture with seeded anti-patterns | correctness | DoD | open | | blocked on arc05 |
+| P-11 | `lykn lint` lints Lykn source (not compiled JS) | end-to-end: `lykn lint` on a fixture with seeded anti-patterns | correctness | DoD | **done** | `p11_lint_corpus` (seeded→16 rules/exit1, clean→exit0) in `make check`; host: `./bin/lykn lint …/p11/{seeded_test,clean}.lykn` | **reconciled** — gate GO 2026-07-21: seeded 16/16 exit 1, clean exit 0 |
 | P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc09 |
 | P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | open | **doctests now green (472/0)** via arc07 slice01 | broader guide-drift audit + SKILL additions still pending (arc07) |
 | P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
@@ -205,6 +210,37 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.31 — 2026-07-21 (arc14 · comment-retention scheduled 0.7.0)
+Operator decided the arc14 release boundary: **comment-retention → 0.7.0**
+(additive capability, not 0.6.0 toolchain alignment). arc14 stays in the design
+tree as the home for the deferred lint-suppression mechanism (DD-62) and is added
+to the §1 Post-0.6.0 tracked candidates with its named source (arc05/slice04).
+0.6.0 is unaffected — its remaining work is **arc06 → arc07 → arc09**.
+Which-child: operator decision.
+
+### v1.30 — 2026-07-21 (GATE GO — arc05 CLOSED; P-5/P-11 reconciled)
+Operator ran the arc05 reconcile (closing-report §5): **`make check` green**;
+the P-11 demo reproduced at project scale — `seeded_test.lykn` → **16 findings,
+all 16 rules, exit 1**; `clean.lykn` → 0 findings, exit 0. **P-5 (arc05
+closed+composed) and P-11 (`lykn lint` lints Lykn source) → reconciled; arc05 →
+Closed.** arc05 delivered the 0.6.0 linter (`lykn lint` over Lykn source, 16
+rules, resolution-aware, replacing the compiled-JS surface) and spawned arc13
+(closed) + arc14 (comment-retention, seeded). Remaining 0.6.0: **arc06 → arc07 →
+arc09.** Which-child: arc05 gate.
+
+### v1.29 — 2026-07-21 (arc05 slice04 CLOSED; arc05 CLOSING — P-5/P-11 met)
+slice04 delivered (`2feb5fd`, CDC-verified): `lykn lint` wired into `make check`
+green (path-scoped), guide-09 reclassified (46 entries; all 12 formerly-
+ELIMINATED corrected; ID-42 body fixed), guide-15 + SKILL, the P-11 corpus. arc05
+arc-ledger A-1…A-7 all done → **the 4 slices compose**; `closing-report.md`
+written with the project bubble-up. **P-5 (arc05 closed+composed) and P-11
+(`lykn lint` lints Lykn source) → done**, reproduce at project scale on the host
+(arc05 closing-report §5 — `make check` + the 2 P-11 demo commands). Bubble-up:
+arc05 spawned **arc13** (expander-coherence, closed) and **arc14** (comment-
+retention, seeded); routed guide-15 stale-tool drift → arc07, the `_test.lykn`
+predicate coupling → hardening backlog, the orphaned `LintContext` API → cleanup.
+Remaining 0.6.0 sequence: **arc06 → arc07 → arc09.** Which-child: arc05 close.
 
 ### v1.28 — 2026-07-21 (arc05 slice04 SCOPED; arc14 · comment-retention created)
 Scoping slice04 surfaced that the lint-suppression mechanism depends on **reader

@@ -3,9 +3,9 @@
 > **Status: SEEDED (2026-07-21) — not slice-planned.** Capability home for the
 > operator's comment-handling directive; design in
 > [`design/dd-62-comment-retention-DRAFT.md`](./design/dd-62-comment-retention-DRAFT.md)
-> (odm promotion = Duncan). **Release boundary is the operator's call** — CDC
-> leans **0.7.0** (additive capability, not toolchain *alignment*; keeping it
-> out lets arc05/0.6.0 close without a new blocker). Created when arc05 slice04
+> (odm promotion = Duncan). **Release boundary: 0.7.0 — operator-decided 2026-07-21** (additive
+> capability, not toolchain *alignment*; kept out so arc05/0.6.0 closed without a
+> new blocker). Created when arc05 slice04
 > deferred the lint-suppression mechanism here (its natural first consumer).
 
 ## 1. Capability
@@ -53,5 +53,5 @@ Created as the home for the operator's comment-retention directive, surfaced
 during arc05 slice04 scoping when the suppression mechanism was found to depend
 on reader comment-retention (which does not exist — same shape as arc05→arc13).
 DD-62 drafted (3 commitments + attach-model options + slice seed). Release
-boundary (0.6.0 vs 0.7.0) flagged for the operator; CDC leans 0.7.0. Suppression
+boundary **decided 0.7.0** (operator, 2026-07-21; CDC's lean confirmed). Suppression
 deferred here from slice04. Which-child-surfaced: arc05 slice04 scoping.

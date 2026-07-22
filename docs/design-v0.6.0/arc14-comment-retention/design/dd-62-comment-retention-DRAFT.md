@@ -116,9 +116,9 @@ JS with, where provenance says the surface was transformed, a short annotation
 - **Both-backend parity:** the conformance discipline (arc13) applies — comment
   attach + provenance must agree across Rust and JS, or divergence is a bug. A
   small comment-conformance corpus is the natural gate.
-- **Release boundary:** 0.6.0 (toolchain *alignment*) vs 0.7.0 (new
-  *capability*). **CDC lean: 0.7.0** — it is additive capability, and keeping it
-  out lets arc05 and 0.6.0 close without a new blocker. Operator decides.
+- **Release boundary: 0.7.0 (operator-decided 2026-07-21).** Additive
+  capability, not toolchain *alignment*; kept out so arc05 and 0.6.0 closed
+  without a new blocker — this settles the DD's one open scheduling question.
 
 ## 6. Slice sketch (seeded, NOT committed — plan late)
 
