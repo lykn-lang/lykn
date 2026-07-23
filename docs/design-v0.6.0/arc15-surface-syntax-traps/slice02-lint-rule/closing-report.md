@@ -1,5 +1,71 @@
 # arc15 · slice02 — Closing Report (Lint rule + check parity)
 
+> **Follow-up B (2026-07-23) — structural carve-out lands; supersedes the global
+> `:when` fix below.** The operator chose Option B: replace the global
+> `method != "when"` carve-out (committed `d6c23b5`) with a **structural,
+> match-clause-position** exemption, closing the `.when()` silent-miscompile hole
+> the global carve-out reopened. See "Follow-up B" immediately below; the
+> original slice02 walk (the lint rule / `check_strict` parity / the regression
+> discovery) is unchanged and recorded further down.
+
+## Follow-up B — structural match-clause carve-out (B-1…B-5)
+
+**Verdict: delivered.** The shared detector is now **pure shape** (List/Cons head
++ keyword arg0) — no keyword is special-cased. A guarded `match` clause is
+exempted **by position** via a single shared `is_match_clause(node, parent)`,
+consulted by *both* surfaces. `((expr):when arg)` **outside** a match clause is
+flagged again (hole closed); the match **subject** and clause **bodies** are
+still checked.
+
+| Row | Status | Evidence |
+|-----|--------|----------|
+| **B-1** — global `:when` carve-out removed; detector is pure shape | **done** | `check_method_on_expression` no longer has `&& method != "when"` — just `List/Cons head + Keyword arg0`. |
+| **B-2** — shared `is_match_clause(node, parent)`, clause positions only, `as_form_head` (shadow-safe) | **done** | `classifier::forms::is_match_clause`: `parent` head `as_form_head() == "match"` **and** `node` ∈ `parent.values[2..]` by `std::ptr::eq` (subject at index 1 excluded). A shadowed `match` (bound name) → `as_form_head` `None` → not special. |
+| **B-3** — applied on **both** surfaces via the shared helper | **done** | compile walk `walk_method_calls(expr, parent, out)` skips the shape-check on a clause node but still recurses; lint `NoMethodOnExpression::enter` uses `ctx.ancestors.last()` + `is_match_clause`. Both call the *same* helper. |
+| **B-4** — `.when()` hole closed on both surfaces | **done** | `((express p):when arg)` (top-level + in a `bind`) → flagged on compile **and** lint; test `dd64_when_method_outside_match_is_still_a_trap` + the lint structural test. |
+| **B-5** — `make check` green; scoped diff | **done** (CC-attested) | `make check` ✓; diff = `classifier/{forms,mod}.rs` + `lint/{mod,rules}.rs` only. |
+
+**The full B test table (both compile *and* lint, verified at parity):**
+
+| Case | compile | lint |
+|------|---------|------|
+| `(match x ((Some v) :when (> v 0) "pos") (_ "neg"))` — guard | ok | ok |
+| `((express p):when arg)` outside match (top + `bind`) | **error** | **error** |
+| `(match ((express p):join "") …)` — trap in subject | **error** | **error** |
+| `(match x ((Some v) ((express p):join "")) …)` — trap in clause body | **error** | **error** |
+| express / new / arith / `#a(…)`, nested/deep | **error** | **error** |
+| atom method / threading / IIFE / curried | ok | ok |
+
+**One source of truth (paste of both call sites):**
+- **compile** (`compile.rs:84` `check_strict`, `:189` compile) →
+  `lykn_lang::classifier::validate_method_calls(&forms)` →
+  `walk_method_calls` → `is_match_clause(expr, parent)` (`forms.rs:141`).
+- **lint** (`lint/rules.rs:486/490`) →
+  `is_match_clause(node, parent)` then `method_on_expression_diagnostic(node)`.
+- Both bottom out in the *same* `is_match_clause` + `check_method_on_expression`
+  — no fork; removing the global carve-out cannot reopen the false positive on
+  one surface but not the other.
+
+**Bubble-up (Follow-up B):**
+- **Did B close the hole with no false positives on either surface?** Yes —
+  the table above is verified at parity; a method literally named `when`
+  (`((expr):when …)`) is a trap again, while guarded match clauses are exempt.
+- **What the structural exemption revealed:** the `parent` context differs by
+  surface — the lint walk *already* threads `ctx.ancestors` (parent =
+  `ancestors.last()`), while the compile walk had to be made parent-aware
+  (`walk_method_calls` now carries `Option<&SExpr>`). Identity is by
+  `std::ptr::eq` on the exact child node being visited, which both walkers
+  provide (the lint child and `parent.values[i]` are the same object; the
+  compile walk passes `Some(expr)` as it descends). **Shadowed `match`:**
+  handled for free by keying the parent's head on `as_form_head` — a bound
+  `match` isn't a form, so its "clauses" are *not* exempt (they'd be a real
+  call), which is correct.
+- **Silent-drop check:** the exemption is one helper, called by both surfaces;
+  the four surfaces (compile / check / lint / guides) still agree, now on the
+  *structural* rule.
+
+---
+
 **By:** CC (Claude Code) · **Date:** 2026-07-23 · **Branch:** `release/0.6.x`
 **Verdict: delivered — with a slice01 regression caught and fixed in the shared
 detector.** `no-method-on-expression` (Error) now flags the DD-64 trap in
