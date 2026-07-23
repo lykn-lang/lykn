@@ -26,8 +26,8 @@ threading (`(-> (express parts) (:join ""))`). DD-64 is its design.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · reject-method-on-expr + guide migration** | Classifier **error** on `(<non-atom-head> :kw …)` with a threading fix-it + tests; **migrate the ~10 guide sites** that teach the trap to threading + repoint ID-31 / 09-anti-patterns; `make check` + `make test-docs` green together. Coupled: the error breaks the guides, so they land as one capability. (CDC sweep done: 0 source/test hits, 0 mycelium, ~13 guide sites enumerated.) | **Open — scoped** (open set 2026-07-22) |
-| **slice02 · lint rule** | arc05 `lykn lint` rule flagging `(<non-atom-head> :kw …)` with the threading fix-it — friendly, earlier catch (DX layer atop the hard error). Resolution-aware machinery exists. | Planned (post-slice01) |
+| **slice01 · reject-method-on-expr + guide migration** | Classifier **error** on `(<non-atom-head> :kw …)` with a threading fix-it + tests; **migrate the guide sites** that teach the trap to threading + repoint ID-31/ID-41/09-anti-patterns (ID-47). Landed as a **recursive `validate_method_calls` pass** in the compile pipeline (dispatch-only was insufficient for nested traps). | **CDC-verified** (`9ca9c7e`; host reconcile pending) |
+| **slice02 · lint rule** | arc05 `lykn lint` rule flagging `(<non-atom-head> :kw …)` with the threading fix-it. **MUST reuse the recursive `walk_method_calls` detection** (not a dispatch branch) so lint/check agree with compile on nested traps (slice01 carry-forward). Also wire the recursive pass into `check_strict`. | Planned (post-slice01) |
 | **slice03 · sibling traps** | Assess whether still-live compiler traps and fold in: **ID-32** `return return` (typed `fn` + explicit `return` → double return), **ID-33** `\uNNNN` not processed (reader — literal Unicode only). Each: is it still a *silent* miscompile on current lykn? → error/warn + guide. **Shaped, not detailed** (plan-late). | Planned (shaped) |
 
 _Plan late, plan deep: slice01 is detailed against the CDC sweep; slice02 is
@@ -59,6 +59,16 @@ arc scale. Opens here; per-row walk closes in `closing-report.md`.
 | A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | open | | sweep said 0 source hits |
 
 ## 5. Version History
+
+### v1.1 — 2026-07-22 (slice01 CDC-verified)
+slice01 delivered (`9ca9c7e`) + CDC-verified: the trap is a compile error at any
+nesting depth (recursive `validate_method_calls` on the shared compile path —
+CC's endorsed deviation from the cc-prompt's classify-dispatch placement); ~14
+guide sites migrated to threading; ID-47 added to 09-anti-patterns; sweep clean;
+`make check`/`make test-docs` green (CC-attested, host reconcile pending). A-1
+done-pending-reconcile; A-3…A-6 met. Carry-forward: slice02 lint MUST use the
+recursive detection; wire it into `check_strict` too. CDC self-note: mis-filed
+`09-anti-patterns:405` in the enumeration (CC caught it).
 
 ### v1.0 — 2026-07-22 (arc SEEDED + slice-planned; recon done)
 Operator-initiated from arc06/slice02 #6 (method-on-`express` silent miscompile)
