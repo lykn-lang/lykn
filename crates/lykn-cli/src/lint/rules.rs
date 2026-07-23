@@ -459,6 +459,32 @@ impl LintRule for Shadowing {
 }
 
 // ---------------------------------------------------------------------------
+// arc15 — surface-syntax traps
+// ---------------------------------------------------------------------------
+
+/// no-method-on-expression (guide ID-47, arc15/DD-64, **error**): method-call
+/// sugar on a *parenthesized expression* — `((express parts):join "")` — is not
+/// method sugar (that needs a name); it silently means the call
+/// `parts.value("join", "")`. It is a hard compile error (slice01); the linter
+/// surfaces it earlier (CI/editor) with the same threading fix-it.
+///
+/// The detection is **shared** with the compiler via
+/// [`lykn_lang::classifier::method_on_expression_diagnostic`] — one source of
+/// truth, so lint / check / compile never disagree (arc15 slice02 S-1). The lint
+/// `walk` fires `enter` on every node, so nested traps are caught for free.
+pub struct NoMethodOnExpression;
+impl LintRule for NoMethodOnExpression {
+    fn id(&self) -> &'static str {
+        "no-method-on-expression"
+    }
+    fn enter(&mut self, node: &SExpr, _ctx: &LintContext, out: &mut Vec<Diagnostic>) {
+        if let Some(diag) = lykn_lang::classifier::method_on_expression_diagnostic(node) {
+            out.push(diag);
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
 // slice02 — conventions rules (path-scoped to this repo's test files)
 // ---------------------------------------------------------------------------
 

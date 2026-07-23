@@ -79,6 +79,18 @@ pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> 
     // DD-61 §A1/§A3: resolve names (tag atoms) so dispatch sites consume the
     // tag via `as_form_head` — a lexically bound head is no longer a form.
     let forms = resolver::resolve(&forms);
+    // DD-64 (arc15 slice02): check ≡ compile — reject the method-on-expression
+    // trap at any nesting depth (classify alone sees only top-level forms).
+    let method_errs = lykn_lang::classifier::validate_method_calls(&forms);
+    if !method_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            method_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
     classifier::classify_with_options(&forms, classifier_options_for(Some(file_path))).map_err(
         |diags| {
             CompileError::Analysis(

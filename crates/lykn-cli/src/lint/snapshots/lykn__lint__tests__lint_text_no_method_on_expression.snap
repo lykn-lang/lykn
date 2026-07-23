@@ -1,0 +1,6 @@
+---
+source: crates/lykn-cli/src/lint/mod.rs
+expression: text
+---
+fixture.lykn:1:2: error [no-method-on-expression]: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)
+  suggestion: thread the method call: (-> <expr> (:join …)); or bind first: (bind v <expr>) (v:join …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> "join" …)

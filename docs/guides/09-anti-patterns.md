@@ -1007,7 +1007,7 @@ assignment.
 
 **Strength**: MUST-AVOID
 
-**Status**: Compiler-enforced
+**Status**: Compiler-enforced · Linted (`no-method-on-expression`)
 
 **Summary**: `x:method` sugar needs `x` to be a **name**. On a parenthesized
 receiver — `((express parts):join "")`, `((new TextEncoder):encode s)`,
@@ -1086,14 +1086,15 @@ receiver) — thread with `(-> <expr> (:method args))`.
 | 44 | `(const ...)` in `for-of` | MUST-AVOID | Compiler-enforced |
 | 45 | `((param))` in class methods | MUST-AVOID | Documented-only |
 | 46 | `=` for assignment in classes | MUST-AVOID | Documented-only |
-| 47 | Method call on a parenthesized expression | MUST-AVOID | Compiler-enforced |
+| 47 | Method call on a parenthesized expression | MUST-AVOID | Compiler / Linted (`no-method-on-expression`) |
 
 **Enforcement** (verified against `lykn lint`'s `registry()` + the compiler,
-arc05 slice04; ID-47 added arc15): **7 compiler-enforced** (ID-10/13/28 `var`,
-ID-39 untyped param, ID-42 reserved-word param, ID-44 `const` loop binding,
-ID-47 method-on-expression), **14 linted** (a live `lykn lint` rule),
-**25 documented-only** (the guide is the guardrail), and **ID-38 split**
-(declaration forms compiler-enforced; operators linted).
+arc05 slice04; ID-47 added arc15): **6 compiler-enforced** (ID-10/13/28 `var`,
+ID-39 untyped param, ID-42 reserved-word param, ID-44 `const` loop binding),
+**14 linted** (a live `lykn lint` rule), **25 documented-only** (the guide is
+the guardrail), and **2 split** — ID-38 (declaration forms compiler-enforced;
+operators linted) and ID-47 (method-on-expression: compiler-enforced *and*
+linted via `no-method-on-expression`, arc15 slice02).
 The former blanket "ELIMINATED BY LANGUAGE DESIGN" was accurate as a
 *mechanical* guarantee for only a few — most "eliminated" entries are in
 fact linted or documented-only.

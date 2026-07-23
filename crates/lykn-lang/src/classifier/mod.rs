@@ -62,6 +62,13 @@ pub fn validate_method_calls(forms: &[SExpr]) -> Vec<Diagnostic> {
     forms::validate_method_calls(forms)
 }
 
+/// DD-64 (arc15): the shared per-node method-on-expression predicate — the lint
+/// rule and the compile pass both use this. See
+/// [`forms::method_on_expression_diagnostic`].
+pub fn method_on_expression_diagnostic(node: &SExpr) -> Option<Diagnostic> {
+    forms::method_on_expression_diagnostic(node)
+}
+
 pub fn classify_expr_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     forms::classify_form_strict(expr)
 }

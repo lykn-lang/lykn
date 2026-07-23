@@ -49,9 +49,17 @@ fn closest_kernel_form(name: &str) -> Option<&'static str> {
 /// calls (`(x:m a)` — atom head), threading steps (`(:m a)` — keyword head), and
 /// compound-head calls with a non-keyword first arg (IIFE `((fn (x) …) 5)`,
 /// curried `((make-adder 3) 4)`).
+///
+/// **Match-guard carve-out (arc15 slice02):** a `match` clause with a guard —
+/// `((Some v) :when (> v 0) body)` — has the *same* List-head + keyword-arg0
+/// shape, but `:when` is the guard keyword, not a method. `:when` is the only
+/// keyword the surface grammar puts in arg0 of a list-headed form that isn't a
+/// method call, so excluding it removes the false positive without narrowing the
+/// trap (a real `.when()` call on an expression would thread: `(-> e (:when …))`).
 fn check_method_on_expression(values: &[SExpr]) -> Result<(), Diagnostic> {
     if let Some(head @ (SExpr::List { .. } | SExpr::Cons { .. })) = values.first()
         && let Some(SExpr::Keyword { value: method, .. }) = values.get(1)
+        && method != "when"
     {
         return Err(Diagnostic {
             message: "method call on a parenthesized expression is not supported \
@@ -68,6 +76,18 @@ fn check_method_on_expression(values: &[SExpr]) -> Result<(), Diagnostic> {
         });
     }
     Ok(())
+}
+
+/// DD-64 (arc15): the per-node view of the method-on-expression detector.
+/// Returns the diagnostic if `node` is a `(<paren-expr> :method …)` call, else
+/// `None`. This is the **single shared predicate** (arc15 slice02): the compile
+/// pass ([`validate_method_calls`]) and the `no-method-on-expression` lint rule
+/// both go through [`check_method_on_expression`] — no forked detection.
+pub fn method_on_expression_diagnostic(node: &SExpr) -> Option<Diagnostic> {
+    match node {
+        SExpr::List { values, .. } => check_method_on_expression(values).err(),
+        _ => None,
+    }
 }
 
 /// DD-64 (arc15): flag every method-on-expression trap in `forms`, at **any
@@ -5813,6 +5833,19 @@ mod tests {
     fn dd64_array_literal_receiver_is_rejected() {
         // `#a(1 2 3):map` reads as `((array 1 2 3) :map …)` — a List head.
         assert_eq!(method_errs("(bind m (#a(1 2 3):map double))").len(), 1);
+    }
+
+    #[test]
+    fn dd64_match_guard_is_not_a_trap() {
+        // `((Some v) :when (> v 0) body)` is a match clause with a guard — same
+        // List-head + keyword-arg0 shape as the trap, but `:when` is the guard
+        // keyword, not a method (arc15 slice02 regression — slice01 rejected it).
+        assert!(
+            method_errs("(match x ((Some v) :when (> v 0) \"pos\") (_ \"neg\"))").is_empty(),
+            "match :when guard must not be flagged"
+        );
+        // the clause form itself, in isolation, is also fine.
+        assert!(method_errs("((Some v) :when (> v 0) \"pos\")").is_empty());
     }
 
     #[test]

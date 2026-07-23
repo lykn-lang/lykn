@@ -83,6 +83,8 @@ fn registry() -> Vec<Box<dyn LintRule>> {
         Box::new(rules::ForInOnArrays),
         // slice03 context rule (consumes the resolver's scope model)
         Box::new(rules::Shadowing),
+        // arc15 surface-syntax trap (shares the compiler's DD-64 detector)
+        Box::new(rules::NoMethodOnExpression),
         // slice02 conventions rules (path-scoped to test files)
         Box::new(rules::NoRelativeSourceImports),
         Box::new(rules::NoDirnameFixtures),
@@ -729,5 +731,73 @@ mod tests {
         let value: serde_json::Value =
             serde_json::from_str(&to_json(&findings)).expect("valid JSON");
         insta::assert_json_snapshot!("lint_json_shadowing", value);
+    }
+
+    // --- arc15: no-method-on-expression (shares the compiler's DD-64 detector) --
+
+    fn method_findings(src: &str) -> Vec<LintFinding> {
+        lint(src)
+            .into_iter()
+            .filter(|f| f.rule == "no-method-on-expression")
+            .collect()
+    }
+
+    #[test]
+    fn no_method_on_expression_flags_receiver_shapes() {
+        // express / new / arithmetic / array-literal receivers — one Error each.
+        for src in [
+            "(bind r ((express parts):join \"\"))",
+            "(bind e ((new TextEncoder):encode s))",
+            "(bind n ((/ cents 100):toFixed 2))",
+            "(bind m (#a(1 2 3):map double))",
+        ] {
+            let f = method_findings(src);
+            assert_eq!(f.len(), 1, "one finding for {src:?}");
+            assert_eq!(f[0].diagnostic.severity, Severity::Error);
+            assert!(
+                f[0].diagnostic
+                    .suggestion
+                    .as_deref()
+                    .unwrap_or("")
+                    .contains("(-> <expr>"),
+                "fix-it should thread"
+            );
+        }
+    }
+
+    #[test]
+    fn no_method_on_expression_flags_nested_and_deep() {
+        // the lint walk is recursive → nested/deep traps caught for free.
+        assert_eq!(method_findings("(bind r ((express p):join \"\"))").len(), 1);
+        assert_eq!(
+            method_findings("(foo (bar ((express p):join \"\")))").len(),
+            1
+        );
+    }
+
+    #[test]
+    fn no_method_on_expression_silent_on_positives() {
+        // parity with slice01's carve-outs: atom method, threading, bare-kw
+        // property step, curried (compound head + non-keyword arg), plain calls.
+        for src in [
+            "(bind r (parts:join \"\"))",
+            "(bind r (-> (express parts) (:join \"\")))",
+            "(bind r (-> (express errors) :length))",
+            "(bind r ((make-adder 3) 4))",
+            "(func f :args (:number a) :body a)",
+        ] {
+            assert!(method_findings(src).is_empty(), "must not fire on {src:?}");
+        }
+    }
+
+    #[test]
+    fn snapshot_no_method_on_expression() {
+        let findings = method_findings("((express parts):join \"\")");
+        let text = findings
+            .iter()
+            .map(render_text)
+            .collect::<Vec<_>>()
+            .join("\n");
+        insta::assert_snapshot!("lint_text_no_method_on_expression", text);
     }
 }
