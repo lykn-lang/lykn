@@ -6,6 +6,8 @@ This index is automatically generated. Do not edit manually.
 
 | Number | Title | State | Updated |
 |--------|-------|-------|----------|
+| 0065 | DD-63 — `lykn add`: cross-project dependency ergonomics (DRAFT) | Accepted | 2026-07-23 |
+| 0064 | DD-62 — Comment Retention & Provenance (`lykn` comments through the pipeline) | Draft | 2026-07-23 |
 | 0063 | DD-61 — Resolve-Once: Name-Resolution Architecture (implements DD-60) | Active | 2026-07-06 |
 | 0062 | DD-60 — Name-Binding Semantics (bindings shadow macros/forms) | Active | 2026-07-06 |
 | 0061 | DD-59 — The Lykn-Source Linter (`lykn lint`) | Accepted | 2026-07-06 |
@@ -74,10 +76,12 @@ This index is automatically generated. Do not edit manually.
 
 ### Accepted
 
+- [0065 - DD-63 — `lykn add`: cross-project dependency ergonomics (DRAFT)](04-accepted/0065-dd-63-lykn-add-cross-project-dependency-ergonomics-draft.md)
 - [0061 - DD-59 — The Lykn-Source Linter (`lykn lint`) — DRAFT](04-accepted/0061-dd-59-the-lykn-source-linter-lykn-lint-draft.md)
 
 ### Draft
 
+- [0064 - DD-62 — Comment Retention & Provenance (`lykn` comments through the pipeline)](01-draft/0064-dd-62-comment-retention-provenance-lykn-comments.md)
 - [0060 - DD-56 — Canonical Form Specification and Language Catalog](01-draft/0060-dd-56-canonical-form-specification-and-language-catalog.md)
 
 ### Active

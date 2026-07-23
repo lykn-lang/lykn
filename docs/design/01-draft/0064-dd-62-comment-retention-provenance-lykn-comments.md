@@ -1,4 +1,18 @@
-# DD-62 — Comment Retention & Provenance (`lykn` comments through the pipeline) — DRAFT
+---
+number: 64
+title: "DD-62 — Comment Retention & Provenance (`lykn` comments through the pipeline)"
+author: "Duncan McGreggor"
+component: All
+tags: [change-me]
+created: 2026-07-23
+updated: 2026-07-23
+state: Draft
+supersedes: null
+superseded-by: null
+version: 1.0
+---
+
+# DD-62 — Comment Retention & Provenance (`lykn` comments through the pipeline)
 
 > **Status: DRAFT — for odm promotion (Duncan; odm assigns its own file
 > number; the DD number is 62, next after DD-61).** Drafted by CDC 2026-07-21

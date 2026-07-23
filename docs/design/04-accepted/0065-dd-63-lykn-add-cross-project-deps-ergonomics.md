@@ -1,6 +1,19 @@
-# DD-63 — `lykn add`: cross-project dependency ergonomics (DRAFT)
+---
+number: 65
+title: "DD-63 — `lykn add`: cross-project dependency ergonomics"
+author: "Duncan McGreggor"
+component: All
+tags: [change-me]
+created: 2026-07-23
+updated: 2026-07-23
+state: Accepted
+supersedes: null
+superseded-by: null
+version: 1.0
+---
 
-> **Status: DRAFT (CDC seed 2026-07-22; odm promotion = Duncan).**
+# DD-63 — `lykn add`: cross-project dependency ergonomics
+
 > **Home: arc06 · cross-project-dep-ergonomics. Release: 0.6.0.**
 > Scoped from arc06/slice02's F-7 requirements read (the mycelium re-audit).
 > Every decision below is operator-approved (2026-07-22); this DD records the
