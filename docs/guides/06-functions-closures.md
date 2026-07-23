@@ -35,8 +35,8 @@ provides type annotations, contracts, and multi-clause dispatch.
   :returns :array
   :body
   (bind parts (line:split "="))
-  (bind key ((get parts 0):trim))
-  (bind val ((parts:slice 1):join "="))
+  (bind key (-> (get parts 0) (:trim)))
+  (bind val (-> (parts:slice 1) (:join "=")))
   #a(key (val:trim)))
 ```
 
@@ -559,7 +559,7 @@ captured configuration.
 
 (bind double (create-multiplier 2))
 (bind triple (create-multiplier 3))
-(#a(1 2 3):map double)  ;; [2, 4, 6]
+(-> #a(1 2 3) (:map double))  ;; [2, 4, 6]
 ```
 
 > **Returning a closure:** end the factory body in a *value-producing* form.
@@ -639,7 +639,7 @@ define functions before their use site for readability.
 ;; Good — define before use
 (func parse-line :args (:string line) :returns :array :body
   (bind parts (line:split "="))
-  #a((get parts 0) ((parts:slice 1):join "=")))
+  #a((get parts 0) (-> (parts:slice 1) (:join "="))))
 
 (func parse-config :args (:string raw) :returns :array :body
   (bind lines (raw:split "\n"))
@@ -985,7 +985,7 @@ naturally encourages purity.
 (func format-currency
   :args (:number cents)
   :returns :string
-  :body (template "$" ((/ cents 100):toFixed 2)))
+  :body (template "$" (-> (/ cents 100) (:toFixed 2))))
 
 ;; Bad — reads external mutable state
 ;; (bind tax-rate (cell 0.08))

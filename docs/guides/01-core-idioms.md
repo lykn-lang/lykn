@@ -1032,22 +1032,31 @@ not exhaustive (unless the last pattern is `_` or a binding).
 
 **Strength**: MUST
 
-**Summary**: Method calls cannot be chained directly on `(express cell)`.
-Bind the expressed value first, then call the method on the binding.
+**Summary**: Method sugar `x:method` needs `x` to be a **name**. To call a
+method on `(express cell)`, **thread it** — `(-> (express cell) (:method args))`
+— or bind the expressed value first. Writing `((express cell):method …)` is a
+**compile error** (DD-64).
 
 ```lykn
-;; Bad — compiles to listeners.value("push", fn) (function call, not method)
-((express listeners):push fn)
+;; Good — thread the method call (primary)
+(-> (express listeners) (:push fn))
 
-;; Good — bind first, then call
+;; Good — or bind first, when the value is reused
 (bind ls (express listeners))
 (ls:push fn)
+
+;; Bad — method sugar on a parenthesized expression. Since DD-64 this is a
+;; compile error; it used to silently emit listeners.value("push", fn)
+;; (a function call, not a method):
+;;   ((express listeners):push fn)
 ```
 
-**Rationale**: The surface compiler treats `(expr:method arg)` as a
-method call on `expr`, but `(express cell)` is a special form that
-the compiler doesn't recognize as a chainable expression target.
-The intermediate `bind` gives the compiler a named value to chain on.
+**Rationale**: `x:method` is lexed at the atom level, so it attaches only to a
+*name*. With a parenthesized receiver the `:method` detaches into a keyword
+*argument* that stringifies — `((express listeners):push fn)` becomes the call
+`listeners.value("push", fn)`. Threading (`(-> …)`) is the one blessed way to
+call a method on an expression; the compiler now rejects the trap with a fix-it
+rather than mis-compiling it.
 
 ---
 
@@ -1253,18 +1262,21 @@ treats the first symbol after `function` as the name.
 
 **Strength**: MUST
 
-**Summary**: Method calls cannot be chained directly on `(get ...)`
-results in kernel. `(get obj key):method` compiles to
-`obj[key]("method")` (function call with string arg), not
-`obj[key].method()`. Use an intermediate `bind` binding.
+**Summary**: Same trap as ID-31 with a `(get ...)` receiver. Method sugar
+needs a **name**, so `((get obj key):method …)` is a **compile error** (DD-64) —
+it used to emit `obj[key]("method", …)` (a call with a string arg), not
+`obj[key].method()`. **Thread it**, or bind first.
 
 ```lykn
-;; Bad — method call on (get ...) result
-((get obj key):push 4)      ;; obj[key]("push", 4) — wrong
+;; Good — thread the method call (primary)
+(-> (get obj key) (:push 4))   ;; obj[key].push(4)
 
-;; Good — intermediate binding
+;; Good — or bind first, when the value is reused
 (bind arr (get obj key))
-(arr:push 4)                ;; arr.push(4) — correct
+(arr:push 4)                   ;; arr.push(4)
+
+;; Bad — method sugar on a parenthesized expression (compile error since DD-64):
+;;   ((get obj key):push 4)      ;; used to emit obj[key]("push", 4) — wrong
 ```
 
 ---

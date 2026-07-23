@@ -68,7 +68,7 @@ code paths.
   (bind t1 (performance:now))
   (bind result (process-data raw))
   (bind t2 (performance:now))
-  (console:log (template "Read: " ((- t1 t0):toFixed 2) "ms, Process: " ((- t2 t1):toFixed 2) "ms"))
+  (console:log (template "Read: " (-> (- t1 t0) (:toFixed 2)) "ms, Process: " (-> (- t2 t1) (:toFixed 2)) "ms"))
   result))
 ```
 
@@ -388,7 +388,7 @@ in an array and `:join` once.
   (bind lines (cell #a()))
   (for-of row rows
     (swap! lines (fn (:array l) (conj l (row:join ",")))))
-  ((express lines):join "\n"))
+  (-> (express lines) (:join "\n")))
 ```
 
 ---

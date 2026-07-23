@@ -402,7 +402,7 @@ In Deno, this terminates the process.
 (await (log-request req))
 
 ;; Fix — explicit catch for intentional fire-and-forget
-((log-request req):catch (fn (:any err) (console:error "Log failed:" err)))
+(-> (log-request req) (:catch (fn (:any err) (console:error "Log failed:" err))))
 ```
 
 **Fix**: `03-error-handling.md` ID-20.
@@ -1003,6 +1003,35 @@ assignment.
 
 ---
 
+## ID-47: Method Call on a Parenthesized Expression
+
+**Strength**: MUST-AVOID
+
+**Status**: Compiler-enforced
+
+**Summary**: `x:method` sugar needs `x` to be a **name**. On a parenthesized
+receiver — `((express parts):join "")`, `((new TextEncoder):encode s)`,
+`((/ cents 100):toFixed 2)` — the `:method` detaches into a keyword *argument*
+that stringifies, so the form silently means `parts.value("join", "")` (a call,
+not a method). Since DD-64 (arc15) this is a **compile error** with a threading
+fix-it.
+
+```lykn
+;; Good — thread it (the one blessed form)
+(-> (express parts) (:join ""))
+(-> (new TextEncoder) (:encode "hello"))
+
+;; Good — or bind first when the value is reused
+(bind arr (express parts))
+(arr:join "")
+
+;; Bad — compile error since DD-64 (used to mis-emit parts.value("join", "")):
+;;   ((express parts):join "")
+```
+
+**Fix**: `01-core-idioms.md` ID-31 (`express` receiver) / ID-41 (`get`
+receiver) — thread with `(-> <expr> (:method args))`.
+
 ---
 
 ## Best Practices Summary
@@ -1057,12 +1086,14 @@ assignment.
 | 44 | `(const ...)` in `for-of` | MUST-AVOID | Compiler-enforced |
 | 45 | `((param))` in class methods | MUST-AVOID | Documented-only |
 | 46 | `=` for assignment in classes | MUST-AVOID | Documented-only |
+| 47 | Method call on a parenthesized expression | MUST-AVOID | Compiler-enforced |
 
 **Enforcement** (verified against `lykn lint`'s `registry()` + the compiler,
-arc05 slice04): **6 compiler-enforced** (ID-10/13/28 `var`, ID-39 untyped
-param, ID-42 reserved-word param, ID-44 `const` loop binding), **14 linted**
-(a live `lykn lint` rule), **25 documented-only** (the guide is the guardrail),
-and **ID-38 split** (declaration forms compiler-enforced; operators linted).
+arc05 slice04; ID-47 added arc15): **7 compiler-enforced** (ID-10/13/28 `var`,
+ID-39 untyped param, ID-42 reserved-word param, ID-44 `const` loop binding,
+ID-47 method-on-expression), **14 linted** (a live `lykn lint` rule),
+**25 documented-only** (the guide is the guardrail), and **ID-38 split**
+(declaration forms compiler-enforced; operators linted).
 The former blanket "ELIMINATED BY LANGUAGE DESIGN" was accurate as a
 *mechanical* guarantee for only a few — most "eliminated" entries are in
 fact linted or documented-only.

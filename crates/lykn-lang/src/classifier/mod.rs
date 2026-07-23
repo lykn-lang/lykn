@@ -55,6 +55,13 @@ pub fn classify_expr(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     forms::classify_form(expr)
 }
 
+/// DD-64 (arc15): reject method-call sugar on a parenthesized expression
+/// (`(<paren-expr> :method …)`) at any nesting depth. See
+/// [`forms::validate_method_calls`].
+pub fn validate_method_calls(forms: &[SExpr]) -> Vec<Diagnostic> {
+    forms::validate_method_calls(forms)
+}
+
 pub fn classify_expr_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     forms::classify_form_strict(expr)
 }

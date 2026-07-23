@@ -169,6 +169,22 @@ fn compile_source_inner(
         ));
     }
 
+    // 2c. DD-64 (arc15): reject method-call sugar on a parenthesized expression
+    // (`((express parts):join "")` → the wrong call `parts.value("join","")`) at
+    // any nesting depth. classify_form only sees top-level forms; the trap is
+    // usually nested, so this recursive pass is the guarantee. The blessed form
+    // is threading (`(-> (express parts) (:join ""))`).
+    let method_errs = lykn_lang::classifier::validate_method_calls(&forms);
+    if !method_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            method_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
+
     // 3. Classify into surface forms (DD-58 strict for `.lykn`, exempt `.lyk`)
     let classified = classifier::classify_with_options(&forms, classify_opts).map_err(|diags| {
         CompileError::Analysis(

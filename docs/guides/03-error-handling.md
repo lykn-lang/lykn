@@ -208,7 +208,7 @@ all the failure reasons, use `AggregateError`.
     (swap! errors (fn (:array e) (conj e (new Error "email is required")))))
   (if (and (!= data:age undefined) (< data:age 0))
     (swap! errors (fn (:array e) (conj e (new RangeError "age must be non-negative")))))
-  (if (> (express errors):length 0)
+  (if (> (-> (express errors) :length) 0)
     (throw (new AggregateError (express errors) "Form validation failed")))
   data)
 ```
@@ -553,8 +553,8 @@ the background. Any rejection is silently lost.
 
 ;; Good — fire-and-forget with explicit catch
 (async (func handle-request :args (:any req) :returns :any :body
-  ((log-request req):catch (fn (:any err)
-    (console:error "Log failed:" err)))
+  (-> (log-request req) (:catch (fn (:any err)
+    (console:error "Log failed:" err))))
   (bind data (await (get-data)))
   data))
 ```

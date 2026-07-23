@@ -34,6 +34,75 @@ fn closest_kernel_form(name: &str) -> Option<&'static str> {
     if best_dist <= 2 { best } else { None }
 }
 
+/// DD-64 (arc15): reject method-call sugar on a **parenthesized expression** —
+/// `(<list-head> :keyword …)`, e.g. `((express parts):join "")`.
+///
+/// The `x:method` sugar is *atom-only* (member access is lexed at the atom
+/// level). When the receiver is a parenthesized expression the reader cannot
+/// attach `:method`, so `:method` detaches into a keyword *argument* that
+/// silently emits as a string — `((express parts):join "")` compiles to the
+/// call `parts.value("join","")`, a clean-but-wrong result. The blessed form is
+/// threading: `(-> (express parts) (:join ""))`.
+///
+/// Fires only when the head is a `List`/`Cons` (a parenthesized expression)
+/// **and** the first argument is a `Keyword`. This leaves untouched: atom method
+/// calls (`(x:m a)` — atom head), threading steps (`(:m a)` — keyword head), and
+/// compound-head calls with a non-keyword first arg (IIFE `((fn (x) …) 5)`,
+/// curried `((make-adder 3) 4)`).
+fn check_method_on_expression(values: &[SExpr]) -> Result<(), Diagnostic> {
+    if let Some(head @ (SExpr::List { .. } | SExpr::Cons { .. })) = values.first()
+        && let Some(SExpr::Keyword { value: method, .. }) = values.get(1)
+    {
+        return Err(Diagnostic {
+            message: "method call on a parenthesized expression is not supported \
+                      (the receiver is an expression, not a name)"
+                .to_string(),
+            severity: Severity::Error,
+            span: head.span(),
+            suggestion: Some(format!(
+                "thread the method call: (-> <expr> (:{method} …)); \
+                 or bind first: (bind v <expr>) (v:{method} …). \
+                 To pass a keyword as a string argument to a computed function, \
+                 use a string literal: (<expr> \"{method}\" …)"
+            )),
+        });
+    }
+    Ok(())
+}
+
+/// DD-64 (arc15): flag every method-on-expression trap in `forms`, at **any
+/// nesting depth**. `classify_form` only sees top-level forms — the common trap
+/// sites are nested (a `bind` value, a call argument), and nested expressions
+/// are classified lazily by the emitter, which would emit the wrong call. This
+/// recursive pass is the actual guarantee ("a user cannot compile the wrong
+/// way"); it mirrors D2's `binding::validate_reserved_names` walk and runs at
+/// the same pipeline point. Returns one diagnostic per offending form.
+pub fn validate_method_calls(forms: &[SExpr]) -> Vec<Diagnostic> {
+    let mut out = Vec::new();
+    for form in forms {
+        walk_method_calls(form, &mut out);
+    }
+    out
+}
+
+fn walk_method_calls(expr: &SExpr, out: &mut Vec<Diagnostic>) {
+    match expr {
+        SExpr::List { values, .. } => {
+            if let Err(diag) = check_method_on_expression(values) {
+                out.push(diag);
+            }
+            for v in values {
+                walk_method_calls(v, out);
+            }
+        }
+        SExpr::Cons { car, cdr, .. } => {
+            walk_method_calls(car, out);
+            walk_method_calls(cdr, out);
+        }
+        _ => {}
+    }
+}
+
 pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
@@ -93,7 +162,9 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                     })
                 }
             } else {
-                // Head is not an atom — function call with computed head
+                // Head is not an atom — function call with computed head.
+                // DD-64: reject `(<paren-expr> :method …)` method-on-expression.
+                check_method_on_expression(values)?;
                 Ok(SurfaceForm::FunctionCall {
                     head: values[0].clone(),
                     args: values[1..].to_vec(),
@@ -207,6 +278,9 @@ pub fn classify_form_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                     })
                 }
             } else {
+                // Head is not an atom — computed-head function call.
+                // DD-64: reject `(<paren-expr> :method …)` method-on-expression.
+                check_method_on_expression(values)?;
                 Ok(SurfaceForm::FunctionCall {
                     head: values[0].clone(),
                     args: values[1..].to_vec(),
@@ -256,6 +330,9 @@ pub fn classify_form_kernel_only(expr: &SExpr) -> Result<SurfaceForm, Diagnostic
                     })
                 }
             } else {
+                // Head is not an atom — computed-head function call.
+                // DD-64: reject `(<paren-expr> :method …)` method-on-expression.
+                check_method_on_expression(values)?;
                 Ok(SurfaceForm::FunctionCall {
                     head: values[0].clone(),
                     args: values[1..].to_vec(),
@@ -5696,5 +5773,82 @@ mod tests {
             }
             other => panic!("expected KernelPassthrough, got {other:?}"),
         }
+    }
+
+    // ---------------------------------------------------------------
+    // DD-64 (arc15) — reject method-on-expression
+    // ---------------------------------------------------------------
+
+    /// Count of DD-64 method-on-expression diagnostics for `src`.
+    fn method_errs(src: &str) -> Vec<Diagnostic> {
+        let forms = crate::reader::read(src).expect("parse");
+        validate_method_calls(&forms)
+    }
+
+    #[test]
+    fn dd64_rejects_the_three_canonical_shapes() {
+        // express / new / arithmetic receivers — top-level and nested.
+        for src in [
+            "((express parts):join \"\")",
+            "((new TextEncoder):encode s)",
+            "((/ cents 100):toFixed 2)",
+            "(bind r ((express parts):join \"\"))", // nested in a bind value
+            "(foo (bar ((express p):join \"\")))",  // deep in an argument
+        ] {
+            let errs = method_errs(src);
+            assert_eq!(errs.len(), 1, "expected one DD-64 error for {src:?}");
+            assert_eq!(errs[0].severity, Severity::Error);
+            assert!(
+                errs[0].message.contains("parenthesized expression"),
+                "message for {src:?}: {}",
+                errs[0].message
+            );
+            // the fix-it names threading and the string-literal escape
+            let sug = errs[0].suggestion.as_deref().unwrap_or("");
+            assert!(sug.contains("(-> <expr>"), "fix-it should thread: {sug}");
+        }
+    }
+
+    #[test]
+    fn dd64_array_literal_receiver_is_rejected() {
+        // `#a(1 2 3):map` reads as `((array 1 2 3) :map …)` — a List head.
+        assert_eq!(method_errs("(bind m (#a(1 2 3):map double))").len(), 1);
+    }
+
+    #[test]
+    fn dd64_does_not_over_reject() {
+        // atom method, threading (keyword head), bare-keyword property step,
+        // IIFE / curried (compound head + non-keyword first arg), plain calls.
+        for src in [
+            "(parts:join \"\")",
+            "(-> (express parts) (:join \"\"))",
+            "(-> (new TextEncoder) (:encode \"hi\"))",
+            "(-> (express errors) :length)",
+            "((fn (:number x) (* x 2)) 5)",
+            "((make-adder 3) 4)",
+            "(func f :args (:number a) :body a)",
+            "(console:log msg)",
+        ] {
+            assert!(
+                method_errs(src).is_empty(),
+                "must NOT reject {src:?}: {:?}",
+                method_errs(src)
+                    .iter()
+                    .map(|d| &d.message)
+                    .collect::<Vec<_>>()
+            );
+        }
+    }
+
+    #[test]
+    fn dd64_span_points_at_the_receiver() {
+        // `((express parts):join "")` — the error span is the receiver list,
+        // which starts at column 2 (after the outer `(`).
+        let errs = method_errs("((express parts):join \"\")");
+        assert_eq!(errs.len(), 1);
+        assert_eq!(
+            errs[0].span.start.column, 2,
+            "span should mark the receiver"
+        );
     }
 }

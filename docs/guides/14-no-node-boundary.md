@@ -183,8 +183,8 @@ Requires `--allow-env`.
 **Strength**: SHOULD-AVOID
 
 ```lykn
-(bind bytes ((new TextEncoder):encode "hello"))
-(bind str ((new TextDecoder):decode bytes))
+(bind bytes (-> (new TextEncoder) (:encode "hello")))
+(bind str (-> (new TextDecoder) (:decode bytes)))
 ```
 
 ---
@@ -221,7 +221,7 @@ Requires `--allow-net`.
 ```lykn
 (bind cmd (new Deno:Command "git" (obj :args #a("log" "--oneline"))))
 (bind output (await (cmd:output)))
-(console:log ((new TextDecoder):decode output:stdout))
+(console:log (-> (new TextDecoder) (:decode output:stdout)))
 ```
 
 Requires `--allow-run`.
@@ -386,7 +386,7 @@ Deno/Web APIs for new code.
 | **Globals** | `process.env.X` | `(Deno:env:get "X")` |
 | | `process.argv.slice(2)` | `Deno:args` |
 | | `__dirname` | `import:meta:dirname` |
-| | `Buffer.from(str)` | `((new TextEncoder):encode str)` |
+| | `Buffer.from(str)` | `(-> (new TextEncoder) (:encode str))` |
 | **I/O** | `fs.readFile` | `(Deno:readTextFile path)` |
 | | `fs.writeFile` | `(Deno:writeTextFile path data)` |
 | **Network** | `http.createServer` | `(Deno:serve handler)` |
