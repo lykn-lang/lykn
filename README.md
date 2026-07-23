@@ -63,7 +63,7 @@ lykn test
 (bind result (-> 5 (+ 3) (* 2)))
 
 ;; Objects with keyword syntax
-(bind user (obj :name "lykn" :version "0.5.0"))
+(bind user (obj :name "lykn" :version "0.6.0"))
 
 ;; Controlled mutation via cells
 (bind counter (cell 0))
@@ -100,7 +100,7 @@ lykn has two compiler implementations sharing the same syntax and semantics:
 **Rust compiler** (standalone binary, no runtime dependencies):
 
 ```
-.lykn source → reader → expander → classifier → analyzer → emitter → codegen → JavaScript
+.lykn source → reader → expander → resolver → classifier → analyzer → emitter → codegen → JavaScript
 ```
 
 **JS compiler** (browser bundle + Deno):
@@ -113,6 +113,9 @@ lykn has two compiler implementations sharing the same syntax and semantics:
 
 - **Reader** (`lykn-lang/reader`) — S-expression parser with source locations
 - **Expander** (`lykn-lang/expander`) — macro expansion (user macros via Deno subprocess)
+- **Resolver** (`lykn-lang/resolver`) — name resolution; tags each atom as bound
+  or unresolved so every downstream stage reads one answer to "what does this
+  name refer to?" (resolve-once)
 - **Classifier** (`lykn-lang/classifier`) — S-expressions → typed surface AST
 - **Analyzer** (`lykn-lang/analysis`) — type registry, exhaustiveness checking,
   scope tracking, unused binding detection
@@ -131,7 +134,7 @@ lykn has two compiler implementations sharing the same syntax and semantics:
   (Bawden's quasiquote algorithm)
 - **Compiler** (`packages/lang/compiler.js`) — kernel forms → ESTree AST → JS via
   [astring](https://github.com/davidbonnet/astring)
-- **Browser shim** (`packages/browser/mod.js`) — 73KB bundle with `<script
+- **Browser shim** (`packages/browser/mod.js`) — ~73 KB bundle with `<script
   type="text/lykn">` support and `window.lykn` API
 
 ## Toolchain
@@ -150,14 +153,17 @@ lykn test                 # discover and run .lykn/.lyk tests
 lykn test test/surface/   # test a specific directory
 lykn fmt main.lykn        # format Lykn source
 lykn check main.lykn      # syntax check
-lykn build --dist         # stage all packages into dist/
+lykn lint main.lykn       # lint Lykn source for idiom/style issues
+lykn dist                 # stage all packages into target/lykn/dist/
 lykn publish --jsr        # publish to JSR
 lykn publish --npm        # publish to npm
 lykn publish --jsr --dry-run   # verify without publishing
 ```
 
-`lykn lint` for Lykn-source linting is planned for 0.6.0 — see
-[`docs/philosophy.md`](docs/philosophy.md) §0.6.0 commitments.
+`lykn lint` checks Lykn source for idiom and style issues and is part of the
+default `make check` gate — see [`docs/philosophy.md`](docs/philosophy.md)
+§0.6.0 commitments for the rationale. `lykn dist` supersedes the older
+`lykn build --dist` / `lykn build --npm` staging flags.
 
 ### Contributor commands (working on Lykn itself)
 
@@ -301,7 +307,7 @@ kernel forms at compile time.
 | lykn | JS |
 |---|---|
 | `(-> x (+ 3) (* 2))` | `(x + 3) * 2` |
-| `(->> items (filter even?) (map double))` | `map(filter(items, even), double)` |
+| `(->> items (filter even?) (map double))` | `map(filter(items, isEven), double)` |
 | `(-> user (get :name) (:to-upper-case))` | `user["name"].toUpperCase()` |
 | `(some-> user (get :name) (:to-upper-case))` | IIFE with null checks + method call |
 
@@ -318,9 +324,15 @@ kernel forms at compile time.
 
 ### Kernel forms
 
-Kernel forms are the compilation targets for surface macros. You can use
-them directly for low-level control, JS interop, or when surface syntax
-doesn't cover a specific JS feature.
+Kernel forms are the compilation targets for surface macros — the thin
+JavaScript dialect the surface lowers into. Most are reachable when surface
+syntax doesn't cover a specific JS feature, or you need low-level control or
+JS interop. The exception is the kernel *declaration* forms — `const`, `let`,
+`var`, `function`, `function*` — which collide with surface bindings: under
+DD-58 strict mode a bare declaration form is a compile error in a `.lykn`
+file. Reach one from surface code with the per-form escape (e.g.
+`(kernel:const x 1)`), or write it in a `.lyk` kernel file, where the kernel
+namespace is available directly.
 
 #### Basics
 
@@ -477,7 +489,7 @@ for the full doc with rationale, implications, and audit checklist.
 - **No runtime.** Compiled Lykn is just JavaScript — no runtime library
   shipped to the browser, nothing extra in published packages.
 - **Self-contained.** The Rust compiler is a single binary with no runtime
-  dependencies. The browser bundle is 73KB and inspectable.
+  dependencies. The browser bundle is ~73 KB and inspectable.
 - **Two implementations.** Rust for the compiler and dev-side tooling
   (fast, single binary). JS for the browser bundle and in-browser
   `<script>` workflow.
