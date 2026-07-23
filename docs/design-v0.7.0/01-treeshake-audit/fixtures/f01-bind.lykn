@@ -1,0 +1,5 @@
+;; Family: bind — plain (pure) + typed non-literal (hazards H3 + H5)
+(bind answer 42)
+(func compute-limit :args (:number n) :body (* n 2))
+(bind :number limit (compute-limit 21))
+(export (names answer limit compute-limit))
