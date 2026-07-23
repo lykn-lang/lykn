@@ -1,0 +1,4 @@
+;; Family: type — enum constructors (const object literals) + record constructor (function)
+(type Color Red Green Blue)
+(type Point (x :number) (y :number))
+(export (names Red Green Blue Point))

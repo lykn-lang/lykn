@@ -1,0 +1,6 @@
+;; Family: template — plain (pure template literal) + ICU plural at top level (hazard H4 probe)
+(bind name "world")
+(bind greeting (template "Hello, " name "!"))
+(bind count 3)
+(bind items-label (template "{n, plural, one {1 item} other {# items}}" :n count))
+(export (names greeting items-label))

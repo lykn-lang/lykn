@@ -1,0 +1,6 @@
+;; Family: macro use — import-macros is compile-time; expanded output should be plain pure code
+;; (If the path form needs adjusting for import-macros resolution, amend + record in cc-run-notes.)
+(import-macros "./macros-impl.lykn" (twice))
+(func quadruple :args (:number x) :body (twice (twice x)))
+(bind eight (twice 4))
+(export (names quadruple eight))

@@ -1,0 +1,4 @@
+;; Family: cell — top-level cell binding (expected pure: object literal) + mutation inside a func
+(bind counter (cell 0))
+(func bump :args (:number by) :body (swap! counter (fn (:number n) (+ n by))))
+(export (names counter bump))
