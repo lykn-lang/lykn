@@ -50,16 +50,15 @@ fn closest_kernel_form(name: &str) -> Option<&'static str> {
 /// compound-head calls with a non-keyword first arg (IIFE `((fn (x) …) 5)`,
 /// curried `((make-adder 3) 4)`).
 ///
-/// **Match-guard carve-out (arc15 slice02):** a `match` clause with a guard —
-/// `((Some v) :when (> v 0) body)` — has the *same* List-head + keyword-arg0
-/// shape, but `:when` is the guard keyword, not a method. `:when` is the only
-/// keyword the surface grammar puts in arg0 of a list-headed form that isn't a
-/// method call, so excluding it removes the false positive without narrowing the
-/// trap (a real `.when()` call on an expression would thread: `(-> e (:when …))`).
+/// This is **pure shape** — no keyword is special-cased. The one production that
+/// shares the shape but isn't a method call, a guarded `match` clause
+/// (`((Some v) :when (> v 0) body)`), is exempted *structurally* (by position)
+/// via [`is_match_clause`], applied by both walkers — not by carving out a
+/// keyword name here (which would reopen the trap for a method literally named
+/// `when`).
 fn check_method_on_expression(values: &[SExpr]) -> Result<(), Diagnostic> {
     if let Some(head @ (SExpr::List { .. } | SExpr::Cons { .. })) = values.first()
         && let Some(SExpr::Keyword { value: method, .. }) = values.get(1)
-        && method != "when"
     {
         return Err(Diagnostic {
             message: "method call on a parenthesized expression is not supported \
@@ -83,10 +82,37 @@ fn check_method_on_expression(values: &[SExpr]) -> Result<(), Diagnostic> {
 /// `None`. This is the **single shared predicate** (arc15 slice02): the compile
 /// pass ([`validate_method_calls`]) and the `no-method-on-expression` lint rule
 /// both go through [`check_method_on_expression`] — no forked detection.
+///
+/// Callers that have the node's `parent` should first consult [`is_match_clause`]
+/// and skip the check for a guarded `match` clause (the one non-call production
+/// with this shape). The lint rule does this via `ctx.ancestors`; the compile
+/// walk does it structurally while descending.
 pub fn method_on_expression_diagnostic(node: &SExpr) -> Option<Diagnostic> {
     match node {
         SExpr::List { values, .. } => check_method_on_expression(values).err(),
         _ => None,
+    }
+}
+
+/// DD-64 (arc15 slice02 follow-up B): is `node` a **guarded `match` clause** —
+/// the one production sharing the method-on-expression shape (`(<list> :kw …)`)
+/// that is *not* a method call?
+///
+/// True iff `parent` is a `match` form (its head resolves via [`as_form_head`]
+/// to `"match"`, so a **shadowed** `match` — a bound name — is *not* special,
+/// DD-61) and `node` is one of its **clauses** (`parent.values[2..]`), i.e. not
+/// the subject at index 1. Identity is by pointer, so only the exact child node
+/// being visited is exempt — the subject and each clause's body/guard are still
+/// checked normally (recursed into). `match` is the only clause-bearing form
+/// with a keyword-arg0 clause today; a future one would extend this helper.
+pub fn is_match_clause(node: &SExpr, parent: &SExpr) -> bool {
+    if let SExpr::List { values, .. } = parent
+        && values.first().and_then(|h| h.as_form_head()) == Some("match")
+        && values.len() >= 3
+    {
+        values[2..].iter().any(|clause| std::ptr::eq(clause, node))
+    } else {
+        false
     }
 }
 
@@ -100,24 +126,29 @@ pub fn method_on_expression_diagnostic(node: &SExpr) -> Option<Diagnostic> {
 pub fn validate_method_calls(forms: &[SExpr]) -> Vec<Diagnostic> {
     let mut out = Vec::new();
     for form in forms {
-        walk_method_calls(form, &mut out);
+        walk_method_calls(form, None, &mut out);
     }
     out
 }
 
-fn walk_method_calls(expr: &SExpr, out: &mut Vec<Diagnostic>) {
+/// `parent` is the enclosing node (if any), so a guarded `match` clause can be
+/// exempted structurally via [`is_match_clause`] — the same helper the lint rule
+/// uses. The clause is *not* shape-checked, but is still recursed into, so a trap
+/// in a clause body/guard (and the match subject) is still caught.
+fn walk_method_calls(expr: &SExpr, parent: Option<&SExpr>, out: &mut Vec<Diagnostic>) {
     match expr {
         SExpr::List { values, .. } => {
-            if let Err(diag) = check_method_on_expression(values) {
+            let exempt = parent.is_some_and(|p| is_match_clause(expr, p));
+            if !exempt && let Err(diag) = check_method_on_expression(values) {
                 out.push(diag);
             }
             for v in values {
-                walk_method_calls(v, out);
+                walk_method_calls(v, Some(expr), out);
             }
         }
         SExpr::Cons { car, cdr, .. } => {
-            walk_method_calls(car, out);
-            walk_method_calls(cdr, out);
+            walk_method_calls(car, Some(expr), out);
+            walk_method_calls(cdr, Some(expr), out);
         }
         _ => {}
     }
@@ -5836,16 +5867,39 @@ mod tests {
     }
 
     #[test]
-    fn dd64_match_guard_is_not_a_trap() {
-        // `((Some v) :when (> v 0) body)` is a match clause with a guard — same
-        // List-head + keyword-arg0 shape as the trap, but `:when` is the guard
-        // keyword, not a method (arc15 slice02 regression — slice01 rejected it).
+    fn dd64_match_guard_is_exempt_structurally() {
+        // `((Some v) :when (> v 0) body)` is a guarded match clause — same
+        // List-head + keyword-arg0 shape as the trap, exempt *by position*
+        // (arc15 slice02 follow-up B; slice01 wrongly rejected it).
         assert!(
             method_errs("(match x ((Some v) :when (> v 0) \"pos\") (_ \"neg\"))").is_empty(),
-            "match :when guard must not be flagged"
+            "match :when guard clause must not be flagged"
         );
-        // the clause form itself, in isolation, is also fine.
-        assert!(method_errs("((Some v) :when (> v 0) \"pos\")").is_empty());
+    }
+
+    #[test]
+    fn dd64_when_method_outside_match_is_still_a_trap() {
+        // The exemption is structural, NOT a keyword carve-out: `:when` on a
+        // parenthesized expression *outside* a match clause is still the trap
+        // (closes the `.when()` silent-miscompile hole).
+        assert_eq!(method_errs("((express p):when arg)").len(), 1);
+        assert_eq!(method_errs("(bind r ((express p):when arg))").len(), 1);
+    }
+
+    #[test]
+    fn dd64_match_subject_and_clause_body_still_checked() {
+        // Only the clause *list* is exempt — the subject (index 1) and clause
+        // bodies/guards are still checked.
+        assert_eq!(
+            method_errs("(match ((express p):join \"\") (_ \"x\"))").len(),
+            1,
+            "trap in the match subject"
+        );
+        assert_eq!(
+            method_errs("(match x ((Some v) ((express p):join \"\")) (_ \"y\"))").len(),
+            1,
+            "trap in a clause body"
+        );
     }
 
     #[test]

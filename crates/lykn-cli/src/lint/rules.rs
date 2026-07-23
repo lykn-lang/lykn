@@ -477,7 +477,16 @@ impl LintRule for NoMethodOnExpression {
     fn id(&self) -> &'static str {
         "no-method-on-expression"
     }
-    fn enter(&mut self, node: &SExpr, _ctx: &LintContext, out: &mut Vec<Diagnostic>) {
+    fn enter(&mut self, node: &SExpr, ctx: &LintContext, out: &mut Vec<Diagnostic>) {
+        // Structural exemption (shared with the compile walk): a guarded `match`
+        // clause `((pattern) :when …)` has the trap's shape but isn't a method
+        // call. The subject and clause bodies are still checked (they're not
+        // clause nodes). `ctx.ancestors.last()` is the immediate parent.
+        if let Some(parent) = ctx.ancestors.last()
+            && lykn_lang::classifier::is_match_clause(node, parent)
+        {
+            return;
+        }
         if let Some(diag) = lykn_lang::classifier::method_on_expression_diagnostic(node) {
             out.push(diag);
         }

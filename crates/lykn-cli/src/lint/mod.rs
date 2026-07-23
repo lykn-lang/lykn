@@ -791,6 +791,35 @@ mod tests {
     }
 
     #[test]
+    fn no_method_on_expression_match_clause_structural_exemption() {
+        // follow-up B: the guarded match clause is exempt (structural, via
+        // ctx.ancestors) — parity with the compile pass.
+        assert!(
+            method_findings("(bind r (match x ((Some v) :when (> v 0) \"pos\") (_ \"neg\")))")
+                .is_empty(),
+            "match :when guard clause exempt"
+        );
+        // …but the exemption is positional, not a keyword carve-out:
+        assert_eq!(
+            method_findings("(bind r ((express p):when arg))").len(),
+            1,
+            ":when outside a match clause is still the trap (hole closed)"
+        );
+        // …and the subject / clause bodies are still checked:
+        assert_eq!(
+            method_findings("(bind r (match ((express p):join \"\") (_ \"x\")))").len(),
+            1,
+            "trap in the match subject"
+        );
+        assert_eq!(
+            method_findings("(bind r (match x ((Some v) ((express p):join \"\")) (_ \"y\")))")
+                .len(),
+            1,
+            "trap in a clause body"
+        );
+    }
+
+    #[test]
     fn snapshot_no_method_on_expression() {
         let findings = method_findings("((express parts):join \"\")");
         let text = findings

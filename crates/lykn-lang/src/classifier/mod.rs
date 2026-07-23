@@ -69,6 +69,13 @@ pub fn method_on_expression_diagnostic(node: &SExpr) -> Option<Diagnostic> {
     forms::method_on_expression_diagnostic(node)
 }
 
+/// DD-64 (arc15 slice02 follow-up B): the shared structural exemption — is `node`
+/// a guarded `match` clause of `parent`? Both the compile walk and the lint rule
+/// consult this before flagging the shape. See [`forms::is_match_clause`].
+pub fn is_match_clause(node: &SExpr, parent: &SExpr) -> bool {
+    forms::is_match_clause(node, parent)
+}
+
 pub fn classify_expr_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     forms::classify_form_strict(expr)
 }
