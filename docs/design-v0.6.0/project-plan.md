@@ -132,6 +132,17 @@ Arcs in dependency order. Each delivers one coherent capability.
 > for a return loop rather than a straight line. arc05 closed 2026-07-21;
 > arc14 is deferred to 0.7.0. (High numbers belie the order: arc10 ran first.)
 
+> **Standalone slices (new 2026-07-24).** Not every unit of 0.6.0 work is an
+> arc. When a body of work is one slice, `PROJECT-MANAGEMENT.md` Part II collapses
+> the wrapper: the per-slice documents live directly in `NN-<slug>/` under this
+> directory, with no `arc-plan.md` above them. Bare-`NN` non-arc units already
+> exist under `docs/design-v0.7.0/` (`01-treeshake-audit` etc.); this tree now
+> uses the same convention. Current standalone slices:
+>
+> - **[`01-macro-entry-diagnostics`](./01-macro-entry-diagnostics/slice-doc.md)** —
+>   `import-macros` resolution diagnostics (open, 2026-07-24). Gates nothing;
+>   fixes a *misleading* error rather than a missing one.
+
 ## 3. Current status (2026-06-28)
 
 - **✅ Reconciliation RESOLVED (2026-06-29) — see [`_reconciliation-2026-06-29.md`](./_reconciliation-2026-06-29.md):**
@@ -238,6 +249,41 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.36 — 2026-07-24 (standalone slice `01-macro-entry-diagnostics` opened)
+
+**A new unit that is deliberately not an arc06 row.** While running arc06's
+host-reconcile runsheet (Part C-bis — the negative check proving a `lykn link`
+override is live), the operator hit a diagnostic that is *confidently wrong*:
+when the resolved macro package **directory does not exist**, both compilers
+report "no macro entry found" and hint *"add `lykn.macroEntry` to the package's
+`deno.json`"* — instructing the user to edit a file inside a directory that
+isn't there. Neither implementation checks whether the directory exists before
+walking its candidate chain.
+
+Two further defects found in the same recon: the error names a resolved path the
+user never typed (the `lykn link` overlay that produced it is invisible in the
+message), and the JS expander's throw escapes to Deno's top level, presenting an
+expected user-facing failure as `Uncaught (in promise)`.
+
+**Not routed to arc06** — that arc is CLOSE-READY at the operator's gate, its
+capability is delivered, and `find_macro_entry` predates slice07 entirely
+(slice07 only made the path reachable a new way). Reopening it a third time in
+one day would be the wrong instinct. Opened instead as a **standalone slice**
+under the Part II collapse; see the note in §2.
+
+**The structural point of the slice is parity, not the message.** The diagnostic
+exists twice — `pass0.rs` and `expander.js` — and has *already drifted*; nothing
+compares them. This is DD-57's Q4=A / W-3 problem in miniature, so ledger row
+**M-4** requires a test that fails when the two diverge. Fixing the wording
+without it only resets the drift clock.
+
+Which-child-surfaced: the operator's arc06 host reconcile. Discoveries logged to
+`docs/backlog/discoveries.md`, including a candidate **systemic** entry — "no
+coverage → the uncovered case ships wrong" has now appeared three times in one
+day (slice07's rewritten-with-zero-coverage function, the test whose name
+overclaimed its guard, and the missing-directory case here, which has no test in
+either compiler).
 
 ### v1.35 — 2026-07-24 (arc06 CLOSE-READY — all 7 slices closed; 0.6.0's founding goal met)
 
