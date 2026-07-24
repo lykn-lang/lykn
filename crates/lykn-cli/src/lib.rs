@@ -3,6 +3,7 @@
 //! Provides the reader, formatter, config, and dist modules used by
 //! the `lykn` CLI tool.
 
+pub mod add;
 pub mod config;
 pub mod dist;
 pub mod formatter;

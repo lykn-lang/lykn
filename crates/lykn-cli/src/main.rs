@@ -124,6 +124,11 @@ enum Commands {
     },
     /// Stage all workspace packages into target/lykn/dist/ for publishing
     Dist,
+    /// Add an exact-pinned registry dependency to the root project.json
+    Add {
+        /// The dependency specifier: jsr:@scope/pkg[@version] or npm:pkg[@version]
+        specifier: String,
+    },
     /// Publish package(s)
     Publish {
         /// Publish to JSR (JavaScript Registry)
@@ -187,6 +192,7 @@ fn main() {
         Commands::New { name, path } => cmd_new(&name, path.as_deref()),
         Commands::Build { browser, npm, dist } => cmd_build(browser, npm, dist),
         Commands::Dist => cmd_dist(),
+        Commands::Add { specifier } => cmd_add(&specifier),
         Commands::Publish {
             jsr,
             npm,
@@ -1341,6 +1347,80 @@ fn cmd_dist() {
             process::exit(1);
         }
     }
+}
+
+/// `lykn add <specifier>` — add an exact-pinned registry dependency to the root
+/// `project.json` (DD-63 / arc06 slice03). Resolution shells to deno; the local
+/// overlay (`lykn link`) is slice04.
+fn cmd_add(specifier: &str) {
+    use lykn_cli::add;
+
+    let spec = match add::parse_specifier(specifier) {
+        Ok(s) => s,
+        Err(e) => {
+            eprintln!("error: {e}");
+            process::exit(2);
+        }
+    };
+
+    // The root project.json (walk up from cwd).
+    let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
+    let project_json = match find_config_in(&cwd, &["project.json"]) {
+        Some(p) => p,
+        None => {
+            eprintln!("error: not in a lykn project (no project.json found)");
+            process::exit(2);
+        }
+    };
+
+    // Exact version: use the given one, else resolve the latest published.
+    let version = match &spec.version {
+        Some(v) => v.clone(),
+        None => {
+            eprintln!("Resolving latest version of {}…", spec.name);
+            match add::resolve_latest_version(&spec) {
+                Ok(v) => v,
+                Err(e) => {
+                    eprintln!("error: could not resolve {}: {e}", spec.name);
+                    process::exit(1);
+                }
+            }
+        }
+    };
+
+    let pair = add::import_pair(&spec, &version);
+    if let Err(e) = add::upsert_imports(&project_json, &pair) {
+        eprintln!("error: {e}");
+        process::exit(1);
+    }
+
+    // Validate at add-time: cache the pinned specifier so a bad add fails now,
+    // not mid-build. (The macro axis: a MacroModule's bare key is the macro
+    // specifier, so `import-macros` resolves via the same pair.)
+    let bare = &pair[0].1;
+    if let Err(e) = add::cache_specifier(bare) {
+        eprintln!(
+            "warning: added {bare} to project.json, but it did not resolve: {e}\n\
+             fix the specifier or re-run `lykn add`."
+        );
+        process::exit(1);
+    }
+
+    let kind = add::detect_kind(&spec, &version);
+    let kind_note = match kind {
+        lykn_cli::config::PackageKind::MacroModule => " (macro module — usable via import-macros)",
+        lykn_cli::config::PackageKind::Tooling => " (tooling)",
+        lykn_cli::config::PackageKind::Runtime => "",
+    };
+    eprintln!(
+        "✓ added {}@{version} to {}{kind_note}\n  {} = {}\n  {} = {}",
+        spec.name,
+        project_json.display(),
+        pair[0].0,
+        pair[0].1,
+        pair[1].0,
+        pair[1].1,
+    );
 }
 
 /// Build the browser bundle by invoking esbuild via Deno.
