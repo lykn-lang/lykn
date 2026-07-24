@@ -1,6 +1,6 @@
 {
     "name": "@lykn/testing",
-    "version": "0.5.2",
+    "version": "0.6.0-dev",
     "description": "Testing macros for Lykn — test, suite, is-equal, ok, is-thrown, matches",
     "exports": "./mod.lykn",
     "lykn": {

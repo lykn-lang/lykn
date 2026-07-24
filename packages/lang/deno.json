@@ -1,6 +1,6 @@
 {
     "name": "@lykn/lang",
-    "version": "0.5.2",
+    "version": "0.6.0-dev",
     "description": "JavaScript implementation of the Lykn language compiler",
     "exports": {
         ".": "./mod.js",

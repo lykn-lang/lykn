@@ -1,3 +1,15 @@
 [workspace]
 resolver = "2"
 members = ["crates/lykn", "crates/lykn-cli", "crates/lykn-lang"]
+
+# The three crates are never released independently — they always share the
+# language release version. Declare it once here; each crate inherits it via
+# `version.workspace = true`. The inter-crate path deps inherit the matching
+# version from `[workspace.dependencies]` below, so a release bump edits this
+# file only.
+[workspace.package]
+version = "0.6.0-dev"
+
+[workspace.dependencies]
+lykn-lang = { path = "crates/lykn-lang", version = "0.6.0-dev" }
+lykn-cli = { path = "crates/lykn-cli", version = "0.6.0-dev" }
