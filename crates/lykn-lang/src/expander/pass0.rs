@@ -158,17 +158,6 @@ fn validate_import_form(values: &[SExpr]) -> Result<(String, Vec<String>), LyknE
     Ok((module_path, binding_names))
 }
 
-/// Resolve a module specifier using three-tier dispatch.
-///
-/// **Tier 1 — Scheme-prefixed**: specifiers starting with `jsr:`, `npm:`,
-/// `https:`, or `http:` are delegated to Deno's `import.meta.resolve`.
-///
-/// **Tier 2 — Import-map lookup**: bare names (no `./`, `../`, or `/` prefix)
-/// are looked up in the optional import map. Exact matches are tried first,
-/// followed by longest-prefix matches for keys ending in `/`.
-///
-/// **Tier 3 — Filesystem path**: relative and absolute paths are resolved
-/// against the importing file's directory, preserving the original behavior.
 /// A registry/remote scheme whose resolution is owned by Deno / the JSR fetch —
 /// never a local override target. `file:` is deliberately absent: a `file:` URL
 /// is a local redirect and is handled by the resolver's `file://` branch.
@@ -179,6 +168,24 @@ fn is_scheme_specifier(s: &str) -> bool {
         || s.starts_with("https:")
 }
 
+/// Resolve a module specifier using tiered dispatch.
+///
+/// **Tier 0 — Exact override (arc06/slice07)**: an exact import-map entry whose
+/// target is a LOCAL (non-scheme) path short-circuits here, ahead of the scheme
+/// branch — the `lykn link` dev overlay, so a *literal* `jsr:`/`npm:` specifier
+/// (e.g. a macro module linked to a local dist) is redirected to a local build.
+/// Guarded by [`is_scheme_specifier`] so it can never reroute one registry
+/// specifier to another (an alias→`jsr:` mapping still flows through Tier 2).
+///
+/// **Tier 1 — Scheme-prefixed**: specifiers starting with `jsr:`, `npm:`,
+/// `https:`, or `http:` are delegated to Deno's `import.meta.resolve`.
+///
+/// **Tier 2 — Import-map lookup**: bare names (no `./`, `../`, or `/` prefix)
+/// are looked up in the optional import map. Exact matches are tried first,
+/// followed by longest-prefix matches for keys ending in `/`.
+///
+/// **Tier 3 — Filesystem path**: relative and absolute paths are resolved
+/// against the importing file's directory, preserving the original behavior.
 fn resolve_specifier(
     module_path: &str,
     file_path: Option<&Path>,
@@ -239,7 +246,10 @@ fn resolve_specifier(
         && !module_path.starts_with("../")
         && !module_path.starts_with('/')
     {
-        // Try exact match first
+        // Try exact match first. Since Tier 0 already consumed every exact
+        // match whose target is LOCAL, only a scheme-*targeted* exact match
+        // reaches here (e.g. an alias → `jsr:…`); the recursion below then
+        // resolves that scheme target. Local targets short-circuit at Tier 0.
         if let Some(target) = map.get(module_path) {
             // Re-resolve the target (it may be scheme-prefixed)
             return resolve_specifier(target, file_path, None, deno);
@@ -1158,20 +1168,37 @@ mod tests {
     }
 
     #[test]
-    fn test_resolve_specifier_scheme_target_override_is_not_taken() {
-        // Guard: an exact entry whose TARGET is itself a registry specifier is
-        // NOT short-circuited by Tier 0 — it flows through the normal tiers (so
-        // an alias→jsr: mapping is unchanged). Here a bare alias → jsr: falls to
-        // Tier 2, which recurses on the jsr: target (Deno). We only assert Tier 0
-        // did not hijack it to a bogus local path (it would panic/err via Deno if
-        // the network path ran; so just assert the alias path is attempted).
+    fn test_is_scheme_specifier() {
+        // The Tier-0 guard: only a non-scheme (local) target short-circuits, so
+        // an exact entry whose TARGET is a registry specifier is NEVER hijacked
+        // to a local path — it flows through the normal tiers. Cover the guard
+        // directly (no Deno / no network).
+        for s in ["jsr:@x/y@1", "npm:foo", "http://x/y", "https://x/y"] {
+            assert!(is_scheme_specifier(s), "{s} should be a scheme specifier");
+        }
+        for s in [
+            "/abs/path/mod.lykn",
+            "./rel.lykn",
+            "file:///x/mod.lykn",
+            "my-macros",
+        ] {
+            assert!(
+                !is_scheme_specifier(s),
+                "{s} should NOT be a scheme specifier (a local override target)"
+            );
+        }
+    }
+
+    #[test]
+    fn test_resolve_specifier_local_alias_override_resolves_via_tier0() {
+        // Positive: a bare alias whose target is a LOCAL (non-scheme) path
+        // short-circuits at Tier 0 (the same path a literal jsr: override takes).
         if !deno_available() {
             eprintln!("skipping: deno not found");
             return;
         }
         let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
         let mut map = HashMap::new();
-        // A LOCAL alias override still works via Tier 0 (fires, non-scheme target):
         map.insert("my-macros".to_string(), "/tmp/x/mod.lykn".to_string());
         let result = resolve_specifier("my-macros", None, Some(&map), &mut deno).unwrap();
         assert_eq!(result, PathBuf::from("/tmp/x/mod.lykn"));

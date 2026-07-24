@@ -133,8 +133,11 @@ enum Commands {
     Link {
         /// The dependency to override: a package name (resolved under the
         /// checkout's target/lykn/build/) OR a literal registry specifier
-        /// `jsr:@scope/pkg@ver` / `npm:pkg` (resolved under target/lykn/dist/,
-        /// which stages a macro module's `.lykn` source)
+        /// `jsr:@scope/pkg@ver` / `npm:pkg` for a MACRO MODULE, resolved under
+        /// target/lykn/dist/ where its `.lykn` source is staged. (A *runtime*
+        /// import of a linked specifier is not yet redirected — it errors rather
+        /// than silently using the published package; full runtime override is
+        /// a 0.7.0 item.)
         package: String,
         /// The local project checkout to resolve the build against
         path: PathBuf,

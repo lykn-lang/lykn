@@ -289,41 +289,66 @@ pub fn write_effective_deno_config() -> Option<PathBuf> {
     if overlay.is_empty() {
         return None;
     }
-    let base_text = std::fs::read_to_string(root.join("project.json")).ok()?;
-    let mut cfg: serde_json::Value = serde_json::from_str(&base_text).ok()?;
-
-    // The effective config lives at `target/lykn/` — two levels below root — so
-    // every relative import value must be absolutized against root, or deno
-    // resolves it relative to `target/lykn/` (arc06/slice07: an overlay on a
-    // project with relative self-package imports broke otherwise). Registry
-    // (`jsr:`/`npm:`) and already-absolute values pass through (see
-    // `absolutize_import`). Covers the base import map + the overlay (local wins).
-    if let Some(imports) = cfg.get_mut("imports").and_then(|v| v.as_object_mut()) {
-        for v in imports.values_mut() {
-            if let Some(s) = v.as_str() {
-                *v = serde_json::Value::String(absolutize_import(s, &root));
-            }
-        }
-        for (k, v) in overlay {
-            imports.insert(k, serde_json::Value::String(absolutize_import(&v, &root)));
-        }
-    }
-    // Drop the `workspace` field. The effective config is a dev import-map
-    // override for `deno run`/`test` on specific files — not a workspace root.
-    // deno requires workspace members to be nested UNDER the config's directory,
-    // but this file sits at `target/lykn/` while the members are at
-    // `../../packages/*`; declaring the workspace here is both impossible and
-    // unnecessary (publish/dist use the raw `project.json`, which is unchanged).
-    if let Some(obj) = cfg.as_object_mut() {
-        obj.remove("workspace");
-    }
-
+    let out = build_effective_config(&root, &overlay)?;
     let eff_dir = root.join("target").join("lykn");
     std::fs::create_dir_all(&eff_dir).ok()?;
     let eff_path = eff_dir.join("project.effective.json");
-    let out = serde_json::to_string_pretty(&cfg).ok()?;
     std::fs::write(&eff_path, out).ok()?;
     Some(eff_path)
+}
+
+/// Build the effective-config JSON from `root`'s `project.json` merged with
+/// `overlay` (local wins). Split from the fs shell so it's unit-testable without
+/// CWD coupling (`write_effective_deno_config` above resolves `root` + writes).
+///
+/// The effective config lives at `target/lykn/` — two levels below root — so
+/// every relative import value is absolutized against root, or deno resolves it
+/// relative to `target/lykn/` (arc06/slice07: an overlay on a project with
+/// relative self-package imports broke otherwise). Registry (`jsr:`/`npm:`) and
+/// already-absolute values pass through (see [`absolutize_import`]). Covers the
+/// base import map + the overlay.
+///
+/// The overlay insertion is hoisted out of the base-imports block so it lands
+/// whether or not the base had an `imports` key (iter1 Finding 1: linking a dep
+/// before any `imports` exists silently dropped the override otherwise). Returns
+/// `None` on a malformed (non-object) `imports` so the caller falls back to the
+/// raw config rather than fabricating an override-free one.
+///
+/// `workspace` is dropped: the effective config is a dev import-map override for
+/// `deno run`/`test` on specific files, not a workspace root — deno requires
+/// members nested UNDER the config's dir, but this file sits at `target/lykn/`
+/// while members are at `../../packages/*`; publish/dist use the raw config.
+fn build_effective_config(root: &Path, overlay: &IndexMap<String, String>) -> Option<String> {
+    let base_text = std::fs::read_to_string(root.join("project.json")).ok()?;
+    let mut cfg: serde_json::Value = serde_json::from_str(&base_text).ok()?;
+
+    if let Some(imports) = cfg.get_mut("imports").and_then(|v| v.as_object_mut()) {
+        for v in imports.values_mut() {
+            if let Some(s) = v.as_str() {
+                *v = serde_json::Value::String(absolutize_import(s, root));
+            }
+        }
+    }
+    let obj = cfg.as_object_mut()?;
+    if obj.get("imports").is_some_and(|v| !v.is_object()) {
+        eprintln!("warning: project.json `imports` is not an object; skipping the dev overlay");
+        return None;
+    }
+    let imports = obj
+        .entry("imports")
+        .or_insert_with(|| serde_json::Value::Object(Default::default()))
+        .as_object_mut()?;
+    for (k, v) in overlay {
+        imports.insert(
+            k.clone(),
+            serde_json::Value::String(absolutize_import(v, root)),
+        );
+    }
+
+    if let Some(obj) = cfg.as_object_mut() {
+        obj.remove("workspace");
+    }
+    serde_json::to_string_pretty(&cfg).ok()
 }
 
 /// Absolutize a relative filesystem import value against `root`, so it resolves
@@ -770,6 +795,83 @@ mod tests {
         assert_eq!(
             absolutize_import("../dep/target/lykn/build/dep/", root),
             "/proj/../dep/target/lykn/build/dep/"
+        );
+    }
+
+    // arc06/slice07 iter1 (Finding 3): build_effective_config coverage.
+    fn overlay(pairs: &[(&str, &str)]) -> IndexMap<String, String> {
+        pairs
+            .iter()
+            .map(|(k, v)| (k.to_string(), v.to_string()))
+            .collect()
+    }
+
+    #[test]
+    fn build_effective_config_lands_overlay_without_base_imports_and_drops_workspace() {
+        // Finding 1 falls out here: no `imports` key + a `workspace` field.
+        let tmp = tempfile::TempDir::new().unwrap();
+        let root = tmp.path();
+        std::fs::write(
+            root.join("project.json"),
+            r#"{"workspace":["./packages/x"]}"#,
+        )
+        .unwrap();
+        let out =
+            build_effective_config(root, &overlay(&[("jsr:@a/b@1", "/abs/dist/b/")])).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&out).unwrap();
+        assert!(v.get("workspace").is_none(), "workspace must be dropped");
+        assert_eq!(
+            v["imports"]["jsr:@a/b@1"], "/abs/dist/b/",
+            "overlay must land even with no base `imports`"
+        );
+    }
+
+    #[test]
+    fn build_effective_config_absolutizes_base_and_preserves_registry_absolute() {
+        let tmp = tempfile::TempDir::new().unwrap();
+        let root = tmp.path();
+        std::fs::write(
+            root.join("project.json"),
+            r#"{"imports":{"self/":"./target/lykn/build/self/","lang":"jsr:@lykn/lang@0.5.2","abs":"/already/abs/x.js"}}"#,
+        )
+        .unwrap();
+        let out = build_effective_config(root, &overlay(&[("ov", "/o/mod.js")])).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&out).unwrap();
+        // relative base value absolutized (trailing slash preserved) — compare
+        // against absolutize_import, which is separately tested for exact shape.
+        assert_eq!(
+            v["imports"]["self/"],
+            serde_json::Value::String(absolutize_import("./target/lykn/build/self/", root))
+        );
+        assert_eq!(
+            v["imports"]["lang"], "jsr:@lykn/lang@0.5.2",
+            "registry unchanged"
+        );
+        assert_eq!(
+            v["imports"]["abs"], "/already/abs/x.js",
+            "absolute unchanged"
+        );
+        assert_eq!(v["imports"]["ov"], "/o/mod.js", "overlay present");
+    }
+
+    #[test]
+    fn build_effective_config_empty_imports_object_takes_overlay() {
+        let tmp = tempfile::TempDir::new().unwrap();
+        let root = tmp.path();
+        std::fs::write(root.join("project.json"), r#"{"imports":{}}"#).unwrap();
+        let out = build_effective_config(root, &overlay(&[("k", "/local/dir/")])).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&out).unwrap();
+        assert_eq!(v["imports"]["k"], "/local/dir/");
+    }
+
+    #[test]
+    fn build_effective_config_malformed_imports_is_none() {
+        let tmp = tempfile::TempDir::new().unwrap();
+        let root = tmp.path();
+        std::fs::write(root.join("project.json"), r#"{"imports":"oops"}"#).unwrap();
+        assert!(
+            build_effective_config(root, &overlay(&[("k", "/x/")])).is_none(),
+            "malformed (non-object) imports must fall back to None, not fabricate a config"
         );
     }
 }
