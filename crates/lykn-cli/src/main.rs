@@ -811,10 +811,19 @@ fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<Pat
         } else {
             "lykn(source)"
         };
+        // 01-macro-entry-diagnostics M-5: catch the JS compiler's throw so an
+        // *expected* user-facing failure (e.g. a linked macro dir that isn't
+        // there) is a clean stderr message + exit code — not Deno's
+        // `Uncaught (in promise)` top-level crash. The Rust side reports the
+        // non-zero status below as "error compiling <file>".
         let script = format!(
             "import {{ lykn }} from '{compiler_import}';\n\
              const source = Deno.readTextFileSync({:?});\n\
-             const js = {lykn_call};\n\
+             let js;\n\
+             try {{ js = {lykn_call}; }} catch (e) {{\n\
+             \x20 console.error(e && e.message ? e.message : String(e));\n\
+             \x20 Deno.exit(1);\n\
+             }}\n\
              Deno.writeTextFileSync({:?}, js);\n",
             lykn_str, js_str,
         );

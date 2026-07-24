@@ -311,14 +311,70 @@ fn resolve_specifier(
     }
 }
 
+/// Where an `import-macros` specifier came from, so a resolution failure can
+/// name what the user actually wrote and how the path was reached. Threaded into
+/// [`find_macro_entry`] (arc06 · 01-macro-entry-diagnostics, design (a)) so the
+/// full diagnostic is produced at one site — the JS `findMacroEntry` mirrors this
+/// exactly, and a parity test fails if the two messages drift.
+pub struct MacroOrigin<'a> {
+    /// The specifier as written in `(import-macros "<specifier>" …)`.
+    pub specifier: &'a str,
+    /// The path was reached through a Tier-0 `lykn link` overlay entry
+    /// (a scheme specifier redirected to a local build).
+    pub via_overlay: bool,
+}
+
+/// The diagnostic for a macro-module package **directory that does not exist**.
+/// Kept byte-identical with JS `macroDirNotFoundMessage` (parity-tested).
+pub fn macro_dir_not_found_message(pkg_dir: &Path, origin: Option<&MacroOrigin>) -> String {
+    let mut m = format!(
+        "import-macros: package directory not found: {}",
+        pkg_dir.display()
+    );
+    if let Some(o) = origin {
+        m.push_str(&format!("\n  specifier: {}", o.specifier));
+        if o.via_overlay {
+            m.push_str("\n  via: lykn link overlay (project.local.json)");
+            m.push_str(&format!(
+                "\n  hint: run 'lykn dist' in the linked project, or 'lykn unlink {}'",
+                o.specifier
+            ));
+        }
+    }
+    m
+}
+
+/// The diagnostic for a package directory that **exists but has no macro entry**.
+/// Kept byte-identical with JS `noMacroEntryMessage` (parity-tested).
+pub fn no_macro_entry_message(pkg_dir: &Path) -> String {
+    format!(
+        "import-macros: no macro entry found in {}\n  \
+         checked: lykn.macroEntry, mod.lykn, mod.lyk, macros.lykn, macros.lyk, index.lykn, index.lyk\n  \
+         hint: add lykn.macroEntry to the package's deno.json",
+        pkg_dir.display()
+    )
+}
+
 /// Locate the macro entry point file within a package directory.
 ///
-/// The lookup chain is:
+/// A **missing** `pkg_dir` yields a distinct "package directory not found" error
+/// ([`macro_dir_not_found_message`]) — never the `lykn.macroEntry` hint, which
+/// would tell the user to edit a file inside a directory that isn't there. When
+/// the directory exists the lookup chain is:
 /// 1. `deno.json` field `lykn.macroEntry`
 /// 2. Fallback files: `mod.lykn`, `mod.lyk`, `macros.lykn`, `macros.lyk`,
 ///    `index.lykn`, `index.lyk`
 /// 3. `deno.json` field `exports` if it points to a `.lykn` or `.lyk` file
-fn find_macro_entry(pkg_dir: &Path) -> Result<PathBuf, LyknError> {
+fn find_macro_entry(pkg_dir: &Path, origin: Option<&MacroOrigin>) -> Result<PathBuf, LyknError> {
+    // Missing directory: the candidate walk below would fail every probe *for
+    // that reason* and mis-hint "add lykn.macroEntry". Branch first.
+    if !pkg_dir.is_dir() {
+        return Err(LyknError::Read {
+            message: macro_dir_not_found_message(pkg_dir, origin),
+            location: SourceLoc::default(),
+        });
+    }
+
     let deno_json = pkg_dir.join("deno.json");
 
     // Check deno.json for lykn.macroEntry
@@ -362,13 +418,7 @@ fn find_macro_entry(pkg_dir: &Path) -> Result<PathBuf, LyknError> {
     }
 
     Err(LyknError::Read {
-        message: format!(
-            "import-macros: no macro entry found in {}\n  \
-             checked: lykn.macroEntry (absent or file not found)\n  \
-             checked: mod.lykn, mod.lyk, macros.lykn, macros.lyk, index.lykn, index.lyk (not found)\n  \
-             hint: add lykn.macroEntry to the package's deno.json",
-            pkg_dir.display()
-        ),
+        message: no_macro_entry_message(pkg_dir),
         location: SourceLoc::default(),
     })
 }
@@ -393,9 +443,20 @@ fn process_single_import(
     // Three-tier specifier resolution.
     let mut resolved = resolve_specifier(&module_path, file_path, imports, deno)?;
 
-    // If resolved path is a directory (package root), find the macro entry.
-    if resolved.is_dir() {
-        resolved = find_macro_entry(&resolved)?;
+    // If the resolved path is a directory (package root), find the macro entry.
+    // A *missing* path also routes through find_macro_entry so it reports
+    // "package directory not found" (with overlay provenance) instead of the
+    // downstream "cannot read macro module" — 01-macro-entry-diagnostics M-1/M-3.
+    // via_overlay: a scheme specifier (jsr:/npm:) redirected to a LOCAL target is
+    // exactly the Tier-0 `lykn link` overlay case.
+    if resolved.is_dir() || !resolved.exists() {
+        let origin = MacroOrigin {
+            specifier: &module_path,
+            via_overlay: is_scheme_specifier(&module_path)
+                && imports
+                    .is_some_and(|m| m.get(&module_path).is_some_and(|t| !is_scheme_specifier(t))),
+        };
+        resolved = find_macro_entry(&resolved, Some(&origin))?;
     }
 
     // Canonicalize for stable cache keying.
@@ -959,7 +1020,7 @@ mod tests {
         .unwrap();
         std::fs::write(tmp.join("my-macros.lykn"), "(macro foo () 1)").unwrap();
 
-        let result = find_macro_entry(&tmp).unwrap();
+        let result = find_macro_entry(&tmp, None).unwrap();
         assert_eq!(result, tmp.join("my-macros.lykn"));
 
         let _ = std::fs::remove_dir_all(&tmp);
@@ -972,7 +1033,7 @@ mod tests {
         std::fs::create_dir_all(&tmp).unwrap();
         std::fs::write(tmp.join("mod.lykn"), "(macro bar () 2)").unwrap();
 
-        let result = find_macro_entry(&tmp).unwrap();
+        let result = find_macro_entry(&tmp, None).unwrap();
         assert_eq!(result, tmp.join("mod.lykn"));
 
         let _ = std::fs::remove_dir_all(&tmp);
@@ -986,7 +1047,7 @@ mod tests {
         // No mod.lykn, only macros.lykn
         std::fs::write(tmp.join("macros.lykn"), "(macro baz () 3)").unwrap();
 
-        let result = find_macro_entry(&tmp).unwrap();
+        let result = find_macro_entry(&tmp, None).unwrap();
         assert_eq!(result, tmp.join("macros.lykn"));
 
         let _ = std::fs::remove_dir_all(&tmp);
@@ -999,7 +1060,7 @@ mod tests {
         std::fs::create_dir_all(&tmp).unwrap();
         std::fs::write(tmp.join("index.lykn"), "(macro qux () 4)").unwrap();
 
-        let result = find_macro_entry(&tmp).unwrap();
+        let result = find_macro_entry(&tmp, None).unwrap();
         assert_eq!(result, tmp.join("index.lykn"));
 
         let _ = std::fs::remove_dir_all(&tmp);
@@ -1017,7 +1078,7 @@ mod tests {
         .unwrap();
         std::fs::write(tmp.join("lib.lykn"), "(macro quux () 5)").unwrap();
 
-        let result = find_macro_entry(&tmp).unwrap();
+        let result = find_macro_entry(&tmp, None).unwrap();
         assert_eq!(result, tmp.join("./lib.lykn"));
 
         let _ = std::fs::remove_dir_all(&tmp);
@@ -1029,7 +1090,7 @@ mod tests {
         let _ = std::fs::remove_dir_all(&tmp);
         std::fs::create_dir_all(&tmp).unwrap();
 
-        let err = find_macro_entry(&tmp).unwrap_err();
+        let err = find_macro_entry(&tmp, None).unwrap_err();
         let msg = format!("{err}");
         assert!(
             msg.contains("no macro entry found"),
@@ -1041,6 +1102,51 @@ mod tests {
         );
 
         let _ = std::fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn test_find_macro_entry_missing_dir_is_not_the_macroentry_hint() {
+        // 01-macro-entry-diagnostics M-1: a MISSING package directory must not
+        // tell the user to add lykn.macroEntry to a deno.json inside a dir that
+        // isn't there. Distinct "package directory not found" message.
+        let missing = std::env::temp_dir().join("lykn_test_macro_entry_absent_dir_xyz");
+        let _ = std::fs::remove_dir_all(&missing);
+        let err = find_macro_entry(&missing, None).unwrap_err();
+        let msg = format!("{err}");
+        assert!(
+            msg.contains("package directory not found"),
+            "missing dir should say so, got: {msg}"
+        );
+        assert!(
+            !msg.contains("lykn.macroEntry"),
+            "missing dir must NOT emit the macroEntry hint, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn test_find_macro_entry_missing_dir_overlay_provenance() {
+        // M-3: when the path came through a `lykn link` overlay, the error names
+        // the specifier the user wrote, says it came from the overlay, and gives
+        // both exits (lykn dist / lykn unlink <specifier>).
+        let missing = std::env::temp_dir().join("lykn_test_macro_entry_overlay_absent");
+        let _ = std::fs::remove_dir_all(&missing);
+        let origin = MacroOrigin {
+            specifier: "jsr:@lykn/testing@0.5.2",
+            via_overlay: true,
+        };
+        let err = find_macro_entry(&missing, Some(&origin)).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("package directory not found"), "{msg}");
+        assert!(msg.contains("specifier: jsr:@lykn/testing@0.5.2"), "{msg}");
+        assert!(msg.contains("via: lykn link overlay"), "{msg}");
+        assert!(
+            msg.contains("lykn unlink jsr:@lykn/testing@0.5.2"),
+            "must name the unlink exit, got: {msg}"
+        );
+        assert!(
+            msg.contains("lykn dist"),
+            "must name the dist exit, got: {msg}"
+        );
     }
 
     #[test]
@@ -1057,7 +1163,7 @@ mod tests {
         .unwrap();
         std::fs::write(tmp.join("mod.lykn"), "(macro x () 0)").unwrap();
 
-        let result = find_macro_entry(&tmp).unwrap();
+        let result = find_macro_entry(&tmp, None).unwrap();
         assert_eq!(result, tmp.join("mod.lykn"));
 
         let _ = std::fs::remove_dir_all(&tmp);
@@ -1077,7 +1183,7 @@ mod tests {
         std::fs::write(tmp.join("custom.lykn"), "(macro a () 1)").unwrap();
         std::fs::write(tmp.join("mod.lykn"), "(macro b () 2)").unwrap();
 
-        let result = find_macro_entry(&tmp).unwrap();
+        let result = find_macro_entry(&tmp, None).unwrap();
         assert_eq!(result, tmp.join("custom.lykn"));
 
         let _ = std::fs::remove_dir_all(&tmp);

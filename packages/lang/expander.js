@@ -1222,13 +1222,61 @@ function findProjectImports(filePath) {
 }
 
 /**
+ * Diagnostic for a macro-module package DIRECTORY that does not exist.
+ * MUST stay byte-identical with the Rust `macro_dir_not_found_message`
+ * (pass0.rs) — a parity test fails if they drift
+ * (01-macro-entry-diagnostics M-4).
+ * @param {string} pkgDir
+ * @param {{specifier: string, viaOverlay: boolean} | null} origin
+ * @returns {string}
+ */
+function macroDirNotFoundMessage(pkgDir, origin) {
+  let m = `import-macros: package directory not found: ${pkgDir}`;
+  if (origin) {
+    m += `\n  specifier: ${origin.specifier}`;
+    if (origin.viaOverlay) {
+      m += `\n  via: lykn link overlay (project.local.json)`;
+      m += `\n  hint: run 'lykn dist' in the linked project, or 'lykn unlink ${origin.specifier}'`;
+    }
+  }
+  return m;
+}
+
+/**
+ * Diagnostic for a package directory that EXISTS but has no macro entry.
+ * MUST stay byte-identical with the Rust `no_macro_entry_message` (pass0.rs).
+ * @param {string} pkgDir
+ * @returns {string}
+ */
+function noMacroEntryMessage(pkgDir) {
+  return (
+    `import-macros: no macro entry found in ${pkgDir}\n` +
+    `  checked: lykn.macroEntry, mod.lykn, mod.lyk, macros.lykn, macros.lyk, index.lykn, index.lyk\n` +
+    `  hint: add lykn.macroEntry to the package's deno.json`
+  );
+}
+
+/**
  * Find the macro entry file in a package directory.
- * Checks: lykn.macroEntry field, then mod.lykn, macros.lykn, index.lykn,
- * then exports if it points to .lykn.
+ *
+ * A MISSING pkgDir yields a distinct "package directory not found" error (with
+ * overlay provenance when `origin` says so) — never the `lykn.macroEntry` hint,
+ * which would tell the user to edit a file inside a directory that isn't there
+ * (01-macro-entry-diagnostics M-1/M-3). When the directory exists: lykn.macroEntry
+ * field, then mod.lykn/…/index.lyk, then a .lykn-valued exports.
  * @param {string} pkgDir - Absolute path to the package directory
+ * @param {{specifier: string, viaOverlay: boolean} | null} [origin]
  * @returns {string} Absolute path to the macro entry file
  */
-function findMacroEntry(pkgDir) {
+function findMacroEntry(pkgDir, origin = null) {
+  // Missing directory: the candidate walk below would fail every probe *for
+  // that reason* and mis-hint "add lykn.macroEntry". Branch first.
+  let dirStat;
+  try { dirStat = Deno.statSync(pkgDir); } catch { dirStat = null; }
+  if (!dirStat || !dirStat.isDirectory) {
+    throw new Error(macroDirNotFoundMessage(pkgDir, origin));
+  }
+
   const denoJsonPath = _resolve(pkgDir, 'deno.json');
   try {
     const content = Deno.readTextFileSync(denoJsonPath);
@@ -1249,12 +1297,11 @@ function findMacroEntry(pkgDir) {
     }
   } catch { /* no deno.json */ }
 
-  throw new Error(
-    `import-macros: no macro entry found in ${pkgDir}\n` +
-    `  checked: lykn.macroEntry, mod.lykn, mod.lyk, macros.lykn, macros.lyk, index.lykn, index.lyk\n` +
-    `  hint: add lykn.macroEntry to the package's deno.json`
-  );
+  throw new Error(noMacroEntryMessage(pkgDir));
 }
+
+// Exported for the cross-compiler diagnostics tests (01-macro-entry-diagnostics).
+export { findMacroEntry, macroDirNotFoundMessage, noMacroEntryMessage };
 
 function _getMacroCacheDir() {
   const xdg = typeof Deno !== 'undefined' ? Deno.env.get('XDG_CACHE_HOME') : null;
@@ -1419,7 +1466,11 @@ function resolveImportMacrosSpecifier(specifier, filePath) {
         if (/\.[a-z]+$/i.test(fsPath)) {
           fsPath = _dirname(fsPath);
         }
-        return findMacroEntry(fsPath);
+        // A scheme specifier that resolves to a LOCAL file:// path was redirected
+        // by the import map — the `lykn link` overlay (a published package would
+        // resolve to a jsr:/npm: URL, handled below). Carry that provenance so a
+        // missing-dir failure names the specifier + both exits (M-3).
+        return findMacroEntry(fsPath, { specifier, viaOverlay: true });
       }
       // Non-file URL (jsr:, npm:, https:) — resolve via deno info + fetch
       return resolveRegistryMacroSource(specifier);
