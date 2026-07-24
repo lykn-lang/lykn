@@ -48,6 +48,13 @@ DD-56, DD-58 in particular).
 audit's routed items; each has a named source + re-entry condition; this
 list is the "watcher" that keeps routed items from re-burying)*:
 
+> **Consolidated (2026-07-22) into `release/0.7.x` →
+> `docs/design-v0.7.0/BACKLOG.md`** — the single canonical 0.7.0+ candidate
+> register. It carries these items (§B), the big-rock arcs (§A — incl. **A6 ·
+> fully-typed classification** = arc15 slice03's deferred Option C), and
+> memory-only items (§C). This list is kept here as the in-tree provenance
+> snapshot; new routing lands in the BACKLOG.
+
 - **`set-symbol!` deprecation decision** (breaking) — the `SetSymbol` TODO's
   trigger fired at arc10's close; it is a live surface form (the only
   surface spelling for computed-key assignment; 1 guide + 2 tests use it).
@@ -90,7 +97,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0); `lykn lint` (16 rules, resolution-aware) ships. Inline suppression deferred → arc14/DD-62 |
 | **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
-| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **Active** — slice-planned 2026-07-21 (recon-first): slice02 mycelium re-audit (host-run) → DD-63 + slice03 `lykn add` → slice04 external-project path → close. slice01 (exports-gap) closed |
+| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **CLOSE-READY** (2026-07-24) — slices 01–05 closed/CDC-verified: mycelium re-audit + DD-63 → `lykn add` (`f9f9014`, exact-pin) → `lykn link`/`unlink` (`e1c0dd7`, git-ignored overlay; dist reads raw = publish-safe) → import-by-specifier (`42500a9`, zero lang change). mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green). Closing-report A-1…A-7 all met; awaits operator gate + host reconcile |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above | **Future** (was M14/M15) |
@@ -98,14 +105,15 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
 | **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded → 0.7.0** (2026-07-21; **release boundary decided 0.7.0**, operator; not slice-planned — post-0.6.0 capability) |
-| **arc15 · surface-syntax-traps** | Surface shapes that compile clean but mean something else → compile error + fix-it + lint + guide fix; slice01 = reject method-on-expression `(<non-atom-head> :kw …)` (DD-64), thread instead | threading (shipping); arc05 (lint) | **Active — slice-planned 2026-07-22** (0.6.0; CDC sweep: 0 source hits, ~10 guide sites teach it; slice01 open) |
+| **arc15 · surface-syntax-traps** | Surface shapes that compile clean but mean something else → compile error + fix-it + lint + guide fix; slice01 = reject method-on-expression `(<non-atom-head> :kw …)` (DD-64), thread instead | threading (shipping); arc05 (lint) | **Active** (0.6.0) — slice01 reject (`9ca9c7e`) + slice02 lint/check-parity (`d6c23b5` + follow-up B `90cf211`) **closed/CDC-verified**; slice03 hardening **DEFERRED → 0.7.0** (Option C = fully-typed classification, `release/0.7.x` BACKLOG A6); slice04 sibling traps (ID-32/ID-33) shaped |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
 > **Dependency/sequence** is carried by the *Depends on* column and the arcs'
-> Dependencies sections. Current dependency sequence of the open arcs:
-> **arc10-gate → (arc11 ∥ arc05) → arc06 → arc07 → arc09.** (High numbers
-> belie the order: arc10 ran first; arc11 may run parallel to arc05.)
+> Dependencies sections. Current dependency sequence of the remaining open
+> arcs (2026-07-24): **arc06 (CLOSE-READY, at gate) + arc15 (active) → arc07
+> (docs) → arc09 (release).** arc05 closed 2026-07-21; arc14 is deferred to
+> 0.7.0. (High numbers belie the order: arc10 ran first.)
 
 ## 3. Current status (2026-06-28)
 
@@ -193,7 +201,7 @@ inherited from arc attestations.
 | P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | architecture merged to release (`6aa3724`); corpus 1345/0; classifier.js/surface-helpers.js present | restored after the 2026-06-29 reconciliation |
 | P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **done** | arc04 closed (5/5 slices); `closing-report.md` composition check; surface.js 2315→448; emitMatchMacro byte-identical; lint green | DD-37 step 4 (`_kernel`) surfaced as follow-up |
 | P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | **done** | 4 slices closed; arc05 closing-report composition A-1…A-7; **gate GO 2026-07-21** (`make check` + P-11 demo) | **reconciled** |
-| P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | open | slice01 (exports-gap) closed | main work (`lykn add`, mycelium audit) not started |
+| P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | **open (CLOSE-READY)** | slices 01–05 closed/CDC-verified (`lykn add` DD-63 `f9f9014`; `lykn link` `e1c0dd7`; import-by-specifier `42500a9`); **closing-report A-1…A-7 all met**; mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green) | flips to **done** on operator gate GO + host reconcile of the CC-attested runtime rows |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
 | P-8 | `lykn publish` fails on a dirty tree; `--allow-dirty` overrides, never auto-injected | end-to-end publish dry-run on dirty + clean tree | serious | DoD | open | | reproduce at project scale |
 | P-9 | same surface input → same output across Rust + JS for the migrated corpus (`compileBoth`) | run `compileBoth` corpus; divergences documented or zero | serious | DoD | **done** | corpus **green: 1293 passed / 0 failed** (slice11); 0 semantic divergences | form-codegen only (~11%) remains a documented coverage bound |
@@ -206,11 +214,51 @@ inherited from arc attestations.
 | P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **done** | 2/2 slices (`75c9cc2`/`4f2a628`); **operator gate GO 2026-07-05 23:31** (three-moment demo 0/0 with `./bin/lykn`, destination proven by the compile message; sweep + hygiene from the earlier session) | P-7's demo unconditional; tracked candidates instantiated |
 | P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | **done** | slice01 (`3612cad`); 1m52s→2.6s / >2m→1m04s; **operator gate GO 2026-07-05** (suite run green; census grep 3 line-mentions ≈ 1 compile + 1 execution — once, vs ~16 before); `lykn test` in 13s during the arc11 demo | the verification cost that was blocking the gates is gone |
 | P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | done | **reconciled** — gate GO 2026-07-09 (arc13 closing-report §5 gate record: ancestry ×6, `make check` 100%, matrix 1947/53 exact = the two documented classes, D2 demos verbatim) | arc05 slice03 / P-11 unblocked; the corpus closes the coverage gap permanently |
+| P-19 | arc15 (surface-syntax-traps) closed + composed — method-call-on-expression (and every non-atom-head + keyword-first shape) is a hard **compile + `lykn check` error** with a threading fix-it; no guide teaches the trap; no source regressed | ptr: arc15 closing-report + host `lykn compile`/`make check` | serious | arc06/slice02 #6 finding + operator pushback (v1.33) | open | slice01 reject (`9ca9c7e`) + slice02 lint (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **deferred → 0.7.0** (Option C = A6, `release/0.7.x` BACKLOG); slice04 (sibling traps ID-32/ID-33) shaped | arc not yet closed (slice04 + arc-close pending); DD-64 still -DRAFT (odm = Duncan) |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.33 — 2026-07-24 (arc06 → CLOSE-READY; arc15 slices 01–03 resolved; 0.7.0 candidates consolidated)
+**arc06 · cross-project-dep-ergonomics → CLOSE-READY** — the arc the whole
+0.6.0 dive was in service of ("consume lykn as a dependency end-to-end").
+Slices 02–05 delivered + CDC-verified since v1.32: **slice02** mycelium
+re-audit (`a2e9b00`; DD-63 promoted, odm); **slice03 `lykn add`** (`f9f9014`)
+— exact-version pin via deno-shell (the `~>` DSL + `nodejs-semver` engine
+routed to the 0.7.0 build-tool arc, BACKLOG A1.1); **slice04 `lykn
+link`/`unlink`** (`e1c0dd7`) — non-destructive git-ignored `project.local.json`
+overlay, **safety property architecturally guaranteed** (dist/publish read the
+raw `project.json`; link/unlink never write it); **slice05 N1
+import-by-specifier** (guide `42500a9`; mycelium `e60af9d`) — the compiler
+preserves import specifiers verbatim (`emit_import`), so N1 is pure convention,
+**zero `lang` change**. **A-6 green** (CC-attested): mycelium as a downstream —
+`lykn build` ✓ · `lykn test` **43/0** · `lykn publish --jsr --dry` green,
+dev-only self-key absent from the staged config (publish-safe). Closing-report
+A-1…A-7 all met. **P-6 → CLOSE-READY; gate = operator's** after host reconcile.
+
+**arc15 · surface-syntax-traps — slices 01–03 resolved.** slice01 reject
+(`9ca9c7e`) + slice02 lint/check-parity (`d6c23b5` + follow-up **B** `90cf211`)
+**closed/CDC-verified** — `((express x):method …)` is now a hard compile +
+`lykn check` error with a threading fix-it. **slice03** (type-safe hardening)
+**DEFERRED → 0.7.0 (Option B kept).** Two verify-before-writing self-stops
+(CC's discipline) established that match-awareness is **irreducible without
+typing the nested exprs**: classification leaves nested exprs raw
+(`Bind.value`/`FuncClause.body` are `SExpr`), so a nested guarded `match` keeps
+the `((pattern) :when …)` trap shape (proven vs `data-types.lykn:54–59`).
+Option B (structural `is_match_clause`/`ptr::eq` exemption) is the verified
+0.6.0 guarantee; the real fix (**Option C = fully-typed classification**) is
+research → `release/0.7.x` BACKLOG **A6**. Lint rule **left as-is** (operator,
+07-24) — its retirement folds into Option-C, not a standalone 0.6.0 change.
+**slice04** (sibling traps ID-32/ID-33) shaped. **P-19 added.**
+
+**0.7.0 candidate register consolidated (2026-07-22)** into `release/0.7.x` →
+`docs/design-v0.7.0/BACKLOG.md` (§A big-rock arcs incl. **A6 fully-typed
+classification**; §B routed 0.6.0 items; §C memory-only). §1's list is retained
+here as the in-tree provenance snapshot. Remaining 0.6.0 work: **arc06 gate →
+arc15 slice04 + close → arc07 (docs) → arc09 (release).** Which-child-surfaced:
+arc06 slices 02–05 + arc15 slices 01–03 closes + operator direction.
 
 ### v1.32 — 2026-07-21 (arc06 ACTIVE — slice-planned recon-first)
 arc06 (the 0.6.0 dive's original motivation) resumed after arc05 closed.
