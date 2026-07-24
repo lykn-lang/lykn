@@ -1,5 +1,24 @@
 # arc06 — Closing Report (Cross-Project Dependency Ergonomics)
 
+> ## ⚠ SUPERSEDED IN PART — 2026-07-24
+>
+> This report was written when arc06's last slice was **slice05**. Two slices
+> have landed since (**slice06 · version-consolidation**, **slice07 ·
+> link-registry-specifier**), and slice07 is currently in **iteration 1** after
+> CDC review returned a blocking regression. The arc is therefore **ACTIVE, not
+> CLOSE-READY**, and this report is **not** the arc's close.
+>
+> What still stands: the **A-1…A-7 per-row walk below** and its evidence.
+> What does not: the **slice walk** (incomplete — 06 and 07 missing), the
+> **composition check** (does not cover the linked-specifier capability), and
+> the **verdict**. Arc ledger rows **A-8** and **A-9** were added in `arc-plan.md`
+> v1.3 to cover the two new slices; A-9 is what blocks the gate.
+>
+> This report will be **re-issued** — not edited in place — when slice07 closes.
+> Surfaced by: slice07's CDC review.
+
+
+
 **By:** CDC · **Date:** 2026-07-22 · **Status: CLOSE-READY** — pending a host
 reconcile of the CC-attested runtime rows + the operator's gate (GO). Verifier ≠
 closer: CDC verified each slice and synthesizes the close here; the gate is
