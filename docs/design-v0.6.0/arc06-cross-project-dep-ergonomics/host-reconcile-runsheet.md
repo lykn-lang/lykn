@@ -30,9 +30,9 @@
 
 So this reconcile drives the **current toolchain** (0.6.0-dev) against a
 downstream that consumes **published-0.5.2 libraries** — which is exactly what
-arc06 is about (the dependency-ergonomics *capability* is toolchain-level).
-Exercising current-*source* lang/testing is **not** a `lykn link` operation and
-is out of scope — see the note after Part C.
+arc06 is about (the dependency-ergonomics *capability* is toolchain-level). To
+*also* exercise current-**source** testing, link its literal specifier at your
+local dist build — **Part C-bis** (arc06/slice07).
 
 ---
 
@@ -92,27 +92,46 @@ grep -rn '\.\./.*\.js' packages --include='*.lykn'   # expect: (no output)
 > If C3 ever reports a dirty tree: `git status`, then commit/stash on the scratch
 > branch and re-run. Do **not** pass `--allow-dirty`.
 
-### Note — exercising current-*source* lang/testing is out of scope (and not a `lykn link` op)
+### Part C-bis — *(optional)* test against current-*source* testing via `lykn link`
 
-Part C proves the current **toolchain** builds/tests mycelium; mycelium's
-*libraries* stay on their published-0.5.2 pins. You might expect `lykn link` to
-re-point them at your local `packages/lang`/`packages/testing` build — it can't,
-and that's a real (acceptable) limitation, not a runsheet step:
+Part C runs mycelium against its **published-0.5.2** library pins. To also
+exercise **current-source** `packages/testing`, link the *literal* macro
+specifier at your local **dist** build (arc06/slice07). `lykn link` resolves a
+`jsr:`/`npm:` arg under `target/lykn/dist/<pkg>/` — where a macro module's
+`.lykn` **source** is staged (the build dir has only compiled `.js`). The
+resolver's exact override wins ahead of the JSR fetch; `dist`/`publish` still
+read the raw config, so nothing local can be published. Do it on a throwaway
+branch — it writes a git-ignored `project.local.json` you'll discard.
 
-- `lykn link <pkg> <path>` overrides an **import-map alias** key (and resolves
-  `<path>/target/lykn/build/<pkg>/`, so the arg is the **build-dir name** —
-  `lang`/`testing`, not `@lykn/lang`).
-- But mycelium consumes testing via the **literal** specifier
-  `(import-macros "jsr:@lykn/testing@0.5.2" …)`, which **bypasses** the `testing`
-  alias entirely — so no alias override redirects it. And mycelium imports **no
-  `lang/`** at runtime (only testing macros + its self-package). So there is
-  nothing here that a link could redirect.
+```sh
+cd ~/lab/lykn/lang && lykn dist          # stage packages/testing → dist (with mod.lykn)
+cd ~/lab/lykn/mycelium
+git switch -c smoke/link-current-testing  # throwaway; keep the slice05 branch clean
 
-**Finding (routed, not blocking):** redirecting a *literal* registry specifier
-(`jsr:@scope/pkg@ver`) — especially a macro module — to a local build is a
-capability `lykn link` does not cover. Route to the **0.7.0 build-tool arc**
-(alongside the `~>` DSL / `lykn update`). It does **not** gate arc06: A-6's bar
-is the toolchain-level composition demo (Part C), which passes.
+lykn link jsr:@lykn/testing@0.5.2 ~/lab/lykn/lang
+#   → overlay: "jsr:@lykn/testing@0.5.2": ".../lang/target/lykn/dist/testing/"
+
+lykn build && lykn test packages/mycl-html/tests/    # expect: 43 passed / 0 failed
+
+# (optional) prove the override is ACTIVE, not a silent JSR fallback:
+mv ~/lab/lykn/lang/target/lykn/dist/testing{,.off}
+lykn test packages/mycl-html/tests/ 2>&1 | grep -i 'no macro entry'   # → fails: using local
+mv ~/lab/lykn/lang/target/lykn/dist/testing{.off,}
+
+# teardown:
+lykn unlink jsr:@lykn/testing@0.5.2
+git switch smoke/0.6-slice05-import-by-specifier && git branch -D smoke/link-current-testing
+```
+
+- [ ] *(optional)* mycelium builds + tests **43/0** against current-source testing
+- [ ] *(optional)* negative check: renaming the local dist makes it fail (override is live)
+
+> This is a *stronger* demo than the A-6 bar requires; a red result would be a
+> testing-vs-0.5.2 drift finding, **not** an arc06 blocker.
+>
+> **Note:** `lykn link <pkg> <path>` (a bare package name) still targets
+> `target/lykn/build/<pkg>/` — for linking a *local workspace package*. A
+> `jsr:`/`npm:` **specifier** targets `dist/` instead (macro source lives there).
 
 ---
 
