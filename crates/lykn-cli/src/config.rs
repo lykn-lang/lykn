@@ -193,6 +193,139 @@ pub fn read_project_config_optional() -> Option<ProjectConfig> {
 }
 
 // ---------------------------------------------------------------------------
+// The dev-only local overlay (DD-63 §3(a) — `lykn link`/`unlink`, arc06 slice04)
+// ---------------------------------------------------------------------------
+
+/// The nearest ancestor directory containing `project.json` (the project root).
+pub fn find_project_root() -> Option<PathBuf> {
+    let cwd = std::env::current_dir().ok()?;
+    crate::util::walk_up_find(&cwd, |d| d.join("project.json").exists())
+}
+
+/// The git-ignored local overlay path (`<root>/project.local.json`).
+pub fn overlay_path(root: &Path) -> PathBuf {
+    root.join("project.local.json")
+}
+
+/// Read the local overlay's `imports` (ordered; empty if the file is
+/// absent/malformed — an overlay is optional).
+pub fn read_overlay_imports(root: &Path) -> IndexMap<String, String> {
+    #[derive(Deserialize, Default)]
+    struct Overlay {
+        #[serde(default)]
+        imports: IndexMap<String, String>,
+    }
+    crate::util::read_json_file::<Overlay>(&overlay_path(root))
+        .map(|o| o.imports)
+        .unwrap_or_default()
+}
+
+/// **Dev-only** effective config: `project.json` ⊕ `project.local.json`
+/// (`local` wins). Used by run / test / compile / macro-expansion so a linked
+/// dependency resolves to its local build. **`dist`/`publish` MUST NOT use
+/// this** — they read the raw [`read_project_config`], so a linked dep never
+/// reaches published output (the DD-63 §3(a) safety property). Returns `None`
+/// if there is no `project.json`.
+pub fn read_effective_project_config_optional() -> Option<ProjectConfig> {
+    effective_from_root(&find_project_root()?)
+}
+
+/// `read_effective_project_config_optional`'s testable core: merge for a given
+/// project root.
+fn effective_from_root(root: &Path) -> Option<ProjectConfig> {
+    let mut base = read_project_config(&root.join("project.json")).ok()?;
+    for (k, v) in read_overlay_imports(root) {
+        base.imports.insert(k, v); // local wins
+    }
+    Some(base)
+}
+
+/// Write `project.local.json` with `entries` upserted into its `imports`
+/// (creating the file if absent, updating keys in place, preserving order).
+pub fn write_overlay(root: &Path, entries: &[(String, String)]) -> Result<(), String> {
+    let mut imports = read_overlay_imports(root);
+    for (k, v) in entries {
+        imports.insert(k.clone(), v.clone());
+    }
+    write_overlay_file(&overlay_path(root), &imports)
+}
+
+/// Remove `keys` from `project.local.json`'s `imports`; delete the file when it
+/// becomes empty. Errors if none of `keys` were present (nothing to unlink).
+pub fn remove_from_overlay(root: &Path, keys: &[String]) -> Result<(), String> {
+    let path = overlay_path(root);
+    let mut imports = read_overlay_imports(root);
+    let before = imports.len();
+    for k in keys {
+        imports.shift_remove(k);
+    }
+    if imports.len() == before {
+        return Err("no matching linked dependency in project.local.json".to_string());
+    }
+    if imports.is_empty() {
+        std::fs::remove_file(&path).map_err(|e| format!("cannot remove {}: {e}", path.display()))
+    } else {
+        write_overlay_file(&path, &imports)
+    }
+}
+
+/// Render `{ "imports": { … } }` (4-space) to `path` — lykn fully owns
+/// `project.local.json`, so it is generated deterministically.
+fn write_overlay_file(path: &Path, imports: &IndexMap<String, String>) -> Result<(), String> {
+    let body = crate::add::render_imports(imports, "        ", "    ");
+    let text = format!("{{\n    \"imports\": {body}\n}}\n");
+    std::fs::write(path, text).map_err(|e| format!("cannot write {}: {e}", path.display()))
+}
+
+/// The `--config` path deno should use for **dev** (run/test): when a non-empty
+/// overlay exists, write the merged config to a git-ignored
+/// `target/lykn/project.effective.json` (with relative override paths
+/// **absolutized**, so they resolve from that deeper location — DD-63 §7) and
+/// return it; otherwise `None` (callers pass `project.json` directly — zero
+/// overhead for the common case).
+pub fn write_effective_deno_config() -> Option<PathBuf> {
+    let root = find_project_root()?;
+    let overlay = read_overlay_imports(&root);
+    if overlay.is_empty() {
+        return None;
+    }
+    let base_text = std::fs::read_to_string(root.join("project.json")).ok()?;
+    let mut imports = read_project_config(&root.join("project.json"))
+        .ok()?
+        .imports;
+    for (k, v) in overlay {
+        imports.insert(k, absolutize_import(&v, &root));
+    }
+    let merged = crate::add::splice_imports(&base_text, &imports).ok()?;
+    let eff_dir = root.join("target").join("lykn");
+    std::fs::create_dir_all(&eff_dir).ok()?;
+    let eff_path = eff_dir.join("project.effective.json");
+    std::fs::write(&eff_path, merged).ok()?;
+    Some(eff_path)
+}
+
+/// Absolutize a relative filesystem import value against `root`, so it resolves
+/// to the same place from the effective config's deeper location
+/// (`target/lykn/`). Registry (`jsr:`/`npm:`), URL, and already-absolute values
+/// are left unchanged.
+fn absolutize_import(value: &str, root: &Path) -> String {
+    if value.starts_with("jsr:")
+        || value.starts_with("npm:")
+        || value.starts_with("http:")
+        || value.starts_with("https:")
+        || Path::new(value).is_absolute()
+    {
+        return value.to_string();
+    }
+    let trailing = value.ends_with('/');
+    let mut s = root.join(value).to_string_lossy().into_owned();
+    if trailing && !s.ends_with('/') {
+        s.push('/');
+    }
+    s
+}
+
+// ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
 
@@ -531,5 +664,90 @@ mod tests {
         // the function should return None (not error).
         // We cannot easily control cwd in a test, but we verify no panic.
         let _result = read_project_config_optional();
+    }
+
+    // -- arc06 slice04: the local overlay --------------------------------------
+
+    #[test]
+    fn overlay_write_read_roundtrip_updates_in_place_preserving_order() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path();
+        write_overlay(root, &[("a".into(), "1".into()), ("b".into(), "2".into())]).unwrap();
+        let imp = read_overlay_imports(root);
+        assert_eq!(imp.get("a").map(String::as_str), Some("1"));
+        // re-write `a` → updates in place, no dup, order preserved (a before b)
+        write_overlay(root, &[("a".into(), "9".into())]).unwrap();
+        let imp2 = read_overlay_imports(root);
+        assert_eq!(imp2.get("a").map(String::as_str), Some("9"));
+        assert_eq!(imp2.len(), 2);
+        assert_eq!(imp2.keys().cloned().collect::<Vec<_>>(), vec!["a", "b"]);
+    }
+
+    #[test]
+    fn overlay_remove_deletes_file_when_empty_and_errors_on_absent() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path();
+        write_overlay(
+            root,
+            &[("x".into(), "1".into()), ("x/".into(), "1/".into())],
+        )
+        .unwrap();
+        assert!(overlay_path(root).exists());
+        remove_from_overlay(root, &["x".into(), "x/".into()]).unwrap();
+        assert!(!overlay_path(root).exists(), "empty overlay deleted");
+        // removing when nothing matches errors
+        write_overlay(root, &[("y".into(), "2".into())]).unwrap();
+        assert!(remove_from_overlay(root, &["nope".into()]).is_err());
+    }
+
+    #[test]
+    fn effective_merge_local_wins_over_base() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path();
+        std::fs::write(
+            root.join("project.json"),
+            r#"{ "workspace": [], "imports": { "lang/": "jsr:@lykn/lang@0.6.0/", "astring": "npm:astring@1.9.0" } }"#,
+        )
+        .unwrap();
+        // no overlay → base unchanged
+        let base = effective_from_root(root).unwrap();
+        assert_eq!(
+            base.imports.get("lang/").map(String::as_str),
+            Some("jsr:@lykn/lang@0.6.0/")
+        );
+        // overlay overrides lang/, leaves astring
+        write_overlay(
+            root,
+            &[("lang/".into(), "../lang/target/lykn/build/lang/".into())],
+        )
+        .unwrap();
+        let eff = effective_from_root(root).unwrap();
+        assert_eq!(
+            eff.imports.get("lang/").map(String::as_str),
+            Some("../lang/target/lykn/build/lang/")
+        );
+        assert_eq!(
+            eff.imports.get("astring").map(String::as_str),
+            Some("npm:astring@1.9.0")
+        );
+    }
+
+    #[test]
+    fn absolutize_relative_leaves_registry_and_absolute() {
+        let root = Path::new("/proj");
+        assert_eq!(
+            absolutize_import("jsr:@lykn/x@1.0", root),
+            "jsr:@lykn/x@1.0"
+        );
+        assert_eq!(
+            absolutize_import("npm:astring@1.9.0", root),
+            "npm:astring@1.9.0"
+        );
+        assert_eq!(absolutize_import("/abs/mod.js", root), "/abs/mod.js");
+        // relative override is resolved against root, trailing slash kept
+        assert_eq!(
+            absolutize_import("../dep/target/lykn/build/dep/", root),
+            "/proj/../dep/target/lykn/build/dep/"
+        );
     }
 }

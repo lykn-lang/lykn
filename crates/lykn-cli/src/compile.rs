@@ -74,7 +74,8 @@ pub fn compile_file(
 pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> {
     let forms = reader::read(source)?;
     let imports: Option<HashMap<String, String>> =
-        crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
+        crate::config::read_effective_project_config_optional()
+            .map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, Some(file_path), imports.as_ref())?;
     // DD-61 §A1/§A3: resolve names (tag atoms) so dispatch sites consume the
     // tag via `as_form_head` — a lexically bound head is no longer a form.
@@ -158,7 +159,8 @@ fn compile_source_inner(
 
     // 2. Expand macros (with project-level import map if available)
     let imports: Option<HashMap<String, String>> =
-        crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
+        crate::config::read_effective_project_config_optional()
+            .map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
 
     // 2a. DD-61 §A1/§A3 — resolve once: tag every atom (BindingDef/BindingRef/
@@ -262,7 +264,8 @@ pub fn compile_source_with_dts(
     let forms = reader::read(source)?;
 
     let imports: Option<HashMap<String, String>> =
-        crate::config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
+        crate::config::read_effective_project_config_optional()
+            .map(|c| c.imports.into_iter().collect());
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
     // DD-61 §A1/§A3 — resolve names before classification (see compile path).
     let forms = resolver::resolve(&forms);

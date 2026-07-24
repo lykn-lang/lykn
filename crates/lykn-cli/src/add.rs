@@ -223,7 +223,7 @@ pub fn upsert_imports(project_json: &Path, entries: &[(String, String)]) -> Resu
 
 /// Replace the `imports` object in `text` with a rendering of `imports`,
 /// preserving the file's indentation and everything outside the object.
-fn splice_imports(
+pub(crate) fn splice_imports(
     text: &str,
     imports: &indexmap::IndexMap<String, String>,
 ) -> Result<String, String> {
@@ -255,7 +255,7 @@ fn splice_imports(
 
 /// Render an imports object body: `{\n<entry>"k": "v",\n…\n<base>}`. An empty map
 /// renders as `{}`.
-fn render_imports(
+pub(crate) fn render_imports(
     imports: &indexmap::IndexMap<String, String>,
     entry_indent: &str,
     base_indent: &str,
@@ -280,7 +280,7 @@ fn render_imports(
 
 /// JSON-encode a string (quotes + minimal escaping) — import keys/values are
 /// simple (`@scope/pkg`, `jsr:…`), but escape defensively.
-fn json_string(s: &str) -> String {
+pub(crate) fn json_string(s: &str) -> String {
     let mut out = String::with_capacity(s.len() + 2);
     out.push('"');
     for c in s.chars() {
@@ -297,7 +297,7 @@ fn json_string(s: &str) -> String {
 }
 
 /// Index of the `}` matching the `{` at `open`, ignoring braces inside strings.
-fn object_end(text: &str, open: usize) -> Option<usize> {
+pub(crate) fn object_end(text: &str, open: usize) -> Option<usize> {
     let bytes = text.as_bytes();
     let mut depth = 0usize;
     let mut in_str = false;
@@ -328,7 +328,7 @@ fn object_end(text: &str, open: usize) -> Option<usize> {
 
 /// The file's indentation unit — the leading whitespace of the first indented
 /// line (lykn's templates use 4 spaces). Falls back to 4 spaces.
-fn indent_unit(text: &str) -> String {
+pub(crate) fn indent_unit(text: &str) -> String {
     for line in text.lines() {
         let ws: String = line
             .chars()

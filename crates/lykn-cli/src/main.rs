@@ -129,6 +129,18 @@ enum Commands {
         /// The dependency specifier: jsr:@scope/pkg[@version] or npm:pkg[@version]
         specifier: String,
     },
+    /// Point a dependency at a local build for development (git-ignored overlay)
+    Link {
+        /// The package (directory name under target/lykn/build/) to override
+        package: String,
+        /// The local project checkout to resolve the build against
+        path: PathBuf,
+    },
+    /// Remove a local override, restoring the committed registry pin
+    Unlink {
+        /// The package to unlink
+        package: String,
+    },
     /// Publish package(s)
     Publish {
         /// Publish to JSR (JavaScript Registry)
@@ -193,6 +205,8 @@ fn main() {
         Commands::Build { browser, npm, dist } => cmd_build(browser, npm, dist),
         Commands::Dist => cmd_dist(),
         Commands::Add { specifier } => cmd_add(&specifier),
+        Commands::Link { package, path } => cmd_link(&package, &path),
+        Commands::Unlink { package } => cmd_unlink(&package),
         Commands::Publish {
             jsr,
             npm,
@@ -405,6 +419,17 @@ fn find_config() -> String {
         .unwrap_or_else(|| "project.json".to_string())
 }
 
+/// The `--config` deno should use for **dev** (`run`/`test`): the git-ignored
+/// `target/lykn/project.effective.json` when a `project.local.json` overlay
+/// exists (so a linked dep resolves locally), else the raw `project.json`
+/// (`find_config`). `dist`/`publish` deliberately do **not** call this — they
+/// read raw, so a linked dep never reaches published output (DD-63 §3(a)).
+fn dev_config() -> String {
+    config::write_effective_deno_config()
+        .map(|p| p.to_string_lossy().into_owned())
+        .unwrap_or_else(find_config)
+}
+
 /// Execute a deno command, returning its exit code.
 fn run_deno(args: &[&str]) -> i32 {
     let status = Command::new("deno")
@@ -424,7 +449,7 @@ fn exec_deno(args: &[&str]) {
 }
 
 fn cmd_run(file: &std::path::Path, args: &[String]) {
-    let config = find_config();
+    let config = dev_config();
 
     if file.extension().is_some_and(lykn_cli::util::is_lykn_ext) {
         // Compile .lykn/.lyk to temp .js, then run
@@ -469,7 +494,7 @@ fn cmd_test(
     compile_only: bool,
     extra_deno_args: &[String],
 ) {
-    let config = find_config();
+    let config = dev_config();
     let out_dir: PathBuf = out_dir
         .map(|p| p.to_path_buf())
         .unwrap_or_else(|| PathBuf::from(DEFAULT_TEST_OUT_DIR));
@@ -741,7 +766,7 @@ fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<Pat
             && let Ok(forms) = lykn_lang::reader::read(&source)
         {
             let imports: Option<std::collections::HashMap<String, String>> =
-                crate::config::read_project_config_optional()
+                crate::config::read_effective_project_config_optional()
                     .map(|c| c.imports.into_iter().collect());
             if let Ok(expanded) =
                 lykn_lang::expander::expand(forms, Some(lykn_path.as_path()), imports.as_ref())
@@ -765,7 +790,7 @@ fn compile_lykn_test_files(files: &[PathBuf], out_dir: Option<&Path>) -> Vec<Pat
             }
         }
 
-        let config = find_config();
+        let config = dev_config();
         let lykn_str = lykn_path.to_string_lossy();
         let js_str = js_path.to_string_lossy();
         // DD-58: the JS `lykn()` is strict-default. `.lyk` kernel files carry
@@ -1224,6 +1249,7 @@ target/
 dist/
 bin/
 *.js.map
+project.local.json
 ";
 
 fn cmd_new(name: &str, path: Option<&Path>) {
@@ -1421,6 +1447,80 @@ fn cmd_add(specifier: &str) {
         pair[1].0,
         pair[1].1,
     );
+}
+
+/// `lykn link <package> <path>` — point `<package>` at a local build for
+/// development, via the git-ignored `project.local.json` overlay (DD-63 §3(a) /
+/// arc06 slice04). Non-destructive: the committed `project.json` pin is never
+/// touched, and `lykn dist`/`publish` ignore the overlay.
+fn cmd_link(package: &str, path: &Path) {
+    let root = match config::find_project_root() {
+        Some(r) => r,
+        None => {
+            eprintln!("error: not in a lykn project (no project.json found)");
+            process::exit(2);
+        }
+    };
+
+    // Build-dir resolution (DD-63 §3(d)) — the *built* output, never packages/
+    // source. Require-built: we do not auto-build another project.
+    let build_dir = path.join("target").join("lykn").join("build").join(package);
+    if !build_dir.is_dir() {
+        eprintln!(
+            "error: {} is not built ({} missing)\n       run 'lykn build' in {} first",
+            package,
+            build_dir.display(),
+            path.display()
+        );
+        process::exit(1);
+    }
+
+    // Reuse slice03's bare+slash shape: bare key → the built mod.js entry,
+    // slash key → the build directory. Values are the local paths as given
+    // (relative overrides are absolutized when the effective config is written).
+    let bare_dir = path.join("target").join("lykn").join("build").join(package);
+    let bare_val = bare_dir.join("mod.js").to_string_lossy().into_owned();
+    let mut slash_val = bare_dir.to_string_lossy().into_owned();
+    if !slash_val.ends_with('/') {
+        slash_val.push('/');
+    }
+    let entries = [
+        (package.to_string(), bare_val),
+        (format!("{package}/"), slash_val),
+    ];
+
+    if let Err(e) = config::write_overlay(&root, &entries) {
+        eprintln!("error: {e}");
+        process::exit(1);
+    }
+    eprintln!(
+        "✓ linked {package} → {} (dev only; project.json unchanged)\n  {} = {}\n  {} = {}",
+        build_dir.display(),
+        entries[0].0,
+        entries[0].1,
+        entries[1].0,
+        entries[1].1,
+    );
+}
+
+/// `lykn unlink <package>` — remove the local override, restoring the committed
+/// registry pin (which was never touched).
+fn cmd_unlink(package: &str) {
+    let root = match config::find_project_root() {
+        Some(r) => r,
+        None => {
+            eprintln!("error: not in a lykn project (no project.json found)");
+            process::exit(2);
+        }
+    };
+    let keys = [package.to_string(), format!("{package}/")];
+    match config::remove_from_overlay(&root, &keys) {
+        Ok(()) => eprintln!("✓ unlinked {package} (restored the committed pin)"),
+        Err(e) => {
+            eprintln!("error: {e}");
+            process::exit(1);
+        }
+    }
 }
 
 /// Build the browser bundle by invoking esbuild via Deno.
