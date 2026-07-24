@@ -1,6 +1,6 @@
 # arc06 — Cross-Project Dependency Ergonomics
 
-> **Status: ACTIVE — slice-planned 2026-07-21** (the 0.6.0 dive's original
+> **Status: CLOSE-READY 2026-07-22** — all slices closed (02–05), A-1…A-7 met; runtime rows reconcile on host; gate (GO) is the operator's. See `closing-report.md`.
 > motivation, resumed with the toolchain now solid). slice01 closed
 > (2026-05-12); **slice02 · mycelium re-audit** is the next work (recon-first).
 > Originating thread: `design/kickoff-thread.md`; empirical corpus:
@@ -61,7 +61,7 @@ are detailed post-audit.)
 | A-1 | slice01 (lang-exports-gap) closed | ptr: slice01 closing-report + cdc-verification | correctness | round-2 | done | Finding-D closing + CDC review (attested) | |
 | A-2 | slice02 (mycelium re-audit) closed | ptr: slice02 cdc-verification | serious | arc-plan | **done** (pending host reconcile) | slice02 cdc-verification (a2e9b00) | the ground-truth inventory |
 | A-3 | slice03 (`lykn add`) closed | ptr: slice03 cdc-verification | serious | arc-plan | **done** (pending reconcile) | slice03 cdc-verification (f9f9014) | DD-63-backed |
-| A-4 | slice04 (external-project path) closed | ptr: slice04 cdc-verification | serious | arc-plan | open | | sized post-audit |
+| A-4 | slice04 (`lykn link`/`unlink`) closed | ptr: slice04 cdc-verification | serious | arc-plan | **met** (reconcile) | slice04 cdc-verification (e1c0dd7) | safety property architecturally guaranteed |
 | A-5 | **`lykn add <specifier>` adds a dependency to a project and it resolves** — end-to-end on a fixture project | run `lykn add`; the added dep imports + compiles | serious | arc-plan / DoD (P-6) | **met** (CC-attested; reconcile) | `lykn add npm:astring` → `@1.9.0` exact, resolves (slice03) | reproduce at arc scale on host |
 | A-6 | **mycelium builds *and tests* green as a downstream of current lykn** (the composition demo) | host: mycelium → `lykn build` + **`lykn test`** + `lykn publish --dry` green | serious | arc-plan | open | | **A-6's concrete bar = downstream `lykn test` green** (slice02 finding). RED today — **N1** (test's relative `../render.js` dangles under `target/`) → **slice05**. host-only |
 | A-7 | every mycelium-bootstrap issue is dispositioned — fixed / fixed-in-arc06 / routed-with-home / documented-only | ptr: slice02 inventory + the routing table | correctness | mycelium report | open | | no silent drops from the 14-issue list |
