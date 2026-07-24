@@ -131,14 +131,17 @@ enum Commands {
     },
     /// Point a dependency at a local build for development (git-ignored overlay)
     Link {
-        /// The package (directory name under target/lykn/build/) to override
+        /// The dependency to override: a package name (resolved under the
+        /// checkout's target/lykn/build/) OR a literal registry specifier
+        /// `jsr:@scope/pkg@ver` / `npm:pkg` (resolved under target/lykn/dist/,
+        /// which stages a macro module's `.lykn` source)
         package: String,
         /// The local project checkout to resolve the build against
         path: PathBuf,
     },
     /// Remove a local override, restoring the committed registry pin
     Unlink {
-        /// The package to unlink
+        /// The package name or registry specifier to unlink
         package: String,
     },
     /// Publish package(s)
@@ -1462,6 +1465,15 @@ fn cmd_link(package: &str, path: &Path) {
         }
     };
 
+    // arc06/slice07: a *literal* registry specifier (`jsr:@scope/pkg@ver` /
+    // `npm:pkg`) is redirected to a local **dist** staging — the macro source
+    // (`mod.lykn`) lives there, not in the build dir. The resolver's Tier-0 exact
+    // override (pass0) honors the overlay entry keyed by the literal specifier.
+    if package.starts_with("jsr:") || package.starts_with("npm:") {
+        cmd_link_specifier(package, path, &root);
+        return;
+    }
+
     // Build-dir resolution (DD-63 §3(d)) — the *built* output, never packages/
     // source. Require-built: we do not auto-build another project.
     let build_dir = path.join("target").join("lykn").join("build").join(package);
@@ -1503,8 +1515,61 @@ fn cmd_link(package: &str, path: &Path) {
     );
 }
 
-/// `lykn unlink <package>` — remove the local override, restoring the committed
-/// registry pin (which was never touched).
+/// `lykn link jsr:@scope/pkg@ver <path>` (arc06/slice07) — redirect a literal
+/// registry specifier to a local **dist** staging, so a downstream can develop
+/// against a current-source library (esp. a macro module, whose `mod.lykn`
+/// source is copied into `target/lykn/dist/<pkg>/` but NOT the build dir). The
+/// overlay entry is keyed by the *exact* specifier; the resolver's Tier-0 override
+/// honors it ahead of the JSR/npm fetch. `dist`/`publish` still read the raw
+/// `project.json`, so the linked path can never reach a published package.
+fn cmd_link_specifier(specifier: &str, path: &Path, root: &Path) {
+    use lykn_cli::add;
+    let spec = match add::parse_specifier(specifier) {
+        Ok(s) => s,
+        Err(e) => {
+            eprintln!("error: {e}");
+            process::exit(2);
+        }
+    };
+    // The local dir name is the package's unscoped last segment
+    // (`@lykn/testing` → `testing`, `astring` → `astring`) — the same name
+    // `lykn dist` stages under.
+    let dir_name = spec.name.rsplit('/').next().unwrap_or(&spec.name);
+
+    // Require **dist** (not build): the macro source `mod.lykn` is staged there.
+    let dist_dir = path.join("target").join("lykn").join("dist").join(dir_name);
+    if !dist_dir.is_dir() {
+        eprintln!(
+            "error: {specifier} is not staged for dev ({} missing)\n       \
+             run 'lykn dist' in {} first",
+            dist_dir.display(),
+            path.display()
+        );
+        process::exit(1);
+    }
+
+    // Exact-key overlay: the literal specifier → the local dist dir. A dir value
+    // lets the macro resolver's find_macro_entry pick up mod.lykn + siblings.
+    let mut val = dist_dir.to_string_lossy().into_owned();
+    if !val.ends_with('/') {
+        val.push('/');
+    }
+    let entries = [(specifier.to_string(), val)];
+    if let Err(e) = config::write_overlay(root, &entries) {
+        eprintln!("error: {e}");
+        process::exit(1);
+    }
+    eprintln!(
+        "✓ linked {specifier} → {} (dev only; project.json unchanged)\n  {} = {}",
+        dist_dir.display(),
+        entries[0].0,
+        entries[0].1,
+    );
+}
+
+/// `lykn unlink <package|specifier>` — remove the local override, restoring the
+/// committed registry pin (which was never touched). A literal registry
+/// specifier (`jsr:`/`npm:`) is an exact key with no slash variant.
 fn cmd_unlink(package: &str) {
     let root = match config::find_project_root() {
         Some(r) => r,
@@ -1513,7 +1578,11 @@ fn cmd_unlink(package: &str) {
             process::exit(2);
         }
     };
-    let keys = [package.to_string(), format!("{package}/")];
+    let keys: Vec<String> = if package.starts_with("jsr:") || package.starts_with("npm:") {
+        vec![package.to_string()]
+    } else {
+        vec![package.to_string(), format!("{package}/")]
+    };
     match config::remove_from_overlay(&root, &keys) {
         Ok(()) => eprintln!("✓ unlinked {package} (restored the committed pin)"),
         Err(e) => {

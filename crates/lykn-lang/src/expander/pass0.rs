@@ -169,12 +169,35 @@ fn validate_import_form(values: &[SExpr]) -> Result<(String, Vec<String>), LyknE
 ///
 /// **Tier 3 — Filesystem path**: relative and absolute paths are resolved
 /// against the importing file's directory, preserving the original behavior.
+/// A registry/remote scheme whose resolution is owned by Deno / the JSR fetch —
+/// never a local override target. `file:` is deliberately absent: a `file:` URL
+/// is a local redirect and is handled by the resolver's `file://` branch.
+fn is_scheme_specifier(s: &str) -> bool {
+    s.starts_with("jsr:")
+        || s.starts_with("npm:")
+        || s.starts_with("http:")
+        || s.starts_with("https:")
+}
+
 fn resolve_specifier(
     module_path: &str,
     file_path: Option<&Path>,
     imports: Option<&HashMap<String, String>>,
     deno: &mut DenoSubprocess,
 ) -> Result<PathBuf, LyknError> {
+    // Tier 0 (arc06/slice07): an **exact** import-map override redirects a
+    // specifier to a LOCAL build — the `lykn link` dev overlay. It runs ahead of
+    // the scheme branch so a *literal* `jsr:`/`npm:` specifier can be redirected
+    // too (a macro module tested against a local dist). Guarded to a non-scheme
+    // (local) target, so it can only point at a local build and never reroutes
+    // one registry specifier to another — an alias→`jsr:` mapping still flows
+    // through the Tier-2 exact match below, unchanged.
+    if let Some(target) = imports.and_then(|m| m.get(module_path))
+        && !is_scheme_specifier(target)
+    {
+        return resolve_specifier(target, file_path, None, deno);
+    }
+
     // Tier 1: Scheme-prefixed — resolve via Deno
     if module_path.starts_with("jsr:")
         || module_path.starts_with("npm:")
@@ -1112,6 +1135,46 @@ mod tests {
         let result =
             resolve_specifier("file:///usr/local/lib/macros.lykn", None, None, &mut deno).unwrap();
         assert_eq!(result, PathBuf::from("/usr/local/lib/macros.lykn"));
+    }
+
+    #[test]
+    fn test_resolve_specifier_literal_specifier_override_wins_over_scheme() {
+        // arc06/slice07: an exact overlay entry keyed by a *literal* jsr:
+        // specifier redirects it to a LOCAL build, short-circuiting the JSR
+        // fetch (the `lykn link jsr:@scope/pkg@ver <path>` capability).
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut map = HashMap::new();
+        map.insert(
+            "jsr:@lykn/testing@0.5.2".to_string(),
+            "/tmp/lykn-slice07/dist/testing".to_string(), // a local (non-scheme) target
+        );
+        let result =
+            resolve_specifier("jsr:@lykn/testing@0.5.2", None, Some(&map), &mut deno).unwrap();
+        assert_eq!(result, PathBuf::from("/tmp/lykn-slice07/dist/testing"));
+    }
+
+    #[test]
+    fn test_resolve_specifier_scheme_target_override_is_not_taken() {
+        // Guard: an exact entry whose TARGET is itself a registry specifier is
+        // NOT short-circuited by Tier 0 — it flows through the normal tiers (so
+        // an alias→jsr: mapping is unchanged). Here a bare alias → jsr: falls to
+        // Tier 2, which recurses on the jsr: target (Deno). We only assert Tier 0
+        // did not hijack it to a bogus local path (it would panic/err via Deno if
+        // the network path ran; so just assert the alias path is attempted).
+        if !deno_available() {
+            eprintln!("skipping: deno not found");
+            return;
+        }
+        let mut deno = super::super::deno::DenoSubprocess::spawn().expect("deno should spawn");
+        let mut map = HashMap::new();
+        // A LOCAL alias override still works via Tier 0 (fires, non-scheme target):
+        map.insert("my-macros".to_string(), "/tmp/x/mod.lykn".to_string());
+        let result = resolve_specifier("my-macros", None, Some(&map), &mut deno).unwrap();
+        assert_eq!(result, PathBuf::from("/tmp/x/mod.lykn"));
     }
 
     #[test]

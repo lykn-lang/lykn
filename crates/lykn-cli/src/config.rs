@@ -290,17 +290,39 @@ pub fn write_effective_deno_config() -> Option<PathBuf> {
         return None;
     }
     let base_text = std::fs::read_to_string(root.join("project.json")).ok()?;
-    let mut imports = read_project_config(&root.join("project.json"))
-        .ok()?
-        .imports;
-    for (k, v) in overlay {
-        imports.insert(k, absolutize_import(&v, &root));
+    let mut cfg: serde_json::Value = serde_json::from_str(&base_text).ok()?;
+
+    // The effective config lives at `target/lykn/` — two levels below root — so
+    // every relative import value must be absolutized against root, or deno
+    // resolves it relative to `target/lykn/` (arc06/slice07: an overlay on a
+    // project with relative self-package imports broke otherwise). Registry
+    // (`jsr:`/`npm:`) and already-absolute values pass through (see
+    // `absolutize_import`). Covers the base import map + the overlay (local wins).
+    if let Some(imports) = cfg.get_mut("imports").and_then(|v| v.as_object_mut()) {
+        for v in imports.values_mut() {
+            if let Some(s) = v.as_str() {
+                *v = serde_json::Value::String(absolutize_import(s, &root));
+            }
+        }
+        for (k, v) in overlay {
+            imports.insert(k, serde_json::Value::String(absolutize_import(&v, &root)));
+        }
     }
-    let merged = crate::add::splice_imports(&base_text, &imports).ok()?;
+    // Drop the `workspace` field. The effective config is a dev import-map
+    // override for `deno run`/`test` on specific files — not a workspace root.
+    // deno requires workspace members to be nested UNDER the config's directory,
+    // but this file sits at `target/lykn/` while the members are at
+    // `../../packages/*`; declaring the workspace here is both impossible and
+    // unnecessary (publish/dist use the raw `project.json`, which is unchanged).
+    if let Some(obj) = cfg.as_object_mut() {
+        obj.remove("workspace");
+    }
+
     let eff_dir = root.join("target").join("lykn");
     std::fs::create_dir_all(&eff_dir).ok()?;
     let eff_path = eff_dir.join("project.effective.json");
-    std::fs::write(&eff_path, merged).ok()?;
+    let out = serde_json::to_string_pretty(&cfg).ok()?;
+    std::fs::write(&eff_path, out).ok()?;
     Some(eff_path)
 }
 
