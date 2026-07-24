@@ -28,7 +28,8 @@ threading (`(-> (express parts) (:join ""))`). DD-64 is its design.
 |-------|-------|--------|
 | **slice01 · reject-method-on-expr + guide migration** | Classifier **error** on `(<non-atom-head> :kw …)` with a threading fix-it + tests; **migrate the guide sites** that teach the trap to threading + repoint ID-31/ID-41/09-anti-patterns (ID-47). Landed as a **recursive `validate_method_calls` pass** in the compile pipeline (dispatch-only was insufficient for nested traps). | **CDC-verified** (`9ca9c7e`; host reconcile pending) |
 | **slice02 · lint rule** | arc05 `lykn lint` rule flagging `(<non-atom-head> :kw …)` with the threading fix-it. **MUST reuse the recursive `walk_method_calls` detection** (not a dispatch branch) so lint/check agree with compile on nested traps (slice01 carry-forward). Also wire the recursive pass into `check_strict`. | Planned (post-slice01) |
-| **slice03 · sibling traps** | Assess whether still-live compiler traps and fold in: **ID-32** `return return` (typed `fn` + explicit `return` → double return), **ID-33** `\uNNNN` not processed (reader — literal Unicode only). Each: is it still a *silent* miscompile on current lykn? → error/warn + guide. **Shaped, not detailed** (plan-late). | Planned (shaped) |
+| **slice03 · type-safe method-check (hardening)** | Move the method-on-expression check to the **classified tree** — a match guard is `SurfaceForm::Match { guard }`, a method-call is its own form, so the collision becomes a **type distinction, impossible by construction**; removes the `is_match_clause`/`ptr::eq` carve-out **and** its implicit borrow-invariant fragility (slice02/B). **First task: confirm classification fully types every nested expr** (slice01 went pre-classify because the emitter lowers nested exprs lazily). | Planned (scoped from slice02/B verify) |
+| **slice04 · sibling traps** | Assess whether still-live compiler traps and fold in: **ID-32** `return return` (typed `fn` + explicit `return` → double return), **ID-33** `\uNNNN` not processed (reader — literal Unicode only). Each: is it still a *silent* miscompile on current lykn? → error/warn + guide. **Shaped, not detailed** (plan-late). | Planned (shaped) |
 
 _Plan late, plan deep: slice01 is detailed against the CDC sweep; slice02 is
 shaped; slice03 is a holding pen for siblings the arc06 audit surfaced, each of
@@ -59,6 +60,14 @@ arc scale. Opens here; per-row walk closes in `closing-report.md`.
 | A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | open | | sweep said 0 source hits |
 
 ## 5. Version History
+
+### v1.2 — 2026-07-22 (slice02 closed; hardening slice added)
+slice02 (lint rule + check parity) closed after follow-up B (`90cf211`) replaced the
+magic `:when` carve-out with a structural, pointer-identity-shared match-clause exemption
+(compile walker + lint rule, both CDC-verified sound). B's residual — the `ptr::eq` borrow
+invariant is convention, not type-enforced — motivated **slice03 · type-safe method-check**:
+run the check on the classified tree so a guard vs a method-call is a *type* distinction.
+Sibling traps (ID-32/ID-33) renumbered slice04.
 
 ### v1.1 — 2026-07-22 (slice01 CDC-verified)
 slice01 delivered (`9ca9c7e`) + CDC-verified: the trap is a compile error at any
