@@ -1,8 +1,10 @@
 # arc06 — Cross-Project Dependency Ergonomics
 
-> **Status: ACTIVE 2026-07-24** — slices 01–06 closed/CDC-verified; **slice07
-> · link-registry-specifier is in iteration 1** (CDC review findings — see its
-> `cc-prompt-followup.md`), so the arc is **not** closeable yet.
+> **Status: CLOSE-READY 2026-07-24 (re-issued)** — **all seven slices closed and
+> CDC-verified.** slice07's iteration 1 resolved all six review findings
+> (`72a1cfd`/`70666d0`); slice06 verified the same day. Arc ledger A-1…A-9 met.
+> Gate (GO) is the operator's, after the host reconcile in
+> `host-reconcile-runsheet.md`. See the **re-issued** `closing-report.md`.
 >
 > *Was: "CLOSE-READY 2026-07-22 — all slices closed (02–05), A-1…A-7 met;
 > runtime rows reconcile on host; gate (GO) is the operator's." That status
@@ -79,8 +81,8 @@ are detailed post-audit.)
 | A-5 | **`lykn add <specifier>` adds a dependency to a project and it resolves** — end-to-end on a fixture project | run `lykn add`; the added dep imports + compiles | serious | arc-plan / DoD (P-6) | **met** (CC-attested; reconcile) | `lykn add npm:astring` → `@1.9.0` exact, resolves (slice03) | reproduce at arc scale on host |
 | A-6 | **mycelium builds *and tests* green as a downstream of current lykn** (the composition demo) | host: mycelium → `lykn build` + **`lykn test`** + `lykn publish --dry` green | serious | arc-plan | **met** (CC-attested; reconcile) | slice05: `lykn build` ✓ · `lykn test` **43/0** · `lykn publish --jsr --dry` green | **A-6's concrete bar = downstream `lykn test` green** (slice02 finding). RED today — **N1** (test's relative `../render.js` dangles under `target/`) → **slice05**. host-only |
 | A-7 | every mycelium-bootstrap issue is dispositioned — fixed / fixed-in-arc06 / routed-with-home / documented-only | ptr: slice02 inventory + the routing table | correctness | mycelium report | **met** | slice02 inventory (14) + N1–N4 all routed — see `closing-report.md` A-7 | no silent drops from the 14-issue list |
-| A-8 | slice06 (version-consolidation) closed | ptr: slice06 closing-report + cdc-verification | polish | operator runsheet pass (v1.3) | **open** | `caeb2e4`/`1139c42` landed; **cdc-verification not yet written** | added v1.3 — was absent from this ledger while the slice was already committed |
-| A-9 | slice07 (link-registry-specifier) closed | ptr: slice07 closing-report + cdc-verification | serious | operator runsheet pass (v1.3) | **open — iteration 1** | `58e22e8`/`be72c37` landed; CDC review returned a blocking regression (effective-config overlay drop) + 3 fixes + 1 host question | **this row is what blocks the arc gate** |
+| A-8 | slice06 (version-consolidation) closed | ptr: slice06 closing-report + cdc-verification | polish | operator runsheet pass (v1.3) | **met** | slice06 cdc-verification (2026-07-24): V-1…V-6 verified; one workspace version, `0.6.0-dev` across Rust+JS, registry pins + scaffold untouched, snapshots clean (independently grepped) | added v1.3 — was absent from this ledger while the slice was already committed. Sweep routed a stale-`dist/` precondition → arc09 |
+| A-9 | slice07 (link-registry-specifier) closed — `lykn link jsr:@scope/pkg@ver <path>` redirects a literal registry specifier **for a macro module** to a local dist staging (a *runtime* import of a linked specifier errors rather than silently resolving to the published package; full runtime override → 0.7.0) | ptr: slice07 closing-report + cdc-verification | serious | operator runsheet pass (v1.3) | **met** | slice07 cdc-verification (2026-07-24): 9 rows verified at HEAD after iteration 1 resolved all six review findings (F1 blocking regression fixed + covered by 4 new table tests; guard now tested; scope narrowed to the demonstrated capability) | scope line carries the macro-module boundary so the arc ledger does not inherit the pre-iteration overclaim |
 
 ## 5. Version History
 
