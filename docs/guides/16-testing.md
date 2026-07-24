@@ -474,6 +474,47 @@ my-project/
 `_test.lykn` compiles to `_test.js`, which Deno discovers with its
 standard glob. The `*.test.lykn` suffix is also accepted.
 
+**Import the package under test by its specifier, not a relative source
+path.** `lykn test` compiles each `_test.lykn` into `target/lykn/test/…`
+(mirroring the source tree) while the built package lands in
+`target/lykn/build/<pkg>/`. A relative import resolves *next to the compiled
+test*, not next to the source — so `(import "../render.js" …)` dangles under
+`target/` and Deno reports `Module not found`. Import through the
+self-package import-map key instead:
+
+```lykn,skip
+;; ✗ relative source path — resolves under target/lykn/test/, dangles
+(import "../render.js" (html))
+
+;; ✓ self-package specifier — resolves to the built output via the import map
+(import "mycl-html/render.js" (html))
+```
+
+The scaffold (`lykn new`) writes the self-package key for you:
+
+```json
+"imports": { "mycl-html/": "./target/lykn/build/mycl-html/" }
+```
+
+Use **bare `<pkg>`** for the public entry (`mod.js` — the package's API) and
+**`<pkg>/<file>`** to reach an internal module directly in a test:
+
+```lykn,skip
+(import "mycl-html"            (html))          ;; public API (mod.js)
+(import "mycl-html/escape.js"  (escape-text))   ;; internal module
+```
+
+The specifier is preserved verbatim — lykn does not rewrite an import to a
+relative path — so Deno resolves it through the import map at run time. This is
+the general rule beyond tests: reach your own package by its specifier, not by
+walking `../` into its source.
+
+> **Multi-package workspaces:** `lykn new` writes **one** `<name>/` self-key
+> (for the single scaffolded package). A workspace with several published
+> members needs a self-key **per member** — add them to the root
+> `project.json` by hand until per-member scaffolding lands (tracked for a
+> post-0.6.0 scaffold pass).
+
 ---
 
 ## ID-16: Async Setup in Tests
