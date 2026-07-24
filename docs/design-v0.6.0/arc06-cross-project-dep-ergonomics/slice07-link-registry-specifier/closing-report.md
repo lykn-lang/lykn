@@ -59,3 +59,43 @@ compiled `.js`); dist also carries the runtime `.js`, so one override serves bot
   in the linked project is the require-dist precondition.
 - Recon (`recon-findings.md`) + this report + the ledger authored at operator
   direction (recon-first, signed off before impl).
+
+## Iteration 1 (2026-07-24, CDC review)
+
+CDC's iteration-1 review against `58e22e8`/`be72c37` raised six findings; all
+resolved in the same three files, `make check` green. Recorded here as an
+expansion of the per-row walk above (which stands).
+
+- **F1 (blocking) → fixed.** `write_effective_deno_config` dropped the overlay
+  when `project.json` had no `imports` key (the insertion loop was nested inside
+  `if let Some(imports)`), yet still wrote a `workspace`-stripped, override-free
+  effective config and returned `Some` — a silent no-op behind a `✓ linked`
+  message. Hoisted the overlay insertion out (create `imports` when absent;
+  a malformed non-object `imports` now returns `None` with a warning rather than
+  fabricating a config). Repro from the review confirms the override is present.
+- **F2 → fixed.** The test named `..._scheme_target_override_is_not_taken`
+  actually inserted a *local* target and asserted Tier 0 fires — it covered the
+  positive path, not the `!is_scheme_specifier` guard. Renamed to
+  `..._local_alias_override_resolves_via_tier0`; added a direct, network-free
+  `test_is_scheme_specifier` that covers the guard the S-1 row claims.
+- **F3 → fixed.** `write_effective_deno_config` had zero test coverage despite a
+  three-way rewrite. Split the pure logic into `build_effective_config` (no CWD
+  coupling) and added 4 table tests (no-base-imports+workspace [F1], absolutize/
+  registry/absolute, empty-imports, malformed→None).
+- **F4 → resolved (host-checked), scope narrowed.** The exact-key→dir-value entry
+  is *honored* by deno (not dropped), but resolves to a directory: a **runtime**
+  `import` of a linked specifier errors loudly ("Is a directory"; subpath →
+  published-exports error) — it never silently uses the published package. So the
+  capability is scoped to **macro modules** (proven); the `Link` help text is
+  narrowed and notes the runtime caveat; full runtime override (exact→entry-file
+  + slash→dir) is routed to 0.7.0. New ledger row **S-8**.
+- **F5 → fixed.** `is_scheme_specifier` had been inserted between
+  `resolve_specifier`'s doc block and the fn, stealing the doc. Moved the helper
+  above; restored `resolve_specifier`'s doc and added a **Tier 0** paragraph.
+- **F6 → applied.** Added the clarifying comment in Tier 2's exact branch (local
+  targets short-circuit at Tier 0). Decision: Tier 0 stays unguarded for
+  `module_path` — overlay keys are package names / registry specifiers, never
+  `./`/`../`/`/` — recorded as a decision, not an accident.
+
+Ledger: **S-4** amended (F1/F3 + the drop-workspace scoped assumption), **S-1**
+Evidence amended (which test covers positive vs guard), **S-8** added (8→9 rows).
