@@ -181,6 +181,83 @@ dependency.
 **Disposition.** *(operator decides)* — pairs naturally with arc09 release work
 and with A1 (build tooling).
 
+### A6 · Fully-typed classification — recursive typed AST *(NEW 2026-07-22; research; origin arc15 slice03)*
+
+**Capability (candidate).** Make `classify` produce a **fully-typed recursive
+tree** — every nested expression a classified node with its own type — instead
+of the current hybrid where `SurfaceForm` variants hold **raw `SExpr` children**
+(`Bind.value`, `Match.target`, `MatchClause.guard`/`.body`, `FuncClause.body`,
+`FunctionCall.head`/`.args`, … are `SExpr`, lowered lazily by the emitter).
+Analysis passes would then match on **types**, not on raw surface shape.
+
+**Origin — the constraint that forces it (arc15 slice03).** The method-on-
+expression trap (`((express p):join "")` → silent miscompile) is a **raw-shape
+collision**: a guarded match clause `((Some v) :when …)` and the trap have the
+**identical** raw shape (List/Cons head + Keyword arg0). `classify_match`
+dissolves the collision by consuming `:when` into a typed
+`MatchClause { pattern, guard, body }` — **but only for top-level matches.**
+A match nested in `Bind.value` or a `FuncClause.body` stays **raw `SExpr`**, so
+its clauses keep the trap shape (proven against `data-types.lykn:54–59` +
+a minimal repro that compiles clean today). **Match-awareness is therefore
+irreducible without typing the nested exprs** — which is exactly this arc.
+slice03 landed **Option B** (recursive raw-shape walk with a parent-aware
+`is_match_clause`/`ptr::eq` skip) as the verified-correct 0.6.0 guarantee; the
+`ptr::eq` borrow-identity check is a maintainability sharp-edge, not a bug.
+**This entry is slice03's deferred Option C.**
+
+**Research question.** What does it cost, and what does it buy, to make
+classification recursive and total — so that a nested `match` (or any nested
+form) is a **typed node** at classification time rather than raw `SExpr` the
+emitter lowers later? The deliverable is a **cost/benefit + architecture-
+direction report**, not an implementation.
+
+**Impact — what it dissolves and enables (benefit).**
+- **Retires the whole raw-shape-collision class**, not just the one trap:
+  method-on-expression, `:when` disambiguation, and any future analysis that
+  today must special-case surface shape all become **exhaustive `match` on
+  typed variants** — completeness compiler-enforced (no `_ =>`), no
+  `ptr::eq`/parent-identity carve-outs anywhere.
+- **Type-safe analysis passes** generally: lint checks, future optimizations,
+  and provenance/metadata passes operate on a stable typed tree instead of
+  re-deriving structure from `SExpr` heuristics.
+- **Removes the slice03 B sharp-edge** (the `ptr::eq` borrow invariant) at the
+  root rather than fencing it.
+
+**Cost / risk.**
+- **Large, central rewrite.** Every `SurfaceForm` variant that currently holds
+  `SExpr` children gains typed children; the classifier grows recursive-descent
+  for all nested positions (this is the bulk of the work and the wide-test
+  surface).
+- **Emitter + analyzer adaptation.** The emitter currently **lowers raw `SExpr`
+  lazily**; it would consume typed nodes instead — a coordinated change across
+  codegen (Rust) and the analyzer, with the JS compiler (`packages/lang`) to
+  keep in parity.
+- **High blast radius, high regression risk.** Touches the pipeline core
+  (reader → expander → resolver → **classifier** → analyzer → emitter →
+  codegen); needs a full-corpus parity gate. **Likely 0.8.0+**, not a single
+  0.7.0 slice — a version-spanning effort in its own right.
+
+**Compiler/checker future directions to settle in the research.**
+- **Scope of typing** — type *all* nested exprs, or only the collision-prone
+  positions (matches, method receivers)? Full typing is cleaner but larger;
+  targeted typing is cheaper but keeps a raw/typed boundary.
+- **Two-compiler parity** — does the JS `packages/lang` classifier mirror the
+  Rust one, or does one lead? (DD-era divergence risk.)
+- **Interaction with A3 (arc14 comment retention / node-metadata)** and A1
+  (build tooling) — a typed tree is the natural carrier for provenance metadata;
+  sequencing matters.
+- **Migration path** — incremental (variant-by-variant, raw-fallback during
+  transition) vs. big-bang; how the parity corpus gates each step.
+
+**Re-entry.** Open a research unit (mirrors `01-treeshake-audit` /
+`02-packaging-strategy`) — **`04-typed-classification/`** — whose deliverable is
+the impact + cost/benefit + implement-plan report. CDC can draft its slice-doc +
+cc-prompt on request. **Cross-ref: `docs/design-v0.6.0/arc15-surface-syntax-
+traps/` slice03 (DEFERRED — Option B retained for 0.6.0; this is its Option C).**
+
+**Disposition.** *(operator decides)* — research is a 0.7.0 candidate; the
+implementation is **likely 0.8.0+** (version-spanning), informed by the report.
+
 ---
 
 ## B. Routed items from the 0.6.0 buried-intent audit (project-plan §1)
