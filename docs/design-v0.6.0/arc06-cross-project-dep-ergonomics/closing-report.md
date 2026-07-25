@@ -157,6 +157,27 @@ arc09 (release).**
 **arc06 is CLOSE-READY.** All seven slices closed and CDC-verified; A-1…A-9 met;
 this report re-issued to cover the full walk.
 
-**The gate (GO / adjust / kill) is the operator's**, after the host reconcile in
-`host-reconcile-runsheet.md` — Part C is the A-6 bar and the one that matters.
-On GO, 0.6.0's founding goal is met and `P-6` closes.
+**GATE: GO — 2026-07-24, operator.** ✅
+
+The host reconcile ran in full: **Part C** (mycelium `lykn build` ✓ · `lykn test`
+**43/0** · publish-dry green), **Part C-bis** (current-source testing linked →
+43/0, plus the negative check proving the override is live), **Part A** (`lykn
+add` exact-pinning, idempotence, both gates firing correctly, `project.json`
+unchanged on a 404), and **Part B** (require-built guard, git-ignored overlay,
+committed pin untouched, **0 linked refs in staged dist output**, lossless
+unlink).
+
+**arc06 is CLOSED.** The runtime rows are no longer CC-attested — they are
+**operator-reproduced**, the top evidence tier, including the publish-safety
+property that was the arc's highest-stakes claim. `P-6` → **done**.
+
+0.6.0's founding goal — *consume lykn as a dependency, end to end* — is met.
+
+Two findings surfaced *by* the reconcile, both logged rather than absorbed: a
+`lykn add` resolve failure leaks deno's `Uncaught (in promise)` and a
+`$deno$eval.js` frame into a user-facing error (same root as
+`01-macro-entry-diagnostics` M-5, different call site), and Part B revealed that
+`lykn link <package-name>` already writes the entry-file + directory pair that
+the linked-*specifier* path lacks — making the routed 0.7.0 runtime-override item
+a parity fix between siblings rather than new design. Host reconcile is a
+discovery surface, not a formality; that is now three times over for this arc.

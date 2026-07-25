@@ -110,7 +110,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc04 · refactor-tooling** | `move-function` byte-exact code-move tool driving surface extraction | arc03 | **Tool built & proven** (slice01+02 closed); A-3 real-extraction deferred to M22.5-2 |
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0); `lykn lint` (16 rules, resolution-aware) ships. Inline suppression deferred → arc14/DD-62 |
 | **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
-| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **CLOSE-READY** (2026-07-24) — **all 7 slices closed/CDC-verified.** slice06 version-consolidation + slice07 link-registry-specifier (Tier-0 resolver override; iteration 1 resolved a blocking effective-config regression + added the 4 table tests that were missing). Slices 01–05: mycelium re-audit + DD-63 → `lykn add` (`f9f9014`, exact-pin) → `lykn link`/`unlink` (`e1c0dd7`, git-ignored overlay; dist reads raw = publish-safe) → import-by-specifier (`42500a9`, zero lang change). mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green). Closing-report **re-issued** covering the full 7-slice walk; arc ledger **A-1…A-9 all met**. Gate is the operator's after the host reconcile (runsheet Part C = the A-6 bar) |
+| **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **CLOSED — gate GO 2026-07-24** (operator; runsheet Parts A/B/C/C-bis all green, runtime rows **reproduced** not merely attested). All 7 slices closed/CDC-verified. slice06 version-consolidation + slice07 link-registry-specifier (Tier-0 resolver override; iteration 1 resolved a blocking effective-config regression + added the 4 table tests that were missing). Slices 01–05: mycelium re-audit + DD-63 → `lykn add` (`f9f9014`, exact-pin) → `lykn link`/`unlink` (`e1c0dd7`, git-ignored overlay; dist reads raw = publish-safe) → import-by-specifier (`42500a9`, zero lang change). mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green). Closing-report **re-issued** covering the full 7-slice walk; arc ledger **A-1…A-9 all met**. **0.6.0's founding goal — consume lykn as a dependency, end to end — is met.** |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc16 (book)** | **Future** (was M14/M15) — gating list gained **arc16** on 2026-07-24 |
@@ -229,7 +229,7 @@ inherited from arc attestations.
 | P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | architecture merged to release (`6aa3724`); corpus 1345/0; classifier.js/surface-helpers.js present | restored after the 2026-06-29 reconciliation |
 | P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **done** | arc04 closed (5/5 slices); `closing-report.md` composition check; surface.js 2315→448; emitMatchMacro byte-identical; lint green | DD-37 step 4 (`_kernel`) surfaced as follow-up |
 | P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | **done** | 4 slices closed; arc05 closing-report composition A-1…A-7; **gate GO 2026-07-21** (`make check` + P-11 demo) | **reconciled** |
-| P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | **open (CLOSE-READY)** | slices 01–05 closed/CDC-verified (`lykn add` DD-63 `f9f9014`; `lykn link` `e1c0dd7`; import-by-specifier `42500a9`); **closing-report A-1…A-7 all met**; mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green) | Round trip 2026-07-24: CLOSE-READY → ACTIVE (slices 06/07 landed post-report; slice07 iteration 1) → **CLOSE-READY again**, all three prerequisites now met — slice07 closed, slice06 verified, closing-report re-issued over the full 7-slice walk. Flips to **done** on operator gate GO + host reconcile of the CC-attested A-5/A-6 rows |
+| P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | **done** | slices 01–05 closed/CDC-verified (`lykn add` DD-63 `f9f9014`; `lykn link` `e1c0dd7`; import-by-specifier `42500a9`); **closing-report A-1…A-7 all met**; mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green) | **DONE — gate GO 2026-07-24.** Round trip on the way: CLOSE-READY → ACTIVE (slices 06/07 landed post-report; slice07 iteration 1) → CLOSE-READY → **CLOSED**. The host reconcile ran in full, so A-4/A-5/A-6 are **operator-reproduced**, not CC-attested — including the publish-safety property (`lykn dist` with a link active → 0 linked refs in staged output), the arc's highest-stakes claim |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
 | P-8 | `lykn publish` fails on a dirty tree; `--allow-dirty` overrides, never auto-injected | end-to-end publish dry-run on dirty + clean tree | serious | DoD | open | | reproduce at project scale |
 | P-9 | same surface input → same output across Rust + JS for the migrated corpus (`compileBoth`) | run `compileBoth` corpus; divergences documented or zero | serious | DoD | **done** | corpus **green: 1293 passed / 0 failed** (slice11); 0 semantic divergences | form-codegen only (~11%) remains a documented coverage bound |
@@ -249,6 +249,37 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.37 — 2026-07-24 (**arc06 CLOSED — gate GO**; 0.6.0's founding goal met)
+
+**Operator gate GO.** The host reconcile ran in full — runsheet Parts A, B, C and
+C-bis all green — so arc06's runtime rows moved from **CC-attested** to
+**operator-reproduced**, the top evidence tier. That matters most for the arc's
+highest-stakes claim: with a link active, `lykn dist` staged **zero** linked
+references, so a local dev path cannot reach a published package. That property
+was architecturally guaranteed by inspection, then attested, and is now
+reproduced. **P-6 → done.**
+
+**arc06 closed at 7 slices** (01 lang-exports-gap · 02 mycelium re-audit · 03
+`lykn add` · 04 `lykn link`/`unlink` · 05 N1 import-by-specifier · 06
+version-consolidation · 07 link-registry-specifier). **0.6.0's founding goal —
+consume lykn as a dependency, end to end — is met.**
+
+**Two findings surfaced by the reconcile itself**, both logged rather than
+absorbed into the close: a `lykn add` resolve failure leaks deno's `Uncaught (in
+promise)` plus a `$deno$eval.js` frame into a user-facing error — the same root as
+`01-macro-entry-diagnostics` M-5 at a different call site; and Part B showed that
+`lykn link <package-name>` already writes the entry-file + directory pair that the
+linked-*specifier* path lacks, which re-scopes the routed 0.7.0 runtime-override
+item from new design to a parity fix between two sibling code paths.
+
+**Recorded as a pattern:** host reconcile is a **discovery surface, not a
+formality.** This arc produced two unplanned slices (06, 07) from the operator's
+runsheet pass and two further findings from running it — three separate times the
+reconcile found work no plan had anticipated. Future arcs should budget for it.
+
+Remaining 0.6.0: **arc15 slice04 + close → arc07 (docs) + arc16 (book) → arc09
+(release).** Which-child-surfaced: arc06's gate.
 
 ### v1.36 — 2026-07-24 (standalone slice `01-macro-entry-diagnostics` opened)
 
