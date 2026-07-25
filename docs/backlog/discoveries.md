@@ -1,0 +1,594 @@
+# Discovery register
+
+Append-only. Protocol in [`README.md`](./README.md). IDs are permanent — never
+renumber, never delete a row. Dispositioned and rejected entries stay: "we looked
+at this and decided no" is information the next person needs.
+
+Seeded 2026-07-24 from the session that closed arc06, so the format was tested
+against a real corpus rather than designed in the abstract.
+
+**Relocated 2026-07-25** from the gitignored `workbench/` into this tracked
+home — the path five committed documents had already been citing
+(`project-plan.md:313`, `:343`; `01-macro-entry-diagnostics/{slice-doc,
+closing-report,cdc-verification}.md`). See `README.md` for the protocol and
+the routing rule.
+
+---
+
+## ★ The systemic finding
+
+### `D-2607-Z5KN` — the uncovered case is reliably the one that ships wrong
+
+- **What:** We have several distinct ways for a green build to mean nothing, and
+  in every instance below the *specific path with no coverage* is the path that
+  shipped a defect. Four independent code paths in a single day.
+- **How found:** `cdc-review` ×2, `dogfooding` ×2 — i.e. **both activities found
+  it independently**, which is what makes it systemic rather than anecdotal.
+- **Guess:** Highest of anything in this register. Every symptom below cost real
+  time, and the class will keep producing them.
+- **Kind:** `systemic` · **Status:** `open`
+
+**The four instances:**
+
+1. **`D-2607-H4TC`** — `write_effective_deno_config` rewritten three ways at once
+   with **zero** test coverage → a silent overlay-drop regression. The causal
+   chain is exact: no coverage → rewrite → silent defect.
+2. **`D-2607-B8SY`** — a test **named** for a guard whose body asserted the
+   opposite case. The ledger row, the commit message and the closing report all
+   inherited a guarantee nothing checked. *A test that overclaims is worse than a
+   missing test:* it converts absence-of-evidence into apparent-evidence at three
+   documentation levels simultaneously.
+3. **`D-2607-3VXM`** — threading tests assert compiled **shape**, never
+   execution. Green forever while the code they describe cannot run.
+4. **`D-2607-7RQD`** — the missing-directory case had no test in *either*
+   compiler, and it is the case that shipped a confidently wrong hint.
+
+**Why this is one finding and not four:** the shape is identical each time — the
+untested branch is the defective branch, and nothing in `make check` could have
+caught any of them, because `make check` was green throughout.
+
+**Two more instances, added 2026-07-25** — same shape, one in test coverage and
+one in documentation:
+
+5. **`D-2607-2PQR`** — cross-compiler threading parity rests on **two** test
+   cases, neither of which covers the keyword-step path DD-18.1 changed in both
+   emitters. The implementations happen to agree; nothing checks that they do.
+6. **`D-2607-V8DM`** — a register row quoted compiled output it had
+   *transcribed* rather than *re-run*, and the quote was wrong. The line nobody
+   executed is the line that is wrong — now demonstrated in prose as well as
+   code.
+
+**Disposition needed.** Candidate structural moves, in rough cost order: audit
+for other shape-only assertions (cheap, direct from #3); require a coverage
+statement in the ledger row of any function being materially rewritten (process,
+free); execute `examples/` in CI (kills `D-2607-P4WQ` too). **Do not close this
+by fixing the four symptoms** — they are already fixed. It closes when the
+*generation rate* drops.
+
+---
+
+## Systemic
+
+### `D-2607-P4WQ` — nothing executes the examples
+
+- **What:** No test target runs `examples/*.lykn`. `make check` runs the corpus;
+  `make test-docs` runs fenced blocks under `docs/`. `examples/` is in neither.
+- **How found:** `dogfooding` · **Guess:** High — this is *why* `D-2607-K9RT`
+  survived the life of the language. **Kind:** `systemic` · **Status:** `open`
+- **Symptoms:** `D-2607-K9RT`
+- **Note:** Structural fix beats vigilance. Executing examples in CI kills the
+  class at once and needs no ongoing discipline.
+
+### `D-2607-3VXM` — shape-assertions stand in for execution
+
+- **What:** `test/surface/threading_test.lykn:25` asserts
+  `"(->> items (filter pred) (map f) (reduce g init))"` nests correctly — and
+  passes green while that code cannot run. Any macro tested only by shape can be
+  green and broken.
+- **How found:** `dogfooding` · **Guess:** High, and broader than threading —
+  worth sweeping all of `test/surface/`. **Kind:** `systemic` ·
+  **Status:** `open` · **Parent:** `D-2607-Z5KN`
+
+### `D-2607-D3NL` — the committed corpus cites an ignored tree 353 times, and 40% of it is already gone
+
+- **What:** A sweep of 507 tracked documents found **106 of them citing 143
+  distinct `workbench/…` paths across 353 citation sites**. `workbench/` is
+  gitignored (`.gitignore:10`), so none of those targets is in git. **57 of the
+  143 no longer exist on the operator's disk at all** — closing reports, CDC
+  reviews, DD drafts, and verification transcripts (`workbench/verify/m11-m13/
+  baseline.txt`, `workbench/M2-guide-drift-inventory.md` ×10 sites,
+  `workbench/phase-2-plan.md` ×9). The evidence base those documents rest on is
+  unrecoverable from this machine.
+- **Where:** repo-wide. Sweep script to be landed as the `02-artifact-homes`
+  L-7 gate; census reproducible from it.
+- **How found:** `audit` — a verification pass on the register's own relocation,
+  which was scoped as a five-document problem and turned out to be a
+  106-document one.
+- **Guess:** High. Not for the current work — 0.6.0's own planning tree is
+  tracked and healthy — but for **provenance**: a closing report whose evidence
+  link is dead cannot be re-verified, only trusted. That is precisely the
+  `asserted` tier the ledger discipline exists to escape.
+- **Kind:** `systemic` · **Status:** `open` · **Parent:** `D-2607-Z5KN`
+- **Sub-finding:** several cites are **literal unfilled placeholders** committed
+  as-is — `workbench/YYYY-MM-DD-DD-50.7-closing-report.md`,
+  `workbench/2026-05-XX-DD-53-closing-report.md`,
+  `workbench/2026-MM-DD-M11-M13-closing-report.md`. Those never pointed at
+  anything; the template was committed with the slot unfilled.
+- **Confidence note:** the `workbench/`-prefixed count is reliable (the prefix is
+  unambiguous). A *general* dangling-path sweep over the same corpus returned
+  ~436 distinct unresolved paths, but that number is **not** trustworthy — most
+  are shorthand fragments (`ast/sexpr.rs` for
+  `crates/lykn-lang/src/ast/sexpr.rs`), pre-restructure historical paths
+  (`src/surface.js`), or deliberately out-of-repo (`assets/ai/…`, a gitignored
+  symlink). **Designing the extractor to tell those four classes apart is the
+  hard half of the `02-artifact-homes` L-7 row**, not the checking.
+- **Disposition owed:** this is a large, mostly-historical corpus. The realistic
+  options are (a) accept-and-mark historical documents as citing dead evidence,
+  (b) salvage the 86 paths still on disk into a tracked `docs/archive/`, or
+  (c) both, scoped by document age. **Operator call — do not decide by
+  implementation.**
+
+### `D-2607-2PQR` — cross-compiler threading parity rests on two test cases
+
+- **What:** `crates/lykn-lang/tests/cross_compiler.rs:144-145` is the *entire*
+  JS/Rust parity surface for threading — `cross_test!(cross_thread_first,
+  "(-> x f g)")` and `cross_test!(cross_thread_last, "(->> x (f a) (g b))")`.
+  Bare symbols and one plain call. **No keyword-step parity test**, though
+  DD-18.1 changed the keyword path in *both* emitters (Phase 2 and Phase 3).
+  Nothing compares the two on `(:method args)`, namespaced heads, or
+  `some->`/`some->>`.
+- **How found:** `audit` — building the Rust compiler to settle whether `->>`
+  existed there too, after the operator surfaced conflicting accounts.
+- **Guess:** Medium as defect risk, **high as explanation.** The two do agree
+  today — 14/14 in `docs/design-v0.7.0/03-threading-macros/data/parity-transcript.txt`
+  — but the thinness is *why* a JS-only check felt sufficient to the surveying
+  session, and `CLAUDE.md` states the obligation outright: *"Changes to the
+  grammar should be reflected in both."*
+- **Kind:** `gap` · **Status:** `open` · **Parent:** `D-2607-Z5KN`
+- **Suggested:** promote the 14 transcript cases into `cross_compiler.rs`. They
+  exist, they pass, and they already cover keyword steps, namespaced heads,
+  `some->`/`some->>` and `as->`'s silent miscompile. Converts a transcript into
+  a regression gate.
+
+### `D-2607-V8DM` — a correct finding degraded, in retelling, into a false one
+
+- **What:** `dogfooding-friction-log.md` F-1 found, correctly, that **the
+  collection prelude is missing** — *"`->>` is a purely syntactic macro… `filter`,
+  `map` and `reduce` do not exist."* Downstream, that travelled informally as
+  ***"`->>` is not implemented"*** — a different claim, and false. `->>` is
+  implemented correctly in **both** compilers (14/14 parity).
+- **How found:** `operator` — Duncan held three accounts of `->>` side by side
+  and asked which to believe. Reconstruction showed **all three agreed**; the
+  contradiction lived entirely in the summaries.
+- **Guess:** Medium-high, and structural. The tracked artifacts were *precise* —
+  F-1 is precise, `D-2607-K9RT` is precise. The drift happened in the informal
+  channel between them, which no register can police. Cost: a session re-derived
+  a settled fact and nearly wrote a false one into a planning tree.
+- **Kind:** `systemic` · **Status:** `open` · **Parent:** `D-2607-Z5KN`
+- **The sharper half:** F-1 said `even?` maps to `evenQMARK`. It maps to
+  **`isEven`**. `D-2607-K9RT` **transcribed** `evenQMARK` from F-1 and it sat in
+  this register unchecked. The register did not merely fail to stop the drift —
+  **it propagated an error from its source document.** Corrected at both sites
+  2026-07-25 as annotations, not silent rewrites.
+- **Candidate disposition:** when a register row quotes *compiled output*, that
+  quote is a claim about the code and owes the same evidence strength as any
+  other — **re-run, not transcribed.** `D-2607-Z5KN`'s thesis applied to
+  documentation.
+
+### `D-2607-L7BX` — `docs/design-v0.7.0/` is absent from `main`, with debris that makes it look present
+
+- **What:** The 0.7.0 planning tree exists only on `release/0.7.x`. On `main`,
+  `docs/design-v0.7.0/` holds two **empty, untracked** directories
+  (`02-packaging-strategy/artifacts`, `.../evidence`) and nothing else. An `ls`
+  suggests a sparse tree; `git ls-files` shows no tree at all.
+- **How found:** `audit` — locating the home for `03-threading-macros`.
+- **Guess:** Low-medium as a hazard, but it is the **`workbench/` failure shape
+  in miniature** — a path resolving on disk and not in git, in the directory
+  where planning artifacts are meant to be findable. `D-2607-D3NL` is the same
+  class at scale.
+- **Kind:** `trap` · **Status:** `open`
+- **The mirror problem, and the one with teeth:** `docs/ecmascript-2025/` (the
+  42-file ES2025 corpus, `0a4b138`) is on **`main` only**. Units under
+  `docs/design-v0.7.0/` live on `release/0.7.x` and therefore **cannot cite it
+  with a path that resolves on their own branch** — which `CLAUDE.md` requires
+  and `make check` enforces. Found the hard way: `03-threading-macros`'
+  reproduce command was written against `../../ecmascript-2025/…` and did not
+  resolve. **Operator call:** cherry-pick `0a4b138` onto `release/0.7.x`, or
+  accept a cross-branch note in every unit that uses the corpus.
+- **Also:** `docs/backlog/owed-0.7.x-rows.md:4` named the worktree
+  `.workdirs/release-0.7.x`; the actual path is `.worktrees/0.7.x`. Fixed
+  2026-07-25.
+
+### `D-2607-8HTN` — a routing row named an owner instead of a home
+
+- **What:** The 0.7.x BACKLOG recorded the Lykn Book as "owned by the Book
+  project." No such project was ever instantiated. The work read as handled for
+  three months.
+- **Where:** `release/0.7.x` → `docs/design-v0.7.0/BACKLOG.md:290`
+- **How found:** `audit` · **Kind:** `systemic` · **Status:** `routed` →
+  project-plan v1.34 records the rule: *a routing row must name a home that can
+  be opened, not an owner that might someday exist.*
+
+### `D-2607-QZ62` — an arc-plan went stale while five slices closed under it
+
+- **What:** `arc06/arc-plan.md` still said "slice02 is the next work" while
+  slices 02–05 had closed and 06/07 were committed. Caused by recon-first
+  scoping: every slice after 02 was scoped against recon output, so nobody
+  re-read the plan.
+- **How found:** `cdc-review` · **Kind:** `systemic` · **Status:** `routed` →
+  arc-plan v1.3, lesson in §2 (re-reconcile at each slice close, not only at arc
+  close).
+
+---
+
+## Held for design
+
+Discoveries whose *fix* is a language decision, parked pending the language-design
+discussion. **Logged so the pending conversation is durable, not to pre-empt it.**
+
+### `D-2607-K9RT` — the flagship `->>` example cannot run
+
+- **What:** `(->> items (filter even?) (map double))` expands to
+  `map(double, filter(isEven, items))`. **`filter`, `map` and `reduce` do not
+  exist** — no prelude, no stdlib. Compiles clean, throws `ReferenceError`.
+  *(Corrected 2026-07-25: this row said `evenQMARK`, transcribed from
+  `dogfooding-friction-log.md` F-1. The mapping is `isEven`, verified in both
+  compilers. See `D-2607-V8DM` — the row was transcribed, not re-run.)*
+- **Where:** `docs/guides/00-lykn-surface-forms.md:678` and `:697`;
+  `examples/surface/threading.lykn:33-37`.
+- **How found:** `dogfooding` — asked "where does `filter` come from?" while
+  writing the first fold in `fences.lykn`.
+- **Guess:** High. Not stale — *never true*. Teaches Clojure muscle memory to
+  people writing JavaScript, in the most-read reference guide.
+- **Kind:** `trap` · **Status:** `held-for-design`
+- **Caused by:** `D-2607-P4WQ`, `D-2607-3VXM`
+- **The design question:** JS collection APIs are methods on the receiver, so
+  `->` + method-threading is the real idiom and `->>` has little natural to point
+  at. Ship a collection prelude (making `->>` earn its place), or demote `->>` in
+  the docs? The doc fix is 0.6.0-cheap either way; the prelude is a language call.
+- **EVIDENCE BASE, 2026-07-25 — this row now has one.**
+  `docs/design-v0.7.0/03-threading-macros/` (on `release/0.7.x`) censused all
+  **489** ES2025 built-ins and **214** host callables. Headline: **417 of 489
+  (85%)** cannot distinguish `->` from `->>` at all; of the **48** that can, it
+  is **37 datum-first : 2 datum-last** (the two being `BigInt.asIntN/asUintN`).
+  The host tier is where thread-last actually lives — 18 operations, all either
+  *configured operators* (WebCrypto) or *keyed sinks* (`Deno.writeTextFile`,
+  `Headers.set`). Conclusion: `->>` has a real but **terminal, one-step** domain,
+  not a pipeline one. Recommendation is *keep `->>` and re-scope the docs; ship
+  `as->` (`D-2607-3KTP`); do **not** ship a datum-last prelude* — the last is
+  coupled to `01-treeshake-audit`, since a prelude needs runtime functions in
+  compiled output. **Still `held-for-design`:** the unit supplies evidence, the
+  language-design conversation owns the call.
+- **Also settled:** `->>` *is* implemented, correctly, in **both** compilers
+  (14/14 byte-identical parity). The "not implemented" reading was a retelling
+  artifact — `D-2607-V8DM`.
+
+### `D-2607-W7KD` — no idiomatic answer for accumulate-over-a-sequence
+
+- **What:** The most common shape in text processing has no documented spelling.
+  `bind` is immutable, `cell` is discouraged, `reduce` doesn't exist, no guide
+  shows a fold. Worse: the SKILL's own generator example uses
+  `(for (let i start) …)` — kernel `let` — while its anti-patterns table bans
+  exactly that. **The guides model the thing they prohibit.**
+- **How found:** `dogfooding` · **Guess:** Medium-high — every non-trivial
+  program hits this in its first hour. **Kind:** `gap` ·
+  **Status:** `held-for-design`
+- **Note:** The *doc* half (an "Iteration and accumulation" section ranking
+  method `:reduce` → recursion → `cell` → kernel loop) can land without the
+  design call. The design call is whether a fold primitive should exist.
+
+### `D-2607-XXXX` — PLACEHOLDER: further `fences.lykn` discoveries pending
+
+- **What:** The operator has additional discoveries from the `fences.lykn`
+  dogfooding work that he wants to raise **after** a language-design discussion.
+  This row exists so the *existence* of that pending conversation is durable.
+- **How found:** `dogfooding` · **Status:** `held-for-design` ·
+  **Owner:** the language-design chat
+- **Source material:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+  (relocated 2026-07-25 from the book repo's gitignored `workbench/book-audit/`;
+  the `fences.lykn` tool it came from is tracked in the book repo)
+- **Replace this row** with real IDs once the discussion happens. Do not close it
+  until they exist.
+
+---
+
+## Language & docs
+
+### `D-2607-N8RP` — surface `try` cannot produce a value; SKILL teaches kernel-only
+
+- **What:** DD-57's W-2 (position-aware `try`, D-2.γ, approved 2026-05-14) never
+  shipped. `"try"` is still in `STATEMENT_FORM_HEADS`
+  (`crates/lykn-lang/src/emitter/forms.rs:2583`); `is_valueless_last_expr`
+  (`:445-455`) special-cases only `if` and the control transfers.
+  `assets/ai/SKILL.md` still teaches try as kernel-statement-only.
+- **How found:** `dogfooding` + `audit` · **Guess:** High — error handling has no
+  expression-position spelling, so it can't live in pipelines.
+- **Kind:** `blocker` · **Status:** `routed` → operator decided 2026-07-24 to
+  **ship W-2 in 0.6.0**; new gating arc + DD-57 W-4a/b/c doc updates.
+
+### `D-2607-8QVL` — DD-18's `->>` example documents the wrong expansion, and it is `final`
+
+- **What:** `docs/design/06-final/0023-dd-18-threading-macros-and-conditional-binding.md`,
+  §`->>` thread-last, states that `(->> items (filter even?) (map double) (take 5))`
+  compiles to `take(map(filter(items, even?), double), 5)`. That is the
+  **thread-first** nesting. Both compilers produce
+  `take(5, map(double, filter(isEven, items)))`. The DD's stated *kernel
+  expansion*, `(take (map (filter items even?) double) 5)`, is wrong the same way.
+  **The code is correct; the DD is wrong.**
+- **Where:** `docs/design/06-final/0023-dd-18-…md`, §`->>` thread-last — the
+  Syntax JS block and the kernel-expansion block.
+- **How found:** `audit`, confirmed by **executing both compilers**
+  (`docs/design-v0.7.0/03-threading-macros/data/parity-transcript.txt`, case 1).
+- **Guess:** High. `final`-state DD, normative description of the macro, and it
+  teaches the reader that `->>` does what `->` does — the exact confusion
+  `D-2607-V8DM` records spreading informally.
+- **Kind:** `trap` · **Status:** `open`
+- **Note:** `D-2607-3VXM`'s shape one level up. There, tests asserted a shape
+  nobody executed; here the *specification* did.
+
+### `D-2607-3KTP` — `as->` does not exist and fails silently
+
+- **What:** `(as-> x $ (f $ 1) (g 2 $))` compiles clean, no diagnostic, to
+  `asTo(x, $, f($, 1), g(2, $));` — a call to an undefined `asTo` plus an
+  undefined `$`. `ReferenceError` at runtime. Identical in both compilers.
+  `asTo` comes from the `->` → `To` rule at `compiler.js:405`
+  (`MULTI_CHAR_ESCAPES`) rewriting an unrecognised head.
+- **Where:** `packages/lang/classifier.js` — registered threading heads are
+  `->`, `->>`, `some->`, `some->>`; no `as->`. Same set on the Rust side.
+- **How found:** `audit` — probing the threading surface during
+  `03-threading-macros`.
+- **Guess:** Medium-high. Strictly an instance of `D-2607-P4WQ`'s class, but a
+  **high-traffic** one: `as->` is the third threading macro a Clojure user
+  reaches for, and the guides teach the other four.
+- **Kind:** `gap` · **Status:** `routed` → `docs/design-v0.7.0/BACKLOG.md` §A7
+- **Why it matters beyond the missing macro:** the survey found `as->` is the
+  *general* form — one macro covers datum-last, datum-**middle**, and
+  operator-receiver, including the datum-in-the-middle shape that has **no**
+  spelling in lykn today (`Reflect.set(target, key, V)` threading `V`; the six
+  `SubtleCrypto` datum-middle signatures). A dedicated `->>` serves two ES2025
+  built-ins; `as->` serves all the residue.
+
+### `D-2607-W4RC` — `->` and `->>` are byte-identical across 85% of the ES surface
+
+- **What:** DD-18.1's keyword-step rule fires *before* the position check in
+  **both** compilers, so a `(:method args)` step threads the receiver regardless
+  of macro. With unary functions (first and last coincide), **417 of 489 ES2025
+  built-ins cannot distinguish the two macros.**
+- **How found:** `audit` + execution — `03-threading-macros` R-2, R-6, R-11.
+- **Guess:** Medium as a defect (it is correct behaviour), **high as a docs
+  finding.** A reader arriving from Clojure assumes the choice is meaningful
+  everywhere; it is meaningful in 48 of 489 core cases and 71 of 214 host cases.
+- **Kind:** `gap` · **Status:** `open` → arc07 (guides) / book
+- **Suggested:** say it outright in the threading guide — *"for method steps the
+  two macros are the same; the choice only matters for free and namespaced
+  functions"* — and give the rule for picking.
+
+### `D-2607-5MJC` — record types and multi-field constructor layout undocumented
+
+- **What:** Every `type` example is a sum type. Declaring a plain record is never
+  shown, and **the field layout of a multi-field constructor is never shown** —
+  the SKILL documents `(Some v)` → `{tag, value}` and stops.
+- **How found:** `dogfooding` — could not determine whether `s:blocks` reads a
+  constructor field. **Guess:** High for anyone modelling data.
+- **Kind:** `gap` · **Status:** `open` → arc07 + book
+- **Suggested:** one worked record example *including the compiled JS*. Records
+  before sum types is also the friendlier teaching order for the book.
+
+### `D-2607-T2FB` — no examples of JS method names needing lisp-case conversion
+
+- **What:** Every method-call example in the guides is single-word, so
+  `str.startsWith` → `(:starts-with)` has to be trusted rather than seen.
+- **How found:** `dogfooding` · **Guess:** Low-medium · **Kind:** `gap` ·
+  **Status:** `open` → arc07
+
+### `D-2607-4WGT` — a swallowed validation error hides the local compiler's message
+
+- **What:** `compile_lykn_test_files` swallows the Rust validation error, so the
+  local binary's (now good) macro-resolution diagnostic never reaches the
+  operator on the `lykn test` path — even when the local compiler produces it.
+- **How found:** `cc-implementation` — CC found it while fixing `D-2607-7RQD` and
+  routed it rather than expanding scope into `cmd_test` control-flow.
+- **Guess:** Medium. Close cousin of the green-means-nothing family: a real error
+  exists and is discarded before anyone sees it.
+- **Kind:** `gap` · **Status:** `open` — routed as a follow-up to
+  `01-macro-entry-diagnostics`
+
+### `D-2607-9PLC` — `lykn add`'s resolve failure leaks deno's crash into a user-facing error
+
+- **What:** A 404 on `lykn add` prints the lykn wrapper *and* the raw deno crash:
+
+  ```
+  error: could not resolve @std/does-not-exist-xyz: error: Uncaught (in promise) Error: registry returned 404 ...
+      at file:///private/tmp/.../$deno$eval.js:1:93
+  ```
+
+  `Uncaught (in promise)` and a `$deno$eval.js:1:93` frame — a generated script the
+  user cannot act on — are concatenated into what should be a clean CLI error.
+- **Where:** the `lykn add` resolve path (deno-eval driver), `crates/lykn-cli/src/add.rs`
+  + `main.rs`.
+- **How found:** `downstream-friction` — operator running arc06 runsheet Part A6.
+- **Guess:** Medium. **Same root as `01-macro-entry-diagnostics` M-5, different
+  call site** — that fix caught the compile-driver; this path still leaks. Compare
+  the bar set two rows over in the same runsheet: *"run 'lykn build' in <path>
+  first"*.
+- **Kind:** `gap` · **Status:** `open`
+- **Note:** the ledger row **passed** — the runsheet expected "registry returned
+  404, rc=1" and that is what happened, with `project.json` correctly unchanged.
+  The *behaviour* is right; the *diagnostic* is below the bar. Worth a sweep for
+  other deno-eval call sites rather than a third one-off fix.
+
+### `D-2607-Q3TV` — `lykn link` behaves differently for a package name than a specifier
+
+- **What:** `lykn link <package-name>` writes **two** overlay entries — the exact
+  key → the entry *file*, the slash key → the *directory*:
+
+  ```
+  localdep  = /tmp/.../target/lykn/build/localdep/mod.js
+  localdep/ = /tmp/.../target/lykn/build/localdep/
+  ```
+
+  `lykn link <jsr:/npm: specifier>` writes **one**, directory-valued
+  (`cmd_link_specifier`: `let entries = [(specifier.to_string(), val)]` with a
+  trailing slash forced). That single-entry shape is exactly why a *runtime*
+  import of a linked specifier doesn't resolve.
+- **How found:** `downstream-friction` — visible in the operator's Part B output.
+- **Guess:** Low-medium as a defect; **high as an estimate correction.** The routed
+  0.7.0 "full runtime override" item is **not new design** — it is bringing the
+  specifier path to parity with the package-name path, which already does the
+  right thing. Re-estimate accordingly.
+- **Kind:** `gap` · **Status:** `routed` → 0.7.x BACKLOG (row 3, sharpened
+  2026-07-24). Related: `D-2607-Z5KN`'s theme, one scale down — *two sibling code
+  paths in one command drifted, and nothing compared them.*
+
+---
+
+## Guides (arc07)
+
+### `D-2607-6BQX` — `lykn publish`'s dirty-check gate is shipped and undocumented
+`main.rs:1016-1026` enforces it, `--allow-dirty` at `:158`; **zero** mentions in
+`docs/guides/`. `audit` · Medium · `gap` · `open` → arc07
+
+### `D-2607-J3HV` — `.d.ts` generation is shipped and near-invisible
+`emitter/dts.rs` ships; the guides mention `.d.ts` once, generically, at
+`05-type-discipline.md:529`. `audit` · High (flagship capability, undiscoverable)
+· `gap` · `open` → arc07
+
+### `D-2607-V5DK` — the guides teach a deprecated command and contradict themselves
+`16-testing.md:478-496` uses `target/lykn/*` as present tense;
+`15-lykn-cli.md:313` says paths are *"moving to"* those; ID-04e and
+`10-project-structure.md:113` still teach `lykn build --dist`, marked
+`[deprecated: use lykn dist]` at `main.rs:118-121`. **Also in code:** `main.rs:986`
+prints "Did `lykn build --dist` complete successfully?" in a user-facing error.
+`audit` · Medium · `trap` · `open` → arc07 *(fix docs and the string together)*
+
+### `D-2607-Y9GS` — the `compileBoth` guide row is superseded, not outstanding
+`main.rs:52-62` documents the flags as harness-only, *explicitly not for
+authoring*; doing the row would manufacture new drift. Must be closed as
+**superseded**, not silently dropped. `audit` · Low · `polish` · `open` → arc07
+
+### `D-2607-2FHM` — legacy repo-root `dist/` is stale debris that corroborates a stale doc
+Root `dist/{lang,testing,browser}` still carry `"version": "0.5.2"` from the
+pre-arc01 layout. **Not a publish hazard** — `publish` reads `target/lykn/dist/`
+(`validate_dist_exports`). But `10-project-structure.md:113` teaches `dist/` as
+staged output, so a reader who checks the repo finds a `dist/` directory
+confirming the stale doc. Delete the debris with the doc fix.
+`audit` · Low · `trap` · `open` → arc07, same root as `D-2607-V5DK`
+*(Correction: this was first logged as an arc09 publish precondition. That framing
+was wrong — see the bootstrap's "a consequence is a claim about a path you have
+not walked.")*
+
+---
+
+## Book (arc16)
+
+Book *findings* live here — they are facts about the language and its docs.
+Chapter rewrites live in the book repo.
+
+### `D-2607-R4NW` — `lykn test --docs` cannot see any of the book
+`extract_blocks` (`crates/lykn-cli/src/doctest.rs:104`) matches only ` ```lykn `
+and ` ```lykn,<annotation> `. The book authors in ` ```lisp `. Census: **444
+`lisp`, 170 `javascript`, 3 `lykn`** — and the only three visible blocks are in
+`part6/chapter29/6-markdown-testing.md`, the chapter that *teaches the doctest
+feature*. `audit` · High (hard prerequisite for any book compile pass) ·
+`blocker` · `open`
+*Note: ~20 lines in `doctest.rs`, but a real decision — teach the extractor
+`lisp`, flip 444 fences, or add `--also-fence`. Recommend the third.*
+
+### `D-2607-C7LZ` — Chapter 9.1 states something now simply false
+*"Lykn's `if` is a kernel form that maps directly to JavaScript's `if`
+statement."* Post-DD-50, surface `if` is position-aware.
+`src/part2/chapter9/1-conditionals.md:3`. Flagged by DD-57 §1.4.3 on 2026-05-14;
+unchanged since. `audit` · High (foundational chapter, known 14 months) · `trap`
+· `open`
+
+### `D-2607-F6PA` — six book sites use `try` as an expression and will not compile
+`part3/chapter17/4-error-handling.md:11,47`; `part5/chapter25/2-json.md:26`;
+`part6/chapter27/5-fetch.md:35`; `part8/chapter37/5-routes.md:29`;
+`part8/chapter38/3-api.md:11,24`. The book teaches the idiomatic error pattern
+using a form that does not compile. `audit` · High · **Status:** `routed` →
+resolved when W-2 ships (`D-2607-N8RP`).
+
+### `D-2607-M2XE` — Chapter 9.5 contradicts five later chapters
+*"`throw`, `try`, `catch`, `finally` are kernel forms with no surface
+transformation"* — currently accurate, contradicted by every chapter in
+`D-2607-F6PA`. `src/part2/chapter9/5-exceptions.md:3`. `audit` · Medium-high ·
+`trap` · **Status:** `routed` → DD-57 W-4a, after W-2.
+
+---
+
+## Closed
+
+Kept for trending. `cdc-review` is a "how found" category and must stay
+countable against the others.
+
+### `D-2607-H4TC` — `lykn link` could silently apply nothing — **CLOSED**
+The overlay-insertion loop sat inside `if let Some(imports) = …`, so with no
+`imports` key in `project.json` no override was written — yet the effective
+config was still written, `workspace` still stripped, and `lykn link` printed
+`✓ linked`. `config.rs:301-310` (introduced `58e22e8`). `cdc-review` · High ·
+`blocker` · **closed** by slice07 iteration 1 (`72a1cfd`) — hoisted, plus four
+table tests and a malformed-`imports` warn-and-fall-back. **Parent:** `D-2607-Z5KN`
+
+### `D-2607-B8SY` — a test named for a guard asserted the opposite case — **CLOSED**
+`test_resolve_specifier_scheme_target_override_is_not_taken` inserted a
+*non*-scheme target and asserted Tier 0 fires — a duplicate of the positive case.
+The advertised "never reroute registry→registry" guard had no coverage.
+`cdc-review` · Medium · `gap` · **closed** by slice07 iteration 1 — renamed, plus
+a direct network-free `test_is_scheme_specifier`. **Parent:** `D-2607-Z5KN`
+
+### `D-2607-7RQD` — a confidently wrong hint for a missing macro directory — **CLOSED**
+Neither compiler checked whether `pkg_dir` existed before walking the candidate
+chain, so a *missing directory* produced "no macro entry found" plus *"add
+`lykn.macroEntry` to the package's `deno.json`"* — instructing the user to edit a
+file inside a directory that isn't there. **Well-formed but wrong is worse than
+terse.** Found by the operator running arc06's runsheet Part C-bis.
+`downstream-friction` · High · `trap` · **closed** by `01-macro-entry-diagnostics`
+(`41cf05a`) — distinct message, overlay provenance, and a drift-detecting parity
+test. **Parent:** `D-2607-Z5KN` · **Spawned:** `D-2607-4WGT`
+*Residual: the end-to-end demo is deferred until 0.6.0 publishes (mycelium's
+`lykn test` pins published `@lykn/lang@0.5.2`, whose JS compiler predates the fix).*
+
+---
+
+## Trending (recompute at each triage pass)
+
+| How found | Entries | Of which `trap`/`blocker` | Systemic |
+|---|---|---|---|
+| `dogfooding` | 6 | 2 | 2 |
+| `audit` | 14 | 7 | 2 |
+| `cdc-review` | 3 | 1 | 1 |
+| `cc-implementation` | 1 | 0 | 0 |
+| **`downstream-friction`** | **3** | **1** | **0** |
+| **`operator`** | **1** | **0** | **1** |
+| **Total** | **28** | **11** | **6** |
+
+*Recomputed 2026-07-25 (+6 from `03-threading-macros`). **`operator` is a new
+category**: `D-2607-V8DM` was found by the operator noticing that three accounts
+of one feature disagreed — not by audit, dogfooding, review, implementation, or
+downstream friction. That is a distinct discovery surface, and it went 1-for-1
+on a systemic finding. Same reasoning that made `downstream-friction` worth
+separating.*
+
+**Early read (one session — do not over-fit).** `dogfooding` has the highest
+severity-per-entry: six entries from writing *one module of one program*, two of
+them traps, and **both** of the non-process systemic findings. `audit` produced
+more entries but skews toward coverage gaps rather than things actively wrong.
+**`downstream-friction` is 3-for-3.** Every time the operator has actually *run*
+the toolchain against a real project, it produced a finding: the misleading macro
+hint (`D-2607-7RQD`, a trap), the `lykn add` crash leak (`D-2607-9PLC`), and the
+link/link-specifier behavioural drift (`D-2607-Q3TV`, which also corrected a
+0.7.0 estimate). Three for three on one runsheet.
+
+**This is the strongest signal in the register.** arc06 also produced two
+unplanned *slices* (06 and 07) from the same runsheet pass. That is five distinct
+pieces of work discovered by one operator sitting down and running the thing —
+which is why the arc's closing report records host reconcile as a **discovery
+surface, not a formality**, and why future arcs should budget for it rather than
+treating it as a checkbox at the end.
+
+If that holds across the next fifty, the conclusion is uncomfortable and useful:
+**writing and running real programs in lykn finds more than reading lykn does.**
+That would argue the book pass should be structured as *building things while
+writing about them*, and that runsheets are a discovery surface rather than a
+formality — which arc06 already demonstrated twice, since both slice06 and
+slice07 originated in one.

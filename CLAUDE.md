@@ -36,6 +36,41 @@ deliberately deferred until the 0.7.0 project definition; current units
 (Homebrew custom-tap + Debian self-hosted-APT-repo packaging strategy,
 opened 2026-07-07).
 
+### Where non-planning artifacts live (confirmed with the operator 2026-07-25)
+
+Per `collaboration-framework/docs/PROJECT-MANAGEMENT.md` Part VI. These are
+categories that document does **not** cover, so they were confirmed explicitly
+rather than defaulted:
+
+| Artifact | Home |
+|---|---|
+| **Discovery Register** — findings with permanent `D-YYMM-XXXX` IDs | **`docs/backlog/discoveries.md`**, protocol + routing rule in `docs/backlog/README.md` |
+| Owed-row queues (e.g. rows owed to the 0.7.x backlog) | `docs/backlog/` |
+| Design decisions (DDs) | `docs/design/` (odm-managed) |
+| Planning (project / arc / slice) | `docs/design-vX.Y.Z/` |
+| Scratch, transcripts, dead ends | `workbench/` — **gitignored** |
+
+**Two rules, and they are the point of this section:**
+
+1. **`workbench/` is scratch. Nothing durable and nothing cited by another
+   document may live there.** It is gitignored wholesale (`.gitignore:10`), so
+   an artifact placed there is invisible to git and lost with the machine. If
+   something is worth referencing, give it a tracked home *first*.
+2. **A path cited in a tracked document must resolve in git.** `make check`
+   enforces this. It is not a style preference: `docs/backlog/discoveries.md`
+   was cited by **five committed documents** for a day while the file itself
+   sat untracked in `workbench/`, and a *committed* spec cited two of its IDs.
+
+**Routing rule** (register `D-2607-8HTN`): *a row is not `routed` until the
+destination file exists in git and contains it.* Naming an owner that might
+someday exist — "the Book project" — is how the Lykn Book went cold for three
+months. Name a home that can be opened.
+
+**arc16 (the book) is split by design:** its plan-of-record is here, at
+`docs/design-v0.6.0/arc16-book-0.6.0-edition/`; the content lives in
+`~/lab/cnbb/lykn`, whose `CLAUDE.md` points back here. The plan lives with the
+project that gates on it.
+
 ## Writing Code
 
 ### JavaScript

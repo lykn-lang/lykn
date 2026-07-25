@@ -118,7 +118,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
 | **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded → 0.7.0** (2026-07-21; **release boundary decided 0.7.0**, operator; not slice-planned — post-0.6.0 capability) |
-| **arc16 · book-0.6.0-edition** | The Lykn Book's 0.6.0 edition drafted to completion — the full-surface review that catches language and DevX defects **before** the release, not in point releases after it | arc01–08, arc10–13, arc15 (describes shipped behaviour); pairs with arc07 (guides) | **Open — reserved slot, not yet planned** (2026-07-24). Work lives in `~/lab/cnbb/lykn` (+ `~/lab/cnbb/lykn-writers-guide`); **planning home deliberately NOT created yet** — operator is investigating, and the layout is a confirmation-protocol decision (PROJECT-MANAGEMENT Part VI). Existing material: an 8-iteration program (kickoff + 40KB drift inventory, Iter-01 complete) currently surviving only as **untracked files in `lang/workbench/`** (gitignored) — giving it a git home is the first task. Five decisions (D-1…D-5) await the operator; the plan is written in pre-reorg M/Thread vocabulary and needs translating to arcs |
+| **arc16 · book-0.6.0-edition** | The Lykn Book's 0.6.0 edition drafted to completion — the full-surface review that catches language and DevX defects **before** the release, not in point releases after it | arc01–08, arc10–13, arc15 (describes shipped behaviour); pairs with arc07 (guides) | **Open — planning home CREATED 2026-07-25, arc-plan still to be written.** *(was: "reserved slot, not yet planned … planning home deliberately NOT created yet".)* The confirmation-protocol decision (PROJECT-MANAGEMENT Part VI) was taken with the operator on 2026-07-25: **split by design** — the *plan* lives here at [`arc16-book-0.6.0-edition/`](./arc16-book-0.6.0-edition/) because this project's arc09 gates on it; the *content* stays in `~/lab/cnbb/lykn`, whose new `CLAUDE.md` points back here (as does `~/lab/cnbb/lykn-writers-guide`'s). The previously-untracked material is now tracked under `arc16-book-0.6.0-edition/design/`: the kickoff thread (which sizes the work at **6–8 iterations**, its own pre-reorg vocabulary — those map to *slices*, not to the framework's `iteration`), the 40KB drift inventory, the fence-wiring spec (moved from a loose file at this directory's root), and the dogfooding friction log (relocated from the book repo's gitignored `workbench/`). **First task is now writing `arc-plan.md`**, not finding the material. Five decisions (D-1…D-5) await the operator; the plan is written in pre-reorg M/Thread vocabulary and needs translating to arcs |
 | **arc15 · surface-syntax-traps** | Surface shapes that compile clean but mean something else → compile error + fix-it + lint + guide fix; slice01 = reject method-on-expression `(<non-atom-head> :kw …)` (DD-64), thread instead | threading (shipping); arc05 (lint) | **Active** (0.6.0) — slice01 reject (`9ca9c7e`) + slice02 lint/check-parity (`d6c23b5` + follow-up B `90cf211`) **closed/CDC-verified**; slice03 hardening **DEFERRED → 0.7.0** (Option C = fully-typed classification, `release/0.7.x` BACKLOG A6); slice04 sibling traps (ID-32/ID-33) shaped |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
@@ -142,6 +142,10 @@ Arcs in dependency order. Each delivers one coherent capability.
 > - **[`01-macro-entry-diagnostics`](./01-macro-entry-diagnostics/slice-doc.md)** —
 >   `import-macros` resolution diagnostics (open, 2026-07-24). Gates nothing;
 >   fixes a *misleading* error rather than a missing one.
+> - **[`02-artifact-homes`](./02-artifact-homes/slice-doc.md)** — give every
+>   durable artifact a tracked home and make "a cited path resolves in git" a
+>   `make check` gate (open, 2026-07-25). Origin: `docs/backlog/discoveries.md`
+>   was cited by five committed documents while sitting in a gitignored tree.
 
 ## 3. Current status (2026-06-28)
 
@@ -243,12 +247,57 @@ inherited from arc attestations.
 | P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | **done** | slice01 (`3612cad`); 1m52s→2.6s / >2m→1m04s; **operator gate GO 2026-07-05** (suite run green; census grep 3 line-mentions ≈ 1 compile + 1 execution — once, vs ~16 before); `lykn test` in 13s during the arc11 demo | the verification cost that was blocking the gates is gone |
 | P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | done | **reconciled** — gate GO 2026-07-09 (arc13 closing-report §5 gate record: ancestry ×6, `make check` 100%, matrix 1947/53 exact = the two documented classes, D2 demos verbatim) | arc05 slice03 / P-11 unblocked; the corpus closes the coverage gap permanently |
 | P-19 | arc15 (surface-syntax-traps) closed + composed — method-call-on-expression (and every non-atom-head + keyword-first shape) is a hard **compile + `lykn check` error** with a threading fix-it; no guide teaches the trap; no source regressed | ptr: arc15 closing-report + host `lykn compile`/`make check` | serious | arc06/slice02 #6 finding + operator pushback (v1.33) | open | slice01 reject (`9ca9c7e`) + slice02 lint (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **deferred → 0.7.0** (Option C = A6, `release/0.7.x` BACKLOG); slice04 (sibling traps ID-32/ID-33) shaped | arc not yet closed (slice04 + arc-close pending); DD-64 still -DRAFT (odm = Duncan) |
-| P-20 | **arc16 (Lykn Book 0.6.0 edition) drafted and closed** — the book's 0.6.0 edition is complete, and every language/DevX defect it surfaced is either fixed in 0.6.0 or routed with a named home | ptr: arc16 closing-report + the defect-routing table | **serious** | operator decision 2026-07-24 (release-gating call) | **open — not yet planned** | none yet; Iter-01 (the drift inventory) is complete but survives only as untracked `lang/workbench/` files | **Gates arc09.** Two prerequisites before this row can be worked: (1) the plan gets a **git home** (the material is currently gitignored and three months cold), (2) the operator's D-1…D-5 decisions land. Deliberately *not* planned in detail yet — *plan late, plan deep*, and the layout is a confirmation-protocol call |
+| P-20 | **arc16 (Lykn Book 0.6.0 edition) drafted and closed** — the book's 0.6.0 edition is complete, and every language/DevX defect it surfaced is either fixed in 0.6.0 or routed with a named home | ptr: arc16 closing-report + the defect-routing table | **serious** | operator decision 2026-07-24 (release-gating call) | **open — planning home created, arc-plan pending** | Iter-01 (the drift inventory), the 6–8-iteration kickoff thread, the fence-wiring spec and the dogfooding friction log are **now tracked** under `arc16-book-0.6.0-edition/design/` (v1.38) | **Gates arc09.** Prerequisite (1) — *the plan gets a git home* — is **MET** as of 2026-07-25 (v1.38); the material is tracked and the layout is recorded in all three repos' `CLAUDE.md`. Prerequisite (2), the operator's D-1…D-5 decisions, is still open. Deliberately *not* planned in detail yet — *plan late, plan deep*, and the layout is a confirmation-protocol call |
+| P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | open | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `CLAUDE.md` written in all three repos | Ledger lives in standalone slice `02-artifact-homes`. The gate is the row that matters — the relocations without it are a one-time cleanup, not a closed class. **Known exemption to design for:** closed historical documents cite paths by convention *verbatim* (e.g. `arc03/design/phase-2-divergence-catalog.md:234`), so the check needs an allowlist or a historical marker rather than a blanket fail |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.38 — 2026-07-25 (artifact homes: the register, arc16's planning home, and a `make check` gate)
+
+**What changed.** Every durable artifact that was living in a gitignored tree
+now has a tracked home, and the class is closed structurally rather than by
+vigilance.
+
+- **The Discovery Register moved to `docs/backlog/discoveries.md`** — *the path
+  this document was already citing at §7 and §8*, and that the
+  `01-macro-entry-diagnostics` slice set cited three more times. Nobody invented
+  a wrong path; the agreed home was simply never created, so **five committed
+  documents carried a dangling reference from the day they were written**, and a
+  committed spec (`fence-wiring-spec.md`) cited two of the register's IDs. A new
+  `docs/backlog/README.md` carries the row format, the section scheme, and the
+  **routing rule**: *a row is not `routed` until the destination file exists in
+  git and contains it* (`D-2607-8HTN`, generalised).
+- **arc16's planning home created** at `arc16-book-0.6.0-edition/`, populated
+  with the material that had been untracked. See the roadmap row.
+- **`workbench/` is now defined as scratch** — nothing durable, nothing cited —
+  recorded in the `CLAUDE.md` of all three repos. The book and writers-guide
+  repos had **no `CLAUDE.md` at all**, which is why their layout decision had
+  nowhere to be written down.
+- **New standalone slice `02-artifact-homes`** carries the ledger for the above
+  plus the `make check` gate that fails on a tracked document citing a path
+  that does not resolve in git.
+
+**The root cause, named honestly.** `PROJECT-MANAGEMENT.md` Part VIII settles
+audit reports at `workbench/<date>-…` — it assumes `workbench/` is durable.
+This repo ignores `/workbench` wholesale. Each half is defensible; together they
+routed durable artifacts into an invisible tree, and the mismatch was invisible
+*because each half looked correct on its own*. Recorded in `status.html`.
+
+**Factual correction folded in (2026-07-25, operator-caught).** Several documents
+— `status.html` ×3, this file, and the v1.38 text as first written — said the
+book's plan was an **8-iteration** program. The kickoff thread's own heading is
+*"Why this is a **6–8** iteration thread"*: an estimate, not a count. Corrected
+in place. The word itself is also a trap for arc16's planning: those Iter-1–8
+units are pre-reorg vocabulary and map to **slices**, whereas `iteration` now
+means a fix pass on a slice that missed spec (budget: five). Do not carry the
+word across.
+
+**Which-child-surfaced:** not a slice — an operator-directed housekeeping pass
+during the arc16 pre-planning conversation, after a memory-vs-git reconcile
+found the register untracked. `P-21` opened.
 
 ### v1.37 — 2026-07-24 (**arc06 CLOSED — gate GO**; 0.6.0's founding goal met)
 
@@ -369,7 +418,7 @@ confirmation-protocol decision (PROJECT-MANAGEMENT Part VI) and the operator is
 mid-investigation. Reserving the slot without inventing the home is the point.
 
 **2 — The routing failure this correction exposes (worth recording).** A CDC
-audit found the book's planning material — an 8-iteration program with buckets,
+audit found the book's planning material — a 6–8 iteration program with buckets,
 per-iter ledger names and five open decisions, its Iter-01 audit *complete* —
 exists only as **two untracked files in `lang/workbench/`** (gitignored), in the
 wrong repo, describing work in a third. The `release/0.7.x` BACKLOG recorded it
