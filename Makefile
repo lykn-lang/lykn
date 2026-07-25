@@ -57,6 +57,7 @@ help:
 	@echo "  $(YELLOW)make test-docs-examples$(RESET) - Test lykn in HTML examples"
 	@echo "  $(YELLOW)make test-publishing$(RESET)  - Run publishing pipeline tests"
 	@echo "  $(YELLOW)make lint$(RESET)             - Run clippy, format check, and JS lint"
+	@echo "  $(YELLOW)make check-cited-paths$(RESET) - Verify cited paths resolve in git on this branch"
 	@echo "  $(YELLOW)make format$(RESET)           - Format all code with rustfmt"
 	@echo "  $(YELLOW)make coverage$(RESET)         - Generate test coverage report"
 	@echo "  $(YELLOW)make check$(RESET)            - Build + lint + test"
@@ -340,12 +341,27 @@ coverage-html:
 	@echo "$(GREEN)✓ HTML coverage report generated$(RESET)"
 	@echo "$(CYAN)→ Report: target/llvm-cov/html/index.html$(RESET)"
 
+# The dangling-citation gate (02-artifact-homes, L-7). Fails when a tracked
+# document cites a repo-relative path that does not resolve in git ON THIS
+# BRANCH — resolution is against `git ls-tree HEAD`, never `--all` and never
+# the working tree, so a file that lives only on another branch fails here by
+# design. Origin: `docs/backlog/discoveries.md` was cited by five committed
+# documents while the file itself sat in the gitignored `workbench/` tree.
+#
+# Deliberately NOT part of `lint` — that target is about source quality and
+# needs bin/lykn; this one needs only git and deno, so it runs first and fails
+# in ~1s instead of after the release build.
+.PHONY: check-cited-paths
+check-cited-paths:
+	@echo "$(BLUE)Checking cited paths resolve in git...$(RESET)"
+	@deno run -A scripts/check-cited-paths.js
+
 # Common checks. build-release BEFORE lint: lint runs `lykn check` (needs
 # bin/lykn), and using the release profile means the workspace compiles once —
 # `fresh-artifacts` (in `test`) reuses cargo's release cache instead of adding a
 # separate debug build (arc12/slice01 F-5).
 .PHONY: common-checks
-common-checks: check-deps build-release lint
+common-checks: check-deps check-cited-paths build-release lint
 
 # Combined check targets
 .PHONY: check
