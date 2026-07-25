@@ -5,38 +5,31 @@ Produced 2026-07-25. **These six rows have been appended to
 correction to `D-2607-K9RT`, an evidence-base block on that row, and two new
 instances added to `D-2607-Z5KN`.
 
-## Status: appended, but NOT yet `routed` — and here is why
+## Status: ROUTED (resolved 2026-07-25)
 
-The register's own routing rule (`D-2607-8HTN`) says: *a row is not `routed`
-until the destination file exists **in git** and contains it.* The second half is
-satisfied. **The first is not:**
+All six rows are in `docs/backlog/discoveries.md`, **and the register is now
+committed** — the operator committed `docs/backlog/` (3 files) to both `main`
+and `release/0.6.x` the same day, after this unit flagged that it was untracked
+on every branch. The register's routing rule (`D-2607-8HTN`) is therefore
+satisfied on both halves: the destination exists in git *and* contains the rows.
 
-```
-$ git ls-tree -r --name-only main           -- docs/backlog | wc -l   ->  0
-$ git ls-tree -r --name-only release/0.7.x  -- docs/backlog | wc -l   ->  0
-$ git ls-tree -r --name-only release/0.6.x  -- docs/backlog | wc -l   ->  0
-$ git status --porcelain -- docs/backlog                              ->  ?? docs/backlog/
-```
+*Superseded text, kept for provenance:* this section previously read
+**"appended, but NOT yet routed"**, because `git ls-tree` returned 0 files for
+`docs/backlog` on `main`, `release/0.6.x` and `release/0.7.x`. That was accurate
+when written and is no longer true. The finding stands as the reason the commit
+happened; the blocker does not.
 
-**`docs/backlog/` is untracked on every branch.** The register exists on disk
-and in no branch's history. That is precisely the condition `CLAUDE.md` records
-as the reason the routing rule was written — *"`docs/backlog/discoveries.md` was
-cited by **five committed documents** for a day while the file itself sat
-untracked"* — except it is not "for a day"; it is still true now, and these six
-rows have joined the documents depending on it.
+**This file is retained anyway**, for one reason that has not changed: the rows
+were authored here and the register lives on another branch, so this is the
+provenance record of where they came from. Retire it if and when the register
+grows a per-unit source field.
 
-**This file is therefore retained, not retired.** Deleting it, on the argument
-that the rows "live in the register now," would move them from one untracked
-location to another while *reading* as routed. That is the failure mode, not the
-fix.
-
-**Retire this file when — and only when — `docs/backlog/` is committed.** At
-that point these rows are genuinely routed and this document is redundant.
-
-Second-order note, same class: this unit lives on `release/0.7.x` and the
-register lives (untracked) in `main`'s working tree, so even once committed the
-cite is **cross-branch** — the same split recorded for the ES2025 corpus in
-`D-2607-L7BX`. Worth deciding both together.
+**Rule adopted as a result** (`CLAUDE.md`, "Which branch do I write to?",
+confirmed with the operator 2026-07-25): `main` changes by rebase/merge only;
+0.6.0 work is authored in `.worktrees/0.6.x/`, 0.7.0 work in `.worktrees/0.7.x/`,
+and **cross-cutting artifacts — this register, the DDs — are owned by the active
+release branch**, currently 0.6.x. Future rows from 0.7.0 units are written to
+the register in the **0.6.x worktree**, not here and not on `main`.
 
 ---
 
