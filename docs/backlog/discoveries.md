@@ -89,45 +89,6 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   worth sweeping all of `test/surface/`. **Kind:** `systemic` ·
   **Status:** `open` · **Parent:** `D-2607-Z5KN`
 
-### `D-2607-D3NL` — the committed corpus cites an ignored tree 353 times, and 40% of it is already gone
-
-- **What:** A sweep of 507 tracked documents found **106 of them citing 143
-  distinct `workbench/…` paths across 353 citation sites**. `workbench/` is
-  gitignored (`.gitignore:10`), so none of those targets is in git. **57 of the
-  143 no longer exist on the operator's disk at all** — closing reports, CDC
-  reviews, DD drafts, and verification transcripts (`workbench/verify/m11-m13/
-  baseline.txt`, `workbench/M2-guide-drift-inventory.md` ×10 sites,
-  `workbench/phase-2-plan.md` ×9). The evidence base those documents rest on is
-  unrecoverable from this machine.
-- **Where:** repo-wide. Sweep script to be landed as the `02-artifact-homes`
-  L-7 gate; census reproducible from it.
-- **How found:** `audit` — a verification pass on the register's own relocation,
-  which was scoped as a five-document problem and turned out to be a
-  106-document one.
-- **Guess:** High. Not for the current work — 0.6.0's own planning tree is
-  tracked and healthy — but for **provenance**: a closing report whose evidence
-  link is dead cannot be re-verified, only trusted. That is precisely the
-  `asserted` tier the ledger discipline exists to escape.
-- **Kind:** `systemic` · **Status:** `open` · **Parent:** `D-2607-Z5KN`
-- **Sub-finding:** several cites are **literal unfilled placeholders** committed
-  as-is — `workbench/YYYY-MM-DD-DD-50.7-closing-report.md`,
-  `workbench/2026-05-XX-DD-53-closing-report.md`,
-  `workbench/2026-MM-DD-M11-M13-closing-report.md`. Those never pointed at
-  anything; the template was committed with the slot unfilled.
-- **Confidence note:** the `workbench/`-prefixed count is reliable (the prefix is
-  unambiguous). A *general* dangling-path sweep over the same corpus returned
-  ~436 distinct unresolved paths, but that number is **not** trustworthy — most
-  are shorthand fragments (`ast/sexpr.rs` for
-  `crates/lykn-lang/src/ast/sexpr.rs`), pre-restructure historical paths
-  (`src/surface.js`), or deliberately out-of-repo (`assets/ai/…`, a gitignored
-  symlink). **Designing the extractor to tell those four classes apart is the
-  hard half of the `02-artifact-homes` L-7 row**, not the checking.
-- **Disposition owed:** this is a large, mostly-historical corpus. The realistic
-  options are (a) accept-and-mark historical documents as citing dead evidence,
-  (b) salvage the 86 paths still on disk into a tracked `docs/archive/`, or
-  (c) both, scoped by document age. **Operator call — do not decide by
-  implementation.**
-
 ### `D-2607-2PQR` — cross-compiler threading parity rests on two test cases
 
 - **What:** `crates/lykn-lang/tests/cross_compiler.rs:144-145` is the *entire*
@@ -193,11 +154,34 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   with a path that resolves on their own branch** — which `CLAUDE.md` requires
   and `make check` enforces. Found the hard way: `03-threading-macros`'
   reproduce command was written against `../../ecmascript-2025/…` and did not
-  resolve. **Operator call:** cherry-pick `0a4b138` onto `release/0.7.x`, or
-  accept a cross-branch note in every unit that uses the corpus.
+  resolve. ~~**Operator call:** cherry-pick `0a4b138` onto `release/0.7.x`, or
+  accept a cross-branch note in every unit that uses the corpus.~~
+  **RESOLVED 2026-07-25 — `release/0.7.x` was rebased onto `main`, which
+  carried `0a4b138`.** The corpus is now on all three branches (42 files each:
+  `git ls-tree -r --name-only <branch> -- docs/ecmascript-2025 | wc -l`), the
+  in-branch `../../ecmascript-2025/…` path resolves, and `inventory.md` §9 +
+  ledger R-1 are amended to use it. **The mirror problem is closed.**
 - **Also:** `docs/backlog/owed-0.7.x-rows.md:4` named the worktree
   `.workdirs/release-0.7.x`; the actual path is `.worktrees/0.7.x`. Fixed
   2026-07-25.
+- **UPDATE 2026-07-25 (same day):** the operator **committed `docs/backlog/`**
+  after this row was written — it is now tracked on both `main` and
+  `release/0.6.x` (3 files each, identical), so the six rows added by
+  `03-threading-macros` are genuinely `routed`. ~~The *branch-split* half of
+  this row stands: `docs/ecmascript-2025/` is still `main`-only while
+  `docs/design-v0.7.0/` is still `release/0.7.x`-only.~~ **Amended later the
+  same day by an independent CDC pass:** only *half* of that still stands.
+  `docs/ecmascript-2025/` is **no longer** `main`-only (the rebase; see the
+  struck bullet above). `docs/design-v0.7.0/` **is** still `release/0.7.x`-only
+  — that is this row's surviving primary claim, and it is fine: the 0.7.0
+  planning tree *should* live on the 0.7.x branch under the new rule. What was
+  wrong was the *debris* on `main` implying otherwise.
+- **Structural fix adopted:** `CLAUDE.md` now carries a **"Which branch do I
+  write to?"** section (confirmed with the operator 2026-07-25) — `main` changes
+  by rebase/merge only; 0.6.0 work is authored in `.worktrees/0.6.x/`, 0.7.0
+  work in `.worktrees/0.7.x/`, and cross-cutting artifacts (this register, the
+  DDs) are owned by the **active release branch**, currently 0.6.x. That removes
+  the guesswork that produced this row and the two failures beside it.
 
 ### `D-2607-8HTN` — a routing row named an owner instead of a home
 
@@ -520,6 +504,66 @@ transformation"* — currently accurate, contradicted by every chapter in
 
 Kept for trending. `cdc-review` is a "how found" category and must stay
 countable against the others.
+
+### `D-2607-D3NL` — the committed corpus cites an ignored tree 353 times, and 40% of it is already gone — **CLOSED (accepted, not repaired)**
+
+> **DISPOSITION — operator, 2026-07-25: option (a), accept and mark.** The 57
+> dead paths and the documents citing them are *purely historical*; the evidence
+> is not being salvaged and the citations are not being repointed. This is a
+> CAP-style accept-with-rationale closure, **not a repair** — the underlying
+> condition persists by design, and the title above is left intact so nobody
+> reads this row as fixed.
+>
+> **What that costs, stated plainly:** pre-0.6.0 closing reports whose evidence
+> links are dead can be *trusted* but not *re-verified*. They are `asserted`-tier
+> permanently. 0.6.0's own tree is unaffected — it is tracked and healthy.
+>
+> **The one live consequence, routed to a home that exists:** the L-7 gate must
+> not fail on this accepted class. Design handed to CC at
+> `docs/design-v0.6.0/02-artifact-homes/{ledger.md,cc-prompt.md}` — a **frozen
+> census allowlist**, generated once from today's 143 paths × 106 files and
+> never appended to. That is what makes the exemption self-closing: a *new*
+> `workbench/` citation is absent from the snapshot and therefore fails, which
+> is exactly what `CLAUDE.md`'s "nothing durable, nothing cited" rule requires.
+> Same prefix, opposite verdicts, decided by age rather than by judgement.
+
+- **What:** A sweep of 507 tracked documents found **106 of them citing 143
+  distinct `workbench/…` paths across 353 citation sites**. `workbench/` is
+  gitignored (`.gitignore:10`), so none of those targets is in git. **57 of the
+  143 no longer exist on the operator's disk at all** — closing reports, CDC
+  reviews, DD drafts, and verification transcripts (`workbench/verify/m11-m13/
+  baseline.txt`, `workbench/M2-guide-drift-inventory.md` ×10 sites,
+  `workbench/phase-2-plan.md` ×9). The evidence base those documents rest on is
+  unrecoverable from this machine.
+- **Where:** repo-wide. Sweep script to be landed as the `02-artifact-homes`
+  L-7 gate; census reproducible from it.
+- **How found:** `audit` — a verification pass on the register's own relocation,
+  which was scoped as a five-document problem and turned out to be a
+  106-document one.
+- **Guess:** High. Not for the current work — 0.6.0's own planning tree is
+  tracked and healthy — but for **provenance**: a closing report whose evidence
+  link is dead cannot be re-verified, only trusted. That is precisely the
+  `asserted` tier the ledger discipline exists to escape.
+- **Kind:** `systemic` · **Status:** `open` · **Parent:** `D-2607-Z5KN`
+- **Sub-finding:** several cites are **literal unfilled placeholders** committed
+  as-is — `workbench/YYYY-MM-DD-DD-50.7-closing-report.md`,
+  `workbench/2026-05-XX-DD-53-closing-report.md`,
+  `workbench/2026-MM-DD-M11-M13-closing-report.md`. Those never pointed at
+  anything; the template was committed with the slot unfilled.
+- **Confidence note:** the `workbench/`-prefixed count is reliable (the prefix is
+  unambiguous). A *general* dangling-path sweep over the same corpus returned
+  ~436 distinct unresolved paths, but that number is **not** trustworthy — most
+  are shorthand fragments (`ast/sexpr.rs` for
+  `crates/lykn-lang/src/ast/sexpr.rs`), pre-restructure historical paths
+  (`src/surface.js`), or deliberately out-of-repo (`assets/ai/…`, a gitignored
+  symlink). **Designing the extractor to tell those four classes apart is the
+  hard half of the `02-artifact-homes` L-7 row**, not the checking.
+- **Disposition owed:** this is a large, mostly-historical corpus. The realistic
+  options are (a) accept-and-mark historical documents as citing dead evidence,
+  (b) salvage the 86 paths still on disk into a tracked `docs/archive/`, or
+  (c) both, scoped by document age. **Operator call — do not decide by
+  implementation.**
+
 
 ### `D-2607-H4TC` — `lykn link` could silently apply nothing — **CLOSED**
 The overlay-insertion loop sat inside `if let Some(imports) = …`, so with no
