@@ -1,0 +1,490 @@
+section	chapter	name	kind	arity	req_arity	params	shape	discriminating	note
+19.2.1	19	eval	global	1	1	x	UNARY	no	
+19.2.2	19	isFinite	global	1	1	number	UNARY	no	
+19.2.3	19	isNaN	global	1	1	number	UNARY	no	
+19.2.4	19	parseFloat	global	1	1	string	UNARY	no	
+19.2.5	19	parseInt	global	2	2	string|radix	D-FIRST	yes	string=D, radix=C
+19.2.6.1	19	decodeURI	global	1	1	encodedURI	UNARY	no	
+19.2.6.2	19	decodeURIComponent	global	1	1	encodedURIComponent	UNARY	no	
+19.2.6.3	19	encodeURI	global	1	1	uri	UNARY	no	
+19.2.6.4	19	encodeURIComponent	global	1	1	uriComponent	UNARY	no	
+19.3.1	19	AggregateError	global	1	1	 . .	UNARY	no	
+19.3.2	19	Array	global	1	1	 . .	UNARY	no	
+19.3.3	19	ArrayBuffer	global	1	1	 . .	UNARY	no	
+19.3.4	19	BigInt	global	1	1	 . .	UNARY	no	
+19.3.5	19	BigInt64Array	global	1	1	 . .	UNARY	no	
+19.3.6	19	BigUint64Array	global	1	1	 . .	UNARY	no	
+19.3.7	19	Boolean	global	1	1	 . .	UNARY	no	
+19.3.8	19	DataView	global	1	1	 . .	UNARY	no	
+19.3.9	19	Date	global	1	1	 . .	UNARY	no	
+19.3.10	19	Error	global	1	1	 . .	UNARY	no	
+19.3.11	19	EvalError	global	1	1	 . .	UNARY	no	
+19.3.12	19	FinalizationRegistry	global	1	1	 . .	UNARY	no	
+19.3.13	19	Float16Array	global	1	1	 . .	UNARY	no	
+19.3.14	19	Float32Array	global	1	1	 . .	UNARY	no	
+19.3.15	19	Float64Array	global	1	1	 . .	UNARY	no	
+19.3.16	19	Function	global	1	1	 . .	UNARY	no	
+19.3.17	19	Int8Array	global	1	1	 . .	UNARY	no	
+19.3.18	19	Int16Array	global	1	1	 . .	UNARY	no	
+19.3.19	19	Int32Array	global	1	1	 . .	UNARY	no	
+19.3.20	19	Iterator	global	1	1	 . .	UNARY	no	
+19.3.21	19	Map	global	1	1	 . .	UNARY	no	
+19.3.22	19	Number	global	1	1	 . .	UNARY	no	
+19.3.23	19	Object	global	1	1	 . .	UNARY	no	
+19.3.24	19	Promise	global	1	1	 . .	UNARY	no	
+19.3.25	19	Proxy	global	1	1	 . .	UNARY	no	
+19.3.26	19	RangeError	global	1	1	 . .	UNARY	no	
+19.3.27	19	ReferenceError	global	1	1	 . .	UNARY	no	
+19.3.28	19	RegExp	global	1	1	 . .	UNARY	no	
+19.3.29	19	Set	global	1	1	 . .	UNARY	no	
+19.3.30	19	SharedArrayBuffer	global	1	1	 . .	UNARY	no	
+19.3.31	19	String	global	1	1	 . .	UNARY	no	
+19.3.32	19	Symbol	global	1	1	 . .	UNARY	no	
+19.3.33	19	SyntaxError	global	1	1	 . .	UNARY	no	
+19.3.34	19	TypeError	global	1	1	 . .	UNARY	no	
+19.3.35	19	Uint8Array	global	1	1	 . .	UNARY	no	
+19.3.36	19	Uint8ClampedArray	global	1	1	 . .	UNARY	no	
+19.3.37	19	Uint16Array	global	1	1	 . .	UNARY	no	
+19.3.38	19	Uint32Array	global	1	1	 . .	UNARY	no	
+19.3.39	19	URIError	global	1	1	 . .	UNARY	no	
+19.3.40	19	WeakMap	global	1	1	 . .	UNARY	no	
+19.3.41	19	WeakRef	global	1	1	 . .	UNARY	no	
+19.3.42	19	WeakSet	global	1	1	 . .	UNARY	no	
+20.1.1.1	20	Object	global	1	0	value	NO-D	no	
+20.1.2.1	20	Object.assign	static	2	2	target|sources	D-FIRST	yes	target=D (mutated), sources=peer data
+20.1.2.2	20	Object.create	static	2	2	O|Properties	D-FIRST	yes	O=prototype datum, Properties=C
+20.1.2.3	20	Object.defineProperties	static	2	2	O|Properties	D-FIRST	yes	O=D
+20.1.2.4	20	Object.defineProperty	static	3	3	O|P|Attributes	D-FIRST	yes	O=D, P=K, Attributes=C
+20.1.2.5	20	Object.entries	static	1	1	O	UNARY	no	
+20.1.2.6	20	Object.freeze	static	1	1	O	UNARY	no	
+20.1.2.7	20	Object.fromEntries	static	1	1	iterable	UNARY	no	
+20.1.2.8	20	Object.getOwnPropertyDescriptor	static	2	2	O|P	D-FIRST	yes	O=D, P=K
+20.1.2.9	20	Object.getOwnPropertyDescriptors	static	1	1	O	UNARY	no	
+20.1.2.10	20	Object.getOwnPropertyNames	static	1	1	O	UNARY	no	
+20.1.2.11	20	Object.getOwnPropertySymbols	static	1	1	O	UNARY	no	
+20.1.2.12	20	Object.getPrototypeOf	static	1	1	O	UNARY	no	
+20.1.2.13	20	Object.groupBy	static	2	2	items|callback	D-FIRST	yes	items=D, callback=F  ** ES2024, newest collection API **
+20.1.2.14	20	Object.hasOwn	static	2	2	O|P	D-FIRST	yes	O=D, P=K
+20.1.2.15	20	Object.is	static	2	2	value1|value2	PEER	yes	two peer values, no primary
+20.1.2.16	20	Object.isExtensible	static	1	1	O	UNARY	no	
+20.1.2.17	20	Object.isFrozen	static	1	1	O	UNARY	no	
+20.1.2.18	20	Object.isSealed	static	1	1	O	UNARY	no	
+20.1.2.19	20	Object.keys	static	1	1	O	UNARY	no	
+20.1.2.20	20	Object.preventExtensions	static	1	1	O	UNARY	no	
+20.1.2.22	20	Object.seal	static	1	1	O	UNARY	no	
+20.1.2.23	20	Object.setPrototypeOf	static	2	2	O|proto	D-FIRST	yes	O=D, proto=C
+20.1.2.24	20	Object.values	static	1	1	O	UNARY	no	
+20.1.3.2	20	Object.prototype.hasOwnProperty	proto	1	1	V	RECEIVER-D	no	
+20.1.3.3	20	Object.prototype.isPrototypeOf	proto	1	1	V	OPERATOR-RECEIVER	no	receiver=the prototype (operator); V=D
+20.1.3.4	20	Object.prototype.propertyIsEnumerable	proto	1	1	V	RECEIVER-D	no	
+20.1.3.5	20	Object.prototype.toLocaleString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+20.1.3.6	20	Object.prototype.toString	proto	0	0		RECEIVER-D	no	
+20.1.3.7	20	Object.prototype.valueOf	proto	0	0		RECEIVER-D	no	
+20.1.3.9.1	20	Object.prototype.__defineGetter__	proto	2	2	P|getter	RECEIVER-D	no	
+20.1.3.9.2	20	Object.prototype.__defineSetter__	proto	2	2	P|setter	RECEIVER-D	no	
+20.1.3.9.3	20	Object.prototype.__lookupGetter__	proto	1	1	P	RECEIVER-D	no	
+20.1.3.9.4	20	Object.prototype.__lookupSetter__	proto	1	1	P	RECEIVER-D	no	
+20.2.1.1	20	Function	global	2	2	parameterArgs|bodyArg	NO-D	yes	constructor; builds a function from source text
+20.2.3.1	20	Function.prototype.apply	proto	2	2	thisArg|argArray	OPERATOR-RECEIVER	no	receiver=function (operator); thisArg=D
+20.2.3.2	20	Function.prototype.bind	proto	2	2	thisArg|args	OPERATOR-RECEIVER	no	receiver=function (operator); thisArg=D
+20.2.3.3	20	Function.prototype.call	proto	2	2	thisArg|args	OPERATOR-RECEIVER	no	receiver=function (operator); thisArg=D
+20.2.3.5	20	Function.prototype.toString	proto	0	0		RECEIVER-D	no	
+20.2.3.6	20	Function.prototype [ %Symbol.hasInstance% ]	proto	1	1	V	OPERATOR-RECEIVER	no	receiver=constructor (operator); V=D
+20.3.1.1	20	Boolean	global	1	1	value	UNARY	no	
+20.3.3.2	20	Boolean.prototype.toString	proto	0	0		RECEIVER-D	no	
+20.3.3.3	20	Boolean.prototype.valueOf	proto	0	0		RECEIVER-D	no	
+20.4.1.1	20	Symbol	global	1	0	description	NO-D	no	
+20.4.2.2	20	Symbol.for	static	1	1	key	UNARY	no	
+20.4.2.6	20	Symbol.keyFor	static	1	1	sym	UNARY	no	
+20.4.3.3	20	Symbol.prototype.toString	proto	0	0		RECEIVER-D	no	
+20.4.3.4	20	Symbol.prototype.valueOf	proto	0	0		RECEIVER-D	no	
+20.4.3.5	20	Symbol.prototype [ %Symbol.toPrimitive% ]	proto	1	1	hint	RECEIVER-D	no	
+20.5.1.1	20	Error	global	2	1	message|options	UNARY	no	
+20.5.3.4	20	Error.prototype.toString	proto	0	0		RECEIVER-D	no	
+20.5.6.1.1	20	NativeError	global	2	1	message|options	UNARY	no	
+20.5.7.1.1	20	AggregateError	global	3	2	errors|message|options	NO-D	yes	constructor
+21.1.1.1	21	Number	global	1	1	value	UNARY	no	
+21.1.2.2	21	Number.isFinite	static	1	1	number	UNARY	no	
+21.1.2.3	21	Number.isInteger	static	1	1	number	UNARY	no	
+21.1.2.4	21	Number.isNaN	static	1	1	number	UNARY	no	
+21.1.2.5	21	Number.isSafeInteger	static	1	1	number	UNARY	no	
+21.1.2.12	21	Number.parseFloat	static	1	1	string	UNARY	no	
+21.1.2.13	21	Number.parseInt	static	2	2	string|radix	D-FIRST	yes	string=D, radix=C
+21.1.3.2	21	Number.prototype.toExponential	proto	1	1	fractionDigits	RECEIVER-D	no	
+21.1.3.3	21	Number.prototype.toFixed	proto	1	1	fractionDigits	RECEIVER-D	no	
+21.1.3.4	21	Number.prototype.toLocaleString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+21.1.3.5	21	Number.prototype.toPrecision	proto	1	1	precision	RECEIVER-D	no	
+21.1.3.6	21	Number.prototype.toString	proto	1	0	radix	RECEIVER-D	no	
+21.1.3.7	21	Number.prototype.valueOf	proto	0	0		RECEIVER-D	no	
+21.2.1.1	21	BigInt	global	1	1	value	UNARY	no	
+21.2.2.1	21	BigInt.asIntN	static	2	2	bits|bigint	D-LAST	yes	bits=C, bigint=D  ** configured operator **
+21.2.2.2	21	BigInt.asUintN	static	2	2	bits|bigint	D-LAST	yes	bits=C, bigint=D  ** configured operator **
+21.2.3.2	21	BigInt.prototype.toLocaleString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+21.2.3.3	21	BigInt.prototype.toString	proto	1	0	radix	RECEIVER-D	no	
+21.2.3.4	21	BigInt.prototype.valueOf	proto	0	0		RECEIVER-D	no	
+21.3.2.1	21	Math.abs	static	1	1	x	UNARY	no	
+21.3.2.2	21	Math.acos	static	1	1	x	UNARY	no	
+21.3.2.3	21	Math.acosh	static	1	1	x	UNARY	no	
+21.3.2.4	21	Math.asin	static	1	1	x	UNARY	no	
+21.3.2.5	21	Math.asinh	static	1	1	x	UNARY	no	
+21.3.2.6	21	Math.atan	static	1	1	x	UNARY	no	
+21.3.2.7	21	Math.atanh	static	1	1	x	UNARY	no	
+21.3.2.8	21	Math.atan2	static	2	2	y|x	PEER	yes	y,x are peer coordinates; y-first is the oddity, not data position
+21.3.2.9	21	Math.cbrt	static	1	1	x	UNARY	no	
+21.3.2.10	21	Math.ceil	static	1	1	x	UNARY	no	
+21.3.2.11	21	Math.clz32	static	1	1	x	UNARY	no	
+21.3.2.12	21	Math.cos	static	1	1	x	UNARY	no	
+21.3.2.13	21	Math.cosh	static	1	1	x	UNARY	no	
+21.3.2.14	21	Math.exp	static	1	1	x	UNARY	no	
+21.3.2.15	21	Math.expm1	static	1	1	x	UNARY	no	
+21.3.2.16	21	Math.floor	static	1	1	x	UNARY	no	
+21.3.2.17	21	Math.fround	static	1	1	x	UNARY	no	
+21.3.2.18	21	Math.f16round	static	1	1	x	UNARY	no	
+21.3.2.19	21	Math.hypot	static	1	1	args	UNARY	no	
+21.3.2.20	21	Math.imul	static	2	2	x|y	PEER	yes	peer operands
+21.3.2.21	21	Math.log	static	1	1	x	UNARY	no	
+21.3.2.22	21	Math.log1p	static	1	1	x	UNARY	no	
+21.3.2.23	21	Math.log10	static	1	1	x	UNARY	no	
+21.3.2.24	21	Math.log2	static	1	1	x	UNARY	no	
+21.3.2.25	21	Math.max	static	1	1	args	UNARY	no	
+21.3.2.26	21	Math.min	static	1	1	args	UNARY	no	
+21.3.2.27	21	Math.pow	static	2	2	base|exponent	D-FIRST	yes	base=D, exponent=C
+21.3.2.28	21	Math.random	static	0	0		NO-D	no	
+21.3.2.29	21	Math.round	static	1	1	x	UNARY	no	
+21.3.2.30	21	Math.sign	static	1	1	x	UNARY	no	
+21.3.2.31	21	Math.sin	static	1	1	x	UNARY	no	
+21.3.2.32	21	Math.sinh	static	1	1	x	UNARY	no	
+21.3.2.33	21	Math.sqrt	static	1	1	x	UNARY	no	
+21.3.2.34	21	Math.tan	static	1	1	x	UNARY	no	
+21.3.2.35	21	Math.tanh	static	1	1	x	UNARY	no	
+21.3.2.36	21	Math.trunc	static	1	1	x	UNARY	no	
+21.4.2.1	21	Date	global	1	1	values	UNARY	no	
+21.4.3.1	21	Date.now	static	0	0		NO-D	no	
+21.4.3.2	21	Date.parse	static	1	1	string	UNARY	no	
+21.4.3.4	21	Date.UTC	static	7	1	year|month|date|hours|minutes|seconds|ms	UNARY	no	
+21.4.4.2	21	Date.prototype.getDate	proto	0	0		RECEIVER-D	no	
+21.4.4.3	21	Date.prototype.getDay	proto	0	0		RECEIVER-D	no	
+21.4.4.4	21	Date.prototype.getFullYear	proto	0	0		RECEIVER-D	no	
+21.4.4.5	21	Date.prototype.getHours	proto	0	0		RECEIVER-D	no	
+21.4.4.6	21	Date.prototype.getMilliseconds	proto	0	0		RECEIVER-D	no	
+21.4.4.7	21	Date.prototype.getMinutes	proto	0	0		RECEIVER-D	no	
+21.4.4.8	21	Date.prototype.getMonth	proto	0	0		RECEIVER-D	no	
+21.4.4.9	21	Date.prototype.getSeconds	proto	0	0		RECEIVER-D	no	
+21.4.4.10	21	Date.prototype.getTime	proto	0	0		RECEIVER-D	no	
+21.4.4.11	21	Date.prototype.getTimezoneOffset	proto	0	0		RECEIVER-D	no	
+21.4.4.12	21	Date.prototype.getUTCDate	proto	0	0		RECEIVER-D	no	
+21.4.4.13	21	Date.prototype.getUTCDay	proto	0	0		RECEIVER-D	no	
+21.4.4.14	21	Date.prototype.getUTCFullYear	proto	0	0		RECEIVER-D	no	
+21.4.4.15	21	Date.prototype.getUTCHours	proto	0	0		RECEIVER-D	no	
+21.4.4.16	21	Date.prototype.getUTCMilliseconds	proto	0	0		RECEIVER-D	no	
+21.4.4.17	21	Date.prototype.getUTCMinutes	proto	0	0		RECEIVER-D	no	
+21.4.4.18	21	Date.prototype.getUTCMonth	proto	0	0		RECEIVER-D	no	
+21.4.4.19	21	Date.prototype.getUTCSeconds	proto	0	0		RECEIVER-D	no	
+21.4.4.20	21	Date.prototype.setDate	proto	1	1	date	RECEIVER-D	no	
+21.4.4.21	21	Date.prototype.setFullYear	proto	3	1	year|month|date	RECEIVER-D	no	
+21.4.4.22	21	Date.prototype.setHours	proto	4	1	hour|min|sec|ms	RECEIVER-D	no	
+21.4.4.23	21	Date.prototype.setMilliseconds	proto	1	1	ms	RECEIVER-D	no	
+21.4.4.24	21	Date.prototype.setMinutes	proto	3	1	min|sec|ms	RECEIVER-D	no	
+21.4.4.25	21	Date.prototype.setMonth	proto	2	1	month|date	RECEIVER-D	no	
+21.4.4.26	21	Date.prototype.setSeconds	proto	2	1	sec|ms	RECEIVER-D	no	
+21.4.4.27	21	Date.prototype.setTime	proto	1	1	time	RECEIVER-D	no	
+21.4.4.28	21	Date.prototype.setUTCDate	proto	1	1	date	RECEIVER-D	no	
+21.4.4.29	21	Date.prototype.setUTCFullYear	proto	3	1	year|month|date	RECEIVER-D	no	
+21.4.4.30	21	Date.prototype.setUTCHours	proto	4	1	hour|min|sec|ms	RECEIVER-D	no	
+21.4.4.31	21	Date.prototype.setUTCMilliseconds	proto	1	1	ms	RECEIVER-D	no	
+21.4.4.32	21	Date.prototype.setUTCMinutes	proto	3	1	min|sec|ms	RECEIVER-D	no	
+21.4.4.33	21	Date.prototype.setUTCMonth	proto	2	1	month|date	RECEIVER-D	no	
+21.4.4.34	21	Date.prototype.setUTCSeconds	proto	2	1	sec|ms	RECEIVER-D	no	
+21.4.4.35	21	Date.prototype.toDateString	proto	0	0		RECEIVER-D	no	
+21.4.4.36	21	Date.prototype.toISOString	proto	0	0		RECEIVER-D	no	
+21.4.4.37	21	Date.prototype.toJSON	proto	1	1	key	RECEIVER-D	no	
+21.4.4.38	21	Date.prototype.toLocaleDateString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+21.4.4.39	21	Date.prototype.toLocaleString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+21.4.4.40	21	Date.prototype.toLocaleTimeString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+21.4.4.41	21	Date.prototype.toString	proto	0	0		RECEIVER-D	no	
+21.4.4.42	21	Date.prototype.toTimeString	proto	0	0		RECEIVER-D	no	
+21.4.4.43	21	Date.prototype.toUTCString	proto	0	0		RECEIVER-D	no	
+21.4.4.44	21	Date.prototype.valueOf	proto	0	0		RECEIVER-D	no	
+21.4.4.45	21	Date.prototype [ %Symbol.toPrimitive% ]	proto	1	1	hint	RECEIVER-D	no	
+22.1.1.1	22	String	global	1	1	value	UNARY	no	
+22.1.2.1	22	String.fromCharCode	static	1	1	codeUnits	UNARY	no	
+22.1.2.2	22	String.fromCodePoint	static	1	1	codePoints	UNARY	no	
+22.1.2.4	22	String.raw	static	2	2	template|substitutions	D-FIRST	yes	template=D, substitutions=peer
+22.1.3.1	22	String.prototype.at	proto	1	1	index	RECEIVER-D	no	
+22.1.3.2	22	String.prototype.charAt	proto	1	1	pos	RECEIVER-D	no	
+22.1.3.3	22	String.prototype.charCodeAt	proto	1	1	pos	RECEIVER-D	no	
+22.1.3.4	22	String.prototype.codePointAt	proto	1	1	pos	RECEIVER-D	no	
+22.1.3.5	22	String.prototype.concat	proto	1	1	args	RECEIVER-D	no	
+22.1.3.7	22	String.prototype.endsWith	proto	2	1	searchString|endPosition	RECEIVER-D	no	
+22.1.3.8	22	String.prototype.includes	proto	2	1	searchString|position	RECEIVER-D	no	
+22.1.3.9	22	String.prototype.indexOf	proto	2	1	searchString|position	RECEIVER-D	no	
+22.1.3.10	22	String.prototype.isWellFormed	proto	0	0		RECEIVER-D	no	
+22.1.3.11	22	String.prototype.lastIndexOf	proto	2	1	searchString|position	RECEIVER-D	no	
+22.1.3.12	22	String.prototype.localeCompare	proto	3	1	that|reserved1|reserved2	RECEIVER-D	no	
+22.1.3.13	22	String.prototype.match	proto	1	1	regexp	RECEIVER-D	no	
+22.1.3.14	22	String.prototype.matchAll	proto	1	1	regexp	RECEIVER-D	no	
+22.1.3.15	22	String.prototype.normalize	proto	1	0	form	RECEIVER-D	no	
+22.1.3.16	22	String.prototype.padEnd	proto	2	1	maxLength|fillString	RECEIVER-D	no	
+22.1.3.17	22	String.prototype.padStart	proto	2	1	maxLength|fillString	RECEIVER-D	no	
+22.1.3.18	22	String.prototype.repeat	proto	1	1	count	RECEIVER-D	no	
+22.1.3.19	22	String.prototype.replace	proto	2	2	searchValue|replaceValue	RECEIVER-D	no	
+22.1.3.20	22	String.prototype.replaceAll	proto	2	2	searchValue|replaceValue	RECEIVER-D	no	
+22.1.3.21	22	String.prototype.search	proto	1	1	regexp	RECEIVER-D	no	
+22.1.3.22	22	String.prototype.slice	proto	2	2	start|end	RECEIVER-D	no	
+22.1.3.23	22	String.prototype.split	proto	2	2	separator|limit	RECEIVER-D	no	
+22.1.3.24	22	String.prototype.startsWith	proto	2	1	searchString|position	RECEIVER-D	no	
+22.1.3.25	22	String.prototype.substring	proto	2	2	start|end	RECEIVER-D	no	
+22.1.3.26	22	String.prototype.toLocaleLowerCase	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+22.1.3.27	22	String.prototype.toLocaleUpperCase	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+22.1.3.28	22	String.prototype.toLowerCase	proto	0	0		RECEIVER-D	no	
+22.1.3.29	22	String.prototype.toString	proto	0	0		RECEIVER-D	no	
+22.1.3.30	22	String.prototype.toUpperCase	proto	0	0		RECEIVER-D	no	
+22.1.3.31	22	String.prototype.toWellFormed	proto	0	0		RECEIVER-D	no	
+22.1.3.32	22	String.prototype.trim	proto	0	0		RECEIVER-D	no	
+22.1.3.33	22	String.prototype.trimEnd	proto	0	0		RECEIVER-D	no	
+22.1.3.34	22	String.prototype.trimStart	proto	0	0		RECEIVER-D	no	
+22.1.3.35	22	String.prototype.valueOf	proto	0	0		RECEIVER-D	no	
+22.1.3.36	22	String.prototype [ %Symbol.iterator% ]	proto	0	0		RECEIVER-D	no	
+22.1.5.1.1	22	%StringIteratorPrototype%.next	proto	0	0		RECEIVER-D	no	
+22.2.4.1	22	RegExp	global	2	2	pattern|flags	D-FIRST	yes	constructor; pattern=D, flags=C
+22.2.5.1	22	RegExp.escape	static	1	1	S	UNARY	no	
+22.2.6.2	22	RegExp.prototype.exec	proto	1	1	string	OPERATOR-RECEIVER	no	receiver=compiled pattern (operator); string=D
+22.2.6.8	22	RegExp.prototype [ %Symbol.match% ]	proto	1	1	string	OPERATOR-RECEIVER	no	internal protocol hook; user-facing twin is String.prototype.match
+22.2.6.9	22	RegExp.prototype [ %Symbol.matchAll% ]	proto	1	1	string	OPERATOR-RECEIVER	no	internal protocol hook; twin String.prototype.matchAll
+22.2.6.11	22	RegExp.prototype [ %Symbol.replace% ]	proto	2	2	string|replaceValue	OPERATOR-RECEIVER	no	internal protocol hook; twin String.prototype.replace
+22.2.6.12	22	RegExp.prototype [ %Symbol.search% ]	proto	1	1	string	OPERATOR-RECEIVER	no	internal protocol hook; twin String.prototype.search
+22.2.6.14	22	RegExp.prototype [ %Symbol.split% ]	proto	2	2	string|limit	OPERATOR-RECEIVER	no	internal protocol hook; twin String.prototype.split
+22.2.6.16	22	RegExp.prototype.test	proto	1	1	S	OPERATOR-RECEIVER	no	receiver=compiled pattern (operator); S=D
+22.2.6.17	22	RegExp.prototype.toString	proto	0	0		RECEIVER-D	no	
+22.2.9.2.1	22	%RegExpStringIteratorPrototype%.next	proto	0	0		RECEIVER-D	no	
+23.1.1.1	23	Array	global	1	1	values	UNARY	no	
+23.1.2.1	23	Array.from	static	3	1	items|mapper|thisArg	UNARY	no	
+23.1.2.2	23	Array.isArray	static	1	1	arg	UNARY	no	
+23.1.2.3	23	Array.of	static	1	1	items	UNARY	no	
+23.1.3.1	23	Array.prototype.at	proto	1	1	index	RECEIVER-D	no	
+23.1.3.2	23	Array.prototype.concat	proto	1	1	items	RECEIVER-D	no	
+23.1.3.4	23	Array.prototype.copyWithin	proto	3	2	target|start|end	RECEIVER-D	no	
+23.1.3.5	23	Array.prototype.entries	proto	0	0		RECEIVER-D	no	
+23.1.3.6	23	Array.prototype.every	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.1.3.7	23	Array.prototype.fill	proto	3	1	value|start|end	RECEIVER-D	no	
+23.1.3.8	23	Array.prototype.filter	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.1.3.9	23	Array.prototype.find	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.1.3.10	23	Array.prototype.findIndex	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.1.3.11	23	Array.prototype.findLast	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.1.3.12	23	Array.prototype.findLastIndex	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.1.3.13	23	Array.prototype.flat	proto	1	0	depth	RECEIVER-D	no	
+23.1.3.14	23	Array.prototype.flatMap	proto	2	1	mapperFunction|thisArg	RECEIVER-D	no	
+23.1.3.15	23	Array.prototype.forEach	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.1.3.16	23	Array.prototype.includes	proto	2	1	searchElement|fromIndex	RECEIVER-D	no	
+23.1.3.17	23	Array.prototype.indexOf	proto	2	1	searchElement|fromIndex	RECEIVER-D	no	
+23.1.3.18	23	Array.prototype.join	proto	1	1	separator	RECEIVER-D	no	
+23.1.3.19	23	Array.prototype.keys	proto	0	0		RECEIVER-D	no	
+23.1.3.20	23	Array.prototype.lastIndexOf	proto	2	1	searchElement|fromIndex	RECEIVER-D	no	
+23.1.3.21	23	Array.prototype.map	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.1.3.22	23	Array.prototype.pop	proto	0	0		RECEIVER-D	no	
+23.1.3.23	23	Array.prototype.push	proto	1	1	items	RECEIVER-D	no	
+23.1.3.24	23	Array.prototype.reduce	proto	2	1	callback|initialValue	RECEIVER-D	no	
+23.1.3.25	23	Array.prototype.reduceRight	proto	2	1	callback|initialValue	RECEIVER-D	no	
+23.1.3.26	23	Array.prototype.reverse	proto	0	0		RECEIVER-D	no	
+23.1.3.27	23	Array.prototype.shift	proto	0	0		RECEIVER-D	no	
+23.1.3.28	23	Array.prototype.slice	proto	2	2	start|end	RECEIVER-D	no	
+23.1.3.29	23	Array.prototype.some	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.1.3.30	23	Array.prototype.sort	proto	1	1	comparator	RECEIVER-D	no	
+23.1.3.31	23	Array.prototype.splice	proto	3	3	start|deleteCount|items	RECEIVER-D	no	
+23.1.3.32	23	Array.prototype.toLocaleString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+23.1.3.33	23	Array.prototype.toReversed	proto	0	0		RECEIVER-D	no	
+23.1.3.34	23	Array.prototype.toSorted	proto	1	1	comparator	RECEIVER-D	no	
+23.1.3.35	23	Array.prototype.toSpliced	proto	3	3	start|skipCount|items	RECEIVER-D	no	
+23.1.3.36	23	Array.prototype.toString	proto	0	0		RECEIVER-D	no	
+23.1.3.37	23	Array.prototype.unshift	proto	1	1	items	RECEIVER-D	no	
+23.1.3.38	23	Array.prototype.values	proto	0	0		RECEIVER-D	no	
+23.1.3.39	23	Array.prototype.with	proto	2	2	index|value	RECEIVER-D	no	
+23.1.3.40	23	Array.prototype [ %Symbol.iterator% ]	proto	0	0		RECEIVER-D	no	
+23.1.5.2.1	23	%ArrayIteratorPrototype%.next	proto	0	0		RECEIVER-D	no	
+23.2.1.1	23	%TypedArray%	global	0	0		NO-D	no	
+23.2.2.1	23	%TypedArray%.from	static	3	1	source|mapper|thisArg	UNARY	no	
+23.2.2.2	23	%TypedArray%.of	static	1	1	items	UNARY	no	
+23.2.3.1	23	%TypedArray%.prototype.at	proto	1	1	index	RECEIVER-D	no	
+23.2.3.6	23	%TypedArray%.prototype.copyWithin	proto	3	2	target|start|end	RECEIVER-D	no	
+23.2.3.7	23	%TypedArray%.prototype.entries	proto	0	0		RECEIVER-D	no	
+23.2.3.8	23	%TypedArray%.prototype.every	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.2.3.9	23	%TypedArray%.prototype.fill	proto	3	1	value|start|end	RECEIVER-D	no	
+23.2.3.10	23	%TypedArray%.prototype.filter	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.2.3.11	23	%TypedArray%.prototype.find	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.2.3.12	23	%TypedArray%.prototype.findIndex	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.2.3.13	23	%TypedArray%.prototype.findLast	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.2.3.14	23	%TypedArray%.prototype.findLastIndex	proto	2	1	predicate|thisArg	RECEIVER-D	no	
+23.2.3.15	23	%TypedArray%.prototype.forEach	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.2.3.16	23	%TypedArray%.prototype.includes	proto	2	1	searchElement|fromIndex	RECEIVER-D	no	
+23.2.3.17	23	%TypedArray%.prototype.indexOf	proto	2	1	searchElement|fromIndex	RECEIVER-D	no	
+23.2.3.18	23	%TypedArray%.prototype.join	proto	1	1	separator	RECEIVER-D	no	
+23.2.3.19	23	%TypedArray%.prototype.keys	proto	0	0		RECEIVER-D	no	
+23.2.3.20	23	%TypedArray%.prototype.lastIndexOf	proto	2	1	searchElement|fromIndex	RECEIVER-D	no	
+23.2.3.22	23	%TypedArray%.prototype.map	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.2.3.23	23	%TypedArray%.prototype.reduce	proto	2	1	callback|initialValue	RECEIVER-D	no	
+23.2.3.24	23	%TypedArray%.prototype.reduceRight	proto	2	1	callback|initialValue	RECEIVER-D	no	
+23.2.3.25	23	%TypedArray%.prototype.reverse	proto	0	0		RECEIVER-D	no	
+23.2.3.26	23	%TypedArray%.prototype.set	proto	2	1	source|offset	RECEIVER-D	no	
+23.2.3.27	23	%TypedArray%.prototype.slice	proto	2	2	start|end	RECEIVER-D	no	
+23.2.3.28	23	%TypedArray%.prototype.some	proto	2	1	callback|thisArg	RECEIVER-D	no	
+23.2.3.29	23	%TypedArray%.prototype.sort	proto	1	1	comparator	RECEIVER-D	no	
+23.2.3.30	23	%TypedArray%.prototype.subarray	proto	2	2	start|end	RECEIVER-D	no	
+23.2.3.31	23	%TypedArray%.prototype.toLocaleString	proto	2	0	reserved1|reserved2	RECEIVER-D	no	
+23.2.3.32	23	%TypedArray%.prototype.toReversed	proto	0	0		RECEIVER-D	no	
+23.2.3.33	23	%TypedArray%.prototype.toSorted	proto	1	1	comparator	RECEIVER-D	no	
+23.2.3.34	23	%TypedArray%.prototype.toString	proto	0	0		RECEIVER-D	no	
+23.2.3.35	23	%TypedArray%.prototype.values	proto	0	0		RECEIVER-D	no	
+23.2.3.36	23	%TypedArray%.prototype.with	proto	2	2	index|value	RECEIVER-D	no	
+23.2.3.37	23	%TypedArray%.prototype [ %Symbol.iterator% ]	proto	0	0		RECEIVER-D	no	
+23.2.5.1	23	TypedArray	global	1	1	args	UNARY	no	
+24.1.1.1	24	Map	global	1	0	iterable	NO-D	no	
+24.1.2.1	24	Map.groupBy	static	2	2	items|callback	D-FIRST	yes	items=D, callback=F  ** ES2024, newest collection API **
+24.1.3.1	24	Map.prototype.clear	proto	0	0		RECEIVER-D	no	
+24.1.3.3	24	Map.prototype.delete	proto	1	1	key	RECEIVER-D	no	
+24.1.3.4	24	Map.prototype.entries	proto	0	0		RECEIVER-D	no	
+24.1.3.5	24	Map.prototype.forEach	proto	2	1	callback|thisArg	RECEIVER-D	no	
+24.1.3.6	24	Map.prototype.get	proto	1	1	key	RECEIVER-D	no	
+24.1.3.7	24	Map.prototype.has	proto	1	1	key	RECEIVER-D	no	
+24.1.3.8	24	Map.prototype.keys	proto	0	0		RECEIVER-D	no	
+24.1.3.9	24	Map.prototype.set	proto	2	2	key|value	RECEIVER-D	no	
+24.1.3.11	24	Map.prototype.values	proto	0	0		RECEIVER-D	no	
+24.1.3.12	24	Map.prototype [ %Symbol.iterator% ]	proto	0	0		RECEIVER-D	no	
+24.1.5.2.1	24	%MapIteratorPrototype%.next	proto	0	0		RECEIVER-D	no	
+24.2.2.1	24	Set	global	1	0	iterable	NO-D	no	
+24.2.4.1	24	Set.prototype.add	proto	1	1	value	RECEIVER-D	no	
+24.2.4.2	24	Set.prototype.clear	proto	0	0		RECEIVER-D	no	
+24.2.4.4	24	Set.prototype.delete	proto	1	1	value	RECEIVER-D	no	
+24.2.4.5	24	Set.prototype.difference	proto	1	1	other	RECEIVER-D	no	
+24.2.4.6	24	Set.prototype.entries	proto	0	0		RECEIVER-D	no	
+24.2.4.7	24	Set.prototype.forEach	proto	2	1	callback|thisArg	RECEIVER-D	no	
+24.2.4.8	24	Set.prototype.has	proto	1	1	value	RECEIVER-D	no	
+24.2.4.9	24	Set.prototype.intersection	proto	1	1	other	RECEIVER-D	no	
+24.2.4.10	24	Set.prototype.isDisjointFrom	proto	1	1	other	RECEIVER-D	no	
+24.2.4.11	24	Set.prototype.isSubsetOf	proto	1	1	other	RECEIVER-D	no	
+24.2.4.12	24	Set.prototype.isSupersetOf	proto	1	1	other	RECEIVER-D	no	
+24.2.4.13	24	Set.prototype.keys	proto	0	0		RECEIVER-D	no	
+24.2.4.15	24	Set.prototype.symmetricDifference	proto	1	1	other	RECEIVER-D	no	
+24.2.4.16	24	Set.prototype.union	proto	1	1	other	RECEIVER-D	no	
+24.2.4.17	24	Set.prototype.values	proto	0	0		RECEIVER-D	no	
+24.2.4.18	24	Set.prototype [ %Symbol.iterator% ]	proto	0	0		RECEIVER-D	no	
+24.2.6.2.1	24	%SetIteratorPrototype%.next	proto	0	0		RECEIVER-D	no	
+24.3.1.1	24	WeakMap	global	1	0	iterable	NO-D	no	
+24.3.3.2	24	WeakMap.prototype.delete	proto	1	1	key	RECEIVER-D	no	
+24.3.3.3	24	WeakMap.prototype.get	proto	1	1	key	RECEIVER-D	no	
+24.3.3.4	24	WeakMap.prototype.has	proto	1	1	key	RECEIVER-D	no	
+24.3.3.5	24	WeakMap.prototype.set	proto	2	2	key|value	RECEIVER-D	no	
+24.4.1.1	24	WeakSet	global	1	0	iterable	NO-D	no	
+24.4.3.1	24	WeakSet.prototype.add	proto	1	1	value	RECEIVER-D	no	
+24.4.3.3	24	WeakSet.prototype.delete	proto	1	1	value	RECEIVER-D	no	
+24.4.3.4	24	WeakSet.prototype.has	proto	1	1	value	RECEIVER-D	no	
+25.1.4.1	25	ArrayBuffer	global	2	1	length|options	UNARY	no	
+25.1.5.1	25	ArrayBuffer.isView	static	1	1	arg	UNARY	no	
+25.1.6.6	25	ArrayBuffer.prototype.resize	proto	1	1	newLength	RECEIVER-D	no	
+25.1.6.7	25	ArrayBuffer.prototype.slice	proto	2	2	start|end	RECEIVER-D	no	
+25.1.6.8	25	ArrayBuffer.prototype.transfer	proto	1	0	newLength	RECEIVER-D	no	
+25.1.6.9	25	ArrayBuffer.prototype.transferToFixedLength	proto	1	0	newLength	RECEIVER-D	no	
+25.2.3.1	25	SharedArrayBuffer	global	2	1	length|options	UNARY	no	
+25.2.5.3	25	SharedArrayBuffer.prototype.grow	proto	1	1	newLength	RECEIVER-D	no	
+25.2.5.6	25	SharedArrayBuffer.prototype.slice	proto	2	2	start|end	RECEIVER-D	no	
+25.3.2.1	25	DataView	global	3	1	buffer|byteOffset|byteLength	UNARY	no	
+25.3.4.5	25	DataView.prototype.getBigInt64	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.6	25	DataView.prototype.getBigUint64	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.7	25	DataView.prototype.getFloat16	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.8	25	DataView.prototype.getFloat32	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.9	25	DataView.prototype.getFloat64	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.10	25	DataView.prototype.getInt8	proto	1	1	byteOffset	RECEIVER-D	no	
+25.3.4.11	25	DataView.prototype.getInt16	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.12	25	DataView.prototype.getInt32	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.13	25	DataView.prototype.getUint8	proto	1	1	byteOffset	RECEIVER-D	no	
+25.3.4.14	25	DataView.prototype.getUint16	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.15	25	DataView.prototype.getUint32	proto	2	1	byteOffset|littleEndian	RECEIVER-D	no	
+25.3.4.16	25	DataView.prototype.setBigInt64	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.17	25	DataView.prototype.setBigUint64	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.18	25	DataView.prototype.setFloat16	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.19	25	DataView.prototype.setFloat32	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.20	25	DataView.prototype.setFloat64	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.21	25	DataView.prototype.setInt8	proto	2	2	byteOffset|value	RECEIVER-D	no	
+25.3.4.22	25	DataView.prototype.setInt16	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.23	25	DataView.prototype.setInt32	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.24	25	DataView.prototype.setUint8	proto	2	2	byteOffset|value	RECEIVER-D	no	
+25.3.4.25	25	DataView.prototype.setUint16	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.3.4.26	25	DataView.prototype.setUint32	proto	3	2	byteOffset|value|littleEndian	RECEIVER-D	no	
+25.4.4	25	Atomics.add	static	3	3	typedArray|index|value	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.5	25	Atomics.and	static	3	3	typedArray|index|value	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.6	25	Atomics.compareExchange	static	4	4	typedArray|index|expectedValue|replacementValue	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.7	25	Atomics.exchange	static	3	3	typedArray|index|value	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.8	25	Atomics.isLockFree	static	1	1	size	UNARY	no	
+25.4.9	25	Atomics.load	static	2	2	typedArray|index	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.10	25	Atomics.or	static	3	3	typedArray|index|value	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.11	25	Atomics.store	static	3	3	typedArray|index|value	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.12	25	Atomics.sub	static	3	3	typedArray|index|value	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.13	25	Atomics.wait	static	4	4	typedArray|index|value|timeout	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.14	25	Atomics.waitAsync	static	4	4	typedArray|index|value|timeout	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.15	25	Atomics.notify	static	3	3	typedArray|index|count	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.4.16	25	Atomics.xor	static	3	3	typedArray|index|value	D-FIRST	yes	typedArray=D, index=K, value/etc=peer
+25.5.1	25	JSON.parse	static	2	1	text|reviver	UNARY	no	
+25.5.2	25	JSON.stringify	static	3	1	value|replacer|space	UNARY	no	
+26.1.1.1	26	WeakRef	global	1	1	target	UNARY	no	
+26.1.3.2	26	WeakRef.prototype.deref	proto	0	0		RECEIVER-D	no	
+26.2.1.1	26	FinalizationRegistry	global	1	1	cleanupCallback	UNARY	no	
+26.2.3.2	26	FinalizationRegistry.prototype.register	proto	3	2	target|heldValue|unregisterToken	RECEIVER-D	no	
+26.2.3.3	26	FinalizationRegistry.prototype.unregister	proto	1	1	unregisterToken	RECEIVER-D	no	
+27.1.2.1.1	27	%IteratorHelperPrototype%.next	proto	0	0		RECEIVER-D	no	
+27.1.2.1.2	27	%IteratorHelperPrototype%.return	proto	0	0		RECEIVER-D	no	
+27.1.3.1.1	27	Iterator	global	0	0		NO-D	no	
+27.1.3.2.1	27	Iterator.from	static	1	1	O	UNARY	no	
+27.1.3.2.1.1.1	27	%WrapForValidIteratorPrototype%.next	proto	0	0		RECEIVER-D	no	
+27.1.3.2.1.1.2	27	%WrapForValidIteratorPrototype%.return	proto	0	0		RECEIVER-D	no	
+27.1.4.2	27	Iterator.prototype.drop	proto	1	1	limit	RECEIVER-D	no	
+27.1.4.3	27	Iterator.prototype.every	proto	1	1	predicate	RECEIVER-D	no	
+27.1.4.4	27	Iterator.prototype.filter	proto	1	1	predicate	RECEIVER-D	no	
+27.1.4.5	27	Iterator.prototype.find	proto	1	1	predicate	RECEIVER-D	no	
+27.1.4.6	27	Iterator.prototype.flatMap	proto	1	1	mapper	RECEIVER-D	no	
+27.1.4.7	27	Iterator.prototype.forEach	proto	1	1	procedure	RECEIVER-D	no	
+27.1.4.8	27	Iterator.prototype.map	proto	1	1	mapper	RECEIVER-D	no	
+27.1.4.9	27	Iterator.prototype.reduce	proto	2	1	reducer|initialValue	RECEIVER-D	no	
+27.1.4.10	27	Iterator.prototype.some	proto	1	1	predicate	RECEIVER-D	no	
+27.1.4.11	27	Iterator.prototype.take	proto	1	1	limit	RECEIVER-D	no	
+27.1.4.12	27	Iterator.prototype.toArray	proto	0	0		RECEIVER-D	no	
+27.1.4.13	27	Iterator.prototype [ %Symbol.iterator% ]	proto	0	0		RECEIVER-D	no	
+27.1.5.1	27	%AsyncIteratorPrototype% [ %Symbol.asyncIterator% ]	proto	0	0		RECEIVER-D	no	
+27.1.6.2.1	27	%AsyncFromSyncIteratorPrototype%.next	proto	1	0	value	RECEIVER-D	no	
+27.1.6.2.2	27	%AsyncFromSyncIteratorPrototype%.return	proto	1	0	value	RECEIVER-D	no	
+27.1.6.2.3	27	%AsyncFromSyncIteratorPrototype%.throw	proto	1	0	value	RECEIVER-D	no	
+27.2.1.1.1	27	IfAbruptRejectPromise	global	2	2	value|capability	EXCLUDE	no	spec-internal shorthand notation, not an observable built-in
+27.2.3.1	27	Promise	global	1	1	executor	UNARY	no	
+27.2.4.1	27	Promise.all	static	1	1	iterable	UNARY	no	
+27.2.4.2	27	Promise.allSettled	static	1	1	iterable	UNARY	no	
+27.2.4.3	27	Promise.any	static	1	1	iterable	UNARY	no	
+27.2.4.5	27	Promise.race	static	1	1	iterable	UNARY	no	
+27.2.4.6	27	Promise.reject	static	1	1	r	UNARY	no	
+27.2.4.7	27	Promise.resolve	static	1	1	x	UNARY	no	
+27.2.4.8	27	Promise.try	static	2	2	callback|args	NO-D	yes	callback=F is the subject; args=peer
+27.2.4.9	27	Promise.withResolvers	static	0	0		NO-D	no	
+27.2.5.1	27	Promise.prototype.catch	proto	1	1	onRejected	RECEIVER-D	no	
+27.2.5.3	27	Promise.prototype.finally	proto	1	1	onFinally	RECEIVER-D	no	
+27.2.5.4	27	Promise.prototype.then	proto	2	2	onFulfilled|onRejected	RECEIVER-D	no	
+27.3.1.1	27	GeneratorFunction	global	2	2	parameterArgs|bodyArg	NO-D	yes	constructor
+27.4.1.1	27	AsyncGeneratorFunction	global	2	2	parameterArgs|bodyArg	NO-D	yes	constructor
+27.5.1.2	27	%GeneratorPrototype%.next	proto	1	1	value	RECEIVER-D	no	
+27.5.1.3	27	%GeneratorPrototype%.return	proto	1	1	value	RECEIVER-D	no	
+27.5.1.4	27	%GeneratorPrototype%.throw	proto	1	1	exception	RECEIVER-D	no	
+27.6.1.2	27	%AsyncGeneratorPrototype%.next	proto	1	1	value	RECEIVER-D	no	
+27.6.1.3	27	%AsyncGeneratorPrototype%.return	proto	1	1	value	RECEIVER-D	no	
+27.6.1.4	27	%AsyncGeneratorPrototype%.throw	proto	1	1	exception	RECEIVER-D	no	
+27.7.1.1	27	AsyncFunction	global	2	2	parameterArgs|bodyArg	NO-D	yes	constructor
+28.1.1	28	Reflect.apply	static	3	3	target|thisArgument|argumentsList	D-FIRST	yes	target=D
+28.1.2	28	Reflect.construct	static	3	2	target|argumentsList|newTarget	D-FIRST	yes	target=D
+28.1.3	28	Reflect.defineProperty	static	3	3	target|propertyKey|attributes	D-FIRST	yes	target=D
+28.1.4	28	Reflect.deleteProperty	static	2	2	target|propertyKey	D-FIRST	yes	target=D
+28.1.5	28	Reflect.get	static	3	2	target|propertyKey|receiver	D-FIRST	yes	target=D, propertyKey=K
+28.1.6	28	Reflect.getOwnPropertyDescriptor	static	2	2	target|propertyKey	D-FIRST	yes	target=D
+28.1.7	28	Reflect.getPrototypeOf	static	1	1	target	UNARY	no	
+28.1.8	28	Reflect.has	static	2	2	target|propertyKey	D-FIRST	yes	target=D
+28.1.9	28	Reflect.isExtensible	static	1	1	target	UNARY	no	
+28.1.10	28	Reflect.ownKeys	static	1	1	target	UNARY	no	
+28.1.11	28	Reflect.preventExtensions	static	1	1	target	UNARY	no	
+28.1.12	28	Reflect.set	static	4	3	target|propertyKey|V|receiver	D-FIRST	yes	target=D, propertyKey=K, V=peer
+28.1.13	28	Reflect.setPrototypeOf	static	2	2	target|proto	D-FIRST	yes	target=D
+28.2.1.1	28	Proxy	global	2	2	target|handler	D-FIRST	yes	constructor; target=D, handler=C
+28.2.2.1	28	Proxy.revocable	static	2	2	target|handler	D-FIRST	yes	target=D, handler=C

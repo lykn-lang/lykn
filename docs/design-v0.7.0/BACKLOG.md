@@ -260,6 +260,67 @@ implementation is **likely 0.8.0+** (version-spanning), informed by the report.
 
 ---
 
+### A7 · `as->` — the general threading form *(NEW 2026-07-25; origin `03-threading-macros`)*
+
+**Capability.** Add `as->` (and, for symmetry, consider `some-as->`): a
+threading macro that binds the threaded value to a **named placeholder** so each
+step can put it in *any* position.
+
+```lisp
+(as-> data $
+  (crypto:subtle:digest "SHA-256" $)     ;; datum last
+  (Reflect:set target :digest $)         ;; datum in the MIDDLE — no spelling today
+  (Deno:write-text-file "out.bin" $))    ;; datum last
+```
+
+**Why this, and why now.** The `03-threading-macros` survey censused the entire
+observable ECMAScript 2025 built-in library (489 callables) plus the host surface
+(214 more) and classified every one by where its primary datum sits. Results:
+
+- **48** ES2025 callables actually discriminate between `->` and `->>`
+  (required arity ≥ 2). The split is **37 datum-first : 2 datum-last** — and the
+  two datum-last are `BigInt.asIntN` / `asUintN`.
+- The host tier adds **71** discriminating callables at **27 : 18**, where the
+  datum-last set is two coherent families (WebCrypto configured operators; keyed
+  sinks like `Deno.writeTextFile`, `Headers.set`, `localStorage.setItem`).
+- **6** host signatures are datum-**middle** (`SubtleCrypto.importKey`,
+  `wrapKey`, `unwrapKey`, `deriveKey`, `deriveBits`) and **17** are callback-last.
+  **None of these has any spelling in lykn today.**
+
+So the surface budget argument is: a second *dedicated* macro (`->>`) serves 2
+core built-ins, while **one general form serves datum-last, datum-middle, and
+operator-receiver together** — and gives the reader an escape hatch for every
+signature the survey classified `PEER`, `D-MID` or `F-LAST`.
+
+**It also currently mis-compiles, silently.** `(as-> x $ (f $ 1) (g 2 $))`
+compiles clean — no diagnostic — to `asTo(x, $, f($, 1), g(2, $));`, a call to an
+undefined `asTo` (the `->` → `To` rule at `compiler.js:405` rewriting an
+unrecognised head), plus an undefined `$`. `ReferenceError` at runtime. So the
+choice is not *add a feature* vs *do nothing*; it is *add it* vs *leave a
+Clojure-shaped trap that compiles*.
+
+**Scope sketch.** Additive, both compilers, mirrors the DD-18 / DD-18.1 pattern:
+a `classifier.js` head + `AsThread` surface node, expansion to nested `const`
+bindings (or an IIFE, as `some->` already does), the parallel Rust
+`emitter/forms.rs` arm, cross-compiler tests, and a guides section. DD-18.1's
+keyword-step rule should apply unchanged, so `(:method …)` steps keep working.
+Interaction to decide: whether the placeholder is user-named (Clojure) or a
+fixed sigil.
+
+**Source:** `docs/design-v0.7.0/03-threading-macros/` — `inventory.md` §5–§7
+(recommendation R2), ledger rows R-7 and R-8. Discovery row `D-2607-3KTP`.
+
+**Re-entry:** the pending language-design conversation on threading macros — the
+same one that owns `D-2607-K9RT`'s disposition. `as->` and the
+collection-prelude question should be decided together, since the survey's
+recommendation is *ship `as->`, don't ship a datum-last prelude* and the two
+arguments share a premise.
+
+**Disposition:** *(operator decides)* — the survey argues 0.7.0; it is small,
+additive, and closes a silent trap.
+
+---
+
 ## B. Routed items from the 0.6.0 buried-intent audit (project-plan §1)
 
 Each was surfaced and dispositioned by the arc11 buried-intent audit; carried
