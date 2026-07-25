@@ -302,9 +302,10 @@ Shape 4 has no spelling at all, and `as->` is its answer.
 
 These are new. Each has a Discovery Register row — `D-2607-8QVL` (§6.1),
 `D-2607-W4RC` (§6.2), `D-2607-3KTP` (§6.3), `D-2607-L7BX` (§6.4),
-`D-2607-2PQR` (§6.5), `D-2607-V8DM` (§6.6). All six are appended to
-`docs/backlog/discoveries.md`; `discovery-rows.md` records why they are not yet
-`routed` (the register is untracked on every branch).
+`D-2607-2PQR` (§6.5), `D-2607-V8DM` (§6.6). All six are in
+`docs/backlog/discoveries.md`, which the operator committed the same day — so
+they are `routed`. `discovery-rows.md` carries the provenance and the branch
+rule that came out of it.
 
 **All compiler-behaviour claims below hold for BOTH compilers.** The first pass
 of this unit verified through `packages/lang` only, which was not enough to
@@ -583,23 +584,26 @@ Stated so the next reader can attack the right things.
 
 **Reproduce**
 
-> **Cross-branch dependency — read first.** This unit lives on `release/0.7.x`.
-> The ES2025 corpus it was built from, `docs/ecmascript-2025/` (42 files, added
-> in `0a4b138`), is on **`main`** and is **not present on `release/0.7.x`**. So
-> a two-levels-up `ecmascript-2025` spec path does *not* resolve from this
-> directory, and a
-> tracked document must not cite a path that fails to resolve on its own branch
-> (`CLAUDE.md`, "A path cited in a tracked document must resolve in git" —
-> `make check` enforces this). Point `--spec` at a checkout of `main`:
+> **Cross-branch dependency — RESOLVED 2026-07-25, note retained for history.**
+> This unit lives on `release/0.7.x`. When it was written, the ES2025 corpus
+> `docs/ecmascript-2025/` (42 files, `0a4b138`) was on **`main` only**, so no
+> in-branch spec path resolved and the reproduce command had to reach across
+> branches. **`release/0.7.x` has since been rebased onto `main`, which carried
+> `0a4b138` with it.** The corpus is now present on all three branches — verify
+> with `git ls-tree -r --name-only release/0.7.x -- docs/ecmascript-2025 | wc -l`
+> (42). The operator call this section flagged — cherry-pick vs. keep the split —
+> was therefore settled in favour of the corpus being in-branch. **Use the
+> in-branch path below; the old five-levels-up form is struck.**
 
 ```sh
 cd docs/design-v0.7.0/03-threading-macros
 deno types > /tmp/deno-types.d.ts
 
-# --spec must point at docs/ecmascript-2025/function-heads.md on `main`.
-# From the `.worktrees/0.7.x` layout that is five levels up (VERIFIED, not counted):
+# --spec resolves IN-BRANCH as of the rebase that carried 0a4b138 onto
+# release/0.7.x. From this directory that is two levels up (VERIFIED by stat,
+# not counted). Was: ../../../../../docs/ecmascript-2025/... into a main checkout.
 python3 scripts/build-catalog.py \
-    --spec ../../../../../docs/ecmascript-2025/function-heads.md \
+    --spec ../../ecmascript-2025/function-heads.md \
     --deno-types /tmp/deno-types.d.ts \
     --out data
 # prints per-tier shape distributions and `self-check: OK`
@@ -611,10 +615,12 @@ deno run -A scripts/probe-threading.js
 scripts/probe-threading-rust.sh
 ```
 
-**Resolving the split is an operator call**, not something this unit should
-decide: either cherry-pick `0a4b138` onto `release/0.7.x`, or leave the corpus
-on `main` and keep the cross-branch note above. Recorded as a bullet under
-discovery row `D-2607-L7BX`.
+~~**Resolving the split is an operator call** … either cherry-pick `0a4b138`
+onto `release/0.7.x`, or leave the corpus on `main`.~~ **Settled 2026-07-25**
+by the rebase of `release/0.7.x` onto `main`: the corpus is in-branch and the
+split no longer exists. `D-2607-L7BX`'s "mirror problem" bullet is amended
+accordingly; the row's *primary* claim — `docs/design-v0.7.0/` is absent from
+`main` — still stands.
 
 `build-catalog.py` exits non-zero if any callable with required arity >= 2 is
 missing from the hand-classification tables, so the catalog cannot silently

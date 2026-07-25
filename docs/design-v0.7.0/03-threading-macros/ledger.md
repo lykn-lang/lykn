@@ -16,7 +16,7 @@ raises it to `reproduced` by an independent party. Raising R-1…R-4 is cheap
 
 | Row | Claim | Evidence | Strength |
 |---|---|---|---|
-| **R-1** | The ES2025 observable built-in library, clauses 19–28, contains **489** callables after excluding 215 in-clause abstract operations. | `scripts/build-catalog.py` → `data/catalog-es2025.tsv`, 489 rows. Reproduce: see `inventory.md` §9 — **note the corpus lives on `main`, not on this branch**; `--spec` must point at a `main` checkout of `docs/ecmascript-2025/function-heads.md`. | `attested` |
+| **R-1** | The ES2025 observable built-in library, clauses 19–28, contains **489** callables after excluding 215 in-clause abstract operations. | `scripts/build-catalog.py` → `data/catalog-es2025.tsv`, 489 rows. Reproduce: see `inventory.md` §9. *(Amended 2026-07-25 by an independent CDC pass; was: "**note the corpus lives on `main`, not on this branch**; `--spec` must point at a `main` checkout". True when written, **stale after `release/0.7.x` was rebased onto `main`** — that carried `0a4b138`, so `docs/ecmascript-2025/` is now on all three branches and `--spec` takes the in-branch `../../ecmascript-2025/function-heads.md`.)* | `attested` |
 | **R-2** | **417 of those 489 (85%)** cannot distinguish `->` from `->>` — they are `RECEIVER-D` (274) or `UNARY` (143). | Same run, shape distribution. Corroborated behaviourally by R-6. | `attested` |
 | **R-3** | Among the **48** ES2025 callables that *do* discriminate (free/static, required arity ≥ 2), the split is **37 datum-first : 2 datum-last**. The two datum-last are `BigInt.asIntN` and `BigInt.asUintN`. | Same run, discriminating-set summary. Every one of the 48 is hand-classified in `ES_HAND`; the build fails on any unclassified row. | `attested` |
 | **R-4** | The host tier (`deno types`, Deno 2.9.4) contributes **214** callables, **71** discriminating, at **27 datum-first : 18 datum-last**. The 18 datum-last are exactly two families: WebCrypto configured operators and keyed sinks (`Deno.write*File*`, `Headers`/`FormData`/`URLSearchParams` `set`/`append`, `localStorage.setItem`). | Same run, tier-2 summary; families enumerated in `inventory.md` §4. | `attested` |
@@ -55,9 +55,15 @@ registers:
   output, an evidence-base block on that row, and two new instances under
   `D-2607-Z5KN`. `D-2607-K9RT` stays `held-for-design` — this unit supplies the
   evidence base it was missing; the language-design conversation owns the call.
-- **BLOCKED on a commit, and it matters.** `docs/backlog/` is **untracked on
-  every branch** (`git ls-tree` returns 0 files for `main`, `release/0.7.x` and
-  `release/0.6.x`). By the register's own rule (`D-2607-8HTN`) none of these
-  rows is `routed` yet, because the destination does not exist in git. This is
-  the pre-existing condition `CLAUDE.md` describes, still live. `discovery-rows.md`
-  is retained rather than retired for exactly this reason — see its header.
+- **Was blocked, now resolved (2026-07-25).** When these rows were written,
+  `docs/backlog/` was **untracked on every branch**, so by the register's own
+  rule (`D-2607-8HTN`) none of them was `routed`. The operator committed
+  `docs/backlog/` the same day, to both `main` and `release/0.6.x` — the rows
+  are now genuinely routed. `discovery-rows.md` is retained as the provenance
+  record, not as a workaround; see its header.
+- **Rule change this unit produced.** `CLAUDE.md` gained a **"Which branch do I
+  write to?"** section (confirmed with the operator 2026-07-25): `main` changes
+  by rebase/merge only; work is authored in the worktree for its release; the
+  active release branch owns cross-cutting artifacts. It is the structural fix
+  for `D-2607-L7BX` and the two write-location failures beside it, and it means
+  future 0.7.0 discoveries go to the register **in the 0.6.x worktree**.
