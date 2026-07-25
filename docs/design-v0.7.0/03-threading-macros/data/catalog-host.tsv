@@ -1,0 +1,215 @@
+owner	name	signature	req_arity	shape	discriminating	note
+Headers	append	name: string, value: string	2	D-LAST	yes	name=K, value=D — keyed sink
+Headers	delete	name: string	1	UNARY	no	
+Headers	get	name: string	1	UNARY	no	
+Headers	has	name: string	1	UNARY	no	
+Headers	set	name: string, value: string	2	D-LAST	yes	name=K, value=D — keyed sink
+Headers	getSetCookie		0	NO-D	no	
+URLSearchParams	append	name: string, value: string	2	D-LAST	yes	name=K, value=D — keyed sink
+URLSearchParams	delete	name: string, value?: string	1	UNARY	no	
+URLSearchParams	getAll	name: string	1	UNARY	no	
+URLSearchParams	get	name: string	1	UNARY	no	
+URLSearchParams	has	name: string, value?: string	1	UNARY	no	
+URLSearchParams	set	name: string, value: string	2	D-LAST	yes	name=K, value=D — keyed sink
+URLSearchParams	sort		0	NO-D	no	
+URLSearchParams	forEach	callbackfn: (value: string, key: string, parent: this) => void, thisArg?: any,	1	UNARY	no	
+URLSearchParams	keys		0	NO-D	no	
+URLSearchParams	values		0	NO-D	no	
+URLSearchParams	entries		0	NO-D	no	
+URLSearchParams	toString		0	NO-D	no	
+URL	toString		0	NO-D	no	
+URL	toJSON		0	NO-D	no	
+TextEncoder	encode	input?: string	0	NO-D	no	
+TextEncoder	encodeInto	input: string, dest: Uint8Array<ArrayBufferLike>,	2	D-FIRST	yes	input=D, dest=out-param
+TextDecoder	decode	input?: AllowSharedBufferSource, options?: TextDecodeOptions	0	NO-D	no	
+Console	assert	condition?: boolean, ...data: any[]	0	NO-D	no	
+Console	clear		0	NO-D	no	
+Console	count	label?: string	0	NO-D	no	
+Console	countReset	label?: string	0	NO-D	no	
+Console	debug	...data: any[]	0	NO-D	no	
+Console	dir	item?: any, options?: any	0	NO-D	no	
+Console	dirxml	...data: any[]	0	NO-D	no	
+Console	error	...data: any[]	0	NO-D	no	
+Console	group	...data: any[]	0	NO-D	no	
+Console	groupCollapsed	...data: any[]	0	NO-D	no	
+Console	groupEnd		0	NO-D	no	
+Console	info	...data: any[]	0	NO-D	no	
+Console	log	...data: any[]	0	NO-D	no	
+Console	table	tabularData?: any, properties?: string[]	0	NO-D	no	
+Console	time	label?: string	0	NO-D	no	
+Console	timeEnd	label?: string	0	NO-D	no	
+Console	timeLog	label?: string, ...data: any[]	0	NO-D	no	
+Console	trace	...data: any[]	0	NO-D	no	
+Console	warn	...data: any[]	0	NO-D	no	
+Console	timeStamp	label?: string	0	NO-D	no	
+Console	profile	label?: string	0	NO-D	no	
+Console	profileEnd	label?: string	0	NO-D	no	
+Request	clone		0	NO-D	no	
+Response	clone		0	NO-D	no	
+Blob	arrayBuffer		0	NO-D	no	
+Blob	bytes		0	NO-D	no	
+Blob	slice	start?: number, end?: number, contentType?: string	0	NO-D	no	
+Blob	stream		0	NO-D	no	
+Blob	text		0	NO-D	no	
+FormData	append	name: string, value: string | Blob, fileName?: string	2	D-LAST	yes	name=K, value=D, fileName=C
+FormData	delete	name: string	1	UNARY	no	
+FormData	get	name: string	1	UNARY	no	
+FormData	getAll	name: string	1	UNARY	no	
+FormData	has	name: string	1	UNARY	no	
+FormData	set	name: string, value: string | Blob, fileName?: string	2	D-LAST	yes	name=K, value=D, fileName=C
+AbortController	abort	reason?: any	0	NO-D	no	
+AbortSignal	addEventListener	type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions,	2	F-LAST	yes	type=K, listener=F
+AbortSignal	removeEventListener	type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions,	2	F-LAST	yes	type=K, listener=F
+AbortSignal	throwIfAborted		0	NO-D	no	
+ReadableStream	cancel	reason?: any	0	NO-D	no	
+ReadableStream	getReader	"options: { mode: ""byob"" }"	1	UNARY	no	
+ReadableStream	getReader		0	NO-D	no	
+ReadableStream	getReader	options?: ReadableStreamGetReaderOptions	0	NO-D	no	
+ReadableStream	pipeTo	destination: WritableStream<R>, options?: StreamPipeOptions,	1	UNARY	no	
+ReadableStream	tee		0	NO-D	no	
+ReadableStream	values	options?: ReadableStreamIteratorOptions	0	NO-D	no	
+WritableStream	abort	reason?: any	0	NO-D	no	
+WritableStream	close		0	NO-D	no	
+WritableStream	getWriter		0	NO-D	no	
+Crypto	randomUUID		0	NO-D	no	
+SubtleCrypto	generateKey	algorithm: RsaHashedKeyGenParams | EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[],	3	NO-D	yes	produces a key; no input datum
+SubtleCrypto	generateKey	algorithm: AesKeyGenParams | HmacKeyGenParams, extractable: boolean, keyUsages: KeyUsage[],	3	NO-D	yes	produces a key; no input datum
+SubtleCrypto	generateKey	algorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: KeyUsage[],	3	NO-D	yes	produces a key; no input datum
+SubtleCrypto	importKey	"format: ""jwk"", keyData: JsonWebKey, algorithm: | AlgorithmIdentifier | HmacImportParams | RsaHashedImportParams | EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[],"	5	D-MID	yes	format, keyData=D, algorithm, ...
+SubtleCrypto	importKey	"format: Exclude<KeyFormat, ""jwk"">, keyData: BufferSource, algorithm: | AlgorithmIdentifier | HmacImportParams | RsaHashedImportParams | EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[],"	5	D-MID	yes	format, keyData=D, algorithm, ...
+SubtleCrypto	exportKey	"format: ""jwk"", key: CryptoKey"	2	D-LAST	yes	format=C, key=D
+SubtleCrypto	exportKey	"format: Exclude<KeyFormat, ""jwk"">, key: CryptoKey,"	2	D-LAST	yes	format=C, key=D
+SubtleCrypto	sign	algorithm: AlgorithmIdentifier | RsaPssParams | EcdsaParams, key: CryptoKey, data: BufferSource,	3	D-LAST	yes	algorithm+key=configured operator, data=D
+SubtleCrypto	verify	algorithm: AlgorithmIdentifier | RsaPssParams | EcdsaParams, key: CryptoKey, signature: BufferSource, data: BufferSource,	4	D-LAST	yes	algorithm+key+signature lead, data=D
+SubtleCrypto	digest	algorithm: AlgorithmIdentifier, data: BufferSource,	2	D-LAST	yes	algorithm=C, data=D — configured operator; plausible pipeline step
+SubtleCrypto	encrypt	algorithm: | AlgorithmIdentifier | RsaOaepParams | AesCbcParams | AesGcmParams | AesCtrParams, key: CryptoKey, data: BufferSource,	3	D-LAST	yes	algorithm+key=operator, data=D
+SubtleCrypto	decrypt	algorithm: | AlgorithmIdentifier | RsaOaepParams | AesCbcParams | AesGcmParams | AesCtrParams, key: CryptoKey, data: BufferSource,	3	D-LAST	yes	algorithm+key=operator, data=D
+SubtleCrypto	deriveBits	algorithm: | AlgorithmIdentifier | HkdfParams | Pbkdf2Params | EcdhKeyDeriveParams, baseKey: CryptoKey, length: number,	3	D-MID	yes	algorithm, baseKey=D, length=C
+SubtleCrypto	deriveKey	algorithm: | AlgorithmIdentifier | HkdfParams | Pbkdf2Params | EcdhKeyDeriveParams, baseKey: CryptoKey, derivedKeyType: | AlgorithmIdentifier | AesDerivedKeyParams | HmacImportParams | HkdfParams | Pbkdf2Params, extractable: boolean, keyUsages: KeyUsage[],	5	D-MID	yes	algorithm, baseKey=D, then 3 more
+SubtleCrypto	wrapKey	format: KeyFormat, key: CryptoKey, wrappingKey: CryptoKey, wrapAlgorithm: | AlgorithmIdentifier | RsaOaepParams | AesCbcParams | AesCtrParams,	4	D-MID	yes	format, key=D, wrappingKey, wrapAlgorithm
+SubtleCrypto	unwrapKey	format: KeyFormat, wrappedKey: BufferSource, unwrappingKey: CryptoKey, unwrapAlgorithm: | AlgorithmIdentifier | RsaOaepParams | AesCbcParams | AesCtrParams, unwrappedKeyAlgorithm: | AlgorithmIdentifier | HmacImportParams | RsaHashedImportParams | EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[],	7	D-MID	yes	format, wrappedKey=D, then 4 more
+Storage	clear		0	NO-D	no	
+Storage	getItem	key: string	1	UNARY	no	
+Storage	key	index: number	1	UNARY	no	
+Storage	removeItem	key: string	1	UNARY	no	
+Storage	setItem	key: string, value: string	2	D-LAST	yes	key=K, value=D — key/value sink
+EventTarget	addEventListener	type: string, listener: EventListenerOrEventListenerObject | null, options?: boolean | AddEventListenerOptions,	2	F-LAST	yes	type=K, listener=F — no data datum
+EventTarget	dispatchEvent	event: Event	1	UNARY	no	
+EventTarget	removeEventListener	type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean,	2	F-LAST	yes	type=K, listener=F
+URLPattern	test	input: URLPatternInput, baseURL?: string	1	OPERATOR-RECEIVER	no	receiver=compiled pattern; input=D (mirrors RegExp)
+URLPattern	exec	input: URLPatternInput, baseURL?: string	1	OPERATOR-RECEIVER	no	receiver=compiled pattern; input=D (mirrors RegExp)
+WebSocket	close	code?: number, reason?: string	0	NO-D	no	
+WebSocket	send	data: string | ArrayBufferLike | Blob | ArrayBufferView	1	UNARY	no	
+WebSocket	addEventListener	type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions,	2	F-LAST	yes	type=K, listener=F
+WebSocket	removeEventListener	type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions,	2	F-LAST	yes	type=K, listener=F
+__globals__	atob	s: string	1	UNARY	no	
+__globals__	btoa	s: string	1	UNARY	no	
+__globals__	reportError	error: any,	1	UNARY	no	
+__globals__	fetch	input: RequestInfo | URL, init?: RequestInit,	1	UNARY	no	
+__globals__	createImageBitmap	image: ImageBitmapSource, options?: ImageBitmapOptions,	1	D-FIRST	no	image=D, crop rect=C
+__globals__	createImageBitmap	image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions,	5	D-FIRST	yes	image=D, crop rect=C
+__globals__	queueMicrotask	func: VoidFunction	1	UNARY	no	
+__globals__	dispatchEvent	event: Event	1	UNARY	no	
+__globals__	fetch	input: RequestInfo | URL, init?: RequestInit & { client?: Deno.HttpClient },	1	UNARY	no	
+__globals__	close		0	NO-D	no	
+__globals__	alert	message?: string	0	NO-D	no	
+__globals__	confirm	message?: string	0	NO-D	no	
+__globals__	prompt	message?: string, defaultValue?: string	0	NO-D	no	
+__globals__	addEventListener	type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions,	2	F-LAST	yes	type=K, listener=F
+__globals__	removeEventListener	type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions,	2	F-LAST	yes	type=K, listener=F
+Deno	memoryUsage		0	NO-D	no	path/subject-first
+Deno	hostname		0	NO-D	no	path/subject-first
+Deno	loadavg		0	NO-D	no	path/subject-first
+Deno	networkInterfaces		0	NO-D	no	path/subject-first
+Deno	systemMemoryInfo		0	NO-D	no	path/subject-first
+Deno	osRelease		0	NO-D	no	path/subject-first
+Deno	osUptime		0	NO-D	no	path/subject-first
+Deno	bench	b: BenchDefinition	1	F-LAST	no	name/options lead, fn last — callback-last convention
+Deno	bench	name: string, fn: (b: BenchContext) => void | Promise<void>,	2	F-LAST	yes	name/options lead, fn last — callback-last convention
+Deno	bench	fn: (b: BenchContext) => void | Promise<void>	1	F-LAST	no	name/options lead, fn last — callback-last convention
+Deno	bench	"name: string, options: Omit<BenchDefinition, ""fn"" | ""name"">, fn: (b: BenchContext) => void | Promise<void>,"	3	F-LAST	yes	name/options lead, fn last — callback-last convention
+Deno	bench	"options: Omit<BenchDefinition, ""fn"">, fn: (b: BenchContext) => void | Promise<void>,"	2	F-LAST	yes	name/options lead, fn last — callback-last convention
+Deno	bench	"options: Omit<BenchDefinition, ""fn"" | ""name"">, fn: (b: BenchContext) => void | Promise<void>,"	2	F-LAST	yes	name/options lead, fn last — callback-last convention
+Deno	exit	code?: number	0	NO-D	no	path/subject-first
+Deno	execPath		0	NO-D	no	path/subject-first
+Deno	chdir	directory: string | URL	1	D-FIRST	no	path/subject-first
+Deno	cwd		0	NO-D	no	path/subject-first
+Deno	link	oldpath: string, newpath: string	2	D-FIRST	yes	oldpath=D, newpath=peer
+Deno	linkSync	oldpath: string, newpath: string	2	D-FIRST	yes	oldpath=D
+Deno	open	path: string | URL, options?: OpenOptions,	1	D-FIRST	no	path/subject-first
+Deno	openSync	path: string | URL, options?: OpenOptions	1	D-FIRST	no	path/subject-first
+Deno	create	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	createSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	consoleSize		0	NO-D	no	path/subject-first
+Deno	mkdir	path: string | URL, options?: MkdirOptions,	1	D-FIRST	no	path/subject-first
+Deno	mkdirSync	path: string | URL, options?: MkdirOptions	1	D-FIRST	no	path/subject-first
+Deno	makeTempDir	options?: MakeTempOptions	0	NO-D	no	path/subject-first
+Deno	makeTempDirSync	options?: MakeTempOptions	0	NO-D	no	path/subject-first
+Deno	makeTempFile	options?: MakeTempOptions	0	NO-D	no	path/subject-first
+Deno	makeTempFileSync	options?: MakeTempOptions	0	NO-D	no	path/subject-first
+Deno	chmod	path: string | URL, mode: number	2	D-FIRST	yes	path=D
+Deno	chmodSync	path: string | URL, mode: number	2	D-FIRST	yes	path=D
+Deno	chown	path: string | URL, uid: number | null, gid: number | null,	3	D-FIRST	yes	path=D
+Deno	chownSync	path: string | URL, uid: number | null, gid: number | null,	3	D-FIRST	yes	path=D
+Deno	remove	path: string | URL, options?: RemoveOptions,	1	D-FIRST	no	path/subject-first
+Deno	removeSync	path: string | URL, options?: RemoveOptions	1	D-FIRST	no	path/subject-first
+Deno	renameSync	oldpath: string | URL, newpath: string | URL,	2	D-FIRST	yes	oldpath=D
+Deno	rename	oldpath: string | URL, newpath: string | URL,	2	D-FIRST	yes	oldpath=D
+Deno	readTextFile	path: string | URL, options?: ReadFileOptions,	1	D-FIRST	no	path/subject-first
+Deno	readTextFileSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	readFile	path: string | URL, options?: ReadFileOptions,	1	D-FIRST	no	path/subject-first
+Deno	readFileSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	realPath	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	realPathSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	readDir	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	readDirSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	copyFile	fromPath: string | URL, toPath: string | URL,	2	D-FIRST	yes	fromPath=D
+Deno	copyFileSync	fromPath: string | URL, toPath: string | URL,	2	D-FIRST	yes	fromPath=D
+Deno	readLink	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	readLinkSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	lstat	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	lstatSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	stat	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	statSync	path: string | URL	1	D-FIRST	no	path/subject-first
+Deno	writeFile	path: string | URL, data: Uint8Array | ReadableStream<Uint8Array>, options?: WriteFileOptions,	2	D-LAST	yes	path=K, data=D  ** plausible pipeline terminus **
+Deno	writeFileSync	path: string | URL, data: Uint8Array, options?: WriteFileOptions,	2	D-LAST	yes	path=K, data=D  ** plausible pipeline terminus **
+Deno	writeTextFile	path: string | URL, data: string | ReadableStream<string>, options?: WriteFileOptions,	2	D-LAST	yes	path=K, data=D  ** plausible pipeline terminus **
+Deno	writeTextFileSync	path: string | URL, data: string, options?: WriteFileOptions,	2	D-LAST	yes	path=K, data=D  ** plausible pipeline terminus **
+Deno	truncate	name: string, len?: number	1	D-FIRST	no	path/subject-first
+Deno	truncateSync	name: string, len?: number	1	D-FIRST	no	path/subject-first
+Deno	addSignalListener	signal: Signal, handler: () => void	2	F-LAST	yes	signal=K, handler=F
+Deno	removeSignalListener	signal: Signal, handler: () => void,	2	F-LAST	yes	signal=K, handler=F
+Deno	spawn	command: string | URL, options?: CommandOptions,	1	D-FIRST	no	command=D, args, options
+Deno	spawn	"command: string | URL, args: string[], options?: Omit<CommandOptions, ""args"">,"	2	D-FIRST	yes	command=D, args, options
+Deno	spawnAndWait	command: string | URL, options?: CommandOptions,	1	D-FIRST	no	command=D, args, options
+Deno	spawnAndWait	"command: string | URL, args: string[], options?: Omit<CommandOptions, ""args"">,"	2	D-FIRST	yes	command=D, args, options
+Deno	spawnAndWaitSync	command: string | URL, options?: CommandOptions,	1	D-FIRST	no	command=D, args, options
+Deno	spawnAndWaitSync	"command: string | URL, args: string[], options?: Omit<CommandOptions, ""args"">,"	2	D-FIRST	yes	command=D, args, options
+Deno	inspect	value: unknown, options?: InspectOptions	1	D-FIRST	no	path/subject-first
+Deno	symlink	oldpath: string | URL, newpath: string | URL, options?: SymlinkOptions,	2	D-FIRST	yes	oldpath=D
+Deno	symlinkSync	oldpath: string | URL, newpath: string | URL, options?: SymlinkOptions,	2	D-FIRST	yes	oldpath=D
+Deno	utimeSync	path: string | URL, atime: number | Date, mtime: number | Date,	3	D-FIRST	yes	path=D
+Deno	utime	path: string | URL, atime: number | Date, mtime: number | Date,	3	D-FIRST	yes	path=D
+Deno	umask	mask?: number	0	NO-D	no	path/subject-first
+Deno	upgradeWebSocket	request: Request, options?: UpgradeWebSocketOptions,	1	D-FIRST	no	path/subject-first
+Deno	kill	pid: number, signo?: Signal | number	1	D-FIRST	no	path/subject-first
+Deno	resolveDns	"query: string, recordType: ""A"" | ""AAAA"" | ""ANAME"" | ""CNAME"" | ""NS"" | ""PTR"", options?: ResolveDnsOptions,"	2	D-FIRST	yes	query=D, recordType=C
+Deno	resolveDns	"query: string, recordType: ""CAA"", options?: ResolveDnsOptions,"	2	D-FIRST	yes	query=D, recordType=C
+Deno	resolveDns	"query: string, recordType: ""MX"", options?: ResolveDnsOptions,"	2	D-FIRST	yes	query=D, recordType=C
+Deno	resolveDns	"query: string, recordType: ""NAPTR"", options?: ResolveDnsOptions,"	2	D-FIRST	yes	query=D, recordType=C
+Deno	resolveDns	"query: string, recordType: ""SOA"", options?: ResolveDnsOptions,"	2	D-FIRST	yes	query=D, recordType=C
+Deno	resolveDns	"query: string, recordType: ""SRV"", options?: ResolveDnsOptions,"	2	D-FIRST	yes	query=D, recordType=C
+Deno	resolveDns	"query: string, recordType: ""TXT"", options?: ResolveDnsOptions,"	2	D-FIRST	yes	query=D, recordType=C
+Deno	resolveDns	query: string, recordType: RecordType, options?: ResolveDnsOptions,	2	D-FIRST	yes	query=D, recordType=C
+Deno	refTimer	id: number | NodeJS.Timeout	1	D-FIRST	no	path/subject-first
+Deno	unrefTimer	id: number | NodeJS.Timeout	1	D-FIRST	no	path/subject-first
+Deno	uid		0	NO-D	no	path/subject-first
+Deno	gid		0	NO-D	no	path/subject-first
+Deno	serve	handler: ServeHandler<Deno.NetAddr>,	1	F-LAST	no	options lead, handler last — callback-last convention
+Deno	serve	options: ServeUnixOptions, handler: ServeHandler<Deno.UnixAddr>,	2	F-LAST	yes	options lead, handler last — callback-last convention
+Deno	serve	options: ServeVsockOptions, handler: ServeHandler<Deno.VsockAddr>,	2	F-LAST	yes	options lead, handler last — callback-last convention
+Deno	serve	options: ServeTcpOptions | (ServeTcpOptions & TlsCertifiedKeyPem), handler: ServeHandler<Deno.NetAddr>,	2	F-LAST	yes	options lead, handler last — callback-last convention
+Deno	serve	options: ServeUnixOptions & ServeInit<Deno.UnixAddr>,	1	F-LAST	no	options lead, handler last — callback-last convention
+Deno	serve	options: ServeVsockOptions & ServeInit<Deno.VsockAddr>,	1	F-LAST	no	options lead, handler last — callback-last convention
+Deno	serve	options: & (ServeTcpOptions | (ServeTcpOptions & TlsCertifiedKeyPem)) & ServeInit<Deno.NetAddr>,	1	F-LAST	no	options lead, handler last — callback-last convention
+Deno	createHttpClient	options: | CreateHttpClientOptions | (CreateHttpClientOptions & TlsCertifiedKeyPem),	1	D-FIRST	no	path/subject-first
