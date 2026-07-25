@@ -12,7 +12,7 @@ advances. Evidence strengths: `asserted` < `attested` < `reproduced` <
 | L-4 | arc16's planning home exists at `docs/design-v0.6.0/arc16-book-0.6.0-edition/` and its four source artifacts are tracked under `design/` (drift inventory, kickoff thread, fence-wiring spec, dogfooding friction log) | `ls` the dir; `git ls-files` | serious | **done** | fence-wiring spec also moved out of the loose root-level file; friction log relocated from the book repo's ignored `workbench/` | reproduced (CDC) |
 | L-5 | `CLAUDE.md` in **all three** repos records the artifact layout, the `workbench/`-is-scratch rule, and the cited-path rule; book + writers-guide point at the lang planning home | read all three | serious | **done** | lang: new §"Where non-planning artifacts live"; book + writers-guide: created (neither had one) | reproduced (CDC) |
 | L-6 | `fences.lykn` has a tracked home in the book repo | `git status` in `~/lab/cnbb/lykn` | polish | **done** | `tools/book-audit/fences.lykn` | reproduced (CDC) |
-| L-7 | **`make check` fails when a tracked document cites a repo-relative path that does not resolve in git *on that document's own branch***, with the file:line of the offending citation in the message | seeded-failure demo (add a bogus citation → red; remove → green), **run on at least two branches** | **serious** | **open — CC (spec revised 2026-07-25)** | — | — |
+| L-7 | **`make check` fails when a tracked document cites a repo-relative path that does not resolve in git *on that document's own branch***, with the file:line of the offending citation in the message | seeded-failure demo (add a bogus citation → red; remove → green), **run on at least two branches** | **serious** | **done — CC** | `scripts/check-cited-paths.js` + 22 tests in `test/integration/cited-paths.test.js`; `check-cited-paths` target in `common-checks` → `make check`. Resolves against `git ls-tree -r HEAD` (never `--all`, never the filesystem). Seeded-failure demo: 4 seeds → 4 hits with `file:line`, exit 1; removed → exit 0. **Three branches** exercised: `release/0.6.x` (2 live — see below), `main` (1), `release/0.7.x` (**15, of which 14 are new real defects**). Full walk in `closing-report.md`. | **attested (CC)** — `make check`'s composite green reconciles on the operator's host |
 | L-8a | The existing corpus is swept and the dangling-citation census is recorded | run a sweep over HEAD; record counts | serious | **done** | **106 tracked docs cite 143 distinct `workbench/…` paths across 353 sites; 57 of those paths are already gone from disk.** Registered as `D-2607-D3NL` | reproduced (CDC, scripted) |
 | L-8b | Every dangling citation is fixed, or dispositioned with a rationale recorded in `D-2607-D3NL` | walk the census against the chosen disposition | serious | **done — dispositioned** | **Operator decision 2026-07-25: option (a), accept and mark.** The 57 dead paths are purely historical; not salvaged, not repointed. Recorded as an accept-with-rationale closure on `D-2607-D3NL` (now in the register's `Closed` section, titled *accepted, not repaired*). The residual — the gate must not fail on the accepted class — is **not** left dangling: it is the frozen-census allowlist specified in the amendment below and in `cc-prompt.md`. *(CDC premise correction retained: L-8 was written assuming a small exemption class; the census showed exemptions are the dominant problem — shorthand fragments, pre-restructure paths, out-of-repo symlinks, and cross-branch reaches.)* | **reconciled** (the decision is the operator's and is recorded in two places) |
 | L-9 | Bubble-up recorded: `project-plan.md` v1.38 with the plan-change discipline (what / which-child / why), P-21 opened, P-20 amended, `02-artifact-homes` listed as a standalone slice; `status.html` carries the learnings | read both | correctness | **done** | v1.38 + 3 new `issues` entries | reproduced (CDC) |
@@ -103,3 +103,39 @@ This makes the exemption **self-closing**: it can only shrink (as historical
 documents are edited or retired), never grow. Contrast the blanket allowlist the
 original L-8 imagined, which grows every time someone finds it inconvenient —
 the mechanism by which an exemption list becomes the bug.
+
+
+## Implementation note 2026-07-25 (CC) — what the build changed about the above
+
+L-7 and L-8's buildable halves are delivered; the walk is in `closing-report.md`.
+Four things the amendments above did not anticipate, recorded here because the
+amendments are the spec a future reader will start from:
+
+1. **The census is twice the assumed size, and only half of it is `workbench/`.**
+   631 `(file, path)` pairs / 307 distinct paths / 174 citing files, against the
+   amendment's "143 paths × 106 files". The gap is not a discrepancy: CDC's sweep
+   looked for `workbench/…` only, and the gate checks *every* repo-relative
+   citation. The 325 non-workbench pairs — renamed packages, migrated tests,
+   pre-restructure trees — are the same accept-and-mark class by the same
+   argument; they were simply never measured. **The operator's disposition is
+   read as covering them.** If that reading is wrong, the census needs splitting.
+
+2. **The census is generated from HEAD's committed content, not the working
+   tree.** Not in the amendment, but forced by it: a snapshot that reads the
+   working tree lets an in-flight edit in someone else's checkout become a
+   permanent accepted exemption. The gate itself still reads the working tree,
+   so breakage surfaces *before* the commit that would bake it in.
+
+3. **Point 4 of the first amendment does not hold as written.** `CLAUDE.md` has
+   eight dangling citations, and three of the four classes are things it must say
+   by its own governance design — the routing table's own 0.7.0 target, the
+   `workbench/`-is-scratch rule naming `workbench/`, and skill paths it itself
+   calls conditional. The branch rule outlaws the document carrying it.
+   `closing-report.md` §8 states the case and recommends a resolution that goes
+   against the amendment's letter; **that one is the operator's.**
+
+4. **A report about broken paths cannot cite them.** This report tripped the gate
+   17 times on its first draft, all correctly. Resolved by convention (fenced
+   blocks / unbackticked prose), not by mechanism — see `closing-report.md` §11.
+   It also exposed that "fenced blocks are not scanned" was *accidentally* true
+   rather than implemented; fence state is now tracked and regression-tested.
