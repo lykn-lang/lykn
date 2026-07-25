@@ -11,6 +11,77 @@ lykn is a lightweight Lisp that compiles S-expressions to clean, readable JavaSc
 
 Zero runtime dependencies in compiled output.
 
+## ⚠ Which branch do I write to? (read before creating or editing any file)
+
+Confirmed with the operator **2026-07-25**, after repeated write-location
+conflicts across sessions.
+
+**Do not write to `main`.** `main` is an integration branch: it changes by
+**rebase and merge only**. No session authors files there — not planning
+artifacts, not source, not docs, not scratch.
+
+Work is written in the **worktree for the release it belongs to**:
+
+| Work | Write it here |
+|---|---|
+| Anything scoped to **0.6.0** — `docs/design-v0.6.0/`, arc/slice artifacts, 0.6.0 source | **`.worktrees/0.6.x/`** (branch `release/0.6.x`) |
+| Anything scoped to **0.7.0+** — `docs/design-v0.7.0/`, `BACKLOG.md`, 0.7.0 research units | **`.worktrees/0.7.x/`** (branch `release/0.7.x`) |
+| **Cross-cutting** — `docs/backlog/` (Discovery Register, owed-row queues), `docs/design/` (odm-managed DDs) | **`.worktrees/0.6.x/`** — the active release owns them |
+| `main` | **nothing** — it receives the above by merge |
+
+**Cross-cutting ownership moves with the active release.** While 0.6.0 is the
+release in flight, the register and the DDs are authored in `.worktrees/0.6.x/`
+and reach 0.7.x and `main` by merge. When 0.6.0 ships, ownership moves to the
+next active release branch. Update this table when it does.
+
+### Why this rule exists
+
+Three distinct failures in a single day, all the same shape — *the file was
+written somewhere the reader could not reach*:
+
+- `docs/design-v0.7.0/` exists **only** on `release/0.7.x`; on `main` the path
+  held two empty untracked directories, so an `ls` implied a tree that
+  `git ls-files` said was not there (`D-2607-L7BX`).
+- `docs/ecmascript-2025/` (the ES2025 corpus) was committed to **`main` only**,
+  so a research unit on `release/0.7.x` could not cite it with a path that
+  resolves on its own branch — which the rule below requires and `make check`
+  enforces.
+- The Discovery Register sat untracked while committed documents cited it —
+  the incident that produced the routing rule in the first place.
+
+One branch per concern removes the guesswork that produced all three.
+
+### Consequences worth knowing before you start
+
+- **Confirm the worktree before the first write, not after.** `git worktree list`
+  and `ls -d .worktrees/*/`. If the worktree you need is missing, say so and
+  stop — do **not** fall back to `main`.
+  *(Amended 2026-07-25: this previously read "missing or `prunable`". Through the
+  Cowork device bridge `git worktree list` reports **every** worktree as
+  `prunable` — a mount-path artifact, not a real state — so the original wording
+  fired on a false positive in every remote session and would have halted them
+  all. `prunable` is not a stop condition; **missing** is.)*
+- **From the Cowork bridge, git does not run inside a worktree — and that is
+  deliberate.** `git -C .worktrees/0.6.x …` fails with
+  `not a git repository: /Users/oubiwann/lab/lykn/lang/.git/worktrees/0.6.x`,
+  because the worktree records an absolute host gitdir the sandbox does not
+  share. **Do not work around it.** It is a hard block on the operations that
+  strand `.git/index.lock` files and leave the operator unable to work locally
+  (see the git/device gotcha below). **Commits are the operator's and CC's, not
+  a remote session's.** The working protocol from Cowork:
+  - **write** into `.worktrees/<branch>/…` with ordinary file operations;
+  - **verify** with `git show <branch>:<path>` from the primary mount, which
+    reads every branch without touching an index.
+- **A path cited in a tracked document must resolve on that document's own
+  branch.** This is the rule that makes branch choice load-bearing rather than
+  cosmetic; see the artifact-homes section below.
+- **`CLAUDE.md` itself is the one governance file kept byte-identical on every
+  branch**, so that a session starting anywhere reads the same rules. It is
+  therefore the sole thing written to `main` directly, and only when the rules
+  change. *(This section was itself bootstrapped that way on 2026-07-25 — with
+  the operator's explicit approval, since a "don't write to `main`" rule that is
+  absent from `main` cannot fire where it is most needed.)*
+
 ## Planning & project management
 
 Planning artifacts for 0.6.0 live under **`docs/design-v0.6.0/`** in the

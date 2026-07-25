@@ -72,8 +72,18 @@ If the destination does not exist yet, the row stays `open` (or
 
 ## Closing a row
 
-A row closes when the thing it describes is actually fixed *and* the fix is
-verifiable — commit SHA, ledger row, or reproduced demonstration. Move it to
+There are **two** legitimate closures, and conflating them is how a register
+starts lying:
+
+- **Repaired** — the thing is fixed and the fix is verifiable.
+- **Accepted, not repaired** — the finding stands, and we have decided, with a
+  written rationale, to live with it. This is a real CAP closure (*"we looked at
+  this and decided no"*), **not** a soft version of open. Mark it in the row
+  title so nobody reads it as fixed, state what the acceptance costs, and route
+  any residual work to a home that exists. `D-2607-D3NL` is the worked example.
+
+For a repair: a row closes when the thing it describes is actually fixed *and*
+the fix is verifiable — commit SHA, ledger row, or reproduced demonstration. Move it to
 `Closed` with that evidence attached. State the evidence strength honestly
 (`asserted` < `attested` < `reproduced` < `reconciled`, per
 `LEDGER-DISCIPLINE.md`); "we'll get to it" is not a closure.

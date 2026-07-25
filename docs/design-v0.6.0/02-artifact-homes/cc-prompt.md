@@ -8,8 +8,13 @@ CDC has already landed the documentation half (L-1…L-6, L-9 — see `ledger.md
 
 ## L-7 — the dangling-path gate
 
+**Spec revised 2026-07-25 — read `ledger.md`'s amendment section before starting.**
+
 Add a check that **fails `make check` when a tracked document cites a
-repo-relative path that does not resolve in git.**
+repo-relative path that does not resolve in git *on that document's own
+branch*.** Resolve against `git ls-tree HEAD` — **not** `--all`, **not** the
+working tree. A file that exists on another branch must fail on this one; that
+is the point, not a false positive.
 
 Why this row exists: `docs/backlog/discoveries.md` was cited by **five committed
 documents** while the file itself sat in a gitignored tree. Nobody typed a wrong
@@ -42,10 +47,17 @@ some of those paths have since moved. Known example:
 cites `workbench/book-drift-inventory-0.6.0.md`, which this slice moved to
 `arc16-book-0.6.0-edition/design/`.
 
-**This is a design decision, and it is yours to surface, not to guess at.** An
-allowlist, a per-file historical marker, and a rule scoped to non-closed
-documents are all defensible; a blanket pass is not. Bring the option set and
-the hit census, with your recommendation — the operator decides.
+**Resolved 2026-07-25 — the operator has decided, so this is no longer yours to
+surface.** Disposition: **option (a), accept and mark**; the historical corpus is
+not salvaged. Build the **frozen census allowlist** specified in `ledger.md`'s
+second amendment: generated once from the 143 paths × 106 files, matched on the
+exact `(file, path)` pair, **never appended to**. A blanket `workbench/`
+exemption is explicitly rejected — new `workbench/` citations must still fail.
+
+What *is* still yours to surface: the other three exemption classes (shorthand
+fragments like `ast/sexpr.rs`, pre-restructure paths like `src/surface.js`,
+out-of-repo symlinks under `assets/ai/`). Bring the census and your
+recommendation for those.
 
 ## Standing
 
