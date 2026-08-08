@@ -32,7 +32,7 @@
 | [arc06 · cross-project-dep-ergonomics](./arc06-cross-project-dep-ergonomics/arc-plan.md) | `lykn add`, `lykn link`, downstream dependency ergonomics | **Closed — gate GO 2026-07-24**; all 7 slices closed/CDC-verified; mycelium consumes lykn end-to-end (build, test 43/0, publish dry-run); P-6 done and reproduced by operator host gate |
 | [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Open** — slice01 (CI-green doctest fix) closed; broader guide-drift work pending |
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
-| [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** — gated by arc15, arc07, arc16, and the open artifact-homes verification cleanup |
+| [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** — gated by arc15, arc07, arc16, and the open artifact-homes remediation |
 | [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal) | **Closed** — gated 2026-07-05; DD-58 enforced on every compile path incl. the macro boundary; `_kernel` retired |
 | [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **Closed** — gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked |
 | [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
@@ -40,14 +40,14 @@
 | [arc15 · surface-syntax-traps](./arc15-surface-syntax-traps/arc-plan.md) | Compile-clean-but-wrong surface shapes become hard errors + lint + guide fixes | **Active** — slices 01/02 closed; slice03 deferred to 0.7.0; slice04 liveness re-check done, blocked on one CC execution probe before scoping |
 | [arc16 · book-0.6.0-edition](./arc16-book-0.6.0-edition/) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — planning home created 2026-07-25; arc-plan still to write; gates arc09 |
 
-_Numbering is **creation order** (from 2026-06-30). Current release sequence: CDC-verify/close artifact-homes, then arc15 slice04 + arc15 close, then arc07 + arc16, then arc09._
+_Numbering is **creation order** (from 2026-06-30). Current release sequence: remediate and close artifact-homes L-5/L-6, then arc15 slice04 + arc15 close, then arc07 + arc16, then arc09._
 
 ## Standalone slices
 
 | Slice | Status |
 |-------|--------|
 | [01 · macro-entry-diagnostics](./01-macro-entry-diagnostics/slice-doc.md) | **Closed** — source/test fix `41cf05a`, docs `e8f212d`, CDC close `bc51055`; end-to-end mycelium acceptance demo deferred until 0.6.0 is published |
-| [02 · artifact-homes](./02-artifact-homes/slice-doc.md) | **Delivered, suspect until CDC-reviewed** — register/backlog homes created and the cited-path gate landed; no `cdc-verification.md`; P-21 remains open until this close discipline is completed |
+| [02 · artifact-homes](./02-artifact-homes/slice-doc.md) | **CDC verification returned** — cited-path gate is green, but L-5/L-6 failed because sibling-repo guidance/tool artifacts are present only as untracked files; P-21 remains open |
 | [03 · citation-repoint](./03-citation-repoint/slice-doc.md) | **Closed** — migrated citations repointed, four decided artifact homes populated, and frozen census shrank 631 -> 601; `make check-cited-paths` green at close |
 
 ## Layout conventions
