@@ -27,13 +27,13 @@ threading (`(-> (express parts) (:join ""))`). DD-64 is its design.
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · reject-method-on-expr + guide migration** | Classifier **error** on `(<non-atom-head> :kw …)` with a threading fix-it + tests; **migrate the guide sites** that teach the trap to threading + repoint ID-31/ID-41/09-anti-patterns (ID-47). Landed as a **recursive `validate_method_calls` pass** in the compile pipeline (dispatch-only was insufficient for nested traps). | **CDC-verified** (`9ca9c7e`; host reconcile pending) |
-| **slice02 · lint rule** | arc05 `lykn lint` rule flagging `(<non-atom-head> :kw …)` with the threading fix-it. **MUST reuse the recursive `walk_method_calls` detection** (not a dispatch branch) so lint/check agree with compile on nested traps (slice01 carry-forward). Also wire the recursive pass into `check_strict`. | Planned (post-slice01) |
+| **slice02 · lint rule** | arc05 `lykn lint` rule flagging `(<non-atom-head> :kw …)` with the threading fix-it. Reused the recursive method-call walk so lint/check agree with compile on nested traps; follow-up B replaced the magic `:when` carve-out with the structural match-clause exemption. | **CDC-verified** (`d6c23b5` + `90cf211`) |
 | **slice03 · type-safe method-check (hardening)** | **DEFERRED (operator, 2026-07-22 — keep B).** The post-classify premise **failed**: classification leaves *nested* exprs raw (`Bind.value`/`FuncClause.body` are `SExpr`), so a nested guarded `match` stays raw and its `((pattern) :when …)` keeps the trap shape (CC proved vs `data-types.lykn`). Match-awareness is therefore **irreducible** without a full classifier rewrite (**Option C → 0.7.x backlog, research**). B (structural `is_match_clause`/`ptr::eq` exemption) is **retained** for 0.6.0; document the borrow invariant. | **Deferred → 0.7.0 (Option C)** |
 | **slice04 · sibling traps** | ~~Assess whether still-live … **ID-32** `return return`, **ID-33** `\uNNNN` not processed … **Shaped, not detailed**.~~ **Liveness re-check DONE 2026-07-25** ([`slice04-sibling-traps/liveness-recheck.md`](./slice04-sibling-traps/liveness-recheck.md)): **both live on both backends, and neither is what its guide entry says.** ID-32 is *two* traps of *two* severities — (b) untyped-or-`--strip-assertions` `fn` silently returns `undefined` (**arc15's class, and the headline**, `D-2607-3XKP`) vs (a) `return return`, which emits **invalid JS** and so fails loudly (`require` genus, not this arc's charter). ID-33's real gap is **every escape except `\n \t \\ \"`**, not just `\uNNNN` (`D-2607-N6HS`) — both readers in exact parity. **New sibling:** the same wrap fires for `throw`/`break`/`continue` (`D-2607-K4WT`). **Neither trap has a single test in either compiler.** | **Re-checked; scoping blocked on one CC probe** (execute the four shapes on both backends so the severity column stops being inference) |
 
-_Plan late, plan deep: slice01 is detailed against the CDC sweep; slice02 is
-shaped; slice03 is a holding pen for siblings the arc06 audit surfaced, each of
-which needs its own re-check against current lykn before scoping._
+_Plan late, plan deep: slices 01/02 are closed, slice03 is deferred to 0.7.0,
+and slice04 is deliberately not scoped until the runtime probe converts the
+liveness re-check from inference to executed fact._
 
 ## 3. Dependencies
 
@@ -52,12 +52,12 @@ arc scale. Opens here; per-row walk closes in `closing-report.md`.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
-| A-1 | slice01 (reject + guide migration) closed | ptr: slice01 cdc-verification | serious | arc-plan | open | | the guarantee + docs correctness |
-| A-2 | slice02 (lint rule) closed | ptr: slice02 cdc-verification | serious | arc-plan | open | | the DX layer |
-| A-3 | **`((express x):m …)` and every non-atom-head + keyword-first shape is a compile ERROR** with the threading fix-it (not silent, not a warning) | host: `lykn compile` the trap → non-zero exit + fix-it message; the 3 canonical shapes (express / new / arithmetic) all rejected | serious | DD-64 | open | | reproduce at arc scale on host |
-| A-4 | **the Lykn-correct form compiles** — `(-> (express x) (:m …))` and atom `(x:m …)` still emit correctly (no over-rejection) | host: threading + atom-method forms compile green; positive tests | correctness | DD-64 | open | | anti-over-rejection |
-| A-5 | **no guide teaches the trap** — the sweep for `):kw` glued fingerprint returns only *documented-as-wrong* sites; `make test-docs` green | re-run the CDC sweep; every remaining hit is an ID-31/anti-pattern "don't" example | correctness | CDC sweep | open | | anti-silent-drop for docs |
-| A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | open | | sweep said 0 source hits |
+| A-1 | slice01 (reject + guide migration) closed | ptr: slice01 cdc-verification | serious | arc-plan | **done** | `9ca9c7e` + CDC verification | the guarantee + docs correctness |
+| A-2 | slice02 (lint rule) closed | ptr: slice02 cdc-verification | serious | arc-plan | **done** | `d6c23b5` + follow-up B `90cf211`, both CDC-verified | the DX layer |
+| A-3 | **`((express x):m …)` and every non-atom-head + keyword-first shape is a compile ERROR** with the threading fix-it (not silent, not a warning) | host: `lykn compile` the trap → non-zero exit + fix-it message; the 3 canonical shapes (express / new / arithmetic) all rejected | serious | DD-64 | **partially done** | covered by slices 01/02 for method-on-expression; sibling traps remain slice04 | reproduce at arc scale on host at arc close |
+| A-4 | **the Lykn-correct form compiles** — `(-> (express x) (:m …))` and atom `(x:m …)` still emit correctly (no over-rejection) | host: threading + atom-method forms compile green; positive tests | correctness | DD-64 | **partially done** | positive coverage from slice01; final arc-scale reproduction still owed | anti-over-rejection |
+| A-5 | **no guide teaches the trap** — the sweep for `):kw` glued fingerprint returns only *documented-as-wrong* sites; `make test-docs` green | re-run the CDC sweep; every remaining hit is an ID-31/anti-pattern "don't" example | correctness | CDC sweep | **partial** | method-on-expression guide sites migrated; sibling-trap guide updates owed to slice04/arc07 | anti-silent-drop for docs |
+| A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | **partial** | slices 01/02 attested green; arc-scale close still owed after slice04 | sweep said 0 source hits |
 
 ## 5. Version History
 

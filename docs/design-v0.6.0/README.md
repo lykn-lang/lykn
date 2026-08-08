@@ -28,17 +28,27 @@
 | [arc03 · compiler-coherence](./arc03-compiler-coherence/arc-plan.md) | Rust + JS coherent; DD-58 kernel/surface + DD-37 surface compiler | **Closed** — architecture landed on release 2026-06-29; corpus 1345/0 |
 | [arc04 · refactor-tooling](./arc04-refactor-tooling/arc-plan.md) | `move-function` tool + the surface-extraction it drives | **Closed** — 5/5 slices; tool built + full extraction; surface.js 2315→448; lint green; `_kernel`→DD-37 step 4 follow-up |
 | [arc05 · lykn-source-linter](./arc05-lykn-source-linter/arc-plan.md) | `lykn lint` over Lykn source | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0). `lykn lint` (16 rules, resolution-aware) ships; guide-09 reclassified. Inline suppression deferred → arc14 (DD-62) |
-| [arc13 · expander-coherence](./arc13-expander-coherence/arc-plan.md) | Lexical bindings shadow macros on both backends; reserved words rejected; conformance corpus | **Open — 5 slices closed** (binding layer complete by construction; D2 everywhere; coverage test standing); **CLOSED — gate GO 2026-07-09** (ancestry ×6; `make check` 100%; matrix 1947/53 exact; D2 demos verbatim); DD-60 D1/D2 hold on both backends; corpus standing in `make check`; P-18 reconciled; arc05 unpaused |
-| [arc06 · cross-project-dep-ergonomics](./arc06-cross-project-dep-ergonomics/arc-plan.md) | `lykn add`, downstream-blocker audit | **Active** — slice-planned 2026-07-21; **slice02 mycelium re-audit** (recon-first, host-run) is next → DD-63 + `lykn add` + external-project path → close. slice01 exports-gap closed |
+| [arc13 · expander-coherence](./arc13-expander-coherence/arc-plan.md) | Lexical bindings shadow macros on both backends; reserved words rejected; conformance corpus | **Closed — gate GO 2026-07-09** (ancestry ×6; `make check` 100%; matrix 1947/53 exact; D2 demos verbatim); DD-60 D1/D2 hold on both backends; corpus standing in `make check`; P-18 reconciled |
+| [arc06 · cross-project-dep-ergonomics](./arc06-cross-project-dep-ergonomics/arc-plan.md) | `lykn add`, `lykn link`, downstream dependency ergonomics | **Closed — gate GO 2026-07-24**; all 7 slices closed/CDC-verified; mycelium consumes lykn end-to-end (build, test 43/0, publish dry-run); P-6 done and reproduced by operator host gate |
 | [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Open** — slice01 (CI-green doctest fix) closed; broader guide-drift work pending |
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
-| [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** |
+| [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** — gated by arc15, arc07, arc16, and the open standalone citation cleanup |
 | [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal) | **Closed** — gated 2026-07-05; DD-58 enforced on every compile path incl. the macro boundary; `_kernel` retired |
 | [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **Closed** — gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked |
 | [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
 | [arc14 · comment-retention](./arc14-comment-retention/arc-plan.md) | Retain comments through the pipeline (reader → surface→kernel provenance → JS-emit strip/preserve); DD-62 | **Seeded → 0.7.0** — home for lint-suppression; **release boundary decided 0.7.0** (operator, 2026-07-21); not slice-planned |
+| [arc15 · surface-syntax-traps](./arc15-surface-syntax-traps/arc-plan.md) | Compile-clean-but-wrong surface shapes become hard errors + lint + guide fixes | **Active** — slices 01/02 closed; slice03 deferred to 0.7.0; slice04 liveness re-check done, blocked on one CC execution probe before scoping |
+| [arc16 · book-0.6.0-edition](./arc16-book-0.6.0-edition/) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — planning home created 2026-07-25; arc-plan still to write; gates arc09 |
 
-_Numbering is **creation order** (from 2026-06-30); dependency sequence of the open arcs is **arc13 → arc05(resume) → arc06 → arc07 → arc09**._
+_Numbering is **creation order** (from 2026-06-30). Current release sequence: finish the open citation-repoint standalone slice, then arc15 slice04 + arc15 close, then arc07 + arc16, then arc09._
+
+## Standalone slices
+
+| Slice | Status |
+|-------|--------|
+| [01 · macro-entry-diagnostics](./01-macro-entry-diagnostics/slice-doc.md) | **Closed** — source/test fix `41cf05a`, docs `e8f212d`, CDC close `bc51055`; end-to-end mycelium acceptance demo deferred until 0.6.0 is published |
+| [02 · artifact-homes](./02-artifact-homes/slice-doc.md) | **Delivered, suspect until CDC-reviewed** — register/backlog homes created and the cited-path gate landed; no `cdc-verification.md`; P-21 remains open because `make check-cited-paths` is red |
+| [03 · citation-repoint](./03-citation-repoint/slice-doc.md) | **Open** — repoint migrated citations and shrink the frozen census; currently the path gate reports 34 dangling citations on `release/0.6.x` |
 
 ## Layout conventions
 
@@ -57,12 +67,11 @@ than fabricated.
 
 ## Provenance and caveats
 
-- **Closed arcs are *reconstructed*, not re-verified.** Slice-level closures
-  carry their original evidence (*attested* from the shipped closing reports);
-  they were not independently re-reproduced during the migration. arc-level
-  composition checks (LEDGER-DISCIPLINE §B) were generally **not** run at the
-  time — most visibly arc03's `compileBoth` end-to-end pass (row A-2), which is
-  the main open item before arc03 can formally close.
+- **Some early closed arcs are *reconstructed*, not re-verified.** Later gates
+  closed the high-risk gaps: arc03, arc05, arc06, arc10, arc11, arc12, and
+  arc13 have explicit gate records in their closing reports or project ledger.
+  Old slices without `cdc-verification.md` remain historical evidence rather
+  than freshly reproduced evidence.
 - **Unpromoted DD drafts** (`dd-58-kernel-surface-separation-DRAFT.md`,
   `dd-56-canonical-form-spec-DRAFT.md`) live under the relevant arc's `design/`
   and are flagged for **odm promotion** — they were not pushed into the

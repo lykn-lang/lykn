@@ -77,79 +77,67 @@ Numbering convention (from 2026-06-30): **`NN` = creation order, not dependency
 order.** Sequence is carried by each arc's Dependencies. Stop renumbering on
 inserts.
 
-## 5. Current state (2026-07-09)
+## 5. Current state (2026-08-08, checked against `release/0.6.x` git)
 
-- **Closed (gated):** arc01, arc02, arc03, arc04, arc08, arc10, arc11,
-  arc12 — see the arc table in `README.md`; gate records in each arc's
-  `closing-report.md`.
-- **CLOSING:** **arc13 (expander-coherence)** — **all 11 slices
-  CDC-closed 2026-07-06…07-09** (3 planned → 11 delivered via tracked
-  re-slices: the Resolve-Once architecture [DD-61], the §A6 privacy
-  pair, two recon slices). **DD-60 D1/D2 hold on both backends**: a
-  lexically-bound name means the binding everywhere (labels excepted by
-  design, DD-60 ‡); reserved words rejected at every derived binding
-  position (ID-44 genus dead). Pinned by a standing conformance corpus
-  in `make check` (~1 s, seeded-teeth demo'd) + 4 other standing checks.
-  Final matrix: **1947 cells · 53 divergent, every one
-  documented-as-intended** (38 form-named-label shape asymmetry + 15
-  `kernel:if` unbindables). Source SHAs: `dc37ae9` (06), `7d86703` +
-  `dab4405` (08), `4c12301` (09), `c19a1fb` (10), `a0b24b9` (11).
-  **Formal close = operator host gate** (runbook: arc closing-report
-  §5). **Gate progress: `make check` 100% operator-reproduced
-  2026-07-09** (runbook step 3 ✓); remaining: the ancestry sweep ×6,
-  the 1947/53 matrix reproduction, the D2 spot-demos.
-- **Open / partial:** arc05 (linter — PAUSED at 2/3, **unpauses on the
-  arc13 gate GO**; 15 rules live), arc06 (dep-ergonomics — slice01
-  closed), arc07 (docs — slice01 closed; drift audit pending; holds the
-  stale-AGENTS.md-architecture fix + kernel-browser-examples items).
-- **Future:** arc09 (release — holds the accumulated breaking notes:
-  DD-58 strict, kernel: JS semantics, D1 bound-names-resolve, D2
-  reserved-words-error).
-- **Dependency sequence of the open arcs:** **arc05(resume) → arc06 →
-  arc07 → arc09.**
-- Headline metrics: matrix divergence 601→**53/1947**
-  (documented-as-intended); conformance corpus ~1 s in `make check`;
-  guide doctests **475/0**; `surface.js` 448 (was 2,315);
-  `size_of::<SExpr>()` 48→48 across the whole resolution+privacy layer.
+**Read this as a snapshot, not a replacement for git.** The release worktree is
+`~/lab/lykn/lang/.worktrees/0.6.x`; the main checkout can lag the release branch
+and has done so. Before acting, confirm with `git log` on `release/0.6.x`.
 
-**Immediate next action (2026-07-21): HAND ARC06 SLICE02 TO CC — arc06 is ACTIVE.** **★ arc05 CLOSED** — gate GO 2026-07-21 (operator: `make check` green; the P-11 demo reproduced — `seeded_test.lykn` → 16 findings / all 16 rules / exit 1, `clean.lykn` → 0 / exit 0). The 0.6.0 linter ships: `lykn lint` over Lykn source, 16 rules, resolution-aware, in `make check`, guides aligned; **P-5/P-11 reconciled.** arc05 spawned **arc13** (expander-coherence, closed) and **arc14** (comment-retention, seeded — the suppression home, DD-62) by the self-stop-into-its-own-arc discipline. **Next: hand arc06 slice02 (mycelium re-audit) to CC — it runs on the HOST** (mycelium isn't a Cowork folder). It's **recon-only**: re-audit the 14-issue April-2026 mycelium report against current `release/0.6.x`, disposition each fixed/partial/open, route the rest, and read out `lykn add`'s requirements. Then **DD-63 + `lykn add` (slice03)** + the **external-project path (slice04)** → arc07 → arc09. arc06 unblocks arc07 (the guide pass can't document the dependency/publish/external-test workflows until they work — the whole point). (arc14 · comment-retention is a **0.7.0** capability — operator-decided 2026-07-21; it holds the deferred lint-suppression mechanism, DD-62.)
+**Closed / gated arcs:** arc01, arc02, arc03, arc04, arc05, arc06, arc08,
+arc10, arc11, arc12, arc13. The big recent closes:
 
-**The 1→2 split (arc05 arc-plan v1.6; project-plan v1.26).** Scoping-time
-grounding found the resolution-consumer work small (`resolver::resolve`
-is `pub` + structural, already called in `compile.rs`; `as_form_head()`
-returns `None` for bound heads → route the linter's one shared
-`atom_call` head accessor through it and every head-matching rule stops
-false-positiving on bound names at once) but the old "slice03" bundle too
-large. Split:
+- **arc05 · lykn-source-linter** — gate GO 2026-07-21. `lykn lint` ships over
+  Lykn source: 16 rules, resolution-aware, wired into `make check`; P-5/P-11
+  reconciled.
+- **arc06 · cross-project-dep-ergonomics** — gate GO 2026-07-24. All seven
+  slices are closed/CDC-verified. The founding 0.6.0 goal is met: mycelium can
+  consume lykn end to end (`lykn add`, `lykn link`/`unlink`, import by
+  specifier, build, test 43/0, publish dry-run). The highest-risk publish-safety
+  row is operator-reproduced, not merely attested.
+- **arc13 · expander-coherence** — gate GO 2026-07-09. Resolve-Once landed:
+  lexical bindings shadow macros on both backends, reserved words are rejected
+  as binding names, and the 1947-cell matrix closes at 53 documented residual
+  divergences.
 
-- **slice03 · resolution-consumer + context rules** — **CLOSED**
-  `ea429e2` (CDC-verified): resolution-awareness (the `as_form_head`
-  funnel), the ID-12 shadowing rule (reuses the resolver's scope model —
-  no second decider; F-6 grep-clean), the ID-42 re-answer (closed arc13
-  A-6), dogfood clean (118 files, 2 benign fixtures triaged). 9/9 rows.
-- **slice04 · integration + guide alignment** — **CLOSED** `2feb5fd`
-  (CDC-verified): `make lint` wiring (path-scoped green, not suppression);
-  guide-09 reclassified (46 entries; all 12 formerly-ELIMINATED corrected;
-  ID-42 body fixed to the D1/D2 truth); guide-15 ID-04c rewritten (was a
-  stale `deno lint` wrapper) + SKILL; the P-11 corpus. Suppression → arc14.
+**Standalone slices:**
 
-**Now: hand arc06 slice02's cc-prompt to CC (host-run — mycelium).** For reference read
-`arc05-lykn-source-linter/arc-plan.md` (v1.7) + slice03's
-`closing-report.md` / `cdc-verification.md` bubble-up first — it routes
-three things into slice04: the now-orphaned `LintContext` ancestry API
-(delete-or-keep), the `prefer-surface-operators` fixture noise that
-motivates the suppression mechanism, and the stale-`bin/lykn` guard that
-bites a bare `cargo test` (rebuild first).
+- **01 · macro-entry-diagnostics — CLOSED.** Source/test fix `41cf05a`, slice
+  docs `e8f212d`, CDC close `bc51055`. One acceptance demo is deliberately owed
+  until 0.6.0 publishes because mycelium currently resolves the registry JS
+  compiler.
+- **02 · artifact-homes — delivered but CDC-suspect.** The register/backlog
+  homes exist and the cited-path gate landed (`379bb32`), but this directory has
+  no `cdc-verification.md`. Treat the CC closing report as useful evidence, not
+  independent close.
+- **03 · citation-repoint — OPEN.** Opened by `409e7fd`. Its job is to repoint
+  migrated citations and shrink the frozen census. As of this check,
+  `make check-cited-paths` is red with **34 dangling citations**, mostly inside
+  the 02/03 citation-cleanup docs plus two 0.7.x research-script citations in
+  the discovery register. This is the immediate housekeeping blocker for P-21.
 
-**Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never
-bare `lykn`; **`./bin/lykn build` before any deno/matrix probe** (trap
-#4 — the `lang/` import map resolves to `target/lykn/build/lang/`);
-doc-touching slices add `make test-docs`; odm = Duncan (**DD-61
-promotion pending** — mirror its refinement log in full when promoting,
-the DD-60 lesson; DD-60 canonical = `docs/design/05-active/0062-…`,
-current through 07-09). Sequence: **arc05(resume) → arc06 → arc07 →
-arc09.** Post-0.6.0 candidates: project-plan §1 (+ the `Atom(_)`
-cosmetic normalization from slice09).
+**Open arcs / release gates:**
+
+- **arc15 · surface-syntax-traps — ACTIVE.** slice01 and slice02 are
+  closed/CDC-verified; slice03 is honestly deferred to 0.7.0 (fully typed
+  classification); slice04's liveness re-check is written, but scoping is
+  blocked on one CC execution probe that converts severity from inference to
+  executed fact.
+- **arc07 · docs — OPEN.** slice01 fixed the first doctest drift; the broader
+  guide/SKILL drift pass is still pending.
+- **arc16 · book-0.6.0-edition — OPEN.** The planning home exists and its design
+  materials are tracked; `arc-plan.md` is still to be written. The book gates
+  arc09 because drafting it is the full-surface review before the release cut.
+- **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
+
+**Current sequence:** close or consciously route **03-citation-repoint / P-21**,
+then arc15 slice04 + arc15 close, then arc07 + arc16, then arc09. arc14
+comment-retention is seeded but explicitly 0.7.0.
+
+**Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never bare
+`lykn`; **`./bin/lykn build` before any deno/matrix probe** (the `lang/` import
+map resolves to `target/lykn/build/lang/`); doc-touching slices add
+`make test-docs`; path-citation work must run `make check-cited-paths` and must
+not append to `scripts/cited-paths-census.tsv`.
 
 ## 6. How we work — the rhythm & the disciplines
 
