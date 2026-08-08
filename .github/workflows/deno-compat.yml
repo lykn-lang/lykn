@@ -17,12 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      # Deno 2.x is the supported floor (bumped from 1.40.0 on 2026-07-22): the
-      # import-macro subprocess spawns `deno eval --ext=js …`, and `--ext`
-      # postdates 1.40, so 1.40 rejects the invocation. The whole toolchain
-      # targets deno v2.x.
+      # Deno 2.3.1 is the supported floor: the repo's deno.lock is lockfile v5,
+      # which Deno 2.0-2.2 cannot read, and Deno 2.3 introduced lockfile v5.
+      # The import-macro subprocess also depends on Deno 2-era `deno eval`
+      # behavior such as `--ext=js`.
       matrix:
-        deno-version: ["2.0.0", "2.x", "canary"]
+        deno-version: ["2.3.1", "2.x", "canary"]
     continue-on-error: ${{ matrix.deno-version == 'canary' }}
     steps:
       - uses: actions/checkout@v4
