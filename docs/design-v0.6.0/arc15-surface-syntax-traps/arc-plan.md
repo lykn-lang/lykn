@@ -30,10 +30,11 @@ threading (`(-> (express parts) (:join ""))`). DD-64 is its design.
 | **slice02 · lint rule** | arc05 `lykn lint` rule flagging `(<non-atom-head> :kw …)` with the threading fix-it. Reused the recursive method-call walk so lint/check agree with compile on nested traps; follow-up B replaced the magic `:when` carve-out with the structural match-clause exemption. | **CDC-verified** (`d6c23b5` + `90cf211`) |
 | **slice03 · type-safe method-check (hardening)** | **DEFERRED (operator, 2026-07-22 — keep B).** The post-classify premise **failed**: classification leaves *nested* exprs raw (`Bind.value`/`FuncClause.body` are `SExpr`), so a nested guarded `match` stays raw and its `((pattern) :when …)` keeps the trap shape (CC proved vs `data-types.lykn`). Match-awareness is therefore **irreducible** without a full classifier rewrite (**Option C → 0.7.x backlog, research**). B (structural `is_match_clause`/`ptr::eq` exemption) is **retained** for 0.6.0; document the borrow invariant. | **Deferred → 0.7.0 (Option C)** |
 | **slice04 · sibling traps** | Execution-probed and fixed the sibling traps: stripped Rust `fn` no longer drops the final value (`D-2607-3XKP`), string escapes cook or fail instead of silently collapsing (`D-2607-N6HS`), and final `return`/`throw`/`break`/`continue` forms are no longer double-wrapped (`D-2607-K4WT`). Guide ID-32/ID-33 re-scoped. Probe corrected one premise: current untyped `(fn (x) …)` is **not** a cross-backend silent-return trap; JS rejects it, Rust mis-lowers it loudly, now tracked as `D-2608-H7FN`. | **Closed** ([slice-doc](./slice04-sibling-traps/slice-doc.md), [ledger](./slice04-sibling-traps/ledger.md), [closing-report](./slice04-sibling-traps/closing-report.md)) |
+| **slice05 · nested `fn` parameter validation** | Fast-follow for `D-2608-H7FN`: Rust now rejects nested bare-parameter `fn`/`lambda`/`genfn` forms at compile/check time, matching JS, instead of falling through to bad raw-call emission. The fix is a narrow parameter-list validator; the older labelled-`fn` non-param arity residual remains unchanged. | **Closed** ([slice-doc](./slice05-nested-fn-param-validation/slice-doc.md), [ledger](./slice05-nested-fn-param-validation/ledger.md), [cc-prompt](./slice05-nested-fn-param-validation/cc-prompt.md), [closing-report](./slice05-nested-fn-param-validation/closing-report.md), [cdc-verification](./slice05-nested-fn-param-validation/cdc-verification.md)) |
 
-_Plan late, plan deep: slices 01/02 are closed, slice03 is deferred to 0.7.0,
-and slice04 was scoped only after the runtime probe converted the liveness
-re-check from inference to executed fact._
+_Plan late, plan deep: slices 01/02/04/05 are closed, slice03 is deferred to
+0.7.0, and slice04 was scoped only after the runtime probe converted the
+liveness re-check from inference to executed fact._
 
 ## 3. Dependencies
 
@@ -54,12 +55,25 @@ arc scale. Opens here; per-row walk closes in `closing-report.md`.
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | slice01 (reject + guide migration) closed | ptr: slice01 cdc-verification | serious | arc-plan | **done** | `9ca9c7e` + CDC verification | the guarantee + docs correctness |
 | A-2 | slice02 (lint rule) closed | ptr: slice02 cdc-verification | serious | arc-plan | **done** | `d6c23b5` + follow-up B `90cf211`, both CDC-verified | the DX layer |
-| A-3 | **`((express x):m …)` and every non-atom-head + keyword-first shape is a compile ERROR** with the threading fix-it (not silent, not a warning) | host: `lykn compile` the trap → non-zero exit + fix-it message; the 3 canonical shapes (express / new / arithmetic) all rejected | serious | DD-64 | **done pending arc-close repro** | slices 01/02 cover method-on-expression; slice04 closed sibling traps and routed `D-2608-H7FN` | reproduce at arc scale on host at arc close |
+| A-3 | **`((express x):m …)` and every non-atom-head + keyword-first shape is a compile ERROR** with the threading fix-it (not silent, not a warning) | host: `lykn compile` the trap → non-zero exit + fix-it message; the 3 canonical shapes (express / new / arithmetic) all rejected | serious | DD-64 | **done pending arc-close repro** | slices 01/02 cover method-on-expression; slice04 closed sibling traps; slice05 closed the `fn` parameter mismatch fast-follow | reproduce at arc scale on host at arc close |
 | A-4 | **the Lykn-correct form compiles** — `(-> (express x) (:m …))` and atom `(x:m …)` still emit correctly (no over-rejection) | host: threading + atom-method forms compile green; positive tests | correctness | DD-64 | **partially done** | positive coverage from slice01; final arc-scale reproduction still owed | anti-over-rejection |
 | A-5 | **no guide teaches the trap** — the sweep for `):kw` glued fingerprint returns only *documented-as-wrong* sites; `make test-docs` green | re-run the CDC sweep; every remaining hit is an ID-31/anti-pattern "don't" example | correctness | CDC sweep | **partial** | method-on-expression guide sites migrated; sibling-trap ID-32/ID-33 re-scoped by slice04; broader guide alignment remains arc07 | anti-silent-drop for docs |
-| A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | **partial** | slices 01/02 attested green; slice04 `make lint`/`make test` green and post-commit `make check` owed for cited-path HEAD resolution | sweep said 0 source hits |
+| A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | **partial** | slices 01/02 attested green; slice04 and slice05 `make test` green; final arc-close `make check` still owed at arc scale | sweep said 0 source hits |
 
 ## 5. Version History
+
+### v1.6 — 2026-08-08 (slice05 closed the nested `fn` parameter mismatch)
+
+slice05 closed `D-2608-H7FN` with a narrow resolved pre-classification validator:
+nested `fn`/`lambda`/`genfn` forms with malformed parameter lists now error
+before recursive emission can fall back to raw-call output. Both `lykn compile`
+and `lykn check` reject `(bind f (fn (x) x))`; a lexically bound `fn` head still
+compiles as a value call under DD-61.
+
+This intentionally did not rewrite `emit_expr` to return `Result`, and it did
+not re-disposition the older labelled-`fn` non-param arity residual. Arc15 is
+now ready for arc-close reproduction: slices 01, 02, 04, and 05 are closed;
+slice03 remains deferred to 0.7.0.
 
 ### v1.5 — 2026-08-08 (slice04 implemented after execution probe)
 
@@ -72,7 +86,9 @@ parity bug tracked separately as `D-2608-H7FN`.
 slice04 fixed the silent classes and the cheap same-path loud class:
 `D-2607-3XKP`, `D-2607-N6HS`, and `D-2607-K4WT` are closed by code + tests +
 guide/register updates. Full-gate evidence lives in the slice04 ledger and
-closing report.
+closing report. The probe's corrected untyped-`fn` premise became a new
+fast-follow, slice05, because it is a loud Rust/JS parity bug rather than the
+silent stripped-return trap slice04 was scoped to close.
 
 ### v1.4 — 2026-07-25 (slice04 liveness re-check; scope corrected *before* scoping)
 

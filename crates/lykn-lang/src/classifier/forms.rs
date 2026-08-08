@@ -131,6 +131,26 @@ pub fn validate_method_calls(forms: &[SExpr]) -> Vec<Diagnostic> {
     out
 }
 
+/// arc15 slice05: flag nested `fn`-family parameter-shape errors before the
+/// recursive emitter can swallow classification failures and emit raw calls.
+///
+/// Top-level classification already rejects these forms. The gap was nested
+/// forms such as `(bind f (fn (x) x))`: `emit_expr` classifies the nested
+/// surface form, sees the parameter-list error, and falls back to the raw
+/// S-expression, which codegen then emits as a bad call to `fn(...)`.
+///
+/// This validator is intentionally about *parameter lists*. Other malformed
+/// `fn`-family arities, such as `(label fn (block (fn 987)))`, remain under the
+/// older documented JS/Rust shape-mismatch residual until that cell is
+/// re-dispositioned directly.
+pub fn validate_nested_fn_params(forms: &[SExpr]) -> Vec<Diagnostic> {
+    let mut out = Vec::new();
+    for form in forms {
+        walk_nested_fn_params(form, &mut out);
+    }
+    out
+}
+
 /// `parent` is the enclosing node (if any), so a guarded `match` clause can be
 /// exempted structurally via [`is_match_clause`] — the same helper the lint rule
 /// uses. The clause is *not* shape-checked, but is still recursed into, so a trap
@@ -149,6 +169,27 @@ fn walk_method_calls(expr: &SExpr, parent: Option<&SExpr>, out: &mut Vec<Diagnos
         SExpr::Cons { car, cdr, .. } => {
             walk_method_calls(car, Some(expr), out);
             walk_method_calls(cdr, Some(expr), out);
+        }
+        _ => {}
+    }
+}
+
+fn walk_nested_fn_params(expr: &SExpr, out: &mut Vec<Diagnostic>) {
+    match expr {
+        SExpr::List { values, .. } => {
+            if let Some("fn" | "lambda" | "genfn") = values.first().and_then(|e| e.as_form_head())
+                && matches!(values.get(1), Some(SExpr::List { .. } | SExpr::Cons { .. }))
+                && let Err(diag) = classify_form(expr)
+            {
+                out.push(diag);
+            }
+            for v in values {
+                walk_nested_fn_params(v, out);
+            }
+        }
+        SExpr::Cons { car, cdr, .. } => {
+            walk_nested_fn_params(car, out);
+            walk_nested_fn_params(cdr, out);
         }
         _ => {}
     }
@@ -5824,6 +5865,77 @@ mod tests {
             }
             other => panic!("expected KernelPassthrough, got {other:?}"),
         }
+    }
+
+    // ---------------------------------------------------------------
+    // arc15 slice05 — nested fn-family parameter validation
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_nested_fn_param_validation_flags_bare_param_list() {
+        let expr = list(vec![
+            atom("bind"),
+            atom("f"),
+            list(vec![atom("fn"), list(vec![atom("x")]), atom("x")]),
+        ]);
+        let diags = validate_nested_fn_params(&[expr]);
+        assert_eq!(diags.len(), 1);
+        assert!(
+            diags[0].message.contains("expected type keyword"),
+            "expected typed-param diagnostic, got: {}",
+            diags[0].message
+        );
+    }
+
+    #[test]
+    fn test_nested_fn_param_validation_covers_lambda_and_genfn() {
+        for head in ["lambda", "genfn"] {
+            let expr = list(vec![
+                atom("bind"),
+                atom("f"),
+                list(vec![atom(head), list(vec![atom("x")]), atom("x")]),
+            ]);
+            let diags = validate_nested_fn_params(&[expr]);
+            assert_eq!(diags.len(), 1, "expected one diagnostic for {head}");
+            assert!(
+                diags[0].message.contains("expected type keyword"),
+                "expected typed-param diagnostic for {head}, got: {}",
+                diags[0].message
+            );
+        }
+    }
+
+    #[test]
+    fn test_nested_fn_param_validation_allows_valid_typed_fn() {
+        let expr = list(vec![
+            atom("bind"),
+            atom("f"),
+            list(vec![
+                atom("fn"),
+                list(vec![kw("number"), atom("x")]),
+                atom("x"),
+            ]),
+        ]);
+        assert!(validate_nested_fn_params(&[expr]).is_empty());
+    }
+
+    #[test]
+    fn test_nested_fn_param_validation_leaves_non_param_arity_residual() {
+        let expr = list(vec![
+            atom("label"),
+            atom("fn"),
+            list(vec![
+                atom("block"),
+                list(vec![
+                    atom("fn"),
+                    SExpr::Number {
+                        value: 987.0,
+                        span: s(),
+                    },
+                ]),
+            ]),
+        ]);
+        assert!(validate_nested_fn_params(&[expr]).is_empty());
     }
 
     // ---------------------------------------------------------------
