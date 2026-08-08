@@ -5,8 +5,8 @@ Using `deno task` for lykn project scripts. Tasks are defined in
 
 For the full treatment, see the JS guide `12-deno/12-03-task-runner.md`.
 
-Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
-output.
+Target environment: **Deno**, **ESM-only**. Use `deno task` for task
+orchestration; use lykn wrappers inside tasks for normal lykn project actions.
 
 ---
 
@@ -17,12 +17,13 @@ output.
 ```json
 {
   "tasks": {
-    "build": "make build",
-    "dev": "deno run --watch --allow-net dist/main.js",
-    "test": "make build && deno test --allow-all",
-    "check": "make build && deno lint dist/ && deno test --allow-all",
-    "bench": "make build && deno bench",
-    "fmt": "deno fmt dist/"
+    "build": "lykn build",
+    "dev": "lykn run packages/myapp/main.lykn",
+    "test": "lykn test",
+    "lint": "lykn lint packages/myapp test",
+    "check": "lykn build && lykn lint packages/myapp test && lykn test",
+    "fmt": "lykn fmt -w packages/myapp/*.lykn test/**/*.lykn",
+    "dist": "lykn dist"
   }
 }
 ```
@@ -32,29 +33,29 @@ output.
 ## ID-02: `deno task` Replaces `npm run`
 
 ```sh
-deno task build     # compile lykn + format
-deno task test      # compile + test
-deno task check     # compile + lint + test
-deno task dev       # watch mode
+deno task build     # build workspace packages
+deno task test      # compile lykn tests + run Deno's test runner
+deno task lint      # lint lykn source
+deno task check     # build + lint + test
+deno task dev       # run the lykn entry point
 ```
 
 ---
 
 ## ID-03: lykn Build Tasks
 
-A typical Makefile for lykn projects:
+Typical `deno.json` tasks for lykn projects call the lykn wrappers directly:
 
-```makefile
-build:
-	lykn compile src/main.lykn -o dist/main.js
-	deno fmt dist/
-
-test: build
-	deno test --allow-all
-
-check: build
-	deno lint dist/
-	deno test --allow-all
+```json
+{
+  "tasks": {
+    "build": "lykn build",
+    "test": "lykn test",
+    "lint": "lykn lint packages/myapp test",
+    "check": "lykn build && lykn lint packages/myapp test && lykn test",
+    "run": "lykn run packages/myapp/main.lykn"
+  }
+}
 ```
 
 ---
@@ -62,13 +63,14 @@ check: build
 ## ID-04: Watch Mode
 
 ```sh
-# Watch compiled output for changes
+# Run the configured development task
 deno task dev
-# deno run --watch --allow-net dist/main.js
 ```
 
-Note: `--watch` watches the compiled `.js` files. Recompile `.lykn`
-sources manually or with a file watcher.
+`deno task` remains useful as the cross-platform task runner. If you need
+file-watch behaviour, put the watcher around the lykn command or use an
+external watcher that re-runs the task; do not make repo-root generated JS the
+primary workflow target.
 
 ---
 

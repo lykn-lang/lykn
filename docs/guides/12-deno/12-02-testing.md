@@ -1,13 +1,13 @@
 # Deno Testing
 
-Testing lykn code with Deno's built-in test runner. Tests run on
-compiled JavaScript output — write `.lykn` source, compile to `.js`,
-test the `.js`.
+Testing lykn code with Deno's built-in test runner. The normal project
+workflow is `lykn test`: write `.lykn` or `.lyk` tests, let the CLI compile
+them into `target/lykn/test/`, and let it invoke Deno's test runner.
 
 For the full treatment, see the JS guide `12-deno/12-02-testing.md`.
 
-Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
-output.
+Target environment: **Deno**, **ESM-only**, with `lykn test` as the project
+test entry point.
 
 ---
 
@@ -16,9 +16,9 @@ output.
 **Strength**: MUST
 
 ```js
-// test/auth/login_test.js — tests compiled output
+// test/auth/login_test.js — JS tests may target built package output
 import { assertEquals, assertThrows } from "@std/assert";
-import { login } from "../../dist/auth/login.js";
+import { login } from "../../target/lykn/build/myapp/auth/login.js";
 
 Deno.test("login returns session for valid credentials", async () => {
   const session = await login("admin", "secret");
@@ -30,18 +30,18 @@ Deno.test("login throws for invalid credentials", () => {
 });
 ```
 
-Tests are written in JS (not lykn) because they import and test the
-compiled output. The test runner discovers `*_test.js` files
-automatically.
+This example is a Deno assertion/API example for JS tests against built
+output. For normal lykn project tests, prefer `.lykn` or `.lyk` test files and
+run them with `lykn test`.
 
 ---
 
 ## ID-02: Test Discovery
 
 ```sh
-deno test                    # discover all *_test.js files
-deno test test/auth/         # specific directory
-deno test --filter "login"   # filter by name
+lykn test                    # discover tests under test/
+lykn test test/auth/         # specific directory or file pattern
+lykn test -- --filter login  # pass Deno test-runner args after --
 ```
 
 ---
@@ -74,15 +74,19 @@ Deno.test("user lifecycle", async (t) => {
 ## ID-06: The lykn Test Workflow
 
 ```sh
-# 1. Compile lykn source
-lykn compile src/auth/login.lykn -o dist/auth/login.js
+# Run the default test corpus
+lykn test
 
-# 2. Run tests against compiled output
-deno test test/auth/login_test.js
+# Run one test directory
+lykn test test/auth/
 
-# Or via Makefile
-make test
+# Compile .lykn/.lyk tests without running them
+lykn test --compile-only
 ```
+
+`lykn test` compiles matching `.lykn` and `.lyk` test files into
+`target/lykn/test/` and then runs Deno's test runner with the generated project
+configuration. Pass extra Deno test-runner flags after `--`.
 
 ---
 
