@@ -128,16 +128,16 @@ gate is historically closed, but arc10 is reopened for
   true, but `D-2608-W2HF` now lives here as draft slice04:
   no-else `if` in expression position must fail `lykn check`/`compile` before
   invalid JS is emitted.
-- **arc07 · docs — ACTIVE.** slice01 fixed the first doctest drift; slice02
+- **arc07 · docs — CLOSED.** slice01 fixed the first doctest drift; slice02
   current-drift recon is closed/CDC-verified; slice03 build/dist/publish guide
   refresh is closed/CDC-verified; slice04 Deno workflow reconciliation is
-  closed/CDC-verified. Arc-level composition rows remain.
+  closed/CDC-verified. Arc ledger A-1...A-7 met; P-13 is done.
 - **arc16 · book-0.6.0-edition — OPEN.** The planning home exists and its design
   materials are tracked; `arc-plan.md` is still to be written. The book gates
   arc09 because drafting it is the full-surface review before the release cut.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
-**Current sequence:** arc10 follow-up + arc07 + arc16, then arc09. arc14
+**Current sequence:** arc10 follow-up + arc16, then arc09. arc14
 comment-retention is seeded but explicitly 0.7.0.
 
 **Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never bare

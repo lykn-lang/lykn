@@ -30,9 +30,9 @@
 | [arc05 · lykn-source-linter](./arc05-lykn-source-linter/arc-plan.md) | `lykn lint` over Lykn source | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0). `lykn lint` (16 rules, resolution-aware) ships; guide-09 reclassified. Inline suppression deferred → arc14 (DD-62) |
 | [arc13 · expander-coherence](./arc13-expander-coherence/arc-plan.md) | Lexical bindings shadow macros on both backends; reserved words rejected; conformance corpus | **Closed — gate GO 2026-07-09** (ancestry ×6; `make check` 100%; matrix 1947/53 exact; D2 demos verbatim); DD-60 D1/D2 hold on both backends; corpus standing in `make check`; P-18 reconciled |
 | [arc06 · cross-project-dep-ergonomics](./arc06-cross-project-dep-ergonomics/arc-plan.md) | `lykn add`, `lykn link`, downstream dependency ergonomics | **Closed — gate GO 2026-07-24**; all 7 slices closed/CDC-verified; mycelium consumes lykn end-to-end (build, test 43/0, publish dry-run); P-6 done and reproduced by operator host gate |
-| [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Active** — slice01/slice02/slice03/slice04 closed/CDC-verified; arc-level composition remains |
+| [arc07 · docs](./arc07-docs/arc-plan.md) | Guide/SKILL alignment with 0.6.0; clear guide drift | **Closed — gate GO 2026-08-08**; all 4 slices closed/CDC-verified; A-1...A-7 met; P-13 done |
 | [arc08 · template-i18n](./arc08-template-i18n/arc-plan.md) | `template` → ICU MessageFormat + i18n (DD-55) | **Closed** — landed on release 2026-06-29 |
-| [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** — gated by arc10 follow-up, arc07, and arc16 |
+| [arc09 · release-0.6.0](./arc09-release-0.6.0/arc-plan.md) | Version bumps, release notes, publish | **Future** — gated by arc10 follow-up and arc16 |
 | [arc10 · compiler-completion](./arc10-compiler-completion/arc-plan.md) | DD-58 strict-default + JS-parity + DD-37 step-4 (`_kernel` removal), plus no-invalid-JS follow-up | **Reopened** — original gate GO 2026-07-05; slice04 draft planned for no-else `if` expression error |
 | [arc11 · source-only-test-build](./arc11-source-only-test-build/arc-plan.md) | `lykn test` → `target/lykn/test/` (no compiled JS in the source tree, ever) + buried-intent audit | **Closed** — gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked |
 | [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
@@ -40,7 +40,7 @@
 | [arc15 · surface-syntax-traps](./arc15-surface-syntax-traps/arc-plan.md) | Compile-clean-but-wrong surface shapes become hard errors + lint + guide fixes | **Closed — gate GO 2026-08-08**; slices 01/02/04/05 closed; slice03 deferred to 0.7.0; arc ledger A-1…A-6 met |
 | [arc16 · book-0.6.0-edition](./arc16-book-0.6.0-edition/) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — planning home created 2026-07-25; arc-plan still to write; gates arc09 |
 
-_Numbering is **creation order** (from 2026-06-30). Current release sequence: arc10 follow-up + arc07 + arc16, then arc09._
+_Numbering is **creation order** (from 2026-06-30). Current release sequence: arc10 follow-up + arc16, then arc09._
 
 ## Standalone slices
 
