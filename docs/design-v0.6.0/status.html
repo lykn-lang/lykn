@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-08 (release/0.6.x status reconcile against git log + slice directories + cited-path gate. arc06 is CLOSED, not active; 01-macro-entry-diagnostics is CLOSED; 02-artifact-homes delivered the cited-path gate but has no CDC verification file; 03-citation-repoint is OPEN and make check-cited-paths is red with 34 findings. Current path: 03-citation-repoint / P-21 -> arc15 slice04 + arc15 close -> arc07 + arc16 -> arc09.)",
+  updated: "2026-08-08 (03-citation-repoint closed on release/0.6.x: migrated citations repointed, four planned artifact homes populated, census shrank 631 -> 601, and make check-cited-paths is green. P-21 remains open only for 02-artifact-homes CDC verification/close. Current path: 02-artifact-homes close discipline -> arc15 slice04 + arc15 close -> arc07 + arc16 -> arc09.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -169,7 +169,7 @@ const DATA = {
       cap:"template → ICU MessageFormat + i18n (DD-55). Un-stranded + merged.",
       slices:[{n:"icu-js",s:"closed"},{n:"icu-rust",s:"closed"},{n:"icu-review+xcompiler",s:"closed"}] },
     { id:"arc09", name:"release-0.6.0", status:"future",
-      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. GATING LIST REVISED 2026-07-24: now also gated on arc16 (the book's 0.6.0 edition) alongside arc06, arc07 and arc15.",
+      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. GATING LIST REVISED 2026-07-24: now also gated on arc16 (the book's 0.6.0 edition) alongside arc07, arc15, and the narrowed P-21 artifact-homes verification close.",
       slices:[] },
     { id:"arc10", name:"compiler-completion", status:"closed",
       cap:"DD-58 strict-default + JS parity + macro-boundary enforcement + DD-37 step-4 (_kernel removed). Gated 2026-07-05: the closed surface namespace holds on every compile path.",
@@ -195,21 +195,21 @@ const DATA = {
       cap:"Closed 2026-07-24: source/test fix, slice docs, and CDC verification are present. The mycelium acceptance demo re-enters after 0.6.0 publication because that path still resolves the registry JS compiler.",
       slices:[{n:"source+tests",s:"closed"},{n:"cdc-close",s:"closed"}] },
     { id:"02", name:"artifact-homes", status:"open",
-      cap:"Delivered mechanism, CDC-suspect: backlog/register homes exist and the path gate landed, but no cdc-verification.md exists. P-21 remains open because the gate is red and 03-citation-repoint is active.",
+      cap:"Delivered mechanism, CDC-suspect: backlog/register homes exist and the path gate landed, but no cdc-verification.md exists. P-21 remains open until this close discipline verifies the structural artifact-home claim.",
       slices:[{n:"homes",s:"closed"},{n:"path-gate",s:"closed"},{n:"CDC review missing",s:"open"}] },
-    { id:"03", name:"citation-repoint", status:"active",
-      cap:"Open: repoint migrated citations, migrate four decided files, and shrink the frozen census. Current local gate run reports 34 dangling citations on release/0.6.x.",
-      slices:[{n:"open set",s:"closed"},{n:"implementation",s:"active"},{n:"CDC close",s:"open"}] },
+    { id:"03", name:"citation-repoint", status:"closed",
+      cap:"Closed 2026-08-08: repointed migrated citations, migrated four decided files, and shrank the frozen census from 631 to 601. make check-cited-paths is green at HEAD.",
+      slices:[{n:"open set",s:"closed"},{n:"implementation",s:"closed"},{n:"CDC close",s:"closed"}] },
   ],
-  sequence: ["03","arc15","arc07","arc16","arc09"],
+  sequence: ["02","arc15","arc07","arc16","arc09"],
   now: {
-    arc:"03-citation-repoint is open · arc15 active · arc07 and arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate. The active housekeeping blocker is the citation-path class: 02-artifact-homes delivered the gate, but 03-citation-repoint is still open and make check-cited-paths currently reports 34 dangling citations. After that, arc15 needs one CC execution probe before slice04 can be scoped; arc07 still owns broader guide/SKILL drift; arc16 has its planning home but still needs its arc-plan; arc09 waits on those gates."
+    arc:"02-artifact-homes CDC verification remains · arc15 active · arc07 and arc16 open · arc09 future",
+    desc:"The current release branch is past the arc06 gate and the citation-repoint cleanup is closed. The cited-path gate is green and the census is smaller; P-21 now waits on 02-artifact-homes CDC verification/close so the durable artifact-home claim is structurally protected, not merely mechanized. After that, arc15 needs one CC execution probe before slice04 can be scoped; arc07 still owns broader guide/SKILL drift; arc16 has its planning home but still needs its arc-plan; arc09 waits on those gates."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
     {n:"~1.0 s", l:"conformance corpus in make check", s:"seeded-teeth demo'd both backends; the 14.3s matrix stays on-demand"},
-    {n:"34", l:"dangling cited paths", s:"make check-cited-paths on release/0.6.x, 2026-08-08"},
+    {n:"601", l:"accepted historical cited paths", s:"census shrank from 631; make check-cited-paths green on release/0.6.x, 2026-08-08"},
     {n:"475 / 0", l:"guide doctests", s:"green"},
     {n:"48 → 48", l:"size_of::<SExpr>()", s:"resolution tags + private payload, zero size cost"},
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
@@ -234,8 +234,8 @@ const DATA = {
     "arc06 delivered and gated: drove 'consume lykn as a dependency' to an end-to-end demonstration — the goal the whole 0.6.0 dive was in service of. Delivered lykn add (DD-63, exact-version pin via deno-shell), lykn link/unlink (a non-destructive git-ignored project.local.json overlay whose safety property — dist/publish read the RAW project.json, so a local dev path can never be published — is architecturally guaranteed, not merely tested), and the import-by-specifier convention (the compiler preserves import specifiers verbatim, so it cost ZERO lang change). Proven on a real downstream (mycelium): lykn build ✓, lykn test 43/0 (was Module-not-found red), lykn publish --jsr --dry green with the dev-only self-key absent from the staged config. Seven slices CDC-verified; closing-report A-1…A-9 met; operator gate GO 2026-07-24.",
     "arc15 · surface-syntax-traps: killed the #6 silent miscompile — ((express parts):join \"\") faithfully compiled to parts.value(\"join\",\"\") (a different, valid, wrong construct). Now a hard compile + lykn check error with a threading fix-it (-> (express parts) (:join \"\")), via a recursive validate_method_calls pass that catches nested traps, plus a matching lykn lint rule. The deeper hardening (slice03) was DEFERRED honestly: two verify-before-writing self-stops proved the elegant 'a type makes it impossible' story fails because classification leaves nested exprs raw — so the verified structural guard (Option B) ships for 0.6.0 and the real fix (Option C, fully-typed classification) became researched backlog (0.7.x A6) rather than a rushed rewrite. The system working: the discipline caught two of CDC's own premise errors before any wrong code was written.",
     "01-macro-entry-diagnostics closed as a standalone slice: the misleading import-macros missing-directory diagnostic now has source/test fixes and CDC verification; its mycelium acceptance demo is explicitly deferred until 0.6.0 publication.",
-    "02-artifact-homes delivered the structural path-citation gate and registered the historical citation wound as accepted/not-repaired, but lack of CDC verification plus the open 03-citation-repoint slice keep P-21 open.",
-    "03-citation-repoint is now the active standalone cleanup: it exists because migrated citations should be repointed rather than frozen when they have tracked homes.",
+    "02-artifact-homes delivered the structural path-citation gate and registered the historical citation wound as accepted/not-repaired, but lack of CDC verification still keeps P-21 open.",
+    "03-citation-repoint closed the active cleanup: migrated citations now point at tracked homes, four planned artifact homes are populated, make check-cited-paths is green, and the frozen census shrank 631 -> 601 without adding exemptions.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
@@ -294,8 +294,8 @@ const DATA = {
       lesson:"<code>PROJECT-MANAGEMENT.md</code> Part VIII settles CAP audit reports at <code>workbench/&lt;date&gt;-audit-results-&lt;slug&gt;.md</code> — it assumes <code>workbench/</code> is durable. This repo ignores <code>/workbench</code> entirely. Both choices are defensible; <i>together</i> they silently routed durable artifacts into an invisible tree — the register, the book's whole 6–8 iteration program, the 40KB drift inventory, the dogfooding friction log. <b>Learning:</b> this was the root cause of the class, not any individual routing mistake, and it was invisible because each half looked correct on its own. Resolved by decision rather than compromise: <code>workbench/</code> is <i>scratch, by definition</i> — nothing durable, nothing cited — recorded in the AGENTS.md of all three repos (the book repo had none at all, which is why its layout decision had nowhere to be written down)." },
     { t:"Memory carries process reliably and state unreliably", tag:"guard",
       lesson:"Resuming 2026-07-25, the session memory store was a full gate stale — arc06 CLOSE-READY vs CLOSED, plan v1.33 vs v1.37, three 'owed' rows already discharged — while the <i>disciplines</i> it carried (read order, ground-truth-against-git, the device/bridge hazards) were all correct and immediately useful. The bootstrap's own top rule is what caught its own staleness. <b>Learning:</b> a handoff note should carry <i>how we work</i> and defer <i>what state things are in</i> to git; four tool calls to detect, four writes to reconcile. The v2 bootstrap also correctly <i>predicted</i> the worktree hazard before it landed — naming a hazard you expect is cheaper than discovering it, and it was wrong only in the path (<code>.worktrees/</code>, not <code>.workdirs/</code>)." },
-    { t:"The path gate is doing its job, and it is currently red", tag:"open",
-      lesson:"As of the 2026-08-08 release-branch check, <code>make check-cited-paths</code> reports 34 dangling citations. Most are inside the citation-cleanup docs themselves, with two discovery-register reaches into 0.7.x research scripts. <b>Learning:</b> 03-citation-repoint is live work, not dashboard polish; P-21 stays open until the census shrinks or the operator deliberately routes the residuals." },
+    { t:"The path gate did its job, and citation-repoint turned it green", tag:"fixed",
+      lesson:"The 2026-08-08 release-branch check first found 34 dangling citations. The fix was not to loosen the gate: 03-citation-repoint repointed migrated paths, moved four already-decided artifacts into tracked homes, preserved historical movement prose, and shrank the frozen census from 631 to 601 accepted pairs. <b>Learning:</b> a red structural gate is useful when the follow-up shrinks the exemption set instead of expanding it. P-21 now remains open only for 02-artifact-homes CDC verification/close." },
   ],
 };
 
