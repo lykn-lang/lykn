@@ -125,8 +125,8 @@ Arcs in dependency order. Each delivers one coherent capability.
 > strict dependency order (we stopped renumbering on each mid-stream insert).
 > **Dependency/sequence** is carried by the *Depends on* column and the arcs'
 > Dependencies sections. Current dependency sequence of the remaining work
-> (**checked 2026-08-08**): **02-artifact-homes L-5/L-6 remediation / P-21 ->
-> arc15 slice04 + arc15 close -> arc07 (docs) + arc16 (book) -> arc09
+> (**checked 2026-08-08**): **arc15 slice04 + arc15 close -> arc07 (docs) +
+> arc16 (book) -> arc09
 > (release).** arc07 and
 > arc16 are siblings, not sequential: both describe shipped behaviour, and the
 > book draft is expected to feed defects back into the language arcs, so plan
@@ -148,11 +148,11 @@ Arcs in dependency order. Each delivers one coherent capability.
 >   currently resolves the registry JS compiler.
 > - **[`02-artifact-homes`](./02-artifact-homes/slice-doc.md)** — give every
 >   durable artifact a tracked home and make "a cited path resolves in git" a
->   `make check` gate (**CDC verification returned**, 2026-08-08). Origin:
+>   `make check` gate (**closed**, 2026-08-08). Origin:
 >   `docs/backlog/discoveries.md` was cited by five committed documents while
->   sitting in a gitignored tree. The gate is green, but L-5/L-6 failed CDC
->   verification because sibling-repo guidance/tool artifacts are untracked.
->   P-21 remains open until those rows reproduce.
+>   sitting in a gitignored tree. The gate is green; the sibling-repo
+>   `AGENTS.md` / `CLAUDE.md` guidance files and the book audit tool are now
+>   tracked. P-21 is done.
 > - **[`03-citation-repoint`](./03-citation-repoint/slice-doc.md)** — execute the
 >   operator's amended disposition: repoint every citation whose target migrated
 >   to a *tracked* location, freeze only what can never resolve, and perform four
@@ -169,9 +169,9 @@ provenance, not as current instruction.
 
 - **Closed / gated arcs:** arc01, arc02, arc03, arc04, arc05, arc06, arc08,
   arc10, arc11, arc12, arc13.
-- **Open standalone work:** `02-artifact-homes` failed CDC verification on
-  L-5/L-6, so P-21 remains open. `03-citation-repoint` is closed and the
-  cited-path gate is green at HEAD.
+- **Open standalone work:** none. `02-artifact-homes` and
+  `03-citation-repoint` are closed, P-21 is done, and the cited-path gate is
+  green at HEAD.
 - **Open arcs:** arc15 (slice04 scoping awaits one CC execution probe), arc07
   (broader guide/SKILL drift), arc16 (book arc-plan still to write).
 - **Future:** arc09 release, gated by the open items above. arc14
@@ -277,13 +277,28 @@ inherited from arc attestations.
 | P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | **done** | slice01 (`3612cad`); 1m52s→2.6s / >2m→1m04s; **operator gate GO 2026-07-05** (suite run green; census grep 3 line-mentions ≈ 1 compile + 1 execution — once, vs ~16 before); `lykn test` in 13s during the arc11 demo | the verification cost that was blocking the gates is gone |
 | P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | done | **reconciled** — gate GO 2026-07-09 (arc13 closing-report §5 gate record: ancestry ×6, `make check` 100%, matrix 1947/53 exact = the two documented classes, D2 demos verbatim) | arc05 slice03 / P-11 unblocked; the corpus closes the coverage gap permanently |
 | P-19 | arc15 (surface-syntax-traps) closed + composed — method-call-on-expression (and every non-atom-head + keyword-first shape) is a hard **compile + `lykn check` error** with a threading fix-it; no guide teaches the trap; no source regressed | ptr: arc15 closing-report + host `lykn compile`/`make check` | serious | arc06/slice02 #6 finding + operator pushback (v1.33) | open | slice01 reject (`9ca9c7e`) + slice02 lint (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **deferred → 0.7.0** (Option C = A6, `release/0.7.x` BACKLOG); slice04 (sibling traps ID-32/ID-33) shaped | arc not yet closed (slice04 + arc-close pending); DD-64 still -DRAFT (odm = Duncan) |
-| P-20 | **arc16 (Lykn Book 0.6.0 edition) drafted and closed** — the book's 0.6.0 edition is complete, and every language/DevX defect it surfaced is either fixed in 0.6.0 or routed with a named home | ptr: arc16 closing-report + the defect-routing table | **serious** | operator decision 2026-07-24 (release-gating call) | **open — planning home created, arc-plan pending** | Iter-01 (the drift inventory), the 6–8-iteration kickoff thread, the fence-wiring spec and the dogfooding friction log are tracked under `arc16-book-0.6.0-edition/design/` (v1.38) | **Gates arc09.** Prerequisite (1) — *the plan gets a git home* — is met for the lang planning materials, but the 2026-08-08 `02-artifact-homes` verification found the sibling-repo guidance/tool artifacts untracked. Prerequisite (2), the operator's D-1…D-5 decisions, is still open. Deliberately *not* planned in detail yet — *plan late, plan deep*, and the layout is a confirmation-protocol call |
-| P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | **open** | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `02-artifact-homes` delivered the gate; `03-citation-repoint` closed the red gate and shrank the census 631 -> 601; CDC verification found L-5/L-6 not reproduced | **Still open, sharply narrowed.** The path gate is green after `03-citation-repoint`, but `02-artifact-homes` CDC verification failed L-5/L-6 because sibling-repo guidance/tool artifacts are present only as untracked files. Remediate those rows, then rerun CDC verification. |
+| P-20 | **arc16 (Lykn Book 0.6.0 edition) drafted and closed** — the book's 0.6.0 edition is complete, and every language/DevX defect it surfaced is either fixed in 0.6.0 or routed with a named home | ptr: arc16 closing-report + the defect-routing table | **serious** | operator decision 2026-07-24 (release-gating call) | **open — planning home created, arc-plan pending** | Iter-01 (the drift inventory), the 6–8-iteration kickoff thread, the fence-wiring spec and the dogfooding friction log are tracked under `arc16-book-0.6.0-edition/design/` (v1.38); sibling book guidance/tool homes are tracked (`91fee17`, `a042e18`) | **Gates arc09.** Prerequisite (1) — *the plan gets a git home* — is met. Prerequisite (2), the operator's D-1…D-5 decisions, is still open. Deliberately *not* planned in detail yet — *plan late, plan deep*, and the layout is a confirmation-protocol call |
+| P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | **done** | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `02-artifact-homes` delivered the gate; `03-citation-repoint` closed the red gate and shrank the census 631 -> 601; sibling repos now track `AGENTS.md` / `CLAUDE.md` and the book audit tool (`91fee17`, `a042e18`) | **Closed 2026-08-08.** `make check-cited-paths`, the Deno cited-path integration test, and full `make check` are green; the remaining release sequence starts at arc15 slice04. |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.42 — 2026-08-08 (`02-artifact-homes` closed; P-21 done)
+
+The L-5/L-6 remediation landed in the sibling book repos. Both repos now
+standardize on tracked `AGENTS.md`, keep `CLAUDE.md` as a symlink to it, and
+include the new assistant-authored commit trailers. The book repo also tracks
+the fence-audit tool. Evidence commits: book `91fee17`, writers-guide
+`a042e18`.
+
+**Close result.** `02-artifact-homes` is closed after CDC re-verification:
+L-1...L-9 are final, `make check-cited-paths` is green, the Deno cited-path
+integration test is green, and full `make check` is green. P-21 is done.
+
+**Sequence update.** With artifact homes closed, the next work is arc15
+slice04 + arc15 close, then arc07 + arc16, then arc09.
 
 ### v1.41 — 2026-08-08 (`02-artifact-homes` CDC verification returned)
 
