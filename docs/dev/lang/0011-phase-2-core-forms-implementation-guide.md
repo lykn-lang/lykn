@@ -4,7 +4,7 @@
 **Scope**: Phase 2 of lykn v0.1.0 — all core language forms
 **Where you're working**: `src/compiler.js` — adding entries to the `macros` object and supporting utilities
 **Prerequisite**: Phase 1 must be complete (`toCamelCase`, colon syntax, `get` form, `.` removed)
-**Design authority**: The decision docs listed per-section below, all in `crates/design/dev/lang/`
+**Design authority**: The decision docs listed per-section below, all in `docs/design/06-final/`
 
 ---
 
