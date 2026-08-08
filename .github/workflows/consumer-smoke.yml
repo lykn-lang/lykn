@@ -2,8 +2,12 @@ name: "Layer 4: Consumer smoke tests"
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 6 * * 1"  # weekly, Monday 6am UTC
+  # Scheduled runs disabled 2026-08-08: the `lykn-lang/lykn-consumer-tests`
+  # repo and `ci/run-smoke.sh` this job checks out do not exist yet, so every
+  # scheduled run fails at checkout (404). Re-enable once that consumer-tests
+  # repo is created. Manual runs stay available via workflow_dispatch.
+  # schedule:
+  #   - cron: "0 6 * * 1"  # weekly, Monday 6am UTC
 
 jobs:
   smoke:
@@ -14,7 +18,7 @@ jobs:
         with:
           repository: lykn-lang/lykn-consumer-tests
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.97.0
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
