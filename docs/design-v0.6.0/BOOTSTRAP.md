@@ -122,8 +122,9 @@ arc10, arc11, arc12, arc13, arc15. The big recent closes:
   closed/CDC-verified; slice03 is honestly deferred to 0.7.0 (fully typed
   classification); slice04 closed the sibling traps and slice05 closed the
   nested `fn` parameter mismatch. The arc-close repro passed at arc scale.
-- **arc07 · docs — OPEN.** slice01 fixed the first doctest drift; the broader
-  guide/SKILL drift pass is still pending.
+- **arc07 · docs — ACTIVE.** slice01 fixed the first doctest drift; slice02
+  current-drift recon is open to classify the old seed lists against the current
+  branch before guide/SKILL edits.
 - **arc16 · book-0.6.0-edition — OPEN.** The planning home exists and its design
   materials are tracked; `arc-plan.md` is still to be written. The book gates
   arc09 because drafting it is the full-surface review before the release cut.
