@@ -280,10 +280,15 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **Guess:** Medium. This is a loud failure rather than a silent miscompile, so
   it is outside slice04's fixed silent-return headline, but it is a compiler
   parity and language-safety defect.
-- **Kind:** `bug` · **Status:** `open` → arc15 fast-follow or arc03 compiler
-  coherence follow-up.
+- **Kind:** `bug` · **Status:** `closed` →
+  `docs/design-v0.6.0/arc15-surface-syntax-traps/slice05-nested-fn-param-validation/closing-report.md`.
 - **Parent:** `D-2607-Z5KN` — the direct case was not covered by cross-backend
   execution tests.
+- **Closure:** slice05 added a resolved pre-classification Rust validator for
+  nested `fn`/`lambda`/`genfn` parameter-list errors, wired through both
+  `lykn compile` and `lykn check`. JS already rejected the shape and is now
+  pinned by a focused regression. The older labelled-`fn` non-param arity
+  residual remains separately documented and unchanged.
 
 ### `D-2607-W2FJ` — the governance document cannot satisfy the rule it carries
 

@@ -62,6 +62,12 @@ pub fn validate_method_calls(forms: &[SExpr]) -> Vec<Diagnostic> {
     forms::validate_method_calls(forms)
 }
 
+/// arc15 slice05: reject nested `fn`/`lambda`/`genfn` parameter-shape errors
+/// before recursive emission can fall back to raw S-expressions.
+pub fn validate_nested_fn_params(forms: &[SExpr]) -> Vec<Diagnostic> {
+    forms::validate_nested_fn_params(forms)
+}
+
 /// DD-64 (arc15): the shared per-node method-on-expression predicate — the lint
 /// rule and the compile pass both use this. See
 /// [`forms::method_on_expression_diagnostic`].

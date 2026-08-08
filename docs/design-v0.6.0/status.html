@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-08 (02-artifact-homes closed after L-5/L-6 remediation: sibling repos now track AGENTS.md, keep CLAUDE.md as a symlink, carry the new commit trailers, and the book audit tool is tracked. Current path: arc15 slice04 + arc15 close -> arc07 + arc16 -> arc09.)",
+  updated: "2026-08-08 (arc15 slice04 and slice05 are closed: sibling traps fixed, and the nested fn parameter mismatch now errors on Rust compile/check like JS. Current path: arc15 close -> arc07 + arc16 -> arc09.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -181,8 +181,8 @@ const DATA = {
       cap:"Every test runs exactly once per make check; make test-docs tests docs. 1m52s → 2.6s (test-docs), >2m → 1m04s (check), corpus 1×/0×. Created, delivered, and gated in one day.",
       slices:[{n:"run-once-topology",s:"closed"}] },
     { id:"arc15", name:"surface-syntax-traps", status:"active",
-      cap:"Surface forms that compile clean but mean something the author did not write become hard errors + lint + guide fixes. slice01 and slice02 closed the method-on-expression trap; slice03 hardening is deferred to 0.7.0; slice04 liveness re-check found the sibling traps are real but scoping waits on one CC execution probe.",
-      slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps probe",s:"active"}] },
+      cap:"Surface forms that compile clean but mean something the author did not write become hard errors + lint + guide fixes. slice01 and slice02 closed the method-on-expression trap; slice03 hardening is deferred to 0.7.0; slice04 sibling traps and slice05 nested fn parameter validation are closed. Arc close pending.",
+      slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps",s:"closed"},{n:"nested-fn-param-validation",s:"closed"}] },
     { id:"arc16", name:"book-0.6.0-edition", status:"open",
       cap:"The Lykn Book's 0.6.0 edition gates release. Planning home created 2026-07-25 and source material is tracked under this arc's design folder; content remains in the book repo. First task is still writing the arc-plan and resolving operator decisions D-1…D-5.",
       slices:[] },
@@ -204,7 +204,7 @@ const DATA = {
   sequence: ["arc15","arc07","arc16","arc09"],
   now: {
     arc:"arc15 active · arc07 and arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint is closed, and artifact-homes/P-21 is done. The cited-path gate is green and the census is smaller. Next, arc15 needs one CC execution probe before slice04 can be scoped; arc07 still owns broader guide/SKILL drift; arc16 has its planning home but still needs its arc-plan; arc09 waits on those gates."
+    desc:"The current release branch is past the arc06 gate, citation-repoint is closed, and artifact-homes/P-21 is done. The cited-path gate is green and the census is smaller. Next, arc15 needs its arc-close reproduction; arc07 still owns broader guide/SKILL drift; arc16 has its planning home but still needs its arc-plan; arc09 waits on those gates."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},

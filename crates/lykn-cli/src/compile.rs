@@ -92,6 +92,16 @@ pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> 
                 .join("\n"),
         ));
     }
+    let fn_param_errs = lykn_lang::classifier::validate_nested_fn_params(&forms);
+    if !fn_param_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            fn_param_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
     classifier::classify_with_options(&forms, classifier_options_for(Some(file_path))).map_err(
         |diags| {
             CompileError::Analysis(
@@ -192,6 +202,16 @@ fn compile_source_inner(
     if !method_errs.is_empty() {
         return Err(CompileError::Analysis(
             method_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
+    let fn_param_errs = lykn_lang::classifier::validate_nested_fn_params(&forms);
+    if !fn_param_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            fn_param_errs
                 .iter()
                 .map(|d| format!("{d}"))
                 .collect::<Vec<_>>()
@@ -581,6 +601,47 @@ mod tests {
         assert!(
             !result.contains("typeof x"),
             "strip_assertions should still omit runtime type checks: {result}"
+        );
+    }
+
+    #[test]
+    fn compile_source_rejects_nested_bare_parameter_fn() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind f (fn (x) x))";
+        let result = compile_source(source, Some(path), false, false);
+        assert!(result.is_err(), "nested bare-parameter fn must reject");
+        let msg = result.unwrap_err().to_string();
+        assert!(
+            msg.contains("expected type keyword"),
+            "expected typed-param diagnostic, got: {msg}"
+        );
+        assert!(
+            !msg.contains("fn(x(), x)"),
+            "must reject before raw JS fallback: {msg}"
+        );
+    }
+
+    #[test]
+    fn check_strict_rejects_nested_bare_parameter_fn() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind f (fn (x) x))";
+        let result = check_strict(source, path);
+        assert!(result.is_err(), "lykn check path must reject too");
+        let msg = result.unwrap_err().to_string();
+        assert!(
+            msg.contains("expected type keyword"),
+            "expected typed-param diagnostic, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn compile_source_allows_bound_fn_head_call() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind fn (=> (x) x))\n(bind _y (fn 1))";
+        let result = compile_source(source, Some(path), false, false).unwrap();
+        assert!(
+            result.contains("const _y = fn(1);"),
+            "bound fn head should remain an ordinary value call: {result}"
         );
     }
 }
