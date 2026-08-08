@@ -453,6 +453,19 @@ fn is_valueless_last_expr(expr: &SExpr) -> bool {
     false
 }
 
+fn should_skip_return_wrap(expr: &SExpr) -> bool {
+    is_valueless_last_expr(expr) || is_control_transfer_last_expr(expr)
+}
+
+fn is_control_transfer_last_expr(expr: &SExpr) -> bool {
+    if let SExpr::List { values, .. } = expr
+        && let Some(head) = values.first().and_then(|e| e.as_form_head())
+    {
+        return matches!(head, "return" | "throw" | "break" | "continue");
+    }
+    false
+}
+
 fn emit_returns_mismatch_error(
     func_name: &str,
     returns_type: &str,
@@ -1267,11 +1280,11 @@ fn emit_fn_expr(
     ctx.expr_context = ExprContext::Statement;
     let emitted_body = emit_body(body, ctx, registry);
     ctx.expr_context = saved_body_ctx;
-    if has_type_checks && !emitted_body.is_empty() {
+    if (has_type_checks || emitted_body.len() > 1) && !emitted_body.is_empty() {
         items.extend(emitted_body[..emitted_body.len() - 1].iter().cloned());
         let last = emitted_body.last().unwrap().clone();
         // DD-50.6: skip return wrap for statement-only last expressions
-        if is_valueless_last_expr(&last) {
+        if should_skip_return_wrap(&last) {
             items.push(last);
         } else {
             let converted = convert_to_expression(last);
@@ -1438,7 +1451,7 @@ fn emit_func_single(
             body[body.len() - 1].clone()
         };
         // DD-50.6: skip return wrap for statement-only last expressions
-        if is_valueless_last_expr(&last) {
+        if should_skip_return_wrap(&last) {
             items.push(last);
         } else {
             let converted = convert_to_expression(last);
@@ -1599,7 +1612,7 @@ fn emit_func_multi(
                 body[body.len() - 1].clone()
             };
             // DD-50.6: skip return wrap for statement-only last expressions
-            if is_valueless_last_expr(&last) {
+            if should_skip_return_wrap(&last) {
                 block_items.push(last);
             } else {
                 let converted = convert_to_expression(last);
@@ -6144,6 +6157,74 @@ mod tests {
             assert!(!has_if, "should not have type checks");
         } else {
             panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_fn_strip_assertions_multi_body_returns_last() {
+        let form = SurfaceForm::Fn {
+            params: vec![sp("number", "x")],
+            body: vec![
+                list(vec![
+                    atom("bind"),
+                    atom("y"),
+                    list(vec![
+                        atom("+"),
+                        atom("x"),
+                        SExpr::Number {
+                            value: 1.0,
+                            span: s(),
+                        },
+                    ]),
+                ]),
+                atom("y"),
+            ],
+            span: s(),
+        };
+        let mut c = EmitterContext::new(true);
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        if let SExpr::List { values, .. } = &result[0] {
+            let last = values.last().unwrap();
+            if let SExpr::List {
+                values: ret_vals, ..
+            } = last
+            {
+                assert_eq!(ret_vals[0].as_atom(), Some("return"));
+                assert_eq!(ret_vals[1].as_atom(), Some("y"));
+            } else {
+                panic!("expected last item to be a return list");
+            }
+        } else {
+            panic!("expected list");
+        }
+    }
+
+    #[test]
+    fn test_fn_control_transfer_last_forms_are_not_wrapped() {
+        for head in ["return", "throw", "break", "continue"] {
+            let form = SurfaceForm::Fn {
+                params: vec![sp("number", "x")],
+                body: vec![list(vec![atom(head), atom("x")])],
+                span: s(),
+            };
+            let mut c = ctx();
+            let result = emit_form(&form, &mut c, &reg());
+            assert_eq!(result.len(), 1);
+            if let SExpr::List { values, .. } = &result[0] {
+                let last = values.last().unwrap();
+                if let SExpr::List {
+                    values: last_values,
+                    ..
+                } = last
+                {
+                    assert_eq!(last_values[0].as_atom(), Some(head));
+                } else {
+                    panic!("expected last item to be a list");
+                }
+            } else {
+                panic!("expected list");
+            }
         }
     }
 

@@ -1060,21 +1060,20 @@ rather than mis-compiling it.
 
 ---
 
-## ID-32: Implicit Return in `fn` — Type Annotations Required
+## ID-32: Prefer Implicit Return in `fn`
 
 **Strength**: MUST
 
-**Summary**: Multi-statement `fn` (arrow function) only gets implicit
-return when type annotations are present on the parameters. Without
-type annotations, the last expression becomes a bare statement.
-Never combine explicit `(return ...)` with typed `fn` parameters —
-the compiler adds its own `return`, producing `return return expr`.
+**Summary**: `fn` is a value-producing function form. End the body with
+the value you want to return, and let the compiler insert `return` when
+the emitted arrow body needs a block. Avoid explicit `(return ...)`
+unless you are intentionally doing early control flow.
 
 ```lykn
-;; Bad — explicit return + typed params → double return in compiled output
+;; Avoid — explicit return is unnecessary for the final expression
 (bind make-link (fn (:string url :string text)
   (bind display (text:substring 0 30))
-  (return (+ "<a>" display "</a>"))))  ;; compiles to: return return "<a>...";
+  (return (+ "<a>" display "</a>"))))
 
 ;; Good — typed fn with implicit return (compiler adds return)
 (bind make-link (fn (:string url :string text)
@@ -1091,33 +1090,36 @@ the compiler adds its own `return`, producing `return return expr`.
   (+ "<a>" display "</a>"))
 ```
 
-**Rationale**: When type annotations are present, the compiler wraps the
-`fn` body in a block with type assertions and adds `return` before
-the final expression. Without annotations and with `--strip-assertions`,
-this implicit return is lost. Always add type annotations to `fn`
-parameters when the function needs to return a value from a
-multi-statement body.
+**Rationale**: A multi-expression arrow function needs a block body in
+JavaScript, and a block body returns only when it contains `return`.
+Lykn preserves this for `fn` even when runtime assertions are stripped.
+The clearest surface style is still to make the final expression be the
+returned value. If you need an untyped closure, use `=>`; `fn` parameters
+are typed.
 
 ---
 
-## ID-33: Use Literal Unicode Characters, Not Escape Sequences
+## ID-33: String Escape Sequences Are Cooked
 
 **Strength**: MUST
 
-**Summary**: Lykn strings do not process `\uNNNN` escape sequences.
-Use the literal Unicode character directly in the source.
+**Summary**: Lykn strings process the standard string escape forms:
+`\n`, `\t`, `\r`, `\b`, `\f`, `\v`, `\0`, `\\`, `\"`, `\'`, `\/`,
+`\xNN`, `\uNNNN`, and `\u{...}`. Unknown or malformed escapes are reader
+errors.
 
 ```lykn
-;; Bad — \u2026 compiles to literal string "u2026"
+;; Good — Unicode escape
 (bind ellipsis "\u2026")
 
-;; Good — use the actual character
+;; Also good — literal UTF-8 source
 (bind ellipsis "…")
 ```
 
-**Rationale**: The Lykn reader treats `\u` as two ordinary characters
-in a string literal, not as a Unicode escape. Since Lykn source files
-are UTF-8, embed the character directly.
+**Rationale**: The reader cooks escapes before code generation, so both
+the Rust CLI and JS compiler see the same string value. Literal Unicode
+characters are often more readable in source, but escape sequences are
+safe when a character would be invisible or awkward to type.
 
 ---
 

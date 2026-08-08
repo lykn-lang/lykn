@@ -568,4 +568,19 @@ mod tests {
             );
         }
     }
+
+    #[test]
+    fn compile_source_strip_assertions_preserves_fn_implicit_return() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind f (fn (:number x) (bind y (+ x 1)) y))\n(console:log (f 1))";
+        let result = compile_source(source, Some(path), true, false).unwrap();
+        assert!(
+            result.contains("return y;"),
+            "stripped fn block must still return the final expression: {result}"
+        );
+        assert!(
+            !result.contains("typeof x"),
+            "strip_assertions should still omit runtime type checks: {result}"
+        );
+    }
 }
