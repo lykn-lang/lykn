@@ -9,8 +9,8 @@
 > (`dcf23f5`, CDC-verified) refreshed build/dist/publish guide drift. The
 > slice04 reconciled the Deno workflow guides and CDC repaired adjacent guide
 > 10/15 supporting-reference drift. The arc close reproduced the guide/SKILL
-> composition checks and closed P-13; a no-else `if` compiler defect remains
-> routed to reopened arc10 slice04 / P-22.
+> composition checks and closed P-13. Post-close reconciliation: the no-else
+> `if` compiler defect routed to arc10 slice04 / P-22 is now fixed and closed.
 
 ## 1. Capability
 
@@ -63,13 +63,13 @@ chasing a moving target) and **before** arc09 (release ships release-ready docs)
 Feeds arc16 (the book should describe the reconciled guide truth) and arc09.
 
 **Compiler dependency surfaced by slice02.** No-else `if` in expression position
-is documented as a compile error, but `lykn check`/`compile` currently return
-success and emit invalid JS (`const label = throw ...`). The operator promoted
-this from backlog routing into reopened arc10
-[`slice04-no-else-if-expression-error`](../arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md).
-arc07 should not paper over this with docs that teach the wrong behaviour;
-either the compiler follow-up lands, or arc07/arc16 must explicitly name the
-live defect.
+was documented as a compile error, but `lykn check`/`compile` returned success
+and emitted invalid JS (`const label = throw ...`). The operator promoted this
+from backlog routing into arc10
+[`slice04-no-else-if-expression-error`](../arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md),
+which fixed the compiler/check path on 2026-08-08. arc07's original close
+correctly routed the defect instead of papering it over; the live guide now
+states the fixed behavior.
 
 ## 4. Arc ledger
 
@@ -77,21 +77,28 @@ live defect.
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | slice01 doctest-drift fix closed | ptr: slice01 cdc-verification | correctness | arc-plan | **done** | `0731048` + [`slice01-doctest-drift-fix/cdc-verification.md`](./slice01-doctest-drift-fix/cdc-verification.md) | red-CI item closed |
 | A-2 | slice02 current-drift recon closed | ptr: slice02 closing-report + cdc-verification | serious | arc-plan v1.3 | **done** | `66a3565` + [`slice02-current-drift-recon/cdc-verification.md`](./slice02-current-drift-recon/cdc-verification.md); CDC reproduced docs/path gates and the no-else `if` defect | re-grounded before editing |
-| A-3 | All current guide/SKILL drift is either fixed in arc07 or explicitly routed | arc close: compare slice02 inventory with subsequent implementation slices and deferrals | serious | arc capability | **done** | [`closing-report.md`](./closing-report.md): slice02 inventory mapped to slice03, slice04, arc10/P-22, or explicit later-candidate deferrals; no silent drops | anti-silent-drop row |
-| A-4 | Guide/SKILL claims match shipped 0.6.0 behaviour for sampled executable claims | arc close: reproduce selected `./bin/lykn` checks/compiles/lints and `make test-docs` | serious | P-13 | **done** | [`closing-report.md`](./closing-report.md): live CLI help/build/run/lint/check/compile samples reproduced; guide 00 now names the no-else `if` live defect instead of asserting it as fixed | class-(b) composition row; reproduced at arc scale |
+| A-3 | All current guide/SKILL drift is either fixed in arc07 or explicitly routed | arc close: compare slice02 inventory with subsequent implementation slices and deferrals | serious | arc capability | **done** | [`closing-report.md`](./closing-report.md): slice02 inventory mapped to slice03, slice04, arc10/P-22, or explicit later-candidate deferrals; arc10/P-22 is now fixed; no silent drops | anti-silent-drop row |
+| A-4 | Guide/SKILL claims match shipped 0.6.0 behaviour for sampled executable claims | arc close: reproduce selected `./bin/lykn` checks/compiles/lints and `make test-docs` | serious | P-13 | **done** | [`closing-report.md`](./closing-report.md): live CLI help/build/run/lint/check/compile samples reproduced; post-close arc10/P-22 fixed no-else `if`, so guide 00 now states the settled compile/check error | class-(b) composition row; reproduced at arc scale |
 | A-5 | `make test-docs` and `make check-cited-paths` are green at arc close | arc close gate | serious | process note + P-21 | **done** | `make test-docs`: 476 passed / 0 failed; `make check-cited-paths`: green at close; `git diff --check`: clean | docs drift and cited-path drift stay visible |
 | A-6 | slice03 build-dist-publish guide refresh closed | ptr: slice03 cdc-verification | serious | arc close accrual | **done** | `dcf23f5` + [`slice03-build-dist-publish-guide-refresh/cdc-verification.md`](./slice03-build-dist-publish-guide-refresh/cdc-verification.md) | accrued child-closed row |
 | A-7 | slice04 Deno workflow reconciliation closed | ptr: slice04 cdc-verification | serious | arc close accrual | **done** | `ae31c75` + `af69f70` + [`slice04-deno-workflow-reconciliation/cdc-verification.md`](./slice04-deno-workflow-reconciliation/cdc-verification.md) | accrued child-closed row |
 
 ## 5. Version History
 
+### v1.12 — 2026-08-08 (arc10/P-22 follow-up landed)
+
+Post-close reconciliation: arc10 slice04 fixed the no-else `if` compiler defect
+that arc07 had routed as `D-2608-W2HF`. guide 00 now states the settled
+compile/check error instead of carrying a live-defect note. arc07 remains closed;
+this update only removes the stale dependency edge from the docs plan.
+
 ### v1.11 — 2026-08-08 (arc07 closed)
 
 arc07 closed with gate GO. The arc-level composition check reproduced the live
 CLI/doc claims, compared slice02's drift inventory against slice03/slice04 and
-the routed deferrals, and closed A-1...A-7. P-13 bubbles up as done. The no-else
-`if` compiler defect remains open in arc10/P-22, and the optional `.d.ts` docs
-pass remains a later candidate tied to P-10.
+the routed deferrals, and closed A-1...A-7. P-13 bubbles up as done. At arc07
+close, the no-else `if` compiler defect remained open in arc10/P-22; the
+optional `.d.ts` docs pass remains a later candidate tied to P-10.
 
 ### v1.10 — 2026-08-08 (slice04 CDC-verified)
 
@@ -157,8 +164,8 @@ The slice owns the `lykn build --dist` / repo-root `dist/` drift cluster in
 still exists, and the `D-2607-2FHM` root-`dist/` disposition.
 
 Per operator direction, `D-2608-W2HF` moved from "compiler follow-up outside
-arc07" to reopened arc10 slice04. arc07 still tracks the dependency, but the
-fix lives in compiler-completion.
+arc07" to reopened arc10 slice04. arc07 tracked the dependency at close, but the
+fix lived in compiler-completion and has since landed.
 
 ### v1.4 — 2026-08-08 (slice02 closed — next slices split)
 

@@ -84,9 +84,10 @@ inserts.
 and has done so. Before acting, confirm with `git log` on `release/0.6.x`.
 
 **Closed / gated arcs:** arc01, arc02, arc03, arc04, arc05, arc06, arc08,
-arc11, arc12, arc13, arc15. arc10's original DD-58/DD-37 compiler-completion
-gate is historically closed, but arc10 is reopened for
-`slice04-no-else-if-expression-error`. The big recent closes:
+arc10, arc11, arc12, arc13, arc15. arc10's original DD-58/DD-37
+compiler-completion gate is historically closed, and its 2026-08-08
+`slice04-no-else-if-expression-error` follow-up is closed. The big recent
+closes:
 
 - **arc05 · lykn-source-linter** — gate GO 2026-07-21. `lykn lint` ships over
   Lykn source: 16 rules, resolution-aware, wired into `make check`; P-5/P-11
@@ -124,10 +125,10 @@ gate is historically closed, but arc10 is reopened for
   closed/CDC-verified; slice03 is honestly deferred to 0.7.0 (fully typed
   classification); slice04 closed the sibling traps and slice05 closed the
   nested `fn` parameter mismatch. The arc-close repro passed at arc scale.
-- **arc10 · compiler-completion — REOPENED.** Original 2026-07-05 gate remains
-  true, but `D-2608-W2HF` now lives here as draft slice04:
-  no-else `if` in expression position must fail `lykn check`/`compile` before
-  invalid JS is emitted.
+- **arc10 · compiler-completion — CLOSED.** Original 2026-07-05 gate remains
+  true, and the 2026-08-08 slice04 follow-up fixed `D-2608-W2HF`:
+  no-else `if` in expression position now fails `lykn check`/`compile` before
+  invalid JS can be emitted.
 - **arc07 · docs — CLOSED.** slice01 fixed the first doctest drift; slice02
   current-drift recon is closed/CDC-verified; slice03 build/dist/publish guide
   refresh is closed/CDC-verified; slice04 Deno workflow reconciliation is
@@ -137,7 +138,7 @@ gate is historically closed, but arc10 is reopened for
   arc09 because drafting it is the full-surface review before the release cut.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
-**Current sequence:** arc10 follow-up + arc16, then arc09. arc14
+**Current sequence:** arc16, then arc09. arc14
 comment-retention is seeded but explicitly 0.7.0.
 
 **Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never bare

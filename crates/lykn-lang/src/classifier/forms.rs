@@ -151,6 +151,17 @@ pub fn validate_nested_fn_params(forms: &[SExpr]) -> Vec<Diagnostic> {
     out
 }
 
+/// DD-50 Rule 2 (arc10 slice04): reject no-else `if` forms that appear where
+/// a value is required, before the Rust emitter can turn them into invalid
+/// JavaScript like `const x = throw ...`.
+pub fn validate_no_else_if_expressions(forms: &[SExpr]) -> Vec<Diagnostic> {
+    let mut out = Vec::new();
+    for form in forms {
+        walk_no_else_if_expression(form, ExprPosition::Statement, &mut out);
+    }
+    out
+}
+
 /// `parent` is the enclosing node (if any), so a guarded `match` clause can be
 /// exempted structurally via [`is_match_clause`] — the same helper the lint rule
 /// uses. The clause is *not* shape-checked, but is still recursed into, so a trap
@@ -171,6 +182,330 @@ fn walk_method_calls(expr: &SExpr, parent: Option<&SExpr>, out: &mut Vec<Diagnos
             walk_method_calls(cdr, Some(expr), out);
         }
         _ => {}
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum ExprPosition {
+    Statement,
+    Value,
+}
+
+impl ExprPosition {
+    fn is_value(self) -> bool {
+        matches!(self, Self::Value)
+    }
+}
+
+fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Vec<Diagnostic>) {
+    match expr {
+        SExpr::List { values, span } if !values.is_empty() => {
+            let Some(head) = values.first().and_then(|e| e.as_form_head()) else {
+                for value in values {
+                    walk_no_else_if_expression(value, ExprPosition::Value, out);
+                }
+                return;
+            };
+
+            if head == "if" {
+                if position.is_value() && values.len() < 4 {
+                    out.push(no_else_if_expression_diagnostic(*span));
+                }
+                for (index, value) in values[1..].iter().enumerate() {
+                    let child_position = match index {
+                        0 => ExprPosition::Value,
+                        _ => ExprPosition::Statement,
+                    };
+                    walk_no_else_if_expression(value, child_position, out);
+                }
+                return;
+            }
+
+            match head {
+                "bind" => walk_bind_value(values, out),
+                "func" | "genfunc" => walk_func_like_args(&values[1..], out),
+                "fn" | "lambda" | "genfn" => walk_fn_like_args(&values[1..], out),
+                "obj" => walk_keyword_value_pairs(&values[1..], out),
+                "cell" | "express" | "conj" | "dissoc" | "=" | "!=" | "and" | "or" | "not" => {
+                    walk_args(&values[1..], ExprPosition::Value, out);
+                }
+                "assoc" => {
+                    if let Some(obj) = values.get(1) {
+                        walk_no_else_if_expression(obj, ExprPosition::Value, out);
+                    }
+                    walk_keyword_value_pairs(values.get(2..).unwrap_or_default(), out);
+                }
+                "swap!" => {
+                    walk_args(&values[1..], ExprPosition::Value, out);
+                }
+                "reset!" | "set!" => {
+                    if let Some(value) = values.get(2) {
+                        walk_no_else_if_expression(value, ExprPosition::Value, out);
+                    }
+                }
+                "set-symbol!" => {
+                    walk_args(&values[1..], ExprPosition::Value, out);
+                }
+                "do" => {
+                    walk_args(&values[1..], ExprPosition::Statement, out);
+                }
+                "class" => walk_class_args(values, true, out),
+                "class-expr" => walk_class_args(values, false, out),
+                "block" | "label" | "try" | "function" | "function*" | "=>" | "break"
+                | "continue" | "debugger" | "import" | "export" => {
+                    walk_args(&values[1..], position, out);
+                }
+                "catch" => {
+                    walk_args(
+                        values.get(2..).unwrap_or_default(),
+                        ExprPosition::Statement,
+                        out,
+                    );
+                }
+                "finally" => {
+                    walk_args(&values[1..], ExprPosition::Statement, out);
+                }
+                "while" => {
+                    walk_positional_args(
+                        &values[1..],
+                        &[ExprPosition::Value],
+                        ExprPosition::Statement,
+                        out,
+                    );
+                }
+                "do-while" => {
+                    walk_positional_args(
+                        &values[1..],
+                        &[ExprPosition::Statement, ExprPosition::Value],
+                        ExprPosition::Value,
+                        out,
+                    );
+                }
+                "for" => {
+                    walk_positional_args(
+                        &values[1..],
+                        &[
+                            ExprPosition::Value,
+                            ExprPosition::Value,
+                            ExprPosition::Value,
+                        ],
+                        ExprPosition::Statement,
+                        out,
+                    );
+                }
+                "for-of" | "for-in" | "for-await-of" => {
+                    walk_positional_args(
+                        &values[1..],
+                        &[ExprPosition::Statement, ExprPosition::Value],
+                        ExprPosition::Statement,
+                        out,
+                    );
+                }
+                "switch" => {
+                    walk_switch_args(&values[1..], out);
+                }
+                "const" | "let" | "var" => {
+                    walk_positional_args(
+                        &values[1..],
+                        &[ExprPosition::Statement, ExprPosition::Value],
+                        ExprPosition::Value,
+                        out,
+                    );
+                }
+                "throw" | "return" => walk_args(&values[1..], ExprPosition::Value, out),
+                _ => walk_args(&values[1..], ExprPosition::Value, out),
+            }
+        }
+        SExpr::List { .. } => {}
+        SExpr::Cons { car, cdr, .. } => {
+            walk_no_else_if_expression(car, position, out);
+            walk_no_else_if_expression(cdr, position, out);
+        }
+        _ => {}
+    }
+}
+
+fn walk_bind_value(values: &[SExpr], out: &mut Vec<Diagnostic>) {
+    let value_index = match values.len() {
+        3 => Some(2),
+        4 => Some(3),
+        _ => None,
+    };
+    if let Some(index) = value_index
+        && let Some(value) = values.get(index)
+    {
+        walk_no_else_if_expression(value, ExprPosition::Value, out);
+    }
+}
+
+fn walk_func_like_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
+    if args.len() < 2 {
+        return;
+    }
+
+    match &args[1] {
+        SExpr::Keyword { value, .. } if is_func_clause_key(value) => {
+            walk_func_clause_items(&args[1..], out);
+        }
+        SExpr::List { values, .. }
+            if values.first().is_some_and(
+                |v| matches!(v, SExpr::Keyword { value, .. } if is_func_clause_key(value)),
+            ) =>
+        {
+            for arg in &args[1..] {
+                if let SExpr::List { values, .. } = arg {
+                    walk_func_clause_items(values, out);
+                }
+            }
+        }
+        _ => walk_args(&args[1..], ExprPosition::Statement, out),
+    }
+}
+
+fn walk_func_clause_items(items: &[SExpr], out: &mut Vec<Diagnostic>) {
+    let mut current_key: Option<&str> = None;
+    for item in items {
+        if let SExpr::Keyword { value, .. } = item
+            && is_func_clause_key(value)
+        {
+            current_key = Some(value);
+            continue;
+        }
+        match current_key {
+            Some("pre" | "post") => walk_no_else_if_expression(item, ExprPosition::Value, out),
+            Some("body") => walk_no_else_if_expression(item, ExprPosition::Statement, out),
+            _ => {}
+        }
+    }
+}
+
+fn walk_fn_like_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
+    if args.len() < 2 {
+        return;
+    }
+    walk_args(&args[1..], ExprPosition::Statement, out);
+}
+
+fn walk_class_args(values: &[SExpr], has_name: bool, out: &mut Vec<Diagnostic>) {
+    let superclass_index = if has_name { 2 } else { 1 };
+    if let Some(superclass) = values.get(superclass_index) {
+        walk_no_else_if_expression(superclass, ExprPosition::Value, out);
+    }
+    for member in values.get(superclass_index + 1..).unwrap_or_default() {
+        walk_class_member(member, out);
+    }
+}
+
+fn walk_class_member(member: &SExpr, out: &mut Vec<Diagnostic>) {
+    let values = match member {
+        SExpr::List { values, .. } if !values.is_empty() => values,
+        _ => {
+            walk_no_else_if_expression(member, ExprPosition::Statement, out);
+            return;
+        }
+    };
+
+    // A6-exempt: a class-member name is a property grammar marker, not a
+    // value-call head.
+    let Some(head) = values.first().and_then(|e| e.as_atom()) else {
+        walk_args(values, ExprPosition::Statement, out);
+        return;
+    };
+
+    match head {
+        "static" | "async" => {
+            if let Some(inner) = values.get(1) {
+                walk_class_member(inner, out);
+            }
+        }
+        "field" => {
+            if let Some(init) = values.get(2) {
+                walk_no_else_if_expression(init, ExprPosition::Value, out);
+            }
+        }
+        "constructor" => {
+            walk_args(
+                values.get(2..).unwrap_or_default(),
+                ExprPosition::Statement,
+                out,
+            );
+        }
+        "get" | "set" => {
+            walk_args(
+                values.get(3..).unwrap_or_default(),
+                ExprPosition::Statement,
+                out,
+            );
+        }
+        _ => {
+            walk_args(
+                values.get(2..).unwrap_or_default(),
+                ExprPosition::Statement,
+                out,
+            );
+        }
+    }
+}
+
+fn walk_keyword_value_pairs(args: &[SExpr], out: &mut Vec<Diagnostic>) {
+    for pair in args.chunks(2) {
+        if let Some(value) = pair.get(1) {
+            walk_no_else_if_expression(value, ExprPosition::Value, out);
+        }
+    }
+}
+
+fn walk_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+    for arg in args {
+        walk_no_else_if_expression(arg, position, out);
+    }
+}
+
+fn walk_positional_args(
+    args: &[SExpr],
+    positions: &[ExprPosition],
+    fallback: ExprPosition,
+    out: &mut Vec<Diagnostic>,
+) {
+    for (index, arg) in args.iter().enumerate() {
+        let position = positions.get(index).copied().unwrap_or(fallback);
+        walk_no_else_if_expression(arg, position, out);
+    }
+}
+
+fn walk_switch_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
+    if let Some(discriminant) = args.first() {
+        walk_no_else_if_expression(discriminant, ExprPosition::Value, out);
+    }
+    for clause in args.get(1..).unwrap_or_default() {
+        walk_switch_clause(clause, out);
+    }
+}
+
+fn walk_switch_clause(clause: &SExpr, out: &mut Vec<Diagnostic>) {
+    let SExpr::List { values, .. } = clause else {
+        walk_no_else_if_expression(clause, ExprPosition::Statement, out);
+        return;
+    };
+    if values.is_empty() {
+        return;
+    }
+
+    // A6-exempt: `default` is a switch-clause label, not a value-call head.
+    if values.first().and_then(|e| e.as_atom()) == Some("default") {
+        walk_args(&values[1..], ExprPosition::Statement, out);
+    } else {
+        walk_no_else_if_expression(&values[0], ExprPosition::Value, out);
+        walk_args(&values[1..], ExprPosition::Statement, out);
+    }
+}
+
+fn no_else_if_expression_diagnostic(span: Span) -> Diagnostic {
+    Diagnostic {
+        message: "if in expression position requires an else branch".to_string(),
+        severity: Severity::Error,
+        span,
+        suggestion: Some("add an else branch, or restructure as a statement".to_string()),
     }
 }
 
@@ -5936,6 +6271,69 @@ mod tests {
             ]),
         ]);
         assert!(validate_nested_fn_params(&[expr]).is_empty());
+    }
+
+    // ---------------------------------------------------------------
+    // arc10 slice04 — no-else if in expression position
+    // ---------------------------------------------------------------
+
+    fn no_else_if_errs(src: &str) -> Vec<Diagnostic> {
+        let forms = crate::reader::read(src).expect("parse");
+        validate_no_else_if_expressions(&forms)
+    }
+
+    #[test]
+    fn test_no_else_if_expression_validation_flags_value_contexts() {
+        for src in [
+            "(bind label (if (> 1 0) \"items\"))",
+            "(console:log (if cond \"yes\"))",
+            "(while (if cond true) (console:log \"loop\"))",
+            "(switch (if cond 1) (1 (console:log \"a\")))",
+            "(bind o (obj :label (if cond \"yes\")))",
+            "(class Foo () (field label (if cond \"yes\")))",
+            "(func show (bind label (if cond \"yes\")))",
+        ] {
+            let diags = no_else_if_errs(src);
+            assert_eq!(diags.len(), 1, "expected one diagnostic for {src}");
+            assert_eq!(diags[0].severity, Severity::Error);
+            assert!(
+                diags[0]
+                    .message
+                    .contains("if in expression position requires an else branch"),
+                "expected DD-50 diagnostic, got: {}",
+                diags[0].message
+            );
+        }
+    }
+
+    #[test]
+    fn test_no_else_if_expression_validation_allows_statement_contexts() {
+        for src in [
+            "(if (> 1 0) (console:log \"items\"))",
+            "(while true (if cond (console:log \"items\")))",
+            "(block (if cond (console:log \"items\")))",
+            "(func show :args (:boolean cond) :body (if cond (console:log \"items\")))",
+            "(try (if cond (throw (new Error \"e\"))) (catch e (console:log e)))",
+            "(try (throw (new Error \"e\")) (catch e (if cond (console:log e))))",
+            "(try (throw (new Error \"e\")) (finally (if cond (console:log \"done\"))))",
+            "(switch x (1 (if (= y 0) (console:log \"a\")) (break)) (default (break)))",
+            "(class Foo () (constructor () (if cond (console:log \"items\"))))",
+            "(class Foo () (get label () (if cond (console:log \"items\"))))",
+            "(class Foo () (set label (value) (if cond (console:log value))))",
+            "(class Foo () (static (show () (if cond (console:log \"items\")))))",
+            "(class Foo () (async (show () (if cond (console:log \"items\")))))",
+        ] {
+            assert!(
+                no_else_if_errs(src).is_empty(),
+                "statement-position no-else if should be valid for {src}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_no_else_if_expression_validation_allows_else_branch() {
+        assert!(no_else_if_errs("(bind label (if cond \"yes\" \"no\"))").is_empty());
+        assert!(no_else_if_errs("(return (if cond \"yes\" \"no\"))").is_empty());
     }
 
     // ---------------------------------------------------------------

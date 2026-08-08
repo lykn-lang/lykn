@@ -68,6 +68,12 @@ pub fn validate_nested_fn_params(forms: &[SExpr]) -> Vec<Diagnostic> {
     forms::validate_nested_fn_params(forms)
 }
 
+/// DD-50 Rule 2 (arc10 slice04): reject no-else `if` forms in value-required
+/// positions before codegen can emit invalid JavaScript.
+pub fn validate_no_else_if_expressions(forms: &[SExpr]) -> Vec<Diagnostic> {
+    forms::validate_no_else_if_expressions(forms)
+}
+
 /// DD-64 (arc15): the shared per-node method-on-expression predicate — the lint
 /// rule and the compile pass both use this. See
 /// [`forms::method_on_expression_diagnostic`].

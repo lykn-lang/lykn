@@ -799,12 +799,8 @@ compiles to a ternary `cond ? then : else` when both branches are
 pure expressions, or an IIFE when a branch is a statement form
 (`throw`, `return`, etc.). `if` in statement position emits a
 standard `if`-statement. A no-else `if` in expression position is
-intended to be a compile error — use `?` explicitly or restructure.
-
-**Known 0.6.0-dev compiler defect:** no-else `if` in expression position is
-currently tracked as `D-2608-W2HF` in arc10
-`slice04-no-else-if-expression-error`; until that compiler follow-up lands,
-write the explicit `?` form or include an `else` branch.
+also a compile/check error — use `?` explicitly, add an else branch, or
+restructure as a statement.
 
 **Style:** Prefer `?` for expression position; prefer `if` for
 statement position. The compiler treats them as functionally

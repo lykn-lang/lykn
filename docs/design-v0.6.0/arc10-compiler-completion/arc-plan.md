@@ -1,13 +1,10 @@
 # arc10 — Compiler Completion (DD-58 strict-default + DD-37 `_kernel` removal)
 
-> **Status: REOPENED — original 3-slice gate remains closed; slice04 draft
-> added 2026-08-08.** The original arc10 capability was gated by the operator
-> 2026-07-05 (host run 23:29: 5-form demo verbatim, `kernel:` resolves, suites
-> reconciled; see [`closing-report.md`](./closing-report.md) §7). arc07 slice02
-> later surfaced `D-2608-W2HF`: no-else `if` in expression position passes
-> `lykn check`/`compile` and emits invalid JS. That follow-up belongs here, so
-> arc10 is reopened with a draft `slice04` plan. The slice is not executable
-> until its full open set is written.
+> **Status: CLOSED — gate GO restored 2026-08-08.** The original three-slice
+> DD-58/DD-37 gate closed on 2026-07-05. arc07 slice02 later surfaced
+> `D-2608-W2HF`; slice04 fixed it on 2026-08-08, so no-else `if` in expression
+> position now fails `lykn check`/`compile` before invalid JavaScript can be
+> emitted.
 
 ## 1. Capability
 
@@ -45,7 +42,7 @@ make that true.
 | **slice01 · dd58-strict-default** | Wire `classify_form_strict` into normal `.lykn` compilation on the **Rust CLI** (`compile`/`build`/`check`). The 5 kernel-only heads (`const`/`let`/`var`/`function`/`function*`) → compile error; `kernel:` resolves; `.lyk` exempt; `--no-strict` harness-only. Guides migrated (15 `lykn,skip` fences; ID-38 operators reframed as legal passthrough). | **Closed** (`faee8a1`; Rust CLI strict; `make check` ✓, corpus 1345/0, guide docs 468/0) |
 | **slice02 · js-dd58-parity** (NEW — from slice01 bubble-up) | The JS compiler (`packages/lang/`) implements **neither** strict **nor** the `kernel:` escape — so doctests/`deno test` stay lax and `(kernel:const x 42)` mis-compiles (`kernel.const(x,42)`). Add strict + `kernel:` handling to the JS compiler so DD-58 holds at the *language* level, not just the Rust CLI. Then guide kernel demos can go `skip`→`compile-fail`. | **Closed** (`feb056c`; strict default-on + `kernel:` escape in JS; A-3 partial→met; 26-site migration; guide fences flipped; `make check` ✓, `lykn test` 1354/0, deno 667/0) |
 | **slice03 · dd37-step4-kernel-removal** | Remove the `_kernel` marker (expander-core; replacement sanctioned-kernel signal; behavior identical) **+ the arc-close closeout, bundled (operator, 2026-07-05):** A-6 macro-boundary enforcement on JS (Rust semantics — decided), A-7 kernel-form parity guard, A-8 `kernel:` compileBoth corpus rows. Bundled because A-6's enforcement shares the `_kernel`-replacement signal. arc10's last slice. | **Closed** (`2f6a84d`; `_kernel` → WeakSet sanctioned-kernel registry; A-6 enforced via post-pass2 sweep; guards landed; `lykn test` 1365/0, deno 673/0, `make check` ✓) |
-| **slice04 · no-else-if-expression-error** | Fix `D-2608-W2HF`: no-else `if` in expression position must fail `lykn check`/`compile` before emitting invalid JS. Positive forms (`if` with else in expression position; no-else `if` in statement position; explicit `?`) must remain valid. | **Draft planned only** ([slice-doc](./slice04-no-else-if-expression-error/slice-doc.md)); full open set still needed before CC starts |
+| **slice04 · no-else-if-expression-error** | Fix `D-2608-W2HF`: no-else `if` in expression position must fail `lykn check`/`compile` before emitting invalid JS. Positive forms (`if` with else in expression position; no-else `if` in statement position; explicit `?`) must remain valid. | **Closed** ([closing-report](./slice04-no-else-if-expression-error/closing-report.md); [cdc-verification](./slice04-no-else-if-expression-error/cdc-verification.md)); negative fixture fails check/compile before codegen; DD-50 positives pass |
 
 ## 3. Dependencies
 
@@ -58,10 +55,9 @@ idiom/style. **Should land before arc09 (release)** — it's a language-integrit
 change (and a breaking one) that 0.6.0 should ship.
 
 **Historical sequence:** arc10 → arc05 → (arc06/arc07) → arc09. (NN is
-creation order; this is the dependency order.) **Current reopened sequence
-(2026-08-08):** slice04 must close before arc07/arc16 teach the no-else
-expression case as settled and before arc09 cuts the release. arc07 slice03
-can proceed because it is build/dist/publish docs, not the `if` semantics pass.
+creation order; this is the dependency order.) **Current sequence
+(2026-08-08):** arc10 is closed again; arc16 remains the last pre-release
+language/docs review gate before arc09 cuts the release.
 
 ## 4. Arc ledger
 
@@ -75,10 +71,19 @@ can proceed because it is build/dist/publish docs, not the `if` semantics pass.
 | A-8 | **`kernel:` compileBoth corpus rows added** — escape convergence regression-protected cross-compiler | corpus contains `(kernel:…)` rows; `lykn test` green | polish | slice02 CDC finding | **done** | slice03 F-6: `test/forms/kernel-escape_test.lykn` (5 rows, one per kernel-only head); green attested (1365/0) | |
 | A-3 | **surface prevents bare kernel-only *declaration* forms** — `const`/`let`/`var`/`function`/`function*` in a `.lykn` file are compile errors, on **both** compilers | compile each of the 5 → errors on Rust CLI **and** JS path; `kernel:` escape resolves on both | serious | anti-patterns finding | **met (attested)** | Rust CLI: slice01 (`faee8a1`); JS path: slice02 (`feb056c`) — 9 committed JS tests + convergence transcript; whitelist parity CDC-reproduced (92=92 set-diff). Class-(b) row: **reproduce at arc scale on host at arc close** per LEDGER-DISCIPLINE §B. (Was: *partial*, Rust-only.) |
 | A-4 | whole tree still compiles + green after migration | `make check` green; doctests green; ~~downstream (mycelium) builds~~ *(clause deferred — see Notes)* | serious | arc-plan | **met (attested)** | per-slice greens attested at each close (final: `make check` ✓, `lykn test` 1365/0, deno 673/0, doctests 0 failed, clippy ✓). **Reproduce at arc scale on host at close.** | mycelium clause **deferred** per the operator's repo-only boundary (2026-06-30); re-entry = the downstream-migration follow-up (bare kernel forms there will break under a strict consumer) |
-| A-9 | slice04 (no-else-if-expression-error) closed | ptr: slice04 closing-report + cdc-verification | serious | arc07 slice02 bubble-up / D-2608-W2HF | open | | draft slice-doc exists; full open set still needed |
-| A-10 | no-else `if` in expression position fails before invalid JS is emitted | `./bin/lykn check` and `./bin/lykn compile` fail on no-else expression-position fixture; positive fixtures still pass; `make check` green | serious | D-2608-W2HF | open | | reopened composition row |
+| A-9 | slice04 (no-else-if-expression-error) closed | ptr: slice04 closing-report + cdc-verification | serious | arc07 slice02 bubble-up / D-2608-W2HF | **done** | [`slice04-no-else-if-expression-error/closing-report.md`](./slice04-no-else-if-expression-error/closing-report.md) + [`cdc-verification.md`](./slice04-no-else-if-expression-error/cdc-verification.md); N-1...N-8 done | |
+| A-10 | no-else `if` in expression position fails before invalid JS is emitted | `./bin/lykn check` and `./bin/lykn compile` fail on no-else expression-position fixture; positive fixtures still pass; `make check` green | serious | D-2608-W2HF | **done** | negative fixture fails `check`/`compile` with DD-50 diagnostic; statement-position and else-branch positives pass; DD-50 JS/Lykn fixture suites pass 34/0 | final `make test-docs`/`make check-cited-paths` gates recorded in slice04 close |
 
 ## 5. Version History
+
+### v1.7 — 2026-08-08 (slice04 closed; arc reclosed)
+
+slice04 closed `D-2608-W2HF`: Rust `lykn check`/`compile` now reject no-else
+`if` in expression position before codegen, while statement-position no-else
+`if` and else-branch expression `if` remain valid. The validator is wired into
+the CLI pre-codegen path and covered by Rust classifier/CLI tests plus the
+existing DD-50 JS and compiled Lykn fixtures. **A-9/A-10 → done; arc10 CLOSED
+again.** Bubble-up: P-22 done; arc09 no longer waits on this follow-up.
 
 ### v1.6 — 2026-08-08 (reopened for no-else `if` expression error)
 
