@@ -77,4 +77,5 @@ standing evidence-strength discipline.
 ## Exit criteria
 
 `ledger.md` rows L-1…L-9 all reach a final status; the gate is green on the
-operator's host; `project-plan.md` carries the bubble-up (done: v1.38, P-21).
+operator's host; `project-plan.md` carries the bubble-up (done: v1.42, P-21
+closed).
