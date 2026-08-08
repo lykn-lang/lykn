@@ -111,10 +111,10 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0); `lykn lint` (16 rules, resolution-aware) ships. Inline suppression deferred → arc14/DD-62 |
 | **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **CLOSED — gate GO 2026-07-24** (operator; runsheet Parts A/B/C/C-bis all green, runtime rows **reproduced** not merely attested). All 7 slices closed/CDC-verified. slice06 version-consolidation + slice07 link-registry-specifier (Tier-0 resolver override; iteration 1 resolved a blocking effective-config regression + added the 4 table tests that were missing). Slices 01–05: mycelium re-audit + DD-63 → `lykn add` (`f9f9014`, exact-pin) → `lykn link`/`unlink` (`e1c0dd7`, git-ignored overlay; dist reads raw = publish-safe) → import-by-specifier (`42500a9`, zero lang change). mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green). Closing-report **re-issued** covering the full 7-slice walk; arc ledger **A-1…A-9 all met**. **0.6.0's founding goal — consume lykn as a dependency, end to end — is met.** |
-| **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08, arc15 (describes shipped behaviour) | **Closed — gate GO 2026-08-08**; slice01/slice02/slice03/slice04 closed/CDC-verified; arc ledger A-1...A-7 met; P-13 done; compiler follow-up `D-2608-W2HF` remains in reopened arc10/P-22 |
+| **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08, arc15 (describes shipped behaviour) | **Closed — gate GO 2026-08-08**; slice01/slice02/slice03/slice04 closed/CDC-verified; arc ledger A-1...A-7 met; P-13 done; compiler follow-up `D-2608-W2HF` fixed in arc10/P-22 |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
-| **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc10 follow-up and arc16 (book)** | **Future** (was M14/M15) — now gated by the remaining open arcs, arc10 follow-up + arc16 |
-| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) + no-invalid-JS follow-up for no-else `if` expression position | arc03, arc04 | **Reopened** — original gate GO 2026-07-05 remains true; slice04 draft planned for `D-2608-W2HF` |
+| **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc16 (book)** | **Future** (was M14/M15) — now gated by arc16 |
+| **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) + no-invalid-JS follow-up for no-else `if` expression position | arc03, arc04 | **Closed — gate GO restored 2026-08-08**; slice04 fixed `D-2608-W2HF`; P-22 done |
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
 | **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded → 0.7.0** (2026-07-21; **release boundary decided 0.7.0**, operator; not slice-planned — post-0.6.0 capability) |
@@ -125,7 +125,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 > strict dependency order (we stopped renumbering on each mid-stream insert).
 > **Dependency/sequence** is carried by the *Depends on* column and the arcs'
 > Dependencies sections. Current dependency sequence of the remaining work
-> (**checked 2026-08-08**): **arc10 follow-up + arc16 (book) -> arc09
+> (**checked 2026-08-08**): **arc16 (book) -> arc09
 > (release).** arc07 and
 > arc16 were siblings while arc07 was open: both describe shipped behaviour, and
 > the book draft is expected to feed defects back into the language arcs, so plan
@@ -167,14 +167,13 @@ history and the slice directories. Older dated snapshots remain below as
 provenance, not as current instruction.
 
 - **Closed / gated arcs:** arc01, arc02, arc03, arc04, arc05, arc06, arc08,
-  arc07, arc11, arc12, arc13, arc15. arc10's original 2026-07-05 gate
-  remains historically closed, but the arc is reopened for slice04.
+  arc07, arc10, arc11, arc12, arc13, arc15. arc10's original 2026-07-05 gate
+  remains historically true, and the 2026-08-08 slice04 follow-up is closed.
 - **Open standalone work:** none. `02-artifact-homes` and
   `03-citation-repoint` are closed, P-21 is done, and the cited-path gate is
   green at HEAD.
-- **Open arcs:** arc10 (reopened: slice04 draft planned), arc16 (book arc-plan
-  still to write).
-- **Future:** arc09 release, gated by the open arcs above. arc14
+- **Open arcs:** arc16 (book arc-plan still to write).
+- **Future:** arc09 release, gated by the open arc above. arc14
   comment-retention is seeded for 0.7.0, not 0.6.0.
 
 ### Historical snapshot (2026-06-28 through 2026-06-30)
@@ -270,7 +269,7 @@ inherited from arc attestations.
 | P-10 | `.d.ts` generated from `:type` annotations | end-to-end: compile a typed module, inspect emitted `.d.ts` | correctness | DoD | open | | reproduce at project scale |
 | P-11 | `lykn lint` lints Lykn source (not compiled JS) | end-to-end: `lykn lint` on a fixture with seeded anti-patterns | correctness | DoD | **done** | `p11_lint_corpus` (seeded→16 rules/exit1, clean→exit0) in `make check`; host: `./bin/lykn lint …/p11/{seeded_test,clean}.lykn` | **reconciled** — gate GO 2026-07-21: seeded 16/16 exit 1, clean exit 0 |
 | P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc09 |
-| P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | **done** | [`arc07-docs/closing-report.md`](./arc07-docs/closing-report.md): arc07 closed gate GO 2026-08-08; slice01 red-CI doctest drift fixed; slice02 recon closed/CDC-verified; slice03 build/dist/publish guide refresh closed/CDC-verified (`dcf23f5`); slice04 Deno workflow reconciliation closed/CDC-verified (`ae31c75` + CDC repair `af69f70`); `make test-docs` 476/0; `make check-cited-paths` green | no-else `if` compiler defect `D-2608-W2HF` remains open in arc10/P-22 and guide 00 names the live 0.6.0-dev defect rather than papering it over |
+| P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | **done** | [`arc07-docs/closing-report.md`](./arc07-docs/closing-report.md): arc07 closed gate GO 2026-08-08; slice01 red-CI doctest drift fixed; slice02 recon closed/CDC-verified; slice03 build/dist/publish guide refresh closed/CDC-verified (`dcf23f5`); slice04 Deno workflow reconciliation closed/CDC-verified (`ae31c75` + CDC repair `af69f70`); arc10/P-22 fixed the no-else `if` compiler defect; `make test-docs` 476/0; `make check-cited-paths` green | guide 00 now states the settled compile/check error instead of a live defect note |
 | P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
 | P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **done** | 3/3 slices (`faee8a1`/`feb056c`/`2f6a84d`); **operator gate GO 2026-07-05 23:29** (5-form demo verbatim; `kernel:` resolves; suites reconciled) — reproduced at arc scale | |
 | P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **done** | 2/2 slices (`75c9cc2`/`4f2a628`); **operator gate GO 2026-07-05 23:31** (three-moment demo 0/0 with `./bin/lykn`, destination proven by the compile message; sweep + hygiene from the earlier session) | P-7's demo unconditional; tracked candidates instantiated |
@@ -279,22 +278,30 @@ inherited from arc attestations.
 | P-19 | arc15 (surface-syntax-traps) closed + composed — method-call-on-expression (and every non-atom-head + keyword-first shape) is a hard **compile + `lykn check` error** with a threading fix-it; no guide teaches the trap; no source regressed | ptr: arc15 closing-report + host `lykn compile`/`make check` | serious | arc06/slice02 #6 finding + operator pushback (v1.33) | **done** | [`arc15-surface-syntax-traps/closing-report.md`](./arc15-surface-syntax-traps/closing-report.md): A-1…A-6 met; trap repros exit 1 with fix-it; atom/thread positives compile and lint green; guide sweep clean except documented-as-wrong/prose/comment sites; `make test-docs` 476/0; final `make check` green on the committed close-documentation state | **Closed 2026-08-08.** DD-64 still -DRAFT (odm = Duncan); slice03 Option C remains routed to 0.7.x, not dropped |
 | P-20 | **arc16 (Lykn Book 0.6.0 edition) drafted and closed** — the book's 0.6.0 edition is complete, and every language/DevX defect it surfaced is either fixed in 0.6.0 or routed with a named home | ptr: arc16 closing-report + the defect-routing table | **serious** | operator decision 2026-07-24 (release-gating call) | **open — planning home created, arc-plan pending** | Iter-01 (the drift inventory), the 6–8-iteration kickoff thread, the fence-wiring spec and the dogfooding friction log are tracked under `arc16-book-0.6.0-edition/design/` (v1.38); sibling book guidance/tool homes are tracked (`91fee17`, `a042e18`) | **Gates arc09.** Prerequisite (1) — *the plan gets a git home* — is met. Prerequisite (2), the operator's D-1…D-5 decisions, is still open. Deliberately *not* planned in detail yet — *plan late, plan deep*, and the layout is a confirmation-protocol call |
 | P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | **done** | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `02-artifact-homes` delivered the gate; `03-citation-repoint` closed the red gate and shrank the census 631 -> 601; sibling repos now track `AGENTS.md` / `CLAUDE.md` and the book audit tool (`91fee17`, `a042e18`) | **Closed 2026-08-08.** `make check-cited-paths`, the Deno cited-path integration test, and full `make check` are green. |
-| P-22 | no-else `if` in expression position fails before invalid JS is emitted | arc10 slice04 close + `./bin/lykn check`/`compile` negative fixture; positive DD-50 fixtures still pass | serious | arc07 slice02 / D-2608-W2HF | open | [`arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md`](./arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md) draft plan exists | gates arc09; fixes compiler truth before arc07/arc16 teach the settled surface |
+| P-22 | no-else `if` in expression position fails before invalid JS is emitted | arc10 slice04 close + `./bin/lykn check`/`compile` negative fixture; positive DD-50 fixtures still pass | serious | arc07 slice02 / D-2608-W2HF | **done** | [`arc10-compiler-completion/slice04-no-else-if-expression-error/closing-report.md`](./arc10-compiler-completion/slice04-no-else-if-expression-error/closing-report.md): negative fixture fails `check`/`compile` with DD-50 diagnostic; statement-position and else-branch positives pass; DD-50 suites pass 34/0 | no longer gates arc09; arc16 remains the release gate |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
 
+### v1.52 — 2026-08-08 (arc10 slice04 closed; P-22 done)
+
+arc10 slice04 fixed `D-2608-W2HF`: no-else `if` in expression position now
+fails `lykn check`/`compile` before invalid JavaScript can be emitted, while
+statement-position no-else `if` and expression-position `if` with an else branch
+remain valid. P-22 is done and arc10 is closed again. The remaining release
+path is now arc16, then arc09.
+
 ### v1.51 — 2026-08-08 (arc07 closed; P-13 done)
 
 arc07 closed with gate GO. The arc-level closing report reproduced the guide and
 CLI composition checks, closed A-1...A-7, and bubbled P-13 to done. The docs
 surface now routes normal project workflows through lykn wrappers, keeps direct
-Deno examples only where they teach Deno itself, and names the live no-else
-`if` compiler defect as `D-2608-W2HF` until arc10/P-22 fixes it.
+Deno examples only where they teach Deno itself. The live no-else `if` compiler
+defect it routed as `D-2608-W2HF` is now fixed in arc10/P-22.
 
-The remaining release path is arc10 follow-up + arc16, then arc09.
+The remaining release path is arc16, then arc09.
 
 ### v1.50 — 2026-08-08 (arc07 slice04 CDC-verified)
 

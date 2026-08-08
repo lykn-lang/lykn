@@ -3,6 +3,11 @@
 Date: 2026-08-08
 Status: Closed - gate GO
 
+> **Post-close reconciliation (2026-08-08):** arc10 slice04 has now fixed the
+> no-else `if` compiler defect this report routed as `D-2608-W2HF`. Historical
+> verification below remains the arc07 close transcript; live status now treats
+> P-22 as done and the remaining release path as arc16 -> arc09.
+
 ## Capability Verdict
 
 arc07 delivered its capability: `docs/guides/` and `assets/ai/SKILL.md` are
@@ -12,10 +17,10 @@ the old guide/SKILL seed lists, refreshed build/dist/publish guidance, and
 reconciled the Deno workflow guides so normal Lykn project work starts from the
 lykn CLI wrappers.
 
-The only live compiler mismatch surfaced by the arc, no-else `if` in expression
-position, is not papered over as docs truth. It is explicitly routed to reopened
-arc10 `slice04-no-else-if-expression-error` as `D-2608-W2HF`, and guide 00 now
-names it as a known 0.6.0-dev defect until the compiler follow-up lands.
+The only compiler mismatch surfaced by the arc, no-else `if` in expression
+position, was not papered over as docs truth. It was explicitly routed to arc10
+`slice04-no-else-if-expression-error` as `D-2608-W2HF`; that follow-up has since
+landed, and guide 00 now states the settled compile/check error.
 
 ## Slice Walk
 
@@ -42,9 +47,9 @@ The slices compose into the arc capability:
 - Deno workflow guidance now preserves direct Deno teaching for permission,
   runtime, assertion, and task-runner mechanics, while normal project workflows
   use `lykn build`, `lykn test`, `lykn lint`, `lykn run`, and `lykn dist`.
-- The live no-else `if` compiler defect is documented as a known defect and
-  routed to arc10/P-22 instead of being represented as already-true shipped
-  behaviour.
+- The no-else `if` compiler defect was documented as a known defect and routed
+  to arc10/P-22 instead of being represented as already-true shipped behaviour;
+  it has since been fixed by arc10 slice04.
 - The optional `.d.ts` user-documentation pass remains a named later candidate
   pending an artifact-producing fixture; it is not silent-dropped.
 
@@ -56,7 +61,7 @@ The slices compose into the arc capability:
 | Raw Deno/manual pipeline examples in guides 12-01/12-02/12-03 | Fixed by slice04 and CDC-verified. |
 | Publish dirty-check and `--allow-dirty` undocumented | Fixed by slice03. |
 | `.d.ts` user documentation incomplete | Deferred as a later candidate pending an artifact-producing fixture. It is tracked in this report and project P-10 remains open for the underlying DoD. |
-| no-else `if` in expression position emits invalid JS at rc=0 | Routed to reopened arc10 slice04 and project row P-22. guide 00 now names the live defect until the compiler follow-up lands. |
+| no-else `if` in expression position emits invalid JS at rc=0 | Routed to arc10 slice04 and project row P-22 during arc07 close; fixed by arc10 slice04 after close. guide 00 now states the settled compile/check error. |
 | Surface-macros JS-loading docs, DD-36/DD-37 architecture docs, error-format alignment, `compileBoth` adoption | Deferred by slice02 as out of current guide/SKILL drift scope. |
 
 ## Arc Ledger Walk
@@ -65,7 +70,7 @@ The slices compose into the arc capability:
 |---|---|---|
 | A-1 | done | slice01 closed at `0731048` with [`slice01-doctest-drift-fix/cdc-verification.md`](./slice01-doctest-drift-fix/cdc-verification.md). |
 | A-2 | done | slice02 closed at `66a3565` with [`slice02-current-drift-recon/cdc-verification.md`](./slice02-current-drift-recon/cdc-verification.md). |
-| A-3 | done | slice02 inventory compared against slices 03/04 and this close report: fixed items are closed, no-else `if` is routed to arc10/P-22, `.d.ts` docs remain an explicit later candidate, and no seed finding is silently dropped. |
+| A-3 | done | slice02 inventory compared against slices 03/04 and this close report: fixed items are closed, no-else `if` was routed to arc10/P-22 and is now fixed, `.d.ts` docs remain an explicit later candidate, and no seed finding is silently dropped. |
 | A-4 | done | Reproduced selected executable claims: `lykn 0.6.0-dev`; build/dist/publish/test/lint/run help matches docs; `lykn build` writes `target/lykn/build/*`; two-branch expression `if` compiles to a ternary; `lykn run` executes a `.lykn` file; `lykn lint` reports no findings on a clean fixture; no-else expression `if` still emits invalid JS and fails at Deno parse time, matching the new known-defect note and arc10/P-22 routing. |
 | A-5 | done | `make test-docs`, `make check-cited-paths`, and `git diff --check` pass at arc close. |
 | A-6 | done | Accrued child-closed row: slice03 is closed/CDC-verified at `dcf23f5` + [`slice03-build-dist-publish-guide-refresh/cdc-verification.md`](./slice03-build-dist-publish-guide-refresh/cdc-verification.md). |
@@ -143,14 +148,15 @@ Key results:
 arc07 delivers the project roadmap capability for docs/guides + SKILL alignment.
 Project row P-13 can close as done with this report as evidence.
 
-The arc does not unblock release by itself: project row P-22 remains open for
-the compiler fix, and arc16 remains open for the Lykn Book 0.6.0 edition.
-arc09 should continue to wait on arc10 follow-up + arc16.
+The arc did not unblock release by itself at close: project row P-22 remained
+open for the compiler fix, and arc16 remained open for the Lykn Book 0.6.0
+edition. Post-close, P-22 is done; arc09 should continue to wait on arc16.
 
 Silent-drop diff at arc scale: none for arc07-owned docs drift. The only known
 language/runtime mismatch found by the docs pass is deliberately outside arc07's
-implementation scope and is tracked by arc10/P-22. The optional `.d.ts` docs pass
-is a named later candidate tied to P-10 rather than an untracked arc07 miss.
+implementation scope and was tracked by arc10/P-22 until fixed. The optional
+`.d.ts` docs pass is a named later candidate tied to P-10 rather than an
+untracked arc07 miss.
 
 ## What Worked
 

@@ -1,10 +1,11 @@
 # arc10 · compiler-completion — Arc Closing Report
 
-> **Reopen addendum (2026-08-08):** this report remains the historical close for
-> the original three-slice DD-58/DD-37 arc10 gate. arc10 has since been reopened
-> for `slice04 · no-else-if-expression-error`, surfaced by arc07 slice02 as
-> `D-2608-W2HF`. Do not treat this report as the current arc close until the
-> reopened slice closes and a new arc-close addendum/gate is written.
+> **Reclose addendum (2026-08-08):** arc10 was reopened for
+> `slice04 · no-else-if-expression-error`, surfaced by arc07 slice02 as
+> `D-2608-W2HF`. That follow-up is now closed: no-else `if` in expression
+> position fails `lykn check`/`compile` before invalid JS can be emitted. The
+> original three-slice DD-58/DD-37 gate below remains historical truth; this
+> addendum restores arc10 to **Closed**.
 
 **Assembled by:** CDC (Cowork) · **Date:** 2026-07-05
 **Composition verdict: delivered — pending the host composition run + operator
@@ -31,13 +32,14 @@ the sanctioned-kernel registry (`kernel-mark.js`). Beyond the original
 capability statement, the arc also landed the kernel-form parity guard and
 the macro-boundary semantics decision recorded in DD-58.
 
-## 2. The slice walk (3 of 3 — matches the arc-plan breakdown)
+## 2. The slice walk (4 of 4 — matches the arc-plan breakdown)
 
 | Slice | Outcome | Close |
 |-------|---------|-------|
 | slice01 · dd58-strict-default | **Delivered** — Rust-CLI strict default-on (5 heads error; `kernel:` resolves; `.lyk` exempt; `--no-strict` harness-only); guides migrated. Bubble-up: the JS-parity gap → slice02. | `faee8a1`, CDC-verified 2026-06-30 |
 | slice02 · js-dd58-parity | **Delivered** — JS compiler strict default-on + `kernel:` escape (`kernel-forms.js` mirror, whitelist parity CDC-reproduced 92=92); browser + `lykn test` codegen extension-aware; 26-site migration; fences flipped. Bubble-ups: A-6 asymmetry, A-7 duplication, A-8 corpus gap. | `feb056c`, CDC-verified 2026-07-05 |
 | slice03 · dd37-step4-kernel-removal | **Delivered** — `_kernel` → WeakSet registry (zero-grep reproduced); A-6 enforced (post-pass2 sweep; divergence runtime-confirmed first); A-7 parity guard in `make check`; A-8 corpus rows. | `2f6a84d`, CDC-verified 2026-07-05 |
+| slice04 · no-else-if-expression-error | **Delivered** — Rust `check`/`compile` reject no-else `if` in expression position before codegen; statement-position no-else `if` and expression-position else-branch `if` remain valid; DD-50 corpus/parity fixtures pass. | [`slice04 closing-report`](./slice04-no-else-if-expression-error/closing-report.md), CDC-verified 2026-08-08 |
 
 No slice dropped, deferred, or missing.
 
@@ -53,6 +55,8 @@ No slice dropped, deferred, or missing.
 | A-6 macro-boundary asymmetry | done | operator decision (Rust semantics, 2026-07-05) + slice03 F-1/F-4 + DD-58 refinement entry |
 | A-7 kernel-form duplication | done | parity guard in `make check` (seeded-mismatch demo) |
 | A-8 `kernel:` corpus rows | done | 5 rows, green |
+| A-9 slice04 closed | done | slice04 `closing-report.md` + `cdc-verification.md`; N-1...N-8 done |
+| A-10 no-else `if` expression-position rejects before invalid JS | done | negative fixture fails `check`/`compile` with DD-50 diagnostic; positives and DD-50 suites pass |
 
 **Silent-drop diff at arc scale:** capability-as-specified vs delivered —
 nothing the arc promised is missing. Named deviations, all disclosed:
@@ -90,6 +94,29 @@ deno test --config project.json -A test/ # expect 673 | 0 (incl. dd58-strict + p
 Green run + operator sign-off here = the gate. On sign-off: flip the arc to
 **Closed** in `arc-plan.md`/README/status.html and reconcile the attested
 rows to *reconciled*.
+
+## 5a. Reclose gate for slice04 (2026-08-08)
+
+The reopened follow-up gate is smaller than the original DD-58/DD-37 composition
+run: it verifies `D-2608-W2HF` and the DD-50 context boundary.
+
+```text
+./bin/lykn check /private/tmp/arc10-no-else-negative.lykn
+./bin/lykn compile /private/tmp/arc10-no-else-negative.lykn
+./bin/lykn check /private/tmp/arc10-no-else-statement.lykn
+./bin/lykn compile /private/tmp/arc10-no-else-statement.lykn
+./bin/lykn compile /private/tmp/arc10-no-else-positive.lykn
+cargo fmt --check
+cargo test -p lykn-lang
+cargo test -p lykn-cli
+deno test --config project.json -A test/forms/dd-50.test.js test/forms/dd-50.7.test.js
+./bin/lykn test test/forms/dd-50_test.lykn
+make test-docs
+make check-cited-paths
+git diff --check
+```
+
+Green run + commit = A-9/A-10 done and arc10 closed again.
 
 ## 6. Bubble-up to the project
 

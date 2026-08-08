@@ -102,6 +102,16 @@ pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> 
                 .join("\n"),
         ));
     }
+    let no_else_if_errs = lykn_lang::classifier::validate_no_else_if_expressions(&forms);
+    if !no_else_if_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            no_else_if_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
     classifier::classify_with_options(&forms, classifier_options_for(Some(file_path))).map_err(
         |diags| {
             CompileError::Analysis(
@@ -218,6 +228,16 @@ fn compile_source_inner(
                 .join("\n"),
         ));
     }
+    let no_else_if_errs = lykn_lang::classifier::validate_no_else_if_expressions(&forms);
+    if !no_else_if_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            no_else_if_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
 
     // 3. Classify into surface forms (DD-58 strict for `.lykn`, exempt `.lyk`)
     let classified = classifier::classify_with_options(&forms, classify_opts).map_err(|diags| {
@@ -289,6 +309,16 @@ pub fn compile_source_with_dts(
     let forms = expander::expand(forms, file_path, imports.as_ref())?;
     // DD-61 §A1/§A3 — resolve names before classification (see compile path).
     let forms = resolver::resolve(&forms);
+    let no_else_if_errs = lykn_lang::classifier::validate_no_else_if_expressions(&forms);
+    if !no_else_if_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            no_else_if_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
 
     let classified = classifier::classify_with_options(&forms, classifier_options_for(file_path))
         .map_err(|diags| {
@@ -631,6 +661,61 @@ mod tests {
         assert!(
             msg.contains("expected type keyword"),
             "expected typed-param diagnostic, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn compile_source_rejects_no_else_if_in_expression_position() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind label (if (> 1 0) \"items\"))";
+        let result = compile_source(source, Some(path), false, false);
+        assert!(result.is_err(), "no-else if in bind value must reject");
+        let msg = result.unwrap_err().to_string();
+        assert!(
+            msg.contains("if in expression position requires an else branch"),
+            "expected DD-50 diagnostic, got: {msg}"
+        );
+        assert!(
+            !msg.contains("const label = throw"),
+            "must reject before emitting invalid JavaScript: {msg}"
+        );
+    }
+
+    #[test]
+    fn check_strict_rejects_no_else_if_in_expression_position() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind label (if (> 1 0) \"items\"))";
+        let result = check_strict(source, path);
+        assert!(
+            result.is_err(),
+            "lykn check path must reject no-else if in bind value"
+        );
+        let msg = result.unwrap_err().to_string();
+        assert!(
+            msg.contains("if in expression position requires an else branch"),
+            "expected DD-50 diagnostic, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn compile_source_allows_no_else_if_in_statement_position() {
+        let path = Path::new("surface.lykn");
+        let source = "(if (> 1 0) (console:log \"items\"))";
+        let result = compile_source(source, Some(path), false, false).unwrap();
+        assert!(
+            result.contains("if (1 > 0)"),
+            "statement-position no-else if should compile as an if statement: {result}"
+        );
+    }
+
+    #[test]
+    fn compile_source_allows_if_expression_with_else_branch() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind label (if (> 1 0) \"items\" \"none\"))";
+        let result = compile_source(source, Some(path), false, false).unwrap();
+        assert!(
+            result.contains("const label = 1 > 0 ? \"items\" : \"none\";"),
+            "both-branch if in expression position should compile to ternary: {result}"
         );
     }
 

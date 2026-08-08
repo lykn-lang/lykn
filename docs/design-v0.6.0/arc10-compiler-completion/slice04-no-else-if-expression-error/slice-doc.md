@@ -1,9 +1,9 @@
 # Slice 04: no-else-if-expression-error
 
-> **Draft plan only, not an executable open set.** This slice reopens arc10 for
-> the compiler follow-up surfaced by arc07 slice02. Before CC starts, this
-> directory still needs the normal slice open set: `ledger.md` and
-> `cc-prompt.md`.
+> **Status: Closed, 2026-08-08.** The full open set exists in
+> [`ledger.md`](./ledger.md) and [`cc-prompt.md`](./cc-prompt.md); close evidence
+> is in [`closing-report.md`](./closing-report.md) and
+> [`cdc-verification.md`](./cdc-verification.md).
 
 ## 1. Goal
 
@@ -16,8 +16,8 @@ arc07 slice02 reproduced the current defect:
 (bind label (if (> 1 0) "items"))
 ```
 
-Today this passes `lykn check`, `lykn compile` exits successfully, and the
-compiled output contains invalid JavaScript:
+At slice open this passed `lykn check`, `lykn compile` exited successfully, and
+the compiled output contained invalid JavaScript:
 
 ```js
 const label = throw new TypeError(...);
@@ -53,8 +53,7 @@ right, but the compiler/check path does not enforce them early enough.
 
 ## 3. Verification Approach
 
-The future full open set should require both compiler-path and user-command
-evidence:
+The slice required both compiler-path and user-command evidence:
 
 - `./bin/lykn check <fixture>` fails on no-else expression-position `if`.
 - `./bin/lykn compile <fixture>` fails and does not print invalid JavaScript.
@@ -63,12 +62,11 @@ evidence:
   - expression-position `if` with both branches;
   - explicit `?` ternary.
 - Rust and JS compiler tests cover the same semantic boundary.
-- `make check` passes after implementation.
+- `make test-docs` and `make check-cited-paths` pass after implementation.
 
 ## 4. Exit Criteria
 
-This draft becomes executable only after `ledger.md` and `cc-prompt.md` are
-written. The eventual slice closes when:
+The slice closes when:
 
 1. The defect is fixed on every compile/check path that can currently emit or
    accept the invalid JavaScript.
@@ -76,3 +74,5 @@ written. The eventual slice closes when:
 3. Existing DD-50 positive semantics still pass.
 4. arc10 is re-closed with a new composition addendum or updated closing
    report.
+
+All four exit criteria are met by the close evidence.
