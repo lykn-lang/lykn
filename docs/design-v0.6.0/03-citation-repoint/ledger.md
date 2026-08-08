@@ -6,7 +6,7 @@ CC closes, CDC verifies, the operator gates.
 
 | Row | Acceptance criterion | Verify | Sev | Status | Evidence | Strength |
 |---|---|---|---|---|---|---|
-| **R-1** | Every `crates/design/…` citation is repointed to its `docs/design/06-final/…` home. All 9 distinct paths resolve; the mapping is same-basename and was spot-checked on 5. | `make check-cited-paths` reports zero `crates/design/` hits; census loses the corresponding rows | correctness | open | — | — |
+| **R-1** | Every crates/design citation is repointed to its `docs/design/06-final/…` home. All 9 distinct paths resolve; the mapping is same-basename and was spot-checked on 5. | `make check-cited-paths` reports zero crates/design hits; census loses the corresponding rows | correctness | open | — | — |
 | **R-2** | Every `examples/…` citation is repointed (6/6 have tracked homes). | as R-1 | polish | open | — | — |
 | **R-3** | `docs/`, `packages/`, `assets/`, `test/` are walked **per citation**, and each is either repointed, or **frozen with a one-line reason** in the census row. No silent leave-behinds: the census delta must account for every path in these classes. | census diff + the reason column | serious | open | — | — |
 | **R-4** | **The four decided-but-unmigrated files are moved**, and their citations now resolve. Not repoints — the destination was already chosen by a committed document. See `cc-prompt.md` §2. | `git ls-tree HEAD` on each destination; gate green on those four | serious | open | — | — |
@@ -22,7 +22,7 @@ like ordinary churn. **Deletions only.**
 
 R-5 protects the record. This slice is executing a disposition whose whole point
 is that history stays accurate; the failure mode is a well-meaning
-search-and-replace that turns *"`packages/lykn/` was renamed to
+search-and-replace that turns *"packages/lykn was renamed to
 `packages/lang/`"* into a sentence claiming a rename from a thing to itself.
 Path-by-path review cannot catch that. **Read sentences.**
 

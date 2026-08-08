@@ -55,7 +55,6 @@ docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-d
 docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/closing-report.md	workbench/verify/m11-m13/lykn-test-output.txt
 docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/closing-report.md	workbench/verify/m11-m13/snapshot-review.md
 docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md	assets/ai/AGENTS.md
-docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md	docs/design-v0.6.0/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md
 docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md	docs/design-v0.6.0/arc01-build-publish-toolchain/phase-2-plan.md
 docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
 docs/design-v0.6.0/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md	docs/design-v0.6.0/docs/philosophy.md
@@ -135,9 +134,6 @@ docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/desig
 docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/design/formatting-divergences-turn2-prompt.md	workbench/2026-05-16-m16-formatting-divergences-diagnosis.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/design/formatting-divergences-turn2-prompt.md	workbench/m16-formatting-divergences-diagnosis-cdc-review-2026-05-16.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-05-DD-49-iteration-2-closing-report.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/old/2026-05-12-DD-52-closing-report.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/old/dd-50.7-closing-cdc-review-2026-05-12.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
@@ -160,7 +156,6 @@ docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/cc-prompt
 docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/cdc-verification.md	workbench/2026-05-17-M17-closing-report.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/closing-report.md	workbench/verify/m17/baseline.txt
 docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md	assets/ai/AGENTS.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md	docs/design-v0.6.0/assets/ai/AGENTS.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md	docs/design-v0.6.0/assets/ai/SUBAGENT-DELEGATION-POLICY.md
@@ -177,7 +172,6 @@ docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/cdc-
 docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/cdc-verification.md	workbench/verify/m18/baseline.txt
 docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/closing-report.md	workbench/verify/m18/baseline.txt
 docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md	assets/ai/AGENTS.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md	docs/design-v0.6.0/assets/ai/AGENTS.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md	docs/design-v0.6.0/assets/ai/SUBAGENT-DELEGATION-POLICY.md
@@ -197,7 +191,6 @@ docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/cdc-veri
 docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/closing-report.md	workbench/verify/m19/baseline.txt
 docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/closing-report.md	workbench/verify/m19/test-migration-audit.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md	assets/ai/AGENTS.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md	docs/design-v0.6.0/assets/ai/AGENTS.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md	docs/design-v0.6.0/assets/ai/SUBAGENT-DELEGATION-POLICY.md
@@ -222,7 +215,6 @@ docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/closing-r
 docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/closing-report.md	workbench/verify/m20/compile-string-audit.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/closing-report.md	workbench/verify/m20/design-confirmation.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md	assets/ai/AGENTS.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md	docs/design-v0.6.0/assets/ai/AGENTS.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md	docs/design-v0.6.0/assets/ai/SUBAGENT-DELEGATION-POLICY.md
@@ -247,7 +239,6 @@ docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/cdc-ver
 docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/closing-report.md	workbench/verify/m21/baseline.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/closing-report.md	workbench/verify/m21/design-confirmation.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md	assets/ai/AGENTS.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md	docs/design-v0.6.0/assets/ai/AGENTS.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md	docs/design-v0.6.0/assets/ai/SUBAGENT-DELEGATION-POLICY.md
@@ -266,7 +257,6 @@ docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/clos
 docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/design/mid-flight-option-c-directive.md	workbench/M22-implementation-prompt-2026-05-17.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/design/mid-flight-option-c-directive.md	workbench/milestones/M22-dd37-step3-per-form-migration-and-ci-integration-ledger.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md	assets/ai/AGENTS.md
-docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md	docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md	docs/design-v0.6.0/assets/ai/AGENTS.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md	docs/design-v0.6.0/assets/ai/LEDGER_DISCIPLINE.md
 docs/design-v0.6.0/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md	docs/design-v0.6.0/assets/ai/SUBAGENT-DELEGATION-POLICY.md
@@ -578,27 +568,8 @@ docs/dev/0023-m16-implementation-prompt-for-cc-cross-compiler-hygiene.md	workben
 docs/dev/0023-m16-implementation-prompt-for-cc-cross-compiler-hygiene.md	workbench/milestones/M16-cross-compiler-hygiene-ledger.md
 docs/dev/0023-m16-implementation-prompt-for-cc-cross-compiler-hygiene.md	workbench/verify/m16/value-override-audit.md
 docs/dev/0024-if-profile-audit-pattern-for-special-case-intercepts.md	workbench/verify/m16/kernel-profile-audit.md
-docs/dev/lang/0010-phase-1-foundation-implementation-guide.md	crates/design/dev/lang/0001-dd-01-colon-syntax-and-camelcase-conversion.md
-docs/dev/lang/0010-phase-1-foundation-implementation-guide.md	crates/design/dev/lang/0008-dd-08-special-atoms-update-operators-and-miscellaneous-forms.md
-docs/dev/lang/0010-phase-1-foundation-implementation-guide.md	examples/main.lykn
 docs/dev/lang/0011-phase-2-core-forms-implementation-guide.md	crates/design/dev/lang
-docs/dev/lang/0012-phase-3-expressions-implementation-guide.md	crates/design/dev/lang/0005-dd-05-template-literals.md
-docs/dev/lang/0012-phase-3-expressions-implementation-guide.md	crates/design/dev/lang/0006-dd-06-destructuring-patterns.md
-docs/dev/lang/0013-phase-4-patterns-destructuring-implementation-guide.md	crates/design/dev/lang/0006-dd-06-destructuring-patterns.md
-docs/dev/lang/0014-phase-5-classes-implementation-guide.md	crates/design/dev/lang/0001-dd-01-colon-syntax-and-camelcase-conversion.md
-docs/dev/lang/0014-phase-5-classes-implementation-guide.md	crates/design/dev/lang/0003-dd-03-async-await.md
-docs/dev/lang/0014-phase-5-classes-implementation-guide.md	crates/design/dev/lang/0007-dd-07-class-syntax.md
-docs/dev/lang/0015-phase-6-browser-shim-implementation-guide.md	examples/browser-api.html
-docs/dev/lang/0015-phase-6-browser-shim-implementation-guide.md	examples/browser-app.lykn
-docs/dev/lang/0015-phase-6-browser-shim-implementation-guide.md	examples/browser-src.html
-docs/dev/lang/0015-phase-6-browser-shim-implementation-guide.md	examples/browser.html
-docs/dev/lang/0016-v0.2.0-phase-1-reader-extensions-implementation-guide.md	crates/design/docs/01-draft/0013-dd-10-quasiquote-unquote-splicing.md
-docs/dev/lang/0016-v0.2.0-phase-1-reader-extensions-implementation-guide.md	crates/design/docs/01-draft/0015-dd-12-reader-dispatch-data-literals-and-cons-lists.md
-docs/dev/lang/0017-v0.2.0-phase-2-expander-core-implementation-guide.md	crates/design/docs/01-draft/0013-dd-10-quasiquote-unquote-splicing.md
-docs/dev/lang/0017-v0.2.0-phase-2-expander-core-implementation-guide.md	crates/design/docs/01-draft/0015-dd-12-reader-dispatch-data-literals-and-cons-lists.md
-docs/dev/lang/0017-v0.2.0-phase-2-expander-core-implementation-guide.md	crates/design/docs/01-draft/0016-dd-13-macro-expansion-pipeline.md
 docs/dev/lang/0018-v0.2.0-phase-3-macro-definition-and-hygiene.md	test/expander/enforced-gensym.test.js
-docs/dev/lang/0021-v0.2.0-phase-6-browser-shim-update-and-testing.md	examples/browser-macros.html
 docs/dev/lang/0021-v0.2.0-phase-6-browser-shim-update-and-testing.md	test/integration/as-pattern.test.js
 docs/dev/lang/0021-v0.2.0-phase-6-browser-shim-update-and-testing.md	test/integration/macroexpand-debug.test.js
 docs/dev/lang/0022-v0.3.0-phase-1-surface-form-macros.md	test/fixtures/surface

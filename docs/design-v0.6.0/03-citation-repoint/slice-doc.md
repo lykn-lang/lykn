@@ -26,12 +26,16 @@ accordingly, and perform four migrations that were decided but never done.
 > record.
 
 **Repoint a *reference to* an artifact. Never rewrite a sentence that *narrates
-the move itself*.** *"See `packages/lykn/mod.js`"* is a reference — repoint it.
-*"`packages/lykn/` was renamed to `packages/lang/`"* is history — both paths
-survive verbatim, and freezing that citation is correct. **When in doubt, read
-the sentence, not the path.** A repoint that turns a true sentence false is
-worse than a dangling path, because the dangling path is at least visibly
-broken.
+the move itself*.** For example:
+
+```text
+See `packages/lykn/mod.js` -> repoint.
+`packages/lykn/` was renamed to `packages/lang/` -> leave both paths verbatim.
+```
+
+Freezing that narration citation is correct. **When in doubt, read the sentence,
+not the path.** A repoint that turns a true sentence false is worse than a
+dangling path, because the dangling path is at least visibly broken.
 
 ## Ground truth (CDC, `release/0.6.x` @ `e77ebcf`)
 
@@ -41,7 +45,7 @@ CC's real matching may recover more. Do not treat a miss as proof of absence.
 
 | Class | Distinct paths | Same-basename tracked match |
 |---|---:|---:|
-| `crates/design/` | 9 | **9** — exact, systematic: same basename under `docs/design/06-final/` |
+| crates/design | 9 | **9** — exact, systematic: same basename under `docs/design/06-final/` |
 | `examples/` | 6 | **6** |
 | `docs/` | 47 | 13 |
 | `packages/` | 12 | 7 |
@@ -58,7 +62,7 @@ a path not walked. The table above supersedes amendment (4)'s.
 ## Scope — in
 
 1. **Repoint** every citation whose target has a tracked home today, honouring
-   the carve-out. `crates/design/` and `examples/` are the clean wins.
+   the carve-out. crates/design and `examples/` are the clean wins.
 2. **Migrate four files** that a committed document already assigned a home to,
    which still sit unmigrated in `workbench/` (see `cc-prompt.md` for the table).
    These are not repoints — the citation becomes *true*.

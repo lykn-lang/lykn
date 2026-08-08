@@ -331,7 +331,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 
 - **What:** Run on `release/0.7.x`, the L-7 gate reported **14** citations that
   resolve for nobody: 0.7.0 ledgers and slice-docs citing
-  `scripts/probe-threading.js`, `scripts/build-catalog.py`, `evidence/`,
+  scripts/probe-threading.js, scripts/build-catalog.py, `evidence/`,
   `artifacts/` — none of them in any branch's git. **Two are ledger rows citing
   their own evidence**, which is the strongest possible form of the defect: a
   verification row whose verification cannot be opened.
