@@ -48,10 +48,10 @@ export function read(source) {
   function skipWhitespaceAndComments() {
     while (pos < source.length) {
       const ch = peek();
-      if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') {
+      if (ch === " " || ch === "\t" || ch === "\n" || ch === "\r") {
         advance();
-      } else if (ch === ';') {
-        while (pos < source.length && peek() !== '\n') advance();
+      } else if (ch === ";") {
+        while (pos < source.length && peek() !== "\n") advance();
       } else {
         break;
       }
@@ -60,45 +60,107 @@ export function read(source) {
 
   function readString() {
     advance(); // skip opening "
-    let value = '';
+    let value = "";
     while (pos < source.length && peek() !== '"') {
-      if (peek() === '\\') {
+      if (peek() === "\\") {
         advance();
-        const esc = advance();
-        if (esc === 'n') value += '\n';
-        else if (esc === 't') value += '\t';
-        else if (esc === '\\') value += '\\';
-        else if (esc === '"') value += '"';
-        else value += esc;
+        value += readStringEscape();
       } else {
         value += advance();
       }
     }
     if (pos < source.length) advance(); // skip closing "
-    return { type: 'string', value };
+    return { type: "string", value };
+  }
+
+  function readStringEscape() {
+    const esc = advance();
+    if (esc === undefined) throw new Error("unterminated escape in string");
+    if (esc === "n") return "\n";
+    if (esc === "t") return "\t";
+    if (esc === "r") return "\r";
+    if (esc === "b") return "\b";
+    if (esc === "f") return "\f";
+    if (esc === "v") return "\v";
+    if (esc === "0") {
+      if (/[0-9]/.test(peek() ?? "")) {
+        throw new Error("octal escapes are not supported in strings");
+      }
+      return "\0";
+    }
+    if (esc === "\\") return "\\";
+    if (esc === '"') return '"';
+    if (esc === "'") return "'";
+    if (esc === "/") return "/";
+    if (esc === "x") return readFixedHexEscape(2, "\\x");
+    if (esc === "u") {
+      if (peek() === "{") return readBracedUnicodeEscape();
+      return readFixedHexEscape(4, "\\u");
+    }
+    throw new Error(`unsupported escape sequence \\${esc} in string`);
+  }
+
+  function readFixedHexEscape(length, prefix) {
+    let hex = "";
+    for (let i = 0; i < length; i++) {
+      const ch = advance();
+      if (!isHexDigit(ch)) {
+        throw new Error(`malformed ${prefix} escape in string`);
+      }
+      hex += ch;
+    }
+    return String.fromCodePoint(Number.parseInt(hex, 16));
+  }
+
+  function readBracedUnicodeEscape() {
+    advance(); // skip {
+    let hex = "";
+    while (pos < source.length && peek() !== "}") {
+      const ch = advance();
+      if (!isHexDigit(ch)) {
+        throw new Error("malformed \\u{...} escape in string");
+      }
+      hex += ch;
+    }
+    if (peek() !== "}") {
+      throw new Error("unterminated \\u{...} escape in string");
+    }
+    advance(); // skip }
+    if (hex.length === 0) throw new Error("empty \\u{...} escape in string");
+    const codePoint = Number.parseInt(hex, 16);
+    if (codePoint > 0x10FFFF) {
+      throw new Error("Unicode escape out of range in string");
+    }
+    return String.fromCodePoint(codePoint);
+  }
+
+  function isHexDigit(ch) {
+    return typeof ch === "string" && /^[0-9a-fA-F]$/.test(ch);
   }
 
   function readAtomOrNumber() {
-    let value = '';
+    let value = "";
     while (pos < source.length) {
       const ch = peek();
-      if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r' ||
-          ch === '(' || ch === ')' || ch === ';' ||
-          ch === '`' || ch === ',' || ch === "'") {
+      if (
+        ch === " " || ch === "\t" || ch === "\n" || ch === "\r" ||
+        ch === "(" || ch === ")" || ch === ";" ||
+        ch === "`" || ch === "," || ch === "'"
+      ) {
         break;
       }
       value += advance();
     }
 
     if (/^-?\d+(\.\d+)?$/.test(value)) {
-      return { type: 'number', value: parseFloat(value) };
+      return { type: "number", value: parseFloat(value) };
     }
 
-    if (value.length > 1 && value.startsWith(':')) {
-      return { type: 'keyword', value: value.slice(1) };
+    if (value.length > 1 && value.startsWith(":")) {
+      return { type: "keyword", value: value.slice(1) };
     }
 
-    return { type: 'atom', value };
+    return { type: "atom", value };
   }
 
   function readList() {
@@ -108,38 +170,38 @@ export function read(source) {
     let cdrNode = null;
 
     skipWhitespaceAndComments();
-    while (pos < source.length && peek() !== ')') {
+    while (pos < source.length && peek() !== ")") {
       const expr = readExpr();
       if (expr === null) {
         skipWhitespaceAndComments();
         continue;
       }
 
-      if (expr.type === 'atom' && expr.value === '.') {
+      if (expr.type === "atom" && expr.value === ".") {
         if (values.length === 0) {
-          throw new Error('dot cannot be first element in list');
+          throw new Error("dot cannot be first element in list");
         }
         if (sawDot) {
-          throw new Error('only one dot allowed per list level');
+          throw new Error("only one dot allowed per list level");
         }
         sawDot = true;
 
         skipWhitespaceAndComments();
-        if (pos >= source.length || peek() === ')') {
-          throw new Error('nothing after dot in list');
+        if (pos >= source.length || peek() === ")") {
+          throw new Error("nothing after dot in list");
         }
         cdrNode = readExpr();
         if (cdrNode === null) {
-          throw new Error('nothing after dot in list');
+          throw new Error("nothing after dot in list");
         }
 
         skipWhitespaceAndComments();
-        if (pos < source.length && peek() !== ')') {
-          throw new Error('only one element allowed after dot in list');
+        if (pos < source.length && peek() !== ")") {
+          throw new Error("only one element allowed after dot in list");
         }
       } else {
         if (sawDot) {
-          throw new Error('only one element allowed after dot in list');
+          throw new Error("only one element allowed after dot in list");
         }
         values.push(expr);
       }
@@ -149,29 +211,31 @@ export function read(source) {
 
     if (sawDot) {
       if (values.length !== 1) {
-        throw new Error('dotted pair must have exactly one element before the dot');
+        throw new Error(
+          "dotted pair must have exactly one element before the dot",
+        );
       }
-      return { type: 'cons', car: values[0], cdr: cdrNode };
+      return { type: "cons", car: values[0], cdr: cdrNode };
     }
 
-    return { type: 'list', values };
+    return { type: "list", values };
   }
 
   function readDispatch() {
     advance(); // consume '#'
     if (pos >= source.length) {
-      throw new Error('unexpected end of input after #');
+      throw new Error("unexpected end of input after #");
     }
     const ch = peek();
 
-    if (ch === ';') return readExprComment();
-    if (ch === '|') return readBlockComment();
-    if (ch === 'a') return readDataLiteral('array');
-    if (ch === 'o') return readDataLiteral('object');
-    if (ch === '(') {
-      throw new Error('use #a(...) for array literals');
+    if (ch === ";") return readExprComment();
+    if (ch === "|") return readBlockComment();
+    if (ch === "a") return readDataLiteral("array");
+    if (ch === "o") return readDataLiteral("object");
+    if (ch === "(") {
+      throw new Error("use #a(...) for array literals");
     }
-    if (ch >= '0' && ch <= '9') return readRadixLiteral();
+    if (ch >= "0" && ch <= "9") return readRadixLiteral();
 
     throw new Error(`unknown dispatch character: ${ch}`);
   }
@@ -180,10 +244,10 @@ export function read(source) {
     advance(); // consume ';'
     skipWhitespaceAndComments();
     if (pos >= source.length) {
-      throw new Error('#; at end of input with no form to discard');
+      throw new Error("#; at end of input with no form to discard");
     }
-    if (peek() === ')') {
-      throw new Error('#; at end of list with no form to discard');
+    if (peek() === ")") {
+      throw new Error("#; at end of list with no form to discard");
     }
     readExpr(); // read and discard
     return null;
@@ -195,17 +259,17 @@ export function read(source) {
 
     while (pos < source.length && depth > 0) {
       const ch = advance();
-      if (ch === '#' && pos < source.length && peek() === '|') {
+      if (ch === "#" && pos < source.length && peek() === "|") {
         advance();
         depth++;
-      } else if (ch === '|' && pos < source.length && peek() === '#') {
+      } else if (ch === "|" && pos < source.length && peek() === "#") {
         advance();
         depth--;
       }
     }
 
     if (depth > 0) {
-      throw new Error('unterminated block comment (missing |#)');
+      throw new Error("unterminated block comment (missing |#)");
     }
     return null;
   }
@@ -213,29 +277,33 @@ export function read(source) {
   function readDataLiteral(formName) {
     advance(); // consume the letter ('a' or 'o')
     skipWhitespaceAndComments();
-    if (pos >= source.length || peek() !== '(') {
+    if (pos >= source.length || peek() !== "(") {
       throw new Error(`#${formName[0]} must be followed by (...)`);
     }
     const list = readList();
     return {
-      type: 'list',
-      values: [{ type: 'atom', value: formName }, ...list.values],
+      type: "list",
+      values: [{ type: "atom", value: formName }, ...list.values],
     };
   }
 
   function readRadixLiteral() {
-    let baseStr = '';
-    while (pos < source.length && peek() !== 'r') {
+    let baseStr = "";
+    while (pos < source.length && peek() !== "r") {
       const ch = peek();
-      if (ch >= '0' && ch <= '9') {
+      if (ch >= "0" && ch <= "9") {
         baseStr += advance();
       } else {
-        throw new Error(`expected 'r' after base in radix literal, got '${ch}'`);
+        throw new Error(
+          `expected 'r' after base in radix literal, got '${ch}'`,
+        );
       }
     }
 
     if (pos >= source.length) {
-      throw new Error("expected 'r' after base in radix literal, got end of input");
+      throw new Error(
+        "expected 'r' after base in radix literal, got end of input",
+      );
     }
 
     advance(); // consume 'r'
@@ -245,18 +313,20 @@ export function read(source) {
       throw new Error(`radix base must be 2-36, got ${base}`);
     }
 
-    let valueStr = '';
+    let valueStr = "";
     while (pos < source.length) {
       const ch = peek();
-      if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r' ||
-          ch === '(' || ch === ')' || ch === ';' ||
-          ch === '`' || ch === ',' || ch === "'") {
+      if (
+        ch === " " || ch === "\t" || ch === "\n" || ch === "\r" ||
+        ch === "(" || ch === ")" || ch === ";" ||
+        ch === "`" || ch === "," || ch === "'"
+      ) {
         break;
       }
       valueStr += advance();
     }
 
-    if (valueStr === '') {
+    if (valueStr === "") {
       throw new Error(`missing value after #${baseStr}r`);
     }
 
@@ -268,38 +338,47 @@ export function read(source) {
     }
 
     const value = parseInt(valueStr, base);
-    return { type: 'number', value, base };
+    return { type: "number", value, base };
   }
 
   function readExpr() {
     skipWhitespaceAndComments();
     if (pos >= source.length) return null;
     const ch = peek();
-    if (ch === ')') return null;
-    if (ch === '(') return readList();
+    if (ch === ")") return null;
+    if (ch === "(") return readList();
     if (ch === '"') return readString();
 
-    if (ch === '`') {
+    if (ch === "`") {
       advance();
       const expr = readExpr();
-      return { type: 'list', values: [{ type: 'atom', value: 'quasiquote' }, expr] };
+      return {
+        type: "list",
+        values: [{ type: "atom", value: "quasiquote" }, expr],
+      };
     }
     if (ch === "'") {
       advance();
       const expr = readExpr();
-      return { type: 'list', values: [{ type: 'atom', value: 'quote' }, expr] };
+      return { type: "list", values: [{ type: "atom", value: "quote" }, expr] };
     }
-    if (ch === ',') {
+    if (ch === ",") {
       advance();
-      if (peek() === '@') {
+      if (peek() === "@") {
         advance();
         const expr = readExpr();
-        return { type: 'list', values: [{ type: 'atom', value: 'unquote-splicing' }, expr] };
+        return {
+          type: "list",
+          values: [{ type: "atom", value: "unquote-splicing" }, expr],
+        };
       }
       const expr = readExpr();
-      return { type: 'list', values: [{ type: 'atom', value: 'unquote' }, expr] };
+      return {
+        type: "list",
+        values: [{ type: "atom", value: "unquote" }, expr],
+      };
     }
-    if (ch === '#') {
+    if (ch === "#") {
       const node = readDispatch();
       if (node === null) return readExpr();
       return node;

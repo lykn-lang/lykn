@@ -212,9 +212,37 @@ impl Lexer {
                 Some('\\') => match self.advance() {
                     Some('n') => value.push('\n'),
                     Some('t') => value.push('\t'),
+                    Some('r') => value.push('\r'),
+                    Some('b') => value.push('\u{0008}'),
+                    Some('f') => value.push('\u{000c}'),
+                    Some('v') => value.push('\u{000b}'),
+                    Some('0') => {
+                        if self.peek().is_some_and(|c| c.is_ascii_digit()) {
+                            return Err(LyknError::Read {
+                                message: "octal escapes are not supported in strings".to_string(),
+                                location: self.loc(),
+                            });
+                        }
+                        value.push('\0');
+                    }
                     Some('\\') => value.push('\\'),
                     Some('"') => value.push('"'),
-                    Some(c) => value.push(c),
+                    Some('\'') => value.push('\''),
+                    Some('/') => value.push('/'),
+                    Some('x') => value.push(self.read_fixed_hex_escape(2, "\\x")?),
+                    Some('u') => {
+                        if self.peek() == Some('{') {
+                            value.push(self.read_braced_unicode_escape()?);
+                        } else {
+                            value.push(self.read_fixed_hex_escape(4, "\\u")?);
+                        }
+                    }
+                    Some(c) => {
+                        return Err(LyknError::Read {
+                            message: format!("unsupported escape sequence \\{c} in string"),
+                            location: self.loc(),
+                        });
+                    }
                     None => {
                         return Err(LyknError::Read {
                             message: "unterminated escape in string".to_string(),
@@ -228,6 +256,72 @@ impl Lexer {
         Ok(SpannedToken {
             token: Token::String(value),
             span: Span::new(start, self.loc()),
+        })
+    }
+
+    fn read_fixed_hex_escape(&mut self, len: usize, prefix: &str) -> Result<char, LyknError> {
+        let mut hex = String::new();
+        for _ in 0..len {
+            match self.advance() {
+                Some(c) if c.is_ascii_hexdigit() => hex.push(c),
+                _ => {
+                    return Err(LyknError::Read {
+                        message: format!("malformed {prefix} escape in string"),
+                        location: self.loc(),
+                    });
+                }
+            }
+        }
+        let code_point = u32::from_str_radix(&hex, 16).map_err(|_| LyknError::Read {
+            message: format!("malformed {prefix} escape in string"),
+            location: self.loc(),
+        })?;
+        char::from_u32(code_point).ok_or_else(|| LyknError::Read {
+            message: format!("invalid Unicode scalar value in {prefix} escape"),
+            location: self.loc(),
+        })
+    }
+
+    fn read_braced_unicode_escape(&mut self) -> Result<char, LyknError> {
+        self.advance(); // skip {
+        let mut hex = String::new();
+        loop {
+            match self.peek() {
+                Some('}') => {
+                    self.advance();
+                    break;
+                }
+                Some(c) if c.is_ascii_hexdigit() => {
+                    hex.push(c);
+                    self.advance();
+                }
+                Some(_) => {
+                    return Err(LyknError::Read {
+                        message: "malformed \\u{...} escape in string".to_string(),
+                        location: self.loc(),
+                    });
+                }
+                None => {
+                    return Err(LyknError::Read {
+                        message: "unterminated \\u{...} escape in string".to_string(),
+                        location: self.loc(),
+                    });
+                }
+            }
+        }
+        if hex.is_empty() {
+            return Err(LyknError::Read {
+                message: "empty \\u{...} escape in string".to_string(),
+                location: self.loc(),
+            });
+        }
+        let code_point = u32::from_str_radix(&hex, 16).map_err(|_| LyknError::Read {
+            message: "malformed \\u{...} escape in string".to_string(),
+            location: self.loc(),
+        })?;
+        char::from_u32(code_point).ok_or_else(|| LyknError::Read {
+            message: "Unicode escape out of range in string".to_string(),
+            location: self.loc(),
         })
     }
 
@@ -277,6 +371,32 @@ mod tests {
         let tokens = tokenize("\"hello\"").unwrap();
         assert_eq!(tokens.len(), 1);
         assert_eq!(tokens[0].token, Token::String("hello".to_string()));
+    }
+
+    #[test]
+    fn tokenize_string_standard_escapes() {
+        let tokens =
+            tokenize("\"\\n\\t\\r\\b\\f\\v\\0\\\\\\\"\\'\\/\\x41\\u2026\\u{1F600}\"").unwrap();
+        assert_eq!(tokens.len(), 1);
+        assert_eq!(
+            tokens[0].token,
+            Token::String("\n\t\r\u{0008}\u{000c}\u{000b}\0\\\"'/A\u{2026}\u{1f600}".to_string())
+        );
+    }
+
+    #[test]
+    fn tokenize_string_rejects_unknown_escape() {
+        let err = tokenize("\"\\q\"").unwrap_err();
+        assert!(
+            err.to_string().contains("unsupported escape sequence \\q"),
+            "{err}"
+        );
+    }
+
+    #[test]
+    fn tokenize_string_rejects_malformed_unicode_escape() {
+        let err = tokenize("\"\\u12xz\"").unwrap_err();
+        assert!(err.to_string().contains("malformed \\u escape"), "{err}");
     }
 
     #[test]

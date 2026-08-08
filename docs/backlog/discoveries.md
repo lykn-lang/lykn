@@ -199,15 +199,17 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **Guess:** Low-medium. The output is invalid JS, so it fails loudly at parse
   time rather than miscompiling silently — the *"compiles ≠ valid output"*
   genus, not arc15's charter. Cheap to fix, and plausibly one edit for all four.
-- **Kind:** `bug` · **Status:** `routed` →
-  `docs/design-v0.6.0/arc15-surface-syntax-traps/slice04-sibling-traps/liveness-recheck.md`
-  (§ID-32(c)); disposition with slice04's scoping.
+- **Kind:** `bug` · **Status:** `closed` →
+  `docs/design-v0.6.0/arc15-surface-syntax-traps/slice04-sibling-traps/closing-report.md`.
 - **Parity note worth keeping:** the two backends *behave* identically and
   *reason* differently — Rust names the heads in an explicit `matches!`, JS
   omits them from a list. A fix must touch both, and the JS side carries no
   record of why the heads are treated this way.
 - **Evidence:** source read at `e77ebcf`, both backends. Runtime behaviour of
-  the emitted JS is **inference, not executed** — CC probe owed.
+  the emitted JS was originally **inference**; slice04 executed the probe on
+  2026-08-08, then fixed both emitters so `return`/`throw`/`break`/`continue`
+  are not wrapped as returned expressions. Residual `break`/`continue`
+  illegality is ordinary JavaScript control-flow validity, not `return <head>`.
 
 ### `D-2607-N6HS` — the string-escape gap is every escape, not `\uNNNN`
 
@@ -223,22 +225,27 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **Guess:** Medium-high. Silent, no diagnostic, and the result is a
   plausible-looking string that will read as a typo in someone's data rather
   than a compiler gap. This *is* arc15's class.
-- **Kind:** `trap` · **Status:** `routed` →
-  `arc15-.../slice04-sibling-traps/liveness-recheck.md` (§ID-33).
+- **Kind:** `trap` · **Status:** `closed` →
+  `arc15-.../slice04-sibling-traps/closing-report.md`.
 - **Good news for scoping:** the two readers are in **exact parity** — same four
   escapes, same catch-all — so a fix lands symmetrically with no divergence to
   reconcile first.
-- **Also owed:** the guide entry (`docs/guides/01-core-idioms.md:1103`) is
-  narrower than the defect and needs re-scoping with the fix → arc07.
+- **Closure:** slice04 taught both readers the standard escape set
+  (`\r`, `\0`, `\b`, `\f`, `\v`, `\/`, `\'`, `\xNN`, `\uNNNN`, `\u{...}`) and
+  rejects malformed or unknown escapes instead of silently dropping the
+  backslash. The guide entry was re-scoped in the same slice.
 
 ### `D-2607-3XKP` — a build flag silently changes what a function returns
 
-- **What:** the `fn` return-wrap is gated on `has_type_checks`, which is
+- **What:** the `fn` return-wrap was gated on `has_type_checks`, which is
   `!ctx.strip_assertions && <params are typed>`. So a typed multi-statement `fn`
   that returns correctly in a normal build **returns `undefined` under
   `--strip-assertions`** — the wrap is skipped, the arrow gets a block body, and
-  the value is discarded. The same silent loss is the *default* for untyped
-  multi-statement `fn`.
+  the value is discarded. The liveness note also described untyped
+  multi-statement `fn` as the same silent class; the 2026-08-08 execution probe
+  corrected that premise for current 0.6.x: JS rejects `(fn (x) ...)`, while
+  Rust mis-lowers it as a bad plain call. That mismatch is tracked separately
+  as `D-2608-H7FN`.
 - **Where:** `emitter/forms.rs` `emit_fn_expr` (the `else` arm →
   `items.extend(emitted_body)`) + `codegen/emit.rs` `emit_arrow`
   (`body.len() > 1` → `emit_block_body`). JS: `classifier.js` `case "Fn"`,
@@ -249,13 +256,34 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **Guess:** **High.** Silent, value-destroying, and *conditional on a build
   flag* — so it can pass every test in a normal build and fail in a stripped
   one. Worse than the trap ID-32 is named for.
-- **Kind:** `trap` · **Status:** `routed` →
-  `arc15-.../slice04-sibling-traps/liveness-recheck.md` (§ID-32(b)).
+- **Kind:** `trap` · **Status:** `closed` →
+  `arc15-.../slice04-sibling-traps/closing-report.md`.
 - **Parent:** `D-2607-Z5KN` — **zero test coverage in either compiler**
   (`grep "return return"` → 0 hits; no escape-gap test either). Another
   instance of *the uncovered case is the one that ships wrong*.
-- **Evidence:** source read at `e77ebcf`, both backends; runtime claim is
-  **inference** — CC probe owed before slice04 is scoped.
+- **Evidence:** source read at `e77ebcf`, both backends; runtime claim was
+  **inference** until slice04. The 2026-08-08 probe reproduced the stripped
+  Rust `undefined` return, then verified `--strip-assertions` emits `return y`
+  and runs as `2`.
+
+### `D-2608-H7FN` — Rust mis-lowers bare-parameter `fn` instead of rejecting it
+
+- **What:** current docs and JS behaviour require typed `fn` parameters:
+  `(fn (x) ...)` should be a surface compile error. The 2026-08-08 slice04
+  probe found that JS rejects the shape, but Rust compiles it as a plain call to
+  `fn(...)`, yielding runtime `ReferenceError: fn is not defined`.
+- **Where:** Rust's recursive surface classification path does not reject this
+  nested `fn` form before emitter/codegen fallback. The direct classifier
+  helper already errors on non-keyword parameter entries; the missing piece is
+  applying that rejection on the nested compile path.
+- **How found:** `cc-implementation` — arc15 slice04 execution probe.
+- **Guess:** Medium. This is a loud failure rather than a silent miscompile, so
+  it is outside slice04's fixed silent-return headline, but it is a compiler
+  parity and language-safety defect.
+- **Kind:** `bug` · **Status:** `open` → arc15 fast-follow or arc03 compiler
+  coherence follow-up.
+- **Parent:** `D-2607-Z5KN` — the direct case was not covered by cross-backend
+  execution tests.
 
 ### `D-2607-W2FJ` — the governance document cannot satisfy the rule it carries
 
