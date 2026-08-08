@@ -29,7 +29,7 @@ threading (`(-> (express parts) (:join ""))`). DD-64 is its design.
 | **slice01 · reject-method-on-expr + guide migration** | Classifier **error** on `(<non-atom-head> :kw …)` with a threading fix-it + tests; **migrate the guide sites** that teach the trap to threading + repoint ID-31/ID-41/09-anti-patterns (ID-47). Landed as a **recursive `validate_method_calls` pass** in the compile pipeline (dispatch-only was insufficient for nested traps). | **CDC-verified** (`9ca9c7e`; host reconcile pending) |
 | **slice02 · lint rule** | arc05 `lykn lint` rule flagging `(<non-atom-head> :kw …)` with the threading fix-it. **MUST reuse the recursive `walk_method_calls` detection** (not a dispatch branch) so lint/check agree with compile on nested traps (slice01 carry-forward). Also wire the recursive pass into `check_strict`. | Planned (post-slice01) |
 | **slice03 · type-safe method-check (hardening)** | **DEFERRED (operator, 2026-07-22 — keep B).** The post-classify premise **failed**: classification leaves *nested* exprs raw (`Bind.value`/`FuncClause.body` are `SExpr`), so a nested guarded `match` stays raw and its `((pattern) :when …)` keeps the trap shape (CC proved vs `data-types.lykn`). Match-awareness is therefore **irreducible** without a full classifier rewrite (**Option C → 0.7.x backlog, research**). B (structural `is_match_clause`/`ptr::eq` exemption) is **retained** for 0.6.0; document the borrow invariant. | **Deferred → 0.7.0 (Option C)** |
-| **slice04 · sibling traps** | Assess whether still-live compiler traps and fold in: **ID-32** `return return` (typed `fn` + explicit `return` → double return), **ID-33** `\uNNNN` not processed (reader — literal Unicode only). Each: is it still a *silent* miscompile on current lykn? → error/warn + guide. **Shaped, not detailed** (plan-late). | Planned (shaped) |
+| **slice04 · sibling traps** | ~~Assess whether still-live … **ID-32** `return return`, **ID-33** `\uNNNN` not processed … **Shaped, not detailed**.~~ **Liveness re-check DONE 2026-07-25** ([`slice04-sibling-traps/liveness-recheck.md`](./slice04-sibling-traps/liveness-recheck.md)): **both live on both backends, and neither is what its guide entry says.** ID-32 is *two* traps of *two* severities — (b) untyped-or-`--strip-assertions` `fn` silently returns `undefined` (**arc15's class, and the headline**, `D-2607-3XKP`) vs (a) `return return`, which emits **invalid JS** and so fails loudly (`require` genus, not this arc's charter). ID-33's real gap is **every escape except `\n \t \\ \"`**, not just `\uNNNN` (`D-2607-N6HS`) — both readers in exact parity. **New sibling:** the same wrap fires for `throw`/`break`/`continue` (`D-2607-K4WT`). **Neither trap has a single test in either compiler.** | **Re-checked; scoping blocked on one CC probe** (execute the four shapes on both backends so the severity column stops being inference) |
 
 _Plan late, plan deep: slice01 is detailed against the CDC sweep; slice02 is
 shaped; slice03 is a holding pen for siblings the arc06 audit surfaced, each of
@@ -60,6 +60,31 @@ arc scale. Opens here; per-row walk closes in `closing-report.md`.
 | A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | open | | sweep said 0 source hits |
 
 ## 5. Version History
+
+### v1.4 — 2026-07-25 (slice04 liveness re-check; scope corrected *before* scoping)
+
+**Which child surfaced it:** slice04's own pre-scoping re-check, run before the
+open set was written — *plan late, plan deep* working as intended.
+
+The row assumed **two items of one kind**. The re-check found **four items of
+three kinds**, and moved the centre of gravity: the dangerous trap is not the
+`return return` the row is named for — that emits invalid JS and fails loudly —
+but the **silent** `undefined` return from an untyped (or `--strip-assertions`)
+multi-statement `fn`, which is build-flag-conditional and can pass every test in
+a normal build while failing in a stripped one. ID-33 is broader than its guide
+entry. A fourth item (`throw`/`break`/`continue` in last position) was not
+recorded anywhere.
+
+Three register rows opened: `D-2607-3XKP` (high), `D-2607-N6HS` (medium-high),
+`D-2607-K4WT` (low-medium). Two guide entries — `01-core-idioms.md` ID-32 and
+ID-33 — are narrower than the defects they describe and are owed a re-scope
+alongside the fix → arc07.
+
+**Deliberately not done: the slice open set.** Scoping against inference would
+repeat `D-2607-3VXM` (shape-assertions standing in for execution). CDC cannot
+run the toolchain, so the runtime half of every finding is marked `inference`;
+one CC probe converts it to executed fact and *then* the slice is scoped.
+Disclosed, not dropped.
 
 ### v1.3 — 2026-07-22 (slice03 hardening DEFERRED — premise failed)
 The post-classify hardening's premise ("`MatchClause` destructuring dissolves the

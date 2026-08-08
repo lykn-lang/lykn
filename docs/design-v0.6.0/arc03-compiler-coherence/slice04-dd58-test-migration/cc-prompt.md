@@ -77,9 +77,9 @@ current flavor enumeration when categorising forms.
 - **You MUST NOT modify dispatch tables.** Those are frozen as
   M17 + M18 + polish left them.
 - **You MUST NOT touch the JS compiler.**
-- **You MUST NOT auto-pass safety-bypass flags** per CLAUDE.md.
+- **You MUST NOT auto-pass safety-bypass flags** per AGENTS.md.
 - **You MUST NOT auto-accept any insta snapshot diffs** per
-  CLAUDE.md "Snapshot testing."
+  AGENTS.md "Snapshot testing."
 
 ---
 
@@ -87,7 +87,7 @@ current flavor enumeration when categorising forms.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot testing"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot testing"
 4. **The M19 ledger** at
    `workbench/milestones/M19-dd58-phase1c-test-migration-and-strict-mode-enforcement-ledger.md`.
 5. **DD-58** at `docs/design/05-active/0059-dd-58-*.md`. Focus on:
@@ -191,7 +191,7 @@ report MUST:
      reason).
 5. Include a "Substrate-rule compliance" section addressing
    six rules:
-   - CLAUDE.md safety gates
+   - AGENTS.md safety gates
    - LEDGER_DISCIPLINE no-silent-rewrite
    - philosophy.md Principle 1
    - philosophy.md Principle 3

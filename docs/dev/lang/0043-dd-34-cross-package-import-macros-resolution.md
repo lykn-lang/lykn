@@ -553,5 +553,5 @@ use case emerges.
    specifier-style reference.
 3. Update the book's macro chapter to mention the three
    specifier forms.
-4. Update `CLAUDE.md` and the relevant conversation bootstrap
+4. Update `AGENTS.md` and the relevant conversation bootstrap
    documents.

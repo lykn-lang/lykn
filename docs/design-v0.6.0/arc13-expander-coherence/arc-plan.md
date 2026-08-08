@@ -233,7 +233,7 @@ ancestry reconcile folds into the arc-close gate). **slice07 CLOSED**
 class was already retired by slice06's constructor; the real work is
 **~85 field-naming pattern sites across two crates** — the phasing
 plan's "separate `lykn-cli` `SExpr`" premise was **false** (a CDC
-scoping error inherited from CLAUDE.md's stale architecture note —
+scoping error inherited from AGENTS.md's stale architecture note —
 routed to arc07 as a docs fix). **Operator decisions (2026-07-07):**
 (1) **two slices** — the un-numbered *atom-payload-privacy* entry splits
 into **slice08 · accessor-sweep** (convert while fields public; green

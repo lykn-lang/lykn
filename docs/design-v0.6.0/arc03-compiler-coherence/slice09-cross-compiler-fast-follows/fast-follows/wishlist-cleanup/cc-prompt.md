@@ -54,7 +54,7 @@ re-diagnosing already-fixed divergences.
   in Turn 2). This is the methodology gate that prevents the
   "literal criterion met, substantive gap" pattern.
 - **You MUST NOT auto-pass safety-bypass flags** to underlying
-  tools per CLAUDE.md "Lykn CLI safety gates."
+  tools per AGENTS.md "Lykn CLI safety gates."
 
 ---
 
@@ -62,7 +62,7 @@ re-diagnosing already-fixed divergences.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — the protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — subagent rules.
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot
    testing" sections.
 4. `workbench/2026-05-15-M16-closing-report.md` — the M16-2
    divergence classes are listed in §"Findings for fast-follow."
@@ -314,7 +314,7 @@ For each of C-1 through C-6, implement the CDC-approved direction.
 - **Do NOT drop any item.** All 12 must reach final status. If
   an item proves unactionable, raise an amendment request — do
   not silently skip.
-- **Do NOT auto-accept any insta snapshot diffs** per CLAUDE.md
+- **Do NOT auto-accept any insta snapshot diffs** per AGENTS.md
   "Snapshot testing."
 - **Do NOT start before Turn 2 of the import-macros divergence
   fast-follow lands.** That work changes the Rust expander's
@@ -345,7 +345,7 @@ closing report MUST:
 2. For each Tier C item, name the direction chosen (a/b/c) AND
    the rationale.
 3. Include a "Substrate-rule compliance" section addressing
-   CLAUDE.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
+   AGENTS.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
    no-spec-softening (particularly for any Tier C class
    promoted to correctness-grade), and partial-adoption check.
 4. Include a "Findings for fast-follow" section logging any

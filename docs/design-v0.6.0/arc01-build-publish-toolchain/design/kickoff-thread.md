@@ -74,7 +74,7 @@ this rule once and not try to invoke git inside the worktree.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — milestone protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — delegation rules.
-3. `assets/ai/CLAUDE.md` — **especially the "Lykn CLI safety gates"
+3. `assets/ai/AGENTS.md` — **especially the "Lykn CLI safety gates"
    section.** This thread's M13 work IS the rule materialization;
    M11 must not weaken safety gates either.
 4. `docs/philosophy.md` — foundational principles. The 0.6.0
@@ -151,7 +151,7 @@ to a hard gate in 0.6.0:
 - Override: `--allow-dirty` opt-in flag for users who explicitly
   accept the risk.
 
-**Critical reference:** `assets/ai/CLAUDE.md` "Lykn CLI safety gates"
+**Critical reference:** `assets/ai/AGENTS.md` "Lykn CLI safety gates"
 section. The rule there says lykn CLI must NOT auto-pass
 `--allow-dirty` to underlying tools (deno publish, cargo publish,
 etc.). M13 implements the *lykn-level* gate consistent with that
@@ -205,7 +205,7 @@ expands during DD-style planning. Discuss with Duncan.
 
 ## Constraints and conventions
 
-- **`CLAUDE.md` "Lykn CLI safety gates" is load-bearing.** M13 is
+- **`AGENTS.md` "Lykn CLI safety gates" is load-bearing.** M13 is
   literally implementing the rule's underlying gate. M11 must not
   weaken any related gates either.
 - **MUST framing for CC prompts.**
@@ -215,7 +215,7 @@ expands during DD-style planning. Discuss with Duncan.
   for golden-file snapshot tests at
   `crates/lykn-cli/src/snapshots/`. M11's build-dir changes likely
   affect these snapshots. **Never auto-accept snapshots** — review
-  each change to verify intent (per CLAUDE.md "Snapshot testing"
+  each change to verify intent (per AGENTS.md "Snapshot testing"
   section).
 - **Workbench is gitignored.**
 

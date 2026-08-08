@@ -261,7 +261,7 @@ Net visible behavior:
 - A `(func ... :returns :T :body (fn ...))` compiles cleanly under Rust but fails under JS Q2=A. This is **why the doc-tests (JS path) fail while `cargo test` (Rust path) passes**.
 - A `(func ... :returns :T :body (try ...))` fails under both — consistent.
 
-This is a divergence-of-truth. Same surface code; different compilers; different answers; different errors. Per CLAUDE.md the JS reader and Rust reader are "parallel implementations of the same S-expression grammar" — but the expanders have grown apart at the *surface macro* layer.
+This is a divergence-of-truth. Same surface code; different compilers; different answers; different errors. Per AGENTS.md the JS reader and Rust reader are "parallel implementations of the same S-expression grammar" — but the expanders have grown apart at the *surface macro* layer.
 
 ---
 

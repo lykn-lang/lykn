@@ -214,7 +214,7 @@ reason to revisit any, STOP and surface to CDC.
 
 1. [`assets/ai/LEDGER_DISCIPLINE.md`](../../assets/ai/LEDGER_DISCIPLINE.md) — protocol (mandatory)
 2. [`assets/ai/SUBAGENT-DELEGATION-POLICY.md`](../../assets/ai/SUBAGENT-DELEGATION-POLICY.md) — subagent rules
-3. [`assets/ai/CLAUDE.md`](../../assets/ai/CLAUDE.md) "Lykn CLI safety gates" + "Snapshot testing"
+3. [`assets/ai/AGENTS.md`](../../assets/ai/AGENTS.md) "Lykn CLI safety gates" + "Snapshot testing"
 4. **DD-58** at `docs/design/05-active/0059-dd-58-*.md`. Focus on:
    - §"Per-layer form enumeration" — kernel-only set + flavor (b)
    - §"The `kernel:<form>` escape" — kernel sub-language identity
@@ -422,9 +422,9 @@ compress at the cost of correctness.
    - **Do NOT change strict's default for production code.** M21+
      scope.
    - **Do NOT touch the JS compiler.**
-   - **Do NOT auto-pass safety-bypass flags** per CLAUDE.md.
+   - **Do NOT auto-pass safety-bypass flags** per AGENTS.md.
    - **Do NOT auto-accept any insta snapshot diffs** per
-     CLAUDE.md.
+     AGENTS.md.
    - **Do NOT exhaustively cover flavor (b) passthroughs.**
      Representative sample only. If CC feels strongly that
      specific additional passthroughs need coverage, surface to
@@ -470,7 +470,7 @@ report MUST:
    substantive escalation from M20-2 preflight).
 5. Include a "Substrate-rule compliance" section addressing six
    rules:
-   - CLAUDE.md safety gates
+   - AGENTS.md safety gates
    - LEDGER_DISCIPLINE no-silent-rewrite
    - philosophy.md Principle 1
    - philosophy.md Principle 3

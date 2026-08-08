@@ -50,7 +50,7 @@ here; route the design questions. Then arc11 closes.
 5. **F-5 — land the docs.** The location-independence conventions (bare
    import-map specifiers; `Deno.cwd()`-anchored fixtures; never
    `import.meta.dirname`) in the home you judge right (guide 16 vs a
-   `test/CONVENTIONS.md` vs CLAUDE.md — say why); the canonical test
+   `test/CONVENTIONS.md` vs AGENTS.md — say why); the canonical test
    command (`deno test --config project.json -A test/` supported; unscoped
    is not — double-runs, needs `-A`) where developers look. File the arc05
    lint-rule candidates in your bubble-up.

@@ -40,7 +40,7 @@ into normal compilation.
 2. **F-2 — strict default-on.** Wire it in: bare `function`/`function*`/`const`/
    `let`/`var` in `.lykn` → the `classify_form_strict` diagnostic; `.lyk` exempt.
    The `(kernel:<form> …)` escape is the sanctioned resolution — **no silent
-   blanket bypass** (CLAUDE.md safety-gates). TDD the compiler change.
+   blanket bypass** (AGENTS.md safety-gates). TDD the compiler change.
 3. **F-3 — migration audit (repo-only), the 5 forms only.** Enumerate every bare
    `const`/`let`/`var`/`function`/`function*` in surface `.lykn` + guide doctests
    (repo grep: ~57 `const`, ~21 `let`, ~14 `function`, ~7 `function*` across ~29

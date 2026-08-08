@@ -77,7 +77,7 @@ Transcript in the closing report.
   one-line constant — else file it for slice02's disposition table);
   freshness-guard interplay; the `--compile-only` UX. → closing report.
 - Suite numbers hold at baseline — relocation must not change what runs.
-- Safety gates (CLAUDE.md): nothing here bypasses git/deno gates; the
+- Safety gates (AGENTS.md): nothing here bypasses git/deno gates; the
   publish dirty-check keeps doing its job (there'll just be less noise for
   it to catch).
 - Leave `docs/design-v0.6.0/**` to CDC except your closing report. Source

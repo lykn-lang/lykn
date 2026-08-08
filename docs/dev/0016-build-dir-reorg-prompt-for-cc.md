@@ -20,7 +20,7 @@ the `crates/lykn-cli/` surface area and are conceptually coupled:
   override. The override does NOT auto-inject `--allow-dirty` into
   underlying `deno publish` / `npm publish` invocations — those have
   their own gates the user controls independently. This is the
-  materialization of the lykn-level half of CLAUDE.md's "Lykn CLI
+  materialization of the lykn-level half of AGENTS.md's "Lykn CLI
   safety gates" rule.
 
 All twelve design questions that this milestone touched have been
@@ -113,9 +113,9 @@ periodically — but don't rebase mid-iteration without good reason.
 ## Required reading
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — protocol.
-2. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" section — load-bearing
+2. `assets/ai/AGENTS.md` "Lykn CLI safety gates" section — load-bearing
    for M13. The rule materialization is what M13 *is*.
-3. `assets/ai/CLAUDE.md` "Snapshot testing (insta)" section — load-
+3. `assets/ai/AGENTS.md` "Snapshot testing (insta)" section — load-
    bearing for M11. Manual review only; `cargo insta accept` is
    forbidden.
 4. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — implementation is
@@ -167,7 +167,7 @@ implementing Spec 9 (`--allow-dirty` override), the lykn-level gate is
 bypassed. **Do NOT then pass `--allow-dirty` through to
 `deno publish` / `npm publish`** — those have their own gates that are
 the user's separate concern. The precedent for this antipattern is
-commit `64bb301` (reverted), named in CLAUDE.md. The rule's reasoning:
+commit `64bb301` (reverted), named in AGENTS.md. The rule's reasoning:
 "dry-runs against an uncommitted tree don't tell the user what would
 actually publish, so weakening the gate defeats the purpose." The
 same logic applies even to real publishes: lykn's gate and the
@@ -287,10 +287,10 @@ DD-50.5 and DD-50.6 applies — diagnose and resolve, don't work around.
 - Per LEDGER_DISCIPLINE: iteration budget is 5; expect 3–4. If the
   fourth iteration doesn't close the milestone, surface scope concerns
   rather than starting iteration 5 reflexively.
-- Per CLAUDE.md "Lykn CLI safety gates": M13 IS the rule's lykn-level
+- Per AGENTS.md "Lykn CLI safety gates": M13 IS the rule's lykn-level
   materialization. Implementation defects here propagate into the
   rule's credibility going forward.
-- Per CLAUDE.md "Snapshot testing": never auto-accept. The protocol
+- Per AGENTS.md "Snapshot testing": never auto-accept. The protocol
   expects manual review.
 - Per SUBAGENT-DELEGATION-POLICY: implementation is thinking work,
   closing report is thinking work — both stay in CC's main context.

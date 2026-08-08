@@ -57,9 +57,9 @@ extension gating.
 - **You MUST NOT touch the emitter, codegen, JS compiler, or
   existing tests.** The lambda emission fix (DD-58 Breaking
   Change #3) and test migration are separate milestones.
-- **You MUST NOT auto-pass safety-bypass flags** per CLAUDE.md
+- **You MUST NOT auto-pass safety-bypass flags** per AGENTS.md
   "Lykn CLI safety gates."
-- **You MUST NOT auto-accept insta snapshot diffs** per CLAUDE.md
+- **You MUST NOT auto-accept insta snapshot diffs** per AGENTS.md
   "Snapshot testing."
 
 ---
@@ -68,7 +68,7 @@ extension gating.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot testing"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot testing"
 4. **The M18 ledger** at
    `workbench/milestones/M18-dd58-phase1b-closed-namespace-dispatch-and-strict-mode-ledger.md`.
 5. **DD-58** at
@@ -153,7 +153,7 @@ report MUST:
    bundled fix in a sibling row, disclose honestly.
 3. Include a "Substrate-rule compliance" section addressing six
    rules:
-   - CLAUDE.md safety gates
+   - AGENTS.md safety gates
    - LEDGER_DISCIPLINE no-silent-rewrite
    - philosophy.md Principle 1
    - philosophy.md Principle 3

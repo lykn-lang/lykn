@@ -618,7 +618,7 @@ tests can be written:
    `test/integration/publishing/fixtures/synthetic/`.
 5. Write the skeleton of each Layer 2 scenario file with `#[ignore]`
    on individual tests until the corresponding phase lands.
-6. Document the `cargo insta review` workflow in `CLAUDE.md`.
+6. Document the `cargo insta review` workflow in `AGENTS.md`.
 
 ### Phase 1: CI workflows
 

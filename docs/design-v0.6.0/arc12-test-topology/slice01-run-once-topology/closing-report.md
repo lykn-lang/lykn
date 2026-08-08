@@ -68,7 +68,7 @@ already make it cheap on warm trees; this removes the redundant *profile*.
 ## F-6 — Counts, docs, timing
 
 **Docs updated so `make check` is the canonical bar** (killing the `&& make
-test-docs` habit at the source): `CLAUDE.md` verify commands + `test/
+test-docs` habit at the source): `AGENTS.md` verify commands + `test/
 CONVENTIONS.md` now state `make check` as the full bar and `make test-docs` as
 the doc-focused iteration tool (no longer run alongside).
 

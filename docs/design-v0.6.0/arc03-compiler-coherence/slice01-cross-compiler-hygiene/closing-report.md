@@ -120,7 +120,7 @@ Commits in order:
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No `--allow-dirty`, `--force`, `--no-verify`,
+1. **AGENTS.md safety gates:** No `--allow-dirty`, `--force`, `--no-verify`,
    or equivalent flags injected. Verified by code review of all modified files.
 
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 8 ledger rows addressed.

@@ -97,7 +97,7 @@ This milestone does **not**:
 
 1. [`assets/ai/LEDGER_DISCIPLINE.md`](../../assets/ai/LEDGER_DISCIPLINE.md) — protocol (mandatory)
 2. [`assets/ai/SUBAGENT-DELEGATION-POLICY.md`](../../assets/ai/SUBAGENT-DELEGATION-POLICY.md) — subagent rules
-3. [`assets/ai/CLAUDE.md`](../../assets/ai/CLAUDE.md) "Lykn CLI safety gates" + "Snapshot testing"
+3. [`assets/ai/AGENTS.md`](../../assets/ai/AGENTS.md) "Lykn CLI safety gates" + "Snapshot testing"
 4. **DD-58** at `docs/design/05-active/0059-dd-58-*.md`. Focus on:
    - §"Per-layer form enumeration" (kernel-only list + surface alternatives)
    - §"Breaking changes inventory" (canonical migration patterns)
@@ -236,7 +236,7 @@ differently:
      scope. M19's runner change is scoped to test files only.
    - **Do NOT modify dispatch tables.** Those are frozen.
    - **Do NOT touch the JS compiler.**
-   - **Do NOT auto-pass safety-bypass flags** per CLAUDE.md.
+   - **Do NOT auto-pass safety-bypass flags** per AGENTS.md.
 
 6. **If the audit surfaces a pattern the polish prompt didn't
    address** (e.g., a kernel-only form not in DD-58's

@@ -57,7 +57,7 @@ slice01).
 |---|------|-------------|
 | 6 | Reserved-plumbing sweep of the CLI surface | **wired/clean** — only `_paths` (#5, tracked) and `_start` (N2, tracked) remain underscore-silenced; both dispositioned. No other hidden flags or dropped `Option`s (the `--out-dir` case was slice01). |
 | 7 | Test-source location-independence conventions | **wired** (F-5) — `test/CONVENTIONS.md`. |
-| 8 | Canonical test command | **wired** (F-5) — `test/CONVENTIONS.md` + `CLAUDE.md`. |
+| 8 | Canonical test command | **wired** (F-5) — `test/CONVENTIONS.md` + `AGENTS.md`. |
 | 9 | Doctest-dir harmonization | **wired** (F-6) — `target/test/doctest` → `target/lykn/test/doctest`. |
 
 **Proposed tracked homes (for CDC to instantiate as rows):** items 1, 2, N1–N4
@@ -95,7 +95,7 @@ routed home and marking "do not remove before the routed decision."
 *this repo's* tests must be written), not user-facing "how to test lykn" — so
 they live in **`test/CONVENTIONS.md`** (new; beside the tests, where an author
 editing a test looks), not `docs/guides/16-testing.md` (user docs). The
-**canonical command** is documented there *and* reinforced in **`CLAUDE.md`**
+**canonical command** is documented there *and* reinforced in **`AGENTS.md`**
 (the contributor command reference, which already carried the `deno test`
 line) with the "scope to `test/`, `-A` required, unscoped unsupported" caveat.
 Content: bare import-map specifiers (never relative source imports);

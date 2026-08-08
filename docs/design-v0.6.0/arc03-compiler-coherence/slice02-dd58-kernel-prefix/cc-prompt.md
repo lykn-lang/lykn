@@ -52,7 +52,7 @@ subsequent milestones build on stable ground.
 - **You MUST NOT add a strict-mode flag** — M18 scope.
 - **You MUST NOT touch the JS compiler** — JS-side `kernel:`
   parity is a separate milestone once DD-37's classifier lands.
-- **You MUST NOT auto-pass safety-bypass flags** per CLAUDE.md
+- **You MUST NOT auto-pass safety-bypass flags** per AGENTS.md
   "Lykn CLI safety gates."
 
 ---
@@ -61,7 +61,7 @@ subsequent milestones build on stable ground.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — the protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — subagent rules.
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot testing".
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot testing".
 4. **The M17 ledger** at
    `workbench/milestones/M17-dd58-phase1a-kernel-prefix-recognition-ledger.md`.
 5. **DD-58 itself** at
@@ -141,7 +141,7 @@ report MUST:
    is part of the deliverable.
 3. Include a "Substrate-rule compliance" section addressing six
    rules:
-   - CLAUDE.md safety gates
+   - AGENTS.md safety gates
    - LEDGER_DISCIPLINE no-silent-rewrite
    - philosophy.md Principle 1
    - philosophy.md Principle 3

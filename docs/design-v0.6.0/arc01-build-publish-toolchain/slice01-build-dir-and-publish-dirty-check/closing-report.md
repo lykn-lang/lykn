@@ -263,7 +263,7 @@ against a tree that was dirtied by the dist-staging step itself.
 
 ## Substrate-rule compliance
 
-### `CLAUDE.md` "Lykn CLI safety gates" — no auto-injection of safety-bypass flags
+### `AGENTS.md` "Lykn CLI safety gates" — no auto-injection of safety-bypass flags
 
 `grep -nE 'allow.dirty' crates/lykn-cli/src/main.rs` returns matches ONLY in:
 - Line 122: clap `#[arg(long)]` definition
@@ -276,7 +276,7 @@ against a tree that was dirtied by the dist-staging step itself.
 arg-construction code. The `--allow-dirty` flag is consumed at the lykn
 level and never forwarded.
 
-### `CLAUDE.md` "Snapshot testing (insta)" — never auto-accept
+### `AGENTS.md` "Snapshot testing (insta)" — never auto-accept
 
 `cargo insta accept` was NOT invoked anywhere in this milestone. All 7
 snapshot tests passed unchanged. The snapshot-review record at

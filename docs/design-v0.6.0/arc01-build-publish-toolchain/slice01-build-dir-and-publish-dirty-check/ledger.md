@@ -24,7 +24,7 @@ Two 0.6.0 commitments from `docs/philosophy.md` `§0.6.0 commitments` land in th
 - **`lykn publish` uncommitted-changes check (M13).** Refuse to publish when
   the working tree has uncommitted changes or untracked files. Provide
   `--allow-dirty` opt-in override. Materializes the lykn-level half of the
-  CLAUDE.md "Lykn CLI safety gates" rule: the lykn CLI owns its own gate at
+  AGENTS.md "Lykn CLI safety gates" rule: the lykn CLI owns its own gate at
   the surface, and never auto-passes safety-bypass flags to underlying tools.
 
 These two milestones are bundled because they (a) both touch
@@ -119,7 +119,7 @@ here so CC has the dispositions in-context without needing to re-derive.
    plus the main checkout's DD-50.6 fast-follow) are in planning/
    investigation mode, not coding. M11 lands against whatever
    `release/0.6.x` head exists at coding time.
-6. **Snapshot review.** Manual review per CLAUDE.md "Snapshot testing"
+6. **Snapshot review.** Manual review per AGENTS.md "Snapshot testing"
    rule. `cargo insta review` only; **never `cargo insta accept`**.
 
 **M13 dispositions:**
@@ -152,7 +152,7 @@ here so CC has the dispositions in-context without needing to re-derive.
    independently. The lykn-level gate runs first; the underlying gate runs
    second; neither auto-passes anything to the other.
 
-   See CLAUDE.md "Lykn CLI safety gates" — this is the materialization of
+   See AGENTS.md "Lykn CLI safety gates" — this is the materialization of
    the rule's lykn-level half. The rule's underlying-tool half (don't
    auto-pass `--allow-dirty` to `deno publish` / `cargo publish` /
    `npm publish`) is already in place in the current `cmd_publish` and
@@ -177,9 +177,9 @@ Emitted to stderr, single warning per invocation, command proceeds.
 ## Source materials (read in this order)
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — protocol (mandatory)
-2. `assets/ai/CLAUDE.md` **"Lykn CLI safety gates" section** — load-bearing
+2. `assets/ai/AGENTS.md` **"Lykn CLI safety gates" section** — load-bearing
    for M13. The rule materialization is what M13 *is*.
-3. `assets/ai/CLAUDE.md` **"Snapshot testing (insta)" section** — load-
+3. `assets/ai/AGENTS.md` **"Snapshot testing (insta)" section** — load-
    bearing for M11. Manual review only.
 4. `docs/philosophy.md` `§0.6.0 commitments` — the contract M11 and M13
    are paying off.
@@ -402,7 +402,7 @@ echo "EXIT: ${PIPESTATUS[0]}"
 
 ### Spec 7 — Snapshot review (M11M13-7)
 
-Per CLAUDE.md "Snapshot testing (insta)" rule, **never** `cargo insta
+Per AGENTS.md "Snapshot testing (insta)" rule, **never** `cargo insta
 accept`. After M11 changes land, snapshot tests in
 `crates/lykn-cli/src/snapshots/` may show diffs (paths in generated
 `deno.json` / `package.json` content may shift, and content of staged
@@ -544,7 +544,7 @@ rm workbench/verify/m11-m13/dirty-test-marker.txt
 
 If the grep returns a match in a `Command::new("deno")` or
 `Command::new("npm")` arg-construction block, that is an auto-injection
-violation per CLAUDE.md "Lykn CLI safety gates" — DO NOT close this row.
+violation per AGENTS.md "Lykn CLI safety gates" — DO NOT close this row.
 
 ### Spec 10 — Documentation alignment (M11M13-10)
 
@@ -595,8 +595,8 @@ substrate-rule compliance section. Starter rules for M11+M13:
 
 | Rule | Touched by | Expected evidence shape |
 |------|-----------|-------------------------|
-| `CLAUDE.md` "Lykn CLI safety gates" — no auto-injection of safety-bypass flags | Spec 9 (`--allow-dirty`) | The grep in Spec 9 returns matches ONLY in the clap def and the lykn-level dirty-check logic, NEVER in a deno/npm Command's args. Documented in the closing report. |
-| `CLAUDE.md` "Snapshot testing (insta)" — never auto-accept | Spec 7 (snapshot review) | `cargo insta accept` was NOT invoked anywhere in the milestone. `cargo insta review` was used; rationales recorded per-snapshot. Or: no snapshots changed, recorded explicitly. |
+| `AGENTS.md` "Lykn CLI safety gates" — no auto-injection of safety-bypass flags | Spec 9 (`--allow-dirty`) | The grep in Spec 9 returns matches ONLY in the clap def and the lykn-level dirty-check logic, NEVER in a deno/npm Command's args. Documented in the closing report. |
+| `AGENTS.md` "Snapshot testing (insta)" — never auto-accept | Spec 7 (snapshot review) | `cargo insta accept` was NOT invoked anywhere in the milestone. `cargo insta review` was used; rationales recorded per-snapshot. Or: no snapshots changed, recorded explicitly. |
 | `docs/philosophy.md` Principle 1 — no `.js` in source tree | Spec 2, Spec 6 (scaffold) | `find packages -name "*.js"` returns 0 after a fresh build. Scaffold-generated projects produce 0 source-tree `.js` after `lykn build`. |
 | `docs/philosophy.md` Decided design question #1 — `target/lykn/build/` and `target/lykn/dist/` | Spec 2, Spec 3, Spec 4 | Compile output at `target/lykn/build/`; staging at `target/lykn/dist/`; both per-package. |
 | `docs/philosophy.md` Decided design question #4 — lykn-owned publish gate | Spec 8, Spec 9 | Dirty check runs at the lykn level before any underlying tool. `--allow-dirty` bypasses only the lykn gate, not underlying gates. |
@@ -662,9 +662,9 @@ git log --grep="M11\|M13\|build-dir\|publish.*dirty\|allow-dirty" --format="%H %
 | M11M13-4 | `lykn build` (no flag) compiles whole project to `target/lykn/build/<pkg>/` | After `rm -rf target/lykn/ && lykn build`: for each pkg in {lang, testing, browser}, `find target/lykn/build/$pkg -name "*.js" \| wc -l` returns >0 | serious | Spec 4; §Design dispositions M11-Q2 | open | | |
 | M11M13-5 | `project.json` imports repointed; `lykn test` exits 0 | `grep -E '"lang/"\s*:\s*"\./target/lykn/build/lang/"' project.json` returns 1; `rm -rf target/lykn/ && lykn build && lykn test` exits 0 | serious | Spec 5; §Design dispositions M11-Q4 | open | | |
 | M11M13-6 | Scaffold generates new-layout project; fresh scaffold's `lykn build && lykn test` succeeds | In scratch dir: `lykn new <name> && cd <name> && grep -E "^target/$" .gitignore` returns 1; `grep -E '"\./target/lykn/build/' project.json \| wc -l` returns >0; `lykn build && lykn test` exits 0 | serious | Spec 6 | open | | |
-| M11M13-7 | All insta snapshots reviewed and either accepted with rationale or rejected; no auto-accept | `cargo insta test --review --check` returns 0 pending; `workbench/verify/m11-m13/snapshot-review.md` exists with one section per reviewed snapshot (or explicit "no diffs" record) | correctness | Spec 7; CLAUDE.md "Snapshot testing" | open | | |
+| M11M13-7 | All insta snapshots reviewed and either accepted with rationale or rejected; no auto-accept | `cargo insta test --review --check` returns 0 pending; `workbench/verify/m11-m13/snapshot-review.md` exists with one section per reviewed snapshot (or explicit "no diffs" record) | correctness | Spec 7; AGENTS.md "Snapshot testing" | open | | |
 | M11M13-8 | `lykn publish` refuses on dirty tree with Cargo-style error | In dirty tree: `lykn publish --jsr --dry-run` exits non-zero; stderr contains `error: lykn publish: working tree has uncommitted changes` AND `Commit or stash these changes, or pass --allow-dirty` | serious | Spec 8; philosophy.md DD #4; 0.6.0 commitment | open | | |
-| M11M13-9 | `--allow-dirty` bypasses lykn gate; no auto-injection to underlying tools | In dirty tree: `lykn publish --jsr --dry-run --allow-dirty` exits 0 (or structural-failure pattern); `grep -nE '"--allow-dirty"' crates/lykn-cli/src/main.rs` returns matches ONLY in clap def + dirty-check logic, NEVER in a deno/npm Command::new args block | serious | Spec 9; CLAUDE.md "Lykn CLI safety gates" — the rule materialization | open | | |
+| M11M13-9 | `--allow-dirty` bypasses lykn gate; no auto-injection to underlying tools | In dirty tree: `lykn publish --jsr --dry-run --allow-dirty` exits 0 (or structural-failure pattern); `grep -nE '"--allow-dirty"' crates/lykn-cli/src/main.rs` returns matches ONLY in clap def + dirty-check logic, NEVER in a deno/npm Command::new args block | serious | Spec 9; AGENTS.md "Lykn CLI safety gates" — the rule materialization | open | | |
 | M11M13-10 | philosophy.md Known Violations entries M11 resolves are marked resolved | `grep -cE "^### Resolved by M11" docs/philosophy.md` returns 1; original-text entries (`lykn compile` source-tree output, scaffold `.gitignore`, source `exports` framing) preserved as historical record under the resolved subsection | correctness | Spec 10; philosophy.md alignment | open | | |
 | M11M13-11 | Closing report includes substrate-rule compliance section addressing the 6 starter rules | `grep -cE "^## Substrate-rule compliance$" workbench/2026-*-M11-M13-closing-report.md` returns 1; each of the 6 starter rules named in the section | correctness | Spec 11; Phase 2 methodology improvement #1 | open | | |
 | M11M13-12 | Single coherent commit chain naming M11/M13 | `git log --grep="M11\|M13\|build-dir\|publish.*dirty\|allow-dirty" --oneline` returns ≥3 commits | polish | Spec 12; LEDGER_DISCIPLINE evidence-trail discipline | open | | |
@@ -676,11 +676,11 @@ git log --grep="M11\|M13\|build-dir\|publish.*dirty\|allow-dirty" --format="%H %
 1. **Read `LEDGER_DISCIPLINE.md` first.** The protocol applies. Iteration
    budget is 5; expected 3–4.
 
-2. **Read `CLAUDE.md` "Lykn CLI safety gates" section before Spec 9.**
+2. **Read `AGENTS.md` "Lykn CLI safety gates" section before Spec 9.**
    M13 is the materialization of the rule's lykn-level half. The
    underlying-tool half (no auto-injection) must be preserved.
 
-3. **Read `CLAUDE.md` "Snapshot testing (insta)" section before Spec 7.**
+3. **Read `AGENTS.md` "Snapshot testing (insta)" section before Spec 7.**
    Manual review only. `cargo insta accept` is forbidden.
 
 4. **Order of work:**
@@ -719,8 +719,8 @@ git log --grep="M11\|M13\|build-dir\|publish.*dirty\|allow-dirty" --format="%H %
    correctness claim.** If you find yourself wanting to pass
    `--allow-dirty` through to `deno publish` "for convenience" or
    "because dry-run benefits," STOP. That is precisely the antipattern
-   the CLAUDE.md safety-gates rule was written to prevent. The
-   commit `64bb301` precedent (reverted) is named in CLAUDE.md as the
+   the AGENTS.md safety-gates rule was written to prevent. The
+   commit `64bb301` precedent (reverted) is named in AGENTS.md as the
    incident the rule responds to. Honour the rule.
 
 8. **For Spec 10: take care moving philosophy.md entries.** The doc is

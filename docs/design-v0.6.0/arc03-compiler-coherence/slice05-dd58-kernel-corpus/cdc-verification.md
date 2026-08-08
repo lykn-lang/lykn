@@ -327,7 +327,7 @@ cleanup. Minor.
 
 All six rules addressed in CC's report. Independent verification:
 
-1. **CLAUDE.md safety gates:** no bypass flags. ✓
+1. **AGENTS.md safety gates:** no bypass flags. ✓
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** all 14 rows walked. ✓
 3. **philosophy.md Principle 1:** `test/kernel/` added cleanly. ✓
 4. **philosophy.md Principle 3:** kernel tests validate codegen

@@ -52,11 +52,11 @@ before the implementation.
   implementation the bug class behaves differently from the
   fast-follow description, raise it before working around.
 - **You MUST NOT auto-pass safety-bypass flags** to underlying
-  tools per CLAUDE.md "Lykn CLI safety gates."
+  tools per AGENTS.md "Lykn CLI safety gates."
 - **You MUST NOT touch the lambda expansion divergence.** That
   one is deferred to DD-58 per the wishlist CDC review.
 - **You MUST NOT auto-accept any insta snapshot diffs.** Per
-  CLAUDE.md "Snapshot testing." Manual review only.
+  AGENTS.md "Snapshot testing." Manual review only.
 
 ---
 
@@ -64,7 +64,7 @@ before the implementation.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot testing"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot testing"
 4. The wishlist closing report at
    `workbench/2026-05-16-wishlist-cleanup-closing-report.md` —
    §"Findings for fast-follow" names the four items + the
@@ -239,7 +239,7 @@ closing report MUST:
 4. If D-2 requires upstream astring work, name the disposition
    (workaround landed; defer; etc.).
 5. Include a "Substrate-rule compliance" section addressing
-   CLAUDE.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
+   AGENTS.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
    the TDD-first discipline (named explicitly), and partial-
    adoption check.
 6. Include a "Findings for fast-follow" section logging any new

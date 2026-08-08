@@ -40,7 +40,7 @@ single-step cleanup. Both can land in the same commit chain.
   CDC approval of the canonical direction. Surface the diagnosis
   artifact for review; wait for direction confirmation.
 - **You MUST NOT auto-pass safety-bypass flags** to underlying
-  tools per CLAUDE.md "Lykn CLI safety gates."
+  tools per AGENTS.md "Lykn CLI safety gates."
 - **You MUST preserve backward compatibility.** Any source that
   compiles correctly today MUST continue to produce correct runtime
   behaviour after the fix. The fix is about alignment between
@@ -53,7 +53,7 @@ single-step cleanup. Both can land in the same commit chain.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates"
 4. `packages/lang/expander.js` — `pass0ImportMacros` function around
    line 1271; the JS path that resolves `import-macros` and registers
    macros.
@@ -178,7 +178,7 @@ Acceptance:
   ...)` sources.** If you discover other related divergences during
   diagnosis, log them as new fast-follows, not as additions to
   Deliverable 1's scope.
-- **Do NOT auto-accept any insta snapshot diffs.** Per CLAUDE.md
+- **Do NOT auto-accept any insta snapshot diffs.** Per AGENTS.md
   "Snapshot testing." Manual review only.
 - **Do NOT mix the two deliverables into a single diff that's hard
   to revert.** Use a separate commit for each.
@@ -206,7 +206,7 @@ closing report MUST:
 2. Include the diagnosis doc's final state (Q1–Q5 + Resolution
    section) verbatim or by reference.
 3. Include a "Substrate-rule compliance" section addressing
-   CLAUDE.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
+   AGENTS.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
    backward-compat invariant, and partial-adoption check.
 4. Include a "Findings for fast-follow" section if any new
    divergences or limitations surface during diagnosis. If none,

@@ -25,7 +25,7 @@ Local `KERNEL_FORMS` slice deleted. Now reads `dispatch::KERNEL_FORMS`.
 Only `closest_kernel_form` and `is_kernel_form` changed. No changes to `classify_form` or `classify_form_strict`.
 
 ## Substrate-rule compliance
-- CLAUDE.md safety gates: no violations.
+- AGENTS.md safety gates: no violations.
 - LEDGER_DISCIPLINE no-silent-rewrite: all 6 rows walked.
 - Backward-compat: is_kernel_form returns same results (consistency test verifies).
 - TDD-first: test commit `8556f11` precedes refactor commit `66301e3`.

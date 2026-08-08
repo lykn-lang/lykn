@@ -48,7 +48,7 @@ this slice's proof that the gate is green against HEAD.
 **Delta against CDC's census (143 paths × 106 files × 353 sites), disclosed.**
 The two numbers are not comparable and neither is wrong. CDC swept all 507
 tracked documents for `workbench/…` only; this gate scans 556 documents
-(`docs/**/*.{md,html}` + root `CLAUDE.md`) for *every* repo-relative citation,
+(`docs/**/*.{md,html}` + root `AGENTS.md`) for *every* repo-relative citation,
 including HTML `<code>`/`href` and markdown link targets, which CDC's grep did
 not reach. The 156 vs 143 workbench figure is the extra extraction surface; the
 325 non-workbench pairs are the population CDC's sweep never measured.
@@ -152,22 +152,22 @@ because they have different lifecycles and only one of them is actually history.
 |---|---|---|
 | **1 · Shorthand fragments** (`ast/sexpr.rs`, `emitter/forms.rs`, `05-active/0059-…`) | **0** | **No exemption needed — solved by the extraction rule.** A candidate is only checked if its first segment is a *tracked top-level entry at HEAD*. `ast`, `emitter`, `05-active` are not, so they never enter the gate. Same rule disposes of branch names (`release/0.6.x`), out-of-repo trees (`collaboration-framework/…`), and generated dirs (`target/`, `dist/`, `bin/`). This one rule removed ~1850 false candidates. |
 | **2 · Pre-restructure paths** (`src/surface.js`, packages/lykn/…, test/surface/*.test.js) | ~290 | **Frozen census, as shipped.** `src/…` is unanchored and never checked; the anchored ones (packages/lykn/, test/…, crates/design/…) are exactly the operator's accept-and-mark class. Self-closing. |
-| **3 · Out-of-repo symlinks** (`assets/ai/**`) | **33** | **Recommend a rule, not census rows.** `/assets/ai` is gitignored (`.gitignore:10`) with five symlinks force-added into an out-of-repo checkout; assets/ai/rust/ and assets/ai/js/ resolve only on a host that has the sibling `ai-engineering` repo. Git cannot verify these on *any* branch, ever — so they are structurally like `target/`, not like history. `CLAUDE.md` itself says of them *"may be a symlink; check to be sure"*. Freezing a permanently-unverifiable class into a file headed "accepted, not repaired" mislabels it. |
+| **3 · Out-of-repo symlinks** (`assets/ai/**`) | **33** | **Recommend a rule, not census rows.** `/assets/ai` is gitignored (`.gitignore:10`) with five symlinks force-added into an out-of-repo checkout; assets/ai/rust/ and assets/ai/js/ resolve only on a host that has the sibling `ai-engineering` repo. Git cannot verify these on *any* branch, ever — so they are structurally like `target/`, not like history. `AGENTS.md` itself says of them *"may be a symlink; check to be sure"*. Freezing a permanently-unverifiable class into a file headed "accepted, not repaired" mislabels it. |
 | **4 · Deliberate cross-branch citations** (docs/design-v0.7.0/\*\*) — *the class the amendment forbade blanket-escaping* | **12**, in 7 documents | **Needs the operator. See §8.** |
 
-## 8 · The premise crack: `CLAUDE.md` cannot be clean under the branch rule
+## 8 · The premise crack: `AGENTS.md` cannot be clean under the branch rule
 
-The amendment's point 4 says `CLAUDE.md` is byte-identical on every branch by
+The amendment's point 4 says `AGENTS.md` is byte-identical on every branch by
 rule, "so it is the one file whose citations must resolve on **all** branches.
-Worth a dedicated case." It is — and the dedicated case fails. `CLAUDE.md` has
+Worth a dedicated case." It is — and the dedicated case fails. `AGENTS.md` has
 eight dangling citations today, in four classes, and **three of the four are
-things `CLAUDE.md` must say by its own governance design**:
+things `AGENTS.md` must say by its own governance design**:
 
 | Citation | Why it's there |
 |---|---|
-| docs/design-v0.7.0/ ×3 | The **routing table's own target**. `CLAUDE.md` tells you 0.7.0 work goes there; the table simultaneously guarantees the tree is 0.7.x-only. |
+| docs/design-v0.7.0/ ×3 | The **routing table's own target**. `AGENTS.md` tells you 0.7.0 work goes there; the table simultaneously guarantees the tree is 0.7.x-only. |
 | workbench/old, workbench/dd-35-… ×2 | Naming `workbench/` **is** the scratch rule. A rule that forbids citing `workbench/` cannot state itself without citing it. |
-| assets/ai/js/ and assets/ai/rust/ ×4 | Skills whose presence `CLAUDE.md` explicitly describes as conditional. |
+| assets/ai/js/ and assets/ai/rust/ ×4 | Skills whose presence `AGENTS.md` explicitly describes as conditional. |
 | docs/design-v0.5.x ×1 | A genuine forward reference — "a future docs/design-v0.5.x/ retro pass". Exists nowhere yet. |
 
 So the rule as literally written outlaws the document that carries it. **That is
@@ -179,7 +179,7 @@ exempt docs/design-v&lt;X.Y.Z&gt;/ **by rule, but only when that planning tree i
 absent from HEAD in its entirety.** The distinction is precise and self-closing:
 
 - a **missing root** (docs/design-v0.7.0/ nowhere on `release/0.6.x`) is a
-  *branch-ownership fact* that `CLAUDE.md`'s routing table deliberately creates;
+  *branch-ownership fact* that `AGENTS.md`'s routing table deliberately creates;
 - a **missing leaf under a present root**
   (`docs/design-v0.6.0/arc15-…/liveness-recheck.md`) is a broken citation, and
   stays checked.
@@ -202,7 +202,7 @@ Written out in full at the head of `scripts/check-cited-paths.js` and pinned by
 tests, because a check that silently under-matches is the failure this slice
 exists to close. Summary of the non-catches:
 
-- **Tokens without a `/`** — a bare `CLAUDE.md` in prose is indistinguishable
+- **Tokens without a `/`** — a bare `AGENTS.md` in prose is indistinguishable
   from a generic mention.
 - **Glob patterns** (`docs/guides/*`, `crates/**/*.rs`) — 40 distinct patterns.
   Matching semantics would have to be invented, and a wrong one is worse than

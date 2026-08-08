@@ -50,7 +50,7 @@ re-execution is.
 4. **F-5 (D):** rationalize the build steps so one `make check` does one
    build pass (mechanism CC's call; minor).
 5. **F-6 docs:** the canonical operator verify is **`make check`** —
-   update CLAUDE.md (verify commands), `test/CONVENTIONS.md`, and the
+   update AGENTS.md (verify commands), `test/CONVENTIONS.md`, and the
    process-standard wording (the green bar's "make test-docs (or make
    check)" becomes "make check; make test-docs only for doc-focused
    iteration"). This kills redundancy #1 (the `&&` habit) at the source.

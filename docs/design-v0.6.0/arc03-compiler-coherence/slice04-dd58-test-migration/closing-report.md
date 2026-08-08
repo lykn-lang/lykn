@@ -57,7 +57,7 @@
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No safety-bypass flags injected.
+1. **AGENTS.md safety gates:** No safety-bypass flags injected.
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 8 rows addressed. M19-3 explicitly dispositioned as no-op with rationale.
 3. **philosophy.md Principle 1:** No structural source-tree changes.
 4. **philosophy.md Principle 3:** Strict validation produces actionable diagnostics if a kernel-only form is introduced at test-file source level.

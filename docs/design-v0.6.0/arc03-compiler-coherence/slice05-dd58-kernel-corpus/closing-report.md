@@ -78,7 +78,7 @@ All 7 confirmed. No dissent surfaced. See `workbench/verify/m20/design-confirmat
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No violations.
+1. **AGENTS.md safety gates:** No violations.
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 14 rows addressed.
 3. **philosophy.md Principle 1:** test/kernel/ added as new directory.
 4. **philosophy.md Principle 3:** Kernel tests validate codegen output.

@@ -103,7 +103,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **Guess:** Medium as defect risk, **high as explanation.** The two do agree
   today — 14/14 in `docs/design-v0.7.0/03-threading-macros/data/parity-transcript.txt`
   — but the thinness is *why* a JS-only check felt sufficient to the surveying
-  session, and `CLAUDE.md` states the obligation outright: *"Changes to the
+  session, and `AGENTS.md` states the obligation outright: *"Changes to the
   grammar should be reflected in both."*
 - **Kind:** `gap` · **Status:** `open` · **Parent:** `D-2607-Z5KN`
 - **Suggested:** promote the 14 transcript cases into `cross_compiler.rs`. They
@@ -151,7 +151,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **The mirror problem, and the one with teeth:** `docs/ecmascript-2025/` (the
   42-file ES2025 corpus, `0a4b138`) is on **`main` only**. Units under
   `docs/design-v0.7.0/` live on `release/0.7.x` and therefore **cannot cite it
-  with a path that resolves on their own branch** — which `CLAUDE.md` requires
+  with a path that resolves on their own branch** — which `AGENTS.md` requires
   and `make check` enforces. Found the hard way: `03-threading-macros`'
   reproduce command was written against `../../ecmascript-2025/…` and did not
   resolve. ~~**Operator call:** cherry-pick `0a4b138` onto `release/0.7.x`, or
@@ -176,12 +176,180 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   — that is this row's surviving primary claim, and it is fine: the 0.7.0
   planning tree *should* live on the 0.7.x branch under the new rule. What was
   wrong was the *debris* on `main` implying otherwise.
-- **Structural fix adopted:** `CLAUDE.md` now carries a **"Which branch do I
+- **Structural fix adopted:** `AGENTS.md` now carries a **"Which branch do I
   write to?"** section (confirmed with the operator 2026-07-25) — `main` changes
   by rebase/merge only; 0.6.0 work is authored in `.worktrees/0.6.x/`, 0.7.0
   work in `.worktrees/0.7.x/`, and cross-cutting artifacts (this register, the
   DDs) are owned by the **active release branch**, currently 0.6.x. That removes
   the guesswork that produced this row and the two failures beside it.
+
+### `D-2607-K4WT` — the double-return path fires on four heads, not one
+
+- **What:** ID-32 records that a typed `fn` ending in an explicit `(return X)`
+  emits `return return X`. The guard responsible lists **four** heads, so
+  `(throw X)`, `(break)` and `(continue)` in the same position emit
+  `return throw X;` / `return break;` too. Only the `return` case was ever
+  written down.
+- **Where:** `crates/lykn-lang/src/emitter/forms.rs`, `is_valueless_last_expr`
+  — `if matches!(head, "return" | "throw" | "break" | "continue") { return false }`
+  (→ not valueless → gets wrapped). JS reaches the identical behaviour by
+  **omission**: `STATEMENT_ONLY_HEADS` (`packages/lang/surface-helpers.js:26`)
+  simply does not list them, so `wrapReturnLast` wraps.
+- **How found:** `cdc-review` — the arc15 slice04 liveness re-check.
+- **Guess:** Low-medium. The output is invalid JS, so it fails loudly at parse
+  time rather than miscompiling silently — the *"compiles ≠ valid output"*
+  genus, not arc15's charter. Cheap to fix, and plausibly one edit for all four.
+- **Kind:** `bug` · **Status:** `routed` →
+  `docs/design-v0.6.0/arc15-surface-syntax-traps/slice04-sibling-traps/liveness-recheck.md`
+  (§ID-32(c)); disposition with slice04's scoping.
+- **Parity note worth keeping:** the two backends *behave* identically and
+  *reason* differently — Rust names the heads in an explicit `matches!`, JS
+  omits them from a list. A fix must touch both, and the JS side carries no
+  record of why the heads are treated this way.
+- **Evidence:** source read at `e77ebcf`, both backends. Runtime behaviour of
+  the emitted JS is **inference, not executed** — CC probe owed.
+
+### `D-2607-N6HS` — the string-escape gap is every escape, not `\uNNNN`
+
+- **What:** ID-33 says lykn does not process `\uNNNN`. Both readers in fact
+  implement exactly four escapes — `\n`, `\t`, `\\`, `\"` — and pass
+  **everything else** through as the bare character. `"\r"` becomes the letter
+  `r`; `"\u2026"` becomes `u2026`. Also affected: `\0`, `\b`, `\f`, `\v`,
+  `\xNN`, `\'`, `\u{…}`.
+- **Where:** `crates/lykn-lang/src/reader/lexer.rs:212-217` (`read_string`,
+  catch-all `Some(c) => value.push(c)`); `packages/lang/reader.js:61`
+  (`readString`, catch-all `else value += esc`).
+- **How found:** `cdc-review` — the arc15 slice04 liveness re-check.
+- **Guess:** Medium-high. Silent, no diagnostic, and the result is a
+  plausible-looking string that will read as a typo in someone's data rather
+  than a compiler gap. This *is* arc15's class.
+- **Kind:** `trap` · **Status:** `routed` →
+  `arc15-.../slice04-sibling-traps/liveness-recheck.md` (§ID-33).
+- **Good news for scoping:** the two readers are in **exact parity** — same four
+  escapes, same catch-all — so a fix lands symmetrically with no divergence to
+  reconcile first.
+- **Also owed:** the guide entry (`docs/guides/01-core-idioms.md:1103`) is
+  narrower than the defect and needs re-scoping with the fix → arc07.
+
+### `D-2607-3XKP` — a build flag silently changes what a function returns
+
+- **What:** the `fn` return-wrap is gated on `has_type_checks`, which is
+  `!ctx.strip_assertions && <params are typed>`. So a typed multi-statement `fn`
+  that returns correctly in a normal build **returns `undefined` under
+  `--strip-assertions`** — the wrap is skipped, the arrow gets a block body, and
+  the value is discarded. The same silent loss is the *default* for untyped
+  multi-statement `fn`.
+- **Where:** `emitter/forms.rs` `emit_fn_expr` (the `else` arm →
+  `items.extend(emitted_body)`) + `codegen/emit.rs` `emit_arrow`
+  (`body.len() > 1` → `emit_block_body`). JS: `classifier.js` `case "Fn"`,
+  the `typeChecks.length > 0` test.
+- **How found:** `cdc-review` — the arc15 slice04 liveness re-check. Stated in
+  ID-32's guide rationale almost in passing; the source confirms it and it is
+  the most dangerous item the re-check found.
+- **Guess:** **High.** Silent, value-destroying, and *conditional on a build
+  flag* — so it can pass every test in a normal build and fail in a stripped
+  one. Worse than the trap ID-32 is named for.
+- **Kind:** `trap` · **Status:** `routed` →
+  `arc15-.../slice04-sibling-traps/liveness-recheck.md` (§ID-32(b)).
+- **Parent:** `D-2607-Z5KN` — **zero test coverage in either compiler**
+  (`grep "return return"` → 0 hits; no escape-gap test either). Another
+  instance of *the uncovered case is the one that ships wrong*.
+- **Evidence:** source read at `e77ebcf`, both backends; runtime claim is
+  **inference** — CC probe owed before slice04 is scoped.
+
+### `D-2607-W2FJ` — the governance document cannot satisfy the rule it carries
+
+- **What:** `AGENTS.md`'s cited-path rule says every citation must resolve on
+  the document's own branch. `AGENTS.md` is byte-identical on every branch by
+  its own design, and it carries **eight** citations that cannot resolve on
+  `release/0.6.x`: `docs/design-v0.7.0/` (0 files there — the routing table's
+  own target), `workbench/` (0 — the rule naming it is *"workbench is scratch,
+  nothing durable, nothing cited"*), `.worktrees/0.6.x/` and `.worktrees/0.7.x/`
+  (0 — worktree roots are git plumbing, never tracked content), plus skill paths
+  the document itself marks conditional.
+- **How found:** `cc-review` — CC ran the L-7 gate against `AGENTS.md` and it
+  fired correctly on all eight.
+- **Guess:** Medium. Not a defect in the *code*; a defect in **my spec**. The
+  `02-artifact-homes` ledger amendment (point 4) asserted `AGENTS.md`'s
+  citations must resolve on *all* branches — the strictest possible reading —
+  without walking what `AGENTS.md` actually has to say. A routing table's job is
+  to name places that do not exist here. **The rule as written outlaws the
+  document that carries it.**
+- **Kind:** `bug` (in the spec) · **Status:** `open — operator decision`
+- **Proposed fix (CC's, endorsed by CDC):** exempt a sibling release's planning
+  tree **only when that tree is absent from `HEAD` entirely**. *A missing root
+  is a branch-ownership fact; a missing leaf under a present root is a bug.*
+  That keeps the teeth — a typo'd path under a tree that **does** exist still
+  fails — while accepting the branch-ownership reality the rule itself created.
+- **Lesson, same shape as the ones this register keeps recording:** I wrote
+  point 4 as a *consequence* of "AGENTS.md is byte-identical everywhere" and
+  never opened `AGENTS.md` to check what that consequence implied. *A
+  consequence is a claim about a path you have not walked* — the fourth instance
+  this week, and the first where the unwalked path was my own rule.
+
+### `D-2607-Q8LM` — the commit discipline guarantees a red gate mid-session — **CLOSED**
+
+- **What:** Two rules adopted the same day interact. (1) The L-7 gate resolves
+  citations against `git ls-tree HEAD`, so a file present in the working tree
+  but uncommitted **fails** — deliberately, because that *is* the original
+  register bug. (2) `AGENTS.md`'s branch rule makes commits the operator's and
+  CC's, never a remote CDC session's. **Therefore any CDC session that writes a
+  document citing a sibling it also just wrote leaves the gate red until the
+  operator commits.** It is not a false positive and not a race — it is the two
+  rules composing.
+- **Where, on the day it landed:** `slice04-sibling-traps/liveness-recheck.md`,
+  written by CDC and cited from `arc-plan.md`, `discoveries.md` **and CC's own
+  `02-artifact-homes/closing-report.md`** — so the report announcing the gate
+  extended the condition the gate reports. Nobody did anything wrong.
+- **How found:** `cc-review`, within hours of the gate landing.
+- **Guess:** Low as a defect, **high as a process fact.** If it is not named, the
+  next session sees red on a clean checkout-plus-work and "fixes" it by
+  weakening the gate.
+- **Kind:** `gap` · **Status:** `open — operator decision`
+- **The three options, and CDC's read:**
+  1. **Accept red-until-commit as normal** *(recommended)*. The gate's contract
+     becomes *green at `HEAD` after the operator commits*, not *green
+     continuously*. A dirty tree reading red is arguably **correct** — the
+     citations genuinely do not resolve for anyone else yet.
+  2. Have CDC avoid citing newly-written siblings. Rejected: that is
+     spec-softening — it makes the documents worse to keep a check quiet.
+  3. Move the gate to pre-commit rather than `make check`. Costs the CI signal.
+- **RESOLVED 2026-07-25 (operator): option 1 — accept red-until-commit.** *"A
+  good, strong stance that will keep us disciplined."* The contract is **green
+  at `HEAD` after the operator commits, not green continuously.** Landed in
+  `AGENTS.md` on all three branches, next to the gate, together with the
+  explicit prohibitions: never weaken the gate, never drop a citation, and
+  **never avoid citing a new sibling to keep the gate quiet** — that last is
+  spec-softening, making documents worse to keep a check happy.
+- Also landed the sibling convention (CC's item 3, CDC-endorsed): *documents
+  that discuss dangling paths cite them in fenced blocks, not inline code* —
+  convention, not mechanism, preserving `Makefile:308`'s standing position
+  against inline suppression.
+- **Status: CLOSED (repaired — the rule now says what the behaviour is).**
+
+### `D-2607-5TDW` — the gate found 14 real defects on a branch it was never tuned against
+
+- **What:** Run on `release/0.7.x`, the L-7 gate reported **14** citations that
+  resolve for nobody: 0.7.0 ledgers and slice-docs citing
+  `scripts/probe-threading.js`, `scripts/build-catalog.py`, `evidence/`,
+  `artifacts/` — none of them in any branch's git. **Two are ledger rows citing
+  their own evidence**, which is the strongest possible form of the defect: a
+  verification row whose verification cannot be opened.
+- **Where:** `release/0.7.x`, `docs/design-v0.7.0/` units. Enumerated in
+  `docs/design-v0.6.0/02-artifact-homes/closing-report.md`.
+- **How found:** `cc-review` — CC ran the gate cross-branch unprompted.
+- **Guess:** Medium-high, and **this is the row that justifies the gate.** It
+  was specified from a `workbench/`-shaped problem on 0.6.x, tuned against
+  nothing on 0.7.x, and immediately found live defects there — including the
+  `evidence/`/`artifacts/` empty untracked directories already recorded as
+  debris under `D-2607-L7BX`.
+- **Kind:** `bug` · **Status:** `open` — owed to `release/0.7.x`; **not**
+  `routed` until a 0.7.x-side home exists and contains them (the rule).
+- **Note:** CC deliberately did not fix these — right call, they are another
+  branch's work — and deliberately wrote no register rows for any of today's
+  findings, to avoid racing a concurrent CDC session editing this file. Also the
+  right call. These three rows are CDC's, written after that session (mine)
+  finished.
 
 ### `D-2607-8HTN` — a routing row named an owner instead of a home
 
@@ -507,6 +675,23 @@ countable against the others.
 
 ### `D-2607-D3NL` — the committed corpus cites an ignored tree 353 times, and 40% of it is already gone — **CLOSED (accepted, not repaired)**
 
+> **WHY `workbench/` LOOKS LIKE A LOSS AND MOSTLY ISN'T — operator, 2026-07-25.**
+> Read this before the disposition; it is the premise the original row was
+> written without. **`workbench/` was designed from the start to hold ephemeral,
+> non-code content.** As the project-management methodology matured, work began
+> there on the assumption that these artifacts would not live in the codebase
+> permanently and that **git history was itself the sufficient record of
+> change** — the artifacts captured the *how*. What changed is that the *why*
+> turned out to be of interest to others, so the project started tracking it,
+> and **the important material did make it into the repo** via `docs/design/`
+> and `docs/dev/` through the `odm` tool. A pruned subset resting there is the
+> intended end state, not a shortfall.
+>
+> **This row was therefore written with an unchecked premise** — that the
+> material was *meant* to be permanent — and its severity framing ("the evidence
+> base is unrecoverable") inflated accordingly. The counts were right; the
+> significance was not. Corrected here rather than quietly softened.
+>
 > **DISPOSITION — operator, 2026-07-25: option (a), accept and mark.** The 57
 > dead paths and the documents citing them are *purely historical*; the evidence
 > is not being salvaged and the citations are not being repointed. This is a
@@ -524,8 +709,26 @@ countable against the others.
 > census allowlist**, generated once from today's 143 paths × 106 files and
 > never appended to. That is what makes the exemption self-closing: a *new*
 > `workbench/` citation is absent from the snapshot and therefore fails, which
-> is exactly what `CLAUDE.md`'s "nothing durable, nothing cited" rule requires.
+> is exactly what `AGENTS.md`'s "nothing durable, nothing cited" rule requires.
 > Same prefix, opposite verdicts, decided by age rather than by judgement.
+>
+> **AMENDED same day — the freeze covers `workbench/` only.** The operator
+> narrowed it once CC's census showed the corpus is **631 pairs, 306
+> `workbench/` : 325 other**: *any citation whose target migrated to a tracked
+> location should be **updated**, unless updating it would damage the accuracy
+> of the historical record.* So `crates/design/…` → `docs/design/…` and the
+> migrated `test/` paths get **repointed**, not frozen; `assets/ai/*` (gitignored
+> symlink) and the `workbench/` half stay frozen because they can never resolve.
+> The carve-out: repoint a *reference to* an artifact; never rewrite a sentence
+> that *narrates the move itself*. Full classification in
+> `docs/design-v0.6.0/02-artifact-homes/ledger.md`, amendment (4).
+>
+> **And four cited files are not lost at all** — they are cited at a
+> destination inside the tracked planning tree while still sitting in
+> `workbench/`: the arc01 build-dir kickoff thread and three arc03 compiler-
+> coherence documents. A committed document already decided where each belongs
+> and nobody executed the move. Those are migrations to finally perform, not
+> citations to freeze. See amendment (4).
 
 - **What:** A sweep of 507 tracked documents found **106 of them citing 143
   distinct `workbench/…` paths across 353 citation sites**. `workbench/` is

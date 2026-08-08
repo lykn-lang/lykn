@@ -68,7 +68,7 @@ unaffected.
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No safety-bypass flags injected.
+1. **AGENTS.md safety gates:** No safety-bypass flags injected.
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 3 items addressed with
    per-item evidence. No items dropped.
 3. **TDD-first discipline:** Each item has a test commit SHA preceding

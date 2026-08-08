@@ -45,7 +45,7 @@ Before writing any code, read, in order:
    per-helper table and the `surface.js` shape section (§C).
 2. `LEDGER_DISCIPLINE.md` — TDD-first paired commits, grep-verifiable
    Verify commands. This applies to the tool's own development.
-3. `CLAUDE.md` → "Lykn CLI safety gates" — the *spirit* of that rule
+3. `AGENTS.md` → "Lykn CLI safety gates" — the *spirit* of that rule
    (never silently bypass a verification gate) applies to this tool's
    verify step, even though this tool is not the Lykn CLI.
 

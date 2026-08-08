@@ -117,8 +117,8 @@ both repos.
   sections, dissolves into the chapter's own language by the
   closing. **Technical content is never the joke**; the humour
   lives in framing, metaphor, and transitions.
-- **No `CLAUDE.md` exists in the book repo.** The authoring guide
-  fills that role, but doesn't follow CLAUDE.md naming/discovery
+- **No `AGENTS.md` exists in the book repo.** The authoring guide
+  fills that role, but doesn't follow AGENTS.md naming/discovery
   conventions. See Q3 below.
 - **Code-example testing is mandatory.** Every ` ```lisp ` block
   has a corresponding test in `test/book/<chN>/<section>.test.js`;
@@ -150,7 +150,7 @@ prompt references.
   the new location — the `~/lab/oxur/` prefix is definitively stale.
 - **Test-import path `../../src/index.js`** in code samples
   (`authoring-guide.md` "Code example verification" section). The
-  JS compiler is now at `packages/lang/` per lang `CLAUDE.md`.
+  JS compiler is now at `packages/lang/` per lang `AGENTS.md`.
   Test files in `test/book/chN/` would need to import via the
   current package layout (likely `jsr:@lykn-lang/lang` or a
   workspace-relative import; verify against `project.json`).
@@ -361,19 +361,19 @@ Monty Python references are intentional but easy to drift. Options:
 - (B) Inline guidance in each chapter README.
 - (C) Trust the author; rely on CDC review of CC's edits.
 
-**Q3: `CLAUDE.md` in the book repo, given `authoring-guide.md`
+**Q3: `AGENTS.md` in the book repo, given `authoring-guide.md`
 already exists?**
 
 `lykn-writers-guide/authoring-guide.md` already functions as the
 book repo's canonical conventions doc — it covers voice,
 structure, source material, code testing, accuracy requirements.
 But it lives in a *separate* repo (`lykn-writers-guide`, not the
-book repo itself), and doesn't follow `CLAUDE.md` naming
+book repo itself), and doesn't follow `AGENTS.md` naming
 convention that CC's tool ecosystem discovers automatically.
 Options:
 - (A) Symlink or copy `authoring-guide.md` into the book repo as
-  `CLAUDE.md` (or vice versa). Discovery + single source of truth.
-- (B) Add a thin `CLAUDE.md` to the book repo that points at the
+  `AGENTS.md` (or vice versa). Discovery + single source of truth.
+- (B) Add a thin `AGENTS.md` to the book repo that points at the
   authoring guide.
 - (C) Leave as-is; rely on kickoff prompts to direct CC to the
   authoring guide explicitly.
@@ -477,7 +477,7 @@ output-specific concerns to track for 0.6.0?
 
 ## Constraints and conventions
 
-- **Per lang CLAUDE.md "Lykn CLI safety gates":** book prose must
+- **Per lang AGENTS.md "Lykn CLI safety gates":** book prose must
   not document `--allow-dirty` / `--force` / `--no-verify` etc. as
   recommended workflows. The book reflects the safety-gated
   defaults.

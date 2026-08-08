@@ -46,14 +46,14 @@ is small.
 - **You MUST NOT touch `is_surface_form` or `is_surface_form_strict`.**
   Those are in scope for DD-58 work, not this drive-by.
 - **You MUST NOT modify the dispatch tables in `forms.rs`.**
-- **You MUST NOT auto-pass safety-bypass flags** per CLAUDE.md.
+- **You MUST NOT auto-pass safety-bypass flags** per AGENTS.md.
 
 ---
 
 ## Required reading
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
-2. `assets/ai/CLAUDE.md`
+2. `assets/ai/AGENTS.md`
 3. `crates/lykn-lang/src/classifier/dispatch.rs` —
    `is_kernel_form()` current shape (the `matches!` macro).
 4. `crates/lykn-lang/src/classifier/forms.rs` —
@@ -184,7 +184,7 @@ Walk K-1 through K-6 with status + verify-command output. Cite
 the test commit SHA and the refactor commit SHA (TDD-first
 ordering preserved).
 
-Substrate-rule compliance section: terse is fine — CLAUDE.md
+Substrate-rule compliance section: terse is fine — AGENTS.md
 safety gates, LEDGER_DISCIPLINE no-silent-rewrite, backward-compat
 invariant (no behaviour change), TDD-first (consistency test
 precedes refactor commit).

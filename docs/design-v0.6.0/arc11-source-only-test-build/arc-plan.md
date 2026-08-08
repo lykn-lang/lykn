@@ -42,7 +42,7 @@ instance exemplifies:
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · test-out-dir** | Wire `--out-dir` (default `target/lykn/test/`): compile `.lykn`/`.lyk` test files there, run Deno against it, wipe-per-run like the doctest dir; `--compile-only` writes there too; interrupt debris lands in gitignored `target/`, never `test/`; add `*_test.js` to `.gitignore` as belt-and-suspenders for pre-existing stray debris; un-hide the flag + document. Recon-first: compiled tests' relative/import-map resolution when run from `target/` (the likely reason for the April sibling design). | **Closed** (`75c9cc2`; recon caught 7 location-dependence items in 5 files, fixed; fossil deleted; exclude declined w/ rationale; three-moment demo clean; 1365/0 · 673/0 · `make check` ✓) |
-| **slice02 · buried-intent-audit** | Sweep the marker inventory (TODO/FIXME/"for now"/"reserved"/`hide = true`/underscore-silenced params/`allow(dead_code)`) + doc-claims-vs-code spot-checks; produce a disposition table: every hit **wired, retired, or given a tracked row**; includes the `surface.rs:294` deprecation whose DD-58 trigger has fired. **Inherits from slice01's bubble-up:** reserved-plumbing sweep of `main.rs`; test-source location-dependence conventions note + arc05 lint-rule candidate; canonical-test-command documentation (`-A test/` is supported; unscoped is not); doctest-dir harmonization (`target/test/doctest` → `target/lykn/`, filed with reason). | **Closed** (`4f2a628`; 13-item disposition table; 3 wired fixes; SetSymbol routed; `test/CONVENTIONS.md` + CLAUDE.md; doctest dir → `target/lykn/test/doctest`; sweep-diff clean, CDC-reproduced; 1365/0 · 673/0 ✓) |
+| **slice02 · buried-intent-audit** | Sweep the marker inventory (TODO/FIXME/"for now"/"reserved"/`hide = true`/underscore-silenced params/`allow(dead_code)`) + doc-claims-vs-code spot-checks; produce a disposition table: every hit **wired, retired, or given a tracked row**; includes the `surface.rs:294` deprecation whose DD-58 trigger has fired. **Inherits from slice01's bubble-up:** reserved-plumbing sweep of `main.rs`; test-source location-dependence conventions note + arc05 lint-rule candidate; canonical-test-command documentation (`-A test/` is supported; unscoped is not); doctest-dir harmonization (`target/test/doctest` → `target/lykn/`, filed with reason). | **Closed** (`4f2a628`; 13-item disposition table; 3 wired fixes; SetSymbol routed; `test/CONVENTIONS.md` + AGENTS.md; doctest dir → `target/lykn/test/doctest`; sweep-diff clean, CDC-reproduced; 1365/0 · 673/0 ✓) |
 
 ## 3. Dependencies
 
@@ -69,7 +69,7 @@ slice02 closed (`4f2a628`, CDC-verified): 13-item disposition table (9 seed
 + 4 new — genfunc multi-clause silent drop, reader block-comment stub,
 doctest nested-fence limit, nested-destructure deferral — all tracked with
 homes + re-entry); 3 fixes wired (kernel-mark comment, `js:eq` guard re-key,
-SetSymbol TODO → tracked-home comment); `test/CONVENTIONS.md` + CLAUDE.md
+SetSymbol TODO → tracked-home comment); `test/CONVENTIONS.md` + AGENTS.md
 docs; doctest dir → `target/lykn/test/doctest`. **A-4 met — CDC
 independently reproduced the sweep-diff** (8 hits, zero orphans). Tracked
 homes instantiated: project-plan §Post-0.6.0 candidates (v1.17); arc05 seed

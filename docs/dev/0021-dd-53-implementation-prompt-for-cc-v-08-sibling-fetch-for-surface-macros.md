@@ -57,7 +57,7 @@ You MUST NOT:
 
 4. **Use regex-based parsing** for finding surface-macros declarations in the fetched .lykn source (Q3=A says use reader.js). If reader.js turns out to be unimportable in the subprocess context, surface — don't silently fall back.
 
-5. **Auto-pass safety-bypass flags** to any tool (per CLAUDE.md "Lykn CLI safety gates").
+5. **Auto-pass safety-bypass flags** to any tool (per AGENTS.md "Lykn CLI safety gates").
 
 6. **Break DD-52's existing tests.** The 8 DD-52 tests must continue to pass.
 
@@ -309,7 +309,7 @@ Required sections:
   - `./workbench/verify-finding-e-2026-05-12.sh --lykn-bin ./target/release/lykn` — DD-50.7 regression check
   - The new JSR end-to-end test output specifically
 - **Cache layout verification** — show the cache directory layout after a successful fetch (e.g., `tree ~/.cache/lykn/macros/` snippet)
-- **Substrate-rule compliance** — Principle 3 (compiler-owned output quality), CLAUDE.md safety gates, LEDGER_DISCIPLINE
+- **Substrate-rule compliance** — Principle 3 (compiler-owned output quality), AGENTS.md safety gates, LEDGER_DISCIPLINE
 - **Cross-compiler convergence** — the JS expander already worked for JSR via Deno's native resolution; DD-53 brings Rust to parity. Confirm by running the JSR end-to-end pattern through both compilers.
 - **What this milestone did NOT cover** — `(runtime-import ...)` sibling fetching, browser-side fetching, deno.json-declared sibling aliases, the `__surface_macro__` sentinel cleanup
 - **Findings for fast-follow** — anything discovered during implementation

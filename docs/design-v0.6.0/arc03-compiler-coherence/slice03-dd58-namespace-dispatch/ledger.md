@@ -117,7 +117,7 @@ This milestone does **not**:
 
 1. [`assets/ai/LEDGER_DISCIPLINE.md`](../../assets/ai/LEDGER_DISCIPLINE.md) — protocol (mandatory)
 2. [`assets/ai/SUBAGENT-DELEGATION-POLICY.md`](../../assets/ai/SUBAGENT-DELEGATION-POLICY.md) — subagent rules
-3. [`assets/ai/CLAUDE.md`](../../assets/ai/CLAUDE.md) "Lykn CLI safety gates" + "Snapshot testing"
+3. [`assets/ai/AGENTS.md`](../../assets/ai/AGENTS.md) "Lykn CLI safety gates" + "Snapshot testing"
 4. **DD-58** at `docs/design/05-active/0059-dd-58-*.md`. Focus on:
    - §"Architectural rule"
    - §"Per-layer form enumeration" — the canonical lists for the strict-mode dispatch
@@ -223,7 +223,7 @@ honestly if so.**
 | M18-5 | Strict acceptance tests: surface forms (rich + passthrough + namesake-sharing) all classify correctly under strict mode | Tests exercise at least one form per flavor: `bind` (a), `+` (b), `=>` (b), `if` (c); each test asserts correct classification (right `SurfaceForm` variant or correct `KernelPassthrough` routing) | serious | Spec 3 | open | | TDD-first; may pass trivially per M18-4 note |
 | M18-6 | `kernel:` escape continues to work under strict mode (per M17's implementation) | Test: `(kernel:const x 42)` with strict ON classifies as `KernelPassthrough` (same as strict OFF behaviour) | correctness | Spec 3; M17 precedent | open | | Backward-compat for M17's work |
 | M18-7 | Backward-compat: no existing test regresses with strict OFF | `make test`, `make test-lykn`, `./bin/lykn test test/forms/` all pass with counts ≥ post-M17 baseline (1006 Rust, 292 surface, 670 forms — except where increased by new M18 tests) | serious | Spec 5; M17 baseline | open | | The strict flag MUST default to OFF; existing call sites MUST NOT need modification |
-| M18-8 | Closing report includes substrate-rule compliance section + TDD-first | `grep -cE "^## Substrate-rule compliance" workbench/2026-*-M18-closing-report.md` returns 1; six rules named (CLAUDE.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite, philosophy.md Principle 1, philosophy.md Principle 3, backward-compat invariant, TDD-first discipline) | correctness | Spec; methodology continuity | open | | |
+| M18-8 | Closing report includes substrate-rule compliance section + TDD-first | `grep -cE "^## Substrate-rule compliance" workbench/2026-*-M18-closing-report.md` returns 1; six rules named (AGENTS.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite, philosophy.md Principle 1, philosophy.md Principle 3, backward-compat invariant, TDD-first discipline) | correctness | Spec; methodology continuity | open | | |
 | M18-9 | Single coherent commit chain demonstrating TDD-first | `git log --grep="M18\|strict.mode\|closed.namespace\|DD-58" --oneline` returns ≥3 commits; for substantive changes (M18-3 et al.) the test commit precedes the fix commit | correctness | Spec; TDD-first discipline | open | | |
 
 ---
@@ -278,8 +278,8 @@ honestly if so.**
      fix (DD-58 Breaking Change #3) is a separate milestone.
    - **Do NOT migrate existing tests.** M19 scope.
    - **Do NOT touch the JS compiler.**
-   - **Do NOT auto-pass safety-bypass flags** per CLAUDE.md.
-   - **Do NOT auto-accept insta snapshot diffs** per CLAUDE.md.
+   - **Do NOT auto-pass safety-bypass flags** per AGENTS.md.
+   - **Do NOT auto-accept insta snapshot diffs** per AGENTS.md.
 
 7. **If the dispatch-table contents in DD-58 don't match
    reality** (e.g., a form is listed as passthrough but doesn't

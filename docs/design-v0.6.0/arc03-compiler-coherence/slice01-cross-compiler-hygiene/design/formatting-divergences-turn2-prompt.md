@@ -44,7 +44,7 @@ and approved the directions per class. This prompt is Turn 2:
   (already added in Tier B) PLUS an explicit named-reason in the
   closing report.
 - **You MUST NOT auto-pass safety-bypass flags** to underlying
-  tools per CLAUDE.md "Lykn CLI safety gates."
+  tools per AGENTS.md "Lykn CLI safety gates."
 
 ---
 
@@ -52,7 +52,7 @@ and approved the directions per class. This prompt is Turn 2:
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot testing"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot testing"
 4. **Your own Turn 1 diagnosis** at
    `workbench/2026-05-16-m16-formatting-divergences-diagnosis.md`
 5. **CDC review** at
@@ -207,7 +207,7 @@ entanglement check).**
 
 ## Forbidden patterns
 
-- **Do NOT auto-accept any insta snapshot diffs.** Per CLAUDE.md
+- **Do NOT auto-accept any insta snapshot diffs.** Per AGENTS.md
   "Snapshot testing." Manual review only.
 - **Do NOT extend the C-3 normalizer beyond stripping the trailing
   `;` after `}`.** Any other normalizer change requires its own
@@ -253,7 +253,7 @@ The closing report MUST:
 6. For the deferred items (C-1c, C-4b), include the rewritten test
    sources (or skip-with-rationale comments) verbatim.
 7. Include a "Substrate-rule compliance" section addressing
-   CLAUDE.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
+   AGENTS.md safety gates, LEDGER_DISCIPLINE no-silent-rewrite,
    the deferred-items disclosure, and partial-adoption check.
 8. Include a "Findings for fast-follow" section logging any new
    findings (e.g., C-5 turning out genuine; C-6b being entangled;

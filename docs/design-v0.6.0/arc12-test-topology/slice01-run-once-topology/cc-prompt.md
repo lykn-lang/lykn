@@ -36,7 +36,7 @@ verification stack gets cheap.
    `build` vs `fresh-artifacts`' release build so `make check` builds once.
    Minor — don't over-engineer; incremental builds already make this cheap
    on warm trees.
-5. **F-6 — docs + the habit fix.** Update CLAUDE.md's verify commands,
+5. **F-6 — docs + the habit fix.** Update AGENTS.md's verify commands,
    `test/CONVENTIONS.md`, and any "green bar" wording so the canonical
    operator verification is **`make check`** (with `make test-docs` as the
    doc-focused iteration tool, no longer needed alongside). The
