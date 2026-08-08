@@ -109,11 +109,10 @@ arc10, arc11, arc12, arc13. The big recent closes:
   homes exist and the cited-path gate landed (`379bb32`), but this directory has
   no `cdc-verification.md`. Treat the CC closing report as useful evidence, not
   independent close.
-- **03 · citation-repoint — OPEN.** Opened by `409e7fd`. Its job is to repoint
-  migrated citations and shrink the frozen census. As of this check,
-  `make check-cited-paths` is red with **34 dangling citations**, mostly inside
-  the 02/03 citation-cleanup docs plus two 0.7.x research-script citations in
-  the discovery register. This is the immediate housekeeping blocker for P-21.
+- **03 · citation-repoint — CLOSED.** Opened by `409e7fd`, closed through
+  `774e9eb`, `a3055c9`, and `2df2130`. It repointed migrated citations,
+  populated four already-decided artifact homes, and shrank the frozen census
+  from 631 to 601 accepted pairs. `make check-cited-paths` is green at HEAD.
 
 **Open arcs / release gates:**
 
@@ -129,9 +128,9 @@ arc10, arc11, arc12, arc13. The big recent closes:
   arc09 because drafting it is the full-surface review before the release cut.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
-**Current sequence:** close or consciously route **03-citation-repoint / P-21**,
-then arc15 slice04 + arc15 close, then arc07 + arc16, then arc09. arc14
-comment-retention is seeded but explicitly 0.7.0.
+**Current sequence:** CDC-verify/close **02-artifact-homes / P-21**, then arc15
+slice04 + arc15 close, then arc07 + arc16, then arc09. arc14 comment-retention
+is seeded but explicitly 0.7.0.
 
 **Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never bare
 `lykn`; **`./bin/lykn build` before any deno/matrix probe** (the `lang/` import
