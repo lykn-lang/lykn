@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-08 (arc07 slice02 current-drift recon is open after arc15 closed. Current path: arc07 + arc16 -> arc09.)",
+  updated: "2026-08-08 (arc07 slice02 current-drift recon is closed/CDC-verified. Current path: arc07 + arc16 -> arc09.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -163,8 +163,8 @@ const DATA = {
       cap:"CLOSED — GATE GO 2026-07-24. All 7 slices closed + CDC-verified; A-1…A-9 met. The host reconcile ran in full, so runtime rows are operator-reproduced, including the publish-safety property: dist with a link active stages zero linked refs. The 0.6.0 founding goal, consume lykn as a dependency end to end, is met: add, link/unlink, import by specifier, mycelium build, test 43/0, and publish dry-run.",
       slices:[{n:"exports-gap",s:"closed"},{n:"mycelium-reaudit",s:"closed"},{n:"lykn-add",s:"closed"},{n:"lykn-link",s:"closed"},{n:"import-by-specifier",s:"closed"},{n:"version-consolidation",s:"closed"},{n:"link-registry-specifier",s:"closed"}] },
     { id:"arc07", name:"docs", status:"active",
-      cap:"Guide/SKILL alignment. slice01 (CI-green doctest fix) closed; slice02 current-drift recon is open to classify old seed lists against the actual 0.6.0 branch before implementation edits.",
-      slices:[{n:"doctest-drift",s:"closed"},{n:"current-drift-recon",s:"open"}] },
+      cap:"Guide/SKILL alignment. slice01 fixed doctest drift; slice02 closed the current-drift recon and split the remaining work into build/dist/publish docs, Deno workflow reconciliation, and a routed compiler follow-up for no-else if expressions emitting invalid JS.",
+      slices:[{n:"doctest-drift",s:"closed"},{n:"current-drift-recon",s:"closed"},{n:"build-dist-publish",s:"open"},{n:"deno-reconcile",s:"open"}] },
     { id:"arc08", name:"template-i18n", status:"closed",
       cap:"template → ICU MessageFormat + i18n (DD-55). Un-stranded + merged.",
       slices:[{n:"icu-js",s:"closed"},{n:"icu-rust",s:"closed"},{n:"icu-review+xcompiler",s:"closed"}] },
@@ -204,12 +204,12 @@ const DATA = {
   sequence: ["arc07","arc16","arc09"],
   now: {
     arc:"arc07 active · arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, and arc15/P-19 is closed. arc07 is active with a recon-only slice that will classify guide/SKILL drift before edits; arc16 still needs its arc-plan and book work; arc09 waits on those gates."
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, and arc15/P-19 is closed. arc07's recon slice is closed and points next to build/dist/publish guide refresh; arc16 still needs its arc-plan and book work; arc09 waits on those gates."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
     {n:"~1.0 s", l:"conformance corpus in make check", s:"seeded-teeth demo'd both backends; the 14.3s matrix stays on-demand"},
-    {n:"601", l:"accepted historical cited paths", s:"census shrank from 631; make check-cited-paths green on release/0.6.x, 2026-08-08"},
+    {n:"601", l:"accepted historical cited paths", s:"census shrank from 631; make check-cited-paths green across 581 docs on release/0.6.x, 2026-08-08"},
     {n:"476 / 0", l:"guide doctests", s:"green"},
     {n:"48 → 48", l:"size_of::<SExpr>()", s:"resolution tags + private payload, zero size cost"},
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
@@ -236,6 +236,7 @@ const DATA = {
     "01-macro-entry-diagnostics closed as a standalone slice: the misleading import-macros missing-directory diagnostic now has source/test fixes and CDC verification; its mycelium acceptance demo is explicitly deferred until 0.6.0 publication.",
     "02-artifact-homes closed after remediation: the structural path-citation gate is green, the historical citation wound is accepted/not-repaired, sibling repos now track AGENTS.md with CLAUDE.md as a symlink, the new commit trailers are recorded, and the book audit tool is tracked. P-21 is done.",
     "03-citation-repoint closed the active cleanup: migrated citations now point at tracked homes, four planned artifact homes are populated, make check-cited-paths is green, and the frozen census shrank 631 -> 601 without adding exemptions.",
+    "arc07 slice02 closed the current-drift recon: every May seed item is dispositioned against the actual 0.6.0 branch; the next docs work splits into build/dist/publish refresh and Deno workflow reconciliation; a no-else if expression compiler bug is routed rather than papered over in prose.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
@@ -296,6 +297,8 @@ const DATA = {
       lesson:"Resuming 2026-07-25, the session memory store was a full gate stale — arc06 CLOSE-READY vs CLOSED, plan v1.33 vs v1.37, three 'owed' rows already discharged — while the <i>disciplines</i> it carried (read order, ground-truth-against-git, the device/bridge hazards) were all correct and immediately useful. The bootstrap's own top rule is what caught its own staleness. <b>Learning:</b> a handoff note should carry <i>how we work</i> and defer <i>what state things are in</i> to git; four tool calls to detect, four writes to reconcile. The v2 bootstrap also correctly <i>predicted</i> the worktree hazard before it landed — naming a hazard you expect is cheaper than discovering it, and it was wrong only in the path (<code>.worktrees/</code>, not <code>.workdirs/</code>)." },
     { t:"The path gate did its job, and citation-repoint turned it green", tag:"fixed",
       lesson:"The 2026-08-08 release-branch check first found 34 dangling citations. The fix was not to loosen the gate: 03-citation-repoint repointed migrated paths, moved four already-decided artifacts into tracked homes, preserved historical movement prose, and shrank the frozen census from 631 to 601 accepted pairs. The final artifact-home remediation then tracked sibling AGENTS.md/CLAUDE.md guidance and the book audit tool. <b>Learning:</b> a red structural gate is useful when the follow-up shrinks the exemption set instead of expanding it. P-21 is done." },
+    { t:"No-else if expression emits invalid JS at rc=0", tag:"open",
+      lesson:"arc07 slice02 reproduced that <code>(bind label (if (&gt; 1 0) \"items\"))</code> passes <code>lykn check</code> and <code>lykn compile</code>, but emits <code>const label = throw ...</code> and fails only when Deno parses the generated JS. <b>Learning:</b> guide truth can expose compiler truth; route the compiler defect (<code>D-2608-W2HF</code>) instead of rewriting docs around a broken emission path." },
   ],
 };
 
