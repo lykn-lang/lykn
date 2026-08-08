@@ -211,7 +211,7 @@ See "Immediate next deliverables" subsection below (within Proposal).
 ## Update: 2026-05-14 handoff from cdc/dep-ergonomics
 
 The other CDC, working on `cdc/dep-ergonomics`, produced a handoff document
-(`workbench/handoff-surface-kernel-separation-2026-05-14.md`) that
+(`docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md`) that
 materially reframes this thread. Summary of what changed:
 
 ### The empirical forcing function
@@ -233,7 +233,7 @@ Classification (Phase 1a):
 
 Classes A1 and A2 are *architectural*, not doc fixes.
 
-The Phase 1c audit (`workbench/phase-1c-classification-audit-2026-05-14.md`)
+The Phase 1c audit (`docs/design-v0.6.0/arc03-compiler-coherence/design/phase-1c-classification-audit.md`)
 established three further findings that converge with my survey here:
 
 1. **Both compilers conflate two different questions onto one list.**
@@ -282,7 +282,7 @@ with surface forms translated. Example from the handoff:
 This requires a canonical, machine-readable enumeration of every form,
 every keyword clause, every type keyword, with per-locale translation
 columns. That's DD-56, drafted at
-`workbench/dd-56-canonical-form-spec-2026-05-14.md`.
+`docs/design-v0.6.0/arc02-type-dts-generation/design/dd-56-canonical-form-spec-DRAFT.md`.
 
 DD-56's schema sketch has `kind = "surface"` and `kind = "kernel"`
 entries with the *same form name* (`try` appears twice). That

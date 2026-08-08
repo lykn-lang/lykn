@@ -74,12 +74,12 @@ this rule once and not try to invoke git inside the worktree.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — milestone protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — delegation rules.
-3. `assets/ai/CLAUDE.md` — **especially the "Lykn CLI safety gates"
+3. `AGENTS.md` — **especially the "Lykn CLI safety gates"
    section.** This thread's M13 work IS the rule materialization;
    M11 must not weaken safety gates either.
 4. `docs/philosophy.md` — foundational principles. The 0.6.0
    commitments section lists what M11 and M13 must deliver.
-5. `workbench/phase-2-plan.md` — Phase 2 milestone list; M11 and M13
+5. workbench/phase-2-plan.md — Phase 2 milestone list; M11 and M13
    entries are there.
 
 ## Current state of the project (as of 2026-05-10)
@@ -151,7 +151,7 @@ to a hard gate in 0.6.0:
 - Override: `--allow-dirty` opt-in flag for users who explicitly
   accept the risk.
 
-**Critical reference:** `assets/ai/CLAUDE.md` "Lykn CLI safety gates"
+**Critical reference:** `AGENTS.md` "Lykn CLI safety gates"
 section. The rule there says lykn CLI must NOT auto-pass
 `--allow-dirty` to underlying tools (deno publish, cargo publish,
 etc.). M13 implements the *lykn-level* gate consistent with that
@@ -210,7 +210,7 @@ expands during DD-style planning. Discuss with Duncan.
   weaken any related gates either.
 - **MUST framing for CC prompts.**
 - **Closing report pattern** — see
-  `workbench/2026-05-10-M7-closing-report.md` for shape.
+  workbench/2026-05-10-M7-closing-report.md for shape.
 - **Snapshot testing (insta) considerations:** lykn-cli uses `insta`
   for golden-file snapshot tests at
   `crates/lykn-cli/src/snapshots/`. M11's build-dir changes likely
