@@ -14,22 +14,41 @@ jobs:
     name: Consumer smoke
     runs-on: ubuntu-latest
     steps:
+      - name: Check consumer test suite availability
+        id: consumer-tests
+        shell: bash
+        run: |
+          if git ls-remote --exit-code https://github.com/lykn-lang/lykn-consumer-tests.git HEAD >/dev/null 2>&1; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice title=Consumer smoke skipped::lykn-lang/lykn-consumer-tests is not available; skipping Layer 4 consumer smoke tests."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.consumer-tests.outputs.available == 'true'
         with:
           repository: lykn-lang/lykn-consumer-tests
 
       - uses: dtolnay/rust-toolchain@1.97.0
+        if: steps.consumer-tests.outputs.available == 'true'
       - uses: denoland/setup-deno@v2
+        if: steps.consumer-tests.outputs.available == 'true'
         with:
           deno-version: v2.x
       - uses: Swatinem/rust-cache@v2
+        if: steps.consumer-tests.outputs.available == 'true'
 
       - name: Install lykn from source
+        if: steps.consumer-tests.outputs.available == 'true'
         run: |
-          git clone --depth 1 https://github.com/lykn-lang/lykn.git /tmp/lykn-build
+          git clone --no-checkout https://github.com/lykn-lang/lykn.git /tmp/lykn-build
           cd /tmp/lykn-build
+          git fetch --depth 1 origin "$GITHUB_SHA"
+          git checkout --detach "$GITHUB_SHA"
           cargo build --release
           sudo cp target/release/lykn /usr/local/bin/lykn
 
       - name: Run smoke tests
+        if: steps.consumer-tests.outputs.available == 'true'
         run: bash ci/run-smoke.sh
