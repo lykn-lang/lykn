@@ -21,6 +21,12 @@ Direct Deno examples remain where Deno itself is the subject: permissions,
 Deno namespace APIs, assertion/test APIs, and task syntax. No compiler, CLI,
 `.d.ts`, arc10, or cited-path census files were changed.
 
+CDC verification found a remaining supporting-reference drift in guides 10 and
+15: the Deno workflow target guides were fixed, but the reference guides still
+contained a repo-root `dist/` Makefile/task pipeline and a multi-file
+`lykn compile` loop. CDC repaired those references during verification so the
+slice's D-5 consistency row is true at close.
+
 ## Substrate Loaded
 
 Before editing, CC loaded:
@@ -58,6 +64,9 @@ CC also checked the live command surface:
 - `docs/guides/12-deno/12-03-task-runner.md` now keeps `deno task` as the
   subject but routes task bodies through `lykn build`, `lykn test`,
   `lykn lint`, `lykn fmt`, `lykn run`, and `lykn dist`.
+- CDC follow-up refreshed the guide 10 task/project pipeline and guide 15
+  compile/run examples so supporting references no longer teach repo-root
+  `dist/` or a hand-managed multi-file compile loop as the normal workflow.
 
 ## Retained Direct Deno Examples
 
@@ -108,6 +117,21 @@ Results:
 - `make test-docs`: 476 passed, 0 failed.
 - `make check-cited-paths`: passed.
 - `git diff --check`: clean.
+
+## Bubble-up to the Arc
+
+slice04 delivered the Deno workflow reconciliation assigned by the arc plan:
+guides 12-01, 12-02, and 12-03 now route normal project workflows through lykn
+wrappers while preserving intentional Deno runtime/API/task-runner teaching.
+
+Implementation and CDC verification revealed one adjacent guide consistency
+gap: guide 10 and guide 15 still carried some old manual `dist/` workflow
+examples. CDC repaired those as supporting-reference touch-ups inside the
+slice boundary. No new slice is required for that finding.
+
+Silent-drop diff: the slice did not change compiler/CLI behaviour, `.d.ts`
+documentation, arc10, or the cited-path census, matching the out-of-scope list.
+Arc07 remains active for the arc-level composition rows A-3, A-4, and A-5.
 
 ## Deferrals
 

@@ -1,14 +1,15 @@
 # arc07 — Documentation & Guide Alignment
 
-> **Status: ACTIVE — slice01, slice02, and slice03 closed/CDC-verified; slice04 closed.**
+> **Status: ACTIVE — slice01, slice02, slice03, and slice04 closed/CDC-verified.**
 > Created 2026-06-28 for the 0.6.0-era docs/SKILL hygiene work. The red-CI finding
 > (2026-06-30: 8 guide doctest blocks, DD-50.6 drift) is **fixed and landed** in
 > **slice01** (`0731048`; guide doctests 472/0) — the release-branch doctests are
 > green (CI re-run pending). **slice02** (`66a3565`, CDC-verified) re-grounded
 > the old guide/SKILL seed lists against the current branch. **slice03**
 > (`dcf23f5`, CDC-verified) refreshed build/dist/publish guide drift. The
-> slice04 reconciled the Deno workflow guides. The remaining arc07 work is
-> arc-level composition and CDC verification; a no-else `if` compiler defect is
+> slice04 reconciled the Deno workflow guides and CDC repaired adjacent guide
+> 10/15 supporting-reference drift. The remaining arc07 work is arc-level
+> composition and CDC verification; a no-else `if` compiler defect is
 > routed to reopened arc10 slice04.
 
 ## 1. Capability
@@ -33,7 +34,7 @@ clearing guide drift first makes the linter's seed corpus trustworthy.
 | **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (explicit return / drop `:returns`) + the `fn`-closure cases (bind-then-return to keep typed params) + a preventive style note. | **Closed** (`0731048`; docs-only; guide doctests 464/8→472/0; `make check` green; CI re-run pending) |
 | **slice02 · current-drift-recon** | Re-ground the old guide/SKILL seed lists against current `release/0.6.x`; disposition each seed item as done/stale/open/defer; run current drift sweeps; behaviour-check live compiler/CLI claims; recommend the next slice breakdown. Recon-only: no guide/SKILL edits. | **Closed** (`66a3565`; [closing report](./slice02-current-drift-recon/closing-report.md); [CDC verification](./slice02-current-drift-recon/cdc-verification.md)) |
 | **slice03 · build-dist-publish-guide-refresh** | Update `assets/ai/SKILL.md`, guide 10, guide 12-04, and guide 15 for `lykn dist`, `target/lykn/{build,dist}`, generated publish files, `--allow-dirty`, and `--no-build`; preserve deprecation notes where useful. | **Closed/CDC-verified** ([closing report](./slice03-build-dist-publish-guide-refresh/closing-report.md); [CDC verification](./slice03-build-dist-publish-guide-refresh/cdc-verification.md); `make test-docs`, `make check-cited-paths`, and `cargo test -p lykn-cli` green) |
-| **slice04 · deno-workflow-reconciliation** | Audit guides 12-01, 12-02, and 12-03 for raw Deno/manual `dist/` examples; preserve intentional low-level runtime examples and convert normal project workflows to `lykn` wrapper flows. | **Closed** ([closing report](./slice04-deno-workflow-reconciliation/closing-report.md); `make test-docs`, `make check-cited-paths`, and `git diff --check` green) |
+| **slice04 · deno-workflow-reconciliation** | Audit guides 12-01, 12-02, and 12-03 for raw Deno/manual `dist/` examples; preserve intentional low-level runtime examples and convert normal project workflows to `lykn` wrapper flows. | **Closed/CDC-verified** ([closing report](./slice04-deno-workflow-reconciliation/closing-report.md); [CDC verification](./slice04-deno-workflow-reconciliation/cdc-verification.md); `make test-docs`, `make check-cited-paths`, and `git diff --check` green) |
 
 The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
 `06-functions-closures.md` (`create-logger`, `create-filter` — `fn`),
@@ -81,6 +82,18 @@ live defect.
 | A-5 | `make test-docs` and `make check-cited-paths` are green at arc close | arc close gate | serious | process note + P-21 | open | | docs drift and cited-path drift stay visible |
 
 ## 5. Version History
+
+### v1.10 — 2026-08-08 (slice04 CDC-verified)
+
+CDC accepted slice04 after repairing a supporting-reference drift in guide 10
+and guide 15: the target Deno guides were already reconciled, but those adjacent
+reference sections still contained repo-root `dist/` / hand-managed compile
+workflow examples. After the CDC repair, guides 10, 12-01, 12-02, 12-03, 15,
+and `assets/ai/SKILL.md` agree on the normal project workflow: use `lykn build`,
+`lykn test`, `lykn lint`, `lykn run`, and generated output under
+`target/lykn/`.
+
+arc07 remains active for arc-level composition rows A-3/A-4/A-5.
 
 ### v1.9 — 2026-08-08 (slice04 closed; Deno workflow guidance reconciled)
 
