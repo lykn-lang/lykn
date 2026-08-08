@@ -111,7 +111,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc05 · lykn-source-linter** | `lykn lint` over Lykn source — anti-patterns, idiom, style (Option A) | arc03, arc10, arc11, arc13 | **Closed** — gate GO 2026-07-21 (`make check` green; P-11 demo 16/16 seeded → exit 1, clean → exit 0); `lykn lint` (16 rules, resolution-aware) ships. Inline suppression deferred → arc14/DD-62 |
 | **arc13 · expander-coherence** | Lexical bindings shadow macros on both backends; JS reserved words rejected as names; name-binding conformance corpus | arc10 (per-backend discipline); blocked arc05 slice03 | **CLOSED — gate GO 2026-07-09** (11 slices, 3 planned → 11 via tracked re-slices; DD-60 D1/D2 hold on both backends; Resolve-Once [DD-61] landed incl. §A6 privacy; corpus standing in `make check`; matrix 1947/53 exact at the gate, all documented-as-intended; P-18 reconciled) |
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **CLOSED — gate GO 2026-07-24** (operator; runsheet Parts A/B/C/C-bis all green, runtime rows **reproduced** not merely attested). All 7 slices closed/CDC-verified. slice06 version-consolidation + slice07 link-registry-specifier (Tier-0 resolver override; iteration 1 resolved a blocking effective-config regression + added the 4 table tests that were missing). Slices 01–05: mycelium re-audit + DD-63 → `lykn add` (`f9f9014`, exact-pin) → `lykn link`/`unlink` (`e1c0dd7`, git-ignored overlay; dist reads raw = publish-safe) → import-by-specifier (`42500a9`, zero lang change). mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green). Closing-report **re-issued** covering the full 7-slice walk; arc ledger **A-1…A-9 all met**. **0.6.0's founding goal — consume lykn as a dependency, end to end — is met.** |
-| **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08, arc15 (describes shipped behaviour) | **Active** — slice01/slice02/slice03 closed/CDC-verified; slice04 Deno workflow reconciliation pending; compiler follow-up `D-2608-W2HF` moved to reopened arc10 slice04 |
+| **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08, arc15 (describes shipped behaviour) | **Active** — slice01/slice02/slice03 closed/CDC-verified; slice04 Deno workflow reconciliation opened; compiler follow-up `D-2608-W2HF` moved to reopened arc10 slice04 |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
 | **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc10 follow-up and arc16 (book)** | **Future** (was M14/M15) — now gated by the remaining open arcs, arc10 follow-up + arc07 + arc16 |
 | **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) + no-invalid-JS follow-up for no-else `if` expression position | arc03, arc04 | **Reopened** — original gate GO 2026-07-05 remains true; slice04 draft planned for `D-2608-W2HF` |
@@ -173,7 +173,7 @@ provenance, not as current instruction.
   `03-citation-repoint` are closed, P-21 is done, and the cited-path gate is
   green at HEAD.
 - **Open arcs:** arc10 (reopened: slice04 draft planned), arc07 (active:
-  slice04 Deno workflow reconciliation pending), arc16 (book arc-plan still
+  slice04 Deno workflow reconciliation opened), arc16 (book arc-plan still
   to write).
 - **Future:** arc09 release, gated by the open arcs above. arc14
   comment-retention is seeded for 0.7.0, not 0.6.0.
@@ -271,7 +271,7 @@ inherited from arc attestations.
 | P-10 | `.d.ts` generated from `:type` annotations | end-to-end: compile a typed module, inspect emitted `.d.ts` | correctness | DoD | open | | reproduce at project scale |
 | P-11 | `lykn lint` lints Lykn source (not compiled JS) | end-to-end: `lykn lint` on a fixture with seeded anti-patterns | correctness | DoD | **done** | `p11_lint_corpus` (seeded→16 rules/exit1, clean→exit0) in `make check`; host: `./bin/lykn lint …/p11/{seeded_test,clean}.lykn` | **reconciled** — gate GO 2026-07-21: seeded 16/16 exit 1, clean exit 0 |
 | P-12 | 0.6.0 published to JSR + npm + crates.io | release transcript | serious | DoD | open | | blocked on arc09 |
-| P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | open | **doctests now green (476/0)**; arc07 slice01 closed the red-CI item; slice02 current-drift recon closed/CDC-verified; slice03 build/dist/publish guide refresh closed/CDC-verified (`dcf23f5`) | next docs work: Deno workflow reconciliation; compiler defect `D-2608-W2HF` moved to arc10 slice04 so docs do not paper over invalid-JS emission |
+| P-13 | docs/guides + SKILL aligned with shipped 0.6.0 (no unreconciled guide drift) | arc07 drift-audit demo; **`make test-docs` green** | correctness | project-plan | open | **doctests now green (476/0)**; arc07 slice01 closed the red-CI item; slice02 current-drift recon closed/CDC-verified; slice03 build/dist/publish guide refresh closed/CDC-verified (`dcf23f5`); slice04 Deno workflow reconciliation opened | current docs work: [`arc07-docs/slice04-deno-workflow-reconciliation`](./arc07-docs/slice04-deno-workflow-reconciliation/slice-doc.md); compiler defect `D-2608-W2HF` moved to arc10 slice04 so docs do not paper over invalid-JS emission |
 | P-14 | `template` ICU MessageFormat / i18n works, Rust↔JS equivalent | DD-55 ICU cross-compiler tests | serious | DoD | **done** | arc08 (DD-55) merged; 25 ICU cross-compiler tests green | escaping consistent with D-2 fix |
 | P-15 | arc10 (compiler-completion) closed + composed — DD-58 enforced on every compile path; DD-37 `_kernel` retired | ptr: arc10 closing-report + operator gate | serious | arc10 bubble-up (v1.15 — the ledger predated arc10) | **done** | 3/3 slices (`faee8a1`/`feb056c`/`2f6a84d`); **operator gate GO 2026-07-05 23:29** (5-form demo verbatim; `kernel:` resolves; suites reconciled) — reproduced at arc scale | |
 | P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **done** | 2/2 slices (`75c9cc2`/`4f2a628`); **operator gate GO 2026-07-05 23:31** (three-moment demo 0/0 with `./bin/lykn`, destination proven by the compile message; sweep + hygiene from the earlier session) | P-7's demo unconditional; tracked candidates instantiated |
@@ -286,6 +286,13 @@ DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.49 — 2026-08-08 (arc07 slice04 opened)
+
+Opened arc07 slice04, **deno-workflow-reconciliation**, with the full open set.
+P-13 remains open; the active docs work is now reconciling guides 12-01,
+12-02, and 12-03 so normal project workflows use lykn wrappers while Deno
+runtime/API/task-runner teaching remains intact where intentional.
 
 ### v1.48 — 2026-08-08 (arc07 slice03 CDC-verified)
 
