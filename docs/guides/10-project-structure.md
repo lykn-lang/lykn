@@ -61,18 +61,23 @@ and entry points. Source code goes in feature directories.
 
 ```
 project/
-├── deno.json               ;; config
+├── project.json            ;; workspace config
 ├── deno.lock               ;; lockfile (auto-generated)
-├── .gitignore              ;; ignore dist/, bin/
+├── .gitignore              ;; ignore target/, bin/
 ├── Makefile                ;; build tasks
 ├── README.md
 ├── bin/                    ;; compiled binary (lykn CLI)
 │   └── lykn
-├── mod.lykn                ;; library entry point
-├── main.lykn               ;; application entry point
-├── auth/
-├── users/
-└── shared/
+├── packages/
+│   └── my-project/
+│       ├── deno.json       ;; package config
+│       ├── mod.lykn        ;; library entry point
+│       ├── main.lykn       ;; application entry point
+│       ├── auth/
+│       ├── users/
+│       └── shared/
+├── test/
+└── target/lykn/            ;; generated build/test/dist artifacts
 ```
 
 ---
@@ -110,19 +115,25 @@ my-project/
 │       └── shared/
 │           ├── http.lykn
 │           └── constants.lyk  ;; kernel syntax
-├── dist/                    ;; staged output (lykn build --dist)
-│   ├── my-project/
-│   │   ├── mod.js
-│   │   ├── deno.json
-│   │   ├── package.json
-│   │   ├── README.md
-│   │   └── LICENSE
-│   └── project.json
 ├── test/
 │   ├── auth/
 │   │   └── login_test.lykn  ;; tests in lykn (using @lykn/testing DSL)
 │   └── users/
 │       └── repository_test.lykn
+├── target/lykn/
+│   ├── build/               ;; `lykn build`: intermediate JS artifacts
+│   │   └── my-project/
+│   │       ├── mod.js
+│   │       └── mod.d.ts
+│   └── dist/                ;; `lykn dist`: publish staging output
+│       ├── my-project/
+│       │   ├── mod.js
+│       │   ├── mod.d.ts
+│       │   ├── deno.json    ;; generated
+│       │   ├── package.json ;; generated
+│       │   ├── README.md    ;; copied from repo root
+│       │   └── LICENSE      ;; copied from repo root
+│       └── project.json     ;; generated workspace config
 └── docs/
     └── guides/              ;; lykn guides
 ```
@@ -132,7 +143,11 @@ my-project/
 - `.lykn` source (surface syntax) and `.lyk` source (kernel syntax)
   in `packages/<name>/` (workspace member)
 - Each package has its own `deno.json` (name, version, exports)
-- Compiled `.js` output in `dist/`
+- `lykn build` writes intermediate `.js` output to `target/lykn/build/<pkg>/`
+- `lykn dist` stages publishable packages under `target/lykn/dist/<pkg>/`
+- Generated publish files (`deno.json`, `package.json`, declaration stubs,
+  copied `README.md`/`LICENSE`) are generated artifacts; do not hand-write
+  them in source package directories or in `target/lykn/dist/`
 - Tests in `.js` (they import compiled output)
 - `bin/lykn` for the CLI binary
 - `lykn test`, `lykn lint`, `lykn run` wrap Deno with `--config project.json`
@@ -539,7 +554,7 @@ tests exercise. The `.lykn` source is the authoritative code.
 |----|---------|----------|-------------|
 | 01 | Flat-by-feature layout | SHOULD | Group by domain, not by type |
 | 02 | Clean root | SHOULD | Config at root, source in directories |
-| 03 | Reference directory structure | SHOULD | `.lykn` source, `dist/` output, tests |
+| 03 | Reference directory structure | SHOULD | `.lykn` source, `target/lykn/{build,dist}` output, tests |
 | 04 | kebab-case file names | SHOULD | `.lykn` extension, cross-OS safe |
 | 05 | One module, one purpose | SHOULD | Focused modules |
 | 06 | Name files after primary export | SHOULD | `login.lykn` exports `login` |

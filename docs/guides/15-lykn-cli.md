@@ -237,15 +237,18 @@ doesn't exist, or a `.lykn` file that fails to parse — run `lykn check` first)
 
 ---
 
-## ID-04d: `lykn build --dist` — Stage Packages for Publishing
+## ID-04d: `lykn dist` — Stage Packages for Publishing
 
 **Strength**: SHOULD
 
-**Summary**: Stage all workspace members into `dist/<pkg>/` with
-generated `deno.json` and `package.json`, ready for both JSR and npm.
+**Summary**: Stage all workspace members into `target/lykn/dist/<pkg>/`
+with generated `deno.json` and `package.json`, ready for both JSR and
+npm. `lykn build` remains the local build step and writes intermediate
+artifacts to `target/lykn/build/<pkg>/`.
 
 ```sh
-lykn build --dist
+lykn build
+lykn dist
 ```
 
 Each package is staged according to its kind (set via `lykn.kind` in
@@ -256,6 +259,11 @@ the package's `deno.json`):
 | **Runtime** | `"runtime"` | `.js` files with workspace imports rewritten to `@lykn/` scope |
 | **Macro module** | `"macro-module"` | All files (`.lykn`/`.lyk` + `.js`), plus a generated `mod.js` stub |
 | **Tooling** | `"tooling"` | Same as runtime |
+
+**Staging scope**: `lykn dist` stages from each workspace member's
+package root (the directory containing its `deno.json`). Place package
+entry points and directly-staged source files at the package root, not
+under a top-level `src/` wrapper.
 
 Example package `deno.json` with lykn metadata:
 
@@ -271,6 +279,10 @@ Example package `deno.json` with lykn metadata:
 }
 ```
 
+`lykn build --dist` is a deprecated alias for `lykn dist`. It remains
+accepted in 0.6.x for migration, but new docs and workflows should use
+`lykn dist`.
+
 ---
 
 ## ID-04e: `lykn publish` — Publish Packages
@@ -278,7 +290,9 @@ Example package `deno.json` with lykn metadata:
 **Strength**: SHOULD
 
 **Summary**: Publish to JSR, npm, or both. Automatically runs
-`lykn build --dist` first unless `--no-build` is passed.
+`lykn dist` first unless `--no-build` is passed. Publishing refuses to
+run with uncommitted changes unless `--allow-dirty` is passed
+explicitly.
 
 ```sh
 # Publish to JSR (default)
@@ -291,26 +305,30 @@ lykn publish --npm
 lykn publish --jsr --dry-run
 lykn publish --npm --dry-run
 
-# Skip the build step (assume dist/ is already staged)
+# Skip staging (assume target/lykn/dist/ is already staged)
 lykn publish --jsr --no-build
+
+# Override the dirty-tree safety gate when you intentionally need to publish
+# with uncommitted changes
+lykn publish --jsr --allow-dirty
 ```
 
-### Note: `dist/` and the JSR publishing flow
+### Note: `target/lykn/dist/` and the JSR publishing flow
 
 JSR's `deno publish` operates on git-tracked files — gitignored files are excluded from the published package. This can create tension:
 a developer may want compiled `.js` artifacts gitignored to keep
 `git status` clean, but JSR needs them tracked.
 
-The scaffold's `.gitignore` resolves this by ignoring the build-
-artifact directory (`dist/`) — the directory `lykn build --dist`
-stages into. `lykn publish --jsr` reads from `dist/` directly via
-the filesystem, not via git, so the gitignore exclusion does not
-affect publishing. Source `.lykn` and other config files remain
-tracked normally.
+The scaffold resolves this by treating `target/lykn/dist/` as generated
+publish staging. `lykn publish --jsr` reads from `target/lykn/dist/`
+directly via the filesystem, not via git, so gitignore exclusions do
+not affect publishing. Source `.lykn` and source package `deno.json`
+files remain tracked normally.
 
-See [`docs/philosophy.md`](../../docs/philosophy.md) Principle 1 and the
-0.6.0 commitments for the longer-term direction (build artifacts
-moving to `target/lykn/build/` and `target/lykn/dist/`).
+The dirty-tree gate is separate from generated staging: publish refuses
+to run when tracked or untracked files are present so the shipped source
+state is auditable. Use `--allow-dirty` only for an intentional,
+reviewed exception.
 
 ---
 
@@ -344,7 +362,8 @@ lykn fmt -w packages/myapp/main.lykn
 lykn check packages/myapp/main.lykn
 
 # 3. Build for distribution
-lykn build --dist
+lykn build
+lykn dist
 
 # 4. Run tests
 lykn test
@@ -359,13 +378,16 @@ A typical `Makefile`:
 .PHONY: build test check fmt
 
 build:
-	lykn build --dist
+	lykn build
 
 test: build
 	lykn test
 
 check: build
 	lykn test
+
+dist: build
+	lykn dist
 
 fmt:
 	lykn fmt -w packages/myapp/*.lykn
@@ -405,8 +427,10 @@ that the JS codegen consumes.
 | `lykn run FILE` | Run .lykn or .js file |
 | `lykn test [PATTERNS]` | Run tests via Deno |
 | `lykn lint [PATHS]` | Lint lykn **source** for anti-patterns (see `09-anti-patterns.md`) |
+| `lykn build` | Build workspace packages to `target/lykn/build/` |
+| `lykn dist` | Stage publishable packages in `target/lykn/dist/` |
 | `lykn publish --jsr` | Publish to JSR |
-| `lykn publish --npm` | Build + publish to npm |
+| `lykn publish --npm` | Stage + publish to npm |
 | `lykn publish --dry-run` | Check without publishing |
 | `lykn --version` | Show version |
 

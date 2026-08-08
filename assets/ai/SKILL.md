@@ -49,17 +49,17 @@ These three rules are load-bearing — violating any of them produces broken bui
 > | `npm publish` | `lykn publish --npm` |
 > | `deno publish` | `lykn publish --jsr` |
 > | `npm install <x>` | add to `project.json` `imports` — Deno auto-caches online; for offline use `deno cache <spec>` |
-> | `cargo build` (in a lykn user project) | `lykn build --dist` |
+> | `cargo build` (in a lykn user project) | `lykn build`; use `lykn dist` only when staging packages for publishing |
 > | `deno run main.lykn` | `lykn run main.lykn` |
 > | `deno test` | `lykn test` |
 > | `deno fmt main.lykn` | `lykn fmt main.lykn` |
-> | `deno fmt dist/` or `deno lint dist/` | don't run these — compiler ensures output is formatted and lint-clean (Principle 3) |
+> | raw Deno lint/format over generated output | don't run these — compiler ensures output is formatted and lint-clean (Principle 3) |
 >
 > **2. Generated files are generated. Don't hand-write them. (MUST)**
 >
-> Never hand-write `package.json`, `jsr.json`, or any file inside
-> `dist/`. These are produced by `lykn build --dist` from the source
-> `deno.json`. Hand-written versions get overwritten on the next build
+> Never hand-write `package.json` or any file inside
+> `target/lykn/dist/`. These are produced by `lykn dist` from the source
+> `deno.json`. Hand-written versions get overwritten on the next dist stage
 > and create silent divergence between what you committed and what
 > ships. If you find yourself opening one of these in an editor, you
 > are about to fight the build.
@@ -68,7 +68,7 @@ These three rules are load-bearing — violating any of them produces broken bui
 >
 > Place `.lykn` source files directly in the package directory:
 > `packages/my-pkg/mod.lykn`, not `packages/my-pkg/src/mod.lykn`.
-> `lykn build --dist` stages from the package root; files inside a
+> `lykn dist` stages from the package root; files inside a
 > top-level `src/` subdirectory are silently skipped. The dist will
 > appear to build successfully but ship a package with no code. This
 > is **not** stylistic — it is a load-bearing structural requirement.
@@ -151,17 +151,17 @@ Note: document paths are relative to the lykn project root.
    in `deno.json` *or* a `LICENSE` file at the package root is
    required for JSR; `lykn new` generates the LICENSE file by
    default, so adding a `license` field is optional.
-2. **Run `lykn build --dist`**: stages compiled `.js`, generated
-   `package.json`, generated `jsr.json`, and copied `README.md`/
-   `LICENSE` into `dist/<pkg>/`. Do **not** hand-write any file in
-   `dist/`.
+2. **Run `lykn dist`**: stages compiled `.js`, generated
+   `deno.json`, generated `package.json`, and copied `README.md`/
+   `LICENSE` into `target/lykn/dist/<package>/`. Do **not** hand-write any
+   file in `target/lykn/dist/`.
 3. **Dry-run first**: `lykn publish --jsr --dry-run` then
    `lykn publish --npm --dry-run`. Read the output — JSR in particular
    has strict requirements that surface here.
 4. **Publish**: `lykn publish --jsr` then `lykn publish --npm`.
 5. **Counter-cue (read this if you're tempted to bypass):** if you
    reach for `npm publish` or `deno publish` directly, stop. Those
-   commands skip `lykn build --dist` staging and produce a broken
+   commands skip `lykn dist` staging and produce a broken
    package. The lykn CLI wraps both — there is no scenario in normal
    project work where calling them directly is correct.
 
@@ -760,11 +760,11 @@ When mixing, surface forms can contain kernel forms freely. The compiler handles
    - Only use `cell` when the value genuinely needs to change over time
    - Thread pipelines replace intermediate mutable variables: `(-> data (transform-a) (transform-b) (transform-c))`
 
-### Task: "Set up linting on lykn compiled output"
+### Task: "Investigate compiled-output lint concerns"
 
 1. **Load**: `docs/guides/12-deno/12-01-runtime-basics.md`
 2. **Apply**:
-   - `deno lint dist/` on compiled JS output — no extra tools needed
-   - `deno fmt dist/` for consistent formatting
+   - Do not add a user workflow that runs `deno lint` or `deno fmt` over `target/lykn/`
+   - Treat malformed, ugly, or lint-unclean generated JS as a compiler defect
    - Many JS anti-patterns (like `var`, `==`) are structurally impossible in lykn's output
-   - `deno lint` catches issues in hand-written JS helpers or edge cases in compiled output
+   - Use `lykn lint` for source anti-patterns and normal tests for behavior

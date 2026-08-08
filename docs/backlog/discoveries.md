@@ -646,8 +646,15 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   before arc07/arc16 teach the no-else expression case as settled.
 
 ### `D-2607-6BQX` — `lykn publish`'s dirty-check gate is shipped and undocumented
-`main.rs:1016-1026` enforces it, `--allow-dirty` at `:158`; **zero** mentions in
-`docs/guides/`. `audit` · Medium · `gap` · `open` → arc07
+Originally found: `main.rs` enforced the dirty-tree gate and exposed
+`--allow-dirty`, but the guides did not document either surface. `audit` ·
+Medium · `gap` · `closed` → arc07
+
+**Closed 2026-08-08 in arc07 slice03.** Guide 15 now documents the dirty-tree
+gate, `--allow-dirty`, and `--no-build`; guide 12-04 points readers at that
+workflow. Verification: `./bin/lykn publish --help` exposes `--allow-dirty` and
+the `target/lykn/dist/` `--no-build` assumption; docs gates passed at slice
+close.
 
 ### `D-2607-J3HV` — `.d.ts` generation is shipped and near-invisible
 `emitter/dts.rs` ships; the guides mention `.d.ts` once, generically, at
@@ -655,12 +662,15 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 · `gap` · `open` → arc07
 
 ### `D-2607-V5DK` — the guides teach a deprecated command and contradict themselves
-`16-testing.md:478-496` uses `target/lykn/*` as present tense;
-`15-lykn-cli.md:313` says paths are *"moving to"* those; ID-04e and
-`10-project-structure.md:113` still teach `lykn build --dist`, marked
-`[deprecated: use lykn dist]` at `main.rs:118-121`. **Also in code:** `main.rs:986`
-prints "Did `lykn build --dist` complete successfully?" in a user-facing error.
-`audit` · Medium · `trap` · `open` → arc07 *(fix docs and the string together)*
+Originally found: `16-testing.md` used `target/lykn/*` as present tense while
+guide 15 and guide 10 still taught `lykn build --dist` / repo-root `dist/`;
+the CLI also printed "Did `lykn build --dist` complete successfully?" in a
+user-facing publish error. `audit` · Medium · `trap` · `closed` → arc07
+
+**Closed 2026-08-08 in arc07 slice03.** SKILL, guides 10/12-04/15, and the
+publish error string now use `lykn dist` and `target/lykn/{build,dist}` as the
+current workflow, with `lykn build --dist` retained only as a deprecated alias
+where useful.
 
 ### `D-2607-Y9GS` — the `compileBoth` guide row is superseded, not outstanding
 `main.rs:52-62` documents the flags as harness-only, *explicitly not for
@@ -668,15 +678,17 @@ authoring*; doing the row would manufacture new drift. Must be closed as
 **superseded**, not silently dropped. `audit` · Low · `polish` · `open` → arc07
 
 ### `D-2607-2FHM` — legacy repo-root `dist/` is stale debris that corroborates a stale doc
-Root `dist/{lang,testing,browser}` still carry `"version": "0.5.2"` from the
-pre-arc01 layout. **Not a publish hazard** — `publish` reads `target/lykn/dist/`
-(`validate_dist_exports`). But `10-project-structure.md:113` teaches `dist/` as
-staged output, so a reader who checks the repo finds a `dist/` directory
-confirming the stale doc. Delete the debris with the doc fix.
-`audit` · Low · `trap` · `open` → arc07, same root as `D-2607-V5DK`
+Originally found: legacy root `dist/{lang,testing,browser}` debris could
+corroborate stale docs even though publish reads `target/lykn/dist/`.
+`audit` · Low · `trap` · `no-op` → arc07, same root as `D-2607-V5DK`
 *(Correction: this was first logged as an arc09 publish precondition. That framing
 was wrong — see the bootstrap's "a consequence is a claim about a path you have
 not walked.")*
+
+**Closed 2026-08-08 as no-op in arc07 slice03.** `git ls-files dist` returned
+empty output and `test ! -e dist` passed in the slice worktree, so there was no
+tracked or filesystem root `dist/` debris to delete. The stale guide corroborator
+was removed by the guide refresh.
 
 ---
 

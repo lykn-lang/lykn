@@ -998,8 +998,8 @@ fn validate_dist_exports() {
             if !target.exists() {
                 let pkg_name = pkg_dir.file_name().unwrap_or_default().to_string_lossy();
                 eprintln!(
-                    "lykn publish: dist/{}/{} not found.\n\
-                     Did `lykn build --dist` complete successfully? The exports field\n\
+                    "lykn publish: target/lykn/dist/{}/{} not found.\n\
+                     Did `lykn dist` complete successfully? The exports field\n\
                      in {}'s deno.json points to {} but no such file was staged.",
                     pkg_name,
                     export_path.trim_start_matches("./"),

@@ -1,12 +1,12 @@
 # arc07 — Documentation & Guide Alignment
 
-> **Status: ACTIVE — slice01 and slice02 closed; slice03 opened.**
+> **Status: ACTIVE — slice01, slice02, and slice03 closed; slice04 pending.**
 > Created 2026-06-28 for the 0.6.0-era docs/SKILL hygiene work. The red-CI finding
 > (2026-06-30: 8 guide doctest blocks, DD-50.6 drift) is **fixed and landed** in
 > **slice01** (`0731048`; guide doctests 472/0) — the release-branch doctests are
 > green (CI re-run pending). **slice02** (`66a3565`, CDC-verified) re-grounded
-> the old guide/SKILL seed lists against the current branch. The remaining work
-> is now split into build/dist/publish guide refresh and Deno workflow
+> the old guide/SKILL seed lists against the current branch. **slice03** refreshed
+> build/dist/publish guide drift. The remaining arc07 work is Deno workflow
 > reconciliation; a no-else `if` compiler defect is routed to reopened arc10
 > slice04.
 
@@ -31,7 +31,7 @@ clearing guide drift first makes the linter's seed corpus trustworthy.
 |-------|-------|--------|
 | **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (explicit return / drop `:returns`) + the `fn`-closure cases (bind-then-return to keep typed params) + a preventive style note. | **Closed** (`0731048`; docs-only; guide doctests 464/8→472/0; `make check` green; CI re-run pending) |
 | **slice02 · current-drift-recon** | Re-ground the old guide/SKILL seed lists against current `release/0.6.x`; disposition each seed item as done/stale/open/defer; run current drift sweeps; behaviour-check live compiler/CLI claims; recommend the next slice breakdown. Recon-only: no guide/SKILL edits. | **Closed** (`66a3565`; [closing report](./slice02-current-drift-recon/closing-report.md); [CDC verification](./slice02-current-drift-recon/cdc-verification.md)) |
-| **slice03 · build-dist-publish-guide-refresh** | Update `assets/ai/SKILL.md`, guide 10, guide 12-04, and guide 15 for `lykn dist`, `target/lykn/{build,dist}`, generated publish files, `--allow-dirty`, and `--no-build`; preserve deprecation notes where useful. | **Open** ([slice-doc](./slice03-build-dist-publish-guide-refresh/slice-doc.md), [ledger](./slice03-build-dist-publish-guide-refresh/ledger.md), [cc-prompt](./slice03-build-dist-publish-guide-refresh/cc-prompt.md)) |
+| **slice03 · build-dist-publish-guide-refresh** | Update `assets/ai/SKILL.md`, guide 10, guide 12-04, and guide 15 for `lykn dist`, `target/lykn/{build,dist}`, generated publish files, `--allow-dirty`, and `--no-build`; preserve deprecation notes where useful. | **Closed** ([closing report](./slice03-build-dist-publish-guide-refresh/closing-report.md); `make test-docs`, `make check-cited-paths`, and `cargo test -p lykn-cli` green) |
 | **slice04 · deno-workflow-reconciliation** | Audit guides 12-01, 12-02, and 12-03 for raw Deno/manual `dist/` examples; preserve intentional low-level runtime examples and convert normal project workflows to `lykn` wrapper flows. | **Pending** |
 
 The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
@@ -80,6 +80,18 @@ live defect.
 | A-5 | `make test-docs` and `make check-cited-paths` are green at arc close | arc close gate | serious | process note + P-21 | open | | docs drift and cited-path drift stay visible |
 
 ## 5. Version History
+
+### v1.6 — 2026-08-08 (slice03 closed; build/dist/publish guidance refreshed)
+
+slice03 closed the build/dist/publish drift cluster. `assets/ai/SKILL.md`,
+guides 10/12-04/15, the stale publish error string, and the related backlog
+rows now describe the current workflow: `lykn build` writes to
+`target/lykn/build/`, `lykn dist` stages under `target/lykn/dist/`, and
+`lykn publish` documents `--no-build`, `--allow-dirty`, and the dirty-tree gate.
+
+The root `dist/` debris row closed as no-op after `git ls-files dist` returned
+empty and `test ! -e dist` passed. Slice04 remains pending for broader Deno
+workflow reconciliation in guides 12-01/12-02/12-03.
 
 ### v1.5 — 2026-08-08 (slice03 opened; compiler follow-up promoted to arc10)
 
