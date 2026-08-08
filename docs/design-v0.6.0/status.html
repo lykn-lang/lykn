@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-08 (03-citation-repoint closed on release/0.6.x: migrated citations repointed, four planned artifact homes populated, census shrank 631 -> 601, and make check-cited-paths is green. P-21 remains open only for 02-artifact-homes CDC verification/close. Current path: 02-artifact-homes close discipline -> arc15 slice04 + arc15 close -> arc07 + arc16 -> arc09.)",
+  updated: "2026-08-08 (02-artifact-homes CDC verification returned: cited-path gate is green and make check passed, but L-5/L-6 failed because sibling-repo guidance/tool artifacts are present only as untracked files. Current path: remediate artifact-homes L-5/L-6 -> arc15 slice04 + arc15 close -> arc07 + arc16 -> arc09.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -169,7 +169,7 @@ const DATA = {
       cap:"template → ICU MessageFormat + i18n (DD-55). Un-stranded + merged.",
       slices:[{n:"icu-js",s:"closed"},{n:"icu-rust",s:"closed"},{n:"icu-review+xcompiler",s:"closed"}] },
     { id:"arc09", name:"release-0.6.0", status:"future",
-      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. GATING LIST REVISED 2026-07-24: now also gated on arc16 (the book's 0.6.0 edition) alongside arc07, arc15, and the narrowed P-21 artifact-homes verification close.",
+      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. GATING LIST REVISED 2026-07-24: now also gated on arc16 (the book's 0.6.0 edition) alongside arc07, arc15, and the narrowed P-21 artifact-homes remediation.",
       slices:[] },
     { id:"arc10", name:"compiler-completion", status:"closed",
       cap:"DD-58 strict-default + JS parity + macro-boundary enforcement + DD-37 step-4 (_kernel removed). Gated 2026-07-05: the closed surface namespace holds on every compile path.",
@@ -194,17 +194,17 @@ const DATA = {
     { id:"01", name:"macro-entry-diagnostics", status:"closed",
       cap:"Closed 2026-07-24: source/test fix, slice docs, and CDC verification are present. The mycelium acceptance demo re-enters after 0.6.0 publication because that path still resolves the registry JS compiler.",
       slices:[{n:"source+tests",s:"closed"},{n:"cdc-close",s:"closed"}] },
-    { id:"02", name:"artifact-homes", status:"open",
-      cap:"Delivered mechanism, CDC-suspect: backlog/register homes exist and the path gate landed, but no cdc-verification.md exists. P-21 remains open until this close discipline verifies the structural artifact-home claim.",
-      slices:[{n:"homes",s:"closed"},{n:"path-gate",s:"closed"},{n:"CDC review missing",s:"open"}] },
+    { id:"02", name:"artifact-homes", status:"active",
+      cap:"CDC verification returned: the path gate is green and make check passed, but L-5/L-6 failed because sibling-repo guidance/tool artifacts are untracked. Remediate and reverify before P-21 closes.",
+      slices:[{n:"homes",s:"active"},{n:"path-gate",s:"closed"},{n:"CDC review returned",s:"active"}] },
     { id:"03", name:"citation-repoint", status:"closed",
       cap:"Closed 2026-08-08: repointed migrated citations, migrated four decided files, and shrank the frozen census from 631 to 601. make check-cited-paths is green at HEAD.",
       slices:[{n:"open set",s:"closed"},{n:"implementation",s:"closed"},{n:"CDC close",s:"closed"}] },
   ],
   sequence: ["02","arc15","arc07","arc16","arc09"],
   now: {
-    arc:"02-artifact-homes CDC verification remains · arc15 active · arc07 and arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate and the citation-repoint cleanup is closed. The cited-path gate is green and the census is smaller; P-21 now waits on 02-artifact-homes CDC verification/close so the durable artifact-home claim is structurally protected, not merely mechanized. After that, arc15 needs one CC execution probe before slice04 can be scoped; arc07 still owns broader guide/SKILL drift; arc16 has its planning home but still needs its arc-plan; arc09 waits on those gates."
+    arc:"02-artifact-homes remediation remains · arc15 active · arc07 and arc16 open · arc09 future",
+    desc:"The current release branch is past the arc06 gate and the citation-repoint cleanup is closed. The cited-path gate is green and the census is smaller, but P-21 now waits on the two artifact-home rows CDC could not reproduce: sibling-repo guidance/tool artifacts are present only as untracked files. After that, arc15 needs one CC execution probe before slice04 can be scoped; arc07 still owns broader guide/SKILL drift; arc16 has its planning home but still needs its arc-plan; arc09 waits on those gates."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
@@ -234,7 +234,7 @@ const DATA = {
     "arc06 delivered and gated: drove 'consume lykn as a dependency' to an end-to-end demonstration — the goal the whole 0.6.0 dive was in service of. Delivered lykn add (DD-63, exact-version pin via deno-shell), lykn link/unlink (a non-destructive git-ignored project.local.json overlay whose safety property — dist/publish read the RAW project.json, so a local dev path can never be published — is architecturally guaranteed, not merely tested), and the import-by-specifier convention (the compiler preserves import specifiers verbatim, so it cost ZERO lang change). Proven on a real downstream (mycelium): lykn build ✓, lykn test 43/0 (was Module-not-found red), lykn publish --jsr --dry green with the dev-only self-key absent from the staged config. Seven slices CDC-verified; closing-report A-1…A-9 met; operator gate GO 2026-07-24.",
     "arc15 · surface-syntax-traps: killed the #6 silent miscompile — ((express parts):join \"\") faithfully compiled to parts.value(\"join\",\"\") (a different, valid, wrong construct). Now a hard compile + lykn check error with a threading fix-it (-> (express parts) (:join \"\")), via a recursive validate_method_calls pass that catches nested traps, plus a matching lykn lint rule. The deeper hardening (slice03) was DEFERRED honestly: two verify-before-writing self-stops proved the elegant 'a type makes it impossible' story fails because classification leaves nested exprs raw — so the verified structural guard (Option B) ships for 0.6.0 and the real fix (Option C, fully-typed classification) became researched backlog (0.7.x A6) rather than a rushed rewrite. The system working: the discipline caught two of CDC's own premise errors before any wrong code was written.",
     "01-macro-entry-diagnostics closed as a standalone slice: the misleading import-macros missing-directory diagnostic now has source/test fixes and CDC verification; its mycelium acceptance demo is explicitly deferred until 0.6.0 publication.",
-    "02-artifact-homes delivered the structural path-citation gate and registered the historical citation wound as accepted/not-repaired, but lack of CDC verification still keeps P-21 open.",
+    "02-artifact-homes delivered the structural path-citation gate and registered the historical citation wound as accepted/not-repaired; CDC verification now confirms the gate but returned the slice because L-5/L-6 sibling-repo artifacts are untracked.",
     "03-citation-repoint closed the active cleanup: migrated citations now point at tracked homes, four planned artifact homes are populated, make check-cited-paths is green, and the frozen census shrank 631 -> 601 without adding exemptions.",
   ],
   issues: [
