@@ -1,6 +1,7 @@
 name: "Layer 5: Deno compatibility"
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - "crates/lykn-lang/src/expander/**"
