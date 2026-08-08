@@ -74,7 +74,7 @@ One branch per concern removes the guesswork that produced all three.
     reads every branch without touching an index.
 - **Commit footer convention (operator override, 2026-08-07):** every future
   assistant-authored commit message includes these trailers:
-  `Co-authored-by: Codex <codex@openai.com>` and
+  `Co-authored-by: Codex <noreply@openai.com>` and
   `Co-authored-by: Billo AI <ai-engineering@billo.systems>`.
 - **A path cited in a tracked document must resolve on that document's own
   branch.** This is the rule that makes branch choice load-bearing rather than
