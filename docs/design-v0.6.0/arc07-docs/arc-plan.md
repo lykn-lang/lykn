@@ -1,6 +1,6 @@
 # arc07 — Documentation & Guide Alignment
 
-> **Status: ACTIVE — slice01, slice02, slice03, and slice04 closed/CDC-verified.**
+> **Status: CLOSED — gate GO 2026-08-08. slice01, slice02, slice03, and slice04 closed/CDC-verified; arc ledger A-1...A-7 met.**
 > Created 2026-06-28 for the 0.6.0-era docs/SKILL hygiene work. The red-CI finding
 > (2026-06-30: 8 guide doctest blocks, DD-50.6 drift) is **fixed and landed** in
 > **slice01** (`0731048`; guide doctests 472/0) — the release-branch doctests are
@@ -8,9 +8,9 @@
 > the old guide/SKILL seed lists against the current branch. **slice03**
 > (`dcf23f5`, CDC-verified) refreshed build/dist/publish guide drift. The
 > slice04 reconciled the Deno workflow guides and CDC repaired adjacent guide
-> 10/15 supporting-reference drift. The remaining arc07 work is arc-level
-> composition and CDC verification; a no-else `if` compiler defect is
-> routed to reopened arc10 slice04.
+> 10/15 supporting-reference drift. The arc close reproduced the guide/SKILL
+> composition checks and closed P-13; a no-else `if` compiler defect remains
+> routed to reopened arc10 slice04 / P-22.
 
 ## 1. Capability
 
@@ -42,7 +42,7 @@ The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
 `memoize-lru` — `fn`), `11-documentation.md` (`debounce` — `fn`). Verify with
 `make test-docs` (the surface that catches this — see the process note below).
 
-_Later candidate (pending slice03/slice04):_ `.d.ts` user documentation remains
+_Later candidate:_ `.d.ts` user documentation remains
 open if the generated declaration path is meant to be a first-class 0.6.0 user
 surface. It needs a targeted artifact-producing fixture before exact guide
 claims are written. 0.5.x-era guide-drift sessions (`workbench/old/`) are out
@@ -77,11 +77,21 @@ live defect.
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | slice01 doctest-drift fix closed | ptr: slice01 cdc-verification | correctness | arc-plan | **done** | `0731048` + [`slice01-doctest-drift-fix/cdc-verification.md`](./slice01-doctest-drift-fix/cdc-verification.md) | red-CI item closed |
 | A-2 | slice02 current-drift recon closed | ptr: slice02 closing-report + cdc-verification | serious | arc-plan v1.3 | **done** | `66a3565` + [`slice02-current-drift-recon/cdc-verification.md`](./slice02-current-drift-recon/cdc-verification.md); CDC reproduced docs/path gates and the no-else `if` defect | re-grounded before editing |
-| A-3 | All current guide/SKILL drift is either fixed in arc07 or explicitly routed | arc close: compare slice02 inventory with subsequent implementation slices and deferrals | serious | arc capability | open | | anti-silent-drop row |
-| A-4 | Guide/SKILL claims match shipped 0.6.0 behaviour for sampled executable claims | arc close: reproduce selected `./bin/lykn` checks/compiles/lints and `make test-docs` | serious | P-13 | open | | class-(b) composition row; reproduce at arc scale |
-| A-5 | `make test-docs` and `make check-cited-paths` are green at arc close | arc close gate | serious | process note + P-21 | open | | docs drift and cited-path drift stay visible |
+| A-3 | All current guide/SKILL drift is either fixed in arc07 or explicitly routed | arc close: compare slice02 inventory with subsequent implementation slices and deferrals | serious | arc capability | **done** | [`closing-report.md`](./closing-report.md): slice02 inventory mapped to slice03, slice04, arc10/P-22, or explicit later-candidate deferrals; no silent drops | anti-silent-drop row |
+| A-4 | Guide/SKILL claims match shipped 0.6.0 behaviour for sampled executable claims | arc close: reproduce selected `./bin/lykn` checks/compiles/lints and `make test-docs` | serious | P-13 | **done** | [`closing-report.md`](./closing-report.md): live CLI help/build/run/lint/check/compile samples reproduced; guide 00 now names the no-else `if` live defect instead of asserting it as fixed | class-(b) composition row; reproduced at arc scale |
+| A-5 | `make test-docs` and `make check-cited-paths` are green at arc close | arc close gate | serious | process note + P-21 | **done** | `make test-docs`: 476 passed / 0 failed; `make check-cited-paths`: green at close; `git diff --check`: clean | docs drift and cited-path drift stay visible |
+| A-6 | slice03 build-dist-publish guide refresh closed | ptr: slice03 cdc-verification | serious | arc close accrual | **done** | `dcf23f5` + [`slice03-build-dist-publish-guide-refresh/cdc-verification.md`](./slice03-build-dist-publish-guide-refresh/cdc-verification.md) | accrued child-closed row |
+| A-7 | slice04 Deno workflow reconciliation closed | ptr: slice04 cdc-verification | serious | arc close accrual | **done** | `ae31c75` + `af69f70` + [`slice04-deno-workflow-reconciliation/cdc-verification.md`](./slice04-deno-workflow-reconciliation/cdc-verification.md) | accrued child-closed row |
 
 ## 5. Version History
+
+### v1.11 — 2026-08-08 (arc07 closed)
+
+arc07 closed with gate GO. The arc-level composition check reproduced the live
+CLI/doc claims, compared slice02's drift inventory against slice03/slice04 and
+the routed deferrals, and closed A-1...A-7. P-13 bubbles up as done. The no-else
+`if` compiler defect remains open in arc10/P-22, and the optional `.d.ts` docs
+pass remains a later candidate tied to P-10.
 
 ### v1.10 — 2026-08-08 (slice04 CDC-verified)
 
