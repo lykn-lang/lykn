@@ -124,13 +124,14 @@ Arcs in dependency order. Each delivers one coherent capability.
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
 > **Dependency/sequence** is carried by the *Depends on* column and the arcs'
-> Dependencies sections. Current dependency sequence of the remaining open
-> arcs (**revised 2026-07-24**): **arc06 (active — slice07 iteration 1) +
-> arc15 (active) → arc07 (docs) + arc16 (book) → arc09 (release).** arc07 and
+> Dependencies sections. Current dependency sequence of the remaining work
+> (**checked 2026-08-08**): **03-citation-repoint / P-21 → arc15 slice04 +
+> arc15 close → arc07 (docs) + arc16 (book) → arc09 (release).** arc07 and
 > arc16 are siblings, not sequential: both describe shipped behaviour, and the
 > book draft is expected to feed defects back into the language arcs, so plan
-> for a return loop rather than a straight line. arc05 closed 2026-07-21;
-> arc14 is deferred to 0.7.0. (High numbers belie the order: arc10 ran first.)
+> for a return loop rather than a straight line. arc05 closed 2026-07-21; arc06
+> closed 2026-07-24; arc14 is deferred to 0.7.0. (High numbers belie the order:
+> arc10 ran first.)
 
 > **Standalone slices (new 2026-07-24).** Not every unit of 0.6.0 work is an
 > arc. When a body of work is one slice, `PROJECT-MANAGEMENT.md` Part II collapses
@@ -140,19 +141,41 @@ Arcs in dependency order. Each delivers one coherent capability.
 > uses the same convention. Current standalone slices:
 >
 > - **[`01-macro-entry-diagnostics`](./01-macro-entry-diagnostics/slice-doc.md)** —
->   `import-macros` resolution diagnostics (open, 2026-07-24). Gates nothing;
->   fixes a *misleading* error rather than a missing one.
+>   `import-macros` resolution diagnostics (**closed**, 2026-07-24). Gates
+>   nothing; fixes a *misleading* error rather than a missing one. Acceptance
+>   demonstration re-enters after 0.6.0 publication because the mycelium path
+>   currently resolves the registry JS compiler.
 > - **[`02-artifact-homes`](./02-artifact-homes/slice-doc.md)** — give every
 >   durable artifact a tracked home and make "a cited path resolves in git" a
->   `make check` gate (open, 2026-07-25). Origin: `docs/backlog/discoveries.md`
->   was cited by five committed documents while sitting in a gitignored tree.
+>   `make check` gate (**delivered / CDC-suspect**, 2026-07-25). Origin:
+>   `docs/backlog/discoveries.md` was cited by five committed documents while
+>   sitting in a gitignored tree. No `cdc-verification.md` exists; P-21 remains
+>   open until `03-citation-repoint` closes or is consciously routed.
 > - **[`03-citation-repoint`](./03-citation-repoint/slice-doc.md)** — execute the
 >   operator's amended disposition: repoint every citation whose target migrated
 >   to a *tracked* location, freeze only what can never resolve, and perform four
->   migrations that were decided but never done (open, 2026-07-25). Uses
->   `02-artifact-homes`' gate; adds no mechanism.
+>   migrations that were decided but never done (**open**, 2026-07-25). Uses
+>   `02-artifact-homes`' gate; adds no mechanism. Current local check
+>   (2026-08-08): `make check-cited-paths` reports 34 dangling citations on
+>   `release/0.6.x`.
 
-## 3. Current status (2026-06-28)
+## 3. Current status (2026-08-08)
+
+This is the live release-branch status, reconciled against `release/0.6.x` git
+history and the slice directories. Older dated snapshots remain below as
+provenance, not as current instruction.
+
+- **Closed / gated arcs:** arc01, arc02, arc03, arc04, arc05, arc06, arc08,
+  arc10, arc11, arc12, arc13.
+- **Open standalone work:** `03-citation-repoint` is open and P-21 remains open.
+  Local verification on 2026-08-08: `make check-cited-paths` reports 34
+  dangling citations on `release/0.6.x`.
+- **Open arcs:** arc15 (slice04 scoping awaits one CC execution probe), arc07
+  (broader guide/SKILL drift), arc16 (book arc-plan still to write).
+- **Future:** arc09 release, gated by the open items above. arc14
+  comment-retention is seeded for 0.7.0, not 0.6.0.
+
+### Historical snapshot (2026-06-28 through 2026-06-30)
 
 - **✅ Reconciliation RESOLVED (2026-06-29) — see [`_reconciliation-2026-06-29.md`](./_reconciliation-2026-06-29.md):**
   both stranded bodies are now merged to `release/0.6.x` and verified green
@@ -238,7 +261,7 @@ inherited from arc attestations.
 | P-3 | arc03 closed + composed | ptr: arc03 closing-report | serious | project-plan | **done** | architecture merged to release (`6aa3724`); corpus 1345/0; classifier.js/surface-helpers.js present | restored after the 2026-06-29 reconciliation |
 | P-4 | arc04 closed + composed | ptr: arc04 closing-report | correctness | project-plan | **done** | arc04 closed (5/5 slices); `closing-report.md` composition check; surface.js 2315→448; emitMatchMacro byte-identical; lint green | DD-37 step 4 (`_kernel`) surfaced as follow-up |
 | P-5 | arc05 (linter) closed + composed | ptr: arc05 closing-report | correctness | project-plan | **done** | 4 slices closed; arc05 closing-report composition A-1…A-7; **gate GO 2026-07-21** (`make check` + P-11 demo) | **reconciled** |
-| P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | **done** | slices 01–05 closed/CDC-verified (`lykn add` DD-63 `f9f9014`; `lykn link` `e1c0dd7`; import-by-specifier `42500a9`); **closing-report A-1…A-7 all met**; mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green) | **DONE — gate GO 2026-07-24.** Round trip on the way: CLOSE-READY → ACTIVE (slices 06/07 landed post-report; slice07 iteration 1) → CLOSE-READY → **CLOSED**. The host reconcile ran in full, so A-4/A-5/A-6 are **operator-reproduced**, not CC-attested — including the publish-safety property (`lykn dist` with a link active → 0 linked refs in staged output), the arc's highest-stakes claim |
+| P-6 | arc06 (dep-ergonomics) closed + composed | ptr: arc06 closing-report | polish | project-plan | **done** | all 7 slices closed/CDC-verified; `lykn add` DD-63 `f9f9014`; `lykn link` `e1c0dd7`; import-by-specifier `42500a9`; version consolidation; link-registry-specifier; closing-report A-1…A-9 all met; mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green) | **DONE — gate GO 2026-07-24.** Round trip on the way: CLOSE-READY → ACTIVE (slices 06/07 landed post-report; slice07 iteration 1) → CLOSE-READY → **CLOSED**. The host reconcile ran in full, so A-4/A-5/A-6 are **operator-reproduced**, not CC-attested — including the publish-safety property (`lykn dist` with a link active → 0 linked refs in staged output), the arc's highest-stakes claim |
 | P-7 | `build` emits to `target/lykn/build/`; no `.js` in source tree (DoD demo) | end-to-end: clean build, grep source tree for `.js` = 0 | serious | DoD | open | | reproduce at project scale |
 | P-8 | `lykn publish` fails on a dirty tree; `--allow-dirty` overrides, never auto-injected | end-to-end publish dry-run on dirty + clean tree | serious | DoD | open | | reproduce at project scale |
 | P-9 | same surface input → same output across Rust + JS for the migrated corpus (`compileBoth`) | run `compileBoth` corpus; divergences documented or zero | serious | DoD | **done** | corpus **green: 1293 passed / 0 failed** (slice11); 0 semantic divergences | form-codegen only (~11%) remains a documented coverage bound |
@@ -253,12 +276,29 @@ inherited from arc attestations.
 | P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | done | **reconciled** — gate GO 2026-07-09 (arc13 closing-report §5 gate record: ancestry ×6, `make check` 100%, matrix 1947/53 exact = the two documented classes, D2 demos verbatim) | arc05 slice03 / P-11 unblocked; the corpus closes the coverage gap permanently |
 | P-19 | arc15 (surface-syntax-traps) closed + composed — method-call-on-expression (and every non-atom-head + keyword-first shape) is a hard **compile + `lykn check` error** with a threading fix-it; no guide teaches the trap; no source regressed | ptr: arc15 closing-report + host `lykn compile`/`make check` | serious | arc06/slice02 #6 finding + operator pushback (v1.33) | open | slice01 reject (`9ca9c7e`) + slice02 lint (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **deferred → 0.7.0** (Option C = A6, `release/0.7.x` BACKLOG); slice04 (sibling traps ID-32/ID-33) shaped | arc not yet closed (slice04 + arc-close pending); DD-64 still -DRAFT (odm = Duncan) |
 | P-20 | **arc16 (Lykn Book 0.6.0 edition) drafted and closed** — the book's 0.6.0 edition is complete, and every language/DevX defect it surfaced is either fixed in 0.6.0 or routed with a named home | ptr: arc16 closing-report + the defect-routing table | **serious** | operator decision 2026-07-24 (release-gating call) | **open — planning home created, arc-plan pending** | Iter-01 (the drift inventory), the 6–8-iteration kickoff thread, the fence-wiring spec and the dogfooding friction log are **now tracked** under `arc16-book-0.6.0-edition/design/` (v1.38) | **Gates arc09.** Prerequisite (1) — *the plan gets a git home* — is **MET** as of 2026-07-25 (v1.38); the material is tracked and the layout is recorded in all three repos' `AGENTS.md`. Prerequisite (2), the operator's D-1…D-5 decisions, is still open. Deliberately *not* planned in detail yet — *plan late, plan deep*, and the layout is a confirmation-protocol call |
-| P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | open | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `AGENTS.md` written in all three repos | Ledger lives in standalone slice `02-artifact-homes`. The gate is the row that matters — the relocations without it are a one-time cleanup, not a closed class. **Known exemption to design for:** closed historical documents cite paths by convention *verbatim* (e.g. `arc03/design/phase-2-divergence-catalog.md:234`), so the check needs an allowlist or a historical marker rather than a blanket fail |
+| P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | **open** | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `AGENTS.md` written in all three repos; `02-artifact-homes` delivered the gate | **Still open.** `02-artifact-homes` delivered the mechanism, but `03-citation-repoint` is the active cleanup slice and `make check-cited-paths` is red as of 2026-08-08 (34 findings). This is not a release blocker by accident; it is the gate doing its job. |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.39 — 2026-08-08 (status reconcile against `release/0.6.x`)
+
+Cross-checked `BOOTSTRAP.md`, `README.md`, `status.html`, the standalone slice
+directories, and the current `release/0.6.x` git log. This revision is a status
+reconcile only; it does not close implementation work.
+
+**Corrections.** arc06 is closed, not active; `01-macro-entry-diagnostics` is
+closed, not open; arc16's planning home exists, though its arc-plan remains
+unwritten; `02-artifact-homes` delivered the path gate but lacks a CDC
+verification file; and `03-citation-repoint` is the current open standalone
+slice created after artifact-homes.
+
+**Current gate fact.** `make check-cited-paths` was run locally on
+`release/0.6.x` on 2026-08-08 and reported 34 dangling citations. P-21 stays
+open until those are repointed, frozen with the intended rationale, or otherwise
+routed by the operator.
 
 ### v1.38 — 2026-07-25 (artifact homes: the register, arc16's planning home, and a `make check` gate)
 
