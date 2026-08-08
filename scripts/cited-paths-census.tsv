@@ -568,7 +568,6 @@ docs/dev/0023-m16-implementation-prompt-for-cc-cross-compiler-hygiene.md	workben
 docs/dev/0023-m16-implementation-prompt-for-cc-cross-compiler-hygiene.md	workbench/milestones/M16-cross-compiler-hygiene-ledger.md
 docs/dev/0023-m16-implementation-prompt-for-cc-cross-compiler-hygiene.md	workbench/verify/m16/value-override-audit.md
 docs/dev/0024-if-profile-audit-pattern-for-special-case-intercepts.md	workbench/verify/m16/kernel-profile-audit.md
-docs/dev/lang/0011-phase-2-core-forms-implementation-guide.md	crates/design/dev/lang
 docs/dev/lang/0018-v0.2.0-phase-3-macro-definition-and-hygiene.md	test/expander/enforced-gensym.test.js
 docs/dev/lang/0021-v0.2.0-phase-6-browser-shim-update-and-testing.md	test/integration/as-pattern.test.js
 docs/dev/lang/0021-v0.2.0-phase-6-browser-shim-update-and-testing.md	test/integration/macroexpand-debug.test.js
