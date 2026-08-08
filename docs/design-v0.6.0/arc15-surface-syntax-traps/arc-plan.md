@@ -1,6 +1,6 @@
 # arc15 — Surface-Syntax Traps
 
-> **Status: ACTIVE — seeded + slice-planned 2026-07-22** (operator-initiated
+> **Status: CLOSED — 2026-08-08** (operator-initiated
 > after the arc06/slice02 #6 finding + pushback). **Release: 0.6.0.** The home
 > for surface-syntax shapes that **compile clean but mean something the author
 > didn't write** — starting with method-call-on-an-expression (DD-64). Design:
@@ -55,12 +55,26 @@ arc scale. Opens here; per-row walk closes in `closing-report.md`.
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | slice01 (reject + guide migration) closed | ptr: slice01 cdc-verification | serious | arc-plan | **done** | `9ca9c7e` + CDC verification | the guarantee + docs correctness |
 | A-2 | slice02 (lint rule) closed | ptr: slice02 cdc-verification | serious | arc-plan | **done** | `d6c23b5` + follow-up B `90cf211`, both CDC-verified | the DX layer |
-| A-3 | **`((express x):m …)` and every non-atom-head + keyword-first shape is a compile ERROR** with the threading fix-it (not silent, not a warning) | host: `lykn compile` the trap → non-zero exit + fix-it message; the 3 canonical shapes (express / new / arithmetic) all rejected | serious | DD-64 | **done pending arc-close repro** | slices 01/02 cover method-on-expression; slice04 closed sibling traps; slice05 closed the `fn` parameter mismatch fast-follow | reproduce at arc scale on host at arc close |
-| A-4 | **the Lykn-correct form compiles** — `(-> (express x) (:m …))` and atom `(x:m …)` still emit correctly (no over-rejection) | host: threading + atom-method forms compile green; positive tests | correctness | DD-64 | **partially done** | positive coverage from slice01; final arc-scale reproduction still owed | anti-over-rejection |
-| A-5 | **no guide teaches the trap** — the sweep for `):kw` glued fingerprint returns only *documented-as-wrong* sites; `make test-docs` green | re-run the CDC sweep; every remaining hit is an ID-31/anti-pattern "don't" example | correctness | CDC sweep | **partial** | method-on-expression guide sites migrated; sibling-trap ID-32/ID-33 re-scoped by slice04; broader guide alignment remains arc07 | anti-silent-drop for docs |
-| A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | **partial** | slices 01/02 attested green; slice04 and slice05 `make test` green; final arc-close `make check` still owed at arc scale | sweep said 0 source hits |
+| A-3 | **`((express x):m …)` and every non-atom-head + keyword-first shape is a compile ERROR** with the threading fix-it (not silent, not a warning) | host: `lykn compile` the trap → non-zero exit + fix-it message; the 3 canonical shapes (express / new / arithmetic) all rejected | serious | DD-64 | **done** | arc close repro: `((express parts):join "")`, `((new TextEncoder):encode s)`, and `((/ cents 100):toFixed 2)` all exit 1 with the method-on-parenthesized-expression diagnostic + threading fix-it | reproduced at arc scale |
+| A-4 | **the Lykn-correct form compiles** — `(-> (express x) (:m …))` and atom `(x:m …)` still emit correctly (no over-rejection) | host: threading + atom-method forms compile green; positive tests | correctness | DD-64 | **done** | arc close repro: atom `(parts:join "")` emits `parts.join("")`; threaded `(-> (express parts) (:join ""))` emits `parts.value.join("")`; `lykn lint` returns no findings for both | anti-over-rejection |
+| A-5 | **no guide teaches the trap** — the sweep for `):kw` glued fingerprint returns only *documented-as-wrong* sites; `make test-docs` green | re-run the CDC sweep; every remaining hit is an ID-31/anti-pattern "don't" example | correctness | CDC sweep | **done** | guide sweep returned 9 hits, all documented-as-wrong/comment/prose; `make test-docs` green: 476 passed, 0 failed, 15 skipped | broader guide/SKILL alignment remains arc07 |
+| A-6 | **no existing source/test regressed** — corpus was 0-hits pre-change; `make check` green | host: `make check` green post-error | correctness | CDC sweep | **done** | slices 01/02 attested green; slice04 and slice05 closed green; final arc-close `make check` green on the committed close-documentation state | sweep said 0 source hits |
 
 ## 5. Version History
+
+### v1.7 — 2026-08-08 (arc closed; P-19 done)
+
+arc15 closed at arc scale. The closing pass reproduced the three canonical
+DD-64 trap shapes as hard compile errors with threading fix-its; reproduced the
+positive atom and threaded method-call forms; swept the guides for glued
+`):keyword` fingerprints; ran `make test-docs` green with 476 passing blocks and
+0 failures; and ran final `make check` green on the committed close-documentation
+state.
+
+P-19 bubbles up as done for 0.6.0. The remaining release sequence is now arc07
+(broader guide/SKILL drift) + arc16 (book 0.6.0 edition), then arc09. slice03's
+fully typed classifier rewrite remains deferred to 0.7.x Option C; it is a named
+route, not an arc15 drop.
 
 ### v1.6 — 2026-08-08 (slice05 closed the nested `fn` parameter mismatch)
 

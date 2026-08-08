@@ -84,7 +84,7 @@ inserts.
 and has done so. Before acting, confirm with `git log` on `release/0.6.x`.
 
 **Closed / gated arcs:** arc01, arc02, arc03, arc04, arc05, arc06, arc08,
-arc10, arc11, arc12, arc13. The big recent closes:
+arc10, arc11, arc12, arc13, arc15. The big recent closes:
 
 - **arc05 · lykn-source-linter** — gate GO 2026-07-21. `lykn lint` ships over
   Lykn source: 16 rules, resolution-aware, wired into `make check`; P-5/P-11
@@ -118,10 +118,10 @@ arc10, arc11, arc12, arc13. The big recent closes:
 
 **Open arcs / release gates:**
 
-- **arc15 · surface-syntax-traps — ACTIVE.** slice01 and slice02 are
+- **arc15 · surface-syntax-traps — CLOSED.** slice01 and slice02 are
   closed/CDC-verified; slice03 is honestly deferred to 0.7.0 (fully typed
   classification); slice04 closed the sibling traps and slice05 closed the
-  nested `fn` parameter mismatch. Arc close is next.
+  nested `fn` parameter mismatch. The arc-close repro passed at arc scale.
 - **arc07 · docs — OPEN.** slice01 fixed the first doctest drift; the broader
   guide/SKILL drift pass is still pending.
 - **arc16 · book-0.6.0-edition — OPEN.** The planning home exists and its design
@@ -129,7 +129,7 @@ arc10, arc11, arc12, arc13. The big recent closes:
   arc09 because drafting it is the full-surface review before the release cut.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
-**Current sequence:** arc15 close, then arc07 + arc16, then arc09. arc14
+**Current sequence:** arc07 + arc16, then arc09. arc14
 comment-retention is seeded but explicitly 0.7.0.
 
 **Standing:** `make check` is the canonical bar; **`./bin/lykn`**, never bare

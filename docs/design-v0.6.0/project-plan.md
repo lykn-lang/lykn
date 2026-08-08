@@ -113,20 +113,19 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **CLOSED — gate GO 2026-07-24** (operator; runsheet Parts A/B/C/C-bis all green, runtime rows **reproduced** not merely attested). All 7 slices closed/CDC-verified. slice06 version-consolidation + slice07 link-registry-specifier (Tier-0 resolver override; iteration 1 resolved a blocking effective-config regression + added the 4 table tests that were missing). Slices 01–05: mycelium re-audit + DD-63 → `lykn add` (`f9f9014`, exact-pin) → `lykn link`/`unlink` (`e1c0dd7`, git-ignored overlay; dist reads raw = publish-safe) → import-by-specifier (`42500a9`, zero lang change). mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green). Closing-report **re-issued** covering the full 7-slice walk; arc ledger **A-1…A-9 all met**. **0.6.0's founding goal — consume lykn as a dependency, end to end — is met.** |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08 (describes shipped behaviour) | **Open** (seeded, not slice-planned) |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
-| **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc16 (book)** | **Future** (was M14/M15) — gating list gained **arc16** on 2026-07-24 |
+| **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc16 (book)** | **Future** (was M14/M15) — now gated by the remaining open arcs, arc07 + arc16 |
 | **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) | arc03, arc04 | **Closed** (gated 2026-07-05; DD-58 on every compile path incl. the macro boundary; `_kernel` retired) |
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
 | **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded → 0.7.0** (2026-07-21; **release boundary decided 0.7.0**, operator; not slice-planned — post-0.6.0 capability) |
 | **arc16 · book-0.6.0-edition** | The Lykn Book's 0.6.0 edition drafted to completion — the full-surface review that catches language and DevX defects **before** the release, not in point releases after it | arc01–08, arc10–13, arc15 (describes shipped behaviour); pairs with arc07 (guides) | **Open — planning home CREATED 2026-07-25, arc-plan still to be written.** *(was: "reserved slot, not yet planned … planning home deliberately NOT created yet".)* The confirmation-protocol decision (PROJECT-MANAGEMENT Part VI) was taken with the operator on 2026-07-25: **split by design** — the *plan* lives here at [`arc16-book-0.6.0-edition/`](./arc16-book-0.6.0-edition/) because this project's arc09 gates on it; the *content* stays in `~/lab/cnbb/lykn`, whose new `AGENTS.md` points back here (as does `~/lab/cnbb/lykn-writers-guide`'s). The previously-untracked material is now tracked under `arc16-book-0.6.0-edition/design/`: the kickoff thread (which sizes the work at **6–8 iterations**, its own pre-reorg vocabulary — those map to *slices*, not to the framework's `iteration`), the 40KB drift inventory, the fence-wiring spec (moved from a loose file at this directory's root), and the dogfooding friction log (relocated from the book repo's gitignored `workbench/`). **First task is now writing `arc-plan.md`**, not finding the material. Five decisions (D-1…D-5) await the operator; the plan is written in pre-reorg M/Thread vocabulary and needs translating to arcs |
-| **arc15 · surface-syntax-traps** | Surface shapes that compile clean but mean something else → compile error + fix-it + lint + guide fix; slice01 = reject method-on-expression `(<non-atom-head> :kw …)` (DD-64), thread instead | threading (shipping); arc05 (lint) | **Active** (0.6.0) — slice01 reject (`9ca9c7e`) + slice02 lint/check-parity (`d6c23b5` + follow-up B `90cf211`) **closed/CDC-verified**; slice03 hardening **DEFERRED → 0.7.0** (Option C = fully-typed classification, `release/0.7.x` BACKLOG A6); slice04 sibling traps closed; slice05 nested `fn` parameter validation closed. Arc close pending. |
+| **arc15 · surface-syntax-traps** | Surface shapes that compile clean but mean something else → compile error + fix-it + lint + guide fix; slice01 = reject method-on-expression `(<non-atom-head> :kw …)` (DD-64), thread instead | threading (shipping); arc05 (lint) | **Closed — gate GO 2026-08-08**. slice01 reject (`9ca9c7e`) + slice02 lint/check-parity (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **DEFERRED → 0.7.0** (Option C = fully-typed classification, `release/0.7.x` BACKLOG A6); slice04 sibling traps closed; slice05 nested `fn` parameter validation closed; arc ledger A-1…A-6 met. |
 
 > **Numbering convention (from 2026-06-30):** `NN` is **creation order**, not
 > strict dependency order (we stopped renumbering on each mid-stream insert).
 > **Dependency/sequence** is carried by the *Depends on* column and the arcs'
 > Dependencies sections. Current dependency sequence of the remaining work
-> (**checked 2026-08-08**): **arc15 close -> arc07 (docs) +
-> arc16 (book) -> arc09
+> (**checked 2026-08-08**): **arc07 (docs) + arc16 (book) -> arc09
 > (release).** arc07 and
 > arc16 are siblings, not sequential: both describe shipped behaviour, and the
 > book draft is expected to feed defects back into the language arcs, so plan
@@ -168,13 +167,13 @@ history and the slice directories. Older dated snapshots remain below as
 provenance, not as current instruction.
 
 - **Closed / gated arcs:** arc01, arc02, arc03, arc04, arc05, arc06, arc08,
-  arc10, arc11, arc12, arc13.
+  arc10, arc11, arc12, arc13, arc15.
 - **Open standalone work:** none. `02-artifact-homes` and
   `03-citation-repoint` are closed, P-21 is done, and the cited-path gate is
   green at HEAD.
-- **Open arcs:** arc15 (arc-close reproduction pending), arc07
-  (broader guide/SKILL drift), arc16 (book arc-plan still to write).
-- **Future:** arc09 release, gated by the open items above. arc14
+- **Open arcs:** arc07 (broader guide/SKILL drift), arc16 (book arc-plan still
+  to write).
+- **Future:** arc09 release, gated by the open arcs above. arc14
   comment-retention is seeded for 0.7.0, not 0.6.0.
 
 ### Historical snapshot (2026-06-28 through 2026-06-30)
@@ -276,14 +275,28 @@ inherited from arc attestations.
 | P-16 | arc11 (source-only-test-build) closed + composed — no compiled `.js` in the source tree at any moment; buried-intent inventory empty-or-tracked | ptr: arc11 closing-report | serious | operator observation + CDC systemic finding (v1.16) | **done** | 2/2 slices (`75c9cc2`/`4f2a628`); **operator gate GO 2026-07-05 23:31** (three-moment demo 0/0 with `./bin/lykn`, destination proven by the compile message; sweep + hygiene from the earlier session) | P-7's demo unconditional; tracked candidates instantiated |
 | P-17 | arc12 (test-topology) closed + composed — corpus executes exactly once per `make check`, zero per `make test-docs`; suite/doctest counts unchanged; verification wall-clock materially reduced | ptr: arc12 closing-report + sentinel census | serious | operator observation + CC redundancy report (v1.18) | **done** | slice01 (`3612cad`); 1m52s→2.6s / >2m→1m04s; **operator gate GO 2026-07-05** (suite run green; census grep 3 line-mentions ≈ 1 compile + 1 execution — once, vs ~16 before); `lykn test` in 13s during the arc11 demo | the verification cost that was blocking the gates is gone |
 | P-18 | arc13 (expander-coherence) closed + composed — the name-binding matrix converges on both backends per DD-60; no invalid output at rc=0 for any name class | ptr: arc13 closing-report + the conformance-corpus run | serious | arc05/slice02 F-4 recon + operator blocker call (v1.23) | done | **reconciled** — gate GO 2026-07-09 (arc13 closing-report §5 gate record: ancestry ×6, `make check` 100%, matrix 1947/53 exact = the two documented classes, D2 demos verbatim) | arc05 slice03 / P-11 unblocked; the corpus closes the coverage gap permanently |
-| P-19 | arc15 (surface-syntax-traps) closed + composed — method-call-on-expression (and every non-atom-head + keyword-first shape) is a hard **compile + `lykn check` error** with a threading fix-it; no guide teaches the trap; no source regressed | ptr: arc15 closing-report + host `lykn compile`/`make check` | serious | arc06/slice02 #6 finding + operator pushback (v1.33) | open | slice01 reject (`9ca9c7e`) + slice02 lint (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **deferred → 0.7.0** (Option C = A6, `release/0.7.x` BACKLOG); slice04 sibling traps closed; slice05 closed `D-2608-H7FN` nested `fn` parameter validation | arc not yet closed (arc-close reproduction pending); DD-64 still -DRAFT (odm = Duncan) |
+| P-19 | arc15 (surface-syntax-traps) closed + composed — method-call-on-expression (and every non-atom-head + keyword-first shape) is a hard **compile + `lykn check` error** with a threading fix-it; no guide teaches the trap; no source regressed | ptr: arc15 closing-report + host `lykn compile`/`make check` | serious | arc06/slice02 #6 finding + operator pushback (v1.33) | **done** | [`arc15-surface-syntax-traps/closing-report.md`](./arc15-surface-syntax-traps/closing-report.md): A-1…A-6 met; trap repros exit 1 with fix-it; atom/thread positives compile and lint green; guide sweep clean except documented-as-wrong/prose/comment sites; `make test-docs` 476/0; final `make check` green on the committed close-documentation state | **Closed 2026-08-08.** DD-64 still -DRAFT (odm = Duncan); slice03 Option C remains routed to 0.7.x, not dropped |
 | P-20 | **arc16 (Lykn Book 0.6.0 edition) drafted and closed** — the book's 0.6.0 edition is complete, and every language/DevX defect it surfaced is either fixed in 0.6.0 or routed with a named home | ptr: arc16 closing-report + the defect-routing table | **serious** | operator decision 2026-07-24 (release-gating call) | **open — planning home created, arc-plan pending** | Iter-01 (the drift inventory), the 6–8-iteration kickoff thread, the fence-wiring spec and the dogfooding friction log are tracked under `arc16-book-0.6.0-edition/design/` (v1.38); sibling book guidance/tool homes are tracked (`91fee17`, `a042e18`) | **Gates arc09.** Prerequisite (1) — *the plan gets a git home* — is met. Prerequisite (2), the operator's D-1…D-5 decisions, is still open. Deliberately *not* planned in detail yet — *plan late, plan deep*, and the layout is a confirmation-protocol call |
-| P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | **done** | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `02-artifact-homes` delivered the gate; `03-citation-repoint` closed the red gate and shrank the census 631 -> 601; sibling repos now track `AGENTS.md` / `CLAUDE.md` and the book audit tool (`91fee17`, `a042e18`) | **Closed 2026-08-08.** `make check-cited-paths`, the Deno cited-path integration test, and full `make check` are green; the remaining release sequence starts at arc15 close. |
+| P-21 | **Every durable artifact has a tracked home, and no tracked document cites a path that does not resolve in git** | `make check` dangling-path gate (green) + a manual sweep of the pre-existing citations | correctness | operator-directed housekeeping, 2026-07-25 (v1.38) | **done** | register + owed-rows relocated to `docs/backlog/`; arc16 material relocated to `arc16-book-0.6.0-edition/design/`; `02-artifact-homes` delivered the gate; `03-citation-repoint` closed the red gate and shrank the census 631 -> 601; sibling repos now track `AGENTS.md` / `CLAUDE.md` and the book audit tool (`91fee17`, `a042e18`) | **Closed 2026-08-08.** `make check-cited-paths`, the Deno cited-path integration test, and full `make check` are green. |
 
 DoD verdict, gate (go / adjust / kill), and the per-row walk are recorded in
 this project's `closing-report.md` at release time.
 
 ## 5. Version History
+
+### v1.44 — 2026-08-08 (arc15 closed; P-19 done)
+
+arc15 closed after arc-scale reproduction. The three canonical DD-64 trap shapes
+now fail compilation with the method-on-parenthesized-expression diagnostic and
+threading fix-it; the atom and threaded positive forms compile and lint green;
+the guide sweep leaves only documented-as-wrong/prose/comment examples;
+`make test-docs` is green with 476 passing blocks and 0 failures; and final
+`make check` is green on the committed close-documentation state. P-19 is done.
+
+The remaining release sequence is now **arc07 + arc16 -> arc09**. arc07 owns the
+broader guide/SKILL drift pass; arc16 owns the book's full-surface review; arc09
+cuts the release after those gates. slice03's fully typed classifier rewrite
+remains an explicit 0.7.x route, not a 0.6.0 close claim.
 
 ### v1.43 — 2026-08-08 (arc15 slice04/slice05 closed; arc close next)
 

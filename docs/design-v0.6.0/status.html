@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-08 (arc15 slice04 and slice05 are closed: sibling traps fixed, and the nested fn parameter mismatch now errors on Rust compile/check like JS. Current path: arc15 close -> arc07 + arc16 -> arc09.)",
+  updated: "2026-08-08 (arc15 is closed: surface-syntax traps are hard failures with fix-its, positives still compile, and P-19 is done. Current path: arc07 + arc16 -> arc09.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -169,7 +169,7 @@ const DATA = {
       cap:"template → ICU MessageFormat + i18n (DD-55). Un-stranded + merged.",
       slices:[{n:"icu-js",s:"closed"},{n:"icu-rust",s:"closed"},{n:"icu-review+xcompiler",s:"closed"}] },
     { id:"arc09", name:"release-0.6.0", status:"future",
-      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. GATING LIST REVISED 2026-07-24: now also gated on arc16 (the book's 0.6.0 edition) alongside arc07 and arc15. P-21 artifact-homes is done.",
+      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. Gating list now waits on arc07 and arc16. P-21 artifact-homes and P-19 surface-syntax traps are done.",
       slices:[] },
     { id:"arc10", name:"compiler-completion", status:"closed",
       cap:"DD-58 strict-default + JS parity + macro-boundary enforcement + DD-37 step-4 (_kernel removed). Gated 2026-07-05: the closed surface namespace holds on every compile path.",
@@ -180,8 +180,8 @@ const DATA = {
     { id:"arc12", name:"test-topology", status:"closed",
       cap:"Every test runs exactly once per make check; make test-docs tests docs. 1m52s → 2.6s (test-docs), >2m → 1m04s (check), corpus 1×/0×. Created, delivered, and gated in one day.",
       slices:[{n:"run-once-topology",s:"closed"}] },
-    { id:"arc15", name:"surface-syntax-traps", status:"active",
-      cap:"Surface forms that compile clean but mean something the author did not write become hard errors + lint + guide fixes. slice01 and slice02 closed the method-on-expression trap; slice03 hardening is deferred to 0.7.0; slice04 sibling traps and slice05 nested fn parameter validation are closed. Arc close pending.",
+    { id:"arc15", name:"surface-syntax-traps", status:"closed",
+      cap:"Closed 2026-08-08: surface forms that compile clean but mean something the author did not write now become hard errors + lint + guide fixes. Method-on-expression rejects with a threading fix-it; sibling traps are closed; nested Rust fn parameter validation matches JS. slice03 hardening is deferred to 0.7.0.",
       slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps",s:"closed"},{n:"nested-fn-param-validation",s:"closed"}] },
     { id:"arc16", name:"book-0.6.0-edition", status:"open",
       cap:"The Lykn Book's 0.6.0 edition gates release. Planning home created 2026-07-25 and source material is tracked under this arc's design folder; content remains in the book repo. First task is still writing the arc-plan and resolving operator decisions D-1…D-5.",
@@ -201,16 +201,16 @@ const DATA = {
       cap:"Closed 2026-08-08: repointed migrated citations, migrated four decided files, and shrank the frozen census from 631 to 601. make check-cited-paths is green at HEAD.",
       slices:[{n:"open set",s:"closed"},{n:"implementation",s:"closed"},{n:"CDC close",s:"closed"}] },
   ],
-  sequence: ["arc15","arc07","arc16","arc09"],
+  sequence: ["arc07","arc16","arc09"],
   now: {
-    arc:"arc15 active · arc07 and arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint is closed, and artifact-homes/P-21 is done. The cited-path gate is green and the census is smaller. Next, arc15 needs its arc-close reproduction; arc07 still owns broader guide/SKILL drift; arc16 has its planning home but still needs its arc-plan; arc09 waits on those gates."
+    arc:"arc07 and arc16 open · arc09 future",
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, and arc15/P-19 is closed. The cited-path gate is green and the census is smaller. Next, arc07 owns broader guide/SKILL drift while arc16 writes the book plan and drafts the 0.6.0 edition; arc09 waits on those gates."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
     {n:"~1.0 s", l:"conformance corpus in make check", s:"seeded-teeth demo'd both backends; the 14.3s matrix stays on-demand"},
     {n:"601", l:"accepted historical cited paths", s:"census shrank from 631; make check-cited-paths green on release/0.6.x, 2026-08-08"},
-    {n:"475 / 0", l:"guide doctests", s:"green"},
+    {n:"476 / 0", l:"guide doctests", s:"green"},
     {n:"48 → 48", l:"size_of::<SExpr>()", s:"resolution tags + private payload, zero size cost"},
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
   ],
@@ -232,7 +232,7 @@ const DATA = {
     "★ THE BOOK NOW GATES THE RELEASE (operator, 2026-07-24): the Lykn Book's 0.6.0 edition moved from out-of-scope to release-gating as arc16. The reasoning is a quality argument, not a scheduling one — drafting the edition is a full-surface review of the shipped language, so it will surface bugs and DevX defects, and the choice is between paying that cost before the gate or in point releases after it. The routing failure was corrected on 2026-07-25: the arc16 planning home now exists and its kickoff, drift inventory, fence spec, and dogfooding log are tracked. The next step is writing the arc-plan, not finding the material.",
     "arc06 REOPENED (was CLOSE-READY): slices 06 + 07 landed after the arc's closing-report was written, and slice07's CDC review returned a blocking regression — with a link active, the effective config silently drops every override when project.json has no imports key, so lykn link prints success and applies nothing. Also: the guard the slice advertises ('can never reroute registry→registry') has no test — the test named for it asserts the opposite case — and the config function rewritten in the same slice has no test coverage at all. An arc closes when its last slice is CDC-closed, so the gate waits on iteration 1. The arc-plan itself had gone stale at slice02 while five slices closed: fixed, with the lesson recorded — recon-first scoping means the arc-plan must be re-reconciled at each slice close, not only at arc close.",
     "arc06 delivered and gated: drove 'consume lykn as a dependency' to an end-to-end demonstration — the goal the whole 0.6.0 dive was in service of. Delivered lykn add (DD-63, exact-version pin via deno-shell), lykn link/unlink (a non-destructive git-ignored project.local.json overlay whose safety property — dist/publish read the RAW project.json, so a local dev path can never be published — is architecturally guaranteed, not merely tested), and the import-by-specifier convention (the compiler preserves import specifiers verbatim, so it cost ZERO lang change). Proven on a real downstream (mycelium): lykn build ✓, lykn test 43/0 (was Module-not-found red), lykn publish --jsr --dry green with the dev-only self-key absent from the staged config. Seven slices CDC-verified; closing-report A-1…A-9 met; operator gate GO 2026-07-24.",
-    "arc15 · surface-syntax-traps: killed the #6 silent miscompile — ((express parts):join \"\") faithfully compiled to parts.value(\"join\",\"\") (a different, valid, wrong construct). Now a hard compile + lykn check error with a threading fix-it (-> (express parts) (:join \"\")), via a recursive validate_method_calls pass that catches nested traps, plus a matching lykn lint rule. The deeper hardening (slice03) was DEFERRED honestly: two verify-before-writing self-stops proved the elegant 'a type makes it impossible' story fails because classification leaves nested exprs raw — so the verified structural guard (Option B) ships for 0.6.0 and the real fix (Option C, fully-typed classification) became researched backlog (0.7.x A6) rather than a rushed rewrite. The system working: the discipline caught two of CDC's own premise errors before any wrong code was written.",
+    "arc15 · surface-syntax-traps CLOSED: killed the #6 silent miscompile — ((express parts):join \"\") faithfully compiled to parts.value(\"join\",\"\") (a different, valid, wrong construct). Now method-on-expression is a hard compile + lykn check error with a threading fix-it (-> (express parts) (:join \"\")), via a recursive validate_method_calls pass and matching lykn lint rule. Sibling traps closed too: stripped Rust fn preserves final values, string escapes cook or fail, final control-flow forms are not double-wrapped, and the nested Rust fn parameter mismatch now errors like JS. The deeper hardening (slice03) was DEFERRED honestly: classification leaves nested exprs raw, so Option C (fully-typed classification) became 0.7.x research rather than a rushed rewrite. Arc-close repros: three trap shapes exit 1, atom/thread positives compile and lint green, guide sweep is clean except documented-as-wrong/prose/comment examples, and doctests are 476/0.",
     "01-macro-entry-diagnostics closed as a standalone slice: the misleading import-macros missing-directory diagnostic now has source/test fixes and CDC verification; its mycelium acceptance demo is explicitly deferred until 0.6.0 publication.",
     "02-artifact-homes closed after remediation: the structural path-citation gate is green, the historical citation wound is accepted/not-repaired, sibling repos now track AGENTS.md with CLAUDE.md as a symlink, the new commit trailers are recorded, and the book audit tool is tracked. P-21 is done.",
     "03-citation-repoint closed the active cleanup: migrated citations now point at tracked homes, four planned artifact homes are populated, make check-cited-paths is green, and the frozen census shrank 631 -> 601 without adding exemptions.",
