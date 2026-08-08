@@ -101,7 +101,7 @@ inserts.
 - **Open / partial:** arc05 (linter — PAUSED at 2/3, **unpauses on the
   arc13 gate GO**; 15 rules live), arc06 (dep-ergonomics — slice01
   closed), arc07 (docs — slice01 closed; drift audit pending; holds the
-  stale-CLAUDE.md-architecture fix + kernel-browser-examples items).
+  stale-AGENTS.md-architecture fix + kernel-browser-examples items).
 - **Future:** arc09 (release — holds the accumulated breaking notes:
   DD-58 strict, kernel: JS semantics, D1 bound-names-resolve, D2
   reserved-words-error).
@@ -173,7 +173,7 @@ cosmetic normalization from slice09).
 - **Standing verification bar:** any slice touching guides/docs must run
   `make test-docs` (not just `lykn test` + `deno test test/`). Rebuild-first
   always (freshness guard exists but assume nothing).
-- **Safety gates (CLAUDE.md):** never auto-pass `--allow-dirty`/`--force`/
+- **Safety gates (AGENTS.md):** never auto-pass `--allow-dirty`/`--force`/
   `--no-verify`; satisfy the gate instead.
 
 ## 7. Issues & learnings — the workflow-evolution log
@@ -321,7 +321,7 @@ learning / what changed.* (Also rendered in `status.html`.)
   IN FULL — the DD-60 drift lesson); DD-60 0062 frontmatter v1.1 vs
   `state.json` reconcile if tracked; the old DD-58 v1.1 reconcile item
   still open.
-- **arc07 (docs):** stale CLAUDE.md architecture note ("lykn-cli …
+- **arc07 (docs):** stale AGENTS.md architecture note ("lykn-cli …
   SExpr enum" — false since the re-export); kernel browser examples'
   `(= el:inner-HTML …)` no-op; broader guide-drift audit + SKILL
   additions (incl. the `(export (func …))` invalid-form fix noted in

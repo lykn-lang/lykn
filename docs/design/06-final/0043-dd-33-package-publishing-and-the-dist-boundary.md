@@ -643,4 +643,4 @@ infrastructure is normal practice. Duncan's explicit preference
 1. Rewrite `docs/guides/12-deno/12-04-publishing.md` to document
    the `dist/` boundary, package kinds, and the three-step workflow.
 2. Update the book's CI/CD chapter into "CI/CD and Publishing".
-3. Update `CLAUDE.md` and `README.md` with the new workflow.
+3. Update `AGENTS.md` and `README.md` with the new workflow.

@@ -81,7 +81,7 @@ correctly didn't conflate them.
 
 ## Substrate-rule compliance — independent verification
 
-- **CLAUDE.md safety gates:** no violations. ✓
+- **AGENTS.md safety gates:** no violations. ✓
 - **LEDGER_DISCIPLINE no-silent-rewrite:** all 6 rows walked. ✓
 - **Backward-compat invariant:** `is_kernel_form`'s public contract
   is unchanged; the consistency test verifies behavioural

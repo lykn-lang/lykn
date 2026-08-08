@@ -10,7 +10,7 @@ advances. Evidence strengths: `asserted` < `attested` < `reproduced` <
 | L-2 | `docs/backlog/README.md` exists and carries: row format, sections, closing, triage, **and the routing rule** stated as *"a row is not `routed` until the destination file exists in git and contains it"* | read the file; grep for the rule verbatim | serious | **done** | 97 lines; rule stated as a blockquote under its own heading | reproduced (CDC) |
 | L-3 | Owed-0.7.x rows have a tracked home at `docs/backlog/owed-0.7.x-rows.md` | `git ls-files` | polish | **done** | moved 2026-07-25 | reproduced (CDC) |
 | L-4 | arc16's planning home exists at `docs/design-v0.6.0/arc16-book-0.6.0-edition/` and its four source artifacts are tracked under `design/` (drift inventory, kickoff thread, fence-wiring spec, dogfooding friction log) | `ls` the dir; `git ls-files` | serious | **done** | fence-wiring spec also moved out of the loose root-level file; friction log relocated from the book repo's ignored `workbench/` | reproduced (CDC) |
-| L-5 | `CLAUDE.md` in **all three** repos records the artifact layout, the `workbench/`-is-scratch rule, and the cited-path rule; book + writers-guide point at the lang planning home | read all three | serious | **done** | lang: new §"Where non-planning artifacts live"; book + writers-guide: created (neither had one) | reproduced (CDC) |
+| L-5 | `AGENTS.md` in **all three** repos records the artifact layout, the `workbench/`-is-scratch rule, and the cited-path rule; book + writers-guide point at the lang planning home | read all three | serious | **done** | lang: new §"Where non-planning artifacts live"; book + writers-guide: created (neither had one) | reproduced (CDC) |
 | L-6 | `fences.lykn` has a tracked home in the book repo | `git status` in `~/lab/cnbb/lykn` | polish | **done** | `tools/book-audit/fences.lykn` | reproduced (CDC) |
 | L-7 | **`make check` fails when a tracked document cites a repo-relative path that does not resolve in git *on that document's own branch***, with the file:line of the offending citation in the message | seeded-failure demo (add a bogus citation → red; remove → green), **run on at least two branches** | **serious** | **done — CC** | `scripts/check-cited-paths.js` + 22 tests in `test/integration/cited-paths.test.js`; `check-cited-paths` target in `common-checks` → `make check`. Resolves against `git ls-tree -r HEAD` (never `--all`, never the filesystem). Seeded-failure demo: 4 seeds → 4 hits with `file:line`, exit 1; removed → exit 0. **Three branches** exercised: `release/0.6.x` (2 live — see below), `main` (1), `release/0.7.x` (**15, of which 14 are new real defects**). Full walk in `closing-report.md`. | **attested (CC)** — `make check`'s composite green reconciles on the operator's host |
 | L-8a | The existing corpus is swept and the dangling-citation census is recorded | run a sweep over HEAD; record counts | serious | **done** | **106 tracked docs cite 143 distinct `workbench/…` paths across 353 sites; 57 of those paths are already gone from disk.** Registered as `D-2607-D3NL` | reproduced (CDC, scripted) |
@@ -28,7 +28,7 @@ the DD drafts → operator.
 
 ## Amendment 2026-07-25 — L-7 gains a branch dimension
 
-`CLAUDE.md`'s new **"Which branch do I write to?"** rule states the check's real
+`AGENTS.md`'s new **"Which branch do I write to?"** rule states the check's real
 contract, and it is stricter than L-7 was originally written:
 
 > A path cited in a tracked document must resolve on **that document's own
@@ -68,7 +68,7 @@ a merge or rebase reports the repair. Neither event announced itself.
    new rule they are precisely the thing being outlawed. If a unit genuinely
    needs data from another branch, the answer is to get the data onto its branch
    (which is what the rebase did here), not to exempt the citation.
-4. `CLAUDE.md` is byte-identical on every branch by rule, so it is the one file
+4. `AGENTS.md` is byte-identical on every branch by rule, so it is the one file
    whose citations must resolve on **all** branches. Worth a dedicated case.
 
 
@@ -81,7 +81,7 @@ consequence, which is L-7's exemption mechanism.
 **The design, and why it is not a loophole.** `workbench/` is gitignored by
 rule, so a `workbench/…` citation can **never** resolve in git — not today, not
 after any commit. Exempting the prefix outright would therefore look like the
-obvious move, and it is wrong: `CLAUDE.md` now says *nothing durable, nothing
+obvious move, and it is wrong: `AGENTS.md` now says *nothing durable, nothing
 cited*, so a **new** `workbench/` citation is precisely the thing the gate
 exists to reject. Same prefix, opposite verdicts.
 
@@ -126,7 +126,7 @@ amendments are the spec a future reader will start from:
    permanent accepted exemption. The gate itself still reads the working tree,
    so breakage surfaces *before* the commit that would bake it in.
 
-3. **Point 4 of the first amendment does not hold as written.** `CLAUDE.md` has
+3. **Point 4 of the first amendment does not hold as written.** `AGENTS.md` has
    eight dangling citations, and three of the four classes are things it must say
    by its own governance design — the routing table's own 0.7.0 target, the
    `workbench/`-is-scratch rule naming `workbench/`, and skill paths it itself
@@ -139,3 +139,142 @@ amendments are the spec a future reader will start from:
    blocks / unbackticked prose), not by mechanism — see `closing-report.md` §11.
    It also exposed that "fenced blocks are not scanned" was *accidentally* true
    rather than implemented; fence state is now tracked and regression-tested.
+
+
+## Amendment 2026-07-25 (3) — CDC retracts point 4; two decisions returned to the operator
+
+Written after CC delivered L-7/L-8. **This amendment corrects the first one.**
+
+### Point 4 is withdrawn
+
+Amendment (1) point 4 read: *"`AGENTS.md` is byte-identical on every branch by
+rule, so it is the one file whose citations must resolve on **all** branches."*
+
+**That is wrong, and CC's gate proved it in one run.** `AGENTS.md` carries eight
+citations that cannot resolve on `release/0.6.x`, and at least four of them are
+things the document **must** say to do its job: the routing table names
+`docs/design-v0.7.0/`; the scratch rule names `workbench/`; the worktree
+protocol names `.worktrees/0.6.x/` and `.worktrees/0.7.x/`. **A routing table's
+purpose is to name places that do not exist here.** The rule as I wrote it
+outlaws the document that carries it.
+
+I derived point 4 as a consequence of "byte-identical everywhere" and never
+opened `AGENTS.md` to see what the consequence implied. Registered as
+`D-2607-W2FJ`; it is the fourth *consequence-not-walked* instance this week and
+the first where the unwalked path was my own rule.
+
+**CDC endorses CC's §8 proposal** and returns it to the operator because it
+contradicts this ledger's letter: exempt a sibling release's planning tree
+**only when that tree is absent from `HEAD` entirely** — *a missing root is a
+branch-ownership fact; a missing leaf under a present root is a bug.* It keeps
+the teeth exactly where they earn their keep.
+
+### The census is bigger than the amendment assumed — and that is not a discrepancy
+
+Amendment (1) specified the frozen allowlist as "143 paths × 106 files". CC's
+census is **631 pairs / 307 paths / 174 files**, split **306 `workbench/` : 325
+other**. Reconciled: my sweep was **`workbench/`-scoped and said so** — the
+general sweep I ran returned ~436 hits which I explicitly marked untrustworthy
+and did not use. CC measured the half I declined to. My 353 *sites* and CC's 306
+*distinct pairs* are the same measurement at different granularity. **No numbers
+conflict; CC's are the better ones and supersede mine.**
+
+**Open for the operator:** does the option-(a) disposition extend to the 325
+non-`workbench` pairs (renamed `packages/lykn/`, migrated
+`test/surface/*.test.js`, `crates/design/…`)? They are the same accept-and-mark
+class by the same argument. **One honest difference:** a `workbench/` path can
+*never* resolve — it is gitignored by rule — whereas a renamed path *could* be
+mechanically repointed to its new home, and repointing would restore
+navigability. Freezing them is therefore a slightly larger concession than
+freezing the `workbench/` half. It is still the right call if the answer to
+*"will anyone open these?"* is no; and a later mechanical repoint pass stays
+cheap if that answer changes.
+
+### Self-reference: a report about broken paths cannot cite them
+
+CC's report tripped the gate 17 times on its first draft, **all correctly**, and
+resolved it by **convention** — fenced blocks and unbackticked prose — rather
+than by adding an inline-suppression mechanism, noting that `Makefile:308`
+records the house position against inline suppression and *a gate landing today
+should not quietly reverse a standing position*.
+
+**CDC agrees, and would make the convention explicit rather than leave it as
+this document's habit:** *documents that discuss dangling paths cite them in
+fenced blocks, not inline code.* Write it next to the gate. The mechanism
+alternative is the thing the house already rejected, and one new check is not
+grounds to reopen it.
+
+### The gate is red on `release/0.6.x`, and one of the two causes is mine
+
+`slice04-sibling-traps/liveness-recheck.md` — written by CDC at 01:32, cited
+from `arc-plan.md`, `discoveries.md`, and CC's own `closing-report.md` — is
+untracked. **The register bug reproduced itself the same day the gate landed,
+and I am the one who reproduced it.**
+
+It is not carelessness on anyone's part; it is two rules composing, and it will
+recur every session. Registered as `D-2607-Q8LM` with three options and a
+recommendation (**accept red-until-commit**: the contract is *green at `HEAD`
+after the operator commits*, not *green continuously* — a dirty tree reading red
+is arguably correct, since the citations genuinely do not resolve for anyone
+else yet). **Whichever is chosen, it belongs in `AGENTS.md` next to the gate.**
+An unexplained red is how a good gate gets disabled.
+
+
+## Amendment 2026-07-25 (4) — disposition split: freeze the unresolvable, repoint the migrated
+
+**Operator, 2026-07-25.** The option-(a) freeze does **not** extend wholesale to
+the 325 non-`workbench` pairs. The rule is now:
+
+> **Any citation whose target migrated to a location that is tracked should be
+> updated — unless updating it would damage the accuracy of the historical
+> record.**
+
+### The carve-out, stated precisely, because it is the part that gets fumbled
+
+Repoint a **reference to** an artifact. Never rewrite a sentence that
+**narrates the move itself**. *"See `packages/lykn/mod.js`"* is a reference —
+repoint it. *"`packages/lykn/` was renamed to `packages/lang/` in M17"* is
+history — both paths must survive verbatim, and freezing that citation is
+correct. **When in doubt, read the sentence, not the path.** A repoint that
+turns a true sentence false is worse than a dangling path, because the dangling
+path is at least visibly broken.
+
+### The classification (from the census, 325 non-`workbench` pairs)
+
+| Class | Count (pairs) | Disposition |
+|---|---|---|
+| `test/` — migrated test files | 127 | **Repoint** where the file exists at a tracked path today |
+| `docs/` — mixed | 105 | **Split**: repoint real migrations; freeze `docs/archive`, `docs/design-v0.5.x` (never created) |
+| `assets/` — mostly `assets/ai/*` | 39 | **Freeze.** `/assets/ai` is gitignored (a symlink dir); these can never resolve |
+| `packages/` — renamed `packages/lykn/` | 26 | **Repoint**, minus any narration-of-the-rename |
+| `crates/design/{dev,docs}/…` | 20 | **Repoint** — the DDs live under `docs/design/` under the *same numbering*; spot-checked `0001-dd-01…` and `0013-dd-10…`, both present |
+| `examples/`, `tools/`, `scripts/` | 8 | Case by case |
+
+The `workbench/` half (306 pairs) stays **frozen** — those targets can never
+resolve, by rule.
+
+### ★ Four files are not lost — they are cited at a home nobody moved them to
+
+The sweep found citations pointing at a **destination inside the tracked
+planning tree** while the file still sits in `workbench/`, unmigrated:
+
+| Cited as | Actually still at |
+|---|---|
+| `docs/design-v0.6.0/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md` | `workbench/kickoff-thread-build-dir-and-publish-dirty-check.md` |
+| `docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md` | `workbench/2026-05-10-compiler-coherence-thread-opening.md` |
+| `docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md` | `workbench/handoff-surface-kernel-separation-2026-05-14.md` |
+| `docs/design-v0.6.0/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md` | `workbench/kickoff-thread-compiler-architecture-coherence.md` |
+
+**A committed document already decided where each belongs, the file still
+exists, and nobody executed the move.** These are not repoints — they are the
+migration finally happening. Do the move; the citation becomes true instead of
+being frozen as false. This is the cheapest recovery in the whole census and it
+directly narrows `D-2607-D3NL`.
+
+### Consequence for the frozen census
+
+The allowlist can only **shrink** — that property was specified in amendment (1)
+and it is now doing work. Every repoint removes a pair; every one of the four
+moves above removes a pair. Regenerating the census is **not** permitted; CC
+deletes the resolved rows and records the count delta. If a row cannot be
+deleted because the path still fails, it was not actually repointed.

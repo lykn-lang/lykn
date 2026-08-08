@@ -282,7 +282,7 @@ greps.
 
 ## Methodology notes
 
-- Per CLAUDE.md "Lykn CLI safety gates": no safety-bypass flags
+- Per AGENTS.md "Lykn CLI safety gates": no safety-bypass flags
   needed.
 - Per LEDGER_DISCIPLINE: this session is small enough that no
   closing report is required — a thorough commit message naming the

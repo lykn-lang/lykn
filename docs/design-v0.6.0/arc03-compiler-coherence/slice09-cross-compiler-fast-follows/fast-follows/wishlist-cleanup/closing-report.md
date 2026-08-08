@@ -85,7 +85,7 @@ Direction (a). The failing pattern was a bare arrow expression without paren wra
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No safety-bypass flags injected.
+1. **AGENTS.md safety gates:** No safety-bypass flags injected.
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 12 items addressed. No items dropped. Deferred items explicitly named with DD-58 rationale.
 3. **No spec-softening:** C-1c and C-4b correctness-grade items properly deferred with explicit rationale, not silently downgraded.
 4. **Partial-adoption check:** Codegen paren-wrapping applied at one site (`emit_statement`). Object formatting applied at one site (`emit_object`). Template fix applied at both `emit_template_text` and `emit_template_text_icu`. No partial adoption.

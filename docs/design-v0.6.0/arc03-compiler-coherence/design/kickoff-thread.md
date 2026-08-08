@@ -80,7 +80,7 @@ this rule once and not try to invoke git inside the worktree.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — milestone protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — delegation rules.
-3. `assets/ai/CLAUDE.md` — project-specific conventions including
+3. `assets/ai/AGENTS.md` — project-specific conventions including
    "Lykn CLI safety gates."
 4. `docs/philosophy.md` — foundational. Especially Principle 3
    (compiler-owned output quality) — this thread is intimately
@@ -203,7 +203,7 @@ Should both compilers agree? If yes, which version is right?
 
 ## Constraints and conventions
 
-- **Per CLAUDE.md "Lykn CLI safety gates":** never auto-pass
+- **Per AGENTS.md "Lykn CLI safety gates":** never auto-pass
   `--allow-dirty`, `--force`, or equivalent.
 - **MUST framing for CC prompts.**
 - **Closing report pattern** for each milestone (template in past

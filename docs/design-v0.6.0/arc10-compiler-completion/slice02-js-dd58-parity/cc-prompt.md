@@ -63,7 +63,7 @@ strict-checked, and the guide kernel demos had to be `lykn,skip` instead of
    `expand()`. Provide an explicit lax opt-out for the harness/kernel-test
    paths (proposed shape: `{ strict: false }` options bag — verify ergonomics
    against the real call sites and propose in the closing report). **No
-   silent blanket bypass** on user-facing paths (CLAUDE.md safety-gates).
+   silent blanket bypass** on user-facing paths (AGENTS.md safety-gates).
    Strict rejects **exactly** the 5 heads + invalid `kernel:` — unknown heads
    remain function calls; do not close the namespace further.
 4. **F-4 — migration audit (repo-only).** Enumerate every JS-path call site

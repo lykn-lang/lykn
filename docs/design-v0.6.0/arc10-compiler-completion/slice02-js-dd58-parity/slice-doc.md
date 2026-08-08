@@ -91,7 +91,7 @@
 3. **F-3 — strict default-on** for the surface pipeline; the 5 heads error at
    top level with Rust-matching diagnostic text; explicit lax opt-out for
    harness/kernel-testing paths only — **no silent blanket bypass**
-   (CLAUDE.md safety-gates).
+   (AGENTS.md safety-gates).
 4. **F-4/F-5 — migration (repo-only).** Enumerate + classify + migrate the
    JS-path call sites compiling bare kernel forms (grounding grep found
    **38 one-line sites across 9 `.lykn` test files** — hot spots

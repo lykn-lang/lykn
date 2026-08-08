@@ -212,7 +212,7 @@ This is the deeper version of D-5. D-5 is about one specific check landing at th
 
 **Resolution direction (Phase 3 — likely 0.7+ territory):**
 - (D-6.α) Port `ExprContext` and `KernelChildProfile` to the JS side. Substantial work; brings parity.
-- (D-6.β) Accept JS as the "fast lane" (no position awareness; smaller surface), Rust as the "correct lane." Then JS doctest fails for patterns that *only* work in the position-aware world become "use the Rust binary to test these blocks." But that destroys the parallel-implementation guarantee that CLAUDE.md asserts.
+- (D-6.β) Accept JS as the "fast lane" (no position awareness; smaller surface), Rust as the "correct lane." Then JS doctest fails for patterns that *only* work in the position-aware world become "use the Rust binary to test these blocks." But that destroys the parallel-implementation guarantee that AGENTS.md asserts.
 - (D-6.γ) **Deprecate the JS compiler entirely.** The Rust binary is the production compiler; JS exists for bootstrapping. Once we're cross-compiling lykn with itself (DD-54 + downstream), the JS implementation can be retired. Position-awareness drift becomes a non-issue.
 
 D-6.γ is the long-term direction but unrealistic for 0.6.x.

@@ -254,7 +254,7 @@ maintaining the existing list's numbering and format.
   (D1 through D7), each with: file edited, line ranges affected,
   before/after excerpts where helpful, evidence file or commit SHA.
 - **Substrate-rule compliance** — confirm:
-  - No safety-bypass flags auto-passed (per CLAUDE.md "Lykn CLI
+  - No safety-bypass flags auto-passed (per AGENTS.md "Lykn CLI
     safety gates").
   - No Verify commands silently rewritten.
   - No spec-softening — every rule from DD-51's Decision is
@@ -330,7 +330,7 @@ Post a 7-row deliverable × evidence table. Include:
 
 ## Methodology notes
 
-- Per CLAUDE.md "Lykn CLI safety gates": none of these tasks
+- Per AGENTS.md "Lykn CLI safety gates": none of these tasks
   require any safety-bypass flags.
 - Per LEDGER_DISCIPLINE: this is the smallest of the M7 DDs to
   implement (doc-only). The closing report is still required —

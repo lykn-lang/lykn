@@ -48,7 +48,7 @@ Commit `1e7d219`. Three citations in classify_form_strict: kernel: escape (§"Th
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No safety-bypass flags injected.
+1. **AGENTS.md safety gates:** No safety-bypass flags injected.
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 10 items addressed.
 3. **philosophy.md Principle 1:** No structural source-tree changes.
 4. **philosophy.md Principle 3:** Diagnostics now specialized per form-class with did-you-mean suggestions.

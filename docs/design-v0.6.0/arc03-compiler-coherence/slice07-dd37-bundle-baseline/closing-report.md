@@ -66,7 +66,7 @@ All 10 confirmed. See `workbench/verify/m21/design-confirmation.md`.
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No violations.
+1. **AGENTS.md safety gates:** No violations.
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 11 rows addressed.
 3. **philosophy.md Principle 1:** New files additive (surface-ast.js, classifier.js, bundle-size.js).
 4. **philosophy.md Principle 3:** Pilot produces identical output to old path.

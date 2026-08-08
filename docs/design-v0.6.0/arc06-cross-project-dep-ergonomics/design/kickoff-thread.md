@@ -89,7 +89,7 @@ this rule once and not try to invoke git inside the worktree.
    commands, per-row evidence, closing reports.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — when delegation is
    acceptable vs. when judgment must stay in main context.
-3. `assets/ai/CLAUDE.md` — project-specific conventions, especially
+3. `assets/ai/AGENTS.md` — project-specific conventions, especially
    the "Lykn CLI safety gates" section (NEVER auto-pass
    `--allow-dirty`, `--force`, etc.).
 4. `docs/philosophy.md` — foundational principles. Phase 2 work is
@@ -203,7 +203,7 @@ incremental smoke-testing during Phase 2 catches issues earlier.
   language with explicit verification checklists. Anti-shortcut
   wording is load-bearing — see DD-49/50/51 iter prompts in
   `workbench/` for examples.
-- **Per CLAUDE.md "Lykn CLI safety gates":** never auto-pass
+- **Per AGENTS.md "Lykn CLI safety gates":** never auto-pass
   `--allow-dirty`, `--force`, `--no-verify`, or equivalent
   safety-bypass flags. If a gate fires, satisfy the gate; don't
   weaken it.

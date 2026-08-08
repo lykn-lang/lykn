@@ -68,7 +68,7 @@ The `lykn new` command generates `project.json` with an import map keyed on the 
 | File | Change |
 |------|--------|
 | `README.md` | `packages/lykn/` → `packages/lang/`, `@lykn/lykn` → `@lykn/lang`, fix browser ref to `packages/browser/` |
-| `CLAUDE.md` | `packages/lykn/` → `packages/lang/`, `@lykn/lykn` → `@lykn/lang` |
+| `AGENTS.md` | `packages/lykn/` → `packages/lang/`, `@lykn/lykn` → `@lykn/lang` |
 
 ## Verification
 
@@ -100,4 +100,4 @@ echo '(console:log "hello")' > /tmp/t.lykn && lykn run /tmp/t.lykn
 - `project.json` (3 lines)
 - `packages/browser/compiler.js` (3 imports)
 - 4 Rust source files (11 line changes)
-- 2 doc files (README, CLAUDE.md)
+- 2 doc files (README, AGENTS.md)

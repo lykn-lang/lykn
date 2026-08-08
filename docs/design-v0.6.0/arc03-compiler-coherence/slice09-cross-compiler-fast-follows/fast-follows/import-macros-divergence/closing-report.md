@@ -68,7 +68,7 @@ Full diagnosis at `workbench/dd-58-or-similar-import-macros-divergence-diagnosis
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No safety-bypass flags injected.
+1. **AGENTS.md safety gates:** No safety-bypass flags injected.
 
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 7 F-rows addressed with evidence. No rows dropped. No verify commands modified.
 

@@ -144,7 +144,7 @@ regression.
 
 Six rules addressed in the closing report. CDC concurs:
 
-- CLAUDE.md safety gates: no bypass flags. ✓
+- AGENTS.md safety gates: no bypass flags. ✓
 - LEDGER_DISCIPLINE no-silent-rewrite: all rows addressed; no
   Verify commands modified. ✓
 - philosophy.md Principle 1: no source-tree structural changes. ✓

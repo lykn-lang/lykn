@@ -194,7 +194,7 @@ honest disclosure is the right protocol behaviour.
 Six starter rules addressed in the closing report's section.
 CDC independently checks:
 
-- **CLAUDE.md safety gates:** CDC reviewed CC's commit chain
+- **AGENTS.md safety gates:** CDC reviewed CC's commit chain
   for `--allow-dirty`, `--force`, `--no-verify` — none in any
   changed file. ✓
 - **LEDGER_DISCIPLINE no-silent-rewrite:** No verify commands

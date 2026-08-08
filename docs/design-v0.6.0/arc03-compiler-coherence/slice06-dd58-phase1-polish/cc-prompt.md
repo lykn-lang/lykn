@@ -46,9 +46,9 @@ spec; the list cannot be quietly ignored.
   Tier A items that involve verifying CC's M17/M18 understanding
   (A-3, A-5): if your re-verification surfaces something
   unexpected, name it before working around.
-- **You MUST NOT auto-pass safety-bypass flags** per CLAUDE.md.
+- **You MUST NOT auto-pass safety-bypass flags** per AGENTS.md.
 - **You MUST NOT auto-accept any insta snapshot diffs** per
-  CLAUDE.md "Snapshot testing."
+  AGENTS.md "Snapshot testing."
 - **You MUST NOT change strict's default to ON.** That's M20+
   scope.
 - **You MUST NOT touch the JS compiler.** Separate milestone
@@ -60,7 +60,7 @@ spec; the list cannot be quietly ignored.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot testing"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot testing"
 4. **DD-58** at
    `docs/design/05-active/0059-dd-58-*.md`. Focus on:
    - §"The `kernel:` escape syntax"
@@ -345,7 +345,7 @@ The closing report MUST:
 4. For A-4 (ternary), name the disposition chosen (passthrough
    vs kernel-only) and the rationale.
 5. Include a "Substrate-rule compliance" section addressing six
-   rules (CLAUDE.md safety gates, LEDGER_DISCIPLINE no-silent-
+   rules (AGENTS.md safety gates, LEDGER_DISCIPLINE no-silent-
    rewrite, philosophy.md Principle 1, philosophy.md Principle 3,
    backward-compat invariant, TDD-first discipline).
 6. Include a "Findings for fast-follow" section logging new

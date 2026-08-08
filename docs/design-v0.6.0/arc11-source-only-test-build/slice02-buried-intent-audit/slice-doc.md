@@ -41,7 +41,7 @@ markers describing *what the code does now* are noise; markers describing
 |---|------|------------------------|
 | 6 | Reserved-plumbing sweep of `main.rs` (and the CLI arg surface generally): other `_`-prefixed ignored params, `hide = true` flags, dead `Option`s threaded-and-dropped | Part of F-1's sweep — enumerate; disposition each |
 | 7 | Test-source **location-independence conventions note** (imports = bare import-map specifiers; fixture paths = `Deno.cwd()`-anchored, never `import.meta.dirname`) | Land in the right home (guide 16 §testing or a `test/CONVENTIONS.md`); file the **arc05 lint-rule candidates** in the bubble-up (F-5) |
-| 8 | **Canonical test command** documented — `deno test --config project.json -A test/` is supported; unscoped `deno test` is not (double-runs the compiled corpus; needs `-A`) | Document where developers look (guide 16 and/or CLAUDE.md/README dev section) (F-5) |
+| 8 | **Canonical test command** documented — `deno test --config project.json -A test/` is supported; unscoped `deno test` is not (double-runs the compiled corpus; needs `-A`) | Document where developers look (guide 16 and/or AGENTS.md/README dev section) (F-5) |
 | 9 | **Doctest-dir harmonization** — `target/test/doctest/` → `target/lykn/test/doctest/` (arc01-aligned); a one-line constant *plus* the discovery/cleanup around it — slice01 filed it rather than folding it in | Do it with its own verify (`make test-docs` green) or no-op with written rationale (F-6) |
 
 **Doc-claims-vs-code spot-checks (bounded sample, F-1):** philosophy.md's

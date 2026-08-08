@@ -234,7 +234,7 @@ methodology intent (paired commits) was not.
 
 CC's six-rule section is correct on substance:
 
-1. **CLAUDE.md safety gates** — no bypass flags injected. ✓
+1. **AGENTS.md safety gates** — no bypass flags injected. ✓
 2. **LEDGER_DISCIPLINE no-silent-rewrite** — all 8 rows addressed,
    M19-3 explicitly dispositioned. ✓
 3. **philosophy.md Principle 1** — no structural source-tree

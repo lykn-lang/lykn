@@ -124,7 +124,7 @@ Remove `/workbench` if desired (it's a working dir). Ensure `dist/` stays ignore
 - File descriptions: update paths
 - Toolchain section: already updated for Deno-only
 
-### 1n. Update `CLAUDE.md`
+### 1n. Update `AGENTS.md`
 
 - Pipeline paths: `src/` → `packages/lykn/`
 - Build commands section
@@ -304,7 +304,7 @@ ls dist/npm/package.json     # generated, not tracked
 | File | Change |
 |------|--------|
 | `README.md` | Architecture paths, CLI commands, toolchain |
-| `CLAUDE.md` | Pipeline paths, build commands |
+| `AGENTS.md` | Pipeline paths, build commands |
 | `assets/ai/SKILL.md` | Document selection paths, CLI section, no-Node table |
 | `docs/guides/00-lykn-surface-forms.md` | Version reference if needed |
 | `docs/guides/15-lykn-cli.md` | New subcommands (if exists) |
@@ -313,10 +313,10 @@ ls dist/npm/package.json     # generated, not tracked
 
 | Phase | Files |
 |-------|-------|
-| 1 | 82 test files, `build.js`, `bridge.rs`, `e2e_tests.rs`, `project.json` (new), `packages/lykn/deno.json` (new), `packages/lykn/mod.js` (new), `.gitignore`, `README.md`, `CLAUDE.md` |
+| 1 | 82 test files, `build.js`, `bridge.rs`, `e2e_tests.rs`, `project.json` (new), `packages/lykn/deno.json` (new), `packages/lykn/mod.js` (new), `.gitignore`, `README.md`, `AGENTS.md` |
 | 2 | `crates/lykn-cli/src/main.rs`, `crates/lykn-cli/src/bridge.rs` |
 | 3 | `build_npm.ts` (new), `crates/lykn-cli/src/main.rs`, `Makefile` |
-| 4 | `README.md`, `CLAUDE.md`, `SKILL.md`, guides |
+| 4 | `README.md`, `AGENTS.md`, `SKILL.md`, guides |
 
 ## Verification (end-to-end)
 

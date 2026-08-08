@@ -122,10 +122,10 @@ correction (e.g., a strict-rejection test for quote in any
   additional coverage is needed, surface to CDC — don't quietly
   expand scope.
 
-- **You MUST NOT auto-pass safety-bypass flags** per CLAUDE.md.
+- **You MUST NOT auto-pass safety-bypass flags** per AGENTS.md.
 
 - **You MUST NOT auto-accept any insta snapshot diffs** per
-  CLAUDE.md "Snapshot testing."
+  AGENTS.md "Snapshot testing."
 
 ---
 
@@ -133,7 +133,7 @@ correction (e.g., a strict-rejection test for quote in any
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" + "Snapshot testing"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" + "Snapshot testing"
 4. **The M20 ledger** at
    `workbench/milestones/M20-dd58-phase15-kernel-test-corpus-and-lyk-runner-ledger.md`.
    Read the seven design calls carefully.
@@ -235,7 +235,7 @@ report MUST:
 
 5. Include a "Substrate-rule compliance" section addressing six
    rules:
-   - CLAUDE.md safety gates
+   - AGENTS.md safety gates
    - LEDGER_DISCIPLINE no-silent-rewrite
    - philosophy.md Principle 1
    - philosophy.md Principle 3

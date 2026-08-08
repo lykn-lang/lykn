@@ -35,7 +35,7 @@ list in that thread's Resolutions section.
   amendment request. Do not silently work around it.
   (LEDGER_DISCIPLINE §CC protocol point 2.)
 - **You MUST NOT auto-pass safety-bypass flags** to underlying
-  tools per `assets/ai/CLAUDE.md` "Lykn CLI safety gates." This
+  tools per `assets/ai/AGENTS.md` "Lykn CLI safety gates." This
   rule continues to apply throughout M16.
 
 ---
@@ -44,7 +44,7 @@ list in that thread's Resolutions section.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — the protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — subagent rules.
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates" section.
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates" section.
 4. **The M16 ledger itself** — `workbench/milestones/M16-cross-compiler-hygiene-ledger.md`.
 5. The source materials listed in the ledger's "Source materials"
    section (read in the order given there).
@@ -119,7 +119,7 @@ report **MUST**:
    SHA + Verify command output). **No prose summaries.** No "all
    rows complete" without per-row walks.
 2. Include a "Substrate-rule compliance" section addressing the
-   six starter rules (CLAUDE.md safety gates, LEDGER_DISCIPLINE
+   six starter rules (AGENTS.md safety gates, LEDGER_DISCIPLINE
    no-silent-rewrite, philosophy.md Principle 1, philosophy.md
    Principle 3, spec-softening check, partial-adoption check).
 3. Include a "Findings for fast-follow" section logging any

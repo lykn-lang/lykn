@@ -24,7 +24,7 @@ DD-37 surface-extraction workstreams (M22.5-2, M22.5-3) are meant to be
 executed *with*, so that large mechanical surface refactors are verifiable
 rather than hand-edited. The tool's own development follows ledger discipline
 (TDD-first paired commits, grep-verifiable Verify), and respects the *spirit*
-of the CLAUDE.md safety gates (never silently bypass its own verify step).
+of the AGENTS.md safety gates (never silently bypass its own verify step).
 
 ## 2. Slice breakdown
 

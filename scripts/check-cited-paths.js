@@ -25,7 +25,7 @@
 // non-catches are enumerated, not discovered later.
 //
 // SCANNED:
-//   - tracked `docs/**/*.md` and `docs/**/*.html`, plus root `CLAUDE.md`
+//   - tracked `docs/**/*.md` and `docs/**/*.html`, plus root `AGENTS.md`
 //   - markdown inline code spans      `like/this`     → repo-root-relative
 //   - markdown link / image targets   [x](like/this)  → document-relative OR
 //                                                       repo-root-relative
@@ -47,14 +47,14 @@
 //     never resolve in git.
 //
 // The one deliberate exception to the anchor rule is `workbench/`, which is a
-// DENY-prefix: gitignored by rule, so it can never resolve, yet `CLAUDE.md`
+// DENY-prefix: gitignored by rule, so it can never resolve, yet `AGENTS.md`
 // now says nothing durable and nothing cited may live there. A NEW
 // `workbench/` citation is precisely what this gate exists to reject, so it is
 // always checked and always fails unless the exact (file, path) pair is in the
 // frozen census (see below).
 //
 // ALSO NOT CAUGHT, deliberately:
-//   - anything without a `/` — a bare `CLAUDE.md` or `Makefile` in prose is
+//   - anything without a `/` — a bare `AGENTS.md` or `Makefile` in prose is
 //     indistinguishable from a generic mention
 //   - glob patterns (`docs/guides/*`, `crates/**/*.rs`) — matching semantics
 //     would have to be invented, and a wrong one is worse than none
@@ -229,7 +229,7 @@ function isDenied(p) {
 /** Which documents this gate scans. */
 export function scannedDocs(trackedFiles) {
   return [...trackedFiles].filter((f) =>
-    (f.startsWith("docs/") && (f.endsWith(".md") || f.endsWith(".html"))) || f === "CLAUDE.md"
+    (f.startsWith("docs/") && (f.endsWith(".md") || f.endsWith(".html"))) || f === "AGENTS.md"
   ).sort();
 }
 

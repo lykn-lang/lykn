@@ -77,7 +77,7 @@ fix genuinely isn't the right call. F-8 verifies this.
   command output that proves it. `attested` is your ceiling; CDC reproduces.
 - **Iteration budget: 5.** If you can't converge a row in 5, stop and surface it
   (it may need a scope/ledger amendment, not a 6th grind).
-- **Safety gates:** never auto-pass `--allow-dirty`/`--force`/etc. (CLAUDE.md).
+- **Safety gates:** never auto-pass `--allow-dirty`/`--force`/etc. (AGENTS.md).
 - Do not touch the `cargo fmt` red state or DD-58/DD-37 behavior — out of scope.
 
 ## 4. Close

@@ -33,7 +33,7 @@ function fakeTree(paths) {
 }
 
 const TREE = fakeTree([
-  "CLAUDE.md",
+  "AGENTS.md",
   "Makefile",
   "docs/philosophy.md",
   "docs/backlog/discoveries.md",
@@ -63,14 +63,14 @@ Deno.test("a file present on disk but untracked still fails — the original reg
   // `docs/backlog/owed-0.7.x-rows.md` is deliberately NOT in TREE, standing in
   // for a file that exists in the working tree but was never `git add`ed. The
   // gate resolves against the tree it is given, never the filesystem.
-  const found = await check("CLAUDE.md", "Queues live in `docs/backlog/owed-0.7.x-rows.md`.");
+  const found = await check("AGENTS.md", "Queues live in `docs/backlog/owed-0.7.x-rows.md`.");
   assertEquals(paths(found), ["docs/backlog/owed-0.7.x-rows.md"]);
 });
 
 Deno.test("a path that exists only on another branch fails on this one", async () => {
   // This is the branch dimension: `docs/design-v0.7.0/` is real on
   // `release/0.7.x` and absent here. Absent here means it fails here.
-  const found = await check("CLAUDE.md", "0.7.0 planning lives in `docs/design-v0.7.0/`.");
+  const found = await check("AGENTS.md", "0.7.0 planning lives in `docs/design-v0.7.0/`.");
   assertEquals(paths(found), ["docs/design-v0.7.0"]);
 });
 
@@ -106,7 +106,7 @@ Deno.test("reports every distinct dangling path, with its line", async () => {
 
 Deno.test("the same citation twice on one line is reported once", async () => {
   const found = await check(
-    "CLAUDE.md",
+    "AGENTS.md",
     "Note that `docs/ai/rust` may be a symlink; if `docs/ai/rust` is missing, ask.",
   );
   assertEquals(found.length, 1);
@@ -143,7 +143,7 @@ Deno.test("non-path tokens are not treated as citations", async () => {
     "@std/assert/mod.ts", // scoped package
     "/etc/hosts", // absolute
     "~/lab/cnbb/lykn", // home-relative
-    "CLAUDE.md", // no slash: indistinguishable from a generic mention
+    "AGENTS.md", // no slash: indistinguishable from a generic mention
     "docs/guides/*", // glob
     "crates/**/*.rs", // glob
     "docs/design-vX.Y.Z/", // placeholder

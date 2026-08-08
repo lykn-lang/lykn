@@ -47,7 +47,7 @@ durable artifacts into an invisible tree, and the mismatch is invisible
    **routing rule**).
 2. Create arc16's planning home and relocate its material into
    `arc16-book-0.6.0-edition/design/`.
-3. `CLAUDE.md` in all three repos records the layout and the two rules
+3. `AGENTS.md` in all three repos records the layout and the two rules
    (`workbench/` is scratch; a cited path must resolve in git). The book and
    writers-guide repos had none at all.
 4. **The gate:** `make check` fails when a tracked document cites a repo-relative

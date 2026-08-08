@@ -67,7 +67,7 @@ TDD ordering: `4e50b59` (tests) → `0ab8155` (fix).
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No safety-bypass flags injected.
+1. **AGENTS.md safety gates:** No safety-bypass flags injected.
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 9 rows addressed. No rows dropped.
 3. **philosophy.md Principle 1:** No structural source-tree changes. New functions added alongside existing ones.
 4. **philosophy.md Principle 3:** Strict-mode produces actionable diagnostics naming the form and suggesting alternatives.

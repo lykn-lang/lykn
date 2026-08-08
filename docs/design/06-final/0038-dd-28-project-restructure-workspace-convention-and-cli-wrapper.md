@@ -300,7 +300,7 @@ The structure established here becomes the template:
 7. Update all import paths in test files
 8. Update `build.js` for new paths
 9. Update Rust CLI paths (if any reference `src/`)
-10. Update `CLAUDE.md`, `README.md` for new structure
+10. Update `AGENTS.md`, `README.md` for new structure
 11. Verify: `deno test --config project.json -A test/` passes
 
 ### Phase 2: CLI subcommands
@@ -326,7 +326,7 @@ The structure established here becomes the template:
 1. Update all guides that reference `src/` paths
 2. Update SKILL.md document selection table
 3. Update README architecture section
-4. Update CLAUDE.md
+4. Update AGENTS.md
 
 ## Edge Cases
 

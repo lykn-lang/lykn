@@ -12,7 +12,7 @@ staging under `target/lykn/dist/` (matching Rust's `target/` convention and
 keeping `.js` out of the source tree, per philosophy Principle 1), and make the
 publish gate explicit at the Lykn surface — `lykn publish` fails on an
 uncommitted working tree, with an opt-in override that is **never**
-auto-injected (philosophy decided-questions #1 and #4; CLAUDE.md "Lykn CLI
+auto-injected (philosophy decided-questions #1 and #4; AGENTS.md "Lykn CLI
 safety gates").
 
 ## 2. Slice breakdown

@@ -18,7 +18,7 @@ Commit: **`3612cad` confirmed on `release/0.6.x`**. Diff: 6 files,
 | F-3 (B) | **Code-reproduced**: `docs: Vec<String>` (multi-path flag); `make test-docs` = one invocation with 4 `--docs` args (`Makefile:246–250`); granular targets preserved. Mechanism rationale stated (reuse over rework — sound). | reproduced (code) |
 | F-4 (C) | **Code-reproduced**: `test: test-rust test-suite test-docs` (`Makefile:200`); `test-suite` honest name; `test-lykn` kept as documented dev alias, out of the chain. Naming surfaced, not silent. | reproduced (code) |
 | F-5 (D) | **Code-reproduced**: `common-checks: check-deps build-release lint` — plus a latent ordering fix CC caught (lint needs `bin/lykn`, which build produces; it ran *after* lint before). | reproduced (code) |
-| F-6 | Docs reproduced (CLAUDE.md + `test/CONVENTIONS.md` name `make check` as the bar); counts attested (1365/0 · 673/0 · docs 475/0); census attested (1×/0×); timing table present. | reproduced (read) + attested |
+| F-6 | Docs reproduced (AGENTS.md + `test/CONVENTIONS.md` name `make check` as the bar); counts attested (1365/0 · 673/0 · docs 475/0); census attested (1×/0×); timing table present. | reproduced (read) + attested |
 
 Rows: 6/6 walked. Done: 6. Deferred: 0. No-op: 0. **No silent drops.**
 

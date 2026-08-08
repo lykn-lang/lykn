@@ -9,7 +9,7 @@ reproduced the **lead finding**: `lykn-cli/src/reader.rs:5` is
 consumed cross-crate with field patterns in `formatter.rs` +
 `lint/rules.rs` (grep run in this session). The F-4 criterion's
 "separate `SExpr`" premise was CDC's scoping error, inherited from
-CLAUDE.md's stale architecture note; CC handled it exactly right —
+AGENTS.md's stale architecture note; CC handled it exactly right —
 answered the *intent* (blast radius) and surfaced the correction as the
 lead bubble-up instead of confirming a false premise.
 
@@ -41,6 +41,6 @@ lead bubble-up instead of confirming a false premise.
 ## Disposition
 
 **slice07 closed; arc A-13 flips done.** Slices 08/09 scoped from this
-report (open sets written 2026-07-07). Routed: the stale CLAUDE.md
+report (open sets written 2026-07-07). Routed: the stale AGENTS.md
 architecture note ("lykn-cli … SExpr enum") → arc07 (docs) as a
 small-fix item.

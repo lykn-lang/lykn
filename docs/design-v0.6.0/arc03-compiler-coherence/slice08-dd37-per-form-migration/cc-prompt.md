@@ -87,10 +87,10 @@ matters at every batch boundary.
   delta approaches +15KB before batches complete, surface to CDC.
   CDC + Duncan make the call.
 
-- **You MUST NOT auto-pass safety-bypass flags** per CLAUDE.md.
+- **You MUST NOT auto-pass safety-bypass flags** per AGENTS.md.
 
 - **You MUST NOT auto-accept any insta snapshot diffs** per
-  CLAUDE.md.
+  AGENTS.md.
 
 ---
 
@@ -98,7 +98,7 @@ matters at every batch boundary.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md`
+3. `assets/ai/AGENTS.md`
 4. **The M22 ledger** at
    `workbench/milestones/M22-dd37-step3-per-form-migration-and-ci-integration-ledger.md`.
    Read the 8 design calls carefully, especially the batch
@@ -204,7 +204,7 @@ report MUST:
 4. Design-call confirmations from M22-1 (or escalation).
 
 5. "Substrate-rule compliance" section addressing six rules:
-   - CLAUDE.md safety gates
+   - AGENTS.md safety gates
    - LEDGER_DISCIPLINE no-silent-rewrite
    - philosophy.md Principle 1
    - philosophy.md Principle 3

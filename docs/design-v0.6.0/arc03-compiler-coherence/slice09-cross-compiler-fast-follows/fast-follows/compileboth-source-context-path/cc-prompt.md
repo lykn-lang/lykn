@@ -47,7 +47,7 @@ it into that existing `file_path` slot when set, and updates
   criterion is wrong, impossible, or supersedable, raise it as an
   amendment request before working around it.
 - **You MUST NOT auto-pass safety-bypass flags** to underlying tools
-  per CLAUDE.md "Lykn CLI safety gates."
+  per AGENTS.md "Lykn CLI safety gates."
 - **You MUST preserve backward compatibility.** When
   `--source-context-path` is *not* set, all existing behaviour stays
   identical. The flag's absence routes through the unchanged code
@@ -59,7 +59,7 @@ it into that existing `file_path` slot when set, and updates
 
 1. `assets/ai/LEDGER_DISCIPLINE.md`
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md`
-3. `assets/ai/CLAUDE.md` "Lykn CLI safety gates"
+3. `assets/ai/AGENTS.md` "Lykn CLI safety gates"
 4. `packages/testing/helpers.js` — the current `compileBoth`
    implementation
 5. `crates/lykn-cli/src/main.rs` `Compile` subcommand clap setup
@@ -226,7 +226,7 @@ compat invariant is broken.
 - **Do NOT touch `expander::expand` or pass0's resolution logic.**
   The existing `file_path` plumbing is correct; this change reuses
   it. If anything in pass0 needs changing, stop and surface.
-- **Do NOT auto-accept any insta snapshot diffs.** Per CLAUDE.md
+- **Do NOT auto-accept any insta snapshot diffs.** Per AGENTS.md
   "Snapshot testing." Manual review only.
 
 ---
@@ -244,7 +244,7 @@ closing report MUST:
    `__compileBoth__.lykn` or whatever you pick) and explain why
    the parent matters but the basename doesn't.
 3. Include a "Substrate-rule compliance" section addressing the
-   four most-relevant rules (CLAUDE.md safety gates, LEDGER_DISCIPLINE
+   four most-relevant rules (AGENTS.md safety gates, LEDGER_DISCIPLINE
    no-silent-rewrite, backward-compatibility invariant, partial-
    adoption check).
 4. Include a "Findings for fast-follow" section if any genuine

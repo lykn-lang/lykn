@@ -237,7 +237,7 @@ These items wait on the corresponding thread closing.
 - `12-04-publishing.md` — document the new dirty-check gate +
   `--allow-dirty` opt-out.
 - `15-lykn-cli.md` — `lykn publish` subcommand description.
-- `assets/ai/CLAUDE.md` "Lykn CLI safety gates" — may need a
+- `assets/ai/AGENTS.md` "Lykn CLI safety gates" — may need a
   cross-reference to confirm M13 materializes the rule.
 
 ### After Thread 1 (M10 .d.ts + surface-macros gap + mycelium friction)

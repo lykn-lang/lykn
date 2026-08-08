@@ -66,7 +66,7 @@ TDD ordering: `18f4b31` (M17-3 test) → `28680d9` (M17-3 fix) → `8823c51` (M1
 
 ## Substrate-rule compliance
 
-1. **CLAUDE.md safety gates:** No safety-bypass flags injected.
+1. **AGENTS.md safety gates:** No safety-bypass flags injected.
 
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** All 8 rows addressed. No rows dropped. Verify commands unchanged.
 

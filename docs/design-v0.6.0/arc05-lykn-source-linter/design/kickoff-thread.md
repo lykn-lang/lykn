@@ -75,7 +75,7 @@ this rule once and not try to invoke git inside the worktree.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — milestone protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — delegation rules.
-3. `assets/ai/CLAUDE.md` — project-specific conventions including
+3. `assets/ai/AGENTS.md` — project-specific conventions including
    "Lykn CLI safety gates."
 4. `docs/philosophy.md` — foundational. The 0.6.0 commitments section
    names the linter explicitly.
@@ -323,7 +323,7 @@ Each iteration is its own CC session.
 
 ## Constraints and conventions
 
-- **Per CLAUDE.md "Lykn CLI safety gates":** never auto-pass
+- **Per AGENTS.md "Lykn CLI safety gates":** never auto-pass
   `--allow-dirty`, `--force`, or equivalent flags.
 - **MUST framing for CC prompts.**
 - **Closing report pattern** — see

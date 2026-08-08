@@ -24,7 +24,7 @@ one that ships wrong") applied to our own documentation.
 
 Shape, to your judgment:
 
-- Input: tracked `*.md` (and `status.html`) under `docs/`, plus root `CLAUDE.md`.
+- Input: tracked `*.md` (and `status.html`) under `docs/`, plus root `AGENTS.md`.
 - Extract candidate repo-relative paths — backticked paths, markdown link
   targets. Be deliberate about the extraction rule and **write down what it
   deliberately does not catch**; a check that silently under-matches is exactly
@@ -62,7 +62,7 @@ recommendation for those.
 ## Standing
 
 - `./bin/lykn`, never bare `lykn`. `make check` is the bar (~1m04s).
-- Do not weaken an existing gate to make a new one pass (`CLAUDE.md` §Lykn CLI
+- Do not weaken an existing gate to make a new one pass (`AGENTS.md` §Lykn CLI
   safety gates).
 - Five-iteration budget; **self-stop and write a handoff if a premise cracks.**
   Every time you have pushed back on CDC, you have been right — including twice

@@ -147,7 +147,7 @@ defaults — flag dissent before starting if any are wrong.
 
 1. [`assets/ai/LEDGER_DISCIPLINE.md`](../../assets/ai/LEDGER_DISCIPLINE.md) — protocol (mandatory)
 2. [`assets/ai/SUBAGENT-DELEGATION-POLICY.md`](../../assets/ai/SUBAGENT-DELEGATION-POLICY.md) — subagent rules
-3. [`assets/ai/CLAUDE.md`](../../assets/ai/CLAUDE.md) "Lykn CLI safety gates" + "Snapshot testing"
+3. [`assets/ai/AGENTS.md`](../../assets/ai/AGENTS.md) "Lykn CLI safety gates" + "Snapshot testing"
 4. **DD-37** at `docs/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`. Focus on:
    - §"Acceptance state and Phase 0 criterion" (lines 30–62) — Phase 0 spec
    - §"Gradual migration, not a big-bang rewrite" (lines 864–916) — the 9-step migration sequence
@@ -317,7 +317,7 @@ CDC — don't compress at the cost of correctness or methodology.
    - **Do NOT touch the Rust compiler.**
    - **Do NOT modify the kernel compiler path.** The kernel path
      is separate from the surface architecture extraction.
-   - **Do NOT auto-pass safety-bypass flags** per CLAUDE.md.
+   - **Do NOT auto-pass safety-bypass flags** per AGENTS.md.
    - **Do NOT add esbuild as a runtime dependency.** It's a
      build-time tool; runtime should remain dependency-free per
      project conventions.
@@ -361,7 +361,7 @@ report MUST:
 
 5. Include a "Substrate-rule compliance" section addressing six
    rules:
-   - CLAUDE.md safety gates
+   - AGENTS.md safety gates
    - LEDGER_DISCIPLINE no-silent-rewrite
    - philosophy.md Principle 1
    - philosophy.md Principle 3

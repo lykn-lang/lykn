@@ -27,7 +27,7 @@ are simply fixed.
 | Slice | Outcome | Close |
 |-------|---------|-------|
 | slice01 · test-out-dir | **Delivered** — `--out-dir` wired (`target/lykn/test/`, wipe-per-run); F-1 recon caught + fixed 7 location-dependence items before wiring; fossil deleted; `.gitignore` hardened; three-moment demo clean. One amended mechanism (the `project.json` exclude — empirically invalidated, goal met without it; A-5 was:-noted). | `75c9cc2`, CDC-verified 2026-07-05 |
-| slice02 · buried-intent-audit | **Delivered** — 13-item disposition table (incl. 4 newly-found items, all tracked); 3 fixes wired; SetSymbol assessed + routed (not removed); `test/CONVENTIONS.md` + CLAUDE.md; doctest-dir harmonized; sweep-diff clean (CDC-reproduced). | `4f2a628`, CDC-verified 2026-07-05 |
+| slice02 · buried-intent-audit | **Delivered** — 13-item disposition table (incl. 4 newly-found items, all tracked); 3 fixes wired; SetSymbol assessed + routed (not removed); `test/CONVENTIONS.md` + AGENTS.md; doctest-dir harmonized; sweep-diff clean (CDC-reproduced). | `4f2a628`, CDC-verified 2026-07-05 |
 
 No slice dropped, deferred, or missing.
 

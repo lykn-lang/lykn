@@ -217,7 +217,7 @@ Success  Dry run complete       rc=0   ✅
 **#12 Makefile raw `npm`/`deno publish` — FIXED (toolchain); downstream drift.**
 `lykn publish --jsr` drives the whole flow (stage → dry-run) in one command and
 **correctly enforces the uncommitted-changes gate** (it refused to run on a dirty
-tree and did **not** auto-pass `--allow-dirty` — matches the CLAUDE.md safety
+tree and did **not** auto-pass `--allow-dirty` — matches the AGENTS.md safety
 rule). mycelium's Makefile still hand-rolls `npm`/`deno publish` (downstream
 drift) → route to a mycelium update / `lykn new` template + arc07 docs.
 

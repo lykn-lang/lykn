@@ -125,7 +125,7 @@ Reading literally: **0.6.0 cannot ship until these clusters are fixed.** Either:
 - (b) Document as known issues in 0.6.0 release notes with workarounds, ship anyway.
 - (c) Delay 0.6.0; ship 0.5.3 patch addressing these clusters; sequence 0.6.0 after.
 
-Per CLAUDE.md "Lykn CLI safety gates" reasoning style, option (b) feels like the same pattern as silently weakening underlying tool safety — shipping known-broken emission as "known issue" violates Principle 3 (compiler-owned output quality). The principle says compiler bugs in compiled JS are language-level bugs, not user-facing issues; documenting them as user-side workarounds is the inverse of that.
+Per AGENTS.md "Lykn CLI safety gates" reasoning style, option (b) feels like the same pattern as silently weakening underlying tool safety — shipping known-broken emission as "known issue" violates Principle 3 (compiler-owned output quality). The principle says compiler bugs in compiled JS are language-level bugs, not user-facing issues; documenting them as user-side workarounds is the inverse of that.
 
 ## Routing recommendation
 

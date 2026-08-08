@@ -187,7 +187,7 @@ boundary visible. ✓
 
 All six rules honored in CC's report:
 
-1. **CLAUDE.md safety gates:** no bypass flags. ✓
+1. **AGENTS.md safety gates:** no bypass flags. ✓
 2. **LEDGER_DISCIPLINE no-silent-rewrite:** all 11 rows. ✓
 3. **philosophy.md Principle 1:** new files additive; no
    structural source-tree changes. ✓

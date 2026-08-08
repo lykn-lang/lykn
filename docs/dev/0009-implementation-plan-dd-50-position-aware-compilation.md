@@ -345,6 +345,6 @@ Phase 4a's `test-compiles`-based tests automatically gate this — they run both
 
 ## Substrate-rule compliance reminders
 
-- **DD-50 Rule 2 says "compile error" — pick the analysis-pass path or document the runtime-throw stand-in.** Per CLAUDE.md spec-softening discipline, do not silently substitute a runtime throw for a compile error without flagging it. If the runtime-throw stand-in is chosen for MVP, the closing report MUST log "analysis-pass replacement" as a fast-follow.
-- **CLAUDE.md "Lykn CLI safety gates":** none of the deliverables require any safety-bypass flags.
+- **DD-50 Rule 2 says "compile error" — pick the analysis-pass path or document the runtime-throw stand-in.** Per AGENTS.md spec-softening discipline, do not silently substitute a runtime throw for a compile error without flagging it. If the runtime-throw stand-in is chosen for MVP, the closing report MUST log "analysis-pass replacement" as a fast-follow.
+- **AGENTS.md "Lykn CLI safety gates":** none of the deliverables require any safety-bypass flags.
 - **LEDGER_DISCIPLINE inline-amendment pattern:** if any audit-list entry in 1e or 3b doesn't fit reality (e.g., the file:line is off, or a site doesn't exist), amend inline using the M5/M9 pattern in the closing report — do not silently rewrite.
