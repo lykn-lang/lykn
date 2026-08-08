@@ -80,13 +80,13 @@ this rule once and not try to invoke git inside the worktree.
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — milestone protocol.
 2. `assets/ai/SUBAGENT-DELEGATION-POLICY.md` — delegation rules.
-3. `assets/ai/CLAUDE.md` — project-specific conventions including
+3. `AGENTS.md` — project-specific conventions including
    "Lykn CLI safety gates."
 4. `docs/philosophy.md` — foundational. Especially Principle 3
    (compiler-owned output quality) — this thread is intimately
    tied to it.
-5. `workbench/phase-2-plan.md` — Phase 2 milestones.
-6. `workbench/2026-05-10-M7-closing-report.md` — recent milestone
+5. workbench/phase-2-plan.md — Phase 2 milestones.
+6. workbench/2026-05-10-M7-closing-report.md — recent milestone
    closure with status snapshot.
 
 ## Current state of the project (as of 2026-05-10)
@@ -114,7 +114,7 @@ documented where it exists.
 
 **1. DD-36 (kernel-surface compiler split) — drafted, not promoted**
 
-Located at `workbench/dd-36-kernel-surface-split.md`. Drafted but
+Located at workbench/dd-36-kernel-surface-split.md. Drafted but
 never made it into `docs/design/01-draft/` or beyond. Goes into the
 architecture of splitting lykn's compilation pipeline into a kernel
 (JS-dialect IR) and surface (user-facing forms) layer.
@@ -126,7 +126,7 @@ established surface vs. kernel patterns implicitly).
 **2. DD-37 (JS surface compiler architecture) — drafted, not
 promoted**
 
-Located at `workbench/dd-37-js-compiler-architecture.md`. JS-side
+Located at workbench/dd-37-js-compiler-architecture.md. JS-side
 counterpart to DD-36. Same status: needs decision on promotion
 vs. decommission.
 
@@ -163,7 +163,7 @@ divergence detection.
 **5. JS/Rust error-message format divergence**
 
 Logged as Finding #4 in
-`workbench/2026-05-05-DD-49-iteration-2-closing-report.md`. JS emits
+workbench/2026-05-05-DD-49-iteration-2-closing-report.md. JS emits
 `"return 'result__gensym0' expected boolean"` (uses the gensym var
 name); Rust emits `"return value expected boolean"` (uses generic
 "return value" label). Same error class, different wording. Pre-dates
@@ -207,7 +207,7 @@ Should both compilers agree? If yes, which version is right?
   `--allow-dirty`, `--force`, or equivalent.
 - **MUST framing for CC prompts.**
 - **Closing report pattern** for each milestone (template in past
-  closing reports — see `workbench/2026-05-10-M7-closing-report.md`).
+  closing reports — see workbench/2026-05-10-M7-closing-report.md).
 - **`docs/design/` taxonomy:** drafts in `01-draft/`, active in
   `05-active/`, finalized in `06-final/`. Duncan handles promotion.
 - **Workbench is gitignored.**
@@ -218,7 +218,7 @@ Should both compilers agree? If yes, which version is right?
   this thread is its natural home for broader adoption.
 - Misdiagnosis correction pattern: if iter-N walks back a previous
   claim, the closing report gets a "Correction" subsection. See
-  `workbench/2026-05-10-DD-50.5-addendum-closing-report.md` for an
+  workbench/2026-05-10-DD-50.5-addendum-closing-report.md for an
   example.
 - Design refinements during implementation are acceptable when
   reflected back into the DD docs (see DD-49 / DD-50.5 "Refinement
