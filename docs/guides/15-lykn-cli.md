@@ -78,10 +78,10 @@ or Node.js required for compilation.
 lykn compile packages/myapp/main.lykn
 
 # Output to file
-lykn compile packages/myapp/main.lykn -o dist/main.js
+lykn compile packages/myapp/main.lykn -o target/lykn/build/myapp/main.js
 
 # Strip type checks and contracts (production)
-lykn compile packages/myapp/main.lykn --strip-assertions -o dist/main.js
+lykn compile packages/myapp/main.lykn --strip-assertions -o target/lykn/build/myapp/main.js
 
 # Output kernel JSON (debugging)
 lykn compile packages/myapp/main.lykn --kernel-json
@@ -95,13 +95,14 @@ lykn compile packages/myapp/main.lykn --kernel-json
 | `--strip-assertions` | Remove type checks and contracts |
 | `--kernel-json` | Output kernel S-expression JSON |
 
-**Note**: `lykn compile` operates on a single file. For multi-file
-projects, use a Makefile or shell loop:
+**Note**: `lykn compile` operates on a single file and is best treated as a
+low-level command reference. For normal multi-file projects, use `lykn build`.
+If you need a one-off debug loop, keep generated files under `target/lykn/`:
 
 ```sh
 # Compile all .lykn files
 for f in packages/myapp/**/*.lykn; do
-  out="dist/${f#packages/myapp/}"
+  out="target/lykn/build/myapp/${f#packages/myapp/}"
   out="${out%.lykn}.js"
   mkdir -p "$(dirname "$out")"
   lykn compile "$f" -o "$out"
@@ -166,7 +167,7 @@ compiled to a temp `.js` file first, then executed.
 lykn run packages/myapp/main.lykn
 
 # Run a .js file directly
-lykn run dist/main.js
+lykn run target/lykn/build/myapp/main.js
 
 # Pass arguments
 lykn run packages/myapp/main.lykn -- --port 3000

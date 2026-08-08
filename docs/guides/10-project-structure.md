@@ -148,7 +148,8 @@ my-project/
 - Generated publish files (`deno.json`, `package.json`, declaration stubs,
   copied `README.md`/`LICENSE`) are generated artifacts; do not hand-write
   them in source package directories or in `target/lykn/dist/`
-- Tests in `.js` (they import compiled output)
+- Tests in `.lykn`/`.lyk` run through `lykn test`; JS tests may import built
+  package output under `target/lykn/build/` when testing Deno APIs directly
 - `bin/lykn` for the CLI binary
 - `lykn test`, `lykn lint`, `lykn run` wrap Deno with `--config project.json`
 
@@ -367,10 +368,11 @@ the edges.
     "@shared/": "./shared/"
   },
   "tasks": {
-    "build": "make build",
-    "dev": "deno run --watch --allow-net --allow-read dist/main.js",
-    "test": "make build && deno test --allow-all",
-    "check": "make build && deno lint dist/ && deno test --allow-all"
+    "build": "lykn build",
+    "dev": "lykn run packages/myapp/main.lykn",
+    "test": "lykn test",
+    "lint": "lykn lint packages/myapp test",
+    "check": "lykn build && lykn lint packages/myapp test && lykn test"
   },
   "compilerOptions": {
     "checkJs": true
@@ -506,41 +508,39 @@ from workspace organization.
 
 **Strength**: MUST
 
-**Summary**: lykn source (`.lykn`) must be compiled to JavaScript
-(`.js`) before execution. The compilation step fits into the build
-pipeline alongside `deno fmt` formatting.
+**Summary**: lykn source (`.lykn`) compiles to JavaScript (`.js`) before
+execution. Normal project workflows should let the lykn CLI manage generated
+artifacts under `target/lykn/`.
 
 ```sh
-# Compile lykn source to JavaScript
-lykn compile src/main.lykn -o dist/main.js
+# Build workspace packages to target/lykn/build/
+lykn build
 
-# Format compiled output
-deno fmt dist/
+# Run a lykn entry point
+lykn run packages/myapp/main.lykn
 
-# Run with Deno
-deno run --allow-net dist/main.js
+# Test .lykn/.lyk tests; compiled JS lands under target/lykn/test/
+lykn test
 
-# Or combine in Makefile / deno tasks
-make build    # compile + format
-make test     # compile + test
-make check    # compile + lint + test
+# Lint lykn source
+lykn lint packages/myapp test
 ```
 
 **Pipeline**:
 ```
-.lykn source → lykn compile → .js output → deno fmt → deno run/test
+.lykn source → lykn CLI wrapper → target/lykn/* generated JS → Deno runtime
 ```
 
 **Development workflow**:
 1. Write `.lykn` source files
-2. `lykn compile` to produce `.js` output
-3. `deno fmt` on compiled output
-4. `deno test` to run tests against compiled JS
-5. `deno run` to execute the application
+2. `lykn build` to produce workspace JS under `target/lykn/build/`
+3. `lykn test` to compile and run `.lykn`/`.lyk` tests via Deno
+4. `lykn lint` to check lykn source
+5. `lykn run` to execute the application entry point
 
 **Rationale**: lykn compiles to clean, readable JavaScript. The
-compiled output is the artifact that Deno runs, `deno fmt` formats, and
-tests exercise. The `.lykn` source is the authoritative code.
+generated output is the artifact that Deno runs, while `.lykn` source remains
+the authoritative code and normal project workflows start from the lykn CLI.
 
 ---
 
