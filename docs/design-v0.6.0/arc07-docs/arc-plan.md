@@ -1,14 +1,14 @@
 # arc07 — Documentation & Guide Alignment
 
-> **Status: ACTIVE — slice01 and slice02 closed; slice03/slice04 pending.**
+> **Status: ACTIVE — slice01 and slice02 closed; slice03 opened.**
 > Created 2026-06-28 for the 0.6.0-era docs/SKILL hygiene work. The red-CI finding
 > (2026-06-30: 8 guide doctest blocks, DD-50.6 drift) is **fixed and landed** in
 > **slice01** (`0731048`; guide doctests 472/0) — the release-branch doctests are
 > green (CI re-run pending). **slice02** (`66a3565`, CDC-verified) re-grounded
 > the old guide/SKILL seed lists against the current branch. The remaining work
 > is now split into build/dist/publish guide refresh and Deno workflow
-> reconciliation; a no-else `if` compiler defect is routed outside the docs-only
-> stream.
+> reconciliation; a no-else `if` compiler defect is routed to reopened arc10
+> slice04.
 
 ## 1. Capability
 
@@ -31,7 +31,7 @@ clearing guide drift first makes the linter's seed corpus trustworthy.
 |-------|-------|--------|
 | **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (explicit return / drop `:returns`) + the `fn`-closure cases (bind-then-return to keep typed params) + a preventive style note. | **Closed** (`0731048`; docs-only; guide doctests 464/8→472/0; `make check` green; CI re-run pending) |
 | **slice02 · current-drift-recon** | Re-ground the old guide/SKILL seed lists against current `release/0.6.x`; disposition each seed item as done/stale/open/defer; run current drift sweeps; behaviour-check live compiler/CLI claims; recommend the next slice breakdown. Recon-only: no guide/SKILL edits. | **Closed** (`66a3565`; [closing report](./slice02-current-drift-recon/closing-report.md); [CDC verification](./slice02-current-drift-recon/cdc-verification.md)) |
-| **slice03 · build-dist-publish-guide-refresh** | Update `assets/ai/SKILL.md`, guide 10, guide 12-04, and guide 15 for `lykn dist`, `target/lykn/{build,dist}`, generated publish files, `--allow-dirty`, and `--no-build`; preserve deprecation notes where useful. | **Pending — open next** |
+| **slice03 · build-dist-publish-guide-refresh** | Update `assets/ai/SKILL.md`, guide 10, guide 12-04, and guide 15 for `lykn dist`, `target/lykn/{build,dist}`, generated publish files, `--allow-dirty`, and `--no-build`; preserve deprecation notes where useful. | **Open** ([slice-doc](./slice03-build-dist-publish-guide-refresh/slice-doc.md), [ledger](./slice03-build-dist-publish-guide-refresh/ledger.md), [cc-prompt](./slice03-build-dist-publish-guide-refresh/cc-prompt.md)) |
 | **slice04 · deno-workflow-reconciliation** | Audit guides 12-01, 12-02, and 12-03 for raw Deno/manual `dist/` examples; preserve intentional low-level runtime examples and convert normal project workflows to `lykn` wrapper flows. | **Pending** |
 
 The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
@@ -62,10 +62,12 @@ Feeds arc16 (the book should describe the reconciled guide truth) and arc09.
 
 **Compiler dependency surfaced by slice02.** No-else `if` in expression position
 is documented as a compile error, but `lykn check`/`compile` currently return
-success and emit invalid JS (`const label = throw ...`). Routed to
-`docs/backlog/discoveries.md` as `D-2608-W2HF`. arc07 should not paper over this
-with docs that teach the wrong behaviour; either the compiler follow-up lands,
-or arc07/arc16 must explicitly name the live defect.
+success and emit invalid JS (`const label = throw ...`). The operator promoted
+this from backlog routing into reopened arc10
+[`slice04-no-else-if-expression-error`](../arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md).
+arc07 should not paper over this with docs that teach the wrong behaviour;
+either the compiler follow-up lands, or arc07/arc16 must explicitly name the
+live defect.
 
 ## 4. Arc ledger
 
@@ -78,6 +80,18 @@ or arc07/arc16 must explicitly name the live defect.
 | A-5 | `make test-docs` and `make check-cited-paths` are green at arc close | arc close gate | serious | process note + P-21 | open | | docs drift and cited-path drift stay visible |
 
 ## 5. Version History
+
+### v1.5 — 2026-08-08 (slice03 opened; compiler follow-up promoted to arc10)
+
+Opened **slice03 build-dist-publish guide refresh** as the next executable docs
+slice, with the full open set (`slice-doc.md`, `ledger.md`, `cc-prompt.md`).
+The slice owns the `lykn build --dist` / repo-root `dist/` drift cluster in
+`assets/ai/SKILL.md`, guides 10/12-04/15, the stale publish error string if it
+still exists, and the `D-2607-2FHM` root-`dist/` disposition.
+
+Per operator direction, `D-2608-W2HF` moved from "compiler follow-up outside
+arc07" to reopened arc10 slice04. arc07 still tracks the dependency, but the
+fix lives in compiler-completion.
 
 ### v1.4 — 2026-08-08 (slice02 closed — next slices split)
 

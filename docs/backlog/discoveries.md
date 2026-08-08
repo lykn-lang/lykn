@@ -641,8 +641,9 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 - **Guess:** High. This is the same "rc=0 but generated JS is invalid" class the
   release has been killing before broader documentation/book work builds on the
   final surface semantics.
-- **Kind:** `bug` · **Status:** `open` → compiler follow-up before arc07/arc16
-  teach the no-else expression case as settled.
+- **Kind:** `bug` · **Status:** `routed` →
+  `docs/design-v0.6.0/arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md`
+  before arc07/arc16 teach the no-else expression case as settled.
 
 ### `D-2607-6BQX` — `lykn publish`'s dirty-check gate is shipped and undocumented
 `main.rs:1016-1026` enforces it, `--allow-dirty` at `:158`; **zero** mentions in

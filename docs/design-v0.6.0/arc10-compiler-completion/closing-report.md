@@ -1,5 +1,11 @@
 # arc10 · compiler-completion — Arc Closing Report
 
+> **Reopen addendum (2026-08-08):** this report remains the historical close for
+> the original three-slice DD-58/DD-37 arc10 gate. arc10 has since been reopened
+> for `slice04 · no-else-if-expression-error`, surfaced by arc07 slice02 as
+> `D-2608-W2HF`. Do not treat this report as the current arc close until the
+> reopened slice closes and a new arc-close addendum/gate is written.
+
 **Assembled by:** CDC (Cowork) · **Date:** 2026-07-05
 **Composition verdict: delivered — pending the host composition run + operator
 gate.** CDC assembled this close and cannot sign it off alone

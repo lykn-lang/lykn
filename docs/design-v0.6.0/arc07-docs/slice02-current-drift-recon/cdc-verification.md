@@ -70,6 +70,12 @@ arc07 stays active. The remaining guide/SKILL work should split as:
    of emitting invalid JS. Routed to `docs/backlog/discoveries.md` as
    `D-2608-W2HF`.
 
+**Route update (2026-08-08):** after this verification, the operator promoted
+`D-2608-W2HF` from backlog-only routing into reopened arc10
+`slice04-no-else-if-expression-error`; see
+`docs/design-v0.6.0/arc10-compiler-completion/arc-plan.md` v1.6. The original
+slice02 verification result is unchanged.
+
 The optional `.d.ts` documentation pass remains a later arc07 candidate, but it
 needs a targeted artifact-producing fixture before its exact user-facing claims
 are written.
