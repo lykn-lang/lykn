@@ -629,6 +629,21 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 
 ## Guides (arc07)
 
+### `D-2608-W2HF` — no-else `if` in expression position emits invalid JS at rc=0
+
+- **What:** `docs/guides/00-lykn-surface-forms.md:797-802` says a no-else `if`
+  in expression position is a compile error. Today `lykn check` and
+  `lykn compile` return success for `(bind label (if (> 1 0) "items"))`, while
+  compile emits invalid JavaScript: `const label = throw new TypeError(...)`.
+  `lykn run` fails only later when Deno parses the generated JS.
+- **How found:** arc07 slice02 current-drift recon; CDC reproduced during
+  `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/cdc-verification.md`.
+- **Guess:** High. This is the same "rc=0 but generated JS is invalid" class the
+  release has been killing before broader documentation/book work builds on the
+  final surface semantics.
+- **Kind:** `bug` · **Status:** `open` → compiler follow-up before arc07/arc16
+  teach the no-else expression case as settled.
+
 ### `D-2607-6BQX` — `lykn publish`'s dirty-check gate is shipped and undocumented
 `main.rs:1016-1026` enforces it, `--allow-dirty` at `:158`; **zero** mentions in
 `docs/guides/`. `audit` · Medium · `gap` · `open` → arc07

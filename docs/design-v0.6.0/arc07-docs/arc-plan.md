@@ -1,12 +1,14 @@
 # arc07 — Documentation & Guide Alignment
 
-> **Status: ACTIVE — slice01 closed; slice02 current-drift recon opened.**
+> **Status: ACTIVE — slice01 and slice02 closed; slice03/slice04 pending.**
 > Created 2026-06-28 for the 0.6.0-era docs/SKILL hygiene work. The red-CI finding
 > (2026-06-30: 8 guide doctest blocks, DD-50.6 drift) is **fixed and landed** in
 > **slice01** (`0731048`; guide doctests 472/0) — the release-branch doctests are
-> green (CI re-run pending). The rest of arc07 (guide-drift audit, SKILL additions,
-> guide↔SKILL consistency) is now being re-grounded after arc05, arc06, and
-> arc15 changed the shipped 0.6.0 surface.
+> green (CI re-run pending). **slice02** (`66a3565`, CDC-verified) re-grounded
+> the old guide/SKILL seed lists against the current branch. The remaining work
+> is now split into build/dist/publish guide refresh and Deno workflow
+> reconciliation; a no-else `if` compiler defect is routed outside the docs-only
+> stream.
 
 ## 1. Capability
 
@@ -28,7 +30,9 @@ clearing guide drift first makes the linter's seed corpus trustworthy.
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · doctest-drift-fix** (CI green) | Fix the 8 guide doctest blocks failing DD-50.6's return-type check: 2 `try` cases (explicit return / drop `:returns`) + the `fn`-closure cases (bind-then-return to keep typed params) + a preventive style note. | **Closed** (`0731048`; docs-only; guide doctests 464/8→472/0; `make check` green; CI re-run pending) |
-| **slice02 · current-drift-recon** | Re-ground the old guide/SKILL seed lists against current `release/0.6.x`; disposition each seed item as done/stale/open/defer; run current drift sweeps; behaviour-check live compiler/CLI claims; recommend the next slice breakdown. Recon-only: no guide/SKILL edits. | **Open** ([slice-doc](./slice02-current-drift-recon/slice-doc.md), [ledger](./slice02-current-drift-recon/ledger.md), [cc-prompt](./slice02-current-drift-recon/cc-prompt.md)) |
+| **slice02 · current-drift-recon** | Re-ground the old guide/SKILL seed lists against current `release/0.6.x`; disposition each seed item as done/stale/open/defer; run current drift sweeps; behaviour-check live compiler/CLI claims; recommend the next slice breakdown. Recon-only: no guide/SKILL edits. | **Closed** (`66a3565`; [closing report](./slice02-current-drift-recon/closing-report.md); [CDC verification](./slice02-current-drift-recon/cdc-verification.md)) |
+| **slice03 · build-dist-publish-guide-refresh** | Update `assets/ai/SKILL.md`, guide 10, guide 12-04, and guide 15 for `lykn dist`, `target/lykn/{build,dist}`, generated publish files, `--allow-dirty`, and `--no-build`; preserve deprecation notes where useful. | **Pending — open next** |
+| **slice04 · deno-workflow-reconciliation** | Audit guides 12-01, 12-02, and 12-03 for raw Deno/manual `dist/` examples; preserve intentional low-level runtime examples and convert normal project workflows to `lykn` wrapper flows. | **Pending** |
 
 The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
 `06-functions-closures.md` (`create-logger`, `create-filter` — `fn`),
@@ -36,13 +40,11 @@ The 8 blocks: `03-error-handling.md` (`load-config`, `valid-json?` — `try`),
 `memoize-lru` — `fn`), `11-documentation.md` (`debounce` — `fn`). Verify with
 `make test-docs` (the surface that catches this — see the process note below).
 
-_Later slices (pending slice02):_ slice02 decides whether the remaining work is
-one implementation slice, split implementation slices, or an arc-close pass.
-The known seed surfaces are the broader **guide-drift audit**
-(`guide-drift-cleanup-plan` seed), **SKILL/guide additions**
-(`proposed-skill-and-guide-additions` seed), and possible **guide↔SKILL
-consistency** pass. 0.5.x-era guide-drift sessions (`workbench/old/`) are out of
-0.6.0 scope.
+_Later candidate (pending slice03/slice04):_ `.d.ts` user documentation remains
+open if the generated declaration path is meant to be a first-class 0.6.0 user
+surface. It needs a targeted artifact-producing fixture before exact guide
+claims are written. 0.5.x-era guide-drift sessions (`workbench/old/`) are out
+of 0.6.0 scope.
 
 > **Process note (applies arc-wide and beyond):** the standing slice "green" bar
 > (`lykn test` + `deno test test/`) **does not run `make test-docs`**, which is
@@ -58,17 +60,37 @@ Best sequenced **after** the language/toolchain arcs stabilize (so docs aren't
 chasing a moving target) and **before** arc09 (release ships release-ready docs).
 Feeds arc16 (the book should describe the reconciled guide truth) and arc09.
 
+**Compiler dependency surfaced by slice02.** No-else `if` in expression position
+is documented as a compile error, but `lykn check`/`compile` currently return
+success and emit invalid JS (`const label = throw ...`). Routed to
+`docs/backlog/discoveries.md` as `D-2608-W2HF`. arc07 should not paper over this
+with docs that teach the wrong behaviour; either the compiler follow-up lands,
+or arc07/arc16 must explicitly name the live defect.
+
 ## 4. Arc ledger
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | slice01 doctest-drift fix closed | ptr: slice01 cdc-verification | correctness | arc-plan | **done** | `0731048` + [`slice01-doctest-drift-fix/cdc-verification.md`](./slice01-doctest-drift-fix/cdc-verification.md) | red-CI item closed |
-| A-2 | slice02 current-drift recon closed | ptr: slice02 closing-report + cdc-verification | serious | arc-plan v1.3 | open | | re-ground before editing |
+| A-2 | slice02 current-drift recon closed | ptr: slice02 closing-report + cdc-verification | serious | arc-plan v1.3 | **done** | `66a3565` + [`slice02-current-drift-recon/cdc-verification.md`](./slice02-current-drift-recon/cdc-verification.md); CDC reproduced docs/path gates and the no-else `if` defect | re-grounded before editing |
 | A-3 | All current guide/SKILL drift is either fixed in arc07 or explicitly routed | arc close: compare slice02 inventory with subsequent implementation slices and deferrals | serious | arc capability | open | | anti-silent-drop row |
 | A-4 | Guide/SKILL claims match shipped 0.6.0 behaviour for sampled executable claims | arc close: reproduce selected `./bin/lykn` checks/compiles/lints and `make test-docs` | serious | P-13 | open | | class-(b) composition row; reproduce at arc scale |
 | A-5 | `make test-docs` and `make check-cited-paths` are green at arc close | arc close gate | serious | process note + P-21 | open | | docs drift and cited-path drift stay visible |
 
 ## 5. Version History
+
+### v1.4 — 2026-08-08 (slice02 closed — next slices split)
+
+slice02 closed as a recon-only pass (`66a3565`) and was CDC-verified. The close
+report did not justify arc07 closure; it split the remaining guide/SKILL work
+into **slice03 build/dist/publish guide refresh** and **slice04 Deno workflow
+reconciliation**. The optional `.d.ts` docs pass stays a later candidate pending
+an artifact-producing fixture.
+
+The recon also surfaced a compiler/check defect: no-else `if` in expression
+position is documented as a compile error, but the current CLI emits invalid JS
+at rc=0. CDC reproduced it and routed it to `docs/backlog/discoveries.md` as
+`D-2608-W2HF`.
 
 ### v1.3 — 2026-08-08 (slice02 current-drift recon opened)
 
