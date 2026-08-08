@@ -5,9 +5,9 @@
 **Where you're working**: `src/compiler.js` — adding macros and a class body compiler
 **Prerequisites**: All previous phases. Classes depend on colon syntax (Phase 1), function forms + `async` (Phase 2), `default`/`spread` (Phase 3), destructuring in params (Phase 4).
 **Design authority**:
-- `crates/design/dev/lang/0007-dd-07-class-syntax.md`
-- `crates/design/dev/lang/0001-dd-01-colon-syntax-and-camelcase-conversion.md` (private field naming)
-- `crates/design/dev/lang/0003-dd-03-async-await.md` (async methods)
+- `docs/design/06-final/0007-dd-07-class-syntax.md`
+- `docs/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md` (private field naming)
+- `docs/design/06-final/0003-dd-03-async-await.md` (async methods)
 
 ---
 

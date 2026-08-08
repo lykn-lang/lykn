@@ -2,7 +2,7 @@
 
 **For**: Claude Code
 **Scope**: Phase 6 of lykn v0.1.0 — bundle compiler for browsers, `<script type="text/lykn">` support, `window.lykn` API
-**Where you're working**: New files — `src/lykn-browser.js` (entry point), `examples/browser.html` (test page), `dist/` (build output)
+**Where you're working**: New files — `src/lykn-browser.js` (entry point), `examples/surface/browser.html` (test page), `dist/` (build output)
 **Prerequisites**: Phases 1–5 must be complete (the compiler must be feature-complete)
 **Design authority**: Project plan §6.1–6.6; research reference to BiwaScheme/Wisp shim patterns
 
@@ -330,7 +330,7 @@ The `processScripts` function already wraps each script in a try/catch. The `loa
 
 Create manual test pages. These aren't automated — they're HTML files you open in a browser to verify everything works.
 
-### `examples/browser.html` — Inline Script
+### `examples/surface/browser.html` — Inline Script
 
 This is Integration Test 4 from the project plan:
 
@@ -359,7 +359,7 @@ This is Integration Test 4 from the project plan:
 </html>
 ```
 
-### `examples/browser-src.html` — External Script via `src`
+### `examples/surface/browser-src.html` — External Script via `src`
 
 ```html
 <!DOCTYPE html>
@@ -380,7 +380,7 @@ This is Integration Test 4 from the project plan:
 </html>
 ```
 
-### `examples/browser-app.lykn` — External Lykn Source
+### `examples/surface/browser-app.lykn` — External Lykn Source
 
 ```lisp
 ;; External lykn file loaded via <script src="...">
@@ -389,7 +389,7 @@ This is Integration Test 4 from the project plan:
 (= el:inner-HTML (template "<p>Loaded at " (now:to-locale-time-string) "</p>"))
 ```
 
-### `examples/browser-api.html` — Programmatic API
+### `examples/surface/browser-api.html` — Programmatic API
 
 ```html
 <!DOCTYPE html>
@@ -432,7 +432,7 @@ Or the short form:
 deno run -A jsr:@std/http/file-server .
 ```
 
-Then open `http://localhost:4507/examples/browser.html` in a browser.
+Then open `http://localhost:4507/examples/surface/browser.html` in a browser.
 
 ---
 
@@ -477,10 +477,10 @@ Or alternatively, INCLUDE `dist/` in the repo so users can grab the browser buil
 | `build.js` | **New** | esbuild build script (or use CLI in deno task) |
 | `dist/lykn-browser.js` | **Generated** | Minified IIFE bundle |
 | `dist/lykn-browser.dev.js` | **Generated** | Unminified IIFE bundle |
-| `examples/browser.html` | **New** | Inline script test page |
-| `examples/browser-src.html` | **New** | External src test page |
-| `examples/browser-app.lykn` | **New** | External lykn source for src test |
-| `examples/browser-api.html` | **New** | Programmatic API test page |
+| `examples/surface/browser.html` | **New** | Inline script test page |
+| `examples/surface/browser-src.html` | **New** | External src test page |
+| `examples/surface/browser-app.lykn` | **New** | External lykn source for src test |
+| `examples/surface/browser-api.html` | **New** | Programmatic API test page |
 | `deno.json` | **Modify** | Add `build:browser` task |
 
 ### What NOT to Do
@@ -502,9 +502,9 @@ Or alternatively, INCLUDE `dist/` in the repo so users can grab the browser buil
 - [ ] Loading `dist/lykn-browser.js` in a browser creates `window.lykn`
 - [ ] `window.lykn.compile('(+ 1 2)')` returns a JS string containing `1 + 2`
 - [ ] `window.lykn.run('(+ 1 2)')` returns `3`
-- [ ] `examples/browser.html` renders a numbered list from inline lykn
-- [ ] `examples/browser-src.html` loads and runs an external `.lykn` file
-- [ ] `examples/browser-api.html` shows compiled output and eval result
+- [ ] `examples/surface/browser.html` renders a numbered list from inline lykn
+- [ ] `examples/surface/browser-src.html` loads and runs an external `.lykn` file
+- [ ] `examples/surface/browser-api.html` shows compiled output and eval result
 - [ ] Errors in lykn scripts appear in console with `[lykn]` prefix
 - [ ] A broken script doesn't prevent subsequent scripts from running
 - [ ] The bundle works in Chrome, Firefox, and Safari (basic smoke test)
@@ -520,6 +520,6 @@ Phase 6 completes v0.1.0. After this, run the four integration tests from the pr
 1. **HTTP Server** (Test 1) — compile and run with Deno/Node
 2. **CLI Tool** (Test 2) — compile and run from command line
 3. **Utility Module** (Test 3) — compile, import from another module
-4. **Browser Page** (Test 4) — the `examples/browser.html` from this phase
+4. **Browser Page** (Test 4) — the `examples/surface/browser.html` from this phase
 
 All four must work. When they do, v0.1.0 is done.

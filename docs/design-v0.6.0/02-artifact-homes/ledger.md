@@ -153,7 +153,7 @@ rule, so it is the one file whose citations must resolve on **all** branches."*
 **That is wrong, and CC's gate proved it in one run.** `AGENTS.md` carries eight
 citations that cannot resolve on `release/0.6.x`, and at least four of them are
 things the document **must** say to do its job: the routing table names
-`docs/design-v0.7.0/`; the scratch rule names `workbench/`; the worktree
+docs/design-v0.7.0; the scratch rule names `workbench/`; the worktree
 protocol names `.worktrees/0.6.x/` and `.worktrees/0.7.x/`. **A routing table's
 purpose is to name places that do not exist here.** The rule as I wrote it
 outlaws the document that carries it.
@@ -180,7 +180,7 @@ and did not use. CC measured the half I declined to. My 353 *sites* and CC's 306
 conflict; CC's are the better ones and supersede mine.**
 
 **Open for the operator:** does the option-(a) disposition extend to the 325
-non-`workbench` pairs (renamed `packages/lykn/`, migrated
+non-`workbench` pairs (renamed packages/lykn, migrated
 `test/surface/*.test.js`, `crates/design/…`)? They are the same accept-and-mark
 class by the same argument. **One honest difference:** a `workbench/` path can
 *never* resolve — it is gitignored by rule — whereas a renamed path *could* be
@@ -232,8 +232,8 @@ the 325 non-`workbench` pairs. The rule is now:
 ### The carve-out, stated precisely, because it is the part that gets fumbled
 
 Repoint a **reference to** an artifact. Never rewrite a sentence that
-**narrates the move itself**. *"See `packages/lykn/mod.js`"* is a reference —
-repoint it. *"`packages/lykn/` was renamed to `packages/lang/` in M17"* is
+**narrates the move itself**. *"See packages/lykn/mod.js"* is a reference —
+repoint it. *"packages/lykn was renamed to `packages/lang/` in M17"* is
 history — both paths must survive verbatim, and freezing that citation is
 correct. **When in doubt, read the sentence, not the path.** A repoint that
 turns a true sentence false is worse than a dangling path, because the dangling
@@ -244,9 +244,9 @@ path is at least visibly broken.
 | Class | Count (pairs) | Disposition |
 |---|---|---|
 | `test/` — migrated test files | 127 | **Repoint** where the file exists at a tracked path today |
-| `docs/` — mixed | 105 | **Split**: repoint real migrations; freeze `docs/archive`, `docs/design-v0.5.x` (never created) |
+| `docs/` — mixed | 105 | **Split**: repoint real migrations; freeze docs/archive, docs/design-v0.5.x (never created) |
 | `assets/` — mostly `assets/ai/*` | 39 | **Freeze.** `/assets/ai` is gitignored (a symlink dir); these can never resolve |
-| `packages/` — renamed `packages/lykn/` | 26 | **Repoint**, minus any narration-of-the-rename |
+| `packages/` — renamed packages/lykn | 26 | **Repoint**, minus any narration-of-the-rename |
 | `crates/design/{dev,docs}/…` | 20 | **Repoint** — the DDs live under `docs/design/` under the *same numbering*; spot-checked `0001-dd-01…` and `0013-dd-10…`, both present |
 | `examples/`, `tools/`, `scripts/` | 8 | Case by case |
 
@@ -260,10 +260,10 @@ planning tree** while the file still sits in `workbench/`, unmigrated:
 
 | Cited as | Actually still at |
 |---|---|
-| `docs/design-v0.6.0/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md` | `workbench/kickoff-thread-build-dir-and-publish-dirty-check.md` |
-| `docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md` | `workbench/2026-05-10-compiler-coherence-thread-opening.md` |
-| `docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md` | `workbench/handoff-surface-kernel-separation-2026-05-14.md` |
-| `docs/design-v0.6.0/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md` | `workbench/kickoff-thread-compiler-architecture-coherence.md` |
+| `docs/design-v0.6.0/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md` | workbench/kickoff-thread-build-dir-and-publish-dirty-check.md |
+| `docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md` | workbench/2026-05-10-compiler-coherence-thread-opening.md |
+| `docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md` | workbench/handoff-surface-kernel-separation-2026-05-14.md |
+| `docs/design-v0.6.0/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md` | workbench/kickoff-thread-compiler-architecture-coherence.md |
 
 **A committed document already decided where each belongs, the file still
 exists, and nobody executed the move.** These are not repoints — they are the

@@ -3,8 +3,8 @@
 **For**: Claude Code
 **Scope**: Phase 1 of lykn v0.1.0 (camelCase, colon syntax, `get` form, special atoms, `.` removal)
 **Where you're working**: `src/compiler.js` — this is the only file you modify
-**Design authority**: `crates/design/dev/lang/0001-dd-01-colon-syntax-and-camelcase-conversion.md`
-**Secondary reference**: `crates/design/dev/lang/0008-dd-08-special-atoms-update-operators-and-miscellaneous-forms.md` (for `this`/`super`)
+**Design authority**: `docs/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md`
+**Secondary reference**: `docs/design/06-final/0008-dd-08-special-atoms-update-operators-and-miscellaneous-forms.md` (for `this`/`super`)
 
 ---
 
@@ -390,7 +390,7 @@ console:log             ;; → console.log
 ### How to Remove It
 
 1. Delete the entire `'.'(args) { ... }` entry from the `macros` object.
-2. Update the example file `examples/main.lykn` to use colon syntax instead of `.` form.
+2. Update the example file `examples/surface/main.lykn` to use colon syntax instead of `.` form.
 
 ### Compiler Pitfall: Calls Using `.` Form
 
@@ -400,7 +400,7 @@ With colon syntax, `(console:log "hi")` works differently. The head of the list 
 
 **This means colon-based method calls already work** once you implement Tasks 1.1–1.2. No additional work needed for the call path. The compiler's existing "lists that aren't macros become CallExpressions" logic handles it.
 
-### Updating `examples/main.lykn`
+### Updating `examples/surface/main.lykn`
 
 The current example uses `(. console log)` and `(. Math floor)` etc. Rewrite it to use colon syntax:
 
@@ -742,7 +742,7 @@ case 'atom': {
 }
 ```
 
-### E. Update `examples/main.lykn`
+### E. Update `examples/surface/main.lykn`
 
 Replace all `(. obj prop)` patterns with `obj:prop` colon syntax.
 
@@ -775,7 +775,7 @@ When you're done, confirm all of the following:
 - [ ] `lykn(':foo')` throws an error about reserved syntax
 - [ ] `lykn('obj:0')` throws an error suggesting `(get obj 0)`
 - [ ] The `.` macro is gone from `macros`
-- [ ] `examples/main.lykn` compiles successfully with the new syntax
+- [ ] `examples/surface/main.lykn` compiles successfully with the new syntax
 - [ ] `deno test test/` passes all tests
 - [ ] `deno lint src/` passes
 - [ ] `biome format src/` passes (or run `biome format --write src/` to fix)
@@ -787,7 +787,7 @@ When you're done, confirm all of the following:
 | File | Action |
 |------|--------|
 | `src/compiler.js` | Add `toCamelCase()`, add `get` macro, delete `.` macro, rewrite atom handling |
-| `examples/main.lykn` | Update to colon syntax |
+| `examples/surface/main.lykn` | Update to colon syntax |
 | `test/forms/camel-case.test.js` | New file |
 | `test/forms/colon-syntax.test.js` | New file |
 | `test/forms/get.test.js` | New file |

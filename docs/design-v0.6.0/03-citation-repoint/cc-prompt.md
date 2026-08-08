@@ -18,12 +18,17 @@ The freeze is **not** wholesale. The rule:
 rule, so those targets can never resolve. Everything else is walked.
 
 **The carve-out is the part that matters.** Repoint a *reference to* an
-artifact; never rewrite a sentence that *narrates the move itself*. *"See
-`packages/lykn/mod.js`"* → repoint. *"`packages/lykn/` was renamed to
-`packages/lang/` in M17"* → leave both paths verbatim, freeze the row, note the
-reason. **When in doubt, read the sentence, not the path.** A repoint that turns
-a true sentence false is worse than a dangling path — the dangling path is at
-least visibly broken. This is ledger row **R-5** and it is a `serious` row.
+artifact; never rewrite a sentence that *narrates the move itself*. For example:
+
+```text
+See `packages/lykn/mod.js` -> repoint.
+`packages/lykn/` was renamed to `packages/lang/` in M17 -> leave both paths verbatim.
+```
+
+Freeze the narration row and note the reason. **When in doubt, read the
+sentence, not the path.** A repoint that turns a true sentence false is worse
+than a dangling path — the dangling path is at least visibly broken. This is
+ledger row **R-5** and it is a `serious` row.
 
 ## 1. Ground truth, and a CDC error you should not inherit
 
@@ -31,7 +36,7 @@ Same-basename match against the 954 tracked files at `e77ebcf`:
 
 | Class | Distinct paths | Match |
 |---|---:|---:|
-| `crates/design/` | 9 | **9** — exact: same basename under `docs/design/06-final/` |
+| crates/design | 9 | **9** — exact: same basename under `docs/design/06-final/` |
 | `examples/` | 6 | **6** |
 | `docs/` | 47 | 13 |
 | `packages/` | 12 | 7 |
@@ -56,10 +61,10 @@ unmigrated in `workbench/`. Moving them makes the existing citation **true**:
 
 | Move to | From |
 |---|---|
-| `docs/design-v0.6.0/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md` | `workbench/kickoff-thread-build-dir-and-publish-dirty-check.md` |
-| `docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md` | `workbench/2026-05-10-compiler-coherence-thread-opening.md` |
-| `docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md` | `workbench/handoff-surface-kernel-separation-2026-05-14.md` |
-| `docs/design-v0.6.0/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md` | `workbench/kickoff-thread-compiler-architecture-coherence.md` |
+| `docs/design-v0.6.0/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md` | workbench/kickoff-thread-build-dir-and-publish-dirty-check.md |
+| `docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md` | workbench/2026-05-10-compiler-coherence-thread-opening.md |
+| `docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md` | workbench/handoff-surface-kernel-separation-2026-05-14.md |
+| `docs/design-v0.6.0/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md` | workbench/kickoff-thread-compiler-architecture-coherence.md |
 
 Content moves **verbatim**. If a file turns out to be genuinely ephemeral rather
 than worth tracking, say so and leave the citation frozen with that reason —

@@ -5,8 +5,8 @@
 **Where you're working**: `src/compiler.js` — adding macros and rewriting the existing `object` macro
 **Prerequisite**: Phase 1 must be complete. Phase 2 is NOT required — Phase 3 is independent.
 **Design authority**:
-- `crates/design/dev/lang/0005-dd-05-template-literals.md`
-- `crates/design/dev/lang/0006-dd-06-destructuring-patterns.md` (for `spread`, `default`, `object` amendment)
+- `docs/design/06-final/0005-dd-05-template-literals.md`
+- `docs/design/06-final/0006-dd-06-destructuring-patterns.md` (for `spread`, `default`, `object` amendment)
 
 ---
 
