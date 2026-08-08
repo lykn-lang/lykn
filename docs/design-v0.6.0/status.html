@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-08 (arc07 slice03 CDC-verified; arc10 reopened for no-else if follow-up. Current path: arc10 follow-up + arc07 + arc16 -> arc09.)",
+  updated: "2026-08-08 (arc07 slice04 opened for Deno workflow reconciliation; arc10 reopened for no-else if follow-up. Current path: arc10 follow-up + arc07 + arc16 -> arc09.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -163,8 +163,8 @@ const DATA = {
       cap:"CLOSED — GATE GO 2026-07-24. All 7 slices closed + CDC-verified; A-1…A-9 met. The host reconcile ran in full, so runtime rows are operator-reproduced, including the publish-safety property: dist with a link active stages zero linked refs. The 0.6.0 founding goal, consume lykn as a dependency end to end, is met: add, link/unlink, import by specifier, mycelium build, test 43/0, and publish dry-run.",
       slices:[{n:"exports-gap",s:"closed"},{n:"mycelium-reaudit",s:"closed"},{n:"lykn-add",s:"closed"},{n:"lykn-link",s:"closed"},{n:"import-by-specifier",s:"closed"},{n:"version-consolidation",s:"closed"},{n:"link-registry-specifier",s:"closed"}] },
     { id:"arc07", name:"docs", status:"active",
-      cap:"Guide/SKILL alignment. slice01 fixed doctest drift; slice02 closed the current-drift recon; slice03 build/dist/publish guide refresh is CDC-verified; slice04 Deno workflow reconciliation remains pending.",
-      slices:[{n:"doctest-drift",s:"closed"},{n:"current-drift-recon",s:"closed"},{n:"build-dist-publish",s:"closed"},{n:"deno-reconcile",s:"open"}] },
+      cap:"Guide/SKILL alignment. slice01 fixed doctest drift; slice02 closed the current-drift recon; slice03 build/dist/publish guide refresh is CDC-verified; slice04 Deno workflow reconciliation is open.",
+      slices:[{n:"doctest-drift",s:"closed"},{n:"current-drift-recon",s:"closed"},{n:"build-dist-publish",s:"closed"},{n:"deno-reconcile",s:"active"}] },
     { id:"arc08", name:"template-i18n", status:"closed",
       cap:"template → ICU MessageFormat + i18n (DD-55). Un-stranded + merged.",
       slices:[{n:"icu-js",s:"closed"},{n:"icu-rust",s:"closed"},{n:"icu-review+xcompiler",s:"closed"}] },
@@ -204,7 +204,7 @@ const DATA = {
   sequence: ["arc10","arc07","arc16","arc09"],
   now: {
     arc:"arc10 reopened · arc07 active · arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, and arc15/P-19 is closed. arc10 has a draft compiler follow-up for no-else if expressions; arc07 slice03 is CDC-verified and slice04 remains for Deno workflow reconciliation; arc16 still needs its arc-plan and book work; arc09 waits on those gates."
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, and arc15/P-19 is closed. arc10 has a draft compiler follow-up for no-else if expressions; arc07 slice04 is open for Deno workflow reconciliation; arc16 still needs its arc-plan and book work; arc09 waits on those gates."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},

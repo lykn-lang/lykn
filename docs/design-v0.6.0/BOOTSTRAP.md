@@ -130,8 +130,8 @@ gate is historically closed, but arc10 is reopened for
   invalid JS is emitted.
 - **arc07 · docs — ACTIVE.** slice01 fixed the first doctest drift; slice02
   current-drift recon is closed/CDC-verified; slice03 build/dist/publish guide
-  refresh is closed/CDC-verified. slice04 will handle Deno workflow
-  reconciliation.
+  refresh is closed/CDC-verified. slice04 Deno workflow reconciliation is now
+  opened.
 - **arc16 · book-0.6.0-edition — OPEN.** The planning home exists and its design
   materials are tracked; `arc-plan.md` is still to be written. The book gates
   arc09 because drafting it is the full-surface review before the release cut.
