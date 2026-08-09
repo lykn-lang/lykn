@@ -135,13 +135,14 @@ closes:
   closed/CDC-verified. Arc ledger A-1...A-7 met; P-13 is done.
 - **arc16 · book-0.6.0-edition — OPEN.** The arc plan now exists at
   `arc16-book-0.6.0-edition/arc-plan.md`; slice01
-  `pre-book-decision-gate` is closed/CDC-verified. The book gates arc09 because
-  drafting it is the full-surface review before the release cut. Slice01
-  re-grounded D-1...D-5, `D-2607-R4NW`, and the new pre-book dogfood decisions:
-  `D-2608-XPRT` export ownership, `D-2608-LBND` grouped local bindings,
-  `D-2608-COND` flatter validation branching, and `D-2608-SOWN` source
-  ownership. Later compiler, scaffold, docs, and chapter work must not proceed
-  until those decisions have an explicit route.
+  `pre-book-decision-gate` is closed/CDC-verified, and slice02
+  `dogfood-implementation-runway` is open. The book gates arc09 because
+  drafting it is the full-surface review before the release cut, but the
+  operator has clarified that all accepted implementation work comes first.
+  Slice02 runs another from-scratch Lykn project with CC, grades it against the
+  SKILL/guides, and routes `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`,
+  `D-2608-COND`, `D-2608-SOWN`, and any new findings before book or
+  writers-guide prose starts.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
 **Current sequence:** arc16, then arc09. arc14

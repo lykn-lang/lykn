@@ -1,8 +1,10 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — slice01 `pre-book-decision-gate` closed/CDC-verified
-> 2026-08-08; operator decisions pending before book prose.** This arc gates
-> arc09/release: the book is the full-surface reader of 0.6.0, and every
+> **Status: OPEN — implementation/dogfood runway active before book prose.**
+> slice01 `pre-book-decision-gate` closed/CDC-verified 2026-08-08. The operator
+> then tightened the rule: all accepted 0.6.0 implementation work must land
+> before book or writers-guide prose normalizes the final surface. This arc
+> gates arc09/release: the book is the full-surface reader of 0.6.0, and every
 > language/tooling/book defect it exposes must be fixed for 0.6.0 or routed
 > with a named home before the release cut.
 
@@ -56,28 +58,32 @@ Read these before planning or executing any slice:
 
 ## 3. Slice Breakdown
 
-Plan late, plan deep. slice01 is closed as an evidence packet; later slices
-remain deliberately scoped at capability level until the operator decides which
-slice01 recommendations land in 0.6.0 and which route to later work.
+Plan late, plan deep. slice01 is closed as an evidence packet. slice02 opens an
+implementation/dogfood runway so CC can build more from-scratch Lykn projects
+and turn implementation pressure into routed work before book prose starts.
+Book-facing slices remain deliberately scoped at capability level until the
+operator decides which findings land in 0.6.0 and which route to later work.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · pre-book-decision-gate** | Re-ground the historical book inventory and dogfood findings against current lang/book/writers-guide state; produce the operator decision packet for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN`; classify each as 0.6.0 implementation, docs/book-only, or 0.7.0+ deferral; recommend the next executable slice order. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice01-pre-book-decision-gate/closing-report.md), [cdc-verification](./slice01-pre-book-decision-gate/cdc-verification.md)) |
-| **slice02 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after slice01 decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, and durable close-artifact locations. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Next to open after operator decisions |
-| **slice03 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` decision |
-| **slice04 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after arc07, arc10, and arc15 have closed. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after slice02/slice03 |
-| **slice05 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the slice01 decision for `D-2608-SOWN`. | Provisional |
-| **slice06 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on slice01 decisions for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`, plus any routed implementation slices. | Provisional |
-| **slice07 · compiler-and-verification-chapters** | Update compiler/testing chapters for the final 0.6.0 compiler surface, cross-compiler verification, source linting, doctest reachability, and any late compiler semantics settled by earlier slices. | Provisional |
-| **slice08 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
+| **slice02 · dogfood-implementation-runway** | Run another from-scratch Lykn project through current SKILL/guides/CLI workflows before book prose; collect command evidence, self-grade against guidance, and route implementation work from `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`, and any new dogfood findings. No compiler/book prose edits. | **Open** ([slice-doc](./slice02-dogfood-implementation-runway/slice-doc.md), [ledger](./slice02-dogfood-implementation-runway/ledger.md), [cc-prompt](./slice02-dogfood-implementation-runway/cc-prompt.md)) |
+| **slice03 · implementation-routing/accepted-surface-work** | Land or explicitly route the implementation slices accepted from slice01/slice02: likely fence reachability, exports, grouped locals, flatter branching, and source/package ownership. This row may split into smaller compiler/CLI/scaffold slices or move work into arc10 if that is the cleaner home. | Planned after slice02 |
+| **slice04 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, and the implementation-first rule. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Blocked until accepted 0.6.0 implementation routes are closed or deferred |
+| **slice05 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` implementation decision |
+| **slice06 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
+| **slice07 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route. | Provisional / book-facing |
+| **slice08 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
+| **slice09 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
 
 slice01 found that D-3 is resolved by the tracked lang planning home, while D-1
 and `D-2607-R4NW` should be treated as one verification strategy: implement a
 repeatable book-fence gate before chapter code edits. It also confirmed that
 `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN` remain operator
-decisions. If any of them becomes 0.6.0 implementation work, it may live in
-arc10, a new 0.6.0 language-surface arc, or an arc16 support slice, but the
-route must be explicit and must block the relevant chapter slice until closed.
+decisions. The operator clarified after slice01 that all accepted 0.6.0
+implementation work must land before book prose. Therefore book-facing slices
+are blocked until the dogfood/implementation runway either closes the accepted
+work or records an explicit deferral with a re-entry condition.
 
 ## 4. Dependencies
 
@@ -94,6 +100,8 @@ Feeds:
 
 - arc09 release — arc09 remains future until arc16 closes;
 - any new 0.6.0 implementation slice/arc opened from slice01 decisions;
+- repeat dogfood project iterations that probe whether the current surface is
+  ready to teach;
 - 0.7.0 backlog, but only for findings explicitly deferred with a re-entry
   condition.
 
@@ -150,6 +158,7 @@ either fixed or routed every language/tooling defect it surfaced.
 | A-6 | chapters touched for 0.6.0 language/tooling changes match shipped behavior | chapter-scope tests plus source sweeps against current lang guides/SKILL | serious | P-20 | open | | reproduced at arc scale |
 | A-7 | final book outputs build and render in supported formats | run mdBook HTML/EPUB build and any configured book checks | serious | P-20 | open | | include known EPUB workaround |
 | A-8 | arc16 bubbles up honestly to arc09 | arc closing-report updates project-plan/status and names remaining blockers, if any | serious | project-management | open | | release gate |
+| A-9 | implementation-first rule honored before book prose | arc close: show accepted 0.6.0 implementation findings from dogfood are closed or explicitly deferred before book/writers-guide/chapter slices depend on them | serious | operator clarification 2026-08-08 | open | | prevents prose from masking unsettled language |
 
 ## 7. Verification Strategy
 
@@ -166,6 +175,11 @@ build the book HTML/EPUB outputs. If a gate is not yet possible because the
 test/fence bootstrap does not exist, the slice must say that plainly and route
 the bootstrap before relying on manual review.
 
+Dogfood slices add scratch-project gates: create a project outside tracked
+source trees, build it, test it, lint it, run or demo it where applicable, then
+self-grade it against the Lykn SKILL/guides and route any defects before prose
+normalizes the surface.
+
 ## 8. Out Of Scope
 
 - Publishing the 0.6.0 release itself; arc09 owns release cutting.
@@ -176,6 +190,15 @@ the bootstrap before relying on manual review.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.2 - 2026-08-08 (implementation-first dogfood runway)
+
+The operator clarified that all accepted implementation work must happen before
+the book or writers-guide starts teaching the final surface, and expects several
+more from-scratch Lykn project dogfood iterations with CC. The arc plan now
+opens slice02 `dogfood-implementation-runway`, inserts an implementation
+routing slice before book-facing work, shifts the book/writers-guide/chapter
+slices later, and adds A-9 to verify the implementation-first rule at arc close.
 
 ### v1.1 — 2026-08-08 (slice01 closed/CDC-verified)
 
