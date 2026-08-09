@@ -1,10 +1,10 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — arc-plan written 2026-08-08; slice01
-> `pre-book-decision-gate` opened.** This arc gates arc09/release: the book is
-> the full-surface reader of 0.6.0, and every language/tooling/book defect it
-> exposes must be fixed for 0.6.0 or routed with a named home before the release
-> cut.
+> **Status: OPEN — slice01 `pre-book-decision-gate` closed/CDC-verified
+> 2026-08-08; operator decisions pending before book prose.** This arc gates
+> arc09/release: the book is the full-surface reader of 0.6.0, and every
+> language/tooling/book defect it exposes must be fixed for 0.6.0 or routed
+> with a named home before the release cut.
 
 ## 1. Capability
 
@@ -56,25 +56,28 @@ Read these before planning or executing any slice:
 
 ## 3. Slice Breakdown
 
-Plan late, plan deep. Only slice01 is fully opened now; later slices are
-deliberately scoped at capability level until slice01 resolves the design gates.
+Plan late, plan deep. slice01 is closed as an evidence packet; later slices
+remain deliberately scoped at capability level until the operator decides which
+slice01 recommendations land in 0.6.0 and which route to later work.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · pre-book-decision-gate** | Re-ground the historical book inventory and dogfood findings against current lang/book/writers-guide state; produce the operator decision packet for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN`; classify each as 0.6.0 implementation, docs/book-only, or 0.7.0+ deferral; recommend the next executable slice order. No compiler/book prose edits. | **Open** ([slice-doc](./slice01-pre-book-decision-gate/slice-doc.md), [ledger](./slice01-pre-book-decision-gate/ledger.md), [cc-prompt](./slice01-pre-book-decision-gate/cc-prompt.md)) |
-| **slice02 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after slice01 decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, and durable close-artifact locations. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Planned after slice01 |
-| **slice03 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using `D-2607-R4NW` or the strategy chosen in slice01. Establish the gate that later chapter slices must run. | Planned after slice01 |
-| **slice04 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after arc07, arc10, and arc15 have closed. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after slice01 |
+| **slice01 · pre-book-decision-gate** | Re-ground the historical book inventory and dogfood findings against current lang/book/writers-guide state; produce the operator decision packet for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN`; classify each as 0.6.0 implementation, docs/book-only, or 0.7.0+ deferral; recommend the next executable slice order. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice01-pre-book-decision-gate/closing-report.md), [cdc-verification](./slice01-pre-book-decision-gate/cdc-verification.md)) |
+| **slice02 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after slice01 decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, and durable close-artifact locations. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Next to open after operator decisions |
+| **slice03 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` decision |
+| **slice04 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after arc07, arc10, and arc15 have closed. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after slice02/slice03 |
 | **slice05 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the slice01 decision for `D-2608-SOWN`. | Provisional |
 | **slice06 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on slice01 decisions for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`, plus any routed implementation slices. | Provisional |
 | **slice07 · compiler-and-verification-chapters** | Update compiler/testing chapters for the final 0.6.0 compiler surface, cross-compiler verification, source linting, doctest reachability, and any late compiler semantics settled by earlier slices. | Provisional |
 | **slice08 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
 
-If slice01 decides that one of the dogfood findings requires language, CLI, or
-scaffold implementation before the book can proceed, this arc-plan must be
-updated before slice02 opens. The implementation may live in arc10, a new
-0.6.0 language-surface arc, or an arc16 support slice, but the route must be
-explicit and must block the relevant chapter slice until closed.
+slice01 found that D-3 is resolved by the tracked lang planning home, while D-1
+and `D-2607-R4NW` should be treated as one verification strategy: implement a
+repeatable book-fence gate before chapter code edits. It also confirmed that
+`D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN` remain operator
+decisions. If any of them becomes 0.6.0 implementation work, it may live in
+arc10, a new 0.6.0 language-surface arc, or an arc16 support slice, but the
+route must be explicit and must block the relevant chapter slice until closed.
 
 ## 4. Dependencies
 
@@ -112,6 +115,26 @@ final call; CC/CDC supply evidence, options, costs, and routing.
 | `D-2608-COND` | dogfood F-9 | settle flatter validation branch syntax/semantics and implementation route |
 | `D-2608-SOWN` | dogfood F-10 | settle Lykn-owned generated/config manifest placement without restricting user-owned non-Lykn source files |
 
+Slice01's decision packet is recorded in
+[`slice01-pre-book-decision-gate/closing-report.md`](./slice01-pre-book-decision-gate/closing-report.md)
+and CDC-verified in
+[`slice01-pre-book-decision-gate/cdc-verification.md`](./slice01-pre-book-decision-gate/cdc-verification.md).
+Current CDC read:
+
+- D-3 is resolved unless the operator reopens artifact-home policy: durable
+  arc16 planning/close artifacts live in this tracked lang arc directory, not
+  sibling repo scratch space.
+- D-1 and `D-2607-R4NW` should be decided together. The recommended route is a
+  repeatable `lykn test --docs --fence <tag>` book gate, with targeted external
+  tests later for examples that need more than fence compilation/execution.
+- D-2, D-4, and D-5 are still operator/editorial process decisions for ToC
+  policy, sequential verification, and cross-repo review cadence.
+- `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` are language-surface
+  decisions. If selected for 0.6.0, they need implementation before slice06 can
+  teach them.
+- `D-2608-SOWN` can be a docs-only 0.6.0 compromise or a scaffold/build/dist
+  behavior change, depending on the operator decision.
+
 ## 6. Arc Ledger
 
 Capability: the 0.6.0 Lykn Book edition is release-ready, and the book pass has
@@ -119,7 +142,7 @@ either fixed or routed every language/tooling defect it surfaced.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
-| A-1 | slice01 pre-book decision gate closed | ptr: slice01 closing-report + cdc-verification | serious | arc-plan | open | | decisions before edits |
+| A-1 | slice01 pre-book decision gate closed | ptr: slice01 closing-report + cdc-verification | serious | arc-plan | **done** | [`slice01-pre-book-decision-gate/closing-report.md`](./slice01-pre-book-decision-gate/closing-report.md) + [`slice01-pre-book-decision-gate/cdc-verification.md`](./slice01-pre-book-decision-gate/cdc-verification.md); commit `00b3338` plus CDC follow-up | decisions before edits |
 | A-2 | every pre-book decision gate has a final disposition | arc close: compare §5 gates with operator decisions and routed homes | serious | arc-plan | open | | no design silent drops |
 | A-3 | book/writers-guide instructions are reconciled with the confirmed layout and current toolchain | read sibling `AGENTS.md`, writer-guide diffs, and slice02 close | serious | arc-plan | open | | includes stale B0 rows |
 | A-4 | book code fences/examples are reachable by an automated gate | run the chosen book fence/test command and record extracted/passing/failing counts | serious | `D-2607-R4NW` + B0-G | open | | class-(b) composition row |
@@ -153,6 +176,16 @@ the bootstrap before relying on manual review.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.1 — 2026-08-08 (slice01 closed/CDC-verified)
+
+slice01 closed at `00b3338` and CDC reproduced the close in
+[`slice01-pre-book-decision-gate/cdc-verification.md`](./slice01-pre-book-decision-gate/cdc-verification.md).
+The arc plan now treats the decision gate as closed, marks A-1 done, resolves
+D-3 to the tracked lang arc16 planning home, records the fence-first
+recommendation for D-1 / `D-2607-R4NW`, and keeps the export, grouped-binding,
+branching, and source-ownership findings as explicit operator decisions before
+later chapter slices normalize those surfaces.
 
 ### v1.0 — 2026-08-08 (arc planned; slice01 opened)
 
