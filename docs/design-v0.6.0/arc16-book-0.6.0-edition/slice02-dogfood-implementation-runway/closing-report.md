@@ -104,7 +104,7 @@ scaffold "next steps" use PATH-dependent `lykn`.
 | `./bin/lykn test` with scaffold-style Lykn test macros | 1 | Failed before tests: macro module `jsr:@lykn/testing` had no `lykn.macroEntry` field and no `mod.lykn` fallback. |
 | `./bin/lykn test` after switching to JS tests | 1 | Failed because `target/lykn/build/record-shape-tools/shared/strings.js` was missing. `lykn build` had skipped nested package source. |
 | `./bin/lykn build` after flattening helper module to package root | 0 | Built root package files, including `strings.js`. |
-| `./bin/lykn test` final | 0 | Ran 3 tests from `test/mod_test.js`; 3 passed, 0 failed. |
+| `./bin/lykn test` final | 0 | Ran 3 tests from the scratch JS test file; 3 passed, 0 failed. |
 | `./bin/lykn lint` | 2 | Failed with usage: `lykn lint <paths...>`. The command requires paths. |
 | `./bin/lykn lint packages/record-shape-tools test` | 0 | Clean: no lint findings across 6 Lykn source files. |
 | `./bin/lykn run packages/record-shape-tools/main.lykn` | 1 | Failed: temp-compiled source resolved `./mod.js` from the temp directory, not the package directory. |

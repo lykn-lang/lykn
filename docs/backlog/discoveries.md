@@ -590,6 +590,88 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   relevant scaffold/build/publish/docs slice before arc16 closes. Do not close
   this row by banning user-authored JSON/assets/resources from source trees.
 
+### `D-2608-BINW` — fresh projects lack the local `bin/lykn` guides expect
+
+- **What:** arc16 slice02 used `lykn new` to create a scratch utility library.
+  The generated project did not include a project-local `bin/lykn`, while the
+  current guides, slice prompts, and standing release workflow prefer
+  `./bin/lykn` so commands exercise the checked-out compiler rather than
+  whatever is on `PATH`. CC had to add a scratch-only symlink before following
+  the normal workflow.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+  records the failed `./bin/lykn --version` probe and scratch symlink fix.
+- **How found:** `dogfooding` — fresh scaffold run through the current
+  SKILL/guides.
+- **Guess:** Medium-high for DevX and guide truth. New users will hit the first
+  command in the guides and either fail, use a global binary, or drift away from
+  release-branch reproducibility.
+- **Kind:** `gap` · **Status:** `held-for-design`
+- **Routing:** arc16's next implementation-routing slice must decide whether
+  `lykn new` creates a project-local shim or whether the guides/prompts change
+  their default command shape. Do not let book examples assume `./bin/lykn`
+  unless the scaffold makes that true.
+
+### `D-2608-TDSL` — scaffolded Lykn tests cannot load the testing macros
+
+- **What:** The scratch project's scaffold-style Lykn tests failed before any
+  assertions ran: the macro module `jsr:@lykn/testing` had no
+  `lykn.macroEntry` field and no `mod.lykn` fallback. CC switched to JS tests to
+  finish the project, so the scaffold's advertised Lykn testing route was not
+  usable in the fresh-project path.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+  records the failed test command and the JS-test workaround.
+- **How found:** `dogfooding` — using the scaffold's normal test shape in a
+  fresh project.
+- **Guess:** High for teaching and package readiness. A testing DSL that is
+  present in guidance but cannot expand in a new project will push the book
+  toward JavaScript tests or manual demos, which hides a 0.6.0 tooling defect.
+- **Kind:** `bug` · **Status:** `held-for-design`
+- **Routing:** route through arc16's implementation runway or the package/testing
+  owner before book chapter work. Either make the macro package resolvable from
+  scaffolded Lykn tests, or change the scaffold/guides so their first-class test
+  path is the one that actually runs.
+
+### `D-2608-BREC` — `lykn build` skips nested package source directories
+
+- **What:** The scratch package originally placed a helper module under a nested
+  package source directory. `lykn build` succeeded but did not emit the nested
+  helper, so the JS test path failed looking for the built helper module. CC had
+  to flatten the helper into the package root to get a working build.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+  records the missing built helper and the flattening workaround.
+- **How found:** `dogfooding` — realistic package organization in a fresh
+  utility library.
+- **Guess:** High for package structure. Nested modules are a normal library
+  shape; silently skipping them creates a green build with missing runtime
+  files, exactly the kind of output-quality defect arc16 should catch before the
+  book teaches package layout.
+- **Kind:** `bug` · **Status:** `held-for-design`
+- **Routing:** arc16's implementation-routing slice must either make `lykn build`
+  recurse into package source directories or document and enforce a flat-package
+  rule with an explicit diagnostic. Do not teach nested helper modules as
+  supported until the build owns them.
+
+### `D-2608-RIMP` — source-file `lykn run` resolves relative imports from temp output
+
+- **What:** Running the scratch project's source entrypoint with `./bin/lykn run`
+  compiled it to a temporary file, then resolved `./mod.js` relative to the temp
+  directory rather than the source file/package directory. The built-JS
+  entrypoint ran successfully, so this is a source-run import-resolution
+  problem, not an application failure.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+  records the failed source run and successful built-JS demo.
+- **How found:** `dogfooding` — running a fresh package demo through the current
+  CLI workflow.
+- **Guess:** High for examples and debugging. `lykn run packages/.../main.lykn`
+  is the natural command to teach during development; if it only works for
+  import-free files, the book needs either an implementation fix or a deliberately
+  narrower command story.
+- **Kind:** `bug` · **Status:** `held-for-design`
+- **Routing:** arc16's implementation-routing slice should choose between fixing
+  source-run relative import resolution and steering all package demos through
+  `lykn build` plus built entrypoints. Do not let book examples imply the source
+  command works for package modules until this is settled.
+
 ---
 
 ## Language & docs
