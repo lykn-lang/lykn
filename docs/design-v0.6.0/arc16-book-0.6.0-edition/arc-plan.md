@@ -1,7 +1,8 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — implementation/dogfood runway active before book prose.**
-> slice01 `pre-book-decision-gate` closed/CDC-verified 2026-08-08. The operator
+> **Status: OPEN — implementation routing next before book prose.**
+> slice01 `pre-book-decision-gate` and slice02 `dogfood-implementation-runway`
+> closed/CDC-verified 2026-08-08. The operator
 > then tightened the rule: all accepted 0.6.0 implementation work must land
 > before book or writers-guide prose normalizes the final surface. This arc
 > gates arc09/release: the book is the full-surface reader of 0.6.0, and every
@@ -58,17 +59,18 @@ Read these before planning or executing any slice:
 
 ## 3. Slice Breakdown
 
-Plan late, plan deep. slice01 is closed as an evidence packet. slice02 opens an
-implementation/dogfood runway so CC can build more from-scratch Lykn projects
-and turn implementation pressure into routed work before book prose starts.
+Plan late, plan deep. slice01 is closed as an evidence packet. slice02 closed
+the first implementation/dogfood runway: CC built a from-scratch Lykn project,
+graded it against the SKILL/guides, and surfaced four CLI/scaffold/package
+runway findings that now need implementation routing before book prose starts.
 Book-facing slices remain deliberately scoped at capability level until the
 operator decides which findings land in 0.6.0 and which route to later work.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · pre-book-decision-gate** | Re-ground the historical book inventory and dogfood findings against current lang/book/writers-guide state; produce the operator decision packet for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN`; classify each as 0.6.0 implementation, docs/book-only, or 0.7.0+ deferral; recommend the next executable slice order. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice01-pre-book-decision-gate/closing-report.md), [cdc-verification](./slice01-pre-book-decision-gate/cdc-verification.md)) |
-| **slice02 · dogfood-implementation-runway** | Run another from-scratch Lykn project through current SKILL/guides/CLI workflows before book prose; collect command evidence, self-grade against guidance, and route implementation work from `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`, and any new dogfood findings. No compiler/book prose edits. | **Open** ([slice-doc](./slice02-dogfood-implementation-runway/slice-doc.md), [ledger](./slice02-dogfood-implementation-runway/ledger.md), [cc-prompt](./slice02-dogfood-implementation-runway/cc-prompt.md)) |
-| **slice03 · implementation-routing/accepted-surface-work** | Land or explicitly route the implementation slices accepted from slice01/slice02: likely fence reachability, exports, grouped locals, flatter branching, and source/package ownership. This row may split into smaller compiler/CLI/scaffold slices or move work into arc10 if that is the cleaner home. | Planned after slice02 |
+| **slice02 · dogfood-implementation-runway** | Run another from-scratch Lykn project through current SKILL/guides/CLI workflows before book prose; collect command evidence, self-grade against guidance, and route implementation work from `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`, and any new dogfood findings. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice02-dogfood-implementation-runway/closing-report.md), [cdc-verification](./slice02-dogfood-implementation-runway/cdc-verification.md)) |
+| **slice03 · implementation-routing/accepted-surface-work** | Land or explicitly route the implementation slices accepted from slice01/slice02. First target: CLI/scaffold/package runway reliability for `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and `D-2608-SOWN`, then language-surface calls for fence reachability, exports, grouped locals, and flatter branching. This row may split into smaller compiler/CLI/scaffold slices or move work into arc10 if that is the cleaner home. | Next to open |
 | **slice04 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, and the implementation-first rule. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Blocked until accepted 0.6.0 implementation routes are closed or deferred |
 | **slice05 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` implementation decision |
 | **slice06 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
@@ -84,6 +86,11 @@ decisions. The operator clarified after slice01 that all accepted 0.6.0
 implementation work must land before book prose. Therefore book-facing slices
 are blocked until the dogfood/implementation runway either closes the accepted
 work or records an explicit deferral with a re-entry condition.
+
+slice02 added four CLI/scaffold/package findings to the permanent register:
+`D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP`. These join
+`D-2608-SOWN` as the first implementation-routing cluster because they affect
+whether a fresh project can follow the guides without local workarounds.
 
 ## 4. Dependencies
 
@@ -158,7 +165,7 @@ either fixed or routed every language/tooling defect it surfaced.
 | A-6 | chapters touched for 0.6.0 language/tooling changes match shipped behavior | chapter-scope tests plus source sweeps against current lang guides/SKILL | serious | P-20 | open | | reproduced at arc scale |
 | A-7 | final book outputs build and render in supported formats | run mdBook HTML/EPUB build and any configured book checks | serious | P-20 | open | | include known EPUB workaround |
 | A-8 | arc16 bubbles up honestly to arc09 | arc closing-report updates project-plan/status and names remaining blockers, if any | serious | project-management | open | | release gate |
-| A-9 | implementation-first rule honored before book prose | arc close: show accepted 0.6.0 implementation findings from dogfood are closed or explicitly deferred before book/writers-guide/chapter slices depend on them | serious | operator clarification 2026-08-08 | open | | prevents prose from masking unsettled language |
+| A-9 | implementation-first rule honored before book prose | arc close: show accepted 0.6.0 implementation findings from dogfood are closed or explicitly deferred before book/writers-guide/chapter slices depend on them | serious | operator clarification 2026-08-08 | open | slice02 closed/CDC-verified; `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP` registered for implementation routing | prevents prose from masking unsettled language |
 
 ## 7. Verification Strategy
 
@@ -191,7 +198,16 @@ normalizes the surface.
 
 ## 9. Version History
 
-### v1.2 - 2026-08-08 (implementation-first dogfood runway)
+### v1.3 - 2026-08-08 (slice02 closed/CDC-verified)
+
+slice02 closed at `35f8fcc` and CDC reproduced the scratch project gates in
+[`slice02-dogfood-implementation-runway/cdc-verification.md`](./slice02-dogfood-implementation-runway/cdc-verification.md).
+The slice surfaced four fresh CLI/scaffold/package runway findings:
+`D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP`. The next arc16
+move is implementation routing before any book/writers-guide prose normalizes
+project structure or package commands.
+
+### v1.2 — 2026-08-08 (implementation-first dogfood runway)
 
 The operator clarified that all accepted implementation work must happen before
 the book or writers-guide starts teaching the final surface, and expects several
