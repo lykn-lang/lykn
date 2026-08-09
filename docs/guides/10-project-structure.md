@@ -143,11 +143,16 @@ my-project/
 - `.lykn` source (surface syntax) and `.lyk` source (kernel syntax)
   in `packages/<name>/` (workspace member)
 - Each package has its own `deno.json` (name, version, exports)
-- `lykn build` writes intermediate `.js` output to `target/lykn/build/<pkg>/`
+- `lykn build` writes intermediate `.js` output to `target/lykn/build/<pkg>/`,
+  recursively preserving package-relative paths for nested `.lykn`, `.lyk`, and
+  hand-written `.js` files
 - `lykn dist` stages publishable packages under `target/lykn/dist/<pkg>/`
 - Generated publish files (`deno.json`, `package.json`, declaration stubs,
   copied `README.md`/`LICENSE`) are generated artifacts; do not hand-write
   them in source package directories or in `target/lykn/dist/`
+- User-authored non-Lykn files are allowed in package source trees, but
+  `lykn build` does not copy arbitrary source files into
+  `target/lykn/build/`; generated output remains under `target/lykn/`
 - Tests in `.lykn`/`.lyk` run through `lykn test`; JS tests may import built
   package output under `target/lykn/build/` when testing Deno APIs directly
 - `bin/lykn` for the CLI binary

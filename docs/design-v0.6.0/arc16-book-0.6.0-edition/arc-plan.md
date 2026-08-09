@@ -70,7 +70,7 @@ operator decides which findings land in 0.6.0 and which route to later work.
 |-------|-------|--------|
 | **slice01 · pre-book-decision-gate** | Re-ground the historical book inventory and dogfood findings against current lang/book/writers-guide state; produce the operator decision packet for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN`; classify each as 0.6.0 implementation, docs/book-only, or 0.7.0+ deferral; recommend the next executable slice order. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice01-pre-book-decision-gate/closing-report.md), [cdc-verification](./slice01-pre-book-decision-gate/cdc-verification.md)) |
 | **slice02 · dogfood-implementation-runway** | Run another from-scratch Lykn project through current SKILL/guides/CLI workflows before book prose; collect command evidence, self-grade against guidance, and route implementation work from `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`, and any new dogfood findings. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice02-dogfood-implementation-runway/closing-report.md), [cdc-verification](./slice02-dogfood-implementation-runway/cdc-verification.md)) |
-| **slice03 · cli-scaffold-package-runway** | Land or explicitly route the first implementation cluster from slice02: `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`. A fresh project should build, test, lint, and run without the manual repairs slice02 needed. No export/grouped-binding/branching syntax work. | **Open** ([slice-doc](./slice03-cli-scaffold-package-runway/slice-doc.md), [ledger](./slice03-cli-scaffold-package-runway/ledger.md), [cc-prompt](./slice03-cli-scaffold-package-runway/cc-prompt.md)) |
+| **slice03 · cli-scaffold-package-runway** | Land or explicitly route the first implementation cluster from slice02: `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`. A fresh project should build, test, lint, and run without the manual repairs slice02 needed. No export/grouped-binding/branching syntax work. | **Closed / pending CDC verification** ([closing-report](./slice03-cli-scaffold-package-runway/closing-report.md), [slice-doc](./slice03-cli-scaffold-package-runway/slice-doc.md), [ledger](./slice03-cli-scaffold-package-runway/ledger.md), [cc-prompt](./slice03-cli-scaffold-package-runway/cc-prompt.md)) |
 | **slice04 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, and the implementation-first rule. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Blocked until accepted 0.6.0 implementation routes are closed or deferred |
 | **slice05 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` implementation decision |
 | **slice06 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
@@ -165,7 +165,7 @@ either fixed or routed every language/tooling defect it surfaced.
 | A-6 | chapters touched for 0.6.0 language/tooling changes match shipped behavior | chapter-scope tests plus source sweeps against current lang guides/SKILL | serious | P-20 | open | | reproduced at arc scale |
 | A-7 | final book outputs build and render in supported formats | run mdBook HTML/EPUB build and any configured book checks | serious | P-20 | open | | include known EPUB workaround |
 | A-8 | arc16 bubbles up honestly to arc09 | arc closing-report updates project-plan/status and names remaining blockers, if any | serious | project-management | open | | release gate |
-| A-9 | implementation-first rule honored before book prose | arc close: show accepted 0.6.0 implementation findings from dogfood are closed or explicitly deferred before book/writers-guide/chapter slices depend on them | serious | operator clarification 2026-08-08 | open | slice02 closed/CDC-verified; `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP` registered for implementation routing | prevents prose from masking unsettled language |
+| A-9 | implementation-first rule honored before book prose | arc close: show accepted 0.6.0 implementation findings from dogfood are closed or explicitly deferred before book/writers-guide/chapter slices depend on them | serious | operator clarification 2026-08-08 | open | slice02 closed/CDC-verified; slice03 closed pending CDC with `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 `D-2608-SOWN` floor implemented | prevents prose from masking unsettled language; language-surface decisions still open |
 
 ## 7. Verification Strategy
 
@@ -197,6 +197,17 @@ normalizes the surface.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.5 - 2026-08-08 (slice03 closed pending CDC)
+
+slice03 closed the first CLI/scaffold/package runway implementation cluster.
+Fresh scaffolds now install `bin/lykn`, scaffolded Lykn tests run through the
+testing macro package, package build/dist traversal includes nested source with
+preserved relative paths, source-file `lykn run` executes package build output
+so relative imports resolve, and the 0.6.0 source-ownership floor is explicit.
+CDC verification remains pending. `D-2608-XPRT`, `D-2608-LBND`, and
+`D-2608-COND` remain the next implementation-first language-surface decisions
+before book prose can normalize the final surface.
 
 ### v1.4 - 2026-08-08 (slice03 CLI/scaffold/package runway opened)
 

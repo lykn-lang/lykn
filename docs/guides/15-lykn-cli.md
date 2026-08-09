@@ -15,7 +15,7 @@ dependencies.
 ```sh
 lykn new my-app
 cd my-app
-lykn run packages/my-app/mod.lykn
+./bin/lykn run packages/my-app/mod.lykn
 ```
 
 **Generated structure**:
@@ -25,6 +25,8 @@ my-app/
 ├── project.json              ← workspace root
 ├── README.md
 ├── LICENSE                    ← Apache-2.0
+├── bin/
+│   └── lykn                   ← project-local CLI binary
 ├── packages/
 │   └── my-app/
 │       ├── deno.json          ← package config (name, version, exports, lykn.kind)
@@ -33,6 +35,11 @@ my-app/
 │   └── mod_test.lykn          ← starter test (using @lykn/testing DSL)
 └── .gitignore
 ```
+
+When `lykn new` is run from a source checkout before the matching
+`@lykn/testing` package has been published, it may also write a gitignored
+`project.local.json` overlay that points the starter test macros at the local
+checkout. The committed `project.json` remains registry-oriented.
 
 **Options**:
 
@@ -43,8 +50,8 @@ my-app/
 **Name rules**: kebab-case only — lowercase letters, digits, hyphens.
 Must start with a letter.
 
-The generated project is immediately runnable (`lykn run`) and
-testable (`lykn test`). Git is initialized automatically.
+The generated project is immediately runnable (`./bin/lykn run`) and
+testable (`./bin/lykn test`). Git is initialized automatically.
 
 ---
 
@@ -159,8 +166,12 @@ Use it in CI to catch issues before compilation.
 
 **Strength**: SHOULD
 
-**Summary**: Run a file directly via Deno. `.lykn` files are
-compiled to a temp `.js` file first, then executed.
+**Summary**: Run a file directly via Deno. Workspace package `.lykn`/`.lyk`
+files are built into `target/lykn/build/<pkg>/` first, then executed from
+that generated path so relative imports resolve beside the rest of the package
+build output. Source files outside a workspace package are compiled under
+`target/lykn/run/` when a project root exists, otherwise to a temporary `.js`
+file.
 
 ```sh
 # Run a .lykn file (compile + execute)
