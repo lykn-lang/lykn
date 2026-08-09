@@ -140,9 +140,10 @@ closes:
   full-surface review before the release cut, but the operator has clarified
   that all accepted implementation work comes first. Slice02's from-scratch
   project routed fresh CLI/scaffold/package findings: `D-2608-BINW`,
-  `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP`. The next move is
-  implementation routing for those, `D-2608-SOWN`, and the language-surface
-  decisions before book or writers-guide prose starts.
+  `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP`. slice03
+  `cli-scaffold-package-runway` is open for those findings plus the 0.6.0 floor
+  for `D-2608-SOWN`; the export/grouped-local/branching language-surface
+  decisions remain after that, before book or writers-guide prose starts.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
 **Current sequence:** arc16, then arc09. arc14

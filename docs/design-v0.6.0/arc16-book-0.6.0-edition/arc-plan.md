@@ -1,6 +1,6 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — implementation routing next before book prose.**
+> **Status: OPEN — CLI/scaffold/package runway active before book prose.**
 > slice01 `pre-book-decision-gate` and slice02 `dogfood-implementation-runway`
 > closed/CDC-verified 2026-08-08. The operator
 > then tightened the rule: all accepted 0.6.0 implementation work must land
@@ -70,7 +70,7 @@ operator decides which findings land in 0.6.0 and which route to later work.
 |-------|-------|--------|
 | **slice01 · pre-book-decision-gate** | Re-ground the historical book inventory and dogfood findings against current lang/book/writers-guide state; produce the operator decision packet for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN`; classify each as 0.6.0 implementation, docs/book-only, or 0.7.0+ deferral; recommend the next executable slice order. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice01-pre-book-decision-gate/closing-report.md), [cdc-verification](./slice01-pre-book-decision-gate/cdc-verification.md)) |
 | **slice02 · dogfood-implementation-runway** | Run another from-scratch Lykn project through current SKILL/guides/CLI workflows before book prose; collect command evidence, self-grade against guidance, and route implementation work from `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`, and any new dogfood findings. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice02-dogfood-implementation-runway/closing-report.md), [cdc-verification](./slice02-dogfood-implementation-runway/cdc-verification.md)) |
-| **slice03 · implementation-routing/accepted-surface-work** | Land or explicitly route the implementation slices accepted from slice01/slice02. First target: CLI/scaffold/package runway reliability for `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and `D-2608-SOWN`, then language-surface calls for fence reachability, exports, grouped locals, and flatter branching. This row may split into smaller compiler/CLI/scaffold slices or move work into arc10 if that is the cleaner home. | Next to open |
+| **slice03 · cli-scaffold-package-runway** | Land or explicitly route the first implementation cluster from slice02: `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`. A fresh project should build, test, lint, and run without the manual repairs slice02 needed. No export/grouped-binding/branching syntax work. | **Open** ([slice-doc](./slice03-cli-scaffold-package-runway/slice-doc.md), [ledger](./slice03-cli-scaffold-package-runway/ledger.md), [cc-prompt](./slice03-cli-scaffold-package-runway/cc-prompt.md)) |
 | **slice04 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, and the implementation-first rule. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Blocked until accepted 0.6.0 implementation routes are closed or deferred |
 | **slice05 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` implementation decision |
 | **slice06 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
@@ -198,7 +198,15 @@ normalizes the surface.
 
 ## 9. Version History
 
-### v1.3 - 2026-08-08 (slice02 closed/CDC-verified)
+### v1.4 - 2026-08-08 (slice03 CLI/scaffold/package runway opened)
+
+slice03 opens the first implementation-routing cluster from slice02:
+`D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0
+source-ownership floor for `D-2608-SOWN`. The language-surface decisions
+(`D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`) remain deliberately out of scope
+for this slice so CLI/scaffold/package reliability can land before book prose.
+
+### v1.3 — 2026-08-08 (slice02 closed/CDC-verified)
 
 slice02 closed at `35f8fcc` and CDC reproduced the scratch project gates in
 [`slice02-dogfood-implementation-runway/cdc-verification.md`](./slice02-dogfood-implementation-runway/cdc-verification.md).
