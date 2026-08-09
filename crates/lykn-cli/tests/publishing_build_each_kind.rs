@@ -7,7 +7,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use lykn_cli::config::PackageKind;
-use lykn_cli::dist::build_dist;
+use lykn_cli::dist::{build_dist, build_project};
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -156,6 +156,77 @@ fn build_runtime_with_imports_rewrites_correctly() {
         !mod_js.contains("from 'lang/reader.js'"),
         "original bare import should not remain, got: {mod_js}"
     );
+}
+
+#[test]
+fn build_project_recurses_runtime_sources_and_preserves_ownership_boundary() {
+    let tmp = tempfile::tempdir().expect("failed to create temp dir");
+    let root = tmp.path();
+    let pkg = root.join("packages/recursive-runtime");
+    fs::create_dir_all(pkg.join("nested/deeper")).unwrap();
+
+    fs::write(
+        root.join("project.json"),
+        r#"{ "workspace": ["./packages/recursive-runtime"], "imports": {} }"#,
+    )
+    .unwrap();
+    fs::write(root.join("README.md"), "# Recursive Runtime\n").unwrap();
+    fs::write(root.join("LICENSE"), "Apache-2.0\n").unwrap();
+    fs::write(
+        pkg.join("deno.json"),
+        r#"{
+    "name": "@fixture/recursive-runtime",
+    "version": "0.0.1",
+    "exports": "./mod.js",
+    "lykn": { "kind": "runtime" }
+}"#,
+    )
+    .unwrap();
+    fs::write(
+        pkg.join("mod.lykn"),
+        r#"(export (bind package-name "recursive-runtime"))
+"#,
+    )
+    .unwrap();
+    fs::write(
+        pkg.join("nested/helper.lykn"),
+        r#"(export (func helper-message
+  :args (:string name)
+  :returns :string
+  :body (template "hello " name)))
+"#,
+    )
+    .unwrap();
+    fs::write(
+        pkg.join("nested/deeper/kernel.lyk"),
+        "(const kernelValue 7)\n",
+    )
+    .unwrap();
+    fs::write(
+        pkg.join("nested/handwritten.js"),
+        r#"export function handwritten() { return "ok"; }
+"#,
+    )
+    .unwrap();
+    fs::write(pkg.join("nested/notes.txt"), "user-owned source note\n").unwrap();
+
+    let built = build_project(root).expect("build_project should succeed");
+    assert_eq!(built.len(), 1);
+
+    let build = root.join("target/lykn/build/recursive-runtime");
+    assert!(build.join("mod.js").exists());
+    assert!(build.join("nested/helper.js").exists());
+    assert!(build.join("nested/deeper/kernel.js").exists());
+    assert!(build.join("nested/handwritten.js").exists());
+    assert!(!build.join("nested/notes.txt").exists());
+    assert!(!pkg.join("nested/helper.js").exists());
+
+    build_dist(root).expect("build_dist should succeed");
+    let dist = root.join("target/lykn/dist/recursive-runtime");
+    assert!(dist.join("nested/helper.js").exists());
+    assert!(dist.join("nested/helper.d.ts").exists());
+    assert!(dist.join("nested/handwritten.js").exists());
+    assert!(!dist.join("nested/notes.txt").exists());
 }
 
 #[test]

@@ -176,11 +176,6 @@ fn compile_lykn_sources(
     build_dir: &Path,
     emit_dts: bool,
 ) -> Result<(), DistError> {
-    let entries = fs::read_dir(pkg_path).map_err(|e| DistError::Io {
-        path: pkg_path.to_path_buf(),
-        source: e,
-    })?;
-
     let imports: Option<std::collections::HashMap<String, String>> =
         config::read_project_config_optional().map(|c| c.imports.into_iter().collect());
 
@@ -189,93 +184,84 @@ fn compile_lykn_sources(
         source: e,
     })?;
 
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.extension().is_some_and(|e| e == "lykn" || e == "lyk") {
-            let filename = path.file_stem().unwrap();
-            let js_path = build_dir.join(filename).with_extension("js");
-            let needs_compile = !js_path.exists()
-                || fs::metadata(&path)
-                    .and_then(|src| fs::metadata(&js_path).map(|dst| (src, dst)))
-                    .and_then(|(src, dst)| Ok(src.modified()? > dst.modified()?))
-                    .unwrap_or(true);
+    for path in package_files(pkg_path, |p| {
+        p.extension().is_some_and(|e| e == "lykn" || e == "lyk")
+    })? {
+        let relative = path.strip_prefix(pkg_path).unwrap_or(&path);
+        let js_path = build_dir.join(relative).with_extension("js");
+        let needs_compile = !js_path.exists()
+            || fs::metadata(&path)
+                .and_then(|src| fs::metadata(&js_path).map(|dst| (src, dst)))
+                .and_then(|(src, dst)| Ok(src.modified()? > dst.modified()?))
+                .unwrap_or(true);
 
-            if needs_compile {
-                let source = fs::read_to_string(&path).map_err(|e| DistError::Io {
-                    path: path.clone(),
-                    source: e,
-                })?;
-                let forms = lykn_lang::reader::read(&source).map_err(|e| DistError::Io {
+        if needs_compile {
+            let source = fs::read_to_string(&path).map_err(|e| DistError::Io {
+                path: path.clone(),
+                source: e,
+            })?;
+            let forms = lykn_lang::reader::read(&source).map_err(|e| DistError::Io {
+                path: path.clone(),
+                source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
+            })?;
+            let expanded = lykn_lang::expander::expand(forms, Some(&path), imports.as_ref())
+                .map_err(|e| DistError::Io {
                     path: path.clone(),
                     source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
                 })?;
-                let expanded = lykn_lang::expander::expand(forms, Some(&path), imports.as_ref())
-                    .map_err(|e| DistError::Io {
-                        path: path.clone(),
-                        source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
-                    })?;
-                // DD-58 strict for `.lykn` surface packages; `.lyk` exempt.
-                let is_lyk = path.extension().is_some_and(|e| e == "lyk");
-                let classify_opts = lykn_lang::classifier::ClassifierOptions {
-                    strict: !is_lyk,
-                    kernel_only: false,
-                };
-                let classified =
-                    lykn_lang::classifier::classify_with_options(&expanded, classify_opts)
-                        .map_err(|diags| {
-                            let msg = diags
-                                .iter()
-                                .map(|d| format!("{d}"))
-                                .collect::<Vec<_>>()
-                                .join("\n");
-                            DistError::Io {
-                                path: path.clone(),
-                                source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
-                            }
-                        })?;
-                let analysis_result = lykn_lang::analysis::analyze(&classified);
-                if analysis_result.has_errors {
-                    let msg = analysis_result
-                        .diagnostics
+            // DD-58 strict for `.lykn` surface packages; `.lyk` exempt.
+            let is_lyk = path.extension().is_some_and(|e| e == "lyk");
+            let classify_opts = lykn_lang::classifier::ClassifierOptions {
+                strict: !is_lyk,
+                kernel_only: false,
+            };
+            let classified = lykn_lang::classifier::classify_with_options(&expanded, classify_opts)
+                .map_err(|diags| {
+                    let msg = diags
                         .iter()
-                        .filter(|d| d.severity == lykn_lang::diagnostics::Severity::Error)
                         .map(|d| format!("{d}"))
                         .collect::<Vec<_>>()
                         .join("\n");
-                    return Err(DistError::Io {
+                    DistError::Io {
                         path: path.clone(),
                         source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
-                    });
-                }
-                let kernel =
-                    lykn_lang::emitter::emit(&classified, &analysis_result.type_registry, false);
-                let js =
-                    lykn_lang::codegen::emit_module_js(&kernel).map_err(|e| DistError::Io {
-                        path: js_path.clone(),
-                        source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
-                    })?;
-                fs::write(&js_path, js).map_err(|e| DistError::Io {
-                    path: js_path.clone(),
-                    source: e,
+                    }
                 })?;
+            let analysis_result = lykn_lang::analysis::analyze(&classified);
+            if analysis_result.has_errors {
+                let msg = analysis_result
+                    .diagnostics
+                    .iter()
+                    .filter(|d| d.severity == lykn_lang::diagnostics::Severity::Error)
+                    .map(|d| format!("{d}"))
+                    .collect::<Vec<_>>()
+                    .join("\n");
+                return Err(DistError::Io {
+                    path: path.clone(),
+                    source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
+                });
+            }
+            let kernel =
+                lykn_lang::emitter::emit(&classified, &analysis_result.type_registry, false);
+            let js = lykn_lang::codegen::emit_module_js(&kernel).map_err(|e| DistError::Io {
+                path: js_path.clone(),
+                source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
+            })?;
+            write_text(&js_path, &js)?;
 
-                if emit_dts {
-                    let file_str = path.display().to_string();
-                    let (dts_content, dts_warnings) = lykn_lang::emitter::dts::emit_dts_module(
-                        &classified,
-                        &analysis_result.type_registry,
-                        &file_str,
-                    );
-                    for w in &dts_warnings {
-                        eprintln!("{w}");
-                    }
-                    if !dts_content.is_empty() {
-                        let dts_path = js_path.with_extension("d.ts");
-                        fs::write(&dts_path, &dts_content).map_err(|e| DistError::Io {
-                            path: dts_path,
-                            source: e,
-                        })?;
-                    }
+            if emit_dts {
+                let file_str = path.display().to_string();
+                let (dts_content, dts_warnings) = lykn_lang::emitter::dts::emit_dts_module(
+                    &classified,
+                    &analysis_result.type_registry,
+                    &file_str,
+                );
+                for w in &dts_warnings {
+                    eprintln!("{w}");
+                }
+                if !dts_content.is_empty() {
+                    let dts_path = js_path.with_extension("d.ts");
+                    write_text(&dts_path, &dts_content)?;
                 }
             }
         }
@@ -286,34 +272,31 @@ fn compile_lykn_sources(
 /// Copy handwritten `.js` files from the package directory into `build_dir`.
 /// Uses mtime-based staleness: only copies when source is newer than target.
 fn copy_js_to_build(pkg_path: &Path, build_dir: &Path) -> Result<(), DistError> {
-    let entries = fs::read_dir(pkg_path).map_err(|e| DistError::Io {
-        path: pkg_path.to_path_buf(),
-        source: e,
-    })?;
-
     fs::create_dir_all(build_dir).map_err(|e| DistError::Io {
         path: build_dir.to_path_buf(),
         source: e,
     })?;
 
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.extension().is_some_and(|e| e == "js")
-            && let Some(filename) = path.file_name()
-        {
-            let target = build_dir.join(filename);
-            let needs_copy = !target.exists()
-                || fs::metadata(&path)
-                    .and_then(|src| fs::metadata(&target).map(|dst| (src, dst)))
-                    .and_then(|(src, dst)| Ok(src.modified()? > dst.modified()?))
-                    .unwrap_or(true);
+    for path in package_files(pkg_path, |p| p.extension().is_some_and(|e| e == "js"))? {
+        let relative = path.strip_prefix(pkg_path).unwrap_or(&path);
+        let target = build_dir.join(relative);
+        let needs_copy = !target.exists()
+            || fs::metadata(&path)
+                .and_then(|src| fs::metadata(&target).map(|dst| (src, dst)))
+                .and_then(|(src, dst)| Ok(src.modified()? > dst.modified()?))
+                .unwrap_or(true);
 
-            if needs_copy {
-                fs::copy(&path, &target).map_err(|e| DistError::Io {
-                    path: path.clone(),
+        if needs_copy {
+            if let Some(parent) = target.parent() {
+                fs::create_dir_all(parent).map_err(|e| DistError::Io {
+                    path: parent.to_path_buf(),
                     source: e,
                 })?;
             }
+            fs::copy(&path, &target).map_err(|e| DistError::Io {
+                path: path.clone(),
+                source: e,
+            })?;
         }
     }
     Ok(())
@@ -335,45 +318,34 @@ fn copy_js_files(
     dst: &Path,
     project_imports: &IndexMap<String, String>,
 ) -> Result<(), DistError> {
-    let entries = fs::read_dir(src).map_err(|e| DistError::Io {
-        path: src.to_path_buf(),
-        source: e,
-    })?;
-
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.extension().is_some_and(|e| e == "js")
-            && let Some(filename) = path.file_name()
-        {
-            let content = fs::read_to_string(&path).map_err(|e| DistError::Io {
-                path: path.clone(),
-                source: e,
-            })?;
-            let rewritten = rewrite_imports(&content, project_imports);
-            write_text(&dst.join(filename), &rewritten)?;
-        }
+    for path in package_files(src, |p| p.extension().is_some_and(|e| e == "js"))? {
+        let relative = path.strip_prefix(src).unwrap_or(&path);
+        let content = fs::read_to_string(&path).map_err(|e| DistError::Io {
+            path: path.clone(),
+            source: e,
+        })?;
+        let rewritten = rewrite_imports(&content, project_imports);
+        write_text(&dst.join(relative), &rewritten)?;
     }
     Ok(())
 }
 
 /// Copy compiled `.js` files from the build directory into the dist directory.
 fn copy_js_to_dist_from_build(build_dir: &Path, dist_dir: &Path) -> Result<(), DistError> {
-    let entries = fs::read_dir(build_dir).map_err(|e| DistError::Io {
-        path: build_dir.to_path_buf(),
-        source: e,
-    })?;
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.extension().is_some_and(|e| e == "js")
-            && let Some(filename) = path.file_name()
-        {
-            let target = dist_dir.join(filename);
-            if !target.exists() {
-                fs::copy(&path, &target).map_err(|e| DistError::Io {
-                    path: path.clone(),
+    for path in package_files(build_dir, |p| p.extension().is_some_and(|e| e == "js"))? {
+        let relative = path.strip_prefix(build_dir).unwrap_or(&path);
+        let target = dist_dir.join(relative);
+        if !target.exists() {
+            if let Some(parent) = target.parent() {
+                fs::create_dir_all(parent).map_err(|e| DistError::Io {
+                    path: parent.to_path_buf(),
                     source: e,
                 })?;
             }
+            fs::copy(&path, &target).map_err(|e| DistError::Io {
+                path: path.clone(),
+                source: e,
+            })?;
         }
     }
     Ok(())
@@ -381,25 +353,25 @@ fn copy_js_to_dist_from_build(build_dir: &Path, dist_dir: &Path) -> Result<(), D
 
 /// Copy all files (`.js`, `.lykn`, etc.) from the source directory to dist.
 fn copy_all_files(src: &Path, dst: &Path) -> Result<(), DistError> {
-    let entries = fs::read_dir(src).map_err(|e| DistError::Io {
-        path: src.to_path_buf(),
-        source: e,
-    })?;
-
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_file()
-            && let Some(filename) = path.file_name()
+    for path in package_files(src, |_| true)? {
+        if path
+            .file_name()
+            .is_some_and(|filename| filename == "deno.json")
         {
-            // Skip deno.json — we generate our own
-            if filename == "deno.json" {
-                continue;
-            }
-            fs::copy(&path, dst.join(filename)).map_err(|e| DistError::Io {
-                path: path.clone(),
+            continue;
+        }
+        let relative = path.strip_prefix(src).unwrap_or(&path);
+        let target = dst.join(relative);
+        if let Some(parent) = target.parent() {
+            fs::create_dir_all(parent).map_err(|e| DistError::Io {
+                path: parent.to_path_buf(),
                 source: e,
             })?;
         }
+        fs::copy(&path, &target).map_err(|e| DistError::Io {
+            path: path.clone(),
+            source: e,
+        })?;
     }
     Ok(())
 }
@@ -410,19 +382,12 @@ fn copy_all_files(src: &Path, dst: &Path) -> Result<(), DistError> {
 /// to infer types from the JS source. This satisfies JSR's requirement for
 /// type declarations on JavaScript entrypoints.
 fn generate_dts_stubs(dist_dir: &Path) -> Result<(), DistError> {
-    let entries = fs::read_dir(dist_dir).map_err(|e| DistError::Io {
-        path: dist_dir.to_path_buf(),
-        source: e,
-    })?;
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.extension().is_some_and(|e| e == "js")
-            && let Some(stem) = path.file_stem()
-        {
+    for path in package_files(dist_dir, |p| p.extension().is_some_and(|e| e == "js"))? {
+        if let Some(stem) = path.file_stem() {
             let dts_name = format!("{}.d.ts", stem.to_string_lossy());
             let js_name = path.file_name().unwrap().to_string_lossy();
             write_text(
-                &dist_dir.join(&dts_name),
+                &path.with_file_name(&dts_name),
                 &format!("export * from \"./{js_name}\";\n"),
             )?;
         }
@@ -438,10 +403,65 @@ fn copy_root_files(project_root: &Path, dist_dir: &Path) {
 
 /// Write a text file to disk.
 fn write_text(path: &Path, content: &str) -> Result<(), DistError> {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent).map_err(|e| DistError::Io {
+            path: parent.to_path_buf(),
+            source: e,
+        })?;
+    }
     fs::write(path, content).map_err(|e| DistError::Io {
         path: path.to_path_buf(),
         source: e,
     })
+}
+
+fn package_files<F>(root: &Path, predicate: F) -> Result<Vec<PathBuf>, DistError>
+where
+    F: Fn(&Path) -> bool,
+{
+    let mut files = Vec::new();
+    collect_package_files(root, root, &predicate, &mut files)?;
+    files.sort();
+    Ok(files)
+}
+
+fn collect_package_files<F>(
+    root: &Path,
+    dir: &Path,
+    predicate: &F,
+    files: &mut Vec<PathBuf>,
+) -> Result<(), DistError>
+where
+    F: Fn(&Path) -> bool,
+{
+    let entries = fs::read_dir(dir).map_err(|e| DistError::Io {
+        path: dir.to_path_buf(),
+        source: e,
+    })?;
+
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_dir() {
+            if is_ignored_package_dir(root, &path) {
+                continue;
+            }
+            collect_package_files(root, &path, predicate, files)?;
+        } else if predicate(&path) {
+            files.push(path);
+        }
+    }
+
+    Ok(())
+}
+
+fn is_ignored_package_dir(root: &Path, path: &Path) -> bool {
+    if path == root {
+        return false;
+    }
+
+    path.file_name()
+        .and_then(|name| name.to_str())
+        .is_some_and(|name| matches!(name, ".git" | "node_modules" | "target"))
 }
 
 /// Write a `.build-stamp` file with the current timestamp.

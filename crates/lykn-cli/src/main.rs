@@ -458,22 +458,39 @@ fn cmd_run(file: &std::path::Path, args: &[String]) {
     let config = dev_config();
 
     if file.extension().is_some_and(lykn_cli::util::is_lykn_ext) {
-        // Compile .lykn/.lyk to temp .js, then run
-        let temp = std::env::temp_dir().join("lykn_run.js");
-        match compile::compile_file(file, false, false) {
-            Ok(js) => {
-                if let Err(e) = std::fs::write(&temp, &js) {
-                    eprintln!("error writing temp file: {e}");
+        let run_file = match workspace_build_output_for_source(file) {
+            Some((root, out_path)) => {
+                if let Err(e) = dist::build_project(&root) {
+                    eprintln!("error: {e}");
                     process::exit(1);
                 }
+                out_path
             }
-            Err(e) => {
-                eprintln!("{e}");
-                process::exit(1);
+            None => {
+                let out_path = fallback_run_output(file);
+                match compile::compile_file(file, false, false) {
+                    Ok(js) => {
+                        if let Some(parent) = out_path.parent()
+                            && let Err(e) = std::fs::create_dir_all(parent)
+                        {
+                            eprintln!("error creating {}: {e}", parent.display());
+                            process::exit(1);
+                        }
+                        if let Err(e) = std::fs::write(&out_path, &js) {
+                            eprintln!("error writing {}: {e}", out_path.display());
+                            process::exit(1);
+                        }
+                    }
+                    Err(e) => {
+                        eprintln!("{e}");
+                        process::exit(1);
+                    }
+                }
+                out_path
             }
-        }
-        let temp_str = temp.to_string_lossy();
-        let mut deno_args = vec!["run", "--config", &config, "-A", &temp_str];
+        };
+        let run_file = run_file.to_string_lossy().into_owned();
+        let mut deno_args = vec!["run", "--config", &config, "-A", &run_file];
         let arg_refs: Vec<&str> = args.iter().map(|s| s.as_str()).collect();
         deno_args.extend(arg_refs);
         exec_deno(&deno_args);
@@ -484,6 +501,60 @@ fn cmd_run(file: &std::path::Path, args: &[String]) {
         deno_args.extend(arg_refs);
         exec_deno(&deno_args);
     }
+}
+
+fn absolute_from_cwd(path: &Path) -> PathBuf {
+    if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        std::env::current_dir()
+            .unwrap_or_else(|_| PathBuf::from("."))
+            .join(path)
+    }
+}
+
+fn workspace_build_output_for_source(file: &Path) -> Option<(PathBuf, PathBuf)> {
+    let root = config::find_project_root()?;
+    let project_config = config::read_project_config(&root.join("project.json")).ok()?;
+    let file_abs = absolute_from_cwd(file).canonicalize().ok()?;
+
+    for member in config::workspace_members(&project_config) {
+        let pkg_path = root.join(&member).canonicalize().ok()?;
+        if !file_abs.starts_with(&pkg_path) {
+            continue;
+        }
+
+        let pkg_config = config::read_package_config(&pkg_path.join("deno.json")).ok()?;
+        let short_name = config::short_name(&pkg_config.name);
+        let relative = file_abs.strip_prefix(&pkg_path).ok()?;
+        let out_path = root
+            .join("target/lykn/build")
+            .join(short_name)
+            .join(relative)
+            .with_extension("js");
+        return Some((root, out_path));
+    }
+
+    None
+}
+
+fn fallback_run_output(file: &Path) -> PathBuf {
+    if let Some(root) = config::find_project_root() {
+        let relative = absolute_from_cwd(file)
+            .strip_prefix(&root)
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|_| {
+                file.file_name()
+                    .map(PathBuf::from)
+                    .unwrap_or_else(|| PathBuf::from("lykn_run.lykn"))
+            });
+        return root
+            .join("target/lykn/run")
+            .join(relative)
+            .with_extension("js");
+    }
+
+    std::env::temp_dir().join("lykn_run.js")
 }
 
 /// Default directory for compiled `.lykn`/`.lyk` test output. Under
@@ -1178,7 +1249,10 @@ fn project_json_template(name: &str) -> String {
         }}
     }},
     "tasks": {{
-        "test": "deno test -A test/"
+        "build": "./bin/lykn build",
+        "test": "./bin/lykn test",
+        "lint": "./bin/lykn lint packages/{name} test",
+        "check": "./bin/lykn build && ./bin/lykn lint packages/{name} test && ./bin/lykn test"
     }}
 }}
 "#
@@ -1213,7 +1287,7 @@ fn mod_lykn_template(name: &str) -> String {
 
 fn test_template(name: &str) -> String {
     format!(
-        r#"(import-macros "jsr:@lykn/testing" (test is-equal))
+        r#"(import-macros "testing" (test is-equal))
 
 (test "{name}: placeholder test"
   (is-equal (+ 1 1) 2))
@@ -1230,8 +1304,8 @@ A [lykn](https://github.com/lykn-lang/lykn) project.
 ## Quick Start
 
 ```sh
-lykn run packages/{name}/mod.lykn
-lykn test
+./bin/lykn run packages/{name}/mod.lykn
+./bin/lykn test
 ```
 
 ## License
@@ -1290,6 +1364,10 @@ fn cmd_new(name: &str, path: Option<&Path>) {
         eprintln!("error creating directories: {e}");
         process::exit(1);
     }
+    if let Err(e) = fs::create_dir_all(project_dir.join("bin")) {
+        eprintln!("error creating directories: {e}");
+        process::exit(1);
+    }
 
     // Write template files
     write_file(
@@ -1311,6 +1389,8 @@ fn cmd_new(name: &str, path: Option<&Path>) {
     write_file(&project_dir.join("README.md"), &readme_template(name));
     write_file(&project_dir.join("LICENSE"), LICENSE_TEMPLATE);
     write_file(&project_dir.join(".gitignore"), GITIGNORE_TEMPLATE);
+    install_project_binary(&project_dir);
+    write_local_testing_overlay_if_available(&project_dir);
 
     // Git init (silent failure if git not installed)
     let _ = Command::new("git")
@@ -1324,15 +1404,92 @@ fn cmd_new(name: &str, path: Option<&Path>) {
     eprintln!();
     eprintln!("Next steps:");
     eprintln!("  cd {name}");
-    eprintln!("  lykn run packages/{name}/mod.lykn   # run the program");
-    eprintln!("  lykn test                            # run the test suite");
+    eprintln!("  ./bin/lykn run packages/{name}/mod.lykn   # run the program");
+    eprintln!("  ./bin/lykn test                            # run the test suite");
     eprintln!();
     eprintln!("To prepare for publishing:");
     eprintln!("  git add .");
     eprintln!("  git commit -m \"Initial commit\"");
-    eprintln!("  lykn dist");
-    eprintln!("  lykn publish --jsr --dry-run");
-    eprintln!("  lykn publish --jsr");
+    eprintln!("  ./bin/lykn dist");
+    eprintln!("  ./bin/lykn publish --jsr --dry-run");
+    eprintln!("  ./bin/lykn publish --jsr");
+}
+
+fn install_project_binary(project_dir: &Path) {
+    let current_exe = match std::env::current_exe() {
+        Ok(path) => path,
+        Err(e) => {
+            eprintln!("error locating current lykn executable: {e}");
+            process::exit(1);
+        }
+    };
+    let target = project_dir.join("bin").join("lykn");
+    if let Err(e) = fs::copy(&current_exe, &target) {
+        eprintln!(
+            "error installing project-local lykn binary {}: {e}",
+            target.display()
+        );
+        process::exit(1);
+    }
+
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+
+        if let Ok(metadata) = fs::metadata(&target) {
+            let mut permissions = metadata.permissions();
+            permissions.set_mode(0o755);
+            if let Err(e) = fs::set_permissions(&target, permissions) {
+                eprintln!(
+                    "error setting executable permissions on {}: {e}",
+                    target.display()
+                );
+                process::exit(1);
+            }
+        }
+    }
+}
+
+fn write_local_testing_overlay_if_available(project_dir: &Path) {
+    let Some(testing_dir) = find_local_testing_package() else {
+        return;
+    };
+    let mut testing_value = testing_dir.to_string_lossy().into_owned();
+    if !testing_value.ends_with('/') {
+        testing_value.push('/');
+    }
+    let entries = [
+        ("testing".to_string(), testing_value.clone()),
+        ("testing/".to_string(), testing_value),
+    ];
+    if let Err(e) = config::write_overlay(project_dir, &entries) {
+        eprintln!(
+            "error writing local testing overlay {}: {e}",
+            config::overlay_path(project_dir).display()
+        );
+        process::exit(1);
+    }
+}
+
+fn find_local_testing_package() -> Option<PathBuf> {
+    let mut starts = Vec::new();
+    if let Ok(exe) = std::env::current_exe() {
+        starts.push(exe);
+    }
+    if let Ok(cwd) = std::env::current_dir() {
+        starts.push(cwd);
+    }
+
+    for start in starts {
+        for dir in start.ancestors() {
+            let candidate = dir.join("packages").join("testing");
+            if candidate.join("mod.lykn").is_file() && candidate.join("macros.js").is_file() {
+                return Some(candidate.canonicalize().unwrap_or(candidate));
+            }
+        }
+    }
+
+    None
 }
 
 // ---------------------------------------------------------------------------
