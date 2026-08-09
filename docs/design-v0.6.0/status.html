@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-08 (arc16 slice02 dogfood runway closed/CDC-verified; implementation routing next before book prose; current path: arc16 -> arc09.)",
+  updated: "2026-08-08 (arc16 slice03 CLI/scaffold/package runway open before book prose; current path: arc16 -> arc09.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -184,8 +184,8 @@ const DATA = {
       cap:"Closed 2026-08-08: surface forms that compile clean but mean something the author did not write now become hard errors + lint + guide fixes. Method-on-expression rejects with a threading fix-it; sibling traps are closed; nested Rust fn parameter validation matches JS. slice03 hardening is deferred to 0.7.0.",
       slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps",s:"closed"},{n:"nested-fn-param-validation",s:"closed"}] },
     { id:"arc16", name:"book-0.6.0-edition", status:"open",
-      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice02 dogfood-implementation-runway is closed/CDC-verified and surfaced the next CLI/scaffold/package cluster: BINW/TDSL/BREC/RIMP plus SOWN before book or writers-guide prose starts.",
-      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"implementation routing",s:"open"},{n:"book-instruction-bootstrap",s:"planned"},{n:"book-fence-reachability",s:"planned"},{n:"current-book-drift-refresh",s:"planned"},{n:"toolchain/project-structure chapters",s:"planned"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
+      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice03 CLI/scaffold/package runway is open for BINW/TDSL/BREC/RIMP plus the SOWN 0.6.0 floor before book or writers-guide prose starts.",
+      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"active"},{n:"book-instruction-bootstrap",s:"planned"},{n:"book-fence-reachability",s:"planned"},{n:"current-book-drift-refresh",s:"planned"},{n:"toolchain/project-structure chapters",s:"planned"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
     { id:"arc14", name:"comment-retention", status:"future",
       cap:"Retain comments through the pipeline: reader retention (opt-in) → surface→kernel provenance annotation → strip-or-preserve at JS emit (DD-62). The LFE comment-drop pain made a first-class goal; the home for the deferred lint-suppression mechanism. SEEDED 2026-07-21; release boundary decided 0.7.0 (operator, 2026-07-21); not slice-planned.",
       slices:[] },
@@ -204,7 +204,7 @@ const DATA = {
   sequence: ["arc16","arc09"],
   now: {
     arc:"arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice02 is closed/CDC-verified: the dogfood project ran, and the next work is implementation routing for scaffold, testing, build recursion, source-run imports, source ownership, and language-surface findings before the book normalizes module and project-structure examples."
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is open for CLI/scaffold/package implementation: local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. Language-surface findings remain after that before the book normalizes module examples."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
