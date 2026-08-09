@@ -38,7 +38,7 @@
 | [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
 | [arc14 · comment-retention](./arc14-comment-retention/arc-plan.md) | Retain comments through the pipeline (reader → surface→kernel provenance → JS-emit strip/preserve); DD-62 | **Seeded → 0.7.0** — home for lint-suppression; **release boundary decided 0.7.0** (operator, 2026-07-21); not slice-planned |
 | [arc15 · surface-syntax-traps](./arc15-surface-syntax-traps/arc-plan.md) | Compile-clean-but-wrong surface shapes become hard errors + lint + guide fixes | **Closed — gate GO 2026-08-08**; slices 01/02/04/05 closed; slice03 deferred to 0.7.0; arc ledger A-1…A-6 met |
-| [arc16 · book-0.6.0-edition](./arc16-book-0.6.0-edition/arc-plan.md) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — slice01 `pre-book-decision-gate` closed/CDC-verified 2026-08-08; gates arc09; operator decisions still needed for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN` before module/API/project-structure chapters |
+| [arc16 · book-0.6.0-edition](./arc16-book-0.6.0-edition/arc-plan.md) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — slice01 `pre-book-decision-gate` closed/CDC-verified 2026-08-08; slice02 `dogfood-implementation-runway` open; all accepted implementation work must land or defer before book/writers-guide/chapter prose normalizes the final surface |
 
 _Numbering is **creation order** (from 2026-06-30). Current release sequence: arc16, then arc09._
 
