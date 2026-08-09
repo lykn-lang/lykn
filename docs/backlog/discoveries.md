@@ -475,6 +475,121 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 - **Replace this row** with real IDs once the discussion happens. Do not close it
   until they exist.
 
+### `D-2608-XPRT` — inline exports plus `mod.lykn` exports need one coherent story
+
+- **What:** CC's external-library dogfood project followed the current SKILL
+  guidance and wrote exported definitions inline, e.g. `(export (func
+  collect-valid-records ...))`. The operator rejected that as the long-term
+  module style: Lykn modules should put their exports at the top, so the public
+  API is visible before implementation bodies. A follow-up read of the same
+  dogfood project found a second export list in `mod.lykn`:
+  `(export "./record-shape.js" (names ...))`. The design task must explain
+  whether definition-site exports plus entrypoint re-exports are both required,
+  duplicated by accident, or intentionally separate concepts.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+  F-7 records the dogfood example and the desired top-of-module shape.
+- **How found:** `operator` + `dogfooding` — CC's generated utility-library code
+  exposed the current style in realistic module code.
+- **Guess:** High for the book surface. This may be a large language/compiler
+  change, but the decision must happen before arc16 writes the 0.6.0 book
+  examples; otherwise the book will normalize a shape the operator does not want
+  to teach and may accidentally teach two export declarations where one should
+  be enough.
+- **Kind:** `gap` · **Status:** `held-for-design`
+- **Design question:** choose the top-of-module export syntax and semantics
+  before the book pass. Candidate shape: `(exports name other-name predicate?)`
+  followed by ordinary `(func ...)` / `(bind ...)` definitions. The final design
+  needs to specify ordering, duplicate/missing export diagnostics, whether
+  `mod.lykn` re-exports are a package-entrypoint layer or redundant with module
+  export declarations, JS emitted names for predicates, and whether inline
+  `(export (func ...))` remains accepted, deprecated, or rejected.
+- **Routing:** arc16 must include this as a pre-draft language-surface decision.
+  If the chosen syntax is not supported, route the compiler work to arc10 or a
+  new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
+  rewriting examples around the current inline wrapper.
+
+### `D-2608-LBND` — repeated local binds need a grouped let-style binding surface
+
+- **What:** CC's external-library dogfood project used several consecutive
+  local `(bind name value)` forms to normalize one record. The operator rejected
+  that as the only durable local-binding shape: when a module needs several
+  derived locals, Lykn should support a grouped let-style binding surface.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+  F-8 records the example and candidate grouped form.
+- **How found:** `operator` + `dogfooding` — realistic normalization code made
+  the repeated-binding shape visible.
+- **Guess:** High for the book surface. Validation, parsing, and normalization
+  examples will hit this constantly; without a grouped form, the book either
+  teaches verbose sibling binds or invents prose around a missing Lisp idiom.
+- **Kind:** `gap` · **Status:** `held-for-design`
+- **Design question:** choose the grouped local-binding syntax and semantics
+  before the book pass. Candidate shape: `(bind name expr name2 expr2 ...)`, but
+  the final design must settle simultaneous vs sequential binding, body
+  placement, shadowing and duplicate-name diagnostics, whether this extends
+  `bind` or introduces `let`/`let*`, and how it interacts with the existing
+  "bind for all values" rule.
+- **Routing:** arc16 must include this as a pre-draft language-surface decision.
+  If the chosen syntax is not supported, route the compiler work to arc10 or a
+  new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
+  telling authors to keep writing repeated sibling binds.
+
+### `D-2608-COND` — nested validation conditionals need a flatter branch surface
+
+- **What:** CC's external-library dogfood project expressed ordered validation
+  as deeply nested `?` forms: check one invalid case, return `ShapeErr`, else
+  nest the next invalid case, and so on until the final `ShapeOk`. The operator
+  flagged the deep repetition as a syntax smell: repeated nesting of the same
+  branch form indicates the surface likely needs a flatter construct.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+  F-9 records the nested validation example and a candidate `cond`-style shape.
+- **How found:** `operator` + `dogfooding` — realistic validation code exposed
+  the readability cost.
+- **Guess:** High for the book surface. Validation and parsing examples are core
+  teaching material; nested `?` ladders are technically valid but too hard to
+  scan as the default idiom.
+- **Kind:** `gap` · **Status:** `held-for-design`
+- **Design question:** choose the flatter branching syntax and semantics before
+  the book pass. Candidate shape: `cond` with ordered predicate/result pairs and
+  `:else`, but the final design must settle naming, required/default else
+  behavior, expression vs statement positions, exhaustiveness diagnostics, and
+  interaction with existing `?`, no-else `if`, and `match` guidance.
+- **Routing:** arc16 must include this as a pre-draft language-surface decision.
+  If the chosen syntax is not supported, route the compiler work to arc10 or a
+  new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
+  teaching nested `?` ladders as the permanent validation idiom.
+
+### `D-2608-SOWN` — Lykn-owned generated manifests need a source ownership boundary
+
+- **What:** CC's external-library dogfood project exposed that `lykn new`
+  scaffolds a package-level `deno.json` beside `.lykn` source. The operator
+  clarified the desired rule: user-owned project resources may include any file
+  type, but files generated, configured, or owned by Lykn's build/publish
+  pipeline should not be made to look like author-owned source. Generated JSON
+  manifests and publish/build metadata need a generated home such as `target/`,
+  `dist/`, or another explicitly generated artifact directory.
+- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+  F-10 records the dogfood `deno.json` example and the clarified source-tree
+  ownership rule.
+- **How found:** `operator` + `dogfooding` — CC's fresh external project used
+  the scaffolded package layout and made the source/package boundary visible.
+- **Guess:** High for the book and for scaffolding. Existing docs and tool
+  behavior still treat source package `deno.json` as package config and export
+  metadata, while newer build/dist guidance says generated publish manifests are
+  staged outside the source tree. The contradiction must be resolved before the
+  book teaches project structure.
+- **Kind:** `gap` · **Status:** `held-for-design`
+- **Design question:** choose the source-tree ownership model for Lykn-built
+  package artifacts before the book pass. The final design must distinguish
+  user-owned non-Lykn source files from Lykn-owned generated/configured files,
+  decide whether package metadata remains in source `deno.json`, moves to
+  `project.json`, lives in a Lykn-native package manifest, or is generated from
+  `.lykn` declarations, and specify how `lykn new`, `lykn build`, `lykn dist`,
+  macro metadata, exports, and publish staging all interact.
+- **Routing:** arc16 must include this as a pre-draft project-structure decision.
+  If the chosen model changes current behavior, route implementation to the
+  relevant scaffold/build/publish/docs slice before arc16 closes. Do not close
+  this row by banning user-authored JSON/assets/resources from source trees.
+
 ---
 
 ## Language & docs

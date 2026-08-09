@@ -136,6 +136,20 @@ closes:
 - **arc16 · book-0.6.0-edition — OPEN.** The planning home exists and its design
   materials are tracked; `arc-plan.md` is still to be written. The book gates
   arc09 because drafting it is the full-surface review before the release cut.
+  New pre-book decisions: `D-2608-XPRT` / dogfood F-7 rejects inline
+  `(export (func ...))` as the durable teaching shape and asks whether
+  `mod.lykn` named re-export lists duplicate or intentionally layer on module
+  exports; settle export ownership and route any compiler/docs work before the
+  book teaches module/API examples. `D-2608-LBND` / dogfood F-8 similarly rejects repeated
+  sibling local `bind` forms as the only grouped-local-binding shape; settle the
+  let-style binding surface before expression/normalization chapters.
+  `D-2608-COND` / dogfood F-9 flags nested validation `?` ladders; settle a
+  flatter `cond`/guard-style branching surface before validation/control-flow
+  chapters.
+  `D-2608-SOWN` / dogfood F-10 clarifies that user-authored non-Lykn files are
+  allowed in project source trees, but Lykn-owned generated manifests and
+  build/publish metadata need generated homes instead of package-source
+  ownership; settle the source-ownership model before project-structure chapters.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
 **Current sequence:** arc16, then arc09. arc14

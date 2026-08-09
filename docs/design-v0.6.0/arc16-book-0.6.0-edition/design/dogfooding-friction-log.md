@@ -200,6 +200,231 @@ A short "calling JS methods from lykn" table — `str.startsWith` → `(:starts-
 
 ---
 
+## F-7 — Inline exports plus `mod.lykn` exports create an unclear export story. **GAP / DESIGN.**
+
+**Where:** CC's 2026-08-08 external-library dogfood report, in the generated
+utility-library module shape, e.g.
+
+```lisp
+(export (func collect-valid-records
+  :args (:array results)
+  :returns :array
+  :body
+  (results:flat-map (fn (:any result)
+    (? (= result:tag "ShapeOk")
+      #a(result:value)
+      #a())))))
+```
+
+The same dogfood package also had a `mod.lykn` entrypoint with a second explicit
+export list:
+
+```lisp
+(export "./record-shape.js" (names
+  ShapeOk
+  ShapeErr
+  collect-valid-records
+  normalize-email
+  ...))
+```
+
+**What I wanted:** one coherent module-export story. A module's public API
+should be visible at the top, before the function bodies, and a package
+entrypoint should not require a second export list unless it is serving a
+clearly different purpose.
+
+**What the guides/SKILL currently teach:** inline named exports:
+`(export (func ...))` and `(export (bind ...))`. The generated package shape
+also pushes public API through a `mod.lykn` re-export list. That may be a real
+two-level requirement, but if so the requirement needs to be explicit.
+
+**Why this matters:** inline export wrappers make the export decision live at the
+definition site, which is familiar from JavaScript but awkward in a Lisp-flavoured
+module. It hides the public surface inside implementation detail and makes
+teaching examples look noisier than the language needs to be. This is not merely
+a prose style preference if the language lacks a first-class top-of-module export
+declaration form. The `mod.lykn` list adds a second question: is the author
+declaring export intent twice, or are implementation visibility and package
+entrypoint re-export separate concepts?
+
+**Candidate direction:** standardize public Lykn examples on a top-of-module
+export surface before the book starts. The exact spelling is a design decision,
+but the desired shape is something closer to:
+
+```lisp
+(exports collect-valid-records normalize-record valid-record?)
+
+(func collect-valid-records
+  :args (:array results)
+  :returns :array
+  :body
+  ...)
+```
+
+If the compiler does not support the settled form yet, this becomes a pre-book
+language/compiler slice, not a book workaround. The book should not normalize the
+current inline wrapper as the durable idiom unless the operator explicitly
+decides to accept that cost. The design also needs to decide how entrypoint
+barrel exports interact with implementation-module exports: required, redundant,
+or intentionally distinct.
+
+**Routes to:** `D-2608-XPRT` in the discovery register; arc16 planning must make
+the export-surface decision before drafting the module/API chapters. The fix may
+route to arc10/compiler-completion or a new 0.6.0 language-surface slice once the
+syntax is chosen.
+
+---
+
+## F-8 — Repeated local `bind` forms need a grouped binding surface. **GAP / DESIGN.**
+
+**Where:** CC's 2026-08-08 external-library dogfood report, in normalization
+code shaped like:
+
+```lisp
+(bind id (normalize-token record:id))
+(bind name (? (= (js:typeof record:name) "string")
+  (record:name:trim)
+  ""))
+(bind email (normalize-email record:email))
+(bind role (normalize-role record:role))
+(bind tags (normalize-tags (?? record:tags #a())))
+```
+
+**What I wanted:** a compact local-binding form for the common "derive several
+locals, then build a value" shape. In a Lisp, a run of sibling bindings should
+not be the only available spelling for a local scope.
+
+**Candidate direction:** support a let-style grouped binding surface, with a
+shape along these lines:
+
+```lisp
+(bind
+  email (normalize-email record:email)
+  role (normalize-role record:role)
+  tags (normalize-tags (?? record:tags #a())))
+```
+
+The exact semantics need a design call before implementation: simultaneous vs
+sequential binding, body placement, shadowing rules, whether this is a new
+`let`/`let*` family or an extension of `bind`, and how it composes with the
+existing "bind for all values" guidance.
+
+**Why this matters:** without a grouped form, idiomatic Lykn examples drift
+toward verbose statement lists. That makes real modules look more imperative
+than the language wants to feel, especially in validation/normalization code
+where several derived locals are natural and should read as one expression.
+
+**Routes to:** `D-2608-LBND` in the discovery register; arc16 planning must make
+the grouped-local-binding decision before drafting the expression/local-binding
+chapters. The fix may route to arc10/compiler-completion or a new 0.6.0
+language-surface slice once the syntax and semantics are chosen.
+
+---
+
+## F-9 — Nested validation `?` ladders need a flatter branch surface. **GAP / DESIGN.**
+
+**Where:** CC's 2026-08-08 external-library dogfood report, in validation code
+shaped like:
+
+```lisp
+(? (not (string-present? id))
+  (ShapeErr (validation-error "id" "missing-id" "id must be a non-empty string"))
+  (? (not (string-present? name))
+    (ShapeErr (validation-error "name" "missing-name" "name must be a non-empty string"))
+    (? (not (valid-email? email))
+      (ShapeErr (validation-error "email" "invalid-email" "email must contain a local part and domain"))
+      (ShapeOk (obj
+        :id id
+        :name name
+        :email email
+        :role role
+        :tags tags)))))))
+```
+
+**What I wanted:** a flat, scan-friendly way to express ordered validation cases:
+first failing predicate returns its error, otherwise return the success value.
+Deeply nesting the same `?` form is a signal that the surface is missing a more
+readable branch construct.
+
+**Candidate direction:** add or bless a `cond`/guard-style surface, with a shape
+roughly like:
+
+```lisp
+(cond
+  ((not (string-present? id))
+   (ShapeErr (validation-error "id" "missing-id" "id must be a non-empty string")))
+  ((not (string-present? name))
+   (ShapeErr (validation-error "name" "missing-name" "name must be a non-empty string")))
+  ((not (valid-email? email))
+   (ShapeErr (validation-error "email" "invalid-email" "email must contain a local part and domain")))
+  (:else
+   (ShapeOk (obj :id id :name name :email email :role role :tags tags))))
+```
+
+The exact spelling is open: `cond`, `case`, `guard`, validation helpers, or a
+pipeline-friendly Result combinator are all possible. The language-design work
+is to settle which branch surface Lykn wants, how it compiles, how exhaustiveness
+or else-coverage is checked, and how it interacts with existing `?` and `match`
+guidance.
+
+**Why this matters:** the book will have to teach validation, parsing, and API
+boundary checks. If the only blessed branch surface is nested `?`, examples will
+be structurally correct but pedagogically heavy. This is the sort of syntax debt
+the book pass is supposed to expose before it becomes the idiom.
+
+**Routes to:** `D-2608-COND` in the discovery register; arc16 planning must make
+the flatter-branching decision before drafting validation/control-flow chapters.
+The fix may route to arc10/compiler-completion or a new 0.6.0 language-surface
+slice once the syntax and semantics are chosen.
+
+---
+
+## F-10 — Lykn-owned generated manifests blur the source-tree ownership boundary. **GAP / DESIGN.**
+
+**Where:** CC's 2026-08-08 external-library dogfood report, in the scaffolded
+project file list:
+
+```text
+/private/tmp/lykn-dogfood-utility-lib/packages/lykn-dogfood-utility-lib/deno.json
+```
+
+The report describes this as created by `lykn new`, alongside the package's
+`.lykn` sources and generated `target/lykn/build/...` outputs.
+
+**What I wanted:** a clearer source-tree ownership rule. For the parts of a
+project that Lykn builds and owns, source packages should be authored in Lykn
+source files (`.lykn` / `.lyk`), while Lykn-generated JSON manifests and other
+build/publish files should live under generated homes such as `target/`,
+`dist/`, or another explicitly generated artifact directory.
+
+This is not a ban on user-owned non-Lykn source files. Users should remain free
+to put their own README files, data files, fixtures, assets, handwritten JS, or
+other project resources in source control when those files are genuinely part of
+their project. The smell is Lykn putting its own generated/config/build surface
+inside a package source tree and making it look author-owned.
+
+**What the guides/SKILL currently teach:** there is a design tension here, not
+just a missing sentence. Recent build/dist guidance says generated publish
+manifests land under `target/lykn/{build,dist}` / `dist`, but older and still
+active project-structure guidance also treats per-package source `deno.json` as
+package config, export metadata, and a staging template. CC followed that
+current surface, so the dogfood result reflects the tool and guide state rather
+than a random implementer invention.
+
+**Why this matters:** the book will have to teach what a Lykn package looks
+like. If `lykn new` scaffolds a package-level `deno.json`, the book either
+normalizes Deno metadata as author-facing Lykn package source or has to explain
+why generated/tool-owned metadata is sitting beside user source. That undercuts
+the source-only / Lykn-first story unless the ownership boundary is made
+explicit.
+
+**Routes to:** `D-2608-SOWN` in the discovery register; arc16 planning must make
+the source-tree ownership decision before drafting project-structure,
+package-layout, build, or publishing chapters. The fix may route to `lykn new`,
+package metadata design, dist/build staging, docs, or all of them.
+
+---
+
 ## Running tally
 
 | # | Kind | One-line | Routes to |
@@ -210,8 +435,12 @@ A short "calling JS methods from lykn" table — `str.startsWith` → `(:starts-
 | F-4 | blocker | `try` valueless; SKILL still teaches kernel-only | W-2 arc + arc07 |
 | F-5 | gap | single-constructor records + multi-field constructor layout undocumented | arc07 + book |
 | F-6 | gap | no method-name conversion examples for JS interop | arc07 |
+| F-7 | gap/design | inline exports plus `mod.lykn` re-exports leave export ownership unclear | `D-2608-XPRT` + arc16 planning + possible compiler slice |
+| F-8 | gap/design | repeated local `bind` forms need a grouped let-style binding surface | `D-2608-LBND` + arc16 planning + possible compiler slice |
+| F-9 | gap/design | nested validation `?` ladders need a flatter `cond`/guard-style branch surface | `D-2608-COND` + arc16 planning + possible compiler slice |
+| F-10 | gap/design | Lykn-owned generated manifests need a generated home, not package source ownership | `D-2608-SOWN` + arc16 planning + possible scaffold/build/docs slice |
 
-**Six findings in the first module, before a single line was compiled.** That is
+**Ten findings from real-module dogfooding before the book pass.** That is
 the argument for the dogfooding approach, and it is also the argument for doing
-it *before* the book's pedagogical pass rather than after: F-1, F-3 and F-5 are
-all things the book would otherwise have to teach around.
+it *before* the book's pedagogical pass rather than after: F-1, F-3, F-5, F-7,
+F-8, F-9, and F-10 are all things the book would otherwise have to teach around.
