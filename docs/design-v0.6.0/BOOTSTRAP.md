@@ -133,23 +133,15 @@ closes:
   current-drift recon is closed/CDC-verified; slice03 build/dist/publish guide
   refresh is closed/CDC-verified; slice04 Deno workflow reconciliation is
   closed/CDC-verified. Arc ledger A-1...A-7 met; P-13 is done.
-- **arc16 · book-0.6.0-edition — OPEN.** The planning home exists and its design
-  materials are tracked; `arc-plan.md` is still to be written. The book gates
-  arc09 because drafting it is the full-surface review before the release cut.
-  New pre-book decisions: `D-2608-XPRT` / dogfood F-7 rejects inline
-  `(export (func ...))` as the durable teaching shape and asks whether
-  `mod.lykn` named re-export lists duplicate or intentionally layer on module
-  exports; settle export ownership and route any compiler/docs work before the
-  book teaches module/API examples. `D-2608-LBND` / dogfood F-8 similarly rejects repeated
-  sibling local `bind` forms as the only grouped-local-binding shape; settle the
-  let-style binding surface before expression/normalization chapters.
-  `D-2608-COND` / dogfood F-9 flags nested validation `?` ladders; settle a
-  flatter `cond`/guard-style branching surface before validation/control-flow
-  chapters.
-  `D-2608-SOWN` / dogfood F-10 clarifies that user-authored non-Lykn files are
-  allowed in project source trees, but Lykn-owned generated manifests and
-  build/publish metadata need generated homes instead of package-source
-  ownership; settle the source-ownership model before project-structure chapters.
+- **arc16 · book-0.6.0-edition — OPEN.** The arc plan now exists at
+  `arc16-book-0.6.0-edition/arc-plan.md`; slice01
+  `pre-book-decision-gate` is open. The book gates arc09 because drafting it is
+  the full-surface review before the release cut. Slice01 re-grounds D-1...D-5,
+  `D-2607-R4NW`, and the new pre-book dogfood decisions: `D-2608-XPRT` export
+  ownership, `D-2608-LBND` grouped local bindings, `D-2608-COND` flatter
+  validation branching, and `D-2608-SOWN` source ownership. Later compiler,
+  scaffold, docs, and chapter work must not proceed until those decisions have
+  an explicit route.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
 **Current sequence:** arc16, then arc09. arc14
