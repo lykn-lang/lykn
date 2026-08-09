@@ -101,7 +101,7 @@ final call; CC/CDC supply evidence, options, costs, and routing.
 
 | Gate | Source | Decision needed before |
 |------|--------|------------------------|
-| D-1 | historical inventory B0-G | choose book example verification strategy: bootstrap `test/book/`, use `lykn test --docs --fence lisp`, or downgrade the old test-suite claim |
+| D-1 | historical inventory B0-G | choose book example verification strategy: bootstrap `/Users/oubiwann/lab/cnbb/lykn/test/book/`, use `lykn test --docs --fence lisp`, or downgrade the old test-suite claim |
 | D-2 | historical inventory B0-I | preserve `planned-toc.md` as v2 and create v3, or reconcile in place |
 | D-3 | historical inventory B0-M | confirm durable close-artifact locations after `workbench/` was declared scratch |
 | D-4 | historical inventory | decide whether the verification bootstrap is sequential before chapter work or can run in parallel |

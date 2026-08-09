@@ -62,7 +62,7 @@ Out:
 
 Create:
 
-`docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md`
+the canonical `closing-report.md` close-set file in this slice directory
 
 It MUST contain:
 

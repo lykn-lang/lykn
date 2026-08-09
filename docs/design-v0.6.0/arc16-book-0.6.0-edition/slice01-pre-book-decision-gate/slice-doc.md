@@ -22,7 +22,7 @@ In:
   - [`../design/dogfooding-friction-log.md`](../design/dogfooding-friction-log.md)
   - [`../../../backlog/discoveries.md`](../../../backlog/discoveries.md)
 - Verify current sibling repo facts that were stale or missing in the May
-  inventory: `AGENTS.md`/`CLAUDE.md`, `test/book/`, `book.toml`,
+  inventory: `AGENTS.md`/`CLAUDE.md`, `/Users/oubiwann/lab/cnbb/lykn/test/book/`, `book.toml`,
   `src/SUMMARY.md`, writer-guide files, and git status.
 - Produce a decision packet inside the slice closing report for D-1...D-5,
   `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and
