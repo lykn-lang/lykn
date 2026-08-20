@@ -1,8 +1,9 @@
 use crate::analysis::type_registry::TypeRegistry;
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::{
-    ArrayParamElement, ClassMemberForm, Constructor, DestructuredField, FuncClause, GenfuncClause,
-    MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation,
+    ArrayParamElement, BindBinding, ClassMemberForm, CondClause, Constructor, DestructuredField,
+    FuncClause, GenfuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
+    TypeAnnotation,
 };
 use crate::reader::source_loc::Span;
 
@@ -134,6 +135,8 @@ pub fn emit_form(
             value,
             span,
         } => emit_bind(name, type_ann.as_ref(), value, *span, ctx, registry),
+        SurfaceForm::BindGroup { bindings, .. } => emit_bind_group(bindings, ctx, registry),
+        SurfaceForm::Exports { names, .. } => vec![emit_exports(names)],
         SurfaceForm::Obj { pairs, .. } => vec![emit_obj(pairs, ctx, registry)],
         SurfaceForm::Cell { value, .. } => vec![emit_cell(value, ctx, registry)],
         SurfaceForm::Express { target, .. } => vec![emit_express(target, ctx, registry)],
@@ -234,6 +237,7 @@ pub fn emit_form(
         SurfaceForm::Match {
             target, clauses, ..
         } => vec![emit_match(target, clauses, ctx, registry)],
+        SurfaceForm::Cond { clauses, .. } => vec![emit_cond(clauses, ctx, registry)],
         SurfaceForm::Async { inner, .. } => {
             // Emit the inner surface form to kernel, then wrap in (async ...)
             let inner_kernel = emit_form(inner, ctx, registry);
@@ -419,7 +423,31 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
 /// Emit a body (list of expressions), recursively expanding any nested surface
 /// forms.
 fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) -> Vec<SExpr> {
-    body.iter().map(|e| emit_expr(e, ctx, registry)).collect()
+    let mut out = Vec::new();
+    for expr in body {
+        if matches!(ctx.expr_context, ExprContext::Statement)
+            && let Some(surface_form) = classify_statement_surface(expr)
+        {
+            out.extend(emit_form(&surface_form, ctx, registry));
+            continue;
+        }
+        out.push(emit_expr(expr, ctx, registry));
+    }
+    out
+}
+
+fn classify_statement_surface(expr: &SExpr) -> Option<SurfaceForm> {
+    let SExpr::List { values, .. } = expr else {
+        return None;
+    };
+    let head = values.first().and_then(|v| v.as_form_head())?;
+    if crate::classifier::dispatch::is_surface_form(head)
+        || matches!(head, "async" | "export" | "class" | "class-expr")
+    {
+        crate::classifier::classify_expr(expr).ok()
+    } else {
+        None
+    }
 }
 
 /// Convert a kernel `(if cond then else)` form to a ternary `(? cond then else)`.
@@ -658,6 +686,31 @@ fn emit_bind(
     } else {
         vec![const_form]
     }
+}
+
+fn emit_bind_group(
+    bindings: &[BindBinding],
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Vec<SExpr> {
+    let mut out = Vec::new();
+    for binding in bindings {
+        out.extend(emit_bind(
+            &binding.name,
+            binding.type_ann.as_ref(),
+            &binding.value,
+            binding.span,
+            ctx,
+            registry,
+        ));
+    }
+    out
+}
+
+fn emit_exports(names: &[SExpr]) -> SExpr {
+    let mut name_list = vec![atom("names")];
+    name_list.extend(names.iter().cloned());
+    list(vec![atom("export"), list(name_list)])
 }
 
 /// Return the JS type name for a literal `SExpr`, or `None` if it is not a
@@ -2153,6 +2206,61 @@ fn compile_pattern(
 }
 
 // ---------------------------------------------------------------------------
+// Cond emission
+// ---------------------------------------------------------------------------
+
+fn emit_cond(clauses: &[CondClause], ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
+    let has_await = clauses.iter().any(|clause| {
+        clause.test.as_ref().is_some_and(contains_await) || contains_await(&clause.result)
+    });
+
+    let fallback = clauses
+        .iter()
+        .find(|clause| clause.test.is_none())
+        .map(|clause| emit_cond_result_block(&clause.result, ctx, registry))
+        .unwrap_or_else(|| list(vec![atom("block")]));
+
+    let mut chain = fallback;
+    for clause in clauses.iter().rev().filter(|clause| clause.test.is_some()) {
+        let saved_ctx = ctx.expr_context;
+        ctx.expr_context = ExprContext::Value;
+        let test = emit_expr(clause.test.as_ref().unwrap(), ctx, registry);
+        ctx.expr_context = saved_ctx;
+        chain = list(vec![
+            atom("if"),
+            test,
+            emit_cond_result_block(&clause.result, ctx, registry),
+            chain,
+        ]);
+    }
+
+    let arrow_body = vec![atom("=>"), list(vec![]), list(vec![atom("block"), chain])];
+    if has_await {
+        wrap_iife_async(arrow_body)
+    } else {
+        list(vec![list(arrow_body)])
+    }
+}
+
+fn emit_cond_result_block(
+    result: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let saved_ctx = ctx.expr_context;
+    ctx.expr_context = ExprContext::Value;
+    let emitted = emit_expr(result, ctx, registry);
+    ctx.expr_context = saved_ctx;
+
+    let inner = if is_statement_form(&emitted) || is_control_transfer_last_expr(&emitted) {
+        emitted
+    } else {
+        list(vec![atom("return"), emitted])
+    };
+    list(vec![atom("block"), inner])
+}
+
+// ---------------------------------------------------------------------------
 // IfLet / WhenLet emission
 // ---------------------------------------------------------------------------
 
@@ -2801,8 +2909,8 @@ mod tests {
     use super::*;
     use crate::analysis::type_registry::{ConstructorDef, FieldDef, TypeDef, TypeRegistry};
     use crate::ast::surface::{
-        Constructor, DestructuredField, FuncClause, GenfuncClause, MatchClause, ParamShape,
-        Pattern, SurfaceForm, ThreadingStep, TypeAnnotation, TypedParam,
+        BindBinding, CondClause, Constructor, DestructuredField, FuncClause, GenfuncClause,
+        MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation, TypedParam,
     };
     use crate::emitter::context::EmitterContext;
 
@@ -2894,6 +3002,73 @@ mod tests {
         } else {
             panic!("expected list");
         }
+    }
+
+    #[test]
+    fn test_emit_bind_group_flattens_to_const_forms() {
+        let form = SurfaceForm::BindGroup {
+            bindings: vec![
+                BindBinding {
+                    name: atom("email"),
+                    type_ann: None,
+                    value: atom("raw"),
+                    span: s(),
+                },
+                BindBinding {
+                    name: atom("role"),
+                    type_ann: Some(ta("string")),
+                    value: str_lit("admin"),
+                    span: s(),
+                },
+            ],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 2);
+        for (expr, name) in result.iter().zip(["email", "role"]) {
+            if let SExpr::List { values, .. } = expr {
+                assert_eq!(values[0].as_atom(), Some("const"));
+                assert_eq!(values[1].as_atom(), Some(name));
+            } else {
+                panic!("expected const form");
+            }
+        }
+    }
+
+    #[test]
+    fn test_emit_bind_group_in_function_body_stays_sibling_scoped() {
+        let form = SurfaceForm::Func {
+            name: "normalize".into(),
+            name_span: s(),
+            clauses: vec![FuncClause {
+                args: vec![sp("any", "raw")],
+                returns: None,
+                pre: None,
+                post: None,
+                body: vec![
+                    list(vec![
+                        atom("bind"),
+                        atom("email"),
+                        atom("raw"),
+                        atom("role"),
+                        atom("email"),
+                    ]),
+                    atom("role"),
+                ],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        let SExpr::List { values, .. } = &result[0] else {
+            panic!("expected function form");
+        };
+        assert_eq!(values[0].as_atom(), Some("function"));
+        assert_eq!(values[3].as_list().unwrap()[0].as_atom(), Some("const"));
+        assert_eq!(values[4].as_list().unwrap()[0].as_atom(), Some("const"));
+        assert_eq!(values[5].as_list().unwrap()[0].as_atom(), Some("return"));
     }
 
     #[test]
@@ -3534,6 +3709,42 @@ mod tests {
         let mut c = ctx();
         let result = emit_form(&form, &mut c, &r);
         assert_eq!(result.len(), 1);
+    }
+
+    // --- Cond ---
+
+    #[test]
+    fn test_emit_cond_iife() {
+        let form = SurfaceForm::Cond {
+            clauses: vec![
+                CondClause {
+                    test: Some(list(vec![atom("="), atom("role"), str_lit("admin")])),
+                    result: str_lit("Admin"),
+                    span: s(),
+                },
+                CondClause {
+                    test: None,
+                    result: str_lit("User"),
+                    span: s(),
+                },
+            ],
+            span: s(),
+        };
+        let mut c = ctx_value();
+        let result = emit_form(&form, &mut c, &reg());
+        assert_eq!(result.len(), 1);
+        let SExpr::List { values, .. } = &result[0] else {
+            panic!("expected IIFE");
+        };
+        let SExpr::List { values: arrow, .. } = &values[0] else {
+            panic!("expected arrow inside IIFE");
+        };
+        assert_eq!(arrow[0].as_atom(), Some("=>"));
+        let SExpr::List { values: block, .. } = &arrow[2] else {
+            panic!("expected arrow block body");
+        };
+        assert_eq!(block[0].as_atom(), Some("block"));
+        assert_eq!(block[1].as_list().unwrap()[0].as_atom(), Some("if"));
     }
 
     // --- KernelPassthrough ---
@@ -7486,6 +7697,27 @@ mod tests {
     }
 
     // --- Export wrapping surface forms ---
+
+    #[test]
+    fn test_emit_exports_names() {
+        let form = SurfaceForm::Exports {
+            names: vec![atom("normalize"), atom("valid-record?")],
+            span: s(),
+        };
+        let mut ctx = ctx();
+        let result = emit_form(&form, &mut ctx, &TypeRegistry::default());
+        assert_eq!(result.len(), 1);
+        let SExpr::List { values, .. } = &result[0] else {
+            panic!("expected export form");
+        };
+        assert_eq!(values[0].as_atom(), Some("export"));
+        let SExpr::List { values: names, .. } = &values[1] else {
+            panic!("expected names list");
+        };
+        assert_eq!(names[0].as_atom(), Some("names"));
+        assert_eq!(names[1].as_atom(), Some("normalize"));
+        assert_eq!(names[2].as_atom(), Some("valid-record?"));
+    }
 
     #[test]
     fn test_emit_export_func() {

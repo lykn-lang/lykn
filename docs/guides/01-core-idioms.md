@@ -23,6 +23,13 @@ state, wrap the initial value in `cell` and mutate via `swap!` or
 ;; Good — immutable bindings
 (bind max-retries 3)
 (bind users #a())
+(bind record (obj :email "a@example.test" :role "admin"))
+
+;; Good — related values share one sequential bind group
+(bind
+  email record:email
+  role (?? record:role "member")
+  active? (?? record:active? true))
 
 ;; Good — controlled mutation via cell
 (bind counter (cell 0))
@@ -40,6 +47,10 @@ you need state that changes over time, `cell` makes mutation explicit
 and auditable: every mutation site is marked with `!` (`swap!`,
 `reset!`), and reading a cell requires `express`. There is no silent
 reassignment.
+
+Grouped `bind` is sequential: later initializers can reference earlier
+names in the same form. Use it for a small cluster of related local
+values, especially normalization and validation setup.
 
 **See also**: ID-14, `04-values-references.md` ID-01
 
@@ -214,15 +225,17 @@ modules with a single, obvious purpose.
 
 ```lykn
 ;; Good — named exports
-(export (func format-date
+(exports format-date parse-date DATE-FORMAT)
+
+(func format-date
   :args (:any d) :returns :string
-  :body (d:toISOString)))
+  :body (d:toISOString))
 
-(export (func parse-date
+(func parse-date
   :args (:string s) :returns :any
-  :body (new Date s)))
+  :body (new Date s))
 
-(export (bind DATE-FORMAT "YYYY-MM-DD"))
+(bind DATE-FORMAT "YYYY-MM-DD")
 ```
 
 ```lykn
@@ -249,8 +262,10 @@ refactoring harder.
 (import "./utils.js" (format-date))
 (import "@std/path" (join))
 
+(exports process-data)
+
 (bind data (await (Deno:readTextFile (join "config" "app.json"))))
-(export (func process-data :args (:any input) :returns :any :body input))
+(func process-data :args (:any input) :returns :any :body input)
 ```
 
 **Module characteristics**:

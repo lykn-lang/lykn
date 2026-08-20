@@ -20,10 +20,12 @@ provides type annotations, contracts, and multi-clause dispatch.
 
 ```lykn
 ;; Good — named function with types
-(export (func parse-config
+(exports parse-config)
+
+(func parse-config
   :args (:string raw)
   :returns :object
-  :body (JSON:parse raw)))
+  :body (JSON:parse raw))
 
 ;; Good — zero-arg shorthand (last expression is returned)
 (func generate-id
@@ -682,7 +684,9 @@ global unless explicitly exported.
 ```lykn
 ;; module-a.lykn
 (bind SECRET "hidden")
-(export (func get-secret :returns :string :body SECRET))
+(exports get-secret)
+
+(func get-secret :returns :string :body SECRET)
 
 ;; module-b.lykn
 (import "./module-a.js" (get-secret))

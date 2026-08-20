@@ -22,7 +22,7 @@
 //! binding is visible in, and sequential visibility across siblings.
 
 use crate::ast::sexpr::{NameRes, SExpr};
-use crate::binding::{BindingKind, BindingSite, bindings_introduced};
+use crate::binding::{BindingKind, BindingSite, binding_names_in_pattern, bindings_introduced};
 use crate::reader::source_loc::Span;
 
 /// Resolve a slice of top-level forms: return the same tree with every atom's
@@ -71,6 +71,17 @@ pub(crate) enum ScopePlan {
         names: Vec<String>,
         body_start: usize,
     },
+    /// A grouped `(bind name value name2 value2 ...)` is a single declaration
+    /// form whose pairs are sequential: each initializer is resolved before
+    /// that pair's names enter scope, then those names are visible to later
+    /// grouped initializers.
+    GroupedBind { slots: Vec<BindGroupSlot> },
+}
+
+#[derive(Clone, Copy)]
+pub(crate) struct BindGroupSlot {
+    pub(crate) name_index: usize,
+    pub(crate) value_index: usize,
 }
 
 /// Compute a form's [`ScopePlan`]. Non-list or non-binding forms → `Sequence`.
@@ -85,6 +96,9 @@ pub(crate) fn scope_plan(form: &SExpr) -> ScopePlan {
         .map(|s| s.name)
         .collect();
     match head {
+        Some("bind") if let Some(slots) = grouped_bind_slots(values) => {
+            ScopePlan::GroupedBind { slots }
+        }
         // Iterable / scrutinee stays outside the binding's scope.
         Some("for-of" | "for-in" | "for-await-of") => ScopePlan::Body {
             names: body_names,
@@ -158,6 +172,9 @@ fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SE
                 ScopePlan::Body { names, body_start } => {
                     resolve_split_at(values, scope, &child_defs, names, body_start)
                 }
+                ScopePlan::GroupedBind { slots } => {
+                    resolve_grouped_bind(values, scope, &child_defs, &slots)
+                }
             };
             SExpr::List {
                 values: new_values,
@@ -172,6 +189,81 @@ fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SE
         // Leaves with no name to resolve.
         other => other.clone(),
     }
+}
+
+fn grouped_bind_slots(values: &[SExpr]) -> Option<Vec<BindGroupSlot>> {
+    if values.first().and_then(|e| e.as_atom()) != Some("bind") || values.len() < 5 {
+        return None;
+    }
+
+    let mut slots = Vec::new();
+    let mut i = 1;
+    while i < values.len() {
+        if matches!(values.get(i), Some(SExpr::Keyword { .. })) {
+            if i + 2 >= values.len() {
+                return None;
+            }
+            slots.push(BindGroupSlot {
+                name_index: i + 1,
+                value_index: i + 2,
+            });
+            i += 3;
+        } else {
+            if i + 1 >= values.len() {
+                return None;
+            }
+            slots.push(BindGroupSlot {
+                name_index: i,
+                value_index: i + 1,
+            });
+            i += 2;
+        }
+    }
+
+    (slots.len() >= 2).then_some(slots)
+}
+
+fn resolve_grouped_bind(
+    values: &[SExpr],
+    scope: &mut Vec<String>,
+    def_spans: &[Span],
+    slots: &[BindGroupSlot],
+) -> Vec<SExpr> {
+    let mut out = Vec::with_capacity(values.len());
+    let mark = scope.len();
+    let mut next_index = 0;
+
+    for slot in slots {
+        while next_index < slot.name_index {
+            out.push(resolve_form(&values[next_index], scope, def_spans));
+            next_index += 1;
+        }
+
+        out.push(resolve_form(&values[slot.name_index], scope, def_spans));
+        next_index = slot.name_index + 1;
+
+        while next_index < slot.value_index {
+            out.push(resolve_form(&values[next_index], scope, def_spans));
+            next_index += 1;
+        }
+
+        out.push(resolve_form(&values[slot.value_index], scope, def_spans));
+        next_index = slot.value_index + 1;
+
+        for site in binding_names_in_pattern(&values[slot.name_index], BindingKind::Bind) {
+            if site.kind.shadows_values() {
+                scope.push(site.name);
+            }
+        }
+    }
+
+    while next_index < values.len() {
+        out.push(resolve_form(&values[next_index], scope, def_spans));
+        next_index += 1;
+    }
+
+    scope.truncate(mark);
+    out
 }
 
 /// Resolve `values[..body_start]` with the current scope, then push `names` and
@@ -313,6 +405,9 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
                     scope.truncate(mark);
                 }
             }
+            ScopePlan::GroupedBind { slots } => {
+                shadow_grouped_bind(values, &slots, scope, out);
+            }
         },
         SExpr::Cons { car, cdr, .. } => {
             shadow_form(car, scope, out);
@@ -320,6 +415,45 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
         }
         _ => {}
     }
+}
+
+fn shadow_grouped_bind(
+    values: &[SExpr],
+    slots: &[BindGroupSlot],
+    scope: &mut Vec<String>,
+    out: &mut Vec<BindingSite>,
+) {
+    let mark = scope.len();
+    let mut next_index = 0;
+
+    for slot in slots {
+        while next_index < slot.name_index {
+            shadow_form(&values[next_index], scope, out);
+            next_index += 1;
+        }
+        shadow_form(&values[slot.name_index], scope, out);
+        next_index = slot.name_index + 1;
+
+        while next_index < slot.value_index {
+            shadow_form(&values[next_index], scope, out);
+            next_index += 1;
+        }
+        shadow_form(&values[slot.value_index], scope, out);
+        next_index = slot.value_index + 1;
+
+        for site in binding_names_in_pattern(&values[slot.name_index], BindingKind::Bind) {
+            if site.kind.shadows_values() {
+                scope.push(site.name);
+            }
+        }
+    }
+
+    while next_index < values.len() {
+        shadow_form(&values[next_index], scope, out);
+        next_index += 1;
+    }
+
+    scope.truncate(mark);
 }
 
 #[cfg(test)]
@@ -510,6 +644,21 @@ mod tests {
             panic!("value is a list")
         };
         assert_eq!(val_vals[0].name_res(), NameRes::Unresolved);
+    }
+
+    #[test]
+    fn grouped_bind_values_are_sequential() {
+        assert_eq!(
+            call_head_tag("(bind a 1 b (a 987))", "a"),
+            Some(NameRes::BindingRef)
+        );
+        assert_eq!(
+            call_head_tag("(bind a (a 987) b 2)", "a"),
+            Some(NameRes::Unresolved)
+        );
+        let (name, res) = last_head("(bind a 1 b a)\n(b 987)");
+        assert_eq!(name, "b");
+        assert_eq!(res, NameRes::BindingRef);
     }
 
     // ── Scope exit / nesting / labels ───────────────────────────────────────

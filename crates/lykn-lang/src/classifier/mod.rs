@@ -74,6 +74,13 @@ pub fn validate_no_else_if_expressions(forms: &[SExpr]) -> Vec<Diagnostic> {
     forms::validate_no_else_if_expressions(forms)
 }
 
+/// Validate top-level `(exports name ...)` declarations: module-level only,
+/// no duplicate export names, and every name must be a top-level runtime
+/// binding in the same module.
+pub fn validate_exports_declarations(forms: &[SExpr]) -> Vec<Diagnostic> {
+    forms::validate_exports_declarations(forms)
+}
+
 /// DD-64 (arc15): the shared per-node method-on-expression predicate — the lint
 /// rule and the compile pass both use this. See
 /// [`forms::method_on_expression_diagnostic`].

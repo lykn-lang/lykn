@@ -490,12 +490,14 @@ never both. In new code, always use Promises.
 
 ```lykn
 ;; Good — Promise-only API
-(export (async (func read-config
+(exports read-config)
+
+(async (func read-config
   :args (:string path)
   :returns :object
   :body
   (bind raw (await (Deno:readTextFile path)))
-  (JSON:parse raw))))
+  (JSON:parse raw)))
 ```
 
 **Critical rule**: Promise-based functions must never throw synchronous
@@ -617,11 +619,13 @@ public API entry points. Inside validated boundaries, trust the data.
 
 ```lykn
 ;; Good — func contracts validate at the boundary
-(export (func create-user
+(exports create-user)
+
+(func create-user
   :args (:string name :string email)
   :returns :object
   :pre (and (> name:length 0) (email:includes "@"))
-  :body (obj :id (generate-id) :name name :email email)))
+  :body (obj :id (generate-id) :name name :email email))
 
 ;; Internal functions trust validated data — no redundant checks
 (func format-user-line :args (:string name) :returns :string :body

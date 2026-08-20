@@ -171,6 +171,7 @@ Note: document paths are relative to the lykn project root.
 
 - **`bind` for all values** — immutable by default. No `const`/`let`/`var` in surface syntax. **MUST**
 - **Type annotation on `bind`** (DD-24): `(bind :number result (compute))`. Non-literal initializers get runtime type checks (same checks as `func`/`fn`). Literal initializers are verified at compile time (no runtime check). Type-incompatible literals are compile errors. Stripped by `--strip-assertions`. **SHOULD**
+- **Grouped `bind` for related local values** (D-2608-LBND): one `(bind ...)` may contain several sequential name/value pairs. Later initializers can reference earlier names. Typed pairs use `:type name value` inside the group. **SHOULD**
 - **`cell` for controlled mutation**: `(bind counter (cell 0))`. **MUST** use `cell` when mutation is needed — never reach for kernel `let`.
 - **`swap!` to update**: `(swap! counter (fn (:number n) (+ n 1)))`. The `!` suffix signals mutation. **MUST**
 - **`reset!` to replace**: `(reset! counter 0)`. **MUST**
@@ -185,6 +186,12 @@ Note: document paths are relative to the lykn project root.
 
 ;; Type annotation — runtime check on non-literal (DD-24)
 (bind :number result (compute-something))
+
+;; Related local values — sequential, earlier names visible later
+(bind
+  email record:email
+  role (?? record:role "user")
+  label (role-label role))
 
 ;; Mutation via cell
 (bind counter (cell 0))
@@ -306,6 +313,7 @@ counter.value = 0;
 - **`type` for algebraic data types**: tagged objects with named fields, constructor validation. **SHOULD**
 - **`match` for exhaustive pattern matching**: compiler verifies all constructors covered. **MUST** include all variants or a wildcard `_`.
 - **`match` is an expression**: returns a value. **SHOULD** use as expression rather than statement when possible.
+- **`cond` for ordered predicate/result decisions** (D-2608-COND): use `:else` in value position. **SHOULD** for three or more non-structural branches.
 - **`if-let` / `when-let`**: conditional binding — test a pattern and bind in one step. **SHOULD**
 - **Constructor patterns**: `(Some v)` matches `{ tag: "Some", value: v }`. **MUST** use constructor syntax in patterns, not raw object checks.
 
@@ -329,6 +337,12 @@ counter.value = 0;
 (if-let ((Some user) (find-user id))
   (greet user)
   "not found")
+
+(bind label
+  (cond
+    ((= role "admin") "Administrator")
+    ((= role "editor") "Editor")
+    (:else "User")))
 
 ;; when-let (no else branch)
 (when-let ((Some user) (find-user id))
@@ -417,7 +431,9 @@ const updated = {...user, age: 31};
 ## Modules
 
 - **ESM only**: `import`/`export` forms. No `require()`, no CommonJS. **MUST**
-- **Named exports**: `(export (func ...))` or `(export (bind ...))`. **MUST**
+- **Named module exports** (D-2608-XPRT): prefer top-level `(exports name1 name2 ...)` after or before declarations. Names must be top-level runtime bindings. **MUST**
+- **Inline export compatibility**: `(export (func ...))`, `(export (bind ...))`, and `(export (type ...))` remain accepted for 0.6.0 compatibility, but do not use them as the default teaching style. **CONSIDER**
+- **`mod.lykn` as barrel**: use `mod.lykn` for package/API re-exports from sibling modules; use `(exports ...)` to expose names defined in the current module. **SHOULD**
 - **Import with binding list**: `(import "./module.js" (name1 name2))`. **MUST** — path first, then bindings.
 - **`alias` for rename**: `(import "./module.js" ((alias original renamed)))`. **SHOULD**
 - **File extensions required** on local imports. **MUST**
@@ -428,14 +444,18 @@ const updated = {...user, age: 31};
 (import "@std/path" (join))
 (import "./auth/mod.js" (login logout))
 
-;; Export
-(export (func greet
+;; Module-level exports
+(exports greet VERSION)
+
+(func greet
   :args (:string name)
   :returns :string
-  :body (template "Hello, " name)))
+  :body (template "Hello, " name))
 
-;; Export a binding
-(export (bind VERSION "0.4.0"))
+(bind VERSION "0.6.0")
+
+;; Barrel re-export in mod.lykn
+(export "./auth/session.js" (names login logout))
 ```
 
 ---
@@ -477,13 +497,15 @@ const updated = {...user, age: 31};
 
 ```lykn
 ;; Async function
-(export (async (func fetch-data
+(exports fetch-data)
+
+(async (func fetch-data
   :args (:string url)
   :returns :promise
   :body (bind response (await (fetch url)))
         (if (not response:ok)
           (throw (new Error (template "HTTP " response:status)))
-          (await (response:json))))))
+          (await (response:json)))))
 
 ;; Parallel operations
 (bind #a(users posts)
@@ -726,8 +748,8 @@ When mixing, surface forms can contain kernel forms freely. The compiler handles
 
 1. **Load**: `docs/guides/09-anti-patterns.md`, `docs/guides/01-core-idioms.md`, `docs/guides/07-async-concurrency.md`
 2. **Apply**:
-   - `(bind cache (new Map))` for the cache
-   - `(export (async (func fetch-cached ...)))` with `:string url` param, typed
+	   - `(bind cache (new Map))` for the cache
+	   - `(exports fetch-cached)` plus `(async (func fetch-cached ...))` with `:string url` param, typed
    - Contract: `:pre ((not (js:eq url null)) "url is required")`
    - `(if-let ((Some cached) (find-in-cache url)) cached (do-fetch url))` pattern
    - `(await ...)` for async, `AbortSignal` via options parameter
@@ -747,7 +769,7 @@ When mixing, surface forms can contain kernel forms freely. The compiler handles
 2. **Apply**:
    - JS `function createServer({ port = 8080, host = "localhost" } = {})` → lykn `(func create-server :args (:object opts) :body ...)` with `(bind :number port (?? opts:port 8080))`
    - Or use kernel destructuring for the options object
-   - Named exports: `(export (func create-server ...))`
+	   - Named exports: `(exports create-server)` plus `(func create-server ...)`
    - Type annotations on all parameters
 
 ### Task: "Refactor imperative JS with mutable state to lykn"

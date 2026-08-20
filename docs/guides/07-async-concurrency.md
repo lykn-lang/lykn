@@ -176,8 +176,10 @@ in an async function.
 
 ```lykn
 ;; Good — top-level await for module initialization
+(exports db)
+
 (bind config (JSON:parse (await (Deno:readTextFile "./config.json"))))
-(export (bind db (await (connect-to-database config:db-url))))
+(bind db (await (connect-to-database config:db-url)))
 ```
 
 ---

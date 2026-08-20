@@ -112,6 +112,16 @@ pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> 
                 .join("\n"),
         ));
     }
+    let exports_errs = lykn_lang::classifier::validate_exports_declarations(&forms);
+    if !exports_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            exports_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
     classifier::classify_with_options(&forms, classifier_options_for(Some(file_path))).map_err(
         |diags| {
             CompileError::Analysis(
@@ -238,6 +248,16 @@ fn compile_source_inner(
                 .join("\n"),
         ));
     }
+    let exports_errs = lykn_lang::classifier::validate_exports_declarations(&forms);
+    if !exports_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            exports_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
 
     // 3. Classify into surface forms (DD-58 strict for `.lykn`, exempt `.lyk`)
     let classified = classifier::classify_with_options(&forms, classify_opts).map_err(|diags| {
@@ -313,6 +333,16 @@ pub fn compile_source_with_dts(
     if !no_else_if_errs.is_empty() {
         return Err(CompileError::Analysis(
             no_else_if_errs
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        ));
+    }
+    let exports_errs = lykn_lang::classifier::validate_exports_declarations(&forms);
+    if !exports_errs.is_empty() {
+        return Err(CompileError::Analysis(
+            exports_errs
                 .iter()
                 .map(|d| format!("{d}"))
                 .collect::<Vec<_>>()
@@ -716,6 +746,97 @@ mod tests {
         assert!(
             result.contains("const label = 1 > 0 ? \"items\" : \"none\";"),
             "both-branch if in expression position should compile to ternary: {result}"
+        );
+    }
+
+    #[test]
+    fn compile_source_exports_declaration() {
+        let path = Path::new("surface.lykn");
+        let source = r#"
+(func valid-record? :args (:any record) :body (!= record null))
+(func normalize-role :args (:string role) :body role)
+(exports valid-record? normalize-role)
+"#;
+        let result = compile_source(source, Some(path), false, false).unwrap();
+        assert!(
+            result.contains("export {isValidRecord, normalizeRole};"),
+            "exports declaration should emit named JS export list: {result}"
+        );
+    }
+
+    #[test]
+    fn compile_source_rejects_missing_exports_name() {
+        let path = Path::new("surface.lykn");
+        let result = compile_source("(exports missing)", Some(path), false, false);
+        assert!(result.is_err(), "unknown export name must reject");
+        let msg = result.unwrap_err().to_string();
+        assert!(
+            msg.contains("exports references unknown top-level binding 'missing'"),
+            "expected missing export diagnostic, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn compile_source_rejects_duplicate_exports_name() {
+        let path = Path::new("surface.lykn");
+        let result = compile_source(
+            "(func normalize :args (:any record) :body record)\n(exports normalize normalize)",
+            Some(path),
+            false,
+            false,
+        );
+        assert!(result.is_err(), "duplicate export name must reject");
+        let msg = result.unwrap_err().to_string();
+        assert!(
+            msg.contains("exports lists 'normalize' more than once"),
+            "expected duplicate export diagnostic, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn compile_source_grouped_bind_keeps_sequential_visibility() {
+        let path = Path::new("surface.lykn");
+        let source = r#"
+(func normalize :args (:any record) :body
+  (bind
+    email record:email
+    role email)
+  role)
+"#;
+        let result = compile_source(source, Some(path), false, false).unwrap();
+        assert!(result.contains("const email = record.email;"), "{result}");
+        assert!(result.contains("const role = email;"), "{result}");
+        assert!(result.contains("return role;"), "{result}");
+    }
+
+    #[test]
+    fn compile_source_cond_expression() {
+        let path = Path::new("surface.lykn");
+        let source = r#"
+(func role-label :args (:string role) :body
+  (cond
+    ((= role "admin") "Admin")
+    (:else "User")))
+"#;
+        let result = compile_source(source, Some(path), false, false).unwrap();
+        assert!(result.contains("if (role === \"admin\")"), "{result}");
+        assert!(result.contains("return \"Admin\";"), "{result}");
+        assert!(result.contains("return \"User\";"), "{result}");
+    }
+
+    #[test]
+    fn compile_source_rejects_cond_expression_without_else() {
+        let path = Path::new("surface.lykn");
+        let source = "(bind label (cond ((= role \"admin\") \"Admin\")))";
+        let result = compile_source(source, Some(path), false, false);
+        assert!(
+            result.is_err(),
+            "cond in bind value without :else must reject"
+        );
+        let msg = result.unwrap_err().to_string();
+        assert!(
+            msg.contains("cond in expression position requires an :else clause"),
+            "expected cond expression diagnostic, got: {msg}"
         );
     }
 

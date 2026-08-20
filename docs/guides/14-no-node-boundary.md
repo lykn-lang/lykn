@@ -35,8 +35,10 @@ compiles exclusively to ESM.
 
 ```lykn
 ;; Good — ESM export
-(export (func parse :args (:string input) :returns :any :body (JSON:parse input)))
-(export (func stringify :args (:any data) :returns :string :body (JSON:stringify data)))
+(exports parse stringify)
+
+(func parse :args (:string input) :returns :any :body (JSON:parse input))
+(func stringify :args (:any data) :returns :string :body (JSON:stringify data))
 ```
 
 ---

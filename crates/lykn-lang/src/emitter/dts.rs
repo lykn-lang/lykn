@@ -4,6 +4,8 @@
 //! :type annotations. The .d.ts is auxiliary type information for TypeScript
 //! consumers; the .js remains the canonical compiled output.
 
+use std::collections::HashSet;
+
 use crate::analysis::type_registry::TypeRegistry;
 use crate::ast::surface::{
     ArrayParamElement, Constructor, DestructuredField, FuncClause, ParamShape, SurfaceForm,
@@ -203,9 +205,11 @@ pub fn emit_dts_module(
 ) -> (String, Vec<Diagnostic>) {
     let mut out = String::new();
     let mut warnings = Vec::new();
+    let named_exports = named_export_set(forms);
 
     for form in forms {
         match form {
+            SurfaceForm::Exports { .. } => {}
             SurfaceForm::Export { inner, .. } => match inner.as_ref() {
                 SurfaceForm::Func { name, clauses, .. } => {
                     out.push_str(&emit_func_dts(
@@ -241,16 +245,74 @@ pub fn emit_dts_module(
                 }
                 _ => {}
             },
+            SurfaceForm::Func { name, clauses, .. } if named_exports.contains(name) => {
+                out.push_str(&emit_func_dts(
+                    name,
+                    clauses,
+                    true,
+                    registry,
+                    file_path,
+                    &mut warnings,
+                ));
+            }
+            SurfaceForm::Bind {
+                name,
+                type_ann,
+                value,
+                ..
+            } => {
+                if let Some(n) = name.as_atom()
+                    && named_exports.contains(n)
+                {
+                    if let Some(ann) = type_ann {
+                        out.push_str(&emit_bind_dts(n, ann, true, registry));
+                    } else {
+                        out.push_str(&emit_bind_inferred_dts(n, value, true));
+                    }
+                }
+            }
+            SurfaceForm::BindGroup { bindings, .. } => {
+                for binding in bindings {
+                    if let Some(n) = binding.name.as_atom()
+                        && named_exports.contains(n)
+                    {
+                        if let Some(ann) = &binding.type_ann {
+                            out.push_str(&emit_bind_dts(n, ann, true, registry));
+                        } else {
+                            out.push_str(&emit_bind_inferred_dts(n, &binding.value, true));
+                        }
+                    }
+                }
+            }
             SurfaceForm::Type {
                 name, constructors, ..
             } => {
                 out.push_str(&emit_type_dts(name, constructors, false, registry));
+                for c in constructors {
+                    if named_exports.contains(&c.name) {
+                        out.push_str(&emit_constructor_fn_dts(name, c, true, registry));
+                    }
+                }
             }
             _ => {}
         }
     }
 
     (out, warnings)
+}
+
+fn named_export_set(forms: &[SurfaceForm]) -> HashSet<String> {
+    let mut out = HashSet::new();
+    for form in forms {
+        if let SurfaceForm::Exports { names, .. } = form {
+            out.extend(
+                names
+                    .iter()
+                    .filter_map(|name| name.as_atom().map(str::to_string)),
+            );
+        }
+    }
+    out
 }
 
 fn infer_literal_ts_type(expr: &crate::ast::sexpr::SExpr) -> &'static str {

@@ -199,6 +199,48 @@ fn expand_children_scoped(
             }
             Ok(out)
         }
+        crate::resolver::ScopePlan::GroupedBind { slots } => {
+            let mark = scope.len();
+            let mut out = Vec::with_capacity(values.len());
+            let mut next_index = 0;
+            for slot in slots {
+                while next_index < slot.name_index {
+                    if let Some(e) = expand_expr(values[next_index].clone(), deno, env, scope)? {
+                        out.push(e);
+                    }
+                    next_index += 1;
+                }
+                if let Some(e) = expand_expr(values[slot.name_index].clone(), deno, env, scope)? {
+                    out.push(e);
+                }
+                next_index = slot.name_index + 1;
+
+                while next_index < slot.value_index {
+                    if let Some(e) = expand_expr(values[next_index].clone(), deno, env, scope)? {
+                        out.push(e);
+                    }
+                    next_index += 1;
+                }
+                if let Some(e) = expand_expr(values[slot.value_index].clone(), deno, env, scope)? {
+                    out.push(e);
+                }
+                next_index = slot.value_index + 1;
+
+                let names = crate::binding::binding_names_in_pattern(
+                    &values[slot.name_index],
+                    crate::binding::BindingKind::Bind,
+                );
+                scope.extend(names.into_iter().map(|site| site.name));
+            }
+            while next_index < values.len() {
+                if let Some(e) = expand_expr(values[next_index].clone(), deno, env, scope)? {
+                    out.push(e);
+                }
+                next_index += 1;
+            }
+            scope.truncate(mark);
+            Ok(out)
+        }
     }
 }
 

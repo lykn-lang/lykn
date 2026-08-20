@@ -516,8 +516,10 @@ are collected when the key is GC'd.
 
 ```lykn
 ;; Good — individually tree-shakeable
-(export (func format-date :args (:any d) :returns :string :body (d:toISOString)))
-(export (func parse-date :args (:string s) :returns :any :body (new Date s)))
+(exports format-date parse-date)
+
+(func format-date :args (:any d) :returns :string :body (d:toISOString))
+(func parse-date :args (:string s) :returns :any :body (new Date s))
 ```
 
 **See also**: `01-core-idioms.md` ID-07, `02-api-design.md` ID-07

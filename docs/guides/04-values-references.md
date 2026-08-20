@@ -293,9 +293,11 @@ or copy at the boundary.
 
 ```lykn
 ;; Good — input defense: use non-destructive sort
-(export (func process-items :args (:array items) :returns :array :body
+(exports process-items)
+
+(func process-items :args (:array items) :returns :array :body
   (bind local (items:toSorted (fn (:any a :any b) (- a:priority b:priority))))
-  (local:map transform)))
+  (local:map transform))
 
 ;; Good — output defense via assoc (new object each time)
 ;; Or use Object:freeze for constant data

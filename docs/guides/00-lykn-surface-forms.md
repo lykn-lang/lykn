@@ -100,6 +100,27 @@ Runtime checks can be stripped with `--strip-assertions`.
 
 `bind` always produces `const`. For mutable state, use `cell`.
 
+Grouped `bind` keeps related local bindings together:
+
+```lykn
+(bind
+  email record:email
+  role (?? record:role "user")
+  label (role-label role))
+```
+
+Grouped bindings are sequential. Each initializer can reference names from
+earlier pairs in the same `bind`, and duplicate names in the same group are
+compile errors. Typed pairs are supported inside the group:
+
+```lykn
+(bind
+  :string email record:email
+  :string role (?? record:role "user"))
+```
+
+The binding position may still use destructuring patterns for untyped pairs.
+
 ### cell / express / swap! / reset! (surface)
 
 Controlled mutation via cell containers. A cell wraps a value in an
@@ -369,8 +390,8 @@ Zero-arg shorthand (no `:args`):
     (let temp a) (= a b) (= b (+ temp b))))
 ```
 
-Async generators: `(async (genfunc ...))` or
-`(export (async (genfunc ...)))`.
+Async generators: `(async (genfunc ...))`. Export a named async generator
+with `(exports name)` at module top level.
 
 ### genfn (surface) — anonymous typed generator
 
@@ -714,7 +735,7 @@ HELLO WORLD
 
 ---
 
-## Modules (kernel)
+## Modules
 
 ### import
 
@@ -730,8 +751,38 @@ Default import:
 
 ### export
 
+Module-level named exports use `(exports name1 name2 ...)`:
+
 ```lykn
-(export (const VERSION "1.0"))
+(exports greet VERSION)
+
+(func greet
+  :args (:string name)
+  :returns :string
+  :body (template "Hello, " name))
+
+(bind VERSION "0.6.0")
+```
+
+`exports` is a top-level declaration for names defined in the current
+module. Names must resolve to top-level runtime bindings such as `func`,
+`bind`, imported locals, class names, or type constructor values. Duplicate
+or missing names are compile errors.
+
+Inline export wrappers remain accepted for 0.6.0 compatibility:
+
+```lykn
+(export (func legacy-greet
+  :args (:string name)
+  :returns :string
+  :body (template "Hello, " name)))
+```
+
+Prefer `(exports ...)` for new module code. Use `mod.lykn` as a package
+entrypoint/barrel module with selective re-exports from sibling modules:
+
+```lykn
+(export "./auth/session.js" (names login logout))
 ```
 
 Default export:
@@ -812,6 +863,34 @@ For LLM-generated code, treat this preference as a hard rule
 statement position). LLMs flatten soft style preferences toward
 uniform compliance, so explicit phrasing makes the convention
 reliable in generated output.
+
+### cond (surface) — ordered predicate/result clauses
+
+Use `cond` for a sequence of predicate/result clauses:
+
+```lykn
+(cond
+  ((= role "admin") "Administrator")
+  ((= role "editor") "Editor")
+  (:else "User"))
+```
+
+Clauses are checked in order. Each clause is a two-item list of predicate
+and result; `:else` is the default branch and must be the final clause.
+In expression position, `cond` requires `:else` so the emitted JavaScript
+always returns a value:
+
+```lykn
+(bind label
+  (cond
+    ((= status "ok") "Ready")
+    (:else "Blocked")))
+```
+
+A statement-position `cond` may omit `:else`; if no predicate matches,
+no branch runs and the statement produces no value. Use `?` for compact
+binary expression choices, `if` for one-off statement branches, `cond`
+for ordered predicate chains, and `match` for structural or ADT dispatch.
 
 ### for-of / while / for / do-while
 

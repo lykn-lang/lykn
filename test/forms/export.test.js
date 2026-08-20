@@ -1,6 +1,7 @@
 import { assertEquals, assertThrows } from "https://deno.land/std/assert/mod.ts";
 import { read } from "lang/reader.js";
 import { compile } from "lang/compiler.js";
+import { lykn as surfaceLykn } from "../../packages/lang/mod.js";
 
 function lykn(source) {
   return compile(read(source)).trim();
@@ -38,4 +39,12 @@ Deno.test("export: re-export from module", () => {
 
 Deno.test("export: no args throws", () => {
   assertThrows(() => lykn("(export)"));
+});
+
+Deno.test("exports: surface declaration lowers to named ESM export", () => {
+  const result = surfaceLykn(`
+    (exports greet)
+    (func greet :args (:string name) :body (template "Hi " name))
+  `);
+  assertEquals(result.includes("export {greet};"), true);
 });

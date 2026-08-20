@@ -288,10 +288,12 @@ explaining what the module does.
 ;; Password hashing and verification using bcrypt.
 ;; All functions are async because bcrypt is CPU-intensive.
 
-(export (async (func hash-password
+(exports hash-password)
+
+(async (func hash-password
   :args (:string password)
   :returns :string
-  :body (bcrypt:hash password))))
+  :body (bcrypt:hash password)))
 ```
 
 ---
@@ -445,12 +447,14 @@ Implementation details belong in inline comments inside the body.
 ```lykn
 ;; Good — contract only
 ;; Hash a password using bcrypt with a random salt.
-(export (func hash-password
+(exports hash-password)
+
+(func hash-password
   :args (:string password)
   :returns :string
   :body
   ;; Using 12 rounds as recommended by OWASP.
-  (bcrypt:hash password (obj :rounds 12))))
+  (bcrypt:hash password (obj :rounds 12)))
 ```
 
 ---

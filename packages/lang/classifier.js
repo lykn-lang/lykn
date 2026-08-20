@@ -7,10 +7,13 @@ import {
   And,
   Assoc,
   Bind,
+  BindGroup,
   Cell,
+  Cond,
   Conj,
   Dissoc,
   Eq,
+  Exports,
   Express,
   Fn,
   Func,
@@ -259,7 +262,20 @@ export function classifySurfaceForm(head, args) {
           "bind requires at least 2 arguments: (bind name value)",
         );
       }
-      return Bind(args);
+      if (args.length === 2) return Bind(args);
+      if (args.length === 3) {
+        if (args[0].type !== "keyword") {
+          throw new Error(
+            "bind requires 2 arguments, 3 typed arguments, or grouped name/value pairs",
+          );
+        }
+        return Bind(args);
+      }
+      return BindGroup(parseBindGroup(args));
+    case "exports":
+      return Exports(parseExports(args));
+    case "cond":
+      return Cond(parseCond(args));
     case "=":
       if (args.length < 2) {
         throw new Error("= requires at least 2 arguments: (= a b)");
@@ -324,6 +340,159 @@ function isKw(x) {
 }
 function isArr(x) {
   return x && x.type === "list" && Array.isArray(x.values);
+}
+
+function namesInPattern(pat) {
+  if (pat?.type === "atom") return pat.value === "_" ? [] : [pat.value];
+  if (!isArr(pat)) return [];
+  const h = pat.values[0]?.type === "atom" ? pat.values[0].value : "";
+  if (h !== "array" && h !== "object") return [];
+  const out = [];
+  for (const el of pat.values.slice(1)) {
+    if (el.type === "keyword") continue;
+    if (el.type === "atom") {
+      if (el.value !== "_") out.push(el.value);
+    } else if (isArr(el)) {
+      const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
+      if (ih === "rest" && el.values[1]) out.push(...namesInPattern(el.values[1]));
+      else if (ih === "default" && el.values[2]) out.push(...namesInPattern(el.values[2]));
+      else if (ih === "array" || ih === "object") out.push(...namesInPattern(el));
+    }
+  }
+  return out;
+}
+
+function parseBindGroup(args) {
+  const bindings = [];
+  const seen = new Set();
+  let i = 0;
+  while (i < args.length) {
+    let typeKw = null;
+    let nameNode;
+    let valueNode;
+    if (args[i]?.type === "keyword") {
+      if (i + 2 >= args.length) {
+        throw new Error(
+          "bind grouped typed pair requires (:type name value)",
+        );
+      }
+      typeKw = args[i];
+      nameNode = args[i + 1];
+      valueNode = args[i + 2];
+      if (nameNode.type !== "atom") {
+        throw new Error("bind typed grouped pair name must be an atom");
+      }
+      i += 3;
+    } else {
+      if (i + 1 >= args.length) {
+        throw new Error("bind grouped form has an incomplete name/value pair");
+      }
+      nameNode = args[i];
+      valueNode = args[i + 1];
+      i += 2;
+    }
+    for (const name of namesInPattern(nameNode)) {
+      if (seen.has(name)) {
+        throw new Error(`bind group declares '${name}' more than once`);
+      }
+      seen.add(name);
+    }
+    bindings.push({ typeKw, nameNode, valueNode });
+  }
+  return bindings;
+}
+
+function parseExports(args) {
+  if (args.length === 0) {
+    throw new Error("exports requires at least one name");
+  }
+  const seen = new Set();
+  for (const arg of args) {
+    if (arg.type !== "atom") {
+      throw new Error("exports expects atom names: (exports name ...)");
+    }
+    if (arg.value === "_") {
+      throw new Error("exports cannot export the wildcard name '_'");
+    }
+    if (seen.has(arg.value)) {
+      throw new Error(`exports lists '${arg.value}' more than once`);
+    }
+    seen.add(arg.value);
+  }
+  return args;
+}
+
+function parseCond(args) {
+  if (args.length === 0) {
+    throw new Error("cond requires at least one clause");
+  }
+  const clauses = [];
+  let sawElse = false;
+  for (let i = 0; i < args.length; i++) {
+    const clause = args[i];
+    if (!isArr(clause) || clause.values.length !== 2) {
+      throw new Error("cond clauses must be two-item lists: (test result)");
+    }
+    const [test, result] = clause.values;
+    if (test.type === "keyword") {
+      if (test.value !== "else") {
+        throw new Error(`cond: unknown keyword clause :${test.value}`);
+      }
+      if (sawElse) throw new Error("cond may only have one :else clause");
+      if (i !== args.length - 1) {
+        throw new Error("cond :else clause must be last");
+      }
+      sawElse = true;
+      clauses.push({ test: null, result });
+    } else {
+      clauses.push({ test, result });
+    }
+  }
+  return clauses;
+}
+
+function emitBindKernelArgs(a, h) {
+  const { sym, array } = h;
+  if (a[0].type === "keyword") {
+    if (a.length !== 3) {
+      throw new Error("bind with type annotation requires 3 arguments");
+    }
+    const typeKw = a[0], nameNode = a[1], valueNode = a[2];
+    const constDecl = array(sym("const"), nameNode, valueNode);
+    if (typeKw.value === "any") return constDecl;
+    const literalType = getLiteralType(valueNode);
+    if (literalType !== null) {
+      if (!typeMatchesLiteral(typeKw.value, literalType)) {
+        throw new Error(
+          `bind '${nameNode.value}': type annotation is :${typeKw.value} but initializer is a ${literalType} literal.`,
+        );
+      }
+      return constDecl;
+    }
+    const check = buildTypeCheck(nameNode, typeKw, "bind", "");
+    return check === null ? constDecl : array(sym("block"), constDecl, check);
+  }
+  if (a.length !== 2) {
+    throw new Error("bind requires exactly name/value or :type name/value arguments");
+  }
+  return array(sym("const"), a[0], a[1]);
+}
+
+function emitCondChain(clauses, h) {
+  const { sym, array } = h;
+  let i = clauses.length - 1;
+  let chain = null;
+  if (clauses[i]?.test === null) {
+    chain = clauses[i].result;
+    i--;
+  }
+  for (; i >= 0; i--) {
+    const clause = clauses[i];
+    chain = chain === null
+      ? array(sym("if"), clause.test, clause.result)
+      : array(sym("if"), clause.test, clause.result, chain);
+  }
+  return chain ?? sym("undefined");
 }
 
 export function emitSurfaceForm(node, h) {
@@ -545,30 +714,19 @@ export function emitSurfaceForm(node, h) {
     case "Cell":
       return array(sym("object"), array(sym("value"), node.value));
     case "Bind": {
-      const a = node.args;
-      if (a[0].type === "keyword") {
-        if (a.length < 3) {
-          throw new Error("bind with type annotation requires 3 arguments");
-        }
-        const typeKw = a[0], nameNode = a[1], valueNode = a[2];
-        const constDecl = array(sym("const"), nameNode, valueNode);
-        if (typeKw.value === "any") return constDecl;
-        const literalType = getLiteralType(valueNode);
-        if (literalType !== null) {
-          if (!typeMatchesLiteral(typeKw.value, literalType)) {
-            throw new Error(
-              `bind '${nameNode.value}': type annotation is :${typeKw.value} but initializer is a ${literalType} literal.`,
-            );
-          }
-          return constDecl;
-        }
-        const check = buildTypeCheck(nameNode, typeKw, "bind", "");
-        return check === null
-          ? constDecl
-          : array(sym("block"), constDecl, check);
-      }
-      return array(sym("const"), a[0], a[1]);
+      return emitBindKernelArgs(node.args, h);
     }
+    case "BindGroup":
+      return node.bindings.map((binding) => {
+        const args = binding.typeKw
+          ? [binding.typeKw, binding.nameNode, binding.valueNode]
+          : [binding.nameNode, binding.valueNode];
+        return emitBindKernelArgs(args, h);
+      });
+    case "Exports":
+      return array(sym("export"), array(sym("names"), ...node.names));
+    case "Cond":
+      return emitCondChain(node.clauses, h);
     case "Eq": {
       if (node.args.length === 2) {
         return array(sym("==="), node.args[0], node.args[1]);

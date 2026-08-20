@@ -5,6 +5,8 @@ pub fn is_surface_form(name: &str) -> bool {
             | "genfunc"
             | "genfn"
             | "bind"
+            | "exports"
+            | "cond"
             | "match"
             | "type"
             | "obj"
@@ -45,6 +47,8 @@ pub fn is_surface_form_strict(name: &str) -> bool {
         name,
         // ── Flavor (a) — Rich, surface-unique ──
         "bind"
+            | "exports"
+            | "cond"
             | "func"
             | "genfunc"
             | "genfn"

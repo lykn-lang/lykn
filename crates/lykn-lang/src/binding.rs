@@ -216,13 +216,39 @@ pub fn bindings_introduced(form: &SExpr) -> Vec<BindingSite> {
 /// `(bind name value)` / `(bind :type name value)` — the name slot is an atom or
 /// a destructuring pattern.
 fn bind_names(args: &[SExpr]) -> Vec<BindingSite> {
-    let name_slot = match args.len() {
-        2 => &args[0],
-        3 => &args[1], // (bind :type name value)
-        _ => return Vec::new(),
-    };
     let mut out = Vec::new();
-    pattern_names(name_slot, BindingKind::Bind, &mut out);
+    match args.len() {
+        2 => pattern_names(&args[0], BindingKind::Bind, &mut out),
+        3 => pattern_names(&args[1], BindingKind::Bind, &mut out),
+        len if len >= 4 => {
+            let mut i = 0;
+            while i < args.len() {
+                let (name_index, next) = if matches!(args.get(i), Some(SExpr::Keyword { .. })) {
+                    if i + 2 >= args.len() {
+                        return out;
+                    }
+                    (i + 1, i + 3)
+                } else {
+                    if i + 1 >= args.len() {
+                        return out;
+                    }
+                    (i, i + 2)
+                };
+                pattern_names(&args[name_index], BindingKind::Bind, &mut out);
+                i = next;
+            }
+        }
+        _ => {}
+    }
+    out
+}
+
+/// Return every name bound by a single binding pattern. This is the public
+/// helper for consumers that need grouped-bind duplicate checks or scoped
+/// per-pair visibility without re-deriving destructuring grammar.
+pub(crate) fn binding_names_in_pattern(pat: &SExpr, kind: BindingKind) -> Vec<BindingSite> {
+    let mut out = Vec::new();
+    pattern_names(pat, kind, &mut out);
     out
 }
 
@@ -599,6 +625,15 @@ mod tests {
         assert_eq!(
             sites("(bind :number x 1)"),
             vec![("x".into(), BindingKind::Bind)]
+        );
+    }
+
+    #[test]
+    fn bind_group() {
+        assert_eq!(names("(bind a 1 b a)"), vec!["a", "b"]);
+        assert_eq!(
+            names("(bind :string email raw role \"user\")"),
+            vec!["email", "role"]
         );
     }
 

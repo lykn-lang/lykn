@@ -98,13 +98,28 @@ export function bindingsIntroduced(form) {
   }
 }
 
-/** (bind name value) / (bind :type name value). */
+/** (bind name value) / (bind :type name value) / grouped bind pairs. */
 function bindNames(args) {
-  let slot;
-  if (args.length === 2) slot = args[0];
-  else if (args.length === 3) slot = args[1];
-  else return [];
-  return patternNames(slot, "bind");
+  const out = [];
+  if (args.length === 2) return patternNames(args[0], "bind");
+  if (args.length === 3) return patternNames(args[1], "bind");
+  if (args.length < 4) return [];
+
+  let i = 0;
+  while (i < args.length) {
+    let slot;
+    if (args[i]?.type === "keyword") {
+      if (i + 2 >= args.length) return out;
+      slot = args[i + 1];
+      i += 3;
+    } else {
+      if (i + 1 >= args.length) return out;
+      slot = args[i];
+      i += 2;
+    }
+    out.push(...patternNames(slot, "bind"));
+  }
+  return out;
 }
 
 const FUNC_CLAUSE_KEYS = new Set([
@@ -304,6 +319,10 @@ function matchPatternNames(pat) {
 }
 
 /** Leaf names bound by a pattern: an atom or an (array …)/(object …) form. */
+export function bindingNamesInPattern(pat, kind = "bind") {
+  return patternNames(pat, kind);
+}
+
 function patternNames(pat, kind) {
   if (pat?.type === "atom") {
     return pat.value === "_" ? [] : [{ name: pat.value, kind, node: pat }];

@@ -207,6 +207,21 @@ pub struct MatchClause {
 }
 
 #[derive(Debug, Clone, PartialEq)]
+pub struct BindBinding {
+    pub name: SExpr,
+    pub type_ann: Option<TypeAnnotation>,
+    pub value: SExpr,
+    pub span: Span,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct CondClause {
+    pub test: Option<SExpr>,
+    pub result: SExpr,
+    pub span: Span,
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub enum ThreadingStep {
     Bare(SExpr),
     Call(Vec<SExpr>),
@@ -246,6 +261,10 @@ pub enum SurfaceForm {
         value: SExpr,
         span: Span,
     },
+    BindGroup {
+        bindings: Vec<BindBinding>,
+        span: Span,
+    },
     Func {
         name: String,
         name_span: Span,
@@ -255,6 +274,10 @@ pub enum SurfaceForm {
     Match {
         target: SExpr,
         clauses: Vec<MatchClause>,
+        span: Span,
+    },
+    Cond {
+        clauses: Vec<CondClause>,
         span: Span,
     },
     Type {
@@ -412,6 +435,10 @@ pub enum SurfaceForm {
         /// Remaining raw args after the inner form (e.g., nothing for
         /// `(export (func ...))`, but could be present for other export patterns)
         extra_args: Vec<SExpr>,
+        span: Span,
+    },
+    Exports {
+        names: Vec<SExpr>,
         span: Span,
     },
     Class {

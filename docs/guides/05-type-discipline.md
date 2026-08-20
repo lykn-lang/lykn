@@ -701,11 +701,13 @@ enforce element type and are faster.
 
 ```lykn
 ;; Good — boundary validation via func
-(export (func connect
+(exports connect)
+
+(func connect
   :args (:string host :number port)
   :returns :object
   :pre (and (> host:length 0) (>= port 0) (<= port 65535))
-  :body (create-connection host port)))
+  :body (create-connection host port))
 
 ;; Internal functions trust the types — no redundant checks
 (func format-address :args (:string host :number port) :returns :string

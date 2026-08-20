@@ -1,7 +1,8 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::*;
+use crate::binding::{BindingKind, binding_names_in_pattern, bindings_introduced};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 
@@ -162,6 +163,158 @@ pub fn validate_no_else_if_expressions(forms: &[SExpr]) -> Vec<Diagnostic> {
     out
 }
 
+/// Validate the top-level `(exports name ...)` surface declaration before
+/// emission lowers it to the existing kernel `(export (names ...))` shape.
+///
+/// `exports` is intentionally a module-level declaration: it names runtime
+/// bindings already declared somewhere in the module, without changing where
+/// those bindings are defined. Inline `(export (bind ...))` remains accepted as
+/// compatibility syntax and is validated by its existing classifier path.
+pub fn validate_exports_declarations(forms: &[SExpr]) -> Vec<Diagnostic> {
+    let mut out = Vec::new();
+    let declared = top_level_exportable_names(forms);
+    let mut exported = HashMap::new();
+
+    for form in forms {
+        validate_exports_form(form, true, &declared, &mut exported, &mut out);
+    }
+    out
+}
+
+fn top_level_exportable_names(forms: &[SExpr]) -> HashSet<String> {
+    let mut names = HashSet::new();
+    for form in forms {
+        for site in top_level_binding_sites(form) {
+            if site.kind.shadows_values()
+                && matches!(site.kind, BindingKind::Bind | BindingKind::ImportLocal)
+                && site.name != "_"
+            {
+                names.insert(site.name);
+            }
+        }
+    }
+    names
+}
+
+fn top_level_binding_sites(form: &SExpr) -> Vec<crate::binding::BindingSite> {
+    let mut sites = bindings_introduced(form);
+    if let SExpr::List { values, .. } = form
+        && values.first().and_then(|e| e.as_form_head()) == Some("export")
+        && let Some(inner) = values.get(1)
+    {
+        sites.extend(bindings_introduced(inner));
+    }
+    sites
+}
+
+fn validate_exports_form(
+    expr: &SExpr,
+    at_top_level: bool,
+    declared: &HashSet<String>,
+    exported: &mut HashMap<String, Span>,
+    out: &mut Vec<Diagnostic>,
+) {
+    match expr {
+        SExpr::List { values, span } if !values.is_empty() => {
+            if values.first().and_then(|e| e.as_form_head()) == Some("exports") {
+                if !at_top_level {
+                    out.push(Diagnostic {
+                        severity: Severity::Error,
+                        message: "exports declarations are only allowed at module top level"
+                            .to_string(),
+                        span: *span,
+                        suggestion: Some(
+                            "move the exports declaration to the top level".to_string(),
+                        ),
+                    });
+                }
+                validate_exports_args(&values[1..], declared, exported, *span, out);
+                return;
+            }
+
+            for child in values {
+                validate_exports_form(child, false, declared, exported, out);
+            }
+        }
+        SExpr::Cons { car, cdr, .. } => {
+            validate_exports_form(car, false, declared, exported, out);
+            validate_exports_form(cdr, false, declared, exported, out);
+        }
+        _ => {}
+    }
+}
+
+fn validate_exports_args(
+    args: &[SExpr],
+    declared: &HashSet<String>,
+    exported: &mut HashMap<String, Span>,
+    span: Span,
+    out: &mut Vec<Diagnostic>,
+) {
+    if args.is_empty() {
+        out.push(Diagnostic {
+            severity: Severity::Error,
+            message: "exports requires at least one name".to_string(),
+            span,
+            suggestion: Some("write (exports name ...)".to_string()),
+        });
+        return;
+    }
+
+    let mut local_seen = HashSet::new();
+    for arg in args {
+        let Some((name, name_span)) = arg.atom_parts() else {
+            out.push(Diagnostic {
+                severity: Severity::Error,
+                message: "exports expects atom names".to_string(),
+                span: arg.span(),
+                suggestion: Some("write (exports name ...) with bare names only".to_string()),
+            });
+            continue;
+        };
+        if name == "_" {
+            out.push(Diagnostic {
+                severity: Severity::Error,
+                message: "exports cannot export the wildcard name '_'".to_string(),
+                span: name_span,
+                suggestion: None,
+            });
+            continue;
+        }
+        if !local_seen.insert(name.to_string()) {
+            out.push(Diagnostic {
+                severity: Severity::Error,
+                message: format!("exports lists '{name}' more than once"),
+                span: name_span,
+                suggestion: Some("remove the duplicate name".to_string()),
+            });
+            continue;
+        }
+        if let Some(first_span) = exported.get(name) {
+            out.push(Diagnostic {
+                severity: Severity::Error,
+                message: format!("module exports '{name}' more than once"),
+                span: name_span,
+                suggestion: Some(format!(
+                    "remove one export declaration; first export was at {:?}",
+                    first_span.start
+                )),
+            });
+            continue;
+        }
+        if !declared.contains(name) {
+            out.push(Diagnostic {
+                severity: Severity::Error,
+                message: format!("exports references unknown top-level binding '{name}'"),
+                span: name_span,
+                suggestion: Some("export a name declared by a top-level bind, func, class, import, or type constructor".to_string()),
+            });
+            continue;
+        }
+        exported.insert(name.to_string(), name_span);
+    }
+}
+
 /// `parent` is the enclosing node (if any), so a guarded `match` clause can be
 /// exempted structurally via [`is_match_clause`] — the same helper the lint rule
 /// uses. The clause is *not* shape-checked, but is still recursed into, so a trap
@@ -223,6 +376,7 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
 
             match head {
                 "bind" => walk_bind_value(values, out),
+                "cond" => walk_cond_clauses(values, position, out),
                 "func" | "genfunc" => walk_func_like_args(&values[1..], out),
                 "fn" | "lambda" | "genfn" => walk_fn_like_args(&values[1..], out),
                 "obj" => walk_keyword_value_pairs(&values[1..], out),
@@ -326,15 +480,31 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
 }
 
 fn walk_bind_value(values: &[SExpr], out: &mut Vec<Diagnostic>) {
-    let value_index = match values.len() {
-        3 => Some(2),
-        4 => Some(3),
-        _ => None,
-    };
-    if let Some(index) = value_index
-        && let Some(value) = values.get(index)
-    {
-        walk_no_else_if_expression(value, ExprPosition::Value, out);
+    let args = values.get(1..).unwrap_or_default();
+    for (_, value_index, _) in bind_binding_arg_slots(args) {
+        if let Some(value) = args.get(value_index) {
+            walk_no_else_if_expression(value, ExprPosition::Value, out);
+        }
+    }
+}
+
+fn walk_cond_clauses(values: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+    let clauses = values.get(1..).unwrap_or_default();
+    if position.is_value() && !cond_has_else_clause(clauses) {
+        out.push(no_else_cond_expression_diagnostic(values[0].span()));
+    }
+
+    for clause in clauses {
+        let SExpr::List { values: items, .. } = clause else {
+            continue;
+        };
+        if items.len() != 2 {
+            continue;
+        }
+        if !matches!(items[0], SExpr::Keyword { ref value, .. } if value == "else") {
+            walk_no_else_if_expression(&items[0], ExprPosition::Value, out);
+        }
+        walk_no_else_if_expression(&items[1], ExprPosition::Value, out);
     }
 }
 
@@ -506,6 +676,15 @@ fn no_else_if_expression_diagnostic(span: Span) -> Diagnostic {
         severity: Severity::Error,
         span,
         suggestion: Some("add an else branch, or restructure as a statement".to_string()),
+    }
+}
+
+fn no_else_cond_expression_diagnostic(span: Span) -> Diagnostic {
+    Diagnostic {
+        message: "cond in expression position requires an :else clause".to_string(),
+        severity: Severity::Error,
+        span,
+        suggestion: Some("add an (:else value) clause, or restructure as a statement".to_string()),
     }
 }
 
@@ -846,6 +1025,8 @@ fn classify_surface_form(
 ) -> Result<SurfaceForm, Diagnostic> {
     match name {
         "bind" => classify_bind(args, span),
+        "exports" => classify_exports(args, span),
+        "cond" => classify_cond(args, span),
         "obj" => classify_obj(args, span),
         "cell" => classify_cell(args, span),
         "express" => classify_express(args, span),
@@ -926,11 +1107,231 @@ fn classify_bind(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
                 span,
             })
         }
+        len if len >= 4 => {
+            let bindings = parse_bind_group(args, span)?;
+            validate_bind_group_duplicates(&bindings, span)?;
+            Ok(SurfaceForm::BindGroup { bindings, span })
+        }
         _ => Err(err(
-            "bind requires 2 or 3 arguments: (bind name value) or (bind :type name value)",
+            "bind requires at least 2 arguments: (bind name value), \
+             (bind :type name value), or grouped name/value pairs",
             span,
         )),
     }
+}
+
+fn classify_exports(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+    if args.is_empty() {
+        return Err(err("exports requires at least one name", span));
+    }
+
+    let mut seen = HashSet::new();
+    let mut names = Vec::with_capacity(args.len());
+    for arg in args {
+        let Some((name, name_span)) = arg.atom_parts() else {
+            return Err(err(
+                "exports expects atom names: (exports name ...)",
+                arg.span(),
+            ));
+        };
+        if name == "_" {
+            return Err(err(
+                "exports cannot export the wildcard name '_'",
+                name_span,
+            ));
+        }
+        if !seen.insert(name.to_string()) {
+            return Err(err(
+                format!("exports lists '{name}' more than once"),
+                name_span,
+            ));
+        }
+        names.push(arg.clone());
+    }
+
+    Ok(SurfaceForm::Exports { names, span })
+}
+
+fn classify_cond(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+    if args.is_empty() {
+        return Err(err("cond requires at least one clause", span));
+    }
+
+    let mut clauses = Vec::with_capacity(args.len());
+    let mut seen_else = false;
+    for (index, clause) in args.iter().enumerate() {
+        let SExpr::List {
+            values,
+            span: clause_span,
+        } = clause
+        else {
+            return Err(err(
+                "cond clause must be a list: (predicate result) or (:else result)",
+                clause.span(),
+            ));
+        };
+        if values.len() != 2 {
+            return Err(err(
+                "cond clause must contain exactly a predicate and result",
+                *clause_span,
+            ));
+        }
+
+        match &values[0] {
+            SExpr::Keyword { value, span: kspan } if value == "else" => {
+                if seen_else {
+                    return Err(err("cond may contain only one :else clause", *kspan));
+                }
+                if index + 1 != args.len() {
+                    return Err(err("cond :else clause must be last", *kspan));
+                }
+                seen_else = true;
+                clauses.push(CondClause {
+                    test: None,
+                    result: values[1].clone(),
+                    span: *clause_span,
+                });
+            }
+            SExpr::Keyword { value, span: kspan } => {
+                return Err(err(
+                    format!("cond keyword clause must be :else, got :{value}"),
+                    *kspan,
+                ));
+            }
+            _ => clauses.push(CondClause {
+                test: Some(values[0].clone()),
+                result: values[1].clone(),
+                span: *clause_span,
+            }),
+        }
+    }
+
+    Ok(SurfaceForm::Cond { clauses, span })
+}
+
+fn parse_bind_group(args: &[SExpr], span: Span) -> Result<Vec<BindBinding>, Diagnostic> {
+    let mut bindings = Vec::new();
+    for (name_index, value_index, type_ann) in bind_binding_arg_slots(args) {
+        let name = args
+            .get(name_index)
+            .ok_or_else(|| err("bind group is missing a binding name", span))?;
+        let value = args
+            .get(value_index)
+            .ok_or_else(|| err("bind group binding is missing an initializer", span))?;
+        if type_ann.is_some() && !name.is_atom() {
+            return Err(err(
+                "grouped typed bind requires an atom name; use an untyped pair for destructuring",
+                name.span(),
+            ));
+        }
+        if binding_names_in_pattern(name, BindingKind::Bind).is_empty()
+            && name.as_atom() != Some("_")
+        {
+            return Err(err(
+                "bind group name must be an atom or destructuring pattern",
+                name.span(),
+            ));
+        }
+        bindings.push(BindBinding {
+            name: name.clone(),
+            type_ann,
+            value: value.clone(),
+            span,
+        });
+    }
+    if bindings.len() < 2 {
+        return Err(err(
+            "grouped bind requires at least two name/value pairs",
+            span,
+        ));
+    }
+    Ok(bindings)
+}
+
+fn bind_binding_arg_slots(args: &[SExpr]) -> Vec<(usize, usize, Option<TypeAnnotation>)> {
+    let mut slots = Vec::new();
+    match args.len() {
+        2 => {
+            slots.push((0, 1, None));
+            return slots;
+        }
+        3 => {
+            if let SExpr::Keyword { value, span } = &args[0] {
+                slots.push((
+                    1,
+                    2,
+                    Some(TypeAnnotation {
+                        name: value.clone(),
+                        span: *span,
+                    }),
+                ));
+            }
+            return slots;
+        }
+        _ => {}
+    }
+
+    let mut i = 0;
+    while i < args.len() {
+        if let Some(SExpr::Keyword { value, span }) = args.get(i) {
+            if i + 2 >= args.len() {
+                break;
+            }
+            slots.push((
+                i + 1,
+                i + 2,
+                Some(TypeAnnotation {
+                    name: value.clone(),
+                    span: *span,
+                }),
+            ));
+            i += 3;
+        } else {
+            if i + 1 >= args.len() {
+                break;
+            }
+            slots.push((i, i + 1, None));
+            i += 2;
+        }
+    }
+    slots
+}
+
+fn validate_bind_group_duplicates(bindings: &[BindBinding], span: Span) -> Result<(), Diagnostic> {
+    let mut seen: HashMap<String, Span> = HashMap::new();
+    for binding in bindings {
+        for site in binding_names_in_pattern(&binding.name, BindingKind::Bind) {
+            if site.name == "_" {
+                continue;
+            }
+            if let Some(first_span) = seen.get(&site.name) {
+                return Err(Diagnostic {
+                    severity: Severity::Error,
+                    message: format!("bind group declares '{}' more than once", site.name),
+                    span: site.span,
+                    suggestion: Some(format!(
+                        "remove the duplicate binding; first declaration is at {:?}",
+                        first_span.start
+                    )),
+                });
+            }
+            seen.insert(site.name, site.span);
+        }
+    }
+    if seen.is_empty() {
+        return Err(err("bind group must declare at least one name", span));
+    }
+    Ok(())
+}
+
+fn cond_has_else_clause(clauses: &[SExpr]) -> bool {
+    clauses.iter().any(|clause| {
+        matches!(
+            clause,
+            SExpr::List { values, .. }
+                if matches!(values.first(), Some(SExpr::Keyword { value, .. }) if value == "else")
+        )
+    })
 }
 
 fn classify_obj(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
@@ -2729,10 +3130,110 @@ mod tests {
     fn test_classify_bind_wrong_arg_count() {
         let result = form("bind", vec![atom("x")]);
         assert!(result.is_err());
-        assert!(result.unwrap_err().message.contains("2 or 3 arguments"));
+        assert!(
+            result
+                .unwrap_err()
+                .message
+                .contains("requires at least 2 arguments")
+        );
+    }
 
+    #[test]
+    fn test_classify_bind_group() {
         let result = form("bind", vec![atom("a"), atom("b"), atom("c"), atom("d")]);
+        match result.unwrap() {
+            SurfaceForm::BindGroup { bindings, .. } => {
+                assert_eq!(bindings.len(), 2);
+                assert_eq!(bindings[0].name.as_atom(), Some("a"));
+                assert_eq!(bindings[0].value.as_atom(), Some("b"));
+                assert_eq!(bindings[1].name.as_atom(), Some("c"));
+                assert_eq!(bindings[1].value.as_atom(), Some("d"));
+            }
+            other => panic!("expected BindGroup, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_bind_group_typed_pair() {
+        let result = form(
+            "bind",
+            vec![
+                kw("string"),
+                atom("email"),
+                string("a@example.test"),
+                atom("role"),
+                string("admin"),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::BindGroup { bindings, .. } => {
+                assert_eq!(bindings.len(), 2);
+                assert_eq!(bindings[0].type_ann.as_ref().unwrap().name, "string");
+                assert_eq!(bindings[0].name.as_atom(), Some("email"));
+                assert!(bindings[1].type_ann.is_none());
+            }
+            other => panic!("expected BindGroup, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_bind_group_duplicate_name_error() {
+        let result = form("bind", vec![atom("a"), num(1.0), atom("a"), num(2.0)]);
         assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("more than once"));
+    }
+
+    #[test]
+    fn test_classify_exports() {
+        let result = form("exports", vec![atom("valid-record?"), atom("normalize")]).unwrap();
+        match result {
+            SurfaceForm::Exports { names, .. } => {
+                assert_eq!(names.len(), 2);
+                assert_eq!(names[0].as_atom(), Some("valid-record?"));
+            }
+            other => panic!("expected Exports, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_exports_rejects_duplicate() {
+        let result = form("exports", vec![atom("x"), atom("x")]);
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("more than once"));
+    }
+
+    #[test]
+    fn test_classify_cond() {
+        let result = form(
+            "cond",
+            vec![
+                list(vec![atom("admin?"), string("admin")]),
+                list(vec![kw("else"), string("user")]),
+            ],
+        )
+        .unwrap();
+        match result {
+            SurfaceForm::Cond { clauses, .. } => {
+                assert_eq!(clauses.len(), 2);
+                assert!(clauses[0].test.is_some());
+                assert!(clauses[1].test.is_none());
+            }
+            other => panic!("expected Cond, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_classify_cond_rejects_else_before_end() {
+        let result = form(
+            "cond",
+            vec![
+                list(vec![kw("else"), string("user")]),
+                list(vec![atom("admin?"), string("admin")]),
+            ],
+        );
+        assert!(result.is_err());
+        assert!(result.unwrap_err().message.contains("must be last"));
     }
 
     // ---------------------------------------------------------------
@@ -6334,6 +6835,52 @@ mod tests {
     fn test_no_else_if_expression_validation_allows_else_branch() {
         assert!(no_else_if_errs("(bind label (if cond \"yes\" \"no\"))").is_empty());
         assert!(no_else_if_errs("(return (if cond \"yes\" \"no\"))").is_empty());
+    }
+
+    #[test]
+    fn test_cond_expression_validation_requires_else() {
+        let diags = no_else_if_errs("(bind label (cond ((= role \"admin\") \"Admin\")))");
+        assert_eq!(diags.len(), 1);
+        assert!(
+            diags[0]
+                .message
+                .contains("cond in expression position requires an :else clause")
+        );
+        assert!(
+            no_else_if_errs("(bind label (cond ((= role \"admin\") \"Admin\") (:else \"User\")))")
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn test_cond_expression_validation_allows_statement_without_else() {
+        assert!(no_else_if_errs("(cond ((= role \"admin\") (console:log \"Admin\")))").is_empty());
+    }
+
+    #[test]
+    fn test_exports_declaration_validation() {
+        let forms = crate::reader::read("(func normalize record record)\n(exports normalize)")
+            .expect("parse");
+        assert!(validate_exports_declarations(&forms).is_empty());
+
+        let forms = crate::reader::read("(exports missing)").expect("parse");
+        let diags = validate_exports_declarations(&forms);
+        assert_eq!(diags.len(), 1);
+        assert!(
+            diags[0]
+                .message
+                .contains("unknown top-level binding 'missing'")
+        );
+
+        let forms = crate::reader::read("(func normalize record (exports normalize) record)")
+            .expect("parse");
+        let diags = validate_exports_declarations(&forms);
+        assert_eq!(diags.len(), 1);
+        assert!(
+            diags[0]
+                .message
+                .contains("only allowed at module top level")
+        );
     }
 
     // ---------------------------------------------------------------

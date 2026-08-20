@@ -133,6 +133,19 @@ impl ScopeTracker {
         // We do not emit an error here; undefined detection is form-specific.
     }
 
+    /// Mark an existing binding as exported, suppressing unused-binding
+    /// warnings for module-level export declarations that are processed after
+    /// all top-level definitions have been introduced.
+    pub fn mark_exported(&mut self, name: &str) {
+        for level in self.stack.iter_mut().rev() {
+            if let Some(binding) = level.bindings.get_mut(name) {
+                binding.exported = true;
+                binding.used = true;
+                return;
+            }
+        }
+    }
+
     /// Look up a binding by name, walking from innermost to outermost scope.
     fn lookup(&self, name: &str) -> Option<&Binding> {
         for level in self.stack.iter().rev() {

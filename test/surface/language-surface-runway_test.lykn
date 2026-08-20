@@ -1,0 +1,33 @@
+(import-macros "testing" (test is-equal))
+
+(func role-label
+  :args (:string role)
+  :body
+  (cond
+    ((= role "admin") "Administrator")
+    ((= role "editor") "Editor")
+    (:else "User")))
+
+(func normalize-record
+  :args (:any record)
+  :body
+  (bind
+    email (get record :email)
+    role (cond
+      ((= (get record :role) "admin") "admin")
+      (:else "user"))
+    label (role-label role))
+  (obj :email email :role role :label label))
+
+(exports role-label normalize-record)
+
+(test
+  "grouped bind and cond normalize a record"
+  (bind result (normalize-record (obj :email "ops@example.test" :role "admin")))
+  (is-equal result:email "ops@example.test")
+  (is-equal result:role "admin")
+  (is-equal result:label "Administrator"))
+
+(test
+  "cond else branch returns fallback"
+  (is-equal (role-label "viewer") "User"))

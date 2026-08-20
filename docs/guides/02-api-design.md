@@ -206,13 +206,15 @@ focused modules over kitchen-sink collections.
 
 ```lykn
 ;; Good — focused module: date-format.lykn
-(export (func format-date
-  :args (:any d) :returns :string
-  :body (d:toISOString)))
+(exports format-date parse-date)
 
-(export (func parse-date
+(func format-date
+  :args (:any d) :returns :string
+  :body (d:toISOString))
+
+(func parse-date
   :args (:string s) :returns :any
-  :body (new Date s)))
+  :body (new Date s))
 
 ;; Bad — one module doing everything (utils.lykn)
 ;; format-date, slugify, debounce, deep-clone all in one file
@@ -232,12 +234,14 @@ object bundling methods.
 
 ```lykn
 ;; Good — named exports, individually tree-shakeable
-(export (func mean :args (:array data) :returns :number :body
-  (/ (data:reduce (fn (:number a :number b) (+ a b)) 0) data:length)))
+(exports mean median)
 
-(export (func median :args (:array data) :returns :number :body
+(func mean :args (:array data) :returns :number :body
+  (/ (data:reduce (fn (:number a :number b) (+ a b)) 0) data:length))
+
+(func median :args (:array data) :returns :number :body
   (bind sorted (data:toSorted (fn (:number a :number b) (- a b))))
-  (get sorted (Math:floor (/ sorted:length 2)))))
+  (get sorted (Math:floor (/ sorted:length 2))))
 ```
 
 **Rationale**: Named function exports are individually removable by
@@ -283,11 +287,13 @@ all side effects inside exported functions.
 ;; Good — no side effects at module level
 (bind DEFAULT-TIMEOUT 5000)
 
-(export (func create-client
+(exports create-client)
+
+(func create-client
   :args (:object options)
   :returns :any
   :body (new Client (assoc options :timeout
-    (?? options:timeout DEFAULT-TIMEOUT)))))
+    (?? options:timeout DEFAULT-TIMEOUT))))
 
 ;; Bad — side effect at import time
 (console:log "stats module loaded")
@@ -300,24 +306,29 @@ testing difficult.
 
 ---
 
-## ID-10: Export at Declaration
+## ID-10: Declare Module Exports Explicitly
 
 **Strength**: SHOULD
 
-**Summary**: Use `export` wrapping the declaration site rather than a
-separate export statement.
+**Summary**: Use a top-level `(exports ...)` declaration for the names
+defined by a module.
 
 ```lykn
-;; Good — inline export, intent is visible at definition
-(export (func format-date
-  :args (:any d) :returns :string
-  :body (d:toISOString)))
+;; Good — module API is explicit and declarations stay plain
+(exports format-date DATE-FORMAT)
 
-(export (bind DATE-FORMAT "YYYY-MM-DD"))
+(func format-date
+  :args (:any d) :returns :string
+  :body (d:toISOString))
+
+(bind DATE-FORMAT "YYYY-MM-DD")
 ```
 
-**Rationale**: Inline exports make the file self-documenting — the
-public API is visible at each declaration.
+**Rationale**: A top-level export declaration gives the module a short
+public API list while keeping the implementation declarations ordinary.
+The compiler rejects duplicate or missing exported names. Inline wrappers
+such as `(export (func ...))` remain accepted for 0.6.0 compatibility,
+but `(exports ...)` is the preferred style for new code.
 
 ---
 
@@ -767,14 +778,16 @@ provide a callback-based alternative.
 
 ```lykn
 ;; Good — async function, callers use await
-(export (async (func fetch-user
+(exports fetch-user)
+
+(async (func fetch-user
   :args (:string id)
   :returns :any
   :body
   (bind res (await (fetch (template "/api/users/" id))))
   (if (not res:ok)
     (throw (new Error (template "User " id " not found"))))
-  (await (res:json)))))
+  (await (res:json)))
 ```
 
 **Rationale**: Every `async` function wraps its return value in a

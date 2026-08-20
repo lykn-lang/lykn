@@ -192,13 +192,15 @@ responsibility.
 
 ```lykn
 ;; Good — focused module: password.lykn
-(export (func hash-password
-  :args (:string plain) :returns :string
-  :body (do-hash plain)))
+(exports hash-password verify-password)
 
-(export (func verify-password
+(func hash-password
+  :args (:string plain) :returns :string
+  :body (do-hash plain))
+
+(func verify-password
   :args (:string plain :string hash) :returns :boolean
-  :body (do-verify plain hash)))
+  :body (do-verify plain hash))
 ```
 
 **See also**: `02-api-design.md` ID-06
@@ -344,8 +346,10 @@ the edges.
 ```lykn
 ;; Good — pure core
 ;; shared/transform.lykn
-(export (func transform :args (:any data) :returns :any :body
-  (data:map normalize)))
+(exports transform)
+
+(func transform :args (:any data) :returns :any :body
+  (data:map normalize))
 
 ;; I/O at the edge
 ;; main.lykn
@@ -425,9 +429,11 @@ mapping.
 
 ```lykn
 ;; shared/constants.lykn
-(export (bind MAX-RETRIES 3))
-(export (bind DEFAULT-TIMEOUT 5000))
-(export (bind API-VERSION "v2"))
+(exports MAX-RETRIES DEFAULT-TIMEOUT API-VERSION)
+
+(bind MAX-RETRIES 3)
+(bind DEFAULT-TIMEOUT 5000)
+(bind API-VERSION "v2")
 ```
 
 **See also**: `01-core-idioms.md` ID-11

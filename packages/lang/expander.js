@@ -11,7 +11,7 @@ import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
-import { validateReservedNames, bindingsIntroduced } from './binding.js';
+import { validateReservedNames, bindingsIntroduced, bindingNamesInPattern } from './binding.js';
 
 // node:path is used intentionally here and CANNOT be replaced with jsr:@std/path.
 //
@@ -960,6 +960,24 @@ function expandExprInner(form, env) {
       const childEnv = FUNCTION_FAMILY.has(head.value)
         ? extendEnv(env, bodyScopeNames(form))
         : env;
+      if (astNode.type === "BindGroup") {
+        const out = [];
+        let cur = env;
+        for (const binding of astNode.bindings) {
+          const args = binding.typeKw
+            ? [binding.typeKw, binding.nameNode, binding.valueNode]
+            : [binding.nameNode, binding.valueNode];
+          const kernel = emitSurfaceForm(
+            { type: "Bind", args },
+            { sym, array, gensym, isKeyword },
+          );
+          pushExpanded(out, expandExpr(markKernel(kernel), cur));
+          const names = bindingNamesInPattern(binding.nameNode).map((site) => site.name);
+          if (names.length) cur = extendEnv(cur, names);
+        }
+        return out;
+      }
+
       const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword });
       if (Array.isArray(kernel)) {
         return kernel.map(k => expandExpr(markKernel(k), childEnv));

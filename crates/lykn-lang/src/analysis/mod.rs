@@ -8,6 +8,7 @@ pub mod type_registry;
 
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::{ClassMemberForm, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation};
+use crate::binding::{BindingKind, binding_names_in_pattern};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 use scope::ScopeTracker;
@@ -105,6 +106,15 @@ impl Analyze for SurfaceForm {
                 value,
                 span,
             } => check_bind_literal_type(name, ann, value, *span),
+            SurfaceForm::BindGroup { bindings, .. } => bindings
+                .iter()
+                .filter_map(|binding| {
+                    binding.type_ann.as_ref().map(|ann| {
+                        check_bind_literal_type(&binding.name, ann, &binding.value, binding.span)
+                    })
+                })
+                .flatten()
+                .collect(),
             _ => vec![],
         }
     }
@@ -119,6 +129,21 @@ impl Analyze for SurfaceForm {
                 track_references_in_expr(value, scope);
                 if let Some(atom) = name.as_atom() {
                     scope.introduce(atom, *span, false, false);
+                }
+            }
+            SurfaceForm::BindGroup { bindings, .. } => {
+                for binding in bindings {
+                    track_references_in_expr(&binding.value, scope);
+                    for site in binding_names_in_pattern(&binding.name, BindingKind::Bind) {
+                        scope.introduce(&site.name, site.span, false, false);
+                    }
+                }
+            }
+            SurfaceForm::Exports { names, .. } => {
+                for name in names {
+                    if let Some(atom) = name.as_atom() {
+                        scope.reference(atom, name.span());
+                    }
                 }
             }
             SurfaceForm::Func {
@@ -163,6 +188,14 @@ impl Analyze for SurfaceForm {
                         track_references_in_expr(expr, scope);
                     }
                     scope.exit_scope();
+                }
+            }
+            SurfaceForm::Cond { clauses, .. } => {
+                for clause in clauses {
+                    if let Some(test) = &clause.test {
+                        track_references_in_expr(test, scope);
+                    }
+                    track_references_in_expr(&clause.result, scope);
                 }
             }
             SurfaceForm::Genfunc {
@@ -368,6 +401,10 @@ pub fn analyze(forms: &[SurfaceForm]) -> AnalysisResult {
         form.track_scope(&mut scope);
     }
 
+    for name in exported_runtime_names(forms) {
+        scope.mark_exported(&name);
+    }
+
     diagnostics.extend(scope.collect_diagnostics());
 
     let has_errors = diagnostics.iter().any(|d| d.severity == Severity::Error);
@@ -375,6 +412,56 @@ pub fn analyze(forms: &[SurfaceForm]) -> AnalysisResult {
         diagnostics,
         type_registry: registry,
         has_errors,
+    }
+}
+
+fn exported_runtime_names(forms: &[SurfaceForm]) -> Vec<String> {
+    let mut names = Vec::new();
+    for form in forms {
+        match form {
+            SurfaceForm::Exports {
+                names: export_names,
+                ..
+            } => {
+                names.extend(
+                    export_names
+                        .iter()
+                        .filter_map(|name| name.as_atom().map(str::to_string)),
+                );
+            }
+            SurfaceForm::Export { inner, .. } => collect_inline_export_names(inner, &mut names),
+            _ => {}
+        }
+    }
+    names
+}
+
+fn collect_inline_export_names(form: &SurfaceForm, out: &mut Vec<String>) {
+    match form {
+        SurfaceForm::Bind { name, .. } => {
+            if let Some(atom) = name.as_atom() {
+                out.push(atom.to_string());
+            }
+        }
+        SurfaceForm::BindGroup { bindings, .. } => {
+            for binding in bindings {
+                if let Some(atom) = binding.name.as_atom() {
+                    out.push(atom.to_string());
+                }
+            }
+        }
+        SurfaceForm::Func { name, .. } | SurfaceForm::Genfunc { name, .. } => {
+            out.push(name.clone())
+        }
+        SurfaceForm::Type { constructors, .. } => {
+            out.extend(constructors.iter().map(|ctor| ctor.name.clone()));
+        }
+        SurfaceForm::Class { name, .. } => {
+            if let Some(atom) = name.as_atom() {
+                out.push(atom.to_string());
+            }
+        }
+        _ => {}
     }
 }
 
