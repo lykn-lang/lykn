@@ -507,6 +507,9 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   If the chosen syntax is not supported, route the compiler work to arc10 or a
   new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
   rewriting examples around the current inline wrapper.
+- **Active route:** arc16 slice04
+  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
+  is open to land or explicitly defer this for 0.6.0.
 
 ### `D-2608-LBND` — repeated local binds need a grouped let-style binding surface
 
@@ -532,6 +535,9 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   If the chosen syntax is not supported, route the compiler work to arc10 or a
   new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
   telling authors to keep writing repeated sibling binds.
+- **Active route:** arc16 slice04
+  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
+  is open to land or explicitly defer this for 0.6.0.
 
 ### `D-2608-COND` — nested validation conditionals need a flatter branch surface
 
@@ -557,6 +563,9 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   If the chosen syntax is not supported, route the compiler work to arc10 or a
   new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
   teaching nested `?` ladders as the permanent validation idiom.
+- **Active route:** arc16 slice04
+  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
+  is open to land or explicitly defer this for 0.6.0.
 
 ### `D-2608-SOWN` — Lykn-owned generated manifests need a source ownership boundary
 
