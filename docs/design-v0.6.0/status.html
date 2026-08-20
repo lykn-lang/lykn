@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-20 (arc16 slice04 language-surface runway opened before book prose.)",
+  updated: "2026-08-20 (arc16 slice04 language-surface runway closed/CDC-verified.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -184,8 +184,8 @@ const DATA = {
       cap:"Closed 2026-08-08: surface forms that compile clean but mean something the author did not write now become hard errors + lint + guide fixes. Method-on-expression rejects with a threading fix-it; sibling traps are closed; nested Rust fn parameter validation matches JS. slice03 hardening is deferred to 0.7.0.",
       slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps",s:"closed"},{n:"nested-fn-param-validation",s:"closed"}] },
     { id:"arc16", name:"book-0.6.0-edition", status:"open",
-      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice04 is open for XPRT/LBND/COND before book or writers-guide prose starts.",
-      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"closed"},{n:"language-surface runway",s:"open"},{n:"book-instruction-bootstrap",s:"planned"},{n:"book-fence-reachability",s:"planned"},{n:"current-book-drift-refresh",s:"planned"},{n:"toolchain/project-structure chapters",s:"planned"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
+      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice04 closed XPRT/LBND/COND before book or writers-guide prose starts.",
+      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"closed"},{n:"language-surface runway",s:"closed"},{n:"book-instruction-bootstrap",s:"planned"},{n:"book-fence-reachability",s:"planned"},{n:"current-book-drift-refresh",s:"planned"},{n:"toolchain/project-structure chapters",s:"planned"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
     { id:"arc14", name:"comment-retention", status:"future",
       cap:"Retain comments through the pipeline: reader retention (opt-in) → surface→kernel provenance annotation → strip-or-preserve at JS emit (DD-62). The LFE comment-drop pain made a first-class goal; the home for the deferred lint-suppression mechanism. SEEDED 2026-07-21; release boundary decided 0.7.0 (operator, 2026-07-21); not slice-planned.",
       slices:[] },
@@ -204,13 +204,13 @@ const DATA = {
   sequence: ["arc16","arc09"],
   now: {
     arc:"arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is closed/CDC-verified for local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. arc16 slice04 is open for the language-surface set: XPRT exports, LBND grouped locals, and COND flatter branching."
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is closed/CDC-verified for local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. arc16 slice04 is closed/CDC-verified for the language-surface set: XPRT exports, LBND grouped locals, and COND flatter branching."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
     {n:"~1.0 s", l:"conformance corpus in make check", s:"seeded-teeth demo'd both backends; the 14.3s matrix stays on-demand"},
-    {n:"601", l:"accepted historical cited paths", s:"census shrank from 631; make check-cited-paths green across 617 docs on release/0.6.x, 2026-08-20"},
-    {n:"476 / 0", l:"guide doctests", s:"green"},
+    {n:"601", l:"accepted historical cited paths", s:"census shrank from 631; make check-cited-paths green across 619 docs on release/0.6.x, 2026-08-20"},
+    {n:"482 / 0", l:"guide doctests", s:"green"},
     {n:"48 → 48", l:"size_of::<SExpr>()", s:"resolution tags + private payload, zero size cost"},
     {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
   ],
@@ -240,7 +240,7 @@ const DATA = {
     "arc10 slice04 closed the compiler-completion follow-up: no-else if in expression position is now a compile/check error before any invalid JS is emitted. The original DD-58/DD-37 gate remains historically closed; P-22 is done.",
     "arc16 slice02 closed the first implementation/dogfood runway: CC built a fresh record-shape utility library, CDC replayed build/test/lint/run, and the pass routed four new CLI/scaffold/package findings — D-2608-BINW, D-2608-TDSL, D-2608-BREC, and D-2608-RIMP — before any book prose starts teaching the final project surface.",
     "arc16 slice03 closed the CLI/scaffold/package runway: fresh scaffolds install bin/lykn, scaffolded Lykn tests run through testing, nested package sources build recursively, source-file lykn run handles relative package imports from build output, and the 0.6.0 source-ownership floor is explicit. CDC reproduced the scratch runway and the full gate set.",
-    "arc16 slice04 is open with the canonical planning packet for the language surface: top-of-module exports and mod.lykn ownership, grouped local bindings, and flatter ordered validation branching must land, defer, or split before book examples harden.",
+    "arc16 slice04 closed the language-surface runway: module-local (exports ...) is preferred for named exports while mod.lykn remains the package/barrel re-export layer; grouped sequential bind handles related locals; cond handles ordered predicate/result branching with :else required in value position. CDC reproduced Rust, Deno, Lykn, docs, and cited-path gates.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
@@ -303,12 +303,12 @@ const DATA = {
       lesson:"The 2026-08-08 release-branch check first found 34 dangling citations. The fix was not to loosen the gate: 03-citation-repoint repointed migrated paths, moved four already-decided artifacts into tracked homes, preserved historical movement prose, and shrank the frozen census from 631 to 601 accepted pairs. The final artifact-home remediation then tracked sibling AGENTS.md/CLAUDE.md guidance and the book audit tool. <b>Learning:</b> a red structural gate is useful when the follow-up shrinks the exemption set instead of expanding it. P-21 is done." },
     { t:"No-else if expression emitted invalid JS at rc=0", tag:"fixed",
       lesson:"arc07 slice02 reproduced that <code>(bind label (if (&gt; 1 0) \"items\"))</code> passed <code>lykn check</code> and <code>lykn compile</code>, but emitted <code>const label = throw ...</code> and failed only when Deno parsed the generated JS. <b>Fixed in arc10/P-22:</b> check/compile now fail before codegen. <b>Learning:</b> guide truth can expose compiler truth; route compiler defects instead of rewriting docs around broken emission paths." },
-    { t:"Export ownership is unclear", tag:"open",
-      lesson:"CC's external-library dogfood code followed current guidance with <code>(export (func ...))</code>, and the package also carried a <code>mod.lykn</code> named re-export list. The operator rejected inline wrappers as the durable teaching shape and flagged the second list as possible duplication or an unexplained requirement. The same scaffold exposed a package-source <code>deno.json</code>; slice03 implemented the 0.6.0 source-ownership floor, but the broader package-metadata ownership model remains a design call. <b>Learning:</b> arc16 must settle export ownership (<code>D-2608-XPRT</code>) before drafting module/API chapters, and must not overstate <code>D-2608-SOWN</code> beyond the accepted 0.6.0 floor." },
-    { t:"Repeated local binds need a grouped form", tag:"open",
-      lesson:"CC's external-library dogfood code used runs of sibling <code>(bind name value)</code> forms for record normalization. The operator flagged this as un-Lispy when several derived locals naturally belong to one local scope. <b>Learning:</b> arc16 should not teach verbose repeated binds as the permanent idiom; settle a grouped let-style binding surface, recorded as <code>D-2608-LBND</code>, before drafting expression and normalization examples." },
-    { t:"Nested validation conditionals need a flatter branch form", tag:"open",
-      lesson:"CC's external-library dogfood code used nested <code>?</code> forms for an ordered validation ladder. The operator flagged the repeated nesting as a readability smell. <b>Learning:</b> the book should not teach deeply nested conditionals as the default validation idiom; settle a <code>cond</code>, guard-style, or equivalent branch surface, recorded as <code>D-2608-COND</code>, before drafting validation/control-flow examples." },
+    { t:"Export ownership is unclear", tag:"fixed",
+      lesson:"CC's external-library dogfood code followed current guidance with <code>(export (func ...))</code>, and the package also carried a <code>mod.lykn</code> named re-export list. <b>Fixed in arc16 slice04:</b> module-local <code>(exports ...)</code> is the preferred named-export teaching surface, inline wrappers remain 0.6.0 compatibility syntax, and <code>mod.lykn</code> remains the package/barrel re-export layer." },
+    { t:"Repeated local binds need a grouped form", tag:"fixed",
+      lesson:"CC's external-library dogfood code used runs of sibling <code>(bind name value)</code> forms for record normalization. <b>Fixed in arc16 slice04:</b> grouped sequential <code>bind</code> supports related locals, including typed atom pairs and untyped destructuring, with earlier names visible to later initializers." },
+    { t:"Nested validation conditionals need a flatter branch form", tag:"fixed",
+      lesson:"CC's external-library dogfood code used nested <code>?</code> forms for an ordered validation ladder. <b>Fixed in arc16 slice04:</b> <code>cond</code> supports ordered predicate/result clauses, requires final <code>:else</code> in value position, and gives book examples a flatter validation surface." },
   ],
 };
 
