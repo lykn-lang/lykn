@@ -1,6 +1,6 @@
 # arc16 slice05 - Book Instruction Bootstrap
 
-> **Status:** Closed by CC on 2026-08-20; CDC verification pending.
+> **Status:** Closed and CDC-verified on 2026-08-20.
 
 ## Goal
 

@@ -31,5 +31,6 @@
 
 ## Closure
 
-Closed by CC on 2026-08-20. Verified by: CC self-check; CDC pending.
+Closed by CC on 2026-08-20. Verified by: CDC on 2026-08-20
+([cdc-verification](./cdc-verification.md)).
 Rows: 15. Done: 15. Deferred: 0. No-op: 0. Pending: 0.

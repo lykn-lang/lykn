@@ -1,6 +1,7 @@
 # arc16 slice05 - Book Instruction Bootstrap Closing Report
 
-Closed by CC on 2026-08-20. CDC verification pending.
+Closed by CC on 2026-08-20. CDC verification recorded in
+[`cdc-verification.md`](./cdc-verification.md).
 
 ## 1. Source Material Read
 
@@ -85,8 +86,8 @@ close artifacts and project/status surfaces.
 Lang repo:
 
 - `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` - marks slice05
-  closed by CC / CDC pending, records sibling commits, keeps slice06 next, and
-  updates arc ledger A-3/A-9.
+  closed/CDC-verified, records sibling commits, keeps slice06 next, and updates
+  arc ledger A-3/A-9.
 - `docs/design-v0.6.0/README.md` - updates the arc16 row.
 - `docs/design-v0.6.0/project-plan.md` - updates the arc16 roadmap row, current
   status, P-20 evidence, and version history.
