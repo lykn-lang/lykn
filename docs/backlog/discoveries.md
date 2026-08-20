@@ -589,6 +589,11 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   If the chosen model changes current behavior, route implementation to the
   relevant scaffold/build/publish/docs slice before arc16 closes. Do not close
   this row by banning user-authored JSON/assets/resources from source trees.
+- **Partial closure:** arc16 slice03 implemented the 0.6.0 floor: user-authored
+  non-Lykn files remain allowed in source trees, generated build/test/dist output
+  stays under `target/lykn/`, and runtime build/dist does not copy arbitrary
+  non-Lykn package source. The broader package-metadata ownership model remains
+  `held-for-design` before final book project-structure prose.
 
 ### `D-2608-BINW` — fresh projects lack the local `bin/lykn` guides expect
 
@@ -605,11 +610,16 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 - **Guess:** Medium-high for DevX and guide truth. New users will hit the first
   command in the guides and either fail, use a global binary, or drift away from
   release-branch reproducibility.
-- **Kind:** `gap` · **Status:** `held-for-design`
+- **Kind:** `gap` · **Status:** `closed` →
+  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** arc16's next implementation-routing slice must decide whether
   `lykn new` creates a project-local shim or whether the guides/prompts change
   their default command shape. Do not let book examples assume `./bin/lykn`
   unless the scaffold makes that true.
+- **Closure:** arc16 slice03 made `lykn new` create project-local `bin/lykn`,
+  updated scaffolded commands to `./bin/lykn`, and added fresh-scaffold
+  regression coverage. CDC reproduced the scratch workflow in
+  `slice03-cli-scaffold-package-runway/cdc-verification.md`.
 
 ### `D-2608-TDSL` — scaffolded Lykn tests cannot load the testing macros
 
@@ -625,11 +635,17 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 - **Guess:** High for teaching and package readiness. A testing DSL that is
   present in guidance but cannot expand in a new project will push the book
   toward JavaScript tests or manual demos, which hides a 0.6.0 tooling defect.
-- **Kind:** `bug` · **Status:** `held-for-design`
+- **Kind:** `bug` · **Status:** `closed` →
+  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** route through arc16's implementation runway or the package/testing
   owner before book chapter work. Either make the macro package resolvable from
   scaffolded Lykn tests, or change the scaffold/guides so their first-class test
   path is the one that actually runs.
+- **Closure:** arc16 slice03 switched scaffolded tests to the bare `testing`
+  import, added `lykn.macroEntry` metadata to `packages/testing/deno.json`, and
+  uses a gitignored `project.local.json` overlay for source-checkout dogfood.
+  CDC reproduced fresh scaffold `./bin/lykn test` and targeted testing-DSL
+  gates in `slice03-cli-scaffold-package-runway/cdc-verification.md`.
 
 ### `D-2608-BREC` — `lykn build` skips nested package source directories
 
@@ -645,11 +661,16 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   shape; silently skipping them creates a green build with missing runtime
   files, exactly the kind of output-quality defect arc16 should catch before the
   book teaches package layout.
-- **Kind:** `bug` · **Status:** `held-for-design`
+- **Kind:** `bug` · **Status:** `closed` →
+  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** arc16's implementation-routing slice must either make `lykn build`
   recurse into package source directories or document and enforce a flat-package
   rule with an explicit diagnostic. Do not teach nested helper modules as
   supported until the build owns them.
+- **Closure:** arc16 slice03 made build/dist traversal recursive for `.lykn`,
+  `.lyk`, and handwritten `.js` package source while preserving relative paths.
+  CDC reproduced nested helper emission and the Rust regression in
+  `slice03-cli-scaffold-package-runway/cdc-verification.md`.
 
 ### `D-2608-RIMP` — source-file `lykn run` resolves relative imports from temp output
 
@@ -666,11 +687,16 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   is the natural command to teach during development; if it only works for
   import-free files, the book needs either an implementation fix or a deliberately
   narrower command story.
-- **Kind:** `bug` · **Status:** `held-for-design`
+- **Kind:** `bug` · **Status:** `closed` →
+  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** arc16's implementation-routing slice should choose between fixing
   source-run relative import resolution and steering all package demos through
   `lykn build` plus built entrypoints. Do not let book examples imply the source
   command works for package modules until this is settled.
+- **Closure:** arc16 slice03 routes workspace source-file `lykn run` through the
+  generated package build output so relative imports resolve beside nested
+  helpers. CDC reproduced source and built entrypoint runs in
+  `slice03-cli-scaffold-package-runway/cdc-verification.md`.
 
 ---
 

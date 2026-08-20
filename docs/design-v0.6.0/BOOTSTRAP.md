@@ -138,12 +138,12 @@ closes:
   `pre-book-decision-gate` and slice02 `dogfood-implementation-runway` are
   closed/CDC-verified. The book gates arc09 because drafting it is the
   full-surface review before the release cut, but the operator has clarified
-  that all accepted implementation work comes first. Slice02's from-scratch
-  project routed fresh CLI/scaffold/package findings: `D-2608-BINW`,
-  `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP`. slice03
-  `cli-scaffold-package-runway` is open for those findings plus the 0.6.0 floor
-  for `D-2608-SOWN`; the export/grouped-local/branching language-surface
-  decisions remain after that, before book or writers-guide prose starts.
+  that all accepted implementation work comes first. slice03
+  `cli-scaffold-package-runway` is closed/CDC-verified: `D-2608-BINW`,
+  `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP` are fixed, and the 0.6.0
+  floor for `D-2608-SOWN` is implemented. The export/grouped-local/branching
+  language-surface decisions remain next, before book or writers-guide prose
+  starts.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
 **Current sequence:** arc16, then arc09. arc14
