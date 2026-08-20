@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-08-20 (arc16 slice05 book-instruction bootstrap opened.)",
+  updated: "2026-08-20 (arc16 slice05 closed by CC; CDC pending.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -184,8 +184,8 @@ const DATA = {
       cap:"Closed 2026-08-08: surface forms that compile clean but mean something the author did not write now become hard errors + lint + guide fixes. Method-on-expression rejects with a threading fix-it; sibling traps are closed; nested Rust fn parameter validation matches JS. slice03 hardening is deferred to 0.7.0.",
       slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps",s:"closed"},{n:"nested-fn-param-validation",s:"closed"}] },
     { id:"arc16", name:"book-0.6.0-edition", status:"open",
-      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice05 is open to align standing book/writers-guide instructions before chapter work; more slices may be added as book review exposes defects.",
-      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"closed"},{n:"language-surface runway",s:"closed"},{n:"book-instruction-bootstrap",s:"open"},{n:"book-fence-reachability",s:"planned"},{n:"current-book-drift-refresh",s:"planned"},{n:"toolchain/project-structure chapters",s:"planned"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
+      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice05 closed the standing book/writers-guide instruction bootstrap; slice06 book-fence reachability remains next before chapter work.",
+      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"closed"},{n:"language-surface runway",s:"closed"},{n:"book-instruction-bootstrap",s:"closed"},{n:"book-fence-reachability",s:"planned"},{n:"current-book-drift-refresh",s:"planned"},{n:"toolchain/project-structure chapters",s:"planned"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
     { id:"arc14", name:"comment-retention", status:"future",
       cap:"Retain comments through the pipeline: reader retention (opt-in) → surface→kernel provenance annotation → strip-or-preserve at JS emit (DD-62). The LFE comment-drop pain made a first-class goal; the home for the deferred lint-suppression mechanism. SEEDED 2026-07-21; release boundary decided 0.7.0 (operator, 2026-07-21); not slice-planned.",
       slices:[] },
@@ -204,7 +204,7 @@ const DATA = {
   sequence: ["arc16","arc09"],
   now: {
     arc:"arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is closed/CDC-verified for local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. arc16 slice04 is closed/CDC-verified for XPRT exports, LBND grouped locals, and COND flatter branching. arc16 slice05 is open to reconcile book/writers-guide standing instructions before chapter work."
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is closed/CDC-verified for local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. arc16 slice04 is closed/CDC-verified for XPRT exports, LBND grouped locals, and COND flatter branching. arc16 slice05 is closed by CC with CDC pending for book/writers-guide standing instructions. slice06 book-fence reachability remains next."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
@@ -241,7 +241,7 @@ const DATA = {
     "arc16 slice02 closed the first implementation/dogfood runway: CC built a fresh record-shape utility library, CDC replayed build/test/lint/run, and the pass routed four new CLI/scaffold/package findings — D-2608-BINW, D-2608-TDSL, D-2608-BREC, and D-2608-RIMP — before any book prose starts teaching the final project surface.",
     "arc16 slice03 closed the CLI/scaffold/package runway: fresh scaffolds install bin/lykn, scaffolded Lykn tests run through testing, nested package sources build recursively, source-file lykn run handles relative package imports from build output, and the 0.6.0 source-ownership floor is explicit. CDC reproduced the scratch runway and the full gate set.",
     "arc16 slice04 closed the language-surface runway: module-local (exports ...) is preferred for named exports while mod.lykn remains the package/barrel re-export layer; grouped sequential bind handles related locals; cond handles ordered predicate/result branching with :else required in value position. CDC reproduced Rust, Deno, Lykn, docs, and cited-path gates.",
-    "arc16 slice05 is open for book/writers-guide instruction bootstrap: stale paths, raw Deno/test-book assumptions, fence-gate honesty, AGENTS/CLAUDE facts, planned-ToC disposition, current 0.6.0 language guidance, and the explicit rule that future book-discovered defects can spawn new slices.",
+    "arc16 slice05 closed the book/writers-guide instruction bootstrap from CC's side: stale paths, raw Deno/test-book assumptions, fence-gate honesty, AGENTS/CLAUDE facts, planned-ToC disposition, current 0.6.0 language guidance, and the explicit rule that future book-discovered defects can spawn new slices are now recorded in sibling instructions. CDC remains pending.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",

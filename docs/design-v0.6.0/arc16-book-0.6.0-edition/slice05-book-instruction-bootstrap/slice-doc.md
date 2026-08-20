@@ -1,5 +1,7 @@
 # arc16 slice05 - Book Instruction Bootstrap
 
+> **Status:** Closed by CC on 2026-08-20; CDC verification pending.
+
 ## Goal
 
 Reconcile the standing book and writers-guide instructions with the current
