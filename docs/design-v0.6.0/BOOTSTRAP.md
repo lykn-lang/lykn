@@ -141,9 +141,10 @@ closes:
   that all accepted implementation work comes first. slice03
   `cli-scaffold-package-runway` is closed/CDC-verified: `D-2608-BINW`,
   `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP` are fixed, and the 0.6.0
-  floor for `D-2608-SOWN` is implemented. The export/grouped-local/branching
-  language-surface decisions remain next, before book or writers-guide prose
-  starts.
+  floor for `D-2608-SOWN` is implemented. slice04
+  `language-surface-runway` is now open for `D-2608-XPRT`, `D-2608-LBND`, and
+  `D-2608-COND`; book or writers-guide prose remains blocked until that slice
+  closes or splits with explicit re-entry conditions.
 - **arc09 · release — FUTURE.** Waits on the remaining 0.6.0 gates above.
 
 **Current sequence:** arc16, then arc09. arc14

@@ -1,6 +1,6 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — language-surface decisions next before book prose.**
+> **Status: OPEN — slice04 language-surface runway opened before book prose.**
 > slice01 `pre-book-decision-gate`, slice02 `dogfood-implementation-runway`,
 > and slice03 `cli-scaffold-package-runway` are closed/CDC-verified. The
 > operator tightened the rule: all accepted 0.6.0 implementation work must land
@@ -62,22 +62,24 @@ Read these before planning or executing any slice:
 Plan late, plan deep. slice01 is closed as an evidence packet. slice02 closed
 the first implementation/dogfood runway: CC built a from-scratch Lykn project,
 graded it against the SKILL/guides, and surfaced four CLI/scaffold/package
-runway findings that now need implementation routing before book prose starts.
+runway findings. slice03 closed that first implementation cluster. slice04 now
+opens the remaining language-surface runway before book prose starts.
 Book-facing slices remain deliberately scoped at capability level until the
-operator decides which remaining findings land in 0.6.0 and which route to
-later work.
+remaining implementation-first findings land or receive explicit deferral with
+re-entry conditions.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · pre-book-decision-gate** | Re-ground the historical book inventory and dogfood findings against current lang/book/writers-guide state; produce the operator decision packet for D-1...D-5, `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, and `D-2608-SOWN`; classify each as 0.6.0 implementation, docs/book-only, or 0.7.0+ deferral; recommend the next executable slice order. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice01-pre-book-decision-gate/closing-report.md), [cdc-verification](./slice01-pre-book-decision-gate/cdc-verification.md)) |
 | **slice02 · dogfood-implementation-runway** | Run another from-scratch Lykn project through current SKILL/guides/CLI workflows before book prose; collect command evidence, self-grade against guidance, and route implementation work from `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`, and any new dogfood findings. No compiler/book prose edits. | **Closed / CDC-verified** ([closing-report](./slice02-dogfood-implementation-runway/closing-report.md), [cdc-verification](./slice02-dogfood-implementation-runway/cdc-verification.md)) |
 | **slice03 · cli-scaffold-package-runway** | Land or explicitly route the first implementation cluster from slice02: `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`. A fresh project should build, test, lint, and run without the manual repairs slice02 needed. No export/grouped-binding/branching syntax work. | **Closed / CDC-verified** ([closing-report](./slice03-cli-scaffold-package-runway/closing-report.md), [cdc-verification](./slice03-cli-scaffold-package-runway/cdc-verification.md), [slice-doc](./slice03-cli-scaffold-package-runway/slice-doc.md), [ledger](./slice03-cli-scaffold-package-runway/ledger.md), [cc-prompt](./slice03-cli-scaffold-package-runway/cc-prompt.md)) |
-| **slice04 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, and the implementation-first rule. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Blocked until accepted 0.6.0 implementation routes are closed or deferred |
-| **slice05 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` implementation decision |
-| **slice06 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
-| **slice07 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route. | Provisional / book-facing |
-| **slice08 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
-| **slice09 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
+| **slice04 · language-surface-runway** | Land or explicitly defer the remaining language-surface findings before book examples harden: `D-2608-XPRT` top-of-module exports and `mod.lykn` ownership, `D-2608-LBND` grouped local bindings, and `D-2608-COND` flatter ordered validation branching. | **Open** ([slice-doc](./slice04-language-surface-runway/slice-doc.md), [ledger](./slice04-language-surface-runway/ledger.md), [cc-prompt](./slice04-language-surface-runway/cc-prompt.md)) |
+| **slice05 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, and the implementation-first rule. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | Blocked until accepted 0.6.0 implementation routes are closed or deferred |
+| **slice06 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` implementation decision |
+| **slice07 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
+| **slice08 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route. | Provisional / book-facing |
+| **slice09 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
+| **slice10 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
 
 slice01 found that D-3 is resolved by the tracked lang planning home, while D-1
 and `D-2607-R4NW` should be treated as one verification strategy: implement a
@@ -92,6 +94,12 @@ slice02 added four CLI/scaffold/package findings to the permanent register:
 `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, and `D-2608-RIMP`. These join
 `D-2608-SOWN` as the first implementation-routing cluster because they affect
 whether a fresh project can follow the guides without local workarounds.
+
+slice03 closed that cluster and left the language-surface set as the next
+implementation-first blocker. slice04 opens that work with explicit target
+shapes for top-of-module exports, grouped local bindings, and `cond`, while
+preserving a split-before-implementation escape hatch if CC proves the combined
+scope is too large for one context.
 
 ## 4. Dependencies
 
@@ -146,8 +154,9 @@ Current CDC read:
 - D-2, D-4, and D-5 are still operator/editorial process decisions for ToC
   policy, sequential verification, and cross-repo review cadence.
 - `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` are language-surface
-  decisions. If selected for 0.6.0, they need implementation before slice06 can
-  teach them.
+  decisions. slice04 is the current implementation route; book-facing language
+  chapters remain blocked until it closes or splits with explicit re-entry
+  conditions.
 - `D-2608-SOWN` can be a docs-only 0.6.0 compromise or a scaffold/build/dist
   behavior change, depending on the operator decision.
 
@@ -198,6 +207,15 @@ normalizes the surface.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.7 - 2026-08-20 (slice04 language-surface runway opened)
+
+Opened slice04 `language-surface-runway` with the canonical open set. The slice
+routes the remaining dogfood language-surface findings before book prose:
+`D-2608-XPRT` top-of-module exports and `mod.lykn` ownership, `D-2608-LBND`
+grouped local bindings, and `D-2608-COND` flatter validation branching. The
+previous book-facing provisional rows were pushed back one slot so execution
+order matches the implementation-first rule.
 
 ### v1.6 - 2026-08-20 (slice03 CDC-verified)
 
