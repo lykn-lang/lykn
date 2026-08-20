@@ -51,7 +51,7 @@ Then inspect the likely implementation seams:
 - `crates/lykn-lang/src/classifier/forms.rs`
 - `crates/lykn-lang/src/emitter/forms.rs`
 - `crates/lykn-lang/src/resolver.rs`
-- `crates/lykn-lang/src/surface.rs`
+- `crates/lykn-lang/src/ast/surface.rs`
 - `crates/lykn-cli/src/lint/`
 - `test/forms/export_test.lykn`
 - `test/forms/export.test.js`
