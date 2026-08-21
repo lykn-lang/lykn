@@ -1,11 +1,10 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — slice05 book-instruction bootstrap closed/CDC-verified;
-> slice06 book-fence reachability remains next.**
+> **Status: OPEN — slice06 book-fence reachability opened.**
 > slice01 `pre-book-decision-gate`, slice02 `dogfood-implementation-runway`,
 > slice03 `cli-scaffold-package-runway`, slice04
 > `language-surface-runway`, and slice05 `book-instruction-bootstrap` are
-> closed/CDC-verified. The
+> closed/CDC-verified. slice06 `book-fence-reachability` is open. The
 > operator tightened the rule: all accepted 0.6.0 implementation work must land
 > before book or writers-guide prose normalizes the final surface. The operator
 > also clarified that the book pass is expected to surface more defects; arc16
@@ -83,7 +82,7 @@ them.
 | **slice03 · cli-scaffold-package-runway** | Land or explicitly route the first implementation cluster from slice02: `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`. A fresh project should build, test, lint, and run without the manual repairs slice02 needed. No export/grouped-binding/branching syntax work. | **Closed / CDC-verified** ([closing-report](./slice03-cli-scaffold-package-runway/closing-report.md), [cdc-verification](./slice03-cli-scaffold-package-runway/cdc-verification.md), [slice-doc](./slice03-cli-scaffold-package-runway/slice-doc.md), [ledger](./slice03-cli-scaffold-package-runway/ledger.md), [cc-prompt](./slice03-cli-scaffold-package-runway/cc-prompt.md)) |
 | **slice04 · language-surface-runway** | Land or explicitly defer the remaining language-surface findings before book examples harden: `D-2608-XPRT` top-of-module exports and `mod.lykn` ownership, `D-2608-LBND` grouped local bindings, and `D-2608-COND` flatter ordered validation branching. | **Closed / CDC-verified** ([closing-report](./slice04-language-surface-runway/closing-report.md), [cdc-verification](./slice04-language-surface-runway/cdc-verification.md), [slice-doc](./slice04-language-surface-runway/slice-doc.md), [ledger](./slice04-language-surface-runway/ledger.md), [cc-prompt](./slice04-language-surface-runway/cc-prompt.md)) |
 | **slice05 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, the implementation-first rule, and the rule that future book-discovered defects become new discoveries/slices instead of prose workarounds. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | **Closed / CDC-verified** ([closing-report](./slice05-book-instruction-bootstrap/closing-report.md), [cdc-verification](./slice05-book-instruction-bootstrap/cdc-verification.md), [slice-doc](./slice05-book-instruction-bootstrap/slice-doc.md), [ledger](./slice05-book-instruction-bootstrap/ledger.md), [cc-prompt](./slice05-book-instruction-bootstrap/cc-prompt.md)) |
-| **slice06 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification, using the fence-first route recommended by slice01 unless the operator chooses another strategy. Establish the gate that later chapter slices must run. | Blocked on `D-2607-R4NW` implementation decision |
+| **slice06 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification by implementing the repeatable `lykn test --docs --fence <tag>` route from `D-2607-R4NW`. Establish the gate that later chapter slices must run, record first book-level extracted/failing counts, and update sibling instructions from "pending" to the landed command. | **Open** ([slice-doc](./slice06-book-fence-reachability/slice-doc.md), [ledger](./slice06-book-fence-reachability/ledger.md), [cc-prompt](./slice06-book-fence-reachability/cc-prompt.md)) |
 | **slice07 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
 | **slice08 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route. | Provisional / book-facing |
 | **slice09 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
@@ -107,11 +106,11 @@ slice03 closed that cluster and left the language-surface set as the next
 implementation-first blocker. slice04 closed that work with accepted 0.6.0
 surfaces for module-local exports, grouped local bindings, and `cond`. slice05
 reconciled and CDC-verified the standing book/writers-guide instructions
-against that shipped surface and recorded sibling commits. slice06
-`book-fence-reachability` remains
-next before book-facing chapter work, while preserving arc16's ability to insert
-new implementation slices when the book pass exposes defects the prior dogfood
-passes did not catch.
+against that shipped surface and recorded sibling commits. slice06 is now open
+to implement the repeatable `--fence` doc-test gate for the book's `lisp`
+fences before book-facing chapter work, while preserving arc16's ability to
+insert new implementation slices when the book pass exposes defects the prior
+dogfood passes did not catch.
 
 ## 4. Dependencies
 
@@ -222,6 +221,15 @@ normalizes the surface.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.13 - 2026-08-20 (slice06 opened)
+
+Opened slice06 `book-fence-reachability` with the canonical open set. The slice
+implements the `D-2607-R4NW` fence-first route: a repeatable `--fence` option
+for `lykn test --docs`, default-preserving guide doctests, opt-in `lisp` fence
+reachability for the book, sibling instruction updates, Discovery Register
+disposition, and first book-level extracted/failing counts. Chapter prose stays
+out of scope; failures exposed by the new gate route later slices.
 
 ### v1.12 - 2026-08-20 (slice05 CDC verified)
 
