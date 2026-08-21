@@ -38,7 +38,7 @@
 | [arc12 · test-topology](./arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
 | [arc14 · comment-retention](./arc14-comment-retention/arc-plan.md) | Retain comments through the pipeline (reader → surface→kernel provenance → JS-emit strip/preserve); DD-62 | **Seeded → 0.7.0** — home for lint-suppression; **release boundary decided 0.7.0** (operator, 2026-07-21); not slice-planned |
 | [arc15 · surface-syntax-traps](./arc15-surface-syntax-traps/arc-plan.md) | Compile-clean-but-wrong surface shapes become hard errors + lint + guide fixes | **Closed — gate GO 2026-08-08**; slices 01/02/04/05 closed; slice03 deferred to 0.7.0; arc ledger A-1…A-6 met |
-| [arc16 · book-0.6.0-edition](./arc16-book-0.6.0-edition/arc-plan.md) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — slice01-slice05 closed/CDC-verified; slice06 `book-fence-reachability` open before chapter work |
+| [arc16 · book-0.6.0-edition](./arc16-book-0.6.0-edition/arc-plan.md) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — slice06 `book-fence-reachability` closed by CC / CDC pending; slice07 `current-book-drift-refresh` next |
 
 _Numbering is **creation order** (from 2026-06-30). Current release sequence: arc16, then arc09._
 

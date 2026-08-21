@@ -204,6 +204,12 @@ lykn test test/forms/
 
 # Run a single test file
 lykn test test/surface/func.test.js
+
+# Test Markdown docs; extracts `lykn` fences by default
+lykn test --docs docs/guides/
+
+# Opt into another Markdown fence tag for docs mode
+lykn test --docs src --fence lisp
 ```
 
 Wraps `deno test --config project.json --no-check -A`.
@@ -438,6 +444,7 @@ that the JS codegen consumes.
 | `lykn check FILE` | Syntax check |
 | `lykn run FILE` | Run .lykn or .js file |
 | `lykn test [PATTERNS]` | Run tests via Deno |
+| `lykn test --docs GLOB [--fence TAG]` | Test Markdown docs; `--fence` is opt-in and repeatable |
 | `lykn lint [PATHS]` | Lint lykn **source** for anti-patterns (see `09-anti-patterns.md`) |
 | `lykn build` | Build workspace packages to `target/lykn/build/` |
 | `lykn dist` | Stage publishable packages in `target/lykn/dist/` |

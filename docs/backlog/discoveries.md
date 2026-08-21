@@ -929,15 +929,23 @@ was removed by the guide refresh.
 Book *findings* live here — they are facts about the language and its docs.
 Chapter rewrites live in the book repo.
 
-### `D-2607-R4NW` — `lykn test --docs` cannot see any of the book
-`extract_blocks` (`crates/lykn-cli/src/doctest.rs:104`) matches only ` ```lykn `
-and ` ```lykn,<annotation> `. The book authors in ` ```lisp `. Census: **444
-`lisp`, 170 `javascript`, 3 `lykn`** — and the only three visible blocks are in
-`part6/chapter29/6-markdown-testing.md`, the chapter that *teaches the doctest
-feature*. `audit` · High (hard prerequisite for any book compile pass) ·
-`blocker` · `open`
-*Note: ~20 lines in `doctest.rs`, but a real decision — teach the extractor
-`lisp`, flip 444 fences, or add `--also-fence`. Recommend the third.*
+### `D-2607-R4NW` — `lykn test --docs` could not see any of the book — **CLOSED (route implemented)**
+`extract_blocks` formerly matched only ` ```lykn ` and
+` ```lykn,<annotation> `. The book authors in ` ```lisp `. Census: **444
+`lisp`, 170 `javascript`, 3 `lykn`** — and the only three default-visible
+blocks are in `part6/chapter29/6-markdown-testing.md`, the chapter that
+*teaches the doctest feature*. `audit` · High (hard prerequisite for any book
+compile pass) · `blocker` · **Status:** `closed`
+*Disposition: arc16 slice06 implemented the opt-in, repeatable route
+`lykn test --docs PATH --fence TAG`. With no `--fence`, Markdown doctests still
+extract only `lykn` fences. From the book repo, the current gate is
+`/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn test --docs src --fence lisp`.
+The first slice06 run generated 176 doctest files from 444 `lisp` blocks and
+reached Deno execution (`417 passed / 27 failed`); the mixed run with
+`--fence lisp --fence lykn` generated 177 files from 447 blocks (`420 passed /
+27 failed`). Remaining book example failures re-enter through arc16 slice07
+`current-book-drift-refresh` or new Discovery rows if triage proves an
+implementation/tooling defect.*
 
 ### `D-2607-C7LZ` — Chapter 9.1 states something now simply false
 *"Lykn's `if` is a kernel form that maps directly to JavaScript's `if`

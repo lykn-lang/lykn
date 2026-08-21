@@ -373,6 +373,12 @@ lykn test --coverage
 # Test documentation (see ID-12)
 lykn test --docs docs/guides/
 
+# Test docs that intentionally use another fence tag for Lykn
+lykn test --docs src --fence lisp
+
+# Test a mixed tag tree
+lykn test --docs src --fence lisp --fence lykn
+
 # Both code and documentation
 lykn test test/ --docs docs/
 ```
@@ -382,6 +388,7 @@ lykn test test/ --docs docs/
 | Flag | Purpose |
 |------|---------|
 | `--docs <glob>` | Test Markdown code blocks |
+| `--fence <tag>` | Treat a Markdown fence tag as Lykn in docs mode; repeatable; defaults to `lykn` when omitted |
 | `--out-dir <dir>` | Write compiled JS to a separate directory |
 | `--compile-only` | Compile but don't run |
 
@@ -407,11 +414,21 @@ lykn test --docs docs/guides/01-core-idioms.md
 
 # Combined with code tests
 lykn test test/ --docs docs/
+
+# Opt into another Markdown fence tag for Lykn examples
+lykn test --docs src --fence lisp
+
+# Accept both tags in one run
+lykn test --docs src --fence lisp --fence lykn
 ```
 
 Each testable code block becomes a `Deno.test()` case. When a
 `` ```lykn `` block is followed by a `` ```js `` block, the tester
 compiles the lykn and asserts the output matches the JavaScript.
+By default, Markdown doctests extract only `` ```lykn `` fences. Use
+repeatable `--fence <tag>` when a document intentionally labels Lykn
+examples with another Markdown tag; for example, the 0.6.0 Lykn Book
+uses `--fence lisp` while it keeps `lisp` fences for syntax highlighting.
 
 ---
 
@@ -434,6 +451,10 @@ via fence annotations.
 The default (bare `` ```lykn ``) is a compile check. Use `skip` or
 `fragment` for code blocks that are intentionally incomplete.
 Use `compile-fail` for anti-pattern examples that should not compile.
+When `--fence <tag>` is supplied, the same annotation grammar applies to
+that accepted tag: `` ```lisp,compile-fail `` means compile-fail only for
+a command that opted into `--fence lisp`. Prefix-similar tags such as
+`` ```lisp-foo `` are not accepted by `--fence lisp`.
 
 ---
 
@@ -571,6 +592,7 @@ enclosing test becomes async.
 | `lykn test --fail-fast` | Stop on first failure |
 | `lykn test --coverage` | Collect coverage |
 | `lykn test --docs GLOB` | Test Markdown code blocks |
+| `lykn test --docs GLOB --fence TAG` | Opt into another Markdown fence tag for docs mode |
 | `lykn test --out-dir DIR` | Separate output directory |
 | `lykn test --compile-only` | Compile without running |
 

@@ -81,6 +81,10 @@ enum Commands {
         /// --docs README.md`).
         #[arg(long)]
         docs: Vec<String>,
+        /// Markdown fence tag(s) to treat as lykn in docs mode. Repeatable.
+        /// Defaults to `lykn` when omitted.
+        #[arg(long)]
+        fence: Vec<String>,
         /// Directory for compiled JS test output (default: target/lykn/test/).
         /// Compiled `*_test.lykn`/`.lyk` files land here (wiped per run), never
         /// in the source tree.
@@ -196,12 +200,14 @@ fn main() {
         Commands::Test {
             patterns,
             docs,
+            fence,
             out_dir,
             compile_only,
             deno_args,
         } => cmd_test(
             &patterns,
             &docs,
+            &fence,
             out_dir.as_deref(),
             compile_only,
             &deno_args,
@@ -567,6 +573,7 @@ const DEFAULT_TEST_OUT_DIR: &str = "target/lykn/test";
 fn cmd_test(
     patterns: &[String],
     docs: &[String],
+    fence_tags: &[String],
     out_dir: Option<&Path>,
     compile_only: bool,
     extra_deno_args: &[String],
@@ -606,7 +613,7 @@ fn cmd_test(
             }
         }
         // All doc paths run under one Deno invocation. run_doc_tests exits.
-        doctest::run_doc_tests(docs, &config, extra_deno_args);
+        doctest::run_doc_tests(docs, &config, fence_tags, extra_deno_args);
     }
 
     // Non-docs path: default to `test/` when no patterns were given.
@@ -1972,6 +1979,21 @@ mod tests {
         let tmpl = project_json_template("my-app");
         assert!(tmpl.contains("./packages/my-app"));
         assert!(tmpl.contains("\"my-app/\""));
+    }
+
+    #[test]
+    fn test_command_parses_repeated_fence_flags() {
+        let cli = Cli::try_parse_from([
+            "lykn", "test", "--docs", "src", "--fence", "lisp", "--fence", "lykn",
+        ])
+        .unwrap();
+        match cli.command {
+            Commands::Test { docs, fence, .. } => {
+                assert_eq!(docs, vec![String::from("src")]);
+                assert_eq!(fence, vec![String::from("lisp"), String::from("lykn")]);
+            }
+            _ => panic!("expected test command"),
+        }
     }
 
     #[test]

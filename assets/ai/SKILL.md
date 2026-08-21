@@ -661,6 +661,12 @@ lykn run packages/myapp/main.lykn
 # Run tests
 lykn test
 
+# Test documentation examples (Markdown `lykn` fences by default)
+lykn test --docs docs/guides/
+
+# Opt into another Markdown fence tag, such as the 0.6.0 book's `lisp` fences
+lykn test --docs src --fence lisp
+
 # Lint lykn SOURCE for anti-patterns (not the compiled JS)
 lykn lint packages/ examples/ test/
 
@@ -696,7 +702,7 @@ lykn targets Deno exclusively. The compiled JS output runs in Deno with ESM-only
 - **Deno APIs**: `Deno.readTextFile`, `Deno.serve`, `Deno.env.get()`, etc. **MUST**
 - **Web Platform APIs**: `fetch`, `Request`, `Response`, `URL`, `AbortController`, `structuredClone`. **SHOULD**
 - **Permissions**: `--allow-net`, `--allow-read`, etc. Never `--allow-all` in production. **MUST**
-- **Testing**: `Deno.test()` + `@std/assert`. Test files named `*_test.js` (on compiled output) or `*_test.lykn`. The lykn testing DSL (`import-macros "testing"`) provides `test`, `suite`, `step`, and assertion macros that compile to `Deno.test()` + `@std/assert`. See `docs/guides/16-testing.md`. **MUST**
+- **Testing**: `Deno.test()` + `@std/assert`. Test files named `*_test.js` (on compiled output) or `*_test.lykn`. The lykn testing DSL (`import-macros "testing"`) provides `test`, `suite`, `step`, and assertion macros that compile to `Deno.test()` + `@std/assert`. Documentation tests use Markdown `lykn` fences by default; use repeatable `lykn test --docs PATH --fence TAG` only when a document intentionally uses another fence tag for Lykn code. See `docs/guides/16-testing.md`. **MUST**
 
 ---
 

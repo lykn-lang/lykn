@@ -9,6 +9,8 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::{self, Command};
 
+const DEFAULT_MARKDOWN_FENCE: &str = "lykn";
+
 // ---------------------------------------------------------------------------
 // Block annotation types
 // ---------------------------------------------------------------------------
@@ -55,6 +57,32 @@ fn parse_annotation(s: &str) -> Annotation {
     }
 }
 
+/// Parse a Markdown fence line against the accepted Lykn fence tags.
+///
+/// A tag matches only as the complete fence tag (` ```tag `) or when followed
+/// by the annotation comma (` ```tag,run `). Prefix-similar tags such as
+/// ` ```lisp-foo ` deliberately do not match `lisp`.
+fn parse_fence_line(line: &str, fence_tags: &[&str]) -> Option<Annotation> {
+    if line.starts_with("````") {
+        return None;
+    }
+    let rest = line.strip_prefix("```")?;
+
+    for tag in fence_tags {
+        if tag.is_empty() {
+            continue;
+        }
+        if rest == *tag {
+            return Some(Annotation::Compile);
+        }
+        if let Some(annotation) = rest.strip_prefix(tag).and_then(|s| s.strip_prefix(',')) {
+            return Some(parse_annotation(annotation));
+        }
+    }
+
+    None
+}
+
 // ---------------------------------------------------------------------------
 // Extracted code blocks
 // ---------------------------------------------------------------------------
@@ -80,15 +108,20 @@ pub struct CodeBlock {
 // Markdown scanner
 // ---------------------------------------------------------------------------
 
-/// Extract all lykn code blocks from Markdown source text.
+/// Extract all default `lykn` code blocks from Markdown source text.
+pub fn extract_blocks(source: &str) -> Vec<CodeBlock> {
+    extract_blocks_with_fences(source, &[DEFAULT_MARKDOWN_FENCE])
+}
+
+/// Extract all accepted lykn code blocks from Markdown source text.
 ///
 /// The scanner is a simple line-by-line state machine:
-/// - A line starting with `` ```lykn `` opens a lykn block.
+/// - A line starting with an accepted fence tag opens a lykn block.
 /// - A line starting with `` ``` `` (and nothing else) closes any open block.
 /// - `## ` headings reset the `continue` accumulator.
-/// - A `` ```js `` block immediately following a lykn block (within a few
+/// - A `` ```js `` block immediately following an accepted block (within a few
 ///   non-blank, non-fence lines) is paired for output comparison.
-pub fn extract_blocks(source: &str) -> Vec<CodeBlock> {
+pub fn extract_blocks_with_fences(source: &str, fence_tags: &[&str]) -> Vec<CodeBlock> {
     let lines: Vec<&str> = source.lines().collect();
     let mut blocks: Vec<CodeBlock> = Vec::new();
     let mut block_number: usize = 0;
@@ -100,18 +133,8 @@ pub fn extract_blocks(source: &str) -> Vec<CodeBlock> {
         // Detect `## ` headings — we don't need to do anything with them
         // at extraction time; section tracking is handled during generation.
 
-        // Look for opening lykn fence
-        if line.starts_with("```lykn") && !line.starts_with("````") {
-            let annotation = if let Some(rest) = line.strip_prefix("```lykn,") {
-                parse_annotation(rest)
-            } else if line == "```lykn" {
-                Annotation::Compile
-            } else {
-                // Something like ```lykn-foo — not our block
-                i += 1;
-                continue;
-            };
-
+        // Look for an opening Lykn fence using the accepted tag set.
+        if let Some(annotation) = parse_fence_line(line, fence_tags) {
             // Collect lines until closing fence
             i += 1;
             let mut body = String::new();
@@ -229,12 +252,62 @@ fn collect_block_body(lines: &[&str], start: usize) -> Option<String> {
 }
 
 // ---------------------------------------------------------------------------
+// Compiler/config routing
+// ---------------------------------------------------------------------------
+
+fn find_checkout_root_from(start: &Path) -> Option<PathBuf> {
+    for dir in start.ancestors() {
+        if dir.join("project.json").is_file() && dir.join("packages/lang/mod.js").is_file() {
+            return Some(dir.to_path_buf());
+        }
+    }
+    None
+}
+
+fn find_binary_checkout_root() -> Option<PathBuf> {
+    std::env::current_exe()
+        .ok()
+        .and_then(|exe| find_checkout_root_from(&exe))
+}
+
+fn doc_test_config_path(requested_config: &Path) -> PathBuf {
+    if requested_config.is_file() {
+        return requested_config.to_path_buf();
+    }
+
+    find_binary_checkout_root()
+        .map(|root| root.join("project.json"))
+        .unwrap_or_else(|| requested_config.to_path_buf())
+}
+
+fn lang_mod_path(config_path: &Path) -> PathBuf {
+    let project_root = config_path.parent().unwrap_or(Path::new("."));
+    let lang_mod = project_root.join("packages/lang/mod.js");
+    if lang_mod.is_file() {
+        return lang_mod;
+    }
+
+    find_binary_checkout_root()
+        .map(|root| root.join("packages/lang/mod.js"))
+        .unwrap_or(lang_mod)
+}
+
+// ---------------------------------------------------------------------------
 // Section tracking for `continue` blocks
 // ---------------------------------------------------------------------------
 
 /// Track `## ` section boundaries in the Markdown source and assign section
 /// indices to each block based on their position in the source.
+#[cfg(test)]
 fn assign_sections(source: &str, blocks: &[CodeBlock]) -> Vec<usize> {
+    assign_sections_with_fences(source, blocks, &[DEFAULT_MARKDOWN_FENCE])
+}
+
+fn assign_sections_with_fences(
+    source: &str,
+    blocks: &[CodeBlock],
+    fence_tags: &[&str],
+) -> Vec<usize> {
     let lines: Vec<&str> = source.lines().collect();
     let mut sections = Vec::with_capacity(blocks.len());
     let mut current_section: usize = 0;
@@ -250,41 +323,31 @@ fn assign_sections(source: &str, blocks: &[CodeBlock]) -> Vec<usize> {
             current_section += 1;
         }
 
-        // Detect lykn fences to track block positions
-        if line.starts_with("```lykn") && !line.starts_with("````") {
-            // Determine if this is actually a valid block (same logic as extract)
-            let is_valid = if let Some(rest) = line.strip_prefix("```lykn,") {
-                let _ = parse_annotation(rest);
-                true
-            } else {
-                line == "```lykn"
-            };
-
-            if is_valid {
-                // Skip to end of block
+        // Detect accepted Lykn fences to track block positions.
+        if parse_fence_line(line, fence_tags).is_some() {
+            // Skip to end of block
+            i += 1;
+            let mut body_empty = true;
+            while i < lines.len() {
+                if lines[i].trim() == "```" {
+                    break;
+                }
+                if !lines[i].trim().is_empty() {
+                    body_empty = false;
+                }
                 i += 1;
-                let mut body_empty = true;
-                while i < lines.len() {
-                    if lines[i].trim() == "```" {
-                        break;
-                    }
-                    if !lines[i].trim().is_empty() {
-                        body_empty = false;
-                    }
-                    i += 1;
-                }
-                i += 1; // past closing fence
-
-                // Only non-empty blocks got numbered
-                if !body_empty {
-                    lykn_block_number += 1;
-                    if lykn_block_number == blocks[block_idx].number {
-                        sections.push(current_section);
-                        block_idx += 1;
-                    }
-                }
-                continue;
             }
+            i += 1; // past closing fence
+
+            // Only non-empty blocks got numbered.
+            if !body_empty {
+                lykn_block_number += 1;
+                if lykn_block_number == blocks[block_idx].number {
+                    sections.push(current_section);
+                    block_idx += 1;
+                }
+            }
+            continue;
         }
 
         i += 1;
@@ -319,19 +382,35 @@ pub fn generate_test_file(
     md_source: &str,
     config_path: &Path,
 ) -> String {
+    generate_test_file_with_fences(
+        md_path,
+        blocks,
+        md_source,
+        config_path,
+        &[DEFAULT_MARKDOWN_FENCE],
+    )
+}
+
+fn generate_test_file_with_fences(
+    md_path: &str,
+    blocks: &[CodeBlock],
+    md_source: &str,
+    config_path: &Path,
+    fence_tags: &[&str],
+) -> String {
     let mut out = String::new();
 
-    // Compute the absolute path to packages/lang/mod.js based on the config
-    // file location (e.g., /project/project.json -> /project/packages/lang/mod.js)
-    let project_root = config_path.parent().unwrap_or(Path::new("."));
-    let lang_mod = project_root.join("packages/lang/mod.js");
+    // Prefer the compiler next to the Deno config. If docs are tested from a
+    // sibling repo without project.json, fall back to the checkout that owns
+    // the invoked repo-local bin/lykn.
+    let lang_mod = lang_mod_path(config_path);
     let lang_mod_str = lang_mod.to_string_lossy();
 
     out.push_str("import { assertEquals } from \"jsr:@std/assert\";\n");
     out.push_str(&format!("import {{ lykn }} from \"{}\";\n\n", lang_mod_str));
 
     // Assign sections for continue-block accumulation
-    let sections = assign_sections(md_source, blocks);
+    let sections = assign_sections_with_fences(md_source, blocks, fence_tags);
 
     // Track accumulated source for `continue` blocks per section
     let mut continue_accum: Vec<(usize, String)> = Vec::new();
@@ -522,7 +601,12 @@ fn sanitize_filename(path: &str) -> String {
 /// 3. Generates temporary Deno test files under `target/lykn/test/doctest/`.
 /// 4. Invokes `deno test` on the generated files.
 /// 5. Exits with Deno's exit code.
-pub fn run_doc_tests(docs_paths: &[String], config: &str, deno_args: &[String]) -> ! {
+pub fn run_doc_tests(
+    docs_paths: &[String],
+    config: &str,
+    fence_tags: &[String],
+    deno_args: &[String],
+) -> ! {
     // Accumulate doc files across all `--docs` paths, so guides + README +
     // examples run under a single Deno invocation (arc12/slice01).
     let mut doc_files: Vec<PathBuf> = Vec::new();
@@ -552,10 +636,12 @@ pub fn run_doc_tests(docs_paths: &[String], config: &str, deno_args: &[String]) 
         process::exit(0);
     }
 
-    let config_path = Path::new(config);
-    let config_dir = config_path.parent().unwrap_or(Path::new("."));
+    let requested_config_path = Path::new(config);
+    let output_root = requested_config_path.parent().unwrap_or(Path::new("."));
+    let config_path = doc_test_config_path(requested_config_path);
+    let config_str = config_path.to_string_lossy().into_owned();
 
-    let out_dir = config_dir.join("target/lykn/test/doctest");
+    let out_dir = output_root.join("target/lykn/test/doctest");
     if out_dir.exists() {
         let _ = fs::remove_dir_all(&out_dir);
     }
@@ -567,6 +653,15 @@ pub fn run_doc_tests(docs_paths: &[String], config: &str, deno_args: &[String]) 
     let mut generated_files: Vec<PathBuf> = Vec::new();
     let mut total_blocks: usize = 0;
     let mut total_skipped: usize = 0;
+    let selected_fence_tags: Vec<&str> = if fence_tags.is_empty() {
+        vec![DEFAULT_MARKDOWN_FENCE]
+    } else {
+        fence_tags
+            .iter()
+            .map(String::as_str)
+            .filter(|tag| !tag.is_empty())
+            .collect()
+    };
 
     for doc_file in &doc_files {
         let source = match fs::read_to_string(doc_file) {
@@ -582,8 +677,10 @@ pub fn run_doc_tests(docs_paths: &[String], config: &str, deno_args: &[String]) 
         let is_html = doc_file.extension().is_some_and(|e| e == "html");
         let blocks = if is_html {
             extract_lykn_from_html(&source, 0)
-        } else {
+        } else if fence_tags.is_empty() {
             extract_blocks(&source)
+        } else {
+            extract_blocks_with_fences(&source, &selected_fence_tags)
         };
 
         if blocks.is_empty() {
@@ -600,7 +697,17 @@ pub fn run_doc_tests(docs_paths: &[String], config: &str, deno_args: &[String]) 
         total_skipped += skip_count;
 
         let doc_path_str = doc_file.to_string_lossy();
-        let test_content = generate_test_file(&doc_path_str, &blocks, &source, config_path);
+        let test_content = if fence_tags.is_empty() {
+            generate_test_file(&doc_path_str, &blocks, &source, &config_path)
+        } else {
+            generate_test_file_with_fences(
+                &doc_path_str,
+                &blocks,
+                &source,
+                &config_path,
+                &selected_fence_tags,
+            )
+        };
 
         let test_filename = format!("{}.test.js", sanitize_filename(&doc_path_str));
         let test_path = out_dir.join(&test_filename);
@@ -627,7 +734,14 @@ pub fn run_doc_tests(docs_paths: &[String], config: &str, deno_args: &[String]) 
 
     // Invoke deno test on the output directory
     let out_dir_str = out_dir.to_string_lossy().into_owned();
-    let mut args: Vec<&str> = vec!["test", "--config", config, "--no-check", "-A", &out_dir_str];
+    let mut args: Vec<&str> = vec![
+        "test",
+        "--config",
+        &config_str,
+        "--no-check",
+        "-A",
+        &out_dir_str,
+    ];
     let extra_refs: Vec<&str> = deno_args.iter().map(|s| s.as_str()).collect();
     args.extend(extra_refs);
 
@@ -818,6 +932,86 @@ print("hello")
         let blocks = extract_blocks(md);
         assert_eq!(blocks.len(), 1);
         assert_eq!(blocks[0].source, "(bind x 1)");
+    }
+
+    #[test]
+    fn test_extract_blocks_lisp_ignored_by_default() {
+        let md = r#"```lisp
+(bind x 1)
+```
+"#;
+        let blocks = extract_blocks(md);
+        assert!(blocks.is_empty());
+    }
+
+    #[test]
+    fn test_extract_blocks_lisp_with_opt_in_fence() {
+        let md = r#"```lisp
+(bind x 1)
+```
+"#;
+        let blocks = extract_blocks_with_fences(md, &["lisp"]);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].number, 1);
+        assert_eq!(blocks[0].annotation, Annotation::Compile);
+        assert_eq!(blocks[0].source, "(bind x 1)");
+    }
+
+    #[test]
+    fn test_extract_blocks_lisp_compile_fail_annotation() {
+        let md = r#"```lisp,compile-fail
+(bind)
+```
+"#;
+        let blocks = extract_blocks_with_fences(md, &["lisp"]);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].annotation, Annotation::CompileFail);
+    }
+
+    #[test]
+    fn test_extract_blocks_lisp_run_annotation() {
+        let md = r#"```lisp,run
+(console:log "hello")
+```
+"#;
+        let blocks = extract_blocks_with_fences(md, &["lisp"]);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].annotation, Annotation::Run);
+    }
+
+    #[test]
+    fn test_extract_blocks_lisp_prefix_tag_ignored() {
+        let md = r#"```lisp-foo
+(bind x 1)
+```
+
+```lisp
+(bind y 2)
+```
+"#;
+        let blocks = extract_blocks_with_fences(md, &["lisp"]);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].source, "(bind y 2)");
+    }
+
+    #[test]
+    fn test_extract_blocks_repeated_fence_tags_compose() {
+        let md = r#"```lisp
+(bind x 1)
+```
+
+```lykn
+(bind y 2)
+```
+
+```rust
+fn main() {}
+```
+"#;
+        let blocks = extract_blocks_with_fences(md, &["lisp", "lykn"]);
+        assert_eq!(blocks.len(), 2);
+        assert_eq!(blocks[0].source, "(bind x 1)");
+        assert_eq!(blocks[1].source, "(bind y 2)");
     }
 
     #[test]
@@ -1105,6 +1299,28 @@ Some prose here.
     }
 
     #[test]
+    fn test_generate_test_file_opt_in_continue_resets_at_section() {
+        let md = r#"## Section A
+
+```lisp,continue
+(type Color Red Green Blue)
+```
+
+## Section B
+
+```lisp,continue
+(bind x 1)
+```
+"#;
+        let blocks = extract_blocks_with_fences(md, &["lisp"]);
+        let config = Path::new("/project/project.json");
+        let result = generate_test_file_with_fences("test.md", &blocks, md, config, &["lisp"]);
+        assert!(result.contains("(type Color Red Green Blue)"));
+        assert!(result.contains("(bind x 1)"));
+        assert!(!result.contains("Color Red Green Blue)\n(bind x 1)"));
+    }
+
+    #[test]
     fn test_sanitize_filename_basic() {
         assert_eq!(
             sanitize_filename("docs/guides/01-core.md"),
@@ -1118,6 +1334,34 @@ Some prose here.
             sanitize_filename("docs\\guides\\test.md"),
             "docs__guides__test_md"
         );
+    }
+
+    #[test]
+    fn test_find_checkout_root_from_ancestors() {
+        let tmp = tempfile::tempdir().unwrap();
+        let root = tmp.path().join("checkout");
+        let bin = root.join("bin");
+        let lang = root.join("packages/lang");
+        std::fs::create_dir_all(&bin).unwrap();
+        std::fs::create_dir_all(&lang).unwrap();
+        std::fs::write(root.join("project.json"), "{}").unwrap();
+        std::fs::write(lang.join("mod.js"), "export {};\n").unwrap();
+
+        let result = find_checkout_root_from(&bin.join("lykn"));
+        assert_eq!(result.as_deref(), Some(root.as_path()));
+    }
+
+    #[test]
+    fn test_lang_mod_path_prefers_config_root() {
+        let tmp = tempfile::tempdir().unwrap();
+        let root = tmp.path().join("project");
+        let lang = root.join("packages/lang");
+        std::fs::create_dir_all(&lang).unwrap();
+        std::fs::write(root.join("project.json"), "{}").unwrap();
+        std::fs::write(lang.join("mod.js"), "export {};\n").unwrap();
+
+        let result = lang_mod_path(&root.join("project.json"));
+        assert_eq!(result, lang.join("mod.js"));
     }
 
     #[test]
@@ -1172,6 +1416,13 @@ Some prose here.
 
     #[test]
     fn test_generate_test_file_imports_correct_path() {
+        let tmp = tempfile::tempdir().unwrap();
+        let root = tmp.path().join("project");
+        let lang = root.join("packages/lang");
+        std::fs::create_dir_all(&lang).unwrap();
+        std::fs::write(root.join("project.json"), "{}").unwrap();
+        std::fs::write(lang.join("mod.js"), "export {};\n").unwrap();
+
         let blocks = vec![CodeBlock {
             number: 1,
             annotation: Annotation::Compile,
@@ -1179,9 +1430,10 @@ Some prose here.
             expected_js: None,
             expected_output: None,
         }];
-        let config = Path::new("/my/project/project.json");
-        let result = generate_test_file("test.md", &blocks, "```lykn\n(bind x 1)\n```", config);
-        assert!(result.contains("/my/project/packages/lang/mod.js"));
+        let config = root.join("project.json");
+        let result = generate_test_file("test.md", &blocks, "```lykn\n(bind x 1)\n```", &config);
+        let expected = lang.join("mod.js").to_string_lossy().to_string();
+        assert!(result.contains(expected.as_str()));
     }
 
     #[test]
