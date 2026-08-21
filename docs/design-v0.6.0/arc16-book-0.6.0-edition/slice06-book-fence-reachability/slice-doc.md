@@ -1,6 +1,6 @@
 # arc16 slice06 - Book Fence Reachability
 
-> **Status:** Closed by CC on 2026-08-20; CDC verification pending.
+> **Status:** Closed / CDC-verified on 2026-08-21.
 
 ## Goal
 

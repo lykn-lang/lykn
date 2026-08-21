@@ -1,11 +1,11 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — slice06 book-fence reachability closed by CC; CDC pending.**
+> **Status: OPEN — slice06 book-fence reachability closed/CDC-verified.**
 > slice01 `pre-book-decision-gate`, slice02 `dogfood-implementation-runway`,
 > slice03 `cli-scaffold-package-runway`, slice04
 > `language-surface-runway`, and slice05 `book-instruction-bootstrap` are
-> closed/CDC-verified. slice06 `book-fence-reachability` is closed by CC and
-> awaits CDC verification. The operator tightened the rule: all accepted 0.6.0 implementation work must land
+> closed/CDC-verified. slice06 `book-fence-reachability` is also
+> closed/CDC-verified. The operator tightened the rule: all accepted 0.6.0 implementation work must land
 > before book or writers-guide prose normalizes the final surface. The operator
 > also clarified that the book pass is expected to surface more defects; arc16
 > may grow many additional slices, and that is healthy as long as each new
@@ -82,7 +82,7 @@ them.
 | **slice03 · cli-scaffold-package-runway** | Land or explicitly route the first implementation cluster from slice02: `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`. A fresh project should build, test, lint, and run without the manual repairs slice02 needed. No export/grouped-binding/branching syntax work. | **Closed / CDC-verified** ([closing-report](./slice03-cli-scaffold-package-runway/closing-report.md), [cdc-verification](./slice03-cli-scaffold-package-runway/cdc-verification.md), [slice-doc](./slice03-cli-scaffold-package-runway/slice-doc.md), [ledger](./slice03-cli-scaffold-package-runway/ledger.md), [cc-prompt](./slice03-cli-scaffold-package-runway/cc-prompt.md)) |
 | **slice04 · language-surface-runway** | Land or explicitly defer the remaining language-surface findings before book examples harden: `D-2608-XPRT` top-of-module exports and `mod.lykn` ownership, `D-2608-LBND` grouped local bindings, and `D-2608-COND` flatter ordered validation branching. | **Closed / CDC-verified** ([closing-report](./slice04-language-surface-runway/closing-report.md), [cdc-verification](./slice04-language-surface-runway/cdc-verification.md), [slice-doc](./slice04-language-surface-runway/slice-doc.md), [ledger](./slice04-language-surface-runway/ledger.md), [cc-prompt](./slice04-language-surface-runway/cc-prompt.md)) |
 | **slice05 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, the implementation-first rule, and the rule that future book-discovered defects become new discoveries/slices instead of prose workarounds. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | **Closed / CDC-verified** ([closing-report](./slice05-book-instruction-bootstrap/closing-report.md), [cdc-verification](./slice05-book-instruction-bootstrap/cdc-verification.md), [slice-doc](./slice05-book-instruction-bootstrap/slice-doc.md), [ledger](./slice05-book-instruction-bootstrap/ledger.md), [cc-prompt](./slice05-book-instruction-bootstrap/cc-prompt.md)) |
-| **slice06 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification by implementing the repeatable `lykn test --docs --fence <tag>` route from `D-2607-R4NW`. Establish the gate that later chapter slices must run, record first book-level extracted/failing counts, and update sibling instructions from "pending" to the landed command. | **Closed by CC / CDC pending** ([closing-report](./slice06-book-fence-reachability/closing-report.md), [slice-doc](./slice06-book-fence-reachability/slice-doc.md), [ledger](./slice06-book-fence-reachability/ledger.md), [cc-prompt](./slice06-book-fence-reachability/cc-prompt.md)) |
+| **slice06 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification by implementing the repeatable `lykn test --docs --fence <tag>` route from `D-2607-R4NW`. Establish the gate that later chapter slices must run, record first book-level extracted/failing counts, and update sibling instructions from "pending" to the landed command. | **Closed / CDC-verified** ([closing-report](./slice06-book-fence-reachability/closing-report.md), [cdc-verification](./slice06-book-fence-reachability/cdc-verification.md), [slice-doc](./slice06-book-fence-reachability/slice-doc.md), [ledger](./slice06-book-fence-reachability/ledger.md), [cc-prompt](./slice06-book-fence-reachability/cc-prompt.md)) |
 | **slice07 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth. | Planned after implementation runway |
 | **slice08 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route. | Provisional / book-facing |
 | **slice09 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
@@ -106,9 +106,10 @@ slice03 closed that cluster and left the language-surface set as the next
 implementation-first blocker. slice04 closed that work with accepted 0.6.0
 surfaces for module-local exports, grouped local bindings, and `cond`. slice05
 reconciled and CDC-verified the standing book/writers-guide instructions
-against that shipped surface and recorded sibling commits. slice06 is closed by
-CC after implementing the repeatable `--fence` doc-test gate and proving the
-book's `lisp` fences are reachable. The first whole-book `lisp` run generated
+against that shipped surface and recorded sibling commits. slice06 is
+closed/CDC-verified after implementing the repeatable `--fence` doc-test gate
+and proving the book's `lisp` fences are reachable. The first whole-book `lisp`
+run generated
 176 doctest files from 444 blocks and reached Deno execution with 417 passing
 and 27 failing examples; the mixed `lisp` + `lykn` run generated 177 files from
 447 blocks with 420 passing and 27 failing examples. slice07
@@ -187,7 +188,7 @@ either fixed or routed every language/tooling defect it surfaced.
 | A-1 | slice01 pre-book decision gate closed | ptr: slice01 closing-report + cdc-verification | serious | arc-plan | **done** | [`slice01-pre-book-decision-gate/closing-report.md`](./slice01-pre-book-decision-gate/closing-report.md) + [`slice01-pre-book-decision-gate/cdc-verification.md`](./slice01-pre-book-decision-gate/cdc-verification.md); commit `00b3338` plus CDC follow-up | decisions before edits |
 | A-2 | every pre-book decision gate has a final disposition | arc close: compare §5 gates with operator decisions and routed homes | serious | arc-plan | open | | no design silent drops |
 | A-3 | book/writers-guide instructions are reconciled with the confirmed layout and current toolchain | read sibling `AGENTS.md`, writer-guide diffs, and slice02 close | serious | arc-plan | **done** | [`slice05-book-instruction-bootstrap/closing-report.md`](./slice05-book-instruction-bootstrap/closing-report.md) + [`slice05-book-instruction-bootstrap/cdc-verification.md`](./slice05-book-instruction-bootstrap/cdc-verification.md); book commit `4a82c62d97c15f3201e66d642c7270545bb1f45f`; writers-guide commit `491df62edb763a29981092be082ff7a6fcaace09` | instruction layer reconciled and independently verified |
-| A-4 | book code fences/examples are reachable by an automated gate | run the chosen book fence/test command and record extracted/passing/failing counts | serious | `D-2607-R4NW` + B0-G | **done by CC / CDC pending** | [`slice06-book-fence-reachability/closing-report.md`](./slice06-book-fence-reachability/closing-report.md): book `--fence lisp` run generated 176 files / 444 blocks / 417 passed / 27 failed; mixed run generated 177 files / 447 blocks / 420 passed / 27 failed | class-(b) composition row; CDC still needs to reproduce |
+| A-4 | book code fences/examples are reachable by an automated gate | run the chosen book fence/test command and record extracted/passing/failing counts | serious | `D-2607-R4NW` + B0-G | **done** | [`slice06-book-fence-reachability/closing-report.md`](./slice06-book-fence-reachability/closing-report.md) + [`slice06-book-fence-reachability/cdc-verification.md`](./slice06-book-fence-reachability/cdc-verification.md): CDC reproduced book `--fence lisp` at 176 files / 444 blocks / 417 passed / 27 failed and mixed `lisp` + `lykn` at 177 files / 447 blocks / 420 passed / 27 failed | class-(b) composition row reproduced by CDC; remaining failures route to slice07/new discoveries |
 | A-5 | stale 0.5.x/tooling/book drift inventory rows are either fixed, no-op, or deferred with re-entry | arc close: compare refreshed inventory against slice closures | serious | inventory | open | | anti-silent-drop row |
 | A-6 | chapters touched for 0.6.0 language/tooling changes match shipped behavior | chapter-scope tests plus source sweeps against current lang guides/SKILL | serious | P-20 | open | | reproduced at arc scale |
 | A-7 | final book outputs build and render in supported formats | run mdBook HTML/EPUB build and any configured book checks | serious | P-20 | open | | include known EPUB workaround |
@@ -224,6 +225,18 @@ normalizes the surface.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.15 - 2026-08-21 (slice06 CDC verified)
+
+CDC verified slice06 against the actual lang, book, and writers-guide repos.
+Lang gates reproduced: `cargo fmt --check`, `cargo test -p lykn-cli`, explicit
+guide/README/example docs sweep at 482/0, `make test-docs`, `make
+check-cited-paths`, and `git diff --check`. The book `--fence lisp` probe
+reproduced 176 files from 444 blocks with 417 passing / 27 failing examples;
+the mixed `--fence lisp --fence lykn` probe reproduced 177 files from 447
+blocks with 420 passing / 27 failing examples. A-4 is done. slice07
+`current-book-drift-refresh` remains next and should triage the 27 visible
+failures before chapter prose normalizes the surface.
 
 ### v1.14 - 2026-08-20 (slice06 closed by CC; CDC pending)
 

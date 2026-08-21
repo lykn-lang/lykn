@@ -1,6 +1,7 @@
 # arc16 slice06 - Book Fence Reachability Closing Report
 
-Closed by CC on 2026-08-20. CDC verification is pending.
+Closed by CC on 2026-08-20. CDC verification passed on 2026-08-21:
+[`cdc-verification.md`](./cdc-verification.md).
 
 ## 1. Source Material Read
 
@@ -160,11 +161,11 @@ Final lang close-state gates:
 | F-13 | done | Book `--fence lisp` generated 176 files from 444 blocks and reached Deno execution; mixed run generated 177 files from 447 blocks. |
 | F-14 | done | Required lang gates passed. Pre-commit `make check-cited-paths` failed only because this new close report was not in `HEAD`; post-commit rerun passed across 628 documents with 601 historical citations accepted. |
 | F-15 | done | Sibling statuses, `git diff --check`, `git ls-files -s AGENTS.md CLAUDE.md`, and `readlink CLAUDE.md` are recorded above after edits/commits. |
-| F-16 | done | Arc plan, project plan, README, status dashboard, slice ledger, and this report bubble slice06 up as closed by CC with CDC pending and slice07 next. |
+| F-16 | done | Arc plan, project plan, README, status dashboard, slice ledger, this report, and CDC verification bubble slice06 up as closed/CDC-verified with slice07 next. |
 
 ## 7. Bubble-Up To arc16
 
-- slice06 `book-fence-reachability` is closed by CC and ready for CDC review.
+- slice06 `book-fence-reachability` is closed/CDC-verified.
 - arc16 remains open because the book edition is not drafted/closed.
 - slice07 `current-book-drift-refresh` remains next. It should consume the 27
   current book-fence failures as the first drift inventory input and split out

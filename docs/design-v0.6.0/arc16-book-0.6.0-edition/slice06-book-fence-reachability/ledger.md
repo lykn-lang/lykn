@@ -19,7 +19,7 @@
 | F-13 | Book-level reachability is demonstrated | closing report records a command run from the sibling book repo that reaches the `lisp` fences, including extracted/generated/failing counts; non-zero exit is acceptable only with routed follow-up | serious | A-4 / `D-2607-R4NW` | **done** | [`closing-report.md`](./closing-report.md) §4: 176 files / 444 blocks / 417 passed / 27 failed; mixed 177 files / 447 blocks / 420 passed / 27 failed | failures are routed to slice07 or new discoveries |
 | F-14 | Required lang implementation gates pass | `cargo fmt --check`; `cargo test -p lykn-cli`; `./bin/lykn test --docs docs/guides/ --docs README.md --docs examples/surface/ --docs examples/kernel/`; `make test-docs`; `make check-cited-paths`; `git diff --check` pass after commit as applicable | serious | AGENTS.md / arc16 | **done** | `cargo fmt --check`; sandbox `cargo test -p lykn-cli` failed only on npm log write permission, rerun outside sandbox passed; explicit docs sweep 482/0; `make test-docs` 482/0; post-commit `make check-cited-paths` passed across 628 docs; `git diff --check` passed | cited-path gate required the new close report in `HEAD` |
 | F-15 | Sibling repo checks are run after edits | book and writers-guide `git diff --check`, statuses, and `git ls-files -s AGENTS.md CLAUDE.md` plus `readlink CLAUDE.md` are recorded after edits/commits | serious | slice05 | **done** | [`closing-report.md`](./closing-report.md) §5 records post-commit sibling statuses, diff checks, modes, and readlinks | book `_to_delete/` remained untouched |
-| F-16 | Slice close bubbles up honestly | closing report updates arc16 `arc-plan.md`, project plan/status surfaces, and states whether slice07 remains next or new implementation slices were inserted from book-gate findings | serious | project-management | **done** | [`closing-report.md`](./closing-report.md) §7 plus arc16/project/README/status bubble-up updates mark slice06 closed by CC / CDC pending | slice07 remains next |
+| F-16 | Slice close bubbles up honestly | closing report updates arc16 `arc-plan.md`, project plan/status surfaces, and states whether slice07 remains next or new implementation slices were inserted from book-gate findings | serious | project-management | **done** | [`closing-report.md`](./closing-report.md) §7 plus [`cdc-verification.md`](./cdc-verification.md) mark slice06 closed/CDC-verified in arc16/project/README/status surfaces | slice07 remains next |
 
 ## What Worked
 
@@ -32,5 +32,5 @@
 
 ## Closure
 
-Closed by CC on 2026-08-20; CDC verification pending. Rows: 16. Done: 16.
-Deferred: 0. No-op: 0. Pending: 0.
+Closed by CC on 2026-08-20 and CDC-verified on 2026-08-21. Rows: 16. Done:
+16. Deferred: 0. No-op: 0. Pending: 0.
