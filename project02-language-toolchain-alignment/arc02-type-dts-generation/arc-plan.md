@@ -26,15 +26,7 @@ substrate, copied to `arc02/design/`).
 
 ## 4. Arc ledger
 
-| ID | Criterion | Verify | Significance | Origin | Status | Evidence |
-|----|-----------|--------|--------------|--------|--------|----------|
-| A-1 | slice01 closed | ptr: slice01 closing-report + cdc-verification | correctness | arc-plan | done | M10 closing report + CDC review |
-| A-2 | `.d.ts` emitted from `:type` annotations | slice01 closing report (per-row walk) | correctness | arc-plan | done | reproduced at slice scale (closing report) |
-
-**Reconstruction caveat:** no separate `ledger.md` existed for M10 (it was
-tracked via diagnosis → prompt → closing → CDC, without a `milestones/` ledger
-file). The closing report + CDC review carry the evidence. Rows here are
-*attested* from those artifacts.
+See [ledger.md](ledger.md). Historical rows were extracted without changing their dispositions during project06-planning-reorg.
 
 ## 5. Version History
 

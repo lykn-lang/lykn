@@ -1,7 +1,3 @@
 # Arc ledger
 
-Added during the migration because this arc previously had no dedicated ledger. Any embedded ledger or child record retains its historical authority; no acceptance status is inferred here.
-
-| ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| A-1 | Historical capability composition is independently evaluated | Read arc plan and retained artifacts/child ledgers | correctness-grade | retrospective layout | open | | Migration does not reopen or close historical implementation. |
+The authoritative historical rows remain in the **Arc ledger** section of [arc-plan.md](arc-plan.md). This is a migration compatibility entrypoint, not a replacement ledger or a new acceptance criterion. Keeping the embedded rows in place preserves the current uncommitted bench edits. Future work can extract those rows as a separately reviewed change.

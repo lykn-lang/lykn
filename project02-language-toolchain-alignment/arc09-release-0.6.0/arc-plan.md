@@ -36,9 +36,7 @@ Relies on arc01's publish gate. This arc's close is the **project gate**
 
 ## 4. Arc ledger
 
-_Opens when the arc-plan is detailed._ Class-(b) composition row will be a
-publish dry-run reproduced across all three registries, then the published
-artifacts verified installable.
+See [ledger.md](ledger.md). Historical rows were extracted without changing their dispositions during project06-planning-reorg.
 
 ## 5. Version History
 

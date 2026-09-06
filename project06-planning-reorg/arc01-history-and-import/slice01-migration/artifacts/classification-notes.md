@@ -9,3 +9,5 @@
 - The latest owning-branch 0.6 records are canonical. Six older inherited blobs are retained in inherited-variants; 0.7 and 0.8 share those older blobs. All original source tips remain reachable through import ancestry and backup branches.
 - The ignored workbench/old inventory has 242 files, 25 exact duplicates of tracked docs and 217 unmatched against that snapshot. It includes mixed 0.5.1/0.5.2/0.6 work, not exclusively pre-0.5 planning. It remains intact in the original workspace; no Git history existed for those local files. Expanding this archive into new canonical plans is outside the tracked-doc migration.
 - Old single-tree ODM configuration is retired because the design records now belong to several project/arc artifact homes. Original ODM metadata remains readable; do not run the former repository-wide ODM configuration to recreate docs/design or docs/dev.
+
+- Project02 project and arc ledgers were extracted from their plan sections without changing row content or dispositions. Project05 dedicated ledger entrypoints point to the retained embedded rows, avoiding a structural rewrite of live uncommitted hardware work.

@@ -43,8 +43,7 @@ the suppression mechanism). Independent of arc06/arc07.
 
 ## 4. Arc ledger
 
-_Opens when the arc is slice-planned (the composition rows come from the DD-62
-commitments C1–C3 + the both-backend parity gate). Not opened while seeded._
+See [ledger.md](ledger.md). Historical rows were extracted without changing their dispositions during project06-planning-reorg.
 
 ## 5. Version History
 
