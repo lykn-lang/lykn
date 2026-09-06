@@ -15,12 +15,12 @@
 | `/Users/oubiwann/.agents/skills/rust-guidelines/guides/14-cli-tools/06-testing.md` | CLI integration-test guidance for subprocess coverage. |
 | `/Users/oubiwann/.agents/skills/javascript-deno-guidelines/SKILL.md` | Deno/package metadata guidance before changing `packages/testing/deno.json`. |
 | `/Users/oubiwann/.agents/skills/javascript-deno-guidelines/guides/12-deno/12-04-publishing.md` | Deno/JSR metadata context for macro package publish truth. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` | Arc status, implementation-first rule, and slice03 scope. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md` | Original dogfood failures and routing recommendations for `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and `D-2608-SOWN`. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cdc-verification.md` | CDC reproduction of slice02 failures and required next implementation cluster. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/slice-doc.md` | Slice goal, scope, expected behavior, and verification bar. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/ledger.md` | F-1 through F-10 acceptance criteria. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/cc-prompt.md` | Direct execution contract. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md` | Arc status, implementation-first rule, and slice03 scope. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md` | Original dogfood failures and routing recommendations for `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and `D-2608-SOWN`. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cdc-verification.md` | CDC reproduction of slice02 failures and required next implementation cluster. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/slice-plan.md` | Slice goal, scope, expected behavior, and verification bar. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/ledger.md` | F-1 through F-10 acceptance criteria. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/cc-prompt.md` | Direct execution contract. |
 | `crates/lykn-cli/src/main.rs` | `cmd_new`, scaffold templates, local binary install, local testing overlay, `cmd_run`, and CLI test/run behavior. |
 | `crates/lykn-cli/src/dist.rs` | `build_project`, recursive compilation/copying, dist staging, and generated metadata/stubs. |
 | `crates/lykn-cli/src/config.rs` | Project/package config parsing and the local overlay writer used by the scaffold. |
@@ -54,8 +54,8 @@ directories; the available Rust and Deno JS guideline skills under
 | `packages/testing/deno.json` | Added explicit `lykn.macroEntry`. |
 | `docs/guides/10-project-structure.md` | Documented recursive build behavior and non-Lykn source ownership boundary. |
 | `docs/guides/15-lykn-cli.md` | Documented scaffolded `bin/lykn`, local testing overlay, and updated `lykn run` source behavior. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` | Updated slice03 status and arc ledger evidence. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/ledger.md` | Closed F-1 through F-10 with evidence. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md` | Updated slice03 status and arc ledger evidence. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/ledger.md` | Closed F-1 through F-10 with evidence. |
 
 ## 4. Automated Coverage
 

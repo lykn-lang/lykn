@@ -66,7 +66,7 @@ CDC ran every Verify command against the worktree state.
 
 ### M16-4 — If-profile-audit pattern ✓
 
-- Dev doc at `docs/dev/0024-if-profile-audit-pattern-for-special-case-intercepts.md` exists. ✓
+- Dev doc at `project02-language-toolchain-alignment/arc03-compiler-coherence/artifacts/dev/0024-if-profile-audit-pattern-for-special-case-intercepts.md` exists. ✓
 - Audit doc at `workbench/verify/m16/kernel-profile-audit.md`
   exists with 4 rows (header + 3 audited forms). ✓
 - The 3 audited forms (`assign`, `class`/`class-expr`, `if`)

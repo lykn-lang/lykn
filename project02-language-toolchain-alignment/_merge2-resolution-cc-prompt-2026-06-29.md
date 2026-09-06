@@ -7,7 +7,7 @@ already merged cleanly just before. 6 files are conflicted. Resolve them, comple
 the merge, and verify — git ops on the host.
 
 ## 0. Read first
-- `docs/design-v0.6.0/_reconciliation-2026-06-29.md` — why these merges are happening.
+- `project02-language-toolchain-alignment/_reconciliation-2026-06-29.md` — why these merges are happening.
 - This whole prompt before touching anything. Two conflicts are **subtly
   dangerous** (§2.2, §2.3) — they can silently revert a shipped fix.
 
@@ -95,7 +95,7 @@ Test **counts will be higher** than the old 657/1293 (DD-37 + DD-55 added tests)
 - **Do NOT stage `docs/design-v0.6.0/**`** — there are uncommitted CDC planning-doc
   edits + untracked reconciliation/cdc-verification files in the tree. Leave them
   alone; CDC reconciles and commits those separately after you confirm green.
-  `git status` before committing to confirm `docs/design-v0.6.0/` stays unstaged.
+  `git status` before committing to confirm `project02-language-toolchain-alignment/` stays unstaged.
 
 ## 5. Close
 Report: per-file how you resolved it (esp. the §2.2 escaping call and the §2.3

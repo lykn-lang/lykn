@@ -149,7 +149,7 @@ payoff: **inline `lykn lint` suppression** (arc05's deferred mechanism).
 **Source.** arc05/slice04 deferred the lint-suppression mechanism here; seeded
 as arc14 in the 0.6.0 tree; release boundary 0.7.0.
 
-**Re-entry.** Already seeded (`docs/design-v0.6.0/arc14-comment-retention/`,
+**Re-entry.** Already seeded (`project02-language-toolchain-alignment/arc14-comment-retention/`,
 `design/dd-62-comment-retention-DRAFT.md`). Activate + slice-plan when 0.7.0
 opens; the open DD-62 §5 question (comment attach model) resolves first.
 Consumes arc13's node-metadata pattern.
@@ -307,7 +307,7 @@ keyword-step rule should apply unchanged, so `(:method …)` steps keep working.
 Interaction to decide: whether the placeholder is user-named (Clojure) or a
 fixed sigil.
 
-**Source:** `docs/design-v0.7.0/03-threading-macros/` — `inventory.md` §5–§7
+**Source:** `project03-language-evolution/slice03-threading-macros/` — `inventory.md` §5–§7
 (recommendation R2), ledger rows R-7 and R-8. Discovery row `D-2607-3KTP`.
 
 **Re-entry:** the pending language-design conversation on threading macros — the

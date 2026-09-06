@@ -36,15 +36,15 @@ Read these before editing:
 9. `docs/guides/15-lykn-cli.md`
 10. Rust language/project guidelines before editing Rust
 11. Deno-based JavaScript guidelines before editing JS or Deno-facing tests
-12. `docs/backlog/discoveries.md` rows `D-2608-XPRT`, `D-2608-LBND`, and
+12. `backlog/discoveries.md` rows `D-2608-XPRT`, `D-2608-LBND`, and
     `D-2608-COND`
-13. `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md`
-14. `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
-15. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md`
-16. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
-17. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/cdc-verification.md`
-18. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/slice-doc.md`
-19. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md`
+13. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md`
+14. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+15. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md`
+16. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+17. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/cdc-verification.md`
+18. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/slice-plan.md`
+19. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md`
 
 Then inspect the likely implementation seams:
 

@@ -24,7 +24,7 @@ against current lykn and find out what actually still breaks.**
 
 ## What to do (MUST)
 
-Produce `docs/design-v0.6.0/arc06-cross-project-dep-ergonomics/slice02-mycelium-reaudit/reaudit-findings.md`.
+Produce `project02-language-toolchain-alignment/arc06-cross-project-dep-ergonomics/slice02-mycelium-reaudit/reaudit-findings.md`.
 
 ### Method — do these three first (see `cdc-pre-audit.md` for detail)
 

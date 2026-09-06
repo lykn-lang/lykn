@@ -1,21 +1,21 @@
 # Discovery rows from `03-threading-macros`
 
 Produced 2026-07-25. **These six rows have been appended to
-`docs/backlog/discoveries.md`** (on `main`'s working tree), together with a
+`backlog/discoveries.md`** (on `main`'s working tree), together with a
 correction to `D-2607-K9RT`, an evidence-base block on that row, and two new
 instances added to `D-2607-Z5KN`.
 
 ## Status: ROUTED (resolved 2026-07-25)
 
-All six rows are in `docs/backlog/discoveries.md`, **and the register is now
-committed** — the operator committed `docs/backlog/` (3 files) to both `main`
+All six rows are in `backlog/discoveries.md`, **and the register is now
+committed** — the operator committed `backlog/` (3 files) to both `main`
 and `release/0.6.x` the same day, after this unit flagged that it was untracked
 on every branch. The register's routing rule (`D-2607-8HTN`) is therefore
 satisfied on both halves: the destination exists in git *and* contains the rows.
 
 *Superseded text, kept for provenance:* this section previously read
 **"appended, but NOT yet routed"**, because `git ls-tree` returned 0 files for
-`docs/backlog` on `main`, `release/0.6.x` and `release/0.7.x`. That was accurate
+`backlog` on `main`, `release/0.6.x` and `release/0.7.x`. That was accurate
 when written and is no longer true. The finding stands as the reason the commit
 happened; the blocker does not.
 
@@ -35,7 +35,7 @@ the register in the **0.6.x worktree**, not here and not on `main`.
 
 ### `D-2607-8QVL` — DD-18's `->>` example documents the wrong expansion, and it is `final`
 
-- **What:** `docs/design/06-final/0023-dd-18-threading-macros-and-conditional-binding.md`,
+- **What:** `project01-mvp/arc03-surface-language/artifacts/design/06-final/0023-dd-18-threading-macros-and-conditional-binding.md`,
   §`->>` thread-last, states that
 
   ```lisp
@@ -52,7 +52,7 @@ the register in the **0.6.x worktree**, not here and not on `main`.
   (the "Syntax" JS block and the kernel-expansion block).
 - **How found:** `audit` — reading the governing DD before writing the
   threading-macro survey; confirmed by executing the compiler
-  (`docs/design-v0.7.0/03-threading-macros/scripts/probe-threading.js`).
+  (`project03-language-evolution/slice03-threading-macros/scripts/probe-threading.js`).
 - **Guess:** High. It is a `final`-state DD, it is the normative description of
   the macro, and it teaches the reader that `->>` does what `->` does — which is
   precisely the confusion the survey found in the guides too.
@@ -80,7 +80,7 @@ the register in the **0.6.x worktree**, not here and not on `main`.
   unknown head compiles to a call), but a **high-traffic** instance: `as->` is
   the third threading macro a Clojure user reaches for, and lykn's own guides
   teach the other four.
-- **Kind:** `gap` · **Status:** `routed` → `docs/design-v0.7.0/BACKLOG.md` §A7
+- **Kind:** `gap` · **Status:** `routed` → `project03-language-evolution/BACKLOG.md` §A7
 - **Why it matters beyond the missing macro:** the `03-threading-macros` survey
   found that `as->` is the *general* form — one macro covers datum-last,
   datum-mid, and operator-receiver signatures, including the datum-in-the-middle
@@ -109,10 +109,10 @@ the register in the **0.6.x worktree**, not here and not on `main`.
 
 ---
 
-### `D-2607-L7BX` — `docs/design-v0.7.0/` is absent from `main`, with debris that makes it look present
+### `D-2607-L7BX` — `project03-language-evolution/` is absent from `main`, with debris that makes it look present
 
 - **What:** The 0.7.0 planning tree exists only on `release/0.7.x`. On `main`,
-  `docs/design-v0.7.0/` holds two **empty, untracked** directories —
+  `project03-language-evolution/` holds two **empty, untracked** directories —
   `02-packaging-strategy/artifacts` and `02-packaging-strategy/evidence` — and
   nothing else. An `ls` on `main` suggests the tree is present and merely
   sparse; `git ls-files` shows it is not there at all.
@@ -127,14 +127,14 @@ the register in the **0.6.x worktree**, not here and not on `main`.
 - **Kind:** `trap` · **Status:** `open`
 - **The mirror problem, and the one with teeth:** `docs/ecmascript-2025/` (the
   42-file ES2025 spec corpus, `0a4b138`) is on **`main` only**. Research units
-  under `docs/design-v0.7.0/` live on `release/0.7.x` and therefore **cannot
+  under `project03-language-evolution/` live on `release/0.7.x` and therefore **cannot
   cite it with a path that resolves on their own branch** — which
   `CLAUDE.md` requires and `make check` enforces. Found the hard way: the
   `03-threading-macros` reproduce command was written against
   a two-levels-up `ecmascript-2025` path and did not resolve. **Operator call:** cherry-pick
   `0a4b138` onto `release/0.7.x`, or accept cross-branch notes in every unit
   that uses the corpus.
-- **Also:** `docs/backlog/owed-0.7.x-rows.md:4` names the worktree as
+- **Also:** `backlog/owed-0.7.x-rows.md:4` names the worktree as
   `.workdirs/release-0.7.x`; the actual path is `.worktrees/0.7.x`. One-line fix,
   same document that exists to make the 0.7.x checkout cheap.
 
@@ -161,7 +161,7 @@ the register in the **0.6.x worktree**, not here and not on `main`.
   was implemented there too, after the operator surfaced conflicting accounts.
 - **Guess:** Medium as a defect risk, **high as an explanation.** The two
   implementations *do* currently agree — 14/14 in
-  `docs/design-v0.7.0/03-threading-macros/data/parity-transcript.txt`. But the
+  `project03-language-evolution/slice03-threading-macros/data/parity-transcript.txt`. But the
   thinness of this surface is *why* a JS-only check felt sufficient to the
   session doing the survey, and it is the standing obligation `CLAUDE.md` states
   outright: *"Changes to the grammar should be reflected in both."* Nothing

@@ -4,7 +4,7 @@
 **Scope**: Phase 4 of lykn v0.1.0 — destructuring patterns for object and array
 **Where you're working**: `src/compiler.js` — modifying existing macros AND adding new compilation functions
 **Prerequisites**: Phase 1 (camelCase, colon syntax), Phase 2 (`const`/`let`/`var`, `=`, function forms, `for-of`/`for-in`), Phase 3 (`default`, `spread`, rewritten `object`)
-**Design authority**: `docs/design/06-final/0006-dd-06-destructuring-patterns.md`
+**Design authority**: `project01-mvp/arc01-js-foundations/artifacts/design/06-final/0006-dd-06-destructuring-patterns.md`
 
 ---
 

@@ -47,7 +47,7 @@ typeMatchesLiteral, buildTypeCheck, paramNameNodes, paramTypeChecks →
 
 ## 2. Per-row walk
 
-Full evidence in [`ledger.md`](./ledger.md); all 8 rows `done`:
+Full evidence in [`ledger.md`](ledger.md); all 8 rows `done`:
 F-1 dep analysis · F-2 moves via the tool (3 invocations, rebuild-first verify) ·
 F-3 all 10 in helpers / 0 in surface · F-4 **all 10 byte-identical** · F-5 alias
 self-deleted (tool's stripReExport) · F-6 consumers rewired (note below) · F-7

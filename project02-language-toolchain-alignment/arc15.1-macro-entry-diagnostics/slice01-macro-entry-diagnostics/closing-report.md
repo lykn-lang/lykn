@@ -87,7 +87,7 @@ The fix itself is proven on the **local** compilers (always current):
 - **Systemic note (per slice-doc §6):** this is the third "the untested path is
   the one that shipped wrong" in a day (slice07's zero-coverage rewrite, its
   overclaiming test name, and this missing-dir case). Belongs in
-  `docs/backlog/discoveries.md` as a systemic entry.
+  `backlog/discoveries.md` as a systemic entry.
 
 ## Discipline notes
 

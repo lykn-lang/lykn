@@ -8,15 +8,15 @@ This slice was recon-only. I did not edit `docs/guides/**` or
 ## Inputs Read
 
 - Slice prompt, slice doc, and ledger:
-  `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/cc-prompt.md`,
-  `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/slice-doc.md`,
-  `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/ledger.md`
+  `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/cc-prompt.md`,
+  `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/slice-plan.md`,
+  `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/ledger.md`
 - Arc/project context:
-  `docs/design-v0.6.0/project-plan.md`,
-  `docs/design-v0.6.0/arc07-docs/arc-plan.md`
+  `project02-language-toolchain-alignment/project-plan.md`,
+  `project02-language-toolchain-alignment/arc07-docs/arc-plan.md`
 - Seed docs:
-  `docs/design-v0.6.0/arc07-docs/design/guide-drift-cleanup-plan.md`,
-  `docs/design-v0.6.0/arc07-docs/design/proposed-skill-and-guide-additions.md`
+  `project02-language-toolchain-alignment/arc07-docs/design/guide-drift-cleanup-plan.md`,
+  `project02-language-toolchain-alignment/arc07-docs/design/proposed-skill-and-guide-additions.md`
 - Current guidance surface:
   `assets/ai/SKILL.md` and all 20 files under `docs/guides/`
 - Current code evidence for behavioral claims:

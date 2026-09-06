@@ -12,12 +12,12 @@
 | `docs/guides/03-error-handling.md` | Error and validation guidance: throw only `Error`, do not throw for expected absence, use tagged results for expected outcomes, fail fast at boundaries. |
 | `docs/guides/10-project-structure.md` | Project layout guidance: scaffold shape, package root source, `mod.lykn` entrypoints, feature directories, generated output, tests, and build pipeline. |
 | `docs/guides/15-lykn-cli.md` | CLI command semantics for `lykn new`, `build`, `test`, `lint`, `run`, `dist`, and publish. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` | Arc capability, implementation-first rule, known decision gates, and arc ledger context. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md` | Current decision packet for D-1...D-5 and `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/cdc-verification.md` | Independent verification of slice01 and the updated arc-plan state this slice must plan against. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/slice-doc.md` | This slice's goal, in/out scope, required project shape, verification, and exit criteria. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/ledger.md` | F-1 through F-9 acceptance criteria for this closeout. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cc-prompt.md` | Direct CC execution contract for the dogfood run and report shape. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md` | Arc capability, implementation-first rule, known decision gates, and arc ledger context. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md` | Current decision packet for D-1...D-5 and `D-2607-R4NW`, `D-2608-XPRT`, `D-2608-LBND`, `D-2608-COND`, `D-2608-SOWN`. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/cdc-verification.md` | Independent verification of slice01 and the updated arc-plan state this slice must plan against. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/slice-plan.md` | This slice's goal, in/out scope, required project shape, verification, and exit criteria. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/ledger.md` | F-1 through F-9 acceptance criteria for this closeout. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cc-prompt.md` | Direct CC execution contract for the dogfood run and report shape. |
 
 ## 2. Scratch Project Summary
 

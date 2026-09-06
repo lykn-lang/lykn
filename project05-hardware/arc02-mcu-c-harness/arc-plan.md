@@ -33,7 +33,7 @@ arc06 timing stimulus.
 | A-1 | NUCLEO-U575ZI-Q C toolchain path builds and flashes a minimal program | slice close transcript | serious | arc capability | open | | |
 | A-2 | owned board shim boundary is documented | shim header/source + notes | serious | Lykn target profile | open | | no vendor HAL in Lykn semantics |
 | A-3 | Lykn-shaped C fixtures compile under the chosen toolchain | build transcript | serious | embedded C research | open | | |
-| A-4 | constraints bubble up to `docs/design-v0.8.0/` | plan/version-history entry | serious | project-management | open | | |
+| A-4 | constraints bubble up to `project04-c-lang/` | plan/version-history entry | serious | project-management | open | | |
 
 ## 5. Version History
 

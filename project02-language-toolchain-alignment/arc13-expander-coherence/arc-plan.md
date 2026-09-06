@@ -54,7 +54,7 @@ creation-order convention; the v1.4 tail-renumber was a CDC slip, corrected
 here.)*
 
 *(Architecture per **DD-61 · Resolve-Once** —
-[`design/dd-61-resolve-once-resolution-architecture.md`](./design/dd-61-resolve-once-resolution-architecture.md):
+[`design/dd-61-resolve-once-resolution-architecture.md`](design/dd-61-resolve-once-resolution-architecture.md):
 **resolved-atom flags** [operator-confirmed 2026-07-06 over alpha-renaming
 and a new kernel construct — the enrich-the-identifier pattern of Racket
 syntax objects / rustc `Res` fields], one binding-walker per backend,

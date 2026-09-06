@@ -26,7 +26,7 @@ raises it to `reproduced` by an independent party. Raising R-1…R-4 is cheap
 | **R-8** | `->>` **does** produce correct, useful output for its real domain, identically in both compilers. | `data/parity-transcript.txt` cases 6-8: `(->> rendered (Deno:write-text-file "out.html"))` → `Deno.writeTextFile("out.html", rendered);`; `(->> bytes (crypto:subtle:digest "SHA-256"))` → `crypto.subtle.digest("SHA-256", bytes);` | `attested` |
 | **R-11** | **The two compilers agree byte-for-byte on threading.** 14 inputs — `->`, `->>`, `some->`, `some->>`, keyword steps, namespaced calls, bare symbols, `as->` — run through both. **14 agree, 0 disagree.** `->>` is therefore correctly implemented in *both* implementations, not just the JS one. | `data/parity-transcript.txt` (committed, machine-generated: each case diffed programmatically, not eyeballed). Regenerate with `scripts/probe-threading.js` + `scripts/probe-threading-rust.sh`. Rust built from `crates/` at `rustc 1.95.0`. | `reproduced` |
 | **R-12** | **Cross-compiler threading coverage in the repo is two cases.** `crates/lykn-lang/tests/cross_compiler.rs:144-145` holds `cross_thread_first` (`(-> x f g)`) and `cross_thread_last` (`(->> x (f a) (g b))`) and nothing else — **no keyword-step parity test**, although DD-18.1 changed the keyword path in *both* emitters. This is why a JS-only check felt sufficient to the session doing the work. | Direct read of `cross_compiler.rs`; grep for `thread` in that file returns exactly those two lines. | `attested` |
-| **R-9** | `docs/design-v0.7.0/` exists **only** on `release/0.7.x`. On `main` the path holds two empty untracked directories. | `git ls-tree -r --name-only <branch> -- docs/design-v0.7.0` across all local branches: empty for every branch except `release/0.7.x`. | `attested` |
+| **R-9** | `project03-language-evolution/` exists **only** on `release/0.7.x`. On `main` the path holds two empty untracked directories. | `git ls-tree -r --name-only <branch> -- docs/design-v0.7.0` across all local branches: empty for every branch except `release/0.7.x`. | `attested` |
 | **R-10** | The four-book JS reference corpus contains **no statement of a global argument-order rule** for the standard library, and zero mentions of Ramda, data-first-vs-data-last, point-free style, or the pipeline operator. What it does supply is receiver-as-implicit-first-parameter and `bind`'s left-only partial application. | Search across `deep-js`, `eloquent-js`, `exploring-js`, `js-definitive-guide`. Positive citations with file:line in `inventory.md` §9; negative results enumerated there too. | `attested` |
 
 ## Disclosed non-delivery
@@ -45,20 +45,20 @@ Named rather than dropped, per the anti-silent-drop discipline:
 
 There is no arc above this unit (single slice, wrapper collapsed) and no
 `project-plan.md` for 0.7.0 yet — deliberately deferred per
-`docs/design-v0.7.0/README.md`. Bubble-up therefore goes to the two watched
+`project03-language-evolution/README.md`. Bubble-up therefore goes to the two watched
 registers:
 
-- **`docs/design-v0.7.0/BACKLOG.md`** — new entry **A7 · `as->`** (R-7 + R2 of
+- **`project03-language-evolution/BACKLOG.md`** — new entry **A7 · `as->`** (R-7 + R2 of
   the report).
-- **`docs/backlog/discoveries.md`** — **six** rows, appended to the register
+- **`backlog/discoveries.md`** — **six** rows, appended to the register
   itself (not left as drafts), plus a correction to `D-2607-K9RT`'s quoted
   output, an evidence-base block on that row, and two new instances under
   `D-2607-Z5KN`. `D-2607-K9RT` stays `held-for-design` — this unit supplies the
   evidence base it was missing; the language-design conversation owns the call.
 - **Was blocked, now resolved (2026-07-25).** When these rows were written,
-  `docs/backlog/` was **untracked on every branch**, so by the register's own
+  `backlog/` was **untracked on every branch**, so by the register's own
   rule (`D-2607-8HTN`) none of them was `routed`. The operator committed
-  `docs/backlog/` the same day, to both `main` and `release/0.6.x` — the rows
+  `backlog/` the same day, to both `main` and `release/0.6.x` — the rows
   are now genuinely routed. `discovery-rows.md` is retained as the provenance
   record, not as a workaround; see its header.
 - **Rule change this unit produced.** `CLAUDE.md` gained a **"Which branch do I

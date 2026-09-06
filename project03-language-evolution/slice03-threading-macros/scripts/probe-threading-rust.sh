@@ -11,7 +11,7 @@
 #
 # Usage, from the repo root:
 #     cargo build --release -p lykn-cli
-#     docs/design-v0.7.0/03-threading-macros/scripts/probe-threading-rust.sh
+#     ../planning/project03-language-evolution/slice03-threading-macros/scripts/probe-threading-rust.sh
 #
 # Optional: LYKN=/path/to/lykn to point at an existing binary.
 

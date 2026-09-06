@@ -1228,7 +1228,7 @@ All file references verified against the current workspace.
   drafting; ICU MessageFormat parser for DD-55's template/i18n work).
 - `packages/browser/mod.js` — re-exports compile/run/load from
   lang via `compiler.js` wrapper.
-- `docs/design/06-final/0025-dd-20-rust-surface-compiler-architecture.md`
+- `project01-mvp/arc03-surface-language/artifacts/design/06-final/0025-dd-20-rust-surface-compiler-architecture.md`
   — DD-20, the Rust analogue this DD mirrors.
 - `workbench/dd-36-kernel-surface-split.md` — DD-36, which depends
   on this DD as Phase 0.

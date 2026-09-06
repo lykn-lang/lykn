@@ -2,12 +2,12 @@
 
 > **Status: CLOSED — gated by the operator 2026-07-05** (suite bars
 > reproduced; census operator-observed; see
-> [`closing-report.md`](./closing-report.md) §5). Created same day from the operator's repeated-tests
+> [`closing-report.md`](closing-report.md) §5). Created same day from the operator's repeated-tests
 > observation + CC's quantified investigation (corpus ×~12); delivered same
 > day: `make test-docs` **1m52s → 2.6s**, `make check` **>2m → 1m04s**,
 > corpus **1× / 0×**, counts unchanged — and the operator's own
 > `make check && make test-docs` run reproduced the after-state green. See
-> [`closing-report.md`](./closing-report.md) §4 for the (now tiny)
+> [`closing-report.md`](closing-report.md) §4 for the (now tiny)
 > consolidated three-arc gate.
 
 ## 1. Capability

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>lykn 0.6.0 — Project Status</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#171b22; --panel2:#1e232c; --border:#2a303b;
+    --ink:#e6e9ef; --ink2:#a3adbb; --ink3:#6b7480;
+    --green:#3fb950; --amber:#d29922; --blue:#4a9eff; --gray:#6b7480; --red:#e5534b; --violet:#a371f7;
+    --bar-track:#232935;
+    --radius:12px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --panel:#fff; --panel2:#f0f2f5; --border:#e2e5ea;
+      --ink:#1a1f27; --ink2:#525a66; --ink3:#8a929e; --bar-track:#e6e9ee; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;padding:32px 20px 80px}
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:26px;font-weight:600;margin:0 0 2px}
+  h2{font-size:17px;font-weight:600;margin:34px 0 14px;display:flex;align-items:center;gap:10px}
+  h2 .rule{flex:1;height:1px;background:var(--border)}
+  .sub{color:var(--ink2);font-size:14px;margin:0 0 4px}
+  .updated{color:var(--ink3);font-size:12.5px;font-family:var(--mono)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0 6px}
+  .kpi{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+  .kpi .n{font-size:26px;font-weight:700;letter-spacing:-.5px}
+  .kpi .l{font-size:12.5px;color:var(--ink2);margin-top:2px}
+  .kpi .s{font-size:11.5px;color:var(--ink3);margin-top:3px;font-family:var(--mono)}
+  .overall{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:14px 0}
+  .track{height:12px;background:var(--bar-track);border-radius:99px;overflow:hidden;display:flex}
+  .seg{height:100%}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:12px;color:var(--ink2)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+  .arcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .arc{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:15px 16px;position:relative}
+  .arc.active{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue) inset}
+  .arc .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .arc .id{font-family:var(--mono);font-size:11.5px;color:var(--ink3)}
+  .arc .name{font-weight:600;font-size:15px;margin:1px 0 0}
+  .arc .cap{color:var(--ink2);font-size:12.5px;margin:7px 0 10px}
+  .badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+  .b-closed{background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green)}
+  .b-active{background:color-mix(in srgb,var(--blue) 22%,transparent);color:var(--blue)}
+  .b-open{background:color-mix(in srgb,var(--amber) 20%,transparent);color:var(--amber)}
+  .b-future{background:color-mix(in srgb,var(--gray) 22%,transparent);color:var(--ink2)}
+  .slices{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+  .pill{font-size:10.5px;font-family:var(--mono);padding:2px 7px;border-radius:6px;border:1px solid var(--border)}
+  .p-closed{border-color:transparent;background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+  .p-active{border-color:transparent;background:color-mix(in srgb,var(--blue) 18%,transparent);color:var(--blue)}
+  .p-open{border-color:transparent;background:color-mix(in srgb,var(--amber) 16%,transparent);color:var(--amber)}
+  .p-none{color:var(--ink3)}
+  .arc .meta{font-size:11.5px;color:var(--ink3);margin-top:9px;font-family:var(--mono)}
+  .seqbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;font-family:var(--mono);font-size:13px}
+  .seqbar .arc-chip{padding:4px 10px;border-radius:8px;background:var(--panel2);border:1px solid var(--border)}
+  .seqbar .arc-chip.next{background:color-mix(in srgb,var(--blue) 18%,transparent);border-color:var(--blue);color:var(--blue);font-weight:600}
+  .seqbar .arrow{color:var(--ink3)}
+  .now{background:var(--panel);border:1px solid var(--blue);border-radius:var(--radius);padding:15px 17px;margin:6px 0}
+  .now .k{font-size:11.5px;color:var(--blue);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .now .t{font-size:15px;font-weight:600;margin:3px 0 4px}
+  .now .d{font-size:13px;color:var(--ink2)}
+  .acclist{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+  .acclist li{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;padding:9px 13px;font-size:13.5px}
+  .issues{display:grid;gap:10px}
+  .issue{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px}
+  .issue .h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .issue .tt{font-weight:600;font-size:14px}
+  .issue .tag{font-size:10.5px;font-family:var(--mono);padding:2px 7px;border-radius:6px;flex-shrink:0}
+  .t-fixed{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+  .t-guard{background:color-mix(in srgb,var(--violet) 18%,transparent);color:var(--violet)}
+  .t-open{background:color-mix(in srgb,var(--amber) 16%,transparent);color:var(--amber)}
+  .issue .lesson{font-size:12.5px;color:var(--ink2);margin-top:5px}
+  .issue .lesson b{color:var(--ink);font-weight:600}
+  .foot{color:var(--ink3);font-size:12px;margin-top:40px;font-family:var(--mono);text-align:center}
+  code{font-family:var(--mono);font-size:.92em;background:var(--panel2);padding:1px 5px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>lykn 0.6.0 — Project Status</h1>
+  <p class="sub">The language-toolchain alignment release. Planned + tracked in the canonical project/arc/slice layout under <code>docs/design-v0.6.0/</code>.</p>
+  <p class="updated" id="updated"></p>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="overall">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin-bottom:8px">
+      <span>Arc progress</span><span id="overall-pct"></span>
+    </div>
+    <div class="track" id="overall-track"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--green)"></i>Closed</span>
+      <span><i class="dot" style="background:var(--blue)"></i>Active</span>
+      <span><i class="dot" style="background:var(--amber)"></i>Open / partial</span>
+      <span><i class="dot" style="background:var(--gray)"></i>Future</span>
+    </div>
+  </div>
+
+  <h2>Now &amp; next<span class="rule"></span></h2>
+  <div id="now"></div>
+  <div class="seqbar" id="seq" style="margin-top:12px"></div>
+
+  <h2>Arcs<span class="rule"></span></h2>
+  <div class="arcs" id="arcs"></div>
+
+  <h2>Standalone slices<span class="rule"></span></h2>
+  <div class="arcs" id="standalone"></div>
+
+  <h2>Key metrics<span class="rule"></span></h2>
+  <div class="kpis" id="metrics"></div>
+
+  <h2>Accomplishments<span class="rule"></span></h2>
+  <ul class="acclist" id="acc"></ul>
+
+  <h2>Issues &amp; learnings <span style="font-weight:400;color:var(--ink3);font-size:12.5px">— the workflow-evolution log</span><span class="rule"></span></h2>
+  <div class="issues" id="issues"></div>
+
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+/* ============================================================================
+   EDIT THIS DATA OBJECT to update the dashboard. Everything below re-renders.
+   status:  "closed" | "active" | "open" | "future"
+   slice status: "closed" | "active" | "open" (open = scoped/not-run) | omit=none
+   ========================================================================== */
+const DATA = {
+  release: "0.6.0",
+  updated: "2026-08-20 (arc16 slice04 language-surface runway opened before book prose.)",
+  definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
+  numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
+  arcs: [
+    { id:"arc01", name:"build-publish-toolchain", status:"closed",
+      cap:"target/lykn/{build,dist} reorg + lykn publish dirty-check (M11+M13)",
+      slices:[{n:"build-dir+dirty-check",s:"closed"}] },
+    { id:"arc02", name:"type-dts-generation", status:"closed",
+      cap:".d.ts declarations from :type annotations (DD-56 / M10)",
+      slices:[{n:"dts-from-type",s:"closed"}] },
+    { id:"arc03", name:"compiler-coherence", status:"closed",
+      cap:"Rust↔JS coherent; DD-58 kernel/surface + DD-37 classifier. Corpus green.",
+      slices:[
+        {n:"hygiene",s:"closed"},{n:"dd58-prefix",s:"closed"},{n:"dd58-dispatch",s:"closed"},
+        {n:"dd58-testmig",s:"closed"},{n:"dd58-corpus",s:"closed"},{n:"dd58-polish",s:"closed"},
+        {n:"dd37-baseline",s:"closed"},{n:"dd37-formmig",s:"closed"},{n:"fast-follows",s:"closed"},
+        {n:"icu-fences",s:"closed"},{n:"corpus-green",s:"closed"}] },
+    { id:"arc04", name:"refactor-tooling", status:"closed",
+      cap:"move-function tool + the full surface extraction it drove. surface.js 2,315→448.",
+      slices:[
+        {n:"move-core",s:"closed"},{n:"rewiring",s:"closed"},{n:"helper-extract",s:"closed"},
+        {n:"complex-forms",s:"closed"},{n:"cleanup",s:"closed"}] },
+    { id:"arc05", name:"lykn-source-linter", status:"closed",
+      cap:"lykn lint over Lykn source — CLOSED (gate GO 2026-07-21). Ships lykn lint: 16 rules (15 shape/idiom + ID-12 shadowing), resolution-aware, wired into make check; exit 0/1/2, --format=json. Suppression deferred → arc14 (DD-62). What each slice delivered: lint-infra = the machinery + CLI (replacing the stub) + the rule-inventory compiler-verification pass; shape-rule-corpus = the verified rule set + 2 recon-gated compiler fixes (ID-42/ID-44); resolution-consumer = linter consumes arc13 resolution via as_form_head (bound names stop false-positiving) + the ID-12 shadowing rule (reusing the resolver's one scope model) + the ID-42 re-answer (no rule — closes arc13 A-6); integration-and-docs = make lint/check wiring + guide-09 reclassified to accurate enforcement labels + guide-15/SKILL + the P-11 demo (seeded 16/16 exit 1, clean exit 0).",
+      slices:[{n:"lint-infra",s:"closed"},{n:"shape-rule-corpus",s:"closed"},{n:"resolution-consumer",s:"closed"},{n:"integration-and-docs",s:"closed"}] },
+    { id:"arc13", name:"expander-coherence", status:"closed",
+      cap:"CLOSED — gate GO 2026-07-09 (ancestry ×6; make check 100%; matrix 1947/53 EXACT; D2 demos verbatim): a lexically-bound name means the binding on BOTH backends, in every derived binding position (D1, incl. user macros + desugars; labels excepted by design); reserved words rejected everywhere a name binds (D2 — the ID-44 genus dead at the root); Resolve-Once architecture (DD-61: resolved-atom tags, one walker per backend, as_form_head()/formHead() doors, by-construction payload privacy); pinned permanently by the standing conformance corpus. 3 slices planned → 11 delivered, 5 DD refinements, all child-surfaced.",
+      slices:[{n:"matrix+DD-60",s:"closed"},{n:"rust-shadowing (self-stopped)",s:"closed"},{n:"walker+D2",s:"closed"},{n:"walker-extension",s:"closed"},{n:"position-sweep",s:"closed"},{n:"rust-resolution",s:"closed"},{n:"atom-privacy-recon",s:"closed"},{n:"accessor-sweep",s:"closed"},{n:"privacy-flip",s:"closed"},{n:"js-resolution",s:"closed"},{n:"corpus+dispositions",s:"closed"}] },
+    { id:"arc06", name:"cross-project-dep-ergonomics", status:"closed",
+      cap:"CLOSED — GATE GO 2026-07-24. All 7 slices closed + CDC-verified; A-1…A-9 met. The host reconcile ran in full, so runtime rows are operator-reproduced, including the publish-safety property: dist with a link active stages zero linked refs. The 0.6.0 founding goal, consume lykn as a dependency end to end, is met: add, link/unlink, import by specifier, mycelium build, test 43/0, and publish dry-run.",
+      slices:[{n:"exports-gap",s:"closed"},{n:"mycelium-reaudit",s:"closed"},{n:"lykn-add",s:"closed"},{n:"lykn-link",s:"closed"},{n:"import-by-specifier",s:"closed"},{n:"version-consolidation",s:"closed"},{n:"link-registry-specifier",s:"closed"}] },
+    { id:"arc07", name:"docs", status:"closed",
+      cap:"CLOSED — GATE GO 2026-08-08. Guide/SKILL alignment is reconciled: doctest drift fixed, current drift inventoried, build/dist/publish refreshed, Deno workflow reconciled, and the no-else if compiler defect was routed to arc10/P-22 instead of papered over. A-1...A-7 met; P-13 done.",
+      slices:[{n:"doctest-drift",s:"closed"},{n:"current-drift-recon",s:"closed"},{n:"build-dist-publish",s:"closed"},{n:"deno-reconcile",s:"closed"}] },
+    { id:"arc08", name:"template-i18n", status:"closed",
+      cap:"template → ICU MessageFormat + i18n (DD-55). Un-stranded + merged.",
+      slices:[{n:"icu-js",s:"closed"},{n:"icu-rust",s:"closed"},{n:"icu-review+xcompiler",s:"closed"}] },
+    { id:"arc09", name:"release-0.6.0", status:"future",
+      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. Gating list now waits on arc16. P-22 no-else compiler follow-up, P-21 artifact-homes, P-19 surface-syntax traps, and P-13 docs alignment are done.",
+      slices:[] },
+    { id:"arc10", name:"compiler-completion", status:"closed",
+      cap:"CLOSED — gate GO restored 2026-08-08. Original DD-58/DD-37 gate remains closed from 2026-07-05; slice04 fixed no-else if expression position emitting invalid JS at rc=0, so check/compile now fail before codegen.",
+      slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"closed"},{n:"kernel-removal",s:"closed"},{n:"no-else-if-error",s:"closed"}] },
+    { id:"arc11", name:"source-only-test-build", status:"closed",
+      cap:"lykn test compiles to target/lykn/test/ (never the source tree — philosophy #1's last emitter) + the buried-intent audit (inventory empty-or-tracked). Gated 2026-07-05; P-7's demo unconditional.",
+      slices:[{n:"test-out-dir",s:"closed"},{n:"buried-intent-audit",s:"closed"}] },
+    { id:"arc12", name:"test-topology", status:"closed",
+      cap:"Every test runs exactly once per make check; make test-docs tests docs. 1m52s → 2.6s (test-docs), >2m → 1m04s (check), corpus 1×/0×. Created, delivered, and gated in one day.",
+      slices:[{n:"run-once-topology",s:"closed"}] },
+    { id:"arc15", name:"surface-syntax-traps", status:"closed",
+      cap:"Closed 2026-08-08: surface forms that compile clean but mean something the author did not write now become hard errors + lint + guide fixes. Method-on-expression rejects with a threading fix-it; sibling traps are closed; nested Rust fn parameter validation matches JS. slice03 hardening is deferred to 0.7.0.",
+      slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps",s:"closed"},{n:"nested-fn-param-validation",s:"closed"}] },
+    { id:"arc16", name:"book-0.6.0-edition", status:"open",
+      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice04 is open for XPRT/LBND/COND before book or writers-guide prose starts.",
+      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"closed"},{n:"language-surface runway",s:"open"},{n:"book-instruction-bootstrap",s:"planned"},{n:"book-fence-reachability",s:"planned"},{n:"current-book-drift-refresh",s:"planned"},{n:"toolchain/project-structure chapters",s:"planned"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
+    { id:"arc14", name:"comment-retention", status:"future",
+      cap:"Retain comments through the pipeline: reader retention (opt-in) → surface→kernel provenance annotation → strip-or-preserve at JS emit (DD-62). The LFE comment-drop pain made a first-class goal; the home for the deferred lint-suppression mechanism. SEEDED 2026-07-21; release boundary decided 0.7.0 (operator, 2026-07-21); not slice-planned.",
+      slices:[] },
+  ],
+  standalone: [
+    { id:"01", name:"macro-entry-diagnostics", status:"closed",
+      cap:"Closed 2026-07-24: source/test fix, slice docs, and CDC verification are present. The mycelium acceptance demo re-enters after 0.6.0 publication because that path still resolves the registry JS compiler.",
+      slices:[{n:"source+tests",s:"closed"},{n:"cdc-close",s:"closed"}] },
+    { id:"02", name:"artifact-homes", status:"closed",
+      cap:"Closed 2026-08-08: path gate green, frozen census shrunk by citation-repoint, sibling AGENTS.md/CLAUDE.md guidance tracked, and the book audit tool tracked. P-21 done.",
+      slices:[{n:"homes",s:"closed"},{n:"path-gate",s:"closed"},{n:"CDC close",s:"closed"}] },
+    { id:"03", name:"citation-repoint", status:"closed",
+      cap:"Closed 2026-08-08: repointed migrated citations, migrated four decided files, and shrank the frozen census from 631 to 601. make check-cited-paths is green at HEAD.",
+      slices:[{n:"open set",s:"closed"},{n:"implementation",s:"closed"},{n:"CDC close",s:"closed"}] },
+  ],
+  sequence: ["arc16","arc09"],
+  now: {
+    arc:"arc16 open · arc09 future",
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is closed/CDC-verified for local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. arc16 slice04 is open for the language-surface set: XPRT exports, LBND grouped locals, and COND flatter branching."
+  },
+  metrics: [
+    {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
+    {n:"~1.0 s", l:"conformance corpus in make check", s:"seeded-teeth demo'd both backends; the 14.3s matrix stays on-demand"},
+    {n:"601", l:"accepted historical cited paths", s:"census shrank from 631; make check-cited-paths green across 617 docs on release/0.6.x, 2026-08-20"},
+    {n:"476 / 0", l:"guide doctests", s:"green"},
+    {n:"48 → 48", l:"size_of::<SExpr>()", s:"resolution tags + private payload, zero size cost"},
+    {n:"448", l:"surface.js lines", s:"was 2,315 (−81%)"},
+  ],
+  accomplishments: [
+    "Reconstructed the entire 0.6.0 planning tree from the gitignored workbench/ into the canonical project/arc/slice layout.",
+    "Branch-ancestry audit found two stranded bodies of closed work (DD-58/DD-37, DD-55) unmerged for ~6 weeks — merged both into release/0.6.x, verified green.",
+    "Closed arc03 (compiler coherence): DD-58 kernel/surface + DD-37 classifier landed; cross-compiler corpus green (1345/0).",
+    "Built the move-function tool and drove the complete surface extraction — surface.js 2,315→448 lines, every move byte-identical (incl. emitMatchMacro, the function that motivated the whole framework).",
+    "Closed arc08 (DD-55 template ICU/i18n) after un-stranding + a 6-conflict merge (D-2 backslash + slice11 async invariants held).",
+    "Fixed the first release-branch CI failure (guide doctest drift) — docs-only, CI green.",
+    "Decided + documented DD-58 strict-default (the language will now enforce what philosophy.md claims).",
+    "Landed DD-58 strict-default on the Rust CLI — bare kernel-only declaration forms in .lykn are now compile errors, with a kernel: escape; guides migrated.",
+    "Brought the JS compiler to full DD-58 parity (strict default-on + the kernel: escape, Rust-verbatim diagnostics) — the closed surface namespace now holds on every compile path: Rust CLI, JS API, doctests, browser, JSR.",
+    "Retired the transitional _kernel marker (DD-37 step 4) for a WeakSet sanctioned-kernel registry, and closed the macro boundary: macro-emitted bare kernel decls now error on both compilers (operator-decided Rust semantics, recorded in DD-58) — with a kernel-form parity guard and kernel: corpus rows standing watch.",
+    "Finished philosophy #1's last mile: lykn test now compiles to target/lykn/test/ (wiped per run) — no generated JS ever touches the source tree (mid-run, post-SIGINT, post-compile-only all clean) — wiring a flag that had sat 'reserved for future use' since April and deleting the fossil that broke unscoped deno test.",
+    "Ran the buried-intent audit: 13 items dispositioned (wired / retired / tracked-with-watchers), 4 previously-unknown functional deferrals surfaced (incl. genfunc's silent clause-drop), the SetSymbol deprecation routed to a real 0.7.0 decision row, and a reproducible sweep-diff proving zero silently-deferred intent remains — the anti-'delayed, deferred, buried, lost' countermeasure, now evidenced.",
+    "★ RESOLVE-ONCE: adopted a single name-resolution authority for the language (arc13, DD-60 semantics + DD-61 architecture) — the pattern that carries Racket's hygienic expander (Flatt's scope-sets: macro dispatch and variable reference are ONE lookup), GHC's Renamer, and rustc's resolution phase (RFC 1560), sized to lykn as resolved-atom flags + one binding-position walker per backend, with every former dispatch site demoted to a read-only consumer. Born from an 885-cell conformance matrix that proved neither backend had real binding awareness (35% of cells diverged; 'shadowing' on Rust was a shape-check accident). lykn gets true lexical scoping — bindings shadow macros and forms, by construction, on both compilers, pinned forever by a conformance corpus. Likely the pivotal language-semantics feature of 0.6.0.",
+    "★ …AND DELIVERED IT: arc13 went 3 planned slices → 11 delivered in 4 days (07-06 → 07-09), with the discipline doing visible work the whole way — one productive self-stop that re-architected the arc (slice02's four-subsystem finding), two clean fresh-context recycles that both shipped same-day (slices 06, 10), five DD refinements all surfaced-with-evidence by children, a Rust payload-privacy layer proven by compile-fail in both crates (size cost: zero), a scope_plan region model ported across backends (a binding is not in scope over its own iterable — the miscompile a naive push causes), and a probe discipline that caught two bugs the 1947-cell matrix structurally couldn't see (the macro-row expander trip; contains_await reinterpreting a bound await as the operator). End state: divergence 601→53, every cell documented-as-intended, and a ~1s conformance corpus with demonstrated seeded-divergence teeth standing in make check. Gate pending; arc05 unpauses on GO.",
+    "★ THE BOOK NOW GATES THE RELEASE (operator, 2026-07-24): the Lykn Book's 0.6.0 edition moved from out-of-scope to release-gating as arc16. The reasoning is a quality argument, not a scheduling one — drafting the edition is a full-surface review of the shipped language, so it will surface bugs and DevX defects, and the choice is between paying that cost before the gate or in point releases after it. The routing failure was corrected on 2026-07-25: the arc16 planning home now exists and its kickoff, drift inventory, fence spec, and dogfooding log are tracked. The arc-plan was written on 2026-08-08; slice01 and slice02 are closed/CDC-verified; implementation routing now comes before book prose.",
+    "arc06 REOPENED (was CLOSE-READY): slices 06 + 07 landed after the arc's closing-report was written, and slice07's CDC review returned a blocking regression — with a link active, the effective config silently drops every override when project.json has no imports key, so lykn link prints success and applies nothing. Also: the guard the slice advertises ('can never reroute registry→registry') has no test — the test named for it asserts the opposite case — and the config function rewritten in the same slice has no test coverage at all. An arc closes when its last slice is CDC-closed, so the gate waits on iteration 1. The arc-plan itself had gone stale at slice02 while five slices closed: fixed, with the lesson recorded — recon-first scoping means the arc-plan must be re-reconciled at each slice close, not only at arc close.",
+    "arc06 delivered and gated: drove 'consume lykn as a dependency' to an end-to-end demonstration — the goal the whole 0.6.0 dive was in service of. Delivered lykn add (DD-63, exact-version pin via deno-shell), lykn link/unlink (a non-destructive git-ignored project.local.json overlay whose safety property — dist/publish read the RAW project.json, so a local dev path can never be published — is architecturally guaranteed, not merely tested), and the import-by-specifier convention (the compiler preserves import specifiers verbatim, so it cost ZERO lang change). Proven on a real downstream (mycelium): lykn build ✓, lykn test 43/0 (was Module-not-found red), lykn publish --jsr --dry green with the dev-only self-key absent from the staged config. Seven slices CDC-verified; closing-report A-1…A-9 met; operator gate GO 2026-07-24.",
+    "arc15 · surface-syntax-traps CLOSED: killed the #6 silent miscompile — ((express parts):join \"\") faithfully compiled to parts.value(\"join\",\"\") (a different, valid, wrong construct). Now method-on-expression is a hard compile + lykn check error with a threading fix-it (-> (express parts) (:join \"\")), via a recursive validate_method_calls pass and matching lykn lint rule. Sibling traps closed too: stripped Rust fn preserves final values, string escapes cook or fail, final control-flow forms are not double-wrapped, and the nested Rust fn parameter mismatch now errors like JS. The deeper hardening (slice03) was DEFERRED honestly: classification leaves nested exprs raw, so Option C (fully-typed classification) became 0.7.x research rather than a rushed rewrite. Arc-close repros: three trap shapes exit 1, atom/thread positives compile and lint green, guide sweep is clean except documented-as-wrong/prose/comment examples, and doctests are 476/0.",
+    "01-macro-entry-diagnostics closed as a standalone slice: the misleading import-macros missing-directory diagnostic now has source/test fixes and CDC verification; its mycelium acceptance demo is explicitly deferred until 0.6.0 publication.",
+    "02-artifact-homes closed after remediation: the structural path-citation gate is green, the historical citation wound is accepted/not-repaired, sibling repos now track AGENTS.md with CLAUDE.md as a symlink, the new commit trailers are recorded, and the book audit tool is tracked. P-21 is done.",
+    "03-citation-repoint closed the active cleanup: migrated citations now point at tracked homes, four planned artifact homes are populated, make check-cited-paths is green, and the frozen census shrank 631 -> 601 without adding exemptions.",
+    "arc07 slice02 closed the current-drift recon: every May seed item is dispositioned against the actual 0.6.0 branch; the next docs work splits into build/dist/publish refresh and Deno workflow reconciliation; a no-else if expression compiler bug is routed rather than papered over in prose.",
+    "arc10 slice04 closed the compiler-completion follow-up: no-else if in expression position is now a compile/check error before any invalid JS is emitted. The original DD-58/DD-37 gate remains historically closed; P-22 is done.",
+    "arc16 slice02 closed the first implementation/dogfood runway: CC built a fresh record-shape utility library, CDC replayed build/test/lint/run, and the pass routed four new CLI/scaffold/package findings — D-2608-BINW, D-2608-TDSL, D-2608-BREC, and D-2608-RIMP — before any book prose starts teaching the final project surface.",
+    "arc16 slice03 closed the CLI/scaffold/package runway: fresh scaffolds install bin/lykn, scaffolded Lykn tests run through testing, nested package sources build recursively, source-file lykn run handles relative package imports from build output, and the 0.6.0 source-ownership floor is explicit. CDC reproduced the scratch runway and the full gate set.",
+    "arc16 slice04 is open with the canonical planning packet for the language surface: top-of-module exports and mod.lykn ownership, grouped local bindings, and flatter ordered validation branching must land, defer, or split before book examples harden.",
+  ],
+  issues: [
+    { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",
+      lesson:"The reconstruction trusted workbench closing-reports as 'done'; a branch-ancestry check found ~58 commits of closed work stranded on worktree branches. <b>Learning:</b> always <code>git merge-base --is-ancestor</code> before claiming a slice/arc is landed — 'closed in a report' is not 'on the branch'." },
+    { t:"Slice green-bar didn't include make test-docs", tag:"guard",
+      lesson:"Guide doctest drift sat latent for weeks because the standard bar (lykn test + deno test test/) can't see doctests; the first CI run caught it. <b>Learning:</b> any slice touching guides/docs must run <code>make test-docs</code> (now a recorded process standard)." },
+    { t:"Staleness traps: stale bin/lykn + stale build dir", tag:"guard",
+      lesson:"compile-both silently ran against a stale binary (16 phantom failures) and a stale build dir (2 more). <b>Learning:</b> rebuild-first verify; a freshness guard in lykn test now fails loudly on either." },
+    { t:"CDC scope error: 'report leaks' ≠ 'DD-58 strict'", tag:"fixed",
+      lesson:"The arc10/slice01 contract claimed strict rejects all 10 anti-pattern 'leaks'; it rejects exactly 5 declaration forms. CC verified against the compiler and stopped before a ~99-file migration. <b>Learning:</b> verify the contract against ground truth (the compiler) before scoping a migration; CC self-stop is high-value." },
+    { t:"=> is the untyped arrow", tag:"fixed",
+      lesson:"The doctest fix nearly swapped typed fn closures for =>, silently dropping type annotations. Grounding in the code caught it → bind-then-return keeps types. <b>Learning:</b> ground fixes in actual language behavior, not the obvious token swap." },
+    { t:"Import-collision moving into a consumer file", tag:"guard",
+      lesson:"Moving the complex-form emitters into classifier.js collided with its existing imports. Rather than hand-edit the highest-stakes file, CC TDD'd a TO-as-consumer import-prune tool capability. <b>Learning:</b> fix the tool, not the move — it left the tool permanently better." },
+    { t:"DD-58 strict enforcement was half-landed (tests-only)", tag:"fixed",
+      lesson:"Strict mode shipped wired to lykn test only; normal compile/build had no gate, so surface silently accepted bare kernel forms — the philosophy's 'prevents' was aspirational. <b>Fixed on the Rust CLI (arc10 slice01);</b> 'design intent' and 'enforced' are different claims." },
+    { t:"…and it was only half-fixed: JS compiler has no parity", tag:"fixed",
+      lesson:"slice01 landed strict on the Rust CLI, but the JS compiler (which doctests + deno test use) enforced neither strict nor the kernel: escape — <code>(kernel:const x 42)</code> even mis-compiled there. <b>Learning:</b> 'the compiler enforces X' must be checked on <i>every</i> compile path, not one. <b>Fixed in slice02</b> (feb056c) — both compilers now enforce." },
+    { t:"Strict semantics diverge at the macro boundary", tag:"fixed",
+      lesson:"Found in slice02 CDC review: Rust enforced strict <i>post</i>-macro-expansion, JS <i>pre</i>-expansion — a user macro expanding to a top-level bare kernel decl compiled on JS but errored on Rust. <b>Learning:</b> behavioural parity claims need checking at the <i>boundaries</i> (macro output), not just direct input. <b>Fixed in slice03</b> (runtime-confirmed first, then a post-pass2 sweep; operator-decided Rust semantics, recorded in DD-58)." },
+    { t:"Reserved-but-never-wired: lykn test's --out-dir", tag:"fixed",
+      lesson:"lykn test compiled _test.js siblings into test/ (transient: run-then-clean, April design) while a hidden --out-dir flag sat 'reserved for future use', received as _out_dir and ignored — intent captured, never wired, no row watching it. Third instance of one signature this cycle (stranded branches; DD-58 half-wired; this). <b>Fixed in arc11/slice01</b> (75c9cc2): the flag is live, output goes to target/lykn/test/ (wiped per run), the April fossil (target/test/lykn orphans — the TS2307 cause) is deleted, and the F-1 recon caught + fixed 7 location-dependence items before wiring. <b>Learning:</b> the signature is grep-able — slice02 sweeps the full buried-intent inventory." },
+    { t:"The corpus ran ~12× per verification pass", tag:"fixed",
+      lesson:"The operator's repeated-tests observation, CC-quantified: lykn test --docs re-ran the entire 88-file corpus before testing any docs ×4 sub-targets; make check ⊇ test-docs so the habitual && doubled the doc phase; test-lykn re-ran a subset of test-js. <b>Fixed same-day (arc12, 3612cad):</b> make test-docs 1m52s → 2.6s, make check >2m → 1m04s, corpus exactly 1×/0×, counts unchanged — operator-reproduced. <b>Learning:</b> make-target names that were honest once silently became lies when lykn test grew — the same drift genus as the buried-intent items, at the toolchain layer; the sentinel census makes 'runs once' a checkable claim." },
+    { t:"Staleness trap, third costume: the PATH binary", tag:"guard",
+      lesson:"The first arc10/arc11 gate run used bare <code>lykn</code>, which resolved to a stale cargo-installed binary — it sibling-emitted 97 _test.js files into test/ (old behavior), while ./bin/lykn in the same session behaved correctly. And the new *_test.js gitignore <i>masked</i> the debris from git. <b>Learning:</b> issues-log #3 guarded bin/ and the build dir; PATH is a third staleness channel. Runbooks now say <code>which lykn</code> + <code>./bin/lykn</code> explicitly; a warn-on-foreign-binary guard is filed. Bonus finding: unscoped deno test also walks .worktrees/ (stale checkouts, 0-ahead, deletable)." },
+    { t:"Deno config 'exclude' filters even explicitly-passed paths", tag:"guard",
+      lesson:"slice01's planned project.json target/ exclude turned out to break the very runs it was protecting (Deno returns 'No test' even for explicitly-passed excluded paths) — CC demonstrated it empirically and declined the mechanism; the row's goal (no unscoped TS2307 abort) was already met by the fossil deletion + bare specifiers. <b>Learning:</b> a ledger row's mechanism can be invalidated while its goal stands — amend the row (was:-note), don't force the mechanism. The supported test command remains deno test --config project.json -A test/." },
+    { t:"★ Resolve-Once: stringly dispatch at four sites → one resolution authority", tag:"guard",
+      lesson:"The deep lesson under the expander divergence: lykn's kernel IR was <i>stringly at the head position</i> — <code>(array 1 2)</code> couldn't say whether array was the form or a bound variable — so FOUR phases (expander, classifier, emitter, codegen) each re-decided what every name meant. Four independent deciders mathematically guarantees divergence; an oracle consulted at four sites just hides it better. The established cure, drawn from Racket's hygienic expander (Flatt's scope-sets — macro dispatch and variable lookup are the same resolution), GHC's Renamer, and rustc's RFC-1560 resolution phase: <b>resolve once, make the resolution part of the data, and demote every dispatch site to a read-only consumer.</b> lykn's sizing: resolved-atom flags (the enrich-the-identifier canon — Racket syntax objects, rustc Res fields) over alpha-renaming (would break readable-JS output) or a new kernel construct (the grammar is user-facing, dual-implemented, macro-visible). <b>Learning:</b> when N sites must agree on a judgment, the fix is never N careful implementations — it's making the judgment once and representing it so the question can't be re-asked. Same shape as kernel-mark (arc10) and the sanctioned-kernel registry, at full language scale." },
+    { t:"The expanders disagree on what a name means", tag:"fixed",
+      lesson:"arc05's ID-42 recon self-stopped and exposed it: a param named after a surface macro compiles as a call on Rust but throws on JS; Rust fires macros for 7 macro-named params (wrong code); JS reserved words emit invalid JS at rc=0. A P-9-class semantic divergence the cross-compiler corpus never covered — form-codegen coverage (~11%) was a documented latent gap since arc03, and this is what lived in it. <b>Learning:</b> the self-stop + recon-gate discipline turned a would-be lint rule into the discovery of the real disease. <b>Fixed by arc13 in full (2026-07-09):</b> DD-60 D1/D2 implemented on both backends via DD-61; divergence 601→53, every residual documented-as-intended; corpus standing." },
+    { t:"Staleness trap, fourth costume: import-map artifacts", tag:"guard",
+      lesson:"The lang/ import map resolves to target/lykn/build/lang/ — so a deno test or matrix run silently exercises the LAST BUILD's JS, not your source edit. Cost one confusing matrix run in slice10 (it showed the pre-slice tally). <b>Learning:</b> <code>./bin/lykn build</code> before any deno/matrix probe. Same genus as bin/, build-dir, and PATH staleness (#3, #12); the costume changes, the rule doesn't: rebuild-first, every channel." },
+    { t:"Fresh-context recycle: the tail-of-session move that works", tag:"guard",
+      lesson:"Twice in arc13 (slices 06, 10), a long session hit its ceiling mid-slice, self-stopped CLEANLY (tree green or reverted, nothing half-landed), and wrote a handoff addendum into the slice's cc-prompt — grounded findings, design decisions, what-not-to-do. Both times the fresh session delivered same-day, re-deriving nothing. <b>Learning:</b> this is now standard practice for big slices at the tail of a session — a recycle, not an iteration (nothing was delivered; the ledger stands). The honest self-stop is the enabling move; the addendum is what makes it cheap." },
+    { t:"The A6 layers bound dispatch, not emit-time heuristics", tag:"guard",
+      lesson:"contains_await read raw atom names to decide async-ness — a destructure-shaped read the A6 static check was structurally blind to (slice08 found it), and when converted, an <i>exempted</i> accessor read that still behaved on the name (slice11's probe caught the real bug: a bound await inside an async-gated wrapper got reinterpreted as the operator on Rust). <b>Learning:</b> the exemption bar for A6-exempt marks is 'renders, never behaves' — any structural read that changes emitted behavior based on a name must honour resolution (as_form_head/formHead). Recorded in DD-61's as-built; the probe discipline (decide with the probe in hand, never in the abstract) is what caught it — twice." },
+    { t:"CDC 'appears dead' recon was a grep artifact", tag:"fixed",
+      lesson:"The slice03 slice-doc claimed kernelArray was dead (2 grep hits read as definition+export without opening the second — it was the call site). CC's gated recon caught it and kept the function. <b>Learning:</b> issues-log #4 cuts both ways — CDC claims need grounding to the artifact too, and recon-gates-implementation earns its keep in both directions." },
+    { t:"require → invalid ESM output", tag:"open",
+      lesson:"(require \"fs\") compiles to an un-runnable require(...) call. Not a closed-namespace violation → routed to arc05 lint (+ a Principle-3 note). <b>Learning:</b> compiles ≠ valid output." },
+    { t:"Arc-numbering churn", tag:"fixed",
+      lesson:"Renumbered arcs twice to keep NN = dependency order (docs, then template inserts). <b>Learning:</b> switched to NN = creation order; dependency sequence lives in the Depends-on field. Stop renumbering." },
+    { t:"Cowork sandbox has no deno/cargo/rust toolchain", tag:"guard",
+      lesson:"CDC can't run runtime tests in-sandbox, so verification is git + code review; runtime rows are CC-attested and reconciled by an operator host re-run. <b>Learning:</b> be explicit about verification strength (reproduced-by-code vs attested-runtime); never claim a run you didn't do." },
+    { t:"Method-on-an-expression compiled to confidently-wrong code", tag:"fixed",
+      lesson:"<code>((express parts):join \"\")</code> silently compiled to <code>parts.value(\"join\",\"\")</code> — the <code>x:method</code> sugar is atom-only, so a parenthesized receiver detached <code>:join</code> into a keyword arg that stringified. rc=0, wrong output, opaque runtime crash later. Fixed as a hard compile + <code>lykn check</code> error with a threading fix-it (arc15 slice01/02); the correct form <code>(-> (express parts) (:join \"\"))</code> compiles today. <b>Learning:</b> 'compiles' ≠ 'means what you wrote' — surface-syntax traps are their own class (arc15), closed pre-adoption so no codebase can be built on the trap." },
+    { t:"★ The elegant 'a type makes it impossible' premise — twice wrong", tag:"guard",
+      lesson:"arc15 slice03 aimed to replace a structural <code>ptr::eq</code> exemption with a type-based guarantee. CDC sold two premises before verifying: (1) 'a method-call is its own node type' — false, SurfaceForm holds raw SExpr children; (2) the corrected 'post-classify MatchClause dissolves the collision' — also false, it holds only for TOP-LEVEL matches (nested exprs stay raw). CC's verify-before-writing self-stops caught BOTH before any code was written, proving it against <code>data-types.lykn</code>. <b>Learning:</b> the pull toward the elegant story ('a type makes it impossible') is a named CDC failure mode; match-awareness is irreducible without a classifier rewrite, so the verified structural guard (Option B) ships and the real fix (Option C) is honest 0.7.x research — deferred, not faked. The recon-gate earned its keep in both directions." },
+    { t:"★ The corpus cites an ignored tree 353 times — and 40% of it is gone", tag:"fixed",
+      lesson:"Scoped as a five-document problem, verified as a 106-document one. A sweep of 507 tracked documents found <b>106 citing 143 distinct <code>workbench/…</code> paths across 353 sites</b> — and <b>57 of those paths no longer exist on disk at all</b>: closing reports, CDC reviews, DD drafts, verification transcripts. Some are literal unfilled template placeholders committed as-is (<code>workbench/YYYY-MM-DD-DD-50.7-closing-report.md</code>). 0.6.0's own planning tree is tracked and healthy; what is damaged is <i>provenance</i> — a closing report whose evidence link is dead cannot be re-verified, only trusted, which is exactly the <code>asserted</code> tier ledger discipline exists to escape. <b>Learning:</b> the verification pass found more than the fix did, which is the argument for running one; and the finding arrived only because the check resolves against <i>git</i> rather than the working tree. Registered <code>D-2607-D3NL</code>. <b>Dispositioned 2026-07-25 (operator): accept and mark</b> — the historical corpus is not salvaged; those pre-0.6.0 closing reports can be trusted but not re-verified, and are <code>asserted</code>-tier permanently. Closed as <i>accepted, not repaired</i> — a real CAP closure, marked in the row title so nobody reads it as fixed. The one buildable residual is the L-7 gate's exemption: a <b>frozen census allowlist</b> (143 paths × 106 files, matched on the exact pair, never appended to) so the exemption can only shrink, never grow — a blanket <code>workbench/</code> pass was rejected, because a <i>new</i> workbench citation must still fail." },
+    { t:"★ A tracked home that was never created", tag:"fixed",
+      lesson:"The Discovery Register — the project's permanent-ID record of findings — spent its first day in <code>workbench/</code>, which <code>.gitignore</code> ignores wholesale. Meanwhile <b>five committed documents already cited <code>docs/backlog/discoveries.md</code></b> (project-plan ×2, the 01-macro-entry-diagnostics slice set ×3), and a <i>committed</i> spec cited two of its IDs. Nobody invented a wrong path: the project had agreed on the home and simply never created it, so every reference was dangling from the moment it was written. <b>Learning:</b> a cited path is a <i>checkable claim</i>, and it was going unchecked. Fixed 2026-07-25 — register + README relocated to <code>docs/backlog/</code>, and <code>make check</code> now fails on any tracked document citing a path that does not resolve in git. Structural fix over vigilance, which is <code>D-2607-Z5KN</code> applied to the register that records it." },
+    { t:"The framework's default and this repo's gitignore disagreed", tag:"fixed",
+      lesson:"<code>PROJECT-MANAGEMENT.md</code> Part VIII settles CAP audit reports at <code>workbench/&lt;date&gt;-audit-results-&lt;slug&gt;.md</code> — it assumes <code>workbench/</code> is durable. This repo ignores <code>/workbench</code> entirely. Both choices are defensible; <i>together</i> they silently routed durable artifacts into an invisible tree — the register, the book's whole 6–8 iteration program, the 40KB drift inventory, the dogfooding friction log. <b>Learning:</b> this was the root cause of the class, not any individual routing mistake, and it was invisible because each half looked correct on its own. Resolved by decision rather than compromise: <code>workbench/</code> is <i>scratch, by definition</i> — nothing durable, nothing cited — recorded in the AGENTS.md of all three repos (the book repo had none at all, which is why its layout decision had nowhere to be written down)." },
+    { t:"Memory carries process reliably and state unreliably", tag:"guard",
+      lesson:"Resuming 2026-07-25, the session memory store was a full gate stale — arc06 CLOSE-READY vs CLOSED, plan v1.33 vs v1.37, three 'owed' rows already discharged — while the <i>disciplines</i> it carried (read order, ground-truth-against-git, the device/bridge hazards) were all correct and immediately useful. The bootstrap's own top rule is what caught its own staleness. <b>Learning:</b> a handoff note should carry <i>how we work</i> and defer <i>what state things are in</i> to git; four tool calls to detect, four writes to reconcile. The v2 bootstrap also correctly <i>predicted</i> the worktree hazard before it landed — naming a hazard you expect is cheaper than discovering it, and it was wrong only in the path (<code>.worktrees/</code>, not <code>.workdirs/</code>)." },
+    { t:"The path gate did its job, and citation-repoint turned it green", tag:"fixed",
+      lesson:"The 2026-08-08 release-branch check first found 34 dangling citations. The fix was not to loosen the gate: 03-citation-repoint repointed migrated paths, moved four already-decided artifacts into tracked homes, preserved historical movement prose, and shrank the frozen census from 631 to 601 accepted pairs. The final artifact-home remediation then tracked sibling AGENTS.md/CLAUDE.md guidance and the book audit tool. <b>Learning:</b> a red structural gate is useful when the follow-up shrinks the exemption set instead of expanding it. P-21 is done." },
+    { t:"No-else if expression emitted invalid JS at rc=0", tag:"fixed",
+      lesson:"arc07 slice02 reproduced that <code>(bind label (if (&gt; 1 0) \"items\"))</code> passed <code>lykn check</code> and <code>lykn compile</code>, but emitted <code>const label = throw ...</code> and failed only when Deno parsed the generated JS. <b>Fixed in arc10/P-22:</b> check/compile now fail before codegen. <b>Learning:</b> guide truth can expose compiler truth; route compiler defects instead of rewriting docs around broken emission paths." },
+    { t:"Export ownership is unclear", tag:"open",
+      lesson:"CC's external-library dogfood code followed current guidance with <code>(export (func ...))</code>, and the package also carried a <code>mod.lykn</code> named re-export list. The operator rejected inline wrappers as the durable teaching shape and flagged the second list as possible duplication or an unexplained requirement. The same scaffold exposed a package-source <code>deno.json</code>; slice03 implemented the 0.6.0 source-ownership floor, but the broader package-metadata ownership model remains a design call. <b>Learning:</b> arc16 must settle export ownership (<code>D-2608-XPRT</code>) before drafting module/API chapters, and must not overstate <code>D-2608-SOWN</code> beyond the accepted 0.6.0 floor." },
+    { t:"Repeated local binds need a grouped form", tag:"open",
+      lesson:"CC's external-library dogfood code used runs of sibling <code>(bind name value)</code> forms for record normalization. The operator flagged this as un-Lispy when several derived locals naturally belong to one local scope. <b>Learning:</b> arc16 should not teach verbose repeated binds as the permanent idiom; settle a grouped let-style binding surface, recorded as <code>D-2608-LBND</code>, before drafting expression and normalization examples." },
+    { t:"Nested validation conditionals need a flatter branch form", tag:"open",
+      lesson:"CC's external-library dogfood code used nested <code>?</code> forms for an ordered validation ladder. The operator flagged the repeated nesting as a readability smell. <b>Learning:</b> the book should not teach deeply nested conditionals as the default validation idiom; settle a <code>cond</code>, guard-style, or equivalent branch surface, recorded as <code>D-2608-COND</code>, before drafting validation/control-flow examples." },
+  ],
+};
+
+/* ---- render ---- */
+const $=(id)=>document.getElementById(id);
+const statusColor={closed:"var(--green)",active:"var(--blue)",open:"var(--amber)",future:"var(--gray)"};
+const badgeClass={closed:"b-closed",active:"b-active",open:"b-open",future:"b-future"};
+const badgeText={closed:"Closed",active:"Active",open:"Open",future:"Future"};
+
+$("updated").textContent=`updated ${DATA.updated}  ·  ${DATA.numberingNote}`;
+
+// KPIs
+const counts=DATA.arcs.reduce((a,x)=>(a[x.status]=(a[x.status]||0)+1,a),{});
+const sliceDone=DATA.arcs.flatMap(a=>a.slices).filter(s=>s.s==="closed").length;
+const sliceTot=DATA.arcs.flatMap(a=>a.slices).length;
+$("kpis").innerHTML=[
+  {n:DATA.arcs.length,l:"arcs total",s:DATA.release},
+  {n:counts.closed||0,l:"closed",s:"fully done"},
+  {n:(counts.active||0)+(counts.open||0),l:"in flight / open",s:"active + partial"},
+  {n:`${sliceDone}/${sliceTot}`,l:"slices closed",s:"across all arcs"},
+].map(k=>`<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div><div class="s">${k.s}</div></div>`).join("");
+
+// overall bar (by arc status)
+const order=["closed","active","open","future"];
+$("overall-track").innerHTML=order.map(st=>{
+  const w=((counts[st]||0)/DATA.arcs.length*100).toFixed(2);
+  return w>0?`<div class="seg" style="width:${w}%;background:${statusColor[st]}"></div>`:"";
+}).join("");
+$("overall-pct").textContent=`${counts.closed||0} of ${DATA.arcs.length} arcs closed`;
+
+// now + sequence
+$("now").innerHTML=`<div class="now"><div class="k">Now working</div><div class="t">${DATA.now.arc}</div><div class="d">${DATA.now.desc}</div></div>`;
+const allUnits=[...DATA.arcs,...(DATA.standalone||[])];
+$("seq").innerHTML=`<span style="color:var(--ink3)">dependency order:</span>`+DATA.sequence.map((id,i)=>{
+  const a=allUnits.find(x=>x.id===id);
+  const next=i===0?" next":"";
+  return `<span class="arc-chip${next}">${id}</span>`+(i<DATA.sequence.length-1?`<span class="arrow">→</span>`:"");
+}).join("");
+
+// arcs
+const renderUnit=(a)=> {
+  const pills=a.slices.length
+    ? `<div class="slices">`+a.slices.map(s=>`<span class="pill p-${s.s}">${s.n}</span>`).join("")+`</div>`
+    : `<div class="meta">no slices planned yet</div>`;
+  const done=a.slices.filter(s=>s.s==="closed").length;
+  const meta=a.slices.length?`<div class="meta">${done}/${a.slices.length} slices closed</div>`:"";
+  return `<div class="arc ${a.status==="active"?"active":""}">
+    <div class="top"><div><div class="id">${a.id}</div><div class="name">${a.name}</div></div>
+      <span class="badge ${badgeClass[a.status]}">${badgeText[a.status]}</span></div>
+    <div class="cap">${a.cap}</div>${pills}${meta}</div>`;
+};
+$("arcs").innerHTML=DATA.arcs.map(renderUnit).join("");
+$("standalone").innerHTML=(DATA.standalone||[]).map(renderUnit).join("");
+
+// metrics
+$("metrics").innerHTML=DATA.metrics.map(m=>`<div class="kpi"><div class="n">${m.n}</div><div class="l">${m.l}</div><div class="s">${m.s}</div></div>`).join("");
+
+// accomplishments
+$("acc").innerHTML=DATA.accomplishments.map(x=>`<li>${x}</li>`).join("");
+
+// issues
+$("issues").innerHTML=DATA.issues.map(i=>`<div class="issue">
+  <div class="h"><span class="tt">${i.t}</span><span class="tag t-${i.tag}">${i.tag}</span></div>
+  <div class="lesson">${i.lesson}</div></div>`).join("");
+
+$("foot").textContent=`lykn ${DATA.release} · generated from docs/design-v0.6.0/ · edit the DATA object in this file to update`;
+</script>
+</body>
+</html>

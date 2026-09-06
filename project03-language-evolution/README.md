@@ -1,3 +1,7 @@
+# project03-language-evolution
+
+Current home: branch planning, project03-language-evolution. Start with [project-plan.md](project-plan.md). Release intent is YAML metadata; the following retained notes describe the original versioned layout.
+
 # docs/design-v0.7.0 — planning tree
 
 Planning artifacts for post-0.6.0 work, in the canonical project/arc/slice
@@ -32,3 +36,7 @@ wrapper is collapsed per PROJECT-MANAGEMENT.md Part II naming rules).
   whether `->>` has a coherent domain in a JS-targeting Lisp. **Research
   complete 2026-07-25**; disposition owed to the language-design conversation.
   Evidence base for `D-2607-K9RT`. Feeds `BACKLOG.md` §A7 (`as->`).
+
+## Running the retained research helpers
+
+Run the helpers from the 0.7.x source worktree with its project.json import map. Script paths are now ../planning/project03-language-evolution/sliceNN-name/scripts/ relative to that worktree. Tree-shake evidence defaults beside its slice, regardless of source cwd; the threading JS probe imports the compiler from the sibling 0.7.x worktree. Supply the existing compiled-output and ECMAScript corpus inputs when required. Historical command transcripts elsewhere retain their original source-checkout context.

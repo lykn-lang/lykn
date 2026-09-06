@@ -58,7 +58,7 @@ give `->>` anything to point at?**
 | `data/catalog-host.{tsv,json}` | 214 host callables, classified. |
 | `scripts/build-catalog.py` | Regenerates both catalogs; fails loudly on any unclassified row. |
 | `scripts/probe-threading.js` | Executes the compiler to produce the §6 findings. |
-| `discovery-rows.md` | Draft rows for `docs/backlog/discoveries.md`. |
+| `discovery-rows.md` | Draft rows for `backlog/discoveries.md`. |
 
 ## Verification approach
 

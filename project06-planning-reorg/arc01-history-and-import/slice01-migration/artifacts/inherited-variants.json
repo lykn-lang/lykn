@@ -1,0 +1,110 @@
+[
+  {
+    "source_branch": "release/0.7.x",
+    "source_commit": "1cd4f5a3bf200500581f7de4c36e496bba3450cf",
+    "source_path": "docs/backlog/discoveries.md",
+    "source_blob": "36b0800611ed58244156b20910682b3f2d7c7568",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/backlog/discoveries.md",
+    "canonical_destination": "backlog/discoveries.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.7.x",
+    "source_commit": "1cd4f5a3bf200500581f7de4c36e496bba3450cf",
+    "source_path": "docs/design-v0.6.0/README.md",
+    "source_blob": "8e5eee893151664ecc546d6799b7e3ad8ca93f4a",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/README.md",
+    "canonical_destination": "project02-language-toolchain-alignment/README.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.7.x",
+    "source_commit": "1cd4f5a3bf200500581f7de4c36e496bba3450cf",
+    "source_path": "docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md",
+    "source_blob": "fd08fb5c4b212a24d0b875fd1a8983b1b82bce3d",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md",
+    "canonical_destination": "project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.7.x",
+    "source_commit": "1cd4f5a3bf200500581f7de4c36e496bba3450cf",
+    "source_path": "docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md",
+    "source_blob": "4cdc6df43baf8be086bad895e542188ce8c75fca",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md",
+    "canonical_destination": "project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.7.x",
+    "source_commit": "1cd4f5a3bf200500581f7de4c36e496bba3450cf",
+    "source_path": "docs/design-v0.6.0/project-plan.md",
+    "source_blob": "c3b089e188f88f0072a12a29b38fc584f2d7a3e3",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/project-plan.md",
+    "canonical_destination": "project02-language-toolchain-alignment/project-plan.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.7.x",
+    "source_commit": "1cd4f5a3bf200500581f7de4c36e496bba3450cf",
+    "source_path": "docs/design-v0.6.0/status.html",
+    "source_blob": "cb730e4bfee97f036c1dc226359162f4f42d2046",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/status.html",
+    "canonical_destination": "project02-language-toolchain-alignment/status.html",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.8.x",
+    "source_commit": "f40327c34b9ae6429da4998350815e11a37c48c2",
+    "source_path": "docs/backlog/discoveries.md",
+    "source_blob": "36b0800611ed58244156b20910682b3f2d7c7568",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/backlog/discoveries.md",
+    "canonical_destination": "backlog/discoveries.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.8.x",
+    "source_commit": "f40327c34b9ae6429da4998350815e11a37c48c2",
+    "source_path": "docs/design-v0.6.0/README.md",
+    "source_blob": "8e5eee893151664ecc546d6799b7e3ad8ca93f4a",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/README.md",
+    "canonical_destination": "project02-language-toolchain-alignment/README.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.8.x",
+    "source_commit": "f40327c34b9ae6429da4998350815e11a37c48c2",
+    "source_path": "docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md",
+    "source_blob": "fd08fb5c4b212a24d0b875fd1a8983b1b82bce3d",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md",
+    "canonical_destination": "project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.8.x",
+    "source_commit": "f40327c34b9ae6429da4998350815e11a37c48c2",
+    "source_path": "docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md",
+    "source_blob": "4cdc6df43baf8be086bad895e542188ce8c75fca",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md",
+    "canonical_destination": "project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/ledger.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.8.x",
+    "source_commit": "f40327c34b9ae6429da4998350815e11a37c48c2",
+    "source_path": "docs/design-v0.6.0/project-plan.md",
+    "source_blob": "c3b089e188f88f0072a12a29b38fc584f2d7a3e3",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/project-plan.md",
+    "canonical_destination": "project02-language-toolchain-alignment/project-plan.md",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  },
+  {
+    "source_branch": "release/0.8.x",
+    "source_commit": "f40327c34b9ae6429da4998350815e11a37c48c2",
+    "source_path": "docs/design-v0.6.0/status.html",
+    "source_blob": "cb730e4bfee97f036c1dc226359162f4f42d2046",
+    "preserved_at": "project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/inherited-variants/docs/design-v0.6.0/status.html",
+    "canonical_destination": "project02-language-toolchain-alignment/status.html",
+    "disposition": "0.6.x is the latest owning-branch record; this inherited snapshot remains evidence."
+  }
+]

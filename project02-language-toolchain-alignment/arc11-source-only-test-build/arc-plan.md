@@ -2,7 +2,7 @@
 
 > **Status: CLOSED — gated by the operator 2026-07-05** (host runs: A-3
 > three-moment with `./bin/lykn` at 23:31; A-4 sweep + A-5 from the earlier
-> session; see [`closing-report.md`](./closing-report.md) §7). Created and
+> session; see [`closing-report.md`](closing-report.md) §7). Created and
 > fully executed same day from an operator observation: slice01 (`75c9cc2`,
 > test-out-dir) + slice02 (`4f2a628`, buried-intent-audit). No compiled JS
 > in the source tree at any moment; buried-intent inventory empty-or-

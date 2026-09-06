@@ -71,7 +71,7 @@ Run from each worktree with the 0.6.x census supplied via `--census-file=`
 | Branch | Live findings | What they are |
 |---|---|---|
 | `release/0.6.x` | **2** | A concurrent session's uncommitted work — §6. |
-| `main` | **1** | `docs/design-v0.6.0/status.html:273` → docs/archive/ |
+| `main` | **1** | `project02-language-toolchain-alignment/status.html:273` → docs/archive/ |
 | `release/0.7.x` | **15** | 1 shared with `main`; **14 new, and all of them real** — §4.1. |
 
 ### 4.1 · The 0.7.x result is the argument for the gate
@@ -120,7 +120,7 @@ register bug — **a file that exists on disk but is not in git**.
 
 The fifth seed was a markdown link to `../docs/backlog/README.md`. It did **not**
 fire, correctly: from `docs/philosophy.md` that resolves to
-`docs/backlog/README.md`, which is tracked. A bad seed, not a missed catch;
+`backlog/README.md`, which is tracked. A bad seed, not a missed catch;
 recorded because a demo that quietly drops a case is the thing `D-2607-B8SY`
 warns about.
 
@@ -234,7 +234,7 @@ overclaiming this slice set out to stop.
 
 1. **Register rows.** The 0.7.x findings (§4.1), the `main` finding, and the
    `assets/ai` class each deserve a `D-YYMM-XXXX` row. Not written here:
-   `docs/backlog/discoveries.md` is being edited by a concurrent session and
+   `backlog/discoveries.md` is being edited by a concurrent session and
    racing it would corrupt the register this slice just gave a home to.
 2. **A real broken link in a shipped guide** — `docs/guides/12-deno/12-04-publishing.md:71`:
 

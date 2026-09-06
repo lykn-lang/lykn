@@ -160,6 +160,6 @@ slice closes. Iteration budget: five, per discipline.
 ## Version History
 
 - **v1.0 (2026-07-07)** — initial plan-of-record. Layout
-  (`docs/design-v0.7.0/02-packaging-strategy/`, arc wrapper collapsed,
+  (`project03-language-evolution/slice02-packaging-strategy/`, arc wrapper collapsed,
   project-plan deferred) follows the precedent set by
   `01-treeshake-audit/`, confirmed with the operator this date.

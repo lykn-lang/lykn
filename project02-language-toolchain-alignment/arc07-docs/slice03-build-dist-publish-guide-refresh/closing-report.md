@@ -23,16 +23,16 @@ reconciliation remains slice04.
 
 Before editing, CC loaded:
 
-- `docs/design-v0.6.0/arc07-docs/arc-plan.md`
-- `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/closing-report.md`
-- `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/cdc-verification.md`
-- `docs/design-v0.6.0/arc07-docs/slice03-build-dist-publish-guide-refresh/slice-doc.md`
-- `docs/design-v0.6.0/arc07-docs/slice03-build-dist-publish-guide-refresh/ledger.md`
+- `project02-language-toolchain-alignment/arc07-docs/arc-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/closing-report.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice03-build-dist-publish-guide-refresh/slice-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice03-build-dist-publish-guide-refresh/ledger.md`
 - `assets/ai/SKILL.md`
 - `docs/guides/10-project-structure.md`
 - `docs/guides/12-deno/12-04-publishing.md`
 - `docs/guides/15-lykn-cli.md`
-- `docs/backlog/discoveries.md`
+- `backlog/discoveries.md`
 - `crates/lykn-cli/src/main.rs`
 
 CC also checked the live command surface:
@@ -61,7 +61,7 @@ CC also checked the live command surface:
   gate, and the deprecated `lykn build --dist` alias.
 - `crates/lykn-cli/src/main.rs` now reports missing publish staging as
   `target/lykn/dist/...` and recommends `lykn dist`.
-- `docs/backlog/discoveries.md` closes `D-2607-6BQX` and `D-2607-V5DK`, and
+- `backlog/discoveries.md` closes `D-2607-6BQX` and `D-2607-V5DK`, and
   marks `D-2607-2FHM` as no-op because no root `dist` debris exists.
 
 ## Ledger Walk

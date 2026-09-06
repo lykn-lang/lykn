@@ -15,10 +15,10 @@
  * that was not enough. See inventory.md section 6.6.
  *
  * Run from the repo root:
- *     deno run -A docs/design-v0.7.0/03-threading-macros/scripts/probe-threading.js
+ *     deno run -A ../planning/project03-language-evolution/slice03-threading-macros/scripts/probe-threading.js
  */
 
-import { lykn } from "../../../../packages/lang/mod.js";
+import { lykn } from "../../../../0.7.x/packages/lang/mod.js";
 
 const compile = (src) => {
   try {

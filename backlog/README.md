@@ -5,7 +5,7 @@ we found out**: defects, traps, gaps, and systemic findings, each with a
 permanent ID. It is the cross-cutting counterpart to the planning tree — a
 discovery is recorded here *first*, then routed to wherever the fix belongs.
 
-**Why it lives here and not under `docs/design-vX.Y.Z/`:** rows outlive any one
+**Why it lives at the planning root rather than inside one project:** rows outlive any one
 release. A finding raised during 0.6.0 may route to arc07, to arc16, and to the
 0.7.0 backlog simultaneously, and its ID must stay valid after 0.6.0 ships.
 Filing it under a versioned design tree would orphan the IDs at the next bump.
@@ -101,7 +101,7 @@ three careful fixes.
 
 | Artifact | Home |
 |---|---|
-| Planning (project / arc / slice) | `docs/design-vX.Y.Z/` — see `collaboration-framework/docs/PROJECT-MANAGEMENT.md` |
-| Design decisions (DDs) | `docs/design/` (odm-managed) |
-| This register + owed-row queues | `docs/backlog/` |
+| Planning (project / arc / slice) | `projectNN-<slug>/` on the planning branch |
+| Design decisions (DDs) | `project01-mvp/artifacts/design-index.md/` (odm-managed) |
+| This register + owed-row queues | `backlog/` |
 | Scratch, transcripts, dead ends | `workbench/` (**gitignored — nothing durable, nothing cited**) |

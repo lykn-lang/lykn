@@ -148,7 +148,7 @@ defaults — flag dissent before starting if any are wrong.
 1. [`assets/ai/LEDGER_DISCIPLINE.md`](../../assets/ai/LEDGER_DISCIPLINE.md) — protocol (mandatory)
 2. [`assets/ai/SUBAGENT-DELEGATION-POLICY.md`](../../assets/ai/SUBAGENT-DELEGATION-POLICY.md) — subagent rules
 3. [`assets/ai/AGENTS.md`](../../assets/ai/AGENTS.md) "Lykn CLI safety gates" + "Snapshot testing"
-4. **DD-37** at `docs/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`. Focus on:
+4. **DD-37** at `project02-language-toolchain-alignment/arc03-compiler-coherence/artifacts/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`. Focus on:
    - §"Acceptance state and Phase 0 criterion" (lines 30–62) — Phase 0 spec
    - §"Gradual migration, not a big-bang rewrite" (lines 864–916) — the 9-step migration sequence
    - §"Six-module decomposition" (lines 187–270) — target architecture

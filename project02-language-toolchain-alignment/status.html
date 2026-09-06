@@ -83,7 +83,7 @@
 <body>
 <div class="wrap">
   <h1>lykn 0.6.0 — Project Status</h1>
-  <p class="sub">The language-toolchain alignment release. Planned + tracked in the canonical project/arc/slice layout under <code>docs/design-v0.6.0/</code>.</p>
+  <p class="sub">The language-toolchain alignment release. Planned + tracked in the canonical project/arc/slice layout in <code>project02-language-toolchain-alignment/</code> on the planning branch.</p>
   <p class="updated" id="updated"></p>
 
   <div class="kpis" id="kpis"></div>
@@ -108,7 +108,7 @@
   <h2>Arcs<span class="rule"></span></h2>
   <div class="arcs" id="arcs"></div>
 
-  <h2>Standalone slices<span class="rule"></span></h2>
+  <h2>Historical standalone slices (now decimal arc wrappers)<span class="rule"></span></h2>
   <div class="arcs" id="standalone"></div>
 
   <h2>Key metrics<span class="rule"></span></h2>
@@ -376,7 +376,7 @@ $("issues").innerHTML=DATA.issues.map(i=>`<div class="issue">
   <div class="h"><span class="tt">${i.t}</span><span class="tag t-${i.tag}">${i.tag}</span></div>
   <div class="lesson">${i.lesson}</div></div>`).join("");
 
-$("foot").textContent=`lykn ${DATA.release} · generated from docs/design-v0.6.0/ · edit the DATA object in this file to update`;
+$("foot").textContent=`lykn ${DATA.release} · generated from project02-language-toolchain-alignment/ · edit the DATA object in this file to update`;
 </script>
 </body>
 </html>

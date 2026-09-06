@@ -39,7 +39,7 @@ the macro-boundary semantics decision recorded in DD-58.
 | slice01 · dd58-strict-default | **Delivered** — Rust-CLI strict default-on (5 heads error; `kernel:` resolves; `.lyk` exempt; `--no-strict` harness-only); guides migrated. Bubble-up: the JS-parity gap → slice02. | `faee8a1`, CDC-verified 2026-06-30 |
 | slice02 · js-dd58-parity | **Delivered** — JS compiler strict default-on + `kernel:` escape (`kernel-forms.js` mirror, whitelist parity CDC-reproduced 92=92); browser + `lykn test` codegen extension-aware; 26-site migration; fences flipped. Bubble-ups: A-6 asymmetry, A-7 duplication, A-8 corpus gap. | `feb056c`, CDC-verified 2026-07-05 |
 | slice03 · dd37-step4-kernel-removal | **Delivered** — `_kernel` → WeakSet registry (zero-grep reproduced); A-6 enforced (post-pass2 sweep; divergence runtime-confirmed first); A-7 parity guard in `make check`; A-8 corpus rows. | `2f6a84d`, CDC-verified 2026-07-05 |
-| slice04 · no-else-if-expression-error | **Delivered** — Rust `check`/`compile` reject no-else `if` in expression position before codegen; statement-position no-else `if` and expression-position else-branch `if` remain valid; DD-50 corpus/parity fixtures pass. | [`slice04 closing-report`](./slice04-no-else-if-expression-error/closing-report.md), CDC-verified 2026-08-08 |
+| slice04 · no-else-if-expression-error | **Delivered** — Rust `check`/`compile` reject no-else `if` in expression position before codegen; statement-position no-else `if` and expression-position else-branch `if` remain valid; DD-50 corpus/parity fixtures pass. | [`slice04 closing-report`](slice04-no-else-if-expression-error/closing-report.md), CDC-verified 2026-08-08 |
 
 No slice dropped, deferred, or missing.
 

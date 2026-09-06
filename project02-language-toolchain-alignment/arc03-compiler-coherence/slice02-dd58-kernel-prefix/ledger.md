@@ -96,7 +96,7 @@ This milestone does **not**:
 6. `crates/lykn-lang/src/classifier/mod.rs` — the classifier entry point.
 7. `crates/lykn-lang/src/classifier/forms.rs` — per-form classification logic.
 8. `crates/lykn-lang/src/ast/surface.rs` — `SurfaceForm` enum, including the `KernelPassthrough` variant.
-9. DD-01 (`docs/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md`) — colon syntax for member access. The `kernel:` prefix is a documented exception to DD-01's colon-as-member-access rule.
+9. DD-01 (`project01-mvp/arc01-js-foundations/artifacts/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md`) — colon syntax for member access. The `kernel:` prefix is a documented exception to DD-01's colon-as-member-access rule.
 
 ---
 

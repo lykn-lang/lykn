@@ -31,10 +31,10 @@ slice's D-5 consistency row is true at close.
 
 Before editing, CC loaded:
 
-- `docs/design-v0.6.0/arc07-docs/arc-plan.md`
-- `docs/design-v0.6.0/arc07-docs/slice03-build-dist-publish-guide-refresh/cdc-verification.md`
-- `docs/design-v0.6.0/arc07-docs/slice04-deno-workflow-reconciliation/slice-doc.md`
-- `docs/design-v0.6.0/arc07-docs/slice04-deno-workflow-reconciliation/ledger.md`
+- `project02-language-toolchain-alignment/arc07-docs/arc-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice03-build-dist-publish-guide-refresh/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice04-deno-workflow-reconciliation/slice-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice04-deno-workflow-reconciliation/ledger.md`
 - `docs/guides/12-deno/12-01-runtime-basics.md`
 - `docs/guides/12-deno/12-02-testing.md`
 - `docs/guides/12-deno/12-03-task-runner.md`

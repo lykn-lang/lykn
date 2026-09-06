@@ -1,7 +1,7 @@
 # CC Prompt — Guide-Drift Cleanup Session C
 
 **Scope:** Steps 5, 6, 7, and 8 from
-`docs/dev/0017-guide-drift-cleanup-plan.md`. The DD-49 and DD-50
+`project01-mvp/arc18-guide-alignment/artifacts/dev/0017-guide-drift-cleanup-plan.md`. The DD-49 and DD-50
 documentation fast-follows that were intentionally deferred from
 those DDs' implementation work, plus a final M2-inventory leftover
 verification pass.
@@ -35,7 +35,7 @@ Doc-only session — no `crates/` or `packages/` changes.
 ## Required reading
 
 1. `assets/ai/LEDGER_DISCIPLINE.md` — protocol.
-2. `docs/dev/0017-guide-drift-cleanup-plan.md` — the parent plan,
+2. `project01-mvp/arc18-guide-alignment/artifacts/dev/0017-guide-drift-cleanup-plan.md` — the parent plan,
    Steps 5-8 (this session's scope).
 3. `docs/design/05-active/0049-identifier-mapping-lykn-js.md` — DD-49
    (steps 5 and parts of 8).
@@ -276,7 +276,7 @@ result. If all 4 are resolved, the M2 inventory is closed. If item
 
 ## Deliverable 5 — Update guide-drift-cleanup-plan status tracker (MUST)
 
-**File:** `docs/dev/0017-guide-drift-cleanup-plan.md`.
+**File:** `project01-mvp/arc18-guide-alignment/artifacts/dev/0017-guide-drift-cleanup-plan.md`.
 
 The status tracker section near the bottom of the plan has
 checkboxes for each step. After Sessions A, B, and C all land,
@@ -312,7 +312,7 @@ down the plan remain unchecked (they wait on other threads).
       `grep -nE "DD-50 Rule 5" assets/ai/SKILL.md` returns ≥1.
 - [ ] **D4 verification:** all 4 M2 "Other drift" items verified —
       3 confirmed resolved, item 4 either resolved or flagged for M11.
-- [ ] **D5 verification:** `docs/dev/0017-guide-drift-cleanup-plan.md`
+- [ ] **D5 verification:** `project01-mvp/arc18-guide-alignment/artifacts/dev/0017-guide-drift-cleanup-plan.md`
       has ≥8 checked items in the status tracker.
 - [ ] `make lint` clean.
 - [ ] `git status -s` shows only `docs/`, `assets/ai/`, and the plan

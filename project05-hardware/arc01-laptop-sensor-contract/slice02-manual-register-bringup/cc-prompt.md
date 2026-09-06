@@ -29,12 +29,12 @@ Do not write to `main`.
 Read these before touching hardware:
 
 1. `AGENTS.md`
-2. `docs/hardware-v0.8.0/README.md`
-3. `docs/hardware-v0.8.0/project-plan.md`
-4. `docs/hardware-v0.8.0/arc01-laptop-sensor-contract/arc-plan.md`
-5. `docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/closing-report.md`
-6. `docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/slice-doc.md`
-7. `docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/ledger.md`
+2. `project05-hardware/README.md`
+3. `project05-hardware/project-plan.md`
+4. `project05-hardware/arc01-laptop-sensor-contract/arc-plan.md`
+5. `project05-hardware/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/closing-report.md`
+6. `project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/slice-plan.md`
+7. `project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/ledger.md`
 8. Current Bus Pirate terminal/protocol docs for the selected bus mode.
 9. Current ICM-42688-P datasheet/register reference.
 10. Current chosen board documentation.
@@ -104,7 +104,7 @@ The close report must include:
     - whether slice03 should use BPIO2, terminal transcript automation, or
       another path;
     - whether arc01 slice breakdown or ledger needs adjustment;
-    - whether any findings must update `docs/design-v0.8.0/`.
+    - whether any findings must update `project04-c-lang/`.
 
 ## Constraints
 

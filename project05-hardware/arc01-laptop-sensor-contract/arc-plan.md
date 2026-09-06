@@ -58,11 +58,11 @@ should be opened only after the operator confirms the cut.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · procurement-and-bench-contract** | Confirm the exact first-order hardware, pin/bus plan, voltage/power limits, and bench safety/mechanical setup. Produce a wiring plan and acceptance checklist before hardware is energized. No Lykn/compiler code. | **Open set drafted** ([slice-doc](./slice01-procurement-and-bench-contract/slice-doc.md), [ledger](./slice01-procurement-and-bench-contract/ledger.md), [cc-prompt](./slice01-procurement-and-bench-contract/cc-prompt.md)) |
-| **slice02 · manual-register-bringup** | Use Bus Pirate interactively to power the IMU, select SPI/I2C as appropriate, read identity/status registers, perform one write/readback config operation, and record known-good and known-bad bus signatures. | **Open set drafted** ([slice-doc](./slice02-manual-register-bringup/slice-doc.md), [ledger](./slice02-manual-register-bringup/ledger.md), [cc-prompt](./slice02-manual-register-bringup/cc-prompt.md)) |
+| **slice01 · procurement-and-bench-contract** | Confirm the exact first-order hardware, pin/bus plan, voltage/power limits, and bench safety/mechanical setup. Produce a wiring plan and acceptance checklist before hardware is energized. No Lykn/compiler code. | **Open set drafted** ([slice-doc](slice01-procurement-and-bench-contract/slice-plan.md), [ledger](slice01-procurement-and-bench-contract/ledger.md), [cc-prompt](slice01-procurement-and-bench-contract/cc-prompt.md)) |
+| **slice02 · manual-register-bringup** | Use Bus Pirate interactively to power the IMU, select SPI/I2C as appropriate, read identity/status registers, perform one write/readback config operation, and record known-good and known-bad bus signatures. | **Open set drafted** ([slice-doc](slice02-manual-register-bringup/slice-plan.md), [ledger](slice02-manual-register-bringup/ledger.md), [cc-prompt](slice02-manual-register-bringup/cc-prompt.md)) |
 | **slice03 · scripted-bpio2-probe** | Turn the manual sequence into a laptop-side script or transcript-driven tool using BPIO2 or the most suitable Bus Pirate automation path. Output deterministic register reads and error cases. | Proposed |
 | **slice04 · lykn-c-shape-notes** | Convert the observed register/FIFO/config work into Lykn embedded-C requirements: data types, bit operations, effect/capability boundaries, transport abstraction, and forms that must be rejected or restricted. No compiler implementation. | Proposed |
-| **slice05 · contract-package-and-bubble-up** | Assemble the IMU contract packet for later arcs: wiring, transcripts, register table, failure signatures, and the target-profile deltas that must bubble into `docs/design-v0.8.0/`. | Proposed |
+| **slice05 · contract-package-and-bubble-up** | Assemble the IMU contract packet for later arcs: wiring, transcripts, register table, failure signatures, and the target-profile deltas that must bubble into `project04-c-lang/`. | Proposed |
 
 ### Proposed execution stance
 
@@ -85,7 +85,7 @@ Feeds:
 - arc02's C board ABI and transport boundary;
 - arc04's STM32 IMU driver/data path;
 - arc07's later sensor-comparison method;
-- the embedded target profile in `docs/design-v0.8.0/`.
+- the embedded target profile in `project04-c-lang/`.
 
 ## 5. Decision gates
 
@@ -112,7 +112,7 @@ produced concrete Lykn embedded-C target requirements.
 | A-6 | scripted or repeatable automation path exists, or is explicitly deferred with rationale | slice03 close | serious | development velocity | open | | BPIO2 preferred if available and stable |
 | A-7 | register/FIFO/config observations are converted into Lykn embedded-C requirements | slice04 close | serious | Lykn target profile | open | | no compiler code required |
 | A-8 | contract packet is assembled for later arcs | slice05 close: artifact index and bubble-up | serious | project recomposition | open | | feeds arc02/arc04/arc07 |
-| A-9 | arc findings bubble up into this project plan and/or `docs/design-v0.8.0/` | arc close: version-history entries | serious | project-management | open | | anti-silent-drop row |
+| A-9 | arc findings bubble up into this project plan and/or `project04-c-lang/` | arc close: version-history entries | serious | project-management | open | | anti-silent-drop row |
 
 ## 7. Verification strategy
 

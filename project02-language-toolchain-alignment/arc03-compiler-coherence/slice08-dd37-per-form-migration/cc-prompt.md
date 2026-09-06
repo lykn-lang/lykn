@@ -111,7 +111,7 @@ matters at every batch boundary.
    - `packages/lang/classifier.js` — classifySurfaceForm + emitSurfaceForm pattern
    - `packages/lang/expander.js` lines 730-740 — classifier integration point
    - `scripts/bundle-size.js` — measurement script
-7. **DD-37** at `docs/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`:
+7. **DD-37** at `project02-language-toolchain-alignment/arc03-compiler-coherence/artifacts/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`:
    - §"Gradual migration, not a big-bang rewrite" (lines 864-916)
    - §"Bundle size considerations" (lines 1027-1114)
    - **Refinement log entries 2026-05-17 (M21 baseline + pilot

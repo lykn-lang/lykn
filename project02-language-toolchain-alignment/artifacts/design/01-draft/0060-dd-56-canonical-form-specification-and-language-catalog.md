@@ -273,8 +273,8 @@ The illustrative shape above is not the final spec — Turn 1 of W-3 refines it.
 
 ## Cross-references
 
-- DD-50.6 (`docs/dev/0016-dd-50.6-implementation-prompt-for-cc.md`) — Q4=A invariant not held in practice; this DD's remediation.
-- DD-55 (`docs/design/06-final/0055-dd-55-template-macro-redesign-icu-messageformat-i18n-foundation.md`) — adjacent i18n work; template-level ICU foundation.
+- DD-50.6 (`project01-mvp/arc15-implicit-return/artifacts/dev/0016-dd-50.6-implementation-prompt-for-cc.md`) — Q4=A invariant not held in practice; this DD's remediation.
+- DD-55 (`project02-language-toolchain-alignment/arc08-template-i18n/artifacts/design/06-final/0055-dd-55-template-macro-redesign-icu-messageformat-i18n-foundation.md`) — adjacent i18n work; template-level ICU foundation.
 - Phase 1c classification audit (`workbench/phase-1c-classification-audit-2026-05-14.md`) — the conflation analysis.
 - Phase 3 synthesis plan (`workbench/phase-3-synthesis-plan-2026-05-14.md`) §W-3.
 

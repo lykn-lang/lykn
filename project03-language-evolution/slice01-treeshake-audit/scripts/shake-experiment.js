@@ -12,13 +12,13 @@
  * Run from the repo root (esbuild needs net+run on first resolution):
  *
  *   deno run --allow-read --allow-write --allow-env --allow-net --allow-run \
- *     docs/design-v0.7.0/01-treeshake-audit/scripts/shake-experiment.js [compiledDir]
+ *     ../planning/project03-language-evolution/slice01-treeshake-audit/scripts/shake-experiment.js [compiledDir]
  *
  * `compiledDir` defaults to the P1 output for the default emission path.
  */
 import * as esbuild from "npm:esbuild";
 
-const AUDIT = "docs/design-v0.7.0/01-treeshake-audit";
+const AUDIT = decodeURIComponent(new URL("../", import.meta.url).pathname).replace(/\/$/, "");
 const compiledDir = Deno.args[0] ?? `${AUDIT}/evidence/compiled/default`;
 const evidenceDir = `${AUDIT}/evidence`;
 const entry = `${compiledDir}/app-main.js`;

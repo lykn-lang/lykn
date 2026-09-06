@@ -13,16 +13,16 @@ sections.
 
 Read:
 
-- `docs/design-v0.6.0/arc07-docs/arc-plan.md`
-- `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/closing-report.md`
-- `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/cdc-verification.md`
-- `docs/design-v0.6.0/arc07-docs/slice03-build-dist-publish-guide-refresh/slice-doc.md`
-- `docs/design-v0.6.0/arc07-docs/slice03-build-dist-publish-guide-refresh/ledger.md`
+- `project02-language-toolchain-alignment/arc07-docs/arc-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/closing-report.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice03-build-dist-publish-guide-refresh/slice-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice03-build-dist-publish-guide-refresh/ledger.md`
 - `assets/ai/SKILL.md`
 - `docs/guides/10-project-structure.md`
 - `docs/guides/12-deno/12-04-publishing.md`
 - `docs/guides/15-lykn-cli.md`
-- `docs/backlog/discoveries.md` rows `D-2607-6BQX`, `D-2607-V5DK`, and
+- `backlog/discoveries.md` rows `D-2607-6BQX`, `D-2607-V5DK`, and
   `D-2607-2FHM`
 - `crates/lykn-cli/src/main.rs` around the `publish` help/error strings
 

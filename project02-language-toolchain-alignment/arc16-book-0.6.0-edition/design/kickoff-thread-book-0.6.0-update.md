@@ -145,7 +145,7 @@ prompt references.
 - **Stale lang-repo path.** Both files reference `~/lab/oxur/lykn/`
   as the lykn source location (multiple occurrences). The current
   repo is at `~/lab/lykn/lang/`. All five sub-paths (the README,
-  `docs/dev/research/`, `docs/design/06-final/`, `examples/surface/`,
+  `project01-mvp/artifacts/research/`, `docs/design/06-final/`, `examples/surface/`,
   `workbench/conversation-bootstrap-v6.md`) need verifying against
   the new location — the `~/lab/oxur/` prefix is definitively stale.
 - **Test-import path `../../src/index.js`** in code samples
@@ -197,7 +197,7 @@ M5's lykn-fronted toolchain.
 - **Keep ` ```lisp `** for lykn source through the 0.6.0 release.
   Duncan's call (2026-05-11): the GitHub Linguist submission for
   lykn as its own language is deferred to 0.7.0+, so ` ```lykn `
-  isn't a usable tag yet. The `docs/dev/linguist-sample-note.md`
+  isn't a usable tag yet. The `project01-mvp/artifacts/ecosystem/linguist-sample-note.md`
   and `linguist-languages-entry.yml` in the lang repo are
   preparation for that future submission, not the trigger to
   switch tags now. Revisit at the 0.7.0 book pass.
@@ -235,7 +235,7 @@ grep -rln Biome src/   # 9 files at time of writing
 ### Bucket 2 — Per-thread folds (gated on threads closing)
 
 These wait on the corresponding Phase 2 thread in the lang repo
-closing. See lang's `docs/dev/0017-guide-drift-cleanup-plan.md`
+closing. See lang's `project01-mvp/arc18-guide-alignment/artifacts/dev/0017-guide-drift-cleanup-plan.md`
 ("Per-thread guide drift" section) for the mirror list.
 
 **After Thread 3 (M11 build-dir reorg + M13 publish dirty-check)
@@ -420,7 +420,7 @@ output-specific concerns to track for 0.6.0?
    section.
 5. **Read lang's `workbench/phase-2-plan.md`** — milestone list +
    status.
-6. **Read lang's `docs/dev/0017-guide-drift-cleanup-plan.md`** —
+6. **Read lang's `project01-mvp/arc18-guide-alignment/artifacts/dev/0017-guide-drift-cleanup-plan.md`** —
    especially the "Per-thread guide drift" section (this book
    thread mirrors that structure for book chapters).
 7. **Read the book's `src/SUMMARY.md`** for the full chapter list.

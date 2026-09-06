@@ -26,10 +26,10 @@ landed, and guide 00 now states the settled compile/check error.
 
 | Slice | Outcome | Evidence |
 |---|---|---|
-| slice01 doctest-drift-fix | closed | `0731048`; [`slice01-doctest-drift-fix/cdc-verification.md`](./slice01-doctest-drift-fix/cdc-verification.md); guide doctests moved from 464/8 to green. |
-| slice02 current-drift-recon | closed/CDC-verified | `66a3565`; [`slice02-current-drift-recon/closing-report.md`](./slice02-current-drift-recon/closing-report.md); [`slice02-current-drift-recon/cdc-verification.md`](./slice02-current-drift-recon/cdc-verification.md). |
-| slice03 build-dist-publish-guide-refresh | closed/CDC-verified | `dcf23f5`; [`slice03-build-dist-publish-guide-refresh/closing-report.md`](./slice03-build-dist-publish-guide-refresh/closing-report.md); [`slice03-build-dist-publish-guide-refresh/cdc-verification.md`](./slice03-build-dist-publish-guide-refresh/cdc-verification.md). |
-| slice04 deno-workflow-reconciliation | closed/CDC-verified | `ae31c75` + CDC close `af69f70`; [`slice04-deno-workflow-reconciliation/closing-report.md`](./slice04-deno-workflow-reconciliation/closing-report.md); [`slice04-deno-workflow-reconciliation/cdc-verification.md`](./slice04-deno-workflow-reconciliation/cdc-verification.md). |
+| slice01 doctest-drift-fix | closed | `0731048`; [`slice01-doctest-drift-fix/cdc-verification.md`](slice01-doctest-drift-fix/cdc-verification.md); guide doctests moved from 464/8 to green. |
+| slice02 current-drift-recon | closed/CDC-verified | `66a3565`; [`slice02-current-drift-recon/closing-report.md`](slice02-current-drift-recon/closing-report.md); [`slice02-current-drift-recon/cdc-verification.md`](slice02-current-drift-recon/cdc-verification.md). |
+| slice03 build-dist-publish-guide-refresh | closed/CDC-verified | `dcf23f5`; [`slice03-build-dist-publish-guide-refresh/closing-report.md`](slice03-build-dist-publish-guide-refresh/closing-report.md); [`slice03-build-dist-publish-guide-refresh/cdc-verification.md`](slice03-build-dist-publish-guide-refresh/cdc-verification.md). |
+| slice04 deno-workflow-reconciliation | closed/CDC-verified | `ae31c75` + CDC close `af69f70`; [`slice04-deno-workflow-reconciliation/closing-report.md`](slice04-deno-workflow-reconciliation/closing-report.md); [`slice04-deno-workflow-reconciliation/cdc-verification.md`](slice04-deno-workflow-reconciliation/cdc-verification.md). |
 
 Slice count matches the arc-plan breakdown: four planned slices, four closed.
 
@@ -68,13 +68,13 @@ The slices compose into the arc capability:
 
 | ID | Result | Evidence |
 |---|---|---|
-| A-1 | done | slice01 closed at `0731048` with [`slice01-doctest-drift-fix/cdc-verification.md`](./slice01-doctest-drift-fix/cdc-verification.md). |
-| A-2 | done | slice02 closed at `66a3565` with [`slice02-current-drift-recon/cdc-verification.md`](./slice02-current-drift-recon/cdc-verification.md). |
+| A-1 | done | slice01 closed at `0731048` with [`slice01-doctest-drift-fix/cdc-verification.md`](slice01-doctest-drift-fix/cdc-verification.md). |
+| A-2 | done | slice02 closed at `66a3565` with [`slice02-current-drift-recon/cdc-verification.md`](slice02-current-drift-recon/cdc-verification.md). |
 | A-3 | done | slice02 inventory compared against slices 03/04 and this close report: fixed items are closed, no-else `if` was routed to arc10/P-22 and is now fixed, `.d.ts` docs remain an explicit later candidate, and no seed finding is silently dropped. |
 | A-4 | done | Reproduced selected executable claims: `lykn 0.6.0-dev`; build/dist/publish/test/lint/run help matches docs; `lykn build` writes `target/lykn/build/*`; two-branch expression `if` compiles to a ternary; `lykn run` executes a `.lykn` file; `lykn lint` reports no findings on a clean fixture; no-else expression `if` still emits invalid JS and fails at Deno parse time, matching the new known-defect note and arc10/P-22 routing. |
 | A-5 | done | `make test-docs`, `make check-cited-paths`, and `git diff --check` pass at arc close. |
-| A-6 | done | Accrued child-closed row: slice03 is closed/CDC-verified at `dcf23f5` + [`slice03-build-dist-publish-guide-refresh/cdc-verification.md`](./slice03-build-dist-publish-guide-refresh/cdc-verification.md). |
-| A-7 | done | Accrued child-closed row: slice04 is closed/CDC-verified at `ae31c75` + `af69f70` + [`slice04-deno-workflow-reconciliation/cdc-verification.md`](./slice04-deno-workflow-reconciliation/cdc-verification.md). |
+| A-6 | done | Accrued child-closed row: slice03 is closed/CDC-verified at `dcf23f5` + [`slice03-build-dist-publish-guide-refresh/cdc-verification.md`](slice03-build-dist-publish-guide-refresh/cdc-verification.md). |
+| A-7 | done | Accrued child-closed row: slice04 is closed/CDC-verified at `ae31c75` + `af69f70` + [`slice04-deno-workflow-reconciliation/cdc-verification.md`](slice04-deno-workflow-reconciliation/cdc-verification.md). |
 
 ## Arc-Scale Verification
 

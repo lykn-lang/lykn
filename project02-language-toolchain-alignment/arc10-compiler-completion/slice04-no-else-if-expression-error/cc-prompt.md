@@ -2,7 +2,7 @@
 
 You are CC implementing slice04 in:
 
-`docs/design-v0.6.0/arc10-compiler-completion/slice04-no-else-if-expression-error/`
+`project02-language-toolchain-alignment/arc10-compiler-completion/slice04-no-else-if-expression-error/`
 
 Branch/worktree:
 

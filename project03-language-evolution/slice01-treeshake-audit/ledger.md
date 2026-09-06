@@ -15,7 +15,7 @@
 | F-9 | dist metadata findings recorded (`sideEffects` absence; generated `deno.json` fields relevant to shaking) | `grep -rn sideEffects crates/lykn-cli/src/dist.rs` returns nothing; `report.md` §Dist metadata cites it | correctness | slice-doc | open | | `sideEffects` absence pre-verified 2026-07-07 grep; re-verify at close |
 | F-10 | Corpus scan run: walker over compiled corpus; effectful top-level statements tabulated with file:line | `evidence/corpus-scan.json` exists; report summary row count == `jq '.findings \| length'` | correctness | slice-doc | open | | CC phase P3 |
 | F-11 | Audit report complete: severity-graded findings + 0.7.0 recommendations | `report.md` contains §Emission paths, §Inventory, §Predictions vs outcomes, §Dist metadata, §Corpus scan, §Recommendations | serious | slice-doc | open | | |
-| F-12 | No production code changed by this slice | `git diff --stat <open>..<close>` touches only `docs/design-v0.7.0/` (and `CLAUDE.md` layout line) | correctness | slice-doc | open | | Diagnostic-only guarantee |
+| F-12 | No production code changed by this slice | `git diff --stat <open>..<close>` touches only `project03-language-evolution/` (and `CLAUDE.md` layout line) | correctness | slice-doc | open | | Diagnostic-only guarantee |
 
 ## What Worked
 

@@ -1,9 +1,9 @@
 # Slice 04: no-else-if-expression-error
 
 > **Status: Closed, 2026-08-08.** The full open set exists in
-> [`ledger.md`](./ledger.md) and [`cc-prompt.md`](./cc-prompt.md); close evidence
-> is in [`closing-report.md`](./closing-report.md) and
-> [`cdc-verification.md`](./cdc-verification.md).
+> [`ledger.md`](ledger.md) and [`cc-prompt.md`](cc-prompt.md); close evidence
+> is in [`closing-report.md`](closing-report.md) and
+> [`cdc-verification.md`](cdc-verification.md).
 
 ## 1. Goal
 

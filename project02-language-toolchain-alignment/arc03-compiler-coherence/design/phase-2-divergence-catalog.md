@@ -41,7 +41,7 @@ Plus `create-multiplier` immediately below it.
 
 Also: `docs/guides/08-performance.md` ID-27 (`memoize`), ID-28 (`memoize-lru`); `docs/guides/06-functions-closures.md` block 34 (`create-filter`); `docs/guides/07-async-concurrency.md` block 31 (`debounce`, `throttle`); `docs/guides/11-documentation.md` block 10.
 
-**Doc source (layer 2):** DD-50.6 Q3 was decided as **C — compile-then-check**, with explicit rationale (quoting `docs/dev/0016-dd-50.6-implementation-prompt-for-cc.md:17-20`):
+**Doc source (layer 2):** DD-50.6 Q3 was decided as **C — compile-then-check**, with explicit rationale (quoting `project01-mvp/arc15-implicit-return/artifacts/dev/0016-dd-50.6-implementation-prompt-for-cc.md:17-20`):
 
 > Q3: C — **compile-then-check.** Don't classify by surface-form head (curated-list approach). Instead, compile the last body expression first, then check the result's head against the kernel statement-form list. This is more future-proof (catches surface forms whose head isn't a statement form but whose compiled kernel form is).
 
@@ -147,7 +147,7 @@ This is the cleanest divergence in the set. **Recommend including as part of Pha
 
 ## D-4 — DD-50.6 Q4 cross-compiler invariant is broken at the data level
 
-**Doc source (layer 2):** `docs/dev/0016-dd-50.6-implementation-prompt-for-cc.md:21-24`:
+**Doc source (layer 2):** `project01-mvp/arc15-implicit-return/artifacts/dev/0016-dd-50.6-implementation-prompt-for-cc.md:21-24`:
 
 > Q4: A — Statement-form list maintained as constants in two locations (`STATEMENT_FORM_HEADS` in `forms.rs`, JS-side equivalent in `surface.js`), with `compile-both` cross-compiler tests gating list drift.
 

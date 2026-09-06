@@ -134,7 +134,7 @@ The principle is sound. The current implementation undermines it by letting surf
 
 ## The i18n unlock — how it changes the priority
 
-While planning the Phase 3 cleanup (workstreams W-1 through W-5 in `docs/design-v0.6.0/arc03-compiler-coherence/design/phase-3-synthesis-plan.md`), one workstream — **W-3, the canonical source of truth for form classifications** — needed a design decision: TOML-generated lists (option A), test-fixture verification (B), or just structural tests (C).
+While planning the Phase 3 cleanup (workstreams W-1 through W-5 in `project02-language-toolchain-alignment/arc03-compiler-coherence/design/phase-3-synthesis-plan.md`), one workstream — **W-3, the canonical source of truth for form classifications** — needed a design decision: TOML-generated lists (option A), test-fixture verification (B), or just structural tests (C).
 
 I initially recommended option B for 0.6.x as the lowest-tooling-weight path, with A as a 0.7+ aspiration.
 
@@ -277,15 +277,15 @@ The catalog schema's shape depends heavily on the separation design. If the sepa
 - W-4d (the six fence edits in `17-template-and-i18n.md`). Closed Class B; 6 of 14 doctest failures gone. Zero compiler change; zero architecture impact.
 
 **Drafted but paused pending separation:**
-- DD-56 (canonical form spec): `docs/design-v0.6.0/arc02-type-dts-generation/design/dd-56-canonical-form-spec-DRAFT.md` — schema sketch in §"Schema sketch" needs reframing post-separation.
+- DD-56 (canonical form spec): `project02-language-toolchain-alignment/arc02-type-dts-generation/design/dd-56-canonical-form-spec-DRAFT.md` — schema sketch in §"Schema sketch" needs reframing post-separation.
 - W-1, W-2 implementation prompts: not yet written, intentionally paused.
 
 **Diagnostic artifacts (still useful regardless of separation):**
-- Phase 1a triage: `docs/design-v0.6.0/arc03-compiler-coherence/design/phase-1a-test-failure-triage.md`
-- Phase 1c audit: `docs/design-v0.6.0/arc03-compiler-coherence/design/phase-1c-classification-audit.md`
-- Phase 2 main catalog: `docs/design-v0.6.0/arc03-compiler-coherence/design/phase-2-divergence-catalog.md`
+- Phase 1a triage: `project02-language-toolchain-alignment/arc03-compiler-coherence/design/phase-1a-test-failure-triage.md`
+- Phase 1c audit: `project02-language-toolchain-alignment/arc03-compiler-coherence/design/phase-1c-classification-audit.md`
+- Phase 2 main catalog: `project02-language-toolchain-alignment/arc03-compiler-coherence/design/phase-2-divergence-catalog.md`
 - Phase 2 book addendum: `~/lab/cnbb/lykn/workbench/phase-2-book-addendum-2026-05-14.md`
-- Phase 3 synthesis plan: `docs/design-v0.6.0/arc03-compiler-coherence/design/phase-3-synthesis-plan.md` (prescriptive parts need rewriting post-separation)
+- Phase 3 synthesis plan: `project02-language-toolchain-alignment/arc03-compiler-coherence/design/phase-3-synthesis-plan.md` (prescriptive parts need rewriting post-separation)
 
 **Open Phase 3 language-design calls already settled (still valid):**
 - D-1 (factory pattern): JS-side fix. Direction confirmed.

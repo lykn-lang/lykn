@@ -6,12 +6,12 @@
 
 ## 0. Read first
 
-- `docs/design-v0.6.0/project-plan.md`
-- `docs/design-v0.6.0/arc07-docs/arc-plan.md`
-- `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/slice-doc.md`
-- `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/ledger.md`
-- `docs/design-v0.6.0/arc07-docs/design/guide-drift-cleanup-plan.md`
-- `docs/design-v0.6.0/arc07-docs/design/proposed-skill-and-guide-additions.md`
+- `project02-language-toolchain-alignment/project-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/arc-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/slice-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/ledger.md`
+- `project02-language-toolchain-alignment/arc07-docs/design/guide-drift-cleanup-plan.md`
+- `project02-language-toolchain-alignment/arc07-docs/design/proposed-skill-and-guide-additions.md`
 - `assets/ai/SKILL.md`
 - the guide files under `docs/guides/`
 

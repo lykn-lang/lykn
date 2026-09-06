@@ -23,9 +23,9 @@ convention.
 | Row | CDC verdict | Evidence |
 |---|---|---|
 | L-1 | reproduced | `git ls-files docs/backlog/discoveries.md`; register has the relocation note naming the five prior citations. |
-| L-2 | reproduced | `docs/backlog/README.md` exists and carries the routing rule: a row is not routed until the destination file exists in git and contains it. |
+| L-2 | reproduced | `backlog/README.md` exists and carries the routing rule: a row is not routed until the destination file exists in git and contains it. |
 | L-3 | reproduced | `git ls-files docs/backlog/owed-0.7.x-rows.md`. |
-| L-4 | reproduced | `git ls-files` shows the arc16 design materials tracked under `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/`. |
+| L-4 | reproduced | `git ls-files` shows the arc16 design materials tracked under `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/`. |
 | L-5 | reproduced | Lang `AGENTS.md` is tracked; book commit `91fee17` and writers-guide commit `a042e18` add tracked `AGENTS.md`, make `CLAUDE.md` symlink to it, point back to the lang planning home, state the `workbench/` scratch and cited-path rules, and include the required commit trailers. |
 | L-6 | reproduced | Book commit `91fee17` tracks the fence-audit tool; the sibling-repo `git ls-files -s ...` check below reports `AGENTS.md`, symlink-mode `CLAUDE.md`, and the fence tool. |
 | L-7 | reproduced | `make check-cited-paths` passes at HEAD; `deno test --config project.json -A test/integration/cited-paths.test.js` reports 22 passed / 0 failed; full `make check` passed with escalation for normal home-directory access. |

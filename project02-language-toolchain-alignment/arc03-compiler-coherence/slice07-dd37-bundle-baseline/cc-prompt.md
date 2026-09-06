@@ -101,7 +101,7 @@ discussion.
 4. **The M21 ledger** at
    `workbench/milestones/M21-dd37-phase0-bundle-size-baseline-and-not-pilot-ledger.md`.
    Read the 10 design calls carefully.
-5. **DD-37** at `docs/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`:
+5. **DD-37** at `project02-language-toolchain-alignment/arc03-compiler-coherence/artifacts/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`:
    - §"Acceptance state and Phase 0 criterion" (lines 30–62) —
      mandatory; the gate this milestone clears.
    - §"Gradual migration, not a big-bang rewrite" (lines 864–916)

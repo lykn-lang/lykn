@@ -6,7 +6,7 @@ directly in one `NN-<slug>/` directory under `docs/design-vX.Y.Z/`, with no
 `arc-plan.md` and no arc-level `closing-report.md` above them.
 
 **Layout note (confirmation protocol, Part VI):** bare-`NN` non-arc units are an
-existing convention in this project — `docs/design-v0.7.0/` carries
+existing convention in this project — `project03-language-evolution/` carries
 `01-treeshake-audit/`, `02-packaging-strategy/`, `04-typed-classification/`. This
 is the first one under `design-v0.6.0/`; the naming follows that precedent rather
 than inventing a parallel one. Operator confirmed 2026-07-24.
@@ -106,7 +106,7 @@ entry" and **there is no test for "directory missing"** in either compiler. The
 untested case is the one that shipped wrong. That is now the third instance of
 this shape in a single day (slice07's rewritten-with-zero-coverage function, the
 test whose name overclaimed its guard, and this), which is itself a systemic
-entry in `docs/backlog/discoveries.md`.
+entry in `backlog/discoveries.md`.
 
 ## 7. Exit criteria
 

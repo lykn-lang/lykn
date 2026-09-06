@@ -7,7 +7,7 @@ aliased helpers out of `surface.js` into `surface-helpers.js`, using the tool yo
 built. **This one lands** (it's a real, committed extraction — not a scratch run).
 
 ## 0. Read first
-- `docs/design-v0.6.0/arc04-refactor-tooling/slice03-helper-extraction/ledger.md` — the contract (8 rows).
+- `project02-language-toolchain-alignment/arc04-refactor-tooling/slice03-helper-extraction/ledger.md` — the contract (8 rows).
 - `…/slice03-helper-extraction/slice-doc.md` — current state, the consumer split, the dependency hazard.
 - `…/slice02-move-function-rewiring/closing-report.md` — the free-var-dependency finding that shapes this slice.
 - The M22 audit `…/arc03-compiler-coherence/slice08-dd37-per-form-migration/design/m22-audit-report.md` §"M22.5-2".

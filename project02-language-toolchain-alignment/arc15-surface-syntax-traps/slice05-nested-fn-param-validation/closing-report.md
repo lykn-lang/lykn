@@ -23,7 +23,7 @@ a lexically bound value named `fn` remains a value call under DD-61.
 | S5-2 | done | `cargo test -p lykn-lang nested_fn -- --nocapture` -> 4 passed / 0 failed. |
 | S5-3 | done | `cargo test -p lykn-cli nested_bare_parameter_fn -- --nocapture` -> 2 passed / 0 failed; `cargo test -p lykn-cli fn_head -- --nocapture` -> 1 passed / 0 failed. |
 | S5-4 | done | `deno test --config project.json -A test/forms/arc15-fn-param-validation.test.js` -> 1 passed / 0 failed. |
-| S5-5 | done | `D-2608-H7FN` is closed in `docs/backlog/discoveries.md`; arc/project/status docs name slice05 as closed and arc15 close as next. |
+| S5-5 | done | `D-2608-H7FN` is closed in `backlog/discoveries.md`; arc/project/status docs name slice05 as closed and arc15 close as next. |
 | S5-6 | done | `make test` green; final lint/cited-path/diff/post-commit evidence is recorded in `cdc-verification.md`. |
 
 ## Boundary

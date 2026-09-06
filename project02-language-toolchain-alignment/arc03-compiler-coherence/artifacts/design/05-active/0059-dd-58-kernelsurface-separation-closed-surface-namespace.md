@@ -809,10 +809,10 @@ Source files referenced:
 - `packages/lang/expander.js` — `_kernel` marker.
 - `packages/testing/helpers.js` — `compileBoth` helper with `--source-context-path`.
 - `docs/design/01-draft/0046-dd-36-kernel-surface-compiler-split.md` — DD-36 (superseded).
-- `docs/design/05-active/0047-dd-37-js-surface-compiler-architecture.md` — DD-37 (with 2026-05-15 amendments).
+- `project02-language-toolchain-alignment/arc03-compiler-coherence/artifacts/design/05-active/0047-dd-37-js-surface-compiler-architecture.md` — DD-37 (with 2026-05-15 amendments).
 - `docs/design/05-active/0050-position-aware-compilation-of-conditional-and-block-forms.md` — DD-50.
-- `docs/design/06-final/0031-dd-22-surface-equality-and-logical-operators.md` — DD-22 (surface `=`).
-- `docs/design/06-final/0032-dd-23-set-external-property-mutation.md` — DD-23 (`set!`).
+- `project01-mvp/arc06-typed-bindings-and-parameters/artifacts/design/06-final/0031-dd-22-surface-equality-and-logical-operators.md` — DD-22 (surface `=`).
+- `project01-mvp/arc06-typed-bindings-and-parameters/artifacts/design/06-final/0032-dd-23-set-external-property-mutation.md` — DD-23 (`set!`).
 - `docs/guides/01-core-idioms.md` — ID-38 kernel-`=` context-dependence.
 - `workbench/dd-56-canonical-form-spec-2026-05-14.md` — DD-56 (cdc/dep-ergonomics).
 - `workbench/handoff-surface-kernel-separation-2026-05-14.md` — cdc/dep-ergonomics handoff.
@@ -1119,7 +1119,7 @@ the work. It also subsumes the `(require …)` → invalid-ESM output issue. Sch
 as a compiler-completion arc (with DD-37 step 4, `_kernel` marker removal),
 sequenced before the `lykn lint` work (the linter's corpus shrinks accordingly —
 the compiler now owns kernel-form enforcement). Tracked in
-`docs/design-v0.6.0/`.
+`project02-language-toolchain-alignment/`.
 
 ### v1.0 — 2026-05-16 (first landed revision)
 

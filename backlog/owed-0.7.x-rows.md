@@ -1,4 +1,4 @@
-# Owed rows for `release/0.7.x` → `docs/design-v0.7.0/BACKLOG.md`
+# Owed rows for `release/0.7.x` → `project03-language-evolution/BACKLOG.md`
 
 **Ready to apply — paste, don't re-derive.** Every row below is blocked on the
 same thing: a `0.7.x` checkout. The worktree layout (`.worktrees/0.7.x`)
@@ -110,7 +110,7 @@ the discovery register as `held-for-design`.*
 
 ## 6. §A — commit the **A7** entry (`as->`) (WRITTEN, uncommitted)
 
-*(New 2026-07-25; origin `docs/design-v0.7.0/03-threading-macros`.)*
+*(New 2026-07-25; origin `project03-language-evolution/slice03-threading-macros`.)*
 
 **Status: written, uncommitted** — same shape as row 1. The A7 entry (*`as->` —
 the general threading form*) has been written into `BACKLOG.md` on the 0.7.x
@@ -124,9 +124,9 @@ datum-last** — so a dedicated thread-last macro serves two built-ins, while
 `as->` covers datum-last, datum-middle and operator-receiver together. `as->`
 also currently compiles *silently* to an undefined `asTo(…)`.
 
-*Action: `cd .worktrees/0.7.x`, review `docs/design-v0.7.0/03-threading-macros/`
+*Action: `cd .worktrees/0.7.x`, review `project03-language-evolution/slice03-threading-macros/`
 and the A7 block in `BACKLOG.md`, then commit. Also append the four draft rows in
-that unit's `discovery-rows.md` to `docs/backlog/discoveries.md` on `main` and
+that unit's `discovery-rows.md` to `backlog/discoveries.md` on `main` and
 delete the draft file — until then those rows are in exactly the position
 `D-2607-8HTN` warns about.*
 
@@ -134,7 +134,7 @@ delete the draft file — until then those rows are in exactly the position
 
 ## Cross-check when you land these
 
-`docs/backlog/discoveries.md` (on `main`) is the register these rows are routed
+`backlog/discoveries.md` (on `main`) is the register these rows are routed
 *from*. Rows 3 and 4 should get their register entries updated to point at the
 BACKLOG once filed — a routing row that names a home is only useful if the home
 exists and the source says where it went. That's the `D-2607-8HTN` lesson applied

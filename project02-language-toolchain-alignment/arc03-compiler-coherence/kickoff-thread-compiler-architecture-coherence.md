@@ -208,7 +208,7 @@ Should both compilers agree? If yes, which version is right?
 - **MUST framing for CC prompts.**
 - **Closing report pattern** for each milestone (template in past
   closing reports — see workbench/2026-05-10-M7-closing-report.md).
-- **`docs/design/` taxonomy:** drafts in `01-draft/`, active in
+- **`project01-mvp/artifacts/design-index.md/` taxonomy:** drafts in `01-draft/`, active in
   `05-active/`, finalized in `06-final/`. Duncan handles promotion.
 - **Workbench is gitignored.**
 

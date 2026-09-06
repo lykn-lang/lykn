@@ -15,7 +15,7 @@ rather than a convention that has already failed silently five times.
 During arc16 pre-planning, a memory-vs-git reconcile found the **Discovery
 Register** (`discoveries.md`, 381 lines, permanent `D-YYMM-XXXX` IDs) sitting in
 `workbench/`, which `.gitignore:10` ignores wholesale. It was not misfiled:
-**five committed documents already cited `docs/backlog/discoveries.md`** —
+**five committed documents already cited `backlog/discoveries.md`** —
 `project-plan.md` §7 and §8, and the `01-macro-entry-diagnostics` slice-doc,
 closing-report and cdc-verification — and a committed spec cited two of its IDs.
 The agreed home was never created, so every reference dangled from birth.
@@ -42,8 +42,8 @@ durable artifacts into an invisible tree, and the mismatch is invisible
 
 ## Scope — in
 
-1. Relocate the register + owed-0.7.x rows to `docs/backlog/`; author
-   `docs/backlog/README.md` (row format, sections, closing, triage, and the
+1. Relocate the register + owed-0.7.x rows to `backlog/`; author
+   `backlog/README.md` (row format, sections, closing, triage, and the
    **routing rule**).
 2. Create arc16's planning home and relocate its material into
    `arc16-book-0.6.0-edition/design/`.

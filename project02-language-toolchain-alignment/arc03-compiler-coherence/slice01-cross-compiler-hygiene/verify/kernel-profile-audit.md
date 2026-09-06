@@ -1,7 +1,7 @@
 # Kernel Profile Audit — M16-4
 
 **Date:** 2026-05-15
-**Pattern doc:** `docs/dev/0024-if-profile-audit-pattern-for-special-case-intercepts.md`
+**Pattern doc:** `project02-language-toolchain-alignment/arc03-compiler-coherence/artifacts/dev/0024-if-profile-audit-pattern-for-special-case-intercepts.md`
 **Scope:** All kernel forms with special-case context intercepts in
 `crates/lykn-lang/src/emitter/forms.rs` `emit_expr` function.
 

@@ -23,10 +23,10 @@
  * Run from the repo root:
  *
  *   deno run --allow-read --allow-write --allow-env --allow-net \
- *     docs/design-v0.7.0/01-treeshake-audit/scripts/toplevel-walker.js \
+ *     ../planning/project03-language-evolution/slice01-treeshake-audit/scripts/toplevel-walker.js \
  *     <rootDir> [outJson]
  *
- * `outJson` defaults to docs/design-v0.7.0/01-treeshake-audit/evidence/corpus-scan.json
+ * `outJson` defaults to ../planning/project03-language-evolution/slice01-treeshake-audit/evidence/corpus-scan.json
  */
 import { parse } from "npm:acorn@8";
 
@@ -137,7 +137,7 @@ if (!root) {
   throw new Error("usage: toplevel-walker.js <rootDir> [outJson]");
 }
 const outJson = Deno.args[1] ??
-  "docs/design-v0.7.0/01-treeshake-audit/evidence/corpus-scan.json";
+  new URL("../evidence/corpus-scan.json", import.meta.url);
 
 const findings = [];
 let filesScanned = 0;

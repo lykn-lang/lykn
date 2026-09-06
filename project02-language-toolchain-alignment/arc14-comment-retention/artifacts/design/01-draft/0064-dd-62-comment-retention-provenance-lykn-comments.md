@@ -17,7 +17,7 @@ version: 1.0
 > **Status: DRAFT — for odm promotion (Duncan; odm assigns its own file
 > number; the DD number is 62, next after DD-61).** Drafted by CDC 2026-07-21
 > from the operator's design directive during arc05 slice04 scoping. Lives in
-> `arc14-comment-retention/design/` until promoted into `docs/design/`.
+> `arc14-comment-retention/design/` until promoted into `project01-mvp/artifacts/design-index.md/`.
 > Motivating pain: **LFE drops comments wholesale with no option to retain
 > them** — lykn should not repeat that.
 

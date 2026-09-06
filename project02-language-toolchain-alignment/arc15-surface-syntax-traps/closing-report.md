@@ -19,11 +19,11 @@ rewrite remains routed to 0.7.x as Option C.
 
 | Slice | Close result | Evidence |
 |-------|--------------|----------|
-| slice01 · reject-method-on-expr + guide migration | closed | `9ca9c7e`; [`slice01-reject-method-on-expr/cdc-verification.md`](./slice01-reject-method-on-expr/cdc-verification.md) |
-| slice02 · lint rule | closed | `d6c23b5` plus follow-up B `90cf211`; [`slice02-lint-rule/cdc-verification.md`](./slice02-lint-rule/cdc-verification.md), [`slice02-lint-rule/cdc-verification-followup-B.md`](./slice02-lint-rule/cdc-verification-followup-B.md) |
-| slice03 · type-safe method-check | deferred | [`slice03-type-safe-method-check/slice-doc.md`](./slice03-type-safe-method-check/slice-doc.md); Option C routed to `release/0.7.x` BACKLOG A6 |
-| slice04 · sibling traps | closed | `703394c`; [`slice04-sibling-traps/closing-report.md`](./slice04-sibling-traps/closing-report.md) |
-| slice05 · nested `fn` parameter validation | closed | `07413e3`; [`slice05-nested-fn-param-validation/closing-report.md`](./slice05-nested-fn-param-validation/closing-report.md), [`slice05-nested-fn-param-validation/cdc-verification.md`](./slice05-nested-fn-param-validation/cdc-verification.md) |
+| slice01 · reject-method-on-expr + guide migration | closed | `9ca9c7e`; [`slice01-reject-method-on-expr/cdc-verification.md`](slice01-reject-method-on-expr/cdc-verification.md) |
+| slice02 · lint rule | closed | `d6c23b5` plus follow-up B `90cf211`; [`slice02-lint-rule/cdc-verification.md`](slice02-lint-rule/cdc-verification.md), [`slice02-lint-rule/cdc-verification-followup-B.md`](slice02-lint-rule/cdc-verification-followup-B.md) |
+| slice03 · type-safe method-check | deferred | [`slice03-type-safe-method-check/slice-doc.md`](slice03-type-safe-method-check/slice-plan.md); Option C routed to `release/0.7.x` BACKLOG A6 |
+| slice04 · sibling traps | closed | `703394c`; [`slice04-sibling-traps/closing-report.md`](slice04-sibling-traps/closing-report.md) |
+| slice05 · nested `fn` parameter validation | closed | `07413e3`; [`slice05-nested-fn-param-validation/closing-report.md`](slice05-nested-fn-param-validation/closing-report.md), [`slice05-nested-fn-param-validation/cdc-verification.md`](slice05-nested-fn-param-validation/cdc-verification.md) |
 
 ## Arc Ledger Walk
 

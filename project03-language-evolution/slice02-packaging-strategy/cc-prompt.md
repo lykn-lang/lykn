@@ -3,11 +3,11 @@
 You are CC, the implementing context for the **execution phases** of a
 packaging-strategy research slice. Read these first, in order:
 
-1. `docs/design-v0.7.0/02-packaging-strategy/slice-doc.md` — the
+1. `project03-language-evolution/slice02-packaging-strategy/slice-plan.md` — the
    plan-of-record, especially the Background section (this is CDC's
    committed research; treat it as the starting hypothesis, not settled
    fact — D-1 in particular exists because it needs independent checking)
-2. `docs/design-v0.7.0/02-packaging-strategy/ledger.md` — you own rows
+2. `project03-language-evolution/slice02-packaging-strategy/ledger.md` — you own rows
    **D-1, D-2, D-3, D-4, D-5, D-6, D-7**; update Evidence (strength
    *attested*) as each lands, not at the end
 3. `CLAUDE.md` — especially the **Lykn CLI safety gates** section (do not

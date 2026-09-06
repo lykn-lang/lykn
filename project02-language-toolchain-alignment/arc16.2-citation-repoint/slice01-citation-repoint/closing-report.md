@@ -19,10 +19,10 @@ Source commits:
 
 | Row | Verdict | Evidence |
 |---|---|---|
-| R-1 | done | crates/design citations were repointed to `docs/design/06-final/`; the final directory citation was corrected in `docs/dev/lang/0011-phase-2-core-forms-implementation-guide.md`; `make check-cited-paths` is green at HEAD. |
+| R-1 | done | crates/design citations were repointed to `docs/design/06-final/`; the final directory citation was corrected in `project01-mvp/arc01-js-foundations/artifacts/dev/0011-phase-2-core-forms-implementation-guide.md`; `make check-cited-paths` is green at HEAD. |
 | R-2 | done | example citations were repointed to tracked `examples/surface/` homes where those examples now live; the corresponding census rows were deleted. |
 | R-3 | done with caveat | Mixed classes were walked. Resolvable live references were repointed; historical movement prose was de-citationized; residual classes remain frozen only under named operator dispositions (`D-2607-D3NL`, `D-2607-5TDW`, `D-2607-W2FJ`, `D-2607-Q8LM`). The caveat is format-level: the TSV has no reason column, so the reasons live here and in the discovery rows rather than in each census row. |
-| R-4 | done | The four files already assigned homes by committed planning docs were added under `docs/design-v0.6.0/arc01-build-publish-toolchain/` and `docs/design-v0.6.0/arc03-compiler-coherence/`; their internal stale citations were cleaned in `a3055c9`. |
+| R-4 | done | The four files already assigned homes by committed planning docs were added under `project02-language-toolchain-alignment/arc01-build-publish-toolchain/` and `project02-language-toolchain-alignment/arc03-compiler-coherence/`; their internal stale citations were cleaned in `a3055c9`. |
 | R-5 | done | Sentence-level review preserved historical move/rename claims. Historical examples were fenced, unbackticked, or reworded when repointing would have changed the meaning of the sentence. |
 | R-6 | done | `scripts/cited-paths-census.tsv` changed by deletion only: 631 accepted pairs before the slice, 601 after `2df2130`; no regenerated census and no new exemptions. |
 

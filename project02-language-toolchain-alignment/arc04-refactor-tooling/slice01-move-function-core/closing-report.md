@@ -40,7 +40,7 @@ scratch branch was deleted and `surface.js` restored — **no extraction landed.
 
 ## Per-row walk
 
-Full evidence (commands + SHAs) is in [`ledger.md`](./ledger.md). All 9 `done`:
+Full evidence (commands + SHAs) is in [`ledger.md`](ledger.md). All 9 `done`:
 F-1 scaffold + locate core · F-2 all shapes + leading comments · F-3 remove/insert
 + **byte-identity invariant** · F-4 addNamedImport/stripReExport · F-5 moveFunction
 orchestration + aborts · F-6 verify gate + auto-revert + dry-run · F-7 Layer-4

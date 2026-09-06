@@ -1,3 +1,7 @@
+# project05-hardware
+
+Current home: branch planning, project05-hardware. Start with [project-plan.md](project-plan.md). Release intent is YAML metadata; the following retained notes describe the original versioned layout.
+
 # Lykn Hardware 0.8.0 Planning
 
 This tree is the planning home for hardware-coupled Lykn 0.8.0 research:
@@ -6,8 +10,8 @@ embedded-C target requirements for Lykn.
 
 The canonical planning layout follows the project/arc/slice discipline from
 `collaboration-framework/docs/PROJECT-MANAGEMENT.md`, with one local adaptation:
-this track lives under `docs/hardware-v0.8.0/` rather than
-`docs/design-v0.8.0/` because the operator explicitly split hardware
+this track lives under `project05-hardware/` rather than
+`project04-c-lang/` because the operator explicitly split hardware
 investigation from the compiler-design seed.
 
 Artifacts:

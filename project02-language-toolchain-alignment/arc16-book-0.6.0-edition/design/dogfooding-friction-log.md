@@ -35,7 +35,7 @@ exist.**
 > is otherwise exactly right and was the finding that opened the whole thread:
 >
 > 1. `even?` compiles to **`isEven`**, not `evenQMARK` — verified in both
->    compilers (`docs/design-v0.7.0/03-threading-macros/data/parity-transcript.txt`,
+>    compilers (`project03-language-evolution/slice03-threading-macros/data/parity-transcript.txt`,
 >    on `release/0.7.x`). `D-2607-K9RT` copied `evenQMARK` from here and it went
 >    unchecked in the register too.
 > 2. The substance above — *the macro works, the functions it names do not

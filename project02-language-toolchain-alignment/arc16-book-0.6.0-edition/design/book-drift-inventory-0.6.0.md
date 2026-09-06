@@ -156,7 +156,7 @@ written against drifted instructions reproduce the drift.
 
 | ID | File | Drift | Disposition | Status |
 |----|------|-------|-------------|--------|
-| B0-A | `authoring-guide.md:284,289` | Stale lang path `~/lab/oxur/lykn/` (2 occurrences) | Replace with `~/lab/lykn/lang/`; verify every sub-path (README, `docs/dev/research/`, `docs/design/06-final/`, `examples/surface/`, `workbench/conversation-bootstrap-v6.md`) | open |
+| B0-A | `authoring-guide.md:284,289` | Stale lang path `~/lab/oxur/lykn/` (2 occurrences) | Replace with `~/lab/lykn/lang/`; verify every sub-path (README, `project01-mvp/artifacts/research/`, `docs/design/06-final/`, `examples/surface/`, `workbench/conversation-bootstrap-v6.md`) | open |
 | B0-B | `new-ch-prompt.md:31-33,47-49` | Stale lang path `~/lab/oxur/lykn/` (6 occurrences) | Same as B0-A; replace all 6 and verify sub-paths | open |
 | B0-C | `authoring-guide.md:557` | Stale DD range claim: "All Lykn syntax examples must be valid surface syntax per DD-15 through DD-21." Current range is DD-15 through DD-51+ | Replace with "per the current `assets/ai/SKILL.md` and `docs/guides/00-lykn-surface-forms.md`" — point at moving ground truth rather than freezing the range | open |
 | B0-D | `authoring-guide.md:354,490` | Test-import path `../../src/index.js` — JS compiler is now at `packages/lang/` per lang `AGENTS.md` | Verify against `project.json` imports map; replace with the correct import (likely `jsr:@lykn/lang` or workspace-relative) | open |
@@ -261,7 +261,7 @@ drift *when instructional*. Descriptive uses (explaining what
 ## Bucket 2 — Per-thread folds
 
 These items wait on the corresponding Phase 2 thread closing.
-Listed mirror-style to lang's `docs/dev/0017-guide-drift-cleanup-plan.md`
+Listed mirror-style to lang's `project01-mvp/arc18-guide-alignment/artifacts/dev/0017-guide-drift-cleanup-plan.md`
 §"Per-thread guide drift".
 
 ### After Thread 3 (M11 build-dir reorg + M13 publish dirty-check)

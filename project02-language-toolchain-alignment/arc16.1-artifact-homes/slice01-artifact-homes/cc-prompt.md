@@ -16,7 +16,7 @@ branch*.** Resolve against `git ls-tree HEAD` — **not** `--all`, **not** the
 working tree. A file that exists on another branch must fail on this one; that
 is the point, not a false positive.
 
-Why this row exists: `docs/backlog/discoveries.md` was cited by **five committed
+Why this row exists: `backlog/discoveries.md` was cited by **five committed
 documents** while the file itself sat in a gitignored tree. Nobody typed a wrong
 path — the agreed home was simply never created. A cited path is a claim, and it
 was going unchecked. This is `D-2607-Z5KN` ("the uncovered case is reliably the
@@ -43,7 +43,7 @@ remove it, show green. Green with nothing seeded proves nothing.
 Run the check over HEAD and walk the output. Expect a real class of hits:
 **closed historical documents cite paths verbatim by project convention**, and
 some of those paths have since moved. Known example:
-`docs/design-v0.6.0/arc03-compiler-coherence/design/phase-2-divergence-catalog.md:234`
+`project02-language-toolchain-alignment/arc03-compiler-coherence/design/phase-2-divergence-catalog.md:234`
 cites `workbench/book-drift-inventory-0.6.0.md`, which this slice moved to
 `arc16-book-0.6.0-edition/design/`.
 

@@ -1,6 +1,6 @@
 # Discovery register
 
-Append-only. Protocol in [`README.md`](./README.md). IDs are permanent — never
+Append-only. Protocol in [`README.md`](README.md). IDs are permanent — never
 renumber, never delete a row. Dispositioned and rejected entries stay: "we looked
 at this and decided no" is information the next person needs.
 
@@ -101,7 +101,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **How found:** `audit` — building the Rust compiler to settle whether `->>`
   existed there too, after the operator surfaced conflicting accounts.
 - **Guess:** Medium as defect risk, **high as explanation.** The two do agree
-  today — 14/14 in `docs/design-v0.7.0/03-threading-macros/data/parity-transcript.txt`
+  today — 14/14 in `project03-language-evolution/slice03-threading-macros/data/parity-transcript.txt`
   — but the thinness is *why* a JS-only check felt sufficient to the surveying
   session, and `AGENTS.md` states the obligation outright: *"Changes to the
   grammar should be reflected in both."*
@@ -136,10 +136,10 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   other — **re-run, not transcribed.** `D-2607-Z5KN`'s thesis applied to
   documentation.
 
-### `D-2607-L7BX` — `docs/design-v0.7.0/` is absent from `main`, with debris that makes it look present
+### `D-2607-L7BX` — `project03-language-evolution/` is absent from `main`, with debris that makes it look present
 
 - **What:** The 0.7.0 planning tree exists only on `release/0.7.x`. On `main`,
-  `docs/design-v0.7.0/` holds two **empty, untracked** directories
+  `project03-language-evolution/` holds two **empty, untracked** directories
   (`02-packaging-strategy/artifacts`, `.../evidence`) and nothing else. An `ls`
   suggests a sparse tree; `git ls-files` shows no tree at all.
 - **How found:** `audit` — locating the home for `03-threading-macros`.
@@ -150,7 +150,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **Kind:** `trap` · **Status:** `open`
 - **The mirror problem, and the one with teeth:** `docs/ecmascript-2025/` (the
   42-file ES2025 corpus, `0a4b138`) is on **`main` only**. Units under
-  `docs/design-v0.7.0/` live on `release/0.7.x` and therefore **cannot cite it
+  `project03-language-evolution/` live on `release/0.7.x` and therefore **cannot cite it
   with a path that resolves on their own branch** — which `AGENTS.md` requires
   and `make check` enforces. Found the hard way: `03-threading-macros`'
   reproduce command was written against `../../ecmascript-2025/…` and did not
@@ -161,18 +161,18 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   `git ls-tree -r --name-only <branch> -- docs/ecmascript-2025 | wc -l`), the
   in-branch `../../ecmascript-2025/…` path resolves, and `inventory.md` §9 +
   ledger R-1 are amended to use it. **The mirror problem is closed.**
-- **Also:** `docs/backlog/owed-0.7.x-rows.md:4` named the worktree
+- **Also:** `backlog/owed-0.7.x-rows.md:4` named the worktree
   `.workdirs/release-0.7.x`; the actual path is `.worktrees/0.7.x`. Fixed
   2026-07-25.
-- **UPDATE 2026-07-25 (same day):** the operator **committed `docs/backlog/`**
+- **UPDATE 2026-07-25 (same day):** the operator **committed `backlog/`**
   after this row was written — it is now tracked on both `main` and
   `release/0.6.x` (3 files each, identical), so the six rows added by
   `03-threading-macros` are genuinely `routed`. ~~The *branch-split* half of
   this row stands: `docs/ecmascript-2025/` is still `main`-only while
-  `docs/design-v0.7.0/` is still `release/0.7.x`-only.~~ **Amended later the
+  `project03-language-evolution/` is still `release/0.7.x`-only.~~ **Amended later the
   same day by an independent CDC pass:** only *half* of that still stands.
   `docs/ecmascript-2025/` is **no longer** `main`-only (the rebase; see the
-  struck bullet above). `docs/design-v0.7.0/` **is** still `release/0.7.x`-only
+  struck bullet above). `project03-language-evolution/` **is** still `release/0.7.x`-only
   — that is this row's surviving primary claim, and it is fine: the 0.7.0
   planning tree *should* live on the 0.7.x branch under the new rule. What was
   wrong was the *debris* on `main` implying otherwise.
@@ -200,7 +200,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   time rather than miscompiling silently — the *"compiles ≠ valid output"*
   genus, not arc15's charter. Cheap to fix, and plausibly one edit for all four.
 - **Kind:** `bug` · **Status:** `closed` →
-  `docs/design-v0.6.0/arc15-surface-syntax-traps/slice04-sibling-traps/closing-report.md`.
+  `project02-language-toolchain-alignment/arc15-surface-syntax-traps/slice04-sibling-traps/closing-report.md`.
 - **Parity note worth keeping:** the two backends *behave* identically and
   *reason* differently — Rust names the heads in an explicit `matches!`, JS
   omits them from a list. A fix must touch both, and the JS side carries no
@@ -281,7 +281,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   it is outside slice04's fixed silent-return headline, but it is a compiler
   parity and language-safety defect.
 - **Kind:** `bug` · **Status:** `closed` →
-  `docs/design-v0.6.0/arc15-surface-syntax-traps/slice05-nested-fn-param-validation/closing-report.md`.
+  `project02-language-toolchain-alignment/arc15-surface-syntax-traps/slice05-nested-fn-param-validation/closing-report.md`.
 - **Parent:** `D-2607-Z5KN` — the direct case was not covered by cross-backend
   execution tests.
 - **Closure:** slice05 added a resolved pre-classification Rust validator for
@@ -295,7 +295,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **What:** `AGENTS.md`'s cited-path rule says every citation must resolve on
   the document's own branch. `AGENTS.md` is byte-identical on every branch by
   its own design, and it carries **eight** citations that cannot resolve on
-  `release/0.6.x`: `docs/design-v0.7.0/` (0 files there — the routing table's
+  `release/0.6.x`: `project03-language-evolution/` (0 files there — the routing table's
   own target), `workbench/` (0 — the rule naming it is *"workbench is scratch,
   nothing durable, nothing cited"*), `.worktrees/0.6.x/` and `.worktrees/0.7.x/`
   (0 — worktree roots are git plumbing, never tracked content), plus skill paths
@@ -368,8 +368,8 @@ by fixing the four symptoms** — they are already fixed. It closes when the
   `artifacts/` — none of them in any branch's git. **Two are ledger rows citing
   their own evidence**, which is the strongest possible form of the defect: a
   verification row whose verification cannot be opened.
-- **Where:** `release/0.7.x`, `docs/design-v0.7.0/` units. Enumerated in
-  `docs/design-v0.6.0/02-artifact-homes/closing-report.md`.
+- **Where:** `release/0.7.x`, `project03-language-evolution/` units. Enumerated in
+  `project02-language-toolchain-alignment/arc16.1-artifact-homes/slice01-artifact-homes/closing-report.md`.
 - **How found:** `cc-review` — CC ran the gate cross-branch unprompted.
 - **Guess:** Medium-high, and **this is the row that justifies the gate.** It
   was specified from a `workbench/`-shaped problem on 0.6.x, tuned against
@@ -389,7 +389,7 @@ by fixing the four symptoms** — they are already fixed. It closes when the
 - **What:** The 0.7.x BACKLOG recorded the Lykn Book as "owned by the Book
   project." No such project was ever instantiated. The work read as handled for
   three months.
-- **Where:** `release/0.7.x` → `docs/design-v0.7.0/BACKLOG.md:290`
+- **Where:** `release/0.7.x` → `project03-language-evolution/BACKLOG.md:290`
 - **How found:** `audit` · **Kind:** `systemic` · **Status:** `routed` →
   project-plan v1.34 records the rule: *a routing row must name a home that can
   be opened, not an owner that might someday exist.*
@@ -432,7 +432,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   at. Ship a collection prelude (making `->>` earn its place), or demote `->>` in
   the docs? The doc fix is 0.6.0-cheap either way; the prelude is a language call.
 - **EVIDENCE BASE, 2026-07-25 — this row now has one.**
-  `docs/design-v0.7.0/03-threading-macros/` (on `release/0.7.x`) censused all
+  `project03-language-evolution/slice03-threading-macros/` (on `release/0.7.x`) censused all
   **489** ES2025 built-ins and **214** host callables. Headline: **417 of 489
   (85%)** cannot distinguish `->` from `->>` at all; of the **48** that can, it
   is **37 datum-first : 2 datum-last** (the two being `BigInt.asIntN/asUintN`).
@@ -469,7 +469,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   This row exists so the *existence* of that pending conversation is durable.
 - **How found:** `dogfooding` · **Status:** `held-for-design` ·
   **Owner:** the language-design chat
-- **Source material:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+- **Source material:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
   (relocated 2026-07-25 from the book repo's gitignored `workbench/book-audit/`;
   the `fences.lykn` tool it came from is tracked in the book repo)
 - **Replace this row** with real IDs once the discussion happens. Do not close it
@@ -486,7 +486,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   `(export "./record-shape.js" (names ...))`. The design task must explain
   whether definition-site exports plus entrypoint re-exports are both required,
   duplicated by accident, or intentionally separate concepts.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
   F-7 records the dogfood example and the desired top-of-module shape.
 - **How found:** `operator` + `dogfooding` — CC's generated utility-library code
   exposed the current style in realistic module code.
@@ -508,7 +508,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
   rewriting examples around the current inline wrapper.
 - **Active route:** arc16 slice04
-  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
+  `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
   is open to land or explicitly defer this for 0.6.0.
 
 ### `D-2608-LBND` — repeated local binds need a grouped let-style binding surface
@@ -517,7 +517,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   local `(bind name value)` forms to normalize one record. The operator rejected
   that as the only durable local-binding shape: when a module needs several
   derived locals, Lykn should support a grouped let-style binding surface.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
   F-8 records the example and candidate grouped form.
 - **How found:** `operator` + `dogfooding` — realistic normalization code made
   the repeated-binding shape visible.
@@ -536,7 +536,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
   telling authors to keep writing repeated sibling binds.
 - **Active route:** arc16 slice04
-  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
+  `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
   is open to land or explicitly defer this for 0.6.0.
 
 ### `D-2608-COND` — nested validation conditionals need a flatter branch surface
@@ -546,7 +546,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   nest the next invalid case, and so on until the final `ShapeOk`. The operator
   flagged the deep repetition as a syntax smell: repeated nesting of the same
   branch form indicates the surface likely needs a flatter construct.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
   F-9 records the nested validation example and a candidate `cond`-style shape.
 - **How found:** `operator` + `dogfooding` — realistic validation code exposed
   the readability cost.
@@ -564,7 +564,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   new 0.6.0 language-surface slice before arc16 closes. Do not close this row by
   teaching nested `?` ladders as the permanent validation idiom.
 - **Active route:** arc16 slice04
-  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
+  `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/`
   is open to land or explicitly defer this for 0.6.0.
 
 ### `D-2608-SOWN` — Lykn-owned generated manifests need a source ownership boundary
@@ -576,7 +576,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   pipeline should not be made to look like author-owned source. Generated JSON
   manifests and publish/build metadata need a generated home such as `target/`,
   `dist/`, or another explicitly generated artifact directory.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
   F-10 records the dogfood `deno.json` example and the clarified source-tree
   ownership rule.
 - **How found:** `operator` + `dogfooding` — CC's fresh external project used
@@ -612,7 +612,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   `./bin/lykn` so commands exercise the checked-out compiler rather than
   whatever is on `PATH`. CC had to add a scratch-only symlink before following
   the normal workflow.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
   records the failed `./bin/lykn --version` probe and scratch symlink fix.
 - **How found:** `dogfooding` — fresh scaffold run through the current
   SKILL/guides.
@@ -620,7 +620,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   command in the guides and either fail, use a global binary, or drift away from
   release-branch reproducibility.
 - **Kind:** `gap` · **Status:** `closed` →
-  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
+  `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** arc16's next implementation-routing slice must decide whether
   `lykn new` creates a project-local shim or whether the guides/prompts change
   their default command shape. Do not let book examples assume `./bin/lykn`
@@ -637,7 +637,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   `lykn.macroEntry` field and no `mod.lykn` fallback. CC switched to JS tests to
   finish the project, so the scaffold's advertised Lykn testing route was not
   usable in the fresh-project path.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
   records the failed test command and the JS-test workaround.
 - **How found:** `dogfooding` — using the scaffold's normal test shape in a
   fresh project.
@@ -645,7 +645,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   present in guidance but cannot expand in a new project will push the book
   toward JavaScript tests or manual demos, which hides a 0.6.0 tooling defect.
 - **Kind:** `bug` · **Status:** `closed` →
-  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
+  `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** route through arc16's implementation runway or the package/testing
   owner before book chapter work. Either make the macro package resolvable from
   scaffolded Lykn tests, or change the scaffold/guides so their first-class test
@@ -662,7 +662,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   package source directory. `lykn build` succeeded but did not emit the nested
   helper, so the JS test path failed looking for the built helper module. CC had
   to flatten the helper into the package root to get a working build.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
   records the missing built helper and the flattening workaround.
 - **How found:** `dogfooding` — realistic package organization in a fresh
   utility library.
@@ -671,7 +671,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   files, exactly the kind of output-quality defect arc16 should catch before the
   book teaches package layout.
 - **Kind:** `bug` · **Status:** `closed` →
-  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
+  `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** arc16's implementation-routing slice must either make `lykn build`
   recurse into package source directories or document and enforce a flat-package
   rule with an explicit diagnostic. Do not teach nested helper modules as
@@ -688,7 +688,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   directory rather than the source file/package directory. The built-JS
   entrypoint ran successfully, so this is a source-run import-resolution
   problem, not an application failure.
-- **Where:** `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+- **Where:** `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
   records the failed source run and successful built-JS demo.
 - **How found:** `dogfooding` — running a fresh package demo through the current
   CLI workflow.
@@ -697,7 +697,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   import-free files, the book needs either an implementation fix or a deliberately
   narrower command story.
 - **Kind:** `bug` · **Status:** `closed` →
-  `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
+  `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/closing-report.md`
 - **Routing:** arc16's implementation-routing slice should choose between fixing
   source-run relative import resolution and steering all package demos through
   `lykn build` plus built entrypoints. Do not let book examples imply the source
@@ -725,7 +725,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 
 ### `D-2607-8QVL` — DD-18's `->>` example documents the wrong expansion, and it is `final`
 
-- **What:** `docs/design/06-final/0023-dd-18-threading-macros-and-conditional-binding.md`,
+- **What:** `project01-mvp/arc03-surface-language/artifacts/design/06-final/0023-dd-18-threading-macros-and-conditional-binding.md`,
   §`->>` thread-last, states that `(->> items (filter even?) (map double) (take 5))`
   compiles to `take(map(filter(items, even?), double), 5)`. That is the
   **thread-first** nesting. Both compilers produce
@@ -735,7 +735,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 - **Where:** `docs/design/06-final/0023-dd-18-…md`, §`->>` thread-last — the
   Syntax JS block and the kernel-expansion block.
 - **How found:** `audit`, confirmed by **executing both compilers**
-  (`docs/design-v0.7.0/03-threading-macros/data/parity-transcript.txt`, case 1).
+  (`project03-language-evolution/slice03-threading-macros/data/parity-transcript.txt`, case 1).
 - **Guess:** High. `final`-state DD, normative description of the macro, and it
   teaches the reader that `->>` does what `->` does — the exact confusion
   `D-2607-V8DM` records spreading informally.
@@ -757,7 +757,7 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
 - **Guess:** Medium-high. Strictly an instance of `D-2607-P4WQ`'s class, but a
   **high-traffic** one: `as->` is the third threading macro a Clojure user
   reaches for, and the guides teach the other four.
-- **Kind:** `gap` · **Status:** `routed` → `docs/design-v0.7.0/BACKLOG.md` §A7
+- **Kind:** `gap` · **Status:** `routed` → `project03-language-evolution/BACKLOG.md` §A7
 - **Why it matters beyond the missing macro:** the survey found `as->` is the
   *general* form — one macro covers datum-last, datum-**middle**, and
   operator-receiver, including the datum-in-the-middle shape that has **no**
@@ -869,12 +869,12 @@ discussion. **Logged so the pending conversation is durable, not to pre-empt it.
   compile emits invalid JavaScript: `const label = throw new TypeError(...)`.
   `lykn run` fails only later when Deno parses the generated JS.
 - **How found:** arc07 slice02 current-drift recon; CDC reproduced during
-  `docs/design-v0.6.0/arc07-docs/slice02-current-drift-recon/cdc-verification.md`.
+  `project02-language-toolchain-alignment/arc07-docs/slice02-current-drift-recon/cdc-verification.md`.
 - **Guess:** High. This is the same "rc=0 but generated JS is invalid" class the
   release has been killing before broader documentation/book work builds on the
   final surface semantics.
 - **Kind:** `bug` · **Status:** `routed` →
-  `docs/design-v0.6.0/arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md`
+  `project02-language-toolchain-alignment/arc10-compiler-completion/slice04-no-else-if-expression-error/slice-plan.md`
   before arc07/arc16 teach the no-else expression case as settled.
 
 ### `D-2607-6BQX` — `lykn publish`'s dirty-check gate is shipped and undocumented
@@ -984,7 +984,7 @@ countable against the others.
 > permanently and that **git history was itself the sufficient record of
 > change** — the artifacts captured the *how*. What changed is that the *why*
 > turned out to be of interest to others, so the project started tracking it,
-> and **the important material did make it into the repo** via `docs/design/`
+> and **the important material did make it into the repo** via `project01-mvp/artifacts/design-index.md/`
 > and `docs/dev/` through the `odm` tool. A pruned subset resting there is the
 > intended end state, not a shortfall.
 >
@@ -1022,7 +1022,7 @@ countable against the others.
 > symlink) and the `workbench/` half stay frozen because they can never resolve.
 > The carve-out: repoint a *reference to* an artifact; never rewrite a sentence
 > that *narrates the move itself*. Full classification in
-> `docs/design-v0.6.0/02-artifact-homes/ledger.md`, amendment (4).
+> `project02-language-toolchain-alignment/arc16.1-artifact-homes/slice01-artifact-homes/ledger.md`, amendment (4).
 >
 > **And four cited files are not lost at all** — they are cited at a
 > destination inside the tracked planning tree while still sitting in

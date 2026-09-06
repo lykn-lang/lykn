@@ -159,7 +159,7 @@ if any are wrong.
 1. [`assets/ai/LEDGER_DISCIPLINE.md`](../../assets/ai/LEDGER_DISCIPLINE.md)
 2. [`assets/ai/SUBAGENT-DELEGATION-POLICY.md`](../../assets/ai/SUBAGENT-DELEGATION-POLICY.md)
 3. [`assets/ai/AGENTS.md`](../../assets/ai/AGENTS.md)
-4. **DD-37** at `docs/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`:
+4. **DD-37** at `project02-language-toolchain-alignment/arc03-compiler-coherence/artifacts/design/05-active/0047-dd-37-js-surface-compiler-architecture.md`:
    - §"Gradual migration, not a big-bang rewrite" (lines 864–916)
      — the 9-step migration sequence; M22 executes step 3 for
      the remaining forms

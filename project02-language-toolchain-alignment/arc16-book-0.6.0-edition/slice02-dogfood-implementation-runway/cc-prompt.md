@@ -29,11 +29,11 @@ Read these before creating the dogfood project:
 6. `docs/guides/03-error-handling.md`
 7. `docs/guides/10-project-structure.md`
 8. `docs/guides/15-lykn-cli.md`
-9. `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md`
-10. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md`
-11. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/cdc-verification.md`
-12. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/slice-doc.md`
-13. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/ledger.md`
+9. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md`
+10. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md`
+11. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/cdc-verification.md`
+12. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/slice-plan.md`
+13. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/ledger.md`
 
 ## Dogfood Assignment
 

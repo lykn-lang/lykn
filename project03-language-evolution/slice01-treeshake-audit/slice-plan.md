@@ -108,5 +108,5 @@ this slice closes. Iteration budget: five, per discipline.
 ## Version History
 
 - **v1.0 (2026-07-07)** — initial plan-of-record. Layout
-  (`docs/design-v0.7.0/01-treeshake-audit/`, arc wrapper collapsed,
+  (`project03-language-evolution/slice01-treeshake-audit/`, arc wrapper collapsed,
   project-plan deferred) confirmed with operator this date.

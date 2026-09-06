@@ -44,7 +44,7 @@ the normal lykn project workflow.
 - Use guide 10, guide 15, and `assets/ai/SKILL.md` as the already-refreshed
   reference model from slice03.
 - If the sweep finds another already-fixed or explicitly-routed discovery row,
-  update `docs/backlog/discoveries.md` honestly; do not invent a row for every
+  update `backlog/discoveries.md` honestly; do not invent a row for every
   prose edit.
 
 ### Out

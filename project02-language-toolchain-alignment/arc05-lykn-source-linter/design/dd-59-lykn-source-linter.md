@@ -3,7 +3,7 @@
 > **Status: DRAFT — for odm promotion (Duncan).** Drafted by CDC 2026-07-06
 > from the M12 kickoff thread's Q0–Q6, resolved with the operator's design
 > calls (2026-07-06) and two months of intervening history. Lives in
-> `arc05/design/` until promoted into `docs/design/`.
+> `arc05/design/` until promoted into `project01-mvp/artifacts/design-index.md/`.
 
 ## Context and history
 

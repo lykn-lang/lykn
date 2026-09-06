@@ -63,7 +63,7 @@ make check-cited-paths
 Result: failed with 15 dangling citations.
 
 Assessment: the failure is not a slice01 implementation defect. Fourteen
-reported dangling citations are pre-existing `docs/design-v0.7.0/` issues on
+reported dangling citations are pre-existing `project03-language-evolution/` issues on
 this branch. The one hardware-track citation is expected until the new
 `closing-report.md` is committed to `HEAD`: slice02 already cites the slice01
 close artifact as its prerequisite. This matches the repository's documented

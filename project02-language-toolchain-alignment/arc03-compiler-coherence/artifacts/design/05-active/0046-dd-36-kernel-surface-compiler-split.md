@@ -571,9 +571,9 @@ Source files referenced in this DD, with approximate locations:
   433.
 - `docs/design/06-final/0020-dd-15-language-architecture…md` —
   canonical statement of the kernel/surface split.
-- `docs/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md`
+- `project01-mvp/arc01-js-foundations/artifacts/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md`
   — the DD-01 decision that `kernel:` must be reconciled with.
-- `docs/design/05-active/0030-pure-rust-kerneljs-codegen.md` —
+- `project01-mvp/arc05-native-js-codegen/arc-plan.md` —
   DD-30; must land before or explicitly not during this work.
 - `workbench/release-notes-0.5.0.md` — breaking change for class-body
   `=` and confirmation that `.lyk`/`.lykn` are both supported today.

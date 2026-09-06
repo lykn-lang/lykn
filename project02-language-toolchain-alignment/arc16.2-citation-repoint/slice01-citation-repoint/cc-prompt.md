@@ -61,10 +61,10 @@ unmigrated in `workbench/`. Moving them makes the existing citation **true**:
 
 | Move to | From |
 |---|---|
-| `docs/design-v0.6.0/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md` | workbench/kickoff-thread-build-dir-and-publish-dirty-check.md |
-| `docs/design-v0.6.0/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md` | workbench/2026-05-10-compiler-coherence-thread-opening.md |
-| `docs/design-v0.6.0/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md` | workbench/handoff-surface-kernel-separation-2026-05-14.md |
-| `docs/design-v0.6.0/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md` | workbench/kickoff-thread-compiler-architecture-coherence.md |
+| `project02-language-toolchain-alignment/arc01-build-publish-toolchain/kickoff-thread-build-dir-and-publish-dirty-check.md` | workbench/kickoff-thread-build-dir-and-publish-dirty-check.md |
+| `project02-language-toolchain-alignment/arc03-compiler-coherence/2026-05-10-compiler-coherence-thread-opening.md` | workbench/2026-05-10-compiler-coherence-thread-opening.md |
+| `project02-language-toolchain-alignment/arc03-compiler-coherence/handoff-surface-kernel-separation-2026-05-14.md` | workbench/handoff-surface-kernel-separation-2026-05-14.md |
+| `project02-language-toolchain-alignment/arc03-compiler-coherence/kickoff-thread-compiler-architecture-coherence.md` | workbench/kickoff-thread-compiler-architecture-coherence.md |
 
 Content moves **verbatim**. If a file turns out to be genuinely ephemeral rather
 than worth tracking, say so and leave the citation frozen with that reason —

@@ -211,7 +211,7 @@ incremental smoke-testing during Phase 2 catches issues earlier.
   closing report at `workbench/YYYY-MM-DD-<scope>-closing-report.md`
   with per-row walks, substrate-rule compliance section, findings
   logged for fast-follow, and a CDC review section.
-- **`docs/design/` taxonomy:** drafts in `01-draft/`, active in
+- **`project01-mvp/artifacts/design-index.md/` taxonomy:** drafts in `01-draft/`, active in
   `05-active/`, finalized in `06-final/`. Duncan handles `odm`
   promotion between states.
 - **Workbench is gitignored:** scratch / planning / staging.

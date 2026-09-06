@@ -6,18 +6,18 @@
 fresh branch — Duncan decides; do git ops on the host).
 **Re:** Get the cross-compiler `compile-both` corpus **green** so arc03 can
 close. This is arc03's remediation slice (slice11), routed from
-`docs/design-v0.6.0/arc03-compiler-coherence/closing-report.md` §5.
+`project02-language-toolchain-alignment/arc03-compiler-coherence/closing-report.md` §5.
 
 ---
 
 ## 0. Read these first (in order)
 
-1. `docs/design-v0.6.0/arc03-compiler-coherence/slice11-cross-compiler-corpus-green/ledger.md`
+1. `project02-language-toolchain-alignment/arc03-compiler-coherence/slice11-cross-compiler-corpus-green/ledger.md`
    — **the contract.** Nine rows (F-1…F-9); every row must reach a final status
    with reproducible evidence.
-2. `docs/design-v0.6.0/arc03-compiler-coherence/slice11-cross-compiler-corpus-green/slice-doc.md`
+2. `project02-language-toolchain-alignment/arc03-compiler-coherence/slice11-cross-compiler-corpus-green/slice-plan.md`
    — goal, scope (in/out), verification approach.
-3. `docs/design-v0.6.0/arc03-compiler-coherence/closing-report.md` §3/§5 — the
+3. `project02-language-toolchain-alignment/arc03-compiler-coherence/closing-report.md` §3/§5 — the
    six residual failures, their diffs, and the dispositions you are executing.
 4. `packages/testing/helpers.js` — the `compileBoth` normalizer **and its
    extension policy** (lines ~120–185). This policy is binding (F-8).
@@ -84,7 +84,7 @@ fix genuinely isn't the right call. F-8 verifies this.
 
 Write the per-row walk into the same `ledger.md` (status + evidence per row),
 fill **What Worked** and **Closure**, then write a slice closing-report at
-`docs/design-v0.6.0/arc03-compiler-coherence/slice11-cross-compiler-corpus-green/closing-report.md`
+`project02-language-toolchain-alignment/arc03-compiler-coherence/slice11-cross-compiler-corpus-green/closing-report.md`
 with the per-row walk **and a Bubble-up to arc03** (did slice11 deliver A-6;
 anything it revealed that changes the arc-plan; the silent-drop diff). Then tell
 Duncan it's ready for CDC verification — CDC reproduces F-1…F-9, lifts the

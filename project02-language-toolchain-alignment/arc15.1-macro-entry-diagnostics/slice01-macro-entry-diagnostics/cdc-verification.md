@@ -52,7 +52,7 @@ control-flow: **a swallowed Rust validation error in `compile_lykn_test_files`**
 means the local binary's good message doesn't reach the operator even when the
 local compiler produces it. That is a discovery in its own right — a swallowed
 error is a close cousin of the "green means nothing" family already logged — and
-belongs in `docs/backlog/discoveries.md`, not only in this closing report.
+belongs in `backlog/discoveries.md`, not only in this closing report.
 
 ## 4. Corrections to my own claims
 

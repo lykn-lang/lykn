@@ -10,8 +10,8 @@
 | `docs/guides/01-core-idioms.md` | Idiomatic binding, export, and control-flow guidance. |
 | `docs/guides/02-api-design.md` | Public API and `mod.lykn` barrel guidance. |
 | `docs/guides/03-error-handling.md` through `docs/guides/17-template-and-i18n.md`, including `docs/guides/12-deno/*.md` | Current guide surface checked for stale preferred inline-export examples and doc-test impact. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` | Arc status, implementation-first rule, and slice04 dependency on book-facing language chapters. |
-| `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md` | Source rows for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md` | Arc status, implementation-first rule, and slice04 dependency on book-facing language chapters. |
+| `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md` | Source rows for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`. |
 | `slice01-pre-book-decision-gate/closing-report.md` and `cdc-verification.md` | Decision-gate context and CDC interpretation. |
 | `slice02-dogfood-implementation-runway/closing-report.md` and `cdc-verification.md` | Dogfood evidence that exposed the language-surface gaps. |
 | `slice03-cli-scaffold-package-runway/closing-report.md` and `cdc-verification.md` | Prior implementation runway closure and remaining language-surface blocker. |

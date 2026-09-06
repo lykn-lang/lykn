@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 build-catalog.py — regenerate the argument-position catalogs for the
-threading-macro survey (docs/design-v0.7.0/03-threading-macros/).
+threading-macro survey (../planning/project03-language-evolution/slice03-threading-macros/).
 
 Two tiers:
 

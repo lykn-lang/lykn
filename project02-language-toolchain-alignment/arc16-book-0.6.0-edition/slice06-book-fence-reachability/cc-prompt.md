@@ -2,8 +2,8 @@
 
 You are CC in the Lykn lang repo. CDC has opened arc16 slice06:
 
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice06-book-fence-reachability/slice-doc.md`
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice06-book-fence-reachability/ledger.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice06-book-fence-reachability/slice-plan.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice06-book-fence-reachability/ledger.md`
 
 ## Mission
 
@@ -30,10 +30,10 @@ Read these before edits and list them in the closing report with one-line roles:
 - `docs/guides/11-documentation.md`
 - `docs/guides/15-lykn-cli.md`
 - `docs/guides/16-testing.md`
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md`
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/fence-wiring-spec.md`
-- `docs/backlog/discoveries.md` row `D-2607-R4NW`
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/fence-wiring-spec.md`
+- `backlog/discoveries.md` row `D-2607-R4NW`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md`
 - `crates/lykn-cli/src/main.rs`
 - `crates/lykn-cli/src/doctest.rs`
 - `/Users/oubiwann/lab/cnbb/lykn/AGENTS.md`
@@ -117,7 +117,7 @@ Update sibling standing instructions after the gate lands:
 Preserve `AGENTS.md` as canonical and `CLAUDE.md` as a symlink in both sibling
 repos.
 
-Update `docs/backlog/discoveries.md` row `D-2607-R4NW` with the implemented
+Update `backlog/discoveries.md` row `D-2607-R4NW` with the implemented
 route and remaining re-entry condition. Do not leave the row as simply `open`
 if the gate lands.
 

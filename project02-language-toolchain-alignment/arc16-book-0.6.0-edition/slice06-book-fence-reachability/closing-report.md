@@ -1,7 +1,7 @@
 # arc16 slice06 - Book Fence Reachability Closing Report
 
 Closed by CC on 2026-08-20. CDC verification passed on 2026-08-21:
-[`cdc-verification.md`](./cdc-verification.md).
+[`cdc-verification.md`](cdc-verification.md).
 
 ## 1. Source Material Read
 
@@ -16,10 +16,10 @@ Closed by CC on 2026-08-20. CDC verification passed on 2026-08-21:
 - `docs/guides/11-documentation.md` - documentation-authoring conventions.
 - `docs/guides/15-lykn-cli.md` - CLI command reference and wrapper-command guidance.
 - `docs/guides/16-testing.md` - test/doctest guidance and annotation semantics.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` - arc16 plan-of-record and ledger.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/fence-wiring-spec.md` - selected fence-first route.
-- `docs/backlog/discoveries.md` row `D-2607-R4NW` - permanent discovery row for the unreachable book fences.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md` - CDC-verified sibling instruction baseline.
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md` - arc16 plan-of-record and ledger.
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/fence-wiring-spec.md` - selected fence-first route.
+- `backlog/discoveries.md` row `D-2607-R4NW` - permanent discovery row for the unreachable book fences.
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md` - CDC-verified sibling instruction baseline.
 - `crates/lykn-cli/src/main.rs` - `lykn test` CLI parsing and dispatch.
 - `crates/lykn-cli/src/doctest.rs` - Markdown/HTML doctest extraction, generation, and Deno invocation.
 - `/Users/oubiwann/lab/cnbb/lykn/AGENTS.md` - book repo standing instructions.
@@ -52,7 +52,7 @@ Lang repo:
 - `crates/lykn-cli/src/doctest.rs` keeps `lykn` as the default Markdown fence, adds opt-in fence selection, preserves comma annotations for every accepted tag, keeps prefix-similar tags such as `lisp-foo` out, and leaves HTML `<script type="text/lykn">` extraction on the existing path.
 - `crates/lykn-cli/src/doctest.rs` also falls back from a sibling repo without `project.json` to the checkout that owns the invoked `bin/lykn` for Deno config and compiler imports, while still writing generated doctests under the caller's project tree.
 - `assets/ai/SKILL.md`, `docs/guides/15-lykn-cli.md`, and `docs/guides/16-testing.md` document the flag as opt-in and repeatable; none claims `lisp` is the default.
-- `docs/backlog/discoveries.md` closes `D-2607-R4NW` as route-implemented and names the remaining re-entry path.
+- `backlog/discoveries.md` closes `D-2607-R4NW` as route-implemented and names the remaining re-entry path.
 
 Sibling repos:
 

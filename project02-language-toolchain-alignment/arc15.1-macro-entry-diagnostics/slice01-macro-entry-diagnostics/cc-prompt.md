@@ -171,10 +171,10 @@ tells the operator what to do next without reading the source.
 ## Where this lands
 
 **Confirmed by the operator 2026-07-24:** a **standalone slice** at
-`docs/design-v0.6.0/01-macro-entry-diagnostics/` — the "one slice, not an arc"
+`project02-language-toolchain-alignment/arc15.1-macro-entry-diagnostics/slice01-macro-entry-diagnostics/` — the "one slice, not an arc"
 collapse in `PROJECT-MANAGEMENT.md` Part II, so there is no `arc-plan.md` and no
 arc-level closing-report above it. Bare-`NN` non-arc units already exist in this
-project under `docs/design-v0.7.0/` (`01-treeshake-audit`, `02-packaging-strategy`,
+project under `project03-language-evolution/` (`01-treeshake-audit`, `02-packaging-strategy`,
 `04-typed-classification`); this follows that convention rather than inventing a
 parallel one.
 

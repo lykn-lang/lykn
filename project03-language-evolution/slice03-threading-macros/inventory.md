@@ -1,6 +1,6 @@
 # Argument-position inventory of the ECMAScript 2025 + host surface
 
-**Unit:** `docs/design-v0.7.0/03-threading-macros/`
+**Unit:** `project03-language-evolution/slice03-threading-macros/`
 **Kind:** research (SDLC step 1) — no production code changes
 **Date:** 2026-07-25
 **Serves:** `D-2607-K9RT` (held-for-design), `D-2607-W7KD` (held-for-design),
@@ -303,7 +303,7 @@ Shape 4 has no spelling at all, and `as->` is its answer.
 These are new. Each has a Discovery Register row — `D-2607-8QVL` (§6.1),
 `D-2607-W4RC` (§6.2), `D-2607-3KTP` (§6.3), `D-2607-L7BX` (§6.4),
 `D-2607-2PQR` (§6.5), `D-2607-V8DM` (§6.6). All six are in
-`docs/backlog/discoveries.md`, which the operator committed the same day — so
+`backlog/discoveries.md`, which the operator committed the same day — so
 they are `routed`. `discovery-rows.md` carries the provenance and the branch
 rule that came out of it.
 
@@ -315,7 +315,7 @@ transcript is `data/parity-transcript.txt` (14 cases, 14 agree, 0 disagree).
 
 ### 6.1 DD-18's worked `->>` example is wrong — and it is `final`
 
-`docs/design/06-final/0023-dd-18-threading-macros-and-conditional-binding.md`,
+`project01-mvp/arc03-surface-language/artifacts/design/06-final/0023-dd-18-threading-macros-and-conditional-binding.md`,
 §`->>` thread-last, documents:
 
 ```lisp
@@ -377,10 +377,10 @@ teach the other four.
 
 ### 6.4 The 0.7.0 planning tree is not on `main`
 
-`docs/design-v0.7.0/` exists only on `release/0.7.x`. On `main` the path holds
+`project03-language-evolution/` exists only on `release/0.7.x`. On `main` the path holds
 two empty untracked directories (`02-packaging-strategy/artifacts`,
 `02-packaging-strategy/evidence`) — debris that makes the tree look present when
-it is not. Also, `docs/backlog/owed-0.7.x-rows.md:4` names the worktree as
+it is not. Also, `backlog/owed-0.7.x-rows.md:4` names the worktree as
 `.workdirs/release-0.7.x`; the actual path is `.worktrees/0.7.x`.
 
 ---
@@ -619,7 +619,7 @@ scripts/probe-threading-rust.sh
 onto `release/0.7.x`, or leave the corpus on `main`.~~ **Settled 2026-07-25**
 by the rebase of `release/0.7.x` onto `main`: the corpus is in-branch and the
 split no longer exists. `D-2607-L7BX`'s "mirror problem" bullet is amended
-accordingly; the row's *primary* claim — `docs/design-v0.7.0/` is absent from
+accordingly; the row's *primary* claim — `project03-language-evolution/` is absent from
 `main` — still stands.
 
 `build-catalog.py` exits non-zero if any callable with required arity >= 2 is

@@ -3,8 +3,8 @@
 **For**: Claude Code
 **Scope**: Phase 1 of lykn v0.1.0 (camelCase, colon syntax, `get` form, special atoms, `.` removal)
 **Where you're working**: `src/compiler.js` — this is the only file you modify
-**Design authority**: `docs/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md`
-**Secondary reference**: `docs/design/06-final/0008-dd-08-special-atoms-update-operators-and-miscellaneous-forms.md` (for `this`/`super`)
+**Design authority**: `project01-mvp/arc01-js-foundations/artifacts/design/06-final/0001-dd-01-colon-syntax-and-camelcase-conversion.md`
+**Secondary reference**: `project01-mvp/arc01-js-foundations/artifacts/design/06-final/0008-dd-08-special-atoms-update-operators-and-miscellaneous-forms.md` (for `this`/`super`)
 
 ---
 

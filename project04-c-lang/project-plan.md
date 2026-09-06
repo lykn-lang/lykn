@@ -1,3 +1,12 @@
+---
+project: project04-c-lang
+status: research-seed
+planned-release: "0.8.0"
+depends-on: ["project03-language-evolution"]
+blocks: []
+related: ["project05-hardware"]
+---
+
 # Lykn 0.8.0 Project Plan
 
 Status: very early research seed

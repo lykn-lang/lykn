@@ -3,8 +3,8 @@
 You are CC, the implementing context for the **execution phases** of a
 diagnostic audit. Read these first, in order:
 
-1. `docs/design-v0.7.0/01-treeshake-audit/slice-doc.md` — the plan-of-record
-2. `docs/design-v0.7.0/01-treeshake-audit/ledger.md` — you own rows
+1. `project03-language-evolution/slice01-treeshake-audit/slice-plan.md` — the plan-of-record
+2. `project03-language-evolution/slice01-treeshake-audit/ledger.md` — you own rows
    **F-1 (evidence), F-4, F-6, F-8, F-10**; update Evidence (strength
    *attested*) as each lands, not at the end
 3. `CLAUDE.md` — especially the **Lykn CLI safety gates** section

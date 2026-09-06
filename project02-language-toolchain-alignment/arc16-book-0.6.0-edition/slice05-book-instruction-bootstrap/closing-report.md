@@ -1,7 +1,7 @@
 # arc16 slice05 - Book Instruction Bootstrap Closing Report
 
 Closed by CC on 2026-08-20. CDC verification recorded in
-[`cdc-verification.md`](./cdc-verification.md).
+[`cdc-verification.md`](cdc-verification.md).
 
 ## 1. Source Material Read
 
@@ -19,27 +19,27 @@ Closed by CC on 2026-08-20. CDC verification recorded in
   baseline.
 - `docs/guides/15-lykn-cli.md` - wrapper-command guidance for Lykn-owned
   workflows.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` - arc16
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md` - arc16
   plan-of-record and slice sequence.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/book-drift-inventory-0.6.0.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/book-drift-inventory-0.6.0.md`
   - historical Bucket 0 drift inventory.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/fence-wiring-spec.md` -
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/fence-wiring-spec.md` -
   source for the pending lisp-fence gate.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md`
   - dogfood findings behind the implementation-first runway.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/closing-report.md`
   - D-1 through D-5 and pre-book routing decisions.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice01-pre-book-decision-gate/cdc-verification.md`
   - independent confirmation of slice01 disposition.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cdc-verification.md`
   - dogfood verification and implementation-routing context.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/cdc-verification.md`
   - closed CLI/scaffold/package runway and source-ownership floor.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice04-language-surface-runway/cdc-verification.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice04-language-surface-runway/cdc-verification.md`
   - closed `(exports ...)`, grouped `bind`, and `cond` implementation surface.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/slice-doc.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/slice-plan.md`
   - scope and exit criteria for this slice.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/ledger.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/ledger.md`
   - F-1 through F-15 acceptance rows.
 - `/Users/oubiwann/lab/cnbb/lykn/AGENTS.md` - book repo standing instructions.
 - `/Users/oubiwann/lab/cnbb/lykn/book.toml` - book repo mdBook configuration
@@ -85,17 +85,17 @@ close artifacts and project/status surfaces.
 
 Lang repo:
 
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md` - marks slice05
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md` - marks slice05
   closed/CDC-verified, records sibling commits, keeps slice06 next, and updates
   arc ledger A-3/A-9.
-- `docs/design-v0.6.0/README.md` - updates the arc16 row.
-- `docs/design-v0.6.0/project-plan.md` - updates the arc16 roadmap row, current
+- `project02-language-toolchain-alignment/README.md` - updates the arc16 row.
+- `project02-language-toolchain-alignment/project-plan.md` - updates the arc16 roadmap row, current
   status, P-20 evidence, and version history.
-- `docs/design-v0.6.0/status.html` - updates the dashboard DATA object for
+- `project02-language-toolchain-alignment/status.html` - updates the dashboard DATA object for
   slice05 closure and slice06 next.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/ledger.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/ledger.md`
   - closes F-1 through F-15 with evidence.
-- `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md`
   - this report.
 
 Book repo, commit `4a82c62d97c15f3201e66d642c7270545bb1f45f`:

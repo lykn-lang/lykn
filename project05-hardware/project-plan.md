@@ -1,3 +1,12 @@
+---
+project: project05-hardware
+status: active
+planned-release: "0.8.0"
+depends-on: []
+blocks: []
+related: ["project04-c-lang"]
+---
+
 # Lykn Hardware 0.8.0 — Project Plan
 
 > Plan-of-record for the hardware-coupled 0.8.0 research track. This is the
@@ -8,7 +17,7 @@
 Status: first approximation
 Created: 2026-08-21
 Branch: release/0.8.x
-Home: `docs/hardware-v0.8.0/`
+Home: `project05-hardware/`
 
 ## 1. Definition of done and boundaries
 
@@ -16,7 +25,7 @@ Home: `docs/hardware-v0.8.0/`
 bench sequence has produced enough evidence to decide whether Lykn's embedded C
 research should continue toward a real backend. The output is not production
 firmware. The output is a set of measured hardware contracts, small C harnesses,
-and target-profile requirements that can feed `docs/design-v0.8.0/`.
+and target-profile requirements that can feed `project04-c-lang/`.
 
 Specifically, the project should deliver:
 
@@ -46,7 +55,7 @@ Specifically, the project should deliver:
 
 **Relationship to the compiler-design seed.** This project consumes the
 research direction already captured in
-`docs/design-v0.8.0/arc01-c-target-research/`: Lykn source should pass through
+`project04-c-lang/arc01-c-target-research/`: Lykn source should pass through
 typed surface/core analysis, target-profile validation, an embedded/C-oriented
 IR, and then C codegen. This hardware track exists to keep that design from
 drifting into abstract compiler elegance without bench evidence.
@@ -89,14 +98,14 @@ here and close in a future project closing report.
 | P-5 | Arc05 records measured power profiles for at least idle and one active telemetry state | arc05 closing-report + PPK2 export/screenshots/transcript | serious | project DoD | open | | low-power requirements become evidence-backed |
 | P-6 | Arc06 records repeatable camera-side timing stimulus and at least one adversarial timing case | arc06 closing-report + stimulus transcript | serious | project DoD | open | | makes CTB behavior testable without a camera |
 | P-7 | Arc07 either selects a sensor candidate or explicitly defers selection with named missing evidence | arc07 closing-report | serious | project DoD | open | | comparison may be supply-gated |
-| P-8 | Every closed arc bubbles up Lykn embedded-C requirements into this roadmap or `docs/design-v0.8.0/` | arc close reports + project-plan Version History | serious | project-management | open | | anti-silent-drop row |
+| P-8 | Every closed arc bubbles up Lykn embedded-C requirements into this roadmap or `project04-c-lang/` | arc close reports + project-plan Version History | serious | project-management | open | | anti-silent-drop row |
 
 ## 5. Version History
 
 ### v1.0 - 2026-08-21
 
 Opened the hardware-coupled 0.8.0 research project under the operator-specified
-`docs/hardware-v0.8.0/` home. Created first-pass arc roadmap and project
+`project05-hardware/` home. Created first-pass arc roadmap and project
 ledger. Arc01 is the active planning target; later arcs are intentionally
 provisional.
 

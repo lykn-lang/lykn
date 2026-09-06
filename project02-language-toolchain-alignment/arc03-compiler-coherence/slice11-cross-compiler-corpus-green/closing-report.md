@@ -14,7 +14,7 @@ artifacts (2 failures), and **one** network gate — not six independent defects
 
 ## Per-row walk (the contract)
 
-The full per-row evidence is in [`ledger.md`](./ledger.md); summarized here.
+The full per-row evidence is in [`ledger.md`](ledger.md); summarized here.
 
 - **F-1 — async declaration trailing `;` (done).** Root cause: `STATEMENT_FORMS`
   in `emit.rs` listed `function`/`function*` but not `async`, so `(async

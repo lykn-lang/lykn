@@ -12,7 +12,7 @@
 | D-6 | Draft `.deb` build actually succeeds locally against `lykn-cli`'s real `Cargo.toml` | `evidence/cargo-deb-build.md` contains the `cargo deb` (or `cargo deb -p lykn-cli`) transcript and the resulting `.deb` filename | serious | slice-doc | open | | If it fails, the failure + diagnosis is the deliverable, not silently deferred |
 | D-7 | CI gap analysis complete (current: ubuntu-latest x86_64 only, no release job) with a draft multi-platform workflow addition (not merged) covering at minimum linux-x86_64, linux-arm64, macos-x86_64, macos-arm64 | `report.md` §CI gap cites `.github/workflows/ci.yml`; `artifacts/release-workflow-draft.yml` exists | correctness | slice-doc | open | | Draft only — out of scope to merge this slice |
 | D-8 | Strategy report complete with a recommended 0.7.0 arc/slice breakdown for the implementation work (tap creation, apt-repo hosting, CI matrix, release automation) | `report.md` contains §Runtime deps, §Homebrew route, §Debian route, §CI gap, §Recommended arc/slice breakdown | serious | slice-doc | open | | This is the artifact the 0.7.0 project-plan consumes |
-| D-9 | No production code changed by this slice; all drafts confined to this slice's directory | `git diff --stat <open>..<close>` touches only `docs/design-v0.7.0/` (and `CLAUDE.md`/README layout lines) | correctness | slice-doc | open | | Diagnostic-only guarantee, same as slice 01's F-12 |
+| D-9 | No production code changed by this slice; all drafts confined to this slice's directory | `git diff --stat <open>..<close>` touches only `project03-language-evolution/` (and `CLAUDE.md`/README layout lines) | correctness | slice-doc | open | | Diagnostic-only guarantee, same as slice 01's F-12 |
 
 ## What Worked
 

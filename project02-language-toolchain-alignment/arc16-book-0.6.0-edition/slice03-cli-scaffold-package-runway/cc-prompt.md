@@ -34,11 +34,11 @@ Read these before editing:
 6. Rust language/project guidelines before editing Rust
 7. Deno-based JavaScript guidelines before editing JS or Deno-facing package
    metadata
-8. `docs/design-v0.6.0/arc16-book-0.6.0-edition/arc-plan.md`
-9. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
-10. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cdc-verification.md`
-11. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/slice-doc.md`
-12. `docs/design-v0.6.0/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/ledger.md`
+8. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md`
+9. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/closing-report.md`
+10. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice02-dogfood-implementation-runway/cdc-verification.md`
+11. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/slice-plan.md`
+12. `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice03-cli-scaffold-package-runway/ledger.md`
 
 Then inspect the likely implementation seams:
 
