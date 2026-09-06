@@ -15,7 +15,8 @@
     "jsr:@std/streams@^1.0.17": "1.0.17",
     "npm:acorn@8": "8.17.0",
     "npm:astring@^1.9.0": "1.9.0",
-    "npm:esbuild@*": "0.27.4"
+    "npm:esbuild@*": "0.27.4",
+    "npm:esbuild@0.27": "0.27.4"
   },
   "jsr": {
     "@std/assert@1.0.19": {
