@@ -1,5 +1,5 @@
 ---
-project: project05-planning-reorg
+project: project06-planning-reorg
 status: active
 planned-release: null
 release-note: Repository maintenance; no product release assigned.
@@ -12,7 +12,7 @@ related: [project01-mvp, project02-language-toolchain-alignment, project03-langu
 
 Move planning out of implementation documentation, retain original Git history,
 and separate project identity from intended release. The operator authorized
-the canonical planning worktree and the project01 through project05 identities
+the canonical planning worktree and the project01 through project06 identities
 on 2026-09-06. Project slugs and historical groupings are reconstructed from
 the documents. No historical implementation or verification status is upgraded.
 
@@ -25,7 +25,7 @@ the documents. No historical implementation or verification status is upgraded.
 - Guides and ECMAScript reference material remain in implementation docs.
 - Planning has project/arc plans, release metadata, ledgers, and usable links.
 - Cross-project discoveries live in root `backlog/`; project candidates stay
-  with their project. The hardware destination awaits the corrected operator choice.
+  with their project. Hardware planning lives in project05-hardware, as corrected by the operator.
 
 ## Roadmap
 
@@ -38,7 +38,7 @@ the documents. No historical implementation or verification status is upgraded.
 ## Scope and evidence boundaries
 
 The tracked trees in scope are design, dev, versioned design, backlog, and
-the separately identified hardware planning tree. Source guides and ECMAScript
+the separately identified hardware planning tree (project05-hardware). Source guides and ECMAScript
 reference documents retain their homes. The ignored workbench archive is
 inventoried, remains intact, and has no existing Git history to migrate.
 Its mixed release provenance is not silently treated as pre-0.5 material.
@@ -60,4 +60,4 @@ Doer evidence is attested; independent framework closure remains a separate gate
 ## Version history
 
 - 2026-09-06 v1.0: Opened from the operator's eight-point migration request;
-  backlog placement confirmed, hardware placement correction pending.
+  backlog placement confirmed; operator corrected hardware to project05-hardware and this effort to project06-planning-reorg.
