@@ -75,7 +75,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.x
+          # Calibrated against DD-37's 27,630-byte baseline. CompressionStream
+          # output changes between Deno versions; see docs/bundle-size.md.
+          deno-version: v2.7.7
       - run: BASELINE_GZIPPED=27630 make bundle-size
 
   publishing:
