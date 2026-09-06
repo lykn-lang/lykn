@@ -1,0 +1,24 @@
+=== M19 Baseline State Capture ===
+Date: 2026-05-17
+Branch: cdc/compiler-coherence
+
+=== Key finding: test file top-level forms are ALL surface ===
+grep for bare kernel-only forms at top level of .lykn test files: 0
+All kernel-only forms in test files are inside (compile "...") strings,
+which are runtime-compiled by the JS helper, not classified by the outer
+compiler. Strict mode on test-file compilation should pass immediately.
+
+=== Bare kernel-only forms inside (compile "...") strings ===
+(const ...): ~10 occurrences (inside compile strings)
+(let ...): ~6 occurrences (inside compile strings)
+(function ...): ~4 occurrences (inside compile strings)
+(var ...), (function* ...), (quote ...), (quasiquote ...): 0
+
+=== Test counts (post-polish baseline) ===
+Rust (lykn-lang): 1022 passed
+Forms: 670 passed
+Surface: 292 passed
+
+=== Strict mode state ===
+Strict mode infrastructure exists (M17 + M18 + polish).
+Strict defaults to OFF everywhere. No call site passes strict: true.

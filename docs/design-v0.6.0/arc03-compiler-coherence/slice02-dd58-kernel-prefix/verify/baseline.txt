@@ -1,0 +1,22 @@
+=== M17 Baseline State Capture ===
+Date: 2026-05-17
+Branch: cdc/compiler-coherence
+HEAD: e462a67 (D-2 fix: remove JS template double-escape)
+
+=== Classifier dispatch tables ===
+is_surface_form: ~124 string entries in dispatch.rs
+is_kernel_form: ~92 string entries in dispatch.rs
+
+=== SurfaceForm enum ===
+Variants: ~58 (including KernelPassthrough at line 430)
+KernelPassthrough shape: { raw: SExpr, span: Span }
+
+=== Test counts (pre-M17) ===
+Rust (lykn-lang): 1003 passed, 0 failed
+Forms: 670 passed, 0 failed
+compile-both calls: 110
+
+=== Current kernel: prefix handling ===
+No kernel: prefix handling exists in the classifier today.
+The reader preserves kernel:if as a single atom (assumed per DD-01;
+verified in M17-2).
