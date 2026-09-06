@@ -1,0 +1,10 @@
+;; Shake target. app-main imports ONLY used-func; everything else is bait.
+;; Each unused export probes one hazard class from inventory.md.
+(func used-func :args (:number x) :body (+ x 1))
+(func unused-func :args (:number x) :body (* x 2))
+(type Fruit Apple Banana)
+(bind unused-cell (cell 0))
+(bind unused-match (match 1 (1 "one") (_ "other")))
+(func helper :args (:number n) :body (* n 10))
+(bind :number unused-typed (helper 4))
+(export (names used-func unused-func Apple Banana unused-cell unused-match unused-typed))
