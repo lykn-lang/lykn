@@ -3,6 +3,11 @@
 Planning-only slice. Select the first arc01 hardware kit and define the bench
 contract for live IMU bringup. Do not energize hardware in this slice.
 
+Operator status update, 2026-08-21: the planning/procurement contract has been
+accepted for slice02 pre-live preparation, but slice01 remains operationally
+open until the ordered Bus Pirate/probe cable hardware and selected MikroE IMU
+board are physically present.
+
 Per `collaboration-framework/templates/LEDGER-DISCIPLINE.md`.
 
 ## Ledger
@@ -29,6 +34,11 @@ Per `collaboration-framework/templates/LEDGER-DISCIPLINE.md`.
 ## Closure
 
 Date: 2026-08-21
-Verifier: CC self-close; CDC/operator verification still required.
+Verifier: CC self-close; CDC planning verification written; operator hold-open
+on physical-arrival gate.
 Commit: pending operator action.
 Row disposition counts: 10 done, 0 deferred, 0 no-op, 0 open.
+
+Operational status: physical hardware arrival recorded on 2026-09-03. The row
+counts above describe the planning contract only; live IMU power remains owned
+by slice02.

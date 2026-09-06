@@ -1,9 +1,13 @@
 # Slice 02: Manual Register Bringup
 
-> First live bench slice. Use the slice01 bench contract to power the selected
+> Open bench slice. Use the slice01 bench contract to power the selected
 > ICM-42688-P board through Bus Pirate, read identity/status registers, perform
 > one configuration write/readback, and record both known-good and known-bad
 > signatures. No automation or MCU firmware in this slice.
+>
+> Current status, 2026-09-03: hardware has arrived and Bus Pirate
+> firmware/status evidence has begun. Live first-power and register work remain
+> blocked until the updated wiring map and pre-power checklist are complete.
 
 ## Goal
 
@@ -23,8 +27,9 @@ At close, we should know:
 
 ## Preconditions
 
-Do not start live bench work until slice01 has closed or the operator
-explicitly overrides the sequence.
+Do not start live IMU bench work until slice01's physical-arrival gate has
+cleared, the Bus Pirate live SPI mapping has been reconciled into the wiring
+table, and the pre-power checklist is complete.
 
 Required before first power:
 
@@ -38,6 +43,20 @@ Required before first power:
 
 If any precondition fails, stop and close or defer the affected ledger row with
 a concrete re-entry condition. Do not "just try it."
+
+Allowed before hardware arrival:
+
+- reread and annotate the slice01 wiring/safety contract;
+- create and maintain the slice02 artifact index;
+- prepare transcript filenames and command-sequence notes;
+- identify candidate known-bad cases from the datasheet and Bus Pirate docs;
+- prepare Lykn embedded-C observation headings.
+
+Not allowed before hardware arrival:
+
+- energizing any device;
+- claiming Bus Pirate status from delivered hardware;
+- claiming identity/status/config read evidence.
 
 ## Scope
 
@@ -90,8 +109,8 @@ Read before live work:
 - Bus Pirate 6 terminal/protocol documentation for the selected bus mode
 - artifact-home policy selected in slice01
 
-If slice01 has not closed, this slice can only be refined as a draft; it cannot
-close with live evidence.
+If slice01's physical-arrival gate has not cleared, this slice can do pre-live
+preparation only; it cannot close with live evidence.
 
 ## Expected outputs
 

@@ -14,7 +14,7 @@ related: ["project04-c-lang"]
 > once: what the camera telemetry logger actually needs from hardware, and what
 > Lykn must be able to express before an embedded C target is worth building.
 
-Status: first approximation
+Status: arc01 active
 Created: 2026-08-21
 Branch: release/0.8.x
 Home: `project05-hardware/`
@@ -79,7 +79,13 @@ plan deep.
 ## 3. Current status
 
 - `arc01-laptop-sensor-contract` is the active detailed-planning arc.
-- arc01 slice01 and slice02 open sets are drafted for operator review.
+- arc01 slice01 is open with the planning/procurement contract accepted and
+  hardware procurement in flight. The Bus Pirate/probe cable and MikroE IMU
+  board have been ordered or confirmed as on the way, but the live bench gate
+  remains physical arrival.
+- arc01 slice02 is open for pre-live setup, source review, artifact-index
+  preparation, and command-sequence planning. Live first-power/register work is
+  blocked until the selected hardware is physically present.
 - The later arc plans exist so the shopping list is no longer a pile; their
   slice breakdowns are provisional and should be revised after arc01 closes.
 - No live bench work has been performed in this planning tree.
@@ -113,3 +119,19 @@ provisional.
 
 Recorded that arc01 slice01 and slice02 open sets are drafted. The project
 remains planning-only; no hardware evidence has been claimed.
+
+### v1.2 - 2026-08-21
+
+Operator update: Bus Pirate/probe cable hardware and the selected MikroE IMU
+board are in procurement and expected to arrive. Kept slice01 operationally
+open on the physical-arrival gate while opening slice02 for pre-live bench
+preparation. Live slice02 evidence remains blocked until the hardware is in
+hand.
+
+### v1.3 - 2026-09-03
+
+Operator update: the MikroE board arrived, the Bus Pirate arrived, firmware was
+updated, and the first Bus Pirate status transcript was captured. The live
+status output superseded the initial SPI IO mapping hypothesis before any IMU
+wiring or power. Live IMU power remains blocked until the updated wiring map
+and pre-power checklist are complete.

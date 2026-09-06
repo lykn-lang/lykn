@@ -1,0 +1,18 @@
+Status: TEMPLATE ONLY - no live hardware evidence recorded.
+
+Purpose:
+Record the first safe power-up through Bus Pirate VOUT.
+
+Expected commands to capture:
+
+SPI> W 3.3 20
+SPI> v
+
+Required notes:
+- VOUT requested:
+- Current limit requested:
+- Reported Vreg/Vref/Vout:
+- Reported current:
+- Board PWR LED:
+- Over-current/digital-fuse event:
+- If fault: VOUT disabled with `w`:

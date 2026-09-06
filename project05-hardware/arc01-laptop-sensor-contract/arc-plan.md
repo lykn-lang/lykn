@@ -1,8 +1,8 @@
 # arc01 — Laptop/Sensor Contract
 
-> **Status: Active planning.** This arc is the first purchasable hardware
-> increment. It uses a laptop and Bus Pirate to learn the IMU contract before
-> any STM32 firmware or Lykn C backend work can hide the problem.
+> **Status: Active, procurement in flight.** This arc is the first purchasable
+> hardware increment. It uses a laptop and Bus Pirate to learn the IMU contract
+> before any STM32 firmware or Lykn C backend work can hide the problem.
 
 ## 1. Capability
 
@@ -53,13 +53,15 @@ arc.
 
 ## 3. Slice breakdown
 
-These slices are a proposal for discussion, not yet open sets. The first slice
-should be opened only after the operator confirms the cut.
+These slices are the active first approximation for arc01. slice01 remains
+operationally open until ordered hardware is physically present; slice02 is open
+for pre-live preparation but cannot claim live bench evidence until that gate
+clears.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · procurement-and-bench-contract** | Confirm the exact first-order hardware, pin/bus plan, voltage/power limits, and bench safety/mechanical setup. Produce a wiring plan and acceptance checklist before hardware is energized. No Lykn/compiler code. | **Open set drafted** ([slice-doc](slice01-procurement-and-bench-contract/slice-plan.md), [ledger](slice01-procurement-and-bench-contract/ledger.md), [cc-prompt](slice01-procurement-and-bench-contract/cc-prompt.md)) |
-| **slice02 · manual-register-bringup** | Use Bus Pirate interactively to power the IMU, select SPI/I2C as appropriate, read identity/status registers, perform one write/readback config operation, and record known-good and known-bad bus signatures. | **Open set drafted** ([slice-doc](slice02-manual-register-bringup/slice-plan.md), [ledger](slice02-manual-register-bringup/ledger.md), [cc-prompt](slice02-manual-register-bringup/cc-prompt.md)) |
+| **slice01 · procurement-and-bench-contract** | Confirm the exact first-order hardware, pin/bus plan, voltage/power limits, and bench safety/mechanical setup. Produce a wiring plan and acceptance checklist before hardware is energized. No Lykn/compiler code. | **Open / procurement in flight** ([slice-doc](slice01-procurement-and-bench-contract/slice-plan.md), [ledger](slice01-procurement-and-bench-contract/ledger.md), [cc-prompt](slice01-procurement-and-bench-contract/cc-prompt.md), [closing-report](slice01-procurement-and-bench-contract/closing-report.md), [CDC note](slice01-procurement-and-bench-contract/cdc-verification.md)) |
+| **slice02 · manual-register-bringup** | Use Bus Pirate interactively to power the IMU, select SPI/I2C as appropriate, read identity/status registers, perform one write/readback config operation, and record known-good and known-bad bus signatures. | **Open / pre-live prep** ([slice-doc](slice02-manual-register-bringup/slice-plan.md), [ledger](slice02-manual-register-bringup/ledger.md), [cc-prompt](slice02-manual-register-bringup/cc-prompt.md), [artifact index](./slice02-manual-register-bringup/artifacts/README.md)) |
 | **slice03 · scripted-bpio2-probe** | Turn the manual sequence into a laptop-side script or transcript-driven tool using BPIO2 or the most suitable Bus Pirate automation path. Output deterministic register reads and error cases. | Proposed |
 | **slice04 · lykn-c-shape-notes** | Convert the observed register/FIFO/config work into Lykn embedded-C requirements: data types, bit operations, effect/capability boundaries, transport abstraction, and forms that must be rejected or restricted. No compiler implementation. | Proposed |
 | **slice05 · contract-package-and-bubble-up** | Assemble the IMU contract packet for later arcs: wiring, transcripts, register table, failure signatures, and the target-profile deltas that must bubble into `project04-c-lang/`. | Proposed |
@@ -156,3 +158,18 @@ Drafted canonical open sets for slice01 `procurement-and-bench-contract` and
 slice02 `manual-register-bringup`. Kept slice01 planning-only and slice02 as
 the first live bench slice so hardware safety, artifact homes, and procurement
 scope are closed before the IMU is energized.
+
+### v1.2 - 2026-08-21
+
+Operator update: Bus Pirate/probe cable hardware and the selected MikroE
+MIKROE-4237 IMU board are on the way. slice01 remains operationally open until
+physical arrival is recorded. slice02 is opened for pre-live preparation now,
+with first-power/register ledger rows blocked until hardware is in hand.
+
+### v1.3 - 2026-09-03
+
+Operator update: hardware arrival is now recorded and Bus Pirate firmware/status
+evidence has begun. slice02's first status transcript reported SPI mapping as
+IO4=MISO, IO5=CS, IO6=CLK, IO7=MOSI, superseding the initial IO mapping
+hypothesis before any IMU power. The next gate is the updated pre-power wiring
+check, not a register read.

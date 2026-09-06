@@ -1,0 +1,21 @@
+Status: TEMPLATE ONLY - no live hardware evidence recorded.
+
+Purpose:
+Record one safe GYRO_CONFIG0 write/readback and restore the reset value.
+
+Expected commands to capture:
+
+SPI> [0xCF r]
+SPI> [0x4F 0x07]
+SPI> [0xCF r]
+SPI> [0x4F 0x06]
+SPI> [0xCF r]
+
+Interpretation fields:
+- Initial GYRO_CONFIG0 read is expected reset value 0x06:
+- If initial value is not 0x06, write skipped and deviation recorded:
+- Write 0x07 performed:
+- Readback 0x07 observed:
+- Restore write 0x06 performed:
+- Final readback 0x06 observed:
+- Deviations/stop condition:

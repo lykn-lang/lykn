@@ -1,0 +1,21 @@
+Status: TEMPLATE ONLY - no live hardware evidence recorded.
+
+Purpose:
+Record one safe, reversible failure signature after a known-good WHO_AM_I read.
+
+Primary planned case:
+No-CS identity read. This uses `>` to execute bus syntax without asserting SPI
+CS.
+
+Expected commands to capture:
+
+SPI> > 0xF5 r
+SPI> [0xF5 r]
+
+Interpretation fields:
+- Known-good WHO_AM_I was already recorded:
+- No-CS command/result:
+- Result is distinct from valid WHO_AM_I 0x47:
+- Normal WHO_AM_I read still returns 0x47 afterward:
+- Diagnosis:
+- If no-CS unexpectedly returns 0x47, alternate selected and rationale:

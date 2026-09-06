@@ -3,7 +3,7 @@
 Date: 2026-08-21
 Verifier: CDC
 Branch: release/0.8.x
-Verdict: verified with procurement blocker carried forward
+Verdict: planning verified; operator hold-open on physical-arrival gate
 
 ## Scope
 
@@ -11,10 +11,12 @@ CDC verified CC's close for
 `slice01-procurement-and-bench-contract`. This was a planning/procurement
 slice only. No hardware evidence was expected, and none was claimed.
 
-The slice is accepted as closed at the planning level. The next live slice,
-`slice02-manual-register-bringup`, remains blocked until the selected
-MikroE MIKROE-4237 board is physically procured or the operator explicitly
-selects a replacement board.
+The slice01 planning contract is accepted as sufficient to open slice02 for
+pre-live preparation. Per operator update on 2026-08-21, slice01 remains
+operationally open until the selected MikroE MIKROE-4237 board and Bus Pirate
+hardware are physically present. The next live slice,
+`slice02-manual-register-bringup`, may be open, but first-power/register work
+remains blocked until the hardware is in hand.
 
 ## Evidence Reviewed
 
@@ -35,8 +37,10 @@ External evidence spot-checked:
 - Bus Pirate SPI protocol page: confirms MOSI/MISO/CLK/CS connections,
   default 100 kHz-class setup, active-low CS default, and `[` / `]` CS syntax.
 - Bus Pirate IO pin descriptions: confirms main connector VOUT/IO0-IO7/GND
-  shape and the documented IO4=SCLK, IO5=MOSI, IO6=MISO, IO7=CS SPI mapping,
-  while also supporting CC's live-statusbar confirmation caveat.
+  shape and supplied the initial SPI mapping hypothesis, while also supporting
+  CC's live-statusbar confirmation caveat. On 2026-09-03, slice02 live status
+  evidence superseded that hypothesis with IO4=MISO, IO5=CS, IO6=CLK,
+  IO7=MOSI.
 - MikroE 6DOF IMU 14 Click product page: confirms PID MIKROE-4237, ICM-42688-P,
   SPI/I2C interfaces, 3.3 V-only operation, pinout, JP2-JP4 COMM SEL left/SPI
   default, and out-of-stock status.
@@ -76,7 +80,7 @@ HEAD-based citation-gate behavior.
 | F-1 | reproduced | The Purchase List is scoped to Bus Pirate 6, probe cable, one selected ICM-42688-P board, breadboard, and wire/header minimums; it explicitly defers extra headers/adapters and the TDK alternate. |
 | F-2 | reproduced | The IMU Board Decision selects MikroE MIKROE-4237 and defers TDK EV_ICM-42688-P with stock and documentation rationale. Current MikroE/Mouser/DigiKey pages support the availability claims. |
 | F-3 | reproduced | The Bus Mode Decision selects SPI-first, records JP2-JP4 COMM SEL left/SPI, defers I2C-first with re-entry conditions, and matches MikroE/ICM/Bus Pirate source material. |
-| F-4 | reproduced | The Wiring Table maps Bus Pirate VOUT/GND and IO4-IO7 to the Click-board SPI pins with direction, voltage, and risk notes. The live Bus Pirate 6 statusbar confirmation gate is appropriate because the IO mapping source labels part of its detail as an RP2040 pin map. |
+| F-4 | reproduced with update | The Wiring Table maps Bus Pirate VOUT/GND and IO4-IO7 to the Click-board SPI pins with direction, voltage, and risk notes. The live Bus Pirate 6 statusbar confirmation gate was appropriate because the initial IO mapping source labels part of its detail as an RP2040 pin map; slice02's 2026-09-03 status transcript triggered the gate and updated the table before power. |
 | F-5 | reproduced | The Pre-Power Safety Checklist covers board revision, COMM SEL jumpers, 3.3 V/GND, current limit, CS idle state, 5 V avoidance, continuity/visual checks, and current-limit stop behavior. |
 | F-6 | reproduced | The Artifact-Home Decision gives slice02 a tracked `artifacts/` subtree for durable text/small artifacts and routes large raw captures to scratch with tracked summaries, avoiding scratch-only closure evidence. |
 | F-7 | reproduced | The Slice02 Starting Checklist records procurement, docs, pre-power, terminal/statusbar, first power, first WHO_AM_I read, first status read, and known-bad candidate steps. |
@@ -108,9 +112,12 @@ The closing report's bubble-up is honest and complete:
 
 ## CDC Verdict
 
-Accepted. Slice01 is CDC-verified as a planning/procurement close.
+Accepted for planning use. Slice01 is CDC-verified as a planning/procurement
+contract, but remains operationally open by operator decision until physical
+hardware arrival is recorded.
 
-Do not start live slice02 hardware work until one of these is true:
+Slice02 may proceed with pre-live preparation. Do not start live slice02
+hardware work until one of these is true:
 
 1. MikroE MIKROE-4237 is physically in hand; or
 2. the operator explicitly accepts a backorder wait and keeps slice02 blocked

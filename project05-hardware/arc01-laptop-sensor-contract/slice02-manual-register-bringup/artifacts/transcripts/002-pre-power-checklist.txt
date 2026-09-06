@@ -1,0 +1,26 @@
+Status: TEMPLATE ONLY - no live hardware evidence recorded.
+
+Purpose:
+Record the slice01 pre-power checklist item by item before the first energizing
+step.
+
+Checklist:
+- Bus Pirate hardware revision, firmware version, and probe-cable contents recorded:
+- IMU board make, part number, revision/schematic marking, and jumper positions recorded:
+- JP2, JP3, and JP4 COMM SEL all confirmed left/SPI:
+- JP1 ADDR SEL confirmed irrelevant for SPI-first:
+- 3.3V and GND identified from silkscreen and schematic/mikroBUS pins:
+- VOUT off continuity check shows no 3.3V-to-GND short:
+- Live Bus Pirate SPI mapping confirmed as IO4=MISO, IO5=CS, IO6=CLK,
+  IO7=MOSI:
+- CS/SCK/MOSI/MISO wiring checked against updated slice01 table:
+- Bus Pirate supply planned at 3.3 V, 20 mA:
+- Bus Pirate IO reference remains 3.3 V:
+- No 5 V connected to any board signal:
+- Pull-ups off for SPI-first:
+- CS idle-high behavior confirmed before first transaction:
+- Unused 5V/I2C/INT/FSYNC pins unbridged:
+- Wiring sketch/photo recorded in artifact index:
+- Stop rule for immediate current-limit trip acknowledged:
+
+Deviations:

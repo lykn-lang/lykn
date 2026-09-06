@@ -1,0 +1,135 @@
+Status: LIVE BUS PIRATE STATUS EVIDENCE - no external IMU connected and no
+IMU power applied.
+
+Purpose:
+Record Bus Pirate hardware/firmware/status, safe HiZ/VOUT-off state, SPI mode
+selection, and live IO4/IO5/IO6/IO7 statusbar mapping before wiring/power.
+
+Expected commands to capture:
+
+HiZ> i
+HiZ> w
+HiZ> m spi
+SPI> i
+SPI> v
+
+Required notes:
+- Bus Pirate hardware revision: Bus Pirate 6, RP2350B with 512KB RAM, 128Mbit FLASH.
+- Firmware branch/version/date: main branch @ 0f66f47, Sep 1 2026 13:18:03.
+- Probe cable observed: not recorded in this transcript.
+- Active mode: SPI after mode selection.
+- SPI speed: 100 kHz.
+- Data bits: 8.
+- CPOL/CPHA: idle low / leading edge.
+- CS polarity: active low (/CS).
+- Bit order: MSB first.
+- Pull-ups: off.
+- VOUT state: off.
+- Live IO mapping: IO4=MISO, IO5=CS, IO6=CLK, IO7=MOSI. This does not match
+  the earlier slice01 mapping hypothesis; slice01 wiring table must be updated
+  before wiring/power.
+
+HiZ> i
+
+This device complies with part 15 of the FCC Rules. Operation is subject to the following two conditions:
+(1) this device may not cause harmful interference, and
+(2) this device must accept any interference received, including interference that may cause undesired operation.
+
+Bus Pirate 6
+https://BusPirate.com/
+Firmware main branch @ 0f66f47 (Sep  1 2026 13:18:03)
+RP2350B with 512KB RAM, 128Mbit FLASH
+S/N: 96369C8444ADFD5B
+Storage:   0.10GB (FAT16 File System)
+Terminal: 244x65
+
+Configuration file: Not Detected
+Active binmode: SUMP logic analyzer
+Available modes: HiZ 1WIRE UART HDUART I2C SPI 2WIRE 3WIRE DIO LED INFRARED JTAG PS2 USB
+Active mode: HiZ
+
+Display format: Auto
+
+HiZ> w
+
+Command has no effect in HiZ mode, press 'm' to choose a mode
+HiZ> m
+
+Mode selection
+ 1. HiZ
+ 2. 1WIRE
+ 3. UART
+ 4. HDUART
+ 5. I2C
+ 6. SPI
+ 7. 2WIRE
+ 8. 3WIRE
+ 9. DIO
+ 10. LED
+ 11. INFRARED
+ 12. JTAG
+ 13. PS2
+ 14. USB
+
+x to exit > 6
+
+Mode: SPISPI speed
+ 1 to 62500kHz
+x to exit (100) >
+
+Data bits
+ 4 to 8 bits
+x to exit (8) >
+
+Clock polarity
+ 1. Idle LOW*
+ 2. Idle HIGH
+x to exit (1) >
+
+Clock phase
+ 1. LEADING edge*
+ 2. TRAILING edge
+x to exit (1) >
+
+Chip select
+ 1. Active HIGH (CS)
+ 2. Active LOW (/CS)*
+x to exit (2) >
+
+Actual speed: 100kHz
+
+SPI> i
+
+This device complies with part 15 of the FCC Rules. Operation is subject to the following two conditions:
+(1) this device may not cause harmful interference, and
+(2) this device must accept any interference received, including interference that may cause undesired operation.
+
+Bus Pirate 6
+https://BusPirate.com/
+Firmware main branch @ 0f66f47 (Sep  1 2026 13:18:03)
+RP2350B with 512KB RAM, 128Mbit FLASH
+S/N: 96369C8444ADFD5B
+Storage:   0.10GB (FAT16 File System)
+Terminal: 244x65
+
+Configuration file: Not Detected
+Active binmode: SUMP logic analyzer
+Available modes: HiZ 1WIRE UART HDUART I2C SPI 2WIRE 3WIRE DIO LED INFRARED JTAG PS2 USB
+Active mode: SPI
+ SPI speed: 100 kHz
+ Data bits: 8
+ Clock polarity: Idle LOW
+ Clock phase: LEADING edge
+ Chip select: Active LOW (/CS)
+
+Display format: Auto
+Data format: 8 bits, MSB bitorder
+Pull-up resistors: OFF
+Power supply: OFF
+Frequency generators: OFF
+
+SPI> v
+
+1.Vout  2.IO0   3.IO1   4.IO2   5.IO3   6.IO4   7.IO5   8.IO6   9.IO7   10.GND
+OFF     -       -       -       -       MISO    CS      CLK     MOSI    GND
+0.0V    0.0V    0.0V    0.0V    0.0V    0.0V    0.0V    0.0V    0.0V    GND

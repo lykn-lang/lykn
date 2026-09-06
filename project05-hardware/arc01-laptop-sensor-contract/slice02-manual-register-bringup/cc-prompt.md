@@ -1,12 +1,14 @@
 # CC Prompt - arc01 slice02: manual register bringup
 
-You are CC in the execution seat. CDC has opened the first live bench slice for
-the Lykn hardware 0.8.0 research track. Your job is to use the slice01 bench
+You are CC in the execution seat. CDC has opened the first bench slice for the
+Lykn hardware 0.8.0 research track. Your job is to use the slice01 bench
 contract to manually prove laptop -> Bus Pirate -> IMU register communication,
 then close the slice with transcript evidence.
 
-Do not start live bench work unless slice01 is closed or Duncan explicitly
-overrides the sequence.
+Current status, 2026-08-21: Bus Pirate/probe cable hardware and the selected
+MikroE IMU board are on the way. You may do pre-live preparation now. Do not
+start live bench work unless slice01's physical-arrival gate has cleared or
+Duncan explicitly overrides the sequence.
 
 ## Branch and repo
 
@@ -40,18 +42,28 @@ Read these before touching hardware:
 10. Current chosen board documentation.
 
 If `slice01/closing-report.md` does not exist, stop before live work and report
-that this slice is blocked on slice01 closure unless Duncan overrides.
+that this slice is blocked on slice01 planning closure unless Duncan overrides.
+If the closing report exists but hardware has not physically arrived, continue
+only with pre-live preparation.
 
 ## Assignment
 
 Use the slice01 wiring/safety/artifact contract to perform the first manual
 register bringup.
 
+Before hardware arrives, limit work to:
+
+1. Creating or updating the artifact index.
+2. Preparing transcript filenames and expected command sequence.
+3. Identifying the exact WHO_AM_I/status/config register commands to try.
+4. Selecting one safe known-bad case from docs.
+5. Preparing headings for preliminary Lykn embedded-C observations.
+
 The close report must include:
 
 1. Source material read, with one-line role for each source.
 2. Preconditions:
-   - slice01 close read;
+   - slice01 planning contract and hold-open gate read;
    - hardware present;
    - selected board confirmed;
    - wiring table followed;
@@ -118,6 +130,8 @@ The close report must include:
   and low risk.
 - If live hardware behavior diverges from slice01's wiring/safety contract,
   stop and record the deviation before continuing.
+- If hardware has not physically arrived, do not write `closing-report.md`
+  unless explicitly closing a deferred/no-live-evidence attempt.
 
 ## Verification
 

@@ -1,0 +1,21 @@
+Status: TEMPLATE ONLY - no live hardware evidence recorded.
+
+Purpose:
+Record bank/status/identity reads and repeat the identity read under the same
+wiring.
+
+Expected commands to capture:
+
+SPI> [0xF6 r]
+SPI> [0xF5 r]
+SPI> [0xAD r]
+SPI> [0xF5 r]
+
+Interpretation fields:
+- REG_BANK_SEL read command/result:
+- WHO_AM_I first read command/result:
+- Expected WHO_AM_I value 0x47 observed:
+- INT_STATUS read command/result:
+- WHO_AM_I repeat command/result:
+- Repeat matches first read:
+- Deviations/stop condition:

@@ -3,6 +3,11 @@
 > Planning-only slice. Select the exact first-order hardware, define the bench
 > setup, and produce the wiring/safety/artifact contract that slice02 will use.
 > Do not energize hardware in this slice.
+>
+> Operator status update, 2026-08-21: the Bus Pirate/probe cable hardware and
+> selected MikroE IMU board are on the way. Keep this slice operationally open
+> until the physical-arrival gate is recorded, even though the planning contract
+> has been accepted for slice02 pre-live preparation.
 
 ## Goal
 
@@ -130,6 +135,8 @@ that does not change the scope: live bringup belongs to slice02.
 - Artifact-home policy for slice02 transcripts/captures is decided.
 - The closing report states whether slice02 can open as live bench work or is
   blocked on procurement, missing documentation, or unresolved pin/safety risk.
+- If hardware is still in transit, the planning rows may be accepted while the
+  slice remains operationally open on the physical-arrival gate.
 
 ## Design sub-questions
 

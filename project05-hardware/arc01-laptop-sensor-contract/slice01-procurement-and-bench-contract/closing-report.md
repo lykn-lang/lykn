@@ -82,18 +82,25 @@ Deferred mode: I2C-first is deferred. Re-entry condition: choose I2C only if SPI
 
 ## Wiring Table for First Live Test
 
-Manual verification basis: Bus Pirate IO Pin Descriptions for IO4/IO5/IO6/IO7 SPI mapping; Bus Pirate SPI Protocol for signal direction and CS behavior; MikroE product pinout and schematic v100 for Click pins; ICM-42688-P datasheet for voltage and SPI register behavior.
+Manual verification basis: Bus Pirate IO Pin Descriptions for initial
+IO4/IO5/IO6/IO7 SPI mapping hypothesis; Bus Pirate SPI Protocol for signal
+direction and CS behavior; MikroE product pinout and schematic v100 for Click
+pins; ICM-42688-P datasheet for voltage and SPI register behavior.
 
-Risk note: the Bus Pirate IO Pin Descriptions page labels the detailed table as an RP2040 pin map. Before connecting the board in slice02, enter SPI mode with VOUT off and confirm the Bus Pirate 6 terminal/statusbar labels IO4/IO5/IO6/IO7 as SCLK/MOSI/MISO/CS respectively. If the live firmware reports a different mapping, stop and update this table before power.
+Live mapping update, 2026-09-03: the first Bus Pirate 6 terminal/status check
+in slice02 reported `IO4=MISO`, `IO5=CS`, `IO6=CLK`, and `IO7=MOSI`, with VOUT
+off and no external board powered. This supersedes the initial IO mapping
+hypothesis from the Bus Pirate IO Pin Descriptions page. Do not wire or power
+the IMU using the old `IO4=SCLK`, `IO5=MOSI`, `IO6=MISO`, `IO7=CS` mapping.
 
 | Bus Pirate lead/pin | IMU board pin | Signal | Direction | Expected voltage | Notes/risk |
 |---------------------|---------------|--------|-----------|------------------|------------|
 | Pin 1 VOUT/VREF | 3.3V, mikroBUS pin 7 | VCC / board supply | Bus Pirate -> board | 3.3 V | Set Bus Pirate supply to 3.3 V. Initial current limit: 20 mA. Do not connect mikroBUS 5V pin. |
 | Pin 10 GND | GND, mikroBUS pin 8 | GND | Common | 0 V | Use the nearest ground. Optional: tie pin 9 GND too after continuity check. |
-| IO4 / physical pin 6 | SCK, mikroBUS pin 4 | SPI SCLK | Bus Pirate -> board | 0 to 3.3 V | Confirm IO4 is SCLK in live Bus Pirate 6 statusbar before connecting. |
-| IO5 / physical pin 7 | SDI/MOSI, mikroBUS pin 6 | SPI MOSI / AP_SDI | Bus Pirate -> board | 0 to 3.3 V | Data from Bus Pirate to ICM-42688-P. |
-| IO6 / physical pin 8 | SDO/MISO, mikroBUS pin 5 | SPI MISO / AP_SDO | Board -> Bus Pirate | 0 to 3.3 V | Data from ICM-42688-P to Bus Pirate. Leave as Bus Pirate input. |
-| IO7 / physical pin 9 | CS, mikroBUS pin 3 | SPI CS / AP_CS | Bus Pirate -> board | Idle high 3.3 V; active low 0 V | Must idle high before power and between transactions. Bus Pirate `[` pulls active low; `]` releases high. |
+| IO6 / physical pin 8 | SCK, mikroBUS pin 4 | SPI CLK / SCLK | Bus Pirate -> board | 0 to 3.3 V | Live Bus Pirate 6 status reports IO6=CLK in SPI mode. |
+| IO7 / physical pin 9 | SDI/MOSI, mikroBUS pin 6 | SPI MOSI / AP_SDI | Bus Pirate -> board | 0 to 3.3 V | Live Bus Pirate 6 status reports IO7=MOSI. Data from Bus Pirate to ICM-42688-P. |
+| IO4 / physical pin 6 | SDO/MISO, mikroBUS pin 5 | SPI MISO / AP_SDO | Board -> Bus Pirate | 0 to 3.3 V | Live Bus Pirate 6 status reports IO4=MISO. Data from ICM-42688-P to Bus Pirate. Leave as Bus Pirate input. |
+| IO5 / physical pin 7 | CS, mikroBUS pin 3 | SPI CS / AP_CS | Bus Pirate -> board | Idle high 3.3 V; active low 0 V | Live Bus Pirate 6 status reports IO5=CS. Must idle high before power and between transactions. Bus Pirate `[` pulls active low; `]` releases high. |
 | Not connected | SCL, mikroBUS pin 12 | I2C SCL | N/A | N/A | Unused in SPI-first. |
 | Not connected | SDA, mikroBUS pin 11 | I2C SDA | N/A | N/A | Unused in SPI-first. |
 | Not connected | INT, mikroBUS pin 15 | Interrupt | Board -> host | 0 to 3.3 V if later used | Defer until identity/status read succeeds. |
@@ -110,7 +117,8 @@ All items must be checked in slice02 before energizing:
 - Confirm JP1 ADDR SEL is irrelevant for SPI-first and has not been mistaken for COMM SEL.
 - Identify 3.3V and GND on the board from the silkscreen and continuity to the schematic/mikroBUS pins.
 - With Bus Pirate VOUT off, verify no continuity short between 3.3V and GND.
-- With Bus Pirate VOUT off, verify CS is wired to CS, SCK to SCK, MOSI to SDI, and MISO to SDO.
+- With Bus Pirate VOUT off, verify IO5/CS is wired to CS, IO6/CLK to SCK,
+  IO7/MOSI to SDI, and IO4/MISO to SDO.
 - Configure Bus Pirate supply to 3.3 V with initial 20 mA current limit.
 - Keep Bus Pirate IO reference at 3.3 V; no 5 V on any board signal.
 - Leave Bus Pirate pull-ups off for SPI-first.
@@ -155,7 +163,8 @@ Slice02 cannot proceed to live bench work until the selected board is physically
 - Hardware present: Bus Pirate 6, probe cable kit, selected MikroE MIKROE-4237 board, breadboard, wire.
 - Docs present: Bus Pirate 6 hardware docs, Bus Pirate SPI docs, probe cable docs, MikroE product page, MikroE schematic v100, ICM-42688-P datasheet.
 - Pre-power checks complete: all checklist items above recorded in the artifact index.
-- First setup: Bus Pirate in HiZ, VOUT off, wiring complete, statusbar confirms expected SPI pin assignment.
+- First setup: Bus Pirate in HiZ, VOUT off, wiring complete, statusbar confirms
+  the live SPI pin assignment recorded above.
 - First mode: enter SPI at 100 kHz, 8 bits, mode 0, active-low CS.
 - First power observation: enable 3.3 V with 20 mA current limit; record current draw and whether PWR LED lights.
 - First register observation: read WHO_AM_I at register 0x75. For SPI read, set the read bit on the address byte: transmit 0xF5 then read one byte. Expected value: 0x47.

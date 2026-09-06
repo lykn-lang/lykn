@@ -1,7 +1,11 @@
 # Slice 02: Manual Register Bringup - Ledger
 
-First live bench slice. Use the slice01 bench contract to manually establish a
+Open bench slice. Use the slice01 bench contract to manually establish a
 known-good and known-bad Bus Pirate to ICM-42688-P register sequence.
+
+Current status, 2026-09-03: hardware has arrived and Bus Pirate status evidence
+has begun. Rows requiring IMU first power or register observations remain
+blocked until the updated wiring map and pre-power checklist are complete.
 
 Per `collaboration-framework/templates/LEDGER-DISCIPLINE.md`.
 
@@ -9,7 +13,7 @@ Per `collaboration-framework/templates/LEDGER-DISCIPLINE.md`.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
-| F-1 | Slice01 preconditions satisfied before first power | closing report cites slice01 close, selected board, wiring table, safety checklist, and artifact-home decision | correctness-grade | slice sequencing | open | | no live work before bench contract |
+| F-1 | Slice01 preconditions satisfied before first power | closing report cites slice01 planning contract, selected board, wiring table, safety checklist, artifact-home decision, and physical-arrival gate status | correctness-grade | slice sequencing | open | | no live work before bench contract and hardware arrival |
 | F-2 | Hardware-as-used recorded | closing report lists Bus Pirate hardware/firmware info if available, IMU board name/revision, bus mode/speed, voltage/current settings, and wiring-as-used | serious | arc01 A-1/A-2 | open | | exact setup matters more than pretty prose |
 | F-3 | Pre-power safety checklist executed | closing report includes completed checklist from slice01 or a documented equivalent with deviations | correctness-grade | arc01 A-2 | open | | no 5 V surprise |
 | F-4 | IMU powered through planned safe path | transcript/notes show power enabled, expected voltage observed or status reported, and no over-current/safety stop | correctness-grade | arc01 A-2 | open | | record current-limit setting if available |
