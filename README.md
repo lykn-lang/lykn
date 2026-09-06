@@ -177,6 +177,9 @@ cargo clippy              # lint Rust
 cargo fmt                 # format Rust
 ```
 
+The [browser bundle size check](docs/bundle-size.md) documents the calibrated
+Deno version, size budget, and procedure for upgrading measurement tools.
+
 ## Usage
 
 ### Browser
