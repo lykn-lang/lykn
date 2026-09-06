@@ -7,75 +7,58 @@
 >
 > **The most valuable section here is [§7 Issues & learnings](#7-issues--learnings--the-workflow-evolution-log).** It is the record of what has gone wrong and what we changed because of it — the substance of our evolving workflow, and (per Duncan) of equal or greater value than the project assets themselves.
 
-## 1. Who's who (the peer frame)
+## 1. Roles and current authority
 
-- **CDC** (you, in Cowork): plan, scope slices, write DDs/ledgers/CC-prompts,
-  **verify** CC's work, keep the plan honest. You do **not** run the host
-  toolchain (see §3).
-- **CC** (Claude Code, separate sessions on Duncan's machine): implements — code,
-  migrations, doctests. Runs the real build/test/lint. Reports back.
-- **Duncan** (operator / methodology owner): makes design calls, handles `odm`
-  promotion of DDs, does host git ops (commits, merges), relays CC↔CDC.
+CDC is the coordinating/design contributor; CC is the implementing contributor;
+Duncan is the operator and co-planner. Use the installed collaboration-framework
+role adapter. Tool availability depends on the active environment: native local
+Codex can run the host tools; the historical Cowork bridge limitations are not
+blanket restrictions on every CDC session.
 
-The loop: **CDC scopes → Duncan hands the prompt to CC → CC implements + reports →
-CDC verifies + closes + bubbles up → CDC updates the plan docs.** Prompts to CC
-use MUST framing with explicit verification checklists; CC is expected to
-**self-stop and surface findings** rather than work around problems (this has
-caught two real CDC errors — see §7).
+## 2. Framework entrypoints
 
-## 2. The framework (read these first)
+Load the collaboration-framework skill and its project-management
+guides/README.md before planning or closing work. It routes to the canonical
+planning-worktree, top-down planning, ledger, and close/bubble-up guides.
+The root [AGENTS.md](../AGENTS.md) records the operator-confirmed local layout.
+Source philosophy and language guides remain in the 0.6.x source worktree.
 
-The house framework is the `collaboration-framework` skill. Load it and read, in
-full, before planning or closing anything:
-- `docs/PROJECT-MANAGEMENT.md` (v2.1) — scales of work (project → arc → slice →
-  step), the canonical layout, the confirmation protocol, top-down planning +
-  bottom-up bubble-up/close.
-- `templates/LEDGER-DISCIPLINE.md` (v2.0) — grep-verifiable ledger rows,
-  evidence strengths (`asserted < attested < reproduced < reconciled`), the
-  closer-≠-verifier rule, the five-iteration cap, arc/project composition rows.
+## 3. Substrate and environment
 
-Also foundational: `docs/philosophy.md` (the three principles — source-only tree,
-lykn-only tooling, compiler-owned output quality — plus the 0.6.0 commitments).
+- Repository: ~/lab/lykn/lang.
+- Planning: branch planning, worktree .worktrees/planning.
+- This project: project02-language-toolchain-alignment; intended release 0.6.0
+  is recorded in project-plan.md YAML, independently of its directory name.
+- Implementation and user/developer docs: release/0.6.x in .worktrees/0.6.x.
+- Source verification runs in that source worktree. Planning Git operations
+  run in the planning worktree; never merge planning into source.
+- Preserve local edits. An implementation attestation is not independent
+  reproduction. Historical release statuses below are snapshots.
 
-## 3. Substrate & environment (important gotchas)
+## 4. Current artifact homes (2026-09-06)
 
-- **Repo:** `~/lab/lykn/lang`. **Branch:** `release/0.6.x` (all 0.6.0 work).
-- **Cowork sandbox has NO deno / cargo / rust toolchain.** You cannot run the
-  runtime suites. Your verification is **git ancestry + code review + grep**;
-  runtime rows are **CC-attested** and reconciled by an **operator host re-run**.
-  Be explicit about which you did (reproduced-by-code vs attested-runtime).
-- **`workbench/` is gitignored** — its files aren't tracked even when the tree
-  looks clean. It's scratch (CC reports land there too).
-- **Git in Cowork:** read-only from the main checkout is fine
-  (`cd .../mnt/lang && git log …`). **Do NOT run git inside a worktree** from
-  Cowork (path-encoding breaks). Host handles commits/merges/rebases.
-- **Two compilers:** Rust (`crates/lykn-lang/`, the codegen `lykn compile` uses)
-  and JS (`packages/lang/`, embedded per DD-54). Know which path a check exercises.
-- **Verify commands** live in `Makefile` (`make check` = build+lint+test incl.
-  `make test-docs`). `lykn test` runs the cross-compiler `compile-both` corpus.
-
-## 4. Where everything lives
-
-```
-docs/design-v0.6.0/
-  project-plan.md      ← arc roadmap + project ledger + Version History (READ FIRST)
-  README.md            ← index + arc table + conventions
-  status.html          ← standalone dashboard (edit its DATA object to update)
-  BOOTSTRAP.md         ← this file
-  _reconciliation-2026-06-29.md   ← the branch-ancestry audit
-  arcNN-<slug>/
-    arc-plan.md, closing-report.md
-    sliceNN-<slug>/{slice-doc, ledger, cc-prompt, closing-report, cdc-verification}.md
-docs/design/           ← odm-managed DDs (DD-58 = 05-active/0059-…; DD-60 = 05-active/0062-…
-                         [CANONICAL — the arc13/design copy was retired 2026-07-06; amendments
-                         land in 0062 only]; DD-61 still arc13/design-only, odm add pending;
-                         Duncan owns odm)
-docs/guides/           ← the guides (doctested; 09-anti-patterns.md seeds arc05)
+```text
+planning/
+  backlog/                         permanent-ID discoveries and owed rows
+  project02-language-toolchain-alignment/
+    project-plan.md                 roadmap and planned-release metadata
+    ledger.md                      preserved project rows
+    README.md, status.html, BOOTSTRAP.md
+    arcNN-name/
+      arc-plan.md, ledger.md
+      artifacts/design/            arc-owned design records
+      sliceNN-name/
+        slice-plan.md, ledger.md, cc-prompt.md
+        closing-report.md, cdc-verification.md
+        artifacts/
 ```
 
-Numbering convention (from 2026-06-30): **`NN` = creation order, not dependency
-order.** Sequence is carried by each arc's Dependencies. Stop renumbering on
-inserts.
+Early DDs and their design index now belong to project01-mvp; 0.6-specific DDs
+belong to the corresponding project02 arcs. The [design index](../project01-mvp/artifacts/design-index.md)
+and project06's migration manifest map every former path. The single-tree ODM
+configuration is retired. Three previously standalone slices now sit inside
+arc15.1, arc16.1, and arc16.2 wrappers; their original slice records are retained.
+The decimal ordering is retrospective and does not change their dependencies.
 
 ## 5. Current state (2026-08-08, checked against `release/0.6.x` git)
 

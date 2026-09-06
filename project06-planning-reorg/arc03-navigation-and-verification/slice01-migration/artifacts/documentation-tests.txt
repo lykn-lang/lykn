@@ -1,0 +1,17 @@
+Command: make test-docs
+Worktree: .worktrees/0.6.x
+Result: exit 0
+
+docs/guides/17-template-and-i18n.md block 17 ... ok (0ms)
+running 1 test from ./target/lykn/test/doctest/examples__kernel__browser-macros_html.test.js
+examples/kernel/browser-macros.html block 1 ... ok (3ms)
+running 1 test from ./target/lykn/test/doctest/examples__kernel__browser_html.test.js
+examples/kernel/browser.html block 1 ... ok (2ms)
+running 1 test from ./target/lykn/test/doctest/examples__surface__browser-macros_html.test.js
+examples/surface/browser-macros.html block 1 ... ok (4ms)
+running 1 test from ./target/lykn/test/doctest/examples__surface__browser_html.test.js
+examples/surface/browser.html block 1 ... ok (2ms)
+
+ok | 482 passed | 0 failed (1s)
+
+[1;32m✓ Documentation tests passed[0m

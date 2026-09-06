@@ -1,0 +1,375 @@
+{
+  "checks": [
+    "631 source blobs, byte-identical move blobs, and tracked destinations checked",
+    "All original source tips remain ancestors; all branch planning paths are represented",
+    "Release ancestry, identical final source trees, planning removals and retained documentation paths checked",
+    "Six project metadata blocks and synchronized governance checked",
+    "Planning links checked; 60 pre-existing unresolved/future references retained separately",
+    "Nine modified and eleven untracked hardware files match recorded relocation hashes"
+  ],
+  "guide_files_with_navigation_edits": [],
+  "historical_link_findings": [
+    {
+      "document": "project01-mvp/arc01-js-foundations/arc-plan.md",
+      "line": 553,
+      "target": "app.lykn",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/arc01-js-foundations/artifacts/dev/0011-phase-2-core-forms-implementation-guide.md",
+      "line": 33,
+      "target": "[a_node,",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/arc01-js-foundations/artifacts/dev/0011-phase-2-core-forms-implementation-guide.md",
+      "line": 167,
+      "target": "child.values.slice(1",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/arc11-publishing-macro-resolution/artifacts/design/06-final/0048-import-macros-jsrnpm-cache-resolution-v-08-fix.md",
+      "line": 25,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/arc11-publishing-macro-resolution/artifacts/design/06-final/0048-import-macros-jsrnpm-cache-resolution-v-08-fix.md",
+      "line": 27,
+      "target": "../phase-2-plan.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/arc11-publishing-macro-resolution/artifacts/design/06-final/0048-import-macros-jsrnpm-cache-resolution-v-08-fix.md",
+      "line": 27,
+      "target": "../../docs/philosophy.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/arc11-publishing-macro-resolution/artifacts/design/06-final/0048-import-macros-jsrnpm-cache-resolution-v-08-fix.md",
+      "line": 57,
+      "target": "../../../workbench/milestones/M9-import-macros-cache-resolution-ledger.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/arc11-publishing-macro-resolution/artifacts/design/06-final/0048-import-macros-jsrnpm-cache-resolution-v-08-fix.md",
+      "line": 78,
+      "target": "../../workbench/bug-import-macros-jsr-resolution.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/artifacts/design-index.md",
+      "line": 79,
+      "target": "04-accepted/0065-dd-63-lykn-add-cross-project-dependency-ergonomics-draft.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/artifacts/research/0004-gap-analysis-lykn-0.0.1-vs.-modern-javascript.md",
+      "line": 4,
+      "target": "01-estree-inventory.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/artifacts/research/0004-gap-analysis-lykn-0.0.1-vs.-modern-javascript.md",
+      "line": 5,
+      "target": "02-astring-coverage.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project01-mvp/artifacts/research/0004-gap-analysis-lykn-0.0.1-vs.-modern-javascript.md",
+      "line": 6,
+      "target": "03-eslisp-macros.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md",
+      "line": 7,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md",
+      "line": 8,
+      "target": "../phase-2-plan.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc01-build-publish-toolchain/slice01-build-dir-and-publish-dirty-check/ledger.md",
+      "line": 8,
+      "target": "../../docs/philosophy.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 7,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 8,
+      "target": "../../docs/philosophy.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 117,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 120,
+      "target": "../old/dd-50.7-closing-cdc-review-2026-05-12.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 121,
+      "target": "../old/2026-05-12-DD-52-closing-report.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 122,
+      "target": "../2026-05-05-DD-49-iteration-2-closing-report.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 123,
+      "target": "../../docs/design/05-active/0050-position-aware-compilation-of-conditional-and-block-forms.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice01-cross-compiler-hygiene/ledger.md",
+      "line": 124,
+      "target": "../../packages/testing/helpers.js",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md",
+      "line": 7,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md",
+      "line": 8,
+      "target": "../../docs/philosophy.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md",
+      "line": 91,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md",
+      "line": 92,
+      "target": "../../assets/ai/SUBAGENT-DELEGATION-POLICY.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice02-dd58-kernel-prefix/ledger.md",
+      "line": 93,
+      "target": "../../assets/ai/AGENTS.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md",
+      "line": 7,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md",
+      "line": 8,
+      "target": "../../docs/philosophy.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md",
+      "line": 118,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md",
+      "line": 119,
+      "target": "../../assets/ai/SUBAGENT-DELEGATION-POLICY.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice03-dd58-namespace-dispatch/ledger.md",
+      "line": 120,
+      "target": "../../assets/ai/AGENTS.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md",
+      "line": 8,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md",
+      "line": 98,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md",
+      "line": 99,
+      "target": "../../assets/ai/SUBAGENT-DELEGATION-POLICY.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice04-dd58-test-migration/ledger.md",
+      "line": 100,
+      "target": "../../assets/ai/AGENTS.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md",
+      "line": 8,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md",
+      "line": 215,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md",
+      "line": 216,
+      "target": "../../assets/ai/SUBAGENT-DELEGATION-POLICY.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice05-dd58-kernel-corpus/ledger.md",
+      "line": 217,
+      "target": "../../assets/ai/AGENTS.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md",
+      "line": 7,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md",
+      "line": 148,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md",
+      "line": 149,
+      "target": "../../assets/ai/SUBAGENT-DELEGATION-POLICY.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice07-dd37-bundle-baseline/ledger.md",
+      "line": 150,
+      "target": "../../assets/ai/AGENTS.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md",
+      "line": 7,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md",
+      "line": 159,
+      "target": "../../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md",
+      "line": 160,
+      "target": "../../assets/ai/SUBAGENT-DELEGATION-POLICY.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice08-dd37-per-form-migration/ledger.md",
+      "line": 161,
+      "target": "../../assets/ai/AGENTS.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc03-compiler-coherence/slice09-cross-compiler-fast-follows/fast-follows/closest-kernel-form-refactor/cc-prompt.md",
+      "line": 16,
+      "target": "../assets/ai/LEDGER_DISCIPLINE.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc05-lykn-source-linter/arc-plan.md",
+      "line": 8,
+      "target": "./design/dd-59-lykn-source-linter-DRAFT.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc05-lykn-source-linter/slice01-lint-infra/closing-report.md",
+      "line": 160,
+      "target": "message`",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc10-compiler-completion/slice02-js-dd58-parity/closing-report.md",
+      "line": 39,
+      "target": "\u2026.lyk",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc10-compiler-completion/slice02-js-dd58-parity/slice-plan.md",
+      "line": 157,
+      "target": "\u2026.lyk",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project02-language-toolchain-alignment/arc14-comment-retention/arc-plan.md",
+      "line": 5,
+      "target": "./design/dd-62-comment-retention-DRAFT.md",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project03-language-evolution/slice03-threading-macros/inventory.md",
+      "line": 176,
+      "target": "s",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project03-language-evolution/slice03-threading-macros/inventory.md",
+      "line": 177,
+      "target": "s",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project03-language-evolution/slice03-threading-macros/inventory.md",
+      "line": 178,
+      "target": "s,",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project03-language-evolution/slice03-threading-macros/inventory.md",
+      "line": 179,
+      "target": "s",
+      "classification": "pre-existing unresolved/future link"
+    },
+    {
+      "document": "project03-language-evolution/slice03-threading-macros/inventory.md",
+      "line": 180,
+      "target": "s,",
+      "classification": "pre-existing unresolved/future link"
+    }
+  ],
+  "errors": [],
+  "evidence_strength": "attested when run by the migration doer; independent rerun required for framework closure"
+}

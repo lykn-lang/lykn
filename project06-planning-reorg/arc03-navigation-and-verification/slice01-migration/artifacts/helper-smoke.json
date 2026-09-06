@@ -1,0 +1,14 @@
+[
+  {
+    "script": "toplevel-walker.js",
+    "exit_code": 0,
+    "stdout": "scanned 2 files (0 parse failures): 1 findings \u2192 file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice01-treeshake-audit/evidence/corpus-scan.json\n",
+    "stderr": ""
+  },
+  {
+    "script": "shake-experiment.js",
+    "exit_code": 0,
+    "stdout": "esbuild 0.27.4\nwrote /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice01-treeshake-audit/evidence/bundle.js, bundle.min.js, metafile.json, analyze.txt\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "original_tips": {
+    "0.6.x": "ba48a24dfb144635ed13a8df24d1c01e168996c0",
+    "0.7.x": "1cd4f5a3bf200500581f7de4c36e496bba3450cf",
+    "0.8.x": "f40327c34b9ae6429da4998350815e11a37c48c2"
+  },
+  "final_tips": {
+    "0.6.x": "ae2613d4745a8cdfe0d5b8aed42adfcc70ecc61a",
+    "0.7.x": "3eac682057a7e42df67e00b1e3a4fb81a6710911",
+    "0.8.x": "fd66dd48da75d77af31a2ecba3d18991cea22052"
+  },
+  "backup_prefix": "backup/planning-reorg-20260906/",
+  "skipped_conflicting_replays": {
+    "0.7.x": {
+      "8e03623": "Only older planning updates, already retained through original ancestry and latest owning-branch copy."
+    },
+    "0.8.x": {
+      "4f6c5e5": "Obsolete CLAUDE.md body plus migrated threading records; canonical AGENTS.md and compatibility symlink retained.",
+      "f4e8b73": "Only earlier backlog/artifact-home planning records already preserved.",
+      "b2e564b": "Only older arc16 planning records already preserved."
+    }
+  },
+  "automatic_rebase_skips": "Git omitted patch-equivalent commits already present in the updated upstream branch.",
+  "push_status": "No remotes updated."
+}

@@ -1,11 +1,11 @@
 ---
 project: project06-planning-reorg
-status: active
+status: implemented-awaiting-operator-review
 planned-release: null
 release-note: Repository maintenance; no product release assigned.
 depends-on: []
 blocks: []
-related: [project01-mvp, project02-language-toolchain-alignment, project03-language-evolution, project04-c-lang]
+related: [project01-mvp, project02-language-toolchain-alignment, project03-language-evolution, project04-c-lang, project05-hardware]
 ---
 
 # Planning reorganization
@@ -31,9 +31,9 @@ the documents. No historical implementation or verification status is upgraded.
 
 | Arc | Capability | Depends on | Status |
 | --- | --- | --- | --- |
-| arc01-history-and-import | Auditable inventory, ancestry imports, and classification | — | active |
-| arc02-release-propagation | Planning removal propagated through release branches | arc01 | planned |
-| arc03-navigation-and-verification | Metadata, governance, links, and reproducible checks | arc02 | planned |
+| arc01-history-and-import | Auditable inventory, ancestry imports, and classification | — | delivered; classification review pending |
+| arc02-release-propagation | Planning removal propagated through release branches | arc01 | delivered; independently reproduced |
+| arc03-navigation-and-verification | Metadata, governance, links, and reproducible checks | arc02 | delivered; independently reproduced |
 
 ## Scope and evidence boundaries
 
@@ -44,7 +44,7 @@ inventoried, remains intact, and has no existing Git history to migrate.
 Its mixed release provenance is not silently treated as pre-0.5 material.
 
 The planning worktree began as an empty orphan branch. To satisfy preservation
-of original commit identities and path history, selective ancestry merges will
+of original commit identities and path history, selective ancestry merges
 connect original source tips while importing only planning paths. This is an
 explicit history-preservation exception to disconnected orphan ancestry; the
 checked-out planning tree contains no inherited implementation tree. Never
@@ -61,3 +61,25 @@ Doer evidence is attested; independent framework closure remains a separate gate
 
 - 2026-09-06 v1.0: Opened from the operator's eight-point migration request;
   backlog placement confirmed; operator corrected hardware to project05-hardware and this effort to project06-planning-reorg.
+
+- 2026-09-06 v1.1: Arc01 preserved 631 tracked files and original ancestry;
+  recorded 18 approximate MVP arcs, six arc-plan promotions, three decimal
+  wrappers, and six inherited divergent blobs. Corrected hardware/project
+  numbering followed the operator's explicit instruction.
+- 2026-09-06 v1.2: Arc02 propagated removals by rebase through all releases;
+  original source tips remain under backup refs and planning ancestry. Nine
+  modified hardware records and eleven untracked artifacts were relocated
+  without committing the user's work.
+- 2026-09-06 v1.3: Arc03 updated governance, READMEs, BOOTSTRAP, metadata,
+  links, ledger homes and research helper paths. Independent mechanical
+  verification passed; 482 documentation tests passed. Retained source guides
+  and ECMAScript data are byte-identical to original 0.6.
+
+## Delivery and remaining acceptance boundary
+
+Implementation is delivered locally. See closing-report.md and the arc03
+verification summary. Operator review of the approximate historical groupings
+is the remaining project acceptance decision; it does not block use of the
+new planning tree. No historical software project was newly declared closed.
+No pushes, force pushes, or main implementation merges were performed. Main
+received only the synchronized governance file, per its existing exception.
