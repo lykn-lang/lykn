@@ -73,12 +73,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The fixed DD-37 baseline commit must be available for calibration.
+          fetch-depth: 0
       - uses: denoland/setup-deno@v2
         with:
-          # Calibrated against DD-37's 27,630-byte baseline. CompressionStream
-          # output changes between Deno versions; see docs/bundle-size.md.
+          # Compare both revisions with the same tools; see docs/bundle-size.md.
           deno-version: v2.7.7
-      - run: BASELINE_GZIPPED=27630 make bundle-size
+      - run: make bundle-size-check
 
   publishing:
     name: "Publishing pipeline tests"
@@ -91,4 +93,3 @@ jobs:
           deno-version: v2.x
       - uses: Swatinem/rust-cache@v2
       - run: make test-publishing
-

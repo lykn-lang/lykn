@@ -577,3 +577,7 @@ publish-one:
 bundle-size:
 	@echo "$(BLUE)Measuring browser bundle size...$(RESET)"
 	@deno run -A --frozen --config project.json scripts/bundle-size.js
+
+.PHONY: bundle-size-check
+bundle-size-check:
+	@bash scripts/check-bundle-size.sh
