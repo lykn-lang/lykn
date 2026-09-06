@@ -1,3 +1,0 @@
-;; Entry point: imports a strict subset of app-lib's exports.
-(import "./app-lib.js" (used-func))
-(console:log (used-func 41))

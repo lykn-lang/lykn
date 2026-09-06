@@ -1,5 +1,0 @@
-;; Family: match — expression position at top level (hazard H1: IIFE) vs inside a func (control)
-(bind status 200)
-(bind label (match status (200 "ok") (404 "not found") (_ "unknown")))
-(func describe :args (:number s) :body (match s (200 "ok") (_ "other")))
-(export (names label describe))

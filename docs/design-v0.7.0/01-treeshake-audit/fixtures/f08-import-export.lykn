@@ -1,6 +1,0 @@
-;; Family: import/export — named import, bare (side-effect) import, re-export
-(import "./f02-func.js" (inc))
-(import "./f01-bind.js")
-(bind nine (inc 8))
-(export (names nine))
-(export "./f02-func.js" (names double))

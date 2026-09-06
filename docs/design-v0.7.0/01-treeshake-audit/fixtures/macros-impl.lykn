@@ -1,2 +1,0 @@
-;; Macro module for f09 (compile-time only; should leave no runtime trace)
-(export (macro twice (x) `(+ ,x ,x)))

@@ -1,6 +1,0 @@
-;; Family: threading — in a top-level initializer (hazard H5: nested calls) vs inside a func (control)
-(func inc :args (:number x) :body (+ x 1))
-(func double :args (:number x) :body (* x 2))
-(bind seeded (-> 5 inc double))
-(func pipeline :args (:number x) :body (-> x inc double))
-(export (names seeded pipeline))

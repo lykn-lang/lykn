@@ -1,4 +1,0 @@
-;; Family: func — pure function declarations only (expected fully shakeable)
-(func inc :args (:number x) :body (+ x 1))
-(func double :args (:number x) :body (* x 2))
-(export (names inc double))
