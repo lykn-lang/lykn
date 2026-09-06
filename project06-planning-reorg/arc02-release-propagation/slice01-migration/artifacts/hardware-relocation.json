@@ -1,0 +1,142 @@
+[
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/arc-plan.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/arc-plan.md",
+    "original_status": "modified",
+    "original_sha256": "2d3a3b184634574138d5d4639a37470db4ad8eae69fe66ed2f63d0d4683c225d",
+    "relocated_sha256": "2a893c0b12aa2930bae59cc891a508adf8905fbd1f6d5bab680e66ab543d076c"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/cdc-verification.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/cdc-verification.md",
+    "original_status": "modified",
+    "original_sha256": "edac34625badc3d72052c4b39d986160df1accfbe11c43dd24c7537dce3dad79",
+    "relocated_sha256": "f24f183ae8b7d3c292434aa3e087a5bdc263de034f29410e06be4b247f9f5328"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/closing-report.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/closing-report.md",
+    "original_status": "modified",
+    "original_sha256": "8bf8c433b35bac94039d84a11d4b3e2a1ab568f7630e225e580529cea44c8f05",
+    "relocated_sha256": "8bf8c433b35bac94039d84a11d4b3e2a1ab568f7630e225e580529cea44c8f05"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/ledger.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/ledger.md",
+    "original_status": "modified",
+    "original_sha256": "db2dc7154610a7c1f243f69a230e7589d8a492364e083ec617260cc3eee23661",
+    "relocated_sha256": "db2dc7154610a7c1f243f69a230e7589d8a492364e083ec617260cc3eee23661"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/slice-doc.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice01-procurement-and-bench-contract/slice-plan.md",
+    "original_status": "modified",
+    "original_sha256": "54bef8a8d78a0815e09b5e2c9cb456c2c9d68d53dbb385f2d22b6fc4bb178642",
+    "relocated_sha256": "54bef8a8d78a0815e09b5e2c9cb456c2c9d68d53dbb385f2d22b6fc4bb178642"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/README.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/README.md",
+    "original_status": "untracked",
+    "original_sha256": "7d9681cf6321586d8eabce7be8241ef6e825a49b59eaaf05f6d4938e034d64a5",
+    "relocated_sha256": "7d9681cf6321586d8eabce7be8241ef6e825a49b59eaaf05f6d4938e034d64a5"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/captures/README.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/captures/README.md",
+    "original_status": "untracked",
+    "original_sha256": "a8c2bedb553106746a0a6bfb55d4ca08bab72070ff4a8f2008a6db01e5bf1049",
+    "relocated_sha256": "a8c2bedb553106746a0a6bfb55d4ca08bab72070ff4a8f2008a6db01e5bf1049"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/logs/README.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/logs/README.md",
+    "original_status": "untracked",
+    "original_sha256": "50edcd09391b52c41e91ddcbc129af56bc3d76359f73e0f756e8a418ea6e8f1f",
+    "relocated_sha256": "50edcd09391b52c41e91ddcbc129af56bc3d76359f73e0f756e8a418ea6e8f1f"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/sketches/README.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/sketches/README.md",
+    "original_status": "untracked",
+    "original_sha256": "df9ee3c196f932f74fa9ce9a4d1ec07d0d672a220cac5343f9f2026a11f7b529",
+    "relocated_sha256": "df9ee3c196f932f74fa9ce9a4d1ec07d0d672a220cac5343f9f2026a11f7b529"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/001-buspirate-status.txt",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/001-buspirate-status.txt",
+    "original_status": "untracked",
+    "original_sha256": "0604991cb3e18711dd00f3b100c0618a52df8a5e9fa2b714c8f6ec8801b8eca1",
+    "relocated_sha256": "0604991cb3e18711dd00f3b100c0618a52df8a5e9fa2b714c8f6ec8801b8eca1"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/002-pre-power-checklist.txt",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/002-pre-power-checklist.txt",
+    "original_status": "untracked",
+    "original_sha256": "ba668352d262d6266ec35377be8ebf2badb729b759aa1f19476649e71b0e1c2d",
+    "relocated_sha256": "ba668352d262d6266ec35377be8ebf2badb729b759aa1f19476649e71b0e1c2d"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/003-first-power.txt",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/003-first-power.txt",
+    "original_status": "untracked",
+    "original_sha256": "a0ed21aaeefb1af7b619822ed90c38ab3bb5361a44c57236d27a4a02095117f0",
+    "relocated_sha256": "a0ed21aaeefb1af7b619822ed90c38ab3bb5361a44c57236d27a4a02095117f0"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/004-who-am-i-read.txt",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/004-who-am-i-read.txt",
+    "original_status": "untracked",
+    "original_sha256": "69a0115ce0462202be270f01f79c06a82d14a0ef572793765cd5668aa1c5df09",
+    "relocated_sha256": "69a0115ce0462202be270f01f79c06a82d14a0ef572793765cd5668aa1c5df09"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/005-config-write-readback.txt",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/005-config-write-readback.txt",
+    "original_status": "untracked",
+    "original_sha256": "ea6daaffb10bdd3c5b38c47403dbe13ac57baa07aae0b2a7034b868ec87c1850",
+    "relocated_sha256": "ea6daaffb10bdd3c5b38c47403dbe13ac57baa07aae0b2a7034b868ec87c1850"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/006-known-bad-case.txt",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/006-known-bad-case.txt",
+    "original_status": "untracked",
+    "original_sha256": "b4c94fdf1019d8e372b45d422a986806226c81b35c1c4054b9e99491c8ac25c8",
+    "relocated_sha256": "b4c94fdf1019d8e372b45d422a986806226c81b35c1c4054b9e99491c8ac25c8"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/README.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/artifacts/transcripts/README.md",
+    "original_status": "untracked",
+    "original_sha256": "eb0f2878d0d446bc2c7c2f40808414ff6e6a5791348109b577d4992ec7f476e8",
+    "relocated_sha256": "eb0f2878d0d446bc2c7c2f40808414ff6e6a5791348109b577d4992ec7f476e8"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/cc-prompt.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/cc-prompt.md",
+    "original_status": "modified",
+    "original_sha256": "432ed247cdc0e285fd3a04d2f975828983e3960b733691aa1da6dd3a497a43eb",
+    "relocated_sha256": "d13c508796d191996ddaa864ce81fb90f1853404b163a2d71ea53f7c05e04934"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/ledger.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/ledger.md",
+    "original_status": "modified",
+    "original_sha256": "529f436897de426907cbdef808cd8755b0a3585355735d174efbec2abac28abd",
+    "relocated_sha256": "529f436897de426907cbdef808cd8755b0a3585355735d174efbec2abac28abd"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/arc01-laptop-sensor-contract/slice02-manual-register-bringup/slice-doc.md",
+    "destination": "project05-hardware/arc01-laptop-sensor-contract/slice02-manual-register-bringup/slice-plan.md",
+    "original_status": "modified",
+    "original_sha256": "ef931f66d90dec171db15b91a0fbc59cffd56924f6f2270900738d526959fab5",
+    "relocated_sha256": "ef931f66d90dec171db15b91a0fbc59cffd56924f6f2270900738d526959fab5"
+  },
+  {
+    "original_path": "docs/hardware-v0.8.0/project-plan.md",
+    "destination": "project05-hardware/project-plan.md",
+    "original_status": "modified",
+    "original_sha256": "fe374385f049a980f7bda7988589a350cc6ad804de58a57670f7d0641b5a8cce",
+    "relocated_sha256": "be1cbee072ea7b0af051ca14a26a5f1cc1950078eaca423a4209a247ee921b1a"
+  }
+]

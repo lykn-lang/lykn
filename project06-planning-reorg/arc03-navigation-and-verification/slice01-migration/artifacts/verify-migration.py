@@ -60,7 +60,8 @@ for x in MANIFEST:
 checks.append(f'{len(MANIFEST)} source blobs, byte-identical move blobs, and tracked destinations checked')
 for v,tip in TIPS.items():
     check(subprocess.run(['git','-C',str(PLAN),'merge-base','--is-ancestor',tip,'HEAD']).returncode==0,'Lost source ancestry '+v)
-    selected=[f for f in paths(tip) if f.startswith(('docs/design/','docs/dev/','docs/backlog/','docs/design-v','docs/hardware-v')) and f in git('ls-tree','-r','--name-only',tip).decode().splitlines()]
+    original_files=set(git('ls-tree','-r','--name-only',tip).decode().splitlines())
+    selected=[f for f in original_files if f.startswith(('docs/design/','docs/dev/','docs/backlog/','docs/design-v','docs/hardware-v'))]
     migrated={x['source_path'] for x in MANIFEST}
     check(set(selected)<=migrated,'Unmapped source planning files '+v)
 checks.append('All original source tips remain ancestors; all branch planning paths are represented')
@@ -112,6 +113,15 @@ for doc in tracked:
         if raw in old_broken:historical.append({'document':doc,'line':line,'target':raw,'classification':'pre-existing unresolved/future link'})
         else:errors.append(f'New unresolved link {doc}:{line}: {raw}')
 checks.append(f'Planning links checked; {len(historical)} pre-existing unresolved/future references retained separately')
+if '--local-hardware' in sys.argv:
+    relocation=PLAN/'project06-planning-reorg/arc02-release-propagation/slice01-migration/artifacts/hardware-relocation.json'
+    rows=json.loads(relocation.read_text())
+    for row in rows:
+        path=PLAN/row['destination']
+        check(path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest()==row['relocated_sha256'],'Local hardware content drift: '+row['destination'])
+    check(sum(row['original_status']=='modified' for row in rows)==9,'Expected nine relocated modifications')
+    check(sum(row['original_status']=='untracked' for row in rows)==11,'Expected eleven relocated untracked files')
+    checks.append('Nine modified and eleven untracked hardware files match recorded relocation hashes')
 result={'checks':checks,'guide_files_with_navigation_edits':guide_changes,'historical_link_findings':historical,'errors':errors,'evidence_strength':'attested when run by the migration doer; independent rerun required for framework closure'}
 if '--json' in sys.argv:print(json.dumps(result,indent=2))
 else:
