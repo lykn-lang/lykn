@@ -527,3 +527,14 @@ Apache-2.0
 [docs-badge]: https://img.shields.io/badge/rust-documentation-blue.svg
 [tag-badge]: https://img.shields.io/github/tag/lykn-lang/lykn.svg
 [tag]: https://github.com/lykn-lang/lykn/tags
+
+## Planning and design history
+
+User and developer documentation lives in docs; project planning lives on the
+dedicated [planning branch](https://github.com/lykn-lang/lykn/blob/planning/README.md).
+Locally, open `.worktrees/planning/README.md`. That index links the MVP history,
+language-toolchain alignment, language evolution, C-target research, hardware,
+and planning-reorganization projects, plus the cross-project discovery backlog.
+Each project plan records its intended release in YAML metadata; directory
+names identify work, not release commitments. See AGENTS.md for write locations.
+

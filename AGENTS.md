@@ -11,156 +11,108 @@ lykn is a lightweight Lisp that compiles S-expressions to clean, readable JavaSc
 
 Zero runtime dependencies in compiled output.
 
-## ⚠ Which branch do I write to? (read before creating or editing any file)
+## Branch and worktree ownership
 
-Confirmed with the operator **2026-07-25**, after repeated write-location
-conflicts across sessions.
+Confirmed by the operator 2026-09-06 during the planning reorganization.
+Inspect `git worktree list` and the target status before writing. Use the
+existing worktree; do not fall back to main when it is missing.
 
-**Do not write to `main`.** `main` is an integration branch: it changes by
-**rebase and merge only**. No session authors files there — not planning
-artifacts, not source, not docs, not scratch.
+| Work | Home |
+| --- | --- |
+| Project, arc, slice plans; ledgers; prompts; reviews; design records; research evidence | Branch `planning`, worktree `.worktrees/planning` |
+| Source and user/developer docs for 0.6.x | Branch `release/0.6.x`, worktree `.worktrees/0.6.x` |
+| Source and user/developer docs for 0.7.x | Branch `release/0.7.x`, worktree `.worktrees/0.7.x` |
+| Source and user/developer docs for 0.8.x | Branch `release/0.8.x`, worktree `.worktrees/0.8.x` |
+| main | Integration by rebase/merge; no authored work except synchronized AGENTS.md governance |
 
-Work is written in the **worktree for the release it belongs to**:
+`docs/` is for user-facing and developer-facing documentation. Planning is
+never created there. The ECMAScript 2025 reference corpus and Lykn guides
+remain in `docs/ecmascript-2025/` and `docs/guides/` on source branches.
 
-| Work | Write it here |
-|---|---|
-| Anything scoped to **0.6.0** — `docs/design-v0.6.0/`, arc/slice artifacts, 0.6.0 source | **`.worktrees/0.6.x/`** (branch `release/0.6.x`) |
-| Anything scoped to **0.7.0+** — `docs/design-v0.7.0/`, `BACKLOG.md`, 0.7.0 research units | **`.worktrees/0.7.x/`** (branch `release/0.7.x`) |
-| **Cross-cutting** — `docs/backlog/` (Discovery Register, owed-row queues), `docs/design/` (odm-managed DDs) | **`.worktrees/0.6.x/`** — the active release owns them |
-| `main` | **nothing** — it receives the above by merge |
+The planning worktree was initialized as an orphan. A deliberate migration
+exception connects original source commits through selective ancestry imports
+to preserve exact Git history. Its current tree contains planning only.
+**Never merge planning into source.** Propagate source changes through the
+release chain 0.6.x → 0.7.x → 0.8.x. Preserve local edits and inspect divergence
+before rebasing. Do not push rewritten branches without operator authorization.
 
-**Cross-cutting ownership moves with the active release.** While 0.6.0 is the
-release in flight, the register and the DDs are authored in `.worktrees/0.6.x/`
-and reach 0.7.x and `main` by merge. When 0.6.0 ships, ownership moves to the
-next active release branch. Update this table when it does.
+## Planning and project management
 
-### Why this rule exists
+Start at the [planning index](https://github.com/lykn-lang/lykn/blob/planning/README.md).
+Canonical homes under the planning root:
 
-Three distinct failures in a single day, all the same shape — *the file was
-written somewhere the reader could not reach*:
+| Project | Purpose | Original planned release |
+| --- | --- | --- |
+| project01-mvp | Retrospective early language/compiler/tooling history | 0.5.0 |
+| project02-language-toolchain-alignment | Structural compiler and toolchain alignment | 0.6.0 |
+| project03-language-evolution | Post-alignment research and candidates | 0.7.0 |
+| project04-c-lang | C target research | 0.8.0 |
+| project05-hardware | Hardware research and bench contracts | 0.8.0 |
+| project06-planning-reorg | This history-preserving migration | none assigned |
 
-- `docs/design-v0.7.0/` exists **only** on `release/0.7.x`; on `main` the path
-  held two empty untracked directories, so an `ls` implied a tree that
-  `git ls-files` said was not there (`D-2607-L7BX`).
-- `docs/ecmascript-2025/` (the ES2025 corpus) was committed to **`main` only**,
-  so a research unit on `release/0.7.x` could not cite it with a path that
-  resolves on its own branch — which the rule below requires and `make check`
-  enforces.
-- The Discovery Register sat untracked while committed documents cited it —
-  the incident that produced the routing rule in the first place.
+Project names do not encode release commitments. Each project-plan.md begins
+with YAML containing `project`, `status`, `planned-release`, `depends-on`,
+`blocks`, and `related`. An unassigned target is explicit null. A planned
+release is intent, not a claim that all candidates are approved to ship.
 
-One branch per concern removes the guesswork that produced all three.
+Use project-plan.md / arc-plan.md / slice-plan.md, with a dedicated ledger.md
+at each scale. Slice prompts are cc-prompt.md; close reports and independent
+verification are recorded when performed. Durable slice-produced artifacts
+default to the owning slice's artifacts directory. This is the confirmed
+collaboration-framework layout; do not reopen layout confirmation for these
+projects. Read the installed framework's project-management guides/README.md
+before opening or closing a unit.
 
-### Consequences worth knowing before you start
+Historical exceptions are documented in project06's migration records:
+project01 uses approximate arcs without fabricated slices; three project02
+standalone slices have decimal arc wrappers at the operator's request; older
+embedded ledgers and historical acceptance claims retain their provenance.
+The three project03 research units retain collapsed standalone slices.
 
-- **Confirm the worktree before the first write, not after.** `git worktree list`
-  and `ls -d .worktrees/*/`. If the worktree you need is missing, say so and
-  stop — do **not** fall back to `main`.
-  *(Amended 2026-07-25: this previously read "missing or `prunable`". Through the
-  Cowork device bridge `git worktree list` reports **every** worktree as
-  `prunable` — a mount-path artifact, not a real state — so the original wording
-  fired on a false positive in every remote session and would have halted them
-  all. `prunable` is not a stop condition; **missing** is.)*
-- **From the Cowork bridge, git does not run inside a worktree — and that is
-  deliberate.** `git -C .worktrees/0.6.x …` fails with
-  `not a git repository: /Users/oubiwann/lab/lykn/lang/.git/worktrees/0.6.x`,
-  because the worktree records an absolute host gitdir the sandbox does not
-  share. **Do not work around it.** It is a hard block on the operations that
-  strand `.git/index.lock` files and leave the operator unable to work locally
-  (see the git/device gotcha below). **Commits are the operator's and CC's, not
-  a remote session's.** The working protocol from Cowork:
-  - **write** into `.worktrees/<branch>/…` with ordinary file operations;
-  - **verify** with `git show <branch>:<path>` from the primary mount, which
-    reads every branch without touching an index.
-- **Commit footer convention (operator override, 2026-08-07):** every future
-  assistant-authored commit message includes these trailers:
-  `Co-authored-by: Codex <noreply@openai.com>` and
-  `Co-authored-by: Billo AI <ai-engineering@billo.systems>`.
-- **A path cited in a tracked document must resolve on that document's own
-  branch.** This is the rule that makes branch choice load-bearing rather than
-  cosmetic; see the artifact-homes section below. Enforced by
-  `make check-cited-paths`, wired into `make check`.
-- **The gate reads RED on a dirty tree, and that is correct — do not "fix" it.**
-  *Operator decision 2026-07-25 (`D-2607-Q8LM`).* The gate resolves against
-  `git ls-tree HEAD`, so a file that exists in your working tree but is not yet
-  committed **fails** — deliberately, because an uncommitted-but-present file is
-  exactly the original Discovery Register bug. Combined with "commits are the
-  operator's and CC's," this means **any session that writes a document citing a
-  sibling it also just wrote leaves the gate red until the operator commits.**
-  That is the two rules composing, not a false positive: those citations
-  genuinely do not resolve for anyone else yet. **The contract is green at
-  `HEAD` after commit, not green continuously.** Never weaken the gate, never
-  drop a citation, and never avoid citing a new sibling to keep it quiet — that
-  last one is spec-softening, making the documents worse to keep a check happy.
-- **Documents that discuss dangling paths cite them in fenced blocks, not inline
-  code.** Convention, not mechanism: `Makefile:308` records the house position
-  against inline suppression, and a gate landing later does not reverse it.
-- **`AGENTS.md` itself is the one governance file kept byte-identical on every
-  branch**, so that a session starting anywhere reads the same rules. It is
-  therefore the sole thing written to `main` directly, and only when the rules
-  change. *(This section was itself bootstrapped that way on 2026-07-25 — with
-  the operator's explicit approval, since a "don't write to `main`" rule that is
-  absent from `main` cannot fire where it is most needed.)*
+## Discovery, design, and citation homes
 
-## Planning & project management
+- The permanent-ID Discovery Register and owed-row queues live in root
+  `backlog/` on planning, independently of any one project's release.
+- Project-specific candidate lists stay with their project. A discovery is
+  not routed until its destination exists in Git and contains the finding.
+- DDs live in the owning project or arc's artifacts/design directory; original
+  names, ODM state metadata, and historical versions remain evidence. The
+  old single-tree ODM configuration is archived in project06; do not use it
+  to recreate planning under source docs.
+- Scratch stays in ignored workbench. The existing mixed-era workbench/old
+  archive is inventoried by project06 and remains intact; no historical
+  completion is inferred from that archive's name.
+- The Book content still lives in the separate book repository. Its owning
+  plan remains project02's arc16-book-0.6.0-edition on planning.
 
-Planning artifacts for 0.6.0 live under **`docs/design-v0.6.0/`** in the
-canonical project/arc/slice layout, per
-`collaboration-framework/docs/PROJECT-MANAGEMENT.md` (v2.1):
-`project-plan.md` (arc roadmap + project ledger), then `arcNN-<slug>/arc-plan.md`
-and `arcNN-<slug>/sliceNN-<slug>/{slice-doc,ledger,cc-prompt,closing-report,cdc-verification}.md`.
-Start at `docs/design-v0.6.0/README.md`.
+Source-document citations must resolve on their own source branch, except
+explicit branch-qualified planning links or immutable historical commit links.
+Planning links use relative paths within planning; source references name
+their source branch/commit. Migrated historical root-relative command snippets
+retain the source context in project06's manifest. A cross-branch reference
+must be explicit; an uncommitted sibling is never sufficient evidence.
 
-This layout was confirmed with the operator on 2026-06-28 (canonical layout;
-lang-repo-only scope). It was **reconstructed retroactively** from the prior
-milestone (M-series) tracking that lived in the gitignored `workbench/` tree;
-`workbench/` is retained until verified, then deletable. The 0.1.0–0.5.x
-history remains in `workbench/old/` (a future `docs/design-v0.5.x/` retro pass).
-Design decisions (DDs) remain odm-managed in `docs/design/`; the v0.6.0 tree
-references them.
+`make check-cited-paths` remains the source-document gate and resolves at HEAD.
+Project06's migration verifier additionally checks moved-path coverage, blobs,
+ancestry, retained source docs, metadata, and planning navigation. The frozen
+historical citation census is not an allowlist to expand for migration errors.
 
-Post-0.6.0 planning lives under **`docs/design-v0.7.0/`**, same canonical
-layout (confirmed with the operator 2026-07-07). `project-plan.md` there is
-deliberately deferred until the 0.7.0 project definition; current units
-(both single slice, arc wrapper collapsed) are `01-treeshake-audit/`
-(compiled-output tree-shakeability) and `02-packaging-strategy/`
-(Homebrew custom-tap + Debian self-hosted-APT-repo packaging strategy,
-opened 2026-07-07).
+## Governance and Git mechanics
 
-### Where non-planning artifacts live (confirmed with the operator 2026-07-25)
+AGENTS.md is kept byte-identical on main, the three release branches, and
+planning. CLAUDE.md remains a compatibility symlink to AGENTS.md.
+Assistant-authored commits include both trailers:
 
-Per `collaboration-framework/docs/PROJECT-MANAGEMENT.md` Part VI. These are
-categories that document does **not** cover, so they were confirmed explicitly
-rather than defaulted:
+```text
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+```
 
-| Artifact | Home |
-|---|---|
-| **Discovery Register** — findings with permanent `D-YYMM-XXXX` IDs | **`docs/backlog/discoveries.md`**, protocol + routing rule in `docs/backlog/README.md` |
-| Owed-row queues (e.g. rows owed to the 0.7.x backlog) | `docs/backlog/` |
-| Design decisions (DDs) | `docs/design/` (odm-managed) |
-| Planning (project / arc / slice) | `docs/design-vX.Y.Z/` |
-| Scratch, transcripts, dead ends | `workbench/` — **gitignored** |
-
-**Two rules, and they are the point of this section:**
-
-1. **`workbench/` is scratch. Nothing durable and nothing cited by another
-   document may live there.** It is gitignored wholesale (`.gitignore:10`), so
-   an artifact placed there is invisible to git and lost with the machine. If
-   something is worth referencing, give it a tracked home *first*.
-2. **A path cited in a tracked document must resolve in git.** `make check`
-   enforces this. It is not a style preference: `docs/backlog/discoveries.md`
-   was cited by **five committed documents** for a day while the file itself
-   sat untracked in `workbench/`, and a *committed* spec cited two of its IDs.
-
-**Routing rule** (register `D-2607-8HTN`): *a row is not `routed` until the
-destination file exists in git and contains it.* Naming an owner that might
-someday exist — "the Book project" — is how the Lykn Book went cold for three
-months. Name a home that can be opened.
-
-**arc16 (the book) is split by design:** its plan-of-record is here, at
-`docs/design-v0.6.0/arc16-book-0.6.0-edition/`; the content lives in
-`~/lab/cnbb/lykn`, whose `AGENTS.md` points back here. The plan lives with the
-project that gates on it.
+The old Cowork device bridge restriction still applies when using that bridge:
+its worktree gitdir mount is intentionally unavailable; do not work around it
+or manipulate its index. Use ordinary file writes in the correct worktree and
+read-only git show from the primary mount. A native local Codex session with
+working Git access is not that bridge.
 
 ## Writing Code
 
