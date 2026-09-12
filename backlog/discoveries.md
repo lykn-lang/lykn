@@ -981,6 +981,19 @@ compile` succeeds and emits a return-checked closure. Current guides also teach
 Source fix: release/0.6.x commit `8c66469`; JS now accepts direct `fn`/`lambda`
 returns under `:returns :function`, with cross-compiler regression coverage.
 
+
+### `D-2609-FOVL` — JS API doctest path does not compile-reject overlapping `func` clauses
+The slice10 book pass rechecked `src/part2/chapter8/4-overlap.md` after marking
+intentional overlap examples as `lisp,compile-fail`. The doctest-generated JS
+API path did not throw at compile time; under the release config,
+`packages/lang/mod.js` emits two compatible clause checks followed by a
+fall-through `TypeError`. The CLI compile path using
+`/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn compile` rejects the
+same examples with `clauses 0 and 1 overlap (same arity 1, compatible types)`.
+The book chapter now skips those examples with an explicit note rather than
+normalizing the defect. `probe` . High . `bug` . **Status:** `routed` ->
+`project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice11-js-overlap-compile-parity/`.
+
 ---
 
 ## Closed
