@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>arc16 Book 0.6.0 Status</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #0e1116;
+    --panel: #171b22;
+    --border: #2a303b;
+    --ink: #e6e9ef;
+    --muted: #a3adbb;
+    --accent: #4a9eff;
+    --done: #3fb950;
+    --open: #d29922;
+    --future: #8a929e;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --border: #e2e5ea;
+      --ink: #1a1f27;
+      --muted: #525a66;
+      --future: #6b7480;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); padding: 32px 20px 80px; }
+  main { max-width: 900px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 26px; font-weight: 650; }
+  .sub { color: var(--muted); margin: 0 0 22px; }
+  .stack { display: grid; gap: 10px; }
+  .row { border: 1px solid var(--border); background: var(--panel); border-radius: 8px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 12px; }
+  .status { font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
+  .closed-cdc-verified { color: var(--done); }
+  .open { color: var(--open); }
+  .provisional { color: var(--future); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<main>
+  <h1>arc16 · book-0.6.0-edition</h1>
+  <p class="sub">Open. slice07 current-book-drift-refresh is active before chapter rewrite slices.</p>
+  <p><a href="../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md">arc plan</a> · <a href="status.json">status data</a> · <a href="../status.html">project status</a></p>
+  <section class="stack">
+    <div class="row"><span>slice01 · pre-book-decision-gate</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
+    <div class="row"><span>slice02 · dogfood-implementation-runway</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
+    <div class="row"><span>slice03 · cli-scaffold-package-runway</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
+    <div class="row"><span>slice04 · language-surface-runway</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
+    <div class="row"><span>slice05 · book-instruction-bootstrap</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
+    <div class="row"><span>slice06 · book-fence-reachability</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
+    <div class="row"><span>slice07 · current-book-drift-refresh</span><span class="status open">open</span></div>
+    <div class="row"><span>slice08 · toolchain-and-project-structure-chapters</span><span class="status provisional">provisional</span></div>
+    <div class="row"><span>slice09 · language-surface-chapters</span><span class="status provisional">provisional</span></div>
+    <div class="row"><span>slice10 · edition-close-and-release-gate</span><span class="status provisional">provisional</span></div>
+  </section>
+</main>
+</body>
+</html>

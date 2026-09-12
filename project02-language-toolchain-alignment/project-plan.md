@@ -127,7 +127,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
 | **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded → 0.7.0** (2026-07-21; **release boundary decided 0.7.0**, operator; not slice-planned — post-0.6.0 capability) |
-| **arc16 · book-0.6.0-edition** | The Lykn Book's 0.6.0 edition drafted to completion — the full-surface review that catches language and DevX defects **before** the release, not in point releases after it | arc01–08, arc10–13, arc15 (describes shipped behaviour); pairs with arc07 (guides) | **Open — slice06 book-fence reachability closed/CDC-verified; slice07 next.** The confirmation-protocol decision (PROJECT-MANAGEMENT Part VI) was taken with the operator on 2026-07-25: **split by design** — the *plan* lives here at [`arc16-book-0.6.0-edition/`](arc16-book-0.6.0-edition) because this project's arc09 gates on it; the *content* stays in `~/lab/cnbb/lykn`, whose `AGENTS.md` points back here (as does `~/lab/cnbb/lykn-writers-guide`'s). The tracked design material lives under `arc16-book-0.6.0-edition/design/`. The CLI/scaffold/package runway closed `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`; [`arc16-book-0.6.0-edition/slice04-language-surface-runway/`](arc16-book-0.6.0-edition/slice04-language-surface-runway) closed the implementation route for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`; [`arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md) record sibling instruction commits and verification; [`arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/cdc-verification.md) record the landed repeatable `--fence` gate, CDC-reproduced book counts, and the routed 27 failures. The book pass may surface more defects; new findings should be registered and routed as new slices or explicit deferrals, not hidden in prose. |
+| **arc16 · book-0.6.0-edition** | The Lykn Book's 0.6.0 edition drafted to completion — the full-surface review that catches language and DevX defects **before** the release, not in point releases after it | arc01–08, arc10–13, arc15 (describes shipped behaviour); pairs with arc07 (guides) | **Open — slice07 current-book-drift-refresh opened.** The confirmation-protocol decision (PROJECT-MANAGEMENT Part VI) was taken with the operator on 2026-07-25: **split by design** — the *plan* lives here at [`arc16-book-0.6.0-edition/`](arc16-book-0.6.0-edition) because this project's arc09 gates on it; the *content* stays in `~/lab/cnbb/lykn`, whose `AGENTS.md` points back here (as does `~/lab/cnbb/lykn-writers-guide`'s). The tracked design material lives under `arc16-book-0.6.0-edition/design/`. The CLI/scaffold/package runway closed `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`; [`arc16-book-0.6.0-edition/slice04-language-surface-runway/`](arc16-book-0.6.0-edition/slice04-language-surface-runway) closed the implementation route for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`; [`arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md) record sibling instruction commits and verification; [`arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/cdc-verification.md) record the landed repeatable `--fence` gate, CDC-reproduced book counts, and the routed 27 failures; [`arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/`](arc16-book-0.6.0-edition/slice07-current-book-drift-refresh) refreshes the live drift inventory before chapter work. The book pass may surface more defects; new findings should be registered and routed as new slices or explicit deferrals, not hidden in prose. |
 | **arc15 · surface-syntax-traps** | Surface shapes that compile clean but mean something else → compile error + fix-it + lint + guide fix; slice01 = reject method-on-expression `(<non-atom-head> :kw …)` (DD-64), thread instead | threading (shipping); arc05 (lint) | **Closed — gate GO 2026-08-08**. slice01 reject (`9ca9c7e`) + slice02 lint/check-parity (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **DEFERRED → 0.7.0** (Option C = fully-typed classification, `release/0.7.x` BACKLOG A6); slice04 sibling traps closed; slice05 nested `fn` parameter validation closed; arc ledger A-1…A-6 met. |
 
 ### Retrospective organizational arcs (2026-09-06)
@@ -177,7 +177,7 @@ Decimal identifiers are an operator-approved retrospective exception. Historical
 >   `774e9eb`, `a3055c9`, and `2df2130`; `make check-cited-paths` green at
 >   HEAD; frozen census 631 -> 601 accepted pairs.
 
-## 3. Current status (2026-08-20)
+## 3. Current status (2026-09-12)
 
 This is the live release-branch status, reconciled against `release/0.6.x` git
 history and the slice directories. Older dated snapshots remain below as
@@ -190,7 +190,7 @@ provenance, not as current instruction.
   `03-citation-repoint` are closed, P-21 is done, and the cited-path gate is
   green at HEAD.
 - **Open arcs:** arc16 (slice01-slice06 closed/CDC-verified; slice07
-  `current-book-drift-refresh` next).
+  `current-book-drift-refresh` open).
 - **Future:** arc09 release, gated by the open arc above. arc14
   comment-retention is seeded for 0.7.0, not 0.6.0.
 
@@ -275,6 +275,16 @@ See [ledger.md](ledger.md). Its historical row dispositions are unchanged.
 
 Project identity is now project02-language-toolchain-alignment; planned-release remains 0.6.0. Original commits and byte-identical move boundaries are recorded in project06. Three formerly standalone slices now have retrospective arc wrappers, per operator request: arc15.1 (macro diagnostics), arc16.1 (artifact homes), and arc16.2 (citation repoint). Their original slice records and verification claims are retained below the wrappers.
 
+
+### v1.70 - 2026-09-12 (arc16 slice07 opened, Expedited Mode)
+
+Opened arc16 slice07 `current-book-drift-refresh` in the planning worktree after
+the operator switched project02/arc16 to Expedited Mode. slice07 reruns the
+book fence gate against current `release/0.6.x`, book, and writers-guide heads,
+triages the visible book example failures, reconciles the historical drift
+inventory against live 0.6.0 truth, fixes or routes planning-path instruction
+drift from the 2026-09-06 planning migration, and recommends the next executable
+slice before chapter rewrite work proceeds. P-20 remains open.
 
 ### v1.69 - 2026-08-21 (arc16 slice06 CDC verified)
 

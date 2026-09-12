@@ -18,8 +18,9 @@ Current home: branch planning, project02-language-toolchain-alignment. Start wit
 
 - **[`project-plan.md`](project-plan.md)** — the arc roadmap, current status,
   and the project ledger (the 0.6.0 definition of done as checkable rows).
-- **[`status.html`](status.html)** — standalone dashboard (open in a browser);
-  edit its `DATA` object to update as items land.
+- **[`../status/project02-language-toolchain-alignment/status.html`](../status/project02-language-toolchain-alignment/status.html)** —
+  standalone dashboard (open in a browser); edit its `DATA` object to update as
+  items land.
 - **[`BOOTSTRAP.md`](BOOTSTRAP.md)** — onboarding for a fresh CDC session,
   including the **issues & learnings log** (the workflow-evolution record).
 
@@ -42,7 +43,7 @@ Current home: branch planning, project02-language-toolchain-alignment. Start wit
 | [arc12 · test-topology](arc12-test-topology/arc-plan.md) | Every test runs exactly once per `make check`; `make test-docs` tests docs (1m52s → 2.6s) | **Closed** — gated 2026-07-05; created, delivered, and gated same-day |
 | [arc14 · comment-retention](arc14-comment-retention/arc-plan.md) | Retain comments through the pipeline (reader → surface→kernel provenance → JS-emit strip/preserve); DD-62 | **Seeded → 0.7.0** — home for lint-suppression; **release boundary decided 0.7.0** (operator, 2026-07-21); not slice-planned |
 | [arc15 · surface-syntax-traps](arc15-surface-syntax-traps/arc-plan.md) | Compile-clean-but-wrong surface shapes become hard errors + lint + guide fixes | **Closed — gate GO 2026-08-08**; slices 01/02/04/05 closed; slice03 deferred to 0.7.0; arc ledger A-1…A-6 met |
-| [arc16 · book-0.6.0-edition](arc16-book-0.6.0-edition/arc-plan.md) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — slice06 `book-fence-reachability` closed/CDC-verified; slice07 `current-book-drift-refresh` next |
+| [arc16 · book-0.6.0-edition](arc16-book-0.6.0-edition/arc-plan.md) | Lykn Book 0.6.0 edition; full-surface review before release | **Open** — slice07 `current-book-drift-refresh` opened; book-fence failures are being refreshed and routed before chapter work |
 
 _Numbering is **creation order** (from 2026-06-30). Current release sequence: arc16, then arc09._
 

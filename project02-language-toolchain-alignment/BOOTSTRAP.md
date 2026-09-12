@@ -3,7 +3,8 @@
 > You are **CDC** (Cowork Claude): the planning / review / verification seat in
 > Duncan's collaboration framework. This doc bootstraps you into the current
 > state of the lykn 0.6.0 effort so you can hit the ground running. Read it, then
-> read `project-plan.md`, `README.md`, and open `status.html`.
+> read `project-plan.md`, `README.md`, and open
+> `../status/project02-language-toolchain-alignment/status.html`.
 >
 > **The most valuable section here is [§7 Issues & learnings](#7-issues--learnings--the-workflow-evolution-log).** It is the record of what has gone wrong and what we changed because of it — the substance of our evolving workflow, and (per Duncan) of equal or greater value than the project assets themselves.
 
@@ -35,15 +36,21 @@ Source philosophy and language guides remain in the 0.6.x source worktree.
 - Preserve local edits. An implementation attestation is not independent
   reproduction. Historical release statuses below are snapshots.
 
-## 4. Current artifact homes (2026-09-06)
+## 4. Current artifact and status homes (2026-09-12)
 
 ```text
 planning/
   backlog/                         permanent-ID discoveries and owed rows
+  status/
+    status.html, status.json
+    project02-language-toolchain-alignment/
+      status.html, status.json
+      arcNN-name/
+        status.html, status.json
   project02-language-toolchain-alignment/
     project-plan.md                 roadmap and planned-release metadata
     ledger.md                      preserved project rows
-    README.md, status.html, BOOTSTRAP.md
+    README.md, BOOTSTRAP.md
     arcNN-name/
       arc-plan.md, ledger.md
       artifacts/design/            arc-owned design records
@@ -150,8 +157,8 @@ not append to `scripts/cited-paths-census.tsv`.
   diffs; run what the sandbox allows; mark runtime rows attested. Write
   `cdc-verification.md`. Then **bubble up** (did the slice deliver its arc piece;
   what it revealed; the silent-drop diff) and **update the plan docs**
-  (arc-plan, project-plan Version History, README, `status.html`, memory).
-  **`status.html` means the whole DATA object** — not just the
+  (arc-plan, project-plan Version History, README, the status dashboard, memory).
+  **The status dashboard means the whole DATA object** — not just the
   `updated`/`arcs`/`now` state fields but the *narrative* sections
   (metrics, accomplishments, issues log): they drift silently if only
   the state fields get touched (caught 2026-07-09 — doctest count and
@@ -167,7 +174,7 @@ not append to `scripts/cited-paths-census.tsv`.
 ## 7. Issues & learnings — the workflow-evolution log
 
 *This is the heart of the bootstrap. Each entry: what happened → root cause → the
-learning / what changed.* (Also rendered in `status.html`.)
+learning / what changed.* (Also rendered in the status dashboard.)
 
 1. **"Milestone-closed" ≠ "landed on the release branch."**
    The retroactive reconstruction trusted workbench closing-reports as done. A
@@ -324,7 +331,7 @@ learning / what changed.* (Also rendered in `status.html`.)
 
 ## 9. One-line cheat-sheet
 
-Read project-plan + README + status.html → **★ arc13 is CLOSED and fully
+Read project-plan + README + status dashboard → **★ arc13 is CLOSED and fully
 discharged** (gate GO 2026-07-09; A-6 closed 2026-07-21) → **arc05 slice03
 is SCOPED** (1→2 split, arc-plan v1.6; open set at
 `slice03-resolution-consumer/`): the linter on true lexical scoping

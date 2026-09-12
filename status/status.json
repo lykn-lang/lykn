@@ -1,0 +1,46 @@
+{
+  "updated": "2026-09-12",
+  "home": "planning/status",
+  "summary": "Planning status is consolidated here as a project collection. Project and arc plans remain in their owning project directories.",
+  "projects": [
+    {
+      "id": "project01-mvp",
+      "status": "historical-archive",
+      "plannedRelease": "0.5.0",
+      "plan": "../project01-mvp/project-plan.md"
+    },
+    {
+      "id": "project02-language-toolchain-alignment",
+      "status": "active",
+      "plannedRelease": "0.6.0",
+      "plan": "../project02-language-toolchain-alignment/project-plan.md",
+      "dashboard": "project02-language-toolchain-alignment/status.html",
+      "currentArc": "arc16-book-0.6.0-edition",
+      "nextArc": "arc09-release-0.6.0"
+    },
+    {
+      "id": "project03-language-evolution",
+      "status": "research",
+      "plannedRelease": "0.7.0",
+      "plan": "../project03-language-evolution/project-plan.md"
+    },
+    {
+      "id": "project04-c-lang",
+      "status": "research-seed",
+      "plannedRelease": "0.8.0",
+      "plan": "../project04-c-lang/project-plan.md"
+    },
+    {
+      "id": "project05-hardware",
+      "status": "active",
+      "plannedRelease": "0.8.0",
+      "plan": "../project05-hardware/project-plan.md"
+    },
+    {
+      "id": "project06-planning-reorg",
+      "status": "implemented-awaiting-operator-review",
+      "plannedRelease": null,
+      "plan": "../project06-planning-reorg/project-plan.md"
+    }
+  ]
+}

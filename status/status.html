@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lykn Planning Status</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #0e1116;
+    --panel: #171b22;
+    --border: #2a303b;
+    --ink: #e6e9ef;
+    --muted: #a3adbb;
+    --accent: #4a9eff;
+    --closed: #3fb950;
+    --open: #d29922;
+    --future: #8a929e;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --border: #e2e5ea;
+      --ink: #1a1f27;
+      --muted: #525a66;
+      --future: #6b7480;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); padding: 32px 20px 80px; }
+  main { max-width: 980px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 28px; font-weight: 650; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .card { border: 1px solid var(--border); background: var(--panel); border-radius: 8px; padding: 16px; }
+  .row { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+  .id { font-weight: 650; }
+  .status { font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--muted); }
+  .active { color: var(--open); }
+  .closed, .historical-archive { color: var(--closed); }
+  .research, .research-seed, .implemented-awaiting-operator-review { color: var(--future); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Lykn Planning Status</h1>
+  <p class="sub">Updated 2026-09-12. Status dashboards live here; planning artifacts stay with their projects.</p>
+  <section class="grid">
+    <article class="card">
+      <div class="row"><span class="id">project01-mvp</span><span class="status historical-archive">historical-archive</span></div>
+      <div class="links"><a href="../project01-mvp/project-plan.md">plan</a></div>
+    </article>
+    <article class="card">
+      <div class="row"><span class="id">project02-language-toolchain-alignment</span><span class="status active">active</span></div>
+      <p class="sub">0.6.0 release path: arc16 book, then arc09 release.</p>
+      <div class="links">
+        <a href="project02-language-toolchain-alignment/status.html">project status</a>
+        <a href="project02-language-toolchain-alignment/status.json">project data</a>
+        <a href="../project02-language-toolchain-alignment/project-plan.md">plan</a>
+      </div>
+    </article>
+    <article class="card">
+      <div class="row"><span class="id">project03-language-evolution</span><span class="status research">research</span></div>
+      <div class="links"><a href="../project03-language-evolution/project-plan.md">plan</a></div>
+    </article>
+    <article class="card">
+      <div class="row"><span class="id">project04-c-lang</span><span class="status research-seed">research-seed</span></div>
+      <div class="links"><a href="../project04-c-lang/project-plan.md">plan</a></div>
+    </article>
+    <article class="card">
+      <div class="row"><span class="id">project05-hardware</span><span class="status active">active</span></div>
+      <div class="links"><a href="../project05-hardware/project-plan.md">plan</a></div>
+    </article>
+    <article class="card">
+      <div class="row"><span class="id">project06-planning-reorg</span><span class="status implemented-awaiting-operator-review">implemented-awaiting-operator-review</span></div>
+      <div class="links"><a href="../project06-planning-reorg/project-plan.md">plan</a></div>
+    </article>
+  </section>
+</main>
+</body>
+</html>

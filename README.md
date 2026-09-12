@@ -9,6 +9,7 @@ Planning authority lives on branch `planning` in `.worktrees/planning`. Source d
 - [project05-hardware](project05-hardware/project-plan.md)
 - [project06-planning-reorg](project06-planning-reorg/project-plan.md)
 
+- [Planning status dashboards](status/status.html)
 - [Cross-project backlog](backlog/README.md)
 - [Migration provenance](project06-planning-reorg/arc01-history-and-import/slice01-migration/artifacts/migration-manifest.json)
 
