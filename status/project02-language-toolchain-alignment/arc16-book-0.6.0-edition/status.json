@@ -4,8 +4,8 @@
   "arc": "arc16-book-0.6.0-edition",
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
-  "currentSlice": "slice09-toolchain-and-project-structure-chapters",
-  "summary": "slice08 is closed/CDC-verified with JS fn/lambda return parity fixed; slice09 is open for toolchain/project-structure chapter work.",
+  "currentSlice": "slice10-language-surface-chapters",
+  "summary": "slice09 is CC-closed with the toolchain/project-structure chapter pass in book commit 03b3818; slice10 is open for language-surface chapters.",
   "slices": [
     {
       "id": "slice01-pre-book-decision-gate",
@@ -41,16 +41,16 @@
     },
     {
       "id": "slice09-toolchain-and-project-structure-chapters",
-      "status": "open"
+      "status": "cc-closed-cdc-pending"
     },
     {
       "id": "slice10-language-surface-chapters",
-      "status": "provisional"
+      "status": "open"
     },
     {
       "id": "slice11-edition-close-and-release-gate",
       "status": "provisional"
     }
   ],
-  "next": "Run slice09 toolchain/project-structure chapters."
+  "next": "Run slice10 language-surface chapters."
 }

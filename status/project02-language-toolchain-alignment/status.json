@@ -11,9 +11,9 @@
   ],
   "current": {
     "arc": "arc16-book-0.6.0-edition",
-    "slice": "slice09-toolchain-and-project-structure-chapters",
+    "slice": "slice10-language-surface-chapters",
     "status": "open",
-    "summary": "slice08 is closed/CDC-verified with D-2609-FNRT fixed; slice09 is open for toolchain/project-structure chapter work."
+    "summary": "slice09 is CC-closed with toolchain/project-structure book updates in commit 03b3818; slice10 is open for language-surface chapter work."
   },
   "arcs": [
     {

@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-09-12 (arc16 slice08 CDC-verified; slice09 active.)",
+  updated: "2026-09-12 (arc16 slice09 CC-closed; slice10 active.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -184,8 +184,8 @@ const DATA = {
       cap:"Closed 2026-08-08: surface forms that compile clean but mean something the author did not write now become hard errors + lint + guide fixes. Method-on-expression rejects with a threading fix-it; sibling traps are closed; nested Rust fn parameter validation matches JS. slice03 hardening is deferred to 0.7.0.",
       slices:[{n:"reject-method-on-expr",s:"closed"},{n:"lint-rule+check-parity",s:"closed"},{n:"type-safe hardening (deferred 0.7)",s:"open"},{n:"sibling-traps",s:"closed"},{n:"nested-fn-param-validation",s:"closed"}] },
     { id:"arc16", name:"book-0.6.0-edition", status:"open",
-      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice08 is CDC-verified with JS fn return parity fixed; slice09 is open for toolchain/project-structure chapter work.",
-      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"closed"},{n:"language-surface runway",s:"closed"},{n:"book-instruction-bootstrap",s:"closed"},{n:"book-fence-reachability",s:"closed"},{n:"current-book-drift-refresh",s:"closed"},{n:"js-fn-return-parity",s:"closed"},{n:"toolchain/project-structure chapters",s:"open"},{n:"language-surface chapters",s:"planned"},{n:"edition close",s:"planned"}] },
+      cap:"The Lykn Book's 0.6.0 edition gates release, but implementation comes first. slice09 is CC-closed with toolchain/project-structure chapters refreshed in book commit 03b3818; slice10 is open for language-surface chapter work.",
+      slices:[{n:"pre-book-decision-gate",s:"closed"},{n:"dogfood-implementation-runway",s:"closed"},{n:"cli/scaffold/package runway",s:"closed"},{n:"language-surface runway",s:"closed"},{n:"book-instruction-bootstrap",s:"closed"},{n:"book-fence-reachability",s:"closed"},{n:"current-book-drift-refresh",s:"closed"},{n:"js-fn-return-parity",s:"closed"},{n:"toolchain/project-structure chapters",s:"open"},{n:"language-surface chapters",s:"open"},{n:"edition close",s:"planned"}] },
     { id:"arc14", name:"comment-retention", status:"future",
       cap:"Retain comments through the pipeline: reader retention (opt-in) → surface→kernel provenance annotation → strip-or-preserve at JS emit (DD-62). The LFE comment-drop pain made a first-class goal; the home for the deferred lint-suppression mechanism. SEEDED 2026-07-21; release boundary decided 0.7.0 (operator, 2026-07-21); not slice-planned.",
       slices:[] },
@@ -204,7 +204,7 @@ const DATA = {
   sequence: ["arc16","arc09"],
   now: {
     arc:"arc16 open · arc09 future",
-    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is closed/CDC-verified for local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. arc16 slice04 is closed/CDC-verified for XPRT exports, LBND grouped locals, and COND flatter branching. arc16 slice05 is closed/CDC-verified for book/writers-guide standing instructions. arc16 slice06 is closed/CDC-verified with the book's lisp fences reachable through repeatable --fence docs mode. arc16 slice07 current-book-drift-refresh is closed/CDC-verified with refreshed drift inventory; arc16 slice08 js-fn-return-parity is closed/CDC-verified with D-2609-FNRT fixed; arc16 slice09 toolchain-and-project-structure-chapters is open."
+    desc:"The current release branch is past the arc06 gate, citation-repoint and artifact-homes/P-21 are done, arc15/P-19 is closed, arc07/P-13 is closed, and arc10/P-22 is closed. arc16 slice03 is closed/CDC-verified for local binary scaffolding, testing macros, build recursion, source-run imports, and the 0.6.0 source-ownership floor. arc16 slice04 is closed/CDC-verified for XPRT exports, LBND grouped locals, and COND flatter branching. arc16 slice05 is closed/CDC-verified for book/writers-guide standing instructions. arc16 slice06 is closed/CDC-verified with the book's lisp fences reachable through repeatable --fence docs mode. arc16 slice07 current-book-drift-refresh is closed/CDC-verified with refreshed drift inventory; arc16 slice08 js-fn-return-parity is closed/CDC-verified with D-2609-FNRT fixed; arc16 slice09 toolchain-and-project-structure-chapters is CC-closed pending CDC; arc16 slice10 language-surface-chapters is open."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
