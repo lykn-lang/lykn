@@ -2,7 +2,7 @@
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| A3-01 | Run-permission correction independently closed | Source/argv/denial tests, build receipt and Slice01 CDC report | serious | D-2609-PERM | open | [Slice01 CC attestation](slice01-run-permissions/closing-report.md); [RP-B01](slice01-run-permissions/artifacts/build-receipt.md) | Proposed-done; CDC pending; gates JSON execution |
+| A3-01 | Run-permission correction independently closed | Source/argv/denial tests, build receipt and Slice01 CDC report | serious | D-2609-PERM | done | [Reproduced Slice01 CDC](slice01-run-permissions/cdc-verification.md); [RP-B01](slice01-run-permissions/artifacts/build-receipt.md) | JSON launcher prerequisite lifted; no inherited arc closure |
 | A3-02 | Test-runner permission policy reconciled and verified | Slice02 argv/denial evidence and retained corpus/doc checks | serious | B01 test -A observation | open | — | Run fix does not discharge this |
 | A3-03 | Accepted guide contradictions corrected and retested | Original claims/tasks against corrected guide trials | correctness-grade | LINT/NPMB and Arc02 | open | — | No blanket rewrite |
 | A3-04 | Accepted book/language findings and human revisions integrated | Source commits, failure reproductions, book coordination and operator records | correctness-grade | JSER and Arc02 | open | — | Human acceptance explicit |

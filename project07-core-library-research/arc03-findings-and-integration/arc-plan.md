@@ -5,13 +5,14 @@
 Correct accepted guide, book, language and tooling findings; reproduce original
 failures and relevant regressions. Human code-shape acceptance remains distinct.
 This arc opens early because Arc01/Slice01 exposed D-2609-PERM.
-Parent: [project plan](../project-plan.md). Status: active; Slice01 CC proposed-done, awaiting CDC.
+Parent: [project plan](../project-plan.md). Status: active; Slice01 CDC closed
+(was CC proposed-done). Resume Arc01/Slice02; Slice02 planning stays queued.
 
 ## Slice breakdown
 
 | Slice | Capability | Depends on | Status |
 | --- | --- | --- | --- |
-| [slice01-run-permissions](slice01-run-permissions/slice-plan.md) | Explicit run permissions, real denial controls and traceable build | Arc01/Slice01 CDC | CC proposed-done; CDC pending |
+| [slice01-run-permissions](slice01-run-permissions/slice-plan.md) | Explicit run permissions, real denial controls and traceable build | Arc01/Slice01 CDC | CDC closed; six criteria reproduced |
 | slice02-test-permissions | Reconcile test runner's implicit -A with governance while preserving corpus/doc testing | Slice01 and current test contract inspection | Roadmap only |
 | slice03-guide-consistency | Correct LINT/NPMB and accepted guide findings; compare original authoring tasks | Arc02 evidence and runtime decisions | Roadmap only |
 | slice04-book-and-language-corrections | Integrate JSER and accepted book/language/formatter findings with operator review | Arc02 and Project02 book coordination | Roadmap only; split as needed |
@@ -37,14 +38,19 @@ be independently demonstrated, not inherited from child closures.
 ## Current correction evidence
 
 Slice01 source commit `d0bb981dae2a4abf6c984406c4b2081a45cc92f8` supplies the run correction.
-Its [CC report](slice01-run-permissions/closing-report.md) and
-[RP-B01 receipt](slice01-run-permissions/artifacts/build-receipt.md) are attested,
-not independently closed. A3-01 and the JSON launch gate remain open. No slice
-breakdown or sequencing change was required by implementation; repeated-scope
-and empty-value behavior is retained in the evidence and tests.
+Its [CDC verification](slice01-run-permissions/cdc-verification.md) independently
+reproduces six criteria, full gates and the [RP-B01 receipt](slice01-run-permissions/artifacts/build-receipt.md).
+A3-01 closes and the JSON launcher dependency is lifted. No slice breakdown
+or sequencing change is needed: resume Arc01/Slice02 with its own remaining
+preflights. Repeated-scope and empty-value behavior is retained in tests.
+Full gates required an isolated cache for an existing package test under the
+CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
 
+- 2026-09-12 v1.2: Slice01 CDC reproduced the run correction and build receipt;
+  closed A3-01 and resumed Arc01/Slice02. Existing cross-arc sequence and
+  test-runner/guide/book/integration scope remain unchanged.
 - 2026-09-12 v1.1: Slice01 CC delivered the scoped correction and build receipt;
   attached evidence while retaining CDC, JSON and test-runner boundaries.
 

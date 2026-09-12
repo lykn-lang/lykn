@@ -93,9 +93,9 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 CDC closed; Slice02 opened, execution blocked |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 CDC closed; Slice02 ready for CC |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CC proposed-done, awaiting CDC |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -182,26 +182,29 @@ Co-authored-by: Billo AI <ai-engineering@billo.systems>
 At opening, Arc01/Slice01 had its full open set and no execution or close set.
 Slice01 is now CDC closed with seven independently verified criteria; see its
 [CDC verification](arc01-format-runtime-evidence/slice01-baseline-and-protocol/cdc-verification.md).
-Arc03/Slice01 is CC proposed-done with its [handoff](arc03-findings-and-integration/slice01-run-permissions/closing-report.md)
-and [corrected-build receipt](arc03-findings-and-integration/slice01-run-permissions/artifacts/build-receipt.md).
-Arc01/Slice02 has its full open set but execution remains blocked until CDC
-independently verifies that correction. All
+Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
+(was CC proposed-done), with its corrected-build receipt independently verified.
+Arc01/Slice02 is ready for CC with pinned launch identities; its own harness,
+package and resource preflights remain required. All
 project ledger rows remain open. No format trial or operator acceptance is claimed.
 
-Slice01 bubble-ups: D-2609-PERM records a source launcher that injects all Deno
-permissions, requiring a correction or explicitly authorized research route
-before runtime trials. D-2609-YNOD records Node API imports in the JSR YAML
+Slice01 bubble-ups: D-2609-PERM recorded implicit run grants; the release/0.6.x
+correction is now independently verified and the discovery closed as repaired.
+D-2609-YNOD records Node API imports in the JSR YAML
 document candidate; preserve the document-fidelity requirement while resolving
 candidate policy. D-2609-LINT/NPMB/JSER retain guide and book corrections for
 Arc03. See the slice's [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md).
-Arc03 is now opened early for the launcher prerequisite; resume Arc01/Slice02
-after its run-permission correction closes. Test-runner permissions remain a
+Arc03 opened early for the launcher prerequisite; Arc01/Slice02 now resumes.
+Test-runner permissions remain a
 separate Arc03 follow-up, not part of this bounded correction.
-Patch identity remains unresolved. Corrected binary provenance now has an
-attested receipt awaiting CDC; historical B01 provenance is not rewritten.
+Patch identity remains unresolved. Corrected binary provenance has a locally
+reproduced build receipt; historical B01 provenance is not rewritten.
 
 ## Version History
 
+- 2026-09-12 v1.4: Arc03/Slice01 CDC verified six criteria and the corrected
+  binary, closed the launcher finding and resumed Arc01/Slice02. Package,
+  resource, test-runner and operator obligations retain their original owners.
 - 2026-09-12 v1.3: Arc03/Slice01 CC delivered the run correction, passing gates
   and a reconciled source/binary receipt. Kept CDC and JSON execution gated; no
   project criterion or other finding is inherited as closed.

@@ -1,6 +1,6 @@
 # Slice02 — JSON behavior through Lykn
 
-Status: **opened; execution blocked by Arc03/Slice01 CDC closure**.
+Status: **ready-for-cc** (was blocked on Arc03/Slice01 CDC closure).
 Expedited Mode. No format trial has run. Read [Arc01](../arc-plan.md),
 [baseline CDC](../slice01-baseline-and-protocol/cdc-verification.md) and the
 [permission correction](../../arc03-findings-and-integration/slice01-run-permissions/slice-plan.md).
@@ -20,13 +20,39 @@ finding without claiming a book repair. Full ADT/human trials remain Arc02.
 
 ## Prerequisites and launch
 
-CDC must verify the run correction and its source-to-binary receipt, then
-record the exact corrected CLI path/hash and launch syntax in this packet
-before execution. Recheck Deno identity and all source drift. B01's replaced
-binary is historical and must not be treated as the current condition.
+The [run-correction CDC](../../arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
+has verified the correction, RP-B01 receipt and actual permission controls.
+That prerequisite is lifted as of 2026-09-12. Pin this condition:
 
-The planned corrected form is `lykn run --no-prompt [explicit grants] FILE`;
-it is a required contract, not proof that the current CLI implements it.
+- CLI: `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn`, source
+  `d0bb981dae2a4abf6c984406c4b2081a45cc92f8`, tree
+  `1c91b11c6ebfc7305ca4bc3fca4a5148eb2fdaf5`.
+- CLI SHA-256: `5efc8299cc005e977c4d33304f3c9f7062bc4eeb0038c93136a95dccdbaceb86`.
+- Deno: `/opt/homebrew/bin/deno`, 2.7.7, SHA-256
+  `103ea70463213b1a8ea7b46852a34612f4e0afcc1ff09d1656d185ed215772d4`.
+
+Recheck hashes, actual runtime selection and source drift before execution;
+record changes rather than silently substituting a new build. The PATH-installed
+Lykn and historical B01 binary are not the selected condition.
+
+Verified launch syntax, from a disposable trial root with its `project.json`
+and retained Lykn case program copied there:
+
+```sh
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn run --no-prompt cases.lykn CASE
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn run --no-prompt --allow-read=./inputs --allow-write=./outputs cases.lykn CASE
+```
+
+`CASE` denotes the frozen variant's actual selector; replace it with the
+manifest value. The cases program does not exist yet; these commands specify
+its launch contract, not an executed JSON trial. Run with cleared inherited
+environment and PATH `/opt/homebrew/bin:/usr/bin:/bin`; put HOME, TMPDIR and
+DENO_DIR under the disposable root, with DENO_NO_UPDATE_CHECK=1, NO_COLOR=1
+and null stdin. Prepare/copy fixture inputs before the measured case so a
+parser-only run does not need fixture-creation permissions.
+
+J2-01 remains open until this harness records effective argv and a real denied
+read. Record the exact case-specific scopes in `artifacts/baseline-and-launch.md`.
 No direct-Deno exception, implicit -A, or flags-after-FILE workaround.
 Parser cases get no application grants; file cases get only disposable input/
 output scopes. Capture the effective argv and a real denied-read control.
@@ -93,6 +119,9 @@ commit exact paths, then seek independent reproduction. No empty close sets.
 
 ## Version History
 
+- 2026-09-12 v1.1: Arc03/Slice01 CDC closed; lifted the launcher dependency,
+  pinned verified CLI/source/runtime identities and concrete launch syntax.
+  Own-harness denial/argv, package and supervisor preflights remain required.
 - 2026-09-12 v1.0: Opened after baseline CDC closure with all J-01–17 families
   retained. Run permission/build receipt gates execution; resource supervision
   and package-graph preflights remain explicit prerequisites.

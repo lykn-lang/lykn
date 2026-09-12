@@ -7,8 +7,9 @@ provide for JSON and YAML, what they lose, and what Lykn libraries must add.
 Evidence includes package provenance and the actual runtime/toolchain
 baseline, so a dependency recommendation is not inferred from a registry name.
 
-Active arc. Slice01 is CDC closed (was CC proposed-done). Slice02 is opened
-with execution blocked on the Arc03/Slice01 run-permission correction.
+Active arc. Slice01 is CDC closed. Slice02 is ready for CC (was blocked on
+Arc03/Slice01); the run correction is independently verified and its launcher
+dependency lifted. Package and resource preflights remain within Slice02.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
 ## Slice breakdown
@@ -16,7 +17,7 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | Slice | Scope and output | Dependency | Status |
 | --- | --- | --- | --- |
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
-| [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | Opened; execution blocked |
+| [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | Ready for CC; launch pins recorded |
 | slice03-yaml-fidelity | Exercise YAML value and document workflows through Lykn; compare schemas, aliases/cycles, non-string keys, multi-document support, diagnostics, comments/layout, and candidate preservation APIs | Slice01; reuse Slice02 harness observations | Planned; open set deferred |
 | slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives | Slices01–03 evidence | Planned; open set deferred |
 
@@ -67,27 +68,32 @@ decision, and that all authoring findings have survived into the next arc.
 
 Slice01 [closing report](slice01-baseline-and-protocol/closing-report.md) and
 [findings](slice01-baseline-and-protocol/artifacts/findings.md) establish new
-prerequisites for the next opening: resolve D-2609-PERM before runtime launches;
-the current source inserts `-A`. Keep JSON first and retain every FM01 case.
+prerequisites for the next opening: D-2609-PERM required correction before
+runtime launches; historical source inserted `-A`. That correction is now
+CDC closed. Keep JSON first and retain every FM01 case.
 D-2609-YNOD gates execution/adoption of @eemeli/yaml 2.9.1 because published
 source imports Node APIs; Slice03's document workflow remains required.
 [Arc03/Slice01](../arc03-findings-and-integration/slice01-run-permissions/slice-plan.md)
-is now the next executable slice, opened early to correct the launcher. CDC
-must verify that correction and pin its build before JSON execution begins.
+is now CDC closed; [verification](../arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
+reproduces the correction and build receipt. Slice02 records the verified pins
+and launch contract; its own preflights still require evidence.
 Guide/book findings D-2609-LINT/NPMB/JSER and the source/binary provenance gap
 must survive the later authoring/integration openings. This records a dependency,
 not a source-scope expansion or acceptance decision.
 
 Apply the project's exact-path commits, proposed-done/CDC separation, immediate
 evidence-based close and next-slice opening, and arc composition rules.
-Slice02 now has its full open set. Resume its JSON trials after the Arc03
-launcher correction closes; the immediate CC handoff is
-`arc03-findings-and-integration/slice01-run-permissions/cc-prompt.md`.
+Slice02 now has its full open set and verified launcher prerequisite. The
+immediate CC handoff is
+`arc01-format-runtime-evidence/slice02-json-behavior/cc-prompt.md`.
 Do not generate a close set or mark research complete merely because the
 planning documents exist.
 
 ## Version History
 
+- 2026-09-12 v1.3: Arc03/Slice01 CDC reproduced the launcher correction;
+  resumed JSON Slice02 with verified build/runtime pins. All JSON families
+  and package/resource controls remain in scope; no format result is claimed.
 - 2026-09-12 v1.2: Independently verified and closed Slice01; opened Slice02
   with all JSON families retained and execution blocked on the newly opened
   Arc03/Slice01 launcher correction. Historical baseline drift remains explicit.

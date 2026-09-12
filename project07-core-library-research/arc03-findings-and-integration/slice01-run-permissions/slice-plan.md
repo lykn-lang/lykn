@@ -1,8 +1,9 @@
 # Slice01 — Explicit run permissions
 
-Status: **CC proposed-done; awaiting CDC**. Expedited Mode.
-See [closing-report.md](closing-report.md) and [RP-B01](artifacts/build-receipt.md).
-All six ledger rows remain open; JSON execution remains gated.
+Status: **CDC closed** (was CC proposed-done). Expedited Mode.
+See [CDC verification](cdc-verification.md) and [RP-B01](artifacts/build-receipt.md).
+All six criteria are reproduced. The JSON launcher prerequisite is lifted;
+the JSON slice retains its own controls, package and resource preflights.
 
 ## Goal and contract
 
@@ -81,6 +82,9 @@ toolchain permission behavior fixed.
 
 ## Version History
 
+- 2026-09-12 v1.2: CDC reproduced all six criteria, canonical gates and the
+  release-binary receipt; closed the correction and lifted the JSON launcher
+  dependency. Separate test-runner and other research obligations remain.
 - 2026-09-12 v1.1: CC delivered the scoped source repair and attested gates/build
   receipt. Independent verification and JSON launch prerequisite remain open.
 

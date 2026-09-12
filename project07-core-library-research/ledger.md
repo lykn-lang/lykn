@@ -5,10 +5,11 @@ reproduced at the scale claimed. CC attestation is proposed-done only.
 
 2026-09-12: Arc01/Slice01 is [CDC closed](arc01-format-runtime-evidence/slice01-baseline-and-protocol/cdc-verification.md),
 with independently reproduced baseline/protocol evidence. Format behavior remains
-unexecuted. Arc03/Slice01 is now [CC proposed-done](arc03-findings-and-integration/slice01-run-permissions/closing-report.md)
-for the run-permission correction; Arc01/Slice02 is
-opened with execution blocked on its verification. The [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md)
-retain PERM/YNOD prerequisites and guide/book corrections in the project plan.
+unexecuted. Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
+for the run-permission correction; Arc01/Slice02 is ready for CC with its own
+preflights retained. PERM is repaired on release/0.6.x; YNOD and guide/book
+corrections from the [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md)
+remain open in the project plan.
 All P-01–P-08 criteria remain open; no project-scale outcome is inherited.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |

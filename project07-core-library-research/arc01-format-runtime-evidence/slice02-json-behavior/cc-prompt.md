@@ -1,11 +1,15 @@
 # CC — JSON behavior research
 
-**Opened but blocked. Do not execute until CDC verifies Arc03/Slice01's run
-permission correction and adds the corrected-build receipt here.**
-Actionable prerequisite prompt:
-`arc03-findings-and-integration/slice01-run-permissions/cc-prompt.md`.
+**Ready for CC.** Arc03/Slice01 is independently closed; its launcher
+prerequisite is lifted. Read its [CDC verification](../../arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
+and this [slice plan's verified launch pins](slice-plan.md). Use only the selected
+CLI `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn`, SHA-256
+`5efc8299cc005e977c4d33304f3c9f7062bc4eeb0038c93136a95dccdbaceb86`,
+from source `d0bb981dae2a4abf6c984406c4b2081a45cc92f8`, with the pinned Deno
+2.7.7. Recheck identities and capture this harness's argv/denial control before
+interpreting format results. Package and resource preflights remain required.
 
-After that gate, execute this slice in Expedited Mode. Worktree:
+Execute this slice in Expedited Mode. Worktree:
 `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`.
 Read root AGENTS.md, project/arc plans and ledgers, this slice open set, prior
 CDC/B01/RP01/FM01/AE01, source Lykn skill and task-relevant guides. Apply
