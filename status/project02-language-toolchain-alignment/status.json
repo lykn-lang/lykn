@@ -13,7 +13,7 @@
     "arc": "arc16-book-0.6.0-edition",
     "slice": "slice09-toolchain-and-project-structure-chapters",
     "status": "open",
-    "summary": "slice08 is CC-closed with D-2609-FNRT fixed; slice09 is open for toolchain/project-structure chapter work."
+    "summary": "slice08 is closed/CDC-verified with D-2609-FNRT fixed; slice09 is open for toolchain/project-structure chapter work."
   },
   "arcs": [
     {

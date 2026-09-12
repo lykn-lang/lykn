@@ -1,9 +1,8 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — slice08 CC-closed; slice09 toolchain/project-structure chapters opened.**
-> slice01 through slice07 are closed/CDC-verified. slice08 fixed the live JS/Rust
+> **Status: OPEN — slice08 CDC-verified; slice09 toolchain/project-structure chapters opened.**
+> slice01 through slice08 are closed/CDC-verified. slice08 fixed the live JS/Rust
 > closure-return mismatch from `D-2609-FNRT` on release/0.6.x commit `8c66469`;
-> CDC verification remains pending.
 > slice09 is open for the toolchain, testing, project-structure, build/dist,
 > publish, and source-ownership chapter pass. The operator tightened
 > the rule: all accepted 0.6.0 implementation work must land
@@ -85,7 +84,7 @@ them.
 | **slice05 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, the implementation-first rule, and the rule that future book-discovered defects become new discoveries/slices instead of prose workarounds. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | **Closed / CDC-verified** ([closing-report](slice05-book-instruction-bootstrap/closing-report.md), [cdc-verification](slice05-book-instruction-bootstrap/cdc-verification.md), [slice-doc](slice05-book-instruction-bootstrap/slice-plan.md), [ledger](slice05-book-instruction-bootstrap/ledger.md), [cc-prompt](slice05-book-instruction-bootstrap/cc-prompt.md)) |
 | **slice06 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification by implementing the repeatable `lykn test --docs --fence <tag>` route from `D-2607-R4NW`. Establish the gate that later chapter slices must run, record first book-level extracted/failing counts, and update sibling instructions from "pending" to the landed command. | **Closed / CDC-verified** ([closing-report](slice06-book-fence-reachability/closing-report.md), [cdc-verification](slice06-book-fence-reachability/cdc-verification.md), [slice-doc](slice06-book-fence-reachability/slice-plan.md), [ledger](slice06-book-fence-reachability/ledger.md), [cc-prompt](slice06-book-fence-reachability/cc-prompt.md)) |
 | **slice07 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth, classify the current book-fence failures, fix or route planning-path instruction drift, and recommend the next executable slice. | **Closed / CDC-verified** ([closing-report](slice07-current-book-drift-refresh/closing-report.md), [cdc-verification](slice07-current-book-drift-refresh/cdc-verification.md), [inventory](slice07-current-book-drift-refresh/artifacts/current-book-drift-inventory-2026-09.md), [slice-plan](slice07-current-book-drift-refresh/slice-plan.md), [ledger](slice07-current-book-drift-refresh/ledger.md), [cc-prompt](slice07-current-book-drift-refresh/cc-prompt.md)) |
-| **slice08 · js-fn-return-parity** | Fix or explicitly dispose `D-2609-FNRT`: the book doctest path through the JS compiler rejects `func` returning `fn`, while the Rust CLI accepts and compiles the same form. | **CC-closed / CDC pending** ([closing-report](slice08-js-fn-return-parity/closing-report.md), [slice-plan](slice08-js-fn-return-parity/slice-plan.md), [ledger](slice08-js-fn-return-parity/ledger.md), [cc-prompt](slice08-js-fn-return-parity/cc-prompt.md)) |
+| **slice08 · js-fn-return-parity** | Fix or explicitly dispose `D-2609-FNRT`: the book doctest path through the JS compiler rejects `func` returning `fn`, while the Rust CLI accepts and compiles the same form. | **Closed / CDC-verified** ([closing-report](slice08-js-fn-return-parity/closing-report.md), [cdc-verification](slice08-js-fn-return-parity/cdc-verification.md), [slice-plan](slice08-js-fn-return-parity/slice-plan.md), [ledger](slice08-js-fn-return-parity/ledger.md), [cc-prompt](slice08-js-fn-return-parity/cc-prompt.md)) |
 | **slice09 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route and the slice08 `D-2609-FNRT` repair. | **Open** ([slice-plan](slice09-toolchain-and-project-structure-chapters/slice-plan.md), [ledger](slice09-toolchain-and-project-structure-chapters/ledger.md), [cc-prompt](slice09-toolchain-and-project-structure-chapters/cc-prompt.md)) |
 | **slice10 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
 | **slice11 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
@@ -213,6 +212,14 @@ normalizes the surface.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.20 - 2026-09-12 (slice08 CDC verified)
+
+CDC reproduced the slice08 fix: the focused `dd-50.6_test.lykn` regression
+passed 10/0, the source gates passed, and the affected book subset generated 1
+doctest file with 3 blocks and passed 3/0. `D-2609-FNRT` is fixed and
+CDC-verified; slice09 remains open for toolchain and project-structure chapter
+work.
 
 ### v1.19 - 2026-09-12 (slice08 CC-closed; slice09 opened)
 

@@ -1,6 +1,6 @@
 # arc16 slice09 - Toolchain and Project-Structure Chapters
 
-> **Status:** Opened 2026-09-12 from slice08. slice08 fixed `D-2609-FNRT`; CDC verification is pending, so stop and surface if CDC reopens the compiler parity blocker.
+> **Status:** Opened 2026-09-12 from slice08. slice08 fixed `D-2609-FNRT` and is CDC-verified.
 
 ## Goal
 

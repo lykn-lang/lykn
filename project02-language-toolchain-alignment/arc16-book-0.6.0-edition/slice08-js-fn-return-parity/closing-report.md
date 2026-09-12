@@ -1,6 +1,6 @@
 # arc16 slice08 - JS `fn` Return Parity Closing Report
 
-**Status:** CC-closed 2026-09-12; CDC verification pending.
+**Status:** CC-closed 2026-09-12; CDC verification recorded in `cdc-verification.md`.
 
 ## Outcome
 
