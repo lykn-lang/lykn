@@ -4,25 +4,29 @@
   "arc": "arc09-release-0.6.0",
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc09-release-0.6.0/arc-plan.md",
-  "currentSlice": "slice01-release-readiness-runbook",
-  "summary": "arc16 is closed/CDC-verified; slice01 is open to build the release readiness runbook before version bumps, dry-runs, publication, tags, and post-publish verification.",
+  "currentSlice": "slice02-version-bump-release-notes-ci-chore",
+  "summary": "slice01 is CC proposed-done with the release runbook complete; slice02 is open for 0.6.0 version bumps, release notes, CI checkout maintenance, and the publish-dry-run no-bypass route before dry-runs.",
   "slices": [
     {
       "id": "slice01-release-readiness-runbook",
+      "status": "cc-proposed-done-cdc-pending"
+    },
+    {
+      "id": "slice02-version-bump-release-notes-ci-chore",
       "status": "open"
     },
     {
-      "id": "slice02-version-bump-and-release-notes",
+      "id": "slice03-publish-dry-runs-and-package-audit",
       "status": "future"
     },
     {
-      "id": "slice03-publish-dry-runs",
+      "id": "slice04-operator-publication-and-tags",
       "status": "future"
     },
     {
-      "id": "slice04-publication-tag-and-postpublish-verification",
+      "id": "slice05-postpublish-verification-and-project-close",
       "status": "future"
     }
   ],
-  "next": "Run slice01 release readiness runbook."
+  "next": "Run slice02 version bump, release notes, and CI chore."
 }

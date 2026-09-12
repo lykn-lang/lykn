@@ -2,15 +2,15 @@
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
-| R-1 | Required project/repo guidance is read before planning | close report lists AGENTS, project plan/ledger, arc09 plan/ledger, arc16 close/CDC evidence, and release docs read | serious | project-management | open | | planning/source/book split must remain intact |
-| R-2 | Version surfaces are inventoried | manifest of every file/command that carries 0.6.0 version state | correctness | release cut | open | | Rust crates, JS packages, CLI, docs, book tag references |
-| R-3 | Release-note inputs are inventoried | list of closed arcs/discoveries/user-visible changes feeding release notes | serious | P-12 | open | | include breaking/compatibility notes and deferred items |
-| R-4 | Publish dry-run gates are specified | commands and expected artifacts for JSR, npm, crates.io dry-runs | correctness | arc01/P-8/P-12 | open | | no real publish in this slice |
-| R-5 | Manual publication and approval boundaries are explicit | runbook separates CC-preparable work from operator-owned publish/tag steps | serious | operator publishing boundary | open | | Duncan handles manual publishes |
-| R-6 | Post-publish verification is specified | install/artifact/tag verification steps are named with evidence homes | correctness | P-12 | open | | include temporary install directory convention |
-| R-7 | Blockers and release chores are routed | discoveries, slice insertions, or explicit no-blocker statement | serious | project-management | open | | include CI maintenance if it remains release-relevant |
-| R-8 | Arc09 plan, ledger, and status surfaces are updated | arc09 plan/ledger/status and next slice prompt reflect actual findings | serious | Expedited Mode | open | | no silent release-plan gaps |
+| R-1 | Required project/repo guidance is read before planning | close report lists AGENTS, project plan/ledger, arc09 plan/ledger, arc16 close/CDC evidence, and release docs read | serious | project-management | **done / CC-attested; CDC pending** | [closing-report](closing-report.md) | planning/source/book split preserved |
+| R-2 | Version surfaces are inventoried | manifest of every file/command that carries 0.6.0 version state | correctness | release cut | **done / CC-attested; CDC pending** | [version-surface-inventory.md](artifacts/version-surface-inventory.md) | includes Rust crates, JS packages, CLI, docs, book tag refs, CI, publish scripts |
+| R-3 | Release-note inputs are inventoried | list of closed arcs/discoveries/user-visible changes feeding release notes | serious | P-12 | **done / CC-attested; CDC pending** | [release-note-inputs.md](artifacts/release-note-inputs.md) | separates user-visible candidates from Project07/deferred rows |
+| R-4 | Publish dry-run gates are specified | commands and expected artifacts for JSR, npm, crates.io dry-runs | correctness | arc01/P-8/P-12 | **done / CC-attested; CDC pending** | [release-runbook.md](artifacts/release-runbook.md#phase-2--dry-runs-and-package-audit) | current `make publish-dry-run` no-bypass hazard routed |
+| R-5 | Manual publication and approval boundaries are explicit | runbook separates CC-preparable work from operator-owned publish/tag steps | serious | operator publishing boundary | **done / CC-attested; CDC pending** | [release-runbook.md](artifacts/release-runbook.md#phase-3--operator-publication-and-release-tags) | Duncan/operator owns real publication/tags/pushes |
+| R-6 | Post-publish verification is specified | install/artifact/tag verification steps are named with evidence homes | correctness | P-12 | **done / CC-attested; CDC pending** | [release-runbook.md](artifacts/release-runbook.md#phase-4--post-publish-verification-and-project02-closeout) | includes explicit temporary install directory convention |
+| R-7 | Blockers and release chores are routed | discoveries, slice insertions, or explicit no-blocker statement | serious | project-management | **done / CC-attested; CDC pending** | [release-runbook.md](artifacts/release-runbook.md#blockers-and-routed-chores-from-slice01), [arc-plan](../arc-plan.md#2-slice-breakdown) | no blocker found; CI checkout, dry-run target, and push recipe hazards routed |
+| R-8 | Arc09 plan, ledger, and status surfaces are updated | arc09 plan/ledger/status and next slice prompt reflect actual findings | serious | Expedited Mode | **done / CC-attested; CDC pending** | [arc-plan](../arc-plan.md), [arc-ledger](../ledger.md), [slice02 prompt](../slice02-version-bump-release-notes-ci-chore/cc-prompt.md), status JSON/HTML | next slice opened |
 
 ## Closure
 
-Open. Rows: 8. Done: 0. Deferred: 0. No-op: 0. Pending: 8.
+CC proposed-done; CDC pending. Rows: 8. Done / CC-attested: 8. Deferred: 0. No-op: 0. Pending: 0.
