@@ -973,7 +973,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
   const stmts = [];
 
   // Sort clauses: longer arity first, then more typed before less typed
-  const parsed = clauseLists.map((cl) => {
+  const parsed = clauseLists.map((cl, index) => {
     const clauses = parseKeywordClauses(cl.values);
     const argsClause = clauses.get("args");
     let params = [];
@@ -983,8 +983,10 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
     const typedCount = params.filter((p) =>
       paramDispatchType(p) !== "any"
     ).length;
-    return { clauses, params, typedCount, arity: params.length };
+    return { clauses, params, typedCount, arity: params.length, index };
   });
+
+  checkFuncClauseOverlap(funcName, parsed);
 
   parsed.sort((a, b) => {
     if (a.arity !== b.arity) return b.arity - a.arity;
@@ -1530,6 +1532,37 @@ export function replaceTilde(node, replacement) {
 export function paramDispatchType(p) {
   if (p.destructured) return p.kind;
   return p.typeKw.value;
+}
+
+function checkFuncClauseOverlap(funcName, clauses) {
+  for (let i = 0; i < clauses.length; i++) {
+    for (let j = i + 1; j < clauses.length; j++) {
+      const left = clauses[i];
+      const right = clauses[j];
+      if (left.arity !== right.arity) continue;
+      if (funcClauseTypesOverlap(left.params, right.params)) {
+        throw new Error(
+          `${funcName}: clauses ${left.index} and ${right.index} overlap ` +
+            `(same arity ${left.arity}, compatible types)`,
+        );
+      }
+    }
+  }
+}
+
+function funcClauseTypesOverlap(leftParams, rightParams) {
+  for (let i = 0; i < leftParams.length; i++) {
+    const leftType = paramDispatchType(leftParams[i]);
+    const rightType = paramDispatchType(rightParams[i]);
+    if (!dispatchTypesOverlap(leftType, rightType)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function dispatchTypesOverlap(leftType, rightType) {
+  return leftType === "any" || rightType === "any" || leftType === rightType;
 }
 
 /** Valid clause keys for func/fn keyword parsing. */

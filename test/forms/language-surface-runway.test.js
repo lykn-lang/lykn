@@ -42,3 +42,48 @@ Deno.test("language surface runway: exports emits named export list", () => {
   `);
   assertStringIncludes(result, "export {normalizeRole};");
 });
+
+Deno.test("language surface runway: multi-clause func rejects same typed overlap", () => {
+  assertThrows(
+    () =>
+      lykn(`
+        (func bad
+          (:args (:number x)
+           :body (* x 2))
+          (:args (:number x)
+           :body (+ x 1)))
+      `),
+    Error,
+    "bad: clauses 0 and 1 overlap (same arity 1, compatible types)",
+  );
+});
+
+Deno.test("language surface runway: multi-clause func rejects :any overlap", () => {
+  assertThrows(
+    () =>
+      lykn(`
+        (func also-bad
+          (:args (:number x)
+           :body (* x 2))
+          (:args (:any x)
+           :body (console:log x)))
+      `),
+    Error,
+    "also-bad: clauses 0 and 1 overlap (same arity 1, compatible types)",
+  );
+});
+
+Deno.test("language surface runway: multi-clause func rejects destructured overlap", () => {
+  assertThrows(
+    () =>
+      lykn(`
+        (func bad
+          (:args ((object :string name))
+           :body name)
+          (:args ((object :number id))
+           :body id))
+      `),
+    Error,
+    "bad: clauses 0 and 1 overlap (same arity 1, compatible types)",
+  );
+});
