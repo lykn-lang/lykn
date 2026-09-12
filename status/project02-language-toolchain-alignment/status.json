@@ -6,14 +6,12 @@
   "plan": "../../project02-language-toolchain-alignment/project-plan.md",
   "definitionOfDone": "build/publish reorg, compiler coherence, type declarations, Lykn source linting, book 0.6.0 review, then release.",
   "sequence": [
-    "arc16-book-0.6.0-edition",
     "arc09-release-0.6.0"
   ],
   "current": {
-    "arc": "arc16-book-0.6.0-edition",
-    "slice": "slice12-edition-close-and-release-gate",
+    "arc": "arc09-release-0.6.0",
     "status": "open",
-        "summary": "slice11 fixed D-2609-FOVL in source commit 2a0cabf, restored overlap compile-fail book examples in commit 43cfebc, and is CDC-verified; slice12 is open for final edition close."
+    "summary": "arc16 closed from CC side in book commit de0342c and planning closeout; release planning, version bumps, release notes, dry-runs, publication, tags, and artifact verification are next."
   },
   "arcs": [
     {
@@ -50,7 +48,7 @@
     },
     {
       "id": "arc09-release-0.6.0",
-      "status": "future"
+      "status": "open"
     },
     {
       "id": "arc10-compiler-completion",
@@ -78,7 +76,7 @@
     },
     {
       "id": "arc16-book-0.6.0-edition",
-      "status": "open",
+      "status": "closed-cc-proposed-done",
       "dashboard": "arc16-book-0.6.0-edition/status.html"
     }
   ]

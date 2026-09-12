@@ -1,9 +1,9 @@
 # arc09 — Release 0.6.0
 
-> **Status: Future — gated on all preceding arcs.** Planned at capability depth
-> only. Was tracked as the M14/M15 release milestones. (Renumbered arc07→08→09 as
-> arc07-docs then arc08-template-i18n were inserted ahead of release — see
-> Version History.)
+> **Status: Open — next Project02 arc after arc16 close.** Planned at capability
+> depth only. Was tracked as the M14/M15 release milestones. arc16 closed from
+> CC's side on 2026-09-12; CDC verification of that close remains pending, but
+> release planning can now prepare the arc09 slice breakdown and gates.
 
 ## 1. Capability
 
@@ -29,14 +29,14 @@ manual publishes; this arc scopes the preparation and verification.
 
 Gated on: arc03 closed (✓ landed), arc04 closed (tool built), arc08
 (template-i18n ✓ landed), the 0.6.0-committed arcs (05 linter, 06 dep-ergonomics)
-reaching their intended 0.6.0 state, and **arc07 (docs) — release ships
-release-ready docs**.
-Relies on arc01's publish gate. This arc's close is the **project gate**
+reaching their intended 0.6.0 state, **arc07 (docs)**, and **arc16 (book 0.6.0
+edition)**. Those gates are closed from CC's side as of 2026-09-12; arc16 CDC
+verification remains pending. Relies on arc01's publish gate. This arc's close is the **project gate**
 (go / adjust / kill against the 0.6.0 DoD — project-plan §4).
 
 ## 4. Arc ledger
 
-See [ledger.md](ledger.md). Historical rows were extracted without changing their dispositions during project06-planning-reorg.
+See [ledger.md](ledger.md). Historical rows were extracted without changing their dispositions during project06-planning-reorg. The detailed release-cut slice breakdown is the next planning task.
 
 ## 5. Version History
 

@@ -15,8 +15,8 @@
       "plannedRelease": "0.6.0",
       "plan": "../project02-language-toolchain-alignment/project-plan.md",
       "dashboard": "project02-language-toolchain-alignment/status.html",
-      "currentArc": "arc16-book-0.6.0-edition",
-      "nextArc": "arc09-release-0.6.0"
+      "currentArc": "arc09-release-0.6.0",
+      "nextArc": null
     },
     {
       "id": "project03-language-evolution",
