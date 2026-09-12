@@ -1,11 +1,11 @@
 # arc16 - Lykn Book 0.6.0 Edition Closing Report
 
 Date: 2026-09-12
-Status: **Closed / CC proposed-done; CDC pending**
+Status: **Closed / CDC-verified**
 
 ## Outcome
 
-arc16 completed the Lykn Book 0.6.0 edition pass and release gate from CC's side. The book review surfaced and resolved language/toolchain defects before the release cut, then closed with whole-book build, EPUB, doctest, link/path, stale-caveat, and edition-metadata evidence.
+arc16 completed the Lykn Book 0.6.0 edition pass and release gate. The book review surfaced and resolved language/toolchain defects before the release cut, then closed with whole-book build, EPUB, doctest, link/path, stale-caveat, and edition-metadata evidence.
 
 The release branch remains at source commit `2a0cabf`, where slice11 fixed the final compiler/book parity defect (`D-2609-FOVL`). The book repo is at commit `de0342c`, which adds the final 0.6 edition metadata and Book Versions navigation. The writers-guide repo remains clean at `4ecd1cc`.
 
@@ -50,6 +50,13 @@ No additional release-blocking implementation or book-documentation defect remai
 - A-8 done: arc16 bubbles up to project02 and arc09; release planning is next.
 - A-9 done: implementation-first sequencing was honored. Accepted 0.6.0 implementation findings landed before the book prose normalized the final surface.
 
+## CDC verification
+
+CDC verification is recorded in
+[`slice12-edition-close-and-release-gate/cdc-verification.md`](slice12-edition-close-and-release-gate/cdc-verification.md).
+CDC reproduced the book build, generated HTML/EPUB metadata checks, whole-book
+`--fence lisp` gate, link/SUMMARY/stale-caveat sweeps, and repository hygiene.
+
 ## Handoff to arc09
 
-arc09 is unblocked for release planning. It still owns version bumps, release notes, publish dry-runs, manual publication to JSR/npm/crates.io, release tags, and post-publish artifact/install verification. P-12 remains open until arc09 completes publication; P-20 is done from CC's side, pending CDC verification of this close.
+arc09 is unblocked for release planning. It still owns version bumps, release notes, publish dry-runs, manual publication to JSR/npm/crates.io, release tags, and post-publish artifact/install verification. P-12 remains open until arc09 completes publication; P-20 is done and CDC-verified.

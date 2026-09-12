@@ -1,0 +1,28 @@
+{
+  "updated": "2026-09-12",
+  "project": "project02-language-toolchain-alignment",
+  "arc": "arc09-release-0.6.0",
+  "status": "open",
+  "plan": "../../../project02-language-toolchain-alignment/arc09-release-0.6.0/arc-plan.md",
+  "currentSlice": "slice01-release-readiness-runbook",
+  "summary": "arc16 is closed/CDC-verified; slice01 is open to build the release readiness runbook before version bumps, dry-runs, publication, tags, and post-publish verification.",
+  "slices": [
+    {
+      "id": "slice01-release-readiness-runbook",
+      "status": "open"
+    },
+    {
+      "id": "slice02-version-bump-and-release-notes",
+      "status": "future"
+    },
+    {
+      "id": "slice03-publish-dry-runs",
+      "status": "future"
+    },
+    {
+      "id": "slice04-publication-tag-and-postpublish-verification",
+      "status": "future"
+    }
+  ],
+  "next": "Run slice01 release readiness runbook."
+}

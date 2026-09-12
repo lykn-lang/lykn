@@ -1,13 +1,13 @@
 # arc16 slice12 - Edition Close and Release Gate Closing Report
 
 Date: 2026-09-12
-Status: **Closed / CC proposed-done; CDC pending**
+Status: **Closed / CDC-verified**
 
 ## Outcome
 
 The Lykn Book 0.6.0 edition gate is satisfied from CC's side. The final book build produces HTML and EPUB, the whole-book `lisp` doctest gate is green, links and summary entries resolve, stale temporary caveats from the chapter-refresh work are gone, and the book now carries visible 0.6 edition metadata in front matter, navigation, generated page footer, and EPUB output.
 
-No new implementation defect or release-blocking book/documentation defect remained after the edition metadata fix. arc16 is therefore closed as CC proposed-done, and project02 hands the 0.6.0 release back to arc09.
+No new implementation defect or release-blocking book/documentation defect remained after the edition metadata fix. arc16 is therefore closed/CDC-verified, and project02 hands the 0.6.0 release back to arc09.
 
 ## Changes
 
@@ -107,4 +107,7 @@ Generated book `target/` was removed after the doctest run. The book repo's pre-
 
 ## Arc handoff
 
-arc16 is closed from CC's side as proposed-done. CDC verification is still pending. arc09 `release-0.6.0` is now the next Project02 arc for release planning, version bumps, release notes, dry-runs, publication, tags, and post-publish artifact verification.
+arc16 is closed and CDC-verified. CDC verification is recorded in
+[`cdc-verification.md`](cdc-verification.md). arc09 `release-0.6.0` is now the
+next Project02 arc for release planning, version bumps, release notes,
+dry-runs, publication, tags, and post-publish artifact verification.

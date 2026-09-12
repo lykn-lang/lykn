@@ -2,9 +2,9 @@
   "updated": "2026-09-12",
   "project": "project02-language-toolchain-alignment",
   "arc": "arc16-book-0.6.0-edition",
-  "status": "closed-cc-proposed-done",
+  "status": "closed-cdc-verified",
   "plan": "../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
-  "summary": "slice12 closed the edition gate in book commit de0342c: HTML/EPUB build passed, whole-book --fence lisp passed 428/0 with 19 skipped, link/path/stale-caveat sweeps were clean, and no new blocker remained; CDC pending.",
+  "summary": "slice12 closed and CDC-verified the edition gate in book commit de0342c: HTML/EPUB build passed, whole-book --fence lisp passed 428/0 with 19 skipped, link/path/stale-caveat sweeps were clean, and no new blocker remained.",
   "slices": [
     {
       "id": "slice01-pre-book-decision-gate",
@@ -52,7 +52,7 @@
     },
     {
       "id": "slice12-edition-close-and-release-gate",
-      "status": "closed-cc-proposed-done"
+      "status": "closed-cdc-verified"
     }
   ],
   "next": "arc09 release-0.6.0 planning and release cut."
