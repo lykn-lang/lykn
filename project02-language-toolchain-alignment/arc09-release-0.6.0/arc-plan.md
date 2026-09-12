@@ -1,11 +1,11 @@
 # arc09 — Release 0.6.0
 
-> **Status: Open — slice02 version-bump/release-notes/CI chore active.**
-> arc16 is closed/CDC-verified as of 2026-09-12. slice01 is closed/CDC-verified:
-> it converted the release arc into an executable runbook and found no release
-> blocker, but it did route two command-surface hazards: current
-> `make publish-dry-run` uses `--allow-dirty`, and current `make push` is not a
-> release-branch push recipe.
+> **Status: Open — slice03 publish dry-runs/package audit active.**
+> arc16 and arc09 slice01 are closed/CDC-verified. slice02 prepared source
+> commit `65ff40f` with 0.6.0 versions, draft release notes, checkout
+> v5 maintenance, and a repaired no-bypass `make publish-dry-run` target. Real
+> publication, tags, branch pushes, and book release tags remain future
+> operator-owned boundaries.
 
 ## 1. Capability
 
@@ -24,8 +24,8 @@ publication, release tags, and pushes.
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · release-readiness-runbook** | Inventory version surfaces, release-note inputs, dry-run gates, manual-publish boundaries, tag/post-publish verification, and blockers; write the executable release runbook. | **Closed / CDC-verified** ([slice-plan](slice01-release-readiness-runbook/slice-plan.md), [ledger](slice01-release-readiness-runbook/ledger.md), [closing-report](slice01-release-readiness-runbook/closing-report.md), [cdc-verification](slice01-release-readiness-runbook/cdc-verification.md), [runbook](slice01-release-readiness-runbook/artifacts/release-runbook.md)) |
-| **slice02 · version-bump-release-notes-ci-chore** | Update version surfaces from `0.6.0-dev` to `0.6.0`, regenerate lock/version evidence, write 0.6.0 release notes, apply low-risk CI checkout maintenance if still current, and either repair or explicitly route no-bypass replacement for `make publish-dry-run`. | **Open** ([slice-plan](slice02-version-bump-release-notes-ci-chore/slice-plan.md), [ledger](slice02-version-bump-release-notes-ci-chore/ledger.md), [cc-prompt](slice02-version-bump-release-notes-ci-chore/cc-prompt.md)) |
-| **slice03 · publish-dry-runs-and-package-audit** | Run `make check`, dist/package audits, JSR/npm dry-runs, and crates.io dry-runs against the exact release tree without weakening dirty-tree gates; capture receipts. | **Future** |
+| **slice02 · version-bump-release-notes-ci-chore** | Update version surfaces from `0.6.0-dev` to `0.6.0`, regenerate lock/version evidence, write 0.6.0 release notes, apply low-risk CI checkout maintenance if still current, and either repair or explicitly route no-bypass replacement for `make publish-dry-run`. | **CC proposed-done; CDC pending** ([slice-plan](slice02-version-bump-release-notes-ci-chore/slice-plan.md), [ledger](slice02-version-bump-release-notes-ci-chore/ledger.md), [closing-report](slice02-version-bump-release-notes-ci-chore/closing-report.md)) |
+| **slice03 · publish-dry-runs-and-package-audit** | Run `make check`, dist/package audits, JSR/npm dry-runs, and crates.io dry-runs against the exact release tree without weakening dirty-tree gates; capture receipts. | **Open** ([slice-plan](slice03-publish-dry-runs-and-package-audit/slice-plan.md), [ledger](slice03-publish-dry-runs-and-package-audit/ledger.md), [cc-prompt](slice03-publish-dry-runs-and-package-audit/cc-prompt.md)) |
 | **slice04 · operator-publication-and-tags** | Prepare the final approval packet; after explicit operator authorization, publish JSR/npm/crates artifacts, tag `0.6.0`, push release branch/tag explicitly to intended remotes, and handle the book `book-v0.6.0` tag/publication boundary. | **Future** |
 | **slice05 · postpublish-verification-and-project-close** | Verify published registry artifacts and explicit temporary installs, confirm remote tags/branch visibility, reconcile book release artifacts, close Project02 P-8/P-12, and produce final project closeout evidence. | **Future** |
 
@@ -33,8 +33,8 @@ publication, release tags, and pushes.
 - **Green CI on `release/0.6.x`** and a clean `make check` before publication.
 - **CI maintenance:** bump `actions/checkout@v4 → v5` where compatible. Treat as
   release-prep chore, not a blocker unless CI proves otherwise.
-- **No-bypass dry-runs:** do not rely on the current `make publish-dry-run`
-  target while it passes `--allow-dirty`.
+- **No-bypass dry-runs:** slice02 repaired `make publish-dry-run` to call
+  `cargo publish --dry-run` without `--allow-dirty`; slice03 must prove it.
 - **Explicit release pushes:** do not rely on the current `make push` recipe for
   release-branch push evidence; name `release/0.6.x` and `0.6.0` explicitly.
 
@@ -54,6 +54,14 @@ their dispositions during project06-planning-reorg. slice01 owns the detailed
 release runbook and can refine the future slice sequence before implementation.
 
 ## 5. Version History
+
+### v1.6 - 2026-09-12 (slice02 CC proposed-done; slice03 opened)
+
+slice02 committed source `65ff40f` with all 0.6.0 version surfaces,
+draft release notes, checkout v5 workflow maintenance, and a repaired crates
+dry-run target that no longer passes `--allow-dirty`. Opened slice03 to run
+`make check`, dist/package audits, JSR/npm dry-runs, and crates dry-runs from
+the exact release tree.
 
 ### v1.5 - 2026-09-12 (slice01 CDC verified)
 

@@ -10,9 +10,9 @@
   ],
   "current": {
     "arc": "arc09-release-0.6.0",
-    "slice": "slice02-version-bump-release-notes-ci-chore",
+    "slice": "slice03-publish-dry-runs-and-package-audit",
     "status": "open",
-    "summary": "arc09 slice01 is closed/CDC-verified with the release runbook complete; slice02 is open for 0.6.0 version bumps, release notes, CI checkout maintenance, and no-bypass dry-run preparation."
+    "summary": "arc09 slice02 is CC proposed-done with source commit 65ff40f prepared for 0.6.0; slice03 is open for dry-runs and package audit."
   },
   "arcs": [
     {
