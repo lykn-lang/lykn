@@ -5,10 +5,12 @@ reproduced at the scale claimed. CC attestation is proposed-done only.
 
 2026-09-12: Arc01/Slice01 is [CDC closed](arc01-format-runtime-evidence/slice01-baseline-and-protocol/cdc-verification.md),
 with independently reproduced baseline/protocol evidence. JSON behavior now has
-[CC-attested results](arc01-format-runtime-evidence/slice02-json-behavior/artifacts/results.md),
-pending its own independent verification. Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
+[independent CDC closure](arc01-format-runtime-evidence/slice02-json-behavior/cdc-verification.md)
+after full replay. Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
 for the run-permission correction; Arc01/Slice02 completed its preflights and
-submitted all 17 JSON families as proposed-done. PERM is repaired on release/0.6.x; YNOD and guide/book
+closed all 17 JSON families at reproduced strength. YAML preparation is opened;
+values/resources/documents have explicit later owners with every Y ID retained.
+PERM is repaired on release/0.6.x; YNOD and guide/book
 corrections from the [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md)
 remain open in the project plan.
 All P-01–P-08 criteria remain open; no project-scale outcome is inherited.

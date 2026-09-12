@@ -1259,9 +1259,10 @@ slice07 originated in one.
 - **Guess:** High for dependency-selection correctness; no vulnerability or
   requirement for the Node executable is asserted.
 - **Kind:** `trap` · **Status:** `open`
-- **Owner:** Project07 Arc01/Slice04 alternatives/policy decision; Slice03 must
-  retain the document-fidelity requirement while execution of this candidate
-  is gated. No fork, shim, npm fallback or acceptance inferred.
+- **Owner:** Project07 Arc01/Slice04 alternatives/policy decision; after the
+  JSON CDC decomposition, Slice03 prepares the full YAML matrix and Slice07
+  owns the retained Y-14 document-fidelity requirement. Execution of this
+  candidate remains gated. No fork, shim, npm fallback or acceptance inferred.
 - **Source material:** [source register](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/source-register.md),
   [published composer](https://jsr.io/@eemeli/yaml/2.9.1/src/compose/composer.ts).
 
@@ -1316,3 +1317,14 @@ twice each. [Results](../project07-core-library-research/arc01-format-runtime-ev
 retain the wider omission/null/toJSON table. This strengthens the existing
 historical book finding with runtime evidence; it does not assert the current
 book is unchanged or close a book correction.
+
+### 2026-09-12 CDC supplement — JSON compiler and evidence findings
+
+[Independent JSON CDC](../project07-core-library-research/arc01-format-runtime-evidence/slice02-json-behavior/cdc-verification.md)
+replayed all 354 format attempts and recompiled retained attempt3 from immutable
+d0bb981 source in isolation. NZRO/JSCF emitted defects and UNUS diagnostics
+reproduced; their repair status remains open and root causes remain unresolved.
+JSER's BigInt/cycle position evidence reproduced without a book repair claim.
+The review also records CC's Python aggregation deviation and replaces the
+independent audit with retained Lykn; future YAML preparation includes evidence
+tooling explicitly. The YAML split preserves all families and the YNOD gate.

@@ -1,12 +1,15 @@
 # Slice02 — JSON behavior through Lykn
 
-Status: **CC proposed-done**, pending independent CDC verification.
+Status: **CDC closed** (was CC proposed-done); seven criteria reproduced.
 Expedited Mode. All 17 JSON families executed in 354 attempts; see the
 [closing report](closing-report.md) and [results](artifacts/results.md). Read [Arc01](../arc-plan.md),
 [baseline CDC](../slice01-baseline-and-protocol/cdc-verification.md) and the
 [permission correction](../../arc03-findings-and-integration/slice01-run-permissions/slice-plan.md).
 
 ## Goal and fixed scope
+
+The [JSON CDC](cdc-verification.md) records full replay, live binary drift,
+the isolated pinned-source build, Lykn evidence audit and next YAML preparation.
 
 Execute all J-01–17 families in
 [FM01](../slice01-baseline-and-protocol/artifacts/fixture-matrix.md) through
@@ -121,6 +124,10 @@ commit exact paths, then seek independent reproduction. No empty close sets.
 
 ## Version History
 
+- 2026-09-12 v1.3: CDC replayed all 354 attempts and verified seven criteria;
+  preserved concurrent source work by rebuilding the pinned commit in isolation.
+  Added independent Lykn audit/raw records and split the next YAML work before
+  opening preparation. Historical CC artifacts remain unchanged.
 - 2026-09-12 v1.2: CC executed all 161 variants/354 attempts after own launcher,
   graph and supervisor preflights; retained failures, bytes, measurements and
   authoring findings. Proposed-done only; no source repair, package adoption,
