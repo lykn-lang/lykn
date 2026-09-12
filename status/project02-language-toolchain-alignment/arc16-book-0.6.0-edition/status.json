@@ -4,19 +4,53 @@
   "arc": "arc16-book-0.6.0-edition",
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
-  "currentSlice": "slice07-current-book-drift-refresh",
-  "summary": "The Lykn Book 0.6.0 edition gates release. slice07 is open to refresh current book drift before chapter rewrite slices.",
+  "currentSlice": "slice08-js-fn-return-parity",
+  "summary": "slice07 is CC-closed with refreshed drift inventory; slice08 is open for JS fn return parity before chapter rewrite slices.",
   "slices": [
-    {"id": "slice01-pre-book-decision-gate", "status": "closed-cdc-verified"},
-    {"id": "slice02-dogfood-implementation-runway", "status": "closed-cdc-verified"},
-    {"id": "slice03-cli-scaffold-package-runway", "status": "closed-cdc-verified"},
-    {"id": "slice04-language-surface-runway", "status": "closed-cdc-verified"},
-    {"id": "slice05-book-instruction-bootstrap", "status": "closed-cdc-verified"},
-    {"id": "slice06-book-fence-reachability", "status": "closed-cdc-verified"},
-    {"id": "slice07-current-book-drift-refresh", "status": "open"},
-    {"id": "slice08-toolchain-and-project-structure-chapters", "status": "provisional"},
-    {"id": "slice09-language-surface-chapters", "status": "provisional"},
-    {"id": "slice10-edition-close-and-release-gate", "status": "provisional"}
+    {
+      "id": "slice01-pre-book-decision-gate",
+      "status": "closed-cdc-verified"
+    },
+    {
+      "id": "slice02-dogfood-implementation-runway",
+      "status": "closed-cdc-verified"
+    },
+    {
+      "id": "slice03-cli-scaffold-package-runway",
+      "status": "closed-cdc-verified"
+    },
+    {
+      "id": "slice04-language-surface-runway",
+      "status": "closed-cdc-verified"
+    },
+    {
+      "id": "slice05-book-instruction-bootstrap",
+      "status": "closed-cdc-verified"
+    },
+    {
+      "id": "slice06-book-fence-reachability",
+      "status": "closed-cdc-verified"
+    },
+    {
+      "id": "slice07-current-book-drift-refresh",
+      "status": "closed-cc-cdc-pending"
+    },
+    {
+      "id": "slice08-js-fn-return-parity",
+      "status": "open"
+    },
+    {
+      "id": "slice09-toolchain-and-project-structure-chapters",
+      "status": "provisional"
+    },
+    {
+      "id": "slice10-language-surface-chapters",
+      "status": "provisional"
+    },
+    {
+      "id": "slice11-edition-close-and-release-gate",
+      "status": "provisional"
+    }
   ],
-  "next": "Run slice07 and use its refreshed inventory to decide whether slice08, slice09, or a newly inserted implementation/instruction slice comes next."
+  "next": "Run slice08; after it closes, proceed to slice09 toolchain/project-structure chapters unless slice08 routes new blockers."
 }

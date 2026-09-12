@@ -967,6 +967,18 @@ transformation"* — currently accurate, contradicted by every chapter in
 `D-2607-F6PA`. `src/part2/chapter9/5-exceptions.md:3`. `audit` · Medium-high ·
 `trap` · **Status:** `routed` → DD-57 W-4a, after W-2.
 
+
+### `D-2609-FNRT` — JS compiler rejects `func` returning `fn` that the Rust CLI accepts
+The current book fence gate exposes three closure examples where a `func` with
+`:returns :function` ends with an `fn` expression. The generated doctest path
+uses the JS compiler and fails with `body ends with fn (a statement-only form
+which cannot produce a value)`. A focused Rust CLI probe on the same shape using
+`/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn check` and `lykn
+compile` succeeds and emits a return-checked closure. Current guides also teach
+`fn` as a value-producing anonymous function. `probe` . High . `bug` .
+**Status:** `routed` ->
+`project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice08-js-fn-return-parity/`
+
 ---
 
 ## Closed

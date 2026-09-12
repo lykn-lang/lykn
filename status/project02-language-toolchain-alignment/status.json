@@ -5,29 +5,81 @@
   "plannedRelease": "0.6.0",
   "plan": "../../project02-language-toolchain-alignment/project-plan.md",
   "definitionOfDone": "build/publish reorg, compiler coherence, type declarations, Lykn source linting, book 0.6.0 review, then release.",
-  "sequence": ["arc16-book-0.6.0-edition", "arc09-release-0.6.0"],
+  "sequence": [
+    "arc16-book-0.6.0-edition",
+    "arc09-release-0.6.0"
+  ],
   "current": {
     "arc": "arc16-book-0.6.0-edition",
-    "slice": "slice07-current-book-drift-refresh",
+    "slice": "slice08-js-fn-return-parity",
     "status": "open",
-    "summary": "slice07 refreshes live book drift and routes book-fence failures before chapter rewrites."
+    "summary": "slice08 fixes or disposes D-2609-FNRT before book chapter rewrites."
   },
   "arcs": [
-    {"id": "arc01-build-publish-toolchain", "status": "closed"},
-    {"id": "arc02-type-dts-generation", "status": "closed"},
-    {"id": "arc03-compiler-coherence", "status": "closed"},
-    {"id": "arc04-refactor-tooling", "status": "closed"},
-    {"id": "arc05-lykn-source-linter", "status": "closed"},
-    {"id": "arc06-cross-project-dep-ergonomics", "status": "closed"},
-    {"id": "arc07-docs", "status": "closed"},
-    {"id": "arc08-template-i18n", "status": "closed"},
-    {"id": "arc09-release-0.6.0", "status": "future"},
-    {"id": "arc10-compiler-completion", "status": "closed"},
-    {"id": "arc11-source-only-test-build", "status": "closed"},
-    {"id": "arc12-test-topology", "status": "closed"},
-    {"id": "arc13-expander-coherence", "status": "closed"},
-    {"id": "arc14-comment-retention", "status": "future"},
-    {"id": "arc15-surface-syntax-traps", "status": "closed"},
-    {"id": "arc16-book-0.6.0-edition", "status": "open", "dashboard": "arc16-book-0.6.0-edition/status.html"}
+    {
+      "id": "arc01-build-publish-toolchain",
+      "status": "closed"
+    },
+    {
+      "id": "arc02-type-dts-generation",
+      "status": "closed"
+    },
+    {
+      "id": "arc03-compiler-coherence",
+      "status": "closed"
+    },
+    {
+      "id": "arc04-refactor-tooling",
+      "status": "closed"
+    },
+    {
+      "id": "arc05-lykn-source-linter",
+      "status": "closed"
+    },
+    {
+      "id": "arc06-cross-project-dep-ergonomics",
+      "status": "closed"
+    },
+    {
+      "id": "arc07-docs",
+      "status": "closed"
+    },
+    {
+      "id": "arc08-template-i18n",
+      "status": "closed"
+    },
+    {
+      "id": "arc09-release-0.6.0",
+      "status": "future"
+    },
+    {
+      "id": "arc10-compiler-completion",
+      "status": "closed"
+    },
+    {
+      "id": "arc11-source-only-test-build",
+      "status": "closed"
+    },
+    {
+      "id": "arc12-test-topology",
+      "status": "closed"
+    },
+    {
+      "id": "arc13-expander-coherence",
+      "status": "closed"
+    },
+    {
+      "id": "arc14-comment-retention",
+      "status": "future"
+    },
+    {
+      "id": "arc15-surface-syntax-traps",
+      "status": "closed"
+    },
+    {
+      "id": "arc16-book-0.6.0-edition",
+      "status": "open",
+      "dashboard": "arc16-book-0.6.0-edition/status.html"
+    }
   ]
 }

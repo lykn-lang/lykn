@@ -1,12 +1,11 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — slice07 current-book-drift-refresh opened.**
-> slice01 `pre-book-decision-gate`, slice02 `dogfood-implementation-runway`,
-> slice03 `cli-scaffold-package-runway`, slice04
-> `language-surface-runway`, and slice05 `book-instruction-bootstrap` are
-> closed/CDC-verified. slice06 `book-fence-reachability` is also
-> closed/CDC-verified. slice07 is open to refresh the book drift inventory
-> against current heads before chapter rewrites begin. The operator tightened
+> **Status: OPEN — slice08 js-fn-return-parity opened after slice07 CC close.**
+> slice01 through slice06 are closed/CDC-verified. slice07 is CC-closed with
+> CDC verification pending after refreshing the book drift inventory, repairing
+> active sibling planning-path drift, and routing one live compiler mismatch.
+> slice08 is open to fix or explicitly dispose `D-2609-FNRT` before chapter
+> rewrites begin. The operator tightened
 > the rule: all accepted 0.6.0 implementation work must land
 > before book or writers-guide prose normalizes the final surface. The operator
 > also clarified that the book pass is expected to surface more defects; arc16
@@ -85,10 +84,11 @@ them.
 | **slice04 · language-surface-runway** | Land or explicitly defer the remaining language-surface findings before book examples harden: `D-2608-XPRT` top-of-module exports and `mod.lykn` ownership, `D-2608-LBND` grouped local bindings, and `D-2608-COND` flatter ordered validation branching. | **Closed / CDC-verified** ([closing-report](slice04-language-surface-runway/closing-report.md), [cdc-verification](slice04-language-surface-runway/cdc-verification.md), [slice-doc](slice04-language-surface-runway/slice-plan.md), [ledger](slice04-language-surface-runway/ledger.md), [cc-prompt](slice04-language-surface-runway/cc-prompt.md)) |
 | **slice05 · book-instruction-bootstrap** | Reconcile the book repo and writers-guide instructions after implementation decisions: stale paths, toolchain commands, planned-ToC strategy, `AGENTS.md`/`CLAUDE.md` status, durable close-artifact locations, the implementation-first rule, and the rule that future book-discovered defects become new discoveries/slices instead of prose workarounds. Disposition Bucket 0 rows that are already fixed by sibling-repo commits. | **Closed / CDC-verified** ([closing-report](slice05-book-instruction-bootstrap/closing-report.md), [cdc-verification](slice05-book-instruction-bootstrap/cdc-verification.md), [slice-doc](slice05-book-instruction-bootstrap/slice-plan.md), [ledger](slice05-book-instruction-bootstrap/ledger.md), [cc-prompt](slice05-book-instruction-bootstrap/cc-prompt.md)) |
 | **slice06 · book-fence-reachability** | Make the book's `lisp` fences reachable to automated verification by implementing the repeatable `lykn test --docs --fence <tag>` route from `D-2607-R4NW`. Establish the gate that later chapter slices must run, record first book-level extracted/failing counts, and update sibling instructions from "pending" to the landed command. | **Closed / CDC-verified** ([closing-report](slice06-book-fence-reachability/closing-report.md), [cdc-verification](slice06-book-fence-reachability/cdc-verification.md), [slice-doc](slice06-book-fence-reachability/slice-plan.md), [ledger](slice06-book-fence-reachability/ledger.md), [cc-prompt](slice06-book-fence-reachability/cc-prompt.md)) |
-| **slice07 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth, classify the current book-fence failures, fix or route planning-path instruction drift, and recommend the next executable slice. | **Open** ([slice-plan](slice07-current-book-drift-refresh/slice-plan.md), [ledger](slice07-current-book-drift-refresh/ledger.md), [cc-prompt](slice07-current-book-drift-refresh/cc-prompt.md)) |
-| **slice08 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route. | Provisional / book-facing |
-| **slice09 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
-| **slice10 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
+| **slice07 · current-book-drift-refresh** | Refresh the 0.6.0 book drift inventory against the current book/writers-guide/lang heads after implementation work settles. Replace stale May bucket/thread terminology with live 0.6.0 arc/slice truth, classify the current book-fence failures, fix or route planning-path instruction drift, and recommend the next executable slice. | **Closed by CC; CDC pending** ([closing-report](slice07-current-book-drift-refresh/closing-report.md), [inventory](slice07-current-book-drift-refresh/artifacts/current-book-drift-inventory-2026-09.md), [slice-plan](slice07-current-book-drift-refresh/slice-plan.md), [ledger](slice07-current-book-drift-refresh/ledger.md), [cc-prompt](slice07-current-book-drift-refresh/cc-prompt.md)) |
+| **slice08 · js-fn-return-parity** | Fix or explicitly dispose `D-2609-FNRT`: the book doctest path through the JS compiler rejects `func` returning `fn`, while the Rust CLI accepts and compiles the same form. | **Open** ([slice-plan](slice08-js-fn-return-parity/slice-plan.md), [ledger](slice08-js-fn-return-parity/ledger.md), [cc-prompt](slice08-js-fn-return-parity/cc-prompt.md)) |
+| **slice09 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route. | Provisional / book-facing |
+| **slice10 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | Provisional / book-facing |
+| **slice11 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
 
 slice01 found that D-3 is resolved by the tracked lang planning home, while D-1
 and `D-2607-R4NW` should be treated as one verification strategy: implement a
@@ -115,8 +115,7 @@ run generated
 176 doctest files from 444 blocks and reached Deno execution with 417 passing
 and 27 failing examples; the mixed `lisp` + `lykn` run generated 177 files from
 447 blocks with 420 passing and 27 failing examples. slice07
-`current-book-drift-refresh` is open and should consume that failure inventory
-before book-facing chapter work proceeds.
+`current-book-drift-refresh` consumed that failure inventory, found `D-2609-FNRT`, and inserted slice08 before book-facing chapter work proceeds.
 
 ## 4. Dependencies
 
@@ -214,6 +213,18 @@ normalizes the surface.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+
+### v1.17 - 2026-09-12 (slice07 CC-closed; slice08 opened)
+
+CC closed slice07 with a refreshed current-book drift inventory. The live book
+`--fence lisp` gate still reaches 444 blocks with 417 passing / 27 failing, and
+the mixed `lisp` + `lykn` run still reaches 447 blocks with 420 passing / 27
+failing. Active sibling instruction paths now point at the planning worktree.
+One implementation defect was routed as `D-2609-FNRT`: the JS compiler rejects
+`func` returning `fn` while the Rust CLI accepts it. Opened slice08
+`js-fn-return-parity`; shifted toolchain chapter work to slice09, language
+surface chapter work to slice10, and edition close to slice11.
 
 ### v1.16 - 2026-09-12 (slice07 opened, Expedited Mode)
 
