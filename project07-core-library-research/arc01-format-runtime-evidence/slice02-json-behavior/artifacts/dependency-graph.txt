@@ -1,0 +1,429 @@
+Actual deno info --no-npm --frozen=true --config project.json --json cases.js
+CWD /private/tmp/lykn-p07-trial.0qqwa5_8
+{
+  "version": 1,
+  "roots": [
+    "file:///private/tmp/lykn-p07-trial.0qqwa5_8/cases.js"
+  ],
+  "modules": [
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "@std/json",
+          "code": {
+            "specifier": "jsr:@std/json@1.1.0",
+            "span": {
+              "start": {
+                "line": 199,
+                "character": 30
+              },
+              "end": {
+                "line": 199,
+                "character": 41
+              }
+            }
+          },
+          "isDynamic": true
+        },
+        {
+          "specifier": "@std/streams/text-line-stream",
+          "code": {
+            "specifier": "jsr:@std/streams@1.1.2/text-line-stream",
+            "span": {
+              "start": {
+                "line": 203,
+                "character": 35
+              },
+              "end": {
+                "line": 203,
+                "character": 66
+              }
+            }
+          },
+          "isDynamic": true
+        },
+        {
+          "specifier": "@std/jsonc",
+          "code": {
+            "specifier": "jsr:@std/jsonc@1.0.2",
+            "span": {
+              "start": {
+                "line": 429,
+                "character": 32
+              },
+              "end": {
+                "line": 429,
+                "character": 44
+              }
+            }
+          },
+          "isDynamic": true
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cases.js",
+      "size": 19272,
+      "mediaType": "JavaScript",
+      "specifier": "file:///private/tmp/lykn-p07-trial.0qqwa5_8/cases.js"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./types.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/types.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 1,
+                "character": 31
+              },
+              "end": {
+                "line": 1,
+                "character": 43
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/c3bdcf0a0c1d0348170de2953708845ab49803d4115870da7b13886b552f6d60",
+      "size": 538,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/_common.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/e47f6f94f3f1cb769fcc3fddc6db43867d8d82558430cf8e50221fc51ceb8068",
+      "size": 333,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/_types.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./types.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/types.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 3,
+                "character": 46
+              },
+              "end": {
+                "line": 3,
+                "character": 58
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_types.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/_types.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 4,
+                "character": 33
+              },
+              "end": {
+                "line": 4,
+                "character": 46
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/d65248c1c65803fb8d590df0906da7a3b842749b3dc5efa5c5e108af70d98ad6",
+      "size": 6760,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/canonicalize.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "jsr:@std/streams@^1.1.0/to-transform-stream",
+          "code": {
+            "specifier": "jsr:@std/streams@^1.1.0/to-transform-stream",
+            "span": {
+              "start": {
+                "line": 1,
+                "character": 34
+              },
+              "end": {
+                "line": 1,
+                "character": 79
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./types.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/types.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 2,
+                "character": 31
+              },
+              "end": {
+                "line": 2,
+                "character": 43
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_common.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/_common.ts",
+            "span": {
+              "start": {
+                "line": 3,
+                "character": 22
+              },
+              "end": {
+                "line": 3,
+                "character": 36
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/42ab809c77e3917347abb2ec61f51972799661aa40979e2ec9afffd8db98c381",
+      "size": 6076,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/concatenated_json_parse_stream.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./concatenated_json_parse_stream.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/concatenated_json_parse_stream.ts",
+            "span": {
+              "start": {
+                "line": 21,
+                "character": 14
+              },
+              "end": {
+                "line": 21,
+                "character": 51
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./types.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/types.ts",
+            "span": {
+              "start": {
+                "line": 22,
+                "character": 14
+              },
+              "end": {
+                "line": 22,
+                "character": 26
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./parse_stream.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/parse_stream.ts",
+            "span": {
+              "start": {
+                "line": 23,
+                "character": 14
+              },
+              "end": {
+                "line": 23,
+                "character": 33
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./stringify_stream.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/stringify_stream.ts",
+            "span": {
+              "start": {
+                "line": 24,
+                "character": 14
+              },
+              "end": {
+                "line": 24,
+                "character": 37
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./canonicalize.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/canonicalize.ts",
+            "span": {
+              "start": {
+                "line": 25,
+                "character": 14
+              },
+              "end": {
+                "line": 25,
+                "character": 33
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/84296806b3a79b22c8f3b4c100920915e909ad15383a35d41f513d2f05add776",
+      "size": 655,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/mod.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./types.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/types.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 3,
+                "character": 31
+              },
+              "end": {
+                "line": 3,
+                "character": 43
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_common.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/json/1.1.0/_common.ts",
+            "span": {
+              "start": {
+                "line": 4,
+                "character": 22
+              },
+              "end": {
+                "line": 4,
+                "character": 36
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/5d214ae3985e0fc54ebe8da902c296f55023621b3bc210abeb9835840abe91b4",
+      "size": 2086,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/parse_stream.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/7e7a09f42de51cc23cdbb325555ba59b6e68adf3045fb891adf71b3cb6409b7f",
+      "size": 3154,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/stringify_stream.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/e250eb3a0402bb11bbb5b9d0bc897e90ce2827bfacdc683404fdc7ff69d659a5",
+      "size": 338,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/json/1.1.0/types.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./parse.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/jsonc/1.0.2/parse.ts",
+            "span": {
+              "start": {
+                "line": 21,
+                "character": 14
+              },
+              "end": {
+                "line": 21,
+                "character": 26
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/d20b5f91a0f87c99ad77b39a05130c575462a7d0c85cdc29f3994df327f1f683",
+      "size": 660,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/jsonc/1.0.2/mod.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "jsr:@std/json@^1.0.2/types",
+          "type": {
+            "specifier": "jsr:@std/json@^1.0.2/types",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 3,
+                "character": 31
+              },
+              "end": {
+                "line": 3,
+                "character": 59
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/bc4fb8b9edfcac38bb3444c2744233b88b823fef1cd9e6691d1e40e7cc02beec",
+      "size": 11104,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/jsonc/1.0.2/parse.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/7fd6ae0ec615ecb4171f494a6325170ddae3594e2c82327bb38fce4f3a1c26f9",
+      "size": 4541,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/streams/1.1.2/text_line_stream.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-trial.0qqwa5_8/cache/remote/https/jsr.io/c7e07be442c9f6102a6243a4b79c81cbd2f9b4b3d4013573304a2bb42f2e925e",
+      "size": 4322,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/streams/1.1.2/to_transform_stream.ts"
+    }
+  ],
+  "redirects": {
+    "jsr:@std/json@1.1.0": "https://jsr.io/@std/json/1.1.0/mod.ts",
+    "jsr:@std/json@^1.0.2/types": "https://jsr.io/@std/json/1.1.0/types.ts",
+    "jsr:@std/jsonc@1.0.2": "https://jsr.io/@std/jsonc/1.0.2/mod.ts",
+    "jsr:@std/streams@1.1.2/text-line-stream": "https://jsr.io/@std/streams/1.1.2/text_line_stream.ts",
+    "jsr:@std/streams@^1.1.0/to-transform-stream": "https://jsr.io/@std/streams/1.1.2/to_transform_stream.ts"
+  },
+  "packages": {
+    "@std/json@1.1.0": "@std/json@1.1.0",
+    "@std/json@^1.0.2": "@std/json@1.1.0",
+    "@std/jsonc@1.0.2": "@std/jsonc@1.0.2",
+    "@std/streams@1.1.2": "@std/streams@1.1.2",
+    "@std/streams@^1.1.0": "@std/streams@1.1.2"
+  },
+  "npmPackages": {}
+}

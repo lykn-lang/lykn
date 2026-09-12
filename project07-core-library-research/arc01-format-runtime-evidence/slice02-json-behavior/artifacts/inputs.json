@@ -1,0 +1,3058 @@
+{
+  "protocol": "RP01",
+  "matrix": "FM01",
+  "variants": [
+    {
+      "id": "J-01-edit",
+      "family": "J-01",
+      "op": "file",
+      "args": [
+        "edit"
+      ],
+      "expected": "Only n becomes 2; input unchanged; destination matches independent expected tree",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "262121c5372be8af3ae6ff0d3d138d9e6e1249335222c7f0e02535e35073bb0b"
+      ]
+    },
+    {
+      "id": "J-02-null",
+      "family": "J-02",
+      "op": "parse",
+      "args": [
+        "null"
+      ],
+      "expected": "Parse success with exact original kind/value; successful null is not error",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+      ]
+    },
+    {
+      "id": "J-02-false",
+      "family": "J-02",
+      "op": "parse",
+      "args": [
+        "false"
+      ],
+      "expected": "Parse success with exact original kind/value; successful null is not error",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+      ]
+    },
+    {
+      "id": "J-02-zero",
+      "family": "J-02",
+      "op": "parse",
+      "args": [
+        "0"
+      ],
+      "expected": "Parse success with exact original kind/value; successful null is not error",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      ]
+    },
+    {
+      "id": "J-02-empty-string",
+      "family": "J-02",
+      "op": "parse",
+      "args": [
+        "\"\""
+      ],
+      "expected": "Parse success with exact original kind/value; successful null is not error",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+      ]
+    },
+    {
+      "id": "J-02-array",
+      "family": "J-02",
+      "op": "parse",
+      "args": [
+        "[]"
+      ],
+      "expected": "Parse success with exact original kind/value; successful null is not error",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      ]
+    },
+    {
+      "id": "J-02-object",
+      "family": "J-02",
+      "op": "parse",
+      "args": [
+        "{}"
+      ],
+      "expected": "Parse success with exact original kind/value; successful null is not error",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      ]
+    },
+    {
+      "id": "J-03-1",
+      "family": "J-03",
+      "op": "reject-file",
+      "args": [
+        "{\"x\":"
+      ],
+      "expected": "SyntaxError before destination replacement; destination bytes unchanged",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "aced72cfd547c2dd97712b69b63ce653b7f867ca39c8f5d41723047bebb6a901"
+      ]
+    },
+    {
+      "id": "J-03-2",
+      "family": "J-03",
+      "op": "reject-file",
+      "args": [
+        "{\"x\":1,}"
+      ],
+      "expected": "SyntaxError before destination replacement; destination bytes unchanged",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "9494e756b4958883d33b48d5240ae5a21cf59d453a9720fbb4dfba20a211b66c"
+      ]
+    },
+    {
+      "id": "J-03-3",
+      "family": "J-03",
+      "op": "reject-file",
+      "args": [
+        "//x\n{}"
+      ],
+      "expected": "SyntaxError before destination replacement; destination bytes unchanged",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "5941363c2c265813c7558cea3fd32e7ce7c7aa7fe788c14e2a6b8e47caefa934"
+      ]
+    },
+    {
+      "id": "J-03-4",
+      "family": "J-03",
+      "op": "reject-file",
+      "args": [
+        "[01]"
+      ],
+      "expected": "SyntaxError before destination replacement; destination bytes unchanged",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "8e955b12c5bd485a2f5ad9ec07f09bf0cd19d368b6fed043e8049f6dc17cc899"
+      ]
+    },
+    {
+      "id": "J-03-5",
+      "family": "J-03",
+      "op": "reject-file",
+      "args": [
+        ""
+      ],
+      "expected": "SyntaxError before destination replacement; destination bytes unchanged",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      ]
+    },
+    {
+      "id": "J-03-6",
+      "family": "J-03",
+      "op": "reject-file",
+      "args": [
+        "true junk"
+      ],
+      "expected": "SyntaxError before destination replacement; destination bytes unchanged",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "df9b16b7b578d6197467b6a33d3b1fb64d1e8e234aa31a28a4ad560ff27d069f"
+      ]
+    },
+    {
+      "id": "J-04-1",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "9007199254740991",
+        "9007199254740991"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling 9007199254740991; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "f40b423c2dd95ff2b2f027e22208f438cf7242862e5e746860e697308c9add26",
+        "f40b423c2dd95ff2b2f027e22208f438cf7242862e5e746860e697308c9add26"
+      ]
+    },
+    {
+      "id": "J-05-1",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "9007199254740991"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "f40b423c2dd95ff2b2f027e22208f438cf7242862e5e746860e697308c9add26"
+      ]
+    },
+    {
+      "id": "J-04-2",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "9007199254740992",
+        "9007199254740992"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling 9007199254740992; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c681da39d7273a6a24c15c9cac3a75526ff2ecf8ba4ee60346a0c70c8163bdb2",
+        "c681da39d7273a6a24c15c9cac3a75526ff2ecf8ba4ee60346a0c70c8163bdb2"
+      ]
+    },
+    {
+      "id": "J-05-2",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "9007199254740992"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c681da39d7273a6a24c15c9cac3a75526ff2ecf8ba4ee60346a0c70c8163bdb2"
+      ]
+    },
+    {
+      "id": "J-04-3",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "9007199254740993",
+        "9007199254740992"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling 9007199254740992; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "a1c367c29158357e62a3ff5d3e800fb7698a22396439dbc0a9d4929322afd35d",
+        "c681da39d7273a6a24c15c9cac3a75526ff2ecf8ba4ee60346a0c70c8163bdb2"
+      ]
+    },
+    {
+      "id": "J-05-3",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "9007199254740993"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "a1c367c29158357e62a3ff5d3e800fb7698a22396439dbc0a9d4929322afd35d"
+      ]
+    },
+    {
+      "id": "J-04-4",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "-9007199254740993",
+        "-9007199254740992"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling -9007199254740992; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "7d7aaf1cc7ba0797dd856e1f40fc9f3dd00d70b497e32fb6493faaa587b90435",
+        "83e109bfd7fb4984b47a46f363627c18dbbd7e57e36b05a04cd162d304df72e9"
+      ]
+    },
+    {
+      "id": "J-05-4",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "-9007199254740993"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "7d7aaf1cc7ba0797dd856e1f40fc9f3dd00d70b497e32fb6493faaa587b90435"
+      ]
+    },
+    {
+      "id": "J-04-5",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "0.1",
+        "0.1"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling 0.1; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "14be4b45f18e0d8c67b4f719b5144eee88497e413709d11d85b096d8e2346310",
+        "14be4b45f18e0d8c67b4f719b5144eee88497e413709d11d85b096d8e2346310"
+      ]
+    },
+    {
+      "id": "J-05-5",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "0.1"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "14be4b45f18e0d8c67b4f719b5144eee88497e413709d11d85b096d8e2346310"
+      ]
+    },
+    {
+      "id": "J-04-6",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "1.2300",
+        "1.23"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling 1.23; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8410f0402d0a3a770db9851714606f9803cb7833f20fc2f94dc8f2ef96d1be84",
+        "5dcdf9da31212582fc88326231ab1f9aadc986cc710f5e2946989d5df3afa8d0"
+      ]
+    },
+    {
+      "id": "J-05-6",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "1.2300"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8410f0402d0a3a770db9851714606f9803cb7833f20fc2f94dc8f2ef96d1be84"
+      ]
+    },
+    {
+      "id": "J-04-7",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "1e400",
+        "Infinity"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling Infinity; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "f2bba4568fecd4b9729970732e571ac9373a33fb2d6a960794a41f0f2ecdbc25",
+        "d0067cad9a63e0813759a2bb841051ca73570c0da2e08e840a8eb45db6a7a010"
+      ]
+    },
+    {
+      "id": "J-05-7",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "1e400"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "f2bba4568fecd4b9729970732e571ac9373a33fb2d6a960794a41f0f2ecdbc25"
+      ]
+    },
+    {
+      "id": "J-04-8",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "1e-400",
+        "0"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling 0; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d42d88695a3f56ff2ce7799a2f261ccb39a2b1a5db8ed284b74b9c452804ed16",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      ]
+    },
+    {
+      "id": "J-05-8",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "1e-400"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d42d88695a3f56ff2ce7799a2f261ccb39a2b1a5db8ed284b74b9c452804ed16"
+      ]
+    },
+    {
+      "id": "J-04-9",
+      "family": "J-04",
+      "op": "number",
+      "args": [
+        "-0",
+        "-0"
+      ],
+      "expected": "Retain lexeme; independently expected Number spelling -0; serialized normalization/loss reported",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "ed79f26d03f412bde3db206601a698e0bb451bea9e3cc25289636ac17ea74b0a",
+        "ed79f26d03f412bde3db206601a698e0bb451bea9e3cc25289636ac17ea74b0a"
+      ]
+    },
+    {
+      "id": "J-05-9",
+      "family": "J-05",
+      "op": "exact",
+      "args": [
+        "-0"
+      ],
+      "expected": "Retain original string; BigInt directly from integral token; characterize source reviver/rawJSON availability and bytes",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "ed79f26d03f412bde3db206601a698e0bb451bea9e3cc25289636ac17ea74b0a"
+      ]
+    },
+    {
+      "id": "J-06-top",
+      "family": "J-06",
+      "op": "duplicates",
+      "args": [
+        "{\"x\":1,\"x\":2}"
+      ],
+      "expected": "Last value 2; fixture contains two equal decoded names; reviver visits surviving key only",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d38245cfdb5d2239d67fe2a719312768b668a6928d8d97d04fbce83215e50b44"
+      ]
+    },
+    {
+      "id": "J-06-nested",
+      "family": "J-06",
+      "op": "duplicates",
+      "args": [
+        "{\"outer\":{\"x\":1,\"x\":2}}"
+      ],
+      "expected": "Last value 2; fixture contains two equal decoded names; reviver visits surviving key only",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "6a6326e1e2a5378cb1ded9489bb633c97f840a185b7f24a2bc3b638ebc439231"
+      ]
+    },
+    {
+      "id": "J-06-escaped",
+      "family": "J-06",
+      "op": "duplicates",
+      "args": [
+        "{\"a\":1,\"\\u0061\":2}"
+      ],
+      "expected": "Last value 2; fixture contains two equal decoded names; reviver visits surviving key only",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c95ba945b310a34906bbfc28ce1346b87741d5a2b3066d1d3ecfa0acbd86392c"
+      ]
+    },
+    {
+      "id": "J-07-absent",
+      "family": "J-07",
+      "op": "presence",
+      "args": [
+        "{}",
+        "absent"
+      ],
+      "expected": "Distinguish own presence, undefined and null; nullish defaults preserve false/0/empty",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "5ad38304b535c2987dbd24657c1a11b884984ff600d9f389deb0d4e634fee792"
+      ]
+    },
+    {
+      "id": "J-07-null",
+      "family": "J-07",
+      "op": "presence",
+      "args": [
+        "{\"x\":null}",
+        "null"
+      ],
+      "expected": "Distinguish own presence, undefined and null; nullish defaults preserve false/0/empty",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c6b8df5aba33a39cbdee46ffaf77fae93ea2aa7d99d66408162b05a42105bd71",
+        "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+      ]
+    },
+    {
+      "id": "J-07-false",
+      "family": "J-07",
+      "op": "presence",
+      "args": [
+        "{\"x\":false}",
+        "false"
+      ],
+      "expected": "Distinguish own presence, undefined and null; nullish defaults preserve false/0/empty",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "45149ebe187b34909058477d83b3aa34fcab4cfe6cb106fd614595a479954085",
+        "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+      ]
+    },
+    {
+      "id": "J-07-zero",
+      "family": "J-07",
+      "op": "presence",
+      "args": [
+        "{\"x\":0}",
+        "zero"
+      ],
+      "expected": "Distinguish own presence, undefined and null; nullish defaults preserve false/0/empty",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5bff452c5ed93f2e87a23984db5a15050c6477335fdec955b70063bb2d692bf1",
+        "f9194e73f9e9459e3450ea10a179cdf77aafa695beecd3b9344a98d111622243"
+      ]
+    },
+    {
+      "id": "J-07-empty",
+      "family": "J-07",
+      "op": "presence",
+      "args": [
+        "{\"x\":\"\"}",
+        "empty"
+      ],
+      "expected": "Distinguish own presence, undefined and null; nullish defaults preserve false/0/empty",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "7d73b63cce8409d230db137d8be7f40e4d49bc4d79735ef9835ebd4a9d68106d",
+        "2e1cfa82b035c26cbbbdae632cea070514eb8b773f616aaeaf668e2f0be8f10d"
+      ]
+    },
+    {
+      "id": "J-07-undefined",
+      "family": "J-07",
+      "op": "presence",
+      "args": [
+        "{}",
+        "undefined"
+      ],
+      "expected": "Distinguish own presence, undefined and null; nullish defaults preserve false/0/empty",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "eb045d78d273107348b0300c01d29b7552d622abbc6faf81b3ec55359aa9950c"
+      ]
+    },
+    {
+      "id": "J-08-keys",
+      "family": "J-08",
+      "op": "keys",
+      "args": [
+        "{\"first-name\":0,\"firstName\":1,\"\":2,\"a:b\":3,\"a/b\":4,\"~\":5,\"__proto__\":6,\"constructor\":7,\"toString\":8}"
+      ],
+      "expected": "Exact nine own keys; each value increments by 10; input prototype and default object prototype unchanged",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "75152af5a1e46de38f65be71703d4e72bc73c6d007baf0797251ec45d1fd1f52"
+      ]
+    },
+    {
+      "id": "J-09-undefined-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "undefined",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "eb045d78d273107348b0300c01d29b7552d622abbc6faf81b3ec55359aa9950c",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-undefined-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "undefined",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "eb045d78d273107348b0300c01d29b7552d622abbc6faf81b3ec55359aa9950c",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-undefined-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "undefined",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "eb045d78d273107348b0300c01d29b7552d622abbc6faf81b3ec55359aa9950c",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-function-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "function",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-function-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "function",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-function-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "function",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-symbol-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "symbol",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "b76a7ca153c24671658335bbd08946350ffc621fa1c516e7123095d4ffd5c581",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-symbol-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "symbol",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "b76a7ca153c24671658335bbd08946350ffc621fa1c516e7123095d4ffd5c581",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-symbol-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "symbol",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "b76a7ca153c24671658335bbd08946350ffc621fa1c516e7123095d4ffd5c581",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-nan-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "nan",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b2d5b4678781e53038e91ea5324530a03f27dc1d0e5f6c9bc9d493a23be9de0",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-nan-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "nan",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b2d5b4678781e53038e91ea5324530a03f27dc1d0e5f6c9bc9d493a23be9de0",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-nan-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "nan",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b2d5b4678781e53038e91ea5324530a03f27dc1d0e5f6c9bc9d493a23be9de0",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-infinity-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "infinity",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d79987051a2552ac1895e06b97d12d8cfe5924872f61dba59c15552bcc832f9e",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-infinity-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "infinity",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d79987051a2552ac1895e06b97d12d8cfe5924872f61dba59c15552bcc832f9e",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-infinity-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "infinity",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d79987051a2552ac1895e06b97d12d8cfe5924872f61dba59c15552bcc832f9e",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-minus-infinity-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "minus-infinity",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9f27e16e95addca30e93983c27335fa0f66b668b293dbd2e9d68705936b304a2",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-minus-infinity-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "minus-infinity",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9f27e16e95addca30e93983c27335fa0f66b668b293dbd2e9d68705936b304a2",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-minus-infinity-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "minus-infinity",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9f27e16e95addca30e93983c27335fa0f66b668b293dbd2e9d68705936b304a2",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-bigint-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "bigint",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "75d012fe28656e0a51e783b2a42c2b30b807009894b8a0cc0ea5e54f928d93a2",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-bigint-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "bigint",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "75d012fe28656e0a51e783b2a42c2b30b807009894b8a0cc0ea5e54f928d93a2",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-bigint-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "bigint",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "75d012fe28656e0a51e783b2a42c2b30b807009894b8a0cc0ea5e54f928d93a2",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-cycle-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "cycle",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c501935a6b2b247d007e9860becbe4c13d6561af9fc8b73ba24c8b2a7a80cb22",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-cycle-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "cycle",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c501935a6b2b247d007e9860becbe4c13d6561af9fc8b73ba24c8b2a7a80cb22",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-cycle-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "cycle",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c501935a6b2b247d007e9860becbe4c13d6561af9fc8b73ba24c8b2a7a80cb22",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-date-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "date",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "0e87632cd46bd4907c516317eb6d81fe0f921a23c7643018f21292894b470681",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-date-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "date",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "0e87632cd46bd4907c516317eb6d81fe0f921a23c7643018f21292894b470681",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-date-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "date",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "0e87632cd46bd4907c516317eb6d81fe0f921a23c7643018f21292894b470681",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-map-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "map",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "60be9861750facbfad8758254a2f76c0cfe78d54459a3bc187d49b1401fcd8e8",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-map-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "map",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "60be9861750facbfad8758254a2f76c0cfe78d54459a3bc187d49b1401fcd8e8",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-map-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "map",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "60be9861750facbfad8758254a2f76c0cfe78d54459a3bc187d49b1401fcd8e8",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-set-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "set",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "6ee0eb490ff832101cf82a3d387c35f29e4230be786978f7acf9e811febf6723",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-set-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "set",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "6ee0eb490ff832101cf82a3d387c35f29e4230be786978f7acf9e811febf6723",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-set-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "set",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "6ee0eb490ff832101cf82a3d387c35f29e4230be786978f7acf9e811febf6723",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-09-sparse-top",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "sparse",
+        "top"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d7af78c1f4c4a2defc54302095df328cc37c57ae94b7b45fb62a1a437eb3dcc3",
+        "28720365c5e7476a011e4f43ac003ee5f16247a263b9d623aa85ed311d73bf39"
+      ]
+    },
+    {
+      "id": "J-09-sparse-object",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "sparse",
+        "object"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d7af78c1f4c4a2defc54302095df328cc37c57ae94b7b45fb62a1a437eb3dcc3",
+        "2958d416d08aa5a472d7b509036cb7eafd542add84527e66a145ea64cb4cdc75"
+      ]
+    },
+    {
+      "id": "J-09-sparse-array",
+      "family": "J-09",
+      "op": "unsupported",
+      "args": [
+        "sparse",
+        "array"
+      ],
+      "expected": "Characterize tagged original vs omission/null/throw/toJSON/coercion; BigInt and cycles throw",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d7af78c1f4c4a2defc54302095df328cc37c57ae94b7b45fb62a1a437eb3dcc3",
+        "dbe42cc09c16704aa3d60127c60b4e1646fc6da1d4764aa517de053e65a663d7"
+      ]
+    },
+    {
+      "id": "J-10-native-0",
+      "family": "J-10",
+      "op": "order",
+      "args": [
+        "{\"a\":1,\"\u00e9\":2,\"\ud83d\ude00\":3,\"nested\":{\"2\":2,\"10\":10,\"a\":0}}",
+        "{\"nested\":{\"a\":0,\"10\":10,\"2\":2},\"\ud83d\ude00\":3,\"\u00e9\":2,\"a\":1}",
+        "0"
+      ],
+      "expected": "Same insertion-order value serializes deterministically; alternate insertion order need not match",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "1e2f703bd7e303e9832064172959b23f36f2c89a305fd0134d55061bbeb16723",
+        "dc8fa0aab92fce1e2318500e10e189c460a51c3e20211d3636ea4f8478804fe1",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      ]
+    },
+    {
+      "id": "J-10-native-2",
+      "family": "J-10",
+      "op": "order",
+      "args": [
+        "{\"a\":1,\"\u00e9\":2,\"\ud83d\ude00\":3,\"nested\":{\"2\":2,\"10\":10,\"a\":0}}",
+        "{\"nested\":{\"a\":0,\"10\":10,\"2\":2},\"\ud83d\ude00\":3,\"\u00e9\":2,\"a\":1}",
+        "2"
+      ],
+      "expected": "Same insertion-order value serializes deterministically; alternate insertion order need not match",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "1e2f703bd7e303e9832064172959b23f36f2c89a305fd0134d55061bbeb16723",
+        "dc8fa0aab92fce1e2318500e10e189c460a51c3e20211d3636ea4f8478804fe1",
+        "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+      ]
+    },
+    {
+      "id": "J-10-native-10",
+      "family": "J-10",
+      "op": "order",
+      "args": [
+        "{\"a\":1,\"\u00e9\":2,\"\ud83d\ude00\":3,\"nested\":{\"2\":2,\"10\":10,\"a\":0}}",
+        "{\"nested\":{\"a\":0,\"10\":10,\"2\":2},\"\ud83d\ude00\":3,\"\u00e9\":2,\"a\":1}",
+        "10"
+      ],
+      "expected": "Same insertion-order value serializes deterministically; alternate insertion order need not match",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "1e2f703bd7e303e9832064172959b23f36f2c89a305fd0134d55061bbeb16723",
+        "dc8fa0aab92fce1e2318500e10e189c460a51c3e20211d3636ea4f8478804fe1",
+        "4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"
+      ]
+    },
+    {
+      "id": "J-10-canonical",
+      "family": "J-10",
+      "op": "canonical",
+      "args": [
+        "{\"a\":1,\"\u00e9\":2,\"\ud83d\ude00\":3,\"nested\":{\"2\":2,\"10\":10,\"a\":0}}",
+        "{\"nested\":{\"a\":0,\"10\":10,\"2\":2},\"\ud83d\ude00\":3,\"\u00e9\":2,\"a\":1}"
+      ],
+      "expected": "Both canonical APIs give equal output across insertion orders and equal UTF-8 bytes",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "1e2f703bd7e303e9832064172959b23f36f2c89a305fd0134d55061bbeb16723",
+        "dc8fa0aab92fce1e2318500e10e189c460a51c3e20211d3636ea4f8478804fe1"
+      ]
+    },
+    {
+      "id": "J-10-canonical-nan",
+      "family": "J-10",
+      "op": "canonical-reject",
+      "args": [
+        "nan"
+      ],
+      "expected": "Canonicalization rejects nonfinite input with TypeError",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b2d5b4678781e53038e91ea5324530a03f27dc1d0e5f6c9bc9d493a23be9de0"
+      ]
+    },
+    {
+      "id": "J-10-canonical-infinity",
+      "family": "J-10",
+      "op": "canonical-reject",
+      "args": [
+        "infinity"
+      ],
+      "expected": "Canonicalization rejects nonfinite input with TypeError",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "d79987051a2552ac1895e06b97d12d8cfe5924872f61dba59c15552bcc832f9e"
+      ]
+    },
+    {
+      "id": "J-10-canonical-minus-infinity",
+      "family": "J-10",
+      "op": "canonical-reject",
+      "args": [
+        "minus-infinity"
+      ],
+      "expected": "Canonicalization rejects nonfinite input with TypeError",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9f27e16e95addca30e93983c27335fa0f66b668b293dbd2e9d68705936b304a2"
+      ]
+    },
+    {
+      "id": "J-11-escapes-replace",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "2271756f74653a205c22206261636b736c6173683a205c5c20636f6e74726f6c3a205c7530303031206e65776c696e653a205c6e22",
+        "replace"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "973527d267ce0ef0288ead2dd04ebff2ec6339f46bc048ed77e15e99bbd2912a",
+        "7ab3778776cde4fa728a162a53ad3abcc967d1bd7361039e0942888240c4ce86"
+      ]
+    },
+    {
+      "id": "J-11-escapes-fatal",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "2271756f74653a205c22206261636b736c6173683a205c5c20636f6e74726f6c3a205c7530303031206e65776c696e653a205c6e22",
+        "fatal"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "973527d267ce0ef0288ead2dd04ebff2ec6339f46bc048ed77e15e99bbd2912a",
+        "79e216f9ba0184b79f347dceaae2234cbe4646d8761a96002936001d882c5e14"
+      ]
+    },
+    {
+      "id": "J-11-escapes-stream-1",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "2271756f74653a205c22206261636b736c6173683a205c5c20636f6e74726f6c3a205c7530303031206e65776c696e653a205c6e22",
+        "stream-1"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "973527d267ce0ef0288ead2dd04ebff2ec6339f46bc048ed77e15e99bbd2912a",
+        "29b48932e3b4af06690778f20598ed04d778e217b5e332fb95372e9558f5eaf3"
+      ]
+    },
+    {
+      "id": "J-11-emoji-replace",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "22f09f988022",
+        "replace"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "2e544c116d7b8907c953e7534688e32dcb9867e54cef084fe8d78aa7fbe5de18",
+        "7ab3778776cde4fa728a162a53ad3abcc967d1bd7361039e0942888240c4ce86"
+      ]
+    },
+    {
+      "id": "J-11-emoji-fatal",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "22f09f988022",
+        "fatal"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "2e544c116d7b8907c953e7534688e32dcb9867e54cef084fe8d78aa7fbe5de18",
+        "79e216f9ba0184b79f347dceaae2234cbe4646d8761a96002936001d882c5e14"
+      ]
+    },
+    {
+      "id": "J-11-emoji-stream-1",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "22f09f988022",
+        "stream-1"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "2e544c116d7b8907c953e7534688e32dcb9867e54cef084fe8d78aa7fbe5de18",
+        "29b48932e3b4af06690778f20598ed04d778e217b5e332fb95372e9558f5eaf3"
+      ]
+    },
+    {
+      "id": "J-11-surrogate-replace",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "225c756438303022",
+        "replace"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c0e23b44d6c429da0c6f89d136369d785ccc33efd42d864b40827ceb2f7d86e5",
+        "7ab3778776cde4fa728a162a53ad3abcc967d1bd7361039e0942888240c4ce86"
+      ]
+    },
+    {
+      "id": "J-11-surrogate-fatal",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "225c756438303022",
+        "fatal"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c0e23b44d6c429da0c6f89d136369d785ccc33efd42d864b40827ceb2f7d86e5",
+        "79e216f9ba0184b79f347dceaae2234cbe4646d8761a96002936001d882c5e14"
+      ]
+    },
+    {
+      "id": "J-11-surrogate-stream-1",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "225c756438303022",
+        "stream-1"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "c0e23b44d6c429da0c6f89d136369d785ccc33efd42d864b40827ceb2f7d86e5",
+        "29b48932e3b4af06690778f20598ed04d778e217b5e332fb95372e9558f5eaf3"
+      ]
+    },
+    {
+      "id": "J-11-bom-replace",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "efbbbf7b2278223a317d0a",
+        "replace"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "dd11ff5b54db4ca331bc8409eae7f6596dc2ab2debea81cdc1890b0784746c28",
+        "7ab3778776cde4fa728a162a53ad3abcc967d1bd7361039e0942888240c4ce86"
+      ]
+    },
+    {
+      "id": "J-11-bom-fatal",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "efbbbf7b2278223a317d0a",
+        "fatal"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "dd11ff5b54db4ca331bc8409eae7f6596dc2ab2debea81cdc1890b0784746c28",
+        "79e216f9ba0184b79f347dceaae2234cbe4646d8761a96002936001d882c5e14"
+      ]
+    },
+    {
+      "id": "J-11-bom-stream-1",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "efbbbf7b2278223a317d0a",
+        "stream-1"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "dd11ff5b54db4ca331bc8409eae7f6596dc2ab2debea81cdc1890b0784746c28",
+        "29b48932e3b4af06690778f20598ed04d778e217b5e332fb95372e9558f5eaf3"
+      ]
+    },
+    {
+      "id": "J-11-crlf-replace",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "7b0d0a2278223a310d0a7d0d0a",
+        "replace"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "2789547b7f202c36b96fec1baca296d948dd1061db3400a323b978110c1abbab",
+        "7ab3778776cde4fa728a162a53ad3abcc967d1bd7361039e0942888240c4ce86"
+      ]
+    },
+    {
+      "id": "J-11-crlf-fatal",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "7b0d0a2278223a310d0a7d0d0a",
+        "fatal"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "2789547b7f202c36b96fec1baca296d948dd1061db3400a323b978110c1abbab",
+        "79e216f9ba0184b79f347dceaae2234cbe4646d8761a96002936001d882c5e14"
+      ]
+    },
+    {
+      "id": "J-11-crlf-stream-1",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "7b0d0a2278223a310d0a7d0d0a",
+        "stream-1"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "2789547b7f202c36b96fec1baca296d948dd1061db3400a323b978110c1abbab",
+        "29b48932e3b4af06690778f20598ed04d778e217b5e332fb95372e9558f5eaf3"
+      ]
+    },
+    {
+      "id": "J-11-no-lf-replace",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "7b2278223a317d",
+        "replace"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "f330e5ec089ed106255d811e0c81358385e974584597c070cb3660b3db3cba77",
+        "7ab3778776cde4fa728a162a53ad3abcc967d1bd7361039e0942888240c4ce86"
+      ]
+    },
+    {
+      "id": "J-11-no-lf-fatal",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "7b2278223a317d",
+        "fatal"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "f330e5ec089ed106255d811e0c81358385e974584597c070cb3660b3db3cba77",
+        "79e216f9ba0184b79f347dceaae2234cbe4646d8761a96002936001d882c5e14"
+      ]
+    },
+    {
+      "id": "J-11-no-lf-stream-1",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "7b2278223a317d",
+        "stream-1"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "f330e5ec089ed106255d811e0c81358385e974584597c070cb3660b3db3cba77",
+        "29b48932e3b4af06690778f20598ed04d778e217b5e332fb95372e9558f5eaf3"
+      ]
+    },
+    {
+      "id": "J-11-invalid-replace",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "22ff22",
+        "replace"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "929cb98bd8560b412914d2bcf011378b3b51c5414fb8854a96267c5f5aae0f20",
+        "7ab3778776cde4fa728a162a53ad3abcc967d1bd7361039e0942888240c4ce86"
+      ]
+    },
+    {
+      "id": "J-11-invalid-fatal",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "22ff22",
+        "fatal"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "929cb98bd8560b412914d2bcf011378b3b51c5414fb8854a96267c5f5aae0f20",
+        "79e216f9ba0184b79f347dceaae2234cbe4646d8761a96002936001d882c5e14"
+      ]
+    },
+    {
+      "id": "J-11-invalid-stream-1",
+      "family": "J-11",
+      "op": "decode",
+      "args": [
+        "22ff22",
+        "stream-1"
+      ],
+      "expected": "Preserve raw bytes and decoded string; characterize BOM/invalid decoding and serialization; fatal decoder rejects invalid UTF-8",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "929cb98bd8560b412914d2bcf011378b3b51c5414fb8854a96267c5f5aae0f20",
+        "29b48932e3b4af06690778f20598ed04d778e217b5e332fb95372e9558f5eaf3"
+      ]
+    },
+    {
+      "id": "J-12-native",
+      "family": "J-12",
+      "op": "parse",
+      "args": [
+        "// before\n{\"n\":1, /* inline */}\n"
+      ],
+      "expected": "Native JSON rejects comments/trailing comma",
+      "phase": "native",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "45eccbebc56ba82f922f8453d7702e4582499895e2cce3f4695cbffd7232369f"
+      ]
+    },
+    {
+      "id": "J-12-noop",
+      "family": "J-12",
+      "op": "jsonc",
+      "args": [
+        "// before\n{\"n\":1, /* inline */}\n",
+        "noop"
+      ],
+      "expected": "JSONC accepts; native rewrite loses comments; edit only changes n value to 2",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "45eccbebc56ba82f922f8453d7702e4582499895e2cce3f4695cbffd7232369f",
+        "f4d960247b7ae9c19f3dcd5361b6dca9dfdcfac14dbd72bf232d642ed49ba9f6"
+      ]
+    },
+    {
+      "id": "J-12-edit",
+      "family": "J-12",
+      "op": "jsonc",
+      "args": [
+        "// before\n{\"n\":1, /* inline */}\n",
+        "edit"
+      ],
+      "expected": "JSONC accepts; native rewrite loses comments; edit only changes n value to 2",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "45eccbebc56ba82f922f8453d7702e4582499895e2cce3f4695cbffd7232369f",
+        "262121c5372be8af3ae6ff0d3d138d9e6e1249335222c7f0e02535e35073bb0b"
+      ]
+    },
+    {
+      "id": "J-13-blank-1-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n\n{\"n\":2}\n",
+        "1",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8cc63509a02bd6f9b67c92cdfaac6bd6d59dadaf1e7eb4c47399032442e0ea9d",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-blank-1-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n\n{\"n\":2}\n",
+        "1",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8cc63509a02bd6f9b67c92cdfaac6bd6d59dadaf1e7eb4c47399032442e0ea9d",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-blank-7-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n\n{\"n\":2}\n",
+        "7",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8cc63509a02bd6f9b67c92cdfaac6bd6d59dadaf1e7eb4c47399032442e0ea9d",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-blank-7-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n\n{\"n\":2}\n",
+        "7",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8cc63509a02bd6f9b67c92cdfaac6bd6d59dadaf1e7eb4c47399032442e0ea9d",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-blank-0-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n\n{\"n\":2}\n",
+        "0",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8cc63509a02bd6f9b67c92cdfaac6bd6d59dadaf1e7eb4c47399032442e0ea9d",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-blank-0-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n\n{\"n\":2}\n",
+        "0",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "8cc63509a02bd6f9b67c92cdfaac6bd6d59dadaf1e7eb4c47399032442e0ea9d",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-crlf-1-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\r\n{\"n\":2}\r\n",
+        "1",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ee82f33cdb4a5b4cdd2071c99b748141cd6b7a5bc887aeff5eaa7bd21aa8b19",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-crlf-1-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\r\n{\"n\":2}\r\n",
+        "1",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ee82f33cdb4a5b4cdd2071c99b748141cd6b7a5bc887aeff5eaa7bd21aa8b19",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-crlf-7-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\r\n{\"n\":2}\r\n",
+        "7",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ee82f33cdb4a5b4cdd2071c99b748141cd6b7a5bc887aeff5eaa7bd21aa8b19",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-crlf-7-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\r\n{\"n\":2}\r\n",
+        "7",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ee82f33cdb4a5b4cdd2071c99b748141cd6b7a5bc887aeff5eaa7bd21aa8b19",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-crlf-0-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\r\n{\"n\":2}\r\n",
+        "0",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ee82f33cdb4a5b4cdd2071c99b748141cd6b7a5bc887aeff5eaa7bd21aa8b19",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-crlf-0-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\r\n{\"n\":2}\r\n",
+        "0",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ee82f33cdb4a5b4cdd2071c99b748141cd6b7a5bc887aeff5eaa7bd21aa8b19",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-no-lf-1-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n{\"n\":2}",
+        "1",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b436fe1b316bb4ca2aea0448c9933ff3ade1d043e5fbe5d8475190637014780",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-no-lf-1-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n{\"n\":2}",
+        "1",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b436fe1b316bb4ca2aea0448c9933ff3ade1d043e5fbe5d8475190637014780",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-no-lf-7-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n{\"n\":2}",
+        "7",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b436fe1b316bb4ca2aea0448c9933ff3ade1d043e5fbe5d8475190637014780",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-no-lf-7-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n{\"n\":2}",
+        "7",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b436fe1b316bb4ca2aea0448c9933ff3ade1d043e5fbe5d8475190637014780",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-no-lf-0-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n{\"n\":2}",
+        "0",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b436fe1b316bb4ca2aea0448c9933ff3ade1d043e5fbe5d8475190637014780",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-no-lf-0-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\n{\"n\":2}",
+        "0",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "9b436fe1b316bb4ca2aea0448c9933ff3ade1d043e5fbe5d8475190637014780",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-malformed-1-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\nBAD\n{\"n\":2}\n",
+        "1",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4c55b68661d5a55d44cda9916c3b90fa4b590d229f4b4c4a7c6b5c5b182e9924",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-malformed-1-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\nBAD\n{\"n\":2}\n",
+        "1",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4c55b68661d5a55d44cda9916c3b90fa4b590d229f4b4c4a7c6b5c5b182e9924",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-malformed-7-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\nBAD\n{\"n\":2}\n",
+        "7",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4c55b68661d5a55d44cda9916c3b90fa4b590d229f4b4c4a7c6b5c5b182e9924",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-malformed-7-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\nBAD\n{\"n\":2}\n",
+        "7",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4c55b68661d5a55d44cda9916c3b90fa4b590d229f4b4c4a7c6b5c5b182e9924",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-13-malformed-0-lines",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\nBAD\n{\"n\":2}\n",
+        "0",
+        "lines"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4c55b68661d5a55d44cda9916c3b90fa4b590d229f4b4c4a7c6b5c5b182e9924",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b"
+      ]
+    },
+    {
+      "id": "J-13-malformed-0-raw",
+      "family": "J-13",
+      "op": "ndjson",
+      "args": [
+        "{\"n\":1}\nBAD\n{\"n\":2}\n",
+        "0",
+        "raw"
+      ],
+      "expected": "Line framing: preserve two records (malformed: prefix 1 then syntax error); raw chunks are negative controls",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4c55b68661d5a55d44cda9916c3b90fa4b590d229f4b4c4a7c6b5c5b182e9924",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "d7439bee24773bcbfa2d0a97947ee36227b10d1022b1a55847e928965bb6bfde"
+      ]
+    },
+    {
+      "id": "J-14-mixed-1",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"a\":1}[2]true null \"x\" 12 34",
+        "1"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "999baed07819e7e34618ec9ed2e18864fd098a837822be438a444d34660dd40a",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+      ]
+    },
+    {
+      "id": "J-14-mixed-7",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"a\":1}[2]true null \"x\" 12 34",
+        "7"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "999baed07819e7e34618ec9ed2e18864fd098a837822be438a444d34660dd40a",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451"
+      ]
+    },
+    {
+      "id": "J-14-mixed-0",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"a\":1}[2]true null \"x\" 12 34",
+        "0"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "999baed07819e7e34618ec9ed2e18864fd098a837822be438a444d34660dd40a",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      ]
+    },
+    {
+      "id": "J-14-escaped-1",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"s\":\"} [ \\\"\"}[2]",
+        "1"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "b674a51fee0f2ea575d9e0a7bcb0e75e74993d2f925858ddddd7b3742f60c394",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+      ]
+    },
+    {
+      "id": "J-14-escaped-7",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"s\":\"} [ \\\"\"}[2]",
+        "7"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "b674a51fee0f2ea575d9e0a7bcb0e75e74993d2f925858ddddd7b3742f60c394",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451"
+      ]
+    },
+    {
+      "id": "J-14-escaped-0",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"s\":\"} [ \\\"\"}[2]",
+        "0"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "b674a51fee0f2ea575d9e0a7bcb0e75e74993d2f925858ddddd7b3742f60c394",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      ]
+    },
+    {
+      "id": "J-14-truncated-1",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"a\":1}{\"b\":",
+        "1"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4088d20a502e9978afddfeab633b61655c9722c5e8a772b2fd90dc173f8abcd5",
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+      ]
+    },
+    {
+      "id": "J-14-truncated-7",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"a\":1}{\"b\":",
+        "7"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4088d20a502e9978afddfeab633b61655c9722c5e8a772b2fd90dc173f8abcd5",
+        "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451"
+      ]
+    },
+    {
+      "id": "J-14-truncated-0",
+      "family": "J-14",
+      "op": "concat",
+      "args": [
+        "{\"a\":1}{\"b\":",
+        "0"
+      ],
+      "expected": "Characterize ordered values, scalar boundaries and incomplete final value; no arbitrary-chunk assumption",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "4088d20a502e9978afddfeab633b61655c9722c5e8a772b2fd90dc173f8abcd5",
+        "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      ]
+    },
+    {
+      "id": "J-15-lines-valid",
+      "family": "J-15",
+      "op": "stringify",
+      "args": [
+        "lines",
+        "valid"
+      ],
+      "expected": "Exact prefix/suffix bytes; matching framing yields two records, mismatched framing separately rejected/characterized",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b",
+        "ec654fac9599f62e79e2706abef23dfb7c07c08185aa86db4d8695f0b718d1b3"
+      ]
+    },
+    {
+      "id": "J-15-lines-wrong-framing",
+      "family": "J-15",
+      "op": "stringify",
+      "args": [
+        "lines",
+        "wrong-framing"
+      ],
+      "expected": "Exact prefix/suffix bytes; matching framing yields two records, mismatched framing separately rejected/characterized",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "5ea44c3961f16643e614435496b16115aa6d75458b5cc3fd5398aae291f3126b",
+        "b535fa9c13df31425f7886e7d4d185cbb4196ef20830a314841755268d0719bf"
+      ]
+    },
+    {
+      "id": "J-15-rs-valid",
+      "family": "J-15",
+      "op": "stringify",
+      "args": [
+        "rs",
+        "valid"
+      ],
+      "expected": "Exact prefix/suffix bytes; matching framing yields two records, mismatched framing separately rejected/characterized",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "571b0e35550136585f653a70460974d32f85879142300ecb361eff423ac62cd4",
+        "ec654fac9599f62e79e2706abef23dfb7c07c08185aa86db4d8695f0b718d1b3"
+      ]
+    },
+    {
+      "id": "J-15-rs-wrong-framing",
+      "family": "J-15",
+      "op": "stringify",
+      "args": [
+        "rs",
+        "wrong-framing"
+      ],
+      "expected": "Exact prefix/suffix bytes; matching framing yields two records, mismatched framing separately rejected/characterized",
+      "phase": "package",
+      "repeats": 2,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "571b0e35550136585f653a70460974d32f85879142300ecb361eff423ac62cd4",
+        "b535fa9c13df31425f7886e7d4d185cbb4196ef20830a314841755268d0719bf"
+      ]
+    },
+    {
+      "id": "J-16-depth-16",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "depth",
+        "16"
+      ],
+      "expected": "Parsed nested array depth equals declared depth; under supervisor budgets",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "ded32129b05bfc16ce501e654a169960583352cbc974824ed16ce94855904386",
+        "b17ef6d19c7a5b1ee83b907c595526dcb1eb06db8227d650d5dda0a9f4ce8cd9"
+      ]
+    },
+    {
+      "id": "J-16-depth-64",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "depth",
+        "64"
+      ],
+      "expected": "Parsed nested array depth equals declared depth; under supervisor budgets",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "ded32129b05bfc16ce501e654a169960583352cbc974824ed16ce94855904386",
+        "a68b412c4282555f15546cf6e1fc42893b7e07f271557ceb021821098dd66c1b"
+      ]
+    },
+    {
+      "id": "J-16-depth-256",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "depth",
+        "256"
+      ],
+      "expected": "Parsed nested array depth equals declared depth; under supervisor budgets",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "ded32129b05bfc16ce501e654a169960583352cbc974824ed16ce94855904386",
+        "51e8ea280b44e16934d4d611901f3d3afc41789840acdff81942c2f65009cd52"
+      ]
+    },
+    {
+      "id": "J-16-string-1024",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "string",
+        "1024"
+      ],
+      "expected": "Parsed string length equals payload; under supervisor budgets",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "473287f8298dba7163a897908958f7c0eae733e25d2e027992ea2edc9bed2fa8",
+        "e39eef82f61b21e2e7f762fcc4307358f165757f2e77ec855d6992f7e0191932"
+      ]
+    },
+    {
+      "id": "J-16-string-1048576",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "string",
+        "1048576"
+      ],
+      "expected": "Parsed string length equals payload; under supervisor budgets",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "473287f8298dba7163a897908958f7c0eae733e25d2e027992ea2edc9bed2fa8",
+        "50b4b069390c1d7966da182649bb2caddb412a2f9012425b5e9ec0ef4ec68545"
+      ]
+    },
+    {
+      "id": "J-16-string-8388608",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "string",
+        "8388608"
+      ],
+      "expected": "Parsed string length equals payload; under supervisor budgets",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "473287f8298dba7163a897908958f7c0eae733e25d2e027992ea2edc9bed2fa8",
+        "761a941bccfaa75dd8ac321e53f2b0a76740e2df7272bc021b2e9efe2a88e63b"
+      ]
+    },
+    {
+      "id": "J-16-records-100",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "records",
+        "100"
+      ],
+      "expected": "Framed stream yields exact record count; no constant-memory inference",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "a94e7bcfcbed3c846d491d4f47c948e53a23908d480248b3ffe9e126e83ea865",
+        "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306"
+      ]
+    },
+    {
+      "id": "J-16-records-10000",
+      "family": "J-16",
+      "op": "stress",
+      "args": [
+        "records",
+        "10000"
+      ],
+      "expected": "Framed stream yields exact record count; no constant-memory inference",
+      "phase": "stress",
+      "repeats": 6,
+      "files": [],
+      "flags": [],
+      "input_sha256": [
+        "a94e7bcfcbed3c846d491d4f47c948e53a23908d480248b3ffe9e126e83ea865",
+        "39e5b4830d4d9c14db7368a95b65d5463ea3d09520373723430c03a5a453b5df"
+      ]
+    },
+    {
+      "id": "J-17-missing",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "missing"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "ffa63583dfa6706b87d284b86b0d693a161e4840aad2c5cf6b5d27c3b9621f7d"
+      ]
+    },
+    {
+      "id": "J-17-unreadable",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "unreadable"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a",
+          "mode": 0
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "da3c01050b1f352b33853bf17e408ba64e0b14423d4f7137a20906ed2e58e679"
+      ]
+    },
+    {
+      "id": "J-17-missing-parent",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "missing-parent"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "38b5b9bf006a328450f294410036c58dc22dcc1b3d97b107920402831245879f"
+      ]
+    },
+    {
+      "id": "J-17-unwritable",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "unwritable"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        },
+        {
+          "path": "outputs/locked",
+          "directory": true,
+          "mode": 320
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "b4a0e7f473be7005c5779e8e73647af616c1d371786b125b7f14f3af6f8805ca"
+      ]
+    },
+    {
+      "id": "J-17-raw-interrupt",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "raw-interrupt"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "wallMs": 500,
+      "expectedStop": "wall",
+      "needsSupervisor": true,
+      "input_sha256": [
+        "678ca26fd39519dbc5fb9bfd45bb717ed8d39c4d2e7802f5c7d80212b5fa88fb"
+      ]
+    },
+    {
+      "id": "J-17-safe-interrupt",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "safe-interrupt"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "wallMs": 500,
+      "expectedStop": "wall",
+      "needsSupervisor": true,
+      "input_sha256": [
+        "3a23dc17e13bae1cb0db3fd8fbc817d02b40423143861a6fecd960bfbc7c3fb1"
+      ]
+    },
+    {
+      "id": "J-17-rename-injected",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "rename-injected"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "d3e94e0228ab80a53adc081043dc11886d61d926b839114055ef9f2ea25e5965"
+      ]
+    },
+    {
+      "id": "J-17-rename-directory",
+      "family": "J-17",
+      "op": "file",
+      "args": [
+        "rename-directory"
+      ],
+      "expected": "Failure is explicit; safe replacement preserves original destination; raw interrupted write may truncate, reported separately",
+      "phase": "native",
+      "repeats": 2,
+      "files": [
+        {
+          "path": "inputs/source.json",
+          "hex": "7b226e616d65223a22416461222c226e223a312c22666c616773223a5b747275652c66616c73655d2c226e696c223a6e756c6c7d0a"
+        },
+        {
+          "path": "outputs/destination.json",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        },
+        {
+          "path": "outputs/target-dir",
+          "directory": true
+        },
+        {
+          "path": "outputs/target-dir/sentinel",
+          "hex": "4f524947494e414c2044455354494e4154494f4e0a"
+        }
+      ],
+      "flags": [
+        "--allow-read=./inputs,./outputs",
+        "--allow-write=./outputs"
+      ],
+      "input_sha256": [
+        "e7c24ec159ced97da106e18da2c57da46e6fca4309dd734e708e356bddede482"
+      ]
+    }
+  ]
+}

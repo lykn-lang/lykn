@@ -1,7 +1,8 @@
 # Slice02 — JSON behavior through Lykn
 
-Status: **ready-for-cc** (was blocked on Arc03/Slice01 CDC closure).
-Expedited Mode. No format trial has run. Read [Arc01](../arc-plan.md),
+Status: **CC proposed-done**, pending independent CDC verification.
+Expedited Mode. All 17 JSON families executed in 354 attempts; see the
+[closing report](closing-report.md) and [results](artifacts/results.md). Read [Arc01](../arc-plan.md),
 [baseline CDC](../slice01-baseline-and-protocol/cdc-verification.md) and the
 [permission correction](../../arc03-findings-and-integration/slice01-run-permissions/slice-plan.md).
 
@@ -44,8 +45,9 @@ and retained Lykn case program copied there:
 ```
 
 `CASE` denotes the frozen variant's actual selector; replace it with the
-manifest value. The cases program does not exist yet; these commands specify
-its launch contract, not an executed JSON trial. Run with cleared inherited
+manifest value. The retained cases program now implements the frozen selectors in
+[inputs.json](artifacts/inputs.json); full replay is in
+[baseline-and-launch.md](artifacts/baseline-and-launch.md). Run with cleared inherited
 environment and PATH `/opt/homebrew/bin:/usr/bin:/bin`; put HOME, TMPDIR and
 DENO_DIR under the disposable root, with DENO_NO_UPDATE_CHECK=1, NO_COLOR=1
 and null stdin. Prepare/copy fixture inputs before the measured case so a
@@ -118,6 +120,11 @@ Review [ledger.md](ledger.md), preserve all findings and source-shape examples,
 commit exact paths, then seek independent reproduction. No empty close sets.
 
 ## Version History
+
+- 2026-09-12 v1.2: CC executed all 161 variants/354 attempts after own launcher,
+  graph and supervisor preflights; retained failures, bytes, measurements and
+  authoring findings. Proposed-done only; no source repair, package adoption,
+  CDC closure or operator acceptance inferred.
 
 - 2026-09-12 v1.1: Arc03/Slice01 CDC closed; lifted the launcher dependency,
   pinned verified CLI/source/runtime identities and concrete launch syntax.

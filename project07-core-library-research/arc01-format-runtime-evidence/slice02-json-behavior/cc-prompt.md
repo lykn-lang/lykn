@@ -1,6 +1,8 @@
 # CC — JSON behavior research
 
-**Ready for CC.** Arc03/Slice01 is independently closed; its launcher
+**Execution submitted as CC proposed-done.** See [closing-report.md](closing-report.md).
+The instructions below remain the original replay/scope contract; independent
+CDC review is next. Arc03/Slice01 is independently closed; its launcher
 prerequisite is lifted. Read its [CDC verification](../../arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
 and this [slice plan's verified launch pins](slice-plan.md). Use only the selected
 CLI `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn`, SHA-256

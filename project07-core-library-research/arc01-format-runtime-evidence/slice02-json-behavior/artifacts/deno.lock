@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@std/json@1.1.0": "1.1.0",
+    "jsr:@std/json@^1.0.2": "1.1.0",
+    "jsr:@std/jsonc@1.0.2": "1.0.2",
+    "jsr:@std/streams@1.1.2": "1.1.2",
+    "jsr:@std/streams@^1.1.0": "1.1.2"
+  },
+  "jsr": {
+    "@std/json@1.1.0": {
+      "integrity": "93330d3ed4054d6b1ffe54b075432c80a5f671be77277b978931e018014cb1cc",
+      "dependencies": [
+        "jsr:@std/streams@^1.1.0"
+      ]
+    },
+    "@std/jsonc@1.0.2": {
+      "integrity": "909605dae3af22bd75b1cbda8d64a32cf1fd2cf6efa3f9e224aba6d22c0f44c7",
+      "dependencies": [
+        "jsr:@std/json@^1.0.2"
+      ]
+    },
+    "@std/streams@1.1.2": {
+      "integrity": "0249bf9b78a999f57032ca4d8e7ccaa57579090242640b35ddc948fbb745d3af"
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/json@1.1.0",
+      "jsr:@std/jsonc@1.0.2",
+      "jsr:@std/streams@1.1.2"
+    ]
+  }
+}

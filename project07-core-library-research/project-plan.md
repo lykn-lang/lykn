@@ -93,7 +93,7 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 CDC closed; Slice02 ready for CC |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 CDC closed; Slice02 CC proposed-done |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
 | [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
@@ -184,9 +184,10 @@ Slice01 is now CDC closed with seven independently verified criteria; see its
 [CDC verification](arc01-format-runtime-evidence/slice01-baseline-and-protocol/cdc-verification.md).
 Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
 (was CC proposed-done), with its corrected-build receipt independently verified.
-Arc01/Slice02 is ready for CC with pinned launch identities; its own harness,
-package and resource preflights remain required. All
-project ledger rows remain open. No format trial or operator acceptance is claimed.
+Arc01/Slice02 is [CC proposed-done](arc01-format-runtime-evidence/slice02-json-behavior/closing-report.md):
+all 161 frozen variants/354 attempts executed after its launcher, package and
+resource preflights. Independent CDC reproduction remains pending. All project
+ledger rows remain open; no operator acceptance or library adoption is claimed.
 
 Slice01 bubble-ups: D-2609-PERM recorded implicit run grants; the release/0.6.x
 correction is now independently verified and the discovery closed as repaired.
@@ -194,13 +195,22 @@ D-2609-YNOD records Node API imports in the JSR YAML
 document candidate; preserve the document-fidelity requirement while resolving
 candidate policy. D-2609-LINT/NPMB/JSER retain guide and book corrections for
 Arc03. See the slice's [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md).
-Arc03 opened early for the launcher prerequisite; Arc01/Slice02 now resumes.
+Arc03 opened early for the launcher prerequisite; Arc01/Slice02 now awaits CDC.
+Its [findings](arc01-format-runtime-evidence/slice02-json-behavior/artifacts/findings.md)
+add D-2609-NZRO/JSCF/UNUS for compiler output/diagnostics and runtime support for
+JSER. Proposed Arc03 correction owners remain open until exact slices exist.
+Arc02 must retain original/revised source and pending operator code-shape review.
 Test-runner permissions remain a
 separate Arc03 follow-up, not part of this bounded correction.
 Patch identity remains unresolved. Corrected binary provenance has a locally
 reproduced build receipt; historical B01 provenance is not rewritten.
 
 ## Version History
+
+- 2026-09-12 v1.5: Arc01/Slice02 submitted all JSON families as CC proposed-done,
+  including native/package/file/resource evidence and three compiler findings.
+  Preserved CDC, YAML/runtime, full authoring and human-acceptance boundaries;
+  no correction, dependency adoption or project criterion inherited as closed.
 
 - 2026-09-12 v1.4: Arc03/Slice01 CDC verified six criteria and the corrected
   binary, closed the launcher finding and resumed Arc01/Slice02. Package,

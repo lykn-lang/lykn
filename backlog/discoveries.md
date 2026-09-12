@@ -1264,3 +1264,55 @@ slice07 originated in one.
   is gated. No fork, shim, npm fallback or acceptance inferred.
 - **Source material:** [source register](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/source-register.md),
   [published composer](https://jsr.io/@eemeli/yaml/2.9.1/src/compose/composer.ts).
+
+### `D-2609-NZRO` — negative-zero literal loses its sign in emitted JavaScript
+
+- **What:** Selected release/0.6.x compiler at `d0bb981` emits
+  `Object.is(value, 0)` from `(Object:is value -0)` in the JSON research
+  observer. The sign-sensitive test changes meaning before JSON executes.
+- **Where:** Project07 Arc01/Slice02 raw transcript, SOURCE cases.lykn attempt3
+  and GENERATED cases.js attempt3; [authoring evidence](../project07-core-library-research/arc01-format-runtime-evidence/slice02-json-behavior/artifacts/authoring-observations.md).
+- **How found:** `probe` (emitted-source inspection, CC-attested).
+- **Guess:** High for numeric correctness. **Kind:** `bug` · **Status:** `open`.
+- **Owner:** Proposed Project07 Arc03 compiler correction; no correction slice
+  or source repair is claimed. Re-entry: reduce retained source, reproduce
+  sign-sensitive output/runtime behavior, then verify an authorized correction.
+  The research spelling `(Number "-0")` preserves the experiment, not the compiler.
+
+### `D-2609-JSCF` — composed control/constructor forms compile successfully to invalid JS
+
+- **What:** Selected release/0.6.x compiler at `d0bb981` returns0 for retained
+  cases attempt3 while emitting `return while`, `return try`, `return throw`
+  and `new await import(...)[...]()`. Unsupported source forms must reject
+  honestly; supported forms need valid output. These are emitted-output
+  observations, not JSON package failures or a completed root-cause diagnosis.
+- **Where:** [Raw source and output](../project07-core-library-research/arc01-format-runtime-evidence/slice02-json-behavior/artifacts/raw-transcript.txt),
+  SOURCE/GENERATED cases attempt3; [attribution](../project07-core-library-research/arc01-format-runtime-evidence/slice02-json-behavior/artifacts/authoring-observations.md).
+- **How found:** `probe` (CC-attested). **Guess:** High. **Kind:** `bug`.
+- **Status:** `open`; related to existing `D-2608-W2HF`'s no-else expression
+  symptom, but this broader set has not been reduced to the same root cause.
+- **Owner:** Proposed Project07 Arc03 compiler correction. Re-entry: retain
+  original task, reduce each shape, check earlier W2HF disposition, and validate
+  compiler rejection or valid emitted code. No generated JS edits allowed.
+
+### `D-2609-UNUS` — compiler warns that referenced research bindings are unused
+
+- **What:** Final JSON research source compiles and runs while compiler warnings
+  mark referenced `encoder`, `op`, `a`, `b`, `c`, and supervisor `CLI`/helpers
+  unused. Warning order varies between otherwise deterministic executions.
+- **Where:** [Retained sources and command stderr](../project07-core-library-research/arc01-format-runtime-evidence/slice02-json-behavior/artifacts/raw-transcript.txt);
+  [source-shape record](../project07-core-library-research/arc01-format-runtime-evidence/slice02-json-behavior/artifacts/authoring-observations.md).
+- **How found:** `probe` (CC-attested). **Guess:** Medium, obscures useful
+  diagnostics. **Kind:** `bug` · **Status:** `open`.
+- **Owner:** Proposed Project07 Arc03 diagnostics correction. Re-entry: reproduce
+  reference analysis on reduced source before fixing; do not mechanically add
+  underscore names or suppress warnings. Root cause remains unresolved.
+
+### 2026-09-12 JSON runtime supplement to `D-2609-JSER`
+
+J-09 on pinned Deno2.7.7 through the corrected Lykn launcher produced TypeError
+for BigInt in all three positions (top level, object property, array slot),
+twice each. [Results](../project07-core-library-research/arc01-format-runtime-evidence/slice02-json-behavior/artifacts/results.md)
+retain the wider omission/null/toJSON table. This strengthens the existing
+historical book finding with runtime evidence; it does not assert the current
+book is unchanged or close a book correction.

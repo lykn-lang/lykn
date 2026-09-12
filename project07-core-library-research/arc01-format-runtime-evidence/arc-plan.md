@@ -7,9 +7,9 @@ provide for JSON and YAML, what they lose, and what Lykn libraries must add.
 Evidence includes package provenance and the actual runtime/toolchain
 baseline, so a dependency recommendation is not inferred from a registry name.
 
-Active arc. Slice01 is CDC closed. Slice02 is ready for CC (was blocked on
-Arc03/Slice01); the run correction is independently verified and its launcher
-dependency lifted. Package and resource preflights remain within Slice02.
+Active arc. Slice01 is CDC closed. Slice02 is CC proposed-done: all 17 JSON
+families executed after launcher, package and supervisor preflights. Its
+independent CDC reproduction is next; no formal Slice02 closure is claimed.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
 ## Slice breakdown
@@ -17,7 +17,7 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | Slice | Scope and output | Dependency | Status |
 | --- | --- | --- | --- |
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
-| [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | Ready for CC; launch pins recorded |
+| [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CC proposed-done; 161 variants/354 attempts; CDC pending |
 | slice03-yaml-fidelity | Exercise YAML value and document workflows through Lykn; compare schemas, aliases/cycles, non-string keys, multi-document support, diagnostics, comments/layout, and candidate preservation APIs | Slice01; reuse Slice02 harness observations | Planned; open set deferred |
 | slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives | Slices01–03 evidence | Planned; open set deferred |
 
@@ -83,13 +83,41 @@ not a source-scope expansion or acceptance decision.
 
 Apply the project's exact-path commits, proposed-done/CDC separation, immediate
 evidence-based close and next-slice opening, and arc composition rules.
-Slice02 now has its full open set and verified launcher prerequisite. The
-immediate CC handoff is
-`arc01-format-runtime-evidence/slice02-json-behavior/cc-prompt.md`.
+Slice02 now has a [CC evidence handoff](slice02-json-behavior/closing-report.md).
+CDC must independently verify it before opening Slice03. The existing JSON
+cc-prompt remains the replay/scope contract.
 Do not generate a close set or mark research complete merely because the
 planning documents exist.
 
+## Slice02 evidence carried forward
+
+[Results](slice02-json-behavior/artifacts/results.md) distinguish native precision,
+duplicate, unsupported-value and lexical losses; JSONC comments; framed streams;
+canonical ordering; and file/resource boundaries. All 17 families remain covered,
+with no requested deferral. Source-aware reviver/rawJSON availability is pinned
+runtime evidence, not a dependency or architecture decision.
+
+D-2609-NZRO/JSCF/UNUS add sign-sensitive code generation, invalid emitted control
+forms and misleading unused-binding diagnostics to Arc02 observation and proposed
+Arc03 correction work. Their detailed source is retained in the
+[authoring record](slice02-json-behavior/artifacts/authoring-observations.md).
+Future YAML authoring must verify generated output before interpreting format
+results and preserve correction headroom; do not assume that check/compile exit0
+means runnable code. Existing D-2609-JSER receives BigInt runtime evidence.
+
+Slice04 still owns full graph/provenance policy, cold offline conditions,
+concurrent replacement/durability, and resource contract limits. Arc02 still
+owns ADT/Result/Option/module/formatter and actual operator code-shape review.
+J-15's known-frame decoder is not a complete text-sequence validator. No source
+correction is authorized by this research handoff.
+
 ## Version History
+
+- 2026-09-12 v1.4: Slice02 delivered CC-attested JSON evidence for every family;
+  retained three compiler findings and explicit resource/framing boundaries.
+  Added generated-output verification to later authoring preparation because
+  successful compilation alone did not establish valid JavaScript. CDC and
+  later slice openings remain separate; no YAML/runtime obligations dropped.
 
 - 2026-09-12 v1.3: Arc03/Slice01 CDC reproduced the launcher correction;
   resumed JSON Slice02 with verified build/runtime pins. All JSON families
