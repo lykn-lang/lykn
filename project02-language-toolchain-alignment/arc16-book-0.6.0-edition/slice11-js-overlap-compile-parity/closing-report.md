@@ -1,7 +1,7 @@
 # arc16 slice11 - JS Overlap Compile Parity Closing Report
 
 Date: 2026-09-12
-Status: **CC proposed-done; CDC verification pending**
+Status: **Closed / CDC-verified**
 
 ## Outcome
 
@@ -81,3 +81,5 @@ Generated book `target/` was removed after the doctest runs. The pre-existing un
 ## Next slice
 
 arc16 can now proceed to `slice12-edition-close-and-release-gate`, the final whole-book edition close and release-gate pass before handing back to arc09.
+
+CDC verification is recorded in [`cdc-verification.md`](cdc-verification.md).

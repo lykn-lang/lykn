@@ -2,7 +2,7 @@
 
 You are working in the Lykn language project. Planning lives on branch `planning` in `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`. Source/user docs for 0.6.x live on branch `release/0.6.x` in `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x`. The Lykn Book content lives in `/Users/oubiwann/lab/cnbb/lykn`, and the writers-guide lives in `/Users/oubiwann/lab/cnbb/lykn-writers-guide`.
 
-Read `AGENTS.md`, then read the installed collaboration-framework project-management guides before changing planning. Read this slice's `slice-plan.md` and `ledger.md`, plus the slice11 closing report. Preserve the split: planning artifacts stay in the planning worktree; book content stays in the book repo; release source/doc changes stay on `release/0.6.x`.
+Read `AGENTS.md`, then read the installed collaboration-framework project-management guides before changing planning. Read this slice's `slice-plan.md` and `ledger.md`, plus the slice11 closing report and `cdc-verification.md`. Preserve the split: planning artifacts stay in the planning worktree; book content stays in the book repo; release source/doc changes stay on `release/0.6.x`.
 
 ## Goal
 

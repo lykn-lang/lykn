@@ -5,7 +5,7 @@
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
   "currentSlice": "slice12-edition-close-and-release-gate",
-  "summary": "slice11 fixed D-2609-FOVL in source commit 2a0cabf and restored overlap compile-fail book examples in commit 43cfebc; slice12 is open for final edition close.",
+    "summary": "slice11 fixed D-2609-FOVL in source commit 2a0cabf, restored overlap compile-fail book examples in commit 43cfebc, and is CDC-verified; slice12 is open for final edition close.",
   "slices": [
     {
       "id": "slice01-pre-book-decision-gate",
@@ -49,7 +49,7 @@
     },
     {
       "id": "slice11-js-overlap-compile-parity",
-      "status": "closed-cdc-pending"
+            "status": "closed-cdc-verified"
     },
     {
       "id": "slice12-edition-close-and-release-gate",
