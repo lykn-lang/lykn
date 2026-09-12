@@ -40,7 +40,6 @@ const STATEMENT_ONLY_HEADS = [
   "const",
   "let",
   "func",
-  "fn",
   "class",
   "type",
   "export",

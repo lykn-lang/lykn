@@ -564,12 +564,11 @@ captured configuration.
 (-> #a(1 2 3) (:map double))  ;; [2, 4, 6]
 ```
 
-> **Returning a closure:** end the factory body in a *value-producing* form.
-> A bare `fn`/`lambda` is a statement-only declaration and cannot be implicitly
-> returned — bind it and return it by name (`(bind logger (fn …)) logger`, which
-> keeps the closure's typed params), or use `=>`, the value-producing arrow
-> (untyped — no param type checks). A `:returns :function` whose body ends in a
-> bare `fn` is a compile error.
+> **Returning a closure:** end the factory body in a value-producing form.
+> `fn` and `lambda` produce function values, so a `:returns :function` body may
+> end in a direct typed closure. Binding the closure and returning it by name is
+> still useful when the local name improves readability or is referenced more
+> than once.
 
 ---
 

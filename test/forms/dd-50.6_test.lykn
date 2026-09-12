@@ -45,6 +45,22 @@
     Error
     "declared `:returns :boolean` but body ends with `if`"))
 
+;; Regression: fn/lambda are value-producing and may satisfy :returns :function
+
+(test
+  "DD-2609-FNRT: func can return direct typed fn value"
+  (bind r (compile-both "(func make-greeter :args (:string prefix) :returns :function :body (fn (:string name) (+ prefix name)))"))
+  (includes r "function makeGreeter(prefix)")
+  (includes r "typeof result__gensym")
+  (includes r "return result__gensym"))
+
+(test
+  "DD-2609-FNRT: func can return direct typed lambda value"
+  (bind r (compile-both "(func make-greeter :args (:string prefix) :returns :function :body (lambda (:string name) (+ prefix name)))"))
+  (includes r "function makeGreeter(prefix)")
+  (includes r "typeof result__gensym")
+  (includes r "return result__gensym"))
+
 ;; Regression: DD-50 machinery still works for both-branch if
 
 (test
