@@ -15,7 +15,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@1.97.0
         with:
           components: clippy, rustfmt
@@ -30,7 +30,7 @@ jobs:
     name: "Rust + JS + lykn tests"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@1.97.0
       - uses: denoland/setup-deno@v2
         with:
@@ -43,7 +43,7 @@ jobs:
     name: "Documentation tests"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@1.97.0
       - uses: denoland/setup-deno@v2
         with:
@@ -56,7 +56,7 @@ jobs:
     name: "Layer 2: Rust integration tests"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@1.97.0
       - uses: denoland/setup-deno@v2
         with:
@@ -72,7 +72,7 @@ jobs:
     name: "Bundle size check (DD-37)"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # The fixed DD-37 baseline commit must be available for calibration.
           fetch-depth: 0
@@ -86,7 +86,7 @@ jobs:
     name: "Publishing pipeline tests"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@1.97.0
       - uses: denoland/setup-deno@v2
         with:

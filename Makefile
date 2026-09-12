@@ -539,21 +539,21 @@ publish-dry-run:
 		i=$$((i+1)); \
 	done
 	@echo ""
-	@echo "$(BLUE)Verifying each crate can be packaged...$(RESET)"
+	@echo "$(BLUE)Verifying each crate can be published with cargo dry-run...$(RESET)"
 	@for crate in $(PUBLISH_ORDER); do \
 		echo ""; \
-		echo "$(CYAN)• Packaging $$crate...$(RESET)"; \
-		if cargo package -p $$crate --allow-dirty --list > /dev/null 2>&1; then \
-			echo "  $(GREEN)✓$(RESET) $$crate is ready for publishing"; \
+		echo "$(CYAN)• Dry-running $$crate publish...$(RESET)"; \
+		if cargo publish -p $$crate --dry-run > /dev/null 2>&1; then \
+			echo "  $(GREEN)✓$(RESET) $$crate publish dry-run passed"; \
 		else \
-			echo "  $(RED)✗$(RESET) $$crate failed validation"; \
-			cargo package -p $$crate --allow-dirty --list; \
+			echo "  $(RED)✗$(RESET) $$crate publish dry-run failed"; \
+			cargo publish -p $$crate --dry-run; \
 			exit 1; \
 		fi; \
 	done
 	@echo ""
 	@echo "$(GREEN)✓ All crates ready for publishing!$(RESET)"
-	@echo "$(CYAN)→ Run 'make publish' to publish to crates.io$(RESET)"
+	@echo "$(CYAN)→ Run 'make publish-crates' to publish to crates.io$(RESET)"
 	@echo "$(CYAN)→ Or 'make publish-one CRATE=crate-name' to publish a single crate$(RESET)"
 	@echo ""
 

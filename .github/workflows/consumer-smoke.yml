@@ -25,7 +25,7 @@ jobs:
             echo "available=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         if: steps.consumer-tests.outputs.available == 'true'
         with:
           repository: lykn-lang/lykn-consumer-tests

@@ -8,8 +8,8 @@ members = ["crates/lykn", "crates/lykn-cli", "crates/lykn-lang"]
 # version from `[workspace.dependencies]` below, so a release bump edits this
 # file only.
 [workspace.package]
-version = "0.6.0-dev"
+version = "0.6.0"
 
 [workspace.dependencies]
-lykn-lang = { path = "crates/lykn-lang", version = "0.6.0-dev" }
-lykn-cli = { path = "crates/lykn-cli", version = "0.6.0-dev" }
+lykn-lang = { path = "crates/lykn-lang", version = "0.6.0" }
+lykn-cli = { path = "crates/lykn-cli", version = "0.6.0" }
