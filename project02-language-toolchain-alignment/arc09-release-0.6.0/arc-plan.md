@@ -1,10 +1,11 @@
 # arc09 — Release 0.6.0
 
 > **Status: Open — slice02 version-bump/release-notes/CI chore active.**
-> arc16 is closed/CDC-verified as of 2026-09-12. slice01 converted the
-> release arc into an executable runbook and found no release blocker, but it
-> did route two command-surface hazards: current `make publish-dry-run` uses
-> `--allow-dirty`, and current `make push` is not a release-branch push recipe.
+> arc16 is closed/CDC-verified as of 2026-09-12. slice01 is closed/CDC-verified:
+> it converted the release arc into an executable runbook and found no release
+> blocker, but it did route two command-surface hazards: current
+> `make publish-dry-run` uses `--allow-dirty`, and current `make push` is not a
+> release-branch push recipe.
 
 ## 1. Capability
 
@@ -22,7 +23,7 @@ publication, release tags, and pushes.
 
 | Slice | Scope | Status |
 |-------|-------|--------|
-| **slice01 · release-readiness-runbook** | Inventory version surfaces, release-note inputs, dry-run gates, manual-publish boundaries, tag/post-publish verification, and blockers; write the executable release runbook. | **CC proposed-done; CDC pending** ([slice-plan](slice01-release-readiness-runbook/slice-plan.md), [ledger](slice01-release-readiness-runbook/ledger.md), [closing-report](slice01-release-readiness-runbook/closing-report.md), [runbook](slice01-release-readiness-runbook/artifacts/release-runbook.md)) |
+| **slice01 · release-readiness-runbook** | Inventory version surfaces, release-note inputs, dry-run gates, manual-publish boundaries, tag/post-publish verification, and blockers; write the executable release runbook. | **Closed / CDC-verified** ([slice-plan](slice01-release-readiness-runbook/slice-plan.md), [ledger](slice01-release-readiness-runbook/ledger.md), [closing-report](slice01-release-readiness-runbook/closing-report.md), [cdc-verification](slice01-release-readiness-runbook/cdc-verification.md), [runbook](slice01-release-readiness-runbook/artifacts/release-runbook.md)) |
 | **slice02 · version-bump-release-notes-ci-chore** | Update version surfaces from `0.6.0-dev` to `0.6.0`, regenerate lock/version evidence, write 0.6.0 release notes, apply low-risk CI checkout maintenance if still current, and either repair or explicitly route no-bypass replacement for `make publish-dry-run`. | **Open** ([slice-plan](slice02-version-bump-release-notes-ci-chore/slice-plan.md), [ledger](slice02-version-bump-release-notes-ci-chore/ledger.md), [cc-prompt](slice02-version-bump-release-notes-ci-chore/cc-prompt.md)) |
 | **slice03 · publish-dry-runs-and-package-audit** | Run `make check`, dist/package audits, JSR/npm dry-runs, and crates.io dry-runs against the exact release tree without weakening dirty-tree gates; capture receipts. | **Future** |
 | **slice04 · operator-publication-and-tags** | Prepare the final approval packet; after explicit operator authorization, publish JSR/npm/crates artifacts, tag `0.6.0`, push release branch/tag explicitly to intended remotes, and handle the book `book-v0.6.0` tag/publication boundary. | **Future** |
@@ -53,6 +54,15 @@ their dispositions during project06-planning-reorg. slice01 owns the detailed
 release runbook and can refine the future slice sequence before implementation.
 
 ## 5. Version History
+
+### v1.5 - 2026-09-12 (slice01 CDC verified)
+
+CDC reproduced slice01's release-readiness claims against the live source,
+planning, book, and writers-guide worktrees. Version surfaces remain
+`0.6.0-dev`, CLI reports `lykn 0.6.0-dev`, language tags stop at `0.5.2`, the
+book tag remains uncut, `make publish-dry-run` still passes `--allow-dirty`,
+and `make push` is not a release-branch recipe. slice01 is closed/CDC-verified;
+slice02 remains active.
 
 ### v1.4 - 2026-09-12 (slice01 CC proposed-done; slice02 opened)
 

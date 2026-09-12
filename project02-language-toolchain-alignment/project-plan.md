@@ -122,7 +122,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc06 · cross-project-dep-ergonomics** | `lykn add` and ergonomic cross-project dependency handling (DD-51 follow-ons) | arc01 | **CLOSED — gate GO 2026-07-24** (operator; runsheet Parts A/B/C/C-bis all green, runtime rows **reproduced** not merely attested). All 7 slices closed/CDC-verified. slice06 version-consolidation + slice07 link-registry-specifier (Tier-0 resolver override; iteration 1 resolved a blocking effective-config regression + added the 4 table tests that were missing). Slices 01–05: mycelium re-audit + DD-63 → `lykn add` (`f9f9014`, exact-pin) → `lykn link`/`unlink` (`e1c0dd7`, git-ignored overlay; dist reads raw = publish-safe) → import-by-specifier (`42500a9`, zero lang change). mycelium consumes lykn end-to-end (build ✓ · test 43/0 · publish --jsr --dry green). Closing-report **re-issued** covering the full 7-slice walk; arc ledger **A-1…A-9 all met**. **0.6.0's founding goal — consume lykn as a dependency, end to end — is met.** |
 | **arc07 · docs** | Guide/SKILL alignment with 0.6.0; clear guide drift; land discoverability additions | arc01–06, arc08, arc15 (describes shipped behaviour) | **Closed — gate GO 2026-08-08**; slice01/slice02/slice03/slice04 closed/CDC-verified; arc ledger A-1...A-7 met; P-13 done; compiler follow-up `D-2608-W2HF` fixed in arc10/P-22 |
 | **arc08 · template-i18n** | `template` macro → ICU MessageFormat + i18n (DD-55) | DD-54 template; D-2 escape | **Closed** (DD-55; landed on release 2026-06-29) |
-| **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc16 (book)** | **Open — slice01 `release-readiness-runbook` active after arc16 CDC verification** |
+| **arc09 · release-0.6.0** | Version bumps, release notes, publish to JSR / npm / crates.io | all above, **incl. arc16 (book)** | **Open — slice01 closed/CDC-verified; slice02 `version-bump-release-notes-ci-chore` active** |
 | **arc10 · compiler-completion** | DD-58 strict-default (surface prevents kernel-form leaks) + DD-37 step-4 (`_kernel` removal) + no-invalid-JS follow-up for no-else `if` expression position | arc03, arc04 | **Closed — gate GO restored 2026-08-08**; slice04 fixed `D-2608-W2HF`; P-22 done |
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
@@ -269,6 +269,15 @@ seeds but are **not** planned slice-by-slice until they become active.
 See [ledger.md](ledger.md). Its historical row dispositions are unchanged.
 
 ## 5. Version History
+
+### v1.79 - 2026-09-12 (arc09 slice01 CDC verified; slice02 active)
+
+CDC reproduced arc09 slice01's runbook claims against the live release, book,
+writers-guide, and planning worktrees. The release arc is now a verified
+five-slice sequence; no Project02 release blocker was found. `make
+publish-dry-run` and `make push` hazards remain routed to arc09, and slice02 is
+active for the version bump, release notes, CI chore, and no-bypass dry-run
+preparation.
 
 ### v1.78 - 2026-09-12 (arc16 CDC verified; arc09 slice01 opened)
 

@@ -1,6 +1,6 @@
 # arc09 slice01 — Release Readiness Runbook Closing Report
 
-Status: **CC proposed-done; CDC pending**
+Status: **Closed / CDC-verified**
 Date: 2026-09-12
 Branch/worktree: planning branch in `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`
 Source release worktree inspected: `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x`
@@ -44,6 +44,13 @@ slice01 converted arc09 from terminal release intent into an executable 0.6.0 re
 - Checked planning diff paths to confirm edits were limited to arc09/project02/status release-planning files.
 - Checked final source, book, writers-guide, and planning statuses. Pre-existing unrelated Project07 planning changes and book `_to_delete/` remain unstaged and untouched.
 
+## CDC verification
+
+CDC verification is recorded in [cdc-verification.md](cdc-verification.md).
+slice01 is closed/CDC-verified; arc09 remains open with
+`slice02-version-bump-release-notes-ci-chore` active.
+
 ## Closure boundary
 
-This is a CC proposed-done close, not independent CDC verification and not operator acceptance. No source files, registry packages, release tags, remotes, or book tags were changed in this slice.
+This slice did not perform operator acceptance. No source files, registry
+packages, release tags, remotes, or book tags were changed in this slice.
