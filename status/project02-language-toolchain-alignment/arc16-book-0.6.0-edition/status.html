@@ -39,6 +39,7 @@
   .closed-cdc-verified { color: var(--done); }
   .open { color: var(--open); }
   .provisional { color: var(--future); }
+  .cc-closed-cdc-pending { color: var(--accent); }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
 </style>
@@ -46,7 +47,7 @@
 <body>
 <main>
   <h1>arc16 · book-0.6.0-edition</h1>
-  <p class="sub">Open. slice08 js-fn-return-parity is active after slice07 CDC verification.</p>
+  <p class="sub">Open. slice08 is CC-closed with JS fn return parity fixed; slice09 is active.</p>
   <p><a href="../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md">arc plan</a> · <a href="status.json">status data</a> · <a href="../status.html">project status</a></p>
   <section class="stack">
     <div class="row"><span>slice01 · pre-book-decision-gate</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
@@ -56,8 +57,8 @@
     <div class="row"><span>slice05 · book-instruction-bootstrap</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
     <div class="row"><span>slice06 · book-fence-reachability</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
     <div class="row"><span>slice07 · current-book-drift-refresh</span><span class="status closed-cdc-verified">closed / CDC-verified</span></div>
-    <div class="row"><span>slice08 · js-fn-return-parity</span><span class="status open">open</span></div>
-    <div class="row"><span>slice09 · toolchain-and-project-structure-chapters</span><span class="status provisional">provisional</span></div>
+    <div class="row"><span>slice08 · js-fn-return-parity</span><span class="status cc-closed-cdc-pending">CC-closed / CDC pending</span></div>
+    <div class="row"><span>slice09 · toolchain-and-project-structure-chapters</span><span class="status open">open</span></div>
     <div class="row"><span>slice10 · language-surface-chapters</span><span class="status provisional">provisional</span></div>
     <div class="row"><span>slice11 · edition-close-and-release-gate</span><span class="status provisional">provisional</span></div>
   </section>

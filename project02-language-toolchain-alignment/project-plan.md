@@ -127,7 +127,7 @@ Arcs in dependency order. Each delivers one coherent capability.
 | **arc11 · source-only-test-build** | `lykn test` compiles to `target/lykn/test/` (never the source tree) — finishes philosophy #1 for the last source-tree emitter — + a buried-intent audit (sweep + disposition every deferred-then-lost stub) | arc01 (target discipline) | **Closed** (gated 2026-07-05; P-7's demo unconditional; buried-intent inventory empty-or-tracked) |
 | **arc12 · test-topology** | Every test executes exactly once per `make check`; `make test-docs` tests docs (killed the ×12 corpus re-runs) | arc11 slice01 (out-dir layout) | **Closed** (gated 2026-07-05; delivered same-day: 1m52s→2.6s, >2m→1m04s, corpus 1×/0×) |
 | **arc14 · comment-retention** | Reader retains comments; provenance annotated surface→kernel; strip-or-preserve at JS emit (DD-62) — the home for lint-suppression | arc13 (node-metadata pattern) | **Seeded → 0.7.0** (2026-07-21; **release boundary decided 0.7.0**, operator; not slice-planned — post-0.6.0 capability) |
-| **arc16 · book-0.6.0-edition** | The Lykn Book's 0.6.0 edition drafted to completion — the full-surface review that catches language and DevX defects **before** the release, not in point releases after it | arc01–08, arc10–13, arc15 (describes shipped behaviour); pairs with arc07 (guides) | **Open — slice07 CDC-verified; slice08 js-fn-return-parity opened.** The confirmation-protocol decision (PROJECT-MANAGEMENT Part VI) was taken with the operator on 2026-07-25: **split by design** — the *plan* lives here at [`arc16-book-0.6.0-edition/`](arc16-book-0.6.0-edition) because this project's arc09 gates on it; the *content* stays in `~/lab/cnbb/lykn`, whose `AGENTS.md` points back here (as does `~/lab/cnbb/lykn-writers-guide`'s). The tracked design material lives under `arc16-book-0.6.0-edition/design/`. The CLI/scaffold/package runway closed `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`; [`arc16-book-0.6.0-edition/slice04-language-surface-runway/`](arc16-book-0.6.0-edition/slice04-language-surface-runway) closed the implementation route for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`; [`arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md) record sibling instruction commits and verification; [`arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/cdc-verification.md) record the landed repeatable `--fence` gate, CDC-reproduced book counts, and the routed 27 failures; [`arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/closing-report.md`](arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/cdc-verification.md) refreshed and verified the live drift inventory before chapter work and routed `D-2609-FNRT`; [`arc16-book-0.6.0-edition/slice08-js-fn-return-parity/`](arc16-book-0.6.0-edition/slice08-js-fn-return-parity) is open before chapter work. The book pass may surface more defects; new findings should be registered and routed as new slices or explicit deferrals, not hidden in prose. |
+| **arc16 · book-0.6.0-edition** | The Lykn Book's 0.6.0 edition drafted to completion — the full-surface review that catches language and DevX defects **before** the release, not in point releases after it | arc01–08, arc10–13, arc15 (describes shipped behaviour); pairs with arc07 (guides) | **Open — slice08 CC-closed; slice09 toolchain/project-structure chapters opened.** The confirmation-protocol decision (PROJECT-MANAGEMENT Part VI) was taken with the operator on 2026-07-25: **split by design** — the *plan* lives here at [`arc16-book-0.6.0-edition/`](arc16-book-0.6.0-edition) because this project's arc09 gates on it; the *content* stays in `~/lab/cnbb/lykn`, whose `AGENTS.md` points back here (as does `~/lab/cnbb/lykn-writers-guide`'s). The tracked design material lives under `arc16-book-0.6.0-edition/design/`. The CLI/scaffold/package runway closed `D-2608-BINW`, `D-2608-TDSL`, `D-2608-BREC`, `D-2608-RIMP`, and the 0.6.0 floor for `D-2608-SOWN`; [`arc16-book-0.6.0-edition/slice04-language-surface-runway/`](arc16-book-0.6.0-edition/slice04-language-surface-runway) closed the implementation route for `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND`; [`arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice05-book-instruction-bootstrap/cdc-verification.md) record sibling instruction commits and verification; [`arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice06-book-fence-reachability/cdc-verification.md) record the landed repeatable `--fence` gate, CDC-reproduced book counts, and the routed 27 failures; [`arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/closing-report.md`](arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/closing-report.md) and [`cdc-verification.md`](arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/cdc-verification.md) refreshed and verified the live drift inventory before chapter work and routed `D-2609-FNRT`; [`arc16-book-0.6.0-edition/slice08-js-fn-return-parity/closing-report.md`](arc16-book-0.6.0-edition/slice08-js-fn-return-parity/closing-report.md) records the CC-closed `D-2609-FNRT` fix, and [`arc16-book-0.6.0-edition/slice09-toolchain-and-project-structure-chapters/`](arc16-book-0.6.0-edition/slice09-toolchain-and-project-structure-chapters) is open for the next chapter pass. The book pass may surface more defects; new findings should be registered and routed as new slices or explicit deferrals, not hidden in prose. |
 | **arc15 · surface-syntax-traps** | Surface shapes that compile clean but mean something else → compile error + fix-it + lint + guide fix; slice01 = reject method-on-expression `(<non-atom-head> :kw …)` (DD-64), thread instead | threading (shipping); arc05 (lint) | **Closed — gate GO 2026-08-08**. slice01 reject (`9ca9c7e`) + slice02 lint/check-parity (`d6c23b5` + follow-up B `90cf211`) closed/CDC-verified; slice03 hardening **DEFERRED → 0.7.0** (Option C = fully-typed classification, `release/0.7.x` BACKLOG A6); slice04 sibling traps closed; slice05 nested `fn` parameter validation closed; arc ledger A-1…A-6 met. |
 
 ### Retrospective organizational arcs (2026-09-06)
@@ -190,7 +190,8 @@ provenance, not as current instruction.
   `03-citation-repoint` are closed, P-21 is done, and the cited-path gate is
   green at HEAD.
 - **Open arcs:** arc16 (slice01-slice07 closed/CDC-verified; slice08
-  `js-fn-return-parity` open).
+  `js-fn-return-parity` CC-closed / CDC pending; slice09
+  `toolchain-and-project-structure-chapters` open).
 - **Future:** arc09 release, gated by the open arc above. arc14
   comment-retention is seeded for 0.7.0, not 0.6.0.
 
@@ -298,6 +299,14 @@ failing examples; mixed `--fence lisp --fence lykn` generated 177 files from
 `current-book-drift-refresh` is next, and the book edition itself is not
 drafted/closed.
 
+### v1.69 - 2026-09-12 (arc16 slice08 CC-closed; slice09 opened)
+
+arc16 slice08 fixed `D-2609-FNRT` in release/0.6.x commit `8c66469`, aligning the
+JS compiler with Rust for direct `fn`/`lambda` returns from `:returns :function`
+`func` bodies. The affected book subset now passes at 3/0. slice09
+`toolchain-and-project-structure-chapters` is open; arc16 remains the release
+blocker until the book edition closes.
+
 ### v1.68 - 2026-08-20 (arc16 slice06 closed by CC; CDC pending)
 
 arc16 slice06 implemented the repeatable `lykn test --docs --fence <tag>` route
@@ -306,8 +315,9 @@ command run from `/Users/oubiwann/lab/cnbb/lykn` now reaches the 444 `lisp`
 blocks and generated 176 doctest files with 417 passing / 27 failing examples.
 The mixed `--fence lisp --fence lykn` run generated 177 files from 447 blocks
 with 420 passing / 27 failing examples. P-20 remains open: CDC still needs to
-verify slice06, slice08 `js-fn-return-parity` is next, and the book
-edition itself is not drafted/closed.
+verify slice06, slice08 `js-fn-return-parity` is now CC-closed, slice09
+`toolchain-and-project-structure-chapters` is open, and the book edition itself
+is not drafted/closed.
 
 ### v1.67 - 2026-08-20 (arc16 slice06 opened)
 

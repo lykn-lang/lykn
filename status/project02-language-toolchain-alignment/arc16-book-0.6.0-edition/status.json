@@ -4,8 +4,8 @@
   "arc": "arc16-book-0.6.0-edition",
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
-  "currentSlice": "slice08-js-fn-return-parity",
-  "summary": "slice07 is closed/CDC-verified with refreshed drift inventory; slice08 is open for JS fn return parity before chapter rewrite slices.",
+  "currentSlice": "slice09-toolchain-and-project-structure-chapters",
+  "summary": "slice08 is CC-closed with JS fn/lambda return parity fixed; slice09 is open for toolchain/project-structure chapter work.",
   "slices": [
     {
       "id": "slice01-pre-book-decision-gate",
@@ -37,11 +37,11 @@
     },
     {
       "id": "slice08-js-fn-return-parity",
-      "status": "open"
+      "status": "cc-closed-cdc-pending"
     },
     {
       "id": "slice09-toolchain-and-project-structure-chapters",
-      "status": "provisional"
+      "status": "open"
     },
     {
       "id": "slice10-language-surface-chapters",
@@ -52,5 +52,5 @@
       "status": "provisional"
     }
   ],
-  "next": "Run slice08; after it closes, proceed to slice09 toolchain/project-structure chapters unless slice08 routes new blockers."
+  "next": "Run slice09 toolchain/project-structure chapters unless CDC verification of slice08 surfaces a blocker."
 }

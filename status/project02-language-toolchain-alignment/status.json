@@ -11,9 +11,9 @@
   ],
   "current": {
     "arc": "arc16-book-0.6.0-edition",
-    "slice": "slice08-js-fn-return-parity",
+    "slice": "slice09-toolchain-and-project-structure-chapters",
     "status": "open",
-    "summary": "slice07 is closed/CDC-verified; slice08 fixes or disposes D-2609-FNRT before book chapter rewrites."
+    "summary": "slice08 is CC-closed with D-2609-FNRT fixed; slice09 is open for toolchain/project-structure chapter work."
   },
   "arcs": [
     {

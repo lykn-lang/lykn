@@ -976,8 +976,10 @@ which cannot produce a value)`. A focused Rust CLI probe on the same shape using
 `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn check` and `lykn
 compile` succeeds and emits a return-checked closure. Current guides also teach
 `fn` as a value-producing anonymous function. `probe` . High . `bug` .
-**Status:** `routed` ->
-`project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice08-js-fn-return-parity/`
+**Status:** `closed` ->
+`project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice08-js-fn-return-parity/closing-report.md`.
+Source fix: release/0.6.x commit `8c66469`; JS now accepts direct `fn`/`lambda`
+returns under `:returns :function`, with cross-compiler regression coverage.
 
 ---
 
