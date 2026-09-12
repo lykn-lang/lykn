@@ -41,6 +41,14 @@
       "status": "implemented-awaiting-operator-review",
       "plannedRelease": null,
       "plan": "../project06-planning-reorg/project-plan.md"
+    },
+    {
+      "id": "project07-core-library-research",
+      "status": "active",
+      "plannedRelease": null,
+      "plan": "../project07-core-library-research/project-plan.md",
+      "currentArc": "arc01-format-runtime-evidence",
+      "nextArc": "arc02-lykn-authoring-evidence"
     }
   ]
 }

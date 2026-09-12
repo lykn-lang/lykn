@@ -1,0 +1,78 @@
+# Arc01 — Format and runtime evidence
+
+## Capability and status
+
+Deliver a reproducible account of what native Deno and candidate packages
+provide for JSON and YAML, what they lose, and what Lykn libraries must add.
+Evidence includes package provenance and the actual runtime/toolchain
+baseline, so a dependency recommendation is not inferred from a registry name.
+
+Active arc. Slice01 is ready for CC; later slices are not yet opened.
+See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
+
+## Slice breakdown
+
+| Slice | Scope and output | Dependency | Status |
+| --- | --- | --- | --- |
+| [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | Ready for CC |
+| slice02-json-behavior | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01 baseline and protocol | Planned; open set deferred |
+| slice03-yaml-fidelity | Exercise YAML value and document workflows through Lykn; compare schemas, aliases/cycles, non-string keys, multi-document support, diagnostics, comments/layout, and candidate preservation APIs | Slice01; reuse Slice02 harness observations | Planned; open set deferred |
+| slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives | Slices01–03 evidence | Planned; open set deferred |
+
+Each execution slice must remain small enough for one context plus correction
+headroom. If the JSON or YAML matrix proves too large, explicitly split that
+slice before execution and preserve every case in the arc plan and ledger.
+Source/native-format fidelity and application validation are separate axes.
+
+## Decisions this arc informs
+
+- Is native JSON adequate for the required numeric and duplicate-key policy?
+- Which JSON extensions are useful without implying preservation guarantees?
+- Does the first YAML use case need value rewriting, document preservation,
+  or both, and what evidence supports the fidelity promised by each candidate?
+- Which YAML schemas and value kinds can a library accept without silent loss?
+- Which implementation, package source, dependency graph, and permission model
+  satisfy the operator's no-Node/no-npm-ecosystem direction?
+- What must the later Lykn ADT and authoring trials exercise?
+
+The operator's direction excludes Node/npm ecosystem dependence for the new
+libraries. Research must expose existing exceptions and candidate provenance,
+not silently allow npm because older guides permit it. Code ancestry, registry,
+transitive dependencies, and required runtime are separate facts. Whether an
+independently maintained port's ancestry is acceptable remains a decision to
+document, not an automatic rejection or acceptance.
+
+## Verification and artifacts
+
+Each slice owns its `artifacts/` directory, reproducible instructions, raw
+observations, and evidence-strength statements. Successful ordinary cases
+must be accompanied by malformed, boundary, and unsupported cases. Keep
+input bytes and output bytes when assessing fidelity; data equality alone
+cannot demonstrate document preservation. Test file failure behavior only in
+isolated fixtures; never edit real configuration or user documents as probes.
+
+Slice01 defines execution locations and allowed source scope for later
+prompts. This arc does not make blanket source changes or adopt packages into
+the language repository. It does authorize narrow, inspectable research
+fixtures through the slice plans. Corrections discovered here feed Arc03;
+blocking corrections may require opening that work earlier.
+
+At arc close, independently replay a JSON and YAML workflow from the recorded
+baseline and reconcile the result with the overall capability/dependency
+matrix. Check that every policy question has evidence or a specific unresolved
+decision, and that all authoring findings have survived into the next arc.
+
+## Expedited Mode
+
+Apply the project's exact-path commits, proposed-done/CDC separation, immediate
+evidence-based close and next-slice opening, and arc composition rules. Next
+after Slice01 closes: open `slice02-json-behavior` with its full open set and
+report `arc01-format-runtime-evidence/slice02-json-behavior/cc-prompt.md`.
+Do not generate a close set or mark research complete merely because the
+planning documents exist.
+
+## Version History
+
+- 2026-09-12 v1.0: Opened the format/runtime evidence arc with four bounded
+  research slices; detailed the baseline-and-protocol slice first. Preserved
+  YAML and dependency-provenance research alongside the JSON starting point.

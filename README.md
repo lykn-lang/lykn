@@ -8,6 +8,7 @@ Planning authority lives on branch `planning` in `.worktrees/planning`. Source d
 - [project04-c-lang](project04-c-lang/project-plan.md)
 - [project05-hardware](project05-hardware/project-plan.md)
 - [project06-planning-reorg](project06-planning-reorg/project-plan.md)
+- [project07-core-library-research](project07-core-library-research/project-plan.md): JSON, YAML, Deno, and Lykn authoring research; Expedited Mode.
 
 - [Planning status dashboards](status/status.html)
 - [Cross-project backlog](backlog/README.md)

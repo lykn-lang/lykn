@@ -1,0 +1,11 @@
+# Slice01 ledger
+
+| ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S-01 | Actual runtime, CLI, source worktrees, guides, book, and patch availability have explicit identities | Independently rerun recorded version/path/Git checks and inspect `artifacts/baseline.md` | correctness-grade | Slice scope 1–2 | open | — | Missing patch identity must be explicit |
+| S-02 | Every exploratory seed claim has a source-backed disposition | Walk SE-01 through SE-10 into `artifacts/source-register.md`; inspect pinned sources and evidence kinds | correctness-grade | Slice scope 3 | open | — | No runtime claim from docs alone |
+| S-03 | Format and runtime fixture matrix preserves all project requirements | Cross-check `artifacts/fixture-matrix.md` against project Scope and Arc01 slice coverage; inspect case IDs/invariants/owners | correctness-grade | Slice scope 4 | open | — | Include value and byte fidelity, negative cases, numeric and alias/resource bounds |
+| S-04 | Replay protocol defines a concrete available baseline and isolated execution | Follow setup in `artifacts/research-protocol.md` as a read-only walkthrough; verify paths, commands, permissions, recording and stop rules | correctness-grade | Slice scope 2,4 | open | — | Full format execution is later work |
+| S-05 | Lykn/guide/book/operator evaluation can be run and assessed without hidden context | Inspect `artifacts/authoring-evaluation.md` for tasks, inputs, actual-reference logs, attribution, denominators, controls, and operator review records | correctness-grade | Operator explicit goals; slice scope 5 | open | — | No invented human ratings or causal claims |
+| S-06 | Findings and unresolved prerequisites have honest, durable dispositions | Inspect `artifacts/findings.md`; check permanent IDs/deduplication and real Git destinations for any routed discovery | correctness-grade | Slice scope 6 | open | — | Seed suspicions need validation before becoming defects |
+| S-07 | Handoff is complete, scoped, and reproducible | Check artifact set/links, inspect changed paths and staged diff, and walk all rows in closing report | correctness-grade | Expedited Mode; verification contract | open | — | CC is proposed-done until CDC review; bubble up next-slice impacts |
