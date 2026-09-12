@@ -11,6 +11,8 @@ Fix or explicitly dispose `D-2609-FOVL`: the JS API path used by book doctests d
 
 - Reproduce the overlap behavior through the JS API and the CLI compile path.
 - Decide the correct 0.6.x behavior from the shipped language design and source guides.
+- Read the slice10 close and CDC verification before changing source or book
+  examples.
 - If the JS API is wrong, implement compile-time overlap rejection in the JS compiler path with regression coverage.
 - Re-enable the overlap chapter examples as `lisp,compile-fail` when the doctest path can prove them.
 - Update `D-2609-FOVL`, slice ledger/close artifacts, arc plan/status, project/status, and the next slice.

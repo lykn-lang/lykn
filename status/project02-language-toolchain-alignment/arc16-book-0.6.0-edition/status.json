@@ -5,7 +5,7 @@
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
   "currentSlice": "slice11-js-overlap-compile-parity",
-  "summary": "slice10 is CC-closed with language/compiler book updates in commit 6aa379d and D-2609-FOVL routed; slice11 is open for JS overlap compile parity.",
+  "summary": "slice10 is CDC-verified with language/compiler book updates in commit 6aa379d and D-2609-FOVL routed; slice11 is open for JS overlap compile parity.",
   "slices": [
     {
       "id": "slice01-pre-book-decision-gate",
@@ -45,7 +45,7 @@
     },
     {
       "id": "slice10-language-surface-chapters",
-      "status": "cc-closed-cdc-pending"
+      "status": "closed-cdc-verified"
     },
     {
       "id": "slice11-js-overlap-compile-parity",

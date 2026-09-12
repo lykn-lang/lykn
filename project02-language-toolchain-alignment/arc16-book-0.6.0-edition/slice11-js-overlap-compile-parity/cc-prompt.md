@@ -10,7 +10,8 @@ Before editing, read:
 
 - `../arc-plan.md`;
 - this slice's `slice-plan.md` and `ledger.md`;
-- `../slice10-language-surface-chapters/closing-report.md`;
+- `../slice10-language-surface-chapters/closing-report.md` and
+  `../slice10-language-surface-chapters/cdc-verification.md`;
 - `/Users/oubiwann/lab/lykn/lang/.worktrees/planning/backlog/discoveries.md` row `D-2609-FOVL`;
 - `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/AGENTS.md`;
 - `/Users/oubiwann/lab/cnbb/lykn/AGENTS.md`;

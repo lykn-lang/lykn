@@ -9,8 +9,8 @@
 | L-5 | 0.6.x language surface prose matches shipped behavior | source-guide cross-check covers exports, grouped bind, cond, functions/closures, records/types, destructuring, classes, generators, equality, and diagnostics touched | serious | arc16 capability | done | source guides read; book diff; `D-2609-FOVL` discovery added for overlap parity | no source docs changed |
 | L-6 | Focused book gates pass or failures are explicitly dispositioned | `lykn test --docs <touched> --fence lisp` from book repo | serious | book fence gate | done | focused touched-chapter gate: 14 files, 39 blocks, 9 skipped, 39 passed / 0 failed | whole-book `--fence lisp`: 177 files, 425 blocks, 22 skipped, 425 passed / 0 failed |
 | L-7 | Repository hygiene is preserved | `git status --short --branch` for planning, release/0.6.x, book, and writers-guide as applicable | serious | AGENTS.md | done | generated book `target/` removed; `_to_delete/` preserved | final statuses recorded in closeout |
-| L-8 | Planning surfaces are updated at close | slice ledger/report, arc plan/status, project/status, and next slice reflect final disposition | serious | project-management | done | this closeout set; `D-2609-FOVL`; slice11 opened | no silent drops |
+| L-8 | Planning surfaces are updated at close | slice ledger/report, arc plan/status, project/status, and next slice reflect final disposition | serious | project-management | done | this closeout set; `D-2609-FOVL`; slice11 opened; [`cdc-verification.md`](cdc-verification.md) | no silent drops |
 
 ## Closure
 
-CC-closed as of 2026-09-12. Rows: 8. Done: 8. Deferred: 0. No-op: 0. Pending: 0. CDC remains pending.
+Closed / CDC-verified as of 2026-09-12. Rows: 8. Done: 8. Deferred: 0. No-op: 0. Pending: 0.

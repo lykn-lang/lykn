@@ -1,6 +1,6 @@
 # arc16 slice10 - Language Surface Chapters Closing Report
 
-Status: **CC-closed 2026-09-12; CDC pending**.
+Status: **Closed / CDC-verified 2026-09-12**.
 
 ## Outcome
 
@@ -99,7 +99,8 @@ No release/0.6.x source files changed in this slice, so source gates were not ru
 
 - Book commit: `6aa379d` (`docs: refresh lykn language chapters`).
 - Discovery Register row: `D-2609-FOVL`.
-- Planning close artifacts: this closing report and the updated slice10 ledger.
+- Planning close artifacts: this closing report, the updated slice10 ledger,
+  and [`cdc-verification.md`](cdc-verification.md).
 - Next-slice open set: `slice11-js-overlap-compile-parity/`.
 - No durable generated artifacts. Generated doctest `target/` was removed; mdBook output under `book/` remains ignored by the book repo.
 
