@@ -1,10 +1,10 @@
 # arc16 — Lykn Book 0.6.0 Edition
 
-> **Status: OPEN — slice10 CDC-verified; slice11 JS overlap compile parity opened.**
-> slice01 through slice10 are closed/CDC-verified. slice10 refreshed the book's
-> language/compiler chapters in book commit `6aa379d` and routed `D-2609-FOVL`;
-> slice11 is open for the JS overlap compile parity implementation pass before
-> edition close. The operator tightened
+> **Status: OPEN — slice11 CC-closed; slice12 edition close opened.**
+> slice01 through slice10 are closed/CDC-verified. slice11 fixed `D-2609-FOVL`
+> in source commit `2a0cabf`, restored the overlap chapter compile-fail examples
+> in book commit `43cfebc`, and is CC proposed-done pending CDC verification.
+> slice12 is open for the final edition close and release-gate pass. The operator tightened
 > the rule: all accepted 0.6.0 implementation work must land
 > before book or writers-guide prose normalizes the final surface. The operator
 > also clarified that the book pass is expected to surface more defects; arc16
@@ -87,8 +87,8 @@ them.
 | **slice08 · js-fn-return-parity** | Fix or explicitly dispose `D-2609-FNRT`: the book doctest path through the JS compiler rejects `func` returning `fn`, while the Rust CLI accepts and compiles the same form. | **Closed / CDC-verified** ([closing-report](slice08-js-fn-return-parity/closing-report.md), [cdc-verification](slice08-js-fn-return-parity/cdc-verification.md), [slice-plan](slice08-js-fn-return-parity/slice-plan.md), [ledger](slice08-js-fn-return-parity/ledger.md), [cc-prompt](slice08-js-fn-return-parity/cc-prompt.md)) |
 | **slice09 · toolchain-and-project-structure-chapters** | Update book chapters that teach project layout, Deno boundaries, testing, tooling, CI/CD, publish/build/dist, and source ownership. Depends on the final `D-2608-SOWN` route and the slice08 `D-2609-FNRT` repair. | **Closed / CDC-verified** ([closing-report](slice09-toolchain-and-project-structure-chapters/closing-report.md), [cdc-verification](slice09-toolchain-and-project-structure-chapters/cdc-verification.md), [slice-plan](slice09-toolchain-and-project-structure-chapters/slice-plan.md), [ledger](slice09-toolchain-and-project-structure-chapters/ledger.md), [cc-prompt](slice09-toolchain-and-project-structure-chapters/cc-prompt.md)) |
 | **slice10 · language-surface-chapters** | Update language chapters for identifier mapping, position-aware forms, records/single-constructor types, exports, grouped local bindings, and flatter validation branching. Depends on final `D-2608-XPRT`, `D-2608-LBND`, and `D-2608-COND` routes, plus any implementation slices. | **Closed / CDC-verified** ([closing-report](slice10-language-surface-chapters/closing-report.md), [cdc-verification](slice10-language-surface-chapters/cdc-verification.md), [slice-plan](slice10-language-surface-chapters/slice-plan.md), [ledger](slice10-language-surface-chapters/ledger.md), [cc-prompt](slice10-language-surface-chapters/cc-prompt.md)) |
-| **slice11 · js-overlap-compile-parity** | Fix or explicitly dispose `D-2609-FOVL`: the JS API path used by book doctests does not compile-reject overlapping multi-clause `func` definitions, while the CLI compile path rejects the same source. | **Open** ([slice-plan](slice11-js-overlap-compile-parity/slice-plan.md), [ledger](slice11-js-overlap-compile-parity/ledger.md), [cc-prompt](slice11-js-overlap-compile-parity/cc-prompt.md)) |
-| **slice12 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | Provisional |
+| **slice11 · js-overlap-compile-parity** | Fix or explicitly dispose `D-2609-FOVL`: the JS API path used by book doctests does not compile-reject overlapping multi-clause `func` definitions, while the CLI compile path rejects the same source. | **CC-closed / CDC pending** ([closing-report](slice11-js-overlap-compile-parity/closing-report.md), [slice-plan](slice11-js-overlap-compile-parity/slice-plan.md), [ledger](slice11-js-overlap-compile-parity/ledger.md), [cc-prompt](slice11-js-overlap-compile-parity/cc-prompt.md)) |
+| **slice12 · edition-close-and-release-gate** | Whole-book final pass: build HTML/EPUB, run book/example gates, voice consistency review, stale-link/path sweep, version/edition metadata check, and arc close with bubble-up to arc09. | **Open** ([slice-plan](slice12-edition-close-and-release-gate/slice-plan.md), [ledger](slice12-edition-close-and-release-gate/ledger.md), [cc-prompt](slice12-edition-close-and-release-gate/cc-prompt.md)) |
 
 slice01 found that D-3 is resolved by the tracked lang planning home, while D-1
 and `D-2607-R4NW` should be treated as one verification strategy: implement a
@@ -115,7 +115,7 @@ run generated
 176 doctest files from 444 blocks and reached Deno execution with 417 passing
 and 27 failing examples; the mixed `lisp` + `lykn` run generated 177 files from
 447 blocks with 420 passing and 27 failing examples. slice07
-`current-book-drift-refresh` consumed that failure inventory, found `D-2609-FNRT`, and inserted slice08 before book-facing chapter work proceeds. slice08 fixed that compiler mismatch and opened slice09 for the first normal chapter pass. slice09 refreshed the toolchain/project-structure chapter set in book commit `03b3818`, passed the focused touched-chapter doctest gate at 5/0 with 13 skipped macro-context fragments, is CDC-verified, and opened slice10 for the remaining language-surface chapters. slice10 refreshed those language/compiler chapters in book commit `6aa379d`, turned the full book `--fence lisp` gate green at 425/0 with 22 skipped blocks, is CDC-verified, and routed `D-2609-FOVL`, so slice11 was inserted before edition close.
+`current-book-drift-refresh` consumed that failure inventory, found `D-2609-FNRT`, and inserted slice08 before book-facing chapter work proceeds. slice08 fixed that compiler mismatch and opened slice09 for the first normal chapter pass. slice09 refreshed the toolchain/project-structure chapter set in book commit `03b3818`, passed the focused touched-chapter doctest gate at 5/0 with 13 skipped macro-context fragments, is CDC-verified, and opened slice10 for the remaining language-surface chapters. slice10 refreshed those language/compiler chapters in book commit `6aa379d`, turned the full book `--fence lisp` gate green at 425/0 with 22 skipped blocks, is CDC-verified, and routed `D-2609-FOVL`. slice11 fixed `D-2609-FOVL` in source commit `2a0cabf`, restored the overlap examples in book commit `43cfebc`, and turned the whole-book `--fence lisp` gate green at 428/0 with 19 skipped blocks. slice12 is now open for final edition close.
 
 ## 4. Dependencies
 
@@ -213,6 +213,16 @@ normalizes the surface.
 - Teaching around a known language defect instead of fixing or routing it.
 
 ## 9. Version History
+
+### v1.25 - 2026-09-12 (slice11 CC-closed; slice12 opened)
+
+slice11 fixed `D-2609-FOVL`: the JS API now rejects overlapping multi-clause
+`func` definitions before emitting first-match dispatch code. Source commit
+`2a0cabf` added the overlap check and JS regression coverage; book commit
+`43cfebc` restored the overlap chapter examples as `lisp,compile-fail`.
+Verification passed: focused JS regression 7/0, `make check`, focused overlap
+chapter doctest 4/0, and whole-book `--fence lisp` 428/0 with 19 skipped
+blocks. slice12 `edition-close-and-release-gate` is now open.
 
 ### v1.24 - 2026-09-12 (slice10 CDC verified)
 
