@@ -1186,6 +1186,14 @@ slice07 originated in one.
   Arc01/Slice02 execution waits for CDC verification of that correction;
   Arc01/Slice04 must reconcile effective permissions. This routing is not a
   repair claim. The test runner's separate implicit grants remain Arc03 follow-up.
+- **2026-09-12 CC correction:** Source `release/0.6.x` commit
+  `d0bb981dae2a4abf6c984406c4b2081a45cc92f8` removes implicit run grants,
+  adds explicit scoped options and script-argument separation, and passes
+  argv/real Deno denial controls plus canonical validation. See the
+  [CC handoff](../project07-core-library-research/arc03-findings-and-integration/slice01-run-permissions/closing-report.md)
+  and [RP-B01 build receipt](../project07-core-library-research/arc03-findings-and-integration/slice01-run-permissions/artifacts/build-receipt.md).
+  Status remains routed pending independent CDC reproduction; JSON execution
+  is still gated. Test-runner grants remain a separate correction.
 - **Source material:** [baseline](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/baseline.md),
   [protocol](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/research-protocol.md).
 

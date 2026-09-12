@@ -1,6 +1,8 @@
 # Slice01 — Explicit run permissions
 
-Status: **ready-for-cc**. Next execution assignment; Expedited Mode.
+Status: **CC proposed-done; awaiting CDC**. Expedited Mode.
+See [closing-report.md](closing-report.md) and [RP-B01](artifacts/build-receipt.md).
+All six ledger rows remain open; JSON execution remains gated.
 
 ## Goal and contract
 
@@ -78,6 +80,9 @@ runner's separate implicit grants remain Arc03/Slice02; do not declare all
 toolchain permission behavior fixed.
 
 ## Version History
+
+- 2026-09-12 v1.1: CC delivered the scoped source repair and attested gates/build
+  receipt. Independent verification and JSON launch prerequisite remain open.
 
 - 2026-09-12 v1.0: Opened from D-2609-PERM; fixed CLI contract, paths,
   process/denial tests, guide updates and corrected-build receipt.

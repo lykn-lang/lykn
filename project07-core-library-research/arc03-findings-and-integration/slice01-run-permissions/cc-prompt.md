@@ -61,3 +61,11 @@ After CDC closure resume:
 `arc01-format-runtime-evidence/slice02-json-behavior/cc-prompt.md`.
 CDC supplies the verified receipt and lifts that packet's gate; a source
 commit by itself does not authorize starting the JSON runtime work early.
+
+## Execution note — 2026-09-12
+
+The source `assets/ai/rust` skill path was confirmed missing, including as a
+symlink. After the required AGENTS.md clarification, the operator explicitly
+authorized `/Users/oubiwann/.codex/skills/rust-guidelines/SKILL.md` for this slice.
+CC delivery is now proposed-done; see [closing-report.md](closing-report.md).
+The existing CDC/JSON gate above is unchanged.
