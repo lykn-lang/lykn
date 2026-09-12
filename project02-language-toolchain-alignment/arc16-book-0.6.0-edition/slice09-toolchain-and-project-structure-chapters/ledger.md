@@ -8,8 +8,8 @@
 | T-4 | Toolchain/project-structure prose matches current 0.6.x behavior | diff plus source-guide cross-check show current `lykn test`, doctest, build/dist/publish, source-ownership, Deno/no-Node, and Makefile guidance | serious | arc16 capability | done | book commit `03b3818`; source guides cross-checked in close | stale Biome/ESLint/raw-Deno claims removed from touched scope |
 | T-5 | Focused book gates pass or failures are explicitly dispositioned | `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn test --docs <touched> --fence lisp` from book repo | serious | book fence gate | done | generated 7 test files from 5 runnable blocks; 5 passed / 0 failed; 13 skipped | touched shell/prose-only files had no Lykn blocks |
 | T-6 | Repository hygiene is preserved | `git status --short --branch` for planning, release/0.6.x, book, and writers-guide as applicable | serious | AGENTS.md | done | book: `## main` + pre-existing `?? _to_delete/`; release/writers-guide clean before closeout | generated book doctest `target/` removed |
-| T-7 | Planning surfaces are updated at close | slice ledger/report, arc plan/status, project/status, and next slice reflect final disposition | serious | project-management | done | this closeout set; slice10 opened | no silent drops |
+| T-7 | Planning surfaces are updated at close | slice ledger/report, arc plan/status, project/status, and next slice reflect final disposition | serious | project-management | done | this closeout set; slice10 opened; [`cdc-verification.md`](cdc-verification.md) | no silent drops |
 
 ## Closure
 
-CC-closed as of 2026-09-12. Rows: 7. Done: 7. Deferred: 0. No-op: 0. Pending: 0. CDC remains pending.
+Closed / CDC-verified as of 2026-09-12. Rows: 7. Done: 7. Deferred: 0. No-op: 0. Pending: 0.

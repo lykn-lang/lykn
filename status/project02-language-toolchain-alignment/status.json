@@ -13,7 +13,7 @@
     "arc": "arc16-book-0.6.0-edition",
     "slice": "slice10-language-surface-chapters",
     "status": "open",
-    "summary": "slice09 is CC-closed with toolchain/project-structure book updates in commit 03b3818; slice10 is open for language-surface chapter work."
+        "summary": "slice09 is CDC-verified with toolchain/project-structure book updates in commit 03b3818; slice10 is open for language-surface chapter work."
   },
   "arcs": [
     {

@@ -1,6 +1,6 @@
 # arc16 slice09 - Toolchain and Project-Structure Chapters Closing Report
 
-Status: **CC-closed 2026-09-12; CDC pending**.
+Status: **Closed / CDC-verified 2026-09-12**.
 
 ## Outcome
 
@@ -64,7 +64,8 @@ No source code or source docs changed in release/0.6.x, so source gates were not
 ## Artifact inventory
 
 - Book commit: `03b3818` (`docs: refresh lykn toolchain chapters`).
-- Planning close artifacts: this closing report and the updated slice09 ledger.
+- Planning close artifacts: this closing report, the updated slice09 ledger,
+  and [`cdc-verification.md`](cdc-verification.md).
 - No durable planning artifacts were added beyond the closeout set.
 - Generated doctest `target/` was removed; generated mdBook output under `book/` remains ignored by the book repo.
 
