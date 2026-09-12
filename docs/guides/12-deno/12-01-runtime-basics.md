@@ -21,14 +21,19 @@ runtime mechanics such as permissions and APIs.
 
 **Strength**: MUST
 
-Deno denies all access unless explicitly granted with permission flags.
+Deno checks protected operations such as file reads/writes and network access.
+`lykn run` adds no permission grants: the launched program uses Deno's normal
+permission policy, including interactive prompts when available. Use explicit
+scopes for the access the program needs and `--no-prompt` to fail on missing
+permissions without a prompt. These flags apply to runtime access, not the
+compiler reading source or emitting JavaScript.
 
 ```sh
-# Permission mechanics for an already-compiled JS entry point
-deno run --allow-net=api.example.com --allow-read=./data target/lykn/build/server/mod.js
+# Compile and run with explicit runtime permissions
+lykn run --no-prompt --allow-net=api.example.com --allow-read=./data packages/server/mod.lykn
 
-# Development only
-deno run -A target/lykn/build/server/mod.js
+# All permissions require an explicit request
+lykn run -A packages/server/mod.lykn
 ```
 
 ### ID-02: Use Granular Permissions
@@ -38,26 +43,38 @@ deno run -A target/lykn/build/server/mod.js
 Scope permissions to specific paths, hosts, and variables.
 
 ```sh
-deno run \
+lykn run --no-prompt \
   --allow-read=./config,./data \
   --allow-write=./output \
   --allow-net=api.example.com:443 \
   --allow-env=PORT,DATABASE_URL \
-  target/lykn/build/server/mod.js
+  packages/server/mod.lykn
 ```
 
 ### ID-03: Permission Prompts for Interactive Use
 
 **Strength**: CONSIDER
 
-Use `--prompt` (default in Deno 2.x) for interactive permission
-requests at runtime.
+Without `--no-prompt`, Deno retains its ordinary interactive prompting policy.
+For unattended checks, `lykn run --no-prompt FILE` fails when a protected
+operation needs a permission that was not granted. For example, a program that
+reads `./data/input.json` fails under that command and can succeed with
+`lykn run --no-prompt --allow-read=./data FILE`.
+
+Runtime options must appear before FILE. In `lykn run FILE -- --allow-read`,
+`--allow-read` is a program argument and grants nothing. Scoped optional values
+require `=`, for example `--allow-read="./input data"`; repeated scoped flags
+accumulate. See `../15-lykn-cli.md` for the complete option and separator contract.
 
 ### ID-04: Deny Flags for Exclusion
 
 **Strength**: CONSIDER
 
 `--deny-net=evil.com` blocks specific resources within broader grants.
+For files, `lykn run --no-prompt --allow-read=./data --deny-read=./data/private FILE`
+permits reads under `./data` except the denied subtree. Both allow and deny flags
+support `read`, `write`, `net`, `env`, `run`, `sys`, `ffi`, and `import`; use bare
+flags only when the whole category is intended.
 
 ---
 

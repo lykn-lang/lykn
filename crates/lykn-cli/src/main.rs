@@ -1,4 +1,5 @@
-use clap::{Parser, Subcommand};
+use clap::{Args, Parser, Subcommand};
+use std::ffi::{OsStr, OsString};
 use std::fs;
 use std::io::IsTerminal;
 use std::path::{Path, PathBuf};
@@ -16,6 +17,133 @@ use lykn_cli::dist;
 struct Cli {
     #[command(subcommand)]
     command: Commands,
+}
+
+/// Options stop at FILE: even recognized flags after it belong to the program.
+#[derive(Args)]
+#[command(override_usage = "lykn run [OPTIONS] <FILE> [ARGS]...")]
+struct RunArgs {
+    /// File to run, followed by script arguments (optional -- separator)
+    #[arg(required = true, num_args = 1.., trailing_var_arg = true, value_name = "FILE")]
+    program: Vec<OsString>,
+    #[command(flatten)]
+    runtime: RunRuntime,
+}
+
+#[derive(Args)]
+struct RunRuntime {
+    /// Allow read access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_read: Option<Vec<String>>,
+    /// Allow write access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_write: Option<Vec<String>>,
+    /// Allow net access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_net: Option<Vec<String>>,
+    /// Allow env access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_env: Option<Vec<String>>,
+    /// Allow run access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_run: Option<Vec<String>>,
+    /// Allow sys access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_sys: Option<Vec<String>>,
+    /// Allow ffi access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_ffi: Option<Vec<String>>,
+    /// Allow import access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    allow_import: Option<Vec<String>>,
+    /// Deny read access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_read: Option<Vec<String>>,
+    /// Deny write access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_write: Option<Vec<String>>,
+    /// Deny net access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_net: Option<Vec<String>>,
+    /// Deny env access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_env: Option<Vec<String>>,
+    /// Deny run access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_run: Option<Vec<String>>,
+    /// Deny sys access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_sys: Option<Vec<String>>,
+    /// Deny ffi access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_ffi: Option<Vec<String>>,
+    /// Deny import access; optionally scope with =LIST (repeatable)
+    #[arg(long, num_args = 0..=1, require_equals = true, value_name = "LIST")]
+    deny_import: Option<Vec<String>>,
+    /// Explicitly grant all Deno permissions
+    #[arg(short = 'A', long)]
+    allow_all: bool,
+    /// Fail instead of prompting for missing permissions
+    #[arg(long)]
+    no_prompt: bool,
+    /// Require remote dependencies to be cached
+    #[arg(long)]
+    cached_only: bool,
+    /// Fail if the lockfile is out of date
+    #[arg(long, num_args = 0..=1, require_equals = true, default_missing_value = "true")]
+    frozen: Option<bool>,
+}
+
+impl RunRuntime {
+    fn deno_args(&self) -> Vec<OsString> {
+        let mut args = Vec::new();
+        // Match Deno's repeated-scope semantics: scopes accumulate. A bare flag
+        // grants/denies the whole category only when no scopes were supplied.
+        // Keep explicit empty values as = so Deno rejects them, never widens them.
+        for (name, scopes) in [
+            ("--allow-read", &self.allow_read),
+            ("--allow-write", &self.allow_write),
+            ("--allow-net", &self.allow_net),
+            ("--allow-env", &self.allow_env),
+            ("--allow-run", &self.allow_run),
+            ("--allow-sys", &self.allow_sys),
+            ("--allow-ffi", &self.allow_ffi),
+            ("--allow-import", &self.allow_import),
+            ("--deny-read", &self.deny_read),
+            ("--deny-write", &self.deny_write),
+            ("--deny-net", &self.deny_net),
+            ("--deny-env", &self.deny_env),
+            ("--deny-run", &self.deny_run),
+            ("--deny-sys", &self.deny_sys),
+            ("--deny-ffi", &self.deny_ffi),
+            ("--deny-import", &self.deny_import),
+        ] {
+            if let Some(scopes) = scopes {
+                if scopes.is_empty() {
+                    args.push(OsString::from(name));
+                } else {
+                    args.extend(
+                        scopes
+                            .iter()
+                            .map(|scope| OsString::from(format!("{name}={scope}"))),
+                    );
+                }
+            }
+        }
+        for (name, enabled) in [
+            ("--allow-all", self.allow_all),
+            ("--no-prompt", self.no_prompt),
+            ("--cached-only", self.cached_only),
+        ] {
+            if enabled {
+                args.push(OsString::from(name));
+            }
+        }
+        if let Some(frozen) = self.frozen {
+            args.push(OsString::from(format!("--frozen={frozen}")));
+        }
+        args
+    }
 }
 
 #[derive(Subcommand)]
@@ -64,13 +192,7 @@ enum Commands {
         no_strict: bool,
     },
     /// Run a .lykn or .js file
-    Run {
-        /// File to run
-        file: PathBuf,
-        /// Arguments to pass to the script
-        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-        args: Vec<String>,
-    },
+    Run(Box<RunArgs>),
     /// Run tests via Deno
     Test {
         /// Test file/directory patterns. Default when omitted: `test/` — but
@@ -196,7 +318,7 @@ fn main() {
             source_context_path.as_deref(),
             no_strict,
         ),
-        Commands::Run { file, args } => cmd_run(&file, &args),
+        Commands::Run(run) => cmd_run(&run),
         Commands::Test {
             patterns,
             docs,
@@ -443,7 +565,7 @@ fn dev_config() -> String {
 }
 
 /// Execute a deno command, returning its exit code.
-fn run_deno(args: &[&str]) -> i32 {
+fn run_deno(args: &[impl AsRef<OsStr>]) -> i32 {
     let status = Command::new("deno")
         .args(args)
         .status()
@@ -456,15 +578,23 @@ fn run_deno(args: &[&str]) -> i32 {
 }
 
 /// Execute a deno command, exiting with its status code.
-fn exec_deno(args: &[&str]) {
+fn exec_deno(args: &[impl AsRef<OsStr>]) {
     process::exit(run_deno(args));
 }
 
-fn cmd_run(file: &std::path::Path, args: &[String]) {
+fn cmd_run(run: &RunArgs) {
+    // Clap requires at least FILE and starts trailing capture at that first value.
+    let file = Path::new(&run.program[0]);
+    let args = &run.program[1..];
+    let args = if args.first().is_some_and(|arg| arg == "--") {
+        &args[1..]
+    } else {
+        args
+    };
     let config = dev_config();
 
-    if file.extension().is_some_and(lykn_cli::util::is_lykn_ext) {
-        let run_file = match workspace_build_output_for_source(file) {
+    let run_file = if file.extension().is_some_and(lykn_cli::util::is_lykn_ext) {
+        match workspace_build_output_for_source(file) {
             Some((root, out_path)) => {
                 if let Err(e) = dist::build_project(&root) {
                     eprintln!("error: {e}");
@@ -494,19 +624,21 @@ fn cmd_run(file: &std::path::Path, args: &[String]) {
                 }
                 out_path
             }
-        };
-        let run_file = run_file.to_string_lossy().into_owned();
-        let mut deno_args = vec!["run", "--config", &config, "-A", &run_file];
-        let arg_refs: Vec<&str> = args.iter().map(|s| s.as_str()).collect();
-        deno_args.extend(arg_refs);
-        exec_deno(&deno_args);
+        }
     } else {
-        let file_str = file.to_string_lossy();
-        let mut deno_args = vec!["run", "--config", &config, "-A", &*file_str];
-        let arg_refs: Vec<&str> = args.iter().map(|s| s.as_str()).collect();
-        deno_args.extend(arg_refs);
-        exec_deno(&deno_args);
-    }
+        file.to_path_buf()
+    };
+    let mut deno_args = vec![
+        OsString::from("run"),
+        OsString::from("--config"),
+        config.into(),
+    ];
+    deno_args.extend(run.runtime.deno_args());
+    // Protect a JS filename beginning with '-' even when selected using lykn's --.
+    deno_args.push(OsString::from("--"));
+    deno_args.push(run_file.into_os_string());
+    deno_args.extend_from_slice(args);
+    exec_deno(&deno_args);
 }
 
 fn absolute_from_cwd(path: &Path) -> PathBuf {

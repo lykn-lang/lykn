@@ -174,18 +174,49 @@ build output. Source files outside a workspace package are compiled under
 file.
 
 ```sh
-# Run a .lykn file (compile + execute)
+# No permissions are added by lykn; Deno can prompt interactively
 lykn run packages/myapp/main.lykn
 
-# Run a .js file directly
-lykn run target/lykn/build/myapp/main.js
+# Grant only the access the program needs; fail instead of prompting
+lykn run --no-prompt --allow-read=./data --allow-write=./output packages/myapp/main.lykn
 
-# Pass arguments
-lykn run packages/myapp/main.lykn -- --port 3000
+# The same options apply to compiler-generated JavaScript
+lykn run --no-prompt --allow-read=./data target/lykn/build/myapp/main.js
+
+# Runtime options precede FILE; everything after FILE belongs to the script
+lykn run --allow-net=localhost:3000 packages/myapp/main.lykn -- --port 3000
 ```
 
-The CLI auto-discovers `project.json` by walking up from the
-current directory and passes `--config project.json` to Deno.
+Usage: `lykn run [OPTIONS] FILE [ARGS]...`. Lykn adds **no permission grants**
+by default. Missing access follows Deno's ordinary prompting policy; use
+`--no-prompt` for deterministic permission failures in unattended work.
+These permissions constrain the launched program, not the compiler's file access.
+
+For each of `read`, `write`, `net`, `env`, `run`, `sys`, `ffi`, and `import`,
+Lykn accepts `--allow-NAME` and `--deny-NAME`, either bare or with `=LIST`.
+A bare flag applies to the category; a list scopes it. Scope values require
+`=` so a bare flag cannot consume FILE. Quote scopes containing spaces, for
+example `--allow-read="./input data"`. Repeated scoped flags accumulate, as in
+`--allow-read=./config --allow-read=./data`. As in Deno, when a bare occurrence
+is mixed with scoped occurrences, the supplied scopes determine access.
+An empty `=LIST` is passed through for Deno to reject, never broadened.
+Explicit deny flags exclude resources from a grant.
+
+`-A` / `--allow-all` grants all permissions only when explicitly requested.
+`--cached-only` requires cached remote dependencies; `--frozen` (equivalent to
+`--frozen=true`) and `--frozen=false` control lockfile enforcement. Deno validates
+scope values and reports options unsupported by the installed runtime.
+
+Everything after FILE, including `--allow-read`, `-A`, or `--help`, is a script
+argument and cannot grant runtime access. An optional `--` immediately after
+FILE is consumed as the script separator; subsequent `--` arguments are passed
+through. Use `--` before FILE to select a filename beginning with `-`.
+The child process's exit code is returned by Lykn.
+
+The CLI discovers `project.json` from the current directory and passes it with
+`--config`. When a local import overlay is present, it passes the generated
+effective configuration instead. This run contract does not change the separate
+`lykn test` permission policy.
 
 ---
 
