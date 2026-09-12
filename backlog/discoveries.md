@@ -1181,11 +1181,11 @@ slice07 originated in one.
 - **How found:** `audit` (read-only source inspection, not binary reproduction).
 - **Guess:** High — least-privilege and denied-permission trials cannot use the
   source launch route honestly.
-- **Kind:** `bug` · **Status:** `open`
-- **Owner:** Project07 CDC to open a narrow correction before runtime trials;
-  Arc01/Slice04 must verify effective permissions. No correction destination is
-  open yet. A separately authorized research launch route is another explicit
-  decision, not an implied exception.
+- **Kind:** `bug` · **Status:** `routed`
+- **Owner:** [Project07 Arc03/Slice01 run-permission correction](../project07-core-library-research/arc03-findings-and-integration/slice01-run-permissions/slice-plan.md).
+  Arc01/Slice02 execution waits for CDC verification of that correction;
+  Arc01/Slice04 must reconcile effective permissions. This routing is not a
+  repair claim. The test runner's separate implicit grants remain Arc03 follow-up.
 - **Source material:** [baseline](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/baseline.md),
   [protocol](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/research-protocol.md).
 

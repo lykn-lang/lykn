@@ -4,9 +4,9 @@
 
 Make subsequent JSON, YAML, Deno, and Lykn research reproducible by pinning the
 actual environment and converting the exploratory discussion into a sourced
-claim inventory and bounded trial protocol. Status: **CC proposed-done; CDC
-pending** (was ready-for-cc). All ledger statuses remain open; see the
-[closing report](closing-report.md) for attestation and prerequisites.
+claim inventory and bounded trial protocol. Status: **CDC closed** (was CC
+proposed-done). All seven rows are reproduced; see [CDC verification](cdc-verification.md).
+The [closing report](closing-report.md) retains CC's original attestation.
 
 Read the [project plan](../../project-plan.md), [arc plan](../arc-plan.md),
 [ledger](ledger.md), and [CC prompt](cc-prompt.md). The supplied
@@ -94,6 +94,9 @@ use a fallback language to mask a Lykn toolchain gap.
 
 ## Version History
 
+- 2026-09-12 v1.2: CDC reproduced all seven criteria, reconciled source/binary/
+  book drift, and closed preparation. Arc03 run correction precedes JSON
+  execution; no source repair or format trial is claimed by this close.
 - 2026-09-12 v1.1: Recorded CC proposed-done after baseline/source inspection,
   fixture/protocol design and findings capture. Runtime launch and candidate
   Node-API gaps are explicit later prerequisites, not executed trials or

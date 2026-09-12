@@ -93,9 +93,9 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 CC proposed-done, CDC pending |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 CDC closed; Slice02 opened, execution blocked |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| arc03-findings-and-integration | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Roadmap only; may be opened earlier for a blocking correction |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 run-permission correction ready for CC |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -180,10 +180,11 @@ Co-authored-by: Billo AI <ai-engineering@billo.systems>
 ## Current status
 
 At opening, Arc01/Slice01 had its full open set and no execution or close set.
-Slice01 now has CC-attested baseline/source reconciliation and trial protocols;
-see its [closing report](arc01-format-runtime-evidence/slice01-baseline-and-protocol/closing-report.md).
-All ledger rows remain open pending CDC reproduction. Later arcs still have
-roadmap scope only; no format trial or operator acceptance is claimed.
+Slice01 is now CDC closed with seven independently verified criteria; see its
+[CDC verification](arc01-format-runtime-evidence/slice01-baseline-and-protocol/cdc-verification.md).
+Arc03/Slice01 is the next executable correction; Arc01/Slice02 has its full
+open set but execution is blocked until that correction is verified. All
+project ledger rows remain open. No format trial or operator acceptance is claimed.
 
 Slice01 bubble-ups: D-2609-PERM records a source launcher that injects all Deno
 permissions, requiring a correction or explicitly authorized research route
@@ -191,11 +192,17 @@ before runtime trials. D-2609-YNOD records Node API imports in the JSR YAML
 document candidate; preserve the document-fidelity requirement while resolving
 candidate policy. D-2609-LINT/NPMB/JSER retain guide and book corrections for
 Arc03. See the slice's [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md).
-Arc03 may need its already-authorized early opening for the launcher prerequisite.
+Arc03 is now opened early for the launcher prerequisite; resume Arc01/Slice02
+after its run-permission correction closes. Test-runner permissions remain a
+separate Arc03 follow-up, not part of this bounded correction.
 Patch identity and binary build provenance remain unresolved handoff questions.
 
 ## Version History
 
+- 2026-09-12 v1.2: Closed Arc01/Slice01 after independent CDC reproduction;
+  opened Arc03 and its bounded run-permission correction as the next executable
+  work, and opened Arc01/Slice02 with its prerequisite explicit. All research
+  families, authoring goals, and project-scale acceptance requirements remain.
 - 2026-09-12 v1.1: Arc01/Slice01 proposed-done baseline revealed permission
   launcher and candidate Node-API prerequisites; retained guide/book findings
   and updated status/evidence pointers. Original scope and all future owners
