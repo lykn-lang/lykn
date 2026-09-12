@@ -18,4 +18,4 @@
 
 ## Closure
 
-Closed by CC on 2026-09-12. Rows: 11. Done: 11. Deferred: 0. No-op: 0. Pending: 0. CDC verification pending.
+Closed by CC on 2026-09-12. Rows: 11. Done: 11. Deferred: 0. No-op: 0. Pending: 0. CDC verified on 2026-09-12 in `cdc-verification.md`.

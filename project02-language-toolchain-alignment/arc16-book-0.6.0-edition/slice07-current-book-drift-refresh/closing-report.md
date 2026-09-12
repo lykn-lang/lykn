@@ -81,7 +81,7 @@ Remaining old `docs/design-v0.6.0` references found under planning are historica
 
 ## 8. Bubble-Up To arc16
 
-slice07 is CC-closed with CDC verification pending. The refreshed inventory recommends inserting slice08 before normal chapter work. The provisional chapter slices are shifted:
+slice07 is CC-closed; CDC verification is recorded in `cdc-verification.md`. The refreshed inventory recommends inserting slice08 before normal chapter work. The provisional chapter slices are shifted:
 
 1. slice08 `js-fn-return-parity` - implementation parity for `D-2609-FNRT`.
 2. slice09 `toolchain-and-project-structure-chapters`.

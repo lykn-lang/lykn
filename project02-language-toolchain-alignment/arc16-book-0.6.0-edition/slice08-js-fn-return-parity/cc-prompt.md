@@ -33,7 +33,7 @@ Read before edits and list roles in the closing report:
 - `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/AGENTS.md`
 - `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/assets/ai/SKILL.md`
 - `/Users/oubiwann/lab/lykn/lang/.worktrees/planning/backlog/discoveries.md` row `D-2609-FNRT`
-- `slice07-current-book-drift-refresh/artifacts/current-book-drift-inventory-2026-09.md`
+- `project02-language-toolchain-alignment/arc16-book-0.6.0-edition/slice07-current-book-drift-refresh/artifacts/current-book-drift-inventory-2026-09.md`
 - relevant `packages/lang/` JS compiler/classifier/expander files
 - relevant Rust compiler/check path if needed for source-of-truth comparison
 

@@ -5,7 +5,7 @@
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc16-book-0.6.0-edition/arc-plan.md",
   "currentSlice": "slice08-js-fn-return-parity",
-  "summary": "slice07 is CC-closed with refreshed drift inventory; slice08 is open for JS fn return parity before chapter rewrite slices.",
+  "summary": "slice07 is closed/CDC-verified with refreshed drift inventory; slice08 is open for JS fn return parity before chapter rewrite slices.",
   "slices": [
     {
       "id": "slice01-pre-book-decision-gate",
@@ -33,7 +33,7 @@
     },
     {
       "id": "slice07-current-book-drift-refresh",
-      "status": "closed-cc-cdc-pending"
+      "status": "closed-cdc-verified"
     },
     {
       "id": "slice08-js-fn-return-parity",

@@ -13,7 +13,7 @@
     "arc": "arc16-book-0.6.0-edition",
     "slice": "slice08-js-fn-return-parity",
     "status": "open",
-    "summary": "slice08 fixes or disposes D-2609-FNRT before book chapter rewrites."
+    "summary": "slice07 is closed/CDC-verified; slice08 fixes or disposes D-2609-FNRT before book chapter rewrites."
   },
   "arcs": [
     {
