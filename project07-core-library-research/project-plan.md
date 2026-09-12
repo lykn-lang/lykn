@@ -93,7 +93,7 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 ready for CC |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slice01 CC proposed-done, CDC pending |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
 | arc03-findings-and-integration | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Roadmap only; may be opened earlier for a blocking correction |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
@@ -179,13 +179,27 @@ Co-authored-by: Billo AI <ai-engineering@billo.systems>
 
 ## Current status
 
-Project planning is opened. Arc01/Slice01 has its full open set; research
-execution and independent verification have not begun. The preceding chat
-is a cited starting point, not completed project research. Later arcs have
-roadmap scope only. No close-set documents exist at opening.
+At opening, Arc01/Slice01 had its full open set and no execution or close set.
+Slice01 now has CC-attested baseline/source reconciliation and trial protocols;
+see its [closing report](arc01-format-runtime-evidence/slice01-baseline-and-protocol/closing-report.md).
+All ledger rows remain open pending CDC reproduction. Later arcs still have
+roadmap scope only; no format trial or operator acceptance is claimed.
+
+Slice01 bubble-ups: D-2609-PERM records a source launcher that injects all Deno
+permissions, requiring a correction or explicitly authorized research route
+before runtime trials. D-2609-YNOD records Node API imports in the JSR YAML
+document candidate; preserve the document-fidelity requirement while resolving
+candidate policy. D-2609-LINT/NPMB/JSER retain guide and book corrections for
+Arc03. See the slice's [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md).
+Arc03 may need its already-authorized early opening for the launcher prerequisite.
+Patch identity and binary build provenance remain unresolved handoff questions.
 
 ## Version History
 
+- 2026-09-12 v1.1: Arc01/Slice01 proposed-done baseline revealed permission
+  launcher and candidate Node-API prerequisites; retained guide/book findings
+  and updated status/evidence pointers. Original scope and all future owners
+  preserved; CDC and operator acceptance remain pending.
 - 2026-09-12 v1.0: Opened from the operator's core-library research request;
   includes the explicit guide, book, language/tooling, and human-elegance
   goals. Adopted the existing planning layout and operator-requested

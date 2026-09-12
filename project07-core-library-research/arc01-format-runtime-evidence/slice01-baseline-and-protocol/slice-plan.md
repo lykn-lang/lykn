@@ -4,7 +4,9 @@
 
 Make subsequent JSON, YAML, Deno, and Lykn research reproducible by pinning the
 actual environment and converting the exploratory discussion into a sourced
-claim inventory and bounded trial protocol. Status: **ready-for-cc**.
+claim inventory and bounded trial protocol. Status: **CC proposed-done; CDC
+pending** (was ready-for-cc). All ledger statuses remain open; see the
+[closing report](closing-report.md) for attestation and prerequisites.
 
 Read the [project plan](../../project-plan.md), [arc plan](../arc-plan.md),
 [ledger](ledger.md), and [CC prompt](cc-prompt.md). The supplied
@@ -92,6 +94,10 @@ use a fallback language to mask a Lykn toolchain gap.
 
 ## Version History
 
+- 2026-09-12 v1.1: Recorded CC proposed-done after baseline/source inspection,
+  fixture/protocol design and findings capture. Runtime launch and candidate
+  Node-API gaps are explicit later prerequisites, not executed trials or
+  waived requirements. Scope unchanged.
 - 2026-09-12 v1.0: Opened the baseline/claim-reconciliation/protocol slice;
   authoring-ecosystem evaluation is part of the research contract from the
   start. No trial results or source fixes are claimed.

@@ -3,6 +3,11 @@
 All rows are open at project opening. Evidence must be independently
 reproduced at the scale claimed. CC attestation is proposed-done only.
 
+2026-09-12: Arc01/Slice01 has an [attested baseline and protocol](arc01-format-runtime-evidence/slice01-baseline-and-protocol/closing-report.md),
+not completed Arc01 behavior evidence. Its [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md)
+carry PERM/YNOD prerequisites and guide/book corrections into the project plan.
+All P-01–P-08 criteria remain open; no project-scale outcome is inherited.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | P-01 | Arc01 establishes JSON/YAML/Deno capabilities and dependency evidence | Inspect Arc01 child closure and rerun a representative cross-format read/edit/write case against its capability matrix | correctness-grade | Project DoD 1–2 | open | — | Evidence must distinguish documentation from execution |

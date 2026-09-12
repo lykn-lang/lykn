@@ -1169,3 +1169,84 @@ That would argue the book pass should be structured as *building things while
 writing about them*, and that runsheets are a discovery surface rather than a
 formality — which arc06 already demonstrated twice, since both slice06 and
 slice07 originated in one.
+
+## Project07 baseline findings — 2026-09-12
+
+### `D-2609-PERM` — run injects all Deno permissions despite the repository gate
+
+- **What:** At release/0.6.x commit `8c66469ba8f290a4bba993157b68a9e0d7716f0d`,
+  `crates/lykn-cli/src/main.rs:499,505` builds `deno run --config ... -A ...`
+  for both Lykn and JS files. `run --help` on the available 0.6.0-dev binary
+  exposes no permission-forwarding option. AGENTS.md forbids injected grants.
+- **How found:** `audit` (read-only source inspection, not binary reproduction).
+- **Guess:** High — least-privilege and denied-permission trials cannot use the
+  source launch route honestly.
+- **Kind:** `bug` · **Status:** `open`
+- **Owner:** Project07 CDC to open a narrow correction before runtime trials;
+  Arc01/Slice04 must verify effective permissions. No correction destination is
+  open yet. A separately authorized research launch route is another explicit
+  decision, not an implied exception.
+- **Source material:** [baseline](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/baseline.md),
+  [protocol](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/research-protocol.md).
+
+### `D-2609-LINT` — the same skill forbids and requires generated-output lint/format
+
+- **What:** At release/0.6.x `8c66469`, `assets/ai/SKILL.md:76-79` says users
+  must not run Deno lint/format on compiled output; `:709-715` prescribes the
+  pipeline with MUST. Guide `docs/guides/14-no-node-boundary.md` ID-22 repeats
+  the latter route. These are conflicting instructions, not an executed
+  compiler failure.
+- **How found:** `audit` · **Guess:** Medium-high for authoring consistency.
+- **Kind:** `trap` · **Status:** `open`
+- **Owner:** Project07 Arc02 capture and Arc03 guide correction when opened.
+  Re-entry: retain affected task, amend authoritative guide, replay task.
+- **Source material:** [findings](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md).
+  Distinct from D-2607-V5DK's earlier dist-command correction.
+
+### `D-2609-NPMB` — npm boundary wording conflicts with guide examples and tooling
+
+- **What:** At release/0.6.x `8c66469`, `assets/ai/SKILL.md:21` says strictly
+  no npm in development workflows; guide `docs/guides/14-no-node-boundary.md`
+  ID-07/24 teaches npm dependencies (`:103`, `:304-315`), while project.json:11
+  maps astring to `npm:astring@^1.9.0`. Compiler tooling, new-library runtime
+  policy and registry/source ancestry need separate, explicit scopes.
+- **How found:** `audit` · **Guess:** Medium-high — invites accidental policy
+  exceptions in new libraries.
+- **Kind:** `trap` · **Status:** `open`
+- **Owner:** Project07 Arc01/Slice04 dependency policy and Arc03 guide correction
+  when opened. Existing dependency does not authorize new npm adoption.
+- **Source material:** [source register](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/source-register.md).
+
+### `D-2609-JSER` — book serialization summary omits the BigInt throwing case
+
+- **What:** Separate book repository cnbbooks/lykn at
+  `6aa379d1534b3cf680bc5a0eb5c344c99f975c16`,
+  `src/part5/chapter25/2-json.md:44` lists BigInt among unsupported values and
+  says such values are dropped or converted to null. ECMAScript 2025
+  §25.5.2.2 requires a TypeError for a remaining BigInt value. The summary
+  needs cases rather than one blanket loss behavior.
+- **How found:** `audit` (book/spec comparison).
+- **Guess:** Medium-high — wrong failure expectations for file serialization.
+- **Kind:** `bug` · **Status:** `open`
+- **Owner:** Project07 Arc02 J-09/AT-05 reproduction, Arc03 book correction
+  coordinated with Project02 arc16; no book edit or new route claimed here.
+- **Source material:** [findings](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md),
+  [ECMAScript 2025](https://tc39.es/ecma262/2025/multipage/structured-data.html#sec-serializejsonproperty).
+
+### `D-2609-YNOD` — JSR YAML document candidate has live Node API imports
+
+- **What:** Published `@eemeli/yaml` 2.9.1 imports `node:process` in
+  `src/compose/composer.ts:1`, `src/parse/parser.ts:1`, and `src/log.ts:1`.
+  Public `src/index.ts` exports Composer and Parser. The imports are runtime
+  source edges, not just upstream development dependencies. JSR availability
+  is therefore insufficient to satisfy Project07's Node-API exclusion.
+- **How found:** `audit` (all 77 published TS files fetched and their checksums
+  matched to the pinned manifest; static imports inspected).
+- **Guess:** High for dependency-selection correctness; no vulnerability or
+  requirement for the Node executable is asserted.
+- **Kind:** `trap` · **Status:** `open`
+- **Owner:** Project07 Arc01/Slice04 alternatives/policy decision; Slice03 must
+  retain the document-fidelity requirement while execution of this candidate
+  is gated. No fork, shim, npm fallback or acceptance inferred.
+- **Source material:** [source register](../project07-core-library-research/arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/source-register.md),
+  [published composer](https://jsr.io/@eemeli/yaml/2.9.1/src/compose/composer.ts).

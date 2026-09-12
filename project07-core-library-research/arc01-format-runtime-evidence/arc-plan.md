@@ -7,14 +7,15 @@ provide for JSON and YAML, what they lose, and what Lykn libraries must add.
 Evidence includes package provenance and the actual runtime/toolchain
 baseline, so a dependency recommendation is not inferred from a registry name.
 
-Active arc. Slice01 is ready for CC; later slices are not yet opened.
+Active arc. Slice01 is CC proposed-done (was ready for CC); independent
+verification is pending and later slices are not yet opened.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
 ## Slice breakdown
 
 | Slice | Scope and output | Dependency | Status |
 | --- | --- | --- | --- |
-| [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | Ready for CC |
+| [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CC proposed-done; CDC pending |
 | slice02-json-behavior | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01 baseline and protocol | Planned; open set deferred |
 | slice03-yaml-fidelity | Exercise YAML value and document workflows through Lykn; compare schemas, aliases/cycles, non-string keys, multi-document support, diagnostics, comments/layout, and candidate preservation APIs | Slice01; reuse Slice02 harness observations | Planned; open set deferred |
 | slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives | Slices01–03 evidence | Planned; open set deferred |
@@ -64,6 +65,18 @@ decision, and that all authoring findings have survived into the next arc.
 
 ## Expedited Mode
 
+Slice01 [closing report](slice01-baseline-and-protocol/closing-report.md) and
+[findings](slice01-baseline-and-protocol/artifacts/findings.md) establish new
+prerequisites for the next opening: resolve D-2609-PERM before runtime launches;
+the current source inserts `-A`. Keep JSON first and retain every FM01 case.
+D-2609-YNOD gates execution/adoption of @eemeli/yaml 2.9.1 because published
+source imports Node APIs; Slice03's document workflow remains required.
+CDC must concretize the authorized correction or policy route before issuing
+execution commands, potentially opening Arc03 early as the project permits.
+Guide/book findings D-2609-LINT/NPMB/JSER and the source/binary provenance gap
+must survive the later authoring/integration openings. This records a dependency,
+not a source-scope expansion or acceptance decision.
+
 Apply the project's exact-path commits, proposed-done/CDC separation, immediate
 evidence-based close and next-slice opening, and arc composition rules. Next
 after Slice01 closes: open `slice02-json-behavior` with its full open set and
@@ -73,6 +86,9 @@ planning documents exist.
 
 ## Version History
 
+- 2026-09-12 v1.1: Slice01 supplied attested baseline/protocol and exposed
+  launcher/candidate prerequisites; updated status and explicit bubble-ups
+  without removing, closing, or opening later work.
 - 2026-09-12 v1.0: Opened the format/runtime evidence arc with four bounded
   research slices; detailed the baseline-and-protocol slice first. Preserved
   YAML and dependency-provenance research alongside the JSON starting point.
