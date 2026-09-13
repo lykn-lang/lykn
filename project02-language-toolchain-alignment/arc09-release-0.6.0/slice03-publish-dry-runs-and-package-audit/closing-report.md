@@ -1,6 +1,6 @@
 # arc09 slice03 — Publish Dry-runs and Package Audit Closing Report
 
-Status: **Closed / CC proposed-done, qualified crates sequencing**
+Status: **Closed / CDC-verified, qualified crates sequencing**
 Date: 2026-09-12
 Source branch/worktree: `release/0.6.x` in `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x`
 Initial source commit: `65ff40fbcabbf3edab760947108f4a0d13ed9d99`
@@ -31,6 +31,7 @@ After that repair, the final committed release evidence was gathered from source
 - [lykn-cli-package-list.log](artifacts/lykn-cli-package-list.log)
 - [lykn-package-list.log](artifacts/lykn-package-list.log)
 - [initial-crates-dry-run-failure.log](artifacts/initial-crates-dry-run-failure.log)
+- [cdc-verification.md](cdc-verification.md)
 
 ## Validation
 
@@ -48,15 +49,22 @@ After that repair, the final committed release evidence was gathered from source
 
 | ID | Disposition | Evidence |
 |----|-------------|----------|
-| D-1 | done / CC proposed-done | Entry status and final source commit are recorded in [dry-run-and-package-audit-receipt.md](artifacts/dry-run-and-package-audit-receipt.md#entry-status). |
-| D-2 | done / CC proposed-done | `make check` passed; see [make-check.log](artifacts/make-check.log). |
-| D-3 | done / CC proposed-done | `./bin/lykn dist` and generated package audit passed; see [dist-audit.log](artifacts/dist-audit.log). |
-| D-4 | done / CC proposed-done | JSR dry-run passed; see [jsr-dry-run.log](artifacts/jsr-dry-run.log). |
-| D-5 | done / CC proposed-done | npm dry-run passed; see [npm-dry-run.log](artifacts/npm-dry-run.log). |
-| D-6 | done / qualified | `lykn-lang` cargo dry-run passed; dependent crates are blocked by normal crates.io publication sequencing until internal 0.6.0 dependencies exist on the registry. |
-| D-7 | done / CC proposed-done | All transcripts are preserved under [artifacts](artifacts). |
-| D-8 | done / CC proposed-done | No publish, tag, branch push, tag push, or book tag was performed. |
-| D-9 | done / CC proposed-done | Arc09 planning is updated and [slice04 cc-prompt](../slice04-operator-publication-and-tags/cc-prompt.md) is opened. |
+| D-1 | done / CDC-verified | Entry status and final source commit are recorded in [dry-run-and-package-audit-receipt.md](artifacts/dry-run-and-package-audit-receipt.md#entry-status) and accepted in [CDC verification](cdc-verification.md). |
+| D-2 | done / CDC-verified | `make check` passed; see [make-check.log](artifacts/make-check.log) and [CDC verification](cdc-verification.md). |
+| D-3 | done / CDC-verified | `./bin/lykn dist` and generated package audit passed; see [dist-audit.log](artifacts/dist-audit.log) and [CDC verification](cdc-verification.md). |
+| D-4 | done / CDC-verified | JSR dry-run passed; see [jsr-dry-run.log](artifacts/jsr-dry-run.log) and [CDC verification](cdc-verification.md). |
+| D-5 | done / CDC-verified | npm dry-run passed; see [npm-dry-run.log](artifacts/npm-dry-run.log) and [CDC verification](cdc-verification.md). |
+| D-6 | done / qualified / CDC-verified | `lykn-lang` cargo dry-run passed; dependent crates are blocked by normal crates.io publication sequencing until internal 0.6.0 dependencies exist on the registry. |
+| D-7 | done / CDC-verified | All transcripts are preserved under [artifacts](artifacts). |
+| D-8 | done / CDC-verified | No publish, tag, branch push, tag push, or book tag was performed. |
+| D-9 | done / CDC-verified | Arc09 planning is updated and [slice04 cc-prompt](../slice04-operator-publication-and-tags/cc-prompt.md) is opened. |
+
+## CDC verification
+
+CDC independently reproduced the source status, embedded crate payload package
+list, full source gate, dist metadata, JSR dry-run, npm dry-run, `lykn-lang`
+Cargo dry-run, dependent crate registry-sequencing failures, and publication/tag
+side-effect boundaries. See [cdc-verification.md](cdc-verification.md).
 
 ## Bubble-up to the arc
 

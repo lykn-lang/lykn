@@ -10,9 +10,9 @@
   ],
   "current": {
     "arc": "arc09-release-0.6.0",
-    "slice": "slice03-publish-dry-runs-and-package-audit",
+    "slice": "slice04-operator-publication-and-tags",
     "status": "open",
-    "summary": "arc09 slice02 is closed/CDC-verified with source commit 65ff40f prepared for 0.6.0; slice03 is open for dry-runs and package audit."
+    "summary": "arc09 slice03 is closed/CDC-verified with qualified crates sequencing from source commit 50608c4; slice04 is open for operator-approved publication, tags, pushes, and the book release boundary."
   },
   "arcs": [
     {

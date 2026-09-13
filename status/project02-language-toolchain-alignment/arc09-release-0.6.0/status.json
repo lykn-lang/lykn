@@ -4,8 +4,8 @@
   "arc": "arc09-release-0.6.0",
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc09-release-0.6.0/arc-plan.md",
-  "currentSlice": "slice03-publish-dry-runs-and-package-audit",
-  "summary": "slice02 is closed/CDC-verified with source commit 65ff40f prepared for 0.6.0; slice03 is open for make check, dist/package audit, JSR/npm dry-runs, and crates dry-runs without bypass flags.",
+  "currentSlice": "slice04-operator-publication-and-tags",
+  "summary": "slice03 is closed/CDC-verified with qualified crates sequencing from source commit 50608c4; slice04 is open for operator-approved publication, tags, pushes, and the book release boundary.",
   "slices": [
     {
       "id": "slice01-release-readiness-runbook",
@@ -17,16 +17,16 @@
     },
     {
       "id": "slice03-publish-dry-runs-and-package-audit",
-      "status": "open"
+      "status": "closed-cdc-verified-qualified"
     },
     {
       "id": "slice04-operator-publication-and-tags",
-      "status": "future"
+      "status": "open"
     },
     {
       "id": "slice05-postpublish-verification-and-project-close",
       "status": "future"
     }
   ],
-  "next": "Run slice03 publish dry-runs and package audit."
+  "next": "Prepare the slice04 operator publication and tag approval packet."
 }

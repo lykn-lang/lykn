@@ -22,6 +22,7 @@ commands and scope.
 1. Read this slice's `slice-plan.md` and `ledger.md`.
 2. Read slice03's close packet and receipt:
    - `../slice03-publish-dry-runs-and-package-audit/closing-report.md`
+   - `../slice03-publish-dry-runs-and-package-audit/cdc-verification.md`
    - `../slice03-publish-dry-runs-and-package-audit/artifacts/dry-run-and-package-audit-receipt.md`
 3. Confirm source status and exact HEAD. The expected release evidence commit is
    `50608c443c452107b138cc30deda4a09ab5c7642` on `release/0.6.x`.

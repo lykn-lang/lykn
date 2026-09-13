@@ -1,8 +1,8 @@
 # arc09 — Release 0.6.0
 
 > **Status: Open — slice04 operator publication/tag boundary open.**
-> arc16, slice01, and slice02 are closed/CDC-verified. slice03 is
-> closed/CC-proposed-done with qualified crates sequencing: final release
+> arc16, slice01, slice02, and slice03 are closed/CDC-verified. slice03 has
+> qualified crates sequencing: final release
 > evidence is from source commit `50608c4`, JSR/npm dry-runs passed, and
 > `lykn-lang` crates dry-run passed; `lykn-cli`/`lykn` remain gated by normal
 > crates.io dependency ordering until internal 0.6.0 crates are published. Real
@@ -27,7 +27,7 @@ publication, release tags, and pushes.
 |-------|-------|--------|
 | **slice01 · release-readiness-runbook** | Inventory version surfaces, release-note inputs, dry-run gates, manual-publish boundaries, tag/post-publish verification, and blockers; write the executable release runbook. | **Closed / CDC-verified** ([slice-plan](slice01-release-readiness-runbook/slice-plan.md), [ledger](slice01-release-readiness-runbook/ledger.md), [closing-report](slice01-release-readiness-runbook/closing-report.md), [cdc-verification](slice01-release-readiness-runbook/cdc-verification.md), [runbook](slice01-release-readiness-runbook/artifacts/release-runbook.md)) |
 | **slice02 · version-bump-release-notes-ci-chore** | Update version surfaces from `0.6.0-dev` to `0.6.0`, regenerate lock/version evidence, write 0.6.0 release notes, apply low-risk CI checkout maintenance if still current, and either repair or explicitly route no-bypass replacement for `make publish-dry-run`. | **Closed / CDC-verified** ([slice-plan](slice02-version-bump-release-notes-ci-chore/slice-plan.md), [ledger](slice02-version-bump-release-notes-ci-chore/ledger.md), [closing-report](slice02-version-bump-release-notes-ci-chore/closing-report.md), [cdc-verification](slice02-version-bump-release-notes-ci-chore/cdc-verification.md)) |
-| **slice03 · publish-dry-runs-and-package-audit** | Run `make check`, dist/package audits, JSR/npm dry-runs, and crates.io dry-runs against the exact release tree without weakening dirty-tree gates; capture receipts. | **Closed / CC proposed-done, qualified crates sequencing** ([slice-plan](slice03-publish-dry-runs-and-package-audit/slice-plan.md), [ledger](slice03-publish-dry-runs-and-package-audit/ledger.md), [closing-report](slice03-publish-dry-runs-and-package-audit/closing-report.md), [receipt](slice03-publish-dry-runs-and-package-audit/artifacts/dry-run-and-package-audit-receipt.md)) |
+| **slice03 · publish-dry-runs-and-package-audit** | Run `make check`, dist/package audits, JSR/npm dry-runs, and crates.io dry-runs against the exact release tree without weakening dirty-tree gates; capture receipts. | **Closed / CDC-verified, qualified crates sequencing** ([slice-plan](slice03-publish-dry-runs-and-package-audit/slice-plan.md), [ledger](slice03-publish-dry-runs-and-package-audit/ledger.md), [closing-report](slice03-publish-dry-runs-and-package-audit/closing-report.md), [cdc-verification](slice03-publish-dry-runs-and-package-audit/cdc-verification.md), [receipt](slice03-publish-dry-runs-and-package-audit/artifacts/dry-run-and-package-audit-receipt.md)) |
 | **slice04 · operator-publication-and-tags** | Prepare the final approval packet; after explicit operator authorization, publish JSR/npm/crates artifacts, tag `0.6.0`, push release branch/tag explicitly to intended remotes, and handle the book `book-v0.6.0` tag/publication boundary. | **Open** ([slice-plan](slice04-operator-publication-and-tags/slice-plan.md), [ledger](slice04-operator-publication-and-tags/ledger.md), [cc-prompt](slice04-operator-publication-and-tags/cc-prompt.md)) |
 | **slice05 · postpublish-verification-and-project-close** | Verify published registry artifacts and explicit temporary installs, confirm remote tags/branch visibility, reconcile book release artifacts, close Project02 P-8/P-12, and produce final project closeout evidence. | **Future** |
 
@@ -36,7 +36,8 @@ publication, release tags, and pushes.
 - **CI maintenance:** bump `actions/checkout@v4 → v5` where compatible. Treat as
   release-prep chore, not a blocker unless CI proves otherwise.
 - **No-bypass dry-runs:** slice02 repaired `make publish-dry-run` to call
-  `cargo publish --dry-run` without `--allow-dirty`; slice03 must prove it.
+  `cargo publish --dry-run` without `--allow-dirty`; slice03 proved the helper
+  and recorded the Cargo registry-sequencing qualification.
 - **Explicit release pushes:** do not rely on the current `make push` recipe for
   release-branch push evidence; name `release/0.6.x` and `0.6.0` explicitly.
 
@@ -56,6 +57,17 @@ their dispositions during project06-planning-reorg. slice01 owns the detailed
 release runbook and can refine the future slice sequence before implementation.
 
 ## 5. Version History
+
+### v1.9 - 2026-09-12 (slice03 CDC verified)
+
+CDC reproduced slice03's package-audit and dry-run claims against source commit
+`50608c4`: `make check` passed outside the sandbox home-log restriction, dist
+metadata reports `0.6.0`, JSR and npm dry-runs passed, `cargo package -p
+lykn-lang --list` includes the embedded language payload, and `cargo publish -p
+lykn-lang --dry-run` verified the crate. The `lykn-cli` and `lykn` crates remain
+qualified by normal crates.io dependency ordering until `lykn-lang 0.6.0` and
+then `lykn-cli 0.6.0` are actually published. slice04 remains open for
+operator-approved publication and tags.
 
 ### v1.8 - 2026-09-12 (slice03 CC proposed-done; slice04 opened)
 
