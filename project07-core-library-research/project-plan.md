@@ -93,7 +93,7 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–02 CDC closed; Slice03 YAML preflight CC proposed-done |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03 CDC closed; Slice05 YAML values open |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
 | [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
@@ -186,9 +186,10 @@ Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-per
 (was CC proposed-done), with its corrected-build receipt independently verified.
 Arc01/Slice02 is now [CDC closed](arc01-format-runtime-evidence/slice02-json-behavior/cdc-verification.md)
 (was CC proposed-done): all 161 frozen variants/354 attempts independently
-replayed. Slice03 YAML preflight is CC proposed-done; its
-[handoff](arc01-format-runtime-evidence/slice03-yaml-preflight/closing-report.md)
-retains all YAML variants and a bounded Lykn sentinel/audit route. All project
+replayed. Slice03 YAML preflight is now
+[CDC closed](arc01-format-runtime-evidence/slice03-yaml-preflight/cdc-verification.md),
+with all six criteria reproduced and all 349 YAML variants retained. Slice05
+is open for 259 full value variants using the verified Lykn harness. All project
 ledger rows remain open; no operator acceptance or library adoption is claimed.
 
 Slice01 bubble-ups: D-2609-PERM recorded implicit run grants; the release/0.6.x
@@ -212,12 +213,20 @@ source into an isolated build and records its fresh identity.
 JSON's authoring/context pressure split the unstarted YAML roadmap into
 Slice03 preparation, Slice05 values, Slice06 resources/files and Slice07
 document fidelity. Existing Slice04 runtime/policy runs before Slice07 to
-resolve its compatible route. All Y-01–16 requirements remain; only preparation
-has a detailed opening. Evidence aggregation/audit follows the same Lykn-first
-rule as runtime probes. The JSON CDC records CC's Python aggregation deviation
-and supplies an independent Lykn audit; full authoring evaluation remains Arc02.
+resolve its compatible route. All Y-01–16 requirements remain; preparation is
+closed and value execution has a detailed opening. Evidence aggregation/audit
+follows the same Lykn-first rule as runtime probes. The JSON CDC records CC's
+Python aggregation deviation and supplies an independent Lykn audit; full
+authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-12 v1.8: Arc01/Slice03 CDC reproduced the pinned build, freeze and all
+  38 sentinel/harness attempts plus three supervisor controls. Opened Slice05
+  with 259 value variants and explicit full file/serialization obligations;
+  retained 62 resource/file and 28 gated document variants. Inspector bounds
+  remain observation guards, not hard allocation guarantees. No project row,
+  source finding, package policy or operator judgment inherits closure.
 
 - 2026-09-12 v1.7: Slice03 submitted YAML harness preparation with 349 YAML
   variants frozen and 38 sentinel/control attempts audited through Lykn.

@@ -1,0 +1,1142 @@
+{
+  "version": 1,
+  "roots": [
+    "file:///private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cases.js"
+  ],
+  "modules": [
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "@std/yaml",
+          "code": {
+            "specifier": "jsr:@std/yaml@1.2.0",
+            "span": {
+              "start": {
+                "line": 112,
+                "character": 28
+              },
+              "end": {
+                "line": 112,
+                "character": 39
+              }
+            }
+          },
+          "isDynamic": true
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cases.js",
+      "size": 9458,
+      "mediaType": "JavaScript",
+      "specifier": "file:///private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cases.js"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/c67e3c17d922cd5f7f369b9622b74aeb1f2d316a7a691eebf65ef1a654077eff",
+      "size": 1880,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_chars.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./_chars.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_chars.ts",
+            "span": {
+              "start": {
+                "line": 28,
+                "character": 7
+              },
+              "end": {
+                "line": 28,
+                "character": 20
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_schema.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_schema.ts",
+            "span": {
+              "start": {
+                "line": 29,
+                "character": 44
+              },
+              "end": {
+                "line": 29,
+                "character": 58
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 30,
+                "character": 50
+              },
+              "end": {
+                "line": 30,
+                "character": 62
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_utils.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_utils.ts",
+            "span": {
+              "start": {
+                "line": 31,
+                "character": 25
+              },
+              "end": {
+                "line": 31,
+                "character": 38
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/0aa5494374cbb7b208a3ed67d8a043e72663bd703865e003473d3d0e9d3de77c",
+      "size": 25939,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_dumper_state.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./_chars.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_chars.ts",
+            "span": {
+              "start": {
+                "line": 36,
+                "character": 7
+              },
+              "end": {
+                "line": 36,
+                "character": 20
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_schema.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_schema.ts",
+            "span": {
+              "start": {
+                "line": 38,
+                "character": 58
+              },
+              "end": {
+                "line": 38,
+                "character": 72
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 39,
+                "character": 36
+              },
+              "end": {
+                "line": 39,
+                "character": 48
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_utils.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_utils.ts",
+            "span": {
+              "start": {
+                "line": 40,
+                "character": 40
+              },
+              "end": {
+                "line": 40,
+                "character": 53
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./types.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/types.ts",
+            "span": {
+              "start": {
+                "line": 41,
+                "character": 32
+              },
+              "end": {
+                "line": 41,
+                "character": 44
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/6158379fd023abb80efd8e384de4706504e6de74a201db97da3b8a35cd8b409b",
+      "size": 51780,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_loader_state.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 6,
+                "character": 36
+              },
+              "end": {
+                "line": 6,
+                "character": 48
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/binary.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/binary.ts",
+            "span": {
+              "start": {
+                "line": 7,
+                "character": 23
+              },
+              "end": {
+                "line": 7,
+                "character": 42
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/bool.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/bool.ts",
+            "span": {
+              "start": {
+                "line": 8,
+                "character": 21
+              },
+              "end": {
+                "line": 8,
+                "character": 38
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/float.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/float.ts",
+            "span": {
+              "start": {
+                "line": 9,
+                "character": 22
+              },
+              "end": {
+                "line": 9,
+                "character": 40
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/int.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/int.ts",
+            "span": {
+              "start": {
+                "line": 10,
+                "character": 20
+              },
+              "end": {
+                "line": 10,
+                "character": 36
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/map.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/map.ts",
+            "span": {
+              "start": {
+                "line": 11,
+                "character": 20
+              },
+              "end": {
+                "line": 11,
+                "character": 36
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/merge.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/merge.ts",
+            "span": {
+              "start": {
+                "line": 12,
+                "character": 22
+              },
+              "end": {
+                "line": 12,
+                "character": 40
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/nil.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/nil.ts",
+            "span": {
+              "start": {
+                "line": 13,
+                "character": 20
+              },
+              "end": {
+                "line": 13,
+                "character": 36
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/omap.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/omap.ts",
+            "span": {
+              "start": {
+                "line": 14,
+                "character": 21
+              },
+              "end": {
+                "line": 14,
+                "character": 38
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/pairs.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/pairs.ts",
+            "span": {
+              "start": {
+                "line": 15,
+                "character": 22
+              },
+              "end": {
+                "line": 15,
+                "character": 40
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/regexp.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/regexp.ts",
+            "span": {
+              "start": {
+                "line": 16,
+                "character": 23
+              },
+              "end": {
+                "line": 16,
+                "character": 42
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/seq.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/seq.ts",
+            "span": {
+              "start": {
+                "line": 17,
+                "character": 20
+              },
+              "end": {
+                "line": 17,
+                "character": 36
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/set.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/set.ts",
+            "span": {
+              "start": {
+                "line": 18,
+                "character": 20
+              },
+              "end": {
+                "line": 18,
+                "character": 36
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/str.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/str.ts",
+            "span": {
+              "start": {
+                "line": 19,
+                "character": 20
+              },
+              "end": {
+                "line": 19,
+                "character": 36
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/timestamp.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/timestamp.ts",
+            "span": {
+              "start": {
+                "line": 20,
+                "character": 26
+              },
+              "end": {
+                "line": 20,
+                "character": 48
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type/undefined.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/undefined.ts",
+            "span": {
+              "start": {
+                "line": 21,
+                "character": 30
+              },
+              "end": {
+                "line": 21,
+                "character": 52
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/38a4484a10340a68f6a0a1a63096a7b03075564b53f893e702321dcd6d956c3c",
+      "size": 5076,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_schema.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/45c391f509b57e9ee2c5be53b310705d24fbf47aa8e8ab003187e23b1e99c390",
+      "size": 1529,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 4,
+                "character": 26
+              },
+              "end": {
+                "line": 4,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/68b86f0577b5090dd7bc5f5734337eec810550999876315b81ee5bce47f1f0b3",
+      "size": 3221,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/binary.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/55f5ad9c307a8ddd9f599239b3020ab7ef4da8cc9a9c72b45fc22101901ab827",
+      "size": 1508,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/bool.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 40
+              },
+              "end": {
+                "line": 5,
+                "character": 53
+              }
+            }
+          }
+        },
+        {
+          "specifier": "../_utils.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_utils.ts",
+            "span": {
+              "start": {
+                "line": 6,
+                "character": 31
+              },
+              "end": {
+                "line": 6,
+                "character": 45
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/9463dea8dceaa97407c1af2faedc2640b224e4eabc6e261d8f317dcec284676a",
+      "size": 3018,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/float.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        },
+        {
+          "specifier": "../_utils.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_utils.ts",
+            "span": {
+              "start": {
+                "line": 6,
+                "character": 31
+              },
+              "end": {
+                "line": 6,
+                "character": 45
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/7be3f1deb18999cc20ca2ac952bfa1cc7157e1314fc54a4fcd904d5d500c6609",
+      "size": 4552,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/int.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/0d8fc6e84c45b5c909372efad0117d8b68ed52ec30dd53cd60b7510422186ea1",
+      "size": 489,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/map.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/399c5393a3c8f9b320f6a520d0b03d1b3a32aacb19daf8b81bf75139adb4c626",
+      "size": 510,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/merge.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/0554fbb00a49420ee909dbf087226cbc777dedd6e6fc167310728a30806bed39",
+      "size": 797,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/nil.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        },
+        {
+          "specifier": "../_utils.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_utils.ts",
+            "span": {
+              "start": {
+                "line": 6,
+                "character": 30
+              },
+              "end": {
+                "line": 6,
+                "character": 44
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/8dc8d52464ecb33d2611e67e673303771ab23836b7f46780072e03aa3e701852",
+      "size": 920,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/omap.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        },
+        {
+          "specifier": "../_utils.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_utils.ts",
+            "span": {
+              "start": {
+                "line": 6,
+                "character": 30
+              },
+              "end": {
+                "line": 6,
+                "character": 44
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/98eb8eb68d31f3de2e2ae3605e156e88d079d5771a7269ce3831611ece31f505",
+      "size": 833,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/pairs.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/ba970aff6276a1a2ba593a4e9c5527bc9bb7fdfc98b93c78432d86397e737f39",
+      "size": 1231,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/regexp.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/ac00e2ae79a621653b28840f5f03649c5c80ab9df329a16ee7b18bc51a35eb53",
+      "size": 505,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/seq.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/98118542f125f0b22f8e93fe5e4d8c0f1be67ea58a6d7daaa1127837a6b2aa6c",
+      "size": 672,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/set.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 4,
+                "character": 26
+              },
+              "end": {
+                "line": 4,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/0360f5edece27152df403eefb487225bafdcc428b264559016ab24afb31f70a3",
+      "size": 417,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/str.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/e01d3138b517f7c8f7d4277a5d40170ff7e2f4e9db4a1d11e615b5530f57c3d0",
+      "size": 2835,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/timestamp.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "../_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 5,
+                "character": 26
+              },
+              "end": {
+                "line": 5,
+                "character": 39
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/5175e4b6f10362b023d8396a1e4f7540fe4d85200ae0af155ee65704982517b6",
+      "size": 620,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_type/undefined.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/1ad0d90c1353ff177f137f8c3c2ad36f46dd4a08c67a223f1e12e89d337e9110",
+      "size": 633,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/_utils.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./parse.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/parse.ts",
+            "span": {
+              "start": {
+                "line": 52,
+                "character": 14
+              },
+              "end": {
+                "line": 52,
+                "character": 26
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./stringify.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/stringify.ts",
+            "span": {
+              "start": {
+                "line": 53,
+                "character": 14
+              },
+              "end": {
+                "line": 53,
+                "character": 30
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./types.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/types.ts",
+            "span": {
+              "start": {
+                "line": 54,
+                "character": 14
+              },
+              "end": {
+                "line": 54,
+                "character": 26
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/8999ec0c1d5f60484d67cd0fc677f9d074f9560d270b618b115c449f34f225db",
+      "size": 1533,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/mod.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./_chars.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_chars.ts",
+            "span": {
+              "start": {
+                "line": 6,
+                "character": 22
+              },
+              "end": {
+                "line": 6,
+                "character": 35
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_loader_state.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_loader_state.ts",
+            "span": {
+              "start": {
+                "line": 7,
+                "character": 28
+              },
+              "end": {
+                "line": 7,
+                "character": 48
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_schema.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_schema.ts",
+            "span": {
+              "start": {
+                "line": 8,
+                "character": 44
+              },
+              "end": {
+                "line": 8,
+                "character": 58
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./types.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/types.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 9,
+                "character": 37
+              },
+              "end": {
+                "line": 9,
+                "character": 49
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/3d004f22e76346af2033b05934e5558d5e40b29e6912ac2579676fca474d797a",
+      "size": 3307,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/parse.ts"
+    },
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "./_dumper_state.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_dumper_state.ts",
+            "span": {
+              "start": {
+                "line": 6,
+                "character": 28
+              },
+              "end": {
+                "line": 6,
+                "character": 48
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_schema.ts",
+          "code": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_schema.ts",
+            "span": {
+              "start": {
+                "line": 7,
+                "character": 44
+              },
+              "end": {
+                "line": 7,
+                "character": 58
+              }
+            }
+          }
+        },
+        {
+          "specifier": "./_type.ts",
+          "type": {
+            "specifier": "https://jsr.io/@std/yaml/1.2.0/_type.ts",
+            "resolutionMode": "import",
+            "span": {
+              "start": {
+                "line": 8,
+                "character": 34
+              },
+              "end": {
+                "line": 8,
+                "character": 46
+              }
+            }
+          }
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/28053553a78b8187c0d781da782c620cb2a03e66a52fbe8b3c5518263c7081dd",
+      "size": 3258,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/stringify.ts"
+    },
+    {
+      "kind": "esm",
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cache/remote/https/jsr.io/f6d6c4082efe5f9a18316ba4165a8d98d9dcfb4c382d5fa7ea0907e298baf926",
+      "size": 3666,
+      "mediaType": "TypeScript",
+      "specifier": "https://jsr.io/@std/yaml/1.2.0/types.ts"
+    }
+  ],
+  "redirects": {
+    "jsr:@std/yaml@1.2.0": "https://jsr.io/@std/yaml/1.2.0/mod.ts"
+  },
+  "packages": {
+    "@std/yaml@1.2.0": "@std/yaml@1.2.0"
+  },
+  "npmPackages": {}
+}

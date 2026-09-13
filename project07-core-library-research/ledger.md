@@ -8,7 +8,7 @@ with independently reproduced baseline/protocol evidence. JSON behavior now has
 [independent CDC closure](arc01-format-runtime-evidence/slice02-json-behavior/cdc-verification.md)
 after full replay. Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-permissions/cdc-verification.md)
 for the run-permission correction; Arc01/Slice02 completed its preflights and
-closed all 17 JSON families at reproduced strength. YAML preparation is opened;
+closed all 17 JSON families at reproduced strength. YAML preparation is CDC closed;
 values/resources/documents have explicit later owners with every Y ID retained.
 PERM is repaired on release/0.6.x; YNOD and guide/book
 corrections from the [findings](arc01-format-runtime-evidence/slice01-baseline-and-protocol/artifacts/findings.md)
@@ -34,3 +34,8 @@ No P criterion changes status from child attestation.
 All 16 YAML families remain owned by Slices05/06/07; only bounded sentinels ran.
 P-01–08 stay open. Lykn evidence tooling, source-build drift controls and pending
 operator review remain explicit; preparation does not close YAML capability.
+
+2026-09-12 CDC: [YAML preflight independently closed](arc01-format-runtime-evidence/slice03-yaml-preflight/cdc-verification.md),
+six of six criteria reproduced. Slice05 is open for 259 full value variants;
+62 resource/file and 28 document variants retain their later owners. All project
+rows remain open, including guide/book evaluation and human acceptance.

@@ -1,0 +1,312 @@
+CDC review of c6eae6b, 2026-09-12
+Fresh export: /private/tmp/lykn-p07-yaml-cdc.HsBg29/source
+Fresh trial: /private/tmp/lykn-p07-yaml-cdc.HsBg29/trial
+Build: cargo build --release --locked
+78aac90c4b4d6c644ac376e99ce91f88cdae32477aff476980912e68eba0c1bb  /private/tmp/lykn-p07-yaml-cdc.HsBg29/source/target/release/lykn
+103ea70463213b1a8ea7b46852a34612f4e0afcc1ff09d1656d185ed215772d4  /opt/homebrew/bin/deno
+lykn 0.6.0-dev
+deno 2.7.7 (stable, release, aarch64-apple-darwin)
+v8 14.6.202.9-rusty
+typescript 5.9.2
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+binary: rustc
+commit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea
+commit-date: 2026-08-18
+host: aarch64-apple-darwin
+release: 1.98.0
+LLVM version: 22.1.8
+cargo 1.98.0 (797e8a9bc 2026-08-05)
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.228
+   Compiling utf8parse v0.2.2
+   Compiling zmij v1.0.21
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling thiserror v2.0.18
+   Compiling colorchoice v1.0.5
+   Compiling serde v1.0.228
+   Compiling anstyle-parse v1.0.0
+   Compiling anstyle-query v1.1.5
+   Compiling serde_json v1.0.150
+   Compiling anstyle v1.0.14
+   Compiling strsim v0.11.1
+   Compiling anstream v1.0.0
+   Compiling heck v0.5.0
+   Compiling itoa v1.0.18
+   Compiling clap_lex v1.1.0
+   Compiling memchr v2.8.0
+   Compiling clap_builder v4.6.0
+   Compiling hashbrown v0.17.0
+   Compiling equivalent v1.0.2
+   Compiling syn v2.0.117
+   Compiling include_dir_macros v0.7.4
+   Compiling include_dir v0.7.4
+   Compiling indexmap v2.14.0
+   Compiling thiserror-impl v2.0.18
+   Compiling serde_derive v1.0.228
+   Compiling clap_derive v4.6.1
+   Compiling clap v4.6.1
+   Compiling lykn-lang v0.6.0-dev (/private/tmp/lykn-p07-yaml-cdc.HsBg29/source/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0-dev (/private/tmp/lykn-p07-yaml-cdc.HsBg29/source/crates/lykn-cli)
+   Compiling lykn v0.6.0-dev (/private/tmp/lykn-p07-yaml-cdc.HsBg29/source/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 9.95s
+
+Gates cases: check/lint/compile exit0
+cases.lykn: ok (15 top-level expressions)
+✓ no lint findings (1 file(s))
+12:28: warning: unused binding 'text'
+  suggestion: prefix with underscore: _text
+59:7: warning: unused binding 'materialize'
+  suggestion: prefix with underscore: _materialize
+56:7: warning: unused binding 'error-fact'
+  suggestion: prefix with underscore: _error-fact
+62:1: warning: unused binding 'allowed'
+  suggestion: prefix with underscore: _allowed
+8:7: warning: unused binding 'ensure'
+  suggestion: prefix with underscore: _ensure
+2:1: warning: unused binding 'encoder'
+  suggestion: prefix with underscore: _encoder
+16:7: warning: unused binding 'append-item'
+  suggestion: prefix with underscore: _append-item
+
+Gates supervisor: check/lint/compile exit0
+supervisor.lykn: ok (21 top-level expressions)
+✓ no lint findings (1 file(s))
+4:1: warning: unused binding 'decoder'
+  suggestion: prefix with underscore: _decoder
+53:7: warning: unused binding 'descendants'
+  suggestion: prefix with underscore: _descendants
+167:1: warning: unused binding 'manifest'
+  suggestion: prefix with underscore: _manifest
+3:1: warning: unused binding 'CLI'
+  suggestion: prefix with underscore: _CLI
+164:1: warning: unused binding 'group'
+  suggestion: prefix with underscore: _group
+7:7: warning: unused binding 'emit'
+  suggestion: prefix with underscore: _emit
+8:7: warning: unused binding 'hex'
+  suggestion: prefix with underscore: _hex
+6:7: warning: unused binding 'append-item'
+  suggestion: prefix with underscore: _append-item
+12:7: warning: unused binding 'delay'
+  suggestion: prefix with underscore: _delay
+
+Gates audit: check/lint/compile exit0
+audit.lykn: ok (26 top-level expressions)
+✓ no lint findings (1 file(s))
+9:28: warning: unused binding 'text'
+  suggestion: prefix with underscore: _text
+21:35: warning: unused binding 'recipe'
+  suggestion: prefix with underscore: _recipe
+159:28: warning: unused binding 'row'
+  suggestion: prefix with underscore: _row
+162:28: warning: unused binding 'node'
+  suggestion: prefix with underscore: _node
+166:33: warning: unused binding 'a'
+  suggestion: prefix with underscore: _a
+166:42: warning: unused binding 'b'
+  suggestion: prefix with underscore: _b
+166:7: warning: unused binding 'equal-files'
+  suggestion: prefix with underscore: _equal-files
+21:7: warning: unused binding 'recipe-bytes'
+  suggestion: prefix with underscore: _recipe-bytes
+162:7: warning: unused binding 'entry'
+  suggestion: prefix with underscore: _entry
+310:7: warning: unused binding 'planning-check'
+  suggestion: prefix with underscore: _planning-check
+14:1: warning: unused binding 'schemas'
+  suggestion: prefix with underscore: _schemas
+169:7: warning: unused binding 'graph-check'
+  suggestion: prefix with underscore: _graph-check
+152:1: warning: unused binding 'mode'
+  suggestion: prefix with underscore: _mode
+15:1: warning: unused binding 'sentinel-ids'
+  suggestion: prefix with underscore: _sentinel-ids
+2:1: warning: unused binding 'encoder'
+  suggestion: prefix with underscore: _encoder
+33:7: warning: unused binding 'add'
+  suggestion: prefix with underscore: _add
+156:7: warning: unused binding 'records'
+  suggestion: prefix with underscore: _records
+159:7: warning: unused binding 'facts'
+  suggestion: prefix with underscore: _facts
+9:7: warning: unused binding 'unhex'
+  suggestion: prefix with underscore: _unhex
+
+Gates cdc: check/lint/compile exit0
+cdc-audit.lykn: ok (25 top-level expressions)
+✓ no lint findings (1 file(s))
+13:27: warning: unused binding 'rows'
+  suggestion: prefix with underscore: _rows
+43:33: warning: unused binding 'data'
+  suggestion: prefix with underscore: _data
+50:1: warning: unused binding 'yaml'
+  suggestion: prefix with underscore: _yaml
+16:1: warning: unused binding 'previous'
+  suggestion: prefix with underscore: _previous
+13:7: warning: unused binding 'files'
+  suggestion: prefix with underscore: _files
+60:1: warning: unused binding 'edits'
+  suggestion: prefix with underscore: _edits
+49:1: warning: unused binding 'manifest'
+  suggestion: prefix with underscore: _manifest
+52:1: warning: unused binding 'expected-counts'
+  suggestion: prefix with underscore: _expected-counts
+17:1: warning: unused binding 'current'
+  suggestion: prefix with underscore: _current
+
+Fresh freeze: both inputs.json and case-manifest.md cmp exit0
+{"phase":"freeze","variants":352,"sentinels":19}
+
+Sandbox graph failure before any controls; retried through approved host route
+{
+  "version": 1,
+  "roots": [
+    "file:///private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cases.js"
+  ],
+  "modules": [
+    {
+      "kind": "esm",
+      "dependencies": [
+        {
+          "specifier": "@std/yaml",
+          "code": {
+            "specifier": "jsr:@std/yaml@1.2.0",
+            "span": {
+              "start": {
+                "line": 112,
+                "character": 28
+              },
+              "end": {
+                "line": 112,
+                "character": 39
+              }
+            }
+          },
+          "isDynamic": true
+        }
+      ],
+      "local": "/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cases.js",
+      "size": 9458,
+      "mediaType": "JavaScript",
+      "specifier": "file:///private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/cases.js"
+    },
+    {
+      "specifier": "jsr:@std/yaml@1.2.0",
+      "error": "JSR package manifest for '@std/yaml' failed to load. Import 'https://jsr.io/@std/yaml/meta.json' failed."
+    }
+  ],
+  "redirects": {},
+  "packages": {
+    "@std/yaml@1.2.0": "@std/yaml@1.2.0"
+  },
+  "npmPackages": {}
+}
+
+Host graph audit exit0
+{"graph":"pass","modules":26,"packages":["@std/yaml@1.2.0"]}
+
+Denied read: exit1
+12:28: warning: unused binding 'text'
+  suggestion: prefix with underscore: _text
+8:7: warning: unused binding 'ensure'
+  suggestion: prefix with underscore: _ensure
+62:1: warning: unused binding 'allowed'
+  suggestion: prefix with underscore: _allowed
+2:1: warning: unused binding 'encoder'
+  suggestion: prefix with underscore: _encoder
+59:7: warning: unused binding 'materialize'
+  suggestion: prefix with underscore: _materialize
+56:7: warning: unused binding 'error-fact'
+  suggestion: prefix with underscore: _error-fact
+16:7: warning: unused binding 'append-item'
+  suggestion: prefix with underscore: _append-item
+error: Uncaught (in promise) NotCapable: Requires read access to "inputs/control.txt", run again with the --allow-read flag
+    console.log(Deno.readTextFileSync("inputs/control.txt"));
+                     ^
+    at Object.readTextFileSync (ext:deno_fs/30_fs.js:800:10)
+    at dispatch (file:///private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/target/lykn/run/cases.js:170:22)
+    at file:///private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/target/lykn/run/cases.js:212:7
+
+Scoped read: exit0
+CONTROL
+
+Fake argv recorder: exit0; each argument on its own line
+run
+--config
+/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/project.json
+--allow-read=./inputs
+--allow-write=./outputs
+--no-prompt
+--
+/private/tmp/lykn-p07-yaml-cdc.HsBg29/trial/target/lykn/run/cases.js
+control-read
+--allow-all
+
+Host process observation exit0 before controls; all groups exit0
+wall/output/RSS controls passed
+{"graph":"pass","modules":26,"packages":["@std/yaml@1.2.0"]}
+{"result":"pass","checks":1991,"sentinelAttempts":38,"frozenVariants":352,"yamlFamilies":16}
+{"result":"pass","checks":907,"records":41,"stdoutComparisons":38,"yamlVariants":349,"nextValueVariants":259}
+{"planning":"pass","paths":20,"links":66}
+
+Fresh byte report
+# Sentinel byte audit
+
+Generated by audit.lykn; zero-based positional differing ranges [start,end), including unmatched EOF bytes. Alignment is positional, not a minimum edit script. Original/noop/edit are separate byte records.
+
+## Y-01-edit noop
+
+Original 46 bytes SHA256 7455a3204d50ad250134ecfef22bb13c8119e87411b44f64fd535a0f4d723a1b hex 6e616d653a204164610a6e3a20310a666c6167733a205b747275652c2066616c73655d0a6e696c3a206e756c6c0a
+
+Observed 53 bytes SHA256 ad86b1600574e3da7fb3282b22c439192d8ab5a8f239b2b5f8b76c7c03775d86 hex 6e616d653a204164610a276e273a20310a666c6167733a0a20202d20747275650a20202d2066616c73650a6e696c3a206e756c6c0a
+
+Differing ranges [[10,53]]
+
+
+## Y-01-edit output
+
+Original 46 bytes SHA256 7455a3204d50ad250134ecfef22bb13c8119e87411b44f64fd535a0f4d723a1b hex 6e616d653a204164610a6e3a20310a666c6167733a205b747275652c2066616c73655d0a6e696c3a206e756c6c0a
+
+Observed 53 bytes SHA256 5ab891101476719c0d2f64a6fb6f6349f861f103a99d89c8f1a9b90e78bb1e97 hex 6e616d653a204164610a276e273a20320a666c6167733a0a20202d20747275650a20202d2066616c73650a6e696c3a206e756c6c0a
+
+Differing ranges [[10,53]]
+
+
+## Y-10-noop noop
+
+Original 48 bytes SHA256 59398266d4bf64051c0bf259d48937d51014dd0d7bca79ac2d9178b9aeedf656 hex 23207469746c650a6e3a2030312023206e6f74650a746578743a202768656c6c6f270a0a7365713a205b612c20625d0a
+
+Observed 36 bytes SHA256 e17aa6f4c32cb0bb06f5d5b6e0a5a09f5310012e80eaa21abd9140aa5d2e170d hex 276e273a20310a746578743a2068656c6c6f0a7365713a0a20202d20610a20202d20620a
+
+Differing ranges [[0,17],[18,35],[36,48]]
+
+
+## Y-10-noop output
+
+Original 48 bytes SHA256 59398266d4bf64051c0bf259d48937d51014dd0d7bca79ac2d9178b9aeedf656 hex 23207469746c650a6e3a2030312023206e6f74650a746578743a202768656c6c6f270a0a7365713a205b612c20625d0a
+
+Observed 36 bytes SHA256 e17aa6f4c32cb0bb06f5d5b6e0a5a09f5310012e80eaa21abd9140aa5d2e170d hex 276e273a20310a746578743a2068656c6c6f0a7365713a0a20202d20610a20202d20620a
+
+Differing ranges [[0,17],[18,35],[36,48]]
+
+
+## Y-10-edit noop
+
+Original 48 bytes SHA256 59398266d4bf64051c0bf259d48937d51014dd0d7bca79ac2d9178b9aeedf656 hex 23207469746c650a6e3a2030312023206e6f74650a746578743a202768656c6c6f270a0a7365713a205b612c20625d0a
+
+Observed 36 bytes SHA256 e17aa6f4c32cb0bb06f5d5b6e0a5a09f5310012e80eaa21abd9140aa5d2e170d hex 276e273a20310a746578743a2068656c6c6f0a7365713a0a20202d20610a20202d20620a
+
+Differing ranges [[0,17],[18,35],[36,48]]
+
+
+## Y-10-edit output
+
+Original 48 bytes SHA256 59398266d4bf64051c0bf259d48937d51014dd0d7bca79ac2d9178b9aeedf656 hex 23207469746c650a6e3a2030312023206e6f74650a746578743a202768656c6c6f270a0a7365713a205b612c20625d0a
+
+Observed 36 bytes SHA256 1d4d5bba60bb71097a812c28318ae2cdcbe92afb1547b166cf7c7b8f0dc62ca8 hex 276e273a20320a746578743a2068656c6c6f0a7365713a0a20202d20610a20202d20620a
+
+Differing ranges [[0,17],[18,35],[36,48]]
+
+End of CDC receipt; raw supervised records are retained separately in cdc-replay.jsonl.

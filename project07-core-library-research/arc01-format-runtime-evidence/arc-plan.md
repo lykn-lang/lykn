@@ -7,9 +7,10 @@ provide for JSON and YAML, what they lose, and what Lykn libraries must add.
 Evidence includes package provenance and the actual runtime/toolchain
 baseline, so a dependency recommendation is not inferred from a registry name.
 
-Active arc. Slices01–02 are CDC closed (Slice02 was CC proposed-done).
-All 17 JSON families independently replayed. Slice03 YAML preflight is now
-CC proposed-done, pending independent CDC. Full YAML families remain owed.
+Active arc. Slices01–03 are CDC closed. All 17 JSON families independently
+replayed; YAML preflight reproduced 38 sentinel/harness attempts and three
+supervisor controls. Slice05 is open for all 259 value variants. Full YAML
+families remain owed.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
 ## Slice breakdown
@@ -18,9 +19,9 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | --- | --- | --- | --- |
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
-| [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CC proposed-done; 349 YAML variants frozen, 38 sentinel/control attempts; CDC pending |
+| [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
 | slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives; resolve the document-route prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence | Planned; identity retained; precedes Slice07 |
-| slice05-yaml-value-behavior | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | Planned; next after Slice03 |
+| [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | Open; 259 variants, two attempts each; no full-value execution claimed |
 | slice06-yaml-resource-and-files | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | Planned |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
 
@@ -99,7 +100,7 @@ Apply the project's exact-path commits, proposed-done/CDC separation, immediate
 evidence-based close and next-slice opening, and arc composition rules.
 Slice02 now has [independent CDC closure](slice02-json-behavior/cdc-verification.md).
 The actionable next handoff is
-`arc01-format-runtime-evidence/slice03-yaml-preflight/cc-prompt.md`.
+`arc01-format-runtime-evidence/slice05-yaml-value-behavior/cc-prompt.md`.
 Original JSON CC artifacts remain historical; CDC records replay adaptations.
 Do not generate a close set or mark research complete merely because the
 planning documents exist.
@@ -131,16 +132,34 @@ correction is authorized by this research handoff.
 [CC report](slice03-yaml-preflight/closing-report.md) retains a fresh immutable
 compiler build, actual YAML graph/lock, bounded inspector/supervisor and a Lykn
 audit. The 349 YAML variants preserve all 16 families; only 16 YAML sentinels
-and three harness controls ran twice. No full family inherits completion.
+and three harness controls ran twice. [CDC](slice03-yaml-preflight/cdc-verification.md)
+reproduced that condition, all attempts and 1991 retained plus 907 additional
+audit checks. No full family inherits completion.
 
 Slice05 must complete alias/cycle serialization and original/no-op/edit bytes,
 existing-destination failure checks and the full value matrix. Slice06 retains
 resource recipes and exact file-fault modes. Stable std/yaml has no separate
 toJS method; report unavailable stages/options honestly rather than emulate an
 API and call it passing. Slice07's 28 document variants remain behind Slice04
-and D-2609-YNOD. After CDC, the next opening is Slice05, not Slice04.
+and D-2609-YNOD. Slice05 is now the next opened work, not Slice04.
+
+CDC preparation review requires Y-01 to read/parse its actual file first and
+Y-09 to exercise the real replacement path against an existing destination.
+Freeze runtime-value construction and additional operation details before full
+execution, keeping YP-M01 IDs/bytes/options and all questions in the crosswalk.
+Inspector enumeration and encoding allocate before their output guards; Slice06
+and Slice04 must distinguish those costs from package behavior and hard limits.
+The 259/62/28 value/resource-and-file/document ownership counts sum to 349.
+No source correction or family reduction accompanies this clarification.
 
 ## Version History
+
+- 2026-09-12 v1.7: Slice03 CDC closed six preparation criteria after fresh build,
+  exact freeze and full sentinel replay. Opened Slice05 for 259 value variants
+  using the actual harness. Carried literal-before-file and destination-failure
+  gaps, serialization obligations and inspector allocation caveats into the
+  relevant owners before planning full execution. Sequence and all 349 cases
+  remain unchanged; A-03–06 remain open.
 
 - 2026-09-12 v1.6: Slice03 submitted bounded preparation as CC proposed-done,
   with all YAML owners/variants retained and Lykn evidence tooling. Explicitly

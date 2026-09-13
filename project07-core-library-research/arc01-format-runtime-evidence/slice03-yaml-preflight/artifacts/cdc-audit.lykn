@@ -1,0 +1,68 @@
+;; CDC comparison independent of the retained implementer audit. Run in fresh trial.
+;; argv[0] is the committed Slice03 artifacts directory. No package imports.
+(bind checks (cell 0))
+(func ensure :args (:boolean ok :string label) :body
+  (swap! checks (fn (:number n) (+ n 1)))
+  (if (not ok) (throw (new Error label))))
+(func same :args (:any actual :any expected :string label) :body
+  (ensure (= (JSON:stringify actual) (JSON:stringify expected)) label))
+(func records :args (:string path) :body
+  (-> (Deno:read-text-file-sync path) (:split "\n")
+    (:filter (fn (:string line) (line:starts-with "{\"id\"")))
+    (:map (fn (:string line) (JSON:parse line)))))
+(func files :args (:array rows) :body
+  (rows:to-sorted (fn (:object a :object b) (a:path:locale-compare b:path))))
+(bind artifacts (get Deno:args 0))
+(bind previous (records (template artifacts "/raw-transcript.txt")))
+(bind current (-> (records "controls.stdout") (:concat (records "sentinel.stdout"))))
+(same previous:length 41 "CC record count")
+(same current:length 41 "CDC record count")
+(for-of row current
+  (bind matches (previous:filter (fn (:object prior) (and (= prior:id row:id) (= prior:attempt row:attempt)))))
+  (same matches:length 1 "unique corresponding CC attempt")
+  (bind prior (get matches 0))
+  (same row:exit prior:exit "exit agreement")
+  (same row:stopReason prior:stopReason "stop reason agreement")
+  (same row:sourceSha256 prior:sourceSha256 "same executed Lykn source")
+  (same row:compiledSha256 prior:compiledSha256 "same emitted program")
+  (same row:survivors #a() "observed cleanup")
+  (for-of field #a("inputState" "inputAfter" "outputBefore" "outputAfter")
+    (same (files (get row field)) (files (get prior field)) (template "CC/CDC files " row:id " " field)))
+  (if (= row:phase "sentinel")
+    (do
+      (same row:stdout prior:stdout (template "exact stdout " row:id))
+      (if (= row:exit 1)
+        (ensure (row:stderr:includes (? (= row:id "HP-unknown-case") "Unknown case ID: NOT-A-CASE" "Unknown operation:")) "explicit rejection"))
+      (same row:preparation:exit 0 "preparation completed")
+      (same row:command (-> #a("/usr/bin/time" "-l" (-> (Deno:read-text-file-sync "compiler-path.txt") (:trim)) "run" "--no-prompt")
+        (:concat (? (= row:id "Y-01-edit") #a("--allow-read=./inputs,./outputs" "--allow-write=./outputs") #a()))
+        (:concat #a("--cached-only" "--frozen=true" "cases.lykn"))
+        (:concat (row:command:slice (? (= row:id "Y-01-edit") 10 8)))) "exact permission prefix"))))
+(bind graph (JSON:parse (Deno:read-text-file-sync "dependency-graph.json")))
+(bind old-graph (JSON:parse (Deno:read-text-file-sync (template artifacts "/dependency-graph.json"))))
+(func remote-ids :args (:object data) :body
+  (-> data:modules (:filter (fn (:object entry) (entry:specifier:starts-with "https:")))
+    (:map (fn (:object entry) entry:specifier)) (:to-sorted)))
+(same (remote-ids graph) (remote-ids old-graph) "remote graph identities")
+(same graph:modules:length 26 "graph module count")
+(same (Deno:read-text-file-sync "deno.lock") (Deno:read-text-file-sync (template artifacts "/deno.lock")) "lock bytes")
+(bind manifest (JSON:parse (Deno:read-text-file-sync "inputs.json")))
+(bind yaml (manifest:variants:filter (fn (:object row) (not (= row:family "HP")))))
+(same yaml:length 349 "all frozen YAML cases")
+(bind expected-counts #a(1 110 50 8 1 2 5 6 4 2 6 52 54 28 12 8))
+(for-of pair (expected-counts:entries)
+  (bind family (template "Y-" (-> (String (+ (get pair 0) 1)) (:pad-start 2 "0"))))
+  (bind members (yaml:filter (fn (:object row) (= row:family family))))
+  (same members:length (get pair 1) (template family " complete count"))
+  (for-of member members
+    (same member:owner (? (= family "Y-14") "slice07-yaml-document-fidelity"
+      (? (or (= family "Y-13") (= family "Y-16")) "slice06-yaml-resource-and-files" "slice05-yaml-value-behavior")) "full execution owner")))
+(bind edits (current:filter (fn (:object row) (= row:id "Y-01-edit"))))
+(for-of edit edits
+  (bind facts (new Map (-> edit:stdout (:trim) (:split "\n") (:map (fn (:string line) (JSON:parse line))))))
+  (same edit:outputAfter:length 1 "replacement temp removed")
+  (bind output (get edit:outputAfter 0))
+  (same output:path "outputs/destination.yaml" "exact destination")
+  (same output:hex (get (facts:get "output") "hex") "serialized bytes actually written")
+  (same (Deno:read-text-file-sync (template edit:cwd "/" output:path)) (get (facts:get "output") "text") "independent file reread"))
+(console:log (JSON:stringify (obj :result "pass" :checks (express checks) :records 41 :stdoutComparisons 38 :yamlVariants 349 :nextValueVariants 259)))

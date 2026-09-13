@@ -1,7 +1,8 @@
 # CC — Prepare the YAML research harness
 
-Execution submitted as **CC proposed-done**; see [closing-report.md](closing-report.md).
-The instructions below remain the exact scope/replay contract. CDC review is next.
+Execution is **CDC closed**; see [cdc-verification.md](cdc-verification.md).
+The instructions below retain the original CC scope/replay contract. Full value
+execution is now assigned to [Slice05](../slice05-yaml-value-behavior/cc-prompt.md).
 
 Execute Project07/Arc01/Slice03 in **Expedited Mode**. Read the project/arc
 plans and ledgers, this full open set, Slice02 CDC and RP01/FM01/AE01. Use
