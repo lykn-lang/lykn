@@ -1,5 +1,11 @@
 # Arc01 ledger
 
+2026-09-13 later CC: [Slice04 preparation](slice04-dependency-and-runtime-boundary/artifacts/resume-preparation.md)
+re-slices bounded supervisor verification to Arc03/Slice07 before authoring
+budget exhaustion. Four source failures remain charged. All original DB rows,
+R families, 47 candidates/expansions and resource/document/source/human owners
+remain; A-03–06 stay open. Earlier immediate-resume notes are superseded.
+
 2026-09-13 subsequent CDC: [launcher correction independently closed](../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md).
 Slice04 resumes at 4dded88/Deno 2.9.6 with all eight DB rows open, full freeze
 and supervisor preflight owed. A-03–06 remain open. Earlier notes below record

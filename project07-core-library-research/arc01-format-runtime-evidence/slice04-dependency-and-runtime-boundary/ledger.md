@@ -1,6 +1,10 @@
 # Slice04 ledger
 
-Eight criteria open, ready to resume after D-2609-DARG correction CDC.
+Eight criteria open. The launcher correction is verified; resumed preparation
+now routes a bounded supervisor prerequisite to [Arc03/Slice07](../../arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)
+before further Slice04 execution. [Preparation evidence](artifacts/resume-preparation.md)
+retains four source failures and a separate frozen-lock configuration mistake.
+No resumed control/matrix ran; all original rows below remain byte-identical.
 No row is CC proposed-done.
 The [blocked handoff](closing-report.md) walks all eight rows and partial attested
 evidence. The immutable build, failed launches, actual argv, operator-suggested
@@ -31,3 +35,8 @@ Resume all eight unchanged DB rows on the active 4dded88/Deno 2.9.6 pair.
 Full operational freeze, adapted supervisor and all R-01–09 remain owed; three
 failed authoring conditions, 36 unsupported resources and 28 gated documents
 retain their budget and owners. No package adoption or human acceptance follows.
+
+2026-09-13 later CC: supervisor re-slicing supersedes the preceding resume
+instruction. Four source failures remain charged; the original 47 candidate
+IDs and every R-01–09 expansion remain Slice04 obligations. Native tooling CDC
+in Arc03/Slice07 precedes full operational freeze here. No DB row is proposed-done.

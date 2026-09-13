@@ -1,6 +1,28 @@
 # CC — Research the dependency and runtime boundary
 
-2026-09-13: **Ready to resume.** [Launcher CDC](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md)
+2026-09-13, subsequent preparation: **Open; supervisor prerequisite re-sliced.**
+Four failed authoring conditions are charged. Before exhausting the five-condition
+budget, the supervisor adaptation/preflight is assigned to Arc03/Slice07.
+Its exact open-set paths are authorized below before creation. All eight DB rows,
+the 47 candidate IDs, every required operational expansion and R-01–09 remain
+owned here. No resumed matrix or supervisor control has run. Resume this full
+assignment only after the bounded prerequisite passes independent CDC; retain
+the four-condition history and do not reset Slice04's budget.
+
+Additional exact paths for this explicitly required re-slicing:
+
+```text
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/artifacts/resume-preparation.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/artifacts/resume-raw-transcript.txt
+project07-core-library-research/arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md
+project07-core-library-research/arc03-findings-and-integration/slice07-research-supervisor/ledger.md
+project07-core-library-research/arc03-findings-and-integration/slice07-research-supervisor/cc-prompt.md
+```
+
+The earlier same-day resume instruction below applied before this authoring
+condition. Its launcher result and full research scope remain valid.
+
+2026-09-13: **Launcher ready.** [Launcher CDC](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md)
 closed all six correction criteria. All eight DB criteria remain open. Follow
 the active compiler/runtime condition in slice-plan.md; the original blocked
 handoff and eval receipts remain historical evidence.

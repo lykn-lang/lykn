@@ -6,6 +6,24 @@ their CDC reports informed this work; it is not a blinded guide experiment.
 
 ## Failed conditions retained
 
+Subsequent resumed condition **4**: the adapted supervisor's first source had
+an excess closing parenthesis near `compiledSha256`; check reported unexpected
+`)` at 230:10. One source correction passed check/lint/compile. Both drafts,
+emitted output and all gate streams remain in the
+[resume packet](resume-raw-transcript.txt), `seed/gates-01` and `seed/gates-02`.
+The supervisor was not executed. Review found still-unverified early-stop,
+empty-target and semantic-marker paths. Following the before-exhaustion rule,
+[Arc03/Slice07](../../../arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)
+now owns bounded native supervisor verification. Slice04's four-condition
+history is not reset. The earlier three conditions below remain unchanged.
+
+A separate supplemental native audit command failed frozen-lock validation
+because its empty config was paired with the merged package lock. No source
+correction or package result is inferred. The failed condition is preserved;
+packet tooling subsequently used a separate matching native config/lock root
+without disabling frozen mode. See [resumed preparation](resume-preparation.md)
+for actual reads, commands, inspection findings, counts and re-entry.
+
 1. First cases.lykn passed check/lint/compile but emitted COMPILE_ERROR throws
    for a catch-final and finally-final `if` without else. Retained source and
    emitted output are under meta/authoring-01. This repeats the known JSCF class;

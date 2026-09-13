@@ -1,6 +1,18 @@
 # Slice04 — Dependency and runtime boundary
 
-Status: **Open, ready to resume after launcher CDC closure.** Expedited Mode. Eight open ledger criteria.
+Status: **Open; supervisor prerequisite re-sliced before budget exhaustion.**
+Expedited Mode. Eight open ledger criteria.
+
+2026-09-13 subsequent preparation: the accepted CLI rebuilt and retained evidence
+restored, but the adapted supervisor needed a fourth source-authoring correction
+and remains unexecuted. [Resumed preparation](artifacts/resume-preparation.md)
+preserves its gates and the separate native-audit config/lock mistake.
+Following this plan's before-exhaustion rule, [Arc03/Slice07](../../arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)
+owns bounded supervisor repair/preflight before independent CDC and re-entry
+here. Slice04 retains four source failures, all eight unchanged DB rows, all
+47 candidate IDs and every operational expansion. No resumed controls or
+research matrix ran. This supersedes the earlier readiness text below without
+reopening the verified launcher correction or resetting the authoring budget.
 This retains the original Slice04 identity and all R-01–09 families. It follows
 Slices03/05/06 and precedes Slice07; numbering is not execution order.
 
@@ -197,3 +209,11 @@ owners. No model supplies the user's aesthetic acceptance. Arc A-03–06 and all
 project rows remain open; Slice04 closure does not replace later composition.
 After CDC, open Slice07 only with a compatible route; otherwise open the
 explicit prerequisite work, preserving the complete document scope.
+
+## Version History
+
+- 2026-09-13 v1.1: Retained resumed build/gates and fourth source failure;
+  re-sliced supervisor verification into Arc03/Slice07 before exhausting the
+  authoring budget. All research criteria and variants remain here. Added
+  resume-preparation.md and resume-raw-transcript.txt through an explicit prompt
+  scope amendment; original evidence remains unchanged.

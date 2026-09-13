@@ -2,6 +2,13 @@
 
 ## Capability and status
 
+Current sequencing, 2026-09-13: Slice04 resumed preparation retained a fourth
+source-authoring failure and unverified supervisor paths. Its explicit
+before-exhaustion rule now opens bounded
+[Arc03/Slice07](../arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)
+before full Slice04 execution. This supersedes the earlier immediate-resume
+instructions below, preserving the closed launcher fix and all research owners.
+
 Deliver a reproducible account of what native Deno and candidate packages
 provide for JSON and YAML, what they lose, and what Lykn libraries must add.
 Evidence includes package provenance and the actual runtime/toolchain
@@ -21,7 +28,7 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
-| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence; Arc03/Slice06 launcher correction | Open, ready to resume after launcher CDC; precedes Slice07 |
+| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence; verified Arc03/Slice06 launcher and Arc03/Slice07 supervisor | Open; awaits bounded supervisor CDC; all eight DB rows unchanged; precedes document Slice07 |
 | [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
 | [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
@@ -189,6 +196,11 @@ variants. JSCF/UNUS and guide/book/human obligations remain open. This refines
 execution mechanics from verified findings without changing family ownership.
 
 ## Version History
+
+- 2026-09-13 v1.16: Slice04's fourth source failure triggered explicit
+  before-exhaustion re-slicing of supervisor verification to Arc03/Slice07.
+  Retained both packets, full R-01–09, 47 candidates and expansions, 36
+  unsupported Y-13 and 28 gated Y-14, with no criterion closure or budget reset.
 
 - 2026-09-13 v1.15: Launcher CDC closed all six correction criteria and lifted
   Slice04's gate. Updated its active source/runtime pin, full re-entry and

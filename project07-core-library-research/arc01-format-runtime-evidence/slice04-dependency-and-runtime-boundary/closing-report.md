@@ -1,5 +1,52 @@
 # Slice04 blocked handoff — not a close
 
+## Subsequent resumed preparation and re-slicing
+
+2026-09-13, CC, starting planning HEAD `ff08306`. The launcher prerequisite is
+independently closed. [Resumed preparation](artifacts/resume-preparation.md)
+reports a fresh matching 4dded88 build, restored original evidence, re-gated
+candidates and an adapted but unexecuted supervisor. A fourth source-authoring
+failure is retained, along with a separate frozen-lock command/configuration
+failure. Following the explicit before-exhaustion rule, bounded supervisor
+verification is assigned to [Arc03/Slice07](../../arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md).
+The historical launcher handoff below is preserved; it is not the active blocker.
+
+| Row | Current disposition and remaining work |
+| --- | --- |
+| DB-01 | Open; fresh binary matches, but complete operational freeze still owed |
+| DB-02 | Open; 30-path interval captured; whole-package/toolchain graphs and lineage incomplete |
+| DB-03 | Open; resolution/offline/cache matrix not run; retained supplemental config failure is not a matrix result |
+| DB-04 | Open; host ps works, but external controls and permissions remain unexecuted |
+| DB-05 | Open; supervisor review gaps routed; all replacement/concurrency/fault variants remain owed |
+| DB-06 | Open; all resource reconciliation/replay and supported-pair disposition remain owed |
+| DB-07 | Open; document-route decision/prerequisite remains owed; all 28 Y-14 cases gated |
+| DB-08 | Open; preparation packet replays, but complete research evidence/replay does not exist |
+
+Separate counts: zero resumed matrix or supervisor/harness controls; four
+cumulative failed source-authoring conditions; one additional resumed native
+audit config/lock failure; 460 historical files restored with 2,301 checks;
+94 new packet files/1,040,715 decoded bytes packed with 282 checks and extracted
+with 471 checks. No new package checksum audit passed. All original packet
+bytes and original eight DB ledger rows are unchanged. Original 47 candidate
+IDs, full R expansions, 36 unsupported Y-13 cells and all source/human owners
+remain. The exact scoped commit is supplied with this handoff's final response.
+
+New durable artifacts are `artifacts/resume-preparation.md` and
+`artifacts/resume-raw-transcript.txt`; the new supervisor open set is under
+Arc03/Slice07. The report includes the full packet inventory and tested capture
+replay. Fresh matrix replay remains gated; no source or package adoption follows.
+
+### Bubble-up to the arc
+
+The runtime/dependency capability remains undelivered. Preparation identified
+insufficient remaining authoring headroom for supervisor verification plus the
+full matrix. Arc03 now owns one bounded native tooling prerequisite; Arc01
+retains every research condition. This is explicit re-slicing, not closure or
+scope reduction. Independent CDC is still required; no project, arc or human
+acceptance criterion changes status.
+
+## Historical launcher handoff
+
 2026-09-13, CC. **All eight DB-01–08 criteria remain open; none is proposed-done.**
 Planning started at ae179ea8658e8a6999f8162151345c0aca280ea9. This report belongs
 to the scoped blocked-handoff commit whose exact identity is returned after

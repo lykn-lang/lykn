@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-13 later CC: [Slice04 resumed preparation](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/artifacts/resume-preparation.md)
+retains four source failures and re-slices bounded supervisor verification to
+[Arc03/Slice07](arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)
+before budget exhaustion. All P rows and DB rows remain open; the launcher
+repair remains verified. Full research/document/source/human scope is unchanged.
+
 2026-09-13 subsequent CDC: [launcher correction independently closed](arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md).
 All six LC rows and A3-06 are done. Slice04 resumes on its active 4dded88/Deno
 2.9.6 condition with all eight DB rows open. All project rows remain open;

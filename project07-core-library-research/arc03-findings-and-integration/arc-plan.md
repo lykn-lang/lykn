@@ -2,6 +2,13 @@
 
 ## Capability and status
 
+2026-09-13 current sequencing: [Slice07](slice07-research-supervisor/slice-plan.md)
+is open for bounded native research-supervisor verification. Arc01/Slice04
+reached four source-authoring failures and explicitly requires re-slicing
+before budget exhaustion. The launcher remains verified. After Slice07 CDC,
+return to all eight unchanged DB criteria and all R families; other correction
+owners remain queued. Earlier immediate-resume instructions below are historical.
+
 Correct accepted guide, book, language and tooling findings; reproduce original
 failures and relevant regressions. Human code-shape acceptance remains distinct.
 This arc opens early because Arc01/Slice01 exposed D-2609-PERM.
@@ -20,6 +27,7 @@ resume Arc01/Slice02 was fulfilled by its subsequent CDC closure.
 | slice04-book-and-language-corrections | Integrate JSER and accepted book/language/formatter findings with operator review | Arc02 and Project02 book coordination | Roadmap only; split as needed |
 | slice05-regression-and-integration | Demonstrate correction composition and carry residual work to handoff | Earlier slices and Arc02 completion | Roadmap only |
 | [slice06-deno-launch-compatibility](slice06-deno-launch-compatibility/slice-plan.md) | Restore script selection on Deno 2.9.6 while preserving explicit authority, path and argument safety | Arc01/Slice04 D-2609-DARG evidence | CDC closed; six criteria reproduced; resume Arc01/Slice04 |
+| [slice07-research-supervisor](slice07-research-supervisor/slice-plan.md) | Verify native external stops, permissions, observer/checkpoint semantics, cleanup and retained audit | Slice04 resumed preparation; verified Slice06 compiler/runtime | Open; six criteria; precedes full Slice04 re-entry |
 
 After Slice01 closes, resume the already-open Arc01/Slice02 research packet;
 queue this arc's Slice02 planning. This explicit cross-arc ordering supersedes
@@ -74,6 +82,11 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-09-13 v1.7: Slice04 preparation exposed supervisor review gaps after
+  its fourth source failure. Added bounded native tooling Slice07 and A3-07
+  before budget exhaustion; all existing rows retain their status and research
+  remains owned by Slice04. No source repair or package evaluation is implied.
 
 - 2026-09-13 v1.6: CDC independently closed Slice06 and A3-06; reproduced
   original failure, gates and corrected binary behavior. Resumed full Slice04
