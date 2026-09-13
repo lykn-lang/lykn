@@ -93,7 +93,7 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05 CDC closed; Slice06 resources/files open |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05 CDC closed; Slice06 CC proposed-done, CDC pending |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
 | [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
@@ -190,8 +190,11 @@ replayed. Slice03 YAML preflight is now
 [CDC closed](arc01-format-runtime-evidence/slice03-yaml-preflight/cdc-verification.md),
 with all six criteria reproduced and all 349 YAML variants retained. Slice05
 is [CDC closed](arc01-format-runtime-evidence/slice05-yaml-value-behavior/cdc-verification.md)
-for 259 value variants after full independent replay. Slice06 is open for all
-62 resource/file variants. All project ledger rows remain open; no operator
+for 259 value variants after full independent replay. Slice06 now has
+[CC proposed-done evidence](arc01-format-runtime-evidence/slice06-yaml-resource-and-files/closing-report.md)
+(was open for execution): 108 resource attempts, 16 file attempts and 36 explicit
+unsupported cells retain all 62 assigned IDs. CDC remains pending.
+All project ledger rows remain open; no operator
 acceptance or library adoption is claimed.
 
 Slice01 bubble-ups: D-2609-PERM recorded implicit run grants; the release/0.6.x
@@ -222,6 +225,12 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-12 v1.11: Arc01/Slice06 submitted bounded resource and actual file-fault
+  evidence with 26674 audit checks. Unsupported conversion/bounds remain explicit;
+  observed partial writes and sampled memory limits refine the Slice04 policy
+  handoff. All 349 YAML owners, document/source/authoring and human obligations
+  remain; no project outcome inherits CC closure.
 
 - 2026-09-12 v1.10: Arc01/Slice05 CDC independently reproduced all 259 value
   variants twice, their controls and correction comparison. Slice06 now opens

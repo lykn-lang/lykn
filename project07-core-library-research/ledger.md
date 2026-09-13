@@ -49,3 +49,9 @@ findings and operator review survive into later owners; no P criterion closes.
 all seven criteria closed. Slice06 resources/files is now open. All project
 rows remain open; value evidence does not supply dependency policy, source
 repairs, whole-YAML composition or operator acceptance.
+
+2026-09-12 Slice06: [CC proposed-done resource/file evidence](arc01-format-runtime-evidence/slice06-yaml-resource-and-files/closing-report.md)
+retains all 62 assigned IDs: 108 resource attempts, 16 file attempts and 36
+unsupported cells, with 13 controls and 26674 audit checks. Independent CDC
+remains pending. Slice04 policy precedes the 28 Slice07 document cases; source,
+book, ADT, operator acceptance and all project rows remain open.

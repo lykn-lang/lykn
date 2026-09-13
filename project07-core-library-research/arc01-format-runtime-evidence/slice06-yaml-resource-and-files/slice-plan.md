@@ -1,7 +1,9 @@
 # Slice06 — YAML resources and file failures
 
-Status: **Open; ready for CC.** Expedited Mode. No resource/file-fault execution
-is claimed by this opening.
+Status: **CC proposed-done; independent CDC pending.** Expedited Mode. Was open
+for execution; the opening contract below is retained. The [CC report](closing-report.md)
+attests 108 resource attempts, 16 file attempts, 36 unsupported cells and 26674
+audit checks. All seven ledger rows remain open until CDC reproduces them.
 
 ## Capability and complete scope
 
@@ -186,6 +188,12 @@ Slice07. All 28 document variants, source/guide/book corrections, ADT experiment
 and operator aesthetic acceptance remain in scope with their established owners.
 
 ## Version History
+
+- 2026-09-12 v1.1: Submitted all 62 assigned IDs with source-backed unsupported
+  dispositions, fresh resource measurements and actual file/partial-write faults.
+  Original criteria/owners/caps remain unchanged. Five failed authoring conditions
+  and the reverted optional renderer are retained; no required work is deferred.
+  CDC and Slice04 policy remain separate gates.
 
 - 2026-09-12 v1.0: Opened after Slice05 CDC full replay. All 54 resource cells
   and eight faults retained, with actual API absence, file-based large-input

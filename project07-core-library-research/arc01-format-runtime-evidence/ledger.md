@@ -4,7 +4,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | A-01 | Slice01 baseline and protocol are independently verified and closed | Inspect Slice01 ledger, closing report, and CDC reproduction of baseline/claim inventory | correctness-grade | Arc roadmap | done | [Reproduced CDC verification](slice01-baseline-and-protocol/cdc-verification.md) | Seven criteria closed; historical binary provenance remains explicitly unknown |
 | A-02 | JSON behavior is independently verified and closed | Inspect Slice02 closure and replay native JSON plus extension/failure cases through Lykn | correctness-grade | Project JSON scope | done | [Reproduced Slice02 CDC](slice02-json-behavior/cdc-verification.md) | All 161 variants/354 attempts replayed; no library adoption claim |
-| A-03 | YAML behavior and fidelity are independently verified and closed | Inspect Slice03 preparation and Slices05–07 closure; compare both semantic values and source bytes on the retained Y-01–16 fixtures | correctness-grade | Project YAML scope | open | [Preparation CDC](slice03-yaml-preflight/cdc-verification.md); [value CDC](slice05-yaml-value-behavior/cdc-verification.md) | Preparation and values closed; Slice06 open; Y-14 awaits Slice04 compatible-route decision |
+| A-03 | YAML behavior and fidelity are independently verified and closed | Inspect Slice03 preparation and Slices05–07 closure; compare both semantic values and source bytes on the retained Y-01–16 fixtures | correctness-grade | Project YAML scope | open | [Preparation CDC](slice03-yaml-preflight/cdc-verification.md); [value CDC](slice05-yaml-value-behavior/cdc-verification.md); [resource/file CC](slice06-yaml-resource-and-files/closing-report.md) | Preparation and values closed; Slice06 CC proposed-done pending CDC; Y-14 awaits Slice04 compatible-route decision |
 | A-04 | Runtime/dependency boundary is independently verified and closed | Inspect Slice04 closure, dependency graph/provenance, permission and offline evidence | serious | Operator no-Node direction | open | — | Registry location is not provenance proof |
 | A-05 | The slices compose into an actionable cross-format capability matrix | Independently replay one JSON and one YAML read/edit/write workflow and reconcile with the matrix and limitations | correctness-grade | Arc capability | open | — | Do not infer composition from child status |
 | A-06 | Lykn/guide/book/human-review findings and unresolved decisions reach the next work | Walk fixture observations and discovery IDs into Arc02/Arc03 scope and project Version History | correctness-grade | Operator explicit authoring goals | open | [Slice01 findings](slice01-baseline-and-protocol/artifacts/findings.md) | PERM/YNOD prerequisites and LINT/NPMB/JSER findings retained; later routing/closure pending |
@@ -38,3 +38,10 @@ Slice06/04/07 and Arc02/03 obligations remain unchanged.
 518 attempts, 13 controls, full audit and correction comparison reproduced.
 Slice06 is open for 54 resource cells and eight file faults. A-03–06 remain
 open, with document/runtime/composition and authoring obligations unchanged.
+
+2026-09-12 Slice06: [CC proposed-done](slice06-yaml-resource-and-files/closing-report.md)
+for 54 resource cells and eight file faults: 108 resource attempts, 16 file
+attempts, 36 unsupported capabilities, zero resource caps/not-runs. Thirteen
+supervised controls and 26674 checks attest the condition; independent CDC is
+pending. A-03–06 remain open. The actual partial-write and OS-failure evidence
+feeds Slice04 policy before Slice07; no source or human criterion inherits closure.

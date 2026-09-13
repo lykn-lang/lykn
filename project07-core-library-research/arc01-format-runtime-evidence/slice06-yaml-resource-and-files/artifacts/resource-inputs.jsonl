@@ -1,0 +1,9 @@
+{"kind":"depth","size":16,"fanout":2,"sha256":"614e865f3ee7c118620d8f7551be5d29cf0be346acf527eb511180252dee1171","encodedBytes":34,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"depth","size":64,"fanout":2,"sha256":"f8e98d56449d4c90792a9368b4558e287a6e96fc9cd94059b42f99577f7c38a8","encodedBytes":130,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"depth","size":256,"fanout":2,"sha256":"d8191b41f00b69c70e3ff2e868ba2e4a25bbdbc085e9c93ba92de97d3a5be973","encodedBytes":514,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"string","size":1024,"fanout":2,"sha256":"3165a5abc3677f934e4f28b24268968c9d2da81362bd5cfaccfead76f129445d","encodedBytes":1025,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"string","size":1048576,"fanout":2,"sha256":"eb92ca55ea07796e15fde2c54bbda31bdaed01130013c4ecb7ba9fd41533afd4","encodedBytes":1048577,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"string","size":8388608,"fanout":2,"sha256":"6ebd215f5992adfd7ea049e317a4c23bb6fff7653ca01e2f8f3e174d32f764e9","encodedBytes":8388609,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"alias-dag","size":4,"fanout":2,"sha256":"e6b7c5ab0c7a52d841d31d1fe991dad29809747f08fa21736dc0e0e6ef3f6167","encodedBytes":88,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"alias-dag","size":8,"fanout":2,"sha256":"4f24341223e32bbedf8199fc80bc4f9337cbf28dbe585cde32e02180e7dab166","encodedBytes":160,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
+{"kind":"alias-dag","size":12,"fanout":2,"sha256":"24a060f0e5cf889c692fb03cdf34fe9d9cde7a8f010d73fb91c29be85bc386d7","encodedBytes":242,"recipe":"recipe-text in retained audit.lykn; UTF-8; exact LF delimiters"}
