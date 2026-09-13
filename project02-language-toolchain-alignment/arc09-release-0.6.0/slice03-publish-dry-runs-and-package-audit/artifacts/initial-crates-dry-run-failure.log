@@ -1,0 +1,31 @@
+
+[1;36m╔══════════════════════════════════════════════════════════╗[0m
+[1;36m║[0m [1;34mDry Run: Publishing Lykn Crates[0m                          [1;36m║[0m
+[1;36m╚══════════════════════════════════════════════════════════╝[0m
+
+[1;34mPublishing order (in dependency order):[0m
+  [1;33m1.[0m lykn-lang
+  [1;33m2.[0m lykn-cli
+  [1;33m3.[0m lykn
+
+[1;34mVerifying each crate can be published with cargo dry-run...[0m
+
+[1;36m• Dry-running lykn-lang publish...[0m
+  [1;31m✗[0m lykn-lang publish dry-run failed
+    Updating crates.io index
+   Packaging lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-lang)
+    Updating crates.io index
+    Packaged 55 files, 1.2MiB (194.1KiB compressed)
+   Verifying lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-lang)
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/package/lykn-lang-0.6.0)
+error: proc macro panicked
+  --> src/expander/embedded.rs:11:33
+   |
+11 | static PACKAGES_LANG: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/../../packages/lang");
+   |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: message: "/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/package/lykn-lang-0.6.0/../../packages/lang" is not a directory
+
+error: could not compile `lykn-lang` (lib) due to 1 previous error
+error: failed to verify package tarball
+make: *** [publish-dry-run] Error 1

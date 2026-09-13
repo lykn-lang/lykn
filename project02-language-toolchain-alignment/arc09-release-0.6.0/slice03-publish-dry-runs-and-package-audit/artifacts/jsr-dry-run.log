@@ -1,0 +1,76 @@
+@lykn/lang staged in target/lykn/dist/lang/
+@lykn/browser staged in target/lykn/dist/browser/
+@lykn/testing staged in target/lykn/dist/testing/
+Publishing to JSR...
+Publishing a workspace...
+Warning Publishing a library with slow types is not recommended. This may lead to poor type checking performance for users of your package, may affect the quality of automatic documentation generation, and your package will not be shipped with a .d.ts file for Node.js users.
+warning[unanalyzable-import-meta-resolve]: unable to analyze import.meta.resolve
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/expander.js:1481:44
+     | 
+1481 |       const resolved = import.meta.resolve(specifier);
+     |                                            ^^^^^^^^^ the unanalyzable import.meta.resolve call
+     | 
+
+  info: after publishing this package, import.meta.resolve calls from the local import map / package.json do not work
+  info: import.meta.resolve calls that can not be analyzed at publish time will not be rewritten automatically
+  info: make sure the import.meta.resolve call is resolvable at runtime without an import map / package.json
+
+Simulating publish of @lykn/lang@0.6.0 with files:
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/.build-stamp (10B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/LICENSE (811B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/README.md (18KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/binding.d.ts (30B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/binding.js (12.55KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/classifier.d.ts (33B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/classifier.js (46.73KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/compiler.d.ts (31B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/compiler.js (66.13KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/deno.json (352B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/expander.d.ts (31B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/expander.js (66.48KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/icu-parser.d.ts (33B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/icu-parser.js (9.53KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/kernel-forms.d.ts (35B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/kernel-forms.js (3.6KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/kernel-mark.d.ts (34B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/kernel-mark.js (1.47KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/mod.d.ts (26B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/mod.js (938B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/package.json (537B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/reader.d.ts (29B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/reader.js (10.4KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/reserved-words.d.ts (37B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/reserved-words.js (1.29KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/surface-ast.d.ts (34B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/surface-ast.js (2.88KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/surface-helpers.d.ts (38B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/surface-helpers.js (18.26KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/surface.d.ts (30B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/lang/surface.js (12.18KB)
+Simulating publish of @lykn/testing@0.6.0 with files:
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/.build-stamp (10B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/LICENSE (811B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/README.md (18KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/deno.json (240B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/helpers.d.ts (30B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/helpers.js (8.59KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/macros.d.ts (29B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/macros.js (7.08KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/mod.d.ts (26B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/mod.js (32B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/mod.lykn (674B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/testing/package.json (513B)
+Simulating publish of @lykn/browser@0.6.0 with files:
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/.build-stamp (10B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/LICENSE (811B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/README.md (18KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/compiler.d.ts (31B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/compiler.js (1.44KB)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/deno.json (166B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/mod.d.ts (26B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/mod.js (580B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/package.json (513B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/scripts.d.ts (30B)
+   file:///Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/lykn/dist/browser/scripts.js (752B)
+Success Dry run complete
+Done.

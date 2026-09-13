@@ -1,0 +1,78 @@
+@lykn/lang staged in target/lykn/dist/lang/
+@lykn/browser staged in target/lykn/dist/browser/
+@lykn/testing staged in target/lykn/dist/testing/
+npm dry run -- checking target/lykn/dist/lang...
+npm notice
+npm notice 📦  @lykn/lang@0.6.0
+npm notice Tarball Contents
+npm notice 811B LICENSE
+npm notice 18.4kB README.md
+npm notice 12.9kB binding.js
+npm notice 47.9kB classifier.js
+npm notice 67.7kB compiler.js
+npm notice 68.1kB expander.js
+npm notice 9.8kB icu-parser.js
+npm notice 3.7kB kernel-forms.js
+npm notice 1.5kB kernel-mark.js
+npm notice 938B mod.js
+npm notice 537B package.json
+npm notice 10.6kB reader.js
+npm notice 1.3kB reserved-words.js
+npm notice 2.9kB surface-ast.js
+npm notice 18.7kB surface-helpers.js
+npm notice 12.5kB surface.js
+npm notice Tarball Details
+npm notice name: @lykn/lang
+npm notice version: 0.6.0
+npm notice filename: lykn-lang-0.6.0.tgz
+npm notice package size: 68.4 kB
+npm notice unpacked size: 278.2 kB
+npm notice shasum: b011133ccfda6dc0dfc5eb6bf30106505e3c116c
+npm notice integrity: sha512-a4saDgllXcgt4[...]AHn74CJsT0tLw==
+npm notice total files: 16
+npm notice
+lykn-lang-0.6.0.tgz
+npm dry run -- checking target/lykn/dist/testing...
+npm notice
+npm notice 📦  @lykn/testing@0.6.0
+npm notice Tarball Contents
+npm notice 811B LICENSE
+npm notice 18.4kB README.md
+npm notice 8.8kB helpers.js
+npm notice 7.2kB macros.js
+npm notice 32B mod.js
+npm notice 674B mod.lykn
+npm notice 513B package.json
+npm notice Tarball Details
+npm notice name: @lykn/testing
+npm notice version: 0.6.0
+npm notice filename: lykn-testing-0.6.0.tgz
+npm notice package size: 13.2 kB
+npm notice unpacked size: 36.5 kB
+npm notice shasum: ee098ca25c061e83737d4760ef10024ac1001993
+npm notice integrity: sha512-+aDOReVymmRtg[...]nh3wUkRQ48+HQ==
+npm notice total files: 7
+npm notice
+lykn-testing-0.6.0.tgz
+npm dry run -- checking target/lykn/dist/browser...
+npm notice
+npm notice 📦  @lykn/browser@0.6.0
+npm notice Tarball Contents
+npm notice 811B LICENSE
+npm notice 18.4kB README.md
+npm notice 1.4kB compiler.js
+npm notice 580B mod.js
+npm notice 513B package.json
+npm notice 752B scripts.js
+npm notice Tarball Details
+npm notice name: @lykn/browser
+npm notice version: 0.6.0
+npm notice filename: lykn-browser-0.6.0.tgz
+npm notice package size: 9.1 kB
+npm notice unpacked size: 22.5 kB
+npm notice shasum: a80d74d3fbff4841780bd6c8284096d4c7ebaa87
+npm notice integrity: sha512-S5WFw69CfAQGU[...]Q9PSlzPlRlNCQ==
+npm notice total files: 6
+npm notice
+lykn-browser-0.6.0.tgz
+Done.

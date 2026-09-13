@@ -1,0 +1,3 @@
+@lykn/lang staged in target/lykn/dist/lang/
+@lykn/browser staged in target/lykn/dist/browser/
+@lykn/testing staged in target/lykn/dist/testing/

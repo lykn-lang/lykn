@@ -1,0 +1,9 @@
+    Updating crates.io index
+   Packaging lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-lang)
+    Updating crates.io index
+    Packaged 70 files, 1.4MiB (253.5KiB compressed)
+   Verifying lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-lang)
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/package/lykn-lang-0.6.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.75s
+   Uploading lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-lang)
+warning: aborting upload due to dry run

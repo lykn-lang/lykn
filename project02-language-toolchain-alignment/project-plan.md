@@ -192,8 +192,9 @@ provenance, not as current instruction.
 - **Open arcs:** arc09 release planning/release cut; slice01
   `release-readiness-runbook` and slice02
   `version-bump-release-notes-ci-chore` are closed/CDC-verified; slice03
-  `publish-dry-runs-and-package-audit` is active. arc16 is
-  closed/CDC-verified.
+  `publish-dry-runs-and-package-audit` is closed/CC-proposed-done with
+  qualified crates sequencing; slice04 `operator-publication-and-tags` is
+  open. arc16 is closed/CDC-verified.
 - **Future:** arc14 comment-retention is seeded for 0.7.0, not 0.6.0.
 
 ### Historical snapshot (2026-06-28 through 2026-06-30)
