@@ -1,5 +1,8 @@
 # CC — Prepare the YAML research harness
 
+Execution submitted as **CC proposed-done**; see [closing-report.md](closing-report.md).
+The instructions below remain the exact scope/replay contract. CDC review is next.
+
 Execute Project07/Arc01/Slice03 in **Expedited Mode**. Read the project/arc
 plans and ledgers, this full open set, Slice02 CDC and RP01/FM01/AE01. Use
 collaboration-framework/project-management, work-verification, scientific-methods,

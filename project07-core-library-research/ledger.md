@@ -29,3 +29,8 @@ All P-01–P-08 criteria remain open; no project-scale outcome is inherited.
 JSON authoring findings D-2609-NZRO/JSCF/UNUS and J-09 support for JSER
 remain in the [slice findings](arc01-format-runtime-evidence/slice02-json-behavior/artifacts/findings.md).
 No P criterion changes status from child attestation.
+
+2026-09-12: YAML preparation is [CC proposed-done](arc01-format-runtime-evidence/slice03-yaml-preflight/closing-report.md).
+All 16 YAML families remain owned by Slices05/06/07; only bounded sentinels ran.
+P-01–08 stay open. Lykn evidence tooling, source-build drift controls and pending
+operator review remain explicit; preparation does not close YAML capability.

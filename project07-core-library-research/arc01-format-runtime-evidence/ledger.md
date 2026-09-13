@@ -14,3 +14,8 @@ existing JSER survive in the [findings](slice02-json-behavior/artifacts/findings
 A-02 is now CDC closed after full replay; A-03 through A-06 remain open.
 YAML preparation/value/resource/document owners are explicit in arc v1.5;
 all Y-01–16 requirements survive. JSON closure does not close arc composition.
+
+2026-09-12: Slice03 [CC preparation handoff](slice03-yaml-preflight/closing-report.md)
+freezes 349 YAML variants and records 38 sentinel/control attempts plus three
+supervisor controls. A-03 remains open pending CDC and full Slices05–07;
+A-04–06 retain their policy/composition/authoring obligations.

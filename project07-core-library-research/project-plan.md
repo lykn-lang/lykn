@@ -93,7 +93,7 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–02 CDC closed; Slice03 YAML preflight ready for CC |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–02 CDC closed; Slice03 YAML preflight CC proposed-done |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
 | [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
@@ -186,7 +186,9 @@ Arc03/Slice01 is now [CDC closed](arc03-findings-and-integration/slice01-run-per
 (was CC proposed-done), with its corrected-build receipt independently verified.
 Arc01/Slice02 is now [CDC closed](arc01-format-runtime-evidence/slice02-json-behavior/cdc-verification.md)
 (was CC proposed-done): all 161 frozen variants/354 attempts independently
-replayed. Slice03 YAML preflight is ready for CC. All project
+replayed. Slice03 YAML preflight is CC proposed-done; its
+[handoff](arc01-format-runtime-evidence/slice03-yaml-preflight/closing-report.md)
+retains all YAML variants and a bounded Lykn sentinel/audit route. All project
 ledger rows remain open; no operator acceptance or library adoption is claimed.
 
 Slice01 bubble-ups: D-2609-PERM recorded implicit run grants; the release/0.6.x
@@ -216,6 +218,11 @@ rule as runtime probes. The JSON CDC records CC's Python aggregation deviation
 and supplies an independent Lykn audit; full authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-12 v1.7: Slice03 submitted YAML harness preparation with 349 YAML
+  variants frozen and 38 sentinel/control attempts audited through Lykn.
+  CDC, full Slices05/06/07 execution, Slice04 policy and operator review remain
+  separate obligations; no project-scale criterion inherits completion.
 
 - 2026-09-12 v1.6: Arc01/Slice02 CDC replayed all JSON attempts and compiler
   findings. Opened bounded YAML preparation with complete future ownership;

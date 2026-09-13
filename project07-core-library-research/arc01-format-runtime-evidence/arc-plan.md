@@ -8,8 +8,8 @@ Evidence includes package provenance and the actual runtime/toolchain
 baseline, so a dependency recommendation is not inferred from a registry name.
 
 Active arc. Slices01–02 are CDC closed (Slice02 was CC proposed-done).
-All 17 JSON families independently replayed. Slice03 YAML preflight is ready
-for CC; its bounded opening replaces the former monolithic YAML roadmap.
+All 17 JSON families independently replayed. Slice03 YAML preflight is now
+CC proposed-done, pending independent CDC. Full YAML families remain owed.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
 ## Slice breakdown
@@ -18,7 +18,7 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | --- | --- | --- | --- |
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
-| [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | Ready for CC |
+| [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CC proposed-done; 349 YAML variants frozen, 38 sentinel/control attempts; CDC pending |
 | slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives; resolve the document-route prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence | Planned; identity retained; precedes Slice07 |
 | slice05-yaml-value-behavior | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | Planned; next after Slice03 |
 | slice06-yaml-resource-and-files | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | Planned |
@@ -126,7 +126,26 @@ owns ADT/Result/Option/module/formatter and actual operator code-shape review.
 J-15's known-frame decoder is not a complete text-sequence validator. No source
 correction is authorized by this research handoff.
 
+## Slice03 preparation handoff
+
+[CC report](slice03-yaml-preflight/closing-report.md) retains a fresh immutable
+compiler build, actual YAML graph/lock, bounded inspector/supervisor and a Lykn
+audit. The 349 YAML variants preserve all 16 families; only 16 YAML sentinels
+and three harness controls ran twice. No full family inherits completion.
+
+Slice05 must complete alias/cycle serialization and original/no-op/edit bytes,
+existing-destination failure checks and the full value matrix. Slice06 retains
+resource recipes and exact file-fault modes. Stable std/yaml has no separate
+toJS method; report unavailable stages/options honestly rather than emulate an
+API and call it passing. Slice07's 28 document variants remain behind Slice04
+and D-2609-YNOD. After CDC, the next opening is Slice05, not Slice04.
+
 ## Version History
+
+- 2026-09-12 v1.6: Slice03 submitted bounded preparation as CC proposed-done,
+  with all YAML owners/variants retained and Lykn evidence tooling. Explicitly
+  carried API absence and remaining full serialization/failure work forward;
+  no sequencing change, family closure, dependency adoption or source repair.
 
 - 2026-09-12 v1.5: Slice02 CDC replayed all 354 attempts, closed A-02 and
   reproduced compiler findings. Split the unstarted YAML roadmap into bounded

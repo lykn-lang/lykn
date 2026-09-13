@@ -1,6 +1,8 @@
 # Slice03 — YAML baseline, fixtures and harness preflight
 
-Status: **ready-for-cc**, Expedited Mode. Opened from Slice02 CDC findings.
+Status: **CC proposed-done**, pending independent CDC. Expedited Mode.
+See [closing-report.md](closing-report.md): 349 YAML variants frozen, 16 YAML
+sentinels plus three harness controls executed twice; full families remain owed.
 
 ## Assigned capability
 
@@ -116,6 +118,11 @@ numerically next runtime slice. At most five failed correction iterations;
 re-slice transparently if the preparation itself exceeds context headroom.
 
 ## Version History
+
+- 2026-09-12 v1.1: Submitted bounded preparation, pinned isolated build and
+  actual graph, 38 sentinel/control attempts, three supervisor controls and
+  retained Lykn audit. Resource recipes have exact byte hashes; all later
+  owners and the Y-14 gate remain intact. Independent CDC remains required.
 
 - 2026-09-12 v1.0: Opened the bounded YAML preparation slice after JSON CDC
   replay exposed live binary drift and confirmed authoring/context pressure.
