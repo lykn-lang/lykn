@@ -1,5 +1,9 @@
 # CC — Execute bounded YAML resource and file-failure research
 
+Current status: **CDC closed, 2026-09-13.** This historical execution prompt was
+fulfilled and independently verified in [CDC verification](cdc-verification.md).
+The next prompt is [Slice04](../slice04-dependency-and-runtime-boundary/cc-prompt.md).
+
 Execute Project07/Arc01/Slice06 in **Expedited Mode**, in
 `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`. Read the project/arc plans
 and ledgers, this entire open set, Slice05 CDC/baseline/findings/source artifacts,

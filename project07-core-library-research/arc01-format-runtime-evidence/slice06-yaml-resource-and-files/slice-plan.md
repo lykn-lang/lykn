@@ -1,9 +1,12 @@
 # Slice06 — YAML resources and file failures
 
-Status: **CC proposed-done; independent CDC pending.** Expedited Mode. Was open
-for execution; the opening contract below is retained. The [CC report](closing-report.md)
-attests 108 resource attempts, 16 file attempts, 36 unsupported cells and 26674
-audit checks. All seven ledger rows remain open until CDC reproduces them.
+Status: **CDC closed, 2026-09-13; seven of seven criteria reproduced.**
+Expedited Mode. The opening contract below and [CC report](closing-report.md)
+remain evidence. [Independent verification](cdc-verification.md) replayed 108
+resource attempts, 16 file attempts, 13 controls and the 26674-check audit;
+4036 additional checks compared semantic/file evidence and reread 138 files.
+All 36 unsupported cells remain explicit capabilities, not measurements.
+Slice04 is now open; whole YAML, dependency adoption and human acceptance remain open.
 
 ## Capability and complete scope
 

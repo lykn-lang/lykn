@@ -10,8 +10,8 @@ baseline, so a dependency recommendation is not inferred from a registry name.
 Active arc. Slices01–03 are CDC closed. All 17 JSON families independently
 replayed; YAML preflight reproduced 38 sentinel/harness attempts and three
 supervisor controls. Slice05 is now CDC closed for all 259 value variants, replayed
-twice. Slice06 resource/file work is CC proposed-done (was open for execution),
-pending independent CDC; full YAML closure remains owed.
+twice. Slice06 resource/file work is now CDC closed, seven of seven criteria
+reproduced. Slice04 runtime/dependency work is open; full YAML closure remains owed.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
 ## Slice breakdown
@@ -21,9 +21,9 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
-| slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives; resolve the document-route prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence | Planned; identity retained; precedes Slice07 |
+| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence | Open for execution; precedes Slice07 |
 | [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
-| [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CC proposed-done; 108 resource attempts, 16 file attempts, 36 unsupported cells; CDC pending |
+| [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
 
 The former `slice03-yaml-fidelity` roadmap had no open set or authored work.
@@ -100,8 +100,9 @@ not a source-scope expansion or acceptance decision.
 Apply the project's exact-path commits, proposed-done/CDC separation, immediate
 evidence-based close and next-slice opening, and arc composition rules.
 Slice02 now has [independent CDC closure](slice02-json-behavior/cdc-verification.md).
-The Slice06 execution prompt has now been fulfilled at CC-attested strength;
-the next action is independent CDC review, then opening Slice04 before Slice07.
+The Slice06 execution prompt is now independently verified. Slice04 is open
+for runtime/dependency execution before Slice07; its complete R-01–09 inventory
+preserves the broader replacement, compatibility and policy questions.
 Original JSON CC artifacts remain historical; CDC records replay adaptations.
 Do not generate a close set or mark research complete merely because the
 planning documents exist.
@@ -171,6 +172,15 @@ variants. JSCF/UNUS and guide/book/human obligations remain open. This refines
 execution mechanics from verified findings without changing family ownership.
 
 ## Version History
+
+- 2026-09-13 v1.11: CDC independently closed Slice06 after 108 resource and 16
+  file attempts, 13 controls, 26674 retained-audit and 4036 extra checks. Runtime
+  semantics and file states agree with CC; timings/RSS remain host observations.
+  A replay-shell correction and a vacuous first CDC live-file selector are
+  retained with corrected evidence. Opened Slice04 with every R-01–09 family,
+  explicit static/runtime/provenance distinctions and document-route re-entry.
+  A-03–06 remain open; closure supplies neither hard resource guarantees nor
+  dependency adoption, document fidelity, source repairs or human acceptance.
 
 - 2026-09-12 v1.10: Slice06 submitted all resource/file obligations with exact
   recipe transport, separate package/setup timers, real OS failures and verified
@@ -247,7 +257,9 @@ Successful represented round trips do not prove document fidelity. The sequence
 resource cells and eight file variants: 18 default cells each ran a warm-up plus
 five measurements, 36 conversion/bound cells have source-backed unsupported
 dispositions, and all file faults ran twice. Thirteen supervised controls and
-26674 audit checks support this attestation; CDC remains required.
+26674 audit checks support this attestation. [CDC verification](slice06-yaml-resource-and-files/cdc-verification.md)
+now reproduces the complete matrix/controls and both archived reports, with
+4036 additional comparison checks and 138 live files. All seven slice rows close.
 
 [Findings](slice06-yaml-resource-and-files/artifacts/findings.md) distinguish
 package timings from setup/inspection, sampled process-tree RSS from true peaks,
@@ -259,5 +271,6 @@ policy questions; they do not establish durability or select a library.
 
 No family, document requirement or source/guide/book/human obligation was removed.
 Five failed authoring conditions are retained; optional report compaction was
-reverted to the passing renderer. After independent Slice06 closure, open Slice04
+reverted to the passing renderer. CDC also retained and corrected a shell recorder
+quoting defect and an initially vacuous live-file selector. Slice04 is now open
 before the 28 Slice07 document variants. Arc composition remains open.

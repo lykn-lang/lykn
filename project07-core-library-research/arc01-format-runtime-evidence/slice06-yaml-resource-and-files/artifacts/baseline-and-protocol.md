@@ -213,7 +213,10 @@ printf '%s\n' "$?" > meta/permission-denied.exit
 yr_env "$yr_cli" run --no-prompt --allow-read=./inputs cases.lykn control-read > meta/permission-scoped.stdout 2> meta/permission-scoped.stderr
 printf '%s\n' "$?" > meta/permission-scoped.exit
 mkdir fake
-printf '#!/bin/sh\nprintf '\''%%s\0'\'' "$@"\n' > fake/deno
+cat > fake/deno <<'RECORDER'
+#!/bin/sh
+printf '%s\0' "$@"
+RECORDER
 chmod +x fake/deno
 env -i PATH="$yr_trial/fake:/opt/homebrew/bin:/usr/bin:/bin" HOME="$yr_trial/home" TMPDIR="$yr_trial/tmp" DENO_DIR="$yr_trial/cache" DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 "$yr_cli" run --no-prompt --allow-read=./inputs --allow-write=./outputs cases.lykn control-read --allow-all > meta/argv.bin 2> meta/argv.stderr
 printf '%s\n' "$?" > meta/argv.exit
@@ -234,6 +237,13 @@ PIDs and paths will differ. The result count and exact semantic/file assertions
 are the reproducible contract, not identical performance numbers.
 
 ## Lossless packet replay
+
+CDC replay correction, 2026-09-13: the recorder above now uses a quoted
+here-document. The original outer printf interpreted its backslash-zero while
+writing the shell script, producing a literal NUL and failing the argv preflight.
+The failed recorder/receipts and corrected passing condition are retained in
+the CDC packet. This changes replay infrastructure only; CC's original packet,
+research programs and observations remain unchanged.
 
 raw-transcript.txt is a JSON-lines envelope whose records contain relative file
 path, exact UTF-8 text, byte count and SHA-256. It includes the 137 final supervised

@@ -55,3 +55,9 @@ retains all 62 assigned IDs: 108 resource attempts, 16 file attempts and 36
 unsupported cells, with 13 controls and 26674 audit checks. Independent CDC
 remains pending. Slice04 policy precedes the 28 Slice07 document cases; source,
 book, ADT, operator acceptance and all project rows remain open.
+
+2026-09-13 CDC: [Slice06 independently closed](arc01-format-runtime-evidence/slice06-yaml-resource-and-files/cdc-verification.md)
+after complete runtime and packet replay. [Slice04 is open](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/slice-plan.md)
+for all nine runtime/dependency families before gated document work. All P rows
+remain open; no library adoption, source repair, operator acceptance or whole
+project composition follows from this child closure.
