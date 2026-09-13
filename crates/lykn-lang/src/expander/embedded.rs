@@ -8,7 +8,9 @@
 use include_dir::{Dir, include_dir};
 use std::path::PathBuf;
 
-static PACKAGES_LANG: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/../../packages/lang");
+// Keep this payload inside the crate so `cargo publish --dry-run` verifies the
+// same self-contained package that crates.io receives.
+static PACKAGES_LANG: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/embedded/packages/lang");
 
 pub const EMBEDDED_VERSION: &str = env!("CARGO_PKG_VERSION");
 
