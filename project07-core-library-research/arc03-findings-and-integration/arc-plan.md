@@ -33,10 +33,15 @@ fail identically. Slice06 owns the bounded repair and new build receipt. After
 its CDC, return to the entire Slice04 open set; test-permission, guide/book,
 language and integration work keep their existing owners and criteria.
 
+CDC has [independently reproduced the blocker and evidence tooling](../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
+Slice06's correction prompt is ready for CC. Keep normal execution on deno run
+and preserve the supported stdin/specifier and local-path boundaries before
+normalization. No LC criterion closes from reproducing the old failure.
+
 ## Boundaries and verification
 
 Each source slice specifies exact worktree/paths and separate source/planning
-commits. Current inspected release/0.6.x head is `2a0cabf`; refresh before work
+commits. CDC inspected release/0.6.x head `50608c4` on 2026-09-13; refresh before work
 and preserve concurrent edits. Never reset to the old research baseline or
 author source on main. No automatic release rebase/propagation or publication.
 
@@ -57,6 +62,11 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-09-13 v1.4: CDC independently reproduced DARG and the partial static/eval
+  evidence. Confirmed Slice06 as the next correction and clarified preservation
+  of normal run execution, stdin/specifiers, symlinks and relative imports.
+  No source change or correction closure; full Slice04 re-entry remains gated.
 
 - 2026-09-13 v1.3: Arc01/Slice04 preparation exposed D-2609-DARG on Deno 2.9.6.
   Added Slice06 as the immediate source correction prerequisite, preserving

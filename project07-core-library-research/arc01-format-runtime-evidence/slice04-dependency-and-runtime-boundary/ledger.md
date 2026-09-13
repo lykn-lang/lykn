@@ -19,3 +19,8 @@ not passing executions or removed requirements.
 | DB-06 | Resource and compatibility claims stay within reproduced conditions | J-16/Y-13 reconciliation, bounded representative replay, CPU/wall/RSS attribution, 36 unsupported cells, available-pair comparison or explicit unavailability | correctness-grade | R-08–09 | open | — | Complete frozen scope; independent replay required |
 | DB-07 | Dependency/document decisions preserve all outstanding capability and policy work | Evidence-backed alternatives, no implicit adoption, compatible-route proof or concrete prerequisite owner/re-entry; 28 Y-14 cases retained | correctness-grade | Project scope; YNOD | open | — | Complete frozen scope; independent replay required |
 | DB-08 | Lykn evidence, authoring findings and handoff reproduce | Source/emitted gates, full packet, fresh and retained replay, exact counts, original failures, ancestor body/history, source/book/ADT/human owners | correctness-grade | RP01/AE01; Expedited Mode | open | — | Complete frozen scope; independent replay required |
+
+2026-09-13 CDC: [blocker/partial evidence independently reproduced](cdc-verification.md),
+including all 188 published files and six generated outputs. All eight original
+DB rows remain unchanged and open. Arc03/Slice06 is ready for CC correction;
+this is an accepted blocked handoff, not slice closure or a frozen runtime matrix.

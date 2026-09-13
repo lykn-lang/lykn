@@ -203,6 +203,9 @@ the immediate-execution status, not the original workload. The concrete
 must be independently verified before a new compiler condition resumes Slice04.
 Its eight criteria, draft variants, 36 unsupported resource cells and 28 gated
 document cases remain owed. Existing PERM closure retains its original provenance.
+CDC has [reproduced that blocker and partial evidence](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
+and reviewed the correction open set. Arc03/Slice06 is the next CC action;
+its normal run, argument/path and explicit-permission contracts remain required.
 All project ledger rows remain open; no operator
 acceptance or library adoption is claimed.
 
@@ -236,6 +239,12 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.14: CDC verified the Slice04 blocked handoff and confirmed the
+  Arc03/Slice06 correction prompt. Four fresh minimal failures, eval success,
+  460 packet files, 376 published-file checks and six byte-identical outputs
+  reproduce. No research or correction row closes; stdin/specifier/path
+  preservation is explicit and all downstream human/source/library work remains.
 
 - 2026-09-13 v1.13: Arc01/Slice04 preparation reproduced a Deno 2.9.6 launcher
   incompatibility after the operator upgrade; preserved the original 2.7.7

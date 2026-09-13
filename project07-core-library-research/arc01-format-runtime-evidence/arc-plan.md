@@ -183,6 +183,12 @@ execution mechanics from verified findings without changing family ownership.
 
 ## Version History
 
+- 2026-09-13 v1.13: CDC reproduced the Slice04 launch blocker, eval tooling,
+  460-file packet, 188 published-file checks and six regenerated outputs.
+  Accepted the prerequisite handoff without closing any DB criterion; Arc03/
+  Slice06 is ready for implementation. Metadata is not a resolved graph and
+  eval success is not restricted wrapper evidence. All original work remains.
+
 - 2026-09-13 v1.12: Slice04 exposed D-2609-DARG after the operator's runtime
   upgrade. Added the concrete Arc03/Slice06 correction before resuming Slice04;
   all eight DB rows and R-01–09 remain open. Unexecuted drafts and static

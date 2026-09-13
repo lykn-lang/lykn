@@ -1,5 +1,8 @@
 # CC — Restore Deno 2.9.6 launch compatibility
 
+CDC prerequisite review passed; see [independent blocker/evidence replay](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
+Proceed with this source correction. All six correction criteria remain open.
+
 Execute Project07/Arc03/Slice06 in **Expedited Mode**. Read project/arc plans
 and ledgers, this full open set, applicable source AGENTS.md and the linked
 Arc01/Slice04 blocked evidence. Follow the installed rust-guidelines substitute
@@ -24,6 +27,12 @@ leading-hyphen paths, config overlays, frozen/cache flags and exit propagation.
 Use meaningful targeted tests, `make check`, and `make check-cited-paths`; no
 snapshot auto-accept, safety-bypass flags, install/downgrade or propagation/push.
 Build an isolated traceable corrected binary; retain exact source/runtime hashes.
+
+Keep normal execution on `deno run`, not eval. Before normalizing paths, inspect
+the existing `-` stdin and specifier pass-through contract as well as local paths;
+preserve supported forms and relative-import/symlink behavior. Add meaningful
+regressions within the listed test path. Eval's success for evidence tooling
+does not prove any restricted launcher behavior.
 
 Planning home is `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`. Exact
 planning commit paths:

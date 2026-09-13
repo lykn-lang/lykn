@@ -1347,6 +1347,10 @@ tooling explicitly. The YAML split preserves all families and the YNOD gate.
   route; this is compatibility failure, not a permission-denial observation.
 - **Kind:** bug / compatibility gap.
 - **Status:** open — correction plan supplied; repair and CDC pending.
+- **CDC evidence review, 2026-09-13:** [Independent replay](../project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
+  reproduced four minimal wrapper failures and eval success at the same binary
+  identities. The blocker is confirmed; implementation and correction CDC remain
+  pending. Packet/static verification does not close the discovery.
 - **Owner:** Project07/Arc03/Slice06, narrow script selection/path/argument safety
   correction with actual permission regressions and traceable new build.
 - **Destination:** [Slice06 plan](../project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md).

@@ -67,3 +67,7 @@ after complete runtime and packet replay. [Slice04 is open](arc01-format-runtime
 for all nine runtime/dependency families before gated document work. All P rows
 remain open; no library adoption, source repair, operator acceptance or whole
 project composition follows from this child closure.
+
+2026-09-13 CDC: [Slice04 blocked handoff independently verified](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
+Arc03/Slice06 is the next CC prompt. All project criteria stay open; eval/static
+verification neither repairs the launcher nor completes runtime research.

@@ -10,6 +10,11 @@ concrete correction prerequisite. No DB criterion is proposed-done; resume the
 entire scope after independent correction verification. Three failed source
 authoring conditions remain charged to this slice's correction budget.
 
+2026-09-13 CDC: [blocker and retained evidence independently reproduced](cdc-verification.md).
+Four fresh minimal wrapper failures, eval success, 460 packet files and 188
+published files reproduce. This verifies the prerequisite handoff only; all
+eight research criteria stay open and full operational freeze remains owed.
+
 ## Capability and inputs
 
 Establish which runtime, dependency and file-operation boundaries the proposed

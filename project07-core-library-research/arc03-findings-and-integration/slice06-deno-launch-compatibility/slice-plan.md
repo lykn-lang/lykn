@@ -23,6 +23,10 @@ the tested failure. Do not infer a Deno stdin regression.
 
 ## Source scope and implementation constraints
 
+CDC reviewed the prerequisite on 2026-09-13; [independent blocker/evidence replay](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
+reproduces the four minimal failures and the eval tooling results. This open set
+is ready for CC; none of the six correction criteria is closed by that review.
+
 Use the existing `release/0.6.x` worktree at
 `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x`; inspected HEAD was 50608c4,
 not authority to reset it. Inspect current worktree/status first. Read its
@@ -46,6 +50,16 @@ literal script arguments, the caller's optional separator, configured overlays,
 requested flags (including explicit `--allow-all`), and nonzero exits. Do not
 silently inject grants or remove frozen/cache controls. The user's all-grants
 diagnostic did not repair selection and does not remove denial-test obligations.
+
+Keep ordinary execution on `deno run`; replacing it with `eval` is not this
+repair. Check whether the existing pass-through contract includes `-` (stdin),
+file/remote specifiers and other non-file entries before applying filesystem
+normalization. Preserve supported forms explicitly; do not silently turn stdin
+or a specifier into a local path. Local-path normalization must protect leading
+hyphens without changing the meaning of symlinks or relative module imports.
+Use focused runtime/argv regressions for these boundaries; no package downloads
+or broad new protocol support are implied. Source-only inspection can qualify
+unavailable old-runtime behavior, but cannot prove a fresh compatibility run.
 
 No PATH shim, hand-edited generated JS, direct-Deno runtime-matrix fallback, dependency
 installation, Deno downgrade, upstream patch, unrelated CLI redesign, automatic

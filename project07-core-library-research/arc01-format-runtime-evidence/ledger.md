@@ -55,3 +55,7 @@ feeds Slice04 policy before Slice07; no source or human criterion inherits closu
 resource attempts, 16 file attempts and 13 controls. Both retained reports
 reproduce; 4036 extra checks include 138 live files. Slice04 is open for all
 R-01–09; A-03–06 remain open, including document fidelity and arc composition.
+
+2026-09-13 CDC: [Slice04 prerequisite handoff verified](slice04-dependency-and-runtime-boundary/cdc-verification.md).
+Minimal launch failure and eval/static evidence reproduce. A-03–06 and all
+DB rows remain open; Arc03/Slice06 correction must be verified before re-entry.
