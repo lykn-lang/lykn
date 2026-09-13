@@ -1,6 +1,11 @@
 # Slice04 ledger
 
-Eight criteria open. CC proposed-done remains attestation until independent CDC.
+Eight criteria open, blocked on D-2609-DARG. No row is CC proposed-done.
+The [blocked handoff](closing-report.md) walks all eight rows and partial attested
+evidence. The immutable build, failed launches, actual argv, operator-suggested
+eval control and 379 generation/static checks do not close the complete contract.
+Arc03/Slice06 owns the immediate prerequisite; the full workload remains here.
+CC proposed-done remains attestation until independent CDC.
 Unavailable/unsupported variants keep exact reasons, owners and re-entry; they are
 not passing executions or removed requirements.
 

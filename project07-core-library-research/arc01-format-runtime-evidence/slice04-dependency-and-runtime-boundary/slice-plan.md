@@ -1,8 +1,14 @@
 # Slice04 — Dependency and runtime boundary
 
-Status: **Open for execution.** Expedited Mode. Eight open ledger criteria.
+Status: **Open, execution blocked by D-2609-DARG.** Expedited Mode. Eight open ledger criteria.
 This retains the original Slice04 identity and all R-01–09 families. It follows
 Slices03/05/06 and precedes Slice07; numbering is not execution order.
+
+Preparation found a new launcher incompatibility after the operator's Deno
+upgrade. See the [blocked handoff](closing-report.md). Arc03/Slice06 is now the
+concrete correction prerequisite. No DB criterion is proposed-done; resume the
+entire scope after independent correction verification. Three failed source
+authoring conditions remain charged to this slice's correction budget.
 
 ## Capability and inputs
 
@@ -44,6 +50,17 @@ runs as new executions.
 | R-09 | Compare the frozen baseline with another already available supported Deno/CLI pair only after identity and support evidence. No installation or source rebuild at an unapproved revision. Missing pair/support evidence means unavailable, with owner and re-entry. Compiler-only drift does not substitute for a runtime comparison. |
 
 ## Baseline, execution and safety
+
+**2026-09-13 runtime-condition amendment during preparation.** The operator
+upgraded Deno and confirmed that 2.7.7 was removed and 2.9.6 installed. The
+pre-upgrade identity matched the original pin; the post-upgrade executable is
+2.9.6, SHA-256 `2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`
+(V8 15.0.245.2-rusty, TypeScript 6.0.3). Runtime trials paused during the upgrade.
+Subsequent work uses a separately identified 2.9.6 condition after launch and
+supervisor preflight. The immutable Lykn source/build remains unchanged. Original
+2.7.7 results remain inherited evidence; they are not counted as a fresh comparison.
+R-09 must retain the removed-pair limitation and exact re-entry. No installation
+or broad compatibility claim is authorized by this amendment.
 
 Use isolated source d0bb981dae2a4abf6c984406c4b2081a45cc92f8 and the
 retained lock; cargo build --release --locked is infrastructure. Expected CLI

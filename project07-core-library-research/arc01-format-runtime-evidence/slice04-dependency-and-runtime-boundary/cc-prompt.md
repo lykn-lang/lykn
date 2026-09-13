@@ -22,6 +22,12 @@ registered worktrees. Check/lint/compile and inspect emitted code; preserve
 all failed sources and warnings. No generated-JS repair or fallback research
 language. Use at most five failed correction iterations before explicit re-slicing.
 
+Runtime amendment, 2026-09-13: the operator confirmed removal of Deno 2.7.7
+and installation of 2.9.6 during preparation. Follow the explicit new-condition
+record in slice-plan.md; retain original pins/evidence and the unavailable live
+pair comparison. Verify 2.9.6 identity and launch before trials. This does not
+authorize installation or imply compatibility beyond observed conditions.
+
 Use narrow grants, fresh roots and cache, no prompt, null stdin, cleared
 environment, frozen/cached execution and host observation before loops.
 Preflight wall/output/RSS stops and cleanup. Never run a graph with Node/npm
@@ -80,3 +86,33 @@ Version History. Report eight rows as CC proposed-done only where justified,
 leaving ledger status open for CDC; include exact commit, separate counts,
 artifact inventory and **Bubble-up to the arc**. Do not open document execution
 without its compatible-route prerequisite or claim arc/project/human closure.
+
+## 2026-09-13 prerequisite-routing amendment
+
+The upgraded runtime cannot launch even the no-import reproduction through the
+pinned CLI. Stop runtime-dependent work under RP01's toolchain-gap rule; retain
+all eight criteria and every R family. This is a blocked handoff, not proposed
+completion. Open Arc03/Slice06 as the narrow launcher compatibility prerequisite;
+do not perform its source repair as part of Slice04. Keep the original 2.7.7
+record distinct from the operator-confirmed 2.9.6 condition.
+
+Additional exact planning paths for that necessary routing:
+
+```text
+project07-core-library-research/arc03-findings-and-integration/arc-plan.md
+project07-core-library-research/arc03-findings-and-integration/ledger.md
+project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md
+project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/ledger.md
+project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/cc-prompt.md
+```
+
+The operator subsequently suggested `deno eval`, after explicitly suggesting
+all permissions. The exact Lykn-emitted minimal program succeeded through eval.
+Use that explicit alternate route for native Lykn-authored evidence generation,
+published-file checksum verification and packet packing/extraction, with a cleared
+environment, null stdin, forced ESM and no remote/npm resolution. Retain its
+implicit-all permission condition; it cannot replace restricted `lykn run` tests
+or establish wrapper compatibility. No package evaluation is authorized by this
+amendment. Preserve captures in the existing raw-transcript.txt as a lossless
+Lykn-generated packet. The proposed unpacked blocked-evidence directory was never
+created and is superseded by this storage route. No additional raw paths needed.

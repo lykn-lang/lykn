@@ -1,5 +1,10 @@
 # Arc01 ledger
 
+2026-09-13: Slice04's [blocked handoff](slice04-dependency-and-runtime-boundary/closing-report.md)
+retains all eight open rows. D-2609-DARG requires Arc03/Slice06 before full
+research resumes. Published-file checks through operator-suggested native eval
+are not runtime graph/permission evidence. A-03–06 and full scope remain open.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | A-01 | Slice01 baseline and protocol are independently verified and closed | Inspect Slice01 ledger, closing report, and CDC reproduction of baseline/claim inventory | correctness-grade | Arc roadmap | done | [Reproduced CDC verification](slice01-baseline-and-protocol/cdc-verification.md) | Seven criteria closed; historical binary provenance remains explicitly unknown |

@@ -1328,3 +1328,31 @@ JSER's BigInt/cycle position evidence reproduced without a book repair claim.
 The review also records CC's Python aggregation deviation and replaces the
 independent audit with retained Lykn; future YAML preparation includes evidence
 tooling explicitly. The YAML split preserves all families and the YNOD gate.
+
+### `D-2609-DARG` — Deno 2.9.6 loses the script after Lykn's pre-script separator
+
+- **What:** The pinned d0bb981 Lykn CLI emits `deno run ... -- SCRIPT ARGS`.
+  After the operator upgraded from Deno 2.7.7 to 2.9.6, two fresh no-import
+  launches exited 1 with a missing-script/task-list message before printing the
+  program marker. Two explicitly requested `--allow-all` controls failed the
+  same way. The exact emitted minimal program succeeds through the later
+  operator-suggested `deno eval` route; this does not verify the wrapper.
+- **Where:** d0bb981 `crates/lykn-cli/src/main.rs`, cmd_run's pre-script separator;
+  upstream Deno v2.9.6 `libs/cli_parser/src/defs.rs:611`, `parse.rs:164–187`,
+  `convert.rs:1415–1465`. Source analysis explains the observed missing script_arg;
+  no upstream patch or direct-Deno file A/B trial is claimed. Stdin was closed,
+  so this is not evidence that stdin support disappeared.
+- **How found:** probe; operator runtime upgrade during Project07/Arc01/Slice04.
+- **Guess:** serious — blocks the required research launcher and evidence-tooling
+  route; this is compatibility failure, not a permission-denial observation.
+- **Kind:** bug / compatibility gap.
+- **Status:** open — correction plan supplied; repair and CDC pending.
+- **Owner:** Project07/Arc03/Slice06, narrow script selection/path/argument safety
+  correction with actual permission regressions and traceable new build.
+- **Destination:** [Slice06 plan](../project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md).
+- **Evidence:** [Slice04 blocked handoff](../project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/closing-report.md)
+  and its lossless packet, original/revised source, actual argv and version hashes.
+- **Re-entry:** independent correction verification, then full Slice04 preparation
+  under a new compiler condition. Preserve all R families, 36 unsupported resource
+  cells, 28 document cases and original PERM closure provenance. No silent grants,
+  installation/downgrade, source-pin mutation, PATH shim or package adoption.

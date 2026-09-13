@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-13: Arc01/Slice04 [remains open/blocked](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/closing-report.md)
+after Deno 2.9.6 failed to select a script through the pinned CLI. Arc03/Slice06
+owns D-2609-DARG. Native eval tooling is an explicit operator-suggested route,
+not wrapper or permission verification. Full R scope, 36 unsupported resource
+cells, 28 document cases and all project criteria survive.
+
 All rows are open at project opening. Evidence must be independently
 reproduced at the scale claimed. CC attestation is proposed-done only.
 

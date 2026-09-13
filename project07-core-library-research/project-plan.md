@@ -93,9 +93,9 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 open for execution |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 open but blocked on Arc03/Slice06 |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice06 launch compatibility open before resuming Arc01/Slice04; Slice02 remains queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -195,6 +195,14 @@ for 259 value variants after full independent replay. Slice06 is now
 108 resource attempts, 16 file attempts and 36 explicit unsupported cells retain
 all 62 assigned IDs. Slice04 is [open for execution](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/slice-plan.md)
 for all R-01–09 runtime/dependency families before the 28 gated document variants.
+Its preparation is now blocked by D-2609-DARG after the operator upgraded Deno
+from 2.7.7 to 2.9.6. The pinned CLI fails to select even a minimal no-import
+script, with or without explicitly requested all-permissions. This supersedes
+the immediate-execution status, not the original workload. The concrete
+[Arc03/Slice06 correction](arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md)
+must be independently verified before a new compiler condition resumes Slice04.
+Its eight criteria, draft variants, 36 unsupported resource cells and 28 gated
+document cases remain owed. Existing PERM closure retains its original provenance.
 All project ledger rows remain open; no operator
 acceptance or library adoption is claimed.
 
@@ -228,6 +236,13 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.13: Arc01/Slice04 preparation reproduced a Deno 2.9.6 launcher
+  incompatibility after the operator upgrade; preserved the original 2.7.7
+  condition and failed drafts. Opened Arc03/Slice06 as a narrow compatibility
+  prerequisite, with source scope and actual permission/path regressions.
+  Slice04 remains open/blocked with all eight criteria and full runtime,
+  document, API-bound, authoring and human obligations intact.
 
 - 2026-09-13 v1.12: CDC closed Arc01/Slice06 after full runtime, file and packet
   replay, with 4036 independent comparison/live-file checks. Corrected the
