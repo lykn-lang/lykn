@@ -9,6 +9,11 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-13 current CDC: [supervisor independently closed](arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md).
+All six SH criteria are done; resume the complete Slice04 assignment with its
+verified native source pins and four-failure history. All project and DB rows
+remain open. Earlier pending-supervisor notes below are historical.
+
 2026-09-13 current handoff: [Arc03/Slice07](arc03-findings-and-integration/slice07-research-supervisor/closing-report.md)
 is CC proposed-done; independent supervisor CDC is next. Primary and fresh
 replay each pass 33 process attempts and five negative controls. Six failed
@@ -113,9 +118,9 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 awaits bounded supervisor CDC |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 ready to resume |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06 CDC closed; Slice07 supervisor prerequisite open; Slice02 queued |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice04 research resumes; Slice02 queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -263,6 +268,10 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.20: Arc03/Slice07 CDC reproduced the complete native supervisor
+  contract and closed six SH rows. Resumed full Slice04, preserving budgets,
+  unavailable/unsupported populations and all research/guide/book/ADT/human owners.
 
 - 2026-09-13 v1.19: Arc03/Slice07 submitted native supervisor verification
   with complete replay and retained failures under explicit operator budget

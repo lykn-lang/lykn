@@ -1,5 +1,9 @@
 # Arc01 ledger
 
+2026-09-13 current CDC: [supervisor closed](../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md).
+Slice04 resumes with all eight DB rows open. No Arc01 criterion inherits
+closure from native controls; all R/Y/document/source/human owners remain.
+
 2026-09-13 CC: [supervisor prerequisite](../arc03-findings-and-integration/slice07-research-supervisor/closing-report.md)
 is proposed-done, pending independent CDC. A-03–06 and every DB row remain
 open; no R/Y evidence, dependency decision or human acceptance is inferred.

@@ -47,8 +47,8 @@
       "status": "active",
       "plannedRelease": null,
       "plan": "../project07-core-library-research/project-plan.md",
-      "currentArc": "arc03-findings-and-integration",
-      "nextArc": "arc01-format-runtime-evidence"
+      "currentArc": "arc01-format-runtime-evidence",
+      "nextArc": "arc02-lykn-authoring-evidence"
     }
   ]
 }

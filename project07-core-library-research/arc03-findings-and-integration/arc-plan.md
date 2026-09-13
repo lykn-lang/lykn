@@ -2,6 +2,11 @@
 
 ## Capability and status
 
+2026-09-13 current CDC: [Slice07 independently closed](slice07-research-supervisor/cdc-verification.md).
+All six SH criteria and A3-07 close after complete fresh and retained replay.
+Return to full Slice04; other correction/composition owners remain unchanged.
+Earlier proposed-done and ready-for-CC statements below are historical.
+
 2026-09-13 CC handoff: [Slice07](slice07-research-supervisor/closing-report.md)
 is proposed-done after 33 primary attempts, five negative controls and full
 fresh/captured replay. Six failed conditions remain under the operator's
@@ -38,7 +43,7 @@ resume Arc01/Slice02 was fulfilled by its subsequent CDC closure.
 | slice04-book-and-language-corrections | Integrate JSER and accepted book/language/formatter findings with operator review | Arc02 and Project02 book coordination | Roadmap only; split as needed |
 | slice05-regression-and-integration | Demonstrate correction composition and carry residual work to handoff | Earlier slices and Arc02 completion | Roadmap only |
 | [slice06-deno-launch-compatibility](slice06-deno-launch-compatibility/slice-plan.md) | Restore script selection on Deno 2.9.6 while preserving explicit authority, path and argument safety | Arc01/Slice04 D-2609-DARG evidence | CDC closed; six criteria reproduced; resume Arc01/Slice04 |
-| [slice07-research-supervisor](slice07-research-supervisor/slice-plan.md) | Verify native external stops, permissions, observer/checkpoint semantics, cleanup and retained audit | Slice04 resumed preparation; verified Slice06 compiler/runtime | CC proposed-done; six statuses open for CDC before full Slice04 re-entry |
+| [slice07-research-supervisor](slice07-research-supervisor/slice-plan.md) | Verify native external stops, permissions, observer/checkpoint semantics, cleanup and retained audit | Slice04 resumed preparation; verified Slice06 compiler/runtime | CDC closed; six criteria; full Slice04 resumes |
 
 After Slice01 closes, resume the already-open Arc01/Slice02 research packet;
 queue this arc's Slice02 planning. This explicit cross-arc ordering supersedes
@@ -93,6 +98,10 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-09-13 v1.10: CDC reproduced all 33 supervisor attempts, five negatives
+  and live files/process identities; closed SH-01–06 and A3-07. Retained six
+  CC failures and separate CDC drafts; full research and source/human owners remain.
 
 - 2026-09-13 v1.9: Slice07 submitted complete native supervisor evidence,
   retaining six failures under explicit eight-failure authority. Checkpoint

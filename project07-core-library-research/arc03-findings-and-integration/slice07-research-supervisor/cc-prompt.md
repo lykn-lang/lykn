@@ -1,8 +1,15 @@
 # CC — Verify the bounded research supervisor
 
-Current handoff, 2026-09-13: [CC proposed-done](closing-report.md) for all six
-SH criteria. Independent CDC is next; do not infer closure or resume Slice04
-from this attestation. The execution assignment below remains replay context.
+Current status, 2026-09-13: [CDC closed](cdc-verification.md), all six SH criteria.
+Next: [resume Slice04](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cc-prompt.md).
+The CC handoff and execution assignment below remain replay context.
+
+Exact CDC closure additions to the planning scope below:
+
+```text
+project07-core-library-research/arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md
+project07-core-library-research/arc03-findings-and-integration/slice07-research-supervisor/artifacts/cdc-raw-transcript.txt
+```
 
 2026-09-13 operator amendment: **Continue this same Slice07 with an eight-failure
 maximum.** Four failed source conditions are already retained. Preserve every

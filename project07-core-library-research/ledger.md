@@ -1,5 +1,9 @@
 # Project07 ledger
 
+2026-09-13 current CDC: [supervisor independently closed](arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md).
+Resume full Slice04 with all eight DB rows and all project criteria open.
+Native tooling closure does not supply package, document or human acceptance.
+
 2026-09-13 CC: [supervisor handoff](arc03-findings-and-integration/slice07-research-supervisor/closing-report.md)
 is proposed-done at child scope, with fresh and captured replay. All project
 criteria and DB rows remain open; independent SH CDC precedes full Slice04

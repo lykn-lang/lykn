@@ -1,5 +1,23 @@
 # CC — Research the dependency and runtime boundary
 
+**Current assignment, 2026-09-13: resume full Slice04.** [Supervisor CDC](../../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md)
+closed all six SH criteria after independent complete replay. This supersedes
+the supervisor stop/next-assignment instructions below. All eight DB rows remain
+open. Slice04 retains four historical source failures; the supervisor's separate
+eight-failure amendment does not reset or enlarge Slice04's budget.
+
+Use the accepted 4dded88/Deno 2.9.6 pair and the exact Slice07 sources at commit
+910268d as the supervisor baseline, with hashes in slice-plan.md. Import its
+verified native controls/audit and recorded fixes. Do not revert to the older
+Slice04 supervisor draft or assume native SH attempts satisfy DB research.
+Adapt only for the complete R-01–09 contract: resolve permitted graphs, separate
+native/package configs and locks, freeze all operational expansions, re-gate
+emitted code and rerun affected controls before matrix execution. Preserve the
+47 candidate IDs, all file/fault/resource/compatibility obligations, 36 unsupported
+Y-13 cells, 28 gated Y-14 documents and all source/guide/book/ADT/human outcomes.
+
+## Historical supervisor routing and retained research contract
+
 2026-09-13 CDC: [resumed preparation and routing verified](cdc-resume-verification.md).
 The next assignment is Arc03/Slice07's bounded supervisor prompt. All eight DB
 rows remain open; this review does not lift the supervisor prerequisite.

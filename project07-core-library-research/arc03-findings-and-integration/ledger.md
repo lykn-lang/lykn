@@ -1,5 +1,9 @@
 # Arc03 ledger
 
+2026-09-13 current CDC: [Slice07 independently closed](slice07-research-supervisor/cdc-verification.md).
+All six SH rows and A3-07 close; all other arc rows retain their status.
+Full Slice04 resumes. Earlier handoff and open-set notes below are historical.
+
 2026-09-13 CC: [Slice07 handoff](slice07-research-supervisor/closing-report.md)
 attests all six SH criteria with 33 primary attempts, five negatives and full
 replay. A3-07 remains open for independent CDC. All earlier arc rows retain
@@ -30,4 +34,4 @@ gates and child attestation do not close arc composition or other findings.
 | A3-04 | Accepted book/language findings and human revisions integrated | Source commits, failure reproductions, book coordination and operator records | correctness-grade | JSER and Arc02 | open | — | Human acceptance explicit |
 | A3-05 | Corrections compose and residual work has real destinations | Arc-scale corrected workflow and discovery/acceptance walk | correctness-grade | Project DoD 6 | open | — | Child closure insufficient |
 | A3-06 | Deno 2.9.6 launch compatibility is independently verified without weakening authority or argument safety | Slice06 original reproduction, actual runtime/argv regressions, canonical gates and build receipt | correctness-grade | Arc01/Slice04; D-2609-DARG | done | [Slice06 CDC](slice06-deno-launch-compatibility/cdc-verification.md) | Six criteria reproduced; original five criteria unchanged |
-| A3-07 | Bounded research supervisor is independently verified before full Slice04 re-entry | Slice07 source gates, native controls, live file observations, semantic rejection checks and captured replay | correctness-grade | Slice04 resumed preparation and before-exhaustion rule | open | [Slice07 open set](slice07-research-supervisor/slice-plan.md) | Six SH criteria; every DB/R obligation stays Slice04 |
+| A3-07 | Bounded research supervisor is independently verified before full Slice04 re-entry | Slice07 source gates, native controls, live file observations, semantic rejection checks and captured replay | correctness-grade | Slice04 resumed preparation and before-exhaustion rule | done | [Slice07 CDC](slice07-research-supervisor/cdc-verification.md) | Six SH criteria reproduced; every DB/R obligation stays Slice04 |

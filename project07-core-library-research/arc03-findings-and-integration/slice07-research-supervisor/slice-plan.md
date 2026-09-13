@@ -1,13 +1,16 @@
 # Slice07 — Research supervisor verification
 
-Status: **CC proposed-done; open for independent CDC.** Planning-only
+Status: **CDC closed; six of six criteria independently reproduced.** Planning-only
 prerequisite, Expedited Mode. [Handoff](closing-report.md) records 33 primary
 attempts, five negative controls and complete fresh/captured replay.
 2026-09-13 operator amendment: continue the same bounded slice with a maximum
 of eight failed correction conditions, retaining the four already observed
 and every verification requirement. This supersedes the five-failure limit
 below; Slice04's separate four-failure history is unchanged.
-Parent: [Arc03](../arc-plan.md). Six open criteria in [ledger.md](ledger.md).
+Parent: [Arc03](../arc-plan.md). Six closed criteria in [ledger.md](ledger.md).
+[CDC verification](cdc-verification.md) reproduces all 33 attempts and five
+negative controls. Resume Slice04 using the pinned supervisor and full re-entry
+contract. The earlier preparation/implementation instructions below are historical.
 
 2026-09-13 CDC: [preparation and split reviewed](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
 The retained failure and packet reproduce; this open set is ready for CC.
@@ -152,6 +155,10 @@ owners and API/route-dependent re-entry; no package or ancestry acceptance is
 implied. Existing guide/book/ADT/source/human outcomes remain Arc02/Arc03 work.
 
 ## Version History
+
+- 2026-09-13 v1.3: CDC reproduced the complete native supervisor packet and
+  fresh 33-attempt/five-negative run; closed SH-01–06 and resumed full Slice04.
+  Retained failure populations, scope boundaries and operator review owners.
 
 - 2026-09-13 v1.2: Operator authorized an eight-failure maximum for the same
   bounded unit. CC retained six failed conditions and submitted all six SH

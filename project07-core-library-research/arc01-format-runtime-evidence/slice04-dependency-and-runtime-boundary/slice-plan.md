@@ -1,5 +1,23 @@
 # Slice04 — Dependency and runtime boundary
 
+**Current status, 2026-09-13: open, ready to resume after supervisor CDC.**
+[Arc03/Slice07](../../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md)
+closed all six SH criteria. The earlier stop instructions below are historical.
+All eight DB rows remain open and four source failures remain charged here.
+
+Use Slice07 commit 910268d as the native tooling baseline with these SHA-256 pins:
+cases.lykn `30c2b33eeca212bc54f6fc1e74e53b276af981058c93934fe484974aa8a096f7`;
+supervisor.lykn `8362299c4ede0c0050c85e4ef2bfd2bd42f355f1b9e3b1c9c93af384dee90263`;
+audit.lykn `5d14ada4db24eac7ad7578cbd168ac51ce93c23189edaa7afeb1df3dbb4a9d6e`.
+Retain the source/emitted fixes, substantive precompile control, checkpoint
+ownership refresh, semantic marker gates and cleanup bounds. Its native-only
+manifest is not the DB matrix. Adapt to every original R family and operational
+expansion, freeze full graphs/configs/locks/inputs/grants, and rerun affected
+controls before interpreting DB attempts. Native SH runs remain prerequisite
+evidence; package, file-fault, resource and document-route decisions remain owed.
+
+## Historical preparation and full research requirements
+
 2026-09-13 CDC: [resumed preparation independently reviewed](cdc-resume-verification.md).
 The fourth source failure and frozen-lock failure reproduce. Arc03/Slice07's
 bounded supervisor open set is ready for CC; all eight DB criteria remain open.

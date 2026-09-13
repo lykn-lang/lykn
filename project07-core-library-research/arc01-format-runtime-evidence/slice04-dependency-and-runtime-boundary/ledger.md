@@ -1,5 +1,10 @@
 # Slice04 ledger
 
+2026-09-13 current CDC: [supervisor independently closed](../../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md).
+Resume the complete Slice04 contract using its pinned native tooling baseline.
+All eight DB rows below remain unchanged and open; four historical source
+failures remain charged. Earlier supervisor stop notes are superseded.
+
 2026-09-13 CDC: [preparation/split verified](cdc-resume-verification.md).
 All eight DB rows remain unchanged and open. Four source failures and the
 separate config error are retained; no runtime supervisor or matrix was run.
