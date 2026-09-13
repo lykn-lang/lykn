@@ -52,6 +52,19 @@ impl Fixture {
         fs::write(path, content).unwrap();
     }
 
+    fn compile_to(&self, source: &str, destination: &str) {
+        self.write("fixture.lykn", source);
+        fs::create_dir_all(self.root.join(destination).parent().unwrap()).unwrap();
+        success(
+            &self
+                .command()
+                .args(["compile", "fixture.lykn", "-o"])
+                .arg(self.root.join(destination))
+                .output()
+                .unwrap(),
+        );
+    }
+
     fn command(&self) -> Command {
         let mut command = Command::new(env!("CARGO_BIN_EXE_lykn"));
         command
@@ -151,7 +164,7 @@ impl Fixture {
 
     fn run(&self, flags: &[String], file: &str, args: &[&str]) -> Output {
         self.command()
-            .args(["run", "--no-prompt"])
+            .args(["run", "--no-prompt", "--cached-only", "--frozen=true"])
             .args(flags)
             .arg(file)
             .args(args)
@@ -195,7 +208,6 @@ fn all_routes_have_no_implicit_grants_and_preserve_build_paths() {
                 "run".into(),
                 "--config".into(),
                 f.root.join(config).display().to_string(),
-                "--".into(),
                 program.display().to_string()
             ]
         );
@@ -214,7 +226,7 @@ fn every_permission_supports_bare_scoped_repeated_and_explicit_empty_values() {
             vec![format!("--{name}=")],
         ] {
             let argv = f.capture(&supplied, &file, &[], 0);
-            assert_eq!(&argv[3..argv.len() - 2], supplied);
+            assert_eq!(&argv[3..argv.len() - 1], supplied);
         }
         // Deno combines scopes, including when a bare occurrence is mixed in.
         for supplied in [
@@ -222,14 +234,14 @@ fn every_permission_supports_bare_scoped_repeated_and_explicit_empty_values() {
             vec![format!("--{name}=one"), format!("--{name}")],
         ] {
             let argv = f.capture(&supplied, &file, &[], 0);
-            assert_eq!(&argv[3..argv.len() - 2], [format!("--{name}=one")]);
+            assert_eq!(&argv[3..argv.len() - 1], [format!("--{name}=one")]);
         }
     }
 }
 
 #[test]
 fn runtime_options_and_child_exit_are_preserved_on_all_routes() {
-    for route in ["standalone", "workspace", "js"] {
+    for route in ["standalone", "workspace", "js", "no-project"] {
         let f = Fixture::new();
         let (file, _) = f.program(route, HELLO);
         for all in ["-A", "--allow-all"] {
@@ -258,7 +270,7 @@ fn runtime_options_and_child_exit_are_preserved_on_all_routes() {
                         }
                     ]
                 );
-                assert_eq!(&argv[9..], ["a b", "$(never executed)", ""]);
+                assert_eq!(&argv[8..], ["a b", "$(never executed)", ""]);
             }
         }
     }
@@ -282,11 +294,11 @@ fn flags_after_file_are_script_args_with_or_without_separator() {
     for flag in flags {
         for args in [vec![flag, "a b"], vec!["--", flag, "a b"]] {
             let argv = f.capture(&[], &file, &args, 0);
-            assert_eq!(&argv[5..], [flag, "a b"]);
+            assert_eq!(&argv[4..], [flag, "a b"]);
         }
     }
     let argv = f.capture(&[], &file, &["first", "--", "last"], 0);
-    assert_eq!(&argv[5..], ["first", "--", "last"]);
+    assert_eq!(&argv[4..], ["first", "--", "last"]);
 }
 
 #[test]
@@ -309,7 +321,7 @@ fn invalid_options_are_rejected_before_launch_and_bare_flags_do_not_eat_file() {
         assert!(!String::from_utf8_lossy(&out.stderr).contains("failed to run deno"));
     }
     let argv = f.capture(&["--allow-read".into()], &file, &["another-file"], 0);
-    assert_eq!(&argv[3..], ["--allow-read", "--", &file, "another-file"]);
+    assert_eq!(&argv[3..], ["--allow-read", &file, "another-file"]);
 }
 
 #[test]
@@ -339,7 +351,7 @@ fn effective_config_overlay_is_used_with_runtime_controls() {
 
 #[test]
 fn real_deno_enforces_read_and_write_scopes_on_all_routes() {
-    for route in ["standalone", "workspace", "js"] {
+    for route in ["standalone", "workspace", "js", "no-project"] {
         for (operation, source) in [("read", READ), ("write", WRITE)] {
             let f = Fixture::new();
             let (file, _) = f.program(route, source);
@@ -429,26 +441,31 @@ fn real_deno_repeated_scopes_and_bare_mixture_match_native_semantics() {
     success(&f.run(&["--allow-read".into()], &file, &["three/input"]));
     let empty = f.run(&["--allow-read=".into()], &file, &["one/input"]);
     assert_eq!(empty.status.code(), Some(1));
-    assert!(String::from_utf8_lossy(&empty.stderr).contains("Empty values are not allowed"));
+    let stderr = String::from_utf8_lossy(&empty.stderr);
+    // Deno 2.9.6 changed this diagnostic; both messages specifically reject
+    // the empty scope. Neither accepts a generic launch failure as evidence.
+    assert!(
+        stderr.contains("Empty values are not allowed")
+            || stderr.contains("Empty path is not allowed"),
+        "{stderr}"
+    );
 }
 
 #[test]
 fn real_deno_receives_script_flags_and_nonzero_exit() {
-    let f = Fixture::new();
-    let (file, _) = f.program(
-        "js",
-        "(console:log (JSON:stringify Deno:args))\n(Deno:exit 23)\n",
-    );
-    let out = f.run(
-        &["--cached-only".into(), "--frozen=false".into()],
-        &file,
-        &["--allow-read", "--", "a b", ""],
-    );
-    assert_eq!(out.status.code(), Some(23));
-    assert_eq!(
-        String::from_utf8(out.stdout).unwrap(),
-        "[\"--allow-read\",\"--\",\"a b\",\"\"]\n"
-    );
+    for route in ["standalone", "workspace", "js", "no-project"] {
+        let f = Fixture::new();
+        let (file, _) = f.program(
+            route,
+            "(console:log (JSON:stringify Deno:args))\n(Deno:exit 23)\n",
+        );
+        let out = f.run(&[], &file, &["--allow-read", "--", "a b", ""]);
+        assert_eq!(out.status.code(), Some(23));
+        assert_eq!(
+            String::from_utf8(out.stdout).unwrap(),
+            "[\"--allow-read\",\"--\",\"a b\",\"\"]\n"
+        );
+    }
 }
 
 #[test]
@@ -463,6 +480,179 @@ fn filename_starting_with_hyphen_is_not_a_runtime_option() {
         .unwrap();
     success(&out);
     assert_eq!(out.stdout, b"fixture\n");
+
+    let argv = f.capture(&["--".into()], "--allow-all.js", &["--help"], 0);
+    assert_eq!(&argv[3..], ["./--allow-all.js", "--help"]);
+
+    // Executing an option-like filename must not accidentally grant read access.
+    f.compile_to(READ, "--allow-all.js");
+    f.write("secret", "private");
+    denied(
+        &f.run(&["--".into()], "--allow-all.js", &["secret"]),
+        "read",
+    );
+}
+
+#[test]
+fn real_deno_no_import_program_and_explicit_all_grants_work_on_all_routes() {
+    for route in ["standalone", "workspace", "js", "no-project"] {
+        let f = Fixture::new();
+        let (file, _) = f.program(route, HELLO);
+        let out = f.run(&[], &file, &[]);
+        success(&out);
+        assert_eq!(out.stdout, b"fixture\n");
+        let f = Fixture::new();
+        let (file, _) = f.program(route, READ);
+        f.write("outside/input", "explicit grant");
+        for all in ["-A", "--allow-all"] {
+            let out = f.run(&[all.into()], &file, &["outside/input"]);
+            success(&out);
+            assert_eq!(out.stdout, b"explicit grant\n");
+        }
+    }
+}
+
+#[test]
+fn non_file_entries_and_local_path_spelling_are_preserved_at_child_boundary() {
+    let f = Fixture::new();
+    for entry in [
+        "-",
+        "file:///tmp/example%20file.js",
+        "https://example.invalid/main.js",
+        "jsr:@example/tool",
+        "npm:example",
+        "data:text/javascript,void%200",
+        "./nested/../main.js",
+        "/tmp/a directory/main.js",
+    ] {
+        let argv = f.capture(&[], entry, &["--allow-all", ""], 0);
+        assert_eq!(&argv[3..], [entry, "--allow-all", ""]);
+    }
+}
+
+#[test]
+fn real_deno_stdin_executes_compiled_input_and_preserves_arguments() {
+    let f = Fixture::new();
+    f.compile_to("(console:log (JSON:stringify Deno:args))\n", "stdin.js");
+    let out = f
+        .command()
+        .args([
+            "run",
+            "--no-prompt",
+            "--cached-only",
+            "--frozen=true",
+            "-",
+            "--",
+            "--allow-all",
+            "a b",
+            "",
+        ])
+        .stdin(fs::File::open(f.root.join("stdin.js")).unwrap())
+        .output()
+        .unwrap();
+    success(&out);
+    assert_eq!(out.stdout, b"[\"--allow-all\",\"a b\",\"\"]\n");
+    f.compile_to(READ, "stdin.js");
+    f.write("secret", "private");
+    let out = f
+        .command()
+        .args([
+            "run",
+            "--no-prompt",
+            "--cached-only",
+            "--frozen=true",
+            "-",
+            "secret",
+            "--allow-all",
+        ])
+        .stdin(fs::File::open(f.root.join("stdin.js")).unwrap())
+        .output()
+        .unwrap();
+    denied(&out, "read");
+}
+
+#[test]
+fn real_deno_local_imports_symlinks_and_file_specifiers_keep_their_base() {
+    let f = Fixture::new();
+    f.compile_to(
+        "(bind value \"target\")\n(exports value)\n",
+        "actual/dep.js",
+    );
+    f.compile_to("(bind value \"link\")\n(exports value)\n", "dep.js");
+    f.compile_to(
+        "(import \"./dep.js\" (value))\n(console:log value)\n",
+        "actual/main.js",
+    );
+    std::os::unix::fs::symlink("actual/main.js", f.root.join("--linked.js")).unwrap();
+    std::os::unix::fs::symlink("actual", f.root.join("--linked-dir")).unwrap();
+    let absolute = f.root.join("actual/main.js").display().to_string();
+    let file_url = format!("file://{}", absolute.replace(' ', "%20"));
+    for entry in [
+        "actual/main.js",
+        "./--linked.js",
+        "--linked.js",
+        "--linked-dir/main.js",
+        &absolute,
+        &file_url,
+    ] {
+        let out = f.run(&["--".into()], entry, &[]);
+        success(&out);
+        let expected = if entry == "./--linked.js" || entry == "--linked.js" {
+            b"link\n".as_slice()
+        } else {
+            b"target\n".as_slice()
+        };
+        assert_eq!(out.stdout, expected, "entry={entry}");
+        // Compare Deno's own path handling. The wrapper must not resolve a
+        // symlink and silently move the entry module's relative-import base.
+        let native_entry = if entry.starts_with('-') {
+            format!("./{entry}")
+        } else {
+            entry.to_owned()
+        };
+        let native = Command::new("deno")
+            .current_dir(&f.root)
+            .env_clear()
+            .env("PATH", std::env::var_os("PATH").unwrap())
+            .env("HOME", &f.root)
+            .env("DENO_DIR", f.root.join("deno-cache"))
+            .env("DENO_NO_UPDATE_CHECK", "1")
+            .env("NO_COLOR", "1")
+            .args([
+                "run",
+                "--config",
+                "project.json",
+                "--no-prompt",
+                "--cached-only",
+                "--frozen=true",
+                &native_entry,
+            ])
+            .stdin(Stdio::null())
+            .output()
+            .unwrap();
+        success(&native);
+        assert_eq!(out.stdout, native.stdout, "entry={entry}");
+    }
+    let argv = f.capture(&["--".into()], "--linked-dir/../dep.js", &[], 0);
+    assert_eq!(argv[3], "./--linked-dir/../dep.js");
+}
+
+#[test]
+fn real_deno_overlay_resolves_local_import_without_runtime_read_grant() {
+    let f = Fixture::new();
+    f.compile_to("(bind value \"overlay\")\n(exports value)\n", "local.js");
+    f.compile_to(
+        "(import \"fixture\" (value))\n(console:log value)\n",
+        "main.js",
+    );
+    f.write("project.json", r#"{"imports":{"fixture":"./missing.js"}}"#);
+    f.write(
+        "project.local.json",
+        r#"{"imports":{"fixture":"./local.js"}}"#,
+    );
+    let out = f.run(&[], "main.js", &[]);
+    success(&out);
+    assert_eq!(out.stdout, b"overlay\n");
 }
 
 #[test]

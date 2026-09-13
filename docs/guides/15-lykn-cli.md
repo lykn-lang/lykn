@@ -213,6 +213,16 @@ FILE is consumed as the script separator; subsequent `--` arguments are passed
 through. Use `--` before FILE to select a filename beginning with `-`.
 The child process's exit code is returned by Lykn.
 
+Normal execution uses `deno run`. Lykn passes the script directly to Deno;
+it does not insert a pre-script `--` (which prevents script selection on Deno
+2.9.6). A leading-hyphen local filename receives a `./` prefix so it cannot be
+interpreted as a runtime option. Other paths retain their spelling, without
+canonicalizing symlinks. For example, `lykn run -- --allow-all.js` executes that
+file without granting permissions. A single `-` is passed through for Deno to
+read JavaScript from stdin; it does not select Lykn source compilation.
+Non-Lykn entries such as `file:` URLs retain the existing Deno pass-through
+behavior and remain subject to Deno's resolution and permission rules.
+
 The CLI discovers `project.json` from the current directory and passes it with
 `--config`. When a local import overlay is present, it passes the generated
 effective configuration instead. This run contract does not change the separate

@@ -634,8 +634,16 @@ fn cmd_run(run: &RunArgs) {
         config.into(),
     ];
     deno_args.extend(run.runtime.deno_args());
-    // Protect a JS filename beginning with '-' even when selected using lykn's --.
-    deno_args.push(OsString::from("--"));
+    // Deno 2.9.6 needs SCRIPT_ARG before any `--`. Protect option-like local
+    // names with a relative prefix, leaving stdin (`-`) and specifiers intact.
+    // Do not canonicalize: that could change symlink/relative-import behavior.
+    let run_file = if run_file.as_os_str() != "-"
+        && run_file.as_os_str().as_encoded_bytes().starts_with(b"-")
+    {
+        Path::new(".").join(run_file)
+    } else {
+        run_file
+    };
     deno_args.push(run_file.into_os_string());
     deno_args.extend_from_slice(args);
     exec_deno(&deno_args);

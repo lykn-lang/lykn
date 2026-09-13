@@ -66,6 +66,13 @@ Runtime options must appear before FILE. In `lykn run FILE -- --allow-read`,
 require `=`, for example `--allow-read="./input data"`; repeated scoped flags
 accumulate. See `../15-lykn-cli.md` for the complete option and separator contract.
 
+Lykn keeps normal execution on `deno run`, passing the script directly. Its
+optional caller separator is distinct from Deno's `-` stdin entry: `lykn run -`
+asks Deno to execute JavaScript from stdin. Leading-hyphen local filenames are
+prefixed with `./` at the child boundary; other paths and non-Lykn specifiers
+are passed through without canonicalization. This preserves script selection
+on Deno 2.9.6 without adding permissions or changing the relative-import base.
+
 ### ID-04: Deny Flags for Exclusion
 
 **Strength**: CONSIDER
