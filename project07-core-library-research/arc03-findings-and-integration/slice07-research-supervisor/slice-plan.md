@@ -1,6 +1,12 @@
 # Slice07 — Research supervisor verification
 
-Status: **Open, ready for CC.** Planning-only prerequisite, Expedited Mode.
+Status: **CC proposed-done; open for independent CDC.** Planning-only
+prerequisite, Expedited Mode. [Handoff](closing-report.md) records 33 primary
+attempts, five negative controls and complete fresh/captured replay.
+2026-09-13 operator amendment: continue the same bounded slice with a maximum
+of eight failed correction conditions, retaining the four already observed
+and every verification requirement. This supersedes the five-failure limit
+below; Slice04's separate four-failure history is unchanged.
 Parent: [Arc03](../arc-plan.md). Six open criteria in [ledger.md](ledger.md).
 
 2026-09-13 CDC: [preparation and split reviewed](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
@@ -146,6 +152,11 @@ owners and API/route-dependent re-entry; no package or ancestry acceptance is
 implied. Existing guide/book/ADT/source/human outcomes remain Arc02/Arc03 work.
 
 ## Version History
+
+- 2026-09-13 v1.2: Operator authorized an eight-failure maximum for the same
+  bounded unit. CC retained six failed conditions and submitted all six SH
+  criteria with successful primary/fresh/captured evidence. CDC remains the
+  prerequisite to full Slice04 re-entry; no research scope or source owner changes.
 
 - 2026-09-13 v1.1: CDC reproduced preparation and reviewed the split. Made
   observation-failure and inherited-pipe cleanup controls explicit, pinned

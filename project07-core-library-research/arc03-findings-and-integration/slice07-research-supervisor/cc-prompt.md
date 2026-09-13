@@ -1,5 +1,15 @@
 # CC — Verify the bounded research supervisor
 
+Current handoff, 2026-09-13: [CC proposed-done](closing-report.md) for all six
+SH criteria. Independent CDC is next; do not infer closure or resume Slice04
+from this attestation. The execution assignment below remains replay context.
+
+2026-09-13 operator amendment: **Continue this same Slice07 with an eight-failure
+maximum.** Four failed source conditions are already retained. Preserve every
+failure and all verification requirements; this replaces only the earlier
+before-five correction limit below. It does not reset Slice04's history or
+authorize another renamed prerequisite, source edits or weaker controls.
+
 2026-09-13 CDC review passed: [preparation verification](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
 Proceed with this bounded prerequisite; all six SH criteria remain open.
 Use the five explicit SH-CAP controls in slice-plan.md, including injected

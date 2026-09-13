@@ -9,8 +9,15 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
-2026-09-13 CDC: [preparation and prerequisite review passed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
-Arc03/Slice07's bounded supervisor prompt is the next CC assignment. Its six
+2026-09-13 current handoff: [Arc03/Slice07](arc03-findings-and-integration/slice07-research-supervisor/closing-report.md)
+is CC proposed-done; independent supervisor CDC is next. Primary and fresh
+replay each pass 33 process attempts and five negative controls. Six failed
+conditions remain under the operator-authorized eight-failure maximum; all
+verification requirements and Slice04's separate history remain intact.
+After CDC, resume full Slice04. No project or human-acceptance row closes.
+
+2026-09-13 prior CDC: [preparation and prerequisite review passed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+That review opened Arc03/Slice07's bounded supervisor assignment. Its six
 criteria and Slice04's eight criteria are all open; launcher closure is unchanged.
 
 2026-09-13 current sequencing: Slice04's resumed preparation reached four
@@ -256,6 +263,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.19: Arc03/Slice07 submitted native supervisor verification
+  with complete replay and retained failures under explicit operator budget
+  amendment. CDC gates Slice04 re-entry; all research/document/source/guide/
+  book/ADT/human outcomes remain owned and open where previously open.
 
 - 2026-09-13 v1.18: CDC verified Arc01/Slice04 preparation, accepted the
   supervisor split and clarified executable failure/cleanup controls before CC.

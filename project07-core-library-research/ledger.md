@@ -1,5 +1,10 @@
 # Project07 ledger
 
+2026-09-13 CC: [supervisor handoff](arc03-findings-and-integration/slice07-research-supervisor/closing-report.md)
+is proposed-done at child scope, with fresh and captured replay. All project
+criteria and DB rows remain open; independent SH CDC precedes full Slice04
+re-entry. Six retained failures are within the operator's eight-failure amendment.
+
 2026-09-13 CDC: [resumed preparation and supervisor routing verified](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
 Arc03/Slice07 is the next CC assignment. All project rows, all eight DB rows and
 all six SH rows remain open; research and human outcomes keep their owners.

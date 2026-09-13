@@ -1,8 +1,10 @@
 # Slice07 ledger
 
-Six criteria open. No source or runtime work in this slice has run. CC may
-attest proposed-done only; independent CDC owns closure. Slice04's eight DB
-criteria remain unchanged and open, with four inherited source failures.
+Six criteria remain open for independent CDC. [CC handoff](closing-report.md)
+attests proposed-done for all six after 33 primary attempts, five negative
+controls and full fresh/captured replay. Six failed conditions are retained
+under the operator's eight-failure maximum. Original row text below is unchanged.
+Slice04's eight DB criteria and four inherited source failures remain separate.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

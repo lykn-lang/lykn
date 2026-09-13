@@ -2,6 +2,12 @@
 
 ## Capability and status
 
+2026-09-13 CC: [Arc03/Slice07 supervisor handoff](../arc03-findings-and-integration/slice07-research-supervisor/closing-report.md)
+is proposed-done, with all six statuses open for CDC. After independent
+closure, resume the entire Slice04 assignment. All eight DB rows, 47 candidates
+and expansions, 36 unsupported resources and 28 gated documents remain here;
+native prerequisite runs do not replace research attempts or adoption decisions.
+
 2026-09-13 CDC: [resumed preparation verified](slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
 The packet, source correction and frozen-lock failure reproduce. The bounded
 Arc03/Slice07 prompt is reviewed and ready; all eight DB rows stay open.
@@ -200,6 +206,10 @@ variants. JSCF/UNUS and guide/book/human obligations remain open. This refines
 execution mechanics from verified findings without changing family ownership.
 
 ## Version History
+
+- 2026-09-13 v1.18: Arc03/Slice07 submitted complete native supervisor
+  evidence; independent CDC remains the full Slice04 re-entry gate. Preserved
+  all R/Y owners, four Slice04 source failures and source/human obligations.
 
 - 2026-09-13 v1.17: CDC verified Slice04 preparation and accepted the bounded
   supervisor split. Clarified failure/cleanup controls in its owning open set;

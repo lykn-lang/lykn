@@ -1,5 +1,9 @@
 # Arc01 ledger
 
+2026-09-13 CC: [supervisor prerequisite](../arc03-findings-and-integration/slice07-research-supervisor/closing-report.md)
+is proposed-done, pending independent CDC. A-03–06 and every DB row remain
+open; no R/Y evidence, dependency decision or human acceptance is inferred.
+
 2026-09-13 CDC: [resumed preparation verified](slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
 All eight DB rows remain unchanged. Supervisor prerequisite is ready for CC;
 no Arc01 criterion closes from packet replay or review of its open set.
