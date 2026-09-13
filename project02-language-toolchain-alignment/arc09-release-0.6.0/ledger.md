@@ -7,7 +7,7 @@ Extracted from arc-plan.md on 2026-09-06 without changing the historical rows, d
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 |----|-----------|--------|--------------|--------|--------|----------|-------|
 | A-1 | Release readiness runbook slice closes | ptr: slice01 closing-report + CDC verification | serious | arc-plan | **done / CDC-verified** | [slice01 closing-report](slice01-release-readiness-runbook/closing-report.md), [CDC verification](slice01-release-readiness-runbook/cdc-verification.md), [runbook](slice01-release-readiness-runbook/artifacts/release-runbook.md), [version inventory](slice01-release-readiness-runbook/artifacts/version-surface-inventory.md), [release-note inputs](slice01-release-readiness-runbook/artifacts/release-note-inputs.md) | detailed release sequence drafted and verified; slice03 active |
-| A-2 | Version bumps and release notes land | exact source/book/docs version diff plus release-note review | correctness | P-12 | **CC proposed-done; CDC pending** | [slice02 closing-report](slice02-version-bump-release-notes-ci-chore/closing-report.md), source commit `65ff40f` | 0.6.0 versions/release notes/checkouts/no-bypass dry-run helper prepared; independent CDC pending |
+| A-2 | Version bumps and release notes land | exact source/book/docs version diff plus release-note review | correctness | P-12 | **done / CDC-verified** | [slice02 closing-report](slice02-version-bump-release-notes-ci-chore/closing-report.md), [CDC verification](slice02-version-bump-release-notes-ci-chore/cdc-verification.md), source commit `65ff40f` | 0.6.0 versions/release notes/checkouts/no-bypass dry-run helper prepared and independently verified |
 | A-3 | Publish dry-runs pass without weakening dirty-tree gates | JSR, npm, and crates dry-run evidence from the exact release tree | correctness | arc01/P-8/P-12 | open | [slice03 prompt](slice03-publish-dry-runs-and-package-audit/cc-prompt.md) | repaired `make publish-dry-run` should be proven in slice03 |
 | A-4 | Publication and tags are completed by the operator-approved route | release transcript and tag evidence | serious | P-12 | open | | Duncan/operator owns manual publication; push release branch/tag explicitly |
 | A-5 | Published artifacts are installable and match release expectations | temporary install/artifact verification across published channels | correctness | P-12 | open | | use explicit temporary install directories |
@@ -15,4 +15,4 @@ Extracted from arc-plan.md on 2026-09-06 without changing the historical rows, d
 
 ## Closure
 
-Open. Rows: 6. Done / CDC-verified: 1. CC proposed-done / CDC pending: 1. Deferred: 0. No-op: 0. Pending: 4.
+Open. Rows: 6. Done / CDC-verified: 2. Deferred: 0. No-op: 0. Pending: 4.

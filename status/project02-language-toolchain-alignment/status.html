@@ -131,7 +131,7 @@
    ========================================================================== */
 const DATA = {
   release: "0.6.0",
-  updated: "2026-09-12 (arc09 slice02 CC proposed-done; slice03 active.)",
+  updated: "2026-09-12 (arc09 slice02 CDC-verified; slice03 active.)",
   definitionOfDone: "build/publish reorg, compiler coherence (DD-58/DD-37), .d.ts gen, template ICU/i18n (DD-55), lykn lint, book 0.6.0 review, then cut the release.",
   numberingNote: "NN = creation order (not dependency order). Sequence lives in each arc's dependencies.",
   arcs: [
@@ -169,8 +169,8 @@ const DATA = {
       cap:"template → ICU MessageFormat + i18n (DD-55). Un-stranded + merged.",
       slices:[{n:"icu-js",s:"closed"},{n:"icu-rust",s:"closed"},{n:"icu-review+xcompiler",s:"closed"}] },
     { id:"arc09", name:"release-0.6.0", status:"active",
-      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. arc16 and slice01 are closed/CDC-verified; slice02 is CC proposed-done at 65ff40f; slice03 dry-runs/package audit is active. P-12 remains open until publication.",
-      slices:[{n:"release-readiness-runbook",s:"closed-cdc-verified"},{n:"version-bump-release-notes-ci-chore",s:"cc-proposed-done"},{n:"publish-dry-runs-and-package-audit",s:"active"},{n:"operator-publication-and-tags",s:"future"},{n:"postpublish-verification-and-project-close",s:"future"}] },
+      cap:"Version bumps, release notes, publish to JSR/npm/crates.io. arc16, slice01, and slice02 are closed/CDC-verified; slice02 prepared source commit 65ff40f; slice03 dry-runs/package audit is active. P-12 remains open until publication.",
+      slices:[{n:"release-readiness-runbook",s:"closed-cdc-verified"},{n:"version-bump-release-notes-ci-chore",s:"closed-cdc-verified"},{n:"publish-dry-runs-and-package-audit",s:"active"},{n:"operator-publication-and-tags",s:"future"},{n:"postpublish-verification-and-project-close",s:"future"}] },
     { id:"arc10", name:"compiler-completion", status:"closed",
       cap:"CLOSED — gate GO restored 2026-08-08. Original DD-58/DD-37 gate remains closed from 2026-07-05; slice04 fixed no-else if expression position emitting invalid JS at rc=0, so check/compile now fail before codegen.",
       slices:[{n:"strict-default (Rust)",s:"closed"},{n:"js-parity",s:"closed"},{n:"kernel-removal",s:"closed"},{n:"no-else-if-error",s:"closed"}] },
@@ -204,7 +204,7 @@ const DATA = {
   sequence: ["arc09"],
   now: {
     arc:"arc09 open · release planning next",
-    desc:"arc16 is closed/CDC-verified: book commit de0342c adds final 0.6 edition metadata; HTML/EPUB build passed; whole-book --fence lisp passed 428/0 with 19 skipped; link/path/stale-caveat sweeps were clean. arc09 slice01 closed/CDC-verified the release readiness runbook; slice02 prepared source commit 65ff40f; slice03 now owns dry-runs and package audit."
+    desc:"arc16 is closed/CDC-verified: book commit de0342c adds final 0.6 edition metadata; HTML/EPUB build passed; whole-book --fence lisp passed 428/0 with 19 skipped; link/path/stale-caveat sweeps were clean. arc09 slice01 and slice02 are closed/CDC-verified; slice02 prepared source commit 65ff40f; slice03 now owns dry-runs and package audit."
   },
   metrics: [
     {n:"53 / 1947", l:"matrix divergence", s:"was 601 at resolution start (35% at discovery); every residual documented-as-intended"},
@@ -244,7 +244,7 @@ const DATA = {
     "arc16 slice05 closed/CDC-verified the book/writers-guide instruction bootstrap: stale paths, raw Deno/test-book assumptions, fence-gate honesty, AGENTS/CLAUDE facts, planned-ToC disposition, current 0.6.0 language guidance, and the explicit rule that future book-discovered defects can spawn new slices are now recorded in sibling instructions.",
     "arc16 slice06 closed/CDC-verified: repeatable lykn test --docs --fence tags landed; default lykn doctests stayed stable at 482/0; CDC reproduced the book's lisp run at 176 files from 444 blocks with 417 passing / 27 failing examples and the mixed lisp+lykn run at 177 files from 447 blocks with 420 passing / 27 failing examples. The 27 failures route to slice07 drift refresh or new discoveries if they prove implementation/tooling defects.",
     "arc16 slice07 closed/CDC-verified in Expedited Mode: refreshed the live book drift inventory, repaired active sibling planning-path drift, reproduced the expected-red book fence counts, and routed D-2609-FNRT to the newly opened slice08 js-fn-return-parity before chapter work.",
-    "arc16 slice12 closed/CDC-verified the final Lykn Book 0.6.0 edition gate: book commit de0342c added edition metadata and Book Versions navigation; HTML/EPUB build passed; whole-book --fence lisp passed 428/0; link/path/stale-caveat sweeps were clean; arc09 slice01 produced and CDC-verified the release runbook, slice02 prepared source commit 65ff40f, and slice03 is active.",
+    "arc16 slice12 closed/CDC-verified the final Lykn Book 0.6.0 edition gate: book commit de0342c added edition metadata and Book Versions navigation; HTML/EPUB build passed; whole-book --fence lisp passed 428/0; link/path/stale-caveat sweeps were clean; arc09 slice01 produced and CDC-verified the release runbook, slice02 prepared source commit 65ff40f and is now CDC-verified, and slice03 is active.",
   ],
   issues: [
     { t:"Milestone-closed ≠ landed on the release branch", tag:"fixed",

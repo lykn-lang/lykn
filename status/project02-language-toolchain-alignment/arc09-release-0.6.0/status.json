@@ -5,7 +5,7 @@
   "status": "open",
   "plan": "../../../project02-language-toolchain-alignment/arc09-release-0.6.0/arc-plan.md",
   "currentSlice": "slice03-publish-dry-runs-and-package-audit",
-  "summary": "slice02 is CC proposed-done with source commit 65ff40f prepared for 0.6.0; slice03 is open for make check, dist/package audit, JSR/npm dry-runs, and crates dry-runs without bypass flags.",
+  "summary": "slice02 is closed/CDC-verified with source commit 65ff40f prepared for 0.6.0; slice03 is open for make check, dist/package audit, JSR/npm dry-runs, and crates dry-runs without bypass flags.",
   "slices": [
     {
       "id": "slice01-release-readiness-runbook",
@@ -13,7 +13,7 @@
     },
     {
       "id": "slice02-version-bump-release-notes-ci-chore",
-      "status": "cc-proposed-done-cdc-pending"
+      "status": "closed-cdc-verified"
     },
     {
       "id": "slice03-publish-dry-runs-and-package-audit",

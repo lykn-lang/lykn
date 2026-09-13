@@ -1,7 +1,7 @@
 # arc09 — Release 0.6.0
 
 > **Status: Open — slice03 publish dry-runs/package audit active.**
-> arc16 and arc09 slice01 are closed/CDC-verified. slice02 prepared source
+> arc16, slice01, and slice02 are closed/CDC-verified. slice02 prepared source
 > commit `65ff40f` with 0.6.0 versions, draft release notes, checkout
 > v5 maintenance, and a repaired no-bypass `make publish-dry-run` target. Real
 > publication, tags, branch pushes, and book release tags remain future
@@ -24,7 +24,7 @@ publication, release tags, and pushes.
 | Slice | Scope | Status |
 |-------|-------|--------|
 | **slice01 · release-readiness-runbook** | Inventory version surfaces, release-note inputs, dry-run gates, manual-publish boundaries, tag/post-publish verification, and blockers; write the executable release runbook. | **Closed / CDC-verified** ([slice-plan](slice01-release-readiness-runbook/slice-plan.md), [ledger](slice01-release-readiness-runbook/ledger.md), [closing-report](slice01-release-readiness-runbook/closing-report.md), [cdc-verification](slice01-release-readiness-runbook/cdc-verification.md), [runbook](slice01-release-readiness-runbook/artifacts/release-runbook.md)) |
-| **slice02 · version-bump-release-notes-ci-chore** | Update version surfaces from `0.6.0-dev` to `0.6.0`, regenerate lock/version evidence, write 0.6.0 release notes, apply low-risk CI checkout maintenance if still current, and either repair or explicitly route no-bypass replacement for `make publish-dry-run`. | **CC proposed-done; CDC pending** ([slice-plan](slice02-version-bump-release-notes-ci-chore/slice-plan.md), [ledger](slice02-version-bump-release-notes-ci-chore/ledger.md), [closing-report](slice02-version-bump-release-notes-ci-chore/closing-report.md)) |
+| **slice02 · version-bump-release-notes-ci-chore** | Update version surfaces from `0.6.0-dev` to `0.6.0`, regenerate lock/version evidence, write 0.6.0 release notes, apply low-risk CI checkout maintenance if still current, and either repair or explicitly route no-bypass replacement for `make publish-dry-run`. | **Closed / CDC-verified** ([slice-plan](slice02-version-bump-release-notes-ci-chore/slice-plan.md), [ledger](slice02-version-bump-release-notes-ci-chore/ledger.md), [closing-report](slice02-version-bump-release-notes-ci-chore/closing-report.md), [cdc-verification](slice02-version-bump-release-notes-ci-chore/cdc-verification.md)) |
 | **slice03 · publish-dry-runs-and-package-audit** | Run `make check`, dist/package audits, JSR/npm dry-runs, and crates.io dry-runs against the exact release tree without weakening dirty-tree gates; capture receipts. | **Open** ([slice-plan](slice03-publish-dry-runs-and-package-audit/slice-plan.md), [ledger](slice03-publish-dry-runs-and-package-audit/ledger.md), [cc-prompt](slice03-publish-dry-runs-and-package-audit/cc-prompt.md)) |
 | **slice04 · operator-publication-and-tags** | Prepare the final approval packet; after explicit operator authorization, publish JSR/npm/crates artifacts, tag `0.6.0`, push release branch/tag explicitly to intended remotes, and handle the book `book-v0.6.0` tag/publication boundary. | **Future** |
 | **slice05 · postpublish-verification-and-project-close** | Verify published registry artifacts and explicit temporary installs, confirm remote tags/branch visibility, reconcile book release artifacts, close Project02 P-8/P-12, and produce final project closeout evidence. | **Future** |
@@ -54,6 +54,15 @@ their dispositions during project06-planning-reorg. slice01 owns the detailed
 release runbook and can refine the future slice sequence before implementation.
 
 ## 5. Version History
+
+### v1.7 - 2026-09-12 (slice02 CDC verified)
+
+CDC independently reproduced slice02's release-prep evidence: source commit
+`65ff40f` carries the 0.6.0 version surfaces, draft release notes, checkout v5
+maintenance, and repaired no-bypass `make publish-dry-run`; rebuilt CLI reports
+`lykn 0.6.0`; generated dist metadata reports `0.6.0`; `make check` passed
+outside the sandbox home-log restriction; no publication, release tag, branch
+push, or book tag was performed. slice03 remains active.
 
 ### v1.6 - 2026-09-12 (slice02 CC proposed-done; slice03 opened)
 

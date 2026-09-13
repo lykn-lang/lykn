@@ -12,7 +12,7 @@
     "arc": "arc09-release-0.6.0",
     "slice": "slice03-publish-dry-runs-and-package-audit",
     "status": "open",
-    "summary": "arc09 slice02 is CC proposed-done with source commit 65ff40f prepared for 0.6.0; slice03 is open for dry-runs and package audit."
+    "summary": "arc09 slice02 is closed/CDC-verified with source commit 65ff40f prepared for 0.6.0; slice03 is open for dry-runs and package audit."
   },
   "arcs": [
     {
