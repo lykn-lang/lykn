@@ -1,5 +1,9 @@
 # Arc01 ledger
 
+2026-09-13 CDC: [resumed preparation verified](slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+All eight DB rows remain unchanged. Supervisor prerequisite is ready for CC;
+no Arc01 criterion closes from packet replay or review of its open set.
+
 2026-09-13 later CC: [Slice04 preparation](slice04-dependency-and-runtime-boundary/artifacts/resume-preparation.md)
 re-slices bounded supervisor verification to Arc03/Slice07 before authoring
 budget exhaustion. Four source failures remain charged. All original DB rows,

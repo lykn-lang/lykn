@@ -2,6 +2,10 @@
 
 ## Capability and status
 
+2026-09-13 CDC: [resumed preparation verified](slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+The packet, source correction and frozen-lock failure reproduce. The bounded
+Arc03/Slice07 prompt is reviewed and ready; all eight DB rows stay open.
+
 Current sequencing, 2026-09-13: Slice04 resumed preparation retained a fourth
 source-authoring failure and unverified supervisor paths. Its explicit
 before-exhaustion rule now opens bounded
@@ -196,6 +200,10 @@ variants. JSCF/UNUS and guide/book/human obligations remain open. This refines
 execution mechanics from verified findings without changing family ownership.
 
 ## Version History
+
+- 2026-09-13 v1.17: CDC verified Slice04 preparation and accepted the bounded
+  supervisor split. Clarified failure/cleanup controls in its owning open set;
+  preserved all research rows, candidate identities, budgets and original evidence.
 
 - 2026-09-13 v1.16: Slice04's fourth source failure triggered explicit
   before-exhaustion re-slicing of supervisor verification to Arc03/Slice07.

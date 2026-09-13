@@ -1,5 +1,9 @@
 # Project07 ledger
 
+2026-09-13 CDC: [resumed preparation and supervisor routing verified](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+Arc03/Slice07 is the next CC assignment. All project rows, all eight DB rows and
+all six SH rows remain open; research and human outcomes keep their owners.
+
 2026-09-13 later CC: [Slice04 resumed preparation](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/artifacts/resume-preparation.md)
 retains four source failures and re-slices bounded supervisor verification to
 [Arc03/Slice07](arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)

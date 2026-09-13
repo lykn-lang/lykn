@@ -3,6 +3,11 @@
 Status: **Open, ready for CC.** Planning-only prerequisite, Expedited Mode.
 Parent: [Arc03](../arc-plan.md). Six open criteria in [ledger.md](ledger.md).
 
+2026-09-13 CDC: [preparation and split reviewed](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+The retained failure and packet reproduce; this open set is ready for CC.
+No SH criterion is closed. The control clarifications below make existing
+observation-failure and parent-exit cleanup obligations directly testable.
+
 ## Capability and reason for the split
 
 Produce a verified, native Lykn supervisor and semantic audit for the bounded
@@ -37,6 +42,13 @@ Use their exact hashes as the adaptation starting point. Preserve failed
 sources; edit Lykn only, check/lint/compile and inspect emitted code. No
 generated-JS repair or alternate research language.
 
+CDC-confirmed seed hashes: `cases.lykn`
+`6bc7f6ff266908383f09261a97e19fab26f6d0d00de1c8ef2e878838dfdf28a7`;
+`supervisor.lykn` `eb768d0ed0af18b82db1676210ee70fd91ae20c53ace37e1706699193b52c912`;
+`audit.lykn` `f73c7b00cebe40e85dcdeee1745c424161e51edc3a6b7a813720b041529743f8`.
+The inherited candidate manifest's launcher-blocked label is historical; native
+SH inputs must be freshly authored/frozen without mutating that evidence.
+
 Build immutable `4dded883bbd321d19635e6fce233343f33803f9e`, tree
 `218b085176053f1273642496cf75d7691c399f6e`, in an isolated export with
 `cargo build --release --locked`. Selected CLI SHA-256:
@@ -61,7 +73,7 @@ execution, are:
 
 | Family | Required observation and repetitions |
 | --- | --- |
-| SH-CAP | External wall/output/RSS stops, one fresh attempt each; include early termination before compiled output exists and one additional nested-child/parent-exit cleanup control |
+| SH-CAP | Five separate controls, one fresh attempt each: wall stop, output stop, RSS stop before compiled output exists, nested-child/parent-exit cleanup, and injected observation failure after owned-child registration. Freeze exact IDs and expected evidence; none is a DB attempt. |
 | SH-NATIVE | Minimal and parser no-grant success; allowed/denied read and write, denied env/net/run; two fresh attempts each |
 | SH-OBSERVER | Deliberate partial raw write detected while writer waits; two fresh attempts |
 | SH-CONCURRENT | Reader plus replacement writer, and reader plus two writers; two fresh attempts each |
@@ -83,6 +95,13 @@ condition requires a named correction with original evidence retained.
   authority. Verify no observed owned survivors and retain termination receipts.
 - Observation failure must stop owned children and leave bounded evidence;
   promise rejection must not orphan loops. Inspect this path before controls.
+  Exercise a labeled injected observation failure, retain its original error,
+  and verify cleanup with an independent working host observation route.
+  The parent-exit control must leave a known nested child holding an inherited
+  output pipe open: cleanup and stream draining must still finish within the
+  declared external bound. Parent exit alone cannot disable the watchdog.
+  Cap process-sample and error evidence as well as stdout/stderr; reaching a
+  recording cap must produce an explicit disposition, not unbounded allocation.
 - Create verified markers only after semantic checks: actual `NotCapable`,
   independently observed partial bytes, nonzero in-window reader samples,
   complete candidate hashes and exact cancellation aftermath.
@@ -127,6 +146,10 @@ owners and API/route-dependent re-entry; no package or ancestry acceptance is
 implied. Existing guide/book/ADT/source/human outcomes remain Arc02/Arc03 work.
 
 ## Version History
+
+- 2026-09-13 v1.1: CDC reproduced preparation and reviewed the split. Made
+  observation-failure and inherited-pipe cleanup controls explicit, pinned
+  adaptation inputs and retained all six open SH and eight unchanged DB rows.
 
 - 2026-09-13 v1.0: Opened from Slice04's fourth source-authoring failure and
   review gaps before exhausting its correction budget. Isolated native

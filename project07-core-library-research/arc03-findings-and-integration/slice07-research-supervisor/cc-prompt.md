@@ -1,5 +1,11 @@
 # CC — Verify the bounded research supervisor
 
+2026-09-13 CDC review passed: [preparation verification](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+Proceed with this bounded prerequisite; all six SH criteria remain open.
+Use the five explicit SH-CAP controls in slice-plan.md, including injected
+observation failure and a nested child retaining an output pipe after parent
+exit. Bounded cleanup must finish even when the root process has exited.
+
 Execute Arc03/Slice07 in **Expedited Mode**, on branch `planning` at
 `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`. Read this complete open set,
 project/arc plans and ledgers, the linked Slice04 resumed packet/report and its
@@ -61,6 +67,8 @@ project07-core-library-research/arc01-format-runtime-evidence/ledger.md
 project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/slice-plan.md
 project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/ledger.md
 project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cc-prompt.md
+status/status.json
+status/status.html
 ```
 
 Artifacts belong only to this slice's artifacts directory. Inspect the staged

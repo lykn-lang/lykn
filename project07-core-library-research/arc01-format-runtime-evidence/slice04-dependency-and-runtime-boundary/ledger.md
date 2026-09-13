@@ -1,5 +1,9 @@
 # Slice04 ledger
 
+2026-09-13 CDC: [preparation/split verified](cdc-resume-verification.md).
+All eight DB rows remain unchanged and open. Four source failures and the
+separate config error are retained; no runtime supervisor or matrix was run.
+
 Eight criteria open. The launcher correction is verified; resumed preparation
 now routes a bounded supervisor prerequisite to [Arc03/Slice07](../../arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)
 before further Slice04 execution. [Preparation evidence](artifacts/resume-preparation.md)

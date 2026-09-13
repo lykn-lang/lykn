@@ -1,5 +1,18 @@
 # CC — Research the dependency and runtime boundary
 
+2026-09-13 CDC: [resumed preparation and routing verified](cdc-resume-verification.md).
+The next assignment is Arc03/Slice07's bounded supervisor prompt. All eight DB
+rows remain open; this review does not lift the supervisor prerequisite.
+
+Exact CDC review additions to the existing scope:
+
+```text
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/artifacts/cdc-resume-raw-transcript.txt
+status/status.json
+status/status.html
+```
+
 2026-09-13, subsequent preparation: **Open; supervisor prerequisite re-sliced.**
 Four failed authoring conditions are charged. Before exhausting the five-condition
 budget, the supervisor adaptation/preflight is assigned to Arc03/Slice07.

@@ -2,6 +2,11 @@
 
 ## Capability and status
 
+2026-09-13 CDC: [Slice04 preparation and routing verified](../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+Slice07 is ready for CC with five explicit external/failure controls, including
+observation failure and a nested child retaining a pipe after parent exit.
+All six SH rows and A3-07 remain open; this is open-set review, not tooling closure.
+
 2026-09-13 current sequencing: [Slice07](slice07-research-supervisor/slice-plan.md)
 is open for bounded native research-supervisor verification. Arc01/Slice04
 reached four source-authoring failures and explicitly requires re-slicing
@@ -82,6 +87,10 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-09-13 v1.8: CDC independently replayed Slice04 preparation and reviewed
+  Slice07. Made existing observation-failure and parent-exit cleanup obligations
+  concrete, pinned adaptation source hashes and retained all six SH criteria open.
 
 - 2026-09-13 v1.7: Slice04 preparation exposed supervisor review gaps after
   its fourth source failure. Added bounded native tooling Slice07 and A3-07

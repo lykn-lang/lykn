@@ -1,5 +1,9 @@
 # Arc03 ledger
 
+2026-09-13 CDC: [preparation and Slice07 open set reviewed](../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-resume-verification.md).
+Proceed with Slice07; all six SH rows and A3-07 remain open. A3-01/A3-06 retain
+their earlier independent closures; no other arc row changes status.
+
 2026-09-13 later CC: added A3-07 for the explicit bounded supervisor
 prerequisite from Slice04's fourth source-authoring failure. Original six rows
 and their statuses remain unchanged. [Slice07](slice07-research-supervisor/slice-plan.md)

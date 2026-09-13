@@ -1,5 +1,9 @@
 # Slice04 — Dependency and runtime boundary
 
+2026-09-13 CDC: [resumed preparation independently reviewed](cdc-resume-verification.md).
+The fourth source failure and frozen-lock failure reproduce. Arc03/Slice07's
+bounded supervisor open set is ready for CC; all eight DB criteria remain open.
+
 Status: **Open; supervisor prerequisite re-sliced before budget exhaustion.**
 Expedited Mode. Eight open ledger criteria.
 
