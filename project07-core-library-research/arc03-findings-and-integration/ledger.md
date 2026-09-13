@@ -1,5 +1,9 @@
 # Arc03 ledger
 
+2026-09-13: Slice06 is [CC proposed-done](slice06-deno-launch-compatibility/closing-report.md).
+A3-06 remains open pending independent correction verification; full source
+gates and child attestation do not close arc composition or other findings.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | A3-01 | Run-permission correction independently closed | Source/argv/denial tests, build receipt and Slice01 CDC report | serious | D-2609-PERM | done | [Reproduced Slice01 CDC](slice01-run-permissions/cdc-verification.md); [RP-B01](slice01-run-permissions/artifacts/build-receipt.md) | JSON launcher prerequisite lifted; no inherited arc closure |

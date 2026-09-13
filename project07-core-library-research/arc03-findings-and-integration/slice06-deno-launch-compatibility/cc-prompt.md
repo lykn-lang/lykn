@@ -1,5 +1,10 @@
 # CC — Restore Deno 2.9.6 launch compatibility
 
+2026-09-13 implementation handoff: [CC proposed-done](closing-report.md), source
+`4dded883bbd321d19635e6fce233343f33803f9e`. The prompt below is retained as the
+executed contract. Next action is independent CDC, not repeated implementation
+or automatic Slice04 execution. Six LC rows remain open.
+
 CDC prerequisite review passed; see [independent blocker/evidence replay](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
 Proceed with this source correction. All six correction criteria remain open.
 

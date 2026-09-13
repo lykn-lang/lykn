@@ -53,6 +53,12 @@ resource API gap or Arc02/03 human/guide/book/ADT outcome is removed.
 
 ## Decisions this arc informs
 
+2026-09-13 correction update: Arc03/Slice06 is now
+[CC proposed-done](../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md).
+CDC must verify the recorded corrected binary before Slice04 resumes. The full
+R-01–09 workload, 36 unsupported resource cells, 28 gated document variants and
+all authoring/source/human outcomes retain their original owners and budgets.
+
 - Is native JSON adequate for the required numeric and duplicate-key policy?
 - Which JSON extensions are useful without implying preservation guarantees?
 - Does the first YAML use case need value rewriting, document preservation,
@@ -182,6 +188,10 @@ variants. JSCF/UNUS and guide/book/human obligations remain open. This refines
 execution mechanics from verified findings without changing family ownership.
 
 ## Version History
+
+- 2026-09-13 v1.14: Arc03/Slice06 supplied the DARG correction and full source
+  gates. Recorded CDC as the remaining launcher prerequisite; no research row,
+  scope, authoring budget or document-route obligation is removed.
 
 - 2026-09-13 v1.13: CDC reproduced the Slice04 launch blocker, eval tooling,
   460-file packet, 188 published-file checks and six regenerated outputs.

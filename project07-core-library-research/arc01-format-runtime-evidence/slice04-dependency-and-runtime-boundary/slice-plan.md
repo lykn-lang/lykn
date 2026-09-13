@@ -17,6 +17,13 @@ eight research criteria stay open and full operational freeze remains owed.
 
 ## Capability and inputs
 
+2026-09-13 re-entry candidate: [Arc03/Slice06's CC handoff](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
+records corrected source `4dded883bbd321d19635e6fce233343f33803f9e` and its isolated
+binary. This is not yet the independently accepted research pin. Await CDC,
+then refresh the complete operational baseline and controls. All eight DB
+criteria remain open, including all R families and the original three failed
+authoring conditions; the candidate harness still requires validation.
+
 Establish which runtime, dependency and file-operation boundaries the proposed
 JSON/YAML libraries can actually rely on, with explicit alternatives and unresolved
 decisions. Distinguish measured behavior, pinned source evidence, upstream claims,

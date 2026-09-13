@@ -1,5 +1,10 @@
 # Project07 ledger
 
+2026-09-13: Arc03/Slice06 [CC correction handoff](arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
+supplies the launcher fix and full source validation. Independent CDC is next;
+all project criteria and Slice04's research gate remain open. This does not
+close test-runner, guide/book, ADT, document or operator-acceptance obligations.
+
 2026-09-13: Arc01/Slice04 [remains open/blocked](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/closing-report.md)
 after Deno 2.9.6 failed to select a script through the pinned CLI. Arc03/Slice06
 owns D-2609-DARG. Native eval tooling is an explicit operator-suggested route,

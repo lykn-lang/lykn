@@ -1,10 +1,15 @@
 # Slice06 — Deno launch compatibility
 
-Status: **Open for execution.** Expedited Mode. This is a prerequisite correction
+Status: **CC proposed-done; independent CDC pending.** Expedited Mode. This is a prerequisite correction
 opened by Arc01/Slice04's reproduced D-2609-DARG failure. Numbering does not change
 the existing test-permission, guide, book/language and integration owners.
 
 ## Capability and evidence
+
+2026-09-13: [CC handoff](closing-report.md) supplies the scoped source correction,
+full gates and an isolated verified binary. All six ledger rows remain open.
+Slice04 remains gated until CDC reproduces this correction; its original scope
+and authoring budget survive. The execution contract below is retained.
 
 Restore explicit `lykn run` script selection on the available Deno 2.9.6 while
 preserving permission scopes, argument bytes, filename safety, configuration,

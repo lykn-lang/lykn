@@ -6,7 +6,7 @@ Correct accepted guide, book, language and tooling findings; reproduce original
 failures and relevant regressions. Human code-shape acceptance remains distinct.
 This arc opens early because Arc01/Slice01 exposed D-2609-PERM.
 Parent: [project plan](../project-plan.md). Status: active; Slice01 CDC closed
-(was CC proposed-done). Slice06 is now open as the Deno 2.9.6 launch prerequisite
+(was CC proposed-done). Slice06 is now CC proposed-done, awaiting CDC, as the Deno 2.9.6 launch prerequisite
 for Arc01/Slice04; Slice02 planning stays queued. The earlier instruction to
 resume Arc01/Slice02 was fulfilled by its subsequent CDC closure.
 
@@ -19,7 +19,7 @@ resume Arc01/Slice02 was fulfilled by its subsequent CDC closure.
 | slice03-guide-consistency | Correct LINT/NPMB and accepted guide findings; compare original authoring tasks | Arc02 evidence and runtime decisions | Roadmap only |
 | slice04-book-and-language-corrections | Integrate JSER and accepted book/language/formatter findings with operator review | Arc02 and Project02 book coordination | Roadmap only; split as needed |
 | slice05-regression-and-integration | Demonstrate correction composition and carry residual work to handoff | Earlier slices and Arc02 completion | Roadmap only |
-| [slice06-deno-launch-compatibility](slice06-deno-launch-compatibility/slice-plan.md) | Restore script selection on Deno 2.9.6 while preserving explicit authority, path and argument safety | Arc01/Slice04 D-2609-DARG evidence | Open; execute before resuming Arc01/Slice04 |
+| [slice06-deno-launch-compatibility](slice06-deno-launch-compatibility/slice-plan.md) | Restore script selection on Deno 2.9.6 while preserving explicit authority, path and argument safety | Arc01/Slice04 D-2609-DARG evidence | CC proposed-done; CDC before resuming Arc01/Slice04 |
 
 After Slice01 closes, resume the already-open Arc01/Slice02 research packet;
 queue this arc's Slice02 planning. This explicit cross-arc ordering supersedes
@@ -52,6 +52,14 @@ be independently demonstrated, not inherited from child closures.
 
 ## Current correction evidence
 
+Slice06's [CC handoff](slice06-deno-launch-compatibility/closing-report.md) now
+supplies source `4dded883bbd321d19635e6fce233343f33803f9e`, 16 launcher regressions,
+full make checks and a reconciled isolated release binary. It preserves the
+normal deno run path, stdin and specifiers, and tests Deno's symlink import base
+directly. This supersedes the instruction to begin implementation; independent
+CDC is next. No new slice or scope reduction is required. A3-06 and Slice04's
+gate stay open; all other correction and composition owners remain.
+
 Slice01 source commit `d0bb981dae2a4abf6c984406c4b2081a45cc92f8` supplies the run correction.
 Its [CDC verification](slice01-run-permissions/cdc-verification.md) independently
 reproduces six criteria, full gates and the [RP-B01 receipt](slice01-run-permissions/artifacts/build-receipt.md).
@@ -62,6 +70,11 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-09-13 v1.5: Slice06 submitted the bounded DARG correction with actual
+  permission/path regressions, full gates and a reconciled release build.
+  Updated the next action to CDC; preserved complete Slice04 re-entry and all
+  other arc owners. Symlink and Cargo build-identity observations are retained.
 
 - 2026-09-13 v1.4: CDC independently reproduced DARG and the partial static/eval
   evidence. Confirmed Slice06 as the next correction and clarified preservation

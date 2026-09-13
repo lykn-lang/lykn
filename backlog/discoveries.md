@@ -1346,7 +1346,7 @@ tooling explicitly. The YAML split preserves all families and the YNOD gate.
 - **Guess:** serious — blocks the required research launcher and evidence-tooling
   route; this is compatibility failure, not a permission-denial observation.
 - **Kind:** bug / compatibility gap.
-- **Status:** open — correction plan supplied; repair and CDC pending.
+- **Status:** open — correction CC proposed-done at 4dded883bbd321d19635e6fce233343f33803f9e; independent CDC pending.
 - **CDC evidence review, 2026-09-13:** [Independent replay](../project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
   reproduced four minimal wrapper failures and eval success at the same binary
   identities. The blocker is confirmed; implementation and correction CDC remain

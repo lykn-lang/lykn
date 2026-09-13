@@ -95,7 +95,7 @@ source edits.
 | --- | --- | --- | --- |
 | [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 open but blocked on Arc03/Slice06 |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice06 launch compatibility open before resuming Arc01/Slice04; Slice02 remains queued |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice06 CC proposed-done, awaiting CDC before Arc01/Slice04; Slice02 remains queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -204,8 +204,10 @@ must be independently verified before a new compiler condition resumes Slice04.
 Its eight criteria, draft variants, 36 unsupported resource cells and 28 gated
 document cases remain owed. Existing PERM closure retains its original provenance.
 CDC has [reproduced that blocker and partial evidence](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
-and reviewed the correction open set. Arc03/Slice06 is the next CC action;
-its normal run, argument/path and explicit-permission contracts remain required.
+and reviewed the correction open set. Arc03/Slice06 was the next CC action;
+it now has a [CC handoff](arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
+with source correction and full gates. Independent correction verification is
+next; its normal run, argument/path and explicit-permission contracts are retained.
 All project ledger rows remain open; no operator
 acceptance or library adoption is claimed.
 
@@ -239,6 +241,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.15: Arc03/Slice06 submitted source correction 4dded88 with full
+  source gates and an isolated binary tested at its recorded hash. Its six rows
+  await CDC; Slice04 remains gated. The correction preserves stdin, specifiers,
+  permissions and import bases without selecting any library/document route.
 
 - 2026-09-13 v1.14: CDC verified the Slice04 blocked handoff and confirmed the
   Arc03/Slice06 correction prompt. Four fresh minimal failures, eval success,

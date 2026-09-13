@@ -89,6 +89,12 @@ without its compatible-route prerequisite or claim arc/project/human closure.
 
 ## 2026-09-13 prerequisite-routing amendment
 
+The correction now has a [CC handoff](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
+at source `4dded883bbd321d19635e6fce233343f33803f9e`. Await independent CDC before
+using its candidate binary as the research baseline. After verification, resume
+this entire prompt, retaining the three failed authoring conditions, all R-01–09,
+36 unsupported resource cells, 28 gated documents and all source/human outcomes.
+
 The upgraded runtime cannot launch even the no-import reproduction through the
 pinned CLI. Stop runtime-dependent work under RP01's toolchain-gap rule; retain
 all eight criteria and every R family. This is a blocked handoff, not proposed

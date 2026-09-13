@@ -1,5 +1,9 @@
 # Arc01 ledger
 
+2026-09-13: [Arc03/Slice06 is CC proposed-done](../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md).
+Independent correction verification still gates Slice04; no Arc01 row inherits
+completion from the launcher source gates or the eight diagnostic captures.
+
 2026-09-13: Slice04's [blocked handoff](slice04-dependency-and-runtime-boundary/closing-report.md)
 retains all eight open rows. D-2609-DARG requires Arc03/Slice06 before full
 research resumes. Published-file checks through operator-suggested native eval
