@@ -93,7 +93,7 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03 CDC closed; Slice05 YAML values CC proposed-done |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05 CDC closed; Slice06 resources/files open |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
 | [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
@@ -189,8 +189,10 @@ Arc01/Slice02 is now [CDC closed](arc01-format-runtime-evidence/slice02-json-beh
 replayed. Slice03 YAML preflight is now
 [CDC closed](arc01-format-runtime-evidence/slice03-yaml-preflight/cdc-verification.md),
 with all six criteria reproduced and all 349 YAML variants retained. Slice05
-is CC proposed-done for 259 full value variants using the verified Lykn harness. All project
-ledger rows remain open; no operator acceptance or library adoption is claimed.
+is [CDC closed](arc01-format-runtime-evidence/slice05-yaml-value-behavior/cdc-verification.md)
+for 259 value variants after full independent replay. Slice06 is open for all
+62 resource/file variants. All project ledger rows remain open; no operator
+acceptance or library adoption is claimed.
 
 Slice01 bubble-ups: D-2609-PERM recorded implicit run grants; the release/0.6.x
 correction is now independently verified and the discovery closed as repaired.
@@ -214,12 +216,18 @@ JSON's authoring/context pressure split the unstarted YAML roadmap into
 Slice03 preparation, Slice05 values, Slice06 resources/files and Slice07
 document fidelity. Existing Slice04 runtime/policy runs before Slice07 to
 resolve its compatible route. All Y-01–16 requirements remain; preparation is
-closed and value execution has a detailed opening. Evidence aggregation/audit
-follows the same Lykn-first rule as runtime probes. The JSON CDC records CC's
-Python aggregation deviation and supplies an independent Lykn audit; full
+closed, value execution is verified, and resource/file work is open. Evidence
+aggregation/audit follows the same Lykn-first rule as runtime probes. The JSON
+CDC records CC's Python aggregation deviation and supplies an independent Lykn audit; full
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-12 v1.10: Arc01/Slice05 CDC independently reproduced all 259 value
+  variants twice, their controls and correction comparison. Slice06 now opens
+  all 62 resource/file variants with explicit API absence and transport limits;
+  28 documents remain behind Slice04. No package policy, source repair, human
+  acceptance or project composition criterion inherits closure.
 
 - 2026-09-12 v1.9: Arc01/Slice05 submitted all 259 value variants twice with
   real file/graph/diagnostic evidence and 35,098 audit checks. Its full warning-

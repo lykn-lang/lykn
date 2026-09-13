@@ -9,8 +9,8 @@ baseline, so a dependency recommendation is not inferred from a registry name.
 
 Active arc. Slices01–03 are CDC closed. All 17 JSON families independently
 replayed; YAML preflight reproduced 38 sentinel/harness attempts and three
-supervisor controls. Slice05 is CC proposed-done for all 259 value variants. Full YAML
-families remain owed.
+supervisor controls. Slice05 is now CDC closed for all 259 value variants, replayed
+twice. Slice06 resource/file work is open; full YAML closure remains owed.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
 ## Slice breakdown
@@ -21,8 +21,8 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
 | slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives; resolve the document-route prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence | Planned; identity retained; precedes Slice07 |
-| [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CC proposed-done; 259 variants/518 final attempts; CDC pending |
-| slice06-yaml-resource-and-files | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | Planned |
+| [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
+| [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | Open; 54 resource cells and eight file faults; unsupported-stage dispositions explicit |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
 
 The former `slice03-yaml-fidelity` roadmap had no open set or authored work.
@@ -100,7 +100,7 @@ Apply the project's exact-path commits, proposed-done/CDC separation, immediate
 evidence-based close and next-slice opening, and arc composition rules.
 Slice02 now has [independent CDC closure](slice02-json-behavior/cdc-verification.md).
 The actionable next handoff is
-`arc01-format-runtime-evidence/slice05-yaml-value-behavior/cc-prompt.md`.
+`arc01-format-runtime-evidence/slice06-yaml-resource-and-files/cc-prompt.md`.
 Original JSON CC artifacts remain historical; CDC records replay adaptations.
 Do not generate a close set or mark research complete merely because the
 planning documents exist.
@@ -141,7 +141,7 @@ existing-destination failure checks and the full value matrix. Slice06 retains
 resource recipes and exact file-fault modes. Stable std/yaml has no separate
 toJS method; report unavailable stages/options honestly rather than emulate an
 API and call it passing. Slice07's 28 document variants remain behind Slice04
-and D-2609-YNOD. Slice05 is now the next opened work, not Slice04.
+and D-2609-YNOD. Slice05 has since closed; Slice06 is now the next opened work.
 
 CDC preparation review requires Y-01 to read/parse its actual file first and
 Y-09 to exercise the real replacement path against an existing destination.
@@ -152,7 +152,30 @@ and Slice04 must distinguish those costs from package behavior and hard limits.
 The 259/62/28 value/resource-and-file/document ownership counts sum to 349.
 No source correction or family reduction accompanies this clarification.
 
+## Slice05 verified handoff
+
+[CDC](slice05-yaml-value-behavior/cdc-verification.md) reproduced all 518 final
+attempts, 13 controls, 35,098 audit checks, 2,592 correction comparisons and
+7,833 additional checks. Accepted parse and serializable value domains differ;
+Map/Set and unsupported-value loss, permissive parse shapes, numeric and source
+trivia losses must inform Arc02/Arc04 validation policy without prematurely
+choosing it. Warnings need explicit name/message capture beside positions.
+
+Slice06 preserves all 62 assigned variants, treats absent toJS/package-bound
+APIs as explicit capability dispositions, and materializes large recipe inputs
+outside argv. Measure parser/serializer stages separately from bounded inspection
+and transport; a supervisor threshold is not a hard allocation guarantee. Slice04
+retains policy/offline/concurrency/durability and precedes all 28 Slice07 document
+variants. JSCF/UNUS and guide/book/human obligations remain open. This refines
+execution mechanics from verified findings without changing family ownership.
+
 ## Version History
+
+- 2026-09-12 v1.9: Slice05 CDC closed all seven value criteria after full replay
+  and correction reconciliation. Opened Slice06 using actual APIs and harness
+  limits: explicit unsupported stages, file-based resource transport and separated
+  stage/inspection costs. All 349 variants and remaining policy/document/authoring
+  owners survive; arc composition stays open.
 
 - 2026-09-12 v1.8: Slice05 submitted full value execution with complete warning
   capture, 35,098 audit checks and retained superseded evidence. Value-domain
@@ -200,7 +223,8 @@ No source correction or family reduction accompanies this clarification.
 [CC evidence](slice05-yaml-value-behavior/closing-report.md) covers all 259
 assigned variants twice, with 13 separate supervised controls and 35,098 audit
 checks. A full warning-capture confirmation retains the earlier condition and
-checks 518 old/new pairs. CDC is next; only verified closure opens Slice06.
+checks 518 old/new pairs. CDC has now reproduced this evidence and closed
+Slice05; Slice06 is open under the verified handoff above.
 
 [Findings](slice05-yaml-value-behavior/artifacts/findings.md) require an explicit
 admissible-value and validation policy in later authoring/library work: Map/Set

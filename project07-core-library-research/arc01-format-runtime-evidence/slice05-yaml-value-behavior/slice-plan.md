@@ -1,7 +1,7 @@
 # Slice05 — YAML value behavior through Lykn
 
-Status: **CC proposed-done; independent CDC pending.** Expedited Mode.
-All 259 variants have two final attempts; see [closing-report.md](closing-report.md).
+Status: **CDC closed; seven criteria reproduced.** Expedited Mode.
+All 259 variants independently replayed twice; see [CDC verification](cdc-verification.md).
 The original scope and verification contract below remain unchanged.
 
 ## Assigned capability and inputs
@@ -202,6 +202,11 @@ After verified close, open Slice06 YAML resources/files using these actual findi
 Slice04 still precedes gated Slice07. No whole-YAML, arc or project closure here.
 
 ## Version History
+
+- 2026-09-12 v1.2: CDC rebuilt and replayed all 518 attempts plus 13 controls;
+  reproduced the retained audit/correction comparison and added exact final-run
+  comparison. Original artifacts remain unchanged; CDC audit/receipt are under
+  artifacts. Opened Slice06 with all resource/file obligations retained.
 
 - 2026-09-12 v1.1: Submitted all 518 final attempts, separate controls and a
   full warning-capture confirmation with original evidence preserved. No

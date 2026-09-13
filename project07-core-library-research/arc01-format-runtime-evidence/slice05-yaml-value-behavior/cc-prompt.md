@@ -1,7 +1,8 @@
 # CC — Execute the full YAML value matrix
 
-Execution submitted as **CC proposed-done**; see [closing-report.md](closing-report.md).
-CDC review is next. The original instructions below remain the replay contract.
+Execution is **CDC closed**; see [cdc-verification.md](cdc-verification.md).
+The original instructions below remain the CC replay contract. The next assignment
+is [Slice06 resources/files](../slice06-yaml-resource-and-files/cc-prompt.md).
 
 Execute Project07/Arc01/Slice05 in **Expedited Mode**. Work in
 `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`. Read the project/arc plans

@@ -44,3 +44,8 @@ rows remain open, including guide/book evaluation and human acceptance.
 259 variants/518 final attempts and 35,098 Lykn audit checks. CDC review remains
 pending. Source-domain loss, complete diagnostic capture, compiler/guide/book
 findings and operator review survive into later owners; no P criterion closes.
+
+2026-09-12 CDC: Slice05's 259 value variants independently replayed twice and
+all seven criteria closed. Slice06 resources/files is now open. All project
+rows remain open; value evidence does not supply dependency policy, source
+repairs, whole-YAML composition or operator acceptance.
