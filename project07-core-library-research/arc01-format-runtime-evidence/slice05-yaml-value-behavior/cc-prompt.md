@@ -1,5 +1,8 @@
 # CC — Execute the full YAML value matrix
 
+Execution submitted as **CC proposed-done**; see [closing-report.md](closing-report.md).
+CDC review is next. The original instructions below remain the replay contract.
+
 Execute Project07/Arc01/Slice05 in **Expedited Mode**. Work in
 `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`. Read the project/arc plans
 and ledgers, this full open set, Slice03 CDC and its artifacts, RP01/FM01/AE01.

@@ -93,7 +93,7 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03 CDC closed; Slice05 YAML values open |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03 CDC closed; Slice05 YAML values CC proposed-done |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
 | [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice02 planning queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
@@ -189,7 +189,7 @@ Arc01/Slice02 is now [CDC closed](arc01-format-runtime-evidence/slice02-json-beh
 replayed. Slice03 YAML preflight is now
 [CDC closed](arc01-format-runtime-evidence/slice03-yaml-preflight/cdc-verification.md),
 with all six criteria reproduced and all 349 YAML variants retained. Slice05
-is open for 259 full value variants using the verified Lykn harness. All project
+is CC proposed-done for 259 full value variants using the verified Lykn harness. All project
 ledger rows remain open; no operator acceptance or library adoption is claimed.
 
 Slice01 bubble-ups: D-2609-PERM recorded implicit run grants; the release/0.6.x
@@ -220,6 +220,12 @@ Python aggregation deviation and supplies an independent Lykn audit; full
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-12 v1.9: Arc01/Slice05 submitted all 259 value variants twice with
+  real file/graph/diagnostic evidence and 35,098 audit checks. Its full warning-
+  capture confirmation preserves prior observations. Value-domain loss and
+  permissive parsing must inform later library validation policy; remaining
+  resource/document/runtime, source/book and human owners are unchanged.
 
 - 2026-09-12 v1.8: Arc01/Slice03 CDC reproduced the pinned build, freeze and all
   38 sentinel/harness attempts plus three supervisor controls. Opened Slice05

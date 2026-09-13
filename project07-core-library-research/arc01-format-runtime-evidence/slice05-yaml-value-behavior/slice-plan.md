@@ -1,6 +1,8 @@
 # Slice05 — YAML value behavior through Lykn
 
-Status: **Open; ready for CC.** Expedited Mode. No full-value execution yet.
+Status: **CC proposed-done; independent CDC pending.** Expedited Mode.
+All 259 variants have two final attempts; see [closing-report.md](closing-report.md).
+The original scope and verification contract below remain unchanged.
 
 ## Assigned capability and inputs
 
@@ -200,6 +202,10 @@ After verified close, open Slice06 YAML resources/files using these actual findi
 Slice04 still precedes gated Slice07. No whole-YAML, arc or project closure here.
 
 ## Version History
+
+- 2026-09-12 v1.1: Submitted all 518 final attempts, separate controls and a
+  full warning-capture confirmation with original evidence preserved. No
+  criterion, owner, input question or permission gate was reduced; CDC pending.
 
 - 2026-09-12 v1.0: Opened after Slice03 CDC reproduced the frozen 349-variant
   preparation. Assigned all 259 value variants, two attempts each, with explicit

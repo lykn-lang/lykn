@@ -39,3 +39,8 @@ operator review remain explicit; preparation does not close YAML capability.
 six of six criteria reproduced. Slice05 is open for 259 full value variants;
 62 resource/file and 28 document variants retain their later owners. All project
 rows remain open, including guide/book evaluation and human acceptance.
+
+2026-09-12 Slice05: [full YAML value evidence is CC proposed-done](arc01-format-runtime-evidence/slice05-yaml-value-behavior/closing-report.md),
+259 variants/518 final attempts and 35,098 Lykn audit checks. CDC review remains
+pending. Source-domain loss, complete diagnostic capture, compiler/guide/book
+findings and operator review survive into later owners; no P criterion closes.

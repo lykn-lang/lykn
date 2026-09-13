@@ -9,7 +9,7 @@ baseline, so a dependency recommendation is not inferred from a registry name.
 
 Active arc. Slices01–03 are CDC closed. All 17 JSON families independently
 replayed; YAML preflight reproduced 38 sentinel/harness attempts and three
-supervisor controls. Slice05 is open for all 259 value variants. Full YAML
+supervisor controls. Slice05 is CC proposed-done for all 259 value variants. Full YAML
 families remain owed.
 See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 
@@ -21,7 +21,7 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
 | slice04-dependency-and-runtime-boundary | Reconcile runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, resource constraints, and adoption alternatives; resolve the document-route prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence | Planned; identity retained; precedes Slice07 |
-| [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | Open; 259 variants, two attempts each; no full-value execution claimed |
+| [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CC proposed-done; 259 variants/518 final attempts; CDC pending |
 | slice06-yaml-resource-and-files | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | Planned |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
 
@@ -154,6 +154,11 @@ No source correction or family reduction accompanies this clarification.
 
 ## Version History
 
+- 2026-09-12 v1.8: Slice05 submitted full value execution with complete warning
+  capture, 35,098 audit checks and retained superseded evidence. Value-domain
+  losses and permissive parsing strengthen the explicit validation-policy
+  handoff. No adoption or closure is inferred; all 349 owners remain unchanged.
+
 - 2026-09-12 v1.7: Slice03 CDC closed six preparation criteria after fresh build,
   exact freeze and full sentinel replay. Opened Slice05 for 259 value variants
   using the actual harness. Carried literal-before-file and destination-failure
@@ -189,3 +194,18 @@ No source correction or family reduction accompanies this clarification.
 - 2026-09-12 v1.0: Opened the format/runtime evidence arc with four bounded
   research slices; detailed the baseline-and-protocol slice first. Preserved
   YAML and dependency-provenance research alongside the JSON starting point.
+
+## Slice05 value handoff
+
+[CC evidence](slice05-yaml-value-behavior/closing-report.md) covers all 259
+assigned variants twice, with 13 separate supervised controls and 35,098 audit
+checks. A full warning-capture confirmation retains the earlier condition and
+checks 518 old/new pairs. CDC is next; only verified closure opens Slice06.
+
+[Findings](slice05-yaml-value-behavior/artifacts/findings.md) require an explicit
+admissible-value and validation policy in later authoring/library work: Map/Set
+members can disappear, top-level/property undefined differ, numeric lexemes lose
+precision/sign, and accepted tab input can yield a surprising mapping shape.
+Original bytes, key domains and warning messages must survive that decision.
+Successful represented round trips do not prove document fidelity. The sequence
+03 → 05 → 06 → 04 → 07 and all 349 original case owners are unchanged.
