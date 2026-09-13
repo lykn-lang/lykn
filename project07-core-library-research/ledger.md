@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-13 subsequent CDC: [launcher correction independently closed](arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md).
+All six LC rows and A3-06 are done. Slice04 resumes on its active 4dded88/Deno
+2.9.6 condition with all eight DB rows open. All project rows remain open;
+source/book/guide/ADT outcomes and human acceptance retain their owners.
+Earlier notes below record the pre-closure blocker and CC handoff.
+
 2026-09-13: Arc03/Slice06 [CC correction handoff](arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
 supplies the launcher fix and full source validation. Independent CDC is next;
 all project criteria and Slice04's research gate remain open. This does not

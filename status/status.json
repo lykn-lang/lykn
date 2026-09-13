@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-12",
+  "updated": "2026-09-13",
   "home": "planning/status",
   "summary": "Planning status is consolidated here as a project collection. Project and arc plans remain in their owning project directories.",
   "projects": [
@@ -47,8 +47,8 @@
       "status": "active",
       "plannedRelease": null,
       "plan": "../project07-core-library-research/project-plan.md",
-      "currentArc": "arc03-findings-and-integration",
-      "nextArc": "arc01-format-runtime-evidence"
+      "currentArc": "arc01-format-runtime-evidence",
+      "nextArc": "arc02-lykn-authoring-evidence"
     }
   ]
 }

@@ -1,12 +1,25 @@
 # CC — Restore Deno 2.9.6 launch compatibility
 
-2026-09-13 implementation handoff: [CC proposed-done](closing-report.md), source
+2026-09-13 current status: [CDC closed](cdc-verification.md), six of six criteria.
+Next: resume [Arc01/Slice04](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cc-prompt.md)
+with its refreshed compiler/runtime condition. Do not repeat this implementation.
+
+Historical implementation handoff: [CC proposed-done](closing-report.md), source
 `4dded883bbd321d19635e6fce233343f33803f9e`. The prompt below is retained as the
-executed contract. Next action is independent CDC, not repeated implementation
-or automatic Slice04 execution. Six LC rows remain open.
+executed contract. At that handoff all six LC rows were open pending CDC.
 
 CDC prerequisite review passed; see [independent blocker/evidence replay](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
-Proceed with this source correction. All six correction criteria remain open.
+The implementation instructions below were executed before CDC closure.
+
+CDC closure scope adds these exact planning paths to the original list below:
+
+```text
+project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md
+project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/artifacts/cdc-raw-transcript.txt
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/ledger.md
+status/status.json
+status/status.html
+```
 
 Execute Project07/Arc03/Slice06 in **Expedited Mode**. Read project/arc plans
 and ledgers, this full open set, applicable source AGENTS.md and the linked

@@ -1346,7 +1346,12 @@ tooling explicitly. The YAML split preserves all families and the YNOD gate.
 - **Guess:** serious — blocks the required research launcher and evidence-tooling
   route; this is compatibility failure, not a permission-denial observation.
 - **Kind:** bug / compatibility gap.
-- **Status:** open — correction CC proposed-done at 4dded883bbd321d19635e6fce233343f33803f9e; independent CDC pending.
+- **Status:** closed as repaired — source 4dded883bbd321d19635e6fce233343f33803f9e independently verified on Deno 2.9.6, 2026-09-13.
+- **Correction CDC:** [Independent verification](../project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md)
+  reproduced a fresh parent failure, 16 regressions, full gates and eight fresh
+  corrected runtime captures using the selected release binary. No fresh
+  removed-Deno-2.7.7 or Windows runtime result is claimed. Other discoveries,
+  test-runner grants and package-adoption decisions remain separately owned.
 - **CDC evidence review, 2026-09-13:** [Independent replay](../project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
   reproduced four minimal wrapper failures and eval success at the same binary
   identities. The blocker is confirmed; implementation and correction CDC remain
@@ -1356,7 +1361,7 @@ tooling explicitly. The YAML split preserves all families and the YNOD gate.
 - **Destination:** [Slice06 plan](../project07-core-library-research/arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md).
 - **Evidence:** [Slice04 blocked handoff](../project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/closing-report.md)
   and its lossless packet, original/revised source, actual argv and version hashes.
-- **Re-entry:** independent correction verification, then full Slice04 preparation
-  under a new compiler condition. Preserve all R families, 36 unsupported resource
+- **Re-entry:** full Slice04 preparation resumes under its verified 4dded88/Deno
+  2.9.6 condition. Preserve all R families, 36 unsupported resource
   cells, 28 document cases and original PERM closure provenance. No silent grants,
   installation/downgrade, source-pin mutation, PATH shim or package adoption.

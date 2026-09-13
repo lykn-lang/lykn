@@ -21,7 +21,7 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
-| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence; Arc03/Slice06 launcher correction | Open/blocked by D-2609-DARG; precedes Slice07 |
+| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; Y-14 static evidence; Arc03/Slice06 launcher correction | Open, ready to resume after launcher CDC; precedes Slice07 |
 | [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
 | [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
@@ -45,17 +45,18 @@ Source/native-format fidelity and application validation are separate axes.
 Slice04 was preparing. Its immutable Lykn build matches, but actual no-import
 launches fail before execution; explicit `--allow-all` does not change the
 failure. [The blocked handoff](slice04-dependency-and-runtime-boundary/closing-report.md)
-retains source/argv/raw evidence and incomplete drafts. Execute
+retains source/argv/raw evidence and incomplete drafts. The resulting
 [Arc03/Slice06](../arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md)
-and independently verify it, then resume all of Slice04 using a new traceable
-compiler condition. No R family, original Y owner, document-route decision,
+is now independently verified; resume all of Slice04 using its active traceable
+4dded88/Deno 2.9.6 condition. No R family, original Y owner, document-route decision,
 resource API gap or Arc02/03 human/guide/book/ADT outcome is removed.
 
 ## Decisions this arc informs
 
 2026-09-13 correction update: Arc03/Slice06 is now
-[CC proposed-done](../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md).
-CDC must verify the recorded corrected binary before Slice04 resumes. The full
+[CDC closed](../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md).
+The selected corrected binary reproduced all six criteria. Slice04 resumes with
+eight DB rows still open and full operational freeze/supervisor preflight owed. The full
 R-01–09 workload, 36 unsupported resource cells, 28 gated document variants and
 all authoring/source/human outcomes retain their original owners and budgets.
 
@@ -188,6 +189,11 @@ variants. JSCF/UNUS and guide/book/human obligations remain open. This refines
 execution mechanics from verified findings without changing family ownership.
 
 ## Version History
+
+- 2026-09-13 v1.15: Launcher CDC closed all six correction criteria and lifted
+  Slice04's gate. Updated its active source/runtime pin, full re-entry and
+  compiler/toolchain drift inventory; retained all eight DB rows, three failed
+  authoring conditions, unavailable comparisons and existing Y/source/human owners.
 
 - 2026-09-13 v1.14: Arc03/Slice06 supplied the DARG correction and full source
   gates. Recorded CDC as the remaining launcher prerequisite; no research row,

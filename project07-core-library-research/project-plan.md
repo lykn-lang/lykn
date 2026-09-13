@@ -93,9 +93,9 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 open but blocked on Arc03/Slice06 |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 ready to resume after launcher CDC |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slice01 CDC closed; Slice06 CC proposed-done, awaiting CDC before Arc01/Slice04; Slice02 remains queued |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06 CDC closed; Arc01/Slice04 resumes; Slice02 remains queued |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -195,19 +195,21 @@ for 259 value variants after full independent replay. Slice06 is now
 108 resource attempts, 16 file attempts and 36 explicit unsupported cells retain
 all 62 assigned IDs. Slice04 is [open for execution](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/slice-plan.md)
 for all R-01–09 runtime/dependency families before the 28 gated document variants.
-Its preparation is now blocked by D-2609-DARG after the operator upgraded Deno
-from 2.7.7 to 2.9.6. The pinned CLI fails to select even a minimal no-import
-script, with or without explicitly requested all-permissions. This supersedes
-the immediate-execution status, not the original workload. The concrete
-[Arc03/Slice06 correction](arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md)
-must be independently verified before a new compiler condition resumes Slice04.
+Its preparation was blocked by D-2609-DARG after the operator upgraded Deno
+from 2.7.7 to 2.9.6. The old pinned CLI failed to select even a minimal no-import
+script, with or without explicitly requested all-permissions. The concrete
+[Arc03/Slice06 correction is now CDC closed](arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md).
+Resume Slice04 using source 4dded88 and the independently verified selected
+release binary on Deno 2.9.6, with complete operational freeze and preflight owed.
 Its eight criteria, draft variants, 36 unsupported resource cells and 28 gated
 document cases remain owed. Existing PERM closure retains its original provenance.
 CDC has [reproduced that blocker and partial evidence](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
-and reviewed the correction open set. Arc03/Slice06 was the next CC action;
-it now has a [CC handoff](arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
-with source correction and full gates. Independent correction verification is
-next; its normal run, argument/path and explicit-permission contracts are retained.
+and then reproduced the corrected pair, 16 regressions, full gates and eight
+fresh runtime captures. Normal run, argument/path and explicit-permission
+contracts are retained. The complete compiler interval since d0bb981 includes
+earlier embedded/toolchain changes, which Slice04 R-01/R-02 must inventory.
+Three failed authoring conditions remain charged; old-runtime comparison is
+unavailable and the candidate matrix/supervisor still require validation.
 All project ledger rows remain open; no operator
 acceptance or library adoption is claimed.
 
@@ -241,6 +243,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.16: CDC independently closed all six launcher criteria and
+  DARG as repaired. Resumed full Slice04 on the verified 4dded88/Deno 2.9.6 pair,
+  with baseline drift, operational freeze, authoring budget and all outstanding
+  research/guide/book/ADT/human obligations preserved. No project row closes.
 
 - 2026-09-13 v1.15: Arc03/Slice06 submitted source correction 4dded88 with full
   source gates and an isolated binary tested at its recorded hash. Its six rows

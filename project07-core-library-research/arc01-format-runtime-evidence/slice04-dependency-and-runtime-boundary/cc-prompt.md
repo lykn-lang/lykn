@@ -1,5 +1,10 @@
 # CC — Research the dependency and runtime boundary
 
+2026-09-13: **Ready to resume.** [Launcher CDC](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md)
+closed all six correction criteria. All eight DB criteria remain open. Follow
+the active compiler/runtime condition in slice-plan.md; the original blocked
+handoff and eval receipts remain historical evidence.
+
 Execute Project07/Arc01/Slice04 in **Expedited Mode**, at
 /Users/oubiwann/lab/lykn/lang/.worktrees/planning. Read the project/arc plans and
 ledgers, this entire open set and its linked inputs. Use collaboration-framework/
@@ -15,8 +20,16 @@ unavailable, blocked and protocol not-run cells with reasons/owners/re-entry.
 Do not silently shrink concurrency, cross-filesystem or compatibility questions
 to match the easy conditions. Respect the no-installation/no-mount restrictions.
 
-Build immutable d0bb981 in isolation and verify all identities. Lykn owns all
-research/generation/supervision/aggregation/audit; shell/Git/Cargo and exact
+Build immutable `4dded883bbd321d19635e6fce233343f33803f9e` in isolation and verify
+the selected CLI `d4a7028ebba234ffcd6fdb544c256489d22b840da2e94e0aa833b0520c834326`
+and Deno 2.9.6 `2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`.
+Re-read the selected compiler's guides and inventory changes since d0bb981 for
+R-01/R-02, including embedded compiler/toolchain changes preceding the narrow
+launcher fix. Re-gate candidate programs and supply the still-owed adapted
+supervisor; freeze complete operational variants/configs/locks and preflight
+controls before the matrix. The 47 candidate variants and published metadata
+do not establish that freeze. Three failed authoring conditions remain charged.
+Lykn owns all research/generation/supervision/aggregation/audit; shell/Git/Cargo and exact
 dependency transport are infrastructure. Protect shared source binaries and
 registered worktrees. Check/lint/compile and inspect emitted code; preserve
 all failed sources and warnings. No generated-JS repair or fallback research
@@ -87,19 +100,19 @@ leaving ledger status open for CDC; include exact commit, separate counts,
 artifact inventory and **Bubble-up to the arc**. Do not open document execution
 without its compatible-route prerequisite or claim arc/project/human closure.
 
-## 2026-09-13 prerequisite-routing amendment
+## Historical 2026-09-13 prerequisite-routing amendment
 
-The correction now has a [CC handoff](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
-at source `4dded883bbd321d19635e6fce233343f33803f9e`. Await independent CDC before
-using its candidate binary as the research baseline. After verification, resume
-this entire prompt, retaining the three failed authoring conditions, all R-01–09,
-36 unsupported resource cells, 28 gated documents and all source/human outcomes.
+The [CC handoff](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
+has now passed independent CDC. The stop condition below applied to the old
+compiler and is superseded by the active pin and resume instructions above.
+Retain three failed authoring conditions, all R-01–09, 36 unsupported resource
+cells, 28 gated documents and all source/human outcomes.
 
-The upgraded runtime cannot launch even the no-import reproduction through the
-pinned CLI. Stop runtime-dependent work under RP01's toolchain-gap rule; retain
-all eight criteria and every R family. This is a blocked handoff, not proposed
-completion. Open Arc03/Slice06 as the narrow launcher compatibility prerequisite;
-do not perform its source repair as part of Slice04. Keep the original 2.7.7
+The upgraded runtime could not launch even the no-import reproduction through
+the old pinned CLI. Runtime-dependent work stopped under RP01's toolchain-gap
+rule, retaining all eight criteria and every R family. That blocked handoff
+opened Arc03/Slice06 as the narrow launcher compatibility prerequisite;
+its source repair belonged there. Keep the original 2.7.7
 record distinct from the operator-confirmed 2.9.6 condition.
 
 Additional exact planning paths for that necessary routing:
@@ -114,11 +127,12 @@ project07-core-library-research/arc03-findings-and-integration/slice06-deno-laun
 
 The operator subsequently suggested `deno eval`, after explicitly suggesting
 all permissions. The exact Lykn-emitted minimal program succeeded through eval.
-Use that explicit alternate route for native Lykn-authored evidence generation,
+That explicit alternate route was used for native Lykn-authored evidence generation,
 published-file checksum verification and packet packing/extraction, with a cleared
 environment, null stdin, forced ESM and no remote/npm resolution. Retain its
 implicit-all permission condition; it cannot replace restricted `lykn run` tests
 or establish wrapper compatibility. No package evaluation is authorized by this
-amendment. Preserve captures in the existing raw-transcript.txt as a lossless
+amendment. Resume through corrected `lykn run`; preserve the earlier eval
+captures in the existing raw-transcript.txt as a lossless
 Lykn-generated packet. The proposed unpacked blocked-evidence directory was never
 created and is superseded by this storage route. No additional raw paths needed.

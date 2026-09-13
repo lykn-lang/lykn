@@ -1,10 +1,11 @@
 # Slice04 ledger
 
-Eight criteria open, blocked on D-2609-DARG. No row is CC proposed-done.
+Eight criteria open, ready to resume after D-2609-DARG correction CDC.
+No row is CC proposed-done.
 The [blocked handoff](closing-report.md) walks all eight rows and partial attested
 evidence. The immutable build, failed launches, actual argv, operator-suggested
 eval control and 379 generation/static checks do not close the complete contract.
-Arc03/Slice06 owns the immediate prerequisite; the full workload remains here.
+Arc03/Slice06 has closed the launcher prerequisite; the full workload remains here.
 CC proposed-done remains attestation until independent CDC.
 Unavailable/unsupported variants keep exact reasons, owners and re-entry; they are
 not passing executions or removed requirements.
@@ -24,3 +25,9 @@ not passing executions or removed requirements.
 including all 188 published files and six generated outputs. All eight original
 DB rows remain unchanged and open. Arc03/Slice06 is ready for CC correction;
 this is an accepted blocked handoff, not slice closure or a frozen runtime matrix.
+
+2026-09-13 subsequent CDC: [launcher correction independently closed](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md).
+Resume all eight unchanged DB rows on the active 4dded88/Deno 2.9.6 pair.
+Full operational freeze, adapted supervisor and all R-01–09 remain owed; three
+failed authoring conditions, 36 unsupported resources and 28 gated documents
+retain their budget and owners. No package adoption or human acceptance follows.

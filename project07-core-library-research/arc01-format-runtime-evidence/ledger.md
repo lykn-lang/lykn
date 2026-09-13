@@ -1,5 +1,10 @@
 # Arc01 ledger
 
+2026-09-13 subsequent CDC: [launcher correction independently closed](../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md).
+Slice04 resumes at 4dded88/Deno 2.9.6 with all eight DB rows open, full freeze
+and supervisor preflight owed. A-03–06 remain open. Earlier notes below record
+the blocker and CC handoff before this correction closure.
+
 2026-09-13: [Arc03/Slice06 is CC proposed-done](../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md).
 Independent correction verification still gates Slice04; no Arc01 row inherits
 completion from the launcher source gates or the eight diagnostic captures.

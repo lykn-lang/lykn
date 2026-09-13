@@ -1,13 +1,13 @@
 # Slice04 — Dependency and runtime boundary
 
-Status: **Open, execution blocked by D-2609-DARG.** Expedited Mode. Eight open ledger criteria.
+Status: **Open, ready to resume after launcher CDC closure.** Expedited Mode. Eight open ledger criteria.
 This retains the original Slice04 identity and all R-01–09 families. It follows
 Slices03/05/06 and precedes Slice07; numbering is not execution order.
 
 Preparation found a new launcher incompatibility after the operator's Deno
-upgrade. See the [blocked handoff](closing-report.md). Arc03/Slice06 is now the
-concrete correction prerequisite. No DB criterion is proposed-done; resume the
-entire scope after independent correction verification. Three failed source
+upgrade. See the historical [blocked handoff](closing-report.md). Arc03/Slice06
+has now independently closed the correction prerequisite. No DB criterion is
+proposed-done; resume the entire scope below. Three failed source
 authoring conditions remain charged to this slice's correction budget.
 
 2026-09-13 CDC: [blocker and retained evidence independently reproduced](cdc-verification.md).
@@ -17,12 +17,13 @@ eight research criteria stay open and full operational freeze remains owed.
 
 ## Capability and inputs
 
-2026-09-13 re-entry candidate: [Arc03/Slice06's CC handoff](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/closing-report.md)
-records corrected source `4dded883bbd321d19635e6fce233343f33803f9e` and its isolated
-binary. This is not yet the independently accepted research pin. Await CDC,
-then refresh the complete operational baseline and controls. All eight DB
-criteria remain open, including all R families and the original three failed
-authoring conditions; the candidate harness still requires validation.
+2026-09-13 re-entry: [Arc03/Slice06 CDC](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md)
+verified corrected source `4dded883bbd321d19635e6fce233343f33803f9e` with Deno
+2.9.6. Use the active pin below and refresh the complete operational baseline
+and controls. The 47 candidate variants and published metadata are preparation,
+not a frozen runtime matrix or complete graph; the adapted supervisor is still
+owed. All eight DB criteria, all R families and three failed authoring conditions
+remain. Do not reset that budget or infer closure from the launcher replay.
 
 Establish which runtime, dependency and file-operation boundaries the proposed
 JSON/YAML libraries can actually rely on, with explicit alternatives and unresolved
@@ -63,22 +64,36 @@ runs as new executions.
 
 ## Baseline, execution and safety
 
-**2026-09-13 runtime-condition amendment during preparation.** The operator
+**Historical runtime-condition amendment during preparation.** The operator
 upgraded Deno and confirmed that 2.7.7 was removed and 2.9.6 installed. The
 pre-upgrade identity matched the original pin; the post-upgrade executable is
 2.9.6, SHA-256 `2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`
 (V8 15.0.245.2-rusty, TypeScript 6.0.3). Runtime trials paused during the upgrade.
-Subsequent work uses a separately identified 2.9.6 condition after launch and
-supervisor preflight. The immutable Lykn source/build remains unchanged. Original
+At that time work retained the old immutable Lykn build and failed launch. Original
 2.7.7 results remain inherited evidence; they are not counted as a fresh comparison.
 R-09 must retain the removed-pair limitation and exact re-entry. No installation
 or broad compatibility claim is authorized by this amendment.
 
-Use isolated source d0bb981dae2a4abf6c984406c4b2081a45cc92f8 and the
-retained lock; cargo build --release --locked is infrastructure. Expected CLI
-SHA-256 78aac90c4b4d6c644ac376e99ce91f88cdae32477aff476980912e68eba0c1bb;
-Deno 2.7.7 at /opt/homebrew/bin/deno has SHA-256
-103ea70463213b1a8ea7b46852a34612f4e0afcc1ff09d1656d185ed215772d4.
+**Active compiler/runtime condition after CDC.** Build isolated source
+`4dded883bbd321d19635e6fce233343f33803f9e`, tree
+`218b085176053f1273642496cf75d7691c399f6e`, with its retained Cargo lock;
+`cargo build --release --locked` is infrastructure. Expected selected CLI
+SHA-256 `d4a7028ebba234ffcd6fdb544c256489d22b840da2e94e0aa833b0520c834326`.
+Deno 2.9.6 at `/opt/homebrew/bin/deno` has SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`.
+The old d0bb981/2.7.7 pins and failed d0bb981/2.9.6 condition remain in the
+original evidence; they are not the active execution instructions.
+
+Re-read the selected compiler's Lykn guidance and inventory the compiler,
+embedded assets and toolchain changes since d0bb981 in R-01/R-02. There are
+30 changed source paths across that interval; the final launcher commit alone
+changes four. Do not label the complete new compiler condition launcher-only.
+Retain source-condition paths/diffstat from the correction CDC packet. Freshly
+gate and inspect all research programs, adapt/preflight the supervisor, review
+candidate flags/checkpoints, resolve permitted graphs and freeze full configs,
+locks and variants before trials. Use corrected `lykn run` for resumed tooling
+and runtime trials; historical eval receipts remain separate evidence.
+
 Record source tree, compiler toolchain, platform and build receipt. Protect all
 registered source worktrees/shared binaries. Treat unexplained drift as a new
 condition before comparison. Already available comparison binaries must be
