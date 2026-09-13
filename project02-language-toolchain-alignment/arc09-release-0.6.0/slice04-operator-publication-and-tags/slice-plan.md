@@ -1,8 +1,10 @@
 # arc09 slice04 — Operator Publication and Tags
 
-> **Status: Open.** slice03 produced dry-run/package evidence from source commit
-> `50608c443c452107b138cc30deda4a09ab5c7642`. This slice is the manual
-> publication, release tag, branch push, and book-tag boundary.
+> **Status: Closed / operator-deferred before publication.** The operator
+> declined publication/tag/push for now on 2026-09-12 and directed additional
+> UAT in other projects before the full 0.6.0 delivery. No registry
+> publication, source tag, branch push, tag push, book tag, or book publication
+> was performed.
 
 ## 1. Objective
 
@@ -32,7 +34,7 @@ and tagging only after explicit operator authorization.
 - Silent publication without explicit operator authorization.
 - Passing `--allow-dirty`, `--force`, `--no-verify`, or other safety-bypass flags as release evidence.
 - Changing release contents after approval except to resolve an explicitly surfaced blocker.
-- Post-publish temporary-install verification; that belongs to slice05.
+- Post-publish temporary-install verification; that belongs to a later post-publish slice.
 
 ## 5. Verification
 
@@ -46,3 +48,9 @@ and tagging only after explicit operator authorization.
 This slice closes when authorized publication/tag/push actions are complete and
 all publication transcripts are recorded, or when the operator declines/defers
 publication with the exact boundary recorded.
+
+slice04 closed by deferral: the operator chose to hold publication until other
+projects complete UAT against the 0.6.0 release candidate. The re-entry
+condition is: once UAT projects can ship with the release candidate, open the
+post-UAT operator publication/tag slice with the then-current release-candidate
+commit and receipts.

@@ -1,13 +1,11 @@
 # arc09 — Release 0.6.0
 
-> **Status: Open — slice04 operator publication/tag boundary open.**
-> arc16, slice01, slice02, and slice03 are closed/CDC-verified. slice03 has
-> qualified crates sequencing: final release
-> evidence is from source commit `50608c4`, JSR/npm dry-runs passed, and
-> `lykn-lang` crates dry-run passed; `lykn-cli`/`lykn` remain gated by normal
-> crates.io dependency ordering until internal 0.6.0 crates are published. Real
-> publication, tags, branch pushes, and book release tags remain
-> operator-owned boundaries.
+> **Status: Open — release-candidate UAT before publication.**
+> arc16, slice01, slice02, and slice03 are closed/CDC-verified. slice04 closed
+> by operator deferral before publication: the 0.6.0 release candidate at
+> source commit `50608c4` will be exercised in other projects before the full
+> 0.6.0 delivery. Real publication, tags, branch pushes, and book release tags
+> remain operator-owned boundaries.
 
 ## 1. Capability
 
@@ -28,8 +26,10 @@ publication, release tags, and pushes.
 | **slice01 · release-readiness-runbook** | Inventory version surfaces, release-note inputs, dry-run gates, manual-publish boundaries, tag/post-publish verification, and blockers; write the executable release runbook. | **Closed / CDC-verified** ([slice-plan](slice01-release-readiness-runbook/slice-plan.md), [ledger](slice01-release-readiness-runbook/ledger.md), [closing-report](slice01-release-readiness-runbook/closing-report.md), [cdc-verification](slice01-release-readiness-runbook/cdc-verification.md), [runbook](slice01-release-readiness-runbook/artifacts/release-runbook.md)) |
 | **slice02 · version-bump-release-notes-ci-chore** | Update version surfaces from `0.6.0-dev` to `0.6.0`, regenerate lock/version evidence, write 0.6.0 release notes, apply low-risk CI checkout maintenance if still current, and either repair or explicitly route no-bypass replacement for `make publish-dry-run`. | **Closed / CDC-verified** ([slice-plan](slice02-version-bump-release-notes-ci-chore/slice-plan.md), [ledger](slice02-version-bump-release-notes-ci-chore/ledger.md), [closing-report](slice02-version-bump-release-notes-ci-chore/closing-report.md), [cdc-verification](slice02-version-bump-release-notes-ci-chore/cdc-verification.md)) |
 | **slice03 · publish-dry-runs-and-package-audit** | Run `make check`, dist/package audits, JSR/npm dry-runs, and crates.io dry-runs against the exact release tree without weakening dirty-tree gates; capture receipts. | **Closed / CDC-verified, qualified crates sequencing** ([slice-plan](slice03-publish-dry-runs-and-package-audit/slice-plan.md), [ledger](slice03-publish-dry-runs-and-package-audit/ledger.md), [closing-report](slice03-publish-dry-runs-and-package-audit/closing-report.md), [cdc-verification](slice03-publish-dry-runs-and-package-audit/cdc-verification.md), [receipt](slice03-publish-dry-runs-and-package-audit/artifacts/dry-run-and-package-audit-receipt.md)) |
-| **slice04 · operator-publication-and-tags** | Prepare the final approval packet; after explicit operator authorization, publish JSR/npm/crates artifacts, tag `0.6.0`, push release branch/tag explicitly to intended remotes, and handle the book `book-v0.6.0` tag/publication boundary. | **Open** ([slice-plan](slice04-operator-publication-and-tags/slice-plan.md), [ledger](slice04-operator-publication-and-tags/ledger.md), [cc-prompt](slice04-operator-publication-and-tags/cc-prompt.md)) |
-| **slice05 · postpublish-verification-and-project-close** | Verify published registry artifacts and explicit temporary installs, confirm remote tags/branch visibility, reconcile book release artifacts, close Project02 P-8/P-12, and produce final project closeout evidence. | **Future** |
+| **slice04 · operator-publication-and-tags** | Prepare the final approval packet; after explicit operator authorization, publish JSR/npm/crates artifacts, tag `0.6.0`, push release branch/tag explicitly to intended remotes, and handle the book `book-v0.6.0` tag/publication boundary. | **Closed / operator-deferred before publication** ([slice-plan](slice04-operator-publication-and-tags/slice-plan.md), [ledger](slice04-operator-publication-and-tags/ledger.md), [closing-report](slice04-operator-publication-and-tags/closing-report.md)) |
+| **slice05 · release-candidate-uat-feedback** | Exercise the 0.6.0 release candidate in downstream/projects-that-must-ship, record feedback, and decide whether to iterate or resume publication. | **Open** ([slice-plan](slice05-release-candidate-uat-feedback/slice-plan.md), [ledger](slice05-release-candidate-uat-feedback/ledger.md), [cc-prompt](slice05-release-candidate-uat-feedback/cc-prompt.md)) |
+| **slice06 · operator-publication-and-tags-after-uat** | After UAT is green and explicit operator authorization is given, publish JSR/npm/crates artifacts, tag `0.6.0`, push release branch/tag explicitly, and handle the book `book-v0.6.0` boundary. | **Future** |
+| **slice07 · postpublish-verification-and-project-close** | Verify published registry artifacts and explicit temporary installs, confirm remote tags/branch visibility, reconcile book release artifacts, close Project02 P-8/P-12, and produce final project closeout evidence. | **Future** |
 
 **Release-prep checklist items captured along the way:**
 - **Green CI on `release/0.6.x`** and a clean `make check` before publication.
@@ -57,6 +57,15 @@ their dispositions during project06-planning-reorg. slice01 owns the detailed
 release runbook and can refine the future slice sequence before implementation.
 
 ## 5. Version History
+
+### v1.10 - 2026-09-12 (slice04 operator-deferred; slice05 opened)
+
+The operator declined the concrete publication/tag/push packet for now and
+directed UAT in other projects before full 0.6.0 delivery. slice04 is closed as
+operator-deferred before publication. No registry publication, source tag,
+branch push, tag push, book tag, or book publication occurred. slice05 is opened
+to record release-candidate UAT feedback against source commit `50608c4`;
+publication resumes only after UAT feedback is accepted or routed.
 
 ### v1.9 - 2026-09-12 (slice03 CDC verified)
 
