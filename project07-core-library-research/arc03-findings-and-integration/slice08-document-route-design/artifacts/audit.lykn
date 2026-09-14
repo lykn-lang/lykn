@@ -1,0 +1,103 @@
+;; Design-data generation and verification only. No candidate imports or execution.
+(bind encoder (new TextEncoder))
+(bind checks (cell 0))
+(func ensure :args (:boolean ok :string label) :body
+  (swap! checks + 1) (if (not ok) (throw (new Error label))) null)
+(func json :args (:string path) :body (JSON:parse (Deno:read-text-file-sync path)))
+(func same :args (:any a :any b) :body (= (JSON:stringify a) (JSON:stringify b)))
+(func hex :args (:any bytes) :body
+  (-> (Array:from bytes (fn (:number b) (-> (b:to-string 16) (:pad-start 2 "0")))) (:join "")))
+(async (func digest :args (:any bytes) :body
+  (hex (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))))
+(func write-json :args (:string path :any value) :body
+  (Deno:write-text-file-sync path (template (JSON:stringify value null 2) "\n")))
+(bind originals #a(
+  "# title\nn: 01 # note\ntext: 'hello'\n\nseq: [a, b]\n"
+  "text: |+\n  one\n\n"
+  "text: >-\n  one\n  two\n"
+  "%YAML 1.2\n---\nn: 1\n"
+  "\uFEFFn: 1\n"
+  "n: 1\r\ntext: hello\r\n"
+  "n: 1"))
+;; Explicit proposed acceptance bytes, not an observed serializer result.
+(bind edited #a(
+  "# title\nn: 2 # note\ntext: 'hello'\n\nseq: [a, b]\n"
+  "text: |+\n  one\n\nn: 2\n"
+  "text: >-\n  one\n  two\nn: 2\n"
+  "%YAML 1.2\n---\nn: 2\n"
+  "\uFEFFn: 2\n"
+  "n: 2\r\ntext: hello\r\n"
+  "n: 2"))
+(bind semantics #a("n=1; text=hello; seq=[a,b]" "text=one\\n\\n" "text=one two"
+  "n=1" "n=1" "n=1; text=hello" "n=1"))
+(async (func build :args () :body
+  (bind dd (json "inputs/dd-inputs.json"))
+  (bind history (json "inputs/rc-history.json"))
+  (bind docs dd:documentVariants)
+  (ensure (= docs:length 28) "28 original document variants")
+  (bind seen (new Set))
+  (bind rows #a())
+  (for-of row docs
+    (ensure (not (seen:has row:id)) "unique document ID")
+    (seen:add row:id)
+    (bind index (Number (row:id:slice 8 9)))
+    (ensure (and (Number:isInteger index) (>= index 0) (< index 7)) "seven exact documents")
+    (bind original (get originals index))
+    (bind bytes (encoder:encode original))
+    (ensure (= row:text original) "explicit source bytes including BOM/CRLF/final LF")
+    (ensure (= row:case:hex (hex bytes)) "case hex matches input")
+    (ensure (= row:inputSha256 (await (digest bytes))) "original input digest")
+    (ensure (= row:encodedBytes bytes:length) "original byte count")
+    (ensure (same row:case (JSON:parse (get row:args 0))) "argument is exact original case")
+    (ensure (and (= row:repeats 2) (= row:case:options:schema "default")) "original repeats and schema")
+    (ensure (same row (dd:originalResourceInputs:yaml:find (fn (:object item) (= item:id row:id)))) "two inherited manifests agree")
+    (bind noop (= row:case:edit "none"))
+    (ensure (or noop (= row:case:edit "n=2")) "known edit")
+    (ensure (= row:id (template "Y-14-doc" index "-tokens" row:case:keepSourceTokens "-" row:case:edit)) "exact option and edit identity")
+    (bind proposed (? noop original (get edited index)))
+    (bind insertion (and (not noop) (or (= index 1) (= index 2))))
+    (bind prefix-bytes (encoder:encode (original:slice 0 (original:index-of "n: "))))
+    (bind start (? noop 0 (? insertion bytes:length (+ prefix-bytes:length 3))))
+    (bind end (? noop 0 (? insertion start (+ start (? (= index 0) 2 1)))))
+    (bind replacement (? noop "" (? insertion "n: 2\n" "2")))
+    (bind before (bytes:subarray 0 start))
+    (bind after (bytes:subarray end))
+    (ensure (= (hex (encoder:encode proposed)) (template (hex before) (hex (encoder:encode replacement)) (hex after))) "exact proposed byte splice")
+    (rows:push (obj :id row:id :original row :inputReference (template "inputs/dd-inputs.json#/documentVariants/" rows:length)
+      :inputHex (hex bytes) :inputSha256 row:inputSha256 :inputBytes bytes:length
+      :editSha256 (await (digest (encoder:encode (JSON:stringify row:case))))
+      :proposedOutputHex (hex (encoder:encode proposed)) :proposedOutputSha256 (await (digest (encoder:encode proposed)))
+      :proposedOutputBytes (get (encoder:encode proposed) "length")
+      :allowedSplice (obj :startByte start :endByteExclusive end :replacement replacement)
+      :expectedSemantics (template (get semantics index) (? noop "; unchanged" "; set root mapping string-key n to numeric 2; all other nodes unchanged"))
+      :threshold (obj :unrelatedChangedBytes 0 :semanticMismatches 0 :missingTrivia 0 :unexpectedDiagnostics 0)
+      :tokenContract (? row:case:keepSourceTokens "expose token spans; internal spans must cover exact source bytes" "do not expose tokens; internal original bytes and spans still required for fidelity")
+      :status "gated; proposed acceptance bytes only; zero document executions"
+      :reentry "Operator decisions and independent design/API/runtime-type-dev-build-graph/license/provenance proof, then Arc01 document owner executes original two attempts in each independent condition")))
+  (bind resources history:resources:yaml)
+  (ensure (= resources:length 54) "all 54 resource cells retained")
+  (bind unsupported (resources:filter (fn (:object row) (= row:phase "unsupported"))))
+  (ensure (= unsupported:length 36) "36 unsupported cells")
+  (bind conversion (unsupported:filter (fn (:object row) row:unsupported:toJS)))
+  (bind bound (unsupported:filter (fn (:object row) row:unsupported:packageBound)))
+  (bind overlap (unsupported:filter (fn (:object row) (and row:unsupported:toJS row:unsupported:packageBound))))
+  (ensure (and (= conversion:length 18) (= bound:length 27) (= overlap:length 9)) "exact overlapping absent-API reasons")
+  (for-of row unsupported
+    (ensure (= row:attempts:length 0) "unsupported has zero attempts")
+    (ensure (same row:original (dd:originalResourceInputs:yaml:find (fn (:object item) (= item:id row:id)))) "exact original resource cell"))
+  (obj :schemaVersion 1 :kind "design-contract-not-execution" :decisionStatus "pending operator disposition"
+    :sourceInputs #a(
+      (obj :path "inputs/dd-inputs.json" :sha256 (await (digest (Deno:read-file-sync "inputs/dd-inputs.json"))))
+      (obj :path "inputs/rc-history.json" :sha256 (await (digest (Deno:read-file-sync "inputs/rc-history.json")))))
+    :documentVariants rows :originalDocumentAttempts 56 :newDocumentExecutions 0
+    :allResourceCells resources :unsupportedCells unsupported
+    :unavailableCounts (obj :union 36 :conversion 18 :packageBound 27 :overlap 9)
+    :resourceReentry "A demonstrated conversion API and/or explicit package-bound API plus a separately reviewed original-recipe protocol; route availability alone is insufficient")))
+(bind mode (get Deno:args 0))
+(ensure (or (= mode "generate") (= mode "verify")) "known design audit mode")
+(bind expected (await (build)))
+(if (= mode "generate") (write-json "y14-crosswalk.json" expected))
+(if (= mode "verify")
+  (ensure (same expected (json "y14-crosswalk.json")) "all design bytes/IDs/thresholds and unsupported rows equal regenerated contract"))
+(console:log (JSON:stringify (obj :result "design-crosswalk-verified" :mode mode :checks (express checks)
+  :documentVariants 28 :originalAttempts 56 :unsupported 36 :executions 0)))

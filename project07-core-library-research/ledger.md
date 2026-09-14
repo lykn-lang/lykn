@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-14 CC: [Arc03/Slice08 design](arc03-findings-and-integration/slice08-document-route-design/closing-report.md)
+is prepared for required operator decisions and independent review. All five
+DR and all project status cells remain open. RC/DB research closure remains;
+all 28 Y-14 and 36 unsupported Y-13 gates survive. Source home is unassigned
+pending design; proposed names/owners are not accepted assignments.
+
 2026-09-14 CDC: [Slice10 verified](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cdc-verification.md)
 and [DB composition closed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
 All eight RC/eight DB rows and Arc01 A-04 are done. Project rows remain unchanged;

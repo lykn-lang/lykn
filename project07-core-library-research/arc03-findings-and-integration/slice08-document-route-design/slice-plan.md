@@ -1,8 +1,14 @@
 # Slice08 — Document-route design prerequisite
 
-Status: **Open; ready as the next design-only assignment, not executed.**
+Status: **Open; design prepared for operator decisions and independent review.**
 Parent: [Arc03](../arc-plan.md). Contract: [ledger.md](ledger.md).
 Durable outputs belong in this slice's `artifacts/` directory. Expedited Mode.
+
+2026-09-14 CC: [Design handoff](closing-report.md) supplies all four artifacts,
+an exact 28-ID/36-unsupported crosswalk and verified portable evidence. D1–D8
+decisions are pending; no row is proposed-done. Source home remains unassigned
+pending design. No document/package execution, source edit or repository
+creation occurred. Earlier readiness notes below are historical.
 
 ## Capability
 
@@ -124,6 +130,10 @@ source-shape judgment remains distinct from source analysis and design review.
 
 ## Version History
 
+- 2026-09-14 v1.3: Prepared full design, recommendation, exact input/edit/splice
+  crosswalk, pending decision record and bounded subsequent proof proposal.
+  Native generation/verification and captured replay passed; all five criteria
+  stay open for actual operator choices and independent CDC.
 - 2026-09-14 v1.2: Made this existing assignment ready after independent RC and
   parent DB closure; added verified boundary inputs and concrete artifact/commit
   paths. Require reviewable choices before operator decisions; preserve source-

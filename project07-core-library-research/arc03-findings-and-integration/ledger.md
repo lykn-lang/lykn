@@ -1,5 +1,11 @@
 # Arc03 ledger
 
+2026-09-14 CC: [Slice08 design handoff](slice08-document-route-design/closing-report.md)
+has concrete reviewable artifacts and portable crosswalk evidence. All five DR
+rows and A3-08 stay open for actual operator decisions and independent CDC.
+No proposed source home, maintainer or policy has been accepted; original
+document/resource and other arc/human gates remain explicit.
+
 2026-09-14 CDC: [RC verification](../arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cdc-verification.md)
 and [DB composition](../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
 are closed. [Slice08 design](slice08-document-route-design/cc-prompt.md) is ready

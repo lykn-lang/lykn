@@ -9,6 +9,14 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-14 CC: [Arc03/Slice08 design handoff](arc03-findings-and-integration/slice08-document-route-design/closing-report.md)
+provides the five-alternative comparison, concrete document/value/resource/file
+contracts, exact 28-case crosswalk and bounded later proof proposal. Required
+operator D1–D8 decisions are pending; all five DR rows remain open, with no
+proposed-done or compatible-route claim. Source home stays unassigned pending
+design. All 36 unsupported resource cells and source/ADT/book/human gates remain.
+Earlier design-ready statements are historical; RC/DB research closure stands.
+
 2026-09-14 CDC: [Slice10 independently closed](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cdc-verification.md)
 after retained replay and two new 105-attempt conditions. The separate
 [parent composition](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
@@ -198,7 +206,7 @@ source edits.
 | --- | --- | --- | --- |
 | [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–06/08–10 CDC closed; Slice04 closed by separate composition preserving partial history; document and arc composition gates remain |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice08 document-route design open, not executed; Slice02 and source/guide/book work retained |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice08 design prepared, operator choices and CDC pending; Slice02 and source/guide/book work retained |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -347,6 +355,10 @@ authoring evaluation remains Arc02.
 
 ## Version History
 
+- 2026-09-14 v1.29: Arc03/Slice08 prepared its concrete design and source-home/
+  policy choices, exact Y-14 crosswalk and bounded later proof proposal. All
+  operator dispositions and independent design review remain owed; no source,
+  library/release assignment or document execution is inferred.
 - 2026-09-14 v1.28: Independently closed Slice10 and the separate eight-row DB
   composition after full retained replay and 210 new attempts. Closed Arc01 A-04;
   advanced the existing document-route design assignment with exact paths and
