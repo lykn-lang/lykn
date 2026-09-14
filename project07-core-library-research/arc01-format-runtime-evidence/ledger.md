@@ -1,5 +1,11 @@
 # Arc01 ledger
 
+2026-09-13 CC: [Slice08](slice08-file-fault-completion/closing-report.md) is
+proposed-done: primary/fresh each pass 37 process audits, five negative families
+and complete physical/captured replay. Independent CDC is next. A-03–06, all
+eight DB rows and all six FF statuses remain open. Slice09 and the gated
+document/source/guide/book/ADT/operator obligations retain their owners.
+
 2026-09-13 CDC: [partial/preparation review passed](slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
 Slice08 is ready for bounded file-fault work. All 163 retained audit dispositions
 reproduce, including three failures; no A-03–06 or DB row closes. Slice04 retains

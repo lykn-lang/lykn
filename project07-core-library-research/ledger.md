@@ -1,5 +1,10 @@
 # Project07 ledger
 
+2026-09-13 CC: [Slice08](arc01-format-runtime-evidence/slice08-file-fault-completion/closing-report.md)
+is proposed-done after two complete 37-attempt conditions and negative/physical/
+captured replay. Independent CDC is next. All P/DB rows and six FF statuses stay
+open; no dependency/document decision or operator acceptance is inferred.
+
 2026-09-13 CDC: [partial review passed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
 The 3,997-file packet and 163 retained audit outcomes reproduce. Slice08's
 reviewed bounded assignment is ready; all P/DB rows stay open. Nine failures

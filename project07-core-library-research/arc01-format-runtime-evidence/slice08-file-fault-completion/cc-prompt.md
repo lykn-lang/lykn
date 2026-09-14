@@ -1,5 +1,11 @@
 # CC — Complete bounded file-fault research
 
+**Current handoff: CC proposed-done; independent CDC is next.**
+[Closing report](closing-report.md) retains complete primary/fresh conditions,
+37 attempts and five negative families each, plus captured/physical replay.
+All six FF statuses remain open for CDC. The execution instructions below are
+the completed CC contract, not an instruction to overwrite retained runs.
+
 **Preparation review passed; ready for bounded CC execution.** The
 [CDC review](../slice04-dependency-and-runtime-boundary/cdc-partial-verification.md)
 accepts the split and concrete source-temp grant correction. Read the complete

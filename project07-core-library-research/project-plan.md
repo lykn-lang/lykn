@@ -9,6 +9,16 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-13 CC: [Slice08 file-fault handoff](arc01-format-runtime-evidence/slice08-file-fault-completion/closing-report.md)
+is proposed-done. Primary and complete fresh conditions each pass 37 process
+audits, five negative families and a 146-fixture physical crosswalk; captured
+replay reproduces both. Actual cross-device/directory OS errors are distinct
+from the source-read denials. Three pre-runtime failures are retained. Six FF
+rows remain open for independent CDC; all DB/P rows remain open. Slice09's full
+dependency/decision/reconciliation, 36 unsupported resources, 28 gated documents
+and source/guide/book/ADT/operator obligations survive. Earlier Slice08 execution
+readiness notes are historical; independent child review is now next.
+
 2026-09-13 CDC: [partial evidence and preparation review passed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
 All 3,997 packet files and 163 retained audit dispositions reproduce; 833 additional
 census checks confirm the populations and failed identities. Slice08 is ready
@@ -138,9 +148,9 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 partial/stopped; Slice08 preparation review next |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 partial/stopped; Slice08 CC proposed-done, independent CDC next |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice04 partial review pending; Slice02 queued |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice02 queued; remaining source/guide/book work retained |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -288,6 +298,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.23: Slice08 submitted its complete 37-attempt primary/fresh file
+  subset, negative controls and physical/captured replay for independent CDC.
+  Preserved three source failures and all parent criteria; full Slice09 research,
+  document-route, source/guide/book/ADT and operator outcomes remain owed.
 
 - 2026-09-13 v1.22: Arc01 partial CDC reproduced the packet and retained outcomes;
   accepted Slice08 preparation with concrete grants, outcome predicates, controls

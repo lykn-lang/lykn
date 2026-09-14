@@ -1,5 +1,12 @@
 # Slice08 — Complete the file-fault evidence
 
+**Current status: CC proposed-done, pending independent CDC.**
+[The handoff](closing-report.md) reports primary and complete fresh replay:
+37 passing process audits, five negative audit families and a 146-fixture
+physical crosswalk per condition. Fresh packet extraction reproduces both.
+Three pre-runtime failed source conditions are retained under the five-failure
+ceiling. The six FF rows remain open; no parent or human acceptance is inferred.
+
 Status: **Preparation independently reviewed; ready for bounded CC execution.**
 The [CDC review](../slice04-dependency-and-runtime-boundary/cdc-partial-verification.md)
 accepts the v1.1 contract below. All six FF criteria remain open.
@@ -128,6 +135,11 @@ candidate IDs and their expansions, 36 unsupported Y-13 cells, 28 gated Y-14 cas
 and source/guide/book/ADT/human outcomes.
 
 ## Version History
+
+- 2026-09-13 v1.2: Completed the reviewed FF subset in two fresh conditions,
+  with actual OS cross-device/directory failures, separate permission denials,
+  complete affected controls, five negatives and physical/captured replay.
+  Retained three pre-runtime failures; submitted six rows for independent CDC.
 
 - 2026-09-13 v1.1: CDC reproduced the partial packet and retained audit outcomes;
   accepted the split with exact 37-attempt controls, scoped temp grants, both

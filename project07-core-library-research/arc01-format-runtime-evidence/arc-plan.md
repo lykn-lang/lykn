@@ -2,6 +2,13 @@
 
 ## Capability and status
 
+2026-09-13 CC: [Slice08 file-fault handoff](slice08-file-fault-completion/closing-report.md)
+is proposed-done, pending independent CDC. Primary/fresh each pass 37 process
+audits, five negative families and a 146-fixture physical crosswalk; captured
+replay reproduces both. Actual OS cross-device/directory faults and source-read
+denials are distinct. Three pre-runtime failed drafts are retained. All FF,
+DB and A-03–06 rows remain open. Earlier execution-readiness text is historical.
+
 2026-09-13 CDC: [partial packet and preparation review passed](slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
 All 163 retained audit dispositions and 3,997 packet files reproduce. Slice08
 is ready for its reviewed 37-attempt file/control condition and independent
@@ -61,7 +68,7 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
 | [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
-| [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Accepted independent partial/preparation review | Ready for bounded CC execution; six FF rows open |
+| [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Accepted independent partial/preparation review | CC proposed-done; primary/fresh 37 attempts each; independent CDC next; six FF rows open |
 | slice09-dependency-decision-and-reconciliation | Finish R-01 argv, R-02 full graph/lineage/toolchain classification, R-08 exact inherited reconciliation, R-09 availability, decisions and complete DB recomposition/replay | Verified Slice08 evidence plus retained Slice04 conditions | Roadmap only; no open set or execution claim |
 
 The former `slice03-yaml-fidelity` roadmap had no open set or authored work.
@@ -254,6 +261,11 @@ code-shape and direction acceptance. Neither new slice resets Slice04's history
 or closes a parent DB row automatically.
 
 ## Version History
+
+- 2026-09-13 v1.22: Slice08 submitted complete primary/fresh file-fault evidence,
+  negative controls and physical/captured replay. Actual OS errors and permission
+  denials remain separate; three authoring failures retained. Independent CDC
+  precedes Slice09 preparation; all parent/document/source/human scope remains.
 
 - 2026-09-13 v1.21: CDC reproduced Slice04's partial packet and all audit
   dispositions, then accepted Slice08 preparation with concrete grants, both
