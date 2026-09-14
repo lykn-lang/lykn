@@ -1,92 +1,51 @@
-# Authoring and reference record
+# Authoring observations and retained failures
 
-CC, Codex/Sofie, 2026-09-13. Model/settings beyond the session identity are not
-available in a durable experiment record. Prior Slice03/05/06 experience and
-their CDC reports informed this work; it is not a blinded guide experiment.
+CC/Sofie, 2026-09-13. The operator authorized continuation with a maximum of eight
+Slice04 failures and explicit `/bin/ln` for isolated symlink setup. The slice
+ultimately retains nine failures. The ninth was a process violation: a closeout
+verifier was authored after the ceiling, rejected during emitted review and
+never executed or corrected. It is not exempted as verification tooling.
 
-## Failed conditions retained
+| Charge | Condition | Evidence / outcome |
+| --- | --- | --- |
+| 1–4 | Historical Slice04 source failures | Exact original artifacts/open set and raw packets retained under `payload/meta/prior-artifacts`, `payload/meta/open-set` and inherited packets; prior preparation report remains in Git |
+| 5 | First condition symlink preparation | Narrow Deno read/write grants rejected symlink setup before a child record existed; operator authorized isolated `/bin/ln`; work02 freezes that correction |
+| 6 | First YAML stringify audit | Plain-scalar expectation rejected actual folded scalar; source-backed byte expectation corrected in work02; original successful child/failing audit retained |
+| 7 | First alias-resolution audit | Actual graph error said `not a dependency`; overly specific old predicate failed; work02 preserves the corrected predicate and original output |
+| 8 | Second condition cross-filesystem trial | Source-temp read authority absent; actual NotCapable, complete orphan and unchanged destination; no grant correction/retry |
+| 9 | Closeout `reconcile.lykn` draft | Source gates passed; emitted code had await inside a synchronous IIFE and a COMPILE_ERROR conditional; never executed or fixed |
 
-Subsequent resumed condition **4**: the adapted supervisor's first source had
-an excess closing parenthesis near `compiledSha256`; check reported unexpected
-`)` at 230:10. One source correction passed check/lint/compile. Both drafts,
-emitted output and all gate streams remain in the
-[resume packet](resume-raw-transcript.txt), `seed/gates-01` and `seed/gates-02`.
-The supervisor was not executed. Review found still-unverified early-stop,
-empty-target and semantic-marker paths. Following the before-exhaustion rule,
-[Arc03/Slice07](../../../arc03-findings-and-integration/slice07-research-supervisor/slice-plan.md)
-now owns bounded native supervisor verification. Slice04's four-condition
-history is not reset. The earlier three conditions below remain unchanged.
+The two runtime conditions retain exact source hashes, configs/locks, emitted
+code, source gate streams, child/observer output and audit results. The failed
+ninth draft is `payload/meta/failed-closeout-reconcile.lykn`, with gates under
+`payload/meta/capture-gates/`; no successful result is fabricated for it.
+No further code authoring followed that failure. Already-gated capture tooling
+and unchanged condition-specific semantic auditors supplied the final packet
+and replay; captured replay preserves failing dispositions.
 
-A separate supplemental native audit command failed frozen-lock validation
-because its empty config was paired with the merged package lock. No source
-correction or package result is inferred. The failed condition is preserved;
-packet tooling subsequently used a separate matching native config/lock root
-without disabling frozen mode. See [resumed preparation](resume-preparation.md)
-for actual reads, commands, inspection findings, counts and re-entry.
+Separately retained infrastructure mistakes: an initial git archive from the
+project subdirectory failed; root-scoped export succeeded. An initial source
+diff selected no paths from that cwd; corrected full-source files retain all
+30 paths. Inherited merged lock failed frozen graph resolution and is retained
+beside the distinct resolved preparation lock. `deno info --cached-only` was
+rejected as unsupported; static graph retrieval and runtime cached-only cases
+remain distinguished. A closeout Markdown patch initially matched the wrong
+arc heading and made no writes; the corrected documentation patch was applied.
+These are not silently presented as successful commands.
 
-1. First cases.lykn passed check/lint/compile but emitted COMPILE_ERROR throws
-   for a catch-final and finally-final `if` without else. Retained source and
-   emitted output are under meta/authoring-01. This repeats the known JSCF class;
-   no new root-cause finding or source repair is asserted.
-2. After moving those conditions into helpers, emitted review found `? throw`
-   syntax and use of the `conj` macro as a first-class callback. Helpers and an
-   explicit append function replace these in the final draft. Original emitted
-   evidence is meta/authoring-02. Its exact source was reconstructed from the
-   retained first source and the recorded edit; recompilation matches the
-   original second emitted output byte-for-byte. This remains authoring error,
-   with known compiler validation gaps; it was caught before runtime.
-3. The first planning-audit draft used `decode-uri-component`, which emitted
-   nonexistent `decodeUriComponent`. Emitted review caught this before execution;
-   the correction uses the exact native identifier `decodeURIComponent`.
-   meta/gates-05 retains the original output, reconstructed source and successful
-   byte comparison after recompilation. This is an authoring error.
+References actually read: current Slice04 prompt/plan/ledger; project/arc bodies
+and histories (some combined output truncated); FM01 R rows and RP01; Slice01
+findings; JSON/YAML preparation/value/resource CDC; launcher/resume/supervisor
+CDC; selected immutable Lykn skill and anti-patterns (some reads truncated),
+core/error IDs 01–04 and async IDs 01–05; installed framework, project-management
+README/scales/closing, verification ledger/row closure and scientific controls/
+capture. Installed Rust guidance is the authorized substitute for the missing
+source path; no Rust source was changed. These are not claims to have read every
+guide in full. This was informed authoring, not a blinded guide experiment.
 
-The final cases and audit drafts pass source gates and the targeted emitted
-review. Cases are **not runtime-validated**. The audit's native generation,
-published-file and packet modes subsequently ran through the operator-suggested
-eval route. Used-binding warnings are retained.
-Three failed source conditions have consumed correction headroom; do not reset
-the five-condition slice budget when resuming. Review the concurrency/draft
-generator carefully before expanding it. The launcher failure is a separately
-identified runtime-condition gap, not an additional source repair or a package result.
-
-The earlier audit source used to enumerate downloads was reconstructed after
-later edits; its emitted bytes match the retained gates-01 output exactly.
-The first later freeze was blocked; the subsequent eval route generated a
-clearly labeled candidate inventory. A dependent shell sequence still
-attempted package gates/copies after that failure; absent-output diagnostics and
-the incomplete frozen-01 directory are retained. This was execution discipline
-error, not successful freeze or a separate package/compiler failure.
-
-## References actually read
-
-- Installed collaboration-framework, project-management, work-verification,
-  scientific-methods and rust-guidelines SKILL entry points (selected portions
-  where output was truncated). The installed Rust substitute was already
-  explicitly authorized by the operator; no permission question was pending.
-- Project-management guides/README.md, 01-scales-of-work, 03-planning-top-down,
-  04-closing-slices and 05-closing-arcs; work-verification 01-ledger-discipline
-  and 03-row-closure; scientific-methods 06-evidence-capture.
-- Pinned d0bb981 Lykn assets/ai/SKILL.md; 09-anti-patterns (selected sections and
-  summary, not an assertion that all truncated output was read); 01-core-idioms
-  IDs 01–04, 19–21, 31–35; 02-api-design IDs 01–03; 03-error-handling IDs 01–04;
-  07-async-concurrency IDs 13–14, 17–19, 23–24; 10-project-structure IDs 01,
-  08–10, 22–25; complete 14-no-node-boundary.
-- Project/arc plans and ledgers, Slice04 open set, FM01/RP01 and Slice01 findings
-  and source-register sections; JSON, YAML preflight, value and resource/file CDC
-  reports; retained Slice06 supervisor and selected audit/generator source.
-- Pinned CLI cmd_run and existing run_permissions tests; captured Deno v2.9.6
-  flags/parser/run-argument source. Current official Deno CLI/run docs were
-  consulted for diagnosis; immutable captured source is the attribution anchor.
-- Discovery Register protocol and targeted searches for existing launcher,
-  permission, Node and compiler findings before adding D-2609-DARG.
-
-Source skill wording allowing npm/Node conflicts with this project's explicit
-scope. No exception was inferred. Lykn supplied research-source authoring and
-the executed pre-upgrade URL enumeration; shell/Git/Cargo/curl supplied build,
-transport, source reads, recording and byte-copy infrastructure. No alternative
-programming language was used. The later operator eval suggestion supplied an
-explicit route for exact Lykn-emitted native evidence tooling, with implicit-all
-permissions, forced ESM, no remote/npm resolution and null stdin. It does not
-validate the wrapper or replace denial cases. Human code-shape and controlled
-guide/book/ADT evaluation remain Arc02.
+Attribution remains bounded: incorrect audit expectations and permission scope
+are researcher mistakes, not demonstrated library/compiler defects. Emitted
+review caught the invalid helper before runtime; compiler/guide implications
+require reproduction through the existing Arc03 findings process. No new source
+bug is declared from this failed draft. All earlier guide/book/ADT and human
+code-shape obligations survive; an LLM's code assessment is not operator evidence.

@@ -1,28 +1,33 @@
-# Slice04 preparation finding
+# Findings from partial dependency/runtime execution
 
-**D-2609-DARG — pinned Lykn run cannot select its script on Deno 2.9.6.**
-The immutable d0bb981 CLI inserts a pre-script `--`. On the operator-upgraded
-runtime, two minimal no-import launches exit 1 and request a script/task; two
-explicit `--allow-all` controls do the same. Correct emitted source never prints
-its marker. Actual NUL-delimited argv and pinned upstream parser source identify
-the separator/script positional interaction. The tested facts are local CC
-observations; upstream cause attribution is source-backed analysis, not an
-independently tested upstream patch.
+All eight DB rows remain open. The [results](results.md) and
+[inventory](dependency-inventory.md) support bounded observations only.
 
-Owner and real routing destination:
-[Arc03/Slice06](../../../arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md).
-Re-entry: independently verified launch correction, preserved permission and
-argument safety, traceable new compiler pin and fresh Slice04 preparation.
-Do not silently remove path safety, install an old Deno, patch the immutable
-research source, use a PATH rewrite shim, or replace the runtime matrix with
-direct Deno execution. The operator-suggested eval route is an explicit exception
-for native Lykn-authored evidence tooling, retaining its implicit-all permissions.
+- The permitted published export graph resolves without Node/npm edges in the
+  pinned condition; the separate development graph still has three unresolved
+  modules. Registry/runtime closure does not prove complete provenance or policy
+  compliance. Existing D-2609-NPMB remains relevant; planned Slice09 owns the
+  complete category/source crosswalk and decision.
+- Pinned standard YAML value parsing/stringifying works in the tested authority
+  conditions. Its long plain-value output becomes a folded scalar. This does
+  not establish document preservation; D-2609-YNOD and all 28 Y-14 cases remain
+  gated pending the concrete compatible-route/design task in Slice09.
+- Explicit child permissions are observable with both native and package-backed
+  operations. Isolated symlink fixture setup needed the operator-authorized
+  `/bin/ln` route; cross-filesystem rename still lacked source read authority.
+  The latter is a retained researcher error, not an OS cross-device finding.
+  Slice08 owns actual remaining file faults and affected controls.
+- Existing observer/cancellation controls produce useful partial-file and
+  preserved-destination evidence, but sampling and bounded repetitions establish
+  neither universal atomicity nor durability. Five negative audit copies and
+  full composed fresh replay remain owed.
+- Authoring exceeded the explicit failure ceiling by one unexecuted draft.
+  That process violation is preserved and disclosed; re-slicing cannot erase
+  it. Independent preparation review precedes further execution.
 
-The existing D-2609-PERM repair remains historically CDC verified under its
-original condition. This is new compatibility work, not a claim that its
-permission repair was never effective. Test-runner implicit grants, NPMB/LINT,
-JSCF/UNUS/NZRO, JSER and document-candidate YNOD retain their original owners.
-
-No R-02–09 runtime conclusion, library adoption, document-route selection,
-power-loss guarantee, complexity bound, guide/book repair, recursive ADT contract
-or operator aesthetic acceptance follows from this interrupted preparation.
+The repaired launcher and run-permission findings retain their prior independent
+CDC status. No source repair, package adoption, policy relaxation, ADT capability,
+guide/book correction or operator aesthetic acceptance is inferred here. Existing
+permanent discoveries remain in their register; these partial observations do
+not justify inventing new compiler/library defect IDs. Arc02/Arc03 and P-04/P-08
+retain the source/guide/book/ADT/human obligations described in the parent plans.

@@ -1,156 +1,108 @@
-# DB01 preparation and launch blocker
+# DB01 resumed baseline and partial replay protocol
 
-2026-09-13, CC observation. **Slice04 is blocked; no criterion is proposed-done.**
-Original scope and budgets remain in [slice-plan.md](../slice-plan.md) and RP01.
-This packet records preparation and a newly reproduced launcher incompatibility,
-not a completed runtime/dependency experiment.
+Status: partial CC evidence, stopped after the amended failure ceiling was
+exceeded. The [closing report](../closing-report.md) is authoritative for current
+scope/status; original protocols and failures remain in the packet. All eight
+DB criteria remain open. Dates use the operator's 2026-09-13 local session;
+the second manifest records 2026-09-14T00:05:23.009Z.
 
-## Identities and operator intervention
+| Identity | Value |
+| --- | --- |
+| Planning start | b54714b; clean planning worktree |
+| Immutable source | 4dded883bbd321d19635e6fce233343f33803f9e |
+| Source tree | 218b085176053f1273642496cf75d7691c399f6e |
+| Fresh locked release CLI SHA-256 | d4a7028ebba234ffcd6fdb544c256489d22b840da2e94e0aa833b0520c834326 |
+| Deno executable | /opt/homebrew/bin/deno, 2.9.6 |
+| Deno SHA-256 | 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74 |
+| V8 / TypeScript | 15.0.245.2-rusty / 6.0.3 |
+| Native supervisor baseline | Arc03/Slice07 commit 910268d, independently CDC closed |
+| Packet SHA-256 | beb47407afaa2effbcd12c95206fff2f426556afb585aba37e4f1a82e95ed94f |
 
-Fresh source export: `d0bb981dae2a4abf6c984406c4b2081a45cc92f8`, tree
-`1c91b11c6ebfc7305ca4bc3fca4a5148eb2fdaf5`, into
-`/private/tmp/lykn-p07-dependency.v8PYzy/source`. The locked release Cargo build
-exited zero with Cargo/rustc 1.97.0. CLI SHA-256:
-`78aac90c4b4d6c644ac376e99ce91f88cdae32477aff476980912e68eba0c1bb`.
-Build logs and identities are retained in the raw packet's meta directory. No registered
-source worktree or shared binary was changed.
+The source archive was built in exclusive scratch with `cargo build --release
+--locked`; the selected CLI matches the accepted binary. Registered source
+worktrees and shared binaries were not modified. The source interval d0bb981 to
+4dded88 has 30 changed paths, including embedded/compiler/toolchain changes;
+it is not solely the launcher fix. Full Cargo metadata, help, versions, configs,
+lock bytes, archive and corrected root-scoped diff are retained under `payload/meta/`.
+The initial empty subdirectory-scoped diff is retained as a setup mistake.
 
-Before the operator upgrade, Deno was 2.7.7, SHA-256
-`103ea70463213b1a8ea7b46852a34612f4e0afcc1ff09d1656d185ed215772d4`.
-The operator paused runtime work during the upgrade, then clarified:
-“2.7.7 was removed; 2.9.6 was installed!” and “2.9.6 is correct :-)”.
-The post-upgrade identity is Deno 2.9.6, V8 15.0.245.2-rusty, TypeScript 6.0.3,
-SHA-256 `2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`.
-This is a separate condition. No fresh 2.7.7/2.9.6 pair comparison exists.
-The pinned CI has broad v2.x jobs and a specific 2.7.7 job; that is support
-intent, not proof that 2.9.6 launches this compiler's output.
+Runtime supervisors use cleared environment, null stdin, no prompt, frozen
+locks and cached-only execution for permitted graphs. No-grant parsers and
+path-scoped file grants are distinct from explicit host observation/kill and
+isolated `/bin/ln` setup. The normal stop is 9s with 10s external deadline,
+16MiB output and 512MiB sampled process-tree RSS; smaller controls deliberately
+exercise stops. These are observed bounds, not allocation/durability guarantees.
+Each condition has five external controls. The latest manifest specifies
+48 executable variants/103 attempts and 11 static rows. Full successful replay
+and five negative audit copies are still owed.
 
-Host: macOS 15.7.9 (24G830), arm64. Registered planning started clean at
-ae179ea; source heads and shared binary hashes are in live-identity.txt.
-The first PATH inventory used unsupported `command -v -a`; available-paths.txt
-contains the corrected `type -a` inventory. This infrastructure correction is
-not a research result. Games01 was already mounted; an exclusive empty directory
-was created there for R-07 and removed after the launch blocker. No mount,
-cross-filesystem rename, file fault or cancellation trial occurred.
+`work/` is the first frozen condition. `work02/` is the corrected second condition;
+never mix their source hashes, expectations, records or denominators. Its exact
+runtime audit hash is in [inputs.json](inputs.json). The top-level
+[audit.lykn](audit.lykn) is a later, gated capture-only revision supporting
+lossless gzip-hex packets; it is not the audit used to generate runtime records.
+[cases.lykn](cases.lykn) and [supervisor.lykn](supervisor.lykn) are work02 snapshots.
+The top-level [project.json](project.json) and [deno.lock](deno.lock) describe
+permitted package imports. Native tools instead use the empty config and version-5
+empty lock preserved separately in each packet condition. Do not run capture
+under the package config or mistake the invalid closeout helper for tooling.
 
-## Minimal replay of the blocker
+## Tested captured-evidence replay
 
-Build the immutable source above in a new scratch root using `git archive`
-from the planning root and `cargo build --release --locked`. Verify both binary
-hashes first. Create a fresh directory for each invocation, containing
-`project.json` with `{}` and this exact UTF-8/LF `minimal.lykn`:
+[raw-transcript.txt](raw-transcript.txt) is JSONL, 20,067,124 encoded bytes,
+3,997 files, 144,067,786 decoded bytes. Each row carries its safe relative path,
+uncompressed byte count/SHA-256, `encoding: gzip-hex` and compressed bytes.
+The capture tool checks unique safe paths and decoded lengths/hashes, writing
+only new files. Packing and fresh extraction each passed 11,991 checks.
+The packet contains both exact conditions, all raw process records/streams,
+fixtures, emitted/gate evidence, historical Slice04 artifacts and source archive;
+transport source caches are retained under `meta/runtime-package-cache` and
+`meta/static-dev-cache`. Machine-local absolute locators remain provenance,
+not portable resolution instructions.
 
-```lykn
-(console:log "DB-MINIMAL-EXECUTED")
-```
-
-Run check, lint and compile with the pinned absolute CLI. Inspect the emitted
-`console.log("DB-MINIMAL-EXECUTED");`. Then, with `db_cli` and `db_trial` set to
-those new absolute paths, use:
-
-```sh
-cd "$db_trial"
-mkdir home tmp cache
-env -i PATH=/opt/homebrew/bin:/usr/bin:/bin HOME="$db_trial/home" \
-  TMPDIR="$db_trial/tmp" DENO_DIR="$db_trial/cache" \
-  DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 \
-  "$db_cli" run --no-prompt --cached-only --frozen=true minimal.lykn \
-  >run.stdout 2>run.stderr < /dev/null
-printf '%s\n' "$?" > run.exit
-```
-
-This literal route ran twice in fresh directories and exited 1 both times,
-printing a missing-script/task-list message; the program marker was absent.
-After the operator suggested `--allow-all`, two more fresh runs added that
-explicit flag and produced the same failure. This permission control is
-operator-authorized and is not an injected default or a policy decision about
-every later denial case. It establishes that the observed launch failure is
-not repaired by granting all permissions.
-
-The attempted Lykn `audit.lykn freeze` invocation also exited 1 before running
-its body. Its compiled source is retained. Thus inputs.json, merged deno.lock,
-package.lykn and the generated case manifest were **not** produced by that run. Subsequent
-package source gates encountered the absent file; their failures are retained
-as a dependent invocation mistake, not a package/compiler observation.
-
-The operator then suggested `deno eval`. The exact compiled minimal program
-printed its marker and exited zero through eval. With this explicit alternate
-route, the native Lykn audit generated a candidate 47-variant inventory (three
-ownership checks), candidate merged config/lock/package source, and verified all
-188 downloaded files against published size/checksum metadata (376 checks).
-These successes do not erase the five failed launcher invocations. Eval's
-implicit-all permissions are recorded, not mistaken for denied/scoped runtime
-evidence. Full operational freeze, resolved runtime/development graphs,
-supervision and the matrix remain blocked on the wrapper correction.
-
-For native evidence tooling, compile and inspect audit.lykn, then invoke its
-exact emitted bytes with a cleared environment and null stdin:
+The actual fresh replay was performed at
+`/private/tmp/lykn-p07-db-final.LuQhzp/evidence/extracted`. From the isolated
+`evidence/` directory with native project/lock, `home/`, `tmp/`, `cache/` and an
+empty `extracted/` directory, the tested extraction invocation was:
 
 ```sh
-env -i PATH=/opt/homebrew/bin:/usr/bin:/bin HOME="$db_trial/home" \
-  TMPDIR="$db_trial/tmp" DENO_DIR="$db_trial/cache" \
-  DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 \
-  /opt/homebrew/bin/deno eval --ext=mjs --no-config --no-remote --no-npm \
-  --cached-only "$(cat audit.js)" published < /dev/null
+env -i PATH=/opt/homebrew/bin:/usr/bin:/bin HOME="$PWD/home" TMPDIR="$PWD/tmp" \
+  DENO_DIR="$PWD/cache" DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 \
+  ../source/target/release/lykn run --no-prompt --cached-only --frozen=true \
+  --allow-read=./raw-transcript.txt --allow-write=./extracted \
+  audit.lykn extract raw-transcript.txt extracted </dev/null
 ```
 
-The shell substitution passes file bytes as one argument; no JavaScript is
-hand-authored or modified. No program in this route imports a package.
-`published`, `freeze`, `pack OUTPUT` and `extract INPUT DESTINATION` are the
-retained modes. Use fresh destinations for packing and extraction. Candidate
-generation is explicitly not an execution-ready operational freeze. Extract the
-packet into a new empty directory, then replay its published audit independently
-of old scratch paths. Full runtime replay still requires the launcher correction.
-
-For captured replay, set `db_artifacts` to this committed artifacts directory,
-`db_cli` to the verified pinned CLI, and `db_trial` to a fresh scratch directory.
-Compile `audit.lykn` with `"$db_cli" compile "$db_artifacts/audit.lykn" > audit.js`
-inside that scratch directory; inspect the emitted file. Create home/tmp/cache
-there and an empty `extracted` directory. In the invocation above replace
-`published` with `extract "$db_artifacts/raw-transcript.txt" "$db_trial/extracted"`.
-After successful extraction, change directory to `extracted`, create its private
-home/tmp/cache directories, and reset `db_trial` to that absolute directory.
-Run the same eval invocation with `published`, then with `freeze`. Compare
-inputs.json, project.json, deno.lock and dependency-graph.json with the committed
-candidate artifacts. Compare package.lykn and case-manifest.md with copies made
-from the extraction before regeneration. The retained manifest is generated
-candidate data; the committed case-manifest.md adds the handoff dispositions.
-This extraction and both regeneration modes were tested from a fresh directory;
-all six outputs matched the original trial bytes. Counts are in results.md.
-
-## Actual argv and source attribution
-
-The recorder uses the corrected Slice06 CDC shell form:
+For another location, copy the packet/capture audit into exclusive scratch,
+create its native `project.json` as `{}` plus LF and `deno.lock` as
+`{"version":"5"}` plus LF, and substitute an absolute accepted CLI path.
+Do not overwrite an existing extraction. The audited shell dispatcher in the
+packet only invokes each condition's unchanged Lykn semantic verifier:
 
 ```sh
-cat > deno <<'RECORDER'
-#!/bin/sh
-printf '%s\0' "$@"
-RECORDER
+DB_CLI=/private/tmp/lykn-p07-db-final.LuQhzp/source/target/release/lykn \
+DB_ROOT=/private/tmp/lykn-p07-db-final.LuQhzp/evidence/extracted/payload \
+DB_LOGS=/private/tmp/lykn-p07-db-final.LuQhzp/logs/extracted-reverify \
+/bin/bash /private/tmp/lykn-p07-db-final.LuQhzp/evidence/extracted/payload/meta/verify-captured.sh
 ```
 
-Placed first in a disposable PATH, it recorded actual NUL-delimited argv.
-Lykn supplies `run`, `--config`, the actual config path, explicit grants,
-`--no-prompt`, **`--`**, the absolute compiled script and its argument `freeze`.
-The raw binary record is retained in the hex-encoded packet; it is neither split on whitespace nor treated
-as evidence of real Deno permissions. The no-grant and explicit-all real launches
-above provide the runtime failure evidence.
+This completed with exit 0 and `All retained semantic-audit dispositions
+reproduced.` It matched all 163 original audit exits, including three expected
+failures; it does not turn those failures into passes. An earlier identical
+163-record replay is retained inside the sealed packet. Post-seal extraction
+and replay receipts are reported here; a packet cannot include its own final
+seal/replay receipts. Packet hashing verifies extracted file bytes, while the
+existing semantic audits verify record contents. A new crosswalk between every
+physical extracted fixture and its record was not completed: the ninth draft
+intended for that purpose was rejected before execution.
 
-Pinned Lykn `crates/lykn-cli/src/main.rs` cmd_run deliberately inserts the
-separator to protect a leading-hyphen filename. Captured upstream Deno v2.9.6
-`libs/cli_parser/src/defs.rs:611` defines script_arg without positional trailing;
-`parse.rs:164–187` routes values following this separator into result.trailing;
-`convert.rs:1415–1465` looks for script_arg and otherwise requests task listing.
-This source path explains the observed message. No patched Deno or Lykn was
-built, and no direct-Deno A/B execution was performed. The precise repair is
-owned by [Arc03/Slice06](../../../arc03-findings-and-integration/slice06-deno-launch-compatibility/slice-plan.md).
+## Fresh runtime re-entry
 
-## Required re-entry
-
-Independently verify a launcher correction preserving explicit permissions,
-argument bytes, leading-hyphen path safety, configuration and exit propagation.
-Record a new immutable compiler identity; retain this original failing pin.
-Then return here, review the draft generator, freeze all variants, gate generated
-entries, inspect full graphs and locks, and run permission/supervisor controls
-before the complete matrix. Fresh runtime and captured-evidence audits remain
-owed; replaying this blocker does not satisfy either full-slice route.
+No complete successful 103-attempt fresh replay exists. The retained per-group
+supervisor invocations/gates are evidence of the actual partial execution, not
+an instruction to replay a known failing full suite. Independent preparation
+review must first accept [Slice08](../../slice08-file-fault-completion/slice-plan.md).
+That unit freezes corrected source-temp grants, revalidates affected controls,
+and completes the remaining faults. Planned Slice09 then owns full composition,
+negative controls, exact inherited reconciliation and successful fresh/captured
+replay. Preserve every failure and original ID; do not reset Slice04's history.

@@ -1,5 +1,13 @@
 # Slice04 ledger
 
+2026-09-13 current CC: [partial execution handoff](closing-report.md), stopped
+after nine failures exceeded the operator-amended ceiling of eight. Across two
+conditions, 163 process records retain 160 passing and three failing audits.
+Latest condition: 91 passes, one failure, 11 unrun attempts. All original DB rows
+below are byte-identical and open; no row is proposed-done. Independent partial
+review and Slice08 preparation review are next; planned Slice09 retains final
+reconciliation. Earlier immediate-resume instructions are historical.
+
 2026-09-13 current CDC: [supervisor independently closed](../../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md).
 Resume the complete Slice04 contract using its pinned native tooling baseline.
 All eight DB rows below remain unchanged and open; four historical source

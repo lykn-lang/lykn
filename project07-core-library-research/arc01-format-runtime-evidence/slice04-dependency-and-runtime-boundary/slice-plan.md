@@ -1,5 +1,22 @@
 # Slice04 — Dependency and runtime boundary
 
+**Current status: partial/stopped; independent packet and re-slicing review next.**
+The operator amended this slice to a maximum of eight retained failures and
+authorized explicit `/bin/ln` only for isolated symlink setup. Nine failures
+were retained: a closeout verifier was mistakenly authored after reaching eight
+and rejected during emitted review without execution. This violates the ceiling;
+no further code correction was made. [Current report](closing-report.md) preserves
+both conditions, all failures and the original eight open criteria unchanged.
+
+The latest frozen condition has 48 executable variants/103 intended attempts
+and 11 static rows, preserving 47 original candidates. It retains 92 records:
+91 passing audits and one failure; 11 attempts remain unrun. Complete fresh
+successful replay and negative controls remain owed. [Slice08](../slice08-file-fault-completion/slice-plan.md)
+owns actual remaining file faults after independent preparation review;
+[Arc01's Slice09 roadmap](../arc-plan.md#remaining-research-ownership-after-slice04-partial-execution)
+owns dependency/decision/reconciliation and full composition. All R/Y/source/
+guide/book/ADT/operator outcomes remain. Earlier resume notes are historical.
+
 **Current status, 2026-09-13: open, ready to resume after supervisor CDC.**
 [Arc03/Slice07](../../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md)
 closed all six SH criteria. The earlier stop instructions below are historical.
@@ -233,6 +250,11 @@ After CDC, open Slice07 only with a compatible route; otherwise open the
 explicit prerequisite work, preserving the complete document scope.
 
 ## Version History
+
+- 2026-09-13 v1.2: Retained resumed package/native evidence and two frozen
+  conditions, with nine failures exceeding the amended eight-failure ceiling.
+  Stopped corrections and routed actual residual research to Slice08 preparation
+  review and planned Slice09; all eight original DB criteria remain open.
 
 - 2026-09-13 v1.1: Retained resumed build/gates and fourth source failure;
   re-sliced supervisor verification into Arc03/Slice07 before exhausting the

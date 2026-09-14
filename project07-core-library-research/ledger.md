@@ -1,5 +1,12 @@
 # Project07 ledger
 
+2026-09-13 current: [Slice04 partial handoff](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/closing-report.md)
+retains 163 process records across two conditions, with 160 passing and three
+failing audits. Nine failures exceed the amended eight-failure ceiling.
+Independent packet/split review precedes Slice08 file-fault completion; planned
+Slice09 retains final reconciliation. All P and DB rows remain open; no package
+or human acceptance follows. Immediate-resume notes below are historical.
+
 2026-09-13 current CDC: [supervisor independently closed](arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md).
 Resume full Slice04 with all eight DB rows and all project criteria open.
 Native tooling closure does not supply package, document or human acceptance.

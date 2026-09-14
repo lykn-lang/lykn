@@ -1,20 +1,38 @@
-# DB01 interim decision record
+# Dependency and document-route decision packet — partial
 
-**Execution decision:** stop runtime-dependent research at the reproduced
-2.9.6 launcher gap. Prepare Arc03/Slice06 as its concrete correction prerequisite;
-resume Slice04 only after CDC verifies the correction and a new compiler pin.
-The operator's explicit `--allow-all` diagnostic produced the same missing-script
-failure. It is not evidence that all future operations require all permissions.
+Status: evidence-backed alternatives for review; no package adoption, policy
+relaxation, document-route acceptance or operator acceptance is recorded.
+DB-07 remains open. [Inventory](dependency-inventory.md) and [results](results.md)
+separate measured behavior, static source evidence and unfinished reconciliation.
 
-| Route | Present evidence | Decision and remaining owner |
+| Alternative | Evidence supporting consideration | Cost / gate / disposition |
 | --- | --- | --- |
-| Native JSON and Deno file APIs | Prior JSON CDC; current launch does not reach even a no-import program | Preserve value/lexical-loss and replacement questions; Slice04 fresh runtime boundary remains owed |
-| Exact std/json, jsonc, streams, yaml candidates | Published bytes verified by native eval audit; prior versioned runtime evidence | No new adoption; complete runtime/type/dev graph, lineage and value-domain/ADT decisions remain Slice04/Arc02/Arc04 |
-| eemeli/yaml 2.9.1 document route | Prior static Node-API rejection; current published source captured without evaluation | D-2609-YNOD remains open; no execution or adoption authorized |
-| Compatible document alternative | None established in this interrupted work | Slice04 must identify and substantiate one or open a bounded design/port prerequisite before Slice07 |
-| Lykn implementation or port | No implementation or design comparison performed | Possible separately planned work; no vendor/port/install authority in this slice |
+| Native JSON with explicit Lykn validation | Prior JSON CDC plus new no-grant parser and boundary cases | Numeric fidelity, duplicate-key and source-preservation policy still required; not adopted here |
+| Pinned standard JSON/JSONC/streams and YAML value APIs | Permitted export graph closes; warm/cold and permission cases observed | Complete lineage/dev classification and policy decision still owed; YAML value output is not document preservation |
+| Eemeli YAML source unchanged | Rich document candidate retained with exact source/package metadata | Direct Node edges and npm build surface; prohibited execution remains gated |
+| Upstream browser build | Static upstream build config supplies browser substitutions | Browser targeting does not remove npm toolchain/ancestry obligations; no independently acceptable artifact/route demonstrated |
+| Independently maintained Lykn/Deno document implementation or port | Could make the runtime/build boundaries explicit | Design alternative only; requires bounded source/lineage/license/maintenance proof and all 28 Y-14 trials; no implementation authorized by this record |
 
-All 28 Y-14 cases remain gated in Slice07. All 36 unsupported Y-13 cells retain
-their conversion/bound-API re-entry from Slice06. A new launcher fix supplies
-neither document capability nor package resource controls. No operator ancestry,
-library, recursive-value contract or code-shape acceptance is inferred.
+No compatible document route was established. All 28 Y-14 cases and
+D-2609-YNOD remain open. The concrete next decision task belongs to Arc01's
+[planned Slice09](../../arc-plan.md#remaining-research-ownership-after-slice04-partial-execution):
+finish exact graph/lineage/resource reconciliation; compare these alternatives
+under the unchanged no-Node/npm direction; then establish a compatible route
+or open the bounded Arc03 design/correction prerequisite before document
+execution. That prerequisite must name source home, maintainer/owner, package
+and build constraints, original Y-14 coverage and acceptance/re-entry criteria.
+It must exist in Git before being called routed. A roadmap promise is not a
+compatible implementation, nor does it close DB-07.
+
+File policy also remains a decision: bounded replacement/concurrency/cancellation
+observations support evaluating a same-filesystem temp-and-rename approach,
+but the current cross-filesystem observation is NotCapable and pending actual
+OS evidence. Durability, failure recovery/orphan ownership, mode/link handling
+and API error contracts need explicit treatment in the later library work.
+Sampled RSS and representative resource runs establish no hard memory guarantee.
+
+All source/compiler fixes remain in their release-owned worktrees; guide/book
+corrections retain Arc03 ownership; ADT and representative authoring trials
+retain Arc02 ownership. P-04/P-08 require the operator's actual code-shape and
+direction judgments. This packet does not supply those judgments or assign a
+new library release/repository by implication.

@@ -1,5 +1,12 @@
 # Arc01 ledger
 
+2026-09-13 current: [Slice04 partial handoff](slice04-dependency-and-runtime-boundary/closing-report.md)
+retains two conditions and nine failures, exceeding the amended eight-failure
+ceiling. Its eight DB rows and A-03–06 remain open. Slice08 file-fault preparation
+review is next; planned Slice09 owns final dependency/decision/reconciliation.
+The 36 unsupported resources, 28 gated documents and source/human owners remain.
+Earlier immediate-resume instructions are historical.
+
 2026-09-13 current CDC: [supervisor closed](../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md).
 Slice04 resumes with all eight DB rows open. No Arc01 criterion inherits
 closure from native controls; all R/Y/document/source/human owners remain.

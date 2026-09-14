@@ -1,41 +1,41 @@
-# DB01 draft scope — generation blocked
+# DB01 frozen scope and partial dispositions
 
-The [generator source](audit.lykn) contains 47 explicitly named variant seeds,
-including one harness family. The first freeze launch failed; the subsequent
-operator-suggested eval route generated candidate inputs.json with three ownership
-checks. This document records intended work, not an execution-ready operational
-freeze. Original FM01 rows remain verbatim in inputs.json and the raw packet's
-fm01.md. All operational conditions, budgets and repeat rules
-in slice-plan.md remain authoritative, including conditions not yet implemented
-by these drafts. No variant is fulfilled by a declaration in source.
+[inputs.json](inputs.json) preserves `originalFm01` verbatim,
+`originalCandidates` (47 IDs), inherited J/Y inputs, exact sources/configs/locks,
+48 executable `variants`, 11 static `dispositions` and 103 expected attempts.
+The executable count is 36 original runtime candidates, five external controls
+and seven explicit package permission expansions. Static rows do not count as
+runtime passes. The packet retains both frozen manifests; the top-level copy is
+work02. Resource attempt 1 is warm-up; attempts 2–6 are measurements. Other
+research variants repeat twice; external controls run once per condition.
 
-| Family | Draft IDs (prefix shown once) | Disposition |
+| Family | Original IDs, family prefix shown once | Latest evidence and remaining work |
 | --- | --- | --- |
-| R-01 | identity, help, argv, minimal | Build/identity/argv evidence partial; minimal launch blocked in a separate diagnostic fixture |
-| R-02 | std-json-1.1.0, std-jsonc-1.0.2, std-yaml-1.2.0, std-streams-1.1.2, eemeli-yaml-2.9.1, toolchain | All 188 sizes/hashes match published metadata; complete graph/lineage inventory remains owed |
-| R-03 | narrow, alias, missing-package, missing-subpath, corrupt-lock | Not run; launcher prerequisite |
-| R-04 | prefetch, warm, cold | Not run; static file download is not a runtime-cache prefetch result |
-| R-05 | parser-native, parser-yaml, read-allowed, read-denied, write-allowed, write-denied, env-denied, net-denied, run-denied | Not run; all-permissions diagnostic did not reach application permissions |
-| R-06 | new, existing, symlink, mode, reader, two-writers | Not run; checkpoint worker drafts not validated |
-| HP | partial-observer | Not run; observer capability not established |
-| R-07 | cross-filesystem, inject-open, inject-write, inject-flush, inject-rename, cancel-before, cancel-after, directory | Not run; empty secondary scratch removed, recreate only under original restrictions |
-| R-08 | reconciliation, json-parse, yaml-parse, yaml-stringify | New representative replay and reconciliation audit not run |
-| R-09 | available-pair | Original runtime removed; no supported live comparison pair established |
+| R-01 | identity, help, argv, minimal | Pinned build/help and two actual minimal runs; full new argv recorder/reconciliation owed to planned Slice09 |
+| R-02 | std-json-1.1.0, std-jsonc-1.0.2, std-yaml-1.2.0, std-streams-1.1.2, eemeli-yaml-2.9.1, toolchain | Published byte inventory and 67-module permitted graph; full dev/type/example/toolchain classification and lineage still owed to Slice09 |
+| R-03 | narrow, alias, missing-package, missing-subpath, corrupt-lock | Narrow imports twice; four static resolution/integrity fault variants twice; earlier alias-audit failure retained |
+| R-04 | prefetch, warm, cold | Two prefetch, two warm package runs, two cold offline failures with expected semantics |
+| R-05 | parser-native, parser-yaml, read-allowed, read-denied, write-allowed, write-denied, env-denied, net-denied, run-denied | Each twice; seven file/env/net/run cases additionally twice with `-package` suffix; parser no-grant success is distinct from host grants |
+| R-06 | new, existing, symlink, mode, reader, two-writers | Four file variants twice and both concurrency variants twice; bounded live observations only |
+| HP | partial-observer | Deliberate partial-write detection twice; separate from ordinary writer success |
+| R-07 | cross-filesystem, inject-open, inject-write, inject-flush, inject-rename, cancel-before, cancel-after, directory | Cancellation twice each; first cross-FS record fails its audit due source-read NotCapable; second cross-FS, eight injections and two directory attempts not run; Slice08 owns completion |
+| R-08 | reconciliation, json-parse, yaml-parse, yaml-stringify | Three recipes each warm-up + five measurements; exact inherited reconciliation owed to Slice09 |
+| R-09 | available-pair | Only selected supported pair established; removed 2.7.7 unavailable; no alternative installed or fabricated |
 
-All executable functional/fault/concurrency variants still owe two fresh attempts;
-the three planned representative resource variants owe one warm-up and five
-measurements each. Wall/output/RSS controls are separate and have not run.
+The latest 103-attempt inventory contains 92 retained records (91 passing audits,
+one failed audit), leaving 11 unrun. Completing the fault subset requires
+12 fresh fault attempts: rerun the failed first cross-FS attempt as well as the
+11 unrun attempts, plus affected controls and five negative audit copies.
+No marker was fabricated to skip the failed files group. The earlier condition
+retains 71 records, 69 passing and two failing audits; the symlink setup error
+occurred before a child/record existed. [Results](results.md) separates these
+populations rather than adding them into a completed denominator.
 
-The complete original YAML ownership input is retained byte-for-byte in
-the raw packet's yp-inputs.json: 54 Y-13 resource cells, 28 gated Y-14 document
-cells and the other 267 YAML rows plus three harness rows. Slice06's independently
-verified 36 unsupported resource cells retain their API/bound reasons, overlap
-and re-entry. They are not newly executed or converted into launch failures.
-The original JSON manifest is the raw packet's j-inputs.json; all eight J-16
-variants and their prior evidence remain inherited. Slice04 owns reconciliation;
-Slice07 owns all 28 document cases after the still-unresolved compatible route.
-
-Owner of every blocked R family: Slice04, after independently verified
-D-2609-DARG correction in Arc03/Slice06. Re-entry requires a new traceable compiler,
-actual runtime identity, corrected draft review, generated manifest, graph/lock
-checks and controls in fresh roots. No protocol family cap or sample exists yet.
+All eight J-16 variants and 54 Y-13 cells remain in `inherited`; prior resource
+measurements remain historical evidence, not new runs. All 36 unsupported Y-13
+cells retain API/bound reasons and re-entry (18 JavaScript-value conversions,
+27 explicit-bound variants, overlap nine). Their current owner is Slice04 via
+planned Slice09 reconciliation. All 28 Y-14 document variants remain gated until
+an actual compatible route/design prerequisite is established; owner Arc01's
+planned Slice07 after Slice09's decision work. Unavailability and not-run are
+neither passes nor removed requirements.

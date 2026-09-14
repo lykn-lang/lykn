@@ -158,6 +158,20 @@
   (emit (obj :event "resource" :resource spec:resource :setupMs setup-ms :stageMs stage-ms :units result:length :bytes bytes:length
     :sha256 (await (digest bytes)) :preview (result:slice 0 32) :inputSha256 (await (digest (encoder:encode text)))))))
 (async (func dispatch :args (:object spec) :body
+  (if (= spec:op "pipe-worker")
+    (do (mark! "outputs/nested-ready.json" (obj :event "nested-ready"))
+      (while true (await (delay 100)))))
+  (if (= spec:op "pipe-parent")
+    (do
+      (bind cwd (Deno:cwd))
+      (bind args #a("run" "--no-prompt" "--cached-only" "--frozen=true" "--allow-write=./outputs" "cases.lykn" (JSON:stringify (obj :op "pipe-worker"))))
+      (bind child (-> (new Deno:Command spec:cli (obj :args args :cwd cwd :clear-env true
+        :env (obj :PATH "/opt/homebrew/bin:/usr/bin:/bin" :HOME (template cwd "/home") :TMPDIR (template cwd "/tmp") :DENO_DIR (template cwd "/cache") :NO_COLOR "1" :DENO_NO_UPDATE_CHECK "1")
+        :stdin "null" :stdout "inherit" :stderr "inherit")) (:spawn)))
+      (emit (obj :event "nested-spawn" :pid child:pid :args args :stdout "inherit" :stderr "inherit"))
+      (await (wait-for "outputs/release-parent"))
+      (emit (obj :event "parent-exit"))
+      (Deno:exit 0)))
   (if (= spec:op "control-timeout") (while true (+ 1 1)))
   (if (= spec:op "control-rss") (while true (+ 1 1)))
   (if (= spec:op "control-output") (while true (console:log (String:prototype:repeat:call "x" 1024))))

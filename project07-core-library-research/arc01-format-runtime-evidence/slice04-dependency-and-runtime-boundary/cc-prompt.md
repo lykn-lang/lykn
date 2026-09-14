@@ -1,5 +1,31 @@
 # CC — Research the dependency and runtime boundary
 
+**Current handoff: stopped; independent review of partial evidence and re-slicing
+is next.** [Resumed execution report](closing-report.md) retains two conditions,
+all original DB/R/Y obligations and the exceeded authoring ceiling. Do not run
+the full matrix or treat the cross-filesystem NotCapable as an OS result.
+
+Explicit re-slicing scope additions, before file creation:
+
+```text
+project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/slice-plan.md
+project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/ledger.md
+project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/cc-prompt.md
+```
+
+Slice08 owns completion of the remaining file-fault evidence and its correction
+controls, with preparation review before execution. Slice09 dependency decision
+and reconciliation is a roadmap obligation in the arc plan, not another opened
+tooling prerequisite. Slice04 retains its eight original criteria as the full
+research/composition contract. Budgets are not silently reset by these routes.
+
+2026-09-13 operator amendment: **Continue this same Slice04 with an eight-failure
+maximum**, preserving every failure and verification requirement. Explicit
+`/bin/ln` authority is granted only for isolated symlink fixture setup, keeping
+Deno read/write permissions path-scoped. This supersedes the historical five-
+failure limit below for Slice04; it does not erase its four prior failures or
+change scope, dependency policy, CDC or human-acceptance requirements.
+
 **Current assignment, 2026-09-13: resume full Slice04.** [Supervisor CDC](../../arc03-findings-and-integration/slice07-research-supervisor/cdc-verification.md)
 closed all six SH criteria after independent complete replay. This supersedes
 the supervisor stop/next-assignment instructions below. All eight DB rows remain
