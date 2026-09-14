@@ -1,5 +1,10 @@
 # Project07 ledger
 
+2026-09-13 CDC: [partial review passed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
+The 3,997-file packet and 163 retained audit outcomes reproduce. Slice08's
+reviewed bounded assignment is ready; all P/DB rows stay open. Nine failures
+remain charged to stopped Slice04. Earlier pending-review/resume notes are historical.
+
 2026-09-13 current: [Slice04 partial handoff](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/closing-report.md)
 retains 163 process records across two conditions, with 160 passing and three
 failing audits. Nine failures exceed the amended eight-failure ceiling.

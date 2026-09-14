@@ -1,5 +1,11 @@
 # Slice04 ledger
 
+2026-09-13 CDC: [partial review passed](cdc-partial-verification.md). Packet
+extraction and all 163 retained audit dispositions reproduce; three failures
+remain failures. Slice08 is ready under its reviewed bounded contract. All eight
+DB rows below stay byte-identical and open. Nine failures remain charged here;
+earlier pending-review and full-resume instructions are historical.
+
 2026-09-13 current CC: [partial execution handoff](closing-report.md), stopped
 after nine failures exceeded the operator-amended ceiling of eight. Across two
 conditions, 163 process records retain 160 passing and three failing audits.

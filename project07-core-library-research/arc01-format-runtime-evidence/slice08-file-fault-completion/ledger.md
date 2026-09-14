@@ -1,6 +1,7 @@
 # Slice08 ledger
 
-Six criteria open. Independent preparation review precedes CC execution.
+Six criteria open. [Independent preparation review](../slice04-dependency-and-runtime-boundary/cdc-partial-verification.md)
+accepted the v1.1 execution contract; CC may begin this bounded unit.
 All eight parent DB rows remain unchanged; this ledger supplies bounded evidence.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |

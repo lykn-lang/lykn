@@ -1,17 +1,22 @@
 # CC — Complete bounded file-fault research
 
-**Preparation review pending. Do not execute until independent CDC accepts this
-split and the concrete source-temp grant correction.** Read the complete
+**Preparation review passed; ready for bounded CC execution.** The
+[CDC review](../slice04-dependency-and-runtime-boundary/cdc-partial-verification.md)
+accepts the split and concrete source-temp grant correction. Read the complete
 [slice plan](slice-plan.md), [ledger](ledger.md), parent
 [Slice04 handoff](../slice04-dependency-and-runtime-boundary/closing-report.md),
-its full open set and both retained conditions. No permission question is pending;
-the outstanding gate is independent preparation review after a budget violation.
+its full open set and both retained conditions. This is the next authorized
+bounded assignment; Slice04 stays stopped with its nine-failure history intact.
 
 Apply installed collaboration/project-management README, work-verification,
 scientific-methods and pinned Lykn guidance. Installed Rust substitution remains
 authorized. Use planning; inspect worktree/status and exact staged paths.
 
-After CDC clearance, deliver FF-01–06 exactly. Start from the parent packet's
+Deliver FF-01–06 exactly, including the slice plan's **Reviewed execution
+contract**: 37 process attempts per complete condition, a complete fresh replay,
+captured/live-file crosswalks, five separate negative audit families, actual
+cross-device success/OS-error branches and rejection of permission denials as
+OS evidence. Start from the parent packet's
 work02 sources, not the invalid closeout helper. Freeze narrower candidate
 source-temp read/write grants and inspect emitted code before corrected trials.
 Preserve actual NotCapable as a negative control; do not relabel it cross-device
@@ -40,6 +45,7 @@ project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault
 project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/artifacts/raw-transcript.txt
 project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/artifacts/results.md
 project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/artifacts/authoring-observations.md
+status/status.html
 ```
 
 Expedited Mode: commit scoped CC work with contiguous Codex and Billo AI trailers.

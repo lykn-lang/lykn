@@ -1,5 +1,11 @@
 # Arc01 ledger
 
+2026-09-13 CDC: [partial/preparation review passed](slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
+Slice08 is ready for bounded file-fault work. All 163 retained audit dispositions
+reproduce, including three failures; no A-03–06 or DB row closes. Slice04 retains
+its nine-failure violation and remains stopped pending Slices08/09 evidence.
+Earlier pending-review and full-resume instructions below are historical.
+
 2026-09-13 current: [Slice04 partial handoff](slice04-dependency-and-runtime-boundary/closing-report.md)
 retains two conditions and nine failures, exceeding the amended eight-failure
 ceiling. Its eight DB rows and A-03–06 remain open. Slice08 file-fault preparation

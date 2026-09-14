@@ -9,6 +9,14 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-13 CDC: [partial evidence and preparation review passed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
+All 3,997 packet files and 163 retained audit dispositions reproduce; 833 additional
+census checks confirm the populations and failed identities. Slice08 is ready
+for bounded file research under its reviewed contract. Slice04 stays stopped,
+with all eight DB rows open and the nine-failure violation retained. Slice09
+still owns full composition and remaining decisions; no P row closes. This
+supersedes the pending-review/whole-matrix resume instructions below.
+
 2026-09-13 current handoff: [Slice04 partial evidence](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/closing-report.md)
 is stopped. The operator enlarged its failure ceiling to eight; nine failures
 were retained, including an unexecuted closeout draft authored after the ceiling.
@@ -280,6 +288,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.22: Arc01 partial CDC reproduced the packet and retained outcomes;
+  accepted Slice08 preparation with concrete grants, outcome predicates, controls
+  and file crosswalks. Preserved nine failures, all DB/P rows and Slice09/Y-14,
+  policy, source/guide/book/ADT and operator ownership without inferred closure.
 
 - 2026-09-13 v1.21: Retained Slice04's two runtime conditions and nine failures,
   explicitly exceeding its amended eight-failure ceiling. All DB/project rows

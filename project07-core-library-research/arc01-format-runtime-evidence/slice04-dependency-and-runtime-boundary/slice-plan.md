@@ -1,6 +1,9 @@
 # Slice04 — Dependency and runtime boundary
 
-**Current status: partial/stopped; independent packet and re-slicing review next.**
+**Current status: partial/stopped; independent partial review passed.**
+[CDC review](cdc-partial-verification.md) reproduces the packet and all 163
+retained audit dispositions. Slice08 is ready under its reviewed v1.1 contract;
+this does not authorize more Slice04 corrections or close any DB criterion.
 The operator amended this slice to a maximum of eight retained failures and
 authorized explicit `/bin/ln` only for isolated symlink setup. Nine failures
 were retained: a closeout verifier was mistakenly authored after reaching eight
@@ -12,7 +15,7 @@ The latest frozen condition has 48 executable variants/103 intended attempts
 and 11 static rows, preserving 47 original candidates. It retains 92 records:
 91 passing audits and one failure; 11 attempts remain unrun. Complete fresh
 successful replay and negative controls remain owed. [Slice08](../slice08-file-fault-completion/slice-plan.md)
-owns actual remaining file faults after independent preparation review;
+owns actual remaining file faults under its accepted preparation review;
 [Arc01's Slice09 roadmap](../arc-plan.md#remaining-research-ownership-after-slice04-partial-execution)
 owns dependency/decision/reconciliation and full composition. All R/Y/source/
 guide/book/ADT/operator outcomes remain. Earlier resume notes are historical.
@@ -250,6 +253,11 @@ After CDC, open Slice07 only with a compatible route; otherwise open the
 explicit prerequisite work, preserving the complete document scope.
 
 ## Version History
+
+- 2026-09-13 v1.3: CDC reproduced 3,997 packet files and all retained audit
+  outcomes; accepted the bounded Slice08 preparation with concrete grant,
+  predicate and control corrections. Preserved the stopped parent, nine failures,
+  exact DB rows and complete remaining research ownership.
 
 - 2026-09-13 v1.2: Retained resumed package/native evidence and two frozen
   conditions, with nine failures exceeding the amended eight-failure ceiling.

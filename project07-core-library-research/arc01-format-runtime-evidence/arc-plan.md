@@ -2,6 +2,13 @@
 
 ## Capability and status
 
+2026-09-13 CDC: [partial packet and preparation review passed](slice04-dependency-and-runtime-boundary/cdc-partial-verification.md).
+All 163 retained audit dispositions and 3,997 packet files reproduce. Slice08
+is ready for its reviewed 37-attempt file/control condition and independent
+fresh/captured replay. Slice04 remains stopped with nine failures and eight
+open DB rows; A-03–06 stay open. This supersedes the pending review and full
+resume directions below. No remaining research is discharged by preparation.
+
 2026-09-13 current: [Slice04 partial evidence](slice04-dependency-and-runtime-boundary/closing-report.md)
 is stopped after nine retained failures exceeded the operator-amended ceiling
 of eight. The latest condition has 91 passing records, one failed record and
@@ -50,11 +57,11 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
-| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; verified launcher/supervisor; completion evidence from Slices08/09 | Partial/stopped; eight unchanged DB rows open; independent review next |
+| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; verified launcher/supervisor; completion evidence from Slices08/09 | Partial/stopped; retained evidence reviewed; eight unchanged DB rows open |
 | [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
 | [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
-| [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Independent review of Slice04 partial handoff and this preparation split | Open for preparation review; six FF rows open; no execution yet |
+| [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Accepted independent partial/preparation review | Ready for bounded CC execution; six FF rows open |
 | slice09-dependency-decision-and-reconciliation | Finish R-01 argv, R-02 full graph/lineage/toolchain classification, R-08 exact inherited reconciliation, R-09 availability, decisions and complete DB recomposition/replay | Verified Slice08 evidence plus retained Slice04 conditions | Roadmap only; no open set or execution claim |
 
 The former `slice03-yaml-fidelity` roadmap had no open set or authored work.
@@ -223,7 +230,9 @@ execution mechanics from verified findings without changing family ownership.
 ## Remaining research ownership after Slice04 partial execution
 
 Slice08 owns actual file-fault completion, not a replacement supervisor project.
-Its six-row open set exists; independent preparation review must precede work.
+Its six-row open set has passed independent preparation review. Its v1.1 contract
+freezes 37 attempts, concrete source-temp grants, genuine OS versus permission
+outcomes and subset-specific markers/negatives/file crosswalks before execution.
 Slice09 is the bounded final reconciliation roadmap: retain all 47 candidates,
 48 executable expansions/103 attempts, 11 static rows and their exact FM01 text;
 finish the actual argv boundary, complete runtime/type/development/example and
@@ -245,6 +254,11 @@ code-shape and direction acceptance. Neither new slice resets Slice04's history
 or closes a parent DB row automatically.
 
 ## Version History
+
+- 2026-09-13 v1.21: CDC reproduced Slice04's partial packet and all audit
+  dispositions, then accepted Slice08 preparation with concrete grants, both
+  cross-device outcomes, directory-error discrimination and complete affected
+  controls. All parent rows, nine failures and remaining Slice09 owners survive.
 
 - 2026-09-13 v1.20: Preserved Slice04's two partial conditions, nine retained
   failures and exceeded eight-failure ceiling. Opened the actual remaining

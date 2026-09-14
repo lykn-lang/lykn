@@ -1,7 +1,9 @@
 # CC — Research the dependency and runtime boundary
 
-**Current handoff: stopped; independent review of partial evidence and re-slicing
-is next.** [Resumed execution report](closing-report.md) retains two conditions,
+**Current handoff: stopped; independent partial review passed. Slice08 is ready
+for bounded execution under its reviewed prompt.** [CDC review](cdc-partial-verification.md)
+accepts the split, not further authoring under Slice04's exhausted budget.
+[Resumed execution report](closing-report.md) retains two conditions,
 all original DB/R/Y obligations and the exceeded authoring ceiling. Do not run
 the full matrix or treat the cross-filesystem NotCapable as an OS result.
 
@@ -11,6 +13,14 @@ Explicit re-slicing scope additions, before file creation:
 project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/slice-plan.md
 project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/ledger.md
 project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/cc-prompt.md
+```
+
+Independent CDC review adds these exact durable paths; CC's original evidence
+and closing report remain unchanged:
+
+```text
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-partial-verification.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/artifacts/cdc-partial-raw-transcript.txt
 ```
 
 Slice08 owns completion of the remaining file-fault evidence and its correction
