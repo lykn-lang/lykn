@@ -1,5 +1,13 @@
 # Project07 ledger
 
+2026-09-14 CC: [Slice10 handoff](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/closing-report.md)
+proposes all eight RC criteria after two complete 105-attempt conditions and
+successful final captured replay. All RC, original DB and project status cells
+remain open. Two source failures and all historical failure/unrun denominators
+are retained. CDC owns independent RC and separate DB composition review;
+source home/design/API/Arc02/03/P-04/P-08 gates remain unchanged. Earlier
+readiness and next-step entries below are historical.
+
 2026-09-13 CDC: [Slice09 closed](arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/cdc-verification.md),
 all six DD criteria verified. [Slice10](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cc-prompt.md)
 is next; all P and DB rows stay open. The library source home remains unassigned

@@ -1,8 +1,15 @@
 # Slice10 — Runtime, resource and parent composition evidence
 
-Status: **Open; ready for CC, no execution yet.** Expedited Mode.
+Status: **Open; CC proposed-done, independent CDC owed.** Expedited Mode.
 Parent: [Arc01](../arc-plan.md). Contract: [ledger.md](ledger.md).
 Durable outputs: this slice's `artifacts/`; exact files in [cc-prompt.md](cc-prompt.md).
+
+2026-09-14 CC: [Complete handoff](closing-report.md) retains two 105-attempt
+conditions, full actual-argv/resource/physical reconciliation and final captured
+replay. Two pre-runtime source failures remain charged. All eight RC and all
+eight original DB status cells remain open; the [DB proposal](artifacts/composition.md)
+requires separate independent composition review. Source home remains unassigned
+pending design; all document/API/human gates below still apply.
 
 ## Capability and authority
 
@@ -159,6 +166,10 @@ prerequisite; Y-14 execution cannot open without a compatible route.
 
 ## Version History
 
+- 2026-09-14 v1.1: Submitted full 210-attempt runtime/resource evidence, exact
+  historical/physical crosswalks, ten negative families and portable final replay.
+  Retained two charged failures and every historical/unsupported denominator;
+  proposed all eight RC rows without closing RC/DB or any design/human gate.
 - 2026-09-13 v1.0: Opened after independent Slice09 closure. Made the existing
   runtime/resource/composition roadmap executable with full historical scope,
   FF integration, two complete conditions, negative controls and explicit

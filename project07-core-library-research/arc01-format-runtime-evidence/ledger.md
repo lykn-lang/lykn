@@ -1,5 +1,13 @@
 # Arc01 ledger
 
+2026-09-14 CC: [Slice10 handoff](slice10-runtime-resource-and-composition/closing-report.md)
+proposes all eight RC criteria with 210 fresh attempts, full history/physical
+crosswalks and final captured replay. Two source failures remain retained.
+All RC, original DB and open arc status cells remain open for their own review;
+CDC must independently verify RC then the full DB composition. Document/source-
+home/API and actual human-judgment gates remain separate. Earlier readiness
+and next-step statements below are historical.
+
 2026-09-13 CDC: [Slice09 closed](slice09-dependency-decision-and-reconciliation/cdc-verification.md)
 with six verified DD criteria. [Slice10](slice10-runtime-resource-and-composition/cc-prompt.md)
 now owns runtime/resource reconciliation and the eight-row DB composition
