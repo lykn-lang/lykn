@@ -1,5 +1,11 @@
 # Slice08 — Complete the file-fault evidence
 
+**Current status: independently CDC closed; all six FF criteria done.**
+[Verification](cdc-verification.md) reproduces the retained packet and two new
+37-attempt conditions with live/captured file checks and five negative controls
+each. Parent criteria remain open. Next: Slice09 dependency/decision evidence,
+then planned Slice10 runtime/resource composition. Earlier statuses are historical.
+
 **Current status: CC proposed-done, pending independent CDC.**
 [The handoff](closing-report.md) reports primary and complete fresh replay:
 37 passing process audits, five negative audit families and a 146-fixture
@@ -135,6 +141,10 @@ candidate IDs and their expansions, 36 unsupported Y-13 cells, 28 gated Y-14 cas
 and source/guide/book/ADT/human outcomes.
 
 ## Version History
+
+- 2026-09-13 v1.3: Independent CDC reproduced the full file-fault contract and
+  closed all six FF rows. Opened bounded Slice09 dependency/decision research;
+  preserved full runtime/resource and parent composition in planned Slice10.
 
 - 2026-09-13 v1.2: Completed the reviewed FF subset in two fresh conditions,
   with actual OS cross-device/directory failures, separate permission denials,

@@ -1,5 +1,14 @@
 # Slice04 — Dependency and runtime boundary
 
+**2026-09-13 CDC update: Slice08 is independently closed.**
+[Verified file evidence](../slice08-file-fault-completion/cdc-verification.md)
+supplies actual OS errors and distinct source-read denials without replacing this
+slice's historical failure. All eight DB rows remain open and Slice04 authoring
+stays stopped. [Slice09](../slice09-dependency-decision-and-reconciliation/slice-plan.md)
+owns dependency/decision evidence; [planned Slice10](../arc-plan.md#remaining-research-ownership-after-slice04-partial-execution)
+owns full runtime/resource and DB composition. This supersedes the former combined
+Slice09 ownership and Slice08-readiness instructions below; no scope is removed.
+
 **Current status: partial/stopped; independent partial review passed.**
 [CDC review](cdc-partial-verification.md) reproduces the packet and all 163
 retained audit dispositions. Slice08 is ready under its reviewed v1.1 contract;
@@ -253,6 +262,11 @@ After CDC, open Slice07 only with a compatible route; otherwise open the
 explicit prerequisite work, preserving the complete document scope.
 
 ## Version History
+
+- 2026-09-13 v1.4: Independent Slice08 closure supplies the bounded file evidence.
+  Split remaining ownership between opened Slice09 dependency decisions and
+  planned Slice10 runtime/resource/DB composition; retain all eight rows and
+  the exhausted Slice04 authoring history unchanged.
 
 - 2026-09-13 v1.3: CDC reproduced 3,997 packet files and all retained audit
   outcomes; accepted the bounded Slice08 preparation with concrete grant,

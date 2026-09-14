@@ -1,5 +1,22 @@
 # CC — Complete bounded file-fault research
 
+**Current status: independently CDC closed.** See [verification](cdc-verification.md).
+The next assignment is [Slice09](../slice09-dependency-decision-and-reconciliation/cc-prompt.md).
+All instructions below describe retained CC execution; do not overwrite its runs.
+
+CDC closure/opening scope additions, before artifact creation:
+
+```text
+project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/cdc-verification.md
+project07-core-library-research/arc01-format-runtime-evidence/slice08-file-fault-completion/artifacts/cdc-raw-transcript.txt
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/slice-plan.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/ledger.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cc-prompt.md
+project07-core-library-research/arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/slice-plan.md
+project07-core-library-research/arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/ledger.md
+project07-core-library-research/arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/cc-prompt.md
+```
+
 **Current handoff: CC proposed-done; independent CDC is next.**
 [Closing report](closing-report.md) retains complete primary/fresh conditions,
 37 attempts and five negative families each, plus captured/physical replay.

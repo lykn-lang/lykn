@@ -1,5 +1,11 @@
 # Slice04 ledger
 
+2026-09-13 CDC: [Slice08 independently closed](../slice08-file-fault-completion/cdc-verification.md).
+All eight DB rows remain unchanged and open. Slice09 owns remaining dependency/
+decision evidence; planned Slice10 owns full runtime/resource reconciliation and
+parent composition. Slice04 remains stopped with nine failures. Earlier Slice08
+readiness and combined Slice09 instructions are historical.
+
 2026-09-13 CDC: [partial review passed](cdc-partial-verification.md). Packet
 extraction and all 163 retained audit dispositions reproduce; three failures
 remain failures. Slice08 is ready under its reviewed bounded contract. All eight

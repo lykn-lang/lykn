@@ -1,5 +1,11 @@
 # Arc01 ledger
 
+2026-09-13 CDC: [Slice08 closed](slice08-file-fault-completion/cdc-verification.md)
+after full retained and fresh replay. A-03–06 and all eight DB rows remain open.
+Bounded Slice09 owns dependency decisions; planned Slice10 retains runtime/
+resource reconciliation and parent composition. All original R/J/Y and source/
+human obligations survive. Earlier pending-review statements are historical.
+
 2026-09-13 CC: [Slice08](slice08-file-fault-completion/closing-report.md) is
 proposed-done: primary/fresh each pass 37 process audits, five negative families
 and complete physical/captured replay. Independent CDC is next. A-03–06, all

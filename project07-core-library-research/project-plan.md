@@ -9,6 +9,15 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-13 CDC: [Slice08 independently closed](arc01-format-runtime-evidence/slice08-file-fault-completion/cdc-verification.md).
+Both retained conditions and two new 37-attempt conditions reproduce, including
+all live/physical file checks and five negative controls each. Six FF rows close;
+all DB and P rows stay open. Slice09 now owns bounded dependency/decision
+research; planned Slice10 retains full runtime/resource reconciliation and DB
+composition. This splits the former combined roadmap before execution, preserving
+all original work, nine Slice04 failures, 36 unsupported resource cells and 28
+gated document variants. Earlier pending-review/readiness statements are historical.
+
 2026-09-13 CC: [Slice08 file-fault handoff](arc01-format-runtime-evidence/slice08-file-fault-completion/closing-report.md)
 is proposed-done. Primary and complete fresh conditions each pass 37 process
 audits, five negative families and a 146-fixture physical crosswalk; captured
@@ -298,6 +307,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.24: Arc01/Slice08 CDC reproduced and closed the file-fault
+  contract. Opened Slice09 dependency/decision evidence and preserved the former
+  roadmap's full runtime/resource/DB composition in planned Slice10, with all
+  policy, source/guide/book/ADT and operator-acceptance obligations unchanged.
 
 - 2026-09-13 v1.23: Slice08 submitted its complete 37-attempt primary/fresh file
   subset, negative controls and physical/captured replay for independent CDC.

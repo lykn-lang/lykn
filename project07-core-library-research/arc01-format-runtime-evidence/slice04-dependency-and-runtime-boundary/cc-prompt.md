@@ -1,5 +1,12 @@
 # CC — Research the dependency and runtime boundary
 
+**Current routing: Slice08 independently closed; Slice04 remains stopped.**
+Read [Slice08 CDC](../slice08-file-fault-completion/cdc-verification.md).
+Next is [Slice09 dependency/decision research](../slice09-dependency-decision-and-reconciliation/cc-prompt.md),
+with full runtime/resource and DB composition retained in planned Slice10.
+All eight DB rows and the nine-failure history remain unchanged. The former
+combined Slice09 ownership and readiness text below are historical.
+
 **Current handoff: stopped; independent partial review passed. Slice08 is ready
 for bounded execution under its reviewed prompt.** [CDC review](cdc-partial-verification.md)
 accepts the split, not further authoring under Slice04's exhausted budget.

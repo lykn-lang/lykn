@@ -2,6 +2,14 @@
 
 ## Capability and status
 
+2026-09-13 CDC: [Slice08 independently closed](slice08-file-fault-completion/cdc-verification.md).
+All six FF criteria reproduce: both retained conditions and two complete new
+37-attempt conditions, five negative controls and 146-fixture/four-source-copy
+crosswalks each. Actual OS faults remain distinct from permission denials.
+Slice09 is now open for dependency/decision evidence; planned Slice10 owns full
+runtime/resource reconciliation and DB composition. All eight DB rows and
+A-03–06 stay open. Earlier pending-review and full-resume instructions are historical.
+
 2026-09-13 CC: [Slice08 file-fault handoff](slice08-file-fault-completion/closing-report.md)
 is proposed-done, pending independent CDC. Primary/fresh each pass 37 process
 audits, five negative families and a 146-fixture physical crosswalk; captured
@@ -64,17 +72,18 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
-| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; verified launcher/supervisor; completion evidence from Slices08/09 | Partial/stopped; retained evidence reviewed; eight unchanged DB rows open |
+| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; verified launcher/supervisor; completion evidence from Slices08/09/10 | Partial/stopped; retained evidence reviewed; eight unchanged DB rows open |
 | [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
 | [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
-| [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Accepted independent partial/preparation review | CC proposed-done; primary/fresh 37 attempts each; independent CDC next; six FF rows open |
-| slice09-dependency-decision-and-reconciliation | Finish R-01 argv, R-02 full graph/lineage/toolchain classification, R-08 exact inherited reconciliation, R-09 availability, decisions and complete DB recomposition/replay | Verified Slice08 evidence plus retained Slice04 conditions | Roadmap only; no open set or execution claim |
+| [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Accepted independent partial/preparation review | CDC closed; all six FF criteria reproduced |
+| [slice09-dependency-decision-and-reconciliation](slice09-dependency-decision-and-reconciliation/slice-plan.md) | Complete R-02 graph/lineage/toolchain evidence and DB-07 decisions, with actual document-route proof or concrete prerequisite | Verified Slice08 and retained Slice04 evidence | Open; six DD rows; bounded static research/decision assignment |
+| slice10-runtime-resource-and-composition | Complete R-01/03–09 argv/runtime/resource/compatibility reconciliation, all historical physical crosswalks and fresh/captured DB composition | Verified Slices08/09 and original R/J/Y evidence | Roadmap only; plan deeply after Slice09 CDC |
 
 The former `slice03-yaml-fidelity` roadmap had no open set or authored work.
 It is superseded by Slices03/05/06/07; no Y family is removed. Execution order
 was **03 → 05 → 06 → 04 → 07**. Current completion order is **04 partial review
-→ 08 → 09 → 04 composition → compatible document route → 07**. This retains the established Slice04 identity
+→ 08 → 09 → 10 → 04 composition → compatible document route → 07**. This retains the established Slice04 identity
 while resolving document dependency policy before the gated trial. If Slice04
 cannot establish a compatible route, open the required correction/design work;
 do not claim Slice07 or YAML closed through silence or static inspection alone.
@@ -236,18 +245,37 @@ execution mechanics from verified findings without changing family ownership.
 
 ## Remaining research ownership after Slice04 partial execution
 
-Slice08 owns actual file-fault completion, not a replacement supervisor project.
-Its six-row open set has passed independent preparation review. Its v1.1 contract
-freezes 37 attempts, concrete source-temp grants, genuine OS versus permission
-outcomes and subset-specific markers/negatives/file crosswalks before execution.
-Slice09 is the bounded final reconciliation roadmap: retain all 47 candidates,
-48 executable expansions/103 attempts, 11 static rows and their exact FM01 text;
-finish the actual argv boundary, complete runtime/type/development/example and
-toolchain classification, resolve or explicitly qualify missing published test
-edges, and supply the source-to-upstream/license crosswalk. It also owns exact
-J-16/Y-13 attempt reconciliation, second-pair availability, five negative audit
-controls, successful fresh replay of the composed condition and actual extracted
-fixture/record comparisons. Review of partial evidence supplies none of these.
+Slice08 is independently closed for actual file-fault evidence. The former
+combined Slice09 roadmap is now split before execution to leave correction
+headroom: static graph/lineage/decision research in Slice09, and runtime/resource
+reconciliation and full composition in Slice10. This changes ownership, not scope.
+Slice09 completes runtime/type/development/test/example/build and toolchain
+classification, resolves or explicitly qualifies missing published test edges,
+and supplies source-to-upstream/license and decision crosswalks.
+
+Slice10 must retain all 47 candidates, 48 executable expansions/103 original
+intended attempts, 11 static rows and nine verbatim FM01 R rows. Freeze a new
+composed manifest with explicit old/new crosswalks, incorporating the verified
+FF corrections and distinct denial controls without deleting original attempts.
+It owns R-01 effective help/argv/build/runtime identity, R-03 alias/missing/corrupt
+lock, R-04 online prefetch/warm cached-only/cold-cache evidence, R-05 allowed and
+denied parser/file/env/net/run permissions, R-06/07 full file/concurrency/cancel
+composition, R-08 exact J-16/Y-13 attempts/recipes and CPU/time/RSS attribution,
+and R-09 another already available supported pair or explicit unavailability.
+No historical runtime reinstall or compiler-only substitution supplies R-09.
+Use bounded representative resource replay and original warm-up/measurement
+rules, not an unmotivated rerun of every large series. Preserve all 36 unsupported
+cells, their overlapping reasons and API/bounds-dependent re-entry.
+
+Slice10 also owns complete fresh and captured replay of the composed condition,
+all five negative audit families, exact original-versus-new record sets and
+physical source/fixture/config/lock/emitted crosswalks. Reconcile both historical
+Slice04 conditions (including their three failed audits and nine authoring
+failures), all original J/Y evidence and verified FF evidence without counting
+retained runs as fresh trials. Validate each of the eight unchanged DB criteria
+against the resulting evidence at parent composition; closure is not automatic.
+Its detailed open set must precede execution, with existing budgets and no new
+source implementation scope. These obligations are not fulfilled by this roadmap.
 
 Slice09's decision deliverable must either establish an actually compatible
 document route or open a concrete bounded Arc03 design/correction prerequisite
@@ -261,6 +289,11 @@ code-shape and direction acceptance. Neither new slice resets Slice04's history
 or closes a parent DB row automatically.
 
 ## Version History
+
+- 2026-09-13 v1.23: CDC closed all six Slice08 criteria after complete retained
+  and fresh replay. Before deeper planning, divided the combined Slice09 roadmap
+  into dependency/decision research (opened) and Slice10 runtime/resource/DB
+  composition (roadmap). Preserved every R/J/Y, failure and source/human owner.
 
 - 2026-09-13 v1.22: Slice08 submitted complete primary/fresh file-fault evidence,
   negative controls and physical/captured replay. Actual OS errors and permission

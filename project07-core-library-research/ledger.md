@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-13 CDC: [Slice08 closed](arc01-format-runtime-evidence/slice08-file-fault-completion/cdc-verification.md),
+all six FF criteria independently reproduced. All P and DB rows remain open.
+Slice09 dependency/decision work is next; planned Slice10 retains full runtime/
+resource and DB composition. Historical failures and human acceptance remain
+distinct. Earlier pending-review/whole-matrix directions are historical.
+
 2026-09-13 CC: [Slice08](arc01-format-runtime-evidence/slice08-file-fault-completion/closing-report.md)
 is proposed-done after two complete 37-attempt conditions and negative/physical/
 captured replay. Independent CDC is next. All P/DB rows and six FF statuses stay
