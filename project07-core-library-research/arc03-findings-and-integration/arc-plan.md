@@ -2,6 +2,15 @@
 
 ## Capability and status
 
+2026-09-13 current routing: Arc01/Slice09's static research established no
+compatible document route. [Slice08 document-route-design](slice08-document-route-design/slice-plan.md)
+now has a concrete design-only open set and five open criteria. It records the
+actual inspected compiler/upstream/mycelium homes and leaves future library
+repository/maintainer/policy selection to explicit operator decisions. No design
+execution, implementation or Y-14 trial occurred. Arc01/Slice10 retains full
+runtime/resource/DB composition after Slice09 CDC; earlier full-Slice04-resume
+directions are historical. Other test, guide, book and language owners remain.
+
 2026-09-13 current CDC: [Slice07 independently closed](slice07-research-supervisor/cdc-verification.md).
 All six SH criteria and A3-07 close after complete fresh and retained replay.
 Return to full Slice04; other correction/composition owners remain unchanged.
@@ -44,6 +53,7 @@ resume Arc01/Slice02 was fulfilled by its subsequent CDC closure.
 | slice05-regression-and-integration | Demonstrate correction composition and carry residual work to handoff | Earlier slices and Arc02 completion | Roadmap only |
 | [slice06-deno-launch-compatibility](slice06-deno-launch-compatibility/slice-plan.md) | Restore script selection on Deno 2.9.6 while preserving explicit authority, path and argument safety | Arc01/Slice04 D-2609-DARG evidence | CDC closed; six criteria reproduced; resume Arc01/Slice04 |
 | [slice07-research-supervisor](slice07-research-supervisor/slice-plan.md) | Verify native external stops, permissions, observer/checkpoint semantics, cleanup and retained audit | Slice04 resumed preparation; verified Slice06 compiler/runtime | CDC closed; six criteria; full Slice04 resumes |
+| [slice08-document-route-design](slice08-document-route-design/slice-plan.md) | Resolve operator policy/source-home choices and design the document/fidelity/resource contract plus bounded later proof | Arc01/Slice09 static decision packet and original Y-14/FF evidence | Open; design-only, not executed; independent API/graph proof required before implementation acceptance/Y-14 |
 
 After Slice01 closes, resume the already-open Arc01/Slice02 research packet;
 queue this arc's Slice02 planning. This explicit cross-arc ordering supersedes
@@ -98,6 +108,11 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-09-13 v1.11: Arc01/Slice09 opened the bounded document-route design
+  prerequisite with five criteria, verified existing source homes, explicit
+  future repository/maintainer decisions and original 28-variant re-entry gate.
+  No design execution, port, library adoption or parent closure is inferred.
 
 - 2026-09-13 v1.10: CDC reproduced all 33 supervisor attempts, five negatives
   and live files/process identities; closed SH-01–06 and A3-07. Retained six

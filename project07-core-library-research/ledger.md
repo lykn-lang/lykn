@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-13 CC: [Slice09 handoff](arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/closing-report.md)
+is proposed-done; all six DD, eight DB and P rows remain open. Arc03/Slice08
+now owns the concrete design-only document prerequisite, with no route/API or
+operator acceptance claim. Slice10 remains the full runtime/resource/DB owner
+after independent Slice09 closure. Prior status statements are historical.
+
 2026-09-13 CDC: [Slice08 closed](arc01-format-runtime-evidence/slice08-file-fault-completion/cdc-verification.md),
 all six FF criteria independently reproduced. All P and DB rows remain open.
 Slice09 dependency/decision work is next; planned Slice10 retains full runtime/

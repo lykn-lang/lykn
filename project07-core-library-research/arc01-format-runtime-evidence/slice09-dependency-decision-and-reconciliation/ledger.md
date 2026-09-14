@@ -3,6 +3,16 @@
 Six criteria open. CC evidence remains proposed-done until independent CDC.
 No row supplies package adoption, document execution or parent DB closure.
 
+2026-09-13 CC submission: [full row walk](closing-report.md),
+[results](artifacts/results.md), [inputs](artifacts/inputs.json),
+[graphs/source crosswalk](artifacts/dependency-graphs.json),
+[licenses/boundaries](artifacts/dependency-inventory.md),
+[decision packet](artifacts/decision-record.md) and
+[replay protocol](artifacts/baseline-and-protocol.md). DD-01–06 are each
+CC proposed-done; all six status cells below deliberately remain open for CDC.
+Five charged conditions are retained. The concrete Arc03/Slice08 open set is
+included in this handoff's scoped commit; no design or Y-14 execution occurred.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | DD-01 | Exact source/package/toolchain and inherited evidence inputs are frozen | Hashes, 30-path compiler interval, package/export roots, original R/J/Y identity crosswalk | correctness-grade | DB-01/02; R-02 | open | — | Preserve full historical conditions |

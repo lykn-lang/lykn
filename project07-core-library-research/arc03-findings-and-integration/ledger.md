@@ -1,5 +1,11 @@
 # Arc03 ledger
 
+2026-09-13: [Slice08 design prerequisite](slice08-document-route-design/slice-plan.md)
+is opened from Arc01/Slice09, not executed. A3-08 owns explicit design/operator/
+source-home acceptance and later independent route-proof gates. Existing seven
+rows are unchanged. This routing does not close DB-07, enable Y-14 or approve
+porting/implementation. Slice10 remains the full runtime/DB composition owner.
+
 2026-09-13 current CDC: [Slice07 independently closed](slice07-research-supervisor/cdc-verification.md).
 All six SH rows and A3-07 close; all other arc rows retain their status.
 Full Slice04 resumes. Earlier handoff and open-set notes below are historical.
@@ -35,3 +41,4 @@ gates and child attestation do not close arc composition or other findings.
 | A3-05 | Corrections compose and residual work has real destinations | Arc-scale corrected workflow and discovery/acceptance walk | correctness-grade | Project DoD 6 | open | — | Child closure insufficient |
 | A3-06 | Deno 2.9.6 launch compatibility is independently verified without weakening authority or argument safety | Slice06 original reproduction, actual runtime/argv regressions, canonical gates and build receipt | correctness-grade | Arc01/Slice04; D-2609-DARG | done | [Slice06 CDC](slice06-deno-launch-compatibility/cdc-verification.md) | Six criteria reproduced; original five criteria unchanged |
 | A3-07 | Bounded research supervisor is independently verified before full Slice04 re-entry | Slice07 source gates, native controls, live file observations, semantic rejection checks and captured replay | correctness-grade | Slice04 resumed preparation and before-exhaustion rule | done | [Slice07 CDC](slice07-research-supervisor/cdc-verification.md) | Six SH criteria reproduced; every DB/R obligation stays Slice04 |
+| A3-08 | Document-route design has explicit operator/source-home acceptance and preserves independent implementation/API/graph gates | Slice08 five-row CDC walk, recorded decisions, source-home proof and exact original Y-14 re-entry contract | correctness-grade | Arc01/Slice09 DD-05; D-2609-YNOD | open | [Concrete design open set](slice08-document-route-design/slice-plan.md) | Design-only; no compatible route or Y-14 execution implied |

@@ -1,5 +1,11 @@
 # Arc01 ledger
 
+2026-09-13 CC: [Slice09](slice09-dependency-decision-and-reconciliation/closing-report.md)
+supplies proposed-done dependency/decision evidence and the concrete Arc03/Slice08
+design prerequisite. Six DD statuses and all eight unchanged DB rows remain open;
+A-03–06 retain their criteria. CDC precedes Slice10 opening. All historical
+R/J/Y, unsupported resource, document, source and human obligations survive.
+
 2026-09-13 CDC: [Slice08 closed](slice08-file-fault-completion/cdc-verification.md)
 after full retained and fresh replay. A-03–06 and all eight DB rows remain open.
 Bounded Slice09 owns dependency decisions; planned Slice10 retains runtime/

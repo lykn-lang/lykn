@@ -9,6 +9,19 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-13 CC: [Slice09 dependency/decision evidence](arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/closing-report.md)
+is submitted for independent CDC. The full 30-path compiler interval, 188-file
+publication crosswalk and five static graph boundaries distinguish runtime,
+type, development/build and ancestry policy. Five charged conditions remain
+(four program drafts and one packet-layout correction).
+[Arc03/Slice08](arc03-findings-and-integration/slice08-document-route-design/slice-plan.md)
+is now a concrete design-only prerequisite, with verified existing source homes
+and future library repository/maintainer decisions explicitly unassigned.
+No compatible document route or operator acceptance is inferred. After Slice09
+CDC, open planned Slice10 for complete runtime/resource/DB reconciliation;
+all 28 Y-14 cases and 36 unsupported resource cells retain their separate gates.
+Earlier next-step statements below are historical.
+
 2026-09-13 CDC: [Slice08 independently closed](arc01-format-runtime-evidence/slice08-file-fault-completion/cdc-verification.md).
 Both retained conditions and two new 37-attempt conditions reproduce, including
 all live/physical file checks and five negative controls each. Six FF rows close;
@@ -157,9 +170,9 @@ source edits.
 
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
-| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06 CDC closed; Slice04 partial/stopped; Slice08 CC proposed-done, independent CDC next |
+| [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–03/05–06/08 CDC closed; Slice04 partial/stopped; Slice09 CC proposed-done; Slice10 roadmap retained |
 | arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
-| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice02 queued; remaining source/guide/book work retained |
+| [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice08 document-route design open, not executed; Slice02 and source/guide/book work retained |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 
 Plan later arcs and slices in depth when their evidence is available. The
@@ -307,6 +320,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.25: Slice09 submitted dependency/source/decision evidence and
+  opened Arc03/Slice08's design-only document prerequisite. Preserved actual
+  source-home verification, unassigned future library decisions, all parent
+  rows, and Slice10 runtime/resource/composition ownership pending CDC.
 
 - 2026-09-13 v1.24: Arc01/Slice08 CDC reproduced and closed the file-fault
   contract. Opened Slice09 dependency/decision evidence and preserved the former

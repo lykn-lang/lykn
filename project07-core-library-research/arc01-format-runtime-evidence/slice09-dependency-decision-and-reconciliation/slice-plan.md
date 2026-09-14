@@ -1,7 +1,12 @@
 # Slice09 — Dependency evidence and document-route decision
 
-Status: **Open; ready for CC.** Expedited Mode. Parent: [Arc01](../arc-plan.md).
+Status: **Open; CC proposed-done, awaiting independent CDC.** Expedited Mode. Parent: [Arc01](../arc-plan.md).
 Contract: [ledger.md](ledger.md). Artifacts: `artifacts/` inside this slice.
+
+2026-09-13 handoff: [closing report](closing-report.md) supplies the source/graph/
+decision packet and concrete Arc03/Slice08 design prerequisite. Five charged
+conditions are retained. All six DD statuses and all eight unchanged DB rows remain
+open; source-home/policy acceptance and compatible route proof are not inferred.
 
 ## Capability and bounded scope
 
@@ -124,6 +129,10 @@ retain overlapping reasons and API/bounds-dependent re-entry; all 28 Y-14 cases
 remain gated until actual route proof and required decisions exist.
 
 ## Version History
+
+- 2026-09-13 v1.1: Submitted CC evidence and tested packet replay; opened the
+  bounded design-only document prerequisite with explicit source-home decisions.
+  Preserved five charged conditions and all Slice10/parent/unsupported/human obligations.
 
 - 2026-09-13 v1.0: Opened after Slice08 independent closure. Split the former
   combined roadmap into bounded dependency/decision evidence here and full

@@ -1,5 +1,10 @@
 # CC — Complete dependency evidence and document-route decision
 
+2026-09-13: CC submission is in [closing-report.md](closing-report.md).
+Independent CDC is next; all six DD statuses remain open. The assignment below
+is preserved as the execution contract, not authorization to repeat research
+or start the newly opened design assignment.
+
 Slice08 is [independently closed](../slice08-file-fault-completion/cdc-verification.md).
 Work in the canonical planning worktree under Expedited Mode. Read this slice's
 complete [plan](slice-plan.md) and [ledger](ledger.md), project/arc contracts and
