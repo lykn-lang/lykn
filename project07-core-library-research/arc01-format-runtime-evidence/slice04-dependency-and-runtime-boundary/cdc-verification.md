@@ -1,4 +1,62 @@
-# CDC review — Deno launch blocker and partial evidence
+# Slice04 CDC composition closure
+
+2026-09-14. **All eight original DB research criteria independently closed.**
+This is a separate composition walk after
+[Slice10 independent verification](../slice10-runtime-resource-and-composition/cdc-verification.md),
+not inherited closure from its row statuses. The original blocker review below
+remains verbatim historical evidence, as do CC's partial closing report and the
+later partial/resume reviews. Their prior open statuses are superseded here.
+
+## Capability and complete row walk
+
+Slice04 promised attributable runtime/dependency/file boundaries and concrete
+alternatives or explicitly routed missing capabilities. The combined evidence
+delivers that research capability. It does not promise or supply a compatible
+document implementation, accepted library policy or completed YAML fidelity.
+
+| Original row | Independent composition evidence and disposition |
+| --- | --- |
+| DB-01 | **Done.** Verified immutable source/CLI/runtime identity; exact 47 candidates, 48 expansions/103 original intended attempts, 11 static rows and nine verbatim R rows; two FF denial attempts are explicit additions. Both original DB conditions and exact J/Y resource inputs reconcile with new 105-attempt manifests. |
+| DB-02 | **Done.** [Slice09 CDC](../slice09-dependency-decision-and-reconciliation/cdc-verification.md) verifies source/lineage/licenses, the full 30-path compiler interval, runtime/type/dev/example/build boundaries and honest missing-edge dispositions. Packet hash rechecked; four new all-export prefetch graphs match accepted pinned source. Unretrieved npm/build/generated/submodule closure remains qualified, not counted clean. |
+| DB-03 | **Done.** Two new complete conditions reproduce narrow import success, alias/missing package/subpath/corrupt-lock rejection, explicit prefetch, warm cached-only success and empty-cache failure. Exact source/config/lock bytes are checked before/after and in extracted physical records. |
+| DB-04 | **Done.** Native/package no-grant parser and file permissions, env/net/run denials, ten new SH controls and 188 actual delegated argv captures reproduce. [Launcher CDC](../../arc03-findings-and-integration/slice06-deno-launch-compatibility/cdc-verification.md) supplies separate historical stdin/option-like argument regressions; new supervisor source preserves null stdin and clear environment. |
+| DB-05 | **Done.** [FF CDC](../slice08-file-fault-completion/cdc-verification.md) composes with two new full runtime conditions: live bytes/modes/link targets, reader/two-writer checkpoints, raw partial detector, injection versus genuine OS failure, cancellation and source-temp capture before cleanup. OS cross-device success remains unobserved; no durability/conflict policy is inferred. |
+| DB-06 | **Done.** Eight J-16 cells/48 historical attempts and 54 Y-13 cells/108 historical attempts reconcile physically; 36 new representative resource attempts follow warm-up/five rules. CPU/wall/RSS attribution and JSON LF difference are explicit. All 36 absent-API cells and the unavailable second supported pair retain owner/re-entry. |
+| DB-07 | **Done.** [Verified alternatives](../slice09-dependency-decision-and-reconciliation/artifacts/decision-record.md) lead to the concrete committed [Arc03/Slice08 design prerequisite](../../arc03-findings-and-integration/slice08-document-route-design/slice-plan.md). Its five rows, decision owner, exact 28 Y-14 coverage and later source/API/graph proof gates survive. The operator explicitly leaves source home unassigned pending design; no adoption is inferred. |
+| DB-08 | **Done.** Literal CC packet replay reproduced both 105-record conditions, all negatives and generated artifacts, both retained FF crosswalks and all 163 historical DB audit outcomes. Two new 105-attempt CDC conditions passed. New evidence is sealed/replayed; source failures and guide/book/ADT/human owners remain explicit. |
+
+## Silent-drop and bubble-up check
+
+The original DB definitions are unchanged; only statuses/evidence/notes advance.
+Historical work remains 71 records (69 pass/two fail; 32 unrun) and work02 92
+records (91 pass/one fail; 11 unrun). All nine original authoring failures,
+including the unauthorized ninth draft, remain disclosed. Closure uses subsequent
+verified completion; it neither resets that budget nor rewrites the failed runs.
+Slice10's two source failures also remain separate.
+
+All 36 unsupported Y-13 cells retain 18 conversion / 27 bound reasons with nine
+overlap and actual API-dependent re-entry. All 28 Y-14 cases still require design
+decisions and compatible source/API/graph proof. Another runtime pair needs actual
+availability/support/provenance, with no installation authorized. Sampled RSS,
+bounded successful replacement and captured outcomes establish no universal
+allocation limit, atomicity, crash durability, cleanup or conflict policy.
+
+Arc01 A-04 now closes. A-03/A-05/A-06 and project/Arc03 composition remain open;
+this is not an arc or project close. Arc03/Slice08 is the next design-only CC
+assignment. Source home stays unassigned until the design's concrete proposal
+receives operator disposition. Arc02 ADT/Result and code-shape trials, Arc03
+test/guide/book/compiler/formatter corrections and P-04/P-08 human judgments
+remain owed. No source, implementation, repository or release action is authorized
+by the research closure. Arc01/project/Arc03 bodies and version histories reflect
+this sequencing before the next assignment.
+
+Durable new runtime evidence and replay instructions live with the completing
+[Slice10 CDC packet](../slice10-runtime-resource-and-composition/artifacts/cdc-raw-transcript.txt),
+not in a duplicate parent packet. Existing parent and CC artifacts remain intact.
+
+---
+
+# Historical CDC review — Deno launch blocker and partial evidence
 
 2026-09-13. Reviewed CC commit **09d6c6e0ee237df5335c011af9d661f3968d9fd0**,
 parent ae179ea8658e8a6999f8162151345c0aca280ea9.

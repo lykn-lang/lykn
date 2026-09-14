@@ -2,6 +2,15 @@
 
 ## Capability and status
 
+2026-09-14 CDC: [Slice10 closed](slice10-runtime-resource-and-composition/cdc-verification.md)
+after full retained replay and two new 105-attempt conditions. The separate
+[Slice04 composition review](slice04-dependency-and-runtime-boundary/cdc-verification.md)
+closes all eight unchanged DB criteria and A-04 while retaining every original
+failure/unrun outcome. Next is [Arc03/Slice08 design](../arc03-findings-and-integration/slice08-document-route-design/cc-prompt.md).
+Its five DR rows remain open, source home unassigned pending design; all 28 Y-14
+and 36 unsupported Y-13 cells retain their gates. A-03/A-05/A-06 and arc/project
+acceptance remain open. Earlier status and completion-order notes are historical.
+
 2026-09-14 CC: [Slice10 proposed-done](slice10-runtime-resource-and-composition/closing-report.md)
 with 105 intended/executed attempts in each of two complete conditions, ten
 negative audit families, full historical/physical reconciliation and successful
@@ -99,13 +108,13 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice01-baseline-and-protocol](slice01-baseline-and-protocol/slice-plan.md) | Pin toolchain/source/package identities, reconcile the exploratory claims, and specify a reproducible research protocol and fixture matrix | None | CDC closed; seven criteria reproduced |
 | [slice02-json-behavior](slice02-json-behavior/slice-plan.md) | Exercise JSON read/parse/edit/write through Lykn; document precision, duplicates, absent/null, errors, ordering, escaping, unsupported values, JSONC, framed streams, and file-failure behavior | Slice01; verified Arc03/Slice01 launcher correction | CDC closed; 161 variants/354 attempts replayed |
 | [slice03-yaml-preflight](slice03-yaml-preflight/slice-plan.md) | Freeze all Y-01–16 variants/owners; pin runtime/graph; verify Lykn inspector, supervisor and small sentinel set | Slices01–02 evidence | CDC closed; six criteria reproduced, 349 YAML variants frozen |
-| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; verified launcher/supervisor; completion evidence from Slices08/09/10 | Partial/stopped; retained evidence reviewed; eight unchanged DB rows open |
+| [slice04-dependency-and-runtime-boundary](slice04-dependency-and-runtime-boundary/slice-plan.md) | Reconcile all R-01–09: runtime/package graphs and provenance, Node/npm exclusion, exact versions and lock integrity, permissions, offline replay, replacement/fault/resource constraints and adoption alternatives; resolve or explicitly route the document prerequisite | Slices01–03 plus Slices05–06; verified launcher/supervisor; completion evidence from Slices08/09/10 | CDC closed all eight original DB research criteria by separate composition; partial failure history retained |
 | [slice05-yaml-value-behavior](slice05-yaml-value-behavior/slice-plan.md) | Execute all Y-01–12/Y-15 value/schema/tag/graph/error/presentation/unsupported-value combinations with byte evidence | Verified Slice03 harness and matrix | CDC closed; all 259 variants/518 attempts reproduced |
 | [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
 | [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Accepted independent partial/preparation review | CDC closed; all six FF criteria reproduced |
 | [slice09-dependency-decision-and-reconciliation](slice09-dependency-decision-and-reconciliation/slice-plan.md) | Complete R-02 graph/lineage/toolchain evidence and DB-07 decisions, with actual document-route proof or concrete prerequisite | Verified Slice08 and retained Slice04 evidence | CDC closed; six DD criteria; source home deferred by operator to design |
-| [slice10-runtime-resource-and-composition](slice10-runtime-resource-and-composition/slice-plan.md) | Complete R-01/03–09 argv/runtime/resource/compatibility reconciliation, all historical physical crosswalks and fresh/captured DB composition | Verified Slices08/09 and original R/J/Y evidence | Open; CC proposed-done after 210 attempts and final replay; eight RC and separate DB independent reviews owed |
+| [slice10-runtime-resource-and-composition](slice10-runtime-resource-and-composition/slice-plan.md) | Complete R-01/03–09 argv/runtime/resource/compatibility reconciliation, all historical physical crosswalks and fresh/captured DB composition | Verified Slices08/09 and original R/J/Y evidence | CDC closed all eight RC rows after retained replay and two additional 105-attempt conditions; parent composition independently closed |
 
 The former `slice03-yaml-fidelity` roadmap had no open set or authored work.
 It is superseded by Slices03/05/06/07; no Y family is removed. Execution order
@@ -317,6 +326,10 @@ or closes a parent DB row automatically.
 
 ## Version History
 
+- 2026-09-14 v1.27: Closed all RC rows after independent retained replay and two
+  new complete conditions, then separately closed all original DB criteria and
+  A-04. Advanced the existing Arc03/Slice08 design prerequisite; preserved all
+  historical failures, unsupported/document gates and remaining arc criteria.
 - 2026-09-14 v1.26: Slice10 delivered full primary/fresh runtime and resource
   observations, original DB/J/Y/FF physical reconciliation and final packet
   replay. Proposed all eight RC rows with two source failures retained; all RC/DB

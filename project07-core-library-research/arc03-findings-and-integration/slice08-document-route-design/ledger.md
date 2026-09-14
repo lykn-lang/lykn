@@ -1,5 +1,10 @@
 # Document-route design ledger
 
+2026-09-14 CDC: ready as the next assignment after independent RC verification
+and separate DB research closure. No design work or operator selection is
+claimed. All five original DR rows below remain unchanged and open; source
+home is unassigned pending design.
+
 Five open criteria. Design acceptance, implementation, route proof, Y-14
 execution and parent DB closure are separate gates.
 

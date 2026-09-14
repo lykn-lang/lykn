@@ -1,5 +1,12 @@
 # Arc03 ledger
 
+2026-09-14 CDC: [RC verification](../arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cdc-verification.md)
+and [DB composition](../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md)
+are closed. [Slice08 design](slice08-document-route-design/cc-prompt.md) is ready
+next, not executed; all five DR rows and A3-08 remain open. Source home remains
+unassigned pending design. Existing arc rows and document/API/human gates are
+unchanged. Older routing and open-DB statements below are historical.
+
 2026-09-13: [Slice08 design prerequisite](slice08-document-route-design/slice-plan.md)
 is opened from Arc01/Slice09, not executed. A3-08 owns explicit design/operator/
 source-home acceptance and later independent route-proof gates. Existing seven

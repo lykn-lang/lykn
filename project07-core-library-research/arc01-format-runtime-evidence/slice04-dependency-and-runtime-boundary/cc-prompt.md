@@ -1,5 +1,12 @@
 # CC — Research the dependency and runtime boundary
 
+**Current routing, 2026-09-14: all eight DB research criteria independently closed.**
+Read the [separate composition review](cdc-verification.md). Do not resume this
+exhausted authoring condition. Next is the existing
+[document-route design assignment](../../arc03-findings-and-integration/slice08-document-route-design/cc-prompt.md).
+Source home remains unassigned pending design. All earlier instructions below
+are retained history, including partial evidence and the nine-failure overrun.
+
 **Current routing: Slice09 independently closed; execute Slice10 next.**
 Read [Slice09 CDC](../slice09-dependency-decision-and-reconciliation/cdc-verification.md)
 and the [Slice10 assignment](../slice10-runtime-resource-and-composition/cc-prompt.md).

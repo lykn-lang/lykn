@@ -1,5 +1,28 @@
 # CC — Complete runtime/resource reconciliation and DB composition evidence
 
+**2026-09-14 CDC: independently verified; see [closure](cdc-verification.md).**
+The separate [parent composition review](../slice04-dependency-and-runtime-boundary/cdc-verification.md)
+closes all eight DB criteria. Next is the design-only
+[Arc03/Slice08 assignment](../../arc03-findings-and-integration/slice08-document-route-design/cc-prompt.md).
+The original execution instructions below are historical; preserve their evidence.
+
+CDC closure and prerequisite preparation additions to the exact path fence,
+recorded before creating closure artifacts:
+
+```text
+project07-core-library-research/arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cdc-verification.md
+project07-core-library-research/arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/artifacts/cdc-raw-transcript.txt
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/slice-plan.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/ledger.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cc-prompt.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md
+project07-core-library-research/arc03-findings-and-integration/arc-plan.md
+project07-core-library-research/arc03-findings-and-integration/ledger.md
+project07-core-library-research/arc03-findings-and-integration/slice08-document-route-design/slice-plan.md
+project07-core-library-research/arc03-findings-and-integration/slice08-document-route-design/ledger.md
+project07-core-library-research/arc03-findings-and-integration/slice08-document-route-design/cc-prompt.md
+```
+
 Work in `/Users/oubiwann/lab/lykn/lang/.worktrees/planning` under Expedited Mode.
 Read the complete [slice plan](slice-plan.md), [ledger](ledger.md), parent DB
 contract and linked primary evidence. Slice09 is [independently closed](../slice09-dependency-decision-and-reconciliation/cdc-verification.md).

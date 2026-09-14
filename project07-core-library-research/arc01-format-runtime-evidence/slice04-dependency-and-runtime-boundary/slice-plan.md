@@ -1,5 +1,13 @@
 # Slice04 — Dependency and runtime boundary
 
+**2026-09-14 CDC: closed by separate composition of verified completion evidence.**
+All eight original DB criteria are done under the [CDC row walk](cdc-verification.md).
+The nine failures, three failed historical audits and original 32/11 unrun
+attempts remain intact. The exhausted Slice04 authoring condition is not resumed.
+Next is [document-route design](../../arc03-findings-and-integration/slice08-document-route-design/cc-prompt.md);
+source home stays unassigned pending design and all document/API/human gates
+survive. Earlier stopped/open and next-step statements below are historical.
+
 **2026-09-13 CDC: Slice09 is independently closed; Slice10 is now open.**
 [Dependency/decision verification](../slice09-dependency-decision-and-reconciliation/cdc-verification.md)
 supplies R-02 and the concrete design prerequisite with the operator's source-home
@@ -271,6 +279,10 @@ explicit prerequisite work, preserving the complete document scope.
 
 ## Version History
 
+- 2026-09-14 v1.6: Closed the eight unchanged original DB criteria by independent
+  composition of verified dependency, launcher, supervisor, file and runtime/
+  resource evidence. Preserved exhausted-condition history and concrete design,
+  unsupported API and human acceptance owners; no Slice04 authoring resumed.
 - 2026-09-13 v1.5: Slice09 independently closed and Slice10 opened deeply for
   full runtime/resource/DB composition. Preserved every original criterion and
   failure; document source home stays unassigned pending design by operator choice.

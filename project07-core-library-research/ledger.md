@@ -1,5 +1,13 @@
 # Project07 ledger
 
+2026-09-14 CDC: [Slice10 verified](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cdc-verification.md)
+and [DB composition closed](arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
+All eight RC/eight DB rows and Arc01 A-04 are done. Project rows remain unchanged;
+all failure/unrun denominators survive. Next is the existing design-only
+[Arc03/Slice08](arc03-findings-and-integration/slice08-document-route-design/cc-prompt.md),
+with five open DR rows and source home unassigned pending design. All document,
+unsupported-resource and human judgment gates remain. Older routing is historical.
+
 2026-09-14 CC: [Slice10 handoff](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/closing-report.md)
 proposes all eight RC criteria after two complete 105-attempt conditions and
 successful final captured replay. All RC, original DB and project status cells

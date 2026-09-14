@@ -1,6 +1,6 @@
 # Slice08 — Document-route design prerequisite
 
-Status: **Open; design-only assignment prepared, not executed.**
+Status: **Open; ready as the next design-only assignment, not executed.**
 Parent: [Arc03](../arc-plan.md). Contract: [ledger.md](ledger.md).
 Durable outputs belong in this slice's `artifacts/` directory. Expedited Mode.
 
@@ -17,6 +17,11 @@ Inputs: Slice09's immutable source/graph/license crosswalk and alternatives;
 original FM01 Y-10/11/14, all 28 original Y-14 variants in Slice09 inputs;
 Slice05/06 value/resource CDC; Slice08 file-fault CDC; Arc02 ADT/authoring plans;
 project P-04/P-08 and existing guide/book/test-permission findings.
+Also read [Slice10 CDC](../../arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cdc-verification.md),
+its original resource/composition artifacts and new measurement table, and the
+[separate DB closure](../../arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cdc-verification.md).
+These now supply verified runtime/file/resource boundaries; they supply no
+design approval or compatible document route.
 
 ## Verified homes and ownership
 
@@ -47,10 +52,12 @@ silently assigned that maintenance obligation.
 
 ## Bounded design work
 
-1. Confirm the exact policy: runtime APIs, package/build dependencies, historical
-   ancestry, porting/copying and notices. Obtain actual answers for choices that
-   determine design; maintain unresolved choices explicitly while progressing
-   independent analysis. Silence is not acceptance.
+1. Prepare concrete policy options from the retained evidence: runtime APIs,
+   package/build dependencies, historical ancestry, porting/copying and notices.
+   Complete the reviewable design and source-home alternatives before requesting
+   operator decisions. Progress all independent analysis while choices remain
+   pending; silence is not acceptance. The existing source-home deferral permits
+   design work and does not select a repository or maintenance owner.
 2. Compare the existing five alternatives, and select a documented recommendation
    with operator disposition. Specify read/parse/edit/write, token/trivia/alias
    identity, allowed unrelated-byte changes, schemas/value domain, recursive ADT
@@ -83,8 +90,9 @@ Only after independent route/API/graph proof and required operator decisions
 may the existing Arc01 document-behavior owner run all 28 Y-14 variants. The 36
 unsupported Y-13 cells remain separately gated (18 missing conversion, 27 missing
 bound, overlap nine); route proof alone does not supply either missing API.
-Arc01/Slice10 retains full R/J/Y/DB composition and cannot inherit DB closure
-from this design. Arc02 retains source-shape/ADT trials; other Arc03 correction
+Arc01/Slice10 and the separate parent DB research composition are already
+independently closed; this design does not supply their evidence retroactively.
+Arc02 retains source-shape/ADT trials; other Arc03 correction
 and project acceptance obligations remain unchanged.
 
 Default five-failure ceiling including any design verification helpers;
@@ -92,8 +100,34 @@ reassess at four. Use Lykn for research/auditing and reuse reviewed packet tools
 No source edits, installation, Node/npm execution, port, vendoring, publishing,
 new library project/repository or release assignment is authorized here.
 
+## Concrete deliverables
+
+- `artifacts/design-brief.md`: evidence-backed comparison of the five existing
+  alternatives and a recommendation; observable document/value/ADT/Result,
+  trivia/alias/schema/error and resource/file contracts; source-home options
+  with actual inspected evidence and proposed maintenance/build/release owners.
+- `artifacts/decision-record.md`: each required choice, alternatives, concrete
+  recommendation, decision owner, exact operator response/provenance or pending
+  status; preserve the explicit source-home deferral until a later actual choice.
+- `artifacts/y14-crosswalk.json`: all 28 original IDs, exact input/edit references
+  and hashes, expected comparisons and thresholds; preserve all 36 unsupported
+  Y-13 cells and their overlapping reasons without inventing missing APIs.
+- `artifacts/proof-contract.md`: bounded subsequent implementation/evaluation
+  proposal, exact proposed source scope and checks, prerequisite API/graph/
+  license/build proof, original Y-14 re-entry, stop rules and remaining owners.
+  A proposal in this file does not create or authorize its implementation open set.
+
+The closing report must walk all five unchanged DR rows and explicitly retain
+pending operator decisions. Any native audit/source packet uses only the exact
+optional paths in the prompt and the existing five-failure ceiling. Operator
+source-shape judgment remains distinct from source analysis and design review.
+
 ## Version History
 
+- 2026-09-14 v1.2: Made this existing assignment ready after independent RC and
+  parent DB closure; added verified boundary inputs and concrete artifact/commit
+  paths. Require reviewable choices before operator decisions; preserve source-
+  home deferral, all five DR criteria and every implementation/re-entry gate.
 - 2026-09-13 v1.1: Recorded the operator's explicit source-home deferral pending
   design; DR-04 and all design and implementation gates remain open.
 - 2026-09-13 v1.0: Opened by Arc01/Slice09 as the concrete design prerequisite,

@@ -1,5 +1,12 @@
 # Arc01 ledger
 
+2026-09-14 CDC: [Slice10 verified](slice10-runtime-resource-and-composition/cdc-verification.md)
+and [parent DB composition closed](slice04-dependency-and-runtime-boundary/cdc-verification.md).
+All eight RC/eight DB rows and A-04 are done. A-03/A-05/A-06 remain open;
+28 document variants, 36 unsupported resource cells and all historical failures
+survive. Next is Arc03/Slice08 design, with source home unassigned pending design.
+Earlier open-status and routing statements are historical.
+
 2026-09-14 CC: [Slice10 handoff](slice10-runtime-resource-and-composition/closing-report.md)
 proposes all eight RC criteria with 210 fresh attempts, full history/physical
 crosswalks and final captured replay. Two source failures remain retained.
@@ -82,8 +89,8 @@ are not runtime graph/permission evidence. A-03–06 and full scope remain open.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | A-01 | Slice01 baseline and protocol are independently verified and closed | Inspect Slice01 ledger, closing report, and CDC reproduction of baseline/claim inventory | correctness-grade | Arc roadmap | done | [Reproduced CDC verification](slice01-baseline-and-protocol/cdc-verification.md) | Seven criteria closed; historical binary provenance remains explicitly unknown |
 | A-02 | JSON behavior is independently verified and closed | Inspect Slice02 closure and replay native JSON plus extension/failure cases through Lykn | correctness-grade | Project JSON scope | done | [Reproduced Slice02 CDC](slice02-json-behavior/cdc-verification.md) | All 161 variants/354 attempts replayed; no library adoption claim |
-| A-03 | YAML behavior and fidelity are independently verified and closed | Inspect Slice03 preparation and Slices05–07 closure; compare both semantic values and source bytes on the retained Y-01–16 fixtures | correctness-grade | Project YAML scope | open | [Preparation CDC](slice03-yaml-preflight/cdc-verification.md); [value CDC](slice05-yaml-value-behavior/cdc-verification.md); [resource/file CDC](slice06-yaml-resource-and-files/cdc-verification.md) | Preparation, values and resources/files closed; Y-14 awaits Slice04 compatible-route decision |
-| A-04 | Runtime/dependency boundary is independently verified and closed | Inspect Slice04 closure, dependency graph/provenance, permission and offline evidence | serious | Operator no-Node direction | open | [Slice04 open set](slice04-dependency-and-runtime-boundary/slice-plan.md) | All R-01–09 retained; registry location is not provenance proof |
+| A-03 | YAML behavior and fidelity are independently verified and closed | Inspect Slice03 preparation and Slices05–07 closure; compare both semantic values and source bytes on the retained Y-01–16 fixtures | correctness-grade | Project YAML scope | open | [Preparation CDC](slice03-yaml-preflight/cdc-verification.md); [value CDC](slice05-yaml-value-behavior/cdc-verification.md); [resource/file CDC](slice06-yaml-resource-and-files/cdc-verification.md) | Preparation, values and resources/files closed; Y-14 awaits Arc03/Slice08 design and subsequent independent compatible-route proof |
+| A-04 | Runtime/dependency boundary is independently verified and closed | Inspect Slice04 closure, dependency graph/provenance, permission and offline evidence | serious | Operator no-Node direction | done | [Separate DB CDC composition](slice04-dependency-and-runtime-boundary/cdc-verification.md) | All R-01–09 retained; design prerequisite explicitly owned; no route adoption or operator acceptance inferred |
 | A-05 | The slices compose into an actionable cross-format capability matrix | Independently replay one JSON and one YAML read/edit/write workflow and reconcile with the matrix and limitations | correctness-grade | Arc capability | open | — | Do not infer composition from child status |
 | A-06 | Lykn/guide/book/human-review findings and unresolved decisions reach the next work | Walk fixture observations and discovery IDs into Arc02/Arc03 scope and project Version History | correctness-grade | Operator explicit authoring goals | open | [Slice01 findings](slice01-baseline-and-protocol/artifacts/findings.md) | PERM/YNOD prerequisites and LINT/NPMB/JSER findings retained; later routing/closure pending |
 

@@ -1,8 +1,16 @@
 # Slice10 — Runtime, resource and parent composition evidence
 
-Status: **Open; CC proposed-done, independent CDC owed.** Expedited Mode.
+Status: **Closed; all eight RC criteria independently verified.** Expedited Mode.
 Parent: [Arc01](../arc-plan.md). Contract: [ledger.md](ledger.md).
 Durable outputs: this slice's `artifacts/`; exact files in [cc-prompt.md](cc-prompt.md).
+
+2026-09-14 CDC: [Verification](cdc-verification.md) reproduced the complete
+retained packet and two new 105-attempt conditions. The separate
+[DB review](../slice04-dependency-and-runtime-boundary/cdc-verification.md) closes
+the eight original parent criteria without erasing historical failures.
+Next is [Arc03/Slice08 design](../../arc03-findings-and-integration/slice08-document-route-design/cc-prompt.md),
+with source home unassigned pending design and all document/API/human gates
+intact. The CC attestation and execution instructions below are historical.
 
 2026-09-14 CC: [Complete handoff](closing-report.md) retains two 105-attempt
 conditions, full actual-argv/resource/physical reconciliation and final captured
@@ -166,6 +174,10 @@ prerequisite; Y-14 execution cannot open without a compatible route.
 
 ## Version History
 
+- 2026-09-14 v1.2: Independently closed all eight RC criteria after complete
+  retained replay and 210 new attempts, followed by separate DB composition
+  closure. Preserved original failures and unsupported/pair/document limits;
+  advanced the existing design-only prerequisite with five open DR rows.
 - 2026-09-14 v1.1: Submitted full 210-attempt runtime/resource evidence, exact
   historical/physical crosswalks, ten negative families and portable final replay.
   Retained two charged failures and every historical/unsupported denominator;
