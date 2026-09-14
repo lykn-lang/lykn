@@ -33,10 +33,13 @@ transport. Rich document APIs remain untested in a compatible route.
 5. Approve recursive ADT/Result and representative Lykn source only after Arc02
    trials and actual operator review. P-04/P-08 cannot be supplied by this packet.
 
-These are proposals for decisions, not recorded answers. No response or timeout
-is treated as acceptance. A text clarification about source-home preferences was
-requested during research; absent an answer, the brief records the decision as
-unassigned rather than selecting or creating a repository.
+The operator explicitly answered the source-home clarification after the Slice09
+handoff: “Leave source home unassigned pending design.” This records deferral of
+selection to design; it selects no repository, maintainer or implementation route
+and authorizes no repository creation or adoption. This answer supersedes the
+unanswered-question note retained as historical evidence in the sealed research
+packet. The other policy choices above remain proposals awaiting actual answers;
+no response or timeout is treated as acceptance.
 
 ## File policy from verified evidence
 

@@ -35,6 +35,11 @@ project P-04/P-08 and existing guide/book/test-permission findings.
   library repository/project number/release remains an explicit operator decision.
   See Slice09 packet `source/mycelium-*` and `transport/lykn-patch.json`.
 
+After the Slice09 handoff, the operator explicitly directed: “Leave source home
+unassigned pending design.” Source-home selection is therefore deferred to this
+design; no repository creation, maintainer or implementation route is approved.
+DR-04 remains open until its selection and verification requirements are met.
+
 Accountable decision owner: the operator (oubiwann). Design author: CC;
 independent verification: CDC. Future implementation maintainer/release owner
 must be named by the operator; neither an assistant nor an upstream project is
@@ -89,5 +94,7 @@ new library project/repository or release assignment is authorized here.
 
 ## Version History
 
+- 2026-09-13 v1.1: Recorded the operator's explicit source-home deferral pending
+  design; DR-04 and all design and implementation gates remain open.
 - 2026-09-13 v1.0: Opened by Arc01/Slice09 as the concrete design prerequisite,
   preserving all 28 document variants and explicit source-home/policy decisions.
