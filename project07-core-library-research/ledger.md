@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-13 CDC: [Slice09 closed](arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/cdc-verification.md),
+all six DD criteria verified. [Slice10](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cc-prompt.md)
+is next; all P and DB rows stay open. The library source home remains unassigned
+pending design by explicit operator decision. All document/resource/source/guide/
+book/ADT/human owners survive. Earlier status notes are historical.
+
 2026-09-13 CC: [Slice09 handoff](arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/closing-report.md)
 is proposed-done; all six DD, eight DB and P rows remain open. Arc03/Slice08
 now owns the concrete design-only document prerequisite, with no route/API or

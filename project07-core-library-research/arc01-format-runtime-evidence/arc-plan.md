@@ -2,6 +2,14 @@
 
 ## Capability and status
 
+2026-09-13 CDC: [Slice09 independently closed](slice09-dependency-decision-and-reconciliation/cdc-verification.md)
+after full packet/artifact replay and source/decision review. All six DD rows
+are done. [Slice10](slice10-runtime-resource-and-composition/slice-plan.md) is now
+open for the full runtime/resource/historical crosswalk and DB composition
+proposal; all eight DB rows stay open. Arc03/Slice08 is a concrete design-only
+prerequisite. The operator explicitly leaves the library source home unassigned
+pending design, with DR-04 open. This supersedes earlier next-step statements.
+
 2026-09-13 CC: [Slice09](slice09-dependency-decision-and-reconciliation/closing-report.md)
 is proposed-done for dependency/decision evidence. All six DD rows await CDC;
 all eight DB rows remain unchanged/open. Published bytes, complete captured
@@ -87,8 +95,8 @@ See the [project plan](../project-plan.md) and [arc ledger](ledger.md).
 | [slice06-yaml-resource-and-files](slice06-yaml-resource-and-files/slice-plan.md) | Execute all Y-13/Y-16 bounded alias/depth/size and file-failure cases; carry wider policy into Slice04 | Slices03/05 | CDC closed; 108 resource attempts, 16 file attempts, 36 unsupported cells; seven criteria reproduced |
 | slice07-yaml-document-fidelity | Execute Y-14 through an explicitly compatible route; compare semantic edits and source trivia/bytes | Slice04 compatible-route disposition and relevant value fixtures | Planned; Node candidate remains gated |
 | [slice08-file-fault-completion](slice08-file-fault-completion/slice-plan.md) | Complete retained cross-filesystem, injected and directory faults; rerun affected controls and verify actual files | Accepted independent partial/preparation review | CDC closed; all six FF criteria reproduced |
-| [slice09-dependency-decision-and-reconciliation](slice09-dependency-decision-and-reconciliation/slice-plan.md) | Complete R-02 graph/lineage/toolchain evidence and DB-07 decisions, with actual document-route proof or concrete prerequisite | Verified Slice08 and retained Slice04 evidence | CC proposed-done; six DD statuses open pending CDC; concrete Arc03/Slice08 prerequisite |
-| slice10-runtime-resource-and-composition | Complete R-01/03–09 argv/runtime/resource/compatibility reconciliation, all historical physical crosswalks and fresh/captured DB composition | Verified Slices08/09 and original R/J/Y evidence | Roadmap only; plan deeply after Slice09 CDC |
+| [slice09-dependency-decision-and-reconciliation](slice09-dependency-decision-and-reconciliation/slice-plan.md) | Complete R-02 graph/lineage/toolchain evidence and DB-07 decisions, with actual document-route proof or concrete prerequisite | Verified Slice08 and retained Slice04 evidence | CDC closed; six DD criteria; source home deferred by operator to design |
+| [slice10-runtime-resource-and-composition](slice10-runtime-resource-and-composition/slice-plan.md) | Complete R-01/03–09 argv/runtime/resource/compatibility reconciliation, all historical physical crosswalks and fresh/captured DB composition | Verified Slices08/09 and original R/J/Y evidence | Open; eight RC rows; full execution and independent review owed |
 
 The former `slice03-yaml-fidelity` roadmap had no open set or authored work.
 It is superseded by Slices03/05/06/07; no Y family is removed. Execution order
@@ -299,6 +307,11 @@ code-shape and direction acceptance. Neither new slice resets Slice04's history
 or closes a parent DB row automatically.
 
 ## Version History
+
+- 2026-09-13 v1.25: Slice09 CDC reproduced 5,257 packet files and both JSON
+  artifacts and closed six DD rows. Accepted the operator's source-home deferral
+  to design. Opened Slice10 deeply with full original scope, FF additions,
+  historical/physical crosswalks and independent parent composition still owed.
 
 - 2026-09-13 v1.24: Slice09 supplied static source/graph/lineage and decision
   evidence with five charged conditions (four drafts plus packet layout).

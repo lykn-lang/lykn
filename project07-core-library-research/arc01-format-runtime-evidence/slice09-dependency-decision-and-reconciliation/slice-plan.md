@@ -1,7 +1,15 @@
 # Slice09 — Dependency evidence and document-route decision
 
-Status: **Open; CC proposed-done, awaiting independent CDC.** Expedited Mode. Parent: [Arc01](../arc-plan.md).
+Status: **Independently CDC closed; all six DD criteria done.** Expedited Mode. Parent: [Arc01](../arc-plan.md).
 Contract: [ledger.md](ledger.md). Artifacts: `artifacts/` inside this slice.
+
+2026-09-13 CDC: [independent verification](cdc-verification.md) reproduces all
+5,257 packet files, 1,063 preparation and 4,886 graph checks, and both JSON
+artifacts byte-for-byte. The operator's source-home deferral supersedes this
+plan's original requirement to select a future library home now. Arc03/Slice08
+owns that design decision; DR-04 stays open. [Slice10](../slice10-runtime-resource-and-composition/slice-plan.md)
+is the next opened assignment. All eight parent DB rows remain unchanged/open.
+The handoff below is retained history.
 
 2026-09-13 handoff: [closing report](closing-report.md) supplies the source/graph/
 decision packet and concrete Arc03/Slice08 design prerequisite. Five charged
@@ -129,6 +137,11 @@ retain overlapping reasons and API/bounds-dependent re-entry; all 28 Y-14 cases
 remain gated until actual route proof and required decisions exist.
 
 ## Version History
+
+- 2026-09-13 v1.2: CDC independently reproduced and closed all six DD rows;
+  accepted the explicit operator source-home deferral without inventing a home.
+  Opened Slice10's full runtime/resource/composition contract. No parent,
+  document-route, policy or human acceptance follows.
 
 - 2026-09-13 v1.1: Submitted CC evidence and tested packet replay; opened the
   bounded design-only document prerequisite with explicit source-home decisions.

@@ -1,5 +1,24 @@
 # CC — Complete dependency evidence and document-route decision
 
+**Current status: independently CDC verified; closure is recorded in
+[cdc-verification.md](cdc-verification.md).** The retained assignment below is
+historical. Next is [Slice10](../slice10-runtime-resource-and-composition/cc-prompt.md).
+The operator explicitly left the future library source home unassigned pending
+design; this supersedes the original home-selection requirement below.
+
+CDC closure/opening additions to the exact path fence, recorded before creation:
+
+```text
+project07-core-library-research/arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/cdc-verification.md
+project07-core-library-research/arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/artifacts/cdc-raw-transcript.txt
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/slice-plan.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/ledger.md
+project07-core-library-research/arc01-format-runtime-evidence/slice04-dependency-and-runtime-boundary/cc-prompt.md
+project07-core-library-research/arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/slice-plan.md
+project07-core-library-research/arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/ledger.md
+project07-core-library-research/arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/cc-prompt.md
+```
+
 2026-09-13: CC submission is in [closing-report.md](closing-report.md).
 Independent CDC is next; all six DD statuses remain open. The assignment below
 is preserved as the execution contract, not authorization to repeat research

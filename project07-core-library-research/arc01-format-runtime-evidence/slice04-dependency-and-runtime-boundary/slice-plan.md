@@ -1,5 +1,13 @@
 # Slice04 — Dependency and runtime boundary
 
+**2026-09-13 CDC: Slice09 is independently closed; Slice10 is now open.**
+[Dependency/decision verification](../slice09-dependency-decision-and-reconciliation/cdc-verification.md)
+supplies R-02 and the concrete design prerequisite with the operator's source-home
+deferral. [Slice10](../slice10-runtime-resource-and-composition/slice-plan.md)
+owns all remaining runtime/resource/physical crosswalks and the DB composition
+proposal. These newer instructions supersede the roadmap/readiness notes below.
+All eight original DB rows remain unchanged/open; this slice stays stopped.
+
 **2026-09-13 CDC update: Slice08 is independently closed.**
 [Verified file evidence](../slice08-file-fault-completion/cdc-verification.md)
 supplies actual OS errors and distinct source-read denials without replacing this
@@ -262,6 +270,10 @@ After CDC, open Slice07 only with a compatible route; otherwise open the
 explicit prerequisite work, preserving the complete document scope.
 
 ## Version History
+
+- 2026-09-13 v1.5: Slice09 independently closed and Slice10 opened deeply for
+  full runtime/resource/DB composition. Preserved every original criterion and
+  failure; document source home stays unassigned pending design by operator choice.
 
 - 2026-09-13 v1.4: Independent Slice08 closure supplies the bounded file evidence.
   Split remaining ownership between opened Slice09 dependency decisions and

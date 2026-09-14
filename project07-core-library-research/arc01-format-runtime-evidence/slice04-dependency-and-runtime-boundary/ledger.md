@@ -1,5 +1,11 @@
 # Slice04 ledger
 
+2026-09-13 CDC: [Slice09 independently closed](../slice09-dependency-decision-and-reconciliation/cdc-verification.md).
+All eight DB rows below remain textually unchanged and open. [Slice10](../slice10-runtime-resource-and-composition/cc-prompt.md)
+is now the remaining runtime/resource/composition assignment. This does not reset
+the stopped Slice04 authoring budget or supply document/policy/human acceptance.
+Earlier next-step statements are historical.
+
 2026-09-13 CDC: [Slice08 independently closed](../slice08-file-fault-completion/cdc-verification.md).
 All eight DB rows remain unchanged and open. Slice09 owns remaining dependency/
 decision evidence; planned Slice10 owns full runtime/resource reconciliation and

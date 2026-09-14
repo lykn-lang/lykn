@@ -1,5 +1,12 @@
 # CC — Research the dependency and runtime boundary
 
+**Current routing: Slice09 independently closed; execute Slice10 next.**
+Read [Slice09 CDC](../slice09-dependency-decision-and-reconciliation/cdc-verification.md)
+and the [Slice10 assignment](../slice10-runtime-resource-and-composition/cc-prompt.md).
+Slice04 remains stopped with its nine failures and eight unchanged open DB rows.
+The source-home choice is explicitly deferred to document-route design.
+Earlier pending-review and next-step statements below are historical.
+
 **Current routing: Slice08 independently closed; Slice04 remains stopped.**
 Read [Slice08 CDC](../slice08-file-fault-completion/cdc-verification.md).
 Next is [Slice09 dependency/decision research](../slice09-dependency-decision-and-reconciliation/cc-prompt.md),

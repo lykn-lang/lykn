@@ -9,6 +9,14 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-13 CDC: [Slice09 closed](arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/cdc-verification.md)
+with all six DD criteria independently reproduced/reconciled. The next assignment
+is [Slice10 runtime/resource composition](arc01-format-runtime-evidence/slice10-runtime-resource-and-composition/slice-plan.md).
+All eight DB and project criteria remain open. The concrete document-route
+design prerequisite retains the operator's decision: source home unassigned
+pending design. No repository, package route, policy or aesthetic acceptance
+is inferred. Earlier pending-review and next-step notes are historical.
+
 2026-09-13 CC: [Slice09 dependency/decision evidence](arc01-format-runtime-evidence/slice09-dependency-decision-and-reconciliation/closing-report.md)
 is submitted for independent CDC. The full 30-path compiler interval, 188-file
 publication crosswalk and five static graph boundaries distinguish runtime,
@@ -320,6 +328,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-09-13 v1.26: Slice09 independent closure reproduced the complete packet
+  and outputs and reconciled lineage/decision claims. Opened Slice10's bounded
+  runtime/resource/parent-composition contract; retained explicit source-home
+  deferral, all gated Y-14/unsupported Y-13 and source/guide/book/human owners.
 
 - 2026-09-13 v1.25: Slice09 submitted dependency/source/decision evidence and
   opened Arc03/Slice08's design-only document prerequisite. Preserved actual

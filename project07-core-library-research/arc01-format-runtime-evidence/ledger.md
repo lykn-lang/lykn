@@ -1,5 +1,12 @@
 # Arc01 ledger
 
+2026-09-13 CDC: [Slice09 closed](slice09-dependency-decision-and-reconciliation/cdc-verification.md)
+with six verified DD criteria. [Slice10](slice10-runtime-resource-and-composition/cc-prompt.md)
+now owns runtime/resource reconciliation and the eight-row DB composition
+proposal. All DB and A-03–06 statuses remain open. Source-home selection is
+explicitly deferred to design; no compatible document route or policy acceptance
+is supplied by this closure. Earlier next-step notes are historical.
+
 2026-09-13 CC: [Slice09](slice09-dependency-decision-and-reconciliation/closing-report.md)
 supplies proposed-done dependency/decision evidence and the concrete Arc03/Slice08
 design prerequisite. Six DD statuses and all eight unchanged DB rows remain open;
