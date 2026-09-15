@@ -1,8 +1,15 @@
 # Slice08 — Document-route design prerequisite
 
-Status: **Open; qualified operator approvals recorded; new-code licence and independent review pending.**
+Status: **Open; DR-02/03/05 independently verified; new-code licence and final bootstrap-scope review remain.**
 Parent: [Arc03](../arc-plan.md). Contract: [ledger.md](ledger.md).
 Durable outputs belong in this slice's `artifacts/` directory. Expedited Mode.
+
+2026-09-14 CDC: [Partial review](cdc-verification.md) reproduces the complete
+design packet and crosswalk and verifies the accepted behavioral, resource/file
+and staged proof contracts. DR-01/04 remain open. Final design closure can use
+explicit reviewed creation authority for DR-04; actual checkout verification
+is later G1 evidence, not a requirement to create a repository in this slice.
+No next implementation open set is prepared while D3b remains pending.
 
 2026-09-14 operator update: [Qualified decisions](artifacts/decision-record.md)
 accept bounded evaluation with translation inventory/feasibility before port
@@ -138,6 +145,10 @@ source-shape judgment remains distinct from source analysis and design review.
 
 ## Version History
 
+- 2026-09-14 v1.5: Independently verified DR-02/03/05 after retained packet and
+  exact crosswalk replay; retained D3b and final bootstrap authority under
+  DR-01/04. Clarified that actual created-home proof belongs to later G1, avoiding
+  circular design/creation gating. No source or new licence was authored.
 - 2026-09-14 v1.4: Recorded operator adoption of CDC's qualified recommendations;
   separated reuse/notices from pending new-code licence, required idiomatic
   internal Lykn/ADTs and feasibility review, and selected future home/ownership

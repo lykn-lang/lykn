@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-14 CDC: [Slice08 partial review](arc03-findings-and-integration/slice08-document-route-design/cdc-verification.md)
+closes DR-02/03/05; DR-01/04 remain open for licence and final bootstrap review.
+Project rows and RC/DB closure are unchanged. Selected future YAML home and
+accountability do not authorize source work or supply human acceptance.
+Earlier CDC-pending and five-open notes are historical.
+
 2026-09-14 operator update: [Qualified Slice08 decisions](arc03-findings-and-integration/slice08-document-route-design/artifacts/decision-record.md)
 select the bounded direction, initial proof and future YAML home/accountability.
 New-code licence remains pending; all DR/project rows remain open. Actual

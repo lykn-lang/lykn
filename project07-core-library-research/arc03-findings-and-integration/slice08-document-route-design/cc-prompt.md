@@ -1,5 +1,19 @@
 # CC — Design the document route and its proof contract
 
+2026-09-14 CDC: [Independent partial review](cdc-verification.md) verifies
+DR-02/03/05. DR-01 remains open for D3b; DR-04 remains open for the final
+bootstrap-scope/creation-authority review. Do not re-ask accepted decisions.
+The slice is not closed and no source assignment is opened. Actual checkout
+verification belongs to the later G1 task, after authorized creation; creating
+the repository is not a prerequisite to finishing this design review.
+
+CDC review adds these exact paths to the existing planning commit fence:
+
+```text
+project07-core-library-research/arc03-findings-and-integration/slice08-document-route-design/cdc-verification.md
+project07-core-library-research/arc03-findings-and-integration/slice08-document-route-design/artifacts/cdc-raw-transcript.txt
+```
+
 2026-09-14 operator update: [Qualified decisions](artifacts/decision-record.md)
 supersede the source-home deferral and unanswered-choice state below. Future
 lykn-patch/yaml and oubiwann accountability are selected; bounded evaluation

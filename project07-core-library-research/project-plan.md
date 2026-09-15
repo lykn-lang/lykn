@@ -9,6 +9,14 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-09-14 CDC: [Arc03/Slice08 partial verification](arc03-findings-and-integration/slice08-document-route-design/cdc-verification.md)
+closes the three behavioral/resource/proof-contract design criteria after
+independent packet and crosswalk replay. New-code licence and final bootstrap
+scope/authority review remain under DR-01/04; no implementation assignment is
+opened. Selected future YAML home/accountability and all original document,
+unsupported resource, ADT/guide/book/human obligations survive. Earlier review-
+pending notes are historical; no slice, arc or project closure follows.
+
 2026-09-14 operator update: [Slice08 qualified approvals](arc03-findings-and-integration/slice08-document-route-design/artifacts/decision-record.md)
 accept bounded idiomatic Lykn/internal-ADT evaluation after translation inventory
 and feasibility review, the provisional behavioral proof, future lykn-patch/yaml
@@ -362,6 +370,10 @@ authoring evaluation remains Arc02.
 
 ## Version History
 
+- 2026-09-14 v1.31: Independently verified three Slice08 design criteria;
+  preserved new-code licence and final bootstrap-scope review before full close.
+  Actual created-home verification remains later G1 work; no implementation or
+  production queue change, and all document/resource/human gates remain.
 - 2026-09-14 v1.30: Recorded qualified operator decisions for Slice08, including
   idiomatic internal Lykn/ADTs, feasibility before port commitment, provisional
   proof limits and selected future home/accountability. New-code licence remains

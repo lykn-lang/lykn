@@ -1,5 +1,10 @@
 # Arc03 ledger
 
+2026-09-14 CDC: [Slice08 partial review](slice08-document-route-design/cdc-verification.md)
+verifies DR-02/03/05. DR-01/04 and A3-08 remain open for licence and final
+bootstrap-scope/authority review. All arc rows are unchanged; no route proof,
+source work or human source-shape acceptance follows. Older status is history.
+
 2026-09-14 operator update: [Qualified approvals](slice08-document-route-design/artifacts/decision-record.md)
 are recorded for Slice08. Future YAML home/accountability and initial proof
 direction are selected; new-code licence remains pending. Five DR rows and
