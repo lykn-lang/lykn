@@ -1,8 +1,10 @@
 # Proposed bounded route proof contract
 
-2026-09-14. **Proposal only.** This file does not create an implementation open
+2026-09-14. **Qualified staged proposal accepted; implementation not authorized
+by this file.** This file does not create an implementation open
 set, assign a project number/release, authorize repository creation, or permit
-package execution. Required operator choices are in [decision-record.md](decision-record.md).
+package execution. Recorded operator choices and the pending new-code licence
+are in [decision-record.md](decision-record.md).
 Independent design CDC precedes source work. JSON remains first in the production
 library queue; this is a bounded document-route research prerequisite.
 
@@ -10,9 +12,9 @@ library queue; this is a bounded document-route research prerequisite.
 
 | Gate | Required concrete evidence | Owner / permitted outcome |
 | --- | --- | --- |
-| G0 Design acceptance | D1–D8 exact operator responses; DR-01–05 CDC walk, unchanged original case inventory and all remaining gates | Operator decides; CDC verifies; unresolved choice keeps design open |
+| G0 Design acceptance | Qualified D1–D8 response recorded; D3b new-code licence remains pending; DR-01–05 CDC walk, unchanged original cases and remaining gates | Do not re-ask accepted choices; obtain the separate licence decision and independent CDC before implementation |
 | G1 Actual home and source authority | Existing repo/branch/worktree/status proof or explicit separate creation authorization, then fresh verification of the created home; named maintainer/build/release owner; enumerated source and planning paths | Operator authorizes a new bounded task; CC does only its exact scope; no source authoring in this design slice |
-| G2 Static port inventory | Immutable source archive/tree/file hashes, selected dependency closure and excluded roots, file-by-file translation/copy/notice map; complete runtime/type/test/build/example edges with dynamic import inventory | No execution while Node/npm/missing/dynamic edges or relevant submodule licenses are unresolved. Report unavailable, not clean |
+| G2 Static port inventory and feasibility | Immutable source/archive/file identities, exact translation/notice map, complete graph; review scope/cost, idiomatic internal Lykn ADTs, recursion/matching/error/ownership design and representative source obligations | Review feasibility before committing to porting. A Lykn interface over mechanical TypeScript translation does not pass. No execution with unresolved prohibited/missing edges or notices |
 | G3 Compatible build/API proof | Pinned accepted CLI/Deno and config/lock; independently rebuilt emitted files; no authored generated-JS repair; actual API/export signatures and complete emitted graph; no new Node/npm shim or toolchain exception | CDC verifies artifact provenance and compatibility before document behavior trials |
 | G4 Bounded structural controls | Tiny non-Y-14 valid/invalid input, typed error, token span/UTF-8/BOM, alias/cycle identity, ambiguous edit and cancellation/counter rejection controls; physical evidence and independent replay | Only under a separately authorized evaluation scope after G0–G3. These do not replace any original Y-14 row |
 | G5 Original fidelity re-entry | All 28 exact original IDs and two attempts each in primary and fresh independent conditions, with original byte/case hashes and token options; exact output, semantic and trivia comparisons | Existing Arc01 document owner executes only after prior gates; CDC independently verifies. Failure remains a failure |
@@ -20,9 +22,10 @@ library queue; this is a bounded document-route research prerequisite.
 
 ## Concrete proposed source scope
 
-The recommended home is a **proposed, absent-from-bounded-inventory**
+The operator-selected future home is **not yet created or verified as a checkout**:
 `lykn-patch/yaml` checkout at `/Users/oubiwann/lab/lykn/yaml`, initial `main`.
-Nothing exists there by authority of this file. If another home is selected,
+No creation follows from this file; separate bootstrap review remains required.
+If another home is selected,
 rewrite this scope before creating a subsequent open set. Confirm its actual
 remote/branch/head/status and applicable AGENTS.md before any write. Keep all
 research planning in this existing canonical planning worktree; do not copy
@@ -34,6 +37,7 @@ authorization: `AGENTS.md`, `README.md`, `LICENSE`, `NOTICE`, `project.json`,
 `provenance/divergence.md`. No publication or production package naming/release
 assignment is part of bootstrap. Generated metadata is produced by the approved
 toolchain, never handwritten to bypass packaging rules.
+The LICENSE path is blocked on D3b: no automatic ISC or other new-code licence.
 
 The following G2/G3 proposal is a sizing/design input, not blanket permission
 to author an entire parser. Proposed owned package roots use Lykn package-root
@@ -54,8 +58,11 @@ objects or browser null exports is not semantic equivalence proof. Warnings
 must reach structured diagnostics; binary behavior must have a native, tested
 disposition. No npm Rollup/Babel/TypeScript build may be presumed acceptable.
 
-Propose a Lykn implementation/translation for the owned route, preserving
-file-level upstream provenance and notices. If the complete selected translation
+Require an idiomatic Lykn implementation with ADTs throughout appropriate
+internal document/node/value/error boundaries, preserving file-level upstream
+provenance and notices. Review internal representations and matching/control-flow
+choices, not just the public API. Mechanical TypeScript translation is insufficient.
+If the complete selected translation
 cannot fit a bounded reviewable slice, return an exact dependency decomposition
 for review before code. Do not add a new implementation language or whole-parser
 rewrite by drift. The first G2 deliverable is the exact translation inventory,

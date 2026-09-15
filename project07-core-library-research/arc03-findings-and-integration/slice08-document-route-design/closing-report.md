@@ -1,10 +1,12 @@
-# Slice08 design review handoff — decisions pending
+# Slice08 design review handoff — qualified approvals recorded
 
 2026-09-14, CC/Sofie. **Design artifacts are prepared; this slice is not
-proposed-done or closed.** All five original DR criteria remain open. D1–D8
-operator dispositions and independent CDC are still owed. The prior response
-“Leave source home unassigned pending design” remains in force. No repository,
-maintainer, policy or implementation route has been selected by the operator.
+proposed-done or closed.** All five original DR criteria remain open. The
+operator accepted CDC's qualified recommendations: bounded idiomatic Lykn/ADT
+evaluation, initial behavioral proof and future YAML home/ownership. The
+new-code licence remains deliberately pending; independent design CDC and
+separate bootstrap/source verification remain owed. The source-home deferral
+is superseded by selection of future lykn-patch/yaml, not repository creation.
 
 Prepared from planning `6518d57`, after independently closed RC and separate
 DB research composition. Source release/0.6.x remains clean at `4dded88`.
@@ -20,23 +22,26 @@ ADT/Result, trivia/alias/schema/error, resource and file contracts and their
 deliberately unsupported boundaries. It proposes a future focused lykn-patch/yaml
 home, with oubiwann maintenance/build/release ownership, without assigning them.
 
-Three grouped questions were presented only after the four required artifacts
+Initially, three grouped questions were presented only after the four required artifacts
 existed: D1–D3 boundary/route/reuse/notices; D4–D5 behavioral/resource/file
-contracts; D6–D8 home/ownership and separately scoped later creation. No response
-has been received at this handoff. [decision-record.md](artifacts/decision-record.md)
-lists each recommendation, alternatives, owner and pending state. An unanswered
-question, this task assignment, or the earlier source-home deferral does not
-constitute acceptance. No dependent implementation work can begin.
+contracts; D6–D8 home/ownership and separately scoped later creation. The operator
+subsequently quoted CDC's recommendations and said, “I actually like these
+recommendations and will go with these :-D”. [decision-record.md](artifacts/decision-record.md)
+records the exact qualified scope, splitting approved reuse/notices (D3a) from
+pending new-code licence (D3b). Translation inventory and feasibility review
+precede commitment to a port; internal idiomatic Lykn/ADTs are mandatory.
+The 1MiB/2MiB limits are provisional, edits remain no-op/n=2 only, and production
+JSON stays ahead of YAML. This response is operator evidence, not independent CDC.
 
 ## Five-row walk
 
 | Row | Attested work | Still required | Status |
 | --- | --- | --- | --- |
-| DR-01 | Five-way comparison, precise owned-graph versus historical ancestry proposal, notice/divergence and maintenance choices | Actual operator D1–D3/D7 dispositions; independent review | open |
-| DR-02 | Concrete document/value/ADT/Result and fidelity contract; all 28 original IDs, exact input/edit references/hashes and proposed splice/output thresholds | Operator D4 disposition and CDC contract/oracle review; Arc02 executable ADT/source-shape work remains separate | open |
-| DR-03 | Limits/cancellation and conflict/mode/link/orphan/durability policy based on verified boundaries; all 36 unsupported cells and overlap preserved | Operator D5 disposition and independent design review; proposed APIs/counters/file mechanisms still unimplemented | open |
-| DR-04 | Fresh local/compiler/mycelium identity and official organization inventory; three concrete home alternatives, recommended ownership and separate bootstrap proposal | Actual D6/D7 selection, willing owner and existing-home verification or explicit separate creation authorization; home remains unassigned | open |
-| DR-05 | Bounded ordered G0–G6 proof proposal, conditional exact bootstrap scope, mandatory later exact translation-path inventory, graph/API/license/build proof and full original Y-14 re-entry | Actual D8 disposition, independent design CDC and separate future source/evaluation authority | open |
+| DR-01 | Five-way comparison; D1/D2/D3a/D7 accepted with internal Lykn/ADT and feasibility qualifications | Separate D3b new-code licence deliberately pending; independent review | open |
+| DR-02 | D4 initial fidelity contract accepted; all 28 original IDs/hashes/splices unchanged; internal ADTs now explicit | CDC contract/oracle review; Arc02 executable ADT/source-shape work remains separate | open |
+| DR-03 | D5 accepted as provisional research/file proof; all 36 unsupported cells and overlap preserved | Independent design review; proposed APIs/counters/file mechanisms still unimplemented | open |
+| DR-04 | Future lykn-patch/yaml selected; oubiwann accepts accountable maintenance/build/release ownership | Separate bootstrap review/creation scope and actual repository verification; no repository created | open |
+| DR-05 | D8 qualified staged proposal accepted; translation inventory/feasibility precede port commitment | Independent design CDC and separate future source/evaluation authority | open |
 
 No criterion is weakened or removed. Pending design acceptance blocks this
 slice; it does not reopen the already independently closed parent DB research.
@@ -87,6 +92,12 @@ and provenance. It does not claim to duplicate or re-audit Slice09's full graph
 packet. Original upstream archive and independent graph/license evidence remain
 there. Post-seal replay receipts are attested here; a packet cannot contain its
 own final seal receipt.
+
+The sealed packet and crosswalk remain byte-identical to `56155d8`; their
+pending-decision text is the historical review snapshot. Current operator
+dispositions and internal-design requirements are the subsequent Markdown
+amendment, not a rewritten past experiment. No code or golden byte changed;
+the prior 413/414 checks and packet replay remain the applicable data evidence.
 
 Zero charged source/tooling failures. Read-only discovery encountered absent
 paths and browser fetch failures; sandbox curl DNS failed, then the authorized
@@ -139,10 +150,10 @@ path is a data dependency. Compiler warnings are retained in separate stderr.
 ## Bubble-up to the arc
 
 All four requested design artifacts and optional reproducible tooling are
-delivered for review. The remaining scope is actual operator disposition and
+delivered for review. The remaining design choice is the new-code licence, plus
 independent CDC, not an omitted implementation. Arc03 A3-08 stays open. The
-source-home deferral continues; proposed name/location/maintainer are not facts
-of assignment. Implementation is sequenced into home/static inventory/build-API
+future home and accountable owner are selected; creation/verification remain
+behind separate bootstrap review. Implementation is sequenced into home/static inventory/build-API
 proof before original document behavior. No source open set, project number or
 release is created. The exact translation path list must be reviewed before a
 port starts; no unbounded wildcard authoring is permitted.

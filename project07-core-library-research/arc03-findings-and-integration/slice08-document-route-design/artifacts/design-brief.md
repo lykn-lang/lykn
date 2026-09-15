@@ -1,14 +1,21 @@
 # Document-route design for operator review
 
-2026-09-14, CC/Sofie. **Recommendation, not an accepted architecture or a
-compatible implementation.** Starting planning commit: `6518d57`. Required
-choices are enumerated in [decision-record.md](decision-record.md). There have
+2026-09-14, CC/Sofie. **Qualified design direction accepted by the operator;
+new-code licence and independent CDC remain pending. No compatible implementation
+is claimed.** Starting planning commit: `6518d57`. Actual decisions and their
+qualifications are in [decision-record.md](decision-record.md). There have
 been zero document/package executions, source edits or repository creations.
 
 ## Recommendation and five alternatives
 
 Recommend a separately maintained Lykn/Deno document route, with a bounded
 evaluation of an attributed Eemeli 2.9.1 port as its first implementation option.
+The operator approved this direction subject to a complete translation inventory
+and feasibility review before commitment to a port. Require idiomatic Lykn and
+ADTs internally, not merely a Lykn interface around mechanically translated
+TypeScript. Internal document/node/value/error representations, matching and
+control flow must be reviewed as Lykn design, with representative source trials
+and the operator's language-design goals retained.
 Keep the original source bytes and syntax graph separate from converted values.
 Use byte splices for supported edits; do not rely on whole-document serialization
 to preserve unrelated bytes. First prove the route can satisfy the original
@@ -59,14 +66,16 @@ Retain exact upstream commits, original paths/hashes/notices, copied-file and
 translation mappings, modification descriptions and local regression evidence.
 Eemeli source is pinned at `1440ecd3d1bff41e4ac399f8f6839e810328bd16`.
 Any reused MIT or ISC notice remains with its source and distribution. The
-eventual new-code license is an operator choice; recommend ISC for a focused
-Eemeli-derived route to simplify notice handling. This is a project provenance
-proposal, not a legal opinion. Unretrieved submodules or dependency sources
+eventual new-code licence remains pending by explicit operator choice. The
+earlier ISC recommendation is not adopted; upstream selection must not choose
+our new-code licence. This is a project provenance contract, not a legal
+opinion. Unretrieved submodules or dependency sources
 remain unresolved until needed and reviewed; empty archive directories are
 not a clean dependency graph.
 
-Propose oubiwann as accountable maintainer, build owner and release decision
-owner, subject to explicit acceptance. Assistants can implement/review bounded
+The operator accepts accountability as maintainer, build owner and release
+decision owner. Implementation and review may be delegated appropriately.
+Assistants can implement/review bounded
 tasks but do not assume ongoing maintenance. Before each release, the named
 owner must review upstream changes/security reports, every local divergence,
 conformance failures, source licenses and reproducible build receipts. No
@@ -170,7 +179,9 @@ P-04/P-08 remain actual operator judgments, not design acceptance by proxy.
 Initial proof profile: input ≤1MiB, output ≤2MiB, depth ≤128, semantic nodes
 ≤100,000, alias references ≤100, expanded conversion nodes ≤100,000, documents
 ≤100, diagnostic retained text ≤64KiB. These are proposed conservative budgets,
-not limits measured or guaranteed by current packages. Check byte limits before
+not permanent library limits or limits measured/guaranteed by current packages.
+The operator accepted them specifically as provisional research limits.
+Check byte limits before
 decode, counters during parsing/traversal and output before writing; do not first
 allocate an unbounded tree/string and then claim a bound. Incremental counter
 support must be independently proven or the API remains unavailable.
@@ -242,11 +253,12 @@ inventory does not prove absence of all private or differently located repos.
 
 | Source-home option | Concrete proposal and tradeoff | Verification/authority still needed |
 | --- | --- | --- |
-| New focused repository under lykn-patch | Recommend proposed `lykn-patch/yaml`, proposed checkout `/Users/oubiwann/lab/lykn/yaml`, initial `main`; keeps YAML maintenance independent of compiler and web framework | Name/location are proposals, not reserved or created. Operator selects and separately authorizes later creation; subsequent scope verifies repo/worktree/branch/status and owners before implementation |
+| New focused repository under lykn-patch | Operator selected future `lykn-patch/yaml`, checkout `/Users/oubiwann/lab/lykn/yaml`, initial `main`; keeps YAML maintenance independent of compiler and web framework | Not created. Separate bootstrap review and exact creation scope remain; subsequent work verifies actual repo/worktree/branch/status before implementation |
 | Existing compiler repo | Actual `lykn-lang/lykn`, release/0.6.x worktree above; possible package subdirectory | Adds library maintenance/release coupling to compiler; not recommended. Requires explicit new source scope and propagation/release design |
 | Existing mycelium repo | Actual checked-out web framework with unrelated package surface | Not recommended as a core-format home; would need explicit scope/governance changes and separate library ownership |
 
-No repository, project number, package name or release target is assigned here.
+The future repository home and accountable owner are selected; the repository
+has not been created. No project number, package name or release is assigned.
 JSON still precedes YAML in the later library queue. The proposed proof is
 bounded research preparation, not opening a production YAML library ahead of
 JSON. Source-home/maintainer selection does not accept representative source

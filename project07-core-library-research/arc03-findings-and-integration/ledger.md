@@ -1,5 +1,11 @@
 # Arc03 ledger
 
+2026-09-14 operator update: [Qualified approvals](slice08-document-route-design/artifacts/decision-record.md)
+are recorded for Slice08. Future YAML home/accountability and initial proof
+direction are selected; new-code licence remains pending. Five DR rows and
+A3-08 remain open, with independent CDC and later bootstrap/source proof owed.
+Earlier all-pending and unassigned-home notes below are historical.
+
 2026-09-14 CC: [Slice08 design handoff](slice08-document-route-design/closing-report.md)
 has concrete reviewable artifacts and portable crosswalk evidence. All five DR
 rows and A3-08 stay open for actual operator decisions and independent CDC.

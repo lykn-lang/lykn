@@ -1,5 +1,11 @@
 # Project07 ledger
 
+2026-09-14 operator update: [Qualified Slice08 decisions](arc03-findings-and-integration/slice08-document-route-design/artifacts/decision-record.md)
+select the bounded direction, initial proof and future YAML home/accountability.
+New-code licence remains pending; all DR/project rows remain open. Actual
+source creation/verification, independent CDC and P-04/P-08 are separate gates.
+Earlier all-pending/source-home-deferral notes are historical.
+
 2026-09-14 CC: [Arc03/Slice08 design](arc03-findings-and-integration/slice08-document-route-design/closing-report.md)
 is prepared for required operator decisions and independent review. All five
 DR and all project status cells remain open. RC/DB research closure remains;

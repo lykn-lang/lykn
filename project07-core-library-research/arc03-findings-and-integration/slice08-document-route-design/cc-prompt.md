@@ -1,5 +1,13 @@
 # CC — Design the document route and its proof contract
 
+2026-09-14 operator update: [Qualified decisions](artifacts/decision-record.md)
+supersede the source-home deferral and unanswered-choice state below. Future
+lykn-patch/yaml and oubiwann accountability are selected; bounded evaluation
+requires translation inventory/feasibility and idiomatic internal Lykn/ADTs.
+Initial proof contracts are accepted; new-code licence stays pending. Separate
+bootstrap review and source/API/graph/CDC gates remain. Do not re-ask accepted
+choices or interpret this as immediate repository creation or port authority.
+
 **Ready next, 2026-09-14.** Arc01/Slice10 and the separate parent DB research
 composition are independently closed. This existing design assignment is now
 ready; no design work or operator selection has been performed by CDC.

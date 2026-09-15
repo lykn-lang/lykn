@@ -2,6 +2,13 @@
 
 ## Capability and status
 
+2026-09-14 operator update: [Slice08 approvals](slice08-document-route-design/artifacts/decision-record.md)
+are qualified: require translation inventory/feasibility before port commitment
+and idiomatic internal Lykn/ADTs; accept initial proof limits/edits and future
+lykn-patch/yaml with oubiwann accountability. New-code licence stays pending.
+Five DR rows and A3-08 remain open for residual decisions/independent review;
+separate bootstrap/source proof remains. Earlier all-pending notes are historical.
+
 2026-09-14 CC: [Slice08 design handoff](slice08-document-route-design/closing-report.md)
 provides all four artifacts and verified native crosswalk/packet replay.
 Operator boundary/reuse, behavioral and source-home/ownership choices are
@@ -69,7 +76,7 @@ resume Arc01/Slice02 was fulfilled by its subsequent CDC closure.
 | slice05-regression-and-integration | Demonstrate correction composition and carry residual work to handoff | Earlier slices and Arc02 completion | Roadmap only |
 | [slice06-deno-launch-compatibility](slice06-deno-launch-compatibility/slice-plan.md) | Restore script selection on Deno 2.9.6 while preserving explicit authority, path and argument safety | Arc01/Slice04 D-2609-DARG evidence | CDC closed; six criteria reproduced; resume Arc01/Slice04 |
 | [slice07-research-supervisor](slice07-research-supervisor/slice-plan.md) | Verify native external stops, permissions, observer/checkpoint semantics, cleanup and retained audit | Slice04 resumed preparation; verified Slice06 compiler/runtime | CDC closed; six criteria; full Slice04 resumes |
-| [slice08-document-route-design](slice08-document-route-design/slice-plan.md) | Resolve operator policy/source-home choices and design the document/fidelity/resource contract plus bounded later proof | Verified Arc01/Slices09/10, separate DB composition and original Y-14/FF evidence | Design prepared; five DR rows open for operator choices and independent CDC; no route or implementation proof |
+| [slice08-document-route-design](slice08-document-route-design/slice-plan.md) | Resolve operator policy/source-home choices and design the document/fidelity/resource contract plus bounded later proof | Verified Arc01/Slices09/10, separate DB composition and original Y-14/FF evidence | Qualified approvals recorded; new-code licence and CDC pending; five DR rows open; no route/implementation proof |
 
 After Slice01 closes, resume the already-open Arc01/Slice02 research packet;
 queue this arc's Slice02 planning. This explicit cross-arc ordering supersedes
@@ -125,6 +132,10 @@ CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
 
+- 2026-09-14 v1.14: Operator accepted qualified Slice08 recommendations;
+  explicit internal Lykn/ADT and feasibility gates replace a public-interface-only
+  reading. Selected future home/accountability, retained provisional limits and
+  limited edits, separated pending new-code licence and later bootstrap review.
 - 2026-09-14 v1.13: Slice08 delivered reviewable design/choices, exact original
   Y-14 and unsupported-resource crosswalk, and ordered later proof proposal.
   All actual operator decisions and CDC remain pending; source home unassigned,

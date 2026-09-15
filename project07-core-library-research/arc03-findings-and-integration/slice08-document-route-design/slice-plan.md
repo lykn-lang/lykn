@@ -1,8 +1,16 @@
 # Slice08 — Document-route design prerequisite
 
-Status: **Open; design prepared for operator decisions and independent review.**
+Status: **Open; qualified operator approvals recorded; new-code licence and independent review pending.**
 Parent: [Arc03](../arc-plan.md). Contract: [ledger.md](ledger.md).
 Durable outputs belong in this slice's `artifacts/` directory. Expedited Mode.
+
+2026-09-14 operator update: [Qualified decisions](artifacts/decision-record.md)
+accept bounded evaluation with translation inventory/feasibility before port
+commitment, idiomatic internal Lykn/ADTs, provisional behavioral limits and
+original no-op/n=2 edits, future lykn-patch/yaml and oubiwann accountability.
+New-code licence remains pending; separate bootstrap review, actual source-home
+verification and CDC remain. The following unassigned/pending-choice notes are
+historical, not instructions to re-ask accepted choices.
 
 2026-09-14 CC: [Design handoff](closing-report.md) supplies all four artifacts,
 an exact 28-ID/36-unsupported crosswalk and verified portable evidence. D1–D8
@@ -130,6 +138,10 @@ source-shape judgment remains distinct from source analysis and design review.
 
 ## Version History
 
+- 2026-09-14 v1.4: Recorded operator adoption of CDC's qualified recommendations;
+  separated reuse/notices from pending new-code licence, required idiomatic
+  internal Lykn/ADTs and feasibility review, and selected future home/ownership
+  while preserving bootstrap/implementation/CDC and human-judgment gates.
 - 2026-09-14 v1.3: Prepared full design, recommendation, exact input/edit/splice
   crosswalk, pending decision record and bounded subsequent proof proposal.
   Native generation/verification and captured replay passed; all five criteria
