@@ -527,3 +527,11 @@ Apache-2.0
 [docs-badge]: https://img.shields.io/badge/rust-documentation-blue.svg
 [tag-badge]: https://img.shields.io/github/tag/lykn-lang/lykn.svg
 [tag]: https://github.com/lykn-lang/lykn/tags
+
+## Planning and design history
+
+Project plans, design records, implementation prompts, and review evidence live
+on the dedicated [planning branch](https://github.com/lykn-lang/lykn/blob/planning/README.md).
+Locally, start at `.worktrees/planning/README.md`. Projects have stable names;
+their YAML metadata records intended releases and dependencies. User and
+developer documentation remains in `docs/`.
