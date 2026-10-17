@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-17",
+  "original_main": "1b747830cd6dcdae465445db64ad70d009904aad",
+  "planning_baseline": "367b6c575d0b9c286a26340880e2c6c68d2bc900",
+  "removed_planning_files": 539,
+  "exact_migration_blobs": 528,
+  "historical_variants": [
+    {
+      "source_path": "docs/backlog/discoveries.md",
+      "main_blob": "336ef391bcdca480471d28d43f620647e529a8a9",
+      "migrated_blob": "7e3b0ef4566534fd43b0aba9a202514870a8a0fb",
+      "destination": "backlog/discoveries.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/BOOTSTRAP.md",
+      "main_blob": "e01cc0f5167418d90cc19b48af1eaea2b480c8cf",
+      "migrated_blob": "d2b5e53665ce469af80b79882fa3eba9ce4f3c48",
+      "destination": "project02-language-toolchain-alignment/BOOTSTRAP.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/README.md",
+      "main_blob": "d8746031fce3dccb88d4199373250156b3a83c83",
+      "migrated_blob": "f94c56ea4d9dba876e8dfd3f55a69397c9b5e07e",
+      "destination": "project02-language-toolchain-alignment/README.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/arc07-docs/arc-plan.md",
+      "main_blob": "e6ffa5aa2a343aab92ddcc1e18253debc8723a51",
+      "migrated_blob": "e1dbbf1246d813e06f8dcbd3d8753d03e8cb1cd3",
+      "destination": "project02-language-toolchain-alignment/arc07-docs/arc-plan.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/arc07-docs/closing-report.md",
+      "main_blob": "8326bb99cfcc666caae71194e9577f8f51f17b7c",
+      "migrated_blob": "4c9b3a82934a5eb190d84455ffc24e6a06be7d15",
+      "destination": "project02-language-toolchain-alignment/arc07-docs/closing-report.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/arc10-compiler-completion/arc-plan.md",
+      "main_blob": "ddce8af2d8e749ca378d926a2d25b5272db4b3a8",
+      "migrated_blob": "ca7bddb899d814899af97bf391d3419265abe816",
+      "destination": "project02-language-toolchain-alignment/arc10-compiler-completion/arc-plan.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/arc10-compiler-completion/closing-report.md",
+      "main_blob": "3b23bd5dd407afefd6a70ae38b6e7fbee7869990",
+      "migrated_blob": "a210ae947f811b7c8ccb18cdc85834ffc0f74dc0",
+      "destination": "project02-language-toolchain-alignment/arc10-compiler-completion/closing-report.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/arc10-compiler-completion/slice04-no-else-if-expression-error/slice-doc.md",
+      "main_blob": "b437f8fbbdaba9eef213983a838e0e9196860c61",
+      "migrated_blob": "38fa6755df9284dd05708f5fa04b0f93afeedf51",
+      "destination": "project02-language-toolchain-alignment/arc10-compiler-completion/slice04-no-else-if-expression-error/slice-plan.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md",
+      "main_blob": "c1a6e6226ec75de38fcd315eda62b7f5bd05efa4",
+      "migrated_blob": "1c6677c5370cb059a1fb440fec1e6ec7729e658a",
+      "destination": "project02-language-toolchain-alignment/arc16-book-0.6.0-edition/design/dogfooding-friction-log.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/project-plan.md",
+      "main_blob": "668fa106d8af53a1cfd50fe798a32604b668211b",
+      "migrated_blob": "1e78e531b62ff656e3540c35caabab14f3b469da",
+      "destination": "project02-language-toolchain-alignment/project-plan.md",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    },
+    {
+      "source_path": "docs/design-v0.6.0/status.html",
+      "main_blob": "b11b9f13ee506607706371cdce150ee5223f4acc",
+      "migrated_blob": "534db141251c438a46b0b58b56c7245e70f56064",
+      "destination": "project02-language-toolchain-alignment/status.html",
+      "preservation": "original main blob reachable in planning history; owning-branch version remains canonical"
+    }
+  ],
+  "intentionally_retired_destinations": [
+    {
+      "original_destination": "project02-language-toolchain-alignment/status.html",
+      "retirement_commit": "e6f2611",
+      "current_dashboard": "status/project02-language-toolchain-alignment/status.html"
+    }
+  ],
+  "removed_odm_configuration": "byte-identical original preserved in planning project06",
+  "retained_documentation_files_byte_identical": 63,
+  "only_changes": "539 mapped planning deletions, ODM deletion, README navigation",
+  "release_branches_checked_without_changes": {
+    "release/0.6.x": "4dded883bbd321d19635e6fce233343f33803f9e",
+    "release/0.7.x": "74a90d51b853fc18fe2b7c6ee07417736e1ce464",
+    "release/0.8.x": "0f3c28ce78f127ec122334c22fd15b8b433905b7"
+  },
+  "checked_source_paths_sha256": "6d70d3598d3af44818a3832b281082525fb2f8369701c4da35752e50a23fd711",
+  "evidence_strength": "attested self-check; does not confer independent project acceptance",
+  "integrated_main": "12afe1c7c7c8acaabce5b7b75e0df19f3b3fb6ec",
+  "cited_paths_check": {
+    "result": "PASS",
+    "documents": 62,
+    "accepted_historical_citations": 601,
+    "runtime": "Deno 2.9.6, temporary executable under /private/tmp/lykn-cleanup-runtime",
+    "command": "env PATH=/private/tmp/lykn-cleanup-runtime:/usr/bin:/bin:/usr/sbin:/sbin DENO_DIR=/private/tmp/lykn-cleanup-deno-cache make check-cited-paths",
+    "scope": "committed cleanup tree; frozen census unchanged"
+  },
+  "integration": "fast-forward merge of cleanup/main-planning-residue into main; no planning ancestry merged into source",
+  "full_build_and_runtime_suite": "not run: change removes migrated planning copies and updates README navigation; implementation and retained docs are byte-identical"
+}

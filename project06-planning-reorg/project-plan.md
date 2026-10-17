@@ -83,3 +83,17 @@ is the remaining project acceptance decision; it does not block use of the
 new planning tree. No historical software project was newly declared closed.
 No pushes, force pushes, or main implementation merges were performed. Main
 received only the synchronized governance file, per its existing exception.
+
+### 2026-10-17 follow-through: main planning removal integrated
+
+The operator's main refresh exposed the outstanding integration boundary above:
+main still contained 539 old planning files although all release branches were
+already clean. Cleanup commit `12afe1c` removed those preserved copies and the
+archived ODM config, and added planning navigation to the README. Main received
+the change by fast-forward from a dedicated cleanup branch. All original blobs
+remain reachable on planning; all 63 retained main documentation files are
+byte-identical; the committed-tree cited-path gate passes. See the dated
+addendum in [closing-report.md](closing-report.md) and its evidence artifact.
+The September delivery statements remain historical; this entry records the
+main integration performed later. Original classification acceptance remains
+pending. No release branches were changed and no remote was pushed.
