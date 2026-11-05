@@ -1,8 +1,9 @@
 # Slice05 — Deno evidence preflight
 
-Status: **CC iteration01 intake correction attested; DP rows remain open for CDC review.**
+Status: **Closed as verified preflight stop; 0/5 controls run, 5/5 unrun (2026-11-05).**
 Parent: [Project03](../project-plan.md), established collapsed standalone slice.
-Current assignment: `cc-prompt-iteration01.md`. Contract: [ledger.md](ledger.md).
+Accepted assignment: `cc-prompt-iteration01.md`.
+Review: [cdc-verification.md](cdc-verification.md); [retrospective](cdc-retrospective.md). Contract: [ledger.md](ledger.md).
 
 ## Operator authority and endpoint
 
@@ -140,9 +141,13 @@ already fails. Current questions and checks are fully specified in the prompt.
 | Assignment | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
 | `cc-prompt.md` | 2026-11-05 | none | Execute operator-required stop after newly discovered Deno provisioning/evidence preflight | candidate c05f95e reviewed; targeted extent clarification required |
-| `cc-prompt-iteration01.md` | 2026-11-05 | `cc-prompt.md` | Complete current prompt tail/parent authority reads and accurate extent record | active first refinement; source/cache evidence retained |
+| `cc-prompt-iteration01.md` | 2026-11-05 | `cc-prompt.md` | Complete current prompt tail/parent authority reads and accurate extent record | accepted at CC candidate 2b79677; one refinement, source/cache evidence retained |
 
 ## Version history
+
+- 2026-11-05 v1.2: CDC accepted the preflight-stop record after targeted extent
+  correction and completed retrospective. All five DP rows reproduced; all five
+  control programs remain unrun. Authorized endpoint reached; no next execution.
 
 - 2026-11-05 v1.1: CDC reproduced the source/cache stop and five-control unrun
   denominator; requested targeted DP-01 extent correction, retaining all source

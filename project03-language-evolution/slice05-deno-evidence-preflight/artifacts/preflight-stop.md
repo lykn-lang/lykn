@@ -1,5 +1,10 @@
 # Slice05 Deno preflight stop
 
+2026-11-05 CDC: this stop record is independently accepted at CC candidate
+`2b79677`; see [verification](../cdc-verification.md). The authorized attempt
+ends with **0/5 controls run and 5/5 unrun**. Original CC attestation/intake
+and correction history below retain their actual origin and limits.
+
 **Assignment:** Project03 / collapsed standalone Slice05 / initial assignment
 **Date:** 2026-11-05
 **CC:** OpenAI Codex 6 Luna High

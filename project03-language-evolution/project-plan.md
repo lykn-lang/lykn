@@ -88,8 +88,8 @@ execution or change original F-6/F-10 evidence contracts.
 
 Author preflight found the exact Deno-required backend absent before control 1;
 source predicts npm provisioning before resolver setup. Different cached
-versions are not substituted. Slice05 therefore opens as independent stop
-verification, not fixture/build execution: 0/5 programs run and 5/5 unrun. No
+versions are not substituted. Slice05 is now independently closed as a [verified stop record](slice05-deno-evidence-preflight/cdc-verification.md)
+with [retrospective](slice05-deno-evidence-preflight/cdc-retrospective.md), not fixture/build execution: 0/5 programs run and 5/5 unrun. No
 unused task branch/worktree is created while the prerequisite prevents source
 implementation. Later executable work first needs an actual dedicated task
 source branch/worktree, revised authority and revalidated pins. CDC Sol 6.1 High,
@@ -102,7 +102,7 @@ retrieval is permitted; no backend provisioning or external action is implied.
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
-- [slice05-deno-evidence-preflight](slice05-deno-evidence-preflight/slice-plan.md): operator-approved five-control Deno attempt; currently stopped before execution for independent provisioning/evidence preflight.
+- [slice05-deno-evidence-preflight](slice05-deno-evidence-preflight/slice-plan.md): operator-approved five-control Deno attempt; independently verified preflight stop, 0/5 run and 5/5 unrun; provisioning/attribution decisions remain with Operator.
 - [slice04-library-baseline-refresh](slice04-library-baseline-refresh/slice-plan.md): current compiler/Deno/policy and library/package boundary refresh; independently closed as a static baseline/protocol prerequisite; audit method decisions remain before Slice01 resumes.
 
 The original units explicitly use the collapsed standalone-slice convention.
@@ -113,10 +113,16 @@ retains every candidate and its re-entry condition.
 ## Definition of done and boundaries
 
 For the current research opening: retain the original three research records,
-the approved baseline refresh and the candidate register, with their source and status distinctions. A future
+the approved baseline refresh, bounded Deno attempt and candidate register,
+with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-05 v1.4: Slice05 independently closed its required preflight stop
+  after one intake-only correction, retaining reproduced source/cache evidence.
+  All five controls remain unrun. Retrospective complete; any exact-backend
+  provisioning or changed attribution route requires a new Operator decision.
 
 - 2026-11-05 v1.3: Operator authorized one-backend/five-control Deno attempt and
   explicit evidence-gap stop. Opened Slice05 after preflight found missing pinned

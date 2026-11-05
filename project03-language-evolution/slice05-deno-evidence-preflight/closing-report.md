@@ -43,3 +43,16 @@ CC proposes DP-01–DP-05 done at attested strength as evidence-record criteria 
 The initial close return above is preserved. CDC held DP-01 because the initial artifact listed `cc-prompt.md` as 1–102 although the issued prompt contains 126 lines, and listed parent-plan current units only through 104 although the required current extent continues through 117. Iteration01 read the required `cc-prompt.md` lines 103–126 and `project-plan.md` lines 76–117, plus the complete 41-line CDC initial review. The artifact preserves the initial claims as historical discrepancies and records the new extents and source/authority readback without backdating or asserting that iteration00 covered them.
 
 DP-01's evidence pointer is updated for the corrected extent record. DP-02/03's independently reproduced source/cache evidence, DP-04's five unrun predictions, and DP-05's residual/boundary walk are unchanged; none was re-run or expanded. The experiment remains stopped at 0/5 run and 5/5 unrun. All five DP statuses remain open for CDC. The correction changes only the four permitted Slice05 files; there is no source, cache, experiment, build, backend, fixture, install/fetch, or external action.
+
+
+## CDC endpoint disposition — 2026-11-05
+
+[Independent verification](cdc-verification.md) accepts corrected CC candidate
+`2b796770abb86657255a5ff8707af71a3951efd7`: all five DP evidence-record criteria
+are done/reproduced. The authorized attempt ends at the required preflight stop,
+with **0/5 control programs run and 5/5 unrun**. No optimizer/API result is claimed.
+Initial CC returns above preserve their historical status. One supporting
+artifact `artifacts/preflight-stop.md` and [retrospective](cdc-retrospective.md)
+are reconciled. Parent Project03 records stop/decision ownership; original audit
+and Project07 obligations remain open. No next unit, source work, backend
+provisioning or external mutation was opened.
