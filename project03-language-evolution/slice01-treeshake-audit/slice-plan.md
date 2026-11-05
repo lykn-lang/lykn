@@ -4,6 +4,21 @@
 **Kind:** diagnostic audit — no production code changes
 **Feeds:** 0.7.0 project definition (candidate arc: app bundling / dead-code-eliminated output)
 
+## Current re-entry hold (2026-11-05)
+
+The operator-approved current-baseline/policy refresh is owned by
+[Slice04](../slice04-library-baseline-refresh/slice-plan.md). All twelve F rows,
+fixtures, inventory, predictions and the original prompt/scripts remain intact
+and open. The old npm:esbuild experiment and handwritten JavaScript tooling are
+historical instructions, not current execution authority. Do not run the issued
+old prompt unchanged. Slice04 delivers findings and a proposed protocol only;
+any changed esbuild/metafile or corpus-walker evidence contract must be expressly
+amended with preserved obligations and authority before execution. A later
+numbered Slice01 assignment must preserve predictions-before-experiment,
+all nine surface families, both live emitters where applicable, the full corpus,
+metadata, divergence analysis and independent verification. No audit result or
+F-row closure is inferred from this refresh.
+
 ## Goal
 
 Determine whether — and precisely where — lykn's compiled JS output is
@@ -106,6 +121,10 @@ The ledger rows in `ledger.md` (F-1 … F-12). Every row reaches
 this slice closes. Iteration budget: five, per discipline.
 
 ## Version History
+
+- **v1.1 (2026-11-05)** — recorded bounded Slice04 prerequisite and current
+  no-new-Node/npm/Lykn-first tooling hold without executing or replacing any
+  original F-1–F-12 work or issued prompt.
 
 - **v1.0 (2026-07-07)** — initial plan-of-record. Layout
   (`project03-language-evolution/slice01-treeshake-audit/`, arc wrapper collapsed,

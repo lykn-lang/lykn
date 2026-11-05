@@ -25,6 +25,17 @@ decisions are pending; no row is proposed-done. Source home remains unassigned
 pending design. No document/package execution, source edit or repository
 creation occurred. Earlier readiness notes below are historical.
 
+## Current approach amendment (2026-11-05)
+
+The operator-approved [project amendment](../../project-plan.md#core-library-research)
+supersedes the future `lykn-patch/yaml` home with `lang/lib/` and opt-in `@lykn/*`
+JSR packaging in the language repository. Existing oubiwann accountability
+survives. This is source-home direction, not actual-home/build proof or bootstrap
+implementation authority. DR-01/04 remain open for their existing licence/final
+bootstrap review; DR-02/03/05 retain their verified September scope. Historical
+prompts, design artifacts and decisions are preserved. No port, document trial,
+source creation or production YAML work is opened by this amendment.
+
 ## Capability
 
 Turn the unresolved document workflow into a bounded, operator-reviewed design
@@ -144,6 +155,10 @@ optional paths in the prompt and the existing five-failure ceiling. Operator
 source-shape judgment remains distinct from source analysis and design review.
 
 ## Version History
+
+- 2026-11-05 v1.6: Recorded operator-approved lib/JSR source-home supersession
+  while preserving verified design scope and pending licence/bootstrap/source,
+  document/resource/authoring/human gates; historical issued records unchanged.
 
 - 2026-09-14 v1.5: Independently verified DR-02/03/05 after retained packet and
   exact crosswalk replay; retained D3b and final bootstrap authority under

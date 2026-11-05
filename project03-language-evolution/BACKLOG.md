@@ -167,7 +167,16 @@ audit of tree-shakeability across both emission paths (Rust codegen vs
 `bridge.rs` → JS compiler), fixtures, an esbuild experiment, and dist metadata.
 Memory flags `sideEffects` absent from `dist.rs`. **Open.**
 
-**Re-entry.** The audit report defines the candidate arc's scope.
+**2026-11-05 current direction.** The operator approved `lang/lib/`, opt-in
+`@lykn/*` JSR packages, selective entrypoints, zero standard-library payload
+when unused, safe application tree shaking and preserved public package APIs.
+[Slice04](slice04-library-baseline-refresh/slice-plan.md) owns the bounded
+compiler/Deno/policy refresh and proposed audit method. All original Slice01
+F-1–F-12 criteria remain open; old npm tooling is not approved for execution.
+
+**Re-entry.** Slice04 independent closure and explicit resolution of any changed
+evidence contract precede a new Slice01 assignment. The eventual complete audit
+report defines the implementation candidate arc's scope.
 **Disposition.** *(operator decides)* — informed by the audit.
 
 ### A5 · Packaging & distribution — **`02-packaging-strategy`** (research open)

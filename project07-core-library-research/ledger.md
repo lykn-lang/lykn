@@ -1,5 +1,12 @@
 # Project07 ledger
 
+2026-11-05: The [current approach amendment](project-plan.md#core-library-research)
+selects `lang/lib/` with opt-in `@lykn/*` JSR packages, superseding the future
+Patch home. All P rows remain open. Arc04/P-06/P-07 explicitly owe a consolidated
+final research report and complete residual handoff; P-02/03/04/08 retain ADT,
+guide/book and human evidence. New-code licence, bootstrap and actual-home proof,
+28 Y-14 variants and 36 unsupported Y-13 cells remain separately gated.
+
 2026-09-14 CDC: [Slice08 partial review](arc03-findings-and-integration/slice08-document-route-design/cdc-verification.md)
 closes DR-02/03/05; DR-01/04 remain open for licence and final bootstrap review.
 Project rows and RC/DB closure are unchanged. Selected future YAML home and

@@ -9,6 +9,28 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-05 operator-approved approach amendment: core library source will live
+under `lang/lib/` in the language repository, as independently opt-in `@lykn/*`
+JSR packages with selective entrypoints. No standard-library imports means zero
+standard-library payload; safe application tree shaking preserves effects, and
+published package APIs remain intact. This supersedes the earlier future
+`lykn-patch/yaml` home, while oubiwann's accountable ownership survives. No home
+has been created or build/release compatibility proven. New-code licence,
+translation inventory/feasibility, bounded bootstrap authority and actual-home
+verification remain distinct and pending where previously pending. JSON still
+precedes production YAML. The [Project03 baseline refresh](../project03-language-evolution/slice04-library-baseline-refresh/slice-plan.md)
+prepares audit re-entry; it does not supply document-route or library proof.
+
+A consolidated final research report remains owed under Arc04/P-06/P-07 before
+library handoffs: synthesize the versioned JSON/YAML/runtime evidence, design
+limits, source/dependency policy, and remaining decisions in one coherent report
+with links to original witnesses. It must retain all 28 Y-14 variants, all 36
+unsupported Y-13 cells, failures/unrun denominators and the separate Arc02 ADT,
+guide, book, representative-source and human judgments under P-02/03/04/08.
+Neither existing RC/DB closure nor the newly approved home closes those duties.
+The later JSON/YAML projects and implementation source scope remain unopened.
+Earlier source-home/current-next-step notes below are historical where superseded.
+
 2026-09-14 CDC: [Arc03/Slice08 partial verification](arc03-findings-and-integration/slice08-document-route-design/cdc-verification.md)
 closes the three behavioral/resource/proof-contract design criteria after
 independent packet and crosswalk replay. New-code licence and final bootstrap
@@ -369,6 +391,12 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-11-05 v1.32: Recorded operator-approved `lang/lib/`/opt-in JSR approach
+  superseding future Patch home, plus Project03 baseline/audit prerequisite.
+  Explicitly retained consolidated research synthesis, licence/bootstrap/source
+  proof and all document/resource/authoring/book/human obligations. No row closes
+  and no library source project or implementation is authorized.
 
 - 2026-09-14 v1.31: Independently verified three Slice08 design criteria;
   preserved new-code licence and final bootstrap-scope review before full close.
