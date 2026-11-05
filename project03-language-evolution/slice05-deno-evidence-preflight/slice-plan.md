@@ -1,8 +1,8 @@
 # Slice05 — Deno evidence preflight
 
-Status: **CC attested proposed-done; preflight stop awaits independent CDC review.**
+Status: **Open; stop evidence reproduced, DP-01 targeted intake correction pending.**
 Parent: [Project03](../project-plan.md), established collapsed standalone slice.
-Current assignment: `cc-prompt.md`. Contract: [ledger.md](ledger.md).
+Current assignment: `cc-prompt-iteration01.md`. Contract: [ledger.md](ledger.md).
 
 ## Operator authority and endpoint
 
@@ -139,9 +139,14 @@ already fails. Current questions and checks are fully specified in the prompt.
 
 | Assignment | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
-| `cc-prompt.md` | 2026-11-05 | none | Execute operator-required stop after newly discovered Deno provisioning/evidence preflight | ready for CC |
+| `cc-prompt.md` | 2026-11-05 | none | Execute operator-required stop after newly discovered Deno provisioning/evidence preflight | candidate c05f95e reviewed; targeted extent clarification required |
+| `cc-prompt-iteration01.md` | 2026-11-05 | `cc-prompt.md` | Complete current prompt tail/parent authority reads and accurate extent record | active first refinement; source/cache evidence retained |
 
 ## Version history
+
+- 2026-11-05 v1.1: CDC reproduced the source/cache stop and five-control unrun
+  denominator; requested targeted DP-01 extent correction, retaining all source
+  evidence and avoiding any experiment or repeated cache investigation.
 
 - 2026-11-05 v1.0: Opened approved bounded Deno attempt, stopped before first
   control at pinned-backend prerequisite; preserve five predictions and0/5 run
