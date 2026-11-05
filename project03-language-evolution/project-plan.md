@@ -73,11 +73,36 @@ publishing, package fetches, installations or workflow triggers are authorized.
 Local CI definitions were inspected: push/PR tests, manual/PR/weekly Deno
 compatibility and manual consumer smoke; this slice triggers none of them.
 
+## Bounded Deno attempt and required preflight stop (2026-11-05)
+
+After Slice04 closure the operator authorized “that bounded Deno experiment”
+with the same models/Autonomous Mode and an explicit evidence-gap stop. Scope:
+one pinned compiler/Deno, one backend, five tiny control programs (no-library
+payload; JSON without YAML; JSON value without unused file helpers; pure-code
+removal/effect preservation; usable published entrypoints), no new external
+dependencies. [Slice05](slice05-deno-evidence-preflight/slice-plan.md) records
+this separate authorization, its five predeclared controls/shared positives
+and exact endpoint: experiment plus independent review/retrospective, or the
+required gap-stop with all unrun work visible. It does not reopen project-wide
+execution or change original F-6/F-10 evidence contracts.
+
+Author preflight found the exact Deno-required backend absent before control 1;
+source predicts npm provisioning before resolver setup. Different cached
+versions are not substituted. Slice05 therefore opens as independent stop
+verification, not fixture/build execution: 0/5 programs run and 5/5 unrun. No
+unused task branch/worktree is created while the prerequisite prevents source
+implementation. Later executable work first needs an actual dedicated task
+source branch/worktree, revised authority and revalidated pins. CDC Sol 6.1 High,
+CC Luna 6 High, sequential ownership, local-only commits and all approval gates
+from the prior authority remain, scoped now to Slice05. Read-only official source
+retrieval is permitted; no backend provisioning or external action is implied.
+
 ## Existing units
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
+- [slice05-deno-evidence-preflight](slice05-deno-evidence-preflight/slice-plan.md): operator-approved five-control Deno attempt; currently stopped before execution for independent provisioning/evidence preflight.
 - [slice04-library-baseline-refresh](slice04-library-baseline-refresh/slice-plan.md): current compiler/Deno/policy and library/package boundary refresh; independently closed as a static baseline/protocol prerequisite; audit method decisions remain before Slice01 resumes.
 
 The original units explicitly use the collapsed standalone-slice convention.
@@ -92,6 +117,11 @@ the approved baseline refresh and the candidate register, with their source and 
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-05 v1.3: Operator authorized one-backend/five-control Deno attempt and
+  explicit evidence-gap stop. Opened Slice05 after preflight found missing pinned
+  backend; preserve 0/5 run denominator and original audit/Project07 obligations.
+  No fixture/build/backend acquisition or evidence-contract substitution.
 
 - 2026-11-05 v1.2: Slice04 independently closed after one bounded correction.
   Recorded static lib/member/import/metadata constraints and separate application,
