@@ -1,6 +1,6 @@
 # Slice04 — library baseline refresh
 
-Status: **Open; initial CC assignment ready.**
+Status: **CC proposed-done; awaiting independent CDC review.**
 Kind: source reconnaissance and next-audit protocol; no production code or experiment.
 Parent: [Project03](../project-plan.md), collapsed standalone-slice convention.
 Contract: [ledger.md](ledger.md). Current assignment: `cc-prompt.md`.
@@ -120,7 +120,7 @@ and Operator. Required packet is sized for one context with recovery headroom.
 
 | Prompt | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
-| `cc-prompt.md` | 2026-11-05 | none | Operator-approved baseline/policy refresh prerequisite | ready for initial CC handoff |
+| `cc-prompt.md` | 2026-11-05 | none | Operator-approved baseline/policy refresh prerequisite | CC completed initial assignment; proposed-done, CDC review pending |
 
 ## Version history
 
