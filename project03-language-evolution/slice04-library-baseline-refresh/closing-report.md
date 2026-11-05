@@ -43,3 +43,20 @@ Bubble-up to Project03: this is a prerequisite and method decision packet only. 
 CC proposes all six LB rows done at attested strength, pending CDC's independent source replay and semantic review. Ledger statuses remain open for CDC. CDC owns any correction within the normal five-iteration limit and the separate close/retrospective records. CDC/operator own the F-6/F-10 evidence-contract decision. Any later source implementation requires a separate assignment, dedicated non-default branch/worktree and revalidated baseline.
 
 The local commit containing this report records the final change set. No external action is part of closure. Ownership of planning mutation/index returns to CDC after this scoped commit and status report.
+
+## Iteration01 correction return — 2026-11-05
+
+The initial proposed-done report above is retained as the initial-attempt record. CDC returned LB-01 and LB-05 for this bounded correction in `cdc-verification.md`; the corrected candidate is pending CDC review. Initial commit `e4d0e4d159028183836ae853a36f2ea55ee49c19` and all unchanged source/query evidence remain in Git at their original date and source pin.
+
+Planning at correction opening was clean at `2c0c6fadc101bce18c0d0e4fa615349a11e19662`, branch `planning`. Source remained clean at `release/0.7.x@74a90d51b853fc18fe2b7c6ee07417736e1ce464`. Findings now names prior required-read extents, identity and current correction reads at §Intake lines 11–50; no source census or unchanged complete guide read was repeated. No source/tool observations changed.
+
+| Row | Iteration01 update | Status |
+|---|---|---|
+| LB-01 | Findings lines 11–50 now enumerate each required manifest item and actual full/section extent with planning/source identity, retain original query coverage and add the correction readback. | Open; attested |
+| LB-02 | No change to independently reproduced source route/package findings or source revision. | Open; CDC evidence retained |
+| LB-03 | No change to independently reproduced policy/source boundary or original scoped census. | Open; CDC evidence retained |
+| LB-04 | All F-1–F-12 remain mapped once and unchanged. | Open; CDC evidence retained |
+| LB-05 | Findings lines 115–125 now separate no-import, cross-package JSON/YAML, within-JSON-package subpaths, application effects and public-package API into five falsifiable claims. Each uses hypothetical prose specimens, precise functional/effect outcomes and graph-versus-retained-output checks. | Open; attested |
+| LB-06 | Project07 residual gates and diagnostic-only scope are retained; no next slice, experiment, or source change. | Open; updated close walk |
+
+The correction defines no production package names or APIs and creates no fixtures or programs. Missing graph/output attribution, F-6 metafile and F-10 walker capability remain unresolved; nothing was executed. `F-1–F-12`, all Project07 P rows and all Y-14/Y-13 obligations stay open. CC proposes the corrected LB-01 and LB-05 evidence for CDC's independent review; this report is not CDC verification or retrospective.

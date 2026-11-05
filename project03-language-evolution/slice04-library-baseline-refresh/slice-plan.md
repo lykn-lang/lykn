@@ -1,6 +1,6 @@
 # Slice04 — library baseline refresh
 
-Status: **Open; initial review returned for bounded iteration01.**
+Status: **CC iteration01 proposed-done; awaiting independent CDC review.**
 Kind: source reconnaissance and next-audit protocol; no production code or experiment.
 Parent: [Project03](../project-plan.md), collapsed standalone-slice convention.
 Contract: [ledger.md](ledger.md). Current assignment: `cc-prompt-iteration01.md`.
@@ -121,7 +121,7 @@ and Operator. Required packet is sized for one context with recovery headroom.
 | Prompt | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
 | `cc-prompt.md` | 2026-11-05 | none | Operator-approved baseline/policy refresh prerequisite | CC e4d0e4d reviewed; returned for LB-05 correction and LB-01 extent clarification |
-| `cc-prompt-iteration01.md` | 2026-11-05 | `cc-prompt.md` | Separate package/subpath oracles, concrete specimens, compact coverage clarification | active; first refinement |
+| `cc-prompt-iteration01.md` | 2026-11-05 | `cc-prompt.md` | Separate package/subpath oracles, concrete specimens, compact coverage clarification | CC completed correction; proposed-done, CDC review pending |
 
 ## Version history
 
