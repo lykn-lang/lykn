@@ -36,10 +36,14 @@ not assigned here. This source-home decision supersedes the earlier future
 `lykn-patch/yaml` proposal in Project07. Existing ownership/accountability and
 all licence, bootstrap, authoring/book and human-acceptance gates survive.
 
-The next bounded delivery is [Slice04](slice04-library-baseline-refresh/slice-plan.md):
+The authorized bounded delivery is [Slice04](slice04-library-baseline-refresh/slice-plan.md):
 a source-grounded current-baseline/policy refresh and concrete next-audit
-protocol. It is a prerequisite for resuming Slice01, not a replacement for its
-F-1–F-12 obligations. No experiment, compiler/CLI change, library port or full
+protocol. Slice04 is now independently closed at CC candidate `55ee1c2`; its
+[verification](slice04-library-baseline-refresh/cdc-verification.md) and
+[retrospective](slice04-library-baseline-refresh/cdc-retrospective.md) complete
+this Autonomous authorization. F-6 bundler/metafile and F-10 walker/evidence
+contract disposition precedes later audit execution. It is a prerequisite for
+resuming Slice01, not a replacement for its F-1–F-12 obligations. No experiment, compiler/CLI change, library port or full
 matrix is authorized in this slice. Its agreed effort extent is one baseline
 census and one method/protocol decision packet, followed by independent review
 and corrections within the normal five-iteration limit; no numeric operator
@@ -74,7 +78,7 @@ compatibility and manual consumer smoke; this slice triggers none of them.
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
-- [slice04-library-baseline-refresh](slice04-library-baseline-refresh/slice-plan.md): current compiler/Deno/policy and library/package boundary refresh; active prerequisite, independently reviewed before the existing audit resumes.
+- [slice04-library-baseline-refresh](slice04-library-baseline-refresh/slice-plan.md): current compiler/Deno/policy and library/package boundary refresh; independently closed as a static baseline/protocol prerequisite; audit method decisions remain before Slice01 resumes.
 
 The original units explicitly use the collapsed standalone-slice convention.
 No arcs are fabricated for unapproved candidate capabilities. The full future
@@ -88,6 +92,12 @@ the approved baseline refresh and the candidate register, with their source and 
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-05 v1.2: Slice04 independently closed after one bounded correction.
+  Recorded static lib/member/import/metadata constraints and separate application,
+  package and public-API proof obligations through its accepted findings.
+  Completed retrospective and stopped at the authorized endpoint; full original
+  Slice01 audit and Project07 outcomes remain open.
 
 - 2026-11-05 v1.1: Recorded operator-approved `lib/` source/opt-in JSR and safe
   application optimization direction. Opened bounded collapsed Slice04 to

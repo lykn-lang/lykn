@@ -1,5 +1,10 @@
 # Slice04 findings: library baseline refresh
 
+2026-11-05 CDC: this baseline/proposed protocol is independently accepted at
+CC candidate `55ee1c2`; see [verification](../cdc-verification.md). The CC
+attestation below records its original return; no runtime/optimizer or parent
+project acceptance follows. The original audit evidence contract remains held.
+
 **Assignment:** Project03 / collapsed standalone Slice04 / initial attempt
 **Strength:** CC attested; CDC reproduction and reconciliation remain open
 **Date:** 2026-11-05
@@ -136,6 +141,6 @@ The original inventory is a static classification; compilation and bundler behav
 - Project07 owners: retain new-code licence, source/home proof, bounded bootstrap authority, translation inventory/feasibility, JSON evidence, subsequent YAML authorization, final synthesis and human review. All P-01–P-08 remain open; all 28 Y-14 and 36 unsupported Y-13 cells remain open, alongside ADT, guides, book and representative-source obligations.
 - No source work, experiment, corpus compile, install, publication or external trigger is included in the Slice04 outcome.
 
-## Status
+## CC return status before independent review
 
 Six Slice04 LB rows are submitted attested/proposed-done for independent CDC review. Slice04 is not CDC-closed, and no Slice01 F row or Project07 outcome is closed by this artifact.

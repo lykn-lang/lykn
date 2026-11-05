@@ -60,3 +60,16 @@ Planning at correction opening was clean at `2c0c6fadc101bce18c0d0e4fa615349a11e
 | LB-06 | Project07 residual gates and diagnostic-only scope are retained; no next slice, experiment, or source change. | Open; updated close walk |
 
 The correction defines no production package names or APIs and creates no fixtures or programs. Missing graph/output attribution, F-6 metafile and F-10 walker capability remain unresolved; nothing was executed. `F-1–F-12`, all Project07 P rows and all Y-14/Y-13 obligations stay open. CC proposes the corrected LB-01 and LB-05 evidence for CDC's independent review; this report is not CDC verification or retrospective.
+
+
+## CDC closure disposition — 2026-11-05
+
+Independent [CDC verification](cdc-verification.md) accepts corrected CC candidate
+`55ee1c2c5ac2277cae09de0f6745f4f0c30435df`: all six LB rows done/reproduced.
+The initial and iteration01 CC returns above retain their historical proposed-
+done status. Artifact inventory checked: exactly `artifacts/findings.md`;
+first-class plan/ledger/prompts/close/review/retrospective stay in the slice root.
+[CDC retrospective](cdc-retrospective.md) is complete. The collapsed slice's
+bubble-up is recorded in Project03; all original F and Project07 gates remain
+open. No later audit execution or source work was opened. The authorized
+Autonomous endpoint is reached; the F-6/F-10 method/contract decision is next.
