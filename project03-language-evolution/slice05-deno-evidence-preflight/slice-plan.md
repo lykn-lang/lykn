@@ -1,6 +1,6 @@
 # Slice05 — Deno evidence preflight
 
-Status: **Open; stop evidence reproduced, DP-01 targeted intake correction pending.**
+Status: **CC iteration01 intake correction attested; DP rows remain open for CDC review.**
 Parent: [Project03](../project-plan.md), established collapsed standalone slice.
 Current assignment: `cc-prompt-iteration01.md`. Contract: [ledger.md](ledger.md).
 

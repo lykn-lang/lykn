@@ -37,3 +37,9 @@ All five Slice05 rows concern a preflight evidence stop and remain open pending 
 - The complete intended diff is restricted to this slice's `artifacts/preflight-stop.md`, `closing-report.md`, `ledger.md` and assignment/status field in `slice-plan.md`. Independent CDC verification and retrospective remain pending.
 
 CC proposes DP-01–DP-05 done at attested strength as evidence-record criteria only. The ledger stays open. This report is not independent CDC acceptance and does not close the Deno experiment, Slice01, Project03 or Project07.
+
+## Iteration01 intake correction return — 2026-11-05
+
+The initial close return above is preserved. CDC held DP-01 because the initial artifact listed `cc-prompt.md` as 1–102 although the issued prompt contains 126 lines, and listed parent-plan current units only through 104 although the required current extent continues through 117. Iteration01 read the required `cc-prompt.md` lines 103–126 and `project-plan.md` lines 76–117, plus the complete 41-line CDC initial review. The artifact preserves the initial claims as historical discrepancies and records the new extents and source/authority readback without backdating or asserting that iteration00 covered them.
+
+DP-01's evidence pointer is updated for the corrected extent record. DP-02/03's independently reproduced source/cache evidence, DP-04's five unrun predictions, and DP-05's residual/boundary walk are unchanged; none was re-run or expanded. The experiment remains stopped at 0/5 run and 5/5 unrun. All five DP statuses remain open for CDC. The correction changes only the four permitted Slice05 files; there is no source, cache, experiment, build, backend, fixture, install/fetch, or external action.

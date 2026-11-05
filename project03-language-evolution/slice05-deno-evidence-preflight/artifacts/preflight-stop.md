@@ -72,3 +72,17 @@ Open owners remain: CDC/operator for any F-6/F-10 evidence-contract amendment; l
 The machine-cache observations are bounded to the two exact required paths and the named 0.25.12/0.27.4 npm package directories. They do not establish that no esbuild versions or binaries exist elsewhere. Source says the native bundle backend may call npm metadata/tarball facilities when the exact path is missing; that is a source-grounded prediction, not an observed request/download. The cache may change after this date and must be rechecked before authorized re-entry. Deno command identity/hash does not establish its source build recipe.
 
 Internal source flags do not prove tree-shaking outcomes. The exposed output summary is not a retained-code oracle; graph absence, source-map content, module counts, stdout and byte sizes each answer only part of the question. Because the exact backend prerequisite blocks even the first control, exposed-versus-internal attribution remains unresolved in this attempt. All five specimen statements are predictions only and do not validate the Lykn syntax, package shape, JSON/YAML behavior, API exports, optimizer or effects.
+
+## Iteration01 intake correction — 2026-11-05
+
+The initial-attempt Intake table above is preserved as written. Its `cc-prompt.md` entry says required-full lines 1–102, and its Project03-plan entry covers lines 76–95 plus current units at 97–104. CDC's initial review found the actual issued `cc-prompt.md` has 126 lines and the required Project03 extent continues through line 117. Those initial entries are not evidence that the omitted extents were read; this correction does not backdate or upgrade them.
+
+Fresh targeted coverage in iteration01:
+
+| Input | Correction read extent | Readback |
+|---|---|---|
+| `cc-prompt.md` | Required lines 103–126; current file length verified as 126 lines. Iteration01 prompt `cc-prompt-iteration01.md` lines 1–32 was read full. | Complete the first intake correction only. Preserve the preceding 1–102 entry as the initial attested extent; combined coverage now reaches 1–126, with no claim that the initial attempt read all 126. Do not reopen the experiment. |
+| Parent `project-plan.md` | Required lines 76–117 loaded in iteration01. | Lines 76–95 state bounded authority and its evidence-gap endpoint; lines 97–104 list all current units; lines 105–117 retain the no-fabricated-arc/backlog boundary and say current research records do not establish future implementation definition-of-done. The earlier 76–95/97–104 receipt remains the initial record and is not treated as complete coverage of the now-required extent. |
+| Current `cdc-verification.md` | Required-full, lines 1–41, initial review. | CDC holds DP-01 for the precise extent discrepancy but independently reproduced the pinned source/cache stop. DP-02/03 source/cache, DP-04 five predictions, and DP-05 residuals are retained without re-running them; all rows remain open and controls remain 0/5 run, 5/5 unrun. |
+
+The source/cache findings and five-control predictions remain at their original source pin/date and evidence strength. This iteration changed no source observation, cache state, command result, experiment scope, or owner. It only corrects the text-coverage receipt and makes the current assignment/intake status explicit; DP-01 remains open for independent CDC disposition.
