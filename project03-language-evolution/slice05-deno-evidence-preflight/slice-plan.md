@@ -1,6 +1,6 @@
 # Slice05 — Deno evidence preflight
 
-Status: **Open; preflight stop awaiting independent CC evidence and CDC review.**
+Status: **CC attested proposed-done; preflight stop awaits independent CDC review.**
 Parent: [Project03](../project-plan.md), established collapsed standalone slice.
 Current assignment: `cc-prompt.md`. Contract: [ledger.md](ledger.md).
 
