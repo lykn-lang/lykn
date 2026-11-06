@@ -176,3 +176,21 @@ and hashes to
 The existing C5 expected raw-text value remains exactly `{"x":1}`; no source
 shape, prediction, or test scope changed. This correction must be committed and
 the new source commit becomes the prerequisite freeze for all fixture work.
+
+### First strict compilation attempt and observer syntax correction
+
+After the corrected-input source commit, I copied a fresh workspace to
+`/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/experiments/native-esbuild-controls/run-01/workspace/`
+and ran the pinned strict per-file `lykn compile -o` loop. All 15 stimulus and
+support files compiled with exit 0. The separately compiled driver failed with
+exit 1, `unterminated list at 98:1`; the actual command and result are retained
+in ignored task-target
+`target/lykn/experiments/native-esbuild-controls/run-01/compile-logs/summary.txt`
+and `driver.log`. This was a Lykn reader error, before dist staging or any
+bundle/runtime operation. Inspection located the unmatched form at the end of
+the async `digest` definition: one required close parenthesis was missing. I
+made only that delimiter correction in `artifacts/source/driver.lykn`; fixture
+shapes, observer flow, permissions, predictions and control count are unchanged.
+This source state and the failed attempt are retained in history, and the driver
+correction must be committed before its compile retry. No runtime control has
+run; all 11 remain unrun and C4 remains the future first bundle/gate.

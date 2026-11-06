@@ -93,7 +93,7 @@
   (bind hash-bytes (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
   (-> (Array:from hash-bytes
         (fn (:number byte) (-> (byte:to-string 16) (:pad-start 2 "0"))))
-      (:join "")))
+      (:join ""))))
 
 (async (func main :args () :body
   (bind phase (get Deno:args 4))
