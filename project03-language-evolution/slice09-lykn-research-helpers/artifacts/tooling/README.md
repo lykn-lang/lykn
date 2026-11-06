@@ -56,7 +56,7 @@ outputs and stay below the task's ignored `target/slice09/`.
 Run the public validator with an explicit workspace argument:
 
 ```sh
-/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/public-check.js,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace" target/slice09/public-check.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace
+/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/public-check.js,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace" target/slice09/public-check.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace
 ```
 
 Choose a fresh `RUNROOT` below `target/slice09/`. The check driver accepts seven
@@ -64,10 +64,12 @@ arguments in this order: `RUNROOT WORKSPACE PUBLIC-CHECK-JS ORCHESTRATE-JS
 CHILD-JS COMPILER CHILD-LYKN`. Its outer Deno process can read/write the task
 target and unchanged workspace, and can start the pinned Deno process. The
 orchestrator's own Deno invocation grants subprocess access to Deno and the
-exact compiler path for R0:
+exact compiler path for R0. Stage the child source under the allowed task target
+before invoking the helper; it will copy that source to R0's spaced compile cwd.
 
+cp /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice09-lykn-research-helpers/artifacts/tooling/child-fixture.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/child-fixture.lykn
 ```sh
-/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace" --allow-write=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09 --allow-run=/opt/homebrew/bin/deno,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn target/slice09/check-helpers.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/run-iteration01-2026-11-06 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/public-check.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/orchestrate.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/child-fixture.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/child-fixture.lykn
+/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace" --allow-write=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09 --allow-run=/opt/homebrew/bin/deno,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn target/slice09/check-helpers.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/run-iteration01-v3-2026-11-06 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/public-check.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/orchestrate.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/child-fixture.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/child-fixture.lykn
 ```
 
 `orchestrate.lykn MANIFEST RECEIPT-DIRECTORY` requires an unused receipt path.

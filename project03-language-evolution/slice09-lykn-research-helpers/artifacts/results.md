@@ -403,3 +403,30 @@ hash `30ff4d62639584243987819b2340b0eaad67201e82ed8068f601f8154577a768`; a
 native `cmp` found them byte-identical, and inspection confirmed the compiled
 NotFound and exact missing-path assertions. No runtime was launched with the
 stale compile4 product for the V5 correction.
+
+With the byte-verified compile5 helper copy, the next frozen runtime at
+`target/slice09/run-iteration01-v2-2026-11-06` passed all V0–V7 controls. The
+helper then exited 1 at R0 before invoking the orchestrator: the outer Deno
+process was not granted read access to the planning-tree child source passed as
+`CHILD-LYKN`. The exact error was `NotCapable` at `Deno.copyFile(childLykn,
+compileSource)`. R0's compile/copy/compare actions did not run, and R1–R3 did
+not run in this attempt. Preserve its successful V0–V7 receipts and the R0
+permission failure in that run root.
+
+The same run's V0 stdout is byte-identical to the single saved original Python
+stdout under native `cmp`: both SHA-256
+`c30a0ead3be94937397eca741072b1cec799af0ee5c0d96d0cdc8d96c21fa92c`. Original
+Python exited 0 with empty stderr; the Lykn V0 exit-status receipt is 0. The
+original parity exception has therefore been exercised once and exact positive
+stdout/status parity is established on the unchanged accepted workspace.
+
+Invocation correction: stage the committed child Lykn source under the already
+granted task target and pass that staged copy to R0. Its source SHA-256 remains
+`e3ba6c8de2be5cadec4778859290e4bc73db2c9b7e50e476072031144a832e86`; the
+target copy at `frozen-iteration01-v3/child-fixture.lykn` has the same hash.
+The README now shows this exact staging step and path. This only corrects the
+outer Deno file-read grant through an already-authorized target path; helper
+source, compiler output, case population, and permissions scope are unchanged.
+The next R0–R3 execution uses fresh root
+`target/slice09/run-iteration01-v3-2026-11-06`; no second Python invocation is
+required or will occur.
