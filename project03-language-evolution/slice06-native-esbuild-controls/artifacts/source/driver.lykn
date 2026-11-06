@@ -118,6 +118,6 @@
         (bundle "C5" c5-entry)
         (runtime "C5" c5-entry true)
         (runtime "C5" c5-entry false))
-      (throw (new Error "phase must be gate or controls")))))
+      (throw (new Error "phase must be gate or controls"))))))
 
 (await (main))

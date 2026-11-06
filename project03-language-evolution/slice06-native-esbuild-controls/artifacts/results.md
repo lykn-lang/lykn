@@ -194,3 +194,12 @@ shapes, observer flow, permissions, predictions and control count are unchanged.
 This source state and the failed attempt are retained in history, and the driver
 correction must be committed before its compile retry. No runtime control has
 run; all 11 remain unrun and C4 remains the future first bundle/gate.
+
+A second fresh compile attempt in `run-02` again compiled all 15 fixture/support
+modules (exit 0); the driver again returned `unterminated list at 98:1`, captured
+in that attempt's separate `compile-logs/summary.txt` and `driver.log`. The
+first delimiter correction closed `digest` but exposed that the following async
+`main` form also lacked its final closing parenthesis. I have now added only
+that closing delimiter. The previous attempt and source commit remain intact;
+the corrected driver requires its own source commit before a fresh `run-03`
+compile. No C4 bundle or runtime action has occurred.
