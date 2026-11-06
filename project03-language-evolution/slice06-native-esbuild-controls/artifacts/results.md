@@ -160,3 +160,19 @@ any fixture compile, dist staging, bundle or runtime action. C4 remains the
 first bundle and sole gate; no runtime control has occurred. Source compilation,
 dist/byte-equality, export-map path verification, full C4 code/metafile review,
 and the eleven declared runtime invocations are pending.
+
+### Pre-execution source correction: input newline
+
+Before any fixture compilation or execution, the read-only coordinator inspected
+the committed input bytes and found that the initial source commit above had an
+LF byte after `{"x":1}`. Thus its recorded SHA-256
+`bb157861a164e35cdde9d726b0af9ce2765a8f530c35d9e45732b94ee65e9557` and claim
+that the file had no LF were incorrect; the actual initial file was eight bytes.
+The plan requires exactly seven bytes with no terminal LF. I preserved the
+initial commit and changed only this data file before any dependent action. The
+corrected input is seven bytes (`7b 22 78 22 3a 31 7d`), contains no newline,
+and hashes to
+`5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22`.
+The existing C5 expected raw-text value remains exactly `{"x":1}`; no source
+shape, prediction, or test scope changed. This correction must be committed and
+the new source commit becomes the prerequisite freeze for all fixture work.
