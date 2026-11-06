@@ -229,3 +229,26 @@ JS test body will move byte-for-byte to `test/forms/template-string-boundary.tes
 in a separate commit, with the original expected-red receipt retained under the
 old path and a new focused discovery/runtime receipt recorded at the corrected
 path. No ignore rule or test behavior changes.
+
+## Expected-red receipts — before implementation
+
+The byte-preserved initial JS test commit is `920012afa4fd182e4619393e20a7af0a53e0382f`;
+the author-readiness rename is `dc7e3ad0353d1e9ed46cbce06dda8f0383a77b46`.
+The renamed file matches the original Git blob byte-for-byte (blob
+`9d38ab06da5a249232e3805dc915e5af15cefd69`, content SHA-256
+`19174f1b6cf847cbd0de1a45d85a12918c819e2735ef3c102c100e4083f5489a`).
+
+Before implementation, `make fresh-artifacts` passed with the original b841
+compiler. The focused native regression at source `920012a` exited 101 from its
+expected test failure, not setup: all six fixtures compiled and executed; eight
+field oracles mismatched (P1/P2/P4/P6 concat and ICU), while P5's child exited
+1 on invalid generated JS and left four values unestablished. Ten of 22 values
+matched. The JS test first run at the ignored old filename also exited 1 after
+running its six child modules. After the byte-identical rename, the focused
+`./bin/lykn test test/forms/template-string-boundary.test.js` selected the new
+file and again executed all six child modules with the same eight mismatches
+and P5 failure. Per-case `ok` labels mean the test's collector completed each
+case; the final aggregate oracle failed, so this is actual JS runtime red.
+Exact command, env, complete stdout/stderr, and exit records for old and new
+JS paths and the native path are retained separately under
+`artifacts/repair/run-01/expected-red/`. No red output was rerun or overwritten.

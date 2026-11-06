@@ -1,0 +1,472 @@
+running 1 test from ./test/forms/template-string-boundary.test.js
+public JS compiler preserves decoded template string values ...
+  P1-backslash-n.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P1-backslash-n.lykn","code":0,"source":"(bind value \"\\\\n\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\\\n\" \"\")\n      :icu (template \"\\\\n\"))))\n","generated":"const value = \"\\\\n\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\\n`,\n  icu: `\\n`\n}));\n","stdout":"{\"plain\":\"\\\\n\",\"interpolated\":\"\\\\n\",\"concat\":\"\\n\",\"icu\":\"\\n\"}\n","stderr":""}
+----- output end -----
+  P1-backslash-n.lykn ... ok (27ms)
+  P2-backslash-quote.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P2-backslash-quote.lykn","code":0,"source":"(bind value \"\\\\\\\"\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\\\\\\"\" \"\")\n      :icu (template \"\\\\\\\"\"))))\n","generated":"const value = \"\\\\\\\"\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\\\"`,\n  icu: `\\\"`\n}));\n","stdout":"{\"plain\":\"\\\\\\\"\",\"interpolated\":\"\\\\\\\"\",\"concat\":\"\\\"\",\"icu\":\"\\\"\"}\n","stderr":""}
+----- output end -----
+  P2-backslash-quote.lykn ... ok (17ms)
+  P3-line-feed.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P3-line-feed.lykn","code":0,"source":"(bind value \"\\n\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\n\" \"\")\n      :icu (template \"\\n\"))))\n","generated":"const value = \"\\n\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\n`,\n  icu: `\n`\n}));\n","stdout":"{\"plain\":\"\\n\",\"interpolated\":\"\\n\",\"concat\":\"\\n\",\"icu\":\"\\n\"}\n","stderr":""}
+----- output end -----
+  P3-line-feed.lykn ... ok (19ms)
+  P4-carriage-return.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P4-carriage-return.lykn","code":0,"source":"(bind value \"\\r\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\r\" \"\")\n      :icu (template \"\\r\"))))\n","generated":"const value = \"\\r\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\r`,\n  icu: `\r`\n}));\n","stdout":"{\"plain\":\"\\r\",\"interpolated\":\"\\r\",\"concat\":\"\\n\",\"icu\":\"\\n\"}\n","stderr":""}
+----- output end -----
+  P4-carriage-return.lykn ... ok (17ms)
+  P5-backslash-backtick-dollar.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P5-backslash-backtick-dollar.lykn","code":1,"source":"(bind value \"\\\\`$\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\\\`$\" \"\")\n      :icu (template \"\\\\`$\"))))\n","generated":"const value = \"\\\\`$\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\\\\`\\$`,\n  icu: `\\\\`\\$`\n}));\n","stdout":"","stderr":"error: SyntaxError: Expected ',', got '<lexing error: Error { error: (110..110, ExpectedUnicodeEscape) }>'\n  |\n5 |   concat: `\\\\`\\$`,\n  |               ~\n    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-template-boundary-f5e40b4059031011/fixture.js:5:15\n"}
+----- output end -----
+  P5-backslash-backtick-dollar.lykn ... ok (17ms)
+  P6-tag-raw.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P6-tag-raw.lykn","code":0,"source":"(console:log\n  (JSON:stringify\n    (obj :concat (tag String:raw (template \"\\\\n\" \"\"))\n      :icu (tag String:raw (template \"\\\\n\")))))\n","generated":"console.log(JSON.stringify({\n  concat: (String.raw)`\\n`,\n  icu: (String.raw)`\\n`\n}));\n","stdout":"{\"concat\":\"\\\\n\",\"icu\":\"\\\\n\"}\n","stderr":""}
+----- output end -----
+  P6-tag-raw.lykn ... ok (17ms)
+public JS compiler preserves decoded template string values ... FAILED (122ms)
+
+ ERRORS 
+
+public JS compiler preserves decoded template string values => ./test/forms/template-string-boundary.test.js:70:6
+error: AssertionError: Values are not equal: P1-backslash-n.lykn/concat: expected scalars [92,110], got [10]
+source:
+(bind value "\\n")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\\n" "")
+      :icu (template "\\n"))))
+
+generated JavaScript:
+const value = "\\n";
+console.log(JSON.stringify({
+  plain: value,
+  interpolated: `${value}`,
+  concat: `\n`,
+  icu: `\n`
+}));
+
+stdout:
+{"plain":"\\n","interpolated":"\\n","concat":"\n","icu":"\n"}
+
+stderr:
+
+
+P1-backslash-n.lykn/icu: expected scalars [92,110], got [10]
+source:
+(bind value "\\n")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\\n" "")
+      :icu (template "\\n"))))
+
+generated JavaScript:
+const value = "\\n";
+console.log(JSON.stringify({
+  plain: value,
+  interpolated: `${value}`,
+  concat: `\n`,
+  icu: `\n`
+}));
+
+stdout:
+{"plain":"\\n","interpolated":"\\n","concat":"\n","icu":"\n"}
+
+stderr:
+
+
+P2-backslash-quote.lykn/concat: expected scalars [92,34], got [34]
+source:
+(bind value "\\\"")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\\\"" "")
+      :icu (template "\\\""))))
+
+generated JavaScript:
+const value = "\\\"";
+console.log(JSON.stringify({
+  plain: value,
+  interpolated: `${value}`,
+  concat: `\"`,
+  icu: `\"`
+}));
+
+stdout:
+{"plain":"\\\"","interpolated":"\\\"","concat":"\"","icu":"\""}
+
+stderr:
+
+
+P2-backslash-quote.lykn/icu: expected scalars [92,34], got [34]
+source:
+(bind value "\\\"")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\\\"" "")
+      :icu (template "\\\""))))
+
+generated JavaScript:
+const value = "\\\"";
+console.log(JSON.stringify({
+  plain: value,
+  interpolated: `${value}`,
+  concat: `\"`,
+  icu: `\"`
+}));
+
+stdout:
+{"plain":"\\\"","interpolated":"\\\"","concat":"\"","icu":"\""}
+
+stderr:
+
+
+P4-carriage-return.lykn/concat: expected scalars [13], got [10]
+source:
+(bind value "\r")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\r" "")
+      :icu (template "\r"))))
+
+generated JavaScript:
+const value = "\r";
+console.log(JSON.stringify({
+  plain: value,
+  interpolated: `${value}`,
+  concat: ``,
+  icu: ``
+}));
+
+stdout:
+{"plain":"\r","interpolated":"\r","concat":"\n","icu":"\n"}
+
+stderr:
+
+
+P4-carriage-return.lykn/icu: expected scalars [13], got [10]
+source:
+(bind value "\r")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\r" "")
+      :icu (template "\r"))))
+
+generated JavaScript:
+const value = "\r";
+console.log(JSON.stringify({
+  plain: value,
+  interpolated: `${value}`,
+  concat: ``,
+  icu: ``
+}));
+
+stdout:
+{"plain":"\r","interpolated":"\r","concat":"\n","icu":"\n"}
+
+stderr:
+
+
+P5-backslash-backtick-dollar.lykn: child exit 1; values unestablished
+source:
+(bind value "\\`$")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\\`$" "")
+      :icu (template "\\`$"))))
+
+generated JavaScript:
+const value = "\\`$";
+console.log(JSON.stringify({
+  plain: value,
+  interpolated: `${value}`,
+  concat: `\\`\$`,
+  icu: `\\`\$`
+}));
+
+stdout:
+
+stderr:
+error: SyntaxError: Expected ',', got '<lexing error: Error { error: (110..110, ExpectedUnicodeEscape) }>'
+  |
+5 |   concat: `\\`\$`,
+  |               ~
+    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-template-boundary-f5e40b4059031011/fixture.js:5:15
+
+
+P6-tag-raw.lykn/concat: expected scalars [92,92,110], got [92,110]
+source:
+(console:log
+  (JSON:stringify
+    (obj :concat (tag String:raw (template "\\n" ""))
+      :icu (tag String:raw (template "\\n")))))
+
+generated JavaScript:
+console.log(JSON.stringify({
+  concat: (String.raw)`\n`,
+  icu: (String.raw)`\n`
+}));
+
+stdout:
+{"concat":"\\n","icu":"\\n"}
+
+stderr:
+
+
+P6-tag-raw.lykn/icu: expected scalars [92,92,110], got [92,110]
+source:
+(console:log
+  (JSON:stringify
+    (obj :concat (tag String:raw (template "\\n" ""))
+      :icu (tag String:raw (template "\\n")))))
+
+generated JavaScript:
+console.log(JSON.stringify({
+  concat: (String.raw)`\n`,
+  icu: (String.raw)`\n`
+}));
+
+stdout:
+{"concat":"\\n","icu":"\\n"}
+
+stderr:
+
+
+
+    [Diff] Actual / Expected
+
+
+-   [
+-     "P1-backslash-n.lykn/concat: expected scalars [92,110], got [10]\n" +
+-       "source:\n" +
+-       '(bind value "\\\\n")\n' +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :plain value\n" +
+-       "      :interpolated (template value)\n" +
+-       '      :concat (template "\\\\n" "")\n' +
+-       '      :icu (template "\\\\n"))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       'const value = "\\\\n";\n' +
+-       "console.log(JSON.stringify({\n" +
+-       "  plain: value,\n" +
+-       "  interpolated: `${value}`,\n" +
+-       "  concat: `\\n`,\n" +
+-       "  icu: `\\n`\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"plain":"\\\\n","interpolated":"\\\\n","concat":"\\n","icu":"\\n"}\n' +
+-       "\n" +
+-       "stderr:\n",
+-     "P1-backslash-n.lykn/icu: expected scalars [92,110], got [10]\n" +
+-       "source:\n" +
+-       '(bind value "\\\\n")\n' +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :plain value\n" +
+-       "      :interpolated (template value)\n" +
+-       '      :concat (template "\\\\n" "")\n' +
+-       '      :icu (template "\\\\n"))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       'const value = "\\\\n";\n' +
+-       "console.log(JSON.stringify({\n" +
+-       "  plain: value,\n" +
+-       "  interpolated: `${value}`,\n" +
+-       "  concat: `\\n`,\n" +
+-       "  icu: `\\n`\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"plain":"\\\\n","interpolated":"\\\\n","concat":"\\n","icu":"\\n"}\n' +
+-       "\n" +
+-       "stderr:\n",
+-     "P2-backslash-quote.lykn/concat: expected scalars [92,34], got [34]\n" +
+-       "source:\n" +
+-       '(bind value "\\\\\\"")\n' +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :plain value\n" +
+-       "      :interpolated (template value)\n" +
+-       '      :concat (template "\\\\\\"" "")\n' +
+-       '      :icu (template "\\\\\\""))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       'const value = "\\\\\\"";\n' +
+-       "console.log(JSON.stringify({\n" +
+-       "  plain: value,\n" +
+-       "  interpolated: `${value}`,\n" +
+-       '  concat: `\\"`,\n' +
+-       '  icu: `\\"`\n' +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"plain":"\\\\\\"","interpolated":"\\\\\\"","concat":"\\"","icu":"\\""}\n' +
+-       "\n" +
+-       "stderr:\n",
+-     "P2-backslash-quote.lykn/icu: expected scalars [92,34], got [34]\n" +
+-       "source:\n" +
+-       '(bind value "\\\\\\"")\n' +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :plain value\n" +
+-       "      :interpolated (template value)\n" +
+-       '      :concat (template "\\\\\\"" "")\n' +
+-       '      :icu (template "\\\\\\""))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       'const value = "\\\\\\"";\n' +
+-       "console.log(JSON.stringify({\n" +
+-       "  plain: value,\n" +
+-       "  interpolated: `${value}`,\n" +
+-       '  concat: `\\"`,\n' +
+-       '  icu: `\\"`\n' +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"plain":"\\\\\\"","interpolated":"\\\\\\"","concat":"\\"","icu":"\\""}\n' +
+-       "\n" +
+-       "stderr:\n",
+-     "P4-carriage-return.lykn/concat: expected scalars [13], got [10]\n" +
+-       "source:\n" +
+-       '(bind value "\\r")\n' +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :plain value\n" +
+-       "      :interpolated (template value)\n" +
+-       '      :concat (template "\\r" "")\n' +
+-       '      :icu (template "\\r"))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       'const value = "\\r";\n' +
+-       "console.log(JSON.stringify({\n" +
+-       "  plain: value,\n" +
+-       "  interpolated: `${value}`,\n" +
+-       "  concat: `\r`,\n" +
+-       "  icu: `\r`\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"plain":"\\r","interpolated":"\\r","concat":"\\n","icu":"\\n"}\n' +
+-       "\n" +
+-       "stderr:\n",
+-     "P4-carriage-return.lykn/icu: expected scalars [13], got [10]\n" +
+-       "source:\n" +
+-       '(bind value "\\r")\n' +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :plain value\n" +
+-       "      :interpolated (template value)\n" +
+-       '      :concat (template "\\r" "")\n' +
+-       '      :icu (template "\\r"))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       'const value = "\\r";\n' +
+-       "console.log(JSON.stringify({\n" +
+-       "  plain: value,\n" +
+-       "  interpolated: `${value}`,\n" +
+-       "  concat: `\r`,\n" +
+-       "  icu: `\r`\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"plain":"\\r","interpolated":"\\r","concat":"\\n","icu":"\\n"}\n' +
+-       "\n" +
+-       "stderr:\n",
+-     "P5-backslash-backtick-dollar.lykn: child exit 1; values unestablished\n" +
+-       "source:\n" +
+-       '(bind value "\\\\`$")\n' +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :plain value\n" +
+-       "      :interpolated (template value)\n" +
+-       '      :concat (template "\\\\`$" "")\n' +
+-       '      :icu (template "\\\\`$"))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       'const value = "\\\\`$";\n' +
+-       "console.log(JSON.stringify({\n" +
+-       "  plain: value,\n" +
+-       "  interpolated: `${value}`,\n" +
+-       "  concat: `\\\\`\\$`,\n" +
+-       "  icu: `\\\\`\\$`\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       "\n" +
+-       "stderr:\n" +
+-       "error: SyntaxError: Expected ',', got '<lexing error: Error { error: (110..110, ExpectedUnicodeEscape) }>'\n" +
+-       "  |\n" +
+-       "5 |   concat: `\\\\`\\$`,\n" +
+-       "  |               ~\n" +
+-       "    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-template-boundary-f5e40b4059031011/fixture.js:5:15\n",
+-     "P6-tag-raw.lykn/concat: expected scalars [92,92,110], got [92,110]\n" +
+-       "source:\n" +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       '    (obj :concat (tag String:raw (template "\\\\n" ""))\n' +
+-       '      :icu (tag String:raw (template "\\\\n")))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       "console.log(JSON.stringify({\n" +
+-       "  concat: (String.raw)`\\n`,\n" +
+-       "  icu: (String.raw)`\\n`\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"concat":"\\\\n","icu":"\\\\n"}\n' +
+-       "\n" +
+-       "stderr:\n",
+-     "P6-tag-raw.lykn/icu: expected scalars [92,92,110], got [92,110]\n" +
+-       "source:\n" +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       '    (obj :concat (tag String:raw (template "\\\\n" ""))\n' +
+-       '      :icu (tag String:raw (template "\\\\n")))))\n' +
+-       "\n" +
+-       "generated JavaScript:\n" +
+-       "console.log(JSON.stringify({\n" +
+-       "  concat: (String.raw)`\\n`,\n" +
+-       "  icu: (String.raw)`\\n`\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       '{"concat":"\\\\n","icu":"\\\\n"}\n' +
+-       "\n" +
+-       "stderr:\n",
+-   ]
++   []
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/template-string-boundary.test.js:213:3
+
+ FAILURES 
+
+public JS compiler preserves decoded template string values => ./test/forms/template-string-boundary.test.js:70:6
+
+FAILED | 0 passed (6 steps) | 1 failed (124ms)
+

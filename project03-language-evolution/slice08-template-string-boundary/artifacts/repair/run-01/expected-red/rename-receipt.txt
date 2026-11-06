@@ -1,0 +1,8 @@
+Original test-only commit: 920012afa4fd182e4619393e20a7af0a53e0382f
+Original path: test/forms/template-string-boundary_test.js
+New path: test/forms/template-string-boundary.test.js
+Rename commit: dc7e3ad0353d1e9ed46cbce06dda8f0383a77b46
+Old Git blob SHA-1: 9d38ab06da5a249232e3805dc915e5af15cefd69
+Old blob and new file SHA-256: 19174f1b6cf847cbd0de1a45d85a12918c819e2735ef3c102c100e4083f5489a
+Byte comparison: cmp exited 0
+Ignore rule: .gitignore:8:*_test.js
