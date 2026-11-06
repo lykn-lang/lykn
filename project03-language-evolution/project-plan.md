@@ -124,12 +124,26 @@ ownership and local-only commits persist. Stop after Slice06, no whole-project
 advance or source repair. Source/module acquisition under this approval is
 separate from earlier documentation-only network reads.
 
+Slice06 is now independently closed as a bounded stop at CC candidate
+6ccfd9e: [verification](slice06-native-esbuild-controls/cdc-verification.md#final-independent-review--2026-11-05)
+and [retrospective](slice06-native-esbuild-controls/cdc-retrospective.md).
+The native tool rebuilt offline to the same binary hash; actual C4 code/metafile
+attribution was reproduced. First C5 runtime failed before evaluation on invalid
+JS generated from a documented equality precondition: 1/5 bundles completed,
+1/11 runtime attempts failed, four bundles/ten runtimes unrun. NE-01/02/03/07
+are done; NE-04/05/06 deferred. [NE-C01](BACKLOG.md#native-pilot-compiler-follow-up-ne-c01)
+owns separate compiler follow-up/re-entry; no implementation is opened here.
+Tool inputs/binary remain reusable under the documented ignored task target.
+This stop is not optimizer-wide, functional, effect or public-API acceptance.
+Original F-1–F-12, F-6/F-10 method decisions, Project03 composition and all
+Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
+
 ## Existing units
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
-- [slice06-native-esbuild-controls](slice06-native-esbuild-controls/slice-plan.md): approved pinned native tool source build and five controlled consumers; active.
+- [slice06-native-esbuild-controls](slice06-native-esbuild-controls/slice-plan.md): independently verified native tool/C4 attribution and required first-C5 parse stop; four done/three deferred rows, remaining controls unrun; NE-C01 owns re-entry.
 - [slice05-deno-evidence-preflight](slice05-deno-evidence-preflight/slice-plan.md): operator-approved five-control Deno attempt; independently verified preflight stop, 0/5 run and 5/5 unrun; provisioning/attribution decisions remain with Operator.
 - [slice04-library-baseline-refresh](slice04-library-baseline-refresh/slice-plan.md): current compiler/Deno/policy and library/package boundary refresh; independently closed as a static baseline/protocol prerequisite; audit method decisions remain before Slice01 resumes.
 
@@ -146,6 +160,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-05 v1.6: Independently closed Slice06 as a bounded stop: reproducible
+  native esbuild and C4 attribution delivered; first C5 failed before evaluation,
+  four bundles/ten runtimes unrun. Routed NE-C01 to the existing backlog;
+  deferred full control criteria and completed retrospective, no source fix.
 
 - 2026-11-05 v1.5: Operator approved pinned native source-built esbuild/Go inputs
   and direct CLI/metafile for the bounded five-control attempt. Opened coherent

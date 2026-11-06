@@ -1,0 +1,52 @@
+CDC independent replay, 2026-11-05
+
+Private root: /private/tmp/lykn-cdc-native-review.gqz91V
+Immutable specimen archive: planning commit 30e97932dc2cabeaa243338f405a5b8fe6399c10
+path project03-language-evolution/slice06-native-esbuild-controls/artifacts/source
+exported with git archive, stripped four leading path components into experiment/.
+No implementation edits. Candidate 6ccfd9e has no source delta from this pin.
+
+Go source was independently exported from immutable esbuild object ea453bf687c8e5cf3c5f11aae372c5ca33be0c98.
+The existing exact acquired module cache was copied into private cache/mod;
+private cache/build, gopath and tmp were freshly created. From private source/:
+
+env GOENV=off GOWORK=off GOTOOLCHAIN=local GOFLAGS=-mod=readonly GOPROXY=off GOSUMDB=sum.golang.org GOPRIVATE= GONOPROXY= GONOSUMDB= GOPATH=/private/tmp/lykn-cdc-native-review.gqz91V/gopath GOMODCACHE=/private/tmp/lykn-cdc-native-review.gqz91V/cache/mod GOCACHE=/private/tmp/lykn-cdc-native-review.gqz91V/cache/build GOTMPDIR=/private/tmp/lykn-cdc-native-review.gqz91V/tmp CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 /opt/go/1.24.3/bin/go mod verify
+Observed exit 0: all modules verified
+
+env GOENV=off GOWORK=off GOTOOLCHAIN=local GOFLAGS=-mod=readonly GOPROXY=off GOSUMDB=sum.golang.org GOPRIVATE= GONOPROXY= GONOSUMDB= GOPATH=/private/tmp/lykn-cdc-native-review.gqz91V/gopath GOMODCACHE=/private/tmp/lykn-cdc-native-review.gqz91V/cache/mod GOCACHE=/private/tmp/lykn-cdc-native-review.gqz91V/cache/build GOTMPDIR=/private/tmp/lykn-cdc-native-review.gqz91V/tmp CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 /opt/go/1.24.3/bin/go build -trimpath -buildvcs=false -mod=readonly -o /private/tmp/lykn-cdc-native-review.gqz91V/bin/esbuild ./cmd/esbuild
+Observed exit 0; SHA256 b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f.
+Version 0.25.5; go version -m confirms Go1.24.3/exact x/sys sum/CGO0/Darwin arm64.
+
+Fresh default native compilation from experiment/workspace cwd used pinned task
+target/lykn/compiler-build/release/lykn, absolute input/output paths, no bypass:
+compile <workspace>/lib/<pkg>/<file>.lykn -o <workspace>/target/lykn/build/<pkg>/<file>.js
+compile <workspace>/controls/<file>.lykn -o <workspace>/target/lykn/build/controls/<file>.js
+compile <private-root>/experiment/driver.lykn -o <workspace>/target/lykn/build/driver.js
+Then same binary: dist. All16 compile and dist exits 0; compile-summary.tsv.
+All15 staged JS files compared byte-identical via cmp to direct compile outputs.
+fmt --check <private-root>/experiment/driver.lykn controls/c5.lykn: exit0.
+lint <driver> lib/json/*.lykn lib/yaml/*.lykn lib/effects/*.lykn controls/*.lykn: exit0/no16findings.
+check <driver>: exit0,39top-level expressions. No JS compiler or npm build route.
+
+Outer Deno invocations below were executed from experiment/workspace with shell
+variables set to these exact values (fresh output created before gate):
+workspace=/private/tmp/lykn-cdc-native-review.gqz91V/experiment/workspace
+output=/private/tmp/lykn-cdc-native-review.gqz91V/experiment/out
+esbuild=/private/tmp/lykn-cdc-native-review.gqz91V/bin/esbuild
+deno=/opt/homebrew/bin/deno
+
+env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR="$output/outer-cache" DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 "$deno" run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="$workspace,$output" --allow-write="$output" --allow-run="$esbuild,$deno" "$workspace/target/lykn/build/driver.js" "$workspace" "$output" "$esbuild" "$deno" gate
+Observed outer exit0, empty stderr. Actual inner native argv/result: C4-bundle.json.
+Complete bundle and rawmeta byte-identical to CC run-10 witnesses; read complete
+bundle/meta/source before controls. C4hash6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a.
+
+env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR="$output/outer-cache" DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 "$deno" run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="$workspace,$output" --allow-write="$output" --allow-run="$esbuild,$deno" "$workspace/target/lykn/build/driver.js" "$workspace" "$output" "$esbuild" "$deno" controls 6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a
+Observed outer exit1, saved in controls-exit.txt; controls-stderr.txt is actual
+requireOk failure after saving the child receipt. Child C5-source-before.json
+has code1, empty stdout, exact parse failure. All later calls/bundles unrun.
+Receipt-printing shell exited0; this is not the Deno/experiment status.
+
+After CC ownership return, repeated exact task Cargo command offline/locked:
+env CARGO_TARGET_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/compiler-build cargo build --offline --locked --release -p lykn-cli
+Observed exit0, finished release in0.12s; same Lykn66e9f8f...51dd/lock hashes.
+Tracked task source and upstream esbuild checkouts clean at their original pins.

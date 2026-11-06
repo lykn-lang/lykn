@@ -1,0 +1,7 @@
+error: Uncaught (in promise) Error: C5-source-before Deno run failed
+  if (!ok) throw new Error(message);
+                 ^
+    at requireOk (file:///private/tmp/lykn-cdc-native-review.gqz91V/experiment/workspace/target/lykn/build/driver.js:12:18)
+    at runtime (file:///private/tmp/lykn-cdc-native-review.gqz91V/experiment/workspace/target/lykn/build/driver.js:380:3)
+    at controlsPhase (file:///private/tmp/lykn-cdc-native-review.gqz91V/experiment/workspace/target/lykn/build/driver.js:522:3)
+    at async file:///private/tmp/lykn-cdc-native-review.gqz91V/experiment/workspace/target/lykn/build/driver.js:563:1

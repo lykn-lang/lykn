@@ -180,6 +180,40 @@ evidence contract precede a new Slice01 assignment. The eventual complete audit
 report defines the implementation candidate arc's scope.
 **Disposition.** *(operator decides)* — informed by the audit.
 
+#### Native pilot compiler follow-up NE-C01
+
+**Open, 2026-11-05.** [Slice06 independent review](slice06-native-esbuild-controls/cdc-verification.md#final-independent-review--2026-11-05)
+delivered a pinned native esbuild 0.25.5 without Node/npm and reproduced the
+C4 code/metafile attribution gate. It stopped at the first C5 source runtime:
+1/5 bundles completed, 1/11 runtime attempts failed before evaluation, four
+bundles and ten runtime invocations unrun. All original F rows remain open.
+
+**NE-C01 — documented equality in :pre emits invalid JavaScript.** At pinned
+74a90d5, the tiny research YAML stub's `(= text "answer: 42")` precondition
+is accepted by default native compile but emits `if (!text = "answer: 42")`.
+Deno 2.9.6 rejects that module before evaluation. Pinned guide Equality/DD-22
+defines `=` as strict equality; Functions documents :pre. Exact
+[source](slice06-native-esbuild-controls/artifacts/evidence/runtime/run-10/yaml-value.lykn),
+[generated JS](slice06-native-esbuild-controls/artifacts/evidence/runtime/run-10/yaml-value.js)
+and [independent failed runtime](slice06-native-esbuild-controls/artifacts/evidence/cdc-review/C5-source-before.json)
+are preserved. This specific contract mismatch is reproduced; cause and wider
+impact are not established. No compiler fix or source escape was attempted.
+
+**Owner/re-entry.** CDC prepares a separate bounded compiler diagnosis/repair
+assignment after Operator authorization; future CC implements it and an
+independent reviewer verifies the actual fix and relevant regressions. Then
+authorize a fresh complete five-control/eleven-invocation attempt with pinned
+identities revalidated and predictions retained/amended explicitly before runs.
+Do not drop :pre, substitute kernel equality, strip assertions or reorder the
+remaining controls to manufacture success. NE-04/05/06 stay deferred until their
+full original oracles pass. Release priority remains the Operator's decision.
+
+Related observer diagnostic/emission witnesses (catch sentinel accepted by
+compile/check, strict-reserved binding, await in a synchronous IIFE) remain in
+Slice06's source history, raw launch failures and retrospective. Any future
+investigation must classify invalid authoring separately from compiler contract
+violations; these observations do not authorize a broad compiler rewrite.
+
 ### A5 · Packaging & distribution — **`02-packaging-strategy`** (research open)
 
 **Capability (candidate).** Release engineering: Homebrew (custom tap) and

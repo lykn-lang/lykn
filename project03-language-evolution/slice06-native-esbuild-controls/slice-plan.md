@@ -1,7 +1,11 @@
 # Slice06 — Native esbuild and five controls
 
-Status: **Open; C4 retained-code gate passed, then the first C5 source runtime failed during module parsing; 1/5 bundles and 1/11 runtime invocations, with ten runtimes and four bundles unrun. No API/runtime acceptance; independent CDC closeout pending.** Parent: [Project03](../project-plan.md).
-Collapsed standalone slice; current assignment `cc-prompt-iteration01.md`; [ledger](ledger.md).
+Status: **Independently closed as a bounded stop: four rows done, three deferred.** Parent: [Project03](../project-plan.md).
+Collapsed standalone slice; final assignment `cc-prompt-iteration01.md`; [ledger](ledger.md).
+Native tool and C4 attribution were reproduced; first C5 runtime failed before
+evaluation (1/5 bundles, 1/11 runtime attempts, 4 bundles/10 runtimes unrun). See
+[verification](cdc-verification.md#final-independent-review--2026-11-05) and
+[retrospective](cdc-retrospective.md). No five-control success is claimed.
 
 ## Authority, result and endpoint
 
@@ -288,9 +292,15 @@ CC inference. Local helper names/report formatting are discretionary.
 | Assignment | Date | Predecessor | Disposition |
 | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-05 | none | executed prerequisites/source freezes; retained parser/input corrections; returned before runtime for observer/C5 source defects |
-| cc-prompt-iteration01.md | 2026-11-05 | cc-prompt.md | active first substantive refinement: host APIs, finite metadata/receipt checks, root consumer coverage |
+| cc-prompt-iteration01.md | 2026-11-05 | cc-prompt.md | completed bounded observer repairs and C4 gate; stopped at first C5 parse failure; independent close with three deferred rows |
 
 ## Version history
+
+- 2026-11-05 v1.2: Independently rebuilt the pinned native tool and replayed
+  C4 attribution plus the first C5 parse failure. Closed NE-01/02/03/07;
+  deferred NE-04/05/06 without changing their criteria. Routed NE-C01 to the
+  existing Project03 backlog, preserved all failures/unruns, and completed
+  retrospective. This authorization ends here; no compiler/source workaround.
 
 - 2026-11-05 v1.1: Pre-runtime source review returned observer host-API errors,
   incomplete metadata/hash observation, duplicate future C5 receipts and root

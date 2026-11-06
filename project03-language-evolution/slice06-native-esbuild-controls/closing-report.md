@@ -1,5 +1,11 @@
 # Slice06 CC closeout — bounded stop at C5 source parse
 
+CDC final disposition, 2026-11-05: the independently reproduced native tool and
+bounded stop are accepted; NE-01/02/03/07 done, NE-04/05/06 deferred. See
+[current review](cdc-verification.md#final-independent-review--2026-11-05)
+and [retrospective](cdc-retrospective.md). The CC-authored pending-review text
+below remains the historical handoff; no runtime/API success is inferred.
+
 Date: 2026-11-05. Owner: CC. Evidence remains **attested**; ledger statuses remain
 **open** pending CDC's formal disposition. CDC independently replayed the frozen
 source/build and reproduced the C4 result and first C5 parse failure. This is a
