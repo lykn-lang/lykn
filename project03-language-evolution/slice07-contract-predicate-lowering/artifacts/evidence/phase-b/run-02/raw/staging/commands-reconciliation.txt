@@ -1,0 +1,23 @@
+Correction to raw/staging/commands.txt:
+The line `python3 export-map-check.py target/lykn/dist/{json,yaml,effects}/deno.json`
+was only a short label, not an executable file or the literal process argv.
+The actual process was Python 3 reading a here-document, with stdout and stderr
+redirected to export-map-check.log and export-map-check.stderr:
+
+python3 - <<'PY' > "$raw/export-map-check.log" 2> "$raw/export-map-check.stderr"
+import json
+from pathlib import Path
+base = Path('target/lykn/dist')
+expected = {
+ 'json': {'.':'./mod.js','./document':'./document.js','./file':'./file.js','./value':'./value.js'},
+ 'yaml': {'.':'./mod.js','./value':'./value.js'},
+ 'effects': {'.':'./mod.js','./dead':'./dead.js','./used':'./used.js'},
+}
+for package, want in expected.items():
+    path = base/package/'deno.json'
+    actual = json.loads(path.read_text())['exports']
+    print(f'export-map package={package} keys={len(actual)} matches-prior-exact-map={actual == want}')
+    for key, value in actual.items(): print(f'  {key} -> {value}')
+    if actual != want: raise SystemExit(1)
+print(f'total-library-public-keys={sum(map(len, expected.values()))}')
+PY

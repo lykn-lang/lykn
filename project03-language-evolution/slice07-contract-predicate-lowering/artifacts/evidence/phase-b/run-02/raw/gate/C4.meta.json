@@ -1,0 +1,73 @@
+{
+  "inputs": {
+    "target/lykn/dist/effects/effect.js": {
+      "bytes": 28,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/effects/used.js": {
+      "bytes": 382,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/effects/dead.js": {
+      "bytes": 406,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/effects/mod.js": {
+      "bytes": 92,
+      "imports": [
+        {
+          "path": "target/lykn/dist/effects/effect.js",
+          "kind": "import-statement",
+          "original": "./effect.js"
+        },
+        {
+          "path": "target/lykn/dist/effects/used.js",
+          "kind": "import-statement",
+          "original": "./used.js"
+        },
+        {
+          "path": "target/lykn/dist/effects/dead.js",
+          "kind": "import-statement",
+          "original": "./dead.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "target/lykn/dist/controls/c4.js": {
+      "bytes": 71,
+      "imports": [
+        {
+          "path": "target/lykn/dist/effects/mod.js",
+          "kind": "import-statement",
+          "original": "@probe/effects"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../out/C4.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "target/lykn/dist/controls/c4.js",
+      "inputs": {
+        "target/lykn/dist/effects/effect.js": {
+          "bytesInOutput": 28
+        },
+        "target/lykn/dist/effects/used.js": {
+          "bytesInOutput": 365
+        },
+        "target/lykn/dist/effects/mod.js": {
+          "bytesInOutput": 0
+        },
+        "target/lykn/dist/controls/c4.js": {
+          "bytesInOutput": 34
+        }
+      },
+      "bytes": 538
+    }
+  }
+}

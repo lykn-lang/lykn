@@ -1,0 +1,16 @@
+cmp target/lykn/build/lib/json/document.js target/lykn/dist/lib/json/document.js
+cmp target/lykn/build/lib/json/file.js target/lykn/dist/lib/json/file.js
+cmp target/lykn/build/lib/json/mod.js target/lykn/dist/lib/json/mod.js
+cmp target/lykn/build/lib/json/value.js target/lykn/dist/lib/json/value.js
+cmp target/lykn/build/lib/yaml/mod.js target/lykn/dist/lib/yaml/mod.js
+cmp target/lykn/build/lib/yaml/value.js target/lykn/dist/lib/yaml/value.js
+cmp target/lykn/build/lib/effects/dead.js target/lykn/dist/lib/effects/dead.js
+cmp target/lykn/build/lib/effects/effect.js target/lykn/dist/lib/effects/effect.js
+cmp target/lykn/build/lib/effects/mod.js target/lykn/dist/lib/effects/mod.js
+cmp target/lykn/build/lib/effects/used.js target/lykn/dist/lib/effects/used.js
+cmp target/lykn/build/controls/c1.js target/lykn/dist/controls/c1.js
+cmp target/lykn/build/controls/c2.js target/lykn/dist/controls/c2.js
+cmp target/lykn/build/controls/c3.js target/lykn/dist/controls/c3.js
+cmp target/lykn/build/controls/c4.js target/lykn/dist/controls/c4.js
+cmp target/lykn/build/controls/c5.js target/lykn/dist/controls/c5.js
+python3 export-map-check.py target/lykn/dist/{json,yaml,effects}/deno.json

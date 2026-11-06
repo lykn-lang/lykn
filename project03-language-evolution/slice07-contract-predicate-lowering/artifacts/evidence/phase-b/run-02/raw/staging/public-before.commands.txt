@@ -1,0 +1,1 @@
+shasum -a 256 <13 frozen public package files>

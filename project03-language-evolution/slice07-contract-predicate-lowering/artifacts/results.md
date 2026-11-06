@@ -271,3 +271,56 @@ parent directories will be created before commands; compile all 16 fresh and
 record each exact command and exit. Source/compiler/Deno/esbuild hashes remain
 the same pins. All five stimuli remain unrun; the initial setup failure is
 preserved as attempt 01, not silently overwritten.
+
+### Attempt 02 — fresh staging and C4-only gate
+
+The same immutable archive was freshly exported into
+`target/slice07/pilot-corrected/run-02/experiment/` (22 files, including five
+stimuli, ten library supports, the driver/configuration, and the unchanged
+seven-byte input). Source `86d116db5c096d0fff7ec555d388343946114e4d` and compiler
+SHA-256 `eb24ae3ba372ecfaef255ac883e0f41a0f1ef85494d41925583c4eb2148cbddb`
+were reconfirmed. Deno2.9.6 hash
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74` and native
+esbuild0.25.5 hash
+`b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f` also match
+the frozen pins.
+
+All 16 strict absolute-path source compiles exited0, followed by `lykn dist`,
+`fmt --check`, `lint` (no findings in16 files), and `check` (39 top-level
+expressions), each exit0. Exact argv and each invocation's stdout/stderr are
+retained in `artifacts/evidence/phase-b/run-02/raw/compile/`. A first staging
+comparison command mistakenly included `lib/` in build paths and attempted
+`build/lib/...` against actual `build/<pkg>/...`; all ten such `cmp` calls
+exited2 (missing path), while the five control comparisons were identical.
+That invocation mistake is preserved in `raw/staging/byte-compare.log` and
+`status.tsv`. With the explicit recipe paths (`build/<pkg>/...` and
+`dist/<pkg>/...`), all 15 staged JS outputs are byte-identical to their direct
+compiles; the corrected command/output/status are retained separately. Actual
+compiled export maps match the prior exact map: JSON4, YAML2, effects3, nine
+public keys total. Thirteen pre-gate public-file hashes are retained; the
+after snapshot remains unrun pending continuation.
+
+The only bundle invocation so far was the authorized C4 gate. The exact outer
+Deno command exited0, with empty outer stdout/stderr; child esbuild code was0.
+Complete receipts, actual tiny Lykn/generated-JS source, 538-byte C4 bundle,
+raw metafile, gate observations, public-before snapshot and command are retained
+under `artifacts/evidence/phase-b/run-02/raw/gate/` and `source/`. Bundle
+SHA-256 is the expected unchanged
+`6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a`. Inspection
+shows effect and used implementation code contribute (28 and365 bytes), the
+effect initializer precedes `entry:42`, the barrel contributes0 bytes, and
+`dead.js` is resolved in the input graph but contributes no output. No
+unexpected library identities appear. C4 gate result is therefore identified
+and expected. The gate has run zero runtime calls; controls remain0/5, the
+eleven runtime denominator remains entirely unrun, and C1/C2/C3/C5 bundles
+remain unrun. Phase B pauses here awaiting CDC's independent review/confirmation
+of the complete C4 receipt before the controls invocation.
+
+On 2026-11-05, CDC independently inspected the complete C4 bundle, raw metafile,
+child receipt, staged source witnesses, corrected 15-file comparisons and
+nine-map receipt, and independently recomputed the expected bundle hash. CDC
+confirmed this exact C4 gate (`6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a`)
+and authorized continuation to the existing fixed controls call. This is
+inspection/confirmation, not an independent bundle execution. The next allowed
+action is the unchanged `controls <reviewedhash>` invocation; no other bundle
+or runtime variant is introduced.

@@ -1,0 +1,19 @@
+planning freeze commit: 21f6d83ce4d2a8e767a0342b80a36bcecb60569a
+source commit: 86d116db5c096d0fff7ec555d388343946114e4d
+source branch/status:
+## codex/contract-predicate-lowering
+source compiler hash: eb24ae3ba372ecfaef255ac883e0f41a0f1ef85494d41925583c4eb2148cbddb  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+source compiler version:
+lykn 0.6.0-dev
+Deno version/hash:
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+esbuild version/hash:
+0.25.5
+b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f  /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild
+archive: planning commit 30e97932dc2cabeaa243338f405a5b8fe6399c10 path project03-language-evolution/slice06-native-esbuild-controls/artifacts/source
+archive export command: git archive 30e97932dc2cabeaa243338f405a5b8fe6399c10 project03-language-evolution/slice06-native-esbuild-controls/artifacts/source | tar -x -C <run-02>/experiment --strip-components=4
+archive files: 22; data bytes:        7
+run root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07/pilot-corrected/run-02

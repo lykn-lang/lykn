@@ -1,0 +1,18 @@
+87:66: warning: unused binding 'result'
+  suggestion: prefix with underscore: _result
+399:9: warning: unused binding 'observation'
+  suggestion: prefix with underscore: _observation
+802:21: warning: unused binding 'after'
+  suggestion: prefix with underscore: _after
+802:9: warning: unused binding 'before'
+  suggestion: prefix with underscore: _before
+632:3: warning: unused binding 'runtime'
+  suggestion: prefix with underscore: _runtime
+11:1: warning: unused binding 'decoder'
+  suggestion: prefix with underscore: _decoder
+800:3: warning: unused binding 'reconcile-snapshots'
+  suggestion: prefix with underscore: _reconcile-snapshots
+937:3: warning: unused binding 'main'
+  suggestion: prefix with underscore: _main
+564:3: warning: unused binding 'bundle'
+  suggestion: prefix with underscore: _bundle

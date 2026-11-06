@@ -1,0 +1,10 @@
+cmp: target/lykn/build/lib/json/document.js: No such file or directory
+cmp: target/lykn/build/lib/json/file.js: No such file or directory
+cmp: target/lykn/build/lib/json/mod.js: No such file or directory
+cmp: target/lykn/build/lib/json/value.js: No such file or directory
+cmp: target/lykn/build/lib/yaml/mod.js: No such file or directory
+cmp: target/lykn/build/lib/yaml/value.js: No such file or directory
+cmp: target/lykn/build/lib/effects/dead.js: No such file or directory
+cmp: target/lykn/build/lib/effects/effect.js: No such file or directory
+cmp: target/lykn/build/lib/effects/mod.js: No such file or directory
+cmp: target/lykn/build/lib/effects/used.js: No such file or directory

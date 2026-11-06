@@ -1,0 +1,15 @@
+cmp target/lykn/build/json/document.js target/lykn/dist/json/document.js
+cmp target/lykn/build/json/file.js target/lykn/dist/json/file.js
+cmp target/lykn/build/json/mod.js target/lykn/dist/json/mod.js
+cmp target/lykn/build/json/value.js target/lykn/dist/json/value.js
+cmp target/lykn/build/yaml/mod.js target/lykn/dist/yaml/mod.js
+cmp target/lykn/build/yaml/value.js target/lykn/dist/yaml/value.js
+cmp target/lykn/build/effects/dead.js target/lykn/dist/effects/dead.js
+cmp target/lykn/build/effects/effect.js target/lykn/dist/effects/effect.js
+cmp target/lykn/build/effects/mod.js target/lykn/dist/effects/mod.js
+cmp target/lykn/build/effects/used.js target/lykn/dist/effects/used.js
+cmp target/lykn/build/controls/c1.js target/lykn/dist/controls/c1.js
+cmp target/lykn/build/controls/c2.js target/lykn/dist/controls/c2.js
+cmp target/lykn/build/controls/c3.js target/lykn/dist/controls/c3.js
+cmp target/lykn/build/controls/c4.js target/lykn/dist/controls/c4.js
+cmp target/lykn/build/controls/c5.js target/lykn/dist/controls/c5.js

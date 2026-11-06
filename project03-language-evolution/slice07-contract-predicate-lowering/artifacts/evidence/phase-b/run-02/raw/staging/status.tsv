@@ -1,0 +1,15 @@
+lib/json/document.js	DIFFERENT	exit=2
+lib/json/file.js	DIFFERENT	exit=2
+lib/json/mod.js	DIFFERENT	exit=2
+lib/json/value.js	DIFFERENT	exit=2
+lib/yaml/mod.js	DIFFERENT	exit=2
+lib/yaml/value.js	DIFFERENT	exit=2
+lib/effects/dead.js	DIFFERENT	exit=2
+lib/effects/effect.js	DIFFERENT	exit=2
+lib/effects/mod.js	DIFFERENT	exit=2
+lib/effects/used.js	DIFFERENT	exit=2
+controls/c1.js	identical
+controls/c2.js	identical
+controls/c3.js	identical
+controls/c4.js	identical
+controls/c5.js	identical
