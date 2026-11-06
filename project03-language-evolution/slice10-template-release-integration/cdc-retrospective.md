@@ -33,3 +33,9 @@ corpus or control programs were needed. Preparation/handoff writing cost was
 visible but not measured; no token/time ratio or comparative model claim is
 supported. This retrospective does not accept wider Project03/07 work or open
 another unit.
+
+Own close check also exposed expected trailing blank lines in two verbatim raw
+logs. CDC retained those bytes and explicitly recorded the whole-diff whitespace
+warning instead of calling it green; authored Markdown was checked separately.
+Future handoffs should separate evidence-byte preservation from prose whitespace
+checks up front. No additional runtime evidence was needed for this distinction.

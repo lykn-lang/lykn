@@ -77,3 +77,10 @@ at its original condition, not newly replayed or generalized. NE-C02/04/05/06,
 NE-D01, Slice01 F1–F12, Project07 final synthesis/licence/bootstrap/library/ADT/
 book/human gates remain owned/open. No push, publication, main/other-release
 propagation, new compiler repair, optimizer audit or next unit follows.
+
+Evidence-format note at close commit798fe8c: whole planning `git diff --check`
+reports only “new blank line at EOF” in verbatim own make-check.log and
+native-focused.log. Those are actual command-output bytes and are preserved;
+this is not reported as a passing whole-evidence whitespace check. The seven
+changed Markdown records separately pass the same whitespace check. Canonical
+source/gate outcomes above are unaffected; no log was normalized or erased.
