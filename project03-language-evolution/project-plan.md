@@ -140,6 +140,15 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 Operator authorized [Slice12](slice12-offline-walker-capability/slice-plan.md)
+to implement Lykn tooling and prove the bounded offline parser/walker capability
+under the same Sol6.1 High CDC / fresh Luna6 High CC Autonomous roles. Exact
+cached Acorn execution is now authorized, without new acquisition or general
+npm-source reuse. Stage the minimal parser prerequisite first and stop on a
+real gap; independently review it before walker investment/fixed controls.
+Endpoint remains bounded tooling/capability or honest gap, not full corpus/F6
+matrix/audit execution, source repair, library work or original F-row closure.
+
 2026-11-06 [Slice11](slice11-audit-evidence-contract/cdc-verification.md) is
 independently closed after one preserved method-precision correction. The
 accepted contract selects existing unmodified npm-distributed Acorn ESM for a
@@ -251,6 +260,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.17: Opened explicitly approved staged Slice12 tooling/capability
+  increment, with exact controls/pins, preserved pre-run freezes and first-gap
+  stop. Full audit and every original/inherited outcome remain separately gated.
 
 - 2026-11-06 v1.16: Independently accepted Slice11's source-grounded walker/
   native-esbuild evidence contract and preserved amendment, five WC rows done,
