@@ -323,3 +323,68 @@ argv/environment, complete raw stdout/stderr, and exit record are retained in
 
 This is CC implementation and gate evidence only. TE-02/03 remain open pending
 CDC independent acceptance. No frozen pilot was run; TE-04/05 remain held.
+
+## Iteration 03 — accepted-repair condition and predictions, frozen before runs
+
+CDC independently accepted TE-01/02/03 and authorized only the original frozen
+five-control pilot under the accepted 0.6 condition. Before any new compile,
+bundle, or runtime invocation, I rechecked the clean source branch
+`codex/template-string-boundary` at `a061c2149792178ba037d17a31220545e34b4ac1`.
+The release compiler `bin/lykn` and `target/release/lykn` both hash to
+`544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a` and report
+`lykn 0.6.0`; `Cargo.lock` remains
+`672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce`. The
+read-only native esbuild0.25.5 binary is
+`/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild`,
+SHA-256 `b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f`;
+`/opt/homebrew/bin/deno` is 2.9.6 with SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`.
+
+The unchanged source population was exported from planning commit
+`30e97932dc2cabeaa243338f405a5b8fe6399c10`, path
+`project03-language-evolution/slice06-native-esbuild-controls/artifacts/source`,
+with four leading path components stripped into the fresh task-local
+`target/slice08/pilot/run-01/experiment/`. The exact tar archive SHA-256 is
+`55d6cd577fc6f003955b2f6d836ad60c0b84c6e715dc6352039bb1276ca12a32`; 22 files
+were exported (five stimuli, ten library supports, one driver, five configs,
+and the seven-byte data file). The data bytes remain
+`5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22`.
+No archived specimen, driver, support, config, or data file was edited.
+
+The five predictions are unchanged from the accepted Slice06 protocol:
+
+| Control | Frozen runtime prediction | Frozen graph/contribution/API prediction |
+| --- | --- | --- |
+| C1 | `BASE\n`, exit 0, empty stderr | No library identities in inputs, import graph, or output contributors |
+| C2 | `{"x":1}\n`, exit 0, empty stderr | JSON value contributes; no YAML graph/contribution |
+| C3 | `{"x":1}\n`, exit 0, empty stderr | JSON value contributes; no file/document/YAML graph/contribution |
+| C4 | `init:effect\nentry:42\n`, exit 0, empty stderr | used/effect retained; unused-pure code absent and zero-contribution |
+| C5 | Effect line then exact frozen JSON, exit 0, empty stderr | Nine declared public paths work; relevant implementations contribute; package bytes unchanged |
+
+C5's frozen JSON values are `jsonRoot`/`jsonValue={"x":1}`;
+`fileRoot`/`fileValue="{\"x\":1}"`;
+`documentRoot`/`documentValue="document:{\"x\":1}"`;
+`yamlRoot`/`yamlValue={"answer":42}`; and `usedRoot`/`usedValue=42`,
+`deadRoot`/`deadValue=82`. The exact observer also checks all nine exports,
+positive C5 implementation contributions, the seven-byte data input, and the
+13-file before/after snapshot reconciliation. The archived YAML module remains
+a one-input research stub; no broader fidelity claim is predicted.
+
+The exact fixed runtime sequence remains C5-source-before, C4-source,
+C4-bundle-run, C1-source, C1-bundle-run, C2-source, C2-bundle-run, C3-source,
+C3-bundle-run, C5-bundle-run, C5-source-after. This is eleven calls across the
+five archived controls, with five total bundles; C4 is a gate-only first
+invocation and must be independently inspected/confirmed before any runtime.
+Permissions remain exactly those in the accepted Slice06 command receipt:
+outer Deno `--no-config` with scoped workspace/output reads, output write, and
+only the pinned esbuild/Deno run grants; each child selects its staged
+`project.json`, and only C5 receives the exact data-file read permission.
+
+At this freeze point, the fresh experiment archive is exported but no compile,
+dist, staging comparison, bundle, or runtime has run. New-run counts are 0/16
+compiles, 0/15 staged comparisons, zero of nine export checks, 0/5 bundles,
+and 0/11 runtime calls. The old Slice06 and Slice07 partial/failed conditions
+remain distinct historical records; they are not counted as attempts in this
+new accepted-source condition. Source, lock, driver, stimuli, permissions,
+predictions, and protocols remain fixed. The next allowed work is strict
+compilation and staging validation, followed by the C4-only gate.

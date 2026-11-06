@@ -87,3 +87,16 @@ remain open until that review. Do not start the frozen pilot: TE-04/05 remain
 held until the repair is independently accepted and the next authorized stage
 is resumed. No source/specimen, dependency, reader, cache-policy, or frozen
 observer change was made.
+
+## Iteration 03 — accepted repair and pilot condition freeze — 2026-11-06
+
+CDC subsequently accepted TE-01/02/03 and authorized the original frozen pilot
+under the repaired 0.6 compiler. The prior “do not start” disposition above is
+historical and is superseded for this bounded iteration. The exact source,
+compiler, lock, esbuild, Deno, archive, unchanged predictions, call order, and
+permissions are recorded in `artifacts/results.md` before new experiment
+commands. The fresh archive is exported under the task-local run-01 root. At the
+condition commit there were no new compiles, staging comparisons, bundles, or
+runtime calls. Current-run counts are 0/16 compile, 0/15 byte comparisons,
+0/9 exports, 0/5 bundles, and 0/11 runtime calls. TE-04/05 remain open. CDC must
+inspect and confirm the C4-only code/metafile gate before any runtime execution.

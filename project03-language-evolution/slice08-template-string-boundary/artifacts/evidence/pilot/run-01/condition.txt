@@ -1,0 +1,34 @@
+Iteration03 pre-execution condition freeze — 2026-11-06
+
+Source task: codex/template-string-boundary
+Source HEAD: a061c2149792178ba037d17a31220545e34b4ac1 (clean)
+Compiler: target/release/lykn, lykn 0.6.0
+Compiler SHA-256: 544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a
+Cargo.lock SHA-256: 672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce
+Deno: /opt/homebrew/bin/deno, 2.9.6
+Deno SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+esbuild: /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild, 0.25.5
+esbuild SHA-256: b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f
+
+Immutable specimen archive: planning commit 30e97932dc2cabeaa243338f405a5b8fe6399c10
+Archive path: project03-language-evolution/slice06-native-esbuild-controls/artifacts/source
+Exact git-archive tar SHA-256: 55d6cd577fc6f003955b2f6d836ad60c0b84c6e715dc6352039bb1276ca12a32
+Export root: target/slice08/pilot/run-01/experiment/
+Export count: 22 files (5 stimuli, 10 library supports, 1 driver, 5 configs, 1 data file)
+Data SHA-256: 5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22 (7 bytes)
+
+Predictions and exact fixed runtime order are in the same commit's
+artifacts/results.md, section “Iteration 03 — accepted-repair condition and
+predictions, frozen before runs”. They are unchanged from the accepted Slice06
+protocol. No source, driver, stimulus, support, config, or data file was edited.
+
+At freeze: no compile, dist, stage comparison, bundle, or runtime has run for
+this condition. Denominators: 0/16 compiles, 0/15 staged byte comparisons, 0/9
+exports, 0/5 bundles, 0/11 runtime calls. Prior Slice06 and Slice07 failures
+remain separate historical conditions and are not included in these counts.
+
+First execution phase: strict compile all 16 with the pinned native compiler;
+run dist, fmt --check, lint, and check; compare all 15 staged JS files against
+build/<pkg> direct outputs; verify nine exports and 13 before hashes. Then run
+only the C4 gate and stop for CDC review. No runtime may start before CDC confirms
+the actual complete C4 code/metafile receipt.

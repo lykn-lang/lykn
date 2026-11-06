@@ -6,10 +6,12 @@ No source edits or additional integration authorized.
 Initial diagnosis prompt is preserved.
 Collapsed standalone increment under Project03; no parallel Project07 home.
 
-Iteration01/02 implementation is now committed at source
-`a061c2149792178ba037d17a31220545e34b4ac1`; the complete unfiltered full gate
-and focused repair regressions are reported in `artifacts/results.md`. CDC
-independent review/acceptance is pending. The frozen pilot remains held.
+Iteration01/02 implementation is committed at source
+`a061c2149792178ba037d17a31220545e34b4ac1`, independently accepted, and its
+required gate evidence is complete. Iteration03 executes only the original
+frozen five-control pilot under that accepted condition. The new condition and
+unchanged predictions were committed before any new compilation, bundle, or
+runtime. Current counts and gates are in `artifacts/results.md`.
 
 ## Authority, outcome and gates
 
@@ -196,6 +198,17 @@ cdc-verification.md. Iteration03 now resumes only the original frozen pilot,
 with its new0.6-based compiler condition committed before execution. Earlier
 compiler conditions/counts remain history. NE-C04 and NE-D01 have separate
 actual backlog owners; no global cache migration or guide correction implied.
+
+## Iteration03 condition freeze — 2026-11-06
+
+The accepted source is clean at `a061c2149792178ba037d17a31220545e34b4ac1`;
+the pinned compiler/tool hashes, exact archive export, unchanged predictions,
+runtime order, permissions, and zero-at-freeze denominators are recorded in
+`artifacts/results.md`. The fresh archive is in task-local
+`target/slice08/pilot/run-01/experiment/`. No compile, staging, bundle, or
+runtime invocation occurred before this condition was committed. TE-04/05 stay
+open until CDC reviews the preserved pilot evidence; C4 confirmation still gates
+all runtime calls.
 
 ## CC Phase A receipt — 2026-11-06
 
