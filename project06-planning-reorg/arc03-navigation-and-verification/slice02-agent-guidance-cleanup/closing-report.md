@@ -46,3 +46,25 @@ references and byte/mode parity were inspected directly.
 
 GC-01 through GC-06 are `open` with CC evidence recorded in `ledger.md`. CDC
 owns the independent review and any final acceptance or follow-up assignment.
+
+## Iteration04 correction
+
+The initial cleanup commits are followed by one AGENTS-only correction commit per
+source home for GC-R01. It restores assigned release-home source/docs authoring
+outside Autonomous Mode or an explicit assignment requiring a dedicated task
+worktree, while retaining the `main` integration boundary and source-chain
+safeguards. Final corrected source tips and the superseded first wording-pass
+hashes are recorded in `artifacts/results.md`; the first-pass commits were
+amended locally before the final citation gates, preserving one correction
+commit per source home. The six final-tip citation gates passed (62 documents on
+main; 63 on each other source home).
+
+Planning contains this correction and the existing four CC slice outputs in one
+scoped commit. CDC's untracked `cdc-retrospective.md` was preserved and not
+staged. All GC and parent A2/P7 rows remain open pending independent acceptance.
+
+The corrected iteration04 source tips are listed in `artifacts/results.md`.
+Each is one AGENTS-only commit with both trailers and a passing final-tip
+citation gate. Planning records the correction plus the existing four CC slice
+outputs in one commit. CDC's untracked retrospective remains outside that
+commit; parent A2/P7 and GC-01 through GC-06 remain open.

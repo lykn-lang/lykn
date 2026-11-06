@@ -1,6 +1,7 @@
 # Slice02 — Portable agent guidance
 
-Status: open (initial cleanup delivered; GC-R01 authority correction pending).
+Status: open (initial cleanup and GC-R01 correction committed; final independent
+review pending).
 Parent: Arc03 navigation/governance follow-through. Current assignment:
 cc-prompt-iteration04.md (restore release-authoring authority). This is the existing
 project's bounded maintenance increment, not a new project or historical

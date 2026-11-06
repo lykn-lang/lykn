@@ -197,3 +197,54 @@ remains Git mode 120000 and a relative symlink to literal `AGENTS.md`. The four
 tracked symlink entries and old `assets/ai` directories are absent in each
 source tree; all five main-only ignored links are absent too. The only test
 executed for this work was the six required committed-HEAD citation gates.
+
+## Iteration04 — GC-R01 release-authoring correction
+
+Fresh independent review found the previous AGENTS candidate had generalized
+Autonomous Mode's dedicated task-branch rule into a global product-authoring
+restriction on release branches. The old repository guidance assigned ordinary
+source and user/developer documentation work to release homes and restricted
+`main` to integration; no Operator decision removed that release-home authority.
+This was an authoring defect. Iteration04 restores the old assignment rule:
+use a dedicated non-default task worktree in Autonomous Mode, or when the active
+assignment explicitly requires one; otherwise ordinary source/docs work may use
+the assigned release home. `main` remains integration-only except for explicitly
+authorized synchronized governance/docs, and the correction adds no implementation,
+integration, or external-action authority.
+
+The first iteration04 wording pass created AGENTS-only commits, then CDC
+identified that the prose condition could read ambiguously. Those unpushed local
+commits were amended in place so each source home still has one explicit
+AGENTS-only commit. Superseded local commit -> final amended commit:
+
+| Home | Superseded pass | Final tip |
+| --- | --- | --- |
+| main | `69eead14fc5b6482e6193bb8f00cf688c090ccf5` | `1dc85832c2414460323f4e203adfcc283db239e7` |
+| release/0.6.x | `9464a9731dc3e0a44c5d83f66199e6937040b88c` | `cb3ee61cd686eac9fe551fb9c826b9aad532b008` |
+| release/0.7.x | `1caca194b2989c45decbb5d16599836ee4cec189` | `d51f494069552d746f4e8d3fa79cf594f685be0e` |
+| release/0.8.x | `efb4664bf47cf097b1c51d50ea84562b62a37cce` | `e0356ee902392610a96492470595ffc745b3d33c` |
+| codex/native-esbuild-controls | `86e80ff94ae477b0f35f465a9708f8dfc4032498` | `9be0c301e11e3d8503605e9b50b53056f47c9b14` |
+| codex/contract-predicate-lowering | `86e80ff94ae477b0f35f465a9708f8dfc4032498` | `9be0c301e11e3d8503605e9b50b53056f47c9b14` |
+
+For each final source tip, only `AGENTS.md` changed from the previous cleanup
+commit. Both required trailers are present. The final committed guidance bytes
+match across all seven homes (planning candidate SHA-256 is recorded in the
+closeout); CLAUDE symlink modes/targets remain unchanged. Each final source tip
+passed `make check-cited-paths`: main reported 62 documents, and each of the
+other five source homes reported 63. Every run retained 601 historical census
+citations. All six source worktrees are clean. No SKILL, link-removal, source,
+code, checker, census, test-selection or test files changed in this correction.
+
+The earlier move checkpoints, unlink commands/inventory, source diff scope,
+source citation receipts and static GC-D01 routing remain unchanged evidence at
+the original cleanup commits and date; this correction did not rerun or claim
+them as fresh. `cdc-retrospective.md` is CDC-owned, untracked and was not
+modified or staged. GC-01 through GC-06 and parent A2/P7 remain open pending
+independent disposition.
+
+Iteration04 handoff began from clean planning commit
+`5d6299fff26a1766899713578c10d188816cd38f` before CC's allowed edits; CDC's
+untracked `cdc-retrospective.md` was visible and left untouched. The corrected
+planning AGENTS and this existing four-file CC closeout set are committed
+separately from that preserved reviewer file. The exact planning correction tip
+is returned in the handoff.
