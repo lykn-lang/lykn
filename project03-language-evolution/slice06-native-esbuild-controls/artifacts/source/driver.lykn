@@ -1,60 +1,139 @@
 (bind workspace (get Deno:args 0))
+
 (bind output (get Deno:args 1))
+
 (bind esbuild (get Deno:args 2))
+
 (bind deno (get Deno:args 3))
+
 (bind data (template workspace "/data/input.json"))
+
 (bind decoder (new TextDecoder))
 
-(func require-ok :args (:boolean ok :string message) :body
+(func
+  require-ok
+  :args
+  (:boolean ok :string message)
+  :body
   (if (not ok) (throw (new Error message)))
   null)
 
-(func is-record :args (:any value) :body
-  (and (= (js:typeof value) "object")
-       (not (= value null))
-       (not (Array:isArray value))))
+(func
+  is-record
+  :args
+  (:any value)
+  :body
+  (and
+    (= (js:typeof value) "object")
+    (not (= value null))
+    (not (Array:isArray value))))
 
-(func ensure-absent :args (:string path) :body
+(func
+  ensure-absent
+  :args
+  (:string path)
+  :body
   (try
     (do
       (Deno:stat-sync path)
       (throw (new Error (template "refusing to overwrite existing path: " path))))
-    (catch err
-      (if (not (= err:name "NotFound")) (throw err))))
+    (catch err (if (not (= err:name "NotFound")) (throw err))))
   null)
 
-(func write-new :args (:string path :string text) :body
+(func
+  write-new
+  :args
+  (:string path :string text)
+  :body
   (ensure-absent path)
   (Deno:write-text-file-sync path text))
 
-(func environment :args (:string cache) :body
-  (obj :PATH "/opt/homebrew/bin:/usr/bin:/bin"
-       :DENO_DIR cache
-       :DENO_NO_UPDATE_CHECK "1"
-       :NO_COLOR "1"))
+(func
+  environment
+  :args
+  (:string cache)
+  :body
+  (obj
+    :PATH
+    "/opt/homebrew/bin:/usr/bin:/bin"
+    :DENO_DIR
+    cache
+    :DENO_NO_UPDATE_CHECK
+    "1"
+    :NO_COLOR
+    "1"))
 
-(func command :args (:string executable :array args :string cwd :string cache) :body
-  (new Deno:Command executable
-    (obj :args args :cwd cwd :clear-env true :env (environment cache)
-         :stdin "null" :stdout "piped" :stderr "piped")))
+(func
+  command
+  :args
+  (:string executable :array args :string cwd :string cache)
+  :body
+  (new
+    Deno:Command
+    executable
+    (obj
+      :args
+      args
+      :cwd
+      cwd
+      :clear-env
+      true
+      :env
+      (environment cache)
+      :stdin
+      "null"
+      :stdout
+      "piped"
+      :stderr
+      "piped")))
 
-(func save-result :args (:string label :string executable :array args :string cwd :any result) :body
+(func
+  save-result
+  :args
+  (:string label :string executable :array args :string cwd :any result)
+  :body
   (bind stdout (decoder:decode result:stdout))
   (bind stderr (decoder:decode result:stderr))
   (write-new
     (template output "/" label ".json")
-    (JSON:stringify (obj :label label :executable executable :args args :cwd cwd
-                         :code result:code :stdout stdout :stderr stderr)))
+    (JSON:stringify
+      (obj
+        :label
+        label
+        :executable
+        executable
+        :args
+        args
+        :cwd
+        cwd
+        :code
+        result:code
+        :stdout
+        stdout
+        :stderr
+        stderr)))
   (obj :code result:code :stdout stdout :stderr stderr))
 
-(func normalize-path :args (:string path) :body
+(func
+  normalize-path
+  :args
+  (:string path)
+  :body
   (bind file-url (new URL path (template "file://" workspace "/")))
   file-url:pathname)
 
-(func module-path :args (:string package :string file) :body
+(func
+  module-path
+  :args
+  (:string package :string file)
+  :body
   (template workspace "/target/lykn/dist/" package "/" file))
 
-(func all-library-paths :args () :body
+(func
+  all-library-paths
+  :args
+  ()
+  :body
   (array
     (module-path "json" "mod.js")
     (module-path "json" "value.js")
@@ -67,171 +146,325 @@
     (module-path "effects" "dead.js")
     (module-path "effects" "effect.js")))
 
-(func json-library-paths :args () :body
-  (array (module-path "json" "mod.js")
-         (module-path "json" "value.js")
-         (module-path "json" "file.js")
-         (module-path "json" "document.js")))
+(func
+  json-library-paths
+  :args
+  ()
+  :body
+  (array
+    (module-path "json" "mod.js")
+    (module-path "json" "value.js")
+    (module-path "json" "file.js")
+    (module-path "json" "document.js")))
 
-(func effects-library-paths :args () :body
-  (array (module-path "effects" "mod.js")
-         (module-path "effects" "used.js")
-         (module-path "effects" "dead.js")
-         (module-path "effects" "effect.js")))
+(func
+  effects-library-paths
+  :args
+  ()
+  :body
+  (array
+    (module-path "effects" "mod.js")
+    (module-path "effects" "used.js")
+    (module-path "effects" "dead.js")
+    (module-path "effects" "effect.js")))
 
-(func alias-arguments :args () :body
-  (bind aliases (cell #a()))
-  (for-of package (array "json" "yaml" "effects")
-    (bind config-path (template workspace "/target/lykn/dist/" package "/deno.json"))
+(func
+  alias-arguments
+  :args
+  ()
+  :body
+  (bind aliases (cell (array)))
+  (for-of
+    package
+    (array "json" "yaml" "effects")
+    (bind
+      config-path
+      (template workspace "/target/lykn/dist/" package "/deno.json"))
     (bind config (JSON:parse (Deno:read-text-file-sync config-path)))
-    (require-ok (Object:hasOwn config "exports")
+    (require-ok
+      (Object:hasOwn config "exports")
       (template "missing exports map: " config-path))
-    (require-ok (is-record config:exports)
+    (require-ok
+      (is-record config:exports)
       (template "exports map is not an object: " config-path))
-    (for-of entry (Object:entries config:exports)
+    (for-of
+      entry
+      (Object:entries config:exports)
       (bind key (get entry 0))
       (bind target (get entry 1))
-      (bind specifier (if (= key ".") config:name
-                        (template config:name "/" (key:slice 2))))
-      (bind flag (template "--alias:" specifier "="
-                           (module-path package target)))
+      (bind
+        specifier
+        (if (= key ".") config:name (template config:name "/" (key:slice 2))))
+      (bind flag (template "--alias:" specifier "=" (module-path package target)))
       (swap! aliases (fn (:array current) (conj current flag)))))
   (express aliases))
 
-(func bundle-arguments :args (:string name :string entry) :body
-  (bind args (cell (array entry "--bundle" "--tree-shaking=true" "--format=esm"
-                          "--platform=neutral" "--target=es2022")))
-  (for-of alias (alias-arguments)
+(func
+  bundle-arguments
+  :args
+  (:string name :string entry)
+  :body
+  (bind
+    args
+    (cell
+      (array
+        entry
+        "--bundle"
+        "--tree-shaking=true"
+        "--format=esm"
+        "--platform=neutral"
+        "--target=es2022")))
+  (for-of
+    alias
+    (alias-arguments)
     (swap! args (fn (:array current) (conj current alias))))
-  (swap! args (fn (:array current)
-    (conj current (template "--metafile=" output "/" name ".meta.json"))))
-  (swap! args (fn (:array current)
-    (conj current (template "--outfile=" output "/" name ".js"))))
+  (swap!
+    args
+    (fn
+      (:array current)
+      (conj current (template "--metafile=" output "/" name ".meta.json"))))
+  (swap!
+    args
+    (fn
+      (:array current)
+      (conj current (template "--outfile=" output "/" name ".js"))))
   (express args))
 
-(func input-identities :args (:any meta) :body
+(func
+  input-identities
+  :args
+  (:any meta)
+  :body
   (require-ok (Object:hasOwn meta "inputs") "metafile has no inputs object")
   (require-ok (is-record meta:inputs) "metafile inputs is not an object")
   (bind entries (Object:entries meta:inputs))
   (require-ok (> entries:length 0) "metafile inputs object is empty")
-  (bind rows (cell #a()))
-  (for-of entry entries
+  (bind rows (cell (array)))
+  (for-of
+    entry
+    entries
     (bind input-path (get entry 0))
     (bind input-info (get entry 1))
-    (require-ok (Array:isArray input-info:imports)
+    (require-ok
+      (Array:isArray input-info:imports)
       (template "input imports is not an array: " input-path))
-    (bind imports (cell #a()))
-    (for-of import-info input-info:imports
-      (require-ok (Object:hasOwn import-info "path")
+    (bind imports (cell (array)))
+    (for-of
+      import-info
+      input-info:imports
+      (require-ok
+        (Object:hasOwn import-info "path")
         (template "import has no path: " input-path))
-      (require-ok (Object:hasOwn import-info "kind")
+      (require-ok
+        (Object:hasOwn import-info "kind")
         (template "import has no kind: " input-path))
-      (swap! imports (fn (:array current)
-        (conj current
-          (obj :path (normalize-path import-info:path)
-               :kind import-info:kind
-               :original import-info:original
-               :external import-info:external)))))
-    (swap! rows (fn (:array current)
-      (conj current
-        (obj :path (normalize-path input-path)
-             :bytes input-info:bytes
-             :imports (express imports))))))
+      (swap!
+        imports
+        (fn
+          (:array current)
+          (conj
+            current
+            (obj
+              :path
+              (normalize-path import-info:path)
+              :kind
+              import-info:kind
+              :original
+              import-info:original
+              :external
+              import-info:external)))))
+    (swap!
+      rows
+      (fn
+        (:array current)
+        (conj
+          current
+          (obj
+            :path
+            (normalize-path input-path)
+            :bytes
+            input-info:bytes
+            :imports
+            (express imports))))))
   (express rows))
 
-(func output-identities :args (:any meta :string name :string entry) :body
+(func
+  output-identities
+  :args
+  (:any meta :string name :string entry)
+  :body
   (require-ok (Object:hasOwn meta "outputs") "metafile has no outputs object")
   (require-ok (is-record meta:outputs) "metafile outputs is not an object")
   (bind entries (Object:entries meta:outputs))
   (require-ok (> entries:length 0) "metafile outputs object is empty")
   (bind output-path (normalize-path (template output "/" name ".js")))
   (bind entry-path (normalize-path entry))
-  (bind rows (cell #a()))
+  (bind rows (cell (array)))
   (bind selected (cell null))
-  (for-of row entries
+  (for-of
+    row
+    entries
     (bind path (normalize-path (get row 0)))
     (bind info (get row 1))
     (bind entry-point (if info:entryPoint (normalize-path info:entryPoint) null))
-    (bind output-row (obj :path path :entryPoint entry-point :bytes info:bytes
-                          :exports info:exports :imports info:imports))
+    (bind
+      output-row
+      (obj
+        :path
+        path
+        :entryPoint
+        entry-point
+        :bytes
+        info:bytes
+        :exports
+        info:exports
+        :imports
+        info:imports))
     (swap! rows (fn (:array current) (conj current output-row)))
-    (if (= path output-path)
+    (if
+      (= path output-path)
       (do
-        (require-ok (not (= entry-point null))
+        (require-ok
+          (not (= entry-point null))
           (template "selected JavaScript output lacks entryPoint: " path))
-        (require-ok (= entry-point entry-path)
-          (template "selected output entryPoint differs from requested source: " entry-point))
-        (require-ok (Object:hasOwn info "inputs")
+        (require-ok
+          (= entry-point entry-path)
+          (template
+            "selected output entryPoint differs from requested source: "
+            entry-point))
+        (require-ok
+          (Object:hasOwn info "inputs")
           (template "selected JavaScript output lacks inputs: " path))
-        (require-ok (is-record info:inputs)
+        (require-ok
+          (is-record info:inputs)
           (template "selected JavaScript output inputs is not an object: " path))
         (bind contributions (Object:entries info:inputs))
-        (require-ok (> contributions:length 0)
+        (require-ok
+          (> contributions:length 0)
           (template "selected JavaScript output has empty inputs: " path))
-        (bind contributor-rows (cell #a()))
-        (for-of contribution contributions
+        (bind contributor-rows (cell (array)))
+        (for-of
+          contribution
+          contributions
           (bind contributor-path (normalize-path (get contribution 0)))
           (bind contribution-info (get contribution 1))
-          (require-ok (Number:isFinite contribution-info:bytesInOutput)
+          (require-ok
+            (Number:isFinite contribution-info:bytesInOutput)
             (template "non-numeric bytesInOutput for " contributor-path))
-          (swap! contributor-rows (fn (:array current)
-            (conj current (obj :path contributor-path
-                               :bytesInOutput contribution-info:bytesInOutput)))))
-        (reset! selected
-          (obj :path path :entryPoint entry-point
-               :contributors (express contributor-rows))))))
+          (swap!
+            contributor-rows
+            (fn
+              (:array current)
+              (conj
+                current
+                (obj
+                  :path
+                  contributor-path
+                  :bytesInOutput
+                  contribution-info:bytesInOutput)))))
+        (reset!
+          selected
+          (obj
+            :path
+            path
+            :entryPoint
+            entry-point
+            :contributors
+            (express contributor-rows))))))
   (bind selected-output (express selected))
-  (require-ok (not (= selected-output null))
+  (require-ok
+    (not (= selected-output null))
     "no selected JavaScript output matched outfile and entryPoint")
   (obj :outputs (express rows) :selected selected-output))
 
-(func metadata-observation :args (:string name :string entry) :body
+(func
+  metadata-observation
+  :args
+  (:string name :string entry)
+  :body
   (bind meta-path (template output "/" name ".meta.json"))
   (bind raw (Deno:read-text-file-sync meta-path))
   (bind meta (JSON:parse raw))
   (bind inputs (input-identities meta))
   (bind output-data (output-identities meta name entry))
-  (obj :control name
-       :entry (normalize-path entry)
-       :metafile meta-path
-       :inputs inputs
-       :outputs output-data:outputs
-       :selected output-data:selected))
+  (obj
+    :control
+    name
+    :entry
+    (normalize-path entry)
+    :metafile
+    meta-path
+    :inputs
+    inputs
+    :outputs
+    output-data:outputs
+    :selected
+    output-data:selected))
 
-(func graph-identities :args (:any observation) :body
-  (bind paths (cell #a()))
-  (for-of input observation:inputs
+(func
+  graph-identities
+  :args
+  (:any observation)
+  :body
+  (bind paths (cell (array)))
+  (for-of
+    input
+    observation:inputs
     (swap! paths (fn (:array current) (conj current input:path)))
-    (for-of import-info input:imports
+    (for-of
+      import-info
+      input:imports
       (swap! paths (fn (:array current) (conj current import-info:path)))))
   (express paths))
 
-(func contributor-bytes :args (:string path :array contributors) :body
+(func
+  contributor-bytes
+  :args
+  (:string path :array contributors)
+  :body
   (bind total (cell 0))
-  (for-of contributor contributors
-    (if (= contributor:path path)
+  (for-of
+    contributor
+    contributors
+    (if
+      (= contributor:path path)
       (swap! total (fn (:number current) (+ current contributor:bytesInOutput)))))
   (express total))
 
-(func allowed-library-paths :args (:string name) :body
-  (if (= name "C1") #a()
-    (if (or (= name "C2") (= name "C3")) (json-library-paths)
-      (if (= name "C4") (effects-library-paths)
-        (all-library-paths)))))
+(func
+  allowed-library-paths
+  :args
+  (:string name)
+  :body
+  (if
+    (= name "C1")
+    (array)
+    (if
+      (or (= name "C2") (= name "C3"))
+      (json-library-paths)
+      (if (= name "C4") (effects-library-paths) (all-library-paths)))))
 
-(func verify-control-metadata :args (:string name :any observation) :body
+(func
+  verify-control-metadata
+  :args
+  (:string name :any observation)
+  :body
   (bind graph (graph-identities observation))
   (bind contributors observation:selected:contributors)
   (bind all-libraries (all-library-paths))
   (bind allowed (allowed-library-paths name))
-  (bind unexpected (cell #a()))
-  (for-of path all-libraries
-    (if (and (or (graph:includes path)
-                 (> (contributor-bytes path contributors) 0))
-             (not (allowed:includes path)))
+  (bind unexpected (cell (array)))
+  (for-of
+    path
+    all-libraries
+    (if
+      (and
+        (or (graph:includes path) (> (contributor-bytes path contributors) 0))
+        (not (allowed:includes path)))
       (swap! unexpected (fn (:array current) (conj current path)))))
   (bind unexpected-paths (express unexpected))
-  (require-ok (= unexpected-paths:length 0)
+  (require-ok
+    (= unexpected-paths:length 0)
     (template name " has unexpected library graph/contribution identity"))
   (bind json-value (module-path "json" "value.js"))
   (bind json-file (module-path "json" "file.js"))
@@ -240,247 +473,479 @@
   (bind effects-used (module-path "effects" "used.js"))
   (bind effects-dead (module-path "effects" "dead.js"))
   (bind effects-effect (module-path "effects" "effect.js"))
-  (if (= name "C1")
-    (for-of path all-libraries
-      (require-ok (and (not (graph:includes path))
-                       (= (contributor-bytes path contributors) 0))
+  (if
+    (= name "C1")
+    (for-of
+      path
+      all-libraries
+      (require-ok
+        (and
+          (not (graph:includes path))
+          (= (contributor-bytes path contributors) 0))
         (template "C1 unexpectedly observes library identity " path))))
-  (if (= name "C2")
+  (if
+    (= name "C2")
     (do
-      (require-ok (> (contributor-bytes json-value contributors) 0)
+      (require-ok
+        (> (contributor-bytes json-value contributors) 0)
         "C2 JSON value did not contribute")
-      (for-of path (array (module-path "yaml" "mod.js") yaml-value)
-        (require-ok (and (not (graph:includes path))
-                         (= (contributor-bytes path contributors) 0))
+      (for-of
+        path
+        (array (module-path "yaml" "mod.js") yaml-value)
+        (require-ok
+          (and
+            (not (graph:includes path))
+            (= (contributor-bytes path contributors) 0))
           (template "C2 unexpectedly observes YAML identity " path)))))
-  (if (= name "C3")
+  (if
+    (= name "C3")
     (do
-      (require-ok (> (contributor-bytes json-value contributors) 0)
+      (require-ok
+        (> (contributor-bytes json-value contributors) 0)
         "C3 JSON value did not contribute")
-      (for-of path (array json-file json-document
-                          (module-path "yaml" "mod.js") yaml-value)
-        (require-ok (and (not (graph:includes path))
-                         (= (contributor-bytes path contributors) 0))
+      (for-of
+        path
+        (array json-file json-document (module-path "yaml" "mod.js") yaml-value)
+        (require-ok
+          (and
+            (not (graph:includes path))
+            (= (contributor-bytes path contributors) 0))
           (template "C3 unexpectedly observes excluded identity " path)))))
-  (if (= name "C4")
+  (if
+    (= name "C4")
     (do
-      (require-ok (> (contributor-bytes effects-used contributors) 0)
+      (require-ok
+        (> (contributor-bytes effects-used contributors) 0)
         "C4 used implementation did not contribute")
-      (require-ok (> (contributor-bytes effects-effect contributors) 0)
+      (require-ok
+        (> (contributor-bytes effects-effect contributors) 0)
         "C4 effect implementation did not contribute")
-      (require-ok (= (contributor-bytes effects-dead contributors) 0)
+      (require-ok
+        (= (contributor-bytes effects-dead contributors) 0)
         "C4 unused-pure implementation contributed bytes")))
-  (if (= name "C5")
-    (for-of path (array json-value json-file json-document yaml-value
-                        effects-used effects-dead effects-effect)
-      (require-ok (> (contributor-bytes path contributors) 0)
+  (if
+    (= name "C5")
+    (for-of
+      path
+      (array
+        json-value
+        json-file
+        json-document
+        yaml-value
+        effects-used
+        effects-dead
+        effects-effect)
+      (require-ok
+        (> (contributor-bytes path contributors) 0)
         (template "C5 positive implementation did not contribute: " path))))
-  (obj :control name :graph graph :unexpectedLibraryIdentities (express unexpected)
-       :contributors contributors
-       :c4DeadResolved (if (= name "C4") (graph:includes effects-dead) null)
-       :positiveBytes (if (= name "C4")
-         (obj :used (contributor-bytes effects-used contributors)
-              :effect (contributor-bytes effects-effect contributors))
-         null)))
+  (obj
+    :control
+    name
+    :graph
+    graph
+    :unexpectedLibraryIdentities
+    (express unexpected)
+    :contributors
+    contributors
+    :c4DeadResolved
+    (if (= name "C4") (graph:includes effects-dead) null)
+    :positiveBytes
+    (if
+      (= name "C4")
+      (obj
+        :used
+        (contributor-bytes effects-used contributors)
+        :effect
+        (contributor-bytes effects-effect contributors))
+      null)))
 
-(func observe-bundle :args (:string name :string entry) :body
+(func
+  observe-bundle
+  :args
+  (:string name :string entry)
+  :body
   (bind observation (metadata-observation name entry))
   (bind oracle (verify-control-metadata name observation))
   (obj :metadata observation :oracle oracle))
 
-(func bundle :args (:string name :string entry) :body
+(func
+  bundle
+  :args
+  (:string name :string entry)
+  :body
   (bind js-path (template output "/" name ".js"))
   (bind meta-path (template output "/" name ".meta.json"))
   (ensure-absent js-path)
   (ensure-absent meta-path)
   (bind args (bundle-arguments name entry))
-  (bind result (-> (command esbuild args workspace (template output "/cache"))
-                   (:output-sync)))
-  (bind receipt (save-result (template name "-bundle") esbuild args workspace result))
+  (bind
+    result
+    (->
+      (command esbuild args workspace (template output "/cache"))
+      (:output-sync)))
+  (bind
+    receipt
+    (save-result (template name "-bundle") esbuild args workspace result))
   (require-ok (= receipt:code 0) (template name " native esbuild failed"))
   (observe-bundle name entry))
 
-(func runtime-args :args (:string config :string entry :string name) :body
-  (bind args (cell (array "run" "--cached-only" "--no-npm" "--no-remote"
-                          "--deny-net" "--no-prompt" (template "--config=" config))))
-  (if (= name "C5")
-    (swap! args (fn (:array current)
-      (conj current (template "--allow-read=" data)))))
+(func
+  runtime-args
+  :args
+  (:string config :string entry :string name)
+  :body
+  (bind
+    args
+    (cell
+      (array
+        "run"
+        "--cached-only"
+        "--no-npm"
+        "--no-remote"
+        "--deny-net"
+        "--no-prompt"
+        (template "--config=" config))))
+  (if
+    (= name "C5")
+    (swap!
+      args
+      (fn (:array current) (conj current (template "--allow-read=" data)))))
   (swap! args (fn (:array current) (conj current entry)))
-  (if (= name "C5")
-    (swap! args (fn (:array current) (conj current data))))
+  (if (= name "C5") (swap! args (fn (:array current) (conj current data))))
   (express args))
 
-(func expected-output :args (:string name) :body
-  (if (= name "C1") "BASE\n"
-    (if (or (= name "C2") (= name "C3")) "{\"x\":1}\n"
-      (if (= name "C4") "init:effect\nentry:42\n"
-        (template "init:effect\n{\"jsonRoot\":{\"x\":1},\"jsonValue\":{\"x\":1},"
+(func
+  expected-output
+  :args
+  (:string name)
+  :body
+  (if
+    (= name "C1")
+    "BASE\n"
+    (if
+      (or (= name "C2") (= name "C3"))
+      "{\"x\":1}\n"
+      (if
+        (= name "C4")
+        "init:effect\nentry:42\n"
+        (template
+          "init:effect\n{\"jsonRoot\":{\"x\":1},\"jsonValue\":{\"x\":1},"
           "\"fileRoot\":\"{\\\"x\\\":1}\",\"fileValue\":\"{\\\"x\\\":1}\","
           "\"documentRoot\":\"document:{\\\"x\\\":1}\","
           "\"documentValue\":\"document:{\\\"x\\\":1}\","
           "\"yamlRoot\":{\"answer\":42},\"yamlValue\":{\"answer\":42},"
           "\"usedRoot\":42,\"usedValue\":42,\"deadRoot\":82,\"deadValue\":82}\n")))))
 
-(func runtime :args (:string name :string run-label :string entry :boolean bundled) :body
+(func
+  runtime
+  :args
+  (:string name :string run-label :string entry :boolean bundled)
+  :body
   (bind config (template workspace "/target/lykn/dist/project.json"))
   (bind runtime-entry (if bundled (template output "/" name ".js") entry))
   (bind args (runtime-args config runtime-entry name))
-  (bind result (-> (command deno args workspace (template output "/cache"))
-                   (:output-sync)))
+  (bind
+    result
+    (-> (command deno args workspace (template output "/cache")) (:output-sync)))
   (bind receipt (save-result run-label deno args workspace result))
   (require-ok (= receipt:code 0) (template run-label " Deno run failed"))
-  (require-ok (= receipt:stderr "") (template run-label " wrote unexpected stderr"))
-  (require-ok (= receipt:stdout (expected-output name))
+  (require-ok
+    (= receipt:stderr "")
+    (template run-label " wrote unexpected stderr"))
+  (require-ok
+    (= receipt:stdout (expected-output name))
     (template run-label " stdout diverged from the frozen prediction"))
   receipt)
 
-(async (func digest :args (:any bytes) :body
-  (bind hash-bytes (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
-  (-> (Array:from hash-bytes
+(async
+  (func
+    digest
+    :args
+    (:any bytes)
+    :body
+    (bind
+      hash-bytes
+      (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+    (->
+      (Array:from
+        hash-bytes
         (fn (:number byte) (-> (byte:to-string 16) (:pad-start 2 "0"))))
       (:join ""))))
 
-(async (func public-snapshot :args () :body
-  (bind relative-files (array
-    "json/deno.json" "json/mod.js" "json/value.js" "json/file.js" "json/document.js"
-    "yaml/deno.json" "yaml/mod.js" "yaml/value.js"
-    "effects/deno.json" "effects/mod.js" "effects/used.js" "effects/dead.js" "effects/effect.js"))
-  (bind files (cell #a()))
-  (for-of relative relative-files
-    (bind path (template workspace "/target/lykn/dist/" relative))
-    (bind hash (await (digest (Deno:read-file-sync path))))
-    (swap! files (fn (:array current)
-      (conj current (obj :path (normalize-path path) :sha256 hash)))))
-  (bind exports (cell #a()))
-  (for-of package (array "json" "yaml" "effects")
-    (bind config-path (template workspace "/target/lykn/dist/" package "/deno.json"))
-    (bind config (JSON:parse (Deno:read-text-file-sync config-path)))
-    (require-ok (Object:hasOwn config "exports")
-      (template "missing public exports: " config-path))
-    (require-ok (is-record config:exports)
-      (template "public exports is not an object: " config-path))
-    (for-of entry (Object:entries config:exports)
-      (bind key (get entry 0))
-      (bind target (get entry 1))
-      (bind specifier (if (= key ".") config:name
-                        (template config:name "/" (key:slice 2))))
-      (bind target-path (module-path package target))
-      (bind hash (await (digest (Deno:read-file-sync target-path))))
-      (swap! exports (fn (:array current)
-        (conj current (obj :specifier specifier :target (normalize-path target-path)
-                           :sha256 hash))))))
-  (bind actual-exports (express exports))
-  (bind expected-exports (array
-    "@probe/json" "@probe/json/value" "@probe/json/file" "@probe/json/document"
-    "@probe/yaml" "@probe/yaml/value"
-    "@probe/effects" "@probe/effects/used" "@probe/effects/dead"))
-  (bind actual-files (express files))
-  (require-ok (= actual-files:length 13) "public file snapshot must contain 13 entries")
-  (require-ok (= actual-exports:length 9) "public export snapshot must contain nine entries")
-  (for-of export-row actual-exports
-    (bind target-count (cell 0))
-    (for-of file-row actual-files
-      (if (= export-row:target file-row:path)
-        (do
-          (swap! target-count (fn (:number current) (+ current 1)))
-          (require-ok (= export-row:sha256 file-row:sha256)
-            (template "export target hash differs from public file snapshot: "
-                      export-row:target)))))
-    (require-ok (= (express target-count) 1)
-      (template "export target missing/duplicated in 13-file snapshot: " export-row:target)))
-  (for-of row actual-exports
-    (require-ok (expected-exports:includes row:specifier)
-      (template "unexpected public export key " row:specifier)))
-  (for-of expected expected-exports
-    (bind matches (cell 0))
-    (for-of row actual-exports
-      (if (= row:specifier expected)
-        (swap! matches (fn (:number current) (+ current 1)))))
-    (require-ok (= (express matches) 1)
-      (template "public export key missing or duplicated: " expected)))
-  (obj :files (express files) :exports actual-exports)))
+(async
+  (func
+    public-snapshot
+    :args
+    ()
+    :body
+    (bind
+      relative-files
+      (array
+        "json/deno.json"
+        "json/mod.js"
+        "json/value.js"
+        "json/file.js"
+        "json/document.js"
+        "yaml/deno.json"
+        "yaml/mod.js"
+        "yaml/value.js"
+        "effects/deno.json"
+        "effects/mod.js"
+        "effects/used.js"
+        "effects/dead.js"
+        "effects/effect.js"))
+    (bind files (cell (array)))
+    (for-of
+      relative
+      relative-files
+      (bind path (template workspace "/target/lykn/dist/" relative))
+      (bind hash (await (digest (Deno:read-file-sync path))))
+      (swap!
+        files
+        (fn
+          (:array current)
+          (conj current (obj :path (normalize-path path) :sha256 hash)))))
+    (bind exports (cell (array)))
+    (for-of
+      package
+      (array "json" "yaml" "effects")
+      (bind
+        config-path
+        (template workspace "/target/lykn/dist/" package "/deno.json"))
+      (bind config (JSON:parse (Deno:read-text-file-sync config-path)))
+      (require-ok
+        (Object:hasOwn config "exports")
+        (template "missing public exports: " config-path))
+      (require-ok
+        (is-record config:exports)
+        (template "public exports is not an object: " config-path))
+      (for-of
+        entry
+        (Object:entries config:exports)
+        (bind key (get entry 0))
+        (bind target (get entry 1))
+        (bind
+          specifier
+          (if (= key ".") config:name (template config:name "/" (key:slice 2))))
+        (bind target-path (module-path package target))
+        (bind hash (await (digest (Deno:read-file-sync target-path))))
+        (swap!
+          exports
+          (fn
+            (:array current)
+            (conj
+              current
+              (obj
+                :specifier
+                specifier
+                :target
+                (normalize-path target-path)
+                :sha256
+                hash))))))
+    (bind actual-exports (express exports))
+    (bind
+      expected-exports
+      (array
+        "@probe/json"
+        "@probe/json/value"
+        "@probe/json/file"
+        "@probe/json/document"
+        "@probe/yaml"
+        "@probe/yaml/value"
+        "@probe/effects"
+        "@probe/effects/used"
+        "@probe/effects/dead"))
+    (bind actual-files (express files))
+    (require-ok
+      (= actual-files:length 13)
+      "public file snapshot must contain 13 entries")
+    (require-ok
+      (= actual-exports:length 9)
+      "public export snapshot must contain nine entries")
+    (for-of
+      export-row
+      actual-exports
+      (bind target-count (cell 0))
+      (for-of
+        file-row
+        actual-files
+        (if
+          (= export-row:target file-row:path)
+          (do
+            (swap! target-count (fn (:number current) (+ current 1)))
+            (require-ok
+              (= export-row:sha256 file-row:sha256)
+              (template
+                "export target hash differs from public file snapshot: "
+                export-row:target)))))
+      (require-ok
+        (= (express target-count) 1)
+        (template
+          "export target missing/duplicated in 13-file snapshot: "
+          export-row:target)))
+    (for-of
+      row
+      actual-exports
+      (require-ok
+        (expected-exports:includes row:specifier)
+        (template "unexpected public export key " row:specifier)))
+    (for-of
+      expected
+      expected-exports
+      (bind matches (cell 0))
+      (for-of
+        row
+        actual-exports
+        (if
+          (= row:specifier expected)
+          (swap! matches (fn (:number current) (+ current 1)))))
+      (require-ok
+        (= (express matches) 1)
+        (template "public export key missing or duplicated: " expected)))
+    (obj :files (express files) :exports actual-exports)))
 
-(func reconcile-snapshots :args (:any before :any after) :body
+(func
+  reconcile-snapshots
+  :args
+  (:any before :any after)
+  :body
   (bind before-files before:files)
   (bind after-files after:files)
   (bind before-exports before:exports)
   (bind after-exports after:exports)
   (require-ok (= before-files:length 13) "before snapshot has wrong file count")
   (require-ok (= after-files:length 13) "after snapshot has wrong file count")
-  (require-ok (= before-exports:length 9) "before snapshot has wrong export count")
+  (require-ok
+    (= before-exports:length 9)
+    "before snapshot has wrong export count")
   (require-ok (= after-exports:length 9) "after snapshot has wrong export count")
-  (for-of old before-files
-    (bind matches (cell #a()))
-    (for-of current after-files
-      (if (= old:path current:path)
+  (for-of
+    old
+    before-files
+    (bind matches (cell (array)))
+    (for-of
+      current
+      after-files
+      (if
+        (= old:path current:path)
         (swap! matches (fn (:array rows) (conj rows current)))))
     (bind rows (express matches))
-    (require-ok (= rows:length 1) (template "public file path missing/duplicated: " old:path))
+    (require-ok
+      (= rows:length 1)
+      (template "public file path missing/duplicated: " old:path))
     (bind matched (get rows 0))
-    (require-ok (= old:sha256 matched:sha256)
+    (require-ok
+      (= old:sha256 matched:sha256)
       (template "public file hash changed: " old:path)))
-  (for-of old before-exports
-    (bind matches (cell #a()))
-    (for-of current after-exports
-      (if (= old:specifier current:specifier)
+  (for-of
+    old
+    before-exports
+    (bind matches (cell (array)))
+    (for-of
+      current
+      after-exports
+      (if
+        (= old:specifier current:specifier)
         (swap! matches (fn (:array rows) (conj rows current)))))
     (bind rows (express matches))
-    (require-ok (= rows:length 1)
+    (require-ok
+      (= rows:length 1)
       (template "public export key missing/duplicated: " old:specifier))
     (bind current (get rows 0))
-    (require-ok (and (= old:target current:target) (= old:sha256 current:sha256))
+    (require-ok
+      (and (= old:target current:target) (= old:sha256 current:sha256))
       (template "public export target/hash changed: " old:specifier)))
   (obj :unchangedFiles before-files :unchangedExports before-exports))
 
-(async (func main :args () :body
-  (bind phase (get Deno:args 4))
-  (if (= phase "gate")
-    (do
-      (bind before (await (public-snapshot)))
-      (write-new (template output "/public-before.json") (JSON:stringify before))
-      (bind entry (template workspace "/target/lykn/dist/controls/c4.js"))
-      (bind observation (bundle "C4" entry))
-      (write-new (template output "/gate-observations.json")
-        (JSON:stringify observation))
-      null)
-    (if (= phase "controls")
+(async
+  (func
+    main
+    :args
+    ()
+    :body
+    (bind phase (get Deno:args 4))
+    (if
+      (= phase "gate")
       (do
-        (bind reviewed-hash (get Deno:args 5))
-        (bind c4-path (template output "/C4.js"))
-        (bind actual-hash (await (digest (Deno:read-file-sync c4-path))))
-        (require-ok (= reviewed-hash actual-hash) "C4 reviewed bundle hash mismatch")
-        (bind gate-path (template output "/gate-observations.json"))
-        (bind gate (JSON:parse (Deno:read-text-file-sync gate-path)))
-        (bind controls-path (template output "/controls-observations.json"))
-        (ensure-absent controls-path)
-        (require-ok (= gate:metadata:control "C4") "gate evidence is not the C4 observation")
-        (bind observations (cell (array gate)))
-        (Deno:write-text-file-sync controls-path (JSON:stringify (express observations)))
-        (bind c5-entry (template workspace "/target/lykn/dist/controls/c5.js"))
-        (runtime "C5" "C5-source-before" c5-entry false)
-        (runtime "C4" "C4-source" (template workspace "/target/lykn/dist/controls/c4.js") false)
-        (runtime "C4" "C4-bundle-run" c4-path true)
-        (for-of name (array "C1" "C2" "C3")
-          (bind entry (template workspace "/target/lykn/dist/controls/"
-                        (name:to-lower-case) ".js"))
-          (bind observation (bundle name entry))
-          (swap! observations (fn (:array current) (conj current observation)))
-          (Deno:write-text-file-sync controls-path (JSON:stringify (express observations)))
-          (runtime name (template name "-source") entry false)
-          (runtime name (template name "-bundle-run") (template output "/" name ".js") true))
-        (bind c5-observation (bundle "C5" c5-entry))
-        (swap! observations (fn (:array current) (conj current c5-observation)))
-        (Deno:write-text-file-sync controls-path (JSON:stringify (express observations)))
-        (runtime "C5" "C5-bundle-run" (template output "/C5.js") true)
-        (runtime "C5" "C5-source-after" c5-entry false)
-        (bind before (JSON:parse (Deno:read-text-file-sync (template output "/public-before.json"))))
-        (bind after (await (public-snapshot)))
-        (write-new (template output "/public-after.json") (JSON:stringify after))
-        (bind reconciliation (reconcile-snapshots before after))
-        (write-new (template output "/public-reconciliation.json")
-          (JSON:stringify reconciliation))
+        (bind before (await (public-snapshot)))
+        (write-new
+          (template output "/public-before.json")
+          (JSON:stringify before))
+        (bind entry (template workspace "/target/lykn/dist/controls/c4.js"))
+        (bind observation (bundle "C4" entry))
+        (write-new
+          (template output "/gate-observations.json")
+          (JSON:stringify observation))
         null)
-      (throw (new Error "phase must be gate or controls"))))))
+      (if
+        (= phase "controls")
+        (do
+          (bind reviewed-hash (get Deno:args 5))
+          (bind c4-path (template output "/C4.js"))
+          (bind actual-hash (await (digest (Deno:read-file-sync c4-path))))
+          (require-ok
+            (= reviewed-hash actual-hash)
+            "C4 reviewed bundle hash mismatch")
+          (bind gate-path (template output "/gate-observations.json"))
+          (bind gate (JSON:parse (Deno:read-text-file-sync gate-path)))
+          (bind controls-path (template output "/controls-observations.json"))
+          (ensure-absent controls-path)
+          (require-ok
+            (= gate:metadata:control "C4")
+            "gate evidence is not the C4 observation")
+          (bind observations (cell (array gate)))
+          (Deno:write-text-file-sync
+            controls-path
+            (JSON:stringify (express observations)))
+          (bind c5-entry (template workspace "/target/lykn/dist/controls/c5.js"))
+          (runtime "C5" "C5-source-before" c5-entry false)
+          (runtime
+            "C4"
+            "C4-source"
+            (template workspace "/target/lykn/dist/controls/c4.js")
+            false)
+          (runtime "C4" "C4-bundle-run" c4-path true)
+          (for-of
+            name
+            (array "C1" "C2" "C3")
+            (bind
+              entry
+              (template
+                workspace
+                "/target/lykn/dist/controls/"
+                (name:to-lower-case)
+                ".js"))
+            (bind observation (bundle name entry))
+            (swap! observations (fn (:array current) (conj current observation)))
+            (Deno:write-text-file-sync
+              controls-path
+              (JSON:stringify (express observations)))
+            (runtime name (template name "-source") entry false)
+            (runtime
+              name
+              (template name "-bundle-run")
+              (template output "/" name ".js")
+              true))
+          (bind c5-observation (bundle "C5" c5-entry))
+          (swap! observations (fn (:array current) (conj current c5-observation)))
+          (Deno:write-text-file-sync
+            controls-path
+            (JSON:stringify (express observations)))
+          (runtime "C5" "C5-bundle-run" (template output "/C5.js") true)
+          (runtime "C5" "C5-source-after" c5-entry false)
+          (bind
+            before
+            (JSON:parse
+              (Deno:read-text-file-sync (template output "/public-before.json"))))
+          (bind after (await (public-snapshot)))
+          (write-new
+            (template output "/public-after.json")
+            (JSON:stringify after))
+          (bind reconciliation (reconcile-snapshots before after))
+          (write-new
+            (template output "/public-reconciliation.json")
+            (JSON:stringify reconciliation))
+          null)
+        (throw (new Error "phase must be gate or controls"))))))
 
 (await (main))

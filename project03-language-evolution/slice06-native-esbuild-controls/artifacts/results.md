@@ -308,3 +308,30 @@ syntax-structure-only. Run-05's C5/driver summaries and native check/fmt outputs
 are retained under its ignored compile-log directory. The next attempt must
 compile the newly committed state and use the successful native formatter output
 to review top-level form boundaries before any C4 bundle.
+
+### Native parser/formatter and observer source review
+
+After the source-boundary correction, fresh `run-06` compiled C5 and the
+observer successfully (two commands, both exit 0). Pinned `lykn check` passed
+both corrected files and reported 37 observer and 12 C5 top-level expressions.
+The first `lykn fmt --check` found these two changed files were unformatted.
+I generated and read the complete 951-line output from the pinned `lykn fmt`
+command, checking the full function list and nested `gate`/`controls`, `do`,
+and loop boundaries; this made the async-main and loop nesting explicit. I then
+applied that formatter only to the two changed sources. A follow-up
+`lykn fmt --check` and `lykn check` both exit 0. All 16 Lykn source files pass
+the pinned `lykn lint` with no findings. The formatted driver byte-compares
+identically to the saved formatter output. These formatted source changes are
+included in the next source commit and the two affected files must be recompiled
+from that exact state before staging.
+
+Inspection of the generated run-06 JavaScript confirms the corrected Lykn
+receivers emit `key.slice(2)`, `name.toLowerCase()`, and instance-array methods;
+the inspected regions contain no generated `Array.push`. Generated C5 imports
+`parseValue`, `readText`, and `documentLabel` from `@probe/json` root and imports
+the matching three subpath functions separately, then calls each root/subpath
+binding. This was generated-code inspection only, not a Deno runtime result.
+Fourteen unchanged compiled module/control outputs in run-06 compare byte for
+byte against run-03. C5 and observer compilation logs, formatter/check/lint
+receipts, and those comparisons are attested; no esbuild bundle or runtime has
+run. The denominator remains zero of five bundles and zero of eleven runtimes.
