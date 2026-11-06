@@ -139,3 +139,78 @@ observations identify generated contract code bypassing surface-expression
 lowering; parse failures are not counted as contract rejection. The runtime
 diagnostic excerpts above and the full command output were observed in the
 focused test run. No pilot inputs were run.
+
+## Phase A CC return
+
+Source branch `codex/contract-predicate-lowering` is clean at
+`86d116db5c096d0fff7ec555d388343946114e4d`; repair is
+`4f5ac27fad9363896de4e55559663f07d5a2fc91`. The implementation diff is scoped
+to `contracts.rs` and `forms.rs`; the two assigned test paths are separately
+committed. Rust/Cargo 1.97.0, Deno 2.9.6, lock SHA-256
+`bbec9052ee3a3401d716c3b4f2d227107e7e0a8c6f8c846c27fd902e0f39ca92`;
+locked/offline release build passed. `target/release/lykn` and `bin/lykn` SHA-256
+`eb24ae3ba372ecfaef255ac883e0f41a0f1ef85494d41925583c4eb2148cbddb`.
+
+Receipts are retained under source `target/slice07/`:
+
+- `native-red-final-baseline.log`: old emitter bytes from `9be0c30`, corrected
+  17-input fixture, 2 pass / 2 wrong nested runtime outcomes / 13
+  unestablished generated-module parse failures.
+- `native-green-focused-head-final.log`: committed candidate, all 17 inputs
+  pass plus following-if branch marker.
+- `lykn-parity-focused-head-corrected.log`: compileBoth 1/1 pass.
+- `make-check-isolated-cache.log`: final unfiltered canonical make check exit 0;
+  dependency, citations, build, clippy, format, syntax/lint, Rust tests
+  (including npm dry-run 5/5), full JS+Lykn (1461/1461), docs (482/482).
+- `check-cited-paths-final.log`: standalone final-HEAD gate passed (63 documents,
+  601 historical citations).
+- Preserve failed/intermediate attempts too: `native-red-corrected-baseline.log`
+  contains the invalid branch-local-bind witness; `lykn-parity-focused.log`
+  records missing built artifacts;
+  `lykn-parity-focused-head.log` records the cond IIFE/ternary shape divergence;
+  `make-check.log` records the first clippy failure; `make-check-head-final.log`
+  records the default npm-cache EPERM. The valid witness/fixture corrections
+  remain in test commits `5ff398f` and `e38960d`; no normalizer or JS compiler
+  changes were made. The cache retry changed only `npm_config_cache` to ignored
+  `target/slice07/npm-cache`; no install, HOME override, or gate filtering.
+
+The corrected multi-clause fixture superseded an earlier candidate run whose
+actual tool output (test source commit `5fa1f7b`, before `e38960d`) was:
+
+```text
+cargo test --locked -p lykn-cli --test contract_predicate_lowering -- --nocapture
+exit 101; exact-yaml, strict-pre, strict-post, generator, nested/value and
+resolved-bound-head passed (12 observations); multi-clause Deno exited 1:
+SyntaxError: Identifier 'multiCheck' has already been declared
+function multiCheck(actual, expected) {
+^
+at fixture.js:20:1; 5 multi-clause observations unestablished
+```
+
+The original run stdout/stderr was shown by the tool but not captured to a
+target log; this excerpt preserves its actual reported failure and denominator.
+Its source was two same-name top-level functions at lines 110-119 of test
+source commit `5fa1f7b`, not the final corrected single multi-clause form. The
+valid 17-input unfixed comparison is separately captured in
+`native-red-final-baseline.log` (test source commit `5ff398f`, after the
+`e38960d` fixture correction). A prior draft incorrectly associated the
+passing `native-green-focused.log` and `native-green-focused-head.log` with the
+duplicate-declaration failure; correction: both files contain passing 17/17
+candidate runs. The duplicate-declaration attempt has no retained raw file;
+only its captured tool output and source revision are preserved here.
+
+The other confounded source was `(if true (bind following-statement 99))`,
+line 70 of `crates/lykn-cli/tests/contract_predicate_lowering.rs` at test
+source commit `d936c18bf9cf5b2e21c6e548eb1a157d7cfde040`. Its actual emitted
+line is retained at line 64 of `native-red-corrected-baseline.log`:
+`if (true) const followingStatement = 99;`; Deno reported
+`SyntaxError: Expression expected`. It is not a repair oracle and was replaced
+in `5ff398f` with the valid bind-then-if witness. The first delimiter attempt
+(`4bee70b`) also has its commits and actual `unterminated list at 2:1` result
+recorded above, but no raw log.
+
+CC attests CP-01, CP-02 and CP-03 as proposed done on this source state;
+CP-04/CP-05 remain held for CDC's independent repair acceptance and explicit
+Phase B resume; CP-06 awaits CDC review and retrospective. All ledger rows stay
+open until independent disposition. No pilot bundle or runtime invocation was
+run. This handoff does not claim independent acceptance.
