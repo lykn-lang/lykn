@@ -1,0 +1,76 @@
++ git -C /Users/oubiwann/lab/lykn/lang/.worktrees/planning archive 41fba58c8d0a99c851ae79093a82fd8c7990b7f6 project03-language-evolution/slice08-template-string-boundary/artifacts/diagnosis/run-01
++ tar -x -C /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/source --strip-components=5
++ cd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/cwd
++ for input in "$review_root/source/"P*.lykn
++ name=P1-backslash-n.lykn
++ label=P1
++ mkdir -p /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/raw/P1
++ compile_status=0
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/source/P1-backslash-n.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P1.js
++ printf '%s\n' 0
++ test 0 = 0
++ runtime_status=0
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P1.js
++ printf '%s\n' 0
++ printf '%s compile=%s runtime=%s\n' P1 0 0
++ for input in "$review_root/source/"P*.lykn
++ name=P2-backslash-quote.lykn
++ label=P2
++ mkdir -p /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/raw/P2
++ compile_status=0
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/source/P2-backslash-quote.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P2.js
++ printf '%s\n' 0
++ test 0 = 0
++ runtime_status=0
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P2.js
++ printf '%s\n' 0
++ printf '%s compile=%s runtime=%s\n' P2 0 0
++ for input in "$review_root/source/"P*.lykn
++ name=P3-line-feed.lykn
++ label=P3
++ mkdir -p /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/raw/P3
++ compile_status=0
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/source/P3-line-feed.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P3.js
++ printf '%s\n' 0
++ test 0 = 0
++ runtime_status=0
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P3.js
++ printf '%s\n' 0
++ printf '%s compile=%s runtime=%s\n' P3 0 0
++ for input in "$review_root/source/"P*.lykn
++ name=P4-carriage-return.lykn
++ label=P4
++ mkdir -p /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/raw/P4
++ compile_status=0
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/source/P4-carriage-return.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P4.js
++ printf '%s\n' 0
++ test 0 = 0
++ runtime_status=0
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P4.js
++ printf '%s\n' 0
++ printf '%s compile=%s runtime=%s\n' P4 0 0
++ for input in "$review_root/source/"P*.lykn
++ name=P5-backslash-backtick-dollar.lykn
++ label=P5
++ mkdir -p /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/raw/P5
++ compile_status=0
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/source/P5-backslash-backtick-dollar.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P5.js
++ printf '%s\n' 0
++ test 0 = 0
++ runtime_status=0
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P5.js
++ runtime_status=1
++ printf '%s\n' 1
++ printf '%s compile=%s runtime=%s\n' P5 0 1
++ for input in "$review_root/source/"P*.lykn
++ name=P6-tag-raw.lykn
++ label=P6
++ mkdir -p /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/raw/P6
++ compile_status=0
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/source/P6-tag-raw.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P6.js
++ printf '%s\n' 0
++ test 0 = 0
++ runtime_status=0
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P6.js
++ printf '%s\n' 0
++ printf '%s compile=%s runtime=%s\n' P6 0 0

@@ -300,6 +300,23 @@ alongside historical C6b/D2 passthrough expectations, not silently subordinated
 to them. Genuine language choice still returns to Operator. All older partial
 counts and obligations remain intact; NE-C02 is not included.
 
+#### NE-C04 — same-version embedded package cache may retain prior compiler text
+
+**Source-backed packaging candidate, 2026-11-06.** During Slice08 preparation,
+`expander/embedded.rs::materialize_packages` at b841f71b was inspected: its warm
+hit checks CARGO_PKG_VERSION sentinel plus directory existence, not embedded
+content. A changed same-version binary can therefore reuse prior package text.
+No new warm-cache experiment or global-cache mutation was performed. The JS
+compiler has a compile-time mirror under crates/lykn-lang/embedded/packages/lang;
+Slice08 must sync it and verify normal macro materialization in a fresh owned
+XDG cache while retaining the accepted existing Deno dependency cache.
+
+**Owner/re-entry.** Existing Project03 A5 packaging candidate owns cache identity/
+invalidation disposition before a same-version deployment claim. This is separate
+from decoded template-value correction, not permission for a cache rewrite or
+version bump in Slice08. Its proof uses a fresh cache and explicitly does not
+claim existing warm global caches are migrated. [Current review](slice08-template-string-boundary/cdc-verification.md).
+
 ### A5 · Packaging & distribution — **`02-packaging-strategy`** (research open)
 
 **Capability (candidate).** Release engineering: Homebrew (custom tap) and

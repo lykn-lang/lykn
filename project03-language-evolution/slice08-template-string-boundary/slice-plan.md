@@ -1,6 +1,8 @@
 # Slice08 — NE-C03 template string boundary
 
-Status: open. Current assignment: `cc-prompt.md`, diagnosis phase only.
+Status: open; TE-01 independently accepted. Current assignment:
+`cc-prompt-iteration01.md`, bounded repair/full validation; pilot still held.
+Initial diagnosis prompt is preserved.
 Collapsed standalone increment under Project03; no parallel Project07 home.
 
 ## Authority, outcome and gates
@@ -159,6 +161,21 @@ not a changed diagnostic payload. Initial work is investigation with explicit
 population/observations, not an unresolved implementation instruction. Repair
 choices and any changed test expectations are held for an independent review
 and preserved iteration; no guessed helper/API signature or new validator.
+
+## Phase B authorization after diagnosis — 2026-11-06
+
+CDC independently reproduced the same18/22 baseline values and three green
+printed-text tests, with an explicitly isolated nearest config. The review
+accepts ID-33 value preservation over the conflicting historical assertions;
+no remaining language choice requires Operator intervention. The preserved
+iteration now authorizes encoding decoded backslash/CR before delimiter/$
+source escapes in the shared native and canonical/mirrored JS printers, with
+explicit changed raw/AST-text consequences. Its thirteen exact paths, shared
+six-fixture native/public-JS runtime proof, packaged fresh-cache proof and full
+native gates bind this phase. No reader change, artificial AST layer or cache
+invalidation rewrite. See cdc-verification.md for the exact interpretation and
+cc-prompt-iteration01.md for the concrete implementation/check contract.
+Independent repair acceptance still gates any frozen five/eleven replay.
 
 ## CC Phase A receipt — 2026-11-06
 

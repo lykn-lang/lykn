@@ -1,0 +1,5 @@
+error: SyntaxError: Expected ',', got '<lexing error: Error { error: (104..104, ExpectedUnicodeEscape) }>'
+  |
+2 | ...ify({ plain: value, interpolated: `${value}`, concat: `\\`\$`, icu: `\\`\$` }));
+  |                                                              ~
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-diagnosis/js/P5.js:2:82
