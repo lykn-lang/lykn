@@ -10,12 +10,23 @@ use super::forms::{atom, list, str_lit};
 /// ```text
 /// (if (! <pre-expr>) (throw (new Error "funcName: pre-condition failed: <sexpr> — caller blame")))
 /// ```
-pub fn emit_pre_check(func_name: &str, pre_expr: &SExpr, _span: Span) -> SExpr {
-    let source = serialize_sexpr(pre_expr);
+pub fn emit_pre_check(func_name: &str, pre_expr: &SExpr, span: Span) -> SExpr {
+    emit_pre_check_with_predicate(func_name, pre_expr, pre_expr.clone(), span)
+}
+
+/// Emit a pre-condition check from a predicate already lowered by the surface
+/// expression emitter, preserving the original expression for diagnostics.
+pub(super) fn emit_pre_check_with_predicate(
+    func_name: &str,
+    diagnostic_expr: &SExpr,
+    predicate: SExpr,
+    _span: Span,
+) -> SExpr {
+    let source = serialize_sexpr(diagnostic_expr);
     let message = format!("{func_name}: pre-condition failed: {source} \u{2014} caller blame");
     list(vec![
         atom("if"),
-        list(vec![atom("!"), pre_expr.clone()]),
+        list(vec![atom("!"), predicate]),
         list(vec![
             atom("throw"),
             list(vec![atom("new"), atom("Error"), str_lit(&message)]),
@@ -30,13 +41,24 @@ pub fn emit_pre_check(func_name: &str, pre_expr: &SExpr, _span: Span) -> SExpr {
 /// ```text
 /// (if (! <post-expr>) (throw (new Error "funcName: post-condition failed: <sexpr> — callee blame")))
 /// ```
-pub fn emit_post_check(func_name: &str, post_expr: &SExpr, result_var: &str, _span: Span) -> SExpr {
-    let source = serialize_sexpr(post_expr);
+pub fn emit_post_check(func_name: &str, post_expr: &SExpr, result_var: &str, span: Span) -> SExpr {
     let replaced = replace_tilde(post_expr, result_var);
+    emit_post_check_with_predicate(func_name, post_expr, replaced, span)
+}
+
+/// Emit a post-condition check from a lowered predicate, preserving the
+/// original source expression for diagnostics.
+pub(super) fn emit_post_check_with_predicate(
+    func_name: &str,
+    diagnostic_expr: &SExpr,
+    predicate: SExpr,
+    _span: Span,
+) -> SExpr {
+    let source = serialize_sexpr(diagnostic_expr);
     let message = format!("{func_name}: post-condition failed: {source} \u{2014} callee blame");
     list(vec![
         atom("if"),
-        list(vec![atom("!"), replaced]),
+        list(vec![atom("!"), predicate]),
         list(vec![
             atom("throw"),
             list(vec![atom("new"), atom("Error"), str_lit(&message)]),
@@ -45,7 +67,7 @@ pub fn emit_post_check(func_name: &str, post_expr: &SExpr, result_var: &str, _sp
 }
 
 /// Recursively replace `~` atoms with the given variable name.
-fn replace_tilde(expr: &SExpr, var: &str) -> SExpr {
+pub(super) fn replace_tilde(expr: &SExpr, var: &str) -> SExpr {
     match expr {
         a @ SExpr::Atom { .. } if a.as_atom() == Some("~") => SExpr::atom(var, a.span()),
         SExpr::List { values, span } => SExpr::List {

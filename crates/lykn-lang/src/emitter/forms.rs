@@ -8,7 +8,9 @@ use crate::ast::surface::{
 use crate::reader::source_loc::Span;
 
 use super::context::{EmitterContext, ExprContext};
-use super::contracts::{emit_post_check, emit_pre_check};
+use super::contracts::{
+    emit_post_check_with_predicate, emit_pre_check_with_predicate, replace_tilde,
+};
 use super::type_checks::{emit_return_type_check, emit_type_check};
 
 // ---------------------------------------------------------------------------
@@ -418,6 +420,20 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
         }
         _ => expr.clone(),
     }
+}
+
+/// Lower a surface contract predicate in value position, restoring the
+/// surrounding emitter context after recursive expression emission.
+fn emit_contract_predicate(
+    predicate: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let saved_ctx = ctx.expr_context;
+    ctx.expr_context = ExprContext::Value;
+    let emitted = emit_expr(predicate, ctx, registry);
+    ctx.expr_context = saved_ctx;
+    emitted
 }
 
 /// Emit a body (list of expressions), recursively expanding any nested surface
@@ -1390,7 +1406,13 @@ fn emit_func_single(
     if !ctx.strip_assertions
         && let Some(ref pre) = clause.pre
     {
-        items.push(emit_pre_check(name, pre, clause.span));
+        let predicate = emit_contract_predicate(pre, ctx, registry);
+        items.push(emit_pre_check_with_predicate(
+            name,
+            pre,
+            predicate,
+            clause.span,
+        ));
     }
 
     // DD-50.7: func body children are statements, not expressions
@@ -1439,7 +1461,14 @@ fn emit_func_single(
             let converted = convert_to_expression(last_expr);
             items.push(list(vec![atom("const"), atom(&result_var), converted]));
             if let Some(ref post) = clause.post {
-                items.push(emit_post_check(name, post, &result_var, clause.span));
+                let replaced = replace_tilde(post, &result_var);
+                let predicate = emit_contract_predicate(&replaced, ctx, registry);
+                items.push(emit_post_check_with_predicate(
+                    name,
+                    post,
+                    predicate,
+                    clause.span,
+                ));
             }
             items.push(list(vec![atom("return"), atom(&result_var)]));
         }
@@ -1610,7 +1639,13 @@ fn emit_func_multi(
         if !ctx.strip_assertions
             && let Some(ref pre) = clause.pre
         {
-            block_items.push(emit_pre_check(name, pre, clause.span));
+            let predicate = emit_contract_predicate(pre, ctx, registry);
+            block_items.push(emit_pre_check_with_predicate(
+                name,
+                pre,
+                predicate,
+                clause.span,
+            ));
         }
 
         // DD-50.7: func body children are statements, not expressions
@@ -1651,7 +1686,14 @@ fn emit_func_multi(
                 let converted = convert_to_expression(last);
                 block_items.push(list(vec![atom("const"), atom(&result_var), converted]));
                 if let Some(ref post) = clause.post {
-                    block_items.push(emit_post_check(name, post, &result_var, clause.span));
+                    let replaced = replace_tilde(post, &result_var);
+                    let predicate = emit_contract_predicate(&replaced, ctx, registry);
+                    block_items.push(emit_post_check_with_predicate(
+                        name,
+                        post,
+                        predicate,
+                        clause.span,
+                    ));
                 }
                 block_items.push(list(vec![atom("return"), atom(&result_var)]));
             }
@@ -1786,7 +1828,13 @@ fn emit_genfunc_single(
     if !ctx.strip_assertions
         && let Some(ref pre) = clause.pre
     {
-        items.push(emit_pre_check(name, pre, clause.span));
+        let predicate = emit_contract_predicate(pre, ctx, registry);
+        items.push(emit_pre_check_with_predicate(
+            name,
+            pre,
+            predicate,
+            clause.span,
+        ));
     }
 
     // DD-50.7: genfunc body children are statements, not expressions
