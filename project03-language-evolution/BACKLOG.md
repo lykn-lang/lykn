@@ -330,6 +330,46 @@ from decoded template-value correction, not permission for a cache rewrite or
 version bump in Slice08. Its proof uses a fresh cache and explicitly does not
 claim existing warm global caches are migrated. [Current review](slice08-template-string-boundary/cdc-verification.md).
 
+#### NE-C05 — explicit final return with a typed result emits invalid initializer
+
+**Open source-backed candidate, 2026-11-06.** Slice09's actual accepted-tool
+helper compile exited0 but a properly closed `func` with `:returns :boolean`
+and explicit final return emitted `const result__gensym1 = return ...`.
+The paired full-source/output hashes and exact emitted line are retained in
+[the witness](slice09-lykn-research-helpers/artifacts/evidence/return-lowering-witness.md).
+Evidence is CC accepted-tool observation plus CDC inspection of the exact pair;
+no reduced repro or runtime was added. This is separate from the disproved
+stale-global-compiler statement-context claim. The delivered helper uses its
+normal implicit final value and passes independently, so migration is complete.
+
+**Owner/re-entry.** Project03 CDC owns focused semantic/source triage and a
+meaningful typed explicit-return regression on the accepted native pipeline,
+including the applicable guide contract, before a repair is scoped. Preserve
+the local full snapshots before any future scratch/worktree disposal. No
+compiler patch, general return-form correctness claim or integration follows.
+
+#### NE-C06 — native diagnostic fidelity candidates
+
+**Open diagnostic follow-up, 2026-11-06.** Slice09's accepted compiler reports
+unused bindings that are used in the actual output. The smallest retained
+observation is child `mode`: [source](slice09-lykn-research-helpers/artifacts/tooling/child-fixture.lykn)
+uses it for dispatch, [compile stderr](slice09-lykn-research-helpers/artifacts/evidence/cdc-review/child-fixture.compile.stderr)
+warns unused, and the independent R0/R1 paths exhibit distinct successful/raw-
+failure behavior. Other helper member-reference/function warnings are retained
+in the same review evidence; lint reports zero findings. No warning was hidden.
+
+There is also a static-only nested-diagnostic concern: native
+`emitter/forms.rs::emit_expr` retains the raw expression after a nested
+classifier error. The observed quoted-string `dissoc` call violated its
+keyword-only contract, and its then-generated output used the wrong global
+compiler; it is NOT accepted-runtime proof of this concern. Keep the source
+fact/limitation distinct from the independently observed warning mismatch.
+
+**Owner/re-entry.** Project03 CDC owns future diagnostic triage with the actual
+compiler identity and relevant classifier/analyzer paths. Separate the warning
+and error-propagation questions when scoping tests; no suppression, broad
+diagnostic rewrite or implementation is opened by this register entry.
+
 #### NE-D01 — template dispatch prose contradicts its single-literal table row
 
 **Open guide follow-up, 2026-11-06.** At b841f71b/a061c214,

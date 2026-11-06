@@ -102,3 +102,31 @@ consumed and no further Python execution is permitted. LH-06 and final LH-07
 remain open; LH-03's implementation proof is accepted with documentation/
 idiom delivery refinement still pending. No compiler fix, merge, push,
 publication or full five/eleven pilot repeat follows.
+
+## Cleanup accepted — 2026-11-06
+
+Reviewed clean2d69bda, including cleanup4e19e0e. I independently confirmed the
+two .py paths are absent and recent Slice06/07/08 artifact plus owned task
+target/slice07/08/09 find/rg queries find no .py/.pyc or full inline bodies.
+I inspected all three replacement/locator documents; original Git blobs37e39,
+dbf448 and5881e780 still exist. Tracked/ignored builder metadata compare equal.
+Both original stderr/status pairs remain equal at SHAa04627a7 and4355a46b;
+Git diff against7048 proves the tracked diagnostic and positive-log bytes did
+not change. Historical diagnostic fragments/mentions remain intentionally;
+this is not a claim of zero Python text or a global legacy-script purge.
+
+All four helper source hashes remain da1f13a8/7569339d/82fca2d8/e3ba6c8d,
+and there is no source diff from accepted e9555ecd. README now really changes
+compiler cwd to its explicit empty-config directory, uses paths valid there,
+documents R0's fixed config dependency and stages the child within read scope.
+Its fresh outputs/run root preserve prior frozen receipts. No remaining
+functional or documentation finding. Accepted native gates, full code review,
+all12 runtime controls and exact output reconciliation therefore retain their
+applicability without another runtime, Python invocation or compiler build.
+
+Final source-home tips, common AGENTS SHA1b5d78b9 and CLAUDE mode120000 remained
+unchanged/clean, so the six independently reproduced citation gates apply.
+LH-03/06/07 now done. CDC's mechanical canonical report relocation and final
+retrospective/parent update complete this bounded endpoint. Source-backed
+NE-C05/06 follow-ups and all earlier audit/library/human obligations remain
+owned/open; no new scope or external action is opened.

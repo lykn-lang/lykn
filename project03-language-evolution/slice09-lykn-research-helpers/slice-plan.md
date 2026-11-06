@@ -1,6 +1,8 @@
 # Slice09 — Lykn research helpers
 
-Status: open. Current assignment: `cc-prompt-iteration02.md`.
+Status: closed, all seven LH rows independently done on2026-11-06.
+No active assignment. Last assignment: `cc-prompt-iteration02.md`, completed
+and independently verified. No next unit or additional integration is opened.
 Collapsed standalone Project03 increment; no new arc or project. Artifacts:
 `artifacts/tooling/` holds reusable Lykn research helpers and their usage;
 `artifacts/evidence/` holds actual parity/control receipts. Generated JS and
@@ -198,3 +200,8 @@ semantics or architecture choice is left for CC to select.
 - 2026-11-06 iteration02: source helpers unchanged; fix README compiler cwd,
   remove verified original Python bodies/owned copies with immutable locators,
   and retain factual diagnostics/outcomes. Python exception is consumed.
+- Cleanup4e19e0e/report2d69bda: actual deletions/replacements and README flow
+  independently verified; helper/policy identities and diagnostic bytes remain
+  unchanged. All seven rows closed with retrospective and Project03 bubble-up.
+  CC's newly misplaced artifacts/closing-report.md was mechanically moved to
+  canonical slice root with relative links rebased; original Git path survives.
