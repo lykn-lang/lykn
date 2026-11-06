@@ -430,3 +430,53 @@ source, compiler output, case population, and permissions scope are unchanged.
 The next R0–R3 execution uses fresh root
 `target/slice09/run-iteration01-v3-2026-11-06`; no second Python invocation is
 required or will occur.
+
+## Iteration01 fixed-control outcome
+
+The final fresh run used Deno SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`, helper
+source SHA-256
+`82fca2d87cd5c07ee4545b51a6fa721ed0d5bfab7db126d5f2e53e46eb2a3e89`, generated
+helper SHA-256
+`30ff4d62639584243987819b2340b0eaad67201e82ed8068f601f8154577a768`, and
+fresh root
+`/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/run-iteration01-v3-2026-11-06`.
+The four JS products were frozen beneath `target/slice09/frozen-iteration01-v3/`;
+their hashes are recorded above and the child Lykn source staged there is byte
+identical to committed SHA-256 `e3ba6c8de2be5cadec4778859290e4bc73db2c9b7e50e476072031144a832e86`.
+The actual direct Deno invocation and all seven arguments are recorded in the
+committed tooling README. It exited 0 and printed `V0–V7 passed`, `R0 pass`,
+`R1 pass`, `R2 pass`, `R3 pass`, and `R0–R3 pass`.
+
+| Case | Captured outcome |
+| --- | --- |
+| V0 | Exit 0; stdout SHA equals original validator SHA `c30a0ead3be94937397eca741072b1cec799af0ee5c0d96d0cdc8d96c21fa92c`. |
+| V1 | Exit 0 after source and dist map reorder; expected map output and only the reordered dist JSON manifest digest change. |
+| V2 | Nonzero with the expected source `json` map key-count diagnostic. |
+| V3 | Nonzero with the expected dist wrong-target diagnostic. |
+| V4 | Nonzero with the expected dist map key-count diagnostic. |
+| V5 | Nonzero; stderr reports `NotFound` and the exact missing `target/lykn/dist/json/value.js` path. |
+| V6 | Exit 0; the sole changed digest row is `target/lykn/dist/effects/effect.js`, matching its mutated bytes. |
+| V7 | Exit 0; the unchanged space-path clone's stdout is byte-identical to V0. |
+| R0 | Exit 0. Receipt 000 directly invoked the accepted compiler with `compile <child-fixture.lykn> -o <child-fixture.js>` from `compile cwd with spaces`; exact compiler SHA is the accepted `544041ec…`. Compile code 0, stdout empty, stderr retained with the warning below. Receipt 001 ran Deno with argv `space value` and literal `literal;$(echo no-shell)`, code 0, exact JSON stdout and empty stderr. Receipts 002/003 copied 3 bytes and recorded `equal: true`. |
+| R1 | Outer and child status 7. Captured stdout bytes `00 ff 0a`; stderr bytes `01 fe 0a`. Sentinel and receipt 001 are absent. |
+| R2 | Unequal three-byte inputs record `equal: false`; outer status 1. Sentinel and receipt 001 are absent. |
+| R3 | No-clobber copy fails; existing destination remains `04 05 06`. Sentinel and receipt 001 are absent. |
+
+R0's accepted compile receipt preserves an 80-byte stderr warning: `3:1:
+warning: unused binding 'mode'` (SHA-256
+`2fd076b63d64c14f98e1b9d4158e78c91c24252a749ea00aad43fbefd77ecce7`). The
+compiled child uses `mode` in its raw-failure/sentinel dispatch; the warning is
+retained as an observed unused-binding analyzer warning, not suppressed. R0
+compile receipt argv, cwd, environment and code, R0 Deno argv/cwd/code, raw
+R1 bytes, R2 result, R3 destination bytes, and all V/R outputs remain under the
+ignored run root. The two earlier runtime failures (missing local `sha256`,
+then source-tree read permission) and the V5 assertion correction remain
+separately preserved at their original run roots; they were not overwritten or
+relabelled as successful attempts.
+
+The exact Python/Lykn positive stdout and status parity is established on the
+same unchanged accepted workspace. The original unmodified Python source was
+executed once, its exception is consumed, and no cleanup/deletion or CDC
+acceptance is claimed. Policy commits remain as previously recorded; LH-01–07
+and all slice acceptance rows remain open for independent disposition.
