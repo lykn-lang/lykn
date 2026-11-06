@@ -1,0 +1,13 @@
+(import-macros "testing" (test includes))
+(import "testing/helpers.js" (compile-both))
+
+(test
+  "contracts: surface predicates converge across compilers"
+  (bind
+    result
+    (compile-both
+      "(func checked :args (:any x) :pre (= x 42) :post (cond ((and (> ~ 0) (= ~ 42)) true) (:else false)) :body x)"))
+  (includes result "x === 42")
+  (includes result "result__gensym0 > 0 && result__gensym0 === 42")
+  (includes result "(= x 42)")
+  (includes result "(cond ((and (> ~ 0) (= ~ 42)) true) (:else false))"))
