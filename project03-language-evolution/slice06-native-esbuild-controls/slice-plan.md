@@ -1,6 +1,6 @@
 # Slice06 — Native esbuild and five controls
 
-Status: **Open; tool/compiler built and sources staged, targeted iteration01 before runtime.** Parent: [Project03](../project-plan.md).
+Status: **Open; C4 retained-code gate passed, then the first C5 source runtime failed during module parsing; 1/5 bundles and 1/11 runtime invocations, with ten runtimes and four bundles unrun. No API/runtime acceptance; independent CDC closeout pending.** Parent: [Project03](../project-plan.md).
 Collapsed standalone slice; current assignment `cc-prompt-iteration01.md`; [ledger](ledger.md).
 
 ## Authority, result and endpoint
