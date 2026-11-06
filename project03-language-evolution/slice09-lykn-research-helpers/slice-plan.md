@@ -1,6 +1,6 @@
 # Slice09 — Lykn research helpers
 
-Status: open. Current assignment: `cc-prompt.md`.
+Status: open. Current assignment: `cc-prompt-iteration01.md`.
 Collapsed standalone Project03 increment; no new arc or project. Artifacts:
 `artifacts/tooling/` holds reusable Lykn research helpers and their usage;
 `artifacts/evidence/` holds actual parity/control receipts. Generated JS and
@@ -177,3 +177,12 @@ semantics or architecture choice is left for CC to select.
 
 - 2026-11-06 initial `cc-prompt.md`: prepared for fresh Luna High execution;
   working helper/parity/policy return precedes independent review and deletion.
+- Initial return 888b1f6a: policy delivered; helper/control candidates and
+  wrong-tool provenance retained. Zero accepted V/R controls or Python oracle;
+  one pre-freeze standalone child attempt. Latest compiles used stale global
+  c02d3b84, invalidating apparent current-compiler blocker/green claims. CDC
+  recompile of the same public source with accepted544041ec disproves the
+  claimed blocker; actual evidence is in artifacts/evidence/cdc-pin-recheck/.
+- 2026-11-06 iteration01: correct exact tool invocation, actual source boundaries
+  and fixed case oracles/R0 compile action, then execute original parity/control
+  population. No compiler prerequisite or source repair authorized or needed.

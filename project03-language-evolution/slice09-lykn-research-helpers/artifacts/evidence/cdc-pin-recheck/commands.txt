@@ -1,0 +1,11 @@
+CDC independent static recheck, 2026-11-06. No helper/control runtime.
+Verified task target/release/lykn and bin/lykn SHA-256:
+544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a
+Explicit target/release/lykn --version: lykn 0.6.0, exit 0.
+Owned cwd /private/tmp/lykn-slice09-pin-review.pKsqma with the retained empty project.json.
+Actual direct command, exit 0:
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/empty/attempts/public-check-candidate-freeze1.lykn > public-check.js 2> public-check.stderr
+Input SHA-256 da1f13a854995696907fe4df037802516ba3a50f67cc75a9b5e100a5949c735d
+Output SHA-256 161036f7c7c14d790f63e9d9b05cd5fc3148441a169bb421f0b13064e922ae24
+Empty stderr. Actual output retains statement ifs within for-of; no COMPILE_ERROR.
+This disproves the alleged accepted-baseline blocker. Prior output 80e5fde8 was generated with wrong global binary c02d3b84, not the accepted compiler. Earlier unattributed commands remain unverified; this recheck does not backfill their provenance or erase authoring failures.
