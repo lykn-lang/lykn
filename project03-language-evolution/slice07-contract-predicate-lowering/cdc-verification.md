@@ -130,3 +130,13 @@ native-focused, parity). Those bytes are preserved rather than cleaned up as
 prose. The changed planning prose passes its explicit-path whitespace check;
 the source diff/full native gate already passed independently. No product
 validation gate is bypassed by retaining raw-output fidelity.
+
+## Authorized integration addendum — 2026-11-06
+
+After the Operator explicitly authorized the local release merge, CDC integrated
+the already accepted four-path change into release/0.6.x at
+`b841f71b30eb2c3e340a651ae1d57de04fec3d79`. Exact predicted tree, file-byte
+carry-forward, proper merge trailers and unfiltered release `make check` exit0
+are recorded in [the integration receipt](artifacts/release-integration.md).
+This mechanical integration does not add implementation authorship or rewrite
+the earlier bounded stop. No other branch propagation or external action.

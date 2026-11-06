@@ -231,6 +231,13 @@ C5 child exit0 but stopped at a distinct observer template oracle mismatch,
 owned by NE-C03 below. Its four bundles/ten calls remain unrun. Neither this
 repair nor its C4 gate closes original F rows or historical NE-04/05/06.
 
+**2026-11-06 integration.** Operator authorized the local release/0.6.x merge;
+it is complete at `b841f71b30eb2c3e340a651ae1d57de04fec3d79` with actual
+unfiltered release `make check` passing. [Receipt](slice07-contract-predicate-lowering/artifacts/release-integration.md).
+Other release propagation, push/publication remain unapproved. NE-C03 still
+owns the separately stopped oracle/template boundary, with no changed pilot
+counts or implied acceptance of its deferred rows.
+
 #### NE-C02 — accepted branch-local binding emits invalid statement JavaScript
 
 **Open observation, 2026-11-05; no repair authorized here.** During Slice07's
