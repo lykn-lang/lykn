@@ -317,6 +317,22 @@ from decoded template-value correction, not permission for a cache rewrite or
 version bump in Slice08. Its proof uses a fresh cache and explicitly does not
 claim existing warm global caches are migrated. [Current review](slice08-template-string-boundary/cdc-verification.md).
 
+#### NE-D01 — template dispatch prose contradicts its single-literal table row
+
+**Open guide follow-up, 2026-11-06.** At b841f71b/a061c214,
+docs/guides/17-template-and-i18n.md123–137 correctly lists `(template "hello")`
+as ICU, then says ICU is “only activated” by literal-string-then-keyword.
+The inspected native/JS dispatch and Slice08's actual single-literal programs
+confirm the table's no-keyword case. This is a source-cited prose inconsistency,
+not a newly ambiguous runtime policy or a reason to change the frozen programs.
+
+**Owner/re-entry.** Project03 CDC owns the next focused source-guide wording
+correction, reconciling that sentence and its adjacent compatibility assertion
+against the table/current dispatch before teaching/publication claims. Related
+Project07 guide/book/human obligations stay open; no ownership transfer or
+unperformed correction is implied. Slice08 records the issue here rather than
+only in a retrospective. No compiler inquiry or additional case is opened.
+
 ### A5 · Packaging & distribution — **`02-packaging-strategy`** (research open)
 
 **Capability (candidate).** Release engineering: Homebrew (custom tap) and

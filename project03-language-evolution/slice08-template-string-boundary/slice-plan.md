@@ -1,8 +1,8 @@
 # Slice08 — NE-C03 template string boundary
 
-Status: open; TE-01 independently accepted. Current assignment:
-`cc-prompt-iteration02.md`, continuing iteration01 repair/full validation with
-the repository JS-test filename correction; pilot still held.
+Status: open; TE-01/02/03 independently accepted. Current assignment:
+`cc-prompt-iteration03.md`, original frozen pilot under accepted source a061c214.
+No source edits or additional integration authorized.
 Initial diagnosis prompt is preserved.
 Collapsed standalone increment under Project03; no parallel Project07 home.
 
@@ -189,6 +189,13 @@ then changes the hand-authored JS test suffix to repository `*.test.js` rather
 than the generated-output `*_test.js` prescribed by CDC. Exact body/fixtures/
 oracles are retained; ignore policy is untouched. This is a bounded author-
 readiness correction, not new behavior or a restarted iteration budget.
+
+Repair accepted2026-11-06: actual independent native/public-JS22 each, fresh
+embedded-copy proof and unfiltered repository gate passed; full review/pins in
+cdc-verification.md. Iteration03 now resumes only the original frozen pilot,
+with its new0.6-based compiler condition committed before execution. Earlier
+compiler conditions/counts remain history. NE-C04 and NE-D01 have separate
+actual backlog owners; no global cache migration or guide correction implied.
 
 ## CC Phase A receipt — 2026-11-06
 
