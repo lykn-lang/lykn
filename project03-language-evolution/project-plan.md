@@ -140,6 +140,15 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 Operator requested replacing the scoped Python research helpers with
+Lykn, retaining originals only for migration parity, then deleting their code
+and making the no-Python rule explicit in seven-home AGENTS/new CC prompts.
+[Slice09](slice09-lykn-research-helpers/slice-plan.md) owns usable validator/
+orchestration replacements, finite exact-positive parity and negative controls,
+independent review and scoped cleanup. Existing outcome/failure/hash records
+and Git history survive. No global Python purge, compiler fix, integration or
+full pilot repeat is authorized by this increment.
+
 2026-11-06 Operator authorized local integration of the accepted predicate
 repair into release/0.6.x, then NE-C03. Merge b841f71b and the unfiltered release
 gate are complete (JS+Lykn1466/1466, docs482/482), recorded in Slice07's dated
@@ -179,6 +188,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice09-lykn-research-helpers](slice09-lykn-research-helpers/slice-plan.md): active Operator-authorized Lykn replacement/parity/deletion and explicit synchronized research-tooling policy.
 - [slice08-template-string-boundary](slice08-template-string-boundary/slice-plan.md): closed; decoded-template repair/full gates and unchanged five-bundle/eleven-call pilot independently accepted on dedicated task branch; no further integration implied.
 - [slice07-contract-predicate-lowering](slice07-contract-predicate-lowering/slice-plan.md): independently accepted predicate repair/full gates; frozen pilot stopped at independently reproduced template-oracle mismatch, four done/two deferred rows; NE-C03 re-entry.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
@@ -200,6 +210,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.11: Opened bounded Slice09 after explicit Operator replacement/
+  removal request; original Python is temporarily a frozen parity oracle,
+  with actual code deletion and seven-home policy delivery required at close.
 
 - 2026-11-06 v1.10: Independently accepted Slice08 repair and complete bounded
   frozen pilot; retained process nonconformance, historical failed conditions,
