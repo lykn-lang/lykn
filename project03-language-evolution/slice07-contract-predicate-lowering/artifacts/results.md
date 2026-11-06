@@ -324,3 +324,35 @@ and authorized continuation to the existing fixed controls call. This is
 inspection/confirmation, not an independent bundle execution. The next allowed
 action is the unchanged `controls <reviewedhash>` invocation; no other bundle
 or runtime variant is introduced.
+
+### Attempt 02 — first fixed runtime and oracle stop
+
+After CDC's gate confirmation, the single unchanged controls command
+`controls 6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a`
+was invoked with the recorded environment. Outer Deno exited1 at the first
+required `C5-source-before` oracle assertion. The child Deno call itself exited
+0 with empty stderr and emitted valid JSON containing every frozen C5 field
+and expected value; its exact command and stdout are in
+`artifacts/evidence/phase-b/run-02/raw/controls/C5-source-before.json`. The
+driver's outer stderr and exit1 are retained alongside it. Thus this is not a
+child runtime failure or evidence that the package APIs failed.
+
+Read-only source inspection of the exact frozen Lykn driver at lines624–629 and
+generated driver JavaScript at lines362–364 identifies a source/template
+boundary oracle mismatch: the `template` expression's quote escapes become
+bare quotes in the emitted JS template literal, while the child's
+`JSON.stringify` output correctly includes escaped inner quotes in its
+`fileRoot`, `fileValue`, `documentRoot` and `documentValue` string values.
+Full driver Lykn/generated-JS and C5 Lykn/generated-JS sources are retained;
+this distinct issue is routed as NE-C03. No source, specimen or observer was
+changed and no retry or extra runtime was run.
+
+A read-only post-stop hash of the 13 public package files exactly matches the
+pre-gate hashes (diff exit0); these hashes are evidence for this stopped run,
+not completion of the planned C5 after-control. Actual Phase B denominator at
+stop: C4 is1/5 bundles; the other four bundles are unrun. One of11 fixed
+runtime calls was attempted: child exit0, outer frozen-oracle assertion failed;
+the remaining ten calls are unrun. The public-after check and all receipts are
+preserved in `artifacts/evidence/phase-b/run-02/raw/controls/`. CP-04 and CP-05
+remain open/incomplete; CP-06 awaits independent review. This returns the
+separate oracle issue without an unauthorized repair or replay.

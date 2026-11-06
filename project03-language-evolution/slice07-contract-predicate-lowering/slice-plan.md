@@ -163,6 +163,28 @@ assertions. Five total bundles/eleven runtime invocations; no hidden variants.
 Only C5 gets exact-data read grant; original minimal driver run/read/write and
 child deny-net/no-remote/no-npm/cached-only/no-prompt flags remain.
 
+### CC execution update — 2026-11-05
+
+CDC accepted Phase A and resumed the frozen condition. CC committed the source,
+compiler/tool pins and unchanged C1–C5 predictions before execution. Attempt01
+preserves one compile setup failure (missing output parent); attempt02 used a
+fresh export of the same archive and passed all16 strict compiles, dist,
+format/lint/check, all15 corrected byte comparisons and nine export maps. Its
+first comparison command had an incorrect `lib/` prefix; that invocation error
+is retained separately.
+
+CDC independently confirmed the sole C4 gate at the expected hash and
+authorized the fixed controls command. The first C5-source-before child exited0
+and returned every expected field/value, but the frozen outer stdout assertion
+failed. Read-only inspection locates the mismatch at the Lykn `template` to
+JavaScript template-literal boundary in the frozen driver; evidence is retained
+and CDC routes the distinct issue as NE-C03. No source/specimen correction,
+retry, or extra runtime was performed. This attempt has one of five bundles
+completed; four bundles remain unrun. One of eleven child runtime calls was
+attempted (exit0, outer oracle mismatch); ten remain unrun. The read-only 13-file
+post-stop hashes match pre-gate hashes, without satisfying completion of the
+fixed controls. CP-04/05 remain open and CP-06 awaits independent review.
+
 Carry all failed/unrun baselines, original Slice01 F1–F12, Project03 composition,
 Project07 final synthesis/licence/bootstrap/ADT/guide/book/human gates. Old Slice06
 deferred rows stay historical; a new accepted compiler condition does not rewrite

@@ -1,0 +1,1 @@
+shasum -a 256 13 files; compare with pre-gate public-before.sha256

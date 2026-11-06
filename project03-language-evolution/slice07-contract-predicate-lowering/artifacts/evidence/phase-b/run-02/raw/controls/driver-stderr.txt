@@ -1,0 +1,7 @@
+error: Uncaught (in promise) Error: C5-source-before stdout diverged from the frozen prediction
+  if (!ok) throw new Error(message);
+                 ^
+    at requireOk (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07/pilot-corrected/run-02/experiment/workspace/target/lykn/build/driver.js:12:18)
+    at runtime (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07/pilot-corrected/run-02/experiment/workspace/target/lykn/build/driver.js:382:3)
+    at controlsPhase (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07/pilot-corrected/run-02/experiment/workspace/target/lykn/build/driver.js:522:3)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07/pilot-corrected/run-02/experiment/workspace/target/lykn/build/driver.js:563:1

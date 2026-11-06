@@ -1,0 +1,7 @@
+Classification by read-only source inspection (no source/specimen edit and no additional runtime):
+
+Frozen Lykn expected-output source: source/driver.lykn lines 624-629 (the complete file is retained). It supplies string fragments through `template`, with `\\\"` Lykn source escapes in the nested fileRoot/fileValue/documentRoot/documentValue fields.
+
+Actual generated expected-output code: source/driver-generated.js lines 362-364 (the complete file is retained). These escapes appear in a JavaScript template literal as `\"`; JavaScript template literal evaluation consumes the backslash before a double quote, yielding bare quotes in the expected JS string. The child C5 stdout in raw/controls/C5-source-before.json is valid JSON.stringify output whose JSON string fields contain backslash-escaped inner quotes. The observed fields and values match the frozen data; the bytes differ in those inner quote escapes, so the driver's `requireOk` reports `C5-source-before stdout diverged from the frozen prediction` even though the child exited 0 with empty stderr.
+
+This is a source/template-boundary oracle divergence, not a child runtime failure or package API failure; CDC routes the distinct follow-up as NE-C03. No later fixed call ran. The exact stdout is preserved in C5-source-before.json. The 13-file read-only after-snapshot matched the pre-gate snapshot byte-for-byte (diff exit 0); these hashes establish only this stopped attempt's unchanged package files, not completion of the planned C5 after-control.
