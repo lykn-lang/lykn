@@ -18,6 +18,15 @@ the documents. No historical implementation or verification status is upgraded.
 
 ## Definition of done
 
+2026-11-05 portable-guidance follow-through is independently complete: six
+Slice02 GC rows and new Arc03 A-2 / project P-7 are done. A fresh read-only
+Sol 6.1 High reviewer accepted cross-worktree composition and corrected
+authority semantics; the [attributable verdict](arc03-navigation-and-verification/closing-report.md#2026-11-05-portable-guidance-follow-through)
+preserves its exact candidate and limits. This does not close historical P-2
+classification or the project/human gate. NE-C01 and the unchanged five controls
+resume under their distinct existing approval after new guidance/source identity
+checks; no compiler fix, source propagation or external action occurred here.
+
 - Every in-scope tracked planning file has a recorded destination and original
   blob/commit provenance. Pure moves precede content edits.
 - The source branch removal chain is 0.6.x → 0.7.x → 0.8.x; source changes
@@ -72,6 +81,11 @@ retained paths, run citation gates, and compare pre/post local hardware hashes.
 Doer evidence is attested; independent framework closure remains a separate gate.
 
 ## Version history
+
+- 2026-11-05 v1.5: Portable guidance delivered and independently composed
+  across seven worktrees after restoration of prior release-authoring authority.
+  Closed P-7 only, retained P-2 and original evidence, and completed the narrow
+  cleanup prerequisite to the already approved compiler repair.
 
 - 2026-11-05 v1.4: Opened Arc03/Slice02 portable guidance cleanup under explicit
   Operator direction, preserving unique Lykn references and source boundaries.

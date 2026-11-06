@@ -131,3 +131,10 @@ unfixed and held until the fresh parent verdict; no original F/Project07 or
 Project06 P-2 acceptance follows. The separate fresh reviewer has confirmed
 iteration04's source meaning/parity; its final parent composition record follows
 the committed child close. Retrospective covers CDC's placement/authority errors.
+
+After this child close, fresh reviewer guidance_composition_review accepted only
+new A-2/P-7 at af7cb86 and the six corrected source tips. Its verbatim authored
+report is now preserved in [parent close](../closing-report.md#2026-11-05-portable-guidance-follow-through),
+with evidence reuse/fresh checks distinguished. CDC merely persisted that
+report and derived status metadata; this is not self-acceptance of parent plans.
+No source/guidance implementation changed after the reviewed candidate.

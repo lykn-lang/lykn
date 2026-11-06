@@ -3,7 +3,8 @@
 2026-11-05: six rows independently done after iteration04; see
 [final child verification](cdc-verification.md#final-child-review--iteration04-2026-11-05).
 Initial rejected candidate/GC-R01 and original attested evidence remain in the
-dated records. Parent A-2/P-7 remain open for the separate fresh composition verdict.
+dated records. Parent A-2/P-7 are accepted by the separate fresh reviewer;
+the attributable verdict is preserved in the parent close. P-2 remains open.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
