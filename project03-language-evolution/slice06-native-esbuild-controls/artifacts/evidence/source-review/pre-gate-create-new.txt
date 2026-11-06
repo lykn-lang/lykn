@@ -1,0 +1,87 @@
+Prior emitted helper from run-07/workspace/target/lykn/build/driver.js:
+  if (typeof path !== "string") throw new TypeError("ensureAbsent: arg 'path' expected string, got " + typeof path);
+
+  try {
+    {
+      Deno.statSync(path);
+      throw new Error(`refusing to overwrite existing path: ${path}`);
+    }
+  } catch (err) {
+    throw new TypeError("COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement");
+  }
+  return null;
+}
+function writeNew(path, text) {
+  if (typeof path !== "string") throw new TypeError("writeNew: arg 'path' expected string, got " + typeof path);
+
+  if (typeof text !== "string") throw new TypeError("writeNew: arg 'text' expected string, got " + typeof text);
+
+  ensureAbsent(path);
+  return Deno.writeTextFileSync(path, text);
+}
+function environment(cache) {
+  if (typeof cache !== "string") throw new TypeError("environment: arg 'cache' expected string, got " + typeof cache);
+
+  return { PATH: "/opt/homebrew/bin:/usr/bin:/bin", DENO_DIR: cache, DENO_NO_UPDATE_CHECK: "1", NO_COLOR: "1" };
+}
+function command(executable, args, cwd, cache) {
+  if (typeof executable !== "string") throw new TypeError("command: arg 'executable' expected string, got " + typeof executable);
+
+  if (!Array.isArray(args)) throw new TypeError("command: arg 'args' expected array, got " + typeof args);
+
+Deno 2.9.6 `deno types` WriteFileOptions/createNew excerpt:
+
+  /** Options for writing to a file.
+   *
+   * @category File System
+   */
+  export interface WriteFileOptions {
+    /** If set to `true`, will append to a file instead of overwriting previous
+     * contents.
+     *
+     * @default {false} */
+    append?: boolean;
+    /** Sets the option to allow creating a new file, if one doesn't already
+     * exist at the specified path.
+     *
+     * @default {true} */
+    create?: boolean;
+    /** If set to `true`, no file, directory, or symlink is allowed to exist at
+     * the target location. When createNew is set to `true`, `create` is ignored.
+     *
+     * @default {false} */
+    createNew?: boolean;
+    /** Permissions always applied to file. */
+    mode?: number;
+    /** An abort signal to allow cancellation of the file write operation.
+     *
+     * If the signal becomes aborted the write file operation will be stopped
+     * and the promise returned will be rejected with an {@linkcode AbortError}.
+     */
+    signal?: AbortSignal;
+
+Deno 2.9.6 `deno types` writeTextFileSync signature excerpt:
+  /** Synchronously write string `data` to the given `path`, by default creating
+   * a new file if needed, else overwriting.
+   *
+   * ```ts
+   * Deno.writeTextFileSync("hello1.txt", "Hello world\n");  // overwrite "hello1.txt" or create it
+   * ```
+   *
+   * As with {@linkcode Deno.writeTextFile}, the data is written and the file is
+   * closed, but this does not guarantee the contents have been flushed from the
+   * operating system's buffers to the physical storage device. If you need such
+   * a durability guarantee, open the file with {@linkcode Deno.openSync} and
+   * call {@linkcode Deno.FsFile.syncSync} before closing it.
+   *
+   * Requires `allow-write` permission, and `allow-read` if `options.create` is
+   * `false`.
+   *
+   * @tags allow-read, allow-write
+   * @category File System
+   */
+  export function writeTextFileSync(
+    path: string | URL,
+    data: string,
+    options?: WriteFileOptions,
+  ): void;

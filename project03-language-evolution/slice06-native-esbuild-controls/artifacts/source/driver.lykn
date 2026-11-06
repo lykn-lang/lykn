@@ -29,24 +29,18 @@
     (not (Array:isArray value))))
 
 (func
-  ensure-absent
+  reserve-absent
   :args
   (:string path)
   :body
-  (try
-    (do
-      (Deno:stat-sync path)
-      (throw (new Error (template "refusing to overwrite existing path: " path))))
-    (catch err (if (not (= err:name "NotFound")) (throw err))))
-  null)
+  (Deno:write-text-file-sync path "" (obj :create-new true)))
 
 (func
   write-new
   :args
   (:string path :string text)
   :body
-  (ensure-absent path)
-  (Deno:write-text-file-sync path text))
+  (Deno:write-text-file-sync path text (obj :create-new true)))
 
 (func
   environment
@@ -575,8 +569,8 @@
   :body
   (bind js-path (template output "/" name ".js"))
   (bind meta-path (template output "/" name ".meta.json"))
-  (ensure-absent js-path)
-  (ensure-absent meta-path)
+  (reserve-absent js-path)
+  (reserve-absent meta-path)
   (bind args (bundle-arguments name entry))
   (bind
     result
@@ -889,7 +883,7 @@
           (bind gate-path (template output "/gate-observations.json"))
           (bind gate (JSON:parse (Deno:read-text-file-sync gate-path)))
           (bind controls-path (template output "/controls-observations.json"))
-          (ensure-absent controls-path)
+          (reserve-absent controls-path)
           (require-ok
             (= gate:metadata:control "C4")
             "gate evidence is not the C4 observation")

@@ -371,3 +371,21 @@ updated C5/driver sources and staging checks are complete; this records
 preparation only. At this receipt, output directory/gate command are not yet
 run, and the denominator is still zero of five bundles and zero of eleven
 runtime invocations.
+
+### Pre-gate generated-code correction: create-new writes
+
+Before C4, inspection of the complete generated `driver.js` found that the
+prior `ensureAbsent` helper's emitted try/catch did not implement its source
+intent: the catch path unconditionally throws, so the helper cannot perform
+the intended absence check. This is recorded as observed emitted behavior;
+the cause is not attributed. No gate ran with that driver. Pinned Deno 2.9.6
+`deno types` documents `Deno.writeTextFileSync(path, data, options)` and
+`WriteFileOptions.createNew`, which fails when a file, directory, or symlink
+already exists. I replaced the try/catch probe with `createNew` writes for
+receipts and reserve empty new paths before esbuild writes bundle/metafile
+outputs. The exact emitted helper and Deno API excerpt are retained in
+`artifacts/evidence/source-review/pre-gate-create-new.txt`. The corrected
+observer requires a fresh native compile and emitted-code inspection before
+the single C4 gate. This correction does not change stimuli, package sources,
+oracles, runtime order, or permissions. The denominator remains zero of five
+bundles and zero of eleven runtimes.
