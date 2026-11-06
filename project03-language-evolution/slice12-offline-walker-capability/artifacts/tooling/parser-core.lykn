@@ -54,7 +54,7 @@
             :status "ready"
             :actualHash actual-hash
             :actualVersion parser:version
-            :parser parser)))))
+            :parser parser))))))
 
 (async
   (func
