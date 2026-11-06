@@ -1,0 +1,1 @@
+exit=0 command=lykn compile <planning>/artifacts/source/driver.lykn -o target/lykn/build/driver.js

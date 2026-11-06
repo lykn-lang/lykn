@@ -1,0 +1,72 @@
+396-  for (const relative of relativeFiles) {
+397-    const path = `${workspace}/target/lykn/dist/${relative}`;
+398:    const hash = await digest(Deno.readFileSync(path));
+399-    files.value = (current => {
+400-      if (!Array.isArray(current)) throw new TypeError("anonymous: arg 'current' expected array, got " + typeof current);
+401-
+402-      return [...current, { path: normalizePath(path), sha256: hash }];
+403-    })(files.value);
+404-  }
+405-  const exports = { value: [] };
+406-  for (const pkg of ["json", "yaml", "effects"]) {
+407-    const configPath = `${workspace}/target/lykn/dist/${pkg}/deno.json`;
+408-    const config = JSON.parse(Deno.readTextFileSync(configPath));
+--
+414-      const specifier = key === "." ? config.name : `${config.name}/${key.slice(2)}`;
+415-      const targetPath = modulePath(pkg, target);
+416:      const hash = await digest(Deno.readFileSync(targetPath));
+417-      exports.value = (current => {
+418-        if (!Array.isArray(current)) throw new TypeError("anonymous: arg 'current' expected array, got " + typeof current);
+419-
+420-        return [...current, { specifier: specifier, target: normalizePath(targetPath), sha256: hash }];
+421-      })(exports.value);
+422-    }
+423-  }
+424-  const actualExports = exports.value;
+425-  const expectedExports = ["@probe/json", "@probe/json/value", "@probe/json/file", "@probe/json/document", "@probe/yaml", "@probe/yaml/value", "@probe/effects", "@probe/effects/used", "@probe/effects/dead"];
+426-  const actualFiles = files.value;
+--
+499-  return { unchangedFiles: beforeFiles, unchangedExports: beforeExports };
+500-}
+501:async function gatePhase() {
+502:  const before = await publicSnapshot();
+503-  writeNew(`${output}/public-before.json`, JSON.stringify(before));
+504-  const entry = `${workspace}/target/lykn/dist/controls/c4.js`;
+505-  const observation = bundle("C4", entry);
+506-  writeNew(`${output}/gate-observations.json`, JSON.stringify(observation));
+507-  return null;
+508-}
+509:async function controlsPhase() {
+510-  const reviewedHash = Deno.args[5];
+511-  const c4Path = `${output}/C4.js`;
+512:  const actualHash = await digest(Deno.readFileSync(c4Path));
+513-  requireOk(reviewedHash === actualHash, "C4 reviewed bundle hash mismatch");
+514-  const gatePath = `${output}/gate-observations.json`;
+515-  const gate = JSON.parse(Deno.readTextFileSync(gatePath));
+516-  const controlsPath = `${output}/controls-observations.json`;
+517-  reserveAbsent(controlsPath);
+518-  requireOk(gate.metadata.control === "C4", "gate evidence is not the C4 observation");
+519-  const observations = { value: [gate] };
+520-  Deno.writeTextFileSync(controlsPath, JSON.stringify(observations.value));
+521-  const c5Entry = `${workspace}/target/lykn/dist/controls/c5.js`;
+522-  runtime("C5", "C5-source-before", c5Entry, false);
+--
+545-  runtime("C5", "C5-source-after", c5Entry, false);
+546-  const before = JSON.parse(Deno.readTextFileSync(`${output}/public-before.json`));
+547:  const after = await publicSnapshot();
+548-  writeNew(`${output}/public-after.json`, JSON.stringify(after));
+549-  const reconciliation = reconcileSnapshots(before, after);
+550-  writeNew(`${output}/public-reconciliation.json`, JSON.stringify(reconciliation));
+551-  return null;
+552-}
+553:function main() {
+554-  const phase = Deno.args[4];
+555-  return phase === "gate" ? gatePhase() : (() => {
+556-    if (phase === "controls") {
+557-      return controlsPhase();
+558-    } else {
+559-      throw new Error("phase must be gate or controls");
+560-    }
+561-  })();
+562-}
+563-await main();

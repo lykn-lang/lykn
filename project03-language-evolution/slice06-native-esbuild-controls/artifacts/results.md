@@ -416,3 +416,5 @@ attribution is made. Pinned native `lykn fmt --write`, `lykn check` (39
 top-level expressions), `fmt --check`, and all-16-file lint passed. The source
 will be committed before the next fresh compile. Bundle/runtime denominators
 remain 0/5 and 0/11.
+
+Fresh run-10 compiled the async phase-function correction from source commit `30e97932dc2cabeaa243338f405a5b8fe6399c10`; native compile, `lykn check` (39 top-level expressions), formatter check, and lint across all 16 sources passed. Generated-code inspection confirms `gatePhase` and `controlsPhase` are async functions, all remaining `await` expressions are within async function bodies, and `main` returns the selected phase promise for the top-level `await main()`. Reserved-declaration/sentinel scan is empty. The fresh workspace reuses the already verified 14 unchanged compiled files and the staged maps/modules; no source or staging inputs changed. The run-09 pre-load parse failure is retained; no C4 bundle or runtime has run yet (0/5, 0/11). Compile and generated-phase witnesses are under `artifacts/evidence/compilation/run-10/`.
