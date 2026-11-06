@@ -21,7 +21,7 @@ language proper, with types, contracts, pattern matching, and macros.
 **Kernel syntax** is the IR the surface compiles into; it's a thin
 JavaScript dialect that exists for compiler maintainers and language
 internals, not for end-user code. This README focuses on surface; for the
-full surface reference, see [`assets/ai/SKILL.md`](assets/ai/SKILL.md).
+full surface reference, see [`skills/lykn/SKILL.md`](skills/lykn/SKILL.md).
 
 For the design principles that govern Lykn's user experience, see
 [`docs/philosophy.md`](docs/philosophy.md).

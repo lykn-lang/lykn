@@ -615,7 +615,7 @@ Note: `$` is NOT in the abbreviation table — it's a valid JS identifier charac
 
 **Macro-name overrides:** the threading macros `->` and `->>` (the language-primitive forms, not embedded in longer identifiers) compile to `threadFirst` and `threadLast` respectively. These are language-design names rather than mechanical-rule outputs.
 
-See DD-49 (`docs/design/05-active/0049-identifier-mapping-lykn-js.md`) for full rationale.
+See [DD-49](https://github.com/lykn-lang/lykn/blob/planning/project01-mvp/arc12-identifier-mapping/artifacts/design/06-final/0049-identifier-mapping-lykn-js.md) for full rationale.
 
 ---
 
