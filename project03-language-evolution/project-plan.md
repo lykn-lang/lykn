@@ -97,11 +97,39 @@ CC Luna 6 High, sequential ownership, local-only commits and all approval gates
 from the prior authority remain, scoped now to Slice05. Read-only official source
 retrieval is permitted; no backend provisioning or external action is implied.
 
+## Native source-built esbuild authorization (2026-11-05)
+
+Operator approved using a pinned native esbuild build without Node/npm: “perfect.
+I love this idea — let's do it :-)”. This expressly authorizes immutable upstream
+source and reviewed Go-input acquisition, separate build, pinned explicit binary
+paths and provenance for the existing five-control scope. Direct native esbuild
+CLI/metafile replaces Deno bundle in [Slice06](slice06-native-esbuild-controls/slice-plan.md);
+Deno executes generated ESM only. Slice05's no-provisioning gate is superseded only
+for this source-build approval, not retroactively erased. Retained-code attribution
+still requires actual proof; all original F-1–F-12 criteria and Project07 outcomes
+remain open. No npm distribution/client/registry, Node installation, new backend,
+production library, push/publish/release or remote CI is authorized.
+
+One coherent increment ends after the pinned native tool and five controls plus
+independent review/retrospective, or an honest prerequisite/evidence-gap stop.
+Same explicit CDC Sol 6.1 High and CC Luna 6 High models; one Lykn observer driver
+is necessary tooling, not a sixth stimulus. Exact source/Go/module pins, finite
+network scope, five source programs/shared positives and actual attempt budgets
+are in the slice plan. The task branch/worktree is codex/native-esbuild-controls
+at 74a90d5, with durable ignored tools/experiment outputs; planning remains the
+only authored research/evidence branch. Managed API could not create this nested
+repository worktree, so verified repository-local Git fallback created it; no
+source baseline switched and main/releases are read-only. Sequential mutation
+ownership and local-only commits persist. Stop after Slice06, no whole-project
+advance or source repair. Source/module acquisition under this approval is
+separate from earlier documentation-only network reads.
+
 ## Existing units
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
+- [slice06-native-esbuild-controls](slice06-native-esbuild-controls/slice-plan.md): approved pinned native tool source build and five controlled consumers; active.
 - [slice05-deno-evidence-preflight](slice05-deno-evidence-preflight/slice-plan.md): operator-approved five-control Deno attempt; independently verified preflight stop, 0/5 run and 5/5 unrun; provisioning/attribution decisions remain with Operator.
 - [slice04-library-baseline-refresh](slice04-library-baseline-refresh/slice-plan.md): current compiler/Deno/policy and library/package boundary refresh; independently closed as a static baseline/protocol prerequisite; audit method decisions remain before Slice01 resumes.
 
@@ -118,6 +146,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-05 v1.5: Operator approved pinned native source-built esbuild/Go inputs
+  and direct CLI/metafile for the bounded five-control attempt. Opened coherent
+  Slice06 with durable tools, exact task branch, predictions and independent
+  review. Earlier stop remains history; no original audit/Project07 gate waived.
 
 - 2026-11-05 v1.4: Slice05 independently closed its required preflight stop
   after one intake-only correction, retaining reproduced source/cache evidence.
