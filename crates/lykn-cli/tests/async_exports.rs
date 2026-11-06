@@ -59,6 +59,33 @@ fn assert_cli_rejects(source_name: &str, source: &str, predicate: &str) {
     );
 }
 
+fn assert_compile_rejects(source_name: &str, source: &str, predicate: &str) {
+    let temp = TempDir::new().expect("create compile rejection directory");
+    let source_path = temp.path().join(source_name);
+    std::fs::write(&source_path, source).expect("write compile rejection fixture");
+    let compile = execute(
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .arg("compile")
+            .arg(&source_path)
+            .arg("-o")
+            .arg(temp.path().join("rejected.js")),
+    );
+    let stderr = String::from_utf8_lossy(&compile.stderr);
+    assert!(
+        !compile.status.success(),
+        "compile unexpectedly accepted {source_name}: {stderr}"
+    );
+    assert!(
+        stderr.contains(predicate),
+        "compile missed {predicate:?}: {stderr}"
+    );
+    eprintln!(
+        "ASYNC_EXPORT_COMPILE_REJECTED name={source_name} predicate={predicate:?} exit={:?} stderr={stderr:?}",
+        compile.status.code(),
+    );
+}
+
 #[test]
 fn async_named_export_checks_compiles_and_imports_with_await() {
     let temp = TempDir::new().expect("create async export runtime directory");
@@ -168,7 +195,7 @@ fn async_exports_keep_unknown_nested_and_reserved_names_rejected() {
         "(func outer :args () :body (exports outer))\n",
         "only allowed at module top level",
     );
-    assert_cli_rejects(
+    assert_compile_rejects(
         "reserved.lykn",
         "(func default :args () :body 42)\n(exports default)\n",
         "reserved word",
