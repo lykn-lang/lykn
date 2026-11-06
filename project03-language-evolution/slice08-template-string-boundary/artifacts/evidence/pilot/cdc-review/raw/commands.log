@@ -1,0 +1,166 @@
++ git -C /Users/oubiwann/lab/lykn/lang/.worktrees/planning archive 30e97932dc2cabeaa243338f405a5b8fe6399c10 project03-language-evolution/slice06-native-esbuild-controls/artifacts/source
++ tar -x -C /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment --strip-components=4
++ workspace=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace
++ output=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out
+++ shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/data/input.json
++ data_sha='5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/data/input.json'
++ test 5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22 = 5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22
++ printf '%s\n' '5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/data/input.json'
++ mkdir -p /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/yaml /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out
++ cd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace
++ for pkg in json yaml effects
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=document.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/document.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/document.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/document.lykn
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=file.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/file.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/file.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/file.lykn
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=mod.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/mod.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/mod.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/mod.lykn
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=value.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/value.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/value.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/json/value.lykn
++ for pkg in json yaml effects
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=mod.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/yaml/mod.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/yaml/mod.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/yaml/mod.lykn
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=value.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/yaml/value.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/yaml/value.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/yaml/value.lykn
++ for pkg in json yaml effects
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=dead.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/dead.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/dead.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/dead.lykn
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=effect.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/effect.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/effect.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/effect.lykn
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=mod.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/mod.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/mod.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/mod.lykn
++ for input in "$workspace/lib/$pkg/"*.lykn
++ name=used.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/used.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/used.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/lib/effects/used.lykn
++ for input in "$workspace/controls/"*.lykn
++ name=c1.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c1.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c1.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c1.lykn
++ for input in "$workspace/controls/"*.lykn
++ name=c2.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c2.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c2.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c2.lykn
++ for input in "$workspace/controls/"*.lykn
++ name=c3.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c3.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c3.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c3.lykn
++ for input in "$workspace/controls/"*.lykn
++ name=c4.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c4.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c4.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c4.lykn
++ for input in "$workspace/controls/"*.lykn
++ name=c5.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c5.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c5.js
++ printf '%s\t0\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/controls/c5.lykn
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/driver.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/driver.js
++ printf 'driver\t0\n'
++ /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn dist
++ for pkg in json yaml effects controls
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=document.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/document.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/document.js
++ printf '%s/%s\tidentical\n' json document.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=file.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/file.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/file.js
++ printf '%s/%s\tidentical\n' json file.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=mod.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/mod.js
++ printf '%s/%s\tidentical\n' json mod.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=value.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/json/value.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/value.js
++ printf '%s/%s\tidentical\n' json value.js
++ for pkg in json yaml effects controls
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=mod.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/yaml/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/mod.js
++ printf '%s/%s\tidentical\n' yaml mod.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=value.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/yaml/value.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/value.js
++ printf '%s/%s\tidentical\n' yaml value.js
++ for pkg in json yaml effects controls
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=dead.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/dead.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/dead.js
++ printf '%s/%s\tidentical\n' effects dead.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=effect.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/effect.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/effect.js
++ printf '%s/%s\tidentical\n' effects effect.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=mod.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/mod.js
++ printf '%s/%s\tidentical\n' effects mod.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=used.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/effects/used.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/used.js
++ printf '%s/%s\tidentical\n' effects used.js
++ for pkg in json yaml effects controls
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=c1.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c1.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/controls/c1.js
++ printf '%s/%s\tidentical\n' controls c1.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=c2.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c2.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/controls/c2.js
++ printf '%s/%s\tidentical\n' controls c2.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=c3.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c3.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/controls/c3.js
++ printf '%s/%s\tidentical\n' controls c3.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=c4.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c4.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/controls/c4.js
++ printf '%s/%s\tidentical\n' controls c4.js
++ for input in "$workspace/target/lykn/build/$pkg/"*.js
++ name=c5.js
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/controls/c5.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/controls/c5.js
++ printf '%s/%s\tidentical\n' controls c5.js
++ for pkg in json yaml effects
++ shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/document.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/file.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/value.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/deno.json
++ for pkg in json yaml effects
++ shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/value.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/deno.json
++ for pkg in json yaml effects
++ shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/dead.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/effect.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/used.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/deno.json
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out/outer-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out --allow-write=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out --allow-run=/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild,/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/driver.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild /opt/homebrew/bin/deno gate
++ printf '0\n'
++ printf '%s\n' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot
++ workspace=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace
++ output=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out
++ esbuild=/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild
++ deno=/opt/homebrew/bin/deno
++ cd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace
++ controls_status=0
++ env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out/outer-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out --allow-write=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out --allow-run=/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild,/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/build/driver.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/out /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild /opt/homebrew/bin/deno controls 6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a
++ printf '%s\n' 0
++ for pkg in json yaml effects
++ shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/document.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/file.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/value.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/json/deno.json
++ for pkg in json yaml effects
++ shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/value.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/yaml/deno.json
++ for pkg in json yaml effects
++ shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/dead.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/effect.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/mod.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/used.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/experiment/workspace/target/lykn/dist/effects/deno.json
++ cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/raw/public-before.sha256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/cdc-pilot/raw/public-after.sha256
++ printf 'public hashes identical; outer controls exit %s\n' 0
++ exit 0

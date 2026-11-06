@@ -1,0 +1,22 @@
+{
+  "inputs": {
+    "target/lykn/dist/controls/c1.js": {
+      "bytes": 21,
+      "imports": [],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../out/C1.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "target/lykn/dist/controls/c1.js",
+      "inputs": {
+        "target/lykn/dist/controls/c1.js": {
+          "bytesInOutput": 21
+        }
+      },
+      "bytes": 56
+    }
+  }
+}

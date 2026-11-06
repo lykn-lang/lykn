@@ -114,3 +114,55 @@ or broader source/Unicode/audit correctness claim follows this acceptance.
 Acceptance staging preserves terminal blank lines in the four actual native,
 JS, D2 and make-check logs flagged by the full whitespace check. Prose and the
 actual source diff pass their checks; raw output is not normalized to hide it.
+
+## Frozen pilot accepted — 2026-11-06
+
+Reviewed clean CC return 06f1162d6f5f057c0b779f0e356d6eb8fb4e3c9f. Its condition
+freeze d5d433a precedes all new compiles. I independently exported exact 30e9793
+into owned task target/slice08/cdc-pilot/, checked compiler 544041ec/esbuild b26c07a/
+Deno 2ad84f9/data 5041bf1f hashes before runs, and used only native shell lifecycle
+plus the unchanged Lykn observer. Own exact trace/source/raw receipts are in
+`artifacts/evidence/pilot/cdc-review/`; no Python or extra stimulus/backend.
+
+Own 16 strict compiles/dist exit 0 and 15 byte-identical direct/staged outputs precede
+the C4-only gate. I read its complete 538-byte bundle/raw metadata before controls
+and reproduced hash 6476e308…433b8a. The single fixed controls invocation then
+exited 0; all 11 child receipts have code 0/empty stderr and exact declared
+stdout, in the unchanged order. C4 was reused, five total bundles. I inspected
+all five COMPLETE bundles and complete raw input/output metafile projections:
+
+| Control | Independent raw/code observation |
+| --- | --- |
+| C1 | Only entry input, zero library input/contribution; BASE output |
+| C2 | JSON value382 output bytes; file/document resolve but contribute no output, no YAML input |
+| C3 | Only direct JSON value+entry input; file/document/YAML absent; value382 bytes |
+| C4 | dead406 input/no output row; used365/effect28 retained/barrel0; full code lacks unusedPure body |
+| C5 | Positive JSON/file/document/YAML/used/effect and dead383 contributions; complete body n*2 present, returns82 through both entry routes |
+
+C5 source-before/bundle/source-after exactly agree, including escaped inner
+file/document JSON and one effect initializer per process. Actual three staged
+package configs expose the nine expected paths. Own 13 public file hashes before/
+after compare byte-identical, including those configs. All runtimes use the
+staged config/offline deny-net flags; only C5 has exact-data read permission.
+This completes TE-04/05 at this explicitly0.6-based condition. CC and CDC are
+two replications of the SAME five programs/eleven calls, not added families.
+
+Process disposition remains candid: CC's Python subprocess/copy orchestration
+violated Operator preference/repository guidance; its failed command-builder
+SyntaxError launched no Deno/esbuild. Root required it to stop, and the direct
+shell controls/independent replay followed. Successful reproduction does not
+retroactively make prior Python use compliant. The initial misplaced JS-test
+suffix was CDC's readiness error, corrected with history/body/red data retained.
+Actual pilot evidence is retained at artifacts/evidence/pilot/ rather than the
+prompt's shorter artifacts/pilot/ spelling; this final record adopts the actual
+same-slice artifact home without moving or reconstructing prior records.
+
+Final disposition: all six TE rows done; no remaining scoped implementation or
+pilot proof. TE-06 closes with the retrospective and explicit nonconformance,
+not a claim of flawless process. Historical Slice06/07 stops/counts stay intact;
+their bounded re-entry is now fulfilled here under the new condition. F-1–F-12,
+minified/full-corpus/ESTree work and Project07 synthesis/licence/bootstrap/ADT/
+guide/book/human gates remain open. NE-C02, NE-C04 and NE-D01 retain actual
+backlog owners. No published-package/production-parser/general optimizer proof
+is claimed. Source a061 remains a clean task branch; only the earlier predicate
+merge b841 is integrated into release/0.6.x. No new merge/push/publication/next slice.

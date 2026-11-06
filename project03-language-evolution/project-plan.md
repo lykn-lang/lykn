@@ -150,6 +150,17 @@ source home is the reused task checkout on new codex/template-string-boundary
 at b841f71b; earlier branch refs/history/binary are preserved. No further release
 integration, propagation, push/publication or broad escape audit is approved.
 
+2026-11-06 Slice08 independently closed with all six TE criteria done. ID-33
+resolved the decoded-string contract; task a061c214 repairs native and JS/mirror
+template encoding. Native/public-JS22-value regressions, fresh materialization
+and full gate pass (1467 JS+Lykn/482 docs). The unchanged frozen pilot now passes
+5/5 bundles and11/11 calls in both CC and independent CDC replications, with
+13 public files/nine exports preserved. Python orchestration nonconformance is
+retained explicitly. This fulfils the bounded re-entry under a new compiler
+condition; prior Slice06/07 failures/deferred rows stay historical. NE-C02/04/D01,
+all original F rows and Project07 synthesis/library/human obligations remain
+open. The template fix is not merged into a release branch.
+
 2026-11-05 Operator approved repairing NE-C01 then resuming the unchanged native
 five-control pilot. [Slice07](slice07-contract-predicate-lowering/slice-plan.md)
 owns that bounded implementation/test/replay increment, with same Sol 6.1 High
@@ -168,7 +179,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
-- [slice08-template-string-boundary](slice08-template-string-boundary/slice-plan.md): active NE-C03 diagnosis/conditional repair and frozen-pilot increment; genuine semantic choice gates dependent implementation.
+- [slice08-template-string-boundary](slice08-template-string-boundary/slice-plan.md): closed; decoded-template repair/full gates and unchanged five-bundle/eleven-call pilot independently accepted on dedicated task branch; no further integration implied.
 - [slice07-contract-predicate-lowering](slice07-contract-predicate-lowering/slice-plan.md): independently accepted predicate repair/full gates; frozen pilot stopped at independently reproduced template-oracle mismatch, four done/two deferred rows; NE-C03 re-entry.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
@@ -189,6 +200,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.10: Independently accepted Slice08 repair and complete bounded
+  frozen pilot; retained process nonconformance, historical failed conditions,
+  separate compiler/cache/guide owners and original audit/Project07 gates.
 
 - 2026-11-06 v1.9: Recorded explicitly authorized local release predicate
   integration/full validation and opened canonical Slice08 for NE-C03 with

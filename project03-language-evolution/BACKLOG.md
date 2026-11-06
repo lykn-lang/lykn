@@ -300,6 +300,19 @@ alongside historical C6b/D2 passthrough expectations, not silently subordinated
 to them. Genuine language choice still returns to Operator. All older partial
 counts and obligations remain intact; NE-C02 is not included.
 
+**2026-11-06 independent disposition: repaired, bounded re-entry complete.**
+Slice08 reconciles normative ID-33 with historical passthrough expectations.
+Accepted task source `a061c2149792178ba037d17a31220545e34b4ac1` encodes decoded
+values for template source in native and public JS/mirror paths. Native/JS22
+runtime values and the full repository gate pass independently. The unchanged
+five-control/eleven-call pilot now passes completely in CC and CDC replications;
+exact code/metafile/public-API evidence is in [final review](slice08-template-string-boundary/cdc-verification.md#frozen-pilot-accepted--2026-11-06).
+No frozen observer/source/data was changed. Earlier Slice06/07 failed conditions
+and deferred rows are retained, not relabelled successful. The template fix
+remains on `codex/template-string-boundary`; only the earlier predicate repair
+is integrated at release/0.6.x b841f71b. No further merge/push/publication is
+implied. NE-C02/NE-C04/NE-D01 and all full-audit/Project07 obligations remain open.
+
 #### NE-C04 — same-version embedded package cache may retain prior compiler text
 
 **Source-backed packaging candidate, 2026-11-06.** During Slice08 preparation,

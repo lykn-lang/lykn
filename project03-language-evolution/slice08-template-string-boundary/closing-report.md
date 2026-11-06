@@ -145,3 +145,42 @@ is disclosed as a process-conformance finding; the first command-builder error
 is retained separately and did not invoke the backend. The actual C4 gate and
 single controls run used the prescribed native shell command path. No additional
 runtime, bundle, retry, or release action was taken.
+
+## CDC final acceptance — 2026-11-06
+
+All six TE criteria are independently accepted. Source repair
+`a061c2149792178ba037d17a31220545e34b4ac1` remains clean on the dedicated
+`codex/template-string-boundary` branch. It passes the native/public-JS
+22-value regressions, fresh embedded-materialization proof and actual full
+repository gate; independent gate counts are 1467 JS+Lykn and 482 docs.
+The earlier authorized predicate merge remains release/0.6.x at b841f71b;
+this acceptance performs no additional release integration.
+
+The unchanged frozen pilot is complete: 16 strict compiles, 15 staging byte
+comparisons, five bundles and eleven exact runtime oracles pass independently.
+All nine public paths and 13 file hashes survive. Complete code and raw
+metafiles establish the scoped exclusions, retained effects and C5 positive
+dead-body use, rather than relying on total output size. Exact independent
+commands/pins are in `artifacts/evidence/pilot/cdc-review/raw/commands.log`
+and `pins.sha256`; compile/staging counts are in `compile-status.tsv` and
+`staging.tsv`. The sibling `out/` directory retains all five bundles/metafiles,
+eleven child receipts and public reconciliation. See `cdc-verification.md`
+for the witness-by-control disposition.
+
+Method nonconformance is preserved: CC attests Python subprocess/copy use for
+native compile/build/staging orchestration and evidence copying, in addition
+to the failed launch builder (`artifacts/results.md`, process addendum). The
+builder's exact command/error/status are retained under
+`artifacts/evidence/pilot/run-01/raw/gate/launch-setup-error-01/`.
+That failed attempt launched no backend/runtime. Further Python was stopped;
+the successful controls and complete independent replay used native shell and
+the frozen Lykn observer. These successes do not retroactively cure the breach.
+The retrospective also retains CDC's test-filename readiness error and its
+history-preserving correction.
+
+This closes the approved bounded endpoint, including TE-04/05/06. Earlier
+Slice06/07 failures and unrun counts retain their original conditions. NE-C02,
+NE-C04 and NE-D01 remain owned in Project03 BACKLOG; F-1–F-12, full ESTree/
+minified/corpus work and Project07 synthesis, licensing, bootstrap, production
+library, ADT, guide/book and human gates remain open. No next slice, further
+merge, push, publication or release is opened.

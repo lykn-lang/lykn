@@ -1,8 +1,8 @@
 # Slice08 — NE-C03 template string boundary
 
-Status: open; TE-01/02/03 independently accepted. Current assignment:
-`cc-prompt-iteration03.md`, original frozen pilot under accepted source a061c214.
-No source edits or additional integration authorized.
+Status: closed, all six TE criteria independently accepted on2026-11-06.
+No active assignment. Last assignment `cc-prompt-iteration03.md` completed the
+original frozen pilot under accepted source a061c214. No additional integration authorized.
 Initial diagnosis prompt is preserved.
 Collapsed standalone increment under Project03; no parallel Project07 home.
 
@@ -14,7 +14,8 @@ unchanged predictions were committed before any new compilation, bundle, or
 runtime. Current counts and gates are in `artifacts/results.md`.
 The fixed controls invocation has now completed once: all five bundles and all
 eleven ordered runtime calls match their frozen oracles, while public hashes
-remain unchanged. TE-04/05 await CDC final review; no follow-up run is authorized.
+remain unchanged. CDC independently reproduced all five bundles/eleven calls,
+reviewed complete code/metafiles and accepted TE-04/05/06. No follow-up run is authorized.
 
 ## Authority, outcome and gates
 
@@ -37,8 +38,9 @@ Operator; CC cannot select new public behavior merely to make the pilot pass.
 
 Phase A returned observations and a source-grounded recommendation; CDC accepted
 that diagnosis and issued iterations01/02 for the narrowly scoped repair.
-Implementation and validation are complete as CC evidence; TE-02/03 remain open
-pending CDC review. No observer or frozen-pilot replay has occurred. No
+Implementation and validation were returned as CC evidence before independent
+repair acceptance and pilot authorization; those earlier holds are resolved by
+the dated reviews. No observer change occurred. No
 release/main edit, further merge/propagation, push/publication, dependency/
 toolchain/backend acquisition, broad escaping audit or NE-C02 repair occurred.
 
