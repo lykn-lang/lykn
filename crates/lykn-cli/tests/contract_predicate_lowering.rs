@@ -13,7 +13,7 @@ const OBSERVE: &str = r#"
       (console:log
         (JSON:stringify
           (obj :label label
-            :error (obj :name err:name :message err:message))))))
+            :error (obj :name err:name :message err:message)))))))
 "#;
 
 struct Observation {
