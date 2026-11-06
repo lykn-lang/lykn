@@ -119,9 +119,9 @@
 (func
   module-path
   :args
-  (:string package :string file)
+  (:string pkg :string file)
   :body
-  (template workspace "/target/lykn/dist/" package "/" file))
+  (template workspace "/target/lykn/dist/" pkg "/" file))
 
 (func
   all-library-paths
@@ -169,11 +169,9 @@
   :body
   (bind aliases (cell (array)))
   (for-of
-    package
+    pkg
     (array "json" "yaml" "effects")
-    (bind
-      config-path
-      (template workspace "/target/lykn/dist/" package "/deno.json"))
+    (bind config-path (template workspace "/target/lykn/dist/" pkg "/deno.json"))
     (bind config (JSON:parse (Deno:read-text-file-sync config-path)))
     (require-ok
       (Object:hasOwn config "exports")
@@ -189,7 +187,7 @@
       (bind
         specifier
         (if (= key ".") config:name (template config:name "/" (key:slice 2))))
-      (bind flag (template "--alias:" specifier "=" (module-path package target)))
+      (bind flag (template "--alias:" specifier "=" (module-path pkg target)))
       (swap! aliases (fn (:array current) (conj current flag)))))
   (express aliases))
 
@@ -701,11 +699,11 @@
           (conj current (obj :path (normalize-path path) :sha256 hash)))))
     (bind exports (cell (array)))
     (for-of
-      package
+      pkg
       (array "json" "yaml" "effects")
       (bind
         config-path
-        (template workspace "/target/lykn/dist/" package "/deno.json"))
+        (template workspace "/target/lykn/dist/" pkg "/deno.json"))
       (bind config (JSON:parse (Deno:read-text-file-sync config-path)))
       (require-ok
         (Object:hasOwn config "exports")
@@ -721,7 +719,7 @@
         (bind
           specifier
           (if (= key ".") config:name (template config:name "/" (key:slice 2))))
-        (bind target-path (module-path package target))
+        (bind target-path (module-path pkg target))
         (bind hash (await (digest (Deno:read-file-sync target-path))))
         (swap!
           exports

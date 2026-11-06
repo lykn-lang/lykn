@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Unexpected strict mode reserved word
+function modulePath(package, file) {
+                    ^
+    at <anonymous> (file:///Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/experiments/native-esbuild-controls/run-08/workspace/target/lykn/build/driver.js:67:21)

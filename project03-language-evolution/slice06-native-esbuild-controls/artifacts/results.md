@@ -390,4 +390,14 @@ the single C4 gate. This correction does not change stimuli, package sources,
 oracles, runtime order, or permissions. The denominator remains zero of five
 bundles and zero of eleven runtimes.
 
+The first run-08 outer launch then stopped at module parse, before the observer
+or native esbuild ran: Deno reported `Unexpected strict mode reserved word` at
+generated `modulePath(package, file)`. The exact command and stderr are retained
+under `artifacts/evidence/gate/run-08/`; this is a failed launch, not a C4
+bundle. I renamed the Lykn binding `package` to `pkg` in the three observer
+locations and call sites. The source has been formatted and `lykn check` passes
+(37 top-level expressions); the next fresh compile must be inspected for any
+remaining reserved generated declarations and compiler sentinels before
+retrying the gate. Bundle/runtime denominators remain 0/5 and 0/11.
+
 The create-new correction is committed at `6c9a3147a7f01b5fff4f5cd80e373c1a989e669b`. Fresh run-08 copied the staged run-07 workspace and recompiled only the changed observer. Native compile, `lykn check` (37 top-level expressions), and `lykn fmt --check` passed; `lykn lint` again reported no findings across all 16 source files. Generated code now emits `Deno.writeTextFileSync(path, text, { createNew: true })` for receipts and uses the same create-new option to reserve JS/metafile output paths. The generated diff versus run-07 is confined to that helper and its call sites; the complete observer's previously reviewed top-level/main/gate/controls and nested loop boundaries are unchanged. CDC completed a read-only static review of this corrected 951-line observer and found no further contract defect. Compilation evidence and the changed-region witness are in `artifacts/evidence/compilation/run-08/`. No C4 bundle or runtime has yet run: 0/5 bundles, 0/11 runtimes.
