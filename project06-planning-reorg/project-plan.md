@@ -29,6 +29,20 @@ the documents. No historical implementation or verification status is upgraded.
 
 ## Roadmap
 
+2026-11-05 bounded follow-through: Operator selected installed rust-guidelines
+and requested obsolete ai guidance removal, rewritten canonical AGENTS.md and
+CLAUDE.md compatibility symlink. [Arc03/Slice02](arc03-navigation-and-verification/slice02-agent-guidance-cleanup/slice-plan.md)
+owns actual cleanup across main, three releases, planning and two task homes.
+Same Autonomous CDC Sol 6.1 High / CC Luna 6 High; root read-only coordination,
+sequential mutation ownership, independent review and closing retrospective.
+Preserve each source Lykn reference via a byte-identical move checkpoint and
+one disclosed DD49 citation correction; no target deletion, frozen census change,
+source implementation, merge, push or publication. Current companion governance/
+doc edits are explicitly authorized on existing branches including main.
+Compiler NE-C01 stays held until this prerequisite is independently accepted;
+then revalidate new guidance/source tips before resuming its existing authority.
+This does not reopen or close historical migration/classification acceptance.
+
 | Arc | Capability | Depends on | Status |
 | --- | --- | --- | --- |
 | arc01-history-and-import | Auditable inventory, ancestry imports, and classification | — | delivered; classification review pending |
@@ -58,6 +72,11 @@ retained paths, run citation gates, and compare pre/post local hardware hashes.
 Doer evidence is attested; independent framework closure remains a separate gate.
 
 ## Version history
+
+- 2026-11-05 v1.4: Opened Arc03/Slice02 portable guidance cleanup under explicit
+  Operator direction, preserving unique Lykn references and source boundaries.
+  Installed named skills replace obsolete personal-path links. Earlier
+  migration acceptance and the held compiler repair retain their own gates.
 
 - 2026-09-06 v1.0: Opened from the operator's eight-point migration request;
   backlog placement confirmed; operator corrected hardware to project05-hardware and this effort to project06-planning-reorg.
