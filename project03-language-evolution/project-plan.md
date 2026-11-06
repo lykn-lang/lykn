@@ -140,6 +140,13 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 Operator authorized [Slice11](slice11-audit-evidence-contract/slice-plan.md)
+to settle the remaining compiled-corpus ESTree walker and coherent native-esbuild
+evidence contract under the same Sol6.1 High CDC / fresh Luna6 High CC Autonomous
+arrangement. Endpoint is independently reviewed method or a concrete gap only,
+not full audit execution. Original F1–F12 remain open; no product change,
+parser acquisition/runtime probe, corpus scan or new pilot is assigned.
+
 2026-11-06 [Slice10](slice10-template-release-integration/slice-plan.md) independently
 closed the explicitly approved template-repair integration into release/0.6.x.
 Merge f70565566088f5d55129edda6bd73a4691e5a58d has exact predicted tree572bc953
@@ -232,6 +239,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.15: Opened bounded Slice11 after explicit audit-contract
+  settlement approval. CC authors the source-grounded method; CDC independently
+  reviews. Preserve full original audit and all library/human obligations; stop
+  before execution or another unit.
 
 - 2026-11-06 v1.14: Independently accepted Slice10's local template merge and
   actual release validation, with all five TI rows done and retrospective.
