@@ -1,7 +1,7 @@
 # Slice06 — Native esbuild and five controls
 
-Status: **Open; initial CC assignment ready.** Parent: [Project03](../project-plan.md).
-Collapsed standalone slice; current assignment `cc-prompt.md`; [ledger](ledger.md).
+Status: **Open; tool/compiler built and sources staged, targeted iteration01 before runtime.** Parent: [Project03](../project-plan.md).
+Collapsed standalone slice; current assignment `cc-prompt-iteration01.md`; [ledger](ledger.md).
 
 ## Authority, result and endpoint
 
@@ -287,9 +287,15 @@ CC inference. Local helper names/report formatting are discretionary.
 
 | Assignment | Date | Predecessor | Disposition |
 | --- | --- | --- | --- |
-| cc-prompt.md | 2026-11-05 | none | ready for initial CC |
+| cc-prompt.md | 2026-11-05 | none | executed prerequisites/source freezes; retained parser/input corrections; returned before runtime for observer/C5 source defects |
+| cc-prompt-iteration01.md | 2026-11-05 | cc-prompt.md | active first substantive refinement: host APIs, finite metadata/receipt checks, root consumer coverage |
 
 ## Version history
+
+- 2026-11-05 v1.1: Pre-runtime source review returned observer host-API errors,
+  incomplete metadata/hash observation, duplicate future C5 receipts and root
+  consumer coverage. Issued iteration01 preserving builds, 14 unaffected compiles,
+  all prior failures/source freezes and the unchanged five-case scope.
 
 - 2026-11-05 v1.0: Opened approved native source-build/direct-metafile approach
   with five fixed stimuli, shared positives, observer scope and pre-run predictions.
