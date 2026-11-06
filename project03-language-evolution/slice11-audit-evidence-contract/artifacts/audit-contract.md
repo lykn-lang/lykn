@@ -120,11 +120,14 @@ Evaluation/traversal rules for a future Lykn-authored walker:
 - Calls, `new`, tagged templates, `await`, dynamic `import()`, assignments and
   updates are potential load-time evaluation when reached outside a deferred
   boundary. Descend into their evaluated operands/arguments so nested reasons
-  are retained. An IIFE is still a potential call even when its callee is an
-  arrow/function expression; its body is reachable through that call and must
-  be recorded as a nested call-reason, not mislabeled as a deferred-only body.
+  are retained. A call through an IIFE is represented by its outer
+  `CallExpression` reason; stop at the nested function node and do not report
+  individual body operations. The outer call is sufficient to say that the
+  initializer may evaluate user code. This is a deliberately conservative
+  syntax rule, not a call-graph analysis or a claim that every call has an
+  observed effect.
 - Treat every top-level non-declaration control-flow statement (`if`, loops,
-  `switch`, `try`, `throw`, `return` where syntactically present, labels, and
+  `switch`, `try`, `throw`, labels, and
   expression statements) as direct module evaluation. Walk tests, iterables,
   discriminants, conditions and bodies for nested reasons. Do not assume a
   branch is unreachable or harmless from syntax alone.
@@ -156,6 +159,30 @@ Evaluation/traversal rules for a future Lykn-authored walker:
   retain diagnostics but cannot upgrade that file to complete. New ECMAScript
   syntax requires an explicit table update and control before acceptance.
 
+The finite walker coverage contract is this table. Node fields not named as
+evaluated are syntax/metadata, not implicit recursive traversal. A child path
+that is not a supported field is `unsupported_ast`; locations/ranges are
+retained for every reason.
+
+| Supported ESTree node/family | Fields traversed at module evaluation | Rule / deferred boundary |
+|---|---|---|
+| `Program`, `BlockStatement`, `ExpressionStatement`, `IfStatement`, `SwitchStatement`, `SwitchCase`, `TryStatement`, `CatchClause`, `ThrowStatement`, `WhileStatement`, `DoWhileStatement`, `ForStatement`, `ForInStatement`, `ForOfStatement`, `LabeledStatement`, `BreakStatement`, `ContinueStatement`, `WithStatement`, `DebuggerStatement`, `EmptyStatement` | Statement body; tests, discriminant, case test/consequents, init/test/update, right/left, argument, catch parameter/body, handler/finalizer, label body as applicable | Top-level executable statement is one direct parent finding when it may evaluate; recursively visit the listed expression/statement fields. `ThrowStatement` is a potential throw even when branch reachability is unknown. `CatchClause` and `SwitchCase` are transparent control containers, not separately counted top-level parents. `BreakStatement`/`ContinueStatement` have no evaluated fields. `WithStatement` is unsupported if parser mode admits it; module strict parsing normally rejects it. |
+| `VariableDeclaration`, `VariableDeclarator` | Each `init`; binding pattern computed keys and defaults | One direct declaration finding if any evaluated child is potential. Plain identifiers are binding names, not reads. Destructuring itself is a potential iterator/getter read; `AssignmentPattern.right` may run conditionally and is still potential. |
+| `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression` | No body or parameter-default expressions | Function body/default expressions are deferred to invocation. A call to the function is represented by the call node; no body descent, including for an IIFE. |
+| `ClassDeclaration`, `ClassExpression`, `ClassBody`, `MethodDefinition`, `PropertyDefinition`, `StaticBlock` | Class `superClass`; computed member `key`; static `value`; static-block `body` | Add `class_heritage_validation` potential at every non-null `superClass` independently of child reasons: constructor/prototype validation can throw even when the expression itself is inert. Add `computed_key_coercion` potential for every computed class key because `ToPropertyKey` may invoke user conversion. Heritage, computed keys, static initializers and static blocks execute at class definition. Method bodies and non-static field initializers are deferred. |
+| `CallExpression`, `NewExpression`, `TaggedTemplateExpression`, `AwaitExpression`, `ImportExpression`, `AssignmentExpression`, `UpdateExpression`, `YieldExpression` | Callee/tag, evaluated arguments/operands/argument, left/right as applicable | Record this node as a potential reason, then traverse evaluated fields. `ImportExpression` is dynamic loading; `AwaitExpression` may suspend module evaluation. `YieldExpression` is supported only under a deferred generator body. |
+| `MemberExpression`, `ChainExpression` | Object and computed property; optional-chain expression | Member reads are potential getter/proxy evaluation. Computed properties also have `computed_key_coercion` potential (`ToPropertyKey`) independent of key-expression children. Noncomputed property identifiers are names, not binding reads. |
+| `Identifier` in reference position | The identifier value | Record `identifier_read` as potential because the walker does no scope/name resolution: an arbitrary name may be unbound and throw. Do not mark any name pure based on spelling. Exclude declaration/binding identifiers and noncomputed property/member keys. |
+| `ArrayExpression`, `ObjectExpression`, `SpreadElement`, `Property`, `ArrayPattern`, `ObjectPattern`, `RestElement`, `AssignmentPattern` | Element/value, spread argument, computed key, pattern default/key/value | Object/array spreads and destructuring may invoke iterators/getters. Property values/computed keys are evaluated; every computed key also has independent `computed_key_coercion` potential (`ToPropertyKey`); static noncomputed keys are not reads. |
+| `UnaryExpression`, `BinaryExpression`, `LogicalExpression`, `ConditionalExpression`, `SequenceExpression`, `TemplateLiteral`, `TemplateElement`, `Literal`, `ThisExpression`, `Super`, `MetaProperty` | Operand(s), test/consequent/alternate, expression list, template substitutions | Traverse evaluated operands. For every unary/binary operator whose JavaScript semantics may coerce an unconstrained operand, add `operator_coercion`; template substitution likewise adds `coercion` because conversion hooks may run. Literal/template raw text and fixed property-name fields are not expressions. |
+| `ImportDeclaration`, `ExportNamedDeclaration`, `ExportDefaultDeclaration`, `ExportAllDeclaration`, `ImportSpecifier`, `ExportSpecifier` | Imported/exported declaration or default expression; module source as an edge | Static imports/re-exports create dependency-edge records, not a local call finding; imported modules may have effects. Bare imports also get `bare_import`. Recurse into exported initializers under normal rules. |
+
+The table is an explicit supported subset, not a claim that these are all
+possible ECMAScript node types. In particular, any future proposal node,
+decorator, parser extension, or node with an unlisted executable child fails
+closed. The walker does not prove identifier resolution, branch reachability,
+callee behavior, exception behavior, or primitive operand types.
+
 Retain and expand legacy blind spots explicitly: getters/member reads; class
 heritage, computed keys, static fields and blocks versus deferred methods and
 instance fields; destructuring/defaults; spread and coercion; calls/IIFEs;
@@ -183,6 +210,60 @@ default `lykn compile` route. F-1/F-8 must identify these roles from source and
 actual re-entry evidence; do not collapse them into one compiler or assert an
 unavailable CLI route.
 
+For F-8's same-input public-JS fixture comparison, the future producer is a
+Lykn-authored **single-input** driver compiled with the pinned native CLI, then
+run once per input in a fresh Deno process from the release worktree root. A
+fresh process avoids carrying `macroEnv` registrations across inputs
+(`packages/lang/expander.js:1838-1865`). The driver imports the already-public
+`read`, `expand`, and `compile` exports from `lang/mod.js`
+(`packages/lang/mod.js:1-3`); for each absolute source input it performs the
+public JS stages:
+
+```text
+forms = read(sourceText)
+expanded = expand(forms, { strict: sourceExtension != ".lyk", filePath: absoluteSourcePath })
+printedJavaScript = compile(expanded)
+write(outputPath, printedJavaScript)
+```
+
+The driver source and all orchestration/data handling are Lykn. Build it using
+`"$LYKN_BIN" compile <driver.lykn> --output "$RUN/public-js-producer.js"`;
+then invoke it once per manifest row with
+`DENO_DIR="$RUN/frozen-deno-dir" deno run --config project.json --cached-only --no-remote --allow-read=<one-input,project.json,build/lang,local-macro-inputs> --allow-write=<one-output> "$RUN/public-js-producer.js" <absolute-input> <absolute-output> <strict|lax>`.
+Run from the release source root. Materialize the task-local `DENO_DIR` only
+from already-present, lock-matched compiler dependencies (including baseline
+npm-distributed `astring`); record dependency identities/hashes and stop on any
+cache miss. `--cached-only --no-remote` prevents downloading missing compiler
+inputs; do not use `--no-npm` because the current JS compiler imports
+`npm:astring`. Omit network, subprocess and cache-write permission. The JS
+compiler's existing `node:path` import uses Deno's built-in compatibility layer
+(`packages/lang/expander.js:20-31`); it is not a new Node client. The
+`project.json` config is required for the existing `lang/` import map; the
+built `target/lykn/build/lang` identity and source/config hashes are inputs and
+must be frozen. `expand` has
+an explicit `filePath` context (`packages/lang/expander.js:1838-1847`), while
+the convenience `lykn(source, {strict})` wrapper at `mod.js:23-25` accepts no
+file path and passes only strictness to `expand`. Therefore this producer must
+not invent a `{filePath}` option for `lykn()`: supplying `filePath` through the
+exported lower-level public stages preserves each fixture's relative
+`import-macros` base (`expander.js:1469-1566`). If any required source uses a
+registry macro, resolution would require Deno subprocess/network behavior
+(`expander.js:1337-1467`); without separate authorization and pinned local
+inputs, that route is `blocked_unapproved_macro_resolution`, not silently
+fetched or counted as a successful JS output.
+
+For F-10's production-like test corpus, retain the actual
+`lykn test --compile-only` route as a distinct condition: its caller performs
+Rust validation, then `deno eval --config` imports `lang/mod.js` and calls
+`lykn(source)` (or `lykn(source, {strict:false})` for `.lyk`) before writing
+each result (`main.rs:964-1055`). That exact route has no per-source filePath
+argument; give it key `js-test-cli-cwd-context` and preserve any
+relative-macro-context failure for the original path. Do not substitute the
+F-8 `read`/`expand({filePath})` producer for this F-10 condition or claim the
+two outputs are identical. If any required source cannot be emitted under its
+assigned route/context, record the route row's precise failed status and leave
+that route's coverage incomplete.
+
 The future F-10 denominator begins with source-driven discovery matching the
 pinned CLI contract: default `test/`, recursive selection of `*_test.lykn`,
 `*.test.lykn`, `*_test.lyk`, `*.test.lyk`, and any `.lykn`/`.lyk` in
@@ -196,26 +277,28 @@ and test helpers as their own segments. Do not count a generated `.js` twice
 because it shares a basename with a source file.
 
 Future re-entry commands, after a separate execution assignment and source/tool
-identity check, are direct native CLI invocations (not a script wrapper):
+identity check, include the direct native CLI fixture invocation and the
+Lykn-authored public-JS producer recipe above:
 
 ```sh
 "$LYKN_BIN" test --compile-only --out-dir "$RUN/compiled-js-emitter" test/
 "$LYKN_BIN" compile <frozen-fixture.lykn> --output "$RUN/native-js-emitter/<fixture>.js"
-"$LYKN_BIN" compile <frozen-fixture.lykn> --output "$RUN/public-js-emitter/<fixture>.js"
 ```
 
-The second route's exact public-JS CLI/API invocation must be recorded from the
-source-backed mechanism selected at re-entry; the existing `test --compile-only`
-path is not an interchangeable command for it. The commands above specify
-ownership and outputs, not authorization to execute now. Fixtures stay outside
-`test/`, matching the original Slice01 contract. If a complete JS-emitter
-population cannot be obtained without compiling/executing tests, stop and
-record the uncovered segment rather than infer it.
+The output of `test --compile-only` and the direct public-JS producer are
+different keyed conditions. For the F-8 fixture parity set, stage byte-identical
+source copies only under ignored `$RUN` paths (the original fixtures remain
+outside `test/`), and map each copy back to the original path/hash; do not run
+test bodies. The commands specify future route identity and output ownership,
+not authorization to execute now. If the exact public-JS stage sequence,
+config, mode, source path or macro base cannot be established for one input,
+record it as a route failure and leave F-8 incomplete for that comparison.
 
 The run must freeze (before emission/scan) the exact source-tree commit, binary
 hash/version, Deno hash/version, all source roots and discovery rules, one
-sorted source manifest with path/extension/segment/SHA-256, and a one-to-one
-expected source-to-generated-output mapping. Compile-only wipes its output
+sorted source manifest with path/extension/segment/SHA-256, and a unique
+expected source-to-generated-output mapping per emitter/mode condition.
+Compile-only wipes its output
 directory (`main.rs:789-820`), but the assigned runner must still use a fresh
 task-local run path and reconcile every expected output; no stale `target/`
 tree is a corpus. Hash every emitted JS input before scanning. Record each
@@ -275,9 +358,9 @@ entry and resolved input hashes, working directory, format, minify state,
 tree-shaking setting, resolution defaults/plugins/aliases, `sideEffects`
 inputs, and Deno/CLI identities where involved. Do not report only esbuild's
 formatted analysis: inspect the complete raw `inputs`/`outputs` JSON and full
-unminified code; inspect minified code as needed against its distinct artifact
-hash. A failed command or absent metafile is an incomplete F-6 attempt, not an
-empty graph.
+unminified code and each minified artifact against its own distinct hash. A
+failed command or absent metafile is an incomplete F-6 attempt, not an empty
+graph.
 
 For each variant, separate these evidence claims:
 
@@ -297,6 +380,20 @@ export/body survived. Minified and unminified runs are separate observations;
 byte-size difference alone is not shaking evidence. F-6 does not validate the
 F-10 walker or establish ESTree classification.
 
+Make membership decisions per artifact. For unminified output, a retained
+declaration/body claim requires full-code inspection with an identifiable
+declaration/body or semantically distinct body, plus that artifact's raw
+metafile. For minified output, inspect that minified file itself and map a
+candidate body by its actual operation/control-flow/literal semantics, never
+by the original identifier (which may be renamed) or a module byte count. Do
+not transfer a minified prediction from unminified code or claim absence just
+because a source name is absent. If minification/inlining makes a predicted
+declaration/body indistinguishable or untraceable, report that exact
+source/artifact claim as `indeterminate_minified_membership` with the reason;
+do not count the original retain/drop prediction as passed from size/name
+heuristics. Preserve any resolvable per-module graph/contribution observation
+separately.
+
 ## 5. Frozen controls and machine-readable scan record
 
 Before any future parser or bundler execution, CDC must freeze a finite control
@@ -307,20 +404,25 @@ predictions and accepted C4 evidence as historical inputs; any added scanner
 controls are Lykn source or inert JS text data inside Lykn control records, not
 handwritten JS helpers. Store command outputs and failed attempts distinctly.
 
-Minimum control matrix:
+Finite unexecuted control set. Each quoted value below is inert JavaScript text
+data for the parser/walker (never helper code); within quoted strings, `\n`
+means one LF byte. For successful AST locations, Acorn `loc.line` is one-based
+and `loc.column` zero-based. Freeze the exact bytes/hash before any future run.
 
-| Control | Frozen input and AST expectation | Required result / falsifier |
+| ID and exact input | Expected AST path, category, counts and location | Falsifier / status |
 |---|---|---|
-| Pure declaration and deferred body | A function declaration and arrow initializer whose bodies contain calls; `Program.body[0]` and `[1].declarations[0].init` are deferred boundaries | No direct load-evaluation findings from body calls. Any body-only finding falsifies boundary handling. |
-| Immediate call and nested IIFE | A variable initializer invoking an arrow that calls a helper, followed by a top-level expression call; paths through `VariableDeclarator.init` and the call's function body/arguments | One direct declaration finding with distinct outer/nested call reasons, plus one direct expression-statement finding. Exact reported line/column must equal each AST node's `loc.start`; counting every nested node as another top-level statement falsifies counting. |
-| Legacy member/destructuring blind spots | Initializer member read; destructuring with computed key/default call; array/object spread | `MemberExpression`, computed/default and spread paths are marked potential. Missing any category falsifies expanded coverage. |
-| Class boundaries | Class heritage call, computed method key, method-body call, instance field initializer, static field call and `StaticBlock` call | Heritage/key/static field/static block are potential at class evaluation; method body and instance field initializer are deferred. Any inversion falsifies class handling. |
-| Coercion and control flow | Object-valued `+`/template substitution, and an `if` with a call in condition/body | Potential coercion is reported without claiming an observed `valueOf`; direct control-flow statement counted once and nested call reason retained. Missing nested reasons or a purity claim falsifies behavior. |
-| Modules and async | Bare import, named import, source re-export, top-level await, dynamic import | Static dependencies appear in edge records; bare import additionally has its informational category; await/dynamic import are potential. Treating a static edge as proof the dependency is safe falsifies the rule. |
-| Malformed parser input | Frozen invalid ECMAScript text with exact input hash | `parse_error`, no AST findings for that file, aggregate incomplete and nonzero exit. Continuing as if zero findings falsifies failure handling. |
-| Missing/unreadable input | Manifest row whose file is missing, then a file denied by the scoped read grant | `input_missing` / `input_unreadable`, row retained, aggregate incomplete and nonzero exit. Dropping either row falsifies reconciliation. |
-| Changed parser identity | Replace/point to a parser path whose hash or `version` differs from the frozen pin | `parser_artifact_identity_mismatch` before scan; no fallback/resolution. Any scan result falsifies identity gating. |
-| Unsupported AST node | Feed the Lykn walker's unit boundary an AST-shaped node not in its explicit coverage table | `unsupported_ast` with node type/path, file incomplete, aggregate nonzero. Generic recursion without incomplete status falsifies fail-closed coverage. |
+| K01 pure/deferred: `"function lazy() {\n  runLater();\n}\nconst later = () => runLater();\n"` | `Program.body[0]` function body call at `{line:2,column:2}` and `Program.body[1].declarations[0].init.body` arrow call are deferred. Direct findings 0; nested reasons 0. | Any body-only reason falsifies function boundaries; complete scan, exit 0. |
+| K02 evaluated/IIFE: `"const value = (() => 1)();\nrun();\n"` | Direct findings 2 (the declaration at `Program.body[0]`, expression statement at `[1]`). Reasons 3: outer `CallExpression` at 1:14; `CallExpression` and `Identifier` reference `run` at 2:0. No reason for the IIFE body. | More than one direct finding per parent, descent into IIFE body, missing call/read reason or mismatched numeric location falsifies the policy; complete scan with findings, exit 0. |
+| K03 member/getter: `"const value = object.field;\n"` | One direct declaration. Two reasons at `Program.body[0].declarations[0].init`: `MemberExpression` and object `Identifier` read, both 1:14; noncomputed `field` is not a binding read. | Omitting member/getter potential or treating `field` as a reference falsifies; complete scan with findings, exit 0. |
+| K04 destructuring/default: `"const { value = fallback() } = source;\n"` | One direct declaration. Four reasons: destructuring read at `Program.body[0].declarations[0].id` 1:6; `CallExpression` and `Identifier` read `fallback` at `id.properties[0].value.right` 1:16; source `Identifier` read at `declarations[0].init` 1:31. | Wrong path/count/location or missing conditional default/getter/iterator potential falsifies; complete scan with findings, exit 0. |
+| K05 spread/coercion: `"const value = { ...source };\nconst text = `x${value}`;\n"` | Two direct declarations, four reasons: `SpreadElement` at `body[0].declarations[0].init.properties[0]` 1:16 and source `Identifier` 1:19; template coercion at `body[1].declarations[0].init` 2:13 and substitution `Identifier` 2:17. | Missing spread/coercion or claiming observed conversion falsifies; complete scan with findings, exit 0. |
+| K06 class boundaries: `"class Box extends Base {\n  [key()]() { run(); }\n  static value = init();\n  static { start(); }\n  item = later();\n}\n"` | One direct class declaration, nine reasons: `class_heritage_validation` plus `Base` read at `superClass` 1:18; computed-key `CallExpression`+`key` read+`computed_key_coercion` at `ClassBody.body[0].key` 2:3; static-field `CallExpression`+`init` 3:17; static-block `CallExpression`+`start` 4:11. Method-body `run()` and instance initializer `later()` are deferred. | Wrong static/instance boundary, missing independent heritage/key-coercion reason, count, path or location falsifies; complete scan with findings, exit 0. |
+| K07 control/throw: `"if (ready) {\n  throw issue;\n}\n"` | One direct `IfStatement`; three reasons: `ready` read at `body[0].test` 1:4; `ThrowStatement` at `body[0].consequent.body[0]` 2:2; `issue` read at its argument 2:8. | Treating unknown identifiers/throw as pure or counting nested throw as a second top-level parent falsifies; complete scan with findings, exit 0. |
+| K08 imports/async: `"import \"./dep.js\";\nexport { value } from \"./dep.js\";\nawait load();\n"` | Two dependency edges; first is also `bare_import`. One direct await expression parent; three reasons: `AwaitExpression` at `body[2].expression` 3:0, `CallExpression` and `load` identifier read 3:6. | Edge/finding conflation, missing await/call/read, or claim static dependency is safe falsifies; complete scan with findings, exit 0. |
+| K09 parse error: `"const value = ;\n"` | Acorn `pos=14`, `loc={line:1,column:14}` (column zero-based); no AST findings for the file. | Terminal status `parse_error`; aggregate `incomplete`, nonzero exit. Treating it as clean falsifies. |
+| K10 missing/unreadable: `missing-control.js` has no file; `unreadable-control.js` contains `"const value = 1;\n"` but its scoped read grant denies it. | Two distinct manifest keys, no AST path. | Exclusive statuses `source_missing` and `source_unreadable`; both retained; aggregate incomplete/nonzero. Omission falsifies. |
+| K11 changed identity: parser gate expected hash is exactly 64 zero hex digits while the selected artifact still has the frozen Acorn hash. | Pre-scan parser gate, no file AST path. | `parser_artifact_identity_mismatch`, no fallback/parse; aggregate incomplete/nonzero. Any AST output falsifies. |
+| K12 unsupported walker node: inject inert AST data `{"type":"ExperimentalNode","argument":{"type":"Literal","value":1}}` at `Program.body[0]` directly into the Lykn walker's unit boundary. | Node path `Program.body[0]`, type `ExperimentalNode`; parser and corpus file counts are not applicable because this is a unit-boundary injection, not parsed JS. | Control status `unsupported_ast` with node/path; for an actual corpus node the source-condition row must be `unsupported_ast` and aggregate incomplete/nonzero. Generic traversal marked complete falsifies. |
 
 For each successful file, `corpus-scan.json` must contain at least:
 
@@ -329,31 +431,61 @@ For each successful file, `corpus-scan.json` must contain at least:
 - literal Acorn artifact path, package version/provenance, file SHA-256, lock
   specifier/archive integrity, parse option object, and offline capability-gate
   receipt reference;
-- roots, discovery rules, sorted source manifest and source-to-output mapping;
-  each row's source/generated paths, extensions, segment, hashes, emitter/mode,
-  parse status, AST coverage status, generated-JS source locations, and explicit
-  exclusion reason where excluded;
-- `files_expected`, `files_emitted`, `files_scanned`, `files_parse_error`,
-  `files_unsupported_ast`, `files_unreadable`, `files_missing`,
-  `files_excluded_named`, `direct_statements_with_findings`, `nested_reasons`,
-  dependency-edge/bare-import totals, plus findings/reasons and per-file errors;
+- roots, discovery rules, sorted source manifest and per-condition
+  source-to-output keys (`source_id`, source SHA-256, emitter, strict/lax mode,
+  condition ID, output path/hash). Each row records source/generated paths,
+  segment, parser status, AST coverage status, generated-JS locations and
+  explicit exclusion reason where excluded;
+- `selected_sources`, `selected_condition_rows`, `required_condition_rows`, `complete_walk`,
+  `source_missing`, `source_unreadable`, `source_hash_mismatch`, `compile_failed`, `output_missing`,
+  `output_hash_mismatch`, `output_unreadable`, `parse_error`, `unsupported_ast`,
+  `not_processed`, `excluded_named`, `files_parsed`, `files_completely_walked`,
+  `direct_statements_with_findings`, `nested_reasons`, dependency-edge and
+  bare-import totals, plus findings/reasons and per-row error/status;
 - a terminal status `complete_no_findings`, `complete_with_findings`, or
   `incomplete`, and a process exit that is `0` only for a complete scan;
   findings themselves do not make the scanner fail. Parser/identity/input/
   coverage/manifest errors produce a nonzero exit and cannot be counted as
   clean files.
 
-Required invariants: expected = emitted + named exclusions + missing outputs;
-emitted = scanned + parse errors + unsupported AST + unreadable inputs; every
-selected source maps to exactly one output or one named exclusion; all totals
-equal the corresponding row sets; direct-statement counts do not include
-nested-reason multiplicity; every reported location resolves to the frozen
-generated JS hash. A run is incomplete if any equality fails. The report must
-reconcile corpus totals with the compile-only transcript, source manifest,
-scanner JSON, exit record and F-10 summary. Separate test-shaped effects from
-product/support observations for interpretation, but keep both in the raw
-denominator. F-10 outcomes never establish `sideEffects: false` suitability or
-public package API safety by themselves.
+Terminal statuses are mutually exclusive for each selected
+`(source_id, source_sha256, emitter, strict/lax mode, condition_id)` row:
+`complete_walk`, `source_missing`, `source_unreadable`, `source_hash_mismatch`,
+`compile_failed`, `output_missing`, `output_hash_mismatch`, `output_unreadable`, `parse_error`,
+`unsupported_ast`, `not_processed`, or `excluded_named`. `excluded_named` is
+valid only for a source/condition declared non-required before execution; it
+cannot replace any required route/output. Equations are:
+
+```text
+selected_condition_rows = complete_walk + source_missing + source_unreadable
+  + source_hash_mismatch + compile_failed + output_missing + output_hash_mismatch
+  + output_unreadable + parse_error + unsupported_ast + not_processed + excluded_named
+files_parsed = complete_walk + unsupported_ast
+files_completely_walked = complete_walk
+```
+
+The required key set is explicit per condition: Slice01 fixtures require both
+`native-rust` and `public-js-api-filepath` output rows for F-8; the selected
+compiled `.lykn`/`.lyk` test files use `js-test-cli-cwd-context` for F-10;
+handwritten tests use `handwritten-js-direct` with source bytes as their output.
+The project/compiler/product/support/dependency segments retain their own
+manifest rows and named boundaries. A parser gate has a separate terminal
+`passed`, `missing`, `identity_mismatch`, or `not_processed`; unless it is
+`passed`, every required scan condition is `not_processed` and aggregate status
+is incomplete. For every route, exact source/output mapping is unique and all
+listed totals equal the row set.
+
+Aggregate status is `complete_no_findings` or `complete_with_findings` only
+when the parser gate passes, every required key is `complete_walk`, every
+non-required selected key has a predeclared named exclusion, and all equations
+hold. Findings alone do not fail a complete scan (exit 0). Any missing,
+mismatched, unreadable, failed, parse-error, unsupported or not-processed
+required row yields `incomplete` (nonzero exit), while preserving valid partial
+findings as explicitly partial observations. The report reconciles every
+condition denominator with compile-only/API transcripts, source/output
+manifests, scanner JSON, exit records and F-10 summary. Test-shaped findings
+are segmented from product/support findings without reducing raw denominators.
+F-10 never establishes `sideEffects: false` suitability or public API safety.
 
 ## 6. Exact method amendment proposed for CDC review
 
@@ -368,9 +500,13 @@ predictions, Slice01 evidence/history, or statuses:
 > evidence is produced by the already accepted source-built native esbuild
 > 0.25.5 binary at the pinned hash, with paired minified/unminified executions,
 > one raw metafile, full output artifact, analysis and diagnostic/exit record
-> per variant. Distinguish resolved graph inputs, per-module `bytesInOutput`,
-> retained declaration/body membership, runtime effects and generated/public
-> APIs; never infer symbol attribution from module bytes. The accepted Slice08
+> per variant. Assess retained declaration/body membership separately within
+> each artifact: no symbol attribution from module bytes, no absence test on
+> renamed identifiers, and no unminified-to-minified transfer. If minification
+> or inlining prevents attribution, mark that claim indeterminate with reason;
+> do not pass its prediction on size/name heuristics. Distinguish resolved
+> graph inputs, per-module `bytesInOutput`, runtime effects and generated/public
+> APIs. The accepted Slice08
 > five-bundle/eleven-call C1–C5 witness and Slice06 source-built provenance are
 > bounded reusable evidence, not a substitute for the original Slice01 F-6
 > fixture/prediction experiment. F-10 remains an ESTree walk of post-emission
@@ -379,10 +515,15 @@ predictions, Slice01 evidence/history, or statuses:
 > separately authorized capability gate must prove exact-artifact offline
 > operation before full corpus scanning; no npm specifier/resolver, acquisition,
 > fallback parser, handwritten JS helper or non-AST proxy is permitted. The
-> scanner is authored in Lykn, and the future population records both the
-> native Rust `lykn compile` route and the Deno JS `lykn test --compile-only`
-> route distinctly, with the complete source/output manifest, handwritten JS
-> segment, named exclusions, failures and denominator reconciliation. No test
+> scanner is authored in Lykn. F-8 fixture parity maps the native Rust
+> `lykn compile` route against a Lykn-authored producer calling exported JS
+> `read` → `expand({filePath, strict})` → `compile` from a fresh, offline Deno
+> process per input; it must not pretend `lykn(source,{strict})` accepts
+> `filePath`. F-10 separately scans the actual Deno JS
+> `lykn test --compile-only` outputs under their cwd macro context and maps
+> every source/output condition. The future population includes the complete
+> source/output manifest, handwritten JS segment, named exclusions, failures
+> and denominator reconciliation. No test
 > body is run to obtain ASTs. Every original F-1–F-12 status remains open until
 > its own evidence, divergence/report obligations and independent review are
 > complete.
