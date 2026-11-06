@@ -480,3 +480,97 @@ same unchanged accepted workspace. The original unmodified Python source was
 executed once, its exception is consumed, and no cleanup/deletion or CDC
 acceptance is claimed. Policy commits remain as previously recorded; LH-01–07
 and all slice acceptance rows remain open for independent disposition.
+
+## Iteration02 scoped cleanup — CC proposed-done
+
+Required intake completed before mutation: `cc-prompt-iteration02.md`,
+`slice-plan.md`, `ledger.md`, Slice09 `cdc-verification.md`, planning
+`AGENTS.md`, tooling README, and the fixed-control/original-parity section above
+were read completely. I read the complete three pre-cleanup bodies and checked
+the original plan's scope/deletion contract. Planning began clean at
+`e9555ecd3bb62af36a66bbfe68affd770a9ae206`; the source task worktree remained
+clean at `bc83b43cc9084d0eddb910c73497cef0f9c43179`. CDC had independently
+accepted helper output byte identity, all 12 controls, exact saved-oracle and
+baseline parity, and the seven-home policy/citation gates. The only remaining
+work was the exact scoped cleanup and usable README. No Python ran in this
+iteration; the parity exception was already consumed.
+
+Before mutation, each original matched its immutable planning commit
+`7048fba9c5da1fefef4659d9c668d0b01d4616eb` blob and expected mode `100644`:
+
+| Original body | Git path at immutable commit | Blob | SHA-256 |
+| --- | --- | --- | --- |
+| Slice08 validator | `project03-language-evolution/slice08-template-string-boundary/artifacts/evidence/pilot/run-01/raw/staging/export-map-check.py` | `37e39ae6bc285a9a6212efd6725b5e1e1222562c` | `8bdaed8398d03e491cb6b349c7d764fc5d8066a6bf1d2467161d037dee105865` |
+| Slice08 failed inline builder | `project03-language-evolution/slice08-template-string-boundary/artifacts/evidence/pilot/run-01/raw/gate/launch-setup-error-01/command.txt` | `dbf448910ab1ac9ad9ab286b4c435f9c24c4c60a` | `01b6100ba22d690908dcda64c0bd89e9f4d0cf6fab73cd384e3a493dee060797` |
+| Slice07 dist-only checker | `project03-language-evolution/slice07-contract-predicate-lowering/artifacts/evidence/phase-b/run-02/raw/staging/commands-reconciliation.txt` | `5881e780c6b08db528dd2b54e775d04f2eb97ad1` | `1477a1d9ac168aec06c239f6c0772ecc75f3d68ec70d5d84b99bcecca73e3c8e` |
+
+The ignored Slice08 task counterparts of the validator and inline-builder files
+were present, mode `0644`, and byte-identical to their tracked originals before
+cleanup. The Slice07 task target contains no reconciliation-body duplicate.
+The tracked and ignored `stderr.log` copies (SHA-256
+`a04627a721f5de85fd2c39791ce16df7f3521bad33ddc203b0e446d011aaab64`) and
+`exit-status.txt` copies (SHA-256
+`4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865`, content
+`1`) were `cmp`-identical before and after replacement and were not edited.
+Their retained stderr includes the actual SyntaxError and invalid source
+fragment; the failed gate command was never invoked. Slice07's prior positive
+output log remains SHA-256
+`235ddc00dd83c6f295500d512868fe249998f36a981bfb8ce1577d6d055072cd` and its
+stderr remains empty (SHA-256
+`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`). CDC
+reconciled its 13 lines with V0's first 13 lines; this was not re-executed.
+
+Removed the tracked Slice08 `export-map-check.py` and its exact ignored copy.
+Added adjacent `export-map-check-source.md` (mode `0644`, SHA-256
+`74dc65c258686670f83350277dc9492bd0028c115be5917cda35ecd09775a531`) with the
+immutable source locator and the replacement/parity paths. Replaced the full
+inline-body `command.txt` in both tracked and ignored Slice08 homes with
+identical metadata (mode `0644`, SHA-256
+`262b1aef8989f82abb18dd168111b12510078b185ae2b8fdc60c0ee8d7246e0e`); the
+metadata identifies the failed setup, exact retained stderr/status and source
+commit/blob/hash. Replaced Slice07's complete here-doc file with metadata
+(mode `0644`, SHA-256
+`69bf690df50572c19c88ae661da618fd125bb6b842f1779ee190dc198dc38fca`), keeping
+its prior log/stderr and explaining why the separate short `commands.txt`
+label is not an executable source. All three body removals are dated
+2026-11-06, after functional parity acceptance and before independent cleanup
+verification. No Python body was copied, backed up, archived, or executed.
+
+The README now states that no Python execution or exception remains. Its
+compiler recipe copies the CDC empty config into a fresh named cwd, runs every
+compiler command from that cwd, uses paths valid from there, stages the child
+under the granted task target, and sends generated products and a new run root
+to fresh iteration02 paths. The accepted helper also uses the pre-existing
+`target/slice09/empty/project.json` for R0; its known hash is documented and
+the file remains untouched. No helper `.lykn`, generated accepted product,
+AGENTS file, source implementation, status, stderr, or prior run receipt was
+changed.
+
+Final native inventory commands were run over Slice06–08 `artifacts/` and task
+`target/slice07/`, `target/slice08/`, `target/slice09/`:
+
+```sh
+find /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice06-native-esbuild-controls/artifacts /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice07-contract-predicate-lowering/artifacts /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice08-template-string-boundary/artifacts -type f \( -name '*.py' -o -name '*.pyc' \) -print
+find /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09 -type f \( -name '*.py' -o -name '*.pyc' \) -print
+rg -n --hidden --glob '*.txt' --glob '*.md' --glob '*.log' --glob '*.sh' \
+  -e 'python3?[[:space:]]+-[[:space:]]*<<' \
+  -e '^import (hashlib|json|pathlib)' /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice06-native-esbuild-controls/artifacts /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice07-contract-predicate-lowering/artifacts /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice08-template-string-boundary/artifacts
+rg -n --hidden --glob '*.txt' --glob '*.md' --glob '*.log' --glob '*.sh' \
+  -e 'python3?[[:space:]]+-[[:space:]]*<<' \
+  -e '^import (hashlib|json|pathlib)' /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09
+```
+
+Both final scans returned no paths or code-body matches. Before deletion, the
+first scan found only the tracked Slice08 validator and its ignored copy; the
+body-pattern search found only the Slice07 here-doc and the two tracked/ignored
+Slice08 inline builder copies. The broader post-cleanup text review found only
+historical prose/metadata, the separate Slice07 `commands.txt` label
+`python3 export-map-check.py ...` (confirmed not an invocation), and a
+third-party Python mention in generated Deno type documentation. Those are not
+program bodies; Slice08's prior results retain factual narrative, not code.
+Slice03 and other projects remain outside this inventory and unchanged.
+
+README and cleanup locators are prepared for commit in the authorized paths.
+This is CC proposed-done evidence only. No Rust make check, compiler gate,
+control rerun, source cleanup, or Python execution was added. LH-03, LH-06,
+LH-07 and all slice acceptance rows remain open for CDC final disposition.

@@ -1,10 +1,23 @@
-Shell command: test ! -e target/slice08/pilot/run-01/experiment/out && mkdir -p target/slice08/pilot/run-01/experiment/out/outer-cache target/slice08/pilot/run-01/raw/gate
-Python used to assemble (but not invoke) the gate command:
-import json, pathlib, shlex, subprocess
-root=pathlib.Path('/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01')
-workspace=root/'experiment/workspace'; output=root/'experiment/out'
-esbuild=pathlib.Path('/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild')
-deno=pathlib.Path('/opt/homebrew/bin/deno'); driver=workspace/'target/lykn/build/driver.js'
-envargs=['PATH=/opt/homebrew/bin:/usr/bin:/bin',f'DENO_DIR={output}/outer-cache','DENO_NO_UPDATE_CHECK=1','NO_COLOR=1']
-allow_read=f'{workspace},{output}';allow_run=f'{esbuild},{deno}'
-argv=['env','-i',*en vargs] if False else None
+# Removed inline Python command builder — 2026-11-06
+
+The inline builder body was removed on 2026-11-06 after functional parity acceptance and before independent cleanup verification. Its immutable
+source locator is planning commit `7048fba9c5da1fefef4659d9c668d0b01d4616eb`,
+path `project03-language-evolution/slice08-template-string-boundary/artifacts/evidence/pilot/run-01/raw/gate/launch-setup-error-01/command.txt`, Git blob
+`dbf448910ab1ac9ad9ab286b4c435f9c24c4c60a`, SHA-256
+`01b6100ba22d690908dcda64c0bd89e9f4d0cf6fab73cd384e3a493dee060797`. The
+identical ignored task copy at
+`target/slice08/pilot/run-01/raw/gate/launch-setup-error-01/command.txt` was
+replaced with this metadata; no Python body was copied or archived.
+
+This was a command-assembly setup attempt; the gate command was not invoked.
+The actual failure is retained in adjacent `stderr.log` (SHA-256
+`a04627a721f5de85fd2c39791ce16df7f3521bad33ddc203b0e446d011aaab64`): Python
+reported `SyntaxError: invalid syntax` at the source fragment
+`argv=['env','-i',*en vargs] if False else None` (line 8). Adjacent
+`exit-status.txt` remains byte-identical in tracked and ignored homes, SHA-256
+`4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865`, content
+`1`. Both stderr/status pairs are preserved without edits.
+
+Use the accepted Lykn helpers and their current commands in Slice09
+`artifacts/tooling/README.md`; this failed assembly body is historical failure
+evidence, not a reusable invocation.

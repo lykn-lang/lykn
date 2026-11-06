@@ -1,23 +1,26 @@
-Correction to raw/staging/commands.txt:
-The line `python3 export-map-check.py target/lykn/dist/{json,yaml,effects}/deno.json`
-was only a short label, not an executable file or the literal process argv.
-The actual process was Python 3 reading a here-document, with stdout and stderr
-redirected to export-map-check.log and export-map-check.stderr:
+# Removed Slice07 dist-only export-map validator here-doc — 2026-11-06
 
-python3 - <<'PY' > "$raw/export-map-check.log" 2> "$raw/export-map-check.stderr"
-import json
-from pathlib import Path
-base = Path('target/lykn/dist')
-expected = {
- 'json': {'.':'./mod.js','./document':'./document.js','./file':'./file.js','./value':'./value.js'},
- 'yaml': {'.':'./mod.js','./value':'./value.js'},
- 'effects': {'.':'./mod.js','./dead':'./dead.js','./used':'./used.js'},
-}
-for package, want in expected.items():
-    path = base/package/'deno.json'
-    actual = json.loads(path.read_text())['exports']
-    print(f'export-map package={package} keys={len(actual)} matches-prior-exact-map={actual == want}')
-    for key, value in actual.items(): print(f'  {key} -> {value}')
-    if actual != want: raise SystemExit(1)
-print(f'total-library-public-keys={sum(map(len, expected.values()))}')
-PY
+The inline Python validator was removed on 2026-11-06 after functional parity acceptance and before independent cleanup verification.
+Its immutable source locator is planning commit
+`7048fba9c5da1fefef4659d9c668d0b01d4616eb`, path
+`project03-language-evolution/slice07-contract-predicate-lowering/artifacts/evidence/phase-b/run-02/raw/staging/commands-reconciliation.txt`, Git blob
+`5881e780c6b08db528dd2b54e775d04f2eb97ad1`, SHA-256
+`1477a1d9ac168aec06c239f6c0772ecc75f3d68ec70d5d84b99bcecca73e3c8e`. It
+contained the dist-only nine-map checker. No ignored duplicate exists under
+task `target/slice07/`.
+
+Adjacent `export-map-check.log` is retained (SHA-256
+`235ddc00dd83c6f295500d512868fe249998f36a981bfb8ce1577d6d055072cd`); its 13
+saved positive lines equal the first 13 lines of Slice09 V0, as independently
+reconciled in Slice09 `cdc-verification.md`. Adjacent stderr is retained and
+empty (SHA-256
+`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`). The
+short `python3 export-map-check.py ...` label retained in this run's separate
+`commands.txt` was not the actual here-doc invocation, per the original
+reconciliation; it is historical provenance, not an executable source copy.
+
+The replacement is Slice09 `artifacts/tooling/public-check.lykn`, which checks
+both source and dist maps and the public files. Exact positive parity and fixed
+controls are recorded in Slice09 `artifacts/results.md`; the saved output
+comparison is reconciliation evidence, not a second execution or arbitrary
+negative-diagnostic parity claim. No Python was re-executed.
