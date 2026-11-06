@@ -67,9 +67,7 @@ fn assert_compile_rejects(source_name: &str, source: &str, predicate: &str) {
         Command::new(env!("CARGO_BIN_EXE_lykn"))
             .current_dir(temp.path())
             .arg("compile")
-            .arg(&source_path)
-            .arg("-o")
-            .arg(temp.path().join("rejected.js")),
+            .arg(&source_path),
     );
     let stderr = String::from_utf8_lossy(&compile.stderr);
     assert!(
