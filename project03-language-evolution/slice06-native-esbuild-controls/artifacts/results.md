@@ -203,3 +203,38 @@ first delimiter correction closed `digest` but exposed that the following async
 that closing delimiter. The previous attempt and source commit remain intact;
 the corrected driver requires its own source commit before a fresh `run-03`
 compile. No C4 bundle or runtime action has occurred.
+
+### Iteration01 source-cited correction readback before edits
+
+Current assigned prompt: `cc-prompt-iteration01.md`; planning opened at
+`abe1c83ebc3d00a0aed99e4e584b6f37fcc58bd8`, with prior source history through
+`0818be32908e3e4eca75aad0f4431fd470ce4795`. CDC's current `cdc-verification.md`
+inspected this exact observer and C5: three invalid static host-method calls,
+missing metafile observations/oracles, a duplicate C5 receipt label, and false
+root-vs-subpath file/document coverage. It confirms zero bundles/runtimes and 14
+unaffected workspace source compiles reusable; C5 and observer require recompile.
+
+The full required Lykn sections were loaded for this correction:
+`docs/guides/00-lykn-surface-forms.md` “Colon Syntax”, “cell / express / swap!”
+and `conj`; `docs/guides/09-anti-patterns.md` ID-41 and ID-47. The pinned source
+ECMAScript corpus sections were loaded fully: `docs/ecmascript-2025/22-text-processing.md`
+§22.1.3.22 `String.prototype.slice`, §22.1.3.28 `String.prototype.toLowerCase`,
+and `docs/ecmascript-2025/23-indexed-collections.md` §23.1.3.23
+`Array.prototype.push`. These are prototype receiver methods; Lykn colon syntax
+lowers `receiver:method` to member access and hyphenated methods to camelCase.
+The correction uses `key:slice`, `name:to-lower-case`, and `conj` accumulation
+where loop state is needed; no static String/Array call or raw JavaScript is
+appropriate. C5 root and subpath imports are separate observations: JSON file
+and document calls will be tested once from `@probe/json` root and once from
+their declared subpaths, preserving the expected camelCase JSON keys/order.
+
+The existing full-metafile requirement will be implemented in finite Lykn code:
+parse actual `inputs`/`outputs`, select output by normalized `entryPoint`, record
+complete normalized input/import identities and numeric `bytesInOutput`, then
+apply the fixed per-control graph/contribution rules. The raw metafile remains
+separate and unchanged. C4 gate writes its observation and returns before any
+runtime; manual complete C4 bundle/source/metafile review remains mandatory.
+C5 positively exercises the dead export and no removal claim rests on grep or
+byte totals. The 13 staged public JS/config hashes will be snapshotted before
+gate and reconciled after. Receipt labels distinguish C5 before/after; writes
+must reject pre-existing paths. No new probe or predicted outcome is introduced.
