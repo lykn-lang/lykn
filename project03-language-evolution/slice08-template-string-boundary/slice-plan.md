@@ -1,7 +1,8 @@
 # Slice08 — NE-C03 template string boundary
 
 Status: open; TE-01 independently accepted. Current assignment:
-`cc-prompt-iteration01.md`, bounded repair/full validation; pilot still held.
+`cc-prompt-iteration02.md`, continuing iteration01 repair/full validation with
+the repository JS-test filename correction; pilot still held.
 Initial diagnosis prompt is preserved.
 Collapsed standalone increment under Project03; no parallel Project07 home.
 
@@ -176,6 +177,12 @@ native gates bind this phase. No reader change, artificial AST layer or cache
 invalidation rewrite. See cdc-verification.md for the exact interpretation and
 cc-prompt-iteration01.md for the concrete implementation/check contract.
 Independent repair acceptance still gates any frozen five/eleven replay.
+
+Iteration02 preserves the initial test-only commit and its actual red runs,
+then changes the hand-authored JS test suffix to repository `*.test.js` rather
+than the generated-output `*_test.js` prescribed by CDC. Exact body/fixtures/
+oracles are retained; ignore policy is untouched. This is a bounded author-
+readiness correction, not new behavior or a restarted iteration budget.
 
 ## CC Phase A receipt — 2026-11-06
 
