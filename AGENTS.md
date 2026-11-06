@@ -42,7 +42,7 @@ another checkout when it is missing.
 | Source and user/developer docs for 0.6.x | Branch `release/0.6.x`, worktree `.worktrees/0.6.x` |
 | Source and user/developer docs for 0.7.x | Branch `release/0.7.x`, worktree `.worktrees/0.7.x` |
 | Source and user/developer docs for 0.8.x | Branch `release/0.8.x`, worktree `.worktrees/0.8.x` |
-| Product task authoring | Its named dedicated non-default task branch and worktree |
+| Product task authoring | Its named dedicated non-default task branch and worktree in Autonomous Mode, or when the active assignment explicitly requires one; otherwise use the assigned source home |
 | `main` | Integration only, except an explicitly authorized synchronized governance/docs change |
 
 Planning was created as an orphan and connected to original source history by
@@ -53,9 +53,12 @@ branch divergence and local changes, retain them, and get explicit integration
 authority. A release target in a project name or plan is intent, not approval
 to ship.
 
+Use a named dedicated non-default task branch and worktree in Autonomous Mode,
+or when the active assignment explicitly requires one. Otherwise, source and
+user/developer documentation work may be authored in its assigned release home.
 An explicitly authorized governance and documentation synchronization may span
-the existing branches, including `main`; this is a scoped exception, not
-authority for product implementation on main or release branches. Do not merge,
+the existing branches, including `main`; it grants no implementation authority
+beyond the active assignment. `main` remains an integration home. Do not merge,
 rebase, cherry-pick, push, publish, release, or trigger remote CI without the
 specific authority required for that action.
 
