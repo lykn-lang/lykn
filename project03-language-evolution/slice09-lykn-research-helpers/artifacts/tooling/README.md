@@ -24,12 +24,14 @@ default strict mode. Do not use the publishing-fixture project config:
 
 ```sh
 mkdir -p target/slice09/empty
+mkdir -p target/slice09/frozen-iteration01-v3
 cp /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice09-lykn-research-helpers/artifacts/evidence/cdc-pin-recheck/project.json target/slice09/empty/project.json
 cp /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice09-lykn-research-helpers/artifacts/tooling/public-check.lykn target/slice09/empty/public-check.lykn
 cp /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice09-lykn-research-helpers/artifacts/tooling/orchestrate.lykn target/slice09/empty/orchestrate.lykn
 cp /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice09-lykn-research-helpers/artifacts/tooling/check-helpers.lykn target/slice09/empty/check-helpers.lykn
 cp /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice09-lykn-research-helpers/artifacts/tooling/child-fixture.lykn target/slice09/child-fixture.lykn
 cp target/slice09/child-fixture.lykn target/slice09/empty/child-fixture.lykn
+cp target/slice09/child-fixture.lykn target/slice09/frozen-iteration01-v3/child-fixture.lykn
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn check target/slice09/empty/public-check.lykn
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn check target/slice09/empty/orchestrate.lykn
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn check target/slice09/empty/check-helpers.lykn
@@ -42,10 +44,10 @@ cp target/slice09/child-fixture.lykn target/slice09/empty/child-fixture.lykn
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn lint target/slice09/empty/orchestrate.lykn
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn lint target/slice09/empty/check-helpers.lykn
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn lint target/slice09/empty/child-fixture.lykn
-/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile target/slice09/empty/public-check.lykn -o target/slice09/public-check.js
-/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile target/slice09/empty/orchestrate.lykn -o target/slice09/orchestrate.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile target/slice09/empty/public-check.lykn -o target/slice09/frozen-iteration01-v3/public-check.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile target/slice09/empty/orchestrate.lykn -o target/slice09/frozen-iteration01-v3/orchestrate.js
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile target/slice09/empty/check-helpers.lykn -o target/slice09/frozen-iteration01-v3/check-helpers.js
-/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile target/slice09/empty/child-fixture.lykn -o target/slice09/child-fixture.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile target/slice09/empty/child-fixture.lykn -o target/slice09/frozen-iteration01-v3/child-fixture.js
 ```
 
 Inspect all generated JavaScript after compiling; these files are disposable
@@ -56,7 +58,7 @@ outputs and stay below the task's ignored `target/slice09/`.
 Run the public validator with an explicit workspace argument:
 
 ```sh
-/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/public-check.js,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace" target/slice09/public-check.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace
+/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/frozen-iteration01-v3/public-check.js,/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace" target/slice09/frozen-iteration01-v3/public-check.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace
 ```
 
 Choose a fresh `RUNROOT` below `target/slice09/`. The check driver accepts seven
