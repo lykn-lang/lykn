@@ -222,6 +222,14 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-06 v1.13: Opened [Slice10](slice10-template-release-integration/slice-plan.md)
+  after explicit Operator approval to merge accepted template repair a061c214
+  into release/0.6.x, validate and independently review under the same
+  Sol6.1 High CDC / Luna6 High CC Autonomous arrangement. Endpoint is this
+  local integration only; preserve synchronized policy, all original evidence,
+  open audit/library/human gates and other compiler candidates. No propagation,
+  push, publication, new compiler fix or subsequent unit is authorized here.
+
 - 2026-11-06 v1.12: Independently closed Slice09's usable helper migration,
   exact positive parity, fixed controls, actual code retirement and policy;
   retained history/evidence limits and owned NE-C05/06 without new compiler scope.
