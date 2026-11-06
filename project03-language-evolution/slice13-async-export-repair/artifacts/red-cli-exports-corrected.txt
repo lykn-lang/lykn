@@ -1,0 +1,30 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running tests/async_exports.rs (target/debug/deps/async_exports-c55362a2e44ad97d)
+
+running 2 tests
+
+thread 'async_named_export_checks_compiles_and_imports_with_await' (94139742) panicked at crates/lykn-cli/tests/async_exports.rs:102:9:
+lykn check failed for /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/async-exports/module.lykn: stdout= stderr=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/async-exports/module.lykn: error: 1:10: error: exports references unknown top-level binding 'fetch-value'
+  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test async_named_export_checks_compiles_and_imports_with_await ... FAILED
+ASYNC_EXPORT_REJECTED name=unknown.lykn predicate="unknown top-level binding 'missing'" check_exit=Some(1) check_stderr="/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpOE5i40/unknown.lykn: error: 1:10: error: exports references unknown top-level binding 'missing'\n  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor\n" compile_exit=Some(1) compile_stderr="1:10: error: exports references unknown top-level binding 'missing'\n  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor\n"
+ASYNC_EXPORT_REJECTED name=nested.lykn predicate="only allowed at module top level" check_exit=Some(1) check_stderr="/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpw1gz8j/nested.lykn: error: 1:28: error: exports declarations are only allowed at module top level\n  suggestion: move the exports declaration to the top level\n" compile_exit=Some(1) compile_stderr="1:28: error: exports declarations are only allowed at module top level\n  suggestion: move the exports declaration to the top level\n"
+
+thread 'async_exports_keep_unknown_nested_and_reserved_names_rejected' (94139741) panicked at crates/lykn-cli/tests/async_exports.rs:75:5:
+compile unexpectedly accepted reserved.lykn: 1:1: warning: exported function `default` has no `:returns` annotation; .d.ts will use `unknown`
+  suggestion: add `:returns :type` to `default`
+
+test async_exports_keep_unknown_nested_and_reserved_names_rejected ... FAILED
+
+failures:
+
+failures:
+    async_exports_keep_unknown_nested_and_reserved_names_rejected
+    async_named_export_checks_compiles_and_imports_with_await
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+error: test failed, to rerun pass `-p lykn-cli --test async_exports`

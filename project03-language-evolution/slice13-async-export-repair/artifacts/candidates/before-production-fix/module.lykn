@@ -1,0 +1,6 @@
+(exports fetch-value)
+
+(async (func fetch-value
+  :args (:number value)
+  :returns :number
+  :body (+ value 1)))

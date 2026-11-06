@@ -1,0 +1,3 @@
+(import "./module.js" (fetch-value))
+
+(console:log (JSON:stringify (await (fetch-value 41))))

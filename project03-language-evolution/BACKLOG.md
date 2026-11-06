@@ -408,6 +408,46 @@ source/compiler pin, resume Slice12's same four parser observations before
 walker investment; all four and K01–K12 remain unrun. No repair, source
 integration, acquisition, full audit or next unit is opened by this record.
 
+**2026-11-06 Slice13 attempted repair, stopped.** The explicitly authorized
+repair/re-entry unit established meaningful red tests, then independently
+confirmed a different compile-with-output validation gap, NE-C08 below.
+NE-C07 remains unfixed/unaccepted. Dedicated task codex/async-export-binding
+at2bf7a10929dc870acbd37709d5851cfd109f0082 retains red tests; the 14-line
+production candidate is [saved, unvalidated](slice13-async-export-repair/artifacts/unvalidated-candidate/provenance.md)
+and its live uncommitted edit was restored. No post-patch gates or parser
+observations occurred. Future accepted NE-C08 disposition precedes resumed
+NE-C07 independent validation and the unchanged four observations.
+
+#### NE-C08 — compile-with-output omits reserved-binding validation
+
+**Independently confirmed, 2026-11-06.** Slice13's intermediate negative
+regression at bdad42216c235a18d51609474f32f6ae9ce84a95 observed unexpected
+success for `(func default :args () :body 42)` then `(exports default)` through
+`compile -o`. The failing test dropped its original temporary output, which
+was not recovered. CDC separately froze the SAME source/command prediction at
+planning2d677c43b3f61e64e969a3c266c93a5f4fa5fc99, then reproduced exit0 with
+absolute release compiler57a49f55/sourcef705655 from a config-free cwd. Full
+[command](slice13-async-export-repair/artifacts/evidence/cdc-output-route/command.txt),
+[raw JS](slice13-async-export-repair/artifacts/evidence/cdc-output-route/result.js)
+and [independent review](slice13-async-export-repair/cdc-verification.md) are retained.
+Output uses literal `function default()` and `export {default}`, with no escaping.
+
+Guide09 lines829–841 at f705655 requires compile-time JS reserved-binding
+rejection. The stdout compiler invokes `validate_reserved_names` in
+crates/lykn-cli/src/compile.rs201–213; `compile_source_with_dts` at311+ does not.
+The actual result contradicts the existing contract; narrowing a test to
+stdout is not disposition of this route. No extra variant matrix or syntax
+runtime was needed to establish the bounded gap.
+
+**Owner/re-entry.** Project03 CDC owns a separately authorized narrow
+output-route validation parity/shared-frontend disposition: compare existing
+validator sequences and relevant route contracts before proposing repair,
+rather than blacklist only `default`. Preserve the original failed test and
+fresh receipt as distinct evidence. After accepted disposition, resume NE-C07
+with retained red tests/candidate and new source/compiler pins, then only the
+same four parser observations. NE-C07 remains unaccepted, parser0/4; no current
+compiler fix, release integration, new unit or full audit is opened here.
+
 #### NE-D01 — template dispatch prose contradicts its single-literal table row
 
 **Open guide follow-up, 2026-11-06.** At b841f71b/a061c214,

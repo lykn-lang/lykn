@@ -1,6 +1,9 @@
 # Slice13: NE-C07 repair and unchanged parser re-entry
 
-Opened 2026-11-06. Status: open. Collapsed standalone Project03 increment.
+Opened 2026-11-06. Status: closed at independently confirmed first new gap
+NE-C08; NE-C07 remains unaccepted/unfixed. One ledger row done, six deferred.
+Parser observations0/4 run. See [independent review](cdc-verification.md).
+Collapsed standalone Project03 increment. Original opening scope follows.
 Operator: “Let's fix NE-C07, validate it independently, and then resume the same
 four parser observations. Same models, Autonomous Mode, and stop if we hit
 another real evidence gap :-D”. Endpoint: independently accepted narrow repair

@@ -1,0 +1,2 @@
+1:1: warning: exported function `default` has no `:returns` annotation; .d.ts will use `unknown`
+  suggestion: add `:returns :type` to `default`

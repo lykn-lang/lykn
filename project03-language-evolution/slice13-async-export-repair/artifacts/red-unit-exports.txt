@@ -1,0 +1,30 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.05s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 8 tests
+test classifier::forms::tests::test_classify_exports ... ok
+test emitter::forms::tests::test_emit_exports_names ... ok
+test classifier::forms::tests::test_classify_exports_rejects_duplicate ... ok
+test classifier::forms::tests::test_exports_declaration_validation ... ok
+test classifier::forms::tests::exports_keep_duplicate_and_nested_declaration_checks ... ok
+test classifier::forms::tests::exports_do_not_promote_async_parameters_or_nested_named_functions ... ok
+test classifier::forms::tests::exports_accept_named_async_func_and_genfunc_in_either_order ... FAILED
+test expander::pass0::tests::test_find_macro_entry_exports_lykn_fallback ... ok
+
+failures:
+
+---- classifier::forms::tests::exports_accept_named_async_func_and_genfunc_in_either_order stdout ----
+
+thread 'classifier::forms::tests::exports_accept_named_async_func_and_genfunc_in_either_order' (94136664) panicked at crates/lykn-lang/src/classifier/forms.rs:6900:13:
+expected async named binding to be exportable: (exports fetch-value)
+(async (func fetch-value :args (:number value) :returns :number :body value))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    classifier::forms::tests::exports_accept_named_async_func_and_genfunc_in_either_order
+
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 1110 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p lykn-lang --lib`
