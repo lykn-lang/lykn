@@ -140,6 +140,16 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 Operator authorized local integration of the accepted predicate
+repair into release/0.6.x, then NE-C03. Merge b841f71b and the unfiltered release
+gate are complete (JS+Lykn1466/1466, docs482/482), recorded in Slice07's dated
+integration addendum. [Slice08](slice08-template-string-boundary/slice-plan.md)
+owns source/template diagnosis, conditional repair after independent semantic
+disposition, and the unchanged frozen pilot or an honest next gap stop. Initial
+source home is the reused task checkout on new codex/template-string-boundary
+at b841f71b; earlier branch refs/history/binary are preserved. No further release
+integration, propagation, push/publication or broad escape audit is approved.
+
 2026-11-05 Operator approved repairing NE-C01 then resuming the unchanged native
 five-control pilot. [Slice07](slice07-contract-predicate-lowering/slice-plan.md)
 owns that bounded implementation/test/replay increment, with same Sol 6.1 High
@@ -158,6 +168,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice08-template-string-boundary](slice08-template-string-boundary/slice-plan.md): active NE-C03 diagnosis/conditional repair and frozen-pilot increment; genuine semantic choice gates dependent implementation.
 - [slice07-contract-predicate-lowering](slice07-contract-predicate-lowering/slice-plan.md): independently accepted predicate repair/full gates; frozen pilot stopped at independently reproduced template-oracle mismatch, four done/two deferred rows; NE-C03 re-entry.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
@@ -178,6 +189,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.9: Recorded explicitly authorized local release predicate
+  integration/full validation and opened canonical Slice08 for NE-C03 with
+  finite diagnosis, semantic review, conditional repair and unchanged pilot
+  obligations. No legacy assertion is promoted to Operator language policy.
 
 - 2026-11-05 v1.8: Independently accepted bounded native contract repair and
   full validation, then closed Slice07 at the separately reproduced frozen

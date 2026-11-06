@@ -289,6 +289,17 @@ five controls/eleven calls from the beginning. CP-04/05 stay deferred; old
 Slice06 failed condition, all original F rows and Project07 gates remain intact.
 No next slice, implementation or release action is opened by this routing.
 
+**2026-11-06 authorized re-entry.** Operator explicitly asked to move on to
+NE-C03 after the accepted local release/0.6.x merge. Existing canonical
+[Slice08](slice08-template-string-boundary/slice-plan.md) now owns that bounded
+diagnosis/conditional repair/frozen-pilot increment. Initial assignment is
+source-contract diagnosis with finite native value/countercontrols and existing
+kernel cases; no production patch or observer change before independent
+disposition. Normative core guide ID-33 (MUST cooked strings) is inspected
+alongside historical C6b/D2 passthrough expectations, not silently subordinated
+to them. Genuine language choice still returns to Operator. All older partial
+counts and obligations remain intact; NE-C02 is not included.
+
 ### A5 · Packaging & distribution — **`02-packaging-strategy`** (research open)
 
 **Capability (candidate).** Release engineering: Homebrew (custom tap) and
