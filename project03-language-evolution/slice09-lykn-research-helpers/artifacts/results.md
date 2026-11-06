@@ -395,3 +395,11 @@ contains the new V5 context assertions and no `COMPILE_ERROR` placeholder.
 This correction and V0–V5 failure evidence are committed before the next fresh
 runtime. No new case was added, and neither the original validator nor source
 workspace was rerun or changed.
+
+Hash receipt cross-check: the V5 paragraph above mistakenly copied the
+compile4 output hash (`ad68208c9654f732756bc19f1f99becfd56d1faab3d280c52c682ab3a5fc201d`)
+into its compile5 row. The actual compile5 JS and fresh runtime copy both
+hash `30ff4d62639584243987819b2340b0eaad67201e82ed8068f601f8154577a768`; a
+native `cmp` found them byte-identical, and inspection confirmed the compiled
+NotFound and exact missing-path assertions. No runtime was launched with the
+stale compile4 product for the V5 correction.
