@@ -356,3 +356,14 @@ the remaining ten calls are unrun. The public-after check and all receipts are
 preserved in `artifacts/evidence/phase-b/run-02/raw/controls/`. CP-04 and CP-05
 remain open/incomplete; CP-06 awaits independent review. This returns the
 separate oracle issue without an unauthorized repair or replay.
+
+### Commit-trailer process nonconformance
+
+The four CC planning commits `33b6ba5de2b9a5b1f0220d6b2304967ed0c77eb1`,
+`21f6d83ce4d2a8e767a0342b80a36bcecb60569a`,
+`be02fc7e85fece623be3e3409c9ed5b198eb7507`, and
+`794f3f4547a0a05e29637c71c7b396b68390f4b0` contain a literal `\n` between the
+Codex and Billo AI co-author strings instead of two contiguous trailer lines.
+Their commit identities and evidence order are preserved; no message/history
+rewrite was performed. This record is committed with correctly separated
+trailers, but does not retroactively repair the four prior commit messages.
