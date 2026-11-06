@@ -1,5 +1,10 @@
 # Slice02 CC implementation closeout
 
+CDC 2026-11-05 current child disposition: iteration04 independently verified,
+all six GC rows done; see [final review](cdc-verification.md#final-child-review--iteration04-2026-11-05)
+and [retrospective](cdc-retrospective.md). The dated CC handoffs below remain
+history. Parent composition/authority acceptance stays separately pending.
+
 CC implementation is committed in the six source worktrees and the planning
 worktree. The six source `make check-cited-paths` gates passed. All six GC rows
 are attested by CC but remain `open` pending CDC's independent review and final
