@@ -1,0 +1,36 @@
+running 1 test from ./test/forms/template-string-boundary.test.js
+public JS compiler preserves decoded template string values ...
+  P1-backslash-n.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P1-backslash-n.lykn","code":0,"source":"(bind value \"\\\\n\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\\\n\" \"\")\n      :icu (template \"\\\\n\"))))\n","generated":"const value = \"\\\\n\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\\\\n`,\n  icu: `\\\\n`\n}));\n","stdout":"{\"plain\":\"\\\\n\",\"interpolated\":\"\\\\n\",\"concat\":\"\\\\n\",\"icu\":\"\\\\n\"}\n","stderr":""}
+----- output end -----
+  P1-backslash-n.lykn ... ok (26ms)
+  P2-backslash-quote.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P2-backslash-quote.lykn","code":0,"source":"(bind value \"\\\\\\\"\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\\\\\\"\" \"\")\n      :icu (template \"\\\\\\\"\"))))\n","generated":"const value = \"\\\\\\\"\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\\\\\"`,\n  icu: `\\\\\"`\n}));\n","stdout":"{\"plain\":\"\\\\\\\"\",\"interpolated\":\"\\\\\\\"\",\"concat\":\"\\\\\\\"\",\"icu\":\"\\\\\\\"\"}\n","stderr":""}
+----- output end -----
+  P2-backslash-quote.lykn ... ok (19ms)
+  P3-line-feed.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P3-line-feed.lykn","code":0,"source":"(bind value \"\\n\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\n\" \"\")\n      :icu (template \"\\n\"))))\n","generated":"const value = \"\\n\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\n`,\n  icu: `\n`\n}));\n","stdout":"{\"plain\":\"\\n\",\"interpolated\":\"\\n\",\"concat\":\"\\n\",\"icu\":\"\\n\"}\n","stderr":""}
+----- output end -----
+  P3-line-feed.lykn ... ok (19ms)
+  P4-carriage-return.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P4-carriage-return.lykn","code":0,"source":"(bind value \"\\r\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\r\" \"\")\n      :icu (template \"\\r\"))))\n","generated":"const value = \"\\r\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\\r`,\n  icu: `\\r`\n}));\n","stdout":"{\"plain\":\"\\r\",\"interpolated\":\"\\r\",\"concat\":\"\\r\",\"icu\":\"\\r\"}\n","stderr":""}
+----- output end -----
+  P4-carriage-return.lykn ... ok (18ms)
+  P5-backslash-backtick-dollar.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P5-backslash-backtick-dollar.lykn","code":0,"source":"(bind value \"\\\\`$\")\n(console:log\n  (JSON:stringify\n    (obj :plain value\n      :interpolated (template value)\n      :concat (template \"\\\\`$\" \"\")\n      :icu (template \"\\\\`$\"))))\n","generated":"const value = \"\\\\`$\";\nconsole.log(JSON.stringify({\n  plain: value,\n  interpolated: `${value}`,\n  concat: `\\\\\\`\\$`,\n  icu: `\\\\\\`\\$`\n}));\n","stdout":"{\"plain\":\"\\\\`$\",\"interpolated\":\"\\\\`$\",\"concat\":\"\\\\`$\",\"icu\":\"\\\\`$\"}\n","stderr":""}
+----- output end -----
+  P5-backslash-backtick-dollar.lykn ... ok (17ms)
+  P6-tag-raw.lykn ...
+------- output -------
+TEMPLATE_BOUNDARY_OBSERVED {"name":"P6-tag-raw.lykn","code":0,"source":"(console:log\n  (JSON:stringify\n    (obj :concat (tag String:raw (template \"\\\\n\" \"\"))\n      :icu (tag String:raw (template \"\\\\n\")))))\n","generated":"console.log(JSON.stringify({\n  concat: (String.raw)`\\\\n`,\n  icu: (String.raw)`\\\\n`\n}));\n","stdout":"{\"concat\":\"\\\\\\\\n\",\"icu\":\"\\\\\\\\n\"}\n","stderr":""}
+----- output end -----
+  P6-tag-raw.lykn ... ok (18ms)
+public JS compiler preserves decoded template string values ... ok (118ms)
+
+ok | 1 passed (6 steps) | 0 failed (120ms)
+

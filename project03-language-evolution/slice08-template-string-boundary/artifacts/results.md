@@ -252,3 +252,74 @@ case; the final aggregate oracle failed, so this is actual JS runtime red.
 Exact command, env, complete stdout/stderr, and exit records for old and new
 JS paths and the native path are retained separately under
 `artifacts/repair/run-01/expected-red/`. No red output was rerun or overwritten.
+
+## Iteration 01/02 repair and green validation
+
+The expected-red fixture/test commit is `920012afa4fd182e4619393e20a7af0a53e0382f`;
+the content-identical handwritten JS test rename is
+`dc7e3ad0353d1e9ed46cbce06dda8f0383a77b46`. The implementation is committed at
+`a061c2149792178ba037d17a31220545e34b4ac1`. Its diff from b841 contains exactly
+the thirteen authorized source paths (with `.test.js` replacing the initial
+ignored `_test.js` path). The source tree is clean. All six fixture SHA-256
+values are retained in the accepted case records; no fixture content changed.
+
+The change encodes already-decoded text for JavaScript template source in both
+native and public JS printers, in the same order: original backslash, actual CR,
+then existing backtick and dollar delimiters. The native borrowed-string helper
+and shared concat/ICU callers remain. The embedded compiler mirror is byte-for-
+byte identical to canonical source. The first direct-AST backslash unit now has
+two string literals (second empty) and therefore exercises concat; the separate
+single-literal unit exercises ICU. The D2 printed-text assertion/comment and
+stale tag-test deferral comment were reconciled without changing reader,
+normalizer, or test helper code.
+
+### Actual green evidence
+
+On committed HEAD `a061c2149792178ba037d17a31220545e34b4ac1`, all focused green
+receipts are captured with exact command, environment, full stdout/stderr, and
+exit status under `artifacts/repair/run-01/green/`:
+
+- Native `template_string_boundary` integration: exit 0, all six strict
+  compile/runtime modules pass and all 22 Unicode-scalar observations match.
+- Public JS `template-string-boundary.test.js`: exit 0, all six real child
+  modules pass, including code 0 and empty stderr, and all 22 values match.
+- Native template kernel selection: 3/3 tests pass; this includes separate
+  concat and ICU backslash coverage.
+- D2 `template-escape-convergence_test.lykn`: 1/1 passes.
+- Tag smoke route: 3/3 passes.
+- Accepted contract-predicate regression: 1 integration test passes with all
+  17 frozen observations.
+- `make fresh-artifacts`: exit 0. After the focused D2 route, canonical,
+  embedded mirror, and freshly materialized package compiler bytes compare
+  identical. All three SHA-256 values are
+  `50db21ce3d1f30325e9541c284cb37ffdc3f6e93bad55521a26cd6b4734ac1f4`.
+
+The native and JS green regressions each report the P6 raw fields as scalars
+`[92,92,110]`, the post-expansion JavaScript raw representation. P1 cooked
+values remain `[92,110]`. This verifies decoded-value preservation while
+retaining the documented generated-source raw behavior.
+
+### Full canonical gate
+
+The unfiltered `make check` ran at the committed HEAD with a fresh task-local
+`XDG_CACHE_HOME`, the accepted explicit `DENO_DIR`, no Deno update checks, and a
+fresh task-local `npm_config_cache`. It included the cited-path gate and legacy
+npm compatibility checks; it exited 0. The log reports 482 documentation/test
+blocks passed, zero failed, and “All checks passed (build + lint + test).” Exact
+argv/environment, complete raw stdout/stderr, and exit record are retained in
+`artifacts/repair/run-01/full-check/`. No extra docs-test rerun was performed.
+
+### Final source/tool pins and limits
+
+- Source branch/head: `codex/template-string-boundary` at
+  `a061c2149792178ba037d17a31220545e34b4ac1`, clean.
+- `Cargo.lock` SHA-256 is unchanged at
+  `672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce`.
+- Rebuilt `bin/lykn` and `target/release/lykn` both hash to
+  `544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a`
+  (`lykn 0.6.0`).
+- Deno remains 2.9.6 stable. The global same-version materialized cache was
+  not modified; the fresh owned XDG materialization was verified instead.
+
+This is CC implementation and gate evidence only. TE-02/03 remain open pending
+CDC independent acceptance. No frozen pilot was run; TE-04/05 remain held.

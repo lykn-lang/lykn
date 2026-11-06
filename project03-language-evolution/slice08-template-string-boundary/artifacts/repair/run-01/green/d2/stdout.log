@@ -1,0 +1,5 @@
+running 1 test from ./target/lykn/test/test/forms/template-escape-convergence_test.js
+D-2: template backslash content converges across compilers ... ok (10ms)
+
+ok | 1 passed | 0 failed (12ms)
+

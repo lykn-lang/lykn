@@ -6,6 +6,11 @@ the repository JS-test filename correction; pilot still held.
 Initial diagnosis prompt is preserved.
 Collapsed standalone increment under Project03; no parallel Project07 home.
 
+Iteration01/02 implementation is now committed at source
+`a061c2149792178ba037d17a31220545e34b4ac1`; the complete unfiltered full gate
+and focused repair regressions are reported in `artifacts/results.md`. CDC
+independent review/acceptance is pending. The frozen pilot remains held.
+
 ## Authority, outcome and gates
 
 On2026-11-06 Operator approved merging the accepted predicate repair into
@@ -25,11 +30,12 @@ not a claim that Operator supplied that number. No extension without disposition
 Five refinement iterations maximum. Genuine language-design ambiguity goes to
 Operator; CC cannot select new public behavior merely to make the pilot pass.
 
-Phase A returns observations and a source-grounded recommendation for independent
-CDC review. NO production patch, legacy-test change, observer change or pilot
-replay before a preserved iteration resolves implementation and semantic scope.
-No release/main edits, further merge/propagation, push/publication, dependency/
-toolchain/backend acquisition, broad escaping audit or NE-C02 repair.
+Phase A returned observations and a source-grounded recommendation; CDC accepted
+that diagnosis and issued iterations01/02 for the narrowly scoped repair.
+Implementation and validation are complete as CC evidence; TE-02/03 remain open
+pending CDC review. No observer or frozen-pilot replay has occurred. No
+release/main edit, further merge/propagation, push/publication, dependency/
+toolchain/backend acquisition, broad escaping audit or NE-C02 repair occurred.
 
 ## Source and ownership
 

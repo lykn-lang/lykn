@@ -63,3 +63,27 @@ not an implementation authorization or an assertion about untested escapes.
 CDC independent replay/disposition is required before any repair iteration.
 TE-01 remains open; TE-02 through TE-06 remain held/open. No runtime or pilot
 criterion is accepted by this CC report.
+
+## Iteration 01/02 implementation return — 2026-11-06
+
+The scoped repair is committed at source
+`a061c2149792178ba037d17a31220545e34b4ac1` on
+`codex/template-string-boundary`, with a clean tracked tree and exactly thirteen
+authorized source paths changed from b841. Fixture/test expected-red commit
+`920012afa4fd182e4619393e20a7af0a53e0382f` and byte-identical filename rename
+`dc7e3ad0353d1e9ed46cbce06dda8f0383a77b46` remain preserved. The old native
+baseline binary is retained; no binaries are committed.
+
+The focused native and public-JS regression suites each pass all six programs
+and 22 scalar observations. Kernel concat/ICU tests, D2 convergence, tag smoke,
+and accepted contract17 regression pass. Fresh embedded materialization matches
+canonical and mirror compiler bytes. The full unfiltered `make check` and
+cited-path gate pass at the committed source HEAD; full receipts are retained
+under `artifacts/repair/run-01/`. `artifacts/results.md` contains exact run
+details and binary, lock, fixture, and materialization pins.
+
+CC returns this implementation for CDC independent review. TE-02 and TE-03
+remain open until that review. Do not start the frozen pilot: TE-04/05 remain
+held until the repair is independently accepted and the next authorized stage
+is resumed. No source/specimen, dependency, reader, cache-policy, or frozen
+observer change was made.

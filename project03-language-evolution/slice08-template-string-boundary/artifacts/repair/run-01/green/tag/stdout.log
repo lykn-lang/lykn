@@ -1,0 +1,7 @@
+running 3 tests from ./target/lykn/test/test/forms/tag_test.js
+tag: basic tagged template ... ok (10ms)
+tag: tag is a member expression ... ok (402µs)
+tag: non-template second arg throws ... ok (337µs)
+
+ok | 3 passed | 0 failed (13ms)
+
