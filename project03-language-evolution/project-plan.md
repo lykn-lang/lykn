@@ -140,7 +140,17 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-05 Operator approved repairing NE-C01 then resuming the unchanged native
+five-control pilot. [Slice07](slice07-contract-predicate-lowering/slice-plan.md)
+owns that bounded implementation/test/replay increment, with same Sol 6.1 High
+CDC and fresh Luna 6 High CC. Guidance cleanup is independently complete;
+task source tip9be0c301 retains74a code baseline. Repair/gates need independent
+acceptance before frozen pilot replay; no production propagation, new backend,
+dependency update, push or publication. Original Slice06 failed counts/deferred
+rows and all F/Project07 outcomes remain historical/open as recorded.
+
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice07-contract-predicate-lowering](slice07-contract-predicate-lowering/slice-plan.md): approved native predicate repair, independent gate then unchanged five-control replay; active.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
 - [slice06-native-esbuild-controls](slice06-native-esbuild-controls/slice-plan.md): independently verified native tool/C4 attribution and required first-C5 parse stop; four done/three deferred rows, remaining controls unrun; NE-C01 owns re-entry.
@@ -160,6 +170,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-05 v1.7: Opened Operator-approved NE-C01 repair plus frozen pilot
+  re-entry after guidance cleanup. Recorded dedicated updated task tip, fresh
+  same-model CC, meaningful native regressions/gates and staged independent
+  acceptance without changing original audit/library/human obligations.
 
 - 2026-11-05 v1.6: Independently closed Slice06 as a bounded stop: reproducible
   native esbuild and C4 attribution delivered; first C5 failed before evaluation,

@@ -199,6 +199,14 @@ and [independent failed runtime](slice06-native-esbuild-controls/artifacts/evide
 are preserved. This specific contract mismatch is reproduced; cause and wider
 impact are not established. No compiler fix or source escape was attempted.
 
+2026-11-05 re-entry: Operator approved repair and the same five controls, later
+confirmed “keep going”. [Slice07](slice07-contract-predicate-lowering/slice-plan.md)
+now owns the bounded shared native predicate-lowering repair on dedicated task
+branch9be0c301 (code baseline74a), its strict regressions/native gates, independent
+acceptance and frozen pilot re-run. No result/closure is inferred at opening;
+the original stop and counts above remain unchanged. Cleanup's GC-D01 guide
+finding has a separate Project07 roadmap owner and is not repaired here.
+
 **Owner/re-entry.** CDC prepares a separate bounded compiler diagnosis/repair
 assignment after Operator authorization; future CC implements it and an
 independent reviewer verifies the actual fix and relevant regressions. Then
