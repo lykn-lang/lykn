@@ -437,3 +437,88 @@ and the expected dead/used/effect attribution. CDC confirmed the C4 gate and
 authorized the existing `controls <reviewedhash>` phase once. The next allowed
 action is that exact controls invocation reusing this bundle; no other bundle
 or runtime variant is authorized.
+
+Planning metadata clarification: commit `3f347ee5837e11292c5ebafb2c87bc741144d7e3`
+was created after CDC's confirmation. Its message says to keep the runtime phase
+“explicitly gated by CDC confirmation,” which does not describe the already
+confirmed state. The original commit/message is preserved; this dated note
+records the phrasing error, and the controls invocation is authorized by CDC's
+confirmation above.
+
+### Fixed controls phase — complete
+
+After CDC's C4 confirmation, I invoked the exact existing `controls
+6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a` command
+once, directly through the frozen shell `env -i ... deno run` argv. It reused
+the already-gated C4 bundle. Outer Deno exited 0 with empty stdout/stderr. The
+complete invoked command, outer status/output, all child receipts, all five
+bundle/metafile pairs, controls observations, and before/after public snapshots
+are committed under `artifacts/evidence/pilot/run-01/raw/controls/`. The actual
+task-root copies remain under `target/slice08/pilot/run-01/experiment/out/`.
+
+All eleven calls ran in the fixed order and each child exited 0 with empty
+stderr. Their actual stdout matches the frozen exact predictions:
+
+| Calls | Observed stdout | Result |
+| --- | --- | --- |
+| C5-source-before, C5-bundle-run, C5-source-after | `init:effect\n` then the exact frozen JSON object for all root/subpath fields | All values match, including inner-quoted file/document strings |
+| C4-source, C4-bundle-run | `init:effect\nentry:42\n` | Match |
+| C1-source, C1-bundle-run | `BASE\n` | Match |
+| C2-source, C2-bundle-run | `{"x":1}\n` | Match |
+| C3-source, C3-bundle-run | `{"x":1}\n` | Match |
+
+`runtime-summary.tsv` contains every exact receipt label, exit code and JSON-
+escaped stdout/stderr. C5's three captured stdout values are identical and
+contain `jsonRoot`/`jsonValue={"x":1}`, file root/value `{"x":1}` as strings,
+document root/value `document:{"x":1}` as strings, YAML root/value
+`{"answer":42}`, used root/value 42, and dead root/value 82. The earlier C5
+inner-quote mismatch does not recur under the accepted compiler. C5 alone has
+the exact staged data file in its child read grant; other child invocations
+have no file-read grant.
+
+The five complete graphs and contribution maps are retained in their actual
+esbuild metadata and summarized in `raw/controls/controls-phase/bundle-summary.tsv`:
+
+- C1 contains only its entry and no library graph identity.
+- C2 resolves the JSON barrel and its value/file/document inputs; only JSON
+  value contributes (382 bytes), with zero barrel contribution. No YAML input
+  or contribution appears.
+- C3 includes only JSON value plus its entry; file, document and YAML are
+  absent. JSON value contributes 382 bytes.
+- C4 resolves `dead.js` (406 input bytes), but it has no output contributor
+  row; used contributes 365 bytes and effect contributes 28, with zero barrel
+  contribution. Complete C4 bundle code contains both effect and used bodies,
+  and no `unusedPure` body.
+- C5 has positive implementation contributions for JSON value (382), file
+  (359), document (365), YAML value (534), effect (28), used (365), and the
+  previously omitted `unusedPure` implementation (383 bytes). JSON/YAML/effects
+  barrels contribute zero bytes. The complete 3,147-byte C5 bundle contains the
+  `unusedPure` body and its call; the C5 graph and bundle output have no
+  unexpected library identity.
+
+There are exactly five total bundles C1–C5, with hashes/sizes recorded in
+`bundle-sha256.txt`. C4 remains the same confirmed hash. Before and after
+snapshots each contain 13 public files and nine exports; the driver's actual
+reconciliation reports all 13 file hashes and all nine export hashes unchanged.
+The expected-before, expected-after and reconciliation receipts are retained;
+there was no extra runtime or bundle variant.
+
+Current accepted-source condition counts are complete: 16/16 strict compiles,
+15/15 staged byte comparisons, 9/9 exports, 5/5 bundles, and 11/11 runtime
+calls. All five control predictions and every paired stdout/exit/stderr oracle
+pass. Prior Slice06/07 failures remain unchanged historical conditions.
+
+### Process-conformance note
+
+During preparation I used Python subprocess/copy scripts to orchestrate the
+native compile/build/staging commands and evidence copying, plus a Python
+command builder for the first C4 launch attempt. This violated the Operator's
+Lykn-over-Python preference/repository guidance and is recorded as a process
+nonconformance even though the actual compiler, dist/gates, Deno and esbuild
+work ran through their pinned native commands and no Python implementation of
+the observer or product was used. That first Python launch-builder failed with
+a syntax error before it launched Deno or esbuild; the original exact attempt
+and stderr remain at `raw/gate/launch-setup-error-01/`. The subsequent C4 gate
+and fixed controls phase were invoked directly from the native shell, and no
+Python was used for the controls launch or runtime analysis. No source,
+specimen, observer, condition, or runtime was changed to compensate.

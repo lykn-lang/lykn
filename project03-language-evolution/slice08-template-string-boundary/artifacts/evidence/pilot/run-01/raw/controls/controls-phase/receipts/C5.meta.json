@@ -1,0 +1,186 @@
+{
+  "inputs": {
+    "target/lykn/dist/json/value.js": {
+      "bytes": 405,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/json/file.js": {
+      "bytes": 380,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/json/document.js": {
+      "bytes": 391,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/json/mod.js": {
+      "bytes": 120,
+      "imports": [
+        {
+          "path": "target/lykn/dist/json/value.js",
+          "kind": "import-statement",
+          "original": "./value.js"
+        },
+        {
+          "path": "target/lykn/dist/json/file.js",
+          "kind": "import-statement",
+          "original": "./file.js"
+        },
+        {
+          "path": "target/lykn/dist/json/document.js",
+          "kind": "import-statement",
+          "original": "./document.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "target/lykn/dist/yaml/value.js": {
+      "bytes": 563,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/yaml/mod.js": {
+      "bytes": 45,
+      "imports": [
+        {
+          "path": "target/lykn/dist/yaml/value.js",
+          "kind": "import-statement",
+          "original": "./value.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "target/lykn/dist/effects/effect.js": {
+      "bytes": 28,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/effects/used.js": {
+      "bytes": 382,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/effects/dead.js": {
+      "bytes": 406,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/effects/mod.js": {
+      "bytes": 92,
+      "imports": [
+        {
+          "path": "target/lykn/dist/effects/effect.js",
+          "kind": "import-statement",
+          "original": "./effect.js"
+        },
+        {
+          "path": "target/lykn/dist/effects/used.js",
+          "kind": "import-statement",
+          "original": "./used.js"
+        },
+        {
+          "path": "target/lykn/dist/effects/dead.js",
+          "kind": "import-statement",
+          "original": "./dead.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "target/lykn/dist/controls/c5.js": {
+      "bytes": 1034,
+      "imports": [
+        {
+          "path": "target/lykn/dist/json/mod.js",
+          "kind": "import-statement",
+          "original": "@probe/json"
+        },
+        {
+          "path": "target/lykn/dist/json/value.js",
+          "kind": "import-statement",
+          "original": "@probe/json/value"
+        },
+        {
+          "path": "target/lykn/dist/json/file.js",
+          "kind": "import-statement",
+          "original": "@probe/json/file"
+        },
+        {
+          "path": "target/lykn/dist/json/document.js",
+          "kind": "import-statement",
+          "original": "@probe/json/document"
+        },
+        {
+          "path": "target/lykn/dist/yaml/mod.js",
+          "kind": "import-statement",
+          "original": "@probe/yaml"
+        },
+        {
+          "path": "target/lykn/dist/yaml/value.js",
+          "kind": "import-statement",
+          "original": "@probe/yaml/value"
+        },
+        {
+          "path": "target/lykn/dist/effects/mod.js",
+          "kind": "import-statement",
+          "original": "@probe/effects"
+        },
+        {
+          "path": "target/lykn/dist/effects/used.js",
+          "kind": "import-statement",
+          "original": "@probe/effects/used"
+        },
+        {
+          "path": "target/lykn/dist/effects/dead.js",
+          "kind": "import-statement",
+          "original": "@probe/effects/dead"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../out/C5.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "target/lykn/dist/controls/c5.js",
+      "inputs": {
+        "target/lykn/dist/json/value.js": {
+          "bytesInOutput": 382
+        },
+        "target/lykn/dist/json/mod.js": {
+          "bytesInOutput": 0
+        },
+        "target/lykn/dist/json/file.js": {
+          "bytesInOutput": 359
+        },
+        "target/lykn/dist/json/document.js": {
+          "bytesInOutput": 365
+        },
+        "target/lykn/dist/yaml/value.js": {
+          "bytesInOutput": 534
+        },
+        "target/lykn/dist/yaml/mod.js": {
+          "bytesInOutput": 0
+        },
+        "target/lykn/dist/effects/effect.js": {
+          "bytesInOutput": 28
+        },
+        "target/lykn/dist/effects/used.js": {
+          "bytesInOutput": 365
+        },
+        "target/lykn/dist/effects/mod.js": {
+          "bytesInOutput": 0
+        },
+        "target/lykn/dist/effects/dead.js": {
+          "bytesInOutput": 383
+        },
+        "target/lykn/dist/controls/c5.js": {
+          "bytesInOutput": 441
+        }
+      },
+      "bytes": 3147
+    }
+  }
+}

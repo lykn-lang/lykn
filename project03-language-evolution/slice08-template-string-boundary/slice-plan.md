@@ -12,6 +12,9 @@ required gate evidence is complete. Iteration03 executes only the original
 frozen five-control pilot under that accepted condition. The new condition and
 unchanged predictions were committed before any new compilation, bundle, or
 runtime. Current counts and gates are in `artifacts/results.md`.
+The fixed controls invocation has now completed once: all five bundles and all
+eleven ordered runtime calls match their frozen oracles, while public hashes
+remain unchanged. TE-04/05 await CDC final review; no follow-up run is authorized.
 
 ## Authority, outcome and gates
 
@@ -214,6 +217,18 @@ CDC has now independently confirmed the actual C4 bundle and raw metafile at
 the recorded hash and source paths. The unchanged controls phase is authorized
 once with that reviewed bundle; current runtime count remains 0/11 before the
 invocation. No alternate C4 build or controls order is authorized.
+
+## Iteration03 controls return — 2026-11-06
+
+The one authorized controls invocation completed at exit 0, producing exactly
+five total bundles and all eleven fixed runtime receipts in order. Each child
+exit/stderr/stdout matched; the C5 before/bundle/after payloads agree, including
+the file/document quote bytes. All five graph/contribution observations pass,
+including C4 dead-module omission and C5 positive `unusedPure` contribution.
+Public before/after reconciliation reports all 13 files and nine exports
+unchanged. Raw evidence and the process-conformance note are in
+`artifacts/evidence/pilot/run-01/`. TE-04/05 remain open pending CDC independent
+review. No source/specimen/observer edit, extra case, runtime or bundle occurred.
 
 ## CC Phase A receipt — 2026-11-06
 

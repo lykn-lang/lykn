@@ -123,3 +123,25 @@ hash, with compiler identity and raw input/output contribution attribution
 independently checked. The prior pause is now resolved; the unchanged fixed
 controls phase is authorized once with this reviewed C4 bundle. Runtime counts
 remain 0/11 at the controls-phase start.
+
+## Iteration 03 controls result — 2026-11-06
+
+The single authorized controls invocation exited 0. All eleven fixed child
+calls ran in order, each with exit 0, empty stderr, and the exact predicted
+stdout. Five total bundles are present; the confirmed C4 bundle was reused.
+C4 retains dead-input resolution with zero dead contribution and positive used
+and effect bodies. C5's complete output positively includes the frozen
+`unusedPure` implementation, and its before/bundled/after stdout values match.
+All nine public paths resolve, and all 13 file/nine export hashes remain
+unchanged. Exact receipts, graph attribution, child bytes and bundle hashes are
+in `artifacts/evidence/pilot/run-01/`; the full outcome is described in
+`artifacts/results.md`.
+
+CC returns TE-04/05 for CDC independent final review; their ledger statuses
+remain open pending that disposition. Earlier Slice06/Slice07 failed and unrun
+conditions remain preserved. No source, frozen specimen, observer, permissions
+or test condition was changed. The prep's Python subprocess/copy orchestration
+is disclosed as a process-conformance finding; the first command-builder error
+is retained separately and did not invoke the backend. The actual C4 gate and
+single controls run used the prescribed native shell command path. No additional
+runtime, bundle, retry, or release action was taken.

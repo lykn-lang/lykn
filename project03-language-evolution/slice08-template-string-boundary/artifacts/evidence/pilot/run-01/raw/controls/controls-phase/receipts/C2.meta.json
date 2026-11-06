@@ -1,0 +1,70 @@
+{
+  "inputs": {
+    "target/lykn/dist/json/value.js": {
+      "bytes": 405,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/json/file.js": {
+      "bytes": 380,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/json/document.js": {
+      "bytes": 391,
+      "imports": [],
+      "format": "esm"
+    },
+    "target/lykn/dist/json/mod.js": {
+      "bytes": 120,
+      "imports": [
+        {
+          "path": "target/lykn/dist/json/value.js",
+          "kind": "import-statement",
+          "original": "./value.js"
+        },
+        {
+          "path": "target/lykn/dist/json/file.js",
+          "kind": "import-statement",
+          "original": "./file.js"
+        },
+        {
+          "path": "target/lykn/dist/json/document.js",
+          "kind": "import-statement",
+          "original": "./document.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "target/lykn/dist/controls/c2.js": {
+      "bytes": 94,
+      "imports": [
+        {
+          "path": "target/lykn/dist/json/mod.js",
+          "kind": "import-statement",
+          "original": "@probe/json"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../out/C2.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "target/lykn/dist/controls/c2.js",
+      "inputs": {
+        "target/lykn/dist/json/value.js": {
+          "bytesInOutput": 382
+        },
+        "target/lykn/dist/json/mod.js": {
+          "bytesInOutput": 0
+        },
+        "target/lykn/dist/controls/c2.js": {
+          "bytesInOutput": 52
+        }
+      },
+      "bytes": 504
+    }
+  }
+}

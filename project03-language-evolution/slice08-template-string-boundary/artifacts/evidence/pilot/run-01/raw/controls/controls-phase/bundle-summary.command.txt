@@ -1,0 +1,6 @@
+for c in C1 C2 C3 C4 C5; do
+  printf '%s\n' "== $c inputs =="
+  jq -r '.inputs|to_entries[]|"\(.key) bytes=\(.value.bytes) imports=\([.value.imports[].path]|join(","))"' "$out/$c.meta.json"
+  printf '%s\n' "== $c output contributors =="
+  jq -r '.outputs|to_entries[]|.value|"entry=\(.entryPoint) outputBytes=\(.bytes)" , (.inputs|to_entries[]|"  \(.key) bytesInOutput=\(.value.bytesInOutput)")' "$out/$c.meta.json"
+done
