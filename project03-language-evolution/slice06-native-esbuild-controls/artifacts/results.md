@@ -238,3 +238,44 @@ C5 positively exercises the dead export and no removal claim rests on grep or
 byte totals. The 13 staged public JS/config hashes will be snapshotted before
 gate and reconciled after. Receipt labels distinguish C5 before/after; writes
 must reject pre-existing paths. No new probe or predicted outcome is introduced.
+
+### Iteration01 implementation and retained preflight evidence
+
+The prior committed C5/observer produced no bundle/runtime evidence. Its CDC
+review returned it before the gate. All iteration01 changes preserve the same
+five stimuli, ten support modules, nine declared public keys, permissions,
+expected outputs and eleven-runtime order. C5 now imports JSON parse/file/
+document from `@probe/json` root and again from their three subpaths; the
+predeclared camelCase JSON output keys and values remain unchanged. The driver
+uses Lykn receiver forms for slice/lowercase and cell-plus-conj accumulation.
+
+For each native bundle the observer reads and JSON-parses the actual metafile,
+requires nonempty actual input/output objects and import arrays, selects the
+specified `.js` outfile by normalized path plus the normalized expected
+`entryPoint`, requires its `inputs`, and records every normalized input/import
+identity, output identity and numeric `bytesInOutput` contributor. It retains
+the original raw `.meta.json` written by esbuild. Its finite checks implement
+the existing C1–C5 graph/contribution rules and explicitly record unexpected
+library identities; C4 separately records whether dead.js resolved and whether
+its output contribution is zero. Gate writes only C4 metadata/observation and
+returns before runtime. Controls consumes the reviewed C4 hash and the same C4
+bundle, then persists a cumulative observation set separate from the gate.
+
+Before C4, the observer records 13 exact staged library JS/config paths and
+hashes plus all nine actual export specifier/target/hash rows. It validates
+target-to-file correspondence and later reconciles each path, key, target and
+hash against a separate after-snapshot. Runtime receipt labels are unique,
+including `C5-source-before`/`C5-source-after`; each refuses an existing receipt
+before writing. The corrected observer code is source-frozen before its
+required C5/observer-only recompile; no bundle or runtime has yet run.
+
+Retained pre-correction build evidence: run-03 compiled all 15 then-current
+workspace modules and the then-current observer (16/16 exits 0); run-03
+`lykn dist` exited 0 and staged `@probe/json`, `@probe/yaml`, `@probe/effects`,
+and `@probe/controls` under `target/lykn/dist/{json,yaml,effects,controls}`.
+Those successes are attested and do not prove the corrected observer or C5.
+The earlier 14 unchanged module outputs remain reusable. C5 and driver must be
+recompiled and the changed C5 staging plus every staged JS byte equality and
+export-map path checked in a fresh attempt. No bundle/runtime or Deno control
+has executed; denominator remains five bundles and eleven runtime invocations,
+all unrun.
