@@ -1,8 +1,10 @@
 # Slice02 — Portable agent guidance
 
-Status: open. Parent: Arc03 navigation/governance follow-through. Current
-assignment: cc-prompt-iteration03.md (precommit semantic preservation). This is the existing project's bounded maintenance
-increment, not a new project or historical migration/acceptance reset.
+Status: open (CC implementation committed; CDC independent review pending).
+Parent: Arc03 navigation/governance follow-through. Current assignment:
+cc-prompt-iteration03.md (precommit semantic preservation). This is the existing
+project's bounded maintenance increment, not a new project or historical
+migration/acceptance reset.
 
 ## Authority and endpoint
 
@@ -22,7 +24,9 @@ This slice itself authors no compiler/library/test implementation.
 
 ## Homes, ownership and exact scope
 
-Planning opens clean at 5f19a3bb888e69e541e37334eceb5acd43efdaf0. Source tips:
+At CC's iteration03 handoff, planning was clean at
+ff2ba522a541e8ed4a5611b03e837be78bc13603 after preserving CDC's assignment
+history and placement amendments. Source tips:
 main 12afe1c7c7c8acaabce5b7b75e0df19f3b3fb6ec; release/0.6.x
 4dded883bbd321d19635e6fce233343f33803f9e; release/0.7.x
 74a90d51b853fc18fe2b7c6ee07417736e1ce464; release/0.8.x
