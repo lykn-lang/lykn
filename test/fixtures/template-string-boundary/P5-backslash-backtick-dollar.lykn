@@ -1,0 +1,7 @@
+(bind value "\\`$")
+(console:log
+  (JSON:stringify
+    (obj :plain value
+      :interpolated (template value)
+      :concat (template "\\`$" "")
+      :icu (template "\\`$"))))
