@@ -296,3 +296,15 @@ and before/after reconciliation. I am preserving run-04 and correcting only
 those loop closures, without changing the five controls, schema/oracle rules,
 permissions or predictions. The corrected source requires a new commit before
 the next fresh C5/observer compile.
+
+A fresh `run-05` copy recompiled corrected C5 with exit 0, then observer compile
+again exited 1 at `unterminated list at 436:1`. The pinned `lykn check` and
+read-only `lykn fmt` on that exact source independently returned the same parse
+error; formatter output was empty. I then inspected complete top-level form
+boundaries and nested loop closures. The specific remaining unclosed forms were
+the first C5 conditional in `runtime-args` and the async `main` function; the
+current source adds one close at each actual boundary. This correction is
+syntax-structure-only. Run-05's C5/driver summaries and native check/fmt outputs
+are retained under its ignored compile-log directory. The next attempt must
+compile the newly committed state and use the successful native formatter output
+to review top-level form boundaries before any C4 bundle.

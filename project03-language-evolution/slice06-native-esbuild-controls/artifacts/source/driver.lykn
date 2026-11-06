@@ -305,7 +305,7 @@
                           "--deny-net" "--no-prompt" (template "--config=" config))))
   (if (= name "C5")
     (swap! args (fn (:array current)
-      (conj current (template "--allow-read=" data))))
+      (conj current (template "--allow-read=" data)))))
   (swap! args (fn (:array current) (conj current entry)))
   (if (= name "C5")
     (swap! args (fn (:array current) (conj current data))))
@@ -481,6 +481,6 @@
         (write-new (template output "/public-reconciliation.json")
           (JSON:stringify reconciliation))
         null)
-      (throw (new Error "phase must be gate or controls")))))
+      (throw (new Error "phase must be gate or controls"))))))
 
 (await (main))
