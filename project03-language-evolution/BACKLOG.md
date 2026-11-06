@@ -379,6 +379,35 @@ compiler identity and relevant classifier/analyzer paths. Separate the warning
 and error-propagation questions when scoping tests; no suppression, broad
 diagnostic rewrite or implementation is opened by this register entry.
 
+#### NE-C07 — native check rejects documented async named exports
+
+**Independently reproduced validation gap, 2026-11-06.** Slice12's frozen
+parser-core6c4faee uses preferred `(exports load-parser verify-parser)` with
+module-level `(async (func ...))`, the exact composition taught by current
+source SKILL Modules/Async and guide00 Modules. Pinned release/0.6.x f705655
+compiler SHA57a49f55 rejects both names as unknown top-level bindings at1:10
+and1:22. CC and CDC repeated the same source check from separate config-free
+cwd; [exact source](slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn),
+[independent raw diagnostic](slice12-offline-walker-capability/artifacts/evidence/cdc/check.stderr)
+and [review](slice12-offline-walker-capability/cdc-verification.md) are retained.
+This is check/validation evidence, not a compile/codegen or parser-runtime result.
+
+Source classifier/forms.rs184–209 collects top-level names via a nonrecursive
+binding walker and unwraps only outer export; binding.rs181–218 has no async
+wrapper branch. This explains the observed mismatch with documented async
+function exports without adding a new program or asserting untested emitters.
+Original delimiter authoring failures and CDC's separate incorrect export
+instruction/retraction remain history, distinct from this valid-source gap.
+
+**Owner/re-entry.** Project03 CDC owns a separately authorized, narrowly scoped
+validation/compiler disposition with meaningful documented async-export native
+check/compile regression and relevant wrapper/binding consumers considered.
+Do not switch to older kernel exports, bind wrappers, single-file rewrites or
+skipped gates merely to bypass it. After an accepted disposition/repair and new
+source/compiler pin, resume Slice12's same four parser observations before
+walker investment; all four and K01–K12 remain unrun. No repair, source
+integration, acquisition, full audit or next unit is opened by this record.
+
 #### NE-D01 — template dispatch prose contradicts its single-literal table row
 
 **Open guide follow-up, 2026-11-06.** At b841f71b/a061c214,

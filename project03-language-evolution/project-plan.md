@@ -140,6 +140,15 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 [Slice12](slice12-offline-walker-capability/cdc-verification.md)
+closed at its independently reproduced first real gap: pinned native check
+rejects documented exports of async-wrapped named functions. NE-C07 owns a
+separate validation disposition/re-entry. Candidate helpers/control data are
+retained but not verified usable; parser observations0/4 and all12 walker
+control groups remain unrun. One PC row done/five deferred, including the
+explicit precheck provenance limit; compiler/source/Acorn were not worked around.
+No PhaseB, product repair, full audit or next unit follows.
+
 2026-11-06 Operator authorized [Slice12](slice12-offline-walker-capability/slice-plan.md)
 to implement Lykn tooling and prove the bounded offline parser/walker capability
 under the same Sol6.1 High CDC / fresh Luna6 High CC Autonomous roles. Exact
@@ -236,6 +245,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice12-offline-walker-capability](slice12-offline-walker-capability/slice-plan.md): closed at reproduced native async-export validation gap; candidate tooling retained, parser0/4 and full K gate unrun; NE-C07 owns re-entry.
 - [slice11-audit-evidence-contract](slice11-audit-evidence-contract/slice-plan.md): independently closed method settlement; all original audit rows/execution remain open and separately gated.
 - [slice10-template-release-integration](slice10-template-release-integration/slice-plan.md): independently closed; exact accepted template repair integrated locally into release/0.6.x with fresh release gates and byte/ancestry reconciliation; no other propagation.
 - [slice09-lykn-research-helpers](slice09-lykn-research-helpers/slice-plan.md): closed; Lykn replacement/parity, independently passing12 controls, scoped Python body deletion and explicit seven-home policy delivered; separate language/diagnostic follow-ups remain.
@@ -260,6 +270,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.18: Independently closed Slice12's requested first-gap stop,
+  preserving native authoring failures, actual valid-source rejection, process
+  nonconformance/reviewer retraction and all unrun controls. Routed NE-C07;
+  no compiler repair or audit execution opened, all original outcomes survive.
 
 - 2026-11-06 v1.17: Opened explicitly approved staged Slice12 tooling/capability
   increment, with exact controls/pins, preserved pre-run freezes and first-gap

@@ -1,6 +1,6 @@
 # Slice12: Lykn tooling and bounded offline walker capability
 
-Opened 2026-11-06. Status: open. Collapsed standalone Project03 increment.
+Opened 2026-11-06. Status: independently closed at first real gap. Collapsed standalone Project03 increment.
 Operator: “Awesome! Let's implement the Lykn tooling and run the bounded offline
 parser/walker capability gate. Same models, Autonomous Mode, and stop if we hit
 a real evidence gap :-D”. Endpoint: reusable Lykn scanner/gate with independently
@@ -125,3 +125,11 @@ No full Make/pilot/fullscan is necessary for these research tools. Source remain
 clean/read-only; local scoped commits use explicit paths and both contiguous
 Codex/Billo AI trailers with genuine newlines/rawbody checks. All source/library/
 audit/Project07 ADT/guide/book/licence/human and other compiler owners survive.
+
+## Accepted bounded stop — 2026-11-06
+
+CC candidate6c4faee/check03 and independent same-source check reject documented
+async exports before generation/runtime. See cdc-verification.md and BACKLOG
+NE-C07. One PC row done/five deferred; no parser observation, generated JS,
+walker or full-audit result. All historical/process exceptions retained in
+artifacts/results.md and cdc-retrospective.md. No next assignment is opened.

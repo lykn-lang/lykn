@@ -1,5 +1,11 @@
 # Slice12 Phase A parser prerequisite
 
+**Unvalidated candidates — stopped at NE-C07.** Native `lykn check` rejects
+the documented async exports in parser-core. No formatter/lint/compile/Deno
+gate or parser observation ran. The commands below are a retained planned
+recipe, not a verified launch path. Resume only after the separately authorized
+validation-gap disposition and a new pinned assignment; see ../../cdc-verification.md.
+
 This directory holds the small Lykn parser core, probe and raw-outcome
 observer. It does not contain or claim a JavaScript AST walker. The selected
 Acorn input is the already-cached npm-distributed 8.17.0 ESM file named in

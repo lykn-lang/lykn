@@ -25,3 +25,12 @@ changes are limited to this slice's assigned tooling, evidence, results,
 closing report and ledger evidence/notes cells. The initial pre-snapshot `jq`
 and `core.hooksPath` bypass on commit `21aa45e` are explicitly retained as
 process exceptions in [the results record](artifacts/results.md).
+
+## CDC final disposition — 2026-11-06
+
+Independent exact-source/pinned-tool replay reproduced check03's two export
+errors from a fresh config-free cwd. This confirms a native validation gap
+(NE-C07), not an Acorn/offline/walker result. All runtime/generated-code gates
+remain unrun. One PC row done, five deferred; cdc-verification.md gives each
+reason/re-entry and cdc-retrospective.md preserves process/reviewer failures.
+This closes only the requested bounded first-gap stop. No repair/next phase opens.

@@ -1,0 +1,18 @@
+Independent reviewer: /root/cdc, OpenAI Sol6.1 High, 2026-11-06.
+Planning handoff7c9fbea; frozen source6c4faee. Actual source SHA-256/tool identity
+and byte-identical frozen-source diff are in identity.txt.
+
+Cwd created fresh: /private/tmp/lykn-slice12-cdc-gap-20261106-01
+Actual single native same-check invocation (no formatter/lint/compile/probe):
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-probe.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/offline-observer.lykn
+Actual raw stdout/check.stdout, stderr/check.stderr and exit/check.exit. Exit1,
+empty stdout, the same two unknown-export errors. cmd_check exits on the first
+file error (source main.rs402+); this does not verify the other tool files.
+
+Configuration absence metadata read:
+/bin/ls -ld /project.json /private/project.json /private/tmp/project.json /private/tmp/lykn-slice12-cdc-gap-20261106-01/project.json
+Raw output and actual exit are in config-absence.*; each path is absent.
+
+No helper generated JavaScript or Acorn/Deno runtime was launched. No additional
+program/reduced repro or full-corpus/control run was added. The four PhaseA
+observations and all K01–K12 walker cases remain unrun.

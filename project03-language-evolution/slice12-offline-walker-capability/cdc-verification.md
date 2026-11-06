@@ -52,3 +52,62 @@ The real path-first import/delimiter/await/try/receipt findings are unchanged.
 Attempt-0003 preserves the corrected observer before further checks; no compiler
 or parser run has occurred. Numbered correction02 records the one-line semantic
 retraction without restarting the refinement budget or inventing source evidence.
+
+## Independently reproduced first-gap stop — 2026-11-06
+
+Reviewed clean CC handoff7c9fbea6c3eb14251c59ade933802e08ed658fe3 and exact
+frozen candidate6c4faee8c093ba1a109152fee90c508816b49320. Independently repeated
+its SAME three-file pinned `lykn check` invocation from fresh owned config-free
+/private/tmp/lykn-slice12-cdc-gap-20261106-01. Actual output is in
+[own receipts](artifacts/evidence/cdc/): exit1, empty stdout and identical
+unknown top-level export diagnostics for load-parser (1:10) and verify-parser
+(1:22). Native cmd_check stops at the first failing file; the other files are
+not thereby validated. No reduced repro, alternative form, formatter, lint,
+compile, Deno check or parser/runtime was run during this review.
+
+Own identity.txt establishes all three current source files equal the frozen
+candidate and actual compiler SHA256
+57a49f559a79700d66a2d1db216bd179d54fd0c51fd7f2626ff2029bd3163d28/version0.6.0.
+Core source SHA256 is8ab59c5f4c81cf0cd8187287a01e6858d9d2dd30d89332d08a64affdadb8a018.
+Own config-absence metadata shows no project.json in cwd or any ancestor. Source
+release remains clean f705655; no product source was edited.
+
+This is a **native check/validation composition gap**, not proof of a codegen,
+Acorn, Deno-offline or walker defect. The valid seven-top-level-form core uses
+preferred `(exports ...)` plus documented `(async (func ...))`. Current SKILL
+Modules/Async and guide00 Modules support that composition. Source
+classifier/forms.rs184–209 collects bindings through top_level_binding_sites;
+it unwraps outer export only. bindings_introduced in binding.rs181–218 is
+explicitly nonrecursive and has no async wrapper case. These source facts and
+the repeated diagnostic establish NE-C07 below without another program.
+The CC's initial “authoring” interpretation of check03 is superseded by this
+source-backed disposition; checks01/02 were actual delimiter authoring failures.
+
+No generated JS exists, so generated-code semantic review is unrun. Authored
+core/probe/observer are retained **unvalidated candidates**, not usable verified
+tooling. PhaseA is0/4 observations run (K11/K01/K08/K09); full K01–K12 walker
+gate is unrun, K10a/K10b remain two manifest cases and K12 remains a separate
+synthetic unit boundary. No AST/range/error/offline parser result is inferred.
+Some CC command-recipe text lists prospective fmt/lint/compile steps; actual
+observations are only the three check receipts and this one independent replay.
+Do not count prospective recipe lines as executions. CC results physically
+reside at artifacts/results.md rather than prompt's root results.md; this same-
+slice existing home is adopted here with the deviation visible, not recreated.
+
+### Final six-row disposition
+
+| ID | Status | Evidence, reason and re-entry |
+| --- | --- | --- |
+| PC-01 | deferred | Later source/tool freezes and every native attempt are retained; pre-jq/diff-check bytes/exits were not contemporaneously preserved and unchanged-data claim remains attested. Hook bypass is noncompliant even though current hooks are only samples. Historical verification requires actual contemporaneous evidence; no recovery inquiry or retroactive cure is claimed. Future work starts with compliant fresh freezes. |
+| PC-02 | deferred | Native validation gap stops before parser prerequisite:0/4 run. Re-entry after separately authorized NE-C07 disposition/repair, pinned compiler/source change and fresh same-four-observation assignment. |
+| PC-03 | deferred | Walker not authored, deliberately held behind prerequisite. Resume only after independent parser-gate acceptance, same accepted contract. |
+| PC-04 | deferred | All12 K control groups unrun; no case weakened or removed. Resume the fixed gate only after prerequisite/tool implementation acceptance, with K10 and K12 boundaries preserved. |
+| PC-05 | deferred | Native check fails documented async exports; fmt/lint/compile/Deno/generated review unrun. No export/async reshaping, kernel/bind wrapper or skipped validation used to bypass it. Resume required scoped gates after NE-C07, not a claim of usable tools now. |
+| PC-06 | done | Reconciled independent same-source/tool failure + source/guide root-cause bounds, six-row walk, owned backlog re-entry, preserved process exceptions and CDC retrospective. Accept only the bounded stop. |
+
+All six rows have explicit disposition: one done, five deferred. No no-op or
+missing row. Initial source/prompt/review mistakes and bypass/precheck limits
+remain preserved; no history is rewritten. No new source/compiler repair,
+parser acquisition, PhaseB, full corpus/F6 audit or next unit is opened.
+All original F1–F12 and Project07 synthesis/licence/bootstrap/library/ADT/guide/
+book/human and separate compiler/diagnostic obligations remain open/owned.
