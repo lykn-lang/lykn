@@ -140,6 +140,14 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 Operator approved [Slice13](slice13-async-export-repair/slice-plan.md)
+for narrow NE-C07 repair, independent required validation, then the unchanged
+four parser observations under Sol6.1 High CDC / fresh Luna6 High CC Autonomous
+roles. Dedicated codex/async-export-binding starts atf705655 in the reused task
+checkout, preserving old refs; no release integration. Stop at another real gap,
+retain Slice12 history/deferrals and all original audit/library/human goals.
+No walker/full corpus/F6 matrix or further unit is authorized.
+
 2026-11-06 [Slice12](slice12-offline-walker-capability/cdc-verification.md)
 closed at its independently reproduced first real gap: pinned native check
 rejects documented exports of async-wrapped named functions. NE-C07 owns a
@@ -270,6 +278,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.19: Opened explicit NE-C07 repair plus gated same-four re-entry
+  as Slice13, with narrow source scope/negative controls, independent full gates
+  and first-new-gap stop. No old deferral or process record is retroactively cured.
 
 - 2026-11-06 v1.18: Independently closed Slice12's requested first-gap stop,
   preserving native authoring failures, actual valid-source rejection, process
