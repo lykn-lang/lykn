@@ -107,3 +107,35 @@ being introduced here.
 No tests or source edits have been made before this readback. Subsequent
 commands, outputs, red/green observations, commits, hashes, and required gate
 results will be appended below without rewriting failed or unrun history.
+
+## Phase A — expected-red native baseline
+
+The initial committed test-only attempt at `4bee70bd0e6838d84e502d141a0ed6a7107c9d98`
+did not reach runtime: all seven fixture compiles reported `unterminated list
+at 2:1`, leaving 17/17 inputs unrun. Inspection found one missing close
+parenthesis in the shared Lykn observation function. That test-source defect is
+corrected in test-only commit `5fa1f7b83ecbda73839d09ba86a401f968ddd03c`;
+the first failed attempt remains recorded.
+
+On unfixed source after that correction, command
+`cargo test --locked -p lykn-cli --test contract_predicate_lowering -- --nocapture`
+exited 101 (expected red). Strict CLI compilation succeeded for all seven
+fixtures. Actual Deno outcomes:
+
+| Family | Runtime observations | Result |
+| --- | ---: | --- |
+| exact YAML | 2 | Generated `if (!text = "answer: 42")` raised `SyntaxError: Expected ')', got '='`; 2 not established |
+| strict pre | 2 | Generated `if (!x = 42)` raised the same SyntaxError; 2 not established |
+| strict post | 2 | Generated `if (!result__gensym0 = 42)` raised the same SyntaxError; 2 not established |
+| multi-clause | 5 | Generated `if (!actual = 42)` raised the same SyntaxError; 5 not established |
+| generator | 2 | Generated `if (!x = 42)` raised the same SyntaxError; 2 not established |
+| nested/value context | 2 | Deno exited 0, but both calls yielded `ReferenceError: cond is not defined`; 2 wrong outcomes |
+| resolved bound head | 2 | Both passed: negating callback returned 7; identity callback produced the expected caller `Error` and `(not false)` diagnostic |
+
+Baseline denominator: 17 inputs; 2 pass, 2 execute with wrong results, and 13
+are not established (13 runtime probes did not run after generated-module parse
+failure; nested calls did run but both failed their value/error oracles). These
+observations identify generated contract code bypassing surface-expression
+lowering; parse failures are not counted as contract rejection. The runtime
+diagnostic excerpts above and the full command output were observed in the
+focused test run. No pilot inputs were run.
