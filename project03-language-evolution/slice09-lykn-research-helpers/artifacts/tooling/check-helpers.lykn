@@ -226,15 +226,16 @@
         output:stderr
         (obj :createNew true)))
     (await
-      (Deno:writeTextFile
+      (Deno:writeFile
         (template case-dir "/exit-status.txt")
-        (String output:code)))
+        (-> (new TextEncoder) (:encode (String output:code)))
+        (obj :createNew true)))
     output))
 
 (func
   same-lines-except-one
   :args
-  (:string before :string after)
+  (:string before :string after :string changed-suffix :string expected-line)
   :returns
   :boolean
   :body
@@ -242,6 +243,7 @@
   (bind after-lines (after:split "\n"))
   (bind differences (cell 0))
   (bind changed-line (cell ""))
+  (bind changed-count (cell 0))
   (for-of
     entry
     (before-lines:entries)
@@ -249,209 +251,250 @@
       (!= (get entry 1) (get after-lines (get entry 0)))
       (do
         (swap! differences (fn (:number current) (+ current 1)))
-        (reset! changed-line (get after-lines (get entry 0))))))
+        (reset! changed-line (get after-lines (get entry 0)))
+        (swap! changed-count (fn (:number current) (+ current 1))))))
   (and
     (= before-lines:length after-lines:length)
     (= (express differences) 1)
-    (-> (express changed-line) (:endsWith "target/lykn/dist/effects/effect.js")))
-  (async
-    (func
-      run-validator-controls
-      :args
-      (:string deno :string helper-js :string workspace :string task-root)
-      :body
-      (bind root (template task-root "/validator-controls"))
-      (await (Deno:mkdir root))
-      (bind
-        v0
-        (await
-          (run-validator deno helper-js workspace task-root (template root "/V0"))))
-      (ensure (= v0:code 0) "V0 positive validator failed")
-      (bind v1-path (template root "/clone V1"))
-      (await (copy-validator-input workspace v1-path))
-      (await (change-export-map v1-path "lib" "json" "reorder"))
-      (bind
-        v1
-        (await
-          (run-validator deno helper-js v1-path task-root (template root "/V1"))))
-      (ensure (= v1:code 0) "V1 reordered export properties failed")
-      (ensure (equal-bytes v0:stdout v1:stdout) "V1 output differs from V0")
-      (bind
-        negative-cases
-        (array (array "V2" "missing") (array "V3" "wrong") (array "V4" "extra")))
-      (for-of
-        case-row
-        negative-cases
-        (bind label (get case-row 0))
-        (bind operation (get case-row 1))
-        (bind clone (template root "/" label))
-        (if
-          (= label "V2")
-          (await (change-export-map clone "lib" "json" operation)))
-        (if
-          (= label "V3")
-          (await (change-export-map clone "target/lykn/dist" "json" operation)))
-        (if
-          (= label "V4")
-          (await (change-export-map clone "target/lykn/dist" "json" operation)))
-        (bind
-          output
-          (await
-            (run-validator
-              deno
-              helper-js
-              clone
-              task-root
-              (template root "/" label))))
-        (ensure (!= output:code 0) (template label " unexpectedly passed")))
-      (bind v5-path (template root "/V5"))
-      (await (copy-validator-input workspace v5-path))
-      (await (Deno:remove (template v5-path "/target/lykn/dist/json/value.js")))
-      (bind
-        v5
-        (await
-          (run-validator deno helper-js v5-path task-root (template root "/V5"))))
-      (ensure (!= v5:code 0) "V5 missing target unexpectedly passed")
-      (bind v6-path (template root "/V6"))
-      (await (copy-validator-input workspace v6-path))
-      (bind
-        mutation-path
-        (template v6-path "/target/lykn/dist/effects/effect.js"))
-      (bind bytes (await (Deno:readFile mutation-path)))
-      (bind first-byte (get bytes 0))
-      (bind next-byte (if (= first-byte 255) 0 (+ first-byte 1)))
-      (await (Deno:writeFile mutation-path (bytes:with 0 next-byte)))
-      (bind
-        v6
-        (await
-          (run-validator deno helper-js v6-path task-root (template root "/V6"))))
-      (ensure (= v6:code 0) "V6 valid content mutation failed")
-      (ensure
-        (same-lines-except-one
-          (-> (new TextDecoder) (:decode v0:stdout))
-          (-> (new TextDecoder) (:decode v6:stdout)))
-        "V6 did not change exactly one checksum line")
-      (bind v7-path (template root "/clone V7 with spaces"))
-      (await (copy-validator-input workspace v7-path))
-      (bind
-        v7
-        (await
-          (run-validator deno helper-js v7-path task-root (template root "/V7"))))
-      (ensure (= v7:code 0) "V7 space-path validator failed")
-      (ensure (equal-bytes v0:stdout v7:stdout) "V7 output differs from V0")
-      (console:log
-        "V0–V7 passed; V0 stdout remains available for exact external positive parity")))
+    (= (express changed-count) 1)
+    (-> (express changed-line) (:endsWith changed-suffix))
+    (= (express changed-line) expected-line)))
+
+(async
   (func
-    command-action
+    run-validator-controls
     :args
-    (:string executable :array args :string cwd)
-    :returns
-    :object
+    (:string deno :string helper-js :string workspace :string task-root)
     :body
-    (obj :kind "command" :executable executable :args args :cwd cwd))
-  (func
-    copy-action
-    :args
-    (:string from :string to)
-    :returns
-    :object
-    :body
-    (obj :kind "copy" :from from :to to))
-  (func
-    compare-action
-    :args
-    (:string left :string right)
-    :returns
-    :object
-    :body
-    (obj :kind "compare" :left left :right right))
-  (async
-    (func
-      invoke-orchestrator
-      :args
-      (:string
-        deno
-        :string
-        orchestrator-js
-        :string
-        task-root
-        :string
-        case-dir
-        :any
-        actions)
-      :body
-      (bind receipt-dir (template case-dir "/receipts"))
-      (bind manifest-path (template case-dir "/manifest.json"))
+    (bind root (template task-root "/validator-controls"))
+    (await (Deno:mkdir root))
+    (bind
+      v0
       (await
-        (Deno:writeTextFile manifest-path (JSON:stringify (obj :actions actions))))
-      (bind
-        environment
-        (obj
-          :PATH
-          "/opt/homebrew/bin:/usr/bin:/bin"
-          :DENO_NO_UPDATE_CHECK
-          "1"
-          :NO_COLOR
-          "1"))
+        (run-validator deno helper-js workspace task-root (template root "/V0"))))
+    (ensure (= v0:code 0) "V0 positive validator failed")
+    (bind v1-path (template root "/clone V1"))
+    (await (copy-validator-input workspace v1-path))
+    (await (change-export-map v1-path "lib" "json" "reorder"))
+    (await (change-export-map v1-path "target/lykn/dist" "json" "reorder"))
+    (bind
+      v1
+      (await
+        (run-validator deno helper-js v1-path task-root (template root "/V1"))))
+    (ensure (= v1:code 0) "V1 reordered export properties failed")
+    (bind
+      v1-manifest-hash
+      (await
+        (sha256
+          (await
+            (Deno:readFile (template v1-path "/target/lykn/dist/json/deno.json"))))))
+    (ensure
+      (same-lines-except-one
+        (-> (new TextDecoder) (:decode v0:stdout))
+        (-> (new TextDecoder) (:decode v1:stdout))
+        "target/lykn/dist/json/deno.json"
+        (template v1-manifest-hash "  target/lykn/dist/json/deno.json"))
+      "V1 changed map output or a digest other than reordered deno.json")
+    (bind
+      negative-cases
+      (array
+        (array "V2" "missing" "lib" "export map mismatch: json lib key-count")
+        (array
+          "V3"
+          "wrong"
+          "target/lykn/dist"
+          "export map mismatch: json target/lykn/dist wrong target for ./value")
+        (array
+          "V4"
+          "extra"
+          "target/lykn/dist"
+          "export map mismatch: json target/lykn/dist key-count")))
+    (for-of
+      case-row
+      negative-cases
+      (bind label (get case-row 0))
+      (bind operation (get case-row 1))
+      (bind area (get case-row 2))
+      (bind expected-error (get case-row 3))
+      (bind clone (template root "/" label))
+      (await (copy-validator-input workspace clone))
+      (await (change-export-map clone area "json" operation))
       (bind
         output
         (await
-          (->
-            (new
-              Deno:Command
-              deno
-              (obj
-                :args
-                (array
-                  "run"
-                  "--no-config"
-                  "--cached-only"
-                  "--no-npm"
-                  "--no-remote"
-                  "--deny-net"
-                  "--no-prompt"
-                  (template "--allow-read=" task-root)
-                  (template "--allow-write=" task-root)
-                  (template "--allow-run=" deno)
-                  orchestrator-js
-                  manifest-path
-                  receipt-dir)
-                :cwd
-                task-root
-                :clearEnv
-                true
-                :env
-                environment
-                :stdin
-                "null"
-                :stdout
-                "piped"
-                :stderr
-                "piped"))
-            (:output))))
+          (run-validator deno helper-js clone task-root (template root "/" label))))
+      (ensure (!= output:code 0) (template label " unexpectedly passed"))
+      (ensure
+        (-> (new TextDecoder) (:decode output:stderr) (:includes expected-error))
+        (template label " failed for an unexpected reason")))
+    (bind v5-path (template root "/V5"))
+    (await (copy-validator-input workspace v5-path))
+    (await (Deno:remove (template v5-path "/target/lykn/dist/json/value.js")))
+    (bind
+      v5
       (await
-        (Deno:writeFile
-          (template case-dir "/orchestrator.stdout.bin")
-          output:stdout
-          (obj :createNew true)))
+        (run-validator deno helper-js v5-path task-root (template root "/V5"))))
+    (ensure (!= v5:code 0) "V5 missing target unexpectedly passed")
+    (ensure
+      (->
+        (new TextDecoder)
+        (:decode v5:stderr)
+        (:includes "not a regular file: json ./value -> json/value.js"))
+      "V5 failed for an unexpected reason")
+    (bind v6-path (template root "/V6"))
+    (await (copy-validator-input workspace v6-path))
+    (bind mutation-path (template v6-path "/target/lykn/dist/effects/effect.js"))
+    (bind bytes (await (Deno:readFile mutation-path)))
+    (bind first-byte (get bytes 0))
+    (bind next-byte (if (= first-byte 255) 0 (+ first-byte 1)))
+    (await (Deno:writeFile mutation-path (bytes:with 0 next-byte)))
+    (bind
+      v6
       (await
-        (Deno:writeFile
-          (template case-dir "/orchestrator.stderr.bin")
-          output:stderr
-          (obj :createNew true)))
+        (run-validator deno helper-js v6-path task-root (template root "/V6"))))
+    (ensure (= v6:code 0) "V6 valid content mutation failed")
+    (bind v6-hash (await (sha256 (await (Deno:readFile mutation-path)))))
+    (bind
+      v6-expected-line
+      (template v6-hash "  target/lykn/dist/effects/effect.js"))
+    (ensure
+      (same-lines-except-one
+        (-> (new TextDecoder) (:decode v0:stdout))
+        (-> (new TextDecoder) (:decode v6:stdout))
+        "target/lykn/dist/effects/effect.js"
+        v6-expected-line)
+      "V6 did not change only the mutated effects/effect.js digest")
+    (bind v7-path (template root "/clone V7 with spaces"))
+    (await (copy-validator-input workspace v7-path))
+    (bind
+      v7
       (await
-        (Deno:writeTextFile
-          (template case-dir "/orchestrator.exit-status.txt")
-          (String output:code)))
+        (run-validator deno helper-js v7-path task-root (template root "/V7"))))
+    (ensure (= v7:code 0) "V7 space-path validator failed")
+    (ensure (equal-bytes v0:stdout v7:stdout) "V7 output differs from V0")
+    (console:log
+      "V0–V7 passed; V0 stdout remains available for exact external positive parity")))
+
+(func
+  command-action
+  :args
+  (:string executable :array args :string cwd)
+  :returns
+  :object
+  :body
+  (obj :kind "command" :executable executable :args args :cwd cwd))
+
+(func
+  copy-action
+  :args
+  (:string from :string to)
+  :returns
+  :object
+  :body
+  (obj :kind "copy" :from from :to to))
+
+(func
+  compare-action
+  :args
+  (:string left :string right)
+  :returns
+  :object
+  :body
+  (obj :kind "compare" :left left :right right))
+
+(async
+  (func
+    invoke-orchestrator
+    :args
+    (:string
+      deno
+      :string
+      compiler
+      :string
+      orchestrator-js
+      :string
+      task-root
+      :string
+      case-dir
+      :any
+      actions)
+    :body
+    (bind receipt-dir (template case-dir "/receipts"))
+    (bind manifest-path (template case-dir "/manifest.json"))
+    (await
+      (Deno:writeFile
+        manifest-path
+        (-> (new TextEncoder) (:encode (JSON:stringify (obj :actions actions))))
+        (obj :createNew true)))
+    (bind
+      environment
       (obj
-        :code
-        output:code
-        :receipt-dir
-        receipt-dir
-        :stdout
+        :PATH
+        "/opt/homebrew/bin:/usr/bin:/bin"
+        :DENO_NO_UPDATE_CHECK
+        "1"
+        :NO_COLOR
+        "1"))
+    (bind
+      output
+      (await
+        (->
+          (new
+            Deno:Command
+            deno
+            (obj
+              :args
+              (array
+                "run"
+                "--no-config"
+                "--cached-only"
+                "--no-npm"
+                "--no-remote"
+                "--deny-net"
+                "--no-prompt"
+                (template "--allow-read=" task-root "," orchestrator-js)
+                (template "--allow-write=" task-root)
+                (template "--allow-run=" deno "," compiler)
+                orchestrator-js
+                manifest-path
+                receipt-dir)
+              :cwd
+              task-root
+              :clearEnv
+              true
+              :env
+              environment
+              :stdin
+              "null"
+              :stdout
+              "piped"
+              :stderr
+              "piped"))
+          (:output))))
+    (await
+      (Deno:writeFile
+        (template case-dir "/orchestrator.stdout.bin")
         output:stdout
-        :stderr
-        output:stderr))))
+        (obj :createNew true)))
+    (await
+      (Deno:writeFile
+        (template case-dir "/orchestrator.stderr.bin")
+        output:stderr
+        (obj :createNew true)))
+    (await
+      (Deno:writeFile
+        (template case-dir "/orchestrator.exit-status.txt")
+        (-> (new TextEncoder) (:encode (String output:code)))
+        (obj :createNew true)))
+    (obj
+      :code
+      output:code
+      :receipt-dir
+      receipt-dir
+      :stdout
+      output:stdout
+      :stderr
+      output:stderr)))
 
 (async
   (func
@@ -469,11 +512,27 @@
   (func
     run-r0
     :args
-    (:string deno :string orchestrator-js :string child-js :string task-root)
+    (:string
+      deno
+      :string
+      compiler
+      :string
+      orchestrator-js
+      :string
+      child-lykn
+      :string
+      task-root)
     :body
     (bind case-dir (template task-root "/orchestration-controls/R0"))
-    (bind cwd (template case-dir "/cwd with spaces"))
+    (bind cwd (template case-dir "/compile cwd with spaces"))
     (await (Deno:mkdir cwd (obj :recursive true)))
+    (bind compile-source (template cwd "/child-fixture.lykn"))
+    (bind compiled-child (template cwd "/child-fixture.js"))
+    (await
+      (Deno:copyFile
+        "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/empty/project.json"
+        (template cwd "/project.json")))
+    (await (Deno:copyFile child-lykn compile-source))
     (bind input (template case-dir "/input.bin"))
     (bind copied (template case-dir "/copied.bin"))
     (await
@@ -481,8 +540,9 @@
         input
         (new Uint8Array (array 0 255 10))
         (obj :createNew true)))
+    (bind compile-args (array "compile" compile-source "-o" compiled-child))
     (bind
-      args
+      child-args
       (array
         "run"
         "--no-config"
@@ -491,21 +551,60 @@
         "--no-remote"
         "--deny-net"
         "--no-prompt"
-        child-js
+        compiled-child
         "space value"
         "literal;$(echo no-shell)"))
     (bind
       actions
       (array
-        (command-action deno args cwd)
+        (command-action compiler compile-args cwd)
+        (command-action deno child-args cwd)
         (copy-action input copied)
         (compare-action input copied)))
     (bind
       result
       (await
-        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+        (invoke-orchestrator
+          deno
+          compiler
+          orchestrator-js
+          task-root
+          case-dir
+          actions)))
     (ensure (= result:code 0) "R0 orchestrator failed")
-    (bind receipt (template result:receipt-dir "/000"))
+    (bind compile-receipt (template result:receipt-dir "/000"))
+    (bind
+      compile-attempt
+      (JSON:parse
+        (await (Deno:readTextFile (template compile-receipt "/attempt.json")))))
+    (ensure (= compile-attempt:index 0) "R0 compile action was not receipt 000")
+    (ensure
+      (= compile-attempt:executable compiler)
+      "R0 compile attempt executable differs")
+    (ensure (= compile-attempt:cwd cwd) "R0 compile attempt cwd differs")
+    (bind
+      compile-result
+      (JSON:parse
+        (await (Deno:readTextFile (template compile-receipt "/result.json")))))
+    (ensure (= compile-result:code 0) "R0 real Lykn compile action failed")
+    (ensure
+      (= (get compile-result:argv 0) compiler)
+      "R0 compiler executable differs")
+    (ensure (= (get compile-result:argv 1) "compile") "R0 compile argv differs")
+    (ensure
+      (= (get compile-result:argv 2) compile-source)
+      "R0 source path differs")
+    (ensure (= (get compile-result:argv 3) "-o") "R0 output flag differs")
+    (ensure
+      (= (get compile-result:argv 4) compiled-child)
+      "R0 output path differs")
+    (ensure (= compile-result:cwd cwd) "R0 compile cwd differs")
+    (bind receipt (template result:receipt-dir "/001"))
+    (bind
+      child-attempt
+      (JSON:parse (await (Deno:readTextFile (template receipt "/attempt.json")))))
+    (ensure (= child-attempt:index 1) "R0 Deno child action was not receipt 001")
+    (ensure (= child-attempt:executable deno) "R0 Deno executable differs")
     (bind output (await (Deno:readFile (template receipt "/stdout.bin"))))
     (bind
       expected
@@ -519,17 +618,38 @@
       result-json
       (JSON:parse (await (Deno:readTextFile (template receipt "/result.json")))))
     (ensure (= result-json:code 0) "R0 command receipt lacks code 0")
+    (ensure (= result-json:cwd cwd) "R0 child command cwd differs")
+    (ensure (= (get result-json:argv 0) deno) "R0 child argv executable differs")
+    (ensure
+      (= (get result-json:argv 8) compiled-child)
+      "R0 child JS path differs")
+    (ensure (= (get result-json:argv 9) "space value") "R0 spaced argv differs")
+    (ensure
+      (= (get result-json:argv 10) "literal;$(echo no-shell)")
+      "R0 literal argv differs")
+    (bind
+      copy-attempt
+      (JSON:parse
+        (await
+          (Deno:readTextFile (template result:receipt-dir "/002/attempt.json")))))
+    (ensure (= copy-attempt:index 2) "R0 copy action was not receipt 002")
     (bind
       copy-json
       (JSON:parse
         (await
-          (Deno:readTextFile (template result:receipt-dir "/001/result.json")))))
+          (Deno:readTextFile (template result:receipt-dir "/002/result.json")))))
     (ensure (= copy-json:copiedBytes 3) "R0 copy byte count mismatch")
     (bind
       compare-json
       (JSON:parse
         (await
-          (Deno:readTextFile (template result:receipt-dir "/002/result.json")))))
+          (Deno:readTextFile (template result:receipt-dir "/003/result.json")))))
+    (bind
+      compare-attempt
+      (JSON:parse
+        (await
+          (Deno:readTextFile (template result:receipt-dir "/003/attempt.json")))))
+    (ensure (= compare-attempt:index 3) "R0 compare action was not receipt 003")
     (ensure compare-json:equal "R0 byte compare failed")
     (console:log
       "R0 pass: spaced argv, direct execution, raw outputs, copy and byte comparison")))
@@ -538,7 +658,16 @@
   (func
     run-r1
     :args
-    (:string deno :string orchestrator-js :string child-js :string task-root)
+    (:string
+      deno
+      :string
+      compiler
+      :string
+      orchestrator-js
+      :string
+      child-js
+      :string
+      task-root)
     :body
     (bind case-dir (template task-root "/orchestration-controls/R1"))
     (bind marker (template case-dir "/sentinel.txt"))
@@ -577,7 +706,13 @@
     (bind
       result
       (await
-        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+        (invoke-orchestrator
+          deno
+          compiler
+          orchestrator-js
+          task-root
+          case-dir
+          actions)))
     (ensure (= result:code 7) "R1 outer code was not 7")
     (bind receipt (template result:receipt-dir "/000"))
     (bind stdout (await (Deno:readFile (template receipt "/stdout.bin"))))
@@ -601,7 +736,16 @@
   (func
     run-r2
     :args
-    (:string deno :string orchestrator-js :string child-js :string task-root)
+    (:string
+      deno
+      :string
+      compiler
+      :string
+      orchestrator-js
+      :string
+      child-js
+      :string
+      task-root)
     :body
     (bind case-dir (template task-root "/orchestration-controls/R2"))
     (bind left (template case-dir "/left.bin"))
@@ -634,7 +778,13 @@
     (bind
       result
       (await
-        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+        (invoke-orchestrator
+          deno
+          compiler
+          orchestrator-js
+          task-root
+          case-dir
+          actions)))
     (ensure (= result:code 1) "R2 unequal comparison did not exit 1")
     (bind
       compare-result
@@ -650,7 +800,16 @@
   (func
     run-r3
     :args
-    (:string deno :string orchestrator-js :string child-js :string task-root)
+    (:string
+      deno
+      :string
+      compiler
+      :string
+      orchestrator-js
+      :string
+      child-js
+      :string
+      task-root)
     :body
     (bind case-dir (template task-root "/orchestration-controls/R3"))
     (bind source (template case-dir "/source.bin"))
@@ -686,7 +845,13 @@
     (bind
       result
       (await
-        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+        (invoke-orchestrator
+          deno
+          compiler
+          orchestrator-js
+          task-root
+          case-dir
+          actions)))
     (ensure (!= result:code 0) "R3 clobber attempt unexpectedly passed")
     (bind prior (await (Deno:readFile destination)))
     (ensure
@@ -701,21 +866,32 @@
   (func
     run-orchestration-controls
     :args
-    (:string deno :string orchestrator-js :string child-js :string task-root)
+    (:string
+      deno
+      :string
+      compiler
+      :string
+      orchestrator-js
+      :string
+      child-js
+      :string
+      child-lykn
+      :string
+      task-root)
     :body
     (bind root (template task-root "/orchestration-controls"))
     (await (Deno:mkdir root))
-    (await (run-r0 deno orchestrator-js child-js task-root))
-    (await (run-r1 deno orchestrator-js child-js task-root))
-    (await (run-r2 deno orchestrator-js child-js task-root))
-    (await (run-r3 deno orchestrator-js child-js task-root))
+    (await (run-r0 deno compiler orchestrator-js child-lykn task-root))
+    (await (run-r1 deno compiler orchestrator-js child-js task-root))
+    (await (run-r2 deno compiler orchestrator-js child-js task-root))
+    (await (run-r3 deno compiler orchestrator-js child-js task-root))
     (console:log "R0–R3 pass")))
 
 (bind argv Deno.args)
 
 (ensure
-  (= argv:length 5)
-  "usage: check-helpers.lykn TASK-ROOT WORKSPACE PUBLIC-CHECK-JS ORCHESTRATE-JS CHILD-JS")
+  (= argv:length 7)
+  "usage: check-helpers.lykn RUNROOT WORKSPACE PUBLIC-CHECK-JS ORCHESTRATE-JS CHILD-JS COMPILER CHILD-LYKN")
 
 (bind task-root (get argv 0))
 
@@ -727,6 +903,18 @@
 
 (bind child-js (get argv 4))
 
+(bind compiler (get argv 5))
+
+(bind child-lykn (get argv 6))
+
+(ensure
+  (=
+    compiler
+    "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn")
+  "compiler argument is not the accepted task binary")
+
+(await (Deno:mkdir task-root))
+
 (await
   (run-validator-controls
     "/opt/homebrew/bin/deno"
@@ -737,6 +925,8 @@
 (await
   (run-orchestration-controls
     "/opt/homebrew/bin/deno"
+    compiler
     orchestrate-js
     child-js
+    child-lykn
     task-root))

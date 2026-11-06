@@ -3,7 +3,8 @@
 ## Intake coverage
 
 Loaded in full: `cc-prompt.md` (120 lines), `slice-plan.md`, and `ledger.md`.
-The slice plan is the binding contract for this CC: the owned artifacts are
+The ownership/allowed-paths/checks heading is in `cc-prompt.md`, not the slice
+plan. The slice plan is the binding contract for this CC: the owned artifacts are
 the four Lykn helpers plus README; allowed source-tree edits are AGENTS-only;
 the accepted Python validator is retained temporarily for exact positive
 parity, and the inline builder is not executable or repairable. The finite
@@ -227,3 +228,87 @@ its committed HEAD (62 documents on main, 63 on each release/task source home;
 
 All slice and ledger acceptance rows remain open for CDC. No helper, policy, or
 original-source deletion acceptance is claimed here.
+
+## Iteration01 accepted-tool source freeze and predictions
+
+The iteration01 intake loaded `cc-prompt-iteration01.md` in full, including
+the exact-tool correction and complete scope; the sibling slice plan and ledger;
+the current planning AGENTS; all four current Lykn files and README; the
+preserved-authoring/current-stop sections above; and the complete CDC pin
+recheck command/output evidence. The initial intake statement “No unrelated
+tests/full-pilot rerun” means the fixed V0–V7 and R0–R3 checks remain required.
+The ownership/allowlist citation belongs to the iteration prompt. The six
+source `AGENTS.md` reads are recorded above. No policy was changed in this
+iteration.
+
+The accepted compiler was reverified at its absolute path and SHA-256
+`544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a`; every
+accepted CLI call below used it from
+`target/slice09/empty/`, whose explicit CDC `project.json` has SHA-256
+`79eb6349b3638aaebd03b21d7418c81756b21bc870a0db50b300badc00c5f851`. Deno
+remains the pinned `/opt/homebrew/bin/deno` SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`.
+
+Final sources committed for the fixed control run:
+
+| Source | SHA-256 | Accepted-tool gate evidence |
+| --- | --- | --- |
+| `public-check.lykn` | `da1f13a854995696907fe4df037802516ba3a50f67cc75a9b5e100a5949c735d` | check, fmt-check, lint passed; compile exit 0, JS `161036f7c7c14d790f63e9d9b05cd5fc3148441a169bb421f0b13064e922ae24` |
+| `orchestrate.lykn` | `7569339d5f4e2e1480c61c435f9e41461af55ce54da7c66dc5f06429b4a20d19` | check, fmt-check, lint passed; compile exit 0, JS `76ee6715db0b98b262a0b11abb7eb1a0338640cd93244387c6b10ef132a3a621` |
+| `check-helpers.lykn` | `82f39a4d51b83f6489867c731cff8b018fecb657a562e414d5f8a7858c0910a0` | check (30 top-level expressions), fmt-check, lint passed; compile exit 0, JS `fb69bc0ca0366ec033df14e9e4cfb27d71e34c826a907ed424ab69eb54a618db` |
+| `child-fixture.lykn` | `e3ba6c8de2be5cadec4778859290e4bc73db2c9b7e50e476072031144a832e86` | check, fmt-check, lint passed; compile exit 0, JS `8a7aa205172c05aad758081b1869b17c9b78a946f27ba5fa90f252c06593b6be` |
+
+Final source bodies and compiler products are preserved under the ignored
+contract-predicate-lowering checkout's
+`target/slice09/empty/attempts/iteration01/`. The latest helper change removed
+the unused `child-js` parameter from R0; R0 instead compiles the canonical
+child source itself and uses that fresh output. Its pre-edit helper body is
+preserved as `check-helpers-pre-r0-param-cleanup.lykn` (SHA-256
+`535acf26e97505b0e8311fa67c7ef0d4bfc7bf3e6c97fc8f1f01b9c634713e17`). The
+final helper freeze used for the latest check, format-check, lint, and compile
+is `check-helpers-r0-param-cleanup-{check,fmtcheck,lint,compile}.lykn`, each
+SHA-256 `82f39a4d51b83f6489867c731cff8b018fecb657a562e414d5f8a7858c0910a0`.
+The compile output contains no `COMPILE_ERROR` placeholders and has top-level
+`equalBytes`, `sameLinesExceptOne`, `runValidatorControls`, `runR0`, and
+`runOrchestrationControls`; R0 receipt indices are compile 000, child 001,
+copy 002, compare 003. Full generated bodies were inspected.
+
+The accepted compiler emitted nonfatal unused-binding warnings for helper
+parameters `left`, `before`, and `after`; CLI bindings `workspace`,
+`public-check-js`, `child-js`, `orchestrate-js`, `child-lykn`, and `task-root`;
+and top-level functions `equal-bytes`, `same-lines-except-one`,
+`command-action`, `copy-action`, and `compare-action`. The generated JS uses
+each named parameter, binding, or function in the fixed controls (for example,
+byte comparison, V1/V6 line checks, CLI dispatch, and action creation). They
+are retained as observed static analyzer warnings, not suppressed or described
+as warning-free. The earlier helper source with explicit `(return ...)` and
+its malformed generated `const result = return ...` are preserved as a
+source/generated witness; the guide-backed implicit final-value form fixed
+that source, and no compiler defect is claimed. The earlier candidate compile
+and generated product are not replaced by this final pair.
+
+Before any remaining runtime, the committed predictions are:
+
+| Case | Expected observation |
+| --- | --- |
+| V0 | Original positive workspace succeeds; retain raw stdout for external parity. |
+| V1 | Reordered source and dist JSON export properties pass; map output and the other 12 digest rows are unchanged; only `target/lykn/dist/json/deno.json` has its actual reordered-byte digest. |
+| V2 | Source-only missing `json ./value` export fails with the expected source map key-count diagnostic. |
+| V3 | Dist-only wrong `json ./value` target fails with the expected target diagnostic. |
+| V4 | One extra dist export fails with the expected dist key-count diagnostic. |
+| V5 | Missing `json/value.js` fails with its expected not-a-regular-file diagnostic. |
+| V6 | One valid first-byte mutation of dist `effects/effect.js` succeeds and changes only that file's expected digest row. |
+| V7 | Unchanged clone under a path containing spaces succeeds with byte-identical stdout to V0. |
+| R0 | The orchestrator directly compiles the copied Lykn child with the exact pinned compiler in a space-containing cwd, runs the fresh JS with literal spaced/metacharacter args, then copies and byte-compares three bytes; receipt order and argv/cwd/status match source assertions. |
+| R1 | Invalid UTF-8 stdout `[0,255,10]`, stderr `[1,254,10]`, child/outer status 7; sentinel and receipt 001 are absent. |
+| R2 | Unequal bytes produce false and status 1; sentinel and receipt 001 are absent. |
+| R3 | No-clobber copy fails, existing destination remains `[4,5,6]`; sentinel and receipt 001 are absent. |
+
+This is a source/prediction freeze only; no V0–V7 controls, accepted R0–R3
+controls, or original Python parity run has occurred in iteration01 yet. The
+pre-freeze raw child exit-7 attempt remains separately recorded above. The
+previous current-stop note about a missing helper boundary/CDC source correction
+is superseded by the accepted-tool generated review here: that suspected
+compiler issue came from the wrong global binary and was disproven. The final
+accepted-tool helper has coherent top-level boundaries. No original Python
+deletion or acceptance is claimed.

@@ -1,3 +1,23 @@
-(await (Deno.stdout:write (new Uint8Array #a(0 255 10))))
-(await (Deno.stderr:write (new Uint8Array #a(1 254 10))))
-(Deno:exit 7)
+(bind args Deno.args)
+
+(bind mode (get args 0))
+
+(if
+  (= mode "--raw-failure")
+  (do
+    (await (Deno.stdout:write (new Uint8Array (array 0 255 10))))
+    (await (Deno.stderr:write (new Uint8Array (array 1 254 10))))
+    (Deno:exit 7)))
+
+(if
+  (= mode "--sentinel")
+  (do
+    (await
+      (Deno:writeFile
+        (get args 1)
+        (-> (new TextEncoder) (:encode "sentinel ran\n"))
+        (obj :createNew true)))))
+
+(if
+  (and (!= mode "--raw-failure") (!= mode "--sentinel"))
+  (console:log (JSON:stringify args)))
