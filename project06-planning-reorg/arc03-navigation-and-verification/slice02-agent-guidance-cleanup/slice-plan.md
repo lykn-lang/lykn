@@ -1,7 +1,7 @@
 # Slice02 — Portable agent guidance
 
 Status: open. Parent: Arc03 navigation/governance follow-through. Current
-assignment: cc-prompt-iteration01.md (placement correction). This is the existing project's bounded maintenance
+assignment: cc-prompt-iteration02.md (final placement correction). This is the existing project's bounded maintenance
 increment, not a new project or historical migration/acceptance reset.
 
 ## Authority and endpoint
@@ -9,7 +9,7 @@ increment, not a new project or historical migration/acceptance reset.
 2026-11-05 Operator chose installed rust-guidelines and requested removal of
 the obsolete ai directory, canonical AGENTS.md rewritten for agents generally,
 and CLAUDE.md as a symlink to AGENTS.md. The latter arrangement already exists;
-preserve it. The unique Lykn reference is retained under docs/skills/lykn/SKILL.md.
+preserve it. The unique Lykn reference is retained under skills/lykn/SKILL.md.
 Installed named skills replace personal absolute-path dependencies.
 
 Same Autonomous roles/settings: CDC Sol 6.1 High designs/reviews; CC Luna 6 High
@@ -41,7 +41,7 @@ history across branches. Both co-author trailers remain contiguous.
 
 Six source worktrees may change only AGENTS.md, CLAUDE.md if necessary,
 .gitignore's obsolete /assets/ai rule, README.md's reference, the two relevant
-docs/philosophy.md references, assets/ai/SKILL.md -> docs/skills/lykn/SKILL.md,
+docs/philosophy.md references, assets/ai/SKILL.md -> skills/lykn/SKILL.md,
 and the four tracked obsolete external symlinks. Main also has five known
 ignored untracked external links: AI-CONSTITUTION-SUPPLEMENT.md,
 AI-ENGINEERING-METHODOLOGY.md, deno, js, rust. Inventory with lstat; unlink only
@@ -66,7 +66,7 @@ Replace obsolete host references with installed skill names: rust-guidelines,
 javascript-deno-guidelines, testing, collaboration-framework (and its routed
 code-auditing/work-verification/agent-coordination components as relevant).
 Resolve through the session's skill catalog; no personal absolute paths or new
-external symlinks. Lykn guidance is source-worktree docs/skills/lykn/SKILL.md and
+external symlinks. Lykn guidance is source-worktree skills/lykn/SKILL.md and
 docs/guides/09-anti-patterns.md, under docs/philosophy.md. On planning, source
 references refer explicitly to the assigned source worktree/branch, not a
 nonexistent planning docs tree. Missing required skills are disclosed and a
@@ -94,13 +94,17 @@ planning URL for project01-mvp/arc12-identifier-mapping/artifacts/design/06-fina
 0049-identifier-mapping-lykn-js.md. Final SKILL is NOT byte-identical: its sole
 approved content delta is this citation. Keep all other version differences.
 Update README's link and philosophy's reference; its audit grep must scan both
-docs/guides/ and docs/skills/lykn/SKILL.md, retaining the old guide/reference scope.
+docs/guides/ and skills/lykn/SKILL.md, retaining the old guide/reference scope.
 Frozen scripts/cited-paths-census.tsv and all historical plans/prompts stay intact.
 
 The source reference was not previously in the executable doctest population.
-Keep it outside docs/guides/: Makefile test-docs selects that directory, README
-and the two example trees. Moving it into docs/skills/lykn preserves that role
-and selected population. Source blob241bc4 has a static grouped-bind example /
+Keep it outside docs/: Makefile test-docs selects docs/guides/, README and the
+two example trees; check-cited-paths scans all docs Markdown, while the old
+reference was outside that population. Moving it into skills/lykn preserves
+both roles/populations without changing illustrative example paths to satisfy
+a newly introduced scan. AGENTS/README links to the new tracked root path are
+still checked; the known DD49 link is still corrected. No automatic skill
+registration or .agents discovery is implied. Source blob241bc4 has a static grouped-bind example /
 expected-JS mismatch (GC-D01), routed to Project07 Arc03 guide consistency;
 do not fix example semantics, annotate skip, or alter tests in this cleanup.
 
@@ -128,5 +132,7 @@ open; CDC independently reproduces checks and commits review/retrospective.
 ## Assignment history
 
 - cc-prompt.md: initial issued assignment; pre-edit intake only, no mutation.
-- cc-prompt-iteration01.md: current bounded placement correction before moves;
-  unchanged inventory/framework/source receipts retained. No scope/quality waiver.
+- cc-prompt-iteration01.md: first proposed placement correction, not executed.
+- cc-prompt-iteration02.md: current final repository-owned skill home outside
+  executable guide/doc-census populations; unchanged intake retained. Neither
+  correction was applied to source before this assignment; no quality waiver.

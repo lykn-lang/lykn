@@ -79,11 +79,11 @@ cleanup observed that release/0.7.x@74a90d5 SKILL blob241bc4's Bindings Lykn exa
 contains grouped email/role/label bindings omitted from its paired Compiles-to
 JS. No example/doc test was executed and cause/wider example coverage is not
 claimed. The preserved agent reference moves from assets/ai/SKILL.md to the
-source-worktree docs/skills/lykn/SKILL.md, outside the existing executable guide
+source-worktree skills/lykn/SKILL.md, outside the existing executable guide
 selection; this cleanup changes no example semantics or test selection. The
 slice03-guide-consistency roadmap owns a later bounded validation/correction
 assignment prepared by CDC, implemented by CC and independently reviewed;
-it is not activated here. See the owning [placement correction](../../project06-planning-reorg/arc03-navigation-and-verification/slice02-agent-guidance-cleanup/cc-prompt-iteration01.md).
+it is not activated here. See the owning [placement correction](../../project06-planning-reorg/arc03-navigation-and-verification/slice02-agent-guidance-cleanup/cc-prompt-iteration02.md).
 Original ADT/guide/book and human acceptance obligations remain distinct.
 
 | Slice | Capability | Depends on | Status |
