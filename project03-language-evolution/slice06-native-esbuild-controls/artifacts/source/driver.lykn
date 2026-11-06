@@ -1,0 +1,123 @@
+(bind workspace (get Deno:args 0))
+(bind output (get Deno:args 1))
+(bind esbuild (get Deno:args 2))
+(bind deno (get Deno:args 3))
+(bind data (template workspace "/data/input.json"))
+(bind decoder (new TextDecoder))
+
+(func require-ok :args (:boolean ok :string message) :body
+  (if (not ok) (throw (new Error message)))
+  null)
+
+(func environment :args (:string cache) :body
+  (obj :PATH "/opt/homebrew/bin:/usr/bin:/bin"
+       :DENO_DIR cache
+       :DENO_NO_UPDATE_CHECK "1"
+       :NO_COLOR "1"))
+
+(func command :args (:string executable :array args :string cwd :string cache) :body
+  (new Deno:Command executable
+    (obj :args args :cwd cwd :clear-env true :env (environment cache)
+         :stdin "null" :stdout "piped" :stderr "piped")))
+
+(func save-result :args (:string name :string executable :array args :string cwd :any result) :body
+  (bind stdout (decoder:decode result:stdout))
+  (bind stderr (decoder:decode result:stderr))
+  (Deno:write-text-file-sync
+    (template output "/" name ".json")
+    (JSON:stringify (obj :executable executable :args args :cwd cwd
+                         :code result:code :stdout stdout :stderr stderr)))
+  (obj :code result:code :stdout stdout :stderr stderr))
+
+(func alias-arguments :args () :body
+  (bind aliases (array))
+  (for-of package (array "json" "yaml" "effects")
+    (bind config-path (template workspace "/target/lykn/dist/" package "/deno.json"))
+    (bind config (JSON:parse (Deno:read-text-file-sync config-path)))
+    (for-of entry (Object:entries config:exports)
+      (bind key (get entry 0))
+      (bind target (get entry 1))
+      (bind specifier (if (= key ".") config:name
+                        (template config:name "/" (String:slice key 2))))
+      (Array:push aliases
+        (template "--alias:" specifier "=" workspace "/target/lykn/dist/"
+                  package "/" target))))
+  aliases)
+
+(func bundle :args (:string name :string entry) :body
+  (bind args (array entry "--bundle" "--tree-shaking=true" "--format=esm"
+                    "--platform=neutral" "--target=es2022"))
+  (for-of alias (alias-arguments) (Array:push args alias))
+  (Array:push args (template "--metafile=" output "/" name ".meta.json"))
+  (Array:push args (template "--outfile=" output "/" name ".js"))
+  (bind result (-> (command esbuild args workspace (template output "/cache"))
+                   (:output-sync)))
+  (bind receipt (save-result (template name "-bundle") esbuild args workspace result))
+  (require-ok (= receipt:code 0) (template name " native esbuild failed"))
+  receipt)
+
+(func runtime-args :args (:string config :string entry :string name) :body
+  (bind args (array "run" "--cached-only" "--no-npm" "--no-remote"
+                    "--deny-net" "--no-prompt" (template "--config=" config)))
+  (if (= name "C5") (Array:push args (template "--allow-read=" data)))
+  (Array:push args entry)
+  (if (= name "C5") (Array:push args data))
+  args)
+
+(func expected-output :args (:string name) :body
+  (if (= name "C1") "BASE\n"
+    (if (or (= name "C2") (= name "C3")) "{\"x\":1}\n"
+      (if (= name "C4") "init:effect\nentry:42\n"
+        (template "init:effect\n{\"jsonRoot\":{\"x\":1},\"jsonValue\":{\"x\":1},"
+          "\"fileRoot\":\"{\\\"x\\\":1}\",\"fileValue\":\"{\\\"x\\\":1}\","
+          "\"documentRoot\":\"document:{\\\"x\\\":1}\","
+          "\"documentValue\":\"document:{\\\"x\\\":1}\","
+          "\"yamlRoot\":{\"answer\":42},\"yamlValue\":{\"answer\":42},"
+          "\"usedRoot\":42,\"usedValue\":42,\"deadRoot\":82,\"deadValue\":82}\n")))))
+
+(func runtime :args (:string name :string entry :boolean bundled) :body
+  (bind config (template workspace "/target/lykn/dist/project.json"))
+  (bind runtime-entry (if bundled (template output "/" name ".js") entry))
+  (bind result (-> (command deno (runtime-args config runtime-entry name)
+                            workspace (template output "/cache"))
+                   (:output-sync)))
+  (bind receipt (save-result (template name (if bundled "-bundle-run" "-source-run"))
+                             deno (runtime-args config runtime-entry name) workspace result))
+  (require-ok (= receipt:code 0) (template name " Deno run failed"))
+  (require-ok (= receipt:stderr "") (template name " wrote unexpected stderr"))
+  (require-ok (= receipt:stdout (expected-output name))
+    (template name " stdout diverged from the frozen prediction"))
+  receipt)
+
+(async (func digest :args (:any bytes) :body
+  (bind hash-bytes (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+  (-> (Array:from hash-bytes
+        (fn (:number byte) (-> (byte:to-string 16) (:pad-start 2 "0"))))
+      (:join "")))
+
+(async (func main :args () :body
+  (bind phase (get Deno:args 4))
+  (if (= phase "gate")
+    (bundle "C4" (template workspace "/target/lykn/dist/controls/c4.js"))
+    (if (= phase "controls")
+      (do
+        (bind reviewed-hash (get Deno:args 5))
+        (bind c4-path (template output "/C4.js"))
+        (bind actual-hash (await (digest (Deno:read-file-sync c4-path))))
+        (require-ok (= reviewed-hash actual-hash) "C4 reviewed bundle hash mismatch")
+        (runtime "C5" (template workspace "/target/lykn/dist/controls/c5.js") false)
+        (runtime "C4" (template workspace "/target/lykn/dist/controls/c4.js") false)
+        (runtime "C4" (template workspace "/target/lykn/dist/controls/c4.js") true)
+        (for-of name (array "C1" "C2" "C3")
+          (bind entry (template workspace "/target/lykn/dist/controls/"
+                        (String:lower-case name) ".js"))
+          (bundle name entry)
+          (runtime name entry false)
+          (runtime name entry true))
+        (bind c5-entry (template workspace "/target/lykn/dist/controls/c5.js"))
+        (bundle "C5" c5-entry)
+        (runtime "C5" c5-entry true)
+        (runtime "C5" c5-entry false))
+      (throw (new Error "phase must be gate or controls")))))
+
+(await (main))

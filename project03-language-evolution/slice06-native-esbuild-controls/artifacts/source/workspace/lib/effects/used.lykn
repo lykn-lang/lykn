@@ -1,0 +1,2 @@
+(func used :args (:number n) :returns :number :body (+ n 1))
+(exports used)

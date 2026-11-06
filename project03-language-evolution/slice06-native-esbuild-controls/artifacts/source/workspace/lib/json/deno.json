@@ -1,0 +1,11 @@
+{
+  "name": "@probe/json",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./mod.js",
+    "./value": "./value.js",
+    "./file": "./file.js",
+    "./document": "./document.js"
+  },
+  "lykn": { "kind": "runtime" }
+}

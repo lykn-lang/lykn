@@ -1,0 +1,3 @@
+(export "./value.js" (names parse-value))
+(export "./file.js" (names read-text))
+(export "./document.js" (names document-label))

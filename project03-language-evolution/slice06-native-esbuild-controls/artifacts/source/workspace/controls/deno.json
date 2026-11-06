@@ -1,0 +1,6 @@
+{
+  "name": "@probe/controls",
+  "version": "0.0.0",
+  "exports": { ".": "./c1.js" },
+  "lykn": { "kind": "runtime" }
+}

@@ -1,0 +1,2 @@
+(import "@probe/json/value" (parse-value))
+(console:log (JSON:stringify (parse-value "{\"x\":1}")))

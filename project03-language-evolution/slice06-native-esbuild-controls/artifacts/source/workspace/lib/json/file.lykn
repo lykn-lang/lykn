@@ -1,0 +1,2 @@
+(func read-text :args (:string path) :returns :string :body (Deno:read-text-file-sync path))
+(exports read-text)
