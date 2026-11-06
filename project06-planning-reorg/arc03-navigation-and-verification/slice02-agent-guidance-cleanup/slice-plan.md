@@ -1,7 +1,7 @@
 # Slice02 — Portable agent guidance
 
 Status: open. Parent: Arc03 navigation/governance follow-through. Current
-assignment: cc-prompt.md. This is the existing project's bounded maintenance
+assignment: cc-prompt-iteration01.md (placement correction). This is the existing project's bounded maintenance
 increment, not a new project or historical migration/acceptance reset.
 
 ## Authority and endpoint
@@ -9,7 +9,7 @@ increment, not a new project or historical migration/acceptance reset.
 2026-11-05 Operator chose installed rust-guidelines and requested removal of
 the obsolete ai directory, canonical AGENTS.md rewritten for agents generally,
 and CLAUDE.md as a symlink to AGENTS.md. The latter arrangement already exists;
-preserve it. The unique Lykn reference is retained under docs/guides/SKILL.md.
+preserve it. The unique Lykn reference is retained under docs/skills/lykn/SKILL.md.
 Installed named skills replace personal absolute-path dependencies.
 
 Same Autonomous roles/settings: CDC Sol 6.1 High designs/reviews; CC Luna 6 High
@@ -41,7 +41,7 @@ history across branches. Both co-author trailers remain contiguous.
 
 Six source worktrees may change only AGENTS.md, CLAUDE.md if necessary,
 .gitignore's obsolete /assets/ai rule, README.md's reference, the two relevant
-docs/philosophy.md references, assets/ai/SKILL.md -> docs/guides/SKILL.md,
+docs/philosophy.md references, assets/ai/SKILL.md -> docs/skills/lykn/SKILL.md,
 and the four tracked obsolete external symlinks. Main also has five known
 ignored untracked external links: AI-CONSTITUTION-SUPPLEMENT.md,
 AI-ENGINEERING-METHODOLOGY.md, deno, js, rust. Inventory with lstat; unlink only
@@ -66,7 +66,7 @@ Replace obsolete host references with installed skill names: rust-guidelines,
 javascript-deno-guidelines, testing, collaboration-framework (and its routed
 code-auditing/work-verification/agent-coordination components as relevant).
 Resolve through the session's skill catalog; no personal absolute paths or new
-external symlinks. Lykn guidance is source-worktree docs/guides/SKILL.md and
+external symlinks. Lykn guidance is source-worktree docs/skills/lykn/SKILL.md and
 docs/guides/09-anti-patterns.md, under docs/philosophy.md. On planning, source
 references refer explicitly to the assigned source worktree/branch, not a
 nonexistent planning docs tree. Missing required skills are disclosed and a
@@ -93,9 +93,16 @@ Then change only its one stale DD49 citation to the branch-qualified canonical
 planning URL for project01-mvp/arc12-identifier-mapping/artifacts/design/06-final/
 0049-identifier-mapping-lykn-js.md. Final SKILL is NOT byte-identical: its sole
 approved content delta is this citation. Keep all other version differences.
-Update README's link and philosophy's reference; philosophy's recursive grep
-may omit the redundant explicit SKILL operand now inside docs/guides/.
+Update README's link and philosophy's reference; its audit grep must scan both
+docs/guides/ and docs/skills/lykn/SKILL.md, retaining the old guide/reference scope.
 Frozen scripts/cited-paths-census.tsv and all historical plans/prompts stay intact.
+
+The source reference was not previously in the executable doctest population.
+Keep it outside docs/guides/: Makefile test-docs selects that directory, README
+and the two example trees. Moving it into docs/skills/lykn preserves that role
+and selected population. Source blob241bc4 has a static grouped-bind example /
+expected-JS mismatch (GC-D01), routed to Project07 Arc03 guide consistency;
+do not fix example semantics, annotate skip, or alter tests in this cleanup.
 
 ## Verification and close
 
@@ -117,3 +124,9 @@ all source diffs restricted to named governance/docs paths and no code/lock/test
 change. Preserve failed commands, unknowns and previous compiler/pilot stop.
 No large archive or new validator/helper is needed. CC reports rows attested/
 open; CDC independently reproduces checks and commits review/retrospective.
+
+## Assignment history
+
+- cc-prompt.md: initial issued assignment; pre-edit intake only, no mutation.
+- cc-prompt-iteration01.md: current bounded placement correction before moves;
+  unchanged inventory/framework/source receipts retained. No scope/quality waiver.
