@@ -179,7 +179,7 @@
                                :bytesInOutput contribution-info:bytesInOutput)))))
         (reset! selected
           (obj :path path :entryPoint entry-point
-               :contributors (express contributor-rows)))))
+               :contributors (express contributor-rows))))))
   (bind selected-output (express selected))
   (require-ok (not (= selected-output null))
     "no selected JavaScript output matched outfile and entryPoint")
@@ -229,7 +229,7 @@
     (if (and (or (graph:includes path)
                  (> (contributor-bytes path contributors) 0))
              (not (allowed:includes path)))
-      (swap! unexpected (fn (:array current) (conj current path))))
+      (swap! unexpected (fn (:array current) (conj current path)))))
   (bind unexpected-paths (express unexpected))
   (require-ok (= unexpected-paths:length 0)
     (template name " has unexpected library graph/contribution identity"))
@@ -252,7 +252,7 @@
       (for-of path (array (module-path "yaml" "mod.js") yaml-value)
         (require-ok (and (not (graph:includes path))
                          (= (contributor-bytes path contributors) 0))
-          (template "C2 unexpectedly observes YAML identity " path))))
+          (template "C2 unexpectedly observes YAML identity " path)))))
   (if (= name "C3")
     (do
       (require-ok (> (contributor-bytes json-value contributors) 0)
@@ -261,7 +261,7 @@
                           (module-path "yaml" "mod.js") yaml-value)
         (require-ok (and (not (graph:includes path))
                          (= (contributor-bytes path contributors) 0))
-          (template "C3 unexpectedly observes excluded identity " path))))
+          (template "C3 unexpectedly observes excluded identity " path)))))
   (if (= name "C4")
     (do
       (require-ok (> (contributor-bytes effects-used contributors) 0)
@@ -369,7 +369,7 @@
       (bind hash (await (digest (Deno:read-file-sync target-path))))
       (swap! exports (fn (:array current)
         (conj current (obj :specifier specifier :target (normalize-path target-path)
-                           :sha256 hash)))))
+                           :sha256 hash))))))
   (bind actual-exports (express exports))
   (bind expected-exports (array
     "@probe/json" "@probe/json/value" "@probe/json/file" "@probe/json/document"
@@ -386,7 +386,7 @@
           (swap! target-count (fn (:number current) (+ current 1)))
           (require-ok (= export-row:sha256 file-row:sha256)
             (template "export target hash differs from public file snapshot: "
-                      export-row:target))))
+                      export-row:target)))))
     (require-ok (= (express target-count) 1)
       (template "export target missing/duplicated in 13-file snapshot: " export-row:target)))
   (for-of row actual-exports
@@ -414,7 +414,7 @@
     (bind matches (cell #a()))
     (for-of current after-files
       (if (= old:path current:path)
-        (swap! matches (fn (:array rows) (conj rows current))))
+        (swap! matches (fn (:array rows) (conj rows current)))))
     (bind rows (express matches))
     (require-ok (= rows:length 1) (template "public file path missing/duplicated: " old:path))
     (bind matched (get rows 0))
@@ -424,7 +424,7 @@
     (bind matches (cell #a()))
     (for-of current after-exports
       (if (= old:specifier current:specifier)
-        (swap! matches (fn (:array rows) (conj rows current))))
+        (swap! matches (fn (:array rows) (conj rows current)))))
     (bind rows (express matches))
     (require-ok (= rows:length 1)
       (template "public export key missing/duplicated: " old:specifier))

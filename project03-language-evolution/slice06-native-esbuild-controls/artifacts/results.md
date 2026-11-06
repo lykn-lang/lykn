@@ -279,3 +279,20 @@ recompiled and the changed C5 staging plus every staged JS byte equality and
 export-map path checked in a fresh attempt. No bundle/runtime or Deno control
 has executed; denominator remains five bundles and eleven runtime invocations,
 all unrun.
+
+### Iteration01 first corrected-source compile attempt
+
+Source commit `d228833905d2a0981c1193d9d27d9deee12e579c` froze the C5 root-path
+coverage and finite observer contract above. I copied the run-03 staged workspace
+to fresh task target `run-04`, replaced only C5 source, and reused the prior
+14 unchanged compiled source outputs. A compile-log setup command first exited
+1 because `run-04/compile-logs/` had not yet been created; no compiler ran in
+that setup attempt. After creating the directory, C5 compiled with exit 0 and
+the observer compile exited 1 with `unterminated list at 436:1`; both outputs
+are retained under ignored task target `run-04/compile-logs/`. No dist, C4
+bundle or runtime action followed. The source review located open loop forms in
+output selection, unexpected-identity accumulation, export target validation,
+and before/after reconciliation. I am preserving run-04 and correcting only
+those loop closures, without changing the five controls, schema/oracle rules,
+permissions or predictions. The corrected source requires a new commit before
+the next fresh C5/observer compile.
