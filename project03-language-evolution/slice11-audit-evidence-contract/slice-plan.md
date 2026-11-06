@@ -1,6 +1,6 @@
 # Slice11: compiled-corpus walker and audit evidence contract
 
-Opened 2026-11-06. Status: open. Bounded collapsed standalone increment under
+Opened 2026-11-06. Status: independently closed 2026-11-06. Bounded collapsed standalone increment under
 Project03's established convention, not the full Slice01 audit.
 
 ## Authority, roles, ownership and endpoint
@@ -124,3 +124,12 @@ Future lib/opt-in @lykn JSR, zero unused payload, effects/public API, Project07
 final synthesis/licence/bootstrap/ADT/guides/book/human gates remain distinct.
 NE-C02/04/05/06 and NE-D01 remain separately owned. No source changes, integration,
 push/publication, remoteCI, audit execution or library implementation follows.
+
+## Accepted endpoint — 2026-11-06
+
+Independently closed after CC candidatea9ccd823 and one preserved correction;
+all five WC rows done. cdc-verification.md records actual static source/hash/
+control-oracle review and its limits; cdc-retrospective.md completes Autonomous
+close. The reviewed contract§6 is adopted by reference in Slice01, with all12
+F statuses/history preserved. No parser capability, walker implementation or
+audit execution is claimed or automatically opened.

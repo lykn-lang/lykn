@@ -140,6 +140,17 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 [Slice11](slice11-audit-evidence-contract/cdc-verification.md) is
+independently closed after one preserved method-precision correction. The
+accepted contract selects existing unmodified npm-distributed Acorn ESM for a
+future separately authorized offline gate and a Lykn-authored conservative
+ESTree walker; native esbuild evidence remains graph/module/body/runtime/API
+specific, per artifact. Source/emitter populations and failure accounting are
+explicit. This settles the F6/F10 method, not their execution: all original
+F rows remain open, with future implementation/capability/complete-audit proof
+still required. No parser/control/fullcheck/corpus/bundle run or source change
+occurred, and no next unit is opened.
+
 2026-11-06 Operator authorized [Slice11](slice11-audit-evidence-contract/slice-plan.md)
 to settle the remaining compiled-corpus ESTree walker and coherent native-esbuild
 evidence contract under the same Sol6.1 High CDC / fresh Luna6 High CC Autonomous
@@ -216,6 +227,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice11-audit-evidence-contract](slice11-audit-evidence-contract/slice-plan.md): independently closed method settlement; all original audit rows/execution remain open and separately gated.
 - [slice10-template-release-integration](slice10-template-release-integration/slice-plan.md): independently closed; exact accepted template repair integrated locally into release/0.6.x with fresh release gates and byte/ancestry reconciliation; no other propagation.
 - [slice09-lykn-research-helpers](slice09-lykn-research-helpers/slice-plan.md): closed; Lykn replacement/parity, independently passing12 controls, scoped Python body deletion and explicit seven-home policy delivered; separate language/diagnostic follow-ups remain.
 - [slice08-template-string-boundary](slice08-template-string-boundary/slice-plan.md): closed; decoded-template repair/full gates and unchanged five-bundle/eleven-call pilot independently accepted on dedicated task branch; no further integration implied.
@@ -239,6 +251,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.16: Independently accepted Slice11's source-grounded walker/
+  native-esbuild evidence contract and preserved amendment, five WC rows done,
+  retrospective complete. No implementation or audit execution inferred; all
+  original F rows, inherited library/human and separate compiler owners remain.
 
 - 2026-11-06 v1.15: Opened bounded Slice11 after explicit audit-contract
   settlement approval. CC authors the source-grounded method; CDC independently

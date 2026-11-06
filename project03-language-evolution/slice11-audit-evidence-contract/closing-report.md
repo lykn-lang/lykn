@@ -25,3 +25,11 @@ read-only and clean at `release/0.6.x@f70565566088f5d55129edda6bd73a4691e5a58d`
 report are CC-attested, not independently accepted. CDC now resumes planning
 and index ownership for citation, hash, scope and row review; no future audit
 execution is issued by this return.
+
+## CDC final disposition — 2026-11-06
+
+Independent CDC accepts the a9ccd823 method after affected-delta source/evidence
+review; all five WC rows are done at contract scale. See cdc-verification.md and
+cdc-retrospective.md. Slice01 adopts the reviewed amendment by reference while
+all original F rows remain open. No implementation/control/corpus execution or
+next unit follows; future exact-artifact capability and full audit remain gates.

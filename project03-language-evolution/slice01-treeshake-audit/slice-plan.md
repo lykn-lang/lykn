@@ -129,3 +129,32 @@ this slice closes. Iteration budget: five, per discipline.
 - **v1.0 (2026-07-07)** — initial plan-of-record. Layout
   (`project03-language-evolution/slice01-treeshake-audit/`, arc wrapper collapsed,
   project-plan deferred) confirmed with operator this date.
+
+## Accepted F-6/F-10 method amendment — 2026-11-06
+
+Following explicit Operator contract-settlement authorization, the complete
+[Slice11 contract](../slice11-audit-evidence-contract/artifacts/audit-contract.md),
+including its exact §6 amendment at CC commit
+a9ccd823f246a9a920e91255788c8822e0841f61, is adopted by reference after
+[independent review](../slice11-audit-evidence-contract/cdc-verification.md).
+This dated amendment supersedes only the historical execution mechanisms,
+not original obligations or evidence. F-6 uses the pinned accepted source-built
+native esbuild with separate minified/unminified raw evidence and per-artifact
+membership/indeterminate rules. F-10 remains a post-emission ESTree scan authored
+in Lykn, using the exact existing cached **npm-distributed** Acorn ESM only as a
+candidate for a future separately authorized offline capability gate. This is
+not general npm-source reuse, new acquisition or authenticated-origin approval.
+
+The contract fixes conservative evaluation/deferred/unsupported rules, finite
+unrun K01–K12 oracles, actual native/public-API/test-CLI contexts, per-condition
+corpus manifest/status equations and honest graph/module/body/runtime/API
+boundaries. All twelve F rows, fixtures, original predictions, old issued
+prompts/scripts, metadata, divergence/report and independent-close obligations
+remain intact/open. No current corpus count, walker result, parser capability
+or experiment pass is supplied by method acceptance. A future numbered
+assignment must freeze implementation/inputs/predictions and prove the offline
+capability/controls before separately authorized full audit execution. Do not
+run the historical prompt unchanged. No new unit is opened here.
+
+Version v1.2 (2026-11-06): accepted the separately reviewed Slice11 method by
+reference; preserved original v1.0/v1.1 history and every F-row status.
