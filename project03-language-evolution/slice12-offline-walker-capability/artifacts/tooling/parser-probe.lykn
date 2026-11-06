@@ -1,4 +1,4 @@
-(import {load-parser verify-parser} from "./parser-core.js")
+(import "./parser-core.js" (load-parser verify-parser))
 
 (bind argv Deno.args)
 
@@ -24,8 +24,11 @@
 
 (bind input-text (await (Deno:readTextFile input-path)))
 
-(bind parsed
-  (try
+(bind parsed (cell null))
+
+(try
+  (reset!
+    parsed
     (obj
       :status "parse_success"
       :controlId control-id
@@ -38,35 +41,39 @@
           :ecmaVersion "latest"
           :sourceType "module"
           :locations true
-          :ranges true)))
-    (catch
-      error
+          :ranges true))))
+  (catch
+    error
+    (reset!
+      parsed
       (obj
         :status "parse_error"
         :controlId control-id
         :actualHash parser-check:actualHash
         :actualVersion parser-check:actualVersion
-          :errorName error:name
+        :errorName error:name
         :message error:message
         :pos error:pos
         :line error:loc:line
         :column error:loc:column))))
 
-(bind after-hash (await (verify-parser parser-check:actualHash)))
+(bind after-check (await (verify-parser parser-check:actualHash)))
 
 (if
-  (!= after-hash parser-check:actualHash)
+  (not after-check:unchanged)
   (do
     (console:log
       (JSON:stringify
         (obj
           :status "parser_artifact_changed_after_use"
           :beforeHash parser-check:actualHash
-          :afterHash after-hash)))
+          :afterHash after-check:afterHash)))
     (Deno.exit 2)))
+
+(bind parsed-result (express parsed))
 
 (console:log
   (JSON:stringify
-    (assoc parsed :afterHash after-hash)))
+    (assoc parsed-result :afterHash after-check:afterHash)))
 
-(if (= parsed:status "parse_error") (Deno.exit 2))
+(if (= parsed-result:status "parse_error") (Deno.exit 2))

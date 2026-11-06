@@ -61,8 +61,10 @@
     verify-parser
     :args
     (:string prior-hash)
-    :returns
-    :string
+    :returns :any
     :body
     (bind parser-bytes (await (Deno:readFile parser-path)))
-    (sha256 parser-bytes)))
+    (bind after-hash (await (sha256 parser-bytes)))
+    (obj
+      :afterHash after-hash
+      :unchanged (= after-hash prior-hash))))

@@ -55,12 +55,15 @@
      :string probe-js
      :string core-js
      :string task-root
-     :string deno-dir)
+     :string cache-root
+     :string cwd)
     :body
     (bind control-id row:id)
     (bind sequence row:sequence)
     (bind case-dir (template task-root "/" control-id))
+    (bind deno-dir (template cache-root "/" control-id))
     (await (Deno:mkdir case-dir))
+    (await (Deno:mkdir deno-dir))
     (bind input-path (template case-dir "/input.js"))
     (bind has-input (not (= row:input null)))
     (if
@@ -112,6 +115,45 @@
         :DENO_NO_UPDATE_CHECK "1"
         :NO_COLOR "1"
         :PATH "/opt/homebrew/bin:/usr/bin:/bin"))
+    (bind attempt-record
+      (obj
+        :id
+        control-id
+        :sequence
+        sequence
+        :argv
+        argv
+        :cwd
+        cwd
+        :environment
+        environment
+        :parserPath
+        parser-path
+        :parserSha256
+        (await (sha256 parser-bytes))
+        :probePath
+        probe-js
+        :probeSha256
+        (await (sha256 probe-bytes))
+        :corePath
+        core-js
+        :coreSha256
+        (await (sha256 core-bytes))
+        :inputPath
+        (if has-input input-path null)
+        :inputSha256
+        (if has-input (await (sha256 input-bytes)) null)
+        :expectedHash
+        row:expectedHash
+        :expectedExit
+        row:expectedExit
+        :expectedStatus
+        row:expectedStatus))
+    (await
+      (Deno:writeTextFile
+        (template case-dir "/attempt.json")
+        (JSON:stringify attempt-record)
+        (obj :createNew true)))
     (bind output
       (await
         (->
@@ -122,7 +164,7 @@
               :args
               (-> (Array:from argv) (:slice 1))
               :cwd
-              "/private/tmp/lykn-slice12-cc-01"
+              cwd
               :clearEnv
               true
               :env
@@ -144,11 +186,6 @@
         (template case-dir "/stderr.bin")
         output:stderr
         (obj :createNew true)))
-    (bind stdout-text (new TextDecoder "utf-8" (obj :fatal true)))
-    (bind witness
-      (try
-        (JSON:parse (stdout-text:decode output:stdout))
-        (catch error (obj :observerJsonError error:message))))
     (bind command-record
       (obj
         :id
@@ -158,31 +195,37 @@
         :argv
         argv
         :cwd
-        "/private/tmp/lykn-slice12-cc-01"
+        cwd
         :environment
         environment
         :exit
         output:code
         :signal
         output:signal
-        :parserSha256
-        (await (sha256 parser-bytes))
-        :probeSha256
-        (await (sha256 probe-bytes))
-        :coreSha256
-        (await (sha256 core-bytes))
-        :inputSha256
-        (if has-input (await (sha256 input-bytes)) null)
         :stdoutBytes
         output:stdout:length
         :stderrBytes
-        output:stderr:length
-        :witness
-        witness))
+        output:stderr:length))
     (await
       (Deno:writeTextFile
         (template case-dir "/result.json")
         (JSON:stringify command-record)
+        (obj :createNew true)))
+    (bind stdout-text (new TextDecoder "utf-8" (obj :fatal true)))
+    (bind witness-cell (cell null))
+    (try
+      (reset!
+        witness-cell
+        (JSON:parse (stdout-text:decode output:stdout)))
+      (catch error
+        (reset!
+          witness-cell
+          (obj :observerJsonError error:message))))
+    (bind witness (express witness-cell))
+    (await
+      (Deno:writeTextFile
+        (template case-dir "/witness.json")
+        (JSON:stringify witness)
         (obj :createNew true)))
     (ensure
       (= output:code row:expectedExit)
@@ -263,7 +306,7 @@
 
 (bind argv Deno.args)
 
-(ensure (= argv:length 7) "usage: offline-observer.lykn CONTROLS DENO PARSER PROBE CORE ROOT DENO_DIR")
+(ensure (= argv:length 8) "usage: offline-observer.lykn CONTROLS DENO PARSER PROBE CORE ROOT CACHE_ROOT CONFIG_FREE_CWD")
 
 (bind controls-path (absolute-path (get argv 0)))
 (bind deno (absolute-path (get argv 1)))
@@ -271,7 +314,8 @@
 (bind probe-js (absolute-path (get argv 3)))
 (bind core-js (absolute-path (get argv 4)))
 (bind task-root (absolute-path (get argv 5)))
-(bind deno-dir (absolute-path (get argv 6)))
+(bind cache-root (absolute-path (get argv 6)))
+(bind cwd (absolute-path (get argv 7)))
 
 (bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
 
@@ -286,6 +330,7 @@
 (ensure (= row-3:id "K09") "K09 must be fourth")
 
 (await (Deno:mkdir task-root))
+(await (Deno:mkdir cache-root))
 
 (for-of row controls:observations
   (await
@@ -296,6 +341,7 @@
       probe-js
       core-js
       task-root
-      deno-dir)))
+      cache-root
+      cwd)))
 
 (console:log "Phase A parser prerequisite passed: 4/4 fixed observations")
