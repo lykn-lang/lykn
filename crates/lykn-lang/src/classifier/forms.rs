@@ -6883,6 +6883,68 @@ mod tests {
         );
     }
 
+    fn resolved_export_diags(source: &str) -> Vec<Diagnostic> {
+        let forms = crate::reader::read(source).expect("parse export regression source");
+        let forms = crate::resolver::resolve(&forms);
+        validate_exports_declarations(&forms)
+    }
+
+    #[test]
+    fn exports_accept_named_async_func_and_genfunc_in_either_order() {
+        for source in [
+            "(exports fetch-value)\n(async (func fetch-value :args (:number value) :returns :number :body value))",
+            "(async (func fetch-value :args (:number value) :returns :number :body value))\n(exports fetch-value)",
+            "(exports values)\n(async (genfunc values :args () :yields :number :body (yield 42)))",
+            "(async (genfunc values :args () :yields :number :body (yield 42)))\n(exports values)",
+        ] {
+            assert!(
+                resolved_export_diags(source).is_empty(),
+                "expected async named binding to be exportable: {source}"
+            );
+        }
+    }
+
+    #[test]
+    fn exports_do_not_promote_async_parameters_or_nested_named_functions() {
+        for source in [
+            "(exports value)\n(async (func outer :args (:number value) :body value))",
+            "(exports inner)\n(func outer :args () :body (async (func inner :args () :body 42)))",
+            "(exports value)\n(async (bind value 42))",
+            "(func async :args (:any value) :body value)\n(exports fetch-value)\n(async (func fetch-value :args () :body 42))",
+        ] {
+            let diags = resolved_export_diags(source);
+            assert_eq!(diags.len(), 1, "expected unknown export for {source}");
+            assert!(
+                diags[0]
+                    .message
+                    .contains("exports references unknown top-level binding"),
+                "expected export-scope diagnostic, got: {}",
+                diags[0].message
+            );
+        }
+    }
+
+    #[test]
+    fn exports_keep_duplicate_and_nested_declaration_checks() {
+        let duplicate = resolved_export_diags(
+            "(func fetch-value :args () :body 42)\n(exports fetch-value fetch-value)",
+        );
+        assert_eq!(duplicate.len(), 1);
+        assert!(
+            duplicate[0]
+                .message
+                .contains("lists 'fetch-value' more than once")
+        );
+
+        let nested = resolved_export_diags("(func outer :args () :body (exports outer))");
+        assert_eq!(nested.len(), 1);
+        assert!(
+            nested[0]
+                .message
+                .contains("only allowed at module top level")
+        );
+    }
+
     // ---------------------------------------------------------------
     // DD-64 (arc15) — reject method-on-expression
     // ---------------------------------------------------------------
