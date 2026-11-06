@@ -1,8 +1,8 @@
 # Slice07 — Contract predicate lowering and resumed native controls
 
-Status: open; Phase A CC return is awaiting CDC independent review. Current
-assignment `cc-prompt.md` has been executed; Phase B remains held until CDC
-acceptance and explicit resume. Collapsed standalone increment owned by
+Status: open; Phase A independently accepted in `cdc-verification.md`. Current
+assignment `cc-prompt-iteration01.md` resumes Phase B. Initial `cc-prompt.md`
+is preserved. Collapsed standalone increment owned by
 Project03 NE-C01, not a second implementation home in Project07.
 
 ## Authority and endpoint

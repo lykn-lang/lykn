@@ -222,6 +222,29 @@ Slice06's source history, raw launch failures and retrospective. Any future
 investigation must classify invalid authoring separately from compiler contract
 violations; these observations do not authorize a broad compiler rewrite.
 
+#### NE-C02 — accepted branch-local binding emits invalid statement JavaScript
+
+**Open observation, 2026-11-05; no repair authorized here.** During Slice07's
+test authoring, default strict native compile accepted the existing witness
+`(if true (bind following-statement 99))`, then emitted
+`if (true) const followingStatement = 99;`. Deno rejected it with
+`SyntaxError: Expression expected`. Exact source is test commit
+`d936c18bf9cf5b2e21c6e548eb1a157d7cfde040`, integration test line70 on
+`codex/contract-predicate-lowering`; actual emitted line64 is retained in task
+`target/slice07/native-red-corrected-baseline.log` and the
+[Slice07 results](slice07-contract-predicate-lowering/artifacts/results.md#phase-a-cc-return).
+This confounded context witness was replaced with a supported bind-then-if;
+it is not NE-C01 red evidence or proof that the original authoring is promised
+by the language. The accepted source/emission/diagnostic boundary needs a
+separate validity/expected-behavior decision before any compiler or guide fix.
+Full original generated module was not retained; the actual failing line,
+runtime result and committed Lykn source are retained.
+
+**Owner/re-entry.** Project03 CDC scopes that decision against conditional/
+binding documentation and native emission, retaining this source/output witness.
+No extra executed probe or unrelated correction was added to Slice07. Its
+repair/control endpoint remains unchanged; this row stays open.
+
 ### A5 · Packaging & distribution — **`02-packaging-strategy`** (research open)
 
 **Capability (candidate).** Release engineering: Homebrew (custom tap) and
