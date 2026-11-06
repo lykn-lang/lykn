@@ -7,6 +7,19 @@
   :body
   (if (not condition) (throw (new Error message))))
 
+(async
+  (func
+    sha256
+    :args
+    (:any bytes)
+    :body
+    (bind digest (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+    (->
+      (Array:from
+        digest
+        (fn (:number byte) (-> (byte:toString 16) (:padStart 2 "0"))))
+      (:join ""))))
+
 (func
   equal-bytes
   :args

@@ -312,3 +312,59 @@ is superseded by the accepted-tool generated review here: that suspected
 compiler issue came from the wrong global binary and was disproven. The final
 accepted-tool helper has coherent top-level boundaries. No original Python
 deletion or acceptance is claimed.
+
+## Iteration01 first runtime attempt and corrective freeze
+
+After source/prediction commit `859f8f436991951898999c00aff910bbb7cb890b`,
+the one permitted external original-validator execution ran exactly once with
+Python `/Library/Frameworks/Python.framework/Versions/3.11/bin/python3`
+(SHA-256 `94a5f331b4d73cbabad9998057013f4d4b6ab2c2d1c3042a1a6e4e56d94773a6`),
+against its hardcoded unchanged accepted workspace. The exact unmodified source
+was `export-map-check.py` SHA-256
+`8bdaed8398d03e491cb6b349c7d764fc5d8066a6bf1d2467161d037dee105865`; command
+exit was 0. Raw stdout and stderr were directed to ignored
+`target/slice09/parity-iteration01/original.stdout.bin` and
+`original.stderr.bin`; parity is not yet established until a successful V0
+output is compared byte-for-byte with the saved original output. This exception
+has been consumed; no second original-validator execution is authorized by
+this prompt.
+
+The first frozen control invocation used Deno SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`, frozen
+helper JavaScript SHA-256
+`fb69bc0ca0366ec033df14e9e4cfb27d71e34c826a907ed424ab69eb54a618db`, and new
+run root `target/slice09/run-iteration01-2026-11-06`. The direct Deno command
+was the seven-argument invocation recorded in the committed README with
+`frozen-iteration01/` substituted for the four JS paths. It exited 1 during
+V1 after V0 had completed. The captured runtime error was:
+
+```text
+ReferenceError: sha256 is not defined
+  const v1ManifestHash = await sha256(await Deno.readFile(`${v1Path}/target/lykn/dist/json/deno.json`));
+                         ^
+    at runValidatorControls (.../frozen-iteration01/check-helpers.js:140:26)
+```
+
+This was a missing helper in the CC-authored check driver, not a language or
+compiler finding. Keep this failed attempt and its partial controls in that
+run root; do not treat V1–V7 or R0–R3 as executed or reuse the root. The
+original runtime's text/status are captured here from the direct tool result;
+no separate raw stderr file was produced by that invocation.
+
+The correction added the already used `sha256` implementation from the public
+validator. The exact corrected helper source SHA-256 is
+`26967707f6ee820218d0d97dd7475756c552150d44f7bd22a6573dfdc80c8b66`, frozen
+before each affected accepted-tool call as `check-helpers-v1-sha-helper-{check,
+fmt,lint,compile}.lykn`. With the accepted absolute compiler at the recorded
+empty project cwd: check passed (31 top-level expressions), fmt-check passed,
+lint reported no findings, and compile exited 0. The generated JS is preserved
+as `check-helpers-accepted-compile4.js`, SHA-256
+`ad68208c9654f732756bc19f1f99becfd56d1faab3d280c52c682ab3a5fc201d`; it
+contains `async function sha256` and no `COMPILE_ERROR` placeholder. Nonfatal
+unused-binding warnings remain and are retained as described above.
+
+The corrected helper plus this actual failed-attempt record must be committed
+before any new runtime. The remaining fixed controls use a fresh run root;
+compare successful V0 stdout with the already saved original output via native
+`cmp`. Preserve both the failed run and any later outcomes. No further Python
+execution, original deletion, or acceptance is claimed.
