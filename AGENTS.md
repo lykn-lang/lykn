@@ -109,9 +109,21 @@ external symlinks, or claim automatic installation/discovery.
   `work-verification`, `agent-coordination` or `code-auditing`.
 - Lykn work: consult `skills/lykn/SKILL.md` and the relevant source guide.
 
-Research tooling should prefer Lykn. Keep compiled output and other generated
-files in ignored `target/` paths. Preserve the ADT, guide/book and explicit
-human acceptance obligations in their owning plans. The approved future
+Research tooling authored for Lykn must use Lykn for all helper, script,
+orchestration, validator, evidence-processing, JSON, and command-construction
+logic. Do not author such logic in Python or substitute Ruby, Fennel,
+handwritten JavaScript/Node, or another scripting language. Use native shell/CLI
+only for direct invocation and simple filesystem lifecycle, never as a
+replacement logic language. The only exception is an Operator-authorized,
+frozen, unmodified, hashed original Python program temporarily executed for a
+precisely scoped migration-parity check; remove it after independent review as
+the assignment directs. Do not create Python wrappers, new/edited Python,
+repaired builders, or copies. Every new initial or iteration CC prompt must
+repeat this policy and identify any specifically authorized temporary parity
+exception and its end condition; otherwise state that no Python execution is
+permitted. Keep compiled output and other generated files in ignored `target/`
+paths. Preserve the ADT, guide/book and explicit human acceptance obligations
+in their owning plans. The approved future
 `lib/`, opt-in JSR, selective-entrypoint, effect and public-API direction is not
 an implemented standard library or approval to license, publish or release it.
 
