@@ -221,3 +221,11 @@ and report `lykn 0.6.0`. Baseline identity, exact copy command, and verification
 are retained at `artifacts/repair/run-01/baseline/identity.txt`. Current source
 is clean at b841; lock hash remains
 `672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce`.
+
+Iteration02 author-readiness correction: `.gitignore:8` matches `*_test.js`,
+reserving that suffix for generated Lykn test output; repository hand-authored
+JavaScript tests use `*.test.js`. The test-only commit remains preserved. Its
+JS test body will move byte-for-byte to `test/forms/template-string-boundary.test.js`
+in a separate commit, with the original expected-red receipt retained under the
+old path and a new focused discovery/runtime receipt recorded at the corrected
+path. No ignore rule or test behavior changes.
