@@ -403,3 +403,16 @@ retrying the gate. Bundle/runtime denominators remain 0/5 and 0/11.
 The create-new correction is committed at `6c9a3147a7f01b5fff4f5cd80e373c1a989e669b`. Fresh run-08 copied the staged run-07 workspace and recompiled only the changed observer. Native compile, `lykn check` (37 top-level expressions), and `lykn fmt --check` passed; `lykn lint` again reported no findings across all 16 source files. Generated code now emits `Deno.writeTextFileSync(path, text, { createNew: true })` for receipts and uses the same create-new option to reserve JS/metafile output paths. The generated diff versus run-07 is confined to that helper and its call sites; the complete observer's previously reviewed top-level/main/gate/controls and nested loop boundaries are unchanged. CDC completed a read-only static review of this corrected 951-line observer and found no further contract defect. Compilation evidence and the changed-region witness are in `artifacts/evidence/compilation/run-08/`. No C4 bundle or runtime has yet run: 0/5 bundles, 0/11 runtimes.
 
 The run-08 module-parse failure was corrected in planning commit `3c7d573f8c61d1327c278e4aa37799e68d95a1d4`: every Lykn binding named `package` in the observer was renamed `pkg`; there were no intended user-facing strings or package identities to change. Fresh run-09 compiled the updated observer with exit 0, `lykn check` passed (37 top-level expressions), `fmt --check` passed, and lint again reported no findings in 16 source files. The generated function/parameter/loop declarations were reviewed for strict-mode reserved names and `COMPILE_ERROR` sentinels; none were found. Generated write helpers still use Deno `createNew`, and the change relative to run-08 is limited to the `package`→`pkg` bindings and derived references. Run-08 failed only before source loading; no esbuild process or C4 bundle was reached. C4 remains not yet attempted successfully (0/5 bundle receipts) and runtimes remain 0/11.
+
+Run-09 passed module loading after the `pkg` rename but stopped on Deno parsing
+the observer's gate body: `await publicSnapshot()` was inside a synchronous
+arrow IIFE emitted for the phase conditional. No observer statement or esbuild
+process ran. The exact launch and stderr are retained in
+`artifacts/evidence/gate/run-09/`. I moved the gate and controls bodies into
+separate async phase functions; the main dispatcher now only returns the
+selected phase promise, keeping each `await` directly inside an async function
+body. This is an observer-source control-flow correction; no compiler
+attribution is made. Pinned native `lykn fmt --write`, `lykn check` (39
+top-level expressions), `fmt --check`, and all-16-file lint passed. The source
+will be committed before the next fresh compile. Bundle/runtime denominators
+remain 0/5 and 0/11.

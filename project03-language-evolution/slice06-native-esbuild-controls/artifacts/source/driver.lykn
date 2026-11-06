@@ -851,93 +851,100 @@
 
 (async
   (func
-    main
+    gate-phase
     :args
     ()
     :body
-    (bind phase (get Deno:args 4))
+    (bind before (await (public-snapshot)))
+    (write-new (template output "/public-before.json") (JSON:stringify before))
+    (bind entry (template workspace "/target/lykn/dist/controls/c4.js"))
+    (bind observation (bundle "C4" entry))
+    (write-new
+      (template output "/gate-observations.json")
+      (JSON:stringify observation))
+    null))
+
+(async
+  (func
+    controls-phase
+    :args
+    ()
+    :body
+    (bind reviewed-hash (get Deno:args 5))
+    (bind c4-path (template output "/C4.js"))
+    (bind actual-hash (await (digest (Deno:read-file-sync c4-path))))
+    (require-ok (= reviewed-hash actual-hash) "C4 reviewed bundle hash mismatch")
+    (bind gate-path (template output "/gate-observations.json"))
+    (bind gate (JSON:parse (Deno:read-text-file-sync gate-path)))
+    (bind controls-path (template output "/controls-observations.json"))
+    (reserve-absent controls-path)
+    (require-ok
+      (= gate:metadata:control "C4")
+      "gate evidence is not the C4 observation")
+    (bind observations (cell (array gate)))
+    (Deno:write-text-file-sync
+      controls-path
+      (JSON:stringify (express observations)))
+    (bind c5-entry (template workspace "/target/lykn/dist/controls/c5.js"))
+    (runtime "C5" "C5-source-before" c5-entry false)
+    (runtime
+      "C4"
+      "C4-source"
+      (template workspace "/target/lykn/dist/controls/c4.js")
+      false)
+    (runtime "C4" "C4-bundle-run" c4-path true)
+    (for-of
+      name
+      (array "C1" "C2" "C3")
+      (bind
+        entry
+        (template
+          workspace
+          "/target/lykn/dist/controls/"
+          (name:to-lower-case)
+          ".js"))
+      (bind observation (bundle name entry))
+      (swap! observations (fn (:array current) (conj current observation)))
+      (Deno:write-text-file-sync
+        controls-path
+        (JSON:stringify (express observations)))
+      (runtime name (template name "-source") entry false)
+      (runtime
+        name
+        (template name "-bundle-run")
+        (template output "/" name ".js")
+        true))
+    (bind c5-observation (bundle "C5" c5-entry))
+    (swap! observations (fn (:array current) (conj current c5-observation)))
+    (Deno:write-text-file-sync
+      controls-path
+      (JSON:stringify (express observations)))
+    (runtime "C5" "C5-bundle-run" (template output "/C5.js") true)
+    (runtime "C5" "C5-source-after" c5-entry false)
+    (bind
+      before
+      (JSON:parse
+        (Deno:read-text-file-sync (template output "/public-before.json"))))
+    (bind after (await (public-snapshot)))
+    (write-new (template output "/public-after.json") (JSON:stringify after))
+    (bind reconciliation (reconcile-snapshots before after))
+    (write-new
+      (template output "/public-reconciliation.json")
+      (JSON:stringify reconciliation))
+    null))
+
+(func
+  main
+  :args
+  ()
+  :body
+  (bind phase (get Deno:args 4))
+  (if
+    (= phase "gate")
+    (gate-phase)
     (if
-      (= phase "gate")
-      (do
-        (bind before (await (public-snapshot)))
-        (write-new
-          (template output "/public-before.json")
-          (JSON:stringify before))
-        (bind entry (template workspace "/target/lykn/dist/controls/c4.js"))
-        (bind observation (bundle "C4" entry))
-        (write-new
-          (template output "/gate-observations.json")
-          (JSON:stringify observation))
-        null)
-      (if
-        (= phase "controls")
-        (do
-          (bind reviewed-hash (get Deno:args 5))
-          (bind c4-path (template output "/C4.js"))
-          (bind actual-hash (await (digest (Deno:read-file-sync c4-path))))
-          (require-ok
-            (= reviewed-hash actual-hash)
-            "C4 reviewed bundle hash mismatch")
-          (bind gate-path (template output "/gate-observations.json"))
-          (bind gate (JSON:parse (Deno:read-text-file-sync gate-path)))
-          (bind controls-path (template output "/controls-observations.json"))
-          (reserve-absent controls-path)
-          (require-ok
-            (= gate:metadata:control "C4")
-            "gate evidence is not the C4 observation")
-          (bind observations (cell (array gate)))
-          (Deno:write-text-file-sync
-            controls-path
-            (JSON:stringify (express observations)))
-          (bind c5-entry (template workspace "/target/lykn/dist/controls/c5.js"))
-          (runtime "C5" "C5-source-before" c5-entry false)
-          (runtime
-            "C4"
-            "C4-source"
-            (template workspace "/target/lykn/dist/controls/c4.js")
-            false)
-          (runtime "C4" "C4-bundle-run" c4-path true)
-          (for-of
-            name
-            (array "C1" "C2" "C3")
-            (bind
-              entry
-              (template
-                workspace
-                "/target/lykn/dist/controls/"
-                (name:to-lower-case)
-                ".js"))
-            (bind observation (bundle name entry))
-            (swap! observations (fn (:array current) (conj current observation)))
-            (Deno:write-text-file-sync
-              controls-path
-              (JSON:stringify (express observations)))
-            (runtime name (template name "-source") entry false)
-            (runtime
-              name
-              (template name "-bundle-run")
-              (template output "/" name ".js")
-              true))
-          (bind c5-observation (bundle "C5" c5-entry))
-          (swap! observations (fn (:array current) (conj current c5-observation)))
-          (Deno:write-text-file-sync
-            controls-path
-            (JSON:stringify (express observations)))
-          (runtime "C5" "C5-bundle-run" (template output "/C5.js") true)
-          (runtime "C5" "C5-source-after" c5-entry false)
-          (bind
-            before
-            (JSON:parse
-              (Deno:read-text-file-sync (template output "/public-before.json"))))
-          (bind after (await (public-snapshot)))
-          (write-new
-            (template output "/public-after.json")
-            (JSON:stringify after))
-          (bind reconciliation (reconcile-snapshots before after))
-          (write-new
-            (template output "/public-reconciliation.json")
-            (JSON:stringify reconciliation))
-          null)
-        (throw (new Error "phase must be gate or controls"))))))
+      (= phase "controls")
+      (controls-phase)
+      (throw (new Error "phase must be gate or controls")))))
 
 (await (main))

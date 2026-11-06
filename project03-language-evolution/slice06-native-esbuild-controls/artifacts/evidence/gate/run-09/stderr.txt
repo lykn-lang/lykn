@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Unexpected reserved word
+        const before = await publicSnapshot();
+                       ^
+    at <anonymous> (file:///Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/experiments/native-esbuild-controls/run-09/workspace/target/lykn/build/driver.js:506:24)
