@@ -1,0 +1,2 @@
+✓ no lint findings (16 file(s))
+exit=0 command=lykn lint workspace driver.lykn

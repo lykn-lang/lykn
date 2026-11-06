@@ -1,0 +1,3 @@
+run-05: fresh copy of run-03; C5/observer source commit 978bb8a; recompile only changed source files
+exit=0 command=lykn compile controls/c5.lykn -o target/lykn/build/controls/c5.js
+exit=1 command=lykn compile <planning>/artifacts/source/driver.lykn -o target/lykn/build/driver.js

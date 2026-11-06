@@ -1,0 +1,13 @@
+export-map package=json keys=4 source-dist-equal=yes
+  . -> ./mod.js
+  ./document -> ./document.js
+  ./file -> ./file.js
+  ./value -> ./value.js
+export-map package=yaml keys=2 source-dist-equal=yes
+  . -> ./mod.js
+  ./value -> ./value.js
+export-map package=effects keys=3 source-dist-equal=yes
+  . -> ./mod.js
+  ./dead -> ./dead.js
+  ./used -> ./used.js
+total-library-public-keys=9

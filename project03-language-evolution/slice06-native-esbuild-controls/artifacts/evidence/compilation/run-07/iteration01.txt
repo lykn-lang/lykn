@@ -1,0 +1,3 @@
+run-07: fresh copy of run-03; source commit ea8410c; compile C5 and observer, reuse 14 verified outputs
+exit=0 command=lykn compile controls/c5.lykn -o target/lykn/build/controls/c5.js
+exit=0 command=lykn compile <planning>/artifacts/source/driver.lykn -o target/lykn/build/driver.js

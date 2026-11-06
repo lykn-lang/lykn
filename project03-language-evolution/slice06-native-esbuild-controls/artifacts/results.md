@@ -335,3 +335,39 @@ Fourteen unchanged compiled module/control outputs in run-06 compare byte for
 byte against run-03. C5 and observer compilation logs, formatter/check/lint
 receipts, and those comparisons are attested; no esbuild bundle or runtime has
 run. The denominator remains zero of five bundles and zero of eleven runtimes.
+
+### Final corrected-source compile and staged pre-gate checks
+
+The formatted corrected source is committed at planning
+`ea8410c203ef773e9b846c4e52c001e4e1844f85`. A fresh run-07 copied run-03's
+checkpoint, recompiled only C5 and the observer (both exit 0), and byte-compared
+the 14 unaffected compiled library/C1–C4 outputs against run-03 (14/14 exact).
+`lykn check` on the two corrected files passed (37 and 12 top-level expressions),
+`lykn fmt --check` passed, and pinned `lykn lint` reported no findings across
+all 16 `.lykn` source files. The driver compile itself exits 0 but emits the
+compiler warnings preserved verbatim in `artifacts/evidence/compilation/run-07/driver.log`
+(unused-binding notices, including several values/functions that the generated
+observer calls). These warnings are retained and disclosed; the source linter
+still reports no findings. No warning is suppressed by a bypass flag.
+
+One map-check wrapper invocation stopped after successful dist/byte comparison
+because its local `plan` shell variable was unset; this did not affect source or
+staging. The corrected finite map command then succeeded: `lykn dist` exit 0
+staged the four declared members; all 15 compiled stimulus/support JS files
+compared byte-for-byte with staged JS. Semantic source/dist export-map diffs
+were identical, with exact keys and targets: JSON 4 (`.`→mod, `./document`,
+`./file`, `./value`), YAML 2 (`.`→mod, `./value`), effects 3 (`.`→mod,
+`./dead`, `./used`); all nine targets exist. Full map output and dist receipt
+are in `artifacts/evidence/staging/run-07/`.
+
+Before the C4 gate, pinned executable identity was reconfirmed: Deno
+`/opt/homebrew/bin/deno` 2.9.6 SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`, native
+esbuild 0.25.5 SHA-256
+`b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f`, and
+task-local Lykn 0.6.0-dev SHA-256
+`66e9f8f83ccf5e8be7d19aa211529f82ab9598c49bebc29642f0146c7e8051dd`. The
+updated C5/driver sources and staging checks are complete; this records
+preparation only. At this receipt, output directory/gate command are not yet
+run, and the denominator is still zero of five bundles and zero of eleven
+runtime invocations.

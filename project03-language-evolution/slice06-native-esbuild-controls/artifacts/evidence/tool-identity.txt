@@ -1,0 +1,13 @@
+Deno identity
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+
+SHA-256 values
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f  target/lykn/tools/esbuild-0.25.5/bin/esbuild
+66e9f8f83ccf5e8be7d19aa211529f82ab9598c49bebc29642f0146c7e8051dd  target/lykn/compiler-build/release/lykn
+
+CLI versions
+0.25.5
+lykn 0.6.0-dev

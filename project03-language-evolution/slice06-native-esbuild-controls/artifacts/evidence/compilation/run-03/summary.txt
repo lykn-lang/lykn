@@ -1,0 +1,16 @@
+exit=0 command=lykn compile lib/json/document.lykn -o target/lykn/build/json/document.js
+exit=0 command=lykn compile lib/json/file.lykn -o target/lykn/build/json/file.js
+exit=0 command=lykn compile lib/json/mod.lykn -o target/lykn/build/json/mod.js
+exit=0 command=lykn compile lib/json/value.lykn -o target/lykn/build/json/value.js
+exit=0 command=lykn compile lib/yaml/mod.lykn -o target/lykn/build/yaml/mod.js
+exit=0 command=lykn compile lib/yaml/value.lykn -o target/lykn/build/yaml/value.js
+exit=0 command=lykn compile lib/effects/dead.lykn -o target/lykn/build/effects/dead.js
+exit=0 command=lykn compile lib/effects/effect.lykn -o target/lykn/build/effects/effect.js
+exit=0 command=lykn compile lib/effects/mod.lykn -o target/lykn/build/effects/mod.js
+exit=0 command=lykn compile lib/effects/used.lykn -o target/lykn/build/effects/used.js
+exit=0 command=lykn compile controls/c1.lykn -o target/lykn/build/controls/c1.js
+exit=0 command=lykn compile controls/c2.lykn -o target/lykn/build/controls/c2.js
+exit=0 command=lykn compile controls/c3.lykn -o target/lykn/build/controls/c3.js
+exit=0 command=lykn compile controls/c4.lykn -o target/lykn/build/controls/c4.js
+exit=0 command=lykn compile controls/c5.lykn -o target/lykn/build/controls/c5.js
+exit=0 command=lykn compile <planning>/artifacts/source/driver.lykn -o target/lykn/build/driver.js

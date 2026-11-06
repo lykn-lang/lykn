@@ -1,0 +1,4 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice06-native-esbuild-controls/artifacts/source/driver.lykn: ok (37 top-level expressions)
+/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice06-native-esbuild-controls/artifacts/source/workspace/controls/c5.lykn: ok (12 top-level expressions)
+exit=0 command=lykn check driver.lykn controls/c5.lykn
+exit=0 command=lykn fmt --check driver.lykn controls/c5.lykn

@@ -1,0 +1,5 @@
+The first export-map-check wrapper exited before checking maps because its
+task-shell `plan` variable was not set (Bash `line 22: plan: unbound variable`).
+The `lykn dist` command and 15/15 staged-JS byte comparisons had already passed.
+The corrected wrapper, captured in `export-map-check.log`, completed all map
+comparisons and target-file existence checks.
