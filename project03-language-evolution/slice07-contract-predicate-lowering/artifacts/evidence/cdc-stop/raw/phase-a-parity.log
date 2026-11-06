@@ -1,0 +1,7 @@
+  test/surface/contract_predicates_test.lykn -> target/lykn/test/test/surface/contract_predicates_test.js
+Compiled 1 .lykn test file(s) to target/lykn/test.
+running 1 test from ./target/lykn/test/test/surface/contract_predicates_test.js
+contracts: surface predicates converge across compilers ... ok (10ms)
+
+ok | 1 passed | 0 failed (12ms)
+

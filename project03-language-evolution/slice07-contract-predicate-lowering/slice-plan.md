@@ -1,8 +1,8 @@
 # Slice07 — Contract predicate lowering and resumed native controls
 
-Status: open; Phase A independently accepted in `cdc-verification.md`. Current
-assignment `cc-prompt-iteration01.md` resumes Phase B. Initial `cc-prompt.md`
-is preserved. Collapsed standalone increment owned by
+Status: closed at the authorized bounded gap stop, independently reproduced.
+CP-01/02/03/06 done; CP-04/05 deferred to NE-C03. Both issued prompts
+are preserved; no current CC assignment or next slice. Collapsed standalone increment owned by
 Project03 NE-C01, not a second implementation home in Project07.
 
 ## Authority and endpoint

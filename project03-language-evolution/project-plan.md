@@ -149,8 +149,16 @@ acceptance before frozen pilot replay; no production propagation, new backend,
 dependency update, push or publication. Original Slice06 failed counts/deferred
 rows and all F/Project07 outcomes remain historical/open as recorded.
 
+2026-11-05 Slice07 independently closed at its authorized new-gap stop.
+NE-C01 task-branch repair at86d116d passes17/17 strict inputs and the independent
+full repository gate. Frozen controls independently reproduced C4 attribution,
+then first C5 child exit0 but outer template oracle mismatch. CP-01/02/03/06
+done, CP-04/05 deferred to existing backlog NE-C03: four bundles/ten calls unrun.
+NE-C02 separately owns the branch-binding observation. No release integration,
+new slice, dependency/backend change or full audit/library acceptance follows.
+
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
-- [slice07-contract-predicate-lowering](slice07-contract-predicate-lowering/slice-plan.md): approved native predicate repair, independent gate then unchanged five-control replay; active.
+- [slice07-contract-predicate-lowering](slice07-contract-predicate-lowering/slice-plan.md): independently accepted predicate repair/full gates; frozen pilot stopped at independently reproduced template-oracle mismatch, four done/two deferred rows; NE-C03 re-entry.
 - [slice02-packaging-strategy](slice02-packaging-strategy/slice-plan.md): distribution strategy research; open.
 - [slice03-threading-macros](slice03-threading-macros/slice-plan.md): completed argument-position research; language-design disposition remains separate.
 - [slice06-native-esbuild-controls](slice06-native-esbuild-controls/slice-plan.md): independently verified native tool/C4 attribution and required first-C5 parse stop; four done/three deferred rows, remaining controls unrun; NE-C01 owns re-entry.
@@ -170,6 +178,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-05 v1.8: Independently accepted bounded native contract repair and
+  full validation, then closed Slice07 at the separately reproduced frozen
+  observer gap. Retained partial pilot counts, all prior failures/process
+  nonconformance, NE-C02/03 owners and original audit/library/human obligations.
 
 - 2026-11-05 v1.7: Opened Operator-approved NE-C01 repair plus frozen pilot
   re-entry after guidance cleanup. Recorded dedicated updated task tip, fresh

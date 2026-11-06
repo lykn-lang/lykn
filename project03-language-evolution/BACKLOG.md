@@ -182,7 +182,7 @@ report defines the implementation candidate arc's scope.
 
 #### Native pilot compiler follow-up NE-C01
 
-**Open, 2026-11-05.** [Slice06 independent review](slice06-native-esbuild-controls/cdc-verification.md#final-independent-review--2026-11-05)
+**Original observation, 2026-11-05; task-branch repair accepted below.** [Slice06 independent review](slice06-native-esbuild-controls/cdc-verification.md#final-independent-review--2026-11-05)
 delivered a pinned native esbuild 0.25.5 without Node/npm and reproduced the
 C4 code/metafile attribution gate. It stopped at the first C5 source runtime:
 1/5 bundles completed, 1/11 runtime attempts failed before evaluation, four
@@ -207,7 +207,7 @@ acceptance and frozen pilot re-run. No result/closure is inferred at opening;
 the original stop and counts above remain unchanged. Cleanup's GC-D01 guide
 finding has a separate Project07 roadmap owner and is not repaired here.
 
-**Owner/re-entry.** CDC prepares a separate bounded compiler diagnosis/repair
+**Original owner/re-entry contract (preserved).** CDC prepares a separate bounded compiler diagnosis/repair
 assignment after Operator authorization; future CC implements it and an
 independent reviewer verifies the actual fix and relevant regressions. Then
 authorize a fresh complete five-control/eleven-invocation attempt with pinned
@@ -221,6 +221,15 @@ compile/check, strict-reserved binding, await in a synchronous IIFE) remain in
 Slice06's source history, raw launch failures and retrospective. Any future
 investigation must classify invalid authoring separately from compiler contract
 violations; these observations do not authorize a broad compiler rewrite.
+
+**2026-11-05 current disposition.** NE-C01 is independently repaired on dedicated
+`codex/contract-predicate-lowering@86d116db5c096d0fff7ec555d388343946114e4d`;
+[Slice07 review](slice07-contract-predicate-lowering/cdc-verification.md) records
+17/17 strict runtime regressions and independent full repository gates. No
+release integration/propagation occurred. The frozen pilot re-entry reached
+C5 child exit0 but stopped at a distinct observer template oracle mismatch,
+owned by NE-C03 below. Its four bundles/ten calls remain unrun. Neither this
+repair nor its C4 gate closes original F rows or historical NE-04/05/06.
 
 #### NE-C02 — accepted branch-local binding emits invalid statement JavaScript
 
@@ -244,6 +253,34 @@ runtime result and committed Lykn source are retained.
 binding documentation and native emission, retaining this source/output witness.
 No extra executed probe or unrelated correction was added to Slice07. Its
 repair/control endpoint remains unchanged; this row stays open.
+
+#### NE-C03 — surface-string/template expected-output boundary
+
+**Open candidate, 2026-11-05.** After accepted NE-C01 repair, the unchanged
+five-control pilot stopped at its first C5-source-before oracle. CC and CDC
+independently reproduced child exit0/empty stderr/all expected values, followed
+by outer assertion exit1. The frozen observer's `template` segments at source
+driver624–629 contain escaped inner quotes; generated driver362–364 puts them
+into a JS template literal whose runtime escapes differ from the intended
+serialized-JSON bytes. Exact independent
+[Lykn source](slice07-contract-predicate-lowering/artifacts/evidence/cdc-stop/source/driver.lykn),
+[generated JS](slice07-contract-predicate-lowering/artifacts/evidence/cdc-stop/source/driver.js),
+[actual child output](slice07-contract-predicate-lowering/artifacts/evidence/cdc-stop/out/C5-source-before.json)
+and [review](slice07-contract-predicate-lowering/cdc-verification.md#phase-b--independently-reproduced-bounded-stop-2026-11-05)
+are in Git. No extra probe/repair or observer correction was made. The retained
+prior run10 generated observer byte-compares identical to the newly compiled
+observer, supporting a latent boundary issue rather than an NE-C01 regression.
+
+**Owner/re-entry.** Project03 CDC scopes a surface-guide/reader/template-emission
+contract diagnosis before any correction. Current codegen emit.rs178–194 and
+1267–1286 intentionally passes template backslashes through; existing kernel
+tests2276–2304 protect that behavior. Do not infer a blanket escaping fix or
+erase those tests. Source validity, decoded string intent and kernel input
+semantics require separate disposition. A new accepted source/compiler or
+explicit observer-condition change must retain predictions and reopen the same
+five controls/eleven calls from the beginning. CP-04/05 stay deferred; old
+Slice06 failed condition, all original F rows and Project07 gates remain intact.
+No next slice, implementation or release action is opened by this routing.
 
 ### A5 · Packaging & distribution — **`02-packaging-strategy`** (research open)
 

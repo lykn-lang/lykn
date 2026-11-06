@@ -54,3 +54,22 @@ Current denominators for the accepted compiler attempt: 1/5 bundles complete,
 retrospective. Historical Slice06 failure/unrun counts remain untouched. CC
 returns planning ownership at the evidence commit and does not self-accept or
 close this slice.
+
+## CDC independent disposition — 2026-11-05
+
+Phase A accepted at source86d116d: independent17/17 strict inputs, full make
+check, parity1/1 and citation gate pass. The task-branch contract repair is
+delivered; release propagation remains unapproved. CDC independently exported
+the frozen population, compiled16/staged15, reconciled nine exports, reproduced
+the exact C4 code/metafile gate and the same first C5 outer oracle failure.
+Child exit0/empty stderr/expected values and unchanged13 public files are
+preserved; no later call was executed. These are separate replication receipts,
+not additional stimuli or a complete five-control result.
+
+Final CP-01/02/03/06 done; CP-04/05 deferred to existing Project03 NE-C03.
+Each run has1/5 bundles and1/11 child calls, four/ten unrun. NE-C02 retains
+the separate branch-binding observation. The four malformed planning commit
+messages remain documented unrepaired; source commits and the corrective record
+use proper trailers. Review and retrospective retain the raw-log limitations,
+failed attempts and all original F/Project07/human obligations. Slice07 closes
+at its explicitly authorized new-gap stop, with no new scope or external action.

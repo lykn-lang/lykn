@@ -1,0 +1,53 @@
+(import
+  "@probe/json"
+  ((alias parse-value json-root)
+    (alias read-text file-root)
+    (alias document-label document-root)))
+
+(import "@probe/json/value" ((alias parse-value json-value)))
+
+(import "@probe/json/file" ((alias read-text file-value)))
+
+(import "@probe/json/document" ((alias document-label document-value)))
+
+(import "@probe/yaml" ((alias parse-yaml-fixture yamlRoot)))
+
+(import "@probe/yaml/value" ((alias parse-yaml-fixture yamlValue)))
+
+(import "@probe/effects" ((alias used usedRoot) (alias unused-pure deadRoot)))
+
+(import "@probe/effects/used" ((alias used usedValue)))
+
+(import "@probe/effects/dead" ((alias unused-pure deadValue)))
+
+(bind raw (file-root (get Deno:args 0)))
+
+(bind
+  object
+  (obj
+    :jsonRoot
+    (json-root raw)
+    :jsonValue
+    (json-value raw)
+    :fileRoot
+    raw
+    :fileValue
+    (file-value (get Deno:args 0))
+    :documentRoot
+    (document-root raw)
+    :documentValue
+    (document-value raw)
+    :yamlRoot
+    (yamlRoot "answer: 42")
+    :yamlValue
+    (yamlValue "answer: 42")
+    :usedRoot
+    (usedRoot 41)
+    :usedValue
+    (usedValue 41)
+    :deadRoot
+    (deadRoot 41)
+    :deadValue
+    (deadValue 41)))
+
+(console:log (JSON:stringify object))
