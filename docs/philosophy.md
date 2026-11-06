@@ -2,7 +2,7 @@
 
 > **Status:** Living document, version 0.1, drafted 2026-04-29.
 > **Authors:** Duncan McGreggor and Claude (Cowork session).
-> **Position in the corpus:** Foundational. `assets/ai/SKILL.md` and the
+> **Position in the corpus:** Foundational. `skills/lykn/SKILL.md` and the
 > `docs/guides/` corpus derive from these principles; where a guide
 > conflicts with this document, the guide is drift. This file is the
 > ground truth.
@@ -240,7 +240,7 @@ specifically as the spec for any "philosophy alignment" milestone.
 
 - **No raw `deno`/`npm`/`cargo`/`node` commands** in user-facing
   workflow documentation:
-  `grep -rnE "^(deno|npm|cargo|node) " docs/guides/ assets/ai/SKILL.md`
+  `grep -rnE "^(deno|npm|cargo|node) " docs/guides/ skills/lykn/SKILL.md`
   should return matches _only_ in MUST-AVOID, counter-cue, or
   reference contexts (verifiable via context inspection — same
   pattern as M2's reconciliation audit).
