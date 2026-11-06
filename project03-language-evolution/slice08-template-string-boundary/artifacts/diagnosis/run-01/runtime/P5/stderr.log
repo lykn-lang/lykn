@@ -1,0 +1,5 @@
+error: SyntaxError: Expected ',', got '<lexing error: Error { error: (104..104, ExpectedUnicodeEscape) }>'
+  |
+2 | ...ify({ plain: value, interpolated: `${value}`, concat: `\\`\$`, icu: `\\`\$` }));
+  |                                                              ~
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice08-template-string-boundary/artifacts/diagnosis/run-01/compile/P5.generated.js:2:82

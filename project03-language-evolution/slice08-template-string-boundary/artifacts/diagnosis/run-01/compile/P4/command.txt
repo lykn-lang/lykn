@@ -1,0 +1,3 @@
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/run-01/cwd
+argv: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice08-template-string-boundary/artifacts/diagnosis/run-01/P4-carriage-return.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/run-01/js/P4.js
+strict mode: CLI default (no --no-strict)

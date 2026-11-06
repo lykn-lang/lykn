@@ -90,5 +90,102 @@ From the clean task checkout at b841, `cargo build --offline --locked
 under `artifacts/diagnosis/run-01/build/`. The resulting task-local `lykn`
 binary is version 0.6.0, SHA-256
 `e69f67f4cbc8cda4b9a3a82436bd3375f277d68c45387dae7ac7fc2a9ba32ae8`.
-The six case sources and predictions are now frozen in run-01 and will be
-committed before any case compile or execution. No case has run yet.
+The six case sources and predictions in run-01 were committed before any case
+compile or execution.
+
+## Actual run-01 observations
+
+The six source modules each compiled once with the pinned default-strict CLI;
+all six compile exits were 0. Each emitted module was copied byte-for-byte to
+`artifacts/diagnosis/run-01/compile/P*.generated.js` before execution. Five Deno
+modules completed with exit 0. P5 completed compilation but Deno rejected the
+generated module with exit 1 (`SyntaxError: Expected ',', got <lexing error:
+Error { error: (104..104, ExpectedUnicodeEscape) }>`); its four runtime values
+are **unestablished**, not passing or recovered by retry. Thus 18/22 values are
+observed and four remain unestablished.
+
+| Case | Field | Observed value as Unicode scalar decimals | Result |
+| --- | --- | --- | --- |
+| P1 | plain | `[92,110]` | literal backslash+n |
+| P1 | interpolated | `[92,110]` | literal backslash+n |
+| P1 | concat | `[10]` | LF, differs from ID-33 input |
+| P1 | ICU | `[10]` | LF, differs from ID-33 input |
+| P2 | plain | `[92,34]` | literal backslash+quote |
+| P2 | interpolated | `[92,34]` | literal backslash+quote |
+| P2 | concat | `[34]` | quote, backslash lost |
+| P2 | ICU | `[34]` | quote, backslash lost |
+| P3 | plain / interpolated / concat / ICU | `[10]` each | LF preserved on all four paths |
+| P4 | plain | `[13]` | CR preserved |
+| P4 | interpolated | `[13]` | CR preserved |
+| P4 | concat | `[10]` | CR becomes LF in template text |
+| P4 | ICU | `[10]` | CR becomes LF in template text |
+| P5 | plain / interpolated / concat / ICU | unestablished | emitted module syntax error before evaluation |
+| P6 | `String:raw` concat | `[92,110]` | raw text is backslash+n |
+| P6 | `String:raw` ICU | `[92,110]` | raw text is backslash+n |
+
+Exact, unmodified child stdout is retained in each `runtime/P*/stdout.log`;
+those lines are JSON serialization, while the table decodes each field to its
+actual scalar sequence. P5's exact generated template witness is in
+`compile/P5.generated.js`; its full Deno diagnostic and empty stdout are in
+`runtime/P5/`.
+
+### Existing direct-AST test results
+
+Ran the three existing unit tests individually using `cargo test --offline
+--locked -p lykn-lang <full-test-name> -- --exact`; all exited 0:
+
+- `codegen::emit::tests::test_template`
+- `codegen::emit::tests::test_template_backslash_passthrough`
+- `codegen::emit::tests::test_template_icu_backslash_passthrough`
+
+The exact argv and complete raw stdout/stderr for each test are under
+`artifacts/diagnosis/run-01/kernel-tests/<test-name>/`. A separate `--list`
+enumeration is preserved; it found the three named tests plus the tagged-template
+and ICU error template tests, which were not run. These tests confirm the
+current source printer's manually constructed AST output, including its
+backslash passthrough expectation. They do not exercise the six surface-source
+programs or execute the generated modules, so their green status does not
+contradict the observed runtime losses.
+
+## Interpretation and recommendation for CDC review
+
+**Observed:** Plain strings and interpolation preserve the cooked Lykn values
+for P1–P4. Both native template-text paths lose/reinterpret P1/P2 backslashes
+and convert the P4 CR to LF. P3 LF is preserved. P5 establishes a separate
+delimiter/backslash ordering defect: current emitted JS is invalid, so none of
+its four values can be counted. `String:raw` returns the generated JS raw
+template contents for the two P1 paths; it is not evidence of preservation of
+the original source token bytes.
+
+**Documented:** ID-33 is a MUST cooked-value contract. Both readers cook before
+codegen. Concat and ICU use the same native `emit_template_text` helper, matching
+the observed common losses. Guide17 defines tag input as the post-expansion JS
+template literal. The existing C6b/D2 direct-AST/convergence evidence tests
+printed-source shape, not the normative surface-source runtime contract.
+
+**Inference:** The value mismatch occurs when already-decoded literal text is
+inserted into JavaScript template raw source without encoding the JS template
+escape-sensitive backslash and CR characters. In P1, the JS template cooks the
+emitted `\\n` to LF; in P2 it cooks `\\"` to a quote; in P4 a physical CR is
+normalized to LF. The same helper feeds concat and ICU. P5's invalid syntax is
+consistent with emitting a cooked backslash adjacent to the separately escaped
+backtick. This diagnosis is limited to these five payloads; no blanket claim
+about all escape forms is established. The JS compiler source inspected has a
+corresponding raw/cooked `TemplateElement` construction, but these cases execute
+only the native CLI output; no JS compiler runtime result is asserted.
+
+**Candidate repair direction, not authorized implementation:** encode cooked
+text for the JS template-literal grammar (including backslash, CR, and
+delimiter ordering) in the shared native/JS printing paths, then reconcile the
+old emitted-text assertions with the MUST runtime contract. Preserve tag raw as
+post-expansion JS raw text; do not promise original Lykn token spelling.
+CDC should independently determine whether that narrow source-encoding
+correction covers the frozen observer witness and whether any remaining public
+tag/raw choice needs Operator disposition before assigning a repair iteration.
+No production code, tests, expectations, or frozen observer were changed and no
+pilot was run.
+
+The complete command/exit/stdout/stderr receipts, emitted JS, case inputs, and
+source/build pins are retained under `artifacts/diagnosis/run-01/`. Compiler
+source remains clean at b841; planning work will be committed as a separate
+diagnosis record with ledger statuses left open for CDC review.

@@ -1,0 +1,2 @@
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: cargo test --offline --locked -p lykn-lang codegen::emit::tests::test_template_icu_backslash_passthrough -- --exact

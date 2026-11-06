@@ -159,3 +159,18 @@ not a changed diagnostic payload. Initial work is investigation with explicit
 population/observations, not an unresolved implementation instruction. Repair
 choices and any changed test expectations are held for an independent review
 and preserved iteration; no guessed helper/API signature or new validator.
+
+## CC Phase A receipt — 2026-11-06
+
+CC committed the source-cited intake at planning `d920f31a177bdd15766b7399993ee68d9b0f90b4`,
+then froze six programs/predictions and the task-local baseline at
+`41fba58c8d0a99c851ae79093a82fd8c7990b7f6` before running cases. From task
+source b841, locked/offline release build produced `lykn 0.6.0`, SHA-256
+`e69f67f4cbc8cda4b9a3a82436bd3375f277d68c45387dae7ac7fc2a9ba32ae8`.
+All six strict native compiles exited 0. Runtime exited 0 for P1/P2/P3/P4/P6;
+P5 exited 1 because emitted JS was syntactically invalid, leaving four of 22
+values unestablished. The three assigned direct-AST tests each exited 0 but
+assert printer text only. Full command/raw receipts and generated JS are in
+`artifacts/diagnosis/run-01/`; interpretation and the 22-row denominator are
+in `artifacts/results.md`. This is CC evidence only: TE-01 remains open for CDC
+independent review, and all repair/runtime/pilot criteria remain held/open.

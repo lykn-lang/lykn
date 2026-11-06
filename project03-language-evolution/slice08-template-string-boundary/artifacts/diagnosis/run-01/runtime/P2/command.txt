@@ -1,0 +1,2 @@
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/run-01/cwd
+argv: deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice08-template-string-boundary/artifacts/diagnosis/run-01/compile/P2.generated.js
