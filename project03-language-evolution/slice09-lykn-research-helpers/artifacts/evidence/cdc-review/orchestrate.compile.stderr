@@ -1,0 +1,4 @@
+85:3: warning: unused binding 'validate-manifest'
+  suggestion: prefix with underscore: _validate-manifest
+286:1: warning: unused binding 'manifest'
+  suggestion: prefix with underscore: _manifest

@@ -1,0 +1,5 @@
+export-map package=json keys=4 matches-prior-exact-map=True
+  . -> ./mod.js
+  ./document -> ./document.js
+  ./file -> ./file.js
+  ./value -> ./value.js

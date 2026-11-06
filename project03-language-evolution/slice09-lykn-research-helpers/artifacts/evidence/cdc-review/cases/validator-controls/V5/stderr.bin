@@ -1,0 +1,7 @@
+error: Uncaught (in promise) NotFound: No such file or directory (os error 2): stat '/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/cdc-review-20261106/cases/validator-controls/V5/target/lykn/dist/json/value.js'
+  const info = await Deno.stat(path);
+               ^
+    at async Object.stat (ext:deno_fs/30_fs.js:475:15)
+    at async checkFile (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/cdc-review-20261106/public-check.js:14:16)
+    at async runCheck (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/cdc-review-20261106/public-check.js:52:42)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/cdc-review-20261106/public-check.js:88:1

@@ -1,0 +1,28 @@
+26:9: warning: unused binding 'left'
+  suggestion: prefix with underscore: _left
+251:12: warning: unused binding 'before'
+  suggestion: prefix with underscore: _before
+251:27: warning: unused binding 'after'
+  suggestion: prefix with underscore: _after
+249:3: warning: unused binding 'same-lines-except-one'
+  suggestion: prefix with underscore: _same-lines-except-one
+24:3: warning: unused binding 'equal-bytes'
+  suggestion: prefix with underscore: _equal-bytes
+923:1: warning: unused binding 'child-js'
+  suggestion: prefix with underscore: _child-js
+921:1: warning: unused binding 'orchestrate-js'
+  suggestion: prefix with underscore: _orchestrate-js
+919:1: warning: unused binding 'public-check-js'
+  suggestion: prefix with underscore: _public-check-js
+917:1: warning: unused binding 'workspace'
+  suggestion: prefix with underscore: _workspace
+927:1: warning: unused binding 'child-lykn'
+  suggestion: prefix with underscore: _child-lykn
+398:3: warning: unused binding 'command-action'
+  suggestion: prefix with underscore: _command-action
+915:1: warning: unused binding 'task-root'
+  suggestion: prefix with underscore: _task-root
+416:3: warning: unused binding 'compare-action'
+  suggestion: prefix with underscore: _compare-action
+407:3: warning: unused binding 'copy-action'
+  suggestion: prefix with underscore: _copy-action

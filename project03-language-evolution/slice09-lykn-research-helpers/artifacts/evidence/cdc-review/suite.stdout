@@ -1,0 +1,6 @@
+V0–V7 passed; V0 stdout remains available for exact external positive parity
+R0 pass: spaced argv, direct execution, raw outputs, copy and byte comparison
+R1 pass: raw invalid-UTF8 bytes, child/outer code 7, sentinel not run
+R2 pass: unequal bytes record false, exit 1, sentinel not run
+R3 pass: existing destination preserved, copy failed, sentinel not run
+R0–R3 pass

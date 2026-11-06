@@ -1,0 +1,6 @@
+error: Uncaught (in promise) Error: export map mismatch: json target/lykn/dist key-count
+  if (!condition) throw new Error(message);
+                        ^
+    at ensure (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/cdc-review-20261106/public-check.js:6:25)
+    at runCheck (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/cdc-review-20261106/public-check.js:43:7)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice09/cdc-review-20261106/public-check.js:88:1
