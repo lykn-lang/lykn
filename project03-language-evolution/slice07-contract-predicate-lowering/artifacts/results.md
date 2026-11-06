@@ -251,3 +251,23 @@ that gate and confirms continuation.
 At this pre-execution point no new archive has been exported, no compilation,
 bundle, or runtime has been invoked, and all five controls remain unrun (0/5;
 the prior Slice06 1/5 bundle and 1/11 runtime-attempt history remains intact).
+
+### Attempt 01 setup failure and frozen retry root
+
+Correction to the preceding pre-execution statement: the archive was exported
+and one compile command was actually attempted. Its output parent directory
+`workspace/target/lykn/build/json/` had not been created, so the compiler exited
+1 with `No such file or directory` while writing `document.js`. This was an
+experiment setup failure; it establishes no compiler, specimen, or control
+result. The complete attempted command and stdout/stderr are preserved in the
+source task at `target/slice07/pilot-corrected/run-01/raw/compile/`; no later
+input was attempted, and no bundle or runtime was invoked.
+
+Before any retry compile, the frozen condition and unchanged C1–C5 predictions
+remain as above. The retry will use a new fresh root
+`target/slice07/pilot-corrected/run-02/experiment/`, exported again from the
+same immutable archive commit/path with no source changes. Required output
+parent directories will be created before commands; compile all 16 fresh and
+record each exact command and exit. Source/compiler/Deno/esbuild hashes remain
+the same pins. All five stimuli remain unrun; the initial setup failure is
+preserved as attempt 01, not silently overwritten.
