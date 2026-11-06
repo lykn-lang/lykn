@@ -1,0 +1,4 @@
+{
+  "workspace": ["./lib/json", "./lib/yaml", "./lib/effects", "./controls"],
+  "imports": {}
+}

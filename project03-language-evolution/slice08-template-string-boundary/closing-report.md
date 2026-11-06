@@ -100,3 +100,26 @@ condition commit there were no new compiles, staging comparisons, bundles, or
 runtime calls. Current-run counts are 0/16 compile, 0/15 byte comparisons,
 0/9 exports, 0/5 bundles, and 0/11 runtime calls. TE-04/05 remain open. CDC must
 inspect and confirm the C4-only code/metafile gate before any runtime execution.
+
+## Iteration 03 C4 gate stop — 2026-11-06
+
+The frozen condition completed all 16 strict compiles, `dist`, format, lint,
+check, 15/15 direct/staged JS byte comparisons, and the nine-export/13-file
+pre-snapshot checks. The single C4-only outer Deno invocation exited 0 with
+empty output; child esbuild exited 0. The full bundle hash is the expected
+`6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a`. Complete
+source, code, raw metafile, child receipt, observations, and raw command are
+retained under `artifacts/evidence/pilot/run-01/`.
+
+CC stops here for CDC inspection of the exact C4 evidence. Counts are one of
+five bundles and zero of eleven runtime calls under the current condition. The
+initial command-builder syntax error is separately retained as a prelaunch
+setup failure; it did not invoke Deno/esbuild or alter those counts. TE-04/05
+remain open. No controls phase, runtime, source repair, or observer change was
+made after the C4 gate.
+
+CDC subsequently confirmed the complete C4 gate at the exact recorded paths and
+hash, with compiler identity and raw input/output contribution attribution
+independently checked. The prior pause is now resolved; the unchanged fixed
+controls phase is authorized once with this reviewed C4 bundle. Runtime counts
+remain 0/11 at the controls-phase start.

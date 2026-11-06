@@ -1,0 +1,2 @@
+(func parse-value :args (:string text) :returns :object :body (JSON:parse text))
+(exports parse-value)

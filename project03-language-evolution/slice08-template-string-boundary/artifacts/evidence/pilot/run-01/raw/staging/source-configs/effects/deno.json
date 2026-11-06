@@ -1,0 +1,10 @@
+{
+  "name": "@probe/effects",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./mod.js",
+    "./used": "./used.js",
+    "./dead": "./dead.js"
+  },
+  "lykn": { "kind": "runtime" }
+}

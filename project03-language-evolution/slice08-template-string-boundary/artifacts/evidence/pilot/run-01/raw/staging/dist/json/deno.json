@@ -1,0 +1,17 @@
+{
+  "exports": {
+    ".": "./mod.js",
+    "./document": "./document.js",
+    "./file": "./file.js",
+    "./value": "./value.js"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-slow-types"
+      ]
+    }
+  },
+  "name": "@probe/json",
+  "version": "0.0.0"
+}

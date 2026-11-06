@@ -1,0 +1,16 @@
+path	status	exit
+json/document.js	identical	0
+json/file.js	identical	0
+json/mod.js	identical	0
+json/value.js	identical	0
+yaml/mod.js	identical	0
+yaml/value.js	identical	0
+effects/dead.js	identical	0
+effects/effect.js	identical	0
+effects/mod.js	identical	0
+effects/used.js	identical	0
+controls/c1.js	identical	0
+controls/c2.js	identical	0
+controls/c3.js	identical	0
+controls/c4.js	identical	0
+controls/c5.js	identical	0

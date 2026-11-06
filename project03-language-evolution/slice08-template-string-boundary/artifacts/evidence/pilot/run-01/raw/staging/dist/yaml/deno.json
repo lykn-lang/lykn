@@ -1,0 +1,15 @@
+{
+  "exports": {
+    ".": "./mod.js",
+    "./value": "./value.js"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-slow-types"
+      ]
+    }
+  },
+  "name": "@probe/yaml",
+  "version": "0.0.0"
+}

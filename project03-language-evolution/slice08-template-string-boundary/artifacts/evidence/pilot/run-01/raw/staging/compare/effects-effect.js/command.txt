@@ -1,0 +1,1 @@
+cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace/target/lykn/build/effects/effect.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace/target/lykn/dist/effects/effect.js

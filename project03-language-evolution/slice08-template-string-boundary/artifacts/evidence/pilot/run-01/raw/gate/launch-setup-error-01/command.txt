@@ -1,0 +1,10 @@
+Shell command: test ! -e target/slice08/pilot/run-01/experiment/out && mkdir -p target/slice08/pilot/run-01/experiment/out/outer-cache target/slice08/pilot/run-01/raw/gate
+Python used to assemble (but not invoke) the gate command:
+import json, pathlib, shlex, subprocess
+root=pathlib.Path('/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01')
+workspace=root/'experiment/workspace'; output=root/'experiment/out'
+esbuild=pathlib.Path('/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild')
+deno=pathlib.Path('/opt/homebrew/bin/deno'); driver=workspace/'target/lykn/build/driver.js'
+envargs=['PATH=/opt/homebrew/bin:/usr/bin:/bin',f'DENO_DIR={output}/outer-cache','DENO_NO_UPDATE_CHECK=1','NO_COLOR=1']
+allow_read=f'{workspace},{output}';allow_run=f'{esbuild},{deno}'
+argv=['env','-i',*en vargs] if False else None

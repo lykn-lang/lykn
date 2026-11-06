@@ -1,0 +1,10 @@
+{
+  "cwd": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace",
+  "argv": [
+    "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn",
+    "compile",
+    "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace/lib/effects/mod.lykn",
+    "-o",
+    "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice08/pilot/run-01/experiment/workspace/target/lykn/build/effects/mod.js"
+  ]
+}

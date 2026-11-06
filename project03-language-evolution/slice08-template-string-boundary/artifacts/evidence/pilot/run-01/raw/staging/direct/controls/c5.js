@@ -1,0 +1,12 @@
+import {parseValue as jsonRoot, readText as fileRoot, documentLabel as documentRoot} from "@probe/json";
+import {parseValue as jsonValue} from "@probe/json/value";
+import {readText as fileValue} from "@probe/json/file";
+import {documentLabel as documentValue} from "@probe/json/document";
+import {parseYamlFixture as yamlRoot} from "@probe/yaml";
+import {parseYamlFixture as yamlValue} from "@probe/yaml/value";
+import {used as usedRoot, unusedPure as deadRoot} from "@probe/effects";
+import {used as usedValue} from "@probe/effects/used";
+import {unusedPure as deadValue} from "@probe/effects/dead";
+const raw = fileRoot(Deno.args[0]);
+const object = { jsonRoot: jsonRoot(raw), jsonValue: jsonValue(raw), fileRoot: raw, fileValue: fileValue(Deno.args[0]), documentRoot: documentRoot(raw), documentValue: documentValue(raw), yamlRoot: yamlRoot("answer: 42"), yamlValue: yamlValue("answer: 42"), usedRoot: usedRoot(41), usedValue: usedValue(41), deadRoot: deadRoot(41), deadValue: deadValue(41) };
+console.log(JSON.stringify(object));

@@ -1,0 +1,9 @@
+{
+  "name": "@probe/yaml",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./mod.js",
+    "./value": "./value.js"
+  },
+  "lykn": { "kind": "runtime" }
+}

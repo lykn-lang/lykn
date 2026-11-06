@@ -1,0 +1,2 @@
+(func parse-yaml-fixture :args (:string text) :returns :object :pre (= text "answer: 42") :body (obj :answer 42))
+(exports parse-yaml-fixture)

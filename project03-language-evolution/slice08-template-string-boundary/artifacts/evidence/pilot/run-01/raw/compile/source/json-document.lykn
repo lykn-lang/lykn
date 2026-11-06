@@ -1,0 +1,2 @@
+(func document-label :args (:string text) :returns :string :body (template "document:" text))
+(exports document-label)

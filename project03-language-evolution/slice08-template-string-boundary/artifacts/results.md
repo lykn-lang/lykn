@@ -388,3 +388,52 @@ remain distinct historical records; they are not counted as attempts in this
 new accepted-source condition. Source, lock, driver, stimuli, permissions,
 predictions, and protocols remain fixed. The next allowed work is strict
 compilation and staging validation, followed by the C4-only gate.
+
+### Fresh compile, staging, and C4-only gate
+
+At the frozen condition, all 16 strict absolute-path compiles completed with
+exit 0. The same compiler `dist`, `fmt --check`, `lint`, and `check` each exited
+0; lint reported no findings. All 15 staged JS files compared byte-identical
+to their direct compiles using the literal recipe paths `build/<pkg>/...` and
+`dist/<pkg>/...`. The actual three staged package export maps match the frozen
+maps: JSON has four keys, YAML two, effects three, for nine keys total. The
+driver's exact 13-file public-before snapshot was captured, with individual
+SHA-256 values retained. Complete per-invocation commands, exits, stdout/stderr,
+all 16 frozen Lykn sources/generated JS, the 15 direct/staged witnesses, and
+the export check are under `artifacts/evidence/pilot/run-01/raw/{compile,
+build-gates,staging}/`.
+
+The C4-only gate then ran once under the exact accepted outer Deno permissions;
+the outer process exited 0 with empty stdout/stderr. The child esbuild receipt
+also reports code 0. The complete command and receipt, C4 source, emitted JS,
+bundle, raw metafile, gate observations, and before snapshot are retained under
+`artifacts/evidence/pilot/run-01/raw/gate/c4-only/` and
+`artifacts/evidence/pilot/run-01/source-witnesses/`. The actual 538-byte bundle
+`raw/gate/c4-only/artifacts/C4.js` hashes to
+`6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a`, the
+frozen expected hash.
+
+Complete source and code inspection identifies the expected C4 result. The raw
+metafile resolves `effects/dead.js` (406 input bytes), but no dead-module row
+contributes to the output. The complete bundle contains the effect initializer
+(28 bytes), the `used` implementation (365 bytes), and the entry body; it has no
+`unusedPure` declaration or body. The effects barrel resolves but contributes
+zero bytes. `gate-observations.json` says `c4DeadResolved: true`, reports the
+positive used/effect contributions, and lists no unexpected library identity.
+The exported-source map is exact, and the pre-run 13-file/nine-key snapshot is
+present. The result matches the prior accepted C4 evidence; no runtime was
+invoked by the gate.
+
+A first local Python command-construction attempt exited 1 on a syntax error
+before launching Deno or esbuild. It is retained separately at
+`raw/gate/launch-setup-error-01/`; it is not a bundle/runtime attempt and does
+not change the denominator. There was exactly one actual bundle invocation:
+current condition counts are 1/5 bundles and 0/11 runtimes. CDC independently
+inspected the complete current C4 bundle, raw metafile, child receipt, frozen
+Lykn/staged JS sources and observations; independently confirmed bundle hash
+`6476e3082c6904e253caad9740d2463941b6f9ab49382a63a478f8ff5e433b8a`,
+compiler hash `544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a`,
+and the expected dead/used/effect attribution. CDC confirmed the C4 gate and
+authorized the existing `controls <reviewedhash>` phase once. The next allowed
+action is that exact controls invocation reusing this bundle; no other bundle
+or runtime variant is authorized.

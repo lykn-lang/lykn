@@ -1,0 +1,16 @@
+{
+  "exports": {
+    ".": "./mod.js",
+    "./dead": "./dead.js",
+    "./used": "./used.js"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-slow-types"
+      ]
+    }
+  },
+  "name": "@probe/effects",
+  "version": "0.0.0"
+}

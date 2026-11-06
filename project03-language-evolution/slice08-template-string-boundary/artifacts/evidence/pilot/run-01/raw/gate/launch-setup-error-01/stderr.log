@@ -1,0 +1,4 @@
+  File "<stdin>", line 8
+    argv=['env','-i',*en vargs] if False else None
+                         ^^^^^
+SyntaxError: invalid syntax

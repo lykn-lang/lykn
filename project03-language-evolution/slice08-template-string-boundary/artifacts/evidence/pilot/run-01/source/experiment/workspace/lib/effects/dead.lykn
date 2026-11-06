@@ -1,0 +1,2 @@
+(func unused-pure :args (:number n) :returns :number :body (* n 2))
+(exports unused-pure)

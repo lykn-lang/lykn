@@ -210,6 +210,11 @@ runtime invocation occurred before this condition was committed. TE-04/05 stay
 open until CDC reviews the preserved pilot evidence; C4 confirmation still gates
 all runtime calls.
 
+CDC has now independently confirmed the actual C4 bundle and raw metafile at
+the recorded hash and source paths. The unchanged controls phase is authorized
+once with that reviewed bundle; current runtime count remains 0/11 before the
+invocation. No alternate C4 build or controls order is authorized.
+
 ## CC Phase A receipt — 2026-11-06
 
 CC committed the source-cited intake at planning `d920f31a177bdd15766b7399993ee68d9b0f90b4`,
