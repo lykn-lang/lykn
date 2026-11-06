@@ -1,0 +1,347 @@
+(func
+  ensure
+  :args
+  (:boolean condition :string message)
+  :returns
+  :void
+  :body
+  (if (not condition) (throw (new Error message))))
+
+(async
+  (func
+    sha256
+    :args
+    (:any bytes)
+    :returns
+    :string
+    :body
+    (bind digest
+      (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+    (->
+      (Array:from
+        digest
+        (fn
+          (:number byte)
+          (-> (byte:toString 16) (:padStart 2 "0"))))
+      (:join ""))))
+
+(func
+  absolute-path
+  :args
+  (:string path)
+  :returns
+  :string
+  :pre
+  (path:startsWith "/")
+  :body
+  path)
+
+(func
+  is-string
+  :args
+  (:any value)
+  :returns
+  :boolean
+  :body
+  (= (js:typeof value) "string"))
+
+(async
+  (func
+    run-observation
+    :args
+    (:any row
+     :string deno
+     :string parser-path
+     :string probe-js
+     :string core-js
+     :string task-root
+     :string cache-root
+     :string cwd)
+    :body
+    (bind control-id row:id)
+    (bind sequence row:sequence)
+    (bind case-dir (template task-root "/" control-id))
+    (bind deno-dir (template cache-root "/" control-id))
+    (await (Deno:mkdir case-dir))
+    (await (Deno:mkdir deno-dir))
+    (bind input-path (template case-dir "/input.js"))
+    (bind has-input (not (= row:input null)))
+    (if
+      has-input
+      (await
+        (Deno:writeFile
+          input-path
+          (-> (new TextEncoder) (:encode row:input))
+          (obj :createNew true))))
+    (bind parser-bytes (await (Deno:readFile parser-path)))
+    (bind probe-bytes (await (Deno:readFile probe-js)))
+    (bind core-bytes (await (Deno:readFile core-js)))
+    (bind input-bytes
+      (if has-input (await (Deno:readFile input-path)) (new Uint8Array)))
+    (bind argv
+      (if
+        has-input
+        (array
+          deno
+          "run"
+          "--no-config"
+          "--no-npm"
+          "--no-remote"
+          "--cached-only"
+          "--deny-net"
+          "--no-prompt"
+          (template "--allow-read=" parser-path "," probe-js "," core-js "," input-path)
+          probe-js
+          control-id
+          row:expectedHash
+          input-path)
+        (array
+          deno
+          "run"
+          "--no-config"
+          "--no-npm"
+          "--no-remote"
+          "--cached-only"
+          "--deny-net"
+          "--no-prompt"
+          (template "--allow-read=" parser-path "," probe-js "," core-js)
+          probe-js
+          control-id
+          row:expectedHash
+          "<no-input>")))
+    (bind environment
+      (obj
+        :DENO_DIR deno-dir
+        :DENO_NO_UPDATE_CHECK "1"
+        :NO_COLOR "1"
+        :PATH "/opt/homebrew/bin:/usr/bin:/bin"))
+    (bind attempt-record
+      (obj
+        :id
+        control-id
+        :sequence
+        sequence
+        :argv
+        argv
+        :cwd
+        cwd
+        :environment
+        environment
+        :parserPath
+        parser-path
+        :parserSha256
+        (await (sha256 parser-bytes))
+        :probePath
+        probe-js
+        :probeSha256
+        (await (sha256 probe-bytes))
+        :corePath
+        core-js
+        :coreSha256
+        (await (sha256 core-bytes))
+        :inputPath
+        (if has-input input-path null)
+        :inputSha256
+        (if has-input (await (sha256 input-bytes)) null)
+        :expectedHash
+        row:expectedHash
+        :expectedExit
+        row:expectedExit
+        :expectedStatus
+        row:expectedStatus))
+    (await
+      (Deno:writeTextFile
+        (template case-dir "/attempt.json")
+        (JSON:stringify attempt-record)
+        (obj :createNew true)))
+    (bind output
+      (await
+        (->
+          (new
+            Deno:Command
+            deno
+            (obj
+              :args
+              (-> (Array:from argv) (:slice 1))
+              :cwd
+              cwd
+              :clearEnv
+              true
+              :env
+              environment
+              :stdin
+              "null"
+              :stdout
+              "piped"
+              :stderr
+              "piped"))
+          (:output))))
+    (await
+      (Deno:writeFile
+        (template case-dir "/stdout.bin")
+        output:stdout
+        (obj :createNew true)))
+    (await
+      (Deno:writeFile
+        (template case-dir "/stderr.bin")
+        output:stderr
+        (obj :createNew true)))
+    (bind command-record
+      (obj
+        :id
+        control-id
+        :sequence
+        sequence
+        :argv
+        argv
+        :cwd
+        cwd
+        :environment
+        environment
+        :exit
+        output:code
+        :signal
+        output:signal
+        :stdoutBytes
+        output:stdout:length
+        :stderrBytes
+        output:stderr:length))
+    (await
+      (Deno:writeTextFile
+        (template case-dir "/result.json")
+        (JSON:stringify command-record)
+        (obj :createNew true)))
+    (bind stdout-text (new TextDecoder "utf-8" (obj :fatal true)))
+    (bind witness-cell (cell null))
+    (try
+      (reset!
+        witness-cell
+        (JSON:parse (stdout-text:decode output:stdout)))
+      (catch error
+        (reset!
+          witness-cell
+          (obj :observerJsonError error:message))))
+    (bind witness (express witness-cell))
+    (await
+      (Deno:writeTextFile
+        (template case-dir "/witness.json")
+        (JSON:stringify witness)
+        (obj :createNew true)))
+    (ensure
+      (= output:code row:expectedExit)
+      (template control-id " exit expected " row:expectedExit " got " output:code))
+    (ensure
+      (= witness:status row:expectedStatus)
+      (template control-id " status expected " row:expectedStatus " got " witness:status))
+    (if
+      (= control-id "K11")
+      (do
+        (ensure
+          (= witness:actualHash "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7")
+          "K11 selected artifact hash changed")
+        (ensure
+          (not (Object:hasOwn witness "program"))
+          "K11 unexpectedly produced an AST")))
+    (if
+      (or (= control-id "K01") (= control-id "K08"))
+      (do
+        (ensure (= witness:actualVersion "8.17.0") (template control-id " version mismatch"))
+        (ensure
+          (= witness:afterHash "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7")
+          (template control-id " post-use parser hash changed"))
+        (ensure (= witness:program:type "Program") (template control-id " Program type mismatch"))
+        (ensure (= witness:program:sourceType "module") (template control-id " module mode mismatch"))
+        (ensure
+          (= witness:program:body:length (if (= control-id "K01") 2 3))
+          (template control-id " body count mismatch"))
+        (ensure
+          (= (get witness:program:range 0) 0)
+          (template control-id " Program range start mismatch"))
+        (ensure
+          (= (get witness:program:range 1) (if (= control-id "K01") 66 67))
+          (template control-id " Program range end mismatch"))
+        (ensure
+          (= witness:program:loc:end:line (if (= control-id "K01") 5 4))
+          (template control-id " Program end line mismatch"))
+        (ensure (= witness:program:loc:end:column 0) (template control-id " Program end column mismatch"))
+        (if
+          (= control-id "K01")
+          (do
+            (bind first-statement (get witness:program:body 0))
+            (bind first-call
+              (get first-statement:body:body 0))
+            (bind call-expression first-call:expression)
+            (ensure (= call-expression:type "CallExpression") "K01 deferred call node type mismatch")
+            (ensure (= call-expression:loc:start:line 2) "K01 call line mismatch")
+            (ensure (= call-expression:loc:start:column 2) "K01 call column mismatch")
+            (ensure (= (get call-expression:range 0) 20) "K01 call range start mismatch")
+            (ensure (= (get call-expression:range 1) 30) "K01 call range end mismatch")))
+        (if
+          (= control-id "K08")
+          (do
+            (bind third-statement (get witness:program:body 2))
+            (bind awaited third-statement:expression)
+            (bind nested-call awaited:argument)
+            (ensure (= awaited:type "AwaitExpression") "K08 top-level await missing")
+            (ensure (= awaited:loc:start:line 3) "K08 await line mismatch")
+            (ensure (= awaited:loc:start:column 0) "K08 await column mismatch")
+            (ensure (= (get awaited:range 0) 53) "K08 await range start mismatch")
+            (ensure (= (get awaited:range 1) 65) "K08 await range end mismatch")
+            (ensure (= nested-call:type "CallExpression") "K08 nested call missing")
+            (ensure (= nested-call:loc:start:column 6) "K08 call column mismatch")
+            (ensure (= (get nested-call:range 0) 59) "K08 call range start mismatch")
+            (ensure (= (get nested-call:range 1) 65) "K08 call range end mismatch")))))
+    (if
+      (= control-id "K09")
+      (do
+        (ensure (= witness:errorName "SyntaxError") "K09 error was not SyntaxError")
+        (ensure (= witness:pos 14) "K09 parser pos mismatch")
+        (ensure (= witness:line 1) "K09 parser line mismatch")
+        (ensure (= witness:column 14) "K09 parser column mismatch")
+        (ensure (is-string witness:message) "K09 actual parser message missing")
+        (ensure
+          (not (Object:hasOwn witness "program"))
+          "K09 unexpectedly produced an AST")))
+    (console:log (template control-id " pass; raw outcomes preserved"))))
+
+(bind argv Deno.args)
+
+(ensure (= argv:length 8) "usage: offline-observer.lykn CONTROLS DENO PARSER PROBE CORE ROOT CACHE_ROOT CONFIG_FREE_CWD")
+
+(bind controls-path (absolute-path (get argv 0)))
+(bind deno (absolute-path (get argv 1)))
+(bind parser-path (absolute-path (get argv 2)))
+(bind probe-js (absolute-path (get argv 3)))
+(bind core-js (absolute-path (get argv 4)))
+(bind task-root (absolute-path (get argv 5)))
+(bind cache-root (absolute-path (get argv 6)))
+(bind cwd (absolute-path (get argv 7)))
+
+(bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
+
+(ensure (= controls:observations:length 4) "Phase A requires exactly four ordered observations")
+(bind row-0 (get controls:observations 0))
+(bind row-1 (get controls:observations 1))
+(bind row-2 (get controls:observations 2))
+(bind row-3 (get controls:observations 3))
+(ensure (= row-0:id "K11") "K11 must be first")
+(ensure (= row-1:id "K01") "K01 must be second")
+(ensure (= row-2:id "K08") "K08 must be third")
+(ensure (= row-3:id "K09") "K09 must be fourth")
+
+(await (Deno:mkdir task-root))
+(await (Deno:mkdir cache-root))
+
+(for-of row controls:observations
+  (await
+    (run-observation
+      row
+      deno
+      controls:parser:path
+      probe-js
+      core-js
+      task-root
+      cache-root
+      cwd)))
+
+(console:log "Phase A parser prerequisite passed: 4/4 fixed observations")

@@ -1,0 +1,6 @@
+Candidate freeze: planning commit b292554 (the parenthesis correction only; all sources pinned in that commit)
+Compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn
+Compiler SHA-256: 57a49f559a79700d66a2d1db216bd179d54fd0c51fd7f2626ff2029bd3163d28
+Working directory: /private/tmp/lykn-slice12-cc-01
+Command: /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-probe.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/offline-observer.lykn
+Outputs: check.stdout, check.stderr, check.exit
