@@ -1,0 +1,2 @@
+(func default :args () :body 42)
+(exports default)

@@ -1,0 +1,7 @@
+Independent exact-condition confirmation authorized by root under the current
+Operator stop rule; reviewer /root/cdc, Sol6.1 High. Source frozen before run.
+Cwd: /private/tmp/lykn-slice13-cdc-route-20261106-01
+Actual planned single invocation:
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice13-async-export-repair/artifacts/evidence/cdc-output-route/reserved.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice13/cdc-reserved-route/result.js
+No unsafe/lax/strip/hook-bypass/permission flags. stdout/stderr/exit captured
+separately. Original Rust-test TempDir artifact is lost, not recovered here.
