@@ -214,3 +214,40 @@ CP-04/CP-05 remain held for CDC's independent repair acceptance and explicit
 Phase B resume; CP-06 awaits CDC review and retrospective. All ledger rows stay
 open until independent disposition. No pilot bundle or runtime invocation was
 run. This handoff does not claim independent acceptance.
+
+## Phase B — frozen condition and predictions (before execution)
+
+CDC independently accepted Phase A and resumed this bounded Phase B at
+planning commit `fc4da722193fc5d2153336f8b5c69f6a78593b66`. Before any new
+compile, bundle, or runtime invocation, the frozen run condition is recorded:
+
+- Exact source task commit: `86d116db5c096d0fff7ec555d388343946114e4d`, clean;
+  `target/release/lykn` SHA-256
+  `eb24ae3ba372ecfaef255ac883e0f41a0f1ef85494d41925583c4eb2148cbddb`.
+- Frozen source archive: planning commit
+  `30e97932dc2cabeaa243338f405a5b8fe6399c10`, path
+  `project03-language-evolution/slice06-native-esbuild-controls/artifacts/source`.
+  It will be exported unchanged to
+  `target/slice07/pilot-corrected/run-01/experiment/` with the first four path
+  components stripped.
+- Deno 2.9.6 SHA-256
+  `2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`;
+  native esbuild 0.25.5 SHA-256
+  `b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f`.
+- Run root:
+  `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice07/pilot-corrected/run-01/`.
+
+The five original predictions are unchanged: C1 BASE has zero library graph
+and payload; C2 returns the JSON value without YAML graph/contribution; C3
+returns the direct JSON value without file/document/YAML graph/contribution;
+C4 emits the effect before entry value 42, retains used/effect code, and omits
+unusedPure from output even if its input resolves; C5 resolves all nine public
+paths with the exact frozen values while package bytes remain unchanged. The
+YAML implementation remains a one-input research stub, not a production or
+fidelity claim. The first action after fresh strict compilation/staging checks
+will be only the C4 bundle gate; no runtime is authorized before CDC reviews
+that gate and confirms continuation.
+
+At this pre-execution point no new archive has been exported, no compilation,
+bundle, or runtime has been invoked, and all five controls remain unrun (0/5;
+the prior Slice06 1/5 bundle and 1/11 runtime-attempt history remains intact).
