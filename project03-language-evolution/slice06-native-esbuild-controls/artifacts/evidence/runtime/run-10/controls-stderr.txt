@@ -1,0 +1,7 @@
+error: Uncaught (in promise) Error: C5-source-before Deno run failed
+  if (!ok) throw new Error(message);
+                 ^
+    at requireOk (file:///Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/experiments/native-esbuild-controls/run-10/workspace/target/lykn/build/driver.js:12:18)
+    at runtime (file:///Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/experiments/native-esbuild-controls/run-10/workspace/target/lykn/build/driver.js:380:3)
+    at controlsPhase (file:///Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/experiments/native-esbuild-controls/run-10/workspace/target/lykn/build/driver.js:522:3)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/experiments/native-esbuild-controls/run-10/workspace/target/lykn/build/driver.js:563:1
