@@ -1,7 +1,7 @@
 # Slice02 — Portable agent guidance
 
 Status: open. Parent: Arc03 navigation/governance follow-through. Current
-assignment: cc-prompt-iteration02.md (final placement correction). This is the existing project's bounded maintenance
+assignment: cc-prompt-iteration03.md (precommit semantic preservation). This is the existing project's bounded maintenance
 increment, not a new project or historical migration/acceptance reset.
 
 ## Authority and endpoint
@@ -133,6 +133,8 @@ open; CDC independently reproduces checks and commits review/retrospective.
 
 - cc-prompt.md: initial issued assignment; pre-edit intake only, no mutation.
 - cc-prompt-iteration01.md: first proposed placement correction, not executed.
-- cc-prompt-iteration02.md: current final repository-owned skill home outside
+- cc-prompt-iteration02.md: final repository-owned skill home outside
   executable guide/doc-census populations; unchanged intake retained. Neither
   correction was applied to source before this assignment; no quality waiver.
+- cc-prompt-iteration03.md: current precommit semantic preservation after CDC
+  read the complete first AGENTS candidate; no changed cleanup scope or census.
