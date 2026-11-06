@@ -1,0 +1,18 @@
+main
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (62 documents on main; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+release06
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (63 documents on release/0.6.x; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+release07
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (63 documents on release/0.7.x; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+release08
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (63 documents on release/0.8.x; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+pilot
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (63 documents on codex/native-esbuild-controls; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+repair
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (63 documents on codex/contract-predicate-lowering; 601 historical citations accepted via scripts/cited-paths-census.tsv)

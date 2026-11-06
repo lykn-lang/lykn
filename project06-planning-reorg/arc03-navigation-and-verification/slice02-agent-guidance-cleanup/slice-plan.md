@@ -1,8 +1,8 @@
 # Slice02 — Portable agent guidance
 
-Status: open (CC implementation committed; CDC independent review pending).
+Status: open (initial cleanup delivered; GC-R01 authority correction pending).
 Parent: Arc03 navigation/governance follow-through. Current assignment:
-cc-prompt-iteration03.md (precommit semantic preservation). This is the existing
+cc-prompt-iteration04.md (restore release-authoring authority). This is the existing
 project's bounded maintenance increment, not a new project or historical
 migration/acceptance reset.
 
@@ -65,6 +65,11 @@ per-scale plans/ledgers and preserved prompts/evidence, original human gates,
 both trailers, explicit publication/push authority, no automatic bypass flags,
 review snapshots rather than auto-accepting, tests scoped to test/ and canonical
 make check for implementation work. Preserve location-independent test rules.
+Dedicated non-default task branches are required in Autonomous Mode or by an
+explicit active assignment, not as a new all-task ban on release authoring.
+Outside those requirements, preserve ordinary source/docs authoring in the
+assigned release homes. Earlier prompt language overgeneralizing this rule is
+superseded by iteration04; the main integration boundary remains unchanged.
 
 Replace obsolete host references with installed skill names: rust-guidelines,
 javascript-deno-guidelines, testing, collaboration-framework (and its routed
@@ -140,5 +145,8 @@ open; CDC independently reproduces checks and commits review/retrospective.
 - cc-prompt-iteration02.md: final repository-owned skill home outside
   executable guide/doc-census populations; unchanged intake retained. Neither
   correction was applied to source before this assignment; no quality waiver.
-- cc-prompt-iteration03.md: current precommit semantic preservation after CDC
+- cc-prompt-iteration03.md: precommit semantic preservation after CDC
   read the complete first AGENTS candidate; no changed cleanup scope or census.
+- cc-prompt-iteration04.md: current GC-R01 correction after fresh independent
+  governance review; restore old release authority outside AM/explicit assignment,
+  preserving the rejected initial candidate and all unaffected proof.
