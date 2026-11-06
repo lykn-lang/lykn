@@ -1,0 +1,288 @@
+(func
+  require
+  :args
+  (:boolean condition :string message)
+  :returns
+  :void
+  :body
+  (if (not condition) (throw (new Error message))))
+
+(func
+  is-string
+  :args
+  (:any value)
+  :returns
+  :boolean
+  :body
+  (= (js:typeof value) "string"))
+
+(func
+  absolute-path
+  :args
+  (:any value :string label)
+  :returns
+  :string
+  :body
+  (require
+    (and (is-string value) (value:startsWith "/"))
+    (template label " must be an absolute path"))
+  value)
+
+(func
+  required-string
+  :args
+  (:any action :string key :string label)
+  :returns
+  :string
+  :body
+  (require (Object:hasOwn action key) (template label " is missing " key))
+  (bind value (get action key))
+  (require (is-string value) (template label " " key " must be a string"))
+  value)
+
+(func
+  validate-action
+  :args
+  (:any action :number index)
+  :returns
+  :void
+  :body
+  (bind label (template "action " index))
+  (require
+    (and
+      (not (= action null))
+      (not (Array:isArray action))
+      (= (js:typeof action) "object"))
+    (template label " must be an object"))
+  (bind kind (required-string action "kind" label))
+  (if
+    (= kind "command")
+    (do
+      (absolute-path (get action "executable") (template label " executable"))
+      (absolute-path (get action "cwd") (template label " cwd"))
+      (require (Object:hasOwn action "args") (template label " is missing args"))
+      (bind args (get action "args"))
+      (require (Array:isArray args) (template label " args must be an array"))
+      (for-of
+        arg
+        args
+        (require
+          (is-string arg)
+          (template label " args must contain only strings"))))
+    (if
+      (= kind "copy")
+      (do
+        (absolute-path (get action "from") (template label " from"))
+        (absolute-path (get action "to") (template label " to")))
+      (if
+        (= kind "compare")
+        (do
+          (absolute-path (get action "left") (template label " left"))
+          (absolute-path (get action "right") (template label " right")))
+        (throw (new Error (template label " has unsupported kind " kind)))))))
+
+(func
+  validate-manifest
+  :args
+  (:any manifest)
+  :body
+  (require
+    (and
+      (not (= manifest null))
+      (not (Array:isArray manifest))
+      (= (js:typeof manifest) "object"))
+    "manifest must be an object")
+  (require (Object:hasOwn manifest "actions") "manifest is missing actions")
+  (bind actions (get manifest "actions"))
+  (require (Array:isArray actions) "manifest actions must be an array")
+  (for-of
+    index
+    (Array:from (Object:keys actions) (fn (:string key) (Number key)))
+    (validate-action (get actions index) index))
+  actions)
+
+(async
+  (func
+    write-new-text
+    :args
+    (:string path :string text)
+    :body
+    (await
+      (Deno:writeFile
+        path
+        (-> (new TextEncoder) (:encode text))
+        (obj :createNew true)))))
+
+(async
+  (func
+    record-result
+    :args
+    (:string path :any value)
+    :body
+    (await (write-new-text path (JSON:stringify value)))))
+
+(async
+  (func
+    run-command
+    :args
+    (:any action :string action-dir :number index)
+    :body
+    (bind executable (get action "executable"))
+    (bind args (get action "args"))
+    (bind cwd (get action "cwd"))
+    (bind
+      environment
+      (obj
+        :PATH
+        "/opt/homebrew/bin:/usr/bin:/bin"
+        :DENO_NO_UPDATE_CHECK
+        "1"
+        :NO_COLOR
+        "1"))
+    (await
+      (record-result
+        (template action-dir "/attempt.json")
+        (obj
+          :index
+          index
+          :kind
+          "command"
+          :executable
+          executable
+          :args
+          args
+          :cwd
+          cwd
+          :environment
+          environment)))
+    (bind
+      output
+      (await
+        (->
+          (new
+            Deno:Command
+            executable
+            (obj
+              :args
+              args
+              :cwd
+              cwd
+              :clearEnv
+              true
+              :env
+              environment
+              :stdin
+              "null"
+              :stdout
+              "piped"
+              :stderr
+              "piped"))
+          (:output))))
+    (await
+      (Deno:writeFile
+        (template action-dir "/stdout.bin")
+        output:stdout
+        (obj :createNew true)))
+    (await
+      (Deno:writeFile
+        (template action-dir "/stderr.bin")
+        output:stderr
+        (obj :createNew true)))
+    (await
+      (record-result
+        (template action-dir "/result.json")
+        (obj
+          :code
+          output:code
+          :signal
+          output:signal
+          :argv
+          (-> (array executable) (:concat args))
+          :cwd
+          cwd
+          :environment
+          environment)))
+    (if (not (= output:code 0)) (Deno:exit output:code))))
+
+(async
+  (func
+    run-copy
+    :args
+    (:any action :string action-dir :number index)
+    :body
+    (bind source (get action "from"))
+    (bind target (get action "to"))
+    (await
+      (record-result
+        (template action-dir "/attempt.json")
+        (obj :index index :kind "copy" :from source :to target)))
+    (bind bytes (await (Deno:readFile source)))
+    (await (Deno:writeFile target bytes (obj :createNew true)))
+    (await
+      (record-result
+        (template action-dir "/result.json")
+        (obj :copiedBytes bytes:length)))))
+
+(async
+  (func
+    run-compare
+    :args
+    (:any action :string action-dir :number index)
+    :body
+    (bind left-path (get action "left"))
+    (bind right-path (get action "right"))
+    (await
+      (record-result
+        (template action-dir "/attempt.json")
+        (obj :index index :kind "compare" :left left-path :right right-path)))
+    (bind left (await (Deno:readFile left-path)))
+    (bind right (await (Deno:readFile right-path)))
+    (bind equal (cell (= left:length right:length)))
+    (if
+      (express equal)
+      (for-of
+        byte-index
+        (Array:from (Object:keys left) (fn (:string key) (Number key)))
+        (if
+          (not (= (get left byte-index) (get right byte-index)))
+          (reset! equal false))))
+    (await
+      (record-result
+        (template action-dir "/result.json")
+        (obj
+          :equal
+          (express equal)
+          :leftBytes
+          left:length
+          :rightBytes
+          right:length)))
+    (if (not (express equal)) (Deno:exit 1))))
+
+(async
+  (func
+    run-actions
+    :args
+    (:array actions :string receipt-directory)
+    :body
+    (await (Deno:mkdir receipt-directory))
+    (for-of
+      pair
+      (Array:from (Object:keys actions) (fn (:string key) (Number key)))
+      (bind index pair)
+      (bind action (get actions index))
+      (bind
+        action-dir
+        (template receipt-directory "/" (-> (String index) (:padStart 3 "0"))))
+      (await (Deno:mkdir action-dir))
+      (bind kind (get action "kind"))
+      (if (= kind "command") (await (run-command action action-dir index)))
+      (if (= kind "copy") (await (run-copy action action-dir index)))
+      (if (= kind "compare") (await (run-compare action action-dir index))))))
+
+(bind argv Deno.args)
+
+(require (= argv:length 2) "usage: orchestrate.lykn MANIFEST RECEIPT-DIRECTORY")
+
+(bind manifest (JSON:parse (await (Deno:readTextFile (get argv 0)))))
+
+(await (run-actions (validate-manifest manifest) (get argv 1)))

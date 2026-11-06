@@ -1,0 +1,162 @@
+(func
+  ensure
+  :args
+  (:boolean condition :string message)
+  :returns
+  :void
+  :body
+  (if (not condition) (throw (new Error message))))
+
+(async
+  (func
+    check-file
+    :args
+    (:string path :string label)
+    :body
+    (bind info (await (Deno:stat path)))
+    (ensure info:isFile (template "not a regular file: " label " " path))))
+
+(async
+  (func
+    sha256
+    :args
+    (:any bytes)
+    :body
+    (bind digest (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+    (->
+      (Array:from
+        digest
+        (fn (:number byte) (-> (byte:toString 16) (:padStart 2 "0"))))
+      (:join ""))))
+
+(async
+  (func
+    run-check
+    :args
+    (:string workspace)
+    :body
+    (bind
+      json-pairs
+      (array
+        (array "." "./mod.js")
+        (array "./document" "./document.js")
+        (array "./file" "./file.js")
+        (array "./value" "./value.js")))
+    (bind
+      yaml-pairs
+      (array (array "." "./mod.js") (array "./value" "./value.js")))
+    (bind
+      effects-pairs
+      (array
+        (array "." "./mod.js")
+        (array "./dead" "./dead.js")
+        (array "./used" "./used.js")))
+    (bind
+      packages
+      (array
+        (array "json" json-pairs)
+        (array "yaml" yaml-pairs)
+        (array "effects" effects-pairs)))
+    (bind count (cell 0))
+    (for-of
+      package-row
+      packages
+      (bind pkg (get package-row 0))
+      (bind pairs (get package-row 1))
+      (for-of
+        area
+        (array "lib" "target/lykn/dist")
+        (bind config-path (template workspace "/" area "/" pkg "/deno.json"))
+        (bind config (JSON:parse (await (Deno:readTextFile config-path))))
+        (ensure
+          (Object:hasOwn config "exports")
+          (template "missing exports: " pkg " " area))
+        (bind actual (get config "exports"))
+        (ensure
+          (and (not (= actual null)) (not (Array:isArray actual)))
+          (template "exports is not an object: " pkg " " area))
+        (bind actual-keys (Object:keys actual))
+        (ensure
+          (= actual-keys:length pairs:length)
+          (template "export map mismatch: " pkg " " area " key-count"))
+        (if
+          (= area "lib")
+          (console:log
+            (template
+              "export-map package="
+              pkg
+              " keys="
+              pairs:length
+              " matches-prior-exact-map=True")))
+        (for-of
+          pair
+          pairs
+          (bind key (get pair 0))
+          (bind target (get pair 1))
+          (ensure
+            (Object:hasOwn actual key)
+            (template "export map mismatch: " pkg " " area " missing " key))
+          (ensure
+            (= (get actual key) target)
+            (template
+              "export map mismatch: "
+              pkg
+              " "
+              area
+              " wrong target for "
+              key))
+          (bind relative (template pkg "/" (target:slice 2)))
+          (if
+            (= area "target/lykn/dist")
+            (await
+              (check-file
+                (template workspace "/" area "/" relative)
+                (template pkg " " key " -> " relative))))
+          (if (= area "lib") (console:log (template "  " key " -> " target)))
+          (if
+            (= area "target/lykn/dist")
+            (swap! count (fn (:number current) (+ current 1)))))))
+    (ensure
+      (= (express count) 9)
+      (template "expected9 exports, got " (express count)))
+    (console:log (template "total-library-public-keys=" (express count)))
+    (bind
+      files
+      (array
+        "json/deno.json"
+        "json/mod.js"
+        "json/value.js"
+        "json/file.js"
+        "json/document.js"
+        "yaml/deno.json"
+        "yaml/mod.js"
+        "yaml/value.js"
+        "effects/deno.json"
+        "effects/mod.js"
+        "effects/used.js"
+        "effects/dead.js"
+        "effects/effect.js"))
+    (ensure
+      (= files:length 13)
+      (template "expected13 public files, got " files:length))
+    (bind rows (cell (array)))
+    (for-of
+      relative
+      files
+      (bind path (template workspace "/target/lykn/dist/" relative))
+      (await (check-file path "public file"))
+      (bind digest (await (sha256 (await (Deno:readFile path)))))
+      (swap!
+        rows
+        (fn
+          (:array current)
+          (conj current (template digest "  target/lykn/dist/" relative)))))
+    (console:log "public-file-sha256-begin")
+    (for-of row (express rows) (console:log row))
+    (console:log "public-file-sha256-end")))
+
+(bind workspace (get Deno.args 0))
+
+(ensure (not (= workspace undefined)) "usage: public-check.lykn WORKSPACE")
+
+(await (run-check workspace))

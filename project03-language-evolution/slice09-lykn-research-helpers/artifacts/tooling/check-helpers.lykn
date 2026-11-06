@@ -1,0 +1,742 @@
+(func
+  ensure
+  :args
+  (:boolean condition :string message)
+  :returns
+  :void
+  :body
+  (if (not condition) (throw (new Error message))))
+
+(func
+  equal-bytes
+  :args
+  (:any left :any right)
+  :returns
+  :boolean
+  :body
+  (bind equal (cell (= left:length right:length)))
+  (for-of
+    entry
+    (left:entries)
+    (if (not (= (get entry 1) (get right (get entry 0)))) (reset! equal false)))
+  (express equal))
+
+(async
+  (func
+    copy-validator-input
+    :args
+    (:string source :string destination)
+    :body
+    (bind packages (array "json" "yaml" "effects"))
+    (for-of
+      pkg
+      packages
+      (await
+        (Deno:mkdir (template destination "/lib/" pkg) (obj :recursive true)))
+      (await
+        (Deno:mkdir
+          (template destination "/target/lykn/dist/" pkg)
+          (obj :recursive true)))
+      (await
+        (Deno:copyFile
+          (template source "/lib/" pkg "/deno.json")
+          (template destination "/lib/" pkg "/deno.json")))
+      (await
+        (Deno:copyFile
+          (template source "/target/lykn/dist/" pkg "/deno.json")
+          (template destination "/target/lykn/dist/" pkg "/deno.json"))))
+    (bind
+      public-files
+      (array
+        "json/deno.json"
+        "json/mod.js"
+        "json/value.js"
+        "json/file.js"
+        "json/document.js"
+        "yaml/deno.json"
+        "yaml/mod.js"
+        "yaml/value.js"
+        "effects/deno.json"
+        "effects/mod.js"
+        "effects/used.js"
+        "effects/dead.js"
+        "effects/effect.js"))
+    (for-of
+      relative
+      public-files
+      (await
+        (Deno:copyFile
+          (template source "/target/lykn/dist/" relative)
+          (template destination "/target/lykn/dist/" relative))))))
+
+(async
+  (func
+    change-export-map
+    :args
+    (:string workspace :string area :string pkg :string operation)
+    :body
+    (bind path (template workspace "/" area "/" pkg "/deno.json"))
+    (bind config (JSON:parse (await (Deno:readTextFile path))))
+    (bind exports (get config "exports"))
+    (if
+      (= operation "reorder")
+      (do
+        (bind keys (Object:keys exports))
+        (bind reordered (Object:create null))
+        (for-of
+          key
+          (keys:toReversed)
+          (Object:defineProperty
+            reordered
+            key
+            (obj
+              :value
+              (get exports key)
+              :enumerable
+              true
+              :writable
+              true
+              :configurable
+              true)))
+        (Object:defineProperty
+          config
+          "exports"
+          (obj
+            :value
+            reordered
+            :enumerable
+            true
+            :writable
+            true
+            :configurable
+            true))))
+    (if
+      (= operation "missing")
+      (do
+        (ensure
+          (Reflect:deleteProperty exports "./value")
+          "could not remove V2 export")
+        (Object:defineProperty
+          config
+          "exports"
+          (obj :value exports :enumerable true :writable true :configurable true))))
+    (if
+      (= operation "wrong")
+      (Object:defineProperty
+        exports
+        "./value"
+        (obj
+          :value
+          "./wrong.js"
+          :enumerable
+          true
+          :writable
+          true
+          :configurable
+          true)))
+    (if
+      (= operation "extra")
+      (Object:defineProperty
+        exports
+        "./extra"
+        (obj
+          :value
+          "./extra.js"
+          :enumerable
+          true
+          :writable
+          true
+          :configurable
+          true)))
+    (ensure
+      (or
+        (= operation "reorder")
+        (= operation "missing")
+        (= operation "wrong")
+        (= operation "extra"))
+      (template "unknown map operation " operation))
+    (await (Deno:writeTextFile path (JSON:stringify config)))))
+
+(async
+  (func
+    run-validator
+    :args
+    (:string
+      deno
+      :string
+      helper-js
+      :string
+      workspace
+      :string
+      task-root
+      :string
+      case-dir)
+    :body
+    (await (Deno:mkdir case-dir (obj :recursive true)))
+    (bind
+      environment
+      (obj
+        :PATH
+        "/opt/homebrew/bin:/usr/bin:/bin"
+        :DENO_NO_UPDATE_CHECK
+        "1"
+        :NO_COLOR
+        "1"))
+    (bind
+      output
+      (await
+        (->
+          (new
+            Deno:Command
+            deno
+            (obj
+              :args
+              (array
+                "run"
+                "--no-config"
+                "--cached-only"
+                "--no-npm"
+                "--no-remote"
+                "--deny-net"
+                "--no-prompt"
+                (template "--allow-read=" helper-js "," workspace)
+                helper-js
+                workspace)
+              :cwd
+              task-root
+              :clearEnv
+              true
+              :env
+              environment
+              :stdin
+              "null"
+              :stdout
+              "piped"
+              :stderr
+              "piped"))
+          (:output))))
+    (await
+      (Deno:writeFile
+        (template case-dir "/stdout.bin")
+        output:stdout
+        (obj :createNew true)))
+    (await
+      (Deno:writeFile
+        (template case-dir "/stderr.bin")
+        output:stderr
+        (obj :createNew true)))
+    (await
+      (Deno:writeTextFile
+        (template case-dir "/exit-status.txt")
+        (String output:code)))
+    output))
+
+(func
+  same-lines-except-one
+  :args
+  (:string before :string after)
+  :returns
+  :boolean
+  :body
+  (bind before-lines (before:split "\n"))
+  (bind after-lines (after:split "\n"))
+  (bind differences (cell 0))
+  (bind changed-line (cell ""))
+  (for-of
+    entry
+    (before-lines:entries)
+    (if
+      (!= (get entry 1) (get after-lines (get entry 0)))
+      (do
+        (swap! differences (fn (:number current) (+ current 1)))
+        (reset! changed-line (get after-lines (get entry 0))))))
+  (and
+    (= before-lines:length after-lines:length)
+    (= (express differences) 1)
+    (-> (express changed-line) (:endsWith "target/lykn/dist/effects/effect.js")))
+  (async
+    (func
+      run-validator-controls
+      :args
+      (:string deno :string helper-js :string workspace :string task-root)
+      :body
+      (bind root (template task-root "/validator-controls"))
+      (await (Deno:mkdir root))
+      (bind
+        v0
+        (await
+          (run-validator deno helper-js workspace task-root (template root "/V0"))))
+      (ensure (= v0:code 0) "V0 positive validator failed")
+      (bind v1-path (template root "/clone V1"))
+      (await (copy-validator-input workspace v1-path))
+      (await (change-export-map v1-path "lib" "json" "reorder"))
+      (bind
+        v1
+        (await
+          (run-validator deno helper-js v1-path task-root (template root "/V1"))))
+      (ensure (= v1:code 0) "V1 reordered export properties failed")
+      (ensure (equal-bytes v0:stdout v1:stdout) "V1 output differs from V0")
+      (bind
+        negative-cases
+        (array (array "V2" "missing") (array "V3" "wrong") (array "V4" "extra")))
+      (for-of
+        case-row
+        negative-cases
+        (bind label (get case-row 0))
+        (bind operation (get case-row 1))
+        (bind clone (template root "/" label))
+        (if
+          (= label "V2")
+          (await (change-export-map clone "lib" "json" operation)))
+        (if
+          (= label "V3")
+          (await (change-export-map clone "target/lykn/dist" "json" operation)))
+        (if
+          (= label "V4")
+          (await (change-export-map clone "target/lykn/dist" "json" operation)))
+        (bind
+          output
+          (await
+            (run-validator
+              deno
+              helper-js
+              clone
+              task-root
+              (template root "/" label))))
+        (ensure (!= output:code 0) (template label " unexpectedly passed")))
+      (bind v5-path (template root "/V5"))
+      (await (copy-validator-input workspace v5-path))
+      (await (Deno:remove (template v5-path "/target/lykn/dist/json/value.js")))
+      (bind
+        v5
+        (await
+          (run-validator deno helper-js v5-path task-root (template root "/V5"))))
+      (ensure (!= v5:code 0) "V5 missing target unexpectedly passed")
+      (bind v6-path (template root "/V6"))
+      (await (copy-validator-input workspace v6-path))
+      (bind
+        mutation-path
+        (template v6-path "/target/lykn/dist/effects/effect.js"))
+      (bind bytes (await (Deno:readFile mutation-path)))
+      (bind first-byte (get bytes 0))
+      (bind next-byte (if (= first-byte 255) 0 (+ first-byte 1)))
+      (await (Deno:writeFile mutation-path (bytes:with 0 next-byte)))
+      (bind
+        v6
+        (await
+          (run-validator deno helper-js v6-path task-root (template root "/V6"))))
+      (ensure (= v6:code 0) "V6 valid content mutation failed")
+      (ensure
+        (same-lines-except-one
+          (-> (new TextDecoder) (:decode v0:stdout))
+          (-> (new TextDecoder) (:decode v6:stdout)))
+        "V6 did not change exactly one checksum line")
+      (bind v7-path (template root "/clone V7 with spaces"))
+      (await (copy-validator-input workspace v7-path))
+      (bind
+        v7
+        (await
+          (run-validator deno helper-js v7-path task-root (template root "/V7"))))
+      (ensure (= v7:code 0) "V7 space-path validator failed")
+      (ensure (equal-bytes v0:stdout v7:stdout) "V7 output differs from V0")
+      (console:log
+        "V0–V7 passed; V0 stdout remains available for exact external positive parity")))
+  (func
+    command-action
+    :args
+    (:string executable :array args :string cwd)
+    :returns
+    :object
+    :body
+    (obj :kind "command" :executable executable :args args :cwd cwd))
+  (func
+    copy-action
+    :args
+    (:string from :string to)
+    :returns
+    :object
+    :body
+    (obj :kind "copy" :from from :to to))
+  (func
+    compare-action
+    :args
+    (:string left :string right)
+    :returns
+    :object
+    :body
+    (obj :kind "compare" :left left :right right))
+  (async
+    (func
+      invoke-orchestrator
+      :args
+      (:string
+        deno
+        :string
+        orchestrator-js
+        :string
+        task-root
+        :string
+        case-dir
+        :any
+        actions)
+      :body
+      (bind receipt-dir (template case-dir "/receipts"))
+      (bind manifest-path (template case-dir "/manifest.json"))
+      (await
+        (Deno:writeTextFile manifest-path (JSON:stringify (obj :actions actions))))
+      (bind
+        environment
+        (obj
+          :PATH
+          "/opt/homebrew/bin:/usr/bin:/bin"
+          :DENO_NO_UPDATE_CHECK
+          "1"
+          :NO_COLOR
+          "1"))
+      (bind
+        output
+        (await
+          (->
+            (new
+              Deno:Command
+              deno
+              (obj
+                :args
+                (array
+                  "run"
+                  "--no-config"
+                  "--cached-only"
+                  "--no-npm"
+                  "--no-remote"
+                  "--deny-net"
+                  "--no-prompt"
+                  (template "--allow-read=" task-root)
+                  (template "--allow-write=" task-root)
+                  (template "--allow-run=" deno)
+                  orchestrator-js
+                  manifest-path
+                  receipt-dir)
+                :cwd
+                task-root
+                :clearEnv
+                true
+                :env
+                environment
+                :stdin
+                "null"
+                :stdout
+                "piped"
+                :stderr
+                "piped"))
+            (:output))))
+      (await
+        (Deno:writeFile
+          (template case-dir "/orchestrator.stdout.bin")
+          output:stdout
+          (obj :createNew true)))
+      (await
+        (Deno:writeFile
+          (template case-dir "/orchestrator.stderr.bin")
+          output:stderr
+          (obj :createNew true)))
+      (await
+        (Deno:writeTextFile
+          (template case-dir "/orchestrator.exit-status.txt")
+          (String output:code)))
+      (obj
+        :code
+        output:code
+        :receipt-dir
+        receipt-dir
+        :stdout
+        output:stdout
+        :stderr
+        output:stderr))))
+
+(async
+  (func
+    assert-absent
+    :args
+    (:string path)
+    :body
+    (bind absent (cell false))
+    (try
+      (await (Deno:stat path))
+      (catch err (if (= err:name "NotFound") (reset! absent true) (throw err))))
+    (ensure (express absent) (template "expected absent path: " path))))
+
+(async
+  (func
+    run-r0
+    :args
+    (:string deno :string orchestrator-js :string child-js :string task-root)
+    :body
+    (bind case-dir (template task-root "/orchestration-controls/R0"))
+    (bind cwd (template case-dir "/cwd with spaces"))
+    (await (Deno:mkdir cwd (obj :recursive true)))
+    (bind input (template case-dir "/input.bin"))
+    (bind copied (template case-dir "/copied.bin"))
+    (await
+      (Deno:writeFile
+        input
+        (new Uint8Array (array 0 255 10))
+        (obj :createNew true)))
+    (bind
+      args
+      (array
+        "run"
+        "--no-config"
+        "--cached-only"
+        "--no-npm"
+        "--no-remote"
+        "--deny-net"
+        "--no-prompt"
+        child-js
+        "space value"
+        "literal;$(echo no-shell)"))
+    (bind
+      actions
+      (array
+        (command-action deno args cwd)
+        (copy-action input copied)
+        (compare-action input copied)))
+    (bind
+      result
+      (await
+        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+    (ensure (= result:code 0) "R0 orchestrator failed")
+    (bind receipt (template result:receipt-dir "/000"))
+    (bind output (await (Deno:readFile (template receipt "/stdout.bin"))))
+    (bind
+      expected
+      (->
+        (new TextEncoder)
+        (:encode "[\"space value\",\"literal;$(echo no-shell)\"]\n")))
+    (ensure (equal-bytes output expected) "R0 child argv/output mismatch")
+    (bind error-output (await (Deno:readFile (template receipt "/stderr.bin"))))
+    (ensure (= error-output:length 0) "R0 child wrote stderr")
+    (bind
+      result-json
+      (JSON:parse (await (Deno:readTextFile (template receipt "/result.json")))))
+    (ensure (= result-json:code 0) "R0 command receipt lacks code 0")
+    (bind
+      copy-json
+      (JSON:parse
+        (await
+          (Deno:readTextFile (template result:receipt-dir "/001/result.json")))))
+    (ensure (= copy-json:copiedBytes 3) "R0 copy byte count mismatch")
+    (bind
+      compare-json
+      (JSON:parse
+        (await
+          (Deno:readTextFile (template result:receipt-dir "/002/result.json")))))
+    (ensure compare-json:equal "R0 byte compare failed")
+    (console:log
+      "R0 pass: spaced argv, direct execution, raw outputs, copy and byte comparison")))
+
+(async
+  (func
+    run-r1
+    :args
+    (:string deno :string orchestrator-js :string child-js :string task-root)
+    :body
+    (bind case-dir (template task-root "/orchestration-controls/R1"))
+    (bind marker (template case-dir "/sentinel.txt"))
+    (await (Deno:mkdir case-dir (obj :recursive true)))
+    (bind
+      child-args
+      (array
+        "run"
+        "--no-config"
+        "--cached-only"
+        "--no-npm"
+        "--no-remote"
+        "--deny-net"
+        "--no-prompt"
+        child-js
+        "--raw-failure"))
+    (bind
+      marker-args
+      (array
+        "run"
+        "--no-config"
+        "--cached-only"
+        "--no-npm"
+        "--no-remote"
+        "--deny-net"
+        "--no-prompt"
+        (template "--allow-write=" case-dir)
+        child-js
+        "--sentinel"
+        marker))
+    (bind
+      actions
+      (array
+        (command-action deno child-args case-dir)
+        (command-action deno marker-args case-dir)))
+    (bind
+      result
+      (await
+        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+    (ensure (= result:code 7) "R1 outer code was not 7")
+    (bind receipt (template result:receipt-dir "/000"))
+    (bind stdout (await (Deno:readFile (template receipt "/stdout.bin"))))
+    (bind stderr (await (Deno:readFile (template receipt "/stderr.bin"))))
+    (ensure
+      (equal-bytes stdout (new Uint8Array (array 0 255 10)))
+      "R1 raw stdout bytes differ")
+    (ensure
+      (equal-bytes stderr (new Uint8Array (array 1 254 10)))
+      "R1 raw stderr bytes differ")
+    (bind
+      command-result
+      (JSON:parse (await (Deno:readTextFile (template receipt "/result.json")))))
+    (ensure (= command-result:code 7) "R1 child receipt code was not 7")
+    (await (assert-absent marker))
+    (await (assert-absent (template result:receipt-dir "/001")))
+    (console:log
+      "R1 pass: raw invalid-UTF8 bytes, child/outer code 7, sentinel not run")))
+
+(async
+  (func
+    run-r2
+    :args
+    (:string deno :string orchestrator-js :string child-js :string task-root)
+    :body
+    (bind case-dir (template task-root "/orchestration-controls/R2"))
+    (bind left (template case-dir "/left.bin"))
+    (bind right (template case-dir "/right.bin"))
+    (bind marker (template case-dir "/sentinel.txt"))
+    (await (Deno:mkdir case-dir (obj :recursive true)))
+    (await
+      (Deno:writeFile left (new Uint8Array (array 1 2 3)) (obj :createNew true)))
+    (await
+      (Deno:writeFile right (new Uint8Array (array 1 2 4)) (obj :createNew true)))
+    (bind
+      marker-args
+      (array
+        "run"
+        "--no-config"
+        "--cached-only"
+        "--no-npm"
+        "--no-remote"
+        "--deny-net"
+        "--no-prompt"
+        (template "--allow-write=" case-dir)
+        child-js
+        "--sentinel"
+        marker))
+    (bind
+      actions
+      (array
+        (compare-action left right)
+        (command-action deno marker-args case-dir)))
+    (bind
+      result
+      (await
+        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+    (ensure (= result:code 1) "R2 unequal comparison did not exit 1")
+    (bind
+      compare-result
+      (JSON:parse
+        (await
+          (Deno:readTextFile (template result:receipt-dir "/000/result.json")))))
+    (ensure (not compare-result:equal) "R2 receipt did not record false")
+    (await (assert-absent marker))
+    (await (assert-absent (template result:receipt-dir "/001")))
+    (console:log "R2 pass: unequal bytes record false, exit 1, sentinel not run")))
+
+(async
+  (func
+    run-r3
+    :args
+    (:string deno :string orchestrator-js :string child-js :string task-root)
+    :body
+    (bind case-dir (template task-root "/orchestration-controls/R3"))
+    (bind source (template case-dir "/source.bin"))
+    (bind destination (template case-dir "/existing.bin"))
+    (bind marker (template case-dir "/sentinel.txt"))
+    (await (Deno:mkdir case-dir (obj :recursive true)))
+    (await
+      (Deno:writeFile source (new Uint8Array (array 9 8 7)) (obj :createNew true)))
+    (await
+      (Deno:writeFile
+        destination
+        (new Uint8Array (array 4 5 6))
+        (obj :createNew true)))
+    (bind
+      marker-args
+      (array
+        "run"
+        "--no-config"
+        "--cached-only"
+        "--no-npm"
+        "--no-remote"
+        "--deny-net"
+        "--no-prompt"
+        (template "--allow-write=" case-dir)
+        child-js
+        "--sentinel"
+        marker))
+    (bind
+      actions
+      (array
+        (copy-action source destination)
+        (command-action deno marker-args case-dir)))
+    (bind
+      result
+      (await
+        (invoke-orchestrator deno orchestrator-js task-root case-dir actions)))
+    (ensure (!= result:code 0) "R3 clobber attempt unexpectedly passed")
+    (bind prior (await (Deno:readFile destination)))
+    (ensure
+      (equal-bytes prior (new Uint8Array (array 4 5 6)))
+      "R3 existing destination bytes changed")
+    (await (assert-absent marker))
+    (await (assert-absent (template result:receipt-dir "/001")))
+    (console:log
+      "R3 pass: existing destination preserved, copy failed, sentinel not run")))
+
+(async
+  (func
+    run-orchestration-controls
+    :args
+    (:string deno :string orchestrator-js :string child-js :string task-root)
+    :body
+    (bind root (template task-root "/orchestration-controls"))
+    (await (Deno:mkdir root))
+    (await (run-r0 deno orchestrator-js child-js task-root))
+    (await (run-r1 deno orchestrator-js child-js task-root))
+    (await (run-r2 deno orchestrator-js child-js task-root))
+    (await (run-r3 deno orchestrator-js child-js task-root))
+    (console:log "R0–R3 pass")))
+
+(bind argv Deno.args)
+
+(ensure
+  (= argv:length 5)
+  "usage: check-helpers.lykn TASK-ROOT WORKSPACE PUBLIC-CHECK-JS ORCHESTRATE-JS CHILD-JS")
+
+(bind task-root (get argv 0))
+
+(bind workspace (get argv 1))
+
+(bind public-check-js (get argv 2))
+
+(bind orchestrate-js (get argv 3))
+
+(bind child-js (get argv 4))
+
+(await
+  (run-validator-controls
+    "/opt/homebrew/bin/deno"
+    public-check-js
+    workspace
+    task-root))
+
+(await
+  (run-orchestration-controls
+    "/opt/homebrew/bin/deno"
+    orchestrate-js
+    child-js
+    task-root))

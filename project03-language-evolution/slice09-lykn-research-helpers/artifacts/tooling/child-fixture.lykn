@@ -1,0 +1,3 @@
+(await (Deno.stdout:write (new Uint8Array #a(0 255 10))))
+(await (Deno.stderr:write (new Uint8Array #a(1 254 10))))
+(Deno:exit 7)

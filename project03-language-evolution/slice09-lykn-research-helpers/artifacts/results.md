@@ -1,0 +1,229 @@
+# CC intake and working record
+
+## Intake coverage
+
+Loaded in full: `cc-prompt.md` (120 lines), `slice-plan.md`, and `ledger.md`.
+The slice plan is the binding contract for this CC: the owned artifacts are
+the four Lykn helpers plus README; allowed source-tree edits are AGENTS-only;
+the accepted Python validator is retained temporarily for exact positive
+parity, and the inline builder is not executable or repairable. The finite
+controls are V0–V7 and R0–R3. Planning artifacts remain open for independent
+CDC disposition. No unrelated tests/full-pilot rerun, compiler fixes, history
+edits, merges, pushes, or cleanup are authorized in this iteration.
+
+The planning worktree was clean at `f4ac5d64937dcec86122f3bc4b190aad498f5cf9`.
+The six source homes were clean at the exact tips listed in the slice plan;
+the worktree listing also showed two unrelated prunable `/private/tmp`
+checkouts, outside the seven-home scope.
+
+Required-full/section reads completed: planning `AGENTS.md` and source
+`AGENTS.md` in all six homes (all seven tracked byte streams were verified
+identical at SHA-256
+`4e314256eec67945d229918ac9f443ea0b0684a199b497c3747be56440fd47a3`); Project03's
+“Existing units” and “Definition of done and boundaries”; source a061
+`skills/lykn/SKILL.md` sections Before You Do Anything, Bindings & Mutation,
+Functions, Objects & Immutable Updates, Colon Syntax & Member Access, Error
+Handling, Async & Concurrency, Anti-Patterns to AVOID, lykn CLI, Deno Runtime
+and No-Node Boundary; source a061 `docs/guides/09-anti-patterns.md` ID-01,
+18–20, 31, 35–41; and the complete source a061 Deno runtime basics guide.
+The pinned Deno `types` output confirms `CommandOutput.stdout/stderr` are
+`Uint8Array`, `Deno.writeFile` accepts `Uint8Array`, and `WriteFileOptions`
+has `createNew`.
+
+Required host material loaded: collaboration-framework entrypoint; PM README's
+Autonomous Mode section; implementation-prompt guide's complete “Required
+reading and CC intake”; testing entrypoint and complete Testing Discipline;
+JavaScript/Deno sections Error Handling, Async & Concurrency, Deno Runtime,
+and No-Node Boundary; and scientific-methods Comparison and Regression Testing.
+The Lykn surface/reference and Deno runtime sections govern API use; host JS
+conventions do not authorize JS implementation. Exact stdout parity on the
+same frozen workspace remains distinct from V/R reconstructed controls.
+
+Required-data and source witnesses: seven worktree tips/statuses revalidated;
+both original Python hashes and scoped duplicate paths identified; original
+validator body, failed inline-builder body, expected map/file sequence and
+full positive stdout loaded; Slice06 driver's save-result and
+public-snapshot/digest sections loaded; Deno types inspected. Tool pins were
+verified locally: accepted `lykn` SHA-256
+`544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a`, Deno
+2.9.6 SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`.
+The frozen driver's UTF-8-decoded output receipt cannot be reused for byte-safe
+evidence. `artifacts/results.md` is the named intake record.
+
+## Contract readback
+
+- `slice-plan.md`, “Binding implementation and oracles”: author logic only in
+  Lykn; no Python or replacement scripting language for helpers, evidence,
+  JSON, orchestration, or command construction. Native shell/CLI is limited to
+  direct invocation/simple filesystem lifecycle. The only temporary exception
+  is the exact unmodified, hashed original validator for parity, followed by a
+  separately authorized cleanup after CDC review.
+- `slice-plan.md`, “Fixed comparison/control population”: exact stdout and
+  successful exit parity on the original positive workspace; V0–V7 validator
+  controls and R0–R3 orchestration controls are finite and must retain actual
+  failures. Reconstructed behavior is not exact parity with missing original
+  orchestration source.
+- `slice-plan.md`, “Guidance, deletion and acceptance sequence”: update only
+  AGENTS.md in each of six source homes, keep seven guidance files byte-equal,
+  and preserve their relative CLAUDE symlinks. New CC prompts must carry the
+  same explicit no-Python rule and parity exception. This iteration returns
+  before deleting source Python.
+- `cc-prompt.md`, “Ownership, allowed paths and checks”: planning changes are
+  restricted to this Slice09 directory and its assigned records; source homes
+  permit AGENTS.md only; generated files are restricted to the task's ignored
+  `target/slice09/`. Parent plan and BACKLOG are CDC-owned.
+- Slice08's original `export-map-check.py` defines ordered 4/2/3 export maps
+  and 13 public-file paths; adjacent `export-map-check.log` is the byte-exact
+  positive stdout oracle. The inline builder's `en vargs` defect is preserved
+  as an observed failure and is not repairable under this assignment.
+- Slice06 `artifacts/source/driver.lykn` demonstrates process output and
+  hashing, but `save-result` decodes stdout/stderr. It does not establish
+  invalid-UTF8-safe evidence. The new runner must persist returned byte arrays
+  before propagating a child failure.
+- Source a061's API reference and pinned Deno types cover structural map
+  checks, actual-byte hashing, `Deno.Command` output bytes, `writeFile`, and
+  `createNew`. V6 is a changed emitted digest that still succeeds, not a
+  frozen-content rejection test. R1 must preserve `[0,255,10]` and
+  `[1,254,10]`, record child status 7, and prevent its sentinel action.
+
+## Source and tool evidence
+
+Intake is complete. Source tips, original hashes, positive stdout, tool hashes
+and API contracts are recorded above. Implementation and control evidence will
+be added here; all ledger rows remain open pending CDC review.
+
+### Preserved authoring attempt
+
+The first authored `public-check.lykn` source SHA-256
+`80d58c8e926b81f090b1a47e15351b02ee1964d90b59969e4c5f72c4c4cd9f66` failed
+with `unterminated list at 45:5`; its bytes were overwritten during iteration
+before a snapshot was made. Its hash and failure output remain, but its exact
+body is unavailable and is not reconstructed. A later failed body, SHA-256
+`2f2ecd841f5bbd40f8955da97b3677237231d1a9fbf5f51ed0f07d8bdb5be77f`, is
+preserved at ignored `target/slice09/attempts/public-check-2f2ecd841f5bbd40.lykn`;
+it failed with the same parser error and its stdout/stderr are retained.
+Initial `orchestrate.lykn` SHA-256
+`1521d64955bfdd4de5d0eca376e8b8ddaa0f485dbd5a16ad0a585e4e84d0e5b5` is
+preserved at `target/slice09/attempts/orchestrate-initial.lykn`; pinned
+`lykn check` exit 1 reported `unterminated list at 37:1`, with raw output beside
+the source snapshot. These are source authoring errors, not compiler blockers.
+
+The first `check-helpers.lykn` compile used frozen source SHA-256
+`7809bd640b11abcb23eee08912308f82b59668cbbc9bffec976f901b82ac6145` at
+`target/slice09/empty/attempts/check-helpers-freeze1.lykn` and failed with
+exit 1, `unterminated list at 71:1`. The exact source body is preserved; the
+compiler diagnostic is retained in this record. This is a source parenthesis
+error, not a language blocker.
+
+`check-helpers` freeze2 source SHA-256
+`5f4bf4bb09a12d0a468c9ef6873ebc2feece605c2c4bf81afaba05bf0b873488` is
+preserved at `target/slice09/empty/attempts/check-helpers-freeze2.lykn`; the
+pinned compiler again exited 1 with `unterminated list at 71:1`. The failure
+body is retained exactly and the diagnostic is recorded here.
+
+Subsequent `check-helpers` source bodies are also preserved in the numbered
+`empty/attempts/` files. Freeze3 (`be89835e1367be8f19ad6c429910e83304ff56fdad2e7d482ef04bb019e693c8`)
+reported the same line-71 unterminated list; freeze4
+(`feff30c397eb81e87e051ff4b68d09670816207f17fd63d3df223a4ffb524b66`) and
+freeze5 (`91d117d1e4526e41c1a0951c0ca4634f41837bb31132ac29a5e0a55b04460543`)
+reported line 64. These are recorded compiler diagnostics from authored
+parenthesis errors; no language blocker has appeared.
+
+The first native Lykn format attempt on `check-helpers.lykn` used SHA-256
+`af2b31ec2fcd70cc17723907ce740bfb45572d629ea50907fb4b22156bd8693d`, preserved
+at `target/slice09/attempts/check-helpers-format-failure.lykn`. The formatter
+reported exit 1, `unterminated list at 210:1`. The formatter successfully
+formatted public-check and orchestrate before stopping on this file. The
+failure source is retained; it is still source syntax, not a compiler defect.
+
+After syntax edits, a second formatter attempt used source SHA-256
+`f06dbefaf04d6b73c96cd3a72112f3c00b1b56f46e481c5671f9a8cbd6cc4962`, retained
+at `target/slice09/attempts/check-helpers-format-184.lykn`; it reported
+`unterminated list at 184:1`. This is a separate source authoring failure.
+
+At precontrol source pins above, recorded `lykn check` results were success for
+all four authored sources. Recorded lint results were one orchestrator warning
+for a shadowed `index` binding (source SHA-256
+`dd330605c081af8d150cb3e9bd1b228a25394af9940382dbfac9101575f2f2df`) and
+success for the other three. Those earlier commands did not record an
+executable path alongside the result, so they are not presently certified as
+using the accepted binary pin. The shadowed-binding source is frozen at
+`target/slice09/empty/attempts/orchestrate-precontrol.lykn`.
+
+## Current stop record
+
+No V0–V7 validator controls, R0–R3 orchestrator controls, or original-Python
+parity run occurred. The sole runtime event was the earlier pre-freeze child
+fixture launch; it is a separate authoring attempt, not accepted R1 coverage.
+Its exact Lykn source is preserved at
+`target/slice09/attempts/child-fixture-early-r1.lykn` (SHA-256
+`a798419b11521c4b765a14dfe04e26ec36ffa0aed8d2a2a323a86e24e6b02168`), with
+generated JS alongside it. Captured stdout bytes were `[0,255,10]`, stderr
+bytes `[1,254,10]`, and process status 7. It did not exercise the orchestrator
+or a following sentinel. The accepted Deno pin was SHA-256
+`2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`.
+
+In the current turn, candidate freezes were copied before CLI invocations:
+`public-check-candidate-freeze1.lykn` (SHA-256
+`da1f13a854995696907fe4df037802516ba3a50f67cc75a9b5e100a5949c735d`),
+`orchestrate-candidate-freeze1.lykn` (`7569339d5f4e2e1480c61c435f9e41461af55ce54da7c66dc5f06429b4a20d19`),
+`check-helpers-candidate-freeze1.lykn` (`eab8d1709edfc1e2c7440da66b6581d1f29eb84e4a5530cfb752ea28479b5b4b`),
+and `child-fixture-candidate-freeze1.lykn`
+(`a798419b11521c4b765a14dfe04e26ec36ffa0aed8d2a2a323a86e24e6b02168`), all
+under the task checkout's `target/slice09/empty/attempts/`.
+
+Tool provenance correction: those current-turn checks, lints, and compiles
+used `/Users/oubiwann/.cargo/bin/lykn`, SHA-256
+`c02d3b844d1d3243f5ad0d4793e3cd2c691038f9011e43734513e1dd19b6bb03`, not the
+accepted task binary. Each `lykn check <freeze>` exited 0. Each
+`lykn lint <freeze>` exited 1 with the CLI message that Lykn-source linting is
+not implemented. Each `lykn compile <freeze> -o <target/slice09 file>` exited
+0; orchestrator emitted unused-binding warnings at 286:1 and 85:3, while
+check-helpers emitted warnings at 13:9, 237:12, 237:27, and 720:1–728:1. These
+results and generated JS are not accepted-tool evidence. The executable at
+`/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn`
+was independently hash-identified as the accepted SHA-256
+`544041ecf2ff61a9b1b3338ed08728a12db549a69dbcadfa644a30d39bfb908a`; it was
+not invoked in this turn. Earlier checks in this record lack an explicit
+binary path and remain unverified for pin compliance.
+
+The wrong-binary generated outputs were copied to uniquely named ignored
+attempt paths: `public-check-compiler-blocker-freeze1.js` (SHA-256
+`80e5fde8ea36a6f9c744efd99a17cae153d46a8024ebb236b95853ec9292813f`),
+`orchestrate-compiler-blocker-freeze1.js`
+(`256cbb8fff947f68d98cd3277f8129aaa0af7cca8c6138ce78dd431238fcb3aa`), and
+`check-helpers-compiler-blocker-freeze1.js`
+(`635459667fa71da1a063de364bfb060b2a5258ed43f756ce162cead844cab119`).
+These are preserved as generated-output witnesses only; their content is not
+evidence about the accepted compiler. The four wrong-tool source/output pairs
+are grouped under
+`target/slice09/attempts/global-lykn-c02d3b844d1d-2026-11-06/`. Exact source
+hashes are listed above and the generated-output hashes are recorded in this
+section. During inspection I also learned that
+the current check-helpers candidate has a missing function boundary before
+`run-validator-controls`; its later nested-if/catch output is therefore
+confounded and is not classified as a language defect. No compiler blocker is
+claimed by this CC. CDC independently checked the public-check freeze using
+the accepted binary and reported exit 0, empty stderr, and valid emitted
+statement-form `if`s. The failed wrong-tool output is superseded as compiler
+evidence. CDC will independently handle the check-helpers source-boundary
+correction under a separate iteration. Do not run controls or original Python
+while that review is pending.
+
+Policy synchronization was completed as seven AGENTS-only commits:
+planning `c7f3770df38461d3007efaa81f62022f67d965bc`, main
+`6ed2c58742917386a83a41b8922b921b3064ad89`, release/0.6.x
+`ae51223089def7b7b3498519d9f51283b3a6065b`, release/0.7.x
+`e693bf98f13d859c9ec6a1ff941bdb8d830aa62c`, release/0.8.x
+`c733f7abe1a2d205aa18b10927dca9e32f340a45`, native-esbuild task
+`3b12e2c885deff4395eaf60840961f6d590bbbc3`, and contract-predicate task
+`bc83b43cc9084d0eddb910c73497cef0f9c43179`. All seven `AGENTS.md` files
+have SHA-256 `1b5d78b96a4ef888153696e8e6656029ee24bc00be602ad5568e40265398c73d`,
+mode `0644`; all seven `CLAUDE.md` symlinks remain relative targets to
+`AGENTS.md`. Each of the six source homes passed `make check-cited-paths` at
+its committed HEAD (62 documents on main, 63 on each release/task source home;
+601 historical citations accepted in each).
+
+All slice and ledger acceptance rows remain open for CDC. No helper, policy, or
+original-source deletion acceptance is claimed here.
