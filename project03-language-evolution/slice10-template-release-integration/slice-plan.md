@@ -1,6 +1,6 @@
 # Slice10: template repair release integration
 
-Opened 2026-11-06. Status: open. Standalone collapsed slice, consistent with
+Opened 2026-11-06. Status: independently closed 2026-11-06. Standalone collapsed slice, consistent with
 Project03's existing slices; no new arc or broader project authorization.
 
 ## Authority, roles and endpoint
@@ -121,3 +121,12 @@ out-of-scope source repair remains a disclosed stop. Prior accepted Slice08
 this integration neither repeats nor enlarges it. Preserve Slice01 F1–F12,
 Project07 licence/bootstrap/library/final-report/ADT/book/human gates and
 BACKLOG NE-C02/04/05/06 and NE-D01. No audit execution or new scope follows.
+
+## Accepted endpoint
+
+Local merge f70565566088f5d55129edda6bd73a4691e5a58d matches predicted tree
+and exact 13-path scope. CC and CDC independently passed full release Make,
+focused native and committed citations; fresh materialized/public/embedded bytes
+and own release binary are reconciled. All five TI rows done; see
+[CDC verification](cdc-verification.md) and [retrospective](cdc-retrospective.md).
+Historical conditions remain in the CC results/raw receipts. Stop here.

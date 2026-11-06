@@ -140,6 +140,16 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 [Slice10](slice10-template-release-integration/slice-plan.md) independently
+closed the explicitly approved template-repair integration into release/0.6.x.
+Merge f70565566088f5d55129edda6bd73a4691e5a58d has exact predicted tree572bc953
+and13 accepted repair/test paths, preserving target policy/lock. CC and CDC
+separately passed full native Make (Rust1509, JS+Lykn1467, docs482), focused
+native22-value regression and committed citations. Fresh materialized JS bytes
+match public/embedded source; actual release binary is pinned in its review.
+Earlier dated “not merged” records below describe their historical conditions.
+No push, other branch propagation, next unit or wider project acceptance follows.
+
 2026-11-06 Operator requested replacing the scoped Python research helpers with
 Lykn, retaining originals only for migration parity, then deleting their code
 and making the no-Python rule explicit in seven-home AGENTS/new CC prompts.
@@ -199,6 +209,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice10-template-release-integration](slice10-template-release-integration/slice-plan.md): independently closed; exact accepted template repair integrated locally into release/0.6.x with fresh release gates and byte/ancestry reconciliation; no other propagation.
 - [slice09-lykn-research-helpers](slice09-lykn-research-helpers/slice-plan.md): closed; Lykn replacement/parity, independently passing12 controls, scoped Python body deletion and explicit seven-home policy delivered; separate language/diagnostic follow-ups remain.
 - [slice08-template-string-boundary](slice08-template-string-boundary/slice-plan.md): closed; decoded-template repair/full gates and unchanged five-bundle/eleven-call pilot independently accepted on dedicated task branch; no further integration implied.
 - [slice07-contract-predicate-lowering](slice07-contract-predicate-lowering/slice-plan.md): independently accepted predicate repair/full gates; frozen pilot stopped at independently reproduced template-oracle mismatch, four done/two deferred rows; NE-C03 re-entry.
@@ -221,6 +232,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.14: Independently accepted Slice10's local template merge and
+  actual release validation, with all five TI rows done and retrospective.
+  Preserved earlier task-only statements as dated history and every other open
+  audit/library/compiler/human obligation; stopped at the integration endpoint.
 
 - 2026-11-06 v1.13: Opened [Slice10](slice10-template-release-integration/slice-plan.md)
   after explicit Operator approval to merge accepted template repair a061c214

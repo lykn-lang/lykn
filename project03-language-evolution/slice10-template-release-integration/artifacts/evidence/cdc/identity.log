@@ -1,0 +1,12 @@
+lykn 0.6.0
+57a49f559a79700d66a2d1db216bd179d54fd0c51fd7f2626ff2029bd3163d28  target/release/lykn
+57a49f559a79700d66a2d1db216bd179d54fd0c51fd7f2626ff2029bd3163d28  bin/lykn
+672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce  Cargo.lock
+1b5d78b96a4ef888153696e8e6656029ee24bc00be602ad5568e40265398c73d  AGENTS.md
+50db21ce3d1f30325e9541c284cb37ffdc3f6e93bad55521a26cd6b4734ac1f4  packages/lang/compiler.js
+50db21ce3d1f30325e9541c284cb37ffdc3f6e93bad55521a26cd6b4734ac1f4  crates/lykn-lang/embedded/packages/lang/compiler.js
+50db21ce3d1f30325e9541c284cb37ffdc3f6e93bad55521a26cd6b4734ac1f4  target/slice10/cdc/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js
+canonical_embedded_cmp_exit=0
+canonical_materialized_cmp_exit=0
+release_bin_cmp_exit=0
+accepted_whole_tree_diff_exit=0

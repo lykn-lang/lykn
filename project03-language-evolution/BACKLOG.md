@@ -313,6 +313,15 @@ remains on `codex/template-string-boundary`; only the earlier predicate repair
 is integrated at release/0.6.x b841f71b. No further merge/push/publication is
 implied. NE-C02/NE-C04/NE-D01 and all full-audit/Project07 obligations remain open.
 
+**2026-11-06 local release integration accepted.** Following separate explicit
+Operator approval, [Slice10](slice10-template-release-integration/cdc-verification.md)
+independently verifies merge f70565566088f5d55129edda6bd73a4691e5a58d into
+release/0.6.x: exact accepted 13-path repair/tree, full release Make, focused
+native values, committed citations and fresh embedded-byte materialization.
+Earlier task-only integration statements above remain their dated history.
+No other release propagation, push/publication or subsequent unit is implied;
+all listed separate candidates and audit/Project07 obligations remain open.
+
 #### NE-C04 — same-version embedded package cache may retain prior compiler text
 
 **Source-backed packaging candidate, 2026-11-06.** During Slice08 preparation,

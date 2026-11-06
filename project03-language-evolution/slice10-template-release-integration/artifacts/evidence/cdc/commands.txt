@@ -1,0 +1,30 @@
+CDC /root/cdc, OpenAI Sol6.1 High, independent execution 2026-11-06.
+Source cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+Source: f70565566088f5d55129edda6bd73a4691e5a58d
+Planning handoff: a4a2bf1d7539956627ffc979733c8f23cc89ade9
+Output: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice10-template-release-integration/artifacts/evidence/cdc
+
+Before gate: source status empty; target/slice10/cdc did not exist. Created new
+owned npm-cache and xdg-cache there. No Cargo target override, PATH filtering,
+HOME change, Python/other authored helper, or added safety/permission flags.
+
+Full gate (stdout+stderr redirected directly to canonical make-check.log):
+env npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice10/cdc/npm-cache XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice10/cdc/xdg-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno make check
+The actual process exit is saved to make-check.exit, separately from display.
+
+After full gate, same three env values for native-focused.log and cited-paths.log:
+cargo test --offline --locked -p lykn-cli --test template_string_boundary -- --nocapture
+make check-cited-paths
+Each command's actual exit saved to its adjacent .exit file.
+
+Identity checks (identity.log):
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn --version
+shasum -a 256 target/release/lykn bin/lykn Cargo.lock AGENTS.md packages/lang/compiler.js crates/lykn-lang/embedded/packages/lang/compiler.js target/slice10/cdc/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js
+cmp packages/lang/compiler.js crates/lykn-lang/embedded/packages/lang/compiler.js
+cmp packages/lang/compiler.js target/slice10/cdc/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js
+cmp target/release/lykn bin/lykn
+git status --porcelain=v1
+
+Preflight log contains actual merge H/P/T/body, target-relative names/status,
+source-cwd Rust/Cargo override, Deno version, existing gate tools, lock/policy
+and Deno hashes. git diff bc83b43... HEAD was empty and a061 ancestry exit0.

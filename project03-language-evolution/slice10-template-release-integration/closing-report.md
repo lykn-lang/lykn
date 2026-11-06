@@ -28,3 +28,12 @@ The durable supporting artifacts produced by this slice are the exact transcript
 Project03 uses its recorded collapsed standalone-slice convention and has no separate arc plan. This slice delivered its assigned local integration into `release/0.6.x` at `f70565566088f5d55129edda6bd73a4691e5a58d`; the exact release diff and successful local gates show the accepted repair is usable at that destination. The integration exposed no new implementation or sequencing need and no plan change is proposed. Scope-as-specified matches scope-as-delivered: local merge, required evidence and CC report are complete; CDC's independent gate, row acceptance, and retrospective are explicitly pending; no propagation, push, publication, or other release work was promised or performed.
 
 No push, publication, remote CI, branch propagation, dependency/toolchain update, or broader acceptance claim is part of this endpoint. Earlier Slice08 boundaries and all inherited Project03/backlog obligations remain in force.
+
+## CDC final disposition — 2026-11-06
+
+Independent reviewer `/root/cdc` accepts all five TI rows after own exact
+merge-tree/ancestry/scope review, full release Make, focused native and committed
+citation executions, and actual release/materialized-byte reconciliation.
+[CDC verification](cdc-verification.md) contains each row's evidence strength;
+[retrospective](cdc-retrospective.md) retains observed process corrections.
+This closes only the authorized local integration, with no next unit opened.
