@@ -26,6 +26,7 @@ struct Fixture {
     name: &'static str,
     source: String,
     observations: Vec<Observation>,
+    following_statement_output: Option<&'static str>,
 }
 
 fn observation(label: &'static str, expected_value: Value) -> Observation {
@@ -44,19 +45,41 @@ fn rejected(label: &'static str, expected_message: &'static str) -> Observation 
     }
 }
 
-fn fixture(
-    name: &'static str,
-    body: &str,
-    observations: Vec<Observation>,
-) -> Fixture {
+fn fixture(name: &'static str, body: &str, observations: Vec<Observation>) -> Fixture {
     Fixture {
         name,
         source: format!("{OBSERVE}\n{body}"),
         observations,
+        following_statement_output: None,
     }
 }
 
 fn fixtures() -> Vec<Fixture> {
+    let mut nested_value_context = fixture(
+        "nested-value-context",
+        r#"
+(func nested-check
+  :args (:any x)
+  :pre
+    (cond
+      ((and (> x 0) (or (= x 42) (= x 43))) (not (!= x 42)))
+      (:else false))
+  :body x)
+(observe "nested-valid" (fn () (nested-check 42)))
+(observe "nested-invalid" (fn () (nested-check 43)))
+(if true (bind following-statement 99))
+(if (= following-statement 99) (console:log "following-statement-ok"))
+"#,
+        vec![
+            observation("nested-valid", json!(42)),
+            rejected(
+                "nested-invalid",
+                "nested-check: pre-condition failed: (cond ((and (> x 0) (or (= x 42) (= x 43))) (not (!= x 42))) (:else false)) — caller blame",
+            ),
+        ],
+    );
+    nested_value_context.following_statement_output = Some("following-statement-ok");
+
     vec![
         fixture(
             "exact-yaml",
@@ -158,28 +181,7 @@ fn fixtures() -> Vec<Fixture> {
                 ),
             ],
         ),
-        fixture(
-            "nested-value-context",
-            r#"
-(func nested-check
-  :args (:any x)
-  :pre
-    (cond
-      ((and (> x 0) (or (= x 42) (= x 43))) (not (!= x 42)))
-      (:else false))
-  :body x)
-(observe "nested-valid" (fn () (nested-check 42)))
-(observe "nested-invalid" (fn () (nested-check 43)))
-(bind following-statement 99)
-"#,
-            vec![
-                observation("nested-valid", json!(42)),
-                rejected(
-                    "nested-invalid",
-                    "nested-check: pre-condition failed: (cond ((and (> x 0) (or (= x 42) (= x 43))) (not (!= x 42))) (:else false)) — caller blame",
-                ),
-            ],
-        ),
+        nested_value_context,
         fixture(
             "resolved-bound-head",
             r#"
@@ -286,8 +288,17 @@ fn run_fixture(fixture: &Fixture, failures: &mut Vec<String>) {
         return;
     }
 
+    if let Some(marker) = fixture.following_statement_output {
+        if !stdout.lines().any(|line| line == marker) {
+            failures.push(format!(
+                "{}: following statement-position if did not emit {marker:?}; stdout: {stdout}",
+                fixture.name
+            ));
+        }
+    }
     let records: Vec<Value> = stdout
         .lines()
+        .filter(|line| Some(*line) != fixture.following_statement_output)
         .filter_map(|line| match serde_json::from_str(line) {
             Ok(record) => Some(record),
             Err(error) => {
@@ -359,7 +370,10 @@ fn strict_native_contract_predicates_lower_and_preserve_blame() {
     let fixtures = fixtures();
     assert_eq!(fixtures.len(), 7, "fixed fixture family denominator");
     assert_eq!(
-        fixtures.iter().map(|fixture| fixture.observations.len()).sum::<usize>(),
+        fixtures
+            .iter()
+            .map(|fixture| fixture.observations.len())
+            .sum::<usize>(),
         17,
         "fixed input observation denominator"
     );
@@ -370,4 +384,3 @@ fn strict_native_contract_predicates_lower_and_preserve_blame() {
     }
     assert!(failures.is_empty(), "{}", failures.join("\n\n"));
 }
-
