@@ -354,18 +354,17 @@ fn run_fixture(fixture: &Fixture, failures: &mut Vec<String>) {
                     fixture.name, expected.label
                 ));
             }
-        } else if let Some(message) = expected.error_message {
-            if record.pointer("/error/name") != Some(&json!("Error"))
+        } else if let Some(message) = expected.error_message
+            && (record.pointer("/error/name") != Some(&json!("Error"))
                 || !record
                     .pointer("/error/message")
                     .and_then(Value::as_str)
-                    .is_some_and(|actual| actual.contains(message))
-            {
-                failures.push(format!(
-                    "{} / {}: expected runtime Error containing {message:?}, got {record}",
-                    fixture.name, expected.label
-                ));
-            }
+                    .is_some_and(|actual| actual.contains(message)))
+        {
+            failures.push(format!(
+                "{} / {}: expected runtime Error containing {message:?}, got {record}",
+                fixture.name, expected.label
+            ));
         }
     }
     eprintln!(
