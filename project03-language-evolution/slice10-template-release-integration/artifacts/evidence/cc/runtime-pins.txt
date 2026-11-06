@@ -1,0 +1,12 @@
+CWD=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+SOURCE_COMMIT=f70565566088f5d55129edda6bd73a4691e5a58d
+RUST_TOOLCHAIN_FILE=rust-toolchain.toml (channel 1.97.0)
+rustc=rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo=cargo 1.97.0 (c980f4866 2026-06-30)
+rustc_sha256=f7c7e11eb2e07f006e532a8aaac77b32f4527d305ac386c0c633ca6133d35ca9
+DENO=/opt/homebrew/bin/deno
+deno=2.9.6 (stable, release, aarch64-apple-darwin)
+deno_sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice10/cc/xdg-cache
+npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice10/cc/npm-cache

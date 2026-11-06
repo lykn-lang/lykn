@@ -1,0 +1,7 @@
+50db21ce3d1f30325e9541c284cb37ffdc3f6e93bad55521a26cd6b4734ac1f4  packages/lang/compiler.js
+50db21ce3d1f30325e9541c284cb37ffdc3f6e93bad55521a26cd6b4734ac1f4  crates/lykn-lang/embedded/packages/lang/compiler.js
+50db21ce3d1f30325e9541c284cb37ffdc3f6e93bad55521a26cd6b4734ac1f4  target/slice10/cc/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js
+57a49f559a79700d66a2d1db216bd179d54fd0c51fd7f2626ff2029bd3163d28  target/release/lykn
+57a49f559a79700d66a2d1db216bd179d54fd0c51fd7f2626ff2029bd3163d28  bin/lykn
+canonical_embedded_equal_exit=0
+canonical_materialized_equal_exit=0
