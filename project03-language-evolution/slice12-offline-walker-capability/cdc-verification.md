@@ -37,3 +37,18 @@ still precede the first native compiler or parser runtime, both unrun.
 
 All six PC rows remain open. No PhaseA/PhaseB capability acceptance, compiler
 repair, new dependencies, larger control set or full-corpus work is inferred.
+
+### CDC export-instruction retraction — before dependent checks
+
+CC correctly challenged iteration01's local-export instruction. Current source
+SKILL Modules431–461 and guide00 Modules require top-level `(exports ...)`;
+classifier/forms.rs166–173 validates this surface declaration and emitter
+forms.rs141/726 lowers it to kernel `(export (names ...))`. CDC had not checked
+that exact current section before prescribing the older syntax. The initial
+candidate's `(exports load-parser verify-parser)` was correct and must remain.
+Retract that part of the first source finding and iteration01, preserving both
+issued records. This is CDC's source-reading error, not a guide/compiler defect.
+The real path-first import/delimiter/await/try/receipt findings are unchanged.
+Attempt-0003 preserves the corrected observer before further checks; no compiler
+or parser run has occurred. Numbered correction02 records the one-line semantic
+retraction without restarting the refinement budget or inventing source evidence.
