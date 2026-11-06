@@ -6,8 +6,8 @@
   (bind
     result
     (compile-both
-      "(func checked :args (:any x) :pre (= x 42) :post (cond ((and (> ~ 0) (= ~ 42)) true) (:else false)) :body x)"))
+      "(func checked :args (:any x) :pre (= x 42) :post (and (> ~ 0) (= ~ 42)) :body x)"))
   (includes result "x === 42")
   (includes result "result__gensym0 > 0 && result__gensym0 === 42")
   (includes result "(= x 42)")
-  (includes result "(cond ((and (> ~ 0) (= ~ 42)) true) (:else false))"))
+  (includes result "(and (> ~ 0) (= ~ 42))"))
