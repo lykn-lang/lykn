@@ -1,0 +1,4 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn: error: 1:10: error: exports references unknown top-level binding 'load-parser'
+  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor
+1:22: error: exports references unknown top-level binding 'verify-parser'
+  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor

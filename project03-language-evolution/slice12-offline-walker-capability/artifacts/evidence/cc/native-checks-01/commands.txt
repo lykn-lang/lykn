@@ -1,0 +1,16 @@
+Candidate freeze: planning commit e6655b0565a5fea1d21bdbce7161ab121957fac2
+Compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn
+Compiler version: lykn 0.6.0
+Compiler SHA-256: 57a49f559a79700d66a2d1db216bd179d54fd0c51fd7f2626ff2029bd3163d28
+Compiler source: release/0.6.x @ f70565566088f5d55129edda6bd73a4691e5a58d (read-only)
+Working directory for all checks and compiles: /private/tmp/lykn-slice12-cc-01
+Config ancestor absence: `test ! -e` succeeded (exit 0) for /project.json, /private/project.json, /private/tmp/project.json, and /private/tmp/lykn-slice12-cc-01/project.json.
+
+The next six direct invocations are separate and each has stdout, stderr, and exit files beside this record:
+
+1. /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-probe.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/offline-observer.lykn
+2. /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn fmt --check /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-probe.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/offline-observer.lykn
+3. /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn lint /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-probe.lykn /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/offline-observer.lykn
+4. /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-core.lykn --output /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice12/cc/source/parser-core.js
+5. /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-probe.lykn --output /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice12/cc/source/parser-probe.js
+6. /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/offline-observer.lykn --output /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice12/cc/source/offline-observer.js
