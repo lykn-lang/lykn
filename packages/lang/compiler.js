@@ -88,9 +88,12 @@ function toClassKey(name) {
 /** Build a TemplateElement node for template literals.
  *  '$' is always escaped to '\$' so that user text never accidentally
  *  forms a `${...}` template-literal interpolation in the emitted JS.
+ *  Decoded backslashes and CR are encoded for JS source; cooked remains input.
  *  Concat-mode and ICU-mode agree on this. */
 function makeTemplateElement(raw, tail) {
   const escaped = raw
+    .replaceAll('\\', '\\\\')
+    .replaceAll('\r', '\\r')
     .replaceAll('`', '\\`')
     .replaceAll('$', '\\$');
   return {
