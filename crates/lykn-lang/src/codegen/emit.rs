@@ -176,16 +176,13 @@ fn emit_string_literal(w: &mut JsWriter, value: &str) {
 }
 
 pub(crate) fn emit_template_text(w: &mut JsWriter, value: &str) {
-    // '$' is always escaped to '\$' so that user text never accidentally
-    // forms a `${...}` template-literal interpolation in the emitted JS.
-    // Concat-mode and ICU-mode agree on this.
-    //
-    // Backslashes pass through unescaped: template literal text in JS
-    // interprets escape sequences (e.g., \n → newline). The string value
-    // at this point already contains the intended escapes from the reader;
-    // double-escaping would produce spurious literal backslashes.
+    // The reader has already decoded the value. Encode its characters for
+    // JavaScript template-literal source so evaluation preserves that value.
+    // Concat-mode and ICU-mode share this representation.
     for ch in value.chars() {
         match ch {
+            '\\' => w.write("\\\\"),
+            '\r' => w.write("\\r"),
             '`' => w.write("\\`"),
             '$' => w.write("\\$"),
             c => w.write_char(c),
@@ -2275,31 +2272,24 @@ mod tests {
     }
 
     #[test]
-    fn test_template_backslash_passthrough() {
+    fn test_template_backslash_is_encoded_for_js() {
         let val = "\\n";
         assert_eq!(val.len(), 2, "rust string literal \\\\n is 2 chars");
         assert_eq!(val.chars().collect::<Vec<_>>(), vec!['\\', 'n']);
-        let expr = list(vec![atom("template"), str_lit(val)]);
+        let expr = list(vec![atom("template"), str_lit(val), str_lit("")]);
         let result = emit_to_string(&expr);
-        assert_eq!(result.len(), 4, "expected `\\n` (4 chars: ` \\ n `)");
-        assert_eq!(result, "`\\n`");
+        assert_eq!(result.len(), 5, "expected escaped template source");
+        assert_eq!(result, "`\\\\n`");
     }
 
     #[test]
-    fn test_template_icu_backslash_passthrough() {
-        // ICU-mode template (single string arg) must escape the same way
-        // as regular template — backslashes pass through unescaped.
-        // This test guards against re-introducing double-escape in the
-        // ICU path (the original C-6b duplication bug).
+    fn test_template_icu_backslash_is_encoded_for_js() {
+        // Single-literal ICU preserves the decoded backslash+n value too.
         let expr = list(vec![atom("template"), str_lit("hello\\nworld")]);
         let result = emit_to_string(&expr);
         assert!(
-            result.contains("\\n"),
-            "template should contain \\n (backslash + n), got: {result}"
-        );
-        assert!(
-            !result.contains("\\\\n"),
-            "template should NOT double-escape to \\\\n, got: {result}"
+            result.contains("hello\\\\nworld"),
+            "template should encode the decoded backslash for JS, got: {result}"
         );
     }
 
