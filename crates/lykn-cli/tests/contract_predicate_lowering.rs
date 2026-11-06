@@ -108,15 +108,14 @@ fn fixtures() -> Vec<Fixture> {
             "multi-clause",
             r#"
 (func multi-check
-  :args (:any actual)
-  :pre (= actual 42)
-  :post (= ~ 42)
-  :body actual)
-(func multi-check
-  :args (:any actual :any expected)
-  :pre (= expected 42)
-  :post (= ~ 42)
-  :body actual)
+  (:args (:any actual)
+   :pre (= actual 42)
+   :post (= ~ 42)
+   :body actual)
+  (:args (:any actual :any expected)
+   :pre (= expected 42)
+   :post (= ~ 42)
+   :body actual))
 (observe "multi-arity1-valid" (fn () (multi-check 42)))
 (observe "multi-arity1-pre-invalid" (fn () (multi-check "42")))
 (observe "multi-arity2-valid" (fn () (multi-check 42 42)))
