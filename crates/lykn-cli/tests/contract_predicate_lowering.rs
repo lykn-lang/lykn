@@ -67,8 +67,10 @@ fn fixtures() -> Vec<Fixture> {
   :body x)
 (observe "nested-valid" (fn () (nested-check 42)))
 (observe "nested-invalid" (fn () (nested-check 43)))
-(if true (bind following-statement 99))
-(if (= following-statement 99) (console:log "following-statement-ok"))
+(bind following-statement 99)
+(if (= following-statement 99)
+  (console:log "following-statement-ok")
+  (console:log "following-statement-wrong"))
 "#,
         vec![
             observation("nested-valid", json!(42)),
@@ -292,6 +294,15 @@ fn run_fixture(fixture: &Fixture, failures: &mut Vec<String>) {
         if !stdout.lines().any(|line| line == marker) {
             failures.push(format!(
                 "{}: following statement-position if did not emit {marker:?}; stdout: {stdout}",
+                fixture.name
+            ));
+        }
+        if stdout
+            .lines()
+            .any(|line| line == "following-statement-wrong")
+        {
+            failures.push(format!(
+                "{}: following if selected its wrong branch; stdout: {stdout}",
                 fixture.name
             ));
         }
