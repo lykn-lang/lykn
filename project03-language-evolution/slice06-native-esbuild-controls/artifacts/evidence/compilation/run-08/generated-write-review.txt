@@ -1,0 +1,115 @@
+15-}
+16-function isRecord(value) {
+17-  return (typeof value === "object" && !(value === null)) && !Array.isArray(value);
+18-}
+19:function reserveAbsent(path) {
+20:  if (typeof path !== "string") throw new TypeError("reserveAbsent: arg 'path' expected string, got " + typeof path);
+21-
+22-  return Deno.writeTextFileSync(path, "", { createNew: true });
+23-}
+24:function writeNew(path, text) {
+25:  if (typeof path !== "string") throw new TypeError("writeNew: arg 'path' expected string, got " + typeof path);
+26-
+27:  if (typeof text !== "string") throw new TypeError("writeNew: arg 'text' expected string, got " + typeof text);
+28-
+29-  return Deno.writeTextFileSync(path, text, { createNew: true });
+30-}
+31-function environment(cache) {
+32-  if (typeof cache !== "string") throw new TypeError("environment: arg 'cache' expected string, got " + typeof cache);
+33-
+34-  return { PATH: "/opt/homebrew/bin:/usr/bin:/bin", DENO_DIR: cache, DENO_NO_UPDATE_CHECK: "1", NO_COLOR: "1" };
+35-}
+36-function command(executable, args, cwd, cache) {
+37-  if (typeof executable !== "string") throw new TypeError("command: arg 'executable' expected string, got " + typeof executable);
+38-
+39-  if (!Array.isArray(args)) throw new TypeError("command: arg 'args' expected array, got " + typeof args);
+--
+54-  if (typeof cwd !== "string") throw new TypeError("saveResult: arg 'cwd' expected string, got " + typeof cwd);
+55-
+56-  const stdout = decoder.decode(result.stdout);
+57-  const stderr = decoder.decode(result.stderr);
+58:  writeNew(`${output}/${label}.json`, JSON.stringify({ label: label, executable: executable, args: args, cwd: cwd, code: result.code, stdout: stdout, stderr: stderr }));
+59-  return { code: result.code, stdout: stdout, stderr: stderr };
+60-}
+61-function normalizePath(path) {
+62-  if (typeof path !== "string") throw new TypeError("normalizePath: arg 'path' expected string, got " + typeof path);
+63-
+64-  const fileUrl = new URL(path, `file://${workspace}/`);
+65-  return fileUrl.pathname;
+66-}
+67-function modulePath(package, file) {
+68-  if (typeof package !== "string") throw new TypeError("modulePath: arg 'package' expected string, got " + typeof package);
+69-
+70-  if (typeof file !== "string") throw new TypeError("modulePath: arg 'file' expected string, got " + typeof file);
+--
+320-  if (typeof entry !== "string") throw new TypeError("bundle: arg 'entry' expected string, got " + typeof entry);
+321-
+322-  const jsPath = `${output}/${name}.js`;
+323-  const metaPath = `${output}/${name}.meta.json`;
+324:  reserveAbsent(jsPath);
+325:  reserveAbsent(metaPath);
+326-  const args = bundleArguments(name, entry);
+327-  const result = command(esbuild, args, workspace, `${output}/cache`).outputSync();
+328-  const receipt = saveResult(`${name}-bundle`, esbuild, args, workspace, result);
+329-  requireOk(receipt.code === 0, `${name} native esbuild failed`);
+330-  return observeBundle(name, entry);
+331-}
+332-function runtimeArgs(config, entry, name) {
+333-  if (typeof config !== "string") throw new TypeError("runtimeArgs: arg 'config' expected string, got " + typeof config);
+334-
+335-  if (typeof entry !== "string") throw new TypeError("runtimeArgs: arg 'entry' expected string, got " + typeof entry);
+336-
+337-  if (typeof name !== "string") throw new TypeError("runtimeArgs: arg 'name' expected string, got " + typeof name);
+--
+503-  return (() => {
+504-    if (phase === "gate") {
+505-      {
+506-        const before = await publicSnapshot();
+507:        writeNew(`${output}/public-before.json`, JSON.stringify(before));
+508-        const entry = `${workspace}/target/lykn/dist/controls/c4.js`;
+509-        const observation = bundle("C4", entry);
+510:        writeNew(`${output}/gate-observations.json`, JSON.stringify(observation));
+511-        null;
+512-      }
+513-    } else {
+514-      return (() => {
+515-        if (phase === "controls") {
+516-          {
+517-            const reviewedHash = Deno.args[5];
+518-            const c4Path = `${output}/C4.js`;
+519-            const actualHash = await digest(Deno.readFileSync(c4Path));
+520-            requireOk(reviewedHash === actualHash, "C4 reviewed bundle hash mismatch");
+521-            const gatePath = `${output}/gate-observations.json`;
+522-            const gate = JSON.parse(Deno.readTextFileSync(gatePath));
+523-            const controlsPath = `${output}/controls-observations.json`;
+524:            reserveAbsent(controlsPath);
+525-            requireOk(gate.metadata.control === "C4", "gate evidence is not the C4 observation");
+526-            const observations = { value: [gate] };
+527-            Deno.writeTextFileSync(controlsPath, JSON.stringify(observations.value));
+528-            const c5Entry = `${workspace}/target/lykn/dist/controls/c5.js`;
+529-            runtime("C5", "C5-source-before", c5Entry, false);
+530-            runtime("C4", "C4-source", `${workspace}/target/lykn/dist/controls/c4.js`, false);
+531-            runtime("C4", "C4-bundle-run", c4Path, true);
+532-            for (const name of ["C1", "C2", "C3"]) {
+533-              const entry = `${workspace}/target/lykn/dist/controls/${name.toLowerCase()}.js`;
+534-              const observation = bundle(name, entry);
+535-              observations.value = (current => {
+536-                if (!Array.isArray(current)) throw new TypeError("anonymous: arg 'current' expected array, got " + typeof current);
+--
+551-            runtime("C5", "C5-bundle-run", `${output}/C5.js`, true);
+552-            runtime("C5", "C5-source-after", c5Entry, false);
+553-            const before = JSON.parse(Deno.readTextFileSync(`${output}/public-before.json`));
+554-            const after = await publicSnapshot();
+555:            writeNew(`${output}/public-after.json`, JSON.stringify(after));
+556-            const reconciliation = reconcileSnapshots(before, after);
+557:            writeNew(`${output}/public-reconciliation.json`, JSON.stringify(reconciliation));
+558-            null;
+559-          }
+560-        } else {
+561-          throw new Error("phase must be gate or controls");
+562-        }
+563-      })();
+564-    }
+565-  })();
+566-}
+567-await main();

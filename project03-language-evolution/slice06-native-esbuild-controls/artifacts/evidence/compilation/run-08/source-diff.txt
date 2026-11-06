@@ -1,0 +1,2 @@
+Generated driver.js diff: run-07 versus run-08
+Only changed regions are ensureAbsent/writeNew and call sites replaced with reserveAbsent. Functions main, gate, controls, bundle, runtime, publicSnapshot, and reconcileSnapshots are otherwise byte-identical. Full run-07 formatter output/top-level and nested-control review remains in the earlier source-review record; this correction changes no form boundaries.
