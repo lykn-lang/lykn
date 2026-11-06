@@ -81,3 +81,14 @@ text; equality with the original Lykn token spelling is not predicted.
 
 No diagnostic source has yet been authored or executed at this point. No
 observed values, compiler binary hash, case result, or test result is claimed.
+
+## Baseline build and case freeze
+
+The source-cited intake is commit `d920f31a177bdd15766b7399993ee68d9b0f90b4`.
+From the clean task checkout at b841, `cargo build --offline --locked
+--release -p lykn-cli` exited 0. Raw stdout/stderr and exact command are retained
+under `artifacts/diagnosis/run-01/build/`. The resulting task-local `lykn`
+binary is version 0.6.0, SHA-256
+`e69f67f4cbc8cda4b9a3a82436bd3375f277d68c45387dae7ac7fc2a9ba32ae8`.
+The six case sources and predictions are now frozen in run-01 and will be
+committed before any case compile or execution. No case has run yet.

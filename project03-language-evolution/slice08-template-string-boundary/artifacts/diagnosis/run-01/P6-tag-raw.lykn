@@ -1,0 +1,4 @@
+(console:log
+  (JSON:stringify
+    (obj :concat (tag String:raw (template "\\n" ""))
+      :icu (tag String:raw (template "\\n")))))

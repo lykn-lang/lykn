@@ -1,0 +1,3 @@
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: cargo build --offline --locked --release -p lykn-cli
+exit: 0
