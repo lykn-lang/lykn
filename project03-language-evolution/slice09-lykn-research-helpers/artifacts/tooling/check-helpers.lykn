@@ -352,7 +352,13 @@
       (->
         (new TextDecoder)
         (:decode v5:stderr)
-        (:includes "not a regular file: json ./value -> json/value.js"))
+        (:includes "NotFound: No such file or directory"))
+      "V5 did not report missing-path context")
+    (ensure
+      (->
+        (new TextDecoder)
+        (:decode v5:stderr)
+        (:includes "/target/lykn/dist/json/value.js"))
       "V5 failed for an unexpected reason")
     (bind v6-path (template root "/V6"))
     (await (copy-validator-input workspace v6-path))

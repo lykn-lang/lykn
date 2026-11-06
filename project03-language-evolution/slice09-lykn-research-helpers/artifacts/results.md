@@ -368,3 +368,30 @@ before any new runtime. The remaining fixed controls use a fresh run root;
 compare successful V0 stdout with the already saved original output via native
 `cmp`. Preserve both the failed run and any later outcomes. No further Python
 execution, original deletion, or acceptance is claimed.
+
+The next frozen invocation used helper4 JS and fresh run root
+`target/slice09/run-iteration01-v1-2026-11-06`. It passed V0–V4; V5 returned
+nonzero from the validator as required, but the driver then failed its
+over-specific error assertion. Captured stderr reports Deno `NotFound` for
+`/target/lykn/dist/json/value.js`, with exit-status file `1`; stderr SHA-256 is
+`b0c440b3f2d7dd53d2cf78262457f64258d50e0bd7c2d91524e2dd968858d1b9`. The
+binding slice plan requires a missing target to fail nonzero with context; it
+does not prescribe the exact text. `Deno.stat` raises `NotFound` before the
+regular-file predicate, so the source validator remains unchanged. The driver
+now checks both the `NotFound` classification and the exact missing dist path,
+retaining contextual coverage without demanding an invented custom message.
+V6, V7 and R0–R3 remain unrun in this attempt.
+
+The corrected V5 assertion source is SHA-256
+`82fca2d87cd5c07ee4545b51a6fa721ed0d5bfab7db126d5f2e53e46eb2a3e89`, frozen
+before each affected accepted-tool gate in
+`check-helpers-v5-error-context-{check,fmt,lint,compile}.lykn`. From the
+explicit empty project cwd, accepted `check` passed (31 top-level expressions),
+`fmt --check` passed, `lint` reported no findings, and compile exited 0 with
+nonfatal unused-binding warnings retained. Generated output
+`check-helpers-accepted-compile5.js` has SHA-256
+`ad68208c9654f732756bc19f1f99becfd56d1faab3d280c52c682ab3a5fc201d`; it
+contains the new V5 context assertions and no `COMPILE_ERROR` placeholder.
+This correction and V0–V5 failure evidence are committed before the next fresh
+runtime. No new case was added, and neither the original validator nor source
+workspace was rerun or changed.
