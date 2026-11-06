@@ -189,3 +189,35 @@ The complete command/exit/stdout/stderr receipts, emitted JS, case inputs, and
 source/build pins are retained under `artifacts/diagnosis/run-01/`. Compiler
 source remains clean at b841; planning work will be committed as a separate
 diagnosis record with ledger statuses left open for CDC review.
+
+## Iteration 01 changed-contract readback and baseline preservation
+
+Read the complete iteration prompt and CDC Phase A acceptance. The binding
+change is source representation only: native `emit_template_text(&str)` and
+canonical JS `makeTemplateElement` must encode each decoded backslash as two
+backslashes, CR as `\\r`, backtick as `\\``, and dollar as `\\$`; all other
+characters, including LF, pass through. JS doubles original backslashes before
+its existing delimiter/dollar escaping and keeps `cooked` equal to input. The
+native helper signature and concat/ICU sharing remain. The embedded JS mirror
+must equal the canonical compiler byte-for-byte. Existing native AST passthrough
+tests and D2's contrary printed-text expectation are to be reconciled explicitly;
+the tag smoke test remains, with raw now expected to encode the generated
+post-expansion JS representation (`[92,92,110]` for P6), not the original
+decoded Lykn value or token bytes.
+
+The new Rust and public-JS regression tests must share the six frozen P1–P6
+fixtures, run real strict compiler/runtime paths, and account for all 22 values.
+Expected-red native and JS executions must be captured after the fixture/test
+commit and before the implementation. No reader, AST, normalizer, dependency,
+test-helper, or cache-policy change is authorized. Packaging validation must
+use `make fresh-artifacts` and a new owned XDG cache; the embedded materializer
+uses a version-only sentinel, so the pre-existing global same-version cache
+will not be changed. The full unfiltered gate remains required.
+
+Before rebuilding, the b841 task binary was copied from `target/release/lykn`
+to ignored task `target/lykn/tools/lykn-b841f71b/bin/lykn`. Source and copy both
+hash to `e69f67f4cbc8cda4b9a3a82436bd3375f277d68c45387dae7ac7fc2a9ba32ae8`
+and report `lykn 0.6.0`. Baseline identity, exact copy command, and verification
+are retained at `artifacts/repair/run-01/baseline/identity.txt`. Current source
+is clean at b841; lock hash remains
+`672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce`.

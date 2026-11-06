@@ -1,0 +1,11 @@
+Source commit: codex/template-string-boundary b841f71b30eb2c3e340a651ae1d57de04fec3d79
+Cargo.lock SHA-256: 672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce
+Source binary path: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+Preserved binary path: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/tools/lykn-b841f71b/bin/lykn
+Copy command: cp target/release/lykn target/lykn/tools/lykn-b841f71b/bin/lykn
+Source and preserved binary SHA-256: e69f67f4cbc8cda4b9a3a82436bd3375f277d68c45387dae7ac7fc2a9ba32ae8
+Preserved binary version: lykn 0.6.0
+Deno path: /opt/homebrew/bin/deno
+Deno version: 2.9.6 (stable, release, aarch64-apple-darwin), V8 15.0.245.2-rusty
+Deno SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Source tracked worktree was clean before any repair edits.
