@@ -4256,12 +4256,24 @@ mod tests {
     #[test]
     fn test_current_await_class_member_countercontrol() {
         let await_expr = list(vec![atom("await"), atom("load")]);
-        let method = list(vec![
+        let named_await = list(vec![atom("await"), list(vec![]), num(1.0)]);
+        let deferred_async_method = list(vec![
             atom("async"),
-            list(vec![atom("await"), list(vec![]), await_expr.clone()]),
+            list(vec![atom("later"), list(vec![]), await_expr.clone()]),
         ]);
-        let class = list(vec![atom("class"), atom("C"), list(vec![]), method.clone()]);
-        let class_expr = list(vec![atom("class-expr"), list(vec![]), method]);
+        let class = list(vec![
+            atom("class"),
+            atom("C"),
+            list(vec![]),
+            named_await.clone(),
+            deferred_async_method.clone(),
+        ]);
+        let class_expr = list(vec![
+            atom("class-expr"),
+            list(vec![]),
+            named_await,
+            deferred_async_method,
+        ]);
         assert!(!contains_current_await(&class));
         assert!(!contains_current_await(&class_expr));
 
