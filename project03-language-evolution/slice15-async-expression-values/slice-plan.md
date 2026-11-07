@@ -222,3 +222,17 @@ documented for-await-of was omitted from statement classification. Preserved
 that bounded alignment and the original lowered-kernel detector callsites before
 fresh native/full gates. No shared fixture/oracle or JS body changes. One correction
 remains after4/5; no reset. Existing unchanged JS proof stays attributed to0fe.
+
+## Last fixture correction5
+
+The normal full Make on546 stopped at the newly authored E5 intentional enclosing
+shadow warning, after deps/citations/build/clippy/format/syntax passed. It is an
+authored fixture/lint conflict, not a demonstrated new compiler gap. Complete
+shadow-source/native/public outcomes, including independent CDC replays, stay
+preserved and applicable to identical production blobs. The final
+[correction5](cc-prompt-iteration04.md) replaces that current-tree condition with
+two same-name local bindings in sibling Do scopes, preserving exact output JSON
+and all other cases. It tests sibling isolation, not enclosing shadowing. No
+suppression, exclusion, lint/product change or historical proof substitution.
+Fresh same-five/full gates follow the fixture freeze. Five-correction budget is
+then exhausted; no reset or further substantive correction loop.
