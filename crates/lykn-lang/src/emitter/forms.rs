@@ -612,12 +612,7 @@ fn emit_switch_children(
                 // to the original atom, so copy it without re-dispatching.
                 emitted_clause.push(test.clone());
             } else {
-                emitted_clause.push(emit_in_context(
-                    test,
-                    ExprContext::Value,
-                    ctx,
-                    registry,
-                ));
+                emitted_clause.push(emit_in_context(test, ExprContext::Value, ctx, registry));
             }
             emitted_clause.extend(clause_values[1..].iter().map(|body_form| {
                 emit_in_context(body_form, ExprContext::Statement, ctx, registry)
