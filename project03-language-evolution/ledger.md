@@ -11,6 +11,12 @@ acceptance. No source/experiment/K/implementation dispatch is authorized by this
 opening; eight spent tooling passes and all original child dispositions remain.
 P-1, original F1–F12 and Project07 outcomes remain open.
 
+Fresh separate `/root/cdc/compiler_integrity_plan_review` (Sol6.1 High) found
+fixed draft17182cb adequate for Operator design review; see the actual
+[planning report](arc01-compiler-semantic-integrity/artifacts/planning-review.md).
+No capability row closes from that verdict. Subsequent author edits clarify
+source citations and record this planning outcome, without expanding authority.
+
 2026-11-07 [Slice19 StageA](slice19-match-subject-and-walker/cdc-verification.md)
 independently accepts task8ed BOTHsourcefixes at MS-02/MS-03; fresh normal gates/
 same740 runtime/readable outputs verified. Other MSrows remainopen, all13K unrun;

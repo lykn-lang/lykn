@@ -9,7 +9,10 @@ Read with the [arc roadmap](../arc-plan.md) and [open ledger](../ledger.md).
 Source facts below refer to accepted task
 `codex/match-subject-values@8ed869f1ed24bf688ba91f71d8c539680136794e`,
 checkout `lang/.worktrees/contract-predicate-lowering`. Relative source paths
-in this record belong to that tree, not the orphan planning tree. Release/0.6.x
+in this record belong to that tree, not the orphan planning tree. Native language
+module shorthand (`classifier/`, `emitter/`, `ast/`, `codegen/`, `error.rs`)
+has prefix `crates/lykn-lang/src/`; CLI shorthand (`compile.rs`, `dist.rs`,
+`main.rs`) has prefix `crates/lykn-cli/src/`. Release/0.6.x
 is separately `5408abd432b8789ae474a3895436f68818c4e482`. C10/11 acceptance
 is task-only; C12 does not invalidate those independently tested repairs.
 No new test, trial or code edit was conducted for this design.
@@ -28,7 +31,8 @@ original evidence strength; a new roadmap does not reconstruct or cure them.
   forms as Statement. Emitter `forms.rs` uses three-state `ExprContext`
   (Statement/Value/Tail). Its numeric-for fixed positional profile around 3271
   defaults later children to Value. Printer `codegen/emit.rs:734–747` accepts
-  every body form after the three headers. Guide00 documents variadic bodies.
+  every body form after the three headers. Guide00 documents numeric-for and
+  statement-if; the classifier and printer establish variadic-for body support.
   This is the bounded NE-C12 mismatch; it is not evidence every loop is broken.
 - Native `ast/surface.rs` contains typed outer forms and raw nested SExprs:
   FuncClause body, Match target/clauses, Bind values and FunctionCall args are
@@ -220,3 +224,22 @@ activate for required findings with source/example/link validation and independe
 review; otherwise explicitly record not needed. Any pending required book/human
 work stays open at arc close. Neither audit nor placeholder authorizes a merge,
 publication, API break or delayed compatibility choice.
+
+## Planning-session outcome and retrospective
+
+The fresh separate Sol 6.1 High reviewer found the fixed draft17182cb adequate
+for Operator design review, with no material correction required; see the
+[attributed report](planning-review.md). The author subsequently made only the
+two announced source-citation precision edits and added this session record.
+That review is independent design/source inspection, not fresh replay of old
+source acceptance or acceptance of a future architecture implementation.
+
+The useful planning change is a shared normative contract with separately usable
+source deliveries and explicit adjacent owners, rather than making every new
+observation another automatically opened prerequisite. Cfor correctness and
+error/API migration were split before execution; the Operator's final API/docs
+request became actual close gates. Historical A6 benefits were qualified as
+hypotheses instead of using repeated raw-shape findings to presume a rewrite.
+No empirical claim that this roadmap improves implementation effectiveness is
+made yet. Future readiness must demonstrate source/API compatibility and actual
+behavior without losing the retained budgets, failure records or human goals.

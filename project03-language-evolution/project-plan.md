@@ -45,6 +45,12 @@ A6 is an architecture alternative with a named decision owner, not an approved
 recursive-AST rewrite. Numbered code slices open only after design/execution
 approval and source-ready sizing.
 
+Fresh separate Sol6.1 High [planning review](arc01-compiler-semantic-integrity/artifacts/planning-review.md)
+found fixed draft17182cb adequate for Operator design review, with no material
+correction required. This is plan adequacy, not architecture/API approval or
+software acceptance. The author clarified two source citations afterward;
+all proposed capability and Operator decision gates remain unchanged.
+
 ## Current direction and bounded Autonomous Mode (2026-11-05)
 
 The operator accepted the proposed core-library approach and directed the next

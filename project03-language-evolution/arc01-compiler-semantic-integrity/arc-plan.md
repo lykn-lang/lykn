@@ -153,6 +153,11 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-07 v0.2: Fresh separate Sol 6.1 High
+  [planning review](artifacts/planning-review.md) found draft17182cb adequate
+  for Operator design review, with no material correction. Clarified two source
+  citations; all capabilities/architecture/API/execution decisions remain open.
+
 - 2026-11-07 v0.1: Proposed planning-only arc after NE-C12; preserved all
   standalone units and accepted/task-versus-release boundaries. Split Cfor and
   fatal API delivery, assigned every finding, and added the Operator-requested
