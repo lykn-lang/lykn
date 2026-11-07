@@ -247,3 +247,84 @@ fn consumed_match_tail_if_is_rejected_without_writing_outputs() {
         "rejected file compile wrote declarations"
     );
 }
+
+#[test]
+fn ordinary_fn_body_yields_keyword_does_not_hide_no_else_if() {
+    let temp = TempDir::new().expect("create ordinary fn validation directory");
+    let source = write_source(
+        &temp,
+        "ordinary-fn.lykn",
+        "(bind f (fn (:boolean cond) :yields (consume (if cond 1)) 42))\n",
+    );
+    let check = execute(
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .arg("check")
+            .arg(&source),
+    );
+    eprintln!(
+        "MATCH_FN_YIELDS status={:?} stdout={:?} stderr={:?}",
+        check.status.code(),
+        check.stdout,
+        check.stderr
+    );
+    assert!(
+        !check.status.success(),
+        "fn body no-else if must be rejected"
+    );
+    assert!(diagnostic(&check).contains("if in expression position requires an else branch"));
+}
+
+#[test]
+fn ordinary_lambda_body_yields_keyword_does_not_hide_no_else_if() {
+    let temp = TempDir::new().expect("create ordinary lambda validation directory");
+    let source = write_source(
+        &temp,
+        "ordinary-lambda.lykn",
+        "(bind f (lambda (:boolean cond) :yields (consume (if cond 1)) 42))\n",
+    );
+    let check = execute(
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .arg("check")
+            .arg(&source),
+    );
+    eprintln!(
+        "MATCH_LAMBDA_YIELDS status={:?} stdout={:?} stderr={:?}",
+        check.status.code(),
+        check.stdout,
+        check.stderr
+    );
+    assert!(
+        !check.status.success(),
+        "lambda body no-else if must be rejected"
+    );
+    assert!(diagnostic(&check).contains("if in expression position requires an else branch"));
+}
+
+#[test]
+fn genfn_yields_header_keeps_statement_body_policy() {
+    let temp = TempDir::new().expect("create generator validation directory");
+    let source = write_source(
+        &temp,
+        "generator.lykn",
+        "(bind f (genfn (:boolean cond) :yields :number (if cond (yield 1))))\n",
+    );
+    let check = execute(
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .arg("check")
+            .arg(&source),
+    );
+    eprintln!(
+        "MATCH_GENFN_YIELDS status={:?} stdout={:?} stderr={:?}",
+        check.status.code(),
+        check.stdout,
+        check.stderr
+    );
+    assert!(
+        check.status.success(),
+        "valid generator body rejected: {}",
+        diagnostic(&check)
+    );
+}

@@ -4014,6 +4014,41 @@ mod tests {
     }
 
     #[test]
+    fn test_emit_statement_match_target_in_value_context() {
+        let target = list(vec![atom("if"), atom("ready"), num(1.0), num(2.0)]);
+        let form = SurfaceForm::Match {
+            target,
+            clauses: vec![MatchClause {
+                pattern: Pattern::Wildcard(s()),
+                guard: None,
+                body: vec![num(0.0)],
+                span: s(),
+            }],
+            span: s(),
+        };
+        let mut c = ctx();
+        let result = emit_form(&form, &mut c, &reg());
+        let SExpr::List { values: block, .. } = &result[0] else {
+            panic!("expected statement match block");
+        };
+        let SExpr::List {
+            values: binding, ..
+        } = &block[1]
+        else {
+            panic!("expected target const binding");
+        };
+        let SExpr::List {
+            values: initializer,
+            ..
+        } = &binding[2]
+        else {
+            panic!("expected value expression initializer");
+        };
+        assert_eq!(initializer[0].as_atom(), Some("?"));
+        assert_eq!(c.expr_context, ExprContext::Statement);
+    }
+
+    #[test]
     fn test_emit_match_literal_value_context() {
         let form = SurfaceForm::Match {
             target: atom("x"),
