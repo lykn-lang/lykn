@@ -379,12 +379,11 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
                 if position.is_value() && values.len() < 4 {
                     out.push(no_else_if_expression_diagnostic(*span));
                 }
-                for (index, value) in values[1..].iter().enumerate() {
-                    let child_position = match index {
-                        0 => ExprPosition::Value,
-                        _ => ExprPosition::Statement,
-                    };
-                    walk_no_else_if_expression(value, child_position, out);
+                if let Some(condition) = values.get(1) {
+                    walk_no_else_if_expression(condition, ExprPosition::Value, out);
+                }
+                for branch in values.get(2..).unwrap_or_default() {
+                    walk_no_else_if_expression(branch, position, out);
                 }
                 return;
             }
@@ -392,8 +391,9 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
             match head {
                 "bind" => walk_bind_value(values, out),
                 "cond" => walk_cond_clauses(values, position, out),
-                "func" | "genfunc" => walk_func_like_args(&values[1..], out),
-                "fn" | "lambda" | "genfn" => walk_fn_like_args(&values[1..], out),
+                "func" => walk_func_like_args(&values[1..], out),
+                "fn" | "lambda" => walk_fn_like_args(&values[1..], out),
+                "match" => walk_match_args(&values[1..], position, out),
                 "obj" => walk_keyword_value_pairs(&values[1..], out),
                 "cell" | "express" | "conj" | "dissoc" | "=" | "!=" | "and" | "or" | "not" => {
                     walk_args(&values[1..], ExprPosition::Value, out);
@@ -416,8 +416,10 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
                     walk_args(&values[1..], ExprPosition::Value, out);
                 }
                 "do" => {
-                    walk_args(&values[1..], ExprPosition::Statement, out);
+                    walk_do_args(&values[1..], position, out);
                 }
+                "genfunc" => walk_args(&values[1..], ExprPosition::Statement, out),
+                "genfn" => walk_fn_like_args(&values[1..], out),
                 "class" => walk_class_args(values, true, out),
                 "class-expr" => walk_class_args(values, false, out),
                 "block" | "label" | "try" | "function" | "function*" | "=>" | "break"
@@ -549,26 +551,114 @@ fn walk_func_like_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
 
 fn walk_func_clause_items(items: &[SExpr], out: &mut Vec<Diagnostic>) {
     let mut current_key: Option<&str> = None;
+    let mut returns_void = false;
+    let mut body = Vec::new();
     for item in items {
-        if let SExpr::Keyword { value, .. } = item
-            && is_func_clause_key(value)
-        {
-            current_key = Some(value);
+        if let SExpr::Keyword { value, .. } = item {
+            if is_func_clause_key(value) {
+                current_key = Some(value);
+            } else if current_key == Some("returns") {
+                returns_void = value == "void";
+            }
             continue;
         }
         match current_key {
             Some("pre" | "post") => walk_no_else_if_expression(item, ExprPosition::Value, out),
-            Some("body") => walk_no_else_if_expression(item, ExprPosition::Statement, out),
+            Some("body") => body.push(item),
             _ => {}
         }
     }
+    walk_function_body(&body, returns_void, out);
 }
 
 fn walk_fn_like_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
     if args.len() < 2 {
         return;
     }
-    walk_args(&args[1..], ExprPosition::Statement, out);
+    walk_function_body(&args[1..].iter().collect::<Vec<_>>(), false, out);
+}
+
+fn walk_function_body(body: &[&SExpr], returns_void: bool, out: &mut Vec<Diagnostic>) {
+    for (index, expr) in body.iter().enumerate() {
+        let is_tail = index + 1 == body.len();
+        let position = if !returns_void && is_tail && is_value_function_tail(expr) {
+            ExprPosition::Value
+        } else {
+            ExprPosition::Statement
+        };
+        walk_no_else_if_expression(expr, position, out);
+    }
+}
+
+fn is_value_function_tail(expr: &SExpr) -> bool {
+    // Mirrors emitter/forms.rs::emit_function_body: a final `if` with an else
+    // is value-producing even though `if` is also a statement form there.
+    let Some(values) = expr.as_list() else {
+        return true;
+    };
+    let Some(head) = values.first().and_then(|value| value.as_form_head()) else {
+        return true;
+    };
+    if head == "if" && values.len() >= 4 {
+        return true;
+    }
+    !matches!(
+        head,
+        "if" | "while" | "for" | "for-of" | "for-in" | "for-await-of" | "do-while"
+            | "switch" | "throw" | "return" | "break" | "continue" | "label"
+            | "debugger" | "block" | "try" | "catch" | "finally" | "var" | "const"
+            | "let" | "func" | "class" | "type" | "export" | "import"
+    )
+}
+
+fn walk_do_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+    for (index, expr) in args.iter().enumerate() {
+        let child_position = if position.is_value() && index + 1 == args.len() {
+            ExprPosition::Value
+        } else {
+            ExprPosition::Statement
+        };
+        walk_no_else_if_expression(expr, child_position, out);
+    }
+}
+
+fn walk_match_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+    if let Some(subject) = args.first() {
+        walk_no_else_if_expression(subject, ExprPosition::Value, out);
+    }
+
+    for clause in args.get(1..).unwrap_or_default() {
+        let Some(items) = clause.as_list() else {
+            continue;
+        };
+        if items.len() < 2 {
+            continue;
+        }
+
+        // Match patterns are classifier-owned syntax, not executable values.
+        // This mirrors classify_match's optional :when positions without
+        // duplicating its malformed-clause diagnostics or indexing unchecked.
+        let body_start = if items.len() >= 3
+            && matches!(items.get(1), Some(SExpr::Keyword { value, .. }) if value == "when")
+        {
+            if let Some(guard) = items.get(2) {
+                walk_no_else_if_expression(guard, ExprPosition::Value, out);
+            }
+            3
+        } else {
+            1
+        };
+
+        let body = items.get(body_start..).unwrap_or_default();
+        for (index, expr) in body.iter().enumerate() {
+            let child_position = if index + 1 == body.len() {
+                position
+            } else {
+                ExprPosition::Statement
+            };
+            walk_no_else_if_expression(expr, child_position, out);
+        }
+    }
 }
 
 fn walk_class_args(values: &[SExpr], has_name: bool, out: &mut Vec<Diagnostic>) {
@@ -6910,6 +7000,31 @@ mod tests {
             assert_eq!(diags.len(), 1, "expected one no-else diagnostic for {src}: {diags:?}");
             assert!(diags[0].message.contains("if in expression position requires an else branch"), "unexpected diagnostic for {src}: {}", diags[0].message);
         }
+    }
+
+    #[test]
+    fn test_genfunc_precondition_remains_a_value() {
+        let genfunc = no_else_if_errs(
+            "(genfunc g :args (:boolean cond) :yields :number :pre (if cond true) :body (yield 1))",
+        );
+        assert_eq!(genfunc.len(), 1, "genfunc precondition remains a value");
+        assert!(genfunc[0].message.contains("requires an else branch"));
+    }
+
+    #[test]
+    fn test_function_keeps_keyword_tail_after_statement_match_prefix() {
+        assert!(no_else_if_errs(
+            "(func f :args (:boolean cond) :returns :keyword :body (match x (_ (if cond (console:log \"x\")))) :done)"
+        )
+        .is_empty());
+    }
+
+    #[test]
+    fn test_genfn_match_tail_remains_a_statement() {
+        assert!(no_else_if_errs(
+            "(bind stream (genfn () (match x (_ (if cond (yield 1))))))"
+        )
+        .is_empty());
     }
 
     #[test]

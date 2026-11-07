@@ -86,7 +86,11 @@ fn match_clause_validation_preserves_context_and_runtime_behavior() {
     let generated_js = generated_js.expect("successful file compile writes JavaScript");
     let generated_dts = generated_dts.expect("successful typed file compile writes declarations");
     assert_eq!(stdout_compile.stdout, generated_js, "stdout and file compile routes differ");
-    assert!(generated_dts.starts_with(b"declare function collect"), "unexpected declaration bytes: {generated_dts:?}");
+    assert_eq!(
+        generated_dts,
+        b"type Choice =\n  | { tag: \"Box\"; ready: boolean }\n  | { tag: \"Other\" };\n",
+        "unexpected declaration bytes"
+    );
     assert!(generated_js.windows(b"prefix".len()).any(|window| window == b"prefix"));
     assert!(generated_js.windows(b"statement".len()).any(|window| window == b"statement"));
 
