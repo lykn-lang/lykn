@@ -1,5 +1,52 @@
 # Slice19 independent review — Stage A accepted, tooling open
 
+## Current verdict after correction7 — source syntax failure, pending Operator
+
+Operator approved ONE consolidated7. Actual two-source freeze7856c4d015fa4d754b82c371c00c6e23fb8e2225
+replaces the wrong core-source digest with OBSERVED generated068af and routes
+BindingRole at both helpers. Core6ca/scanner120bf/control0f20 unchanged. Final
+ignored TASKtarget core compile reproduced068af; native/fmt/lint/strictcompile4/4
+passed for core, full1986-byte JS independently read/hashed. Initial planning
+output was NOT ignored; exact move/initial -o context retained, not relabeled.
+No DTS was emitted (known NE-T01, not a universal helper-sidecar requirement);
+failed combined hash/copy is setup history, not parser/compiler failure.
+
+First post-edit walker check failed1, unterminated223:1. CDC independently checks
+SAME sourcec36f…/acceptedCLIaa319… in freshconfigfree/private/tmp: exit1, hashes
+stable; full raw/condition in cdc/correction07-walker-check. Actual source cause:
+visit-list default245 closes new/throw/clause/match/inner-if but NOT for232 before
+intended outer-if else246. This is ordinary authoring syntax, not a new compiler/
+parser capability gap. No edit/variant/workaround followed. CC raw committed
+0e771a99f66809cf1ab49213eec4ccafcaa6566b, correct actual supplied-message trailers.
+
+Executed7 denominators: initial core4/4 plus final-layout core4/4 (eight recorded
+gate invocations in those two contexts, not one relabeled run); walker native0/1 pass
+(exit1), walker remaining0/3 held; scanner0/4, observer0/4. Complete four-module
+generated/predicate/DenoCheck acceptance0/4 and zeroargguards0/4; K0/13/all13unrun.
+Core-only readable output is NOT whole tooling acceptance. Role/pin fixes remain
+UNACCEPTED as part of a syntax-invalid candidate. Other source/generated/runtime/
+oracle defects are not known absent: their remaining gates never ran.
+
+**Concrete next choice, NOT current authority:** ONE bounded correction8 adds
+the missing for close at245 BEFORE else246, preserving both intended semantic
+fixes and all core/control/oracle/product invariants. Then full required native/
+fmt/lint/strictcompile/generated/predicate/DenoCheck/genuinezeroarg gates, unchanged
+13 and independent fresh replay ONLY if prerequisites pass. No added family/table/
+argv or guarantee of convergence. Consider a fresh Sol6.1 High implementer with
+separate Sol6.1 High CDC review (task-local staffing recommendation in interim
+retrospective); model change and eighth cycle BOTH require explicit Operator
+choice. Same-model continuation or stopping here are also Operator choices.
+No eighth edit, contributor/model substitution or dependent gate launched.
+
+Source8ed remains independently accepted/task-only, release5408 unchanged.
+MS02/MS03 done, other rows open; unit incomplete. Prior history/budgets/process
+limits retained below, no reset or retroactive compliance.
+
+README provenance links now resolve to original frozen controls/predictions,
+current owning plan/review and accepted contract (five filesystem targets checked).
+Documentation clarifies same-file bounded scanner/no input-program execution and
+current unaccepted status. No source/control/prediction/runtime change follows.
+
 ## Current verdict after authorized correction6 — pending Operator again
 
 Operator explicitly authorized ONE extra correction6; actual442eccd changes

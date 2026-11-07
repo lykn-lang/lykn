@@ -140,6 +140,12 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Operator authorized consolidated Slice19 correction7: actual core
+final-layout prerequisites4/4/pin068af, but walker7856 failed native syntax223:1,
+independently reproduced. Candidate remains unaccepted; all13K unrun. No eighth
+cycle/model change authorized; concrete boundary repair/staffing choice awaits
+Operator. Source8ed acceptance unchanged, no release integration.
+
 2026-11-07 Operator authorized ONE extra Slice19 correction6, exact observer
 delimiter442; native4/4 CC passes. Static review then rejected source-vs-generated
 identity comparison and incomplete BindingRole routing. No later gates/K ran,

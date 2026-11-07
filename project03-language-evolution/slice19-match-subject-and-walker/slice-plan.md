@@ -1,5 +1,12 @@
 # Slice19 — match subject repair and combined validation
 
+Current: correction7 STOPPED, pending Operator. Core final-layout4/4 and generated
+068af pin reproduced; first7856 walker nativecheck1 unterminated223:1, independently
+confirmed. No postfailure edit/gate; K0/13. Seven spent/no reset/eighth. Exact
+semantic-boundary next proposal and optional staffing-change recommendation in
+cdc-verification/interim retrospective, neither authorized yet. Source8ed remains
+accepted; tools7856 unaccepted. All earlier active headers are historical now.
+
 2026-11-07 Operator explicitly replied “yup, please go ahead!” to fee9215's
 consolidated two-defect proposal. ONE extra correction7 authorized, six remain
 spent/no reset/eighth. Iteration05 now governs: fresh LunaHigh fork-none CC

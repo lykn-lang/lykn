@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+Current correction7 spent/pending Operator: core4/4 passes, walker native1fail
+independently reproduced at223:1; remaining gates/guards/K0/13 unrun. Candidate
+7856 UNACCEPTED. Seven spent/no eighth authority/model change. Exact one-boundary
+next proposal/known-vs-untested and interim retrospective preserved. Source8ed
+MS02/03 done, other four rows open; no completed-unit claim.
+
 Current2026-11-07: Operator “yup, please go ahead!” approves ONE consolidated
 correction7, six prior spent/no reset/eighth. Iteration05 freshLunaHigh owns two
 known ordinary defects, actual core strictcompile BEFORE expected artifact pin,
