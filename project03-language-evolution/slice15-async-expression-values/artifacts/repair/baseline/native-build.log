@@ -1,0 +1,616 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+error[E0015]: cannot call non-const associated function `serde_json::Map::<std::string::String, Value>::new` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:15:19
+   |
+15 |           expected: json!({
+   |  ___________________^
+16 | |             "value": 41,
+17 | |             "falseValue": 42,
+18 | |             "typeof": "number",
+19 | |             "noElsePrefix": 41,
+20 | |             "nestedEquality": true
+21 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `<&str as Into<std::string::String>>::into` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:15:19
+   |
+15 |           expected: json!({
+   |  ___________________^
+16 | |             "value": 41,
+17 | |             "falseValue": 42,
+18 | |             "typeof": "number",
+19 | |             "noElsePrefix": 41,
+20 | |             "nestedEquality": true
+21 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&i32>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:15:19
+    |
+ 15 |           expected: json!({
+    |  ___________________^
+ 16 | |             "value": 41,
+ 17 | |             "falseValue": 42,
+ 18 | |             "typeof": "number",
+ 19 | |             "noElsePrefix": 41,
+ 20 | |             "nestedEquality": true
+ 21 | |         }),
+    | |__________^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `Result::<Value, serde_json::Error>::unwrap` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:15:19
+   |
+15 |           expected: json!({
+   |  ___________________^
+16 | |             "value": 41,
+17 | |             "falseValue": 42,
+18 | |             "typeof": "number",
+19 | |             "noElsePrefix": 41,
+20 | |             "nestedEquality": true
+21 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `serde_json::Map::<std::string::String, Value>::insert` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:15:19
+   |
+15 |           expected: json!({
+   |  ___________________^
+16 | |             "value": 41,
+17 | |             "falseValue": 42,
+18 | |             "typeof": "number",
+19 | |             "noElsePrefix": 41,
+20 | |             "nestedEquality": true
+21 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0493]: destructor of `Option<Value>` cannot be evaluated at compile-time
+  --> crates/lykn-cli/tests/async_expression_values.rs:15:19
+   |
+15 |           expected: json!({
+   |  ___________________^
+16 | |             "value": 41,
+17 | |             "falseValue": 42,
+18 | |             "typeof": "number",
+19 | |             "noElsePrefix": 41,
+20 | |             "nestedEquality": true
+21 | |         }),
+   | |          ^
+   | |          |
+   | |__________the destructor for this type cannot be evaluated in constants
+   |            value is dropped here
+   |
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&&str>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:15:19
+    |
+ 15 |           expected: json!({
+    |  ___________________^
+ 16 | |             "value": 41,
+ 17 | |             "falseValue": 42,
+ 18 | |             "typeof": "number",
+ 19 | |             "noElsePrefix": 41,
+ 20 | |             "nestedEquality": true
+ 21 | |         }),
+    | |__________^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const associated function `serde_json::Map::<std::string::String, Value>::new` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+   |
+25 |           expected: json!({
+   |  ___________________^
+26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+28 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `<&str as Into<std::string::String>>::into` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+   |
+25 |           expected: json!({
+   |  ___________________^
+26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+28 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const associated function `Box::<[Value; 3]>::new_uninit` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+   |
+25 |           expected: json!({
+   |  ___________________^
+26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+28 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::__private::vec` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&&str>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+    |
+ 25 |           expected: json!({
+    |  ___________________^
+ 26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+ 27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+ 28 | |         }),
+    | |__________^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `Result::<Value, serde_json::Error>::unwrap` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+   |
+25 |           expected: json!({
+   |  ___________________^
+26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+28 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `std::boxed::box_assume_init_into_vec_unsafe::<Value, 3>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+    |
+ 25 |           expected: json!({
+    |  ___________________^
+ 26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+ 27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+ 28 | |         }),
+    | |__________^
+    |
+note: function `box_assume_init_into_vec_unsafe` is not const
+   --> /Users/oubiwann/.rustup/toolchains/1.97.0-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/boxed.rs:262:1
+    |
+262 | / pub fn box_assume_init_into_vec_unsafe<T, const N: usize>(
+263 | |     b: Box<MaybeUninit<[T; N]>>,
+264 | | ) -> crate::vec::Vec<T> {
+    | |_______________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__private::vec` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `serde_json::Map::<std::string::String, Value>::insert` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+   |
+25 |           expected: json!({
+   |  ___________________^
+26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+28 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0493]: destructor of `Option<Value>` cannot be evaluated at compile-time
+  --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+   |
+25 |           expected: json!({
+   |  ___________________^
+26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+28 | |         }),
+   | |          ^
+   | |          |
+   | |__________the destructor for this type cannot be evaluated in constants
+   |            value is dropped here
+   |
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&i32>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:25:19
+    |
+ 25 |           expected: json!({
+    |  ___________________^
+ 26 | |             "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
+ 27 | |             "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
+ 28 | |         }),
+    | |__________^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const associated function `serde_json::Map::<std::string::String, Value>::new` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:32:19
+   |
+32 |         expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `<&str as Into<std::string::String>>::into` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:32:19
+   |
+32 |         expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `serde_json::Map::<std::string::String, Value>::insert` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:32:19
+   |
+32 |         expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0493]: destructor of `Option<Value>` cannot be evaluated at compile-time
+  --> crates/lykn-cli/tests/async_expression_values.rs:32:19
+   |
+32 |         expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |                   |
+   |                   the destructor for this type cannot be evaluated in constants
+   |                   value is dropped here
+   |
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&&str>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:32:19
+    |
+ 32 |         expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `Result::<Value, serde_json::Error>::unwrap` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:32:19
+   |
+32 |         expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&i32>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:32:19
+    |
+ 32 |         expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const associated function `serde_json::Map::<std::string::String, Value>::new` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:36:19
+   |
+36 |           expected: json!({
+   |  ___________________^
+37 | |             "constructionCalls": 0,
+38 | |             "immediateType": "function",
+39 | |             "invocationCalls": 1,
+40 | |             "result": 9
+41 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `<&str as Into<std::string::String>>::into` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:36:19
+   |
+36 |           expected: json!({
+   |  ___________________^
+37 | |             "constructionCalls": 0,
+38 | |             "immediateType": "function",
+39 | |             "invocationCalls": 1,
+40 | |             "result": 9
+41 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&i32>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:36:19
+    |
+ 36 |           expected: json!({
+    |  ___________________^
+ 37 | |             "constructionCalls": 0,
+ 38 | |             "immediateType": "function",
+ 39 | |             "invocationCalls": 1,
+ 40 | |             "result": 9
+ 41 | |         }),
+    | |__________^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `Result::<Value, serde_json::Error>::unwrap` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:36:19
+   |
+36 |           expected: json!({
+   |  ___________________^
+37 | |             "constructionCalls": 0,
+38 | |             "immediateType": "function",
+39 | |             "invocationCalls": 1,
+40 | |             "result": 9
+41 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `serde_json::Map::<std::string::String, Value>::insert` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:36:19
+   |
+36 |           expected: json!({
+   |  ___________________^
+37 | |             "constructionCalls": 0,
+38 | |             "immediateType": "function",
+39 | |             "invocationCalls": 1,
+40 | |             "result": 9
+41 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0493]: destructor of `Option<Value>` cannot be evaluated at compile-time
+  --> crates/lykn-cli/tests/async_expression_values.rs:36:19
+   |
+36 |           expected: json!({
+   |  ___________________^
+37 | |             "constructionCalls": 0,
+38 | |             "immediateType": "function",
+39 | |             "invocationCalls": 1,
+40 | |             "result": 9
+41 | |         }),
+   | |          ^
+   | |          |
+   | |__________the destructor for this type cannot be evaluated in constants
+   |            value is dropped here
+   |
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&&str>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:36:19
+    |
+ 36 |           expected: json!({
+    |  ___________________^
+ 37 | |             "constructionCalls": 0,
+ 38 | |             "immediateType": "function",
+ 39 | |             "invocationCalls": 1,
+ 40 | |             "result": 9
+ 41 | |         }),
+    | |__________^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const associated function `serde_json::Map::<std::string::String, Value>::new` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+   |
+45 |           expected: json!({
+   |  ___________________^
+46 | |             "trace": ["selected"],
+47 | |             "selectedMessage": "selected boom",
+48 | |             "rejectionMessage": "await rejected",
+49 | |             "outer": "outer",
+50 | |             "scoped": "inner"
+51 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `<&str as Into<std::string::String>>::into` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+   |
+45 |           expected: json!({
+   |  ___________________^
+46 | |             "trace": ["selected"],
+47 | |             "selectedMessage": "selected boom",
+48 | |             "rejectionMessage": "await rejected",
+49 | |             "outer": "outer",
+50 | |             "scoped": "inner"
+51 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const associated function `Box::<[Value; 1]>::new_uninit` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+   |
+45 |           expected: json!({
+   |  ___________________^
+46 | |             "trace": ["selected"],
+47 | |             "selectedMessage": "selected boom",
+48 | |             "rejectionMessage": "await rejected",
+49 | |             "outer": "outer",
+50 | |             "scoped": "inner"
+51 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::__private::vec` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `to_value::<&&str>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+    |
+ 45 |           expected: json!({
+    |  ___________________^
+ 46 | |             "trace": ["selected"],
+ 47 | |             "selectedMessage": "selected boom",
+ 48 | |             "rejectionMessage": "await rejected",
+ 49 | |             "outer": "outer",
+ 50 | |             "scoped": "inner"
+ 51 | |         }),
+    | |__________^
+    |
+note: function `to_value` is not const
+   --> /Users/oubiwann/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.150/src/value/mod.rs:995:1
+    |
+995 | / pub fn to_value<T>(value: T) -> Result<Value, Error>
+996 | | where
+997 | |     T: Serialize,
+    | |_________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `Result::<Value, serde_json::Error>::unwrap` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+   |
+45 |           expected: json!({
+   |  ___________________^
+46 | |             "trace": ["selected"],
+47 | |             "selectedMessage": "selected boom",
+48 | |             "rejectionMessage": "await rejected",
+49 | |             "outer": "outer",
+50 | |             "scoped": "inner"
+51 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const function `std::boxed::box_assume_init_into_vec_unsafe::<Value, 1>` in constants
+   --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+    |
+ 45 |           expected: json!({
+    |  ___________________^
+ 46 | |             "trace": ["selected"],
+ 47 | |             "selectedMessage": "selected boom",
+ 48 | |             "rejectionMessage": "await rejected",
+ 49 | |             "outer": "outer",
+ 50 | |             "scoped": "inner"
+ 51 | |         }),
+    | |__________^
+    |
+note: function `box_assume_init_into_vec_unsafe` is not const
+   --> /Users/oubiwann/.rustup/toolchains/1.97.0-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/boxed.rs:262:1
+    |
+262 | / pub fn box_assume_init_into_vec_unsafe<T, const N: usize>(
+263 | |     b: Box<MaybeUninit<[T; N]>>,
+264 | | ) -> crate::vec::Vec<T> {
+    | |_______________________^
+    = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__private::vec` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const method `serde_json::Map::<std::string::String, Value>::insert` in constants
+  --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+   |
+45 |           expected: json!({
+   |  ___________________^
+46 | |             "trace": ["selected"],
+47 | |             "selectedMessage": "selected boom",
+48 | |             "rejectionMessage": "await rejected",
+49 | |             "outer": "outer",
+50 | |             "scoped": "inner"
+51 | |         }),
+   | |__________^
+   |
+   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0493]: destructor of `Option<Value>` cannot be evaluated at compile-time
+  --> crates/lykn-cli/tests/async_expression_values.rs:45:19
+   |
+45 |           expected: json!({
+   |  ___________________^
+46 | |             "trace": ["selected"],
+47 | |             "selectedMessage": "selected boom",
+48 | |             "rejectionMessage": "await rejected",
+49 | |             "outer": "outer",
+50 | |             "scoped": "inner"
+51 | |         }),
+   | |          ^
+   | |          |
+   | |__________the destructor for this type cannot be evaluated in constants
+   |            value is dropped here
+   |
+   = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Some errors have detailed explanations: E0015, E0493.
+For more information about an error, try `rustc --explain E0015`.
+error: could not compile `lykn-cli` (test "async_expression_values") due to 128 previous errors
