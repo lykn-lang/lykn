@@ -359,6 +359,12 @@ enum ExprPosition {
     Value,
 }
 
+#[derive(Clone, Copy)]
+enum FunctionBodyPolicy {
+    ValueTail,
+    Statements,
+}
+
 impl ExprPosition {
     fn is_value(self) -> bool {
         matches!(self, Self::Value)
@@ -391,8 +397,10 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
             match head {
                 "bind" => walk_bind_value(values, out),
                 "cond" => walk_cond_clauses(values, position, out),
-                "func" => walk_func_like_args(&values[1..], out),
-                "fn" | "lambda" => walk_fn_like_args(&values[1..], out),
+                "func" => walk_func_like_args(&values[1..], FunctionBodyPolicy::ValueTail, out),
+                "fn" | "lambda" => {
+                    walk_fn_like_args(&values[1..], FunctionBodyPolicy::ValueTail, out)
+                }
                 "match" => walk_match_args(&values[1..], position, out),
                 "obj" => walk_keyword_value_pairs(&values[1..], out),
                 "cell" | "express" | "conj" | "dissoc" | "=" | "!=" | "and" | "or" | "not" => {
@@ -418,8 +426,8 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
                 "do" => {
                     walk_do_args(&values[1..], position, out);
                 }
-                "genfunc" => walk_args(&values[1..], ExprPosition::Statement, out),
-                "genfn" => walk_fn_like_args(&values[1..], out),
+                "genfunc" => walk_func_like_args(&values[1..], FunctionBodyPolicy::Statements, out),
+                "genfn" => walk_fn_like_args(&values[1..], FunctionBodyPolicy::Statements, out),
                 "class" => walk_class_args(values, true, out),
                 "class-expr" => walk_class_args(values, false, out),
                 "block" | "label" | "try" | "function" | "function*" | "=>" | "break"
@@ -525,14 +533,14 @@ fn walk_cond_clauses(values: &[SExpr], position: ExprPosition, out: &mut Vec<Dia
     }
 }
 
-fn walk_func_like_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
+fn walk_func_like_args(args: &[SExpr], body_policy: FunctionBodyPolicy, out: &mut Vec<Diagnostic>) {
     if args.len() < 2 {
         return;
     }
 
     match &args[1] {
         SExpr::Keyword { value, .. } if is_func_clause_key(value) => {
-            walk_func_clause_items(&args[1..], out);
+            walk_func_clause_items(&args[1..], body_policy, out);
         }
         SExpr::List { values, .. }
             if values.first().is_some_and(
@@ -541,25 +549,41 @@ fn walk_func_like_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
         {
             for arg in &args[1..] {
                 if let SExpr::List { values, .. } = arg {
-                    walk_func_clause_items(values, out);
+                    walk_func_clause_items(values, body_policy, out);
                 }
             }
         }
-        _ => walk_args(&args[1..], ExprPosition::Statement, out),
+        _ => walk_function_body(
+            &args[1..].iter().collect::<Vec<_>>(),
+            false,
+            body_policy,
+            out,
+        ),
     }
 }
 
-fn walk_func_clause_items(items: &[SExpr], out: &mut Vec<Diagnostic>) {
+fn walk_func_clause_items(
+    items: &[SExpr],
+    body_policy: FunctionBodyPolicy,
+    out: &mut Vec<Diagnostic>,
+) {
     let mut current_key: Option<&str> = None;
     let mut returns_void = false;
     let mut body = Vec::new();
     for item in items {
-        if let SExpr::Keyword { value, .. } = item {
-            if is_func_clause_key(value) {
-                current_key = Some(value);
-            } else if current_key == Some("returns") {
+        if let SExpr::Keyword { value, .. } = item
+            && is_func_clause_key(value)
+        {
+            current_key = Some(value);
+            continue;
+        }
+        if current_key == Some("returns") {
+            if let SExpr::Keyword { value, .. } = item {
                 returns_void = value == "void";
             }
+            continue;
+        }
+        if matches!(item, SExpr::Keyword { .. }) && current_key != Some("body") {
             continue;
         }
         match current_key {
@@ -568,20 +592,41 @@ fn walk_func_clause_items(items: &[SExpr], out: &mut Vec<Diagnostic>) {
             _ => {}
         }
     }
-    walk_function_body(&body, returns_void, out);
+    walk_function_body(&body, returns_void, body_policy, out);
 }
 
-fn walk_fn_like_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
+fn walk_fn_like_args(args: &[SExpr], body_policy: FunctionBodyPolicy, out: &mut Vec<Diagnostic>) {
     if args.len() < 2 {
         return;
     }
-    walk_function_body(&args[1..].iter().collect::<Vec<_>>(), false, out);
+    let body_start = if args.len() >= 3
+        && matches!(args.get(1), Some(SExpr::Keyword { value, .. }) if value == "yields")
+    {
+        3
+    } else {
+        1
+    };
+    walk_function_body(
+        &args[body_start..].iter().collect::<Vec<_>>(),
+        false,
+        body_policy,
+        out,
+    );
 }
 
-fn walk_function_body(body: &[&SExpr], returns_void: bool, out: &mut Vec<Diagnostic>) {
+fn walk_function_body(
+    body: &[&SExpr],
+    returns_void: bool,
+    body_policy: FunctionBodyPolicy,
+    out: &mut Vec<Diagnostic>,
+) {
     for (index, expr) in body.iter().enumerate() {
         let is_tail = index + 1 == body.len();
-        let position = if !returns_void && is_tail && is_value_function_tail(expr) {
+        let position = if matches!(body_policy, FunctionBodyPolicy::ValueTail)
+            && !returns_void
+            && is_tail
+            && is_value_function_tail(expr)
+        {
             ExprPosition::Value
         } else {
             ExprPosition::Statement
@@ -604,10 +649,31 @@ fn is_value_function_tail(expr: &SExpr) -> bool {
     }
     !matches!(
         head,
-        "if" | "while" | "for" | "for-of" | "for-in" | "for-await-of" | "do-while"
-            | "switch" | "throw" | "return" | "break" | "continue" | "label"
-            | "debugger" | "block" | "try" | "catch" | "finally" | "var" | "const"
-            | "let" | "func" | "class" | "type" | "export" | "import"
+        "if" | "while"
+            | "for"
+            | "for-of"
+            | "for-in"
+            | "for-await-of"
+            | "do-while"
+            | "switch"
+            | "throw"
+            | "return"
+            | "break"
+            | "continue"
+            | "label"
+            | "debugger"
+            | "block"
+            | "try"
+            | "catch"
+            | "finally"
+            | "var"
+            | "const"
+            | "let"
+            | "func"
+            | "class"
+            | "type"
+            | "export"
+            | "import"
     )
 }
 
@@ -6977,7 +7043,10 @@ mod tests {
             "(bind x (if cond (match value ((Box x) (if cond (console:log x)) 42) (_ 0)) 7))",
             "(func f :args (:boolean cond) :returns :void :body (match value ((Box x) (if cond (console:log x)))))",
         ] {
-            assert!(no_else_if_errs(src).is_empty(), "valid statement/value roles rejected: {src}");
+            assert!(
+                no_else_if_errs(src).is_empty(),
+                "valid statement/value roles rejected: {src}"
+            );
         }
     }
 
@@ -6997,8 +7066,18 @@ mod tests {
         ];
         for src in errors {
             let diags = no_else_if_errs(src);
-            assert_eq!(diags.len(), 1, "expected one no-else diagnostic for {src}: {diags:?}");
-            assert!(diags[0].message.contains("if in expression position requires an else branch"), "unexpected diagnostic for {src}: {}", diags[0].message);
+            assert_eq!(
+                diags.len(),
+                1,
+                "expected one no-else diagnostic for {src}: {diags:?}"
+            );
+            assert!(
+                diags[0]
+                    .message
+                    .contains("if in expression position requires an else branch"),
+                "unexpected diagnostic for {src}: {}",
+                diags[0].message
+            );
         }
     }
 
@@ -7021,18 +7100,22 @@ mod tests {
 
     #[test]
     fn test_genfn_match_tail_remains_a_statement() {
-        assert!(no_else_if_errs(
-            "(bind stream (genfn () (match x (_ (if cond (yield 1))))))"
-        )
-        .is_empty());
+        assert!(
+            no_else_if_errs("(bind stream (genfn () (match x (_ (if cond (yield 1))))))")
+                .is_empty()
+        );
     }
 
     #[test]
     fn test_no_else_if_expression_validation_keeps_match_grammar_owned_by_classifier() {
         for src in ["(match value (_))", "(match value (n :when guard))"] {
-            let forms = crate::reader::read(src).expect("reader accepts malformed match for classifier");
+            let forms =
+                crate::reader::read(src).expect("reader accepts malformed match for classifier");
             assert!(validate_no_else_if_expressions(&forms).is_empty());
-            assert!(classify_form(&forms[0]).is_err(), "classifier must own malformed match grammar: {src}");
+            assert!(
+                classify_form(&forms[0]).is_err(),
+                "classifier must own malformed match grammar: {src}"
+            );
         }
     }
 
