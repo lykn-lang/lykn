@@ -15,7 +15,18 @@ and internationalization. It is a research and candidate roadmap, not a promise
 that every backlog item ships in 0.7.0. Release splits remain undecided where
 BACKLOG.md says so.
 
-## Current proposed engineering roadmap (2026-11-07)
+## Current bounded Arc01 S01 execution (2026-11-07)
+
+The Operator approved incremental design and explicitly opened
+[S01 numeric-for context repair](arc01-compiler-semantic-integrity/slice01-variadic-for-context/slice-plan.md),
+fresh Luna6 High CC/separate Sol6.1 High CDC Autonomous Mode, with first additional
+substantive-failure stop. Scope is NE-C12 task-only repair and independent focused/
+normal full validation, then S01 close; no later API migration, helper/K re-entry,
+release integration or automatic next unit. The planning-only account below is
+retained history and superseded only for this approved S01 increment. Eight spent
+tooling passes and every original F/Project07/human gate remain unchanged.
+
+## Proposed engineering roadmap (2026-11-07 planning history)
 
 The Operator requested planning/design that gives the accumulated compiler,
 tooling and documentation findings a proper engineering home. Proposed
@@ -496,6 +507,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.33: Operator approved incremental design and bounded S01-only
+  NE-C12 repair/independent validation, selecting Luna6 High CC/Sol6.1 High CDC
+  and a stricter first additional substantive-failure stop. Later units held.
 
 - 2026-11-07 v1.32: Proposed Arc01 after Operator planning/design direction;
   split useful numeric-for and checked-emission/API deliveries, assigned all

@@ -9,7 +9,18 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
-## Authority and current endpoint
+## Current S01 execution authority — 2026-11-07
+
+The Operator approved the **incremental design direction** and explicitly opened
+[S01 numeric-for repair](slice01-variadic-for-context/slice-plan.md), selecting
+fresh Luna6 High CC and separate Sol6.1 High CDC, Autonomous Mode, with a stop on
+any further substantive failure. This supersedes the planning-only hold solely
+for S01. S02's public compatibility decision and all later units remain held;
+no source integration or tooling/K re-entry is approved. The dedicated task
+branch and exact source/gates/ownership are in S01. Eight spent tooling passes
+remain unchanged. All arc capability rows are still open pending actual proof.
+
+## Original planning authority and endpoint
 
 On 2026-11-07 the Operator requested planning/design that gives the accumulated
 findings a proper engineering home, potentially a new arc. The Operator also
@@ -152,6 +163,10 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.3: Operator approved incremental direction and S01 execution
+  only, Luna6 High CC/Sol6.1 High CDC with first additional substantive-failure
+  stop. Opened actual first-slice set; no later-unit/API/integration authority.
 
 - 2026-11-07 v0.2: Fresh separate Sol 6.1 High
   [planning review](artifacts/planning-review.md) found draft17182cb adequate

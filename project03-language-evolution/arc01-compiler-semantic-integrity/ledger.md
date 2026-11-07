@@ -5,6 +5,12 @@ open. Independent review of this plan is recorded separately in
 `artifacts/planning-review.md` and cannot close software, audit, book or human
 acceptance. No implementation assignment is issued.
 
+2026-11-07: Operator subsequently approved incremental direction and opened
+[S01 only](slice01-variadic-for-context/slice-plan.md) with Luna6 High CC/separate
+Sol6.1 High CDC and first additional substantive-failure stop. CI-01 remains
+open until independent source acceptance; no other capability or tooling budget
+is approved/closed by that authorization.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | CI-01 | Numeric-for headers/body roles faithfully compile supported variadic statements | Meaningful red/green native/kernel/CLI and runtime regressions; full source gates and independent review | correctness-grade | NE-C12 / S01 | open | | Narrow first useful delivery; other loops not inferred |

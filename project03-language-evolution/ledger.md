@@ -2,6 +2,13 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07: Operator approved incremental design and opened Arc01
+[S01](arc01-compiler-semantic-integrity/slice01-variadic-for-context/slice-plan.md)
+NE-C12 only, fresh Luna6 High CC/separate Sol6.1 High CDC and first additional
+substantive-failure stop. All five VF and nine arc capability rows initially
+open; no accepted source/tool/K/release change yet. Later units and original
+F/Project07 obligations remain held/open as previously recorded.
+
 2026-11-07 Operator requested engineering planning/design after NE-C12, plus
 post-implementation public-API/documentation impact audit and conditional docs
 implementation. Proposed [Arc01](arc01-compiler-semantic-integrity/arc-plan.md)

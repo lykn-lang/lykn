@@ -18,6 +18,13 @@
 
 ### Current engineering routing — 2026-11-07 (proposed; planning only)
 
+Subsequent Operator approval: incremental direction is approved and
+[Arc01 S01](arc01-compiler-semantic-integrity/slice01-variadic-for-context/slice-plan.md)
+is opened for NE-C12 numeric-for correctness, task-only focused/full independent
+validation and first additional substantive-failure stop. This supersedes the
+planning-only hold below for S01 only; no fatal API migration, other loop fix,
+tool runtime/K, release integration or renewed eight-spent tooling budget.
+
 The Operator requested a proper engineering roadmap after NE-C12, rather than
 another automatic isolated repair. Proposed
 [Arc01 compiler semantic integrity](arc01-compiler-semantic-integrity/arc-plan.md)
