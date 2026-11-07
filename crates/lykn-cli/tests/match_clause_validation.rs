@@ -9,7 +9,7 @@ const POSITIVE_SOURCE: &str = r#"(type Choice (Box :boolean ready) Other)
   (bind events (cell #a()))
   (bind answer
     (match (if is-box (Box ready) Other)
-      ((Box should-run) :when should-run
+      ((Box should-run) :when true
         (if should-run (swap! events (fn (:array xs) (conj xs "prefix"))))
         (swap! events (fn (:array xs) (conj xs "tail")))
         42)

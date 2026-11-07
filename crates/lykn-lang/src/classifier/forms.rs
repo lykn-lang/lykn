@@ -6876,6 +6876,8 @@ mod tests {
     fn test_no_else_if_expression_validation_tracks_match_clause_roles() {
         for src in [
             "(match value ((Box x) (if cond (console:log x)) 42) (_ 0))",
+            "(match value (\"Box\" (if cond (console:log \"Box\")) 42))",
+            "(match value (x (if cond (console:log x)) 42))",
             "(bind result (match value ((Box x) (if cond (console:log x)) 42) (_ 0)))",
             "(match value ((Box x) (if cond (console:log x))))",
             "(match value ((obj :value x) (if cond (console:log x)) 42) (_ 0))",
