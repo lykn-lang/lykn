@@ -6912,7 +6912,7 @@ mod tests {
 
     #[test]
     fn test_no_else_if_expression_validation_keeps_match_grammar_owned_by_classifier() {
-        for src in ["(match value (_))", "(match value (when true 1))"] {
+        for src in ["(match value (_))", "(match value (n :when guard))"] {
             let forms = crate::reader::read(src).expect("reader accepts malformed match for classifier");
             assert!(validate_no_else_if_expressions(&forms).is_empty());
             assert!(classify_form(&forms[0]).is_err(), "classifier must own malformed match grammar: {src}");
