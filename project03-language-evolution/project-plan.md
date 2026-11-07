@@ -140,6 +140,14 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 Operator authorized [Slice15](slice15-async-expression-values/slice-plan.md)
+for NE-C09 async expression/value-flow repair, independent source/full validation,
+then only the same four parser observations or another-real-gap stop. Same
+Sol6.1 High CDC/fresh Luna6 High CC Autonomous roles, new task branch from3b65d09;
+release unchanged. Private transport preserves Promise-valued finals, selected
+paths and synchronous results; finite five shared product fixtures precede patch.
+No helper/oracle bypass, unrelated NE-C02/type repair, full audit or integration.
+
 2026-11-06 [Slice14 independent endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 accepts NE-C08 compile-route parity and NE-C07 private async-export discovery
 task-only at3b65d09/compiler748. Complete fresh normal-env Make passes all Rust,
@@ -284,6 +292,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice15-async-expression-values](slice15-async-expression-values/slice-plan.md): open bounded NE-C09 repair/independent validation and same-four re-entry; no integration or full audit.
 - [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): closed6done/2deferred; both repairs independently accepted task-only/full gates, new NE-C09 stops parser0/4; history/method breach/NE-T01 owned, no integration or next unit.
 - [slice13-async-export-repair](slice13-async-export-repair/slice-plan.md): closed at independent NE-C08 output-route gap; NE-C07 candidate unvalidated, one done/six deferred, parser0/4; no integration or next unit.
 - [slice12-offline-walker-capability](slice12-offline-walker-capability/slice-plan.md): closed at reproduced native async-export validation gap; candidate tooling retained, parser0/4 and full K gate unrun; NE-C07 owns re-entry.
@@ -311,6 +320,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.23: Opened explicit Slice15 NE-C09 async expression/value-flow
+  repair and same-four re-entry; private boxed transport/selected-path design,
+  finite product regression set, source/raw-only fresh CC and endpoint recorded.
 
 - 2026-11-06 v1.22: Closed Slice14 with both task-only repairs independently
   accepted/full gates; same-four re-entry stopped at independently confirmed
