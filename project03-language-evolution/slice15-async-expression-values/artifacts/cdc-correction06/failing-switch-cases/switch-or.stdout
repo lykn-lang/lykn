@@ -1,0 +1,34 @@
+running 1 test from ./target/lykn/test/test/forms/dd-50_test.js
+DD-50.5 iter3: surface or inside switch case body ... FAILED (299ms)
+
+ ERRORS 
+
+DD-50.5 iter3: surface or inside switch case body => ./target/lykn/test/test/forms/dd-50_test.js:137:6
+error: Error: cross-compiler divergence:
+--- JS ---
+switch (state) {
+  case 1:
+    if (a || b) console.log("x");
+    break;
+  default:
+    break;
+}
+--- Rust ---
+switch (state) {
+  case 1:
+    throw new TypeError("COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement");
+    break;
+  default:
+    break;
+}
+      throw new Error(
+            ^
+    at compileBoth (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/testing/helpers.js:204:13)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/test/test/forms/dd-50_test.js:138:13
+
+ FAILURES 
+
+DD-50.5 iter3: surface or inside switch case body => ./target/lykn/test/test/forms/dd-50_test.js:137:6
+
+FAILED | 0 passed | 1 failed | 33 filtered out (303ms)
+

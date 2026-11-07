@@ -264,3 +264,16 @@ allows only forms.rs statement-body expansion restoration, unchanged tests and
 normal full/independent gates. No seventh substantive pass or implicit integration.
 Any unresolved substantive failure returns to Operator; same-four re-entry still
 requires independent source acceptance and stops at another real blocker.
+
+## Correction6 return: full gate fails, pending further Operator decision
+
+Final clean source3f8f6dfe6177db7233932dc6c8938993655a1cae restores the existing
+grouped-bind unit and preserves finite5native/5public/core-load successes. After
+one retained mechanical rustfmt correction, normal full Make passes all Rust but
+fails two existing DD50 switch-case coherence tests:1466passed/2failed(11steps),
+actual exit2. CDC independently reproduces both exact failures. The new forced-
+Value generic recursion treats structural switch clauses as ordinary calls;
+[current review/proposed bounded next scope](cdc-verification.md) records evidence.
+One extra correction6 is spent; no seventh pass or budget reset is authorized.
+Source remains unaccepted, docs/independent full Make unrun, parser0/4. All
+affected execution pauses for Operator disposition; no formal close or next unit.

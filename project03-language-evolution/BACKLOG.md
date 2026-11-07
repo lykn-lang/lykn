@@ -517,6 +517,15 @@ Five correction passes are exhausted; Operator re-scope/override decision is
 required before another correction. Parser0/4, no sixth pass or integration;
 accepted3b65d09 and releasef705655 remain untouched.
 
+**Authorized correction6 return:** final3f8f6df fixes grouped-bind statement
+expansion, but is still unaccepted after two newly failing existing DD50 switch-
+case tests. Full normal Make1466passed/2failed; CDC repeats both exact failures.
+Source-guided mechanism is the new generic forced-Value recursion treating a
+structural case list as a computed call, despite switch Statement-body roles.
+[Current pending verdict/proposal](slice15-async-expression-values/cdc-verification.md)
+owns a bounded role-aware switch-clause correction for further Operator decision.
+The one extra cycle is spent; no seventh pass, source acceptance or parser run.
+
 #### NE-T01 — async declaration-sidecar coverage limitation
 
 **Owned current limitation, 2026-11-06.** Accepted Slice14 async module/consumer

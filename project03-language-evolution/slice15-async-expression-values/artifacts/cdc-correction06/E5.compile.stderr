@@ -1,0 +1,2 @@
+28:1: warning: unused binding 'fail-value'
+  suggestion: prefix with underscore: _fail-value

@@ -15,6 +15,12 @@ as recorded in the plan/cc-prompt-iteration05.md, with fresh Luna6 High executio
 and Sol6.1 High independent validation. All rows remain open. Prior rejected
 candidate/pause is preserved; no reset, source acceptance or gate waiver follows.
 
+**Correction6 returned, still unmet:** grouped-bind unit is repaired, but final
+normal Make fails two unchanged DD50 switch-case tests (1466passed/2failed); CDC
+independently repeats each exact failure. AV-02/AV-04 remain unmet and candidate
+3f8f6df unaccepted. AV-05/AV-06 remain unrun, parser0/4; AV-07 awaits Operator
+decision. No seventh pass, reset or formal row/slice close. See current review.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AV-01 | Meaningful NE-C09 red and fixed finite oracles frozen | Five shared fixtures/source/expected JSON before runtime, both backend baseline/raw core witness | serious | NE-C09 | open | | Syntax/wrong-value/positive results distinguished |

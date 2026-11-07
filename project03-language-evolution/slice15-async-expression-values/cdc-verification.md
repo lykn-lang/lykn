@@ -1,5 +1,61 @@
 # Independent review — pending Operator decision
 
+## Current verdict after authorized correction6
+
+**Still rejected; extra cycle spent, awaiting Operator decision.** Final source
+3f8f6dfe6177db7233932dc6c8938993655a1cae is clean. The narrow statement expansion
+fix96e20b9 plus rustfmt-only3f8f6df resolves the exact grouped-bind unit: CC final
+unit1/1; CDC independently replayed the96 binary1/1 and reviewed the subsequent
+one-line whitespace diff. Five native/public fixtures and same-core load remain
+green; full normal validation is NOT green, so source is not accepted.
+
+CC's final normal Make (correction06/raw/attempt-31, actual exit2) passes deps,
+citations63/601, release/clippy/format/syntax/lint and ALL Rust suites, then JS/Lykn
+reports1466passed/2failed(11steps). Both failures are unchanged existing DD50
+switch-case tests. Docs and the independent full Make are unrun; parser0/4.
+Separate citation attempt32 also passes63/601, but is CC evidence, not CDC replay.
+
+I independently reran ONLY those exact two existing tests with actual absolute
+release compiler SHAedafa7067f481bdc4f61d412bd6ba68853ba018341914e9b8c3ab2b30912b987,
+pinned Deno and unchanged generated harness. Each selected1/failed1/filtered33,
+exit1. [Exact commands/raw/pins](artifacts/cdc-correction06/failing-switch-cases/commands.md).
+The JS output preserves conditional console.log; Rust instead emits an unconditional
+COMPILE_ERROR throw. These are actual compiler-output mismatches; no runtime
+throw or invalid-module syntax is claimed. The accepted3b65 independent full
+Make previously passed both (Slice14 raw lines2066/2078). These are introduced
+candidate regressions, not evidence of previously failing baseline tests.
+
+**Source mechanism:** test/forms/dd-50_test.lykn126–129/189–191 compile top-level
+switch strings, so the grouped-bind function-body helper is not their direct
+path. emit_body/classify_statement_surface remain unchanged from3b65. Kernel
+switch passes clause lists as Statement (forms.rs3212); each case begins with
+number1. emit_expr's newly changed non-form-head fallback550–555 treats that
+structural clause as a computed call and forces all children Value, incorrectly
+rejecting its no-else if. Codegen emit.rs861–895 explicitly treats clause[0] as
+the test and clause[1..] as statements. Guide00:849–858 supports statement if and
+932–940 documents the switch shape. This is source-grounded causal analysis,
+not a new experiment or a claim that every clause variant was exercised.
+
+**Concrete proposed next scope — NOT authorized/dispatched:** role-aware traversal
+of switch clauses, preserving Value discriminant/case tests and Statement bodies
+without treating a clause as an ordinary call. Retain actual bound/computed-call
+Value arguments needed by the NE-C09 repair; do not blanket revert that behavior,
+weaken assertions or change helpers/fixtures/oracles. Require these same two
+existing failures, grouped-bind regression, same five cases/full normal Make/
+citations and independent review, then the same four only after source acceptance.
+The one extra cycle is exhausted; this needs a further explicit Operator decision,
+not a seventh pass, re-slice/reset or automatic continuation. No code changed
+after the failed gate; accepted3b65/releasef705 remain unchanged/clean.
+
+Correction06 preserves two0-case product setup failures (--no-remote then no-npm),
+the rustfmt-only failure, and a wrong full-SHA suffix in initial19/20 metadata
+explicitly retracted against actual Git21 output. CC core-load argv omitted explicit
+deny-net; CDC's strict no-grant core load includes it. All actual receipts remain;
+none is retroactively compliant. Positive CDC raw is under cdc-correction06;
+no overall acceptance or formal slice close follows these partial successes.
+
+## Prior five-pass verdict (preserved)
+
 2026-11-06, CDC OpenAI Sol6.1 High. **Candidate rejected; execution paused at
 five correction passes.** Source802bb223b341b5860fc2a0b7d2f2f77f17fbe499 on
 codex/async-expression-values contains unaccepted production54608a7 and the

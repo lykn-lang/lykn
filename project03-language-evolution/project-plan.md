@@ -162,6 +162,14 @@ Luna6 High CC, Sol6.1 High independent validation and same-four continuation onl
 after source acceptance. Slice15's governing plan records the exact choice and
 bounded override; the budget is not reset and source is not yet accepted.
 
+That extra correction6 now repairs grouped-bind scope, but final3f8f6df remains
+unaccepted: full normal Make passes Rust then fails two existing switch-case
+coherence tests (1466passed/2failed); CDC reproduces both exact failures. Same
+five-case/core successes remain finite evidence. Docs/independent full Make and
+parser0/4 remain unrun. Further role-aware switch-clause correction is a concrete
+proposal in the current review, requiring another explicit Operator decision;
+no seventh pass, reset, integration or next unit is underway.
+
 2026-11-06 [Slice14 independent endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 accepts NE-C08 compile-route parity and NE-C07 private async-export discovery
 task-only at3b65d09/compiler748. Complete fresh normal-env Make passes all Rust,
