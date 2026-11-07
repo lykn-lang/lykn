@@ -1,0 +1,10 @@
+    Blocking waiting for file lock on build directory
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.80s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 2 tests
+test emitter::forms::tests::test_current_await_class_member_countercontrol ... ok
+test emitter::forms::tests::test_contains_current_await_respects_function_boundaries_and_for_await ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1121 filtered out; finished in 0.00s
+

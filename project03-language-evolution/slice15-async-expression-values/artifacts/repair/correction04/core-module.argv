@@ -1,0 +1,1 @@
+/opt/homebrew/bin/deno run --no-config --no-npm --no-remote --cached-only --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice15/correction04/core-load/generated/parser-core.js

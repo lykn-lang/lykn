@@ -1,0 +1,26 @@
+--- /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice14-compile-validation-and-parser/artifacts/cdc-stage-c/parser-core.js	2026-11-06 19:45:45
++++ /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice15-async-expression-values/artifacts/repair/correction04/core-generated.js	2026-11-06 21:19:01
+@@ -18,18 +18,11 @@
+ 
+   const parserBytes = await Deno.readFile(parserPath);
+   const actualHash = await sha256(parserBytes);
+-  return (() => {
+-    if (actualHash !== expectedHash) {
+-      return { status: "parser_artifact_identity_mismatch", actualHash: actualHash, expectedHash: expectedHash };
+-    } else {
+-      {
+-        const parser = await import(parserUrl);
+-        if (parser.version !== parserVersion) ({ status: "parser_artifact_version_mismatch", actualHash: actualHash, actualVersion: parser.version });
+-         else ({ status: "ready", actualHash: actualHash, actualVersion: parser.version, parser: parser });
+-
+-      }
+-    }
+-  })();
++  return actualHash !== expectedHash ? { status: "parser_artifact_identity_mismatch", actualHash: actualHash, expectedHash: expectedHash } : (value_box__gensym1 => value_box__gensym1[0])(await (async () => {
++    const parser = await import(parserUrl);
++    return [parser.version !== parserVersion ? { status: "parser_artifact_version_mismatch", actualHash: actualHash, actualVersion: parser.version } : { status: "ready", actualHash: actualHash, actualVersion: parser.version, parser: parser }];
++    return [undefined];
++  })());
+ }
+ async function verifyParser(priorHash) {
+   if (typeof priorHash !== "string") throw new TypeError("verifyParser: arg 'priorHash' expected string, got " + typeof priorHash);

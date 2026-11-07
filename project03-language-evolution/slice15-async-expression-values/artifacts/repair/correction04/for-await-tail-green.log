@@ -1,0 +1,9 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.76s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 1 test
+test emitter::forms::tests::test_for_await_of_tail_stays_in_statement_position ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1122 filtered out; finished in 0.00s
+

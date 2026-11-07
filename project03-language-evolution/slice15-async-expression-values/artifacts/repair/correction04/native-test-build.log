@@ -1,0 +1,77 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0382]: borrow of moved value: `cond`
+    --> crates/lykn-lang/src/emitter/forms.rs:2995:36
+     |
+2964 |     let cond = emit_expr(&args[0], ctx, registry);
+     |         ---- move occurs because `cond` has type `SExpr`, which does not implement the `Copy` trait
+...
+2992 |             cond,
+     |             ---- value moved here
+...
+2995 |             contains_current_await(&cond)
+     |                                    ^^^^^ value borrowed here after move
+     |
+note: consider changing this parameter type in function `emit_if_iife_with_await` to borrow instead if owning the value isn't necessary
+    --> crates/lykn-lang/src/emitter/forms.rs:3014:11
+     |
+3013 | fn emit_if_iife_with_await(
+     |    ----------------------- in this function
+3014 |     cond: SExpr,
+     |           ^^^^^ this parameter takes ownership of the value
+help: consider cloning the value if the performance cost is acceptable
+     |
+2992 |             cond.clone(),
+     |                 ++++++++
+
+error[E0382]: borrow of moved value: `then_branch`
+    --> crates/lykn-lang/src/emitter/forms.rs:2996:43
+     |
+2983 |     let then_branch = emit_in_context(&args[1], ExprContext::Value, ctx, registry);
+     |         ----------- move occurs because `then_branch` has type `SExpr`, which does not implement the `Copy` trait
+...
+2993 |             then_branch,
+     |             ----------- value moved here
+...
+2996 |                 || contains_current_await(&then_branch)
+     |                                           ^^^^^^^^^^^^ value borrowed here after move
+     |
+note: consider changing this parameter type in function `emit_if_iife_with_await` to borrow instead if owning the value isn't necessary
+    --> crates/lykn-lang/src/emitter/forms.rs:3015:18
+     |
+3013 | fn emit_if_iife_with_await(
+     |    ----------------------- in this function
+3014 |     cond: SExpr,
+3015 |     then_branch: SExpr,
+     |                  ^^^^^ this parameter takes ownership of the value
+help: consider cloning the value if the performance cost is acceptable
+     |
+2993 |             then_branch.clone(),
+     |                        ++++++++
+
+error[E0382]: borrow of moved value: `else_branch`
+    --> crates/lykn-lang/src/emitter/forms.rs:2997:43
+     |
+2984 |     let else_branch = emit_in_context(&args[2], ExprContext::Value, ctx, registry);
+     |         ----------- move occurs because `else_branch` has type `SExpr`, which does not implement the `Copy` trait
+...
+2994 |             else_branch,
+     |             ----------- value moved here
+...
+2997 |                 || contains_current_await(&else_branch),
+     |                                           ^^^^^^^^^^^^ value borrowed here after move
+     |
+note: consider changing this parameter type in function `emit_if_iife_with_await` to borrow instead if owning the value isn't necessary
+    --> crates/lykn-lang/src/emitter/forms.rs:3016:18
+     |
+3013 | fn emit_if_iife_with_await(
+     |    ----------------------- in this function
+...
+3016 |     else_branch: SExpr,
+     |                  ^^^^^ this parameter takes ownership of the value
+help: consider cloning the value if the performance cost is acceptable
+     |
+2994 |             else_branch.clone(),
+     |                        ++++++++
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `lykn-lang` (lib) due to 3 previous errors
