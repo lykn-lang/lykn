@@ -25,7 +25,8 @@ same task checkout tracked bytes. Reuse task checkout
 owned ignored target/slice17 outputs/caches, no source/index/build mutation.
 Actual absolute release target/release/lykn SHA
 85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc,version0.6.0;
-Deno /opt/homebrew/bin/deno2.9.6 SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Deno executable `/opt/homebrew/bin/deno`, version `2.9.6`,
+SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
 Re-pin before use, never bare/global/task-old CLI. No full Make/redundant old
 parser/pilot matrix is required for these research sources.
 
@@ -63,6 +64,34 @@ Sources in this slice artifacts/tooling/:
    bytes before child, launches ONLY exact Deno with raw receipts before assertions;
    validates fixed outcomes and writes capability-results.json. No other new
    helper/framework/producer is needed. README/predictions explain replay/API.
+
+**Pre-authoring API clarification (iteration01):** scanner argv is exactly ONE
+absolute manifest path: `scanner.js MANIFEST`. Manifest `kind` is `file_scan` or
+`synthetic_unit`. File manifest contains run/tool/source/parser metadata (including
+`parser.expected_sha256`) and `rows` array of required condition records below.
+K11 sets expected_sha256 to64zeros and points its single required row at existing
+K01 bytes; scanner gate runs before reading any row. Synthetic manifest instead
+contains `control_id: K12` and the unchanged injected AST JSON value; no rows/parser
+activity. Use the same minimal report envelope with explicit run kind; its parser/
+file counts are not-applicable, not zero claimed parsed files.
+
+Observer argv EXACTLY8 absolute values in order: `CONTROLS DENO SCANNER_JS CORE_JS
+WALKER_JS TASK_ROOT CACHE_ROOT CONFIG_FREE_CWD`. The three module args identify
+already compiled siblings; parser path/version/hash come from frozen controls.
+TASK_ROOT/CACHE_ROOT must not preexist (parent only); observer creates them and
+fixed staged inputs/manifests/results. It validates the exact13 IDs before writes,
+uses K11 thenK01–K10b,K12 order, and hashes writes before each dependent child.
+Compiler/source identity metadata references the frozen native preflight receipt,
+not an invented Git subprocess/self-authentication. Scanner stdout is one JSON
+report plusLF; only observer launches subprocesses.
+
+Real zero-arg module oracles BEFORE data/case activity: parser-core and walker
+load0 with empty streams; scanner exits2 with one JSON object
+`{"status":"scanner_usage_error","expectedArgs":1,"actualArgs":0}` plusLF,
+empty stderr; observer exits2 with
+`{"status":"observer_usage_error","expectedArgs":8,"actualArgs":0}` plusLF,
+empty stderr. Guards precede all IO/Acorn use/children. These are not capability
+cases; they test actual module syntax/guard paths after complete generated review.
 
 Walker: one record per Program.body parent in source order; reasons attached to
 that parent with node type/path/generated loc.start/range/category/rule. Count
@@ -199,3 +228,10 @@ discretion. All original-method node/status rules remain binding.
 | Prompt | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-07 | none | Explicit Lykn walker/fixed capability gate | Active after prep commit/dispatch |
+| cc-prompt-iteration01.md | 2026-11-07 | cc-prompt.md | Pre-authoring Deno separator/API/usage clarification | Current; no executed correction pass |
+
+Initial plan concatenated executable/version as `/opt/homebrew/bin/deno2.9.6`;
+CC correctly found that literal path absent and verified actual `/opt/homebrew/bin/deno`
+version2.9.6/hash2ad84 before any source/check/runtime. Lookup remains historical,
+not a compiler/parser gap. CC returned index ownership for this preserved amendment;
+initial prompt is unchanged. No source pass ran; normal max5 budget is not reset.
