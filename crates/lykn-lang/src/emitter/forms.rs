@@ -2222,7 +2222,7 @@ fn emit_match_statement(
     let target_binding = list(vec![
         atom("const"),
         atom(&target_var),
-        emit_expr(target, ctx, registry),
+        emit_in_context(target, ExprContext::Value, ctx, registry),
     ]);
 
     // Collect (condition, block) tuples; stop at wildcard

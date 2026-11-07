@@ -599,7 +599,8 @@ fn walk_fn_like_args(args: &[SExpr], body_policy: FunctionBodyPolicy, out: &mut 
     if args.len() < 2 {
         return;
     }
-    let body_start = if args.len() >= 3
+    let body_start = if matches!(body_policy, FunctionBodyPolicy::Statements)
+        && args.len() >= 3
         && matches!(args.get(1), Some(SExpr::Keyword { value, .. }) if value == "yields")
     {
         3
