@@ -1,0 +1,7 @@
+Preserve variadic numeric-for body statements
+
+Lower every form after the three value headers as an ordered statement and document the contract.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

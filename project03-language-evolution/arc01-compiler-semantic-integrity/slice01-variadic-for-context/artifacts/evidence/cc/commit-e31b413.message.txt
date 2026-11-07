@@ -1,0 +1,7 @@
+Correct variadic-for behavioral regression controls
+
+Add real public-backend runtime proof and independent emitter/header controls.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

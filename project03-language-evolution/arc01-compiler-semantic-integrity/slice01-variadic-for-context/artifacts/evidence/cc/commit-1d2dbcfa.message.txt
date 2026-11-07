@@ -1,0 +1,7 @@
+Add variadic numeric-for context regressions
+
+Freeze the approved body sequencing and consumed-header countercontrols.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

@@ -1,0 +1,7 @@
+Clarify numeric-for header semantics
+
+Distinguish its binding-declaring initializer header from value expressions.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

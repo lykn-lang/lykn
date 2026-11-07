@@ -1,0 +1,17 @@
+
+running 1 test
+
+thread 'emitter::forms::tests::numeric_for_emits_first_and_late_no_else_if_as_ordered_statements' (96319367) panicked at crates/lykn-lang/src/emitter/forms.rs:3396:13:
+assertion `left == right` failed
+  left: Some("throw")
+ right: Some("if")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test emitter::forms::tests::numeric_for_emits_first_and_late_no_else_if_as_ordered_statements ... FAILED
+
+failures:
+
+failures:
+    emitter::forms::tests::numeric_for_emits_first_and_late_no_else_if_as_ordered_statements
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1131 filtered out; finished in 0.00s
+

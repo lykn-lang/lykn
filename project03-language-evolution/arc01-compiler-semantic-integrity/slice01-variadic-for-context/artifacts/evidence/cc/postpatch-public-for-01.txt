@@ -1,0 +1,15 @@
+Check test/forms/for.test.js
+running 5 tests from ./test/forms/for.test.js
+for: basic c-style ... ok (1ms)
+for: infinite loop with empty slots ... ok (74µs)
+for: missing body throws ... ok (304µs)
+for: all body forms compile and run as ordered statements ...
+------- output -------
+VARIADIC_FOR_JS_PREASSERT {"source":"(bind trace (array))\n(for (let i 0) (< i 2) (++ i)\n  (if true (trace:push i))\n  (bind value (+ i 10))\n  (if true (trace:push value))\n  (bind next-value (+ value 1))\n  (if true (trace:push next-value))\n  (if false (trace:push 999)))\n(console:log (JSON:stringify (obj :trace trace)))\n","generated":"const trace = [];\nfor (let i = 0; i < 2; ++i) {\n  if (true) trace.push(i);\n  const value = i + 10;\n  if (true) trace.push(value);\n  const nextValue = value + 1;\n  if (true) trace.push(nextValue);\n  if (false) trace.push(999);\n}\nconsole.log(JSON.stringify({\n  trace: trace\n}));\n","executable":"/opt/homebrew/bin/deno","modulePath":"/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-variadic-for-32f93b64f4800a76/fixture.js"}
+VARIADIC_FOR_JS_RUNTIME {"code":0,"stdoutBytes":[123,34,116,114,97,99,101,34,58,91,48,44,49,48,44,49,49,44,49,44,49,49,44,49,50,93,125,10],"stderrBytes":[],"stdout":"{\"trace\":[0,10,11,1,11,12]}\n","stderr":"","source":"(bind trace (array))\n(for (let i 0) (< i 2) (++ i)\n  (if true (trace:push i))\n  (bind value (+ i 10))\n  (if true (trace:push value))\n  (bind next-value (+ value 1))\n  (if true (trace:push next-value))\n  (if false (trace:push 999)))\n(console:log (JSON:stringify (obj :trace trace)))\n","generated":"const trace = [];\nfor (let i = 0; i < 2; ++i) {\n  if (true) trace.push(i);\n  const value = i + 10;\n  if (true) trace.push(value);\n  const nextValue = value + 1;\n  if (true) trace.push(nextValue);\n  if (false) trace.push(999);\n}\nconsole.log(JSON.stringify({\n  trace: trace\n}));\n"}
+----- output end -----
+for: all body forms compile and run as ordered statements ... ok (26ms)
+for: each consumed header rejects no-else if ... ok (800µs)
+
+ok | 5 passed | 0 failed (31ms)
+

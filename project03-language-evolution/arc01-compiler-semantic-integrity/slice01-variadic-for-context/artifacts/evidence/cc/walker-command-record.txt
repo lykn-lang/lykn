@@ -1,0 +1,20 @@
+NE-C12 original walker witness — command record
+
+Current source implementation freeze: 8f5d1990df86405656729972485ae4d11feba808 (tree 8b1a05ff7ca8d6c9aedd82984be19d81a03894f2), branch codex/variadic-for-body-context, clean. Rust test binaries were built from b1283127; docs-only 8f5d199 did not change product code or binaries.
+Input extracted by native `git show` from immutable commit 9122473cbb1bb5a145cde368d749f50157216d7f path `project03-language-evolution/slice19-match-subject-and-walker/artifacts/tooling/estree-walker.lykn`; Git blob 8d9901f64723cd0d5dcc1eb5b59331da51d3ae8c; SHA-256 033762a58aa1a9a3104c097641666fc2dc794f08115ce913de2009f78be688c7; working copy `/private/tmp/lykn-s01-nec12-witness.1uXjtp/estree-walker.lykn`.
+
+Cwd: `/private/tmp/lykn-s01-nec12-witness.1uXjtp`. It contains only the extracted source before compile. Native config search (`find_project_root`) walks upward for `project.json`; exact candidate check `ls -ld /project.json /private/project.json /private/tmp/project.json /private/tmp/lykn-s01-nec12-witness.1uXjtp/project.json` returned exit1 and four “No such file” results. A broad directory listing had one unrelated permission failure at `/private/tmp/codex-daemon-501`; the scoped config candidate check is the relevant result. No project config is present in the cwd or any ancestor.
+
+CLI before compile: `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn`, SHA-256 9fc676a2c1a11355966680808dd0a3c8afb2c74881b2b7a78ad35e12588e48de. Deno file SHA remains 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; witness compile does not invoke Deno.
+
+Inherited environment: no explicit command environment overrides; the ambient environment was not exhaustively enumerated. `LYKN_TEST_DENO` was explicitly set only for the earlier CLI integration-test process, not for these direct CLI commands. No Cargo/build command is to run between this CLI pin and check/compile; witness compile only, never execute the emitted walker.
+
+Commands to run separately from this cwd:
+1. `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn check /private/tmp/lykn-s01-nec12-witness.1uXjtp/estree-walker.lykn`
+2. `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn compile /private/tmp/lykn-s01-nec12-witness.1uXjtp/estree-walker.lykn -o /private/tmp/lykn-s01-nec12-witness.1uXjtp/estree-walker.js`
+
+Observed after witness compile (outputs captured at launch in the neighboring stdout/stderr files)
+- `check` exited0; stdout empty; stderr has three existing unused-binding warnings at 183:45 (`allowed`), 875:21 (`reasons`), and 3:7 (`FieldRole`). `compile` exited0; stdout empty; stderr has the existing unused-binding warning for `FieldRole` at 3:7. Neither command was rerun. Full raw streams are walker-check.stdout/stderr and walker-compile.stdout/stderr.
+- Source SHA-256 remained 033762a58aa1a9a3104c097641666fc2dc794f08115ce913de2009f78be688c7. CLI after compile remained SHA-256 9fc676a2c1a11355966680808dd0a3c8afb2c74881b2b7a78ad35e12588e48de.
+- Generated JS: 33,520 bytes, SHA-256 736b60c54591ce549506bc5593b486acdb0954a5f8511c568bd08febd6be9480; exact copy `walker-generated.js`. DTS: 182 bytes, SHA-256 b7d37c3b115ae1e5b8c3ed3b44923e468aa1e8e9d19377f57c593a3b9c30de49; exact copy `walker-generated.d.ts`.
+- Complete affected source functions were read at source lines 162–178 (`flag-unlisted`) and 900–1058 (`walk-program`); emitted functions were read in full at JS lines 95–105 and 612–667. In `flagUnlisted`, the prior inner numeric-for-body no-else `if` now appears as `if (isAstNode(item)) unsupported(...)` inside the emitted loop, not a TypeError placeholder. In `walkProgram`, the numeric-for body retains its `if (parentFinding)` and `if (localCoverage.value === "unsupported_ast")` statements plus following sibling updates; neither prior emitted sentinel becomes a compile-error TypeError. This establishes compile-time body lowering for the same immutable full walker only; no JS/DTS was executed and no runtime or broader walker claim is made.

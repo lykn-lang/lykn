@@ -1,0 +1,21 @@
+
+running 1 test
+VARIADIC_FOR_POSITIVE_PREASSERT check_exit=Some(0) check_stdout="" check_stderr="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/variadic-for-bodies.lykn: ok (3 top-level expressions)\n" compile_exit=Some(0) compile_stdout="" compile_stderr="" source="(bind trace (array))\n(for (let i 0) (< i 2) (++ i)\n  (if true (trace:push i))\n  (bind value (+ i 10))\n  (if true (trace:push value))\n  (bind next-value (+ value 1))\n  (if true (trace:push next-value))\n  (if false (trace:push 999)))\n(console:log (JSON:stringify (obj :trace trace)))\n" generated=Some("const trace = [];\nfor (let i = 0; i < 2; ++i) {\n  if (true) trace.push(i);\n\n  const value = i + 10;\n  throw new TypeError(\"COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\");\n  const nextValue = value + 1;\n  throw new TypeError(\"COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\");\n  throw new TypeError(\"COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\");\n}\nconsole.log(JSON.stringify({ trace: trace }));\n") dts=None
+VARIADIC_FOR_POSITIVE_RUNTIME exit=Some(1) stdout="" stderr="error: Uncaught (in promise) TypeError: COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\n  throw new TypeError(\"COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\");\n        ^\n    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpqCGURH/variadic-for-bodies.js:6:9\n" source="(bind trace (array))\n(for (let i 0) (< i 2) (++ i)\n  (if true (trace:push i))\n  (bind value (+ i 10))\n  (if true (trace:push value))\n  (bind next-value (+ value 1))\n  (if true (trace:push next-value))\n  (if false (trace:push 999)))\n(console:log (JSON:stringify (obj :trace trace)))\n" generated="const trace = [];\nfor (let i = 0; i < 2; ++i) {\n  if (true) trace.push(i);\n\n  const value = i + 10;\n  throw new TypeError(\"COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\");\n  const nextValue = value + 1;\n  throw new TypeError(\"COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\");\n  throw new TypeError(\"COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement\");\n}\nconsole.log(JSON.stringify({ trace: trace }));\n" dts=None
+
+thread 'numeric_for_preserves_variadic_statement_body_and_value_headers' (96320269) panicked at crates/lykn-cli/tests/variadic_for_bodies.rs:95:5:
+Deno execution failed: error: Uncaught (in promise) TypeError: COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement
+  throw new TypeError("COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement");
+        ^
+    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpqCGURH/variadic-for-bodies.js:6:9
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test numeric_for_preserves_variadic_statement_body_and_value_headers ... FAILED
+
+failures:
+
+failures:
+    numeric_for_preserves_variadic_statement_body_and_value_headers
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.24s
+
