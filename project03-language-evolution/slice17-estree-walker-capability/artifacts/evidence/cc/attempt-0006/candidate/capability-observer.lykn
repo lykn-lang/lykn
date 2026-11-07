@@ -1,0 +1,418 @@
+(func
+  ensure
+  :args
+  (:boolean condition :string message)
+  :returns
+  :void
+  :body
+  (if (not condition) (throw (new Error message))))
+
+(func
+  absolute-path
+  :args
+  (:string path)
+  :returns
+  :string
+  :pre
+  (path:startsWith "/")
+  :body
+  path)
+
+(async
+  (func
+    sha256
+    :args
+    (:any bytes)
+    :returns
+    :string
+    :body
+    (bind digest (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+    (->
+      (Array:from
+        digest
+        (fn (:number byte) (-> (byte:toString 16) (:padStart 2 "0"))))
+      (:join ""))))
+
+(func
+  control
+  :args
+  (:any controls :string id)
+  :returns
+  :any
+  :body
+  (-> controls:fullAuditControls (:find (fn (:any row) (= row:id id)))))
+
+(func
+  expected-status
+  :args
+  (:string id)
+  :returns
+  :string
+  :body
+  (match
+    id
+    ("K11") "parser_artifact_identity_mismatch"
+    ("K09") "parse_error"
+    ("K10a") "source_missing"
+    ("K10b") "source_unreadable"
+    ("K12") "unsupported_ast"
+    (_ "complete")))
+
+(func
+  expected-exit
+  :args
+  (:string id)
+  :returns
+  :number
+  :body
+  (if (array "K09" "K10a" "K10b" "K11" "K12" (:includes id)) 2 0))
+
+(func
+  ensure-zero
+  :args
+  (:any report :number direct :number reasons :string id)
+  :returns
+  :void
+  :body
+  (do
+    (ensure (= report:direct_statements_with_findings direct) (template id " direct count"))
+    (ensure (= report:nested_reasons reasons) (template id " reason count"))))
+
+(func
+  result-path
+  :args
+  (:string case-dir :string file)
+  :returns
+  :string
+  :body
+  (template case-dir "/" file))
+
+(async
+  (func
+    run-case
+    :args
+    (:any controls
+     :string id
+     :number sequence
+     :string deno
+     :string scanner-js
+     :string core-js
+     :string walker-js
+     :string parser-path
+     :string task-root
+     :string cache-root
+     :string cwd)
+    :returns
+    :promise
+    :body
+    (bind definition (control controls id))
+    (bind case-dir (result-path task-root id))
+    (bind deno-dir (result-path cache-root id))
+    (await (Deno:mkdir case-dir))
+    (await (Deno:mkdir deno-dir))
+    (bind input-path (result-path case-dir (if (= id "K10a") "missing-control.js" "input.js")))
+    (bind has-input
+      (and
+        (Object:hasOwn definition "input")
+        (not (= definition:input null))))
+    (if
+      has-input
+      (await
+        (Deno:writeFile
+          input-path
+          (-> (new TextEncoder) (:encode definition:input))
+          (obj :createNew true))))
+    (bind input-bytes
+      (if
+        has-input
+        (await (Deno:readFile input-path))
+        (new Uint8Array)))
+    (bind input-hash (if has-input (await (sha256 input-bytes)) null))
+    (bind synthetic? (= id "K12"))
+    (bind gated? (= id "K11"))
+    (bind scanner-input-path
+      (if
+        gated?
+        (template task-root "/seed/K01.js")
+        input-path))
+    (bind row-hash
+      (if
+        gated?
+        (await (sha256 (await (Deno:readFile scanner-input-path)))
+        input-hash))
+    (bind source-id (template "slice17-" id))
+    (bind manifest
+      (if
+        synthetic?
+        (obj
+          :schema "lykn-estree-capability-manifest-v1"
+          :kind "synthetic_unit"
+          :run_id id
+          :created_at "2026-11-07"
+          :control_id id
+          :injected_ast (JSON:parse definition:injectedAst))
+        (obj
+          :schema "lykn-estree-capability-manifest-v1"
+          :kind "file_scan"
+          :run_id id
+          :created_at "2026-11-07"
+          :source_commit "5408abd432b8789ae474a3895436f68818c4e482"
+          :source_tree "39bc56b73897e568ff81ce60a2feef28a2310ea8"
+          :source_clean true
+          :compiler (obj :path "/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn" :version "0.6.0" :sha256 "85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc")
+          :deno (obj :path deno :version "2.9.6" :sha256 "2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74")
+          :parser (obj
+            :path parser-path
+            :url "file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs"
+            :version "8.17.0"
+            :expected_sha256 (if gated? definition:expectedHash "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7")
+            :options (obj :ecmaVersion "latest" :sourceType "module" :locations true :ranges true))
+          :rows
+          (array
+            (obj
+              :source_id source-id
+          :source_sha256 row-hash
+              :emitter "inert-js-control"
+              :mode "module"
+              :condition_id id
+              :path scanner-input-path
+              :sha256 (if (= id "K10a") "" row-hash)
+              :output_path scanner-input-path
+              :required true
+              :segment "control"
+              :gated gated?
+              :expectedHash (if gated? definition:expectedHash null)))))))
+    (bind manifest-path (result-path case-dir "manifest.json"))
+    (await
+      (Deno:writeTextFile
+        manifest-path
+        (JSON:stringify manifest)
+        (obj :createNew true)))
+    (bind manifest-bytes (await (Deno:readFile manifest-path)))
+    (bind parser-bytes (await (Deno:readFile parser-path)))
+    (bind scanner-bytes (await (Deno:readFile scanner-js)))
+    (bind core-bytes (await (Deno:readFile core-js)))
+    (bind walker-bytes (await (Deno:readFile walker-js)))
+    (bind parser-hash (await (sha256 parser-bytes)))
+    (bind scanner-hash (await (sha256 scanner-bytes)))
+    (bind core-hash (await (sha256 core-bytes)))
+    (bind walker-hash (await (sha256 walker-bytes)))
+    (bind manifest-hash (await (sha256 manifest-bytes)))
+    (bind read-paths
+      (if
+        synthetic?
+        (array manifest-path scanner-js core-js walker-js)
+        (if
+          gated?
+          (array manifest-path scanner-js core-js walker-js parser-path)
+          (if
+            (= id "K10b")
+            (array manifest-path scanner-js core-js walker-js parser-path)
+            (array manifest-path scanner-js core-js walker-js parser-path scanner-input-path))))
+    (bind read-grant (-> read-paths (:join ",")))
+    (bind argv
+      (array
+        "run"
+        "--no-config"
+        "--no-npm"
+        "--no-remote"
+        "--cached-only"
+        "--deny-net"
+        "--no-prompt"
+        (template "--allow-read=" read-grant)
+        scanner-js
+        manifest-path))
+    (bind environment
+      (obj
+        :DENO_DIR deno-dir
+        :DENO_NO_UPDATE_CHECK "1"
+        :NO_COLOR "1"
+        :PATH "/opt/homebrew/bin:/usr/bin:/bin"))
+    (bind attempt
+      (obj
+        :id id
+        :sequence sequence
+        :argv (conj (array deno) argv)
+        :cwd cwd
+        :clearEnv true
+        :environment environment
+        :read_grant_paths read-paths
+        :run_grant deno
+        :write_grant "none"
+        :network "denied"
+        :input_path (if has-input input-path null)
+        :input_sha256 input-hash
+        :manifest_path manifest-path
+        :manifest_sha256 manifest-hash
+        :parser_path parser-path
+        :parser_sha256 parser-hash
+        :scanner_path scanner-js
+        :scanner_sha256 scanner-hash
+        :core_path core-js
+        :core_sha256 core-hash
+        :walker_path walker-js
+        :walker_sha256 walker-hash
+        :expected_status (expected-status id)
+        :expected_exit (expected-exit id)))
+    (await
+      (Deno:writeTextFile
+        (result-path case-dir "attempt.json")
+        (JSON:stringify attempt)
+        (obj :createNew true)))
+    (bind output
+      (await
+        (->
+          (new
+            Deno:Command
+            deno
+            (obj
+              :args argv
+              :cwd cwd
+              :clearEnv true
+              :env environment
+              :stdin "null"
+              :stdout "piped"
+              :stderr "piped"))
+          (:output))))
+    (await (Deno:writeFile (result-path case-dir "stdout.bin") output:stdout (obj :createNew true)))
+    (await (Deno:writeFile (result-path case-dir "stderr.bin") output:stderr (obj :createNew true)))
+    (await
+      (Deno:writeTextFile
+        (result-path case-dir "command-result.json")
+        (JSON:stringify
+          (obj
+            :id id
+            :sequence sequence
+            :argv (conj (array deno) argv)
+            :cwd cwd
+            :exit output:code
+            :signal output:signal
+            :stdout_bytes output:stdout:length
+            :stderr_bytes output:stderr:length))
+        (obj :createNew true)))
+    (bind report-text (new TextDecoder "utf-8" (obj :fatal true)))
+    (bind report-cell (cell null))
+    (try
+      (reset! report-cell (JSON:parse (report-text:decode output:stdout)))
+      (catch error (throw (new Error (template id " scanner stdout was not JSON") (obj :cause error)))))
+    (await
+      (Deno:writeFile
+        (result-path case-dir "scan-report.json")
+        (output:stdout:subarray 0 output:stdout:length)
+        (obj :createNew true)))
+    (bind report (express report-cell))
+    (ensure (= output:code (expected-exit id)) (template id " child exit mismatch"))
+    (if
+      (= id "K11")
+      (do
+        (ensure (= report:parser_gate:status "identity_mismatch") "K11 parser gate mismatch")
+        (ensure (= report:not_processed 1) "K11 required row not_processed mismatch")
+        (ensure (= report:files_parsed 0) "K11 must parse no file")))
+    (if (= id "K01") (ensure-zero report 0 0 id))
+    (if (= id "K02") (ensure-zero report 2 3 id))
+    (if (= id "K03") (ensure-zero report 1 2 id))
+    (if (= id "K04") (ensure-zero report 1 4 id))
+    (if (= id "K05") (ensure-zero report 2 4 id))
+    (if (= id "K06") (ensure-zero report 1 9 id))
+    (if (= id "K07") (ensure-zero report 1 3 id))
+    (if (= id "K08")
+      (do
+        (ensure-zero report 1 3 id)
+        (ensure (= report:dependency_edges 2) "K08 dependency-edge count")
+        (ensure (= report:bare_imports 1) "K08 bare-import count")))
+    (if (= id "K09") (ensure (= (get (get report:rows 0) "status") "parse_error") "K09 parse status"))
+    (if (= id "K10a") (ensure (= (get (get report:rows 0) "status") "source_missing") "K10a status"))
+    (if (= id "K10b") (ensure (= (get (get report:rows 0) "status") "source_unreadable") "K10b status"))
+    (if (= id "K12")
+      (do
+        (ensure (= report:unit:status "unsupported_ast") "K12 unsupported status")
+        (ensure (= report:unit:path "Program.body[0]") "K12 path")
+        (ensure (= report:files_parsed null) "K12 parser count must be not applicable")))
+    (await
+      (Deno:writeTextFile
+        (result-path case-dir "case-verdict.json")
+        (JSON:stringify (obj :id id :status "pass" :childExit output:code :report report))
+        (obj :createNew true)))
+    (obj :id id :status "pass" :exit output:code :report report)))
+
+(async
+  (func
+    run-fixed-gate
+    :args
+    (:string controls-path
+     :string deno
+     :string scanner-js
+     :string core-js
+     :string walker-js
+     :string task-root
+     :string cache-root
+     :string cwd)
+    :returns
+    :promise
+    :body
+    (bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
+    (bind ids (array "K11" "K01" "K02" "K03" "K04" "K05" "K06" "K07" "K08" "K09" "K10a" "K10b" "K12"))
+    (ensure (= controls:fullAuditControls:length 13) "fixed control population must be 13")
+    (bind parser-path controls:parser:path)
+    (bind cases (cell #a()))
+    (bind sequence 0)
+    (for-of
+      id
+      ids
+      (swap! cases
+        (fn
+          (:array all)
+          (conj all (await (run-case controls id sequence deno scanner-js core-js walker-js parser-path task-root cache-root cwd))))
+      (+= sequence 1))
+    (bind results
+      (obj
+        :schema "lykn-estree-capability-results-v1"
+        :controls_sha256 (await (sha256 (await (Deno:readFile controls-path))))
+        :source_commit "5408abd432b8789ae474a3895436f68818c4e482"
+        :source_tree "39bc56b73897e568ff81ce60a2feef28a2310ea8"
+        :compiler_sha256 "85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc"
+        :deno_sha256 (await (sha256 (await (Deno:readFile deno))))
+        :parser_sha256 (await (sha256 (await (Deno:readFile parser-path))))
+        :selected_rows 13
+        :completed (get (express cases) "length")
+        :passed (-> (express cases) (:filter (fn (:any row) (= row:status "pass"))) (:length))
+        :cases (express cases)))
+    (await
+      (Deno:writeTextFile
+        (result-path task-root "capability-results.json")
+        (JSON:stringify results)
+        (obj :createNew true)))
+    (ensure (= results:completed 13) "fixed gate denominator mismatch")
+    (ensure (= results:passed 13) "fixed gate has failed rows")
+    (console:log "fixed K01-K12 gate passed: 13/13")))
+
+(if
+  (!= Deno.args:length 8)
+  (do
+    (console:log
+      (JSON:stringify
+        (obj :status "observer_usage_error" :expectedArgs 8 :actualArgs Deno.args:length)))
+    (Deno:exit 2))
+  (do
+    (bind argv Deno.args)
+    (bind controls-path (absolute-path (get argv 0)))
+    (bind deno (absolute-path (get argv 1)))
+    (bind scanner-js (absolute-path (get argv 2)))
+    (bind core-js (absolute-path (get argv 3)))
+    (bind walker-js (absolute-path (get argv 4)))
+    (bind task-root (absolute-path (get argv 5)))
+    (bind cache-root (absolute-path (get argv 6)))
+    (bind cwd (absolute-path (get argv 7)))
+    (await (Deno:mkdir task-root))
+    (await (Deno:mkdir cache-root))
+    (bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
+    (bind seed-dir (result-path task-root "seed"))
+    (await (Deno:mkdir seed-dir))
+    (bind seed-path (result-path seed-dir "K01.js"))
+    (bind k01 (control controls "K01"))
+    (await
+      (Deno:writeFile
+        seed-path
+        (-> (new TextEncoder) (:encode k01:input))
+        (obj :createNew true)))
+    (await (run-fixed-gate controls-path deno scanner-js core-js walker-js task-root cache-root cwd))))
