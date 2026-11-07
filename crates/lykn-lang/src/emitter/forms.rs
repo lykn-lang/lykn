@@ -4254,6 +4254,30 @@ mod tests {
     }
 
     #[test]
+    fn test_current_await_class_member_countercontrol() {
+        let await_expr = list(vec![atom("await"), atom("load")]);
+        let method = list(vec![
+            atom("async"),
+            list(vec![atom("await"), list(vec![]), await_expr.clone()]),
+        ]);
+        let class = list(vec![atom("class"), atom("C"), list(vec![]), method.clone()]);
+        let class_expr = list(vec![atom("class-expr"), list(vec![]), method]);
+        assert!(!contains_current_await(&class));
+        assert!(!contains_current_await(&class_expr));
+
+        let eager_super = list(vec![atom("await"), list(vec![atom("load-super")])]);
+        let class_with_async_super = list(vec![
+            atom("class-expr"),
+            list(vec![eager_super]),
+            list(vec![
+                atom("async"),
+                list(vec![atom("ready"), list(vec![]), num(1.0)]),
+            ]),
+        ]);
+        assert!(contains_current_await(&class_with_async_super));
+    }
+
+    #[test]
     fn test_resolved_bound_call_emits_if_argument_in_value_context() {
         let call = list(vec![
             atom("ensure").with_name_res(NameRes::BindingRef),
