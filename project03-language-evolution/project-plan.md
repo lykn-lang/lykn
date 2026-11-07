@@ -140,6 +140,13 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Operator explicitly approved [Slice18](slice18-match-validation-and-walker/slice-plan.md):
+NE-C10 narrow validator repair with independent full source gates, then completion
+of partial Lykn tools and unchanged13-row capability gate or next realgapstop.
+Same Sol6.1 High CDC/Luna6 High CC Autonomous Mode; release read-only, dedicated
+task branch. Slice17 tooling3spent/tworemaining carried inside new outer5refinement
+bound; no stage reset, full corpus/F6/library/source integration or next unit.
+
 2026-11-07 [Slice17 stop](slice17-estree-walker-capability/cdc-verification.md):
 partial Lykn tools are not verified usable. Three source corrections reached a
 real match-clause validation-context gap NE-C10, independently reproduced. One
@@ -397,6 +404,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.29: Opened explicitly authorized Slice18 NE-C10 source prerequisite
+  and unchanged tooling/gate re-entry; independent source acceptance first,
+  preserving old tooling correction allowance and every historical limit.
 
 - 2026-11-07 v1.28: Closed Slice17 at independently reproduced NE-C10 validation
   gap, retaining partial tools/13unruns, provenance limits and source-only ADT/

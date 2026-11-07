@@ -2,6 +2,12 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 Operator opened [Slice18](slice18-match-validation-and-walker/slice-plan.md)
+for NE-C10 repair/independent source validation then unfinished Lykn tooling and
+same13-row gate. Six MV rows open; Slice17 tooling3spent/tworemaining explicitly
+retained within outer5refinement cap. This opening accepts no source/tool/audit/
+Project07 outcome and authorizes no release integration or remote action.
+
 2026-11-07: [Slice17 first-gap stop](slice17-estree-walker-capability/cdc-verification.md)
 independently closes one EW row/five deferred, partial tools unaccepted and all13
 fixed capability rows unrun. NE-C10 owns separate match-validation disposition

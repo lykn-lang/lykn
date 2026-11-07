@@ -560,6 +560,12 @@ no push/publication/type/cache repair/walker/corpus or next unit follows.
 
 #### NE-C10 — match clause statements rejected by no-else validation
 
+**2026-11-07 authorized active re-entry:** Operator explicitly approved narrow
+repair, independent full source validation, then completing partial tooling and
+unchanged13-row gate, stopping at another real gap. Canonical Slice18 now owns
+this work; source remains unaccepted until new independent gates. Existing raw
+evidence/old deferred statuses and two remaining tooling corrections stay intact.
+
 **Independently reproduced blocker,2026-11-07.** Slice17 exact walker source at
 planningbd3e4c730a60184e13a2426ffd61318f1c5b9770, SHA
 6976a853a9fea81bcf47e47d634fa5bcd568e9f3b72e6f36c4f58be2bd48d1c6,
