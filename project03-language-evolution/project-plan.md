@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S02 source/test stop (2026-11-07)
+
+Resumed candidate d352 has workspace no-run0 only and is unaccepted. Independent
+final-source review found wrong nested diagnostic oracle and incomplete prescribed
+test coverage; [S02 review](arc01-compiler-semantic-integrity/slice02-checked-emission-results/cdc-verification.md)
+preserves the stop and one concrete unissued test-only proposal. No focused/runtime/
+full gate or production acceptance, no source edit after stop. Maintenancec129
+remains accepted, release8f unchanged, CI-02 open and explicit Operator disposition
+required before correction. Shared01 spent/four remain; no S03 or budget reset.
+
 ## Current explicit S02 continuation (2026-11-07)
 
 Operator resumed Arc01 S02's approved Result-family implementation from accepted
@@ -591,6 +601,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.40: S02 final d352 candidate stopped on source-confirmed new-test
+  oracle/coverage defects after no-run0, no behavioral execution. Preserved isolated
+  candidate/old baseline and one unissued consolidated test correction proposal.
 
 - 2026-11-07 v1.39: Operator explicitly resumed S02 checked-emission delivery
   from accepted maintenancec129; preserved baseline/known MH-P01/iteration budget

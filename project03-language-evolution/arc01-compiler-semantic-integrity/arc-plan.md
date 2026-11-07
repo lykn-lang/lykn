@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 resumed candidate stopped, unaccepted — 2026-11-07
+
+At final d352 only workspace no-run0 ran. Independently confirmed wrong typed
+oracle path plus prescribed coverage gaps stop further S02 work; no runtime/full
+gate or compiler correctness claim. CI-02 remains open. [S02 current review](slice02-checked-emission-results/cdc-verification.md)
+contains one unissued test-only corrective proposal, pending Operator disposition.
+Result design/accepted maintenancec129/release8f and all prior duties remain.
+
 ## S02 Result delivery resumed explicitly — 2026-11-07
 
 Operator approved continuation after accepted maintenancec129 baseline, same
@@ -253,6 +261,9 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.8: S02 resumed candidate d352 is unaccepted after final-test
+  source review/no-run0 only; CE deferred, concrete test-only proposal held.
 
 - 2026-11-07 v0.7: Explicit Operator return authorizes settled S02 Result code
   from c129, fresh Luna6 High CC/separate Sol6.1 High CDC and full source gates.

@@ -1,5 +1,26 @@
 # S02 bounded stop report
 
+## Current resumed implementation stop — independent disposition
+
+2026-11-07: candidate d352e6b is **unaccepted**, not delivered. Workspace no-run0
+with full raw streams/pins is the only build; focused tests0, new typed functions
+0/6, invalid routes0/4, runtime controls0/4, contract observations0/17, full Make/
+citations unrun. No generated runtime result is claimed at this candidate.
+
+[Independent resumed review](cdc-verification.md) confirms final typed tests
+select the enclosing Obj instead of the invalid nested child (CE-R05); constructor
+origin/nested-assign coverage and validation-order suffix counters are incomplete
+(CE-R06/07). These are source-confirmed test defects/acceptance gaps, not a new
+compiler/parser evidence gap or an empirically observed test panic. The first
+substantive-failure stop was obeyed, no correction/rerun followed.
+
+All six CE rows remain deferred/CI-02 open. One consolidated test-only follow-up
+is proposed but NOT issued/authorized. Shared correction01 spent/four remain,
+next refinement02 only if approved. Maintenancec129 remains accepted and unchanged;
+release8f/prior refs untouched. Source/planning/index/build ownership returned to
+CDC. [Retrospective](cdc-retrospective.md) preserves process/capture limits. No
+S03/integration/other unit follows. Earlier reports below are retained history.
+
 2026-11-07: implementation is **not delivered**. Test-only2321943 on dedicated `codex/checked-emission-results` is clean; release and prior accepted source8f unchanged. No checked API or production code was authored.
 
 Independent static review found wrong package output paths, an unsupported DTS-existence oracle, missing package runtime execution and nondiscriminating stderr/status predicates. These are test-authoring defects, not a compiler/parser evidence gap. The first unexpected substantive-failure stop was honored. One test-only correction is proposed in [CDC review](cdc-verification.md), pending Operator approval; zero source refinements executed, no new prompt issued.

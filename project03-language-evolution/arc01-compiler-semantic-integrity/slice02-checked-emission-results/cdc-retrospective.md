@@ -1,5 +1,30 @@
 # S02 initial-attempt retrospective
 
+## Resumed source attempt — 2026-11-07
+
+Fresh Luna6 High CC produced a13-path Result/route candidate, but final typed
+tests repeated a concrete raw-AST path mistake: selecting the enclosing Obj as
+the bad child. The prompt had specified the extra descent. Source inspection of
+the actual shallow Obj classifier was sufficient to stop; no runtime panic was
+observed. Parsed-origin/nested-assign and validation suffix obligations were also
+not fully implemented. This is authoring/coverage evidence, not proof of a guide
+ambiguity or a need for recursive typed-AST architecture.
+
+The earlier unchecked test alias was caught while CC still attested unfinished
+authoring, removed before final freeze/checks and retained in history. Final
+wrong-oracle construction is different: CC had declared readiness. The explicit
+stop was followed after no-run0, before any focused/runtime case; independent
+review did not manufacture a miniature probe or infer correctness from compile.
+
+Proper contiguous trailers and durable first build streams/pins improved on the
+initial232 capture limitation, but two intermediate titles used older supplied
+message text. Record that process nonconformance, not blanket compliance. No
+history rewrite/cure. The source candidate remains isolated/unaccepted; accepted
+maintenance baseline and release8f remain safe. A consolidated original-test
+completion is proposed, not an endless new evidence prerequisite or budget reset.
+
+## Retained initial-attempt analysis
+
 2026-11-07, CDC Sol6.1 High; fresh Luna6 High CC. This covers the stopped test-only attempt, not a completed source delivery or a model benchmark.
 
 The concrete design and staged old-API tests avoided an artificial type-error baseline during a Result API migration. Fixed message files and raw Git readback produced compliant trailers on the actual test commit; static review caught defective oracles before any behavioral execution or production patch.

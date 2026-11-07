@@ -2,12 +2,27 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
-status: in-progress
+status: paused
 planned-release: unassigned
 depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emission-harness-baseline]
 ---
 
 # Checked emission results
+
+## Current resumed-source stop — 2026-11-07
+
+Final candidate d352e6b is unaccepted and clean on the v2 task branch; only the
+workspace no-run build0 occurred. Independent review confirms CE-R05 wrong nested
+oracle node in two new typed tests; CE-R06 parsed-origin/nested-assign coverage and
+CE-R07 five-group suffix counters also remain incomplete. See [current review](cdc-verification.md).
+No focused/runtime/full Make/citation gate ran, no post-stop edit/correction.
+
+The first further substantive-failure stop is binding. One consolidated test-only
+correction is proposed in that review, NOT issued or authorized. The Result design
+remains approved but delivery/CE/CI-02 is unaccepted. Accepted maintenancec129 and
+release8f stay intact; next actual refinement would be shared02 (01 already spent,
+four remaining), not a new slice/budget. Earlier resumption authority/history below
+is preserved; it does not authorize work past this stop. No automatic next unit.
 
 ## Explicit Result implementation resumption — 2026-11-07
 

@@ -1,5 +1,11 @@
 # S02 checked emission ledger
 
+2026-11-07 current stop: candidate d352 has workspace no-run0 only. Final typed
+oracle CE-R05 is source-confirmed wrong; prescribed coverage CE-R06/07 unmet.
+All CE rows deferred/CI-02 open; focused/API/runtime/full gates0, no code acceptance.
+See resumed section of cdc-verification.md. One test-only correction proposed,
+not authorized; shared01 spent/four remain, maintenance/release baselines intact.
+
 2026-11-07 resumed: explicit Operator “yes please!” authorizes original Result
 implementation from accepted c129 baseline via cc-prompt-iteration01. Same models/
 first further unexpected substantive-failure stop. CE rows still deferred pending
@@ -27,9 +33,9 @@ and old tooling8 spent/K0/13 retained.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| CE-01 | Actual source/authority/API disposition and behavioral red established | Exact baseline/branch/readback; four captured invalid routes and two valid controls, all bodies committed first | correctness-grade | CI-02/S02 | deferred | cdc-verification.md; source2321943 | Intake/test freeze only; no-run0 is not behavioral red |
-| CE-02 | Public checked emission delivers first typed fatal with honest origin and context recovery | Three checked APIs, nested sibling/strip/context/gensym/span tests; exact source diff | correctness-grade | NE-C06 channel/S02 | deferred | cdc-verification.md | Production unchanged; implementation held |
-| CE-03 | All production routes stop before failing-file artifacts and preserve valid semantics | CLI stdout/file/DTS/dist, typed path/source, resolver/shared validator order and runtime/user-text controls | correctness-grade | CI-02 | deferred | cdc-verification.md | Four invalid and four valid route conditions unrun |
-| CE-04 | Actual source/full generated/runtime/full normal gates pass | Focused binaries/producer pins; complete JS/DTS; normal Make/citations/full raw attempts | correctness-grade | AGENTS/S02 | deferred | artifacts/evidence/cc-readback.txt | One transcript-only no-run0, no test pin/full gates/runtime |
+| CE-01 | Actual source/authority/API disposition and behavioral red established | Exact baseline/branch/readback; four captured invalid routes and two valid controls, all bodies committed first | correctness-grade | CI-02/S02 | deferred | cdc-verification.md; accepted maintenance c129 review | Old baseline reusable, new candidate unaccepted |
+| CE-02 | Public checked emission delivers first typed fatal with honest origin and context recovery | Three checked APIs, nested sibling/strip/context/gensym/span tests; exact source diff | correctness-grade | NE-C06 channel/S02 | deferred | cdc-verification.md; source d352 | Candidate authored, final oracle defect/coverage gaps, no tests |
+| CE-03 | All production routes stop before failing-file artifacts and preserve valid semantics | CLI stdout/file/DTS/dist, typed path/source, resolver/shared validator order and runtime/user-text controls | correctness-grade | CI-02 | deferred | cdc-verification.md | New candidate invalid/runtime conditions0/4 each; old MH-P01 retained |
+| CE-04 | Actual source/full generated/runtime/full normal gates pass | Focused binaries/producer pins; complete JS/DTS; normal Make/citations/full raw attempts | correctness-grade | AGENTS/S02 | deferred | artifacts/evidence/cc/resumption01/attempt01/; initial cc-readback history | Workspace no-run0 with pins; all behavioral/full gates unrun |
 | CE-05 | Separate CDC reproduction accepts exact candidate | Independent source/API/diagnostic/context/route review plus focused/runtime/full Make/citations | correctness-grade | work-verification | deferred | cdc-verification.md | Independent static rejection, no source acceptance |
 | CE-06 | Delivery, docs/API impacts, history and residual owners reconcile | Row walk/report/retro/parent/S07 impact pointer with exact clean source/plan refs | correctness-grade | Arc01/Operator | deferred | closing-report.md; cdc-retrospective.md | Stop recorded, delivery incomplete; no later unit/integration |

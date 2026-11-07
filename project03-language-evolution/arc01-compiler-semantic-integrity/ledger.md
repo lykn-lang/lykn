@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 newest: S02 d352 candidate stopped/unaccepted, no-run0 only, final
+test CE-R05 oracle defect/CE-R06–07 coverage gaps. CI-02 open/CE deferred; no
+source/runtime/full-gate acceptance or later-unit authority. One test-only proposal
+pending Operator, shared01 spent/four remain, accepted c129/release8f unchanged.
+
 2026-11-07 latest: Operator explicitly resumed S02 Result implementation from
 accepted maintenancec129, same selected models/stop rule. CI-02 remains open;
 new proof must satisfy all original criteria. Shared correction01 spent/four
