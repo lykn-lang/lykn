@@ -242,7 +242,7 @@
           (ReferenceRole (visit-node state (get values index) (path-index path index) role))
           (NameRole (visit-node state (get values index) (path-index path index) role))
           (DeferredRole (visit-node state (get values index) (path-index path index) role))
-          (_ (throw (new Error "unsupported traversal role")))))
+          (_ (throw (new Error "unsupported traversal role"))))))
     (if (not (= values null)) (unsupported state values path))))
 
 (func

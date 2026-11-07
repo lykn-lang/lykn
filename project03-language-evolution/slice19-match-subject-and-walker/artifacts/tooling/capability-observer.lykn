@@ -300,6 +300,45 @@
     (bind input-hash (if has-input (await (sha256 input-bytes)) null))
     (bind synthetic? (= id "K12"))
     (bind gated? (= id "K11"))
+    (bind k11-expected-hash
+      (?
+        gated?
+        (do
+          (ensure
+            (and
+              (not (= controls null))
+              (not (= controls undefined))
+              (= (js:typeof controls) "object")
+              (Object:hasOwn controls "observations")
+              (Array:isArray controls:observations))
+            "K11 observations must be an array")
+          (bind k11-observation
+            (->
+              controls:observations
+              (:find
+                (fn
+                  (:any observation)
+                  (and
+                    (not (= observation null))
+                    (not (= observation undefined))
+                    (= (js:typeof observation) "object")
+                    (Object:hasOwn observation "id")
+                    (= observation:id "K11"))))))
+          (ensure
+            (and
+              (not (= k11-observation null))
+              (not (= k11-observation undefined))
+              (= (js:typeof k11-observation) "object")
+              (not (Array:isArray k11-observation))
+              (Object:hasOwn k11-observation "expectedHash"))
+            "K11 observation must own expectedHash")
+          (ensure
+            (and
+              (= (js:typeof k11-observation:expectedHash) "string")
+              (= k11-observation:expectedHash "0000000000000000000000000000000000000000000000000000000000000000"))
+            "K11 observation expectedHash must be the frozen zero digest")
+          k11-observation:expectedHash)
+        null))
     (bind scanner-input-path
       (if
         gated?
@@ -335,7 +374,7 @@
             :path parser-path
             :url "file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs"
             :version "8.17.0"
-            :expected_sha256 (if gated? definition:expectedHash "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7")
+            :expected_sha256 (if gated? k11-expected-hash "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7")
             :options (obj :ecmaVersion "latest" :sourceType "module" :locations true :ranges true))
           :rows
           (array
@@ -351,7 +390,7 @@
               :required true
               :segment "control"
               :gated gated?
-              :expectedHash (if gated? definition:expectedHash null)))))))
+              :expectedHash (if gated? k11-expected-hash null)))))))
     (bind manifest-path (result-path case-dir "manifest.json"))
     (await
       (Deno:writeTextFile
