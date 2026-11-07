@@ -4,6 +4,11 @@ Opened2026-11-07. CC attestation is not CDC acceptance. Normal source ceiling5,
 stricter first additional substantive-failure stop; eight spent tooling passes
 unchanged. No K observation or source integration is authorized.
 
+Current review: test-only1d2dbcfa paused on static test-contract deficiencies,
+not compiler/runtime evidence. Two no-run builds, zero test/runtime executions;
+NE-C12 production unchanged. See [actual review/proposal](cdc-verification.md).
+All rows remain open pending Operator disposition; no corrective prompt issued.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | VF-01 | Actual approved source/readiness/freeze/tool identities and preserved history | Intake, committed bodies, raw commands and post-build pins | correctness-grade | S01 authority | open | | No retroactive freeze or lost-body reconstruction |

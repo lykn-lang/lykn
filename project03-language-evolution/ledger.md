@@ -2,6 +2,14 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 S01 paused on independently inspected static test-contract failure at
+test-only1d2dbcfa. Two no-run builds only; baseline/runtime/witness/full gates
+unrun, production unchanged and all VF/CI/P rows open. The
+[review](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md)
+records CDC readiness contribution and a concrete unissued test correction for
+Operator decision. The incremental design approval and eight-spent tool limit
+remain; no source repair or renewed execution is inferred.
+
 2026-11-07: Operator approved incremental design and opened Arc01
 [S01](arc01-compiler-semantic-integrity/slice01-variadic-for-context/slice-plan.md)
 NE-C12 only, fresh Luna6 High CC/separate Sol6.1 High CDC and first additional

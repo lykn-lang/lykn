@@ -17,6 +17,12 @@ BACKLOG.md says so.
 
 ## Current bounded Arc01 S01 execution (2026-11-07)
 
+Current status: S01 paused before baseline execution/production change on static
+test-contract review at1d2dbcfa, with two no-run builds only. All VF/CI-01 remain
+open; NE-C12 remains unfixed. [Review and unissued correction proposal](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md)
+await Operator disposition under the explicit substantive-failure stop; no
+new compiler/parser bug, behavioral result or budget reset is asserted.
+
 The Operator approved incremental design and explicitly opened
 [S01 numeric-for context repair](arc01-compiler-semantic-integrity/slice01-variadic-for-context/slice-plan.md),
 fresh Luna6 High CC/separate Sol6.1 High CDC Autonomous Mode, with first additional

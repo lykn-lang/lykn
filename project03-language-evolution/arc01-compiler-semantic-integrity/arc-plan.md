@@ -11,6 +11,13 @@ related: [project07-core-library-research]
 
 ## Current S01 execution authority — 2026-11-07
 
+Current: S01 is paused at test-only1d2dbcfa after static contract review found
+inadequate runtime/countercontrol coverage. Two no-run builds, no behavioral
+execution or production repair; CI-01 remains open. The [S01 review](slice01-variadic-for-context/cdc-verification.md)
+preserves CDC readiness responsibility and a concrete unissued correction
+proposal. The first additional substantive-failure stop is binding; Operator
+disposition precedes further implementation. No architectural redesign inferred.
+
 The Operator approved the **incremental design direction** and explicitly opened
 [S01 numeric-for repair](slice01-variadic-for-context/slice-plan.md), selecting
 fresh Luna6 High CC and separate Sol6.1 High CDC, Autonomous Mode, with a stop on

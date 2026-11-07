@@ -8,6 +8,17 @@ planned-release: unassigned
 
 # S01 — faithful variadic numeric-for bodies
 
+## Current review state — 2026-11-07
+
+Paused under the Operator's first additional substantive-failure stop. Frozen
+test-only1d2dbcfa has static test-contract defects documented in
+[independent review](cdc-verification.md). Two no-run builds succeeded per CC;
+zero behavioral tests/runtime/witness/full gates executed. Production profile
+unchanged, NE-C12 unfixed; all five VF rows open. A consolidated test-correction
+proposal is recorded for Operator decision, not issued or executed. The original
+recipe below is preserved, including its inadequate validator alternative;
+the review owns that CDC readiness error. No source/tool budget reset.
+
 ## Authority, roles and endpoint
 
 On 2026-11-07 the Operator approved the incremental design direction and said:
