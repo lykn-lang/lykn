@@ -88,6 +88,34 @@
     (ensure (= report:nested_reasons reasons) (template id " reason count"))))
 
 (func
+  ensure-no-ast
+  :args
+  (:any row :string id)
+  :returns
+  :void
+  :body
+  (do
+    (ensure (= row:program null) (template id " must not report a Program"))
+    (ensure (= row:findings:length 0) (template id " must have no findings"))
+    (ensure (= row:reasons:length 0) (template id " must have no reasons"))
+    (ensure (= row:dependency_edges:length 0) (template id " must have no dependency edges"))))
+
+(func
+  ensure-positive-row
+  :args
+  (:any row :number direct :number reasons :string id)
+  :returns
+  :void
+  :body
+  (do
+    (ensure (= row:status "complete_walk") (template id " row status"))
+    (ensure (= row:ast_coverage "complete") (template id " AST coverage"))
+    (ensure (= row:program:type "Program") (template id " Program type"))
+    (ensure (= row:program:sourceType "module") (template id " source type"))
+    (ensure (= row:direct_count direct) (template id " direct parent count"))
+    (ensure (= row:reason_count reasons) (template id " reason count"))))
+
+(func
   result-path
   :args
   (:string case-dir :string file)
@@ -119,7 +147,13 @@
     (bind deno-dir (result-path cache-root id))
     (await (Deno:mkdir case-dir))
     (await (Deno:mkdir deno-dir))
-    (bind input-path (result-path case-dir (if (= id "K10a") "missing-control.js" "input.js")))
+    (bind input-path
+      (result-path
+        case-dir
+        (match id
+          ("K10a" "missing-control.js")
+          ("K10b" "unreadable-control.js")
+          (_ "input.js"))))
     (bind has-input
       (and
         (Object:hasOwn definition "input")
@@ -148,8 +182,8 @@
       (if
         gated?
         (await (sha256 (await (Deno:readFile scanner-input-path))))
-        input-hash))
-    (bind source-id (template "slice17-" id))
+        (if has-input input-hash (await (sha256 (new Uint8Array)))))
+    (bind source-id (if gated? "slice17-K01" (template "slice17-" id)))
     (bind manifest
       (if
         synthetic?
@@ -217,7 +251,7 @@
           (if
             (= id "K10b")
             (array manifest-path scanner-js core-js walker-js parser-path)
-            (array manifest-path scanner-js core-js walker-js parser-path scanner-input-path))))
+          (array manifest-path scanner-js core-js walker-js parser-path scanner-input-path)))))
     (bind read-grant (-> read-paths (:join ",")))
     (bind argv
       (array
@@ -241,12 +275,13 @@
       (obj
         :id id
         :sequence sequence
-        :argv (conj (array deno) argv)
+        :argv (-> (array deno) (:concat argv))
         :cwd cwd
         :clearEnv true
         :environment environment
         :read_grant_paths read-paths
-        :run_grant deno
+        :outer_run_target deno
+        :child_run_grant "none"
         :write_grant "none"
         :network "denied"
         :input_path (if has-input input-path null)
@@ -292,7 +327,7 @@
           (obj
             :id id
             :sequence sequence
-            :argv (conj (array deno) argv)
+            :argv (-> (array deno) (:concat argv))
             :cwd cwd
             :exit output:code
             :signal output:signal
@@ -315,30 +350,79 @@
     (if
       (= id "K11")
       (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "incomplete") "K11 aggregate status")
         (ensure (= report:parser_gate:status "identity_mismatch") "K11 parser gate mismatch")
         (ensure (= report:not_processed 1) "K11 required row not_processed mismatch")
-        (ensure (= report:files_parsed 0) "K11 must parse no file")))
-    (if (= id "K01") (do (ensure (= report:status "complete_no_findings") "K01 status") (ensure-zero report 0 0 id)))
-    (if (= id "K02") (do (ensure (= report:status "complete_with_findings") "K02 status") (ensure-zero report 2 3 id)))
-    (if (= id "K03") (do (ensure (= report:status "complete_with_findings") "K03 status") (ensure-zero report 1 2 id)))
-    (if (= id "K04") (do (ensure (= report:status "complete_with_findings") "K04 status") (ensure-zero report 1 4 id)))
-    (if (= id "K05") (do (ensure (= report:status "complete_with_findings") "K05 status") (ensure-zero report 2 4 id)))
-    (if (= id "K06") (do (ensure (= report:status "complete_with_findings") "K06 status") (ensure-zero report 1 9 id)))
-    (if (= id "K07") (do (ensure (= report:status "complete_with_findings") "K07 status") (ensure-zero report 1 3 id)))
+        (ensure (= report:files_parsed 0) "K11 must parse no file")
+        (ensure (= row:status "not_processed") "K11 row status")
+        (ensure (= row:manifest_source_sha256 row:source_sha256) "K11 declared source hash missing")
+        (ensure (= row:observed_source_sha256 null) "K11 source must remain unread")
+        (ensure (= row:observed_output_sha256 null) "K11 output hash must be unobserved")
+        (ensure-no-ast row id)))
+    (if
+      (= id "K01")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "complete_no_findings") "K01 aggregate status")
+        (ensure (= report:files_parsed 1) "K01 parsed-file count")
+        (ensure (= row:program:bodyCount 2) "K01 Program body count")
+        (ensure (= (JSON:stringify row:program:range) "[0,66]") "K01 Program range")
+        (ensure (= row:program:loc:end:line 5) "K01 Program end line")
+        (ensure (= row:program:loc:end:column 0) "K01 Program end column")
+        (ensure-positive-row row 0 0 id)
+        (ensure-zero report 0 0 id)))
+    (if (= id "K02") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K02 aggregate status") (ensure-positive-row row 2 3 id) (ensure-zero report 2 3 id)))
+    (if (= id "K03") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K03 aggregate status") (ensure-positive-row row 1 2 id) (ensure-zero report 1 2 id)))
+    (if (= id "K04") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K04 aggregate status") (ensure-positive-row row 1 4 id) (ensure-zero report 1 4 id)))
+    (if (= id "K05") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K05 aggregate status") (ensure-positive-row row 2 4 id) (ensure-zero report 2 4 id)))
+    (if (= id "K06") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K06 aggregate status") (ensure-positive-row row 1 9 id) (ensure-zero report 1 9 id)))
+    (if (= id "K07") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K07 aggregate status") (ensure-positive-row row 1 3 id) (ensure-zero report 1 3 id)))
     (if (= id "K08")
       (do
+        (bind row (get report:rows 0))
         (ensure (= report:status "complete_with_findings") "K08 status")
+        (ensure-positive-row row 1 3 id)
         (ensure-zero report 1 3 id)
         (ensure (= report:dependency_edges 2) "K08 dependency-edge count")
-        (ensure (= report:bare_imports 1) "K08 bare-import count")))
-    (if (= id "K09") (ensure (= (get (get report:rows 0) "status") "parse_error") "K09 parse status"))
-    (if (= id "K10a") (ensure (= (get (get report:rows 0) "status") "source_missing") "K10a status"))
-    (if (= id "K10b") (ensure (= (get (get report:rows 0) "status") "source_unreadable") "K10b status"))
+        (ensure (= report:bare_imports 1) "K08 bare-import count")
+        (ensure (= row:program:bodyCount 3) "K08 Program body count")
+        (ensure (= (JSON:stringify row:program:range) "[0,67]") "K08 Program range")
+        (ensure (= row:program:loc:end:line 4) "K08 Program end line")
+        (ensure (= row:program:loc:end:column 0) "K08 Program end column")
+        (bind await-reason (get row:reasons 0))
+        (ensure (= await-reason:nodeType "AwaitExpression") "K08 await node")
+        (ensure (= await-reason:path "Program.body[2].expression") "K08 await path")
+        (ensure (= await-reason:loc:line 3) "K08 await line")
+        (ensure (= await-reason:loc:column 0) "K08 await column")
+        (ensure (= (JSON:stringify await-reason:range) "[53,65]") "K08 await range")))
+    (if
+      (= id "K09")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "incomplete") "K09 aggregate status")
+        (ensure (= report:parse_error 1) "K09 parse-error count")
+        (ensure (= row:status "parse_error") "K09 row status")
+        (ensure (= row:error:pos 14) "K09 SyntaxError position")
+        (ensure (= row:error:loc:line 1) "K09 SyntaxError line")
+        (ensure (= row:error:loc:column 14) "K09 SyntaxError column")
+        (ensure-no-ast row id)))
+    (if
+      (or (= id "K10a") (= id "K10b"))
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "incomplete") (template id " aggregate status"))
+        (ensure (= row:status (if (= id "K10a") "source_missing" "source_unreadable")) (template id " row status"))
+        (ensure-no-ast row id)))
     (if (= id "K12")
       (do
         (ensure (= report:unit:status "unsupported_ast") "K12 unsupported status")
+        (ensure (= report:unit:nodeType "ExperimentalNode") "K12 actual offending type")
         (ensure (= report:unit:path "Program.body[0]") "K12 path")
-        (ensure (= report:files_parsed null) "K12 parser count must be not applicable")))
+        (ensure (= report:status "incomplete") "K12 aggregate status")
+        (ensure (= report:files_parsed null) "K12 parser count must be not applicable")
+        (ensure (= report:files_completely_walked null) "K12 walked-file count must be not applicable")
+        (ensure (= report:rows:length 0) "K12 file rows must be not applicable")))
     (await
       (Deno:writeTextFile
         (result-path case-dir "case-verdict.json")
@@ -363,17 +447,24 @@
     :body
     (bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
     (bind ids (array "K11" "K01" "K02" "K03" "K04" "K05" "K06" "K07" "K08" "K09" "K10a" "K10b" "K12"))
+    (bind control-ids (array "K01" "K02" "K03" "K04" "K05" "K06" "K07" "K08" "K09" "K10a" "K10b" "K11" "K12"))
     (ensure (= controls:fullAuditControls:length 13) "fixed control population must be 13")
+    (for
+      (let index 0)
+      (< index control-ids:length)
+      (+= index 1)
+      (ensure
+        (= (get (get controls:fullAuditControls index) "id") (get control-ids index))
+        (template "fixed control order mismatch at " index)))
     (bind parser-path controls:parser:path)
     (bind cases (cell #a()))
     (bind sequence (cell 0))
     (for-of
       id
       ids
-      (swap! cases
-        (fn
-          (:array all)
-          (conj all (await (run-case controls id (express sequence) deno scanner-js core-js walker-js parser-path task-root cache-root cwd))))
+      (bind case-result
+        (await (run-case controls id (express sequence) deno scanner-js core-js walker-js parser-path task-root cache-root cwd)))
+      (swap! cases (fn (:array all) (conj all case-result)))
       (swap! sequence (fn (:number n) (+ n 1))))
     (bind results
       (obj
@@ -414,9 +505,24 @@
     (bind task-root (absolute-path (get argv 5)))
     (bind cache-root (absolute-path (get argv 6)))
     (bind cwd (absolute-path (get argv 7)))
+    (bind controls-bytes (await (Deno:readFile controls-path)))
+    (bind controls-hash (await (sha256 controls-bytes)))
+    (ensure
+      (= controls-hash "0f20dba4713b93671b337fa1ba0a5cde00fdbe29bed195a00e3ae1c689473a5d")
+      "fixed controls bytes differ from the frozen Slice12 copy")
+    (bind controls-decoder (new TextDecoder "utf-8" (obj :fatal true)))
+    (bind controls (JSON:parse (controls-decoder:decode controls-bytes)))
+    (bind control-ids (array "K01" "K02" "K03" "K04" "K05" "K06" "K07" "K08" "K09" "K10a" "K10b" "K11" "K12"))
+    (ensure (= controls:fullAuditControls:length 13) "fixed control population must be 13")
+    (for
+      (let index 0)
+      (< index control-ids:length)
+      (+= index 1)
+      (ensure
+        (= (get (get controls:fullAuditControls index) "id") (get control-ids index))
+        (template "fixed control order mismatch at " index)))
     (await (Deno:mkdir task-root))
     (await (Deno:mkdir cache-root))
-    (bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
     (bind seed-dir (result-path task-root "seed"))
     (await (Deno:mkdir seed-dir))
     (bind seed-path (result-path seed-dir "K01.js"))

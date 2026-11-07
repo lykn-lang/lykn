@@ -62,3 +62,41 @@ interop stays narrow. The relevant current Deno guidance confirms ESM file
 extensions, no Node execution helpers, typed boundaries, secure granular
 permissions and raw Uint8Array/file APIs. The four fixed controls' raw bytes and
 their predeclared oracles were completely read before any authored tool code.
+
+## Correction1 source readback
+
+Current pinned source guidance for the corrective pass was reread directly:
+`docs/guides/00-lykn-surface-forms.md` shows literal match clauses as
+`(pattern result)` at 471–515, mutable C-style iteration as `(for (let i 0)
+... (++ i) ...)` at 899–915, and `try` clauses at 917–930. `docs/guides/03-error-handling.md`
+ID-09 (lines 255–285) uses prefix `(instanceof error ErrorType)` and handles
+only known errors before rethrowing; ID-10 reinforces rethrowing unknown errors.
+`docs/guides/05-type-discipline.md` ID-04, ID-18, ID-24/25 (126–169, 470–502,
+602–645) grounds closed internal roles in zero-field ADTs and `match`, with
+exhaustiveness. Foreign ESTree objects and JSON status strings remain validated
+open data at the boundary, not internal ADTs. Rechecking the exact unchanged
+parser-core at Slice14 shows `(exports load-parser verify-parser)` only; its
+digest helper is private, so the scanner needs its own private local digest.
+
+The consolidated findings map to the existing contract: R1 restores these
+actual surface forms and the node/role table; R2 obeys the async function and
+private core API; R3 restores Binding/Name/Reference role behavior and finite
+coverage; R4 retains only observed identities, positive Program and real status
+partitions; R5 makes assertions discriminate the original fixed controls and
+preserves raw evidence first. Control/prediction bytes remain frozen.
+
+## Correction1 sequencing amendment readback
+
+Iteration03 changes sequencing only. I will commit a partial correction1 freeze
+of all actual module bodies, unchanged core/control bytes and predictions, with
+the observer explicitly marked unfinished and not runtime-ready. The saved
+current-8 bodies are historical snapshots; they do not represent every
+intermediate. The already-reported missing intermediate scanner snapshot remains
+a capture-process nonconformance; no check or runtime consumed that missing
+body. From the exact commit, only stable walker/scanner pinned native checks run
+from config-free copies; no generation, Deno check, guards or capability case is
+permitted at this partial stage. Complete observer predicates and all original
+final source/generated/runtime prerequisites remain required. The earlier
+native-0001 core check exited 0; its 80-byte stderr is normal success
+information `(7 top-level expressions)`, not a warning. No capability runtime
+has run (0/13).

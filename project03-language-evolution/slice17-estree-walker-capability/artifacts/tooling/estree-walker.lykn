@@ -9,7 +9,7 @@
   :returns
   :boolean
   :body
-  (Object:hasOwn value key))
+  (and (not (= value null)) (Object:hasOwn value key)))
 
 (func
   child
@@ -74,7 +74,12 @@
             :path
             path
             :loc
-            (child node "loc")))))))
+            (if
+              (and (own node "loc") (own (get node "loc") "start"))
+              (get (get node "loc") "start")
+              null)
+            :range
+            (child node "range")))))))
 
 (func
   add-reason
@@ -108,7 +113,7 @@
           :potential_load_evaluation
           true
           :observed_effect
-          null))))
+          null)))))
 
 (func
   add-edge
@@ -135,8 +140,8 @@
               (child (get node "source") "value")
               null)
             :bare_import
-            bare)))
-    (if bare (swap! (get state "bare") (fn (:number n) (+ n 1)))))
+            bare))))
+    (if bare (swap! (get state "bare") (fn (:number n) (+ n 1))))))
 
 (func
   ast-child-in?
@@ -159,6 +164,27 @@
       false)))
 
 (func
+  flag-unlisted
+  :args
+  (:any state :any value :string path)
+  :returns
+  :void
+  :body
+  (if
+    (ast-node? value)
+    (unsupported state value path)
+    (if
+      (Array:isArray value)
+      (for
+        (let index 0)
+        (< index value:length)
+        (+= index 1)
+        (bind item (get value index))
+        (if
+          (ast-node? item)
+          (unsupported state item (path-index path index))))))
+
+(func
   check-unlisted
   :args
   (:any state :any node :string path :array allowed)
@@ -174,7 +200,7 @@
       (and
         (not (allowed:includes key))
         (ast-child-in? value))
-      (unsupported state value (path-field path key)))))
+      (flag-unlisted state value (path-field path key)))))
 
 (func
   check-attributes
@@ -189,28 +215,30 @@
     (bind value (child node field))
     (if
       (and (not (= value null)) (ast-child-in? value))
-      (unsupported state value (path-field path field)))))
+      (flag-unlisted state value (path-field path field)))))
 
 (func
   visit-list
   :args
-  (:any state :any values :string path :any role)
+  (:any state :any values :string path :FieldRole role)
   :returns
   :void
   :body
   (if
     (Array:isArray values)
     (for
-      (bind index 0)
+      (let index 0)
       (< index values:length)
       (+= index 1)
-      (visit-node state (get values index) (path-index path index) role))
+      (if
+        (not (= (get values index) null))
+        (visit-node state (get values index) (path-index path index) role)))
     (if (not (= values null)) (unsupported state values path))))
 
 (func
   visit-one
   :args
-  (:any state :any node :string field :string path :any role)
+  (:any state :any node :string field :string path :FieldRole role)
   :returns
   :void
   :body
@@ -234,11 +262,9 @@
         null)
       ("RestElement"
         (check-unlisted state node path (array "type" "argument"))
-        (add-reason state node path "destructuring" "rest binding may acquire an iterator")
         (visit-one state node "argument" path BindingRole))
       ("AssignmentPattern"
         (check-unlisted state node path (array "type" "left" "right"))
-        (add-reason state node path "destructuring" "binding defaults may evaluate")
         (visit-one state node "left" path BindingRole)
         (visit-one state node "right" path ReferenceRole))
       ("ArrayPattern"
@@ -253,7 +279,7 @@
         (check-unlisted state node path (array "type" "key" "value" "computed" "shorthand" "kind" "method"))
         (if (child node "computed")
           (do
-            (add-reason state node path "computed_key_coercion" "ToPropertyKey may invoke user conversion")
+            (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
             (visit-one state node "key" path ReferenceRole))
           (visit-one state node "key" path NameRole))
         (visit-pattern state (child node "value") (path-field path "value")))
@@ -262,7 +288,7 @@
 (func
   visit-node
   :args
-  (:any state :any node :string path :any role)
+  (:any state :any node :string path :FieldRole role)
   :returns
   :void
   :body
@@ -277,7 +303,9 @@
           role
           (ReferenceRole
             (add-reason state node path "identifier_read" "name resolution is not established"))
-          (_ null)))
+          (BindingRole null)
+          (NameRole null)
+          (DeferredRole null)))
       ("Literal"
         (check-unlisted state node path (array "type" "value" "raw" "regex" "bigint"))
         null)
@@ -343,12 +371,18 @@
         (visit-one state node "body" path ReferenceRole))
       ("ForInStatement"
         (check-unlisted state node path (array "type" "left" "right" "body" "await"))
-        (visit-pattern state (child node "left") (path-field path "left"))
+        (if
+          (= (child (child node "left") "type") "VariableDeclaration")
+          (visit-one state node "left" path ReferenceRole)
+          (visit-pattern state (child node "left") (path-field path "left")))
         (visit-one state node "right" path ReferenceRole)
         (visit-one state node "body" path ReferenceRole))
       ("ForOfStatement"
         (check-unlisted state node path (array "type" "left" "right" "body" "await"))
-        (visit-pattern state (child node "left") (path-field path "left"))
+        (if
+          (= (child (child node "left") "type") "VariableDeclaration")
+          (visit-one state node "left" path ReferenceRole)
+          (visit-pattern state (child node "left") (path-field path "left")))
         (add-reason state node path "iteration" "iteration may acquire an iterator")
         (visit-one state node "right" path ReferenceRole)
         (visit-one state node "body" path ReferenceRole))
@@ -364,16 +398,13 @@
         (visit-one state node "init" path ReferenceRole))
       ("FunctionDeclaration"
         (check-unlisted state node path (array "type" "id" "params" "body" "generator" "async" "expression"))
-        (null))
+        null)
       ("FunctionExpression"
         (check-unlisted state node path (array "type" "id" "params" "body" "generator" "async" "expression"))
-        (null))
+        null)
       ("ArrowFunctionExpression"
         (check-unlisted state node path (array "type" "id" "params" "body" "generator" "async" "expression"))
-        (null))
-      ("ReturnStatement"
-        (check-unlisted state node path (array "type" "argument"))
-        (visit-one state node "argument" path ReferenceRole))
+        null)
       ("ClassDeclaration"
         (check-unlisted state node path (array "type" "id" "superClass" "body"))
         (if (not (= (child node "superClass") null))
@@ -398,7 +429,7 @@
             (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
             (visit-one state node "key" path ReferenceRole))
           (visit-one state node "key" path NameRole))
-        (null))
+        null)
       ("PropertyDefinition"
         (check-unlisted state node path (array "type" "key" "value" "computed" "static"))
         (if (child node "computed")
@@ -443,10 +474,6 @@
         (check-unlisted state node path (array "type" "operator" "argument" "prefix"))
         (add-reason state node path "update" "update mutates a reference")
         (visit-one state node "argument" path ReferenceRole))
-      ("YieldExpression"
-        (check-unlisted state node path (array "type" "argument" "delegate"))
-        (add-reason state node path "yield" "yield is visited only under deferred execution")
-        (visit-one state node "argument" path ReferenceRole))
       ("MemberExpression"
         (check-unlisted state node path (array "type" "object" "property" "computed" "optional"))
         (add-reason state node path "member_read" "member access may invoke a getter or proxy")
@@ -479,8 +506,6 @@
         (visit-one state node "value" path ReferenceRole))
       ("ArrayPattern" (visit-pattern state node path))
       ("ObjectPattern" (visit-pattern state node path))
-      ("RestElement" (visit-pattern state node path))
-      ("AssignmentPattern" (visit-pattern state node path))
       ("UnaryExpression"
         (check-unlisted state node path (array "type" "operator" "prefix" "argument"))
         (if (not (= (child node "operator") "!"))
@@ -488,7 +513,8 @@
         (visit-one state node "argument" path ReferenceRole))
       ("BinaryExpression"
         (check-unlisted state node path (array "type" "operator" "left" "right"))
-        (if (not (array "===" "!==" "in" "instanceof" (:includes (child node "operator"))))
+        (if
+          (not (-> (array "===" "!==") (:includes (child node "operator"))))
           (add-reason state node path "operator_coercion" "binary operator may coerce unconstrained operands"))
         (visit-one state node "left" path ReferenceRole)
         (visit-one state node "right" path ReferenceRole))
@@ -544,7 +570,10 @@
   :body
   (or
     (> reasons:length 0)
-    (array
+    (= (child node "type") "ExpressionStatement")
+    (->
+      (array
+        "BlockStatement"
       "IfStatement"
       "SwitchStatement"
       "TryStatement"
@@ -556,7 +585,7 @@
       "ForOfStatement"
       "LabeledStatement"
       "WithStatement"
-      "DebuggerStatement"
+        "DebuggerStatement")
       (:includes (child node "type")))))
 
 (func
@@ -569,66 +598,79 @@
   (if
     (or (not (ast-node? program)) (!= (child program "type") "Program"))
     (obj
-      :coverage_status
-      "unsupported_ast"
-      :direct_statements
-      #a()
-      :reasons
-      #a()
-      :dependency_edges
-      #a()
-      :bare_imports
-      0
+      :coverage_status "unsupported_ast"
+      :direct_statements #a()
+      :direct_count 0
+      :reasons #a()
+      :reason_count 0
+      :dependency_edges #a()
+      :dependency_edge_count 0
+      :bare_imports 0
       :unsupported_nodes
-      #a())
-    (do
-      (bind direct (cell #a()))
-      (bind reasons-total (cell #a()))
-      (bind edges (cell #a()))
-      (bind bare (cell 0))
-      (bind coverage (cell "complete"))
-      (bind errors (cell #a()))
-      (if
-        (not (Array:isArray (child program "body")))
-        (unsupported
-          (obj :coverage coverage :errors errors)
-          program
-          "Program.body"))
-      (for
-        (bind index 0)
-        (< index program:body:length)
-        (+= index 1)
-        (bind parent (get program:body index))
-        (bind parent-path (path-index "Program.body" index))
-        (bind local-reasons (cell #a()))
-        (bind local-edges (cell #a()))
-        (bind local-bare (cell 0))
-        (bind local-coverage (cell "complete"))
-        (bind local-errors (cell #a()))
-        (visit-node
+      (array
+        (obj
+          :status "unsupported_ast"
+          :nodeType (child program "type")
+          :path "Program"
+          :loc (child program "loc")
+          :range (child program "range"))))
+    (if
+      (not (Array:isArray (child program "body")))
+      (obj
+        :coverage_status "unsupported_ast"
+        :direct_statements #a()
+        :direct_count 0
+        :reasons #a()
+        :reason_count 0
+        :dependency_edges #a()
+        :dependency_edge_count 0
+        :bare_imports 0
+        :unsupported_nodes
+        (array
           (obj
-            :reasons
-            local-reasons
-            :edges
-            local-edges
-            :bare
-            local-bare
-            :coverage
-            local-coverage
-            :errors
-            local-errors)
-          parent
-          parent-path
-          ReferenceRole)
-        (swap!
-          reasons-total
-          (fn (:array all) (Array:concat all (express local-reasons))))
-        (swap! edges (fn (:array all) (Array:concat all (express local-edges))))
-        (swap! bare (fn (:number n) (+ n (express local-bare))))
-        (if (= (express local-coverage) "unsupported_ast") (reset! coverage "unsupported_ast"))
-        (swap! errors (fn (:array all) (Array:concat all (express local-errors))))
-        (if
-          (direct-top-level? parent (express local-reasons))
+            :status "unsupported_ast"
+            :nodeType "Program"
+            :path "Program.body"
+            :loc (child program "loc")
+            :range (child program "range"))))
+      (do
+        (bind direct (cell #a()))
+        (bind findings (cell 0))
+        (bind reasons-total (cell #a()))
+        (bind edges (cell #a()))
+        (bind bare (cell 0))
+        (bind coverage (cell "complete"))
+        (bind errors (cell #a()))
+        (for
+          (let index 0)
+          (< index program:body:length)
+          (+= index 1)
+          (bind parent (get program:body index))
+          (bind parent-path (path-index "Program.body" index))
+          (bind local-reasons (cell #a()))
+          (bind local-edges (cell #a()))
+          (bind local-bare (cell 0))
+          (bind local-coverage (cell "complete"))
+          (bind local-errors (cell #a()))
+          (visit-node
+            (obj
+              :reasons local-reasons
+              :edges local-edges
+              :bare local-bare
+              :coverage local-coverage
+              :errors local-errors)
+            parent
+            parent-path
+            ReferenceRole)
+          (bind parent-finding (direct-top-level? parent (express local-reasons)))
+          (if parent-finding (swap! findings (fn (:number n) (+ n 1))))
+          (swap!
+            reasons-total
+            (fn (:array all) (-> all (:concat (express local-reasons)))))
+          (swap! edges (fn (:array all) (-> all (:concat (express local-edges)))))
+          (swap! bare (fn (:number n) (+ n (express local-bare))))
+          (if (= (express local-coverage) "unsupported_ast") (reset! coverage "unsupported_ast"))
+          (swap! errors (fn (:array all) (-> all (:concat (express local-errors)))))
           (swap!
             direct
             (fn
@@ -636,36 +678,21 @@
               (conj
                 rows
                 (obj
-                  :parentPath
-                  parent-path
-                  :parentType
-                  (child parent "type")
-                  :potential_load_evaluation
-                  true
-                  :observed_effect
-                  null
-                  :reasons
-                  (express local-reasons)
-                  :reasonCount
-                  (get (express local-reasons) "length")
-                  :dependency_edges
-                  (express local-edges)))))))
-      (obj
-        :coverage_status
-        (express coverage)
-        :direct_statements
-        (express direct)
-        :direct_count
-        (get (express direct) "length")
-        :reasons
-        (express reasons-total)
-        :reason_count
-        (get (express reasons-total) "length")
-        :dependency_edges
-        (express edges)
-        :dependency_edge_count
-        (get (express edges) "length")
-        :bare_imports
-        (express bare)
-        :unsupported_nodes
-        (express errors)))))
+                  :parentPath parent-path
+                  :parentType (child parent "type")
+                  :finding parent-finding
+                  :potential_load_evaluation parent-finding
+                  :observed_effect null
+                  :reasons (express local-reasons)
+                  :reasonCount (get (express local-reasons) "length")
+                  :dependency_edges (express local-edges)))))
+        (obj
+          :coverage_status (express coverage)
+          :direct_statements (express direct)
+          :direct_count (express findings)
+          :reason_count (get (express reasons-total) "length")
+          :reasons (express reasons-total)
+          :dependency_edges (express edges)
+          :dependency_edge_count (get (express edges) "length")
+          :bare_imports (express bare)
+          :unsupported_nodes (express errors))))))
