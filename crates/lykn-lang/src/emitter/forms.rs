@@ -599,28 +599,25 @@ fn emit_function_body(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> Vec<SExpr> {
-    body.iter()
-        .enumerate()
-        .map(|(index, expr)| {
-            let has_value_if_else = expr.as_list().is_some_and(|values| {
-                values.first().and_then(|value| value.as_form_head()) == Some("if")
-                    && values.len() >= 4
-            });
-            let is_tail_value = value_tail
-                && index + 1 == body.len()
-                && (!is_statement_form(expr) || has_value_if_else);
-            emit_in_context(
-                expr,
-                if is_tail_value {
-                    ExprContext::Value
-                } else {
-                    ExprContext::Statement
-                },
-                ctx,
-                registry,
-            )
-        })
-        .collect()
+    let mut out = Vec::new();
+    for (index, expr) in body.iter().enumerate() {
+        let has_value_if_else = expr.as_list().is_some_and(|values| {
+            values.first().and_then(|value| value.as_form_head()) == Some("if")
+                && values.len() >= 4
+        });
+        let is_tail_value = value_tail
+            && index + 1 == body.len()
+            && (!is_statement_form(expr) || has_value_if_else);
+        if is_tail_value {
+            out.push(emit_in_context(expr, ExprContext::Value, ctx, registry));
+        } else {
+            let saved_context = ctx.expr_context;
+            ctx.expr_context = ExprContext::Statement;
+            out.extend(emit_body(std::slice::from_ref(expr), ctx, registry));
+            ctx.expr_context = saved_context;
+        }
+    }
+    out
 }
 
 fn classify_statement_surface(expr: &SExpr) -> Option<SurfaceForm> {
