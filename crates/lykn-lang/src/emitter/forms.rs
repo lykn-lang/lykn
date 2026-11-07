@@ -3267,8 +3267,8 @@ fn kernel_child_profile(head: &str) -> KernelChildProfile {
         "while" => KernelChildProfile::Positional(&[V, S]),
         // do-while: body=Statement, test=Value
         "do-while" => KernelChildProfile::Positional(&[S, V]),
-        // for: init=Value, test=Value, update=Value, body=Statement
-        "for" => KernelChildProfile::Positional(&[V, V, V, S]),
+        // for: init/test/update=Value, then every body form=Statement
+        "for" => KernelChildProfile::PositionalThenStatement(&[V, V, V]),
         // for-of/for-in/for-await-of: binding=Statement, iterable=Value, body...=Statement
         "for-of" | "for-in" | "for-await-of" => {
             KernelChildProfile::PositionalThenStatement(&[S, V])

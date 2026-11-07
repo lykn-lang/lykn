@@ -908,6 +908,9 @@ C-style for:
 (for (let i 0) (< i 10) (++ i) (console:log i))
 ```
 
+The initializer, test, and update are value expressions. Every form after
+those three runs in order as a statement in the loop body.
+
 do-while:
 
 ```lykn
