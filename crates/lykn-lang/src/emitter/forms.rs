@@ -4303,6 +4303,41 @@ mod tests {
         assert_eq!(context.expr_context, ExprContext::Statement);
     }
 
+    #[test]
+    fn test_async_value_carrier_covers_fallthrough_and_current_return() {
+        fn returns_boxed(expr: &SExpr, payload: &SExpr) -> bool {
+            let Some(values) = expr.as_list() else {
+                return false;
+            };
+            let this_return = values.first().and_then(SExpr::as_form_head) == Some("return")
+                && values.get(1).is_some_and(|value| {
+                    value.as_list().is_some_and(|carrier| {
+                        carrier.first().and_then(SExpr::as_form_head) == Some("array")
+                            && carrier.get(1) == Some(payload)
+                    })
+                });
+            this_return || values.iter().any(|value| returns_boxed(value, payload))
+        }
+
+        let await_expr = list(vec![atom("await"), atom("pending")]);
+        let fallthrough_body = [
+            await_expr.clone(),
+            list(vec![
+                atom("while"),
+                bool_lit(false),
+                list(vec![atom("block")]),
+            ]),
+        ];
+        let mut context = ctx_value();
+        let fallthrough = emit_do(&fallthrough_body, &mut context, &reg());
+        assert!(returns_boxed(&fallthrough, &atom("undefined")));
+
+        let return_body = [await_expr, list(vec![atom("return"), num(7.0)])];
+        let mut context = ctx_value();
+        let returned = emit_do(&return_body, &mut context, &reg());
+        assert!(returns_boxed(&returned, &num(7.0)));
+    }
+
     // --- Match with await in target (Strategy 1) ---
 
     #[test]
