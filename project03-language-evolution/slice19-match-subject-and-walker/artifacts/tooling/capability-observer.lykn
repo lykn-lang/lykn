@@ -375,7 +375,7 @@
       (do
         (ensure (= deno-hash "2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74") (template id " Deno binary identity"))
         (ensure (= parser-hash "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7") (template id " Acorn artifact identity"))))
-    (ensure (= core-hash "6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7") (template id " parser-core module identity"))
+    (ensure (= core-hash "068afeb7c912bab6876b8412fdadc6c6948ca41dcdb497f8b99a40061fb3f6a9") (template id " compiled parser-core module identity"))
     (ensure (not (= walker-hash null)) (template id " walker module identity missing"))
     (ensure (not (= scanner-hash null)) (template id " scanner module identity missing"))
     (bind read-paths

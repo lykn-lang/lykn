@@ -235,7 +235,14 @@
       (+= index 1)
       (if
         (not (= (get values index) null))
-        (visit-node state (get values index) (path-index path index) role)))
+        (match
+          role
+          (BindingRole
+            (visit-pattern state (get values index) (path-index path index)))
+          (ReferenceRole (visit-node state (get values index) (path-index path index) role))
+          (NameRole (visit-node state (get values index) (path-index path index) role))
+          (DeferredRole (visit-node state (get values index) (path-index path index) role))
+          (_ (throw (new Error "unsupported traversal role")))))
     (if (not (= values null)) (unsupported state values path))))
 
 (func
@@ -246,7 +253,15 @@
   :void
   :body
   (bind value (child node field))
-  (if (not (= value null)) (visit-node state value (path-field path field) role)))
+  (if
+    (not (= value null))
+    (match
+      role
+      (BindingRole (visit-pattern state value (path-field path field)))
+      (ReferenceRole (visit-node state value (path-field path field) role))
+      (NameRole (visit-node state value (path-field path field) role))
+      (DeferredRole (visit-node state value (path-field path field) role))
+      (_ (throw (new Error "unsupported traversal role"))))))
 
 (func
   visit-pattern
