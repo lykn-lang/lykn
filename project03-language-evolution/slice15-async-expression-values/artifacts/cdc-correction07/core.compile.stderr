@@ -1,0 +1,6 @@
+11:1: warning: unused binding 'parser-version'
+  suggestion: prefix with underscore: _parser-version
+7:1: warning: unused binding 'parser-url'
+  suggestion: prefix with underscore: _parser-url
+3:1: warning: unused binding 'parser-path'
+  suggestion: prefix with underscore: _parser-path

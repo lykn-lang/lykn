@@ -175,6 +175,12 @@ aware switch clauses and normal/full independent validation, followed by the sam
 four only after acceptance. Slice15 records the authorization before dispatch;
 no eighth substantive correction, source acceptance or integration is implied.
 
+Source5408abd is now independently accepted TASK-ONLY: normal full Make0/all Rust,
+JS1468(11steps)/docs482/citations63+601, fixed grouped/switch regressions and finite
+async/core proofs. Slice15 AV-01–04 done; unchanged four-parser continuation is
+active with AV-05–07 open and0/4 at handoff. This is the approved second phase,
+not an eighth correction, source integration, full audit or project acceptance.
+
 2026-11-06 [Slice14 independent endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 accepts NE-C08 compile-route parity and NE-C07 private async-export discovery
 task-only at3b65d09/compiler748. Complete fresh normal-env Make passes all Rust,

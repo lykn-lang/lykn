@@ -1,4 +1,25 @@
-# Independent review — pending Operator decision
+# Independent review — source accepted, parser phase pending
+
+## Current source-stage acceptance after correction7
+
+**Accepted TASK-ONLY at5408abd432b8789ae474a3895436f68818c4e482, before parser
+continuation.** Independent normal full Make exits0: all Rust, JS1468/0failed
+(11steps), docs482/0failed, citations63docs/601historical plus build/lint pass.
+Exact two switch regressions/grouped-bind and five native runtime cases independently
+pass, complete generated modules reviewed, same-core strict module load0. Full
+evidence/commands/pins: [CDC final replay](artifacts/cdc-correction07/replay.md).
+CC full Make/source evidence is correction07 at planning2fb39c3. Current compiler
+is absolute task target/release/lykn SHA
+b0a5649791ec6dfdd774619cc7c01c4c6c4f1138a5db7e368916416a9600b873;
+canonical/embedded/fresh materialized JS match1c1e7e8. Source clean; no integration.
+
+AV-01–04 source criteria are accepted within their finite proof, not universal
+compiler correctness. The original shadow proof and later sibling fixture are
+distinct preserved conditions. All prior rejected candidates, failed gates and
+process/provenance limits below remain historical facts. AV-05/06 parser work
+remains0/4; AV-07 awaits endpoint. Preserved cc-prompt-iteration07.md is the
+original authorized conditional parser continuation, not an eighth correction.
+No parser child/runtime ran before this recorded acceptance.
 
 ## Current verdict after authorized correction6
 

@@ -1,0 +1,1 @@
+(switch state (1 (if (or a b) (console:log "x")) (break)) (default (break)))

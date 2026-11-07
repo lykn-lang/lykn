@@ -526,6 +526,15 @@ structural case list as a computed call, despite switch Statement-body roles.
 owns a bounded role-aware switch-clause correction for further Operator decision.
 The one extra cycle is spent; no seventh pass, source acceptance or parser run.
 
+**Subsequent explicit override7 / source acceptance:** Operator authorized one
+further switch-role correction; source5408abd432b8789ae474a3895436f68818c4e482 is
+now independently accepted task-only, including normal full Make0/all Rust,
+JS1468(11steps), docs482/citations63+601. Exact grouped/switch regressions pass;
+same complete core genuinely loads and finite value/Promise/effect controls pass.
+Actual release compiler SHA b0a5649791ec6dfdd774619cc7c01c4c6c4f1138a5db7e368916416a9600b873.
+No release integration or universal compiler-correctness claim. Original same-four
+parser continuation begins only after this acceptance;0/4 at handoff, no walker.
+
 #### NE-T01 — async declaration-sidecar coverage limitation
 
 **Owned current limitation, 2026-11-06.** Accepted Slice14 async module/consumer

@@ -1,0 +1,3 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source=5408abd432b8789ae474a3895436f68818c4e482
+env -u CARGO_NET_OFFLINE -u CARGO_TARGET_DIR DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno npm_config_cache=/private/tmp/lykn-s15-cdc-5408abd/full-npm-cache XDG_CACHE_HOME=/private/tmp/lykn-s15-cdc-5408abd/full-xdg-cache /usr/bin/make check

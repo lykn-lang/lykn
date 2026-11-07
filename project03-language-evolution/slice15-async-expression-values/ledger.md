@@ -1,6 +1,9 @@
 # Slice15 ledger
 
-All rows open; CC attestations are not CDC acceptance.
+Current: AV-01–04 independently accepted source-stage; AV-05–07 remain open.
+Parser0/4 at the continuation handoff. CC attestations alone are not acceptance.
+
+## Preserved earlier status history
 
 **Pending Operator decision,5/5 corrections exhausted.**
 [Independent verdict](cdc-verification.md) rejects candidate802bb22/product54608a7:
@@ -26,12 +29,12 @@ role-aware switch handling with full/independent gates, then same-four only afte
 source acceptance. Plan/cc-prompt-iteration06.md record it BEFORE execution. This
 does not reset the budget or accept source; no eighth substantive correction.
 
-| ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
+ | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AV-01 | Meaningful NE-C09 red and fixed finite oracles frozen | Five shared fixtures/source/expected JSON before runtime, both backend baseline/raw core witness | serious | NE-C09 | open | | Syntax/wrong-value/positive results distinguished |
-| AV-02 | Value/async lowering preserves synchronous and selected-path semantics | Exact native/JS AST diff, private scope-aware await + box, sync/trace/Promise identity/deferred-fn/throw controls | serious | Operator repair | open | | No global scanner/async-all/promise flattening |
-| AV-03 | Both native/public JS runtime values and real core validity proven | Actual strict compile/module execution and awaited observations, complete generated code | serious | Runtime regression | open | | DenoCheck0 not validity proof |
-| AV-04 | Complete source and mirror validation independently passes | Focused/full normal Make/citations, byte mirror and fresh materialization, exact new compiler | serious | Repository gate | open | | No filtering/metadata env waiver |
+| AV-01 | Meaningful NE-C09 red and fixed finite oracles frozen | Five shared fixtures/source/expected JSON before runtime, both backend baseline/raw core witness | serious | NE-C09 | done | cdc-verification.md; correction02 frozen baseline | Source/harness errors retained separately; original shadow and sibling control distinguished |
+| AV-02 | Value/async lowering preserves synchronous and selected-path semantics | Exact native/JS AST diff, private scope-aware await + box, sync/trace/Promise identity/deferred-fn/throw controls | serious | Operator repair | done | cdc-verification.md; cdc-correction07 replay | Finite proof; no universal scheduler claim; all introduced grouped/switch regressions resolved |
+| AV-03 | Both native/public JS runtime values and real core validity proven | Actual strict compile/module execution and awaited observations, complete generated code | serious | Runtime regression | done | artifacts/cdc-correction07/; full Make | Native5/public5, exact source regressions and same-core genuine load0; DenoCheck not sole oracle |
+| AV-04 | Complete source and mirror validation independently passes | Focused/full normal Make/citations, byte mirror and fresh materialization, exact new compiler | serious | Repository gate | done | artifacts/cdc-correction07/full-make.*; replay.md | Normal Make0/all Rust/JS1468+11steps/docs482/citations63+601; fresh mirror1c1e7e8; compilerb0a56497 |
 | AV-05 | Same parser helpers pass prerequisites with genuine JS validity | Exact three formatted helpers/control hashes, native/generated/real module gates | serious | Re-entry | open | | No helper rewrite to bypass NE-C09 |
 | AV-06 | Same four observations independently pass or true blocker disclosed | K11/K01/K08/K09 raw outcomes/hash/AST/range/errors, fresh CDC replay | serious | Parser capability | open | | Initially0/4, no walker/corpus |
 | AV-07 | Independent endpoint/history/ownership/retrospective complete | Per-row disposition, parent/backlog, old constraints/failures preserved | correctness-grade | Autonomous endpoint | open | | No integration or next unit |

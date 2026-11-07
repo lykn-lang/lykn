@@ -292,3 +292,32 @@ Luna High source/raw-only context is selected to avoid stale scope instructions;
 CDC retains planning/review ownership. Source3f8/releasef705 and planning692b5d8
 were revalidated clean. Endpoint remains independent source acceptance plus the
 same four, or honest blocker; no integration, next unit or expanded audit.
+
+## Source accepted; original conditional parser continuation active
+
+CDC independently accepts source5408abd432b8789ae474a3895436f68818c4e482 TASK-ONLY:
+normal full Make0/all Rust/JS1468(11steps)/docs482/citations63+601, exact regressions,
+five runtime cases/full generated review and same-core strict load0. Canonical/
+embedded/fresh XDG compiler.js match1c1e7e8; actual release compilerb0a56497.
+Source clean, no integration. AV-01–04 done; AV-05–07 remain open, parser0/4.
+[Parser continuation](cc-prompt-iteration07.md) executes the SAME three immutable
+helpers and four oracles under the originally approved conditional authority.
+It is not an eighth correction or budget reset; any substantive gap stops.
+
+## Assignment history
+
+All issue dates2026-11-06. Issued prompts remain unchanged; filenames identify
+correspondence, not new iteration allowance. The initial const-storage correction1
+was an author fix within the initial assignment without a separate prompt; this
+historical discrepancy is preserved, not repaired by inventing a prompt.
+
+| Assignment | Predecessor | Reason / count | Disposition |
+| --- | --- | --- | --- |
+| cc-prompt.md | none | Initial source repair; correction1 harness fix preserved | Superseded, failures retained |
+| cc-prompt-iteration01.md | cc-prompt.md | Correct finite fixture discriminators, correction2 | Superseded, corrected baseline retained |
+| cc-prompt-iteration02.md | iteration01 | Class/carrier/AST review, correction3 | Superseded, meaningful/weak controls retained |
+| cc-prompt-iteration03.md | iteration02 | Async-loop statement role/lowered scan, correction4 | Superseded, focused greens/lint stop retained |
+| cc-prompt-iteration04.md | iteration03 | Lint-clean sibling scope condition, correction5 | Rejected grouped-bind regression; pause retained |
+| cc-prompt-iteration05.md | iteration04 | Explicit override1, grouped-bind correction6 | Group fix green, switch regression rejected |
+| cc-prompt-iteration06.md | iteration05 | Explicit override2, role-aware switch correction7 | Source independently accepted5408 |
+| cc-prompt-iteration07.md | iteration06 | Original conditional parser phase; count remains7 | Active; no parser runtime before source acceptance |
