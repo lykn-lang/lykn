@@ -58,7 +58,7 @@ mod tests {
     #[test]
     fn test_emit_empty_input() {
         let registry = TypeRegistry::default();
-        let result = emit(&[], &registry, false);
+        let result = emit(&[], &registry, false).unwrap();
         assert!(result.is_empty());
     }
 
@@ -79,7 +79,7 @@ mod tests {
                 span: s(),
             },
         ];
-        let result = emit(&forms, &registry, false);
+        let result = emit(&forms, &registry, false).unwrap();
         assert_eq!(result.len(), 2);
     }
 
@@ -92,7 +92,7 @@ mod tests {
             value: num(42.0),
             span: s(),
         }];
-        let json_str = emit_json(&forms, &registry, false);
+        let json_str = emit_json(&forms, &registry, false).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&json_str).unwrap();
         assert!(parsed.is_array());
         let arr = parsed.as_array().unwrap();
@@ -117,8 +117,8 @@ mod tests {
             span: s(),
         }];
 
-        let json_normal = emit_json(&forms, &registry, false);
-        let json_stripped = emit_json(&forms, &registry, true);
+        let json_normal = emit_json(&forms, &registry, false).unwrap();
+        let json_stripped = emit_json(&forms, &registry, true).unwrap();
         // For passthrough, stripping assertions makes no difference
         assert_eq!(json_normal, json_stripped);
     }
@@ -146,7 +146,7 @@ mod tests {
                 span: s(),
             },
         ];
-        let result = emit(&forms, &registry, false);
+        let result = emit(&forms, &registry, false).unwrap();
         assert_eq!(result.len(), 3);
 
         // Check ordering

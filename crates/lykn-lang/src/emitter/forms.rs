@@ -3298,6 +3298,7 @@ fn kernel_child_profile(head: &str) -> KernelChildProfile {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use super::emit_form_inner as emit_form;
     use crate::analysis::type_registry::{ConstructorDef, FieldDef, TypeDef, TypeRegistry};
     use crate::ast::sexpr::NameRes;
     use crate::ast::surface::{
@@ -3435,7 +3436,8 @@ mod tests {
     #[test]
     fn test_convert_to_expression_converts_if_form() {
         let expr = list(vec![atom("if"), atom("cond"), atom("a"), atom("b")]);
-        let result = convert_to_expression(expr);
+        let mut ctx = EmitterContext::new(false);
+        let result = convert_to_expression(expr, &mut ctx, Span::default());
         if let SExpr::List { values, .. } = &result {
             assert_eq!(values[0].as_atom(), Some("?"));
             assert_eq!(values[1].as_atom(), Some("cond"));
@@ -3449,14 +3451,16 @@ mod tests {
     #[test]
     fn test_convert_to_expression_passes_through_non_if() {
         let expr = list(vec![atom("foo"), atom("bar")]);
-        let result = convert_to_expression(expr.clone());
+        let mut ctx = EmitterContext::new(false);
+        let result = convert_to_expression(expr.clone(), &mut ctx, Span::default());
         assert_eq!(result, expr);
     }
 
     #[test]
     fn test_convert_to_expression_passes_through_atom() {
         let expr = atom("x");
-        let result = convert_to_expression(expr.clone());
+        let mut ctx = EmitterContext::new(false);
+        let result = convert_to_expression(expr.clone(), &mut ctx, Span::default());
         assert_eq!(result, expr);
     }
 
