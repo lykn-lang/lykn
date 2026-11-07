@@ -1,5 +1,17 @@
 # Slice17 independent review — revision required
 
+## Partial correction1 independent feedback,2026-11-07
+
+Unaccepted f2c2a6077e3cf866a201110171331385508856d3 was independently extracted
+to separate config-free scratch. Actual absolute CLI85 and source hashes verified.
+Walker check1 at591:1, scanner check1 at307:5, both stdoutempty; raw commands/exits/
+streams in artifacts/evidence/cdc/partial-f2c2. These match CC native-0004/0005.
+No runtime/control ran (0/13). Whole-source read identifies an unclosed numeric
+for before walker aggregate result and unclosed scanner try/catch boundary.
+Observer remains unfinished. No valid-Lykn compiler/parser gap follows. Source
+correction1 is spent; iteration04 is correction2/5. No post-f2c2 edit occurred
+before this handoff. All six EW rows remain open; no independent acceptance.
+
 ## Receipt and sequencing correction,2026-11-07
 
 Native-0001 core stderr is normal success information `(7 top-level expressions)`,

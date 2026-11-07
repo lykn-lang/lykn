@@ -1,5 +1,12 @@
 # Slice17 — Lykn ESTree walker and bounded capability gate
 
+Current assignment: `cc-prompt-iteration04.md`, issued2026-11-07, predecessor
+iteration03 returned after actual partial f2c2 native failures. This is source
+correction2/5 (correction1 spent), not a stage reset. Both CC and independent CDC
+walker/scanner checks exit1 for actual unterminated forms; observer unfinished,
+capability0/13. All original source/runtime gates remain required. Earlier
+current-assignment descriptions below are preserved historical entries.
+
 2026-11-07 sequencing amendment: iteration03 permits a partial correction1 freeze
 of all actual bodies (observer unfinished/nonruntime-ready), then only existing
 pinned native checks of stable walker/scanner. Complete final freeze and every

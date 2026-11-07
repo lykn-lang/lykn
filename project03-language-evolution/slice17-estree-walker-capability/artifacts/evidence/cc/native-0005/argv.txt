@@ -1,0 +1,1 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check tooling/scanner.lykn

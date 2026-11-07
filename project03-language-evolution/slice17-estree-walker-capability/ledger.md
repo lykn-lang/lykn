@@ -3,6 +3,11 @@
 Six rows open. CC source/raw attestation is not independent acceptance.13 frozen
 control rows/12families; K12 synthetic is outside parser/file counts.
 
+Partial correction1 f2c2 was independently checked: walker1/unterminated591:1,
+scanner1/unterminated307:5, no runtime0/13. Raw CDC evidence partial-f2c2 and CC
+native-0004/0005 retained; observer unfinished. Correction2/5 iteration04 active,
+all rows open. Capture nonconformance remains explicit, not fully compliant.
+
 Initialb312 source is unaccepted: corecheck0, walkercheck1 source delimiter error;
 one earlier receipt-setup failure did not launch CLI.0/13 control runtime. All rows
 remainopen pending ordinary correction1/EW-R1–R5 and actual complete prerequisites.

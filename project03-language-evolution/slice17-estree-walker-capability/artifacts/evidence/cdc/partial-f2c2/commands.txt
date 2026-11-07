@@ -1,0 +1,19 @@
+CDC independent partial feedback,2026-11-07; not acceptance.
+Input commit f2c2a6077e3cf866a201110171331385508856d3.
+Git show extracted exact estree-walker/scanner/parser-core blobs into this private scratch.
+Compiler /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn
+SHA25685d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc.
+Walker SHA2569df0c78eddbb3f7c8f000fc0ceb27a05249f27f8f5589a82ab6acf9597442212.
+Scanner SHA256094aa0e526da0c351d504ed01c09b35c33817a9750a4146421ec7eb07d6326c5.
+Core SHA2566ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7.
+cwd /private/tmp/lykn-s17-cdc-partial-slaXeT; inherited tool environment, no overrides.
+Direct ls of project.json/deno.json/deno.jsonc at /, /private, /private/tmp and cwd
+returned missing for all twelve exact entries (ls exit1 is expected absence,
+not a compiler result). No recursive inventory or permission escalation.
+
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /private/tmp/lykn-s17-cdc-partial-slaXeT/estree-walker.lykn > /private/tmp/lykn-s17-cdc-partial-slaXeT/walker.stdout 2> /private/tmp/lykn-s17-cdc-partial-slaXeT/walker.stderr
+Actual exec result exit1. stdout empty; stderr retained verbatim.
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /private/tmp/lykn-s17-cdc-partial-slaXeT/scanner.lykn > /private/tmp/lykn-s17-cdc-partial-slaXeT/scanner.stdout 2> /private/tmp/lykn-s17-cdc-partial-slaXeT/scanner.stderr
+Actual exec result exit1. stdout empty; stderr retained verbatim.
+Independent read-only checks ran in parallel on immutable separate files.
+No planning/source/index writes; no runtime/control executed (0/13).
