@@ -1,0 +1,8 @@
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/parser-core.stdout.bin
+2870da127c96ed811f4a903534a0a7489864a2f6d244cba7d1b5f5b47659b008  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/parser-core.stderr.bin
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/estree-walker.stdout.bin
+30d52705d40c7700fa8dd94819b8ec32d520b4f3d1f0babee184bcde456526e0  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/estree-walker.stderr.bin
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/scanner.stdout.bin
+cc2d0c98b970e6cbad54b1fdbb5c2911edeb689935d70a34152fb8977164c64d  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/scanner.stderr.bin
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/capability-observer.stdout.bin
+deab60d5a578c7f3f6ed8f4542e74e5620b18073fc1feab3c704c7d18abcb681  project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/tooling/correction06/capability-observer.stderr.bin

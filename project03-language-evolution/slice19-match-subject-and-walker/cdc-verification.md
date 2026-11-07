@@ -1,5 +1,58 @@
 # Slice19 independent review — Stage A accepted, tooling open
 
+## Current verdict after authorized correction6 — pending Operator again
+
+Operator explicitly authorized ONE extra correction6; actual442eccd changes
+ONLY the missing observer delimiter. All four native checks0 are CC-attested
+and corroborated by complete raw INFO streams7/20/16/19 forms; no independent
+repeat of those four passes is claimed. Actual inputs were absolute planning
+paths with configfree cwd, not copied input paths. Further validation STOPPED
+at substantive static source review failure. No formatter/lint/strictcompile/
+generated-module/Deno/realguard/K invocation occurred; K0/13/all13unrun. No core
+JavaScript artifact exists, so no observed compiled hash/runtime failure is
+invented. These are ordinary TOOLING defects, not new compiler/parser findings.
+
+Known static defects in exact442 sources:
+
+1. Observer359–370 reads CORE_JS into core-bytes/hashes it, then378 compares the
+   GENERATED module digest to6ca1…bf7, which pins immutable parser-core.LYKN source.
+   Public eight-argv contract says CORE_JS, not source. Different artifact roles
+   must not be conflated. Native source-check success does not validate this
+   runtime assertion. No fabricated numerical generated digest or actual failed
+   child invocation follows from this static finding.
+2. Walker224–249 visit-list/visit-one forward BindingRole to visit-node; pattern
+   ArrayPattern/ObjectPattern276/280 send child patterns through those helpers.
+   Only Property502–516 routes BindingRole to existing visit-pattern. RestElement
+   and direct AssignmentPattern are implemented in visit-pattern266–272 but have
+   no visit-node dispatch arms, so these contracted binding routes reach the
+   unsupported fallback. This is source-established missing implementation,
+   UNEXECUTED; no claim K04's Property-default path failed or a new K family ran.
+
+**Reviewable next choice, NOT current authority:** authorize ONE consolidated
+bounded correction7 of BOTH defects in same existing four modules/eight argv/
+13 frozen rows. Keep source6ca pin at immutable source/preflight boundary; use
+the actual approved strictcompile artifact identity at CORE_JS boundary with
+recorded pre/post compiled-module hashes (never source-hash equality). Route ALL
+contracted BindingRole children to existing visit-pattern, preserving typed roles,
+reference/name/deferred semantics and unknown fail-closed behavior. No new node
+table/case/family/parser/core/control/oracle/product change. Then full required
+native/fmt/lint/strictcompile/generated/predicate/realguard gates BEFORE same13
+and independent fresh replay. No guarantee these fixes suffice: all remaining
+generated/runtime/predicate behavior is untested. Any further substantive failure
+or real gap stops; no unlimited extension/reset. Alternative is stop here.
+
+This proposal does not authorize execution. Correction6 is spent; no seventh
+cycle yet approved. Five prior passes, explicit extra6, all failures and process
+limits remain. Pending budget clause below still applies. Source8ed NE-C10/NE-C11
+acceptance remains task-only; release5408/source trees unchanged. MS02/03 done,
+other four rows open. No full corpus/F6/original F1–F12/Project07 acceptance.
+
+CC actor stopped/returned all authority; exact raw/unfinished metadata and actual
+message violations preserved in correction06/cdc-handoff.md. In particular five
+commits used pseudo-trailers and d62's 'valid contiguous' attestation was false.
+No history rewrite or retroactive cure. Prior uncaptured authoring intermediate
+was never consumed by a checker; its missing body still is not reconstructed.
+
 ## Current verdict — pending Operator, both tooling budgets exhausted
 
 2026-11-07: final correction5 candidate fd532d07c889539b09fdb6ceba461cb44f65fd01

@@ -1,5 +1,14 @@
 # Slice19 — match subject repair and combined validation
 
+Current: correction6 delimiter applied442, native4/4 CC passes, but tooling
+UNACCEPTED at static predicate/role review. CORE_JS digest compared to Lykn-source
+pin; contracted RestElement/direct AssignmentPattern BindingRole routes missing.
+No generated artifact or parser/runtime failure observed, no post-native gates/K.
+All13 unrun. ONE extra6 spent; no seventh authority. Both known ordinary defects
+and consolidated next bounded proposal preserved in cdc-verification, remaining
+behavior explicitly untested. All affected execution paused for Operator choice.
+No new source/unit/merge; source8ed acceptance remains unchanged.
+
 2026-11-07 Operator explicitly replied “yes please! Authorised :-)” to ONE extra
 bounded correction6 for observer ensure-positive-row boundary, then required
 gates and unchanged13 only if green. Same CDC Sol6.1High/CC Luna6High Autonomous

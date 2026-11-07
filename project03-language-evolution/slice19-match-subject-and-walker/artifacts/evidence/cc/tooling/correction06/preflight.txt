@@ -19,3 +19,4 @@ Controls SHA256: 0f20dba4713b93671b337fa1ba0a5cde00fdbe29bed195a00e3ae1c689473a5
 Native check working directory: /private/tmp/s19-native-cwd
 The original fd532 preflight/body and native failure remain preserved in native-0002. This correction does not rewrite that history.
 No correction06 check, format, lint, compile, generated review, Deno check, zero-argument guard, or K runtime has run before this preflight.
+Exact Deno invocation fields clarification before use: executable path is /opt/homebrew/bin/deno; version string is 2.9.6; SHA256 is 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. The compact iteration04 notation is not an executable path.

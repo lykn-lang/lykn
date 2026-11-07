@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+Current after extra6: exact delimiter442, native4/4 CC passes, tools UNACCEPTED
+at static identity/BindingRole review; remaining gates/K0/13 unrun. Source8ed
+acceptance MS02/03 unchanged. Extra6 spent, no correction7 authorized. Consolidated
+two-defect proposal in cdc-verification; no claimed generated/runtime failures.
+Raw/unfinished receipt/message violations preserved in correction06/cdc-handoff.
+
 Current Operator approval2026-11-07: “yes please! Authorised :-)” grants ONE extra
 bounded correction6 beyond both retained5/5 caps, no reset/seventh. Iteration04
 exact observer function-boundary edit then all scoped gates; same13 ONLY after

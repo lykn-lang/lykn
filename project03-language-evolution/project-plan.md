@@ -140,6 +140,12 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Operator authorized ONE extra Slice19 correction6, exact observer
+delimiter442; native4/4 CC passes. Static review then rejected source-vs-generated
+identity comparison and incomplete BindingRole routing. No later gates/K ran,
+all13unrun/tools unaccepted. Extra6 spent; concrete consolidated two-defect next
+proposal awaits Operator, no seventh authority/reset. Source8ed remains accepted.
+
 2026-11-07 Slice19 tooling continuation reached both retained5/5 caps. Candidate
 fd532 native core/walker/scanner0, observer1 missing function delimiter at136:1,
 independently reproduced. Tooling unaccepted/K0/13, dependent gates paused pending
