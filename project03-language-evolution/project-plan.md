@@ -140,6 +140,13 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Operator explicitly approved local integration of the complete accepted
+NE-C07/08/09 stack through5408 into release/0.6.x, fresh release validation and
+independent review. [Slice16](slice16-compiler-stack-release-integration/slice-plan.md)
+records exact ff-only target/tree/16paths, same Sol6.1 High CDC/Luna6 High CC
+Autonomous arrangement and integration-only endpoint. No new compiler correction,
+source budget reset, other propagation, audit/library work or remote action.
+
 2026-11-06 Operator authorized [Slice15](slice15-async-expression-values/slice-plan.md)
 for NE-C09 async expression/value-flow repair, independent source/full validation,
 then only the same four parser observations or another-real-gap stop. Same
@@ -337,6 +344,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice16-compiler-stack-release-integration](slice16-compiler-stack-release-integration/slice-plan.md): open explicit local0.6 integration of accepted NE-C07/08/09, full fresh release validation and independent review only.
 - [slice15-async-expression-values](slice15-async-expression-values/slice-plan.md): closed7done; NE-C09 independently accepted task-only/full normal gates and unchanged parser four independently4/4; failed conditions/overrides retained, no integration/full audit/next unit.
 - [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): closed6done/2deferred; both repairs independently accepted task-only/full gates, new NE-C09 stops parser0/4; history/method breach/NE-T01 owned, no integration or next unit.
 - [slice13-async-export-repair](slice13-async-export-repair/slice-plan.md): closed at independent NE-C08 output-route gap; NE-C07 candidate unvalidated, one done/six deferred, parser0/4; no integration or next unit.
@@ -365,6 +373,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.25: Opened explicit Slice16 ff-only accepted compiler-stack
+  integration into local release/0.6.x with fresh normal gates/independent review,
+  preserving history/16path tree/all audit and human obligations; no new source
+  fix or next-unit authority.
 
 - 2026-11-07 v1.24: Closed Slice15 at independently accepted task source5408 and
   original parser prerequisite4/4 in both fresh conditions. Preserved seven-pass
