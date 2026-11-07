@@ -1,0 +1,17 @@
+(async
+  (func observe-promise-value
+    :args ()
+    :returns :any
+    :body
+    (bind original (Promise:resolve 9))
+    (bind result
+      (do
+        (await (Promise:resolve 0))
+        original))
+    (obj
+      :same (= result original)
+      :thenType (js:typeof result:then)
+      :resolved (await result))))
+
+(bind observation (await (observe-promise-value)))
+(console:log (JSON:stringify observation))

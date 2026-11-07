@@ -148,6 +148,15 @@ release unchanged. Private transport preserves Promise-valued finals, selected
 paths and synchronous results; finite five shared product fixtures precede patch.
 No helper/oracle bypass, unrelated NE-C02/type repair, full audit or integration.
 
+Slice15 is currently **paused at5/5 corrections pending Operator decision**:
+candidate802bb22/product54608a7 remains unaccepted after an independently reproduced
+regression in the pre-existing grouped-bind function-body scope unit. Finite
+native/public five-case and same-core-load successes are retained; normal full
+Make stops1122passed/1failed, parser0/4. The
+[pending verdict](slice15-async-expression-values/cdc-verification.md) proposes one
+bounded statement-expansion correction and full independent gates; it does not
+authorize a sixth pass, restart, integration or next unit.
+
 2026-11-06 [Slice14 independent endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 accepts NE-C08 compile-route parity and NE-C07 private async-export discovery
 task-only at3b65d09/compiler748. Complete fresh normal-env Make passes all Rust,

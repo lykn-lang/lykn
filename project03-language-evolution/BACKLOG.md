@@ -505,6 +505,18 @@ parser observations with genuine JS module-validity proof; DenoCheck0 alone is
 insufficient. Original helpers/data/oracles and all failed conditions remain.
 No current repair, new unit, source integration or full audit follows.
 
+**Slice15 pending decision,2026-11-06.** Authorized candidate802bb22/product54608a7
+resolves the SAME core module-parse witness and passes finite native/public5,
+but is **not accepted**: full Make exposes a regression in the unchanged
+`test_emit_bind_group_in_function_body_stays_sibling_scoped` (forms.rs3375),
+independently reproduced exit101/block instead of sibling const. New
+emit_function_body bypasses old Statement-body multi-form expansion. This belongs
+to the current NE-C09 candidate, not a separate unrelated compiler finding.
+[Pending review/proposed bounded correction](slice15-async-expression-values/cdc-verification.md).
+Five correction passes are exhausted; Operator re-scope/override decision is
+required before another correction. Parser0/4, no sixth pass or integration;
+accepted3b65d09 and releasef705655 remain untouched.
+
 #### NE-T01 — async declaration-sidecar coverage limitation
 
 **Owned current limitation, 2026-11-06.** Accepted Slice14 async module/consumer

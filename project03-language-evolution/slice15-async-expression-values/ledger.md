@@ -2,6 +2,14 @@
 
 All rows open; CC attestations are not CDC acceptance.
 
+**Pending Operator decision,5/5 corrections exhausted.**
+[Independent verdict](cdc-verification.md) rejects candidate802bb22/product54608a7:
+the exact unchanged grouped-bind function-body unit independently fails101.
+AV-02 and AV-04 are unmet; the full gate stops1122passed/1failed. AV-01/AV-03
+have retained meaningful baseline/finite five-case/core-load evidence, but no
+aggregate repair acceptance follows. AV-05/AV-06 are unrun (parser0/4); AV-07
+awaits the Operator decision and eventual endpoint. No sixth pass or formal close.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AV-01 | Meaningful NE-C09 red and fixed finite oracles frozen | Five shared fixtures/source/expected JSON before runtime, both backend baseline/raw core witness | serious | NE-C09 | open | | Syntax/wrong-value/positive results distinguished |

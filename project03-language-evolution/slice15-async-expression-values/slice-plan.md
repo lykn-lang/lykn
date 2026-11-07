@@ -236,3 +236,17 @@ and all other cases. It tests sibling isolation, not enclosing shadowing. No
 suppression, exclusion, lint/product change or historical proof substitution.
 Fresh same-five/full gates follow the fixture freeze. Five-correction budget is
 then exhausted; no reset or further substantive correction loop.
+
+## Pending Operator decision at exhausted budget
+
+After correction5, full Make passes lint but the unchanged pre-existing grouped-
+bind function-body scope unit fails (1122passed/1failed). CDC independently repeats
+that EXACT unit: exit101, block where sibling const was required. Candidate802
+and production546 remain UNACCEPTED; same-core/five-case successes do not override
+this regression. [Independent pending verdict and concrete proposal](cdc-verification.md)
+identifies new emit_function_body bypassing the old Statement out.extend path.
+All affected execution is paused at5/5, parser0/4. No sixth pass, re-slice, code
+change, full gate or parser continuation is authorized by this record. Proposed
+one extra correction restores existing statement expansion while retaining new
+value tails, with exact unit/same-five/full normal gates and independent review;
+an explicit Operator re-scope/override decision is required. No formal close yet.

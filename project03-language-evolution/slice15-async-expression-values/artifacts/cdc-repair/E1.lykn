@@ -1,0 +1,38 @@
+(func
+  typed-branch
+  :args
+  (:boolean take-left)
+  :returns
+  :number
+  :post
+  (> ~ 0)
+  :body
+  (if take-left (do (bind left 40) (+ left 1)) (do (bind right 40) (+ right 2))))
+
+(bind result (typed-branch true))
+
+(bind other (typed-branch false))
+
+(bind prefixEffect (cell 0))
+
+(bind
+  no-else-result
+  (do (bind prefix 1) (if true (reset! prefixEffect 1)) (+ prefix 40)))
+
+(bind nested-equality (= 7 (if true 7 8)))
+
+(console:log
+  (JSON:stringify
+    (obj
+      :value
+      result
+      :falseValue
+      other
+      :typeof
+      (js:typeof result)
+      :noElsePrefix
+      no-else-result
+      :nestedEquality
+      nested-equality
+      :prefixEffect
+      (express prefixEffect))))
