@@ -1,5 +1,10 @@
 # Slice19 ledger
 
+Current: explicit Operator amended8 approval, iteration07. Same SolCC/separate
+SolCDC; seven spent/current8/unexecuted06 replaced/no reset/ninth. Two exact fixes
+only, full required gates before frozen13; no control/oracle change. Source8ed
+MS02/03 done, remaining four rows open and K0/13. Approval is not acceptance.
+
 Current approved8 UNEXECUTED/held: further static K11 expectedHash lookup defect
 confirmed before any source/check/runtime. Seven prior passes spent; no eighth
 failed pass/reset/ninth. Amended-unstarted8 proposal awaits revised scope approval,

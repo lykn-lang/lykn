@@ -1,5 +1,13 @@
 # Slice19 — match subject repair and combined validation
 
+2026-11-07 Operator explicitly authorized amended UNEXECUTED8 for BOTH walker
+delimiter and K11 lookup, same Sol6.1High CC/separateSol6.1High CDC, Autonomous
+Mode/stop any further substantive failure. Iteration07 supersedes unexecuted06;
+seven spent/current8/no reset/ninth. K11 value comes from EXISTING frozen
+observations.K11, validated64zeros and reused at both adapter sites; no fallback/
+control/oracle/extraK/schema/argv change. All required scoped/generated/predicate/
+realguard review before unchanged13+independent replay; source8ed remains accepted.
+
 Current: approved8 is UNEXECUTED/held in preflight. Further STATIC K11 adapter
 defect: observer selects fullAuditControls lacking expectedHash, but frozen
 observations.K11 contains intended64zeros. No edit/check/runtime by fresh SolCC;
@@ -251,3 +259,4 @@ six rows/report/review/retro/parent/backlog honestly at endpoint only, no nextun
 | cc-prompt-iteration04.md | 2026-11-07 | Explicitly authorized ONE extra correction6, observer boundary only | Operator approval received; no reset/seventh; runtime held for CDC prereview |
 | cc-prompt-iteration05.md | 2026-11-07 | Explicitly authorized ONE consolidated correction7, compiled-core pin and all BindingRole routes | Fresh LunaHigh, six spent/no reset/eighth; K held for CDC |
 | cc-prompt-iteration06.md | 2026-11-07 | Explicit correction8 and model change: fresh SolHigh implementer, separate SolHigh CDC | Exact walker boundary only; seven spent/no reset/ninth; K held |
+| cc-prompt-iteration07.md | 2026-11-07 | Explicit amended UNEXECUTED8: walkerclose plus existing observations.K11 lookup | Replaces unexecuted06, seven spent/current8/no ninth; same Sol roles |
