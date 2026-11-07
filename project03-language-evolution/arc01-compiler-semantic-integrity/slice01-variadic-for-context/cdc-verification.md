@@ -1,4 +1,77 @@
-# S01 independent review — pending Operator after static test-contract failure
+# S01 final independent verification — accepted task-only repair
+
+2026-11-07, `/root/cdc` Sol6.1 High, separate from Luna6 High implementer.
+**ACCEPT NE-C12 on source8f5d1990df86405656729972485ae4d11feba808**,
+tree8b1a05ff7ca8d6c9aedd82984be19d81a03894f2. Exactly five planned source paths;
+production change is existing numeric-for profile option/comment only. Three
+headers retain Value and every body child is Statement; resolver dispatch,
+context restoration, other loops, public APIs and JS product compiler unchanged.
+The narrow guide now distinguishes the initializer's declaration syntax from
+consumed expression contexts. No source integration or later-unit acceptance.
+
+## Fresh reproduced verification
+
+Independent full normal unfiltered Make exited0 with fresh owned npm/XDG caches,
+fixed existing DENO_DIR, normal Cargo metadata/resolution and supported explicit
+LYKN_TEST_DENO. Every Rust suite passed (lang1132), product1470 plus11steps/0fail,
+docs482/0fail. Separate committed citation gate passed63documents/601historical.
+After Make actual release/bin both SHA657ff4cc1db6cd7488511c5b6eabbb76f04efcd20f23b03f2d70f5876295f49d;
+debug9fc676a2...; actual lib/CLI test hashes were pinned before direct execution,
+with no intervening Cargo. Fresh focused actual2unit/2CLI/5public tests all pass.
+All three native headers reject at check and compile with no JS; direct emitter
+counter verifies actual header rejection structure and restored Statement context.
+Public backend executes strict Deno child, exact JSON trace and empty stderr.
+
+Also compiled the unchanged shared positive with the actual release CLI from
+owned config-free cwd, read its entire279-byte module before execution, then
+strict Deno run0/exact `{"trace":[0,10,11,1,11,12]}` plusLF/empty stderr. Sibling
+const declarations, sequential reads, first/multiple late if statements and
+falsebranch are visible. No positive DTS exists; no type-availability promise
+is inferred. Complete native/public generated modules were inspected in full.
+
+Original full walker033762 was independently checked/strict-compiled0 in separate
+config-free cwd using that same actual release CLI. Complete affected generated
+flagUnlisted/walkProgram functions read: all three formerly bad sites are real
+body if statements, sibling updates retained and final report outside the loop.
+JS736b60c5... exactly byte-matches CC output; DTSb7d37c3b... retained. **Walker
+never loaded/executed**, no K/AST/effect/coverage proof or core/observer repin.
+Actual raw check stderr is an ok line; compile stderr has three existing unused
+warnings. CC command-record prose misattributes those warning routes; raw streams
+are authoritative and preserved, with no suppression or source repair.
+
+All fresh command/cwd/explicit-env/exit/identity facts and raw files are in
+[CDC commands](artifacts/evidence/cdc/commands.txt). Selected ambient env keys
+were queried; unrelated ambient variables are not exhaustively captured. Binaries
+and source hashes stayed unchanged after runtime. Source clean; old8ed reference
+and release5408 unchanged. Canonical/embedded JS compiler byte comparison passed;
+neither product JS implementation changed. Source diff whitespace gate passed.
+
+## Disposition and evidence limits
+
+| Row | Final | Basis |
+| --- | --- | --- |
+| VF-01 | done | Actual scope/freeze/tool identities/history verified; initial stopped tests and explicit correction authority preserved. Earlier focused metadata remains tool-attested/partly recorded, not retroactively launch-file proof. Fresh CDC conditions are prospective and reproduced. |
+| VF-02 | done | CC meaningful known-red outputs inspected at corrected teste31; fresh independent2/2unit,2/2CLI,5/5public plus actual release runtime proof. Original red was not rerun by CDC or relabeled independent. |
+| VF-03 | done | Fresh same immutable full-walker compile0 and complete affected generated functions; no runtime claim. |
+| VF-04 | done | Fresh full normal Make/citations/focused proof and exact five-path/source/generated review; task-only acceptance. |
+| VF-05 | done | Implementer closeout preserved with attribution, final ledger/parent/bubble-up and retrospective account all scope and limits; no automatic next unit. |
+
+Initial inadequate public-runtime/header-counter design and selected-population
+weakness remain below; correction1 was explicitly authorized and fixed before
+baseline. Eight spent tooling passes are unchanged. Old focused raw process
+outputs exist, but separate metadata files were not made at launch and ambient
+env cannot be reconstructed; do not read acceptance as blanket process compliance.
+The final fresh proof establishes actual current behavior without curing history.
+
+Bubble-up: CI-01 is delivered; no arc decomposition/architecture change needed,
+only completion/provenance status. S02 public Rust compatibility remains a real
+decision gate. K0/13/tools unaccepted/S06 held, F1–F12/Project07/book/human gates
+unchanged. No merge/push/release or automatic S02/tool execution. See
+[retrospective](cdc-retrospective.md) and implementer [closeout](closing-report.md).
+
+---
+
+# Retained first review — pending Operator after static test-contract failure
 
 Subsequent decision2026-11-07: Operator authorized the consolidated four-part
 test correction and original S01 continuation via cc-prompt-iteration01.md.

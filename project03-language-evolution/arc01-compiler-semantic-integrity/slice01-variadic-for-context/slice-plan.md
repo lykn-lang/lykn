@@ -2,11 +2,23 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice01-variadic-for-context
-status: open
+status: closed
 planned-release: unassigned
 ---
 
 # S01 — faithful variadic numeric-for bodies
+
+## Final endpoint — 2026-11-07
+
+Independently accepted task-only source8f5d1990df86405656729972485ae4d11feba808,
+five VF rows done. [Verification](cdc-verification.md), implementer-attributed
+[closeout](closing-report.md) and [retrospective](cdc-retrospective.md) preserve
+the initial stopped test attempt, explicitly authorized correction01 and raw
+capture limits. Fresh independent full normal Make/focused/citation/runtime and
+unchanged-walker compile-only proof pass. No further substantive failure arose.
+Source release/bin actual SHA657ff4cc...; release5408 unchanged. S02/tools/K/
+integration remain held, eight spent tooling passes unchanged. Endpoint complete;
+the historical authority and attempts below are not retroactively rewritten.
 
 ## Approved continuation — 2026-11-07
 

@@ -2,6 +2,13 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Final2026-11-07 [Arc01 S01](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md)
+independently accepts NE-C12 task8f5d199, all five VF rows done/CI-01 delivered.
+Current full normal Make/focused/runtime/citation and original walker compile-only
+proof pass. Initial test stop/correction01/capture limits remain; source release
+5408 unchanged, K0/13/eight spent tooling passes unchanged. No automatic S02 or
+integration. P-1, all original F and Project07/book/human obligations stay open.
+
 Latest2026-11-07 Operator authorized consolidated S01 correction01 then original
 NE-C12 repair/validation with same Luna6 High CC/separate Sol6.1 High CDC and
 first further substantive-failure stop. Earlier static test-only stop remains

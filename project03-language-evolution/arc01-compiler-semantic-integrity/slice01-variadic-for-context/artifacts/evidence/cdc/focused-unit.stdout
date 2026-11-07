@@ -1,0 +1,7 @@
+
+running 2 tests
+test emitter::forms::tests::numeric_for_emits_first_and_late_no_else_if_as_ordered_statements ... ok
+test emitter::forms::tests::numeric_for_header_slots_still_reject_no_else_if_values ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1130 filtered out; finished in 0.00s
+

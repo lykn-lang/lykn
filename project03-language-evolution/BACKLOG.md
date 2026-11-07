@@ -684,6 +684,17 @@ emitter fix/source propagation/next unit opened; release5408 stays unchanged.
 
 #### NE-C12 — variadic numeric-for body loses Statement context after first slot
 
+**Current disposition2026-11-07: independently repaired on task8f5d199 by
+[Arc01 S01](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md).**
+Meaningful corrected-e31 known-red proof, fresh native/kernel/public/runtime and
+full normal gates preserve all three header Value roles and every ordered body
+Statement. Exact original walker compiles with correct affected functions; no
+walker execution/K acceptance. Five VF rows done; release5408 has not integrated
+this repair. Broader internal-failure propagation belongs S02's separate API
+decision; tooling/K re-entry remains S06 with eight spent passes unchanged.
+The original stop evidence and then-open re-entry description below are retained
+history, not a current assertion that this task source is still unfixed.
+
 **Independently reproduced printed-output failure,2026-11-07.** Slice19 final
 walker9122473, source033762a58aa1a9a3104c097641666fc2dc794f08115ce913de2009f78be688c7,
 on accepted task8ed nativeCLIaa31947… passes nativecheck/defaultstrictcompile0.

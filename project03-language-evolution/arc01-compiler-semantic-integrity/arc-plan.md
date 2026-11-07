@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
-status: proposed
+status: in-progress
 planned-release: unassigned
 depends-on: []
 related: [project07-core-library-research]
@@ -10,6 +10,15 @@ related: [project07-core-library-research]
 # Compiler semantic integrity
 
 ## Current S01 execution authority — 2026-11-07
+
+S01 is now independently closed: task8f5d199 delivers NE-C12 with five VF rows
+done, fresh full/focused/runtime/citation proof and unchanged walker compile-only.
+CI-01 done; all other arc capabilities remain open. No decomposition change was
+needed. This authorization ends here: S02's public Rust compatibility choice,
+tools/K/S06, release integration and all later units remain held. Eight spent
+tooling passes remain unchanged. See [S01 final verification](slice01-variadic-for-context/cdc-verification.md).
+
+### Retained S01 authorization and review chronology
 
 Latest: Operator explicitly authorized S01 correction01's consolidated test
 repair then original NE-C12 implementation/validation, same Luna6 High CC and
@@ -176,6 +185,10 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.4: Independently accepted S01 task8f5d199/CI-01, preserving
+  stopped tests/correction01 and evidence limits. No arc restructuring or next
+  execution; source release5408 and eight-spent tooling budget unchanged.
 
 - 2026-11-07 v0.3: Operator approved incremental direction and S01 execution
   only, Luna6 High CC/Sol6.1 High CDC with first additional substantive-failure

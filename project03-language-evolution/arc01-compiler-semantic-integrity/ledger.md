@@ -1,9 +1,15 @@
 # Arc01 compiler semantic integrity ledger
 
-Proposed 2026-11-07. These rows describe future capability acceptance; all are
-open. Independent review of this plan is recorded separately in
+2026-11-07: CI-01 independently delivered by S01 task8f5d199, five VF rows done.
+Other eight capabilities remain open; no arc composition acceptance, S02 launch,
+tooling/K or release integration follows. Original all-open planning review is
+retained history; actual source acceptance is the linked child verification.
+
+Proposed 2026-11-07 with all rows initially open; current dispositions are below.
+Independent review of the original plan is recorded separately in
 `artifacts/planning-review.md` and cannot close software, audit, book or human
-acceptance. No implementation assignment is issued.
+acceptance. That planning review issued no implementation assignment; subsequent
+S01 authority and actual source acceptance are recorded above and in the child.
 
 2026-11-07: Operator subsequently approved incremental direction and opened
 [S01 only](slice01-variadic-for-context/slice-plan.md) with Luna6 High CC/separate
@@ -13,7 +19,7 @@ is approved/closed by that authorization.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| CI-01 | Numeric-for headers/body roles faithfully compile supported variadic statements | Meaningful red/green native/kernel/CLI and runtime regressions; full source gates and independent review | correctness-grade | NE-C12 / S01 | open | | Narrow first useful delivery; other loops not inferred |
+| CI-01 | Numeric-for headers/body roles faithfully compile supported variadic statements | Meaningful red/green native/kernel/CLI and runtime regressions; full source gates and independent review | correctness-grade | NE-C12 / S01 | done | slice01-variadic-for-context/cdc-verification.md; source8f5d199 | Narrow task-only delivery; no other loop/API/tooling claim |
 | CI-02 | Structured fatal lowering failures reach public APIs and all production routes before successful artifacts | Approved compatibility policy; caller/route tests, unchanged pre-existing output-file contents and no new JS/DTS on compiler failure, successful JS/DTS and legitimate runtime/user-text controls; independent full gates | correctness-grade | NE-C06 static channel / S02 | open | | No text grep or silent legacy-success path as evidence |
 | CI-03 | Shared roles compose across validation/lowering with resolution and syntax boundaries intact | Role/counter regressions, native/JS comparison where equivalent, accepted historical controls and independent full gates | correctness-grade | A6 / accepted NE stack / S03 | open | | Recursive typed AST is an option, not an accepted necessity |
 | CI-04 | C02/C05 current-source validity and completion behavior are explicitly dispositioned and supported behavior correct | Source-contract decisions, actual generated/runtime witnesses and regressions, independent gates | correctness-grade | NE-C02/05 / S04 | open | | No pre-decision that C02 is supported or both remain current bugs |

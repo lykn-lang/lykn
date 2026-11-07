@@ -1,0 +1,7 @@
+
+running 2 tests
+test numeric_for_preserves_variadic_statement_body_and_value_headers ... ok
+test numeric_for_rejects_no_else_if_in_each_consumed_header ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

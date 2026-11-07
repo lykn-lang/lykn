@@ -17,6 +17,15 @@ BACKLOG.md says so.
 
 ## Current bounded Arc01 S01 execution (2026-11-07)
 
+S01 is independently closed at task8f5d199, five VF rows done and CI-01 delivered;
+fresh full normal Make/focused/runtime/citation proof and original walker
+compile-only succeeded. [Final verification](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md)
+and retrospective preserve the first static stop, authorized correction and
+capture limits. Release5408 unchanged; S02/tools/K/integration not opened and
+eight spent tooling passes unchanged. P-1/F1–F12/Project07/human gates stay open.
+
+### Retained S01 authorization and review chronology
+
 Latest Operator decision explicitly authorizes consolidated S01 correction01
 then original NE-C12 repair/validation, same Luna6 High CC/Sol6.1 High CDC and
 first further substantive-failure stop. Previous test-only stop below is retained
@@ -518,6 +527,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.34: Independently accepted S01's narrow NE-C12 repair at
+  task8f5d199 with five VF rows done, current full gates and compile-only original
+  witness. Preserved correction/capture history and stopped at S01 endpoint.
 
 - 2026-11-07 v1.33: Operator approved incremental design and bounded S01-only
   NE-C12 repair/independent validation, selecting Luna6 High CC/Sol6.1 High CDC

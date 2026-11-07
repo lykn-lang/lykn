@@ -2,12 +2,11 @@
 
 Current home: branch planning, project03-language-evolution. Start with [project-plan.md](project-plan.md). Release intent is YAML metadata; the following retained notes describe the original versioned layout.
 
-Current: Operator approved incremental direction and opened
-[Arc01 S01 numeric-for repair](arc01-compiler-semantic-integrity/slice01-variadic-for-context/slice-plan.md)
-only, with independent validation and a first additional substantive-failure
-stop. Later code units, tooling/K and integration remain held.
+Current: [Arc01 S01 numeric-for repair](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md)
+is independently accepted on task8f5d199; source release5408 remains unchanged.
+Later code units, tooling/K and integration remain held at the S01 endpoint.
 
-2026-11-07: proposed [Arc01 compiler semantic integrity](arc01-compiler-semantic-integrity/arc-plan.md)
+Earlier2026-11-07 planning state: proposed [Arc01 compiler semantic integrity](arc01-compiler-semantic-integrity/arc-plan.md)
 is a planning-only roadmap after standalone Slice01–19, with final API-impact
 audit and conditional documentation delivery. No implementation or audit
 execution is opened. The dated original layout below is retained history.

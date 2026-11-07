@@ -1,0 +1,111 @@
+Independent S01 source validation — Sol6.1 High /root/cdc, 2026-11-07
+
+Prelaunch facts: source8f5d1990df86405656729972485ae4d11feba808, tree
+8b1a05ff7ca8d6c9aedd82984be19d81a03894f2, clean codex/variadic-for-body-context.
+Exact authorized five-path diff inspected; production diff is existing numeric-for
+profile option only. Rustc1.97.0/cargo1.97.0 from actual source cwd. Deno2.9.6
+/opt/homebrew/bin/deno SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Source release/bin before Make both657ff4cc1db6cd7488511c5b6eabbb76f04efcd20f23b03f2d70f5876295f49d;
+not assumed producer hashes after Make. Native env/rg query found no selected
+CARGO_HOME/CARGO_NET_OFFLINE/CARGO_TARGET_DIR/DENO_DIR/RUSTUP_TOOLCHAIN/XDG_CACHE_HOME/
+npm_config_cache entries (query exit1 means no matches, not a gate failure).
+Other ambient environment is inherited, not exhaustively recorded.
+
+Fresh owned root /private/tmp/lykn-s01-cdc.ehPMnM created by mktemp. New npm-cache
+and xdg subdirectories; fixed existing DENO_DIR preserves approved compiler cache.
+No source/index writes or builds overlap CC; explicit ownership returned at
+planningb3d1093. No install/update/push/publication/other scope.
+
+FULL MAKE command, captured from launch; cwd:
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env npm_config_cache=/private/tmp/lykn-s01-cdc.ehPMnM/npm-cache XDG_CACHE_HOME=/private/tmp/lykn-s01-cdc.ehPMnM/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno make check
+stdout/stderr: full-make.stdout, full-make.stderr in this directory, separate.
+No test filters/global offline/targetdir overrides or bypass flags. Normal
+canonical Make includes existing publishing dry-run compatibility tests, not
+publication. LYKN_TEST_DENO is the supported native test override, explicitly
+pinned here; CC Make used normal PATH resolution. Actual exit recorded on return.
+
+OBSERVED: full Make tool session16003 returned exit0. Every Rust suite0failed,
+lykn-lang1132passed, product1470passed(11steps)/0failed, docs482passed/0failed,
+terminalAllChecksPassed. Source remains clean8f5d199. Canonical/embedded product
+compiler.js cmp exit0; no JS production change in this source diff.
+
+Post-Make actual pins BEFORE focused runtimes (no Cargo/build afterward):
+target/release/lykn AND bin/lykn:657ff4cc1db6cd7488511c5b6eabbb76f04efcd20f23b03f2d70f5876295f49d
+target/debug/lykn:9fc676a2c1a11355966680808dd0a3c8afb2c74881b2b7a78ad35e12588e48de
+target/debug/deps/lykn_lang-660f810f98f77866:a291719f456b6154bb30250bebca230ddd81d8f832e46f3928e65b4e72ec6ce0
+target/debug/deps/variadic_for_bodies-dc06f81c033262f2:a8431f50150120ccb57278f7840114e1ab633cbf06c230d49435b1c56ba8fb49
+Deno remains2ad84f9e...e5ce74. All paths under source root except /opt/homebrew/bin/deno.
+
+Prospective focused commands; same source cwd, output pairs named below:
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866 numeric_for_ --nocapture --test-threads=1
+  -> focused-unit.stdout/stderr (exact2 selected from1132, not a replacement fullgate)
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/variadic_for_bodies-dc06f81c033262f2 --nocapture --test-threads=1
+  -> focused-cli.stdout/stderr (all2tests, positive plus3headers/check+compile)
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno test --cached-only --config project.json -A test/forms/for.test.js
+  -> focused-public.stdout/stderr (5product tests; existing sanctioned parent
+  permissions, generated child strictflags/no additional grants)
+env npm_config_cache=/private/tmp/lykn-s01-cdc.ehPMnM/npm-cache XDG_CACHE_HOME=/private/tmp/lykn-s01-cdc.ehPMnM/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno make check-cited-paths
+  -> cited-paths.stdout/stderr; separate committed source gate.
+
+OBSERVED focused/citation tool exits all0: unit2/2(1130filtered out), CLI2/2 with
+all3headers/check+compile rejected1/noJS, public5/5 with strictchild0/exactJSON/
+empty stderr bytes, citations63documents/601historical. Complete native/public
+generated modules and raw process outputs inspected in focused logs.
+
+Prospective release-interface and unchanged full-witness conditions:
+Positive copied from current committed fixture to
+/private/tmp/lykn-s01-cdc.ehPMnM/positive/variadic-for-bodies.lykn,
+SHA9b527840a0c179b64ebb392402679a5e32a3acced117db53722fe217c4efe2ff.
+Walker extracted with git show9122473 from the original full path recorded in
+CC evidence; /private/tmp/lykn-s01-cdc.ehPMnM/witness/estree-walker.lykn,
+SHA033762a58aa1a9a3104c097641666fc2dc794f08115ce913de2009f78be688c7.
+Actual scoped ls query for project.json at /, /private, /private/tmp, owned root,
+positive and witness cwd returned exit1 with six ENOENT messages. Native compiler
+find_project_root checks this filename; Deno child uses --no-config. No recursive
+directory inventory or permission escalation. No explicit env overrides for
+these direct CLI operations; ambient inherited, already selected keys queried.
+
+CLI EXACT absolute path for all following operations:
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+SHA657ff4cc1db6cd7488511c5b6eabbb76f04efcd20f23b03f2d70f5876295f49d
+No Cargo/build invocation between this pin and following CLI/runtime operations.
+
+Cwd positive directory:
+1. CLI check /private/tmp/lykn-s01-cdc.ehPMnM/positive/variadic-for-bodies.lykn
+2. CLI compile /private/tmp/lykn-s01-cdc.ehPMnM/positive/variadic-for-bodies.lykn -o /private/tmp/lykn-s01-cdc.ehPMnM/positive/fixture.js
+Each stdout/stderr captured at launch as release-check/release-compile pairs.
+After complete generated-module review ONLY, same cwd:
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/lykn-s01-cdc.ehPMnM/positive/fixture.js
+->release-runtime.stdout/stderr; exact same positive/oracle, no extra family.
+
+Cwd witness directory, compile ONLY, never execute generated walker:
+3. CLI check /private/tmp/lykn-s01-cdc.ehPMnM/witness/estree-walker.lykn
+4. CLI compile /private/tmp/lykn-s01-cdc.ehPMnM/witness/estree-walker.lykn -o /private/tmp/lykn-s01-cdc.ehPMnM/witness/estree-walker.js
+->walker-check/walker-compile stdout/stderr. Actual outputs/afterhashes recorded
+after each operation; no core/observer pin update, DenoCheck or K.
+
+OBSERVED: release positive check0, compile0; complete279-byte generated module
+read BEFORE strict Deno child. JS SHA1f64fc8a8faf147a611c7738501f22f0e089495d1bbbc16705459fe7e6ec3504.
+Runtime0, stdout exactly {"trace":[0,10,11,1,11,12]} plusLF, stderr0bytes.
+No positive DTS produced (actual absence, no declaration-availability claim).
+Generated body retains first/multiple late statementifs and sibling value/nextValue
+declarations inside loop, following reads/order and falsebranch. Copy retained
+release-generated.js. No code/source/oracle changes made for this replay.
+
+Original fullwalker check0/strictcompile0. Check stderr reports20top-level forms
+ok; compile stderr contains existing allowed/reasons/FieldRole warnings, retained
+verbatim. This is the actual raw route attribution, not CC's prose shorthand.
+Source SHA remains033762;
+JS SHA736b60c54591ce549506bc5593b486acdb0954a5f8511c568bd08febd6be9480,
+DTS SHAb7d37c3b115ae1e5b8c3ed3b44923e468aa1e8e9d19377f57c593a3b9c30de49.
+Retained generated JS/DTS; bytecmp with CC generated JS0 despite separate actual
+debug/release producers. Read COMPLETE flagUnlisted95–105 and walkProgram612–667;
+prior three bad sites are actual if statements in numeric-for bodies, with sibling
+updates and report after the loop. Walker NOT loaded/executed; no runtime/AST/
+coverage/K claim follows from this source-compilation proof.
+
+After ALL operations, release/bin still657ff4cc..., debug still9fc676a2..., unit
+still a291719f..., CLItest still a8431f50..., Deno still2ad84f9e... (full prior pins).
+No source changes, source diff whitespace gate0. codex/match-subject-values remains
+8ed869f1ed24bf688ba91f71d8c539680136794e; release/0.6.x remains5408abd432b8789ae474a3895436f68818c4e482.
