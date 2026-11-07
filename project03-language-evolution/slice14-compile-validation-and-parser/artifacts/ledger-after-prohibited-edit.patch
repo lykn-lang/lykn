@@ -1,0 +1,17 @@
+diff --git a/project03-language-evolution/slice14-compile-validation-and-parser/ledger.md b/project03-language-evolution/slice14-compile-validation-and-parser/ledger.md
+index 9295966..fe621b4 100644
+--- a/project03-language-evolution/slice14-compile-validation-and-parser/ledger.md
++++ b/project03-language-evolution/slice14-compile-validation-and-parser/ledger.md
+@@ -4,9 +4,9 @@ All rows open; CC attestations are not independent acceptance.
+ 
+ | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
+ | --- | --- | --- | --- | --- | --- | --- | --- |
+-| VP-01 | NE-C08 route failures meaningfully red before patch | Frozen five-category API/stdout/-o tests and retained pre-assert raw outputs | serious | NE-C08 | open | | No check-strict reserved oracle expansion |
+-| VP-02 | Shared validation parity preserves successful output behavior | Exact private helper/order diff, diagnostics/output-no-write and JS/DTS/warning positive controls | serious | Operator repair | open | | No blacklist/DTS bypass/pipeline rewrite |
+-| VP-03 | NE-C08 independently accepted with required gate disposition | CDC source/generated/focused replay + unfiltered Make/citation; known NE-C07 explicit | serious | Independent gate | open | | Full green not claimed while known dependency fails |
++| VP-01 | NE-C08 route failures meaningfully red before patch | Frozen five-category API/stdout/-o tests and retained pre-assert raw outputs | serious | NE-C08 | open | [CC results](results.md#frozen-red-and-focused-green), [API red](artifacts/stage-a-api-red.txt), [CLI red](artifacts/stage-a-cli-red.txt) | CC attested; CDC disposition pending; no check-strict reserved oracle expansion |
++| VP-02 | Shared validation parity preserves successful output behavior | Exact private helper/order diff, diagnostics/output-no-write and JS/DTS/warning positive controls | serious | Operator repair | open | [CC results](results.md#frozen-red-and-focused-green), source `4610b4ce37d41dd11a591f88b4e67e15b84f96b1`, [API green](artifacts/stage-a-api-green.txt), [CLI green](artifacts/stage-a-cli-green.txt) | CC attested; CDC disposition pending; no blacklist/DTS bypass/pipeline rewrite |
++| VP-03 | NE-C08 independently accepted with required gate disposition | CDC source/generated/focused replay + unfiltered Make/citation; known NE-C07 explicit | serious | Independent gate | open | [CC gate results](results.md#build-and-repository-gates), [unfiltered Make](artifacts/stage-a-make-check.txt), [citation gate](artifacts/stage-a-cited-paths.txt) | Awaiting CDC independent replay; known NE-C07 failure retained; later Make targets unrun |
+ | VP-04 | NE-C07 narrowly repaired and real imported-await semantics pass | Private collector/scope controls, actual check/compile/import42, fresh binary pin | serious | Authorized second repair | open | | Global bindings API remains nonrecursive |
+ | VP-05 | Both repairs complete canonical independent validation | Full unfiltered Make/citation, exact source/generated/binary, no filtered gates | serious | Source acceptance | open | | Required before parser re-entry |
+ | VP-06 | Unchanged parser tooling passes native/generated prerequisites | Existing core/probe/observer source and check/fmt/lint/compile/Deno check + review | serious | Slice12 re-entry | open | | Same frozen bytes/oracles unless preserved correction |

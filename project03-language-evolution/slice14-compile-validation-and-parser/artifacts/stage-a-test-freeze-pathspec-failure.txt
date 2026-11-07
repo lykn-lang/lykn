@@ -1,0 +1,5 @@
+Command: git -C /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering commit --only -F /private/tmp/lykn-slice14-test-freeze-message.txt -- crates/lykn-cli/src/compile.rs crates/lykn-cli/tests/compile_validation_parity.rs
+Exit: 1
+Output:
+error: pathspec 'crates/lykn-cli/tests/compile_validation_parity.rs' did not match any file(s) known to git
+Disposition: the new authorized integration test was untracked; no commit occurred. Stage only the two authorized source paths, then retry the same exact-path commit.

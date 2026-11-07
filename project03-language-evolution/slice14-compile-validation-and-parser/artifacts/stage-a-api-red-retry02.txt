@@ -1,0 +1,36 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+
+running 1 test
+COMPILE_VALIDATION_API route=stdout case="reserved binding" diagnostic="1:7: error: 'default' is a JavaScript reserved word and cannot be used as a lykn binding name\n  suggestion: rename the binding name (e.g. `default_`)"
+COMPILE_VALIDATION_API route=with_dts case="reserved binding" accepted_js="function default() {\n  return 42;\n}\nexport {default};\n" accepted_dts=Some("export function default(): unknown;\n") warnings=[Diagnostic { severity: Warning, message: "exported function `default` has no `:returns` annotation; .d.ts will use `unknown`", span: Span { start: SourceLoc { line: 1, column: 1 }, end: SourceLoc { line: 1, column: 33 } }, suggestion: Some("add `:returns :type` to `default`") }]
+COMPILE_VALIDATION_API route=stdout case="method on expression" diagnostic="1:10: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)\n  suggestion: thread the method call: (-> <expr> (:join …)); or bind first: (bind v <expr>) (v:join …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> \"join\" …)"
+1:1: warning: unused binding 'r'
+  suggestion: prefix with underscore: _r
+COMPILE_VALIDATION_API route=with_dts case="method on expression" accepted_js="const r = parts.value(\"join\", \"\");\n" accepted_dts=None warnings=[]
+COMPILE_VALIDATION_API route=stdout case="nested bare-parameter fn" diagnostic="1:13: error: expected type keyword or destructuring pattern at position 0"
+1:1: warning: unused binding 'f'
+  suggestion: prefix with underscore: _f
+COMPILE_VALIDATION_API route=with_dts case="nested bare-parameter fn" accepted_js="const f = fn(x(), x);\n" accepted_dts=None warnings=[]
+COMPILE_VALIDATION_API route=stdout case="no-else if expression" diagnostic="1:13: error: if in expression position requires an else branch\n  suggestion: add an else branch, or restructure as a statement"
+COMPILE_VALIDATION_API route=with_dts case="no-else if expression" diagnostic="1:13: error: if in expression position requires an else branch\n  suggestion: add an else branch, or restructure as a statement"
+COMPILE_VALIDATION_API route=stdout case="unknown export" diagnostic="1:10: error: exports references unknown top-level binding 'missing'\n  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor"
+COMPILE_VALIDATION_API route=with_dts case="unknown export" diagnostic="1:10: error: exports references unknown top-level binding 'missing'\n  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor"
+
+thread 'compile::tests::compile_routes_reject_the_same_validation_inputs' (94236530) panicked at crates/lykn-cli/src/compile.rs:932:9:
+validation parity failures: [
+    "with_dts route did not reject \"reserved binding\" with \"'default' is a JavaScript reserved word\"",
+    "with_dts route did not reject \"method on expression\" with \"method call on a parenthesized expression is not supported\"",
+    "with_dts route did not reject \"nested bare-parameter fn\" with \"expected type keyword\"",
+]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test compile::tests::compile_routes_reject_the_same_validation_inputs ... FAILED
+
+failures:
+
+failures:
+    compile::tests::compile_routes_reject_the_same_validation_inputs
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 177 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p lykn-cli --bin lykn`

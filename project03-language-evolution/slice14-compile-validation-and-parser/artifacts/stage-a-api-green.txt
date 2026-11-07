@@ -1,0 +1,105 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.15s
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+
+running 40 tests
+test compile::tests::compile_file_nonexistent_errors ... ok
+1:1: warning: unused binding 'x'
+  suggestion: prefix with underscore: _x
+2:7: warning: unused binding 'role-label'
+  suggestion: prefix with underscore: _role-label
+1:1test compile::tests::compile_source_empty_input ... ok
+: warning: unused binding 'x'
+  suggestion: prefix with underscore: _x
+2:test compile::tests::compile_source_allows_bound_fn_head_call ... ok
+1test compile::tests::compile_file_with_temp_file ... ok
+test compile::tests::compile_source_allows_no_else_if_in_statement_position ... ok
+test compile::tests::compile_source_bind_kernel_json ... ok
+test compile::tests::compile_source_cond_expression ... ok
+: warning: unused binding 'val'
+  suggestion: prefix with underscore: _val
+1:7: warningtest compile::tests::compile_source_exports_declaration ... ok
+test compile::tests::compile_source_invalid_syntax_errors ... ok
+: unused binding 'greet'test compile::tests::compile_source_cell_express ... ok
+
+  suggestion: prefix with underscore: _greet
+test compile::tests::compile_source_none_path_is_strict ... ok
+test compile::tests::compile_source_lyk_exempt_from_strict ... ok
+1:1: warning: unused binding 'label'
+  suggestion: prefix with underscore: _label
+COMPILE_VALIDATION_API route=stdout case="reserved binding" diagnostic="1:7: error: 'default' is a JavaScript reserved word and cannot be used as a lykn binding name\n  suggestion: rename the binding name (e.g. `default_`)"
+test compile::tests::compile_source_rejects_cond_expression_without_else ... ok
+2:1: warning: unused binding 'y'
+  suggestion: prefix with underscore: _ytest compile::tests::compile_source_allows_if_expression_with_else_branch ... ok
+
+1:1: warning: unused binding 'x'
+  suggestion: test compile::tests::compile_source_rejects_missing_exports_name ... ok
+test compile::tests::compile_source_rejects_duplicate_exports_name ... ok
+prefix with underscore: _x
+test compile::tests::compile_source_func_kernel_json ... ok
+2:29: warning: unused binding 'record'
+  suggestion: test compile::tests::compile_source_rejects_nested_bare_parameter_fn ... ok
+test compile::tests::compile_source_rejects_no_else_if_in_expression_position ... ok
+test compile::tests::compile_source_multiple_binds ... ok
+prefix with underscore: _recordtest compile::tests::compile_source_strict_kernel_escape_compiles_in_lykn ... ok
+
+2:7: warning: unused binding 'normalize'
+  suggestion: prefix with underscore: _normalize
+1:1: warning: unused binding 'result'
+  suggestion: prefix with underscore: _result
+1:1: warning: test compile::tests::compile_source_grouped_bind_keeps_sequential_visibility ... ok
+unused binding 'config'
+  suggestion: prefix with underscore: _config
+test compile::tests::compile_source_strip_assertions_preserves_fn_implicit_return ... ok
+test compile::tests::compile_source_threading ... ok
+1:1: warning: unused binding 'x'
+  suggestion: prefix with underscore: _x
+1:1: warning: unused binding 'x'
+  suggestion: prefix with underscore: _x
+2:7: warning: unused binding 'Color'
+  suggestion: prefix with underscore: _Color
+4:1: warning: unused binding 'name'
+  suggestion: prefix with underscore: _name
+1:1: warning: unused binding 'x'
+  suggestion: prefix with underscore: _x
+test compile::tests::compile_source_obj_form ... ok
+1:7: warning: unused binding 'inc'
+  suggestion: test compile::tests::compile_typed_bind_any_no_check ... ok
+prefix with underscore: _inctest compile::tests::compile_source_strict_rejects_bare_kernel_in_lykn ... ok
+test compile::tests::compile_typed_bind_literal_match ... ok
+
+test compile::tests::compile_source_strict_allows_operators_and_surface ... ok
+COMPILE_VALIDATION_API route=with_dts case="reserved binding" diagnostic="1:7: error: 'default' is a JavaScript reserved word and cannot be used as a lykn binding name\n  suggestion: rename the binding name (e.g. `default_`)"
+COMPILE_VALIDATION_API route=stdout case="method on expression" diagnostic="1:10: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)\n  suggestion: thread the method call: (-> <expr> (:join …)); or bind first: (bind v <expr>) (v:join …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> \"join\" …)"
+1:1: warning: unused binding 'x'
+  suggestion: prefix with underscore: _x
+test compile::tests::compile_typed_bind_literal_mismatch_errors ... ok
+COMPILE_VALIDATION_POSITIVE typed_js="function inc(x) {\n  if (typeof x !== \"number\" || Number.isNaN(x)) throw new TypeError(\"inc: arg 'x' expected number, got \" + typeof x);\n\n  const result__gensym0 = x + 1;\n  if (typeof result__gensym0 !== \"number\" || Number.isNaN(result__gensym0)) throw new TypeError(\"inc: return value expected number, got \" + typeof result__gensym0);\n\n  return result__gensym0;\n}\nexport {inc};\n" typed_dts=Some("export function inc(x: number): number;\n") warnings=[]
+test doctest::tests::test_extract_blocks_compile_fail ... ok
+1:1: warning: unused binding 'x'
+  suggestion: prefix with underscore: _x
+test doctest::tests::test_extract_blocks_lisp_compile_fail_annotation ... ok
+test compile::tests::compile_source_type_and_match ... ok
+test doctest::tests::test_generate_test_file_compile_block ... ok
+test doctest::tests::test_generate_test_file_compile_fail_block ... ok
+1:1: warningtest compile::tests::compile_source_context_path_synthetic_parent ... ok
+: unused binding 'x'
+  suggestion: prefix with underscore: _x
+COMPILE_VALIDATION_POSITIVE untyped_js="function loose(x) {\n  if (typeof x !== \"number\" || Number.isNaN(x)) throw new TypeError(\"loose: arg 'x' expected number, got \" + typeof x);\n\n  return x;\n}\nexport {loose};\n" untyped_dts=Some("export function loose(x: number): unknown;\n") warnings=[Diagnostic { severity: Warning, message: "exported function `loose` has no `:returns` annotation; .d.ts will use `unknown`", span: Span { start: SourceLoc { line: 1, column: 1 }, end: SourceLoc { line: 1, column: 39 } }, suggestion: Some("add `:returns :type` to `loose`") }]
+COMPILE_VALIDATION_API route=with_dts case="method on expression" diagnostic="1:10: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)\n  suggestion: thread the method call: (-> <expr> (:join …)); or bind first: (bind v <expr>) (v:join …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> \"join\" …)"
+COMPILE_VALIDATION_POSITIVE empty_js="" empty_dts=None warnings=[]
+test compile::tests::compile_typed_bind_strip_assertions ... ok
+COMPILE_VALIDATION_API route=stdout case="nested bare-parameter fn" diagnostic="1:13: error: expected type keyword or destructuring pattern at position 0"
+1:7: warning: unused binding 'inc'
+  suggestion: prefix with underscore: _inc
+COMPILE_VALIDATION_API route=with_dts case="nested bare-parameter fn" diagnostic="1:13: error: expected type keyword or destructuring pattern at position 0"
+COMPILE_VALIDATION_API route=stdout case="no-else if expression" diagnostic="1:13: error: if in expression position requires an else branch\n  suggestion: add an else branch, or restructure as a statement"test compile::tests::compile_source_strip_assertions ... 
+ok
+COMPILE_VALIDATION_API route=with_dts case="no-else if expression" diagnostic="1:13: error: if in expression position requires an else branch\n  suggestion: add an else branch, or restructure as a statement"
+COMPILE_VALIDATION_API route=stdout case="unknown export" diagnostic="1:10: error: exports references unknown top-level binding 'missing'\n  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor"
+COMPILE_VALIDATION_API route=with_dts case="unknown export" diagnostic="1:10: error: exports references unknown top-level binding 'missing'\n  suggestion: export a name declared by a top-level bind, func, class, import, or type constructor"
+test compile::tests::compile_routes_reject_the_same_validation_inputs ... ok
+COMPILE_VALIDATION_POSITIVE kernel_json=("[\n  {\n    \"type\": \"list\",\n    \"values\": [\n      {\n        \"type\": \"atom\",\n        \"value\": \"function\"\n      },\n      {\n        \"type\": \"atom\",\n        \"value\": \"inc\"\n      },\n      {\n        \"type\": \"list\",\n        \"values\": [\n          {\n            \"type\": \"atom\",\n            \"value\": \"x\"\n          }\n        ]\n      },\n      {\n        \"type\": \"list\",\n        \"values\": [\n          {\n            \"type\": \"atom\",\n            \"value\": \"if\"\n          },\n          {\n            \"type\": \"list\",\n            \"values\": [\n              {\n                \"type\": \"atom\",\n                \"value\": \"||\"\n              },\n              {\n                \"type\": \"list\",\n                \"values\": [\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"!==\"\n                  },\n                  {\n                    \"type\": \"list\",\n                    \"values\": [\n                      {\n                        \"type\": \"atom\",\n                        \"value\": \"typeof\"\n                      },\n                      {\n                        \"type\": \"atom\",\n                        \"value\": \"x\"\n                      }\n                    ]\n                  },\n                  {\n                    \"type\": \"string\",\n                    \"value\": \"number\"\n                  }\n                ]\n              },\n              {\n                \"type\": \"list\",\n                \"values\": [\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"Number:isNaN\"\n                  },\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"x\"\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"type\": \"list\",\n            \"values\": [\n              {\n                \"type\": \"atom\",\n                \"value\": \"throw\"\n              },\n              {\n                \"type\": \"list\",\n                \"values\": [\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"new\"\n                  },\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"TypeError\"\n                  },\n                  {\n                    \"type\": \"list\",\n                    \"values\": [\n                      {\n                        \"type\": \"atom\",\n                        \"value\": \"+\"\n                      },\n                      {\n                        \"type\": \"string\",\n                        \"value\": \"inc: arg 'x' expected number, got \"\n                      },\n                      {\n                        \"type\": \"list\",\n                        \"values\": [\n                          {\n                            \"type\": \"atom\",\n                            \"value\": \"typeof\"\n                          },\n                          {\n                            \"type\": \"atom\",\n                            \"value\": \"x\"\n                          }\n                        ]\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"type\": \"list\",\n        \"values\": [\n          {\n            \"type\": \"atom\",\n            \"value\": \"const\"\n          },\n          {\n            \"type\": \"atom\",\n            \"value\": \"result__gensym0\"\n          },\n          {\n            \"type\": \"list\",\n            \"values\": [\n              {\n                \"type\": \"atom\",\n                \"value\": \"+\"\n              },\n              {\n                \"type\": \"atom\",\n                \"value\": \"x\"\n              },\n              {\n                \"type\": \"number\",\n                \"value\": 1\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"type\": \"list\",\n        \"values\": [\n          {\n            \"type\": \"atom\",\n            \"value\": \"if\"\n          },\n          {\n            \"type\": \"list\",\n            \"values\": [\n              {\n                \"type\": \"atom\",\n                \"value\": \"||\"\n              },\n              {\n                \"type\": \"list\",\n                \"values\": [\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"!==\"\n                  },\n                  {\n                    \"type\": \"list\",\n                    \"values\": [\n                      {\n                        \"type\": \"atom\",\n                        \"value\": \"typeof\"\n                      },\n                      {\n                        \"type\": \"atom\",\n                        \"value\": \"result__gensym0\"\n                      }\n                    ]\n                  },\n                  {\n                    \"type\": \"string\",\n                    \"value\": \"number\"\n                  }\n                ]\n              },\n              {\n                \"type\": \"list\",\n                \"values\": [\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"Number:isNaN\"\n                  },\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"result__gensym0\"\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"type\": \"list\",\n            \"values\": [\n              {\n                \"type\": \"atom\",\n                \"value\": \"throw\"\n              },\n              {\n                \"type\": \"list\",\n                \"values\": [\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"new\"\n                  },\n                  {\n                    \"type\": \"atom\",\n                    \"value\": \"TypeError\"\n                  },\n                  {\n                    \"type\": \"list\",\n                    \"values\": [\n                      {\n                        \"type\": \"atom\",\n                        \"value\": \"+\"\n                      },\n                      {\n                        \"type\": \"string\",\n                        \"value\": \"inc: return value expected number, got \"\n                      },\n                      {\n                        \"type\": \"list\",\n                        \"values\": [\n                          {\n                            \"type\": \"atom\",\n                            \"value\": \"typeof\"\n                          },\n                          {\n                            \"type\": \"atom\",\n                            \"value\": \"result__gensym0\"\n                          }\n                        ]\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"type\": \"list\",\n        \"values\": [\n          {\n            \"type\": \"atom\",\n            \"value\": \"return\"\n          },\n          {\n            \"type\": \"atom\",\n            \"value\": \"result__gensym0\"\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"type\": \"list\",\n    \"values\": [\n      {\n        \"type\": \"atom\",\n        \"value\": \"export\"\n      },\n      {\n        \"type\": \"list\",\n        \"values\": [\n          {\n            \"type\": \"atom\",\n            \"value\": \"names\"\n          },\n          {\n            \"type\": \"atom\",\n            \"value\": \"inc\"\n          }\n        ]\n      }\n    ]\n  }\n]", Some("export function inc(x: number): number;\n"), [])
+test compile::tests::compile_with_dts_keeps_positive_output_contracts ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 138 filtered out; finished in 0.01s
+
