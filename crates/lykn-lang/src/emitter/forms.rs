@@ -602,8 +602,7 @@ fn emit_function_body(
     let mut out = Vec::new();
     for (index, expr) in body.iter().enumerate() {
         let has_value_if_else = expr.as_list().is_some_and(|values| {
-            values.first().and_then(|value| value.as_form_head()) == Some("if")
-                && values.len() >= 4
+            values.first().and_then(|value| value.as_form_head()) == Some("if") && values.len() >= 4
         });
         let is_tail_value = value_tail
             && index + 1 == body.len()
