@@ -1,0 +1,159 @@
+---
+project: project03-language-evolution
+arc: arc01-compiler-semantic-integrity
+status: proposed
+planned-release: unassigned
+depends-on: []
+related: [project07-core-library-research]
+---
+
+# Compiler semantic integrity
+
+## Authority and current endpoint
+
+On 2026-11-07 the Operator requested planning/design that gives the accumulated
+findings a proper engineering home, potentially a new arc. The Operator also
+requested a final public-API/documentation-impact audit and a conditional slice
+to implement resulting documentation. This authorizes this roadmap and an
+independent **planning review only**. Source changes, experiments, K execution,
+implementation prompts, integration, dependency acquisition and publication are
+held. All capability ledger rows remain open. Proposed architecture, public-API
+compatibility and release decisions below require Operator design review before
+affected implementation begins.
+
+The planning author is `/root/cdc`, OpenAI Sol 6.1 High. A fresh separate
+Sol 6.1 High context reviews the design; root coordinates/read-only co-design.
+The last selected execution arrangement remains Sol 6.1 High CC and separate
+Sol 6.1 High CDC, Autonomous Mode, but this document dispatches no implementation.
+
+This is Project03's first arc directory. Standalone Slice01–19 retain their
+historical paths, authorizations, failures and acceptance. See the
+[design and complete finding map](artifacts/compiler-integrity-design.md).
+
+## Capability and delivery homes
+
+The intended capability is a compiler that applies one explicit semantic role
+contract across validation and lowering, preserves supported value/control-flow
+behavior, and reports internal lowering failures before presenting successful
+artifacts. Users continue to author Surface Lykn and use Lykn commands; inspecting
+generated JS is a contributor quality gate, not a required user repair step.
+The first usable increment is faithful numeric-for body compilation, not another
+investigation-only prerequisite. Structured failure delivery is a distinct second
+increment because it has a separate public Rust API decision.
+
+Plans/reviews stay on `planning`. Future code and source documentation use a
+named dedicated non-default task branch in the assigned source checkout, after
+fresh identity checks and execution approval. Current accepted task baseline is
+`codex/match-subject-values@8ed869f1ed24bf688ba91f71d8c539680136794e`
+at `.worktrees/contract-predicate-lowering`; release/0.6.x remains
+`5408abd432b8789ae474a3895436f68818c4e482` at `.worktrees/0.6.x`.
+NE-C10/11 are independently accepted on task8ed, not integrated into release5408.
+Release intent remains unassigned; no propagation or merge follows from this plan.
+
+## Normative design constraints for the proposed work
+
+The [design](artifacts/compiler-integrity-design.md#semantic-role-contract)
+defines the proposed shared role and failure contracts. They apply to every
+future implementation unit, including S01 before broader consolidation in S03.
+They preserve Statement/Value/Tail, lexical resolution and special-form identity,
+syntax/data/pattern/header boundaries, function-local contexts and observable
+evaluation/completion. They do not require a recursive typed AST by assumption.
+The incremental recommendation and A6 alternative remain explicit design choices.
+
+Structured compiler errors must be distinguished from legitimate runtime type,
+contract and match errors and from user strings. The checked-emission public Rust
+API policy must be decided before S02; the final audit cannot retroactively
+authorize a breaking change. Required affected guides/reference updates and
+compatibility decisions accompany each coding slice, not just the final audit.
+
+## Planned usable increments
+
+These are roadmap units, not opened slices or executable assignments. Create a
+slice's full open set only when it becomes the approved next implementation unit.
+
+| Unit | Deliverable and acceptance | Dependencies and limits |
+| --- | --- | --- |
+| S01 — Variadic numeric-for correctness | Repair NE-C12's first-three-header Value/all-remaining-body Statement rule at its actual emitter boundary. Preserve initializer/test/update Value rejection, body sequencing and scoped declarations; meaningful fail-before/pass-after native/kernel/CLI runtime regressions and existing controls, relevant parallel-JS parity, complete generated review and full normal source gates. Update affected language guidance if the implementation changes its documented contract. | First useful code increment after design/execution approval, on task8ed or explicitly reconciled successor. No while/other-loop expansion or fatal-API migration. S01 does not by itself prove compiler-wide failure containment. |
+| S02 — Checked lowering and artifact failure delivery | Adopt structured fatal lowering diagnostics at the emitter and all production routes. Prove recognized invalid nested forms cannot silently pass through, errors reach library/CLI, and compiler failure produces no new/overwritten JS/DTS for the failing unit. Preserve successful outputs, ordinary foreign calls, runtime assertions/match errors and literal user text. Route map, API migration, dist/frontend disposition, tests, guides and full gates are one coherent deliverable. | S01 plus explicit public Rust API compatibility choice; source/caller inventory refreshed before code. Per-file compiler-failure guarantee is separate from I/O atomicity or whole-package transactions. C06's warning analysis belongs S05. |
+| S03 — Shared semantic child/body roles | Consolidate duplicated validation/lowering role rules into an authoritative contract and adapters; cover Statement/Value/Tail, resolved/bound heads, evaluated versus function-local/deferred children, patterns and syntax containers. Preserve accepted C01/03/07–11 regressions and C12; meaningful role/counter tests, native/parallel-JS agreement where equivalent, full gates and affected documentation. | S02 and approved incremental-versus-A6 decision. No automatic whole-AST rewrite. Public AST changes, if proposed, require their own upfront compatibility decision. |
+| S04 — Completion and value-flow integrity | Source-grounded disposition of C02 and C05 on the current candidate, followed by bounded fixes/tests for supported contracts or a concrete language-policy decision where validity is unsettled. Preserve scopes, sequencing, explicit/implicit return, async final values and exceptions; do not mask valid `if` with `?`. Deliver real CLI/generated/runtime proof and full gates for actual changes. | S03; historical C02 validity and current C05 applicability are not pre-decided. Split a genuinely oversized coding scope at readiness, retaining this acceptance obligation. Not a claim all findings share a cause. |
+| S05 — Warning and diagnostic fidelity | Resolve C06's observed unused-binding warning mismatch using meaningful receiver/use versus truly-unused controls, actual diagnostics/exit/stdout/stderr behavior and full gates. Reconcile the source-only nested-classifier concern against S02 rather than double-counting it as reproduced runtime evidence. | S02/S03 diagnostic contracts; S04 accepted candidate for final composition. Do not suppress warnings to pass tests or confuse successful lint with warning accuracy. |
+| S06 — Composition and original walker delivery | Evaluate the composed source regressions and finish/deliver the existing Lykn tooling only under an explicitly approved continuation budget. Refresh actual compiler/generated-core provenance and run the unchanged bounded 12-family/13-row K gate, with separate fresh independent replay. Complete source/generated/predicate/guard gates first; exact offline parser identity, errors, coverage and all negative oracles remain binding. | Minimum technical K re-entry: accepted S01+S02, accepted task8ed stack, actual new compiler pin, compatible provenance refresh and tool readiness. S03–05 must compose for arc acceptance; later compiler changes invalidate unreviewed applicability. No full corpus or original F6 matrix execution. Eight spent tooling passes are not reset. |
+| S07 — Public API and documentation-impact audit | After implementation, inventory every actual public delta and explicit no-change result across Lykn language behavior, CLI flags/diagnostics/stdout/files, package/module exports, DTS and public Rust APIs. Classify compatibility, affected audiences and exact documentation locations, including guides, LLM reference and separate book. Independently review the impact register. | All preceding implementation accepted; exact baseline/final and release-to-candidate ranges required as described below. No code/API change is authorized by the audit. Earlier compatibility decisions remain prerequisites to code. |
+| S08 — Conditional documentation implementation | Placeholder: if S07 finds necessary updates, implement the enumerated source guides/reference/API/release documentation and coordinate the separate book/human acceptance in verified homes. Validate examples/links and independently review actual changes. Otherwise explicitly record not needed with S07 evidence. | S07 reviewed impact register. Activate only for actual findings and approved delivery homes; no premature prompt, open code docs or fictional completed verification. Required work is an arc-close gate, not optional polish. |
+
+S01 and S02 are deliberately separate: the numeric-for result is useful without
+settling a public API migration, while S02 must not compress API design, failure
+representation and every caller into an incidental loop patch. S03–05 remain
+individually useful semantic/diagnostic deliveries rather than one large rewrite.
+
+## Evidence, scope and acceptance
+
+Each future coding slice freezes real source/tests/predictions before dependent
+execution, retains actual failed bodies and raw command/stdout/stderr/exit/tool
+identities, reviews complete relevant generated output, and independently proves
+focused behavior plus normal unfiltered `make check` and committed citation gates.
+Actual binaries are re-pinned after Cargo/Make, before runtime. No old tool hash
+is inherited by source ancestry. DenoCheck alone does not prove arbitrary JS
+syntax; meaningful real module load/runtime proof remains necessary.
+
+The original K13 data/oracles and accepted Slice11 evidence contract stay fixed.
+The final tools are unaccepted at Slice19 source9122473; K remains **0/13**.
+Source-only provenance refresh is not permission for silent semantic tool fixes.
+Any necessary tool semantic rework requires a named scope/budget decision:
+**eight tooling passes are spent**, including explicit overrides. An arc/new
+compiler prerequisite does not reset that record. Future source-slice budgets
+use the normal framework refinement limit unless the Operator specifies another;
+no budget questionnaire or new trial population is required for that default.
+No automatic unlimited correction or eighth-to-zero
+conversion is granted here. Historical process breaches remain uncured.
+
+S07 compares (a) accepted task8ed to the final accepted arc candidate and
+(b) release5408 to that candidate/actual separately authorized integration tip,
+identifying the already accepted but unmerged C10/11 stack separately from new
+arc changes. Candidate, integrated and published states must not be conflated.
+If integration has not been authorized, audit the candidate impact and retain
+that limit; no merge is required or authorized by an audit. Audit scope includes
+compatibility/deprecation/error changes, not merely signature additions.
+
+Arc closure requires all [ledger](ledger.md) capabilities independently evaluated,
+S07 completed, S08 implemented/accepted or explicitly not-needed, affected guide/
+reference/book obligations and designated human acceptance accounted for. A book
+or human gate still pending keeps that relevant close criterion open; source
+tests cannot close it. Independent plan review accepts only roadmap adequacy.
+
+## Adjacent owners and exclusions
+
+The design assigns concrete planned adjacent units for C04 cache identity,
+T01 async declarations and T02 ADT guard policy. They are not K prerequisites
+unless future evidence demonstrates a direct dependency. D01/D02 are explicit
+pre-existing documentation candidates for S07/S08, distinct from documentation
+caused by new APIs. A6's architecture decision is owned here, not silently
+accepted as an implementation commitment.
+
+Original Slice01 F-1–F-12, Project03 P-1 and Project07's final synthesis,
+licensing/bootstrap, authoring/ADT, guides, separate book and human gates remain
+open. Future `lang/lib/`, independent opt-in `@lykn/*`, zero unused-library
+payload, safe effects and preserved public package APIs are consumer constraints,
+not library implementation or publishing scope. No source propagation, push,
+publication, hosted CI, new dependencies, corpus scan or next unit is authorized.
+
+## Decisions for Operator design review
+
+1. Approve or revise this eight-unit roadmap and the incremental semantic-role
+   recommendation over immediate A6 migration.
+2. Choose the public Rust compatibility policy before S02 (breaking Result
+   migration versus an explicit additive/deprecation transition); do not block
+   the separately useful S01 on that later decision.
+3. At execution approval, choose source/release intent; record the normal
+   framework source-refinement limit unless the Operator sets another. Any
+   necessary future semantic tool rework needs a named allowance because eight
+   passes are spent; the frozen 13-row trial count is already fixed. No such
+   implementation approval is inferred from this planning request.
+
+## Version history
+
+- 2026-11-07 v0.1: Proposed planning-only arc after NE-C12; preserved all
+  standalone units and accepted/task-versus-release boundaries. Split Cfor and
+  fatal API delivery, assigned every finding, and added the Operator-requested
+  final API audit and conditional documentation implementation gates.

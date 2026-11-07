@@ -2,6 +2,11 @@
 
 Current home: branch planning, project03-language-evolution. Start with [project-plan.md](project-plan.md). Release intent is YAML metadata; the following retained notes describe the original versioned layout.
 
+2026-11-07: proposed [Arc01 compiler semantic integrity](arc01-compiler-semantic-integrity/arc-plan.md)
+is a planning-only roadmap after standalone Slice01–19, with final API-impact
+audit and conditional documentation delivery. No implementation or audit
+execution is opened. The dated original layout below is retained history.
+
 # docs/design-v0.7.0 — planning tree
 
 Planning artifacts for post-0.6.0 work, in the canonical project/arc/slice

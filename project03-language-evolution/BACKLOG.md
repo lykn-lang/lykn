@@ -16,6 +16,34 @@
 
 ## How this list stays honest
 
+### Current engineering routing — 2026-11-07 (proposed; planning only)
+
+The Operator requested a proper engineering roadmap after NE-C12, rather than
+another automatic isolated repair. Proposed
+[Arc01 compiler semantic integrity](arc01-compiler-semantic-integrity/arc-plan.md)
+assigns C12, structured compiler failures, shared roles, current C02/C05
+disposition, C06 warning fidelity, composition and the original bounded K gate.
+Its [complete finding map](arc01-compiler-semantic-integrity/artifacts/compiler-integrity-design.md#complete-finding-map)
+preserves accepted C01/03/07–11 as regressions and distinguishes all evidence
+strengths. C10/11 are accepted on task8ed only; release5408 has not integrated
+them. All old records below remain history, not silently revised status.
+
+| Candidate planned unit | Technical owner / deliverable | Re-entry and acceptance |
+| --- | --- | --- |
+| Embedded compiler cache identity and refresh | Compiler delivery/cache owner, existing A5; source/version/content identity and predictable warm/stale/fresh refresh/recovery | Approved cache policy and separately opened code unit; meaningful warm/fresh tests and canonical/mirror/materialized-byte parity. C04 remains source-only until tested. |
+| Async declaration contract and distribution | Type-distribution owner; explicit async public declaration promise and consumer behavior | Decide contract before JSR type-availability claims; implement if approved, prove actual declaration/import consumer and public-sidecar compatibility. T01 absence is a limitation, not an invented universal promise failure. |
+| ADT membership and guard contract | Language/ADT design owner, Operator policy; structural/tag versus nominal membership and docs/book/human acceptance | Approved language policy and separately opened unit; native/JS positive/negative guard tests and reference/book disposition. T02 remains source-only, not A6 AST representation or T01. |
+| A6 architecture decision | Arc01 S03; compare incremental authoritative roles/normalization with recursive typed AST | Decide actual invariant/caller/migration requirements before architecture code; historic benefit assertions are hypotheses. No full rewrite or prototype execution approved now. |
+| Public API impact and documentation | Arc01 S07 audit / S08 conditional implementation, explicitly Operator-requested final units | Exact base/final and release-to-candidate impact register, all audiences/docs, explicit no-change findings; implement required updates or record evidence-based not needed. Includes pre-existing D01/D02 separately from new API changes. |
+
+These are named future ownership/outcome units, not fabricated numbered slices.
+CDC opens an approved unit in its actual delivery home when it becomes next;
+Operator retains language, public compatibility and release decisions. Adjacent
+cache/types/ADT work does not block K absent an actual dependency. No source
+change, experiment, integration or K execution follows from this planning-only
+routing. Eight spent tooling passes are not reset; all F1–F12/Project07 gates
+remain open. Historical register sections and original acceptance are retained.
+
 - **Source** — where the item came from, so it can be traced back.
 - **Re-entry** — the condition that makes the item actionable (what has to be
   true, or what touches it next).

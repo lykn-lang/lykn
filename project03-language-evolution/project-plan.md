@@ -15,6 +15,36 @@ and internationalization. It is a research and candidate roadmap, not a promise
 that every backlog item ships in 0.7.0. Release splits remain undecided where
 BACKLOG.md says so.
 
+## Current proposed engineering roadmap (2026-11-07)
+
+The Operator requested planning/design that gives the accumulated compiler,
+tooling and documentation findings a proper engineering home. Proposed
+[Arc01 — compiler semantic integrity](arc01-compiler-semantic-integrity/arc-plan.md)
+has eight usable increments: numeric-for correctness; checked fatal emission/
+API-route adoption; shared semantic roles; completion/value-flow disposition;
+warning fidelity; composed source/original K13 tooling; public-API/doc-impact
+audit; conditional documentation implementation. The last two implement the
+Operator's explicit request for a post-work API audit and a documentation
+placeholder. Upfront compatibility decisions still precede affected code.
+
+This authorization is **planning/design only**, including fresh independent
+Sol6.1 High plan review. No implementation prompt, source repair, experiment,
+dependency acquisition, integration or K execution follows. Release intent is
+unassigned. Source8ed's NE-C10/11 acceptance is task-only; release5408 is distinct.
+All arc capabilities, P-1, original F1–F12 and Project07 gates remain open;
+standalone Slice01–19 and their historical evidence/budgets are unchanged.
+The eight spent tooling passes are not reset by a new arc or source prerequisite.
+
+[The design and finding map](arc01-compiler-semantic-integrity/artifacts/compiler-integrity-design.md)
+also assigns concrete planned adjacent units: **Embedded compiler cache identity
+and refresh** (C04/A5), **Async declaration contract and distribution** (T01),
+and **ADT membership and guard contract** (T02). These have independent technical
+acceptance and remain outside K's minimum critical path absent actual dependency.
+D01/D02 are explicit pre-existing inputs to the final audit/conditional docs;
+A6 is an architecture alternative with a named decision owner, not an approved
+recursive-AST rewrite. Numbered code slices open only after design/execution
+approval and source-ready sizing.
+
 ## Current direction and bounded Autonomous Mode (2026-11-05)
 
 The operator accepted the proposed core-library approach and directed the next
@@ -460,6 +490,12 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.32: Proposed Arc01 after Operator planning/design direction;
+  split useful numeric-for and checked-emission/API deliveries, assigned all
+  findings/adjacent units, preserved task/release and spent-budget boundaries,
+  and added final public-API audit plus conditional documentation implementation.
+  Plan review only; no software acceptance or implementation dispatch.
 
 - 2026-11-07 v1.31: Opened authorized Slice19 combined source prerequisite and
   original tooling/gate continuation, preserving both budgets and all prior

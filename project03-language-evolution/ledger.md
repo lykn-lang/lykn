@@ -2,6 +2,15 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 Operator requested engineering planning/design after NE-C12, plus
+post-implementation public-API/documentation impact audit and conditional docs
+implementation. Proposed [Arc01](arc01-compiler-semantic-integrity/arc-plan.md)
+and its all-open [capability ledger](arc01-compiler-semantic-integrity/ledger.md)
+provide that roadmap. Independent planning review is separate from capability
+acceptance. No source/experiment/K/implementation dispatch is authorized by this
+opening; eight spent tooling passes and all original child dispositions remain.
+P-1, original F1–F12 and Project07 outcomes remain open.
+
 2026-11-07 [Slice19 StageA](slice19-match-subject-and-walker/cdc-verification.md)
 independently accepts task8ed BOTHsourcefixes at MS-02/MS-03; fresh normal gates/
 same740 runtime/readable outputs verified. Other MSrows remainopen, all13K unrun;
