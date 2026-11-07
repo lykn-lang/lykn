@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+FINAL: bounded NE-C12 stop independently reproduced, source8ed accepted/task-only,
+tools9122473 UNACCEPTED. Native4-tool gates pass, printedJS43976… has3 compiler
+sentinels; no runtime/DenoCheck/guards/K. Fourdone/twodeferred below; MS05 done
+ONLY its genuine-gap-stop alternative, no K pass (0/13). Eight spent/no ninth/
+newunit; old failed/capture/process limitations remain. Earlier notes historical.
+
 Current: explicit Operator amended8 approval, iteration07. Same SolCC/separate
 SolCDC; seven spent/current8/unexecuted06 replaced/no reset/ninth. Two exact fixes
 only, full required gates before frozen13; no control/oracle change. Source8ed
@@ -71,9 +77,9 @@ same finite frontend proof, no original fixture/oracle change.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| MS-01 | Authority/provenance/budgets and committed pre-run inputs actual | Branch4304/tool/test/body/hash/argv/status captures, producer before+afteruse | serious | Operator + history | open | | Old limits not cured |
+| MS-01 | Authority/provenance/budgets and committed pre-run inputs actual | Branch4304/tool/test/body/hash/argv/status captures, producer before+afteruse | serious | Operator + history | deferred | Current identities/approvals/source freezes reconciled in final review; historical violations/limits preserved | Uncaptured unconsumed intermediate/incomplete prior Make excerpt/messages not cured; no blanket process compliance |
 | MS-02 | NE-C11 and remaining NE-C10 concern repaired narrowly | Meaningful unit red/green, exact740 JS/JSON/DTS and negative preservation | correctness-grade | Actualsource/runtime | done | Reconciled/reproduced cdc-verification StageA, fullsamepositive/focused raw | Task8ed accepted only, release unchanged |
 | MS-03 | BOTH repairs independently accepted at full required source gates | Exactdiff/readablegenerated/focused/fullnormalMake/citations/newactualbinary | correctness-grade | Repository + independence | done | Fresh independent fullMake0/focused1+5/citations63/601; actualproducer aa31947… | Source acceptance precedes tooling re-entry; old failed excerpt not cured |
-| MS-04 | Completed original Lykn tools satisfy contract/prerequisites | Fullsource/generated/predicate review/native/realzeroargguards | serious | Slice11 + deferred tooling | open | | Only remaining two tooling refinements |
-| MS-05 | Unchanged13 capability rows independently established or genuinegap stop | Fullfixedoracles/status/errors/raw/replay; separate K10a/b and K12unit | correctness-grade | Operator endpoint | open | |0/13 |
-| MS-06 | Independent honest close/history/retro/parent/openowners retained | Sixrowwalk/evidence/scopedresult/unruns/nextowner | serious | Autonomous endpoint | open | | No next unit |
+| MS-04 | Completed original Lykn tools satisfy contract/prerequisites | Fullsource/generated/predicate review/native/realzeroargguards | serious | Slice11 + deferred tooling | deferred | Final912 native gates passed; generated failure reproduced in cdc/nec12 | Full generated/predicate acceptance failed/incomplete, DenoCheck/guards unrun; tools unaccepted |
+| MS-05 | Unchanged13 capability rows independently established or genuinegap stop | Fullfixedoracles/status/errors/raw/replay; separate K10a/b and K12unit | correctness-grade | Operator endpoint | done | Independently reproduced genuine NE-C12 printed-output gap, SAME fullsource/CLI/output cmp0 | Done ONLY stop branch, K0/13/allunrun; not parser/runtime success |
+| MS-06 | Independent honest close/history/retro/parent/openowners retained | Sixrowwalk/evidence/scopedresult/unruns/nextowner | serious | Autonomous endpoint | done | Final cdc-verification/closing-report/retro, BACKLOG NE-C12 and parent update | Eight spent retained, no next unit/integration/automatic repair |

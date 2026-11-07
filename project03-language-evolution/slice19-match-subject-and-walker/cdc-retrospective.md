@@ -1,4 +1,37 @@
-# Interim retrospective — pending Operator after correction7
+# Slice19 retrospective — final NE-C12 stop and retained interim history
+
+## Final closing retrospective — 2026-11-07
+
+Closed at independently reproduced compiler boundary NE-C12, not another budget
+request or capability success. Amended8 SolCC completed exact two changes and
+native mechanical formatting, froze bodies before gates, used actual supplied
+commit messages, preserved native4-tool passes/core068af and stopped on generated
+COMPILE_ERROR during full read. Separate SolCDC reproduced same fullsource/output
+without runtime. All13 K unrun; prior source8ed acceptance retained. Eight spent,
+no ninth/next unit; final record owns the new prerequisite and old open duties.
+
+Generated review added decisive evidence beyond check/compile0: validator/printer
+accept variadic numeric-for Statement bodies, while emitter's fixed profile
+promotes later slots to Value. This explains printed error instructions in
+otherwise accepted source. No control/helper rewrite or added else masked it.
+Only numeric-for is established; no runtime/other-loop/tested-fix claim.
+
+The final Sol actor's source/raw/commit discipline and early generated stop are
+observed improvements in THIS assignment. Workloads/baselines differ from prior
+Luna contexts and many prior repairs were inherited, so no controlled model
+comparison or general performance claim follows. Model change was explicitly
+Operator-selected. Earlier CDC/source-readiness mistakes and original capture/
+message/path limits remain; no prospective success erases them. Strict phase
+gates exposed real compiler behavior after ordinary authoring mistakes converged.
+
+Recommend future separately authorized narrow numeric-for parity regression/
+normal fullsource gates/independent acceptance, then provenance-only refresh of
+actual compiler/core artifacts and unchanged13. Do not automatically reset eight
+tooling passes or expand other loop forms/families. No framework or guide policy
+change is made here; Source-only NE-D02/NE-T02 and Project07 authoring/ADT/guide/
+book/licence/human/consolidated-report obligations remain owned and open.
+
+## Retained interim observations (historical)
 
 Update: Operator selected fresh Sol6.1 High implementer and separate SolHigh CDC
 for8, but that assignment stopped during intake on an additional static K11

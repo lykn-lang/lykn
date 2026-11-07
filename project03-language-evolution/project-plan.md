@@ -140,6 +140,14 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Slice19 CLOSED bounded NE-C12 stop: finaltools912 native gates passed,
+but numeric-for later-body statement-if prints COMPILE_ERROR. Independent same
+fullsource/CLI compile0 yields identicalJS43976… with3 sentinels; no execution.
+Four ledgerdone/twodeferred, MS05 solely stop branch, toolsunaccepted/K0/13.
+Source8ed NE-C10/11 acceptance unchanged/task-only, release5408 untouched; eight
+tooling passes spent/no ninth/reset. BACKLOG NE-C12 owns separate source repair/
+provenance refresh/unchanged13 re-entry; no next unit opened or F1–F12 closed.
+
 2026-11-07 Operator selected SolHigh CC/separateSolHigh CDC and narrow Slice19
 correction8, but intake stopped BEFORE any edit/check on static K11 expectedHash
 adapter mismatch. Seven spent,8UNEXECUTED; amended8scope (visitorclose plus existing
@@ -422,6 +430,7 @@ new slice, dependency/backend change or full audit/library acceptance follows.
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
 - [slice17-estree-walker-capability](slice17-estree-walker-capability/slice-plan.md): closed first-gap stop NE-C10; partial tools unaccepted, one rowdone/fivedeferred,0/13. Separate disposition before unchanged re-entry.
 - [slice18-match-validation-and-walker](slice18-match-validation-and-walker/slice-plan.md): closed first-new-gap NE-C11; candidate validator unaccepted, one MVrowdone/fivedeferred, original13 K rows unrun.
+- [slice19-match-subject-and-walker](slice19-match-subject-and-walker/slice-plan.md): source NE-C10/11 independently accepted task8ed; closed NE-C12 printed-output stop, tooling unaccepted/K0/13, fourdone/twodeferred; eight passes retained.
 - [slice16-compiler-stack-release-integration](slice16-compiler-stack-release-integration/slice-plan.md): closed5done; accepted NE-C07/08/09 stack locally integrated0.6 at5408, full fresh independent release gates; no other propagation/next unit.
 - [slice15-async-expression-values](slice15-async-expression-values/slice-plan.md): closed7done; NE-C09 independently accepted task-only/full normal gates and unchanged parser four independently4/4; failed conditions/overrides retained, no integration/full audit/next unit.
 - [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): closed6done/2deferred; both repairs independently accepted task-only/full gates, new NE-C09 stops parser0/4; history/method breach/NE-T01 owned, no integration or next unit.

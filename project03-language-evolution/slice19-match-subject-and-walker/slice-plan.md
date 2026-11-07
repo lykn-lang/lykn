@@ -1,5 +1,15 @@
 # Slice19 — match subject repair and combined validation
 
+FINAL2026-11-07: CLOSED bounded genuine-gap stop NE-C12, not capability success.
+Finaltools9122473/evidenceb7f2f94 native check/fmt/lint/strictcompile4/4 pass but
+printed walker has three COMPILE_ERROR instructions101/630/646. CDC same fullsource
+check0/compile0 produces identicalJS43976…, no runtime. Numeric-for variadic body
+context mismatch owned BACKLOG NE-C12; no sourcefix/newunit. Source8ed NE-C10/11
+acceptance unchanged/task-only, release5408 untouched. Four ledgerdone/twodeferred,
+MS05 done solely for genuine-gap-stop branch; K0/13/allunrun, toolsunaccepted.
+Eight corrections spent, no reset/ninth; old process/capture limits retained.
+Closing report/review/finalretro govern; all earlier active/pending headers historical.
+
 2026-11-07 Operator explicitly authorized amended UNEXECUTED8 for BOTH walker
 delimiter and K11 lookup, same Sol6.1High CC/separateSol6.1High CDC, Autonomous
 Mode/stop any further substantive failure. Iteration07 supersedes unexecuted06;

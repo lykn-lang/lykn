@@ -1,0 +1,12 @@
+ls: /deno.json: No such file or directory
+ls: /deno.jsonc: No such file or directory
+ls: /private/deno.json: No such file or directory
+ls: /private/deno.jsonc: No such file or directory
+ls: /private/project.json: No such file or directory
+ls: /private/tmp/deno.json: No such file or directory
+ls: /private/tmp/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-s19-cdc-c8-walker-Ie8TZn/deno.json: No such file or directory
+ls: /private/tmp/lykn-s19-cdc-c8-walker-Ie8TZn/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-s19-cdc-c8-walker-Ie8TZn/project.json: No such file or directory
+ls: /private/tmp/project.json: No such file or directory
+ls: /project.json: No such file or directory

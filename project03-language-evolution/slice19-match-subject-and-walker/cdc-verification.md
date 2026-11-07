@@ -1,4 +1,36 @@
-# Slice19 independent review — Stage A accepted, tooling open
+# Slice19 independent review — source accepted, tooling stopped at NE-C12
+
+## FINAL — bounded genuine-gap stop NE-C12
+
+2026-11-07: amended8 executed, final source9122473, CC complete raw b7f2f94.
+Native checks/fmt/lint/defaultstrictcompile4/4 pass; mechanical native formatting
+preserved whole old bodies/new Git pin, sourcecore6ca/control0f20 immutable. Full
+generated review FAILED at walker101: a supported no-else statement-if after
+bind in numeric-for becomes COMPILE_ERROR throw; same sentinels630/646 preserved.
+Actual source/printed module evidence, not an executed exception. No DenoCheck,
+guard or K followed. Initial108 alert was estimated and corrected to101, no
+manufactured raw location. Other generated bodies/predicates remain unaccepted.
+
+CDC independently extracted SAME final full walker033762… into fresh configfree
+private/tmp, pinned acceptedCLIaa319… before/after. Nativecheck0/defaultstrictcompile0,
+actualJS43976… byte-identical to CC (cmp0), same THREE instructions101/630/646;
+actualDTSb7d37… preserved. Source/CLI stable; raw warnings retained. No miniature
+variant, DenoCheck, runtime or inferred Kresult. Full independent actual output/
+commands/config checks in artifacts/evidence/cdc/nec12. Guide00 statement-if/Cfor,
+classifier463 variadicStatement body and printer734 args[3..] ground supported
+source; emitter fixed[V,V,V,S] with laterValue fallback is source-based mechanism,
+not a tested repair or otherloop conclusion. Actual new owner BACKLOG NE-C12.
+
+Current six-row disposition4done/2deferred: MS01 deferred (old capture/process
+limits not cured), MS02/MS03 done (prior independent source8ed acceptance), MS04
+deferred (tools failed/incomplete), MS05 done ONLY genuine-gap-stop alternative,
+MS06 done (honest independent close/owners/history/retrospective). No Krow passes:
+K0/13/all13unrun, K12synthetic notfile/parser; original F1–F12 stillopen. Source8ed
+accepted/task-only; release5408 unchanged. Eight tooling passes spent including
+explicit6/7/amended8; unexecuted06 replacement not another pass. No ninth, new
+compiler repair/unit/merge or automatic continuation. Closing report and finalized
+retrospective carry exact limits and separately owned re-entry; earlier verdicts
+below remain historical, never retroactively repaired.
 
 ## Current preflight stop — approved8 UNEXECUTED, amended scope pending
 

@@ -647,6 +647,38 @@ still-unaccepted NE-C10 (including fn-header source concern), remaining tooling
 completion and unchanged13 controls only under authorized continuation. No current
 emitter fix/source propagation/next unit opened; release5408 stays unchanged.
 
+#### NE-C12 — variadic numeric-for body loses Statement context after first slot
+
+**Independently reproduced printed-output failure,2026-11-07.** Slice19 final
+walker9122473, source033762a58aa1a9a3104c097641666fc2dc794f08115ce913de2009f78be688c7,
+on accepted task8ed nativeCLIaa31947… passes nativecheck/defaultstrictcompile0.
+Fresh CDC same full source/configfree replay produces byte-identical JS
+43976d8d3aef17210b6ed9dea609ef66b4bc3dfd4d0bb50bf02ee9e5661b3583, with THREE
+COMPILE_ERROR throws at101/630/646 inside numeric for bodies. First source
+flag-unlisted162–178 has bind item followed by a no-else statement if; generated
+flagUnlisted95–105 replaces the if with unconditional TypeError placeholder.
+All complete actual source/JS/DTS/stdout/stderr/exits/hashes retained in Slice19
+artifacts/evidence/cdc/nec12 and CC correction08. No runtime/guard/K occurred;
+the three instructions were not observed executing. Tools remain unaccepted.
+
+**Source basis at8ed (no tested fix).** Guide00 statement-if849–854/Cfor905,
+classifier/forms.rs463–475 first3Value/allremainingStatement and printer
+codegen/emit.rs734–747 body args[3..] support variadic statement bodies. Emitter
+forms.rs3271 instead fixed Positional([V,V,V,S]); context_for3234–3246 defaults
+beyond that array to Value. This explains the actual source/output boundary;
+not an authored missing else, no proof about while/other loops or shared cause
+with NE-C02/NE-C05, and no required typed-AST architecture rewrite.
+
+**Owner/re-entry:** Project03 compiler CDC owns separate authorized narrow
+numeric-for header/body-context parity with exact valid-source regression,
+preserved invalid Value/header diagnostics, full normal source gates and independent
+acceptance. Then provenance-only refresh to ACTUAL accepted compiler/core artifact
+pins and same frozen helper/control13 re-entry. Do not add else/ternary/helper
+rewrite, patch generated JS, weaken or change controls to evade the gap. Eight
+tooling corrections remain spent, not reset by prerequisite. No current source
+fix/newunit/integration/F6/fullcorpus work is opened. Source8ed NE-C10/11 acceptance
+and release5408 unchanged; all Project07/future package/type/human duties persist.
+
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 
 **Source-only observation,2026-11-07.** At source5408,
