@@ -1,0 +1,47 @@
+Type-check the dependencies
+
+Usage: deno check [OPTIONS] <FILES>...
+
+Options:
+      --all               Type-check all code, including remote modules and npm packages
+      --doc               Type-check code blocks in JSDoc as well as actual code
+      --doc-only          Type-check code blocks in JSDoc and Markdown only
+      --desktop           Type-check using the type definitions for `deno desktop`
+      --no-code-cache     Disable V8 code cache feature
+      --watch[=VALUE...]  Watch for file changes and restart process automatically.
+                            Only local files from entry point module graph are watched.
+      --watch-exclude[=VALUE...]  Exclude provided files/patterns from watch mode
+      --no-clear-screen   Do not clear terminal screen when under watch mode
+      --no-check[=<VALUE>]  Skip type-checking. If the value of "remote" is supplied, diagnostic errors from remote modules will be ignored
+      --import-map <VALUE>  Load import map file from local file or remote URL
+                            Docs: https://docs.deno.com/runtime/manual/basics/import_maps
+      --no-remote         Do not resolve remote modules
+      --no-npm            Do not resolve npm modules
+      --node-modules-dir[=<VALUE>]  Selects the node_modules directory mode for npm packages (not a path). One of: auto (create a local node_modules directory and install npm packages into it), manual (use the existing local node_modules directory, do not modify it), none (do not use a local node_modules directory; resolve npm packages from the global cache). Defaults to auto when the flag is passed without a value.
+      --vendor[=<VALUE>]  Toggles local vendor folder usage for remote modules and a node_modules folder for npm packages
+      --node-modules-linker <VALUE>  Sets the linker mode for npm packages (isolated or hoisted)
+  -c, --config <VALUE>    Configure different aspects of deno including TypeScript, linting, and code formatting.
+                            Typically the configuration file will be called `deno.json` or `deno.jsonc` and
+                            automatically detected; in that case this flag is not necessary.
+                            Docs: https://docs.deno.com/go/config
+      --no-config         Disable automatic loading of the configuration file
+  -r, --reload[=VALUE...]  Reload source code cache (recompile TypeScript). With no value, reloads everything. Pass a comma-separated list of specifiers to reload only those modules; npm: reloads all npm modules; npm:chalk reloads a single npm module; jsr:@std/http/file-server,jsr:@std/assert/assert-equals reloads specific modules.
+      --lock [<VALUE>]    Check the specified lock file. (If value is not provided, defaults to "./deno.lock")
+      --no-lock           Disable auto discovery of the lock file
+      --frozen-lockfile[=<VALUE>]  Error out if lockfile is out of date
+      --cert <VALUE>      Load certificate authority from PEM encoded file
+      --unsafely-ignore-certificate-errors[=VALUE...]  DANGER: Disables verification of TLS certificates
+      --min-dep-age <VALUE>  (Unstable) The age in minutes, ISO-8601 duration or RFC3339 absolute timestamp (e.g. '120' for two hours, 'P2D' for two days, '2025-09-16' for cutoff date, '2025-09-16T12:00:00+00:00' for cutoff time, '0' to disable)
+      --cached-only       Require that remote dependencies are already cached
+      --location <VALUE>  Value of globalThis.location used by some web APIs
+      --v8-flags[=VALUE...]  To see a list of all available flags use --v8-flags=--help
+                            Flags can also be set via the DENO_V8_FLAGS environment variable.
+                            Any flags set with this flag are appended after the DENO_V8_FLAGS environment variable
+      --seed <VALUE>      Set the random number generator seed
+      --preload <VALUE>   A list of files that will be executed before the main module
+      --require <VALUE>   A list of CommonJS modules that will be executed before the main module
+      --conditions <VALUE>  Use this argument to specify custom conditions for npm package exports. You can also use DENO_CONDITIONS env var.
+                          
+                          Docs: https://docs.deno.com/go/conditional-exports
+  -I, --allow-import[=VALUE...]  Allow importing from remote hosts. Optionally specify allowed IP addresses and host names, with ports as necessary. Default value: deno.land:443,jsr.io:443,esm.sh:443,raw.esm.sh:443,cdn.jsdelivr.net:443,raw.githubusercontent.com:443,gist.githubusercontent.com:443
+      --deny-import[=VALUE...]  Deny importing from remote hosts. Optionally specify denied IP addresses and host names, with ports as necessary.

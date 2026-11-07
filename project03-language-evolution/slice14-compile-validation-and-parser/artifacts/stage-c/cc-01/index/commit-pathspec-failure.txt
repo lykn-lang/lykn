@@ -1,0 +1,4 @@
+Attempted: git commit --only -F /private/tmp/slice14-stage-c-index-commit.txt -- project03-language-evolution/slice14-compile-validation-and-parser/artifacts/stage-c/cc-01/index
+Exit: 1
+Output: error: pathspec 'project03-language-evolution/slice14-compile-validation-and-parser/artifacts/stage-c/cc-01/index' did not match any file(s) known to git
+Cause: commit --only does not include an untracked path; the exact artifact path must first be explicitly added.
