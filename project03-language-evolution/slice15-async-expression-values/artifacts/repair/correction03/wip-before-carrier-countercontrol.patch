@@ -1,0 +1,213 @@
+diff --git a/crates/lykn-lang/src/emitter/forms.rs b/crates/lykn-lang/src/emitter/forms.rs
+index fc1f46e..8ed321b 100644
+--- a/crates/lykn-lang/src/emitter/forms.rs
++++ b/crates/lykn-lang/src/emitter/forms.rs
+@@ -96,6 +96,9 @@ fn contains_current_await(expr: &SExpr) -> bool {
+             {
+                 return false;
+             }
++            if matches!(head, Some("class" | "class-expr")) {
++                return class_contains_current_await(head.unwrap(), &values[1..]);
++            }
+             if matches!(head, Some("await" | "for-await-of")) {
+                 return true;
+             }
+@@ -105,6 +108,83 @@ fn contains_current_await(expr: &SExpr) -> bool {
+     }
+ }
+ 
++fn class_contains_current_await(class_head: &str, args: &[SExpr]) -> bool {
++    let (bases, members) = if class_head == "class" {
++        (args.get(1), args.get(2..).unwrap_or_default())
++    } else {
++        (args.first(), args.get(1..).unwrap_or_default())
++    };
++    let superclass_await = bases.is_some_and(|bases| {
++        bases
++            .as_list()
++            .and_then(|values| values.first())
++            .is_some_and(contains_current_await)
++    });
++    superclass_await || members.iter().any(|member| class_member_current_await(member, false))
++}
++
++fn class_member_current_await(member: &SExpr, is_static: bool) -> bool {
++    let Some(values) = member.as_list() else {
++        return false;
++    };
++    let Some(head) = values.first().and_then(SExpr::as_atom) else {
++        return false;
++    };
++    match head {
++        "static" => values
++            .get(1)
++            .is_some_and(|member| class_member_current_await(member, true)),
++        "async" => values
++            .get(1)
++            .is_some_and(|member| class_member_current_await(member, is_static)),
++        "get" | "set" => values
++            .get(1)
++            .is_some_and(contains_current_await),
++        "field" => {
++            let computed_key_await = values.get(1).is_some_and(|key| {
++                !matches!(key, SExpr::Atom(_)) && contains_current_await(key)
++            });
++            let initializer_await = is_static && values.get(2).is_some_and(contains_current_await);
++            computed_key_await || initializer_await
++        }
++        "constructor" => false,
++        _ => {
++            // Ordinary method: the raw first atom is a property name, while
++            // parameters and body execute only when the method is invoked.
++            false
++        }
++    }
++}
++
++/// Turn returns that belong to a synthetic async value IIFE into carrier
++/// returns. Nested functions and classes own their own return scopes.
++fn box_current_scope_returns(expr: &SExpr) -> SExpr {
++    let SExpr::List { values, span } = expr else {
++        return expr.clone();
++    };
++    if values.is_empty() {
++        return expr.clone();
++    }
++    let head = values[0].as_form_head();
++    if matches!(head, Some("function" | "function*" | "=>" | "lambda" | "class" | "class-expr" | "async")) {
++        return expr.clone();
++    }
++    if head == Some("return") {
++        let value = values.get(1).cloned().unwrap_or_else(|| atom("undefined"));
++        return SExpr::List {
++            values: vec![
++                values[0].clone(),
++                list(vec![atom("array"), value]),
++            ],
++            span: *span,
++        };
++    }
++    SExpr::List {
++        values: values.iter().map(box_current_scope_returns).collect(),
++        span: *span,
++    }
++}
++
+ fn any_current_await(exprs: &[SExpr]) -> bool {
+     exprs.iter().any(contains_current_await)
+ }
+@@ -2888,7 +2968,7 @@ fn emit_if_expression(
+             cond,
+             then_branch,
+             else_branch,
+-            any_current_await(&args[1..3]),
++            any_current_await(&args[..3]),
+             ctx,
+         )
+     }
+@@ -2913,6 +2993,16 @@ fn emit_if_iife_with_await(
+ ) -> SExpr {
+     // DD-50.7 extension: conditional return-wrap per branch.
+     // Statement branches (throw, return, etc.) stay as-is; value branches get (return ...).
++    let then_branch = if is_async {
++        box_current_scope_returns(&then_branch)
++    } else {
++        then_branch
++    };
++    let else_branch = if is_async {
++        box_current_scope_returns(&else_branch)
++    } else {
++        else_branch
++    };
+     let then_inner = if is_statement_form(&then_branch) {
+         then_branch
+     } else if is_async {
+@@ -2932,7 +3022,15 @@ fn emit_if_iife_with_await(
+     let else_block = list(vec![atom("block"), else_inner]);
+     let if_stmt = list(vec![atom("if"), cond, then_block, else_block]);
+     // Wrap in (block ...) so arrow codegen emits { if (...) {...} else {...} }
+-    let arrow_body = list(vec![atom("block"), if_stmt]);
++    let arrow_body = if is_async {
++        list(vec![
++            atom("block"),
++            if_stmt,
++            list(vec![atom("return"), list(vec![atom("array"), atom("undefined")])]),
++        ])
++    } else {
++        list(vec![atom("block"), if_stmt])
++    };
+     let arrow = list(vec![atom("=>"), list(vec![]), arrow_body]);
+     let callable = if is_async {
+         list(vec![atom("async"), arrow])
+@@ -2975,6 +3073,10 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
+                 ctx,
+                 registry,
+             ));
++            let is_async = any_current_await(body);
++            if is_async {
++                emitted = emitted.iter().map(box_current_scope_returns).collect();
++            }
+             // Expression position: IIFE-wrap with last expression returned
+             let mut statements = Vec::new();
+             if emitted.len() == 1 {
+@@ -3005,6 +3107,12 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
+             let mut arrow_body = vec![atom("=>"), list(vec![])];
+             let mut block = vec![atom("block")];
+             block.extend(statements);
++            if is_async {
++                block.push(list(vec![
++                    atom("return"),
++                    list(vec![atom("array"), atom("undefined")]),
++                ]));
++            }
+             arrow_body.push(list(block));
+             // ((() => { ... })())
+             let arrow = list(arrow_body);
+diff --git a/packages/lang/compiler.js b/packages/lang/compiler.js
+index 8708131..fc94497 100644
+--- a/packages/lang/compiler.js
++++ b/packages/lang/compiler.js
+@@ -706,7 +706,7 @@ const macros = {
+       }
+       // Statement branch → IIFE
+       return buildIfIIFE(test, consequent, alternate,
+-        args.slice(1, 3).some(containsCurrentAwait));
++        [test, consequent, alternate].some(containsCurrentAwaitNode));
+     }
+     // Statement position: unchanged
+     return {
+@@ -733,18 +733,20 @@ const macros = {
+         : { type: 'EmptyStatement' };
+     }
+     if (position === 'expression') {
+-      const isAsync = args.some(containsCurrentAwait);
+       const stmts = args.slice(0, -1).map(e => toStatement(compileExpr(e)));
+       const value = compileExpr(args[args.length - 1], 'expression');
++      const isAsync = [...stmts, value].some(containsCurrentAwaitNode);
+       const isStatement = value.type.endsWith('Statement') || value.type.endsWith('Declaration');
++      const tail = isAsync ? boxCurrentScopeReturns(value) : value;
+       const last = isStatement
+-        ? value
++        ? tail
+         : {
+           type: 'ReturnStatement',
+           argument: isAsync
+-            ? { type: 'ArrayExpression', elements: [value] }
++            ? { type: 'ArrayExpression', elements: [tail] }
+             : value,
+         };
++      const transformedStmts = isAsync ? stmts.map(boxCurrentScopeReturns) : stmts;
+       const call = {
+         type: 'CallExpression',
+         callee: {
+@@ -752,7 +754,9 @@ const macros = {
+           params: [],
+           body: {
+             type: 'BlockStatement',
+-            body: [...stmts, last],
++            body: isAsync
++              ? [...transformedStmts, last, boxedUndefinedReturn()]
++              : [...stmts, { type: 'ReturnStatement', argument: value }],
+           },
+           expression: false,
+           async: isAsync,

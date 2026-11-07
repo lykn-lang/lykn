@@ -1,0 +1,9 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.23s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 1 test
+test emitter::forms::tests::test_async_value_carrier_covers_fallthrough_and_current_return ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1121 filtered out; finished in 0.00s
+

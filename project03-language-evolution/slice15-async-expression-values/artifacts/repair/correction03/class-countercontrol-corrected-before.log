@@ -1,0 +1,22 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.49s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 1 test
+test emitter::forms::tests::test_current_await_class_member_countercontrol ... FAILED
+
+failures:
+
+---- emitter::forms::tests::test_current_await_class_member_countercontrol stdout ----
+
+thread 'emitter::forms::tests::test_current_await_class_member_countercontrol' (94512552) panicked at crates/lykn-lang/src/emitter/forms.rs:4277:9:
+assertion failed: !contains_current_await(&class)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    emitter::forms::tests::test_current_await_class_member_countercontrol
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1120 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p lykn-lang --lib`

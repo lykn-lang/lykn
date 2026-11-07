@@ -1,0 +1,22 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.77s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 1 test
+test emitter::forms::tests::test_async_value_carrier_covers_fallthrough_and_current_return ... FAILED
+
+failures:
+
+---- emitter::forms::tests::test_async_value_carrier_covers_fallthrough_and_current_return stdout ----
+
+thread 'emitter::forms::tests::test_async_value_carrier_covers_fallthrough_and_current_return' (94521727) panicked at crates/lykn-lang/src/emitter/forms.rs:4333:9:
+assertion failed: returns_boxed(&fallthrough, &atom("undefined"))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    emitter::forms::tests::test_async_value_carrier_covers_fallthrough_and_current_return
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1121 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p lykn-lang --lib`
