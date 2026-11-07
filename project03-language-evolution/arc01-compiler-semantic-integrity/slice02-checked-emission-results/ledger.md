@@ -1,5 +1,11 @@
 # S02 checked emission ledger
 
+2026-11-07 resumed: explicit Operator “yes please!” authorizes original Result
+implementation from accepted c129 baseline via cc-prompt-iteration01. Same models/
+first further unexpected substantive-failure stop. CE rows still deferred pending
+new proof; known invalid/MH-P01 old behavior is authorized to repair, not a new
+stop. Shared correction01 spent/four remaining, no reset; old tooling8/K0 intact.
+
 2026-11-07 latest: maintenance S01 accepted as faithful c129 baseline, not product
 green. All CE rows stay deferred. Its MH-P01 package bound-dissoc ReferenceError
 is explicitly CE-03's existing resolver/fatal-fallback obligation; accepted review

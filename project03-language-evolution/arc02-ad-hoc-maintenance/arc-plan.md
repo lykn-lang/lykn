@@ -9,6 +9,13 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+## Explicit return decision — 2026-11-07
+
+After accepted finite S01 baseline, Operator answered “yes please!” to S02
+continuation. The bounded return dependency is satisfied; Arc01 owns Result code.
+No further maintenance intake or implementation is authorized by that answer.
+AM-03 remains open for any later arc composition/intake close, not a S02 blocker.
+
 ## First slice accepted; intake remains available — 2026-11-07
 
 S01 independently closes five MH rows atc129 as a trustworthy local harness and

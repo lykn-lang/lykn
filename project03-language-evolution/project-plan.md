@@ -9,6 +9,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current explicit S02 continuation (2026-11-07)
+
+Operator resumed Arc01 S02's approved Result-family implementation from accepted
+maintenancec129, same Luna6 High CC/Sol6.1 High CDC Autonomous Mode and first
+further unexpected substantive-failure stop. New preserved S02 iteration01 owns
+the settled API/context/route/tests/full gates. CI-02/CE pending actual proof,
+known MH-P01 authorized prerequisite; no automatic S03/integration or new budget.
+
 ## Accepted finite maintenance baseline; product continuation held (2026-11-07)
 
 [Arc02 S01 verification](arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/cdc-verification.md)
@@ -583,6 +591,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.39: Operator explicitly resumed S02 checked-emission delivery
+  from accepted maintenancec129; preserved baseline/known MH-P01/iteration budget
+  and first further substantive-failure stop, no automatic later scope.
 
 - 2026-11-07 v1.38: Independently accepted finite Arc02 S01 c129 harness/baseline
   with expected product reds and actual package MH-P01 failure; assigned existing

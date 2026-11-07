@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 Result delivery resumed explicitly — 2026-11-07
+
+Operator approved continuation after accepted maintenancec129 baseline, same
+Luna6 High CC/separate Sol6.1 High CDC Autonomous Mode, first further unexpected
+substantive-failure stop. S02 preserved iteration01 now implements settled checked
+API/production-route design, including known MH-P01, with full normal/independent
+gates. CI-02 remains open; no S03/integration/tooling advance or budget reset.
+
 ## Maintenance baseline accepted, S02 product work still gated — 2026-11-07
 
 Arc02 S01 independently accepts corrected c129 harness/baseline with test101 and
@@ -245,6 +253,9 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.7: Explicit Operator return authorizes settled S02 Result code
+  from c129, fresh Luna6 High CC/separate Sol6.1 High CDC and full source gates.
 
 - 2026-11-07 v0.6: S02's initial test-only232 stopped on local harness defects;
   Operator paused source work and requested planning-only Arc02 maintenance.

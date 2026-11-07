@@ -1,5 +1,9 @@
 # Arc02 ad hoc maintenance ledger
 
+2026-11-07 return update: Operator explicitly approved S02 continuation after
+accepted S01. The return decision is satisfied; AM-03 remains open only for later
+arc composition/intake disposition, not a blocker or further maintenance mandate.
+
 2026-11-07 final first slice: five MH done, AM-01/02 done for faithful baseline,
 not product green (test101,1pass2fail,runtime3/4). AM-03 stays open: explicit S02
 continuation and future separately authorized intake are not inferred. Shared

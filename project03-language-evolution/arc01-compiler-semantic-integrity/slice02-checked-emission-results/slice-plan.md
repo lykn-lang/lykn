@@ -2,12 +2,44 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
-status: paused
+status: in-progress
 planned-release: unassigned
 depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emission-harness-baseline]
 ---
 
 # Checked emission results
+
+## Explicit Result implementation resumption — 2026-11-07
+
+Operator answered “yes please!” to resuming S02 with the same Luna6 High CC,
+separate Sol6.1 High CDC, Autonomous Mode and first further unexpected substantive
+failure stop. Current [cc-prompt-iteration01.md](cc-prompt-iteration01.md) governs
+from accepted maintenancec129e94; earlier initial/pause/source8f instructions are
+history. New descendant branch `codex/checked-emission-results-v2` in the same
+task checkout preserves maintenance/old232/accepted8f refs. Release8f read-only.
+
+Reuse accepted maintenance baseline (no ceremonial red repeat): three tests,
+1pass2fail/ten predicates/four invalid observations/four runtimes3matching.
+MH-P01 plus invalid false-success are known authorized prerequisites, not new
+stops. This unit must now make all four invalid rejection/no-write and four
+runtime oracles pass, then full normal source gates and independent acceptance.
+
+Maintenance correction01 spent (1/5), four refinements remain; prompt numbering
+is not usage and the resumed planned implementation does not reset the allowance.
+Original failed232 and older tooling8/K0 remain. Exact new typed API/context/
+span/gensym/route tests join implementation freeze, not fake old-Vec type-red.
+CDC source-readiness refreshed actual owned API/caller/fatal paths; context seed0,
+failed post allocation1/probe2 and parsed Some-suggestion cases are source-grounded
+in the prompt. Fixed -F files supplied before handoff. No generic adapter, source
+path expansion, S03/tool/K/integration/dependency or automatic next unit authority.
+
+### Assignment history
+
+- Initial `cc-prompt.md` atfd53e1a: test-only232 stopped on harness defects; preserved.
+- Maintenance Arc02 S01: shared correction01 accepted atc129 with faithful baseline,
+  not product green; its history/receipts stay in that owning slice.
+- Current `cc-prompt-iteration01.md`: first S02 follow-up, explicitly authorized
+  Result delivery fromc129; awaiting fresh Luna6 High intake then ownership handoff.
 
 ## Accepted maintenance baseline; Result continuation still held — 2026-11-07
 
