@@ -15,7 +15,18 @@ and internationalization. It is a research and candidate roadmap, not a promise
 that every backlog item ships in 0.7.0. Release splits remain undecided where
 BACKLOG.md says so.
 
-## Current bounded Arc01 S01 execution (2026-11-07)
+## Current local integration and conditional next readiness (2026-11-07)
+
+Operator explicitly authorized [Slice20](slice20-semantic-stack-release-integration/slice-plan.md)
+exact release/0.6.x FF5408→accepted8f5d199, fresh release gates and independent
+review, same Luna6 High CC/Sol6.1 High CDC Autonomous Mode, stop any substantive
+failure. No second merge or other propagation/publication is implied. After all
+green/close, advance into Arc01 S02 readiness/design; its public Rust compatibility
+choice remains an explicit Operator gate, asked separately while integration
+proceeds. No breaking Result API/legacy transition is inferred from “next chunk”.
+All prior source/tool histories and eight-spent tooling allowance remain.
+
+## Closed Arc01 S01 execution (2026-11-07)
 
 S01 is independently closed at task8f5d199, five VF rows done and CI-01 delivered;
 fresh full normal Make/focused/runtime/citation proof and original walker
@@ -527,6 +538,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.35: Opened explicit exact local FF/independent release integration
+  as standaloneSlice20, conditional S02 readiness afterward and unresolved API
+  gate retained. No source authorship, second merge or renewed tooling budget.
 
 - 2026-11-07 v1.34: Independently accepted S01's narrow NE-C12 repair at
   task8f5d199 with five VF rows done, current full gates and compile-only original

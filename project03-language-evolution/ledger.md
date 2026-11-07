@@ -2,6 +2,12 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 Operator opened [Slice20](slice20-semantic-stack-release-integration/slice-plan.md)
+exact local FF5408→8f5d199/release validation/independent review, five RI rows open.
+After green close, S02 readiness may proceed but its API compatibility choice is
+still required before affected implementation. No project/arc acceptance follows
+from this opening; original audit/Project07 and eight-spent tooling limit remain.
+
 Final2026-11-07 [Arc01 S01](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md)
 independently accepts NE-C12 task8f5d199, all five VF rows done/CI-01 delivered.
 Current full normal Make/focused/runtime/citation and original walker compile-only
