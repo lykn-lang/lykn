@@ -4449,6 +4449,49 @@ mod tests {
         assert!(returns_boxed(&returned, &num(7.0)));
     }
 
+    #[test]
+    fn test_for_await_of_tail_stays_in_statement_position() {
+        fn loop_in_return_array(expr: &SExpr) -> bool {
+            let Some(values) = expr.as_list() else {
+                return false;
+            };
+            let invalid_tail = values.first().and_then(SExpr::as_form_head) == Some("return")
+                && values.get(1).is_some_and(|value| {
+                    value.as_list().is_some_and(|carrier| {
+                        carrier.first().and_then(SExpr::as_form_head) == Some("array")
+                            && carrier.get(1).and_then(SExpr::as_form_head) == Some("for-await-of")
+                    })
+                });
+            invalid_tail || values.iter().any(loop_in_return_array)
+        }
+        fn contains_for_await(expr: &SExpr) -> bool {
+            expr.as_list().is_some_and(|values| {
+                values.first().and_then(SExpr::as_form_head) == Some("for-await-of")
+                    || values.iter().any(contains_for_await)
+            })
+        }
+
+        let body = [
+            list(vec![atom("await"), atom("pending")]),
+            list(vec![
+                atom("for-await-of"),
+                atom("item"),
+                atom("items"),
+                list(vec![atom("block")]),
+            ]),
+        ];
+        let mut context = ctx_value();
+        let emitted = emit_do(&body, &mut context, &reg());
+        assert!(
+            contains_for_await(&emitted),
+            "loop must remain in emitted Do"
+        );
+        assert!(
+            !loop_in_return_array(&emitted),
+            "for-await-of must not be emitted as a value return"
+        );
+    }
+
     // --- Match with await in target (Strategy 1) ---
 
     #[test]
