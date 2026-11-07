@@ -1,0 +1,3 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.72s
+  Executable tests/emission_failures.rs (target/debug/deps/emission_failures-ee1302ddd95a417d)

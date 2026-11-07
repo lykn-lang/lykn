@@ -1,0 +1,2 @@
+Ok([BuiltPackage { name: "@fixture/emission", short_name: "emission", version: "0.0.1", kind: Runtime }])
+short_name_emission=true
