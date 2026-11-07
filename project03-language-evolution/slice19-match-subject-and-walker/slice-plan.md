@@ -1,5 +1,13 @@
 # Slice19 — match subject repair and combined validation
 
+Current iteration03 is LAST continuation5/5 for BOTH outer and tooling counters.
+b828 actual native checks: core0/7forms, walker0/20forms, scanner1 unterminated98:5,
+observer1 unterminated45:1; full raw committed79163f9, no dependent gates/K.
+Consolidated last directive fixes semantic function boundaries and source-reviewed
+ordinary API/status/span/partition/hash predicates BEFORE final checks. No new
+case/schema/producer; exact controls unchanged. A further substantive failure
+requires Operator decision, no sixth pass/reset. K runtime still held for CDC.
+
 2026-11-07 current StageB assignment: iteration02, continuation outer4/5 AND old
 tooling4/5 (one substantive correction remains). Source8ed independently accepted
 at a8f2070. FIRST exact unchanged bd3 walker SHA6976a853… check0/20top-level with
@@ -177,3 +185,4 @@ six rows/report/review/retro/parent/backlog honestly at endpoint only, no nextun
 | cc-prompt.md | 2026-11-07 | Source continuation refinement3/5, NE-C11+NE-C10 concern | StageA only; no tooling/runtimeK before CDC combined acceptance |
 | cc-prompt-iteration01.md | 2026-11-07 | Correct already-required owned cache/raw capture for fullMake | Current operational retry, source refinement3 unchanged/no code edit |
 | cc-prompt-iteration02.md | 2026-11-07 | Complete original tooling and fixed13 gate under original contract | Current continuation4/5 for BOTH outer/tool tracks; one remains; runtime held for CDC prereview |
+| cc-prompt-iteration03.md | 2026-11-07 | Consolidated actual syntax and predicate defects | LAST continuation5/5 BOTH tracks; no further substantive retry without Operator |

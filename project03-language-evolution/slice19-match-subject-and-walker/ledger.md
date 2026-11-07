@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+Current continuation5/5 LAST both tracks, iteration03. b828 native core0/walker0,
+scanner1/observer1 syntax authoring failures, raw79163f9; no fmt/lint/compile/
+DenoCheck/guards/K. Full frozen review found ordinary predicate/API/span defects,
+consolidated before final check; no real compiler/parser gap claimed. Source8ed
+acceptance unaffected. All13K unrun; any further substantive failure needs Operator.
+
 Current2026-11-07: MS02/MS03 accepted at a8f2070, others open. Exact old bd3
 walker first re-entry check0 with accepted aa31947… (20top-level INFO, not warning),
 full raw/source in cdc/walker-reentry. Iteration02 tooling continuation4/5 on both
