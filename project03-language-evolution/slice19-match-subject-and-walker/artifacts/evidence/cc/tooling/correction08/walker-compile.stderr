@@ -1,0 +1,6 @@
+183:45: warning: unused binding 'allowed'
+  suggestion: prefix with underscore: _allowed
+875:21: warning: unused binding 'reasons'
+  suggestion: prefix with underscore: _reasons
+3:7: warning: unused binding 'FieldRole'
+  suggestion: prefix with underscore: _FieldRole

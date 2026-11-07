@@ -1,0 +1,722 @@
+(exports walk-program)
+
+(type FieldRole ReferenceRole BindingRole NameRole DeferredRole)
+
+(func
+  own
+  :args
+  (:any value :string key)
+  :returns
+  :boolean
+  :body
+  (and
+    (not (= value null))
+    (or (= (js:typeof value) "object") (= (js:typeof value) "function"))
+    (Object:hasOwn value key)))
+
+(func
+  child
+  :args
+  (:any value :string key)
+  :returns
+  :any
+  :body
+  (if (own value key) (get value key) null))
+
+(func
+  path-field
+  :args
+  (:string path :string field)
+  :returns
+  :string
+  :body
+  (template path "." field))
+
+(func
+  path-index
+  :args
+  (:string path :number index)
+  :returns
+  :string
+  :body
+  (template path "[" index "]"))
+
+(func
+  ast-node?
+  :args
+  (:any value)
+  :returns
+  :boolean
+  :body
+  (and
+    (not (= value null))
+    (= (js:typeof value) "object")
+    (own value "type")
+    (= (js:typeof (get value "type")) "string")))
+
+(func
+  unsupported
+  :args
+  (:any state :any node :string path)
+  :returns
+  :void
+  :body
+  (do
+    (reset! (get state "coverage") "unsupported_ast")
+    (swap!
+      (get state "errors")
+      (fn
+        (:array errors)
+        (conj
+          errors
+          (obj
+            :status
+            "unsupported_ast"
+            :nodeType
+            (if (own node "type") (get node "type") null)
+            :path
+            path
+            :loc
+            (if
+              (and (own node "loc") (own (get node "loc") "start"))
+              (get (get node "loc") "start")
+              null)
+            :range
+            (child node "range")))))))
+
+(func
+  add-reason
+  :args
+  (:any state :any node :string path :string category :string rule)
+  :returns
+  :void
+  :body
+  (swap!
+    (get state "reasons")
+    (fn
+      (:array reasons)
+      (conj
+        reasons
+        (obj
+          :nodeType
+          (child node "type")
+          :path
+          path
+          :loc
+          (if
+            (and (own node "loc") (own (get node "loc") "start"))
+            (get (get node "loc") "start")
+            null)
+          :range
+          (child node "range")
+          :category
+          category
+          :rule
+          rule
+          :potential_load_evaluation
+          true
+          :observed_effect
+          null)))))
+
+(func
+  add-edge
+  :args
+  (:any state :any node :string path :boolean bare)
+  :returns
+  :void
+  :body
+  (do
+    (swap!
+      (get state "edges")
+      (fn
+        (:array edges)
+        (conj
+          edges
+          (obj
+            :nodeType
+            (child node "type")
+            :path
+            path
+            :source
+            (if
+              (own node "source")
+              (child (get node "source") "value")
+              null)
+            :bare_import
+            bare))))
+    (if bare (swap! (get state "bare") (fn (:number n) (+ n 1))))))
+
+(func
+  ast-child-in?
+  :args
+  (:any value)
+  :returns
+  :boolean
+  :body
+  (if
+    (ast-node? value)
+    true
+    (if
+      (Array:isArray value)
+      (->
+        value
+        (:some
+          (fn
+            (:any item)
+            (ast-node? item))))
+      false)))
+
+(func
+  flag-unlisted
+  :args
+  (:any state :any value :string path)
+  :returns
+  :void
+  :body
+  (if
+    (ast-node? value)
+    (unsupported state value path)
+    (if
+      (Array:isArray value)
+      (for
+        (let index 0)
+        (< index value:length)
+        (+= index 1)
+        (bind item (get value index))
+        (if
+          (ast-node? item)
+          (unsupported state item (path-index path index)))))))
+
+(func
+  check-unlisted
+  :args
+  (:any state :any node :string path :array allowed)
+  :returns
+  :void
+  :body
+  (for-of
+    entry
+    (Object:entries node)
+    (bind key (get entry 0))
+    (bind value (get entry 1))
+    (if
+      (and
+        (not (allowed:includes key))
+        (ast-child-in? value))
+      (flag-unlisted state value (path-field path key)))))
+
+(func
+  check-attributes
+  :args
+  (:any state :any node :string path)
+  :returns
+  :void
+  :body
+  (for-of
+    field
+    (array "attributes" "assertions")
+    (bind value (child node field))
+    (if
+      (and (not (= value null)) (ast-child-in? value))
+      (flag-unlisted state value (path-field path field)))))
+
+(func
+  visit-list
+  :args
+  (:any state :any values :string path :FieldRole role)
+  :returns
+  :void
+  :body
+  (if
+    (Array:isArray values)
+    (for
+      (let index 0)
+      (< index values:length)
+      (+= index 1)
+      (if
+        (not (= (get values index) null))
+        (match
+          role
+          (BindingRole
+            (visit-pattern state (get values index) (path-index path index)))
+          (ReferenceRole (visit-node state (get values index) (path-index path index) role))
+          (NameRole (visit-node state (get values index) (path-index path index) role))
+          (DeferredRole (visit-node state (get values index) (path-index path index) role))
+          (_ (throw (new Error "unsupported traversal role"))))))
+    (if (not (= values null)) (unsupported state values path))))
+
+(func
+  visit-one
+  :args
+  (:any state :any node :string field :string path :FieldRole role)
+  :returns
+  :void
+  :body
+  (bind value (child node field))
+  (if
+    (not (= value null))
+    (match
+      role
+      (BindingRole (visit-pattern state value (path-field path field)))
+      (ReferenceRole (visit-node state value (path-field path field) role))
+      (NameRole (visit-node state value (path-field path field) role))
+      (DeferredRole (visit-node state value (path-field path field) role))
+      (_ (throw (new Error "unsupported traversal role"))))))
+
+(func
+  visit-pattern
+  :args
+  (:any state :any node :string path)
+  :returns
+  :void
+  :body
+  (if
+    (= node null)
+    null
+    (match
+      (child node "type")
+      ("Identifier"
+        (check-unlisted state node path (array "type" "name"))
+        null)
+      ("RestElement"
+        (check-unlisted state node path (array "type" "argument"))
+        (visit-one state node "argument" path BindingRole))
+      ("AssignmentPattern"
+        (check-unlisted state node path (array "type" "left" "right"))
+        (visit-one state node "left" path BindingRole)
+        (visit-one state node "right" path ReferenceRole))
+      ("ArrayPattern"
+        (check-unlisted state node path (array "type" "elements"))
+        (add-reason state node path "destructuring" "array binding may acquire an iterator")
+        (visit-list state (child node "elements") (path-field path "elements") BindingRole))
+      ("ObjectPattern"
+        (check-unlisted state node path (array "type" "properties"))
+        (add-reason state node path "destructuring" "object binding may invoke getters")
+        (visit-list state (child node "properties") (path-field path "properties") BindingRole))
+      ("Property"
+        (check-unlisted state node path (array "type" "key" "value" "computed" "shorthand" "kind" "method"))
+        (if (child node "computed")
+          (do
+            (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
+            (visit-one state node "key" path ReferenceRole))
+          (visit-one state node "key" path NameRole))
+        (visit-pattern state (child node "value") (path-field path "value")))
+      (_ (unsupported state node path)))))
+
+(func
+  visit-node
+  :args
+  (:any state :any node :string path :FieldRole role)
+  :returns
+  :void
+  :body
+  (if
+    (not (ast-node? node))
+    (unsupported state node path)
+    (match
+      (child node "type")
+      ("Identifier"
+        (check-unlisted state node path (array "type" "name"))
+        (match
+          role
+          (ReferenceRole
+            (add-reason state node path "identifier_read" "name resolution is not established"))
+          (BindingRole null)
+          (NameRole null)
+          (DeferredRole null)))
+      ("Literal"
+        (check-unlisted state node path (array "type" "value" "raw" "regex" "bigint"))
+        null)
+      ("ThisExpression" (check-unlisted state node path (array "type")) null)
+      ("Super" (check-unlisted state node path (array "type")) null)
+      ("MetaProperty" (check-unlisted state node path (array "type" "meta" "property")) null)
+      ("TemplateElement" (check-unlisted state node path (array "type" "value" "tail")) null)
+      ("Program"
+        (check-unlisted state node path (array "type" "sourceType" "body" "directives"))
+        (visit-list state (child node "body") (path-field path "body") ReferenceRole))
+      ("BlockStatement"
+        (check-unlisted state node path (array "type" "body" "directives"))
+        (visit-list state (child node "body") (path-field path "body") ReferenceRole))
+      ("ExpressionStatement"
+        (check-unlisted state node path (array "type" "expression" "directive"))
+        (visit-one state node "expression" path ReferenceRole))
+      ("EmptyStatement" (check-unlisted state node path (array "type")) null)
+      ("DebuggerStatement" (check-unlisted state node path (array "type")) null)
+      ("BreakStatement" (check-unlisted state node path (array "type" "label")) null)
+      ("ContinueStatement" (check-unlisted state node path (array "type" "label")) null)
+      ("LabeledStatement"
+        (check-unlisted state node path (array "type" "label" "body"))
+        (visit-one state node "body" path ReferenceRole))
+      ("IfStatement"
+        (check-unlisted state node path (array "type" "test" "consequent" "alternate"))
+        (visit-one state node "test" path ReferenceRole)
+        (visit-one state node "consequent" path ReferenceRole)
+        (visit-one state node "alternate" path ReferenceRole))
+      ("SwitchStatement"
+        (check-unlisted state node path (array "type" "discriminant" "cases"))
+        (visit-one state node "discriminant" path ReferenceRole)
+        (visit-list state (child node "cases") (path-field path "cases") ReferenceRole))
+      ("SwitchCase"
+        (check-unlisted state node path (array "type" "test" "consequent"))
+        (visit-one state node "test" path ReferenceRole)
+        (visit-list state (child node "consequent") (path-field path "consequent") ReferenceRole))
+      ("TryStatement"
+        (check-unlisted state node path (array "type" "block" "handler" "finalizer"))
+        (visit-one state node "block" path ReferenceRole)
+        (visit-one state node "handler" path ReferenceRole)
+        (visit-one state node "finalizer" path ReferenceRole))
+      ("CatchClause"
+        (check-unlisted state node path (array "type" "param" "body"))
+        (visit-pattern state (child node "param") (path-field path "param"))
+        (visit-one state node "body" path ReferenceRole))
+      ("ThrowStatement"
+        (check-unlisted state node path (array "type" "argument"))
+        (add-reason state node path "throw" "throw may terminate module evaluation")
+        (visit-one state node "argument" path ReferenceRole))
+      ("WhileStatement"
+        (check-unlisted state node path (array "type" "test" "body"))
+        (visit-one state node "test" path ReferenceRole)
+        (visit-one state node "body" path ReferenceRole))
+      ("DoWhileStatement"
+        (check-unlisted state node path (array "type" "body" "test"))
+        (visit-one state node "body" path ReferenceRole)
+        (visit-one state node "test" path ReferenceRole))
+      ("ForStatement"
+        (check-unlisted state node path (array "type" "init" "test" "update" "body"))
+        (visit-one state node "init" path ReferenceRole)
+        (visit-one state node "test" path ReferenceRole)
+        (visit-one state node "update" path ReferenceRole)
+        (visit-one state node "body" path ReferenceRole))
+      ("ForInStatement"
+        (check-unlisted state node path (array "type" "left" "right" "body" "await"))
+        (if
+          (= (child (child node "left") "type") "VariableDeclaration")
+          (visit-one state node "left" path ReferenceRole)
+          (visit-pattern state (child node "left") (path-field path "left")))
+        (visit-one state node "right" path ReferenceRole)
+        (visit-one state node "body" path ReferenceRole))
+      ("ForOfStatement"
+        (check-unlisted state node path (array "type" "left" "right" "body" "await"))
+        (if
+          (= (child (child node "left") "type") "VariableDeclaration")
+          (visit-one state node "left" path ReferenceRole)
+          (visit-pattern state (child node "left") (path-field path "left")))
+        (add-reason state node path "iteration" "iteration may acquire an iterator")
+        (visit-one state node "right" path ReferenceRole)
+        (visit-one state node "body" path ReferenceRole))
+      ("WithStatement"
+        (check-unlisted state node path (array "type" "object" "body"))
+        (unsupported state node path))
+      ("VariableDeclaration"
+        (check-unlisted state node path (array "type" "declarations" "kind"))
+        (visit-list state (child node "declarations") (path-field path "declarations") ReferenceRole))
+      ("VariableDeclarator"
+        (check-unlisted state node path (array "type" "id" "init"))
+        (visit-pattern state (child node "id") (path-field path "id"))
+        (visit-one state node "init" path ReferenceRole))
+      ("FunctionDeclaration"
+        (check-unlisted state node path (array "type" "id" "params" "body" "generator" "async" "expression"))
+        null)
+      ("FunctionExpression"
+        (check-unlisted state node path (array "type" "id" "params" "body" "generator" "async" "expression"))
+        null)
+      ("ArrowFunctionExpression"
+        (check-unlisted state node path (array "type" "id" "params" "body" "generator" "async" "expression"))
+        null)
+      ("ClassDeclaration"
+        (check-unlisted state node path (array "type" "id" "superClass" "body"))
+        (if (not (= (child node "superClass") null))
+          (do
+            (add-reason state (child node "superClass") (path-field path "superClass") "class_heritage_validation" "heritage validation may throw")
+            (visit-one state node "superClass" path ReferenceRole)))
+        (visit-one state node "body" path ReferenceRole))
+      ("ClassExpression"
+        (check-unlisted state node path (array "type" "id" "superClass" "body"))
+        (if (not (= (child node "superClass") null))
+          (do
+            (add-reason state (child node "superClass") (path-field path "superClass") "class_heritage_validation" "heritage validation may throw")
+            (visit-one state node "superClass" path ReferenceRole)))
+        (visit-one state node "body" path ReferenceRole))
+      ("ClassBody"
+        (check-unlisted state node path (array "type" "body"))
+        (visit-list state (child node "body") (path-field path "body") ReferenceRole))
+      ("MethodDefinition"
+        (check-unlisted state node path (array "type" "key" "value" "kind" "computed" "static"))
+        (if (child node "computed")
+          (do
+            (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
+            (visit-one state node "key" path ReferenceRole))
+          (visit-one state node "key" path NameRole))
+        null)
+      ("PropertyDefinition"
+        (check-unlisted state node path (array "type" "key" "value" "computed" "static"))
+        (if (child node "computed")
+          (do
+            (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
+            (visit-one state node "key" path ReferenceRole))
+          (visit-one state node "key" path NameRole))
+        (if (child node "static") (visit-one state node "value" path ReferenceRole)))
+      ("StaticBlock"
+        (check-unlisted state node path (array "type" "body"))
+        (visit-list state (child node "body") (path-field path "body") ReferenceRole))
+      ("CallExpression"
+        (check-unlisted state node path (array "type" "callee" "arguments" "optional"))
+        (add-reason state node path "call" "call may invoke user or host behavior")
+        (visit-one state node "callee" path ReferenceRole)
+        (visit-list state (child node "arguments") (path-field path "arguments") ReferenceRole))
+      ("NewExpression"
+        (check-unlisted state node path (array "type" "callee" "arguments"))
+        (add-reason state node path "construction" "construction may invoke user behavior")
+        (visit-one state node "callee" path ReferenceRole)
+        (visit-list state (child node "arguments") (path-field path "arguments") ReferenceRole))
+      ("TaggedTemplateExpression"
+        (check-unlisted state node path (array "type" "tag" "quasi"))
+        (add-reason state node path "tagged_template" "tag may execute during evaluation")
+        (visit-one state node "tag" path ReferenceRole)
+        (visit-one state node "quasi" path ReferenceRole))
+      ("AwaitExpression"
+        (check-unlisted state node path (array "type" "argument"))
+        (add-reason state node path "await" "await may suspend module evaluation")
+        (visit-one state node "argument" path ReferenceRole))
+      ("ImportExpression"
+        (check-unlisted state node path (array "type" "source" "options" "phase"))
+        (add-reason state node path "dynamic_import" "dynamic import may load another module")
+        (visit-one state node "source" path ReferenceRole)
+        (visit-one state node "options" path ReferenceRole))
+      ("AssignmentExpression"
+        (check-unlisted state node path (array "type" "operator" "left" "right"))
+        (add-reason state node path "assignment" "assignment mutates a reference")
+        (visit-one state node "left" path ReferenceRole)
+        (visit-one state node "right" path ReferenceRole))
+      ("UpdateExpression"
+        (check-unlisted state node path (array "type" "operator" "argument" "prefix"))
+        (add-reason state node path "update" "update mutates a reference")
+        (visit-one state node "argument" path ReferenceRole))
+      ("MemberExpression"
+        (check-unlisted state node path (array "type" "object" "property" "computed" "optional"))
+        (add-reason state node path "member_read" "member access may invoke a getter or proxy")
+        (visit-one state node "object" path ReferenceRole)
+        (if (child node "computed")
+          (do
+            (add-reason state (child node "property") (path-field path "property") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
+            (visit-one state node "property" path ReferenceRole))
+          (visit-one state node "property" path NameRole)))
+      ("ChainExpression"
+        (check-unlisted state node path (array "type" "expression"))
+        (visit-one state node "expression" path ReferenceRole))
+      ("ArrayExpression"
+        (check-unlisted state node path (array "type" "elements"))
+        (visit-list state (child node "elements") (path-field path "elements") ReferenceRole))
+      ("ObjectExpression"
+        (check-unlisted state node path (array "type" "properties"))
+        (visit-list state (child node "properties") (path-field path "properties") ReferenceRole))
+      ("SpreadElement"
+        (check-unlisted state node path (array "type" "argument"))
+        (add-reason state node path "spread" "spread may invoke getters or iterators")
+        (visit-one state node "argument" path ReferenceRole))
+      ("Property"
+        (match
+          role
+          (BindingRole (visit-pattern state node path))
+          (ReferenceRole
+            (check-unlisted state node path (array "type" "key" "value" "computed" "shorthand" "kind" "method"))
+            (if (child node "computed")
+              (do
+                (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
+                (visit-one state node "key" path ReferenceRole))
+              (visit-one state node "key" path NameRole))
+            (visit-one state node "value" path ReferenceRole))
+          (NameRole (unsupported state node path))
+          (DeferredRole (unsupported state node path))))
+      ("ArrayPattern" (visit-pattern state node path))
+      ("ObjectPattern" (visit-pattern state node path))
+      ("UnaryExpression"
+        (check-unlisted state node path (array "type" "operator" "prefix" "argument"))
+        (if (not (= (child node "operator") "!"))
+          (add-reason state node path "operator_coercion" "unary operator may coerce an unconstrained operand"))
+        (visit-one state node "argument" path ReferenceRole))
+      ("BinaryExpression"
+        (check-unlisted state node path (array "type" "operator" "left" "right"))
+        (if
+          (not (-> (array "===" "!==") (:includes (child node "operator"))))
+          (add-reason state node path "operator_coercion" "binary operator may coerce unconstrained operands"))
+        (visit-one state node "left" path ReferenceRole)
+        (visit-one state node "right" path ReferenceRole))
+      ("LogicalExpression"
+        (check-unlisted state node path (array "type" "operator" "left" "right"))
+        (visit-one state node "left" path ReferenceRole)
+        (visit-one state node "right" path ReferenceRole))
+      ("ConditionalExpression"
+        (check-unlisted state node path (array "type" "test" "consequent" "alternate"))
+        (visit-one state node "test" path ReferenceRole)
+        (visit-one state node "consequent" path ReferenceRole)
+        (visit-one state node "alternate" path ReferenceRole))
+      ("SequenceExpression"
+        (check-unlisted state node path (array "type" "expressions"))
+        (visit-list state (child node "expressions") (path-field path "expressions") ReferenceRole))
+      ("TemplateLiteral"
+        (check-unlisted state node path (array "type" "quasis" "expressions"))
+        (if
+          (> (get (child node "expressions") "length") 0)
+          (add-reason state node path "coercion" "template substitution may invoke conversion hooks"))
+        (visit-list state (child node "expressions") (path-field path "expressions") ReferenceRole))
+      ("ImportDeclaration"
+        (check-unlisted state node path (array "type" "specifiers" "source" "assertions" "attributes" "importKind"))
+        (check-attributes state node path)
+        (add-edge state node path (= (get (child node "specifiers") "length") 0)))
+      ("ExportNamedDeclaration"
+        (check-unlisted state node path (array "type" "declaration" "specifiers" "source" "exportKind" "attributes"))
+        (check-attributes state node path)
+        (if (not (= (child node "source") null)) (add-edge state node path false))
+        (visit-one state node "declaration" path ReferenceRole)
+        (visit-list state (child node "specifiers") (path-field path "specifiers") NameRole))
+      ("ExportDefaultDeclaration"
+        (check-unlisted state node path (array "type" "declaration"))
+        (visit-one state node "declaration" path ReferenceRole))
+      ("ExportAllDeclaration"
+        (check-unlisted state node path (array "type" "source" "exported" "exportKind" "attributes"))
+        (check-attributes state node path)
+        (add-edge state node path false))
+      ("ImportSpecifier"
+        (check-unlisted state node path (array "type" "imported" "local" "importKind"))
+        null)
+      ("ExportSpecifier"
+        (check-unlisted state node path (array "type" "local" "exported" "exportKind"))
+        null)
+      (_ (unsupported state node path)))))
+
+(func
+  direct-top-level?
+  :args
+  (:any node :array reasons)
+  :returns
+  :boolean
+  :body
+  (or
+    (> reasons:length 0)
+    (= (child node "type") "ExpressionStatement")
+    (->
+      (array
+        "BlockStatement"
+      "IfStatement"
+      "SwitchStatement"
+      "TryStatement"
+      "ThrowStatement"
+      "WhileStatement"
+      "DoWhileStatement"
+      "ForStatement"
+      "ForInStatement"
+      "ForOfStatement"
+      "LabeledStatement"
+      "WithStatement"
+        "DebuggerStatement")
+      (:includes (child node "type")))))
+
+(func
+  walk-program
+  :args
+  (:any program)
+  :returns
+  :any
+  :body
+  (if
+    (or (not (ast-node? program)) (!= (child program "type") "Program"))
+    (obj
+      :coverage_status "unsupported_ast"
+      :direct_statements #a()
+      :direct_count 0
+      :reasons #a()
+      :reason_count 0
+      :dependency_edges #a()
+      :dependency_edge_count 0
+      :bare_imports 0
+      :unsupported_nodes
+      (array
+        (obj
+          :status "unsupported_ast"
+          :nodeType (child program "type")
+          :path "Program"
+          :loc (child program "loc")
+          :range (child program "range"))))
+    (if
+      (not (Array:isArray (child program "body")))
+      (obj
+        :coverage_status "unsupported_ast"
+        :direct_statements #a()
+        :direct_count 0
+        :reasons #a()
+        :reason_count 0
+        :dependency_edges #a()
+        :dependency_edge_count 0
+        :bare_imports 0
+        :unsupported_nodes
+        (array
+          (obj
+            :status "unsupported_ast"
+            :nodeType "Program"
+            :path "Program.body"
+            :loc (child program "loc")
+            :range (child program "range"))))
+      (do
+        (bind direct (cell #a()))
+        (bind findings (cell 0))
+        (bind reasons-total (cell #a()))
+        (bind edges (cell #a()))
+        (bind bare (cell 0))
+        (bind coverage (cell "complete"))
+        (bind errors (cell #a()))
+        (for
+          (let index 0)
+          (< index program:body:length)
+          (+= index 1)
+          (bind parent (get program:body index))
+          (bind parent-path (path-index "Program.body" index))
+          (bind local-reasons (cell #a()))
+          (bind local-edges (cell #a()))
+          (bind local-bare (cell 0))
+          (bind local-coverage (cell "complete"))
+          (bind local-errors (cell #a()))
+          (visit-node
+            (obj
+              :reasons local-reasons
+              :edges local-edges
+              :bare local-bare
+              :coverage local-coverage
+              :errors local-errors)
+            parent
+            parent-path
+            ReferenceRole)
+          (bind parent-finding (direct-top-level? parent (express local-reasons)))
+          (if parent-finding (swap! findings (fn (:number n) (+ n 1))))
+          (swap!
+            reasons-total
+            (fn (:array all) (-> all (:concat (express local-reasons)))))
+          (swap! edges (fn (:array all) (-> all (:concat (express local-edges)))))
+          (swap! bare (fn (:number n) (+ n (express local-bare))))
+          (if (= (express local-coverage) "unsupported_ast") (reset! coverage "unsupported_ast"))
+          (swap! errors (fn (:array all) (-> all (:concat (express local-errors)))))
+          (swap!
+            direct
+            (fn
+              (:array rows)
+              (conj
+                rows
+                (obj
+                  :parentPath parent-path
+                  :parentType (child parent "type")
+                  :finding parent-finding
+                  :potential_load_evaluation parent-finding
+                  :observed_effect null
+                  :reasons (express local-reasons)
+                  :reasonCount (get (express local-reasons) "length")
+                  :dependency_edges (express local-edges))))))
+        (obj
+          :coverage_status (express coverage)
+          :direct_statements (express direct)
+          :direct_count (express findings)
+          :reason_count (get (express reasons-total) "length")
+          :reasons (express reasons-total)
+          :dependency_edges (express edges)
+          :dependency_edge_count (get (express edges) "length")
+          :bare_imports (express bare)
+          :unsupported_nodes (express errors))))))

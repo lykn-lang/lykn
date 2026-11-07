@@ -1,0 +1,40 @@
+STOP during whole-generated review, amended correction8.
+
+Actual final source commit9122473cbb1bb5a145cde368d749f50157216d7f, whole owned
+copies in final-source; actual source hashes in post-use-identities.sha256 and
+final-source-copies.sha256 match. Original generated outputs are in ignored TASK
+target/slice19/correction08/modules; faithful complete copies and matching original/
+copy hashes retained here. No generated patch or semantic retry occurred.
+
+First observed failure: estree-walker.js line101, function flagUnlisted95-105:
+the array branch's for-loop binds item then unconditionally throws
+TypeError("COMPILE_ERROR: if in expression position requires an else branch — add an else branch, or restructure as a statement").
+Actual source flag-unlisted162-178 has outer if / inner array-if / for with
+(bind item (get value index)) then
+(if (ast-node? item) (unsupported state item (path-index path index))).
+This generated throw replaces that intended conditional. Strictcompile had
+exited0 with only unused-binding warnings. Observation is static generated text;
+no runtime failure, parser capability result or compiler root-cause conclusion
+is claimed. Actual native artifact search additionally locates same generated
+placeholder at630 and646; their surrounding semantics were not reviewed.
+Initial alert's estimated108 locator was corrected to actual101 promptly.
+
+Whole generated modules are preserved, but review is INCOMPLETE: core1-33 and
+walkerDTS1-6 read completely; walker1-230 and231-460 delivered in same tool call,
+with failure recognized at101. Walker461-660/scanner1-351/observer1-760 not read.
+No whole-generated/predicate acceptance follows. DenoCheck0/4, genuine zeroarg
+guards0/4, K0/13 all UNRUN. No pending processes. No postfailure edit, compilation,
+probe, input program execution or dependent runtime command occurred.
+
+Native gate denominator details are in gate-invocations.txt; all native final
+required module checks/fmt/lint/defaultstrictcompile0 does NOT accept tools.
+Actual output sizes: core1986, walker33569, scanner20277, observer46885 bytes;
+only walker emitted a DTS182 bytes. Core/scanner/observer sidecars absent in
+actual directory listing (known NE-T01, no generated workaround).
+Core generated pin068af reproduced; immutable source6ca/control0f20 unchanged.
+Tool/parser source SHA before+after unchanged: CLIaa319, Deno2ad, Acorn1cbc.
+Protected task8ed869f1ed24bf688ba91f71d8c539680136794e and
+release5408abd432b8789ae474a3895436f68818c4e482 remain clean and unchanged.
+
+Returning evidence only for independent CDC disposition; no ninth authority,
+remaining gates held, prior history/limitations not cured. Eight is now spent.

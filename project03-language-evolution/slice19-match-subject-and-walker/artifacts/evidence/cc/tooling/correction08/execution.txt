@@ -1,0 +1,60 @@
+Assignment: cc-prompt-iteration07.md, amended unexecuted correction8.
+Seven prior passes spent; no reset/ninth. No K execution before CDC release.
+CC /root/cdc/walker_eighth_sol_cc, separate CDC /root/cdc; Sol6.1 High.
+Opening planning57a5c02441b3c32e7f1a21ec231070631b2f91a2 clean.
+Two-source semantic freeze ffb049c5c8527d4a16604e2213d9bce00994a5f3.
+Actual source-body snapshots walker-before-format.lykn and observer-before-format.lykn
+were extracted successfully from that Git commit before checks. Core/scanner unchanged.
+Source-copy SHA256 before use:
+parser-core 6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7
+estree-walker 0416377dbf9049210b7ee51aa1b16d2654ed6aed491576ce4294182d9687c5b9
+scanner 120bf83aaa2ebae8a0619b00d86d9ca3cac95075703e9fe7a331358598488688
+capability-observer ba93ff5a5a7707e14ed698cd9a46ce60fb571554aadcbd9a7e644303d9a82fe7
+
+Actual source copies: /private/tmp/lykn-s19-correction08/source/<name>.lykn
+Actual cwd for native gates: /private/tmp/lykn-s19-correction08/cwd
+Native gate environment is cleared with /usr/bin/env -i and EXACT fields:
+PATH=/opt/homebrew/bin:/usr/bin:/bin
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+DENO_NO_UPDATE_CHECK=1
+NO_COLOR=1
+Executable /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+Version lykn 0.6.0; SHA256 aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8
+Deno /opt/homebrew/bin/deno version2.9.6
+SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Acorn exact cached unmodified artifact SHA256 1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7
+Frozen controls0f20dba4713b93671b337fa1ba0a5cde00fdbe29bed195a00e3ae1c689473a5d
+Protected task8ed869f and release5408: status empty, no source/build mutation.
+Config inspection: exact 18 project.json/deno.json/deno.jsonc ancestor paths in
+source and cwd chains; stat exit1, stdout empty, all stderr absent-file records.
+Output paths target/slice19/correction08/modules/{parser-core,estree-walker,scanner,capability-observer}.js
+in TASK checkout, all four verified by actual git check-ignore exit0 before generation.
+No active Git hooks; only .sample hooks, no configured core.hooksPath (query exit1).
+
+Intake extents: FULL iteration07 and inherited05/06; FULL slice-plan/ledger/current
+cdc-verification read previously, then complete newly prepended amendment sections.
+Actual FULL four tooling sources: core1-78; walker1-260/261-520/521-722;
+scanner1-270/271-528; observer1-300/301-600/601-871 before this exact edit.
+FULL frozen Slice17 attempt-0001 candidate controls.json loaded, including distinct
+observations.K11 expectedHash versus fullAuditControls.K11 input/oracle.
+Slice11 contract read in full invocation; recovered §2 complete80-245 after output
+elision; §1 and §5 actual tables/partition rules loaded. Required boundary facts
+are generated text AST, no input execution, parent/reason distinction, fail-closed
+unsupported nodes, K06nine, K08 Call59-65 versus Identifier59-63, K12 synthetic.
+Framework/PM/verification/testing/scientific/JS-Deno and actual task8ed Lykn skill
+entrypoints loaded; PM README, iteration filenames302-355, iteration workflow202-256,
+prompt intake297-398, autonomous326-550, ledger/evidence, testing/validation,
+scientific evidence capture. Recovered JS-Deno1-600 and collaboration180-340
+after earlier elision; retained complete endings from prior invocation.
+Task docs09 read complete in contiguous1-300/301-600/601-900/901-1117;
+guide00 match444-525 and dynamic-import/control794-941; guide05 types1-254,
+ADT/match602-637. Reading attestation is not independent acceptance.
+
+Contract readback: close exactly for232 before the intended outer else; preserve
+BindingRole dispatch to visit-pattern in both helpers and existing core068af pin.
+Select K11 from existing observations only when gated; guard null/undefined/object/
+own string shape, validate strict64zeros before reuse at both adapter sites.
+Frozen controls and later assertion unchanged. Required scoped check/fmt/lint/
+default strictcompile, whole generated/predicate review, DenoCheck and genuine
+zeroargs precede ownership return; any further substantive failure stops edits.
+No helper language, fallback, new cases, dependencies, product source or permissions.

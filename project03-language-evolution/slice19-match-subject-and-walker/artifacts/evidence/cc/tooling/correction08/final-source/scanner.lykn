@@ -1,0 +1,832 @@
+(import "./parser-core.js" (load-parser verify-parser))
+
+(import "./estree-walker.js" (walk-program))
+
+(exports scan-manifest)
+
+(func
+  own
+  :args
+  (:any value :string key)
+  :returns
+  :boolean
+  :body
+  (and (not (= value null)) (Object:hasOwn value key)))
+
+(async
+  (func
+    sha256
+    :args
+    (:any bytes)
+    :returns
+    :string
+    :body
+    (bind digest (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+    (->
+      (Array:from
+        digest
+        (fn (:number byte) (-> (byte:toString 16) (:padStart 2 "0"))))
+      (:join ""))))
+
+(func
+  empty-row
+  :args
+  (:any row :string status)
+  :returns
+  :any
+  :body
+  (obj
+    :source_id
+    row:source_id
+    :source_sha256
+    row:source_sha256
+    :emitter
+    row:emitter
+    :mode
+    row:mode
+    :condition_id
+    row:condition_id
+    :source_path
+    row:path
+    :output_path
+    row:output_path
+    :segment
+    row:segment
+    :required
+    row:required
+    :status
+    status
+    :manifest_source_sha256
+    row:source_sha256
+    :observed_source_sha256
+    null
+    :observed_output_sha256
+    null
+    :ast_coverage
+    null
+    :findings
+    (array)
+    :reasons
+    (array)
+    :dependency_edges
+    (array)
+    :bare_imports
+    0
+    :error
+    null))
+
+(func
+  error-record
+  :args
+  (:any error)
+  :returns
+  :any
+  :body
+  (obj
+    :name
+    (if
+      (and (not (= error null)) (= (js:typeof error:name) "string"))
+      error:name
+      null)
+    :message
+    (if (and (not (= error null)) (own error "message")) error:message null)
+    :pos
+    (if (and (not (= error null)) (own error "pos")) error:pos null)
+    :loc
+    (if (and (not (= error null)) (own error "loc")) error:loc null)))
+
+(func
+  read-error-status
+  :args
+  (:any error)
+  :returns
+  :string
+  :body
+  (if
+    (instanceof error Deno:errors:NotFound)
+    "source_missing"
+    (if
+      (instanceof error Deno:errors:NotCapable)
+      "source_unreadable"
+      "unexpected")))
+
+(async
+  (func
+    scan-row
+    :args
+    (:any row :any parser :any options)
+    :returns
+    :any
+    :body
+    (bind result (cell (empty-row row "not_processed")))
+    (bind bytes (cell null))
+    (try
+      (reset! bytes (await (Deno:readFile row:path)))
+      (catch
+        error
+        (bind status (read-error-status error))
+        (if
+          (= status "unexpected")
+          (throw error)
+          (reset!
+            result
+            (assoc (express result) :status status :error (error-record error))))))
+    (if
+      (not (= (express bytes) null))
+      (do
+        (bind actual-hash (await (sha256 (express bytes))))
+        (if
+          (!= actual-hash row:sha256)
+          (reset!
+            result
+            (assoc
+              (express result)
+              :status
+              "source_hash_mismatch"
+              :observed_source_sha256
+              actual-hash
+              :observed_output_sha256
+              actual-hash
+              :error
+              (obj :expected row:sha256 :actual actual-hash)))
+          (do
+            (reset!
+              result
+              (assoc
+                (express result)
+                :observed_source_sha256
+                actual-hash
+                :observed_output_sha256
+                actual-hash))
+            (bind source (cell null))
+            (bind decoder (new TextDecoder "utf-8" (obj :fatal true)))
+            (try
+              (reset! source (decoder:decode (express bytes)))
+              (catch
+                error
+                (reset!
+                  result
+                  (assoc
+                    (express result)
+                    :status
+                    "source_unreadable"
+                    :error
+                    (error-record error)))))
+            (if
+              (not (= (express source) null))
+              (do
+                (bind parsed (cell null))
+                (try
+                  (reset!
+                    parsed
+                    (obj :program (parser:parse (express source) options)))
+                  (catch
+                    error
+                    (if
+                      (instanceof error SyntaxError)
+                      (reset!
+                        result
+                        (assoc
+                          (express result)
+                          :status
+                          "parse_error"
+                          :error
+                          (error-record error)))
+                      (throw error))))
+                (if
+                  (not (= (express parsed) null))
+                  (do
+                    (bind program (get (express parsed) "program"))
+                    (bind walked (walk-program program))
+                    (if
+                      (!= walked:coverage_status "complete")
+                      (reset!
+                        result
+                        (assoc
+                          (express result)
+                          :status
+                          "unsupported_ast"
+                          :ast_coverage
+                          "unsupported_ast"
+                          :program
+                          program
+                          :findings
+                          walked:direct_statements
+                          :direct_count
+                          walked:direct_count
+                          :reasons
+                          walked:reasons
+                          :reason_count
+                          walked:reason_count
+                          :dependency_edges
+                          walked:dependency_edges
+                          :dependency_edge_count
+                          walked:dependency_edge_count
+                          :bare_imports
+                          walked:bare_imports
+                          :error
+                          walked:unsupported_nodes))
+                      (reset!
+                        result
+                        (assoc
+                          (express result)
+                          :status
+                          "complete_walk"
+                          :ast_coverage
+                          "complete"
+                          :program
+                          program
+                          :findings
+                          walked:direct_statements
+                          :direct_count
+                          walked:direct_count
+                          :reasons
+                          walked:reasons
+                          :reason_count
+                          walked:reason_count
+                          :dependency_edges
+                          walked:dependency_edges
+                          :dependency_edge_count
+                          walked:dependency_edge_count
+                          :bare_imports
+                          walked:bare_imports)))))))))))
+    (bind final-result (express result))
+    (if
+      (= final-result:status "complete_walk")
+      final-result
+      (dissoc final-result :program))))
+
+(func
+  compound-key
+  :args
+  (:any row)
+  :returns
+  :string
+  :body
+  (JSON:stringify
+    (array row:source_id row:source_sha256 row:emitter row:mode row:condition_id)))
+
+(func
+  validate-manifest
+  :args
+  (:any manifest)
+  :returns
+  :void
+  :body
+  (if
+    (!= manifest:kind "file_scan")
+    (throw (new Error "file manifest kind mismatch")))
+  (if
+    (not (Array:isArray manifest:rows))
+    (throw (new Error "file manifest rows must be an array")))
+  (bind keys (cell (array)))
+  (bind source-outputs (cell (array)))
+  (for-of
+    row
+    manifest:rows
+    (bind
+      absent-required-key
+      (->
+        (array
+          "source_id"
+          "source_sha256"
+          "emitter"
+          "mode"
+          "condition_id"
+          "path"
+          "sha256"
+          "output_path"
+          "required")
+        (:some (fn (:string field) (not (Object:hasOwn row field))))))
+    (bind expected-hash-missing (= row:condition_id "K10a"))
+    (if
+      (or
+        absent-required-key
+        (not (= (js:typeof row:source_id) "string"))
+        (not (= (js:typeof row:emitter) "string"))
+        (not (= (js:typeof row:mode) "string"))
+        (not (= (js:typeof row:condition_id) "string"))
+        (not (= (js:typeof row:path) "string"))
+        (not (= (js:typeof row:output_path) "string"))
+        (not (row:path:startsWith "/"))
+        (not (row:output_path:startsWith "/"))
+        (not (or (= row:required true) (= row:required false)))
+        (if
+          expected-hash-missing
+          (or (not (= row:source_sha256 null)) (not (= row:sha256 null)))
+          (or
+            (not (= (js:typeof row:source_sha256) "string"))
+            (not (= (js:typeof row:sha256) "string")))))
+      (throw
+        (new Error "manifest row is incomplete or has invalid expected hashes")))
+    (if
+      (!= row:source_sha256 row:sha256)
+      (throw (new Error "manifest source hash declarations disagree")))
+    (if
+      (or
+        (!= row:emitter "inert-js-control")
+        (!= row:mode "module")
+        (!= row:path row:output_path))
+      (throw
+        (new
+          Error
+          "bounded control row has unsupported route or unequal source/output paths")))
+    (if
+      (and
+        (= row:required false)
+        (or
+          (not (Object:hasOwn row "exclusion_reason"))
+          (not (= (js:typeof row:exclusion_reason) "string"))))
+      (throw
+        (new Error "non-required manifest row needs a frozen exclusion reason")))
+    (bind key (compound-key row))
+    (if
+      (-> (express keys) (:includes key))
+      (throw (new Error "duplicate condition key")))
+    (swap! keys (fn (:array all) (conj all key)))
+    (bind
+      source-output
+      (JSON:stringify
+        (array
+          row:source_id
+          row:emitter
+          row:mode
+          row:condition_id
+          row:output_path)))
+    (if
+      (-> (express source-outputs) (:includes source-output))
+      (throw (new Error "duplicate source/output mapping")))
+    (swap! source-outputs (fn (:array all) (conj all source-output))))
+  (if
+    (or
+      (!=
+        manifest:parser:path
+        "/Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs")
+      (!= manifest:parser:version "8.17.0")
+      (!=
+        manifest:parser:url
+        "file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs")
+      (!= manifest:parser:options:ecmaVersion "latest")
+      (!= manifest:parser:options:sourceType "module")
+      (!= manifest:parser:options:locations true)
+      (!= manifest:parser:options:ranges true))
+    (throw (new Error "parser identity or options differ from frozen contract"))))
+
+(func
+  status-counts
+  :args
+  (:array rows)
+  :returns
+  :any
+  :body
+  (bind
+    counts
+    (cell
+      (obj
+        :complete_walk
+        0
+        :source_missing
+        0
+        :source_unreadable
+        0
+        :source_hash_mismatch
+        0
+        :compile_failed
+        0
+        :output_missing
+        0
+        :output_hash_mismatch
+        0
+        :output_unreadable
+        0
+        :parse_error
+        0
+        :unsupported_ast
+        0
+        :not_processed
+        0
+        :excluded_named
+        0)))
+  (for-of
+    row
+    rows
+    (bind status row:status)
+    (bind
+      bucket
+      (match
+        status
+        ("complete_walk" "complete_walk")
+        ("source_missing" "source_missing")
+        ("source_unreadable" "source_unreadable")
+        ("source_hash_mismatch" "source_hash_mismatch")
+        ("compile_failed" "compile_failed")
+        ("output_missing" "output_missing")
+        ("output_hash_mismatch" "output_hash_mismatch")
+        ("output_unreadable" "output_unreadable")
+        ("parse_error" "parse_error")
+        ("unsupported_ast" "unsupported_ast")
+        ("not_processed" "not_processed")
+        ("excluded_named" "excluded_named")
+        (_
+          (throw
+            (new Error (template "unrecognized terminal row status " status))))))
+    (reset!
+      counts
+      (assoc (express counts) bucket (+ (get (express counts) bucket) 1))))
+  (express counts))
+
+(async
+  (func
+    scan-file-manifest
+    :args
+    (:any manifest)
+    :returns
+    :any
+    :body
+    (validate-manifest manifest)
+    (bind gate (cell null))
+    (bind gate-error (cell null))
+    (try
+      (reset! gate (await (load-parser manifest:parser:expected_sha256)))
+      (catch
+        error
+        (bind read-status (read-error-status error))
+        (if
+          (= read-status "unexpected")
+          (throw error)
+          (do
+            (reset! gate-error (error-record error))
+            (reset!
+              gate
+              (obj
+                :status
+                (if
+                  (= read-status "source_missing")
+                  "parser_artifact_missing"
+                  "parser_artifact_unreadable")
+                :actualHash
+                null
+                :actualVersion
+                null))))))
+    (bind rows (cell (array)))
+    (bind loaded (express gate))
+    (if
+      (!= loaded:status "ready")
+      (for-of
+        row
+        manifest:rows
+        (bind status (if row:required "not_processed" "excluded_named"))
+        (swap! rows (fn (:array all) (conj all (empty-row row status)))))
+      (do
+        (for-of
+          row
+          manifest:rows
+          (bind
+            observed
+            (if
+              row:required
+              (await (scan-row row loaded:parser manifest:parser:options))
+              (assoc (empty-row row "excluded_named") :error row:exclusion_reason)))
+          (swap! rows (fn (:array all) (conj all observed))))
+        (bind after (await (verify-parser loaded:actualHash)))
+        (if
+          (not after:unchanged)
+          (do
+            (reset!
+              gate
+              (obj
+                :status
+                "parser_artifact_changed_after_use"
+                :actualHash
+                after:afterHash
+                :actualVersion
+                loaded:actualVersion))
+            (reset!
+              gate-error
+              (obj
+                :status
+                "after_use_hash_mismatch"
+                :actualHash
+                after:afterHash
+                :expectedHash
+                loaded:actualHash))))))
+    (bind values (express rows))
+    (bind counts (status-counts values))
+    (bind files-parsed (+ counts:complete_walk counts:unsupported_ast))
+    (bind
+      partition-total
+      (+
+        counts:complete_walk
+        counts:source_missing
+        counts:source_unreadable
+        counts:source_hash_mismatch
+        counts:compile_failed
+        counts:output_missing
+        counts:output_hash_mismatch
+        counts:output_unreadable
+        counts:parse_error
+        counts:unsupported_ast
+        counts:not_processed
+        counts:excluded_named))
+    (if
+      (!= partition-total values:length)
+      (throw (new Error "terminal status partition does not match selected rows")))
+    (bind source-keys (cell (array)))
+    (for-of
+      row
+      values
+      (bind source-key (JSON:stringify (array row:source_id row:source_sha256)))
+      (if
+        (not (-> (express source-keys) (:includes source-key)))
+        (swap! source-keys (fn (:array all) (conj all source-key)))))
+    (bind
+      direct-total
+      (->
+        values
+        (:map (fn (:any row) (if (own row "direct_count") row:direct_count 0)))
+        (:reduce (fn (:number total :number next) (+ total next)) 0)))
+    (bind
+      reason-total
+      (->
+        values
+        (:map (fn (:any row) (if (own row "reason_count") row:reason_count 0)))
+        (:reduce (fn (:number total :number next) (+ total next)) 0)))
+    (bind
+      edge-total
+      (->
+        values
+        (:map
+          (fn
+            (:any row)
+            (if (own row "dependency_edge_count") row:dependency_edge_count 0)))
+        (:reduce (fn (:number total :number next) (+ total next)) 0)))
+    (bind
+      bare-total
+      (->
+        values
+        (:map (fn (:any row) row:bare_imports))
+        (:reduce (fn (:number total :number next) (+ total next)) 0)))
+    (bind required-count (cell 0))
+    (for-of
+      row
+      manifest:rows
+      (if row:required (swap! required-count (fn (:number count) (+ count 1)))))
+    (bind required-total (express required-count))
+    (bind loaded-gate (express gate))
+    (bind
+      complete
+      (and
+        (= loaded-gate:status "ready")
+        (= counts:complete_walk required-total)
+        (=
+          (+
+            counts:source_missing
+            counts:source_unreadable
+            counts:source_hash_mismatch
+            counts:compile_failed
+            counts:output_missing
+            counts:output_hash_mismatch
+            counts:output_unreadable
+            counts:parse_error
+            counts:unsupported_ast
+            counts:not_processed)
+          0)))
+    (bind
+      parser-gate
+      (obj
+        :status
+        (match
+          loaded-gate:status
+          ("ready" "passed")
+          ("parser_artifact_missing" "missing")
+          ("parser_artifact_unreadable" "not_processed")
+          ("parser_artifact_identity_mismatch" "identity_mismatch")
+          ("parser_artifact_version_mismatch" "identity_mismatch")
+          (_ "not_processed"))
+        :path
+        manifest:parser:path
+        :version
+        loaded-gate:actualVersion
+        :expected_sha256
+        manifest:parser:expected_sha256
+        :actual_sha256
+        loaded-gate:actualHash
+        :options
+        manifest:parser:options
+        :error
+        (express gate-error)))
+    (obj
+      :schema
+      "lykn-estree-capability-report-v1"
+      :run_id
+      manifest:run_id
+      :run_kind
+      "file_scan"
+      :created_at
+      manifest:created_at
+      :source_commit
+      manifest:source_commit
+      :source_tree
+      manifest:source_tree
+      :source_clean
+      manifest:source_clean
+      :compiler
+      manifest:compiler
+      :deno
+      manifest:deno
+      :parser_gate
+      parser-gate
+      :selected_sources
+      (get (express source-keys) "length")
+      :selected_condition_rows
+      (get values "length")
+      :required_condition_rows
+      required-total
+      :complete_walk
+      counts:complete_walk
+      :source_missing
+      counts:source_missing
+      :source_unreadable
+      counts:source_unreadable
+      :source_hash_mismatch
+      counts:source_hash_mismatch
+      :compile_failed
+      counts:compile_failed
+      :output_missing
+      counts:output_missing
+      :output_hash_mismatch
+      counts:output_hash_mismatch
+      :output_unreadable
+      counts:output_unreadable
+      :parse_error
+      counts:parse_error
+      :unsupported_ast
+      counts:unsupported_ast
+      :not_processed
+      counts:not_processed
+      :excluded_named
+      counts:excluded_named
+      :files_parsed
+      files-parsed
+      :files_completely_walked
+      counts:complete_walk
+      :direct_statements_with_findings
+      direct-total
+      :nested_reasons
+      reason-total
+      :dependency_edges
+      edge-total
+      :bare_imports
+      bare-total
+      :rows
+      values
+      :status
+      (if
+        complete
+        (if
+          (> (+ direct-total reason-total edge-total) 0)
+          "complete_with_findings"
+          "complete_no_findings")
+        "incomplete")
+      :exit
+      (if complete 0 2))))
+
+(func
+  scan-synthetic
+  :args
+  (:any manifest)
+  :returns
+  :any
+  :body
+  (if
+    (or (!= manifest:kind "synthetic_unit") (!= manifest:control_id "K12"))
+    (throw (new Error "synthetic manifest must be frozen K12")))
+  (bind
+    walked
+    (walk-program (obj :type "Program" :body (array manifest:injected_ast))))
+  (bind error (get walked:unsupported_nodes 0))
+  (obj
+    :schema
+    "lykn-estree-capability-report-v1"
+    :run_id
+    manifest:run_id
+    :run_kind
+    "synthetic_unit"
+    :created_at
+    manifest:created_at
+    :parser_gate
+    (obj
+      :status
+      "not_applicable"
+      :path
+      null
+      :version
+      null
+      :expected_sha256
+      null
+      :actual_sha256
+      null
+      :options
+      null
+      :error
+      null)
+    :selected_sources
+    null
+    :selected_condition_rows
+    null
+    :required_condition_rows
+    null
+    :complete_walk
+    null
+    :source_missing
+    null
+    :source_unreadable
+    null
+    :source_hash_mismatch
+    null
+    :compile_failed
+    null
+    :output_missing
+    null
+    :output_hash_mismatch
+    null
+    :output_unreadable
+    null
+    :parse_error
+    null
+    :unsupported_ast
+    null
+    :not_processed
+    null
+    :excluded_named
+    null
+    :files_parsed
+    null
+    :files_completely_walked
+    null
+    :direct_statements_with_findings
+    null
+    :nested_reasons
+    null
+    :dependency_edges
+    null
+    :bare_imports
+    null
+    :status
+    "incomplete"
+    :exit
+    2
+    :rows
+    (array)
+    :unit
+    (obj
+      :control_id
+      "K12"
+      :status
+      error:status
+      :nodeType
+      error:nodeType
+      :path
+      error:path
+      :loc
+      error:loc
+      :range
+      error:range)))
+
+(async
+  (func
+    scan-manifest
+    :args
+    (:string manifest-path)
+    :returns
+    :any
+    :body
+    (if
+      (not (manifest-path:startsWith "/"))
+      (throw (new Error "manifest path must be absolute")))
+    (bind manifest (JSON:parse (await (Deno:readTextFile manifest-path))))
+    (bind
+      report
+      (match
+        manifest:kind
+        ("file_scan" (await (scan-file-manifest manifest)))
+        ("synthetic_unit" (scan-synthetic manifest))
+        (_
+          (throw (new Error "manifest kind must be file_scan or synthetic_unit")))))
+    (console:log (JSON:stringify report))
+    (if (!= report:exit 0) (Deno:exit 2))))
+
+(if
+  (!= Deno.args:length 1)
+  (do
+    (console:log
+      (JSON:stringify
+        (obj
+          :status
+          "scanner_usage_error"
+          :expectedArgs
+          1
+          :actualArgs
+          Deno.args:length)))
+    (Deno:exit 2))
+  (await (scan-manifest (get Deno.args 0))))

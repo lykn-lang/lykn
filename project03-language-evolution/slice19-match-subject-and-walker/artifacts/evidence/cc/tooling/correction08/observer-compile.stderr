@@ -1,0 +1,34 @@
+39:9: warning: unused binding 'controls'
+  suggestion: prefix with underscore: _controls
+114:9: warning: unused binding 'report'
+  suggestion: prefix with underscore: _report
+145:9: warning: unused binding 'row'
+  suggestion: prefix with underscore: _row
+217:5: warning: unused binding 'row'
+  suggestion: prefix with underscore: _row
+250:5: warning: unused binding 'row'
+  suggestion: prefix with underscore: _row
+359:5: warning: unused binding 'row'
+  suggestion: prefix with underscore: _row
+143:3: warning: unused binding 'ensure-positive-row'
+  suggestion: prefix with underscore: _ensure-positive-row
+273:3: warning: unused binding 'ensure-file-report'
+  suggestion: prefix with underscore: _ensure-file-report
+37:3: warning: unused binding 'control'
+  suggestion: prefix with underscore: _control
+214:3: warning: unused binding 'ensure-parent'
+  suggestion: prefix with underscore: _ensure-parent
+11:3: warning: unused binding 'absolute-path'
+  suggestion: prefix with underscore: _absolute-path
+125:3: warning: unused binding 'ensure-no-ast'
+  suggestion: prefix with underscore: _ensure-no-ast
+395:3: warning: unused binding 'result-path'
+  suggestion: prefix with underscore: _result-path
+247:3: warning: unused binding 'ensure-edge'
+  suggestion: prefix with underscore: _ensure-edge
+112:3: warning: unused binding 'ensure-zero'
+  suggestion: prefix with underscore: _ensure-zero
+102:3: warning: unused binding 'expected-exit'
+  suggestion: prefix with underscore: _expected-exit
+356:3: warning: unused binding 'ensure-reason'
+  suggestion: prefix with underscore: _ensure-reason

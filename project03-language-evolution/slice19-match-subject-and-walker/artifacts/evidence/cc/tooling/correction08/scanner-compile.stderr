@@ -1,0 +1,20 @@
+34:9: warning: unused binding 'row'
+  suggestion: prefix with underscore: _row
+262:9: warning: unused binding 'row'
+  suggestion: prefix with underscore: _row
+272:9: warning: unused binding 'manifest'
+  suggestion: prefix with underscore: _manifest
+697:9: warning: unused binding 'manifest'
+  suggestion: prefix with underscore: _manifest
+270:3: warning: unused binding 'validate-manifest'
+  suggestion: prefix with underscore: _validate-manifest
+79:3: warning: unused binding 'error-record'
+  suggestion: prefix with underscore: _error-record
+695:3: warning: unused binding 'scan-synthetic'
+  suggestion: prefix with underscore: _scan-synthetic
+32:3: warning: unused binding 'empty-row'
+  suggestion: prefix with underscore: _empty-row
+99:3: warning: unused binding 'read-error-status'
+  suggestion: prefix with underscore: _read-error-status
+376:3: warning: unused binding 'status-counts'
+  suggestion: prefix with underscore: _status-counts

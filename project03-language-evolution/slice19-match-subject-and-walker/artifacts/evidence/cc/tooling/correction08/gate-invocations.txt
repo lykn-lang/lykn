@@ -1,0 +1,52 @@
+All native invocations below used exactly this executable:
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+Actual cwd /private/tmp/lykn-s19-correction08/cwd
+Actual process environment was cleared via /usr/bin/env -i then set to:
+PATH=/opt/homebrew/bin:/usr/bin:/bin
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+DENO_NO_UPDATE_CHECK=1
+NO_COLOR=1
+No other process environment fields were supplied.
+Each prefix names complete raw <prefix>.stdout and <prefix>.stderr files.
+Exit codes below are transcribed from actual native exec results, not inferred
+from text. Streams were redirected directly before any result interpretation.
+
+Source ffb049c5c8527d4a16604e2213d9bce00994a5f3, verified owned source copies:
+walker-check exit0 argv ["check","/private/tmp/lykn-s19-correction08/source/estree-walker.lykn"]
+core-check exit0 argv ["check","/private/tmp/lykn-s19-correction08/source/parser-core.lykn"]
+scanner-check exit0 argv ["check","/private/tmp/lykn-s19-correction08/source/scanner.lykn"]
+observer-check exit0 argv ["check","/private/tmp/lykn-s19-correction08/source/capability-observer.lykn"]
+core-fmt-check exit0 argv ["fmt","--check","/private/tmp/lykn-s19-correction08/source/parser-core.lykn"]
+walker-fmt-check exit1 argv ["fmt","--check","/private/tmp/lykn-s19-correction08/source/estree-walker.lykn"]
+scanner-fmt-check exit1 argv ["fmt","--check","/private/tmp/lykn-s19-correction08/source/scanner.lykn"]
+observer-fmt-check exit1 argv ["fmt","--check","/private/tmp/lykn-s19-correction08/source/capability-observer.lykn"]
+fmt-write exit0 argv ["fmt","-w","/private/tmp/lykn-s19-correction08/source/estree-walker.lykn","/private/tmp/lykn-s19-correction08/source/scanner.lykn","/private/tmp/lykn-s19-correction08/source/capability-observer.lykn"]
+
+Only native formatter output was copied to canonical sources; entire old bodies
+saved before formatting. Source9122473cbb1bb5a145cde368d749f50157216d7f committed
+before all following dependent gates; owned copy hashes matched canonical hashes.
+Core immutable6ca unchanged throughout.
+formatted-check exit0 argv ["check","/private/tmp/lykn-s19-correction08/source/estree-walker.lykn","/private/tmp/lykn-s19-correction08/source/scanner.lykn","/private/tmp/lykn-s19-correction08/source/capability-observer.lykn"]
+formatted-fmt-check exit0 argv ["fmt","--check","/private/tmp/lykn-s19-correction08/source/estree-walker.lykn","/private/tmp/lykn-s19-correction08/source/scanner.lykn","/private/tmp/lykn-s19-correction08/source/capability-observer.lykn"]
+all-lint exit0 argv ["lint","/private/tmp/lykn-s19-correction08/source/parser-core.lykn","/private/tmp/lykn-s19-correction08/source/estree-walker.lykn","/private/tmp/lykn-s19-correction08/source/scanner.lykn","/private/tmp/lykn-s19-correction08/source/capability-observer.lykn"]
+core-compile exit0 argv ["compile","/private/tmp/lykn-s19-correction08/source/parser-core.lykn","-o","/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/correction08/modules/parser-core.js"]
+walker-compile exit0 argv ["compile","/private/tmp/lykn-s19-correction08/source/estree-walker.lykn","-o","/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/correction08/modules/estree-walker.js"]
+scanner-compile exit0 argv ["compile","/private/tmp/lykn-s19-correction08/source/scanner.lykn","-o","/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/correction08/modules/scanner.js"]
+observer-compile exit0 argv ["compile","/private/tmp/lykn-s19-correction08/source/capability-observer.lykn","-o","/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/correction08/modules/capability-observer.js"]
+
+Actual observations:
+Initial check4/4 passed, INFO7/20/16/19 core/walker/scanner/observer forms.
+Initial fmt-check1/4 passed, other3 exit1 only not-formatted diagnostics.
+Formatter-write3files0, subsequent sourcecheck3/3 and fmtcheck3/3 passed.
+Lint4files0/no findings. Default strictcompile4/4 exit0; warnings retained fully.
+No strip/lax/skip/config/suppression flags. Core generated068af reproduced.
+There were16 native CLI invocations, not16 independent complete tool acceptances.
+
+Additional native source review: git diff --check exit0 before both source commits.
+git diff -w --exit-code after formatter exit1; displayed output was truncated.
+This was not semantic-equality proof: formatter also normalized #a() to (array).
+Full actual native formatter diff retained in native-formatter.diff.
+Config stat exit1, all18 exact paths absent; no general configuration claim.
+git check-ignore over four exact module output paths exit0 before generation.
+CLI --version0 -> lykn0.6.0; Deno --version0 -> Deno2.9.6/V815.0.245.2-rusty/TS6.0.3.
+No product build was performed.
