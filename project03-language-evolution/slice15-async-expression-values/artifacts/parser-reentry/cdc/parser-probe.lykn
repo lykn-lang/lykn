@@ -1,0 +1,98 @@
+(import "./parser-core.js" (load-parser verify-parser))
+
+(bind argv Deno.args)
+
+(if
+  (!= argv:length 3)
+  (do
+    (console:log
+      (JSON:stringify
+        (obj :status "probe_usage_error" :expectedArgs 3 :actualArgs argv:length)))
+    (Deno.exit 2)))
+
+(bind control-id (get argv 0))
+
+(bind expected-hash (get argv 1))
+
+(bind input-path (get argv 2))
+
+(bind parser-check (await (load-parser expected-hash)))
+
+(if
+  (!= parser-check:status "ready")
+  (do (console:log (JSON:stringify parser-check)) (Deno.exit 2)))
+
+(bind input-text (await (Deno:readTextFile input-path)))
+
+(bind parsed (cell null))
+
+(try
+  (reset!
+    parsed
+    (obj
+      :status
+      "parse_success"
+      :controlId
+      control-id
+      :actualHash
+      parser-check:actualHash
+      :actualVersion
+      parser-check:actualVersion
+      :program
+      (parser-check:parser:parse
+        input-text
+        (obj
+          :ecmaVersion
+          "latest"
+          :sourceType
+          "module"
+          :locations
+          true
+          :ranges
+          true))))
+  (catch
+    error
+    (reset!
+      parsed
+      (obj
+        :status
+        "parse_error"
+        :controlId
+        control-id
+        :actualHash
+        parser-check:actualHash
+        :actualVersion
+        parser-check:actualVersion
+        :errorName
+        error:name
+        :message
+        error:message
+        :pos
+        error:pos
+        :line
+        error:loc:line
+        :column
+        error:loc:column))))
+
+(bind after-check (await (verify-parser parser-check:actualHash)))
+
+(if
+  (not after-check:unchanged)
+  (do
+    (console:log
+      (JSON:stringify
+        (obj
+          :status
+          "parser_artifact_changed_after_use"
+          :beforeHash
+          parser-check:actualHash
+          :afterHash
+          after-check:afterHash)))
+    (Deno.exit 2)))
+
+(bind parsed-result (express parsed))
+
+(console:log
+  (JSON:stringify (assoc parsed-result :afterHash after-check:afterHash)))
+
+(if (= parsed-result:status "parse_error") (Deno.exit 2))

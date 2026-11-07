@@ -1,0 +1,26 @@
+375:1: warning: unused binding 'task-root'
+  suggestion: prefix with underscore: _task-root
+377:1: warning: unused binding 'cache-root'
+  suggestion: prefix with underscore: _cache-root
+387:1: warning: unused binding 'row-0'
+  suggestion: prefix with underscore: _row-0
+373:1: warning: unused binding 'core-js'
+  suggestion: prefix with underscore: _core-js
+367:1: warning: unused binding 'deno'
+  suggestion: prefix with underscore: _deno
+371:1: warning: unused binding 'probe-js'
+  suggestion: prefix with underscore: _probe-js
+391:1: warning: unused binding 'row-2'
+  suggestion: prefix with underscore: _row-2
+379:1: warning: unused binding 'cwd'
+  suggestion: prefix with underscore: _cwd
+381:1: warning: unused binding 'controls'
+  suggestion: prefix with underscore: _controls
+393:1: warning: unused binding 'row-3'
+  suggestion: prefix with underscore: _row-3
+37:3: warning: unused binding 'is-string'
+  suggestion: prefix with underscore: _is-string
+369:1: warning: unused binding 'parser-path'
+  suggestion: prefix with underscore: _parser-path
+389:1: warning: unused binding 'row-1'
+  suggestion: prefix with underscore: _row-1

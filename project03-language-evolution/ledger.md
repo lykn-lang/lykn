@@ -30,3 +30,12 @@ four parser observations0/4, six VP rowsdone/twodeferred. Method breach/unknown
 receipt and old Slice12/13 history are preserved; NE-T01 type coverage owned.
 This is not project composition, original F1–F12 or Project07 acceptance, release
 integration or authority to start another unit. P-1 remains open.
+
+2026-11-07: [Slice15 endpoint](slice15-async-expression-values/cdc-verification.md)
+independently accepts NE-C09 at task5408, full normal source gates and the original
+four parser observations4/4 in each independent fresh run. Seven AV rows done;
+two explicit source-budget overrides and failed conditions/provenance limits
+remain. The first outer-read omission and exact original-authority restoration
+are distinct preserved launch conditions. No full K/walker/corpus/F6 audit,
+release integration, next unit or inherited project/Project07 acceptance. P-1 and
+all original Slice01 F-1–F-12 remain open; old child deferrals stay historical.

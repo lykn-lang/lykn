@@ -1,12 +1,19 @@
 # Slice15 — async expression values and bounded parser re-entry
 
-Opened2026-11-06; open, collapsed standalone increment. Operator “let’s dive
+Opened2026-11-06; closed2026-11-07, collapsed standalone increment. Operator “let’s dive
 into C09!” accepts NE-C09 repair → independent validation → unchanged four
 parser observations, same Sol6.1 High CDC/Luna6 High CC Autonomous Mode and
 another-real-gap stop. Endpoint only this increment. No release integration,
 walker/corpus/F6/library/push/publication/global install/dependency/remote CI.
 
-Current assignment iteration01: consolidated fixture correction2/5 before
+**Final:** source5408abd independently accepted task-only; all seven ledger rows
+done. Same unchanged four parser observations pass4/4 independently, no error or
+unrun row in either corrected fresh condition. See [close](closing-report.md),
+[review](cdc-verification.md) and [retrospective](cdc-retrospective.md). No next
+unit/integration opens. The chronological original assignment and pauses below
+remain preserved; source passes6 and7 each had explicit Operator overrides.
+
+Preserved initial assignment iteration01: consolidated fixture correction2/5 before
 production. Original freeze61a7e3e/oracle5dc2e0d and baseline9133b90 preserved;
 const expected-Value harness fix5b11f49 was correction1. E2 malformed source,
 E1 stdout prefix and E2/E4 weak discriminators are authoring findings, not new
@@ -321,7 +328,7 @@ historical discrepancy is preserved, not repaired by inventing a prompt.
 | cc-prompt-iteration05.md | iteration04 | Explicit override1, grouped-bind correction6 | Group fix green, switch regression rejected |
 | cc-prompt-iteration06.md | iteration05 | Explicit override2, role-aware switch correction7 | Source independently accepted5408 |
 | cc-prompt-iteration07.md | iteration06 | Original conditional parser phase; count remains7 | Returned: K11 passed, K01 outer read denied before child |
-| cc-prompt-iteration08.md | iteration07 | Restore original exact own-input read scope; source count remains7 | Active; fresh four-case launch |
+| cc-prompt-iteration08.md | iteration07 | Restore original exact own-input read scope; source count remains7 | Returneddecfb23; fresh4/4, independently repeated4/4 |
 
 ## Operational launch correction within original authority
 
@@ -338,3 +345,14 @@ No directory/-A/env/net/subprocess expansion, child policy/source/oracle change
 or eighth source correction. Original full prerequisite evidence is reused with
 unchanged-byte applicability; current assignment iteration08 is active. Four
 ordered observations and fresh CDC replay remain the same bounded endpoint.
+
+## Final endpoint
+
+CC attempt17 and CDC separate fresh replay each pass ordered K11,K01,K08,K09,
+4attempted/4passed/0error/0unrun, overall0. Immutable helper/data/oracle bytes and
+source5408 remain unchanged. Full source Make/citation receipts retain direct
+applicability; no redundant source gate rerun after read-only research execution.
+AV-01–07 done, ownership returned to CDC for closure. Original F-1–F-12, full
+walker/corpus gate, Project07 synthesis/licence/bootstrap/ADT/authoring/book/human
+gates and NE-C02/NE-C04/NE-C05/NE-T01 limits remain owned/open as recorded.
+No release merge, other propagation, new unit or project/arc acceptance follows.

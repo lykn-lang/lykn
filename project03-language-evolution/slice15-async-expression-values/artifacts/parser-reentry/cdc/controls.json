@@ -1,0 +1,131 @@
+{
+  "schema": "lykn-slice12-phase-a-controls-v1",
+  "parser": {
+    "path": "/Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs",
+    "url": "file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs",
+    "version": "8.17.0",
+    "sha256": "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7"
+  },
+  "options": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "locations": true,
+    "ranges": true
+  },
+  "observations": [
+    {
+      "id": "K11",
+      "sequence": 1,
+      "input": null,
+      "expectedHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expectedStatus": "parser_artifact_identity_mismatch",
+      "expectedExit": 2,
+      "mustNotImportOrParse": true
+    },
+    {
+      "id": "K01",
+      "sequence": 2,
+      "input": "function lazy() {\n  runLater();\n}\nconst later = () => runLater();\n",
+      "expectedHash": "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7",
+      "expectedStatus": "parse_success",
+      "expectedExit": 0
+    },
+    {
+      "id": "K08",
+      "sequence": 3,
+      "input": "import \"./dep.js\";\nexport { value } from \"./dep.js\";\nawait load();\n",
+      "expectedHash": "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7",
+      "expectedStatus": "parse_success",
+      "expectedExit": 0
+    },
+    {
+      "id": "K09",
+      "sequence": 4,
+      "input": "const value = ;\n",
+      "expectedHash": "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7",
+      "expectedStatus": "parse_error",
+      "expectedExit": 2
+    }
+  ],
+  "fullAuditControls": [
+    {
+      "id": "K01",
+      "phaseAUse": "parser-only; no walker assertion",
+      "input": "function lazy() {\n  runLater();\n}\nconst later = () => runLater();\n",
+      "oracle": "Program module; 2 body statements; range [0,66], end loc 5:0; function body call at Program.body[0].body.body[0].expression, loc 2:2, range [20,30], deferred; arrow body call deferred; direct findings 0, nested reasons 0."
+    },
+    {
+      "id": "K02",
+      "phaseAUse": "unrun; Phase B walker",
+      "input": "const value = (() => 1)();\nrun();\n",
+      "oracle": "2 direct parent findings; 3 reasons: outer CallExpression at 1:14, then run CallExpression and Identifier at 2:0; no IIFE-body reason; complete with findings, exit 0."
+    },
+    {
+      "id": "K03",
+      "phaseAUse": "unrun; Phase B walker",
+      "input": "const value = object.field;\n",
+      "oracle": "1 direct declaration; MemberExpression and object Identifier reasons at Program.body[0].declarations[0].init, both loc 1:14; noncomputed field is not a read; complete with findings, exit 0."
+    },
+    {
+      "id": "K04",
+      "phaseAUse": "unrun; Phase B walker",
+      "input": "const { value = fallback() } = source;\n",
+      "oracle": "1 direct declaration; 4 reasons: destructuring at Program.body[0].declarations[0].id loc 1:6; fallback CallExpression and Identifier at id.properties[0].value.right loc 1:16; source Identifier at declarations[0].init loc 1:31; complete with findings, exit 0."
+    },
+    {
+      "id": "K05",
+      "phaseAUse": "unrun; Phase B walker",
+      "input": "const value = { ...source };\nconst text = `x${value}`;\n",
+      "oracle": "2 direct declarations; 4 reasons: SpreadElement at body[0].declarations[0].init.properties[0] loc 1:16, source Identifier loc 1:19; template coercion at body[1].declarations[0].init loc 2:13 and substitution Identifier loc 2:17; complete with findings, exit 0."
+    },
+    {
+      "id": "K06",
+      "phaseAUse": "unrun; Phase B walker",
+      "input": "class Box extends Base {\n  [key()]() { run(); }\n  static value = init();\n  static { start(); }\n  item = later();\n}\n",
+      "oracle": "1 direct class declaration; 9 reasons: class_heritage_validation plus Base read at superClass loc 1:18; key CallExpression, key read and computed_key_coercion at ClassBody.body[0].key loc 2:3; static init CallExpression and identifier loc 3:17; static-block start CallExpression loc 4:11; method and instance initializer deferred; complete with findings, exit 0."
+    },
+    {
+      "id": "K07",
+      "phaseAUse": "unrun; Phase B walker",
+      "input": "if (ready) {\n  throw issue;\n}\n",
+      "oracle": "1 direct IfStatement; 3 reasons: ready read at body[0].test loc 1:4, ThrowStatement at body[0].consequent.body[0] loc 2:2, issue read at argument loc 2:8; complete with findings, exit 0."
+    },
+    {
+      "id": "K08",
+      "phaseAUse": "parser-only; no walker assertion",
+      "input": "import \"./dep.js\";\nexport { value } from \"./dep.js\";\nawait load();\n",
+      "oracle": "Program module; 3 body statements; range [0,67], end loc 4:0; 2 dependency edges and first also bare_import; direct await parent; 3 reasons: AwaitExpression at body[2].expression loc 3:0 range [53,65], nested CallExpression and load Identifier loc 3:6 range [59,65]."
+    },
+    {
+      "id": "K09",
+      "phaseAUse": "parser-only; no walker assertion",
+      "input": "const value = ;\n",
+      "oracle": "Actual SyntaxError pos 14, loc 1:14; no AST findings; parse_error, incomplete aggregate, nonzero exit. Preserve actual diagnostic."
+    },
+    {
+      "id": "K10a",
+      "phaseAUse": "unrun; Phase B manifest failure control",
+      "manifestPath": "missing-control.js",
+      "oracle": "No file; distinct manifest key and no AST path; source_missing; retained; aggregate incomplete and nonzero."
+    },
+    {
+      "id": "K10b",
+      "phaseAUse": "unrun; Phase B manifest failure control",
+      "manifestPath": "unreadable-control.js",
+      "input": "const value = 1;\n",
+      "oracle": "Existing file whose scoped read grant denies it; distinct manifest key and no AST path; source_unreadable; retained; aggregate incomplete and nonzero."
+    },
+    {
+      "id": "K11",
+      "phaseAUse": "active first negative control",
+      "input": null,
+      "oracle": "Expected parser hash is 64 zero hex digits; actual pinned artifact unchanged; parser_artifact_identity_mismatch before import/parse; no AST; aggregate incomplete and nonzero."
+    },
+    {
+      "id": "K12",
+      "phaseAUse": "unrun; Phase B synthetic walker unit boundary",
+      "injectedAst": "{\"type\":\"ExperimentalNode\",\"argument\":{\"type\":\"Literal\",\"value\":1}}",
+      "oracle": "At Program.body[0], type ExperimentalNode; unsupported_ast with node/path; parser and corpus file counts not applicable because this is synthetic unit data, not parsed JS; generic traversal cannot complete."
+    }
+  ]
+}

@@ -535,6 +535,19 @@ Actual release compiler SHA b0a5649791ec6dfdd774619cc7c01c4c6c4f1138a5db7e368916
 No release integration or universal compiler-correctness claim. Original same-four
 parser continuation begins only after this acceptance;0/4 at handoff, no walker.
 
+**Slice15 final disposition,2026-11-07:** NE-C09 repair is independently accepted
+on task5408 only. Original three helper bodies/data/oracles stay unchanged and
+pass independent native/generated/real-module gates. Original four observations
+K11,K01,K08,K09 each pass in separate CC and CDC runs (4/4 in each, no errors/unrun).
+Exact cached unmodified npm-distributed Acorn8.17.0/hash1cbcbf is verified before
+import and unchanged after use. First observer launch's omitted own-input reads
+caused a preserved outer setup failure after K11; original-authority exact three
+input-read restoration precedes the successful fresh conditions. It is not an
+extra source correction or retroactive first-run success. [Final review](slice15-async-expression-values/cdc-verification.md)
+and [raw independent witnesses](slice15-async-expression-values/artifacts/parser-reentry/cdc/replay.md).
+No release propagation, universal async/compiler proof, walker/full corpus or
+F-1–F-12 completion follows. NE-C02/04/05/NE-T01 and Project07 gates remain separate.
+
 #### NE-T01 — async declaration-sidecar coverage limitation
 
 **Owned current limitation, 2026-11-06.** Accepted Slice14 async module/consumer

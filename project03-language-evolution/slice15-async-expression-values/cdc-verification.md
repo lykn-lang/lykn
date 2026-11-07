@@ -1,6 +1,40 @@
-# Independent review — source accepted, parser phase pending
+# Independent review — bounded endpoint accepted
 
-## Current source-stage acceptance after correction7
+## Final endpoint verdict,2026-11-07
+
+**ACCEPT this bounded increment: AV-01–07 done.** Source5408abd remains accepted
+TASK-ONLY as recorded below. The unchanged three helpers independently pass native
+check/fmt/lint/strict compile, complete generated-code review, Deno check and real
+zero-argument module/usage guards. Core0, probe2/usage JSON and observer1/usage
+Error are distinct guard outcomes, not parser observations or DenoCheck-only proof.
+
+CC corrected launch at planningdecfb23d3c58b07d59da21616b2d856d02ae0f52 and
+[fresh CDC replay](artifacts/parser-reentry/cdc/replay.md) each execute the same
+ordered four observations: **4attempted/4passed/0error/0unrun**, observerexit0,
+empty stderr. Their four raw stdout binaries are independently byte-equal (cmp0
+each); actual child exits are2,0,0,2, all child stderr empty. K11 rejects bad hash
+without AST; K01 gives module Program[0,66], end5:0 and deferred call[20,30] at2:2;
+K08 gives Program[0,67], end4:0, TLA[53,65] at3:0 and call[59,65] at3:6;
+K09 gives actual SyntaxError `Unexpected token (1:14)`,pos14/1:14 and no AST.
+Acorn8.17.0/hash1cbcbf is verified before import and unchanged after parsing.
+
+These are independent CDC executions from separate config-free /private/tmp
+sources/compiled modules, own roots/caches and exact grants, performed while CC
+packaged its independent immutable-input run; no shared source/cache/index write.
+CDC's outer environment is explicitly cleared; CC reports inherited outer env
+plus fixed DENO_DIR/update/no-color. Both children clearEnv identically. No broader
+grant was needed. Exact cached npm-distributed unmodified ESM is the selected
+artifact; this is not general npm-source/acquisition authorization.
+
+The earlier ca568 first launch remains1childpass/K01setup-error/2untouched. Its
+deficient grant actually differs from corrected conditions. Iteration08/root
+disposition restores only three exact owned input reads already authorized in the
+original method; no eighth source correction or retroactive compliance follows.
+All prior source rejects, process violations and provenance limits below survive.
+No walker/effect classification/full corpus/F-6 matrix/library/type claim follows.
+Releasef705655 and accepted predecessor3b65d09 remain untouched; no integration.
+
+## Preserved source-stage acceptance before parser continuation
 
 **Accepted TASK-ONLY at5408abd432b8789ae474a3895436f68818c4e482, before parser
 continuation.** Independent normal full Make exits0: all Rust, JS1468/0failed
