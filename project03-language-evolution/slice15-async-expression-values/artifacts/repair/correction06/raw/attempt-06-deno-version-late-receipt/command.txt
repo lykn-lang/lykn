@@ -1,0 +1,4 @@
+late receipt for an already completed direct version query
+original cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/opt/homebrew/bin/deno --version
+capture timing=after invocation; this receipt was not prepared before execution

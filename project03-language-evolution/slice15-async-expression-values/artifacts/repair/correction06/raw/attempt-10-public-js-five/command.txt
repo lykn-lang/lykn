@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/opt/homebrew/bin/deno test --config project.json --cached-only --no-npm --no-remote --allow-read=. --allow-write=/private/tmp --allow-run=/opt/homebrew/bin/deno test/forms/async-expression-values.test.js
+environment=TMPDIR=/private/tmp; DENO_DIR=/Users/oubiwann/Library/Caches/deno; network permission absent
+Deno_sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+canonical_and_embedded_compiler_sha256=1c1e7e822e5665b3cac2914d95bceade004694c0c37db5be1dd971876e56fd56

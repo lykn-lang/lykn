@@ -1,0 +1,3 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866
+source_commit=3f8f6df8d4bdefd1aeb3f66cf14037efb9d927a6

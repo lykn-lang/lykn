@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=make check-cited-paths
+environment=normal metadata environment; no CARGO overrides
+source_commit=3f8f6dfe6177db7233932dc6c8938993655a1cae

@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice15-async-expression-values/artifacts/cdc-repair/parser-core.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice15-async-expression-values/artifacts/repair/correction06/raw/attempt-16-core-compile/parser-core.js
+release_cli=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+release_cli_sha256=af7987162c3341e83435adb16c2bd972538629a5c267918d84e0d112348d7f07
+core_source_sha256=6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7

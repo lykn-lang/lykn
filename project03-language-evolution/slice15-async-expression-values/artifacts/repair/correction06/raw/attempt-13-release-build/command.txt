@@ -1,0 +1,3 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=cargo build --offline --locked --release -p lykn-cli --bin lykn
+environment=CARGO_NET_OFFLINE=unset; CARGO_TARGET_DIR=unset

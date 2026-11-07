@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/async_expression_values-ca9664e9a5eacb46 --nocapture
+environment=LYKN_TEST_DENO=/opt/homebrew/bin/deno; CARGO_NET_OFFLINE=unset; CARGO_TARGET_DIR=unset
+integration_binary_sha256=089061fec14fa98c6954b9afc583bb60f75b5af2499461949a11b71807b85a26
+CLI_sha256=f80d60d280a092978922a797eb6602446f14c00daa4eb5ff263b91bf2ec261a7
+Deno_sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+source_commit=3f8f6dfe6177db7233932dc6c8938993655a1cae

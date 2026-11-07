@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=env -u CARGO_NET_OFFLINE -u CARGO_TARGET_DIR XDG_CACHE_HOME=/private/tmp/lykn-correction06-96e20b9-xdg-cache npm_config_cache=/private/tmp/lykn-correction06-96e20b9-npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno make check
+environment=CARGO_NET_OFFLINE unset; CARGO_TARGET_DIR unset; fresh owned XDG/npm caches; fixed DENO_DIR; pinned LYKN_TEST_DENO
+source_commit=3f8f6dfe6177db7233932dc6c8938993655a1cae

@@ -1,0 +1,3 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice15-async-expression-values/artifacts/cdc-repair/parser-core.lykn
+purpose=pin unchanged complete old core source before compiling with frozen release CLI

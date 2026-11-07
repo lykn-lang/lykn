@@ -1,0 +1,2 @@
+error: npm specifiers were requested; but --no-npm is specified
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/compiler.js:5:26

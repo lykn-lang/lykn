@@ -1,0 +1,1 @@
+Correction: command.txt source_commit field was an inaccurate hand-expanded value. Exact git rev-parse is preserved in attempt-21-final-source-pin; use that exact result.

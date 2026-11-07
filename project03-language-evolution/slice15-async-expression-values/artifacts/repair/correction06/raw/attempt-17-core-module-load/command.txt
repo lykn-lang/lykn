@@ -1,0 +1,6 @@
+cwd=/private/tmp
+argv=/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice15-async-expression-values/artifacts/repair/correction06/raw/attempt-16-core-compile/parser-core.js
+environment=DENO_DIR=/Users/oubiwann/Library/Caches/deno; no Deno permission flags; no input/function call
+Deno_sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Core source sha256=6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7
+Generated module path is the complete 33-line compiler output in attempt-16.

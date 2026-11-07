@@ -1,0 +1,5 @@
+cwd=/private/tmp
+argv=/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --no-prompt --deny-net /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice15-async-expression-values/artifacts/repair/correction06/raw/attempt-29-final-core-compile/parser-core.js
+environment=DENO_DIR=/Users/oubiwann/Library/Caches/deno; no permission grants; no inputs/function call; no static Acorn import
+Deno_sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+source_commit=3f8f6dfe6177db7233932dc6c8938993655a1cae

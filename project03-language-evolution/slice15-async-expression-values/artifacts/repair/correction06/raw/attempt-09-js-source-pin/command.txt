@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=shasum -a 256 packages/lang/compiler.js crates/lykn-lang/embedded/packages/lang/compiler.js
+purpose=verify product JS mirror identity before public-JS same-five execution
+environment=PATH inherited; no source mutation

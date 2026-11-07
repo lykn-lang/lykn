@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866 --exact emitter::forms::tests::test_emit_bind_group_in_function_body_stays_sibling_scoped --nocapture
+pinned_sha256=0c8b69eb0ded1bcfd1fe7a6c9e884af5cba86027d08d7a5bdfcbbfc61cc305bb
+source_commit=3f8f6dfe6177db7233932dc6c8938993655a1cae
