@@ -1,0 +1,7 @@
+Source branch codex/match-subject-values; HEAD 8ed869f1ed24bf688ba91f71d8c539680136794e; clean before run.
+Built after the fix commit with cargo test --offline --locked --workspace --no-run.
+lykn_lang test executable target/debug/deps/lykn_lang-60c4a58c1162abbf SHA256 before use 93993a16fb8748ce7956b75e49de7f160dadfd69af3963b1a70b0a7e1935f451
+match_clause_validation executable target/debug/deps/match_clause_validation-7d8f7aa58e91c201 SHA256 before use 6ee385514cdce56059630cd4334bfe7a95d668ae7eb2e4016210dc0b0fd93261
+CLI target/debug/lykn SHA256 0492d5f50aa2f5d77f4b8896b761f38e552c49febf58fbf8c0aa3fdea2ac157c
+Deno /opt/homebrew/bin/deno SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+No task-specific environment overrides.

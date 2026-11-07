@@ -1,0 +1,8 @@
+Task branch codex/match-subject-values
+Frozen pre-fix source HEAD d1e5c47d724ad8e797999d3caa3ed6df64238e37 (clean)
+`lykn_lang` direct test executable: target/debug/deps/lykn_lang-60c4a58c1162abbf
+SHA256 before/after: 911a45ca8915d427e3beb5bd527fbe6a7d16cc4bd121bf52cc80422564044f31
+`match_clause_validation` direct test executable: target/debug/deps/match_clause_validation-7d8f7aa58e91c201
+SHA256 before/after: 2b55caffe2f09c1a580c290c005b00e6f348b59854f644ea6c82d3ebddb47599
+`target/debug/lykn` SHA256: dd2d33a995066508ffee73e577f1de47480049cc10ed66b38fbb39e105f955b3
+Original positive Lykn source: 740 bytes incl LF, SHA256 ceaaf162892e964a76f317558ad35cfcdf82bd6731fcebe0eabb21de2d953058

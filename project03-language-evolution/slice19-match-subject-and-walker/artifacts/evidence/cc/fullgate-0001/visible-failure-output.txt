@@ -1,0 +1,39 @@
+This is the npm failure block visible in the command tool's truncated result. The tool reported 6680 original tokens and omitted part of the 477-line output, so this is not a complete raw stdout/stderr capture.
+
+     Running tests/publishing_dry_run.rs (target/debug/deps/publishing_dry_run-232f1d30250d8883)
+
+running 5 tests
+test jsr_dry_run_rejects_invalid_fixture ... ok
+test jsr_dry_run_accepts_macro_module_fixture ... ok
+test jsr_dry_run_accepts_runtime_fixture ... ok
+test jsr_dry_run_accepts_tooling_fixture ... ok
+test npm_dry_run_produces_expected_file_list ... FAILED
+
+failures:
+
+---- npm_dry_run_produces_expected_file_list stdout ----
+
+thread 'npm_dry_run_produces_expected_file_list' (95968447) panicked at crates/lykn-cli/tests/publishing_dry_run.rs:200:5:
+npm pack --dry-run should succeed.
+stdout:
+stderr: npm error code EPERM
+npm error syscall open
+npm error path /Users/oubiwann/.npm/_cacache/tmp/***
+npm error errno -1
+npm error
+npm error Your cache folder contains root-owned files, due to a bug in previous versions of npm which has since been addressed.
+npm error
+npm error To permanently fix this problem, please run:
+npm error   sudo chown -R 501:20 "/Users/oubiwann/.npm"
+npm error Log files were not written due to an error writing to the directory: /Users/oubiwann/.npm/_logs
+npm error You can rerun the command with `--loglevel=verbose` to see the logs in your terminal
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+failures:
+    npm_dry_run_produces_expected_file_list
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+
+error: test failed, to rerun pass `-p lykn-cli --test publishing_dry_run`
+make: *** [test-rust] Error 101

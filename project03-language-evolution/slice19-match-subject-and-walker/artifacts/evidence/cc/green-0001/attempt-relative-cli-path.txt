@@ -1,0 +1,5 @@
+Command: target/debug/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cc/positive/positive.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cc/positive/positive.js
+CWD: /private/tmp
+Exit: 127
+Output: /opt/homebrew/bin/bash: line 1: target/debug/lykn: No such file or directory
+Disposition: command path was relative to private cwd; no product/tool invocation occurred.

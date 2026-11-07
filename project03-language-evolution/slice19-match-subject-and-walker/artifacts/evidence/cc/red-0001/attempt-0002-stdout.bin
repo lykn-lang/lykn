@@ -1,0 +1,11 @@
+
+running 1 test
+test emitter::forms::tests::test_emit_statement_match_target_in_value_context ... FAILED
+
+failures:
+
+failures:
+    emitter::forms::tests::test_emit_statement_match_target_in_value_context
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1129 filtered out; finished in 0.00s
+

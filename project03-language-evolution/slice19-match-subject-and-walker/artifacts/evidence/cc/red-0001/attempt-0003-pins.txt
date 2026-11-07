@@ -1,0 +1,3 @@
+Source HEAD d1e5c47d724ad8e797999d3caa3ed6df64238e37; clean before run.
+Executable /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/match_clause_validation-7d8f7aa58e91c201
+SHA256 before: 2b55caffe2f09c1a580c290c005b00e6f348b59854f644ea6c82d3ebddb47599

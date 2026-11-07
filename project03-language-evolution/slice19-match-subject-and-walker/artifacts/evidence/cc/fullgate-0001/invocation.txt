@@ -1,0 +1,6 @@
+Command argv: ["make", "check"]
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Source HEAD before invocation: 8ed869f1ed24bf688ba91f71d8c539680136794e
+Git status before invocation: clean, branch codex/match-subject-values
+Task-specific environment overrides: none were set in the invocation. The complete inherited process environment was not captured before launch.
+Exit status: 2

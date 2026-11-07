@@ -3,6 +3,12 @@
 Six rows open. Continuation refinement3/5, NOT reset; outer2alreadyspent/3remaining
 before this assignment, old tooling3spent/tworemaining. CC green is proposed only.
 
+Focused8ed869f green (structural1/1, CLI5/5/same740 runtime). FullMake0001exit2 from
+omitted required ownedcache setup; record is excerpt-only/truncated, env incomplete.
+Iteration01 operational SAME gate retry, no source/pass reset; source acceptance
+and all tooling/K remain pending. Direct CLI header-counter placement accepted as
+same finite frontend proof, no original fixture/oracle change.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | MS-01 | Authority/provenance/budgets and committed pre-run inputs actual | Branch4304/tool/test/body/hash/argv/status captures, producer before+afteruse | serious | Operator + history | open | | Old limits not cured |

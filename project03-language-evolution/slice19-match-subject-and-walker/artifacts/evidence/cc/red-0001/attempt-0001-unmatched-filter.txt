@@ -1,0 +1,9 @@
+Command: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-60c4a58c1162abbf test_emit_statement_match_target_in_value_context --exact --nocapture
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Executable SHA256 before use: 911a45ca8915d427e3beb5bd527fbe6a7d16cc4bd121bf52cc80422564044f31
+Exit: 0
+Raw stdout:
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 1130 filtered out; finished in 0.00s
+Raw stderr: empty
+Disposition: selector mismatch; not behavioral evidence.

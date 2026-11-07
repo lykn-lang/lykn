@@ -1,5 +1,16 @@
 # Slice19 — match subject repair and combined validation
 
+Current assignment iteration01 operational fullgate setup correction, source
+continuation3/5 unchanged; oldtool3spent/tworemaining. Focusedgreen8ed869f: structural
+1/1, CLI5/5 and same740 realruntime/JSON/DTS pass, pins stable. FullMake0001 omitted
+already-required owned caches, npm EPERM/exit2; output truncated/recordexcerpt,
+prior env not captured. Retry SAME unfiltered gate with required ownedcache values
+and complete absolute stdout/stderr files, no source edit/pass increment. No source
+acceptance/tool re-entry/K yet. Header counters were implemented as direct CLIcheck
+tests rather than private units; CDC accepts same finite contexts as stronger
+frontend evidence within Operator scope, preserving original placement restriction
+and actual deviation, no duplicate tests/new runtime family.
+
 Opened2026-11-07, canonical standalone Project03 continuation. Operator:
 “Let's fix NE-C11, independently validate both repairs, then complete the Lykn
 tooling and resume the same K01–K12 gate. Same models, Autonomous Mode, and stop
@@ -145,3 +156,4 @@ six rows/report/review/retro/parent/backlog honestly at endpoint only, no nextun
 | Prompt | Date | Assignment | State |
 | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-07 | Source continuation refinement3/5, NE-C11+NE-C10 concern | StageA only; no tooling/runtimeK before CDC combined acceptance |
+| cc-prompt-iteration01.md | 2026-11-07 | Correct already-required owned cache/raw capture for fullMake | Current operational retry, source refinement3 unchanged/no code edit |
