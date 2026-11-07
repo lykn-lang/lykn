@@ -1,0 +1,32 @@
+(bind trace (cell #a()))
+
+(async
+  (func choose-branch
+    :args (:boolean take-sync)
+    :returns :number
+    :body
+    (if take-sync
+      (do
+        (swap! trace (fn (:array entries) (conj entries "sync")))
+        42)
+      (do
+        (swap! trace (fn (:array entries) (conj entries "await")))
+        (await (Promise:resolve 7)))))
+
+(async
+  (func observe-branch
+    :args (:boolean take-sync)
+    :returns :any
+    :body
+    (reset! trace #a())
+    (bind pending (choose-branch take-sync))
+    (swap! trace (fn (:array entries) (conj entries "after-call")))
+    (bind value (await pending))
+    (swap! trace (fn (:array entries) (conj entries "after-await")))
+    (obj :trace (express trace) :value value)))
+
+(bind sync-observation (await (observe-branch true)))
+(bind await-observation (await (observe-branch false)))
+(console:log
+  (JSON:stringify
+    (obj :sync sync-observation :await await-observation)))

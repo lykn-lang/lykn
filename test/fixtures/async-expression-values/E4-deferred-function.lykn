@@ -1,0 +1,20 @@
+(bind calls (cell 0))
+(bind callback
+  (do
+    (async
+      (fn ()
+        (swap! calls (fn (:number count) (+ count 1)))
+        (await (Promise:resolve 0))
+        9))))
+(bind constructionCalls (express calls))
+(bind immediateType (js:typeof callback))
+(bind result (await (callback)))
+(bind invocationCalls (express calls))
+
+(console:log
+  (JSON:stringify
+    (obj
+      :constructionCalls constructionCalls
+      :immediateType immediateType
+      :invocationCalls invocationCalls
+      :result result)))
