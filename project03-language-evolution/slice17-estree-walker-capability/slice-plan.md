@@ -1,5 +1,11 @@
 # Slice17 — Lykn ESTree walker and bounded capability gate
 
+**Closed2026-11-07 at independently reproduced NE-C10; one EW rowdone/fivedeferred.**
+Candidatebd3e4c7 unaccepted, no source edit after freeze. Iteration05/correction3
+returned; no active CC assignment or fourth correction/next unit. Capability0/13,
+all13unrun. Real validator context gap, not syntax failure or cap exhaustion.
+See final cdc-verification/closing-report. Earlier active/open wording is historical.
+
 Current assignment: `cc-prompt-iteration05.md`, issued2026-11-07, predecessor04
 returned after correction2 partial333b209 walker syntax failure166:1. Independent
 exact walker check reproduces1; scanner check1 at296:1. Correction3/5 now active;
@@ -251,7 +257,10 @@ discretion. All original-method node/status rules remain binding.
 | --- | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-07 | none | Explicit Lykn walker/fixed capability gate | Replaced before authoring/check/runtime by iteration01 |
 | cc-prompt-iteration01.md | 2026-11-07 | cc-prompt.md | Pre-authoring Deno separator/API/usage clarification | Returnedb312; source failure/review requires iteration02 |
-| cc-prompt-iteration02.md | 2026-11-07 | iteration01 | Actual b312 source failure + consolidated EW-R1–R5 | Current ordinary source correction1/5 |
+| cc-prompt-iteration02.md | 2026-11-07 | iteration01 | Actual b312 source failure + consolidated EW-R1–R5 | Correction1, sequencing amended by03 |
+| cc-prompt-iteration03.md | 2026-11-07 | iteration02 | Partial freeze/native feedback without runtime waiver | Returnedf2c2 syntax failures; correction1 spent |
+| cc-prompt-iteration04.md | 2026-11-07 | iteration03 | Actual whole-form delimiter repairs | Returned333b syntax failures; correction2 spent |
+| cc-prompt-iteration05.md | 2026-11-07 | iteration04 | Remaining whole-form/try boundaries and prior obligations | Returnedbd3; correction3 ends at independent NE-C10, closed stop |
 
 Initial plan concatenated executable/version as `/opt/homebrew/bin/deno2.9.6`;
 CC correctly found that literal path absent and verified actual `/opt/homebrew/bin/deno`

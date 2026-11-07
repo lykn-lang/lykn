@@ -1,0 +1,8 @@
+2026-11-07 CDC independent same-source check; actual exit1, stdoutempty.
+git -C /Users/oubiwann/lab/lykn/lang/.worktrees/planning show bd3e4c730a60184e13a2426ffd61318f1c5b9770:project03-language-evolution/slice17-estree-walker-capability/artifacts/tooling/estree-walker.lykn > /private/tmp/lykn-s17-cdc-partial-slaXeT/walker-bd3e4c7-exact.lykn
+Actual extraction exit0. SHA6976a853a9fea81bcf47e47d634fa5bcd568e9f3b72e6f36c4f58be2bd48d1c6 verified BEFORE check.
+CLI SHA85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc verified before check.
+cwd /private/tmp/lykn-s17-cdc-partial-slaXeT; exact ancestor config absence retained in partial-f2c2/commands.txt.
+Inherited tool environment, no task overrides; full environment values were not captured.
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /private/tmp/lykn-s17-cdc-partial-slaXeT/walker-bd3e4c7-exact.lykn > /private/tmp/lykn-s17-cdc-partial-slaXeT/walker-bd3e4c7-exact.stdout 2> /private/tmp/lykn-s17-cdc-partial-slaXeT/walker-bd3e4c7-exact.stderr
+Actual tool result exit1. Raw streams copied unchanged here; no generated/runtime/parser activity.

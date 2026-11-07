@@ -1,0 +1,14 @@
+/private/tmp/lykn-s17-cdc-partial-slaXeT/walker-bd3e4c7-exact.lykn: error: 410:9: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement
+417:9: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement
+440:9: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement
+511:9: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement
+516:9: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement
+535:9: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement
+546:9: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement

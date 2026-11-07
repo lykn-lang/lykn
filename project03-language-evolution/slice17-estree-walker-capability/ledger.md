@@ -1,4 +1,9 @@
-# Slice17 ledger
+# Slice17 ledger — independently closed at first real gap
+
+Final2026-11-07: **one done/five deferred**. Unacceptedbd3e4c7/correction3 reaches
+NE-C10; no budget exhaustion or correction4. Capability0/13/all13unrun. Earlier
+open/active status paragraphs below are preserved historical entries, superseded
+by this final verdict and current row statuses. No criterion is removed.
 
 Six rows open. CC source/raw attestation is not independent acceptance.13 frozen
 control rows/12families; K12 synthetic is outside parser/file counts.
@@ -19,9 +24,9 @@ No valid-Lykn compiler/Acorn gap is established; no product repair authorized.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| EW-01 | Actual identity/source/control/prediction freeze and scope | Clean5408/absolute85DenoAcorn pins, full13 frozen rows, bodies before runs | correctness-grade | Operator gate | open | | No source/dependency changes |
-| EW-02 | Reusable Lykn walker honors explicit evaluated-node/deferred contract | Pure API/source+generated review, all field roles/reasons/paths/counts, unknown fail-closed | serious | Accepted Slice11 §2 | open | | Potential evaluation, not observed effect/purity |
-| EW-03 | Minimal scanner preserves errors/accounting and offline provenance | Required manifests/status partitions/identity guard/options/actual diagnostics/receipts | serious | Accepted §5 | open | | Negative incomplete scans stay nonzero |
-| EW-04 | New tools pass native/generated/real module prerequisites | Check/fmt/lint/strictcompile/fullgeneratedreview/DenoCheck/real guards | serious | Tooling validity | open | | No helper/compiler workaround |
-| EW-05 | Same13-row capability gate independently passes or genuine gap stops | Exact K01–K12 all numeric oracles; separate K10a/b; K12synthetic; fresh CDC replay | correctness-grade | Operator bounded gate | open | | Eight positive/five negative-unit expected; actual/unrun denominators |
-| EW-06 | Independent endpoint/history/silent-drop/retro and parent duties | Six dispositions, actual source/evidence/report, original obligations preserved | correctness-grade | Autonomous endpoint | open | | No corpus/F6/library/next unit |
+| EW-01 | Actual identity/source/control/prediction freeze and scope | Clean5408/absolute85DenoAcorn pins, full13 frozen rows, bodies before runs | correctness-grade | Operator gate | deferred | Later exact freezes/checks reproduced; CC correction-01 authoring receipt and CDC final review | Missing intermediate body prevents full capture compliance; future fresh capture cannot retroactively cure it |
+| EW-02 | Reusable Lykn walker honors explicit evaluated-node/deferred contract | Pure API/source+generated review, all field roles/reasons/paths/counts, unknown fail-closed | serious | Accepted Slice11 §2 | deferred | Native0007 and independent cdc/bd3-gap; NE-C10 in BACKLOG | Partial source not verified usable; separate compiler disposition precedes unchanged re-entry |
+| EW-03 | Minimal scanner preserves errors/accounting and offline provenance | Required manifests/status partitions/identity guard/options/actual diagnostics/receipts | serious | Accepted §5 | deferred | Partial source/initial review/correction prompts; closing-report | Current scanner untested, observer unfinished; full review/runtime invariants remain owed |
+| EW-04 | New tools pass native/generated/real module prerequisites | Check/fmt/lint/strictcompile/fullgeneratedreview/DenoCheck/real guards | serious | Tooling validity | deferred | Pinned walker1 reproduced in cdc/bd3-gap | Remaining current gates unrun, none waived/substituted |
+| EW-05 | Same13-row capability gate independently passes or genuine gap stops | Exact K01–K12 all numeric oracles; separate K10a/b; K12synthetic; fresh CDC replay | correctness-grade | Operator bounded gate | deferred | Exact frozen controls/predictions plus first-gap proof | 0/13 run,13/13 unrun; all fixed oracles remain owed, no Acorn failure result |
+| EW-06 | Independent endpoint/history/silent-drop/retro and parent duties | Six dispositions, actual source/evidence/report, original obligations preserved | correctness-grade | Autonomous endpoint | done | Reconciled cdc-verification/closing-report/retro, actual raw, dated parent/backlog | Honest stop accepted, not implementation/project/full-audit acceptance; no next unit |

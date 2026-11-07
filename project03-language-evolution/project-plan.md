@@ -140,6 +140,14 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 [Slice17 stop](slice17-estree-walker-capability/cdc-verification.md):
+partial Lykn tools are not verified usable. Three source corrections reached a
+real match-clause validation-context gap NE-C10, independently reproduced. One
+rowdone/fivedeferred,0/13 capability rows/allunrun. Capture/setup/reviewer mistakes
+remain explicit. Separate NE-C10 disposition precedes unchanged gate re-entry;
+no compiler fix/next unit opened. Source-only ADT/guide observations NE-T02/NE-D02
+stay distinct, no runtime probe or type/doc repair.
+
 2026-11-07 Operator explicitly approved [Slice17](slice17-estree-walker-capability/slice-plan.md):
 Lykn ESTree walker/minimal scanner+observer and bounded accepted K01–K12 gate
 (13rows including separate K10a/b, K12synthetic), same Sol6.1 High CDC/Luna6 High
@@ -359,7 +367,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
-- [slice17-estree-walker-capability](slice17-estree-walker-capability/slice-plan.md): open explicit Lykn walker and fixed13-row offline capability gate, independent review/first real gap stop only.
+- [slice17-estree-walker-capability](slice17-estree-walker-capability/slice-plan.md): closed first-gap stop NE-C10; partial tools unaccepted, one rowdone/fivedeferred,0/13. Separate disposition before unchanged re-entry.
 - [slice16-compiler-stack-release-integration](slice16-compiler-stack-release-integration/slice-plan.md): closed5done; accepted NE-C07/08/09 stack locally integrated0.6 at5408, full fresh independent release gates; no other propagation/next unit.
 - [slice15-async-expression-values](slice15-async-expression-values/slice-plan.md): closed7done; NE-C09 independently accepted task-only/full normal gates and unchanged parser four independently4/4; failed conditions/overrides retained, no integration/full audit/next unit.
 - [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): closed6done/2deferred; both repairs independently accepted task-only/full gates, new NE-C09 stops parser0/4; history/method breach/NE-T01 owned, no integration or next unit.
@@ -389,6 +397,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.28: Closed Slice17 at independently reproduced NE-C10 validation
+  gap, retaining partial tools/13unruns, provenance limits and source-only ADT/
+  guide owners. No compiler fix, original audit/Project07 acceptance or next unit.
 
 - 2026-11-07 v1.27: Opened explicit Slice17 Lykn ESTree tooling/fixed K capability
   gate,13 rows/12families with separate synthetic denominator and exact frozen

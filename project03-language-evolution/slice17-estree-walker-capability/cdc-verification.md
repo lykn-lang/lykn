@@ -1,4 +1,50 @@
-# Slice17 independent review — revision required
+# Slice17 independent review — accepted first-gap stop
+
+## Final disposition,2026-11-07
+
+Accept the bounded stop, **not the tooling implementation**. Current source
+bd3e4c730a60184e13a2426ffd61318f1c5b9770 remains unvalidated/unaccepted. CC native-0007
+and CDC fresh exact-source artifacts/evidence/cdc/bd3-gap both exit1 with the same
+seven no-else diagnostics. Walker SHA6976a853a9fea81bcf47e47d634fa5bcd568e9f3b72e6f36c4f58be2bd48d1c6
+and actual absolute CLI85 were verified BEFORE replay. No post-freeze source edit.
+Prior partial sources/receipts stay distinct; CDC empty-input0 is excluded.
+
+**NE-C10 source basis:** source release/0.6.x5408 classifier/forms.rs370–487
+walk_no_else_if_expression has no match-clause role branch; raw clause lists fall
+through Value recursion. classify_match1871–1918 accepts body sequences, with
+test_classify_match_multiple_body_exprs4006 supporting that API. Emitter
+emit_match_statement2234–2237 and emit_match_iife2322–2325 explicitly emit clause
+bodies as Statement sequences. Guide00:849–854 permits no-else statement if.
+Actual ClassDeclaration arm if410 is NONFINAL, followed by visit-one; its rejection
+is a clean context witness independent of final-value ambiguity. Seven diagnostics
+are reproduced, not seven distinct causes proven. A6 raw-child classification
+research is context only, not an authorized typed-AST redesign. NE-C05 remains
+separate. No product source changes or runtime claims follow.
+
+Source correction3 reaches the real-gap endpoint before the five-pass cap. No
+fourth correction, else/do workaround, compiler fix, current scanner check or later
+gate. **0/13 capability rows;13/13 unrun**,12families/K10a,b distinct/K12synthetic
+outside parser/file counts. No Acorn load/parse/effect/oracle/runtime result or
+usable tooling delivery. Generated review is deferred because no JS was generated,
+not waived. Prior successful parser4/4 remains prior evidence only.
+
+### Final six-row walk and bubble-up
+
+| Row | Status | Independent basis / remaining owner |
+| --- | --- | --- |
+| EW-01 | deferred | Actual latest freezes/identities/checks reproduced, but missing intermediate body prevents full capture-compliance claim; no retroactive cure |
+| EW-02 | deferred | Partial walker review; NE-C10 blocks validation, complete evaluated/deferred contract still owed |
+| EW-03 | deferred | Scanner partial/observer unfinished, no usable accounting/offline result; resume full review after NE-C10 |
+| EW-04 | deferred | Current walker native check fails; other current source/generated/guard gates unrun |
+| EW-05 | deferred | All13 fixed rows unrun, exact population/predictions preserved |
+| EW-06 | done | Same-source gap independently reproduced, CC handoff reconciled, six-row close/retro/parent/backlog and inherited duties preserved |
+
+Supporting artifacts inventoried in closing-report; issued prompts remain in slice
+root. Standalone parent updated, no arc invented. NE-C10 owns separate disposition
+before unchanged re-entry; NE-T02/NE-D02 retain source-only ADT/guide observations.
+Original F1–F12/Project07/full audit and prior defect/human/publication duties remain
+open. No project acceptance, source propagation or next unit. Earlier reviews below
+remain historical, not current verdicts.
 
 ## Partial correction2 disposition,2026-11-07
 

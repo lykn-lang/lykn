@@ -2,6 +2,13 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07: [Slice17 first-gap stop](slice17-estree-walker-capability/cdc-verification.md)
+independently closes one EW row/five deferred, partial tools unaccepted and all13
+fixed capability rows unrun. NE-C10 owns separate match-validation disposition
+before unchanged re-entry; source-only NE-T02/NE-D02 retained. Actual authoring/
+setup/capture/reviewer failures remain. P-1, original F1–F12 and all Project07
+outcomes stay open; no source repair/integration/next unit or remote action follows.
+
 2026-11-05: [Slice04 baseline/protocol](slice04-library-baseline-refresh/cdc-verification.md)
 is independently closed (six LB rows) with its retrospective complete. Original
 Slice01 F-1–F-12 and this project composition row remain open; F-6/F-10 method

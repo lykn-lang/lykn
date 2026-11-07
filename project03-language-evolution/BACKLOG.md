@@ -558,6 +558,57 @@ This supersedes the earlier task-only integration state for these three repairs,
 not their historical observations/limits. Other releases/main remain untouched;
 no push/publication/type/cache repair/walker/corpus or next unit follows.
 
+#### NE-C10 — match clause statements rejected by no-else validation
+
+**Independently reproduced blocker,2026-11-07.** Slice17 exact walker source at
+planningbd3e4c730a60184e13a2426ffd61318f1c5b9770, SHA
+6976a853a9fea81bcf47e47d634fa5bcd568e9f3b72e6f36c4f58be2bd48d1c6,
+fails native check on absolute release/0.6.x5408 CLI85d6d3d5. CC native-0007 and
+fresh CDC same-source replay both exit1 with seven no-else-if diagnostics. Actual
+ClassDeclaration clause's nonfinal if410 is followed by visit-one, a clean
+statement-position witness. Raw: slice17-estree-walker-capability/artifacts/evidence/
+cdc/bd3-gap and its review. No generated/runtime/Acorn/control execution occurred.
+
+At source5408 classifier/forms.rs370–487, walk_no_else_if_expression has cond/
+switch roles but no match roles, so literal-headed clauses fall through Value
+recursion. classify_match1871–1918 and unit4006 accept multiple body forms;
+emitter/forms.rs2234–2237/2322–2325 explicitly lower clause bodies as Statement
+sequences. Guide00:849–854 permits no-else statement if. Seven observed diagnostics
+do not establish seven independent defects. NE-C05 typed explicit-return finding
+is separate; A6 hybrid/raw-child classification research is related context,
+not a required architectural rewrite or authorized implementation scope.
+
+**Owner/re-entry:** Project03 CDC owns a separately authorized bounded validator
+context diagnosis/repair with meaningful exact positive/negative regression,
+normal required source gates and independent review. Do not add else/do or alter
+the frozen helper/oracle to evade this valid condition. Then revalidate unfinished
+walker/scanner/observer and all unchanged13 capability rows; no full-corpus/F6
+claim. Slice17 closes at0/13, one rowdone/fivedeferred. No current compiler fix,
+fourth correction, next unit or release propagation is opened.
+
+#### NE-T02 — user-type annotation guard is only tagged-object shaped
+
+**Source-only observation,2026-11-07.** At source5408,
+emitter/type_checks.rs104–117 user-defined fallback checks non-null object with a
+tag property, not exact membership in the declared variant set. Slice17's private
+FieldRole annotation therefore does not alone prove closed-role membership;
+exhaustive match dispatch remains relevant. Guide05:628–637 documents match's
+automatic unmatched fallback. No runtime probe/bug or new type fix is claimed.
+Project03 CDC owns annotation/ADT guarantee clarification before future PL/guide/
+book assertions, with Project07 authoring/human duties retained. This is distinct
+from NE-T01 async declaration-sidecar coverage and is not the capability stop.
+
+#### NE-D02 — zero-field ADT guide example calls a constant
+
+**Source-only guide contradiction,2026-11-07.** Source5408 guide05:548–552 defines
+zero-field None and calls `(None)` in find-config. Same guide480–494 uses bare
+Info; guide00 zero-field constant rule and emitter/forms.rs1396–1407 emit a tagged
+constant for zero-field variants. Bare FieldRole values in Slice17 follow that
+reference; no change to constructor calls is warranted. No runtime error/probe
+or causal claim about authoring failures. Project03 CDC guide/book owner should
+reconcile this example before teaching/publication, retaining Project07 ADT/guide/
+book/human acceptance. No current guide edit, extra K case or compiler gap claim.
+
 #### NE-T01 — async declaration-sidecar coverage limitation
 
 **Owned current limitation, 2026-11-06.** Accepted Slice14 async module/consumer
