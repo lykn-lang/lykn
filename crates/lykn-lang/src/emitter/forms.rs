@@ -4459,7 +4459,12 @@ mod tests {
                 && values.get(1).is_some_and(|value| {
                     value.as_list().is_some_and(|carrier| {
                         carrier.first().and_then(SExpr::as_form_head) == Some("array")
-                            && carrier.get(1).and_then(SExpr::as_form_head) == Some("for-await-of")
+                            && carrier
+                                .get(1)
+                                .and_then(SExpr::as_list)
+                                .and_then(|values| values.first())
+                                .and_then(SExpr::as_form_head)
+                                == Some("for-await-of")
                     })
                 });
             invalid_tail || values.iter().any(loop_in_return_array)
@@ -4488,7 +4493,7 @@ mod tests {
         );
         assert!(
             !loop_in_return_array(&emitted),
-            "for-await-of must not be emitted as a value return"
+            "for-await-of must not be emitted as a value return: {emitted:?}"
         );
     }
 
