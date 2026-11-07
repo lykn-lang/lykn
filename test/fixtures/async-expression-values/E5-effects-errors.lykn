@@ -1,8 +1,8 @@
 (bind trace (cell (array)))
 
-(bind outer "outer")
+(bind outer (do (bind scope-value "outer") scope-value))
 
-(bind scoped (do (bind outer "inner") outer))
+(bind scoped (do (bind scope-value "inner") scope-value))
 
 (bind selectedMessage (cell ""))
 
