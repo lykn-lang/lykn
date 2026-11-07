@@ -705,7 +705,8 @@ const macros = {
         return { type: 'ConditionalExpression', test, consequent, alternate };
       }
       // Statement branch → IIFE
-      return buildIfIIFE(test, consequent, alternate);
+      return buildIfIIFE(test, consequent, alternate,
+        args.slice(1, 3).some(containsCurrentAwait));
     }
     // Statement position: unchanged
     return {
@@ -732,24 +733,34 @@ const macros = {
         : { type: 'EmptyStatement' };
     }
     if (position === 'expression') {
-      // IIFE: (() => { stmt1; stmt2; return final; })()
+      const isAsync = args.some(containsCurrentAwait);
       const stmts = args.slice(0, -1).map(e => toStatement(compileExpr(e)));
-      const last = compileExpr(args[args.length - 1], 'expression');
-      return {
+      const value = compileExpr(args[args.length - 1], 'expression');
+      const isStatement = value.type.endsWith('Statement') || value.type.endsWith('Declaration');
+      const last = isStatement
+        ? value
+        : {
+          type: 'ReturnStatement',
+          argument: isAsync
+            ? { type: 'ArrayExpression', elements: [value] }
+            : value,
+        };
+      const call = {
         type: 'CallExpression',
         callee: {
           type: 'ArrowFunctionExpression',
           params: [],
           body: {
             type: 'BlockStatement',
-            body: [...stmts, { type: 'ReturnStatement', argument: last }],
+            body: [...stmts, last],
           },
           expression: false,
-          async: false,
+          async: isAsync,
         },
         arguments: [],
         optional: false,
       };
+      return isAsync ? unboxAwaitedValue({ type: 'AwaitExpression', argument: call }) : call;
     }
     // Statement position: plain block
     return {
@@ -1660,13 +1671,15 @@ function isExpressionNode(node) {
   return !node.type.endsWith('Statement') && !node.type.endsWith('Declaration');
 }
 
-function buildIfIIFE(test, consequent, alternate) {
+function buildIfIIFE(test, consequent, alternate, isAsync = false) {
   // DD-50.7 extension: conditional return-wrap per branch.
   // Statement branches (throw, return, etc.) stay as-is; value branches get ReturnStatement.
   const wrapBranch = (node) => isExpressionNode(node)
-    ? { type: 'ReturnStatement', argument: node }
+    ? { type: 'ReturnStatement', argument: isAsync
+      ? { type: 'ArrayExpression', elements: [node] }
+      : node }
     : toStatement(node);
-  return {
+  const result = {
     type: 'CallExpression',
     callee: {
       type: 'ArrowFunctionExpression',
@@ -1681,9 +1694,42 @@ function buildIfIIFE(test, consequent, alternate) {
         }],
       },
       expression: false,
-      async: false,
+      async: isAsync,
     },
     arguments: [],
+    optional: false,
+  };
+  return isAsync
+    ? unboxAwaitedValue({ type: 'AwaitExpression', argument: result })
+    : result;
+}
+
+function containsCurrentAwait(expr) {
+  if (!expr || expr.type !== 'list' || expr.values.length === 0) return false;
+  const head = expr.values[0];
+  const name = head.type === 'atom' && head.binding === undefined ? head.value : null;
+  if (['function', 'function*', 'lambda', '=>', 'async'].includes(name)) return false;
+  if (name === 'await' || name === 'for-await-of') return true;
+  return expr.values.some(containsCurrentAwait);
+}
+
+function unboxAwaitedValue(awaitedBox) {
+  return {
+    type: 'CallExpression',
+    callee: {
+      type: 'ArrowFunctionExpression',
+      params: [{ type: 'Identifier', name: '__lykn_value_box' }],
+      body: {
+        type: 'MemberExpression',
+        object: { type: 'Identifier', name: '__lykn_value_box' },
+        property: { type: 'Literal', value: 0 },
+        computed: true,
+        optional: false,
+      },
+      expression: true,
+      async: false,
+    },
+    arguments: [awaitedBox],
     optional: false,
   };
 }

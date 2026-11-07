@@ -84,6 +84,56 @@ fn any_contains_await(exprs: &[SExpr]) -> bool {
     exprs.iter().any(contains_await)
 }
 
+/// Detect suspension that belongs to the current emitted function/IIFE.
+/// Unlike the legacy scanner above, this deliberately stops at nested
+/// functions: an await in a callback must not make its creator asynchronous.
+fn contains_current_await(expr: &SExpr) -> bool {
+    match expr {
+        SExpr::List { values, .. } if !values.is_empty() => {
+            let head = values[0].as_form_head();
+            if matches!(head, Some("function" | "function*" | "=>" | "lambda"))
+                || head == Some("async")
+            {
+                return false;
+            }
+            if matches!(head, Some("await" | "for-await-of")) {
+                return true;
+            }
+            values.iter().any(contains_current_await)
+        }
+        _ => false,
+    }
+}
+
+fn any_current_await(exprs: &[SExpr]) -> bool {
+    exprs.iter().any(contains_current_await)
+}
+
+fn emit_in_context(
+    expr: &SExpr,
+    context: ExprContext,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let saved = ctx.expr_context;
+    ctx.expr_context = context;
+    let emitted = emit_expr(expr, ctx, registry);
+    ctx.expr_context = saved;
+    emitted
+}
+
+/// Preserve a value across async-IIFE fulfillment without Promise
+/// assimilation, using ordinary supported kernel forms for the unbox step.
+fn unbox_awaited_value(awaited_box: SExpr, ctx: &mut EmitterContext) -> SExpr {
+    let param = ctx.gensym.next("value_box");
+    let arrow = list(vec![
+        atom("=>"),
+        list(vec![atom(&param)]),
+        list(vec![atom("get"), atom(&param), num(0.0)]),
+    ]);
+    list(vec![arrow, awaited_box])
+}
+
 /// Check whether a `ThreadingStep` contains an `(await ...)` form.
 fn step_contains_await(step: &ThreadingStep) -> bool {
     match step {
@@ -399,7 +449,14 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                     let mut new_values = Vec::with_capacity(values.len());
                     new_values.push(values[0].clone()); // head atom unchanged
                     for (i, v) in values[1..].iter().enumerate() {
-                        ctx.expr_context = profile.context_for(i, saved_ctx);
+                        // Resolved-bound heads are ordinary calls. Their callee
+                        // and arguments are value positions even when the call
+                        // itself appears in a statement/tail context.
+                        ctx.expr_context = if values[0].as_form_head().is_none() {
+                            ExprContext::Value
+                        } else {
+                            profile.context_for(i, saved_ctx)
+                        };
                         new_values.push(emit_expr(v, ctx, registry));
                     }
                     ctx.expr_context = saved_ctx;
@@ -410,8 +467,11 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                 }
             } else {
                 // Head is not an atom (computed call) — recurse on all elements
+                let saved_ctx = ctx.expr_context;
+                ctx.expr_context = ExprContext::Value;
                 let new_values: Vec<SExpr> =
                     values.iter().map(|v| emit_expr(v, ctx, registry)).collect();
+                ctx.expr_context = saved_ctx;
                 SExpr::List {
                     values: new_values,
                     span: *span,
@@ -450,6 +510,36 @@ fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) 
         out.push(emit_expr(expr, ctx, registry));
     }
     out
+}
+
+fn emit_function_body(
+    body: &[SExpr],
+    value_tail: bool,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Vec<SExpr> {
+    body.iter()
+        .enumerate()
+        .map(|(index, expr)| {
+            let has_value_if_else = expr.as_list().is_some_and(|values| {
+                values.first().and_then(|value| value.as_form_head()) == Some("if")
+                    && values.len() >= 4
+            });
+            let is_tail_value = value_tail
+                && index + 1 == body.len()
+                && (!is_statement_form(expr) || has_value_if_else);
+            emit_in_context(
+                expr,
+                if is_tail_value {
+                    ExprContext::Value
+                } else {
+                    ExprContext::Statement
+                },
+                ctx,
+                registry,
+            )
+        })
+        .collect()
 }
 
 fn classify_statement_surface(expr: &SExpr) -> Option<SurfaceForm> {
@@ -1345,10 +1435,7 @@ fn emit_fn_expr(
     // When type checks are present, the arrow gets a block body, so we must
     // wrap the last body expression in (return ...) to preserve the return value.
     // DD-50.7: fn body children are statements, not expressions
-    let saved_body_ctx = ctx.expr_context;
-    ctx.expr_context = ExprContext::Statement;
-    let emitted_body = emit_body(body, ctx, registry);
-    ctx.expr_context = saved_body_ctx;
+    let emitted_body = emit_function_body(body, true, ctx, registry);
     if (has_type_checks || emitted_body.len() > 1) && !emitted_body.is_empty() {
         items.extend(emitted_body[..emitted_body.len() - 1].iter().cloned());
         let last = emitted_body.last().unwrap().clone();
@@ -1415,17 +1502,13 @@ fn emit_func_single(
         ));
     }
 
-    // DD-50.7: func body children are statements, not expressions
-    let saved_body_ctx = ctx.expr_context;
-    ctx.expr_context = ExprContext::Statement;
-    let body = emit_body(&clause.body, ctx, registry);
-    ctx.expr_context = saved_body_ctx;
-
     // Determine return handling
     let has_post = clause.post.is_some();
     let returns_void = clause.returns.as_ref().is_some_and(|r| r.name == "void");
     let returns_any = clause.returns.as_ref().is_some_and(|r| r.name == "any");
     let has_returns = clause.returns.is_some();
+    // Function prefixes are statements; a non-void implicit tail is a value.
+    let body = emit_function_body(&clause.body, !returns_void, ctx, registry);
 
     if has_post && !ctx.strip_assertions {
         // Capture result in gensym, check post, return
@@ -2793,28 +2876,54 @@ fn emit_if_expression(
         ]);
     }
 
-    let then_branch = emit_expr(&args[1], ctx, registry);
-    let else_branch = emit_expr(&args[2], ctx, registry);
+    let then_branch = emit_in_context(&args[1], ExprContext::Value, ctx, registry);
+    let else_branch = emit_in_context(&args[2], ExprContext::Value, ctx, registry);
 
     if !is_statement_form(&then_branch) && !is_statement_form(&else_branch) {
         // Both branches are pure expressions → ternary
         list(vec![atom("?"), cond, then_branch, else_branch])
     } else {
         // One or both branches are statement forms → IIFE
-        emit_if_iife(cond, then_branch, else_branch)
+        emit_if_iife_with_await(
+            cond,
+            then_branch,
+            else_branch,
+            any_current_await(&args[1..3]),
+            ctx,
+        )
     }
 }
 
 fn emit_if_iife(cond: SExpr, then_branch: SExpr, else_branch: SExpr) -> SExpr {
+    emit_if_iife_with_await(
+        cond,
+        then_branch,
+        else_branch,
+        false,
+        &mut EmitterContext::new(false),
+    )
+}
+
+fn emit_if_iife_with_await(
+    cond: SExpr,
+    then_branch: SExpr,
+    else_branch: SExpr,
+    is_async: bool,
+    ctx: &mut EmitterContext,
+) -> SExpr {
     // DD-50.7 extension: conditional return-wrap per branch.
     // Statement branches (throw, return, etc.) stay as-is; value branches get (return ...).
     let then_inner = if is_statement_form(&then_branch) {
         then_branch
+    } else if is_async {
+        list(vec![atom("return"), list(vec![atom("array"), then_branch])])
     } else {
         list(vec![atom("return"), then_branch])
     };
     let else_inner = if is_statement_form(&else_branch) {
         else_branch
+    } else if is_async {
+        list(vec![atom("return"), list(vec![atom("array"), else_branch])])
     } else {
         list(vec![atom("return"), else_branch])
     };
@@ -2825,8 +2934,18 @@ fn emit_if_iife(cond: SExpr, then_branch: SExpr, else_branch: SExpr) -> SExpr {
     // Wrap in (block ...) so arrow codegen emits { if (...) {...} else {...} }
     let arrow_body = list(vec![atom("block"), if_stmt]);
     let arrow = list(vec![atom("=>"), list(vec![]), arrow_body]);
+    let callable = if is_async {
+        list(vec![atom("async"), arrow])
+    } else {
+        arrow
+    };
     // ((() => { ... })())
-    list(vec![arrow])
+    let call = list(vec![callable]);
+    if is_async {
+        unbox_awaited_value(list(vec![atom("await"), call]), ctx)
+    } else {
+        call
+    }
 }
 
 fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
@@ -2834,30 +2953,66 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
         return atom("undefined");
     }
 
-    let emitted: Vec<SExpr> = body.iter().map(|e| emit_expr(e, ctx, registry)).collect();
-
     match ctx.expr_context {
         ExprContext::Statement => {
+            let emitted: Vec<SExpr> = body
+                .iter()
+                .map(|e| emit_in_context(e, ExprContext::Statement, ctx, registry))
+                .collect();
             let mut items = vec![atom("block")];
             items.extend(emitted);
             list(items)
         }
         _ => {
+            let is_async = any_current_await(body);
+            let mut emitted: Vec<SExpr> = body[..body.len() - 1]
+                .iter()
+                .map(|e| emit_in_context(e, ExprContext::Statement, ctx, registry))
+                .collect();
+            emitted.push(emit_in_context(
+                body.last().unwrap(),
+                ExprContext::Value,
+                ctx,
+                registry,
+            ));
             // Expression position: IIFE-wrap with last expression returned
-            let mut arrow_body = vec![atom("=>"), list(vec![])];
+            let mut statements = Vec::new();
             if emitted.len() == 1 {
-                arrow_body.push(list(vec![atom("return"), emitted[0].clone()]));
-            } else {
-                for expr in &emitted[..emitted.len() - 1] {
-                    arrow_body.push(expr.clone());
+                if is_statement_form(&emitted[0]) {
+                    statements.push(emitted[0].clone());
+                } else {
+                    let value = if is_async {
+                        list(vec![atom("array"), emitted[0].clone()])
+                    } else {
+                        emitted[0].clone()
+                    };
+                    statements.push(list(vec![atom("return"), value]));
                 }
-                arrow_body.push(list(vec![
-                    atom("return"),
-                    emitted[emitted.len() - 1].clone(),
-                ]));
+            } else {
+                statements.extend(emitted[..emitted.len() - 1].iter().cloned());
+                let tail = emitted.last().unwrap();
+                if is_statement_form(tail) {
+                    statements.push(tail.clone());
+                } else {
+                    let last = if is_async {
+                        list(vec![atom("array"), tail.clone()])
+                    } else {
+                        tail.clone()
+                    };
+                    statements.push(list(vec![atom("return"), last]));
+                }
             }
+            let mut arrow_body = vec![atom("=>"), list(vec![])];
+            let mut block = vec![atom("block")];
+            block.extend(statements);
+            arrow_body.push(list(block));
             // ((() => { ... })())
-            list(vec![list(arrow_body)])
+            let arrow = list(arrow_body);
+            if is_async {
+                unbox_awaited_value(wrap_iife_async(arrow.as_list().unwrap().to_vec()), ctx)
+            } else {
+                list(vec![arrow])
+            }
         }
     }
 }
@@ -2956,6 +3111,7 @@ fn kernel_child_profile(head: &str) -> KernelChildProfile {
 mod tests {
     use super::*;
     use crate::analysis::type_registry::{ConstructorDef, FieldDef, TypeDef, TypeRegistry};
+    use crate::ast::sexpr::NameRes;
     use crate::ast::surface::{
         BindBinding, CondClause, Constructor, DestructuredField, FuncClause, GenfuncClause,
         MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep, TypeAnnotation, TypedParam,
@@ -4076,6 +4232,39 @@ mod tests {
             ]),
         ]);
         assert!(contains_await(&deep));
+    }
+
+    #[test]
+    fn test_contains_current_await_respects_function_boundaries_and_for_await() {
+        let await_expr = list(vec![atom("await"), atom("pending")]);
+        let nested = list(vec![atom("=>"), list(vec![]), await_expr.clone()]);
+        assert!(!contains_current_await(&nested));
+        assert!(contains_current_await(&await_expr));
+        assert!(contains_current_await(&list(vec![
+            atom("for-await-of"),
+            atom("item"),
+            atom("items"),
+            atom("item"),
+        ])));
+        let bound_await = atom("await").with_name_res(NameRes::BindingRef);
+        assert!(!contains_current_await(&list(vec![
+            bound_await,
+            atom("pending")
+        ])));
+    }
+
+    #[test]
+    fn test_resolved_bound_call_emits_if_argument_in_value_context() {
+        let call = list(vec![
+            atom("ensure").with_name_res(NameRes::BindingRef),
+            list(vec![atom("if"), atom("ready"), num(1.0), num(0.0)]),
+        ]);
+        let mut context = ctx();
+        let emitted = emit_expr(&call, &mut context, &reg());
+        let values = emitted.as_list().expect("resolved call remains a list");
+        let argument = values[1].as_list().expect("argument remains a list");
+        assert_eq!(argument[0].as_form_head(), Some("?"));
+        assert_eq!(context.expr_context, ExprContext::Statement);
     }
 
     // --- Match with await in target (Strategy 1) ---
