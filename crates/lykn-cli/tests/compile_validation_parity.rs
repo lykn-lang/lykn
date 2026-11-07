@@ -210,6 +210,8 @@ fn stdout_and_file_compile_keep_typed_export_output_and_runtime_behavior() {
                 "--no-config",
                 "--no-remote",
                 "--cached-only",
+                "--no-npm",
+                "--deny-net",
                 "--no-prompt",
             ])
             .arg(&output),
