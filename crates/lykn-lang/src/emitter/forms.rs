@@ -3351,6 +3351,62 @@ mod tests {
         TypeRegistry::default()
     }
 
+    #[test]
+    fn numeric_for_emits_first_and_late_no_else_if_as_ordered_statements() {
+        let form = list(vec![
+            atom("for"),
+            list(vec![atom("let"), atom("i"), num(0.0)]),
+            list(vec![atom("<"), atom("i"), num(2.0)]),
+            list(vec![atom("++"), atom("i")]),
+            list(vec![atom("if"), atom("true"), list(vec![atom("trace"), atom("push"), atom("i")])]),
+            list(vec![atom("bind"), atom("value"), list(vec![atom("+"), atom("i"), num(10.0)])]),
+            list(vec![atom("if"), atom("true"), list(vec![atom("trace"), atom("push"), atom("value")])]),
+            list(vec![atom("bind"), atom("next-value"), list(vec![atom("+"), atom("value"), num(1.0)])]),
+            list(vec![atom("if"), atom("true"), list(vec![atom("trace"), atom("push"), atom("next-value")])]),
+        ]);
+        let mut context = ctx_value();
+        let emitted = emit_expr(&form, &mut context, &reg());
+        assert_eq!(context.expr_context, ExprContext::Value);
+
+        let values = emitted.as_list().expect("numeric-for kernel list");
+        assert_eq!(values[0].as_atom(), Some("for"));
+        assert_eq!(values.len(), 9);
+        for (index, expected) in [(4, "if"), (6, "if"), (8, "if")] {
+            let body = values[index].as_list().expect("body statement");
+            assert_eq!(body[0].as_atom(), Some(expected));
+        }
+        assert_eq!(values[5].as_list().unwrap()[0].as_atom(), Some("const"));
+        assert_eq!(values[7].as_list().unwrap()[0].as_atom(), Some("const"));
+    }
+
+    #[test]
+    fn numeric_for_header_slots_still_reject_no_else_if_values() {
+        for (index, value) in [
+            list(vec![atom("if"), atom("true"), num(0.0)]),
+            list(vec![atom("if"), atom("true"), bool_lit(true)]),
+            list(vec![atom("if"), atom("true"), num(1.0)]),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let mut values = vec![
+                atom("for"),
+                list(vec![atom("let"), atom("i"), num(0.0)]),
+                list(vec![atom("<"), atom("i"), num(1.0)]),
+                list(vec![atom("++"), atom("i")]),
+                list(vec![atom("console:log"), atom("i")]),
+            ];
+            values[index + 1] = value;
+            let diagnostics = crate::classifier::forms::validate_no_else_if_expressions(&[
+                list(values),
+            ]);
+            assert_eq!(diagnostics.len(), 1, "header index {index}: {diagnostics:?}");
+            assert!(diagnostics[0]
+                .message
+                .contains("if in expression position requires an else branch"));
+        }
+    }
+
     // --- convert_to_expression ---
 
     #[test]
