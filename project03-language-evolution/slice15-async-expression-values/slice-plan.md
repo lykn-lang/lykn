@@ -6,6 +6,13 @@ parser observations, same Sol6.1 High CDC/Luna6 High CC Autonomous Mode and
 another-real-gap stop. Endpoint only this increment. No release integration,
 walker/corpus/F6/library/push/publication/global install/dependency/remote CI.
 
+Current assignment iteration01: consolidated fixture correction2/5 before
+production. Original freeze61a7e3e/oracle5dc2e0d and baseline9133b90 preserved;
+const expected-Value harness fix5b11f49 was correction1. E2 malformed source,
+E1 stdout prefix and E2/E4 weak discriminators are authoring findings, not new
+language gaps. Correction restores promised cases and async value-throw coverage
+within the same five fixtures, freezes updated predictions before rerun.
+
 ## Roles, homes and history
 
 CDC /root/cdc gpt-6.1-sol High independently reviews fresh fork-none
@@ -65,7 +72,10 @@ JS block/value APIs already use expression position; no expander rewrite needed.
    Value consumers receive Value; sequence prefixes Statement, final Value/Tail
    only when the result is used. Apply to do value bodies, if condition/branches,
    func single/multi non-void and fn/lambda final expressions, and equality/
-   inequality/logical operand helpers (observer witness). Void and statement
+   inequality/logical operand helpers (observer witness). Resolved-bound and
+   computed-call fallback callee/arguments are also Value, not inherited Statement;
+   preserve resolution tags/list shape and cover that site with a focused unit.
+   Void and statement
    bodies remain Statement. Preserve current type/post/return handling and no-else
    diagnostics. No broad generator/yield/class/binding or native printer rewrite.
 2. Lower branches as values BEFORE if wrapper selection. Pure values remain
@@ -93,6 +103,15 @@ JS block/value APIs already use expression position; no expander rewrite needed.
 5. Mirror necessary JS compiler changes byte-identically into embedded source;
    preserve public sync behavior. Fresh XDG materialization + fixed existing
    DENO_DIR must prove used mirror bytes (NE-C04 same-version cache remains open).
+
+Native representation clarification2026-11-06: codegen emit_await614 currently
+does not apply parent precedence; use a private synchronous scalar-unwrapper
+arrow applied to the awaited box, conceptually `(box=>box[0])(await boxCall)`,
+rather than relying on direct get(await…,0). This fits the existing computed-
+callee/call-argument writer API, preserves the approved boxed final value and
+needs no printer change. JS may use its equivalent ESTree member representation.
+The static backend constraint is not a reproduced public await-member gap;
+no additional fixture or helper rewrite is authorized by this clarification.
 
 Private names/local mechanics discretionary. Consequential alternatives need
 source-grounded explanation before broadening. This is not a new typed-AST
