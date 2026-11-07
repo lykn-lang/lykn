@@ -4,10 +4,16 @@ arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
 status: paused
 planned-release: unassigned
-depends-on: [slice01-variadic-for-context]
+depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emission-harness-baseline]
 ---
 
 # Checked emission results
+
+## Operator-directed maintenance pause — 2026-11-07
+
+The Operator requested planning-only [Arc02 S01](../../arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/slice-plan.md) for this local test correction and honest old-compiler baseline. No correction, CC dispatch, source/test/build execution or S02 continuation is authorized now. That bounded accepted result, not closure of all future miscellany, plus explicit Operator continuation gates return to this approved Result design. Current CE deferrals and original prompt/review remain unchanged.
+
+Carry the first failed initial S02 attempt at2321943 and zero executed numbered refinements. The next maintenance correction is shared refinement01 under this inherited five-refinement ceiling, not a new budget. Record its future actual source/evidence and usage in both plans before resumption. Eight older tooling passes/K0/13 unchanged. The earlier unissued correction proposal below is historical input to the new maintenance plan, not executable authority.
 
 ## Current stopped disposition — 2026-11-07
 

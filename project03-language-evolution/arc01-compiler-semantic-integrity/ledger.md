@@ -1,5 +1,11 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 latest: Operator paused S02 for planning-only
+[Arc02 S01 local harness/baseline](../arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/slice-plan.md).
+CI-02 remains open; acceptance of that bounded slice and explicit continuation
+precede S02 resumption. Expected old-product red is not compiler acceptance.
+Original history/shared allowance and all later arc capabilities unchanged.
+
 2026-11-07 current: S02 initial test-only2321943 is paused on independently
 verified harness defects before behavioral baseline/production edits. CE rows
 all deferred, CI-02 remains open. Proposed consolidated test correction awaits

@@ -9,6 +9,21 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current maintenance planning and S02 pause (2026-11-07)
+
+The Operator explicitly paused Arc01 S02 and requested an ad hoc miscellany arc
+with harness repair planning. [Arc02](arc02-ad-hoc-maintenance/arc-plan.md) is
+planning only: its first finite slice corrects the LOCAL newly authored test and
+establishes an independently reproduced old-compiler baseline. Proven test
+defects do not establish a shared infrastructure failure. Expected product reds
+remain meaningful evidence; full normal green source gates stay with S02.
+
+No CC dispatch/source edit/test/build/correction or S02 resume is approved now.
+Return is tied to accepted maintenance S01 plus explicit S02 continuation, not
+closure of indefinite miscellany intake. Source test-only232 and release8f are
+unchanged; the approved Result design, original CE rows, failed initial attempt,
+shared correction allowance, tooling8 spent/K0/13 and all inherited duties remain.
+
 This project holds the former 0.7.0 candidate backlog and exploratory work:
 build tooling, distribution, output optimization, language forms and typing,
 and internationalization. It is a research and candidate roadmap, not a promise
@@ -549,6 +564,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.37: Operator paused S02 and requested planning-only Arc02 ad hoc
+  maintenance. Detailed one local harness/baseline slice with expected product
+  reds distinct from harness checks and explicit return; no execution or reset.
 
 - 2026-11-07 v1.36: Independently accepted Slice20 release8f integration/full
   gates, five RI rows done; recorded explicit Result-family0.6 decision and

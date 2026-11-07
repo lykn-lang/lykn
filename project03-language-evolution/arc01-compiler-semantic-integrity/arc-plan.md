@@ -9,6 +9,16 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Explicit S02 pause for maintenance planning — 2026-11-07
+
+The Operator requested [Arc02 ad hoc maintenance](../arc02-ad-hoc-maintenance/arc-plan.md)
+planning before returning to S02. Only its finite first local harness/baseline
+slice is detailed; no source execution, correction or S02 continuation now.
+Accepted maintenance S01 supplies a trustworthy baseline with expected product
+reds, then explicit Operator continuation returns to the approved Result design.
+Arc02's future miscellany intake is not an indefinite prerequisite. Initial232
+failure, CE deferrals, inherited allowance, release8f and tooling8/K0/13 persist.
+
 ## S02 initial test-only stop — 2026-11-07
 
 S02 is paused at test-only2321943: independent review found four substantive
@@ -221,6 +231,11 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.6: S02's initial test-only232 stopped on local harness defects;
+  Operator paused source work and requested planning-only Arc02 maintenance.
+  Return depends on its accepted first baseline slice and explicit continuation,
+  preserving Result approval, original evidence and shared correction allowance.
 
 - 2026-11-07 v0.5: Slice20 independently accepts release8f integration. Recorded
   explicit Result-family/no-legacy-shim choice for0.6 development and conditional
