@@ -1,5 +1,15 @@
 # Slice19 — match subject repair and combined validation
 
+2026-11-07 Operator explicitly replied “yes please! Authorised :-)” to ONE extra
+bounded correction6 for observer ensure-positive-row boundary, then required
+gates and unchanged13 only if green. Same CDC Sol6.1High/CC Luna6High Autonomous
+Mode; iteration04 now governs. Five prior passes remain spent, no reset/seventh.
+Only semantic change is missing function close before ensure-parent; other tools/
+core/controls/oracles/product source fixed. Required scoped gates and independent
+source/generated/predicate review precede any K. Prior pending verdict retained;
+source8ed acceptance remains. Any further substantive failure/gap returns, no
+extra edit/next unit. CC ownership explicitly narrowed to directive allowlist.
+
 Current2026-11-07: PAUSED pending Operator budget choice; both tracks5/5 exhausted.
 Final candidate fd532 native core/walker/scanner0, observer1 unterminated136:1;
 CDC independently reproduces exact source/hash/tool condition, no edit/retry.
@@ -194,3 +204,4 @@ six rows/report/review/retro/parent/backlog honestly at endpoint only, no nextun
 | cc-prompt-iteration01.md | 2026-11-07 | Correct already-required owned cache/raw capture for fullMake | Current operational retry, source refinement3 unchanged/no code edit |
 | cc-prompt-iteration02.md | 2026-11-07 | Complete original tooling and fixed13 gate under original contract | Current continuation4/5 for BOTH outer/tool tracks; one remains; runtime held for CDC prereview |
 | cc-prompt-iteration03.md | 2026-11-07 | Consolidated actual syntax and predicate defects | LAST continuation5/5 BOTH tracks; no further substantive retry without Operator |
+| cc-prompt-iteration04.md | 2026-11-07 | Explicitly authorized ONE extra correction6, observer boundary only | Operator approval received; no reset/seventh; runtime held for CDC prereview |

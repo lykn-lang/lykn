@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+Current Operator approval2026-11-07: “yes please! Authorised :-)” grants ONE extra
+bounded correction6 beyond both retained5/5 caps, no reset/seventh. Iteration04
+exact observer function-boundary edit then all scoped gates; same13 ONLY after
+CDC prerequisite acceptance. Old failures/capture limits remain; MS02/03 done,
+MS04–06 open, K0/13. Approval is budget authority, not tool/source acceptance.
+
 Current: pending Operator choice at both exhausted5/5 caps, source8ed accepted,
 tooling fd532 unaccepted. Native3/4 sourcechecks pass; observer1 independently
 reproduced at136:1. No sixth correction or dependent gates/K. Detailed concrete
