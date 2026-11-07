@@ -1,0 +1,1 @@
+No environment overrides were added. CWD is the config-free directory recorded above. Executable and input are absolute paths. Inherited environment is the active Codex process environment.
