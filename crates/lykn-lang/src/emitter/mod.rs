@@ -177,7 +177,7 @@ mod tests {
                 span: s(),
             },
         ];
-        let result = emit(&forms, &registry, false);
+        let result = emit(&forms, &registry, false).unwrap();
         assert_eq!(result.len(), 2);
 
         // First is a const binding

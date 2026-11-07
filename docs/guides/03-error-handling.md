@@ -927,3 +927,25 @@ be updated or they throw at runtime.
   anti-patterns
 - **Surface Forms Reference**: See `00-lykn-surface-forms.md` for
   `try`/`catch`/`finally`, `throw`, `type`, `match`
+# Compiler failures and runtime exceptions
+
+The Rust source-lowering entry points `emitter::emit`, `emitter::emit_json`,
+and `emitter::forms::emit_form` return `Result`. A `LyknError::Classify` keeps
+the classifier's diagnostic, including its span and suggestion; a
+`LyknError::Codegen` identifies a compiler lowering failure. Call
+`EmitterContext::new` to construct an emitter context: its internal first-error
+slot is private, so external struct literals are no longer available.
+
+Each checked `emit_form` call consumes its first recorded fatal diagnostic.
+Failure restores the caller's expression and class-body modes and clears that
+diagnostic, so a context can be reused. Gensym allocation remains monotonic
+across failures. `emit` returns no partial module and `emit_json` serializes
+only successful output. Assertion stripping does not suppress compiler
+failures.
+
+Compiler failures differ from Lykn program behavior. A user's `throw`, a
+literal containing `COMPILE_ERROR`, and runtime contract/type/match exceptions
+remain generated program behavior. On a compiler failure, CLI and package
+compilation return an error before writing new JavaScript or declarations for
+that failing source. This does not promise pairwise atomic I/O writes or
+rollback of earlier package files.
