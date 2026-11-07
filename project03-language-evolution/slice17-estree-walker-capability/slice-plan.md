@@ -227,7 +227,7 @@ discretion. All original-method node/status rules remain binding.
 
 | Prompt | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
-| cc-prompt.md | 2026-11-07 | none | Explicit Lykn walker/fixed capability gate | Active after prep commit/dispatch |
+| cc-prompt.md | 2026-11-07 | none | Explicit Lykn walker/fixed capability gate | Replaced before authoring/check/runtime by iteration01 |
 | cc-prompt-iteration01.md | 2026-11-07 | cc-prompt.md | Pre-authoring Deno separator/API/usage clarification | Current; no executed correction pass |
 
 Initial plan concatenated executable/version as `/opt/homebrew/bin/deno2.9.6`;
