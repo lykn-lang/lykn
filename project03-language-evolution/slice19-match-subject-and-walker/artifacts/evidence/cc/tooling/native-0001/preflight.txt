@@ -1,0 +1,18 @@
+Frozen input commit: b828c2a1b2f4d408508e5697d9a458f7b20538e9
+Planning branch status immediately before invocation: clean
+Working directory: /private/tmp/s19-native-cwd
+Compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+Compiler version: 0.6.0
+Compiler SHA256: aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8
+
+Committed source SHA256 values:
+parser-core.lykn 6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7
+estree-walker.lykn 6976a853a9fea81bcf47e47d634fa5bcd568e9f3b72e6f36c4f58be2bd48d1c6
+scanner.lykn cb90f4f2c28b9d22fb343ab91da474d36c712d52d1dbe43619ed94ca6585d0cc
+capability-observer.lykn 1dcb5106af1006a80ecee14c022e7520517d291ba1fa427dc902912beca56d4b
+
+Each check used the absolute compiler and source paths, redirected stdout and
+stderr to separate raw files, and ran in the stated working directory. The
+tool returned exit status directly. Core and walker checks exited 0. Scanner
+and observer checks exited 1. No fmt, lint, compile, DenoCheck, zero-argument
+guard, or K runtime was run after these native syntax failures.

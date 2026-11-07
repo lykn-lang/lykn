@@ -1,0 +1,4 @@
+parser-core: 0
+estree-walker: 0
+scanner: 1
+capability-observer: 1
