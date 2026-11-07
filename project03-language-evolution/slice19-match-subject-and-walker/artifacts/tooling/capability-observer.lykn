@@ -51,20 +51,20 @@
   :body
   (match
     id
-    ("K01") "complete_no_findings"
-    ("K02") "complete_with_findings"
-    ("K03") "complete_with_findings"
-    ("K04") "complete_with_findings"
-    ("K05") "complete_with_findings"
-    ("K06") "complete_with_findings"
-    ("K07") "complete_with_findings"
-    ("K08") "complete_with_findings"
-    ("K11") "parser_artifact_identity_mismatch"
-    ("K09") "parse_error"
-    ("K10a") "source_missing"
-    ("K10b") "source_unreadable"
-    ("K12") "unsupported_ast"
-    (_ "complete")))
+    ("K01" "complete_walk")
+    ("K02" "complete_walk")
+    ("K03" "complete_walk")
+    ("K04" "complete_walk")
+    ("K05" "complete_walk")
+    ("K06" "complete_walk")
+    ("K07" "complete_walk")
+    ("K08" "complete_walk")
+    ("K11" "parser_artifact_identity_mismatch")
+    ("K09" "parse_error")
+    ("K10a" "source_missing")
+    ("K10b" "source_unreadable")
+    ("K12" "unsupported_ast")
+    (_ (throw (new Error (template "unknown fixed control " id)))))
 
 (func
   expected-exit
@@ -95,7 +95,7 @@
   :void
   :body
   (do
-    (ensure (= row:program null) (template id " must not report a Program"))
+    (ensure (not (Object:hasOwn row "program")) (template id " must omit Program AST"))
     (ensure (= row:findings:length 0) (template id " must have no findings"))
     (ensure (= row:reasons:length 0) (template id " must have no reasons"))
     (ensure (= row:dependency_edges:length 0) (template id " must have no dependency edges"))))
@@ -109,11 +109,28 @@
   :body
   (do
     (ensure (= row:status "complete_walk") (template id " row status"))
+    (ensure (= row:status (expected-status id)) (template id " expected terminal status"))
     (ensure (= row:ast_coverage "complete") (template id " AST coverage"))
     (ensure (= row:program:type "Program") (template id " Program type"))
     (ensure (= row:program:sourceType "module") (template id " source type"))
     (ensure (= row:direct_count direct) (template id " direct parent count"))
     (ensure (= row:reason_count reasons) (template id " reason count"))))
+
+(func
+  ensure-reason
+  :args
+  (:any row :number index :string node-type :string path :string category :number line :number column :string range :string id)
+  :returns
+  :void
+  :body
+  (do
+    (bind reason (get row:reasons index))
+    (ensure (= reason:nodeType node-type) (template id " reason node type at " index))
+    (ensure (= reason:path path) (template id " reason path at " index))
+    (ensure (= reason:category category) (template id " reason category at " index))
+    (ensure (= reason:loc:line line) (template id " reason line at " index))
+    (ensure (= reason:loc:column column) (template id " reason column at " index))
+    (ensure (= (JSON:stringify reason:range) range) (template id " reason range at " index))))
 
 (func
   result-path
@@ -140,7 +157,7 @@
      :string cache-root
      :string cwd)
     :returns
-    :promise
+    :any
     :body
     (bind definition (control controls id))
     (bind case-dir (result-path task-root id))
@@ -182,8 +199,8 @@
       (if
         gated?
         (await (sha256 (await (Deno:readFile scanner-input-path))))
-        (if has-input input-hash (await (sha256 (new Uint8Array)))))
-    (bind source-id (if gated? "slice17-K01" (template "slice17-" id)))
+        (if has-input input-hash null))
+    (bind source-id (if gated? "slice19-K01" (template "slice19-" id)))
     (bind manifest
       (if
         synthetic?
@@ -199,10 +216,10 @@
           :kind "file_scan"
           :run_id id
           :created_at "2026-11-07"
-          :source_commit "5408abd432b8789ae474a3895436f68818c4e482"
-          :source_tree "39bc56b73897e568ff81ce60a2feef28a2310ea8"
+          :source_commit "8ed869f1ed24bf688ba91f71d8c539680136794e"
+          :source_tree "74b980be159f8557c78d11b4546bf92498b7861e"
           :source_clean true
-          :compiler (obj :path "/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn" :version "0.6.0" :sha256 "85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc")
+          :compiler (obj :path "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn" :version "0.6.0" :sha256 "aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8")
           :deno (obj :path deno :version "2.9.6" :sha256 "2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74")
           :parser (obj
             :path parser-path
@@ -219,7 +236,7 @@
               :mode "module"
               :condition_id id
               :path scanner-input-path
-              :sha256 (if (= id "K10a") "" row-hash)
+              :sha256 row-hash
               :output_path scanner-input-path
               :required true
               :segment "control"
@@ -352,7 +369,7 @@
       (do
         (bind row (get report:rows 0))
         (ensure (= report:status "incomplete") "K11 aggregate status")
-        (ensure (= report:parser_gate:status "identity_mismatch") "K11 parser gate mismatch")
+        (ensure (= report:parser_gate:status (expected-status id)) "K11 parser gate mismatch")
         (ensure (= report:not_processed 1) "K11 required row not_processed mismatch")
         (ensure (= report:files_parsed 0) "K11 must parse no file")
         (ensure (= row:status "not_processed") "K11 row status")
@@ -370,14 +387,86 @@
         (ensure (= (JSON:stringify row:program:range) "[0,66]") "K01 Program range")
         (ensure (= row:program:loc:end:line 5) "K01 Program end line")
         (ensure (= row:program:loc:end:column 0) "K01 Program end column")
+        (bind function-declaration (get row:program:body 0))
+        (bind function-expression-statement (get function-declaration:body:body 0))
+        (bind function-call function-expression-statement:expression)
+        (bind arrow-declaration (get row:program:body 1))
+        (bind arrow-variable (get arrow-declaration:declarations 0))
+        (bind arrow-function arrow-variable:init)
+        (ensure (= function-call:type "CallExpression") "K01 function body call AST")
+        (ensure (= function-call:loc:start:line 2) "K01 function body call line")
+        (ensure (= function-call:loc:start:column 2) "K01 function body call column")
+        (ensure (= (JSON:stringify function-call:range) "[20,30]") "K01 function body call range")
+        (ensure (= arrow-function:body:type "CallExpression") "K01 arrow body call AST")
         (ensure-positive-row row 0 0 id)
         (ensure-zero report 0 0 id)))
-    (if (= id "K02") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K02 aggregate status") (ensure-positive-row row 2 3 id) (ensure-zero report 2 3 id)))
-    (if (= id "K03") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K03 aggregate status") (ensure-positive-row row 1 2 id) (ensure-zero report 1 2 id)))
-    (if (= id "K04") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K04 aggregate status") (ensure-positive-row row 1 4 id) (ensure-zero report 1 4 id)))
-    (if (= id "K05") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K05 aggregate status") (ensure-positive-row row 2 4 id) (ensure-zero report 2 4 id)))
-    (if (= id "K06") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K06 aggregate status") (ensure-positive-row row 1 9 id) (ensure-zero report 1 9 id)))
-    (if (= id "K07") (do (bind row (get report:rows 0)) (ensure (= report:status "complete_with_findings") "K07 aggregate status") (ensure-positive-row row 1 3 id) (ensure-zero report 1 3 id)))
+    (if
+      (= id "K02")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "complete_with_findings") "K02 aggregate status")
+        (ensure-positive-row row 2 3 id)
+        (ensure-zero report 2 3 id)
+        (ensure-reason row 0 "CallExpression" "Program.body[0].declarations[0].init" "call" 1 14 "[14,23]" id)
+        (ensure-reason row 1 "CallExpression" "Program.body[1].expression" "call" 2 0 "[25,31]" id)
+        (ensure-reason row 2 "Identifier" "Program.body[1].expression.callee" "identifier_read" 2 0 "[25,28]" id)))
+    (if
+      (= id "K03")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "complete_with_findings") "K03 aggregate status")
+        (ensure-positive-row row 1 2 id)
+        (ensure-zero report 1 2 id)
+        (ensure-reason row 0 "MemberExpression" "Program.body[0].declarations[0].init" "member_read" 1 14 "[14,26]" id)
+        (ensure-reason row 1 "Identifier" "Program.body[0].declarations[0].init.object" "identifier_read" 1 14 "[14,20]" id)))
+    (if
+      (= id "K04")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "complete_with_findings") "K04 aggregate status")
+        (ensure-positive-row row 1 4 id)
+        (ensure-zero report 1 4 id)
+        (ensure-reason row 0 "ObjectPattern" "Program.body[0].declarations[0].id" "destructuring" 1 6 "[6,27]" id)
+        (ensure-reason row 1 "CallExpression" "Program.body[0].declarations[0].id.properties[0].value.right" "call" 1 16 "[16,26]" id)
+        (ensure-reason row 2 "Identifier" "Program.body[0].declarations[0].id.properties[0].value.right.callee" "identifier_read" 1 16 "[16,24]" id)
+        (ensure-reason row 3 "Identifier" "Program.body[0].declarations[0].init" "identifier_read" 1 31 "[31,37]" id)))
+    (if
+      (= id "K05")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "complete_with_findings") "K05 aggregate status")
+        (ensure-positive-row row 2 4 id)
+        (ensure-zero report 2 4 id)
+        (ensure-reason row 0 "SpreadElement" "Program.body[0].declarations[0].init.properties[0]" "spread" 1 16 "[16,25]" id)
+        (ensure-reason row 1 "Identifier" "Program.body[0].declarations[0].init.properties[0].argument" "identifier_read" 1 19 "[19,25]" id)
+        (ensure-reason row 2 "TemplateLiteral" "Program.body[1].declarations[0].init" "coercion" 2 13 "[42,53]" id)
+        (ensure-reason row 3 "Identifier" "Program.body[1].declarations[0].init.expressions[0]" "identifier_read" 2 17 "[46,51]" id)))
+    (if
+      (= id "K06")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "complete_with_findings") "K06 aggregate status")
+        (ensure-positive-row row 1 9 id)
+        (ensure-zero report 1 9 id)
+        (ensure-reason row 0 "Identifier" "Program.body[0].superClass" "class_heritage_validation" 1 18 "[18,22]" id)
+        (ensure-reason row 1 "Identifier" "Program.body[0].superClass" "identifier_read" 1 18 "[18,22]" id)
+        (ensure-reason row 2 "CallExpression" "Program.body[0].body.body[0].key" "computed_key_coercion" 2 3 "[28,33]" id)
+        (ensure-reason row 3 "CallExpression" "Program.body[0].body.body[0].key" "call" 2 3 "[28,33]" id)
+        (ensure-reason row 4 "Identifier" "Program.body[0].body.body[0].key.callee" "identifier_read" 2 3 "[28,31]" id)
+        (ensure-reason row 5 "CallExpression" "Program.body[0].body.body[1].value" "call" 3 17 "[64,71]" id)
+        (ensure-reason row 6 "Identifier" "Program.body[0].body.body[1].value.callee" "identifier_read" 3 17 "[64,68]" id)
+        (ensure-reason row 7 "CallExpression" "Program.body[0].body.body[2].body[0].expression" "call" 4 11 "[83,90]" id)
+        (ensure-reason row 8 "Identifier" "Program.body[0].body.body[2].body[0].expression.callee" "identifier_read" 4 11 "[83,88]" id)))
+    (if
+      (= id "K07")
+      (do
+        (bind row (get report:rows 0))
+        (ensure (= report:status "complete_with_findings") "K07 aggregate status")
+        (ensure-positive-row row 1 3 id)
+        (ensure-zero report 1 3 id)
+        (ensure-reason row 0 "Identifier" "Program.body[0].test" "identifier_read" 1 4 "[4,9]" id)
+        (ensure-reason row 1 "ThrowStatement" "Program.body[0].consequent.body[0]" "throw" 2 2 "[15,27]" id)
+        (ensure-reason row 2 "Identifier" "Program.body[0].consequent.body[0].argument" "identifier_read" 2 8 "[21,26]" id)))
     (if (= id "K08")
       (do
         (bind row (get report:rows 0))
@@ -390,12 +479,9 @@
         (ensure (= (JSON:stringify row:program:range) "[0,67]") "K08 Program range")
         (ensure (= row:program:loc:end:line 4) "K08 Program end line")
         (ensure (= row:program:loc:end:column 0) "K08 Program end column")
-        (bind await-reason (get row:reasons 0))
-        (ensure (= await-reason:nodeType "AwaitExpression") "K08 await node")
-        (ensure (= await-reason:path "Program.body[2].expression") "K08 await path")
-        (ensure (= await-reason:loc:line 3) "K08 await line")
-        (ensure (= await-reason:loc:column 0) "K08 await column")
-        (ensure (= (JSON:stringify await-reason:range) "[53,65]") "K08 await range")))
+        (ensure-reason row 0 "AwaitExpression" "Program.body[2].expression" "await" 3 0 "[53,65]" id)
+        (ensure-reason row 1 "CallExpression" "Program.body[2].expression.argument" "call" 3 6 "[59,65]" id)
+        (ensure-reason row 2 "Identifier" "Program.body[2].expression.argument.callee" "identifier_read" 3 6 "[59,63]" id)))
     (if
       (= id "K09")
       (do
@@ -404,6 +490,7 @@
         (ensure (= report:parse_error 1) "K09 parse-error count")
         (ensure (= row:status "parse_error") "K09 row status")
         (ensure (= row:error:pos 14) "K09 SyntaxError position")
+        (ensure (= row:error:name "SyntaxError") "K09 actual SyntaxError name")
         (ensure (= row:error:loc:line 1) "K09 SyntaxError line")
         (ensure (= row:error:loc:column 14) "K09 SyntaxError column")
         (ensure-no-ast row id)))
@@ -413,12 +500,15 @@
         (bind row (get report:rows 0))
         (ensure (= report:status "incomplete") (template id " aggregate status"))
         (ensure (= row:status (if (= id "K10a") "source_missing" "source_unreadable")) (template id " row status"))
+        (ensure (= row:error:name (if (= id "K10a") "NotFound" "NotCapable")) (template id " distinct read failure"))
         (ensure-no-ast row id)))
     (if (= id "K12")
       (do
         (ensure (= report:unit:status "unsupported_ast") "K12 unsupported status")
         (ensure (= report:unit:nodeType "ExperimentalNode") "K12 actual offending type")
         (ensure (= report:unit:path "Program.body[0]") "K12 path")
+        (ensure (= report:unit:loc null) "K12 unavailable location")
+        (ensure (= report:unit:range null) "K12 unavailable range")
         (ensure (= report:status "incomplete") "K12 aggregate status")
         (ensure (= report:files_parsed null) "K12 parser count must be not applicable")
         (ensure (= report:files_completely_walked null) "K12 walked-file count must be not applicable")
@@ -443,7 +533,7 @@
      :string cache-root
      :string cwd)
     :returns
-    :promise
+    :any
     :body
     (bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
     (bind ids (array "K11" "K01" "K02" "K03" "K04" "K05" "K06" "K07" "K08" "K09" "K10a" "K10b" "K12"))
@@ -470,9 +560,9 @@
       (obj
         :schema "lykn-estree-capability-results-v1"
         :controls_sha256 (await (sha256 (await (Deno:readFile controls-path))))
-        :source_commit "5408abd432b8789ae474a3895436f68818c4e482"
-        :source_tree "39bc56b73897e568ff81ce60a2feef28a2310ea8"
-        :compiler_sha256 "85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc"
+        :source_commit "8ed869f1ed24bf688ba91f71d8c539680136794e"
+        :source_tree "74b980be159f8557c78d11b4546bf92498b7861e"
+        :compiler_sha256 "aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8"
         :deno_sha256 (await (sha256 (await (Deno:readFile deno))))
         :parser_sha256 (await (sha256 (await (Deno:readFile parser-path))))
         :selected_rows 13

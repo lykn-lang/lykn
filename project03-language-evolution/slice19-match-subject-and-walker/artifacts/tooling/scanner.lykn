@@ -46,7 +46,6 @@
     :observed_source_sha256 null
     :observed_output_sha256 null
     :ast_coverage null
-    :program null
     :findings #a()
     :reasons #a()
     :dependency_edges #a()
@@ -61,10 +60,10 @@
   :any
   :body
   (obj
-    :name (if (own error "name") error:name null)
-    :message (if (own error "message") error:message null)
-    :pos (if (own error "pos") error:pos null)
-    :loc (if (own error "loc") error:loc null)))
+    :name (if (and (not (= error null)) (= (js:typeof error:name) "string")) error:name null)
+    :message (if (and (not (= error null)) (own error "message")) error:message null)
+    :pos (if (and (not (= error null)) (own error "pos")) error:pos null)
+    :loc (if (and (not (= error null)) (own error "loc")) error:loc null)))
 
 (func
   read-error-status
@@ -95,7 +94,7 @@
         (if
           (= status "unexpected")
           (throw error)
-          (reset! result (assoc (express result) :status status :error (error-record error))))))))
+          (reset! result (assoc (express result) :status status :error (error-record error))))))
     (if
       (not (= (express bytes) null))
       (do
@@ -156,12 +155,7 @@
                           (express result)
                           :status "unsupported_ast"
                           :ast_coverage "unsupported_ast"
-                          :program (obj
-                            :type program:type
-                            :sourceType program:sourceType
-                            :bodyCount program:body:length
-                            :loc program:loc
-                            :range program:range)
+                          :program program
                           :findings walked:direct_statements
                           :direct_count walked:direct_count
                           :reasons walked:reasons
@@ -176,12 +170,7 @@
                           (express result)
                           :status "complete_walk"
                           :ast_coverage "complete"
-                          :program (obj
-                            :type program:type
-                            :sourceType program:sourceType
-                            :bodyCount program:body:length
-                            :loc program:loc
-                            :range program:range)
+                          :program program
                           :findings walked:direct_statements
                           :direct_count walked:direct_count
                           :reasons walked:reasons
@@ -189,7 +178,11 @@
                           :dependency_edges walked:dependency_edges
                           :dependency_edge_count walked:dependency_edge_count
                           :bare_imports walked:bare_imports))))))))
-    (express result)))
+    (bind final-result (express result))
+    (if
+      (= final-result:status "complete_walk")
+      final-result
+      (dissoc final-result :program))))
 
 (func
   compound-key
@@ -213,25 +206,40 @@
   (if
     (not (Array:isArray manifest:rows))
     (throw (new Error "file manifest rows must be an array")))
-    (bind keys (cell #a()))
+  (bind keys (cell #a()))
   (bind source-outputs (cell #a()))
   (for-of
     row
     manifest:rows
+    (bind absent-required-key
+      (->
+        (array "source_id" "source_sha256" "emitter" "mode" "condition_id" "path" "sha256" "output_path" "required")
+        (:some (fn (:string field) (not (Object:hasOwn row field))))))
+    (bind expected-hash-missing (= row:condition_id "K10a"))
     (if
       (or
-        (= row:source_id null)
-        (= row:source_sha256 null)
-        (= row:emitter null)
-        (= row:mode null)
-        (= row:condition_id null)
-        (= row:path null)
-        (= row:sha256 null)
-        (= row:output_path null)
-        (not (or (= row:required true) (= row:required false))))
-      (throw (new Error "manifest row is incomplete or not required")))
+        absent-required-key
+        (not (= (js:typeof row:source_id) "string"))
+        (not (= (js:typeof row:emitter) "string"))
+        (not (= (js:typeof row:mode) "string"))
+        (not (= (js:typeof row:condition_id) "string"))
+        (not (= (js:typeof row:path) "string"))
+        (not (= (js:typeof row:output_path) "string"))
+        (not (or (= row:required true) (= row:required false)))
+        (if expected-hash-missing
+          (or (not (= row:source_sha256 null)) (not (= row:sha256 null)))
+          (or
+            (not (= (js:typeof row:source_sha256) "string"))
+            (not (= (js:typeof row:sha256) "string")))))
+      (throw (new Error "manifest row is incomplete or has invalid expected hashes")))
+    (if (!= row:source_sha256 row:sha256)
+      (throw (new Error "manifest source hash declarations disagree")))
     (if
-      (and (= row:required false) (= row:exclusion_reason null))
+      (and
+        (= row:required false)
+        (or
+          (not (Object:hasOwn row "exclusion_reason"))
+          (not (= (js:typeof row:exclusion_reason) "string"))))
       (throw (new Error "non-required manifest row needs a frozen exclusion reason")))
     (bind key (compound-key row))
     (if (-> (express keys) (:includes key)) (throw (new Error "duplicate condition key")))
@@ -346,6 +354,22 @@
             (reset! gate-error (obj :status "after_use_hash_mismatch" :actualHash after:afterHash :expectedHash loaded:actualHash))))))
     (bind values (express rows))
     (bind counts (status-counts values))
+    (bind files-parsed (+ counts:complete_walk counts:unsupported_ast))
+    (bind partition-total
+      (+
+        counts:complete_walk
+        counts:source_missing
+        counts:source_unreadable
+        counts:source_hash_mismatch
+        counts:compile_failed
+        counts:output_missing
+        counts:output_hash_mismatch
+        counts:output_unreadable
+        counts:parse_error
+        counts:unsupported_ast
+        counts:not_processed
+        counts:excluded_named))
+    (if (!= partition-total values:length) (throw (new Error "terminal status partition does not match selected rows")))
     (bind source-keys (cell #a()))
     (for-of
       row
@@ -377,10 +401,10 @@
           loaded-gate:status
           ("ready" "passed")
           ("parser_artifact_missing" "missing")
-          ("parser_artifact_unreadable" "unreadable")
+          ("parser_artifact_unreadable" "not_processed")
           ("parser_artifact_identity_mismatch" "identity_mismatch")
-          ("parser_artifact_version_mismatch" "version_mismatch")
-          (_ "after_use_mismatch"))
+          ("parser_artifact_version_mismatch" "identity_mismatch")
+          (_ "not_processed"))
         :path manifest:parser:path
         :version loaded-gate:actualVersion
         :expected_sha256 manifest:parser:expected_sha256
@@ -413,7 +437,7 @@
       :unsupported_ast counts:unsupported_ast
       :not_processed counts:not_processed
       :excluded_named counts:excluded_named
-      :files_parsed (+ counts:complete_walk counts:unsupported_ast)
+      :files_parsed files-parsed
       :files_completely_walked counts:complete_walk
       :direct_statements_with_findings direct-total
       :nested_reasons reason-total
