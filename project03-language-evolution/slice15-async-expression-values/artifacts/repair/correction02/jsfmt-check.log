@@ -1,0 +1,52 @@
+
+from /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/async-expression-values.test.js:
+ 68 | -          JSON.stringify({ name: fixture.name, expected: fixture.expected, source, generated }),
+ 68 | +          JSON.stringify({
+ 69 | +            name: fixture.name,
+ 70 | +            expected: fixture.expected,
+ 71 | +            source,
+ 72 | +            generated,
+ 73 | +          }),
+    | ...
+ 90 | -          JSON.stringify({ name: fixture.name, code: result.code, stdout, stderr, source, generated }),
+ 95 | +          JSON.stringify({
+ 96 | +            name: fixture.name,
+ 97 | +            code: result.code,
+ 98 | +            stdout,
+ 99 | +            stderr,
+100 | +            source,
+101 | +            generated,
+102 | +          }),
+    | ...
+ 98 | -        if (stderr !== "") failures.push(`${fixture.name}: unexpected stderr ${JSON.stringify(stderr)}`);
+110 | +        if (stderr !== "") {
+111 | +          failures.push(
+112 | +            `${fixture.name}: unexpected stderr ${JSON.stringify(stderr)}`,
+113 | +          );
+114 | +        }
+    | ...
+103 | -          failures.push(`${fixture.name}: invalid JSON ${error}; stdout=${JSON.stringify(stdout)}`);
+119 | +          failures.push(
+120 | +            `${fixture.name}: invalid JSON ${error}; stdout=${
+121 | +              JSON.stringify(stdout)
+122 | +            }`,
+123 | +          );
+    | ...
+108 | -            `${fixture.name}: expected ${JSON.stringify(fixture.expected)}, got ${JSON.stringify(actual)}; source:\n${source}\ngenerated:\n${generated}\nstdout:\n${stdout}`,
+128 | +            `${fixture.name}: expected ${
+129 | +              JSON.stringify(fixture.expected)
+130 | +            }, got ${
+131 | +              JSON.stringify(actual)
+132 | +            }; source:\n${source}\ngenerated:\n${generated}\nstdout:\n${stdout}`,
+    | ...
+113 | -          `${fixture.name}: setup/compile/runtime error ${error}\nsource:\n${source ?? "<not read>"}\ngenerated:\n${generated ?? "<not generated>"}`,
+137 | +          `${fixture.name}: setup/compile/runtime error ${error}\nsource:\n${
+138 | +            source ?? "<not read>"
+139 | +          }\ngenerated:\n${generated ?? "<not generated>"}`,
+    | ...
+116 | -        if (tempDir !== undefined) await Deno.remove(tempDir, { recursive: true });
+142 | +        if (tempDir !== undefined) {
+143 | +          await Deno.remove(tempDir, { recursive: true });
+144 | +        }
+
+error: Found 1 not formatted file in 1 file

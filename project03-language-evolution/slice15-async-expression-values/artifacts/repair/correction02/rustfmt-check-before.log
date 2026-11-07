@@ -1,0 +1,37 @@
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/async_expression_values.rs:76:
+         ) {
+             Ok(output) => output,
+             Err(error) => {
+-                failures.push(format!("{}: strict compile {error}; source={source:?}", fixture.name));
++                failures.push(format!(
++                    "{}: strict compile {error}; source={source:?}",
++                    fixture.name
++                ));
+                 continue;
+             }
+         };
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/async_expression_values.rs:157:
+             }
+         };
+         if !runtime.stderr.is_empty() {
+-            failures.push(format!("{}: unexpected Deno stderr {stderr:?}", fixture.name));
++            failures.push(format!(
++                "{}: unexpected Deno stderr {stderr:?}",
++                fixture.name
++            ));
+         }
+         if actual != expected {
+             failures.push(format!(
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/async_expression_values.rs:168:
+             ));
+         }
+     }
+-    assert!(failures.is_empty(), "{} native failures:\n{}", failures.len(), failures.join("\n\n"));
++    assert!(
++        failures.is_empty(),
++        "{} native failures:\n{}",
++        failures.len(),
++        failures.join("\n\n")
++    );
+ }
+ 

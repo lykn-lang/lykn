@@ -1,0 +1,5 @@
+test/fixtures/async-expression-values/E1-sync-values.lykn: ok (7 top-level expressions)
+test/fixtures/async-expression-values/E2-async-branches.lykn: ok (8 top-level expressions)
+test/fixtures/async-expression-values/E3-promise-value.lykn: ok (3 top-level expressions)
+test/fixtures/async-expression-values/E4-deferred-function.lykn: ok (8 top-level expressions)
+test/fixtures/async-expression-values/E5-effects-errors.lykn: ok (12 top-level expressions)

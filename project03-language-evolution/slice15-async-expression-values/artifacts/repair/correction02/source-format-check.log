@@ -1,0 +1,6 @@
+test/fixtures/async-expression-values/E1-sync-values.lykn: not formatted
+test/fixtures/async-expression-values/E2-async-branches.lykn: not formatted
+test/fixtures/async-expression-values/E3-promise-value.lykn: not formatted
+test/fixtures/async-expression-values/E4-deferred-function.lykn: not formatted
+test/fixtures/async-expression-values/E5-effects-errors.lykn: not formatted
+5 file(s) not formatted

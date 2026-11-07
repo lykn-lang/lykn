@@ -1,0 +1,714 @@
+Check test/forms/async-expression-values.test.js
+running 1 test from ./test/forms/async-expression-values.test.js
+public JS compiler preserves async expression values ...
+  E1-sync-values.lykn ...
+------- output -------
+ASYNC_EXPR_JS_PREASSERT {"name":"E1-sync-values.lykn","expected":{"value":41,"falseValue":42,"typeof":"number","noElsePrefix":41,"nestedEquality":true,"prefixEffect":1},"source":"(func\n  typed-branch\n  :args\n  (:boolean take-left)\n  :returns\n  :number\n  :post\n  (> ~ 0)\n  :body\n  (if take-left (do (bind left 40) (+ left 1)) (do (bind right 40) (+ right 2))))\n\n(bind result (typed-branch true))\n\n(bind other (typed-branch false))\n\n(bind prefixEffect (cell 0))\n\n(bind\n  no-else-result\n  (do (bind prefix 1) (if true (reset! prefixEffect 1)) (+ prefix 40)))\n\n(bind nested-equality (= 7 (if true 7 8)))\n\n(console:log\n  (JSON:stringify\n    (obj\n      :value\n      result\n      :falseValue\n      other\n      :typeof\n      (js:typeof result)\n      :noElsePrefix\n      no-else-result\n      :nestedEquality\n      nested-equality\n      :prefixEffect\n      (express prefixEffect))))\n","generated":"function typedBranch(takeLeft) {\n  if (typeof takeLeft !== \"boolean\") throw new TypeError(\"typedBranch: arg 'takeLeft' expected boolean, got \" + typeof takeLeft);\n  const result__gensym0 = takeLeft ? (() => {\n    const left = 40;\n    return left + 1;\n  })() : (() => {\n    const right = 40;\n    return right + 2;\n  })();\n  if (typeof result__gensym0 !== \"number\" || Number.isNaN(result__gensym0)) throw new TypeError(\"typedBranch: return value expected number, got \" + typeof result__gensym0);\n  if (!(result__gensym0 > 0)) throw new Error(\"typed-branch: post-condition failed: (> ~ 0) — callee blame\");\n  return result__gensym0;\n}\nconst result = typedBranch(true);\nconst other = typedBranch(false);\nconst prefixEffect = {\n  value: 0\n};\nconst noElseResult = (() => {\n  const prefix = 1;\n  if (true) prefixEffect.value = 1;\n  return prefix + 40;\n})();\nconst nestedEquality = 7 === (true ? 7 : 8);\nconsole.log(JSON.stringify({\n  value: result,\n  falseValue: other,\n  typeof: typeof result,\n  noElsePrefix: noElseResult,\n  nestedEquality: nestedEquality,\n  prefixEffect: prefixEffect.value\n}));\n"}
+ASYNC_EXPR_JS_RUNTIME {"name":"E1-sync-values.lykn","code":0,"stdout":"{\"value\":41,\"falseValue\":42,\"typeof\":\"number\",\"noElsePrefix\":41,\"nestedEquality\":true,\"prefixEffect\":1}\n","stderr":"","source":"(func\n  typed-branch\n  :args\n  (:boolean take-left)\n  :returns\n  :number\n  :post\n  (> ~ 0)\n  :body\n  (if take-left (do (bind left 40) (+ left 1)) (do (bind right 40) (+ right 2))))\n\n(bind result (typed-branch true))\n\n(bind other (typed-branch false))\n\n(bind prefixEffect (cell 0))\n\n(bind\n  no-else-result\n  (do (bind prefix 1) (if true (reset! prefixEffect 1)) (+ prefix 40)))\n\n(bind nested-equality (= 7 (if true 7 8)))\n\n(console:log\n  (JSON:stringify\n    (obj\n      :value\n      result\n      :falseValue\n      other\n      :typeof\n      (js:typeof result)\n      :noElsePrefix\n      no-else-result\n      :nestedEquality\n      nested-equality\n      :prefixEffect\n      (express prefixEffect))))\n","generated":"function typedBranch(takeLeft) {\n  if (typeof takeLeft !== \"boolean\") throw new TypeError(\"typedBranch: arg 'takeLeft' expected boolean, got \" + typeof takeLeft);\n  const result__gensym0 = takeLeft ? (() => {\n    const left = 40;\n    return left + 1;\n  })() : (() => {\n    const right = 40;\n    return right + 2;\n  })();\n  if (typeof result__gensym0 !== \"number\" || Number.isNaN(result__gensym0)) throw new TypeError(\"typedBranch: return value expected number, got \" + typeof result__gensym0);\n  if (!(result__gensym0 > 0)) throw new Error(\"typed-branch: post-condition failed: (> ~ 0) — callee blame\");\n  return result__gensym0;\n}\nconst result = typedBranch(true);\nconst other = typedBranch(false);\nconst prefixEffect = {\n  value: 0\n};\nconst noElseResult = (() => {\n  const prefix = 1;\n  if (true) prefixEffect.value = 1;\n  return prefix + 40;\n})();\nconst nestedEquality = 7 === (true ? 7 : 8);\nconsole.log(JSON.stringify({\n  value: result,\n  falseValue: other,\n  typeof: typeof result,\n  noElsePrefix: noElseResult,\n  nestedEquality: nestedEquality,\n  prefixEffect: prefixEffect.value\n}));\n"}
+----- output end -----
+  E1-sync-values.lykn ... ok (33ms)
+  E2-async-branches.lykn ...
+------- output -------
+ASYNC_EXPR_JS_PREASSERT {"name":"E2-async-branches.lykn","expected":{"sync":{"trace":["sync","after-branch","after-call"],"value":42},"await":{"trace":["await","after-call","after-branch"],"value":7},"bothAwaited":[42,7]},"source":"(bind trace (cell (array)))\n\n(async\n  (func\n    choose-branch\n    :args\n    (:boolean take-sync)\n    :returns\n    :number\n    :body\n    (bind\n      value\n      (if\n        take-sync\n        (do (swap! trace (fn (:array entries) (conj entries \"sync\"))) 42)\n        (do\n          (swap! trace (fn (:array entries) (conj entries \"await\")))\n          (await (Promise:resolve 7)))))\n    (swap! trace (fn (:array entries) (conj entries \"after-branch\")))\n    value))\n\n(async\n  (func\n    observe-branch\n    :args\n    (:boolean take-sync)\n    :returns\n    :any\n    :body\n    (reset! trace (array))\n    (bind pending (choose-branch take-sync))\n    (swap! trace (fn (:array entries) (conj entries \"after-call\")))\n    (bind value (await pending))\n    (obj :trace (express trace) :value value)))\n\n(async\n  (func\n    choose-both-awaited\n    :args\n    (:boolean take-left)\n    :returns\n    :number\n    :body\n    (if\n      take-left\n      (do (await (Promise:resolve 42)))\n      (do (await (Promise:resolve 7))))))\n\n(bind sync-observation (await (observe-branch true)))\n\n(bind await-observation (await (observe-branch false)))\n\n(bind\n  bothAwaited\n  (array (await (choose-both-awaited true)) (await (choose-both-awaited false))))\n\n(console:log\n  (JSON:stringify\n    (obj :sync sync-observation :await await-observation :bothAwaited bothAwaited)))\n","generated":"const trace = {\n  value: []\n};\nasync function chooseBranch(takeSync) {\n  if (typeof takeSync !== \"boolean\") throw new TypeError(\"chooseBranch: arg 'takeSync' expected boolean, got \" + typeof takeSync);\n  const value = takeSync ? (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"sync\"];\n    })(trace.value);\n    return 42;\n  })() : (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"await\"];\n    })(trace.value);\n    return await Promise.resolve(7);\n  })();\n  trace.value = (entries => {\n    if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n    return [...entries, \"after-branch\"];\n  })(trace.value);\n  const result__gensym1 = value;\n  if (typeof result__gensym1 !== \"number\" || Number.isNaN(result__gensym1)) throw new TypeError(\"chooseBranch: return value expected number, got \" + typeof result__gensym1);\n  return result__gensym1;\n}\nasync function observeBranch(takeSync) {\n  if (typeof takeSync !== \"boolean\") throw new TypeError(\"observeBranch: arg 'takeSync' expected boolean, got \" + typeof takeSync);\n  trace.value = [];\n  const pending = chooseBranch(takeSync);\n  trace.value = (entries => {\n    if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n    return [...entries, \"after-call\"];\n  })(trace.value);\n  const value = await pending;\n  return {\n    trace: trace.value,\n    value: value\n  };\n}\nasync function chooseBothAwaited(takeLeft) {\n  if (typeof takeLeft !== \"boolean\") throw new TypeError(\"chooseBothAwaited: arg 'takeLeft' expected boolean, got \" + typeof takeLeft);\n  const result__gensym2 = takeLeft ? (() => {\n    return await Promise.resolve(42);\n  })() : (() => {\n    return await Promise.resolve(7);\n  })();\n  if (typeof result__gensym2 !== \"number\" || Number.isNaN(result__gensym2)) throw new TypeError(\"chooseBothAwaited: return value expected number, got \" + typeof result__gensym2);\n  return result__gensym2;\n}\nconst syncObservation = await observeBranch(true);\nconst awaitObservation = await observeBranch(false);\nconst bothAwaited = [await chooseBothAwaited(true), await chooseBothAwaited(false)];\nconsole.log(JSON.stringify({\n  sync: syncObservation,\n  await: awaitObservation,\n  bothAwaited: bothAwaited\n}));\n"}
+ASYNC_EXPR_JS_RUNTIME {"name":"E2-async-branches.lykn","code":1,"stdout":"","stderr":"error: Uncaught SyntaxError: Unexpected reserved word\n    return await Promise.resolve(7);\n           ^\n    at <anonymous> (file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-1d471d490c3dc49f/fixture.js:17:12)\n","source":"(bind trace (cell (array)))\n\n(async\n  (func\n    choose-branch\n    :args\n    (:boolean take-sync)\n    :returns\n    :number\n    :body\n    (bind\n      value\n      (if\n        take-sync\n        (do (swap! trace (fn (:array entries) (conj entries \"sync\"))) 42)\n        (do\n          (swap! trace (fn (:array entries) (conj entries \"await\")))\n          (await (Promise:resolve 7)))))\n    (swap! trace (fn (:array entries) (conj entries \"after-branch\")))\n    value))\n\n(async\n  (func\n    observe-branch\n    :args\n    (:boolean take-sync)\n    :returns\n    :any\n    :body\n    (reset! trace (array))\n    (bind pending (choose-branch take-sync))\n    (swap! trace (fn (:array entries) (conj entries \"after-call\")))\n    (bind value (await pending))\n    (obj :trace (express trace) :value value)))\n\n(async\n  (func\n    choose-both-awaited\n    :args\n    (:boolean take-left)\n    :returns\n    :number\n    :body\n    (if\n      take-left\n      (do (await (Promise:resolve 42)))\n      (do (await (Promise:resolve 7))))))\n\n(bind sync-observation (await (observe-branch true)))\n\n(bind await-observation (await (observe-branch false)))\n\n(bind\n  bothAwaited\n  (array (await (choose-both-awaited true)) (await (choose-both-awaited false))))\n\n(console:log\n  (JSON:stringify\n    (obj :sync sync-observation :await await-observation :bothAwaited bothAwaited)))\n","generated":"const trace = {\n  value: []\n};\nasync function chooseBranch(takeSync) {\n  if (typeof takeSync !== \"boolean\") throw new TypeError(\"chooseBranch: arg 'takeSync' expected boolean, got \" + typeof takeSync);\n  const value = takeSync ? (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"sync\"];\n    })(trace.value);\n    return 42;\n  })() : (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"await\"];\n    })(trace.value);\n    return await Promise.resolve(7);\n  })();\n  trace.value = (entries => {\n    if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n    return [...entries, \"after-branch\"];\n  })(trace.value);\n  const result__gensym1 = value;\n  if (typeof result__gensym1 !== \"number\" || Number.isNaN(result__gensym1)) throw new TypeError(\"chooseBranch: return value expected number, got \" + typeof result__gensym1);\n  return result__gensym1;\n}\nasync function observeBranch(takeSync) {\n  if (typeof takeSync !== \"boolean\") throw new TypeError(\"observeBranch: arg 'takeSync' expected boolean, got \" + typeof takeSync);\n  trace.value = [];\n  const pending = chooseBranch(takeSync);\n  trace.value = (entries => {\n    if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n    return [...entries, \"after-call\"];\n  })(trace.value);\n  const value = await pending;\n  return {\n    trace: trace.value,\n    value: value\n  };\n}\nasync function chooseBothAwaited(takeLeft) {\n  if (typeof takeLeft !== \"boolean\") throw new TypeError(\"chooseBothAwaited: arg 'takeLeft' expected boolean, got \" + typeof takeLeft);\n  const result__gensym2 = takeLeft ? (() => {\n    return await Promise.resolve(42);\n  })() : (() => {\n    return await Promise.resolve(7);\n  })();\n  if (typeof result__gensym2 !== \"number\" || Number.isNaN(result__gensym2)) throw new TypeError(\"chooseBothAwaited: return value expected number, got \" + typeof result__gensym2);\n  return result__gensym2;\n}\nconst syncObservation = await observeBranch(true);\nconst awaitObservation = await observeBranch(false);\nconst bothAwaited = [await chooseBothAwaited(true), await chooseBothAwaited(false)];\nconsole.log(JSON.stringify({\n  sync: syncObservation,\n  await: awaitObservation,\n  bothAwaited: bothAwaited\n}));\n"}
+----- output end -----
+  E2-async-branches.lykn ... ok (18ms)
+  E3-promise-value.lykn ...
+------- output -------
+ASYNC_EXPR_JS_PREASSERT {"name":"E3-promise-value.lykn","expected":{"same":true,"thenType":"function","resolved":9},"source":"(async\n  (func observe-promise-value\n    :args ()\n    :returns :any\n    :body\n    (bind original (Promise:resolve 9))\n    (bind result\n      (do\n        (await (Promise:resolve 0))\n        original))\n    (obj\n      :same (= result original)\n      :thenType (js:typeof result:then)\n      :resolved (await result))))\n\n(bind observation (await (observe-promise-value)))\n(console:log (JSON:stringify observation))\n","generated":"async function observePromiseValue() {\n  const original = Promise.resolve(9);\n  const result = (() => {\n    await Promise.resolve(0);\n    return original;\n  })();\n  return {\n    same: result === original,\n    thenType: typeof result.then,\n    resolved: await result\n  };\n}\nconst observation = await observePromiseValue();\nconsole.log(JSON.stringify(observation));\n"}
+ASYNC_EXPR_JS_RUNTIME {"name":"E3-promise-value.lykn","code":1,"stdout":"","stderr":"error: Uncaught SyntaxError: Unexpected reserved word\n    await Promise.resolve(0);\n    ^\n    at <anonymous> (file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-ec197c43295673b4/fixture.js:4:5)\n","source":"(async\n  (func observe-promise-value\n    :args ()\n    :returns :any\n    :body\n    (bind original (Promise:resolve 9))\n    (bind result\n      (do\n        (await (Promise:resolve 0))\n        original))\n    (obj\n      :same (= result original)\n      :thenType (js:typeof result:then)\n      :resolved (await result))))\n\n(bind observation (await (observe-promise-value)))\n(console:log (JSON:stringify observation))\n","generated":"async function observePromiseValue() {\n  const original = Promise.resolve(9);\n  const result = (() => {\n    await Promise.resolve(0);\n    return original;\n  })();\n  return {\n    same: result === original,\n    thenType: typeof result.then,\n    resolved: await result\n  };\n}\nconst observation = await observePromiseValue();\nconsole.log(JSON.stringify(observation));\n"}
+----- output end -----
+  E3-promise-value.lykn ... ok (17ms)
+  E4-deferred-function.lykn ...
+------- output -------
+ASYNC_EXPR_JS_PREASSERT {"name":"E4-deferred-function.lykn","expected":{"constructionCalls":0,"immediateType":"function","invocationCalls":1,"result":9},"source":"(bind calls (cell 0))\n\n(func\n  make-callback\n  :args\n  ()\n  :returns\n  :any\n  :body\n  (do\n    (async\n      (fn\n        ()\n        (swap! calls (fn (:number count) (+ count 1)))\n        (await (Promise:resolve 0))\n        9))))\n\n(bind callback (make-callback))\n\n(bind constructionCalls (express calls))\n\n(bind immediateType (js:typeof callback))\n\n(bind result (await (callback)))\n\n(bind invocationCalls (express calls))\n\n(console:log\n  (JSON:stringify\n    (obj\n      :constructionCalls\n      constructionCalls\n      :immediateType\n      immediateType\n      :invocationCalls\n      invocationCalls\n      :result\n      result)))\n","generated":"const calls = {\n  value: 0\n};\nfunction makeCallback() {\n  return (() => {\n    return async () => {\n      calls.value = (count => {\n        if (typeof count !== \"number\" || Number.isNaN(count)) throw new TypeError(\"anonymous: arg 'count' expected number, got \" + typeof count);\n        return count + 1;\n      })(calls.value);\n      await Promise.resolve(0);\n      return 9;\n    };\n  })();\n}\nconst callback = makeCallback();\nconst constructionCalls = calls.value;\nconst immediateType = typeof callback;\nconst result = await callback();\nconst invocationCalls = calls.value;\nconsole.log(JSON.stringify({\n  constructionCalls: constructionCalls,\n  immediateType: immediateType,\n  invocationCalls: invocationCalls,\n  result: result\n}));\n"}
+ASYNC_EXPR_JS_RUNTIME {"name":"E4-deferred-function.lykn","code":0,"stdout":"{\"constructionCalls\":0,\"immediateType\":\"function\",\"invocationCalls\":1,\"result\":9}\n","stderr":"","source":"(bind calls (cell 0))\n\n(func\n  make-callback\n  :args\n  ()\n  :returns\n  :any\n  :body\n  (do\n    (async\n      (fn\n        ()\n        (swap! calls (fn (:number count) (+ count 1)))\n        (await (Promise:resolve 0))\n        9))))\n\n(bind callback (make-callback))\n\n(bind constructionCalls (express calls))\n\n(bind immediateType (js:typeof callback))\n\n(bind result (await (callback)))\n\n(bind invocationCalls (express calls))\n\n(console:log\n  (JSON:stringify\n    (obj\n      :constructionCalls\n      constructionCalls\n      :immediateType\n      immediateType\n      :invocationCalls\n      invocationCalls\n      :result\n      result)))\n","generated":"const calls = {\n  value: 0\n};\nfunction makeCallback() {\n  return (() => {\n    return async () => {\n      calls.value = (count => {\n        if (typeof count !== \"number\" || Number.isNaN(count)) throw new TypeError(\"anonymous: arg 'count' expected number, got \" + typeof count);\n        return count + 1;\n      })(calls.value);\n      await Promise.resolve(0);\n      return 9;\n    };\n  })();\n}\nconst callback = makeCallback();\nconst constructionCalls = calls.value;\nconst immediateType = typeof callback;\nconst result = await callback();\nconst invocationCalls = calls.value;\nconsole.log(JSON.stringify({\n  constructionCalls: constructionCalls,\n  immediateType: immediateType,\n  invocationCalls: invocationCalls,\n  result: result\n}));\n"}
+----- output end -----
+  E4-deferred-function.lykn ... ok (17ms)
+  E5-effects-errors.lykn ...
+------- output -------
+ASYNC_EXPR_JS_PREASSERT {"name":"E5-effects-errors.lykn","expected":{"trace":["selected","await-selected"],"selectedMessage":"selected boom","rejectionMessage":"await rejected","outer":"outer","scoped":"inner","asyncValueMessage":"value boom"},"source":"(bind trace (cell (array)))\n\n(bind outer \"outer\")\n\n(bind scoped (do (bind outer \"inner\") outer))\n\n(bind selectedMessage (cell \"\"))\n\n(try\n  (if\n    true\n    (do\n      (swap! trace (fn (:array entries) (conj entries \"selected\")))\n      (throw (new Error \"selected boom\")))\n    (do (swap! trace (fn (:array entries) (conj entries \"untaken\"))) 1))\n  (catch err (reset! selectedMessage err:message)))\n\n(async\n  (func\n    reject-later\n    :args\n    ()\n    :returns\n    :any\n    :body\n    (await (Promise:reject (new Error \"await rejected\")))))\n\n(bind\n  fail-value\n  (async\n    (fn\n      ()\n      (bind\n        result\n        (if\n          true\n          (do\n            (swap! trace (fn (:array entries) (conj entries \"await-selected\")))\n            (await (Promise:resolve 0))\n            (throw (new Error \"value boom\")))\n          (do\n            (swap! trace (fn (:array entries) (conj entries \"await-untaken\")))\n            99)))\n      result)))\n\n(bind rejectionMessage (cell \"\"))\n\n(try (await (reject-later)) (catch err (reset! rejectionMessage err:message)))\n\n(bind asyncValueMessage (cell \"\"))\n\n(try (await (fail-value)) (catch err (reset! asyncValueMessage err:message)))\n\n(console:log\n  (JSON:stringify\n    (obj\n      :trace\n      (express trace)\n      :selectedMessage\n      (express selectedMessage)\n      :rejectionMessage\n      (express rejectionMessage)\n      :outer\n      outer\n      :scoped\n      scoped\n      :asyncValueMessage\n      (express asyncValueMessage))))\n","generated":"const trace = {\n  value: []\n};\nconst outer = \"outer\";\nconst scoped = (() => {\n  const outer = \"inner\";\n  return outer;\n})();\nconst selectedMessage = {\n  value: \"\"\n};\ntry {\n  if (true) {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"selected\"];\n    })(trace.value);\n    throw new Error(\"selected boom\");\n  } else {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"untaken\"];\n    })(trace.value);\n    1;\n  }\n} catch (err) {\n  selectedMessage.value = err.message;\n}\nasync function rejectLater() {\n  return await Promise.reject(new Error(\"await rejected\"));\n}\nconst failValue = async () => {\n  const result = true ? (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"await-selected\"];\n    })(trace.value);\n    await Promise.resolve(0);\n    return throw new Error(\"value boom\");;\n  })() : (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"await-untaken\"];\n    })(trace.value);\n    return 99;\n  })();\n  return result;\n};\nconst rejectionMessage = {\n  value: \"\"\n};\ntry {\n  await rejectLater();\n} catch (err) {\n  rejectionMessage.value = err.message;\n}\nconst asyncValueMessage = {\n  value: \"\"\n};\ntry {\n  await failValue();\n} catch (err) {\n  asyncValueMessage.value = err.message;\n}\nconsole.log(JSON.stringify({\n  trace: trace.value,\n  selectedMessage: selectedMessage.value,\n  rejectionMessage: rejectionMessage.value,\n  outer: outer,\n  scoped: scoped,\n  asyncValueMessage: asyncValueMessage.value\n}));\n"}
+ASYNC_EXPR_JS_RUNTIME {"name":"E5-effects-errors.lykn","code":1,"stdout":"","stderr":"error: SyntaxError: Expression expected\n   |\n39 |     return throw new Error(\"value boom\");;\n   |            ~~~~~\n    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-eda12017ba1c70ad/fixture.js:39:12\n","source":"(bind trace (cell (array)))\n\n(bind outer \"outer\")\n\n(bind scoped (do (bind outer \"inner\") outer))\n\n(bind selectedMessage (cell \"\"))\n\n(try\n  (if\n    true\n    (do\n      (swap! trace (fn (:array entries) (conj entries \"selected\")))\n      (throw (new Error \"selected boom\")))\n    (do (swap! trace (fn (:array entries) (conj entries \"untaken\"))) 1))\n  (catch err (reset! selectedMessage err:message)))\n\n(async\n  (func\n    reject-later\n    :args\n    ()\n    :returns\n    :any\n    :body\n    (await (Promise:reject (new Error \"await rejected\")))))\n\n(bind\n  fail-value\n  (async\n    (fn\n      ()\n      (bind\n        result\n        (if\n          true\n          (do\n            (swap! trace (fn (:array entries) (conj entries \"await-selected\")))\n            (await (Promise:resolve 0))\n            (throw (new Error \"value boom\")))\n          (do\n            (swap! trace (fn (:array entries) (conj entries \"await-untaken\")))\n            99)))\n      result)))\n\n(bind rejectionMessage (cell \"\"))\n\n(try (await (reject-later)) (catch err (reset! rejectionMessage err:message)))\n\n(bind asyncValueMessage (cell \"\"))\n\n(try (await (fail-value)) (catch err (reset! asyncValueMessage err:message)))\n\n(console:log\n  (JSON:stringify\n    (obj\n      :trace\n      (express trace)\n      :selectedMessage\n      (express selectedMessage)\n      :rejectionMessage\n      (express rejectionMessage)\n      :outer\n      outer\n      :scoped\n      scoped\n      :asyncValueMessage\n      (express asyncValueMessage))))\n","generated":"const trace = {\n  value: []\n};\nconst outer = \"outer\";\nconst scoped = (() => {\n  const outer = \"inner\";\n  return outer;\n})();\nconst selectedMessage = {\n  value: \"\"\n};\ntry {\n  if (true) {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"selected\"];\n    })(trace.value);\n    throw new Error(\"selected boom\");\n  } else {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"untaken\"];\n    })(trace.value);\n    1;\n  }\n} catch (err) {\n  selectedMessage.value = err.message;\n}\nasync function rejectLater() {\n  return await Promise.reject(new Error(\"await rejected\"));\n}\nconst failValue = async () => {\n  const result = true ? (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"await-selected\"];\n    })(trace.value);\n    await Promise.resolve(0);\n    return throw new Error(\"value boom\");;\n  })() : (() => {\n    trace.value = (entries => {\n      if (!Array.isArray(entries)) throw new TypeError(\"anonymous: arg 'entries' expected array, got \" + typeof entries);\n      return [...entries, \"await-untaken\"];\n    })(trace.value);\n    return 99;\n  })();\n  return result;\n};\nconst rejectionMessage = {\n  value: \"\"\n};\ntry {\n  await rejectLater();\n} catch (err) {\n  rejectionMessage.value = err.message;\n}\nconst asyncValueMessage = {\n  value: \"\"\n};\ntry {\n  await failValue();\n} catch (err) {\n  asyncValueMessage.value = err.message;\n}\nconsole.log(JSON.stringify({\n  trace: trace.value,\n  selectedMessage: selectedMessage.value,\n  rejectionMessage: rejectionMessage.value,\n  outer: outer,\n  scoped: scoped,\n  asyncValueMessage: asyncValueMessage.value\n}));\n"}
+----- output end -----
+  E5-effects-errors.lykn ... ok (17ms)
+public JS compiler preserves async expression values ... FAILED (113ms)
+
+ ERRORS 
+
+public JS compiler preserves async expression values => ./test/forms/async-expression-values.test.js:50:6
+error: AssertionError: Values are not equal: E2-async-branches.lykn: runtime exit 1; values unestablished
+source:
+(bind trace (cell (array)))
+
+(async
+  (func
+    choose-branch
+    :args
+    (:boolean take-sync)
+    :returns
+    :number
+    :body
+    (bind
+      value
+      (if
+        take-sync
+        (do (swap! trace (fn (:array entries) (conj entries "sync"))) 42)
+        (do
+          (swap! trace (fn (:array entries) (conj entries "await")))
+          (await (Promise:resolve 7)))))
+    (swap! trace (fn (:array entries) (conj entries "after-branch")))
+    value))
+
+(async
+  (func
+    observe-branch
+    :args
+    (:boolean take-sync)
+    :returns
+    :any
+    :body
+    (reset! trace (array))
+    (bind pending (choose-branch take-sync))
+    (swap! trace (fn (:array entries) (conj entries "after-call")))
+    (bind value (await pending))
+    (obj :trace (express trace) :value value)))
+
+(async
+  (func
+    choose-both-awaited
+    :args
+    (:boolean take-left)
+    :returns
+    :number
+    :body
+    (if
+      take-left
+      (do (await (Promise:resolve 42)))
+      (do (await (Promise:resolve 7))))))
+
+(bind sync-observation (await (observe-branch true)))
+
+(bind await-observation (await (observe-branch false)))
+
+(bind
+  bothAwaited
+  (array (await (choose-both-awaited true)) (await (choose-both-awaited false))))
+
+(console:log
+  (JSON:stringify
+    (obj :sync sync-observation :await await-observation :bothAwaited bothAwaited)))
+
+generated:
+const trace = {
+  value: []
+};
+async function chooseBranch(takeSync) {
+  if (typeof takeSync !== "boolean") throw new TypeError("chooseBranch: arg 'takeSync' expected boolean, got " + typeof takeSync);
+  const value = takeSync ? (() => {
+    trace.value = (entries => {
+      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+      return [...entries, "sync"];
+    })(trace.value);
+    return 42;
+  })() : (() => {
+    trace.value = (entries => {
+      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+      return [...entries, "await"];
+    })(trace.value);
+    return await Promise.resolve(7);
+  })();
+  trace.value = (entries => {
+    if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+    return [...entries, "after-branch"];
+  })(trace.value);
+  const result__gensym1 = value;
+  if (typeof result__gensym1 !== "number" || Number.isNaN(result__gensym1)) throw new TypeError("chooseBranch: return value expected number, got " + typeof result__gensym1);
+  return result__gensym1;
+}
+async function observeBranch(takeSync) {
+  if (typeof takeSync !== "boolean") throw new TypeError("observeBranch: arg 'takeSync' expected boolean, got " + typeof takeSync);
+  trace.value = [];
+  const pending = chooseBranch(takeSync);
+  trace.value = (entries => {
+    if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+    return [...entries, "after-call"];
+  })(trace.value);
+  const value = await pending;
+  return {
+    trace: trace.value,
+    value: value
+  };
+}
+async function chooseBothAwaited(takeLeft) {
+  if (typeof takeLeft !== "boolean") throw new TypeError("chooseBothAwaited: arg 'takeLeft' expected boolean, got " + typeof takeLeft);
+  const result__gensym2 = takeLeft ? (() => {
+    return await Promise.resolve(42);
+  })() : (() => {
+    return await Promise.resolve(7);
+  })();
+  if (typeof result__gensym2 !== "number" || Number.isNaN(result__gensym2)) throw new TypeError("chooseBothAwaited: return value expected number, got " + typeof result__gensym2);
+  return result__gensym2;
+}
+const syncObservation = await observeBranch(true);
+const awaitObservation = await observeBranch(false);
+const bothAwaited = [await chooseBothAwaited(true), await chooseBothAwaited(false)];
+console.log(JSON.stringify({
+  sync: syncObservation,
+  await: awaitObservation,
+  bothAwaited: bothAwaited
+}));
+
+stdout:
+
+stderr:
+error: Uncaught SyntaxError: Unexpected reserved word
+    return await Promise.resolve(7);
+           ^
+    at <anonymous> (file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-1d471d490c3dc49f/fixture.js:17:12)
+
+
+E3-promise-value.lykn: runtime exit 1; values unestablished
+source:
+(async
+  (func observe-promise-value
+    :args ()
+    :returns :any
+    :body
+    (bind original (Promise:resolve 9))
+    (bind result
+      (do
+        (await (Promise:resolve 0))
+        original))
+    (obj
+      :same (= result original)
+      :thenType (js:typeof result:then)
+      :resolved (await result))))
+
+(bind observation (await (observe-promise-value)))
+(console:log (JSON:stringify observation))
+
+generated:
+async function observePromiseValue() {
+  const original = Promise.resolve(9);
+  const result = (() => {
+    await Promise.resolve(0);
+    return original;
+  })();
+  return {
+    same: result === original,
+    thenType: typeof result.then,
+    resolved: await result
+  };
+}
+const observation = await observePromiseValue();
+console.log(JSON.stringify(observation));
+
+stdout:
+
+stderr:
+error: Uncaught SyntaxError: Unexpected reserved word
+    await Promise.resolve(0);
+    ^
+    at <anonymous> (file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-ec197c43295673b4/fixture.js:4:5)
+
+
+E5-effects-errors.lykn: runtime exit 1; values unestablished
+source:
+(bind trace (cell (array)))
+
+(bind outer "outer")
+
+(bind scoped (do (bind outer "inner") outer))
+
+(bind selectedMessage (cell ""))
+
+(try
+  (if
+    true
+    (do
+      (swap! trace (fn (:array entries) (conj entries "selected")))
+      (throw (new Error "selected boom")))
+    (do (swap! trace (fn (:array entries) (conj entries "untaken"))) 1))
+  (catch err (reset! selectedMessage err:message)))
+
+(async
+  (func
+    reject-later
+    :args
+    ()
+    :returns
+    :any
+    :body
+    (await (Promise:reject (new Error "await rejected")))))
+
+(bind
+  fail-value
+  (async
+    (fn
+      ()
+      (bind
+        result
+        (if
+          true
+          (do
+            (swap! trace (fn (:array entries) (conj entries "await-selected")))
+            (await (Promise:resolve 0))
+            (throw (new Error "value boom")))
+          (do
+            (swap! trace (fn (:array entries) (conj entries "await-untaken")))
+            99)))
+      result)))
+
+(bind rejectionMessage (cell ""))
+
+(try (await (reject-later)) (catch err (reset! rejectionMessage err:message)))
+
+(bind asyncValueMessage (cell ""))
+
+(try (await (fail-value)) (catch err (reset! asyncValueMessage err:message)))
+
+(console:log
+  (JSON:stringify
+    (obj
+      :trace
+      (express trace)
+      :selectedMessage
+      (express selectedMessage)
+      :rejectionMessage
+      (express rejectionMessage)
+      :outer
+      outer
+      :scoped
+      scoped
+      :asyncValueMessage
+      (express asyncValueMessage))))
+
+generated:
+const trace = {
+  value: []
+};
+const outer = "outer";
+const scoped = (() => {
+  const outer = "inner";
+  return outer;
+})();
+const selectedMessage = {
+  value: ""
+};
+try {
+  if (true) {
+    trace.value = (entries => {
+      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+      return [...entries, "selected"];
+    })(trace.value);
+    throw new Error("selected boom");
+  } else {
+    trace.value = (entries => {
+      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+      return [...entries, "untaken"];
+    })(trace.value);
+    1;
+  }
+} catch (err) {
+  selectedMessage.value = err.message;
+}
+async function rejectLater() {
+  return await Promise.reject(new Error("await rejected"));
+}
+const failValue = async () => {
+  const result = true ? (() => {
+    trace.value = (entries => {
+      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+      return [...entries, "await-selected"];
+    })(trace.value);
+    await Promise.resolve(0);
+    return throw new Error("value boom");;
+  })() : (() => {
+    trace.value = (entries => {
+      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);
+      return [...entries, "await-untaken"];
+    })(trace.value);
+    return 99;
+  })();
+  return result;
+};
+const rejectionMessage = {
+  value: ""
+};
+try {
+  await rejectLater();
+} catch (err) {
+  rejectionMessage.value = err.message;
+}
+const asyncValueMessage = {
+  value: ""
+};
+try {
+  await failValue();
+} catch (err) {
+  asyncValueMessage.value = err.message;
+}
+console.log(JSON.stringify({
+  trace: trace.value,
+  selectedMessage: selectedMessage.value,
+  rejectionMessage: rejectionMessage.value,
+  outer: outer,
+  scoped: scoped,
+  asyncValueMessage: asyncValueMessage.value
+}));
+
+stdout:
+
+stderr:
+error: SyntaxError: Expression expected
+   |
+39 |     return throw new Error("value boom");;
+   |            ~~~~~
+    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-eda12017ba1c70ad/fixture.js:39:12
+
+
+
+    [Diff] Actual / Expected
+
+
+-   [
+-     "E2-async-branches.lykn: runtime exit 1; values unestablished\n" +
+-       "source:\n" +
+-       "(bind trace (cell (array)))\n" +
+-       "\n" +
+-       "(async\n" +
+-       "  (func\n" +
+-       "    choose-branch\n" +
+-       "    :args\n" +
+-       "    (:boolean take-sync)\n" +
+-       "    :returns\n" +
+-       "    :number\n" +
+-       "    :body\n" +
+-       "    (bind\n" +
+-       "      value\n" +
+-       "      (if\n" +
+-       "        take-sync\n" +
+-       '        (do (swap! trace (fn (:array entries) (conj entries "sync"))) 42)\n' +
+-       "        (do\n" +
+-       '          (swap! trace (fn (:array entries) (conj entries "await")))\n' +
+-       "          (await (Promise:resolve 7)))))\n" +
+-       '    (swap! trace (fn (:array entries) (conj entries "after-branch")))\n' +
+-       "    value))\n" +
+-       "\n" +
+-       "(async\n" +
+-       "  (func\n" +
+-       "    observe-branch\n" +
+-       "    :args\n" +
+-       "    (:boolean take-sync)\n" +
+-       "    :returns\n" +
+-       "    :any\n" +
+-       "    :body\n" +
+-       "    (reset! trace (array))\n" +
+-       "    (bind pending (choose-branch take-sync))\n" +
+-       '    (swap! trace (fn (:array entries) (conj entries "after-call")))\n' +
+-       "    (bind value (await pending))\n" +
+-       "    (obj :trace (express trace) :value value)))\n" +
+-       "\n" +
+-       "(async\n" +
+-       "  (func\n" +
+-       "    choose-both-awaited\n" +
+-       "    :args\n" +
+-       "    (:boolean take-left)\n" +
+-       "    :returns\n" +
+-       "    :number\n" +
+-       "    :body\n" +
+-       "    (if\n" +
+-       "      take-left\n" +
+-       "      (do (await (Promise:resolve 42)))\n" +
+-       "      (do (await (Promise:resolve 7))))))\n" +
+-       "\n" +
+-       "(bind sync-observation (await (observe-branch true)))\n" +
+-       "\n" +
+-       "(bind await-observation (await (observe-branch false)))\n" +
+-       "\n" +
+-       "(bind\n" +
+-       "  bothAwaited\n" +
+-       "  (array (await (choose-both-awaited true)) (await (choose-both-awaited false))))\n" +
+-       "\n" +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj :sync sync-observation :await await-observation :bothAwaited bothAwaited)))\n" +
+-       "\n" +
+-       "generated:\n" +
+-       "const trace = {\n" +
+-       "  value: []\n" +
+-       "};\n" +
+-       "async function chooseBranch(takeSync) {\n" +
+-       `  if (typeof takeSync !== "boolean") throw new TypeError("chooseBranch: arg 'takeSync' expected boolean, got " + typeof takeSync);\n` +
+-       "  const value = takeSync ? (() => {\n" +
+-       "    trace.value = (entries => {\n" +
+-       `      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '      return [...entries, "sync"];\n' +
+-       "    })(trace.value);\n" +
+-       "    return 42;\n" +
+-       "  })() : (() => {\n" +
+-       "    trace.value = (entries => {\n" +
+-       `      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '      return [...entries, "await"];\n' +
+-       "    })(trace.value);\n" +
+-       "    return await Promise.resolve(7);\n" +
+-       "  })();\n" +
+-       "  trace.value = (entries => {\n" +
+-       `    if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '    return [...entries, "after-branch"];\n' +
+-       "  })(trace.value);\n" +
+-       "  const result__gensym1 = value;\n" +
+-       '  if (typeof result__gensym1 !== "number" || Number.isNaN(result__gensym1)) throw new TypeError("chooseBranch: return value expected number, got " + typeof result__gensym1);\n' +
+-       "  return result__gensym1;\n" +
+-       "}\n" +
+-       "async function observeBranch(takeSync) {\n" +
+-       `  if (typeof takeSync !== "boolean") throw new TypeError("observeBranch: arg 'takeSync' expected boolean, got " + typeof takeSync);\n` +
+-       "  trace.value = [];\n" +
+-       "  const pending = chooseBranch(takeSync);\n" +
+-       "  trace.value = (entries => {\n" +
+-       `    if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '    return [...entries, "after-call"];\n' +
+-       "  })(trace.value);\n" +
+-       "  const value = await pending;\n" +
+-       "  return {\n" +
+-       "    trace: trace.value,\n" +
+-       "    value: value\n" +
+-       "  };\n" +
+-       "}\n" +
+-       "async function chooseBothAwaited(takeLeft) {\n" +
+-       `  if (typeof takeLeft !== "boolean") throw new TypeError("chooseBothAwaited: arg 'takeLeft' expected boolean, got " + typeof takeLeft);\n` +
+-       "  const result__gensym2 = takeLeft ? (() => {\n" +
+-       "    return await Promise.resolve(42);\n" +
+-       "  })() : (() => {\n" +
+-       "    return await Promise.resolve(7);\n" +
+-       "  })();\n" +
+-       '  if (typeof result__gensym2 !== "number" || Number.isNaN(result__gensym2)) throw new TypeError("chooseBothAwaited: return value expected number, got " + typeof result__gensym2);\n' +
+-       "  return result__gensym2;\n" +
+-       "}\n" +
+-       "const syncObservation = await observeBranch(true);\n" +
+-       "const awaitObservation = await observeBranch(false);\n" +
+-       "const bothAwaited = [await chooseBothAwaited(true), await chooseBothAwaited(false)];\n" +
+-       "console.log(JSON.stringify({\n" +
+-       "  sync: syncObservation,\n" +
+-       "  await: awaitObservation,\n" +
+-       "  bothAwaited: bothAwaited\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       "\n" +
+-       "stderr:\n" +
+-       "error: Uncaught SyntaxError: Unexpected reserved word\n" +
+-       "    return await Promise.resolve(7);\n" +
+-       "           ^\n" +
+-       "    at <anonymous> (file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-1d471d490c3dc49f/fixture.js:17:12)\n",
+-     "E3-promise-value.lykn: runtime exit 1; values unestablished\n" +
+-       "source:\n" +
+-       "(async\n" +
+-       "  (func observe-promise-value\n" +
+-       "    :args ()\n" +
+-       "    :returns :any\n" +
+-       "    :body\n" +
+-       "    (bind original (Promise:resolve 9))\n" +
+-       "    (bind result\n" +
+-       "      (do\n" +
+-       "        (await (Promise:resolve 0))\n" +
+-       "        original))\n" +
+-       "    (obj\n" +
+-       "      :same (= result original)\n" +
+-       "      :thenType (js:typeof result:then)\n" +
+-       "      :resolved (await result))))\n" +
+-       "\n" +
+-       "(bind observation (await (observe-promise-value)))\n" +
+-       "(console:log (JSON:stringify observation))\n" +
+-       "\n" +
+-       "generated:\n" +
+-       "async function observePromiseValue() {\n" +
+-       "  const original = Promise.resolve(9);\n" +
+-       "  const result = (() => {\n" +
+-       "    await Promise.resolve(0);\n" +
+-       "    return original;\n" +
+-       "  })();\n" +
+-       "  return {\n" +
+-       "    same: result === original,\n" +
+-       "    thenType: typeof result.then,\n" +
+-       "    resolved: await result\n" +
+-       "  };\n" +
+-       "}\n" +
+-       "const observation = await observePromiseValue();\n" +
+-       "console.log(JSON.stringify(observation));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       "\n" +
+-       "stderr:\n" +
+-       "error: Uncaught SyntaxError: Unexpected reserved word\n" +
+-       "    await Promise.resolve(0);\n" +
+-       "    ^\n" +
+-       "    at <anonymous> (file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-ec197c43295673b4/fixture.js:4:5)\n",
+-     "E5-effects-errors.lykn: runtime exit 1; values unestablished\n" +
+-       "source:\n" +
+-       "(bind trace (cell (array)))\n" +
+-       "\n" +
+-       '(bind outer "outer")\n' +
+-       "\n" +
+-       '(bind scoped (do (bind outer "inner") outer))\n' +
+-       "\n" +
+-       '(bind selectedMessage (cell ""))\n' +
+-       "\n" +
+-       "(try\n" +
+-       "  (if\n" +
+-       "    true\n" +
+-       "    (do\n" +
+-       '      (swap! trace (fn (:array entries) (conj entries "selected")))\n' +
+-       '      (throw (new Error "selected boom")))\n' +
+-       '    (do (swap! trace (fn (:array entries) (conj entries "untaken"))) 1))\n' +
+-       "  (catch err (reset! selectedMessage err:message)))\n" +
+-       "\n" +
+-       "(async\n" +
+-       "  (func\n" +
+-       "    reject-later\n" +
+-       "    :args\n" +
+-       "    ()\n" +
+-       "    :returns\n" +
+-       "    :any\n" +
+-       "    :body\n" +
+-       '    (await (Promise:reject (new Error "await rejected")))))\n' +
+-       "\n" +
+-       "(bind\n" +
+-       "  fail-value\n" +
+-       "  (async\n" +
+-       "    (fn\n" +
+-       "      ()\n" +
+-       "      (bind\n" +
+-       "        result\n" +
+-       "        (if\n" +
+-       "          true\n" +
+-       "          (do\n" +
+-       '            (swap! trace (fn (:array entries) (conj entries "await-selected")))\n' +
+-       "            (await (Promise:resolve 0))\n" +
+-       '            (throw (new Error "value boom")))\n' +
+-       "          (do\n" +
+-       '            (swap! trace (fn (:array entries) (conj entries "await-untaken")))\n' +
+-       "            99)))\n" +
+-       "      result)))\n" +
+-       "\n" +
+-       '(bind rejectionMessage (cell ""))\n' +
+-       "\n" +
+-       "(try (await (reject-later)) (catch err (reset! rejectionMessage err:message)))\n" +
+-       "\n" +
+-       '(bind asyncValueMessage (cell ""))\n' +
+-       "\n" +
+-       "(try (await (fail-value)) (catch err (reset! asyncValueMessage err:message)))\n" +
+-       "\n" +
+-       "(console:log\n" +
+-       "  (JSON:stringify\n" +
+-       "    (obj\n" +
+-       "      :trace\n" +
+-       "      (express trace)\n" +
+-       "      :selectedMessage\n" +
+-       "      (express selectedMessage)\n" +
+-       "      :rejectionMessage\n" +
+-       "      (express rejectionMessage)\n" +
+-       "      :outer\n" +
+-       "      outer\n" +
+-       "      :scoped\n" +
+-       "      scoped\n" +
+-       "      :asyncValueMessage\n" +
+-       "      (express asyncValueMessage))))\n" +
+-       "\n" +
+-       "generated:\n" +
+-       "const trace = {\n" +
+-       "  value: []\n" +
+-       "};\n" +
+-       'const outer = "outer";\n' +
+-       "const scoped = (() => {\n" +
+-       '  const outer = "inner";\n' +
+-       "  return outer;\n" +
+-       "})();\n" +
+-       "const selectedMessage = {\n" +
+-       '  value: ""\n' +
+-       "};\n" +
+-       "try {\n" +
+-       "  if (true) {\n" +
+-       "    trace.value = (entries => {\n" +
+-       `      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '      return [...entries, "selected"];\n' +
+-       "    })(trace.value);\n" +
+-       '    throw new Error("selected boom");\n' +
+-       "  } else {\n" +
+-       "    trace.value = (entries => {\n" +
+-       `      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '      return [...entries, "untaken"];\n' +
+-       "    })(trace.value);\n" +
+-       "    1;\n" +
+-       "  }\n" +
+-       "} catch (err) {\n" +
+-       "  selectedMessage.value = err.message;\n" +
+-       "}\n" +
+-       "async function rejectLater() {\n" +
+-       '  return await Promise.reject(new Error("await rejected"));\n' +
+-       "}\n" +
+-       "const failValue = async () => {\n" +
+-       "  const result = true ? (() => {\n" +
+-       "    trace.value = (entries => {\n" +
+-       `      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '      return [...entries, "await-selected"];\n' +
+-       "    })(trace.value);\n" +
+-       "    await Promise.resolve(0);\n" +
+-       '    return throw new Error("value boom");;\n' +
+-       "  })() : (() => {\n" +
+-       "    trace.value = (entries => {\n" +
+-       `      if (!Array.isArray(entries)) throw new TypeError("anonymous: arg 'entries' expected array, got " + typeof entries);\n` +
+-       '      return [...entries, "await-untaken"];\n' +
+-       "    })(trace.value);\n" +
+-       "    return 99;\n" +
+-       "  })();\n" +
+-       "  return result;\n" +
+-       "};\n" +
+-       "const rejectionMessage = {\n" +
+-       '  value: ""\n' +
+-       "};\n" +
+-       "try {\n" +
+-       "  await rejectLater();\n" +
+-       "} catch (err) {\n" +
+-       "  rejectionMessage.value = err.message;\n" +
+-       "}\n" +
+-       "const asyncValueMessage = {\n" +
+-       '  value: ""\n' +
+-       "};\n" +
+-       "try {\n" +
+-       "  await failValue();\n" +
+-       "} catch (err) {\n" +
+-       "  asyncValueMessage.value = err.message;\n" +
+-       "}\n" +
+-       "console.log(JSON.stringify({\n" +
+-       "  trace: trace.value,\n" +
+-       "  selectedMessage: selectedMessage.value,\n" +
+-       "  rejectionMessage: rejectionMessage.value,\n" +
+-       "  outer: outer,\n" +
+-       "  scoped: scoped,\n" +
+-       "  asyncValueMessage: asyncValueMessage.value\n" +
+-       "}));\n" +
+-       "\n" +
+-       "stdout:\n" +
+-       "\n" +
+-       "stderr:\n" +
+-       "error: SyntaxError: Expression expected\n" +
+-       "   |\n" +
+-       '39 |     return throw new Error("value boom");;\n' +
+-       "   |            ~~~~~\n" +
+-       "    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/lykn-async-expr-eda12017ba1c70ad/fixture.js:39:12\n",
+-   ]
++   []
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/async-expression-values.test.js:148:3
+
+ FAILURES 
+
+public JS compiler preserves async expression values => ./test/forms/async-expression-values.test.js:50:6
+
+FAILED | 0 passed (5 steps) | 1 failed (116ms)
+
+error: Test failed
