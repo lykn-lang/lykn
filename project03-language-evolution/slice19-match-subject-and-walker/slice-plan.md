@@ -1,5 +1,14 @@
 # Slice19 — match subject repair and combined validation
 
+Current: approved8 is UNEXECUTED/held in preflight. Further STATIC K11 adapter
+defect: observer selects fullAuditControls lacking expectedHash, but frozen
+observations.K11 contains intended64zeros. No edit/check/runtime by fresh SolCC;
+seven spent, not eight. Exact schema/site proof and amended-unstarted8 proposal
+in cdc-verification: existing visitorclose PLUS read expectedHash from existing
+observations.K11 for both manifest sites. No oracle/control/newfield/extraK/model
+change. Revised scope needs Operator approval; no silent broadening/nextunit.
+Current code7856 unaccepted/K0/13, source8ed acceptance unchanged.
+
 2026-11-07 Operator explicitly selected fresh CC Sol6.1 High and ONE correction8,
 separate Sol6.1 High CDC review, same bounded Autonomous endpoint/stop rule.
 Iteration06 governs exact visit-list for close before else ONLY, retaining7856

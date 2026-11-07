@@ -1,5 +1,15 @@
 # Interim retrospective — pending Operator after correction7
 
+Update: Operator selected fresh Sol6.1 High implementer and separate SolHigh CDC
+for8, but that assignment stopped during intake on an additional static K11
+adapter mismatch before any edit/check. Seven spent; approved8 UNEXECUTED/held.
+Root discovery and independent CDC confirmation distinguish fullAuditControls
+(input/oracle) from observations (expectedHash metadata). Earlier CDC readiness
+did not reconcile those exact fields; this is ordinary source/schema adaptation,
+not a frozen-oracle, parser, language or guide defect. Revised scope approval is
+needed. No implementation or comparative model outcome from Sol exists yet, so
+this intake stop cannot be represented as a model performance result.
+
 This is not a completed-unit retrospective or a source/tooling acceptance.
 Source8ed's independent NE-C10/NE-C11/full-gate acceptance survives; original13
 walker controls remain unrun. Seven tooling continuation passes (five retained,

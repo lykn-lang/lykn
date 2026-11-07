@@ -140,6 +140,12 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Operator selected SolHigh CC/separateSolHigh CDC and narrow Slice19
+correction8, but intake stopped BEFORE any edit/check on static K11 expectedHash
+adapter mismatch. Seven spent,8UNEXECUTED; amended8scope (visitorclose plus existing
+observations.K11 hash lookup) awaits approval. No control/oracle/model change or
+new K; tooling7856 remains unaccepted/K0/13, source8ed accepted unchanged.
+
 2026-11-07 Operator authorized consolidated Slice19 correction7: actual core
 final-layout prerequisites4/4/pin068af, but walker7856 failed native syntax223:1,
 independently reproduced. Candidate remains unaccepted; all13K unrun. No eighth

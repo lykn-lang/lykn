@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+Current approved8 UNEXECUTED/held: further static K11 expectedHash lookup defect
+confirmed before any source/check/runtime. Seven prior passes spent; no eighth
+failed pass/reset/ninth. Amended-unstarted8 proposal awaits revised scope approval,
+same SolCC/separateSolCDC/frozen13. Four tool sources unchanged7856 (Gitdiff0),
+K0/13; all open rows stay open and source8ed MS02/03 acceptance stays intact.
+
 Current2026-11-07: Operator explicitly approves ONE correction8 with fresh Sol6.1
 High CC and separate Sol6.1 High CDC, Autonomous Mode. Seven spent/no reset/ninth.
 Iteration06 exact walker for-boundary close, all prior semantics/pins/frozen13

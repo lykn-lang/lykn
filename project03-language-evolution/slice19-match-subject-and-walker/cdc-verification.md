@@ -1,5 +1,44 @@
 # Slice19 independent review — Stage A accepted, tooling open
 
+## Current preflight stop — approved8 UNEXECUTED, amended scope pending
+
+Operator explicitly selected fresh Sol6.1 High CC with separate Sol6.1 High CDC
+and authorized narrow correction8. Fresh /root/cdc/walker_eighth_sol_cc stopped
+in intake after a further substantive STATIC observer adapter defect was found
+by root, independently confirmed by CDC, and corroborated in CC's full-source
+readback. NO edit/commit/native/fmt/lint/compile/Deno/guard/K invocation occurred,
+no pending process. Observed planning93d4a6c clean; native Git diff7856→HEAD over
+all four .lykn tools exit0. Thus SEVEN passes spent; authorized8 is UNEXECUTED/
+held, not an eighth failed implementation. No ninth or model change is involved.
+
+Exact static mismatch, unchanged observer4dd6/frozen controls0f20:
+control()43 selects fullAuditControls; its K11 record119–122 contains input/oracle
+but NO expectedHash. run-case uses definition:expectedHash338 for parser manifest
+expected_sha256 and354 for row metadata, while545 later requires64zeros. The
+existing observations.K11 record17–23 DOES contain the frozen64zero expectedHash.
+Undefined lookup cannot supply that declaration; JSON serialization would omit
+the field. This is unexecuted source inference, NOT an observed parser/compiler
+or child-runtime failure. Frozen data/oracle are valid and remain unchanged.
+
+**Reviewable amended-unstarted8 proposal, NOT current authority:** retain exact
+visitor for-close at245 before outerelse246 AND fix the observer to obtain K11's
+expectedHash from EXISTING frozen observations record selected by idK11. Validate
+it against the existing exact64zero declaration and use that one value at both
+current wrong lookup sites; fullAuditControls still supplies same input/oracle.
+No mutation/newfield in controls, literal fallback, oracle/status/table/argv/
+family/probe/product change. Same explicitly selected fresh SolHigh implementer
+and separate SolHigh CDC; all required native/fmt/lint/strictcompile/generated/
+predicate/DenoCheck/realguards before frozen13+independent replay ONLY if green.
+Any further substantive failure stops. Additional repair is outside the narrow
+approved delimiter scope, so revised Operator approval is required before edits.
+This amendment replaces an unexecuted assignment and does NOT reset/increment
+the seven spent passes. No assertion other defects are absent: remaining tooling
+and runtime behavior is untested; existing visitor syntax failure still present.
+
+CC returned all ownership; tools remain7856/unaccepted, K0/13; source8ed remains
+independently accepted/task-only. Prior model-selection/budget/history and all
+earlier source/raw/process limits remain intact. Unit remains incomplete.
+
 ## Current verdict after correction7 — source syntax failure, pending Operator
 
 Operator approved ONE consolidated7. Actual two-source freeze7856c4d015fa4d754b82c371c00c6e23fb8e2225
