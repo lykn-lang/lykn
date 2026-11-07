@@ -250,3 +250,17 @@ change, full gate or parser continuation is authorized by this record. Proposed
 one extra correction restores existing statement expansion while retaining new
 value tails, with exact unit/same-five/full normal gates and independent review;
 an explicit Operator re-scope/override decision is required. No formal close yet.
+
+## Explicit Operator override: one extra cycle
+
+Operator selected **Authorize one extra cycle (Recommended)** to the exact question: “Do you
+authorize one extra bounded correction beyond the framework’s five-pass cap:
+a fresh Luna 6 High CC restores grouped-binding scope, Sol 6.1 High independently
+validates it, then the same four parser observations run only if the source gate
+is green?” This records approval BEFORE execution. The prior pause/verdict remains
+history; correction6 TOTAL is authorized once, with a fresh Luna High context,
+not a budget reset or source acceptance. [Issued assignment](cc-prompt-iteration05.md)
+allows only forms.rs statement-body expansion restoration, unchanged tests and
+normal full/independent gates. No seventh substantive pass or implicit integration.
+Any unresolved substantive failure returns to Operator; same-four re-entry still
+requires independent source acceptance and stops at another real blocker.

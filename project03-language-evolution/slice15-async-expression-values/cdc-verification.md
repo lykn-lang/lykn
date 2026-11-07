@@ -6,6 +6,11 @@ codex/async-expression-values contains unaccepted production54608a7 and the
 lint-clean E5 test correction. Prior accepted3b65d09 and releasef705655 remain
 untouched. No repair acceptance, integration, sixth pass or parser observation.
 
+**Subsequent Operator decision:** the explicit one-cycle override is now recorded
+in the governing plan/ledger and cc-prompt-iteration05.md BEFORE fresh execution.
+The rejected candidate and five-pass pause below remain historical evidence.
+Correction6 total is authorized once; no reset, source acceptance or waiver.
+
 ## Exact blocking result
 
 CC's normal full Make passed dependencies, citations63docs/601historical,

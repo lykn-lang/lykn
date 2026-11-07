@@ -157,6 +157,11 @@ Make stops1122passed/1failed, parser0/4. The
 bounded statement-expansion correction and full independent gates; it does not
 authorize a sixth pass, restart, integration or next unit.
 
+Subsequently the Operator explicitly approved ONE extra correction6 with a fresh
+Luna6 High CC, Sol6.1 High independent validation and same-four continuation only
+after source acceptance. Slice15's governing plan records the exact choice and
+bounded override; the budget is not reset and source is not yet accepted.
+
 2026-11-06 [Slice14 independent endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 accepts NE-C08 compile-route parity and NE-C07 private async-export discovery
 task-only at3b65d09/compiler748. Complete fresh normal-env Make passes all Rust,

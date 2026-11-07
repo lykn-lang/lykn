@@ -10,6 +10,11 @@ have retained meaningful baseline/finite five-case/core-load evidence, but no
 aggregate repair acceptance follows. AV-05/AV-06 are unrun (parser0/4); AV-07
 awaits the Operator decision and eventual endpoint. No sixth pass or formal close.
 
+**Subsequent explicit Operator decision:** one extra correction6 is now approved
+as recorded in the plan/cc-prompt-iteration05.md, with fresh Luna6 High execution
+and Sol6.1 High independent validation. All rows remain open. Prior rejected
+candidate/pause is preserved; no reset, source acceptance or gate waiver follows.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AV-01 | Meaningful NE-C09 red and fixed finite oracles frozen | Five shared fixtures/source/expected JSON before runtime, both backend baseline/raw core witness | serious | NE-C09 | open | | Syntax/wrong-value/positive results distinguished |
