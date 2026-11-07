@@ -10,13 +10,15 @@ const FIXTURES = [
       typeof: "number",
       noElsePrefix: 41,
       nestedEquality: true,
+      prefixEffect: 1,
     },
   },
   {
     name: "E2-async-branches.lykn",
     expected: {
-      sync: { trace: ["sync", "after-call", "after-await"], value: 42 },
-      await: { trace: ["await", "after-call", "after-await"], value: 7 },
+      sync: { trace: ["sync", "after-branch", "after-call"], value: 42 },
+      await: { trace: ["await", "after-call", "after-branch"], value: 7 },
+      bothAwaited: [42, 7],
     },
   },
   {
@@ -35,11 +37,12 @@ const FIXTURES = [
   {
     name: "E5-effects-errors.lykn",
     expected: {
-      trace: ["selected"],
+      trace: ["selected", "await-selected"],
       selectedMessage: "selected boom",
       rejectionMessage: "await rejected",
       outer: "outer",
       scoped: "inner",
+      asyncValueMessage: "value boom",
     },
   },
 ];

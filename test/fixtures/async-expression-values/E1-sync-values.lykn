@@ -13,10 +13,11 @@
 
 (bind result (typed-branch true))
 (bind other (typed-branch false))
+(bind prefixEffect (cell 0))
 (bind no-else-result
   (do
     (bind prefix 1)
-    (if true (console:log "statement-prefix"))
+    (if true (reset! prefixEffect 1))
     (+ prefix 40)))
 (bind nested-equality (= 7 (if true 7 8)))
 
@@ -27,4 +28,5 @@
       :falseValue other
       :typeof (js:typeof result)
       :noElsePrefix no-else-result
-      :nestedEquality nested-equality)))
+      :nestedEquality nested-equality
+      :prefixEffect (express prefixEffect))))

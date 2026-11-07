@@ -12,11 +12,11 @@ struct Fixture {
 const FIXTURES: &[Fixture] = &[
     Fixture {
         name: "E1-sync-values.lykn",
-        expected_json: r#"{"value":41,"falseValue":42,"typeof":"number","noElsePrefix":41,"nestedEquality":true}"#,
+        expected_json: r#"{"value":41,"falseValue":42,"typeof":"number","noElsePrefix":41,"nestedEquality":true,"prefixEffect":1}"#,
     },
     Fixture {
         name: "E2-async-branches.lykn",
-        expected_json: r#"{"sync":{"trace":["sync","after-call","after-await"],"value":42},"await":{"trace":["await","after-call","after-await"],"value":7}}"#,
+        expected_json: r#"{"sync":{"trace":["sync","after-branch","after-call"],"value":42},"await":{"trace":["await","after-call","after-branch"],"value":7},"bothAwaited":[42,7]}"#,
     },
     Fixture {
         name: "E3-promise-value.lykn",
@@ -28,7 +28,7 @@ const FIXTURES: &[Fixture] = &[
     },
     Fixture {
         name: "E5-effects-errors.lykn",
-        expected_json: r#"{"trace":["selected"],"selectedMessage":"selected boom","rejectionMessage":"await rejected","outer":"outer","scoped":"inner"}"#,
+        expected_json: r#"{"trace":["selected","await-selected"],"selectedMessage":"selected boom","rejectionMessage":"await rejected","outer":"outer","scoped":"inner","asyncValueMessage":"value boom"}"#,
     },
 ];
 
