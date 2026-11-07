@@ -1,0 +1,6 @@
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root/K01/input.js
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root/K11/attempt.json
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root/K11/result.json
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root/K11/stderr.bin
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root/K11/stdout.bin
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root/K11/witness.json

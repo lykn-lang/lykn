@@ -1,0 +1,4 @@
+Task/cache root absence checks:
+ls: /private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root: No such file or directory
+ls: /private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root: No such file or directory
+1

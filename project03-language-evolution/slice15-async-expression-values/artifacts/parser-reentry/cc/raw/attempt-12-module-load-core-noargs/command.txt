@@ -1,0 +1,1 @@
+/opt/homebrew/bin/deno run --no-config --no-npm --no-remote --cached-only --deny-net --no-prompt /private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/parser-core.js

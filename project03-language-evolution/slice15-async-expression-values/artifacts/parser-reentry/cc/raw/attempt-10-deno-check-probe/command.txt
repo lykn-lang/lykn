@@ -1,0 +1,1 @@
+/opt/homebrew/bin/deno check --no-config --no-npm --no-remote --cached-only /private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/parser-probe.js

@@ -1,0 +1,6 @@
+error: Uncaught (in promise) NotCapable: Requires read access to "/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-task-root/K01/input.js", run again with the --allow-read flag
+  const inputBytes = hasInput ? await Deno.readFile(inputPath) : new Uint8Array();
+                                           ^
+    at Object.readFile (ext:deno_fs/30_fs.js:836:24)
+    at runObservation (file:///private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/offline-observer.js:64:44)
+    at async file:///private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/offline-observer.js:157:3

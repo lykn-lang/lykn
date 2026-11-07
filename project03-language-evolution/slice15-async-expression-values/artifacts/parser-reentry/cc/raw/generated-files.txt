@@ -1,0 +1,4 @@
+compiled directory listing after all three strict compiles:
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/offline-observer.js
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/parser-core.js
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/parser-probe.js

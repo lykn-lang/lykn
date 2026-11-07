@@ -1,0 +1,1 @@
+DENO_DIR=/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/outer-deno-dir DENO_NO_UPDATE_CHECK=1 NO_COLOR=1; other inherited environment retained. Exact permissions: read controls, cached Acorn, probe JS, core JS; write task root and cache root; run only /opt/homebrew/bin/deno. No net, npm, remote, prompt. Eight absolute argv values in prompt order.

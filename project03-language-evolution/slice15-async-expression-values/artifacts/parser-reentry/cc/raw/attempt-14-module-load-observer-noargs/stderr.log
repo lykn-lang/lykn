@@ -1,0 +1,5 @@
+error: Uncaught (in promise) Error: usage: offline-observer.lykn CONTROLS DENO PARSER PROBE CORE ROOT CACHE_ROOT CONFIG_FREE_CWD
+  if (!condition) throw new Error(message);
+                        ^
+    at ensure (file:///private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/offline-observer.js:6:25)
+    at file:///private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/compiled/offline-observer.js:135:1

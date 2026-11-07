@@ -1,0 +1,1 @@
+Observer terminal case denominator: K11 completed and passed; K01 entered, input created, observer failed NotCapable while reading task-root input before child launch and before attempt.json; K08 and K09 unrun. One completed pass, one observer-level error, two unrun. No retry; exact prescribed grants retained.

@@ -1,0 +1,13 @@
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K01
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/dep_analysis_cache_v2
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/dep_analysis_cache_v2-shm
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/dep_analysis_cache_v2-wal
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/node_analysis_cache_v2
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/node_analysis_cache_v2-shm
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/node_analysis_cache_v2-wal
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/npm
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/v8_code_cache_v2
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/v8_code_cache_v2-shm
+/private/tmp/lykn-parser-reentry-c7-5408abd-cc-20261106/parser-cache-root/K11/v8_code_cache_v2-wal

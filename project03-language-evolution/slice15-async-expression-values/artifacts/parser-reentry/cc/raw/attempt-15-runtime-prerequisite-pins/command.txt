@@ -1,0 +1,1 @@
+sha256 inputs and generated modules; pinned CLI/Deno; selected cached Acorn
