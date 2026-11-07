@@ -1,0 +1,21 @@
+Correction06 exact source freeze before native checks
+Source commit: 442eccd03e06ca8baf859f55e7810ff89d4188b3
+Prior frozen source: fd532d07c889539b09fdb6ceba461cb44f65fd01
+Only semantic delta: one closing delimiter at the end of ensure-positive-row before ensure-parent.
+Planning worktree status after source commit: clean
+Frozen source SHA256:
+parser-core.lykn 6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7
+estree-walker.lykn 4950f73f819e5a05381c08171a7a6652c85993a9e76319e6eb57aeaa74153960
+scanner.lykn 120bf83aaa2ebae8a0619b00d86d9ca3cac95075703e9fe7a331358598488688
+capability-observer.lykn 816c447a5a939f5171447b7b988e3c43247897c6aba1523463a9b0ba641bca3d
+Compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn 0.6.0
+Compiler SHA256: aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8
+Deno: /opt/homebrew/bin/deno 2.9.6
+Deno SHA256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Acorn input: /Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs
+Acorn SHA256: 1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7
+Controls: project03-language-evolution/slice17-estree-walker-capability/artifacts/controls.json
+Controls SHA256: 0f20dba4713b93671b337fa1ba0a5cde00fdbe29bed195a00e3ae1c689473a5d
+Native check working directory: /private/tmp/s19-native-cwd
+The original fd532 preflight/body and native failure remain preserved in native-0002. This correction does not rewrite that history.
+No correction06 check, format, lint, compile, generated review, Deno check, zero-argument guard, or K runtime has run before this preflight.
