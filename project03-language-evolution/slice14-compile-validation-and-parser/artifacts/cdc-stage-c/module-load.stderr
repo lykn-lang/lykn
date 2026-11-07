@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Unexpected reserved word
+        const parser = await import(parserUrl);
+                       ^
+    at <anonymous> (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-c/cdc-stop-01/generated/parser-core.js:26:24)

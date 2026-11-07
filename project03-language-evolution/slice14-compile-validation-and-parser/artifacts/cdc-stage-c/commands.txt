@@ -1,0 +1,21 @@
+Independent SAME complete formatted core; no miniature source or control case.
+cwd: /private/tmp/lykn-slice14-cdc-stop-01 (new owned directory)
+source: project03-language-evolution/slice14-compile-validation-and-parser/artifacts/stage-c/tooling/parser-core.lykn at13fd27feed2c3e6b4c0de37835f9edab602cee47
+compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn (748cd9991003da42b9a07950005d21e46b6a295b9d8650c71c4fca3e69cf2e5c)
+source task:3b65d09a1a8997f8c9680a34f43fd2c2e0aa8c4e
+
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn check /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice14-compile-validation-and-parser/artifacts/stage-c/tooling/parser-core.lykn
+exit0; check.stdout/check.stderr
+
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice14-compile-validation-and-parser/artifacts/stage-c/tooling/parser-core.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-c/cdc-stop-01/generated/parser-core.js
+exit0; compile.stdout/compile.stderr
+Generated cmp to CC output exit0, SHA3e5b22d1d959b68e244c1ea3cf11ad6aaec29a8b81a5e6e6c7faa166ef44fefb; selected raw copy parser-core.js
+
+env DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-c/cdc-stop-01/deno-check-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno check --no-config --no-npm --no-remote --cached-only /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-c/cdc-stop-01/generated/parser-core.js
+exit0; deno-check.stdout/stderr empty. This did NOT establish JS syntax validity.
+
+env DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-c/cdc-stop-01/deno-parse-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --no-npm --no-remote --cached-only --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-c/cdc-stop-01/generated/parser-core.js
+exit1; module-load.stdout empty; module-load.stderr SyntaxError Unexpected reserved word at26:24 await import. No permissions, input arguments or entry-function call; parse failed before module evaluation. No Acorn import or four-control observation.
+
+Deno /opt/homebrew/bin/deno2.9.6 hash2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Only explicit environment overrides above were recorded; remaining ordinary exec environment inherited, not exhaustively captured. One generated-module load was attempted; parsing failed before any helper body evaluated. No Python, alternate script or observer launch was used. Acorn artifact hash remained1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7 before/after.

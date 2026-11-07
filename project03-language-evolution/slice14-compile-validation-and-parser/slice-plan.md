@@ -1,6 +1,9 @@
 # Slice14: compile validation parity, async exports and four parser observations
 
-Opened 2026-11-06. Status: open. Canonical collapsed standalone increment.
+Opened 2026-11-06. Status: closed at independently confirmed new gap NE-C09.
+Both authorized repairs accepted task-only3b65d09/compiler748;6rowsdone/2deferred,
+parser0/4. See cdc-verification.md and closing-report.md. No next unit opened.
+Canonical collapsed standalone increment; original scope/staged chronology follows.
 StageA NE-C08 independently accepted narrowly at source4610b4 (VP01–03 done),
 known NE-C07/full green pending. Fresh StageB CC replaces the prior context after
 its explicit Python-policy breach; see cdc-verification.md and incident receipt.
@@ -10,6 +13,9 @@ cc-prompt-iteration02.md. Earlier staged statements remain dated chronology.
 StageC cc-01 check passed, formatter rejected all3 original unformatted bodies;
 no later gates/observations ran. Iteration03 authorizes correction1/5: canonical
 formatting into new Slice14 helper copies only, old originals/data/oracles intact.
+Correction copies committed13fd27f; native gates then pass but generated async
+expression IIFE fails module parsing. CDC independently compiled SAME core and
+corroborated hard blocker before evaluation; no Acorn import/four observations.
 Operator: “Let's fix NE-C08, validate it independently, then return to NE-C07
 and the same four parser observations. Same models, Autonomous Mode, and stop
 if we hit another real evidence gap :-D”. Endpoint is these staged repairs and

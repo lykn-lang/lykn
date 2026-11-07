@@ -140,6 +140,18 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 [Slice14 independent endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
+accepts NE-C08 compile-route parity and NE-C07 private async-export discovery
+task-only at3b65d09/compiler748. Complete fresh normal-env Make passes all Rust,
+JS1467/docs482 and citations63/601. Re-entry source gates pass after one retained
+canonical-format correction, but generated async expression IIFE fails parsing
+before module evaluation: NE-C09 owns syntax/value-flow disposition. Parser0/4;
+6rowsdone/2deferred. Initial prohibited Python ledger edit/unknown status and
+first offline-env full Make remain explicit history; no process-compliance waiver.
+NE-T01 owns absent async declaration-sidecar coverage before package/type claims.
+Release f705655 unchanged; no next unit, release propagation, walker/full audit
+or Project07 acceptance follows. Original Slice12/13 rows/evidence stay intact.
+
 2026-11-06 Operator explicitly authorized [Slice14](slice14-compile-validation-and-parser/slice-plan.md):
 NE-C08 shared compile-route validation parity, independent acceptance, then
 NE-C07 narrow async-export repair/independent acceptance, then only the unchanged
@@ -272,7 +284,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
-- [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): open staged NE-C08/NE-C07 repairs and same-four parser re-entry; independent source acceptance between stages, explicit first-new-gap stop.
+- [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): closed6done/2deferred; both repairs independently accepted task-only/full gates, new NE-C09 stops parser0/4; history/method breach/NE-T01 owned, no integration or next unit.
 - [slice13-async-export-repair](slice13-async-export-repair/slice-plan.md): closed at independent NE-C08 output-route gap; NE-C07 candidate unvalidated, one done/six deferred, parser0/4; no integration or next unit.
 - [slice12-offline-walker-capability](slice12-offline-walker-capability/slice-plan.md): closed at reproduced native async-export validation gap; candidate tooling retained, parser0/4 and full K gate unrun; NE-C07 owns re-entry.
 - [slice11-audit-evidence-contract](slice11-audit-evidence-contract/slice-plan.md): independently closed method settlement; all original audit rows/execution remain open and separately gated.
@@ -299,6 +311,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.22: Closed Slice14 with both task-only repairs independently
+  accepted/full gates; same-four re-entry stopped at independently confirmed
+  async expression-IIFE gap NE-C09. Preserved0/4, method breach/unknown status,
+  old histories, formatting correction and type-coverage limitation NE-T01.
 
 - 2026-11-06 v1.21: Opened explicit staged Slice14 NE-C08/NE-C07 repair and
   independent validation then unchanged four observations; known prerequisite

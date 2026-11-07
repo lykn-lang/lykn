@@ -418,6 +418,16 @@ and its live uncommitted edit was restored. No post-patch gates or parser
 observations occurred. Future accepted NE-C08 disposition precedes resumed
 NE-C07 independent validation and the unchanged four observations.
 
+**2026-11-06 accepted task repair, Slice14.** At
+3b65d09a1a8997f8c9680a34f43fd2c2e0aa8c4e, the private top-level export collector
+recognizes exact async named func/genfunc wrappers, retaining nonrecursive global
+binding discovery and scope guards. Independent8unit/2CLI tests prove actual
+check/strict stdout/-o/import-await42 behavior; complete normal-env Make and
+citations pass. [Review](slice14-compile-validation-and-parser/cdc-verification.md#stage-b-ne-c07--accepted-2026-11-06).
+The exact old parser sources now pass check, but re-entry stops at unrelated
+NE-C09 below. NE-C07 is accepted on the task branch only; release f705655 and
+historical Slice12/13 statuses remain unchanged. Parser still0/4.
+
 #### NE-C08 — compile-with-output omits reserved-binding validation
 
 **Independently confirmed, 2026-11-06.** Slice13's intermediate negative
@@ -447,6 +457,65 @@ fresh receipt as distinct evidence. After accepted disposition, resume NE-C07
 with retained red tests/candidate and new source/compiler pins, then only the
 same four parser observations. NE-C07 remains unaccepted, parser0/4; no current
 compiler fix, release integration, new unit or full audit is opened here.
+
+**2026-11-06 accepted task repair, Slice14.** Source4610b4ce37d41dd11a591f88b4e67e15b84f96b1
+extracts stdout's reserved/method/nested-fn/no-else-if/exports validator sequence
+and shares it with compile-with-DTS, preserving order/diagnostics and successful
+JS/DTS/warnings. Independent40API/3CLI tests plus later complete normal-env Make
+on combined3b65d09 pass; check_strict's subset is unchanged. [Review](slice14-compile-validation-and-parser/cdc-verification.md#stage-a-ne-c08--accepted-narrowly-2026-11-06).
+This is not a default-only blacklist or skipped DTS. No release integration;
+earlier exact success/invalid-output receipts and lost-temp-output limit remain.
+
+#### NE-C09 — async expression IIFE loses context and branch value flow
+
+**Independently confirmed blocking syntax, 2026-11-06.** Slice14's canonical-
+format-only complete core is frozen at13fd27feed2c3e6b4c0de37835f9edab602cee47,
+[source](slice14-compile-validation-and-parser/artifacts/stage-c/tooling/parser-core.lykn),
+SHA6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7.
+Native compiler748cd999/source3b65d09 accepts check/strict compile0 but emits
+`return (() => {... const parser = await import(parserUrl); ...})()` inside
+async loadParser. CDC independently compiles the SAME complete source from a
+new config-free cwd and obtains byte-identical generated JS SHA
+3e5b22d1d959b68e244c1ea3cf11ad6aaec29a8b81a5e6e6c7faa166ef44fefb.
+[Full raw module](slice14-compile-validation-and-parser/artifacts/cdc-stage-c/parser-core.js),
+[commands/limits](slice14-compile-validation-and-parser/artifacts/cdc-stage-c/commands.txt).
+
+Pinned Deno check returns0/empty output; it does **not** establish JS syntax
+validity. A pinned offline no-permission module-load attempt of that SAME core,
+without inputs or calling an entry function, exits1 with actual SyntaxError at
+26:24 `await import` before module evaluation. No Acorn import/AST/control ran:
+parser0/4. Guide00 do final-value/expression-IIFE and if-expression equivalence,
+plus async/await MUST rules, establish the supported composition. The guide's
+strong LLM preference for `?` is a style issue, not permission to emit invalid
+JS for supported `if` or to rewrite around this stop.
+
+**Static limits and relationship.** The inner version-mismatch/ready objects
+also lack returned value flow; that is generated-source inspection, not tested
+runtime behavior. CC retained malformed nested-if observer output as another
+unexecuted static witness. NE-C02 instead concerns a statement-position bind;
+they share a position-sensitive emission concern, not an established root cause.
+Do not merge findings or infer all branch behavior was evaluated.
+
+**Owner/re-entry.** Project03 CDC owns separately authorized source-guided
+async-aware expression-IIFE syntax **and correct branch-value propagation**
+disposition, preserving the full witness and later meaningful runtime controls.
+Do not mark all IIFEs async or change the helpers as an unreviewed workaround.
+After independently accepted disposition/new compiler pin, resume the same four
+parser observations with genuine JS module-validity proof; DenoCheck0 alone is
+insufficient. Original helpers/data/oracles and all failed conditions remain.
+No current repair, new unit, source integration or full audit follows.
+
+#### NE-T01 — async declaration-sidecar coverage limitation
+
+**Owned current limitation, 2026-11-06.** Accepted Slice14 async module/consumer
+compile produces no .d.ts paths; absence is explicitly retained in both actual
+CLI logs. At3b65d09, emitter/dts.rs208–301 handles exported Func declarations but
+not the Async wrapper. Philosophy describes compiled JS “and possibly .d.ts”;
+no universal async-sidecar promise was established, so this is not the new-gap
+stop or an authorized type repair. Project03 CDC owns type-distribution coverage
+disposition before future JSR/package/type-availability claims; Project07's
+public API/authoring/human gates stay open. Preserve the current native runtime
+success separately from declaration availability.
 
 #### NE-D01 — template dispatch prose contradicts its single-literal table row
 

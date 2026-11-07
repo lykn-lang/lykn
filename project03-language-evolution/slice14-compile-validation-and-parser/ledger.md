@@ -1,8 +1,9 @@
 # Slice14 ledger
 
-StageA independently accepted narrowly at4610b4 (VP01–03 done), remaining rows
-open. Full green remains VP05; explicit known NE-C07 prerequisite retained.
-The Python handoff breach is preserved separately, never labelled compliant.
+Closed at independently confirmed NE-C09, 2026-11-06:6done/2deferred.
+Both authorized repairs and complete independent product gates accepted
+task-only3b65d09; parser0/4. The Python handoff breach is preserved separately,
+never labelled compliant. Historical Slice12/13 rows remain unchanged.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -11,6 +12,6 @@ The Python handoff breach is preserved separately, never labelled compliant.
 | VP-03 | NE-C08 independently accepted with required gate disposition | CDC source/generated/focused replay + unfiltered Make/citation; known NE-C07 explicit | serious | Independent gate | done | [Review](cdc-verification.md#stage-a-ne-c08--accepted-narrowly-2026-11-06), fresh CDC Make/citation logs | Make2/Cargo101 KNOWN NE-C07, later gates unrun; no full-green claim |
 | VP-04 | NE-C07 narrowly repaired and real imported-await semantics pass | Private collector/scope controls, actual check/compile/import42, fresh binary pin | serious | Authorized second repair | done | [StageB independent review](cdc-verification.md#stage-b-ne-c07--accepted-2026-11-06), fresh exports8/CLI2 logs | Native private collector only; unchanged fixtures, stdout/-o/await42 proven |
 | VP-05 | Both repairs complete canonical independent validation | Full unfiltered Make/citation, exact source/generated/binary, no filtered gates | serious | Source acceptance | done | [StageB independent review](cdc-verification.md#stage-b-ne-c07--accepted-2026-11-06), fresh normal-env Make/citation | Make0, all Rust pass, JS1467/docs482; citations63/601; task-only3b65d09/compiler748cd999 |
-| VP-06 | Unchanged parser tooling passes native/generated prerequisites | Existing core/probe/observer source and check/fmt/lint/compile/Deno check + review | serious | Slice12 re-entry | open | | Same frozen bytes/oracles unless preserved correction |
-| VP-07 | Same four observations independently pass or new gap honestly held | K11/K01/K08/K09 raw argv/hash/status/output/loc/range, fresh CDC replay | serious | Capability gate | open | | 0/4 initially; no walker/full audit |
-| VP-08 | Independent close/ownership/history/retrospective complete | All8 rows, exact refs, parent/backlog, no silent drops | correctness-grade | Autonomous endpoint | open | | No next unit/merge/propagation |
+| VP-06 | Unchanged parser tooling passes native/generated prerequisites | Existing core/probe/observer source and check/fmt/lint/compile/Deno check + review | serious | Slice12 re-entry | deferred | [StageC review](cdc-verification.md#stage-c--independently-confirmed-new-gap-stop-2026-11-06), CC C0/CDC raw evidence | Canonical-format copies source gates pass, generated core invalid; DenoCheck0 not syntax proof; NE-C09 |
+| VP-07 | Same four observations independently pass or new gap honestly held | K11/K01/K08/K09 raw argv/hash/status/output/loc/range, fresh CDC replay | serious | Capability gate | deferred | [StageC review](cdc-verification.md#stage-c--independently-confirmed-new-gap-stop-2026-11-06) | 0/4 run,4/4 unrun; isolated SAME-core module-load parse failure is not a parser case |
+| VP-08 | Independent close/ownership/history/retrospective complete | All8 rows, exact refs, parent/backlog, no silent drops | correctness-grade | Autonomous endpoint | done | [Review](cdc-verification.md), [close](closing-report.md), [retrospective](cdc-retrospective.md), Project03 NE-C09/NE-T01 | Stop independently corroborated; initial Python breach/unknown status retained; no next unit/merge |

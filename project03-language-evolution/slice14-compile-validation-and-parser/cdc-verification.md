@@ -106,3 +106,63 @@ No release/source propagation. Parser still0/4 until the preserved StageC gate.
 Async declaration sidecar absence is an owned type-distribution limitation,
 not a NEW gap: current DTS emitter lacks Async wrapper handling; philosophy
 says “possibly .d.ts”, not universal async coverage. No new type repair here.
+
+## Stage C — independently confirmed new-gap stop, 2026-11-06
+
+The exact original helpers first passed native check7/16/29, then all3 failed
+fmt--check. Actual formatter notices were in stderr/stdout empty (CC milestone
+stream labels were wrong; raw files preserved). This ordinary authoring gate
+was corrected once using native canonical formatting into new owning-slice
+copies, not edits to old Slice12 sources/data/oracles. Native formatter source
+cmd_fmt confirmed default stdout semantics; CDC read all three complete new
+bodies against the earlier originals. Differences are formatting/wrapping only.
+The copies were committed BEFORE new gates at13fd27feed2c3e6b4c0de37835f9edab602cee47;
+one correction of the five-pass ceiling used. Initial attempt310057ac and
+corrected C0 receipts03d0ef6e95fbb8a23a1e94174d2b3b1016a9b2a3 remain history.
+
+CC corrected C0: check0,fmt0,lint0 (3files/no findings), strict compile0 for all3;
+warnings retained. Complete generated review found invalid core JS; Deno check
+and all four observations were deliberately held by CC. No AST/parser result
+exists. CDC read the complete core/probe JS, all formatted sources and relevant
+guide contracts, then independently repeated ONLY the SAME full core condition
+from fresh config-free /private/tmp/lykn-slice14-cdc-stop-01:
+
+- Same absolute748 compiler check0/compile0; full core output byte-identical to
+  CC SHA3e5b22d1d959b68e244c1ea3cf11ad6aaec29a8b81a5e6e6c7faa166ef44fefb.
+- Pinned Deno check with no-config/no-npm/no-remote/cached-only returns0 with
+  empty output. This is explicitly **not evidence of arbitrary JS validity**.
+- Same COMPLETE core module, pinned Deno run offline with no permission grants,
+  inputs or entry-function call: exit1, SyntaxError “Unexpected reserved word”
+  at26:24, `await import(parserUrl)` inside the nonasync `(() => {...})()`.
+  Parsing failed before module evaluation. No Acorn import or control execution.
+  This is one isolated module-load parse corroboration, not an extra parser case.
+
+Full actual argv/cwd/explicit environment and receipt limits are in
+[commands](artifacts/cdc-stage-c/commands.txt); raw stdout/stderr/exits, complete
+generated module and identities retained there. Acorn hash unchanged. No new
+mini-fixture, compiler patch, helper rearrangement, permission workaround or
+additional full Make was used after the gap.
+
+Source validity: guide00 func implicit-final-value (185–218), do expression
+final-value/IIFE rule (804–825), if expression position/equivalence (834–860),
+SKILL Async MUST and guide07 ID11 establish async await/value behavior. Guide00
+strongly prefers `?` for LLM expression style, but explicitly promises `if`
+equivalence/IIFE lowering; that style violation does not permit invalid output
+and is not a reason to evade this compiler gap by rewriting the helper.
+
+New owner **NE-C09**: async expression if/do IIFE context/value lowering. Version-
+mismatch and ready objects lose returns in generated source; this is static
+inspection only, not a runtime result (the syntax error prevents evaluation).
+CC also retained malformed nested-if observer output as secondary static
+evidence; it was not independently executed or assigned a common root cause.
+Related NE-C02 is a distinct statement-position declaration witness; no shared
+cause is asserted. Project03 CDC owns future source-grounded disposition and
+re-entry; no another repair/unit is opened here.
+
+**Final:** VP01–05 and VP08 done; VP06/07 deferred. Both authorized repairs are
+accepted task-only3b65d09/compiler748, but helper runtime remains unvalidated:
+parser observations **0/4 run,4/4 unrun**. All walker/corpus/F6/full-audit and
+Project07 obligations remain open. Old Slice12/13 rows are not retrospectively
+closed. The Python handoff breach/unknown status remains explicit; technical
+acceptance is not blanket process compliance. Endpoint reached at the promised
+first-new-gap stop, no next unit or release propagation.
