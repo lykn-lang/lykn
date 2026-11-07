@@ -1,0 +1,13 @@
+Captured immediately after the successful workspace no-run build and before any focused test invocation.
+
+CLI target/debug/lykn SHA256: 9d64b649acd03745ad5aeda6c2ff5f946eacb4e556e4b5273c4fb8290f829189
+lykn-lang unit target/debug/deps/lykn_lang-60c4a58c1162abbf SHA256: 5c0cc623cc309b4c852e2a47c0b31279e7bdc2424efca5d53f4626675fd1be2d
+emission_results target/debug/deps/emission_results-ec634af31c6c32ab SHA256: 3cb8f901f686c579981a8b258aabdc810226c4cf787fb176a755dd560048f57b
+lykn-cli unit target/debug/deps/lykn_cli-8a470da61c5d1dbe SHA256: 607bc0f2001f105086d4bc5f065dee93c44a1c6775dffe1a650247b7a1fc26bb
+emission_failures target/debug/deps/emission_failures-ee1302ddd95a417d SHA256: a245e847bec3a39f2c2387de56b7a012a8b256c74bd894e0200851b8a642836d
+contract_predicate_lowering target/debug/deps/contract_predicate_lowering-5224edfea80a9408 SHA256: e5e1a1ffaa61c45d55d0d9adf615ff7dd3e02aa6247dabfbdc7ca59fb72aad2a
+compile_validation_parity target/debug/deps/compile_validation_parity-ed5da4aecd278839 SHA256: e70af624cae2e068005b4db32e68bdb1b2d46761bce020dc99cafed5228eb26a
+Deno /opt/homebrew/bin/deno SHA256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Deno version: 2.9.6
+
+Focused executables were pinned but never launched. No focused, runtime, full Make, or citation gate is claimed.
