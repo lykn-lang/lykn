@@ -140,6 +140,13 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Operator explicitly approved [Slice17](slice17-estree-walker-capability/slice-plan.md):
+Lykn ESTree walker/minimal scanner+observer and bounded accepted K01–K12 gate
+(13rows including separate K10a/b, K12synthetic), same Sol6.1 High CDC/Luna6 High
+CC Autonomous Mode and first-real-gap stop. Source5408/releaseCLI85d6d3 is
+read-only. Endpoint independent bounded capability or honest stop; no full corpus,
+F6/library/product repair/integration/next unit or remote action.
+
 2026-11-07 Operator explicitly approved local integration of the complete accepted
 NE-C07/08/09 stack through5408 into release/0.6.x, fresh release validation and
 independent review. [Slice16](slice16-compiler-stack-release-integration/slice-plan.md)
@@ -352,6 +359,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice17-estree-walker-capability](slice17-estree-walker-capability/slice-plan.md): open explicit Lykn walker and fixed13-row offline capability gate, independent review/first real gap stop only.
 - [slice16-compiler-stack-release-integration](slice16-compiler-stack-release-integration/slice-plan.md): closed5done; accepted NE-C07/08/09 stack locally integrated0.6 at5408, full fresh independent release gates; no other propagation/next unit.
 - [slice15-async-expression-values](slice15-async-expression-values/slice-plan.md): closed7done; NE-C09 independently accepted task-only/full normal gates and unchanged parser four independently4/4; failed conditions/overrides retained, no integration/full audit/next unit.
 - [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): closed6done/2deferred; both repairs independently accepted task-only/full gates, new NE-C09 stops parser0/4; history/method breach/NE-T01 owned, no integration or next unit.
@@ -381,6 +389,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.27: Opened explicit Slice17 Lykn ESTree tooling/fixed K capability
+  gate,13 rows/12families with separate synthetic denominator and exact frozen
+  contract. Source/release remain read-only; no full audit/library/product repair
+  or next unit authorized.
 
 - 2026-11-07 v1.26: Closed Slice16's exact local0.6 fast-forward and independent
   fresh full/native/citation/binary/materialization validation; five rows done,
