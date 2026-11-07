@@ -3,6 +3,11 @@
 Six rows open. CC proposed-done requires genuine independent CDC disposition.
 Tooling inherits3spent/tworemaining corrections inside outer five refinement bound.
 
+Source refinement1/5 active. Actual test-only0117102 red retained; wrong grammar
+oracle corrected3175 before numbered handoff under premature informal CDC message.
+Guardtrue/literal-positive correction follows preserved iteration01, expected
+output unchanged. No production patch/parser/K runtime yet; all rows remain open.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | MV-01 | Authority/source/provenance/budgets and pre-run freezes actual | Exact5408/new branch/tools/body/control/oracle pins, no hidden resets | serious | Operator + preserved history | open | | Old capture limits not cured |

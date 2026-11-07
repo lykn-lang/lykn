@@ -1,0 +1,18 @@
+Freeze identity
+  source checkout: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+  branch: codex/match-validation-context
+  base: 5408abd432b8789ae474a3895436f68818c4e482
+  Rust: rustc 1.97.0 (2d8144b78 2026-07-07)
+  Cargo: cargo 1.97.0 (c980f4866 2026-06-30)
+  Deno: /opt/homebrew/bin/deno 2.9.6, SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+  forms.rs complete-body SHA256: df67536694a5128b5c0570f1c895204f6ccca0ffcb6dded0950cdd288b888c67 (250412 bytes)
+  match_clause_validation.rs complete-body SHA256: a9b9003f431017aea86a4b9ef2c2cea01b3db752a566793142a56a9057b9a3fb (6803 bytes)
+  `core.hooksPath` is unset; only installed Git sample hooks were present. No remote CI is invoked by the local focused Cargo tests or local commit.
+
+Frozen unchanged-production red argv, in order:
+  cargo test --offline --locked -p lykn-lang no_else_if_expression_validation -- --nocapture
+  cargo test --offline --locked -p lykn-cli --test match_clause_validation -- --nocapture
+
+The complete candidate test sources and positive/negative CLI fixture/oracle are
+the adjacent frozen `forms.rs` and `match_clause_validation.rs` bodies. No
+execution has occurred against them as of this freeze.

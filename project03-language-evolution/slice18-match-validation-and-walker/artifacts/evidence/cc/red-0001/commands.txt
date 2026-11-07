@@ -1,0 +1,36 @@
+Frozen test commit: 0117102b7c9e25381f5ea2e2586aab31acdcabf9
+Baseline source: unchanged production at 5408abd432b8789ae474a3895436f68818c4e482 plus test-only commit.
+Branch: codex/match-validation-context
+Working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Environment for both runs:
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  DENO_NO_UPDATE_CHECK=1
+  NO_COLOR=1
+  LYKN_TEST_DENO=/opt/homebrew/bin/deno
+  npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice18/cc/npm-cache
+  XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice18/cc/xdg-cache
+
+Unit argv:
+  cargo test --offline --locked -p lykn-lang no_else_if_expression_validation -- --nocapture
+  stdout: target/slice18/cc/red-unit/stdout.txt
+  stderr: target/slice18/cc/red-unit/stderr.txt
+  exit: target/slice18/cc/red-unit/exit.txt = 101
+  stdout SHA256: bed437af3ae2917f0cb7ab63fd55654ec26a878e87af2c5dde89532c4593cb09
+  stderr SHA256: 0f1f8030dd46cd38bdd100b4c113fa6d47a4f7b3c67a97be7dec19febcd04144
+
+CLI argv:
+  cargo test --offline --locked -p lykn-cli --test match_clause_validation -- --nocapture
+  stdout: target/slice18/cc/red-cli/stdout.txt
+  stderr: target/slice18/cc/red-cli/stderr.txt
+  exit: target/slice18/cc/red-cli/exit.txt = 101
+  stdout SHA256: b1abac552432e542c31d8b4530e6a1f39eab884f226cacda1ae8f18ede8cf456
+  stderr SHA256: dfa9fa531ffec8d1a83ac42d757eb448536144aeb079d49faba9c823093ca81f
+
+Observed: the unit valid-role assertion red is consistent with NE-C10. A second
+unit failure is a test-authoring error: `(match value (when true 1))` is valid
+as pattern `when` and body `true 1`; the classifier's existing malformed
+guard-without-body oracle is `(match x (n :when guard))`. The CLI negative
+case passed, including no-output checks. The CLI positive case failed check and
+both compile routes on the expected no-else diagnostics; generated module
+runtime was not reached. Full source bodies are retained in `freeze-0001/` and
+commit 0117102. No production code was changed for this baseline.

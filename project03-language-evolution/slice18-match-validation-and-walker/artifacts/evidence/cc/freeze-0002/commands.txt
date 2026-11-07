@@ -1,0 +1,13 @@
+Corrected test-only freeze before rerunning unchanged production.
+Source baseline remains 5408abd432b8789ae474a3895436f68818c4e482.
+The sole edit replaces a false malformed-clause fixture with the exact
+classifier-owned `:when` guard-without-body shape already used by
+test_classify_match_guard_no_body_error.
+
+Complete forms.rs SHA256: 87590b002415628c07003ce260132fcf205b2d628fdabde58ac6a828d8288c98 (250414 bytes)
+Complete CLI test SHA256: a9b9003f431017aea86a4b9ef2c2cea01b3db752a566793142a56a9057b9a3fb (6803 bytes)
+Expected corrected unchanged-production red commands, after this freeze is
+committed:
+  cargo test --offline --locked -p lykn-lang no_else_if_expression_validation -- --nocapture
+  cargo test --offline --locked -p lykn-cli --test match_clause_validation -- --nocapture
+No command has run against this corrected test body yet.

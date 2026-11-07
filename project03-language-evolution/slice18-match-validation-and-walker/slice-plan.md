@@ -1,5 +1,13 @@
 # Slice18 — match validation repair and unchanged walker re-entry
 
+Current assignment iteration01,2026-11-07, source refinement1/outer5; tooling
+3spent/tworemaining unchanged. Initial test0117102 baseline has meaningful NE-C10
+red plus wrong malformed-clause oracle. CC grammar correction3175e4f and unit
+rerun preceded formal directive under CDC informal instruction; preserve actual
+timing, no retroactive conformance. Positive guard should-run would contradict
+Box/false fixed42 oracle (runtime unrun); test-only guardtrue correction and actual
+literal/binding prefix cases frozen before corrected baseline. Production unchanged.
+
 Opened2026-11-07, standalone collapsed Project03 increment. Operator explicitly:
 “Let's fix NE-C10, validate it independently, then complete the Lykn tooling and
 resume the same K01–K12 gate. Same models, Autonomous Mode, and stop if we hit
@@ -160,3 +168,4 @@ review/retro/parent/backlog with done/deferred/unrun truth at endpoint only.
 | Prompt | Date | Reason | State |
 | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-07 | Explicit NE-C10 repair, independently gated before old tooling | Initial Stage A assignment; no tooling mutation/runtime yet |
+| cc-prompt-iteration01.md | 2026-11-07 | Retain wrong grammar/guard fixtures, restore intended conditions, real literal clause positive | Current source refinement1/5; old tooling allowance unchanged |
