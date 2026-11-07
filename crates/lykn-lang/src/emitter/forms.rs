@@ -2912,9 +2912,32 @@ fn emit_class_member_form(
 // ---------------------------------------------------------------------------
 
 const STATEMENT_FORM_HEADS: &[&str] = &[
-    "if", "while", "for", "for-of", "for-in", "do-while", "switch", "throw", "return", "break",
-    "continue", "label", "debugger", "block", "try", "catch", "finally", "var", "const", "let",
-    "func", "class", "type", "export", "import",
+    "if",
+    "while",
+    "for",
+    "for-of",
+    "for-in",
+    "for-await-of",
+    "do-while",
+    "switch",
+    "throw",
+    "return",
+    "break",
+    "continue",
+    "label",
+    "debugger",
+    "block",
+    "try",
+    "catch",
+    "finally",
+    "var",
+    "const",
+    "let",
+    "func",
+    "class",
+    "type",
+    "export",
+    "import",
 ];
 
 fn is_statement_form(expr: &SExpr) -> bool {
@@ -2965,13 +2988,10 @@ fn emit_if_expression(
         list(vec![atom("?"), cond, then_branch, else_branch])
     } else {
         // One or both branches are statement forms → IIFE
-        emit_if_iife_with_await(
-            cond,
-            then_branch,
-            else_branch,
-            any_current_await(&args[..3]),
-            ctx,
-        )
+        let is_async = contains_current_await(&cond)
+            || contains_current_await(&then_branch)
+            || contains_current_await(&else_branch);
+        emit_if_iife_with_await(cond, then_branch, else_branch, is_async, ctx)
     }
 }
 
@@ -3076,7 +3096,7 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                 ctx,
                 registry,
             ));
-            let is_async = any_current_await(body);
+            let is_async = any_current_await(&emitted);
             if is_async {
                 emitted = emitted.iter().map(box_current_scope_returns).collect();
             }
