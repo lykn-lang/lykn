@@ -1,54 +1,34 @@
 use std::path::PathBuf;
 use std::process::{Command, Output};
 
-use serde_json::{Value, json};
+use serde_json::Value;
 use tempfile::TempDir;
 
 struct Fixture {
     name: &'static str,
-    expected: Value,
+    expected_json: &'static str,
 }
 
 const FIXTURES: &[Fixture] = &[
     Fixture {
         name: "E1-sync-values.lykn",
-        expected: json!({
-            "value": 41,
-            "falseValue": 42,
-            "typeof": "number",
-            "noElsePrefix": 41,
-            "nestedEquality": true
-        }),
+        expected_json: r#"{"value":41,"falseValue":42,"typeof":"number","noElsePrefix":41,"nestedEquality":true}"#,
     },
     Fixture {
         name: "E2-async-branches.lykn",
-        expected: json!({
-            "sync": {"trace": ["sync", "after-call", "after-await"], "value": 42},
-            "await": {"trace": ["await", "after-call", "after-await"], "value": 7}
-        }),
+        expected_json: r#"{"sync":{"trace":["sync","after-call","after-await"],"value":42},"await":{"trace":["await","after-call","after-await"],"value":7}}"#,
     },
     Fixture {
         name: "E3-promise-value.lykn",
-        expected: json!({"same": true, "thenType": "function", "resolved": 9}),
+        expected_json: r#"{"same":true,"thenType":"function","resolved":9}"#,
     },
     Fixture {
         name: "E4-deferred-function.lykn",
-        expected: json!({
-            "constructionCalls": 0,
-            "immediateType": "function",
-            "invocationCalls": 1,
-            "result": 9
-        }),
+        expected_json: r#"{"constructionCalls":0,"immediateType":"function","invocationCalls":1,"result":9}"#,
     },
     Fixture {
         name: "E5-effects-errors.lykn",
-        expected: json!({
-            "trace": ["selected"],
-            "selectedMessage": "selected boom",
-            "rejectionMessage": "await rejected",
-            "outer": "outer",
-            "scoped": "inner"
-        }),
+        expected_json: r#"{"trace":["selected"],"selectedMessage":"selected boom","rejectionMessage":"await rejected","outer":"outer","scoped":"inner"}"#,
     },
 ];
 
@@ -68,6 +48,8 @@ fn execute(command: &mut Command) -> Result<Output, String> {
 fn native_compiler_preserves_async_expression_values() {
     let mut failures = Vec::new();
     for fixture in FIXTURES {
+        let expected: Value = serde_json::from_str(fixture.expected_json)
+            .expect("frozen fixture expectation is valid JSON");
         let temp = match TempDir::new() {
             Ok(temp) => temp,
             Err(error) => {
@@ -103,7 +85,7 @@ fn native_compiler_preserves_async_expression_values() {
         eprintln!(
             "ASYNC_EXPR_NATIVE_PREASSERT name={} expected={} compile_exit={:?} stdout={:?} stderr={:?} source={:?} generated={:?} dts={:?}",
             fixture.name,
-            fixture.expected,
+            expected,
             compile.status.code(),
             String::from_utf8_lossy(&compile.stdout),
             String::from_utf8_lossy(&compile.stderr),
@@ -177,11 +159,11 @@ fn native_compiler_preserves_async_expression_values() {
         if !runtime.stderr.is_empty() {
             failures.push(format!("{}: unexpected Deno stderr {stderr:?}", fixture.name));
         }
-        if actual != fixture.expected {
+        if actual != expected {
             failures.push(format!(
                 "{}: expected {}, got {}; source={source:?}; generated={generated:?}; stdout={stdout:?}; stderr={stderr:?}",
                 fixture.name,
-                fixture.expected,
+                expected,
                 actual,
             ));
         }
