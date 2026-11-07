@@ -140,6 +140,13 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Slice19 tooling continuation reached both retained5/5 caps. Candidate
+fd532 native core/walker/scanner0, observer1 missing function delimiter at136:1,
+independently reproduced. Tooling unaccepted/K0/13, dependent gates paused pending
+Operator choice on one explicitly bounded extra correction; no budget reset or
+new unit. BOTH source repairs8ed remain accepted/task-only. See current Slice19
+cdc-verification for exact proof, proposal and uncured process limits.
+
 2026-11-07 Slice19 StageA independently accepts BOTH NE-C10/NE-C11 on task8ed869f:
 fresh fullnormalMake/focused1+5/citations63/601, unchanged740 realJSON/DTS and full
 readableJS proof. Selected native taskrelease/bin aa31947…; release5408 unchanged.

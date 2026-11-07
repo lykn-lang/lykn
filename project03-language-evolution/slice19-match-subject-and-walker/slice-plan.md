@@ -1,5 +1,13 @@
 # Slice19 — match subject repair and combined validation
 
+Current2026-11-07: PAUSED pending Operator budget choice; both tracks5/5 exhausted.
+Final candidate fd532 native core/walker/scanner0, observer1 unterminated136:1;
+CDC independently reproduces exact source/hash/tool condition, no edit/retry.
+Static diagnosis/proposed single boundary close in cdc-verification; no sixth
+correction authorized/executed. Source8ed accepted remains; tools unaccepted,
+all13K unrun, dependent gates held. Do not treat earlier current headers as
+permission to continue. This unit remains incomplete, no endpoint success claim.
+
 Current iteration03 is LAST continuation5/5 for BOTH outer and tooling counters.
 b828 actual native checks: core0/7forms, walker0/20forms, scanner1 unterminated98:5,
 observer1 unterminated45:1; full raw committed79163f9, no dependent gates/K.

@@ -1,5 +1,12 @@
 # Slice19 ledger
 
+Current: pending Operator choice at both exhausted5/5 caps, source8ed accepted,
+tooling fd532 unaccepted. Native3/4 sourcechecks pass; observer1 independently
+reproduced at136:1. No sixth correction or dependent gates/K. Detailed concrete
+bounded extra-cycle proposal in cdc-verification; MS04–06 stay open, MS02/03 done.
+This is not a completed unit; all13K unrun. Historical capture/process limits
+remain explicitly unresolved rather than upgraded by current reproducible body.
+
 Current continuation5/5 LAST both tracks, iteration03. b828 native core0/walker0,
 scanner1/observer1 syntax authoring failures, raw79163f9; no fmt/lint/compile/
 DenoCheck/guards/K. Full frozen review found ordinary predicate/API/span defects,

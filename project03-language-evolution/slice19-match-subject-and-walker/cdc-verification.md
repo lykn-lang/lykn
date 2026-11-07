@@ -1,5 +1,45 @@
 # Slice19 independent review — Stage A accepted, tooling open
 
+## Current verdict — pending Operator, both tooling budgets exhausted
+
+2026-11-07: final correction5 candidate fd532d07c889539b09fdb6ceba461cb44f65fd01
+is UNACCEPTED. CC actual native checks core0/walker0/scanner0/observer1; complete
+raw/preflight committed d62aef0. CDC independently extracted SAME observer to
+fresh configfree/private/tmp, verified source98bbe28c… and acceptedCLIaa31947…
+before/after; exact native check again exit1, unterminated136:1. Full raw and
+condition in cdc/final-observer-check. Not a compiler/parser capability gap:
+source func ensure-positive-row is missing its close before ensure-parent.
+Proposed delimiter correction is static-only/unapplied, not proved sufficient.
+
+Both outer continuation and old tooling allowance are5/5 spent. A sixth semantic
+correction is NOT authorized. All affected editing/execution is paused; no
+re-slice/reset/workaround. No fmt/lint/strictcompile/generated/Deno/realguards/K
+gates occurred for final candidate. K0/13; all13 remain unrun. Three source-check
+passes do not accept tools or prove runtime/coverage/predicates. NE-C10/NE-C11
+source acceptance8ed remains intact; task/release source unchanged and clean.
+
+Authority for the pause is the installed project-management skill's
+guides/03-planning-top-down.md, “Issuing and executing an iteration”:
+“At the cap without convergence, surface the need for re-scoping or an explicit
+operator decision rather than silently issuing more work.” Actual named budgets
+were retained explicitly in this unit's governing plan and issued directives.
+
+Concrete Operator option: authorize ONE extra bounded correction6, restoring
+the ensure-positive-row function boundary without changing frozen13 controls,
+oracles/core or product source; then required native/fmt/lint/strictcompile,
+whole generated/predicate review, genuine zeroarg guards and exact13 gate plus
+independent fresh replay ONLY if prerequisites pass. Any unresolved substantive
+failure/real gap stops; this is no reset/unlimited extension. Alternatively stop
+this tooling attempt here. No extra correction or K is launched by this proposal.
+
+Process limits remain explicit: wrong baseline-directory copies were preserved
+and restored before check; malformed89c5 trailer message remains in history;
+actual role-dispatch intermediate was not captured before own-guard edit, though
+no checker consumed it. Current fd532 complete body is reproducible; this does
+not reconstruct the lost intermediate or establish blanket process compliance.
+
+## Earlier Stage A acceptance (unchanged)
+
 2026-11-07, CDC `/root/cdc` Sol6.1 High, independent of fresh LunaHigh author
 `/root/cdc/match_subject_cc`. BOTH NE-C10 and NE-C11 source repairs accepted on
 task8ed869f1ed24bf688ba91f71d8c539680136794e, not integrated into release5408.
