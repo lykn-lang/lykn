@@ -706,7 +706,7 @@ const macros = {
       }
       // Statement branch → IIFE
       return buildIfIIFE(test, consequent, alternate,
-        args.slice(1, 3).some(containsCurrentAwait));
+        [test, consequent, alternate].some(containsCurrentAwaitNode));
     }
     // Statement position: unchanged
     return {
@@ -733,18 +733,20 @@ const macros = {
         : { type: 'EmptyStatement' };
     }
     if (position === 'expression') {
-      const isAsync = args.some(containsCurrentAwait);
       const stmts = args.slice(0, -1).map(e => toStatement(compileExpr(e)));
       const value = compileExpr(args[args.length - 1], 'expression');
+      const isAsync = [...stmts, value].some(containsCurrentAwaitNode);
       const isStatement = value.type.endsWith('Statement') || value.type.endsWith('Declaration');
+      const tail = isAsync ? boxCurrentScopeReturns(value) : value;
       const last = isStatement
-        ? value
+        ? tail
         : {
           type: 'ReturnStatement',
           argument: isAsync
-            ? { type: 'ArrayExpression', elements: [value] }
+            ? { type: 'ArrayExpression', elements: [tail] }
             : value,
         };
+      const transformedStmts = isAsync ? stmts.map(boxCurrentScopeReturns) : stmts;
       const call = {
         type: 'CallExpression',
         callee: {
@@ -752,7 +754,9 @@ const macros = {
           params: [],
           body: {
             type: 'BlockStatement',
-            body: [...stmts, last],
+            body: isAsync
+              ? [...transformedStmts, last, boxedUndefinedReturn()]
+              : [...stmts, last],
           },
           expression: false,
           async: isAsync,
@@ -1678,7 +1682,7 @@ function buildIfIIFE(test, consequent, alternate, isAsync = false) {
     ? { type: 'ReturnStatement', argument: isAsync
       ? { type: 'ArrayExpression', elements: [node] }
       : node }
-    : toStatement(node);
+    : toStatement(isAsync ? boxCurrentScopeReturns(node) : node);
   const result = {
     type: 'CallExpression',
     callee: {
@@ -1691,7 +1695,7 @@ function buildIfIIFE(test, consequent, alternate, isAsync = false) {
           test,
           consequent: { type: 'BlockStatement', body: [wrapBranch(consequent)] },
           alternate: { type: 'BlockStatement', body: [wrapBranch(alternate)] },
-        }],
+        }, ...(isAsync ? [boxedUndefinedReturn()] : [])],
       },
       expression: false,
       async: isAsync,
@@ -1704,13 +1708,61 @@ function buildIfIIFE(test, consequent, alternate, isAsync = false) {
     : result;
 }
 
-function containsCurrentAwait(expr) {
-  if (!expr || expr.type !== 'list' || expr.values.length === 0) return false;
-  const head = expr.values[0];
-  const name = head.type === 'atom' && head.binding === undefined ? head.value : null;
-  if (['function', 'function*', 'lambda', '=>', 'async'].includes(name)) return false;
-  if (name === 'await' || name === 'for-await-of') return true;
-  return expr.values.some(containsCurrentAwait);
+function containsCurrentAwaitNode(node) {
+  if (!node || typeof node !== 'object') return false;
+  if (node.type === 'AwaitExpression') return true;
+  if (node.type === 'ForOfStatement' && node.await) return true;
+  if (['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression'].includes(node.type)) {
+    return false;
+  }
+  if (node.type === 'ClassDeclaration' || node.type === 'ClassExpression') {
+    return containsCurrentAwaitNode(node.superClass) ||
+      node.body.body.some(member => containsCurrentAwaitNode(member));
+  }
+  if (node.type === 'MethodDefinition') {
+    return node.computed && containsCurrentAwaitNode(node.key);
+  }
+  if (node.type === 'PropertyDefinition') {
+    return (node.computed && containsCurrentAwaitNode(node.key)) ||
+      (node.static && containsCurrentAwaitNode(node.value));
+  }
+  if (node.type === 'StaticBlock') {
+    return node.body.some(statement => containsCurrentAwaitNode(statement));
+  }
+  return Object.values(node).some(value => Array.isArray(value)
+    ? value.some(child => containsCurrentAwaitNode(child))
+    : containsCurrentAwaitNode(value));
+}
+
+function boxedUndefinedReturn() {
+  return {
+    type: 'ReturnStatement',
+    argument: {
+      type: 'ArrayExpression',
+      elements: [{ type: 'Identifier', name: 'undefined' }],
+    },
+  };
+}
+
+function boxCurrentScopeReturns(node) {
+  if (!node || typeof node !== 'object') return node;
+  if (['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression',
+    'ClassDeclaration', 'ClassExpression'].includes(node.type)) return node;
+  if (node.type === 'ReturnStatement') {
+    return {
+      ...node,
+      argument: {
+        type: 'ArrayExpression',
+        elements: [node.argument || { type: 'Identifier', name: 'undefined' }],
+      },
+    };
+  }
+  return Object.fromEntries(Object.entries(node).map(([key, value]) => [key,
+    Array.isArray(value)
+      ? value.map(child => boxCurrentScopeReturns(child))
+      : value && typeof value === 'object'
+        ? boxCurrentScopeReturns(value)
+        : value]));
 }
 
 function unboxAwaitedValue(awaitedBox) {
