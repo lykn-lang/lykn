@@ -1,5 +1,11 @@
 # S02 checked emission ledger
 
+2026-11-07 latest: maintenance S01 accepted as faithful c129 baseline, not product
+green. All CE rows stay deferred. Its MH-P01 package bound-dissoc ReferenceError
+is explicitly CE-03's existing resolver/fatal-fallback obligation; accepted review
+and same source/oracle must be consumed on explicit S02 continuation. Correction01
+spent (1/5), initial232/older tooling8 preserved. No implementation resumed.
+
 2026-11-07 newest: Operator opened linked Arc02 S01 maintenance correction01
 execution only; CE rows remain deferred and S02 Result code held. The shared
 allowance/history carries across; explicit continuation follows accepted baseline.

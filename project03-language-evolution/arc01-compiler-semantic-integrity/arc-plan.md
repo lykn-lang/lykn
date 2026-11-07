@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Maintenance baseline accepted, S02 product work still gated — 2026-11-07
+
+Arc02 S01 independently accepts corrected c129 harness/baseline with test101 and
+runtime3/4matches. MH-P01 package unresolved bound-dissoc/raw obj failure is now
+an actual witness for existing S02 CE-03 resolver/fatal-fallback work, not a new
+automatic compiler repair. CI-02 stays open/CE deferred until explicit continuation.
+Shared correction01 spent; original histories, tooling8/K0 and release8f unchanged.
+
 ## Maintenance first slice opened; Result work paused — 2026-11-07
 
 Operator authorized Arc02 S01's bounded local test/baseline correction01 only.

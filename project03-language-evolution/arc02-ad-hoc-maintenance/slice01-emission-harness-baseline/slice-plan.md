@@ -2,13 +2,26 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice01-emission-harness-baseline
-status: in-progress
+status: closed
 planned-release: unassigned
 depends-on: []
 related: [arc01-compiler-semantic-integrity/slice02-checked-emission-results]
 ---
 
 # Local emission harness and old-compiler baseline
+
+## Final bounded acceptance — 2026-11-07
+
+All five MH rows independently done at final sourcec129e94 after exact fresh
+CDC replay. [Verification](cdc-verification.md): test101/3selected/1pass2fail,
+predicates10/10, four invalid false successes, all four valid runtimes observed
+with3matching and package bound-dissoc ReferenceError obj. The unpredicted product
+failure was correctly detected/stopped, not fixed or relabeled pass; MH-P01 is
+existing S02 resolution/fatal-fallback work. [Close](closing-report.md) and
+[retrospective](cdc-retrospective.md) retain original limitations and no-green claim.
+Correction01 spent (1/5), initial232 and tooling8/K0 unchanged. S02 still requires
+explicit continuation; no next unit/integration. Earlier assignment status below
+is historical: initial prompt returned, reviewed and accepted for this baseline.
 
 ## Current execution authority and author readiness — 2026-11-07
 
@@ -77,6 +90,9 @@ No implementation assignment is issued by this planning record. On execution app
 Accepted maintenance S01 provides a linked corrected test and independently reproduced baseline, not CI-02 closure. CDC updates both plans/ledgers and asks for explicit S02 continuation at its already-approved Result design; further source work remains held until then. Arc02 may retain unrelated future intake without blocking this return. No automatic next maintenance unit, source fix or integration.
 
 ## Version history
+
+- 2026-11-07 v0.3: Independent exact replay accepts all five MH baseline rows at
+  c129, retaining101/1pass2fail/runtime3of4 and MH-P01 S02 ownership; no source retry.
 
 - 2026-11-07 v0.2: Operator opened this maintenance correction01; completed
   source-ready prompt/receipt recipe and fixed commit messages before handoff.

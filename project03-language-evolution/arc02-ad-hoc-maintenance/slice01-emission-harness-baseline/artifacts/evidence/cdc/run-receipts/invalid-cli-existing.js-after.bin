@@ -1,0 +1,3 @@
+const objValue = { secret: 1 };
+const cleaned = dissoc(objValue, "secret");
+console.log(cleaned);

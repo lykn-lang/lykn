@@ -9,6 +9,24 @@ depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emis
 
 # Checked emission results
 
+## Accepted maintenance baseline; Result continuation still held — 2026-11-07
+
+[Arc02 S01](../../arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/cdc-verification.md)
+independently accepts the corrected test/baseline atc129e94, not product success:
+ten predicates pass, four invalid compile false successes, valid runtimes3/4.
+Newly observed **MH-P01**, package bound-dissoc emits nested `obj(...)` instead of
+an object literal and raises ReferenceError, is owned HERE by the already-planned
+package resolver adoption plus checked fatal raw-fallback contract (CE-03).
+The same valid source/oracle must remain; no keyword rewrite/workaround. Future
+S02 must restore the package ordinary bound-call runtime and all invalid-source
+rejection/file guarantees, then full normal source gates/independent review.
+
+The first unexpected product result stopped maintenance source work; no retry or
+production repair. Exact modules/trace/raw are linked in that accepted review.
+Shared refinement01 is now spent (1/5), initial232 retained; no reset/next unit.
+CE rows remain deferred/CI-02 open until actual S02 continuation/implementation.
+Operator continuation is still required, independent of future miscellany intake.
+
 ## Maintenance execution approved; S02 still held — 2026-11-07
 
 Operator opened the linked Arc02 S01 local harness/baseline correction01 only.

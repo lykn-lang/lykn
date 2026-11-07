@@ -9,6 +9,17 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Accepted finite maintenance baseline; product continuation held (2026-11-07)
+
+[Arc02 S01 verification](arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/cdc-verification.md)
+closes five MH rows at taskc129 for local harness/baseline only. Both runs101,
+1pass2fail; predicates10/10, four invalid false successes, runtime3/4matches.
+Unexpected package bound-dissoc/obj failure is MH-P01 in existing S02 resolution/
+fatal-fallback scope, with unchanged source/oracle. S02/CI-02 remain open and need
+explicit continuation; no source retry or production change. Miscellany intake
+is not an indefinite return prerequisite. Shared correction01 spent, history and
+all F/Project07/book/human/tooling duties unchanged; release8f unchanged.
+
 ## Current finite maintenance execution (2026-11-07)
 
 Operator opened [Arc02 S01](arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/slice-plan.md)
@@ -572,6 +583,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.38: Independently accepted finite Arc02 S01 c129 harness/baseline
+  with expected product reds and actual package MH-P01 failure; assigned existing
+  S02 obligation, kept continuation gated and shared correction01/history intact.
 
 - 2026-11-07 v1.37: Operator paused S02 and requested planning-only Arc02 ad hoc
   maintenance. Detailed one local harness/baseline slice with expected product

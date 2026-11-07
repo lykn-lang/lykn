@@ -1,4 +1,21 @@
-# S01 CC execution report — proposed return, independent review pending
+# S01 maintenance close — faithful baseline accepted
+
+2026-11-07 CDC independently accepts all five MH rows at final sourcec129e94,
+after exact source/generated/predicate review and fresh unfiltered replay. See
+[CDC verification](cdc-verification.md) and [retrospective](cdc-retrospective.md).
+No all-green product claim: both runs test101/3selected/1pass/2fail, predicates
+10/10, four invalid old-product false successes observed, valid runtimes3/4match.
+Package bound-dissoc fails with ReferenceError obj; MH-P01 is owned by existing
+S02 package-resolution/fatal-fallback scope. The first unexpected result stopped
+further source work; no oracle change/retry/variant or production repair.
+
+Shared correction01/5 spent, initial232/history and older tooling8/K0 intact.
+Task candidatec129 is clean; release/prior accepted8f and old task232 unchanged.
+S02 remains held for explicit continuation. This finite slice is closed, not the
+whole miscellaneous intake arc or CI-02. The original CC attestation below is
+preserved with its historical pending-review wording.
+
+## Retained CC execution report — proposed return at that time
 
 **Disposition:** source correction and one frozen baseline execution are reported for CDC review. This is not independent acceptance. The first unpredicted substantive result occurred in the package runtime control; execution stopped without a source/oracle change or retry. CDC owns the separate replay and final row dispositions. Arc01 S02 remains held pending acceptance and explicit Operator continuation.
 

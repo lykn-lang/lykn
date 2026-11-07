@@ -2,6 +2,13 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 final maintenance S01: five MH done after independent exact c129
+baseline replay, NOT all-green product (test101/1pass2fail, predicates10/10,
+runtime3/4). MH-P01 package bound-dissoc failure is existing S02 CE-03-owned;
+CI-02/CE remain open/deferred pending explicit continuation. Shared correction01
+spent, release8f/old refs and original F/Project07/tooling8/K0 unchanged. No next
+unit/integration/source repair follows; ad hoc intake remains separately gated.
+
 2026-11-07 latest: Operator opened Arc02 S01 local harness/baseline execution only,
 shared correction01/5 with first unexpected substantive-failure stop and expected
 old-product red retained. New MH/AM rows stay open pending proof, S02 held; no

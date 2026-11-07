@@ -9,6 +9,16 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+## First slice accepted; intake remains available — 2026-11-07
+
+S01 independently closes five MH rows atc129 as a trustworthy local harness and
+baseline, NOT all-green product. Both runs101/1pass2fail; predicates10/10; four
+invalid observations and runtime3/4matches. Unexpected package obj failure is
+concretely owned by existing S02 resolver/fatal-fallback scope. No source retry or
+production repair followed. AM-01/02 done; AM-03 remains open for explicit return
+disposition/intake composition. S02 continuation stays Operator-gated and does
+not depend on indefinite future miscellany. Correction01 spent, no reset.
+
 ## S01 execution authorized — 2026-11-07
 
 Operator “perfect, let's tackle that one now!” opens only the finite first
@@ -45,6 +55,10 @@ No investigation/repair/review slices split this first result by process stage. 
 All original F1–F12, Project07/library/book/guide/human/licensing and other compiler/type/doc owners remain unchanged. No compiler fix, helper/K/walker/corpus/F6 run or publication is part of this arc's current item.
 
 ## Version history
+
+- 2026-11-07 v0.3: First finite slice independently accepted as faithful c129
+  baseline, with product-red/unexpected package witness preserved and S02-owned;
+  no all-green claim or automatic return. Later intake/return composition open.
 
 - 2026-11-07 v0.2: Operator authorized finite S01 execution, inherited correction01,
   fresh Luna6 High CC/separate Sol6.1 High CDC; S02/later work still held.

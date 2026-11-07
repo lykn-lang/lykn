@@ -1,0 +1,20 @@
+Prospective independent exact baseline replay, 2026-11-07.
+Reviewer /root/cdc, gpt-6.1-sol High; CC returned source/planning/index/build ownership.
+Source cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Frozen source c129e94cc3c2d27a07c3bf26e4476bf740c04461, only local Rust test differs from232.
+Planning parent7b1169545c3ddc8249fc438a0c4e798cc258e034.
+Private owned fresh outputs /private/tmp/lykn-emission-cdc.ShU5Pc
+Explicit caches: XDG_CACHE_HOME=/private/tmp/lykn-emission-cdc.ShU5Pc/xdg; NPM_CONFIG_CACHE=/private/tmp/lykn-emission-cdc.ShU5Pc/npm; DENO_DIR=/Users/oubiwann/Library/Caches/deno.
+LYKN_TEST_DENO=/opt/homebrew/bin/deno; LYKN_EMISSION_EVIDENCE_DIR=/private/tmp/lykn-emission-cdc.ShU5Pc/run-receipts.
+No HOME/toolchain/target-dir override; focused Cargo --offline --locked, no full Make required or claimed green.
+
+First source/tool metadata and owned-file native formatting check captured before no-run build.
+Expected no-run exit0; capture full separate streams/status.
+Command: env XDG_CACHE_HOME=/private/tmp/lykn-emission-cdc.ShU5Pc/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-emission-cdc.ShU5Pc/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno cargo test --offline --locked -p lykn-cli --test emission_failures --no-run
+Then pin ACTUAL resulting debug CLI/test executable from no-run output. No intervening Cargo build before direct execution.
+Direct executable expected /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/emission_failures-ee1302ddd95a417d (must confirm from actual no-run output first).
+Direct command same explicit environment plus LYKN_EMISSION_EVIDENCE_DIR and absolute actual executable, --nocapture --test-threads=1, unfiltered.
+Expected faithful observed CC condition: test101,3selected/1pass/2fail/0ignored/0filtered; ten predicates match; four invalid compile outcomes violate future rejection/no-write; all four runtime controls observed,3match and package bound-dissoc1/ReferenceError obj fails unchanged oracle.
+Do not repair or run variants; this is exact independently repeated baseline, not product acceptance or a new case family.
+All raw stdout/stderr/exit and actual child receipts are retained; missing-invalid-file receipt retains existence only, not module bytes.
+Review complete generated valid modules/sidecar records and real mtime/sentinel observations, source/pin/diff, then stop execution. S02 remains held.

@@ -1,0 +1,14 @@
+
+running 3 tests
+test checked_emission_failure_blocks_cli_and_dist_outputs ... FAILED
+test runtime_predicates_reject_independent_control_mutations ... ok
+test valid_runtime_exceptions_and_resolved_dissoc_remain_ordinary_programs ... FAILED
+
+failures:
+
+failures:
+    checked_emission_failure_blocks_cli_and_dist_outputs
+    valid_runtime_exceptions_and_resolved_dissoc_remain_ordinary_programs
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+

@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 current: Arc02 S01's independently accepted c129 harness/baseline
+retains product-red101 and runtime3/4. Actual MH-P01 package resolution/rawfallback
+failure belongs to existing CI-02/S02 CE-03; no code acceptance/continuation from
+maintenance. CI-02 open, CE deferred, shared correction01 spent, release8f intact.
+
 2026-11-07 latest: Operator paused S02 for planning-only
 [Arc02 S01 local harness/baseline](../arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/slice-plan.md).
 CI-02 remains open; acceptance of that bounded slice and explicit continuation
