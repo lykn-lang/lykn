@@ -51,6 +51,10 @@ fn assert_cli_rejects(source_name: &str, source: &str, predicate: &str) {
         compile_stderr.contains(predicate),
         "compile missed {predicate:?}: {compile_stderr}"
     );
+    assert!(
+        !temp.path().join("rejected.js").exists(),
+        "compile wrote rejected output for {source_name}"
+    );
 
     eprintln!(
         "ASYNC_EXPORT_REJECTED name={source_name} predicate={predicate:?} check_exit={:?} check_stderr={check_stderr:?} compile_exit={:?} compile_stderr={compile_stderr:?}",
@@ -115,13 +119,45 @@ fn async_named_export_checks_compiles_and_imports_with_await() {
             .arg("-o")
             .arg(&module_js),
     );
+    let module_generated_bytes = std::fs::read(&module_js).unwrap_or_default();
+    eprintln!("ASYNC_EXPORT_MODULE_FILE_JS_BYTES {module_generated_bytes:?}");
+    let module_dts_path = module_js.with_extension("d.ts");
+    let module_dts_bytes = std::fs::read(&module_dts_path).ok();
+    eprintln!("ASYNC_EXPORT_MODULE_DTS {module_dts_bytes:?}");
     assert!(
         module_compile.status.success(),
         "module strict compile failed: stdout={} stderr={}",
         String::from_utf8_lossy(&module_compile.stdout),
         String::from_utf8_lossy(&module_compile.stderr)
     );
-    let module_generated = std::fs::read_to_string(&module_js).expect("read generated module");
+    let module_generated =
+        String::from_utf8(module_generated_bytes).expect("generated module is UTF-8");
+    let module_stdout_compile = execute(
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .arg("compile")
+            .arg(&module_source),
+    );
+    let module_stdout = String::from_utf8_lossy(&module_stdout_compile.stdout);
+    eprintln!(
+        "ASYNC_EXPORT_MODULE_STDOUT exit={:?} stdout={module_stdout:?} stderr={:?}",
+        module_stdout_compile.status.code(),
+        String::from_utf8_lossy(&module_stdout_compile.stderr),
+    );
+    assert!(
+        module_stdout_compile.status.success(),
+        "module stdout compile failed: stdout={module_stdout:?} stderr={}",
+        String::from_utf8_lossy(&module_stdout_compile.stderr)
+    );
+    assert!(
+        module_stdout_compile.stderr.is_empty(),
+        "module stdout compile wrote stderr: {}",
+        String::from_utf8_lossy(&module_stdout_compile.stderr)
+    );
+    assert_eq!(
+        module_stdout_compile.stdout,
+        std::fs::read(&module_js).expect("read module JS bytes")
+    );
     assert!(
         module_generated.contains("export"),
         "generated module has no export:\n{module_generated}"
@@ -140,6 +176,11 @@ fn async_named_export_checks_compiles_and_imports_with_await() {
             .arg("-o")
             .arg(&consumer_js),
     );
+    let consumer_generated_bytes = std::fs::read(&consumer_js).unwrap_or_default();
+    eprintln!("ASYNC_EXPORT_CONSUMER_FILE_JS_BYTES {consumer_generated_bytes:?}");
+    let consumer_dts_path = consumer_js.with_extension("d.ts");
+    let consumer_dts_bytes = std::fs::read(&consumer_dts_path).ok();
+    eprintln!("ASYNC_EXPORT_CONSUMER_DTS {consumer_dts_bytes:?}");
     assert!(
         consumer_compile.status.success(),
         "consumer strict compile failed: stdout={} stderr={}",
@@ -147,9 +188,9 @@ fn async_named_export_checks_compiles_and_imports_with_await() {
         String::from_utf8_lossy(&consumer_compile.stderr)
     );
     let consumer_generated =
-        std::fs::read_to_string(&consumer_js).expect("read generated consumer");
+        String::from_utf8(consumer_generated_bytes).expect("generated consumer is UTF-8");
     let runtime = execute(
-        Command::new("deno")
+        Command::new(std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into()))
             .current_dir(temp.path())
             .args([
                 "run",

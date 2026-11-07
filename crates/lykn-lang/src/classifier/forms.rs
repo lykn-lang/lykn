@@ -204,6 +204,21 @@ fn top_level_binding_sites(form: &SExpr) -> Vec<crate::binding::BindingSite> {
     {
         sites.extend(bindings_introduced(inner));
     }
+    if let SExpr::List { values, .. } = form
+        && values.first().and_then(|e| e.as_form_head()) == Some("async")
+        && values.len() == 2
+        && let Some(
+            inner @ SExpr::List {
+                values: function, ..
+            },
+        ) = values.get(1)
+        && matches!(
+            function.first().and_then(|e| e.as_form_head()),
+            Some("func" | "genfunc")
+        )
+    {
+        sites.extend(bindings_introduced(inner));
+    }
     sites
 }
 
@@ -6910,6 +6925,7 @@ mod tests {
             "(exports value)\n(async (func outer :args (:number value) :body value))",
             "(exports inner)\n(func outer :args () :body (async (func inner :args () :body 42)))",
             "(exports value)\n(async (bind value 42))",
+            "(exports fetch-value)\n(async (func fetch-value :args () :body 42) extra)",
             "(func async :args (:any value) :body value)\n(exports fetch-value)\n(async (func fetch-value :args () :body 42))",
         ] {
             let diags = resolved_export_diags(source);
