@@ -6873,6 +6873,53 @@ mod tests {
     }
 
     #[test]
+    fn test_no_else_if_expression_validation_tracks_match_clause_roles() {
+        for src in [
+            "(match value ((Box x) (if cond (console:log x)) 42) (_ 0))",
+            "(bind result (match value ((Box x) (if cond (console:log x)) 42) (_ 0)))",
+            "(match value ((Box x) (if cond (console:log x))))",
+            "(match value ((obj :value x) (if cond (console:log x)) 42) (_ 0))",
+            "(func f :args (:boolean cond) :returns :number :body (match value ((Box x) (if cond (console:log x)) 42) (_ 0)))",
+            "(bind f (fn (:boolean cond) (match value ((Box x) (if cond (console:log x)) 42) (_ 0))))",
+            "(bind x (do (match value ((Box x) (if cond (console:log x)) 42) (_ 0)) 7))",
+            "(bind x (if cond (match value ((Box x) (if cond (console:log x)) 42) (_ 0)) 7))",
+            "(func f :args (:boolean cond) :returns :void :body (match value ((Box x) (if cond (console:log x)))))",
+        ] {
+            assert!(no_else_if_errs(src).is_empty(), "valid statement/value roles rejected: {src}");
+        }
+    }
+
+    #[test]
+    fn test_no_else_if_expression_validation_rejects_match_values() {
+        let errors = [
+            "(bind result (match (if cond 1) (_ 0)))",
+            "(bind result (match value ((Box x) :when (if cond true) x) (_ 0)))",
+            "(bind result (match value ((Box x) (consume (if cond 1))) (_ 0)))",
+            "(bind result (match value ((Box x) (bind y (if cond 1)) y) (_ 0)))",
+            "(return (match value ((Box x) (return (if cond 1))) (_ 0)))",
+            "(bind result (match value ((Box x) (if cond (console:log x))) (_ 0)))",
+            "(bind result (do 0 (match value ((Box x) (if cond (console:log x))) (_ 0))))",
+            "(bind result (if cond (match value ((Box x) (if cond (console:log x))) (_ 0)) 0))",
+            "(func f :args (:boolean cond) :returns :number :body 0 (match value ((Box x) (if cond (console:log x))) (_ 0)))",
+            "(bind f (fn (:boolean cond) 0 (match value ((Box x) (if cond (console:log x))) (_ 0))))",
+        ];
+        for src in errors {
+            let diags = no_else_if_errs(src);
+            assert_eq!(diags.len(), 1, "expected one no-else diagnostic for {src}: {diags:?}");
+            assert!(diags[0].message.contains("if in expression position requires an else branch"), "unexpected diagnostic for {src}: {}", diags[0].message);
+        }
+    }
+
+    #[test]
+    fn test_no_else_if_expression_validation_keeps_match_grammar_owned_by_classifier() {
+        for src in ["(match value (_))", "(match value (when true 1))"] {
+            let forms = crate::reader::read(src).expect("reader accepts malformed match for classifier");
+            assert!(validate_no_else_if_expressions(&forms).is_empty());
+            assert!(classify_form(&forms[0]).is_err(), "classifier must own malformed match grammar: {src}");
+        }
+    }
+
+    #[test]
     fn test_exports_declaration_validation() {
         let forms = crate::reader::read("(func normalize record record)\n(exports normalize)")
             .expect("parse");
