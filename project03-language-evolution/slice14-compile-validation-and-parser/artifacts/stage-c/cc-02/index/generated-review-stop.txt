@@ -1,0 +1,7 @@
+C0 stop after complete generated-code review; Deno check and all parser observations remain unrun (0/4: K11, K01, K08, K09).
+
+Native source gates on the formatted committed copies: check exit0 (7/16/29 top-level expressions), fmt --check exit0, lint exit0 (3 files/no findings), strict compile exit0 for all 3 files. Compiler stderr warnings are preserved beside each compile receipt.
+
+Generated parser-core.js is not valid JavaScript: its line `return (() => {` introduces a non-async arrow, followed by `const parser = await import(parserUrl);`. The same branch does not return either version-mismatch or ready object from the inner conditional. This is a direct generated-code compiler gap; no Deno check was run after recognizing it, and no output was patched.
+
+Generated offline-observer.js also contains malformed JavaScript where expression-position conditional forms are emitted as `=== if (...) 2; else 3;` around body-count, range-end and end-line assertions. Generated modules are preserved byte-for-byte in this directory and under the ignored target/slice14/stage-c/cc-02/generated path. These defects stop dependent parser execution; no Acorn import or observation occurred.

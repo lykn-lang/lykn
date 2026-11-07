@@ -1,0 +1,112 @@
+--- /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice12-offline-walker-capability/artifacts/tooling/parser-probe.lykn	2026-11-06 16:52:02
++++ /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice14-compile-validation-and-parser/artifacts/stage-c/tooling/parser-probe.lykn	2026-11-06 19:37:34
+@@ -11,16 +11,16 @@
+     (Deno.exit 2)))
+ 
+ (bind control-id (get argv 0))
++
+ (bind expected-hash (get argv 1))
++
+ (bind input-path (get argv 2))
+ 
+ (bind parser-check (await (load-parser expected-hash)))
+ 
+ (if
+   (!= parser-check:status "ready")
+-  (do
+-    (console:log (JSON:stringify parser-check))
+-    (Deno.exit 2)))
++  (do (console:log (JSON:stringify parser-check)) (Deno.exit 2)))
+ 
+ (bind input-text (await (Deno:readTextFile input-path)))
+ 
+@@ -30,32 +30,49 @@
+   (reset!
+     parsed
+     (obj
+-      :status "parse_success"
+-      :controlId control-id
+-      :actualHash parser-check:actualHash
+-      :actualVersion parser-check:actualVersion
++      :status
++      "parse_success"
++      :controlId
++      control-id
++      :actualHash
++      parser-check:actualHash
++      :actualVersion
++      parser-check:actualVersion
+       :program
+       (parser-check:parser:parse
+         input-text
+         (obj
+-          :ecmaVersion "latest"
+-          :sourceType "module"
+-          :locations true
+-          :ranges true))))
++          :ecmaVersion
++          "latest"
++          :sourceType
++          "module"
++          :locations
++          true
++          :ranges
++          true))))
+   (catch
+     error
+     (reset!
+       parsed
+       (obj
+-        :status "parse_error"
+-        :controlId control-id
+-        :actualHash parser-check:actualHash
+-        :actualVersion parser-check:actualVersion
+-        :errorName error:name
+-        :message error:message
+-        :pos error:pos
+-        :line error:loc:line
+-        :column error:loc:column))))
++        :status
++        "parse_error"
++        :controlId
++        control-id
++        :actualHash
++        parser-check:actualHash
++        :actualVersion
++        parser-check:actualVersion
++        :errorName
++        error:name
++        :message
++        error:message
++        :pos
++        error:pos
++        :line
++        error:loc:line
++        :column
++        error:loc:column))))
+ 
+ (bind after-check (await (verify-parser parser-check:actualHash)))
+ 
+@@ -65,15 +82,17 @@
+     (console:log
+       (JSON:stringify
+         (obj
+-          :status "parser_artifact_changed_after_use"
+-          :beforeHash parser-check:actualHash
+-          :afterHash after-check:afterHash)))
++          :status
++          "parser_artifact_changed_after_use"
++          :beforeHash
++          parser-check:actualHash
++          :afterHash
++          after-check:afterHash)))
+     (Deno.exit 2)))
+ 
+ (bind parsed-result (express parsed))
+ 
+ (console:log
+-  (JSON:stringify
+-    (assoc parsed-result :afterHash after-check:afterHash)))
++  (JSON:stringify (assoc parsed-result :afterHash after-check:afterHash)))
+ 
+ (if (= parsed-result:status "parse_error") (Deno.exit 2))

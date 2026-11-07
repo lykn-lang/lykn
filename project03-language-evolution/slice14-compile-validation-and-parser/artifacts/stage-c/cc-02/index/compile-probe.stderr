@@ -1,0 +1,8 @@
+19:1: warning: unused binding 'parser-check'
+  suggestion: prefix with underscore: _parser-check
+25:1: warning: unused binding 'input-text'
+  suggestion: prefix with underscore: _input-text
+77:1: warning: unused binding 'after-check'
+  suggestion: prefix with underscore: _after-check
+13:1: warning: unused binding 'control-id'
+  suggestion: prefix with underscore: _control-id
