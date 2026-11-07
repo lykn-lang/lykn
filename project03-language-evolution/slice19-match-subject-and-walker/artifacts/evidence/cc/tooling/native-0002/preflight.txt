@@ -1,0 +1,18 @@
+Final correction5 source freeze preflight
+Planning branch HEAD: fd532d0
+Exact frozen source commit: fd532d0 (Complete Slice19 tooling correction 5)
+Planning worktree status after source commit: clean
+Captured role-dispatch intermediate before own-guard edit: no; only original walker source record preserved. Do not reconstruct intermediate chronology.
+Original walker source record: commit b828c2a1b2f4d408508e5697d9a458f7b20538e9, blob 20965b50ccd07f05b52a5506011219f592ac6330, SHA256 6976a853a9fea81bcf47e47d634fa5bcd568e9f3b72e6f36c4f58be2bd48d1c6.
+Frozen source SHA256 values:
+parser-core.lykn 6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7
+estree-walker.lykn 4950f73f819e5a05381c08171a7a6652c85993a9e76319e6eb57aeaa74153960
+scanner.lykn 120bf83aaa2ebae8a0619b00d86d9ca3cac95075703e9fe7a331358598488688
+capability-observer.lykn 98bbe28c288251748e9e73be4ceed1ec448c03b7509f99cb74696fc0cf1cb1a3
+Compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+Compiler version: 0.6.0
+Compiler SHA256: aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8
+Working directory for checks: /private/tmp/s19-native-cwd
+Exact native command family: absolute compiler path check absolute source path
+Controls source/tree/hash remain unchanged at 0f20dba4713b93671b337fa1ba0a5cde00fdbe29bed195a00e3ae1c689473a5d.
+No formatter, lint, compile, Deno, zero-argument guard, or K runtime has run in this correction cycle.
