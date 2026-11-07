@@ -1,0 +1,12 @@
+
+running 2 tests
+test consumed_match_tail_if_is_rejected_without_writing_outputs ... ok
+test match_clause_validation_preserves_context_and_runtime_behavior ... FAILED
+
+failures:
+
+failures:
+    match_clause_validation_preserves_context_and_runtime_behavior
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+

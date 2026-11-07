@@ -3,6 +3,11 @@
 Six rows open. CC proposed-done requires genuine independent CDC disposition.
 Tooling inherits3spent/tworemaining corrections inside outer five refinement bound.
 
+Current refinement2/5, candidate47 exact uncommitted body preserved. Units6/6/fmt0,
+CLI fails private-DTS test oracle before runtime; generator/keyword roles require
+correction. Suppressed archival cp/stray stdout/inaccurate initial no-file claim
+retained. Fresh CC, no budget reset, no source/tool acceptance. All rows open.
+
 Source refinement1/5 active. Actual test-only0117102 red retained; wrong grammar
 oracle corrected3175 before numbered handoff under premature informal CDC message.
 Guardtrue/literal-positive correction follows preserved iteration01, expected

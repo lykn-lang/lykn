@@ -1,0 +1,17 @@
+Source refinement1 corrected fixture freeze, before the corrected baseline run.
+Task branch: codex/match-validation-context; production baseline remains 5408abd432b8789ae474a3895436f68818c4e482.
+The malformed-clause oracle from 3175e4f is retained unchanged.
+
+Test-only changes since freeze-0002:
+  - add a literal string pattern with a no-else statement-if prefix and scalar tail;
+  - add a binding pattern with the same prefix/tail shape;
+  - change the CLI positive's guarded Box arm from `:when should-run` to `:when true`.
+The fixed runtime oracle remains exactly:
+  [[42,["prefix","tail","statement"]],[42,["tail"]],[0,["fallback"]]]\n
+Complete forms.rs SHA256: 4ad812b4b716f6b29bf513c86946e80fe5c9e2faf82977ce800d2b87b2af142c (250550 bytes)
+Complete CLI test SHA256: c354a348c8eddda3cd663e140c22facdb270b755d02770c2d6a7a496eb5e349f (6797 bytes)
+
+Corrected unchanged-production red argv, to be run only after this freeze is committed:
+  cargo test --offline --locked -p lykn-lang no_else_if_expression_validation -- --nocapture
+  cargo test --offline --locked -p lykn-cli --test match_clause_validation -- --nocapture
+Expected: unit accepted-role case remains red; other unit negatives pass. CLI check/stdout/file report the expected no-else context errors; runtime remains unreached on baseline. Every source body and output from 0117102, 3175e4f and earlier runs remains separately preserved.

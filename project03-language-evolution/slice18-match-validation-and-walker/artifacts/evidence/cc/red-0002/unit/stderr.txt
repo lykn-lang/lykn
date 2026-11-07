@@ -1,0 +1,8 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.99s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+thread 'classifier::forms::tests::test_no_else_if_expression_validation_tracks_match_clause_roles' (95816621) panicked at crates/lykn-lang/src/classifier/forms.rs:6890:13:
+valid statement/value roles rejected: (match value ((Box x) (if cond (console:log x)) 42) (_ 0))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-lang --lib`

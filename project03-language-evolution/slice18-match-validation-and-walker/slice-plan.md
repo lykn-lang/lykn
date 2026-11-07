@@ -1,5 +1,15 @@
 # Slice18 — match validation repair and unchanged walker re-entry
 
+Current assignment iteration02,2026-11-07, outer refinement2/5, fresh LunaHigh CC
+because recurring fixture/capture errors; prior CC relinquished all writes. Tooling
+3spent/tworemaining unchanged. Uncommitted candidate47c516 full body preserved,
+not HEAD68b production: units6/6/fmt0, CLI private-DTS oracle fails before runtime.
+Consolidated review requires generator metadata/body policies, keyword literal
+tail preservation and exact source-backed type sidecar oracle. No full source
+acceptance/tool edit/K runtime. Suppressed archival cp created stray stdout;
+SHA390b2f… bytes preserved/relocated, initial no-file claim corrected and violation
+retained in iteration02. Earlier active entries below are historical.
+
 Raw-log whitespace exception: prep23197ab's staged diff check reported trailing
 blank lines at EOF in the three verbatim Rust stdout receipts, then the multiline
 shell continued to commit. Do not claim that aggregate check passed. Raw bytes
@@ -175,3 +185,4 @@ review/retro/parent/backlog with done/deferred/unrun truth at endpoint only.
 | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-07 | Explicit NE-C10 repair, independently gated before old tooling | Initial Stage A assignment; no tooling mutation/runtime yet |
 | cc-prompt-iteration01.md | 2026-11-07 | Retain wrong grammar/guard fixtures, restore intended conditions, real literal clause positive | Current source refinement1/5; old tooling allowance unchanged |
+| cc-prompt-iteration02.md | 2026-11-07 | Preserve generator/keyword roles, precise DTS oracle, fresh CC | Current refinement2/5; source acceptance held |

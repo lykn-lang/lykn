@@ -1,0 +1,25 @@
+Corrected frozen tests commit: 68b0b3a891fa1b37540fa858cda6d55cdc465be0
+Production under test: unchanged classifier/forms.rs from source baseline 5408abd432b8789ae474a3895436f68818c4e482.
+Branch: codex/match-validation-context
+Working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Rust: rustc 1.97.0 (2d8144b78 2026-07-07); Cargo 1.97.0 (c980f4866 2026-06-30)
+Environment:
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  DENO_NO_UPDATE_CHECK=1
+  NO_COLOR=1
+  LYKN_TEST_DENO=/opt/homebrew/bin/deno
+  npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice18/cc/npm-cache
+  XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice18/cc/xdg-cache
+
+Unit argv: cargo test --offline --locked -p lykn-lang no_else_if_expression_validation -- --nocapture
+  exit=101; 5/6 filtered tests pass; the one valid-role test fails at its first literal match witness, expected NE-C10.
+  stdout SHA256=c350c0a6e8aca20938658225e78655c2b0159adc5dda5c18d5458332e9fe8e62
+  stderr SHA256=25555f8df53eb96eadcc1dddbd6a5092aedc55f000f4a3973673ccefd00f4a9c
+CLI argv: cargo test --offline --locked -p lykn-cli --test match_clause_validation -- --nocapture
+  exit=101; the negative test passes check/stdout/file routes and confirms no JS/DTS writes. The positive test reaches strict check/stdout/file compilation, all three reject the two intended no-else locations. Deno runtime was not launched.
+  stdout SHA256=b1abac552432e542c31d8b4530e6a1f39eab884f226cacda1ae8f18ede8cf456
+  stderr SHA256=45901be8306d91f96fabfb3e1613967351dfaf0cf1911d5d8a85542f31b41ab2
+
+Complete corrected test sources and unchanged fixture oracle are frozen in
+`freeze-0003/`. All first-attempt and premature-correction bodies/raw remain in
+their original files; no raw receipt has been rewritten.
