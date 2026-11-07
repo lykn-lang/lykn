@@ -170,7 +170,7 @@
         (ensure (= row:bare_imports 0) (template id " unexpected bare imports"))))
     (for-of reason row:reasons
       (ensure (= reason:potential_load_evaluation true) (template id " reason must be potential"))
-      (ensure (= reason:observed_effect null) (template id " reason must not claim observed effect"))))
+      (ensure (= reason:observed_effect null) (template id " reason must not claim observed effect")))))
 
 (func
   ensure-parent
