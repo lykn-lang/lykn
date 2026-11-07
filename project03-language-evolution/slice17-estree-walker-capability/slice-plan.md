@@ -1,5 +1,13 @@
 # Slice17 — Lykn ESTree walker and bounded capability gate
 
+2026-11-07 sequencing amendment: iteration03 permits a partial correction1 freeze
+of all actual bodies (observer unfinished/nonruntime-ready), then only existing
+pinned native checks of stable walker/scanner. Complete final freeze and every
+observer/generated/runtime gate remain required; no new pass or scope. Core
+native-0001 stderr is success information, not a warning. Correction1's missing
+intermediate source capture remains a process nonconformance; no checker/runtime
+consumed it. See preserved iteration03 for exact sequence and limitation.
+
 Opened2026-11-07; open collapsed standalone increment, same established Project03
 layout. Operator: “Awesome! Let's implement the Lykn ESTree walker and run the
 bounded K01–K12 capability gate. Same models, Autonomous Mode, and stop if we hit

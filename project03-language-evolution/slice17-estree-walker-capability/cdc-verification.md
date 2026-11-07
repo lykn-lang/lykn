@@ -1,5 +1,16 @@
 # Slice17 independent review — revision required
 
+## Receipt and sequencing correction,2026-11-07
+
+Native-0001 core stderr is normal success information `(7 top-level expressions)`,
+not a warning; the original misdescription below is preserved and superseded here.
+Correction1 has a missing intermediate snapshot between scanner patches. Actual
+b312 and later full bodies are retained, but the missing body's exact identity is
+unknown; no check/runtime consumed it. This is a process nonconformance, not full
+capture compliance or a compiler gap. Iteration03 permits only partial-freeze
+native feedback while observer remains unfinished; all six EW rows remain open,
+capability runtime0/13, no acceptance follows from that sequencing change.
+
 ## Initial source review,2026-11-07
 
 CDC /root/cdc Sol6.1 High reviewed frozen CC b312cf36b58cda0af061018caae5d71d4b553277,
