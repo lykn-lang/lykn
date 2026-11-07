@@ -265,6 +265,8 @@ fn checked_emission_failure_blocks_cli_and_dist_outputs() {
     let dts_sentinel = b"existing declarations sentinel\n";
     fs::write(&output, js_sentinel).expect("write JS sentinel");
     fs::write(&declaration, dts_sentinel).expect("write DTS sentinel");
+    save_receipt("invalid-cli-existing", "js-before.bin", js_sentinel);
+    save_receipt("invalid-cli-existing", "dts-before.bin", dts_sentinel);
     let file = execute_recorded(
         "invalid-cli-existing",
         cli()
@@ -339,6 +341,8 @@ fn checked_emission_failure_blocks_cli_and_dist_outputs() {
     let dts_sentinel = b"existing package declarations\n";
     fs::write(&build_js, js_sentinel).expect("write package JS sentinel");
     fs::write(&build_dts, dts_sentinel).expect("write package DTS sentinel");
+    save_receipt("invalid-package-existing", "js-before.bin", js_sentinel);
+    save_receipt("invalid-package-existing", "dts-before.bin", dts_sentinel);
     fs::File::open(&build_js)
         .and_then(|file| file.set_modified(UNIX_EPOCH))
         .expect("make JS sentinel stale");
@@ -366,10 +370,19 @@ fn checked_emission_failure_blocks_cli_and_dist_outputs() {
     let build_result = build_project(dist_fixture.path());
     let actual_js = fs::read(&build_js).ok();
     let actual_dts = fs::read(&build_dts).ok();
+    let js_mtime_after = fs::metadata(&build_js)
+        .and_then(|metadata| metadata.modified())
+        .ok();
+    let dts_mtime_after = fs::metadata(&build_dts)
+        .and_then(|metadata| metadata.modified())
+        .ok();
+    let short_name_ok = build_result
+        .as_ref()
+        .is_ok_and(|built| built.iter().any(|pkg| pkg.short_name == "emission"));
     save_receipt(
         "invalid-package-existing",
         "build-result.txt",
-        format!("{build_result:?}\n").as_bytes(),
+        format!("{build_result:?}\nshort_name_emission={short_name_ok}\n").as_bytes(),
     );
     save_receipt(
         "invalid-package-existing",
@@ -380,6 +393,11 @@ fn checked_emission_failure_blocks_cli_and_dist_outputs() {
         "invalid-package-existing",
         "dts-after.bin",
         actual_dts.as_deref().unwrap_or_default(),
+    );
+    save_receipt(
+        "invalid-package-existing",
+        "mtimes-after.txt",
+        format!("js={js_mtime_after:?}\ndts={dts_mtime_after:?}\n").as_bytes(),
     );
     eprintln!(
         "INVALID route=package-existing source_mtime={source_mtime:?} js_mtime={js_mtime:?} dts_mtime={dts_mtime:?} result={build_result:?} js={actual_js:?} dts={actual_dts:?}"
@@ -392,6 +410,9 @@ fn checked_emission_failure_blocks_cli_and_dist_outputs() {
         || actual_dts.as_deref() != Some(dts_sentinel)
     {
         failures.push("package build succeeded or changed existing outputs".to_string());
+    }
+    if build_result.is_ok() && !short_name_ok {
+        failures.push("successful package build did not report short_name emission".to_string());
     }
 
     assert!(
