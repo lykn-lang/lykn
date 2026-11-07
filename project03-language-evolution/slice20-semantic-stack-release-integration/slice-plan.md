@@ -1,5 +1,13 @@
 # Slice20 — local integration of the accepted semantic-context stack
 
+**Final2026-11-07: independently closed, all five RI rows done.** Release/0.6.x
+is exactly8f5d199/tree8b1a05ff via the authorized normal FF, fresh CC/CDC normal
+release gates and native5+2/direct740/Cfor proof pass. [Verification](cdc-verification.md)
+and [retrospective](cdc-retrospective.md) preserve chronology limits. The separate
+Operator discussion resolved Result-family APIs/no legacy shim for0.6 breaking
+development; conditional advance is now S02's engineered open-set, not a second
+merge or automatic public removals/architecture rewrite. Source/K budgets intact.
+
 Opened2026-11-07 after explicit Operator request: “fast-forward release/0.6.x
 to8f5d199, then validate the release build and independently review it. Same
 Luna6 High CC and Sol6.1 High CDC, Autonomous Mode, and stop on any substantive

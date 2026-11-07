@@ -1,5 +1,17 @@
 # Compiler integrity design and finding reconciliation
 
+## Subsequent approved decision and current baseline — 2026-11-07
+
+Operator approved the incremental direction, S01 delivered NE-C12, and Slice20
+independently integrated accepted source8f5d199 into release/0.6.x. Operator then
+clarified the0.5→0.6 breaking development boundary and explicitly chose
+**Result-family compiler APIs without a legacy shim merely for compatibility**.
+This supersedes the earlier unresolved compatibility choice in the original
+planning comparison below, not its source/evidence history. S02 must cover actual
+public emit/emit_json/emit_form and context error lifecycle, preserve infallible
+primitive/runtime AST builders and actual parsed-source diagnostics. No broad
+public removal, runtime-error change or recursive typed-AST rewrite is approved.
+
 Proposed 2026-11-07 by `/root/cdc` (Sol 6.1 High). This is a planning design,
 not an implementation, experiment, architecture approval or software acceptance.
 Read with the [arc roadmap](../arc-plan.md) and [open ledger](../ledger.md).

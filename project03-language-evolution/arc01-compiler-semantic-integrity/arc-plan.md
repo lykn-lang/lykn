@@ -9,6 +9,22 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Current release baseline and Result decision — 2026-11-07
+
+Standalone [Slice20](../slice20-semantic-stack-release-integration/cdc-verification.md)
+independently integrated exact accepted8f5d199/tree8b1a05ff into release/0.6.x by
+normal FF, full fresh release proof green. Earlier task-only/release5408 statements
+below are historical baselines. The Operator clarified0.5→0.6 is a breaking
+development release and explicitly approved Result-family compiler APIs, no
+legacy shim merely for stability. S02 may now proceed after its engineered
+open set; public form/context disposition and source validity/failure semantics
+remain explicit design obligations, not arbitrary removal or A6 rewrite. Eight
+spent tooling passes/K0/13 and S03–08/adjacent/human gates remain unchanged.
+
+The old compatibility alternatives/decision questions below retain their planning
+history; this selection resolves that particular gate. Publication and later
+source propagation/integration still require their own authority.
+
 ## Current S01 execution authority — 2026-11-07
 
 S01 is now independently closed: task8f5d199 delivers NE-C12 with five VF rows
@@ -185,6 +201,10 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.5: Slice20 independently accepts release8f integration. Recorded
+  explicit Result-family/no-legacy-shim choice for0.6 development and conditional
+  S02 implementation after source-ready design; no unrelated public removals.
 
 - 2026-11-07 v0.4: Independently accepted S01 task8f5d199/CI-01, preserving
   stopped tests/correction01 and evidence limits. No arc restructuring or next

@@ -1,0 +1,10 @@
+
+running 5 tests
+test consumed_match_tail_if_is_rejected_without_writing_outputs ... ok
+test genfn_yields_header_keeps_statement_body_policy ... ok
+test match_clause_validation_preserves_context_and_runtime_behavior ... ok
+test ordinary_fn_body_yields_keyword_does_not_hide_no_else_if ... ok
+test ordinary_lambda_body_yields_keyword_does_not_hide_no_else_if ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+

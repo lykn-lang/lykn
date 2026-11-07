@@ -2,6 +2,13 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Final2026-11-07 [Slice20 integration](slice20-semantic-stack-release-integration/cdc-verification.md)
+independently accepts release8f/exact7paths/11commitFF, five RI rows done. Fresh
+normalfullMake/native5+2/direct740+Cfor/cites pass; prior capture limits retained.
+Result-family/no legacy shim explicitly selected for0.6 breaking development;
+S02 source-ready advance authorized, no source/API removal inferred beyond that
+engineered unit. P-1/F1–F12/Project07/tooling8spent/K0/13 unchanged.
+
 2026-11-07 Operator opened [Slice20](slice20-semantic-stack-release-integration/slice-plan.md)
 exact local FF5408→8f5d199/release validation/independent review, five RI rows open.
 After green close, S02 readiness may proceed but its API compatibility choice is

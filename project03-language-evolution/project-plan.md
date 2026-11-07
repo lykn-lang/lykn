@@ -17,6 +17,17 @@ BACKLOG.md says so.
 
 ## Current local integration and conditional next readiness (2026-11-07)
 
+Slice20 independently closed at release8f5d199/tree8b1a05ff, all five RI rows
+done with fresh release full/focused/directproof/citations. The exact authorized
+FF was the merge; no second merge or external action. [Final verification](slice20-semantic-stack-release-integration/cdc-verification.md)
+preserves capture limits. Operator clarified0.5→0.6 breaking development and
+explicitly chose Result-family APIs/no legacy shim; this resolves the compatibility
+gate without approving arbitrary public removals/A6 rewrite. Conditional advance
+is Arc01 S02's source-ready plan/prompt, then authorized scoped implementation.
+All original tool/K budgets, F rows, Project07/book/human duties remain.
+
+### Retained integration authorization
+
 Operator explicitly authorized [Slice20](slice20-semantic-stack-release-integration/slice-plan.md)
 exact release/0.6.x FF5408→accepted8f5d199, fresh release gates and independent
 review, same Luna6 High CC/Sol6.1 High CDC Autonomous Mode, stop any substantive
@@ -538,6 +549,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.36: Independently accepted Slice20 release8f integration/full
+  gates, five RI rows done; recorded explicit Result-family0.6 decision and
+  conditional S02 advance. Kept all prior limits and external-action boundaries.
 
 - 2026-11-07 v1.35: Opened explicit exact local FF/independent release integration
   as standaloneSlice20, conditional S02 readiness afterward and unresolved API

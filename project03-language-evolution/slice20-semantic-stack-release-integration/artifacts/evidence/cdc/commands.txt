@@ -1,0 +1,77 @@
+Independent release integration proof — /root/cdc Sol6.1 High, 2026-11-07
+
+Prelaunch actual release cwd /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x.
+HEAD8f5d1990df86405656729972485ae4d11feba808, tree8b1a05ff7ca8d6c9aedd82984be19d81a03894f2,
+clean. Whole-tree diff target8f vsHEAD0. Base5408->HEAD0/11; reflog explicitly
+records normal fast-forward. Exact7paths previously read, no product authorship.
+Actual rustc/cargo1.97.0 in release cwd. Current release/bin before independent
+Make SHA bd08444270bc27f10b146f855f92b49e24ac93274fdd6a3b6c4ce23706f879d2;
+not assumed post-build producer. Deno /opt/homebrew/bin/deno SHA
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74/version2.9.6.
+Selected ambient envquery CARGO_HOME/CARGO_TARGET_DIR/CARGO_NET_OFFLINE/DENO_DIR/
+RUSTUP_TOOLCHAIN/XDG_CACHE_HOME/npm_config_cache found none (exit1 for no rgmatches,
+not gate failure). Other ambient variables inherited/not exhaustively captured.
+
+Fresh owned mktemp root/private/tmp/lykn-s20-cdc.bfR4JW, npm-cache/xdg created.
+No CC overlap after explicit clean ownership return planning4686265.
+
+Prospective fullnormal unfiltered Make exact argv, release cwd:
+env npm_config_cache=/private/tmp/lykn-s20-cdc.bfR4JW/npm-cache XDG_CACHE_HOME=/private/tmp/lykn-s20-cdc.bfR4JW/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno make check
+Separate full-make.stdout/full-make.stderr created at launch; actual tool exit
+recorded on return. No filters/global Cargooverrides/installers/newdeps/bypass.
+Existing npm compatibility dry-run tests remain included; no publication.
+After Make, pin ALL actual release/bin/debug/test binaries before focus/runtime;
+no Cargo/build between final pins and subsequent direct operations.
+
+OBSERVED full Make session18922 exit0: allRustsuites0failed, lib1132,
+product1470plus11steps/0failed, docs482/0failed;15existingdocblocks skipped as
+normalharness, not introduced here. Sourceclean8f afterMake, canonical/embedded
+compiler.js and classifier.js each cmp0. Actual postMake pins (full source prefix
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/):
+target/release/lykn AND bin/lykn:bd08444270bc27f10b146f855f92b49e24ac93274fdd6a3b6c4ce23706f879d2
+target/debug/lykn:d2f9395c6dc9555bc4317ff47884407c90c762c7b71b1e872875d5196f5a80e5
+target/debug/deps/match_clause_validation-7d8f7aa58e91c201:aa69942d210dd5c2c9d902ac063bf968891daf0a2cc8fdf64ebaf6599afd6836
+target/debug/deps/variadic_for_bodies-dc06f81c033262f2:61493d37e96fe9727549f9e6959115a29b372827df21037eb6d8fce3bec27440
+Deno unchanged2ad84...; no build/Cargo after this finalpin.
+
+Prospective focused commands, release cwd, outputs match/cfor-focused.stdout/stderr:
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/match_clause_validation-7d8f7aa58e91c201 --nocapture --test-threads=1
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/variadic_for_bodies-dc06f81c033262f2 --nocapture --test-threads=1
+No filters; exact5+2existingtest populations.
+
+Prospective direct releaseproof: immutable740 source copied from Slice19
+artifacts/evidence/cdc/positive-0001/positive.lykn to owned
+/private/tmp/lykn-s20-cdc.bfR4JW/positive/positive.lykn,
+SHAceaaf162892e964a76f317558ad35cfcdf82bd6731fcebe0eabb21de2d953058.
+Current committed Cfor fixture copied to owned
+/private/tmp/lykn-s20-cdc.bfR4JW/cfor/cfor.lykn,
+SHA9b527840a0c179b64ebb392402679a5e32a3acced117db53722fe217c4efe2ff.
+Scoped ls project.json candidates at /,/private,/private/tmp, ownedroot, both
+childCWDs returned1/sixENOENT; no inherited nativeproject config.
+
+CLI absolute=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn
+Each respective own cwd, no explicit env overrides for nativeCLI:
+CLI check <absolute corresponding .lykn>
+CLI compile <same .lykn> -o <same cwd>/generated.js
+Raw positive-check/positive-compile/cfor-check/cfor-compile stdout/stderr fromlaunch.
+After full readableJS/DTS review, each respective own cwd:
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <same cwd>/generated.js
+Raw positive-runtime/cfor-runtime stdout/stderr. No extra grants/newfamily.
+
+Separate citation command in release cwd after these proofs:
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno make check-cited-paths
+Raw cited-paths.stdout/stderr. Actual exits/results appended after operations.
+
+OBSERVED: match-focused0/5passed/0filtered; Cfor-focused0/2passed/0filtered,
+all3 header negatives check/compile1/noJS. Direct740 check0/compile0, complete
+2097-byte JS/71-byte DTS read before Deno; JS6765b493fcf483b11fd7f975d5398e6ec2683768aa5d5831a3a14fa0f780b0a1,
+DTS0ce10d8a36d40fa340ede6fce895a51b8a3b6e6dfaf1d51a03b6fc6a20d6986f.
+Runtime0/exact [[42,["prefix","tail","statement"]],[42,["tail"]],[0,["fallback"]]] plusLF,
+stderr0bytes. Original740 sourceSHA remainsceaaf162... .
+Cfor check0/compile0, entire279-byte JS read; SHA1f64fc8a8faf147a611c7738501f22f0e089495d1bbbc16705459fe7e6ec3504.
+Runtime0/exact {"trace":[0,10,11,1,11,12]} plusLF/stderr0bytes; source9b527840...unchanged.
+Generated files copied into this evidence directory without normalization.
+Separate citations0/63documents/601historical. Every post-use hash matches the
+full pin above (release/binbd0844, debugd2f939, testaa699/61493, Deno2ad84).
+Sourceclean8f/tree8b1a; whole-tree diff0 and source7-path whitespacecheck0.
+No further Cargo, product edit, walker/helper/K execution or other integration.

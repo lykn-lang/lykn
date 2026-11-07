@@ -1,5 +1,14 @@
 # Slice20 CC closing report — release integration proposed
 
+**Subsequent CDC final disposition2026-11-07:** independently accepted exact
+release8f; all five RI rows done. Fresh normal gates/native/directproof and
+source review are in [cdc-verification.md](cdc-verification.md). The Operator
+separately resolved Result-family APIs/no legacy shim for the breaking0.6
+development boundary, so the implementer's earlier “choice pending” below is
+retained history, not the current decision. Conditional S02 advance requires its
+own source-ready open set; no second merge or unreviewed source change occurred.
+The [CDC retrospective](cdc-retrospective.md) accounts all chronology limits.
+
 **Assignment:** exact local fast-forward and release validation, Slice20 initial CC prompt. **Implementer:** fresh OpenAI Luna6 High CC. **Independent reviewer:** CDC `/root/cdc`, Sol6.1 High; review remains pending. This is a proposed close, not independent acceptance.
 
 ## Delivered state

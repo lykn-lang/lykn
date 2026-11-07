@@ -18,6 +18,12 @@
 
 ### Current engineering routing — 2026-11-07 (proposed; planning only)
 
+Latest: standaloneSlice20 independently integrated C10/11/C12 accepted stack into
+release/0.6.x8f5d199, normal FF/full fresh release gates. Source defects remain
+accepted; tool/K0/13/eight spent budget unchanged. Operator selected Result-family
+APIs/no legacy shim for0.6 breaking development; Arc01 S02 source-ready advance
+authorized, no broad public removals/AST rewrite/external delivery inferred.
+
 Subsequent Operator approval: incremental direction is approved and
 [Arc01 S01](arc01-compiler-semantic-integrity/slice01-variadic-for-context/slice-plan.md)
 is opened for NE-C12 numeric-for correctness, task-only focused/full independent
