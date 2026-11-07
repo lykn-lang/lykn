@@ -210,3 +210,15 @@ private source-role countercontrol, retains all five shared cases/oracles, and
 requires a committed final body before fresh gates. See preserved
 [correction3 prompt](cc-prompt-iteration02.md). Two corrections remain afterward;
 no parser re-entry before independent repair acceptance.
+
+## Frozen green review and correction4
+
+Source0fe6663c49f35608927832cfc7b8bf09cf50551d was frozen before genuine native5/5,
+public-JS5/5 and four private-unit greens. Correction03 retains its source/tool
+pins, meaningful class/carrier reds, weak initial class unit and WIP chronology.
+Full gates were held for the remaining native statement-role inconsistency:
+documented for-await-of was omitted from statement classification. Preserved
+[correction4](cc-prompt-iteration03.md) requires a private meaningful tail red,
+that bounded alignment and the original lowered-kernel detector callsites before
+fresh native/full gates. No shared fixture/oracle or JS body changes. One correction
+remains after4/5; no reset. Existing unchanged JS proof stays attributed to0fe.
