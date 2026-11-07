@@ -50,66 +50,11 @@ fn classifier_options_for(file_path: Option<&Path>) -> classifier::ClassifierOpt
 }
 
 fn validate_compile_forms(forms: &[lykn_lang::ast::sexpr::SExpr]) -> Result<(), CompileError> {
-    // DD-60 D2 (via DD-61 §A2's binding walker): reject JS reserved names in
-    // any binding position before codegen, including macro-introduced names.
-    let reserved = lykn_lang::binding::validate_reserved_names(forms);
-    if !reserved.is_empty() {
-        return Err(CompileError::Analysis(
-            reserved
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-
-    // DD-64 rejects method-call sugar on parenthesized expressions at any
-    // nesting depth; the supported form is threading or binding the receiver.
-    let method_errs = lykn_lang::classifier::validate_method_calls(forms);
-    if !method_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            method_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-
-    let fn_param_errs = lykn_lang::classifier::validate_nested_fn_params(forms);
-    if !fn_param_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            fn_param_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-
-    let no_else_if_errs = lykn_lang::classifier::validate_no_else_if_expressions(forms);
-    if !no_else_if_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            no_else_if_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-
-    let exports_errs = lykn_lang::classifier::validate_exports_declarations(forms);
-    if !exports_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            exports_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-
-    Ok(())
+    crate::validation::first_compile_validation_group(forms).map_or(Ok(()), |diagnostics| {
+        Err(CompileError::Analysis(
+            diagnostics.iter().map(|d| format!("{d}")).collect::<Vec<_>>().join("\n"),
+        ))
+    })
 }
 
 /// Compile a `.lykn` source file through the full pipeline.
@@ -299,7 +244,7 @@ fn compile_source_inner(
         &classified,
         &analysis_result.type_registry,
         strip_assertions,
-    );
+    )?;
 
     // 6. Output
     if kernel_json_only {
@@ -368,7 +313,7 @@ pub fn compile_source_with_dts(
         &classified,
         &analysis_result.type_registry,
         strip_assertions,
-    );
+    )?;
 
     let js = if kernel_json_only {
         emitter::json::emit_module_json(&kernel)

@@ -60,7 +60,7 @@ fn rust_pipeline(source: &str) -> String {
         }
     }
 
-    let kernel = emitter::emit(&forms, &registry, false);
+    let kernel = emitter::emit(&forms, &registry, false).unwrap();
     emitter::json::emit_module_json(&kernel)
 }
 

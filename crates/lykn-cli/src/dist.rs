@@ -35,6 +35,10 @@ pub enum DistError {
     /// No workspace members were found in project.json.
     #[error("no workspace members found in project.json")]
     EmptyWorkspace,
+
+    /// A path-scoped Lykn classification or lowering failure.
+    #[error("{}: {source}", path.display())]
+    Language { path: PathBuf, #[source] source: lykn_lang::error::LyknError },
 }
 
 // ---------------------------------------------------------------------------
@@ -209,13 +213,20 @@ fn compile_lykn_sources(
                     path: path.clone(),
                     source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
                 })?;
+            let resolved = lykn_lang::resolver::resolve(&expanded);
+            if let Some(diagnostics) = crate::validation::first_compile_validation_group(&resolved) {
+                return Err(DistError::Language {
+                    path: path.clone(),
+                    source: lykn_lang::error::LyknError::Classify(diagnostics[0].clone()),
+                });
+            }
             // DD-58 strict for `.lykn` surface packages; `.lyk` exempt.
             let is_lyk = path.extension().is_some_and(|e| e == "lyk");
             let classify_opts = lykn_lang::classifier::ClassifierOptions {
                 strict: !is_lyk,
                 kernel_only: false,
             };
-            let classified = lykn_lang::classifier::classify_with_options(&expanded, classify_opts)
+            let classified = lykn_lang::classifier::classify_with_options(&resolved, classify_opts)
                 .map_err(|diags| {
                     let msg = diags
                         .iter()
@@ -241,8 +252,8 @@ fn compile_lykn_sources(
                     source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
                 });
             }
-            let kernel =
-                lykn_lang::emitter::emit(&classified, &analysis_result.type_registry, false);
+            let kernel = lykn_lang::emitter::emit(&classified, &analysis_result.type_registry, false)
+                .map_err(|source| DistError::Language { path: path.clone(), source })?;
             let js = lykn_lang::codegen::emit_module_js(&kernel).map_err(|e| DistError::Io {
                 path: js_path.clone(),
                 source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),

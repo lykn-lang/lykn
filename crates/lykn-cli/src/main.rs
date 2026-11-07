@@ -6,6 +6,7 @@ use std::path::{Path, PathBuf};
 use std::process::{self, Command};
 
 mod compile;
+mod validation;
 mod doctest;
 mod lint;
 

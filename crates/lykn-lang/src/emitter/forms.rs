@@ -6,12 +6,23 @@ use crate::ast::surface::{
     TypeAnnotation,
 };
 use crate::reader::source_loc::Span;
+use crate::diagnostics::{Diagnostic, Severity};
+use crate::error::LyknError;
 
 use super::context::{EmitterContext, ExprContext};
 use super::contracts::{
     emit_post_check_with_predicate, emit_pre_check_with_predicate, replace_tilde,
 };
 use super::type_checks::{emit_return_type_check, emit_type_check};
+
+fn codegen_error(message: impl Into<String>, span: Span) -> LyknError {
+    LyknError::Codegen(Diagnostic {
+        severity: Severity::Error,
+        message: message.into(),
+        span,
+        suggestion: None,
+    })
+}
 
 // ---------------------------------------------------------------------------
 // Kernel SExpr construction helpers
@@ -260,6 +271,25 @@ pub fn emit_form(
     form: &SurfaceForm,
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
+) -> Result<Vec<SExpr>, LyknError> {
+    let saved_context = ctx.expr_context;
+    let saved_class = ctx.in_class_body;
+    let result = emit_form_inner(form, ctx, registry);
+    let failure = ctx.first_fatal.take();
+    if failure.is_some() {
+        ctx.expr_context = saved_context;
+        ctx.in_class_body = saved_class;
+    }
+    match failure {
+        Some(error) => Err(error),
+        None => Ok(result),
+    }
+}
+
+fn emit_form_inner(
+    form: &SurfaceForm,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
 ) -> Vec<SExpr> {
     match form {
         SurfaceForm::Bind {
@@ -373,7 +403,7 @@ pub fn emit_form(
         SurfaceForm::Cond { clauses, .. } => vec![emit_cond(clauses, ctx, registry)],
         SurfaceForm::Async { inner, .. } => {
             // Emit the inner surface form to kernel, then wrap in (async ...)
-            let inner_kernel = emit_form(inner, ctx, registry);
+            let inner_kernel = emit_form_inner(inner, ctx, registry);
             inner_kernel
                 .into_iter()
                 .map(|k| list(vec![atom("async"), k]))
@@ -383,7 +413,7 @@ pub fn emit_form(
             inner, extra_args, ..
         } => {
             // Emit the inner surface form to kernel, then wrap in (export ...)
-            let inner_kernel = emit_form(inner, ctx, registry);
+            let inner_kernel = emit_form_inner(inner, ctx, registry);
             inner_kernel
                 .into_iter()
                 .map(|k| {
@@ -422,17 +452,8 @@ pub fn emit_form(
                 }
                 // assign outside class body — compile-time error
                 if name == "assign" {
-                    return vec![list(vec![
-                        atom("throw"),
-                        list(vec![
-                            atom("new"),
-                            atom("Error"),
-                            SExpr::String {
-                                value: "assign can only be used inside class bodies — use set! for property mutation".into(),
-                                span: *span,
-                            },
-                        ]),
-                    ])];
+                    ctx.record_fatal(codegen_error("assign can only be used inside class bodies — use set! for property mutation", *span));
+                    return vec![atom("undefined")];
                 }
             }
             vec![emit_function_call(head, args, ctx, registry)]
@@ -481,17 +502,8 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                         return list(vec![atom("="), target, value]);
                     }
                     // Outside class body — emit error marker
-                    return list(vec![
-                        atom("throw"),
-                        list(vec![
-                            atom("new"),
-                            atom("Error"),
-                            SExpr::String {
-                                value: "assign can only be used inside class bodies — use set! for property mutation".into(),
-                                span: *span,
-                            },
-                        ]),
-                    ]);
+                    ctx.record_fatal(codegen_error("assign can only be used inside class bodies — use set! for property mutation", *span));
+                    return atom("undefined");
                 }
                 if head_name == "switch" {
                     // Case lists are structural switch clauses, not computed
@@ -511,7 +523,7 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                     // expression-form AST regardless of the enclosing context.
                     match crate::classifier::classify_expr(expr) {
                         Ok(surface_form) => {
-                            let emitted = emit_form(&surface_form, ctx, registry);
+                            let emitted = emit_form_inner(&surface_form, ctx, registry);
                             if emitted.len() == 1 {
                                 emitted.into_iter().next().unwrap()
                             } else if emitted.is_empty() {
@@ -522,7 +534,10 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                                 list(items)
                             }
                         }
-                        Err(_) => expr.clone(),
+                        Err(error) => {
+                            ctx.record_fatal(LyknError::Classify(error));
+                            expr.clone()
+                        },
                     }
                 } else if head_name == "if"
                     && matches!(ctx.expr_context, ExprContext::Value | ExprContext::Tail)
@@ -652,7 +667,7 @@ fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) 
         if matches!(ctx.expr_context, ExprContext::Statement)
             && let Some(surface_form) = classify_statement_surface(expr)
         {
-            out.extend(emit_form(&surface_form, ctx, registry));
+            out.extend(emit_form_inner(&surface_form, ctx, registry));
             continue;
         }
         out.push(emit_expr(expr, ctx, registry));
@@ -749,27 +764,19 @@ fn emit_returns_mismatch_error(
     returns_type: &str,
     head_name: &str,
     span: Span,
+    ctx: &mut EmitterContext,
 ) -> SExpr {
-    list(vec![
-        atom("throw"),
-        list(vec![
-            atom("new"),
-            atom("TypeError"),
-            SExpr::String {
-                value: format!(
+    ctx.record_fatal(codegen_error(format!(
                     "COMPILE_ERROR: function `{func_name}` declared `:returns :{returns_type}` \
                      but body ends with `{head_name}` \
                      (a statement-only form which cannot produce a value). \
                      Either: (a) add a return-typed expression after the form, \
                      or (b) remove `:returns :{returns_type}` from the function declaration."
-                ),
-                span,
-            },
-        ]),
-    ])
+                ), span));
+    atom("undefined")
 }
 
-fn convert_to_expression(expr: SExpr) -> SExpr {
+fn convert_to_expression(expr: SExpr, ctx: &mut EmitterContext, origin: Span) -> SExpr {
     if let SExpr::List { values, span } = &expr
         && !values.is_empty()
         && values[0].as_atom() == Some("if")
@@ -779,24 +786,16 @@ fn convert_to_expression(expr: SExpr) -> SExpr {
 
         // DD-50 Rule 2: no else in expression position → compile error
         if args.len() < 3 {
-            return list(vec![
-                atom("throw"),
-                list(vec![
-                    atom("new"),
-                    atom("TypeError"),
-                    SExpr::String {
-                        value: "COMPILE_ERROR: if in expression position requires an else branch \
-                                — add an else branch, or restructure as a statement"
-                            .into(),
-                        span: *span,
-                    },
-                ]),
-            ]);
+            ctx.record_fatal(codegen_error(
+                "if in expression position requires an else branch",
+                if *span == Span::default() { origin } else { *span },
+            ));
+            return atom("undefined");
         }
 
         let cond = args[0].clone();
-        let then_branch = convert_to_expression(args[1].clone());
-        let else_branch = convert_to_expression(args[2].clone());
+        let then_branch = convert_to_expression(args[1].clone(), ctx, origin);
+        let else_branch = convert_to_expression(args[2].clone(), ctx, origin);
 
         if !is_statement_form(&then_branch) && !is_statement_form(&else_branch) {
             // Both branches are pure expressions → ternary
@@ -1587,7 +1586,7 @@ fn emit_fn_expr(
         if should_skip_return_wrap(&last) {
             items.push(last);
         } else {
-            let converted = convert_to_expression(last);
+            let converted = convert_to_expression(last, ctx, Span::default());
             items.push(list(vec![atom("return"), converted]));
         }
     } else {
@@ -1683,9 +1682,10 @@ fn emit_func_single(
                 ret_name,
                 head_name,
                 clause.span,
+                ctx,
             ));
         } else {
-            let converted = convert_to_expression(last_expr);
+            let converted = convert_to_expression(last_expr, ctx, clause.span);
             items.push(list(vec![atom("const"), atom(&result_var), converted]));
             if let Some(ref post) = clause.post {
                 let replaced = replace_tilde(post, &result_var);
@@ -1732,11 +1732,12 @@ fn emit_func_single(
                 ret_name,
                 head_name,
                 clause.span,
+                ctx,
             ));
         } else if !ctx.strip_assertions {
             if let Some(ref ret) = clause.returns {
                 let result_var = ctx.gensym.next("result");
-                let converted = convert_to_expression(last);
+                let converted = convert_to_expression(last, ctx, clause.span);
                 items.push(list(vec![atom("const"), atom(&result_var), converted]));
                 if let Some(check) = emit_return_type_check(&result_var, &ret.name, name, ret.span)
                 {
@@ -1763,7 +1764,7 @@ fn emit_func_single(
         if should_skip_return_wrap(&last) {
             items.push(last);
         } else {
-            let converted = convert_to_expression(last);
+            let converted = convert_to_expression(last, ctx, clause.span);
             items.push(list(vec![atom("return"), converted]));
         }
     }
@@ -1908,9 +1909,10 @@ fn emit_func_multi(
                     ret_name,
                     head_name,
                     clause.span,
+                    ctx,
                 ));
             } else {
-                let converted = convert_to_expression(last);
+                let converted = convert_to_expression(last, ctx, clause.span);
                 block_items.push(list(vec![atom("const"), atom(&result_var), converted]));
                 if let Some(ref post) = clause.post {
                     let replaced = replace_tilde(post, &result_var);
@@ -1937,7 +1939,7 @@ fn emit_func_multi(
             if should_skip_return_wrap(&last) {
                 block_items.push(last);
             } else {
-                let converted = convert_to_expression(last);
+                let converted = convert_to_expression(last, ctx, clause.span);
                 block_items.push(list(vec![atom("return"), converted]));
             }
         }
@@ -3028,19 +3030,11 @@ fn emit_if_expression(
 
     // DD-50 Rule 2: no else in expression position → compile error
     if args.len() < 3 {
-        return list(vec![
-            atom("throw"),
-            list(vec![
-                atom("new"),
-                atom("TypeError"),
-                SExpr::String {
-                    value: "COMPILE_ERROR: if in expression position requires an else branch \
-                            — add an else branch, or restructure as a statement"
-                        .into(),
-                    span,
-                },
-            ]),
-        ]);
+        ctx.record_fatal(codegen_error(
+            "if in expression position requires an else branch",
+            span,
+        ));
+        return atom("undefined");
     }
 
     let then_branch = emit_in_context(&args[1], ExprContext::Value, ctx, registry);

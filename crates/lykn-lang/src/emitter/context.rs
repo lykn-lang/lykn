@@ -1,4 +1,5 @@
 use super::gensym::EmitterGensym;
+use crate::error::LyknError;
 
 /// Describes how the result of an emitted expression will be used.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -22,6 +23,7 @@ pub struct EmitterContext {
     pub gensym: EmitterGensym,
     /// Whether we're currently inside a class body (enables `assign`).
     pub in_class_body: bool,
+    pub(crate) first_fatal: Option<LyknError>,
 }
 
 impl EmitterContext {
@@ -31,6 +33,13 @@ impl EmitterContext {
             gensym: EmitterGensym::new(),
             strip_assertions,
             in_class_body: false,
+            first_fatal: None,
+        }
+    }
+
+    pub(crate) fn record_fatal(&mut self, error: LyknError) {
+        if self.first_fatal.is_none() {
+            self.first_fatal = Some(error);
         }
     }
 }
