@@ -140,6 +140,13 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Operator explicitly approved [Slice19](slice19-match-subject-and-walker/slice-plan.md):
+narrow NE-C11 and remaining NE-C10 validation concern, BOTH independently validated
+before original tooling/13-row re-entry, stop another real gap. Same Sol6.1 High
+CDC/Luna6 High CC Autonomous arrangement; new task branch from4304, release protected.
+Continuation refinement3/5, not reset: outer2spent and oldtooling3spent/tworemaining
+carried. No broader emitter repair/integration/corpus/F6/library/nextunit.
+
 2026-11-07 [Slice18 stop](slice18-match-validation-and-walker/cdc-verification.md):
 NE-C10 candidate4304 remains unaccepted; independent same740-byte positive proves
 NE-C11 unconsumed match target emits invalid JS. One MVrowdone/fivedeferred,
@@ -413,6 +420,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.31: Opened authorized Slice19 combined source prerequisite and
+  original tooling/gate continuation, preserving both budgets and all prior
+  source/pin/process limits; independent combined source acceptance first.
 
 - 2026-11-07 v1.30: Closed Slice18 at independent NE-C11, keeping NE-C10 partial
   and all tool/gate outcomes deferred, preserved budgets/source-only concern and

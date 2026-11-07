@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 Operator opened [Slice19](slice19-match-subject-and-walker/slice-plan.md)
+NE-C11/NE-C10 combined source validation then original tools/same13 or nextgapstop.
+Six MSrows open; continuation3/5, oldouter2spent/oldtooling3spent+2remaining retained.
+No acceptance or source integration follows from opening; all original duties open.
+
 2026-11-07: [Slice18 independent stop](slice18-match-validation-and-walker/cdc-verification.md)
 closes MVone done/five deferred; NE-C11 witnessed with actual compile0/runtime1,
 NE-C10 source candidate4304 remains unaccepted. Full source gates/tool completion/

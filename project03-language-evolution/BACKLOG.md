@@ -604,6 +604,11 @@ fourth correction, next unit or release propagation is opened.
 
 #### NE-C11 — unconsumed match subject inherits Statement during codegen
 
+**2026-11-07 authorized re-entry:** Slice19 owns explicit narrow repair, independent
+validation of BOTH source fixes (including NE-C10 fn/header concern), then original
+tool completion/same13 under next-real-gap stop. Candidate4304 is baseline, not
+accepted source. Outer2spent/continuation3 and oldtooling3spent/tworemaining carried.
+
 **Independently reproduced,2026-11-07.** Source task4304, complete frozen740-byte
 positive in its CLI test. CC strict check/bothcompile/DTS pass, Deno parse fails.
 Fresh CDC SAME source SHAceaaf162892e964a76f317558ad35cfcdf82bd6731fcebe0eabb21de2d953058
