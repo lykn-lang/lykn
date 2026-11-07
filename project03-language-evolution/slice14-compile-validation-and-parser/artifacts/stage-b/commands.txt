@@ -1,0 +1,7 @@
+Focused API: LYKN_TEST_DENO=/opt/homebrew/bin/deno CARGO_TARGET_DIR=target/slice14/stage-b cargo test -p lykn-lang exports --offline --locked -- --nocapture (exit 0)
+Focused CLI: LYKN_TEST_DENO=/opt/homebrew/bin/deno CARGO_TARGET_DIR=target/slice14/stage-b cargo test -p lykn-cli --test async_exports --offline --locked -- --nocapture (exit 0)
+Release custom cache: CARGO_TARGET_DIR=target/slice14/stage-b cargo build -p lykn-cli --release --offline --locked (exit 0)
+Default Make release pre-pin: CARGO_NET_OFFLINE=true make build-release (exit 0)
+Full unfiltered Make attempt: CARGO_NET_OFFLINE=true DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno npm_config_cache=target/slice14/stage-b/npm-cache make check (exit 0; retain offline metadata-gate condition)
+Committed citation gate: DENO_DIR=/Users/oubiwann/Library/Caches/deno deno run -A scripts/check-cited-paths.js (exit 0)
+Normal metadata gate: make check-deps (exit 0; CARGO_NET_OFFLINE unset)

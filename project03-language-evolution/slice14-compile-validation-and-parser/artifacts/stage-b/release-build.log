@@ -1,0 +1,34 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.228
+   Compiling utf8parse v0.2.2
+   Compiling zmij v1.0.21
+   Compiling anstyle v1.0.14
+   Compiling thiserror v2.0.18
+   Compiling colorchoice v1.0.5
+   Compiling anstyle-query v1.1.5
+   Compiling anstyle-parse v1.0.0
+   Compiling serde_json v1.0.150
+   Compiling serde v1.0.228
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling heck v0.5.0
+   Compiling anstream v1.0.0
+   Compiling itoa v1.0.18
+   Compiling clap_lex v1.1.0
+   Compiling memchr v2.8.0
+   Compiling strsim v0.11.1
+   Compiling hashbrown v0.17.0
+   Compiling equivalent v1.0.2
+   Compiling clap_builder v4.6.0
+   Compiling syn v2.0.117
+   Compiling include_dir_macros v0.7.4
+   Compiling include_dir v0.7.4
+   Compiling indexmap v2.14.0
+   Compiling thiserror-impl v2.0.18
+   Compiling serde_derive v1.0.228
+   Compiling clap_derive v4.6.1
+   Compiling clap v4.6.1
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `release` profile [optimized] target(s) in 17.79s

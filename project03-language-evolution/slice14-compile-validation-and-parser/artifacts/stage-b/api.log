@@ -1,0 +1,59 @@
+   Compiling libc v0.2.185
+   Compiling memchr v2.8.0
+   Compiling once_cell v1.21.4
+   Compiling syn v2.0.117
+   Compiling serde_json v1.0.150
+   Compiling errno v0.3.14
+   Compiling getrandom v0.4.2
+   Compiling rustix v1.1.4
+   Compiling serde_derive v1.0.228
+   Compiling thiserror-impl v2.0.18
+   Compiling tempfile v3.27.0
+   Compiling thiserror v2.0.18
+   Compiling serde v1.0.228
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.85s
+     Running unittests src/lib.rs (target/slice14/stage-b/debug/deps/lykn_lang-660f810f98f77866)
+
+running 8 tests
+test emitter::forms::tests::test_emit_exports_names ... ok
+test classifier::forms::tests::test_classify_exports_rejects_duplicate ... ok
+test classifier::forms::tests::test_exports_declaration_validation ... ok
+test classifier::forms::tests::test_classify_exports ... ok
+test classifier::forms::tests::exports_keep_duplicate_and_nested_declaration_checks ... ok
+test classifier::forms::tests::exports_accept_named_async_func_and_genfunc_in_either_order ... ok
+test classifier::forms::tests::exports_do_not_promote_async_parameters_or_nested_named_functions ... ok
+test expander::pass0::tests::test_find_macro_entry_exports_lykn_fallback ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 1110 filtered out; finished in 0.00s
+
+     Running tests/a6_dispatch_conformance.rs (target/slice14/stage-b/debug/deps/a6_dispatch_conformance-71c5f1e628f2cc9a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/cross_compiler.rs (target/slice14/stage-b/debug/deps/cross_compiler-7270e8ccefc96ab3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 22 filtered out; finished in 0.00s
+
+     Running tests/e2e_tests.rs (target/slice14/stage-b/debug/deps/e2e_tests-a10fc2c08ad95c63)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 0.00s
+
+     Running tests/icu_cross_compiler_tests.rs (target/slice14/stage-b/debug/deps/icu_cross_compiler_tests-1835a3c7f031ad84)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 0.00s
+
+     Running tests/macro_expansion.rs (target/slice14/stage-b/debug/deps/macro_expansion-e3348c8f3018cee3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+

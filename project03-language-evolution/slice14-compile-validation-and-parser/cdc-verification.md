@@ -67,3 +67,42 @@ blank EOF lines, one interleaved test-output trailing space and the patch's
 space-prefixed blank context. Explicitly named prose passes; no whole-raw-diff
 whitespace-clean claim or log normalization. CC's Make101 prose denotes its
 inner Cargo failure; CDC separately captures actual Make exit2 above.
+
+## Stage B NE-C07 — accepted, 2026-11-06
+
+Fresh implementer `/root/cdc/async_repair_cc`, gpt-6-luna High. Source clean at
+3b65d09a1a8997f8c9680a34f43fd2c2e0aa8c4e. CDC independently inspected both
+changed Rust paths and original private collector/shared binding consumers.
+Only the exact async func/genfunc wrapper is unwrapped, with resolution-aware
+heads; shared bindings_introduced stays nonrecursive. Existing unknown/local/
+parameter/nested/duplicate/bound-head rules and the extra malformed-wrapper
+countercontrol pass. Shared fixture hashes unchanged (module e8c39a91…c7bd4d,
+consumer08482d6d…80ea). Source/test body cmp against CC pre-run frozen copies
+passes. Those body freezes preceded CC tests; source Git commit followed them.
+
+CDC freshly built tests --no-run, then pinned default debug compiler
+a13d6b313740608eaa0e825b81573fa6e0db6066aa9754bf0843ff15c5485957 before
+running8/8 export unit tests (1110 filtered; separate zero-selected targets
+explicit in log) and2/2 actual async CLI tests: all exit0. Raw exact outputs
+and exits: artifacts/cdc-stage-b/{test-build,exports,async-cli}.{log,exit}.
+Complete emitted module/consumer JS inspected: valid export plus async function,
+typed argument/return checks, relative import and await; stdout/file bytes match,
+Deno outputs42 LF/empty stderr. Applicable DTS paths explicitly absent, not lost.
+
+CC full Make passed with CARGO_NET_OFFLINE=true; that invocation is retained
+as such, followed by normal metadata/citation passes, not silently relabelled.
+CDC's independent COMPLETE `make check` explicitly unset CARGO_NET_OFFLINE and
+CARGO_TARGET_DIR, used default target plus fresh target/slice14/cdc-b npm/XDG
+caches, existing fixed DENO_DIR and absolute LYKN_TEST_DENO. Exit0: all Rust
+targets pass (including StageA regressions), JS1467 passed/6steps, docs482 passed.
+Direct committed citations exit0:63 documents/601 historical citations. Raw
+artifacts/cdc-stage-b/{make-check,cited-paths}.{log,exit}. This is full canonical
+gate acceptance, with no test filtering or metadata-gate waiver.
+
+Verified before/after: actual task target/release/lykn and bin/lykn both
+748cd9991003da42b9a07950005d21e46b6a295b9d8650c71c4fca3e69cf2e5c,
+Deno2.9.6 remains2ad84f9e…e5ce74. VP04/05 done; both repairs accepted task-only.
+No release/source propagation. Parser still0/4 until the preserved StageC gate.
+Async declaration sidecar absence is an owned type-distribution limitation,
+not a NEW gap: current DTS emitter lacks Async wrapper handling; philosophy
+says “possibly .d.ts”, not universal async coverage. No new type repair here.

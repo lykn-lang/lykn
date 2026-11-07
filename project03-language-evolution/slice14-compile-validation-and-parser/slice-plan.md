@@ -4,6 +4,9 @@ Opened 2026-11-06. Status: open. Canonical collapsed standalone increment.
 StageA NE-C08 independently accepted narrowly at source4610b4 (VP01–03 done),
 known NE-C07/full green pending. Fresh StageB CC replaces the prior context after
 its explicit Python-policy breach; see cdc-verification.md and incident receipt.
+StageB NE-C07 and complete canonical independent validation now accepted at
+source3b65d09, compiler748cd999 (VP04/05 done); StageC re-entry is current under
+cc-prompt-iteration02.md. Earlier staged statements remain dated chronology.
 Operator: “Let's fix NE-C08, validate it independently, then return to NE-C07
 and the same four parser observations. Same models, Autonomous Mode, and stop
 if we hit another real evidence gap :-D”. Endpoint is these staged repairs and

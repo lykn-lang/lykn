@@ -1,0 +1,17 @@
+Source branch: codex/compile-route-validation
+Source commit: 3b65d09a1a8997f8c9680a34f43fd2c2e0aa8c4e
+Focused debug CLI: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-b/debug/lykn
+Focused debug CLI SHA-256: 8e915bc573351c5cfb6ce3888cdbcb32245ebad59d3a03aa6ea1dbddb274fad0
+Focused integration test executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice14/stage-b/debug/deps/async_exports-c55362a2e44ad97d
+Focused integration test executable SHA-256: b426112c02115fa979affba4a474f956f9d81b3bb7d7190b55beccd82576e83d
+Release compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+Release compiler SHA-256 before Make test/runtime: 748cd9991003da42b9a07950005d21e46b6a295b9d8650c71c4fca3e69cf2e5c
+Make-copied compiler: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn
+Make-copied compiler SHA-256 before Make test/runtime and after gate: 748cd9991003da42b9a07950005d21e46b6a295b9d8650c71c4fca3e69cf2e5c
+Both release compiler version: lykn 0.6.0
+Deno: /opt/homebrew/bin/deno; deno 2.9.6 (stable, release, aarch64-apple-darwin)
+Deno SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Focused API selected: 8 passed, 0 failed, 0 ignored, 1110 filtered
+Focused CLI selected: 2 passed, 0 failed, 0 ignored, 0 filtered
+Full Make committed cited-path census: 63 documents, 601 historical citations unchanged
+Standalone committed citation gate: 63 documents, 601 historical citations unchanged
