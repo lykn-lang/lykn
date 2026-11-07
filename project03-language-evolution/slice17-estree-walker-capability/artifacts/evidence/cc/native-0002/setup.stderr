@@ -1,0 +1,4 @@
+/opt/homebrew/bin/bash: line 1: lang/.worktrees/planning/project03-language-evolution/slice17-estree-walker-capability/artifacts/evidence/cc/native-0002/argv.txt: No such file or directory
+/opt/homebrew/bin/bash: line 1: lang/.worktrees/planning/project03-language-evolution/slice17-estree-walker-capability/artifacts/evidence/cc/native-0002/exit.txt: No such file or directory
+wc: lang/.worktrees/planning/project03-language-evolution/slice17-estree-walker-capability/artifacts/evidence/cc/native-0002/stdout.bin: open: No such file or directory
+wc: lang/.worktrees/planning/project03-language-evolution/slice17-estree-walker-capability/artifacts/evidence/cc/native-0002/stderr.bin: open: No such file or directory

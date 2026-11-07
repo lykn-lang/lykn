@@ -3,6 +3,11 @@
 Six rows open. CC source/raw attestation is not independent acceptance.13 frozen
 control rows/12families; K12 synthetic is outside parser/file counts.
 
+Initialb312 source is unaccepted: corecheck0, walkercheck1 source delimiter error;
+one earlier receipt-setup failure did not launch CLI.0/13 control runtime. All rows
+remainopen pending ordinary correction1/EW-R1–R5 and actual complete prerequisites.
+No valid-Lykn compiler/Acorn gap is established; no product repair authorized.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | EW-01 | Actual identity/source/control/prediction freeze and scope | Clean5408/absolute85DenoAcorn pins, full13 frozen rows, bodies before runs | correctness-grade | Operator gate | open | | No source/dependency changes |

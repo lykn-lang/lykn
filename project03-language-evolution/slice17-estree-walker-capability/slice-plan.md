@@ -228,10 +228,20 @@ discretion. All original-method node/status rules remain binding.
 | Prompt | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-07 | none | Explicit Lykn walker/fixed capability gate | Replaced before authoring/check/runtime by iteration01 |
-| cc-prompt-iteration01.md | 2026-11-07 | cc-prompt.md | Pre-authoring Deno separator/API/usage clarification | Current; no executed correction pass |
+| cc-prompt-iteration01.md | 2026-11-07 | cc-prompt.md | Pre-authoring Deno separator/API/usage clarification | Returnedb312; source failure/review requires iteration02 |
+| cc-prompt-iteration02.md | 2026-11-07 | iteration01 | Actual b312 source failure + consolidated EW-R1–R5 | Current ordinary source correction1/5 |
 
 Initial plan concatenated executable/version as `/opt/homebrew/bin/deno2.9.6`;
 CC correctly found that literal path absent and verified actual `/opt/homebrew/bin/deno`
 version2.9.6/hash2ad84 before any source/check/runtime. Lookup remains historical,
 not a compiler/parser gap. CC returned index ownership for this preserved amendment;
 initial prompt is unchanged. No source pass ran; normal max5 budget is not reset.
+
+Initial implementationb312cf36 freezes all four modules/data/predictions/drafts.
+Core nativecheck0/warning; first walker launch failed receipt setup before CLI;
+actual unchanged walkercheck1 reports unterminated list120:3. No generated/runtime/
+capability proof (0/13). [Partial CDC review](cdc-verification.md) classifies
+documented authoring/API/coverage/verifier defects, not a valid-Lykn compiler gap.
+Iteration02 consolidates correction1 under unchanged contract; no new cases or
+product repair. Bounded positive Program retention is reused from prior probe
+solely to validate fixed numeric oracles; negative rows omit AST, K12 synthetic.
