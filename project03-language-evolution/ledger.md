@@ -2,6 +2,12 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07: [Slice18 independent stop](slice18-match-validation-and-walker/cdc-verification.md)
+closes MVone done/five deferred; NE-C11 witnessed with actual compile0/runtime1,
+NE-C10 source candidate4304 remains unaccepted. Full source gates/tool completion/
+all13K unrun. Outer2spent and oldtooling3spent/tworemaining retained; no reset.
+Original F1–F12, P-1, all Project07/source/human/publication duties stay open.
+
 2026-11-07 Operator opened [Slice18](slice18-match-validation-and-walker/slice-plan.md)
 for NE-C10 repair/independent source validation then unfinished Lykn tooling and
 same13-row gate. Six MV rows open; Slice17 tooling3spent/tworemaining explicitly

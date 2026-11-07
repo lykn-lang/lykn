@@ -1,0 +1,27 @@
+CDC fresh SAME positive source condition,2026-11-07; no rebuild/variant.
+Source4304eb280a4198eb75355956b166923883ceecbe, committed CLI raw literal manually
+copied/fully visually checked,740bytes inclLF; SHAceaaf162892e964a76f317558ad35cfcdf82bd6731fcebe0eabb21de2d953058
+verified BEFORE compile. Fresh owned cwd /private/tmp/lykn-s18-cdc-gap-thdM7i.
+Direct ls of project.json/deno.json/deno.jsonc at cwd,/private/tmp,/private,/:
+all12 absent, expected ls exit1; no recursive inventory/permission escalation.
+Actual current compiler pinned BEFORE compile:
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn
+SHA9b71ca938f5f61c17cb3bee8b024a2e3f3c656c5f8178eac7cdb2272507d7f85.
+CC pre-cargo transcript pinb6fca differs, so original producer identity is NOT
+established by that old pin; this is a distinct fresh pinned replay condition.
+Compile inherited tool environment, no task overrides; full env not captured.
+
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn compile /private/tmp/lykn-s18-cdc-gap-thdM7i/positive.lykn -o /private/tmp/lykn-s18-cdc-gap-thdM7i/positive.js > /private/tmp/lykn-s18-cdc-gap-thdM7i/compile.stdout 2> /private/tmp/lykn-s18-cdc-gap-thdM7i/compile.stderr
+Actual exit0, stdoutempty; stderr unused Choice warning retained unchanged.
+Full generated JS/DTS read BEFORE runtime. JS SHA111a1fae5475e18c1179c5b530b94a734312e0aafcedc1cc18afac75c197ccf2;
+DTS SHA0ce10d8a36d40fa340ede6fce895a51b8a3b6e6dfaf1d51a03b6fc6a20d6986f,
+exact predeclared private Choice type oracle. Consumed match target uses ternary;
+second unconsumed match target incorrectly contains statement if initializer.
+
+Fresh owned deno-cache directory; Deno actual SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+and JS hash verified again BEFORE runtime.
+env DENO_DIR=/private/tmp/lykn-s18-cdc-gap-thdM7i/deno-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --no-remote --cached-only --no-npm --deny-net --no-prompt /private/tmp/lykn-s18-cdc-gap-thdM7i/positive.js > /private/tmp/lykn-s18-cdc-gap-thdM7i/runtime.stdout 2> /private/tmp/lykn-s18-cdc-gap-thdM7i/runtime.stderr
+Actual exit1, stdoutempty; SyntaxError Expression expected42:29 before evaluation.
+Compiler/Deno/source/JS hashes were rechecked unchanged AFTER runtime. No Acorn,
+inputAST execution, tooling/K/fullgate/extra source condition. Raw files copied
+unchanged here; functional expected JSON is unobserved, not substituted.

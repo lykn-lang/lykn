@@ -1,5 +1,12 @@
 # Slice18 — match validation repair and unchanged walker re-entry
 
+**Closed2026-11-07 at independently reproduced NE-C11.** Candidate4304 task-only/
+unaccepted; MVone done/five deferred. Actual same740-byte positive compile0 then
+DenoSyntaxError42:29/runtime1; no source acceptance/fullMake/citation/tool re-entry/
+K execution. All13unrun. Outer2spent/3remaining, oldtooling3spent/2remaining unchanged,
+no cap reset or current next unit. Source-only fn/yields candidate concern stays
+NE-C10 acceptance follow-up. All earlier active wording below is historical.
+
 Current assignment iteration02,2026-11-07, outer refinement2/5, fresh LunaHigh CC
 because recurring fixture/capture errors; prior CC relinquished all writes. Tooling
 3spent/tworemaining unchanged. Uncommitted candidate47c516 full body preserved,
@@ -183,6 +190,6 @@ review/retro/parent/backlog with done/deferred/unrun truth at endpoint only.
 
 | Prompt | Date | Reason | State |
 | --- | --- | --- | --- |
-| cc-prompt.md | 2026-11-07 | Explicit NE-C10 repair, independently gated before old tooling | Initial Stage A assignment; no tooling mutation/runtime yet |
-| cc-prompt-iteration01.md | 2026-11-07 | Retain wrong grammar/guard fixtures, restore intended conditions, real literal clause positive | Current source refinement1/5; old tooling allowance unchanged |
-| cc-prompt-iteration02.md | 2026-11-07 | Preserve generator/keyword roles, precise DTS oracle, fresh CC | Current refinement2/5; source acceptance held |
+| cc-prompt.md | 2026-11-07 | Explicit NE-C10 repair, independently gated before old tooling | Returned test/oracle failures; production initially unchanged |
+| cc-prompt-iteration01.md | 2026-11-07 | Retain wrong grammar/guard fixtures, restore intended conditions, real literal clause positive | Refinement1 returned candidate47/DTS oracle failure; old CC retired after suppression violation |
+| cc-prompt-iteration02.md | 2026-11-07 | Preserve generator/keyword roles, precise DTS oracle, fresh CC | Refinement2 returned4304/new runtime gap NE-C11; closed stop, no source acceptance |

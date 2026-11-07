@@ -1,0 +1,6 @@
+test: freeze match validation refinement counters
+
+Preserve the current validator candidate with independent generator, function keyword-tail, and generator-function tail counters plus the exact Choice declaration oracle.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,0 +1,16 @@
+2026-11-07 CDC independent SAME frozen POSITIVE_SOURCE condition from committed
+4304eb280a4198eb75355956b166923883ceecbe crates/lykn-cli/tests/match_clause_validation.rs.
+Literal copied in full and visually checked against raw Rust string; expected740
+bytes including LF. No alternative fixture/minirepro/source edit/newcase.
+Predictions before execution: default strict file compile succeeds; pinned Deno
+rejects generated JS before evaluation at unconsumed match subject initializer,
+SyntaxError Expression expected. Functional expectedJSON remains original and
+is not claimed observed if module parsing fails.
+Native tool selected is actual current absolute task target/debug/lykn, freshly
+hashed before compile; CC's earlier b6fca transcript pin differs from current9b71,
+so don't relabel original test as that current byte identity. No rebuild performed.
+cwd is this fresh owned /private/tmp directory; no source config inheritance.
+Compile uses inherited tool environment without task overrides (not a full env
+snapshot). Runtime uses fresh owned DENO_DIR and DENO_NO_UPDATE_CHECK=1/NO_COLOR=1;
+strict no-config/no-remote/cached-only/no-npm/deny-net/no-prompt, no extra permissions.
+No Acorn/import source/network/subprocess tooling or K observation involved.

@@ -1,0 +1,18 @@
+(type Choice (Box :boolean ready) Other)
+(func collect :args (:boolean is-box :boolean ready) :returns :array :body
+  (bind events (cell #a()))
+  (bind answer
+    (match (if is-box (Box ready) Other)
+      ((Box should-run) :when true
+        (if should-run (swap! events (fn (:array xs) (conj xs "prefix"))))
+        (swap! events (fn (:array xs) (conj xs "tail")))
+        42)
+      (_
+        (swap! events (fn (:array xs) (conj xs "fallback")))
+        0)))
+  (match (if is-box (Box ready) Other)
+    ((Box should-run)
+      (if should-run (swap! events (fn (:array xs) (conj xs "statement")))))
+    (_ ()))
+  #a(answer (express events)))
+(console:log (JSON:stringify #a((collect true true) (collect true false) (collect false true))))

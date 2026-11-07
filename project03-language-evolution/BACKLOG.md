@@ -560,6 +560,16 @@ no push/publication/type/cache repair/walker/corpus or next unit follows.
 
 #### NE-C10 — match clause statements rejected by no-else validation
 
+**2026-11-07 Slice18 stop:** candidate4304eb280a4198eb75355956b166923883ceecbe is
+unaccepted/task-only. CC's three metadata counters green/CLI validation+DTS partial
+passes do not replace full source gates. NE-C11 below stops actual positive runtime
+before evaluation; no fullMake/citations/old walker re-entry/K. Additional SOURCE-
+ONLY untested candidate concern: walk_fn_like_args recognizes :yields metadata for
+fn/lambda, but classify_fn/lambda retain args1 onward as body and only classify_genfn
+owns that header. It could skip ordinary fn body validation. Disposition/negative
+regression before candidate acceptance is owned by Project03 CDC; no probe or fix
+after the stop. Outer2spent/oldtooling3spent+2remaining carried, no reset/next unit.
+
 **2026-11-07 authorized active re-entry:** Operator explicitly approved narrow
 repair, independent full source validation, then completing partial tooling and
 unchanged13-row gate, stopping at another real gap. Canonical Slice18 now owns
@@ -591,6 +601,33 @@ the frozen helper/oracle to evade this valid condition. Then revalidate unfinish
 walker/scanner/observer and all unchanged13 capability rows; no full-corpus/F6
 claim. Slice17 closes at0/13, one rowdone/fivedeferred. No current compiler fix,
 fourth correction, next unit or release propagation is opened.
+
+#### NE-C11 — unconsumed match subject inherits Statement during codegen
+
+**Independently reproduced,2026-11-07.** Source task4304, complete frozen740-byte
+positive in its CLI test. CC strict check/bothcompile/DTS pass, Deno parse fails.
+Fresh CDC SAME source SHAceaaf162892e964a76f317558ad35cfcdf82bd6731fcebe0eabb21de2d953058
+with actual current debugCLI9b71ca938f5f61c17cb3bee8b024a2e3f3c656c5f8178eac7cdb2272507d7f85
+strict -o0 produces JS111a1fae5475e18c1179c5b530b94a734312e0aafcedc1cc18afac75c197ccf2.
+Full readable module shows consumed match target is ternary, second UNCONSUMED
+match initializer instead `const target__gensym1 = if (isBox) Box(ready);` followed
+by else statement. Pinned Deno2.9.6/2ad84 strict offline run1, SyntaxError42:29
+before evaluation. Source/tool/output hashes stable after replay. Raw/readable
+source/JS/DTS/commands: slice18-match-validation-and-walker/artifacts/evidence/cdc/nec11.
+CC earlier debug pinb6 differs handoff9b; original producer identity is limited,
+not relabeled as fresh replay. Source style preference for ? is distinct from the
+documented supported functional if/ternary equivalence; don't change the frozen
+source to evade the gap.
+
+At unchanged emitter/forms.rs::emit_match_statement, target const initializer
+uses emit_expr(target,ctx) under Statement context instead of explicit Value.
+Actual unconsumed-target case only is established; no broader guard/async/method/
+lambda proof. **Owner/re-entry:** Project03 CDC owns separately authorized narrow
+target-Value codegen repair with exact same positive regression, negative/context
+preservation, normal full required gates and independent acceptance. Then resume
+still-unaccepted NE-C10 (including fn-header source concern), remaining tooling
+completion and unchanged13 controls only under authorized continuation. No current
+emitter fix/source propagation/next unit opened; release5408 stays unchanged.
 
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 

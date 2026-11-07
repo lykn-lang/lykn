@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+   |
+42 |     const target__gensym1 = if (isBox) Box(ready);
+   |                             ~~
+    at file:///private/tmp/lykn-s18-cdc-gap-thdM7i/positive.js:42:29

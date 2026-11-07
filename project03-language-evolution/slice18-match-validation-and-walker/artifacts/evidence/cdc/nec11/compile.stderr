@@ -1,0 +1,2 @@
+1:7: warning: unused binding 'Choice'
+  suggestion: prefix with underscore: _Choice

@@ -1,0 +1,18 @@
+
+running 1 test
+test classifier::forms::tests::test_function_keeps_keyword_tail_after_statement_match_prefix ... FAILED
+
+failures:
+
+---- classifier::forms::tests::test_function_keeps_keyword_tail_after_statement_match_prefix stdout ----
+
+thread 'classifier::forms::tests::test_function_keeps_keyword_tail_after_statement_match_prefix' (95838404) panicked at crates/lykn-lang/src/classifier/forms.rs:7016:9:
+assertion failed: no_else_if_errs("(func f :args (:boolean cond) :returns :keyword :body (match x (_ (if cond (console:log \"x\")))) :done)").is_empty()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    classifier::forms::tests::test_function_keeps_keyword_tail_after_statement_match_prefix
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1128 filtered out; finished in 0.00s
+

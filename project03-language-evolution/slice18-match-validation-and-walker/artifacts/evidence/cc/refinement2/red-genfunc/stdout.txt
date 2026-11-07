@@ -1,0 +1,20 @@
+
+running 1 test
+test classifier::forms::tests::test_genfunc_precondition_remains_a_value ... FAILED
+
+failures:
+
+---- classifier::forms::tests::test_genfunc_precondition_remains_a_value stdout ----
+
+thread 'classifier::forms::tests::test_genfunc_precondition_remains_a_value' (95837201) panicked at crates/lykn-lang/src/classifier/forms.rs:7010:9:
+assertion `left == right` failed: genfunc precondition remains a value
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    classifier::forms::tests::test_genfunc_precondition_remains_a_value
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1128 filtered out; finished in 0.00s
+

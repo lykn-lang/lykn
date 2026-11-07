@@ -1,0 +1,6 @@
+fix: preserve match validation expression roles
+
+Keep generator contracts and bodies in their emitter-defined positions, and preserve ordinary keyword body values while validating match clauses.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

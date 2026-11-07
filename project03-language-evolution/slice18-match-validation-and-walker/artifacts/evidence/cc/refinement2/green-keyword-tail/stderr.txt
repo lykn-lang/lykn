@@ -1,0 +1,7 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+     Running tests/a6_dispatch_conformance.rs (target/debug/deps/a6_dispatch_conformance-71c5f1e628f2cc9a)
+     Running tests/cross_compiler.rs (target/debug/deps/cross_compiler-7270e8ccefc96ab3)
+     Running tests/e2e_tests.rs (target/debug/deps/e2e_tests-a10fc2c08ad95c63)
+     Running tests/icu_cross_compiler_tests.rs (target/debug/deps/icu_cross_compiler_tests-1835a3c7f031ad84)
+     Running tests/macro_expansion.rs (target/debug/deps/macro_expansion-e3348c8f3018cee3)
