@@ -1,5 +1,11 @@
 # Slice18 — match validation repair and unchanged walker re-entry
 
+Raw-log whitespace exception: prep23197ab's staged diff check reported trailing
+blank lines at EOF in the three verbatim Rust stdout receipts, then the multiline
+shell continued to commit. Do not claim that aggregate check passed. Raw bytes
+are preserved unchanged; prose/prompt diff is checked separately before handoff.
+This metadata handling does not weaken any source/runtime validation gate.
+
 Current assignment iteration01,2026-11-07, source refinement1/outer5; tooling
 3spent/tworemaining unchanged. Initial test0117102 baseline has meaningful NE-C10
 red plus wrong malformed-clause oracle. CC grammar correction3175e4f and unit
