@@ -1,0 +1,129 @@
+error: let chains are only allowed in Rust 2024 or later
+   --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:229:16
+    |
+229 |             if let Some(head) = exprs.first()
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+   --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:658:16
+    |
+658 |             && let Some(surface_form) = classify_statement_surface(expr)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+   --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:725:8
+    |
+725 |     if let SExpr::List { values, .. } = expr
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+   --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:726:12
+    |
+726 |         && let Some(head) = values.first().and_then(|e| e.as_form_head())
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+   --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:744:8
+    |
+744 |     if let SExpr::List { values, .. } = expr
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+   --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:745:12
+    |
+745 |         && let Some(head) = values.first().and_then(|e| e.as_form_head())
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+   --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:778:8
+    |
+778 |     if let SExpr::List { values, span } = &expr
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:1643:12
+     |
+1643 |         && let Some(ref pre) = clause.pre
+     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:1872:16
+     |
+1872 |             && let Some(ref pre) = clause.pre
+     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:2061:12
+     |
+2061 |         && let Some(ref pre) = clause.pre
+     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:3014:8
+     |
+3014 |     if let SExpr::List { values, .. } = expr
+     |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:3015:12
+     |
+3015 |         && let Some(head) = values.first().and_then(|e| e.as_form_head())
+     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:7197:20
+     |
+7197 |                   if let SExpr::List {
+     |  ____________________^
+7198 | |                     values: if_vals, ..
+7199 | |                 } = v
+     | |_____________________^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:7322:12
+     |
+7322 |         if let SExpr::List { values, .. } = &result[0]
+     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:7323:16
+     |
+7323 |             && let SExpr::List { values: arrow, .. } = &values[0]
+     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:7325:16
+     |
+7325 |               && let SExpr::List {
+     |  ________________^
+7326 | |                 values: const_form, ..
+7327 | |             } = &arrow[2]
+     | |_________________________^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:7328:16
+     |
+7328 |               && let SExpr::List {
+     |  ________________^
+7329 | |                 values: pattern, ..
+7330 | |             } = &const_form[1]
+     | |______________________________^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:8411:20
+     |
+8411 |                 if let SExpr::List { values, .. } = expr
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:8413:24
+     |
+8413 |                     && let Some(SExpr::List { values: iife, .. }) = values.get(1)
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: let chains are only allowed in Rust 2024 or later
+    --> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:8414:24
+     |
+8414 |                     && let Some(SExpr::List { values: arrow, .. }) = iife.first()
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+

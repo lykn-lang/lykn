@@ -1,0 +1,5 @@
+source HEAD: 5408abd432b8789ae474a3895436f68818c4e482
+forms.rs SHA256: 096c91ea3dc15a9ec6f54aad69f31b5fe81a38ff0813fd55d89cb9d45c8f53c0
+test executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866
+sha256: 6fc308f570bbaf6956372588ad9961a52a1e8370cd52f2573ad58187bfb9e278
+built by attempt-05-native-lib-build, exit 0

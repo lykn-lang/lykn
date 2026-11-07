@@ -1,0 +1,1 @@
+/Users/oubiwann/.cargo/bin/rustfmt --check crates/lykn-lang/src/emitter/forms.rs

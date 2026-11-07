@@ -1,0 +1,5 @@
+source HEAD: 5408abd432b8789ae474a3895436f68818c4e482
+forms.rs SHA256: 096c91ea3dc15a9ec6f54aad69f31b5fe81a38ff0813fd55d89cb9d45c8f53c0
+Deno: /opt/homebrew/bin/deno 2.9.6; SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+parser-core.lykn SHA256: 6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7
+generated module SHA256: 068afeb7c912bab6876b8412fdadc6c6948ca41dcdb497f8b99a40061fb3f6a9

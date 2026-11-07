@@ -1,0 +1,1 @@
+/Users/oubiwann/.cargo/bin/rustfmt --edition 2024 --check crates/lykn-lang/src/emitter/forms.rs

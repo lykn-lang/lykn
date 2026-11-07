@@ -1,0 +1,1 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn test test/forms/dd-50_test.lykn --compile-only

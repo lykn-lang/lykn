@@ -1,0 +1,1 @@
+cargo build --offline --locked --release -p lykn-cli

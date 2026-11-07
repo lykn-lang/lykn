@@ -1,0 +1,3 @@
+hash_command=0
+canonical_vs_embedded_cmp=0
+embedded_vs_materialized_cmp=0

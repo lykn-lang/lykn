@@ -1,0 +1,1 @@
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --no-prompt --deny-net /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice15/correction07/core-load/generated/parser-core.js

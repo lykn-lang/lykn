@@ -1,0 +1,5 @@
+rustfmt: /Users/oubiwann/.cargo/bin/rustfmt
+version: rustfmt 1.9.0-stable (2d8144b788 2026-07-07)
+sha256: f7c7e11eb2e07f006e532a8aaac77b32f4527d305ac386c0c633ca6133d35ca9
+source HEAD: 5408abd432b8789ae474a3895436f68818c4e482
+source forms.rs SHA256: 096c91ea3dc15a9ec6f54aad69f31b5fe81a38ff0813fd55d89cb9d45c8f53c0

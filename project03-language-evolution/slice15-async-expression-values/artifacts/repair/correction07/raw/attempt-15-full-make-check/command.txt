@@ -1,0 +1,1 @@
+env -u CARGO_NET_OFFLINE -u CARGO_TARGET_DIR DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno npm_config_cache=/private/tmp/lykn-correction07-5408abd-npm-cache XDG_CACHE_HOME=/private/tmp/lykn-correction07-5408abd-xdg-cache make check

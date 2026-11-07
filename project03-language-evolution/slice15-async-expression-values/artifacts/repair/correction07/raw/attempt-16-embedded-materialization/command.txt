@@ -1,0 +1,3 @@
+shasum -a 256 packages/lang/compiler.js crates/lykn-lang/embedded/packages/lang/compiler.js /private/tmp/lykn-correction07-5408abd-xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js
+cmp packages/lang/compiler.js crates/lykn-lang/embedded/packages/lang/compiler.js
+cmp crates/lykn-lang/embedded/packages/lang/compiler.js /private/tmp/lykn-correction07-5408abd-xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js

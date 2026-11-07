@@ -1,0 +1,10 @@
+source HEAD: 5408abd432b8789ae474a3895436f68818c4e482
+Deno: /opt/homebrew/bin/deno 2.9.6; SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+harness: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/async-expression-values.test.js
+harness SHA256: d386fcd1775f44d334c0c0a7c8d9e094b5c9b32f43e2760cdc500931c81466a7
+fixtures:
+  E1-sync-values.lykn SHA256 c5e429d1f4dfe396fc75425e3afd11e349b80c38024f88441df5e833ef4545f1
+  E2-async-branches.lykn SHA256 bbcb9e7ebf7768cd6350ddb77f8cb21aaa78ae886d82c04b4d39c7c04e7a8155
+  E3-promise-value.lykn SHA256 bc7a7b23007b80f10b298145e36a859d0a108a70537139e85628c3986a1d21fb
+  E4-deferred-function.lykn SHA256 1e3218e6ebe1672eb8fcb20fc96b50a03cd117998f97752e4fde6d455fbe740e
+  E5-effects-errors.lykn SHA256 0b4a02a9c67e7537fc8a3f88cf2a001387b925772a7c75fe79d23dd8bd499034

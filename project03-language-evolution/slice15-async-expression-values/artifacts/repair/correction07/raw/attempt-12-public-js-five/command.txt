@@ -1,0 +1,1 @@
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno test --config /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json --allow-read --allow-write --allow-run --cached-only /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/async-expression-values.test.js

@@ -1,0 +1,1 @@
+env LYKN_TEST_DENO=/opt/homebrew/bin/deno DENO_DIR=/Users/oubiwann/Library/Caches/deno cargo test --offline --locked -p lykn-cli --test async_expression_values -- --nocapture
