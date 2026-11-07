@@ -177,7 +177,7 @@
                           :reason_count walked:reason_count
                           :dependency_edges walked:dependency_edges
                           :dependency_edge_count walked:dependency_edge_count
-                          :bare_imports walked:bare_imports))))))))
+                          :bare_imports walked:bare_imports)))))))))))
     (bind final-result (express result))
     (if
       (= final-result:status "complete_walk")
@@ -191,7 +191,7 @@
   :returns
   :string
   :body
-  (template row:source_id "|" row:source_sha256 "|" row:emitter "|" row:mode "|" row:condition_id))
+  (JSON:stringify (array row:source_id row:source_sha256 row:emitter row:mode row:condition_id)))
 
 (func
   validate-manifest
@@ -225,6 +225,8 @@
         (not (= (js:typeof row:condition_id) "string"))
         (not (= (js:typeof row:path) "string"))
         (not (= (js:typeof row:output_path) "string"))
+        (not (row:path:startsWith "/"))
+        (not (row:output_path:startsWith "/"))
         (not (or (= row:required true) (= row:required false)))
         (if expected-hash-missing
           (or (not (= row:source_sha256 null)) (not (= row:sha256 null)))
@@ -235,6 +237,12 @@
     (if (!= row:source_sha256 row:sha256)
       (throw (new Error "manifest source hash declarations disagree")))
     (if
+      (or
+        (!= row:emitter "inert-js-control")
+        (!= row:mode "module")
+        (!= row:path row:output_path))
+      (throw (new Error "bounded control row has unsupported route or unequal source/output paths")))
+    (if
       (and
         (= row:required false)
         (or
@@ -244,7 +252,7 @@
     (bind key (compound-key row))
     (if (-> (express keys) (:includes key)) (throw (new Error "duplicate condition key")))
     (swap! keys (fn (:array all) (conj all key)))
-    (bind source-output (template row:source_id "|" row:emitter "|" row:mode "|" row:condition_id "|" row:output_path))
+    (bind source-output (JSON:stringify (array row:source_id row:emitter row:mode row:condition_id row:output_path)))
     (if (-> (express source-outputs) (:includes source-output)) (throw (new Error "duplicate source/output mapping")))
     (swap! source-outputs (fn (:array all) (conj all source-output))))
   (if
@@ -374,7 +382,7 @@
     (for-of
       row
       values
-      (bind source-key (template row:source_id "|" row:source_sha256))
+      (bind source-key (JSON:stringify (array row:source_id row:source_sha256)))
       (if
         (not (-> (express source-keys) (:includes source-key)))
         (swap! source-keys (fn (:array all) (conj all source-key)))))
@@ -464,12 +472,28 @@
     :run_id manifest:run_id
     :run_kind "synthetic_unit"
     :created_at manifest:created_at
-    :parser_gate (obj :status "not_applicable")
+    :parser_gate (obj :status "not_applicable" :path null :version null :expected_sha256 null :actual_sha256 null :options null :error null)
     :selected_sources null
     :selected_condition_rows null
     :required_condition_rows null
+    :complete_walk null
+    :source_missing null
+    :source_unreadable null
+    :source_hash_mismatch null
+    :compile_failed null
+    :output_missing null
+    :output_hash_mismatch null
+    :output_unreadable null
+    :parse_error null
+    :unsupported_ast null
+    :not_processed null
+    :excluded_named null
     :files_parsed null
     :files_completely_walked null
+    :direct_statements_with_findings null
+    :nested_reasons null
+    :dependency_edges null
+    :bare_imports null
     :status "incomplete"
     :exit 2
     :rows #a()
@@ -483,6 +507,7 @@
     :returns
     :any
     :body
+    (if (not (manifest-path:startsWith "/")) (throw (new Error "manifest path must be absolute")))
     (bind manifest (JSON:parse (await (Deno:readTextFile manifest-path))))
     (bind report
       (match

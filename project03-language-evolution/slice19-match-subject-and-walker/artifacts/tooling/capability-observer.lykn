@@ -59,12 +59,44 @@
     ("K06" "complete_walk")
     ("K07" "complete_walk")
     ("K08" "complete_walk")
-    ("K11" "parser_artifact_identity_mismatch")
+    ("K11" "identity_mismatch")
     ("K09" "parse_error")
     ("K10a" "source_missing")
     ("K10b" "source_unreadable")
     ("K12" "unsupported_ast")
-    (_ (throw (new Error (template "unknown fixed control " id)))))
+    (_ (throw (new Error (template "unknown fixed control " id))))))
+
+(func
+  expected-row-status
+  :args
+  (:string id)
+  :returns
+  :string
+  :body
+  (match
+    id
+    ("K01" "complete_walk")
+    ("K02" "complete_walk")
+    ("K03" "complete_walk")
+    ("K04" "complete_walk")
+    ("K05" "complete_walk")
+    ("K06" "complete_walk")
+    ("K07" "complete_walk")
+    ("K08" "complete_walk")
+    ("K09" "parse_error")
+    ("K10a" "source_missing")
+    ("K10b" "source_unreadable")
+    ("K11" "not_processed")
+    (_ (throw (new Error (template "unknown fixed row " id))))))
+
+(func
+  expected-parser-status
+  :args
+  (:string id)
+  :returns
+  :string
+  :body
+  (if (= id "K11") "identity_mismatch" "passed"))
 
 (func
   expected-exit
@@ -98,7 +130,8 @@
     (ensure (not (Object:hasOwn row "program")) (template id " must omit Program AST"))
     (ensure (= row:findings:length 0) (template id " must have no findings"))
     (ensure (= row:reasons:length 0) (template id " must have no reasons"))
-    (ensure (= row:dependency_edges:length 0) (template id " must have no dependency edges"))))
+    (ensure (= row:dependency_edges:length 0) (template id " must have no dependency edges"))
+    (ensure (= row:bare_imports 0) (template id " must have no bare imports"))))
 
 (func
   ensure-positive-row
@@ -114,7 +147,84 @@
     (ensure (= row:program:type "Program") (template id " Program type"))
     (ensure (= row:program:sourceType "module") (template id " source type"))
     (ensure (= row:direct_count direct) (template id " direct parent count"))
-    (ensure (= row:reason_count reasons) (template id " reason count"))))
+    (ensure (= row:reason_count reasons) (template id " reason count"))
+    (ensure (= row:program:body:length row:findings:length) (template id " top-level parent count"))
+    (bind finding-parents (-> row:findings (:filter (fn (:any parent) parent:finding))))
+    (ensure (= row:direct_count finding-parents:length) (template id " finding flag sum"))
+    (ensure (= row:reason_count row:reasons:length) (template id " reason array length"))
+    (ensure (= row:dependency_edge_count row:dependency_edges:length) (template id " edge array length"))
+    (bind parent-reasons (cell #a()))
+    (bind parent-edges (cell #a()))
+    (for-of parent row:findings
+      (swap! parent-reasons (fn (:array all) (-> all (:concat parent:reasons))))
+      (swap! parent-edges (fn (:array all) (-> all (:concat parent:dependency_edges)))))
+    (ensure (= (JSON:stringify (express parent-reasons)) (JSON:stringify row:reasons)) (template id " flattened reasons"))
+    (ensure (= (JSON:stringify (express parent-edges)) (JSON:stringify row:dependency_edges)) (template id " flattened dependency edges"))
+    (if
+      (= id "K08")
+      (do
+        (ensure (= row:dependency_edges:length 2) (template id " dependency edge count"))
+        (ensure (= row:bare_imports 1) (template id " bare import count")))
+      (do
+        (ensure (= row:dependency_edges:length 0) (template id " unexpected dependency edges"))
+        (ensure (= row:bare_imports 0) (template id " unexpected bare imports"))))
+    (for-of reason row:reasons
+      (ensure (= reason:potential_load_evaluation true) (template id " reason must be potential"))
+      (ensure (= reason:observed_effect null) (template id " reason must not claim observed effect"))))
+
+(func
+  ensure-parent
+  :args
+  (:any row :number index :string parent-type :string parent-path :boolean finding :string id)
+  :returns
+  :void
+  :body
+  (bind parent (get row:findings index))
+  (ensure (= parent:parentType parent-type) (template id " parent type at " index))
+  (ensure (= parent:parentPath parent-path) (template id " parent path at " index))
+  (ensure (= parent:finding finding) (template id " parent finding at " index))
+  (ensure (= parent:potential_load_evaluation finding) (template id " parent potential flag at " index))
+  (ensure (= parent:observed_effect null) (template id " parent observed effect at " index)))
+
+(func
+  ensure-edge
+  :args
+  (:any row :number index :string node-type :string path :string source :boolean bare :string id)
+  :returns
+  :void
+  :body
+  (bind edge (get row:dependency_edges index))
+  (ensure (= edge:nodeType node-type) (template id " dependency node at " index))
+  (ensure (= edge:path path) (template id " dependency path at " index))
+  (ensure (= edge:source source) (template id " dependency source at " index))
+  (ensure (= edge:bare_import bare) (template id " bare-import flag at " index)))
+
+(func
+  ensure-file-report
+  :args
+  (:any report :string id)
+  :returns
+  :void
+  :body
+  (do
+    (ensure (= report:selected_sources 1) (template id " selected source denominator"))
+    (ensure (= report:selected_condition_rows 1) (template id " selected row denominator"))
+    (ensure (= report:required_condition_rows 1) (template id " required row denominator"))
+    (ensure (= report:rows:length 1) (template id " report row length"))
+    (ensure (= report:parser_gate:status (expected-parser-status id)) (template id " parser gate status"))
+    (bind row (get report:rows 0))
+    (ensure (= row:status (expected-row-status id)) (template id " exclusive row status"))
+    (ensure (= report:direct_statements_with_findings (if (Object:hasOwn row "direct_count") row:direct_count 0)) (template id " direct parent report total"))
+    (ensure (= report:nested_reasons (if (Object:hasOwn row "reason_count") row:reason_count 0)) (template id " nested reason report total"))
+    (ensure (= report:dependency_edges (if (Object:hasOwn row "dependency_edge_count") row:dependency_edge_count 0)) (template id " dependency report total"))
+    (ensure (= report:bare_imports row:bare_imports) (template id " bare import report total"))
+    (bind statuses (array "complete_walk" "source_missing" "source_unreadable" "source_hash_mismatch" "compile_failed" "output_missing" "output_hash_mismatch" "output_unreadable" "parse_error" "unsupported_ast" "not_processed" "excluded_named"))
+    (for-of status statuses
+      (ensure (= (get report status) (if (= status (expected-row-status id)) 1 0)) (template id " terminal bucket " status)))
+    (bind partition-total (-> statuses (:map (fn (:string status) (get report status))) (:reduce (fn (:number total :number count) (+ total count)) 0)))
+    (ensure (= partition-total report:selected_condition_rows) (template id " terminal partition equation"))
+    (ensure (= report:files_parsed (+ report:complete_walk report:unsupported_ast)) (template id " parsed file equation"))
+    (ensure (= report:files_completely_walked report:complete_walk) (template id " completely walked equation"))))
 
 (func
   ensure-reason
@@ -249,15 +359,25 @@
         (JSON:stringify manifest)
         (obj :createNew true)))
     (bind manifest-bytes (await (Deno:readFile manifest-path)))
-    (bind parser-bytes (await (Deno:readFile parser-path)))
+    (bind deno-bytes (await (Deno:readFile deno)))
+    (bind parser-bytes (if synthetic? null (await (Deno:readFile parser-path))))
     (bind scanner-bytes (await (Deno:readFile scanner-js)))
     (bind core-bytes (await (Deno:readFile core-js)))
     (bind walker-bytes (await (Deno:readFile walker-js)))
-    (bind parser-hash (await (sha256 parser-bytes)))
+    (bind deno-hash (await (sha256 deno-bytes)))
+    (bind parser-hash (if synthetic? null (await (sha256 parser-bytes))))
     (bind scanner-hash (await (sha256 scanner-bytes)))
     (bind core-hash (await (sha256 core-bytes)))
     (bind walker-hash (await (sha256 walker-bytes)))
     (bind manifest-hash (await (sha256 manifest-bytes)))
+    (if
+      (not synthetic?)
+      (do
+        (ensure (= deno-hash "2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74") (template id " Deno binary identity"))
+        (ensure (= parser-hash "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7") (template id " Acorn artifact identity"))))
+    (ensure (= core-hash "6ca1afe83d6d9a47f7eb1fea7f0aa3872ae626cc4f39d5b3ed017aab38308bf7") (template id " parser-core module identity"))
+    (ensure (not (= walker-hash null)) (template id " walker module identity missing"))
+    (ensure (not (= scanner-hash null)) (template id " scanner module identity missing"))
     (bind read-paths
       (if
         synthetic?
@@ -269,6 +389,15 @@
             (= id "K10b")
             (array manifest-path scanner-js core-js walker-js parser-path)
           (array manifest-path scanner-js core-js walker-js parser-path scanner-input-path)))))
+    (if
+      (= id "K10a")
+      (ensure (-> read-paths (:includes input-path)) "K10a missing source grant not declared"))
+    (if
+      (= id "K10b")
+      (do
+        (ensure has-input "K10b existing denied input was not staged")
+        (ensure (not (= input-hash null)) "K10b existing input hash missing")
+        (ensure (not (-> read-paths (:includes input-path))) "K10b denied source path is granted")))
     (bind read-grant (-> read-paths (:join ",")))
     (bind argv
       (array
@@ -301,12 +430,15 @@
         :child_run_grant "none"
         :write_grant "none"
         :network "denied"
-        :input_path (if has-input input-path null)
+        :input_path (if synthetic? null scanner-input-path)
         :input_sha256 input-hash
+        :declared_source_sha256 row-hash
+        :source_path (if synthetic? null scanner-input-path)
         :manifest_path manifest-path
         :manifest_sha256 manifest-hash
-        :parser_path parser-path
+        :parser_path (if synthetic? null parser-path)
         :parser_sha256 parser-hash
+        :deno_sha256 deno-hash
         :scanner_path scanner-js
         :scanner_sha256 scanner-hash
         :core_path core-js
@@ -351,6 +483,38 @@
             :stdout_bytes output:stdout:length
             :stderr_bytes output:stderr:length))
         (obj :createNew true)))
+    (bind post-deno-hash (await (sha256 (await (Deno:readFile deno)))))
+    (bind post-manifest-hash (await (sha256 (await (Deno:readFile manifest-path)))))
+    (bind post-scanner-hash (await (sha256 (await (Deno:readFile scanner-js)))))
+    (bind post-core-hash (await (sha256 (await (Deno:readFile core-js)))))
+    (bind post-walker-hash (await (sha256 (await (Deno:readFile walker-js)))))
+    (bind post-parser-hash (if synthetic? null (await (sha256 (await (Deno:readFile parser-path))))))
+    (bind post-use
+      (obj
+        :id id
+        :deno_before deno-hash
+        :deno_after post-deno-hash
+        :parser_before parser-hash
+        :parser_after post-parser-hash
+        :scanner_before scanner-hash
+        :scanner_after post-scanner-hash
+        :core_before core-hash
+        :core_after post-core-hash
+        :walker_before walker-hash
+        :walker_after post-walker-hash
+        :manifest_before manifest-hash
+        :manifest_after post-manifest-hash))
+    (await
+      (Deno:writeTextFile
+        (result-path case-dir "post-use-hashes.json")
+        (JSON:stringify post-use)
+        (obj :createNew true)))
+    (ensure (= deno-hash post-deno-hash) (template id " Deno changed during child run"))
+    (ensure (= parser-hash post-parser-hash) (template id " parser changed during child run"))
+    (ensure (= scanner-hash post-scanner-hash) (template id " scanner changed during child run"))
+    (ensure (= core-hash post-core-hash) (template id " parser-core changed during child run"))
+    (ensure (= walker-hash post-walker-hash) (template id " walker changed during child run"))
+    (ensure (= manifest-hash post-manifest-hash) (template id " manifest changed during child run"))
     (bind report-text (new TextDecoder "utf-8" (obj :fatal true)))
     (bind report-cell (cell null))
     (try
@@ -364,6 +528,7 @@
     (bind report (express report-cell))
     (ensure (= output:code (expected-exit id)) (template id " child exit mismatch"))
     (ensure (= output:stderr:length 0) (template id " unexpected child stderr"))
+    (if (not synthetic?) (ensure-file-report report id))
     (if
       (= id "K11")
       (do
@@ -374,8 +539,11 @@
         (ensure (= report:files_parsed 0) "K11 must parse no file")
         (ensure (= row:status "not_processed") "K11 row status")
         (ensure (= row:manifest_source_sha256 row:source_sha256) "K11 declared source hash missing")
+        (ensure (= row:source_sha256 row-hash) "K11 K01 source hash declaration mismatch")
         (ensure (= row:observed_source_sha256 null) "K11 source must remain unread")
         (ensure (= row:observed_output_sha256 null) "K11 output hash must be unobserved")
+        (ensure (= report:parser_gate:expected_sha256 "0000000000000000000000000000000000000000000000000000000000000000") "K11 parser expected hash")
+        (ensure (= report:parser_gate:actual_sha256 "1cbcbf252a5800e496dc505c706f309a9dd4e1789392e12963c77ae9497ff6f7") "K11 parser actual hash")
         (ensure-no-ast row id)))
     (if
       (= id "K01")
@@ -383,7 +551,7 @@
         (bind row (get report:rows 0))
         (ensure (= report:status "complete_no_findings") "K01 aggregate status")
         (ensure (= report:files_parsed 1) "K01 parsed-file count")
-        (ensure (= row:program:bodyCount 2) "K01 Program body count")
+        (ensure (= row:program:body:length 2) "K01 Program body count")
         (ensure (= (JSON:stringify row:program:range) "[0,66]") "K01 Program range")
         (ensure (= row:program:loc:end:line 5) "K01 Program end line")
         (ensure (= row:program:loc:end:column 0) "K01 Program end column")
@@ -399,6 +567,8 @@
         (ensure (= (JSON:stringify function-call:range) "[20,30]") "K01 function body call range")
         (ensure (= arrow-function:body:type "CallExpression") "K01 arrow body call AST")
         (ensure-positive-row row 0 0 id)
+        (ensure-parent row 0 "FunctionDeclaration" "Program.body[0]" false id)
+        (ensure-parent row 1 "VariableDeclaration" "Program.body[1]" false id)
         (ensure-zero report 0 0 id)))
     (if
       (= id "K02")
@@ -407,15 +577,18 @@
         (ensure (= report:status "complete_with_findings") "K02 aggregate status")
         (ensure-positive-row row 2 3 id)
         (ensure-zero report 2 3 id)
-        (ensure-reason row 0 "CallExpression" "Program.body[0].declarations[0].init" "call" 1 14 "[14,23]" id)
-        (ensure-reason row 1 "CallExpression" "Program.body[1].expression" "call" 2 0 "[25,31]" id)
-        (ensure-reason row 2 "Identifier" "Program.body[1].expression.callee" "identifier_read" 2 0 "[25,28]" id)))
+        (ensure-parent row 0 "VariableDeclaration" "Program.body[0]" true id)
+        (ensure-parent row 1 "ExpressionStatement" "Program.body[1]" true id)
+        (ensure-reason row 0 "CallExpression" "Program.body[0].declarations[0].init" "call" 1 14 "[14,25]" id)
+        (ensure-reason row 1 "CallExpression" "Program.body[1].expression" "call" 2 0 "[27,32]" id)
+        (ensure-reason row 2 "Identifier" "Program.body[1].expression.callee" "identifier_read" 2 0 "[27,30]" id)))
     (if
       (= id "K03")
       (do
         (bind row (get report:rows 0))
         (ensure (= report:status "complete_with_findings") "K03 aggregate status")
         (ensure-positive-row row 1 2 id)
+        (ensure-parent row 0 "VariableDeclaration" "Program.body[0]" true id)
         (ensure-zero report 1 2 id)
         (ensure-reason row 0 "MemberExpression" "Program.body[0].declarations[0].init" "member_read" 1 14 "[14,26]" id)
         (ensure-reason row 1 "Identifier" "Program.body[0].declarations[0].init.object" "identifier_read" 1 14 "[14,20]" id)))
@@ -425,8 +598,9 @@
         (bind row (get report:rows 0))
         (ensure (= report:status "complete_with_findings") "K04 aggregate status")
         (ensure-positive-row row 1 4 id)
+        (ensure-parent row 0 "VariableDeclaration" "Program.body[0]" true id)
         (ensure-zero report 1 4 id)
-        (ensure-reason row 0 "ObjectPattern" "Program.body[0].declarations[0].id" "destructuring" 1 6 "[6,27]" id)
+        (ensure-reason row 0 "ObjectPattern" "Program.body[0].declarations[0].id" "destructuring" 1 6 "[6,28]" id)
         (ensure-reason row 1 "CallExpression" "Program.body[0].declarations[0].id.properties[0].value.right" "call" 1 16 "[16,26]" id)
         (ensure-reason row 2 "Identifier" "Program.body[0].declarations[0].id.properties[0].value.right.callee" "identifier_read" 1 16 "[16,24]" id)
         (ensure-reason row 3 "Identifier" "Program.body[0].declarations[0].init" "identifier_read" 1 31 "[31,37]" id)))
@@ -436,6 +610,8 @@
         (bind row (get report:rows 0))
         (ensure (= report:status "complete_with_findings") "K05 aggregate status")
         (ensure-positive-row row 2 4 id)
+        (ensure-parent row 0 "VariableDeclaration" "Program.body[0]" true id)
+        (ensure-parent row 1 "VariableDeclaration" "Program.body[1]" true id)
         (ensure-zero report 2 4 id)
         (ensure-reason row 0 "SpreadElement" "Program.body[0].declarations[0].init.properties[0]" "spread" 1 16 "[16,25]" id)
         (ensure-reason row 1 "Identifier" "Program.body[0].declarations[0].init.properties[0].argument" "identifier_read" 1 19 "[19,25]" id)
@@ -447,22 +623,24 @@
         (bind row (get report:rows 0))
         (ensure (= report:status "complete_with_findings") "K06 aggregate status")
         (ensure-positive-row row 1 9 id)
+        (ensure-parent row 0 "ClassDeclaration" "Program.body[0]" true id)
         (ensure-zero report 1 9 id)
         (ensure-reason row 0 "Identifier" "Program.body[0].superClass" "class_heritage_validation" 1 18 "[18,22]" id)
         (ensure-reason row 1 "Identifier" "Program.body[0].superClass" "identifier_read" 1 18 "[18,22]" id)
         (ensure-reason row 2 "CallExpression" "Program.body[0].body.body[0].key" "computed_key_coercion" 2 3 "[28,33]" id)
         (ensure-reason row 3 "CallExpression" "Program.body[0].body.body[0].key" "call" 2 3 "[28,33]" id)
         (ensure-reason row 4 "Identifier" "Program.body[0].body.body[0].key.callee" "identifier_read" 2 3 "[28,31]" id)
-        (ensure-reason row 5 "CallExpression" "Program.body[0].body.body[1].value" "call" 3 17 "[64,71]" id)
-        (ensure-reason row 6 "Identifier" "Program.body[0].body.body[1].value.callee" "identifier_read" 3 17 "[64,68]" id)
-        (ensure-reason row 7 "CallExpression" "Program.body[0].body.body[2].body[0].expression" "call" 4 11 "[83,90]" id)
-        (ensure-reason row 8 "Identifier" "Program.body[0].body.body[2].body[0].expression.callee" "identifier_read" 4 11 "[83,88]" id)))
+        (ensure-reason row 5 "CallExpression" "Program.body[0].body.body[1].value" "call" 3 17 "[65,71]" id)
+        (ensure-reason row 6 "Identifier" "Program.body[0].body.body[1].value.callee" "identifier_read" 3 17 "[65,69]" id)
+        (ensure-reason row 7 "CallExpression" "Program.body[0].body.body[2].body[0].expression" "call" 4 11 "[84,91]" id)
+        (ensure-reason row 8 "Identifier" "Program.body[0].body.body[2].body[0].expression.callee" "identifier_read" 4 11 "[84,89]" id)))
     (if
       (= id "K07")
       (do
         (bind row (get report:rows 0))
         (ensure (= report:status "complete_with_findings") "K07 aggregate status")
         (ensure-positive-row row 1 3 id)
+        (ensure-parent row 0 "IfStatement" "Program.body[0]" true id)
         (ensure-zero report 1 3 id)
         (ensure-reason row 0 "Identifier" "Program.body[0].test" "identifier_read" 1 4 "[4,9]" id)
         (ensure-reason row 1 "ThrowStatement" "Program.body[0].consequent.body[0]" "throw" 2 2 "[15,27]" id)
@@ -475,10 +653,15 @@
         (ensure-zero report 1 3 id)
         (ensure (= report:dependency_edges 2) "K08 dependency-edge count")
         (ensure (= report:bare_imports 1) "K08 bare-import count")
-        (ensure (= row:program:bodyCount 3) "K08 Program body count")
+        (ensure-parent row 0 "ImportDeclaration" "Program.body[0]" false id)
+        (ensure-parent row 1 "ExportNamedDeclaration" "Program.body[1]" false id)
+        (ensure-parent row 2 "ExpressionStatement" "Program.body[2]" true id)
+        (ensure (= row:program:body:length 3) "K08 Program body count")
         (ensure (= (JSON:stringify row:program:range) "[0,67]") "K08 Program range")
         (ensure (= row:program:loc:end:line 4) "K08 Program end line")
         (ensure (= row:program:loc:end:column 0) "K08 Program end column")
+        (ensure-edge row 0 "ImportDeclaration" "Program.body[0]" "./dep.js" true id)
+        (ensure-edge row 1 "ExportNamedDeclaration" "Program.body[1]" "./dep.js" false id)
         (ensure-reason row 0 "AwaitExpression" "Program.body[2].expression" "await" 3 0 "[53,65]" id)
         (ensure-reason row 1 "CallExpression" "Program.body[2].expression.argument" "call" 3 6 "[59,65]" id)
         (ensure-reason row 2 "Identifier" "Program.body[2].expression.argument.callee" "identifier_read" 3 6 "[59,63]" id)))
@@ -491,6 +674,8 @@
         (ensure (= row:status "parse_error") "K09 row status")
         (ensure (= row:error:pos 14) "K09 SyntaxError position")
         (ensure (= row:error:name "SyntaxError") "K09 actual SyntaxError name")
+        (ensure (= (js:typeof row:error:message) "string") "K09 diagnostic message type")
+        (ensure (> row:error:message:length 0) "K09 diagnostic message nonempty")
         (ensure (= row:error:loc:line 1) "K09 SyntaxError line")
         (ensure (= row:error:loc:column 14) "K09 SyntaxError column")
         (ensure-no-ast row id)))
@@ -501,10 +686,41 @@
         (ensure (= report:status "incomplete") (template id " aggregate status"))
         (ensure (= row:status (if (= id "K10a") "source_missing" "source_unreadable")) (template id " row status"))
         (ensure (= row:error:name (if (= id "K10a") "NotFound" "NotCapable")) (template id " distinct read failure"))
+        (if
+          (= id "K10a")
+          (do
+            (ensure (= row:source_sha256 null) "K10a source expected hash must be null")
+            (ensure (= row:manifest_source_sha256 null) "K10a manifest expected hash must be null"))
+          (do
+            (ensure (= row:source_sha256 row-hash) "K10b declared hash mismatch")
+            (ensure (= input-hash row-hash) "K10b staged input hash mismatch")))
+        (ensure (= row:observed_source_sha256 null) (template id " observed source hash must be null"))
+        (ensure (= row:observed_output_sha256 null) (template id " observed output hash must be null"))
         (ensure-no-ast row id)))
     (if (= id "K12")
       (do
-        (ensure (= report:unit:status "unsupported_ast") "K12 unsupported status")
+        (ensure (= report:parser_gate:status "not_applicable") "K12 parser gate N/A")
+        (ensure (= report:parser_gate:path null) "K12 parser path N/A")
+        (ensure (= report:parser_gate:version null) "K12 parser version N/A")
+        (ensure (= report:parser_gate:expected_sha256 null) "K12 expected parser hash N/A")
+        (ensure (= report:parser_gate:actual_sha256 null) "K12 actual parser hash N/A")
+        (ensure (= report:parser_gate:options null) "K12 parser options N/A")
+        (ensure (= report:selected_sources null) "K12 selected sources N/A")
+        (ensure (= report:selected_condition_rows null) "K12 selected rows N/A")
+        (ensure (= report:required_condition_rows null) "K12 required rows N/A")
+        (ensure (= report:complete_walk null) "K12 complete walks N/A")
+        (ensure (= report:source_missing null) "K12 missing sources N/A")
+        (ensure (= report:source_unreadable null) "K12 unreadable sources N/A")
+        (ensure (= report:source_hash_mismatch null) "K12 hash mismatches N/A")
+        (ensure (= report:compile_failed null) "K12 compile failures N/A")
+        (ensure (= report:output_missing null) "K12 missing outputs N/A")
+        (ensure (= report:output_hash_mismatch null) "K12 output hash mismatches N/A")
+        (ensure (= report:output_unreadable null) "K12 unreadable outputs N/A")
+        (ensure (= report:parse_error null) "K12 parse errors N/A")
+        (ensure (= report:unsupported_ast null) "K12 corpus unsupported AST N/A")
+        (ensure (= report:not_processed null) "K12 not-processed rows N/A")
+        (ensure (= report:excluded_named null) "K12 exclusions N/A")
+        (ensure (= report:unit:status (expected-status id)) "K12 unsupported status")
         (ensure (= report:unit:nodeType "ExperimentalNode") "K12 actual offending type")
         (ensure (= report:unit:path "Program.body[0]") "K12 path")
         (ensure (= report:unit:loc null) "K12 unavailable location")
@@ -512,6 +728,10 @@
         (ensure (= report:status "incomplete") "K12 aggregate status")
         (ensure (= report:files_parsed null) "K12 parser count must be not applicable")
         (ensure (= report:files_completely_walked null) "K12 walked-file count must be not applicable")
+        (ensure (= report:direct_statements_with_findings null) "K12 direct findings N/A")
+        (ensure (= report:nested_reasons null) "K12 nested reasons N/A")
+        (ensure (= report:dependency_edges null) "K12 dependency edges N/A")
+        (ensure (= report:bare_imports null) "K12 bare imports N/A")
         (ensure (= report:rows:length 0) "K12 file rows must be not applicable")))
     (await
       (Deno:writeTextFile
@@ -535,7 +755,11 @@
     :returns
     :any
     :body
-    (bind controls (JSON:parse (await (Deno:readTextFile controls-path))))
+    (bind controls-bytes (await (Deno:readFile controls-path)))
+    (bind controls-hash-before (await (sha256 controls-bytes)))
+    (ensure (= controls-hash-before "0f20dba4713b93671b337fa1ba0a5cde00fdbe29bed195a00e3ae1c689473a5d") "pre-run controls hash differs from frozen bytes")
+    (bind controls-decoder (new TextDecoder "utf-8" (obj :fatal true)))
+    (bind controls (JSON:parse (controls-decoder:decode controls-bytes)))
     (bind ids (array "K11" "K01" "K02" "K03" "K04" "K05" "K06" "K07" "K08" "K09" "K10a" "K10b" "K12"))
     (bind control-ids (array "K01" "K02" "K03" "K04" "K05" "K06" "K07" "K08" "K09" "K10a" "K10b" "K11" "K12"))
     (ensure (= controls:fullAuditControls:length 13) "fixed control population must be 13")
@@ -547,6 +771,13 @@
         (= (get (get controls:fullAuditControls index) "id") (get control-ids index))
         (template "fixed control order mismatch at " index)))
     (bind parser-path controls:parser:path)
+    (bind parser-hash-before (await (sha256 (await (Deno:readFile parser-path)))))
+    (bind gate-parser-before (obj :parser_path parser-path :parser_sha256 parser-hash-before :controls_sha256 controls-hash-before))
+    (await
+      (Deno:writeTextFile
+        (result-path task-root "whole-gate-parser-before.json")
+        (JSON:stringify gate-parser-before)
+        (obj :createNew true)))
     (bind cases (cell #a()))
     (bind sequence (cell 0))
     (for-of
@@ -556,18 +787,33 @@
         (await (run-case controls id (express sequence) deno scanner-js core-js walker-js parser-path task-root cache-root cwd)))
       (swap! cases (fn (:array all) (conj all case-result)))
       (swap! sequence (fn (:number n) (+ n 1))))
+    (bind parser-hash-after (await (sha256 (await (Deno:readFile parser-path)))))
+    (bind controls-hash-after (await (sha256 (await (Deno:readFile controls-path)))))
+    (bind gate-parser-after (obj
+      :parser_path parser-path
+      :parser_sha256 parser-hash-after
+      :controls_sha256 controls-hash-after))
+    (await
+      (Deno:writeTextFile
+        (result-path task-root "whole-gate-parser-after.json")
+        (JSON:stringify gate-parser-after)
+        (obj :createNew true)))
+    (ensure (= parser-hash-before parser-hash-after) "whole-gate parser identity changed")
+    (ensure (= controls-hash-before controls-hash-after) "controls changed during fixed gate")
+    (bind case-results (express cases))
+    (bind passed-cases (-> case-results (:filter (fn (:any row) (= row:status "pass")))))
     (bind results
       (obj
         :schema "lykn-estree-capability-results-v1"
-        :controls_sha256 (await (sha256 (await (Deno:readFile controls-path))))
+        :controls_sha256 controls-hash-before
         :source_commit "8ed869f1ed24bf688ba91f71d8c539680136794e"
         :source_tree "74b980be159f8557c78d11b4546bf92498b7861e"
         :compiler_sha256 "aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8"
         :deno_sha256 (await (sha256 (await (Deno:readFile deno))))
-        :parser_sha256 (await (sha256 (await (Deno:readFile parser-path))))
+        :parser_sha256 parser-hash-after
         :selected_rows 13
-        :completed (get (express cases) "length")
-        :passed (-> (express cases) (:filter (fn (:any row) (= row:status "pass"))) (:length))
+        :completed case-results:length
+        :passed passed-cases:length
         :cases (express cases)))
     (await
       (Deno:writeTextFile

@@ -9,7 +9,10 @@
   :returns
   :boolean
   :body
-  (and (not (= value null)) (Object:hasOwn value key)))
+  (and
+    (not (= value null))
+    (or (= (js:typeof value) "object") (= (js:typeof value) "function"))
+    (Object:hasOwn value key)))
 
 (func
   child
@@ -497,13 +500,19 @@
         (add-reason state node path "spread" "spread may invoke getters or iterators")
         (visit-one state node "argument" path ReferenceRole))
       ("Property"
-        (check-unlisted state node path (array "type" "key" "value" "computed" "shorthand" "kind" "method"))
-        (if (child node "computed")
-          (do
-            (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
-            (visit-one state node "key" path ReferenceRole))
-          (visit-one state node "key" path NameRole))
-        (visit-one state node "value" path ReferenceRole))
+        (match
+          role
+          (BindingRole (visit-pattern state node path))
+          (ReferenceRole
+            (check-unlisted state node path (array "type" "key" "value" "computed" "shorthand" "kind" "method"))
+            (if (child node "computed")
+              (do
+                (add-reason state (child node "key") (path-field path "key") "computed_key_coercion" "ToPropertyKey may invoke user conversion")
+                (visit-one state node "key" path ReferenceRole))
+              (visit-one state node "key" path NameRole))
+            (visit-one state node "value" path ReferenceRole))
+          (NameRole (unsupported state node path))
+          (DeferredRole (unsupported state node path))))
       ("ArrayPattern" (visit-pattern state node path))
       ("ObjectPattern" (visit-pattern state node path))
       ("UnaryExpression"
