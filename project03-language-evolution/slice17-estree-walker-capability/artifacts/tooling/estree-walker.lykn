@@ -182,7 +182,7 @@
         (bind item (get value index))
         (if
           (ast-node? item)
-          (unsupported state item (path-index path index))))))
+          (unsupported state item (path-index path index)))))))
 
 (func
   check-unlisted

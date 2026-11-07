@@ -1,0 +1,78 @@
+(exports load-parser verify-parser)
+
+(bind
+  parser-path
+  "/Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs")
+
+(bind
+  parser-url
+  "file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/acorn/8.17.0/dist/acorn.mjs")
+
+(bind parser-version "8.17.0")
+
+(async
+  (func
+    sha256
+    :args
+    (:any bytes)
+    :returns
+    :string
+    :body
+    (bind digest (new Uint8Array (await (crypto:subtle:digest "SHA-256" bytes))))
+    (->
+      (Array:from
+        digest
+        (fn (:number byte) (-> (byte:toString 16) (:padStart 2 "0"))))
+      (:join ""))))
+
+(async
+  (func
+    load-parser
+    :args
+    (:string expected-hash)
+    :returns
+    :any
+    :body
+    (bind parser-bytes (await (Deno:readFile parser-path)))
+    (bind actual-hash (await (sha256 parser-bytes)))
+    (if
+      (!= actual-hash expected-hash)
+      (obj
+        :status
+        "parser_artifact_identity_mismatch"
+        :actualHash
+        actual-hash
+        :expectedHash
+        expected-hash)
+      (do
+        (bind parser (await (dynamic-import parser-url)))
+        (if
+          (!= parser:version parser-version)
+          (obj
+            :status
+            "parser_artifact_version_mismatch"
+            :actualHash
+            actual-hash
+            :actualVersion
+            parser:version)
+          (obj
+            :status
+            "ready"
+            :actualHash
+            actual-hash
+            :actualVersion
+            parser:version
+            :parser
+            parser))))))
+
+(async
+  (func
+    verify-parser
+    :args
+    (:string prior-hash)
+    :returns
+    :any
+    :body
+    (bind parser-bytes (await (Deno:readFile parser-path)))
+    (bind after-hash (await (sha256 parser-bytes)))
+    (obj :afterHash after-hash :unchanged (= after-hash prior-hash))))

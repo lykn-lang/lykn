@@ -95,7 +95,7 @@
         (if
           (= status "unexpected")
           (throw error)
-          (reset! result (assoc (express result) :status status :error (error-record error))))))
+          (reset! result (assoc (express result) :status status :error (error-record error))))))))
     (if
       (not (= (express bytes) null))
       (do
@@ -122,7 +122,7 @@
             (try
               (reset! source (decoder:decode (express bytes)))
               (catch error
-                (reset! result (assoc (express result) :status "source_unreadable" :error (error-record error))))
+                (reset! result (assoc (express result) :status "source_unreadable" :error (error-record error)))))
             (if
               (not (= (express source) null))
               (do
@@ -142,7 +142,7 @@
                           (express result)
                           :status "parse_error"
                           :error (error-record error)))
-                      (throw error)))
+                      (throw error))))
                 (if
                   (not (= (express parsed) null))
                   (do
@@ -421,7 +421,7 @@
       :bare_imports bare-total
       :rows values
       :status (if complete (if (> (+ direct-total reason-total edge-total) 0) "complete_with_findings" "complete_no_findings") "incomplete")
-      :exit (if complete 0 2)))
+      :exit (if complete 0 2))))
 
 (func
   scan-synthetic

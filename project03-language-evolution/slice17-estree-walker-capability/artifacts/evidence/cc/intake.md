@@ -122,3 +122,19 @@ type/path/category/loc/range or all §5 partition equations, and it is explicitl
 not runtime-ready. No source generation, module guard, or capability case has
 run (0/13). After intended boundaries are repaired, freeze before the two
 native checks; if either fails, return before more semantic source editing.
+
+## Correction3 source readback
+
+Iteration05 is correction3/5. Before editing, I preserved all four actual
+333b209 module bodies under `artifacts/evidence/cc/correction-03/baseline/`.
+The pinned native feedback is ordinary source syntax: walker `flag-unlisted`
+leaves its function open before `check-unlisted`; scanner `scan-row` leaves the
+read, decoder, and parse try/catch scopes crossing into their following guards;
+and `scan-file-manifest` is not fully closed before `scan-synthetic`. The fix
+must close each intended local boundary, keep `walk-program` outside the parse
+catch, and leave `(express result)` as `scan-row`'s final value. The observer is
+still unfinished: its existing candidate checks K10 path/grant separation and
+K11 unread hashes, but lacks the full per-reason type/path/category/loc/range
+oracles and §5 aggregate partitions. CDC reports no runtime (0/13), and its
+wrong-CWD empty-input check remains non-evidence. Freeze before only the two
+native checks; a failure returns before further semantic edits.
