@@ -548,6 +548,16 @@ and [raw independent witnesses](slice15-async-expression-values/artifacts/parser
 No release propagation, universal async/compiler proof, walker/full corpus or
 F-1–F-12 completion follows. NE-C02/04/05/NE-T01 and Project07 gates remain separate.
 
+**Subsequent explicit local integration,2026-11-07:** Slice16 independently
+accepts the complete NE-C07/NE-C08/NE-C09 stack on release/0.6.x at
+5408abd432b8789ae474a3895436f68818c4e482, tree39bc56b73897e568ff81ce60a2feef28a2310ea8.
+Normal ff-only fromf705 preserves24commits/exact16paths. Fresh independent full
+Make, six native regressions and citations pass; release/bin85d6d3 and actual
+fresh embedded mirror1c1e7e8 verified. [Integration review](slice16-compiler-stack-release-integration/cdc-verification.md).
+This supersedes the earlier task-only integration state for these three repairs,
+not their historical observations/limits. Other releases/main remain untouched;
+no push/publication/type/cache repair/walker/corpus or next unit follows.
+
 #### NE-T01 — async declaration-sidecar coverage limitation
 
 **Owned current limitation, 2026-11-06.** Accepted Slice14 async module/consumer

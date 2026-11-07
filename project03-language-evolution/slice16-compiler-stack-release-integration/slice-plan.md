@@ -1,12 +1,18 @@
 # Slice16 — accepted compiler stack local release integration
 
-Opened2026-11-07; open collapsed standalone integration, consistent with Slice10.
+Opened/closed2026-11-07; collapsed standalone integration, consistent with Slice10.
 Operator explicitly answered “let’s do it!” to integrating the complete accepted
 NE-C07/08/09 stack through5408abd into release/0.6.x, fresh release validation and
 independent review. Same approved OpenAI CDC Sol6.1 High / CC Luna6 High,
 Autonomous Mode. Endpoint ONLY this local integration accepted or honest gate stop;
 no next unit, other release/main propagation, push/publication/remote CI, new
 compiler repair, dependency/toolchain/install/global-install/walker/corpus/library.
+
+**Final:** all five rows independently done. Release now5408/tree39bc56b7 by
+normal ff-only; fresh CC and CDC full normal Make/native/citation gates0, actual
+release binaries/materialized mirrors verified. [Review](cdc-verification.md),
+[CC close](closing-report.md), [retrospective](cdc-retrospective.md). No subsequent
+unit or other integration/publication opens.
 
 ## Authority, identities and implementation
 
@@ -134,4 +140,4 @@ No arc invented; this follows the existing collapsed-unit convention.
 
 | Prompt | Date | Predecessor | Reason | Disposition |
 | --- | --- | --- | --- | --- |
-| cc-prompt.md | 2026-11-07 | none | Explicit local compiler-stack integration | Active after prep commit/dispatch |
+| cc-prompt.md | 2026-11-07 | none | Explicit local compiler-stack integration | CCea58d19 returned; independently accepted, no correction pass |

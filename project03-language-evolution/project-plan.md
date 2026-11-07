@@ -147,6 +147,14 @@ records exact ff-only target/tree/16paths, same Sol6.1 High CDC/Luna6 High CC
 Autonomous arrangement and integration-only endpoint. No new compiler correction,
 source budget reset, other propagation, audit/library work or remote action.
 
+Slice16 is now independently closed: release/0.6.x fast-forwarded normally from
+f705655 to accepted5408/tree39bc56b7 with exact16 paths/24commits preserved. Fresh
+CC and CDC normal full Make, six native tests and committed citations pass;
+actual release/bin85d6d3 and fresh materialized compiler1c1e7e8 are verified.
+Five SI rows done. Prior source/parser/pilot histories retain original conditions;
+no publication, other propagation, full audit/library/project acceptance or next
+unit follows. [Independent integration review](slice16-compiler-stack-release-integration/cdc-verification.md).
+
 2026-11-06 Operator authorized [Slice15](slice15-async-expression-values/slice-plan.md)
 for NE-C09 async expression/value-flow repair, independent source/full validation,
 then only the same four parser observations or another-real-gap stop. Same
@@ -344,7 +352,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
-- [slice16-compiler-stack-release-integration](slice16-compiler-stack-release-integration/slice-plan.md): open explicit local0.6 integration of accepted NE-C07/08/09, full fresh release validation and independent review only.
+- [slice16-compiler-stack-release-integration](slice16-compiler-stack-release-integration/slice-plan.md): closed5done; accepted NE-C07/08/09 stack locally integrated0.6 at5408, full fresh independent release gates; no other propagation/next unit.
 - [slice15-async-expression-values](slice15-async-expression-values/slice-plan.md): closed7done; NE-C09 independently accepted task-only/full normal gates and unchanged parser four independently4/4; failed conditions/overrides retained, no integration/full audit/next unit.
 - [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): closed6done/2deferred; both repairs independently accepted task-only/full gates, new NE-C09 stops parser0/4; history/method breach/NE-T01 owned, no integration or next unit.
 - [slice13-async-export-repair](slice13-async-export-repair/slice-plan.md): closed at independent NE-C08 output-route gap; NE-C07 candidate unvalidated, one done/six deferred, parser0/4; no integration or next unit.
@@ -373,6 +381,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.26: Closed Slice16's exact local0.6 fast-forward and independent
+  fresh full/native/citation/binary/materialization validation; five rows done,
+  source5408/16paths/24commits preserved. No new source work, audit/library gate,
+  publication, other propagation or next unit inherits acceptance.
 
 - 2026-11-07 v1.25: Opened explicit Slice16 ff-only accepted compiler-stack
   integration into local release/0.6.x with fresh normal gates/independent review,

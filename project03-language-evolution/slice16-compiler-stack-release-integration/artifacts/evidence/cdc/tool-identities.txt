@@ -1,0 +1,18 @@
+/Users/oubiwann/.cargo/bin/rustc
+/Users/oubiwann/.cargo/bin/cargo
+/opt/homebrew/bin/deno
+/Users/oubiwann/.cargo/bin/cargo-binstall
+/Users/oubiwann/.cargo/bin/cargo-outdated
+/Users/oubiwann/.cargo/bin/cargo-llvm-cov
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+54c9e14255b2861a31bece6b5de29ef3fa715d0e87e27c440d05ed258bb24bf4  /Users/oubiwann/.rustup/toolchains/1.97.0-aarch64-apple-darwin/bin/rustc
+ab0f670cc50bc74a6f79bc2250a9310515f71ab81d513748ce5a7f309808b3bf  /Users/oubiwann/.rustup/toolchains/1.97.0-aarch64-apple-darwin/bin/cargo
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc  /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn
+85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc  /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn
+4eb4a7b429e27de7ccd33122152cfdd84eb4c4273eeccfb7536b98bc109a0a2e  /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn
+lykn 0.6.0

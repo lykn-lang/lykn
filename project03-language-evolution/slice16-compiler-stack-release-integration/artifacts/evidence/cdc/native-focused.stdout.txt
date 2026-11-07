@@ -1,0 +1,21 @@
+
+running 2 tests
+test async_exports_keep_unknown_nested_and_reserved_names_rejected ... ok
+test async_named_export_checks_compiles_and_imports_with_await ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+
+running 1 test
+test native_compiler_preserves_async_expression_values ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+
+running 3 tests
+test rejected_file_compile_preserves_existing_js_and_dts_sentinels ... ok
+test stdout_and_file_compile_keep_typed_export_output_and_runtime_behavior ... ok
+test stdout_and_file_routes_reject_the_same_validation_inputs ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

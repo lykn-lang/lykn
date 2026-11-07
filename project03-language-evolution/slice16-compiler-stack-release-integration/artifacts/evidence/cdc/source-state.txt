@@ -1,0 +1,26 @@
+release/0.6.x
+5408abd432b8789ae474a3895436f68818c4e482
+39bc56b73897e568ff81ce60a2feef28a2310ea8
+5408abd432b8789ae474a3895436f68818c4e482
+3b65d09a1a8997f8c9680a34f43fd2c2e0aa8c4e
+0	24
+0	0
+M	crates/lykn-cli/src/compile.rs
+A	crates/lykn-cli/tests/async_exports.rs
+A	crates/lykn-cli/tests/async_expression_values.rs
+A	crates/lykn-cli/tests/compile_validation_parity.rs
+M	crates/lykn-lang/embedded/packages/lang/compiler.js
+M	crates/lykn-lang/src/classifier/forms.rs
+M	crates/lykn-lang/src/emitter/forms.rs
+M	packages/lang/compiler.js
+A	test/fixtures/async-exports/consumer.lykn
+A	test/fixtures/async-exports/module.lykn
+A	test/fixtures/async-expression-values/E1-sync-values.lykn
+A	test/fixtures/async-expression-values/E2-async-branches.lykn
+A	test/fixtures/async-expression-values/E3-promise-value.lykn
+A	test/fixtures/async-expression-values/E4-deferred-function.lykn
+A	test/fixtures/async-expression-values/E5-effects-errors.lykn
+A	test/forms/async-expression-values.test.js
+0
+0
+5408abd432b8789ae474a3895436f68818c4e482 merge 5408abd432b8789ae474a3895436f68818c4e482: Fast-forward

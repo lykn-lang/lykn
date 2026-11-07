@@ -39,3 +39,10 @@ remain. The first outer-read omission and exact original-authority restoration
 are distinct preserved launch conditions. No full K/walker/corpus/F6 audit,
 release integration, next unit or inherited project/Project07 acceptance. P-1 and
 all original Slice01 F-1–F-12 remain open; old child deferrals stay historical.
+
+2026-11-07: [Slice16 integration](slice16-compiler-stack-release-integration/cdc-verification.md)
+independently accepts the normal local0.6 fast-forward to5408 and exact16-path
+stack, fresh full Make/six native tests/citations plus actual binary/materialized
+mirror proof. All five SI rows done; release clean,24history commits preserved.
+Original F-1–F-12/fullwalker/corpus/F6, Project07 and P-1 composition stay open.
+No other propagation, push/publication, source repair or next unit is authorized.

@@ -23,3 +23,12 @@ Assignment: `cc-prompt.md` for accepted compiler stack local release integration
 The slice delivered the planned exact local release integration at `5408…e482`, with the required fresh normal full gate and supporting focused runtime/citation/cache-mirror checks. The integration added no compiler work beyond the accepted stack. No new arc sequencing or scope change was discovered. The complete specified 16-path source delta is integrated; no listed path is missing and no extra source path was added. NE-C04's version-only cache key limitation and all prior source evidence boundaries remain as previously recorded. No push, publication, other-branch propagation, next unit, or broader release/acceptance claim is made.
 
 CDC now owns independent replay and all status/acceptance, CDC retrospective, parent and backlog mutations. CC explicitly returns release and planning index ownership after the reviewable results/close records are committed.
+
+## CDC follow-through,2026-11-07
+
+The CC proposal above is preserved at ea58d1972c4806baad2dd6a2bf7bcdb5afd538f9.
+CDC independently accepts all five rows after fresh release full/native/citation
+gates and actual tree/binary/materialization reconciliation. See
+[review](cdc-verification.md), [retrospective](cdc-retrospective.md) and ledger.
+Source remains clean5408; no further unit/action follows. `results.md` and this
+close are slice-root records; supporting raw artifacts are under artifacts/.

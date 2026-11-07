@@ -1,0 +1,21 @@
+Actual CDC execution record (transcribed after execution; not a pre-run source freeze).
+CWD for all gates: /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+
+Cache-before receipts: ls -ld target/slice16/cdc (absent, exit1), then native mkdir -p target/slice16/cdc/npm-cache target/slice16/cdc/xdg-cache.
+
+Full Make:
+env -u CARGO_NET_OFFLINE -u CARGO_TARGET_DIR DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice16/cdc/npm-cache XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice16/cdc/xdg-cache /usr/bin/make check
+
+Focused native:
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno cargo test --offline --locked -p lykn-cli --test compile_validation_parity --test async_exports --test async_expression_values -- --nocapture
+
+Committed citations:
+/usr/bin/make check-cited-paths
+
+Each gate's stdout/stderr was redirected to the adjacent matching files before invocation; actual command status saved immediately as .exit. Full Make session20537 completed0, not merely the outer printf exit. Existing product test harnesses capture their own compiler/runtime outcomes before assertions. No new helper/validator was authored.
+
+tool-identities.txt: command -v/rustc --version/cargo --version/deno --version plus actual absolute shasum256. Version lookup was independently repeated during Make; resolved Rust-toolchain/release/bin/debug hashes recorded after Make, BEFORE focused runtimes. After focused execution all three CLI hashes were rechecked unchanged. Rust shim hashes are not represented as compiler executable hashes.
+
+mirrors.txt: shasum256 canonical packages/lang/compiler.js, tracked embedded mirror, actual fresh target/slice16/cdc/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js; native cmp canonical→embedded0 and canonical→fresh0.
+
+source-state.txt: actual current branch/status, HEAD/tree/task/prior refs, baselinef705...HEAD0/24 and currentHEAD...task0/0, complete16-path name/status, exact5408 whole-tree diff0, protected baseline-path diff0, actual release reflog Fast-forward. Source was clean before/after the independent gates; ignored build/cache files are not product edits. CDC separately verified clean f705/0,24 before dispatch in its original tool trace; current queries are not relabeled pre-merge execution.
