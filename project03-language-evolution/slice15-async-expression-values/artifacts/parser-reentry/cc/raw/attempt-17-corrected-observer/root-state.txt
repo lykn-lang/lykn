@@ -1,0 +1,4 @@
+The fresh parent and its outer-cache DENO_DIR were created. TASK_ROOT=/private/tmp/lykn-s15-parser-cc-retry-5408abd/results and CACHE_ROOT=/private/tmp/lykn-s15-parser-cc-retry-5408abd/child-cache were required absent before observer launch.
+ls: /private/tmp/lykn-s15-parser-cc-retry-5408abd/child-cache: No such file or directory
+ls: /private/tmp/lykn-s15-parser-cc-retry-5408abd/results: No such file or directory
+1

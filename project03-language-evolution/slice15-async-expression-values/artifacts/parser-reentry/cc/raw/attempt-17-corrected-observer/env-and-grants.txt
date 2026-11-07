@@ -1,0 +1,1 @@
+DENO_DIR=/private/tmp/lykn-s15-parser-cc-retry-5408abd/outer-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1; other environment inherited. Exact outer reads: controls, parser, probe JS, core JS, and only results/K01/input.js, results/K08/input.js, results/K09/input.js. Exact writes: results and child-cache roots. Exact run grant: /opt/homebrew/bin/deno. No net/prompt/environment grant.
