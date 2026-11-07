@@ -908,8 +908,10 @@ C-style for:
 (for (let i 0) (< i 10) (++ i) (console:log i))
 ```
 
-The initializer, test, and update are value expressions. Every form after
-those three runs in order as a statement in the loop body.
+The first three forms are the initializer, test, and update headers. The
+initializer may declare a binding; expressions consumed in these headers
+require values. Every following form runs in order as a statement in the loop
+body.
 
 do-while:
 
