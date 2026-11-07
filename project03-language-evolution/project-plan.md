@@ -140,6 +140,15 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-06 Operator explicitly authorized [Slice14](slice14-compile-validation-and-parser/slice-plan.md):
+NE-C08 shared compile-route validation parity, independent acceptance, then
+NE-C07 narrow async-export repair/independent acceptance, then only the unchanged
+four parser observations. Same Sol6.1 High CDC/fresh Luna6 High CC Autonomous
+roles; first genuinely new real gap stops dependent work. Known NE-C08/07 red
+failures are authorized prerequisites. Dedicated codex/compile-route-validation
+preserves prior refs; no release integration, full audit/walker/library or next
+unit. Earlier Slice12/13 deferrals and process history remain unchanged.
+
 2026-11-06 [Slice13](slice13-async-export-repair/cdc-verification.md) closed
 at independently confirmed NE-C08: the same reserved-binding input succeeds
 through compile-with-output and emits literal invalid `function default`.
@@ -263,6 +272,7 @@ NE-C02 separately owns the branch-binding observation. No release integration,
 new slice, dependency/backend change or full audit/library acceptance follows.
 
 - [slice01-treeshake-audit](slice01-treeshake-audit/slice-plan.md): compiled-output tree-shakeability research; open.
+- [slice14-compile-validation-and-parser](slice14-compile-validation-and-parser/slice-plan.md): open staged NE-C08/NE-C07 repairs and same-four parser re-entry; independent source acceptance between stages, explicit first-new-gap stop.
 - [slice13-async-export-repair](slice13-async-export-repair/slice-plan.md): closed at independent NE-C08 output-route gap; NE-C07 candidate unvalidated, one done/six deferred, parser0/4; no integration or next unit.
 - [slice12-offline-walker-capability](slice12-offline-walker-capability/slice-plan.md): closed at reproduced native async-export validation gap; candidate tooling retained, parser0/4 and full K gate unrun; NE-C07 owns re-entry.
 - [slice11-audit-evidence-contract](slice11-audit-evidence-contract/slice-plan.md): independently closed method settlement; all original audit rows/execution remain open and separately gated.
@@ -289,6 +299,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-06 v1.21: Opened explicit staged Slice14 NE-C08/NE-C07 repair and
+  independent validation then unchanged four observations; known prerequisite
+  red retained, shared compile-pass parity scope and endpoint recorded.
 
 - 2026-11-06 v1.20: Closed Slice13 at independently reproduced NE-C08; retained
   meaningful red tests and unvalidated candidate, restored live production edit,
