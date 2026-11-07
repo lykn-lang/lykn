@@ -1,5 +1,9 @@
 # S02 checked emission ledger
 
+2026-11-07 newest: Operator opened linked Arc02 S01 maintenance correction01
+execution only; CE rows remain deferred and S02 Result code held. The shared
+allowance/history carries across; explicit continuation follows accepted baseline.
+
 2026-11-07 latest: Operator explicitly paused S02 for planning-only
 [Arc02 S01](../../arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/slice-plan.md).
 All CE rows remain deferred; no correction/dispatch/source/test/build authority.

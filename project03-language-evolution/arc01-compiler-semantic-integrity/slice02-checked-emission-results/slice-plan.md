@@ -9,6 +9,14 @@ depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emis
 
 # Checked emission results
 
+## Maintenance execution approved; S02 still held — 2026-11-07
+
+Operator opened the linked Arc02 S01 local harness/baseline correction01 only.
+Its fresh Luna6 High CC/separate Sol6.1 High CDC assignment carries this same
+allowance/history, expected baseline reds and first unexpected-failure stop.
+No Result implementation or S02 resumption is implied; accepted maintenance
+baseline plus explicit continuation remains the return gate.
+
 ## Operator-directed maintenance pause — 2026-11-07
 
 The Operator requested planning-only [Arc02 S01](../../arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/slice-plan.md) for this local test correction and honest old-compiler baseline. No correction, CC dispatch, source/test/build execution or S02 continuation is authorized now. That bounded accepted result, not closure of all future miscellany, plus explicit Operator continuation gates return to this approved Result design. Current CE deferrals and original prompt/review remain unchanged.

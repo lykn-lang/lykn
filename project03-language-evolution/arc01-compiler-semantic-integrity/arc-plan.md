@@ -9,6 +9,12 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Maintenance first slice opened; Result work paused — 2026-11-07
+
+Operator authorized Arc02 S01's bounded local test/baseline correction01 only.
+This does not resume S02 or close CI-02. Accepted baseline plus explicit S02
+continuation remains the gate; original source/tool histories and limits persist.
+
 ## Explicit S02 pause for maintenance planning — 2026-11-07
 
 The Operator requested [Arc02 ad hoc maintenance](../arc02-ad-hoc-maintenance/arc-plan.md)

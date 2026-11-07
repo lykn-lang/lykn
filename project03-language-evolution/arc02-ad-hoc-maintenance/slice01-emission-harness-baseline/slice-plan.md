@@ -2,13 +2,25 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice01-emission-harness-baseline
-status: planned
+status: in-progress
 planned-release: unassigned
 depends-on: []
 related: [arc01-compiler-semantic-integrity/slice02-checked-emission-results]
 ---
 
 # Local emission harness and old-compiler baseline
+
+## Current execution authority and author readiness — 2026-11-07
+
+The Operator said “perfect, let's tackle that one now!” and explicitly opened this finite slice. Fresh Luna6 High CC implements; separate Sol6.1 High CDC independently reviews, root read-only. Source/index/build ownership transfers only after intake acknowledgement. This is inherited correction01/5; initial failed232 and older tooling8/K0 remain history. First unexpected substantive failure stops; explicitly predicted old-product red is expected. S02 remains paused and needs explicit continuation after this slice is accepted. No next unit/integration/dependency authority.
+
+CDC refreshed PM README/operation and prompt-authoring requirements, reused unchanged source/domain receipts, and reread actual test/fatal-baseline/output/DTS routes at232. Source-only readiness: task clean232, Rust1.97 in actual cwd; Deno executable `/opt/homebrew/bin/deno`, version2.9.6, SHA `2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`. No new test/build was run at readiness. Private predicate shape, ten data triples, source constants, output paths, optional-DTS and old-red distinction are engineered in the [initial prompt](cc-prompt.md); no public/API choice is left to CC.
+
+Tiny private receipt writes in the existing Rust product test may use optional `LYKN_EMISSION_EVIDENCE_DIR` for actual child raw bytes/generated source/file outcomes before assertions and TempDir cleanup. With the variable absent, normal product-test execution remains self-contained. This is local test evidence capture, not an external research harness or extra runtime case. Outer first-launch raw argv/cwd/env/stdout/stderr/exit and executable pins are saved natively. Evidence home: `artifacts/evidence/cc/`; ignored task scratch `target/emission-harness-baseline/cc/`.
+
+### Assignment history
+
+- 2026-11-07: `cc-prompt.md`, initial maintenance assignment and shared S02 correction01, supersedes no old prompt. Issued only after prep commit; current status awaiting fresh CC intake, then explicit ownership handoff. Original S02 initial assignment/stopped review remain intact. The planning-only record below is retained as history, superseded only by this bounded execution authorization.
 
 ## Planning authority and delivery boundary
 
@@ -65,5 +77,8 @@ No implementation assignment is issued by this planning record. On execution app
 Accepted maintenance S01 provides a linked corrected test and independently reproduced baseline, not CI-02 closure. CDC updates both plans/ledgers and asks for explicit S02 continuation at its already-approved Result design; further source work remains held until then. Arc02 may retain unrelated future intake without blocking this return. No automatic next maintenance unit, source fix or integration.
 
 ## Version history
+
+- 2026-11-07 v0.2: Operator opened this maintenance correction01; completed
+  source-ready prompt/receipt recipe and fixed commit messages before handoff.
 
 - 2026-11-07 v0.1: Planning-only consolidated local harness correction/baseline delivery, separate harness/product outcomes, inherited allowance and explicit S02 return gate.

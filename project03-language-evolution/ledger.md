@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 latest: Operator opened Arc02 S01 local harness/baseline execution only,
+shared correction01/5 with first unexpected substantive-failure stop and expected
+old-product red retained. New MH/AM rows stay open pending proof, S02 held; no
+P-1/CI-02 acceptance or changed tool allowance follows.
+
 2026-11-07 current: Operator paused Arc01 S02 and authorized planning ONLY for
 [Arc02 maintenance](arc02-ad-hoc-maintenance/arc-plan.md). Its first slice owns
 the local test correction/trustworthy old-compiler baseline, not a general

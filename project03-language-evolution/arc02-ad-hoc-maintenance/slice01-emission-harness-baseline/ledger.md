@@ -1,5 +1,10 @@
 # Maintenance S01 ledger
 
+2026-11-07 execution now approved for this slice only. Fresh Luna6 High CC and
+separate Sol6.1 High CDC; shared correction01/5 authorized, initial232 preserved.
+All rows open pending actual source/baseline and independent proof. Expected
+old-product red is not an unexpected failure or product acceptance. S02 held.
+
 2026-11-07 planned only; all rows open, no execution prompt/CC/source changes. Retain the failed initial S02 attempt and next shared refinement01/5, not a new allowance. Expected old-product reds are separate from harness-quality acceptance.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |

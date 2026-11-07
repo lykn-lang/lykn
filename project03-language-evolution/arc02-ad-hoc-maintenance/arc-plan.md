@@ -1,13 +1,21 @@
 ---
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
-status: planned
+status: in-progress
 planned-release: unassigned
 depends-on: []
 related: [arc01-compiler-semantic-integrity]
 ---
 
 # Ad hoc maintenance
+
+## S01 execution authorized — 2026-11-07
+
+Operator “perfect, let's tackle that one now!” opens only the finite first
+maintenance slice. Its source-ready prompt governs fresh Luna6 High CC and
+separate Sol6.1 High CDC, inherited correction01/5 and first unexpected
+substantive-failure stop (known old-product red expected). Planning-only history
+below remains intact. S02/future miscellany/integration remain held.
 
 ## Authority and useful result
 
@@ -37,5 +45,8 @@ No investigation/repair/review slices split this first result by process stage. 
 All original F1–F12, Project07/library/book/guide/human/licensing and other compiler/type/doc owners remain unchanged. No compiler fix, helper/K/walker/corpus/F6 run or publication is part of this arc's current item.
 
 ## Version history
+
+- 2026-11-07 v0.2: Operator authorized finite S01 execution, inherited correction01,
+  fresh Luna6 High CC/separate Sol6.1 High CDC; S02/later work still held.
 
 - 2026-11-07 v0.1: Operator-requested planning-only maintenance home and one finite local-test/baseline slice; preserved S02 pause, expected product reds, history and shared correction allowance.

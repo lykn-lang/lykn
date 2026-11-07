@@ -9,6 +9,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current finite maintenance execution (2026-11-07)
+
+Operator opened [Arc02 S01](arc02-ad-hoc-maintenance/slice01-emission-harness-baseline/slice-plan.md)
+local harness/baseline correction01 only, Luna6 High CC/Sol6.1 High CDC Autonomous
+Mode, first unexpected substantive-failure stop. Expected product-red assertions
+are retained. S02 remains paused until accepted baseline and explicit continuation;
+no compiler/API change or automatic next unit. Planning-only history below remains.
+
 ## Current maintenance planning and S02 pause (2026-11-07)
 
 The Operator explicitly paused Arc01 S02 and requested an ad hoc miscellany arc

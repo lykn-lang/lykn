@@ -1,5 +1,10 @@
 # Arc02 ad hoc maintenance ledger
 
+2026-11-07 execution update: Operator opened S01 only, fresh Luna6 High CC/separate
+Sol6.1 High CDC. All rows still open; inherited correction01/5, no budget reset,
+first unexpected substantive-failure stop. Expected product-red baseline remains
+distinct from harness-quality acceptance; S02 continuation remains separately held.
+
 2026-11-07 planning only. All rows open; source execution and independent acceptance have not occurred. Future miscellany does not indefinitely block the separately defined S02 return gate.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
