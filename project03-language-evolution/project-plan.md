@@ -170,6 +170,11 @@ parser0/4 remain unrun. Further role-aware switch-clause correction is a concret
 proposal in the current review, requiring another explicit Operator decision;
 no seventh pass, reset, integration or next unit is underway.
 
+Operator subsequently explicitly authorized ONE further correction7 for role-
+aware switch clauses and normal/full independent validation, followed by the same
+four only after acceptance. Slice15 records the authorization before dispatch;
+no eighth substantive correction, source acceptance or integration is implied.
+
 2026-11-06 [Slice14 independent endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 accepts NE-C08 compile-route parity and NE-C07 private async-export discovery
 task-only at3b65d09/compiler748. Complete fresh normal-env Make passes all Rust,

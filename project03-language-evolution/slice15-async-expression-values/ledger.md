@@ -21,6 +21,11 @@ independently repeats each exact failure. AV-02/AV-04 remain unmet and candidate
 3f8f6df unaccepted. AV-05/AV-06 remain unrun, parser0/4; AV-07 awaits Operator
 decision. No seventh pass, reset or formal row/slice close. See current review.
 
+**Subsequent explicit decision:** Operator now authorizes ONE correction7 for
+role-aware switch handling with full/independent gates, then same-four only after
+source acceptance. Plan/cc-prompt-iteration06.md record it BEFORE execution. This
+does not reset the budget or accept source; no eighth substantive correction.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AV-01 | Meaningful NE-C09 red and fixed finite oracles frozen | Five shared fixtures/source/expected JSON before runtime, both backend baseline/raw core witness | serious | NE-C09 | open | | Syntax/wrong-value/positive results distinguished |

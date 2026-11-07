@@ -277,3 +277,18 @@ Value generic recursion treats structural switch clauses as ordinary calls;
 One extra correction6 is spent; no seventh pass or budget reset is authorized.
 Source remains unaccepted, docs/independent full Make unrun, parser0/4. All
 affected execution pauses for Operator disposition; no formal close or next unit.
+
+## Explicit second override: correction7 total
+
+Operator answered **“yes, authorised!”** to ONE further bounded role-aware
+switch-clause correction, full validation plus Sol6.1 High independent review
+with CC Luna6 High, then the unchanged four parser observations ONLY after source
+acceptance. This authorization is recorded before execution. Correction7 total
+is allowed once, not a reset/eighth substantive correction. Previous rejection,
+failed full gates and every provenance limit remain history. The preserved
+[next assignment](cc-prompt-iteration06.md) permits only forms.rs kernel switch
+role traversal and correction07 raw evidence, retaining tests/JS/oracles. A fresh
+Luna High source/raw-only context is selected to avoid stale scope instructions;
+CDC retains planning/review ownership. Source3f8/releasef705 and planning692b5d8
+were revalidated clean. Endpoint remains independent source acceptance plus the
+same four, or honest blocker; no integration, next unit or expanded audit.

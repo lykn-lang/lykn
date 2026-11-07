@@ -2,6 +2,11 @@
 
 ## Current verdict after authorized correction6
 
+**Subsequent authorization:** Operator's “yes, authorised!” permits ONE bounded
+correction7, recorded in the plan/ledger and cc-prompt-iteration06.md before work.
+The rejected correction6 verdict below remains evidence; source is not accepted
+and the budget is not reset. Full independent gates still precede the same four.
+
 **Still rejected; extra cycle spent, awaiting Operator decision.** Final source
 3f8f6dfe6177db7233932dc6c8938993655a1cae is clean. The narrow statement expansion
 fix96e20b9 plus rustfmt-only3f8f6df resolves the exact grouped-bind unit: CC final
