@@ -9,6 +9,11 @@ not compiler/runtime evidence. Two no-run builds, zero test/runtime executions;
 NE-C12 production unchanged. See [actual review/proposal](cdc-verification.md).
 All rows remain open pending Operator disposition; no corrective prompt issued.
 
+Subsequent Operator approval2026-11-07 authorizes consolidated correction01 and
+original S01 continuation. All rows remain open; earlier static failure/receipt
+limits retained. Direct emitter-header oracle supersedes validator alternative;
+first further substantive failure stops, no source/tool budget reset.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | VF-01 | Actual approved source/readiness/freeze/tool identities and preserved history | Intake, committed bodies, raw commands and post-build pins | correctness-grade | S01 authority | open | | No retroactive freeze or lost-body reconstruction |

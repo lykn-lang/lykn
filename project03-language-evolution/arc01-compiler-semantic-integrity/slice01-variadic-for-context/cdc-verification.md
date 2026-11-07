@@ -1,5 +1,11 @@
 # S01 independent review — pending Operator after static test-contract failure
 
+Subsequent decision2026-11-07: Operator authorized the consolidated four-part
+test correction and original S01 continuation via cc-prompt-iteration01.md.
+The fixed1d2 verdict below remains historical; no corrected source or behavioral
+acceptance is inferred from that resumption. First further substantive failure
+stops; correction1/5 and eight spent tooling passes remain explicitly recorded.
+
 2026-11-07. Reviewer `/root/cdc`, Sol6.1 High, separate from implementer
 `/root/cdc/variadic_for_luna_cc`, Luna6 High. Assignment is the original
 `cc-prompt.md` at planningd69ddb3. **No source acceptance.** Operator's first

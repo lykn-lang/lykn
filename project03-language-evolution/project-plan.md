@@ -17,6 +17,11 @@ BACKLOG.md says so.
 
 ## Current bounded Arc01 S01 execution (2026-11-07)
 
+Latest Operator decision explicitly authorizes consolidated S01 correction01
+then original NE-C12 repair/validation, same Luna6 High CC/Sol6.1 High CDC and
+first further substantive-failure stop. Previous test-only stop below is retained
+history; no later unit/tool/K/integration or budget reset is inferred.
+
 Current status: S01 paused before baseline execution/production change on static
 test-contract review at1d2dbcfa, with two no-run builds only. All VF/CI-01 remain
 open; NE-C12 remains unfixed. [Review and unissued correction proposal](arc01-compiler-semantic-integrity/slice01-variadic-for-context/cdc-verification.md)

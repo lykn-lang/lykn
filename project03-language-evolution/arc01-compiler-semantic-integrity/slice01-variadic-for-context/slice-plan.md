@@ -8,6 +8,17 @@ planned-release: unassigned
 
 # S01 — faithful variadic numeric-for bodies
 
+## Approved continuation — 2026-11-07
+
+Operator explicitly authorized the consolidated four-part test correction then
+original S01 repair, same Luna6 High CC/separate Sol6.1 High CDC and first further
+substantive-failure stop. [Preserved correction01](cc-prompt-iteration01.md)
+supersedes the inadequate validator alternative and defines actual public runtime,
+direct emitter-header counter, independently selected native negatives and
+Deno.cwd fixture path. Correction1/5, no reset; eight spent tooling passes remain.
+Corrected actual tests must be committed and statically reviewed before baseline.
+The preceding stopped condition below is retained, not cured retroactively.
+
 ## Current review state — 2026-11-07
 
 Paused under the Operator's first additional substantive-failure stop. Frozen

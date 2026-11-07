@@ -11,6 +11,12 @@ related: [project07-core-library-research]
 
 ## Current S01 execution authority — 2026-11-07
 
+Latest: Operator explicitly authorized S01 correction01's consolidated test
+repair then original NE-C12 implementation/validation, same Luna6 High CC and
+separate Sol6.1 High CDC, with first further substantive-failure stop. Prior
+test-only1d2 review stop remains history. No later-unit/tool/K/API/integration
+scope or tooling-budget reset; capability rows remain open pending proof.
+
 Current: S01 is paused at test-only1d2dbcfa after static contract review found
 inadequate runtime/countercontrol coverage. Two no-run builds, no behavioral
 execution or production repair; CI-01 remains open. The [S01 review](slice01-variadic-for-context/cdc-verification.md)

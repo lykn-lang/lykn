@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Latest2026-11-07 Operator authorized consolidated S01 correction01 then original
+NE-C12 repair/validation with same Luna6 High CC/separate Sol6.1 High CDC and
+first further substantive-failure stop. Earlier static test-only stop remains
+history, no original receipt limit is cured. All VF/CI/P rows remain open.
+
 2026-11-07 S01 paused on independently inspected static test-contract failure at
 test-only1d2dbcfa. Two no-run builds only; baseline/runtime/witness/full gates
 unrun, production unchanged and all VF/CI/P rows open. The
