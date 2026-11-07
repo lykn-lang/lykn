@@ -1,5 +1,15 @@
 # Slice19 — match subject repair and combined validation
 
+2026-11-07 Operator explicitly replied “yup, please go ahead!” to fee9215's
+consolidated two-defect proposal. ONE extra correction7 authorized, six remain
+spent/no reset/eighth. Iteration05 now governs: fresh LunaHigh fork-none CC
+replaces retired context for repeated message/attestation failures; same models.
+Unchanged core first required strictcompile in final layout establishes ACTUAL
+compiled pin before observer literal is authored; all BindingRole children route
+to existing pattern visitor. Same four modules/eightargv/13/control/core/product
+invariants, all scoped gates/generated+predicate/guard review before K. Any
+further substantive failure/gap stops. Approval is budget/scope, not acceptance.
+
 Current: correction6 delimiter applied442, native4/4 CC passes, but tooling
 UNACCEPTED at static predicate/role review. CORE_JS digest compared to Lykn-source
 pin; contracted RestElement/direct AssignmentPattern BindingRole routes missing.
@@ -214,3 +224,4 @@ six rows/report/review/retro/parent/backlog honestly at endpoint only, no nextun
 | cc-prompt-iteration02.md | 2026-11-07 | Complete original tooling and fixed13 gate under original contract | Current continuation4/5 for BOTH outer/tool tracks; one remains; runtime held for CDC prereview |
 | cc-prompt-iteration03.md | 2026-11-07 | Consolidated actual syntax and predicate defects | LAST continuation5/5 BOTH tracks; no further substantive retry without Operator |
 | cc-prompt-iteration04.md | 2026-11-07 | Explicitly authorized ONE extra correction6, observer boundary only | Operator approval received; no reset/seventh; runtime held for CDC prereview |
+| cc-prompt-iteration05.md | 2026-11-07 | Explicitly authorized ONE consolidated correction7, compiled-core pin and all BindingRole routes | Fresh LunaHigh, six spent/no reset/eighth; K held for CDC |
