@@ -422,6 +422,40 @@ fn checked_emission_failure_blocks_cli_and_dist_outputs() {
 }
 
 #[test]
+fn package_error_keeps_language_diagnostic_and_failing_file_bytes() {
+    let fixture = TempDir::new().expect("create typed package fixture");
+    let package_dir = package(fixture.path(), INVALID_SOURCE);
+    let build = fixture.path().join("target/lykn/build/emission");
+    fs::create_dir_all(&build).expect("create build output fixture");
+    let js = build.join("mod.js");
+    let dts = build.join("mod.d.ts");
+    let js_before = b"existing module sentinel\n";
+    let dts_before = b"existing declarations sentinel\n";
+    fs::write(&js, js_before).expect("write JavaScript sentinel");
+    fs::write(&dts, dts_before).expect("write declaration sentinel");
+    fs::File::open(&js)
+        .unwrap()
+        .set_modified(UNIX_EPOCH)
+        .expect("make JavaScript cache entry stale");
+    fs::File::open(&dts)
+        .unwrap()
+        .set_modified(UNIX_EPOCH)
+        .expect("make declaration cache entry stale");
+
+    let error = build_project(fixture.path()).unwrap_err();
+    let lykn_cli::dist::DistError::Language { path, source } = error else {
+        panic!("dist must preserve a typed source failure");
+    };
+    assert_eq!(path, package_dir.join("mod.lykn"));
+    let lykn_lang::error::LyknError::Classify(diagnostic) = source else {
+        panic!("the invalid dissoc key remains a classifier diagnostic");
+    };
+    assert_ne!(diagnostic.span, Default::default());
+    assert_eq!(fs::read(&js).unwrap(), js_before);
+    assert_eq!(fs::read(&dts).unwrap(), dts_before);
+}
+
+#[test]
 fn valid_runtime_exceptions_and_resolved_dissoc_remain_ordinary_programs() {
     let mut failures = Vec::new();
     for (name, source_text, kind) in [

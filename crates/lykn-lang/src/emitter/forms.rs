@@ -5,9 +5,9 @@ use crate::ast::surface::{
     FuncClause, GenfuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
     TypeAnnotation,
 };
-use crate::reader::source_loc::Span;
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
+use crate::reader::source_loc::Span;
 
 use super::context::{EmitterContext, ExprContext};
 use super::contracts::{
@@ -537,7 +537,7 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                         Err(error) => {
                             ctx.record_fatal(LyknError::Classify(error));
                             expr.clone()
-                        },
+                        }
                     }
                 } else if head_name == "if"
                     && matches!(ctx.expr_context, ExprContext::Value | ExprContext::Tail)
@@ -766,13 +766,16 @@ fn emit_returns_mismatch_error(
     span: Span,
     ctx: &mut EmitterContext,
 ) -> SExpr {
-    ctx.record_fatal(codegen_error(format!(
-                    "COMPILE_ERROR: function `{func_name}` declared `:returns :{returns_type}` \
+    ctx.record_fatal(codegen_error(
+        format!(
+            "COMPILE_ERROR: function `{func_name}` declared `:returns :{returns_type}` \
                      but body ends with `{head_name}` \
                      (a statement-only form which cannot produce a value). \
                      Either: (a) add a return-typed expression after the form, \
                      or (b) remove `:returns :{returns_type}` from the function declaration."
-                ), span));
+        ),
+        span,
+    ));
     atom("undefined")
 }
 
@@ -788,7 +791,11 @@ fn convert_to_expression(expr: SExpr, ctx: &mut EmitterContext, origin: Span) ->
         if args.len() < 3 {
             ctx.record_fatal(codegen_error(
                 "if in expression position requires an else branch",
-                if *span == Span::default() { origin } else { *span },
+                if *span == Span::default() {
+                    origin
+                } else {
+                    *span
+                },
             ));
             return atom("undefined");
         }
@@ -3298,7 +3305,6 @@ fn kernel_child_profile(head: &str) -> KernelChildProfile {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use super::emit_form_inner as emit_form;
     use crate::analysis::type_registry::{ConstructorDef, FieldDef, TypeDef, TypeRegistry};
     use crate::ast::sexpr::NameRes;
     use crate::ast::surface::{
@@ -3412,22 +3418,19 @@ mod tests {
                 list(vec![atom("console:log"), atom("i")]),
             ];
             values[index + 1] = value;
-            let mut context = ctx();
-            let emitted = emit_expr(&list(values), &mut context, &reg());
-            assert_eq!(context.expr_context, ExprContext::Statement);
-            let lowered = emitted.as_list().expect("numeric-for kernel list");
-            let rejection = lowered[index + 1]
-                .as_list()
-                .expect("header expression lowering rejection");
-            assert_eq!(rejection[0].as_atom(), Some("throw"));
-            let error = rejection[1].as_list().expect("constructed TypeError");
-            assert_eq!(error[0].as_atom(), Some("new"));
-            assert_eq!(error[1].as_atom(), Some("TypeError"));
-            let message = match &error[2] {
-                SExpr::String { value, .. } => value,
-                other => panic!("expected diagnostic string, got {other:?}"),
+            let form = SurfaceForm::KernelPassthrough {
+                raw: list(values),
+                span: Span::default(),
             };
-            assert!(message.contains("if in expression position requires an else branch"));
+            let mut context = ctx_value();
+            context.in_class_body = true;
+            let result = emit_form(&form, &mut context, &reg());
+            let Err(LyknError::Codegen(diagnostic)) = result else {
+                panic!("numeric-for value header must fail through the checked API");
+            };
+            assert!(diagnostic.message.contains("else branch"));
+            assert_eq!(context.expr_context, ExprContext::Value);
+            assert!(context.in_class_body);
         }
     }
 
@@ -3464,6 +3467,15 @@ mod tests {
         assert_eq!(result, expr);
     }
 
+    #[test]
+    fn test_convert_to_expression_records_missing_else_failure() {
+        let expr = list(vec![atom("if"), atom("cond"), atom("then")]);
+        let mut ctx = EmitterContext::new(false);
+        let result = convert_to_expression(expr, &mut ctx, Span::default());
+        assert_eq!(result.as_atom(), Some("undefined"));
+        assert!(matches!(ctx.first_fatal, Some(LyknError::Codegen(_))));
+    }
+
     // --- Bind ---
 
     #[test]
@@ -3475,7 +3487,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("const"));
@@ -3505,7 +3517,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 2);
         for (expr, name) in result.iter().zip(["email", "role"]) {
             if let SExpr::List { values, .. } = expr {
@@ -3542,7 +3554,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         let SExpr::List { values, .. } = &result[0] else {
             panic!("expected function form");
         };
@@ -3562,7 +3574,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1, "literal match should produce only const");
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("const"));
@@ -3581,7 +3593,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 2, "non-literal should produce const + check");
         // First: const
         if let SExpr::List { values, .. } = &result[0] {
@@ -3607,7 +3619,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1, ":any should not emit type check");
     }
 
@@ -3621,7 +3633,7 @@ mod tests {
             span: s(),
         };
         let mut c = EmitterContext::new(true);
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1, "strip_assertions should omit type check");
     }
 
@@ -3635,7 +3647,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -3652,7 +3664,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -3667,7 +3679,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(
             result.len(),
             1,
@@ -3685,7 +3697,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 2);
         if let SExpr::List { values, .. } = &result[1] {
             assert_eq!(values[0].as_atom(), Some("if"));
@@ -3703,7 +3715,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("object"));
@@ -3722,7 +3734,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("object"));
@@ -3745,7 +3757,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].as_atom(), Some("counter:value"));
     }
@@ -3761,7 +3773,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("="));
@@ -3781,7 +3793,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("="));
@@ -3801,7 +3813,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (inc 1)
         if let SExpr::List { values, .. } = &result[0] {
@@ -3819,7 +3831,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         // Should be (add 1 2)
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("add"));
@@ -3844,7 +3856,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         // Should be (add 2 1)
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("add"));
@@ -3875,7 +3887,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (const Red (object (tag "Red")))
         if let SExpr::List { values, .. } = &result[0] {
@@ -3900,7 +3912,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (function Pair (x y) [checks] (return (object ...)))
         if let SExpr::List { values, .. } = &result[0] {
@@ -3933,7 +3945,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         // Each constructor is a separate top-level form (no block wrapper)
         assert_eq!(result.len(), 2);
         if let SExpr::List { values, .. } = &result[0] {
@@ -3960,7 +3972,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=>"));
@@ -3987,7 +3999,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -4025,7 +4037,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -4069,7 +4081,7 @@ mod tests {
         };
         // Statement context: bare if/else chain
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("block"));
@@ -4110,7 +4122,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         let SExpr::List { values: block, .. } = &result[0] else {
             panic!("expected statement match block");
         };
@@ -4153,7 +4165,7 @@ mod tests {
         };
         // Value context: IIFE
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             if let SExpr::List { values: arrow, .. } = &values[0] {
@@ -4223,7 +4235,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &r);
+        let result = emit_form(&form, &mut c, &r).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -4247,7 +4259,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         let SExpr::List { values, .. } = &result[0] else {
             panic!("expected IIFE");
@@ -4273,7 +4285,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         assert_eq!(result[0], raw);
     }
@@ -4288,7 +4300,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("add"));
@@ -4308,7 +4320,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be IIFE
         if let SExpr::List { values, .. } = &result[0] {
@@ -4338,7 +4350,7 @@ mod tests {
         };
         // Statement context: bare if/else
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("block"));
@@ -4361,7 +4373,7 @@ mod tests {
         };
         // Value context: IIFE
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             if let SExpr::List { values: arrow, .. } = &values[0] {
@@ -4389,7 +4401,7 @@ mod tests {
         };
         // Statement context: bare if
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("block"));
@@ -4411,7 +4423,7 @@ mod tests {
         };
         // Value context: IIFE
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             if let SExpr::List { values: arrow, .. } = &values[0] {
@@ -4442,7 +4454,7 @@ mod tests {
             span: s(),
         };
         let mut c = EmitterContext::new(true);
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
 
         // With strip_assertions, no type checks or pre-checks
         if let SExpr::List { values, .. } = &result[0] {
@@ -4480,8 +4492,8 @@ mod tests {
         let mut c2 = EmitterContext::new(true);
         let r = reg();
 
-        let fn_result = emit_form(&fn_form, &mut c1, &r);
-        let lambda_result = emit_form(&lambda_form, &mut c2, &r);
+        let fn_result = emit_form(&fn_form, &mut c1, &r).unwrap();
+        let lambda_result = emit_form(&lambda_form, &mut c2, &r).unwrap();
 
         assert_eq!(fn_result, lambda_result);
     }
@@ -4713,7 +4725,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (block (const await__gensymN ...) ((=> () ...)))
         if let SExpr::List { values, .. } = &result[0] {
@@ -4761,7 +4773,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (await ((async (=> () ...))))
         if let SExpr::List { values, .. } = &result[0] {
@@ -4800,7 +4812,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (block (const await__gensym ...) (await ((async (=> () ...)))))
         if let SExpr::List { values, .. } = &result[0] {
@@ -4835,7 +4847,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (block (const await__gensym ...) ((=> () ...)))
         if let SExpr::List { values, .. } = &result[0] {
@@ -4864,7 +4876,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (await ((async (=> () ...))))
         if let SExpr::List { values, .. } = &result[0] {
@@ -4889,7 +4901,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (block (const await__gensym ...) ((=> () ...)))
         if let SExpr::List { values, .. } = &result[0] {
@@ -4919,7 +4931,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (await ((async (=> () ...))))
         if let SExpr::List { values, .. } = &result[0] {
@@ -4943,7 +4955,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("block"));
@@ -4969,7 +4981,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("await"));
@@ -4994,7 +5006,7 @@ mod tests {
         };
         // Value context: plain IIFE (no async wrapper)
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be plain IIFE: ((=> () ...))
         if let SExpr::List { values, .. } = &result[0] {
@@ -5020,7 +5032,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (js:call console:log "hello") -> (console:log "hello")
         if let SExpr::List { values, .. } = &result[0] {
@@ -5043,7 +5055,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (js:bind obj:method obj) -> (obj:method:bind obj)
         if let SExpr::List { values, .. } = &result[0] {
@@ -5063,7 +5075,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("obj:method:bind"));
@@ -5082,7 +5094,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("js:bind"));
@@ -5099,7 +5111,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (js:eval "1 + 2") -> (eval "1 + 2")
         if let SExpr::List { values, .. } = &result[0] {
@@ -5122,7 +5134,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("eval"));
@@ -5140,7 +5152,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (js:eq a b) -> (== a b)
         if let SExpr::List { values, .. } = &result[0] {
@@ -5160,7 +5172,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=="));
@@ -5179,7 +5191,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (js:typeof x) -> (typeof x)
         if let SExpr::List { values, .. } = &result[0] {
@@ -5198,7 +5210,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("typeof"));
@@ -5216,7 +5228,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("js:unknown"));
@@ -5238,7 +5250,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (conj xs 42) -> (array (spread xs) 42)
         if let SExpr::List { values, .. } = &result[0] {
@@ -5266,7 +5278,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (assoc m :name "Alice") -> (object (spread m) (name "Alice"))
         if let SExpr::List { values, .. } = &result[0] {
@@ -5299,7 +5311,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be IIFE: ((=> () (const (object ...) m) (return rest_var)))
         if let SExpr::List { values, .. } = &result[0] {
@@ -5344,7 +5356,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (= (get item META) 42)
         if let SExpr::List { values, .. } = &result[0] {
@@ -5376,7 +5388,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("="));
@@ -5414,7 +5426,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("get"));
@@ -5437,7 +5449,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("="));
@@ -5463,7 +5475,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("="));
@@ -5492,7 +5504,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (inc 1)
         if let SExpr::List { values, .. } = &result[0] {
@@ -5511,7 +5523,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::Number { value, .. } = &result[0] {
             assert!((value - 1.0).abs() < f64::EPSILON);
@@ -5529,7 +5541,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("add"));
@@ -5557,7 +5569,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // IIFE that just returns the initial value
         if let SExpr::List { values, .. } = &result[0] {
@@ -5588,7 +5600,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be IIFE with null checks
         if let SExpr::List { values, .. } = &result[0] {
@@ -5613,7 +5625,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // IIFE with intermediate null checks
         if let SExpr::List { values, .. } = &result[0] {
@@ -5660,7 +5672,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             // void function: no return statement at the end
@@ -5693,7 +5705,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             // Should have a return-type check before the return
@@ -5726,7 +5738,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             // returns any: implicit return, no type check
@@ -5757,7 +5769,7 @@ mod tests {
             span: s(),
         };
         let mut c = EmitterContext::new(true);
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             // With strip_assertions, just a plain return
@@ -5792,7 +5804,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should have an if block for pre-condition check
         if let SExpr::List { values, .. } = &result[0] {
@@ -5825,7 +5837,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Post-condition: should capture result in gensym, check, then return
         if let SExpr::List { values, .. } = &result[0] {
@@ -5866,7 +5878,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             // Find the const assignment: (const result__gensymN ...)
@@ -5914,7 +5926,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Multi-body + post: all but last as statements, last captured
         if let SExpr::List { values, .. } = &result[0] {
@@ -5943,7 +5955,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -5963,7 +5975,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -5983,7 +5995,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             let last = values.last().unwrap();
@@ -6018,7 +6030,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             // Last should be (return 42)
@@ -6063,7 +6075,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -6105,7 +6117,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6135,7 +6147,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6165,7 +6177,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6195,7 +6207,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6225,7 +6237,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6255,7 +6267,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6355,7 +6367,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6381,7 +6393,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6413,7 +6425,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6441,7 +6453,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6464,7 +6476,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6485,7 +6497,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should have a throw fallback in the else chain
     }
@@ -6503,7 +6515,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6527,7 +6539,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6571,7 +6583,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &r);
+        let result = emit_form(&form, &mut c, &r).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6594,7 +6606,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6608,7 +6620,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6622,7 +6634,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6639,7 +6651,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Statement context without else: should be (block (const ...) (if cond then))
         if let SExpr::List { values, .. } = &result[0] {
@@ -6662,7 +6674,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6705,7 +6717,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &r);
+        let result = emit_form(&form, &mut c, &r).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6790,7 +6802,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         assert_eq!(result[0], raw);
     }
@@ -6803,7 +6815,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         assert_eq!(result[0], raw);
     }
@@ -6822,7 +6834,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // The nested (-> 1 inc) should be expanded to (inc 1)
         if let SExpr::List { values, .. } = &result[0] {
@@ -6849,7 +6861,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             // Head should be the list (get-fn), recursed
@@ -6871,7 +6883,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6892,7 +6904,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6948,7 +6960,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &r);
+        let result = emit_form(&form, &mut c, &r).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6968,7 +6980,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx_value();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -6990,7 +7002,7 @@ mod tests {
             span: s(),
         };
         let mut c = EmitterContext::new(true);
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // With strip_assertions, no type checks inside the function
         if let SExpr::List { values, .. } = &result[0] {
@@ -7021,7 +7033,7 @@ mod tests {
             span: s(),
         };
         let mut c = EmitterContext::new(true);
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=>"));
@@ -7061,7 +7073,7 @@ mod tests {
             span: s(),
         };
         let mut c = EmitterContext::new(true);
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             let last = values.last().unwrap();
@@ -7088,7 +7100,7 @@ mod tests {
                 span: s(),
             };
             let mut c = ctx();
-            let result = emit_form(&form, &mut c, &reg());
+            let result = emit_form(&form, &mut c, &reg()).unwrap();
             assert_eq!(result.len(), 1);
             if let SExpr::List { values, .. } = &result[0] {
                 let last = values.last().unwrap();
@@ -7123,7 +7135,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=>"));
@@ -7161,7 +7173,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=>"));
@@ -7189,7 +7201,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=>"));
@@ -7219,7 +7231,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("const"));
@@ -7267,7 +7279,7 @@ mod tests {
             span: s(),
         };
         let mut c = EmitterContext::new(true);
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
     }
 
@@ -7301,7 +7313,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // When all params are "any", dispatch condition is just arity check (no &&)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7360,7 +7372,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be nested if/else chain
         if let SExpr::List { values, .. } = &result[0] {
@@ -7401,7 +7413,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // (= counter:value (add counter:value 5))
         if let SExpr::List { values, .. } = &result[0] {
@@ -7429,7 +7441,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // IIFE with destructuring pattern that has 2 alias entries + rest
         if let SExpr::List { values, .. } = &result[0]
@@ -7457,7 +7469,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (=== a b)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7476,7 +7488,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (&& (=== a b) (=== b c))
         if let SExpr::List { values, .. } = &result[0] {
@@ -7507,7 +7519,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (&& (&& (=== a b) (=== b c)) (=== c d))
         if let SExpr::List { values, .. } = &result[0] {
@@ -7541,7 +7553,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (!== a b)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7562,7 +7574,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (&& a b)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7581,7 +7593,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (&& (&& (&& a b) c) d)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7616,7 +7628,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (|| a b)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7635,7 +7647,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (|| (|| (|| a b) c) d)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7662,7 +7674,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (! x)
         if let SExpr::List { values, .. } = &result[0] {
@@ -7684,14 +7696,14 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let inner_result = emit_form(&inner_not, &mut c, &reg());
+        let inner_result = emit_form(&inner_not, &mut c, &reg()).unwrap();
         // inner_result = [(! x)]
 
         let outer = SurfaceForm::Not {
             operand: inner_result[0].clone(),
             span: s(),
         };
-        let result = emit_form(&outer, &mut c, &reg());
+        let result = emit_form(&outer, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Should be (! (! x))
         if let SExpr::List { values, .. } = &result[0] {
@@ -7736,7 +7748,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -7788,7 +7800,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=>"));
@@ -7842,7 +7854,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -7874,7 +7886,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(
@@ -7898,7 +7910,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(
@@ -7925,7 +7937,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("==="));
@@ -7970,7 +7982,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -8027,7 +8039,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("=>"));
@@ -8097,7 +8109,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -8170,7 +8182,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -8236,7 +8248,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -8293,7 +8305,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function"));
@@ -8343,7 +8355,7 @@ mod tests {
             span: s(),
         };
         let mut c = ctx();
-        let result = emit_form(&form, &mut c, &reg());
+        let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
         // Search the output tree for a (for-of ...) node.
         fn find_for_of(expr: &SExpr) -> bool {
@@ -8373,7 +8385,7 @@ mod tests {
             span: s(),
         };
         let mut ctx = ctx();
-        let result = emit_form(&form, &mut ctx, &TypeRegistry::default());
+        let result = emit_form(&form, &mut ctx, &TypeRegistry::default()).unwrap();
         assert_eq!(result.len(), 1);
         let SExpr::List { values, .. } = &result[0] else {
             panic!("expected export form");
@@ -8408,7 +8420,7 @@ mod tests {
         };
         let mut ctx = ctx();
         let registry = TypeRegistry::default();
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         // Should produce (export (function add (a b) ...))
         assert_eq!(result.len(), 1);
         match &result[0] {
@@ -8443,7 +8455,7 @@ mod tests {
         };
         let mut ctx = ctx();
         let registry = TypeRegistry::default();
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         // Should produce (export (const VERSION "0.4.0"))
         assert_eq!(result.len(), 1);
         match &result[0] {
@@ -8481,7 +8493,7 @@ mod tests {
         };
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         assert_eq!(result.len(), 1);
         // Should produce (function* gen () (yield 1))
         if let SExpr::List { values, .. } = &result[0] {
@@ -8510,7 +8522,7 @@ mod tests {
         };
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function*"));
@@ -8557,7 +8569,7 @@ mod tests {
         };
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         // With :yields :any, yield should not be instrumented
         if let SExpr::List { values, .. } = &result[0] {
             // Body starts after function*, name, params
@@ -8596,7 +8608,7 @@ mod tests {
         };
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(true);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function*"));
             // With strip_assertions, no type checks or yield instrumentation
@@ -8624,7 +8636,7 @@ mod tests {
         };
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function*"));
@@ -8645,7 +8657,7 @@ mod tests {
         };
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         assert_eq!(result.len(), 1);
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("function*"));
@@ -8684,7 +8696,7 @@ mod tests {
 
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
         assert_eq!(result.len(), 1);
 
         // (class Foo () (constructor (x) (const y 42)))
@@ -8729,7 +8741,7 @@ mod tests {
 
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
 
         // The member should be wrapped in (static ...)
         if let SExpr::List { values, .. } = &result[0] {
@@ -8765,7 +8777,7 @@ mod tests {
 
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
 
         if let SExpr::List { values, .. } = &result[0] {
             if let SExpr::List { values: member, .. } = &values[3] {
@@ -8796,7 +8808,7 @@ mod tests {
 
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
 
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("class-expr"));
@@ -8824,7 +8836,7 @@ mod tests {
 
         let registry = TypeRegistry::default();
         let mut ctx = EmitterContext::new(false);
-        let result = emit_form(&form, &mut ctx, &registry);
+        let result = emit_form(&form, &mut ctx, &registry).unwrap();
 
         if let SExpr::List { values, .. } = &result[0] {
             if let SExpr::List { values: member, .. } = &values[3] {

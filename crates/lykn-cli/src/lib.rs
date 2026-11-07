@@ -6,7 +6,7 @@
 pub mod add;
 pub mod config;
 pub mod dist;
-mod validation;
 pub mod formatter;
 pub mod reader;
 pub mod util;
+mod validation;

@@ -52,7 +52,11 @@ fn classifier_options_for(file_path: Option<&Path>) -> classifier::ClassifierOpt
 fn validate_compile_forms(forms: &[lykn_lang::ast::sexpr::SExpr]) -> Result<(), CompileError> {
     crate::validation::first_compile_validation_group(forms).map_or(Ok(()), |diagnostics| {
         Err(CompileError::Analysis(
-            diagnostics.iter().map(|d| format!("{d}")).collect::<Vec<_>>().join("\n"),
+            diagnostics
+                .iter()
+                .map(|d| format!("{d}"))
+                .collect::<Vec<_>>()
+                .join("\n"),
         ))
     })
 }
@@ -338,6 +342,21 @@ pub fn compile_source_with_dts(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn compile_validation_preserves_all_messages_in_the_first_group() {
+        let forms = lykn_lang::reader::read(
+            "(func default :args () :body 1)\n(func class :args () :body 2)",
+        )
+        .unwrap();
+        let error = validate_compile_forms(&forms).unwrap_err();
+        let CompileError::Analysis(message) = error else {
+            panic!("reserved-name validation returns analysis diagnostics");
+        };
+        assert!(message.contains("default"));
+        assert!(message.contains("class"));
+        assert!(message.contains('\n'));
+    }
 
     #[test]
     fn compile_source_bind_kernel_json() {

@@ -25,7 +25,11 @@ use json::emit_module_json;
 /// Each surface form may produce one or more kernel forms. The results are
 /// collected in order. When `strip_assertions` is `true`, type-check
 /// assertions and contract checks are omitted from the output.
-pub fn emit(forms: &[SurfaceForm], registry: &TypeRegistry, strip_assertions: bool) -> Result<Vec<SExpr>, crate::error::LyknError> {
+pub fn emit(
+    forms: &[SurfaceForm],
+    registry: &TypeRegistry,
+    strip_assertions: bool,
+) -> Result<Vec<SExpr>, crate::error::LyknError> {
     let mut ctx = EmitterContext::new(strip_assertions);
     let mut result = Vec::new();
     for form in forms {
@@ -38,7 +42,11 @@ pub fn emit(forms: &[SurfaceForm], registry: &TypeRegistry, strip_assertions: bo
 ///
 /// This is a convenience function that calls [`emit`] followed by JSON
 /// serialization.
-pub fn emit_json(forms: &[SurfaceForm], registry: &TypeRegistry, strip_assertions: bool) -> Result<String, crate::error::LyknError> {
+pub fn emit_json(
+    forms: &[SurfaceForm],
+    registry: &TypeRegistry,
+    strip_assertions: bool,
+) -> Result<String, crate::error::LyknError> {
     let kernel = emit(forms, registry, strip_assertions)?;
     Ok(emit_module_json(&kernel))
 }

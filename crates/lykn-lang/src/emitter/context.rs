@@ -23,7 +23,7 @@ pub struct EmitterContext {
     pub gensym: EmitterGensym,
     /// Whether we're currently inside a class body (enables `assign`).
     pub in_class_body: bool,
-    pub(crate) first_fatal: Option<LyknError>,
+    pub(super) first_fatal: Option<LyknError>,
 }
 
 impl EmitterContext {
@@ -37,7 +37,7 @@ impl EmitterContext {
         }
     }
 
-    pub(crate) fn record_fatal(&mut self, error: LyknError) {
+    pub(super) fn record_fatal(&mut self, error: LyknError) {
         if self.first_fatal.is_none() {
             self.first_fatal = Some(error);
         }
