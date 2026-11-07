@@ -3358,11 +3358,31 @@ mod tests {
             list(vec![atom("let"), atom("i"), num(0.0)]),
             list(vec![atom("<"), atom("i"), num(2.0)]),
             list(vec![atom("++"), atom("i")]),
-            list(vec![atom("if"), atom("true"), list(vec![atom("trace"), atom("push"), atom("i")])]),
-            list(vec![atom("bind"), atom("value"), list(vec![atom("+"), atom("i"), num(10.0)])]),
-            list(vec![atom("if"), atom("true"), list(vec![atom("trace"), atom("push"), atom("value")])]),
-            list(vec![atom("bind"), atom("next-value"), list(vec![atom("+"), atom("value"), num(1.0)])]),
-            list(vec![atom("if"), atom("true"), list(vec![atom("trace"), atom("push"), atom("next-value")])]),
+            list(vec![
+                atom("if"),
+                atom("true"),
+                list(vec![atom("trace"), atom("push"), atom("i")]),
+            ]),
+            list(vec![
+                atom("bind"),
+                atom("value"),
+                list(vec![atom("+"), atom("i"), num(10.0)]),
+            ]),
+            list(vec![
+                atom("if"),
+                atom("true"),
+                list(vec![atom("trace"), atom("push"), atom("value")]),
+            ]),
+            list(vec![
+                atom("bind"),
+                atom("next-value"),
+                list(vec![atom("+"), atom("value"), num(1.0)]),
+            ]),
+            list(vec![
+                atom("if"),
+                atom("true"),
+                list(vec![atom("trace"), atom("push"), atom("next-value")]),
+            ]),
         ]);
         let mut context = ctx_value();
         let emitted = emit_expr(&form, &mut context, &reg());
@@ -3397,13 +3417,22 @@ mod tests {
                 list(vec![atom("console:log"), atom("i")]),
             ];
             values[index + 1] = value;
-            let diagnostics = crate::classifier::forms::validate_no_else_if_expressions(&[
-                list(values),
-            ]);
-            assert_eq!(diagnostics.len(), 1, "header index {index}: {diagnostics:?}");
-            assert!(diagnostics[0]
-                .message
-                .contains("if in expression position requires an else branch"));
+            let mut context = ctx();
+            let emitted = emit_expr(&list(values), &mut context, &reg());
+            assert_eq!(context.expr_context, ExprContext::Statement);
+            let lowered = emitted.as_list().expect("numeric-for kernel list");
+            let rejection = lowered[index + 1]
+                .as_list()
+                .expect("header expression lowering rejection");
+            assert_eq!(rejection[0].as_atom(), Some("throw"));
+            let error = rejection[1].as_list().expect("constructed TypeError");
+            assert_eq!(error[0].as_atom(), Some("new"));
+            assert_eq!(error[1].as_atom(), Some("TypeError"));
+            let message = match &error[2] {
+                SExpr::String { value, .. } => value,
+                other => panic!("expected diagnostic string, got {other:?}"),
+            };
+            assert!(message.contains("if in expression position requires an else branch"));
         }
     }
 

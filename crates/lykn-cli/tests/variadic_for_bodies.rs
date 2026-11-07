@@ -53,11 +53,23 @@ fn numeric_for_preserves_variadic_statement_body_and_value_headers() {
         String::from_utf8_lossy(&compile.stderr),
     );
     assert!(check.status.success(), "check rejected positive fixture");
-    assert!(compile.status.success(), "compile rejected positive fixture");
+    assert!(
+        compile.status.success(),
+        "compile rejected positive fixture"
+    );
     let generated = generated.expect("generated JavaScript exists");
-    assert!(generated.contains("for (let i = 0;"), "generated module: {generated}");
-    assert!(generated.contains("const value"), "generated module: {generated}");
-    assert!(generated.contains("const nextValue"), "generated module: {generated}");
+    assert!(
+        generated.contains("for (let i = 0;"),
+        "generated module: {generated}"
+    );
+    assert!(
+        generated.contains("const value"),
+        "generated module: {generated}"
+    );
+    assert!(
+        generated.contains("const nextValue"),
+        "generated module: {generated}"
+    );
 
     let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
     let runtime = execute(
@@ -81,10 +93,17 @@ fn numeric_for_preserves_variadic_statement_body_and_value_headers() {
         runtime.status.code(),
     );
     assert!(runtime.status.success(), "Deno execution failed: {stderr}");
-    assert!(runtime.stderr.is_empty(), "unexpected runtime stderr: {stderr}");
+    assert!(
+        runtime.stderr.is_empty(),
+        "unexpected runtime stderr: {stderr}"
+    );
     let actual: Value = serde_json::from_str(stdout.trim()).expect("runtime emits JSON");
     assert_eq!(actual, serde_json::json!({"trace": [0, 10, 11, 1, 11, 12]}));
+}
 
+#[test]
+fn numeric_for_rejects_no_else_if_in_each_consumed_header() {
+    let temp = TempDir::new().expect("create negative source directory");
     for (index, (name, replacement)) in negative_header_sources().into_iter().enumerate() {
         let mut forms = [
             "(let i 0)".to_string(),
@@ -126,7 +145,10 @@ fn numeric_for_preserves_variadic_statement_body_and_value_headers() {
         let diagnostic = "if in expression position requires an else branch";
         assert!(!check.status.success(), "check accepted {name}: {invalid}");
         assert!(String::from_utf8_lossy(&check.stderr).contains(diagnostic));
-        assert!(!compile.status.success(), "compile accepted {name}: {invalid}");
+        assert!(
+            !compile.status.success(),
+            "compile accepted {name}: {invalid}"
+        );
         assert!(String::from_utf8_lossy(&compile.stderr).contains(diagnostic));
         assert!(!emitted, "compile emitted JS for {name}");
     }
