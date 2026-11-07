@@ -197,3 +197,16 @@ Close review/rows/report/parent/backlog/CDC retrospective at endpoint, preserve
 NE-C02/05/NE-T01 and every prior failure/violation/uncaptured receipt. Original
 F1–F12 and Project07 finalresearch/licence/bootstrap/lib/ADT/guide/book/human gates
 remain open. No automatic next unit or integration follows.
+
+## Draft review correction3
+
+The complete unaccepted production draft is preserved at source45fc835c2bcf0c4a713a49a9910bb3458feed4e9.
+Implementation01 reported greens preceded its freeze and a later JS/unit edit;
+they are historical draft observations, not acceptance of this committed body.
+The exact pre-green implementation body is not established by a retained snapshot.
+Correction3/5 addresses the new current-scope scanner's class-member namespace
+regression and restores the assigned compiled-ESTree JS detector. It adds a
+private source-role countercontrol, retains all five shared cases/oracles, and
+requires a committed final body before fresh gates. See preserved
+[correction3 prompt](cc-prompt-iteration02.md). Two corrections remain afterward;
+no parser re-entry before independent repair acceptance.
