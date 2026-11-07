@@ -318,7 +318,7 @@
               (obj
                 :status (if (= read-status "source_missing") "parser_artifact_missing" "parser_artifact_unreadable")
                 :actualHash null
-                :actualVersion null)))))
+                :actualVersion null))))))
     (bind rows (cell #a()))
     (bind loaded (express gate))
     (if
@@ -327,7 +327,7 @@
         row
         manifest:rows
         (bind status (if row:required "not_processed" "excluded_named"))
-        (swap! rows (fn (:array all) (conj all (empty-row row status))))
+        (swap! rows (fn (:array all) (conj all (empty-row row status)))))
       (do
         (for-of
           row

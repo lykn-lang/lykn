@@ -685,7 +685,7 @@
                   :observed_effect null
                   :reasons (express local-reasons)
                   :reasonCount (get (express local-reasons) "length")
-                  :dependency_edges (express local-edges)))))
+                  :dependency_edges (express local-edges))))))
         (obj
           :coverage_status (express coverage)
           :direct_statements (express direct)

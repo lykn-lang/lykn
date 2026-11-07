@@ -100,3 +100,25 @@ final source/generated/runtime prerequisites remain required. The earlier
 native-0001 core check exited 0; its 80-byte stderr is normal success
 information `(7 top-level expressions)`, not a warning. No capability runtime
 has run (0/13).
+
+## Correction2 source readback
+
+Iteration04 spends correction2/5 after the independently reproduced f2c2a60
+syntax failures; no source edit followed that freeze before handoff. The exact
+walker failure is structural: `walk-program` leaves the numeric `for` open
+after its final `swap! direct`, so the aggregate result begins inside the loop
+and the function remains unterminated. The scanner parser-gate `try/catch` is
+still open before `bind rows`; its failed-gate `for-of` branch also remains open
+before the sibling success `do`. These intended form boundaries, not EOF
+padding, are the correction target. Preserve the actual failed sources and raw
+native-0004/0005 results. Both CC and independent CDC checks exited 1 with empty
+stdout and the recorded unterminated-list locations; neither was a compiler gap.
+
+Observer obligations remain incomplete at this partial point: the fixed IDs are
+checked before writes and K10a/b use distinct paths with the existing K10b input
+omitted from the child read grant; K11 uses the K01 source identity and leaves
+observed hashes null. The candidate has not yet asserted every frozen reason's
+type/path/category/loc/range or all §5 partition equations, and it is explicitly
+not runtime-ready. No source generation, module guard, or capability case has
+run (0/13). After intended boundaries are repaired, freeze before the two
+native checks; if either fails, return before more semantic source editing.
