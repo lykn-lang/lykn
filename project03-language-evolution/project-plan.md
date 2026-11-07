@@ -140,6 +140,12 @@ Project07 final synthesis/licence/bootstrap/authoring/book/human gates survive.
 
 ## Existing units
 
+2026-11-07 Slice19 StageA independently accepts BOTH NE-C10/NE-C11 on task8ed869f:
+fresh fullnormalMake/focused1+5/citations63/601, unchanged740 realJSON/DTS and full
+readableJS proof. Selected native taskrelease/bin aa31947…; release5408 unchanged.
+Tool completion and all13K stillunrun/within remaining two refinements. This is
+source-stage acceptance only, not wholeSlice19/original audit/Project07 closure.
+
 2026-11-07 Operator explicitly approved [Slice19](slice19-match-subject-and-walker/slice-plan.md):
 narrow NE-C11 and remaining NE-C10 validation concern, BOTH independently validated
 before original tooling/13-row re-entry, stop another real gap. Same Sol6.1 High

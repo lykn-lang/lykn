@@ -1,0 +1,1 @@
+No PATH override. No CARGO_NET_OFFLINE, CARGO_TARGET_DIR, CARGO_HOME, or RUSTFLAGS inherited at launch. No test filters, hardening flags, permission changes, cache deletion, HOME changes, or dependency install/update requested. Only npm_config_cache, XDG_CACHE_HOME, and the required fixed DENO_DIR are set for make check.

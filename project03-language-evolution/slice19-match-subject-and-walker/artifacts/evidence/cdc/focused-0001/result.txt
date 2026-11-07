@@ -1,0 +1,5 @@
+Actual direct emitter exit0,1passed/0failed/1129filtered (purposeful focused selector).
+Actual direct CLI executable exit0,5passed/0failed/0filtered; all original typed
+source/negative/no-write/JSON/DTS predicates executed. Raw bytes retained before
+interpretation. All CLI/test/Deno/release/bin hashes unchanged after both uses,
+exact values in pre-run invocation.txt. No Cargo/build/source mutation between.

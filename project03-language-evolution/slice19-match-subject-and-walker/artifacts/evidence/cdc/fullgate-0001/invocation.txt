@@ -1,0 +1,17 @@
+2026-11-07 CDC independent FULL NORMAL gate, no source edits.
+Source branch codex/match-subject-values, HEAD8ed869f1ed24bf688ba91f71d8c539680136794e clean before launch.
+cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Actual cwd rustc1.97.0(2d8144b78)/cargo1.97.0(c980f4866).
+printenv CARGO_NET_OFFLINE CARGO_TARGET_DIR CARGO_HOME RUSTFLAGS returned no values,
+exit1 expected absent, not a test outcome. PATH inherited unchanged, no testfilter/
+hardening override. Scoped fresh owned npm/XDG directories precreated; fixed existing
+DENO_DIR=/Users/oubiwann/Library/Caches/deno. No HOME or shared cache deletion.
+Before launch debug0492d5f50aa2f5d77f4b8896b761f38e552c49febf58fbf8c0aa3fdea2ac157c,
+release/bin aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8,
+Deno2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Make may rebuild/replace binaries; these are pre-gate identities, not later producer
+claims. Refresh actual final hashes before directly replaying focused/new condition.
+Complete stdout/stderr captured from launch at this owning fullgate directory.
+Command:
+env npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cdc/npm-cache-fullgate-0001 XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cdc/xdg-cache-fullgate-0001 DENO_DIR=/Users/oubiwann/Library/Caches/deno make check
+Actual result will be recorded after tool returns; expected0, no waiver on failure.

@@ -1,0 +1,6 @@
+cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Source clean8ed869f1ed24bf688ba91f71d8c539680136794e.
+make check-cited-paths
+Complete stdout/stderr captured separately here; actual tool exit0,63 committed
+documents/601 frozen historical citations. No source/Make/census changes.
+Deno pinned2ad84 before this native invocation, unchanged afterward.

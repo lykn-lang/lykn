@@ -560,6 +560,13 @@ no push/publication/type/cache repair/walker/corpus or next unit follows.
 
 #### NE-C10 — match clause statements rejected by no-else validation
 
+**2026-11-07 current accepted task disposition:** Slice19 independently accepts
+combined NE-C10/NE-C11 source at8ed869f after freshfullnormalMake/focused1+5/
+citations and SAME740 realJSON+DTS proof. Fn/lambda yields-header concern is now
+actually counter-tested/repaired; genfn positive preserved. Taskrelease/bin aa31947…
+is selected compiler; release5408 remains unchanged. Old Slice18 unaccepted state
+and limits remain historical. Original tool completion/same13 stillowed/unrun.
+
 **2026-11-07 Slice18 stop:** candidate4304eb280a4198eb75355956b166923883ceecbe is
 unaccepted/task-only. CC's three metadata counters green/CLI validation+DTS partial
 passes do not replace full source gates. NE-C11 below stops actual positive runtime
@@ -603,6 +610,12 @@ claim. Slice17 closes at0/13, one rowdone/fivedeferred. No current compiler fix,
 fourth correction, next unit or release propagation is opened.
 
 #### NE-C11 — unconsumed match subject inherits Statement during codegen
+
+**2026-11-07 current accepted task disposition:** Slice198ed869f fixes only the
+unconsumed target Value emission via existing context-save helper; exact original
+740source now compiles/runs independently with originalJSON/DTS, complete JS both
+targets as values. Fresh fullsource/focused/citation gates passed. See Slice19
+cdc-verification. No release propagation or broad emitter claim; tooling/K remain.
 
 **2026-11-07 authorized re-entry:** Slice19 owns explicit narrow repair, independent
 validation of BOTH source fixes (including NE-C10 fn/header concern), then original

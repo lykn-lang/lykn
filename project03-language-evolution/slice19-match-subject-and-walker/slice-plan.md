@@ -1,5 +1,13 @@
 # Slice19 — match subject repair and combined validation
 
+2026-11-07 StageA independently accepted BOTH source repairs on clean task8ed869f,
+fresh fullnormalMake/focused1+5/citations63/601/same740 realJSON+DTS proof. Actual
+postMake taskrelease/bin aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8,
+debug0492…ac157c, no release integration. Source continuation3/5 complete; oldtool
+3spent/tworemaining and two outer refinements remain. StageB not yet dispatched;
+exactbd3 walker unchanged is first re-entry; all13K unrun. Earlier active entries
+remain historical. Current canonical source verdict cdc-verification.md.
+
 Current assignment iteration01 operational fullgate setup correction, source
 continuation3/5 unchanged; oldtool3spent/tworemaining. Focusedgreen8ed869f: structural
 1/1, CLI5/5 and same740 realruntime/JSON/DTS pass, pins stable. FullMake0001 omitted

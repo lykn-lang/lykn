@@ -1,0 +1,8 @@
+Source branch codex/match-subject-values, HEAD 8ed869f1ed24bf688ba91f71d8c539680136794e; clean after full make check.
+make check argv: make check with only npm_config_cache, XDG_CACHE_HOME, and DENO_DIR scoped as recorded in invocation.txt.
+Exit status: 0.
+Complete stdout bytes: 250805. Complete stderr bytes: 14073. Stderr inspection found compiler status/informational lines only; no error/warning/failure matches.
+Release CLI target/release/lykn SHA256 aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8
+Copied CLI bin/lykn SHA256 aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8
+Debug CLI target/debug/lykn SHA256 0492d5f50aa2f5d77f4b8896b761f38e552c49febf58fbf8c0aa3fdea2ac157c
+Focused test binaries were not re-invoked after full Make; their prior pre/post hashes and captured direct runs remain in green-0001.

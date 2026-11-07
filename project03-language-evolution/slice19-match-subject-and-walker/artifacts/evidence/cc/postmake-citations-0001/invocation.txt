@@ -1,0 +1,9 @@
+Command: make check-cited-paths
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Source branch: codex/match-subject-values
+Source HEAD: 8ed869f1ed24bf688ba91f71d8c539680136794e
+Git status before invocation: clean
+Tool resolution: deno from inherited PATH, resolved executable /opt/homebrew/bin/deno; SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Complete stdout path: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/postmake-citations-0001/stdout.bin
+Complete stderr path: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/postmake-citations-0001/stderr.bin
+Actual exit status will be recorded separately after command completion.

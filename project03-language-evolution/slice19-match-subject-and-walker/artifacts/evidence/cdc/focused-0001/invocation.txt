@@ -1,0 +1,15 @@
+2026-11-07 CDC direct independent focused replay AFTER fullMake0, no source edits/
+Cargo invocation between these final pins and direct executable use.
+Source clean8ed869f1ed24bf688ba91f71d8c539680136794e.
+cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering.
+Actual debugCLI0492d5f50aa2f5d77f4b8896b761f38e552c49febf58fbf8c0aa3fdea2ac157c;
+release/bin aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8;
+libtest93993a16fb8748ce7956b75e49de7f160dadfd69af3963b1a70b0a7e1935f451;
+CLItest6ee385514cdce56059630cd4334bfe7a95d668ae7eb2e4016210dc0b0fd93261;
+Deno2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Commands (stdout/stderr captured separately to emitter/cli.*.bin in this directory):
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-60c4a58c1162abbf emitter::forms::tests::test_emit_statement_match_target_in_value_context --exact --nocapture
+env DENO_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cdc/focused-deno-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/match_clause_validation-7d8f7aa58e91c201 --nocapture
+Expected emitter1/1 and all5CLItests0. Runtime/DTS/negative/status bytes observed
+before test assertions by original frozen harness. No new source or test family.
+Actual exits and post-use pins recorded after tools return; no green inferred yet.

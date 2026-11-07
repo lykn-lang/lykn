@@ -1,0 +1,10 @@
+Command: npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cc/npm-cache-fullgate-0002 XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cc/xdg-cache-fullgate-0002 DENO_DIR=/Users/oubiwann/Library/Caches/deno make check
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Source branch: codex/match-subject-values
+Source HEAD: 8ed869f1ed24bf688ba91f71d8c539680136794e
+Git status before invocation: clean
+Inherited selected env before scoped assignments: CARGO_NET_OFFLINE unset; CARGO_TARGET_DIR unset; CARGO_HOME unset; RUSTFLAGS unset; PATH inherited unchanged.
+Effective task-specific env: npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cc/npm-cache-fullgate-0002; XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/slice19/cc/xdg-cache-fullgate-0002; DENO_DIR=/Users/oubiwann/Library/Caches/deno
+Complete stdout path: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/fullgate-0002/stdout.bin
+Complete stderr path: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice19-match-subject-and-walker/artifacts/evidence/cc/fullgate-0002/stderr.bin
+Actual exit status will be recorded separately after command completion.

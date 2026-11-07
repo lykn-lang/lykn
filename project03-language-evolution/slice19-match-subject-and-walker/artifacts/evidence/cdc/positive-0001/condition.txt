@@ -1,0 +1,14 @@
+2026-11-07 independent SAME740-byte source, copied natively from immutable Slice18
+CDC actual positive. Source SHAceaaf162892e964a76f317558ad35cfcdf82bd6731fcebe0eabb21de2d953058
+and740bytes verified BEFORE compile. Fresh owned configfree cwd; all12 exact
+project.json/deno.json/deno.jsonc entries absent across cwd,/private/tmp,/private,/;
+expected ls exit1 not a test result, no recursive inventory.
+Source/task clean8ed869f1ed24bf688ba91f71d8c539680136794e, releaseCLI actual
+aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8 AFTER fullMake.
+Deno actual2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+No Cargo/build between pin and use. Predict defaultstrict -o0, exact ChoiceDTS,
+fullJS valid with BOTH match-target initializers values, Deno0/emptyerr/expectedJSON
+[[42,["prefix","tail","statement"]],[42,["tail"]],[0,["fallback"]]] plusLF.
+Compile inherited tool environment/no task overrides (not full environment dump).
+Runtime fresh owned cache, strict offline/no-config/no-prompt/no extra permissions.
+Capture full streams/exits before interpretation, hashes before/after. No new case.

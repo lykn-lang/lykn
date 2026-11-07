@@ -1,0 +1,14 @@
+Actual default strict file compile0, stdoutempty, unused Choice warning retained.
+Command at configfree cwd:
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn compile /private/tmp/lykn-s19-cdc-positive-3c5E1i/positive.lykn -o /private/tmp/lykn-s19-cdc-positive-3c5E1i/positive.js
+Actual full readable JS inspected BEFORE runtime; BOTH targets are ternaries.
+JS SHA6765b493fcf483b11fd7f975d5398e6ec2683768aa5d5831a3a14fa0f780b0a1.
+DTS SHA0ce10d8a36d40fa340ede6fce895a51b8a3b6e6dfaf1d51a03b6fc6a20d6986f,
+exact predeclared Choice-only bytes. Native cmp with CC readableJS exited0.
+Runtime command:
+env DENO_DIR=/private/tmp/lykn-s19-cdc-positive-3c5E1i/deno-cache DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --no-remote --cached-only --no-npm --deny-net --no-prompt /private/tmp/lykn-s19-cdc-positive-3c5E1i/positive.js
+Actual tool exit0, stderrempty, stdout EXACT original JSON+LF (also proven by
+independent original CLI test byte assertion):
+[[42,["prefix","tail","statement"]],[42,["tail"]],[0,["fallback"]]]
+ReleaseCLI aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8,
+Deno2ad84/sourceceaaf/JS6765 hashes unchanged AFTER runtime. No build in between.

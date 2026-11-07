@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 [Slice19 StageA](slice19-match-subject-and-walker/cdc-verification.md)
+independently accepts task8ed BOTHsourcefixes at MS-02/MS-03; fresh normal gates/
+same740 runtime/readable outputs verified. Other MSrows remainopen, all13K unrun;
+release5408 unchanged, no project or library acceptance inherited.
+
 2026-11-07 Operator opened [Slice19](slice19-match-subject-and-walker/slice-plan.md)
 NE-C11/NE-C10 combined source validation then original tools/same13 or nextgapstop.
 Six MSrows open; continuation3/5, oldouter2spent/oldtooling3spent+2remaining retained.
