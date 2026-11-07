@@ -7,6 +7,9 @@ its explicit Python-policy breach; see cdc-verification.md and incident receipt.
 StageB NE-C07 and complete canonical independent validation now accepted at
 source3b65d09, compiler748cd999 (VP04/05 done); StageC re-entry is current under
 cc-prompt-iteration02.md. Earlier staged statements remain dated chronology.
+StageC cc-01 check passed, formatter rejected all3 original unformatted bodies;
+no later gates/observations ran. Iteration03 authorizes correction1/5: canonical
+formatting into new Slice14 helper copies only, old originals/data/oracles intact.
 Operator: “Let's fix NE-C08, validate it independently, then return to NE-C07
 and the same four parser observations. Same models, Autonomous Mode, and stop
 if we hit another real evidence gap :-D”. Endpoint is these staged repairs and
