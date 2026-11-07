@@ -1,0 +1,68 @@
+(bind trace (cell (array)))
+
+(bind outer (do (bind scope-value "outer") scope-value))
+
+(bind scoped (do (bind scope-value "inner") scope-value))
+
+(bind selectedMessage (cell ""))
+
+(try
+  (if
+    true
+    (do
+      (swap! trace (fn (:array entries) (conj entries "selected")))
+      (throw (new Error "selected boom")))
+    (do (swap! trace (fn (:array entries) (conj entries "untaken"))) 1))
+  (catch err (reset! selectedMessage err:message)))
+
+(async
+  (func
+    reject-later
+    :args
+    ()
+    :returns
+    :any
+    :body
+    (await (Promise:reject (new Error "await rejected")))))
+
+(bind
+  fail-value
+  (async
+    (fn
+      ()
+      (bind
+        result
+        (if
+          true
+          (do
+            (swap! trace (fn (:array entries) (conj entries "await-selected")))
+            (await (Promise:resolve 0))
+            (throw (new Error "value boom")))
+          (do
+            (swap! trace (fn (:array entries) (conj entries "await-untaken")))
+            99)))
+      result)))
+
+(bind rejectionMessage (cell ""))
+
+(try (await (reject-later)) (catch err (reset! rejectionMessage err:message)))
+
+(bind asyncValueMessage (cell ""))
+
+(try (await (fail-value)) (catch err (reset! asyncValueMessage err:message)))
+
+(console:log
+  (JSON:stringify
+    (obj
+      :trace
+      (express trace)
+      :selectedMessage
+      (express selectedMessage)
+      :rejectionMessage
+      (express rejectionMessage)
+      :outer
+      outer
+      :scoped
+      scoped
+      :asyncValueMessage
+      (express asyncValueMessage))))
