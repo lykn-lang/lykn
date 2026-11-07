@@ -1,0 +1,29 @@
+/Users/oubiwann/.cargo/bin/rustc
+rustc 1.97.0 (2d8144b78 2026-07-07)
+/Users/oubiwann/.cargo/bin/cargo
+cargo 1.97.0 (c980f4866 2026-06-30)
+/opt/homebrew/bin/deno
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+/Users/oubiwann/.cargo/bin/cargo-binstall
+/Users/oubiwann/.cargo/bin/cargo-outdated
+cargo-llvm-cov 0.6.21
+/opt/homebrew/bin/npm
+11.19.1
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+f7c7e11eb2e07f006e532a8aaac77b32f4527d305ac386c0c633ca6133d35ca9  /Users/oubiwann/.cargo/bin/rustc
+f7c7e11eb2e07f006e532a8aaac77b32f4527d305ac386c0c633ca6133d35ca9  /Users/oubiwann/.cargo/bin/cargo
+0e81347e45c2c81d65be56fde8f4720b80bba3b48aa737ca23c6d83ed6d09ad4  /Users/oubiwann/.cargo/bin/cargo-binstall
+05f23d77319744714a68e77999742967b714a60ca7d29a32a3f8ab0676a516ae  /Users/oubiwann/.cargo/bin/cargo-outdated
+8e5f6f3429f8cdbe693cdc29904e9d5a7b127a494bd15c804bd54c7403bfcbe7  /opt/homebrew/bin/npm
+85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc  target/release/lykn
+85d6d3d528c404873bae712ebc8594d0d7a5dacaeffecba2c388fbe7f19f87fc  bin/lykn
+4eb4a7b429e27de7ccd33122152cfdd84eb4c4273eeccfb7536b98bc109a0a2e  target/debug/lykn
+lykn 0.6.0
+lykn 0.6.0
+lykn 0.6.0
+1c1e7e822e5665b3cac2914d95bceade004694c0c37db5be1dd971876e56fd56  packages/lang/compiler.js
+1c1e7e822e5665b3cac2914d95bceade004694c0c37db5be1dd971876e56fd56  crates/lykn-lang/embedded/packages/lang/compiler.js
+1c1e7e822e5665b3cac2914d95bceade004694c0c37db5be1dd971876e56fd56  target/slice16/cc/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js
+cmp exits: 0 0

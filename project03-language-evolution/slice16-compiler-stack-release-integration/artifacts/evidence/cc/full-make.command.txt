@@ -1,0 +1,3 @@
+CWD=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+COMMAND=env -u CARGO_NET_OFFLINE -u CARGO_TARGET_DIR DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice16/cc/xdg-cache npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/slice16/cc/npm-cache /usr/bin/make check
+SCOPE=normal unfiltered canonical full gate; no test filters, skipped targets, installer commands, or metadata overrides

@@ -1,0 +1,30 @@
+Updating f705655..5408abd
+Fast-forward
+ crates/lykn-cli/src/compile.rs                     | 285 ++++++++---
+ crates/lykn-cli/tests/async_exports.rs             | 242 +++++++++
+ crates/lykn-cli/tests/async_expression_values.rs   | 183 +++++++
+ crates/lykn-cli/tests/compile_validation_parity.rs | 231 +++++++++
+ .../lykn-lang/embedded/packages/lang/compiler.js   | 122 ++++-
+ crates/lykn-lang/src/classifier/forms.rs           |  78 +++
+ crates/lykn-lang/src/emitter/forms.rs              | 558 +++++++++++++++++++--
+ packages/lang/compiler.js                          | 122 ++++-
+ test/fixtures/async-exports/consumer.lykn          |   3 +
+ test/fixtures/async-exports/module.lykn            |   6 +
+ .../async-expression-values/E1-sync-values.lykn    |  38 ++
+ .../async-expression-values/E2-async-branches.lykn |  59 +++
+ .../async-expression-values/E3-promise-value.lykn  |  17 +
+ .../E4-deferred-function.lykn                      |  38 ++
+ .../async-expression-values/E5-effects-errors.lykn |  68 +++
+ test/forms/async-expression-values.test.js         | 149 ++++++
+ 16 files changed, 2067 insertions(+), 132 deletions(-)
+ create mode 100644 crates/lykn-cli/tests/async_exports.rs
+ create mode 100644 crates/lykn-cli/tests/async_expression_values.rs
+ create mode 100644 crates/lykn-cli/tests/compile_validation_parity.rs
+ create mode 100644 test/fixtures/async-exports/consumer.lykn
+ create mode 100644 test/fixtures/async-exports/module.lykn
+ create mode 100644 test/fixtures/async-expression-values/E1-sync-values.lykn
+ create mode 100644 test/fixtures/async-expression-values/E2-async-branches.lykn
+ create mode 100644 test/fixtures/async-expression-values/E3-promise-value.lykn
+ create mode 100644 test/fixtures/async-expression-values/E4-deferred-function.lykn
+ create mode 100644 test/fixtures/async-expression-values/E5-effects-errors.lykn
+ create mode 100644 test/forms/async-expression-values.test.js

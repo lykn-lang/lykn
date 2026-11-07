@@ -1,0 +1,3 @@
+CWD=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+COMMAND=env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno cargo test --offline --locked -p lykn-cli --test compile_validation_parity --test async_exports --test async_expression_values -- --nocapture
+SCOPE=exact three existing native integration targets; no filters or added tests
