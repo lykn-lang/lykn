@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+Current2026-11-07: MS02/MS03 accepted at a8f2070, others open. Exact old bd3
+walker first re-entry check0 with accepted aa31947… (20top-level INFO, not warning),
+full raw/source in cdc/walker-reentry. Iteration02 tooling continuation4/5 on both
+outer and old tooling tracks, one substantive correction remains; all13K unrun.
+Earlier pending-stage notes below remain dated assignment history, not verdict.
+
 Six rows open. Continuation refinement3/5, NOT reset; outer2alreadyspent/3remaining
 before this assignment, old tooling3spent/tworemaining. CC green is proposed only.
 

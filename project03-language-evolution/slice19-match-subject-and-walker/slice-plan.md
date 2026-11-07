@@ -1,5 +1,16 @@
 # Slice19 — match subject repair and combined validation
 
+2026-11-07 current StageB assignment: iteration02, continuation outer4/5 AND old
+tooling4/5 (one substantive correction remains). Source8ed independently accepted
+at a8f2070. FIRST exact unchanged bd3 walker SHA6976a853… check0/20top-level with
+accepted aa31947… compiler; raw/source/condition in cdc/walker-reentry. No K run.
+Fresh LunaHigh research CC owns only four Slice19 tooling sources/README and
+tooling raw; no product edits. Full §2/§5 predicates, original13 controls/core
+unchanged; compact concrete completion directive in iteration02. K runtime held
+for CDC source/generated/predicate review after native/realguard prerequisites.
+K08 joint Call/Identifier shorthand reconciled BEFORE trial: Call59–65 vs
+Identifier59–63, both3:6; frozen old controls preserved. No new case/probe.
+
 2026-11-07 StageA independently accepted BOTH source repairs on clean task8ed869f,
 fresh fullnormalMake/focused1+5/citations63/601/same740 realJSON+DTS proof. Actual
 postMake taskrelease/bin aa31947fd4bb0ae0024cf82380c8e076bc2b92ba4493fec4feade586058bfaf8,
@@ -165,3 +176,4 @@ six rows/report/review/retro/parent/backlog honestly at endpoint only, no nextun
 | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-07 | Source continuation refinement3/5, NE-C11+NE-C10 concern | StageA only; no tooling/runtimeK before CDC combined acceptance |
 | cc-prompt-iteration01.md | 2026-11-07 | Correct already-required owned cache/raw capture for fullMake | Current operational retry, source refinement3 unchanged/no code edit |
+| cc-prompt-iteration02.md | 2026-11-07 | Complete original tooling and fixed13 gate under original contract | Current continuation4/5 for BOTH outer/tool tracks; one remains; runtime held for CDC prereview |
