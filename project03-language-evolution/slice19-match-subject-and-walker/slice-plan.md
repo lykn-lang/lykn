@@ -1,5 +1,14 @@
 # Slice19 — match subject repair and combined validation
 
+2026-11-07 Operator explicitly selected fresh CC Sol6.1 High and ONE correction8,
+separate Sol6.1 High CDC review, same bounded Autonomous endpoint/stop rule.
+Iteration06 governs exact visit-list for close before else ONLY, retaining7856
+role/corepin fixes. Seven spent/no reset/ninth. Fresh fork-none contributor is
+explicit model change, not inferred substitution. Full scoped/source/generated/
+predicate/realguard gates before same13+independent replay; actual core068af must
+reproduce, never repin. Any further substantive failure stops before more edits.
+All old failures/limits/interim retrospective remain. Approval is not acceptance.
+
 Current: correction7 STOPPED, pending Operator. Core final-layout4/4 and generated
 068af pin reproduced; first7856 walker nativecheck1 unterminated223:1, independently
 confirmed. No postfailure edit/gate; K0/13. Seven spent/no reset/eighth. Exact
@@ -232,3 +241,4 @@ six rows/report/review/retro/parent/backlog honestly at endpoint only, no nextun
 | cc-prompt-iteration03.md | 2026-11-07 | Consolidated actual syntax and predicate defects | LAST continuation5/5 BOTH tracks; no further substantive retry without Operator |
 | cc-prompt-iteration04.md | 2026-11-07 | Explicitly authorized ONE extra correction6, observer boundary only | Operator approval received; no reset/seventh; runtime held for CDC prereview |
 | cc-prompt-iteration05.md | 2026-11-07 | Explicitly authorized ONE consolidated correction7, compiled-core pin and all BindingRole routes | Fresh LunaHigh, six spent/no reset/eighth; K held for CDC |
+| cc-prompt-iteration06.md | 2026-11-07 | Explicit correction8 and model change: fresh SolHigh implementer, separate SolHigh CDC | Exact walker boundary only; seven spent/no reset/ninth; K held |

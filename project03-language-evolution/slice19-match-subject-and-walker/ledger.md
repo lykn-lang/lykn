@@ -1,5 +1,11 @@
 # Slice19 ledger
 
+Current2026-11-07: Operator explicitly approves ONE correction8 with fresh Sol6.1
+High CC and separate Sol6.1 High CDC, Autonomous Mode. Seven spent/no reset/ninth.
+Iteration06 exact walker for-boundary close, all prior semantics/pins/frozen13
+unchanged. Full scoped gates/review before K; source8ed accepted, tooling open.
+MS02/03 done; other four rows open, K0/13. No implicit acceptance/model reuse.
+
 Current correction7 spent/pending Operator: core4/4 passes, walker native1fail
 independently reproduced at223:1; remaining gates/guards/K0/13 unrun. Candidate
 7856 UNACCEPTED. Seven spent/no eighth authority/model change. Exact one-boundary
