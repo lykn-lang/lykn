@@ -76,7 +76,10 @@ fn native_compiler_preserves_async_expression_values() {
         ) {
             Ok(output) => output,
             Err(error) => {
-                failures.push(format!("{}: strict compile {error}; source={source:?}", fixture.name));
+                failures.push(format!(
+                    "{}: strict compile {error}; source={source:?}",
+                    fixture.name
+                ));
                 continue;
             }
         };
@@ -157,7 +160,10 @@ fn native_compiler_preserves_async_expression_values() {
             }
         };
         if !runtime.stderr.is_empty() {
-            failures.push(format!("{}: unexpected Deno stderr {stderr:?}", fixture.name));
+            failures.push(format!(
+                "{}: unexpected Deno stderr {stderr:?}",
+                fixture.name
+            ));
         }
         if actual != expected {
             failures.push(format!(
@@ -168,5 +174,10 @@ fn native_compiler_preserves_async_expression_values() {
             ));
         }
     }
-    assert!(failures.is_empty(), "{} native failures:\n{}", failures.len(), failures.join("\n\n"));
+    assert!(
+        failures.is_empty(),
+        "{} native failures:\n{}",
+        failures.len(),
+        failures.join("\n\n")
+    );
 }

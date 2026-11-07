@@ -1,15 +1,18 @@
-(bind trace (cell #a()))
+(bind trace (cell (array)))
 
 (async
-  (func choose-branch
-    :args (:boolean take-sync)
-    :returns :number
+  (func
+    choose-branch
+    :args
+    (:boolean take-sync)
+    :returns
+    :number
     :body
-    (bind value
-      (if take-sync
-        (do
-          (swap! trace (fn (:array entries) (conj entries "sync")))
-          42)
+    (bind
+      value
+      (if
+        take-sync
+        (do (swap! trace (fn (:array entries) (conj entries "sync"))) 42)
         (do
           (swap! trace (fn (:array entries) (conj entries "await")))
           (await (Promise:resolve 7)))))
@@ -17,30 +20,40 @@
     value))
 
 (async
-  (func observe-branch
-    :args (:boolean take-sync)
-    :returns :any
+  (func
+    observe-branch
+    :args
+    (:boolean take-sync)
+    :returns
+    :any
     :body
-    (reset! trace #a())
+    (reset! trace (array))
     (bind pending (choose-branch take-sync))
     (swap! trace (fn (:array entries) (conj entries "after-call")))
     (bind value (await pending))
     (obj :trace (express trace) :value value)))
 
 (async
-  (func choose-both-awaited
-    :args (:boolean take-left)
-    :returns :number
+  (func
+    choose-both-awaited
+    :args
+    (:boolean take-left)
+    :returns
+    :number
     :body
-    (if take-left
+    (if
+      take-left
       (do (await (Promise:resolve 42)))
       (do (await (Promise:resolve 7))))))
 
 (bind sync-observation (await (observe-branch true)))
+
 (bind await-observation (await (observe-branch false)))
-(bind bothAwaited
-  #a((await (choose-both-awaited true))
-     (await (choose-both-awaited false))))
+
+(bind
+  bothAwaited
+  (array (await (choose-both-awaited true)) (await (choose-both-awaited false))))
+
 (console:log
   (JSON:stringify
     (obj :sync sync-observation :await await-observation :bothAwaited bothAwaited)))

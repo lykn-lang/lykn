@@ -65,7 +65,12 @@ Deno.test("public JS compiler preserves async expression values", async (t) => {
         await Deno.writeTextFile(modulePath, generated);
         console.log(
           "ASYNC_EXPR_JS_PREASSERT",
-          JSON.stringify({ name: fixture.name, expected: fixture.expected, source, generated }),
+          JSON.stringify({
+            name: fixture.name,
+            expected: fixture.expected,
+            source,
+            generated,
+          }),
         );
         const result = await new Deno.Command(Deno.execPath(), {
           args: [
@@ -87,7 +92,14 @@ Deno.test("public JS compiler preserves async expression values", async (t) => {
         const stderr = new TextDecoder().decode(result.stderr);
         console.log(
           "ASYNC_EXPR_JS_RUNTIME",
-          JSON.stringify({ name: fixture.name, code: result.code, stdout, stderr, source, generated }),
+          JSON.stringify({
+            name: fixture.name,
+            code: result.code,
+            stdout,
+            stderr,
+            source,
+            generated,
+          }),
         );
         if (result.code !== 0) {
           failures.push(
@@ -95,25 +107,41 @@ Deno.test("public JS compiler preserves async expression values", async (t) => {
           );
           return;
         }
-        if (stderr !== "") failures.push(`${fixture.name}: unexpected stderr ${JSON.stringify(stderr)}`);
+        if (stderr !== "") {
+          failures.push(
+            `${fixture.name}: unexpected stderr ${JSON.stringify(stderr)}`,
+          );
+        }
         let actual;
         try {
           actual = JSON.parse(stdout.trim());
         } catch (error) {
-          failures.push(`${fixture.name}: invalid JSON ${error}; stdout=${JSON.stringify(stdout)}`);
+          failures.push(
+            `${fixture.name}: invalid JSON ${error}; stdout=${
+              JSON.stringify(stdout)
+            }`,
+          );
           return;
         }
         if (JSON.stringify(actual) !== JSON.stringify(fixture.expected)) {
           failures.push(
-            `${fixture.name}: expected ${JSON.stringify(fixture.expected)}, got ${JSON.stringify(actual)}; source:\n${source}\ngenerated:\n${generated}\nstdout:\n${stdout}`,
+            `${fixture.name}: expected ${
+              JSON.stringify(fixture.expected)
+            }, got ${
+              JSON.stringify(actual)
+            }; source:\n${source}\ngenerated:\n${generated}\nstdout:\n${stdout}`,
           );
         }
       } catch (error) {
         failures.push(
-          `${fixture.name}: setup/compile/runtime error ${error}\nsource:\n${source ?? "<not read>"}\ngenerated:\n${generated ?? "<not generated>"}`,
+          `${fixture.name}: setup/compile/runtime error ${error}\nsource:\n${
+            source ?? "<not read>"
+          }\ngenerated:\n${generated ?? "<not generated>"}`,
         );
       } finally {
-        if (tempDir !== undefined) await Deno.remove(tempDir, { recursive: true });
+        if (tempDir !== undefined) {
+          await Deno.remove(tempDir, { recursive: true });
+        }
       }
     });
   }

@@ -1,32 +1,39 @@
-(bind trace (cell #a()))
+(bind trace (cell (array)))
+
 (bind outer "outer")
-(bind scoped
-  (do
-    (bind outer "inner")
-    outer))
+
+(bind scoped (do (bind outer "inner") outer))
+
 (bind selectedMessage (cell ""))
+
 (try
-  (if true
+  (if
+    true
     (do
       (swap! trace (fn (:array entries) (conj entries "selected")))
       (throw (new Error "selected boom")))
-    (do
-      (swap! trace (fn (:array entries) (conj entries "untaken")))
-      1))
+    (do (swap! trace (fn (:array entries) (conj entries "untaken"))) 1))
   (catch err (reset! selectedMessage err:message)))
 
 (async
-  (func reject-later
-    :args ()
-    :returns :any
+  (func
+    reject-later
+    :args
+    ()
+    :returns
+    :any
     :body
     (await (Promise:reject (new Error "await rejected")))))
 
-(bind fail-value
+(bind
+  fail-value
   (async
-    (fn ()
-      (bind result
-        (if true
+    (fn
+      ()
+      (bind
+        result
+        (if
+          true
           (do
             (swap! trace (fn (:array entries) (conj entries "await-selected")))
             (await (Promise:resolve 0))
@@ -37,21 +44,25 @@
       result)))
 
 (bind rejectionMessage (cell ""))
-(try
-  (await (reject-later))
-  (catch err (reset! rejectionMessage err:message)))
+
+(try (await (reject-later)) (catch err (reset! rejectionMessage err:message)))
 
 (bind asyncValueMessage (cell ""))
-(try
-  (await (fail-value))
-  (catch err (reset! asyncValueMessage err:message)))
+
+(try (await (fail-value)) (catch err (reset! asyncValueMessage err:message)))
 
 (console:log
   (JSON:stringify
     (obj
-      :trace (express trace)
-      :selectedMessage (express selectedMessage)
-      :rejectionMessage (express rejectionMessage)
-      :outer outer
-      :scoped scoped
-      :asyncValueMessage (express asyncValueMessage))))
+      :trace
+      (express trace)
+      :selectedMessage
+      (express selectedMessage)
+      :rejectionMessage
+      (express rejectionMessage)
+      :outer
+      outer
+      :scoped
+      scoped
+      :asyncValueMessage
+      (express asyncValueMessage))))
