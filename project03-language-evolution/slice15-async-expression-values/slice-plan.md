@@ -320,4 +320,21 @@ historical discrepancy is preserved, not repaired by inventing a prompt.
 | cc-prompt-iteration04.md | iteration03 | Lint-clean sibling scope condition, correction5 | Rejected grouped-bind regression; pause retained |
 | cc-prompt-iteration05.md | iteration04 | Explicit override1, grouped-bind correction6 | Group fix green, switch regression rejected |
 | cc-prompt-iteration06.md | iteration05 | Explicit override2, role-aware switch correction7 | Source independently accepted5408 |
-| cc-prompt-iteration07.md | iteration06 | Original conditional parser phase; count remains7 | Active; no parser runtime before source acceptance |
+| cc-prompt-iteration07.md | iteration06 | Original conditional parser phase; count remains7 | Returned: K11 passed, K01 outer read denied before child |
+| cc-prompt-iteration08.md | iteration07 | Restore original exact own-input read scope; source count remains7 | Active; fresh four-case launch |
+
+## Operational launch correction within original authority
+
+First observer run atca5680e preserves1 passed K11 child, K01 setup permission
+error before child, two untouched rows (actual children1/4, other3unrun). CDC's
+iteration07 wrongly omitted outer read access to newly written input files.
+Original Slice12 candidate README72–78 explicitly includes required probe inputs;
+Slice11 audit contract52–61 authorizes frozen inputs/manifests. Root reviewed and
+confirmed the existing Operator authority, so no new permission/budget decision
+is needed. [Preserved operational amendment](cc-prompt-iteration08.md) restores
+ONLY exact NEWROOT/K01,K08,K09 input.js reads under fresh roots. Actual grants
+change; old deficient condition stays failed history, not retroactively compliant.
+No directory/-A/env/net/subprocess expansion, child policy/source/oracle change
+or eighth source correction. Original full prerequisite evidence is reused with
+unchanged-byte applicability; current assignment iteration08 is active. Four
+ordered observations and fresh CDC replay remain the same bounded endpoint.

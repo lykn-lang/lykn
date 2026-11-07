@@ -21,6 +21,17 @@ remains0/4; AV-07 awaits endpoint. Preserved cc-prompt-iteration07.md is the
 original authorized conditional parser continuation, not an eighth correction.
 No parser child/runtime ran before this recorded acceptance.
 
+**First parser launch / operational correction:** all three immutable helper
+native/generated/real-module prerequisites passed, including independent CDC
+copies. CC's initial observer then passed K11 but failed reading newly written
+K01 input before launching that child. The profile omission is CDC's prompt
+error, not compiler/parser failure. Source/predictions unchanged. Original Slice12
+candidate README72–78 and Slice11 contract52–61 already authorize exact required
+input reads; the preserved iteration08 restores three exact new owned input paths,
+with fresh roots and all other strict permissions unchanged. It is an operational
+launch correction under existing authority, not an eighth source pass. Original
+failed condition/raw1child-of4 remain preserved; no successful aggregate yet.
+
 ## Current verdict after authorized correction6
 
 **Subsequent authorization:** Operator's “yes, authorised!” permits ONE bounded

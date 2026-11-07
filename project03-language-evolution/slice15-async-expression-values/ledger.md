@@ -3,6 +3,11 @@
 Current: AV-01–04 independently accepted source-stage; AV-05–07 remain open.
 Parser0/4 at the continuation handoff. CC attestations alone are not acceptance.
 
+First launch: K11 passed; K01 outer setup read denied, no child; K08/K09 untouched.
+Actual children1/4. All source/helper/module prerequisites pass. AV-05/06 remain
+open pending operational amendment08, restoring exact own-input reads already
+authorized in the original method. No source repair/budget reset or false4/4.
+
 ## Preserved earlier status history
 
 **Pending Operator decision,5/5 corrections exhausted.**
