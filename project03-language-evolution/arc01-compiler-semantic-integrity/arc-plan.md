@@ -9,6 +9,15 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 execution opened — 2026-11-07
+
+After independently closed Slice20, [S02](slice02-checked-emission-results/slice-plan.md)
+opens the approved Result-family/private-collector and production-route migration
+from release/task8f on a dedicated task branch. Fresh Luna6 High CC implements;
+separate Sol6.1 High CDC independently validates. First unexpected substantive
+failure stops; known baseline false-success red is expected. CI-02 remains open
+until proof. No S03, integration, tools/K or old tooling-budget reset follows.
+
 ## Current release baseline and Result decision — 2026-11-07
 
 Standalone [Slice20](../slice20-semantic-stack-release-integration/cdc-verification.md)

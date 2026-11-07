@@ -1,5 +1,11 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07: after Slice20 independently accepted release8f, the Operator approved
+Result-family APIs at the0.6 breaking boundary. Actual S02 open set now governs
+the private checked-lowering and production-route implementation; CI-02 remains
+open pending independent acceptance. Fresh Luna6 High CC/separate Sol6.1 High CDC,
+first unexpected substantive-failure stop. Old tooling8 spent/K0/13 unchanged.
+
 2026-11-07: CI-01 independently delivered by S01 task8f5d199, five VF rows done.
 Other eight capabilities remain open; no arc composition acceptance, S02 launch,
 tooling/K or release integration follows. Original all-open planning review is
