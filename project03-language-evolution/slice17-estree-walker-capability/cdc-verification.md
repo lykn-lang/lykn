@@ -1,5 +1,21 @@
 # Slice17 independent review — revision required
 
+## Partial correction2 disposition,2026-11-07
+
+333b2091bdbf388aebeea551f398486cb5bd00af remains unaccepted. CC walker check1 at
+166:1; CDC verified exact frozen hashes before independent walker1/same166:1 and
+scanner1/296:1. Native-0006 and CDC partial333 retain raw outcomes. Static whole
+form read identifies flag-unlisted's own func unclosed, scanner async wrapper
+unclosed and scan-row try boundaries requiring semantic placement review. No
+compiler/parser gap or runtime proof;0/13. Correction2 spent, iteration05 is3/5.
+
+CDC setup NONCONFORMANCE: first git extraction omitted -C from scratch, failed
+before proper extraction, and left an empty redirected file; the subsequent CLI
+actually returned0/zero expressions. This is not confirmation or a passing gate.
+Its actual empty body/stderr and chronology remain in partial333; exact corrected
+extractions and source hashes precede the real checks. No source implementation
+was authored by CDC, no source/index mutation during CC ownership. All EW rows open.
+
 ## Partial correction1 independent feedback,2026-11-07
 
 Unaccepted f2c2a6077e3cf866a201110171331385508856d3 was independently extracted

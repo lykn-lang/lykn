@@ -1,0 +1,22 @@
+CDC independent partial333 feedback,2026-11-07; no acceptance/runtime.
+Source pin333b2091bdbf388aebeea551f398486cb5bd00af; same CLI85d6d3 and config-free
+scratch ancestry established in prior commands.txt. No environment overrides.
+
+SETUP NONCONFORMANCE: git show333b:path was first invoked from this scratch
+without -C, returning fatal:not a git repository (actual tool output, not retained
+stderr file). Redirected walker-333b209.lykn was empty. Subsequent absolute CLI
+check actually returned0 with '(0 top-level expressions)' in retained stderr.
+This empty-input result is NOT an independent source confirmation or valid tool
+gate. It is retained separately rather than rewritten or counted as expected.
+
+Correct extraction used git -C /Users/oubiwann/lab/lykn/lang/.worktrees/planning
+show333b:<exact owning walker/scanner path>, then shasum BEFORE each check.
+walker-333b209-exact.lykn SHA2c0160e41877cadbea574c433bc97d0ec70c8870994ecfb8e75ce609d8edec60
+scanner-333b209-exact.lykn SHAe66bb742733cdcee1ca225660a6e695ae93124e7136f40724ac6fee3a635c5cf
+
+cwd /private/tmp/lykn-s17-cdc-partial-slaXeT
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /private/tmp/lykn-s17-cdc-partial-slaXeT/walker-333b209-exact.lykn
+stdout/stderr redirected to same prefix.stdout/.stderr; actual exit1, retained.
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn check /private/tmp/lykn-s17-cdc-partial-slaXeT/scanner-333b209-exact.lykn
+stdout/stderr redirected to same prefix.stdout/.stderr; actual exit1, retained.
+No new case/helper/compiler/parsing/runtime activity. Capability0/13.

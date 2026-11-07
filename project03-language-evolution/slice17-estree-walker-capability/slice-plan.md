@@ -1,5 +1,12 @@
 # Slice17 — Lykn ESTree walker and bounded capability gate
 
+Current assignment: `cc-prompt-iteration05.md`, issued2026-11-07, predecessor04
+returned after correction2 partial333b209 walker syntax failure166:1. Independent
+exact walker check reproduces1; scanner check1 at296:1. Correction3/5 now active;
+CC made no post-freeze edits. CDC wrong-cwd extraction/empty-input check0 is
+preserved as setup nonconformance, not source confirmation. Capability0/13.
+Earlier current-assignment entries below are historical, not active instructions.
+
 Current assignment: `cc-prompt-iteration04.md`, issued2026-11-07, predecessor
 iteration03 returned after actual partial f2c2 native failures. This is source
 correction2/5 (correction1 spent), not a stage reset. Both CC and independent CDC

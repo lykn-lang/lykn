@@ -1,0 +1,15 @@
+ls: /deno.json: No such file or directory
+ls: /deno.jsonc: No such file or directory
+ls: /private/deno.json: No such file or directory
+ls: /private/deno.jsonc: No such file or directory
+ls: /private/project.json: No such file or directory
+ls: /private/tmp/deno.json: No such file or directory
+ls: /private/tmp/deno.jsonc: No such file or directory
+ls: /private/tmp/project.json: No such file or directory
+ls: /private/tmp/s17-correction2-native-0001/deno.json: No such file or directory
+ls: /private/tmp/s17-correction2-native-0001/deno.jsonc: No such file or directory
+ls: /private/tmp/s17-correction2-native-0001/project.json: No such file or directory
+ls: /private/tmp/s17-correction2-native-0001/tooling/deno.json: No such file or directory
+ls: /private/tmp/s17-correction2-native-0001/tooling/deno.jsonc: No such file or directory
+ls: /private/tmp/s17-correction2-native-0001/tooling/project.json: No such file or directory
+ls: /project.json: No such file or directory

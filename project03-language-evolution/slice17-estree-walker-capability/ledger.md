@@ -3,6 +3,10 @@
 Six rows open. CC source/raw attestation is not independent acceptance.13 frozen
 control rows/12families; K12 synthetic is outside parser/file counts.
 
+Partial correction2 remains red: CC/CDC walker1 at166:1, CDC scanner1 at296:1.
+Iteration05 correction3/5 active,0/13. CDC failed extraction/empty-input0 is retained
+as nonconformance/non-evidence, not promoted to a successful source check.
+
 Partial correction1 f2c2 was independently checked: walker1/unterminated591:1,
 scanner1/unterminated307:5, no runtime0/13. Raw CDC evidence partial-f2c2 and CC
 native-0004/0005 retained; observer unfinished. Correction2/5 iteration04 active,
