@@ -2,12 +2,18 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
-status: in-progress
+status: paused
 planned-release: unassigned
 depends-on: [slice01-variadic-for-context]
 ---
 
 # Checked emission results
+
+## Current stopped disposition — 2026-11-07
+
+Stopped at committed test-only `23219431e6d154a4e046bfd375a01dc8bfb3929d` before any behavioral baseline or production edit. Independent source review found four substantive harness defects: wrong package output directory, unsupported DTS-existence oracle, unexecuted package runtime controls, and vacuous empty-stderr/insufficient status predicates. One no-run build exited0 (transcript-only receipt, no post-build pin); all four invalid conditions and four valid route/runtime conditions remain unrun. No compiler/parser failure or source acceptance is claimed.
+
+The Operator's first unexpected substantive-failure stop is obeyed. A single consolidated **test-only correction is proposed, not authorized or issued**, in [CDC review](cdc-verification.md). No correction/refinement has been executed (0/5); the initial authored attempt is preserved. S02/CI-02 remain incomplete, release/prior source8f unchanged, eight old tooling passes and K0/13 unchanged. CDC owns both indices/builds again; CC has returned ownership and stopped. Existing design/Result approval remains in force, but does not override this stop.
 
 ## Authority, endpoint and homes
 

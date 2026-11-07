@@ -1,5 +1,11 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 current: S02 initial test-only2321943 is paused on independently
+verified harness defects before behavioral baseline/production edits. CE rows
+all deferred, CI-02 remains open. Proposed consolidated test correction awaits
+Operator continuation; no source refinement executed. Release8f, tooling8 spent,
+K0/13 and all other capabilities unchanged. See S02 cdc-verification.md.
+
 2026-11-07: after Slice20 independently accepted release8f, the Operator approved
 Result-family APIs at the0.6 breaking boundary. Actual S02 open set now governs
 the private checked-lowering and production-route implementation; CI-02 remains

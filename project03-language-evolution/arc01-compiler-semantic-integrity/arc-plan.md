@@ -9,6 +9,17 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 initial test-only stop — 2026-11-07
+
+S02 is paused at test-only2321943: independent review found four substantive
+test harness defects before behavioral baseline or production work. One no-run
+build0 is transcript-attested only. All six CE rows deferred, CI-02 open; release
+and prior source8f unchanged. A consolidated test correction is proposed in the
+[review](slice02-checked-emission-results/cdc-verification.md), not issued or
+authorized. Result design approval persists; first-substantive-failure stop
+requires Operator continuation. Source refinements0/5, initial attempt retained;
+old tooling8 spent/K0/13 and all later units unchanged.
+
 ## S02 execution opened — 2026-11-07
 
 After independently closed Slice20, [S02](slice02-checked-emission-results/slice-plan.md)
