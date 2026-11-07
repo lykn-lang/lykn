@@ -493,6 +493,13 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                         ]),
                     ]);
                 }
+                if head_name == "switch" {
+                    // Case lists are structural switch clauses, not computed
+                    // calls: the test is a value and each following item is a
+                    // statement. Preserve the normal call handling for a
+                    // lexically bound `switch` head (which never reaches here).
+                    return emit_switch_children(values, *span, ctx, registry);
+                }
                 if crate::classifier::dispatch::is_surface_form(head_name)
                     || head_name == "class"
                     || head_name == "class-expr"
@@ -560,6 +567,71 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
             }
         }
         _ => expr.clone(),
+    }
+}
+
+/// Emit a kernel switch using its clause roles rather than the generic call
+/// recursion. The code generator consumes each clause's first item as its case
+/// test and the rest as statements.
+fn emit_switch_children(
+    values: &[SExpr],
+    span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let mut emitted = Vec::with_capacity(values.len());
+    emitted.push(values[0].clone());
+
+    if let Some(discriminant) = values.get(1) {
+        emitted.push(emit_in_context(
+            discriminant,
+            ExprContext::Value,
+            ctx,
+            registry,
+        ));
+        for clause in &values[2..] {
+            let SExpr::List {
+                values: clause_values,
+                span: clause_span,
+            } = clause
+            else {
+                // The writer ignores non-list clauses; retain them unchanged.
+                emitted.push(clause.clone());
+                continue;
+            };
+            if clause_values.is_empty() {
+                // Empty clauses are also ignored by the writer.
+                emitted.push(clause.clone());
+                continue;
+            }
+
+            let mut emitted_clause = Vec::with_capacity(clause_values.len());
+            let test = &clause_values[0];
+            if test.as_atom() == Some("default") {
+                // This raw marker is structural and its resolution tag belongs
+                // to the original atom, so copy it without re-dispatching.
+                emitted_clause.push(test.clone());
+            } else {
+                emitted_clause.push(emit_in_context(
+                    test,
+                    ExprContext::Value,
+                    ctx,
+                    registry,
+                ));
+            }
+            emitted_clause.extend(clause_values[1..].iter().map(|body_form| {
+                emit_in_context(body_form, ExprContext::Statement, ctx, registry)
+            }));
+            emitted.push(SExpr::List {
+                values: emitted_clause,
+                span: *clause_span,
+            });
+        }
+    }
+
+    SExpr::List {
+        values: emitted,
+        span,
     }
 }
 
