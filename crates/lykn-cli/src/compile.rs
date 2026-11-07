@@ -850,4 +850,144 @@ mod tests {
             "bound fn head should remain an ordinary value call: {result}"
         );
     }
+
+    #[test]
+    fn compile_routes_reject_the_same_validation_inputs() {
+        let path = Path::new("parity.lykn");
+        let cases = [
+            (
+                "reserved binding",
+                "(func default :args () :body 42)\n(exports default)\n",
+                "'default' is a JavaScript reserved word",
+            ),
+            (
+                "method on expression",
+                "(bind r ((express parts):join \"\"))",
+                "method call on a parenthesized expression is not supported",
+            ),
+            (
+                "nested bare-parameter fn",
+                "(bind f (fn (x) x))",
+                "expected type keyword",
+            ),
+            (
+                "no-else if expression",
+                "(bind label (if (> 1 0) \"items\"))",
+                "if in expression position requires an else branch",
+            ),
+            (
+                "unknown export",
+                "(exports missing)",
+                "exports references unknown top-level binding 'missing'",
+            ),
+        ];
+
+        let mut failures = Vec::new();
+        for (name, source, expected) in cases {
+            let result = compile_source(source, Some(path), false, false);
+            let matched = match result {
+                Ok(js) => {
+                    eprintln!(
+                        "COMPILE_VALIDATION_API route=stdout case={name:?} accepted_js={js:?}"
+                    );
+                    false
+                }
+                Err(error) => {
+                    let diagnostic = error.to_string();
+                    eprintln!(
+                        "COMPILE_VALIDATION_API route=stdout case={name:?} diagnostic={diagnostic:?}"
+                    );
+                    diagnostic.contains(expected)
+                }
+            };
+            if !matched {
+                failures.push(format!(
+                    "stdout route did not reject {name:?} with {expected:?}"
+                ));
+            }
+
+            let result = compile_source_with_dts(source, Some(path), false, false);
+            let matched = match result {
+                Ok((js, dts, warnings)) => {
+                    eprintln!(
+                        "COMPILE_VALIDATION_API route=with_dts case={name:?} accepted_js={js:?} accepted_dts={dts:?} warnings={warnings:?}"
+                    );
+                    false
+                }
+                Err(error) => {
+                    let diagnostic = error.to_string();
+                    eprintln!(
+                        "COMPILE_VALIDATION_API route=with_dts case={name:?} diagnostic={diagnostic:?}"
+                    );
+                    diagnostic.contains(expected)
+                }
+            };
+            if !matched {
+                failures.push(format!(
+                    "with_dts route did not reject {name:?} with {expected:?}"
+                ));
+            }
+        }
+
+        assert!(
+            failures.is_empty(),
+            "validation parity failures: {failures:#?}"
+        );
+    }
+
+    #[test]
+    fn compile_with_dts_keeps_positive_output_contracts() {
+        let typed = "(func inc :args (:number x) :returns :number :body (+ x 1))\n(exports inc)\n";
+        let (typed_js, typed_dts, typed_warnings) =
+            compile_source_with_dts(typed, Some(Path::new("positive.lykn")), false, false).unwrap();
+        eprintln!(
+            "COMPILE_VALIDATION_POSITIVE typed_js={typed_js:?} typed_dts={typed_dts:?} warnings={typed_warnings:?}"
+        );
+        assert!(typed_js.contains("function inc"));
+        assert_eq!(
+            typed_dts.as_deref(),
+            Some("export function inc(x: number): number;\n")
+        );
+        assert!(typed_warnings.is_empty());
+
+        let untyped = "(func loose :args (:number x) :body x)\n(exports loose)\n";
+        let (untyped_js, untyped_dts, untyped_warnings) =
+            compile_source_with_dts(untyped, Some(Path::new("untyped.lykn")), false, false)
+                .unwrap();
+        eprintln!(
+            "COMPILE_VALIDATION_POSITIVE untyped_js={untyped_js:?} untyped_dts={untyped_dts:?} warnings={untyped_warnings:?}"
+        );
+        assert_eq!(
+            untyped_dts.as_deref(),
+            Some("export function loose(x: number): unknown;\n")
+        );
+        assert_eq!(untyped_warnings.len(), 1);
+        assert!(
+            untyped_warnings[0]
+                .message
+                .contains(".d.ts will use `unknown`")
+        );
+
+        let (empty_js, empty_dts, empty_warnings) =
+            compile_source_with_dts("", None, false, false).unwrap();
+        eprintln!(
+            "COMPILE_VALIDATION_POSITIVE empty_js={empty_js:?} empty_dts={empty_dts:?} warnings={empty_warnings:?}"
+        );
+        assert!(empty_dts.is_none());
+        assert!(empty_warnings.is_empty());
+
+        let json = compile_source_with_dts(typed, None, false, true).unwrap();
+        eprintln!("COMPILE_VALIDATION_POSITIVE kernel_json={json:?}");
+        assert!(json.0.starts_with('['));
+        assert_eq!(
+            json.1.as_deref(),
+            Some("export function inc(x: number): number;\n")
+        );
+
+        let with_assertions = compile_source(typed, None, false, true).unwrap();
+        let without_assertions = compile_source(typed, None, true, true).unwrap();
+        assert!(without_assertions.len() <= with_assertions.len());
+        assert!(compile_source_lax("(var raw 1)", None, false, true).is_ok());
+        assert!(compile_source("(var raw 1)", None, false, true).is_err());
+    }
 }
