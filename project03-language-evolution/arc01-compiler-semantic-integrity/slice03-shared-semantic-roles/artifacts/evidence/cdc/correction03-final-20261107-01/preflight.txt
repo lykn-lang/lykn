@@ -1,0 +1,15 @@
+Independent scratch setup BEFORE any CDC build/runtime; no overlapping source build.
+Fresh root/tmp/xdg-cache/npm-cache/raw directories created by CDC native mkdir.
+Exact native ls -l query: project.json,deno.json,deno.jsonc,package.json at /,
+/private, /private/tmp, /private/tmp/lykn-s03-cdc-correction03-20261107-01,
+and that root's tmp directory. Actual stdout/stderr saved adjacent as
+config-paths.stdout/config-paths.stderr; exec389cfa exit1, all20 listed paths
+No such file or directory, inspected completely (76f6d4). Expected setup
+absences, not behavior failures or exhaustive directory inventory.
+Source-cwd cargo1.97.0(c980f4866 2026-06-30), rustc1.97.0(2d8144b78 2026-07-07),
+actual read results3c56c4/065834. printenv CARGO_NET_OFFLINE CARGO_TARGET_DIR
+returned1/empty (149d6e), both absent, not supplied by canonical gate invocation.
+Deno actual sha68cd06:2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74,
+executable /opt/homebrew/bin/deno, known version2.9.6; no CLI runtime started here.
+Proceed only after actual CC ownership return, live source revalidation and
+reading the independent full-Make prelaunch record; no old binary pin is reused.

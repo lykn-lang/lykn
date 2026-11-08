@@ -16,6 +16,18 @@
 
 ## How this list stays honest
 
+### Current accepted incremental disposition — 2026-11-07
+
+Arc01 S03 independently accepts task62e9531/tree6721237's private shared roles/
+body-cardinality contract; public AST/ExprContext/Result APIs unchanged. Actual
+two-phase duplication removal and full native/public/runtime/source gates support
+that bounded choice. [S03 review](arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/cdc-verification.md#final-independent-acceptance--2026-11-07)
+preserves prior failures/limits. A6 recursive typed AST remains a research
+candidate, not implemented or proven necessary. Release0.6 remains integratedc9,
+S03 task-only; no integration/K/source-budget reset. Older routing text below
+is dated planning/history. Adjacent cache/type/ADT units and S04/S05/S07/S08
+owners are unchanged; actual final public-impact/book/human gates remain open.
+
 ### Current engineering routing — 2026-11-07 (proposed; planning only)
 
 Latest: standaloneSlice20 independently integrated C10/11/C12 accepted stack into
@@ -824,6 +836,15 @@ dependency.
 and with A1 (build tooling).
 
 ### A6 · Fully-typed classification — recursive typed AST *(NEW 2026-07-22; research; origin arc15 slice03)*
+
+**2026-11-07 disposition.** Operator-selected incremental private roles are now
+independently delivered in Arc01 S03 at62e9531. This answers the bounded current
+architecture choice without a public/recursive AST migration. Project03 design
+CDC retains A6 research ownership: re-enter only for source-backed invariants
+not reasonably handled by the shared contract, with explicit migration/caller/
+compatibility and useful-increment decision before code. Historical July benefit/
+necessity assertions below are preserved hypotheses, not present proof that a
+whole rewrite is required; this entry itself remains an unimplemented candidate.
 
 **Capability (candidate).** Make `classify` produce a **fully-typed recursive
 tree** — every nested expression a classified node with its own type — instead

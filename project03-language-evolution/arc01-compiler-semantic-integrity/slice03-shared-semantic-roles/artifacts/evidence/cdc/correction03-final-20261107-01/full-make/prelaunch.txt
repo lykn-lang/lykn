@@ -1,0 +1,14 @@
+CDC independent normal full gate; no implementation authorship.
+DO NOT LAUNCH until complete CC source/index/build/raw ownership return and live source revalidation.
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source=62e9531e6183b3762a9ff326fdc07439db33f31f
+tree=672123750d2561f2d9d16c4ff1cb4590fca9da76
+argv=env TMPDIR=/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp XDG_CACHE_HOME=/private/tmp/lykn-s03-cdc-correction03-20261107-01/xdg-cache npm_config_cache=/private/tmp/lykn-s03-cdc-correction03-20261107-01/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/full-make/receipts make check
+Raw stdout=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/full-make/stdout.bin
+Raw stderr=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/full-make/stderr.bin
+Actual tool exit will be recorded after completion, not predicted.
+No supplied CARGO_NET_OFFLINE or CARGO_TARGET_DIR; verify inherited absence before launch.
+Fresh owned tmp/xdg-cache/npm-cache and receipt directories precreated.
+Fixed approved DENO_DIR existing cache, not a new acquisition or global install.
+Canonical Make builds/tests via repository pipeline. Actual final CLI/test hashes will be measured AFTER Make, before direct focused use; no old producer pin is assigned to new artifacts.
+All six SR rows remain open until independent reconciliation; no S04/K/integration authority.

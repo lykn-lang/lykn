@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S03 independently accepted, task-only (2026-11-07)
+
+[S03 final review](arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/cdc-verification.md#final-independent-acceptance--2026-11-07)
+accepts source62e9531/tree6721237, all6SR/CI-03 done. Actual CC proposals and
+separate fresh CDC full/current-runtime/citation gates reconcile private shared
+roles/cardinality with public AST/APIs preserved. Rustlib1140/JS1471+15steps/
+docs482/cites63/601 pass. P-1/arc composition and later units remain open;
+source03/5 spent/two unused, tooling8/K0 unchanged. Releasec9 untouched, no
+integration/push/publication/S04/K/next unit. Prior stops/limits remain history.
+
 ## Current S03 correction03 explicitly approved (2026-11-07)
 
 Operator approved exact private identity simplification and resumed original
@@ -702,6 +712,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-07 v1.52: Independently accepted S03 private shared roles at62e9531;
+  actual CC row attribution/history/residual owners retained, no later advance.
 - 2026-11-07 v1.51: Recorded explicit private-helper correction03 authority and
   proportionate retained-focused/fresh-full/independent gate order.
 - 2026-11-07 v1.50: Retained focused S03 greens and independently reproduced

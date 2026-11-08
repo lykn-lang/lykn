@@ -9,6 +9,22 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S03 capability independently delivered (2026-11-07)
+
+[S03](slice03-shared-semantic-roles/cdc-verification.md#final-independent-acceptance--2026-11-07)
+accepts task62e9531/tree6721237, all6SR/CI-03 done: one private shared role/body/
+cardinality contract replaces actual duplication in both phases; full CC and
+separate CDC normal/current runtime/citation proof pass. Public AST/ExprContext/
+Result APIs unchanged. Prior source/setup/protocol limits and three spent source
+refinements remain, no historical compliance rewrite. Releasec9 untouched.
+
+A6's approved incremental choice is delivered for this bounded invariant;
+recursive typed-AST migration remains research, not implemented/necessary by
+theorem. No structural roadmap change. S04 completion/C02/C05/source-only NE-C13,
+S05 count-warning fidelity and S07/S08 exact API/doc/LLM/book/human impact remain
+owned. Later source must compose, original tooling8/K0/13/F/Project07 gates stay
+open. No integration/push/publication/S04/next-unit execution from this close.
+
 ## Current S03 correction03 continuation (2026-11-07)
 
 Operator explicitly approved private identity match→parent only, followed by
@@ -376,6 +392,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-07 v0.20: S03 independently delivers the bounded private role contract;
+  CI-03 done with actual CC attribution/limits and later owners preserved.
 - 2026-11-07 v0.19: Explicit correction03 resumes fresh full/current-runtime/
   independent validation, retaining prior evidence without relabelling it.
 - 2026-11-07 v0.18: S03 focused behavior passes but full quality gate stops at

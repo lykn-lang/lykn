@@ -1,0 +1,8 @@
+(bind trace (array))
+(bind count (cell 0))
+(do-while (< count:value 2)
+  (if true (trace:push (+ count:value 100)))
+  (bind first (+ count:value 20) second (+ first 1))
+  (if true (trace:push second))
+  (reset! count (+ count:value 1)))
+(console:log (JSON:stringify trace))

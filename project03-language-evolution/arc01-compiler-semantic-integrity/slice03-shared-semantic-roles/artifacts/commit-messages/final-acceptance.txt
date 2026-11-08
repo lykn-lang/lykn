@@ -1,0 +1,6 @@
+Accept independently validated shared semantic roles
+
+Reconcile actual contributor evidence, full gates and remaining arc obligations.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

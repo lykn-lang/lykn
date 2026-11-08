@@ -2,12 +2,24 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice03-shared-semantic-roles
-status: in-progress
+status: complete
 planned-release: unassigned
 depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-integration]
 ---
 
 # S03 — authoritative child uses and body sequences
+
+## Final independent acceptance — 2026-11-07
+
+All6SR done at task62e9531e6183b3762a9ff326fdc07439db33f31f/tree672123750d2561f2d9d16c4ff1cb4590fca9da76.
+Actual CC per-row/ownership return is preserved under correction03; separate
+CDC full normal Make/current pinned native-public/runtime/citation reproduction
+passes. Lib1140/JS1471+15steps/docs482, direct native5/public1+4steps/cites63/601.
+[Final review](cdc-verification.md#final-independent-acceptance--2026-11-07),
+report/retro and parents reconcile actual source, histories and limits.
+Source03/5 spent/two unused; no allowance reset. Releasec9 unchanged/task-only;
+S04/K/integration/push/publication/next unit not authorized by closure. Earlier
+current/stop/proposal labels below are dated history, not competing verdicts.
 
 ## Current explicit correction03 authority — 2026-11-07
 
@@ -76,7 +88,7 @@ All entries2026-11-07; issued files remain unchanged.
 | cc-prompt-iteration02.md | iteration01; release original baseline/guard readiness | Original baseline completed, no additional refinement |
 | cc-prompt-iteration03.md | iteration02; fresh original implementation contributor | Returned3737; first no-run101 stop, no extra correction count |
 | cc-prompt-iteration04.md | iteration03; explicit Operator test-only correction | RETURNED/STOPPED, refinement02/5; ca982a5 focused-green/fullMake2 at lint; history retained |
-| cc-prompt-iteration05.md | iteration04; explicit Operator private identity simplification | CURRENT, refinement03/5; intake/handoff complete, exact62e9531 diff independently released for fresh full gates |
+| cc-prompt-iteration05.md | iteration04; explicit Operator private identity simplification | ACCEPTED, refinement03/5; source62e9531/CC full gates and separate CDC full acceptance; endpoint closed |
 
 ## Current substantive stop / proposed correction only — 2026-11-07
 

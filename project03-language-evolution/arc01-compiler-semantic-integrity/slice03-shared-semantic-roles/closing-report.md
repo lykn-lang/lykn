@@ -1,4 +1,52 @@
-# S03 stopped handoff — source delivery unaccepted
+# S03 delivery and retained stop reports
+
+## Final delivery / CDC reconciliation — 2026-11-07
+
+S03 is independently accepted at task62e9531e6183b3762a9ff326fdc07439db33f31f,
+tree672123750d2561f2d9d16c4ff1cb4590fca9da76, clean dedicated branch. Actual
+Luna High implementer [authored return](artifacts/evidence/cc/correction03/execution-return.md)
+supplies SR01–04 proposed-done and leaves SR05/06 to CDC. This canonical section
+is explicitly Sol6.1 High CDC's reconciliation AFTER separate execution, not
+misattributed implementer prose or self-acceptance.
+
+The private shared role/use/cardinality core replaces actual validator/emitter
+duplication; fixed slots, variadic statement bodies, resolution-aware calls and
+grammar owners are preserved. Native while/do-while/match/switch behavior matches
+the frozen functional contract; do-while guide/reference order corrected to the
+existing kernel contract. Public AST/ExprContext/Result APIs/deps/JScompiler unchanged.
+
+| Row | Final independently verified disposition |
+| --- | --- |
+| SR-01 | done — meaningful frozen source/baseline/oracles with historical limits preserved |
+| SR-02 | done — private two-consumer contract, real lowering/context/markers and full unit proof |
+| SR-03 | done — current native4/public4 strict runtimes,4invalid positions and preserved full routes |
+| SR-04 | done — fresh full normal Make0, library1140/JS1471+15steps/docs482, standalone cites63/601 |
+| SR-05 | done — separate CDC source/current generated/pinned runtime/full gate reproduction |
+| SR-06 | done — actual CC proposal attribution, rowwalk/history/retro/parents/architecture/doc owners reconciled |
+
+Independent actual post-Make pins and complete raw/module/positive-DTS observations
+are in [final review](cdc-verification.md#final-independent-acceptance--2026-11-07).
+Current direct native5/public1+4steps/cites all exit0; all eight child runtimes
+match fixed JSON+LF/emptyerr. Negative DTS remains UNOBSERVED. Old ca982 focused
+results stay dated/source-attributed, not relabelled new. Source03/5 spent/two
+unused. [Retrospective](cdc-retrospective.md) retains both substantive failures
+and capture/setup/formatter/EOF limitations without retroactive compliance.
+
+Artifacts: fixed messages; CC baseline/implementation/correction02/03 raw and
+actual execution-return; CDC exact failure replays and fresh correction03-final
+full/focused/runtime/module/citation/pin receipts. All under artifacts/. No new
+checker/framework/archive; every issued initial/iteration01–05 stays at root.
+Actual CC Make filenames are make-check.stdout/make-check.stderr; its original
+return locator typo is preserved, not used as a nonexistent evidence path.
+
+### Final bubble-up
+
+CI-03 done task-only; P-1 and arc composition remain open. No promised S03 code,
+gate or history obligation is silently dropped. No structural re-sequencing:
+approved private incremental option delivered, full A6 research not implemented.
+S04 C02/C05/NE-C13, S05 count-warning fidelity, S07/S08 actual API/doc/book/human
+follow-through stay owned. Original tooling8/K0/13/F1–F12/Project07 duties unchanged.
+Release0.6 remains acceptedc9, no integration/push/publication/S04/next unit.
 
 ## Current correction02 stop — 2026-11-07
 

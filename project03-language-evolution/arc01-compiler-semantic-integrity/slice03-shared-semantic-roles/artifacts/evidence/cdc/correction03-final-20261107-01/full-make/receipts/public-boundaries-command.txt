@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/b7d17f819bbcf60a/boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/b7d17f819bbcf60a",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/b7d17f819bbcf60a/boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/full-make/receipts"
+  }
+}

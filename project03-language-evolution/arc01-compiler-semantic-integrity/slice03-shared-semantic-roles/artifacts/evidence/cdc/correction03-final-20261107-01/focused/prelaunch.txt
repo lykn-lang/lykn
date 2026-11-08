@@ -1,0 +1,31 @@
+Independent current-source focused runtime/module and standalone-citation gates.
+Source62e9531e6183b3762a9ff326fdc07439db33f31f/tree672123750d2561f2d9d16c4ff1cb4590fca9da76.
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+All needed Make/Cargo work completed exit0 BEFORE observed postmake-pins.txt;
+no further build between those pins and these direct uses.
+Common actual scoped env:
+TMPDIR=/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s03-cdc-correction03-20261107-01/xdg-cache
+npm_config_cache=/private/tmp/lykn-s03-cdc-correction03-20261107-01/npm-cache
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+CARGO_NET_OFFLINE/CARGO_TARGET_DIR absent, no override supplied.
+
+Native argv=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture --test-threads=1
+Actual test SHA04b1dd7ad54365d055aa78b5681171e3989f07c0a8a104d5147609c2efd14541;
+actual debug CLI SHAec97c00a0910e623db67d5d9341c04bb0b643077456f1aaadef755dafcb81d7c.
+Additional env LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/native/receipts
+Native raw=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/native/stdout.bin and stderr.bin.
+
+Public argv=/opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js
+Actual Deno SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74, version2.9.6 separate.
+Additional env LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/public/receipts
+Public raw=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/public/stdout.bin and stderr.bin.
+Existing repository parent command/grants; actual child flags/argv/raw in product receipts, no grant additions.
+
+Standalone argv=make check-cited-paths
+Raw=/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/citations.stdout and citations.stderr.
+Execute sequentially only on prior success; actual tool exits recorded after each,
+no chained commands or predictive statuses. Native5/four runtimes/four negatives,
+public1/four steps/four strict runtimes and exact unchanged JSON+LF oracles.
+Positive optionalDTS measured, negative DTS placeholder UNOBSERVED.

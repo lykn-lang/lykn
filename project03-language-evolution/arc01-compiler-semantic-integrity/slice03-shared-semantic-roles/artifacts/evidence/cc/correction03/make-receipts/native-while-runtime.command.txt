@@ -1,0 +1,11 @@
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-s03-correction03-luna-20261107-01/tmp/.tmpngMUpU/while.js"]
+cwd=Some("/private/tmp/lykn-s03-correction03-luna-20261107-01/tmp/.tmpngMUpU")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction03-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction03-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction03/make-receipts")

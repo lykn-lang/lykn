@@ -1,4 +1,76 @@
-# S03 CDC verification — current substantive stop, source unaccepted
+# S03 independent verification and retained attempt history
+
+## Final independent acceptance — 2026-11-07
+
+**ACCEPT S03 at62e9531e6183b3762a9ff326fdc07439db33f31f**, tree
+672123750d2561f2d9d16c4ff1cb4590fca9da76, clean codex/shared-semantic-roles.
+Actual implementer `/root/cdc/shared_roles_impl_luna_cc` (Luna6 High) supplied
+the [authored per-row proposals/ownership return](artifacts/evidence/cc/correction03/execution-return.md).
+SR01–04 were proposed-done; SR05/06 explicitly remained CDC duties. This verdict
+is `/root/cdc` Sol6.1 High's separate source/evidence review and fresh execution,
+not CC self-acceptance or root's read-only lookup. All six rows now done below.
+
+CDC read the complete private core/both consumer diffs, exact later identity/test
+corrections, unchanged fixture/predicate construction and narrow guide/reference
+changes. Final c9→62e pathset is exactly12 allowed paths. Shared roles/tail policy
+replace actual duplicate tables; grammar adapters/cardinality and resolver-aware
+heads remain explicit. No public AST/ExprContext/Result API/dependency/JScompiler
+change. The bounded value-guard continuation does not repair general statement
+guards or C02/C05/async completion. Native/public complete generated modules
+retain loop/sibling scope, strict guard equality/false fallback, ordinary bound/
+computed ternaries, switch markers and runtime guards.
+
+Fresh independent Make executed AFTER complete CC ownership return, with separate
+owned TMP/XDG/npm roots, exact ancestor-file preflight/fixed DENO_DIR, no global
+Cargo overrides. Raw first-launch argv/cwd/env/locators/status and per-case data
+are [here](artifacts/evidence/cdc/correction03-final-20261107-01/), copied from
+/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw without editing. Completed
+independent Make0: Clippy/format/syntax/lint/all Rust, lib1140/0fail/0ignored/
+0filtered (including private4/emitter3); typed checked-result integration6;
+JS1471/15steps/0fail; docs482/0fail; inline citations63/601. Actual raw query/
+stage inspection supports these counts, not inherited CC output.
+
+After all builds, actual independent pins: debug CLI
+ec97c00a0910e623db67d5d9341c04bb0b643077456f1aaadef755dafcb81d7c;
+release/bin b600a1447cc057e4a819ddb2b407ca996ab86f741854e862e2cbfb7de0315936;
+native test04b1dd7ad54365d055aa78b5681171e3989f07c0a8a104d5147609c2efd14541;
+Deno2.9.6 SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Direct current native5 exit0 (4runtimes+4invalid positions), public1/4steps exit0
+(4strict runtimes), all exact fixed JSON+LF/empty child stderr; standalone committed
+cites0 (63documents/601historical). Complete eight modules/manual raw-output
+inspection and four measured positive DTS absences completed. Negative DTS stays
+UNOBSERVED. No intervening build; before/after-use pin files byte-compare0.
+
+| Row | Independent disposition |
+| --- | --- |
+| SR-01 | done — committed meaningful baseline/input/oracles; earlier source/setup/capture limitations explicitly retained |
+| SR-02 | done — private actual two-consumer role/body core, public interfaces preserved, all private/emitter/full tests pass |
+| SR-03 | done — fresh current native/public traces,4negative positions, complete modules and full preserved routes |
+| SR-04 | done — fresh full normal Make/pins/runtime/docs and standalone citations, not just focused green |
+| SR-05 | done — separate CDC actual full/focused/runtime/citation reproduction after clean ownership return |
+| SR-06 | done — actual CC return reconciled, six-row walk/history/retro/parents/A6/S07S08 and clean task-only disposition |
+
+Prior ca982 focused results retain source/date and exact identity-delta
+applicability; they were not relabelled current. Both old substantive failures,
+native baseline TMP/XDG/broad-find/missing-exit limits, first corrected no-run
+message-only prelaunch file miss, formatter-preimage limits and raw EOF whitespace
+finding remain below/in receipts. Current success does not cure historical
+nonconformance. Prose-only close checks do not normalize immutable raw streams.
+CC return's first Make locator shorthand01-make-check.stdout is a typo; actual
+files are make-check.stdout/make-check.stderr, retained unchanged. Byte receipts
+and frozen expected JSON govern over escaped display notation in the return.
+
+### Final bubble-up and limits
+
+CI-03 done, P-1/arc composition still open. Approved incremental private roles
+are now delivered; A6 whole recursive typed-AST research remains a candidate,
+not implemented/necessary by proof. No structural roadmap change required.
+S04 owns C02/C05 and source-only NE-C13 statement-guard continuation; S05 owns
+the retained actual unused-count warning; S07/S08 audit actual API/doc/book/
+human impacts including corrected pre-existing do-while example. No compiler-wide
+semantic theorem, universal AST coverage or full corpus/F6/K claim. Source03/5
+spent/two unused, tooling8/K0 unchanged. Releasec9 remains clean/untouched;
+no source integration/push/publication/S04/next unit authorized by this close.
 
 ## Correction03 immutable release — 2026-11-07
 

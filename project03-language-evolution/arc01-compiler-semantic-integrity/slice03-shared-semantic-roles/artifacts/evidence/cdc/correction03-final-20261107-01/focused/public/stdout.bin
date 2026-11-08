@@ -1,0 +1,126 @@
+running 1 test from ./test/forms/semantic-roles.test.js
+public JavaScript compiler preserves shared semantic-role fixtures ...
+  while ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN while {"source":"(bind trace (array))\n(bind count (cell 0))\n(while (< count:value 2)\n  (if true (trace:push (+ count:value 1)))\n  (bind first (+ count:value 10) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\nwhile (count.value < 2) {\n  if (true) trace.push(count.value + 1);\n  const first = count.value + 10;\n  const second = first + 1;\n  if (true) trace.push(second);\n  count.value = count.value + 1;\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/5a9375fc6d3e63ae/while.js"
+  ],
+  "cwd": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/5a9375fc6d3e63ae",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/while.lykn",
+  "modulePath": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/5a9375fc6d3e63ae/while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/public/receipts"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":44,"3":49,"4":49,"5":44,"6":50,"7":44,"8":49,"9":50,"10":93,"11":10},"stderr":{}}
+----- output end -----
+  while ... ok (24ms)
+  do-while ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN do-while {"source":"(bind trace (array))\n(bind count (cell 0))\n(do-while (< count:value 2)\n  (if true (trace:push (+ count:value 100)))\n  (bind first (+ count:value 20) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\ndo {\n  if (true) trace.push(count.value + 100);\n  const first = count.value + 20;\n  const second = first + 1;\n  if (true) trace.push(second);\n  count.value = count.value + 1;\n} while (count.value < 2);\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND do-while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/4a35eeb08cbdb706/do-while.js"
+  ],
+  "cwd": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/4a35eeb08cbdb706",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/do-while.lykn",
+  "modulePath": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/4a35eeb08cbdb706/do-while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/public/receipts"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT do-while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":48,"3":48,"4":44,"5":50,"6":49,"7":44,"8":49,"9":48,"10":49,"11":44,"12":50,"13":50,"14":93,"15":10},"stderr":{}}
+----- output end -----
+  do-while ... ok (17ms)
+  match ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match {"source":"(bind trace (array))\n(func choose :args (:number n) :returns :any :body\n  (match n\n    (captured :when (= captured 1)\n      (if true (trace:push \"guard\"))\n      (if true 7 8))\n    (_\n      (if true (trace:push \"fallback\"))\n      (if false 9 10))))\n(console:log (JSON:stringify (array (array (choose 1) (choose 2)) trace)))\n","generated":"const trace = [];\nfunction choose(n) {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"choose: arg 'n' expected number, got \" + typeof n);\n  return (() => {\n    const target__gensym0 = n;\n    {\n      const captured = target__gensym0;\n      if (captured === 1) {\n        if (true) trace.push(\"guard\");\n        return true ? 7 : 8;\n      }\n    }\n    {\n      if (true) trace.push(\"fallback\");\n      return false ? 9 : 10;\n    }\n  })();\n}\nconsole.log(JSON.stringify([[choose(1), choose(2)], trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/df6cb003afef5fdf/match.js"
+  ],
+  "cwd": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/df6cb003afef5fdf",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/match.lykn",
+  "modulePath": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/df6cb003afef5fdf/match.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/public/receipts"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":55,"3":44,"4":49,"5":48,"6":93,"7":44,"8":91,"9":34,"10":103,"11":117,"12":97,"13":114,"14":100,"15":34,"16":44,"17":34,"18":102,"19":97,"20":108,"21":108,"22":98,"23":97,"24":99,"25":107,"26":34,"27":93,"28":93,"29":10},"stderr":{}}
+----- output end -----
+  match ... ok (19ms)
+  boundaries ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN boundaries {"source":"(bind match (fn (:number n) n))\n(bind picked (match (if true 4 5)))\n(bind target (fn (:number n) n))\n(bind computed ((get (array target) 0) (if true 6 7)))\n(bind trace (array))\n(switch 1\n  (1\n    (bind first 1 second (+ first 1))\n    (if true (trace:push second))\n    (break))\n  (default (trace:push \"bad\")))\n(console:log (JSON:stringify (array picked computed trace)))\n","generated":"const match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return n;\n};\nconst picked = match(true ? 4 : 5);\nconst target = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return n;\n};\nconst computed = [target][0](true ? 6 : 7);\nconst trace = [];\nswitch (1) {\n  case 1:\n    const first = 1;\n    const second = first + 1;\n    if (true) trace.push(second);\n    break;\n  default:\n    trace.push(\"bad\");\n}\nconsole.log(JSON.stringify([picked, computed, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND boundaries {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/acdd7780b2218e76/boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/acdd7780b2218e76",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp/acdd7780b2218e76/boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s03-cdc-correction03-20261107-01/raw/focused/public/receipts"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT boundaries {"status":0,"success":true,"stdout":{"0":91,"1":52,"2":44,"3":54,"4":44,"5":91,"6":50,"7":93,"8":93,"9":10},"stderr":{}}
+----- output end -----
+  boundaries ... ok (17ms)
+public JavaScript compiler preserves shared semantic-role fixtures ... ok (77ms)
+
+ok | 1 passed (4 steps) | 0 failed (79ms)
+

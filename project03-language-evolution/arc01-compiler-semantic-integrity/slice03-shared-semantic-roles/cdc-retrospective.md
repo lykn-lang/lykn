@@ -1,4 +1,35 @@
-# S03 retrospective at substantive stop
+# S03 retrospective and retained stop analysis
+
+## Final accepted window — 2026-11-07
+
+Source62e9531 is independently accepted after actual CC and separate CDC full
+normal/current native-public/citation gates. The useful outcome is a real shared
+private contract and corrected body/value behavior, not just an evidence packet.
+Frozen native baseline reds/public controls discriminated the old implementation;
+current complete generated code/real traces and four consumed-value negatives
+support the finite contract. No compiler-wide/A6 necessity theorem follows.
+
+Authoring/readiness missed two ordinary Rust issues: &&str into atom and needless
+identity match. Both stopped under explicit Operator rule, were independently
+confirmed and corrected only with authorization. The small identity correction
+allowed prior focused evidence retention with source/date, while mandatory full
+gates and current pinned runtimes were freshly executed; no repeated no-run
+matrix was needed. This is practical evidence reuse, not a waived gate.
+
+The source capture completion/preflight correction was accounted01, test fix02,
+identity03; unused allowance does not authorize next-unit work. Reusing the same
+selected Luna actor for exact corrections was reasonable scope judgment, not a
+comparative effectiveness claim. Root/CDC static review misses and all prior
+protocol/capture/formatter/whitespace limits below remain. Final correct setup
+does not cure them. Actual CC per-row proposals were preserved and reconciled,
+not replaced with prose falsely attributed to the implementer.
+
+Follow-through: keep future private-policy refactors source/test-first with actual
+canonical lint/full/runtime proof; preserve explicit sequence-vs-single and grammar
+owners. S04 must evaluate open completion contracts rather than treat this as all
+control flow fixed. S07/S08 own actual API/doc/book/human impacts; no new skill,
+checker or broad research trial is proposed. Endpoint is this task-only slice,
+releasec9 unchanged; no integration/K/S04 automatic advance.
 
 ## Correction02 window — 2026-11-07
 

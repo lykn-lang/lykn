@@ -156,6 +156,14 @@ not retroactively erased under a fictional transaction guarantee.
 
 ## Architecture alternatives and A6 ownership
 
+**2026-11-07 actual disposition:** Operator approved the incremental option;
+S03 independently delivered private shared role/body policies at62e9531, reducing
+actual two-consumer duplication with full finite source/runtime proof and public
+interfaces unchanged. [S03 final review](../slice03-shared-semantic-roles/cdc-verification.md#final-independent-acceptance--2026-11-07)
+records its limits. The alternatives below remain design rationale; no full
+recursive migration/research execution, universal AST coverage or necessity
+theorem follows. Later completion/diagnostic/composition/API/doc gates persist.
+
 | Alternative | Assessment and needed answer |
 | --- | --- |
 | Continue isolated profile/validator patches | Small immediate diffs but perpetuates duplicated context rules and weak internal error transport. Appropriate only as S01's contract-backed delivery, not the whole arc strategy. |
