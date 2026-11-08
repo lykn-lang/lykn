@@ -1,0 +1,135 @@
+---
+project: project03-language-evolution
+arc: arc03-protected-host-intrinsics
+status: in-progress
+planned-release: unassigned
+depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results, arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
+related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity, project07-core-library-research]
+---
+
+# Protected host intrinsics
+
+Current first source assignment: [S01](slice01-versioned-host-protection/slice-plan.md)
+and [prompt](slice01-versioned-host-protection/cc-prompt.md), all6HC open. Source
+recipe is now concrete: whole-unit source classification pre-strip plus whole-
+kernel consistency, exact Source/Kernel dialect and normalized scope proof,
+old-policy baseline then actual policy/runtime/full independent gates. No source
+has run at preparation; branch remains planned until explicit intake/handoff.
+
+## Authority, substrate and endpoint — 2026-11-08
+
+Operator explicitly adopts the protected-intrinsics contract, requests its own
+named arc, and authorizes DIRECT plan→implementation/independent validation/
+closure after readiness. Same Luna6 High CC/separate Sol6.1 High CDC,
+Autonomous Mode; STOP any substantive failure or REAL evidence gap. Scope is
+this arc only, no automatic Arc01 completion/S05/K or release integration.
+Actual inventory has Arc01 semantic integrity and Arc02 ad hoc maintenance;
+Arc03 is unused and follows the established canonical layout, not miscellany.
+
+Planning/index home is existing orphan `.worktrees/planning`; source starts
+clean62e9531e6183b3762a9ff326fdc07439db33f31f/tree672123750d2561f2d9d16c4ff1cb4590fca9da76
+in existing contract-predicate-lowering checkout. Intended dedicated nondefault
+branch `codex/protected-host-contract` preserves `codex/shared-semantic-roles`;
+create only at source handoff. Release/0.6.x remains clean62e/read-only. No new
+worktree, merge/cherry-pick/rebase/push/publish/remoteCI/deps/global install.
+
+CDC owns design/planning/independent acceptance; fresh Luna6 High contexts own
+one source slice at a time after complete intake/exclusive ownership. Each
+genuinely useful new source slice has normal refinement ceiling5, starts0;
+the ANY-substantive-failure stop is stricter. No reset of S04 source0/5, prior
+S03/S02 allowances, or exhausted original tooling8/K0/13. Preserve old H1
+reasoning and failures as history, not a current unresolved policy gate.
+
+## Useful capability and v1 contract seed
+
+Deliver an explicit stable compiler/host boundary, source protection of provable
+writes, a usable PRIVATE typed intrinsic request/access facility for future S04,
+and real native/public/backend/runtime/optimized-output proof. Do not claim an
+S04 production caller exists before it is implemented. No public AST migration,
+new language primitive, external runtime, global freezing or default integrity
+scan is implied.
+
+The user approved the following policy; the exact first profile is delegated
+engineering: **v1 contains only Reflect.apply**. Required protected slots for the
+chosen bare `Reflect.apply` backend recipe are real global binding `Reflect`
+and its property `apply`. Other existing compiler operations (Array.isArray,
+Number.isNaN, etc.) are unclaimed/candidates, not silently protected. The set
+is versioned and MUST NOT vary with optimization or whether a helper is used.
+
+| Clause | Binding policy / required proof |
+| --- | --- |
+| H01 | Host conformance declares the real Reflect operation/binding stable and standard for compiled code; aliases/reflection/foreignJS/host mutation are not universally detected. No default runtime check/freeze. |
+| H02 | Provable direct source writes to real protected bindings/slots are SOURCE ERRORS, an explicit stronger language policy. Reads, local/import/macro binding shadows and an application function's own .call/.apply remain legal. No speculative builtin-name ban. |
+| H03 | Resolve actual roots/scopes after macro expansion, including colon paths and normalized JS identifiers; NameRes::Unresolved alone is NOT proof a colon root is global. Scope/TDZ, params/imports/declarations/patterns/property namespaces matter. |
+| H04 | Direct unshadowed globalThis.Reflect paths may prove the global alias only under the initial canonical-host alias precondition. Whole-unit conservative invalidation on any identifiable real-globalThis replacement/update/destructuring write (even nested/conditional) makes ALL such alias paths unknown; globalThis replacement itself is not banned. Reflection/dynamic/foreign alias mutations remain declared detection limits. Bare real Reflect remains independently protected. |
+| H05 | Compiler requests use private typed IntrinsicId/one central backend access route, hygienic against source/macro/normalized names. Bare Reflect recipe does not automatically protect all globalThis or every Reflect property. Preserve source export/property names; generated/debugger/inferred function-name impacts are explicitly audited rather than promising unsupported reflection identity. |
+| H06 | Lazy feature-local support is default: no mandatory module-startup capture, imported runtime/dependency or unconditional support/lookup. Absent feature emits none; unused function shaken removes helper/init; retained uncalled function performs no eager lookup; live request preserves receiver/getter/argument/control behavior. |
+| H07 | Native/public policies agree; optimization/assertion stripping cannot erase source-write errors. Whole-unit validation must preserve enclosing bindings; never naively validate each recursive emit_form/compileExpr without context. Low-level partial-context versus full-unit contracts are explicit. |
+| H08 | One normative shipped source document (`docs/host-contract.md`) owns policy/profile/limits; guides, source skill, CC contracts and book/API audit reference it rather than fork the rules. S07/S08 retain exact public/doc/book/human obligations. |
+
+The source-first/zero-unused goal is an ACTUAL gate, not a PURITY annotation.
+Root's new SOURCE-ONLY observation: pinned esbuild0.25.5 clean commit ea453bf… lists bare
+Reflect.apply in internal/config/globals.go148–162 as CanBeRemovedIfUnused.
+Thus eager capture retention was POSSIBLE, not inevitable. The exact hygienic
+output remains untested; no prior experiment proved it removable or retained.
+Do not amend original K controls/harness or silently substitute bundle size for
+actual code/initialization/runtime proof.
+
+## Two useful source deliveries
+
+| Slice | Delivered result / consumer | Acceptance and dependency |
+| --- | --- | --- |
+| S01 — Versioned host contract and provable-write errors | Install v1 normative policy/catalog and scope-aware direct-write diagnostics through real native/public source pipelines, preserving local/read/application controls and source-file failure behavior. | Meaningful old-API expected red first; stable policy before removal/strip, normalized/import/macro/shadow/alias cases, exact errors/no new-or-overwritten output, real valid runtimes, full normal gates and separate CDC. No S04 semantic repair. |
+| S02 — Lazy hygienic invocation facility and optimized payload | Actual private backend request primitive for ReflectApply, with central symbol hygiene and no public source/AST primitive. Usable by S04 later; provide a finite real proof harness through existing product test/accepted Lykn/native routes. | Depends on accepted S01, not S04. Actual native/public request behavior; four absent/shaken/retained-uncalled/live conditions, current native-esbuild/Deno pins, full generated/bundle reads/effects/status and independent fresh replay/full gates. No claimed production S04 consumer or K execution. |
+
+S01 scope/readiness is engineered next; no unused slice/prompt dirs are created.
+S02 exact private signatures/emission adapter and fixture paths are finalized
+against accepted S01 source before its executable prompt. This sizing keeps
+each useful delivery and review in one context; it is not a process-only
+inventory/repair/review chain. No new source input acquisition or dependency.
+
+## Source/validation constraints
+
+Current source has public native module emission/result APIs and separately
+exported publicJS expand/compile/compileExpr. Protection needs source-before-
+removal coverage PLUS whole-unit backend consistency; post-strip kernel-only
+checking alone would miss protected writes in removed :pre/:post clauses.
+Actual first-slice recipe must resolve stage/order/scope, not broaden `check`'s
+documented subset or blindly propagate a whole-unit check into recursive APIs.
+Native codegen splits colon members separately from whole-atom NameRes tagging.
+
+Full normal unfiltered Make/committed citations and actual after-last-build
+absolute producer pins, complete readable generated output and strict real Deno
+runtimes are required for source acceptance. Fresh owned TMPDIR/XDG/npm roots,
+fixed approved DENO_DIR/Deno2.9.6, prelaunch actual argv/cwd/scoped-env/raw paths
+written/read, full stdout/stderr/status before assertions. Source bodies are
+actual Git-frozen before dependent checks; no false filename-only freeze.
+Preserve failed attempts/raw history and per-row CC proposal vs separate CDC
+acceptance. Exact named-path commits/provided -F real contiguous Codex+BilloAI
+trailers; no bypass/filter/suppression/permission widening/history rewrite.
+
+Research/helper/orchestration/validator/JSON logic must be Lykn: NO Python or
+migration exception, Ruby/Fennel/handwritten researchJS/Node/jq/shell-logic
+substitutes. Necessary product Rust/JS/tests/docs are allowed when named by the
+source prompt; native direct CLI/simple filesystem only otherwise. Keep output
+under ignored task target/owned private scratch, not authored JS research drivers.
+
+## S04 and other ownership, no circular dependency
+
+Operator protected-host decision resolves S04-H1's POLICY uncertainty. Its
+ordered-reference implementation waits for accepted Arc03/S02 facility/proof,
+not arc planning alone. S04 C02/boundary delivery can be independent. Arc03
+consumes accepted Arc01/S02+S03 at62e; it does NOT depend on unfinished S04.
+All6CV/CI04 remain open and completion semantics stay Arc01-owned. No renaming
+old units, silent row transfer, tooling allowance or K/S05/library advance.
+
+Arc01 S07/S08 must include this arc's actual final source range/source errors/
+intrinsic/global/name behavior in API/guide/LLM/separate-book/human disposition.
+The new normative document and references land with code; audit crosslinks do
+not postpone required source-user guidance or fabricate a book update.
+
+## Version history
+
+- 2026-11-08 v0.1: Operator named-arc/host-policy authority and subsequent direct
+  implementation authority recorded; actual03 availability, two useful slices,
+  v1 ReflectApply policy and exact S04 dependency established. No source started.

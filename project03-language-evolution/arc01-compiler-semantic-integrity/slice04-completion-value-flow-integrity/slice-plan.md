@@ -9,6 +9,22 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+## H1 policy resolved; protected-call dependency explicit — 2026-11-08
+
+Operator adopts a small versioned protected-host contract: identifiable writes
+to real protected globals/slots are source errors, shadows/reads/own.call stay
+legal, alias/foreign host mutation is not universally detected. New named
+[Arc03](../../arc03-protected-host-intrinsics/arc-plan.md) owns source protection,
+lazy private typed invocation/hygiene and real optimized/runtime proof, with
+explicit implementation authority. This resolves H1 POLICY uncertainty; it
+does not prove the facility or completed S04 lowering. Ordered-reference I3
+waits specifically for accepted Arc03/S02; C02/boundary I1 can be independent.
+Arc03 consumes accepted62e, not unfinished S04: no circular dependency.
+
+All6CV/CI04 remain open; earlier H1 record below is preserved history. S04 source
+and unrelated completion stages do not gain execution authority from this new
+arc. Old budgets/tooling8/K0 unchanged, no rename/row transfer or release merge.
+
 ## Partial design handoff / real contract gate — 2026-11-08
 
 [Incremental design](artifacts/incremental-completion-design.md) recommends a

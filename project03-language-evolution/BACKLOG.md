@@ -16,6 +16,17 @@
 
 ## How this list stays honest
 
+### Protected-host decision and named delivery — 2026-11-08
+
+Operator resolves H1 policy through versioned protected host operations and
+provable-write source errors, authorizing [Arc03](arc03-protected-host-intrinsics/arc-plan.md)
+implementation/independent close. Exact initial profile is ReflectApply only,
+required Reflect global/property slots, not a broad builtin ban. Actual source
+contract/facility/no-unused proof remain open; S04 I3 depends on accepted Arc03
+S02, C02/boundary may be independent. Source-first esbuild capture effects remain
+to prove; earlier retention concern was possible, not inherent. All6CV/CI04,
+old source/tooling8/K0 and adjacent/API/book/human duties survive, no scope reset.
+
 ### S04 uniform source-completion design — 2026-11-08
 
 Operator selected source function/loop/switch/label targets rather than synthetic

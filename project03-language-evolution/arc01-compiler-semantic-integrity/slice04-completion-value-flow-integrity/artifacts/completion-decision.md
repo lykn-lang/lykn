@@ -1,5 +1,11 @@
 # S04 decision needed — return targets inside discarded match
 
+Protected-host follow-through2026-11-08: Operator also resolves the later H1
+host-policy question with versioned protected operations/source errors and lazy
+private support. [Arc03](../../../arc03-protected-host-intrinsics/arc-plan.md)
+owns implementation/proof; S04 ordered-reference dependency is its accepted S02.
+This does not weaken the uniform source-control principle or start S04 code.
+
 ## Resolution — Operator decision, 2026-11-08
 
 Operator adopted source-level completion uniformly: nearest language-level

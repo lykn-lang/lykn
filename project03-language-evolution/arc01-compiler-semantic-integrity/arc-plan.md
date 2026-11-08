@@ -9,6 +9,16 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Protected-host policy resolved into named Arc03 — 2026-11-08
+
+Operator adopts v1 protected host operations/provable-write source errors and
+authorizes [Arc03](../arc03-protected-host-intrinsics/arc-plan.md) delivery.
+This resolves S04-H1 policy; ordered-reference implementation depends on accepted
+Arc03/S02 facility plus actual no-unused/eager proof. C02/boundary is independent;
+Arc03 consumes accepted62e, not S04. All6CV/CI04 stay open, earlier H1 evidence
+and source03/5/tooling8 history preserved. Arc01 completion semantics remain
+here, no automatic S04/S05/K/integration execution or renamed units.
+
 ## S04 partial design / proposed useful split — 2026-11-08
 
 [Partial design](slice04-completion-value-flow-integrity/artifacts/incremental-completion-design.md)
@@ -455,6 +465,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-08 v0.26: Resolved H1 host policy into explicit Arc03 delivery/dependency,
+  retaining all completion rows/history and avoiding a circular source dependency.
 - 2026-11-08 v0.25: Recorded partial S04 design/proposed useful implementation
   split and real H1 HOLD, with all CV/final-composition obligations retained.
 - 2026-11-08 v0.24: Operator selects source-level completion principle; S04

@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-08 current: H1 POLICY resolved by Operator; Arc03 protected-host delivery
+owns actual facility/proof required by S04 I3. I1 may be independent; all6CV/CI04
+OPEN, no new completion/source/K allowance, no circular dependency.
+
 2026-11-08 S04 partial design handoff: all6CV/CI04 OPEN; no source/gates/trials.
 Private target/completion/reference direction proposed; first C02/boundary
 delivery independently designable, ordered-reference H1 held at concrete

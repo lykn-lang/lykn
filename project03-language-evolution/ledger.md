@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 current: Operator protects v1 host operation semantics and authorizes
+named Arc03 implementation/independent close. All6PHI/6HC OPEN; H1 policy resolved,
+actual facility/proof still required for S04 I3. All6CV/CI04/P-1 and new P-HI
+remain open; old budgets/source62e/release protection untouched.
+
 2026-11-08 S04 design handoff: all6CV/CI04/P-1 OPEN, no source/runtime validation.
 Partial private-plan design recorded; I1 C02/boundary independently designable,
 I3 ordered references HELD H1 realm/capture/load/unused-code contract. Proposed
@@ -213,6 +218,7 @@ No project/F/Project07 row inherits completion; retrospective closes this scope.
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | P-1 | Project composition is independently evaluated against its plan | Review project plan and original child evidence | correctness-grade | historical planning | open | | Reorganization is not software acceptance. |
+| P-HI | Protected-host contract/source diagnostics and lazy private access compose with source-first optimized output | Accepted Arc03 PHI01–06, actual native/public/esbuild/Deno proof and exact S04/API/doc handoff | correctness-grade | Operator/Arc03 | open | arc03-protected-host-intrinsics/ledger.md | No new runtime/AST/integration or old-tool allowance |
 
 2026-11-06: [Slice14 endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 independently accepts task-only NE-C08/NE-C07 repairs and full canonical product

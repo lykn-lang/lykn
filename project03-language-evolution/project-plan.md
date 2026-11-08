@@ -9,6 +9,30 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Arc03 protected host contract authorized for delivery — 2026-11-08
+
+Operator adopts protected intrinsics and explicitly authorizes
+[Arc03](arc03-protected-host-intrinsics/arc-plan.md) plan→implementation/separate
+validation/closure, same Luna6 High CC/Sol6.1 High CDC/Autonomous/ANY substantive
+failure or REAL gap STOP. Actual Arc01/02 inventory makes03 the next unused
+named arc. Two useful increments: v1 provable-write errors/source contract;
+lazy private invocation/hygiene plus real native-esbuild/Deno no-unused/eager
+proof. First [S01 prompt](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cc-prompt.md)
+is source-ready before fresh intake/handoff, not a placeholder execution pause.
+All6PHI/6HC open, source62e/release62e protected; no source started at planning.
+
+| Current arc | Capability / ownership | Current state |
+| --- | --- | --- |
+| Arc01 compiler semantic integrity | Completion/control meaning and later diagnostic/tool/API/doc composition | S04 source principle selected; ordered-reference implementation depends only on accepted Arc03/S02 facility/proof, not plan alone |
+| Arc02 ad hoc maintenance | Individually approved miscellany; accepted harness baseline history | Existing bounded S01 retained, no miscellaneous sweep |
+| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | Explicit implementation authority, two useful source slices; no dependency on unfinished S04 |
+
+S04-H1 policy uncertainty is resolved by Operator's stronger source contract;
+implementation/proof dependencies remain. Original H1 alternatives/history and
+all6CV/CI04 remain, no tooling8/K0 or old-source allowance reset. S07/S08 must
+include actual Arc03 final source/API/error/name/doc/book/human impacts; no
+S04/S05/K/integration/push/publication authority is inferred from Arc03 delivery.
+
 ## S04 partial design at explicit host/effect gate — 2026-11-08
 
 [S04 design](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/artifacts/incremental-completion-design.md)
@@ -765,6 +789,9 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-08 v1.58: Opened explicitly authorized named Arc03 protected-host
+  delivery and S01 source-ready assignment, resolving H1 policy without source
+  acceptance or circular completion dependency.
 - 2026-11-08 v1.57: Recorded partial completion design/useful proposed split and
   real H1 host/effect HOLD; no source readiness/implementation acceptance.
 - 2026-11-08 v1.56: Recorded uniform source-control principle and bounded S04

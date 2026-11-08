@@ -1,0 +1,6 @@
+Enforce versioned protected-host source writes
+
+Preserve normalized lexical roots and legal controls across source and kernel units.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

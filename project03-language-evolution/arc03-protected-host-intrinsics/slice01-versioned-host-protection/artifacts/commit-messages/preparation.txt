@@ -1,0 +1,6 @@
+Open protected-host intrinsic delivery and first source assignment
+
+Record the versioned contract, useful arc slices and exact S04 dependency before implementation.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,5 +1,21 @@
 # Incremental source-completion design — 2026-11-08
 
+## Current protected-host decision / dependency — 2026-11-08
+
+Operator resolves H1 policy by adopting protected host intrinsics and stronger
+provable-write source errors, with lazy feature-local support/declared host
+conformance and explicit detection limits. [Arc03](../../../arc03-protected-host-intrinsics/arc-plan.md)
+owns actual contract/facility/proof; S04 ordered references wait for its accepted
+S02, not this plan. C02/boundary can be independent; Arc03 does not depend on
+unfinished S04. All6CV remain open and completion implementation is not started.
+
+New root source-only esbuild0.25.5 globals.go observation lists bare Reflect.apply
+as CanBeRemovedIfUnused; earlier eager capture retention was a POSSIBILITY, not
+an established or inevitable result. Exact hygienic output is still untested,
+and no source/K experiment was run. Historical H1 alternatives/conclusions below
+are preserved as the pre-decision record, not a current policy request. No
+source-first/PURE shortcut, new runtime or automatic AST selection follows.
+
 **Design recommendation, not implementation acceptance.** CDC `/root/cdc`
 (Sol6.1 High) authors/selects this proposal; fresh Luna6 High
 `/root/cdc/completion_design_luna_cc` supplied a read-only source feasibility

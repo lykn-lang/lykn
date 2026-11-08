@@ -1,5 +1,11 @@
 # S04 completion/value-flow ledger
 
+Current2026-11-08: Operator resolves H1 POLICY with protected intrinsics; Arc03
+owns actual source contract/facility/proof. I3 waits specifically accepted
+Arc03/S02, while I1 can be independent; no circular dependency. All6CV OPEN,
+S04 source0/5, no new S04/K execution or old-budget reset. Earlier H1 records
+remain history, not a still-unanswered policy question.
+
 Design-phase handoff2026-11-08: private structured Target/Completion/Reference/
 Argument recommendation and useful I1–I4 deliveries are recorded; whole S04 NOT
 implementation-ready. H1 holds ordered-reference lowering on actual realm-trust/

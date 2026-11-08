@@ -1,0 +1,6 @@
+Freeze protected-host source-contract regressions
+
+Capture old-policy routes and legal runtime controls before v1 enforcement.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
