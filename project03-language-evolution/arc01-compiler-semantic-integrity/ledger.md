@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 newest: S02 corrected483 focused-green but fullMake2 at documented
+DD-60 residual; exact Rust arm independently reproduced. RD01 requires explicit
+policy/oracle/spec disposition, CI-02 remains open/CE deferred; no automatic fix.
+Correction02 spent, source/release refs and all inherited obligations preserved.
+
 2026-11-07 latest: S02 shared correction02 TEST-ONLY explicitly authorized;
 CI-02 remains open until corrected tests and original full independent gates.
 Same models/first further failure stop; no production/API or later-unit scope.

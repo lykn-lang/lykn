@@ -1,5 +1,27 @@
 # S02 initial-attempt retrospective
 
+## Correction02 and the residual contract — 2026-11-07
+
+The exact AST helper/head assertions, independent span origins and suffix mixtures
+made the corrected tests sound before execution. Their focused runtime checks then
+passed, as did the other original focused gates. This supports that bounded test
+repair; it is not a model benchmark or independent source acceptance.
+
+Full normal validation did useful work beyond those focused successes: it exposed
+an explicit historical behavior contract the Result design had not dispositioned.
+The permanent conformance test intentionally pins Rust shape fallthrough versus
+JS error and demands conscious change. Stronger error propagation is a plausible
+PL design improvement, but calling the test stale or source invalid would skip
+that decision. The first failure was preserved; no exception restored or oracle
+changed merely to regain green. Only the exact original Rust arm was independently
+replayed; no38-cell improvement or complete matrix was inferred.
+
+Next engineering work is a named policy/test/current-guide and canonical-DD
+disposition, not another undocumented compiler patch. Historical counts/decisions
+remain dated; later public behavior/book impact belongs S07/S08. Correction02 is
+spent without reset, full acceptance held, release8f safe. This retrospective
+does not authorize the proposal or substitute for the failed full gate.
+
 ## Resumed source attempt — 2026-11-07
 
 Fresh Luna6 High CC produced a13-path Result/route candidate, but final typed

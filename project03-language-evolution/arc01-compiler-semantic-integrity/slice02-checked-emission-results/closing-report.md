@@ -1,5 +1,28 @@
 # S02 bounded stop report
 
+## Current correction02 full-gate stop — 2026-11-07
+
+Candidate483ff507 remains **unaccepted**, all six CE deferred/CI-02 open. Corrected
+typed6/lang1133/CLI99+main180/emission4/contract17/parity3/e2e18/cross22 passed
+in CC's actual focused run. Original four invalid/four runtime oracles match there.
+Full normal Make exited2 at one documented residual:1469passed/11steps/1failed.
+Embedded citations63/601 and Rust/other prerequisite stages passed; documentation
+tests not reached, standalone cites and independent full gates held.
+
+CDC independently reproduced ONLY the exact27-byte original failing Rust arm:
+actual post-Make compiler746f2062, compile --no-strict, exit1/empty stdout/
+`1:18: error: fn requires params and body`. [Review](cdc-verification.md) names
+S02-RD01: current corpus explicitly expects historical Rust fallthrough while JS
+rejects shape, and canonical DD-60 requires conscious re-disposition. Not an
+automatic compiler bug, invalid-source claim or permission to soften the oracle.
+
+Recommendation is explicit unresolved-form rejection policy plus exact corpus/
+dated canonical-DD/current error-guide disposition, with genuine bound calls and
+old residual counts preserved. It is a PROPOSAL only, no new prompt/source edit/
+probe/retry. Correction02 spent/three remain; release8f/old refs clean unchanged.
+[Retrospective](cdc-retrospective.md) and current review preserve all limits.
+S02 stays paused for Operator decision; earlier stopped reports below are history.
+
 ## Correction02 source freeze and first full-gate stop — 2026-11-07
 
 The authorized test-only correction is frozen at

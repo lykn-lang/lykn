@@ -1,0 +1,14 @@
+Prospective exact failing Rust-arm reproduction, 2026-11-07, CDC /root/cdc Sol6.1 High.
+CC returned all source/index/build ownership after normal unfiltered make check2.
+Source frozen483ff5074001d7a039270f4639e8ef61d70e4b4e; planning2c7ff05ef6d14d1df1950697065978c23127a702.
+Original test test/expander/conformance-corpus.test.js221-235, compileRust51-65.
+Exact src=(label fn (block (fn 987))) — 27 ASCII bytes, NO final LF, identical to original literal.
+Input /private/tmp/lykn-s02-residual-cdc.QPA2wM/input.lykn; only native printf writes this existing frozen input, no new program/driver.
+Cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering (same existing test cwd).
+Pin actual POST-MAKE bin/lykn and target/release/lykn before use, cmp bytes, never infer pre-Make debug hash.
+Command: env DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/private/tmp/lykn-s02-residual-cdc.QPA2wM/xdg /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn compile --no-strict /private/tmp/lykn-s02-residual-cdc.QPA2wM/input.lykn
+--no-strict is the ORIGINAL conformance-case mode, not an injected gate bypass.
+Capture raw stdout/stderr/exit, actual producer/input identities before/after. No generated JS runtime or second variant/JS-backend probe.
+Expected reproduction of observed new condition: compiler1, empty stdout, diagnostic1:18 fn requires params and body. Original current corpus oracle still EXPECTS Rust success/fn(987); do NOT silently replace it.
+Historical JS shape-error outcome is inspected contract, not a fresh trial here. Full Make remains failed and docs/independent fullgreen unrun.
+After exact reproduction/source-contract review, stop and record behavior/oracle disposition PROPOSAL only, no correction/API/source change.

@@ -9,6 +9,15 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 full-gate residual decision stop — 2026-11-07
+
+Corrected483 focused tests passed; normal Make2 exposes an explicit historical
+DD-60 form-named-label fallthrough oracle (1469pass/1fail). Exact failing Rust arm
+independently confirmed. S02-RD01 is an Operator behavior/test/spec disposition,
+not an automatic regression or oracle change; current proposal is in S02 review.
+CI-02 open/all CE deferred, docs/independent full gates held. Correction02 spent,
+no source edits/retry/S03/integration, release8f and old duties unchanged.
+
 ## S02 correction02 authorized, validation remains required — 2026-11-07
 
 Operator approved consolidated test-only CE-R05/06/07 correction at d352, same
@@ -268,6 +277,9 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.10: Corrected483 reaches focused greens then full-gate residual
+  contract stop; RD01 explicit behavior disposition required before further work.
 
 - 2026-11-07 v0.9: Explicit test-only correction02 approval addresses CE-R05–07;
   independent corrected-test release precedes original full S02 validation.

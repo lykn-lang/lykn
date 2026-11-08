@@ -1,4 +1,89 @@
-# S02 independent review — stopped before behavioral baseline
+# S02 independent reviews and stopped dispositions
+
+## Correction02 full-gate stop — current disposition (2026-11-07)
+
+Source483ff5074001d7a039270f4639e8ef61d70e4b4e is clean and **unaccepted**.
+Correction02 fixed CE-R05/06/07 in exactly the two authorized test locations;
+CDC reviewed the actual immutable delta and released it BEFORE any validation.
+The prior d352 wrong-oracle finding is resolved test construction, not the current
+blocker. Production/docs/maintenance fixtures/oracles were unchanged by correction.
+Shared correction02 is spent (2/5; three remain), no reset of old tooling8/K0/13.
+
+### Actual green checks and first failure
+
+CC `/root/cdc/checked_emission_correction02_luna_cc` (fresh Luna6 High) captured
+workspace no-run --offline --locked0 and final producer pins before direct tests.
+Focused: new typed6/6, lang units1133/1133, CLI library99/99, CLI main180/180,
+emission_failures4/4, contract1test/17observations, validation parity3/3,
+e2e18/18, cross-compiler22/22. All four invalid rejection/no-write and four valid
+strict-runtime oracles now match in CC's run, including prior MH-P01. These are
+doer-observed greens; they are not independent full acceptance or a new baseline.
+
+Required normal UNFILTERED `make check` then exited2. Actual raw stages: embedded
+cited paths0 (63 documents/601 frozen historical refs), release build, Clippy,
+format, syntax, Lykn lint, refresh and Rust test stage completed. Deno corpus:
+**1469 passed (11 steps), 1 failed**, existing
+`residual (documented): form-named label — shape-mismatch asymmetry`
+at `test/expander/conformance-corpus.test.js:221–235`. Documentation tests were
+NOT reached; standalone citation gate and independent full/focused reproduction
+were NOT run after the stop. Complete CC streams/commands/exit/pins and dated
+attestation are committed at planning2c7ff05ef6d14d1df1950697065978c23127a702 in
+`artifacts/evidence/cc/correction02/`. No source edit/retry/filter followed failure.
+
+### Independent exact failing condition
+
+After explicit ownership return, CDC Sol6.1 High reproduced ONLY the failing
+Rust arm, with original `compile --no-strict`, same task cwd and exact original
+27-byte/no-LF source `(label fn (block (fn 987)))`. The original corpus helper
+uses that mode; no skip/permission option was injected. Input SHA256
+`37ce2126f73aaef828a263c5bc0ca68a993758f5e3408ce2c823374191ab4ccf`.
+Actual POST-MAKE `bin/lykn` byte-equals `target/release/lykn`, SHA256
+`746f206298f1a32f3da6210022a2f3e706436d25dd36efb513feffc52893024f`,
+unchanged before/after replay. Compiler **exit1, empty stdout, exact diagnostic
+`1:18: error: fn requires params and body`**. No generated program runtime,
+new variant, JS-backend probe or compiler rebuild. Fresh actual raw/command/input/
+producer evidence is in `artifacts/evidence/cdc/correction02-stop/`.
+
+### S02-RD01 — explicit behavior/contract decision required
+
+The CURRENT tracked test explicitly expects Rust success containing `fn(987)`
+while JS rejects the form shape. It says a change forces conscious re-disposition.
+The [canonical DD-60](../../../project02-language-toolchain-alignment/arc13-expander-coherence/artifacts/design/05-active/0062-dd-60-name-binding-semantics-bindings-shadow-macrosforms.md)
+Context/D1/label exception and 2026-07-09 refinement confirm: lexical value
+bindings shadow forms; a label is a separate namespace and does NOT introduce
+such a value binding. Wrong-shape form fallthrough was documented outside D1's
+scope and pinned as expected divergence. Thus this is not automatically a new
+compiler bug, a bad test, or proof the whole source program is invalid.
+
+Candidate's checked nested-classification error naturally rejects the recognized
+unresolved `fn` form instead of silently cloning it as a call. That aligns with
+the proposed S02 error contract and historical JS shape rejection, but does not
+override the authoritative pinned residual without Operator decision. Genuine
+lexically bound `fn`/foreign calls remain a distinct requirement, protected by
+resolution and existing D1 cases; no fallback restoration or oracle change is
+authorized here. Historical53/1947 and38-label-cell counts remain dated evidence,
+NOT remeasured or claimed fixed by one representative case.
+
+**Recommendation/proposed next scope, NOT approved or issued:** explicitly adopt
+rejection of malformed recognized UNRESOLVED forms while preserving real bound
+calls/label namespace. Then update only this original corpus expectation and
+its coverage/residual comments; append a dated Operator refinement to canonical
+DD-60 without rewriting its old decision/counts; clarify this behavior in current
+`docs/guides/03-error-handling.md` and assign public behavior/doc/book impact to
+S02 and final S07/S08. Keep source case and all D1 controls; do not remove or
+weaken the failing test. Production implementation need not change for that
+choice. After explicit approval, original full normal Make/citations and separate
+CDC gates are still required. If instead preserving legacy fallthrough is chosen,
+a new narrow dispatch/error design must distinguish it from invalid nested
+forms without reviving silent failure; not a quick blanket raw-clone exception.
+
+All six CE rows remain deferred/CI-02 open. Source483, old d352/maintenancec129/
+checked232 refs and accepted release8f are preserved/clean. No policy amendment,
+new prompt, source correction, further experiment, integration or later unit
+was issued after this stop. Initial test stops below, receipt limitations and
+all original F/Project07/book/human/old tooling obligations remain history.
+
+## Retained d352 resumed implementation review
 
 ## Resumed implementation review — stopped at d352 (2026-11-07)
 

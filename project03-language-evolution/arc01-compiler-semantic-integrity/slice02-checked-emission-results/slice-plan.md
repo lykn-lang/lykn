@@ -2,12 +2,29 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
-status: in-progress
+status: paused
 planned-release: unassigned
 depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emission-harness-baseline]
 ---
 
 # Checked emission results
+
+## Current full-gate policy stop — 2026-11-07
+
+Correction02 is frozen at483ff507 and its corrected test construction independently
+released before execution. All original focused targets passed in CC's run, but
+NORMAL unfiltered Make exited2:1469pass/11steps/1failure, the explicitly documented
+form-named-label fallthrough residual. Docs not reached, standalone citations/
+independent full gates held. [Current review](cdc-verification.md) independently
+reproduces the exact original Rust arm with actual post-Make producer746f2062.
+
+S02-RD01 requires explicit behavior/test/DD-60 disposition; not an automatic
+compiler regression or oracle error. Proposed consistent unresolved-form rejection
+and exact corpus/canonical-DD/current-guide amendment is UNAPPROVED, no prompt or
+edit issued. Bound-value calls/label namespace and historical residual counts
+remain distinct. Source483 unaccepted, all CE deferred/CI-02 open. Correction02
+spent (2/5; three remain), tooling8/K0 and accepted release8f unchanged. First
+further substantive-failure stop honored; no retry/integration/later scope.
 
 ## Authorized consolidated test correction02 — 2026-11-07
 

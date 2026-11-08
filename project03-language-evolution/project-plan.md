@@ -9,6 +9,15 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S02 residual-contract stop (2026-11-07)
+
+Corrected483 focused gates passed, then full normal Make2 at the explicitly pinned
+form-named-label fallthrough residual. [S02 review](arc01-compiler-semantic-integrity/slice02-checked-emission-results/cdc-verification.md)
+independently confirms exact Rust behavior and names RD01 policy/test/canonical
+DD-60/current-guide disposition. Candidate unaccepted/CI-02 open, docs and independent
+full gates held; no source retry/oracle edit/new prompt. Correction02 spent,
+release8f/history/tooling8/K0 and all original duties unchanged.
+
 ## Current authorized S02 test correction (2026-11-07)
 
 Operator approved S02 consolidated correction02 in the two test locations only,
@@ -608,6 +617,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.42: S02 correction02 focused-green but normal fullMake stopped
+  at an explicitly pinned residual. Exact Rust-arm reproduction and RD01 policy/
+  test/spec proposal recorded; no amendment, retry or software acceptance.
 
 - 2026-11-07 v1.41: Operator authorized consolidated S02 test-only correction02
   followed by original validation, same models/stop rule and immutable production.

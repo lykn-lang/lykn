@@ -1,5 +1,11 @@
 # S02 checked emission ledger
 
+2026-11-07 current: corrected483 tests/focused targets CC-green, but normal Make2
+at explicit DD-60 form-named-label residual (1469pass/1fail). Exact failing Rust
+arm independently reproduced. S02-RD01 policy/test/spec disposition pending;
+all CE deferred/CI-02 open, docs/standalone cites/independent full gates held.
+Correction02 spent/three remain; no source edit/retry or automatic next unit.
+
 2026-11-07 current authority: Operator authorized consolidated TEST-ONLY shared
 correction02 then original validation; first further substantive-failure stop.
 Two test locations only; production/oracles immutable. All CE rows still deferred
@@ -40,8 +46,8 @@ and old tooling8 spent/K0/13 retained.
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | CE-01 | Actual source/authority/API disposition and behavioral red established | Exact baseline/branch/readback; four captured invalid routes and two valid controls, all bodies committed first | correctness-grade | CI-02/S02 | deferred | cdc-verification.md; accepted maintenance c129 review | Old baseline reusable, new candidate unaccepted |
-| CE-02 | Public checked emission delivers first typed fatal with honest origin and context recovery | Three checked APIs, nested sibling/strip/context/gensym/span tests; exact source diff | correctness-grade | NE-C06 channel/S02 | deferred | cdc-verification.md; source d352 | Candidate authored, final oracle defect/coverage gaps, no tests |
-| CE-03 | All production routes stop before failing-file artifacts and preserve valid semantics | CLI stdout/file/DTS/dist, typed path/source, resolver/shared validator order and runtime/user-text controls | correctness-grade | CI-02 | deferred | cdc-verification.md | New candidate invalid/runtime conditions0/4 each; old MH-P01 retained |
-| CE-04 | Actual source/full generated/runtime/full normal gates pass | Focused binaries/producer pins; complete JS/DTS; normal Make/citations/full raw attempts | correctness-grade | AGENTS/S02 | deferred | artifacts/evidence/cc/resumption01/attempt01/; initial cc-readback history | Workspace no-run0 with pins; all behavioral/full gates unrun |
-| CE-05 | Separate CDC reproduction accepts exact candidate | Independent source/API/diagnostic/context/route review plus focused/runtime/full Make/citations | correctness-grade | work-verification | deferred | cdc-verification.md | Independent static rejection, no source acceptance |
+| CE-02 | Public checked emission delivers first typed fatal with honest origin and context recovery | Three checked APIs, nested sibling/strip/context/gensym/span tests; exact source diff | correctness-grade | NE-C06 channel/S02 | deferred | cdc-verification.md; correction02 CC typed6green | Test defects fixed; full independent acceptance held by RD01 |
+| CE-03 | All production routes stop before failing-file artifacts and preserve valid semantics | CLI stdout/file/DTS/dist, typed path/source, resolver/shared validator order and runtime/user-text controls | correctness-grade | CI-02 | deferred | correction02 CC emission_failures4green/raw | Four invalid/four runtime oracles CC-match, not independent full acceptance |
+| CE-04 | Actual source/full generated/runtime/full normal gates pass | Focused binaries/producer pins; complete JS/DTS; normal Make/citations/full raw attempts | correctness-grade | AGENTS/S02 | deferred | artifacts/evidence/cc/correction02/; artifacts/evidence/cdc/correction02-stop/ | FullMake2/Deno1fail; docs not reached; embedded cites63/601 pass |
+| CE-05 | Separate CDC reproduction accepts exact candidate | Independent source/API/diagnostic/context/route review plus focused/runtime/full Make/citations | correctness-grade | work-verification | deferred | cdc-verification.md; artifacts/evidence/cdc/correction02-stop/ | Exact failing Rust arm reproduced; independent full acceptance held |
 | CE-06 | Delivery, docs/API impacts, history and residual owners reconcile | Row walk/report/retro/parent/S07 impact pointer with exact clean source/plan refs | correctness-grade | Arc01/Operator | deferred | closing-report.md; cdc-retrospective.md | Stop recorded, delivery incomplete; no later unit/integration |
