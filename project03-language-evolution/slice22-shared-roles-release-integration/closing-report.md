@@ -5,7 +5,7 @@
 The actual CC report below is preserved as authored/proposed. Separate CDC
 [acceptance](cdc-verification.md) now accepts exact release62e/tree6721237 and
 all5RI after fresh normal Make0/native5/public1+4steps/citations63/601 and full
-generated-module/pin review. [Retrospective](artifacts/retrospective.md) and
+generated-module/pin review. [CDC retrospective](cdc-retrospective.md) and
 parent pointers close this unit. S04 readiness follows with a concrete
 statement-match return-target decision HOLD; no speculative implementation
 prompt or source change. Old source/tooling/K limits remain unchanged.

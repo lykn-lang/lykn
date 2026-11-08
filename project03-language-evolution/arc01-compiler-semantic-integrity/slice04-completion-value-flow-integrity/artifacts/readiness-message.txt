@@ -1,0 +1,6 @@
+Open completion-integrity readiness at explicit policy gate
+
+Preserve release acceptance and frame the match return-target decision before source work.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

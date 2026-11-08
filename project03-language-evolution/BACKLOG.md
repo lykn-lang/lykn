@@ -16,6 +16,19 @@
 
 ## How this list stays honest
 
+### Current release/completion disposition — 2026-11-08
+
+[Slice22](slice22-shared-roles-release-integration/cdc-verification.md) now
+independently accepts exact local release62e/tree6721237; S03 is integrated.
+[S04 readiness](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/slice-plan.md)
+owns C02/C05/source-onlyNE-C13/all6CV OPEN. Statement-match return targets differ
+between native transparent lowering and documented/publicJS IIFEs; a concrete
+Operator choice holds affected implementation. C02 source scope/branch contract
+and C05 explicit-return support are reconciled as source inputs, not new current
+runtime findings. Original C05 full source/output hashes are still intact at
+owned historical task paths; no cleanup or new probe. S03 acceptance/old source
+budgets/tooling8/K0/13/A6/adjacent/S07S08/book/human obligations remain unchanged.
+
 ### Current accepted incremental disposition — 2026-11-07
 
 Arc01 S03 independently accepts task62e9531/tree6721237's private shared roles/

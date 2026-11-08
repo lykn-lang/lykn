@@ -9,6 +9,17 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S04 readiness held on completion policy — 2026-11-08
+
+[S04](slice04-completion-value-flow-integrity/slice-plan.md) is opened for
+source-grounded C02/C05/NE-C13 disposition, all6CV/CI04 open. The
+[worked decision](slice04-completion-value-flow-integrity/artifacts/completion-decision.md)
+shows the concrete discarded-match return-target difference and distinguishes
+limited positional alignment from broader source-boundary completion design.
+No option, implementation mechanism, source prompt/branch or new trial is
+selected. Operator policy resolution precedes affected implementation; accepted
+S03/release composition and old budgets remain. No S05/K automatic advance.
+
 ## S03 integrated; S04 semantic readiness next — 2026-11-08
 
 [Slice22 independent close](../slice22-shared-roles-release-integration/cdc-verification.md)
@@ -328,8 +339,10 @@ compatibility decisions accompany each coding slice, not just the final audit.
 
 ## Planned usable increments
 
-These are roadmap units, not opened slices or executable assignments. Create a
-slice's full open set only when it becomes the approved next implementation unit.
+These roadmap obligations remain; actual opened units are linked in the dated
+current sections above. Future units are not executable assignments. Create an
+implementation open set only when ready and approved; S04 currently has a
+readiness/decision hold rather than a speculative CC implementation prompt.
 
 | Unit | Deliverable and acceptance | Dependencies and limits |
 | --- | --- | --- |
@@ -413,6 +426,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-08 v0.23: Opened S04 readiness/all6CV and explicit match-completion
+  policy hold; no option/source/experiment selected or architecture expansion.
 - 2026-11-08 v0.22: Slice22 independently accepts exact release62e composition;
   all5RI done, S04 semantic readiness retains real Operator decision gates.
 - 2026-11-07 v0.21: Explicit Slice22 release integration/conditional S04 authority

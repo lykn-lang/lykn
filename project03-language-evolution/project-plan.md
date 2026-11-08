@@ -9,6 +9,17 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## S04 opened at a concrete language-policy gate — 2026-11-08
+
+[S04 readiness](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/slice-plan.md)
+now reconciles C02/C05/source-onlyNE-C13 against current62e and original contracts;
+all6CV/CI04 open, no S04 runtime or source authoring. Its
+[worked decision](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/artifacts/completion-decision.md)
+shows native discarded-match return-to-enclosing-function versus documented/
+publicJS return-to-IIFE. Operator choice holds dependent implementation; no
+speculative CC prompt/new branch or wider completion policy is selected. Same
+approved models/Autonomous/ANY substantive failure stop; no S05/K advance.
+
 ## S03 release composition independently accepted — 2026-11-08
 
 [Slice22](slice22-shared-roles-release-integration/cdc-verification.md) accepts
@@ -734,6 +745,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-08 v1.55: Opened S04 readiness/ledger and concrete match-completion
+  decision hold after independent release acceptance; no source/experiment.
 - 2026-11-08 v1.54: Independently closed exact Slice22 release62e integration;
   all5RI done, S04 release gate clears with explicit completion-policy hold.
 - 2026-11-07 v1.53: Opened explicitly authorized Slice22 exact release FF/gates;

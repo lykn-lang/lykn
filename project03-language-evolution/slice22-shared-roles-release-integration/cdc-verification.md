@@ -62,6 +62,8 @@ RI03 done actual CC full/pinned/native/public/cited proof; RI04 done genuinely
 separate CDC exact-release reproduction; RI05 done actual CC attribution, this
 row walk, retrospective/parents/clean handoff. Five opened/five done, no drop.
 CC proposed RI01–03 only, RI04–05 pending; this is CDC's final reconciliation.
+Completed [CDC retrospective](cdc-retrospective.md) is in the canonical slice
+root; its original committed artifacts placement is retained and identified.
 
 CI03/S03 accepted capability is now locally integrated into0.6. Prior failures,
 capture limitations, S03 source03/5, tooling8/K0/13/F/Project07 duties survive.

@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 S04 readiness opened/all6CV and CI04 OPEN; worked match-return-target
+decision holds dependent source implementation. No S04 source/check/runtime,
+prompt or branch creation, new old-budget allowance, S05/K or integration scope.
+
 2026-11-08 final Slice22: all5RI independently done; exact release62e/tree6721237,
 actual release-specific full/current-runtime/citation proof repeated separately.
 CI03 integrated/P-1 and later capabilities open. Conditional S04 release gate

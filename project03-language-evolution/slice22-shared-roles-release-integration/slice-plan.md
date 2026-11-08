@@ -11,7 +11,7 @@ depends-on: [arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
 ## Independent close — 2026-11-08
 
 All5RI independently done at exact release62e/tree6721237; see
-[CDC acceptance](cdc-verification.md) and [retrospective](artifacts/retrospective.md).
+[CDC acceptance](cdc-verification.md) and [CDC retrospective](cdc-retrospective.md).
 Actual CC and separate CDC full normal/current-runtime/citation gates pass.
 Conditional S04 release prerequisite cleared; consequential completion-policy
 choices still hold affected implementation. Original Nov7 authority below is
