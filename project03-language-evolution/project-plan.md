@@ -9,6 +9,17 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current Arc03 static STOP — 2026-11-08
+
+[S01](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md)
+tests-only871f is unaccepted: duplicate createNew public receipt path found
+before any build/runtime. Arc03 all6HC/all6PHI remain open, S02 unstarted;
+proposed phase-specific path correction requires renewed authority. No compiler
+implementation, runtime observation or integration occurred. Release/accepted
+source62e and S04 all6CV/CI04 are unchanged; host POLICY remains selected while
+the actual S04 I3 facility dependency remains unmet. Original source/tooling8/
+K0/13 history and unused refinement allowance do not override first-failure STOP.
+
 ## Arc03 protected host contract authorized for delivery — 2026-11-08
 
 Operator adopts protected intrinsics and explicitly authorizes
@@ -25,7 +36,7 @@ All6PHI/6HC open, source62e/release62e protected; no source started at planning.
 | --- | --- | --- |
 | Arc01 compiler semantic integrity | Completion/control meaning and later diagnostic/tool/API/doc composition | S04 source principle selected; ordered-reference implementation depends only on accepted Arc03/S02 facility/proof, not plan alone |
 | Arc02 ad hoc maintenance | Individually approved miscellany; accepted harness baseline history | Existing bounded S01 retained, no miscellaneous sweep |
-| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | Explicit implementation authority, two useful source slices; no dependency on unfinished S04 |
+| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | S01 blocked at initial static test review; two-slice scope retained, no implementation/facility accepted |
 
 S04-H1 policy uncertainty is resolved by Operator's stronger source contract;
 implementation/proof dependencies remain. Original H1 alternatives/history and

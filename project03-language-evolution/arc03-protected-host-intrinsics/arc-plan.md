@@ -1,13 +1,25 @@
 ---
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results, arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
 related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity, project07-core-library-research]
 ---
 
 # Protected host intrinsics
+
+## Current STOP — 2026-11-08
+
+S01 initial tests-only freeze871f failed independent STATIC review before any
+build/runtime: its legal public before/after receipts use one createNew path.
+See [stopped report](slice01-versioned-host-protection/closing-report.md) and
+[review](slice01-versioned-host-protection/cdc-verification.md). All6HC/all6PHI
+remain open; no policy implementation or S02 facility is delivered. Source
+refinement0/5, no correction issued; first-failure stop requires renewed
+Operator authority for the bounded phase-path-only test correction. Existing
+two-useful-slice scope/dependency is unchanged; S04 I3 still waits accepted S02.
+Accepted refs/release62e and old tooling8/K0/13 are untouched.
 
 Current first source assignment: [S01](slice01-versioned-host-protection/slice-plan.md)
 and [prompt](slice01-versioned-host-protection/cc-prompt.md), all6HC open. Source
@@ -130,6 +142,8 @@ not postpone required source-user guidance or fabricate a book update.
 
 ## Version history
 
+- 2026-11-08 v0.2: S01 static test-review STOP871f, all capability rows open;
+  current status blocked, no architectural rescope or automatic correction.
 - 2026-11-08 v0.1: Operator named-arc/host-policy authority and subsequent direct
   implementation authority recorded; actual03 availability, two useful slices,
   v1 ReflectApply policy and exact S04 dependency established. No source started.

@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+Current2026-11-08: STATIC STOP at tests-only871f before all launches, no
+implementation accepted. All6HC remain OPEN; [row walk](closing-report.md),
+[CDC review](cdc-verification.md), [retrospective](cdc-retrospective.md).
+Initial source refinement0/5; no correction issued. Opening state follows.
+
 Opened2026-11-08, source0/5; expected old-policy baseline reds are prerequisites,
 first UNEXPECTED substantive failure/REAL gap stops. All6rows OPEN. No code/gates
 yet, old allowances/release62e preserved.

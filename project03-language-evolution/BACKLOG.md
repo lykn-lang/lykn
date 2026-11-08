@@ -16,6 +16,15 @@
 
 ## How this list stays honest
 
+### Arc03 initial static stop — 2026-11-08
+
+Tests-only871f failed [S01 independent review](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md)
+before any build/runtime: legal before/after records collide under createNew.
+No compiler/parser/host-policy failure was observed. All6HC/all6PHI remain open;
+proposed bounded phase-path correction needs renewed authority, no issued fix.
+Actual protected-call facility/S04 I3 dependency remains undelivered. Accepted
+source/release62e, all6CV/CI04, tooling8/K0/13 and prior histories are preserved.
+
 ### Protected-host decision and named delivery — 2026-11-08
 
 Operator resolves H1 policy through versioned protected host operations and

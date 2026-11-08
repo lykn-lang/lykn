@@ -2,12 +2,23 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice01-versioned-host-protection
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: []
 ---
 
 # S01 — versioned host contract and provable-write errors
+
+## Current initial-attempt STOP — 2026-11-08
+
+Tests-only871f failed separate CDC static review: same legal case receipt path
+is created both before and after the child with createNew. No build/no-run/test/
+runtime was launched; no production policy/docs authored. All6HC/all6PHI remain
+open; see [report](closing-report.md), [review](cdc-verification.md), and
+[retrospective](cdc-retrospective.md). Source refinement0/5, initial attempt
+stopped, next correction01 NOT issued/authorized. Proposed precise re-entry is
+distinct before/after paths retaining createNew and both observations, followed
+by original gates. No automatic continuation despite unused allowance.
 
 ## Authority/readiness — 2026-11-08
 
@@ -174,6 +185,11 @@ body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
 
+- 2026-11-08 initial return: CC froze tests-only
+  `871f0a3b5d444213fb59e7f25dab8f9a95fa0893`, CDC read both complete files and
+  issued STOP before baseline release on the receipt collision. CC confirmed no
+  further edits/builds/launches. Root separately confirmed the static source.
+  Actual source capability remains undelivered; all original rows/limits stay.
 - Initial cc-prompt.md, issued2026-11-08 with this preparation: fresh Luna6 High
   intake then explicit source/index/build/raw ownership. Source starts only after
   readback/static baseline-test release. Actual actor/commit reported at dispatch.

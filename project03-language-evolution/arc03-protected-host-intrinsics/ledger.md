@@ -1,5 +1,10 @@
 # Arc03 protected host intrinsics ledger
 
+Current2026-11-08: BLOCKED at S01 tests-only871f, static receipt collision;
+[independent STOP](slice01-versioned-host-protection/cdc-verification.md).
+All6PHI remain OPEN. No build/runtime/implementation/facility accepted, S02
+unstarted; original source/tool budgets are not reset. Opening state follows.
+
 Opened2026-11-08 under explicit named-arc plan→implementation/independent close
 authority. All6rows OPEN, no source/gate/trial yet. Existing source62e; release
 protected, old S04/tooling budgets unchanged. Slice budgets begin only in their
