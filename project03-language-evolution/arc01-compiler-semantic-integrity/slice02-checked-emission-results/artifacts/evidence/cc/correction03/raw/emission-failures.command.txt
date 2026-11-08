@@ -1,0 +1,5 @@
+argv=target/s02-checked-emission/correction02/debug/deps/emission_failures-ee1302ddd95a417d
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+LYKN_EMISSION_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice02-checked-emission-results/artifacts/evidence/cc/correction03
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+source=c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1; Rust test sources unchanged from correction02

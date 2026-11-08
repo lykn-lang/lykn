@@ -1,5 +1,33 @@
 # S02 bounded stop report
 
+## Correction03 CC execution — 2026-11-07
+
+The operator-approved RD01 behavior/test/guide correction is source-frozen at
+`codex/checked-emission-results-v2@c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1`.
+Only the existing form-named label corpus case/current coverage comments and
+the narrow compiler-failure guide passage changed. The exact 27-byte case source,
+both compiler calls, and test ordering remain intact; D1 controls, class9,
+compiler, fixtures and public API are unchanged. CDC independently released the
+static construction before validation.
+
+The updated existing corpus runner passed 9/9. Normal unfiltered `make check`
+passed (exit0), including the full JS/Lykn suite 1470/1470 in 11 steps and
+documentation tests 482/482. Standalone committed cited-paths passed: 63
+documents, 601 historical citations. The unchanged Rust suites were re-executed
+by full Make; prior focused source/API receipts remain scoped to their original
+source commits. The existing `emission_failures` executable was rerun without a
+Cargo rebuild: 4/4 passed and wrote current raw CLI/package failure, unchanged
+JS/DTS sentinel, valid runtime and generated-module evidence under
+`artifacts/evidence/cc/correction03/`. Post-Make release `./bin/lykn` and
+`target/release/lykn` both hash to
+`746f206298f1a32f3da6210022a2f3e706436d25dd36efb513feffc52893024f`; focused
+debug CLI/test executable hashes and the Deno 2.9.6 pin are in adjacent evidence.
+
+These are CC execution receipts, not independent acceptance. Full streams,
+commands, exits, generated outputs, diagnostics, file-preservation evidence and
+tool pins are retained under `artifacts/evidence/cc/correction03/`. No matrix
+recount, all-38-cell claim, CE acceptance, S03, integration or release follows.
+
 ## Current correction02 full-gate stop — 2026-11-07
 
 Candidate483ff507 remains **unaccepted**, all six CE deferred/CI-02 open. Corrected

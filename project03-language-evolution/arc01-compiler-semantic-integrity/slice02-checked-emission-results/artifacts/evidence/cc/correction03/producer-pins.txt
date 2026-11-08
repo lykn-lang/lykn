@@ -1,0 +1,30 @@
+Source: codex/checked-emission-results-v2@c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1
+Post-Make release CLI and target/release/lykn:
+  SHA256 746f206298f1a32f3da6210022a2f3e706436d25dd36efb513feffc52893024f
+Focused debug CLI target/s02-checked-emission/correction02/debug/lykn:
+  SHA256 566d29e925575139616d1bb2aae6a3a96a95f60cc66fe211b863fd86b29a3199
+Focused emission_failures executable:
+  SHA256 250444c725dcc5d19339f48814fcc6b54d3191499160cfb35354032d84571a57
+Deno /opt/homebrew/bin/deno 2.9.6:
+  SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Rust compiler: rustc 1.97.0 (2d8144b78 2026-07-07)
+Cargo: 1.97.0 (c980f4866 2026-06-30)
+
+Receipts:
+- Existing corpus route: raw/corpus.*; exit 0, 9 passed, 0 failed.
+- Normal unfiltered make check: raw/make-check.*; exit 0; 1470 JS/Lykn
+  tests passed in 11 steps, 482 documentation tests passed; all checks passed.
+- Standalone make check-cited-paths: raw/check-cited-paths.*; exit 0; 63
+  documents, 601 historical citations.
+- Existing focused `emission_failures` executable, no Cargo rebuild:
+  raw/emission-failures.*; exit 0, 4 passed, 0 failed. It generated the
+  adjacent raw CLI/package, JS/DTS sentinel, runtime, diagnostics and module
+  outputs for all existing test cases.
+
+Applicability: full Make reran the unchanged Rust suites and current corpus on
+the frozen source. The dedicated prior typed-emission, lang, CLI API/context,
+header, contract and cross-compiler receipts remain attached to their original
+source commit; the only intervening source changes are this assignment's
+existing JavaScript test and guide. No Cargo rebuild was done after Make; the
+existing debug CLI/test binaries were pinned above and exercised by the
+emission_failures receipt. Full normal CDC validation/review remains outstanding.

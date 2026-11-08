@@ -1,0 +1,13 @@
+running 9 tests from ./test/expander/conformance-corpus.test.js
+D1: control name shadows in every position ... ok (101ms)
+D1: surface-form names shadow (skip dispatch) ... ok (77ms)
+D1: kernel-head names shadow (skip dispatch) ... ok (59ms)
+D1/F-3: bound `macro` calls the binding on both backends ... ok (46ms)
+D1 region: a binding is not in scope over its own initializer ... ok (6ms)
+D2: reserved words are rejected at every binding position ... ok (137ms)
+DD-60 ‡: a label does not shadow a value (control name) ... ok (3ms)
+DD-60 ‡: form-named label preserves malformed-form rejection ... ok (3ms)
+residual (documented): kernel:-prefixed name is unbindable (edge 4) ... ok (2ms)
+
+ok | 9 passed | 0 failed (440ms)
+
