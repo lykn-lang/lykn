@@ -1,4 +1,26 @@
-# CDC static STOP — 2026-11-08
+# CDC verification — S01 attempts, 2026-11-08
+
+## Correction01 static release — no behavioral acceptance
+
+Operator-approved iteration01 issued at planning 63723f42a15f5267424ac5fff2caec4bcf2386c9.
+Same Luna actor completed renewed intake/F-body readback; CDC explicitly renewed
+exclusive source/index/build/raw ownership. CC froze correction at
+`e2f29597ab677346abc6e17ec3616d4a340b7861`, clean, direct child of preserved 871f.
+CDC independently read the COMPLETE new public test and exact one-file diff:
+only final default phase parameter, phase-qualified path and before/after
+arguments changed. createNew, both records, all fields/sources/assertions/flags
+are intact. Native test blob is unchanged from the prior complete review.
+Actual raw Git body matches the supplied correction01-F and contiguous trailers.
+
+The known static writer collision is resolved by distinct literal phase paths;
+this is not a runtime result or universal test correctness claim. CDC releases
+the ORIGINAL still-unrun baseline build/final-pin/direct-native/public stage
+after this record commits. No production policy edit before actual baseline
+return and explicit source-stage release. All6HC/all6PHI/CV remain OPEN;
+refinement01/5, original first-further-substantive-failure STOP remains.
+The initial STOP/report below remains valid for its871f condition.
+
+## Initial static STOP — preserved
 
 Reviewer `/root/cdc`, gpt-6.1-sol High, independently inspected the complete
 two-file test freeze `871f0a3b5d444213fb59e7f25dab8f9a95fa0893` authored by

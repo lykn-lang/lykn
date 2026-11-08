@@ -196,6 +196,12 @@ body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
 
+- 2026-11-08 iteration01 actual intake/handoff: same Luna actor reread immutable
+  planning 63723f4, plan/ledger/stopped records and supplied-F; CDC renewed source/
+  index/build/raw ownership. Exact correction freeze e2f29597 followed by separate
+  CDC whole-public-file/diff/raw-body review, known writer issue statically
+  resolved; ORIGINAL baseline stage released only after this review record
+  commits. No behavioral launch/result claimed here, no production-stage release.
 - 2026-11-08 iteration01, predecessor cc-prompt.md: explicit renewed Operator
   approval for same source branch871f, phase-specific before/after receipt
   filenames only. New prompt/F supplied before renewed intake/handoff; actual

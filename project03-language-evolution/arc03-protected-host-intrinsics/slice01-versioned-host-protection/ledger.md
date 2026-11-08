@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+Correction01 static 2026-11-08: exact one-file e2f29597 resolves known phase-path
+collision; [review](cdc-verification.md) releases original baseline after commit.
+No behavioral result/source acceptance; all6HC remain OPEN, refinement01/5.
+
 Latest2026-11-08: Operator authorizes correction01/5 and original continuation,
 [iteration01](cc-prompt-iteration01.md). All6HC OPEN; no corrected freeze/run
 yet. Initial stopped state below is retained, not retroactively cured.
