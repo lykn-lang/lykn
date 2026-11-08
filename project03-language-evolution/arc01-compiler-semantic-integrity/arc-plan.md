@@ -11,6 +11,12 @@ related: [project07-core-library-research]
 
 ## S03 opened after independent release acceptance — 2026-11-07
 
+S03 readiness also retained source-only NE-C13 statement-match guard continuation
+under S04's completion triage; no runtime proof/repair/probe now. S03's existing
+frozen VALUE-match oracle needs ordinary guarded-irrefutable fallthrough, made
+explicit before baseline/production. No new case, language policy, asyncguard
+support or claim all match-guard control paths are fixed.
+
 Operator-approved incremental [S03](slice03-shared-semantic-roles/slice-plan.md)
 now owns a private authoritative role/body/cardinality core and actual two-phase
 adapters, preserving public AST/ExprContext/Result APIs. Meaningful existing-API

@@ -1,5 +1,12 @@
 # S03 semantic role ledger
 
+Current2026-11-07:939 capture completion independently reviewed; refinement01
+spent/four remain. Semantic fixtures/assertions unchanged; ZERO launches so far.
+Iteration02 releases original baseline, not another implementation refinement.
+Negative DTS placeholder unobserved; guarded VALUE-IIFE continuation now explicit
+before original implementation, separate statement-guard source candidate S04.
+All6rows still open until actual source/behavior/full independent gates.
+
 Current2026-11-07: initial six-file testfreeze823536d independently read, semantic
 oracles sound but dynamic observation capture incomplete; ZERO launches. Narrow
 nonbehavioral pre-validation completion iteration01 counts refinement01/5/four

@@ -9,6 +9,31 @@ depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-
 
 # S03 — authoritative child uses and body sequences
 
+## Current frozen construction accepted for baseline — 2026-11-07
+
+Capture-only completion939abb519de04d10b8c1502af9bba2e2ea27ad8a changes
+exactly two test files; all4fixtures/assertions/flags unchanged. CDC immutable
+review accepts dynamic pre-spawn metadata/raw/readable observations/unique
+receipts/owned cleanup. Path import is now genuinely used, not unused. No
+build/check/runtime yet. Refinement01/5 spent/four remain, no reset; original
+implementation is still unimplemented. [Iteration02](cc-prompt-iteration02.md)
+releases only the original baseline after renewed explicit ownership.
+
+Observation limit: negative DTS present=false is a supplied None placeholder,
+UNOBSERVED, not an absence measurement or acceptance evidence; negative criterion
+is noJS/rejection/diagnostic. Positive optionalDTS reads are actual observations.
+
+Readiness correction BEFORE baseline/production: c9's value-match guarded
+binding pattern hits conditionNone and unconditionally breaks, even with guard.
+The already-frozen match oracle requires false guard to continue. Original S03
+adapter recipe therefore explicitly appends guardSome block and CONTINUES;
+only guardNone sets has_wildcard/break, preserving existing true-return and final
+exhaustive fallback. No fixture/oracle/newcase/language-policy change, no runtime
+claim yet. Baseline parse-red prediction unchanged. General statement-match guard
+continuation is separately source-only NE-C13/S04; no S03 redesign/probe there,
+no async/abrupt expansion or all-guards-correct claim. CDC owns this initial
+source-readiness omission; it is not attributed to the contributor's capture edit.
+
 ## Current pre-validation completion — 2026-11-07
 
 Initial test/fixture freeze823536d8c73c218c55f4295d4ef643cf96317810 is clean

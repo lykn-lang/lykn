@@ -742,6 +742,25 @@ tooling corrections remain spent, not reset by prerequisite. No current source
 fix/newunit/integration/F6/fullcorpus work is opened. Source8ed NE-C10/11 acceptance
 and release5408 unchanged; all Project07/future package/type/human duties persist.
 
+#### NE-C13 — statement-position guarded match continuation (source-only)
+
+**Source-only candidate,2026-11-07.** S03 readiness inspected exact acceptedc9
+`crates/lykn-lang/src/emitter/forms.rs::emit_match_statement` (roughly2224–2293).
+It builds a pattern-condition chain, puts the guard inside the selected block,
+and stops at an irrefutable binding/wildcard even if guarded. If the pattern
+matches but its guard is false, there is no continuation into the next clause.
+Guide00:501–510 teaches guarded alternatives; the JS value-match emitter keeps
+sequential guarded progression. No statement-position runtime probe or reduced
+source was run, so this is not a reproduced runtime/compiler-output failure.
+
+**Owner/re-entry.** Arc01 S04 completion/value-flow owns source-contract/current
+applicability triage and meaningful guard-true/false/side-effect/binding-scope
+controls BEFORE a repair is scoped. Statement form's builder needs its own
+continuation design; no new source action/probe is authorized here. S03 only
+addresses the VALUE-IIFE guarded-irrefutable continuation needed by its already
+frozen fixture/oracle, alongside guard/tail child lowering. Do not conflate that
+finite result with this untested statement path or new async/abrupt semantics.
+
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 
 **Source-only observation,2026-11-07.** At source5408,

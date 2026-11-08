@@ -1,0 +1,6 @@
+Release frozen semantic-role baseline conditions
+
+Record static capture review, observation limits and the scoped value-clause recipe.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
