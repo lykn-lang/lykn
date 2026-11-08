@@ -185,7 +185,7 @@ mod tests {
         SExpr::List {
             values: items
                 .iter()
-                .map(|item| SExpr::atom(item, Span::default()))
+                .map(|item| SExpr::atom(*item, Span::default()))
                 .collect(),
             span: Span::default(),
         }
