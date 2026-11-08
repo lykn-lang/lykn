@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 latest: RD01 explicit Operator policy resolution authorizes S02 scoped
+correction03/test+guide validation only, with unchanged compiler/old namespace
+semantics and full independent gates still required. CI-02 remains open.
+
 2026-11-07 newest: S02 corrected483 focused-green but fullMake2 at documented
 DD-60 residual; exact Rust arm independently reproduced. RD01 requires explicit
 policy/oracle/spec disposition, CI-02 remains open/CE deferred; no automatic fix.

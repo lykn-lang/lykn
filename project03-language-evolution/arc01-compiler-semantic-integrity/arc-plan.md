@@ -9,6 +9,13 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## RD01 resolved; scoped correction03 validation — 2026-11-07
+
+Operator adopted malformed recognized unresolved-form rejection while preserving
+lexical bound calls/labels; canonicalDD dated refinement records this, not a new
+matrix result. S02 iteration03 updates exact current test/guide only, compiler
+immutable, then original full independent gates. CI-02 open; no later scope.
+
 ## S02 full-gate residual decision stop — 2026-11-07
 
 Corrected483 focused tests passed; normal Make2 exposes an explicit historical
@@ -277,6 +284,9 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.11: RD01 policy approved, canonicalDD dated history preserved;
+  correction03 changes current case/guide only before original validation.
 
 - 2026-11-07 v0.10: Corrected483 reaches focused greens then full-gate residual
   contract stop; RD01 explicit behavior disposition required before further work.

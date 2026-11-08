@@ -9,6 +9,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current approved RD01 disposition (2026-11-07)
+
+Operator explicitly approved recognized malformed unresolved-form rejection,
+actual lexical binding/label rules preserved. CanonicalDD60 gets a dated current
+refinement, July history/counts intact. S02 correction03 changes only existing
+case/currentcomments+errorguide, then original normal/independent gates; compiler
+immutable, CI-02 open, no38cell proof or automatic later work.
+
 ## Current S02 residual-contract stop (2026-11-07)
 
 Corrected483 focused gates passed, then full normal Make2 at the explicitly pinned
@@ -617,6 +625,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.43: Operator explicitly resolved RD01 in favor of malformed
+  recognized unresolved-form rejection; dated canonicalDD amendment and scoped
+  correction03 case/guide assignment precede original full independent gates.
 
 - 2026-11-07 v1.42: S02 correction02 focused-green but normal fullMake stopped
   at an explicitly pinned residual. Exact Rust-arm reproduction and RD01 policy/

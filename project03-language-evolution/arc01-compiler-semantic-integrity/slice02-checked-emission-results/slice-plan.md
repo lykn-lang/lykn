@@ -2,12 +2,35 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
-status: paused
+status: in-progress
 planned-release: unassigned
 depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emission-harness-baseline]
 ---
 
 # Checked emission results
+
+## RD01 policy approved; correction03 opened — 2026-11-07
+
+After PL-design discussion the Operator explicitly approved recognized malformed
+UNRESOLVED-form rejection, preserving lexical value bindings/label namespace,
+and current case/guide plus dated canonicalDD disposition, then original validation.
+Current [iteration03](cc-prompt-iteration03.md) is shared03/5 (02 spent; three
+remaining before this pass). Source483 baseline/compiler immutable; only existing
+conformance case/current comments and narrow error guide may change. CDC appended
+the actual dated Operator resolution to canonicalDD60 preserving July text/counts.
+
+CDC applied JS/Deno guidance to current test naming/existing assert APIs, exact
+negative diagnostic/no new permissions/imports, and inline-only malformed guide
+example (no accidental doctest). Existing D1/class9 controls and 27Bcase preserved.
+Fresh Luna6 High intake/explicit ownership then actual Git freeze, CDC static
+release before dependent checks; full normal Make/docs/cites and truly independent
+validation still required. No policy approval is software acceptance or a38cell
+matrix result. Previous RD01 stop/proposal below is historical, now dispositioned
+only by this exact authority. No compiler/API repair/S03/integration/new budget.
+
+Assignment history: iteration03 follows stopped iteration02/483 and explicitly
+approved RD01; awaiting fresh CC intake/handoff/source freeze. All old prompts,
+fullgate failure, exact replay, provenance limits and source refs remain intact.
 
 ## Current full-gate policy stop — 2026-11-07
 

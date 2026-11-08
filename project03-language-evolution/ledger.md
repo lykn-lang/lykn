@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 current: explicit RD01 policy approval opens scoped S02 correction03
+case/guide disposition then full independent validation. CI-02/P-1 open; no code
+fallback/API change, no historical count rewrite or wider matrix authority.
+
 2026-11-07 current: S02 corrected483 focused-green, normalMake2/Deno1469pass1fail
 at explicit historical residual. RD01 independently confirmed exact Rust arm;
 policy/oracle/spec disposition pending Operator, no correction. CI-02/P-1 open,

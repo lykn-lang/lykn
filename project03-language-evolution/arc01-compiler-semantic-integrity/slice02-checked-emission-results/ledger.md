@@ -1,5 +1,10 @@
 # S02 checked emission ledger
 
+2026-11-07 current: Operator explicitly approved RD01 rejection policy and scoped
+case/guide/canonicalDD disposition, shared correction03 now authorized. All CE
+remain deferred until original complete/independent gates; no software acceptance.
+Compiler immutable, genuine bound calls/class9 unchanged, old counts historical.
+
 2026-11-07 current: corrected483 tests/focused targets CC-green, but normal Make2
 at explicit DD-60 form-named-label residual (1469pass/1fail). Exact failing Rust
 arm independently reproduced. S02-RD01 policy/test/spec disposition pending;

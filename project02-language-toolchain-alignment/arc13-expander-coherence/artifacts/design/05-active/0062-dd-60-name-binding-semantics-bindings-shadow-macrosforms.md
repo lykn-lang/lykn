@@ -5,11 +5,11 @@ author: "Duncan McGreggor"
 component: All
 tags: [change-me]
 created: 2026-07-06
-updated: 2026-07-06
+updated: 2026-11-07
 state: Active
 supersedes: null
 superseded-by: null
-version: 1.1
+version: 1.2
 ---
 
 # DD-60 — Name-Binding Semantics (bindings shadow macros/forms)
@@ -25,6 +25,11 @@ version: 1.1
 > resolution — **landed 2026-07-06**), then js-resolution and the
 > conformance corpus. Architecture: DD-61 · Resolve-Once (implements
 > this DD).
+
+> **Current error-policy resolution (Operator, 2026-11-07):** see the dated
+> refinement below. Recognized malformed unresolved forms reject; genuine value
+> bindings still shadow forms and labels retain their separate namespace. The
+> dated July residual/census evidence is preserved, not a current recount.
 
 ## Context
 
@@ -250,6 +255,38 @@ not apply; D2 does). Surfaced when slice06's matrix re-probe left exactly
 the 22 label-column cells at `macro-fires` — correct behaviour that the
 target table, read literally, called a miss. **Operator-confirmed
 2026-07-06.** Which-child-surfaced: arc13/slice06.
+
+### 2026-11-07 (malformed unresolved-form rejection — Project03 Arc01 S02)
+
+**Operator-confirmed:** after explicit PL-design discussion, the Operator approved
+the recommendation to retain checked rejection of a recognized malformed
+**unresolved** form rather than restoring shape-dependent call fallthrough. This
+is a conscious error-policy re-disposition of the residual documented on
+2026-07-09; that historical note and its measured counts remain unchanged.
+
+Resolution precedes form interpretation: a genuine lexical value binding named
+`fn` (or another form name) still makes its reference an ordinary call under D1.
+A label does not introduce that value binding, so in the existing representative
+`(label fn (block (fn 987)))` the inner `fn` retains form meaning and its malformed
+shape must reject. Labels remain a separate namespace; D1/D2/D3 are otherwise
+unchanged. An ordinary unresolved callee that is NOT a recognized form is not
+turned into a form or rejected by this rule. No blanket raw-call fallback is
+restored for malformed recognized forms.
+
+The Project03 S02 candidate independently reproduced Rust diagnostic
+`1:18: error: fn requires params and body` for that exact27-byte case, while the
+standing corpus still expected historical Rust call fallthrough and JS shape
+rejection. The Operator authorized updating that existing case/current guidance
+and then resuming full validation. This is normative approval, **not software
+acceptance**: S02's full normal and independent gates still apply.
+
+The July53/1947 total and38-label-cell count are dated observations. No full
+matrix was rerun and no claim that all38 cells are now verified/converged follows
+from one representative. History stays in this dated refinement log and Git,
+not a new archive or narrative appended to working tests. Current behavior and
+public-API/documentation impact are owned by
+[Project03 Arc01 S02](../../../../../project03-language-evolution/arc01-compiler-semantic-integrity/slice02-checked-emission-results/slice-plan.md),
+with final guide/LLM-reference/book impact reconciliation in S07/S08.
 
 ## Design sub-questions (for operator confirmation)
 
