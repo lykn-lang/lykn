@@ -1,0 +1,6 @@
+Issue original shared-role implementation continuation
+
+Retain completed baseline and assign a fresh Luna High source contributor.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

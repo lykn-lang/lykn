@@ -25,6 +25,13 @@ Separate Sol6.1 High CDC retains design/review/prose. This is staffing within
 existing authority, no model/budget reset: refinement01 spent/four remain;
 original planned implementation is not correction02. Releasec9 stays read-only.
 
+Author readiness: [iteration03](cc-prompt-iteration03.md) carries the settled
+private role/cardinality/adapters and bounded guarded-value continuation, exact
+12-path scope, immutable pre-build review, existing finite oracles and required
+full independent gates. Actual source939 and baseline929af00 checked; no
+consequential policy unresolved, no new family/helper/API decision. Fresh CC
+must read back complete contracts/-F body before explicit ownership release.
+
 ## Current frozen construction accepted for baseline — 2026-11-07
 
 Capture-only completion939abb519de04d10b8c1502af9bba2e2ea27ad8a changes
