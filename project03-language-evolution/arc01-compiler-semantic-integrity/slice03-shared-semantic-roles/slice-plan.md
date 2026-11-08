@@ -32,6 +32,13 @@ full independent gates. Actual source939 and baseline929af00 checked; no
 consequential policy unresolved, no new family/helper/API decision. Fresh CC
 must read back complete contracts/-F body before explicit ownership release.
 
+Actual contributor `/root/cdc/shared_roles_impl_luna_cc` (fresh Luna6 High,
+fork-none) completed required coverage and source-cited contract readback;
+CDC accepted it and explicitly handed source/index/build ownership at clean939.
+CC owns only the named source paths and unique implementation raw home; CDC
+retains planning/index/prose and independent review. Next boundary is committed
+implementation plus immutable CDC review BEFORE dependent validation.
+
 ## Current frozen construction accepted for baseline — 2026-11-07
 
 Capture-only completion939abb519de04d10b8c1502af9bba2e2ea27ad8a changes

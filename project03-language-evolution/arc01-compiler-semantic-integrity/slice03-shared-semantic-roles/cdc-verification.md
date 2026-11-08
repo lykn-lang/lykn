@@ -1,5 +1,32 @@
 # S03 CDC verification — baseline only, implementation pending
 
+## Frozen implementation static release — 2026-11-07
+
+3737dddcdd2bde8d034b31991786502b229ad0ba/tree
+516a97c228a183c95e741b2c355b45e21ec65a48, clean task branch. Implementer
+`/root/cdc/shared_roles_impl_luna_cc`, fresh Luna6 High; CDC separately read the
+complete new278-line core, complete classifier/emitter diffs and both doc changes.
+Six allowed paths only; fixtures/harness/oracles unchanged; actual fixed message
+and contiguous trailers verified. No checks/builds yet at this static boundary.
+
+Private module/exhaustive method conversions preserve public APIs; both real
+consumers use shared roles/function-tail policy and replaced duplicate profiles/
+predicate are removed. Resolver-aware heads/ordinary computed calls and existing
+grammar adapters remain. Sequence flattening is in loop/block Statement bodies
+and switch clause bodies, not fixed slots or structural clauses; label remains
+one body slot, matching the writer. Match subject/guard/final consumption and
+bounded value-only guarded continuation follow the declared recipe. Collector
+entrypoints/context/async scanners/public types are unchanged. New private tests
+use actual existing NameRes/Span/AST APIs and assert lowering/sibling cardinality,
+context/fatal recording and marker/span preservation alongside role checks.
+
+No blocking static issue identified. Release ORIGINAL focused/full validation
+under prospective owned TMP/XDG/narrow-path setup; this is not source acceptance
+or permission to correct a returned substantive failure. Root's separate read-only
+source check found no additional concern; CDC owns the disposition. All6SR rows
+remain open pending actual gates and independent reproduction. Refinement01/5
+spent/four remain; original implementation is not an extra correction.
+
 2026-11-07. Reviewer `/root/cdc`, OpenAI Sol6.1 High, separate from baseline
 author `/root/cdc/shared_roles_s03_luna_cc`, Luna6 High. Exact source
 939abb519de04d10b8c1502af9bba2e2ea27ad8a/tree
