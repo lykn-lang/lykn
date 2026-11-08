@@ -1,0 +1,6 @@
+Freeze semantic-role behavioral regressions
+
+Preserve public native and JavaScript conditions before shared-role changes.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

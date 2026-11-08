@@ -1,0 +1,6 @@
+Record shared semantic-role implementation evidence
+
+Retain exact source, generated behavior and native validation outcomes.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

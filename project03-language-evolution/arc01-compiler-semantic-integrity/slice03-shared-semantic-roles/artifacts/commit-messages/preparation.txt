@@ -1,0 +1,6 @@
+Open approved shared semantic-role delivery
+
+Record phase adapters and finite public baseline before the implementation.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

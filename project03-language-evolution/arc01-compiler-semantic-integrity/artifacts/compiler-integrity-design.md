@@ -1,5 +1,16 @@
 # Compiler integrity design and finding reconciliation
 
+## S03 private incremental representation selected — 2026-11-07
+
+After independent S02 and exact local release integration atc9, the Operator
+explicitly advanced S03. Its [source-ready plan](../slice03-shared-semantic-roles/slice-plan.md)
+selects a crate-private shared expression-use/body/cardinality core with actual
+validator/lowering consumers and explicit existing grammar adapters. Public
+AST/ExprContext/Result APIs remain unchanged. This is the approved incremental
+direction's routine representation choice, not a selected recursive A6 migration
+or a proof the planned code works. S03's finite real baseline/runtime/gates still
+decide acceptance; original source-specific planning comparison below is history.
+
 ## Subsequent approved decision and current baseline — 2026-11-07
 
 Operator approved the incremental direction, S01 delivered NE-C12, and Slice20

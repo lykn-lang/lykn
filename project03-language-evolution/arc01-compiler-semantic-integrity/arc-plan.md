@@ -9,6 +9,19 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S03 opened after independent release acceptance — 2026-11-07
+
+Operator-approved incremental [S03](slice03-shared-semantic-roles/slice-plan.md)
+now owns a private authoritative role/body/cardinality core and actual two-phase
+adapters, preserving public AST/ExprContext/Result APIs. Meaningful existing-API
+baseline four shared positives/four value-negatives precedes new private tests.
+Exact sourcec9/releasec9; new task descendant preserves old refs. Same fresh
+Luna6 High CC/separate Sol6.1 High CDC Autonomous Mode, first unexpected
+substantive failure stops. CI-03/SR rows open until actual independent source/
+generated/runtime/full normal gates. No A6 migration/public API decision needed
+for this private bounded choice; broader changes still require explicit scope.
+S04/K/tooling/public-impact/human gates and old budgets remain separate.
+
 ## S02 release composition accepted; S03 next — 2026-11-07
 
 [Slice21](../slice21-checked-emission-release-integration/cdc-verification.md)
@@ -321,6 +334,10 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.15: Opened approved S03 private shared-role/cardinality delivery
+  after Slice21 green; finite source-backed baseline and phase adapters fixed
+  without a recursive AST/public API migration or old tooling budget reset.
 
 - 2026-11-07 v0.14: Slice21 independently integrated/validated S02 on0.6;
   cleared conditional S03 prerequisite without broader architecture/integration.

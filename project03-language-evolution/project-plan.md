@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S03 incremental delivery opened (2026-11-07)
+
+After independently accepted Slice21 releasec9 integration, the Operator's direct
+advance opens [Arc01 S03](arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/slice-plan.md).
+Private role/use/cardinality contract plus explicit phase adapters, actual two-
+consumer duplication removal and finite native/public behavior proof; no public
+AST/API/A6 rewrite. Fresh Luna6 High CC/separate Sol6.1 High CDC, first unexpected
+substantive failure stops. Six SR/CI-03/P-1 await real independent gates; no S04/K/
+new tool allowance or source integration. Existing histories/budgets remain.
+
 ## Current release integration accepted (2026-11-07)
 
 [Slice21](slice21-checked-emission-release-integration/cdc-verification.md)
@@ -658,6 +668,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.47: Opened approved Arc01 S03 source-ready private semantic-role
+  delivery, finite baseline/oracles and two-consumer adapters after releasec9
+  composition acceptance; preserved public/API/A6 and later execution boundaries.
 
 - 2026-11-07 v1.46: Independently closed Slice21 exact S02 local release FF and
   fresh release composition gates, clearing the already-approved S03 prerequisite.

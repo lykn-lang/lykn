@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 current S03: six SR rows open under actual c9 baseline/private-role
+recipe after Slice21 release acceptance. CI-03 remains open; no descriptor-only
+acceptance, A6 rewrite, S04/K/tooling/budget reset or integration authority.
+
 2026-11-07 final S02: independently reproduced taskc9 Result/first-fatal/routes,
 full normal Make/focused/runtime/cites pass; CI-02 done. Arc composition and
 S03–09 remain open. Release8f unchanged/no integration, old tooling8/K0 retained.
