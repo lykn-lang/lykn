@@ -16,6 +16,14 @@
 
 ## How this list stays honest
 
+### Arc03 approved local correction — 2026-11-08
+
+Operator approves [S01 iteration01](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cc-prompt-iteration01.md),
+distinct before/after paths retaining createNew/both records/predicates, then
+original Arc03 gates/endpoint under the same first-further-failure stop. All
+rows remain open, no new observed run or source acceptance; old stop below
+and exhausted tooling8/K0/13 history are preserved.
+
 ### Arc03 initial static stop — 2026-11-08
 
 Tests-only871f failed [S01 independent review](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md)

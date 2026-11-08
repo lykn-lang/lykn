@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+Latest2026-11-08: explicit Operator correction01/5/resumption, original gates
+and endpoint unchanged. All6PHI OPEN; no corrected test or source capability
+accepted. Initial static stop below is historical/current evidence cutoff.
+
 Current2026-11-08: BLOCKED at S01 tests-only871f, static receipt collision;
 [independent STOP](slice01-versioned-host-protection/cdc-verification.md).
 All6PHI remain OPEN. No build/runtime/implementation/facility accepted, S02

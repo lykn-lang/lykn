@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+Latest2026-11-08: Operator authorizes correction01/5 and original continuation,
+[iteration01](cc-prompt-iteration01.md). All6HC OPEN; no corrected freeze/run
+yet. Initial stopped state below is retained, not retroactively cured.
+
 Current2026-11-08: STATIC STOP at tests-only871f before all launches, no
 implementation accepted. All6HC remain OPEN; [row walk](closing-report.md),
 [CDC review](cdc-verification.md), [retrospective](cdc-retrospective.md).

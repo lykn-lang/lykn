@@ -1,0 +1,6 @@
+Separate protected-host before and after receipts
+
+Retain both legal-control observations with distinct phase paths and unchanged assertions.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

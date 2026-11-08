@@ -9,7 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
-## Current Arc03 static STOP — 2026-11-08
+## Arc03 resumed for approved test correction — 2026-11-08
+
+Operator explicitly authorizes [S01 iteration01](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cc-prompt-iteration01.md)
+phase-specific before/after receipt filenames retaining createNew/predicates,
+then ORIGINAL baseline/source/independent gates and Arc03 endpoint if green.
+Same Luna6 High CC/Sol6.1 High CDC/Autonomous, first further unexpected
+substantive failure/REAL gap STOP. Refinement01/5; all6HC/all6PHI/CV open,
+old failures/tooling8/K0/13 preserved. No corrected source/run yet.
+
+## Arc03 initial static STOP — 2026-11-08 (preserved)
 
 [S01](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md)
 tests-only871f is unaccepted: duplicate createNew public receipt path found
@@ -36,7 +45,7 @@ All6PHI/6HC open, source62e/release62e protected; no source started at planning.
 | --- | --- | --- |
 | Arc01 compiler semantic integrity | Completion/control meaning and later diagnostic/tool/API/doc composition | S04 source principle selected; ordered-reference implementation depends only on accepted Arc03/S02 facility/proof, not plan alone |
 | Arc02 ad hoc maintenance | Individually approved miscellany; accepted harness baseline history | Existing bounded S01 retained, no miscellaneous sweep |
-| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | S01 blocked at initial static test review; two-slice scope retained, no implementation/facility accepted |
+| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | S01 approved test correction01 before original baseline; two-slice scope retained, no implementation/facility accepted |
 
 S04-H1 policy uncertainty is resolved by Operator's stronger source contract;
 implementation/proof dependencies remain. Original H1 alternatives/history and

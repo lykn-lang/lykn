@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 latest authority: Operator approves Arc03 S01 phase-path correction01/5
+and original continuation; [assignment](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cc-prompt-iteration01.md).
+All6HC/all6PHI/P-HI/CV remain OPEN; no new source/run acceptance. Previous stopped
+observations and old budgets persist; first further substantive failure STOPS.
+
 2026-11-08 latest: Arc03 S01 STATIC STOP at tests-only871f, before any build/
 runtime, duplicate createNew public receipt path. All6HC/all6PHI/P-HI remain
 OPEN; [disposition](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md).

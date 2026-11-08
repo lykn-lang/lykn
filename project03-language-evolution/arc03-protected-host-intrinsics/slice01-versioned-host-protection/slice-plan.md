@@ -2,14 +2,25 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice01-versioned-host-protection
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: []
 ---
 
 # S01 — versioned host contract and provable-write errors
 
-## Current initial-attempt STOP — 2026-11-08
+## Current resumed authority — 2026-11-08
+
+Operator explicitly approved the proposed phase-path-only test correction and
+resumed original Arc03 endpoint (“yup, let's do that — proceed!”). Current
+assignment [cc-prompt-iteration01.md](cc-prompt-iteration01.md), refinement01/5
+authorized (four remain), same Luna6 High CC/separate Sol6.1 High CDC. Reuse the
+coherent initial CC after renewed intake/ownership; correction freeze/static
+release precedes the still-unrun original baseline. ANY further unexpected
+substantive failure/REAL gap STOPS. All6HC/all6PHI stay open; no prior result is
+upgraded. Existing initial stopped records below remain historical evidence.
+
+## Initial-attempt STOP — 2026-11-08 (preserved)
 
 Tests-only871f failed separate CDC static review: same legal case receipt path
 is created both before and after the child with createNew. No build/no-run/test/
@@ -185,6 +196,10 @@ body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
 
+- 2026-11-08 iteration01, predecessor cc-prompt.md: explicit renewed Operator
+  approval for same source branch871f, phase-specific before/after receipt
+  filenames only. New prompt/F supplied before renewed intake/handoff; actual
+  execution/acceptance pending. This is refinement01, not a fresh source budget.
 - 2026-11-08 initial return: CC froze tests-only
   `871f0a3b5d444213fb59e7f25dab8f9a95fa0893`, CDC read both complete files and
   issued STOP before baseline release on the receipt collision. CC confirmed no

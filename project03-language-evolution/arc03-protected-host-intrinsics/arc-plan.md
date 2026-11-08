@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results, arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
 related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity, project07-core-library-research]
@@ -9,7 +9,16 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
-## Current STOP — 2026-11-08
+## Current authorized resumption — 2026-11-08
+
+Operator explicitly approves phase-specific S01 test receipts, then original
+baseline/implementation/independent gates and remaining arc endpoint if green.
+[Iteration01](slice01-versioned-host-protection/cc-prompt-iteration01.md) governs
+the exact one-path correction, same models/ANY further substantive failure or
+REAL gap STOP. Source refinement01/5 authorized; all6HC/all6PHI OPEN. Initial
+stop and all unrun denominators below remain history, not acceptance.
+
+## Initial STOP — 2026-11-08 (preserved)
 
 S01 initial tests-only freeze871f failed independent STATIC review before any
 build/runtime: its legal public before/after receipts use one createNew path.
@@ -142,6 +151,8 @@ not postpone required source-user guidance or fabricate a book update.
 
 ## Version history
 
+- 2026-11-08 v0.3: Explicit Operator phase-path correction01/5/resumption;
+  original two-slice capability/gates/stop rule retained, no result upgraded.
 - 2026-11-08 v0.2: S01 static test-review STOP871f, all capability rows open;
   current status blocked, no architectural rescope or automatic correction.
 - 2026-11-08 v0.1: Operator named-arc/host-policy authority and subsequent direct
