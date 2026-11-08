@@ -1,5 +1,12 @@
 # S03 retrospective at substantive stop
 
+Closeout process note: full staged whitespace checking found the raw Git-body
+receipt's terminal blank line, and the shell sequence nevertheless committed.
+Preserve that actual finding/raw body; a separate explicit prose-only check
+passed afterward, not a retroactive full-gate pass. Future dependent checks and
+commits should be separate tool steps so a failure cannot be hidden by a later
+successful command's exit. This note adds no code/test retry or new machinery.
+
 2026-11-07, `/root/cdc` Sol6.1 High; baseline939 and implementation3737 windows,
 not a comparative model trial. Intended shared-role source capability remains
 unaccepted. Actual baseline/public controls are useful; implementation no-run

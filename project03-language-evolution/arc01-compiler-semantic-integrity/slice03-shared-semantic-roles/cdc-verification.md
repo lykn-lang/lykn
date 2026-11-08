@@ -2,6 +2,12 @@
 
 ## Current independent stop — 2026-11-07
 
+Closeout whitespace limit: the full staged diff check reported the preserved
+raw `source-commit.txt:9` terminal blank line from Git %B. The shell sequence
+continued to commite159c3a; do not label that full gate passed. Raw bytes remain
+unchanged. A separate explicit prose-only committed-diff check subsequently
+returned0 (tool7d1cc5), excluding raw receipts; no source/test rerun followed.
+
 **UNACCEPTED / further execution held.** First original implementation no-run
 at3737dddc/tree516a97c exits101/E0277 in the new unit helper, not in a Lykn
 program or parser. `list(items: &[&str])` iterates to &&str; line188 passes that
