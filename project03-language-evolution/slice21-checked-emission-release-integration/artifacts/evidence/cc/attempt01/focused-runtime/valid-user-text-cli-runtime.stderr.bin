@@ -1,0 +1,4 @@
+error: Uncaught (in promise) TypeError: COMPILE_ERROR: user runtime
+throw new TypeError("COMPILE_ERROR: user runtime");
+      ^
+    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpeN5ZTf/valid.js:2:7

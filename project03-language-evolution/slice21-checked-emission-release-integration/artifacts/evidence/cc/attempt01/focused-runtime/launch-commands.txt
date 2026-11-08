@@ -1,0 +1,8 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/emission_results-ec634af31c6c32ab --nocapture
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_EMISSION_EVIDENCE_DIR=/private/tmp/lykn-release21-cc-20261107/focused-runtime /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/emission_failures-ee1302ddd95a417d --nocapture
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/lykn_lang-60c4a58c1162abbf --exact emitter::forms::tests::numeric_for_header_slots_still_reject_no_else_if_values --nocapture
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/lykn_cli-8a470da61c5d1dbe --exact validation::tests::first_nonempty_compile_group_keeps_the_established_priority --nocapture
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/contract_predicate_lowering-5224edfea80a9408 --nocapture
+env DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno NPM_CONFIG_CACHE=/private/tmp/lykn-release21-npm-20261107 XDG_CACHE_HOME=/private/tmp/lykn-release21-xdg-20261107 TMPDIR=/private/tmp/lykn-release21-output-20261107 make check-cited-paths

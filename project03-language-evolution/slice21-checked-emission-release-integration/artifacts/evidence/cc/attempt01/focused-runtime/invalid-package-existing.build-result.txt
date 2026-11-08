@@ -1,0 +1,2 @@
+Err(Language { path: "/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpE8md9r/packages/fixture/mod.lykn", source: Classify(Diagnostic { severity: Error, message: "dissoc: expected keyword at position 1", span: Span { start: SourceLoc { line: 2, column: 15 }, end: SourceLoc { line: 2, column: 42 } }, suggestion: None }) })
+short_name_emission=false
