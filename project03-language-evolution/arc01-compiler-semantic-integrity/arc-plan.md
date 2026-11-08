@@ -9,6 +9,13 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 correction02 authorized, validation remains required — 2026-11-07
+
+Operator approved consolidated test-only CE-R05/06/07 correction at d352, same
+models/Autonomous and first further substantive-failure stop. Corrected immutable
+tests require CDC review BEFORE execution, then original focused/full/independent
+gates. CI-02 remains open; no production change, new scope or budget reset.
+
 ## S02 resumed candidate stopped, unaccepted — 2026-11-07
 
 At final d352 only workspace no-run0 ran. Independently confirmed wrong typed
@@ -261,6 +268,9 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.9: Explicit test-only correction02 approval addresses CE-R05–07;
+  independent corrected-test release precedes original full S02 validation.
 
 - 2026-11-07 v0.8: S02 resumed candidate d352 is unaccepted after final-test
   source review/no-run0 only; CE deferred, concrete test-only proposal held.

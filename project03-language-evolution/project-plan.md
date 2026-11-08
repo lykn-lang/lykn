@@ -9,6 +9,13 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current authorized S02 test correction (2026-11-07)
+
+Operator approved S02 consolidated correction02 in the two test locations only,
+then original validation/independent review, same Luna6 High CC/Sol6.1 High CDC
+and first further substantive-failure stop. Corrected source freeze must pass
+CDC static review before execution; no product change/budget reset/later scope.
+
 ## Current S02 source/test stop (2026-11-07)
 
 Resumed candidate d352 has workspace no-run0 only and is unaccepted. Independent
@@ -601,6 +608,9 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.41: Operator authorized consolidated S02 test-only correction02
+  followed by original validation, same models/stop rule and immutable production.
 
 - 2026-11-07 v1.40: S02 final d352 candidate stopped on source-confirmed new-test
   oracle/coverage defects after no-run0, no behavioral execution. Preserved isolated

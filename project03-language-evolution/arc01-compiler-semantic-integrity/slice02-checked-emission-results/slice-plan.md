@@ -2,12 +2,36 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
-status: paused
+status: in-progress
 planned-release: unassigned
 depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emission-harness-baseline]
 ---
 
 # Checked emission results
+
+## Authorized consolidated test correction02 — 2026-11-07
+
+Operator explicitly approved the test-only correction then original S02 validation,
+same Luna6 High CC/separate Sol6.1 High CDC Autonomous Mode, stop on any further
+substantive failure. Current [iteration02](cc-prompt-iteration02.md) corrects ONLY
+emission_results.rs and validation.rs test module at exact clean d352 on the same
+v2 branch. Production implementation/docs and accepted fixtures/oracles immutable.
+Shared01 spent/02 now authorized under5, no reset or new allowance. Earlier stop
+below remains actual history; no claim d352 tests ran or product was accepted.
+
+CDC source readiness verified actual SExpr::span/as_list/as_form_head and public
+FuncClause.span, classifier shallow Obj handling and existing five source tuples.
+Prompt fixes both bad-node descents/head assertions, independent assign/clause
+origin comparisons and full five suffix combinations. Fixed -F bodies supplied.
+Fresh CC intake/explicit ownership precede edits; actual corrected Git freeze is
+independently reviewed by CDC BEFORE dependent validation. Then original focused/
+full normal/source-generated/runtime/citation and independent gates, not a new
+baseline exercise. No production edit/extra family/S03/integration/tooling scope.
+
+Assignment history continuation: `cc-prompt-iteration02.md` is the second S02
+follow-up and shared correction02, authorized after stopped iteration01/d352.
+Current status awaiting fresh Luna intake, source handoff, corrected freeze and
+CDC pre-validation release. Original initial/iteration01 and all raw limits stay.
 
 ## Current resumed-source stop — 2026-11-07
 

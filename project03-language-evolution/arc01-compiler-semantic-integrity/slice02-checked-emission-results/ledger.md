@@ -1,5 +1,11 @@
 # S02 checked emission ledger
 
+2026-11-07 current authority: Operator authorized consolidated TEST-ONLY shared
+correction02 then original validation; first further substantive-failure stop.
+Two test locations only; production/oracles immutable. All CE rows still deferred
+pending corrected freeze/independent pre-validation review and original full gates.
+No counter reset; old failures/tooling8/K0 remain. See iteration02.
+
 2026-11-07 current stop: candidate d352 has workspace no-run0 only. Final typed
 oracle CE-R05 is source-confirmed wrong; prescribed coverage CE-R06/07 unmet.
 All CE rows deferred/CI-02 open; focused/API/runtime/full gates0, no code acceptance.

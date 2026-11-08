@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 current: Operator authorized S02 consolidated test-only correction02
+then original full/independent validation. CI-02/P-1 remain open; no source/API
+behavior change, reset, integration or later unit. First further failure stops.
+
 2026-11-07 current S02 stop: candidate d352 unaccepted; workspace no-run0 only,
 typed oracle/coverage defects source-confirmed, focused/runtime/full gates unrun.
 CI-02/P-1 remain open; one unissued test-only proposal pending Operator. Accepted

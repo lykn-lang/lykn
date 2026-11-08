@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 latest: S02 shared correction02 TEST-ONLY explicitly authorized;
+CI-02 remains open until corrected tests and original full independent gates.
+Same models/first further failure stop; no production/API or later-unit scope.
+
 2026-11-07 newest: S02 d352 candidate stopped/unaccepted, no-run0 only, final
 test CE-R05 oracle defect/CE-R06–07 coverage gaps. CI-02 open/CE deferred; no
 source/runtime/full-gate acceptance or later-unit authority. One test-only proposal
