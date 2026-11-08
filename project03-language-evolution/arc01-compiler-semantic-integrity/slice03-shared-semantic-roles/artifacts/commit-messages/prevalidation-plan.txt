@@ -1,0 +1,6 @@
+Record semantic-role prevalidation completion
+
+Retain the first frozen tests and a bounded observation-only follow-up.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

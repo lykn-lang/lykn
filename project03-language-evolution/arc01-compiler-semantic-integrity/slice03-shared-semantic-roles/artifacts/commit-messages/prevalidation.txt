@@ -1,0 +1,6 @@
+Complete semantic-role test observation capture
+
+Preserve actual child conditions and generated modules before the first baseline.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -9,6 +9,27 @@ depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-
 
 # S03 — authoritative child uses and body sequences
 
+## Current pre-validation completion — 2026-11-07
+
+Initial test/fixture freeze823536d8c73c218c55f4295d4ef643cf96317810 is clean
+on codex/shared-semantic-roles; exactly six test/input files, parentc9, correct
+fixed message/trailers. CDC read every body: fixtures/predicates/populations sound.
+No build/check/runtime launched. Native byte-vector logs preserve result content
+but omit actual dynamic child argv/cwd/env/locators and readable persisted module
+capture before TempDir drop; JS likewise lacks command/cwd/locators and cleanup.
+Unused Rust Path import is a nonbehavioral lint issue, not an observed compiler
+warning. These are source-only readiness observations, no product/semantic failure.
+
+Root adjudicated narrowly completing this existing authoring before FIRST launch
+under existing authority, with fixtures/assertions/flags unchanged. Preserved
+[iteration01](cc-prompt-iteration01.md) supplies exact two-test-file capture/
+lifecycle completion and new Gitfreeze/static HOLD. Count conservatively as
+refinement01/5 (four remain), no budget exemption/reset; original planned source
+implementation is not another correction. Earlier0used opening statement below
+records that earlier condition. S02/tooling budgets unchanged. Ownership returned
+clean before this directive; renewed explicit handoff required. No baseline or
+implementation acceptance claimed. First substantive failure stop still binding.
+
 ## Authority, decision and endpoint — 2026-11-07
 
 The Operator explicitly approved exact S02 release integration “and then jump
