@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 newest: Operator approved S03 correction03 exact identity helper
+simplification and original full/independent gates. All6SR/CI-03/P-1 open;
+03/5 spent/two remain, no reset/integration/S04/K. Sourceca982/releasec9 preserved.
+
 2026-11-07 current S03 correction02 STOP: focused-green ca982/fullMake2 at Clippy,
 CDC exact101; all6SR/CI-03/P-1 open. Format/full Rust/JS/docs/standalone cites
 unrun, proposed production-helper correction03 pending Operator. Source02/5

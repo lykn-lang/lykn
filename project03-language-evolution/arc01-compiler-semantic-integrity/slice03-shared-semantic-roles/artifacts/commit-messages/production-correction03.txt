@@ -1,0 +1,6 @@
+Simplify semantic sequence identity branch
+
+Return the unchanged parent use without altering role policies or test oracles.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,5 +1,11 @@
 # S03 semantic role ledger
 
+Current2026-11-07: Operator explicitly approved exact private identity correction03
+and original validation; iteration05 active,03/5 spent/two remain. All6SR open.
+Retain ca982 focused results with attribution; fresh full Make then final pins/
+current runtimes/cites and separate full CDC gates required. Earlier stop remains
+history. No role/oracle/API change, no S04/K/integration or budget reset.
+
 Current2026-11-07 correction02 STOP: ca982 focused native5/private4/public1+4steps/
 listed preservation targets green; fullMake2 at Clippy needless_match112. Exact
 CDC Clippy replay101; all6SR open, no full source acceptance. Source02/5 spent/

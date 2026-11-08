@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Current S03 correction03 continuation (2026-11-07)
+
+Operator explicitly approved private identity match→parent only, followed by
+original full S03 validation. All6SR/CI-03 open,03/5 spent/two remain, same models/
+ANY further substantive failure stop. Prior ca982 focused evidence retained by
+exact identity-delta applicability; fresh full/current-runtime/independent gates
+remain mandatory. No architecture/roadmap/oracle/S04/K/integration change.
+
 ## Current S03 correction02 quality stop (2026-11-07)
 
 Focused native5/private4/public1+4steps and existing CLI controls pass atca982,
@@ -368,6 +376,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-07 v0.19: Explicit correction03 resumes fresh full/current-runtime/
+  independent validation, retaining prior evidence without relabelling it.
 - 2026-11-07 v0.18: S03 focused behavior passes but full quality gate stops at
   needless identity match; exact independent failure/proposed correction retained.
 - 2026-11-07 v0.17: Explicit Operator correction02 resumes original S03 gates;

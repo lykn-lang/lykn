@@ -2,12 +2,32 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice03-shared-semantic-roles
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-integration]
 ---
 
 # S03 — authoritative child uses and body sequences
+
+## Current explicit correction03 authority — 2026-11-07
+
+Operator approved exact private sequence_use identity match→parent correction,
+same Luna6 High CC/separate Sol6.1 High CDC, Autonomous/ANY further substantive
+failure STOP. [Iteration05](cc-prompt-iteration05.md) active: source03/5 spent/two
+remain; all6SR/CI-03 open, no reset. Sourceca982 clean; reuse same implementation
+actor for tiny exact correction with renewed intake/ownership/-F readback.
+Private production edit now expressly approved, no role/oracle/API/lint allowance.
+Earlier pending/stop sections remain history, not current authority conflicts.
+
+Author readiness: closed ExprUse's three identity arms return input exactly;
+outer prefix/Statement/tail logic untouched. Retain prior ca982 focused evidence
+with source/date and identity-delta rationale, not current-source relabelling.
+Fresh normal Make FIRST establishes current build/lint/format/all unit/integration/
+JS/docs (private/emitter3/checked-result included); then actual final pins/direct
+current native/public module/runtime proof and standalone cites. No redundant
+no-run/preservation matrix/baseline replay. Separate full CDC reproduction still
+mandatory. Exact one-function diff/static HOLD before gates, proper durable
+prospective capture/env, no consequential choice/new family left to infer.
 
 ## Current correction02 full-gate STOP — 2026-11-07
 
@@ -55,7 +75,8 @@ All entries2026-11-07; issued files remain unchanged.
 | cc-prompt-iteration01.md | Initial; capture-only prevalidation completion | Refinement01; returned939 |
 | cc-prompt-iteration02.md | iteration01; release original baseline/guard readiness | Original baseline completed, no additional refinement |
 | cc-prompt-iteration03.md | iteration02; fresh original implementation contributor | Returned3737; first no-run101 stop, no extra correction count |
-| cc-prompt-iteration04.md | iteration03; explicit Operator test-only correction | CURRENT RETURNED/STOPPED, refinement02/5; ca982a5 focused-green/fullMake2 at lint; no correction03 issued |
+| cc-prompt-iteration04.md | iteration03; explicit Operator test-only correction | RETURNED/STOPPED, refinement02/5; ca982a5 focused-green/fullMake2 at lint; history retained |
+| cc-prompt-iteration05.md | iteration04; explicit Operator private identity simplification | CURRENT, refinement03/5; intake/handoff/static review required before fresh full gates |
 
 ## Current substantive stop / proposed correction only — 2026-11-07
 

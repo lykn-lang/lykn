@@ -9,6 +9,13 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S03 correction03 explicitly approved (2026-11-07)
+
+Operator approved exact private identity simplification and resumed original
+S03 full validation, same models/Autonomous/ANY further substantive failure stop.
+All6SR/CI-03/P-1 open;03/5 spent/two remain. Prior focused source/date retained,
+fresh full and independent gates mandatory; no source integration/S04/K/reset.
+
 ## Current S03 correction02 quality-gate stop (2026-11-07)
 
 S03 focused candidateca982 greens are retained, but full normal Make exits2 at
@@ -695,6 +702,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-07 v1.51: Recorded explicit private-helper correction03 authority and
+  proportionate retained-focused/fresh-full/independent gate order.
 - 2026-11-07 v1.50: Retained focused S03 greens and independently reproduced
   Clippy stop; all rows open, proposed private-helper correction awaits Operator.
 - 2026-11-07 v1.49: Recorded explicit S03 test-only correction02/resumed original

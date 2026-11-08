@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 newest: explicit S03 private identity correction03/resumed gates,
+03/5 spent/two remain; all6SR/CI-03 open. Prior evidence retained/current fresh
+full gates required; no role/API/architecture/next-unit or integration expansion.
+
 2026-11-07 current correction02 STOP: S03 ca982 focused-green, fullMake2 at
 Clippy needless_match/CDC exact101. All6SR/CI-03 open; later full gates/cites
 unrun. Proposed private helper correction03 pending Operator, no edit/prompt.

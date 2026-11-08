@@ -1,0 +1,6 @@
+Issue authorized semantic-role identity correction
+
+Retain prior focused evidence and require fresh full and independent gates.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
