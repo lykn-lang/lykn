@@ -9,6 +9,24 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S04 partial design / proposed useful split — 2026-11-08
+
+[Partial design](slice04-completion-value-flow-integrity/artifacts/incremental-completion-design.md)
+keeps source targets distinct from consumption and models values/references/
+arguments/completion without selecting public A6 migration or runtime packets.
+Whole S04 is NOT implementation-ready: H1's invocation/realm-trust versus
+module-load/zero-unused effects holds ordered-reference work. No new probe/code.
+
+Proposed source-delivery homes, pending review/execution authority: S04/I1
+boundary+C02; S09/I2 transparent value/control/guards; S10/I3 ordered references/
+arguments (HELD H1); S11/I4 protected function exits/composition. No S09–11 dirs
+or prompts are created, no existing S01–03/S05–08 identity is renamed. Every CV
+obligation remains OPEN in S04 until explicit future disposition/transfer;
+splitting cannot reset exhausted source/tooling allowances. If adopted, S05/
+final audit consumes FINAL completion composition, not merely I1's first source
+delivery. Each useful source increment includes real tests/docs/full separate
+gates; this is not a new evidence-only prerequisite chain.
+
 ## S04 uniform source-completion design authority — 2026-11-08
 
 Operator resolves source control targets uniformly (including intentional macro
@@ -437,6 +455,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-08 v0.25: Recorded partial S04 design/proposed useful implementation
+  split and real H1 HOLD, with all CV/final-composition obligations retained.
 - 2026-11-08 v0.24: Operator selects source-level completion principle; S04
   design-only assignment engineers incremental delivery, no representation/code.
 - 2026-11-08 v0.23: Opened S04 readiness/all6CV and explicit match-completion

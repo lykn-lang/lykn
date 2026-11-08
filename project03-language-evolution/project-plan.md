@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## S04 partial design at explicit host/effect gate — 2026-11-08
+
+[S04 design](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/artifacts/incremental-completion-design.md)
+recommends private source-target/completion/reference planning and four useful
+code deliveries, not a full AST migration. First C02+boundary increment is
+independently designable; ordered-reference stage HELD H1 on realm-trust versus
+capture/load/unused-code effects. Whole S04 NOT implementation-ready, all6CV/
+CI04 open, no source or new experiment. Proposed S09–11 homes remain names only;
+retained owners/final-composition/S07S08/book/human gates and old budgets persist.
+
 ## S04 source-completion principle selected; design only — 2026-11-08
 
 Operator adopts uniform source-level function/loop/label control targets,
@@ -755,6 +765,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-08 v1.57: Recorded partial completion design/useful proposed split and
+  real H1 host/effect HOLD; no source readiness/implementation acceptance.
 - 2026-11-08 v1.56: Recorded uniform source-control principle and bounded S04
   design contribution; no production representation/execution selected.
 - 2026-11-08 v1.55: Opened S04 readiness/ledger and concrete match-completion

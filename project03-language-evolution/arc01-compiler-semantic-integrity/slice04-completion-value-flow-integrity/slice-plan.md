@@ -9,6 +9,25 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+## Partial design handoff / real contract gate — 2026-11-08
+
+[Incremental design](artifacts/incremental-completion-design.md) recommends a
+private region/target/completion/reference plan and four useful source
+deliveries. First C02+boundary increment is independently designable; ordered-
+call/reference lowering is HELD H1: current sources do not settle trusted
+intrinsic/realm behavior alongside module-load effects/zero-unused payload.
+Missing CallWithReceiver is ordinary implementation work, not the gap. Early
+capture and lazy/current-host alternatives have distinct concrete semantics/
+deployment costs. No mechanism experiments or further design branches run.
+
+Whole S04 is NOT implementation-ready. All6CV/CI04 remain open; no source/test/
+probe/build, branch or executable implementation prompt. The issued cc-prompt
+was read-only DESIGN ONLY; Luna contribution is source feasibility, CDC authors
+the final partial design, root reviews it. Proposed S09–11 delivery names are
+not new directories/assignments or approved source scope. All old allowances
+stay intact. [Design-phase retrospective](cdc-retrospective.md) records this
+bounded handoff, not S04 implementation closure.
+
 ## Current Operator design decision — 2026-11-08
 
 Operator explicitly adopted UNIFORM source-level completion meaning: return

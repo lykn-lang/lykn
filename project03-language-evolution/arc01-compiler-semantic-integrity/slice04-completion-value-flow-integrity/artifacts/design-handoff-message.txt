@@ -1,0 +1,6 @@
+Preserve incremental completion design at explicit host gate
+
+Retain useful stage plans and all open obligations without authorizing production work.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

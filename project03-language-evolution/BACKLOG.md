@@ -16,6 +16,16 @@
 
 ## How this list stays honest
 
+### S04 uniform source-completion design — 2026-11-08
+
+Operator selected source function/loop/switch/label targets rather than synthetic
+wrapper targets, qualified in canonical DD50. [S04 partial design](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/artifacts/incremental-completion-design.md)
+retains C02/C05/NE-C13 owners/all6CV OPEN and proposes useful source increments.
+H1 is a DESIGN contract/effect gate (trusted call capability/realm mutation versus
+module-load/unused payload), not a newly observed compiler failure or missing-API
+finding. Ordered-reference stage/whole source assignment held; no experiment,
+code/API/AST migration or old-budget reset. Accepted release62e remains intact.
+
 ### Current release/completion disposition — 2026-11-08
 
 [Slice22](slice22-shared-roles-release-integration/cdc-verification.md) now

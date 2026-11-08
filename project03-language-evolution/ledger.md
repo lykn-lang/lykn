@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 S04 design handoff: all6CV/CI04/P-1 OPEN, no source/runtime validation.
+Partial private-plan design recorded; I1 C02/boundary independently designable,
+I3 ordered references HELD H1 realm/capture/load/unused-code contract. Proposed
+split/source homes not executed, no new old-tool/source allowance.
+
 2026-11-08 current S04: Operator chooses uniform source-level completion targets;
 bounded DESIGN only now active. All6CV/CI04/P-1 remain open. Dated DD50 refinement
 preserves old caveat/history; no source/probe/API/architecture/budget reset.

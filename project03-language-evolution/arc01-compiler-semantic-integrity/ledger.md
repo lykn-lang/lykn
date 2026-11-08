@@ -1,5 +1,11 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-08 S04 partial design handoff: all6CV/CI04 OPEN; no source/gates/trials.
+Private target/completion/reference direction proposed; first C02/boundary
+delivery independently designable, ordered-reference H1 held at concrete
+realm/capture/load/unused effect contract. Proposed homes S09–11 not created;
+final composition/adjacent/API/doc owners and all old budgets remain.
+
 2026-11-08 current: uniform SOURCE-level completion targets selected, intentional
 macro functions included. S04 DESIGN only; all6CV/CI04 open, no source/probe/full
 AST choice or old-budget reset. See current S04 plan/prompt and dated DD50 note.
