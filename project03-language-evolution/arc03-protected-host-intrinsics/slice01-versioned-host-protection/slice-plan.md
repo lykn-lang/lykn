@@ -9,6 +9,11 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+Reviewed design2026-11-08: [actual review/disposition](../../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/artifacts/design-review.md)
+now supplies concrete prerequisite and native-oracle/dist re-entry proposal.
+No implementation/correction02/source composition authorized in this design
+endpoint; original01/5/all6HC/PHI/CV and stopped evidence remain unchanged.
+
 ## Current DESIGN-only re-entry — 2026-11-08
 
 Operator authorizes reviewed design, NOT source continuation, after latest STOP.

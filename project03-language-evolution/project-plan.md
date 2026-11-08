@@ -9,6 +9,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Reviewed macro design endpoint2026-11-08: [Luna read-only contribution and CDC disposition](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/artifacts/design-review.md)
+complete the bounded plan; no actual repair/runtime proof or source acceptance.
+Execution/candidate composition remains held for Operator approval. All old
+caps/HC/PHI/CV and new MR/AM-04 obligations remain open as applicable.
+
 ## Current macro prerequisite/oracle DESIGN ONLY — 2026-11-08
 
 Operator approves source-grounded reviewed re-entry design after Arc03 W8 stop.

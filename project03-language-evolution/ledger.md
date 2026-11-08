@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 design endpoint: actual fresh Luna read-only review/CDC reconciliation
+[recorded](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/artifacts/design-review.md).
+No new implementation/runtime/source acceptance; six MR/AM-04/HC/PHI/CV remain
+OPEN. Existing completed historical rows are not reopened or upgraded.
+
 2026-11-08 current scope: DESIGN ONLY macro prerequisite + native policy-oracle
 re-entry. New Arc02 S02 six MR/AM-04 OPEN; all Arc03 HC/PHI/CV/CI04 still OPEN,
 source01/5/tooling8/K0/13 retained. [Design home](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/slice-plan.md).

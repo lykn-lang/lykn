@@ -10,6 +10,15 @@ related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
 
 # S02 — compiler-owned embedded macro dependency resolution
 
+## Reviewed design outcome — 2026-11-08
+
+Fresh `/root/cdc/macro_dependency_design_luna` (gpt-6-luna High) completed the
+issued6003 read-only review; CDC Sol6.1 High reconciled its source findings in
+[design-review.md](artifacts/design-review.md). Five bounded clarifications are
+incorporated below. No source/build/probe/runtime, no actual repair proof or
+implementation acceptance. All6MR/AM-04/HC/PHI/CV remain OPEN. This DESIGN endpoint
+is ready for Operator assessment; execution/candidate composition still held.
+
 ## Authority and endpoint — 2026-11-08
 
 Operator authorizes DESIGN of the bounded dependency-resolution repair and
@@ -38,14 +47,14 @@ The [repair/oracle design](artifacts/repair-and-oracle-design.md) is the exact
 source/contract authority. Future source assignment is HELD for Operator approval.
 Recommended scope, no public API addition:
 
-1. `crates/lykn-lang/src/expander/deno.rs`: public spawn materializes with `?`,
+1. `crates/lykn-lang/src/expander/deno.rs`: public spawn materializes/canonicalizes with `?`,
    passes `&Path` to PURE private `build_deno_command(script, materialized)`.
    Always use compiler-owned package config/lock; remove private cwd-project
    discovery. Preserve evaluator script/protocol, pipes and Drop kill→wait.
 2. `crates/lykn-lang/src/expander/embedded.rs`: narrow required-file presence
    in same-version cache fastpath (existing deno.json AND deno.lock); missing
    file triggers existing extraction. No content-hash/build-key/cache redesign.
-3. NEW `crates/lykn-cli/tests/macro_dependencies.rs`: four finite process
+3. NEW `crates/lykn-cli/tests/macro_dependencies.rs`: five finite process
    conditions below plus strict runtimes/immutability observations; tiny local
    optional receipt idiom, no replacement harness. Default assertions never skip.
 4. `docs/guides/15-lykn-cli.md`, `skills/lykn/SKILL.md`: narrow native macro
@@ -75,6 +84,14 @@ Freeze complete literal fixture in future product test before any execution.
 | M4 same-version cache missing required package config | Warm-up compile/materialization captured before assertions, remove ONLY config, then second compile must re-extract and succeed; old fastpath expected red. Preserve both outcomes; no early expected-red assertion may skip the second condition |
 | M5 owned blocked XDG cache path | Existing regular file prevents materialization: CLI exits1 with I/O diagnostic, no panic/new output; old expect path predicted101. Typed propagation is additionally source-reviewed, not inferred from CLI text alone |
 
+M5 MUST use the SAME macro-bearing harmless source as M1: without a top-level
+macro/import-macros form expand() returns before spawning/materializing, so an
+ordinary source would not test the intended failure. Compile to an owned absent
+output, require no new JS/DTS; no generic I/O program or new source family.
+M2 config is `{"workspace":[],"imports":{}}`; M3 uses the same root schema with
+`"astring":"./macros/mod.lykn"`. Use existing valid package lock bytes for any
+caller-lock sentinel, not a malformed hand-invented lock schema.
+
 M3 module contains ONLY:
 ```lykn
 (macro alias-twice (x) `(+ ,x ,x))
@@ -91,9 +108,11 @@ are materialized even if old macro compilation errors. Require actual config
 existence/bytes before removing it; do not synthesize a successful warm-up or
 skip on error. Second compile and all final assertions still run. Missing-lock
 proof uses owned filesystem state through the ACTUAL shared production cache-
-validity/materialization path, not a synthetic boolean mirror. No extra runtime
-family is needed; final code requires both files. No global env mutation inside
-parallel Rust tests.
+validity path, not a synthetic boolean mirror: private cache-readiness helper
+used BY production fastpath, owned dirs/same-version sentinel and neither-file,
+config-only, lock-only, both-file states => false,false,false,true. Lock-absence
+proof is source+filesystem-unit ONLY; M4 supplies runtime re-extraction proof
+for config absence. No extra runtime family; no global env mutation in tests.
 
 Proposed parent population is five tests/M1–M5, six compilation observations
 (M4 has two), four harmless runtime outputs; pure command/cache controls are
@@ -104,6 +123,13 @@ owned cwd, OsString/Path config+lock arguments/frozen flag, no caller file. Chec
 unusual path characters without spawning Deno. Add materialization-error typed
 propagation test using an owned blocked cache path in an isolated CLI process,
 not unsafe global env changes or broad permission manipulation.
+
+Future guide15 edit explicitly qualifies its current lines74–75 “no Deno ...
+required for compilation”: ordinary/no-user-macro native compilation versus
+user macro/import-macros compilation requiring Deno. Document the actual owned
+config/lock and lost arbitrary caller-Deno passthrough. This pre-existing guide
+overstatement is owned here, not deferred wholesale to later S07/S08/book audit.
+No new target-JS runtime dependency is implied.
 
 Future full normal unfiltered Make+cites and separate CDC source/focused/full
 reproduction required. Build all needed targets/no-run then actual final pins;

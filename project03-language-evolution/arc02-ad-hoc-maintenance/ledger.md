@@ -1,5 +1,9 @@
 # Arc02 ad hoc maintenance ledger
 
+2026-11-08 design review complete: [actual Luna contribution/CDC disposition](slice02-embedded-macro-dependency-resolution/artifacts/design-review.md)
+supports a bounded proposal, NOT completed MR/AM-04 capability. All six MR/AM-04
+OPEN; source0/5, no execution/composition. Prior Arc01 S02 return is historical.
+
 2026-11-08: New S02 DESIGN ONLY intake, all6MR/AM-04 OPEN. Prior AM-01/02
 acceptance/history unchanged; source/probe/execution/composition not authorized.
 Arc03 source01/5 and tooling8/K0/13 not reset.

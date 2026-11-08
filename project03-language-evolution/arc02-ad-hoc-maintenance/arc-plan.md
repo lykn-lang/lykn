@@ -9,6 +9,16 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+## Reviewed S02 design endpoint — 2026-11-08
+
+Fresh Luna6 High read-only review at planning6003 completed; CDC Sol6.1 High
+disposition incorporates macro-trigger, cache-proof, count, docs and mtime
+clarifications in [actual review](slice02-embedded-macro-dependency-resolution/artifacts/design-review.md).
+Design is ready for Operator assessment, no source/runtime/repair acceptance.
+All6MR/AM-04 remain open; execution and candidate composition still held.
+Earlier November7 S02 return references below mean Arc01's Result slice, not
+this new maintenance S02. Original acceptance/history is not reinterpreted.
+
 ## New S02 design intake — 2026-11-08
 
 Operator authorizes DESIGN ONLY of existing compiler dependency resolution and

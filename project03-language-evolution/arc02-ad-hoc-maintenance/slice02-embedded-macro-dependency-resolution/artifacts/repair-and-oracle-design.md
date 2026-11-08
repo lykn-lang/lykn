@@ -25,8 +25,10 @@ paths are source-checkout-relative. Source references are62e/e2f, not runtime pr
 
 Implementation sketch (private types/API, UNCOMPILED):
 - `DenoSubprocess::spawn() -> Result<Self,LyknError>` calls
-  `embedded::materialize_packages()?`, then PURE
+  `embedded::materialize_packages()?.canonicalize()?`, then PURE
   `build_deno_command(script:&str, materialized:&Path) -> Command`.
+  Canonicalization in fallible spawn gives the pure builder an absolute root
+  before changing child cwd; do not double-resolve a relative XDG path there.
 - Builder owns cwd=materialized and exact arguments `eval --config
   <materialized>/packages/lang/deno.json --lock
   <materialized>/packages/lang/deno.lock --frozen-lockfile=true --ext=js <script>`.
@@ -117,6 +119,9 @@ macro/error wrapper or extra lines must fail. This does not claim unforgeable
 diagnostic authentication for arbitrary programs.
 
 Keep JS/DTS before/after bytes, missing-file absence and typed-dist epoch mtimes.
+Set native existing-output sentinels to UNIX_EPOCH using the already used
+File::set_modified API BEFORE launch, then read actual mtimes. Freshly written
+files/coarse filesystem clocks cannot prove no equal-byte rewrite by themselves.
 Add existing-output mtime capture to the SAME native observations so equal-byte
 rewrites cannot count as preservation. No new invalid source family/launch.
 Raw code/streams/files/mtimes precede all assertions. All29 observations still
@@ -160,10 +165,12 @@ authority/actual exact union review, no release merge. Arc03 source01/5 and
 old tooling8/K0/13 carry forward; future oracle correction02 is not issued by
 this DESIGN request. S04/HC/PHI/CV still open, no protection/facility delivered.
 
-Applied guides: Rust type design TD05 MUST private representation; core Path
-APIs preserve path identity. EH01/EH04 MUST recoverable typed errors: reuse
-LyknError::Io and Language/Classify, no panics/string laundering. JS-Deno testing
-ID04/08 MUST awaited/error assertions and Testing Discipline's behavioral floor
+Applied guides: `rust-guidelines/guides/05-type-design.md` TD05 MUST private
+representation; Path/OsStr preserve identity at the private command boundary.
+`rust-guidelines/guides/03-error-handling.md` EH01/EH04 MUST recoverable typed
+errors: reuse LyknError::Io and Language/Classify, no panics/string laundering.
+`javascript-deno-guidelines/guides/12-deno/12-02-testing.md` ID04/08 MUST awaited/
+error assertions; `testing/guides/01-testing-discipline.md` behavioral floor
 motivate exact runtime bytes and the SAME-predicate false-positive controls.
 No new diagnostics/AST/cache/helper framework. Proposals remain uncompiled and
 runtime outcomes UNOBSERVED pending explicit execution approval.

@@ -1,0 +1,31 @@
+# CDC retrospective — design phase only, 2026-11-08
+
+CDC Sol6.1 High authored a bounded repair/oracle proposal; fresh Luna6 High
+read-only review at6003 and root source co-design supplied actual challenges.
+No implementation, source test, probe or runtime trial occurred. All capability
+rows remain open; this record does not accept source or close the maintenance arc.
+
+Useful result: a private compiler-owned config/lock recipe avoids a generalized
+Deno map-merging framework and leaves publicJS/browser imports intact. It also
+states the deliberate caller-Deno passthrough change instead of claiming false
+equivalence. The typed dist adapter is explicit S01-owned scope, not a hidden
+repair discovered after new v1 assertions fail.
+
+Review found concrete readiness weaknesses: an unforced M5 macro path, ambiguous
+lock proof and condition counts, a pre-existing overbroad guide statement, and
+native sentinel clock granularity. Root had already caught builtin when as a
+non-discriminating alias control before issue; the unique macro prevents that
+false success. CDC owns these omissions and incorporated source-backed limits;
+they are not language/compiler runtime findings or a model comparison.
+
+The source walk considered unnecessary map-composition machinery before the
+actual Rust resolver ownership was fully separated. The smaller selected
+contract followed from tracing callers and existing config/lock assets, not a
+new experiment. Future prompting should begin at those boundaries and include
+the macro-trigger and distinct old/final per-case expectations explicitly.
+
+Earlier generic-nonzero weakness is now designed around one acceptance and14
+rejection predicate controls, exact route rendering and typed library/dist
+proof. None has run: no claim the new predicates work or the receipt-path fix
+is runtime validated. Source/budget/history limits persist; next observation
+requires explicit execution approval and ordinary separate full gates.
