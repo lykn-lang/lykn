@@ -179,6 +179,14 @@ body/readback; CC raw only, CDC canonical prose/index after handoff.
   readback/static baseline-test release. Actual actor/commit reported at dispatch.
   No source executed during preparation; planned implementation is not a
   refinement. Source0/5 and all original allowances remain.
+- 2026-11-08 actual issue: preparation commit
+  `3ada8c4e74fc66e152bfac31dbbdc3ba62fe6a89`; fresh fork-none actor
+  `/root/cdc/protected_host_s01_luna_cc` (gpt-6-luna High) completed the required
+  source/guide and supplied-F readback. CDC explicitly handed source/index/build/
+  raw ownership after intake. Initial tests are being authored on the dedicated
+  branch; immutable test freeze and separate CDC static release remain required
+  before any baseline build/runtime. This records active assignment, not a gate
+  result or source acceptance. CDC retains planning/index ownership.
 
 CDC author readiness: exact classifier/module APIs, Source/Kernel prefix
 semantics, member normalization, binding/import shapes, macro syntax, accepted
