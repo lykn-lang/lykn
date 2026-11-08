@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-08 current: uniform SOURCE-level completion targets selected, intentional
+macro functions included. S04 DESIGN only; all6CV/CI04 open, no source/probe/full
+AST choice or old-budget reset. See current S04 plan/prompt and dated DD50 note.
+
 2026-11-08 S04 readiness/all6CV open; concrete match-return-target Operator
 decision holds implementation. No S04 source/runtime or speculative CC prompt,
 no new old-tool allowance/S05/K; see slice04 plan and worked decision.

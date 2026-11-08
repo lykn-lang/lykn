@@ -14,6 +14,27 @@ version: 1.0
 
 # Position-Aware Compilation of Conditional and Block Forms
 
+## Current completion-policy refinement — 2026-11-08
+
+Operator explicitly selected preservation of Lykn source-level control-flow
+meaning uniformly: return targets the nearest language-level function,
+including intentionally macro-introduced functions; break/continue target source
+loop/label boundaries. Compiler-generated wrappers do not create semantic
+targets, and consuming versus discarding a value must not retarget transfers.
+This SUPERSEDES the historical local-IIFE completion caveat below, including
+Rule3's implementation wording when it implies different control targets.
+The historical May text is preserved verbatim after this refinement. An IIFE
+is not itself a loop; the old break/continue shorthand is not a promise that
+JavaScript can jump across a function boundary.
+
+This approves the semantic principle, not a private representation, full AST
+rewrite or completed compiler behavior. Project03
+[Arc01 S04 design](../../../../../project03-language-evolution/arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/slice-plan.md)
+owns incremental implementation design, evaluation sequencing, finally/async/
+type/post semantics, both backends and future actual validation. Current
+authorization is design-only; no source execution or retroactive correctness
+claim. No old evidence, failure history or iteration allowance is erased.
+
 ## Status
 
 Proposed (pending Duncan/CDC review).

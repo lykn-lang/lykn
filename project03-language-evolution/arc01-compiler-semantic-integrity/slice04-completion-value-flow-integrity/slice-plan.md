@@ -9,6 +9,33 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+## Current Operator design decision — 2026-11-08
+
+Operator explicitly adopted UNIFORM source-level completion meaning: return
+targets the nearest language-level function, including an intentionally
+macro-introduced function; break/continue target source loop/label boundaries.
+Consumption/discard and compiler-generated wrappers must not silently retarget
+those transfers. This supersedes DD50's match-local/IIFE caveat, with dated
+history retained. It does NOT select a representation or authorize a full AST
+migration. [Current design assignment](cc-prompt.md) is DESIGN ONLY: concrete
+incremental implementation, sequencing/finally/async/type/post interactions,
+native/publicJS parity, useful staged source deliveries and discriminating
+oracles. No production implementation, source branch, test/build/probe, fixture,
+dependency or helper execution is authorized by this design assignment.
+
+CDC Sol6.1 High owns design/final judgment and planning index; fresh fork-none
+Luna6 High contributes one bounded read-only source feasibility/review pass.
+Same Autonomous Mode, stop on any substantive failure or REAL evidence gap.
+Normal S04 source0/5 and all prior budgets stay unchanged; a design contribution
+is not a new implementation allowance or reset. Source remains clean62e.
+
+The earlier decision HOLD/options below are preserved as dated readiness.
+Current policy resolves their principle, while concrete private representation,
+phase placement, call-reference preservation and honest staging must now be
+engineered before an executable source prompt. Competing proposals in the
+design pass are not implicit Operator selections. Any additional consequential
+host/runtime assumption must be surfaced explicitly, not hidden in a helper.
+
 ## Authority and current boundary — 2026-11-08
 
 Operator explicitly authorized S04 after exact62e release integration passes.

@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## S04 source-completion principle selected; design only — 2026-11-08
+
+Operator adopts uniform source-level function/loop/label control targets,
+including intentional macro functions; synthetic wrappers never retarget based
+on value consumption. [S04](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/slice-plan.md)
+now owns bounded incremental DESIGN, not production execution or full-AST
+selection. Canonical DD50 has a dated superseding refinement, old text retained.
+Same models/Autonomous, substantive failure/REAL evidence-gap stop; all6CV/CI04
+open, no source budget reset/K/S05/integration. Actual source remains62e.
+
 ## S04 opened at a concrete language-policy gate — 2026-11-08
 
 [S04 readiness](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/slice-plan.md)
@@ -745,6 +755,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-08 v1.56: Recorded uniform source-control principle and bounded S04
+  design contribution; no production representation/execution selected.
 - 2026-11-08 v1.55: Opened S04 readiness/ledger and concrete match-completion
   decision hold after independent release acceptance; no source/experiment.
 - 2026-11-08 v1.54: Independently closed exact Slice22 release62e integration;

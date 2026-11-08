@@ -1,5 +1,16 @@
 # S04 decision needed — return targets inside discarded match
 
+## Resolution — Operator decision, 2026-11-08
+
+Operator adopted source-level completion uniformly: nearest language-level
+function (including intentionally macro-introduced functions) owns return;
+source loops/labels own break/continue. Compiler wrappers are not semantic
+boundaries and consumption/discard cannot retarget transfers. This is now the
+binding principle. The historical choice table below remains the pre-decision
+record, not an unresolved poll or selection of a private IR. Current work is
+design only; [assignment](../cc-prompt.md) engineers staged implementation and
+remaining interactions. No production source/test/probe is authorized here.
+
 2026-11-08, CDC source/design reading only. This brief consumes the existing
 C02/C05/NE-C13 assignment; no new experiment or implementation is authorized
 by the brief. No S04 runtime observation, source change or compiler failure is

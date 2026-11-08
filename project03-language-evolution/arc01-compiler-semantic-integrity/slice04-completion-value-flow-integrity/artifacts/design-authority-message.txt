@@ -1,0 +1,6 @@
+Record source-level completion principle and bounded design assignment
+
+Preserve the superseded wrapper policy and engineer S04 without authorizing production work.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

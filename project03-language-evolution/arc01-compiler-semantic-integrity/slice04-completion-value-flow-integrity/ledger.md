@@ -1,5 +1,10 @@
 # S04 completion/value-flow ledger
 
+Current2026-11-08: Operator selects uniform SOURCE-level control targets,
+including intentionally macro-introduced functions, not synthetic wrappers.
+DESIGN ONLY assignment now active; all6CV remain OPEN until actual supported
+capability/independent gates. Source0/5, old allowances untouched. No code/probe.
+
 Opened2026-11-08 for Operator-authorized conditional advance after independently
 accepted Slice22. All6rows OPEN; source budget0/5, no S04 trial or implementation
 prompt. Match return-target policy holds dependent work. Original tooling8/K0/13

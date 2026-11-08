@@ -9,6 +9,17 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S04 uniform source-completion design authority — 2026-11-08
+
+Operator resolves source control targets uniformly (including intentional macro
+functions), irrespective of synthetic wrappers or consumed/discarded position.
+[S04 design assignment](slice04-completion-value-flow-integrity/cc-prompt.md)
+is read-only source-grounded feasibility/design with CDC final judgment, no
+production source/probe/new public AST representation selected. Concrete stage/
+target/reference/finally/async/contracts/parity design follows; any further real
+gap or consequential host assumption is surfaced, not hidden. Old allowances
+unchanged; all6CV/CI04 and later capabilities remain open.
+
 ## S04 readiness held on completion policy — 2026-11-08
 
 [S04](slice04-completion-value-flow-integrity/slice-plan.md) is opened for
@@ -426,6 +437,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-08 v0.24: Operator selects source-level completion principle; S04
+  design-only assignment engineers incremental delivery, no representation/code.
 - 2026-11-08 v0.23: Opened S04 readiness/all6CV and explicit match-completion
   policy hold; no option/source/experiment selected or architecture expansion.
 - 2026-11-08 v0.22: Slice22 independently accepts exact release62e composition;

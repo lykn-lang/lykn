@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 current S04: Operator chooses uniform source-level completion targets;
+bounded DESIGN only now active. All6CV/CI04/P-1 remain open. Dated DD50 refinement
+preserves old caveat/history; no source/probe/API/architecture/budget reset.
+
 2026-11-08 S04 readiness opened/all6CV and CI04 OPEN; worked match-return-target
 decision holds dependent source implementation. No S04 source/check/runtime,
 prompt or branch creation, new old-budget allowance, S05/K or integration scope.
