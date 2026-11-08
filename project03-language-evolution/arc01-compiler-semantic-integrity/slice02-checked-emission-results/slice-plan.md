@@ -2,12 +2,26 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice02-checked-emission-results
-status: in-progress
+status: closed
 planned-release: unassigned
 depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emission-harness-baseline]
 ---
 
 # Checked emission results
+
+## Accepted endpoint — 2026-11-07
+
+Task-only sourcec9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1 is independently
+accepted; all six CE rows done. [Verification](cdc-verification.md), implementer-
+attributed [delivery](closing-report.md) and [retrospective](cdc-retrospective.md)
+retain every prior stop/approval/receipt limit. Fresh independent normal Make0,
+1470+11steps/docs482, focused typed6/header3/validator5suffix/contract17, invalid4/
+validruntime4 and citations63/601 establish the Result/first-fatal/route capability.
+Approved RD01 and canonicalDD dated history reconcile the preserved exact corpus
+case; no all38-cell measurement claim. CI-02 delivered; release8f unchanged.
+Shared03/5 spent, two remain; old tooling8/K0 unchanged. No S03/integration/next
+unit. S07/S08 own actual public API/docs/book/human impact follow-through.
+The dated authorities and earlier stopped states below are retained history.
 
 ## RD01 policy approved; correction03 opened — 2026-11-07
 

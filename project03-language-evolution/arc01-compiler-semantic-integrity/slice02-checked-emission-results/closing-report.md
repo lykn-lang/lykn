@@ -1,4 +1,51 @@
-# S02 bounded stop report
+# S02 delivery and retained stop reports
+
+## Final delivery and CDC reconciliation — 2026-11-07
+
+The CC correction03 execution below is independently accepted at exact task
+`c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1`, treef19702c863e74d672c2e471e148eab21daad591e.
+Current implementer `/root/cdc/checked_emission_policy03_luna_cc` (Luna6 High)
+authored the case/guide disposition and committed its execution evidence at
+planning1133ad1dc63e739788d2d1d7d3ff5b34acf6da19. CDC Sol6.1 High authored this
+reconciliation after separate source review and fresh full validation; the
+actual implementer report remains below and is not relabelled independent.
+
+The slice delivers checked public lowering results and first typed fatal
+diagnostics across source/file/package routes before successful artifacts,
+preserving ordinary bound calls, literal marker text and legitimate runtime
+exceptions. Result signatures/context-constructor migration are intentional
+0.6 development API changes approved by the Operator. RD01 is the separately
+approved malformed unresolved-form rejection policy, not a blanket foreign-call
+restriction or proof that all38 historic label cells were exercised.
+
+| Row | Final disposition and independently reproduced basis |
+| --- | --- |
+| CE-01 | done — actual source/API/authority plus accepted maintenance red and retained attempt history |
+| CE-02 | done — typed6, parsed diagnostic origins/first failure/context reuse/strip/gensym and checked header counter |
+| CE-03 | done — invalid4 rejection/no-write, runtime4/4, typed dist/path, shared five-group order and stale sentinel proof |
+| CE-04 | done — complete generated module review, full normal Make0 (1470+11steps/docs482), standalone cites0 (63/601) |
+| CE-05 | done — separate CDC source and fresh gate/focused/runtime reproduction |
+| CE-06 | done — exact refs/row walk, history, retrospective and parent/S07/S08 obligations reconciled |
+
+The [independent verdict](cdc-verification.md#final-independent-acceptance--2026-11-07)
+and [retrospective](cdc-retrospective.md) give limits and exact pins. Artifact
+inventory: fixed commit messages; CC readbacks/raw resumption/correction02/03;
+CDC prior stop and final correction03 raw/runtime/source receipts, all under
+`artifacts/`. Issued initial/iteration01/02/03 prompts stay at slice root.
+No new archive, helper framework or missing historical raw reconstruction.
+
+### Bubble-up to the arc
+
+CI-02 is delivered task-only; normal independent full Make/focused/citation
+gates meet its specified capability, not just artifact presence. Scope as
+delivered includes the approved shared validation/package resolver adoption and
+RD01 current corpus/guide/canonicalDD disposition; no missing promised route or
+weakened oracle remains. Historical local test defects/policy stop were resolved
+only by explicit approved corrections, not hidden. Shared03 spent/two remain.
+Arc plan/ledger now records CI-02 done and S07/S08 public-impact follow-through;
+no structural re-sequencing or new slice is needed. Source/behavior changes are
+not integrated into clean release8f. No S03, tooling/K, merge, publication or
+next unit follows this close. All unrelated original findings/human gates remain.
 
 ## Correction03 CC execution — 2026-11-07
 

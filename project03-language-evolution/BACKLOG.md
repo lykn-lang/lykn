@@ -420,6 +420,17 @@ compiler identity and relevant classifier/analyzer paths. Separate the warning
 and error-propagation questions when scoping tests; no suppression, broad
 diagnostic rewrite or implementation is opened by this register entry.
 
+**2026-11-07 split disposition.** Arc01 [S02](arc01-compiler-semantic-integrity/slice02-checked-emission-results/cdc-verification.md)
+independently accepts the error-propagation track at taskc9e0d7e: nested classifier
+Diagnostic preserved, checked public emission/first-fatal boundary, failing-file
+route guarantees and genuine bound-call/runtime controls, fresh full normal
+Make/focused/citations. MH-P01 package resolution/raw-subtree failure also passes
+its same four valid route oracles. This does NOT close the observed unused-warning
+track; Arc01 S05 owns that separately. Result/context/dist/RD01 public impact is
+owned S07/S08 (including minor stale corpus-heading polish, guide/LLM/book/human
+disposition). Release8f is unchanged; historical source-only limits/counts above
+remain, no tooling/K/audit claim or automatic next unit follows.
+
 #### NE-C07 — native check rejects documented async named exports
 
 **Independently reproduced validation gap, 2026-11-06.** Slice12's frozen

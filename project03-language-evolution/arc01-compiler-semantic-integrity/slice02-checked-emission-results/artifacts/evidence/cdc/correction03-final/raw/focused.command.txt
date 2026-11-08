@@ -1,0 +1,10 @@
+source=c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+All actual executable paths below are absolute under this cwd; all built by the completed independent full normal Make. No Cargo rebuild follows producer-pins.before before direct invocation. CLI/test/Deno pins are recorded separately before/after. Raw stdout/stderr/status capture starts before each invocation.
+Common env: XDG_CACHE_HOME=/private/tmp/lykn-s02-cdc-final.9WHN7E/xdg npm_config_cache=/private/tmp/lykn-s02-cdc-final.9WHN7E/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno; inherited PATH unchanged.
+1: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/emission_results-ec634af31c6c32ab --nocapture
+2: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-60c4a58c1162abbf emitter::forms::tests::numeric_for_header_slots_still_reject_no_else_if_values --exact --nocapture
+3: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_cli-8a470da61c5d1dbe validation::tests::first_nonempty_compile_group_keeps_the_established_priority --exact --nocapture
+4: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/contract_predicate_lowering-5224edfea80a9408 --nocapture
+5: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/emission_failures-ee1302ddd95a417d --nocapture
+Invocation5 additionally sets LYKN_EMISSION_EVIDENCE_DIR=/private/tmp/lykn-s02-cdc-final.9WHN7E/focused-runtime (separate from full-Make runtime receipts, no overwrite). Existing Rust test assertions/selection unchanged. Expected6/1/1/1/4 selected tests; header internal3/validation5suffix/contract17/invalid4+valid4+predicate10 bounded observations.

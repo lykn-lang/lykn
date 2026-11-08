@@ -9,6 +9,25 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 independently delivered — 2026-11-07
+
+[S02](slice02-checked-emission-results/cdc-verification.md) independently accepts
+task c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1: public Result/first-fatal
+lowering, shared compile/dist validation/resolution and failing-source artifact
+preservation, with legitimate runtime/bound-call controls. Fresh CDC full normal
+Make0 (1470+11steps/docs482), focused typed/route/context/contract checks and
+standalone citations63/601 pass. All six CE done; CI-02 delivered. RD01 rejection
+is explicitly approved/canonicalDD dated, not a38-cell matrix measurement.
+
+S07 must audit actual Result signatures/context construction, typed DistError,
+route diagnostic/file behavior and RD01 against base/final integration ranges,
+including prior unmerged stack and guide/LLM/book audiences. The stale corpus
+section7/8 heading is a minor S07 documentation-polish input; working assertions
+and class9 remain intact. S08 retains conditional required docs/human disposition.
+No structural roadmap change: S03–09 still open; NE-C06 warning mismatch stays
+S05, C02/C05 stay S04. Release8f unchanged, task not integrated. Shared03 spent/
+two remaining and old tooling8/K0/13 retained. This endpoint starts no later work.
+
 ## RD01 resolved; scoped correction03 validation — 2026-11-07
 
 Operator adopted malformed recognized unresolved-form rejection while preserving
@@ -284,6 +303,10 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.12: S02/CI-02 independently accepted task-only after fresh full
+  normal/focused/runtime/citation gates and approved RD01 disposition. Recorded
+  actual API/doc impact owners; no integration, later slice or tooling allowance.
 
 - 2026-11-07 v0.11: RD01 policy approved, canonicalDD dated history preserved;
   correction03 changes current case/guide only before original validation.

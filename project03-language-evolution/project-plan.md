@@ -9,6 +9,18 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S02 delivery (2026-11-07)
+
+Arc01 [S02 independent review](arc01-compiler-semantic-integrity/slice02-checked-emission-results/cdc-verification.md)
+accepts taskc9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1, all six CE done/CI-02
+delivered. Checked Result/fatal lowering, production-route validation/resolution
+and no failing-source artifact writes preserve bound calls/legitimate runtime
+errors. Approved RD01 resolves the exact retained residual case, not all38 cells.
+Fresh CDC full normal Make0 (1470+11steps/docs482), focused/runtime and cites63/601
+pass. Release8f remains unchanged; no source integration/S03/tool/K/next unit.
+Arc composition/P-1 and final S07 API/doc/S08 book/human obligations stay open.
+Shared03/5 spent/two remain; old tooling8/K0/13 and prior failure history retained.
+
 ## Current approved RD01 disposition (2026-11-07)
 
 Operator explicitly approved recognized malformed unresolved-form rejection,
@@ -625,6 +637,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.44: Independently accepted Arc01 S02/CI-02 task-only after full
+  normal/focused/generated/runtime/citation reproduction and approved RD01.
+  Kept release8f/integration and all later API/doc/book/K/arc gates distinct.
 
 - 2026-11-07 v1.43: Operator explicitly resolved RD01 in favor of malformed
   recognized unresolved-form rejection; dated canonicalDD amendment and scoped

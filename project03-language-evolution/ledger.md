@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 final S02: taskc9 checked lowering/route capability independently
+accepted, six CE done/CI-02 delivered. Fresh full normal Make/focused/runtime/
+citations pass. P-1/arc composition and remaining S03–09 open; release8f unchanged,
+no later execution/integration, shared03/5 and old tooling8/K0 retained.
+
 2026-11-07 current: explicit RD01 policy approval opens scoped S02 correction03
 case/guide disposition then full independent validation. CI-02/P-1 open; no code
 fallback/API change, no historical count rewrite or wider matrix authority.

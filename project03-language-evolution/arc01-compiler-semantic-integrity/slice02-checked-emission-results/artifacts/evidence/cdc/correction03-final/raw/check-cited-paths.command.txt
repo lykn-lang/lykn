@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source=c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1
+argv=make check-cited-paths
+XDG_CACHE_HOME=/private/tmp/lykn-s02-cdc-final.9WHN7E/xdg
+npm_config_cache=/private/tmp/lykn-s02-cdc-final.9WHN7E/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+PATH inherited; actual Deno /opt/homebrew/bin/deno 2.9.6 SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.

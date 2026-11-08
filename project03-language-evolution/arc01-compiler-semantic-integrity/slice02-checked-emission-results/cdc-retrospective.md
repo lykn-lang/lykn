@@ -1,4 +1,44 @@
-# S02 initial-attempt retrospective
+# S02 retrospective and retained earlier analyses
+
+## Final delivery — 2026-11-07
+
+CDC `/root/cdc`, Sol6.1 High. Outcome: checked lowering/API/production-route
+delivery accepted task-only atc9e0d7e, after current Luna6 High correction03 and
+genuinely separate full normal Make/focused/generated/runtime/citation replay.
+The reviewed scope is the exact14-path delta and canonical DD60 disposition;
+not a model comparison, broader compiler correctness or full historical matrix.
+
+What worked: the repaired maintenance harness kept actual invalid and valid
+route observations separate. It first exposed package resolution/raw-fallback
+MH-P01, then proved the same unchanged valid source works through both routes.
+Parsed-child assertions/independent Diagnostic comparisons and five suffix
+mixtures corrected the typed tests before their execution. The new first-error
+boundary/reuse controls and marker/intentional-throw countercontrols distinguish
+compiler outcome from program behavior; this was the actual design objective.
+
+The full suite caught a contract decision the original prompt had not resolved.
+The corpus deliberately pinned the old form-label divergence; treating it as
+merely stale would have weakened the language design process. Preserving it,
+replaying its exact Rust arm, discussing label versus lexical binding semantics,
+then recording explicit RD01 approval in the canonical dated DD made the change
+reviewable. Final native/JS controls pass without restoring silent fallback.
+This is finite evidence, not38-cell convergence or a language-equivalence theorem.
+
+Costs and responsibility: CDC's readiness and source-path review did not prevent
+the original local harness defects or final wrong nested oracle; more detailed
+instructions alone did not guarantee correct construction. Static review before
+dependent validation helped after those stops, but no controlled comparison
+proves a general prompting/model improvement. Earlier missing original receipts,
+temporary unchecked alias attestation, commit-title issues and failed attempts
+remain as recorded below; final green cannot repair their chronology.
+
+Follow-through: keep source-grounded concrete AST-child/route examples and
+inspect actual immutable predicates before release in subsequent work. S07 must
+audit Result/context/dist/RD01 public effects against the real integration range,
+including guide/LLM/book audiences and the minor current corpus heading polish;
+S08 dispositions required documentation/human obligations. Warning fidelity and
+C02/C05 remain separate owners, not benefits inferred from checked errors.
+Shared03/5 and old tooling8/K0/13 remain unchanged; no automatic next assignment.
 
 ## Correction02 and the residual contract — 2026-11-07
 

@@ -1,4 +1,113 @@
-# S02 independent reviews and stopped dispositions
+# S02 independent acceptance and retained stopped dispositions
+
+## Final independent acceptance — 2026-11-07
+
+**ACCEPT task-only S02 at `c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1`, tree
+`f19702c863e74d672c2e471e148eab21daad591e`.** Reviewer `/root/cdc`, OpenAI
+gpt-6.1-sol High, independently reviewed the implementation authored by the
+separate Luna6 High contributors and reproduced the required source gates.
+Current correction03 contributor `/root/cdc/checked_emission_policy03_luna_cc`
+returned exclusive source/index/build ownership clean before this replay.
+CC evidence/dated report is committed at planning1133ad1dc63e739788d2d1d7d3ff5b34acf6da19.
+CDC authored planning/the approved canonical DD disposition, not product code;
+this verdict accepts CC implementation, not an independent review of CDC's plan.
+
+### Actual reviewed capability
+
+The exact14-path source delta from accepted maintenancec129 comprises the
+three emitter modules; CLI compile/dist/main/lib/private validation; existing
+CLI emission-failure test; language e2e/cross-compiler/new emission-result tests;
+error guide; existing conformance case. The source-state receipt lists every
+path. Public `emit`, `emit_json` and `forms::emit_form` now return checked
+Results. Primitive builders remain infallible. Internal recursion uses the
+private inner function, never a recursive checked-boundary drain. The private
+first-fatal collector cannot be overwritten by successful/later siblings;
+errors discard partial output, restore entry expression/class context, clear
+the consumed failure for reuse, and leave gensym allocation monotonic.
+
+Nested classifier diagnostics retain their actual variant/payload; lowering
+failures use Codegen with parsed origin where available. Synthetic/unknown
+origins are not claimed precise. CLI source/file routes propagate before JS/DTS
+writes. Dist resolves before the shared five-group validation/classification,
+and preserves a typed path/source error for the new validation/lowering route.
+Existing package import/config/cache/strictness behavior and other aggregate
+error formatting remain scoped as designed. This is failing-source preservation,
+not I/O-pair atomicity or rollback of earlier successful package files.
+
+The explicitly approved RD01 policy rejects malformed recognized unresolved
+forms. The exact27B label case still invokes both compilers before assertions;
+its new guarded Rust diagnostic/JS rejection, unchanged D1 controls and unchanged
+kernel:if residual passed. Actual lexical bound calls remain ordinary calls;
+labels remain a separate namespace. Canonical DD60's dated November refinement
+and current inline guide explain this policy while retaining July history.
+No38-cell matrix rerun or all-residual-convergence claim follows.
+
+### Fresh reproduced gates and generated behavior
+
+Raw independent evidence is [correction03-final](artifacts/evidence/cdc/correction03-final/).
+It was captured at first launch in `/private/tmp/lykn-s02-cdc-final.9WHN7E`, then
+copied byte-for-byte to that durable home. Commands identify actual cwd, source,
+fresh owned XDG/npm caches and fixed approved DENO_DIR. Rust1.97.0/Deno2.9.6,
+no Cargo offline/target override for normal Make, inherited PATH, no new flags,
+filters, suppressions, dependency changes or helper programs.
+Raw tool streams retain their original ANSI/whitespace/temporary-path bytes;
+they are evidence, not reformatted prose. The prose-only diff check applies to
+authored Markdown; raw-output whitespace is a documented preservation exception.
+
+- Fresh **normal unfiltered `make check`: exit0**, Rust/build/Clippy/format/
+  syntax/lint stages green, **1470 JS/Lykn tests +11steps, zero failures**,
+  **482 documentation tests, zero failures**. This is a new independent run,
+  not the earlier failed/CC full gate relabelled green.
+- Standalone committed `make check-cited-paths`: exit0, **63documents/601
+  unchanged historical citations**.
+- Already-built actual executables, no intervening Cargo build: typed emission
+  **6/6**; numeric-for header **1test/3slots** through checked public API with
+  restored context; shared validator **1test/5successive suffixes**; contracts
+  **1test/17observations**; emission-failure integration **4/4**.
+- The last integration reproduces **10discriminating predicates**, **4invalid
+  route observations** rejecting before new/overwritten artifacts, and **4/4
+  valid strict Deno runtime oracles**. Package sentinels have epoch mtimes with
+  source explicitly newer; all existing JS/DTS before/after byte comparisons
+  match. Fresh-output absence and typed package path/diagnostic are established.
+- CDC read all four complete successful generated modules: CLI/package bound
+  dissoc both emit an ordinary call with a literal object and output `"kept"`
+  plus LF, exit0/empty stderr. Both marker programs retain their literal text
+  and intentional TypeError, exact stdout/exit1/user message. Optional DTS is
+  absent for these nonexporting fixtures; no async declaration promise inferred.
+
+Actual release/bin producer **746f206298f1a32f3da6210022a2f3e706436d25dd36efb513feffc52893024f**;
+debug CLI **dc72bdf0b7296e1fcdb9c454691a9b0a545ff900071f4caf01cc733ad5f0be86**.
+Deno SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+All selected test executable/CLI/Deno hashes match before/after direct replay.
+Full Make itself also reran all unchanged Rust suites; previous dedicated CC
+receipts retain their original identity/date and are not promoted to independent
+evidence. Fresh independent execution above establishes the affected claims.
+
+### Final row walk, scope and carryover
+
+CE-01 done: accepted maintenance red/history and approved API/RD01 policy plus
+current exact source/authority reviewed. CE-02 done: checked boundaries, first
+diagnostic, parsed spans, modes/reuse/gensym reproduced. CE-03 done: all four
+invalid and four valid route oracles reproduced, including former MH-P01.
+CE-04 done: actual generated modules/strict runtimes/full normal/citation gates.
+CE-05 done: genuinely separate source/gate reproduction. CE-06 done: this row
+walk, implementer-attributed report, retrospective and parent/impact ownership.
+**Six opening rows, six done; no dropped/deferred/no-op row. CI-02 is delivered.**
+
+This is task-only acceptance. Release stays clean8f5d1990df86405656729972485ae4d11feba808;
+old refs/history/failed attempts/capture limits remain. Shared03/5 spent (two
+remain); old tooling8 spent/K0/13 and F1–F12 unchanged. No S03/tooling/K/integration/
+push/publication or next unit starts. S07 owns the final API/compatibility/doc
+audit (Result signatures, constructor-only context struct creation, typed dist
+error, route diagnostics/file behavior and RD01), including preexisting unmerged
+stack; S08 owns required doc/book/human disposition. The stale nonbehavioral
+section7/8 heading mentioning a residual is an explicit S07 polish input, not a
+reason to mutate the frozen passing source. NE-C06 warning fidelity remains S05;
+C02/C05/S03/S04, T01/T02/D01/D02 and all other arc/project obligations remain open.
+
+Earlier stopped sections below are retained historical verdicts, superseded only
+for this approved, tested final condition. No earlier missing receipt is recovered
+or original failed condition retroactively made compliant.
 
 ## Correction02 full-gate stop — current disposition (2026-11-07)
 

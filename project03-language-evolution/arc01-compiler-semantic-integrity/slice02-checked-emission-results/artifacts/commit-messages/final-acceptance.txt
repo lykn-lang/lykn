@@ -1,0 +1,4 @@
+Accept checked emission results after independent validation
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

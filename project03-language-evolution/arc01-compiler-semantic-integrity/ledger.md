@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 final S02: independently reproduced taskc9 Result/first-fatal/routes,
+full normal Make/focused/runtime/cites pass; CI-02 done. Arc composition and
+S03–09 remain open. Release8f unchanged/no integration, old tooling8/K0 retained.
+Earlier dated conditions below remain history, not competing current verdicts.
+
 2026-11-07 latest: RD01 explicit Operator policy resolution authorizes S02 scoped
 correction03/test+guide validation only, with unchanged compiler/old namespace
 semantics and full independent gates still required. CI-02 remains open.
@@ -66,7 +71,7 @@ is approved/closed by that authorization.
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | CI-01 | Numeric-for headers/body roles faithfully compile supported variadic statements | Meaningful red/green native/kernel/CLI and runtime regressions; full source gates and independent review | correctness-grade | NE-C12 / S01 | done | slice01-variadic-for-context/cdc-verification.md; source8f5d199 | Narrow task-only delivery; no other loop/API/tooling claim |
-| CI-02 | Structured fatal lowering failures reach public APIs and all production routes before successful artifacts | Approved compatibility policy; caller/route tests, unchanged pre-existing output-file contents and no new JS/DTS on compiler failure, successful JS/DTS and legitimate runtime/user-text controls; independent full gates | correctness-grade | NE-C06 static channel / S02 | open | | No text grep or silent legacy-success path as evidence |
+| CI-02 | Structured fatal lowering failures reach public APIs and all production routes before successful artifacts | Approved compatibility policy; caller/route tests, unchanged pre-existing output-file contents and no new JS/DTS on compiler failure, successful JS/DTS and legitimate runtime/user-text controls; independent full gates | correctness-grade | NE-C06 static channel / S02 | done | slice02-checked-emission-results/cdc-verification.md; taskc9e0d7e | Independently reproduced checked API/route capability; no text grep/legacy success, not release integration or arc composition |
 | CI-03 | Shared roles compose across validation/lowering with resolution and syntax boundaries intact | Role/counter regressions, native/JS comparison where equivalent, accepted historical controls and independent full gates | correctness-grade | A6 / accepted NE stack / S03 | open | | Recursive typed AST is an option, not an accepted necessity |
 | CI-04 | C02/C05 current-source validity and completion behavior are explicitly dispositioned and supported behavior correct | Source-contract decisions, actual generated/runtime witnesses and regressions, independent gates | correctness-grade | NE-C02/05 / S04 | open | | No pre-decision that C02 is supported or both remain current bugs |
 | CI-05 | Actual warnings and diagnostics faithfully distinguish used/unused and internal failures | Meaningful positive/negative diagnostic controls and independent gates | correctness-grade | NE-C06 observed warning / S05 | open | | Static nested-classifier concern separately owned CI-02 |
