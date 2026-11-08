@@ -16,6 +16,19 @@
 
 ## How this list stays honest
 
+### Arc03 macro-resolution and native-oracle STOP — 2026-11-08
+
+Owner: Project03 CDC, renewed Operator-approved scope/readiness required.
+[S01 actual baseline](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md)
+captured29 native routes:26 old-success+3 W8 macro errors resolving existing
+declared astring from fresh isolated embedded compiler. Root cause/repair not
+proven. DISTINCT native test-oracle gap: generic nonzero can accept this error
+instead of host-contract v1. Future acceptance must discriminate policy phase/
+identity; no current predicate/source/config/dependency change or extra probe.
+Legal native4/4 and dist old-overwrite red retained, public0/13; all capability
+rows open, source01/5, old tooling8/K0/13. This is not stale-cache identity proof
+or a new dependency request; no silent conflation with existing C04.
+
 ### Arc03 approved local correction — 2026-11-08
 
 Operator approves [S01 iteration01](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cc-prompt-iteration01.md),

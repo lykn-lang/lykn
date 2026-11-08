@@ -1,0 +1,3 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.22s
+  Executable tests/protected_host.rs (target/debug/deps/protected_host-365226f479af5deb)

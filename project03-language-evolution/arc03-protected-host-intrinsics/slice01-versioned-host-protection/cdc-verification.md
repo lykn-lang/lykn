@@ -1,5 +1,41 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Current native-baseline STOP — no product acceptance
+
+Luna ran native baseline once at e2f after the released correction. CDC read
+original no-run/native metadata/status/runner output, all37 CLI/runtime status
+receipts, three full W8 errors/source, four complete legal generated modules/
+runtime bytes and actual dist before/after/mtime records. Current CLI/test/Deno
+hashes match prelaunch metadata. This is independent reconciliation of original
+CC evidence, NOT fresh runtime reproduction; root explicitly held any rerun.
+
+Observed native29 =26 old-success +3 W8 macro dependency errors. Legal native
+4/4 exact expected bytes/exit0/empty stderr; dist Ok/JS+DTS overwritten. Runner
+1pass2fail/exit101 is not enough to certify a meaningful entire baseline: W8
+failed early with bare-astring dependency resolution, not protected-host v1.
+Public0/13. Full [report](closing-report.md) retains source/pins/limits and all
+unrun gates; no protected-write code executed or policy implementation authored.
+
+Separate test-oracle gap: native generic-nonzero predicate cannot distinguish
+this unrelated error from desired policy rejection. CDC owns a future approved
+discriminating-v1 oracle design, not a quiet edit. The phase-path correction is
+statically resolved, but its public runtime effect remains untested.
+
+Bounded source inspection: actual `expander/deno.rs` find_project_json walks
+caller cwd, build_deno_command materializes packages and supplies --config only
+when found, then changes child cwd to that materialization. Compiler.js imports
+bare astring. This aligns with the observed boundary; it does not prove a repair
+or an unavailable-versus-unmapped dependency diagnosis. No probe/installation/
+environment workaround followed. Earlier read of a guessed subprocess.rs path
+failed; actual source was then located/read as deno.rs, no runtime involved.
+
+CC ownership is fully returned. Verdict STOP; all6HC/PHI/CV OPEN, source
+refinement01/5 spent, no new correction issued. Exact existing raw copies compare
+identical; prior stopped records and setup/pin-capture limitations remain.
+Actual whole staged diff-check2 is solely raw/native.stdout's trailing blank
+line; prose-only gate0. Raw fidelity is retained, not silently normalized or
+represented as a green whole-diff check.
+
 ## Correction01 static release — no behavioral acceptance
 
 Operator-approved iteration01 issued at planning 63723f42a15f5267424ac5fff2caec4bcf2386c9.

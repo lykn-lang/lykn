@@ -1,5 +1,11 @@
 # Arc03 S01 host protection ledger
 
+Latest baseline STOP2026-11-08: no-run0/native1pass2fail, invalid29 observed
+as26 old-success+3 unexpected W8 dependency errors; legal native4/4, dist
+old-overwrite red. Public0/13/implementation/full gates unrun, all6HC OPEN.
+Separate generic-nonzero oracle gap/current owner in [review](cdc-verification.md).
+Source01/5 spent, no further correction/replay; original states below retained.
+
 Correction01 static 2026-11-08: exact one-file e2f29597 resolves known phase-path
 collision; [review](cdc-verification.md) releases original baseline after commit.
 No behavioral result/source acceptance; all6HC remain OPEN, refinement01/5.

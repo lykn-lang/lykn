@@ -1,0 +1,31 @@
+phase=baseline required no-run
+source_branch=codex/protected-host-contract
+source_commit=e2f29597ab677346abc6e17ec3616d4a340b7861
+source_tree=a8249f8a2c14a7854fd1300592cf8673083971fd
+test_files=crates/lykn-cli/tests/protected_host.rs at parent871f; test/forms/protected-host.test.js at e2f2959
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+executable=/Users/oubiwann/.cargo/bin/cargo
+argv[0]=test
+argv[1]=-p
+argv[2]=lykn-cli
+argv[3]=--test
+argv[4]=protected_host
+argv[5]=--no-run
+argv[6]=--offline
+argv[7]=--locked
+scoped_env.TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/baseline-e2f2959/tmp
+scoped_env.XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/baseline-e2f2959/xdg
+scoped_env.NPM_CONFIG_CACHE=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/baseline-e2f2959/npm
+scoped_env.DENO_DIR=/Users/oubiwann/Library/Caches/deno
+scoped_env.LYKN_TEST_DENO=/opt/homebrew/bin/deno
+scoped_env.LYKN_PROTECTED_HOST_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/baseline-e2f2959/native-evidence
+inherited_env.CARGO_NET_OFFLINE=<unset>
+inherited_env.CARGO_TARGET_DIR=<unset>
+inherited_env.CARGO_NET_GIT_FETCH_WITH_CLI=true
+inherited_env.PATH=raw/no-run.path
+rustc=/Users/oubiwann/.cargo/bin/rustc, version=rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo=/Users/oubiwann/.cargo/bin/cargo, version=cargo 1.97.0 (c980f4866 2026-06-30)
+deno=/opt/homebrew/bin/deno, version=2.9.6, sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+stdout=raw/no-run.stdout
+stderr=raw/no-run.stderr
+status=raw/no-run.status

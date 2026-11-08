@@ -2,6 +2,12 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 latest evidence: Arc03 S01 native-baseline STOP at e2f, no-run0/
+native 1 pass/2 fail; invalid 29 =26 old-success +3 W8 dependency errors, legal native4/4,
+dist overwrite red. Public0/13/implementation/full gates unrun. All6HC/PHI/
+P-HI/CV/CI04 OPEN; [review](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md).
+Source01/5, old tooling8/K0/13 preserved; no next correction issued.
+
 2026-11-08 latest authority: Operator approves Arc03 S01 phase-path correction01/5
 and original continuation; [assignment](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cc-prompt-iteration01.md).
 All6HC/all6PHI/P-HI/CV remain OPEN; no new source/run acceptance. Previous stopped

@@ -9,6 +9,17 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Latest Arc03 native-baseline STOP — 2026-11-08
+
+[S01 current report](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md):
+e2f phase-only correction statically verified; native29 =26 old-success+3 W8
+embedded macro dependency errors; native legal4/4, dist expected overwrite red.
+Public0/13, no policy implementation/full gates/facility. Separate native
+nonzero-only oracle gap owned by CDC with existing dependency-resolution
+re-entry, not new package adoption. All6HC/PHI/CV/CI04 remain open; source01/5,
+tooling8/K0/13 and clean accepted source/release62e preserved. No new correction,
+experiment, independent replay or implementation beyond current stop authorized.
+
 ## Arc03 resumed for approved test correction — 2026-11-08
 
 Operator explicitly authorizes [S01 iteration01](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cc-prompt-iteration01.md)
@@ -45,7 +56,7 @@ All6PHI/6HC open, source62e/release62e protected; no source started at planning.
 | --- | --- | --- |
 | Arc01 compiler semantic integrity | Completion/control meaning and later diagnostic/tool/API/doc composition | S04 source principle selected; ordered-reference implementation depends only on accepted Arc03/S02 facility/proof, not plan alone |
 | Arc02 ad hoc maintenance | Individually approved miscellany; accepted harness baseline history | Existing bounded S01 retained, no miscellaneous sweep |
-| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | S01 approved test correction01 before original baseline; two-slice scope retained, no implementation/facility accepted |
+| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | S01 stopped at native macro dependency/oracle boundary after correction01; no implementation/facility accepted |
 
 S04-H1 policy uncertainty is resolved by Operator's stronger source contract;
 implementation/proof dependencies remain. Original H1 alternatives/history and

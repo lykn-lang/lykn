@@ -2,14 +2,29 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice01-versioned-host-protection
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: []
 ---
 
 # S01 — versioned host contract and provable-write errors
 
-## Current resumed authority — 2026-11-08
+## Latest baseline STOP — 2026-11-08
+
+Correction01 e2f is statically verified, but the first native baseline stopped
+original continuation: no-run0, native1pass2fail/exit101, all29 invalid-route
+observations =26 old-success +3 W8 macro dependency-resolution errors. Legal
+native4/4 passed; typed dist old-success/overwrite red observed. Public0/13,
+no implementation/full gates. See current [report](closing-report.md),
+[review](cdc-verification.md) and [retrospective](cdc-retrospective.md).
+Native generic-nonzero rejection is a DISTINCT oracle gap: unrelated W8 errors
+are not v1 policy verification. CDC owns renewed readiness/scope for existing
+declared macro dependency resolution and discriminating policy oracles; no
+new correction/probe/production edit authorized. Refinement01/5 spent, all6HC/
+PHI/CV OPEN. Root directed read-only reconciliation, no independent replay.
+Actual CC source/index/build/raw ownership fully returned; release62e unchanged.
+
+## Correction01 resumption authority — 2026-11-08 (preserved)
 
 Operator explicitly approved the proposed phase-path-only test correction and
 resumed original Arc03 endpoint (“yup, let's do that — proceed!”). Current
@@ -196,6 +211,10 @@ body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
 
+- 2026-11-08 iteration01 baseline return: one no-run0 and one direct native
+  launch at e2f; unexpected W8 dependency phase triggered STOP before public/
+  production. Existing raw copied byte-identically to artifacts/evidence/cc/
+  baseline-e2f2959, original task data preserved. No further prompt issued.
 - 2026-11-08 iteration01 actual intake/handoff: same Luna actor reread immutable
   planning 63723f4, plan/ledger/stopped records and supplied-F; CDC renewed source/
   index/build/raw ownership. Exact correction freeze e2f29597 followed by separate

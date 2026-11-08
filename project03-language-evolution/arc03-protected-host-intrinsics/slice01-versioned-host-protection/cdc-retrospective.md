@@ -1,5 +1,40 @@
 # CDC retrospective — initial attempt stopped, 2026-11-08
 
+## Correction01/native-baseline follow-through — current
+
+Same actual Luna CC/Sol CDC roles. Operator approved the local phase-path repair;
+exact four-line correction e2f passed separate immutable static review. Its
+public runtime benefit is UNTESTED because the native baseline encountered the
+next stop first. This does not validate the recommendation experimentally.
+
+Native no-run0, then one native launch1pass2fail observed all29 routes and four
+legal successes. The expected aggregate concealed an unexpected component:
+W8's three nonzero exits were dependency/config errors rather than policy
+rejections. Per-case raw review, not aggregate totals, revealed it. Native
+nonzero-only assertions are a distinct oracle weakness; CDC's source-ready
+assignment/review should have pinned the v1 diagnostic identity at these routes.
+Do not attribute this solely to CC or infer that the host-policy design failed.
+
+The fresh private fixture cwd/XDG condition exposed an embedded macro dependency
+boundary. Root cause is not proven; adding dependencies, borrowing repository
+configuration or removing W8 would bypass the unresolved condition. Future
+re-entry needs explicit source-grounded scope for that boundary and stronger
+native policy oracles. No such correction was issued here. Useful positives
+remain finite: four native legal outputs and old dist-overwrite behavior.
+
+Provenance controls helped retain all original route streams/inputs/modules and
+preserve the exact stop. Setup quality still slipped: a broad find hit an
+unrelated protected directory despite the narrow-file instruction; its raw/exit
+were not retained. This is disclosed protocol nonconformance, not a compiler
+finding. No specimen had launched or required program input/oracle changed;
+the setup capture gap remains, while actual launch metadata is retained.
+Prefer direct exact-file checks
+already prescribed, not a new traversal framework. No comparative-model or
+workflow-effectiveness conclusion follows from this short stopped attempt.
+
+Current capability remains undelivered, all HC/PHI/CV open, source01/5 and old
+tooling8/K0/13 preserved. Original attempt analysis follows unchanged.
+
 Author/reviewer `/root/cdc`, Sol6.1 High; inspected issued prompt, full frozen
 two-test source871f and actual Luna CC return. No builds or runtime trials are
 available. This retrospective closes the attempt record, not the slice/arc.

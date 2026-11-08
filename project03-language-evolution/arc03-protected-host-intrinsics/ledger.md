@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+Latest2026-11-08: S01 native baseline STOP at e2f, macro dependency-resolution
+failure and separate generic-nonzero oracle gap; [report](slice01-versioned-host-protection/closing-report.md).
+All6PHI OPEN, no product policy/facility accepted; S02 unstarted/source01/5.
+
 Latest2026-11-08: explicit Operator correction01/5/resumption, original gates
 and endpoint unchanged. All6PHI OPEN; no corrected test or source capability
 accepted. Initial static stop below is historical/current evidence cutoff.
