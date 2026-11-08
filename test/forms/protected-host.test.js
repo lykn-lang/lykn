@@ -32,7 +32,7 @@ const GOOD = [
   ],
 ];
 
-function record(name, source, generated, args, cwd, runtime) {
+function record(name, source, generated, args, cwd, runtime, phase = "result") {
   const selectedEnv = Object.fromEntries(
     ["DENO_DIR", "LYKN_TEST_DENO", "XDG_CACHE_HOME", "TMPDIR", "LYKN_PROTECTED_HOST_EVIDENCE_DIR"]
       .map((key) => [key, Deno.env.get(key) ?? null]),
@@ -53,7 +53,7 @@ function record(name, source, generated, args, cwd, runtime) {
   const root = Deno.env.get("LYKN_PROTECTED_HOST_EVIDENCE_DIR");
   if (root !== undefined) {
     if (!root.startsWith("/")) throw new Error("evidence directory must be absolute");
-    Deno.writeTextFileSync(`${root}/${name}.json`, `${JSON.stringify(receipt, null, 2)}\n`, { createNew: true });
+    Deno.writeTextFileSync(`${root}/${name}.${phase}.json`, `${JSON.stringify(receipt, null, 2)}\n`, { createNew: true });
   }
 }
 
@@ -101,14 +101,14 @@ Deno.test("public JavaScript compiler rejects nine writes and runs four legal co
           "--no-prompt",
           modulePath,
         ];
-        record(name, source, generated, args, temp, undefined);
+        record(name, source, generated, args, temp, undefined, "before");
         const runtime = await new Deno.Command(Deno.execPath(), {
           args,
           cwd: temp,
           stdout: "piped",
           stderr: "piped",
         }).output();
-        record(name, source, generated, args, temp, runtime);
+        record(name, source, generated, args, temp, runtime, "after");
         assertEquals(runtime.success, true, `${name} strict runtime failed`);
         assertEquals(new TextDecoder().decode(runtime.stdout), expected, `${name} stdout differs`);
         assertEquals(runtime.stderr.length, 0, `${name} runtime stderr must be empty`);
