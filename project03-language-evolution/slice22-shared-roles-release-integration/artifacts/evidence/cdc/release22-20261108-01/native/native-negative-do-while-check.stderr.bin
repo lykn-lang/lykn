@@ -1,0 +1,2 @@
+/private/tmp/lykn-s22-cdc-20261108-01/native-tmp/.tmpwqadTz/do-while.lykn: error: 1:11: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement

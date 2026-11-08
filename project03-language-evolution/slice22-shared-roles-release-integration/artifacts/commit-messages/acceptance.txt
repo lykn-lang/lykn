@@ -1,0 +1,6 @@
+Accept exact shared-role release integration
+
+Reconcile independent release proof, all five rows and conditional S04 readiness.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

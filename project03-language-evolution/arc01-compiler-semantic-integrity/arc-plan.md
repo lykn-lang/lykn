@@ -9,6 +9,16 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S03 integrated; S04 semantic readiness next — 2026-11-08
+
+[Slice22 independent close](../slice22-shared-roles-release-integration/cdc-verification.md)
+accepts exact local release62e/tree6721237, all5RI done, fresh separate full/
+native-public/cited proof. CI03 capability now composes in0.6 locally. Conditional
+S04 release prerequisite clears; discarded-match return targets differ between
+native transparent lowering and documented/publicJS IIFEs. This is an explicit
+PL decision HOLD before affected source work, not a fabricated runtime failure
+or architecture selection. Later capabilities/budgets/history remain intact.
+
 ## Exact S03 integration, then conditional S04 (2026-11-07)
 
 Operator approved [standaloneSlice22](../slice22-shared-roles-release-integration/slice-plan.md)
@@ -403,6 +413,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-08 v0.22: Slice22 independently accepts exact release62e composition;
+  all5RI done, S04 semantic readiness retains real Operator decision gates.
 - 2026-11-07 v0.21: Explicit Slice22 release integration/conditional S04 authority
   recorded; completion validity/policy gates and old allowances remain intact.
 - 2026-11-07 v0.20: S03 independently delivers the bounded private role contract;

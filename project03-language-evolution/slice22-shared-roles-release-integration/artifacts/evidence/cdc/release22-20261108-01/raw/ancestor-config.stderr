@@ -1,0 +1,6 @@
+stat: /project.json: stat: No such file or directory
+stat: /private/project.json: stat: No such file or directory
+stat: /private/tmp/project.json: stat: No such file or directory
+stat: /private/tmp/lykn-s22-cdc-20261108-01/project.json: stat: No such file or directory
+stat: /private/tmp/lykn-s22-cdc-20261108-01/native-tmp/project.json: stat: No such file or directory
+stat: /private/tmp/lykn-s22-cdc-20261108-01/public-tmp/project.json: stat: No such file or directory

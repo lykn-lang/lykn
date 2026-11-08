@@ -1,0 +1,12 @@
+crates/lykn-cli/tests/semantic_roles.rs
+crates/lykn-lang/src/classifier/forms.rs
+crates/lykn-lang/src/emitter/forms.rs
+crates/lykn-lang/src/lib.rs
+crates/lykn-lang/src/semantic_roles.rs
+docs/guides/00-lykn-surface-forms.md
+skills/lykn/SKILL.md
+test/fixtures/semantic-roles/boundaries.lykn
+test/fixtures/semantic-roles/do-while.lykn
+test/fixtures/semantic-roles/match.lykn
+test/fixtures/semantic-roles/while.lykn
+test/forms/semantic-roles.test.js

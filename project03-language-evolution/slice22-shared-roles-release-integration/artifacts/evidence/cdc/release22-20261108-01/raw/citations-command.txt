@@ -1,0 +1,7 @@
+date=2026-11-08 America/Chicago
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+source=62e9531e6183b3762a9ff326fdc07439db33f31f
+argv=make check-cited-paths
+stdout=/private/tmp/lykn-s22-cdc-20261108-01/raw/citations.stdout
+stderr=/private/tmp/lykn-s22-cdc-20261108-01/raw/citations.stderr
+scope=standalone committed citation gate; no source edits or extra compiler build

@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-08: Slice22 all5RI independently done, exact release62e/tree6721237;
+CI03 now locally integrated. S04 release dependency clears, but explicit
+statement-match return-target policy holds affected implementation. CI04 and
+all later obligations stay open; no source/tooling budget reset or K advance.
+
 2026-11-07 newest: Slice22 exact releasec9→62e/gates explicitly authorized,
 all5RI open. CI-03 accepted source remains; S04 held pending independently green
 release composition and source/semantic readiness. No S05/K/product edits/
@@ -104,7 +109,7 @@ is approved/closed by that authorization.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | CI-01 | Numeric-for headers/body roles faithfully compile supported variadic statements | Meaningful red/green native/kernel/CLI and runtime regressions; full source gates and independent review | correctness-grade | NE-C12 / S01 | done | slice01-variadic-for-context/cdc-verification.md; source8f5d199 | Narrow task-only delivery; no other loop/API/tooling claim |
 | CI-02 | Structured fatal lowering failures reach public APIs and all production routes before successful artifacts | Approved compatibility policy; caller/route tests, unchanged pre-existing output-file contents and no new JS/DTS on compiler failure, successful JS/DTS and legitimate runtime/user-text controls; independent full gates | correctness-grade | NE-C06 static channel / S02 | done | slice02-checked-emission-results/cdc-verification.md; taskc9e0d7e | Independently reproduced checked API/route capability; no text grep/legacy success, not release integration or arc composition |
-| CI-03 | Shared roles compose across validation/lowering with resolution and syntax boundaries intact | Role/counter regressions, native/JS comparison where equivalent, accepted historical controls and independent full gates | correctness-grade | A6 / accepted NE stack / S03 | done | slice03-shared-semantic-roles/cdc-verification.md; task62e9531 | Private incremental contract independently delivered; no recursive/public AST migration or arc-wide theorem |
+| CI-03 | Shared roles compose across validation/lowering with resolution and syntax boundaries intact | Role/counter regressions, native/JS comparison where equivalent, accepted historical controls and independent full gates | correctness-grade | A6 / accepted NE stack / S03 | done | slice03-shared-semantic-roles/cdc-verification.md; ../slice22-shared-roles-release-integration/cdc-verification.md | Private incremental contract independently delivered and integrated at release62e; no recursive/public AST migration or arc-wide theorem |
 | CI-04 | C02/C05 current-source validity and completion behavior are explicitly dispositioned and supported behavior correct | Source-contract decisions, actual generated/runtime witnesses and regressions, independent gates | correctness-grade | NE-C02/05 / S04 | open | | No pre-decision that C02 is supported or both remain current bugs |
 | CI-05 | Actual warnings and diagnostics faithfully distinguish used/unused and internal failures | Meaningful positive/negative diagnostic controls and independent gates | correctness-grade | NE-C06 observed warning / S05 | open | | Static nested-classifier concern separately owned CI-02 |
 | CI-06 | Accepted compiler composition supports delivered Lykn tooling and unchanged bounded K13 capability | Full tool prerequisites/generated/guard review, exact offline/raw per-row proof, fresh independent replay | correctness-grade | Slice11/17/19 / S06 | open | | K0/13 now; eight tooling passes spent; no F/audit inheritance |

@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## S03 release composition independently accepted — 2026-11-08
+
+[Slice22](slice22-shared-roles-release-integration/cdc-verification.md) accepts
+exact local release62e9531/tree6721237, all5RI done after fresh CC and separate
+CDC full normal Make/native5/public4/citation proof. CI03 capability is now
+integrated, no source authoring or remote action. Conditional S04 release gate
+clears; its statement-match return-target policy requires a concrete Operator
+decision before affected implementation. Old source/tooling budgets/history,
+P-1/later capabilities/S07S08/book/human duties remain open.
+
 ## Current S03 release integration / conditional S04 authority (2026-11-07)
 
 Operator explicitly approved exact local releasec9→accepted62e9531 FF/fresh actual
@@ -724,6 +734,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-08 v1.54: Independently closed exact Slice22 release62e integration;
+  all5RI done, S04 release gate clears with explicit completion-policy hold.
 - 2026-11-07 v1.53: Opened explicitly authorized Slice22 exact release FF/gates;
   conditional S04 advance retains real source/PL-policy/first-failure boundaries.
 - 2026-11-07 v1.52: Independently accepted S03 private shared roles at62e9531;

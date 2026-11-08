@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-cli/../../test/fixtures/semantic-roles/do-while.lykn", "-o", "/private/tmp/lykn-s22-cdc-20261108-01/native-tmp/.tmpI8fKto/do-while.js"]
+cwd=Some("/private/tmp/lykn-s22-cdc-20261108-01/native-tmp/.tmpI8fKto")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s22-cdc-20261108-01/native-xdg")
+TMPDIR=Some("/private/tmp/lykn-s22-cdc-20261108-01/native-tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s22-cdc-20261108-01/native")

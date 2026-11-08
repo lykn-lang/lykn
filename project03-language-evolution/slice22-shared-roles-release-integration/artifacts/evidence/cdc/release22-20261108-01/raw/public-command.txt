@@ -1,0 +1,10 @@
+date=2026-11-08 America/Chicago
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+source=62e9531e6183b3762a9ff326fdc07439db33f31f/tree672123750d2561f2d9d16c4ff1cb4590fca9da76 clean
+producer=/opt/homebrew/bin/deno
+version=2.9.6
+sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+argv=env TMPDIR=/private/tmp/lykn-s22-cdc-20261108-01/public-tmp XDG_CACHE_HOME=/private/tmp/lykn-s22-cdc-20261108-01/public-xdg npm_config_cache=/private/tmp/lykn-s22-cdc-20261108-01/public-npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-cdc-20261108-01/public /opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js
+stdout=/private/tmp/lykn-s22-cdc-20261108-01/raw/public.stdout
+stderr=/private/tmp/lykn-s22-cdc-20261108-01/raw/public.stderr
+expected=1 parent test/four steps, four complete generated modules and strict no-config/cached-only/no-npm/no-remote/deny-net/no-prompt children, unchanged oracles

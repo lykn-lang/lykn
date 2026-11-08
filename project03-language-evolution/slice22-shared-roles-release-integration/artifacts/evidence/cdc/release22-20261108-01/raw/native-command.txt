@@ -1,0 +1,13 @@
+date=2026-11-08 America/Chicago
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+source=62e9531e6183b3762a9ff326fdc07439db33f31f/tree672123750d2561f2d9d16c4ff1cb4590fca9da76 clean
+producer=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/semantic_roles-cb18f482652d85e9
+producer_sha256=40c6771d120818113dfaeaf2c65b0da85f8a9ef0bc88e9e06d3fbc8270f73b4e
+CARGO_BIN_EXE_lykn=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn
+debug_cli_sha256=c9b50970dbfa9c01930cc9f1ada8d1f14c8aec223e958178b965feebb19fcc5f
+preflight=all exact project.json ancestor paths in ancestor-config.stderr absent (stat exit1 expected); no rebuild since full Make0
+argv=env TMPDIR=/private/tmp/lykn-s22-cdc-20261108-01/native-tmp XDG_CACHE_HOME=/private/tmp/lykn-s22-cdc-20261108-01/native-xdg npm_config_cache=/private/tmp/lykn-s22-cdc-20261108-01/native-npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-cdc-20261108-01/native /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+stdout=/private/tmp/lykn-s22-cdc-20261108-01/raw/native.stdout
+stderr=/private/tmp/lykn-s22-cdc-20261108-01/raw/native.stderr
+expected=5 selected Rust tests, four exact positive JSON+LF runtime oracles and four invalid check/compile rejections/noJS; no invalid-output execution
+negative_DTS=unobserved placeholder, not filesystem proof

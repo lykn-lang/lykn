@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s22-cdc-20261108-01/public-tmp/45e3c40e522334c7/boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-s22-cdc-20261108-01/public-tmp/45e3c40e522334c7",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/test/fixtures/semantic-roles/boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-s22-cdc-20261108-01/public-tmp/45e3c40e522334c7/boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s22-cdc-20261108-01/public-xdg",
+    "TMPDIR": "/private/tmp/lykn-s22-cdc-20261108-01/public-tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s22-cdc-20261108-01/public"
+  }
+}

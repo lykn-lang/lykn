@@ -1,0 +1,4 @@
+actual tool return: write_stdin session58427, chunk0bbb03
+exit_code=0
+stdout=make.stdout
+stderr=make.stderr
