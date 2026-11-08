@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S03 first-substantive-failure hold (2026-11-07)
+
+[S03 review](arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/cdc-verification.md#current-independent-stop--2026-11-07)
+independently reproduces original implementation3737's native no-run101/E0277:
+private unit helper passes &&str to atom(Into<String>). Ordinary test authoring,
+not a new language/compiler finding. All6SR/CI-03/P-1 open; candidate runtime/
+fullMake/cites unrun. Test-only *item correction02 proposed, NOT issued/approved;
+refinement01 spent/four remain. Actual releasec9/Slice21 acceptance unchanged;
+S04/K/integration/source edits held, all history/tooling8 preserved.
+
 ## Current S03 incremental delivery opened (2026-11-07)
 
 After independently accepted Slice21 releasec9 integration, the Operator's direct
@@ -669,6 +679,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-07 v1.48: Recorded S03 ordinary private-test no-run failure and exact
+  independent replay; all rows remain open and local correction awaits Operator.
 - 2026-11-07 v1.47: Opened approved Arc01 S03 source-ready private semantic-role
   delivery, finite baseline/oracles and two-consumer adapters after releasec9
   composition acceptance; preserved public/API/A6 and later execution boundaries.

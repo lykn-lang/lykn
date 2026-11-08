@@ -9,6 +9,17 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S03 current substantive stop (2026-11-07)
+
+Original implementation3737 remains UNACCEPTED: first native no-run101/E0277 in
+new private test helper, independently replayed exactly by CDC. No candidate
+runtime/fullMake/cites. [S03 stopped review](slice03-shared-semantic-roles/cdc-verification.md#current-independent-stop--2026-11-07)
+owns source/raw/limits and proposed test-only *item correction02; no correction
+issued. All6SR/CI-03 open, refinement01 spent/four remain; releasec9 accepted.
+No structural roadmap/new slice/A6 change needed; ordinary local test correction
+requires explicit continuation under selected stop rule. S04/K/tooling/integration
+held, NE-C13 source-only S04/NE-C06 S05/S07–09/book/human duties intact.
+
 ## S03 opened after independent release acceptance — 2026-11-07
 
 S03 readiness also retained source-only NE-C13 statement-match guard continuation
@@ -341,6 +352,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-07 v0.16: S03 first no-run failed in private test authoring; exact CDC
+  replay/held correction recorded without roadmap or capability acceptance.
 - 2026-11-07 v0.15: Opened approved S03 private shared-role/cardinality delivery
   after Slice21 green; finite source-backed baseline and phase adapters fixed
   without a recursive AST/public API migration or old tooling budget reset.

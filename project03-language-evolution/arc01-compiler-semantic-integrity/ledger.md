@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 current S03 STOP: source3737 unit no-run101/E0277 independently
+confirmed; all6SR/CI-03 open, no candidate runtime/fullMake/cites. Local test-only
+correction02 proposed, not issued; refinement01 spent/four remain. Releasec9
+accepted/unchanged, later units/K/integration held; no architecture/budget reset.
+
 2026-11-07 current S03: six SR rows open under actual c9 baseline/private-role
 recipe after Slice21 release acceptance. CI-03 remains open; no descriptor-only
 acceptance, A6 rewrite, S04/K/tooling/budget reset or integration authority.

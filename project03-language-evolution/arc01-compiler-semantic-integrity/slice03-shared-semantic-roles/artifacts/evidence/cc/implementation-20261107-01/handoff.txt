@@ -1,0 +1,30 @@
+Contributor attestation, retained by CDC from the actual ownership-return message.
+This is not a reconstructed raw preflight/command/exit receipt.
+
+CC=/root/cdc/shared_roles_impl_luna_cc, OpenAI gpt-6-luna High.
+Source3737dddcdd2bde8d034b31991786502b229ad0ba,
+tree516a97c228a183c95e741b2c355b45e21ec65a48, clean codex/shared-semantic-roles.
+Actual fixed -F commit message/trailers read back before validation.
+
+Only post-freeze validation invocation:
+env TMPDIR=/private/tmp/s03-semantic-roles-20261107-luna/tmp XDG_CONFIG_HOME=/private/tmp/s03-semantic-roles-20261107-luna/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno cargo test --offline --locked -p lykn-lang --lib --no-run
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Tool-returned exit101; actual stdout/stderr redirected before inspection to:
+/private/tmp/s03-semantic-roles-20261107-luna/receipts/native/lykn-lang-no-run.stdout
+/private/tmp/s03-semantic-roles-20261107-luna/receipts/native/lykn-lang-no-run.stderr
+Those two original files were copied byte-preservingly to adjacent no-run.*.bin.
+stdout empty; stderr E0277 at semantic_roles.rs188, String:From<&&str> absent.
+
+Actual scoped variable was XDG_CONFIG_HOME, NOT required XDG_CACHE_HOME; CC
+acknowledged this setup deviation. No fresh-cache-compliance claim. Setup used
+mkdir -p for owned tmp/xdg/native/deno receipt directories; printenv TMPDIR
+XDG_CONFIG_HOME CARGO_HOME DENO_DIR HOME PATH; cargo/rustc/Deno versions plus
+Deno SHA check; exact candidate-path ls checks and a filtered npm prefix read.
+These setup observations are tool-text/contributor-attested, not raw file receipts.
+CC reported pre-freeze rustfmt --edition2024 on the two changed Rust source files;
+formatter raw/intermediate draft identities are not supplied by this handoff.
+The actual consumed implementation body is fully retained in Git3737.
+
+CC stopped immediately, no retries/source edits/other checks/Make/Deno runtimes;
+precreated deno receipt directory remained unused. Explicit ALL source/index/
+build/raw mutation ownership returned to CDC; actor then completed.

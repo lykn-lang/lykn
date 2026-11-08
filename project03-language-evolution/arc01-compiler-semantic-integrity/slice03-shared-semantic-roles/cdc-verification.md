@@ -1,4 +1,48 @@
-# S03 CDC verification — baseline only, implementation pending
+# S03 CDC verification — current substantive stop, source unaccepted
+
+## Current independent stop — 2026-11-07
+
+**UNACCEPTED / further execution held.** First original implementation no-run
+at3737dddc/tree516a97c exits101/E0277 in the new unit helper, not in a Lykn
+program or parser. `list(items: &[&str])` iterates to &&str; line188 passes that
+to `SExpr::atom(value: impl Into<String>,...)` (sexpr.rs163). Into<String> accepts
+&str, not &&str. Concrete test-only correction is dereference `*item`, pending
+Operator continuation. This is an ordinary authoring error; no new NE-C finding,
+PL-policy ambiguity or production semantic diagnosis is inferred.
+
+CDC Sol6.1 High independently repeated ONLY the exact existing no-run invocation
+after explicit complete CC ownership return. Exact source/module SHA
+619fadc6254a141270a5593cf5f23339ab4bd6713e92fa00c420b752fb87cdc6 before/after;
+same E0277/exit101/empty stdout. [Independent raw](artifacts/evidence/cdc/stop-20261107-01/)
+contains prelaunch command/source/cwd/tool identity, actual byte streams and exit;
+[CC raw/attested handoff](artifacts/evidence/cc/implementation-20261107-01/)
+distinguishes saved streams from uncaptured setup/tool-text attestation. Copies
+were byte-compared to originals. Cargo/rustc actual task override1.97, not outer
+cwd. No variant, source repair, later gate or runtime was launched.
+
+CC used XDG_CONFIG_HOME rather than required XDG_CACHE_HOME. Exact independent
+failure replay retains that original condition, not prospective compliance. The
+type error is source/API-determined, not evidence of cache/config dependency.
+The next authorized full validation must supply the correct fresh cache setup.
+Actual final source3737 is retained; pre-freeze formatter intermediate bodies/raw
+were not provided and are not claimed fully captured.
+
+Static release above failed to catch this routine Rust test construction error;
+CDC owns the miss alongside CC authoring, and root's read-only check also missed
+it. Static source review is not compilation. Candidate private/behavioral tests
+have ZERO executions, new native0/5 and public0/4; all preservation/full normal
+Make/citation/independent acceptance gates UNRUN. Earlier actual baseline results
+remain separately attributed to939, never upgraded to candidate success.
+
+Rowwalk: all six SR rows remain open. SR-01 retains completed frozen actual
+source/functional-baseline evidence with setup/receipt limits, not row/source
+acceptance. SR-02–06 gates deferred: source candidate exists/static reviewed,
+but does not build its unit tests and is not independently accepted.
+CI-03/P-1 remain open; accepted CI-01/02/releasec9 unchanged. All6row identities,
+issued initial/iteration01/02/03 prompts, old budgets/tooling8/K0 and S04/S05/
+S07/S08/book/human owners survive. No structural arc split/new dependency needed;
+the proposed next action is one local test correction02 under existing S03,
+subject to explicit continuation. No correction/prompt/source edit issued now.
 
 ## Frozen implementation static release — 2026-11-07
 

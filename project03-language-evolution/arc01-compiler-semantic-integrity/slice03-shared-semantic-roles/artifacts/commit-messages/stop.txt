@@ -1,0 +1,6 @@
+Record shared-role no-run stop and independent replay
+
+Preserve the unaccepted candidate, open rows and proposed test-only continuation.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

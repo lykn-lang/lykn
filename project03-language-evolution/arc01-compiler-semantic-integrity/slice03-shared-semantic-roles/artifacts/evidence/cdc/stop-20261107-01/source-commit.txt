@@ -1,0 +1,9 @@
+3737dddcdd2bde8d034b31991786502b229ad0ba
+516a97c228a183c95e741b2c355b45e21ec65a48
+Consolidate semantic child and body role policies
+
+Share phase-aware use and sequence cardinality without changing public AST APIs.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

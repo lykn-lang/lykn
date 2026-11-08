@@ -2,12 +2,33 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice03-shared-semantic-roles
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-integration]
 ---
 
 # S03 — authoritative child uses and body sequences
+
+## Current substantive stop / proposed correction only — 2026-11-07
+
+The ORIGINAL planned implementation is frozen/clean at3737dddcdd2bde8d034b31991786502b229ad0ba,
+tree516a97c228a183c95e741b2c355b45e21ec65a48, but UNACCEPTED. First native
+no-run exits101: new private test helper line188 passes &&str to atom(Into<String>).
+CDC independently repeated EXACT existing condition, same E0277/exit101; no
+source edits, behavior/runtime/private tests/fullMake/cites. See current
+[review](cdc-verification.md#current-independent-stop--2026-11-07),
+[stopped report](closing-report.md), [retrospective](cdc-retrospective.md).
+
+Source/index/build/raw ownership returned completely to CDC. Releasec9 and old
+accepted refs unchanged. Source refinement01/5 spent/four remain; original
+implementation is not another correction. Proposed correction02, PENDING
+Operator: test-only `SExpr::atom(*item, Span::default())` at the exact helper,
+unchanged predicates/fixtures/production code. Then original frozen-source review,
+ordered focused/full normal/citation/independent gates, with correct prospective
+XDG_CACHE_HOME/owned TMP/raw command metadata. No correction or new prompt issued.
+All further execution held by the selected first-substantive-failure rule;
+S03/CI-03 unaccepted, no S04/K/integration/budget reset. All six SR rows remain
+open, later gates deferred with explicit re-entry, not a completed source unit.
 
 ## Original baseline complete / implementation handoff — 2026-11-07
 

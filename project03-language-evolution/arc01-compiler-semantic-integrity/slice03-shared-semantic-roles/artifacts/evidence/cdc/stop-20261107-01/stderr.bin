@@ -1,0 +1,23 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0277]: the trait bound `std::string::String: From<&&str>` is not satisfied
+   --> crates/lykn-lang/src/semantic_roles.rs:188:41
+    |
+188 |                 .map(|item| SExpr::atom(item, Span::default()))
+    |                             ----------- ^^^^ the trait `From<&&str>` is not implemented for `std::string::String`
+    |                             |
+    |                             required by a bound introduced by this call
+    |
+    = help: consider casting the `&&str` value to `&str`
+    = note: required for `&&str` to implement `Into<std::string::String>`
+note: required by a bound in `sexpr::SExpr::atom`
+   --> crates/lykn-lang/src/ast/sexpr.rs:163:29
+    |
+163 |     pub fn atom(value: impl Into<String>, span: Span) -> Self {
+    |                             ^^^^^^^^^^^^ required by this bound in `SExpr::atom`
+help: consider dereferencing here
+    |
+188 |                 .map(|item| SExpr::atom(*item, Span::default()))
+    |                                         +
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `lykn-lang` (lib test) due to 1 previous error

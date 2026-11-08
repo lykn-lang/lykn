@@ -1,0 +1,14 @@
+Independent exact existing no-run failure replay; no source changes or variant.
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source=3737dddcdd2bde8d034b31991786502b229ad0ba
+tree=516a97c228a183c95e741b2c355b45e21ec65a48
+semantic_roles.rs blob=83962fd255c06b56550da8dbe255947f620892c9
+semantic_roles.rs SHA256=619fadc6254a141270a5593cf5f23339ab4bd6713e92fa00c420b752fb87cdc6
+actual cargo command lookup=/Users/oubiwann/.cargo/bin/cargo
+actual source-cwd cargo=/Users/oubiwann/.rustup/toolchains/1.97.0-aarch64-apple-darwin/bin/cargo
+cargo=1.97.0 (c980f4866 2026-06-30)
+rustc=1.97.0 (2d8144b78 2026-07-07)
+argv=env TMPDIR=/private/tmp/s03-semantic-roles-20261107-luna/tmp XDG_CONFIG_HOME=/private/tmp/s03-semantic-roles-20261107-luna/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno cargo test --offline --locked -p lykn-lang --lib --no-run
+stdout=/private/tmp/lykn-s03-cdc-stop-20261107-01/stdout.bin
+stderr=/private/tmp/lykn-s03-cdc-stop-20261107-01/stderr.bin
+Actual original XDG_CONFIG_HOME typo retained for EXACT failure replay, not setup compliance; required fresh XDG_CACHE_HOME was not supplied by original invocation. No runtime or behavioral tests.
