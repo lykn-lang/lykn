@@ -5,6 +5,11 @@ same Luna6 High CC/separate Sol6.1 High CDC, source0/5 and first substantive
 failure STOP. All6MR OPEN; no new source/gate yet. Earlier design-only cutoff
 below remains history; no Arc03 composition or old-budget reset.
 
+Actual assignment: issued017549ff; renewed Luna6 High intake/three fixed-message
+readbacks accepted, exclusive source/index/build/raw ownership handed to
+`/root/cdc/macro_dependency_design_luna`. Sol6.1 High CDC remains independent
+reviewer/planning owner. Tests-only freeze/static HOLD precedes any build.
+
 2026-11-08 DESIGN ONLY. All six MR rows OPEN; no new source, build or runtime.
 Future useful source unit0/5; no Arc03 source01/5/tooling8/K0 reset. Design review
 does not satisfy these implementation criteria.

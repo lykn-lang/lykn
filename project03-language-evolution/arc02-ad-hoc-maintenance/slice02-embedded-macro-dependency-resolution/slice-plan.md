@@ -26,6 +26,12 @@ Provided exact source -F files precede first commit. All6MR remain OPEN.
 
 ## Assignment history
 
+- 2026-11-08: iteration01 issued at017549ff297b9545a718dfc33fead3b5340c54ab.
+  `/root/cdc/macro_dependency_design_luna` completed renewed source intake and
+  verbatim readback of all three supplied commit messages. CDC handed that
+  Luna6 High actor exclusive source/index/build/raw ownership; CDC retains
+  planning/prose and independent acceptance. Hook preflight found only sample
+  hooks. Tests-only freeze is first; static review holds all builds/baselines.
 - Initial cc-prompt.md at6003: read-only design review completed, no source pass.
 - Iteration01 SOURCE assignment issued after explicit approval, predecessor
   design-only prompt. Same physical task checkout, new branch from accepted62e
