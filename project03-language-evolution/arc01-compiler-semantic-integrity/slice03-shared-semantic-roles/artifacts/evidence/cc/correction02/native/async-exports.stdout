@@ -1,0 +1,7 @@
+
+running 2 tests
+test async_exports_keep_unknown_nested_and_reserved_names_rejected ... ok
+test async_named_export_checks_compiles_and_imports_with_await ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

@@ -1,0 +1,13 @@
+Independent replay of ONLY Make's exact existing failing Clippy command.
+Reviewer=/root/cdc, OpenAI Sol6.1 High, after complete CC ownership return.
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source=ca982a598e4e4e0a5adf4943e737a517db50cea3
+tree=764d831708f6a793e9ffc92059d25815e1fff6bd
+semantic_roles.rs blob=87c28062c87f4bbdd6a1ea23fb9dbcad679e6651
+semantic_roles.rs SHA256=f62e77bfec7d17236bf3507f8074cdb04461d9b0a5ab7687b6ad4ad4e6fd319d
+actual source-cwd cargo=1.97.0 (c980f4866 2026-06-30)
+printenv CARGO_NET_OFFLINE CARGO_TARGET_DIR returned1/empty; both unset.
+argv=env TMPDIR=/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp XDG_CACHE_HOME=/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache npm_config_cache=/private/tmp/lykn-s03-correction02-luna-20261107-01/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno cargo clippy --all-features --workspace --all-targets -- -D warnings
+stdout=/private/tmp/lykn-s03-cdc-clippy-stop-20261107-01/stdout.bin
+stderr=/private/tmp/lykn-s03-cdc-clippy-stop-20261107-01/stderr.bin
+No source edits, new variants, full Make retry, runtime, citation or later gate.

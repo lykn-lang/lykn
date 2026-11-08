@@ -1,5 +1,30 @@
 # S03 retrospective at substantive stop
 
+## Correction02 window — 2026-11-07
+
+The exact test dereference fixed compilation and actual focused native/public
+behavior is green; complete modules show the intended role/cardinality fixes.
+Full normal Make nevertheless stops at an ordinary needless identity match under
+Clippy -D warnings. CDC independently confirmed only that exact failure. Source
+is unaccepted; descriptor/runtime controls do not replace the full quality gate.
+Static reviews did not disposition this lint issue before the gate; no language
+policy/compiler architecture inference follows. A one-expression private helper
+simplification is proposed, not applied, subject to explicit Operator continuation.
+
+The reused actor properly froze the one-line source correction and stopped
+without quiet fixes, but again missed one capture instruction: first no-run
+metadata was sent contemporaneously in chat rather than written before launch.
+Actual tool exit/raw were preserved; later prospective records were used after
+CDC/root reconciled provenance. This is nonconformance, not a passing file-capture
+step or reason to repeat the command to manufacture compliance. Keep the literal
+required destination visible at point of use, with no new checker/framework.
+
+Recommendations remain narrow: if approved, simplify only the identity match,
+retain all roles/oracles, finish original full normal/independent gates. This
+observation does not establish a model comparison or prescribe another staffing
+change. Source02/5 spent/three remain, earlier failures/limits/own review misses
+retained. No correction03/new prompt, new experiment, source integration or K.
+
 Closeout process note: full staged whitespace checking found the raw Git-body
 receipt's terminal blank line, and the shell sequence nevertheless committed.
 Preserve that actual finding/raw body; a separate explicit prose-only check

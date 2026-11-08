@@ -1,0 +1,4 @@
+f62e77bfec7d17236bf3507f8074cdb04461d9b0a5ab7687b6ad4ad4e6fd319d  crates/lykn-lang/src/semantic_roles.rs
+62460c92162cbebc89e1dd4e2d67fe5d6985aa6c0de871a9243a17c808ca2a16  target/debug/lykn
+b8ae42b0b3af461e3bbee33957e17b36714815e8c4454d6126cb89df59bfae87  target/release/lykn
+b8ae42b0b3af461e3bbee33957e17b36714815e8c4454d6126cb89df59bfae87  bin/lykn

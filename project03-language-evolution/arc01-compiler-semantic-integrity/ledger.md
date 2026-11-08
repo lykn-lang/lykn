@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 current correction02 STOP: S03 ca982 focused-green, fullMake2 at
+Clippy needless_match/CDC exact101. All6SR/CI-03 open; later full gates/cites
+unrun. Proposed private helper correction03 pending Operator, no edit/prompt.
+Source02/5 spent/three remain, releasec9/old budgets/other owners unchanged.
+
 2026-11-07 newest: explicit S03 test-only correction02/resumed original validation
 approved; source02/5 spent/three remain. All6SR/CI-03 open; releasec9 accepted,
 no later-unit/K/integration/budget reset. Earlier stopped condition retained.

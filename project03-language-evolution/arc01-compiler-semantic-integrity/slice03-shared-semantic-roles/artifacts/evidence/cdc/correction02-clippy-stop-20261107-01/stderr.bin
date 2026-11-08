@@ -1,0 +1,18 @@
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error: this match expression is unnecessary
+   --> crates/lykn-lang/src/semantic_roles.rs:112:9
+    |
+112 | /         match parent {
+113 | |             ExprUse::Tail => ExprUse::Tail,
+114 | |             ExprUse::Value => ExprUse::Value,
+115 | |             ExprUse::Statement => ExprUse::Statement,
+116 | |         }
+    | |_________^ help: replace it with: `parent`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#needless_match
+    = note: `-D clippy::needless-match` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_match)]`
+
+error: could not compile `lykn-lang` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 1 previous error

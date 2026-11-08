@@ -1,0 +1,10 @@
+
+running 5 tests
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... ok
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... ok
+test while_uses_value_test_and_statement_sequence_body ... ok
+test match_consumes_value_tail_after_statement_prefix ... ok
+test do_while_uses_value_test_and_statement_sequence_body ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+

@@ -1,5 +1,12 @@
 # S03 semantic role ledger
 
+Current2026-11-07 correction02 STOP: ca982 focused native5/private4/public1+4steps/
+listed preservation targets green; fullMake2 at Clippy needless_match112. Exact
+CDC Clippy replay101; all6SR open, no full source acceptance. Source02/5 spent/
+three remain; production-helper identity simplification correction03 proposed,
+NOT issued/approved. Format/full Rust/JS/docs/standalone cites unrun; inline
+cites63/601/deps/release build passed. Releasec9 unchanged; all ownership returned.
+
 Current2026-11-07: Operator explicitly approved exact test-only correction02 and
 original S03 validation. Iteration04 active; source02/5 spent/three remain,
 all6SR open. No row/source acceptance from approval, no baseline replay/reset.
@@ -40,8 +47,8 @@ first unexpected substantive failure stops. Prior S02/tooling budgets unchanged.
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | SR-01 | Actual source/role contract and meaningful baseline frozen | Exact c9 branch/readback,4positive/4negative sources and expected predicates committed before runtime | correctness-grade | CI-03/S03 | open | cdc-verification.md; baseline929af00/source939 | Functional baseline complete with native setup/receipt limits; no candidate/row acceptance |
-| SR-02 | Shared role core replaces duplicate validator/lowering policies | Private API/diff, real two-consumer use, removed duplicate profile/tail tables, typed conversion/context/structural counters | correctness-grade | CI-03/A6 | open | source3737; current review | Deferred: unit helper does not compile; proposed correction02 then original gates |
-| SR-03 | Roles/cardinality preserve supported actual behavior and reject consumed invalids | Native4/public4 real runtime traces;4negative compile/check conditions; syntax/bound/computed/loop/match/function preservation | correctness-grade | NE-C01/03/07–12 | open | current review/raw | Deferred: candidate native0/5/public0/4 unrun; no oracle change |
-| SR-04 | Full source/generated/runtime/documentation gates pass | Actual pins after builds, complete modules/optionalDTS/strict Deno, focused old regressions, normal unfiltered Make/cites | correctness-grade | AGENTS/testing | open | current review/raw | Deferred: no-run101; later gates unrun, no suppression |
-| SR-05 | Separate CDC reproduction accepts exact task candidate | Independent source/role/actual behavior/full normal/focused/citation replay after clean handoff | correctness-grade | work-verification | open | exact CDC no-run101 | Deferred: failure independently reproduced, source not accepted |
-| SR-06 | Delivery/history/architecture/docs and residual obligations reconcile | Rowwalk/review/report/retro/parents/A6/S07/S08 with actual clean refs/limits | correctness-grade | Arc01/Operator | open | closing-report.md; cdc-retrospective.md | Stopped handoff retained; final delivery/composition still requires continuation |
+| SR-02 | Shared role core replaces duplicate validator/lowering policies | Private API/diff, real two-consumer use, removed duplicate profile/tail tables, typed conversion/context/structural counters | correctness-grade | CI-03/A6 | open | sourceca982; current review | Compiles/private4 pass; lint blocked, new emitter3/full acceptance deferred |
+| SR-03 | Roles/cardinality preserve supported actual behavior and reject consumed invalids | Native4/public4 real runtime traces;4negative compile/check conditions; syntax/bound/computed/loop/match/function preservation | correctness-grade | NE-C01/03/07–12 | open | correction02 CC raw/current review | Focused native5/public4+4negatives/preservation green; independent/full acceptance deferred |
+| SR-04 | Full source/generated/runtime/documentation gates pass | Actual pins after builds, complete modules/optionalDTS/strict Deno, focused old regressions, normal unfiltered Make/cites | correctness-grade | AGENTS/testing | open | Make2/current review/raw | Clippy fails; format/full Rust/JS/docs/standalone cites unrun |
+| SR-05 | Separate CDC reproduction accepts exact task candidate | Independent source/role/actual behavior/full normal/focused/citation replay after clean handoff | correctness-grade | work-verification | open | exact CDC Clippy101 | Failure independently reproduced; no independent full acceptance |
+| SR-06 | Delivery/history/architecture/docs and residual obligations reconcile | Rowwalk/review/report/retro/parents/A6/S07/S08 with actual clean refs/limits | correctness-grade | Arc01/Operator | open | closing-report.md; cdc-retrospective.md | Current stopped handoff/limits retained; proposed correction03 requires Operator |

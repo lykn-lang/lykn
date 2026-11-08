@@ -1,0 +1,9 @@
+
+running 4 tests
+test runtime_predicates_reject_independent_control_mutations ... ok
+test package_error_keeps_language_diagnostic_and_failing_file_bytes ... ok
+test checked_emission_failure_blocks_cli_and_dist_outputs ... ok
+test valid_runtime_exceptions_and_resolved_dissoc_remain_ordinary_programs ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+

@@ -2,12 +2,31 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice03-shared-semantic-roles
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-integration]
 ---
 
 # S03 — authoritative child uses and body sequences
+
+## Current correction02 full-gate STOP — 2026-11-07
+
+Clean ca982a598e4e4e0a5adf4943e737a517db50cea3/tree764d831708f6a793e9ffc92059d25815e1fff6bd
+remains UNACCEPTED. Test-only correction02 compiled; focused native5/private4/
+public1+4steps and all nine listed CLI target controls pass. Full normal Make
+exits2 at Clippy needless_match in private sequence_use112; CDC independently
+reproduced ONLY that exact Clippy command, exit101. No source edit/retry/later
+gate. Format/full Rust/JS/docs and standalone cites unrun; inline cites63/601,
+dependencies and release build passed before lint. All6SR/CI-03 remain open.
+
+All ownership returned to CDC; source02/5 spent/three remain. Proposed correction03
+PENDING Operator: replace ONLY the identity `match parent` with `parent`, no lint
+allowance/semantic/fixture/oracle/API change, then original full gates and separate
+acceptance. This is private production helper code, beyond prior test-only scope;
+no new prompt or correction issued. Releasec9 unchanged; S04/K/integration held.
+See current [review](cdc-verification.md#correction02-current-independent-full-gate-stop--2026-11-07),
+retained report/retro and raw. First no-run's prelaunch metadata message existed
+but file did not; that nonconformance is explicitly retained, not backdated.
 
 ## Current explicit correction02 authority — 2026-11-07
 
@@ -36,7 +55,7 @@ All entries2026-11-07; issued files remain unchanged.
 | cc-prompt-iteration01.md | Initial; capture-only prevalidation completion | Refinement01; returned939 |
 | cc-prompt-iteration02.md | iteration01; release original baseline/guard readiness | Original baseline completed, no additional refinement |
 | cc-prompt-iteration03.md | iteration02; fresh original implementation contributor | Returned3737; first no-run101 stop, no extra correction count |
-| cc-prompt-iteration04.md | iteration03; explicit Operator test-only correction | CURRENT, refinement02/5; intake/handoff complete, ca982a5 exact one-line diff independently released for original validation |
+| cc-prompt-iteration04.md | iteration03; explicit Operator test-only correction | CURRENT RETURNED/STOPPED, refinement02/5; ca982a5 focused-green/fullMake2 at lint; no correction03 issued |
 
 ## Current substantive stop / proposed correction only — 2026-11-07
 

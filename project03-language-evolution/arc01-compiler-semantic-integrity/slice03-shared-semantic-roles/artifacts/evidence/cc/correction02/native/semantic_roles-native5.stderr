@@ -1,0 +1,352 @@
+SEMANTIC_ROLE_SOURCE name=native-negative-while-check source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/while.lykn"
+bytes=[40, 119, 104, 105, 108, 101, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 116, 114, 117, 101, 41, 32, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 34, 110, 101, 118, 101, 114, 34, 41, 41]
+SEMANTIC_ROLE_SOURCE name=native-boundaries-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/boundaries.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 112, 105, 99, 107, 101, 100, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 52, 32, 53, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 97, 114, 103, 101, 116, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 40, 40, 103, 101, 116, 32, 40, 97, 114, 114, 97, 121, 32, 116, 97, 114, 103, 101, 116, 41, 32, 48, 41, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 54, 32, 55, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 115, 119, 105, 116, 99, 104, 32, 49, 10, 32, 32, 40, 49, 10, 32, 32, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 49, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 32, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 40, 100, 101, 102, 97, 117, 108, 116, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 98, 97, 100, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 112, 105, 99, 107, 101, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-do-while-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/do-while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 100, 111, 45, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 48, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-while-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-match-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 99, 104, 111, 111, 115, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 110, 10, 32, 32, 32, 32, 40, 99, 97, 112, 116, 117, 114, 101, 100, 32, 58, 119, 104, 101, 110, 32, 40, 61, 32, 99, 97, 112, 116, 117, 114, 101, 100, 32, 49, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 103, 117, 97, 114, 100, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 55, 32, 56, 41, 41, 10, 32, 32, 32, 32, 40, 95, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 57, 32, 49, 48, 41, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 99, 104, 111, 111, 115, 101, 32, 49, 41, 32, 40, 99, 104, 111, 111, 115, 101, 32, 50, 41, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+SEMANTIC_ROLE_COMMAND name=native-negative-while-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/while.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-boundaries-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/boundaries.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpZbgaTi")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-do-while-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/do-while.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpWqwBJn")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-while-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/while.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp2X7C53")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-match-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp74UuoA")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-while-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 108, 121, 107, 110, 45, 115, 48, 51, 45, 99, 111, 114, 114, 101, 99, 116, 105, 111, 110, 48, 50, 45, 108, 117, 110, 97, 45, 50, 48, 50, 54, 49, 49, 48, 55, 45, 48, 49, 47, 116, 109, 112, 47, 46, 116, 109, 112, 55, 81, 65, 67, 106, 50, 47, 119, 104, 105, 108, 101, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 56, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_OUTPUT name=native-boundaries-check success=true code=Some(0)
+stdout=[] stderr=[47, 85, 115, 101, 114, 115, 47, 111, 117, 98, 105, 119, 97, 110, 110, 47, 108, 97, 98, 47, 108, 121, 107, 110, 47, 108, 97, 110, 103, 47, 46, 119, 111, 114, 107, 116, 114, 101, 101, 115, 47, 99, 111, 110, 116, 114, 97, 99, 116, 45, 112, 114, 101, 100, 105, 99, 97, 116, 101, 45, 108, 111, 119, 101, 114, 105, 110, 103, 47, 99, 114, 97, 116, 101, 115, 47, 108, 121, 107, 110, 45, 99, 108, 105, 47, 46, 46, 47, 46, 46, 47, 116, 101, 115, 116, 47, 102, 105, 120, 116, 117, 114, 101, 115, 47, 115, 101, 109, 97, 110, 116, 105, 99, 45, 114, 111, 108, 101, 115, 47, 98, 111, 117, 110, 100, 97, 114, 105, 101, 115, 46, 108, 121, 107, 110, 58, 32, 111, 107, 32, 40, 55, 32, 116, 111, 112, 45, 108, 101, 118, 101, 108, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 115, 41, 10]
+SEMANTIC_ROLE_OUTPUT name=native-match-check success=true code=Some(0)
+stdout=[] stderr=[47, 85, 115, 101, 114, 115, 47, 111, 117, 98, 105, 119, 97, 110, 110, 47, 108, 97, 98, 47, 108, 121, 107, 110, 47, 108, 97, 110, 103, 47, 46, 119, 111, 114, 107, 116, 114, 101, 101, 115, 47, 99, 111, 110, 116, 114, 97, 99, 116, 45, 112, 114, 101, 100, 105, 99, 97, 116, 101, 45, 108, 111, 119, 101, 114, 105, 110, 103, 47, 99, 114, 97, 116, 101, 115, 47, 108, 121, 107, 110, 45, 99, 108, 105, 47, 46, 46, 47, 46, 46, 47, 116, 101, 115, 116, 47, 102, 105, 120, 116, 117, 114, 101, 115, 47, 115, 101, 109, 97, 110, 116, 105, 99, 45, 114, 111, 108, 101, 115, 47, 109, 97, 116, 99, 104, 46, 108, 121, 107, 110, 58, 32, 111, 107, 32, 40, 51, 32, 116, 111, 112, 45, 108, 101, 118, 101, 108, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 115, 41, 10]
+SEMANTIC_ROLE_OUTPUT name=native-while-check success=true code=Some(0)
+stdout=[] stderr=[47, 85, 115, 101, 114, 115, 47, 111, 117, 98, 105, 119, 97, 110, 110, 47, 108, 97, 98, 47, 108, 121, 107, 110, 47, 108, 97, 110, 103, 47, 46, 119, 111, 114, 107, 116, 114, 101, 101, 115, 47, 99, 111, 110, 116, 114, 97, 99, 116, 45, 112, 114, 101, 100, 105, 99, 97, 116, 101, 45, 108, 111, 119, 101, 114, 105, 110, 103, 47, 99, 114, 97, 116, 101, 115, 47, 108, 121, 107, 110, 45, 99, 108, 105, 47, 46, 46, 47, 46, 46, 47, 116, 101, 115, 116, 47, 102, 105, 120, 116, 117, 114, 101, 115, 47, 115, 101, 109, 97, 110, 116, 105, 99, 45, 114, 111, 108, 101, 115, 47, 119, 104, 105, 108, 101, 46, 108, 121, 107, 110, 58, 32, 111, 107, 32, 40, 52, 32, 116, 111, 112, 45, 108, 101, 118, 101, 108, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 115, 41, 10]
+SEMANTIC_ROLE_OUTPUT name=native-do-while-check success=true code=Some(0)
+stdout=[] stderr=[47, 85, 115, 101, 114, 115, 47, 111, 117, 98, 105, 119, 97, 110, 110, 47, 108, 97, 98, 47, 108, 121, 107, 110, 47, 108, 97, 110, 103, 47, 46, 119, 111, 114, 107, 116, 114, 101, 101, 115, 47, 99, 111, 110, 116, 114, 97, 99, 116, 45, 112, 114, 101, 100, 105, 99, 97, 116, 101, 45, 108, 111, 119, 101, 114, 105, 110, 103, 47, 99, 114, 97, 116, 101, 115, 47, 108, 121, 107, 110, 45, 99, 108, 105, 47, 46, 46, 47, 46, 46, 47, 116, 101, 115, 116, 47, 102, 105, 120, 116, 117, 114, 101, 115, 47, 115, 101, 109, 97, 110, 116, 105, 99, 45, 114, 111, 108, 101, 115, 47, 100, 111, 45, 119, 104, 105, 108, 101, 46, 108, 121, 107, 110, 58, 32, 111, 107, 32, 40, 52, 32, 116, 111, 112, 45, 108, 101, 118, 101, 108, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 115, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-negative-while-compile source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/while.lykn"
+bytes=[40, 119, 104, 105, 108, 101, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 116, 114, 117, 101, 41, 32, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 34, 110, 101, 118, 101, 114, 34, 41, 41]
+SEMANTIC_ROLE_SOURCE name=native-boundaries-compile source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/boundaries.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 112, 105, 99, 107, 101, 100, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 52, 32, 53, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 97, 114, 103, 101, 116, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 40, 40, 103, 101, 116, 32, 40, 97, 114, 114, 97, 121, 32, 116, 97, 114, 103, 101, 116, 41, 32, 48, 41, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 54, 32, 55, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 115, 119, 105, 116, 99, 104, 32, 49, 10, 32, 32, 40, 49, 10, 32, 32, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 49, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 32, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 40, 100, 101, 102, 97, 117, 108, 116, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 98, 97, 100, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 112, 105, 99, 107, 101, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-match-compile source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 99, 104, 111, 111, 115, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 110, 10, 32, 32, 32, 32, 40, 99, 97, 112, 116, 117, 114, 101, 100, 32, 58, 119, 104, 101, 110, 32, 40, 61, 32, 99, 97, 112, 116, 117, 114, 101, 100, 32, 49, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 103, 117, 97, 114, 100, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 55, 32, 56, 41, 41, 10, 32, 32, 32, 32, 40, 95, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 57, 32, 49, 48, 41, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 99, 104, 111, 111, 115, 101, 32, 49, 41, 32, 40, 99, 104, 111, 111, 115, 101, 32, 50, 41, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-while-compile source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-do-while-compile source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/do-while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 100, 111, 45, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 48, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+SEMANTIC_ROLE_COMMAND name=native-negative-while-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/while.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/while.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-boundaries-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/boundaries.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpZbgaTi/boundaries.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpZbgaTi")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-match-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp74UuoA/match.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp74UuoA")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-while-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/while.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp2X7C53/while.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp2X7C53")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-do-while-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/do-while.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpWqwBJn/do-while.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpWqwBJn")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-while-compile success=false code=Some(1)
+stdout=[] stderr=[49, 58, 56, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_OUTPUT name=native-do-while-compile success=true code=Some(0)
+stdout=[] stderr=[50, 58, 49, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 99, 111, 117, 110, 116, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 99, 111, 117, 110, 116, 10]
+SEMANTIC_ROLE_OUTPUT name=native-match-compile success=true code=Some(0)
+stdout=[] stderr=[]
+SEMANTIC_ROLE_OUTPUT name=native-boundaries-compile success=true code=Some(0)
+stdout=[] stderr=[]
+SEMANTIC_ROLE_OUTPUT name=native-while-compile success=true code=Some(0)
+stdout=[] stderr=[50, 58, 49, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 99, 111, 117, 110, 116, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 99, 111, 117, 110, 116, 10]
+SEMANTIC_ROLE_ARTIFACTS name=native-negative-while generated=None generated_utf8=None dts=None
+SEMANTIC_ROLE_ARTIFACTS name=native-do-while generated=Some([99, 111, 110, 115, 116, 32, 116, 114, 97, 99, 101, 32, 61, 32, 91, 93, 59, 10, 99, 111, 110, 115, 116, 32, 99, 111, 117, 110, 116, 32, 61, 32, 123, 32, 118, 97, 108, 117, 101, 58, 32, 48, 32, 125, 59, 10, 100, 111, 32, 123, 10, 32, 32, 105, 102, 32, 40, 116, 114, 117, 101, 41, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 43, 32, 49, 48, 48, 41, 59, 10, 10, 32, 32, 99, 111, 110, 115, 116, 32, 102, 105, 114, 115, 116, 32, 61, 32, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 43, 32, 50, 48, 59, 10, 32, 32, 99, 111, 110, 115, 116, 32, 115, 101, 99, 111, 110, 100, 32, 61, 32, 102, 105, 114, 115, 116, 32, 43, 32, 49, 59, 10, 32, 32, 105, 102, 32, 40, 116, 114, 117, 101, 41, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 115, 101, 99, 111, 110, 100, 41, 59, 10, 10, 32, 32, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 61, 32, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 43, 32, 49, 59, 10, 125, 32, 119, 104, 105, 108, 101, 32, 40, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 60, 32, 50, 41, 59, 10, 99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 116, 114, 97, 99, 101, 41, 41, 59, 10]) generated_utf8=Some("const trace = [];\nconst count = { value: 0 };\ndo {\n  if (true) trace.push(count.value + 100);\n\n  const first = count.value + 20;\n  const second = first + 1;\n  if (true) trace.push(second);\n\n  count.value = count.value + 1;\n} while (count.value < 2);\nconsole.log(JSON.stringify(trace));\n") dts=None
+SEMANTIC_ROLE_ARTIFACTS name=native-match generated=Some([99, 111, 110, 115, 116, 32, 116, 114, 97, 99, 101, 32, 61, 32, 91, 93, 59, 10, 102, 117, 110, 99, 116, 105, 111, 110, 32, 99, 104, 111, 111, 115, 101, 40, 110, 41, 32, 123, 10, 32, 32, 105, 102, 32, 40, 116, 121, 112, 101, 111, 102, 32, 110, 32, 33, 61, 61, 32, 34, 110, 117, 109, 98, 101, 114, 34, 32, 124, 124, 32, 78, 117, 109, 98, 101, 114, 46, 105, 115, 78, 97, 78, 40, 110, 41, 41, 32, 116, 104, 114, 111, 119, 32, 110, 101, 119, 32, 84, 121, 112, 101, 69, 114, 114, 111, 114, 40, 34, 99, 104, 111, 111, 115, 101, 58, 32, 97, 114, 103, 32, 39, 110, 39, 32, 101, 120, 112, 101, 99, 116, 101, 100, 32, 110, 117, 109, 98, 101, 114, 44, 32, 103, 111, 116, 32, 34, 32, 43, 32, 116, 121, 112, 101, 111, 102, 32, 110, 41, 59, 10, 10, 32, 32, 114, 101, 116, 117, 114, 110, 32, 40, 40, 41, 32, 61, 62, 32, 123, 10, 32, 32, 32, 32, 99, 111, 110, 115, 116, 32, 116, 97, 114, 103, 101, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 32, 61, 32, 110, 59, 10, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 99, 111, 110, 115, 116, 32, 99, 97, 112, 116, 117, 114, 101, 100, 32, 61, 32, 116, 97, 114, 103, 101, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 59, 10, 32, 32, 32, 32, 32, 32, 105, 102, 32, 40, 99, 97, 112, 116, 117, 114, 101, 100, 32, 61, 61, 61, 32, 49, 41, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 105, 102, 32, 40, 116, 114, 117, 101, 41, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 34, 103, 117, 97, 114, 100, 34, 41, 59, 10, 10, 32, 32, 32, 32, 32, 32, 32, 32, 114, 101, 116, 117, 114, 110, 32, 116, 114, 117, 101, 32, 63, 32, 55, 32, 58, 32, 56, 59, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 105, 102, 32, 40, 116, 114, 117, 101, 41, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 59, 10, 10, 32, 32, 32, 32, 32, 32, 114, 101, 116, 117, 114, 110, 32, 102, 97, 108, 115, 101, 32, 63, 32, 57, 32, 58, 32, 49, 48, 59, 10, 32, 32, 32, 32, 125, 10, 32, 32, 125, 41, 40, 41, 59, 10, 125, 10, 99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 91, 91, 99, 104, 111, 111, 115, 101, 40, 49, 41, 44, 32, 99, 104, 111, 111, 115, 101, 40, 50, 41, 93, 44, 32, 116, 114, 97, 99, 101, 93, 41, 41, 59, 10]) generated_utf8=Some("const trace = [];\nfunction choose(n) {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"choose: arg 'n' expected number, got \" + typeof n);\n\n  return (() => {\n    const target__gensym0 = n;\n    {\n      const captured = target__gensym0;\n      if (captured === 1) {\n        if (true) trace.push(\"guard\");\n\n        return true ? 7 : 8;\n      }\n    }\n    {\n      if (true) trace.push(\"fallback\");\n\n      return false ? 9 : 10;\n    }\n  })();\n}\nconsole.log(JSON.stringify([[choose(1), choose(2)], trace]));\n") dts=None
+SEMANTIC_ROLE_ARTIFACTS name=native-boundaries generated=Some([99, 111, 110, 115, 116, 32, 109, 97, 116, 99, 104, 32, 61, 32, 110, 32, 61, 62, 32, 123, 10, 32, 32, 105, 102, 32, 40, 116, 121, 112, 101, 111, 102, 32, 110, 32, 33, 61, 61, 32, 34, 110, 117, 109, 98, 101, 114, 34, 32, 124, 124, 32, 78, 117, 109, 98, 101, 114, 46, 105, 115, 78, 97, 78, 40, 110, 41, 41, 32, 116, 104, 114, 111, 119, 32, 110, 101, 119, 32, 84, 121, 112, 101, 69, 114, 114, 111, 114, 40, 34, 97, 110, 111, 110, 121, 109, 111, 117, 115, 58, 32, 97, 114, 103, 32, 39, 110, 39, 32, 101, 120, 112, 101, 99, 116, 101, 100, 32, 110, 117, 109, 98, 101, 114, 44, 32, 103, 111, 116, 32, 34, 32, 43, 32, 116, 121, 112, 101, 111, 102, 32, 110, 41, 59, 10, 10, 32, 32, 114, 101, 116, 117, 114, 110, 32, 110, 59, 10, 125, 59, 10, 99, 111, 110, 115, 116, 32, 112, 105, 99, 107, 101, 100, 32, 61, 32, 109, 97, 116, 99, 104, 40, 116, 114, 117, 101, 32, 63, 32, 52, 32, 58, 32, 53, 41, 59, 10, 99, 111, 110, 115, 116, 32, 116, 97, 114, 103, 101, 116, 32, 61, 32, 110, 32, 61, 62, 32, 123, 10, 32, 32, 105, 102, 32, 40, 116, 121, 112, 101, 111, 102, 32, 110, 32, 33, 61, 61, 32, 34, 110, 117, 109, 98, 101, 114, 34, 32, 124, 124, 32, 78, 117, 109, 98, 101, 114, 46, 105, 115, 78, 97, 78, 40, 110, 41, 41, 32, 116, 104, 114, 111, 119, 32, 110, 101, 119, 32, 84, 121, 112, 101, 69, 114, 114, 111, 114, 40, 34, 97, 110, 111, 110, 121, 109, 111, 117, 115, 58, 32, 97, 114, 103, 32, 39, 110, 39, 32, 101, 120, 112, 101, 99, 116, 101, 100, 32, 110, 117, 109, 98, 101, 114, 44, 32, 103, 111, 116, 32, 34, 32, 43, 32, 116, 121, 112, 101, 111, 102, 32, 110, 41, 59, 10, 10, 32, 32, 114, 101, 116, 117, 114, 110, 32, 110, 59, 10, 125, 59, 10, 99, 111, 110, 115, 116, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 61, 32, 40, 91, 116, 97, 114, 103, 101, 116, 93, 91, 48, 93, 41, 40, 116, 114, 117, 101, 32, 63, 32, 54, 32, 58, 32, 55, 41, 59, 10, 99, 111, 110, 115, 116, 32, 116, 114, 97, 99, 101, 32, 61, 32, 91, 93, 59, 10, 115, 119, 105, 116, 99, 104, 32, 40, 49, 41, 32, 123, 10, 32, 32, 99, 97, 115, 101, 32, 49, 58, 10, 32, 32, 32, 32, 99, 111, 110, 115, 116, 32, 102, 105, 114, 115, 116, 32, 61, 32, 49, 59, 10, 32, 32, 32, 32, 99, 111, 110, 115, 116, 32, 115, 101, 99, 111, 110, 100, 32, 61, 32, 102, 105, 114, 115, 116, 32, 43, 32, 49, 59, 10, 32, 32, 32, 32, 105, 102, 32, 40, 116, 114, 117, 101, 41, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 115, 101, 99, 111, 110, 100, 41, 59, 10, 10, 32, 32, 32, 32, 98, 114, 101, 97, 107, 59, 10, 32, 32, 100, 101, 102, 97, 117, 108, 116, 58, 10, 32, 32, 32, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 34, 98, 97, 100, 34, 41, 59, 10, 125, 10, 99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 91, 112, 105, 99, 107, 101, 100, 44, 32, 99, 111, 109, 112, 117, 116, 101, 100, 44, 32, 116, 114, 97, 99, 101, 93, 41, 41, 59, 10]) generated_utf8=Some("const match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n\n  return n;\n};\nconst picked = match(true ? 4 : 5);\nconst target = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n\n  return n;\n};\nconst computed = ([target][0])(true ? 6 : 7);\nconst trace = [];\nswitch (1) {\n  case 1:\n    const first = 1;\n    const second = first + 1;\n    if (true) trace.push(second);\n\n    break;\n  default:\n    trace.push(\"bad\");\n}\nconsole.log(JSON.stringify([picked, computed, trace]));\n") dts=None
+SEMANTIC_ROLE_NEGATIVE_PREASSERT name=while check_status=Some(1) compile_status=Some(1) generated=None
+SEMANTIC_ROLE_ARTIFACTS name=native-while generated=Some([99, 111, 110, 115, 116, 32, 116, 114, 97, 99, 101, 32, 61, 32, 91, 93, 59, 10, 99, 111, 110, 115, 116, 32, 99, 111, 117, 110, 116, 32, 61, 32, 123, 32, 118, 97, 108, 117, 101, 58, 32, 48, 32, 125, 59, 10, 119, 104, 105, 108, 101, 32, 40, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 60, 32, 50, 41, 32, 123, 10, 32, 32, 105, 102, 32, 40, 116, 114, 117, 101, 41, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 43, 32, 49, 41, 59, 10, 10, 32, 32, 99, 111, 110, 115, 116, 32, 102, 105, 114, 115, 116, 32, 61, 32, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 43, 32, 49, 48, 59, 10, 32, 32, 99, 111, 110, 115, 116, 32, 115, 101, 99, 111, 110, 100, 32, 61, 32, 102, 105, 114, 115, 116, 32, 43, 32, 49, 59, 10, 32, 32, 105, 102, 32, 40, 116, 114, 117, 101, 41, 32, 116, 114, 97, 99, 101, 46, 112, 117, 115, 104, 40, 115, 101, 99, 111, 110, 100, 41, 59, 10, 10, 32, 32, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 61, 32, 99, 111, 117, 110, 116, 46, 118, 97, 108, 117, 101, 32, 43, 32, 49, 59, 10, 125, 10, 99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 116, 114, 97, 99, 101, 41, 41, 59, 10]) generated_utf8=Some("const trace = [];\nconst count = { value: 0 };\nwhile (count.value < 2) {\n  if (true) trace.push(count.value + 1);\n\n  const first = count.value + 10;\n  const second = first + 1;\n  if (true) trace.push(second);\n\n  count.value = count.value + 1;\n}\nconsole.log(JSON.stringify(trace));\n") dts=None
+SEMANTIC_ROLE_SOURCE name=native-do-while-runtime source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/do-while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 100, 111, 45, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 48, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-match-runtime source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 99, 104, 111, 111, 115, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 110, 10, 32, 32, 32, 32, 40, 99, 97, 112, 116, 117, 114, 101, 100, 32, 58, 119, 104, 101, 110, 32, 40, 61, 32, 99, 97, 112, 116, 117, 114, 101, 100, 32, 49, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 103, 117, 97, 114, 100, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 55, 32, 56, 41, 41, 10, 32, 32, 32, 32, 40, 95, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 57, 32, 49, 48, 41, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 99, 104, 111, 111, 115, 101, 32, 49, 41, 32, 40, 99, 104, 111, 111, 115, 101, 32, 50, 41, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-negative-do-while-check source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/do-while.lykn"
+bytes=[40, 100, 111, 45, 119, 104, 105, 108, 101, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 102, 97, 108, 115, 101, 41, 32, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 34, 110, 101, 118, 101, 114, 34, 41, 41]
+SEMANTIC_ROLE_SOURCE name=native-boundaries-runtime source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/boundaries.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 112, 105, 99, 107, 101, 100, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 52, 32, 53, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 97, 114, 103, 101, 116, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 40, 40, 103, 101, 116, 32, 40, 97, 114, 114, 97, 121, 32, 116, 97, 114, 103, 101, 116, 41, 32, 48, 41, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 54, 32, 55, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 115, 119, 105, 116, 99, 104, 32, 49, 10, 32, 32, 40, 49, 10, 32, 32, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 49, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 32, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 40, 100, 101, 102, 97, 117, 108, 116, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 98, 97, 100, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 112, 105, 99, 107, 101, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+SEMANTIC_ROLE_SOURCE name=native-while-runtime source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+SEMANTIC_ROLE_COMMAND name=native-do-while-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpWqwBJn/do-while.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpWqwBJn")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-match-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp74UuoA/match.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp74UuoA")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-negative-do-while-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/do-while.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-boundaries-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpZbgaTi/boundaries.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmpZbgaTi")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_COMMAND name=native-while-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp2X7C53/while.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp2X7C53")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-do-while-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 108, 121, 107, 110, 45, 115, 48, 51, 45, 99, 111, 114, 114, 101, 99, 116, 105, 111, 110, 48, 50, 45, 108, 117, 110, 97, 45, 50, 48, 50, 54, 49, 49, 48, 55, 45, 48, 49, 47, 116, 109, 112, 47, 46, 116, 109, 112, 55, 81, 65, 67, 106, 50, 47, 100, 111, 45, 119, 104, 105, 108, 101, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 49, 49, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_SOURCE name=native-negative-do-while-compile source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/do-while.lykn"
+bytes=[40, 100, 111, 45, 119, 104, 105, 108, 101, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 102, 97, 108, 115, 101, 41, 32, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 34, 110, 101, 118, 101, 114, 34, 41, 41]
+SEMANTIC_ROLE_COMMAND name=native-negative-do-while-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/do-while.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/do-while.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-do-while-compile success=false code=Some(1)
+stdout=[] stderr=[49, 58, 49, 49, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_ARTIFACTS name=native-negative-do-while generated=None generated_utf8=None dts=None
+SEMANTIC_ROLE_NEGATIVE_PREASSERT name=do-while check_status=Some(1) compile_status=Some(1) generated=None
+SEMANTIC_ROLE_SOURCE name=native-negative-bound-call-check source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/bound-call.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 120, 41, 32, 120, 41, 41, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 49, 41, 41]
+SEMANTIC_ROLE_COMMAND name=native-negative-bound-call-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/bound-call.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-bound-call-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 108, 121, 107, 110, 45, 115, 48, 51, 45, 99, 111, 114, 114, 101, 99, 116, 105, 111, 110, 48, 50, 45, 108, 117, 110, 97, 45, 50, 48, 50, 54, 49, 49, 48, 55, 45, 48, 49, 47, 116, 109, 112, 47, 46, 116, 109, 112, 55, 81, 65, 67, 106, 50, 47, 98, 111, 117, 110, 100, 45, 99, 97, 108, 108, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 51, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_SOURCE name=native-negative-bound-call-compile source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/bound-call.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 120, 41, 32, 120, 41, 41, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 49, 41, 41]
+SEMANTIC_ROLE_COMMAND name=native-negative-bound-call-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/bound-call.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/bound-call.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-bound-call-compile success=false code=Some(1)
+stdout=[] stderr=[49, 58, 51, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_ARTIFACTS name=native-negative-bound-call generated=None generated_utf8=None dts=None
+SEMANTIC_ROLE_NEGATIVE_PREASSERT name=bound-call check_status=Some(1) compile_status=Some(1) generated=None
+SEMANTIC_ROLE_SOURCE name=native-negative-computed-call-check source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/computed-call.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 97, 114, 103, 101, 116, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 120, 41, 32, 120, 41, 41, 32, 40, 40, 103, 101, 116, 32, 40, 97, 114, 114, 97, 121, 32, 116, 97, 114, 103, 101, 116, 41, 32, 48, 41, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 49, 41, 41]
+SEMANTIC_ROLE_COMMAND name=native-negative-computed-call-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/computed-call.lykn"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-computed-call-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 108, 121, 107, 110, 45, 115, 48, 51, 45, 99, 111, 114, 114, 101, 99, 116, 105, 111, 110, 48, 50, 45, 108, 117, 110, 97, 45, 50, 48, 50, 54, 49, 49, 48, 55, 45, 48, 49, 47, 116, 109, 112, 47, 46, 116, 109, 112, 55, 81, 65, 67, 106, 50, 47, 99, 111, 109, 112, 117, 116, 101, 100, 45, 99, 97, 108, 108, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 53, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_SOURCE name=native-negative-computed-call-compile source_path="/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/computed-call.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 97, 114, 103, 101, 116, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 120, 41, 32, 120, 41, 41, 32, 40, 40, 103, 101, 116, 32, 40, 97, 114, 114, 97, 121, 32, 116, 97, 114, 103, 101, 116, 41, 32, 48, 41, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 49, 41, 41]
+SEMANTIC_ROLE_COMMAND name=native-negative-computed-call-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/computed-call.lykn", "-o", "/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2/computed-call.js"]
+cwd=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp/.tmp7QACj2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s03-correction02-luna-20261107-01/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/correction02/native/receipts")
+
+SEMANTIC_ROLE_OUTPUT name=native-negative-computed-call-compile success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 105, 102, 32, 105, 110, 32, 101, 120, 112, 114, 101, 115, 115, 105, 111, 110, 32, 112, 111, 115, 105, 116, 105, 111, 110, 32, 114, 101, 113, 117, 105, 114, 101, 115, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 97, 100, 100, 32, 97, 110, 32, 101, 108, 115, 101, 32, 98, 114, 97, 110, 99, 104, 44, 32, 111, 114, 32, 114, 101, 115, 116, 114, 117, 99, 116, 117, 114, 101, 32, 97, 115, 32, 97, 32, 115, 116, 97, 116, 101, 109, 101, 110, 116, 10]
+SEMANTIC_ROLE_ARTIFACTS name=native-negative-computed-call generated=None generated_utf8=None dts=None
+SEMANTIC_ROLE_NEGATIVE_PREASSERT name=computed-call check_status=Some(1) compile_status=Some(1) generated=None
+SEMANTIC_ROLE_OUTPUT name=native-while-runtime success=true code=Some(0)
+stdout=[91, 49, 44, 49, 49, 44, 50, 44, 49, 50, 93, 10] stderr=[]
+SEMANTIC_ROLE_OUTPUT name=native-boundaries-runtime success=true code=Some(0)
+stdout=[91, 52, 44, 54, 44, 91, 50, 93, 93, 10] stderr=[]
+SEMANTIC_ROLE_OUTPUT name=native-match-runtime success=true code=Some(0)
+stdout=[91, 91, 55, 44, 49, 48, 93, 44, 91, 34, 103, 117, 97, 114, 100, 34, 44, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 93, 93, 10] stderr=[]
+SEMANTIC_ROLE_OUTPUT name=native-do-while-runtime success=true code=Some(0)
+stdout=[91, 49, 48, 48, 44, 50, 49, 44, 49, 48, 49, 44, 50, 50, 93, 10] stderr=[]

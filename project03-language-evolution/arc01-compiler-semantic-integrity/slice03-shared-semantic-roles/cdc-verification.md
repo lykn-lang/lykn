@@ -1,5 +1,72 @@
 # S03 CDC verification — current substantive stop, source unaccepted
 
+## Correction02 current independent full-gate stop — 2026-11-07
+
+**UNACCEPTED; all6SR open.** Exact ca982a598e4e4e0a5adf4943e737a517db50cea3/
+tree764d831708f6a793e9ffc92059d25815e1fff6bd is clean. Actual Luna High CC
+`/root/cdc/shared_roles_impl_luna_cc` returned all source/index/build/raw ownership
+after first full-gate failure. No later source edit/check/retry or new prompt.
+
+Correction02 fixed ONLY the private test atom dereference. Actual no-run builds
+and fresh-artifacts exit0, then pinned direct focused results:
+
+| Condition | Actual selected result |
+| --- | --- |
+| private semantic_roles module | 4passed/1136filtered, exit0; three new emitter units/full lib still unrun |
+| native semantic_roles | 5passed, exit0;4positive runtimes exact JSON+LF/emptyerr and4invalid consumed positions rejected |
+| public semantic_roles | 1parent/4steps, exit0;4strict runtimes exact JSON+LF/emptyerr |
+| match_clause_validation | 5passed/exit0 |
+| variadic_for_bodies | 2passed/exit0 |
+| async_expression_values | 1parent passed/exit0 (not five Rust selected tests) |
+| async_exports | 2passed/exit0 |
+| contract_predicate_lowering | 1parent passed/exit0 (not seventeen Rust selected tests) |
+| emission_failures | 4passed/exit0 |
+| compile_validation_parity | 3passed/exit0 |
+| template_string_boundary | 1parent passed/exit0 |
+
+CDC and root separately read all four complete retained native generated modules:
+correct test-first loops/sibling const declarations; match guard=== and guarded
+false continuation/value ternaries; ordinary bound/computed calls; structural
+switch case/default/break and runtime type guards. This is actual source/module
+review of CC observations, NOT fresh independent behavioral acceptance. Raw
+streams/per-case source/commands/modules/status and selected actual executable
+pins live in [correction02 CC evidence](artifacts/evidence/cc/correction02/).
+
+Full normal unfiltered Make toola3e1a5 exits2 at first Clippy stage. Dependencies,
+inline cited-paths63documents/601historical and release build/copy passed; Clippy
+rejects semantic_roles.rs112–116 under -D warnings: an identity match on parent
+is needless. Format, full Rust (including checked-result integration), full JS,
+docs and standalone cited-path gate were NOT executed. Focused green is not a
+full gate pass. Original Make stdout/stderr/prelaunch/status files remain intact.
+
+CDC Sol6.1 High independently replayed ONLY Make's exact
+`cargo clippy --all-features --workspace --all-targets -- -D warnings`, same
+frozen source/scoped env, actual task cargo1.97/no Cargo global overrides:
+exit101/same needless_match/empty stdout. Prelaunch source/cwd/env/argv/raw/status
+and post-use pins are [here](artifacts/evidence/cdc/correction02-clippy-stop-20261107-01/).
+Module SHAf62e77bfec7d17236bf3507f8074cdb04461d9b0a5ab7687b6ad4ad4e6fd319d
+unchanged before/after. Actual debug CLI62460c92162cbebc89e1dd4e2d67fe5d6985aa6c0de871a9243a17c808ca2a16;
+post-Make release/bin bothb8ae42b0b3af461e3bbee33957e17b36714815e8c4454d6126cb89df59bfae87,
+observed but not used for any post-stop runtime.
+
+Capture qualification: first corrected lib no-run had contemporaneous full
+prelaunch metadata in a CC→CDC message, not the required durable prelaunch file.
+Original exec9a2f60 returned0; saved complete streams show Finished/Executable.
+This file-capture nonconformance was preserved in an explicitly postlaunch note;
+CDC/root reconciled actual message/tool provenance and continued only original
+unrun gates, no compliance replay. Later prelaunch/status records were written
+for original gates. Do not backdate or claim blanket capture compliance. Earlier
+baseline TMP/XDG/broad-find/negative-DTS/formatter/raw-EOF limits remain unchanged.
+
+Known bounded next proposal: production-private sequence_use identity match→parent
+ONLY, with predicates/fixtures/roles/APIs unchanged; NO lint suppression/skip.
+It requires explicit correction03 authority under first-further-failure stop,
+despite being semantically an identity. Current02/5 spent/three remain. No new
+compiler/language finding, A6/arc split or investigation is justified. Unknown
+remaining gate outcomes stay untested. SR-01–06/CI-03/P-1 open; accepted releasec9
+and prior capabilities unaffected. Original completion/doc/book/human owners
+remain. No S04/K/integration/publication follows this stopped handoff.
+
 ## Correction02 immutable release — 2026-11-07
 
 Explicit Operator continuation issued iteration04; same actual Luna High actor

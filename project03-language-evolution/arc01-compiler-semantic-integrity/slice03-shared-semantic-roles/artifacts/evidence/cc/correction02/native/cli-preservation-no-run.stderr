@@ -1,0 +1,9 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.87s
+  Executable tests/async_exports.rs (target/debug/deps/async_exports-c55362a2e44ad97d)
+  Executable tests/async_expression_values.rs (target/debug/deps/async_expression_values-ca9664e9a5eacb46)
+  Executable tests/compile_validation_parity.rs (target/debug/deps/compile_validation_parity-ed5da4aecd278839)
+  Executable tests/contract_predicate_lowering.rs (target/debug/deps/contract_predicate_lowering-5224edfea80a9408)
+  Executable tests/emission_failures.rs (target/debug/deps/emission_failures-ee1302ddd95a417d)
+  Executable tests/template_string_boundary.rs (target/debug/deps/template_string_boundary-7a0f5808c52261b8)
+  Executable tests/variadic_for_bodies.rs (target/debug/deps/variadic_for_bodies-dc06f81c033262f2)

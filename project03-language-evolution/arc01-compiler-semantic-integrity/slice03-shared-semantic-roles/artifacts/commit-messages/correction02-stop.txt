@@ -1,0 +1,6 @@
+Record semantic-role focused results and lint stop
+
+Preserve exact independent Clippy failure and the unaccepted source handoff.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

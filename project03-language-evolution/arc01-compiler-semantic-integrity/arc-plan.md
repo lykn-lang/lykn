@@ -9,6 +9,15 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Current S03 correction02 quality stop (2026-11-07)
+
+Focused native5/private4/public1+4steps and existing CLI controls pass atca982,
+but full normal Make2/independent Clippy101 block acceptance at needless_match112.
+All6SR/CI-03 open; later full gates/standalone cites unrun. [Current review](slice03-shared-semantic-roles/cdc-verification.md#correction02-current-independent-full-gate-stop--2026-11-07)
+preserves raw/limits and proposed identity-match→parent correction03, NOT issued.
+Source02/5 spent/three remain; no roadmap/A6 change or new language finding.
+Releasec9 accepted/untouched; S04/K/integration and old obligations held.
+
 ## Current S03 correction02 continuation (2026-11-07)
 
 Operator explicitly approved exact private-test `atom(*item,...)` correction and
@@ -359,6 +368,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-07 v0.18: S03 focused behavior passes but full quality gate stops at
+  needless identity match; exact independent failure/proposed correction retained.
 - 2026-11-07 v0.17: Explicit Operator correction02 resumes original S03 gates;
   no capability acceptance, roadmap change or budget reset.
 - 2026-11-07 v0.16: S03 first no-run failed in private test authoring; exact CDC

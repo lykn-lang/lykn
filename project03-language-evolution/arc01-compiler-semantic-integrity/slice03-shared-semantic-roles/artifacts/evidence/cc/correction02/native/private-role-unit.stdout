@@ -1,0 +1,9 @@
+
+running 4 tests
+test semantic_roles::tests::bound_heads_remain_value_calls_and_if_branches_are_fixed_inherited_slots ... ok
+test semantic_roles::tests::conversions_preserve_every_existing_emitter_context ... ok
+test semantic_roles::tests::loop_policies_keep_fixed_headers_and_flat_statement_sequences ... ok
+test semantic_roles::tests::function_tail_and_sequence_roles_preserve_tail_distinction ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1136 filtered out; finished in 0.00s
+
