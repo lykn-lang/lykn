@@ -1,0 +1,6 @@
+Open authorized shared-role release integration
+
+Require exact fast-forward and independent release gates before conditional S04.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

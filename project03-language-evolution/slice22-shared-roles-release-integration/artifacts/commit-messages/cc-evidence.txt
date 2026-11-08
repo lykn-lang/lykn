@@ -1,0 +1,6 @@
+Record exact shared-role release integration evidence
+
+Retain actual release gates, producer identities and proposed row dispositions.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

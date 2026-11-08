@@ -9,6 +9,17 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Exact S03 integration, then conditional S04 (2026-11-07)
+
+Operator approved [standaloneSlice22](../slice22-shared-roles-release-integration/slice-plan.md)
+for exact releasec9→62e9531 FF and fresh release/independent gates, no product
+authoring. All5RI open; CI-03 acceptance stays task-only until actual integration.
+Only after all-green independent close, CDC opens/executes S04 source-grounded
+completion/value-flow disposition for C02/C05/source-onlyNE-C13; unresolved
+semantic/policy/evidence choices hold affected work concretely, not auto-selected
+by adjacent approval. Same models/Autonomous/ANY substantive failure STOP, no
+S05/K/integration beyond named0.6 FF. Old budgets/remaining owners unchanged.
+
 ## S03 capability independently delivered (2026-11-07)
 
 [S03](slice03-shared-semantic-roles/cdc-verification.md#final-independent-acceptance--2026-11-07)
@@ -392,6 +403,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-07 v0.21: Explicit Slice22 release integration/conditional S04 authority
+  recorded; completion validity/policy gates and old allowances remain intact.
 - 2026-11-07 v0.20: S03 independently delivers the bounded private role contract;
   CI-03 done with actual CC attribution/limits and later owners preserved.
 - 2026-11-07 v0.19: Explicit correction03 resumes fresh full/current-runtime/

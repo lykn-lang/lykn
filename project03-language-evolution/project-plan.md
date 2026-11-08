@@ -9,6 +9,18 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S03 release integration / conditional S04 authority (2026-11-07)
+
+Operator explicitly approved exact local releasec9→accepted62e9531 FF/fresh actual
+release validation/separate review, then S04 ONLY if all green. New standalone
+[Slice22](slice22-shared-roles-release-integration/slice-plan.md) follows actual
+1–21 inventory/Slice21 convention; all5RI open. Same Luna6 High CC/separate
+Sol6.1 High CDC/Autonomous/ANY substantive failure STOP. No new product edits/
+other branches/push/publication. S04 source/runtime held until independent
+integration close; readiness must reconcile current C02/C05/source-onlyNE-C13
+without assumed validity/common cause or unapproved language policy. No S05/K/
+library/corpus scope, old source/tool budgets preserved.
+
 ## Current S03 independently accepted, task-only (2026-11-07)
 
 [S03 final review](arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/cdc-verification.md#final-independent-acceptance--2026-11-07)
@@ -712,6 +724,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-07 v1.53: Opened explicitly authorized Slice22 exact release FF/gates;
+  conditional S04 advance retains real source/PL-policy/first-failure boundaries.
 - 2026-11-07 v1.52: Independently accepted S03 private shared roles at62e9531;
   actual CC row attribution/history/residual owners retained, no later advance.
 - 2026-11-07 v1.51: Recorded explicit private-helper correction03 authority and

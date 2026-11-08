@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 newest: Operator approved standaloneSlice22 exact releasec9→62e FF/
+actual fresh gates/independent review, then conditional S04 only. All5RI open;
+CI-03 done/P-1 and later capabilities open. Same models/stop rule; no product/
+other propagation/push/K/new allowance. S04 policy/source readiness not presumed.
+
 Final2026-11-07: S03 all6SR/CI-03 independently done at task62e9531, fresh full
 Make/current native-public/cites and actual CC row attribution. P-1/later arc
 capabilities open, releasec9 unchanged. Source03/5 spent/two unused/tooling8/K0
