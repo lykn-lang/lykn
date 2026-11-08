@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 current: explicit Operator approval opens Slice21 exact release8f→c9
+FF/validation/independent review, then conditional S03. All5RI open; P-1 remains
+open. No source code/other propagation/tooling budget change or S04 authority.
+
 2026-11-07 final S02: taskc9 checked lowering/route capability independently
 accepted, six CE done/CI-02 delivered. Fresh full normal Make/focused/runtime/
 citations pass. P-1/arc composition and remaining S03–09 open; release8f unchanged,

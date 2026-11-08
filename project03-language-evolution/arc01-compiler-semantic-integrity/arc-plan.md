@@ -9,6 +9,16 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 integration then approved S03 advance — 2026-11-07
+
+Operator explicitly opened [standalone Slice21](../slice21-checked-emission-release-integration/slice-plan.md)
+for exact release8f→acceptedc9 fast-forward and fresh separate release gates.
+Only after that independent close, move directly into S03's approved incremental
+shared semantic role delivery. Private representation/adapters are routine
+readiness choices; a recursive A6/public-AST/PL expansion still requires explicit
+decision. Same Luna6 High CC/Sol6.1 High CDC and substantive-failure stop; no S04/
+integration beyond0.6/tooling/K authority. CI-02 accepted; CI-03 awaits real work.
+
 ## S02 independently delivered — 2026-11-07
 
 [S02](slice02-checked-emission-results/cdc-verification.md) independently accepts
@@ -303,6 +313,9 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.13: Recorded explicit S02 exact release integration and
+  conditional approved S03 advance; preserved public-AST/PL decisions and budgets.
 
 - 2026-11-07 v0.12: S02/CI-02 independently accepted task-only after fresh full
   normal/focused/runtime/citation gates and approved RD01 disposition. Recorded

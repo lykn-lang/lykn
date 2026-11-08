@@ -1,0 +1,6 @@
+Record checked-emission release integration evidence
+
+Preserve the exact fast-forward and fresh release validation outcomes.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

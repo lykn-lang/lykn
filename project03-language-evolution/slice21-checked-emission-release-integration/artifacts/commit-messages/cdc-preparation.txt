@@ -1,0 +1,6 @@
+Open checked-emission release integration
+
+Record exact local fast-forward authority and separate release gates before S03.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

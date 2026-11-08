@@ -9,6 +9,17 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current integration and conditional S03 authority (2026-11-07)
+
+The Operator explicitly approved exact release8f→acceptedc9 FF plus fresh release
+validation/independent review, then direct S03. [Slice21](slice21-checked-emission-release-integration/slice-plan.md)
+owns this bounded integration; no product change/other propagation/push/publish.
+After independently green close, S03 may implement the approved incremental
+shared-role direction on a dedicated task descendant; public-AST/PL policy
+expansion remains a real gate, not implicit A6 approval. Same Luna6 High CC/
+separate Sol6.1 High CDC Autonomous Mode, first substantive failure stops.
+S02 source03/5, old tooling8/K0/13 and history remain. No S04/later scope.
+
 ## Current S02 delivery (2026-11-07)
 
 Arc01 [S02 independent review](arc01-compiler-semantic-integrity/slice02-checked-emission-results/cdc-verification.md)
@@ -637,6 +648,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.45: Opened standalone Slice21 for explicitly approved exact S02
+  local release FF/fresh independent gates, with conditional direct S03 advance
+  within the approved incremental design and retained architecture gates.
 
 - 2026-11-07 v1.44: Independently accepted Arc01 S02/CI-02 task-only after full
   normal/focused/generated/runtime/citation reproduction and approved RD01.
