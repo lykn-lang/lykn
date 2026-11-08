@@ -1,5 +1,10 @@
 # Embedded macro dependency repair ledger
 
+2026-11-08 implementation approved: [source iteration01](cc-prompt-iteration01.md),
+same Luna6 High CC/separate Sol6.1 High CDC, source0/5 and first substantive
+failure STOP. All6MR OPEN; no new source/gate yet. Earlier design-only cutoff
+below remains history; no Arc03 composition or old-budget reset.
+
 2026-11-08 DESIGN ONLY. All six MR rows OPEN; no new source, build or runtime.
 Future useful source unit0/5; no Arc03 source01/5/tooling8/K0 reset. Design review
 does not satisfy these implementation criteria.

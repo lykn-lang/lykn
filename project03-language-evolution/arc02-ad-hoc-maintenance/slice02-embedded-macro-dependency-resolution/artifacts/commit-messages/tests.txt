@@ -1,0 +1,6 @@
+Freeze isolated macro dependency regressions
+
+Capture compiler configuration, alias preservation and cache behavior before the evaluator repair.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

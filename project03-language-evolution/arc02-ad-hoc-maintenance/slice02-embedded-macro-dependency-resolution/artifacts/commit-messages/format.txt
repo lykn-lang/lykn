@@ -1,0 +1,6 @@
+Format embedded macro dependency sources
+
+Apply repository-native leaf formatting to the frozen owned Rust paths without semantic changes.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,0 +1,6 @@
+Resolve macros with compiler-owned configuration
+
+Preserve Lykn import tiers while selecting the embedded manifest and frozen dependency lock.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

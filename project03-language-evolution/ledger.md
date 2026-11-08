@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 latest: finite Arc02 S02 SOURCE implementation/independent close
+approved, [iteration01](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cc-prompt-iteration01.md).
+Same Luna6 High CC/Sol6.1 High CDC, source0/5/first substantive failure STOP.
+All6MR/AM-04 open; no Arc03 composition/release/next unit or old-budget reset.
+
 2026-11-08 design endpoint: actual fresh Luna read-only review/CDC reconciliation
 [recorded](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/artifacts/design-review.md).
 No new implementation/runtime/source acceptance; six MR/AM-04/HC/PHI/CV remain

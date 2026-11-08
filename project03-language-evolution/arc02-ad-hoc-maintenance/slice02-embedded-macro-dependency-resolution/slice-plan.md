@@ -2,13 +2,35 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice02-embedded-macro-dependency-resolution
-status: planning
+status: in-progress
 planned-release: unassigned
 depends-on: []
 related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
 ---
 
 # S02 — compiler-owned embedded macro dependency resolution
+
+## Current implementation authority — 2026-11-08
+
+Operator “Perfect! Go ahead and implement” approves reviewed c209462 design
+for this prerequisite's source delivery/independent close. Current SOURCE
+assignment [cc-prompt-iteration01.md](cc-prompt-iteration01.md); initial6003
+cc-prompt.md remains immutable DESIGN-only history. Reuse coherent Luna6 High
+design contributor as CC after renewed intake/source ownership; Sol6.1 High CDC
+independently reviews/reproduces. First planned source assignment0/5, source
+refinements not inferred from filename. Arc03 source01/5/tooling8/K0 unchanged.
+STOP ANY substantive failure/real gap. Only finite S02 is authorized; no Arc03
+composition/continuation, release mutation or automatic next source unit.
+Actual immutable freezes/static release precede baseline and production gates.
+Provided exact source -F files precede first commit. All6MR remain OPEN.
+
+## Assignment history
+
+- Initial cc-prompt.md at6003: read-only design review completed, no source pass.
+- Iteration01 SOURCE assignment issued after explicit approval, predecessor
+  design-only prompt. Same physical task checkout, new branch from accepted62e
+  only after intake/handoff; old e2f ref preserved. Execution pending, no new
+  results claimed. First initial planned code/TDD delivery, not a budget reset.
 
 ## Reviewed design outcome — 2026-11-08
 
