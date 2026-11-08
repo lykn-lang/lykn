@@ -740,7 +740,7 @@ Surface syntax covers the vast majority of use cases. Drop to kernel forms only 
 
 1. **JS interop requires it**: a JS construct with no surface equivalent
 2. **Class bodies**: `class` is a kernel form; method bodies use kernel syntax
-3. **Low-level control flow**: `switch`, `for`, `do-while`, `label` — kernel forms
+3. **Low-level control flow**: `switch`, `for`, `do-while`, `label` — kernel forms. In `(do-while test body...)`, the test comes first and every later form is a statement in the body.
 4. **Debugging**: `(debugger)` is a kernel form
 5. **The `js:` escape hatch isn't enough**: very rare
 

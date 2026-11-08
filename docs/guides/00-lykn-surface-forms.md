@@ -916,8 +916,11 @@ body.
 do-while:
 
 ```lykn
-(do-while (console:log n) (> n 0))
+(do-while (> n 0) (console:log n) (= n (- n 1)))
 ```
+
+The test is the first form. Every following form runs in order as a statement
+in the loop body.
 
 ### try / catch / finally
 

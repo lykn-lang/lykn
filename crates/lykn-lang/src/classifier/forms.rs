@@ -5,6 +5,9 @@ use crate::ast::surface::*;
 use crate::binding::{BindingKind, binding_names_in_pattern, bindings_introduced};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
+use crate::semantic_roles::{
+    BodyPolicy, ExprUse, child_use, function_body_use, normalized_child_role, sequence_use,
+};
 
 use super::dispatch;
 
@@ -158,7 +161,7 @@ pub fn validate_nested_fn_params(forms: &[SExpr]) -> Vec<Diagnostic> {
 pub fn validate_no_else_if_expressions(forms: &[SExpr]) -> Vec<Diagnostic> {
     let mut out = Vec::new();
     for form in forms {
-        walk_no_else_if_expression(form, ExprPosition::Statement, &mut out);
+        walk_no_else_if_expression(form, ExprUse::Statement, &mut out);
     }
     out
 }
@@ -353,40 +356,22 @@ fn walk_method_calls(expr: &SExpr, parent: Option<&SExpr>, out: &mut Vec<Diagnos
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum ExprPosition {
-    Statement,
-    Value,
-}
-
-#[derive(Clone, Copy)]
-enum FunctionBodyPolicy {
-    ValueTail,
-    Statements,
-}
-
-impl ExprPosition {
-    fn is_value(self) -> bool {
-        matches!(self, Self::Value)
-    }
-}
-
-fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Vec<Diagnostic>) {
+fn walk_no_else_if_expression(expr: &SExpr, position: ExprUse, out: &mut Vec<Diagnostic>) {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
             let Some(head) = values.first().and_then(|e| e.as_form_head()) else {
                 for value in values {
-                    walk_no_else_if_expression(value, ExprPosition::Value, out);
+                    walk_no_else_if_expression(value, ExprUse::Value, out);
                 }
                 return;
             };
 
             if head == "if" {
-                if position.is_value() && values.len() < 4 {
+                if position.is_consumed() && values.len() < 4 {
                     out.push(no_else_if_expression_diagnostic(*span));
                 }
                 if let Some(condition) = values.get(1) {
-                    walk_no_else_if_expression(condition, ExprPosition::Value, out);
+                    walk_no_else_if_expression(condition, ExprUse::Value, out);
                 }
                 for branch in values.get(2..).unwrap_or_default() {
                     walk_no_else_if_expression(branch, position, out);
@@ -397,102 +382,61 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
             match head {
                 "bind" => walk_bind_value(values, out),
                 "cond" => walk_cond_clauses(values, position, out),
-                "func" => walk_func_like_args(&values[1..], FunctionBodyPolicy::ValueTail, out),
+                "func" => walk_func_like_args(&values[1..], BodyPolicy::FunctionValueTail, out),
                 "fn" | "lambda" => {
-                    walk_fn_like_args(&values[1..], FunctionBodyPolicy::ValueTail, out)
+                    walk_fn_like_args(&values[1..], BodyPolicy::FunctionValueTail, out)
                 }
                 "match" => walk_match_args(&values[1..], position, out),
                 "obj" => walk_keyword_value_pairs(&values[1..], out),
                 "cell" | "express" | "conj" | "dissoc" | "=" | "!=" | "and" | "or" | "not" => {
-                    walk_args(&values[1..], ExprPosition::Value, out);
+                    walk_args(&values[1..], ExprUse::Value, out);
                 }
                 "assoc" => {
                     if let Some(obj) = values.get(1) {
-                        walk_no_else_if_expression(obj, ExprPosition::Value, out);
+                        walk_no_else_if_expression(obj, ExprUse::Value, out);
                     }
                     walk_keyword_value_pairs(values.get(2..).unwrap_or_default(), out);
                 }
                 "swap!" => {
-                    walk_args(&values[1..], ExprPosition::Value, out);
+                    walk_args(&values[1..], ExprUse::Value, out);
                 }
                 "reset!" | "set!" => {
                     if let Some(value) = values.get(2) {
-                        walk_no_else_if_expression(value, ExprPosition::Value, out);
+                        walk_no_else_if_expression(value, ExprUse::Value, out);
                     }
                 }
                 "set-symbol!" => {
-                    walk_args(&values[1..], ExprPosition::Value, out);
+                    walk_args(&values[1..], ExprUse::Value, out);
                 }
                 "do" => {
                     walk_do_args(&values[1..], position, out);
                 }
-                "genfunc" => walk_func_like_args(&values[1..], FunctionBodyPolicy::Statements, out),
-                "genfn" => walk_fn_like_args(&values[1..], FunctionBodyPolicy::Statements, out),
+                "genfunc" => walk_func_like_args(&values[1..], BodyPolicy::Statements, out),
+                "genfn" => walk_fn_like_args(&values[1..], BodyPolicy::Statements, out),
                 "class" => walk_class_args(values, true, out),
                 "class-expr" => walk_class_args(values, false, out),
-                "block" | "label" | "try" | "function" | "function*" | "=>" | "break"
-                | "continue" | "debugger" | "import" | "export" => {
+                "block" | "label" => walk_kernel_children(values, position, out),
+                "try" | "function" | "function*" | "=>" | "break" | "continue" | "debugger"
+                | "import" | "export" => {
                     walk_args(&values[1..], position, out);
                 }
                 "catch" => {
-                    walk_args(
-                        values.get(2..).unwrap_or_default(),
-                        ExprPosition::Statement,
-                        out,
-                    );
+                    walk_args(values.get(2..).unwrap_or_default(), ExprUse::Statement, out);
                 }
                 "finally" => {
-                    walk_args(&values[1..], ExprPosition::Statement, out);
+                    walk_args(&values[1..], ExprUse::Statement, out);
                 }
-                "while" => {
-                    walk_positional_args(
-                        &values[1..],
-                        &[ExprPosition::Value],
-                        ExprPosition::Statement,
-                        out,
-                    );
-                }
-                "do-while" => {
-                    walk_positional_args(
-                        &values[1..],
-                        &[ExprPosition::Statement, ExprPosition::Value],
-                        ExprPosition::Value,
-                        out,
-                    );
-                }
-                "for" => {
-                    walk_positional_args(
-                        &values[1..],
-                        &[
-                            ExprPosition::Value,
-                            ExprPosition::Value,
-                            ExprPosition::Value,
-                        ],
-                        ExprPosition::Statement,
-                        out,
-                    );
-                }
-                "for-of" | "for-in" | "for-await-of" => {
-                    walk_positional_args(
-                        &values[1..],
-                        &[ExprPosition::Statement, ExprPosition::Value],
-                        ExprPosition::Statement,
-                        out,
-                    );
+                "while" | "do-while" | "for" | "for-of" | "for-in" | "for-await-of" => {
+                    walk_kernel_children(values, position, out);
                 }
                 "switch" => {
                     walk_switch_args(&values[1..], out);
                 }
                 "const" | "let" | "var" => {
-                    walk_positional_args(
-                        &values[1..],
-                        &[ExprPosition::Statement, ExprPosition::Value],
-                        ExprPosition::Value,
-                        out,
-                    );
+                    walk_kernel_children(values, position, out);
                 }
-                "throw" | "return" => walk_args(&values[1..], ExprPosition::Value, out),
-                _ => walk_args(&values[1..], ExprPosition::Value, out),
+                "throw" | "return" => walk_args(&values[1..], ExprUse::Value, out),
+                _ => walk_args(&values[1..], ExprUse::Value, out),
             }
         }
         SExpr::List { .. } => {}
@@ -504,18 +448,28 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprPosition, out: &mut Ve
     }
 }
 
+fn walk_kernel_children(values: &[SExpr], parent: ExprUse, out: &mut Vec<Diagnostic>) {
+    let Some(head) = values.first() else {
+        return;
+    };
+    for (index, child) in values[1..].iter().enumerate() {
+        let role = normalized_child_role(head, index);
+        walk_no_else_if_expression(child, child_use(role, parent), out);
+    }
+}
+
 fn walk_bind_value(values: &[SExpr], out: &mut Vec<Diagnostic>) {
     let args = values.get(1..).unwrap_or_default();
     for (_, value_index, _) in bind_binding_arg_slots(args) {
         if let Some(value) = args.get(value_index) {
-            walk_no_else_if_expression(value, ExprPosition::Value, out);
+            walk_no_else_if_expression(value, ExprUse::Value, out);
         }
     }
 }
 
-fn walk_cond_clauses(values: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+fn walk_cond_clauses(values: &[SExpr], position: ExprUse, out: &mut Vec<Diagnostic>) {
     let clauses = values.get(1..).unwrap_or_default();
-    if position.is_value() && !cond_has_else_clause(clauses) {
+    if position.is_consumed() && !cond_has_else_clause(clauses) {
         out.push(no_else_cond_expression_diagnostic(values[0].span()));
     }
 
@@ -527,13 +481,13 @@ fn walk_cond_clauses(values: &[SExpr], position: ExprPosition, out: &mut Vec<Dia
             continue;
         }
         if !matches!(items[0], SExpr::Keyword { ref value, .. } if value == "else") {
-            walk_no_else_if_expression(&items[0], ExprPosition::Value, out);
+            walk_no_else_if_expression(&items[0], ExprUse::Value, out);
         }
-        walk_no_else_if_expression(&items[1], ExprPosition::Value, out);
+        walk_no_else_if_expression(&items[1], ExprUse::Value, out);
     }
 }
 
-fn walk_func_like_args(args: &[SExpr], body_policy: FunctionBodyPolicy, out: &mut Vec<Diagnostic>) {
+fn walk_func_like_args(args: &[SExpr], body_policy: BodyPolicy, out: &mut Vec<Diagnostic>) {
     if args.len() < 2 {
         return;
     }
@@ -562,11 +516,7 @@ fn walk_func_like_args(args: &[SExpr], body_policy: FunctionBodyPolicy, out: &mu
     }
 }
 
-fn walk_func_clause_items(
-    items: &[SExpr],
-    body_policy: FunctionBodyPolicy,
-    out: &mut Vec<Diagnostic>,
-) {
+fn walk_func_clause_items(items: &[SExpr], body_policy: BodyPolicy, out: &mut Vec<Diagnostic>) {
     let mut current_key: Option<&str> = None;
     let mut returns_void = false;
     let mut body = Vec::new();
@@ -587,7 +537,7 @@ fn walk_func_clause_items(
             continue;
         }
         match current_key {
-            Some("pre" | "post") => walk_no_else_if_expression(item, ExprPosition::Value, out),
+            Some("pre" | "post") => walk_no_else_if_expression(item, ExprUse::Value, out),
             Some("body") => body.push(item),
             _ => {}
         }
@@ -595,11 +545,11 @@ fn walk_func_clause_items(
     walk_function_body(&body, returns_void, body_policy, out);
 }
 
-fn walk_fn_like_args(args: &[SExpr], body_policy: FunctionBodyPolicy, out: &mut Vec<Diagnostic>) {
+fn walk_fn_like_args(args: &[SExpr], body_policy: BodyPolicy, out: &mut Vec<Diagnostic>) {
     if args.len() < 2 {
         return;
     }
-    let body_start = if matches!(body_policy, FunctionBodyPolicy::Statements)
+    let body_start = if matches!(body_policy, BodyPolicy::Statements)
         && args.len() >= 3
         && matches!(args.get(1), Some(SExpr::Keyword { value, .. }) if value == "yields")
     {
@@ -618,80 +568,30 @@ fn walk_fn_like_args(args: &[SExpr], body_policy: FunctionBodyPolicy, out: &mut 
 fn walk_function_body(
     body: &[&SExpr],
     returns_void: bool,
-    body_policy: FunctionBodyPolicy,
+    body_policy: BodyPolicy,
     out: &mut Vec<Diagnostic>,
 ) {
     for (index, expr) in body.iter().enumerate() {
-        let is_tail = index + 1 == body.len();
-        let position = if matches!(body_policy, FunctionBodyPolicy::ValueTail)
-            && !returns_void
-            && is_tail
-            && is_value_function_tail(expr)
-        {
-            ExprPosition::Value
+        let policy = if returns_void {
+            BodyPolicy::Statements
         } else {
-            ExprPosition::Statement
+            body_policy
         };
+        let position = function_body_use(expr, index, body.len(), policy);
         walk_no_else_if_expression(expr, position, out);
     }
 }
 
-fn is_value_function_tail(expr: &SExpr) -> bool {
-    // Mirrors emitter/forms.rs::emit_function_body: a final `if` with an else
-    // is value-producing even though `if` is also a statement form there.
-    let Some(values) = expr.as_list() else {
-        return true;
-    };
-    let Some(head) = values.first().and_then(|value| value.as_form_head()) else {
-        return true;
-    };
-    if head == "if" && values.len() >= 4 {
-        return true;
-    }
-    !matches!(
-        head,
-        "if" | "while"
-            | "for"
-            | "for-of"
-            | "for-in"
-            | "for-await-of"
-            | "do-while"
-            | "switch"
-            | "throw"
-            | "return"
-            | "break"
-            | "continue"
-            | "label"
-            | "debugger"
-            | "block"
-            | "try"
-            | "catch"
-            | "finally"
-            | "var"
-            | "const"
-            | "let"
-            | "func"
-            | "class"
-            | "type"
-            | "export"
-            | "import"
-    )
-}
-
-fn walk_do_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+fn walk_do_args(args: &[SExpr], position: ExprUse, out: &mut Vec<Diagnostic>) {
     for (index, expr) in args.iter().enumerate() {
-        let child_position = if position.is_value() && index + 1 == args.len() {
-            ExprPosition::Value
-        } else {
-            ExprPosition::Statement
-        };
+        let child_position = sequence_use(index, args.len(), position);
         walk_no_else_if_expression(expr, child_position, out);
     }
 }
 
-fn walk_match_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+fn walk_match_args(args: &[SExpr], position: ExprUse, out: &mut Vec<Diagnostic>) {
     if let Some(subject) = args.first() {
-        walk_no_else_if_expression(subject, ExprPosition::Value, out);
+        walk_no_else_if_expression(subject, ExprUse::Value, out);
     }
 
     for clause in args.get(1..).unwrap_or_default() {
@@ -709,7 +609,7 @@ fn walk_match_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnos
             && matches!(items.get(1), Some(SExpr::Keyword { value, .. }) if value == "when")
         {
             if let Some(guard) = items.get(2) {
-                walk_no_else_if_expression(guard, ExprPosition::Value, out);
+                walk_no_else_if_expression(guard, ExprUse::Value, out);
             }
             3
         } else {
@@ -718,11 +618,7 @@ fn walk_match_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnos
 
         let body = items.get(body_start..).unwrap_or_default();
         for (index, expr) in body.iter().enumerate() {
-            let child_position = if index + 1 == body.len() {
-                position
-            } else {
-                ExprPosition::Statement
-            };
+            let child_position = sequence_use(index, body.len(), position);
             walk_no_else_if_expression(expr, child_position, out);
         }
     }
@@ -731,7 +627,7 @@ fn walk_match_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnos
 fn walk_class_args(values: &[SExpr], has_name: bool, out: &mut Vec<Diagnostic>) {
     let superclass_index = if has_name { 2 } else { 1 };
     if let Some(superclass) = values.get(superclass_index) {
-        walk_no_else_if_expression(superclass, ExprPosition::Value, out);
+        walk_no_else_if_expression(superclass, ExprUse::Value, out);
     }
     for member in values.get(superclass_index + 1..).unwrap_or_default() {
         walk_class_member(member, out);
@@ -742,7 +638,7 @@ fn walk_class_member(member: &SExpr, out: &mut Vec<Diagnostic>) {
     let values = match member {
         SExpr::List { values, .. } if !values.is_empty() => values,
         _ => {
-            walk_no_else_if_expression(member, ExprPosition::Statement, out);
+            walk_no_else_if_expression(member, ExprUse::Statement, out);
             return;
         }
     };
@@ -750,7 +646,7 @@ fn walk_class_member(member: &SExpr, out: &mut Vec<Diagnostic>) {
     // A6-exempt: a class-member name is a property grammar marker, not a
     // value-call head.
     let Some(head) = values.first().and_then(|e| e.as_atom()) else {
-        walk_args(values, ExprPosition::Statement, out);
+        walk_args(values, ExprUse::Statement, out);
         return;
     };
 
@@ -762,29 +658,17 @@ fn walk_class_member(member: &SExpr, out: &mut Vec<Diagnostic>) {
         }
         "field" => {
             if let Some(init) = values.get(2) {
-                walk_no_else_if_expression(init, ExprPosition::Value, out);
+                walk_no_else_if_expression(init, ExprUse::Value, out);
             }
         }
         "constructor" => {
-            walk_args(
-                values.get(2..).unwrap_or_default(),
-                ExprPosition::Statement,
-                out,
-            );
+            walk_args(values.get(2..).unwrap_or_default(), ExprUse::Statement, out);
         }
         "get" | "set" => {
-            walk_args(
-                values.get(3..).unwrap_or_default(),
-                ExprPosition::Statement,
-                out,
-            );
+            walk_args(values.get(3..).unwrap_or_default(), ExprUse::Statement, out);
         }
         _ => {
-            walk_args(
-                values.get(2..).unwrap_or_default(),
-                ExprPosition::Statement,
-                out,
-            );
+            walk_args(values.get(2..).unwrap_or_default(), ExprUse::Statement, out);
         }
     }
 }
@@ -792,32 +676,20 @@ fn walk_class_member(member: &SExpr, out: &mut Vec<Diagnostic>) {
 fn walk_keyword_value_pairs(args: &[SExpr], out: &mut Vec<Diagnostic>) {
     for pair in args.chunks(2) {
         if let Some(value) = pair.get(1) {
-            walk_no_else_if_expression(value, ExprPosition::Value, out);
+            walk_no_else_if_expression(value, ExprUse::Value, out);
         }
     }
 }
 
-fn walk_args(args: &[SExpr], position: ExprPosition, out: &mut Vec<Diagnostic>) {
+fn walk_args(args: &[SExpr], position: ExprUse, out: &mut Vec<Diagnostic>) {
     for arg in args {
-        walk_no_else_if_expression(arg, position, out);
-    }
-}
-
-fn walk_positional_args(
-    args: &[SExpr],
-    positions: &[ExprPosition],
-    fallback: ExprPosition,
-    out: &mut Vec<Diagnostic>,
-) {
-    for (index, arg) in args.iter().enumerate() {
-        let position = positions.get(index).copied().unwrap_or(fallback);
         walk_no_else_if_expression(arg, position, out);
     }
 }
 
 fn walk_switch_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
     if let Some(discriminant) = args.first() {
-        walk_no_else_if_expression(discriminant, ExprPosition::Value, out);
+        walk_no_else_if_expression(discriminant, ExprUse::Value, out);
     }
     for clause in args.get(1..).unwrap_or_default() {
         walk_switch_clause(clause, out);
@@ -826,7 +698,7 @@ fn walk_switch_args(args: &[SExpr], out: &mut Vec<Diagnostic>) {
 
 fn walk_switch_clause(clause: &SExpr, out: &mut Vec<Diagnostic>) {
     let SExpr::List { values, .. } = clause else {
-        walk_no_else_if_expression(clause, ExprPosition::Statement, out);
+        walk_no_else_if_expression(clause, ExprUse::Statement, out);
         return;
     };
     if values.is_empty() {
@@ -835,10 +707,10 @@ fn walk_switch_clause(clause: &SExpr, out: &mut Vec<Diagnostic>) {
 
     // A6-exempt: `default` is a switch-clause label, not a value-call head.
     if values.first().and_then(|e| e.as_atom()) == Some("default") {
-        walk_args(&values[1..], ExprPosition::Statement, out);
+        walk_args(&values[1..], ExprUse::Statement, out);
     } else {
-        walk_no_else_if_expression(&values[0], ExprPosition::Value, out);
-        walk_args(&values[1..], ExprPosition::Statement, out);
+        walk_no_else_if_expression(&values[0], ExprUse::Value, out);
+        walk_args(&values[1..], ExprUse::Statement, out);
     }
 }
 

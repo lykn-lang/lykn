@@ -8,6 +8,10 @@ use crate::ast::surface::{
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
 use crate::reader::source_loc::Span;
+use crate::semantic_roles::{
+    BodyPolicy, ChildRole, ExprUse, child_use, function_body_use, is_statement_form,
+    normalized_child_role, sequence_use,
+};
 
 use super::context::{EmitterContext, ExprContext};
 use super::contracts::{
@@ -548,18 +552,19 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                     // Not a surface form — recursively process subexpressions
                     // with per-form child context profile (DD-50.5).
                     let saved_ctx = ctx.expr_context;
-                    let profile = kernel_child_profile(head_name);
                     let mut new_values = Vec::with_capacity(values.len());
                     new_values.push(values[0].clone()); // head atom unchanged
                     for (i, v) in values[1..].iter().enumerate() {
-                        // Resolved-bound heads are ordinary calls. Their callee
-                        // and arguments are value positions even when the call
-                        // itself appears in a statement/tail context.
-                        ctx.expr_context = if values[0].as_form_head().is_none() {
-                            ExprContext::Value
-                        } else {
-                            profile.context_for(i, saved_ctx)
-                        };
+                        let role = normalized_child_role(&values[0], i);
+                        let inherited_statement_sequence = role == ChildRole::InheritedSequence
+                            && saved_ctx == ExprContext::Statement;
+                        if role == ChildRole::StatementSequence || inherited_statement_sequence {
+                            ctx.expr_context = ExprContext::Statement;
+                            new_values.extend(emit_body(&values[i + 1..], ctx, registry));
+                            break;
+                        }
+                        ctx.expr_context = child_use(role, ExprUse::from_expr_context(saved_ctx))
+                            .to_expr_context();
                         new_values.push(emit_expr(v, ctx, registry));
                     }
                     ctx.expr_context = saved_ctx;
@@ -629,9 +634,10 @@ fn emit_switch_children(
             } else {
                 emitted_clause.push(emit_in_context(test, ExprContext::Value, ctx, registry));
             }
-            emitted_clause.extend(clause_values[1..].iter().map(|body_form| {
-                emit_in_context(body_form, ExprContext::Statement, ctx, registry)
-            }));
+            let saved_context = ctx.expr_context;
+            ctx.expr_context = ExprContext::Statement;
+            emitted_clause.extend(emit_body(&clause_values[1..], ctx, registry));
+            ctx.expr_context = saved_context;
             emitted.push(SExpr::List {
                 values: emitted_clause,
                 span: *clause_span,
@@ -683,19 +689,40 @@ fn emit_function_body(
 ) -> Vec<SExpr> {
     let mut out = Vec::new();
     for (index, expr) in body.iter().enumerate() {
-        let has_value_if_else = expr.as_list().is_some_and(|values| {
-            values.first().and_then(|value| value.as_form_head()) == Some("if") && values.len() >= 4
-        });
-        let is_tail_value = value_tail
-            && index + 1 == body.len()
-            && (!is_statement_form(expr) || has_value_if_else);
-        if is_tail_value {
-            out.push(emit_in_context(expr, ExprContext::Value, ctx, registry));
+        let policy = if value_tail {
+            BodyPolicy::FunctionValueTail
+        } else {
+            BodyPolicy::Statements
+        };
+        let use_ = function_body_use(expr, index, body.len(), policy);
+        if use_ != ExprUse::Statement {
+            out.push(emit_in_context(expr, use_.to_expr_context(), ctx, registry));
         } else {
             let saved_context = ctx.expr_context;
             ctx.expr_context = ExprContext::Statement;
             out.extend(emit_body(std::slice::from_ref(expr), ctx, registry));
             ctx.expr_context = saved_context;
+        }
+    }
+    out
+}
+
+fn emit_sequence_body(
+    body: &[SExpr],
+    parent: ExprUse,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Vec<SExpr> {
+    let mut out = Vec::new();
+    for (index, expr) in body.iter().enumerate() {
+        let use_ = sequence_use(index, body.len(), parent);
+        if use_ == ExprUse::Statement {
+            let saved = ctx.expr_context;
+            ctx.expr_context = ExprContext::Statement;
+            out.extend(emit_body(std::slice::from_ref(expr), ctx, registry));
+            ctx.expr_context = saved;
+        } else {
+            out.push(emit_in_context(expr, use_.to_expr_context(), ctx, registry));
         }
     }
     out
@@ -741,7 +768,7 @@ fn is_valueless_last_expr(expr: &SExpr) -> bool {
         if matches!(head, "return" | "throw" | "break" | "continue") {
             return false;
         }
-        return STATEMENT_FORM_HEADS.contains(&head);
+        return is_statement_form(expr);
     }
     false
 }
@@ -2074,10 +2101,7 @@ fn emit_genfunc_single(
     }
 
     // DD-50.7: genfunc body children are statements, not expressions
-    let saved_body_ctx = ctx.expr_context;
-    ctx.expr_context = ExprContext::Statement;
-    let raw_body = emit_body(&clause.body, ctx, registry);
-    ctx.expr_context = saved_body_ctx;
+    let raw_body = emit_function_body(&clause.body, false, ctx, registry);
     let body = if !ctx.strip_assertions {
         if let Some(ref yields_ann) = clause.yields {
             if yields_ann.name != "any" {
@@ -2119,10 +2143,7 @@ fn emit_genfn_expr(
     }
 
     // DD-50.7: genfn body children are statements, not expressions
-    let saved_body_ctx = ctx.expr_context;
-    ctx.expr_context = ExprContext::Statement;
-    let raw_body = emit_body(body, ctx, registry);
-    ctx.expr_context = saved_body_ctx;
+    let raw_body = emit_function_body(body, false, ctx, registry);
     let emitted_body = if !ctx.strip_assertions {
         if let Some(yields_ann) = yields {
             if yields_ann.name != "any" {
@@ -2252,7 +2273,8 @@ fn emit_match_statement(
         if let Some(ref guard) = clause.guard {
             let mut inner_block = vec![atom("block")];
             inner_block.extend(clause_body);
-            block_items.push(list(vec![atom("if"), guard.clone(), list(inner_block)]));
+            let guard = emit_in_context(guard, ExprContext::Value, ctx, registry);
+            block_items.push(list(vec![atom("if"), guard, list(inner_block)]));
         } else {
             block_items.extend(clause_body);
         }
@@ -2310,11 +2332,14 @@ fn emit_match_iife(
         let hoist = list(vec![
             atom("const"),
             atom(&hoisted_var),
-            emit_expr(target, ctx, registry),
+            emit_in_context(target, ExprContext::Value, ctx, registry),
         ]);
         (Some(hoist), atom(&hoisted_var))
     } else {
-        (None, emit_expr(target, ctx, registry))
+        (
+            None,
+            emit_in_context(target, ExprContext::Value, ctx, registry),
+        )
     };
 
     let target_var = ctx.gensym.next("target");
@@ -2331,7 +2356,7 @@ fn emit_match_iife(
         // DD-50.7: match clause bodies are statement sequences
         let saved_body_ctx = ctx.expr_context;
         ctx.expr_context = ExprContext::Statement;
-        let clause_body = emit_body(&clause.body, ctx, registry);
+        let clause_body = emit_sequence_body(&clause.body, ExprUse::Tail, ctx, registry);
         ctx.expr_context = saved_body_ctx;
 
         let mut block_items = vec![atom("block")];
@@ -2346,7 +2371,8 @@ fn emit_match_iife(
                     inner_block.push(expr.clone());
                 }
             }
-            block_items.push(list(vec![atom("if"), guard.clone(), list(inner_block)]));
+            let guard = emit_in_context(guard, ExprContext::Value, ctx, registry);
+            block_items.push(list(vec![atom("if"), guard, list(inner_block)]));
         } else {
             for (i, expr) in clause_body.iter().enumerate() {
                 if i == clause_body.len() - 1 {
@@ -2359,6 +2385,10 @@ fn emit_match_iife(
 
         if let Some(cond) = condition {
             body.push(list(vec![atom("if"), cond, list(block_items)]));
+        } else if clause.guard.is_some() {
+            // A guarded wildcard is only a candidate. If it fails, continue
+            // through the remaining clauses to the real wildcard/fallback.
+            body.push(list(block_items));
         } else {
             has_wildcard = true;
             body.push(list(block_items));
@@ -2983,46 +3013,6 @@ fn emit_class_member_form(
 // DD-50: Position-aware `if` emission
 // ---------------------------------------------------------------------------
 
-const STATEMENT_FORM_HEADS: &[&str] = &[
-    "if",
-    "while",
-    "for",
-    "for-of",
-    "for-in",
-    "for-await-of",
-    "do-while",
-    "switch",
-    "throw",
-    "return",
-    "break",
-    "continue",
-    "label",
-    "debugger",
-    "block",
-    "try",
-    "catch",
-    "finally",
-    "var",
-    "const",
-    "let",
-    "func",
-    "class",
-    "type",
-    "export",
-    "import",
-];
-
-fn is_statement_form(expr: &SExpr) -> bool {
-    // DD-61 §A6: a lexically bound head (e.g. `block`) is a call, not a
-    // statement form — `as_form_head` returns `None`, so it is not misclassified.
-    if let SExpr::List { values, .. } = expr
-        && let Some(head) = values.first().and_then(|e| e.as_form_head())
-    {
-        return STATEMENT_FORM_HEADS.contains(&head);
-    }
-    false
-}
-
 fn emit_if_expression(
     args: &[SExpr],
     span: Span,
@@ -3141,25 +3131,21 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
 
     match ctx.expr_context {
         ExprContext::Statement => {
-            let emitted: Vec<SExpr> = body
-                .iter()
-                .map(|e| emit_in_context(e, ExprContext::Statement, ctx, registry))
-                .collect();
+            let saved_context = ctx.expr_context;
+            ctx.expr_context = ExprContext::Statement;
+            let emitted = emit_body(body, ctx, registry);
+            ctx.expr_context = saved_context;
             let mut items = vec![atom("block")];
             items.extend(emitted);
             list(items)
         }
         _ => {
-            let mut emitted: Vec<SExpr> = body[..body.len() - 1]
-                .iter()
-                .map(|e| emit_in_context(e, ExprContext::Statement, ctx, registry))
-                .collect();
-            emitted.push(emit_in_context(
-                body.last().unwrap(),
-                ExprContext::Value,
+            let mut emitted = emit_sequence_body(
+                body,
+                ExprUse::from_expr_context(ctx.expr_context),
                 ctx,
                 registry,
-            ));
+            );
             let is_async = any_current_await(&emitted);
             if is_async {
                 emitted = emitted.iter().map(box_current_scope_returns).collect();
@@ -3209,92 +3195,6 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                 list(vec![arrow])
             }
         }
-    }
-}
-
-// ---------------------------------------------------------------------------
-// DD-50.5: Kernel-form child context profile
-// ---------------------------------------------------------------------------
-
-/// Describes how a kernel form's children should inherit expression context.
-enum KernelChildProfile {
-    /// All non-head children are in Value context (expression-producing forms).
-    AllValue,
-    /// All non-head children inherit the parent's context (statement-bodied forms
-    /// like `block`, `for` body, etc.) — effectively Statement.
-    AllParent,
-    /// Per-position contexts: each entry is the context for that child index.
-    /// Children beyond the array length default to Value.
-    Positional(&'static [ExprContext]),
-    /// Per-position contexts for fixed-prefix forms with a variable-length
-    /// trailing sequence of Statement-context children (e.g., `switch`:
-    /// discriminant=Value, then variable case sub-lists=Statement).
-    PositionalThenStatement(&'static [ExprContext]),
-}
-
-impl KernelChildProfile {
-    fn context_for(&self, child_index: usize, parent_ctx: ExprContext) -> ExprContext {
-        match self {
-            KernelChildProfile::AllValue => ExprContext::Value,
-            KernelChildProfile::AllParent => parent_ctx,
-            KernelChildProfile::Positional(positions) => positions
-                .get(child_index)
-                .copied()
-                .unwrap_or(ExprContext::Value),
-            KernelChildProfile::PositionalThenStatement(positions) => positions
-                .get(child_index)
-                .copied()
-                .unwrap_or(ExprContext::Statement),
-        }
-    }
-}
-
-/// Return the child context profile for a kernel form.
-///
-/// Categories:
-/// - AllValue: expression-producing forms (operators, literals, etc.)
-/// - AllParent: statement-bodied forms whose children inherit parent context
-/// - Positional: mixed forms with specific per-child semantics
-fn kernel_child_profile(head: &str) -> KernelChildProfile {
-    use ExprContext::Statement as S;
-    use ExprContext::Value as V;
-
-    match head {
-        // Category B: statement-bodied forms — body children stay in parent context
-        "block" => KernelChildProfile::AllParent,
-        "label" => KernelChildProfile::AllParent,
-
-        // while: test=Value, body=Statement
-        "while" => KernelChildProfile::Positional(&[V, S]),
-        // do-while: body=Statement, test=Value
-        "do-while" => KernelChildProfile::Positional(&[S, V]),
-        // for: init/test/update=Value, then every body form=Statement
-        "for" => KernelChildProfile::PositionalThenStatement(&[V, V, V]),
-        // for-of/for-in/for-await-of: binding=Statement, iterable=Value, body...=Statement
-        "for-of" | "for-in" | "for-await-of" => {
-            KernelChildProfile::PositionalThenStatement(&[S, V])
-        }
-        // try: body=Statement, catch-clause=Statement, finally=Statement
-        "try" => KernelChildProfile::AllParent,
-        // switch: discriminant=Value, then variable-length case sub-lists=Statement
-        "switch" => KernelChildProfile::PositionalThenStatement(&[V]),
-        // if: condition=Value, consequent=Statement, alternate=Statement
-        // (Value/Tail context is intercepted at line 375 for expression-position emit)
-        "if" => KernelChildProfile::Positional(&[V, S, S]),
-
-        // Category C: declarations — name=Statement (binding), initializer=Value
-        "const" | "let" | "var" => KernelChildProfile::Positional(&[S, V]),
-        // function/function*/=>: complex body semantics handled by their own emitters;
-        // at the kernel fallthrough level, treat children as parent context
-        "function" | "function*" | "=>" => KernelChildProfile::AllParent,
-
-        // Category B: statement forms with expression args
-        "throw" | "return" => KernelChildProfile::AllValue,
-        "break" | "continue" | "debugger" => KernelChildProfile::AllParent,
-        "import" | "export" => KernelChildProfile::AllParent,
-
-        // Category A: all-Value (operators, literals, expression-producing forms)
-        _ => KernelChildProfile::AllValue,
     }
 }
 
@@ -3350,6 +3250,86 @@ mod tests {
 
     fn reg() -> TypeRegistry {
         TypeRegistry::default()
+    }
+
+    #[test]
+    fn variadic_loop_and_switch_bodies_keep_grouped_bindings_as_siblings() {
+        let grouped_bind = list(vec![
+            atom("bind"),
+            atom("first"),
+            num(1.0),
+            atom("second"),
+            list(vec![atom("+"), atom("first"), num(1.0)]),
+        ]);
+        for form in [
+            list(vec![atom("while"), bool_lit(true), grouped_bind.clone()]),
+            list(vec![
+                atom("switch"),
+                num(1.0),
+                list(vec![
+                    num(1.0),
+                    grouped_bind.clone(),
+                    list(vec![atom("break")]),
+                ]),
+            ]),
+        ] {
+            let mut context = EmitterContext::new(false);
+            let emitted = emit_expr(&form, &mut context, &reg());
+            let values = emitted.as_list().expect("kernel form");
+            if values[0].as_atom() == Some("while") {
+                assert_eq!(values.len(), 4, "loop body declarations are siblings");
+                assert_eq!(values[2].as_list().unwrap()[0].as_atom(), Some("const"));
+                assert_eq!(values[3].as_list().unwrap()[0].as_atom(), Some("const"));
+            } else {
+                let clause = values[2].as_list().expect("switch clause");
+                assert_eq!(clause.len(), 4, "clause body declarations are siblings");
+                assert_eq!(clause[1].as_list().unwrap()[0].as_atom(), Some("const"));
+                assert_eq!(clause[2].as_list().unwrap()[0].as_atom(), Some("const"));
+                assert_eq!(clause[3].as_list().unwrap()[0].as_atom(), Some("break"));
+            }
+            assert_eq!(context.expr_context, ExprContext::Statement);
+        }
+    }
+
+    #[test]
+    fn value_lowering_restores_tail_context_and_records_checked_failure() {
+        let mut context = EmitterContext::new(false);
+        context.expr_context = ExprContext::Tail;
+        let missing_else = list(vec![atom("if"), bool_lit(true), num(1.0)]);
+        let _ = emit_in_context(&missing_else, ExprContext::Value, &mut context, &reg());
+        assert_eq!(context.expr_context, ExprContext::Tail);
+        assert!(context.first_fatal.is_some());
+    }
+
+    #[test]
+    fn switch_preserves_clause_markers_spans_and_ignored_structural_children() {
+        let source_span = Span::new(
+            crate::reader::source_loc::SourceLoc { line: 2, column: 3 },
+            crate::reader::source_loc::SourceLoc { line: 4, column: 5 },
+        );
+        let marker = atom("default").with_name_res(NameRes::BindingRef);
+        let clause = SExpr::List {
+            values: vec![marker, list(vec![atom("break")])],
+            span: source_span,
+        };
+        let empty = SExpr::List {
+            values: Vec::new(),
+            span: source_span,
+        };
+        let nonlist = atom("ignored");
+        let switch = SExpr::List {
+            values: vec![atom("switch"), num(1.0), clause, empty, nonlist],
+            span: source_span,
+        };
+        let emitted = emit_expr(&switch, &mut EmitterContext::new(false), &reg());
+        let values = emitted.as_list().expect("switch form");
+        assert_eq!(values.len(), 5, "outer clauses remain structural children");
+        let emitted_clause = values[2].as_list().expect("default clause");
+        assert_eq!(values[2].span(), source_span);
+        assert_eq!(emitted_clause[0].as_atom(), Some("default"));
+        assert_eq!(emitted_clause[0].name_res(), NameRes::BindingRef);
+        assert_eq!(values[3].as_list().unwrap().len(), 0);
+        assert_eq!(values[4].as_atom(), Some("ignored"));
     }
 
     #[test]
