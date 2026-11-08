@@ -1,0 +1,23 @@
+
+running 18 tests
+test e2e_analysis_catches_errors ... ok
+test e2e_bind_obj_produces_valid_kernel ... ok
+test e2e_cells_produces_valid_kernel ... ok
+test e2e_async_func ... ok
+test e2e_export_async_func ... ok
+test e2e_kernel_json_is_valid ... ok
+test e2e_contracts_produces_valid_kernel ... ok
+test e2e_export_func ... ok
+test e2e_kernel_json_contracts ... ok
+test e2e_threading_produces_valid_kernel ... ok
+test e2e_export_bind ... ok
+test e2e_cell ... ok
+test e2e_obj ... ok
+test e2e_bind_number ... ok
+test e2e_bind_string ... ok
+test e2e_thread_last ... ok
+test e2e_export_func_destructured ... ok
+test e2e_thread_first ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+

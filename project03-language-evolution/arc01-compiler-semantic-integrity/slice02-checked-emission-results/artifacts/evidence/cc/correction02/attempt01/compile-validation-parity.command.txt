@@ -1,0 +1,2 @@
+argv=target/s02-checked-emission/correction02/debug/deps/compile_validation_parity-ed5da4aecd278839
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering

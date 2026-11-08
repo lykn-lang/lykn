@@ -1,0 +1,8 @@
+
+running 3 tests
+test rejected_file_compile_preserves_existing_js_and_dts_sentinels ... ok
+test stdout_and_file_compile_keep_typed_export_output_and_runtime_behavior ... ok
+test stdout_and_file_routes_reject_the_same_validation_inputs ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+

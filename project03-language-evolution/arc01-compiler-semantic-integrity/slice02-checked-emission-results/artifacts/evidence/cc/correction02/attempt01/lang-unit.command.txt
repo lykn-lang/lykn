@@ -1,0 +1,4 @@
+argv=target/s02-checked-emission/correction02/debug/deps/lykn_lang-60c4a58c1162abbf
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+LYKN_EMISSION_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice02-checked-emission-results/artifacts/evidence/cc/correction02/attempt01
+LYKN_TEST_DENO=/opt/homebrew/bin/deno

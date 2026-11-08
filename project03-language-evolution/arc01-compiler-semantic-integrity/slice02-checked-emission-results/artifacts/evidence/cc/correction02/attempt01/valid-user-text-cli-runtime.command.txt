@@ -1,0 +1,5 @@
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--no-remote", "--cached-only", "--no-npm", "--deny-net", "--no-prompt", "/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpEBjmni/valid.js"]
+cwd=Some("/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpEBjmni")
+env_overrides=
+

@@ -1,0 +1,7 @@
+argv=CARGO_TARGET_DIR=target/s02-checked-emission/correction02 cargo test --workspace --no-run --offline --locked
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+XDG_CACHE_HOME=/private/tmp/lykn-s02-checked-emission-correction02/xdg
+npm_config_cache=/private/tmp/lykn-s02-checked-emission-correction02/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+CARGO_NET_OFFLINE=unset (Cargo --offline used explicitly)
+CARGO_TARGET_DIR=target/s02-checked-emission/correction02

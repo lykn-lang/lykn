@@ -1,0 +1,2 @@
+argv=target/s02-checked-emission/correction02/debug/deps/contract_predicate_lowering-5224edfea80a9408
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering

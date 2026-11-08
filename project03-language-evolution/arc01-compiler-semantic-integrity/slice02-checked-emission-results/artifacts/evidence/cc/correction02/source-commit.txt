@@ -1,0 +1,8 @@
+Complete checked emission diagnostic regression coverage
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+
+M	crates/lykn-cli/src/validation.rs
+M	crates/lykn-lang/tests/emission_results.rs

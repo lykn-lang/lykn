@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/s02-checked-emission/correction02/debug/lykn"
+args=["compile", "/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpEBjmni/valid.lykn", "-o", "/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpEBjmni/valid.js"]
+cwd=Some("/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpEBjmni")
+env_overrides=
+

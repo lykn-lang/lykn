@@ -1,5 +1,35 @@
 # S02 bounded stop report
 
+## Correction02 source freeze and first full-gate stop — 2026-11-07
+
+The authorized test-only correction is frozen at
+`codex/checked-emission-results-v2@483ff5074001d7a039270f4639e8ef61d70e4b4e`
+(tree `e653fa678a153b08c4fc3caad49f1d846bdf4b84`). CDC independently cleared
+the exact two test locations for validation only. Focused gates passed: typed
+emission tests6/6, lang unit1133/1133, CLI library99/99, CLI binary180/180,
+emission route/runtime4/4, contract1/1, validation parity3/3, e2e18/18 and
+cross-compiler22/22. Strict CLI/package Deno receipts, invalid routes, sentinels,
+mtime, complete generated JS and explicit DTS absence are retained under
+`artifacts/evidence/cc/correction02/attempt01/`.
+
+The first required full gate, normal unfiltered `make check`, exited2. Its
+embedded cited-path prerequisite passed (63 documents/601 historical citations),
+as did the visible release build, Clippy, format, Lykn syntax/lint, artifact
+refresh and Rust test stage. The Deno test suite reported1469 passed and one
+failed in11 steps: pre-existing documented `form-named label — shape-mismatch
+asymmetry` at `test/expander/conformance-corpus.test.js:221:6`; actual Rust result
+was `1:18: error: fn requires params and body` for source
+`(label fn (block (fn 987)))`. `test-docs` was not reached; the standalone
+`make check-cited-paths` command was not run. Exact source text, argv, producer
+route and full make streams are in the correction02 failure record and raw
+attempt receipts.
+
+The first-further-substantive-failure stop is in force. No retry, filter,
+suppression, source edit, or further dependent check followed. S02 remains
+unaccepted and CE rows remain deferred pending CDC disposition/replay. Source,
+planning and index/build ownership are returned to CDC; no S03/integration is
+authorized. See [correction02 failure record](artifacts/evidence/cc/correction02/attempt01/failure-record.md).
+
 ## Current resumed implementation stop — independent disposition
 
 2026-11-07: candidate d352e6b is **unaccepted**, not delivered. Workspace no-run0

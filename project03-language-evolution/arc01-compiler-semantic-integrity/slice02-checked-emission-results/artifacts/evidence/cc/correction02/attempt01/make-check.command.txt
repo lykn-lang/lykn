@@ -1,0 +1,9 @@
+argv=make check
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+XDG_CACHE_HOME=/private/tmp/lykn-s02-checked-emission-correction02/make-xdg
+npm_config_cache=/private/tmp/lykn-s02-checked-emission-correction02/make-npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+CARGO_NET_OFFLINE=unset
+CARGO_TARGET_DIR=unset
+Rust=1.97.0
+source=483ff5074001d7a039270f4639e8ef61d70e4b4e
