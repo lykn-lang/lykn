@@ -9,6 +9,14 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+## S02 source readiness stopped — 2026-11-08
+
+The tests-only freeze d7c7c733 stopped before the first build on two borrowed
+temporary command builders. [Review and re-entry](slice02-embedded-macro-dependency-resolution/cdc-verification.md).
+All six MR rows and AM-04 remain open, no compiler change or trial. Source
+refinements 0/5; the bounded test correction requires renewed approval.
+Existing scope and future Arc03 composition dependency are unchanged.
+
 ## S02 implementation approved — 2026-11-08
 
 Operator approves reviewed c209462 repair for finite S02 implementation and
@@ -77,7 +85,7 @@ The Operator explicitly requested this collection arc. Only the first finite ite
 | Unit | Useful deliverable | Dependencies and owner |
 | --- | --- | --- |
 | [S01 — Emission harness and old-compiler baseline](slice01-emission-harness-baseline/slice-plan.md) | Correct the local test's real paths, optional-DTS and runtime/error predicates; establish discriminating harness checks and complete honest baseline observations with independent review | Frozen test-only2321943 and Arc01 S02 review; CDC Sol6.1 High designs/reviews, future CC Luna6 High implements only after Operator execution approval |
-| [S02 — Embedded macro dependency resolution](slice02-embedded-macro-dependency-resolution/slice-plan.md) | Native compiler-owned config/lock, unchanged documented Lykn macro resolver tiers, cold/warm/alias/runtime/error proof | DESIGN ONLY, accepted62e source base proposed; independent future acceptance unblocks Arc03 only after explicit candidate composition |
+| [S02 — Embedded macro dependency resolution](slice02-embedded-macro-dependency-resolution/slice-plan.md) | Native compiler-owned config/lock, unchanged documented Lykn macro resolver tiers, cold/warm/alias/runtime/error proof | Source readiness stopped at tests-only d7c7c733; independent future acceptance unblocks Arc03 only after explicit candidate composition |
 | Future individually scoped miscellany | Not yet assigned or authorized | CDC records a concrete proposed item and its acceptance before opening another slice; no inherited implementation authority |
 
 No investigation/repair/review slices split this first result by process stage. It is one branch-sized test delivery with its verification. No executable CC prompt is issued now; complete that open-set member only when execution is approved. Future implementation uses the established two-contributor arrangement, normal exact-path commits and separate `cdc-verification.md`; no fabricated plan-review or implementation-acceptance artifact is created at planning time.

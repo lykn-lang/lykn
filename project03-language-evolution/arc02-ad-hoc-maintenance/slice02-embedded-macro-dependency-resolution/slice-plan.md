@@ -2,13 +2,28 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice02-embedded-macro-dependency-resolution
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: []
 related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
 ---
 
 # S02 — compiler-owned embedded macro dependency resolution
+
+## Current disposition — source readiness stopped, 2026-11-08
+
+Iteration01 stopped at the first static review of clean tests-only d7c7c733.
+Two command builders retain a reference to a dropped temporary. No formatter,
+build, compiler specimen, or generated runtime ran. The compiler implementation
+did not begin. See [independent review](cdc-verification.md) and
+[stopped handoff](closing-report.md); all six MR rows remain open.
+
+Source refinements remain 0/5: this was the initial planned source attempt.
+Proposed correction01, held for Operator authority, gives each of the two
+commands an owned local before configuring it with the same arguments. Then
+freeze and independently review the test before the original baseline and
+implementation gates. No correction was issued or performed; no Arc03
+composition, release mutation, or old-budget reset.
 
 ## Current implementation authority — 2026-11-08
 

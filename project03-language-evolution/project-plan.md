@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+2026-11-08 latest: Arc02 S02 [stopped at static test review](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).
+No build, baseline, compiler repair or release change. All MR/AM-04 remain open;
+the bounded test correction requires renewed approval. Arc03 remains held.
+
 2026-11-08 current: Operator authorizes finite Arc02 S02 implementation/
 independent close of reviewed c209462 design. [Source assignment](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cc-prompt-iteration01.md),
 same Luna6 High CC/Sol6.1 High CDC/Autonomous/first substantive failure STOP.

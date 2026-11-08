@@ -29,3 +29,19 @@ rejection predicate controls, exact route rendering and typed library/dist
 proof. None has run: no claim the new predicates work or the receipt-path fix
 is runtime validated. Source/budget/history limits persist; next observation
 requires explicit execution approval and ordinary separate full gates.
+
+## Source attempt — 2026-11-08
+
+Operator approval did reach an immutable test freeze (d7c7c733), but no
+baseline or compiler repair. Both command builders used a reference derived
+from a temporary rather than an owned local. The author and CDC's recipe did
+not make ownership explicit at these call sites; the existing good pattern
+was available in the same file. The independent prebuild hold caught both
+instances before any gate consumed the body. This is a test authoring and
+readiness failure, not a macro behavior result or a model comparison.
+
+Use the existing owned-command pattern explicitly at re-entry, and keep
+the immutable prebuild hold. The new evidence flow, isolation conditions
+and compiler repair remain untested; do not infer their success from the
+static stop or create a new harness to compensate. The
+[verification](cdc-verification.md) carries the precise proposed correction.

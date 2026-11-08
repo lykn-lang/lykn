@@ -1,5 +1,10 @@
 # Embedded macro dependency repair ledger
 
+2026-11-08 SOURCE STOP: [static review](cdc-verification.md) found two borrowed
+temporary command builders in immutable tests-only d7c7c733. All six MR rows
+remain open. Builds 0; baseline 0/6 compiles and 0/4 runtimes. Implementation
+and all later gates unrun. Source refinements 0/5; proposed correction01 held.
+
 2026-11-08 implementation approved: [source iteration01](cc-prompt-iteration01.md),
 same Luna6 High CC/separate Sol6.1 High CDC, source0/5 and first substantive
 failure STOP. All6MR OPEN; no new source/gate yet. Earlier design-only cutoff
