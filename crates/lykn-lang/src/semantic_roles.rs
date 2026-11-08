@@ -109,11 +109,7 @@ pub(crate) fn sequence_use(index: usize, len: usize, parent: ExprUse) -> ExprUse
     if parent == ExprUse::Statement {
         ExprUse::Statement
     } else if index + 1 == len {
-        match parent {
-            ExprUse::Tail => ExprUse::Tail,
-            ExprUse::Value => ExprUse::Value,
-            ExprUse::Statement => ExprUse::Statement,
-        }
+        parent
     } else {
         ExprUse::Statement
     }
