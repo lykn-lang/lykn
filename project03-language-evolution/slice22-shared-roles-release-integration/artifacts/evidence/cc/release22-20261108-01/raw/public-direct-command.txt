@@ -1,0 +1,9 @@
+operation=direct current public JavaScript compiler test; one parent test and four strict child runtimes
+argv=env TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/public-tmp XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/public-xdg npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/public-npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-release22-20261108-01/public /opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+selected_environment=TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/public-tmp; XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/public-xdg; npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/public-npm; DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno; LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-release22-20261108-01/public
+Deno_path=/opt/homebrew/bin/deno
+Deno_version=2.9.6
+Deno_SHA256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+raw_stdout=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/public-direct.stdout
+raw_stderr=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/public-direct.stderr

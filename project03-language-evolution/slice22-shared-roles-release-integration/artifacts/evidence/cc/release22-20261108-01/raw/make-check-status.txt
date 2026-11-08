@@ -1,0 +1,2 @@
+exit_code=0
+result=normal unfiltered make check completed successfully

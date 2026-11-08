@@ -1,0 +1,5 @@
+exit_code=0
+running=5 tests
+result=5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+producer=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/semantic_roles-cb18f482652d85e9
+producer_sha256=40c6771d120818113dfaeaf2c65b0da85f8a9ef0bc88e9e06d3fbc8270f73b4e

@@ -1,0 +1,4 @@
+exit_code=0
+result=Cited-path check passed
+selected_population=63 documents
+historical_citations=601 accepted via scripts/cited-paths-census.tsv

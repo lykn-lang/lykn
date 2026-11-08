@@ -1,0 +1,16 @@
+operation=full normal unfiltered repository gate
+argv=env TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/tmp XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/xdg npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-release22-20261108-01/make make check
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+selected_environment=TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/tmp; XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/xdg; npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/npm; DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno; LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-release22-20261108-01/make
+inherited_CARGO_NET_OFFLINE=unset
+inherited_CARGO_TARGET_DIR=unset
+inherited_CARGO_HOME=unset
+release_head=62e9531e6183b3762a9ff326fdc07439db33f31f
+release_tree=672123750d2561f2d9d16c4ff1cb4590fca9da76
+rustc=1.97.0 (2d8144b78 2026-07-07)
+cargo=1.97.0 (c980f4866 2026-06-30)
+deno=/opt/homebrew/bin/deno 2.9.6 stable aarch64-apple-darwin
+Deno SHA-256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+optional_evidence_root=/private/tmp/lykn-s22-release22-20261108-01/make
+raw_stdout=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/make-check.stdout
+raw_stderr=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/make-check.stderr

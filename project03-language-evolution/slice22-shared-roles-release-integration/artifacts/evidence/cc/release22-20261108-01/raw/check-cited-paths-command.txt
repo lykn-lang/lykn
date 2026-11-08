@@ -1,0 +1,11 @@
+operation=standalone committed source citation gate
+argv=env TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/cites-tmp XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/cites-xdg npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/cites-npm DENO_DIR=/Users/oubiwann/Library/Caches/deno make check-cited-paths
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+selected_environment=TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/cites-tmp; XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/cites-xdg; npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/cites-npm; DENO_DIR=/Users/oubiwann/Library/Caches/deno
+release_head=62e9531e6183b3762a9ff326fdc07439db33f31f
+release_tree=672123750d2561f2d9d16c4ff1cb4590fca9da76
+deno_path=/opt/homebrew/bin/deno
+deno_version=2.9.6
+Deno_SHA256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+raw_stdout=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/check-cited-paths.stdout
+raw_stderr=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/check-cited-paths.stderr

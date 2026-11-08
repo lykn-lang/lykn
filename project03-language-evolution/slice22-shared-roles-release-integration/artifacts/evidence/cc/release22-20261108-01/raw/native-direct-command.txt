@@ -1,0 +1,8 @@
+operation=direct current-source native semantic_roles integration executable; five tests
+argv=env TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/native-tmp XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/native-xdg npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/native-npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-release22-20261108-01/native /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+selected_environment=TMPDIR=/private/tmp/lykn-s22-release22-20261108-01/native-tmp; XDG_CACHE_HOME=/private/tmp/lykn-s22-release22-20261108-01/native-xdg; npm_config_cache=/private/tmp/lykn-s22-release22-20261108-01/native-npm; DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno; LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-release22-20261108-01/native
+artifact_path=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/semantic_roles-cb18f482652d85e9
+artifact_sha256=40c6771d120818113dfaeaf2c65b0da85f8a9ef0bc88e9e06d3fbc8270f73b4e
+raw_stdout=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/native-direct.stdout
+raw_stderr=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/slice22-shared-roles-release-integration/artifacts/evidence/cc/release22-20261108-01/raw/native-direct.stderr

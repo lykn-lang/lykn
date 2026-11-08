@@ -1,0 +1,16 @@
+observation=actual artifacts after final Cargo/Make command and before direct current-source use; no build has run since make check
+release_cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+release_head=62e9531e6183b3762a9ff326fdc07439db33f31f
+release_tree=672123750d2561f2d9d16c4ff1cb4590fca9da76
+debug_cli_path=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn
+debug_cli_sha256=c9b50970dbfa9c01930cc9f1ada8d1f14c8aec223e958178b965feebb19fcc5f
+release_profile_cli_path=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn
+release_profile_cli_sha256=2b09e6f4ebd1e45cba4185808d32fb6642236472fdb302a3d2387c8b63067cf4
+bin_cli_path=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn
+bin_cli_sha256=2b09e6f4ebd1e45cba4185808d32fb6642236472fdb302a3d2387c8b63067cf4
+bin_release_cmp_exit=0
+semantic_roles_test_path=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/semantic_roles-cb18f482652d85e9
+semantic_roles_test_sha256=40c6771d120818113dfaeaf2c65b0da85f8a9ef0bc88e9e06d3fbc8270f73b4e
+deno_path=/opt/homebrew/bin/deno
+deno_version=2.9.6
+Deno_SHA256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
