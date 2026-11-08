@@ -4,7 +4,7 @@
 
 CDC reconciliation of actual reused Luna High CC return; separate Sol6.1 High
 reviewer. Clean sourceca982/tree764d831, all6SR open. Native5/private4/public1+4steps
-and nine CLI preservation targets pass with actual pins/complete generated module
+and eight CLI preservation targets pass with actual pins/complete generated module
 review. Full normal Make exits2 at Clippy needless_match112; CDC exact Clippy
 replay exits101. No source edit/retry/standalone cites/later gates. Dependencies,
 inline cites63/601/release build passed; format/full Rust/full JS/docs unrun.
