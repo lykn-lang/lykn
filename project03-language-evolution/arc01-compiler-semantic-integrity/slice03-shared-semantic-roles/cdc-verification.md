@@ -1,5 +1,18 @@
 # S03 CDC verification — current substantive stop, source unaccepted
 
+## Correction02 immutable release — 2026-11-07
+
+Explicit Operator continuation issued iteration04; same actual Luna High actor
+completed refreshed intake/-F readback and received renewed exclusive source/
+index/build ownership. CDC read the exact3737→ca982a598e4e4e0a5adf4943e737a517db50cea3
+diff: ONLY test helper atom(item)→atom(*item), no other byte/fixture/predicate/
+production change. Tree764d831708f6a793e9ffc92059d25815e1fff6bd/clean task status,
+actual fixed raw message and contiguous trailers verified. Source-supported
+dereference matches Into<String>; no blocking static issue. ORIGINAL validation
+released under prospective corrected cache/raw/independent-step contract; no
+behavior/gate/source acceptance yet. All6SR open,02/5 spent/three remain;
+first further substantive failure stops. Prior stop/limits below remain history.
+
 ## Current independent stop — 2026-11-07
 
 Closeout whitespace limit: the full staged diff check reported the preserved
