@@ -1,5 +1,20 @@
 # S03 CDC verification — current substantive stop, source unaccepted
 
+## Correction03 immutable release — 2026-11-07
+
+Explicit Operator continuation/iteration05, actual same Luna High actor refreshed
+intake/-F readback and renewed exclusive ownership. CDC independently read exact
+ca982→62e9531e6183b3762a9ff326fdc07439db33f31f/tree672123750d2561f2d9d16c4ff1cb4590fca9da76:
+ONLY private sequence_use identity match→parent, one path; clean source/fixed
+raw message/trailers verified. Closed Copy enum/all3oldarms return their input,
+no effects or other policy/test/input/API/doc delta. No blocking static issue.
+Prior ca982 focused results remain with that source/date and this identity-delta
+applicability, never relabelled current. Fresh full normal Make FIRST, then actual
+final pins/current direct native-public module/runtime/cites and separate full
+CDC reproduction released as iteration05 specifies. No redundant old build/
+no-run matrix; all6SR open,03/5 spent/two remain, ANY further substantive failure
+stops. No source/gate acceptance yet; earlier stopped records remain history.
+
 ## Correction02 current independent full-gate stop — 2026-11-07
 
 **UNACCEPTED; all6SR open.** Exact ca982a598e4e4e0a5adf4943e737a517db50cea3/
