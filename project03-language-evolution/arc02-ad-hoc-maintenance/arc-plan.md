@@ -9,6 +9,18 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+## New S02 design intake — 2026-11-08
+
+Operator authorizes DESIGN ONLY of existing compiler dependency resolution and
+native v1-oracle re-entry after Arc03 S01's observed W8 stop. Proposed useful
+[S02](slice02-embedded-macro-dependency-resolution/slice-plan.md) owns generic
+native evaluator config/lock/materialization plus real macro controls. Arc03
+retains its v1-oracle correction/dist classifier wiring and source01/5. Fresh
+Luna6 High read-only contribution, Sol6.1 High CDC final design judgment; no
+source/build/probe/branch/merge/dependency acquisition or execution prompt.
+Earlier S01 acceptance/return and all prior budgets remain. AM-04 below is a
+new capability obligation, not acceptance by planning or a miscellaneous sweep.
+
 ## Explicit return decision — 2026-11-07
 
 After accepted finite S01 baseline, Operator answered “yes please!” to S02
@@ -47,6 +59,7 @@ The Operator explicitly requested this collection arc. Only the first finite ite
 | Unit | Useful deliverable | Dependencies and owner |
 | --- | --- | --- |
 | [S01 — Emission harness and old-compiler baseline](slice01-emission-harness-baseline/slice-plan.md) | Correct the local test's real paths, optional-DTS and runtime/error predicates; establish discriminating harness checks and complete honest baseline observations with independent review | Frozen test-only2321943 and Arc01 S02 review; CDC Sol6.1 High designs/reviews, future CC Luna6 High implements only after Operator execution approval |
+| [S02 — Embedded macro dependency resolution](slice02-embedded-macro-dependency-resolution/slice-plan.md) | Native compiler-owned config/lock, unchanged documented Lykn macro resolver tiers, cold/warm/alias/runtime/error proof | DESIGN ONLY, accepted62e source base proposed; independent future acceptance unblocks Arc03 only after explicit candidate composition |
 | Future individually scoped miscellany | Not yet assigned or authorized | CDC records a concrete proposed item and its acceptance before opening another slice; no inherited implementation authority |
 
 No investigation/repair/review slices split this first result by process stage. It is one branch-sized test delivery with its verification. No executable CC prompt is issued now; complete that open-set member only when execution is approved. Future implementation uses the established two-contributor arrangement, normal exact-path commits and separate `cdc-verification.md`; no fabricated plan-review or implementation-acceptance artifact is created at planning time.
@@ -63,6 +76,8 @@ All original F1–F12, Project07/library/book/guide/human/licensing and other co
 
 ## Version history
 
+- 2026-11-08 v0.4: New bounded S02 DESIGN intake after Arc03 W8; generic repair
+  home distinct from Arc03 policy/oracles, original accepted S01 not reopened.
 - 2026-11-07 v0.3: First finite slice independently accepted as faithful c129
   baseline, with product-red/unexpected package witness preserved and S02-owned;
   no all-green claim or automatic return. Later intake/return composition open.

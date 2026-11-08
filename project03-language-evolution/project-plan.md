@@ -9,6 +9,15 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current macro prerequisite/oracle DESIGN ONLY — 2026-11-08
+
+Operator approves source-grounded reviewed re-entry design after Arc03 W8 stop.
+[Arc02 S02](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/slice-plan.md)
+is the proposed useful native evaluator config/lock repair on accepted62e;
+Arc03 S01 owns exact v1 native oracles and narrow required typed-dist mapping.
+No source/probe/build/composition is authorized in this design endpoint. Same
+Luna6 High read-only contribution/Sol6.1 High CDC; prior raw/caps/all rows remain.
+
 ## Latest Arc03 native-baseline STOP — 2026-11-08
 
 [S01 current report](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md):

@@ -9,6 +9,16 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+## Current dependency/oracle DESIGN — 2026-11-08
+
+Source remains stopped. Operator now authorizes design of bounded re-entry:
+generic compiler-owned native macro config/lock in
+[Arc02 S02](../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/slice-plan.md),
+then this S01's exact native v1 oracle/dist classifier wiring after independent
+prerequisite acceptance and explicitly approved candidate composition. No new
+arc/source implementation/probe/merge authority. Existing Arc03 two-increment
+endpoint/all6PHI/HC/CV/old budgets persist; design is not prerequisite acceptance.
+
 ## Latest S01 baseline STOP — 2026-11-08
 
 Corrected tests e2f passed static review, then native baseline observed29 routes

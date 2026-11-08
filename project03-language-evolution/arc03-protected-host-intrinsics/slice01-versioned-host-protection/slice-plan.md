@@ -9,6 +9,19 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Current DESIGN-only re-entry — 2026-11-08
+
+Operator authorizes reviewed design, NOT source continuation, after latest STOP.
+Generic macro runtime prerequisite is planned in
+[Arc02 S02](../../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/slice-plan.md)
+on accepted62e so intentionally-red e2f tests do not poison its full gates.
+Native exact v1 diagnostic/phase/effect oracles and REQUIRED narrow dist.rs
+classifier→Language adapter addition stay owned by this S01, in the linked
+[design](../../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/artifacts/repair-and-oracle-design.md).
+This justifies a proposed future16th source path, not a quiet current allowlist
+change. All6HC/PHI/CV remain open, source01/5 spent, no correction02 issued.
+Candidate composition/re-entry needs explicit future approval, no release merge.
+
 ## Latest baseline STOP — 2026-11-08
 
 Correction01 e2f is statically verified, but the first native baseline stopped

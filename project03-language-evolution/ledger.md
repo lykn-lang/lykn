@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-08 current scope: DESIGN ONLY macro prerequisite + native policy-oracle
+re-entry. New Arc02 S02 six MR/AM-04 OPEN; all Arc03 HC/PHI/CV/CI04 still OPEN,
+source01/5/tooling8/K0/13 retained. [Design home](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/slice-plan.md).
+Planning review cannot close source/runtime criteria or authorize composition.
+
 2026-11-08 latest evidence: Arc03 S01 native-baseline STOP at e2f, no-run0/
 native 1 pass/2 fail; invalid 29 =26 old-success +3 W8 dependency errors, legal native4/4,
 dist overwrite red. Public0/13/implementation/full gates unrun. All6HC/PHI/

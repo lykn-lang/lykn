@@ -16,6 +16,15 @@
 
 ## How this list stays honest
 
+### Macro repair/oracle design owner — 2026-11-08
+
+DESIGN ONLY [Arc02 S02](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/slice-plan.md)
+proposes compiler-owned existing package config/lock and a narrow cache-file
+presence contract, preserving intentional Rust macro import tiers. Arc03 S01
+retains exact diagnostic/effect predicates and required typed dist mapping.
+All runtime outcomes remain unobserved beyond original c791eca evidence;
+no source/probe/execution/composition authority or old-budget reset.
+
 ### Arc03 macro-resolution and native-oracle STOP — 2026-11-08
 
 Owner: Project03 CDC, renewed Operator-approved scope/readiness required.
