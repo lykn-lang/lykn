@@ -945,7 +945,14 @@ failures.
 
 Compiler failures differ from Lykn program behavior. A user's `throw`, a
 literal containing `COMPILE_ERROR`, and runtime contract/type/match exceptions
-remain generated program behavior. On a compiler failure, CLI and package
-compilation return an error before writing new JavaScript or declarations for
-that failing source. This does not promise pairwise atomic I/O writes or
-rollback of earlier package files.
+remain generated program behavior. Name resolution precedes form
+interpretation: a genuine lexical value binding named `fn` makes a reference an
+ordinary call, while a label has a separate namespace and does not create that
+binding. For example, `(label fn (block (fn 987)))` leaves the inner `fn` as a
+recognized form; because its shape is malformed, compilation rejects it rather
+than treating the shape mismatch as an ordinary foreign call. An ordinary
+unresolved callee that is not a recognized form remains an ordinary call.
+Compiler diagnostics are compile-time failures, not runtime exceptions. On a
+compiler failure, CLI and package compilation return an error before writing
+new JavaScript or declarations for that failing source. This does not promise
+pairwise atomic I/O writes or rollback of earlier package files.

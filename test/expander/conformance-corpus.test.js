@@ -31,15 +31,13 @@
 //      ................................. "D2: reserved words are rejected at every binding position"
 //   7. label position, non-form name → calls-binding both (labels don't shadow, DD-60 ‡)
 //      ................................. "DD-60 ‡: a label does not shadow a value (control name)"
-//   8. label position, form name → the DOCUMENTED shape-mismatch asymmetry
-//      ................................. "residual (documented): form-named label — shape-mismatch asymmetry"
+//   8. label position, form name → malformed unresolved form rejects
+//      ................................. "DD-60 ‡: form-named label preserves malformed-form rejection"
 //   9. kernel:-prefixed name in a binding position → DOCUMENTED edge-4 residual
 //      ................................. "residual (documented): kernel:-prefixed name is unbindable (edge 4)"
 //
-// Residual dispositions (classes 8, 9) are pinned as *expected divergence* so a
-// change to them trips this corpus and forces a conscious re-disposition. The
-// end-state count is 53 documented-as-intended divergent matrix cells (38 form-
-// named-label + 15 kernel:if); see the slice11 closing report (the A-4 input).
+// The kernel:-prefixed-name residual (class 9) remains pinned as expected
+// divergence so a change trips this corpus and forces conscious re-disposition.
 
 import { assert, assertEquals } from "https://deno.land/std/assert/mod.ts";
 import { lykn } from "lang/mod.js";
@@ -218,20 +216,20 @@ Deno.test("DD-60 ‡: a label does not shadow a value (control name)", () => {
   assert(callsBinding("widget", js, "call-head"), `JS: ${js.out ?? js.err}`);
 });
 
-Deno.test("residual (documented): form-named label — shape-mismatch asymmetry", () => {
-  // A *form*-named label leaves references meaning the FORM (labels don't
-  // shadow values — DD-60 ‡ — so D1 does not apply). The backends then differ
-  // only in how they treat a form invoked with the wrong shape (`(fn 987)`):
-  // Rust falls through to a plain call (or fires the macro); JS raises a form
-  // arity error. This is the PRE-EXISTING accidental-shadowing asymmetry
-  // (DD-60 §Context), orthogonal to name-binding semantics — 38 matrix cells,
-  // documented-as-intended. Pinned here so a change forces re-disposition.
+Deno.test("DD-60 ‡: form-named label preserves malformed-form rejection", () => {
+  // Labels have their own namespace and do not create a value binding, so the
+  // inner `fn` retains form meaning. Its malformed shape must reject on both
+  // backends. Genuine lexical value bindings named `fn` remain ordinary calls
+  // under the D1 controls above.
   const src = "(label fn (block (fn 987)))";
   const rust = compileRust(src);
   const js = compileJs(src);
-  assert(rust.ok, `Rust should still emit (fall-through call): ${rust.err}`);
-  assert(rust.out.includes("fn(987)"), `Rust should fall through to a call:\n${rust.out}`);
-  assert(!js.ok, `JS should raise a form-shape error (documented residual): ${js.out}`);
+  assert(!rust.ok, `Rust should reject a malformed unresolved form: ${rust.out}`);
+  assert(
+    rust.err.includes("fn requires params and body"),
+    `Rust should report the malformed fn shape, got: ${rust.err}`,
+  );
+  assert(!js.ok, `JS should reject the malformed form shape: ${js.out}`);
 });
 
 // ── 9. kernel:-prefixed names are unbindable (DD-60 edge case 4) ────────────
