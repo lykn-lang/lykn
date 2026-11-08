@@ -9,6 +9,13 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Current S03 correction02 continuation (2026-11-07)
+
+Operator explicitly approved exact private-test `atom(*item,...)` correction and
+original full S03 validation. All6SR/CI-03 stay open; source02/5 spent/three remain.
+Same Luna6 High CC/separate Sol6.1 High CDC, first further substantive failure
+stops. Historical3737/no-run stop retained; no S04/K/integration/reset.
+
 ## S03 current substantive stop (2026-11-07)
 
 Original implementation3737 remains UNACCEPTED: first native no-run101/E0277 in
@@ -352,6 +359,8 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
 
 ## Version history
 
+- 2026-11-07 v0.17: Explicit Operator correction02 resumes original S03 gates;
+  no capability acceptance, roadmap change or budget reset.
 - 2026-11-07 v0.16: S03 first no-run failed in private test authoring; exact CDC
   replay/held correction recorded without roadmap or capability acceptance.
 - 2026-11-07 v0.15: Opened approved S03 private shared-role/cardinality delivery

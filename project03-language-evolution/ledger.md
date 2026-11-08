@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 newest: S03 exact test-only correction02/original validation explicitly
+approved, same models/stop rule. All6SR/CI-03/P-1 open; source02/5 spent/three
+remain. No reset/baseline replay/S04/K/integration; releasec9 unchanged.
+
 2026-11-07 current S03 STOP: source3737 unit no-run101/E0277 independently
 confirmed, ordinary private test authoring. All6SR/CI-03/P-1 open; no candidate
 runtime/fullMake/cites. Proposed test-only correction02 awaits continuation;

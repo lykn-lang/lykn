@@ -1,0 +1,6 @@
+Correct semantic-role private test atom input
+
+Dereference the borrowed string without changing role policies or test oracles.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,5 +1,11 @@
 # S03 semantic role ledger
 
+Current2026-11-07: Operator explicitly approved exact test-only correction02 and
+original S03 validation. Iteration04 active; source02/5 spent/three remain,
+all6SR open. No row/source acceptance from approval, no baseline replay/reset.
+Older stop/proposal remains history; next immutable test diff review precedes
+dependent gates, first further substantive failure STOP. Releasec9 unchanged.
+
 Current2026-11-07 STOP:3737 implementation UNACCEPTED. CC and separate CDC exact
 native no-run exit101/E0277 private unit helper &&str→Into<String>; ZERO candidate
 behavior/private/runtime/fullMake/citation execution. All6SR rows remain open,

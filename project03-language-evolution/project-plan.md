@@ -9,6 +9,13 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current S03 test-only continuation approved (2026-11-07)
+
+Operator explicitly approved S03 private-test correction02 and original full
+validation, same models/Autonomous/first further substantive failure stop.
+All6SR/CI-03/P-1 open; source02/5 spent/three remain, no reset. Historical stop
+below preserved; no S04/K/source integration or new architecture scope.
+
 ## Current S03 first-substantive-failure hold (2026-11-07)
 
 [S03 review](arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/cdc-verification.md#current-independent-stop--2026-11-07)
@@ -679,6 +686,8 @@ implementation definition of done is not established by this migration.
 
 ## Version history
 
+- 2026-11-07 v1.49: Recorded explicit S03 test-only correction02/resumed original
+  validation authority, retaining first further failure stop and all open rows.
 - 2026-11-07 v1.48: Recorded S03 ordinary private-test no-run failure and exact
   independent replay; all rows remain open and local correction awaits Operator.
 - 2026-11-07 v1.47: Opened approved Arc01 S03 source-ready private semantic-role

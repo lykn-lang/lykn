@@ -1,0 +1,6 @@
+Issue authorized semantic-role test correction
+
+Preserve the stopped attempt and resume original gates after immutable review.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

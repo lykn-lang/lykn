@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-07 newest: explicit S03 test-only correction02/resumed original validation
+approved; source02/5 spent/three remain. All6SR/CI-03 open; releasec9 accepted,
+no later-unit/K/integration/budget reset. Earlier stopped condition retained.
+
 2026-11-07 current S03 STOP: source3737 unit no-run101/E0277 independently
 confirmed; all6SR/CI-03 open, no candidate runtime/fullMake/cites. Local test-only
 correction02 proposed, not issued; refinement01 spent/four remain. Releasec9

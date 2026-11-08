@@ -2,12 +2,41 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice03-shared-semantic-roles
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-integration]
 ---
 
 # S03 — authoritative child uses and body sequences
+
+## Current explicit correction02 authority — 2026-11-07
+
+Operator explicitly authorized the consolidated test-only correction and resumed
+S03 validation, same Luna6 High CC/separate Sol6.1 High CDC, Autonomous Mode,
+stop on ANY further substantive failure. [Iteration04](cc-prompt-iteration04.md)
+governs exact `atom(*item,...)` private-test change only and original full gates.
+Source refinement02/5 spent/three remain; no reset or old baseline replay.
+Earlier stopped/pending statements below describe those historical conditions.
+All6SR/CI-03 remain open until actual full independent acceptance. Reuse existing
+implementation actor for this tiny source-supported correction and retained
+compiler contract; renewed intake and exclusive handoff before edits/builds.
+
+Author readiness: exact &&str/Into<String> API and E0277 independently verified;
+one-line fix leaves production/fixtures/predicates immutable. Correct prospective
+XDG_CACHE_HOME/raw first-launch/separate dependent steps explicit, no new choice,
+family/helper or gate. Releasec9 protected; no S04/K/integration authority.
+
+## Assignment history
+
+All entries2026-11-07; issued files remain unchanged.
+
+| Prompt | Predecessor/reason | Disposition |
+| --- | --- | --- |
+| cc-prompt.md | Initial S03 source/test/gate recipe | Historical; baseline delivered via823/939 |
+| cc-prompt-iteration01.md | Initial; capture-only prevalidation completion | Refinement01; returned939 |
+| cc-prompt-iteration02.md | iteration01; release original baseline/guard readiness | Original baseline completed, no additional refinement |
+| cc-prompt-iteration03.md | iteration02; fresh original implementation contributor | Returned3737; first no-run101 stop, no extra correction count |
+| cc-prompt-iteration04.md | iteration03; explicit Operator test-only correction | CURRENT, refinement02/5; intake/handoff required |
 
 ## Current substantive stop / proposed correction only — 2026-11-07
 
