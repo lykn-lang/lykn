@@ -1,0 +1,6 @@
+Record shared-role functional baseline
+
+Retain original native reds, public runtime controls and setup limitations.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

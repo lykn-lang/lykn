@@ -1,0 +1,8 @@
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07), host aarch64-apple-darwin, LLVM 22.1.6
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+deno path /opt/homebrew/bin/deno
+sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+DENO_DIR /Users/oubiwann/Library/Caches/deno (existing)
+CARGO_TARGET_DIR unset
+TMPDIR /var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/

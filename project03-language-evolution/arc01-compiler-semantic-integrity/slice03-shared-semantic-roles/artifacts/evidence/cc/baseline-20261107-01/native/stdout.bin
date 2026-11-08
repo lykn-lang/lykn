@@ -1,0 +1,19 @@
+
+running 5 tests
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... FAILED
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... FAILED
+test do_while_uses_value_test_and_statement_sequence_body ... FAILED
+test match_consumes_value_tail_after_statement_prefix ... FAILED
+test while_uses_value_test_and_statement_sequence_body ... FAILED
+
+failures:
+
+failures:
+    boundaries_preserve_bound_calls_and_switch_sibling_visibility
+    consumed_no_else_if_is_rejected_in_all_four_value_positions
+    do_while_uses_value_test_and_statement_sequence_body
+    match_consumes_value_tail_after_statement_prefix
+    while_uses_value_test_and_statement_sequence_body
+
+test result: FAILED. 0 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+

@@ -1,0 +1,4 @@
+4:3: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement
+6:3: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement

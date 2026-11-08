@@ -1,5 +1,12 @@
 # S03 semantic role ledger
 
+Current2026-11-07: source939 original functional baseline completed: native5
+planned reds (exit101), public1 parent/4steps and4strict runtimes pass (exit0).
+See [CDC baseline disposition](cdc-verification.md). Native TMP/XDG setup deviated
+from prescription; functional observations retained with explicit limits, no
+compliance replay. Product implementation unstarted/all6rows remain open.
+Refinement01 spent/four remain; planned implementation is not a new correction.
+
 Current2026-11-07:939 capture completion independently reviewed; refinement01
 spent/four remain. Semantic fixtures/assertions unchanged; ZERO launches so far.
 Iteration02 releases original baseline, not another implementation refinement.

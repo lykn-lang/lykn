@@ -1,0 +1,5 @@
+program=make
+args=["fresh-artifacts"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env_overrides=[DENO_DIR=/Users/oubiwann/Library/Caches/deno]
+selected_inherited_env=[DENO_DIR=/Users/oubiwann/Library/Caches/deno, LYKN_TEST_DENO=unset, XDG_CACHE_HOME=unset, TMPDIR=/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/, CARGO_TARGET_DIR=unset, CARGO_HOME=unset]

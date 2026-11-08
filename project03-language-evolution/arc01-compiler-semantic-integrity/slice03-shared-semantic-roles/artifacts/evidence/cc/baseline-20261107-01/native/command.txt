@@ -1,0 +1,5 @@
+program=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9
+args=["--nocapture", "--test-threads=1"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env_overrides=[DENO_DIR=/Users/oubiwann/Library/Caches/deno, LYKN_TEST_DENO=/opt/homebrew/bin/deno, LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc01-compiler-semantic-integrity/slice03-shared-semantic-roles/artifacts/evidence/cc/baseline-20261107-01/native]
+selected_inherited_env=[DENO_DIR=/Users/oubiwann/Library/Caches/deno, LYKN_TEST_DENO=/opt/homebrew/bin/deno, XDG_CACHE_HOME=unset, TMPDIR=/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/, CARGO_TARGET_DIR=unset, CARGO_HOME=unset]

@@ -1,0 +1,25 @@
+TMPDIR root created before launch: /private/tmp/lykn-s03-public-baseline-20261107-01
+stat: owner=oubiwann mode=drwx------
+
+Initial broad config search attempted:
+find / /private /private/tmp /private/tmp/lykn-s03-public-baseline-20261107-01 -maxdepth 1 ( -name deno.json -o -name deno.jsonc -o -name project.json -o -name package.json ) -print
+result: find: /private/tmp/codex-daemon-501: Operation not permitted; command stopped before later ls.
+
+Narrow exact candidate path checks via `test -e` (all exit 1 / absent):
+/deno.json /deno.jsonc /project.json /package.json
+/private/deno.json /private/deno.jsonc /private/project.json /private/package.json
+/private/tmp/deno.json /private/tmp/deno.jsonc /private/tmp/project.json /private/tmp/package.json
+/private/tmp/lykn-s03-public-baseline-20261107-01/deno.json /private/tmp/lykn-s03-public-baseline-20261107-01/deno.jsonc /private/tmp/lykn-s03-public-baseline-20261107-01/project.json /private/tmp/lykn-s03-public-baseline-20261107-01/package.json
+
+Parent Deno test will use the repository's explicit project.json with unchanged existing -A route. Generated child remains --no-config and has no added grants.
+
+Following CDC instruction, fresh XDG_CACHE_HOME created separately:
+/private/tmp/lykn-s03-public-baseline-20261107-01/xdg-cache
+owner=oubiwann mode=drwx------
+All four exact candidate config files under xdg-cache were independently checked and absent (each `test -e` exit 1): deno.json, deno.jsonc, project.json, package.json.
+An attempted combined `test -e` joined with && stopped on the first expected absence; independent checks above replace it.
+Public environment now sets DENO_DIR=/Users/oubiwann/Library/Caches/deno (fixed existing), XDG_CACHE_HOME=/private/tmp/lykn-s03-public-baseline-20261107-01/xdg-cache (fresh owned), TMPDIR=/private/tmp/lykn-s03-public-baseline-20261107-01 (fresh owned).
+
+Process-record limitations for the two setup attempts above:
+- The broad `find` attempt was called through exec with output-only display, not redirected. The returned tool text included `find: /private/tmp/codex-daemon-501: Operation not permitted`; the wrapper exit_code was not displayed/retained and no raw stdout/stderr/status receipt exists. This is a manual transcription, not a raw command receipt. It affected only the ancestor inventory attempt and does not establish any other config presence/absence or compiler behavior.
+- A subsequent receipt-file write call used nonexistent workdir `/Users/oubiwann/lab/lykn/.worktrees/planning` and failed at process creation with `Rejected("Failed to create unified exec process: No such file or directory (os error 2)")`. No shell command ran and no file was written; this is setup0cases. Correct planning worktree is `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`.

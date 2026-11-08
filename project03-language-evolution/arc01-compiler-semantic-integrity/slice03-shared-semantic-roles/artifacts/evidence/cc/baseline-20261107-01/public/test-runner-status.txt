@@ -1,0 +1,4 @@
+exit=0
+program=/opt/homebrew/bin/deno
+args=["test", "--config", "project.json", "-A", "test/forms/semantic-roles.test.js"]
+result=1 parent test passed; four public child runtime steps passed; 0 failed

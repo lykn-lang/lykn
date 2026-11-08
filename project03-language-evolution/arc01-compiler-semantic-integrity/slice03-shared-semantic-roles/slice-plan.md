@@ -9,6 +9,22 @@ depends-on: [slice02-checked-emission-results, slice21-checked-emission-release-
 
 # S03 — authoritative child uses and body sequences
 
+## Original baseline complete / implementation handoff — 2026-11-07
+
+Source939 remains test-only/clean; original compiler c9 is unchanged. Native5
+planned reds and public4 passing runtime steps are retained in the
+[CDC baseline disposition](cdc-verification.md) and actual raw receipts. Its
+native TMP/XDG protocol deviation and limited setup receipts remain explicit;
+no baseline rerun to manufacture compliance. All six SR rows remain open.
+
+Baseline contributor returned all source/index/build/raw ownership. Select a
+fresh SAME Luna6 High implementation context for the compiler phase: source
+engineering differs from baseline capture, and the previous context's broad
+ancestor search/setup/capture mistakes warrant fresh operational attention.
+Separate Sol6.1 High CDC retains design/review/prose. This is staffing within
+existing authority, no model/budget reset: refinement01 spent/four remain;
+original planned implementation is not correction02. Releasec9 stays read-only.
+
 ## Current frozen construction accepted for baseline — 2026-11-07
 
 Capture-only completion939abb519de04d10b8c1502af9bba2e2ea27ad8a changes

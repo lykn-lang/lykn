@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+   |
+12 |         return if (true) 7;
+   |                ~~
+    at file:///var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpgLq5GF/match.js:12:16
