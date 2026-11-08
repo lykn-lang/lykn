@@ -6,6 +6,29 @@ fn classify(source: &str) -> Vec<SurfaceForm> {
     lykn_lang::classifier::classify(&resolved).expect("source classifies")
 }
 
+fn nested_bad_child<'a>(
+    outer: &'a lykn_lang::ast::sexpr::SExpr,
+    expected_head: &str,
+) -> &'a lykn_lang::ast::sexpr::SExpr {
+    let outer_values = outer.as_list().expect("outer form is a list");
+    assert_eq!(outer_values[0].as_form_head(), Some("bind"));
+    let obj_values = outer_values[2]
+        .as_list()
+        .expect("bind value is an Obj list");
+    assert_eq!(obj_values[0].as_form_head(), Some("obj"));
+    let bad_child = &obj_values[2];
+    let bad_values = bad_child.as_list().expect("selected Obj value is a list");
+    assert_eq!(bad_values[0].as_form_head(), Some(expected_head));
+    bad_child
+}
+
+fn codegen_diagnostic(error: lykn_lang::error::LyknError) -> lykn_lang::diagnostics::Diagnostic {
+    let lykn_lang::error::LyknError::Codegen(diagnostic) = error else {
+        panic!("expected Codegen diagnostic");
+    };
+    diagnostic
+}
+
 #[test]
 fn checked_emission_boundaries_reject_value_if_without_else() {
     let forms = classify("(bind value (if true 1))");
@@ -35,10 +58,9 @@ fn nested_classification_failure_preserves_source_diagnostic() {
     let source = "(bind data (obj :secret 1)) (bind result (obj :a (dissoc data \"bad\") :b (dissoc data \"later\") :c (obj :ok 1)))";
     let parsed = lykn_lang::reader::read(source).expect("source reads");
     let resolved = lykn_lang::resolver::resolve(&parsed);
-    let lykn_lang::ast::sexpr::SExpr::List { values, .. } = &resolved[1] else {
-        panic!("second form is a bind");
-    };
-    let expected = lykn_lang::classifier::classify_expr(&values[2]).unwrap_err();
+    let bad_child = nested_bad_child(&resolved[1], "dissoc");
+    let expected = lykn_lang::classifier::classify_expr(bad_child).unwrap_err();
+    assert_ne!(expected.span, Default::default());
     let forms = lykn_lang::classifier::classify(&resolved).expect("outer forms classify");
     let registry = TypeRegistry::default();
     for strip_assertions in [false, true] {
@@ -67,10 +89,9 @@ fn nested_diagnostic_keeps_duplicate_binding_suggestion() {
     let source = "(bind result (obj :bad (bind x 1 x 2)))";
     let parsed = lykn_lang::reader::read(source).expect("source reads");
     let resolved = lykn_lang::resolver::resolve(&parsed);
-    let lykn_lang::ast::sexpr::SExpr::List { values, .. } = &resolved[0] else {
-        panic!("form is a bind");
-    };
-    let expected = lykn_lang::classifier::classify_expr(&values[2]).unwrap_err();
+    let bad_child = nested_bad_child(&resolved[0], "bind");
+    let expected = lykn_lang::classifier::classify_expr(bad_child).unwrap_err();
+    assert_ne!(expected.span, Default::default());
     assert!(expected.suggestion.is_some());
     let forms = lykn_lang::classifier::classify(&resolved).expect("outer form classifies");
     let error = emitter::emit(&forms, &TypeRegistry::default(), false).unwrap_err();
@@ -95,21 +116,41 @@ fn checked_form_failure_restores_modes_and_clears_error_for_reuse() {
 #[test]
 fn checked_emission_reports_assign_and_returns_mismatch() {
     let registry = TypeRegistry::default();
-    let assign = classify("(assign field 1)");
-    assert!(matches!(
-        emitter::emit(&assign, &registry, false),
-        Err(lykn_lang::error::LyknError::Codegen(_))
-    ));
+    let top_source = "(assign field 1)";
+    let top_parsed = lykn_lang::reader::read(top_source).expect("top assign reads");
+    let top_span = top_parsed[0].span();
+    assert_ne!(top_span, Default::default());
+    let top_assign = classify(top_source);
+    let top_error = codegen_diagnostic(emitter::emit(&top_assign, &registry, false).unwrap_err());
+    assert_eq!(top_error.span, top_span);
 
-    let mismatch = classify(
-        "(func broken :args () :returns :number :post true :body (while false (console:log \"never\")))",
-    );
+    let nested_source = "(bind value (assign field 1))";
+    let nested_parsed = lykn_lang::reader::read(nested_source).expect("nested assign reads");
+    let nested_values = nested_parsed[0].as_list().expect("outer form is a list");
+    assert_eq!(nested_values[0].as_form_head(), Some("bind"));
+    let nested_assign = &nested_values[2];
+    let nested_assign_values = nested_assign.as_list().expect("nested assign is a list");
+    assert_eq!(nested_assign_values[0].as_form_head(), Some("assign"));
+    let nested_span = nested_assign.span();
+    assert_ne!(nested_span, Default::default());
+    let nested_forms = classify(nested_source);
+    let nested_error =
+        codegen_diagnostic(emitter::emit(&nested_forms, &registry, false).unwrap_err());
+    assert_eq!(nested_error.span, nested_span);
+
+    let mismatch_source = "(func broken :args () :returns :number :post true :body (while false (console:log \"never\")))";
+    let mismatch = classify(mismatch_source);
+    let clause_span = match &mismatch[0] {
+        SurfaceForm::Func { clauses, .. } => clauses[0].span,
+        other => panic!("expected classified function, got {other:?}"),
+    };
+    assert_ne!(clause_span, Default::default());
     let mut ctx = emitter::context::EmitterContext::new(false);
     assert_eq!(ctx.gensym.next("seed"), "seed__gensym0");
-    assert!(matches!(
-        emitter::forms::emit_form(&mismatch[0], &mut ctx, &registry),
-        Err(lykn_lang::error::LyknError::Codegen(_))
-    ));
+    let mismatch_error = codegen_diagnostic(
+        emitter::forms::emit_form(&mismatch[0], &mut ctx, &registry).unwrap_err(),
+    );
+    assert_eq!(mismatch_error.span, clause_span);
     assert_eq!(ctx.gensym.next("probe"), "probe__gensym2");
 }
 
