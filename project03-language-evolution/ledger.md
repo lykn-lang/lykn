@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+2026-11-07 final Slice21: all5RI independently done, release0.6 c9/f197 clean
+and validated with actual release producers. Conditional S03 prerequisite clear;
+CI-03/P-1 still open until actual role delivery/composition, no S04/K propagation.
+
 2026-11-07 current: explicit Operator approval opens Slice21 exact release8f→c9
 FF/validation/independent review, then conditional S03. All5RI open; P-1 remains
 open. No source code/other propagation/tooling budget change or S04 authority.

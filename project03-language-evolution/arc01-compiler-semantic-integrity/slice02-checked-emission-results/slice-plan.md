@@ -9,6 +9,13 @@ depends-on: [slice01-variadic-for-context, arc02-ad-hoc-maintenance/slice01-emis
 
 # Checked emission results
 
+## Subsequent local release integration — 2026-11-07
+
+[Slice21](../../slice21-checked-emission-release-integration/cdc-verification.md)
+independently accepts exact FF into release0.6 c9/f197 with fresh release gates.
+This updates integration state only; original task acceptance, stops/refinements,
+RD01/canonicalDD/history and S07/S08 obligations below retain their identities.
+
 ## Accepted endpoint — 2026-11-07
 
 Task-only sourcec9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1 is independently

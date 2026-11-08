@@ -1,12 +1,21 @@
 ---
 project: project03-language-evolution
 slice: slice21-checked-emission-release-integration
-status: in-progress
+status: closed
 planned-release: unassigned
 depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results]
 ---
 
 # Slice21 — checked-emission release integration
+
+## Final endpoint — 2026-11-07
+
+All five RI rows independently done: exact clean release c9/f197 via normal
+8f→c9 FF, new separate full normal release Make/focused/generated/runtime/cites
+green. [Verification](cdc-verification.md), implementer report and retrospective
+retain actual producers/history/limits. No source edit/other propagation/push.
+Conditional Operator S03 readiness/approved incremental execution may now proceed;
+no consequential public-AST/PL expansion inferred. No S04 or tooling/K advance.
 
 ## Authority and endpoint — 2026-11-07
 

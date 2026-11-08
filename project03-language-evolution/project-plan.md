@@ -9,6 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## Current release integration accepted (2026-11-07)
+
+[Slice21](slice21-checked-emission-release-integration/cdc-verification.md)
+independently accepts exact local release0.6 FF8f→c9,14paths/treef197/all5RI done.
+Fresh separate release full normal Make/focused/generated/runtime/citations pass;
+actual releasecff38 producer differs from task746f and is independently pinned.
+No source changes/other propagation/push/publication. The Operator's conditional
+direct S03 advance now clears this prerequisite; open the approved incremental
+shared-role unit, with consequential public-AST/PL scope gates intact. No S04/K.
+
 ## Current integration and conditional S03 authority (2026-11-07)
 
 The Operator explicitly approved exact release8f→acceptedc9 FF plus fresh release
@@ -648,6 +658,9 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-07 v1.46: Independently closed Slice21 exact S02 local release FF and
+  fresh release composition gates, clearing the already-approved S03 prerequisite.
 
 - 2026-11-07 v1.45: Opened standalone Slice21 for explicitly approved exact S02
   local release FF/fresh independent gates, with conditional direct S03 advance

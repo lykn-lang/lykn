@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn"
+args=["compile", "/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpy6kIvI/invalid.lykn"]
+cwd=Some("/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/.tmpy6kIvI")
+env_overrides=
+

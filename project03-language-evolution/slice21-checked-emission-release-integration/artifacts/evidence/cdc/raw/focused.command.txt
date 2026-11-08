@@ -1,0 +1,10 @@
+Reviewer=/root/cdc OpenAI gpt-6.1-sol High
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+branch/source=release/0.6.x c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1
+Common env: XDG_CACHE_HOME=/private/tmp/lykn-s21-cdc.AzQCdQ/xdg npm_config_cache=/private/tmp/lykn-s21-cdc.AzQCdQ/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno. PATH unchanged; no Cargo overrides. All actual release-built executables pinned before use, no subsequent Cargo rebuild.
+1 /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/emission_results-ec634af31c6c32ab --nocapture
+2 /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/lykn_lang-60c4a58c1162abbf emitter::forms::tests::numeric_for_header_slots_still_reject_no_else_if_values --exact --nocapture
+3 /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/lykn_cli-8a470da61c5d1dbe validation::tests::first_nonempty_compile_group_keeps_the_established_priority --exact --nocapture
+4 /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/contract_predicate_lowering-5224edfea80a9408 --nocapture
+5 /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/deps/emission_failures-ee1302ddd95a417d --nocapture
+Invocation5 additionally LYKN_EMISSION_EVIDENCE_DIR=/private/tmp/lykn-s21-cdc.AzQCdQ/focused-runtime (precreated, distinct from full Make runtime). Every existing assertion/fixture/oracle remains unchanged. Expected actual selected tests6/1/1/1/4, internal header3/suffix5/contract17/invalid4+validruntime4+predicates10. Capture raw first, inspect actual populations/status/output before acceptance.

@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S02 release composition accepted; S03 next — 2026-11-07
+
+[Slice21](../slice21-checked-emission-release-integration/cdc-verification.md)
+independently accepts exact local release0.6 c9/f197, full fresh release gates,
+all5RI done. S02/CI-02 accepted capability is now integrated. Already-authorized
+incremental S03 readiness/execution follows; no A6/public-AST rewrite implied,
+no S04/tooling/K advance. Budgets/history/public-impact obligations unchanged.
+
 ## S02 integration then approved S03 advance — 2026-11-07
 
 Operator explicitly opened [standalone Slice21](../slice21-checked-emission-release-integration/slice-plan.md)
@@ -313,6 +321,9 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
    implementation approval is inferred from this planning request.
 
 ## Version history
+
+- 2026-11-07 v0.14: Slice21 independently integrated/validated S02 on0.6;
+  cleared conditional S03 prerequisite without broader architecture/integration.
 
 - 2026-11-07 v0.13: Recorded explicit S02 exact release integration and
   conditional approved S03 advance; preserved public-AST/PL decisions and budgets.

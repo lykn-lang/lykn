@@ -1,0 +1,18 @@
+Reviewer=/root/cdc OpenAI gpt-6.1-sol High
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+branch=release/0.6.x
+source=c9e0d7e5a6faa437e1dece7d0adf9ce06a67b5a1
+tree=f19702c863e74d672c2e471e148eab21daad591e
+argv=make check
+XDG_CACHE_HOME=/private/tmp/lykn-s21-cdc.AzQCdQ/xdg
+npm_config_cache=/private/tmp/lykn-s21-cdc.AzQCdQ/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_EMISSION_EVIDENCE_DIR=/private/tmp/lykn-s21-cdc.AzQCdQ/runtime
+CARGO_NET_OFFLINE=unset
+CARGO_TARGET_DIR=unset
+PATH=inherited unchanged
+Rust/cargo=1.97.0
+Deno=2.9.6 SHA2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Actual pre-Make release/bin SHA=cff38e6eeba42ac1063005731679c736be002ba8d73ca7a6c03effb3704c8739
+Full unfiltered native gate, first-launch separate raw streams/status. Existing optional Rust receipt env only captures actual artifacts/children before assertions; no test or permission change. Fresh owned caches, no installation/updates/filters/bypass/new helper. CC returned ownership clean before this independent replay.
