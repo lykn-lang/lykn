@@ -1,4 +1,5 @@
 use std::fs;
+use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
 
@@ -34,29 +35,113 @@ fn fixture_path(name: &str) -> PathBuf {
         .join(format!("{name}.lykn"))
 }
 
-fn execute(command: &mut Command) -> Output {
-    command.output().expect("start lykn semantic-role process")
+fn evidence_root() -> Option<PathBuf> {
+    let root = std::env::var_os("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR").map(PathBuf::from)?;
+    assert!(
+        root.is_absolute(),
+        "semantic-role evidence directory must be absolute"
+    );
+    Some(root)
 }
 
-fn evidence(
-    case: &Case,
-    source: &[u8],
-    outputs: &[(&str, &Output)],
-    generated: Option<&[u8]>,
-    dts: Option<&[u8]>,
-) {
-    eprintln!(
-        "SEMANTIC_ROLE_PREASSERT case={} source={:?} generated={:?} dts={:?}",
-        case.name, source, generated, dts
+fn save_receipt(name: &str, suffix: &str, bytes: &[u8]) {
+    if let Some(root) = evidence_root() {
+        let path = root.join(format!("{name}.{suffix}"));
+        let mut file = fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(path)
+            .expect("create unique semantic-role evidence receipt");
+        file.write_all(bytes)
+            .expect("write semantic-role evidence receipt");
+    }
+}
+
+fn record_source(name: &str, source_path: &Path, source: &[u8]) {
+    let locator = format!("source_path={source_path:?}\n");
+    eprintln!("SEMANTIC_ROLE_SOURCE name={name} {locator}bytes={source:?}");
+    save_receipt(name, "source.bin", source);
+    save_receipt(name, "source-path.txt", locator.as_bytes());
+}
+
+fn record_command(name: &str, command: &Command) {
+    let selected_env = [
+        "DENO_DIR",
+        "LYKN_TEST_DENO",
+        "XDG_CACHE_HOME",
+        "TMPDIR",
+        "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR",
+    ]
+    .map(|key| format!("{key}={:?}", std::env::var_os(key)))
+    .join("\n");
+    let env_overrides = command
+        .get_envs()
+        .map(|(key, value)| format!("{key:?}={value:?}"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    let description = format!(
+        "program={:?}\nargs={:?}\ncwd={:?}\nenv_overrides=\n{}\nselected_inherited_env=\n{}\n",
+        command.get_program(),
+        command.get_args().collect::<Vec<_>>(),
+        command.get_current_dir(),
+        env_overrides,
+        selected_env,
     );
-    for (label, output) in outputs {
-        eprintln!(
-            "SEMANTIC_ROLE_PREASSERT case={} step={} status={:?} stdout={:?} stderr={:?}",
-            case.name,
-            label,
-            output.status.code(),
-            output.stdout,
-            output.stderr,
+    eprintln!("SEMANTIC_ROLE_COMMAND name={name}\n{description}");
+    save_receipt(name, "command.txt", description.as_bytes());
+}
+
+fn record_output(name: &str, output: &Output) {
+    let status = format!(
+        "success={} code={:?}\n",
+        output.status.success(),
+        output.status.code()
+    );
+    eprintln!(
+        "SEMANTIC_ROLE_OUTPUT name={name} {status}stdout={:?} stderr={:?}",
+        output.stdout, output.stderr
+    );
+    save_receipt(name, "stdout.bin", &output.stdout);
+    save_receipt(name, "stderr.bin", &output.stderr);
+    save_receipt(name, "status.txt", status.as_bytes());
+}
+
+fn execute_recorded(
+    name: &str,
+    source_path: &Path,
+    source: &[u8],
+    command: &mut Command,
+) -> Output {
+    record_source(name, source_path, source);
+    record_command(name, command);
+    let output = command.output().expect("start lykn semantic-role process");
+    record_output(name, &output);
+    output
+}
+
+fn record_generated(name: &str, generated: Option<&[u8]>, dts: Option<&[u8]>) {
+    let generated_status = format!("present={}\n", generated.is_some());
+    let dts_status = format!("present={}\n", dts.is_some());
+    eprintln!(
+        "SEMANTIC_ROLE_ARTIFACTS name={name} generated={generated:?} generated_utf8={:?} dts={dts:?}",
+        generated.map(String::from_utf8_lossy)
+    );
+    save_receipt(name, "generated-status.txt", generated_status.as_bytes());
+    save_receipt(name, "dts-status.txt", dts_status.as_bytes());
+    if let Some(generated) = generated {
+        save_receipt(name, "generated.js", generated);
+        save_receipt(
+            name,
+            "generated.txt",
+            String::from_utf8_lossy(generated).as_bytes(),
+        );
+    }
+    if let Some(dts) = dts {
+        save_receipt(name, "generated.d.ts", dts);
+        save_receipt(
+            name,
+            "generated-dts.txt",
+            String::from_utf8_lossy(dts).as_bytes(),
         );
     }
 }
@@ -66,13 +151,19 @@ fn run_positive(case: &Case) {
     let source = fs::read(&source_path).expect("read frozen semantic-role source");
     let temp = TempDir::new().expect("create semantic-role output directory");
     let output_path = temp.path().join(format!("{}.js", case.name));
-    let check = execute(
+    let check = execute_recorded(
+        &format!("native-{}-check", case.name),
+        &source_path,
+        &source,
         Command::new(env!("CARGO_BIN_EXE_lykn"))
             .current_dir(temp.path())
             .arg("check")
             .arg(&source_path),
     );
-    let compile = execute(
+    let compile = execute_recorded(
+        &format!("native-{}-compile", case.name),
+        &source_path,
+        &source,
         Command::new(env!("CARGO_BIN_EXE_lykn"))
             .current_dir(temp.path())
             .arg("compile")
@@ -82,10 +173,8 @@ fn run_positive(case: &Case) {
     );
     let generated = fs::read(&output_path).ok();
     let dts = fs::read(output_path.with_extension("d.ts")).ok();
-    evidence(
-        case,
-        &source,
-        &[("check", &check), ("compile", &compile)],
+    record_generated(
+        &format!("native-{}", case.name),
         generated.as_deref(),
         dts.as_deref(),
     );
@@ -115,7 +204,10 @@ fn run_positive(case: &Case) {
     );
 
     let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
-    let runtime = execute(
+    let runtime = execute_recorded(
+        &format!("native-{}-runtime", case.name),
+        &source_path,
+        &source,
         Command::new(deno)
             .current_dir(temp.path())
             .args([
@@ -128,17 +220,6 @@ fn run_positive(case: &Case) {
                 "--no-prompt",
             ])
             .arg(&output_path),
-    );
-    evidence(
-        case,
-        &source,
-        &[
-            ("check", &check),
-            ("compile", &compile),
-            ("runtime", &runtime),
-        ],
-        generated.as_deref(),
-        dts.as_deref(),
     );
     assert!(
         runtime.status.success(),
@@ -203,13 +284,20 @@ fn consumed_no_else_if_is_rejected_in_all_four_value_positions() {
         let source_path = temp.path().join(format!("{name}.lykn"));
         let output_path = temp.path().join(format!("{name}.js"));
         fs::write(&source_path, source).expect("write frozen negative source");
-        let check = execute(
+        let source = fs::read(&source_path).expect("read frozen negative source");
+        let check = execute_recorded(
+            &format!("native-negative-{name}-check"),
+            &source_path,
+            &source,
             Command::new(env!("CARGO_BIN_EXE_lykn"))
                 .current_dir(temp.path())
                 .arg("check")
                 .arg(&source_path),
         );
-        let compile = execute(
+        let compile = execute_recorded(
+            &format!("native-negative-{name}-compile"),
+            &source_path,
+            &source,
             Command::new(env!("CARGO_BIN_EXE_lykn"))
                 .current_dir(temp.path())
                 .arg("compile")
@@ -218,14 +306,15 @@ fn consumed_no_else_if_is_rejected_in_all_four_value_positions() {
                 .arg(&output_path),
         );
         let generated = fs::read(&output_path).ok();
+        record_generated(
+            &format!("native-negative-{name}"),
+            generated.as_deref(),
+            None,
+        );
         eprintln!(
-            "SEMANTIC_ROLE_NEGATIVE_PREASSERT name={name} source={source:?} check_status={:?} check_stdout={:?} check_stderr={:?} compile_status={:?} compile_stdout={:?} compile_stderr={:?} generated={generated:?}",
+            "SEMANTIC_ROLE_NEGATIVE_PREASSERT name={name} check_status={:?} compile_status={:?} generated={generated:?}",
             check.status.code(),
-            check.stdout,
-            check.stderr,
-            compile.status.code(),
-            compile.stdout,
-            compile.stderr
+            compile.status.code()
         );
         observations.push((name, check, compile, generated));
     }
