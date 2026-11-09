@@ -805,13 +805,15 @@ function isDeclHead(h) {
  * while earlier children (a loop iterable / `if-let` scrutinee / `match`
  * subject) are evaluated OUTSIDE the binding's scope. Head dispatch works on
  * both surface and kernel heads.
- * @returns {{kind:'seq'} | {kind:'body', names: string[], bodyStart: number}}
+ * @returns {{kind:'seq'} | {kind:'body', names: string[], bodyStart: number} | {kind:'conditional'}}
  */
 function scopePlan(form) {
   if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
   const head = form.values[0];
   const h = head?.type === "atom" ? head.value : null;
   switch (h) {
+    case "if":
+      return { kind: "conditional" };
     case "for-of":
     case "for-in":
     case "for-await-of":
@@ -859,6 +861,16 @@ function expandChildrenSeq(children, env) {
 function expandChildrenPlan(form, env) {
   const plan = scopePlan(form);
   const children = form.values;
+  if (plan.kind === "conditional") {
+    const out = [children[0]];
+    if (children.length > 1) {
+      out.push(expandConditionalChild(children[1], env, true));
+    }
+    for (let i = 2; i < children.length; i++) {
+      out.push(expandConditionalChild(children[i], env, false));
+    }
+    return out;
+  }
   if (plan.kind === "seq") return expandChildrenSeq(children, env);
   const split = Math.min(plan.bodyStart, children.length);
   const out = [];
@@ -868,6 +880,16 @@ function expandChildrenPlan(form, env) {
     for (const v of expandChildrenSeq(children.slice(split), bodyEnv)) out.push(v);
   }
   return out;
+}
+
+function expandConditionalChild(child, env, isCondition) {
+  const expanded = expandExpr(child, env);
+  if (!Array.isArray(expanded)) return expanded;
+  if (isCondition && expanded.length > 1) {
+    throw new Error('if condition must expand to a single form');
+  }
+  if (expanded.length > 1) return markKernel(array(sym("block"), ...expanded));
+  return expanded[0] ?? null;
 }
 
 // --- Expansion Walk ---

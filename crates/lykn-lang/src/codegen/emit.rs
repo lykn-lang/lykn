@@ -697,13 +697,13 @@ fn emit_if(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     w.write(") ");
 
     if args.len() >= 2 {
-        emit_stmt_or_block(w, &args[1])?;
+        emit_if_branch(w, &args[1])?;
     }
 
     if args.len() >= 3 {
         // Check if we just emitted a block — if so, the cursor is after `}`.
         w.write(" else ");
-        emit_stmt_or_block(w, &args[2])?;
+        emit_if_branch(w, &args[2])?;
     }
 
     w.newline();
@@ -711,7 +711,7 @@ fn emit_if(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
 }
 
 /// Emit a single statement as either a block `{ ... }` or inline `stmt;`.
-fn emit_stmt_or_block(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
+fn emit_if_branch(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     // DD-61 §A6: a lexically bound `block` head is a call, not the block form.
     if let SExpr::List { values, .. } = expr
         && values.first().and_then(|e| e.as_form_head()) == Some("block")
@@ -719,9 +719,7 @@ fn emit_stmt_or_block(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
         emit_block_body(w, &values[1..])?;
         return Ok(());
     }
-    // Inline statement.
-    emit_statement(w, expr)?;
-    Ok(())
+    emit_block_body(w, std::slice::from_ref(expr))
 }
 
 fn emit_block(w: &mut JsWriter, stmts: &[SExpr]) -> Result<(), LyknError> {
@@ -1971,7 +1969,7 @@ mod tests {
     fn test_if_simple() {
         // (if x (f))
         let expr = list(vec![atom("if"), atom("x"), list(vec![atom("f")])]);
-        assert_eq!(stmt_to_string(&expr), "if (x) f();\n\n");
+        assert_eq!(stmt_to_string(&expr), "if (x) {\n  f();\n}\n");
     }
 
     #[test]
@@ -1983,7 +1981,10 @@ mod tests {
             list(vec![atom("f")]),
             list(vec![atom("g")]),
         ]);
-        assert_eq!(stmt_to_string(&expr), "if (x) f();\n else g();\n\n");
+        assert_eq!(
+            stmt_to_string(&expr),
+            "if (x) {\n  f();\n} else {\n  g();\n}\n"
+        );
     }
 
     #[test]

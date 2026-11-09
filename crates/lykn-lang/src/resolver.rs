@@ -76,6 +76,9 @@ pub(crate) enum ScopePlan {
     /// that pair's names enter scope, then those names are visible to later
     /// grouped initializers.
     GroupedBind { slots: Vec<BindGroupSlot> },
+    /// A conditional's test, consequent, and optional alternate each see the
+    /// same incoming scope; declarations in one operand do not leak to another.
+    Conditional,
 }
 
 #[derive(Clone, Copy)]
@@ -85,17 +88,22 @@ pub(crate) struct BindGroupSlot {
 }
 
 /// Compute a form's [`ScopePlan`]. Non-list or non-binding forms → `Sequence`.
-pub(crate) fn scope_plan(form: &SExpr) -> ScopePlan {
+pub(crate) fn scope_plan(form: &SExpr, scope: &[String]) -> ScopePlan {
     let SExpr::List { values, .. } = form else {
         return ScopePlan::Sequence;
     };
     let head = values.first().and_then(|e| e.as_atom());
+    let dispatch_head = values.first().and_then(SExpr::as_form_head);
     let body_names: Vec<String> = bindings_introduced(form)
         .into_iter()
         .filter(|s| s.kind.shadows_values() && !is_enclosing_only(s.kind))
         .map(|s| s.name)
         .collect();
     match head {
+        Some("if") if dispatch_head == Some("if") && !scope.iter().any(|name| name == "if") => {
+            ScopePlan::Conditional
+        }
+        Some("kernel:if") => ScopePlan::Conditional,
         Some("bind") if let Some(slots) = grouped_bind_slots(values) => {
             ScopePlan::GroupedBind { slots }
         }
@@ -167,7 +175,7 @@ fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SE
             let mut child_defs: Vec<Span> = def_spans.to_vec();
             child_defs.extend(sites.iter().map(|s| s.span));
 
-            let new_values = match scope_plan(form) {
+            let new_values = match scope_plan(form, scope) {
                 ScopePlan::Sequence => resolve_seq(values, scope, &child_defs),
                 ScopePlan::Body { names, body_start } => {
                     resolve_split_at(values, scope, &child_defs, names, body_start)
@@ -175,6 +183,10 @@ fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SE
                 ScopePlan::GroupedBind { slots } => {
                     resolve_grouped_bind(values, scope, &child_defs, &slots)
                 }
+                ScopePlan::Conditional => values
+                    .iter()
+                    .map(|child| resolve_form(child, scope, &child_defs))
+                    .collect(),
             };
             SExpr::List {
                 values: new_values,
@@ -382,7 +394,7 @@ fn shadow_seq(forms: &[SExpr], scope: &mut Vec<String>, out: &mut Vec<BindingSit
 /// enclosing scope.
 fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>) {
     match form {
-        SExpr::List { values, .. } => match scope_plan(form) {
+        SExpr::List { values, .. } => match scope_plan(form, scope) {
             ScopePlan::Sequence => shadow_seq(values, scope, out),
             ScopePlan::Body { names, body_start } => {
                 let split = body_start.min(values.len());
@@ -407,6 +419,11 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
             }
             ScopePlan::GroupedBind { slots } => {
                 shadow_grouped_bind(values, &slots, scope, out);
+            }
+            ScopePlan::Conditional => {
+                for child in values {
+                    shadow_seq(std::slice::from_ref(child), scope, out);
+                }
             }
         },
         SExpr::Cons { car, cdr, .. } => {
@@ -594,11 +611,7 @@ mod tests {
     #[test]
     fn conditional_arm_declarations_do_not_shadow_other_arms_or_following_forms() {
         let source = "(if true (bind pick 1) (pick 987))\n(pick 987)";
-        let (alternate, alternate_tag) = call_head_tag_with_tag(source, "pick", 0);
-        assert_eq!(
-            (alternate.as_str(), alternate_tag),
-            ("pick", NameRes::Unresolved)
-        );
+        assert_eq!(call_head_tag(source, "pick"), Some(NameRes::Unresolved));
         let (name, following_tag) = last_head(source);
         assert_eq!(
             (name.as_str(), following_tag),
@@ -606,27 +619,30 @@ mod tests {
         );
     }
 
-    fn call_head_tag_with_tag(src: &str, name: &str, occurrence: usize) -> (String, NameRes) {
-        fn find(e: &SExpr, name: &str, out: &mut Vec<(String, NameRes)>) {
-            if let SExpr::List { values, .. } = e {
-                if let (Some(a @ SExpr::Atom { .. }), Some(SExpr::Number { value: 987.0, .. })) =
-                    (values.first(), values.get(1))
-                    && a.as_atom() == Some(name)
-                {
-                    out.push((name.to_string(), a.name_res()));
-                }
-                for v in values {
-                    find(v, name, out);
-                }
-            }
-        }
-        let forms = read(src).expect("parse");
-        let resolved = resolve(&forms);
-        let mut out = Vec::new();
-        for form in &resolved {
-            find(form, name, &mut out);
-        }
-        out.into_iter().nth(occurrence).expect("matching call")
+    #[test]
+    fn conditional_scope_plan_accepts_kernel_escape_and_bypasses_bound_heads() {
+        let ordinary = read("(if true 1 2)").expect("parse ordinary conditional");
+        assert!(matches!(
+            scope_plan(&ordinary[0], &[]),
+            ScopePlan::Conditional
+        ));
+
+        let kernel = read("(kernel:if true 1 2)").expect("parse kernel conditional");
+        assert!(matches!(
+            scope_plan(&kernel[0], &[]),
+            ScopePlan::Conditional
+        ));
+
+        let mut bound = read("(if true 1 2)").expect("parse bound call");
+        let SExpr::List { values, .. } = &mut bound[0] else {
+            panic!("conditional is a list")
+        };
+        values[0] = values[0].clone().with_name_res(NameRes::BindingRef);
+        assert!(matches!(scope_plan(&bound[0], &[]), ScopePlan::Sequence));
+        assert!(matches!(
+            scope_plan(&ordinary[0], &["if".to_string()]),
+            ScopePlan::Sequence
+        ));
     }
 
     #[test]

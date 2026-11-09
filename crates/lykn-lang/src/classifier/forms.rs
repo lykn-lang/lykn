@@ -416,8 +416,8 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprUse, out: &mut Vec<Dia
                 "class" => walk_class_args(values, true, out),
                 "class-expr" => walk_class_args(values, false, out),
                 "block" | "label" => walk_kernel_children(values, position, out),
-                "try" | "function" | "function*" | "=>" | "break" | "continue" | "debugger"
-                | "import" | "export" => {
+                "try" | "function" | "kernel:function" | "function*" | "=>" | "break"
+                | "continue" | "debugger" | "import" | "export" => {
                     walk_args(&values[1..], position, out);
                 }
                 "catch" => {

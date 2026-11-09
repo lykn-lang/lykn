@@ -179,7 +179,7 @@ fn expand_children_scoped(
     env: &MacroEnv,
     scope: &mut Vec<String>,
 ) -> Result<Vec<SExpr>, LyknError> {
-    match crate::resolver::scope_plan(form) {
+    match crate::resolver::scope_plan(form, scope) {
         crate::resolver::ScopePlan::Sequence => expand_seq(values, deno, env, scope),
         crate::resolver::ScopePlan::Body { names, body_start } => {
             let split = body_start.min(values.len());
@@ -239,6 +239,15 @@ fn expand_children_scoped(
                 next_index += 1;
             }
             scope.truncate(mark);
+            Ok(out)
+        }
+        crate::resolver::ScopePlan::Conditional => {
+            let mut out = Vec::with_capacity(values.len());
+            for child in values {
+                if let Some(expanded) = expand_expr(child.clone(), deno, env, scope)? {
+                    out.push(expanded);
+                }
+            }
             Ok(out)
         }
     }

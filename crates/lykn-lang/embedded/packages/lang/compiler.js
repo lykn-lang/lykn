@@ -714,8 +714,8 @@ const macros = {
     return {
       type: 'IfStatement',
       test: compileExpr(args[0], 'expression'),
-      consequent: toStatement(compileExpr(args[1])),
-      alternate: args[2] ? toStatement(compileExpr(args[2])) : null,
+      consequent: compileIfBranch(args[1]),
+      alternate: args[2] ? compileIfBranch(args[2]) : null,
     };
   },
 
@@ -1615,6 +1615,15 @@ const macros = {
     return { type: 'ObjectExpression', properties };
   },
 };
+
+function compileIfBranch(node) {
+  const compiled = compileExpr(node);
+  if (compiled.type === 'BlockStatement') return compiled;
+  return {
+    type: 'BlockStatement',
+    body: [toStatement(compiled)],
+  };
+}
 
 // Binary/logical operators
 const binaryOps = ['+', '-', '*', '/', '%', '**', '===', '!==', '==', '!=',
