@@ -1,0 +1,6 @@
+Freeze numeric quasiquote macro regressions
+
+Exercise direct and nested numeric literals through the public compiler.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

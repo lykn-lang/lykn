@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+Operator authorizes [iteration03](cc-prompt-iteration03.md), source
+refinement 03 of 5. Scope is the bounded W8 repair, independent prerequisite
+validation and original baseline. All six HC rows remain open.
+
 Correction02 stopped at public W8 on `a7153649`. Native 15 controls,
 29 legacy successes, legal4 and dist overwrite were reconciled. Public
 write-case outcomes were eight generated and one unrelated expansion

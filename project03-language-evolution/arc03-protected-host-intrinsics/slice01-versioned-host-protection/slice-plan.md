@@ -9,6 +9,16 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Authorized W8 repair and baseline continuation
+
+Operator authorizes the bounded public W8 repair, independent validation,
+and original baseline. [Iteration03](cc-prompt-iteration03.md) is source
+refinement 03 of 5. Same Luna6 High CC and Sol6.1 High CDC in Autonomous
+Mode, stop at the next unexpected substantive failure or real gap. Keep
+the prerequisite on a local branch from accepted `f2cd8139` for full
+checks, then compose into preserved `a7153649` after independent acceptance.
+All six HC rows and later v1/dist gates stay open.
+
 ## Latest stop — public W8
 
 Native correction02 is frozen at `a7153649`. Its 15 predicate controls

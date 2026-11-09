@@ -1,0 +1,6 @@
+Preserve numeric macro template nodes
+
+Construct typed number nodes when compiling quasiquote literals.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

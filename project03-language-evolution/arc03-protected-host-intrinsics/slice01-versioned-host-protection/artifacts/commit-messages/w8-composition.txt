@@ -1,0 +1,6 @@
+Compose numeric macro literal repair into Arc03
+
+Retain the independently accepted prerequisite and original baseline fixtures.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
