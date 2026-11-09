@@ -9,6 +9,24 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Iteration06 private if-let oracle clarification
+
+The issued prompt's new private `Reflect` pattern example is a
+zero-field constructor, per `classifier/forms.rs:1954–1980,2031–2048`.
+The actual binding pair below supersedes only that new private test
+input and oracle. The original host fixtures and all gates are unchanged.
+
+- Source `(if-let (globalThis source) (++ globalThis) 0) (set! globalThis:Reflect:apply 0)`
+  has one Reflect.apply diagnostic at the second form's original target.
+  The then arm's local update leaves the global alias valid.
+- Source `(if-let (globalThis source) 0 (++ globalThis)) (set! globalThis:Reflect:apply 0)`
+  has no diagnostic. Else sees the real binding, so its update
+  invalidates alias proof throughout the unit.
+
+This is an in-scope authoring clarification under the current Operator
+steering. It does not change the language, issue a new assignment or
+consume another source refinement.
+
 ## Current Operator steering — standard Autonomous Mode
 
 After iteration06 was issued, the Operator replaced the strict

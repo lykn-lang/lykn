@@ -1,5 +1,17 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## If-let example corrected during iteration06 authoring
+
+CC and CDC checked actual `classify_if_let` and `classify_pattern`.
+The earlier illustrative pattern named Reflect is a zero-field
+constructor and does not bind the name. The sibling-scope defect in
+the frozen native walker remains: a lowercase `globalThis` binding
+can hide an else-arm write that should invalidate alias proofs.
+The [private proof pair](slice-plan.md#iteration06-private-if-let-oracle-clarification)
+uses that actual binder and has opposite outcomes for then and else.
+No specimen or original oracle changed, and no validation ran to
+settle this source-grammar correction.
+
 ## Consolidated correction04 held on exact path identity — 2026-11-09
 
 The Operator authorized the six previously recorded repairs together.
