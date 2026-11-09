@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+The Operator adopts [standard Autonomous Mode](slice-plan.md#current-operator-steering--standard-autonomous-mode)
+for active iteration06. Clear in-scope issues may be resolved without
+renewed permission. Original evidence and acceptance gates remain.
+
 [Iteration06](cc-prompt-iteration06.md) authorizes the consolidated
 seven-finding correction and the original gates. All HC rows remain
 open. Source refinement 04 of 5 is assigned, with no acceptance yet.

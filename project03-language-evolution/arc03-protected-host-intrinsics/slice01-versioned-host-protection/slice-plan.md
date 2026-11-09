@@ -9,6 +9,24 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Current Operator steering — standard Autonomous Mode
+
+After iteration06 was issued, the Operator replaced the strict
+first-failure stop with standard Autonomous Mode. The same Luna6 High
+CC and separate Sol6.1 High CDC continue through S01 acceptance.
+Resolve clear in-scope code, formatting, test setup and receipt issues
+using sound engineering judgment without asking for another approval.
+Pause only if there is no obvious sound solution or a genuinely
+material unresolved design or evidence gap. This supersedes the
+stop wording in the preserved issued prompt and earlier records.
+
+The original v1 scope, exact behavioral fixtures/oracles, release
+boundary, source freeze and independent review, durable prospective
+launch receipts and named releases remain binding. Preserve actual
+failed attempts and never weaken a gate to pass it. Refinement 04 of
+5 remains the current assignment. Normal later refinement and closure
+rules apply, with no reset and no expansion to S02 or release work.
+
 ## Consolidated correction04 authorized
 
 The Operator authorizes all seven recorded static repairs and the
@@ -360,6 +378,10 @@ and their tests are explicitly allowed. Source commits exact paths/provided -F
 body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
+
+- 2026-11-09 additive Operator steering to active iteration06.
+  Standard Autonomous Mode replaces the earlier stop condition.
+  Issued prompt remains unchanged. Current authority is above.
 
 - 2026-11-09 [iteration06](cc-prompt-iteration06.md), predecessor
   [iteration05](cc-prompt-iteration05.md). Active consolidated
