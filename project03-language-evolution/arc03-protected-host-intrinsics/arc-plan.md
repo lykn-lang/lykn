@@ -9,6 +9,11 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+S01 correction02 stopped at public W8 on `a7153649`. The macro prerequisite
+enabled all 29 planned native observations. The public baseline needs a
+separate W8 disposition before source continuation.
+[Independent reconciliation](slice01-versioned-host-protection/cdc-verification.md#correction02-public-baseline-stop).
+
 ## Current dependency/oracle DESIGN — 2026-11-08
 
 Source remains stopped. Operator now authorizes design of bounded re-entry:
@@ -19,7 +24,7 @@ prerequisite acceptance and explicitly approved candidate composition. No new
 arc/source implementation/probe/merge authority. Existing Arc03 two-increment
 endpoint/all6PHI/HC/CV/old budgets persist; design is not prerequisite acceptance.
 
-## Latest S01 baseline STOP — 2026-11-08
+## Earlier S01 native baseline STOP — 2026-11-08
 
 Corrected tests e2f passed static review, then native baseline observed29 routes
 (26 old-success+3 unexpected W8 embedded macro dependency errors), valid4/4 and

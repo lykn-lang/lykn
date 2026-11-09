@@ -1,0 +1,16 @@
+Prospective fixed fixture-root ancestor checks; each command was run before the baseline launch. Every exit 0 means the named path was absent.
+test ! -e /project.json => exit 0
+test ! -e /deno.json => exit 0
+test ! -e /deno.jsonc => exit 0
+test ! -e /private/project.json => exit 0
+test ! -e /private/deno.json => exit 0
+test ! -e /private/deno.jsonc => exit 0
+test ! -e /private/tmp/project.json => exit 0
+test ! -e /private/tmp/deno.json => exit 0
+test ! -e /private/tmp/deno.jsonc => exit 0
+test ! -e /private/tmp/lykn-arc03-s01-correction02-baseline/project.json => exit 0
+test ! -e /private/tmp/lykn-arc03-s01-correction02-baseline/deno.json => exit 0
+test ! -e /private/tmp/lykn-arc03-s01-correction02-baseline/deno.jsonc => exit 0
+test ! -e /private/tmp/lykn-arc03-s01-correction02-baseline/tmp/project.json => exit 0
+test ! -e /private/tmp/lykn-arc03-s01-correction02-baseline/tmp/deno.json => exit 0
+test ! -e /private/tmp/lykn-arc03-s01-correction02-baseline/tmp/deno.jsonc => exit 0

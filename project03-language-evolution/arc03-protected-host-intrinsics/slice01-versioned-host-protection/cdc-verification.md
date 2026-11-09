@@ -1,6 +1,59 @@
 # CDC verification — S01 attempts, 2026-11-08
 
-## Current native-baseline STOP — no product acceptance
+## Correction02 public baseline stop
+
+Operator authorized the one-file native-oracle correction and finite
+baseline through [iteration02](cc-prompt-iteration02.md), source refinement
+02 of 5. CC `/root/cdc/macro_dependency_design_luna` (Luna6 High) froze
+the native test at `f84b599dc6c3fba9166687a09806ef76f783ba81` and leaf
+formatting at `a71536496ab8ee858cafdc319deea2e0d483077f`, tree
+`2bb3c5903acea127e291304091d1be05a7e92e6b`. Sol6.1 High CDC read both
+complete immutable deltas, checked exact scope and digest, and released
+the baseline. The final native file SHA-256 is
+`f8a93bcc9223f59826ddd3a5f01ceb40fe38a96ee6e76c10fef34b6b55651ef7`.
+The implementation tree delta from the accepted composite is the native
+test only. The public test still has the original phase pairs.
+
+CDC independently reconciled the [raw CC evidence](artifacts/evidence/cc/correction02-baseline/)
+against the exact commands, fixed-ancestor checks and pinned tool identities.
+No-run exited 0. Direct native target exited 101 with one pass and two
+expected failed parent tests. The acceptance control and all fourteen
+rejecting controls matched their independent expectations. All 29 original
+routes exited 0, including all three native W8 routes, and all 29 failed
+the exact v1 rejection predicate. The four legal native runtimes exited 0
+with exact `"function"\n`, `[7,8]\n`, `9\n`, `99\n`, and empty
+stderr. The typed dist package returned success and overwrote both actual
+JS/DTS sentinels and their epoch mtimes. The new exact typed diagnostic
+comparison is a future v1 assertion. This old success never reached it.
+
+After native reconciliation, CC launched only the released public target,
+`/opt/homebrew/bin/deno test --config project.json -A test/forms/protected-host.test.js`.
+It exited 1 at the final aggregate assertion. The runner printed 13 step
+statuses as ok because each step captures its error. Actual per-case
+receipts show eight write cases returning JS. The unchanged W8 fixture
+instead recorded `generated: null`, `runtime: null`, with the exact
+reported error `expandExpr: unexpected node type 'undefined'`. This
+differs from the required nine public generated-module results and is the
+first unexpected substantive failure. It supplies neither generated JS
+nor a host policy rejection. The four legal public runtimes retained
+before/after pairs and passed exact outputs, exit 0 and empty stderr.
+No protected-write module ran.
+
+**Verdict.** The correction's source and native pre-policy results are
+verified. Public baseline stopped on W8. CC returned clean ownership at
+`a7153649`. Separate replay, full Make and production v1/dist work were
+held at the stop. All HC, PHI and CV rows stay open. Source refinement
+02 of 5 is spent. The future normal full-suite gate still owns the
+pre-existing Homebrew-only native legal-runtime fallback. This baseline
+used the explicit pinned Deno override. The public W8 evidence gap needs
+its own bounded disposition before resuming the baseline.
+
+The archived raw directories and command receipts match the original bytes.
+The full planning diff check exited 2 on trailing spaces in the original
+public runner headings and EOF blank lines in native/public stdout. Prose-only
+diff check exited 0. Runner stdout is preserved without normalization.
+
+## Earlier native-baseline STOP — no product acceptance
 
 Luna ran native baseline once at e2f after the released correction. CDC read
 original no-run/native metadata/status/runner output, all37 CLI/runtime status

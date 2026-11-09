@@ -1,0 +1,1 @@
+(func guarded :args () :returns :number :pre (do (set! Reflect:apply 0) true) :body 1)

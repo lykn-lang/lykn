@@ -1,0 +1,31 @@
+phase=Arc03 S01 refinement02 original direct native baseline after static release of a715364
+source_branch=codex/protected-host-contract
+source_commit=a71536496ab8ee858cafdc319deea2e0d483077f
+source_tree=2bb3c5903acea127e291304091d1be05a7e92e6b
+native_test_source=crates/lykn-cli/tests/protected_host.rs SHA256 f8a93bcc9223f59826ddd3a5f01ceb40fe38a96ee6e76c10fef34b6b55651ef7
+public_test_source=test/forms/protected-host.test.js unchanged from 8443fde
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+executable=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb
+executable_sha256=db030e6ba5b7d568b0cba503fd3031208a5229dc7377225f3a65772f50db33c2
+argv[0]=--nocapture
+argv[1]=--test-threads=1
+scoped_env.TMPDIR=/private/tmp/lykn-arc03-s01-correction02-baseline/tmp
+scoped_env.XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/correction02-baseline/xdg
+scoped_env.NPM_CONFIG_CACHE=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/correction02-baseline/npm
+scoped_env.DENO_DIR=/Users/oubiwann/Library/Caches/deno
+scoped_env.LYKN_TEST_DENO=/opt/homebrew/bin/deno
+scoped_env.LYKN_PROTECTED_HOST_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/correction02-baseline/native-evidence
+cli=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn sha256=ee18ea4702528931029b009c115812adf7dea32da68a86be0a157def01805c6d
+rustc=rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo=cargo 1.97.0 (c980f4866 2026-06-30)
+deno=/opt/homebrew/bin/deno version=2.9.6 sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+no_cargo_command_after_executable_pins=true
+inherited_env.CARGO_NET_OFFLINE=<unset>
+inherited_env.CARGO_TARGET_DIR=<unset>
+inherited_env.CARGO_NET_GIT_FETCH_WITH_CLI=true
+ancestor_checks_fixed_paths=/project.json,/deno.json,/deno.jsonc,/private/project.json,/private/deno.json,/private/deno.jsonc,/private/tmp/project.json,/private/tmp/deno.json,/private/tmp/deno.jsonc,/private/tmp/lykn-arc03-s01-correction02-baseline/{project.json,deno.json,deno.jsonc},/private/tmp/lykn-arc03-s01-correction02-baseline/tmp/{project.json,deno.json,deno.jsonc}: all 15 exact existence checks returned exit 0 for absence
+expected pre-v1 observation: every one of 29 CLI routes exits 0 and fails exact v1 rejection predicate; no actual host-policy diagnostics. Separate legal4 exact runtimes and typed dist success/JS+DTS overwrite remain the baseline expectation.
+stdout=target/arc03-s01/cc/correction02-baseline/raw/native.stdout
+stderr=target/arc03-s01/cc/correction02-baseline/raw/native.stderr
+status=target/arc03-s01/cc/correction02-baseline/raw/native.status
+per-observation receipts=native-evidence/

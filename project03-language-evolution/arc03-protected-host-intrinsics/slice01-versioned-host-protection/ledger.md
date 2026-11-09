@@ -1,5 +1,11 @@
 # Arc03 S01 host protection ledger
 
+Correction02 stopped at public W8 on `a7153649`. Native 15 controls,
+29 legacy successes, legal4 and dist overwrite were reconciled. Public
+write-case outcomes were eight generated and one unrelated expansion
+error, with legal4 passed. [Review](cdc-verification.md#correction02-public-baseline-stop).
+All six HC rows stay open. Source refinement 02 of 5 is spent.
+
 Operator authorizes [iteration02](cc-prompt-iteration02.md) on `8443fde`,
 source refinement 02 of 5. Native test correction and independently
 reconciled baseline are the finite endpoint. All six HC rows stay open.

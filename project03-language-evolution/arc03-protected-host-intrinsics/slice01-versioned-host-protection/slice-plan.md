@@ -9,6 +9,16 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Latest stop — public W8
+
+Native correction02 is frozen at `a7153649`. Its 15 predicate controls
+and all 29 legacy native routes reached the expected observations.
+Native legal4 passed and old dist overwrote both artifacts. Public baseline
+produced eight expected write-case modules and stopped on an unrelated
+W8 expansion error. Public legal4 passed. See [exact reconciliation](cdc-verification.md#correction02-public-baseline-stop).
+All six HC rows remain open, source 02 of 5 spent. Independent replay and
+production v1/dist continuation are held.
+
 ## Authorized native oracle correction and baseline
 
 Operator authorizes [iteration02](cc-prompt-iteration02.md) on the exact

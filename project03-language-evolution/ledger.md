@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Arc03 correction02 at `a7153649` reached the exact native baseline and
+stopped on public W8. All HC/PHI/CV rows remain open.
+[Evidence and held gates](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#correction02-public-baseline-stop).
+
 Local Arc03 candidate composition passed at `8443fde` with exact parents
 `e2f2959` and `f2cd8139`. AM-04 retains the explicit source re-entry gate
 and all HC rows stay open. [Exact union proof](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md#independent-local-composition-acceptance--2026-11-08).

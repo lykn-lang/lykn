@@ -1,6 +1,27 @@
 # S01 attempts — current baseline STOP, 2026-11-08
 
-## Correction01 return and current verdict
+## Correction02 stopped on public W8
+
+CC returned clean at test-only `a7153649`. The exact oracle uses one
+predicate over observed status, output, diagnostic and file effects, with
+15 discriminating control verdicts. The no-run and original native
+baseline reached every planned observation. All 29 legacy routes exited
+0, native legal4 passed, and dist overwrote JS/DTS as expected.
+
+The public baseline returned JS for eight write fixtures and stopped on
+the W8 public expander error `expandExpr: unexpected node type 'undefined'`.
+All four legal runtime phase pairs passed. Thirteen caught step statuses
+are preserved separately from the failed parent and actual case outcomes.
+[Independent reconciliation](cdc-verification.md#correction02-public-baseline-stop)
+records the exact scope and pins. The [raw CC archive](artifacts/evidence/cc/correction02-baseline/)
+retains the original streams and phase receipts.
+
+All six HC rows remain open. Correction02 closes no policy capability
+row. The public W8 disposition, portable native runner readiness and
+production/dist gates remain owned by Arc03. No baseline replay or
+production continuation occurred after the unexpected result.
+
+## Earlier correction01 return and verdict
 
 CDC-authored reconciliation of actual Luna return; no completed implementation
 or self-acceptance. Phase-path-only correction `e2f29597ab677346abc6e17ec3616d4a340b7861`

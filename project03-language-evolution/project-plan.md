@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Arc03 S01 correction02 verified the planned native baseline and stopped
+on a separate public W8 expansion error.
+[Review](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#correction02-public-baseline-stop).
+
 The accepted macro prerequisite is locally composed with the original Arc03
 tests at `8443fde`. [Independent composition review](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md#independent-local-composition-acceptance--2026-11-08).
 The next Arc03 source gate is the separately held native-oracle correction02.

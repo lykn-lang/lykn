@@ -1,5 +1,8 @@
 # Arc03 protected host intrinsics ledger
 
+S01 source 02 of 5 is spent. [Correction02 stopped on public W8](slice01-versioned-host-protection/cdc-verification.md#correction02-public-baseline-stop).
+Native pre-policy results match expectations. All PHI rows stay open.
+
 Latest2026-11-08: S01 native baseline STOP at e2f, macro dependency-resolution
 failure and separate generic-nonzero oracle gap; [report](slice01-versioned-host-protection/closing-report.md).
 All6PHI OPEN, no product policy/facility accepted; S02 unstarted/source01/5.

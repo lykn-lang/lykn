@@ -1,6 +1,19 @@
 # CDC retrospective — initial attempt stopped, 2026-11-08
 
-## Correction01/native-baseline follow-through — current
+## Correction02/public baseline
+
+The macro prerequisite removed the earlier obstacle for all three native
+W8 routes in this baseline. The public W8 route exercised a separate
+compiler path and returned an unrelated expansion error. Parent status
+and the caught step statuses alone would have hidden the difference.
+The exact generated-output and runtime receipts identified the real
+baseline gap. Keep those per-case expectations and retain the pre-existing
+Homebrew fallback as a separate normal-suite readiness obligation.
+The initial CC intake misstated the old expectation as policy rejects.
+CDC corrected that readback before edits and the run used the original
+legacy-success expectation.
+
+## Earlier correction01/native-baseline follow-through
 
 Same actual Luna CC/Sol CDC roles. Operator approved the local phase-path repair;
 exact four-line correction e2f passed separate immutable static review. Its
