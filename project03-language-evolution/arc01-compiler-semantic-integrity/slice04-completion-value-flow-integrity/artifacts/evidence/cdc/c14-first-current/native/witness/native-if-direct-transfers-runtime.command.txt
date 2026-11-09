@@ -1,0 +1,11 @@
+program="deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-nec14-cdc.BX3ezvC2/native/tmp/.tmp2fLCuw/if-direct-transfers.js"]
+cwd=Some("/private/tmp/lykn-nec14-cdc.BX3ezvC2/native/tmp/.tmp2fLCuw")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-nec14-cdc.BX3ezvC2/native/xdg")
+TMPDIR=Some("/private/tmp/lykn-nec14-cdc.BX3ezvC2/native/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-nec14-cdc.BX3ezvC2/evidence/native")

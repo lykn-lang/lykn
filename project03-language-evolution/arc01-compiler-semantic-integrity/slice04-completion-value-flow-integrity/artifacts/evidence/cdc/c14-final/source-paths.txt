@@ -1,0 +1,5 @@
+crates/lykn-cli/tests/semantic_roles.rs
+crates/lykn-lang/src/binding.rs
+crates/lykn-lang/src/classifier/forms.rs
+crates/lykn-lang/src/resolver.rs
+test/forms/semantic-roles.test.js

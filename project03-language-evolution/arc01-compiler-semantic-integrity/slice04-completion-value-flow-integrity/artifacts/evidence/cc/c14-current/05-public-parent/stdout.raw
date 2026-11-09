@@ -1,0 +1,246 @@
+running 1 test from ./test/forms/semantic-roles.test.js
+public JavaScript compiler preserves shared semantic-role fixtures ...
+  while ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN while {"source":"(bind trace (array))\n(bind count (cell 0))\n(while (< count:value 2)\n  (if true (trace:push (+ count:value 1)))\n  (bind first (+ count:value 10) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\nwhile (count.value < 2) {\n  if (true) {\n    trace.push(count.value + 1);\n  }\n  const first = count.value + 10;\n  const second = first + 1;\n  if (true) {\n    trace.push(second);\n  }\n  count.value = count.value + 1;\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/3513f6e4cbb474b7/while.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/3513f6e4cbb474b7",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/while.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/3513f6e4cbb474b7/while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":44,"3":49,"4":49,"5":44,"6":50,"7":44,"8":49,"9":50,"10":93,"11":10},"stderr":{}}
+----- output end -----
+  while ... ok (26ms)
+  do-while ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN do-while {"source":"(bind trace (array))\n(bind count (cell 0))\n(do-while (< count:value 2)\n  (if true (trace:push (+ count:value 100)))\n  (bind first (+ count:value 20) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\ndo {\n  if (true) {\n    trace.push(count.value + 100);\n  }\n  const first = count.value + 20;\n  const second = first + 1;\n  if (true) {\n    trace.push(second);\n  }\n  count.value = count.value + 1;\n} while (count.value < 2);\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND do-while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/b214958456fa15ff/do-while.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/b214958456fa15ff",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/do-while.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/b214958456fa15ff/do-while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT do-while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":48,"3":48,"4":44,"5":50,"6":49,"7":44,"8":49,"9":48,"10":49,"11":44,"12":50,"13":50,"14":93,"15":10},"stderr":{}}
+----- output end -----
+  do-while ... ok (15ms)
+  match ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match {"source":"(bind trace (array))\n(func choose :args (:number n) :returns :any :body\n  (match n\n    (captured :when (= captured 1)\n      (if true (trace:push \"guard\"))\n      (if true 7 8))\n    (_\n      (if true (trace:push \"fallback\"))\n      (if false 9 10))))\n(console:log (JSON:stringify (array (array (choose 1) (choose 2)) trace)))\n","generated":"const trace = [];\nfunction choose(n) {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"choose: arg 'n' expected number, got \" + typeof n);\n  }\n  return (() => {\n    const target__gensym0 = n;\n    {\n      const captured = target__gensym0;\n      if (captured === 1) {\n        if (true) {\n          trace.push(\"guard\");\n        }\n        return true ? 7 : 8;\n      }\n    }\n    {\n      if (true) {\n        trace.push(\"fallback\");\n      }\n      return false ? 9 : 10;\n    }\n  })();\n}\nconsole.log(JSON.stringify([[choose(1), choose(2)], trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/5d8bfcb95e0fb8d2/match.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/5d8bfcb95e0fb8d2",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/match.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/5d8bfcb95e0fb8d2/match.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":55,"3":44,"4":49,"5":48,"6":93,"7":44,"8":91,"9":34,"10":103,"11":117,"12":97,"13":114,"14":100,"15":34,"16":44,"17":34,"18":102,"19":97,"20":108,"21":108,"22":98,"23":97,"24":99,"25":107,"26":34,"27":93,"28":93,"29":10},"stderr":{}}
+----- output end -----
+  match ... ok (17ms)
+  boundaries ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN boundaries {"source":"(bind match (fn (:number n) n))\n(bind picked (match (if true 4 5)))\n(bind target (fn (:number n) n))\n(bind computed ((get (array target) 0) (if true 6 7)))\n(bind trace (array))\n(switch 1\n  (1\n    (bind first 1 second (+ first 1))\n    (if true (trace:push second))\n    (break))\n  (default (trace:push \"bad\")))\n(console:log (JSON:stringify (array picked computed trace)))\n","generated":"const match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst picked = match(true ? 4 : 5);\nconst target = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst computed = [target][0](true ? 6 : 7);\nconst trace = [];\nswitch (1) {\n  case 1:\n    const first = 1;\n    const second = first + 1;\n    if (true) {\n      trace.push(second);\n    }\n    break;\n  default:\n    trace.push(\"bad\");\n}\nconsole.log(JSON.stringify([picked, computed, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND boundaries {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/3e3278c2ae1ec3c1/boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/3e3278c2ae1ec3c1",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/3e3278c2ae1ec3c1/boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT boundaries {"status":0,"success":true,"stdout":{"0":91,"1":52,"2":44,"3":54,"4":44,"5":91,"6":50,"7":93,"8":93,"9":10},"stderr":{}}
+----- output end -----
+  boundaries ... ok (15ms)
+  if-arm-scope ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-arm-scope {"source":"(macro pick (x) `(+ ,x 10))\n(bind trace (array))\n(if true\n  (bind pick (fn (:number n) (+ n 100)) saved (trace:push (pick 1)))\n  (trace:push (pick 2)))\n(if false\n  (bind pick (fn (:number n) (+ n 200)) saved (trace:push (pick 3)))\n  (trace:push (pick 4)))\n(trace:push (pick 5))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nif (true) {\n  const pick = n => {\n    if (typeof n !== \"number\" || Number.isNaN(n)) {\n      throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n    }\n    return n + 100;\n  };\n  const saved = trace.push(pick(1));\n} else {\n  trace.push(2 + 10);\n}\nif (false) {\n  const pick = n => {\n    if (typeof n !== \"number\" || Number.isNaN(n)) {\n      throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n    }\n    return n + 200;\n  };\n  const saved = trace.push(pick(3));\n} else {\n  trace.push(4 + 10);\n}\ntrace.push(5 + 10);\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-arm-scope {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/6b1e2ec3b500935b/if-arm-scope.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/6b1e2ec3b500935b",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-arm-scope.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/6b1e2ec3b500935b/if-arm-scope.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-arm-scope {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":48,"3":49,"4":44,"5":49,"6":52,"7":44,"8":49,"9":53,"10":93,"11":10},"stderr":{}}
+----- output end -----
+  if-arm-scope ... ok (17ms)
+  if-declaration ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-declaration {"source":"(if true (bind following-statement 99))\n","generated":"if (true) {\n  const followingStatement = 99;\n}\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-declaration {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/27bbd2faf1fe7f1b/if-declaration.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/27bbd2faf1fe7f1b",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-declaration.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/27bbd2faf1fe7f1b/if-declaration.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-declaration {"status":0,"success":true,"stdout":{},"stderr":{}}
+----- output end -----
+  if-declaration ... ok (14ms)
+  if-direct-transfers-literal ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-direct-transfers-literal {"source":"(kernel:function select (flag)\n  (if flag (return 7))\n  (return 9))\n(bind match (fn (:number n) n))\n(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (if (= i 1) (continue))\n  (if (= i 3) (break))\n  (trace:push i))\n(if true (if false (trace:push 900)) (trace:push 901))\n(console:log (JSON:stringify (array (select true) (select false) trace\n  (match (if true 4 5)))))\n","generated":"function select(flag) {\n  if (flag) {\n    return 7;\n  }\n  return 9;\n}\nconst match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst trace = [];\nfor (let i = 0; i < 4; ++i) {\n  if (i === 1) {\n    continue;\n  }\n  if (i === 3) {\n    break;\n  }\n  trace.push(i);\n}\nif (true) {\n  if (false) {\n    trace.push(900);\n  }\n} else {\n  trace.push(901);\n}\nconsole.log(JSON.stringify([select(true), select(false), trace, match(true ? 4 : 5)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-direct-transfers-literal {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/efe42d084ab3d4f/if-direct-transfers-literal.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/efe42d084ab3d4f",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-direct-transfers-literal.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/efe42d084ab3d4f/if-direct-transfers-literal.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-direct-transfers-literal {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":57,"4":44,"5":91,"6":48,"7":44,"8":50,"9":93,"10":44,"11":52,"12":93,"13":10},"stderr":{}}
+----- output end -----
+  if-direct-transfers-literal ... ok (16ms)
+  if-direct-transfers ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-direct-transfers {"source":"(macro make-pick () `(kernel:function select (flag)\n  (if flag (return 7))\n  (return 9)))\n(make-pick)\n(bind match (fn (:number n) n))\n(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (if (= i 1) (continue))\n  (if (= i 3) (break))\n  (trace:push i))\n(if true (if false (trace:push 900)) (trace:push 901))\n(console:log (JSON:stringify (array (select true) (select false) trace\n  (match (if true 4 5)))))\n","generated":"function select(flag) {\n  if (flag) {\n    return 7;\n  }\n  return 9;\n}\nconst match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst trace = [];\nfor (let i = 0; i < 4; ++i) {\n  if (i === 1) {\n    continue;\n  }\n  if (i === 3) {\n    break;\n  }\n  trace.push(i);\n}\nif (true) {\n  if (false) {\n    trace.push(900);\n  }\n} else {\n  trace.push(901);\n}\nconsole.log(JSON.stringify([select(true), select(false), trace, match(true ? 4 : 5)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-direct-transfers {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/4e2311c10c77f332/if-direct-transfers.js"
+  ],
+  "cwd": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/4e2311c10c77f332",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-direct-transfers.lykn",
+  "modulePath": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp/4e2311c10c77f332/if-direct-transfers.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/xdg",
+    "TMPDIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-current/05-public-parent/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-direct-transfers {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":57,"4":44,"5":91,"6":48,"7":44,"8":50,"9":93,"10":44,"11":52,"12":93,"13":10},"stderr":{}}
+----- output end -----
+  if-direct-transfers ... ok (16ms)
+public JavaScript compiler preserves shared semantic-role fixtures ... ok (136ms)
+
+ok | 1 passed (8 steps) | 0 failed (139ms)
+

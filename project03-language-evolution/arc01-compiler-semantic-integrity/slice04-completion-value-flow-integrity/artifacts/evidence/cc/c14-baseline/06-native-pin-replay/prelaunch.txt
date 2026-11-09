@@ -1,0 +1,15 @@
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch/HEAD: codex/completion-value-flow
+2ab840882abf16bbdd0a5d1b13a8c3f8a2ffbe82
+Production predecessor: c202e55c20410f58c950343531f003cd6453650d
+Status: ## codex/completion-value-flow
+Cargo: cargo 1.97.0 (c980f4866 2026-06-30)
+Rustc: rustc 1.97.0 (2d8144b78 2026-07-07)
+Deno: deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+Fresh roots:
+drwxr-xr-x@ 2 oubiwann  wheel  64 Nov  9 17:09 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/06-native-pin-replay/evidence
+drwxr-xr-x@ 2 oubiwann  wheel  64 Nov  9 17:09 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/06-native-pin-replay/npm
+drwxr-xr-x@ 2 oubiwann  wheel  64 Nov  9 17:09 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/06-native-pin-replay/tmp
+drwxr-xr-x@ 2 oubiwann  wheel  64 Nov  9 17:09 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/06-native-pin-replay/xdg

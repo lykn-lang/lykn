@@ -1,0 +1,3 @@
+d5b235bc6ecaba4b49e832c29c7fadc7abb0e8790fde0023b961516266bb11d2  target/debug/lykn
+827ab0534f6d973e51581feb387cbb87e93d83caf4f5a9c35c607c08a45684a7  target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

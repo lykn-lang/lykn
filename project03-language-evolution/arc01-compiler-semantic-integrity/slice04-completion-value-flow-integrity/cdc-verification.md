@@ -68,3 +68,53 @@ F3 replay before macro-boundary acceptance. I2–I4 and their actual
 composed proof remain S04 work. Release is d736 and K remains 0/13.
 The normal S04 I1 refinements are 04/5; earlier tooling allowance and
 denominators remain intact.
+
+## NE-C14 independently accepted — 2026-11-09
+
+Luna 6 High CC proposed done and returned clean exclusive ownership.
+Sol 6.1 High CDC accepts native binder occurrence identity and the
+restored original macro boundary witness at
+`f348ae4239c45e21b730e66cc229875f06ed6e8e`, tree
+`1b7e10f67fb4f86d17d1216a4073e3284d64e5ff`. Task branch
+`codex/completion-value-flow` is clean. Exact five paths from accepted
+I1 `c202e55c` are the three native binding/classifier/resolver paths
+and the two existing integration tests. Both literal and macro fixture
+bytes and the public/embedded compiler files are identical to I1.
+
+The native resolver now identifies definitions by their borrowed input
+atoms. The binding walker projects the same public names, kinds and
+spans. The classifier records original nodes within its existing
+grammar and publishes capture only on success. Ordered borrowed groups
+retain first-key prefix and last-key overwrite behavior. ScopePlan
+reuses the current form's collected sites.
+
+| Condition | Actual result |
+| --- | --- |
+| Old I1 production, test freeze `2ab84088` | Both exact default-span role tests fail. Native original F3 check/compile exit 0, then actual strict SyntaxError at 1:33. Public 1 parent/8 steps pass. The first native run lacked a prospective CLI hash. A separately recorded exact native replay with verified before/after pins reproduced the same outcome. |
+| First current independent `decb1bb6` | Private 2/2 and public 1+8 pass. Native original F3 passes, but the prior F2 check exits 1 with I/O EINVAL 22. F2 compile exits 0 and its runtime remains unrun after the check assertion. This attempt has its prospective producer pin and no paired after-use pin. No full Make or standalone cites launched in this condition. |
+| Final current `f348ae42` | Independent fresh build/no-run, both private tests, all nine native tests and public 1+8 pass. Actual F2 and F3 check/compile use distinct per-fixture XDG paths in the normal parallel runner. Exact original F3 native and public complete modules are byte-identical. Its strict Deno trace is `[7,9,[0,2],4]\n` with empty stderr. The other seven outputs per backend match their prior accepted I1 bytes. |
+| Final repository gates | CC and separate CDC full normal `make check` and standalone cited paths all exit 0. CDC raw includes 1161 library tests, 1480 public/corpus tests plus 32 steps, 482 docs, 64 cited-path documents and 601 historical citations. Pre/post focused pins match, and post-Make release/bin both hash `37106e50d358f0b6df78dbacd165147da1759a3096d5527ddfc62c8c0c83826f`. |
+
+[CC old baseline and pinned replay](artifacts/evidence/cc/c14-baseline/),
+[first CC current gates](artifacts/evidence/cc/c14-current/),
+[CC final gates](artifacts/evidence/cc/c14-cache-current/),
+[first independent condition](artifacts/evidence/cdc/c14-first-current/)
+and [final independent raw](artifacts/evidence/cdc/c14-final/) retain actual
+launches, exits and streams. The final raw includes full generated modules
+in the focused captures and separately retained F2/F3 witness files.
+Historic limitations and static-only freezes remain recorded.
+Scoped source and planning prose whitespace checks passed. The full
+staged raw evidence whitespace check exited 2 on terminal spacing
+and existing EOF line endings. Raw bytes are preserved.
+
+The F2 error and concurrent shared cold-cache condition are observed.
+Existing readiness then remove/extract provides a plausible interference
+path. The error did not identify a syscall. The verified test isolation
+keeps normal parallelism and exact behavior. NE-C15 carries the separate
+product cache concurrency question.
+
+CV-02 remains accepted. NE-C14 completes the bounded original macro
+function prerequisite. CV-01, CV-03 through CV-06, and parent CI-04
+remain open for later completion stages and composition. Release remains
+clean at d736, K0/13. The S04 source ledger has seven refinements, with
+two recorded beyond the normal five under standard Autonomous Mode.

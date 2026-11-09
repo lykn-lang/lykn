@@ -1,0 +1,13 @@
+(macro make-pick () `(kernel:function select (flag)
+  (if flag (return 7))
+  (return 9)))
+(make-pick)
+(bind match (fn (:number n) n))
+(bind trace (array))
+(for (let i 0) (< i 4) (++ i)
+  (if (= i 1) (continue))
+  (if (= i 3) (break))
+  (trace:push i))
+(if true (if false (trace:push 900)) (trace:push 901))
+(console:log (JSON:stringify (array (select true) (select false) trace
+  (match (if true 4 5)))))

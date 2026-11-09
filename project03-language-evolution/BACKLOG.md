@@ -862,6 +862,27 @@ I1's separate literal fixture proves direct transfers without resolving
 NE-C14. A later private resolver correction must preserve public binding
 and diagnostic locations and replay the unchanged original witness.
 
+**Accepted 2026-11-09.** Task `f348ae42` resolves native binder
+occurrences privately and passes both default-span controls and the
+unchanged macro fixture on both backends. Independent full Make and
+cited paths pass. [Current verification](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/cdc-verification.md#ne-c14-independently-accepted--2026-11-09).
+
+#### NE-C15 — investigate concurrent cold embedded-package materialization
+
+**Observed condition, 2026-11-09.** An independent native test run at
+`decb1bb6` used one fresh XDG cache for both macro-bearing fixtures.
+F2 check reported EINVAL 22 while its compile and the original F3
+succeeded. The existing native readiness check and remove/extract
+sequence in `expander/embedded.rs::materialize_packages` is an
+uncoordinated shared-cache path. This supports an interference
+hypothesis. The process error did not identify the syscall.
+
+**Owner/re-entry.** Project03 packaging/cache work owns a bounded
+concurrent-start investigation before any product cache change.
+This is distinct from NE-C04's same-version cache identity. S04's
+accepted per-fixture isolation retains parallel test behavior and
+leaves the product question open. [Exact observed and repaired test conditions](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/cdc-verification.md#ne-c14-independently-accepted--2026-11-09).
+
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 
 **Source-only observation,2026-11-07.** At source5408,

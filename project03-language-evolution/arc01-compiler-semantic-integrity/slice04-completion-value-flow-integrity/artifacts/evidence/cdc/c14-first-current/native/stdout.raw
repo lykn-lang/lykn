@@ -1,0 +1,19 @@
+
+running 9 tests
+test match_consumes_value_tail_after_statement_prefix ... ok
+test while_uses_value_test_and_statement_sequence_body ... ok
+test if_declaration_is_emitted_inside_a_branch_block ... ok
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... ok
+test if_direct_transfers_keep_source_targets ... ok
+test do_while_uses_value_test_and_statement_sequence_body ... ok
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... ok
+test if_arm_scope_and_macro_expansion_are_preserved ... FAILED
+test if_direct_transfers_keep_macro_introduced_function_targets ... ok
+
+failures:
+
+failures:
+    if_arm_scope_and_macro_expansion_are_preserved
+
+test result: FAILED. 8 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+

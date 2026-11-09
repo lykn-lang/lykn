@@ -1,0 +1,4 @@
+target/debug/lykn: OK
+target/debug/deps/semantic_roles-cb18f482652d85e9: OK
+target/debug/deps/lykn_lang-60c4a58c1162abbf: OK
+/opt/homebrew/bin/deno: OK

@@ -1,0 +1,7 @@
+Source decb1bb6c09f41cff44c9cb09f5c1260eb27046f tree 51ef8d45ea758d9e37e18a794844a6483ddde181
+Working directory /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Ordinary pinned PATH and no LYKN_TEST_DENO, CARGO_TARGET_DIR, RUSTFLAGS overrides.
+Actual version, SHA and post-build focused pins: /private/tmp/lykn-nec14-cdc.BX3ezvC2/producer-preflight.txt and /private/tmp/lykn-nec14-cdc.BX3ezvC2/focused-producers-before.sha256
+Named probes /private/tmp/lykn-nec14-cdc.BX3ezvC2/named-config.prospective.txt and /private/tmp/lykn-nec14-cdc.BX3ezvC2/named-config.stderr.raw
+/usr/bin/env TMPDIR=/private/tmp/lykn-nec14-cdc.BX3ezvC2/public/tmp XDG_CACHE_HOME=/private/tmp/lykn-nec14-cdc.BX3ezvC2/public/xdg npm_config_cache=/private/tmp/lykn-nec14-cdc.BX3ezvC2/public/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-nec14-cdc.BX3ezvC2/evidence/public /opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js > /private/tmp/lykn-nec14-cdc.BX3ezvC2/public/stdout.raw 2> /private/tmp/lykn-nec14-cdc.BX3ezvC2/public/stderr.raw
+Terminal status /private/tmp/lykn-nec14-cdc.BX3ezvC2/public/exit-status.txt

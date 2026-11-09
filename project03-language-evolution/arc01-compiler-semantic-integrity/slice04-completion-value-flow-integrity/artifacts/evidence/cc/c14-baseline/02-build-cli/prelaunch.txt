@@ -1,0 +1,17 @@
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch/HEAD: codex/completion-value-flow
+2ab840882abf16bbdd0a5d1b13a8c3f8a2ffbe82
+Production predecessor: c202e55c20410f58c950343531f003cd6453650d
+Tree: 52fbea94d54fa82d6370ce218bd4815e55f822f2
+Working tree: ## codex/completion-value-flow
+Cargo: cargo 1.97.0 (c980f4866 2026-06-30)
+Rustc: rustc 1.97.0 (2d8144b78 2026-07-07)
+Deno: deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+Roots:
+drwxr-xr-x@ 9 oubiwann  wheel  288 Nov  9 17:05 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/02-build-cli
+drwxr-xr-x@ 2 oubiwann  wheel   64 Nov  9 17:05 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/02-build-cli/npm
+drwxr-xr-x@ 2 oubiwann  wheel   64 Nov  9 17:05 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/02-build-cli/tmp
+drwxr-xr-x@ 2 oubiwann  wheel   64 Nov  9 17:05 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/02-build-cli/xdg

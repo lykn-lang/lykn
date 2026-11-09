@@ -9,6 +9,15 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S04 first implementation checkpoint — 2026-11-09
+
+[Independent I1 and NE-C14 verification](slice04-completion-value-flow-integrity/cdc-verification.md)
+accepts task `f348ae42`. CV-02 conditional arm scope and direct transfers
+are done, including the original macro-introduced function witness after
+native occurrence repair. I2 statement-match, I3 ordered references,
+I4 protected exits, CI-04 composition and S07/S08 audit obligations
+remain open. The locally validated release is d736.
+
 ## Protected-host policy resolved into named Arc03 — 2026-11-08
 
 Operator adopts v1 protected host operations/provable-write source errors and

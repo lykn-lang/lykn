@@ -1,0 +1,14 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+thread 'resolver::tests::same_span_bind_name_does_not_capture_initializer_form_head' (100331097) panicked at crates/lykn-lang/src/resolver.rs:726:9:
+assertion `left == right` failed
+  left: [("bind", BindingDef), ("match", BindingDef), ("match", BindingDef), ("_", BindingDef), ("match", BindingRef)]
+ right: [("bind", Unresolved), ("match", BindingDef), ("match", Unresolved), ("_", Unresolved), ("match", BindingRef)]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'resolver::tests::same_span_last_typed_args_atom_is_the_param_occurrence' (100331098) panicked at crates/lykn-lang/src/resolver.rs:777:9:
+assertion `left == right` failed
+  left: [("func", BindingDef), ("run", BindingDef), ("ignored", BindingDef), ("match", BindingDef), ("match", BindingDef)]
+ right: [("func", Unresolved), ("run", BindingDef), ("ignored", Unresolved), ("match", BindingDef), ("match", BindingRef)]
+error: test failed, to rerun pass `-p lykn-lang --lib`

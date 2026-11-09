@@ -1,0 +1,4 @@
+Program: /usr/bin/env
+Argv: -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/05-public-parent/tmp XDG_CACHE_HOME=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/05-public-parent/xdg npm_config_cache=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/05-public-parent/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/05-public-parent/evidence /opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Scoped env includes unique evidence dir; roots under 05-public-parent; DENO_DIR fixed; Cargo network/RUST_LOG unset.

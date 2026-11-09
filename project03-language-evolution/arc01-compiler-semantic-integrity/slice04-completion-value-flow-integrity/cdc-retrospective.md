@@ -1,5 +1,23 @@
 # S04 design-phase retrospective — 2026-11-08
 
+## Native occurrence checkpoint — 2026-11-09
+
+The old private vectors distinguished actual definitions from other
+nodes that share default spans. A separate pinned native replay closed
+the missing original CLI pin. Native and public then emitted the same
+original macro boundary and exact trace. Preserving original nodes in
+the existing classifier grammar kept diagnostic spans and avoided
+deriving a second parser.
+
+Independent execution also exposed a real F2 I/O failure with two
+macro fixtures sharing a fresh XDG cache. Per-fixture directories
+restored the intended independent parallel tests and the full gate.
+The exact error and source hypothesis remain separate from a product
+concurrency claim. A future test expansion with macro-bearing children
+should account for materialization state before launch. Both passes
+beyond the normal five, first failed test freeze and raw limits remain
+visible in the [verification](cdc-verification.md).
+
 ## I1 implementation checkpoint — 2026-11-09
 
 The original shared fixture included a macro-introduced function in a

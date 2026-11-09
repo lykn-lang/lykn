@@ -1,0 +1,7 @@
+Source f348ae4239c45e21b730e66cc229875f06ed6e8e tree 1b7e10f67fb4f86d17d1216a4073e3284d64e5ff
+Working directory /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Ordinary pinned PATH and no LYKN_TEST_DENO, CARGO_TARGET_DIR, RUSTFLAGS overrides.
+Toolchain/post-build focused pins /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/producer-preflight.txt and /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/focused-producers-before.sha256
+Named probes /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/named-config.prospective.txt and /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/named-config.stderr.raw
+/usr/bin/env TMPDIR=/private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/same-span/tmp XDG_CACHE_HOME=/private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/same-span/xdg npm_config_cache=/private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/same-span/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-60c4a58c1162abbf resolver::tests::same_span_ --nocapture > /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/same-span/stdout.raw 2> /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/same-span/stderr.raw
+Terminal status /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/same-span/exit-status.txt

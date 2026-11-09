@@ -1,0 +1,2 @@
+37106e50d358f0b6df78dbacd165147da1759a3096d5527ddfc62c8c0c83826f  target/release/lykn
+d5b235bc6ecaba4b49e832c29c7fadc7abb0e8790fde0023b961516266bb11d2  target/debug/lykn

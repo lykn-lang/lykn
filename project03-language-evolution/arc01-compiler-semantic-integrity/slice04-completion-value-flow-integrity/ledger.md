@@ -1,5 +1,12 @@
 # S04 completion/value-flow ledger
 
+[NE-C14 independently accepted](cdc-verification.md#ne-c14-independently-accepted--2026-11-09)
+at clean `f348ae42`. Same-span native controls, exact original macro
+boundary and complete current independent gates pass. CV-02 remains
+done. Other five CV rows and CI-04 remain open for I2–I4/composition.
+Source refinements 07, including two beyond the normal five. NE-C15
+owns the source-supported cold product cache question.
+
 [Independent I1 acceptance](cdc-verification.md#i1-conditional-branch-regions-accepted--2026-11-09)
 at `c202e55c` closes bounded CV-02. NE-C14 exact original F3
 and all remaining five CV rows stay open. Parent CI-04 remains open.

@@ -11,6 +11,14 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 ## Implementation re-entry — 2026-11-09
 
+[NE-C14 independently accepted](cdc-verification.md#ne-c14-independently-accepted--2026-11-09)
+at task `f348ae42`, completing the bounded I1 prerequisite. Original
+macro F3 and separate literal transfers both pass. The next design
+work is I2 statement-match completion, followed by the
+existing ordered-reference and checked-exit stages. Five CV rows and
+CI-04 remain open. NE-C15 carries the separate product cache question.
+Release d736, K0/13 and prior budgets remain recorded.
+
 [Independent I1 acceptance](cdc-verification.md#i1-conditional-branch-regions-accepted--2026-11-09)
 covers CV-02 at task `c202e55c`. Five CV rows and parent CI-04
 remain open. The next prerequisite is native macro occurrence identity

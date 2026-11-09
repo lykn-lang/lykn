@@ -1,0 +1,69 @@
+commit f348ae4239c45e21b730e66cc229875f06ed6e8e
+tree 1b7e10f67fb4f86d17d1216a4073e3284d64e5ff
+parent decb1bb6c09f41cff44c9cb09f5c1260eb27046f
+author Duncan McGreggor <oubiwann@gmail.com> 1794267071 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794267071 -0600
+
+    Isolate semantic-role fixture macro caches
+    
+    Give each positive fixture's compiler children their own owned cache
+    while preserving the normal parallel test population.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit decb1bb6c09f41cff44c9cb09f5c1260eb27046f
+tree 51ef8d45ea758d9e37e18a794844a6483ddde181
+parent e0a216433552b918826f99a4153663d90822fa8c
+author Duncan McGreggor <oubiwann@gmail.com> 1794266588 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794266588 -0600
+
+    Finish native occurrence classifier integration
+    
+    Keep owned output types explicit and restrict the legacy parser
+    wrapper to its actual test consumers.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit e0a216433552b918826f99a4153663d90822fa8c
+tree 68ff325fc8a6b914cf2977e15ed6c15d1d820e22
+parent 2ab840882abf16bbdd0a5d1b13a8c3f8a2ffbe82
+author Duncan McGreggor <oubiwann@gmail.com> 1794266441 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794266441 -0600
+
+    Resolve binding definitions by occurrence
+    
+    Keep diagnostic spans separate from identity and use original
+    classifier-owned binder atoms for native resolution.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit 2ab840882abf16bbdd0a5d1b13a8c3f8a2ffbe82
+tree 52fbea94d54fa82d6370ce218bd4815e55f822f2
+parent 3f3c036d6d7e27185964db432ac158af00675f1d
+author Duncan McGreggor <oubiwann@gmail.com> 1794265468 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794265468 -0600
+
+    Correct the frozen binding occurrence regressions
+    
+    Use the accepted braced transfer oracle and inspect the protocol
+    node span through the existing accessor.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit 3f3c036d6d7e27185964db432ac158af00675f1d
+tree f9b9a60bf2fa4a4e7334648e830983b6c33f5376
+parent c202e55c20410f58c950343531f003cd6453650d
+author Duncan McGreggor <oubiwann@gmail.com> 1794265385 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794265385 -0600
+
+    Freeze native macro binding occurrence regressions
+    
+    Restore the exact macro boundary witness and discriminate same-span
+    definitions from initializer and parameter references.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

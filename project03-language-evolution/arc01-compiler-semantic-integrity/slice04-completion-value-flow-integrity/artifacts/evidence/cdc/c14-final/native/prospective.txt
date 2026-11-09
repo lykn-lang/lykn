@@ -1,0 +1,7 @@
+Source f348ae4239c45e21b730e66cc229875f06ed6e8e tree 1b7e10f67fb4f86d17d1216a4073e3284d64e5ff
+Working directory /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Ordinary pinned PATH and no LYKN_TEST_DENO, CARGO_TARGET_DIR, RUSTFLAGS overrides.
+Toolchain/post-build focused pins /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/producer-preflight.txt and /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/focused-producers-before.sha256
+Named probes /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/named-config.prospective.txt and /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/named-config.stderr.raw
+/usr/bin/env TMPDIR=/private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/native/tmp XDG_CACHE_HOME=/private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/native/xdg npm_config_cache=/private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/native/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/evidence/native /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture > /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/native/stdout.raw 2> /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/native/stderr.raw
+Terminal status /private/tmp/lykn-nec14-isolated-cdc.NsPR5sM9/native/exit-status.txt

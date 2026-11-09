@@ -1,0 +1,13 @@
+
+running 2 tests
+test resolver::tests::same_span_last_typed_args_atom_is_the_param_occurrence ... FAILED
+test resolver::tests::same_span_bind_name_does_not_capture_initializer_form_head ... FAILED
+
+failures:
+
+failures:
+    resolver::tests::same_span_bind_name_does_not_capture_initializer_form_head
+    resolver::tests::same_span_last_typed_args_atom_is_the_param_occurrence
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 1159 filtered out; finished in 0.00s
+

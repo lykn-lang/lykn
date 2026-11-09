@@ -1,0 +1,4 @@
+Program: /usr/bin/env
+Argv: -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/03-private-tests/tmp XDG_CACHE_HOME=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/03-private-tests/xdg npm_config_cache=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/c14-baseline/03-private-tests/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno cargo test -p lykn-lang --lib same_span_ -- --nocapture
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Scoped env: TMPDIR=.../03-private-tests/tmp; XDG_CACHE_HOME=.../03-private-tests/xdg; npm_config_cache=.../03-private-tests/npm; DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno; CARGO_NET_GIT_FETCH_WITH_CLI=unset; RUST_LOG=unset
