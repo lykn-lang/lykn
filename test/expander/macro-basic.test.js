@@ -1,5 +1,6 @@
 import { assertEquals, assertThrows } from "https://deno.land/std/assert/mod.ts";
 import { lykn as publicLykn } from "../../packages/lang/mod.js";
+import { resetGensym as resetPublicGensym, resetMacros as resetPublicMacros } from "../../packages/lang/expander.js";
 import { read } from "lang/reader.js";
 import { expand, expandExpr, resetGensym, resetMacros } from "lang/expander.js";
 import { compile } from "lang/compiler.js";
@@ -82,8 +83,8 @@ Deno.test("macro: body without quasiquote", () => {
 });
 
 Deno.test("macro: nested numeric literal through public compiler", () => {
-  resetMacros();
-  resetGensym();
+  resetPublicMacros();
+  resetPublicGensym();
   assertEquals(
     publicLykn("(macro emit-zero () `(console:log 0)) (emit-zero)").trim(),
     "console.log(0);",
@@ -91,8 +92,8 @@ Deno.test("macro: nested numeric literal through public compiler", () => {
 });
 
 Deno.test("macro: direct numeric literal through public compiler", () => {
-  resetMacros();
-  resetGensym();
+  resetPublicMacros();
+  resetPublicGensym();
   assertEquals(
     publicLykn("(macro literal-zero () `0) (literal-zero)").trim(),
     "0;",
