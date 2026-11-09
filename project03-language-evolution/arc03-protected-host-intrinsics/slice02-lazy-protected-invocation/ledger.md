@@ -1,5 +1,9 @@
 # S02 lazy protected invocation ledger
 
+[Iteration 08](cc-prompt-iteration08.md) retains the normal Make Clippy
+failure at `8e122ad` and the earlier focused/optimizer/strict observations
+with their actual provenance. Final candidate gates remain open.
+
 [Iteration 07](cc-prompt-iteration07.md) retains the actual `0af53e8`
 public focused 3/4 and replaces its stale old-decline assertion only.
 No optimizer/runtime gate ran at that freeze.

@@ -53,6 +53,10 @@ explicitly one beyond the normal five, with no reset or changed oracle.
 result. The single stale assertion is assigned without changing compiler
 behavior or the runtime oracles. Seventh numbered pass, no reset.
 
+[Iteration 08](cc-prompt-iteration08.md) follows the actual normal Make
+Clippy failure at `8e122ad`. The exact local style correction preserves
+generated text and fixture oracles. Eighth numbered pass, no reset.
+
 ## Prior bounded disposition — 2026-11-09
 
 The [independent review](cdc-verification.md) accepts the eligible-module
