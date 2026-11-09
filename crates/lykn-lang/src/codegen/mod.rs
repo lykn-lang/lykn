@@ -57,14 +57,16 @@ pub(crate) fn emit_module_with_invocations(
         return Err(LyknError::Codegen(diagnostic));
     }
     let invocation = host_invocation::prepare(forms, requests)?;
-    let mut w = JsWriter::with_invocations(invocation.request_names.clone());
+    let helper_name = invocation.helper_name;
+    let slot = invocation.slot;
+    let mut w = JsWriter::with_invocations(invocation.request_names);
     let directives = forms.iter().take_while(|form| matches!(form, SExpr::String { .. })).count();
     for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
     }
-    if let Some(name) = invocation.helper_name.as_deref() {
+    if let Some(name) = helper_name.as_deref() {
         w.write(&format!(
-            "function {name}(fn, receiver, argv) {{ return Reflect.apply(fn, receiver, argv); }}"
+            "function {name}(fn, receiver, argv) {{ return {slot}(fn, receiver, argv); }}"
         ));
         w.newline();
     }
@@ -81,6 +83,8 @@ pub(crate) fn emit_module_with_invocations(
 mod tests {
     use super::*;
     use crate::reader::source_loc::Span;
+    use std::fs;
+    use std::path::PathBuf;
 
     fn s() -> Span {
         Span::default()
@@ -204,10 +208,10 @@ mod tests {
     fn private_host_invocation_is_lazy_backend_and_uses_exact_node() {
         let call = list(vec![atom("saved"), atom("receiver"), atom("argv")]);
         let forms = vec![str_lit("use strict"), call];
-        let request = host_invocation::InvocationRequest::new(
-            host_invocation::InvocationId::new(1),
-            &forms[1],
-        );
+        let request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: &forms[1],
+        };
         let js = emit_module_with_invocations(&forms, &[request]).unwrap();
         assert_eq!(
             js,
@@ -222,11 +226,140 @@ mod tests {
             list(vec![atom("const"), atom("Reflect"), atom("local")]),
             call,
         ];
-        let request = host_invocation::InvocationRequest::new(
-            host_invocation::InvocationId::new(1),
-            &forms[1],
-        );
+        let request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: &forms[1],
+        };
         let error = emit_module_with_invocations(&forms, &[request]).unwrap_err();
         assert!(error.to_string().contains("module Reflect binding"));
+    }
+
+    #[test]
+    fn private_host_invocation_requires_stable_atoms_and_owned_anchor() {
+        let nested = list(vec![atom("saved"), list(vec![atom("receiver")]), atom("argv")]);
+        let nested_forms = vec![nested];
+        let nested_request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: &nested_forms[0],
+        };
+        assert!(emit_module_with_invocations(&nested_forms, &[nested_request]).is_err());
+
+        let member = list(vec![atom("saved"), atom("receiver:method"), atom("argv")]);
+        let member_forms = vec![member];
+        let member_request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: &member_forms[0],
+        };
+        assert!(emit_module_with_invocations(&member_forms, &[member_request]).is_err());
+
+        let call = list(vec![atom("saved"), atom("undefined"), atom("argv")]);
+        let forms = vec![call.clone()];
+        let orphan = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: &call,
+        };
+        assert!(emit_module_with_invocations(&forms, &[orphan]).is_err());
+
+        let call = list(vec![atom("saved"), atom("undefined"), atom("argv")]);
+        let forms = vec![call];
+        let request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: &forms[0],
+        };
+        assert!(emit_module_with_invocations(&forms, &[request]).is_ok());
+    }
+
+    fn fixture_forms(source: &str) -> Vec<SExpr> {
+        crate::reader::read(source).unwrap()
+    }
+
+    fn find_saved_call(node: &SExpr) -> Option<&SExpr> {
+        if let Some(values) = node.as_list() {
+            if values.len() == 3
+                && values[0].as_atom() == Some("saved")
+                && values[1].as_atom() == Some("receiver")
+                && values[2].as_atom() == Some("argv")
+            {
+                return Some(node);
+            }
+            for child in values {
+                if let Some(found) = find_saved_call(child) {
+                    return Some(found);
+                }
+            }
+        } else if let SExpr::Cons { car, cdr, .. } = node {
+            return find_saved_call(car).or_else(|| find_saved_call(cdr));
+        }
+        None
+    }
+
+    fn native_fixture_source(name: &str) -> &'static str {
+        match name {
+            "absent" => include_str!("../../../../test/fixtures/lazy-protected-invocation/absent.lisp"),
+            "provider" => include_str!("../../../../test/fixtures/lazy-protected-invocation/provider.lisp"),
+            "shaken-entry" => include_str!("../../../../test/fixtures/lazy-protected-invocation/shaken-entry.lisp"),
+            "live-entry" => include_str!("../../../../test/fixtures/lazy-protected-invocation/live-entry.lisp"),
+            "retained-observer" => include_str!("../../../../test/fixtures/lazy-protected-invocation/retained-observer.lisp"),
+            _ => unreachable!(),
+        }
+    }
+
+    fn compile_provider_fixture() -> String {
+        let forms = fixture_forms(native_fixture_source("provider"));
+        let anchor = forms.iter().find_map(find_saved_call).unwrap();
+        let request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor,
+        };
+        emit_module_with_invocations(&forms, &[request]).unwrap()
+    }
+
+    fn compile_collision_fixture() -> String {
+        let forms = fixture_forms(include_str!("../../../../test/fixtures/lazy-protected-invocation/collision.lisp"));
+        let anchor = forms.iter().find_map(find_saved_call).unwrap();
+        let request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor,
+        };
+        emit_module_with_invocations(&forms, &[request]).unwrap()
+    }
+
+    fn write_fixture(root: &std::path::Path, filename: &str, contents: &str) {
+        fs::create_dir_all(root).unwrap();
+        fs::write(root.join(filename), contents).unwrap();
+    }
+
+    #[test]
+    fn private_host_invocation_materializes_four_native_proof_inputs() {
+        let evidence_root = std::env::var_os("LYKN_INTRINSIC_EVIDENCE_DIR")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| std::env::temp_dir().join(format!("lykn-intrinsic-native-{}", std::process::id())));
+        let root = evidence_root.join("native");
+
+        let absent = emit_module_js(&fixture_forms(native_fixture_source("absent"))).unwrap();
+        assert!(!absent.contains("lyknHostReflectApply"));
+        assert!(!absent.contains("Reflect.apply"));
+        write_fixture(&root.join("absent"), "absent.js", &absent);
+
+        let provider = compile_provider_fixture();
+        assert!(provider.contains("function lyknHostReflectApply0"));
+        assert!(provider.contains("lyknHostReflectApply0(saved, receiver, argv)"));
+        let shaken_entry = emit_module_js(&fixture_forms(native_fixture_source("shaken-entry"))).unwrap();
+        write_fixture(&root.join("shaken"), "provider.js", &provider);
+        write_fixture(&root.join("shaken"), "entry.js", &shaken_entry);
+
+        write_fixture(&root.join("retained"), "provider.js", &provider);
+        let observer = emit_module_js(&fixture_forms(native_fixture_source("retained-observer"))).unwrap();
+        write_fixture(&root.join("retained"), "observer.js", &observer);
+
+        let live_entry = emit_module_js(&fixture_forms(native_fixture_source("live-entry"))).unwrap();
+        write_fixture(&root.join("live"), "provider.js", &provider);
+        write_fixture(&root.join("live"), "entry.js", &live_entry);
+        assert!(live_entry.contains("invoke("));
+        assert!(live_entry.contains("function*"));
+
+        let collision = compile_collision_fixture();
+        assert!(collision.contains("function lyknHostReflectApply2(fn, receiver, argv)"));
+        assert!(collision.contains("lyknHostReflectApply1"));
     }
 }

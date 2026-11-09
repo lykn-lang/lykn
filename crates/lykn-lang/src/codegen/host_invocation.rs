@@ -1,7 +1,5 @@
-//! Private request preparation for lazy protected host invocation.
-//!
-//! A request is keyed by the address of the exact final-tree call node. The
-//! address is used only as an identity token; it is never dereferenced.
+//! Private requests for calls whose callee, receiver, and arguments have
+//! already been evaluated and saved by compiler-owned code.
 
 use std::collections::{HashMap, HashSet};
 
@@ -9,31 +7,18 @@ use crate::ast::sexpr::SExpr;
 use crate::codegen::names::to_js_identifier;
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
+use crate::protected_host::IntrinsicId;
 use crate::reader::source_loc::Span;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub(crate) struct InvocationId(u64);
-
-impl InvocationId {
-    pub(crate) const fn new(value: u64) -> Self {
-        Self(value)
-    }
-}
-
 pub(crate) struct InvocationRequest<'a> {
-    id: InvocationId,
-    anchor: &'a SExpr,
-}
-
-impl<'a> InvocationRequest<'a> {
-    pub(crate) const fn new(id: InvocationId, anchor: &'a SExpr) -> Self {
-        Self { id, anchor }
-    }
+    pub(crate) id: IntrinsicId,
+    pub(crate) anchor: &'a SExpr,
 }
 
 pub(crate) struct PreparedInvocations {
     pub(crate) helper_name: Option<String>,
     pub(crate) request_names: HashMap<usize, String>,
+    pub(crate) slot: &'static str,
 }
 
 pub(crate) fn prepare(
@@ -44,6 +29,7 @@ pub(crate) fn prepare(
         return Ok(PreparedInvocations {
             helper_name: None,
             request_names: HashMap::new(),
+            slot: IntrinsicId::ReflectApply.slot(),
         });
     }
     if crate::protected_host::invocation_unavailable_for_reflect(forms) {
@@ -54,28 +40,32 @@ pub(crate) fn prepare(
 
     let mut nodes = HashSet::new();
     collect_node_addresses(forms, &mut nodes);
-    let mut ids = HashSet::new();
     let mut anchors = HashSet::new();
     for request in requests {
         let address = request.anchor as *const SExpr as usize;
         if !nodes.contains(&address) {
             return Err(invalid_request("orphaned invocation request"));
         }
-        if !ids.insert(request.id) || !anchors.insert(address) {
+        if !anchors.insert(address) {
             return Err(invalid_request("duplicate invocation request"));
         }
-        if !matches!(request.anchor.as_list(), Some(values) if values.len() == 3) {
-            return Err(invalid_request(
-                "invocation request must anchor an exact three-part call",
-            ));
+        if request.id != IntrinsicId::ReflectApply {
+            return Err(invalid_request("unsupported protected invocation ID"));
         }
+        validate_anchor(request.anchor)?;
     }
 
-    let names = normalized_names(forms);
-    let helper_name = (0_u64..)
-        .map(|index| format!("lyknHostReflectApply{index}"))
-        .find(|candidate| !names.contains(candidate))
-        .expect("u64 helper-name space exhausted");
+    let reserved = normalized_payload_names(forms);
+    let mut index = 0_u64;
+    let helper_name = loop {
+        let candidate = format!("lyknHostReflectApply{index}");
+        if !reserved.contains(&candidate) {
+            break candidate;
+        }
+        index = index
+            .checked_add(1)
+            .ok_or_else(|| invalid_request("helper name space exhausted"))?;
+    };
     let request_names = requests
         .iter()
         .map(|request| (request.anchor as *const SExpr as usize, helper_name.clone()))
@@ -83,7 +73,35 @@ pub(crate) fn prepare(
     Ok(PreparedInvocations {
         helper_name: Some(helper_name),
         request_names,
+        slot: requests[0].id.slot(),
     })
+}
+
+fn validate_anchor(anchor: &SExpr) -> Result<(), LyknError> {
+    let Some(values) = anchor.as_list() else {
+        return Err(invalid_request("invocation anchor is not a call"));
+    };
+    if values.len() != 3 {
+        return Err(invalid_request(
+            "invocation requires exactly three saved references",
+        ));
+    }
+    for (index, value) in values.iter().enumerate() {
+        let Some(name) = value.as_atom() else {
+            return Err(invalid_request(
+                "invocation operands must be stable atom references",
+            ));
+        };
+        if name.contains(':')
+            || matches!(name, "true" | "false" | "null" | "super")
+            || (name == "undefined" && index != 1)
+        {
+            return Err(invalid_request(
+                "invocation operands must be stable atom references",
+            ));
+        }
+    }
+    Ok(())
 }
 
 fn collect_node_addresses(forms: &[SExpr], addresses: &mut HashSet<usize>) {
@@ -101,11 +119,15 @@ fn collect_node_addresses(forms: &[SExpr], addresses: &mut HashSet<usize>) {
     forms.iter().for_each(|form| visit(form, addresses));
 }
 
-fn normalized_names(forms: &[SExpr]) -> HashSet<String> {
+fn normalized_payload_names(forms: &[SExpr]) -> HashSet<String> {
     fn visit(node: &SExpr, names: &mut HashSet<String>) {
         match node {
-            SExpr::Atom { value, .. } => {
-                names.insert(to_js_identifier(value));
+            SExpr::Atom(_) => {
+                if let Some(value) = node.as_atom() {
+                    for segment in value.split(':') {
+                        names.insert(to_js_identifier(segment));
+                    }
+                }
             }
             SExpr::List { values, .. } => values.iter().for_each(|child| visit(child, names)),
             SExpr::Cons { car, cdr, .. } => {

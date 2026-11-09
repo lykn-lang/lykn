@@ -2279,5 +2279,5 @@ export function compile(exprs) {
     body: exprs.map(e => toStatement(compileExpr(e))),
     sourceType: 'module',
   };
-  return generate(finalizeHostInvocations(program), { indent: '  ' });
+  return generate(finalizeHostInvocations(program, exprs), { indent: '  ' });
 }

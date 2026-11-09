@@ -76,19 +76,8 @@ fn is_async_declaration(values: &[SExpr]) -> bool {
 /// Emit an expression. `parent_prec` is the precedence of the enclosing
 /// operator context (0 means top-level / no enclosing operator).
 pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), LyknError> {
-    if let Some(helper) = w.take_invocation(expr) {
-        let values = expr.as_list().ok_or_else(|| {
-            crate::codegen::host_invocation::invalid_request("invocation anchor is not a call")
-        })?;
-        w.write(&helper);
-        w.write("(");
-        for (index, value) in values.iter().enumerate() {
-            if index > 0 {
-                w.write(", ");
-            }
-            emit_expr(w, value, 0)?;
-        }
-        w.write(")");
+    if let Some(helper) = w.take_invocation(expr)? {
+        emit_requested_call(w, expr, &helper)?;
         return Ok(());
     }
     match expr {
@@ -117,6 +106,11 @@ pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), 
 /// Emit an expression in statement position: appends a semicolon + newline for
 /// expression statements, or just a newline for statement forms.
 pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
+    if let Some(helper) = w.take_invocation(expr)? {
+        emit_requested_call(w, expr, &helper)?;
+        w.semicolon();
+        return Ok(());
+    }
     // DD-61 §A6: dispatch on the form head — a bound head is an expression call.
     if let SExpr::List { values, .. } = expr
         && let Some(head) = values.first().and_then(|e| e.as_form_head())
@@ -158,6 +152,22 @@ pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
         w.write(")");
     }
     w.semicolon();
+    Ok(())
+}
+
+fn emit_requested_call(w: &mut JsWriter, expr: &SExpr, helper: &str) -> Result<(), LyknError> {
+    let values = expr.as_list().ok_or_else(|| {
+        crate::codegen::host_invocation::invalid_request("invocation anchor is not a call")
+    })?;
+    w.write(helper);
+    w.write("(");
+    for (index, value) in values.iter().enumerate() {
+        if index > 0 {
+            w.write(", ");
+        }
+        emit_expr(w, value, 0)?;
+    }
+    w.write(")");
     Ok(())
 }
 

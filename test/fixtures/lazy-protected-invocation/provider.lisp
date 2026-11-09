@@ -1,0 +1,5 @@
+(console:log "provider")
+(const marker "provider")
+(function invoke (saved receiver argv)
+  (saved receiver argv))
+(export (names invoke marker))

@@ -4,7 +4,7 @@
 //! level. It lazily prepends indentation only when the first write after a
 //! newline occurs.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 /// A buffer that builds indented JavaScript source text.
 pub struct JsWriter {
@@ -12,7 +12,7 @@ pub struct JsWriter {
     indent_level: usize,
     at_line_start: bool,
     invocations: HashMap<usize, String>,
-    consumed_invocations: usize,
+    consumed_invocations: HashSet<usize>,
     expected_invocations: usize,
 }
 
@@ -24,7 +24,7 @@ impl JsWriter {
             indent_level: 0,
             at_line_start: true,
             invocations: HashMap::new(),
-            consumed_invocations: 0,
+            consumed_invocations: HashSet::new(),
             expected_invocations: 0,
         }
     }
@@ -38,14 +38,25 @@ impl JsWriter {
         }
     }
 
-    pub(crate) fn take_invocation(&mut self, node: &crate::ast::sexpr::SExpr) -> Option<String> {
-        let name = self.invocations.remove(&(node as *const _ as usize))?;
-        self.consumed_invocations += 1;
-        Some(name)
+    pub(crate) fn take_invocation(
+        &mut self,
+        node: &crate::ast::sexpr::SExpr,
+    ) -> Result<Option<String>, crate::error::LyknError> {
+        let address = node as *const _ as usize;
+        if self.consumed_invocations.contains(&address) {
+            return Err(crate::codegen::host_invocation::invalid_request(
+                "invocation request consumed more than once",
+            ));
+        }
+        let Some(name) = self.invocations.remove(&address) else {
+            return Ok(None);
+        };
+        self.consumed_invocations.insert(address);
+        Ok(Some(name))
     }
 
     pub(crate) fn all_invocations_consumed(&self) -> bool {
-        self.invocations.is_empty() && self.consumed_invocations == self.expected_invocations
+        self.invocations.is_empty() && self.consumed_invocations.len() == self.expected_invocations
     }
 
     /// Write a string fragment. If at the start of a line, prepend indentation

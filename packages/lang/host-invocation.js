@@ -1,31 +1,30 @@
 // Private lazy backend for compiler-owned, already-materialized host calls.
 // This module is intentionally imported by its internal path only.
 
-import { compile } from './compiler.js';
-
-const ID_BRAND = Symbol('lykn host invocation id');
+const REFLECT_APPLY_ID = Symbol('Reflect.apply');
 const REQUEST_BRAND = Symbol('lykn host invocation request');
 const PROVISIONAL = new WeakMap();
 let active = null;
 
 export function newHostInvocationId() {
-  return Object.freeze({ [ID_BRAND]: Symbol('invocation') });
+  return REFLECT_APPLY_ID;
 }
 
 export function hostInvocationRequest(id, node) {
-  if (!id || !id[ID_BRAND] || !node || typeof node !== 'object') {
+  if (id !== REFLECT_APPLY_ID || !node || typeof node !== 'object') {
     throw new TypeError('invalid private host invocation request');
   }
   return Object.freeze({ [REQUEST_BRAND]: true, id, node });
 }
 
-export function compileWithHostInvocations(exprs, requests) {
+export function compileWithHostInvocations(exprs, compileFn, requests) {
+  if (requests.length === 0) return compileFn(exprs);
   if (active !== null) throw new Error('nested host invocation compilation');
   const byNode = new WeakMap();
   const ids = new Set();
   const nodes = new Set();
   for (const request of requests) {
-    if (!request || request[REQUEST_BRAND] !== true || !request.id?.[ID_BRAND]) {
+    if (!request || request[REQUEST_BRAND] !== true || request.id !== REFLECT_APPLY_ID) {
       throw new TypeError('invalid private host invocation request');
     }
     if (ids.has(request.id) || nodes.has(request.node)) {
@@ -38,9 +37,17 @@ export function compileWithHostInvocations(exprs, requests) {
     nodes.add(request.node);
     byNode.set(request.node, request);
   }
-  active = { byNode, requests: new Set(requests), consumed: new Set() };
+  const inputNodes = collectInputNodes(exprs);
+  for (const node of nodes) {
+    if (!inputNodes.has(node)) throw new Error('orphaned host invocation request');
+  }
+  active = { exprs, byNode, requests: new Set(requests), consumed: new Set() };
   try {
-    return compile(exprs);
+    const output = compileFn(exprs);
+    if (active.consumed.size !== active.requests.size) {
+      throw new Error('orphaned or unconsumed host invocation request');
+    }
+    return output;
   } finally {
     active = null;
   }
@@ -61,8 +68,9 @@ export function requestedHostCall(node, compileExpr) {
   return call;
 }
 
-export function finalizeHostInvocations(program) {
+export function finalizeHostInvocations(program, exprs) {
   if (active === null) return program;
+  if (active.exprs !== exprs) throw new Error('host invocation plan belongs to a different unit');
   if (active.consumed.size !== active.requests.size) {
     throw new Error('orphaned or unconsumed host invocation request');
   }
@@ -195,6 +203,19 @@ function hasModuleReflectBinding(program) {
   return names.has('Reflect');
 }
 
-// Retain a direct reference to the actual compiler function passed through this
-// private adapter; the compiler owns all parsing and ordinary output behavior.
-void compile;
+function collectInputNodes(root) {
+  const nodes = new Set();
+  const seen = new Set();
+  function walk(value) {
+    if (!value || typeof value !== 'object' || seen.has(value)) return;
+    seen.add(value);
+    if (Array.isArray(value)) {
+      value.forEach(walk);
+      return;
+    }
+    if (typeof value.type === 'string') nodes.add(value);
+    for (const child of Object.values(value)) walk(child);
+  }
+  walk(root);
+  return nodes;
+}

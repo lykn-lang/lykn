@@ -19,11 +19,11 @@ pub(crate) enum InputDialect {
     Kernel,
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum IntrinsicId {
+pub(crate) enum IntrinsicId {
     ReflectApply,
 }
 impl IntrinsicId {
-    fn slot(self) -> &'static str {
+    pub(crate) fn slot(self) -> &'static str {
         match self {
             Self::ReflectApply => "Reflect.apply",
         }
@@ -141,31 +141,32 @@ fn scope_names(forms: &[SExpr], module: bool) -> HashSet<String> {
 
 pub(crate) fn invocation_unavailable_for_reflect(forms: &[SExpr]) -> bool {
     let mut names = scope_names(forms, true);
-    fn collect_wrapped(forms: &[SExpr], names: &mut HashSet<String>) {
-        for form in forms {
-            let Some((head, args)) = head_and_args(form) else {
-                continue;
-            };
-            if !matches!(head, "export" | "async" | "kernel:export" | "kernel:async") {
-                continue;
-            }
-            for arg in args {
-                let Some((inner_head, _)) = head_and_args(arg) else {
-                    continue;
-                };
-                let base = inner_head.strip_prefix("kernel:").unwrap_or(inner_head);
-                if matches!(
-                    base,
-                    "bind" | "import" | "const" | "let" | "var" | "function" | "function*"
-                        | "func" | "genfunc" | "class" | "type"
-                ) {
-                    names.extend(scope_names(std::slice::from_ref(arg), false));
-                }
-                collect_wrapped(std::slice::from_ref(arg), names);
-            }
+    fn add_decl(candidate: Option<&SExpr>, names: &mut HashSet<String>) {
+        let Some(form) = candidate else { return };
+        let Some((head, _)) = head_and_args(form) else { return };
+        let head = head.strip_prefix("kernel:").unwrap_or(head);
+        if matches!(
+            head,
+            "bind" | "import" | "const" | "let" | "var" | "function" | "function*"
+                | "func" | "genfunc" | "class" | "type"
+        ) {
+            names.extend(scope_names(std::slice::from_ref(form), false));
         }
     }
-    collect_wrapped(forms, &mut names);
+    for form in forms {
+        let Some((head, args)) = head_and_args(form) else { continue };
+        match head.strip_prefix("kernel:").unwrap_or(head) {
+            "export" => {
+                if args.first().and_then(SExpr::as_atom) == Some("default") {
+                    add_decl(args.get(1), &mut names);
+                } else {
+                    add_decl(args.first(), &mut names);
+                }
+            }
+            "async" => add_decl(args.first(), &mut names),
+            _ => {}
+        }
+    }
     names.contains("Reflect")
 }
 
