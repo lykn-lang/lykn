@@ -25,6 +25,14 @@ control, exact old/current runtime, full repository gates and independent
 reproduction apply. Current I1 acceptance remains recorded, with four
 refinements used. I2–I4 remain separate.
 
+NE-C14 authoring clarification before production. The existing
+`parse_keyword_clauses` loop retains nodes preceding the first recognized
+keyword in its first values group. Borrow each original node in the
+same ordered groups using `HashMap<&str, Vec<&SExpr>>`, preserving both
+that behavior and last-key overwrite. A contiguous slice would lose the
+first group's discontiguous prefix. Clone only the public owned output
+fields. The issued assignment and test-only refinements are preserved.
+
 The Operator authorized direct S04 continuation after independently
 [validated local release integration](../../arc03-protected-host-intrinsics/artifacts/release-integration-d736.md)
 at `d73601a5`. Same Luna 6 High CC and Sol 6.1 High CDC, standard
