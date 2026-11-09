@@ -185,7 +185,14 @@ function addKernelModuleDeclaration(form, names, toJsIdentifier, formHead) {
     }
     return;
   }
-  if (!['const', 'let', 'function', 'function*', 'class', 'import'].includes(head)) return;
+  if (head === 'function' || head === 'function*') {
+    const name = args[0];
+    if (name?.type === 'atom' && name.value !== '') {
+      names.add(toJsIdentifier(name.value));
+    }
+    return;
+  }
+  if (!['const', 'let', 'class', 'import'].includes(head)) return;
   for (const binding of bindingsIntroduced(form)) {
     if (binding.kind === 'bind' || binding.kind === 'import-local') {
       names.add(toJsIdentifier(binding.name));

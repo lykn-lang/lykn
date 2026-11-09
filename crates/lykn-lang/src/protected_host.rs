@@ -191,7 +191,7 @@ fn add_kernel_module_declaration(form: &SExpr, names: &mut HashSet<String>) {
             }
         }
         "function" => {
-            if let Some(name) = args.first() {
+            if let Some(name) = args.first().filter(|name| name.as_atom().is_some()) {
                 kernel_pattern_names(name, names);
             }
         }
