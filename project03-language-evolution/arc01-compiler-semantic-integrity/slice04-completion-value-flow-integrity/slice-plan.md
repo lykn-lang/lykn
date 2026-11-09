@@ -9,6 +9,14 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+## Implementation re-entry — 2026-11-09
+
+The Operator authorized direct S04 continuation after independently
+[validated local release integration](../../arc03-protected-host-intrinsics/artifacts/release-integration-d736.md)
+at `d73601a5`. Same Luna 6 High CC and Sol 6.1 High CDC, standard
+Autonomous Mode. I1 is the first bounded source increment. Earlier
+design-only and strict-stop instructions below remain historical.
+
 The [Arc03 composition review](../../arc03-protected-host-intrinsics/cdc-verification.md)
 accepts the private protected invocation facility at task source
 `d73601a5`. This satisfies the facility evidence dependency for future

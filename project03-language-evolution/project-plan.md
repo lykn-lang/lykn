@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+[Arc03 local release validation](arc03-protected-host-intrinsics/artifacts/release-integration-d736.md)
+passed at `d73601a5`. The Operator directed continuation into S04
+on the accepted release baseline.
+
 Arc03 [independent composition](arc03-protected-host-intrinsics/cdc-verification.md)
 accepts S01 and S02 at task-only `d73601a5`, including the approved
 affected-module ESM fallback. P-HI is delivered. Arc01 S04's I3 consumer

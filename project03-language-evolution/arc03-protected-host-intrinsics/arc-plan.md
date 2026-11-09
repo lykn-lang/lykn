@@ -9,6 +9,10 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+[Local release integration](artifacts/release-integration-d736.md)
+independently passed at exact `d73601a5`. This clears S04's release
+prerequisite under its own authorized scope.
+
 ## Arc03 task-source acceptance — 2026-11-09
 
 [Composition and closing report](closing-report.md) and
