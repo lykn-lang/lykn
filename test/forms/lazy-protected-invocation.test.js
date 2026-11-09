@@ -79,8 +79,8 @@ Deno.test("lazy protected invocation preserves the no-request compiler path", ()
 Deno.test("lazy protected invocation validates plans and recovers after rejection", () => {
   const moduleReflect = read('(const Reflect local) (saved receiver argv)');
   const request = hostInvocationRequest(newHostInvocationId(), moduleReflect[1]);
-  assertThrows(() => compileWithHostInvocations(moduleReflect, compile, [request]), Error,
-    "module Reflect binding");
+  assertStringIncludes(compileWithHostInvocations(moduleReflect, compile, [request]),
+    INLINE_APPLY_MODULE);
   assertEquals(compile(moduleReflect).includes("const Reflect = local;"), true);
   assertEquals(compileWithHostInvocations(moduleReflect, compile, []), compile(moduleReflect));
 
