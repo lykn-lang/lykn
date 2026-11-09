@@ -491,43 +491,23 @@ mod tests {
             .collect()
     }
 
-    fn without_resolution(expr: &SExpr) -> SExpr {
-        match expr {
-            atom @ SExpr::Atom { .. } => atom.clone().with_name_res(NameRes::Unresolved),
-            SExpr::List { values, span } => SExpr::List {
-                values: values.iter().map(without_resolution).collect(),
-                span: *span,
-            },
-            SExpr::Cons { car, cdr, span } => SExpr::Cons {
-                car: Box::new(without_resolution(car)),
-                cdr: Box::new(without_resolution(cdr)),
-                span: *span,
-            },
-            other => other.clone(),
-        }
-    }
-
     fn protocol_tags(forms: &[SExpr]) -> Vec<(String, NameRes)> {
         let resolved = resolve(forms);
         assert_eq!(
-            resolved.iter().map(without_resolution).collect::<Vec<_>>(),
-            forms,
+            resolved, forms,
             "resolution preserves protocol structure and spans"
         );
         fn spans_are_default(expr: &SExpr) -> bool {
             match expr {
-                SExpr::Atom { span, .. }
-                | SExpr::Keyword { span, .. }
-                | SExpr::String { span, .. }
-                | SExpr::Number { span, .. }
-                | SExpr::Bool { span, .. }
-                | SExpr::Null { span } => *span == Span::default(),
-                SExpr::List { values, span } => {
-                    *span == Span::default() && values.iter().all(spans_are_default)
+                SExpr::List { values, .. } => {
+                    expr.span() == Span::default() && values.iter().all(spans_are_default)
                 }
-                SExpr::Cons { car, cdr, span } => {
-                    *span == Span::default() && spans_are_default(car) && spans_are_default(cdr)
+                SExpr::Cons { car, cdr, .. } => {
+                    expr.span() == Span::default()
+                        && spans_are_default(car)
+                        && spans_are_default(cdr)
                 }
+                _ => expr.span() == Span::default(),
             }
         }
         assert!(forms.iter().all(spans_are_default));

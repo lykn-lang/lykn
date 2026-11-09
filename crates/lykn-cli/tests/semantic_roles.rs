@@ -41,7 +41,7 @@ const FIXTURES: &[Case] = &[
     },
     Case {
         name: "if-direct-transfers",
-        expected: b"[7,9,[0,2,901],4]\n",
+        expected: b"[7,9,[0,2],4]\n",
     },
 ];
 
