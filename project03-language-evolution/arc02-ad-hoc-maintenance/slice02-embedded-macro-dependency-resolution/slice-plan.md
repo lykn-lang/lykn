@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice02-embedded-macro-dependency-resolution
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: []
 related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
@@ -10,7 +10,16 @@ related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
 
 # S02 — compiler-owned embedded macro dependency resolution
 
-## Current disposition — candidate validation held
+## Approved iteration03 continuation
+
+Operator “Yes, approved: continue with plan” authorizes the one-line PATH
+fallback and original candidate gates. [Iteration03](cc-prompt-iteration03.md)
+is source refinement 02 of 5. Same Luna6 High CC and Sol6.1 High CDC in
+Autonomous Mode. Stop on the next unexpected substantive failure or real gap.
+The retained baseline never reached the runtime executable selector.
+Review the exact new body before the candidate gates. All MR rows remain open.
+
+## Historical disposition — candidate validation held
 
 Iteration02 corrected the two ownership sites. The original test target built
 and the baseline produced six old-compiler failures. The four runtime children

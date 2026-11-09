@@ -1,0 +1,6 @@
+Resolve default macro test runtime from PATH
+
+Keep the explicit Deno override while supporting the normal test environment.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

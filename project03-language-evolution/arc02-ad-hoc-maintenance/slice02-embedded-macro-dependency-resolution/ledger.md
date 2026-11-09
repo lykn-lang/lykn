@@ -1,5 +1,10 @@
 # Embedded macro dependency repair ledger
 
+Operator “Yes, approved: continue with plan” authorizes
+[iteration03](cc-prompt-iteration03.md), source refinement 02 of 5, and the
+original candidate gates. The retained baseline never reached the changed
+runtime selector. All MR rows remain open.
+
 Iteration02 stopped at [candidate review](cdc-verification.md). Tests built
 at `408405fc`. Six legacy compiles exposed expected defects, with 0/4 runtime
 children launched. Candidate `7777cd71` remains unaccepted. All six MR rows
