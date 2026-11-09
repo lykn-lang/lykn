@@ -1,5 +1,9 @@
 # S02 lazy protected invocation ledger
 
+[Iteration 07](cc-prompt-iteration07.md) retains the actual `0af53e8`
+public focused 3/4 and replaces its stale old-decline assertion only.
+No optimizer/runtime gate ran at that freeze.
+
 [Iteration 06](cc-prompt-iteration06.md) preserves first frozen implementation
 `f0ccce4` and corrects its prevalidation fixture/assertion gaps. No build or
 runtime gate ran at that freeze.

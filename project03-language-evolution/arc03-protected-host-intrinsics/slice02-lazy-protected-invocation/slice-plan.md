@@ -48,6 +48,11 @@ specimens retained CLI-only kernel prefixes and named-import assertions
 assumed the wrong generator spacing. No candidate gate had run. This is
 explicitly one beyond the normal five, with no reset or changed oracle.
 
+[Iteration 07](cc-prompt-iteration07.md) follows the actual public focused
+3/4 at `0af53e8`. One test block still expected the superseded unavailable
+result. The single stale assertion is assigned without changing compiler
+behavior or the runtime oracles. Seventh numbered pass, no reset.
+
 ## Prior bounded disposition — 2026-11-09
 
 The [independent review](cdc-verification.md) accepts the eligible-module
