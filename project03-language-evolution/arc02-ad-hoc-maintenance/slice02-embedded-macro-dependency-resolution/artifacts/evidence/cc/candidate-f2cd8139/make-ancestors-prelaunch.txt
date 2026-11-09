@@ -1,0 +1,12 @@
+Gate: prospective exact config-ancestor inspection before unfiltered make check
+owned TMPDIR root: /private/tmp/lykn-arc02-s02-make-f2cd8139
+future TempDir fixture children: allocated by test frameworks only after launch; leaf names are not known yet
+exact filenames inspected at every fixed ancestor: project.json, deno.json, deno.jsonc
+exact paths:
+/private/tmp/lykn-arc02-s02-make-f2cd8139/{project.json,deno.json,deno.jsonc}
+/private/tmp/{project.json,deno.json,deno.jsonc}
+/private/{project.json,deno.json,deno.jsonc}
+/{project.json,deno.json,deno.jsonc}
+argv: ls -ld followed by those twelve explicit paths; no traversal
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch/source_head: codex/embedded-macro-dependencies @ f2cd813908649d5b58253c75d0eda61b029fc6ff

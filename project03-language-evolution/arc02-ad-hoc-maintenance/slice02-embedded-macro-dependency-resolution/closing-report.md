@@ -1,4 +1,28 @@
-# Arc02 S02 — stopped source handoff, 2026-11-08
+# Arc02 S02 — embedded macro dependency repair
+
+## Final bounded close — iteration03
+
+Luna6 High CC returned clean at `f2cd8139` with focused, full normal Make,
+standalone citation and post-Make focused passes. Sol6.1 High CDC reconciled
+the CC return and independently reran the candidate gates. Six of six MR
+rows are accepted in [CDC verification](cdc-verification.md#final-acceptance--source-iteration03).
+Earlier stopped reports below retain their original evidence.
+
+The native evaluator uses the existing package's frozen dependencies while
+the caller's Lykn macro aliases keep their own resolution. The fixture
+lockfiles now survive the compiles intact. Cold and missing-config warm
+cases, the typed I/O path, four strict runtimes and the normal PATH fallback
+all passed. The [evidence inventory](artifacts/evidence/) keeps the original
+baseline and the separate CC/CDC candidate records.
+
+**Bubble-up.** S02 has delivered the independent prerequisite candidate.
+AM-04 retains its explicit re-entry gate. Arc03 composition starts only
+with approval over the exact candidate and preserved tests-only ref, then
+retains the policy-oracle and dist wiring obligations. No additional
+structural arc changes emerged. Source refinement 02 of 5 is spent.
+See the [retrospective](cdc-retrospective.md).
+
+## Original iteration01 stopped handoff — 2026-11-08
 
 **No repair delivered.** This records the stopped attempt, not slice acceptance.
 The source assignment was [iteration01](cc-prompt-iteration01.md), issued at

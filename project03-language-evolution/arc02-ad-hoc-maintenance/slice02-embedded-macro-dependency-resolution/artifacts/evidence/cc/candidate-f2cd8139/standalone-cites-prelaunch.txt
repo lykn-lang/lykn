@@ -1,0 +1,7 @@
+Gate: standalone committed cited-path verification
+argv: deno run -A scripts/check-cited-paths.js
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch/source_head: codex/embedded-macro-dependencies @ f2cd813908649d5b58253c75d0eda61b029fc6ff
+scoped environment: TMPDIR=/private/tmp/lykn-arc02-s02-make-f2cd8139; DENO_DIR=/Users/oubiwann/Library/Caches/deno; NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-make-f2cd8139/npm-cache; LYKN_TEST_DENO unset
+PATH `deno` resolves to /opt/homebrew/bin/deno, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74, version 2.9.6
+make check had already run unfiltered, passed, and included this gate; this is the separate standalone reproduction

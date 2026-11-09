@@ -1,0 +1,1 @@
+(macro alias-twice (x) `(+ ,x ,x))

@@ -57,3 +57,16 @@ local pin. Compare test defaults with the normal runner as well as the
 explicit verification setup. Preserve actual named ancestor checks before
 launch. The baseline omitted higher ancestors and a later check could only
 corroborate. The repair's candidate gates are still outstanding.
+
+## Iteration03 and independent close
+
+The one-line fallback used the repository's existing PATH convention. The
+normal Make command left the override unset and captured all four child
+commands, while the direct focused gate exercised the explicit pin. This
+checked the previously missed default through an actual ordinary run.
+CC and CDC both recorded exact fixed-ancestor paths before launches.
+That improves candidate provenance while leaving the legacy limitation
+visible. No baseline replay was needed because its runtime branch never ran.
+Full independent acceptance closes S02 at `f2cd8139`. The earlier
+ownership mistake, missed portable default and inaccurate byte attestation
+remain useful review lessons for the separate Arc03 work.

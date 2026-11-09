@@ -1,0 +1,11 @@
+Post-make executable pin, recorded after the final Cargo invocation in `make check`
+source_head: f2cd813908649d5b58253c75d0eda61b029fc6ff
+CLI: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn
+CLI SHA-256: 35336c66da6273927ea830434e3c5e3b481be4b28044a50394d916a0259d3f18
+lykn-lang lib test: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866
+SHA-256: d0b3940cffa4b019889d73e88334946301d00f0d48247678a6d6ce30b87fe816
+macro_dependencies test: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/macro_dependencies-c2da4081568226dd
+SHA-256: 4176e65b75295f306bf4b0ef2c9fa8d66f61d587c50cdcc3c7dd5168e8ff0165
+Deno: /opt/homebrew/bin/deno SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74, version 2.9.6
+PATH resolves `deno` to /opt/homebrew/bin/deno; DENO_DIR astring@1.9.0 cache present
+No Cargo invocation is permitted after this pin for direct focused executions.

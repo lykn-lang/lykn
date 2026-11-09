@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Arc02 S02 has six independently done MR rows at `f2cd8139`.
+[Verification](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).
+AM-04 remains open for the explicit Arc03 re-entry decision.
+
 Arc02 S02 iteration02 retained six pre-fix compile failures and held the
 unaccepted candidate `7777cd71` at
 [static review](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).

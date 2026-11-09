@@ -1,0 +1,9 @@
+Gate: compile macro_dependencies integration-test target and required CLI binary only (no-run)
+argv: cargo test --offline --locked -p lykn-cli --test macro_dependencies --no-run
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch/source_head: codex/embedded-macro-dependencies @ f2cd813908649d5b58253c75d0eda61b029fc6ff
+scoped_environment: TMPDIR=/private/tmp/lykn-arc02-s02-candidate-f2cd8139
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-candidate-f2cd8139/npm-cache
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cc/candidate-f2cd8139
+CARGO_TARGET_DIR not overridden; Cargo --offline; no test execution

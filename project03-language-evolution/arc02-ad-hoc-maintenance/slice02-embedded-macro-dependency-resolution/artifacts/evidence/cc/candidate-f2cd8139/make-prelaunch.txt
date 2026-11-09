@@ -1,0 +1,16 @@
+Gate: normal, unfiltered workspace check
+argv: make check
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch/source_head: codex/embedded-macro-dependencies @ f2cd813908649d5b58253c75d0eda61b029fc6ff
+scoped environment:
+  TMPDIR=/private/tmp/lykn-arc02-s02-make-f2cd8139
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-make-f2cd8139/npm-cache
+  LYKN_TEST_DENO explicitly unset to exercise PATH fallback
+  LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cc/candidate-f2cd8139/make-evidence
+CARGO_TARGET_DIR not overridden; CARGO_NET_OFFLINE not set; no make flags or test filters
+Deno PATH resolver: /opt/homebrew/bin/deno
+Deno SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; version 2.9.6
+DENO_DIR astring@1.9.0 cache present
+make check prerequisite tools: cargo-binstall and cargo-outdated present; no install hook will be entered
+Exact prospective fixture-ancestor inspection: make-ancestors-prelaunch.txt and make-ancestors.{stdout,stderr,status}

@@ -1,0 +1,5 @@
+CDC prospective exact named path inspection. Cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Focused argv ls -ld /private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused/project.json /private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused/deno.json /private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc
+Make argv ls -ld /private/tmp/lykn-arc02-s02-cdc-f2cd8139-make/project.json /private/tmp/lykn-arc02-s02-cdc-f2cd8139-make/deno.json /private/tmp/lykn-arc02-s02-cdc-f2cd8139-make/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc
+Capture distinct focused-ancestors.stdout/stderr/status and make-ancestors.stdout/stderr/status.
+Future per-case leaf names are allocated by TempDir at launch.

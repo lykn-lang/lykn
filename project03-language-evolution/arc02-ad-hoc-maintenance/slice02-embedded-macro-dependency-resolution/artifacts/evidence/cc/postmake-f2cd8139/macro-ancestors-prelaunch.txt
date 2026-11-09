@@ -1,0 +1,9 @@
+Prospective exact config-ancestor inspection before post-make macro_dependencies test
+TMPDIR: /private/tmp/lykn-arc02-s02-postmake-f2cd8139
+Future TempDir children allocated after launch; exact filenames checked at all fixed ancestors: project.json, deno.json, deno.jsonc
+Paths:
+/private/tmp/lykn-arc02-s02-postmake-f2cd8139/{project.json,deno.json,deno.jsonc}
+/private/tmp/{project.json,deno.json,deno.jsonc}
+/private/{project.json,deno.json,deno.jsonc}
+/{project.json,deno.json,deno.jsonc}
+argv: ls -ld on these twelve explicit paths; no traversal

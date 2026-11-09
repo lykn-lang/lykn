@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Arc02 S02 is independently accepted at `f2cd8139`, the compiler-owned macro
+dependency prerequisite. [Acceptance](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).
+Arc03 composition and re-entry remain separately held.
+
 Latest Arc02 S02 disposition: the baseline ran and candidate validation
 stopped at a platform-specific runtime test default.
 [Candidate review](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).

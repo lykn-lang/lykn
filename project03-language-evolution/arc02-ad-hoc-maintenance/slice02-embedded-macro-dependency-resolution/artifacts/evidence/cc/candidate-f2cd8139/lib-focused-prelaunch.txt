@@ -1,0 +1,15 @@
+Gate: direct focused lykn-lang library unit executable (no Cargo invocation)
+argv: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch/source_head: codex/embedded-macro-dependencies @ f2cd813908649d5b58253c75d0eda61b029fc6ff
+executable SHA-256: d0b3940cffa4b019889d73e88334946301d00f0d48247678a6d6ce30b87fe816
+scoped environment:
+  TMPDIR=/private/tmp/lykn-arc02-s02-candidate-f2cd8139
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-candidate-f2cd8139/npm-cache
+  LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cc/candidate-f2cd8139
+  PATH inherited; Deno resolver pinned /opt/homebrew/bin/deno
+Deno SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; version 2.9.6
+DENO_DIR astring cache: /Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0 present
+prospective exact ancestor inspection: ancestors-lib-prelaunch.txt and ancestors-lib.{stdout,stderr,status}; all twelve fixed-ancestor names absent
+no Cargo/build command follows pinned binaries

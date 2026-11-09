@@ -1,5 +1,8 @@
 # Arc02 ad hoc maintenance ledger
 
+S02 source acceptance completed at `f2cd8139`. All six MR rows are done.
+AM-04 retains its separate explicit Arc03 re-entry condition.
+
 S02 iteration02 observed six legacy compile failures, 0/4 runtimes, then
 stopped at static review of candidate `7777cd71`. All six MR rows and AM-04
 remain open. Source refinement 01 of 5 is spent.
@@ -41,4 +44,4 @@ distinct from harness-quality acceptance; S02 continuation remains separately he
 | AM-01 | Local emission harness delivers trustworthy fixed conditions/predicates | Accepted first-slice test diff, discriminating self-checks and all four invalid/four valid route observations | correctness-grade | S02 CE-R01–04 | done | slice01-emission-harness-baseline/cdc-verification.md | Product expected reds/unexpected package failure both retained |
 | AM-02 | Baseline and history are independently reproducible without provenance inflation | Separate fresh CDC replay, actual executable/source identities and complete streams; original232/receipt limits retained | correctness-grade | S02 stop | done | slice01-emission-harness-baseline/artifacts/evidence/cdc/ | Receipt limits explicit; no budget reset |
 | AM-03 | Scope and return compose without losing original obligations | First-slice row walk, S02 explicit continuation decision/pointer, future intake individually owned | correctness-grade | Operator maintenance direction | open | | No indefinite misc-arc close prerequisite; no Result implementation here |
-| AM-04 | Native embedded compiler dependencies resolve independently of caller configuration while Lykn macro roots remain intentional | Future accepted S02 MR01–06/source/runtime/full independent gates and explicit Arc03 re-entry | correctness-grade | Arc03 W8/Operator design intake | open | slice02-embedded-macro-dependency-resolution/ledger.md | Test readiness stopped before build; no compiler implementation or new dependency |
+| AM-04 | Native embedded compiler dependencies resolve independently of caller configuration while Lykn macro roots remain intentional | Accepted S02 MR01–06/source/runtime/full independent gates and explicit Arc03 re-entry | correctness-grade | Arc03 W8/Operator design intake | open | slice02-embedded-macro-dependency-resolution/cdc-verification.md | S02 accepted at f2cd8139. Explicit Arc03 re-entry is pending. |

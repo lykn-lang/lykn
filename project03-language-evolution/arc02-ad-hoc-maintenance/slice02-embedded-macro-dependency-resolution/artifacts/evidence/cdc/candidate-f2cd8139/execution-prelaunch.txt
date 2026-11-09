@@ -1,0 +1,20 @@
+Independent CDC candidate gates at f2cd813908649d5b58253c75d0eda61b029fc6ff
+Cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Rust and Cargo 1.97.0. Neither CARGO_TARGET_DIR nor CARGO_NET_OFFLINE is overridden.
+Focused targets built before these pins. No Cargo invocation until both direct tests finish.
+Post-last-build SHA-256:
+CLI target/debug/lykn 35336c66da6273927ea830434e3c5e3b481be4b28044a50394d916a0259d3f18
+Library test d0b3940cffa4b019889d73e88334946301d00f0d48247678a6d6ce30b87fe816
+Macro test 4176e65b75295f306bf4b0ef2c9fa8d66f61d587c50cdcc3c7dd5168e8ff0165
+PATH deno /opt/homebrew/bin/deno, 2.9.6
+Deno SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Existing cached astring 1.9.0 present, approved DENO_DIR.
+Actual argv and scoped environment:
+env TMPDIR=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused XDG_CACHE_HOME=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused/npm /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866
+env TMPDIR=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused XDG_CACHE_HOME=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused/npm LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cdc/f2cd8139/focused /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/macro_dependencies-c2da4081568226dd
+env -u LYKN_TEST_DENO TMPDIR=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-make XDG_CACHE_HOME=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-make/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-make/npm LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cdc/f2cd8139/full-make make check
+env TMPDIR=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-make XDG_CACHE_HOME=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-make/xdg DENO_DIR=/Users/oubiwann/Library/Caches/deno NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-make/npm make check-cited-paths
+Capture in this directory as lib-focused, macro-focused, make-check, standalone-cites with stdout, stderr, status suffixes.
+Exact prospective named checks are in focused-ancestors and make-ancestors receipts.
+Default-runtime proof is the unfiltered Make invocation with LYKN_TEST_DENO unset.
+Execute in listed order after confirming preceding substantive gates.

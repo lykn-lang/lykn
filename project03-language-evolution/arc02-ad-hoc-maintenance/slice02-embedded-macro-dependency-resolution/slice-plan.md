@@ -2,13 +2,22 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice02-embedded-macro-dependency-resolution
-status: in-progress
+status: closed
 planned-release: unassigned
 depends-on: []
 related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
 ---
 
 # S02 — compiler-owned embedded macro dependency resolution
+
+## Independent acceptance
+
+All six MR rows are done at `f2cd813908649d5b58253c75d0eda61b029fc6ff`.
+CC and CDC separately passed the original focused cases, normal workspace
+checks and standalone citations. See [verification](cdc-verification.md),
+[closing report](closing-report.md) and [retrospective](cdc-retrospective.md).
+Source refinements 02 of 5 are spent. AM-04 still holds the explicit Arc03
+re-entry gate. This source acceptance completes the finite S02 assignment.
 
 ## Approved iteration03 continuation
 

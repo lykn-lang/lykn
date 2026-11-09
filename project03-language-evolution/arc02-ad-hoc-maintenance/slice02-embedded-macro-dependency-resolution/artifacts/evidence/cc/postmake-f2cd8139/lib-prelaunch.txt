@@ -1,0 +1,8 @@
+Gate: post-make direct lykn-lang library unit executable
+argv: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source_head: f2cd813908649d5b58253c75d0eda61b029fc6ff; executable pin: pins.txt
+scoped env: TMPDIR=/private/tmp/lykn-arc02-s02-postmake-f2cd8139; DENO_DIR=/Users/oubiwann/Library/Caches/deno; NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-postmake-f2cd8139/npm-cache; LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cc/postmake-f2cd8139; LYKN_TEST_DENO not set
+PATH inherited, Deno resolves to pinned /opt/homebrew/bin/deno
+Prospective exact ancestor inspection: lib-ancestors-prelaunch.txt and lib-ancestors.{stdout,stderr,status}
+No build/Cargo command follows post-Make pins.

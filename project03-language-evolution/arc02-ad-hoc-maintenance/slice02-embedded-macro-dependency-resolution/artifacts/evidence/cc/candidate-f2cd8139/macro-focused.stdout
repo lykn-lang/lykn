@@ -1,0 +1,10 @@
+
+running 5 tests
+test m5_blocked_xdg_materialization_returns_io_error_without_output ... ok
+test m1_no_project_cold_xdg_uses_compiler_owned_dependencies ... ok
+test m2_project_without_astring_keeps_caller_files_unchanged ... ok
+test m3_astring_alias_still_resolves_unique_imported_macro ... ok
+test m4_same_version_cache_reextracts_missing_config ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+

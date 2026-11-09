@@ -1,0 +1,9 @@
+Gate: post-make direct five-condition macro_dependencies integration executable
+argv: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/macro_dependencies-c2da4081568226dd
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source_head: f2cd813908649d5b58253c75d0eda61b029fc6ff; executable pin: pins.txt
+scoped env: TMPDIR=/private/tmp/lykn-arc02-s02-postmake-f2cd8139; DENO_DIR=/Users/oubiwann/Library/Caches/deno; NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-postmake-f2cd8139/npm-cache; LYKN_TEST_DENO=/opt/homebrew/bin/deno (focused explicit override); LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cc/postmake-f2cd8139
+PATH inherited; macro child `deno` resolves to /opt/homebrew/bin/deno, exact pinned 2.9.6
+DENO_DIR astring@1.9.0 cache present
+prospective exact config-ancestor inspection: macro-ancestors-prelaunch.txt and macro-ancestors.{stdout,stderr,status}
+No Cargo invocation follows post-Make pins.

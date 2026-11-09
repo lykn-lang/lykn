@@ -1,0 +1,11 @@
+Independent CDC reproduction, source f2cd813908649d5b58253c75d0eda61b029fc6ff
+Tree d651757008a675f016af6b65229342fc56b745a2
+Cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Rust 1.97.0 (2d8144b78 2026-07-07), Cargo 1.97.0 (c980f4866 2026-06-30)
+Each command has TMPDIR=/private/tmp/lykn-arc02-s02-cdc-f2cd8139-focused
+No CARGO_TARGET_DIR or CARGO_NET_OFFLINE override
+Library argv cargo test --offline --locked -p lykn-lang --lib --no-run
+Library raw output lib-no-run.stdout and lib-no-run.stderr, then lib-no-run.status
+CLI argv cargo test --offline --locked -p lykn-cli --test macro_dependencies --no-run
+CLI raw output cli-no-run.stdout and cli-no-run.stderr, then cli-no-run.status
+Execute sequentially after clean CC ownership return. Candidate runtime pins follow the last build.

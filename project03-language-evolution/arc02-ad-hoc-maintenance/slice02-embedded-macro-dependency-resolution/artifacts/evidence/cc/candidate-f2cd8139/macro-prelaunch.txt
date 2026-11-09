@@ -1,0 +1,17 @@
+Gate: direct focused five-condition macro_dependencies integration executable (no Cargo invocation)
+argv: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/macro_dependencies-c2da4081568226dd
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch/source_head: codex/embedded-macro-dependencies @ f2cd813908649d5b58253c75d0eda61b029fc6ff
+executable SHA-256: 4176e65b75295f306bf4b0ef2c9fa8d66f61d587c50cdcc3c7dd5168e8ff0165
+CLI child path/hash: target/debug/lykn / 35336c66da6273927ea830434e3c5e3b481be4b28044a50394d916a0259d3f18
+scoped environment:
+  TMPDIR=/private/tmp/lykn-arc02-s02-candidate-f2cd8139
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-candidate-f2cd8139/npm-cache
+  LYKN_TEST_DENO=/opt/homebrew/bin/deno (explicit focused-runtime override)
+  LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cc/candidate-f2cd8139
+  PATH inherited; `deno` resolves to /opt/homebrew/bin/deno
+Deno SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; version 2.9.6
+DENO_DIR astring cache: /Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0 present
+prospective exact ancestor inspection: macro-ancestors-prelaunch.txt and macro-ancestors.{stdout,stderr,status}; fixture leaf will be allocated by TempDir at launch
+Cargo: no further invocation after pinned binaries

@@ -1,4 +1,71 @@
-# CDC verification — source iteration01 stopped, 2026-11-08
+# CDC verification — embedded macro dependency resolution
+
+## Final acceptance — source iteration03
+
+CDC Sol6.1 High independently accepts all six MR rows for
+`codex/embedded-macro-dependencies@f2cd813908649d5b58253c75d0eda61b029fc6ff`,
+tree `d651757008a675f016af6b65229342fc56b745a2`. Actual CC
+`/root/cdc/macro_dependency_design_luna` returned clean after the original
+candidate gates. The [iteration03 assignment](cc-prompt-iteration03.md)
+authorized source refinement 02 of 5. The frozen fallback edit
+`19038376` changes one literal. The subsequent `f2cd8139` diff changes
+line wrapping only. CDC reviewed both bodies and confirmed the five
+approved paths from `62e9531e`, the clean source and the raw Git messages.
+
+The [old baseline](artifacts/evidence/cc/baseline-408405fc/) remains
+applicable. It ran before the production repair and reached none of the
+runtime selector branches. The missed prospective higher-ancestor checks and
+corrected CC lock-byte attestation remain in the iteration02 account below.
+Both candidate runs recorded twelve exact fixed-ancestor checks prospectively.
+The TempDir fixture leaves were allocated at launch.
+
+- **MR-01/02.** Fresh CDC direct execution passed 1140 library tests,
+  including exact compiler-owned config/lock argv and existing pass0 controls.
+  Five integration parent tests passed. The six compile outcomes were five
+  successes and the intended M5 I/O exit 1. The M3 user alias named
+  `astring` resolved the unique imported macro and produced the expected
+  output while the compiler resolved its own locked dependency.
+- **MR-03.** The actual M4 recovery saw config absent and lock present
+  before re-extraction. Both recovered file contents matched embedded
+  source. The same production predicate passed all four filesystem states,
+  including config-only. M2/M3 caller config and lock bytes and epoch
+  mtimes stayed equal. M5 returned the typed I/O diagnostic with both
+  output artifacts absent. Drop/pipes are unchanged by diff inspection.
+- **MR-04.** Five complete 38-byte generated modules matched
+  `bdeec6a9d6b92c8564dc8d4a4de96ad75442b27143b3f9442d4bdd356a18531d`,
+  with the inspected body `console.log(JSON.stringify(21 + 21));`.
+  Four strict runtime children exited 0 with exact `42\n` and empty stderr.
+  Independent unfiltered `make check` exited 0 with Rust, 1471 JS/Lykn
+  tests (15 steps), and 482 doc tests passing. Its separate macro receipts
+  show all four children using `program="deno"` with the override unset.
+  Standalone `make check-cited-paths` exited 0 for 63 docs and 601 historical
+  citations. The post-Make CLI/test/Deno pins match the preceding focused
+  executions. CC ran the same focused checks again after its Make build.
+- **MR-05.** The guide and source skill explain native macro-time Deno,
+  compiler-owned config and frozen lock, and the intentional caller-config
+  behavior change. Existing resolver, public JavaScript and browser paths
+  remain untouched by the diff. Nested info/fetch and the S07/S08/book
+  audit retain their existing scope.
+- **MR-06.** Exact task candidate `f2cd8139` and Arc03 tests-only
+  `e2f29597ab677346abc6e17ec3616d4a340b7861` retain common base
+  `62e9531e6183b3762a9ff326fdc07439db33f31f`. The release and Arc03
+  refs are preserved. Explicit future local composition, native policy-oracle
+  refinement and typed dist wiring remain gates. AM-04's explicit re-entry
+  requirement remains open at arc scale.
+
+Raw [CC candidate](artifacts/evidence/cc/candidate-f2cd8139/),
+[CC post-Make](artifacts/evidence/cc/postmake-f2cd8139/) and
+[independent CDC](artifacts/evidence/cdc/candidate-f2cd8139/) outputs preserve
+prelaunch conditions, full streams, artifact bytes and tool pins. The
+review's command and cache findings cover the existing package assets and
+observed conditions. They leave the wider cache identity problem and any
+whole-run network or hermeticity claim outside this proof.
+
+The final planning diff check exited 2 on eight original blank lines at EOF
+in the captured CC and CDC test and Make stdout logs. Prose-only diff check
+exited 0. The original stdout bytes are retained.
+
+## Source iteration01 stopped, 2026-11-08
 
 Reviewer `/root/cdc` (Sol6.1 High), separate from the Luna6 High implementation
 actor, independently read the complete immutable test source, raw Git message,

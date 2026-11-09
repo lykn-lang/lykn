@@ -1,0 +1,10 @@
+Gate: mechanical leaf formatting only
+argv: rustfmt --edition 2024 crates/lykn-lang/src/expander/deno.rs crates/lykn-lang/src/expander/embedded.rs crates/lykn-cli/tests/macro_dependencies.rs
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source_head: 19038376f8a94da412f5e6fe387af30091a4e1ca
+rustfmt: rustfmt 1.9.0-stable (2d8144b788 2026-07-07)
+pre-format SHA-256:
+  deno.rs: 9ec797de53bf3107446f028d46bf590c9ea6f736b60b63b506deb60a23586a78
+  embedded.rs: 55ba297dc0177c7a722764bc52d77f3f0211b5fc486ad68c7851c00fb31c2092
+  macro_dependencies.rs: 49c4b906bea67f54cccda8c65891ab653780c2b3a566613e1f69d48d3bc334a9
+Scope: only the three authored Rust files above; no build or test.

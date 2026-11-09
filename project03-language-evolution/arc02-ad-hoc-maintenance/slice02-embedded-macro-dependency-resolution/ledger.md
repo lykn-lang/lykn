@@ -1,5 +1,10 @@
 # Embedded macro dependency repair ledger
 
+Six of six MR rows are independently done at `f2cd8139`.
+[Acceptance](cdc-verification.md) records fresh CDC execution and the retained
+baseline limits. Source refinements 02 of 5 are spent. AM-04 remains open for
+the separate Arc03 re-entry decision.
+
 Operator “Yes, approved: continue with plan” authorizes
 [iteration03](cc-prompt-iteration03.md), source refinement 02 of 5, and the
 original candidate gates. The retained baseline never reached the changed
@@ -35,9 +40,9 @@ does not satisfy these implementation criteria.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| MR-01 | Native evaluator owns compiler dependency configuration/lock | Pure command shape plus real no-project/missing-alias/poisoned-alias conditions | correctness-grade | Arc03 W8 stop | open | artifacts/repair-and-oracle-design.md | Existing astring declaration only, no new acquisition |
-| MR-02 | Documented Lykn macro import roots/precedence survive | Unique imported macro through colliding user alias + existing pass0 alias/prefix/overlay/relative controls | correctness-grade | pass0 contract | open | | No arbitrary Deno config equivalence promise |
-| MR-03 | Cold/warm cache/resource/error outcomes are trustworthy | Missing required config/lock re-extraction, typed I/O, immutable owned/caller locks, child Drop | correctness-grade | materialization | open | | Not full C04 identity/content repair |
-| MR-04 | Source/gates/generated runtime are independently accepted | Meaningful pre-fix red, source freeze/pins/full normal Make/cites and fresh separate CDC proof | correctness-grade | verification | open | | No source execution authorized by design review |
-| MR-05 | User contract/API/docs disclose actual change | Native config boundary docs, no publicJS/browser change, S07/S08/book impact ownership | correctness-grade | 0.6 design policy | open | | No accidental passthrough-equivalence claim |
-| MR-06 | Candidate composition/re-entry retains original obligations | Exact accepted P vs e2f, explicit future merge authority, native v1 oracle/dist wiring and all original rows/history | correctness-grade | Arc03 S01 | open | | No release integration or budget reset |
+| MR-01 | Native evaluator owns compiler dependency configuration/lock | Pure command shape plus real no-project/missing-alias/poisoned-alias conditions | correctness-grade | Arc03 W8 stop | done | cdc-verification.md | M1/M2/M3 and owned command unit passed |
+| MR-02 | Documented Lykn macro import roots/precedence survive | Unique imported macro through colliding user alias + existing pass0 alias/prefix/overlay/relative controls | correctness-grade | pass0 contract | done | cdc-verification.md | M3 runtime and existing pass0 suite passed |
+| MR-03 | Cold/warm cache/resource/error outcomes are trustworthy | Missing required config/lock re-extraction, typed I/O, immutable owned/caller locks, child Drop | correctness-grade | materialization | done | cdc-verification.md | M4 recovery, M5 typed error and missing-lock unit |
+| MR-04 | Source/gates/generated runtime are independently accepted | Meaningful pre-fix red, source freeze/pins/full normal Make/cites and fresh separate CDC proof | correctness-grade | verification | done | cdc-verification.md | Six compile observations and four strict runtimes reproduced |
+| MR-05 | User contract/API/docs disclose actual change | Native config boundary docs, no publicJS/browser change, S07/S08/book impact ownership | correctness-grade | 0.6 design policy | done | cdc-verification.md | Guide and source skill qualified with audit ownership retained |
+| MR-06 | Candidate composition/re-entry retains original obligations | Exact accepted P vs e2f, explicit future merge authority, native v1 oracle/dist wiring and all original rows/history | correctness-grade | Arc03 S01 | done | cdc-verification.md | Composition remains a separately authorized gate |
