@@ -41,6 +41,13 @@ retain exact input variants. The direct-eval proof is unbundled; current
 pinned esbuild's top-level ESM eval limitation remains explicit. The
 five-pass accounting and prior independent results retain their provenance.
 
+[Iteration 06](cc-prompt-iteration06.md) is a bounded prevalidation correction
+under the Operator's standard Autonomous Mode authority. The initial
+implementation `f0ccce4` is preserved. Static review found that two raw writer
+specimens retained CLI-only kernel prefixes and named-import assertions
+assumed the wrong generator spacing. No candidate gate had run. This is
+explicitly one beyond the normal five, with no reset or changed oracle.
+
 ## Prior bounded disposition — 2026-11-09
 
 The [independent review](cdc-verification.md) accepts the eligible-module

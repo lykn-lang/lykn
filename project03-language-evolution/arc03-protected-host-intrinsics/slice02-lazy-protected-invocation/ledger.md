@@ -1,5 +1,9 @@
 # S02 lazy protected invocation ledger
 
+[Iteration 06](cc-prompt-iteration06.md) preserves first frozen implementation
+`f0ccce4` and corrects its prevalidation fixture/assertion gaps. No build or
+runtime gate ran at that freeze.
+
 [Iteration 05](cc-prompt-iteration05.md) reopens HI-05 implementation under
 the Operator-approved feature-local ESM fallback. The bounded feasibility
 proof passed on the pinned tools. No candidate acceptance yet.
