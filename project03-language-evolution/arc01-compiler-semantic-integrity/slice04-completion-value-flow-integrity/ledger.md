@@ -24,6 +24,12 @@ completes its local Rust compile readiness as refinement 06, beyond
 the normal five under standard Autonomous Mode. No source gate has
 run on that first production freeze.
 
+[Iteration 09](cc-prompt-iteration09.md) isolates each native
+positive fixture's compiler cache after independent F2 check
+observed EINVAL at `decb1bb6`. Same source/oracles, first actual
+failure retained. Source refinement 07 beyond normal five. NE-C14
+independent acceptance remains pending.
+
 [I1 executable assignment](cc-prompt-iteration01.md) is issued on the
 validated release baseline `d73601a5`. This is a bounded first increment
 and supplies actual conditional branch and direct-transfer controls.
