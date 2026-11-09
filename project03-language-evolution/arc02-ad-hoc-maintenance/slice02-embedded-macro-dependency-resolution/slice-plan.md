@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice02-embedded-macro-dependency-resolution
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: []
 related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
@@ -10,7 +10,16 @@ related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
 
 # S02 — compiler-owned embedded macro dependency resolution
 
-## Current disposition — source readiness stopped, 2026-11-08
+## Current continuation
+
+Operator “Go for it” approves the exact two test-only ownership fixes and
+continuation of the original S02 gates. [Iteration02](cc-prompt-iteration02.md)
+is source refinement 01 of 5. Same Luna6 High CC and Sol6.1 High CDC in
+Autonomous Mode. Stop on the next unexpected substantive failure or real gap.
+Review the new immutable test body before the first build or specimen launch.
+All six MR rows stay open.
+
+## Historical disposition — source readiness stopped, 2026-11-08
 
 Iteration01 stopped at the first static review of clean tests-only d7c7c733.
 Two command builders retain a reference to a dropped temporary. No formatter,

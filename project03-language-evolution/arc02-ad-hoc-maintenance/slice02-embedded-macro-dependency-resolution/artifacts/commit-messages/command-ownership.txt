@@ -1,0 +1,6 @@
+Own macro regression subprocess commands
+
+Retain each Command while configuring its arguments and recording its launch.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,5 +1,9 @@
 # Embedded macro dependency repair ledger
 
+Operator “Go for it” authorizes [iteration02](cc-prompt-iteration02.md),
+the first source refinement (01 of 5), and the original finite S02 gates.
+All six MR rows remain open pending actual observations and review.
+
 2026-11-08 SOURCE STOP: [static review](cdc-verification.md) found two borrowed
 temporary command builders in immutable tests-only d7c7c733. All six MR rows
 remain open. Builds 0; baseline 0/6 compiles and 0/4 runtimes. Implementation
