@@ -9,6 +9,14 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Consolidated correction05 active
+
+[Iteration07](cc-prompt-iteration07.md) follows the immutable
+[correction04 static return](cdc-verification.md#correction04-static-return-and-correction05).
+The standard Autonomous authority covers this focused correction and
+the original independent gates. Source refinement 05 of 5 is the
+current assignment, with 04 spent. No v1 gate has run.
+
 ## Iteration06 private if-let oracle clarification
 
 The issued prompt's new private `Reflect` pattern example is a
@@ -396,6 +404,10 @@ and their tests are explicitly allowed. Source commits exact paths/provided -F
 body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
+
+- 2026-11-09 [iteration07](cc-prompt-iteration07.md), predecessor
+  [iteration06](cc-prompt-iteration06.md). Active correction05 at
+  clean `0c4e3ca9`, with the original tests and independent gates.
 
 - 2026-11-09 additive Operator steering to active iteration06.
   Standard Autonomous Mode replaces the earlier stop condition.

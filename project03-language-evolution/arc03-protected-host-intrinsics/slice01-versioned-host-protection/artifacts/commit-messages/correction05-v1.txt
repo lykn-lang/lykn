@@ -1,0 +1,6 @@
+Complete protected host scope and traversal proof
+
+Separate parameter defaults, preserve structural object roles, and validate executable callees.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,5 +1,32 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Correction04 static return and correction05
+
+CC froze `0c4e3ca9bc477d457feb3c8d80d7e1af53887274`, tree
+`dcf609936193fa432e50e1d496ad43958aa4a947`, exact four allowed paths
+and correct trailers. I reviewed the complete new native/public
+walkers and exact-key test against the actual original contracts.
+The seven prior repairs are present in source. No formatter, build,
+test or v1 execution had been released.
+
+The explicit-escape span test uses child2 of a one-operand list at
+native `protected_host.rs:638`. The default walkers also push body
+lexical/var names before defaults (native lines 275–348 and public
+lines 188–218). Real defaults have no access to those body names.
+The ordinary visitors and var prepasses walk kernel object property
+pairs as dispatch forms; the actual writers treat their head as a
+property key. A key named delete can falsely trigger policy and a
+key named var can invent a local. The public walker also skips a
+computed callee despite the compiler's plain-call lowering
+(`compiler.js:1884–1898)). Actual body scope and try order remain
+incomplete. The full candidate source diff check reports the blank
+Rust EOF, preserved for mechanical formatting.
+
+Under the standard Autonomous steering, these clear original-contract
+repairs are consolidated in [iteration07](cc-prompt-iteration07.md).
+Refinement 04 is spent. The new assignment uses refinement 05 of 5
+and retains all original HC gates. No criterion is accepted yet.
+
 ## If-let example corrected during iteration06 authoring
 
 CC and CDC checked actual `classify_if_let` and `classify_pattern`.

@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+[Iteration07](cc-prompt-iteration07.md) consolidates the independent
+static findings at `0c4e3ca9` under standard Autonomous Mode. Source
+refinement 05 of 5 is assigned. All HC rows remain open.
+
 The Operator adopts [standard Autonomous Mode](slice-plan.md#current-operator-steering--standard-autonomous-mode)
 for active iteration06. Clear in-scope issues may be resolved without
 renewed permission. Original evidence and acceptance gates remain.
