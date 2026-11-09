@@ -266,6 +266,14 @@ const compileStrategy = {
   quoteSymbol(name) {
     return array(sym('$sym'), { type: 'string', value: name });
   },
+  /** Build a typed number node in the compiled macro result. */
+  numberLiteral(form) {
+    return array(
+      sym('object'),
+      array(sym('type'), { type: 'string', value: 'number' }),
+      array(sym('value'), form),
+    );
+  },
   /** Concatenate spliced and non-spliced parts via $concat. */
   makeConcat(...args) {
     return array(sym('$concat'), ...args);
@@ -296,6 +304,10 @@ const expandStrategy = {
   quoteSymbol(name) {
     return array(sym('quote'), sym(name));
   },
+  /** Number nodes remain unchanged during ordinary quasiquote expansion. */
+  numberLiteral(form) {
+    return form;
+  },
   makeConcat(...args) {
     return array(sym('append'), ...args);
   },
@@ -317,8 +329,13 @@ const expandStrategy = {
  * @returns {*} Transformed AST
  */
 function walkQuasiquote(form, depth, strategy) {
-  // Self-evaluating types pass through unchanged
-  if (form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
+  // Compiled macro templates must preserve numbers as typed AST nodes.
+  if (form.type === 'number') {
+    return strategy.numberLiteral(form);
+  }
+
+  // Other self-evaluating types pass through unchanged
+  if (form.type === 'string' || form.type === 'keyword') {
     return form;
   }
 
@@ -427,7 +444,11 @@ function walkQQElement(element, depth, strategy) {
   }
 
   // Self-evaluating literals
-  if (element.type === 'number' || element.type === 'string') {
+  if (element.type === 'number') {
+    return { node: strategy.numberLiteral(element), isSplice: false, isLiteral: true };
+  }
+
+  if (element.type === 'string') {
     return { node: element, isSplice: false, isLiteral: true };
   }
 
