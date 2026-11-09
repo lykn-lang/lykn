@@ -165,8 +165,7 @@ fn compile_recorded(
 }
 
 fn run_strict_recorded(name: &str, fixture: &Path, module: &Path) -> Output {
-    let deno = std::env::var_os("LYKN_TEST_DENO")
-        .unwrap_or_else(|| OsString::from("deno"));
+    let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| OsString::from("deno"));
     let mut command = Command::new(deno);
     command
         .current_dir(fixture)

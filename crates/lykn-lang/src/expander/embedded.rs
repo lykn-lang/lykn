@@ -77,8 +77,7 @@ mod tests {
         let package_dir = root.join("packages").join("lang");
         std::fs::create_dir_all(&package_dir).expect("create owned package directory");
         if config {
-            std::fs::write(package_dir.join("deno.json"), b"{}")
-                .expect("write config fixture");
+            std::fs::write(package_dir.join("deno.json"), b"{}").expect("write config fixture");
         }
         if lock {
             std::fs::write(package_dir.join("deno.lock"), b"{}").expect("write lock fixture");
@@ -95,7 +94,11 @@ mod tests {
             ("both", true, true, true),
         ] {
             let cache = owned_cache(config, lock);
-            assert_eq!(cache_is_ready(cache.path()), expected, "{state} cache state");
+            assert_eq!(
+                cache_is_ready(cache.path()),
+                expected,
+                "{state} cache state"
+            );
         }
     }
 }
