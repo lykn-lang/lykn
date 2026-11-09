@@ -1,0 +1,6 @@
+Enforce the versioned protected host contract
+
+Reject provable writes to the Reflect.apply profile before lowering and keep typed diagnostics through dist.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

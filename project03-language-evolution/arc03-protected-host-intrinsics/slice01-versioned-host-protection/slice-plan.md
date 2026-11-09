@@ -9,6 +9,27 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Authorized v1 implementation
+
+The Operator authorizes v1 source protection and typed dist diagnostics,
+then separate independent validation. [Iteration05](cc-prompt-iteration05.md)
+is the active production assignment from clean `5a2e569`, with Luna6
+High CC and Sol6.1 High CDC in Autonomous Mode. Stop on the first
+unexpected substantive failure or real evidence gap. This is the
+original planned implementation, with source refinement 03 of 5 spent.
+The earlier baseline and all evidence limitations stay in history.
+CDC owns planning and prospective gate release. CC receives exclusive
+source/index/build/raw ownership after intake and returns it before
+independent validation. Release `62e9531e` remains read-only.
+
+Readiness at `5a2e569`: the assignment pins the actual whole-unit
+source and kernel boundaries, the existing typed dist error, and the
+sole macro-time compiler call. The approved scoped behavior and
+domain rules are applied in the recipe. The frozen native/public
+oracles, separate dormant compile-only regression, exact prospective
+gates and artifact preservation define independent acceptance. No
+open API or behavior decision is delegated to implementation.
+
 ## Bounded baseline return accepted
 
 The original pre-policy baseline was independently reproduced at local

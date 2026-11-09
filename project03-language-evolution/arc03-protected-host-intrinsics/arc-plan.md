@@ -12,8 +12,9 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 S01's numeric macro prerequisite is accepted at `46ca1c04`. Exact local
 composition and the original baseline are independently accepted at
 `5a2e569`. [Verification](slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced).
-All PHI/HC/CV rows remain open. S01 v1 source protection and typed dist
-wiring require separate continuation authority.
+All PHI/HC/CV rows remain open. The Operator now authorizes
+[S01 v1 source protection and typed dist wiring](slice01-versioned-host-protection/cc-prompt-iteration05.md),
+followed by independent validation. The endpoint is S01 only.
 
 W8 prerequisite source refinement 03 stopped before repair at the
 prospective launch evidence gate. The expected focused red is preserved.

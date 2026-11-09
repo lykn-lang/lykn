@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+The Operator authorizes [v1 enforcement and typed dist diagnostics](cc-prompt-iteration05.md)
+at clean composite `5a2e569`, followed by independent validation.
+All six HC rows are open. The original planned implementation starts
+with source refinement 03 of 5 spent.
+
 The [bounded baseline return](cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
 is independently accepted at `5a2e569`. All six HC rows remain open.
 Refinement 03 of 5 is spent. V1 and typed dist production remain held.
