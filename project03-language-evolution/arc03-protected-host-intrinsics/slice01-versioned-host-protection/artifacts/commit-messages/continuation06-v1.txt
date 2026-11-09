@@ -1,0 +1,6 @@
+Complete kernel binding and policy assertions
+
+Follow actual kernel pattern slots and assert the public outcomes the reader provides.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

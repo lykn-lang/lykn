@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+[Iteration08](cc-prompt-iteration08.md) is the recorded bounded
+sixth pass under direct Operator steering. Normal source refinements
+05 of 5 are spent. All HC rows and original gates remain open.
+
 [Iteration07](cc-prompt-iteration07.md) consolidates the independent
 static findings at `0c4e3ca9` under standard Autonomous Mode. Source
 refinement 05 of 5 is assigned. All HC rows remain open.

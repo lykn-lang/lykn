@@ -1,5 +1,30 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Correction05 static return and bounded continuation
+
+The immutable fifth candidate is `c51beb7148dcc1f291d7225f3397ee2cd2b46ec2`,
+tree `6bb320949b2345abb0b3a9e8434c079331c20998`. CC changed exactly the
+four assigned paths, synchronized the public mirror and returned a
+clean source freeze. The scope/default/object/callee changes are
+present in the exact diff. There is still no v1 execution evidence.
+
+Native `kernel_param_names` delegates to the source-oriented
+`binding_names_in_pattern` walker, whose actual grammar omits raw
+default/rest/alias binding slots emitted by `codegen/emit.rs:348–435`.
+For example `(default Reflect 0)` emits a local but is not collected
+as a kernel parameter. The JS reader's atom return at
+`packages/lang/reader.js:163` has no span, so the new private check
+compares two absent values. The two new shadow positives also
+declare a lexical `let Reflect` on top of their parameter in
+emitted JS. These are bounded source/oracle findings, not test runs.
+
+The Operator's direct standard Autonomous instruction covers
+obvious in-scope repairs without another approval. The normal five
+passes remain spent. [Iteration08](cc-prompt-iteration08.md) is a
+sixth, bounded pass in this same slice under that instruction.
+All original frozen behavior and independent gates remain binding.
+No criterion is accepted.
+
 ## Correction04 static return and correction05
 
 CC froze `0c4e3ca9bc477d457feb3c8d80d7e1af53887274`, tree

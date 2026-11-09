@@ -9,6 +9,16 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Bounded continuation beyond normal refinement allowance
+
+The normal five source refinements are spent. Under the Operator's
+direct steering to fix clear in-scope problems without more approvals,
+[iteration08](cc-prompt-iteration08.md) is an explicitly recorded
+sixth pass at clean `c51beb71`, with the same actors and S01 endpoint.
+No re-slice, reset or broader authority is implied. The
+[review](cdc-verification.md#correction05-static-return-and-bounded-continuation)
+identifies the concrete bounded changes. All original gates remain.
+
 ## Consolidated correction05 active
 
 [Iteration07](cc-prompt-iteration07.md) follows the immutable
@@ -404,6 +414,10 @@ and their tests are explicitly allowed. Source commits exact paths/provided -F
 body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
+
+- 2026-11-09 [iteration08](cc-prompt-iteration08.md), predecessor
+  [iteration07](cc-prompt-iteration07.md). Active bounded sixth pass
+  under the current direct Operator steering. Normal five remain spent.
 
 - 2026-11-09 [iteration07](cc-prompt-iteration07.md), predecessor
   [iteration06](cc-prompt-iteration06.md). Active correction05 at
