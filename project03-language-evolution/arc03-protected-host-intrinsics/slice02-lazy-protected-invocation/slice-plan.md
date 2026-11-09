@@ -61,6 +61,13 @@ generated text and fixture oracles. Eighth numbered pass, no reset.
 actual normal Rust format failure at `d879783`. Apply the formatter to
 the one source file. Ninth numbered pass, no reset.
 
+[Iteration 10](cc-prompt-iteration10.md) follows a fresh composition
+review at formatted `aa6fa30`. A raw ordinary call could invent a
+module shadow, while an actual export/async declaration was absent
+from the S01 raw root scope. The assignment corrects the shared
+whole-module kernel contract in both backends, preserving Source
+behavior and original proof. Tenth numbered pass, no reset.
+
 ## Prior bounded disposition — 2026-11-09
 
 The [independent review](cdc-verification.md) accepts the eligible-module

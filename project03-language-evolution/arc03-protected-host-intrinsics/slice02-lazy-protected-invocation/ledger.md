@@ -1,5 +1,9 @@
 # S02 lazy protected invocation ledger
 
+[Iteration 10](cc-prompt-iteration10.md) records two source-derived
+composed kernel scope findings and their exact focused correction
+assignment. No final candidate execution yet at `aa6fa30`.
+
 [Iteration 09](cc-prompt-iteration09.md) retains actual Clippy success
 and normal format failure at `d879783`; final acceptance remains open.
 
