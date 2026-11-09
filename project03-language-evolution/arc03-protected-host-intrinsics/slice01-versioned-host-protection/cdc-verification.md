@@ -1,5 +1,33 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Consolidated correction04 held on exact path identity — 2026-11-09
+
+The Operator authorized the six previously recorded repairs together.
+The same first-substantive-failure stop applied. Before issuing the
+assignment, I found a separate false rejection in the unchanged
+`cabfc621dd28331aafe1315292bd830be2dd459d` candidate.
+
+`packages/lang/protected-host.js:11–14` correctly retains a literal
+computed key as one segment. The comparisons at lines 110–116 then
+join segments with a dot. This equates the unrelated
+`["globalThis", "Reflect.apply"]` with the protected
+`["globalThis", "Reflect", "apply"]`. The existing computed-member
+lowering (`packages/lang/compiler.js:604–614`) keeps the single key
+literal. The update path in the frozen policy at lines 93–94 records
+that target even before the proposed dialect change. The candidate's
+string comparison can therefore reject a write to
+`globalThis["Reflect.apply"]` as a write to `globalThis.Reflect.apply`.
+This is a source-derived result. No specimen was compiled or run.
+
+The six approved repairs remain pending. No next prompt was created
+or issued, CC received no assignment or ownership, and no source
+edits, formatter, build or test occurred. Refinement 04 is unexecuted.
+Refinement 03 of 5 stays spent. The bounded proposal is to compare
+length and exact segments for both protected and alias-invalidating
+paths, then run the existing gates with the frozen oracles. That
+additional repair requires renewed scope. All HC/PHI/CV criteria
+remain open and the prior baseline and AM-04 remain accepted.
+
 ## Correction04 held at preflight — 2026-11-09
 
 The Operator approved correcting the four findings below and resuming

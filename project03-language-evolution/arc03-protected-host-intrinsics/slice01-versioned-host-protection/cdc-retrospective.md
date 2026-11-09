@@ -1,5 +1,12 @@
 # CDC retrospective — S01 attempts, 2026-11-08
 
+## Exact path identity preflight — 2026-11-09
+
+The source stored a literal computed key in a segment and then lost
+that boundary in the final comparison. Checking the identity used for
+the actual decision exposed a false rejection before CC handoff.
+The candidate remains unchanged and no runtime evidence was produced.
+
 ## Correction04 preflight — 2026-11-09
 
 The preflight compared the frozen walk with the actual lowering of

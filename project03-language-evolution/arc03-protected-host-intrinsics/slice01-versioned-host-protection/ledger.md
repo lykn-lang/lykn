@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+The [consolidated correction04 hold](cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09)
+records a separate literal computed-key false rejection. All six
+approved repairs stay pending. No source refinement or validation ran.
+
 [Correction04 preflight](cdc-verification.md#correction04-held-at-preflight--2026-11-09)
 found two additional scope defects. The approved four corrections and
 all v1 gates remain held. No prompt issued or source work began. All

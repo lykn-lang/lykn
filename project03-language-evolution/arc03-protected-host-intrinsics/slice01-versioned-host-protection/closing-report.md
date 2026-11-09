@@ -1,5 +1,13 @@
 # S01 attempt dispositions — 2026-11-08
 
+## Consolidated correction04 path-identity hold — 2026-11-09
+
+The six approved corrections stopped before dispatch on a distinct
+public computed-key false rejection.
+[Static trace](cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09).
+The source remains at `cabfc621` with all six HC rows open. No source
+or validation ran and refinement 04 remains unexecuted.
+
 ## Correction04 preflight hold — 2026-11-09
 
 The Operator approved the previous four findings. Before prompt

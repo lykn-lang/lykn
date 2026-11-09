@@ -1,5 +1,8 @@
 # Arc03 protected host intrinsics ledger
 
+The [consolidated correction04 hold](slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09)
+preserves `cabfc621` and the unchanged refinement count. PHI remains open.
+
 S01 [correction04 preflight](slice01-versioned-host-protection/cdc-verification.md#correction04-held-at-preflight--2026-11-09)
 held the source assignment before dispatch. PHI remains open. No
 source refinement or v1 gate was executed under this authorization.

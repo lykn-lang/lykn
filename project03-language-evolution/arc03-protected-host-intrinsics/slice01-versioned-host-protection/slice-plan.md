@@ -9,6 +9,14 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Consolidated correction04 held before dispatch
+
+The Operator authorized all six recorded corrections. Preflight found
+a distinct computed-key collision in the public proof.
+[Verdict](cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09).
+No prompt issued or source work began. Refinement 03 of 5 remains spent
+and all HC rows and gates remain open.
+
 ## Approved correction04 held before assignment
 
 The Operator approved the four original static corrections with the

@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Arc03 S01 consolidated correction04 is held before assignment on a
+[computed-key false rejection](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09).
+The previous baseline remains accepted.
+
 Arc03 S01 correction04 stopped before dispatch at two new static
 scope findings on `cabfc621`. The pre-policy baseline remains accepted.
 [Verification](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#correction04-held-at-preflight--2026-11-09).

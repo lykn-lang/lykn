@@ -2,6 +2,9 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Arc03's [exact path-identity hold](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09)
+leaves all HC/PHI/CV open and refinement 03 of 5 spent.
+
 Arc03 [correction04 preflight](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#correction04-held-at-preflight--2026-11-09)
 held assignment and validation on unchanged `cabfc621`. Refinement
 03 of 5 stays spent. HC/PHI/CV remain open and AM-04 stays done.

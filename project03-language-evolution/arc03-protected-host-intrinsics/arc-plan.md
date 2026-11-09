@@ -9,6 +9,10 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+S01's consolidated correction04 is held before dispatch on a separate
+[public path-identity defect](slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09).
+The six authorized repairs and original gates remain pending.
+
 S01 correction04 is held before assignment on two new static scope
 findings at unchanged `cabfc621`.
 [Verification](slice01-versioned-host-protection/cdc-verification.md#correction04-held-at-preflight--2026-11-09).
