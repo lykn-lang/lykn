@@ -21,6 +21,12 @@ adds its explicit-wrapper role adapter (refinement 02/5), with no oracle change.
 gate found at the first production freeze `45df1093` before any dependent
 validation. Refinement 03/5, same I1 fixture/verification population.
 
+Focused CC behavior at `487c9551` passed. The first full gate failed
+at CLI temp-file setup. A prepared-root full replay reached one old
+inline-printing assertion. [Iteration 05](cc-prompt-iteration05.md)
+updates only the exact braced golden, refinement 04/5. Full gate and
+independent acceptance remain pending.
+
 Current2026-11-08: Operator resolves H1 POLICY with protected intrinsics; Arc03
 owns actual source contract/facility/proof. I3 waits specifically accepted
 Arc03/S02, while I1 can be independent; no circular dependency. All6CV OPEN,
