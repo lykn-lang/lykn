@@ -11,6 +11,11 @@ planned prerequisite delivery under S04, with the four previous
 refinements retained. CV-02 acceptance and all other CV/CI-04 statuses
 stay as recorded above until actual new evidence is accepted.
 
+[Iteration 07](cc-prompt-iteration07.md) corrects two static errors in
+test-only `3f3c036d` before any launch, using the actual original
+success oracle and existing SExpr shape/accessor. Normal refinement
+05/5. NE-C14 source and gates remain pending.
+
 [I1 executable assignment](cc-prompt-iteration01.md) is issued on the
 validated release baseline `d73601a5`. This is a bounded first increment
 and supplies actual conditional branch and direct-transfer controls.
