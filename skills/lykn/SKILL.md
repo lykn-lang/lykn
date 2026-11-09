@@ -14,11 +14,11 @@ description: |
 
 # lykn Skill — Language Reference
 
-lykn is a Lisp-flavoured JavaScript — s-expression syntax compiling to clean, readable JS with no runtime dependencies. lykn has two syntax layers: **surface syntax** (the recommended authoring language) and **kernel syntax** (the compilation target). All examples in this skill use surface syntax unless explicitly marked otherwise.
+lykn is a Lisp-flavoured JavaScript — s-expression syntax compiling to clean, readable JS with no runtime dependencies in the generated program. Expanding user-defined macros during CLI compilation requires Deno. lykn has two syntax layers: **surface syntax** (the recommended authoring language) and **kernel syntax** (the compilation target). All examples in this skill use surface syntax unless explicitly marked otherwise.
 
 **Design principles**: thin skin over JS (no runtime, no invented semantics), JS-aligned naming over Lisp conventions, lisp-case→camelCase auto-conversion, functional by default (immutable bindings, controlled mutation), required type annotations on all boundaries, clean compiled output.
 
-**Toolchain**: Deno (not Node.js), `deno lint` + `deno fmt` on compiled JS output, ESM-only modules, strictly no npm in development workflows.
+**Toolchain**: Deno (not Node.js), `deno lint` + `deno fmt` on compiled JS output, ESM-only modules. Lykn workflows do not require a user-managed npm install; the CLI macro evaluator uses its compiler-owned, frozen dependency lock.
 
 **Strength indicators** used throughout:
 
@@ -692,6 +692,14 @@ cargo build --release && cp ./target/release/lykn ./bin
 ### Project config
 
 The CLI auto-discovers `project.json` by walking up from the current directory. This is the workspace root config that maps imports and defines tasks.
+
+When CLI compilation expands user-defined macros, the evaluator uses Lykn's
+embedded `packages/lang/deno.json` and frozen `deno.lock` (which pins
+`astring` 1.9.0). The caller's arbitrary Deno configuration is not passed
+through. Lykn's intentional `import-macros` resolution tiers still apply.
+This describes the CLI evaluator; it does not change public-JavaScript or
+browser macro entry points, or the separate nested `deno info` and remote
+macro-fetch path.
 
 ---
 

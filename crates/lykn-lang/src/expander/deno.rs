@@ -6,7 +6,7 @@
 //! per line.
 
 use std::io::{BufRead, BufReader, BufWriter, Write};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
 
 use crate::ast::sexpr::SExpr;
@@ -44,28 +44,16 @@ fn build_evaluator_script() -> String {
     format!("{}\n{}", env::MACRO_ENV_JS, env::DENO_EVALUATOR_JS)
 }
 
-fn find_project_json() -> Option<PathBuf> {
-    let cwd = std::env::current_dir().ok()?;
-    let mut dir = cwd.as_path();
-    loop {
-        let candidate = dir.join("project.json");
-        if candidate.exists() {
-            return std::fs::canonicalize(candidate).ok();
-        }
-        dir = dir.parent()?;
-    }
-}
-
-fn build_deno_command(script: &str, project_json: Option<&std::path::Path>) -> Command {
-    let materialized =
-        super::embedded::materialize_packages().expect("materializing embedded packages failed");
+fn build_deno_command(script: &str, materialized: &Path) -> Command {
+    let config = materialized.join("packages/lang/deno.json");
+    let lock = materialized.join("packages/lang/deno.lock");
     let mut cmd = Command::new("deno");
-    cmd.current_dir(&materialized);
-    cmd.arg("eval");
-    if let Some(pj) = project_json {
-        cmd.args(["--config", &pj.to_string_lossy()]);
-    }
-    cmd.arg("--ext=js")
+    cmd.current_dir(materialized);
+    cmd.args(["eval", "--config"])
+        .arg(config)
+        .arg("--lock")
+        .arg(lock)
+        .args(["--frozen-lockfile=true", "--ext=js"])
         .arg(script)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -93,8 +81,11 @@ impl DenoSubprocess {
     /// injected. Returns an error if Deno is not installed or cannot be started.
     pub fn spawn() -> Result<Self, LyknError> {
         let script = build_evaluator_script();
-        let project_json = find_project_json();
-        let mut child = build_deno_command(&script, project_json.as_deref())
+        let materialized = super::embedded::materialize_packages()
+            .map_err(LyknError::Io)?
+            .canonicalize()
+            .map_err(LyknError::Io)?;
+        let mut child = build_deno_command(&script, &materialized)
             .spawn()
             .map_err(map_spawn_error)?;
 
@@ -509,21 +500,25 @@ mod tests {
     }
 
     #[test]
-    fn test_build_deno_command_without_config() {
-        let cmd = build_deno_command("console.log(1)", None);
-        let prog = cmd.get_program();
-        assert_eq!(prog, "deno");
+    fn test_build_deno_command_uses_owned_config_and_lock() {
+        let materialized = PathBuf::from("/tmp/lykn macros [unit] @#%/δ");
+        let config = materialized.join("packages/lang/deno.json");
+        let lock = materialized.join("packages/lang/deno.lock");
+        let cmd = build_deno_command("console.log(1)", &materialized);
+        assert_eq!(cmd.get_program(), "deno");
+        assert_eq!(cmd.get_current_dir(), Some(materialized.as_path()));
         let args: Vec<_> = cmd.get_args().collect();
-        assert!(args.contains(&std::ffi::OsStr::new("eval")));
-        assert!(!args.contains(&std::ffi::OsStr::new("--config")));
-    }
-
-    #[test]
-    fn test_build_deno_command_with_config() {
-        let pj = PathBuf::from("/tmp/test-project.json");
-        let cmd = build_deno_command("console.log(1)", Some(&pj));
-        let args: Vec<_> = cmd.get_args().collect();
-        assert!(args.contains(&std::ffi::OsStr::new("--config")));
+        let expected_args = vec![
+            std::ffi::OsStr::new("eval"),
+            std::ffi::OsStr::new("--config"),
+            config.as_os_str(),
+            std::ffi::OsStr::new("--lock"),
+            lock.as_os_str(),
+            std::ffi::OsStr::new("--frozen-lockfile=true"),
+            std::ffi::OsStr::new("--ext=js"),
+            std::ffi::OsStr::new("console.log(1)"),
+        ];
+        assert_eq!(args, expected_args);
     }
 
     #[test]
