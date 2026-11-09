@@ -16,6 +16,14 @@ test-only `3f3c036d` before any launch, using the actual original
 success oracle and existing SExpr shape/accessor. Normal refinement
 05/5. NE-C14 source and gates remain pending.
 
+The expected old NE-C14 roles and exact native F3 failed on
+`2ab84088` with unchanged old production. Public F3 passed. A separately
+pinned native replay retained the same failure. First production
+`e0a21643` has the intended occurrence representation. [Iteration 08](cc-prompt-iteration08.md)
+completes its local Rust compile readiness as refinement 06, beyond
+the normal five under standard Autonomous Mode. No source gate has
+run on that first production freeze.
+
 [I1 executable assignment](cc-prompt-iteration01.md) is issued on the
 validated release baseline `d73601a5`. This is a bounded first increment
 and supplies actual conditional branch and direct-transfer controls.
