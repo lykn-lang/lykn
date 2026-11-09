@@ -2,6 +2,10 @@
 
 Opened 2026-11-09 at accepted S01 `e7b44c1`. No S02 observation yet.
 
+Initial candidate `c945bca8` is preserved. [Refinement 01](cc-prompt-iteration01.md)
+records static corrections and the nonconforming Git command. No validation
+ran and no criterion was upgraded.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | HI-01 | Native and public private typed request is actual, lazy and closed to source forgery | Exact identity consumption, stable existing interfaces, directive/no-request checks, full source and generated review | correctness-grade | H05/H06 | open | cc-prompt.md | Eligible modules only |

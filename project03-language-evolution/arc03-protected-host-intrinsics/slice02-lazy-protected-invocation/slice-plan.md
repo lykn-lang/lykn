@@ -9,6 +9,12 @@ depends-on: [slice01-versioned-host-protection]
 
 # S02 — Lazy protected invocation
 
+[Refinement 01](cc-prompt-iteration01.md) follows the exact
+`c945bca8` source freeze. No source gate ran at that revision.
+It preserves the disclosed commit-command deviation and assigns the
+known local implementation gaps and original fixture completion.
+Normal refinement 01 of 5 is assigned. HI-05 stays held.
+
 ## Authority and actual baseline — 2026-11-09
 
 The Operator approved S02 implementation and independent validation in
