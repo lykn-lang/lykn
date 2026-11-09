@@ -9,6 +9,16 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Authorized W8 gate continuation
+
+Operator approves [iteration04](cc-prompt-iteration04.md) from the stopped
+planning record at `f1719d2` and frozen prerequisite `17d7018`. Same
+Luna6 High CC and Sol6.1 High CDC in Autonomous Mode with the same stop
+rule. This continues refinement 03 of 5. Before each validation invocation,
+CDC must read the exact prospective named-file checks and durable launch
+receipt, then explicitly release that invocation. The prior red remains
+preserved and production still follows the original gated endpoint.
+
 ## Latest stop — W8 prerequisite launch evidence
 
 The exact tests-only `17d7018` prerequisite reproduced two expected

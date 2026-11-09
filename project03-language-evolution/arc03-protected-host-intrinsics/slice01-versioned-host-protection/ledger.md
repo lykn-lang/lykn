@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+Operator authorizes the [prospective replay continuation](cc-prompt-iteration04.md)
+at frozen `17d7018`. Source refinement remains 03 of 5. Every validation
+command requires its own CDC prelaunch release. All HC rows remain open.
+
 W8 prerequisite stopped before production at `17d7018`. The focused
 raw result was 7 passes and 2 expected failures, with incomplete
 prospective launch evidence.
