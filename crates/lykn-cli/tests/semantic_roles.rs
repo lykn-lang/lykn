@@ -166,6 +166,8 @@ fn run_positive(case: &Case) {
     let source_path = fixture_path(case.name);
     let source = fs::read(&source_path).expect("read frozen semantic-role source");
     let temp = TempDir::new().expect("create semantic-role output directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated semantic-role XDG cache");
     let output_path = temp.path().join(format!("{}.js", case.name));
     let check = execute_recorded(
         &format!("native-{}-check", case.name),
@@ -173,6 +175,7 @@ fn run_positive(case: &Case) {
         &source,
         Command::new(env!("CARGO_BIN_EXE_lykn"))
             .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
             .arg("check")
             .arg(&source_path),
     );
@@ -182,6 +185,7 @@ fn run_positive(case: &Case) {
         &source,
         Command::new(env!("CARGO_BIN_EXE_lykn"))
             .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
             .arg("compile")
             .arg(&source_path)
             .arg("-o")
