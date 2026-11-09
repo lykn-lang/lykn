@@ -109,13 +109,7 @@ fn scope_names(forms: &[SExpr], module: bool) -> HashSet<String> {
             if let Some(pattern) = form.as_list().and_then(|values| values.get(1)) {
                 kernel_pattern_names(pattern, &mut names);
             }
-        } else if raw_head == "function" {
-            if let Some(name) = form.as_list().and_then(|values| values.get(1))
-                && name.as_atom().is_some()
-            {
-                kernel_pattern_names(name, &mut names);
-            }
-        } else if raw_head == "function*" {
+        } else if matches!(raw_head, "function" | "function*") {
             if let Some(name) = form.as_list().and_then(|values| values.get(1))
                 && name.as_atom().is_some()
             {
@@ -248,10 +242,14 @@ fn kernel_pattern_names(pattern: &SExpr, names: &mut HashSet<String>) {
         }
         "object" => {
             for member in args {
-                if member.as_list()
-                    .and_then(|values| values.first())
-                    .and_then(SExpr::as_atom) == Some("spread")
-                {
+                let Some(values) = member.as_list() else {
+                    kernel_pattern_names(member, names);
+                    continue;
+                };
+                if values.first().and_then(SExpr::as_atom) == Some("spread") {
+                    if let Some(atom) = values.get(1).and_then(SExpr::as_atom) {
+                        add_atom(atom, names);
+                    }
                     continue;
                 }
                 kernel_pattern_names(member, names);
@@ -897,6 +895,7 @@ mod tests {
             "(function f ((default Reflect 0)) (++ Reflect))",
             "(function f ((rest Reflect)) (++ Reflect))",
             "(function f ((object (alias field Reflect))) (++ Reflect))",
+            "(function f ((object (spread Reflect))) (++ Reflect))",
         ] {
             assert!(check(source, InputDialect::Kernel).is_empty(), "{source}");
         }
