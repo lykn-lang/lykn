@@ -480,6 +480,63 @@ fn shadow_grouped_bind(
 mod tests {
     use super::*;
     use crate::reader::read;
+    use serde_json::{Value, json};
+
+    fn protocol_forms(value: Value) -> Vec<SExpr> {
+        value
+            .as_array()
+            .expect("typed protocol form array")
+            .iter()
+            .map(|form| crate::expander::env::protocol_json_to_sexpr(form).expect("typed form"))
+            .collect()
+    }
+
+    fn without_resolution(expr: &SExpr) -> SExpr {
+        match expr {
+            atom @ SExpr::Atom { .. } => atom.clone().with_name_res(NameRes::Unresolved),
+            SExpr::List { values, span } => SExpr::List {
+                values: values.iter().map(without_resolution).collect(),
+                span: *span,
+            },
+            SExpr::Cons { car, cdr, span } => SExpr::Cons {
+                car: Box::new(without_resolution(car)),
+                cdr: Box::new(without_resolution(cdr)),
+                span: *span,
+            },
+            other => other.clone(),
+        }
+    }
+
+    fn protocol_tags(forms: &[SExpr]) -> Vec<(String, NameRes)> {
+        let resolved = resolve(forms);
+        assert_eq!(
+            resolved.iter().map(without_resolution).collect::<Vec<_>>(),
+            forms,
+            "resolution preserves protocol structure and spans"
+        );
+        fn spans_are_default(expr: &SExpr) -> bool {
+            match expr {
+                SExpr::Atom { span, .. }
+                | SExpr::Keyword { span, .. }
+                | SExpr::String { span, .. }
+                | SExpr::Number { span, .. }
+                | SExpr::Bool { span, .. }
+                | SExpr::Null { span } => *span == Span::default(),
+                SExpr::List { values, span } => {
+                    *span == Span::default() && values.iter().all(spans_are_default)
+                }
+                SExpr::Cons { car, cdr, span } => {
+                    *span == Span::default() && spans_are_default(car) && spans_are_default(cdr)
+                }
+            }
+        }
+        assert!(forms.iter().all(spans_are_default));
+        let mut out = Vec::new();
+        for form in &resolved {
+            collect(form, &mut out);
+        }
+        out
+    }
 
     /// Resolve source and return `(name, NameRes)` for every atom, in a
     /// pre-order walk — so a test can assert the tag at each occurrence.
@@ -663,6 +720,101 @@ mod tests {
             scope_plan(&ordinary[0], &["if".to_string()]),
             ScopePlan::Sequence
         ));
+    }
+
+    #[test]
+    fn same_span_bind_name_does_not_capture_initializer_form_head() {
+        let forms = protocol_forms(json!([
+            {"type":"list","values":[
+                {"type":"atom","value":"bind"},
+                {"type":"atom","value":"match"},
+                {"type":"list","values":[
+                    {"type":"atom","value":"match"},
+                    {"type":"number","value":1},
+                    {"type":"list","values":[
+                        {"type":"atom","value":"_"},
+                        {"type":"number","value":3}
+                    ]}
+                ]}
+            ]},
+            {"type":"list","values":[
+                {"type":"atom","value":"match"},
+                {"type":"number","value":7}
+            ]}
+        ]));
+
+        assert_eq!(
+            protocol_tags(&forms),
+            vec![
+                ("bind".into(), NameRes::Unresolved),
+                ("match".into(), NameRes::BindingDef),
+                ("match".into(), NameRes::Unresolved),
+                ("_".into(), NameRes::Unresolved),
+                ("match".into(), NameRes::BindingRef),
+            ]
+        );
+    }
+
+    #[test]
+    fn same_span_last_typed_args_atom_is_the_param_occurrence() {
+        let forms = protocol_forms(json!([
+            {"type":"list","values":[
+                {"type":"atom","value":"func"},
+                {"type":"atom","value":"run"},
+                {"type":"keyword","value":"args"},
+                {"type":"list","values":[
+                    {"type":"keyword","value":"any"},
+                    {"type":"atom","value":"ignored"}
+                ]},
+                {"type":"keyword","value":"args"},
+                {"type":"list","values":[
+                    {"type":"keyword","value":"any"},
+                    {"type":"atom","value":"match"}
+                ]},
+                {"type":"keyword","value":"body"},
+                {"type":"list","values":[
+                    {"type":"atom","value":"match"},
+                    {"type":"number","value":9}
+                ]}
+            ]}
+        ]));
+
+        assert_eq!(
+            bindings_introduced(&forms[0]),
+            vec![
+                BindingSite {
+                    name: "run".into(),
+                    kind: BindingKind::Bind,
+                    span: Span::default(),
+                },
+                BindingSite {
+                    name: "match".into(),
+                    kind: BindingKind::Param,
+                    span: Span::default(),
+                },
+            ]
+        );
+        assert_eq!(
+            protocol_tags(&forms),
+            vec![
+                ("func".into(), NameRes::Unresolved),
+                ("run".into(), NameRes::BindingDef),
+                ("ignored".into(), NameRes::Unresolved),
+                ("match".into(), NameRes::BindingDef),
+                ("match".into(), NameRes::BindingRef),
+            ]
+        );
+
+        let failed = protocol_forms(json!([{"type":"list","values":[
+            {"type":"atom","value":"func"},
+            {"type":"atom","value":"broken"},
+            {"type":"keyword","value":"args"},
+            {"type":"list","values":[
+                {"type":"keyword","value":"any"},
+                {"type":"atom","value":"rejected"}
+            ]}
+        ]}]));
+        assert!(bindings_introduced(&failed[0]).is_empty());
     }
 
     #[test]

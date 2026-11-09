@@ -39,6 +39,10 @@ const FIXTURES: &[Case] = &[
         name: "if-direct-transfers-literal",
         expected: b"[7,9,[0,2],4]\n",
     },
+    Case {
+        name: "if-direct-transfers",
+        expected: b"[7,9,[0,2,901],4]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -285,6 +289,11 @@ fn if_declaration_is_emitted_inside_a_branch_block() {
 #[test]
 fn if_direct_transfers_keep_source_targets() {
     run_positive(&FIXTURES[6]);
+}
+
+#[test]
+fn if_direct_transfers_keep_macro_introduced_function_targets() {
+    run_positive(&FIXTURES[7]);
 }
 
 #[test]
