@@ -4,7 +4,7 @@
 //! level. It lazily prepends indentation only when the first write after a
 //! newline occurs.
 
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 /// A buffer that builds indented JavaScript source text.
 pub struct JsWriter {
@@ -57,10 +57,6 @@ impl JsWriter {
 
     pub(crate) fn all_invocations_consumed(&self) -> bool {
         self.invocations.values().all(|consumed| *consumed)
-    }
-
-    pub(crate) fn invocation_helper_name(&self) -> &str {
-        &self.invocation_helper_name
     }
 
     pub(crate) fn write_invocation_helper_name(&mut self) {
