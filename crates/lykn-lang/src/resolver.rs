@@ -592,6 +592,44 @@ mod tests {
     }
 
     #[test]
+    fn conditional_arm_declarations_do_not_shadow_other_arms_or_following_forms() {
+        let source = "(if true (bind pick 1) (pick 987))\n(pick 987)";
+        let (alternate, alternate_tag) = call_head_tag_with_tag(source, "pick", 0);
+        assert_eq!(
+            (alternate.as_str(), alternate_tag),
+            ("pick", NameRes::Unresolved)
+        );
+        let (name, following_tag) = last_head(source);
+        assert_eq!(
+            (name.as_str(), following_tag),
+            ("pick", NameRes::Unresolved)
+        );
+    }
+
+    fn call_head_tag_with_tag(src: &str, name: &str, occurrence: usize) -> (String, NameRes) {
+        fn find(e: &SExpr, name: &str, out: &mut Vec<(String, NameRes)>) {
+            if let SExpr::List { values, .. } = e {
+                if let (Some(a @ SExpr::Atom { .. }), Some(SExpr::Number { value: 987.0, .. })) =
+                    (values.first(), values.get(1))
+                    && a.as_atom() == Some(name)
+                {
+                    out.push((name.to_string(), a.name_res()));
+                }
+                for v in values {
+                    find(v, name, out);
+                }
+            }
+        }
+        let forms = read(src).expect("parse");
+        let resolved = resolve(&forms);
+        let mut out = Vec::new();
+        for form in &resolved {
+            find(form, name, &mut out);
+        }
+        out.into_iter().nth(occurrence).expect("matching call")
+    }
+
+    #[test]
     fn loop_body_reference_is_bindingref() {
         assert_eq!(
             call_head_tag("(for-of array #a(1) (array 987))", "array"),

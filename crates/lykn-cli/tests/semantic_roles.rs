@@ -27,6 +27,18 @@ const FIXTURES: &[Case] = &[
         name: "boundaries",
         expected: b"[4,6,[2]]\n",
     },
+    Case {
+        name: "if-arm-scope",
+        expected: b"[101,14,15]\n",
+    },
+    Case {
+        name: "if-declaration",
+        expected: b"",
+    },
+    Case {
+        name: "if-direct-transfers",
+        expected: b"[7,9,[0,2],4]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -258,6 +270,21 @@ fn match_consumes_value_tail_after_statement_prefix() {
 #[test]
 fn boundaries_preserve_bound_calls_and_switch_sibling_visibility() {
     run_positive(&FIXTURES[3]);
+}
+
+#[test]
+fn if_arm_scope_and_macro_expansion_are_preserved() {
+    run_positive(&FIXTURES[4]);
+}
+
+#[test]
+fn if_declaration_is_emitted_inside_a_branch_block() {
+    run_positive(&FIXTURES[5]);
+}
+
+#[test]
+fn if_direct_transfers_keep_source_targets() {
+    run_positive(&FIXTURES[6]);
 }
 
 #[test]

@@ -6,6 +6,9 @@ const CASES = [
   { name: "do-while", expected: "[100,21,101,22]\n" },
   { name: "match", expected: "[[7,10],[\"guard\",\"fallback\"]]\n" },
   { name: "boundaries", expected: "[4,6,[2]]\n" },
+  { name: "if-arm-scope", expected: "[101,14,15]\n" },
+  { name: "if-declaration", expected: "" },
+  { name: "if-direct-transfers", expected: "[7,9,[0,2],4]\n" },
 ];
 
 Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", async (t) => {
