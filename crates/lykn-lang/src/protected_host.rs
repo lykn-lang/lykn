@@ -139,7 +139,7 @@ fn scope_names(forms: &[SExpr], module: bool) -> HashSet<String> {
     names
 }
 
-pub(crate) fn invocation_unavailable_for_reflect(forms: &[SExpr]) -> bool {
+pub(crate) fn module_binds_reflect(forms: &[SExpr]) -> bool {
     let mut names = scope_names(forms, true);
     fn add_decl(candidate: Option<&SExpr>, names: &mut HashSet<String>) {
         let Some(form) = candidate else { return };

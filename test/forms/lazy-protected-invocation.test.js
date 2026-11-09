@@ -8,6 +8,8 @@ import {
 } from "../../packages/lang/host-invocation.js";
 
 const FIXTURES = "test/fixtures/lazy-protected-invocation/";
+const INLINE_APPLY_MODULE = "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D";
+const INLINE_APPLY_SOURCE = "export function apply(fn,receiver,argv){return Reflect.apply(fn,receiver,argv)}";
 
 function fixture(name) {
   return read(Deno.readTextFileSync(`${FIXTURES}${name}`));
@@ -27,10 +29,14 @@ function findSavedCall(nodes) {
 }
 
 function compileProvider(requested) {
-  const forms = fixture("provider.lisp");
-  if (!requested) return compile(forms);
+  if (!requested) return compile(fixture("provider.lisp"));
+  return compileRequestedFixture("provider.lisp");
+}
+
+function compileRequestedFixture(name) {
+  const forms = fixture(name);
   const anchor = findSavedCall(forms);
-  if (!anchor) throw new Error("shared provider fixture lost its exact saved call node");
+  if (!anchor) throw new Error(`${name} lost its exact saved call node`);
   const request = hostInvocationRequest(newHostInvocationId(), anchor);
   return compileWithHostInvocations(forms, compile, [request]);
 }
@@ -136,20 +142,40 @@ Deno.test("lazy protected invocation validates plans and recovers after rejectio
 });
 
 Deno.test("lazy protected invocation checks source module binding roles", () => {
-  const unavailableSources = [
-    '(import "./remote.js" ((alias remote Reflect))) (saved receiver argv)',
-    '(export (function Reflect () (return 1))) (saved receiver argv)',
-    '(export default (function Reflect () (return 1))) (saved receiver argv)',
-    '(export (async (function Reflect () (return 1)))) (saved receiver argv)',
-    '(block (var Reflect local)) (saved receiver argv)',
+  assertEquals(decodeURIComponent(INLINE_APPLY_MODULE.slice("data:text/javascript,".length)),
+    INLINE_APPLY_SOURCE);
+  const moduleReflectSources = [
+    '(const Reflect! local) (saved receiver argv)',
+    '(import "./remote.js" ((alias remote Reflect!))) (saved receiver argv)',
+    '(export (function Reflect! () (return 1))) (saved receiver argv)',
+    '(export default (function Reflect! () (return 1))) (saved receiver argv)',
+    '(export (async (function Reflect! () (return 1)))) (saved receiver argv)',
+    '(block (var Reflect! local)) (saved receiver argv)',
   ];
-  for (const source of unavailableSources) {
+  for (const source of moduleReflectSources) {
     const forms = read(source);
     const anchor = findSavedCall(forms);
-    assertThrows(() => compileWithHostInvocations(forms, compile,
-      [hostInvocationRequest(newHostInvocationId(), anchor)]), Error,
-    "module Reflect binding");
+    const normal = compile(forms);
+    assertEquals(normal.includes(INLINE_APPLY_MODULE), false);
+    assertEquals(compileWithHostInvocations(forms, compile, []), normal);
+    const output = compileWithHostInvocations(forms, compile,
+      [hostInvocationRequest(newHostInvocationId(), anchor)]);
+    assertEquals((output.match(/data:text\/javascript,/g) ?? []).length, 1);
+    assertStringIncludes(output, "import { apply as lyknHostReflectApply0 }");
+    assertStringIncludes(output, "lyknHostReflectApply0(saved, receiver, argv);");
+    assertEquals(output.includes("function lyknHostReflectApply0"), false);
+    if (source.startsWith('(import')) {
+      assertEquals(output.indexOf(INLINE_APPLY_MODULE) < output.indexOf('"./remote.js"'), true);
+    }
   }
+  const multiple = read('(const Reflect local) (saved receiver argv) (other target args)');
+  const multipleRequests = multiple.slice(1).map(node =>
+    hostInvocationRequest(newHostInvocationId(), node));
+  const multipleOutput = compileWithHostInvocations(multiple, compile, multipleRequests);
+  assertEquals((multipleOutput.match(/data:text\/javascript,/g) ?? []).length, 1);
+  assertStringIncludes(multipleOutput, "lyknHostReflectApply0(saved, receiver, argv);");
+  assertStringIncludes(multipleOutput, "lyknHostReflectApply0(other, target, args);");
+
   const reexport = read('(export "./remote.js" (names Reflect)) (saved receiver argv)');
   assertEquals(compileWithHostInvocations(reexport, compile,
     [hostInvocationRequest(newHostInvocationId(), findSavedCall(reexport))])
@@ -158,6 +184,11 @@ Deno.test("lazy protected invocation checks source module binding roles", () => 
   const nested = read('(function local (Reflect) (saved receiver argv))');
   assertEquals(compileWithHostInvocations(nested, compile,
     [hostInvocationRequest(newHostInvocationId(), findSavedCall(nested))])
+    .includes("function lyknHostReflectApply0"), true);
+
+  const globalThisOnly = read('(const globalThis local) (saved receiver argv)');
+  assertEquals(compileWithHostInvocations(globalThisOnly, compile,
+    [hostInvocationRequest(newHostInvocationId(), findSavedCall(globalThisOnly))])
     .includes("function lyknHostReflectApply0"), true);
 });
 
@@ -201,6 +232,43 @@ Deno.test("lazy protected invocation materializes all four public proof inputs",
   assertStringIncludes(Deno.readTextFileSync(`${liveRoot}/provider.js`), "lyknHostReflectApply2");
   assertStringIncludes(Deno.readTextFileSync(`${liveRoot}/entry.js`), "invoke(");
   assertStringIncludes(Deno.readTextFileSync(`${liveRoot}/entry.js`), "function* () {");
+
+  // A module Reflect binding selects one inline import only for a request.
+  const fallbackProvider = compileRequestedFixture("fallback-provider.lisp");
+  assertEquals((fallbackProvider.match(/data:text\/javascript,/g) ?? []).length, 1);
+  assertStringIncludes(fallbackProvider, 'const Reflect = "provider";');
+  assertStringIncludes(fallbackProvider, "const marker = Reflect;");
+  assertStringIncludes(fallbackProvider, "import { apply as lyknHostReflectApply2 }");
+  assertStringIncludes(fallbackProvider, "lyknHostReflectApply2(saved, receiver, argv)");
+  assertEquals(fallbackProvider.includes("function lyknHostReflectApply2"), false);
+  assertEquals(fallbackProvider.indexOf('"use strict";') <
+    fallbackProvider.indexOf("import { apply as"), true);
+  const fallbackSource = fixture("fallback-provider.lisp");
+  const fallbackOrdinary = compile(fallbackSource);
+  assertEquals(fallbackOrdinary.includes(INLINE_APPLY_MODULE), false);
+  assertEquals(compileWithHostInvocations(fallbackSource, compile, []), fallbackOrdinary);
+
+  const fallbackShakenRoot = caseRoot("fallback-shaken", evidenceRoot);
+  Deno.writeTextFileSync(`${fallbackShakenRoot}/provider.js`, fallbackProvider);
+  Deno.writeTextFileSync(`${fallbackShakenRoot}/entry.js`, compileFixture("shaken-entry.lisp"));
+
+  const fallbackRetainedRoot = caseRoot("fallback-retained", evidenceRoot);
+  Deno.writeTextFileSync(`${fallbackRetainedRoot}/provider.js`, fallbackProvider);
+  Deno.writeTextFileSync(`${fallbackRetainedRoot}/observer.js`, compileFixture("retained-observer.lisp"));
+
+  const fallbackLiveRoot = caseRoot("fallback-live", evidenceRoot);
+  Deno.writeTextFileSync(`${fallbackLiveRoot}/provider.js`, fallbackProvider);
+  Deno.writeTextFileSync(`${fallbackLiveRoot}/entry.js`, compileFixture("live-entry.lisp"));
+
+  const fallbackEvalRoot = caseRoot("fallback-eval", evidenceRoot);
+  const fallbackEval = compileRequestedFixture("fallback-eval.lisp");
+  assertEquals((fallbackEval.match(/data:text\/javascript,/g) ?? []).length, 1);
+  assertStringIncludes(fallbackEval, 'import { current as Reflect, advance } from "./state.js";');
+  assertStringIncludes(fallbackEval, "lyknHostReflectApply0(saved, receiver, argv)");
+  assertEquals(fallbackEval.indexOf(INLINE_APPLY_MODULE) <
+    fallbackEval.indexOf('"./state.js"'), true);
+  Deno.writeTextFileSync(`${fallbackEvalRoot}/eval.js`, fallbackEval);
+  Deno.writeTextFileSync(`${fallbackEvalRoot}/state.js`, compileFixture("fallback-state.lisp"));
   } finally {
     if (!requestedEvidenceRoot) Deno.removeSync(evidenceRoot, { recursive: true });
   }

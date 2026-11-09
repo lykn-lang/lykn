@@ -2,6 +2,7 @@
 // This module is intentionally imported by its internal path only.
 
 const REFLECT_APPLY_ID = Symbol('Reflect.apply');
+const INLINE_APPLY_MODULE = 'data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D';
 const REQUEST_BRAND = Symbol('lykn host invocation request');
 const PROVISIONAL = new WeakMap();
 let active = null;
@@ -77,9 +78,7 @@ export function finalizeHostInvocations(program, exprs) {
     if (node.type === 'Identifier') names.add(node.name);
     if (node.type === 'CallExpression' && PROVISIONAL.has(node)) calls.push(node);
   });
-  if (hasModuleReflectBinding(program)) {
-    throw new Error('lazy protected invocation is unavailable with a module Reflect binding');
-  }
+  const needsInlineImport = hasModuleReflectBinding(program);
   if (calls.length !== active.requests.size) {
     throw new Error('orphaned or duplicate provisional host invocation call');
   }
@@ -92,39 +91,49 @@ export function finalizeHostInvocations(program, exprs) {
     call.callee = { type: 'Identifier', name: helperName };
     PROVISIONAL.delete(call);
   }
-  const helper = {
-    type: 'FunctionDeclaration',
-    id: { type: 'Identifier', name: helperName },
-    params: [
-      { type: 'Identifier', name: 'fn' },
-      { type: 'Identifier', name: 'receiver' },
-      { type: 'Identifier', name: 'argv' },
-    ],
-    body: {
-      type: 'BlockStatement',
-      body: [{
-        type: 'ReturnStatement',
-        argument: {
-          type: 'CallExpression',
-          callee: {
-            type: 'MemberExpression',
-            object: { type: 'Identifier', name: 'Reflect' },
-            property: { type: 'Identifier', name: 'apply' },
-            computed: false,
+  const support = needsInlineImport
+    ? {
+      type: 'ImportDeclaration',
+      specifiers: [{
+        type: 'ImportSpecifier',
+        imported: { type: 'Identifier', name: 'apply' },
+        local: { type: 'Identifier', name: helperName },
+      }],
+      source: { type: 'Literal', value: INLINE_APPLY_MODULE },
+    }
+    : {
+      type: 'FunctionDeclaration',
+      id: { type: 'Identifier', name: helperName },
+      params: [
+        { type: 'Identifier', name: 'fn' },
+        { type: 'Identifier', name: 'receiver' },
+        { type: 'Identifier', name: 'argv' },
+      ],
+      body: {
+        type: 'BlockStatement',
+        body: [{
+          type: 'ReturnStatement',
+          argument: {
+            type: 'CallExpression',
+            callee: {
+              type: 'MemberExpression',
+              object: { type: 'Identifier', name: 'Reflect' },
+              property: { type: 'Identifier', name: 'apply' },
+              computed: false,
+              optional: false,
+            },
+            arguments: [
+              { type: 'Identifier', name: 'fn' },
+              { type: 'Identifier', name: 'receiver' },
+              { type: 'Identifier', name: 'argv' },
+            ],
             optional: false,
           },
-          arguments: [
-            { type: 'Identifier', name: 'fn' },
-            { type: 'Identifier', name: 'receiver' },
-            { type: 'Identifier', name: 'argv' },
-          ],
-          optional: false,
-        },
-      }],
-    },
-    generator: false,
-    async: false,
-  };
+        }],
+      },
+      generator: false,
+      async: false,
+    };
   let directiveEnd = 0;
   while (directiveEnd < program.body.length &&
          program.body[directiveEnd].type === 'ExpressionStatement' &&
@@ -132,7 +141,7 @@ export function finalizeHostInvocations(program, exprs) {
          typeof program.body[directiveEnd].expression.value === 'string') {
     directiveEnd++;
   }
-  program.body.splice(directiveEnd, 0, helper);
+  program.body.splice(directiveEnd, 0, support);
   active.finalized = true;
   return program;
 }

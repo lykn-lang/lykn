@@ -59,6 +59,7 @@ pub(crate) fn emit_module_with_invocations(
     let invocation = host_invocation::prepare(forms, requests)?;
     let helper_name = invocation.helper_name;
     let slot = invocation.slot;
+    let support = invocation.support;
     let mut w = JsWriter::with_invocations(
         invocation.request_names,
         helper_name.clone().unwrap_or_default(),
@@ -70,11 +71,25 @@ pub(crate) fn emit_module_with_invocations(
     for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
     }
-    if let Some(name) = helper_name.as_deref() {
-        w.write(&format!(
-            "function {name}(fn, receiver, argv) {{ return {slot}(fn, receiver, argv); }}"
-        ));
-        w.newline();
+    match (helper_name.as_deref(), support) {
+        (Some(name), Some(strategy)) => {
+            match strategy {
+                host_invocation::SupportStrategy::LocalFunction => w.write(&format!(
+                    "function {name}(fn, receiver, argv) {{ return {slot}(fn, receiver, argv); }}"
+                )),
+                host_invocation::SupportStrategy::InlineModuleImport => w.write(&format!(
+                    "import {{ apply as {name} }} from \"{}\";",
+                    host_invocation::INLINE_APPLY_MODULE
+                )),
+            }
+            w.newline();
+        }
+        (None, None) => {}
+        _ => {
+            return Err(host_invocation::invalid_request(
+                "invocation support strategy did not match the request plan",
+            ));
+        }
     }
     for form in &forms[directives..] {
         emit_statement(&mut w, form)?;
@@ -228,7 +243,7 @@ mod tests {
     }
 
     #[test]
-    fn private_host_invocation_declines_module_reflect_binding() {
+    fn private_host_invocation_uses_inline_module_for_module_reflect_binding() {
         let call = list(vec![atom("saved"), atom("receiver"), atom("argv")]);
         let forms = vec![
             list(vec![atom("const"), atom("Reflect"), atom("local")]),
@@ -238,8 +253,15 @@ mod tests {
             id: crate::protected_host::IntrinsicId::ReflectApply,
             anchor: &forms[1],
         };
-        let error = emit_module_with_invocations(&forms, &[request]).unwrap_err();
-        assert!(error.to_string().contains("module Reflect binding"));
+        let js = emit_module_with_invocations(&forms, &[request]).unwrap();
+        let import = format!(
+            "import {{ apply as lyknHostReflectApply0 }} from \"{}\";",
+            host_invocation::INLINE_APPLY_MODULE
+        );
+        assert_eq!(js.matches(host_invocation::INLINE_APPLY_MODULE).count(), 1);
+        assert!(js.contains(&import));
+        assert!(js.contains("lyknHostReflectApply0(saved, receiver, argv);"));
+        assert!(!js.contains("function lyknHostReflectApply0"));
     }
 
     #[test]
@@ -293,30 +315,89 @@ mod tests {
 
     #[test]
     fn private_host_invocation_uses_module_binding_roles() {
-        let rejects = [
-            "(const Reflect local)",
-            "(import \"./remote.js\" ((alias apply Reflect)))",
-            "(export (function Reflect () (return 1)))",
-            "(export default (function Reflect () (return 1)))",
-            "(export (async (function Reflect () (return 1))))",
-            "(block (var Reflect 1))",
+        let module_bindings = [
+            "(const Reflect! local) (saved receiver argv)",
+            "(import \"./remote.js\" ((alias apply Reflect!))) (saved receiver argv)",
+            "(export (function Reflect! () (return 1))) (saved receiver argv)",
+            "(export default (function Reflect! () (return 1))) (saved receiver argv)",
+            "(export (async (function Reflect! () (return 1)))) (saved receiver argv)",
+            "(block (var Reflect! 1)) (saved receiver argv)",
         ];
-        for source in rejects {
+        for source in module_bindings {
+            let forms = fixture_forms(source);
             assert!(
-                crate::protected_host::invocation_unavailable_for_reflect(&fixture_forms(source)),
+                crate::protected_host::module_binds_reflect(&forms),
                 "expected module Reflect binding in {source}"
             );
-        }
-        let allowed = [
-            "(export \"./remote.js\" (names Reflect))",
-            "(function local (Reflect) (saved receiver argv))",
-        ];
-        for source in allowed {
-            assert!(
-                !crate::protected_host::invocation_unavailable_for_reflect(&fixture_forms(source)),
-                "external or nested name must not bind module Reflect: {source}"
+            let ordinary = emit_module_js(&forms).unwrap();
+            assert!(!ordinary.contains(host_invocation::INLINE_APPLY_MODULE));
+            assert_eq!(ordinary, emit_module_with_invocations(&forms, &[]).unwrap());
+            let anchor = forms.iter().find_map(find_saved_call).unwrap();
+            let request = host_invocation::InvocationRequest {
+                id: crate::protected_host::IntrinsicId::ReflectApply,
+                anchor,
+            };
+            let requested = emit_module_with_invocations(&forms, &[request]).unwrap();
+            assert_eq!(
+                requested
+                    .matches(host_invocation::INLINE_APPLY_MODULE)
+                    .count(),
+                1,
+                "expected one inline module import for {source}"
             );
+            assert!(requested.contains("import { apply as lyknHostReflectApply0 }"));
+            assert!(requested.contains("lyknHostReflectApply0(saved, receiver, argv);"));
+            assert!(!requested.contains("function lyknHostReflectApply0"));
+            if source.starts_with("(import") {
+                assert!(
+                    requested
+                        .find(host_invocation::INLINE_APPLY_MODULE)
+                        .unwrap()
+                        < requested.find("./remote.js").unwrap()
+                );
+            }
         }
+
+        let eligible = [
+            "(export \"./remote.js\" (names Reflect)) (saved receiver argv)",
+            "(function local (Reflect) (saved receiver argv))",
+            "(const globalThis local) (saved receiver argv)",
+        ];
+        for source in eligible {
+            let forms = fixture_forms(source);
+            assert!(
+                !crate::protected_host::module_binds_reflect(&forms),
+                "external, nested or globalThis-only name must not bind module Reflect: {source}"
+            );
+            let anchor = forms.iter().find_map(find_saved_call).unwrap();
+            let request = host_invocation::InvocationRequest {
+                id: crate::protected_host::IntrinsicId::ReflectApply,
+                anchor,
+            };
+            let requested = emit_module_with_invocations(&forms, &[request]).unwrap();
+            assert!(requested.contains("function lyknHostReflectApply0"));
+            assert!(!requested.contains(host_invocation::INLINE_APPLY_MODULE));
+        }
+
+        let multiple =
+            fixture_forms("(const Reflect local) (saved receiver argv) (other target args)");
+        let requests = multiple
+            .iter()
+            .skip(1)
+            .map(|anchor| host_invocation::InvocationRequest {
+                id: crate::protected_host::IntrinsicId::ReflectApply,
+                anchor,
+            })
+            .collect::<Vec<_>>();
+        let requested = emit_module_with_invocations(&multiple, &requests).unwrap();
+        assert_eq!(
+            requested
+                .matches(host_invocation::INLINE_APPLY_MODULE)
+                .count(),
+            1
+        );
+        assert!(requested.contains("lyknHostReflectApply0(saved, receiver, argv);"));
+        assert!(requested.contains("lyknHostReflectApply0(other, target, args);"));
     }
 
     fn fixture_forms(source: &str) -> Vec<SExpr> {
@@ -386,6 +467,30 @@ mod tests {
         emit_module_with_invocations(&forms, &[request]).unwrap()
     }
 
+    fn compile_fallback_provider_fixture() -> String {
+        let forms = fixture_forms(include_str!(
+            "../../../../test/fixtures/lazy-protected-invocation/fallback-provider.lisp"
+        ));
+        let anchor = forms.iter().find_map(find_saved_call).unwrap();
+        let request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor,
+        };
+        emit_module_with_invocations(&forms, &[request]).unwrap()
+    }
+
+    fn compile_fallback_eval_fixture() -> String {
+        let forms = fixture_forms(include_str!(
+            "../../../../test/fixtures/lazy-protected-invocation/fallback-eval.lisp"
+        ));
+        let anchor = forms.iter().find_map(find_saved_call).unwrap();
+        let request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor,
+        };
+        emit_module_with_invocations(&forms, &[request]).unwrap()
+    }
+
     fn write_fixture(root: &std::path::Path, filename: &str, contents: &str) {
         fs::create_dir_all(root).unwrap();
         fs::write(root.join(filename), contents).unwrap();
@@ -430,5 +535,86 @@ mod tests {
         let collision = compile_collision_fixture();
         assert!(collision.contains("function lyknHostReflectApply2(fn, receiver, argv)"));
         assert!(collision.contains("lyknHostReflectApply1"));
+
+        let fallback_provider = compile_fallback_provider_fixture();
+        assert_eq!(
+            fallback_provider
+                .matches(host_invocation::INLINE_APPLY_MODULE)
+                .count(),
+            1
+        );
+        assert!(fallback_provider.contains("const Reflect = \"provider\";"));
+        assert!(fallback_provider.contains("const marker = Reflect;"));
+        assert!(fallback_provider.contains("import { apply as lyknHostReflectApply2 }"));
+        assert!(fallback_provider.contains("lyknHostReflectApply2(saved, receiver, argv)"));
+        assert!(!fallback_provider.contains("function lyknHostReflectApply2"));
+        assert!(
+            fallback_provider.find("\"use strict\";").unwrap()
+                < fallback_provider.find("import { apply as").unwrap()
+        );
+
+        let fallback_eval = compile_fallback_eval_fixture();
+        assert_eq!(
+            fallback_eval
+                .matches(host_invocation::INLINE_APPLY_MODULE)
+                .count(),
+            1
+        );
+        assert!(
+            fallback_eval.contains("import { current as Reflect, advance } from \"./state.js\";")
+        );
+        assert!(fallback_eval.contains("import { apply as lyknHostReflectApply0 }"));
+        assert!(fallback_eval.contains("lyknHostReflectApply0(saved, receiver, argv)"));
+
+        let fallback_root = &root;
+        let shaken_entry =
+            emit_module_js(&fixture_forms(native_fixture_source("shaken-entry"))).unwrap();
+        write_fixture(
+            &fallback_root.join("fallback-shaken"),
+            "provider.js",
+            &fallback_provider,
+        );
+        write_fixture(
+            &fallback_root.join("fallback-shaken"),
+            "entry.js",
+            &shaken_entry,
+        );
+        write_fixture(
+            &fallback_root.join("fallback-retained"),
+            "provider.js",
+            &fallback_provider,
+        );
+        let observer =
+            emit_module_js(&fixture_forms(native_fixture_source("retained-observer"))).unwrap();
+        write_fixture(
+            &fallback_root.join("fallback-retained"),
+            "observer.js",
+            &observer,
+        );
+        write_fixture(
+            &fallback_root.join("fallback-live"),
+            "provider.js",
+            &fallback_provider,
+        );
+        let live_entry =
+            emit_module_js(&fixture_forms(native_fixture_source("live-entry"))).unwrap();
+        write_fixture(
+            &fallback_root.join("fallback-live"),
+            "entry.js",
+            &live_entry,
+        );
+        let state = fixture_forms(include_str!(
+            "../../../../test/fixtures/lazy-protected-invocation/fallback-state.lisp"
+        ));
+        write_fixture(
+            &fallback_root.join("fallback-eval"),
+            "eval.js",
+            &fallback_eval,
+        );
+        write_fixture(
+            &fallback_root.join("fallback-eval"),
+            "state.js",
+            &emit_module_js(&state).unwrap(),
+        );
     }
 }

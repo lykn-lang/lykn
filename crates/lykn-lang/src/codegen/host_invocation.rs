@@ -10,6 +10,14 @@ use crate::error::LyknError;
 use crate::protected_host::IntrinsicId;
 use crate::reader::source_loc::Span;
 
+pub(crate) const INLINE_APPLY_MODULE: &str = "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D";
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum SupportStrategy {
+    LocalFunction,
+    InlineModuleImport,
+}
+
 pub(crate) struct InvocationRequest<'a> {
     pub(crate) id: IntrinsicId,
     pub(crate) anchor: &'a SExpr,
@@ -19,6 +27,7 @@ pub(crate) struct PreparedInvocations {
     pub(crate) helper_name: Option<String>,
     pub(crate) request_names: HashMap<usize, bool>,
     pub(crate) slot: &'static str,
+    pub(crate) support: Option<SupportStrategy>,
 }
 
 pub(crate) fn prepare(
@@ -30,13 +39,14 @@ pub(crate) fn prepare(
             helper_name: None,
             request_names: HashMap::new(),
             slot: IntrinsicId::ReflectApply.slot(),
+            support: None,
         });
     }
-    if crate::protected_host::invocation_unavailable_for_reflect(forms) {
-        return Err(invalid_request(
-            "lazy protected invocation is unavailable with a module Reflect binding",
-        ));
-    }
+    let support = if crate::protected_host::module_binds_reflect(forms) {
+        SupportStrategy::InlineModuleImport
+    } else {
+        SupportStrategy::LocalFunction
+    };
 
     let mut nodes = HashSet::new();
     collect_node_addresses(forms, &mut nodes);
@@ -74,6 +84,7 @@ pub(crate) fn prepare(
         helper_name: Some(helper_name),
         request_names,
         slot: requests[0].id.slot(),
+        support: Some(support),
     })
 }
 
