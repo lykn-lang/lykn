@@ -1,0 +1,47 @@
+{
+  "inputs": {
+    "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>": {
+      "bytes": 79,
+      "imports": [],
+      "format": "esm"
+    },
+    "provider.js": {
+      "bytes": 378,
+      "imports": [
+        {
+          "path": "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>",
+          "kind": "import-statement",
+          "original": "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D"
+        }
+      ],
+      "format": "esm"
+    },
+    "shaken.js": {
+      "bytes": 68,
+      "imports": [
+        {
+          "path": "provider.js",
+          "kind": "import-statement",
+          "original": "./provider.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../bundle/shaken.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "shaken.js",
+      "inputs": {
+        "provider.js": {
+          "bytesInOutput": 50
+        },
+        "shaken.js": {
+          "bytesInOutput": 30
+        }
+      },
+      "bytes": 109
+    }
+  }
+}

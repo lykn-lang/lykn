@@ -1,0 +1,3 @@
+(let current "first")
+(function advance () (= current "second"))
+(export (names current advance))

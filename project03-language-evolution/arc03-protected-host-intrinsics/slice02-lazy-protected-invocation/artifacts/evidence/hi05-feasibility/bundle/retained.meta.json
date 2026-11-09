@@ -1,0 +1,39 @@
+{
+  "inputs": {
+    "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>": {
+      "bytes": 79,
+      "imports": [],
+      "format": "esm"
+    },
+    "provider.js": {
+      "bytes": 378,
+      "imports": [
+        {
+          "path": "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>",
+          "kind": "import-statement",
+          "original": "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../bundle/retained.js": {
+      "imports": [],
+      "exports": [
+        "invoke",
+        "marker"
+      ],
+      "entryPoint": "provider.js",
+      "inputs": {
+        "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>": {
+          "bytesInOutput": 83
+        },
+        "provider.js": {
+          "bytesInOutput": 168
+        }
+      },
+      "bytes": 371
+    }
+  }
+}

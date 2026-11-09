@@ -1,0 +1,8 @@
+(import "./state.js" ((alias current Reflect) advance))
+(import "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D" ((alias apply lyknHostReflectApply0)))
+(const code (get Deno:args 0))
+(console:log (eval code))
+(advance)
+(console:log (eval code))
+(function saved (value) (return (array this:id value)))
+(console:log (JSON:stringify (lyknHostReflectApply0 saved (object (id "receiver")) (array 7))))

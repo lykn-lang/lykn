@@ -2,14 +2,46 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice02-lazy-protected-invocation
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: [slice01-versioned-host-protection]
 ---
 
 # S02 — Lazy protected invocation
 
-## Current disposition — 2026-11-09
+## HI-05 re-entry authority — 2026-11-09
+
+The Operator approved a compiler-generated, feature-local ESM fallback only
+for actual private request plans with a real normalized module-scope Reflect
+binding. Keep the existing default helper, stable private identity/ordering,
+exact empty-plan behavior, and no third-party or ambient runtime. Source stays
+on `codex/lazy-protected-invocation` at accepted bounded baseline `801fcd83`.
+Luna 6 High CC and Sol 6.1 High CDC remain in standard Autonomous Mode.
+Implement and independently verify the fallback, then close S02 and Arc03 if
+their criteria are met. No release integration, push, K or S04 implementation.
+
+Before assignment, CDC will test one fixed inline static data-ESM encoding
+using Lykn-authored specimens and the existing pinned native compiler,
+Deno 2.9.6 and esbuild 0.25.5. Six Lykn compiles, two bundles and three
+runs suffice: unbundled live-import/direct eval, statically used ordinary
+bundle proof without direct eval, and a retained-bundle lookup observer.
+The shaken ordinary entry is the static-use bundle and must retain the
+provider effect and used marker while removing the unused helper/import.
+The retained bundle must expose the invocation and defer host lookup.
+No network/cache expansion, unbounded configuration search or policy changes.
+Unexpected output stops architecture selection for that encoding. Actual
+proof and remaining limits are retained with the assignment; this is neither
+a source product result nor independent verification of a future implementation.
+
+[Iteration 05](cc-prompt-iteration05.md) selects the tested static data ESM
+encoding. After the initial specimen-compile setup corrections, both bundles
+and all three prescribed strict Deno runs passed. The
+[original and corrected feasibility receipts](artifacts/evidence/hi05-feasibility/)
+retain exact input variants. The direct-eval proof is unbundled; current
+pinned esbuild's top-level ESM eval limitation remains explicit. The
+five-pass accounting and prior independent results retain their provenance.
+
+## Prior bounded disposition — 2026-11-09
 
 The [independent review](cdc-verification.md) accepts the eligible-module
 delivery and exact four-case proof at `801fcd83`. It retains the actual

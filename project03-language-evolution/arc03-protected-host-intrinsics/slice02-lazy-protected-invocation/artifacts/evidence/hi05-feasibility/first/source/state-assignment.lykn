@@ -1,0 +1,3 @@
+(kernel:let current "first")
+(kernel:function advance () (kernel:= current "second"))
+(export (names current advance))

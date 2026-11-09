@@ -1,5 +1,9 @@
 # S02 lazy protected invocation ledger
 
+[Iteration 05](cc-prompt-iteration05.md) reopens HI-05 implementation under
+the Operator-approved feature-local ESM fallback. The bounded feasibility
+proof passed on the pinned tools. No candidate acceptance yet.
+
 The [CDC review](cdc-verification.md) independently accepts five bounded
 rows at `801fcd83`. HI-05 remains blocked after a source-only design pass.
 Neither complete S02 nor Arc03 acceptance is claimed.
@@ -27,5 +31,5 @@ ran and no criterion was upgraded.
 | HI-02 | Hygienic reserved identifiers preserve source name behavior | Normalized and free collision, nested Reflect/globalThis, preservation of export/property names | correctness-grade | H05 | done | cdc-verification.md | Module-level shadow has an explicit internal unavailable outcome |
 | HI-03 | Four bounded native esbuild/Deno conditions independently pass on both backends | Actual full input/output and metafiles plus strict runtime, selective lookup observation and meaningful live traces | correctness-grade | H06/PHI-04 | done | cdc-verification.md | Exact finite eligible-module cases |
 | HI-04 | Source and S01 compatibility pass separate independent gates | Accepted S01 ancestor, exact changed paths, mirrors, focused/full Make and citations | correctness-grade | PHI-05 | done | cdc-verification.md | No release mutation |
-| HI-05 | Module-scope Reflect and direct-eval interop contract is resolved for complete S02 | Approved semantic mechanism with source preservation and separate evidence | correctness-grade | PHI-03/S04 I3 | blocked | cdc-verification.md#hi-05-design-disposition | Source-only review, no mechanism selected |
+| HI-05 | Module-scope Reflect and direct-eval interop contract is resolved for complete S02 | Approved semantic mechanism with source preservation and separate evidence | correctness-grade | PHI-03/S04 I3 | open | cc-prompt-iteration05.md | Approved fallback selected after finite feasibility; actual product proof pending |
 | HI-06 | Actual handoff, retrospective, source/API and composition ownership reconcile | Actual CC return, CDC row walk, durable pins and result, explicit remainder | correctness-grade | PHI-06 | done | closing-report.md; cdc-verification.md; cdc-retrospective.md | Bounded handoff; arc closure waits HI-05 |

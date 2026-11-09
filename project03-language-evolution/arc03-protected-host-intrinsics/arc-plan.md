@@ -9,6 +9,15 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+## S02 fallback re-entry — 2026-11-09
+
+The Operator approved a feature-local compiler-generated ESM fallback for
+actual private requests in modules that bind Reflect at module scope.
+[Iteration 05](slice02-lazy-protected-invocation/cc-prompt-iteration05.md)
+uses the tested inline encoding. This changes the no-import condition only
+for that fallback; default/absent output and protected slots are unchanged.
+Final source, composition and independent closure remain pending.
+
 ## S02 eligible-module delivery — 2026-11-09
 
 [Independent S02 review](slice02-lazy-protected-invocation/cdc-verification.md)
@@ -242,6 +251,9 @@ The new normative document and references land with code; audit crosslinks do
 not postpone required source-user guidance or fabricate a book update.
 
 ## Version history
+
+- 2026-11-09 v0.8: Recorded the approved affected-module ESM exception,
+  pinned feasibility and implementation re-entry within S02.
 
 - 2026-11-09 v0.7: Recorded independent eligible-module delivery and exact
   optimizer proof. Preserved HI-05 as an explicit design gate and retained

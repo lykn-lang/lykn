@@ -1,0 +1,4 @@
+3:1: error: 'const' is a kernel-only form; use 'bind' for surface binding, or '(kernel:const ...)' to access the kernel form explicitly
+  suggestion: (kernel:const ...)
+7:1: error: 'function' is a kernel-only form; use 'func', 'fn', or 'lambda' for surface functions, or '(kernel:function ...)' to access the kernel form explicitly
+  suggestion: (kernel:function ...)

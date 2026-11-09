@@ -1,0 +1,7 @@
+(import "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D" ((alias apply lyknHostReflectApply0)))
+(const Reflect "local")
+(console:log "provider")
+(const marker "provider")
+(function invoke (saved receiver argv)
+  (return (array Reflect (lyknHostReflectApply0 saved receiver argv))))
+(export (names marker invoke))
