@@ -1,5 +1,44 @@
 # CDC verification — embedded macro dependency resolution
 
+## Independent local composition acceptance — 2026-11-08
+
+The assigned Luna6 High CC returned clean source/index ownership after
+`git switch codex/protected-host-contract` and the authorized
+`git merge --no-ff --no-edit -F <absolute composition.txt> f2cd813908649d5b58253c75d0eda61b029fc6ff`.
+Both commands exited 0. Git reported the ort strategy and no conflicts.
+An intake readback pluralized the commit title. CC reread the tracked
+message before merge, and the actual Git body matches the singular title
+and both supplied trailers.
+
+Sol6.1 High CDC independently inspected merge
+`8443fdeda07139cdc2c333e03f210ac471454249`, tree
+`4cf3cc9654899e21faecbc5cb3ff5fc5f5fc383b`. The first parent is
+`e2f29597ab677346abc6e17ec3616d4a340b7861` and the second is
+`f2cd813908649d5b58253c75d0eda61b029fc6ff`. Their exact common base is
+`62e9531e6183b3762a9ff326fdc07439db33f31f`. Parent-to-merge deltas contain
+only the opposite parent's contributions. Path-restricted
+`git diff --exit-code` against the respective owners returned 0 for both
+sets. `git diff --no-abbrev --raw --no-renames` from the base independently
+confirmed this exact seven-path union, with result mode `100644` on each.
+
+| Path | Owner | Result blob |
+| --- | --- | --- |
+| `crates/lykn-cli/tests/macro_dependencies.rs` | Prerequisite | `37b3fa8acdc3a287acc66dacb2a23c92caeb3b3e` |
+| `crates/lykn-cli/tests/protected_host.rs` | Arc03 | `35e8409ab42531258597f7f9630e2f6e2925978b` |
+| `crates/lykn-lang/src/expander/deno.rs` | Prerequisite | `7f4e08ad363f7edf15d454a9e7af1a2691683443` |
+| `crates/lykn-lang/src/expander/embedded.rs` | Prerequisite | `b52f42af4aa40bf6941e931657ac41f4c986aa90` |
+| `docs/guides/15-lykn-cli.md` | Prerequisite | `3abf18dd8fa17fa5b338a2490438538409a1ab92` |
+| `skills/lykn/SKILL.md` | Prerequisite | `9dc75cae983f91f710b52c7ca9243daa6bbca6e2` |
+| `test/forms/protected-host.test.js` | Arc03 | `e6f8f87941b0947c7ae52970f223538dba8cef8f` |
+
+The clean task checkout now carries the local composite. The prerequisite
+ref remains at `f2cd8139`, and release remains at `62e9531e`. Acceptance
+covers composition only. The Arc03 pre-policy test files and old raw
+evidence retain their red baseline status. This gate ran no build or test.
+AM-04 still requires explicit Arc03 re-entry. Its next work is the
+separately held native-oracle correction02 and later v1 implementation with
+their own gates. All six HC rows and original budgets retain their status.
+
 ## Local candidate composition assignment — 2026-11-08
 
 Operator “let's do it!” authorizes the exact local composition gate.

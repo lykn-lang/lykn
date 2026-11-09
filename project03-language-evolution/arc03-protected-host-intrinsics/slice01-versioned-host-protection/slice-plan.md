@@ -9,6 +9,17 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Current local composition status — 2026-11-08
+
+Exact macro prerequisite `f2cd8139` and the Arc03 tests-only tip
+`e2f2959` compose at clean `8443fdeda07139cdc2c333e03f210ac471454249`
+on `codex/protected-host-contract`. The
+[independent Git proof](../../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md#independent-local-composition-acceptance--2026-11-08)
+accepts both parents and the exact union. Original red baseline evidence
+and all six HC rows retain their disposition. Source refinement 01 of 5
+is spent. Native-oracle correction02 and v1 source continuation remain
+separate from the local composition authority.
+
 Reviewed design2026-11-08: [actual review/disposition](../../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/artifacts/design-review.md)
 now supplies concrete prerequisite and native-oracle/dist re-entry proposal.
 No implementation/correction02/source composition authorized in this design

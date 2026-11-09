@@ -1,5 +1,11 @@
 # Arc03 S01 host protection ledger
 
+Local composition passed independent Git review at `8443fde`.
+[Proof](../../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md#independent-local-composition-acceptance--2026-11-08).
+Original Arc03 test bytes and the prior red baseline are retained. All six
+HC rows remain open, source 01 of 5 spent. Correction02 and v1 await their
+separate source re-entry decision.
+
 Latest baseline STOP2026-11-08: no-run0/native1pass2fail, invalid29 observed
 as26 old-success+3 unexpected W8 dependency errors; legal native4/4, dist
 old-overwrite red. Public0/13/implementation/full gates unrun, all6HC OPEN.

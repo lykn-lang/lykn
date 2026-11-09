@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Local Arc03 candidate composition passed at `8443fde` with exact parents
+`e2f2959` and `f2cd8139`. AM-04 retains the explicit source re-entry gate
+and all HC rows stay open. [Exact union proof](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md#independent-local-composition-acceptance--2026-11-08).
+
 Arc02 S02 has six independently done MR rows at `f2cd8139`.
 [Verification](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).
 AM-04 remains open for the explicit Arc03 re-entry decision.
