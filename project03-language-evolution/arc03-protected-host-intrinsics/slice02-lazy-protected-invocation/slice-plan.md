@@ -57,6 +57,10 @@ behavior or the runtime oracles. Seventh numbered pass, no reset.
 Clippy failure at `8e122ad`. The exact local style correction preserves
 generated text and fixture oracles. Eighth numbered pass, no reset.
 
+[Iteration 09](cc-prompt-iteration09.md) follows Clippy passing and the
+actual normal Rust format failure at `d879783`. Apply the formatter to
+the one source file. Ninth numbered pass, no reset.
+
 ## Prior bounded disposition — 2026-11-09
 
 The [independent review](cdc-verification.md) accepts the eligible-module

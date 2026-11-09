@@ -1,5 +1,8 @@
 # S02 lazy protected invocation ledger
 
+[Iteration 09](cc-prompt-iteration09.md) retains actual Clippy success
+and normal format failure at `d879783`; final acceptance remains open.
+
 [Iteration 08](cc-prompt-iteration08.md) retains the normal Make Clippy
 failure at `8e122ad` and the earlier focused/optimizer/strict observations
 with their actual provenance. Final candidate gates remain open.
