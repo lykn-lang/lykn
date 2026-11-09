@@ -2,6 +2,10 @@
 
 Opened 2026-11-09 at accepted S01 `e7b44c1`. No S02 observation yet.
 
+[Refinement 03](cc-prompt-iteration03.md) follows native focused 5/5
+at `b7dde69c` and public 2/4 after correcting the runner condition.
+The first public launch discovered no tests. No optimizer/runtime result.
+
 [Refinement 02](cc-prompt-iteration02.md) preserves the normal successor
 `27eeef0` and corrects source-proven request and fixture gaps. No validation
 has run. The original semantic/result oracles and HI-05 hold are retained.

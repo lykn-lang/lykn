@@ -9,6 +9,10 @@ depends-on: [slice01-versioned-host-protection]
 
 # S02 — Lazy protected invocation
 
+[Refinement 03](cc-prompt-iteration03.md) assigns the observed focused
+assertion and unused Rust corrections. Normal refinement 03 of 5 is
+assigned. The original four runtime results and HI-05 gate are unchanged.
+
 [Refinement 02](cc-prompt-iteration02.md) follows clean `27eeef0`.
 The normal commit used the correct dot-path fixed message after a failed
 hyphen-path attempt that created no commit. Static review found request
