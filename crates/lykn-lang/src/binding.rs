@@ -13,7 +13,6 @@
 //! default) is reused from the classifier, so the walker never re-derives it.
 
 use crate::ast::sexpr::SExpr;
-use crate::ast::surface::{ParamShape, Pattern, SurfaceForm};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 
@@ -153,6 +152,29 @@ pub struct BindingSite {
     pub span: Span,
 }
 
+/// A binding at its actual node in the input tree. Unlike `BindingSite`, this
+/// private resolver representation keeps occurrence identity separate from
+/// diagnostic span data.
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct BindingOccurrence<'a> {
+    pub(crate) atom: &'a SExpr,
+    pub(crate) kind: BindingKind,
+}
+
+impl BindingOccurrence<'_> {
+    fn project(self) -> BindingSite {
+        let (name, span) = self
+            .atom
+            .atom_parts()
+            .expect("binding occurrence is an atom");
+        BindingSite {
+            name: name.to_string(),
+            kind: self.kind,
+            span,
+        }
+    }
+}
+
 /// Recursively walk `forms`, collecting every binding site in source order.
 ///
 /// This is D2's enumeration. Slices 04/05 use [`bindings_introduced`] per form
@@ -179,6 +201,14 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>) {
 /// not a binding introducer. This is the D1 env-extension hook: "entering this
 /// form, these names are now in scope."
 pub fn bindings_introduced(form: &SExpr) -> Vec<BindingSite> {
+    binding_occurrences(form)
+        .into_iter()
+        .map(BindingOccurrence::project)
+        .collect()
+}
+
+/// The actual input atom for every binding introduced by one form.
+pub(crate) fn binding_occurrences(form: &SExpr) -> Vec<BindingOccurrence<'_>> {
     let SExpr::List { values, .. } = form else {
         return Vec::new();
     };
@@ -188,16 +218,12 @@ pub fn bindings_introduced(form: &SExpr) -> Vec<BindingSite> {
     let args = &values[1..];
     match head {
         "bind" => bind_names(args),
-        "func" | "genfunc" | "fn" | "lambda" | "genfn" => param_names(form),
+        "func" | "genfunc" | "fn" | "lambda" | "genfn" | "type" | "if-let" | "when-let"
+        | "match" => crate::classifier::forms::classify_form_with_bindings(form)
+            .map(|(_, occurrences)| occurrences)
+            .unwrap_or_default(),
         "for-of" | "for-in" | "for-await-of" => loop_names(args),
         "class" => class_names(args),
-        // `type` → `function CtorName(field…)` per constructor (sweep finding).
-        "type" => type_constructor_names(form),
-        // DD-60 refinement (2026-07-06): if-let/when-let binding patterns and
-        // match clause patterns bind names too.
-        "if-let" | "when-let" => if_let_names(form),
-        "match" => match_clause_names(form),
-        // DD-60 refinement #2 (2026-07-06): catch bindings, import locals, labels.
         "catch" => catch_names(args),
         "import" => import_local_names(args),
         "label" => label_names(args),
@@ -215,11 +241,11 @@ pub fn bindings_introduced(form: &SExpr) -> Vec<BindingSite> {
 
 /// `(bind name value)` / `(bind :type name value)` — the name slot is an atom or
 /// a destructuring pattern.
-fn bind_names(args: &[SExpr]) -> Vec<BindingSite> {
+fn bind_names(args: &[SExpr]) -> Vec<BindingOccurrence<'_>> {
     let mut out = Vec::new();
     match args.len() {
-        2 => pattern_names(&args[0], BindingKind::Bind, &mut out),
-        3 => pattern_names(&args[1], BindingKind::Bind, &mut out),
+        2 => pattern_occurrences(&args[0], BindingKind::Bind, &mut out),
+        3 => pattern_occurrences(&args[1], BindingKind::Bind, &mut out),
         len if len >= 4 => {
             let mut i = 0;
             while i < args.len() {
@@ -234,7 +260,7 @@ fn bind_names(args: &[SExpr]) -> Vec<BindingSite> {
                     }
                     (i, i + 2)
                 };
-                pattern_names(&args[name_index], BindingKind::Bind, &mut out);
+                pattern_occurrences(&args[name_index], BindingKind::Bind, &mut out);
                 i = next;
             }
         }
@@ -248,24 +274,24 @@ fn bind_names(args: &[SExpr]) -> Vec<BindingSite> {
 /// per-pair visibility without re-deriving destructuring grammar.
 pub(crate) fn binding_names_in_pattern(pat: &SExpr, kind: BindingKind) -> Vec<BindingSite> {
     let mut out = Vec::new();
-    pattern_names(pat, kind, &mut out);
-    out
+    pattern_occurrences(pat, kind, &mut out);
+    out.into_iter().map(BindingOccurrence::project).collect()
 }
 
 /// Loop binding: `(for-of binding iterable body…)` — binding is an atom or a
 /// destructuring pattern.
-fn loop_names(args: &[SExpr]) -> Vec<BindingSite> {
+fn loop_names(args: &[SExpr]) -> Vec<BindingOccurrence<'_>> {
     let Some(binding) = args.first() else {
         return Vec::new();
     };
     let mut out = Vec::new();
-    pattern_names(binding, BindingKind::LoopBinding, &mut out);
+    pattern_occurrences(binding, BindingKind::LoopBinding, &mut out);
     out
 }
 
 /// `(kernel:const NAME value)` / `const`/`let`/`var`/`function`/`function*` —
 /// the name slot is the first argument.
-fn kernel_decl_names(kernel_form: &str, args: &[SExpr]) -> Vec<BindingSite> {
+fn kernel_decl_names<'a>(kernel_form: &str, args: &'a [SExpr]) -> Vec<BindingOccurrence<'a>> {
     if !matches!(
         kernel_form,
         "const" | "let" | "var" | "function" | "function*"
@@ -276,115 +302,28 @@ fn kernel_decl_names(kernel_form: &str, args: &[SExpr]) -> Vec<BindingSite> {
         return Vec::new();
     };
     let mut out = Vec::new();
-    pattern_names(name_slot, BindingKind::Bind, &mut out);
-    out
-}
-
-/// Params of `func`/`genfunc`/`fn`/`lambda`/`genfn` — reuse the classifier's
-/// clause + param-shape parsing so the grammar (typed / destructured / rest /
-/// default) is never re-derived here.
-fn param_names(form: &SExpr) -> Vec<BindingSite> {
-    let Ok(sf) = crate::classifier::classify_expr(form) else {
-        return Vec::new();
-    };
-    let mut out = Vec::new();
-    let push_params = |params: &[ParamShape], out: &mut Vec<BindingSite>| {
-        for shape in params {
-            for tp in shape.typed_params() {
-                out.push(BindingSite {
-                    name: tp.name.clone(),
-                    kind: BindingKind::Param,
-                    span: tp.name_span,
-                });
-            }
-        }
-    };
-    match sf {
-        // `func`/`genfunc` lower to `function NAME(params)` — the NAME is a
-        // binder too (a reserved NAME → invalid `function if`; sweep finding).
-        SurfaceForm::Func {
-            name,
-            name_span,
-            clauses,
-            ..
-        } => {
-            out.push(BindingSite {
-                name,
-                kind: BindingKind::Bind,
-                span: name_span,
-            });
-            for clause in &clauses {
-                push_params(&clause.args, &mut out);
-            }
-        }
-        SurfaceForm::Genfunc {
-            name,
-            name_span,
-            clauses,
-            ..
-        } => {
-            out.push(BindingSite {
-                name,
-                kind: BindingKind::Bind,
-                span: name_span,
-            });
-            for clause in &clauses {
-                push_params(&clause.args, &mut out);
-            }
-        }
-        SurfaceForm::Fn { params, .. }
-        | SurfaceForm::Lambda { params, .. }
-        | SurfaceForm::Genfn { params, .. } => push_params(&params, &mut out),
-        _ => {}
-    }
-    out
-}
-
-/// `type` constructor names and their fields — a `type` lowers to a
-/// `function CtorName(field…)` per constructor; the constructor name and every
-/// field are binders (a reserved one → invalid `function if` / `function C(if)`;
-/// sweep finding). The type name itself is erased (not a runtime binder).
-fn type_constructor_names(form: &SExpr) -> Vec<BindingSite> {
-    let Ok(SurfaceForm::Type { constructors, .. }) = crate::classifier::classify_expr(form) else {
-        return Vec::new();
-    };
-    let mut out = Vec::new();
-    for ctor in &constructors {
-        out.push(BindingSite {
-            name: ctor.name.clone(),
-            kind: BindingKind::Bind,
-            span: ctor.name_span,
-        });
-        for field in &ctor.fields {
-            out.push(BindingSite {
-                name: field.name.clone(),
-                kind: BindingKind::Param,
-                span: field.name_span,
-            });
-        }
-    }
+    pattern_occurrences(name_slot, BindingKind::Bind, &mut out);
     out
 }
 
 /// `catch` clause error binding: `(catch NAME handler…)` — NAME is the first
 /// argument (an atom, or a destructuring pattern for `catch ({…})`).
-fn catch_names(args: &[SExpr]) -> Vec<BindingSite> {
+fn catch_names(args: &[SExpr]) -> Vec<BindingOccurrence<'_>> {
     let Some(binding) = args.first() else {
         return Vec::new();
     };
     let mut out = Vec::new();
-    pattern_names(binding, BindingKind::CatchBinding, &mut out);
+    pattern_occurrences(binding, BindingKind::CatchBinding, &mut out);
     out
 }
 
 /// `label` name: `(label NAME body)` — NAME binds in the *label* namespace
 /// (D2-only; labels do not shadow value bindings).
-fn label_names(args: &[SExpr]) -> Vec<BindingSite> {
-    match args.first().and_then(|e| e.atom_parts()) {
-        Some((value, span)) if value != "_" => vec![BindingSite {
-            name: value.to_string(),
+fn label_names(args: &[SExpr]) -> Vec<BindingOccurrence<'_>> {
+    match args.first() {
+        Some(atom) if atom.as_atom().is_some_and(|value| value != "_") => vec![BindingOccurrence {
+            atom,
             kind: BindingKind::Label,
-            span,
         }],
         _ => Vec::new(),
     }
@@ -395,7 +334,7 @@ fn label_names(args: &[SExpr]) -> Vec<BindingSite> {
 /// name)` (default), `(import "m" (spec…))` (named), `(import "m" name (spec…))`
 /// (default + named). A spec is an atom (local = name) or `(alias original
 /// local)` (local = 3rd element).
-fn import_local_names(args: &[SExpr]) -> Vec<BindingSite> {
+fn import_local_names(args: &[SExpr]) -> Vec<BindingOccurrence<'_>> {
     let mut out = Vec::new();
     let Some(second) = args.get(1) else {
         return out; // side-effect import
@@ -405,11 +344,9 @@ fn import_local_names(args: &[SExpr]) -> Vec<BindingSite> {
         SExpr::List { values, .. } => import_specs(values, &mut out),
         // (import "m" name …) — default import name
         a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
-            let (value, span) = a.atom_parts().unwrap();
-            out.push(BindingSite {
-                name: value.to_string(),
+            out.push(BindingOccurrence {
+                atom: a,
                 kind: BindingKind::ImportLocal,
-                span,
             });
             // (import "m" name (spec…)) — default + named
             if let Some(SExpr::List { values, .. }) = args.get(2) {
@@ -421,26 +358,21 @@ fn import_local_names(args: &[SExpr]) -> Vec<BindingSite> {
     out
 }
 
-fn import_specs(specs: &[SExpr], out: &mut Vec<BindingSite>) {
+fn import_specs<'a>(specs: &'a [SExpr], out: &mut Vec<BindingOccurrence<'a>>) {
     for spec in specs {
         match spec {
-            a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
-                let (value, span) = a.atom_parts().unwrap();
-                out.push(BindingSite {
-                    name: value.to_string(),
-                    kind: BindingKind::ImportLocal,
-                    span,
-                })
-            }
+            a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => out.push(BindingOccurrence {
+                atom: a,
+                kind: BindingKind::ImportLocal,
+            }),
             // (alias original local) → local binding is the 3rd element
             SExpr::List { values, .. }
                 if values.first().and_then(|e| e.as_atom()) == Some("alias") =>
             {
-                if let Some((value, span)) = values.get(2).and_then(|e| e.atom_parts()) {
-                    out.push(BindingSite {
-                        name: value.to_string(),
+                if let Some(local) = values.get(2).filter(|e| e.atom_parts().is_some()) {
+                    out.push(BindingOccurrence {
+                        atom: local,
                         kind: BindingKind::ImportLocal,
-                        span,
                     });
                 }
             }
@@ -449,69 +381,19 @@ fn import_specs(specs: &[SExpr], out: &mut Vec<BindingSite>) {
     }
 }
 
-/// `if-let`/`when-let` binding pattern. Reuse the classifier so the
-/// binding-vs-constructor distinction (uppercase = constructor) is not
-/// re-derived.
-fn if_let_names(form: &SExpr) -> Vec<BindingSite> {
-    let mut out = Vec::new();
-    match crate::classifier::classify_expr(form) {
-        Ok(SurfaceForm::IfLet { pattern, .. }) | Ok(SurfaceForm::WhenLet { pattern, .. }) => {
-            collect_pattern(&pattern, &mut out);
-        }
-        _ => {}
-    }
-    out
-}
-
-/// `match` clause patterns — every clause's pattern binds its variables.
-fn match_clause_names(form: &SExpr) -> Vec<BindingSite> {
-    let mut out = Vec::new();
-    if let Ok(SurfaceForm::Match { clauses, .. }) = crate::classifier::classify_expr(form) {
-        for clause in &clauses {
-            collect_pattern(&clause.pattern, &mut out);
-        }
-    }
-    out
-}
-
-/// Collect the names a `match`/`if-let`/`when-let` `Pattern` binds — recursing
-/// into constructor sub-patterns and object patterns. Wildcards, literals, and
-/// constructor *heads* bind nothing.
-fn collect_pattern(pat: &Pattern, out: &mut Vec<BindingSite>) {
-    match pat {
-        Pattern::Binding { name, span } => out.push(BindingSite {
-            name: name.clone(),
-            kind: BindingKind::Pattern,
-            span: *span,
-        }),
-        Pattern::Constructor { bindings, .. } => {
-            for b in bindings {
-                collect_pattern(b, out);
-            }
-        }
-        Pattern::Obj { pairs, .. } => {
-            for (_, p) in pairs {
-                collect_pattern(p, out);
-            }
-        }
-        Pattern::Wildcard(_) | Pattern::Literal(_) => {}
-    }
-}
-
 /// Class binders: the class **name** (`class NAME {…}` — a reserved NAME →
 /// invalid `class if`; sweep finding) plus every method/constructor param.
 /// Field/method *names* are property names (reserved words are legal there), so
 /// they are not binders.
-fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
+fn class_names(args: &[SExpr]) -> Vec<BindingOccurrence<'_>> {
     let mut out = Vec::new();
     // (class NAME (bases) member…) — NAME is args[0].
-    if let Some((value, span)) = args.first().and_then(|e| e.atom_parts())
-        && value != "_"
+    if let Some(atom) = args.first()
+        && atom.as_atom().is_some_and(|value| value != "_")
     {
-        out.push(BindingSite {
-            name: value.to_string(),
+        out.push(BindingOccurrence {
+            atom,
             kind: BindingKind::Bind,
-            span,
         });
     }
     // members start after name + bases list.
@@ -523,13 +405,10 @@ fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
         // shapes have no bare param list in slot 1.
         if let Some(SExpr::List { values: params, .. }) = values.get(1) {
             for p in params {
-                if let Some((value, span)) = p.atom_parts()
-                    && value != "_"
-                {
-                    out.push(BindingSite {
-                        name: value.to_string(),
+                if p.as_atom().is_some_and(|value| value != "_") {
+                    out.push(BindingOccurrence {
+                        atom: p,
                         kind: BindingKind::ClassMethodParam,
-                        span,
                     });
                 }
             }
@@ -541,15 +420,14 @@ fn class_names(args: &[SExpr]) -> Vec<BindingSite> {
 /// Collect the leaf names bound by a pattern (an atom, or an `(array …)` /
 /// `(object …)` destructuring form). Type keywords, `_` skips, and nested
 /// structure are handled; `(rest x)` binds `x`.
-fn pattern_names(pat: &SExpr, kind: BindingKind, out: &mut Vec<BindingSite>) {
+fn pattern_occurrences<'a>(
+    pat: &'a SExpr,
+    kind: BindingKind,
+    out: &mut Vec<BindingOccurrence<'a>>,
+) {
     match pat {
         a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
-            let (value, span) = a.atom_parts().unwrap();
-            out.push(BindingSite {
-                name: value.to_string(),
-                kind,
-                span,
-            })
+            out.push(BindingOccurrence { atom: a, kind })
         }
         SExpr::List { values, .. } => {
             let head = values.first().and_then(|e| e.as_atom()).unwrap_or("");
@@ -565,26 +443,21 @@ fn pattern_names(pat: &SExpr, kind: BindingKind, out: &mut Vec<BindingSite>) {
                                 match ih {
                                     "rest" => {
                                         if let Some(n) = inner.get(1) {
-                                            pattern_names(n, kind, out);
+                                            pattern_occurrences(n, kind, out);
                                         }
                                     }
                                     "default" => {
                                         // (default :type name value)
                                         if let Some(n) = inner.get(2) {
-                                            pattern_names(n, kind, out);
+                                            pattern_occurrences(n, kind, out);
                                         }
                                     }
-                                    "array" | "object" => pattern_names(el, kind, out),
+                                    "array" | "object" => pattern_occurrences(el, kind, out),
                                     _ => {}
                                 }
                             }
                             a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
-                                let (value, span) = a.atom_parts().unwrap();
-                                out.push(BindingSite {
-                                    name: value.to_string(),
-                                    kind,
-                                    span,
-                                })
+                                out.push(BindingOccurrence { atom: a, kind })
                             }
                             _ => {}
                         }

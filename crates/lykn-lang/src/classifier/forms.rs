@@ -2,7 +2,9 @@ use std::collections::{HashMap, HashSet};
 
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::*;
-use crate::binding::{BindingKind, binding_names_in_pattern, bindings_introduced};
+use crate::binding::{
+    BindingKind, BindingOccurrence, binding_names_in_pattern, bindings_introduced,
+};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 use crate::semantic_roles::{
@@ -754,6 +756,34 @@ fn walk_nested_fn_params(expr: &SExpr, out: &mut Vec<Diagnostic>) {
 }
 
 pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
+    classify_form_inner(expr, &mut None)
+}
+
+pub(crate) fn classify_form_with_bindings<'tree>(
+    expr: &'tree SExpr,
+) -> Result<(SurfaceForm, Vec<BindingOccurrence<'tree>>), Diagnostic> {
+    let mut occurrences = Vec::new();
+    let result = {
+        let mut capture = Some(&mut occurrences);
+        classify_form_inner(expr, &mut capture)
+    }?;
+    Ok((result, occurrences))
+}
+
+fn record_binding<'tree>(
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+    atom: &'tree SExpr,
+    kind: BindingKind,
+) {
+    if let Some(out) = capture.as_deref_mut() {
+        out.push(BindingOccurrence { atom, kind });
+    }
+}
+
+fn classify_form_inner<'tree>(
+    expr: &'tree SExpr,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
             // DD-61 §A6: dispatch on the *form head* — a lexically bound head
@@ -789,7 +819,7 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                     });
                 }
                 if dispatch::is_surface_form(head_name) {
-                    classify_surface_form(head_name, args, *span)
+                    classify_surface_form_with_capture(head_name, args, *span, capture)
                 } else if head_name == "export" {
                     classify_export(args, *span, expr)
                 } else if head_name == "async" {
@@ -1067,6 +1097,15 @@ fn classify_surface_form(
     args: &[SExpr],
     span: Span,
 ) -> Result<SurfaceForm, Diagnostic> {
+    classify_surface_form_with_capture(name, args, span, &mut None)
+}
+
+fn classify_surface_form_with_capture<'tree>(
+    name: &str,
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     match name {
         "bind" => classify_bind(args, span),
         "exports" => classify_exports(args, span),
@@ -1082,15 +1121,15 @@ fn classify_surface_form(
         "->>" => classify_threading(args, span, true, false),
         "some->" => classify_threading(args, span, false, true),
         "some->>" => classify_threading(args, span, true, true),
-        "type" => classify_type(args, span),
-        "func" => classify_func(args, span),
-        "genfunc" => classify_genfunc(args, span),
-        "genfn" => classify_genfn(args, span),
-        "match" => classify_match(args, span),
-        "if-let" => classify_if_let(args, span),
-        "when-let" => classify_when_let(args, span),
-        "fn" => classify_fn(args, span),
-        "lambda" => classify_lambda(args, span),
+        "type" => classify_type(args, span, capture),
+        "func" => classify_func(args, span, capture),
+        "genfunc" => classify_genfunc(args, span, capture),
+        "genfn" => classify_genfn(args, span, capture),
+        "match" => classify_match(args, span, capture),
+        "if-let" => classify_if_let(args, span, capture),
+        "when-let" => classify_when_let(args, span, capture),
+        "fn" => classify_fn(args, span, capture),
+        "lambda" => classify_lambda(args, span, capture),
         "conj" => classify_conj(args, span),
         "assoc" => classify_assoc(args, span),
         "dissoc" => classify_dissoc(args, span),
@@ -1522,7 +1561,11 @@ fn classify_threading(
     }
 }
 
-fn classify_type(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_type<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.len() < 2 {
         return Err(err(
             "type requires a name and at least one constructor",
@@ -1533,12 +1576,12 @@ fn classify_type(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
         Some((value, nspan)) => (value.to_string(), nspan),
         None => return Err(err("type: first argument must be a type name", span)),
     };
-
     let mut constructors = Vec::new();
     for ctor in &args[1..] {
         match ctor {
             a @ SExpr::Atom { .. } => {
                 let (value, cspan) = a.atom_parts().unwrap();
+                record_binding(capture, a, BindingKind::Bind);
                 constructors.push(Constructor {
                     name: value.to_string(),
                     name_span: cspan,
@@ -1554,7 +1597,8 @@ fn classify_type(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
                     Some((value, nspan)) => (value.to_string(), nspan),
                     None => return Err(err("constructor name must be an atom", *cspan)),
                 };
-                let fields = parse_simple_typed_params(&values[1..], *cspan)?;
+                record_binding(capture, &values[0], BindingKind::Bind);
+                let fields = parse_simple_typed_params_with_capture(&values[1..], *cspan, capture)?;
                 constructors.push(Constructor {
                     name: ctor_name.0,
                     name_span: ctor_name.1,
@@ -1574,7 +1618,11 @@ fn classify_type(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
     })
 }
 
-fn classify_func(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_func<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.is_empty() {
         return Err(err("func requires at least a name", span));
     }
@@ -1582,6 +1630,7 @@ fn classify_func(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
         Some((value, nspan)) => (value.to_string(), nspan),
         None => return Err(err("func: first argument must be a function name", span)),
     };
+    record_binding(capture, &args[0], BindingKind::Bind);
 
     let rest = &args[1..];
     if rest.is_empty() {
@@ -1600,7 +1649,7 @@ fn classify_func(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
         // Multi-clause
         let mut clauses = Vec::new();
         for clause_expr in rest {
-            clauses.push(parse_func_clause(clause_expr, span)?);
+            clauses.push(parse_func_clause(clause_expr, span, capture)?);
         }
         return Ok(SurfaceForm::Func {
             name: name.0,
@@ -1614,7 +1663,7 @@ fn classify_func(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
     if let SExpr::Keyword { value, .. } = first
         && is_func_clause_key(value)
     {
-        let clause = parse_func_clause_from_args(rest, span)?;
+        let clause = parse_func_clause_from_args(rest, span, capture)?;
         return Ok(SurfaceForm::Func {
             name: name.0,
             name_span: name.1,
@@ -1647,14 +1696,22 @@ fn is_func_clause_key(name: &str) -> bool {
     )
 }
 
-fn parse_func_clause(expr: &SExpr, outer_span: Span) -> Result<FuncClause, Diagnostic> {
+fn parse_func_clause<'tree>(
+    expr: &'tree SExpr,
+    outer_span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<FuncClause, Diagnostic> {
     match expr {
-        SExpr::List { values, span } => parse_func_clause_from_args(values, *span),
+        SExpr::List { values, span } => parse_func_clause_from_args(values, *span, capture),
         _ => Err(err("func clause must be a list", outer_span)),
     }
 }
 
-fn parse_func_clause_from_args(args: &[SExpr], span: Span) -> Result<FuncClause, Diagnostic> {
+fn parse_func_clause_from_args<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<FuncClause, Diagnostic> {
     let kw_map = parse_keyword_clauses(args);
     let typed_args = if let Some(args_val) = kw_map.get("args") {
         if let Some(SExpr::List {
@@ -1662,7 +1719,7 @@ fn parse_func_clause_from_args(args: &[SExpr], span: Span) -> Result<FuncClause,
             span: pspan,
         }) = args_val.first()
         {
-            parse_typed_params(values, *pspan)?
+            parse_typed_params_with_capture(values, *pspan, capture)?
         } else {
             Vec::new()
         }
@@ -1681,9 +1738,20 @@ fn parse_func_clause_from_args(args: &[SExpr], span: Span) -> Result<FuncClause,
         }
     });
 
-    let pre = kw_map.get("pre").and_then(|v| v.first().cloned());
-    let post = kw_map.get("post").and_then(|v| v.first().cloned());
-    let body = kw_map.get("body").cloned().unwrap_or_default();
+    let pre = kw_map
+        .get("pre")
+        .and_then(|v| v.first())
+        .map(|e| (*e).clone());
+    let post = kw_map
+        .get("post")
+        .and_then(|v| v.first())
+        .map(|e| (*e).clone());
+    let body = kw_map
+        .get("body")
+        .into_iter()
+        .flatten()
+        .map(|e| (*e).clone())
+        .collect();
 
     if body.is_empty() {
         return Err(err("func clause requires :body", span));
@@ -1699,10 +1767,10 @@ fn parse_func_clause_from_args(args: &[SExpr], span: Span) -> Result<FuncClause,
     })
 }
 
-fn parse_keyword_clauses(args: &[SExpr]) -> HashMap<String, Vec<SExpr>> {
+fn parse_keyword_clauses<'tree>(args: &'tree [SExpr]) -> HashMap<&'tree str, Vec<&'tree SExpr>> {
     let mut map = HashMap::new();
-    let mut current_key: Option<String> = None;
-    let mut current_values: Vec<SExpr> = Vec::new();
+    let mut current_key: Option<&str> = None;
+    let mut current_values: Vec<&SExpr> = Vec::new();
 
     for arg in args {
         if let SExpr::Keyword { value, .. } = arg
@@ -1711,10 +1779,10 @@ fn parse_keyword_clauses(args: &[SExpr]) -> HashMap<String, Vec<SExpr>> {
             if let Some(key) = current_key.take() {
                 map.insert(key, std::mem::take(&mut current_values));
             }
-            current_key = Some(value.clone());
+            current_key = Some(value);
             continue;
         }
-        current_values.push(arg.clone());
+        current_values.push(arg);
     }
     if let Some(key) = current_key {
         map.insert(key, current_values);
@@ -1726,7 +1794,11 @@ fn parse_keyword_clauses(args: &[SExpr]) -> HashMap<String, Vec<SExpr>> {
 // Genfunc / Genfn classification
 // ---------------------------------------------------------------------------
 
-fn classify_genfunc(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_genfunc<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.is_empty() {
         return Err(err("genfunc requires at least a name", span));
     }
@@ -1734,6 +1806,7 @@ fn classify_genfunc(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnosti
         Some((value, nspan)) => (value.to_string(), nspan),
         None => return Err(err("genfunc: first argument must be a function name", span)),
     };
+    record_binding(capture, &args[0], BindingKind::Bind);
 
     let rest = &args[1..];
     if rest.is_empty() {
@@ -1751,7 +1824,7 @@ fn classify_genfunc(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnosti
     {
         let mut clauses = Vec::new();
         for clause_expr in rest {
-            clauses.push(parse_genfunc_clause(clause_expr, span)?);
+            clauses.push(parse_genfunc_clause(clause_expr, span, capture)?);
         }
         return Ok(SurfaceForm::Genfunc {
             name: name.0,
@@ -1765,7 +1838,7 @@ fn classify_genfunc(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnosti
     if let SExpr::Keyword { value, .. } = first
         && is_func_clause_key(value)
     {
-        let clause = parse_genfunc_clause_from_args(rest, span)?;
+        let clause = parse_genfunc_clause_from_args(rest, span, capture)?;
         return Ok(SurfaceForm::Genfunc {
             name: name.0,
             name_span: name.1,
@@ -1792,14 +1865,22 @@ fn classify_genfunc(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnosti
     })
 }
 
-fn parse_genfunc_clause(expr: &SExpr, outer_span: Span) -> Result<GenfuncClause, Diagnostic> {
+fn parse_genfunc_clause<'tree>(
+    expr: &'tree SExpr,
+    outer_span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<GenfuncClause, Diagnostic> {
     match expr {
-        SExpr::List { values, span } => parse_genfunc_clause_from_args(values, *span),
+        SExpr::List { values, span } => parse_genfunc_clause_from_args(values, *span, capture),
         _ => Err(err("genfunc clause must be a list", outer_span)),
     }
 }
 
-fn parse_genfunc_clause_from_args(args: &[SExpr], span: Span) -> Result<GenfuncClause, Diagnostic> {
+fn parse_genfunc_clause_from_args<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<GenfuncClause, Diagnostic> {
     let kw_map = parse_keyword_clauses(args);
     let typed_args = if let Some(args_val) = kw_map.get("args") {
         if let Some(SExpr::List {
@@ -1807,7 +1888,7 @@ fn parse_genfunc_clause_from_args(args: &[SExpr], span: Span) -> Result<GenfuncC
             span: pspan,
         }) = args_val.first()
         {
-            parse_typed_params(values, *pspan)?
+            parse_typed_params_with_capture(values, *pspan, capture)?
         } else {
             Vec::new()
         }
@@ -1837,9 +1918,20 @@ fn parse_genfunc_clause_from_args(args: &[SExpr], span: Span) -> Result<GenfuncC
         }
     });
 
-    let pre = kw_map.get("pre").and_then(|v| v.first().cloned());
-    let post = kw_map.get("post").and_then(|v| v.first().cloned());
-    let body = kw_map.get("body").cloned().unwrap_or_default();
+    let pre = kw_map
+        .get("pre")
+        .and_then(|v| v.first())
+        .map(|e| (*e).clone());
+    let post = kw_map
+        .get("post")
+        .and_then(|v| v.first())
+        .map(|e| (*e).clone());
+    let body = kw_map
+        .get("body")
+        .into_iter()
+        .flatten()
+        .map(|e| (*e).clone())
+        .collect();
 
     if body.is_empty() {
         return Err(err("genfunc clause requires :body", span));
@@ -1856,7 +1948,11 @@ fn parse_genfunc_clause_from_args(args: &[SExpr], span: Span) -> Result<GenfuncC
     })
 }
 
-fn classify_genfn(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_genfn<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.len() < 2 {
         return Err(err("genfn requires params and body", span));
     }
@@ -1864,7 +1960,7 @@ fn classify_genfn(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic>
         SExpr::List {
             values,
             span: pspan,
-        } => parse_typed_params(values, *pspan)?,
+        } => parse_typed_params_with_capture(values, *pspan, capture)?,
         _ => {
             return Err(err("genfn: first argument must be a parameter list", span));
         }
@@ -1897,7 +1993,11 @@ fn classify_genfn(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic>
     })
 }
 
-fn classify_match(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_match<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.len() < 2 {
         return Err(err("match requires a target and at least one clause", span));
     }
@@ -1910,7 +2010,7 @@ fn classify_match(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic>
                 values,
                 span: cspan,
             } if values.len() >= 2 => {
-                let pattern = classify_pattern(&values[0])?;
+                let pattern = classify_pattern_captured(&values[0], capture)?;
                 let mut guard = None;
                 let mut body_start = 1;
 
@@ -1952,6 +2052,13 @@ fn classify_match(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic>
 }
 
 fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
+    classify_pattern_captured(expr, &mut None)
+}
+
+fn classify_pattern_captured<'tree>(
+    expr: &'tree SExpr,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<Pattern, Diagnostic> {
     match expr {
         a @ SExpr::Atom { .. } if a.as_atom() == Some("_") => Ok(Pattern::Wildcard(a.span())),
         SExpr::Atom { .. }
@@ -1974,6 +2081,7 @@ fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
                 })
             } else {
                 // lowercase — binding
+                record_binding(capture, expr, BindingKind::Pattern);
                 Ok(Pattern::Binding {
                     name: value.to_string(),
                     span,
@@ -1989,13 +2097,13 @@ fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
             // Structural obj pattern
             if let Some(value) = head.as_atom() {
                 if value == "obj" {
-                    return classify_obj_pattern(&values[1..], *span);
+                    return classify_obj_pattern(&values[1..], *span, capture);
                 }
                 if value.starts_with(|c: char| c.is_uppercase()) {
                     // ADT constructor pattern
                     let bindings = values[1..]
                         .iter()
-                        .map(classify_pattern)
+                        .map(|pattern| classify_pattern_captured(pattern, capture))
                         .collect::<Result<Vec<_>, _>>()?;
                     return Ok(Pattern::Constructor {
                         name: value.to_string(),
@@ -2011,7 +2119,11 @@ fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
     }
 }
 
-fn classify_obj_pattern(args: &[SExpr], span: Span) -> Result<Pattern, Diagnostic> {
+fn classify_obj_pattern<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<Pattern, Diagnostic> {
     if !args.len().is_multiple_of(2) {
         return Err(err("obj pattern requires keyword-binding pairs", span));
     }
@@ -2019,7 +2131,7 @@ fn classify_obj_pattern(args: &[SExpr], span: Span) -> Result<Pattern, Diagnosti
     for i in (0..args.len()).step_by(2) {
         match &args[i] {
             SExpr::Keyword { value, .. } => {
-                let binding = classify_pattern(&args[i + 1])?;
+                let binding = classify_pattern_captured(&args[i + 1], capture)?;
                 pairs.push((value.clone(), binding));
             }
             _ => return Err(err("obj pattern: expected keyword", span)),
@@ -2028,13 +2140,17 @@ fn classify_obj_pattern(args: &[SExpr], span: Span) -> Result<Pattern, Diagnosti
     Ok(Pattern::Obj { pairs, span })
 }
 
-fn classify_if_let(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_if_let<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.len() < 2 || args.len() > 3 {
         return Err(err("if-let requires 2-3 arguments", span));
     }
     let binding = match &args[0] {
         SExpr::List { values, .. } if values.len() == 2 => {
-            let pattern = classify_pattern(&values[0])?;
+            let pattern = classify_pattern_captured(&values[0], capture)?;
             let expr = values[1].clone();
             (pattern, expr)
         }
@@ -2054,13 +2170,17 @@ fn classify_if_let(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic
     })
 }
 
-fn classify_when_let(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_when_let<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.len() < 2 {
         return Err(err("when-let requires at least 2 arguments", span));
     }
     let binding = match &args[0] {
         SExpr::List { values, .. } if values.len() == 2 => {
-            let pattern = classify_pattern(&values[0])?;
+            let pattern = classify_pattern_captured(&values[0], capture)?;
             let expr = values[1].clone();
             (pattern, expr)
         }
@@ -2077,7 +2197,11 @@ fn classify_when_let(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnost
     })
 }
 
-fn classify_fn(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_fn<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.len() < 2 {
         return Err(err("fn requires params and body", span));
     }
@@ -2085,7 +2209,7 @@ fn classify_fn(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
         SExpr::List {
             values,
             span: pspan,
-        } => parse_typed_params(values, *pspan)?,
+        } => parse_typed_params_with_capture(values, *pspan, capture)?,
         _ => {
             return Err(err("fn: first argument must be a parameter list", span));
         }
@@ -2097,7 +2221,11 @@ fn classify_fn(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
     })
 }
 
-fn classify_lambda(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
+fn classify_lambda<'tree>(
+    args: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<SurfaceForm, Diagnostic> {
     if args.len() < 2 {
         return Err(err("lambda requires params and body", span));
     }
@@ -2105,7 +2233,7 @@ fn classify_lambda(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic
         SExpr::List {
             values,
             span: pspan,
-        } => parse_typed_params(values, *pspan)?,
+        } => parse_typed_params_with_capture(values, *pspan, capture)?,
         _ => {
             return Err(err("lambda: first argument must be a parameter list", span));
         }
@@ -2272,7 +2400,11 @@ fn classify_not(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> {
 }
 
 /// Parse simple typed params (keyword-name pairs only). Used for type constructors.
-fn parse_simple_typed_params(values: &[SExpr], span: Span) -> Result<Vec<TypedParam>, Diagnostic> {
+fn parse_simple_typed_params_with_capture<'tree>(
+    values: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<Vec<TypedParam>, Diagnostic> {
     if !values.len().is_multiple_of(2) {
         return Err(err("typed parameters must be keyword-name pairs", span));
     }
@@ -2284,6 +2416,7 @@ fn parse_simple_typed_params(values: &[SExpr], span: Span) -> Result<Vec<TypedPa
                 span: kspan,
             } => match values[i + 1].atom_parts() {
                 Some((name, nspan)) => {
+                    record_binding(capture, &values[i + 1], BindingKind::Param);
                     params.push(TypedParam {
                         type_ann: TypeAnnotation {
                             name: type_name.clone(),
@@ -2307,7 +2440,11 @@ fn parse_simple_typed_params(values: &[SExpr], span: Span) -> Result<Vec<TypedPa
 
 /// Parse typed params with support for destructuring patterns.
 /// Returns Vec<ParamShape> — each element is either Simple or Destructured.
-fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, Diagnostic> {
+fn parse_typed_params_with_capture<'tree>(
+    values: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<Vec<ParamShape>, Diagnostic> {
     let mut params = Vec::new();
     let mut i = 0;
     while i < values.len() {
@@ -2321,7 +2458,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                 let head = inner.first().and_then(|e| e.as_atom()).unwrap_or("");
                 match head {
                     "object" | "array" => {
-                        params.push(parse_destructured_param(inner, *lspan)?);
+                        params.push(parse_destructured_param(inner, *lspan, capture)?);
                     }
                     "default" => {
                         // (default :type name value) — 4 elements
@@ -2340,6 +2477,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                 atom @ SExpr::Atom { .. },
                             ) => {
                                 let (name, nspan) = atom.atom_parts().unwrap();
+                                record_binding(capture, atom, BindingKind::Param);
                                 params.push(ParamShape::Simple(TypedParam {
                                     type_ann: TypeAnnotation {
                                         name: type_name.clone(),
@@ -2371,6 +2509,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                                 atom @ SExpr::Atom { .. },
                             ) => {
                                 let (name, nspan) = atom.atom_parts().unwrap();
+                                record_binding(capture, atom, BindingKind::Param);
                                 params.push(ParamShape::Simple(TypedParam {
                                     type_ann: TypeAnnotation {
                                         name: type_name.clone(),
@@ -2410,6 +2549,7 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
                 }
                 match values[i + 1].atom_parts() {
                     Some((name, nspan)) => {
+                        record_binding(capture, &values[i + 1], BindingKind::Param);
                         params.push(ParamShape::Simple(TypedParam {
                             type_ann: TypeAnnotation {
                                 name: type_name.clone(),
@@ -2453,7 +2593,11 @@ fn parse_typed_params(values: &[SExpr], span: Span) -> Result<Vec<ParamShape>, D
     Ok(params)
 }
 
-fn parse_destructured_param(values: &[SExpr], span: Span) -> Result<ParamShape, Diagnostic> {
+fn parse_destructured_param<'tree>(
+    values: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<ParamShape, Diagnostic> {
     if values.is_empty() {
         return Err(err(
             "empty destructuring pattern — at least one field required",
@@ -2470,8 +2614,8 @@ fn parse_destructured_param(values: &[SExpr], span: Span) -> Result<ParamShape, 
         }
     };
     match head {
-        "object" => parse_object_destructure(&values[1..], span),
-        "array" => parse_array_destructure(&values[1..], span),
+        "object" => parse_object_destructure(&values[1..], span, capture),
+        "array" => parse_array_destructure(&values[1..], span, capture),
         _ => Err(err(
             format!("destructuring pattern must start with 'object' or 'array', got '{head}'"),
             span,
@@ -2479,7 +2623,11 @@ fn parse_destructured_param(values: &[SExpr], span: Span) -> Result<ParamShape, 
     }
 }
 
-fn parse_object_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, Diagnostic> {
+fn parse_object_destructure<'tree>(
+    values: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<ParamShape, Diagnostic> {
     if values.is_empty() {
         return Err(err(
             "empty destructuring pattern — at least one field required",
@@ -2505,6 +2653,7 @@ fn parse_object_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, 
                         }
                         let (type_ann, name, name_span) =
                             parse_type_and_name(&inner[1], &inner[2], *lspan)?;
+                        record_binding(capture, &inner[2], BindingKind::Param);
                         fields.push(DestructuredField::Simple(TypedParam {
                             type_ann,
                             name,
@@ -2529,7 +2678,8 @@ fn parse_object_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, 
                                 span: pat_span,
                                 ..
                             } => {
-                                let pattern = parse_destructured_param(pat_inner, *pat_span)?;
+                                let pattern =
+                                    parse_destructured_param(pat_inner, *pat_span, capture)?;
                                 fields.push(DestructuredField::Nested {
                                     alias_name,
                                     alias_name_span,
@@ -2579,6 +2729,7 @@ fn parse_object_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, 
                 }
                 match values[i + 1].atom_parts() {
                     Some((name, nspan)) => {
+                        record_binding(capture, &values[i + 1], BindingKind::Param);
                         fields.push(DestructuredField::Simple(TypedParam {
                             type_ann: TypeAnnotation {
                                 name: type_name.clone(),
@@ -2640,7 +2791,11 @@ fn parse_type_and_name(
     }
 }
 
-fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, Diagnostic> {
+fn parse_array_destructure<'tree>(
+    values: &'tree [SExpr],
+    span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
+) -> Result<ParamShape, Diagnostic> {
     if values.is_empty() {
         return Err(err(
             "empty destructuring pattern — at least one field required",
@@ -2675,6 +2830,7 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
                             ));
                         }
                         let tp = parse_rest_element(&inner[1..], *lspan)?;
+                        record_binding(capture, &inner[2], BindingKind::Param);
                         elements.push(ArrayParamElement::Rest(tp));
                         i += 1;
                     }
@@ -2685,6 +2841,7 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
                         }
                         let (type_ann, name, name_span) =
                             parse_type_and_name(&inner[1], &inner[2], *lspan)?;
+                        record_binding(capture, &inner[2], BindingKind::Param);
                         elements.push(ArrayParamElement::Typed(TypedParam {
                             type_ann,
                             name,
@@ -2696,7 +2853,7 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
                     }
                     "object" | "array" => {
                         // Bare nested: (object ...) or (array ...) in array position
-                        let pattern = parse_destructured_param(inner, *lspan)?;
+                        let pattern = parse_destructured_param(inner, *lspan, capture)?;
                         elements.push(ArrayParamElement::Nested {
                             pattern: Box::new(pattern),
                             span: *lspan,
@@ -2719,7 +2876,8 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
                                 span: pat_span,
                                 ..
                             } => {
-                                let pattern = parse_destructured_param(pat_inner, *pat_span)?;
+                                let pattern =
+                                    parse_destructured_param(pat_inner, *pat_span, capture)?;
                                 elements.push(ArrayParamElement::NestedWithAlias {
                                     alias_name,
                                     alias_name_span,
@@ -2759,6 +2917,7 @@ fn parse_array_destructure(values: &[SExpr], span: Span) -> Result<ParamShape, D
                 }
                 match values[i + 1].atom_parts() {
                     Some((name, nspan)) => {
+                        record_binding(capture, &values[i + 1], BindingKind::Param);
                         elements.push(ArrayParamElement::Typed(TypedParam {
                             type_ann: TypeAnnotation {
                                 name: type_name.clone(),

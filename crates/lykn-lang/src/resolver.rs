@@ -22,8 +22,10 @@
 //! binding is visible in, and sequential visibility across siblings.
 
 use crate::ast::sexpr::{NameRes, SExpr};
-use crate::binding::{BindingKind, BindingSite, binding_names_in_pattern, bindings_introduced};
-use crate::reader::source_loc::Span;
+use crate::binding::{
+    BindingKind, BindingOccurrence, BindingSite, binding_names_in_pattern, binding_occurrences,
+    bindings_introduced,
+};
 
 /// Resolve a slice of top-level forms: return the same tree with every atom's
 /// [`NameRes`] tag set. Idempotent on already-unresolved input; never changes
@@ -89,6 +91,15 @@ pub(crate) struct BindGroupSlot {
 
 /// Compute a form's [`ScopePlan`]. Non-list or non-binding forms → `Sequence`.
 pub(crate) fn scope_plan(form: &SExpr, scope: &[String]) -> ScopePlan {
+    let occurrences = binding_occurrences(form);
+    scope_plan_with_occurrences(form, scope, &occurrences)
+}
+
+fn scope_plan_with_occurrences(
+    form: &SExpr,
+    scope: &[String],
+    occurrences: &[BindingOccurrence<'_>],
+) -> ScopePlan {
     let SExpr::List { values, .. } = form else {
         return ScopePlan::Sequence;
     };
@@ -101,10 +112,12 @@ pub(crate) fn scope_plan(form: &SExpr, scope: &[String]) -> ScopePlan {
     {
         return ScopePlan::Conditional;
     }
-    let body_names: Vec<String> = bindings_introduced(form)
-        .into_iter()
-        .filter(|s| s.kind.shadows_values() && !is_enclosing_only(s.kind))
-        .map(|s| s.name)
+    let body_names: Vec<String> = occurrences
+        .iter()
+        .filter(|occurrence| {
+            occurrence.kind.shadows_values() && !is_enclosing_only(occurrence.kind)
+        })
+        .filter_map(|occurrence| occurrence.atom.as_atom().map(str::to_string))
         .collect();
     match head {
         Some("bind") if let Some(slots) = grouped_bind_slots(values) => {
@@ -135,13 +148,17 @@ pub(crate) fn scope_plan(form: &SExpr, scope: &[String]) -> ScopePlan {
 /// Resolve `forms` as a **sibling sequence**, left to right: a name a form
 /// declares into the enclosing scope becomes visible to the following siblings
 /// (`(bind x …)` then `(x …)`), and the whole sequence's additions are dropped
-/// on exit (shadow ends at scope exit). `def_spans` carries the binder
-/// definition-site spans inherited from enclosing forms.
-fn resolve_seq(forms: &[SExpr], scope: &mut Vec<String>, def_spans: &[Span]) -> Vec<SExpr> {
+/// on exit (shadow ends at scope exit). `def_occurrences` carries borrowed
+/// binder atoms inherited from enclosing forms.
+fn resolve_seq(
+    forms: &[SExpr],
+    scope: &mut Vec<String>,
+    def_occurrences: &[BindingOccurrence<'_>],
+) -> Vec<SExpr> {
     let mark = scope.len();
     let mut out = Vec::with_capacity(forms.len());
     for form in forms {
-        out.push(resolve_form(form, scope, def_spans));
+        out.push(resolve_form(form, scope, def_occurrences));
         // Hoist this form's enclosing-scope declarations to the following
         // siblings (function names, `bind`s, `import` locals, …).
         scope.extend(hoisted_names(form));
@@ -150,16 +167,23 @@ fn resolve_seq(forms: &[SExpr], scope: &mut Vec<String>, def_spans: &[Span]) -> 
     out
 }
 
-/// Resolve one form. Atoms are tagged from `def_spans`/`scope`; lists dispatch
+/// Resolve one form. Atoms are tagged from `def_occurrences`/`scope`; lists dispatch
 /// on their (raw) head to place each introduced binding in scope over exactly
 /// the child positions where it is lexically visible — never over an
 /// initializer / iterable / match-subject / `if-let` expression, which are
 /// evaluated *outside* the binding's scope.
-fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SExpr {
+fn resolve_form(
+    form: &SExpr,
+    scope: &mut Vec<String>,
+    def_occurrences: &[BindingOccurrence<'_>],
+) -> SExpr {
     match form {
         SExpr::Atom { .. } => {
-            let (value, span) = form.atom_parts().unwrap();
-            let res = if def_spans.contains(&span) {
+            let value = form.as_atom().expect("atom variant");
+            let res = if def_occurrences
+                .iter()
+                .any(|occurrence| std::ptr::eq(occurrence.atom, form))
+            {
                 // A binding definition site never dispatches, even if its name
                 // also happens to be in scope (def takes priority over ref).
                 NameRes::BindingDef
@@ -171,14 +195,13 @@ fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SE
             form.clone().with_name_res(res)
         }
         SExpr::List { values, span } => {
-            // This form's own binder definition-site spans, accumulated so deep
-            // param/pattern atoms (nested inside arg lists) are still recognised
-            // as def-sites within this subtree.
-            let sites = bindings_introduced(form);
-            let mut child_defs: Vec<Span> = def_spans.to_vec();
-            child_defs.extend(sites.iter().map(|s| s.span));
+            // This form's own binder occurrences, accumulated so deep
+            // param/pattern atoms are still recognised within this subtree.
+            let sites = binding_occurrences(form);
+            let mut child_defs = def_occurrences.to_vec();
+            child_defs.extend(sites.iter().copied());
 
-            let new_values = match scope_plan(form, scope) {
+            let new_values = match scope_plan_with_occurrences(form, scope, &sites) {
                 ScopePlan::Sequence => resolve_seq(values, scope, &child_defs),
                 ScopePlan::Body { names, body_start } => {
                     resolve_split_at(values, scope, &child_defs, names, body_start)
@@ -197,8 +220,8 @@ fn resolve_form(form: &SExpr, scope: &mut Vec<String>, def_spans: &[Span]) -> SE
             }
         }
         SExpr::Cons { car, cdr, span } => SExpr::Cons {
-            car: Box::new(resolve_form(car, scope, def_spans)),
-            cdr: Box::new(resolve_form(cdr, scope, def_spans)),
+            car: Box::new(resolve_form(car, scope, def_occurrences)),
+            cdr: Box::new(resolve_form(cdr, scope, def_occurrences)),
             span: *span,
         },
         // Leaves with no name to resolve.
@@ -241,7 +264,7 @@ fn grouped_bind_slots(values: &[SExpr]) -> Option<Vec<BindGroupSlot>> {
 fn resolve_grouped_bind(
     values: &[SExpr],
     scope: &mut Vec<String>,
-    def_spans: &[Span],
+    def_occurrences: &[BindingOccurrence<'_>],
     slots: &[BindGroupSlot],
 ) -> Vec<SExpr> {
     let mut out = Vec::with_capacity(values.len());
@@ -250,19 +273,27 @@ fn resolve_grouped_bind(
 
     for slot in slots {
         while next_index < slot.name_index {
-            out.push(resolve_form(&values[next_index], scope, def_spans));
+            out.push(resolve_form(&values[next_index], scope, def_occurrences));
             next_index += 1;
         }
 
-        out.push(resolve_form(&values[slot.name_index], scope, def_spans));
+        out.push(resolve_form(
+            &values[slot.name_index],
+            scope,
+            def_occurrences,
+        ));
         next_index = slot.name_index + 1;
 
         while next_index < slot.value_index {
-            out.push(resolve_form(&values[next_index], scope, def_spans));
+            out.push(resolve_form(&values[next_index], scope, def_occurrences));
             next_index += 1;
         }
 
-        out.push(resolve_form(&values[slot.value_index], scope, def_spans));
+        out.push(resolve_form(
+            &values[slot.value_index],
+            scope,
+            def_occurrences,
+        ));
         next_index = slot.value_index + 1;
 
         for site in binding_names_in_pattern(&values[slot.name_index], BindingKind::Bind) {
@@ -273,7 +304,7 @@ fn resolve_grouped_bind(
     }
 
     while next_index < values.len() {
-        out.push(resolve_form(&values[next_index], scope, def_spans));
+        out.push(resolve_form(&values[next_index], scope, def_occurrences));
         next_index += 1;
     }
 
@@ -288,19 +319,19 @@ fn resolve_grouped_bind(
 fn resolve_split_at(
     values: &[SExpr],
     scope: &mut Vec<String>,
-    def_spans: &[Span],
+    def_occurrences: &[BindingOccurrence<'_>],
     names: Vec<String>,
     body_start: usize,
 ) -> Vec<SExpr> {
     let split = body_start.min(values.len());
     let mut out = Vec::with_capacity(values.len());
     for child in &values[..split] {
-        out.push(resolve_form(child, scope, def_spans));
+        out.push(resolve_form(child, scope, def_occurrences));
     }
     if split < values.len() {
         let mark = scope.len();
         scope.extend(names);
-        out.extend(resolve_seq(&values[split..], scope, def_spans));
+        out.extend(resolve_seq(&values[split..], scope, def_occurrences));
         scope.truncate(mark);
     }
     out
@@ -480,6 +511,7 @@ fn shadow_grouped_bind(
 mod tests {
     use super::*;
     use crate::reader::read;
+    use crate::reader::source_loc::Span;
     use serde_json::{Value, json};
 
     fn protocol_forms(value: Value) -> Vec<SExpr> {
