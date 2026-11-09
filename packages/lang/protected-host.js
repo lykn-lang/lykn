@@ -75,6 +75,7 @@ function visitPatternDefaults(pattern, visit) {
   const [head, ...parts] = pattern.values;
   if (head?.type !== 'atom') return;
   if (head.value === 'default') {
+    visitPatternDefaults(parts[0], visit);
     if (parts[1]) visit(parts[1]);
     return;
   }
@@ -108,12 +109,36 @@ function isFunctionBoundary(node, formHead) {
     .includes(formHead(node.values[0]));
 }
 
+function objectExecutableChildren(property) {
+  if (property?.type !== 'list' || property.values.length === 0) return [];
+  const [key, value] = property.values;
+  if (key?.type === 'atom' && key.value === 'spread') return value ? [value] : [];
+  const children = [];
+  if (key?.type === 'list') {
+    if (key.values[0]?.type === 'atom' && key.values[0].value === 'computed') {
+      if (key.values[1]) children.push(key.values[1]);
+    } else {
+      children.push(key);
+    }
+  }
+  if (value) children.push(value);
+  return children;
+}
+
 function collectVarNames(forms, names, toJsIdentifier, formHead) {
   for (const form of forms) {
     if (form?.type !== 'list') continue;
     const head = formHead(form.values[0]);
+    if (head === null) {
+      collectVarNames(form.values, names, toJsIdentifier, formHead);
+      continue;
+    }
     if (['quote', 'quasiquote', 'syntax-quote'].includes(head) || isFunctionBoundary(form, formHead)) continue;
-    if (isVarDeclaration(form, formHead)) {
+    if (head === 'object') {
+      for (const property of form.values.slice(1)) {
+        collectVarNames(objectExecutableChildren(property), names, toJsIdentifier, formHead);
+      }
+    } else if (isVarDeclaration(form, formHead)) {
       for (const binding of bindingsIntroduced(form)) {
         if (binding.kind === 'bind') names.add(toJsIdentifier(binding.name));
       }
@@ -185,6 +210,17 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
       visitBody(args, scopes, dialect);
       return;
     }
+    if (head === 'object') {
+      for (const property of args) {
+        for (const child of objectExecutableChildren(property)) visit(child, scopes, dialect);
+      }
+      return;
+    }
+    if (head === null) {
+      visit(headNode, scopes, dialect);
+      for (const arg of args) visit(arg, scopes, dialect);
+      return;
+    }
     if (head === 'function' || head === 'function*') {
       let paramsIndex;
       let bodyIndex;
@@ -201,9 +237,14 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
       const params = args[paramsIndex]?.type === 'list' ? args[paramsIndex].values : [];
       const paramNames = patternNames(params, toJsIdentifier);
       const body = args.slice(bodyIndex);
+      const functionName = args[0]?.type === 'atom' && args[0].value !== '' ? toJsIdentifier(args[0].value) : null;
+      const defaultLocals = new Set([...locals, ...paramNames]);
+      if (functionName) defaultLocals.add(functionName);
+      const defaults = [...scopes.slice(0, -1), defaultLocals];
+      for (const param of params) visitPatternDefaults(param, (value) => visit(value, defaults, dialect));
+      if (functionName) paramNames.add(functionName);
       const nextScope = functionScope(body, paramNames, locals, toJsIdentifier, formHead);
       const next = [...scopes.slice(0, -1), nextScope];
-      for (const param of params) visitPatternDefaults(param, (value) => visit(value, next, dialect));
       for (const form of body) visit(form, next, dialect);
       return;
     }
@@ -211,9 +252,10 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
       const params = args[0]?.type === 'list' ? args[0].values : [];
       const paramNames = patternNames(params, toJsIdentifier);
       const body = args.slice(1);
+      const defaults = [...scopes.slice(0, -1), new Set([...locals, ...paramNames])];
+      for (const param of params) visitPatternDefaults(param, (value) => visit(value, defaults, dialect));
       const nextScope = functionScope(body, paramNames, locals, toJsIdentifier, formHead);
       const next = [...scopes.slice(0, -1), nextScope];
-      for (const param of params) visitPatternDefaults(param, (value) => visit(value, next, dialect));
       for (const form of body) visit(form, next, dialect);
       return;
     }
@@ -250,9 +292,10 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
           const methodLocals = patternNames(params, toJsIdentifier);
           for (const name of classNames) methodLocals.add(name);
           const body = entry.values.slice(bodyIndex);
+          const defaults = [...next.slice(0, -1), new Set([...classNames, ...methodLocals])];
+          for (const param of params) visitPatternDefaults(param, (value) => visit(value, defaults, dialect));
           const methodScope = functionScope(body, methodLocals, classNames, toJsIdentifier, formHead);
           const methodScopes = [...next.slice(0, -1), methodScope];
-          for (const param of params) visitPatternDefaults(param, (value) => visit(value, methodScopes, dialect));
           for (const form of body) visit(form, methodScopes, dialect);
         };
         visitMember(member);
@@ -293,25 +336,33 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
       visitBody(args.slice(1), scopes, dialect);
       return;
     }
-    if (head === 'try') {
-      const body = [];
-      for (const arg of args) {
-        const clauseHead = arg?.type === 'list' ? formHead(arg.values[0]) : null;
-        if (clauseHead === 'catch') visit(arg, scopes, dialect);
-        else if (clauseHead === 'finally') visitBody(arg.values.slice(1), scopes, dialect);
-        else body.push(arg);
-      }
-      visitBody(body, scopes, dialect);
-      return;
-    }
-    if (head === 'finally') {
+    if (head === 'do') {
       visitBody(args, scopes, dialect);
       return;
     }
-    if (head === 'catch') {
-      const catchNames = patternNames(args[0]?.type === 'list' ? [args[0]] : [args[0]], toJsIdentifier);
-      const next = [...scopes.slice(0, -1), new Set([...locals, ...catchNames])];
-      for (const arg of args.slice(1)) visit(arg, next, dialect);
+    if (head === 'try') {
+      let bodyEnd = args.length;
+      let finalizer = null;
+      let handler = null;
+      const finalCandidate = args[bodyEnd - 1];
+      if (finalCandidate?.type === 'list' && finalCandidate.values[0]?.type === 'atom' &&
+          finalCandidate.values[0].value === 'finally') {
+        finalizer = finalCandidate.values.slice(1);
+        bodyEnd--;
+      }
+      const catchCandidate = args[bodyEnd - 1];
+      if (catchCandidate?.type === 'list' && catchCandidate.values[0]?.type === 'atom' &&
+          catchCandidate.values[0].value === 'catch') {
+        handler = catchCandidate.values.slice(1);
+        bodyEnd--;
+      }
+      visitBody(args.slice(0, bodyEnd), scopes, dialect);
+      if (handler) {
+        const catchNames = patternNames(handler[0]?.type === 'list' ? [handler[0]] : [handler[0]], toJsIdentifier);
+        const catchScopes = [...scopes.slice(0, -1), new Set([...locals, ...catchNames])];
+        visitBody(handler.slice(1), catchScopes, dialect);
+      }
+      if (finalizer) visitBody(finalizer, scopes, dialect);
       return;
     }
     if (head === 'if-let' || head === 'when-let') {
@@ -324,10 +375,10 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
         if (scrutinee) visit(scrutinee, scopes, dialect);
         const thenScope = [...scopes.slice(0, -1), new Set([...locals, ...names])];
         if (head === 'if-let') {
-          if (args[1]) visit(args[1], thenScope, dialect);
-          if (args[2]) visit(args[2], scopes, dialect);
+          if (args[1]) visitBody([args[1]], thenScope, dialect);
+          if (args[2]) visitBody([args[2]], scopes, dialect);
         } else {
-          for (const form of args.slice(1)) visit(form, thenScope, dialect);
+          visitBody(args.slice(1), thenScope, dialect);
         }
       }
       return;
@@ -339,7 +390,7 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
         const names = new Set();
         matchPatternNames(clause.values[0], names, toJsIdentifier);
         const next = [...scopes.slice(0, -1), new Set([...locals, ...names])];
-        for (const form of clause.values.slice(1)) visit(form, next, dialect);
+        visitBody(clause.values.slice(1), next, dialect);
       }
       return;
     }
