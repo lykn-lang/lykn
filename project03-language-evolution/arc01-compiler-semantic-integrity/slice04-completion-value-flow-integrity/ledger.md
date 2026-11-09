@@ -5,6 +5,12 @@ at `c202e55c` closes bounded CV-02. NE-C14 exact original F3
 and all remaining five CV rows stay open. Parent CI-04 remains open.
 I1 spent four refinements of the normal five. Release d736 and K0/13.
 
+[Iteration 06](cc-prompt-iteration06.md) opens the NE-C14 prerequisite
+on c202e for native occurrence identity and original F3 replay. This is
+planned prerequisite delivery under S04, with the four previous
+refinements retained. CV-02 acceptance and all other CV/CI-04 statuses
+stay as recorded above until actual new evidence is accepted.
+
 [I1 executable assignment](cc-prompt-iteration01.md) is issued on the
 validated release baseline `d73601a5`. This is a bounded first increment
 and supplies actual conditional branch and direct-transfer controls.

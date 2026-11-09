@@ -17,6 +17,14 @@ remain open. The next prerequisite is native macro occurrence identity
 (NE-C14) with the unchanged original F3. I2–I4 retain their separate
 readiness and composed proof. Release remains d736. I1 refinements 04/5.
 
+[NE-C14 executable prerequisite](cc-prompt-iteration06.md) continues
+from accepted task c202e under the existing S04 authority. It repairs
+only native binder occurrence identity and restores the original macro
+boundary witness alongside the literal proof. Private scope/identity
+control, exact old/current runtime, full repository gates and independent
+reproduction apply. Current I1 acceptance remains recorded, with four
+refinements used. I2–I4 remain separate.
+
 The Operator authorized direct S04 continuation after independently
 [validated local release integration](../../arc03-protected-host-intrinsics/artifacts/release-integration-d736.md)
 at `d73601a5`. Same Luna 6 High CC and Sol 6.1 High CDC, standard
