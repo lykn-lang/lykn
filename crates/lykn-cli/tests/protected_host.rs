@@ -1,9 +1,13 @@
 use std::fs;
+use std::io;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
-use std::time::UNIX_EPOCH;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use lykn_cli::dist::{DistError, build_project};
+use lykn_lang::diagnostics::{Diagnostic, Severity};
+use lykn_lang::reader::source_loc::Span;
+use lykn_lang::error::LyknError;
 use tempfile::TempDir;
 
 const INVALID: &[(&str, &str)] = &[
@@ -46,6 +50,369 @@ const LEGAL: &[(&str, &str, &str)] = &[
 
 const DIST_SOURCE: &str =
     "(export (func answer :args () :returns :number :body 42))\n(set! Reflect:apply 0)\n";
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum ArtifactState {
+    Missing,
+    Present {
+        bytes: Vec<u8>,
+        modified: SystemTime,
+    },
+    Error {
+        stage: &'static str,
+        kind: io::ErrorKind,
+        message: String,
+    },
+}
+
+#[derive(Debug, Clone)]
+struct ArtifactPair {
+    before: ArtifactState,
+    after: ArtifactState,
+    expected_bytes: Vec<u8>,
+    expected_modified: SystemTime,
+}
+
+#[derive(Debug, Clone)]
+enum ArtifactEffects {
+    None,
+    Preserve { js: ArtifactPair, dts: ArtifactPair },
+    Absent { js: ArtifactPair, dts: ArtifactPair },
+}
+
+struct PredicateInput<'a> {
+    code: Option<i32>,
+    stdout: &'a [u8],
+    stderr: &'a [u8],
+    expected_stderr: &'a [u8],
+    effects: &'a ArtifactEffects,
+}
+
+struct PredicateControl {
+    name: &'static str,
+    code: Option<i32>,
+    stdout: Vec<u8>,
+    stderr: Vec<u8>,
+    expected_stderr: Vec<u8>,
+    effects: ArtifactEffects,
+    expected_match: bool,
+}
+
+fn snapshot_artifact(path: &Path) -> ArtifactState {
+    let bytes = match fs::read(path) {
+        Ok(bytes) => bytes,
+        Err(error) if error.kind() == io::ErrorKind::NotFound => {
+            return ArtifactState::Missing;
+        }
+        Err(error) => {
+            return ArtifactState::Error {
+                stage: "read",
+                kind: error.kind(),
+                message: error.to_string(),
+            };
+        }
+    };
+    match fs::metadata(path).and_then(|metadata| metadata.modified()) {
+        Ok(modified) => ArtifactState::Present { bytes, modified },
+        Err(error) => ArtifactState::Error {
+            stage: "stat",
+            kind: error.kind(),
+            message: error.to_string(),
+        },
+    }
+}
+
+fn artifact_pair_matches(pair: &ArtifactPair, must_be_absent: bool) -> bool {
+    if must_be_absent {
+        return pair.before == ArtifactState::Missing && pair.after == ArtifactState::Missing;
+    }
+    matches!(
+        (&pair.before, &pair.after),
+        (
+            ArtifactState::Present {
+                bytes: before_bytes,
+                modified: before_modified,
+            },
+            ArtifactState::Present {
+                bytes: after_bytes,
+                modified: after_modified,
+            }
+        ) if before_bytes == &pair.expected_bytes
+            && after_bytes == &pair.expected_bytes
+            && before_modified == &pair.expected_modified
+            && after_modified == &pair.expected_modified
+            && before_bytes == after_bytes
+            && before_modified == after_modified
+    )
+}
+
+fn artifact_effects_match(effects: &ArtifactEffects) -> bool {
+    match effects {
+        ArtifactEffects::None => true,
+        ArtifactEffects::Preserve { js, dts } => {
+            artifact_pair_matches(js, false) && artifact_pair_matches(dts, false)
+        }
+        ArtifactEffects::Absent { js, dts } => {
+            artifact_pair_matches(js, true) && artifact_pair_matches(dts, true)
+        }
+    }
+}
+
+fn matches_policy_rejection(observation: &PredicateInput<'_>) -> bool {
+    observation.code == Some(1)
+        && observation.stdout.is_empty()
+        && observation.stderr == observation.expected_stderr
+        && artifact_effects_match(observation.effects)
+}
+
+fn exact_diagnostic(case: &str, source: &str, path: &Path, route: &str) -> Vec<u8> {
+    let forms = lykn_lang::reader::read(source).expect("parse unchanged protected-host fixture");
+    let form = forms.first().expect("protected-host fixture has a first form");
+    let values = form.as_list().expect("protected-host first form is a list");
+    let span = match case {
+        "w8" => Span::default(),
+        "w9" => values[7]
+            .as_list()
+            .expect("pre clause is a list")[1]
+            .as_list()
+            .expect("pre body is a list")[1]
+            .span(),
+        _ => values[1].span(),
+    };
+    let slot = if matches!(case, "w3" | "w4") {
+        "Reflect"
+    } else {
+        "Reflect.apply"
+    };
+    let message = format!("host-contract v1: write to protected slot {slot}");
+    let rendered = format!(
+        "{}:{}: error: {message}\n",
+        span.start.line, span.start.column
+    );
+    if route == "check" {
+        format!("{}: error: {rendered}", path.display()).into_bytes()
+    } else {
+        rendered.into_bytes()
+    }
+}
+
+fn save_artifact_snapshot(name: &str, path_name: &str, phase: &str, state: &ArtifactState) {
+    save_receipt(
+        name,
+        &format!("{path_name}-{phase}.txt"),
+        format!("{state:?}\n").as_bytes(),
+    );
+    if let ArtifactState::Present { bytes, .. } = state {
+        save_receipt(name, &format!("{path_name}-{phase}.bin"), bytes);
+    }
+}
+
+fn run_predicate_controls() {
+    let js_bytes = b"predicate JavaScript sentinel\n".to_vec();
+    let dts_bytes = b"predicate declaration sentinel\n".to_vec();
+    let js_state = ArtifactState::Present {
+        bytes: js_bytes.clone(),
+        modified: UNIX_EPOCH,
+    };
+    let dts_state = ArtifactState::Present {
+        bytes: dts_bytes.clone(),
+        modified: UNIX_EPOCH,
+    };
+    let expected_stderr =
+        b"1:7: error: host-contract v1: write to protected slot Reflect.apply\n".to_vec();
+    let baseline_effects = ArtifactEffects::Preserve {
+        js: ArtifactPair {
+            before: js_state.clone(),
+            after: js_state.clone(),
+            expected_bytes: js_bytes.clone(),
+            expected_modified: UNIX_EPOCH,
+        },
+        dts: ArtifactPair {
+            before: dts_state.clone(),
+            after: dts_state.clone(),
+            expected_bytes: dts_bytes.clone(),
+            expected_modified: UNIX_EPOCH,
+        },
+    };
+    let correct = expected_stderr.clone();
+    let mut controls = vec![
+        PredicateControl {
+            name: "accept-exact-policy-diagnostic-and-preservation",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: correct.clone(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: true,
+        },
+        PredicateControl {
+            name: "reject-syntax-error",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: b"syntax error\n".to_vec(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-io-error",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: b"I/O error\n".to_vec(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-unrelated-astring-macro-error",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: b"macro expansion error: Import \"astring\" is not a dependency\n".to_vec(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-v1-marker-inside-macro-error",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: b"macro expansion error: host-contract v1: write to protected slot Reflect.apply\n".to_vec(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-wrong-slot",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: b"1:7: error: host-contract v1: write to protected slot Reflect\n".to_vec(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-wrong-severity",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: b"1:7: warning: host-contract v1: write to protected slot Reflect.apply\n".to_vec(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-wrong-span",
+            code: Some(1),
+            stdout: Vec::new(),
+            stderr: b"1:8: error: host-contract v1: write to protected slot Reflect.apply\n".to_vec(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-exit-zero",
+            code: Some(0),
+            stdout: Vec::new(),
+            stderr: correct.clone(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-exit-101",
+            code: Some(101),
+            stdout: Vec::new(),
+            stderr: correct.clone(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-no-exit-code",
+            code: None,
+            stdout: Vec::new(),
+            stderr: correct.clone(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+        PredicateControl {
+            name: "reject-stdout-payload",
+            code: Some(1),
+            stdout: b"unexpected stdout".to_vec(),
+            stderr: correct.clone(),
+            expected_stderr: correct.clone(),
+            effects: baseline_effects.clone(),
+            expected_match: false,
+        },
+    ];
+    let mut js_mutation = baseline_effects.clone();
+    if let ArtifactEffects::Preserve { js, .. } = &mut js_mutation {
+        js.after = ArtifactState::Present {
+            bytes: b"mutated JavaScript\n".to_vec(),
+            modified: UNIX_EPOCH,
+        };
+    }
+    controls.push(PredicateControl {
+        name: "reject-javascript-mutation",
+        code: Some(1),
+        stdout: Vec::new(),
+        stderr: correct.clone(),
+        expected_stderr: correct.clone(),
+        effects: js_mutation,
+        expected_match: false,
+    });
+    let mut dts_mutation = baseline_effects.clone();
+    if let ArtifactEffects::Preserve { dts, .. } = &mut dts_mutation {
+        dts.after = ArtifactState::Present {
+            bytes: b"mutated declarations\n".to_vec(),
+            modified: UNIX_EPOCH,
+        };
+    }
+    controls.push(PredicateControl {
+        name: "reject-declaration-mutation",
+        code: Some(1),
+        stdout: Vec::new(),
+        stderr: correct.clone(),
+        expected_stderr: correct.clone(),
+        effects: dts_mutation,
+        expected_match: false,
+    });
+    let mut mtime_mutation = baseline_effects.clone();
+    if let ArtifactEffects::Preserve { js, .. } = &mut mtime_mutation {
+        js.after = ArtifactState::Present {
+            bytes: js_bytes,
+            modified: UNIX_EPOCH + std::time::Duration::from_secs(1),
+        };
+    }
+    controls.push(PredicateControl {
+        name: "reject-mtime-only-mutation",
+        code: Some(1),
+        stdout: Vec::new(),
+        stderr: correct.clone(),
+        expected_stderr: correct,
+        effects: mtime_mutation,
+        expected_match: false,
+    });
+
+    assert_eq!(controls.len(), 15, "all private predicate controls retained");
+    for control in &controls {
+        let observation = PredicateInput {
+            code: control.code,
+            stdout: &control.stdout,
+            stderr: &control.stderr,
+            expected_stderr: &control.expected_stderr,
+            effects: &control.effects,
+        };
+        let matched = matches_policy_rejection(&observation);
+        let verdict = format!(
+            "case={} matched={} expected={}\n",
+            control.name, matched, control.expected_match
+        );
+        eprintln!("PROTECTED_HOST_PREDICATE_CONTROL {verdict}");
+        save_receipt(control.name, "predicate.txt", verdict.as_bytes());
+        assert_eq!(matched, control.expected_match, "predicate control {}", control.name);
+    }
+}
 
 fn cli() -> Command {
     Command::new(env!("CARGO_BIN_EXE_lykn"))
@@ -132,14 +499,32 @@ fn write_source(root: &Path, source: &str) -> PathBuf {
     path
 }
 
-fn existing_sentinels(root: &Path, name: &str) -> (PathBuf, PathBuf, Vec<u8>, Vec<u8>) {
+fn existing_sentinels(
+    root: &Path,
+    name: &str,
+) -> (PathBuf, PathBuf, ArtifactState, ArtifactState, Vec<u8>, Vec<u8>) {
     let output = root.join(format!("{name}.js"));
     let declaration = output.with_extension("d.ts");
     let js = format!("existing {name} JavaScript sentinel\n").into_bytes();
     let dts = format!("existing {name} declarations sentinel\n").into_bytes();
     fs::write(&output, &js).expect("write existing JavaScript sentinel");
     fs::write(&declaration, &dts).expect("write existing declaration sentinel");
-    (output, declaration, js, dts)
+    fs::File::open(&output)
+        .and_then(|file| file.set_modified(UNIX_EPOCH))
+        .expect("set JavaScript sentinel epoch mtime");
+    fs::File::open(&declaration)
+        .and_then(|file| file.set_modified(UNIX_EPOCH))
+        .expect("set declaration sentinel epoch mtime");
+    let js_before = snapshot_artifact(&output);
+    let dts_before = snapshot_artifact(&declaration);
+    (
+        output,
+        declaration,
+        js_before,
+        dts_before,
+        js,
+        dts,
+    )
 }
 
 #[test]
@@ -148,12 +533,11 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
         name: String,
         route: &'static str,
         output: Output,
-        js_after: Option<Vec<u8>>,
-        dts_after: Option<Vec<u8>>,
-        expected_js: Option<Vec<u8>>,
-        expected_dts: Option<Vec<u8>>,
+        expected_stderr: Vec<u8>,
+        effects: ArtifactEffects,
     }
 
+    run_predicate_controls();
     let mut observations = Vec::new();
     for (case, source_text) in INVALID {
         let fixture = TempDir::new().expect("create invalid protected-host fixture");
@@ -172,10 +556,8 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
             name: (*case).to_string(),
             route: "check",
             output: check,
-            js_after: None,
-            dts_after: None,
-            expected_js: None,
-            expected_dts: None,
+            expected_stderr: exact_diagnostic(case, source_text, &source_path, "check"),
+            effects: ArtifactEffects::None,
         });
 
         let stdout_compile = execute_recorded(
@@ -191,17 +573,15 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
             name: (*case).to_string(),
             route: "compile-stdout",
             output: stdout_compile,
-            js_after: None,
-            dts_after: None,
-            expected_js: None,
-            expected_dts: None,
+            expected_stderr: exact_diagnostic(case, source_text, &source_path, "compile"),
+            effects: ArtifactEffects::None,
         });
 
-        let (output_path, dts_path, js_before, dts_before) =
+        let (output_path, dts_path, js_before, dts_before, js_expected, dts_expected) =
             existing_sentinels(fixture.path(), case);
         let route = format!("{case}-compile-existing");
-        save_receipt(&route, "js-before.bin", &js_before);
-        save_receipt(&route, "dts-before.bin", &dts_before);
+        save_artifact_snapshot(&route, "js", "before", &js_before);
+        save_artifact_snapshot(&route, "dts", "before", &dts_before);
         let file_compile = execute_recorded(
             &route,
             &source_path,
@@ -213,29 +593,32 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
                 .arg("-o")
                 .arg(&output_path),
         );
-        let js_after = fs::read(&output_path).ok();
-        let dts_after = fs::read(&dts_path).ok();
+        let js_after = snapshot_artifact(&output_path);
+        let dts_after = snapshot_artifact(&dts_path);
         eprintln!(
             "PROTECTED_HOST_FILES name={route} js_after={js_after:?} dts_after={dts_after:?}"
         );
-        save_receipt(
-            &route,
-            "js-after.bin",
-            js_after.as_deref().unwrap_or_default(),
-        );
-        save_receipt(
-            &route,
-            "dts-after.bin",
-            dts_after.as_deref().unwrap_or_default(),
-        );
+        save_artifact_snapshot(&route, "js", "after", &js_after);
+        save_artifact_snapshot(&route, "dts", "after", &dts_after);
         observations.push(Observation {
             name: (*case).to_string(),
             route: "compile-existing",
             output: file_compile,
-            js_after,
-            dts_after,
-            expected_js: Some(js_before),
-            expected_dts: Some(dts_before),
+            expected_stderr: exact_diagnostic(case, source_text, &source_path, "compile"),
+            effects: ArtifactEffects::Preserve {
+                js: ArtifactPair {
+                    before: js_before,
+                    after: js_after,
+                    expected_bytes: js_expected,
+                    expected_modified: UNIX_EPOCH,
+                },
+                dts: ArtifactPair {
+                    before: dts_before,
+                    after: dts_after,
+                    expected_bytes: dts_expected,
+                    expected_modified: UNIX_EPOCH,
+                },
+            },
         });
     }
 
@@ -245,6 +628,10 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
     let source = fs::read(&source_path).expect("read missing-output protected-host fixture");
     let output_path = fixture.path().join("missing.js");
     let dts_path = output_path.with_extension("d.ts");
+    let js_before = snapshot_artifact(&output_path);
+    let dts_before = snapshot_artifact(&dts_path);
+    save_artifact_snapshot("w1-compile-missing", "js", "before", &js_before);
+    save_artifact_snapshot("w1-compile-missing", "dts", "before", &dts_before);
     let missing = execute_recorded(
         "w1-compile-missing",
         &source_path,
@@ -256,39 +643,47 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
             .arg("-o")
             .arg(&output_path),
     );
-    let js_after = fs::read(&output_path).ok();
-    let dts_after = fs::read(&dts_path).ok();
+    let js_after = snapshot_artifact(&output_path);
+    let dts_after = snapshot_artifact(&dts_path);
     eprintln!(
         "PROTECTED_HOST_FILES name=w1-compile-missing js_after={js_after:?} dts_after={dts_after:?}"
     );
+    save_artifact_snapshot("w1-compile-missing", "js", "after", &js_after);
+    save_artifact_snapshot("w1-compile-missing", "dts", "after", &dts_after);
     save_receipt(
         "w1-compile-missing",
         "files.txt",
-        format!(
-            "js_exists={}\ndts_exists={}\n",
-            output_path.exists(),
-            dts_path.exists()
-        )
-        .as_bytes(),
+        format!("js_before={js_before:?}\ndts_before={dts_before:?}\njs_after={js_after:?}\ndts_after={dts_after:?}\n").as_bytes(),
     );
     observations.push(Observation {
         name: case.to_string(),
         route: "compile-missing",
         output: missing,
-        js_after,
-        dts_after,
-        expected_js: None,
-        expected_dts: None,
+        expected_stderr: exact_diagnostic(case, source_text, &source_path, "compile"),
+        effects: ArtifactEffects::Absent {
+            js: ArtifactPair {
+                before: js_before,
+                after: js_after,
+                expected_bytes: Vec::new(),
+                expected_modified: UNIX_EPOCH,
+            },
+            dts: ArtifactPair {
+                before: dts_before,
+                after: dts_after,
+                expected_bytes: Vec::new(),
+                expected_modified: UNIX_EPOCH,
+            },
+        },
     });
 
     let (case, source_text) = INVALID[8];
     let fixture = TempDir::new().expect("create stripped protected-host fixture");
     let source_path = write_source(fixture.path(), source_text);
     let source = fs::read(&source_path).expect("read stripped protected-host fixture");
-    let (output_path, dts_path, js_before, dts_before) =
+    let (output_path, dts_path, js_before, dts_before, js_expected, dts_expected) =
         existing_sentinels(fixture.path(), "w9-strip");
-    save_receipt("w9-strip-compile-existing", "js-before.bin", &js_before);
-    save_receipt("w9-strip-compile-existing", "dts-before.bin", &dts_before);
+    save_artifact_snapshot("w9-strip-compile-existing", "js", "before", &js_before);
+    save_artifact_snapshot("w9-strip-compile-existing", "dts", "before", &dts_before);
     let stripped = execute_recorded(
         "w9-strip-compile-existing",
         &source_path,
@@ -301,29 +696,32 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
             .arg("-o")
             .arg(&output_path),
     );
-    let js_after = fs::read(&output_path).ok();
-    let dts_after = fs::read(&dts_path).ok();
+    let js_after = snapshot_artifact(&output_path);
+    let dts_after = snapshot_artifact(&dts_path);
     eprintln!(
         "PROTECTED_HOST_FILES name=w9-strip-compile-existing js_after={js_after:?} dts_after={dts_after:?}"
     );
-    save_receipt(
-        "w9-strip-compile-existing",
-        "js-after.bin",
-        js_after.as_deref().unwrap_or_default(),
-    );
-    save_receipt(
-        "w9-strip-compile-existing",
-        "dts-after.bin",
-        dts_after.as_deref().unwrap_or_default(),
-    );
+    save_artifact_snapshot("w9-strip-compile-existing", "js", "after", &js_after);
+    save_artifact_snapshot("w9-strip-compile-existing", "dts", "after", &dts_after);
     observations.push(Observation {
         name: case.to_string(),
         route: "compile-strip-existing",
         output: stripped,
-        js_after,
-        dts_after,
-        expected_js: Some(js_before),
-        expected_dts: Some(dts_before),
+        expected_stderr: exact_diagnostic(case, source_text, &source_path, "compile"),
+        effects: ArtifactEffects::Preserve {
+            js: ArtifactPair {
+                before: js_before,
+                after: js_after,
+                expected_bytes: js_expected,
+                expected_modified: UNIX_EPOCH,
+            },
+            dts: ArtifactPair {
+                before: dts_before,
+                after: dts_after,
+                expected_bytes: dts_expected,
+                expected_modified: UNIX_EPOCH,
+            },
+        },
     });
 
     assert_eq!(
@@ -338,43 +736,32 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
     let failures: Vec<String> = observations
         .iter()
         .filter_map(|observation| {
-            let mut reasons = Vec::new();
-            if observation.output.status.success() {
-                reasons.push("command succeeded".to_string());
-            }
-            if observation.route == "compile-stdout" && !observation.output.stdout.is_empty() {
-                reasons.push(format!(
-                    "stdout was not empty: {:?}",
-                    observation.output.stdout
-                ));
-            }
-            if let Some(expected) = &observation.expected_js
-                && observation.js_after.as_ref() != Some(expected)
-            {
-                reasons.push(format!(
-                    "JavaScript output changed: {:?}",
-                    observation.js_after
-                ));
-            }
-            if let Some(expected) = &observation.expected_dts
-                && observation.dts_after.as_ref() != Some(expected)
-            {
-                reasons.push(format!(
-                    "declaration output changed: {:?}",
-                    observation.dts_after
-                ));
-            }
-            if observation.route == "compile-missing"
-                && (observation.js_after.is_some() || observation.dts_after.is_some())
-            {
-                reasons.push("missing-output route created an artifact".to_string());
-            }
-            (!reasons.is_empty()).then(|| {
+            let input = PredicateInput {
+                code: observation.output.status.code(),
+                stdout: &observation.output.stdout,
+                stderr: &observation.output.stderr,
+                expected_stderr: &observation.expected_stderr,
+                effects: &observation.effects,
+            };
+            let matched = matches_policy_rejection(&input);
+            let verdict = format!(
+                "route={} matched={matched}\nexpected_stderr={:?}\nactual_code={:?}\nactual_stdout={:?}\nactual_stderr={:?}\neffects={:?}\n",
+                observation.route,
+                observation.expected_stderr,
+                observation.output.status.code(),
+                observation.output.stdout,
+                observation.output.stderr,
+                observation.effects
+            );
+            save_receipt(
+                &format!("{}-{}", observation.name, observation.route),
+                "predicate.txt",
+                verdict.as_bytes(),
+            );
+            (!matched).then(|| {
                 format!(
-                    "{} {}: {}",
-                    observation.name,
-                    observation.route,
-                    reasons.join(", ")
+                    "{} {}: did not match exact host-policy rejection",
+                    observation.name, observation.route
                 )
             })
         })
@@ -550,7 +937,21 @@ fn protected_host_dist_error_preserves_typed_path_and_stale_outputs() {
         panic!("dist must preserve a typed source failure");
     };
     assert_eq!(path, source_path);
-    assert!(matches!(source, lykn_lang::error::LyknError::Classify(_)));
+    let LyknError::Classify(actual) = source else {
+        panic!("dist must preserve the classifier diagnostic");
+    };
+    let forms = lykn_lang::reader::read(DIST_SOURCE).expect("parse typed dist fixture");
+    let target_span = forms[1]
+        .as_list()
+        .expect("second dist form is a list")[1]
+        .span();
+    let expected = Diagnostic {
+        severity: Severity::Error,
+        message: "host-contract v1: write to protected slot Reflect.apply".to_string(),
+        span: target_span,
+        suggestion: None,
+    };
+    assert_eq!(actual, expected);
     assert_eq!(js_after.as_deref(), Some(js_before.as_slice()));
     assert_eq!(dts_after.as_deref(), Some(dts_before.as_slice()));
     assert_eq!(js_mtime_after, Some(js_mtime));
