@@ -5,6 +5,7 @@
 import { generate } from 'astring';
 import { parseIcu, collectSlotNames, IcuParseError } from './icu-parser.js';
 import { validateProtectedHost } from './protected-host.js';
+import { requestedHostCall, finalizeHostInvocations } from './host-invocation.js';
 
 // DD-61 §A6 — the resolution-aware dispatch accessor (JS twin of Rust's
 // `SExpr::as_form_head`). Returns a head atom's name ONLY when the atom is
@@ -1800,6 +1801,9 @@ function toStatement(node) {
 export function compileExpr(node, position = 'statement') {
   if (!node) return { type: 'Literal', value: null };
 
+  const requested = requestedHostCall(node, compileExpr);
+  if (requested) return requested;
+
   switch (node.type) {
     case 'number':
       return { type: 'Literal', value: node.value };
@@ -2275,5 +2279,5 @@ export function compile(exprs) {
     body: exprs.map(e => toStatement(compileExpr(e))),
     sourceType: 'module',
   };
-  return generate(program, { indent: '  ' });
+  return generate(finalizeHostInvocations(program), { indent: '  ' });
 }

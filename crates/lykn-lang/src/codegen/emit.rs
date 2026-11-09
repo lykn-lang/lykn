@@ -76,6 +76,21 @@ fn is_async_declaration(values: &[SExpr]) -> bool {
 /// Emit an expression. `parent_prec` is the precedence of the enclosing
 /// operator context (0 means top-level / no enclosing operator).
 pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), LyknError> {
+    if let Some(helper) = w.take_invocation(expr) {
+        let values = expr.as_list().ok_or_else(|| {
+            crate::codegen::host_invocation::invalid_request("invocation anchor is not a call")
+        })?;
+        w.write(&helper);
+        w.write("(");
+        for (index, value) in values.iter().enumerate() {
+            if index > 0 {
+                w.write(", ");
+            }
+            emit_expr(w, value, 0)?;
+        }
+        w.write(")");
+        return Ok(());
+    }
     match expr {
         SExpr::Number { value, .. } => emit_number(w, *value),
         SExpr::String { value, .. } => emit_string_literal(w, value),

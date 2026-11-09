@@ -139,6 +139,36 @@ fn scope_names(forms: &[SExpr], module: bool) -> HashSet<String> {
     names
 }
 
+pub(crate) fn invocation_unavailable_for_reflect(forms: &[SExpr]) -> bool {
+    let mut names = scope_names(forms, true);
+    fn collect_wrapped(forms: &[SExpr], names: &mut HashSet<String>) {
+        for form in forms {
+            let Some((head, args)) = head_and_args(form) else {
+                continue;
+            };
+            if !matches!(head, "export" | "async" | "kernel:export" | "kernel:async") {
+                continue;
+            }
+            for arg in args {
+                let Some((inner_head, _)) = head_and_args(arg) else {
+                    continue;
+                };
+                let base = inner_head.strip_prefix("kernel:").unwrap_or(inner_head);
+                if matches!(
+                    base,
+                    "bind" | "import" | "const" | "let" | "var" | "function" | "function*"
+                        | "func" | "genfunc" | "class" | "type"
+                ) {
+                    names.extend(scope_names(std::slice::from_ref(arg), false));
+                }
+                collect_wrapped(std::slice::from_ref(arg), names);
+            }
+        }
+    }
+    collect_wrapped(forms, &mut names);
+    names.contains("Reflect")
+}
+
 fn collect_var_hoists(forms: &[SExpr], names: &mut HashSet<String>) {
     for form in forms {
         let Some((head, args)) = head_and_args(form) else {

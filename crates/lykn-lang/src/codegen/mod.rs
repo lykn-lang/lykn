@@ -26,6 +26,7 @@
 
 pub mod emit;
 pub mod format;
+mod host_invocation;
 pub mod icu;
 pub mod names;
 pub mod precedence;
@@ -41,6 +42,13 @@ use format::JsWriter;
 /// Each top-level form is emitted as a statement. The resulting string is
 /// ready to be written to a `.js` file.
 pub fn emit_module_js(forms: &[SExpr]) -> Result<String, LyknError> {
+    emit_module_with_invocations(forms, &[])
+}
+
+pub(crate) fn emit_module_with_invocations(
+    forms: &[SExpr],
+    requests: &[host_invocation::InvocationRequest<'_>],
+) -> Result<String, LyknError> {
     if let Some(diagnostic) =
         crate::protected_host::validate_program(forms, crate::protected_host::InputDialect::Kernel)
             .into_iter()
@@ -48,9 +56,23 @@ pub fn emit_module_js(forms: &[SExpr]) -> Result<String, LyknError> {
     {
         return Err(LyknError::Codegen(diagnostic));
     }
-    let mut w = JsWriter::new();
-    for form in forms {
+    let invocation = host_invocation::prepare(forms, requests)?;
+    let mut w = JsWriter::with_invocations(invocation.request_names.clone());
+    let directives = forms.iter().take_while(|form| matches!(form, SExpr::String { .. })).count();
+    for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
+    }
+    if let Some(name) = invocation.helper_name.as_deref() {
+        w.write(&format!(
+            "function {name}(fn, receiver, argv) {{ return Reflect.apply(fn, receiver, argv); }}"
+        ));
+        w.newline();
+    }
+    for form in &forms[directives..] {
+        emit_statement(&mut w, form)?;
+    }
+    if !w.all_invocations_consumed() {
+        return Err(host_invocation::invalid_request("unconsumed invocation request"));
     }
     Ok(w.finish())
 }
@@ -176,5 +198,35 @@ mod tests {
         assert!(js.contains("this.x = x"));
         assert!(js.contains("getX()"));
         assert!(js.contains("return this.x"));
+    }
+
+    #[test]
+    fn private_host_invocation_is_lazy_backend_and_uses_exact_node() {
+        let call = list(vec![atom("saved"), atom("receiver"), atom("argv")]);
+        let forms = vec![str_lit("use strict"), call];
+        let request = host_invocation::InvocationRequest::new(
+            host_invocation::InvocationId::new(1),
+            &forms[1],
+        );
+        let js = emit_module_with_invocations(&forms, &[request]).unwrap();
+        assert_eq!(
+            js,
+            "\"use strict\";\nfunction lyknHostReflectApply0(fn, receiver, argv) { return Reflect.apply(fn, receiver, argv); }\nlyknHostReflectApply0(saved, receiver, argv);\n"
+        );
+    }
+
+    #[test]
+    fn private_host_invocation_declines_module_reflect_binding() {
+        let call = list(vec![atom("saved"), atom("receiver"), atom("argv")]);
+        let forms = vec![
+            list(vec![atom("const"), atom("Reflect"), atom("local")]),
+            call,
+        ];
+        let request = host_invocation::InvocationRequest::new(
+            host_invocation::InvocationId::new(1),
+            &forms[1],
+        );
+        let error = emit_module_with_invocations(&forms, &[request]).unwrap_err();
+        assert!(error.to_string().contains("module Reflect binding"));
     }
 }

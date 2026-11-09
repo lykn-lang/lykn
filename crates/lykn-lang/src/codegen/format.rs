@@ -4,11 +4,16 @@
 //! level. It lazily prepends indentation only when the first write after a
 //! newline occurs.
 
+use std::collections::HashMap;
+
 /// A buffer that builds indented JavaScript source text.
 pub struct JsWriter {
     buf: String,
     indent_level: usize,
     at_line_start: bool,
+    invocations: HashMap<usize, String>,
+    consumed_invocations: usize,
+    expected_invocations: usize,
 }
 
 impl JsWriter {
@@ -18,7 +23,29 @@ impl JsWriter {
             buf: String::new(),
             indent_level: 0,
             at_line_start: true,
+            invocations: HashMap::new(),
+            consumed_invocations: 0,
+            expected_invocations: 0,
         }
+    }
+
+    pub(crate) fn with_invocations(invocations: HashMap<usize, String>) -> Self {
+        let expected_invocations = invocations.len();
+        Self {
+            invocations,
+            expected_invocations,
+            ..Self::new()
+        }
+    }
+
+    pub(crate) fn take_invocation(&mut self, node: &crate::ast::sexpr::SExpr) -> Option<String> {
+        let name = self.invocations.remove(&(node as *const _ as usize))?;
+        self.consumed_invocations += 1;
+        Some(name)
+    }
+
+    pub(crate) fn all_invocations_consumed(&self) -> bool {
+        self.invocations.is_empty() && self.consumed_invocations == self.expected_invocations
     }
 
     /// Write a string fragment. If at the start of a line, prepend indentation
