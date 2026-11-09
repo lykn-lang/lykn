@@ -566,39 +566,23 @@ mod tests {
             "provider.js",
             &fallback_provider,
         );
-        write_fixture(
-            &root.join("fallback-shaken"),
-            "entry.js",
-            &shaken_entry,
-        );
+        write_fixture(&root.join("fallback-shaken"), "entry.js", &shaken_entry);
         write_fixture(
             &root.join("fallback-retained"),
             "provider.js",
             &fallback_provider,
         );
-        write_fixture(
-            &root.join("fallback-retained"),
-            "observer.js",
-            &observer,
-        );
+        write_fixture(&root.join("fallback-retained"), "observer.js", &observer);
         write_fixture(
             &root.join("fallback-live"),
             "provider.js",
             &fallback_provider,
         );
-        write_fixture(
-            &root.join("fallback-live"),
-            "entry.js",
-            &live_entry,
-        );
+        write_fixture(&root.join("fallback-live"), "entry.js", &live_entry);
         let state = fixture_forms(include_str!(
             "../../../../test/fixtures/lazy-protected-invocation/fallback-state.lisp"
         ));
-        write_fixture(
-            &root.join("fallback-eval"),
-            "eval.js",
-            &fallback_eval,
-        );
+        write_fixture(&root.join("fallback-eval"), "eval.js", &fallback_eval);
         write_fixture(
             &root.join("fallback-eval"),
             "state.js",
