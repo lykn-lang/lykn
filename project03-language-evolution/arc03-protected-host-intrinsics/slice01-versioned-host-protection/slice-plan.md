@@ -9,6 +9,15 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Authorized native oracle correction and baseline
+
+Operator authorizes [iteration02](cc-prompt-iteration02.md) on the exact
+`8443fde` composite. Same Luna6 High CC and Sol6.1 High CDC in Autonomous
+Mode. Stop on the next unexpected substantive failure or real evidence gap.
+This is source refinement 02 of 5. Scope is the single native test file and
+independent reconciliation of the original baseline. All six HC rows remain
+open. The production v1 and typed dist adapter remain separate.
+
 ## Current local composition status — 2026-11-08
 
 Exact macro prerequisite `f2cd8139` and the Arc03 tests-only tip

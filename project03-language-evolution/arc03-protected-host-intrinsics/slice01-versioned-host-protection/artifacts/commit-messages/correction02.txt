@@ -1,0 +1,6 @@
+Require exact native host policy diagnostics
+
+Check typed diagnostics and file preservation while retaining the old-policy baseline.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

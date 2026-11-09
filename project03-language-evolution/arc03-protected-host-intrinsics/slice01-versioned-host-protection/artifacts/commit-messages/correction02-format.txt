@@ -1,0 +1,6 @@
+Format native host oracle test
+
+Apply leaf Rust formatting to the frozen test without changing its observations.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

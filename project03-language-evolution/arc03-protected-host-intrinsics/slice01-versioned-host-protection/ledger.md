@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+Operator authorizes [iteration02](cc-prompt-iteration02.md) on `8443fde`,
+source refinement 02 of 5. Native test correction and independently
+reconciled baseline are the finite endpoint. All six HC rows stay open.
+
 Local composition passed independent Git review at `8443fde`.
 [Proof](../../arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md#independent-local-composition-acceptance--2026-11-08).
 Original Arc03 test bytes and the prior red baseline are retained. All six
