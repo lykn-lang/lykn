@@ -761,13 +761,13 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
 
 pub(crate) fn classify_form_with_bindings<'tree>(
     expr: &'tree SExpr,
-) -> Result<(SurfaceForm, Vec<BindingOccurrence<'tree>>), Diagnostic> {
+) -> Result<Vec<BindingOccurrence<'tree>>, Diagnostic> {
     let mut occurrences = Vec::new();
-    let result = {
+    {
         let mut capture = Some(&mut occurrences);
-        classify_form_inner(expr, &mut capture)
-    }?;
-    Ok((result, occurrences))
+        classify_form_inner(expr, &mut capture)?;
+    }
+    Ok(occurrences)
 }
 
 fn record_binding<'tree>(
@@ -1746,7 +1746,7 @@ fn parse_func_clause_from_args<'tree>(
         .get("post")
         .and_then(|v| v.first())
         .map(|e| (*e).clone());
-    let body = kw_map
+    let body: Vec<SExpr> = kw_map
         .get("body")
         .into_iter()
         .flatten()
@@ -1767,7 +1767,7 @@ fn parse_func_clause_from_args<'tree>(
     })
 }
 
-fn parse_keyword_clauses<'tree>(args: &'tree [SExpr]) -> HashMap<&'tree str, Vec<&'tree SExpr>> {
+fn parse_keyword_clauses(args: &[SExpr]) -> HashMap<&str, Vec<&SExpr>> {
     let mut map = HashMap::new();
     let mut current_key: Option<&str> = None;
     let mut current_values: Vec<&SExpr> = Vec::new();
@@ -1926,7 +1926,7 @@ fn parse_genfunc_clause_from_args<'tree>(
         .get("post")
         .and_then(|v| v.first())
         .map(|e| (*e).clone());
-    let body = kw_map
+    let body: Vec<SExpr> = kw_map
         .get("body")
         .into_iter()
         .flatten()
@@ -2051,6 +2051,7 @@ fn classify_match<'tree>(
     })
 }
 
+#[cfg(test)]
 fn classify_pattern(expr: &SExpr) -> Result<Pattern, Diagnostic> {
     classify_pattern_captured(expr, &mut None)
 }

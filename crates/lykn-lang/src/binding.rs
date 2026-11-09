@@ -219,9 +219,9 @@ pub(crate) fn binding_occurrences(form: &SExpr) -> Vec<BindingOccurrence<'_>> {
     match head {
         "bind" => bind_names(args),
         "func" | "genfunc" | "fn" | "lambda" | "genfn" | "type" | "if-let" | "when-let"
-        | "match" => crate::classifier::forms::classify_form_with_bindings(form)
-            .map(|(_, occurrences)| occurrences)
-            .unwrap_or_default(),
+        | "match" => {
+            crate::classifier::forms::classify_form_with_bindings(form).unwrap_or_default()
+        }
         "for-of" | "for-in" | "for-await-of" => loop_names(args),
         "class" => class_names(args),
         "catch" => catch_names(args),
