@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+[S02 is active](slice02-lazy-protected-invocation/ledger.md) with four-case
+proof for eligible modules and an explicit module-level interop hold.
+PHI-03–06 remain open pending their actual criteria.
+
 [S01 acceptance](slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
 at `e7b44c1` closes PHI-01 and PHI-02. PHI-03 through PHI-06 remain open.
 S02 has not started. Source history and release `62e9531e` are retained.

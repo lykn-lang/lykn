@@ -9,6 +9,14 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+## S02 opened — 2026-11-09
+
+[S02](slice02-lazy-protected-invocation/slice-plan.md) proceeds with the
+private lazy invocation facility and four-case proof for eligible modules.
+Module-level `Reflect` plus direct-eval interop remains an explicit design
+gate for complete S02 and arc acceptance. No change to the approved host
+policy, S01 status or S04 authority.
+
 ## S01 local release integration — 2026-11-09
 
 Local `release/0.6.x` now points to the accepted S01 `e7b44c1`.
@@ -223,6 +231,9 @@ The new normative document and references land with code; audit crosslinks do
 not postpone required source-user guidance or fabricate a book update.
 
 ## Version history
+
+- 2026-11-09 v0.6: Opened S02 under Operator implementation authority and
+  recorded the separable delivery and unresolved module-scope interop.
 
 - 2026-11-09 v0.5: Recorded S01's independently validated local release
   fast-forward. The prior source acceptance and remaining arc gates retain
