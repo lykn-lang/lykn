@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+The S01 [v1 production static stop](slice01-versioned-host-protection/cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09)
+preserves candidate `cabfc621` before validation. No PHI row closes.
+The exact accepted baseline and prior refinement count are unchanged.
+
 The [original pre-policy baseline](slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
 was independently reproduced at exact local composite `5a2e569`. All
 PHI/HC/CV rows remain open and source refinement 03 of 5 stays spent.

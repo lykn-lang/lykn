@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+The Arc03 [v1 production stop](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09)
+retains unaccepted `cabfc621`, with no v1 runtime or full-gate evidence.
+HC/PHI/CV stay open. AM-04 remains done for the earlier bounded baseline.
+
 Arc03's [bounded baseline return](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
 was independently accepted at `5a2e569`. Arc02 AM-04 is done for that
 re-entry. HC/PHI/CV stay open. The earlier stops below are preserved.

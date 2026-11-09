@@ -1,5 +1,29 @@
 # S01 attempt dispositions — 2026-11-08
 
+## V1 production static STOP — 2026-11-09
+
+CDC stopped [iteration05](cc-prompt-iteration05.md) at the clean frozen
+`cabfc621` candidate before formatting or execution.
+[Static verification](cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09)
+records the mismatched JS dialect, omitted delete dispatch, missing
+native Surface function scopes and explicit-escape child dialect leak.
+The source candidate remains available in Git. No new runtime receipts
+were produced and no source was accepted.
+
+| Row | Current disposition |
+| --- | --- |
+| HC-01 | Open. Draft catalog and normative doc remain unaccepted. |
+| HC-02 | Open. Frozen policy dispatch and scope defects stop the original gates. |
+| HC-03 | Open. Native V2/V3 scope is wrong in the draft. No legal runs occurred. |
+| HC-04 | Open. The typed dist route and exact outputs/diagnostics remain untested. |
+| HC-05 | Open. Focused, runtime, full normal, citations and independent execution all remain unrun. |
+| HC-06 | Open. Stop and prior evidence are recorded. The delivered-source and downstream obligations remain. |
+
+The previous bounded baseline acceptance and AM-04 are unchanged.
+The next action is a separately authorized bounded correction under
+the same six criteria. Refinement 03 of 5 stays spent. No arc expansion
+or S02/S04/S07/S08 advancement follows this stop.
+
 ## Accepted numeric prerequisite and bounded baseline return
 
 The public numeric macro-literal repair at `46ca1c04` passed the focused

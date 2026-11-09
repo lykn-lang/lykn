@@ -1,5 +1,46 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## V1 production candidate stopped at static review — 2026-11-09
+
+[Iteration05](cc-prompt-iteration05.md) authorized the original production
+implementation after the accepted pre-policy baseline. Luna6 High CC
+froze clean `cabfc621dd28331aafe1315292bd830be2dd459d`, tree
+`1809cdaa7918c0cd2c24fa6e5a9d878161fc59cf`, parent
+`5a2e569852fa88181498c18d28cdfb26f70e2dae`. I inspected the actual
+17-path scope, commit body and trailers, and the source from that clean
+checkout. The public host test is unchanged and the native test diff
+only replaces the Deno fallback path. CC attested mirror comparisons
+exit 0. Neither reviewer released any formatter, build or test.
+
+**Verdict: substantive static STOP.** These are source-derived findings
+at the frozen revision. No v1 compiler result has been observed.
+
+| Finding | Frozen source trace and affected contract |
+| --- | --- |
+| Public walker enters in the wrong dialect | `packages/lang/mod.js:23–24` sends `expand(read(source))` to `compile`. The expansion of SetProp and SetSymbol emits ordinary kernel `=` forms at `packages/lang/classifier.js:513–516`. `packages/lang/compiler.js:2271–2275` calls the new validator. Its visitor defaults to Surface at `packages/lang/protected-host.js:40`, uses that default for the full unit at line 106, and only records `=` in Kernel at lines 95–96. It therefore misses the ordinary expanded assignment route used by W1/W2/W4/W5/W8/W9. |
+| Both walkers omit delete | Frozen W7 is `(kernel:delete Reflect:apply)`. JS strips the prefix at `packages/lang/expander.js:942–955` and supports kernel `delete` at `packages/lang/compiler.js:1642–1649`. The new JS target dispatch at `packages/lang/protected-host.js:87–98` lacks `delete`. Native strips the explicit prefix in `crates/lykn-lang/src/protected_host.rs:330–349` but also has no delete target case. |
+| Native Surface `func` parameter scope is missing | The new function handling at `crates/lykn-lang/src/protected_host.rs:231–254` covers fn/lambda/genfn and kernel function only. The later generic visit walks a Surface `func` body with no parameter scope. The unchanged V2/V3 functions assign through their own `Reflect`, `globalThis` and normalized `Reflect!` parameters. The walk reaches those writes as though their roots were global. |
+| Native explicit escape leaks into unprefixed children | `crates/lykn-lang/src/protected_host.rs:330–349` changes the operation's dialect and then passes that changed dialect to every child. Iteration05 requires unprefixed source children to retain the surrounding dialect. A parent escape alone must not reinterpret source equality as a write. |
+
+The mechanical source diff check exited 2 on the new Rust module's
+blank EOF line at line 440. It remains as frozen. The typed dist
+adapter, macro-time wrapper and docs are present in the draft and have
+no build or behavioral acceptance. The frozen candidate and both
+accepted prerequisite refs remain intact.
+
+**Re-entry held.** Retain the exact frozen W/legal/oracle tests and
+approved source contracts. A proposed correction would align the JS
+whole-unit boundary with expanded Kernel, cover delete in both target
+dispatches, derive actual Surface function/parameter/body scopes from
+the source binder grammar, and keep an explicit escape's dialect local
+to its operation. Recheck the remaining scope/target cases in the
+issued recipe before the existing independent static gate. Preserve
+macro-time exclusion, typed dist and the portable test fallback.
+If authorized, the next correction is source refinement 04 of 5.
+No correction is issued here. HC-01 through HC-06 and the linked
+PHI/CV work remain open. All planned v1 behavioral gates are unrun.
+The previous pre-policy baseline remains accepted at `5a2e569`.
+
 ## Original pre-policy baseline independently reproduced
 
 At clean local composite `5a2e569852fa88181498c18d28cdfb26f70e2dae`,

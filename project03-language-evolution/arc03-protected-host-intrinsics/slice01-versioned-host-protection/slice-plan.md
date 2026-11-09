@@ -2,12 +2,20 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice01-versioned-host-protection
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: []
 ---
 
 # S01 — versioned host contract and provable-write errors
+
+## V1 production held after static review
+
+The frozen `cabfc621` implementation stopped on four source-derived
+contract mismatches before any validation execution.
+[Verdict and held correction](cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09).
+No HC row closes. Source refinement remains 03 of 5. The original
+pre-policy baseline at `5a2e569` and its raw evidence remain accepted.
 
 ## Authorized v1 implementation
 

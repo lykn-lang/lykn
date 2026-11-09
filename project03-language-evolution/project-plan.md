@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Arc03 S01 v1 implementation stopped at static review of `cabfc621`,
+before any formatter, build or test. The accepted prior baseline and
+AM-04 stay intact. [Static stop](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09).
+
 Arc03 S01 independently accepted the numeric macro repair `46ca1c04`,
 exact local composition `5a2e569` and the original pre-policy baseline.
 [Verification](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced).

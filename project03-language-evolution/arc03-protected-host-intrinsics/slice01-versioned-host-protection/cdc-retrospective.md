@@ -1,5 +1,22 @@
 # CDC retrospective — S01 attempts, 2026-11-08
 
+## V1 production static review — 2026-11-09
+
+The immutable freeze let review trace exact W1 and W7 lowering from
+the public entry to the policy walker and compare native `func`
+parameters with V2/V3 before executing a broken candidate. The prompt
+already named the whole-unit dialect and parameter-scope obligations,
+but the implementation used an unverified Surface default at the JS
+boundary and did not carry the frozen W7 operator into either walker.
+Review found these omissions in source. No measurement is available
+for compiler output or for why authoring missed them.
+
+For a later authorized correction, trace the existing W1/W7 and V2/V3
+route contracts through the exact AST shape and scope transition before
+freezing a candidate. The correction should prove the old immutable
+oracles rather than broaden their population or soften acceptance.
+The earlier prospective launch holds and raw baseline remain applicable.
+
 ## Prospective hold through the bounded baseline return
 
 Separate command-level readback exposed the omitted native flags and

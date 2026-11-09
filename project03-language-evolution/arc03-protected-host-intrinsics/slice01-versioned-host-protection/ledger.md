@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+V1 production candidate `cabfc621` stopped before validation on
+[independent static findings](cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09).
+All six HC rows remain open. Source refinement 03 of 5 is spent.
+No correction or further validation is authorized by this record.
+
 The Operator authorizes [v1 enforcement and typed dist diagnostics](cc-prompt-iteration05.md)
 at clean composite `5a2e569`, followed by independent validation.
 All six HC rows are open. The original planned implementation starts

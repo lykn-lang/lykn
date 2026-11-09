@@ -1,13 +1,19 @@
 ---
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results, arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
 related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity, project07-core-library-research]
 ---
 
 # Protected host intrinsics
+
+S01's V1 production candidate `cabfc621` stopped in independent static
+review before any build or test.
+[Source findings](slice01-versioned-host-protection/cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09).
+The accepted pre-policy baseline still holds. All HC/PHI/CV obligations
+remain open and S02 remains unstarted.
 
 S01's numeric macro prerequisite is accepted at `46ca1c04`. Exact local
 composition and the original baseline are independently accepted at
