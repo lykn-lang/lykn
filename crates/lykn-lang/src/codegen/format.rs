@@ -11,9 +11,8 @@ pub struct JsWriter {
     buf: String,
     indent_level: usize,
     at_line_start: bool,
-    invocations: HashMap<usize, String>,
-    consumed_invocations: HashSet<usize>,
-    expected_invocations: usize,
+    invocations: HashMap<usize, bool>,
+    invocation_helper_name: String,
 }
 
 impl JsWriter {
@@ -24,16 +23,17 @@ impl JsWriter {
             indent_level: 0,
             at_line_start: true,
             invocations: HashMap::new(),
-            consumed_invocations: HashSet::new(),
-            expected_invocations: 0,
+            invocation_helper_name: String::new(),
         }
     }
 
-    pub(crate) fn with_invocations(invocations: HashMap<usize, String>) -> Self {
-        let expected_invocations = invocations.len();
+    pub(crate) fn with_invocations(
+        invocations: HashMap<usize, bool>,
+        invocation_helper_name: String,
+    ) -> Self {
         Self {
             invocations,
-            expected_invocations,
+            invocation_helper_name,
             ..Self::new()
         }
     }
@@ -41,22 +41,31 @@ impl JsWriter {
     pub(crate) fn take_invocation(
         &mut self,
         node: &crate::ast::sexpr::SExpr,
-    ) -> Result<Option<String>, crate::error::LyknError> {
+    ) -> Result<bool, crate::error::LyknError> {
         let address = node as *const _ as usize;
-        if self.consumed_invocations.contains(&address) {
+        let Some(consumed) = self.invocations.get_mut(&address) else {
+            return Ok(false);
+        };
+        if *consumed {
             return Err(crate::codegen::host_invocation::invalid_request(
                 "invocation request consumed more than once",
             ));
         }
-        let Some(name) = self.invocations.remove(&address) else {
-            return Ok(None);
-        };
-        self.consumed_invocations.insert(address);
-        Ok(Some(name))
+        *consumed = true;
+        Ok(true)
     }
 
     pub(crate) fn all_invocations_consumed(&self) -> bool {
-        self.invocations.is_empty() && self.consumed_invocations.len() == self.expected_invocations
+        self.invocations.values().all(|consumed| *consumed)
+    }
+
+    pub(crate) fn invocation_helper_name(&self) -> &str {
+        &self.invocation_helper_name
+    }
+
+    pub(crate) fn write_invocation_helper_name(&mut self) {
+        let name = self.invocation_helper_name.clone();
+        self.write(&name);
     }
 
     /// Write a string fragment. If at the start of a line, prepend indentation

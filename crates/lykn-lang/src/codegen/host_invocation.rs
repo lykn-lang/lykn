@@ -17,7 +17,7 @@ pub(crate) struct InvocationRequest<'a> {
 
 pub(crate) struct PreparedInvocations {
     pub(crate) helper_name: Option<String>,
-    pub(crate) request_names: HashMap<usize, String>,
+    pub(crate) request_names: HashMap<usize, bool>,
     pub(crate) slot: &'static str,
 }
 
@@ -68,7 +68,7 @@ pub(crate) fn prepare(
     };
     let request_names = requests
         .iter()
-        .map(|request| (request.anchor as *const SExpr as usize, helper_name.clone()))
+        .map(|request| (request.anchor as *const SExpr as usize, false))
         .collect();
     Ok(PreparedInvocations {
         helper_name: Some(helper_name),
@@ -92,8 +92,9 @@ fn validate_anchor(anchor: &SExpr) -> Result<(), LyknError> {
                 "invocation operands must be stable atom references",
             ));
         };
-        if name.contains(':')
-            || matches!(name, "true" | "false" | "null" | "super")
+        if name.is_empty()
+            || name.contains(':')
+            || matches!(name, "this" | "super" | "true" | "false" | "null")
             || (name == "undefined" && index != 1)
         {
             return Err(invalid_request(

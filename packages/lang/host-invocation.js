@@ -21,19 +21,15 @@ export function compileWithHostInvocations(exprs, compileFn, requests) {
   if (requests.length === 0) return compileFn(exprs);
   if (active !== null) throw new Error('nested host invocation compilation');
   const byNode = new WeakMap();
-  const ids = new Set();
   const nodes = new Set();
   for (const request of requests) {
     if (!request || request[REQUEST_BRAND] !== true || request.id !== REFLECT_APPLY_ID) {
       throw new TypeError('invalid private host invocation request');
     }
-    if (ids.has(request.id) || nodes.has(request.node)) {
+    if (nodes.has(request.node)) {
       throw new Error('duplicate private host invocation request');
     }
-    if (request.node.type !== 'list' || request.node.values.length !== 3) {
-      throw new Error('host invocation request must anchor an exact three-part call');
-    }
-    ids.add(request.id);
+    validateAnchor(request.node);
     nodes.add(request.node);
     byNode.set(request.node, request);
   }
@@ -41,11 +37,11 @@ export function compileWithHostInvocations(exprs, compileFn, requests) {
   for (const node of nodes) {
     if (!inputNodes.has(node)) throw new Error('orphaned host invocation request');
   }
-  active = { exprs, byNode, requests: new Set(requests), consumed: new Set() };
+  active = { exprs, byNode, requests: new Set(requests), consumed: new Set(), finalized: false };
   try {
     const output = compileFn(exprs);
-    if (active.consumed.size !== active.requests.size) {
-      throw new Error('orphaned or unconsumed host invocation request');
+    if (!active.finalized || active.consumed.size !== active.requests.size) {
+      throw new Error('host invocation plan returned without complete finalization');
     }
     return output;
   } finally {
@@ -70,6 +66,7 @@ export function requestedHostCall(node, compileExpr) {
 
 export function finalizeHostInvocations(program, exprs) {
   if (active === null) return program;
+  if (active.finalized) throw new Error('host invocation plan finalized more than once');
   if (active.exprs !== exprs) throw new Error('host invocation plan belongs to a different unit');
   if (active.consumed.size !== active.requests.size) {
     throw new Error('orphaned or unconsumed host invocation request');
@@ -136,7 +133,25 @@ export function finalizeHostInvocations(program, exprs) {
     directiveEnd++;
   }
   program.body.splice(directiveEnd, 0, helper);
+  active.finalized = true;
   return program;
+}
+
+function validateAnchor(node) {
+  if (node.type !== 'list' || node.values.length !== 3) {
+    throw new Error('host invocation request must anchor an exact three-part call');
+  }
+  for (const [index, operand] of node.values.entries()) {
+    if (operand.type !== 'atom') {
+      throw new Error('host invocation operands must be stable atom references');
+    }
+    const name = operand.value;
+    if (name.length === 0 || name.includes(':') ||
+        ['this', 'super', 'true', 'false', 'null'].includes(name) ||
+        (name === 'undefined' && index !== 1)) {
+      throw new Error('host invocation operands must be stable atom references');
+    }
+  }
 }
 
 function visitAst(root, visit) {

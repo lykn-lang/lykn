@@ -143,8 +143,12 @@ pub(crate) fn invocation_unavailable_for_reflect(forms: &[SExpr]) -> bool {
     let mut names = scope_names(forms, true);
     fn add_decl(candidate: Option<&SExpr>, names: &mut HashSet<String>) {
         let Some(form) = candidate else { return };
-        let Some((head, _)) = head_and_args(form) else { return };
+        let Some((head, args)) = head_and_args(form) else { return };
         let head = head.strip_prefix("kernel:").unwrap_or(head);
+        if head == "async" {
+            add_decl(args.first(), names);
+            return;
+        }
         if matches!(
             head,
             "bind" | "import" | "const" | "let" | "var" | "function" | "function*"

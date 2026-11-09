@@ -59,7 +59,10 @@ pub(crate) fn emit_module_with_invocations(
     let invocation = host_invocation::prepare(forms, requests)?;
     let helper_name = invocation.helper_name;
     let slot = invocation.slot;
-    let mut w = JsWriter::with_invocations(invocation.request_names);
+    let mut w = JsWriter::with_invocations(
+        invocation.request_names,
+        helper_name.clone().unwrap_or_default(),
+    );
     let directives = forms.iter().take_while(|form| matches!(form, SExpr::String { .. })).count();
     for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
@@ -252,6 +255,16 @@ mod tests {
         };
         assert!(emit_module_with_invocations(&member_forms, &[member_request]).is_err());
 
+        for invalid in ["", "this", "true", "null", "super"] {
+            let call = list(vec![atom("saved"), atom(invalid), atom("argv")]);
+            let forms = vec![call];
+            let request = host_invocation::InvocationRequest {
+                id: crate::protected_host::IntrinsicId::ReflectApply,
+                anchor: &forms[0],
+            };
+            assert!(emit_module_with_invocations(&forms, &[request]).is_err());
+        }
+
         let call = list(vec![atom("saved"), atom("undefined"), atom("argv")]);
         let forms = vec![call.clone()];
         let orphan = host_invocation::InvocationRequest {
@@ -267,6 +280,38 @@ mod tests {
             anchor: &forms[0],
         };
         assert!(emit_module_with_invocations(&forms, &[request]).is_ok());
+    }
+
+    #[test]
+    fn private_host_invocation_uses_module_binding_roles() {
+        let rejects = [
+            "(const Reflect local)",
+            "(import \"./remote.js\" ((alias apply Reflect)))",
+            "(export (function Reflect () (return 1)))",
+            "(export default (function Reflect () (return 1)))",
+            "(export (async (function Reflect () (return 1))))",
+            "(block (var Reflect 1))",
+        ];
+        for source in rejects {
+            assert!(
+                crate::protected_host::invocation_unavailable_for_reflect(
+                    &fixture_forms(source)
+                ),
+                "expected module Reflect binding in {source}"
+            );
+        }
+        let allowed = [
+            "(export \"./remote.js\" (names Reflect))",
+            "(function local (Reflect) (saved receiver argv))",
+        ];
+        for source in allowed {
+            assert!(
+                !crate::protected_host::invocation_unavailable_for_reflect(
+                    &fixture_forms(source)
+                ),
+                "external or nested name must not bind module Reflect: {source}"
+            );
+        }
     }
 
     fn fixture_forms(source: &str) -> Vec<SExpr> {
@@ -337,13 +382,13 @@ mod tests {
         let root = evidence_root.join("native");
 
         let absent = emit_module_js(&fixture_forms(native_fixture_source("absent"))).unwrap();
-        assert!(!absent.contains("lyknHostReflectApply"));
+        assert!(!absent.contains("function lyknHostReflectApply"));
         assert!(!absent.contains("Reflect.apply"));
         write_fixture(&root.join("absent"), "absent.js", &absent);
 
         let provider = compile_provider_fixture();
-        assert!(provider.contains("function lyknHostReflectApply0"));
-        assert!(provider.contains("lyknHostReflectApply0(saved, receiver, argv)"));
+        assert!(provider.contains("function lyknHostReflectApply2"));
+        assert!(provider.contains("lyknHostReflectApply2(saved, receiver, argv)"));
         let shaken_entry = emit_module_js(&fixture_forms(native_fixture_source("shaken-entry"))).unwrap();
         write_fixture(&root.join("shaken"), "provider.js", &provider);
         write_fixture(&root.join("shaken"), "entry.js", &shaken_entry);

@@ -76,8 +76,8 @@ fn is_async_declaration(values: &[SExpr]) -> bool {
 /// Emit an expression. `parent_prec` is the precedence of the enclosing
 /// operator context (0 means top-level / no enclosing operator).
 pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), LyknError> {
-    if let Some(helper) = w.take_invocation(expr)? {
-        emit_requested_call(w, expr, &helper)?;
+    if w.take_invocation(expr)? {
+        emit_requested_call(w, expr)?;
         return Ok(());
     }
     match expr {
@@ -106,8 +106,8 @@ pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), 
 /// Emit an expression in statement position: appends a semicolon + newline for
 /// expression statements, or just a newline for statement forms.
 pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
-    if let Some(helper) = w.take_invocation(expr)? {
-        emit_requested_call(w, expr, &helper)?;
+    if w.take_invocation(expr)? {
+        emit_requested_call(w, expr)?;
         w.semicolon();
         return Ok(());
     }
@@ -155,11 +155,11 @@ pub fn emit_statement(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     Ok(())
 }
 
-fn emit_requested_call(w: &mut JsWriter, expr: &SExpr, helper: &str) -> Result<(), LyknError> {
+fn emit_requested_call(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     let values = expr.as_list().ok_or_else(|| {
         crate::codegen::host_invocation::invalid_request("invocation anchor is not a call")
     })?;
-    w.write(helper);
+    w.write_invocation_helper_name();
     w.write("(");
     for (index, value) in values.iter().enumerate() {
         if index > 0 {

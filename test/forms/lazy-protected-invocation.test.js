@@ -51,7 +51,11 @@ Deno.test("lazy protected invocation preserves the no-request compiler path", ()
   const first = compile(forms);
   const second = compileWithHostInvocations(forms, compile, []);
   assertEquals(second, first);
-  assertEquals(second.includes("lyknHostReflectApply"), false);
+  assertEquals(second.includes("function lyknHostReflectApply"), false);
+  assertStringIncludes(second, "saved(receiver, argv)");
+  const requestedProvider = compileProvider(true);
+  assertStringIncludes(requestedProvider, "function lyknHostReflectApply2(fn, receiver, argv)");
+  assertStringIncludes(requestedProvider, "lyknHostReflectApply2(saved, receiver, argv)");
 
   const collision = fixture("collision.lisp");
   const anchor = findSavedCall(collision);
@@ -81,6 +85,55 @@ Deno.test("lazy protected invocation validates plans and recovers after rejectio
   const duplicateRequest = hostInvocationRequest(newHostInvocationId(), duplicate[0]);
   assertThrows(() => compileWithHostInvocations(duplicate, compile,
     [duplicateRequest, duplicateRequest]), Error, "duplicate");
+
+  for (const source of [
+    '(saved receiver:method argv)',
+    '(saved this argv)',
+    '(saved receiver true)',
+    '(undefined receiver argv)',
+  ]) {
+    const invalid = read(source);
+    const invalidRequest = hostInvocationRequest(newHostInvocationId(), invalid[0]);
+    let callbackRan = false;
+    assertThrows(() => compileWithHostInvocations(invalid, () => {
+      callbackRan = true;
+      return "should not run";
+    }, [invalidRequest]), Error, "stable atom references");
+    assertEquals(callbackRan, false);
+  }
+
+  const multiple = read('(saved receiver argv) (other target args)');
+  const multipleRequests = multiple.map(node =>
+    hostInvocationRequest(newHostInvocationId(), node));
+  const multipleOutput = compileWithHostInvocations(multiple, compile, multipleRequests);
+  assertEquals((multipleOutput.match(/function lyknHostReflectApply0/g) ?? []).length, 1);
+  assertEquals((multipleOutput.match(/lyknHostReflectApply0\(/g) ?? []).length, 2);
+});
+
+Deno.test("lazy protected invocation checks source module binding roles", () => {
+  const unavailableSources = [
+    '(import "./remote.js" ((alias remote Reflect))) (saved receiver argv)',
+    '(export (function Reflect () (return 1))) (saved receiver argv)',
+    '(export default (function Reflect () (return 1))) (saved receiver argv)',
+    '(export (async (function Reflect () (return 1)))) (saved receiver argv)',
+    '(block (var Reflect local)) (saved receiver argv)',
+  ];
+  for (const source of unavailableSources) {
+    const forms = read(source);
+    const anchor = findSavedCall(forms);
+    assertThrows(() => compileWithHostInvocations(forms, compile,
+      [hostInvocationRequest(newHostInvocationId(), anchor)]), Error,
+    "module Reflect binding");
+  }
+  const reexport = read('(export "./remote.js" (names Reflect)) (saved receiver argv)');
+  assertEquals(compileWithHostInvocations(reexport, compile,
+    [hostInvocationRequest(newHostInvocationId(), findSavedCall(reexport))])
+    .includes("function lyknHostReflectApply0"), true);
+
+  const nested = read('(function local (Reflect) (saved receiver argv))');
+  assertEquals(compileWithHostInvocations(nested, compile,
+    [hostInvocationRequest(newHostInvocationId(), findSavedCall(nested))])
+    .includes("function lyknHostReflectApply0"), true);
 });
 
 Deno.test("lazy protected invocation materializes all four public proof inputs", () => {
@@ -101,7 +154,7 @@ Deno.test("lazy protected invocation materializes all four public proof inputs",
   Deno.writeTextFileSync(`${shakenRoot}/entry.js`, compileFixture("shaken-entry.lisp"));
   const shakenProvider = Deno.readTextFileSync(`${shakenRoot}/provider.js`);
   assertStringIncludes(shakenProvider, "Reflect.apply");
-  assertEquals(shakenProvider.indexOf("Reflect.apply") > shakenProvider.indexOf("function lyknHostReflectApply0"), true);
+  assertEquals(shakenProvider.indexOf("Reflect.apply") > shakenProvider.indexOf("function lyknHostReflectApply2"), true);
   assertEquals(Deno.readTextFileSync(`${shakenRoot}/entry.js`).includes("lyknHostReflectApply"), false);
 
   // Retained but uncalled: invocation survives in the export; lookup stays in
@@ -110,7 +163,7 @@ Deno.test("lazy protected invocation materializes all four public proof inputs",
   Deno.writeTextFileSync(`${retainedRoot}/provider.js`, compileProvider(true));
   const retainedInput = Deno.readTextFileSync(`${retainedRoot}/provider.js`);
   assertStringIncludes(retainedInput, "export {invoke, marker}");
-  assertStringIncludes(retainedInput, "function lyknHostReflectApply0");
+  assertStringIncludes(retainedInput, "function lyknHostReflectApply2");
   Deno.writeTextFileSync(`${retainedRoot}/observer.js`, compileFixture("retained-observer.lisp"));
 
   // Live call: saved getter value, original receiver and fully materialized
@@ -118,7 +171,7 @@ Deno.test("lazy protected invocation materializes all four public proof inputs",
   const liveRoot = caseRoot("live", evidenceRoot);
   Deno.writeTextFileSync(`${liveRoot}/provider.js`, compileProvider(true));
   Deno.writeTextFileSync(`${liveRoot}/entry.js`, compileFixture("live-entry.lisp"));
-  assertStringIncludes(Deno.readTextFileSync(`${liveRoot}/provider.js`), "lyknHostReflectApply0");
+  assertStringIncludes(Deno.readTextFileSync(`${liveRoot}/provider.js`), "lyknHostReflectApply2");
   assertStringIncludes(Deno.readTextFileSync(`${liveRoot}/entry.js`), "invoke(");
   assertStringIncludes(Deno.readTextFileSync(`${liveRoot}/entry.js`), "function*() {");
 });
