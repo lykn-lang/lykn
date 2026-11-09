@@ -1,0 +1,13 @@
+Independent CDC prospective W8 refresh. No execution yet; first requires clean CC ownership return.
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch: codex/public-macro-numeric-literals
+source: 46ca1c04b41e19385bc2867125bf4c816b7be31e
+tree: d483d56d7f807237e6248d5b05cbd8ad8e4a3e17
+executable: /usr/bin/make; argv: ["fresh-artifacts"]
+env TMPDIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/refresh/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/refresh/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/refresh/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make fresh-artifacts > /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/refresh/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/refresh/evidence/stderr.raw
+status destination after direct tool return: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/refresh/evidence/exit-status.txt
+Scoped paths above replace TMPDIR/XDG cache/npm. Fixed DENO_DIR. Inherited PATH and NO_COLOR are in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/tool-preflight.txt; no Cargo target or offline override.
+Actual source-cwd Rust 1.97.0 and Deno 2.9.6 pin in tool-preflight. Refresh rebuilds release/bin before dependent binary pins.
+Exact scratch probes: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/refresh/evidence/named-config.command.txt and adjacent raw. All 21 named files absent.
+Source project.json is present and selected by bin/lykn build. ls -ld /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc (exit 1); actual source-config.stdout.raw and source-config.stderr.raw in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1.
+Expected fresh-artifacts exit 0 with built packages and refreshed CLI.

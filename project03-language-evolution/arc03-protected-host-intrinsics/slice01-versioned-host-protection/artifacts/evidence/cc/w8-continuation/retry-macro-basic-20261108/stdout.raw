@@ -1,0 +1,48 @@
+running 9 tests from ./test/expander/macro-basic.test.js
+macro: simple when macro ... ok (2ms)
+macro: unless via when ... ok (479µs)
+macro: erased from output ... ok (205µs)
+macro: duplicate name throws ... ok (494µs)
+macro: no body throws ... ok (300µs)
+macro: produces correct expansion ... ok (154µs)
+macro: body without quasiquote ... ok (103µs)
+macro: nested numeric literal through public compiler ... FAILED (1ms)
+macro: direct numeric literal through public compiler ... FAILED (306µs)
+
+ ERRORS 
+
+macro: nested numeric literal through public compiler => ./test/expander/macro-basic.test.js:85:6
+error: Error: expandExpr: unexpected node type 'undefined'
+    throw new Error(`expandExpr: unexpected node type '${form.type}'`);
+          ^
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:884:11)
+    at expandExpr (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:862:18)
+    at expandChildrenSeq (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:821:23)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:836:35)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:1102:34)
+    at expandExpr (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:862:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:1010:12)
+    at expandExpr (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:862:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:1207:22)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:1856:20)
+
+macro: direct numeric literal through public compiler => ./test/expander/macro-basic.test.js:94:6
+error: Error: expandExpr: unexpected node type 'undefined'
+    throw new Error(`expandExpr: unexpected node type '${form.type}'`);
+          ^
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:884:11)
+    at expandExpr (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:862:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:1010:12)
+    at expandExpr (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:862:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:1207:22)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:1856:20)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/macro-basic.test.js:98:5
+
+ FAILURES 
+
+macro: nested numeric literal through public compiler => ./test/expander/macro-basic.test.js:85:6
+macro: direct numeric literal through public compiler => ./test/expander/macro-basic.test.js:94:6
+
+FAILED | 7 passed | 2 failed (8ms)
+

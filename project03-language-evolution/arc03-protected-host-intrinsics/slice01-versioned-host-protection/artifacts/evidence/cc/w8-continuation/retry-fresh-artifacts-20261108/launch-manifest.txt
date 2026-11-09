@@ -1,0 +1,43 @@
+Arc03 S01 W8 prerequisite — prospective launch receipt
+Invocation ID: fresh-artifacts-17d7018-retry-20261108
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and exact invocation.
+
+SOURCE AND STATUS
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/public-macro-numeric-literals
+HEAD: 17d7018fe679fcc75e1912fcd336af133e5c9cd4
+Tree: 718af9ecb77bcf4f750b61a5720b92cdaf98c2e8
+Preflight status: clean.
+Protected-host ref: codex/protected-host-contract @ a71536496ab8ee858cafdc319deea2e0d483077f
+Protected release: 62e9531e6183b3762a9ff326fdc07439db33f31f
+
+EXECUTABLE, ARGV, ENVIRONMENT
+Resolved executable: /usr/bin/make (GNU Make 3.81; resolved from retained PATH).
+Make argv: ["fresh-artifacts"]
+Exact top-level launch invocation to run only after release:
+env TMPDIR=/private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-17d7018-refresh-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-17d7018-refresh-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno make fresh-artifacts
+
+Exact shell command, including raw stream capture, to run only after release (tool exit must remain the actual make status):
+env TMPDIR=/private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-17d7018-refresh-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-17d7018-refresh-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno make fresh-artifacts > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-fresh-artifacts-20261108/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-fresh-artifacts-20261108/stderr.raw
+After that tool call returns, write its actual returned exit code verbatim to /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-fresh-artifacts-20261108/exit-status.txt.
+
+Scoped assignments: TMPDIR=/private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-17d7018-refresh-20261108/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-17d7018-refresh-20261108/npm-cache; fixed approved DENO_DIR=/Users/oubiwann/Library/Caches/deno. XDG_CONFIG_HOME and XDG_DATA_HOME are not assigned; they do not isolate caches.
+Inherited relevant environment is captured in inherited-relevant-env.txt. Observed inherited overrides: CARGO_NET_GIT_FETCH_WITH_CLI=true and RUST_LOG=warn; PATH retained. No command-level Cargo/Rust flags, global Cargo paths or targets are assigned. Cargo/rustc/Deno resolved paths, versions, Deno pin, and relevant environment are in this invocation directory.
+
+SOURCE CONFIGURATION
+The Make recipe has no explicit Deno `--config` argument. Its `bin/lykn build` subprocess intentionally reads the repository workspace `project.json` through `cmd_build` -> `build_project('.')`. Source-root `project.json` is present and used by that child; source-root `deno.json` and `deno.jsonc` are absent. This source checkout config is separate from the owned temp-root ancestry checks below.
+
+EXACT-NAME ANCESTOR CHECK
+Owned TMPDIR root: /private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR. Its checked fixed ancestors are the TMPDIR root, /private/tmp/arc03-s01-17d7018-refresh-20261108, /private/tmp, /private, and /.
+Actual preflight command argv: `ls -ld /private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR/project.json /private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR/deno.json /private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR/deno.jsonc /private/tmp/arc03-s01-17d7018-refresh-20261108/project.json /private/tmp/arc03-s01-17d7018-refresh-20261108/deno.json /private/tmp/arc03-s01-17d7018-refresh-20261108/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc`. Exact stdout, stderr, and status are preserved at named-config-ls.stdout.raw, named-config-ls.stderr.raw, and named-config-ls.exit-status.txt. Status 1 is expected because all 15 scratch-ancestry files and the two source-root Deno config names are absent; source-root project.json is present and printed to stdout. No traversal was used.
+
+PINS
+Cargo: cargo 1.97.0 (c980f4866 2026-06-30); rustc: rustc 1.97.0 (2d8144b78 2026-07-07).
+Deno: /opt/homebrew/bin/deno 2.9.6; SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+
+DESTINATIONS
+Scratch root: /private/tmp/arc03-s01-17d7018-refresh-20261108
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-fresh-artifacts-20261108
+Raw stdout: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-fresh-artifacts-20261108/stdout.raw
+Raw stderr: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-fresh-artifacts-20261108/stderr.raw
+Actual make status: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-fresh-artifacts-20261108/exit-status.txt

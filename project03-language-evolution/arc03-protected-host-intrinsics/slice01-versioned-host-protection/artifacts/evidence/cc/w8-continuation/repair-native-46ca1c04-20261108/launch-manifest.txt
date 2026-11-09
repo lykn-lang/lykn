@@ -1,0 +1,41 @@
+Arc03 S01 numeric repair — prospective safe native compile receipt
+Invocation: repair-native-compile-46ca1c04-20261108
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and exact invocation.
+
+Source cwd before launch: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/public-macro-numeric-literals
+HEAD: 46ca1c04b41e19385bc2867125bf4c816b7be31e
+Tree: d483d56d7f807237e6248d5b05cbd8ad8e4a3e17
+Working tree clean. Protected-host ref remains a71536496ab8ee858cafdc319deea2e0d483077f.
+Post-refresh actual CLI `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn` SHA-256 3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc. Release source binary has the same digest. Deno `/opt/homebrew/bin/deno` 2.9.6 SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+
+Exact fixture source from frozen macro-basic.test.js nested case, no trailing LF:
+(macro emit-zero () `(console:log 0)) (emit-zero)
+Fixture path: /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/program.lykn
+Fixture length: 49 bytes. Fixture SHA-256: 50c14d12d5b8cf2f2ee6cf637639ed4cb223ba6501d952fefba98b5f6ec328a5. Hex byte readback is in fixture-bytes-hex.txt; it ends in byte 29 (close parenthesis), with no 0a.
+
+CLI executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn
+CLI argv: ["compile", "/private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/program.lykn"]
+CLI cwd: /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture
+Exact command to run only after release (redirect-only; real CLI exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-46ca1c04-native-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-native-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-46ca1c04-native-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn compile /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/program.lykn > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-46ca1c04-20261108/compile-stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-46ca1c04-20261108/compile-stderr.raw
+After the tool returns, record its actual exit status verbatim at /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-46ca1c04-20261108/compile-exit-status.txt.
+
+Fresh invocation environment:
+TMPDIR=/private/tmp/arc03-s01-46ca1c04-native-20261108/TMPDIR
+XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-native-20261108/XDG_CACHE_HOME (this is the fresh cache root used for later inspection of the materialized embedded expander)
+npm_config_cache=/private/tmp/arc03-s01-46ca1c04-native-20261108/npm-cache
+DENO_DIR=/Users/oubiwann/Library/Caches/deno (fixed approved)
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+Inherited relevant environment readback is in inherited-relevant-env.txt (NO_COLOR, PATH; inherited TMPDIR replaced).
+
+Exact-name config preflight argv:
+ls -ld /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/project.json /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/deno.json /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/deno.jsonc /private/tmp/arc03-s01-46ca1c04-native-20261108/project.json /private/tmp/arc03-s01-46ca1c04-native-20261108/deno.json /private/tmp/arc03-s01-46ca1c04-native-20261108/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc
+These 15 exact paths cover the owned fixture cwd, its fixed parent `/private/tmp/arc03-s01-46ca1c04-native-20261108`, `/private/tmp`, `/private`, and `/`; no traversal was used. Status 1 is expected: all 15 paths are absent, so the fixture is config-free. Actual stdout/stderr/status are in named-config-ls.stdout.raw, named-config-ls.stderr.raw, and named-config-ls.exit-status.txt.
+
+Expected compile stdout bytes: `console.log(0);\n`. Expected stderr empty. A separate strict Deno runtime invocation of generated JS requires its own fresh receipt and release after compile output; it is not included or launched here. The project’s existing strict runtime flags are `run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt`; its eventual exact input path/hash and actual invocation receive a separate receipt.
+
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-46ca1c04-20261108
+Compile raw stdout: compile-stdout.raw
+Compile raw stderr: compile-stderr.raw
+Actual compile status: compile-exit-status.txt

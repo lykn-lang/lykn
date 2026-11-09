@@ -1,0 +1,27 @@
+Arc03 S01 numeric repair — prospective refresh receipt
+Invocation: repair-fresh-artifacts-46ca1c04-20261108
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and invocation.
+
+Source cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/public-macro-numeric-literals
+HEAD: 46ca1c04b41e19385bc2867125bf4c816b7be31e
+Tree: d483d56d7f807237e6248d5b05cbd8ad8e4a3e17
+Status: clean. Protected-host ref remains a71536496ab8ee858cafdc319deea2e0d483077f.
+Changed canonical and embedded expander files are byte-identical, SHA-256 239bbdcf5b50d7168b0e477bc940d6b1da0a46452ac715d833e76b3baa280c0b. Frozen macro-basic test SHA-256 d708f7893b22ebd2c3c82a49c36d673c5f8573119ed51d9139c815fe00632a7c.
+
+Executable resolved: /usr/bin/make, GNU Make 3.81; argv ["fresh-artifacts"]. Cargo 1.97.0 (c980f4866 2026-06-30), rustc 1.97.0 (2d8144b78 2026-07-07). Deno /opt/homebrew/bin/deno 2.9.6, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Inherited relevant environment: CARGO_NET_GIT_FETCH_WITH_CLI=true, RUST_LOG=warn, PATH retained; details in inherited-relevant-env.txt. No command-level Cargo/Rust flags or global Cargo paths/targets are assigned.
+
+Exact command to run only after release (redirect-only; real process exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-46ca1c04-refresh-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-refresh-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-46ca1c04-refresh-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno make fresh-artifacts > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-46ca1c04-refresh-20261108/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-46ca1c04-refresh-20261108/stderr.raw
+After the tool returns, write its actual returned exit code verbatim to /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-46ca1c04-refresh-20261108/exit-status.txt.
+Scoped TMPDIR=/private/tmp/arc03-s01-46ca1c04-refresh-20261108/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-refresh-20261108/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-46ca1c04-refresh-20261108/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno. XDG config/data are not assigned.
+
+Make recipe uses `cargo build --release; rm -f bin/lykn; cp target/release/lykn bin/lykn; bin/lykn build`. The latter intentionally reads source-root project.json through `cmd_build` -> `build_project('.')`; this is separate from owned scratch ancestry.
+
+Single exact-name preflight command:
+ls -ld /private/tmp/arc03-s01-46ca1c04-refresh-20261108/TMPDIR/project.json /private/tmp/arc03-s01-46ca1c04-refresh-20261108/TMPDIR/deno.json /private/tmp/arc03-s01-46ca1c04-refresh-20261108/TMPDIR/deno.jsonc /private/tmp/arc03-s01-46ca1c04-refresh-20261108/project.json /private/tmp/arc03-s01-46ca1c04-refresh-20261108/deno.json /private/tmp/arc03-s01-46ca1c04-refresh-20261108/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+Owned TMPDIR and fixed ancestors checked: TMPDIR root, /private/tmp/arc03-s01-46ca1c04-refresh-20261108, /private/tmp, /private, /. No traversal. Preflight ls status 1 is expected: 15 scratch ancestry exact filenames and source-root deno.json/deno.jsonc absent; source-root project.json exists and is used by bin/lykn build. Actual stdout/stderr/status: named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt.
+
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-46ca1c04-refresh-20261108
+Raw output destinations: stdout.raw, stderr.raw; actual make exit destination: exit-status.txt.

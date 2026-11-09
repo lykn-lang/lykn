@@ -9,6 +9,15 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Accepted W8 prerequisite, composition pending
+
+The numeric-only repair at `46ca1c04` passed separate CC and CDC gates
+under [iteration04](cc-prompt-iteration04.md).
+[Independent proof](cdc-verification.md#w8-numeric-prerequisite-accepted-independently).
+The exact local composition into `a7153649` and the original pre-policy
+baseline remain the authorized endpoint. Source refinement stays 03 of 5.
+No protected-host implementation or release update is in this increment.
+
 ## Authorized W8 gate continuation
 
 Operator approves [iteration04](cc-prompt-iteration04.md) from the stopped

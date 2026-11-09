@@ -1,0 +1,25 @@
+Prelaunch exact-name checks. Each command was `test -e '<absolute path>'` from the source checkout.
+For each check, stdout empty and stderr empty. Status 1 means the exact file is absent; status 0 means present.
+No traversal was used.
+
+Owned TMPDIR ancestry, from TMPDIR through its fixed ancestors:
+- /private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR/project.json — status 1, expected absence.
+- /private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR/deno.json — status 1, expected absence.
+- /private/tmp/arc03-s01-17d7018-refresh-20261108/TMPDIR/deno.jsonc — status 1, expected absence.
+- /private/tmp/arc03-s01-17d7018-refresh-20261108/project.json — status 1, expected absence.
+- /private/tmp/arc03-s01-17d7018-refresh-20261108/deno.json — status 1, expected absence.
+- /private/tmp/arc03-s01-17d7018-refresh-20261108/deno.jsonc — status 1, expected absence.
+- /private/tmp/project.json — status 1, expected absence.
+- /private/tmp/deno.json — status 1, expected absence.
+- /private/tmp/deno.jsonc — status 1, expected absence.
+- /private/project.json — status 1, expected absence.
+- /private/deno.json — status 1, expected absence.
+- /private/deno.jsonc — status 1, expected absence.
+- /project.json — status 1, expected absence.
+- /deno.json — status 1, expected absence.
+- /deno.jsonc — status 1, expected absence.
+
+Source checkout is separate from scratch ancestry. The planned make invocation selects no Deno project config; it runs the Makefile `fresh-artifacts` target. Exact source-root checks from cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering:
+- test -e '/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json' — status 0, present, not selected by this Make/Cargo command.
+- test -e '/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json' — status 1, expected absence.
+- test -e '/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc' — status 1, expected absence.

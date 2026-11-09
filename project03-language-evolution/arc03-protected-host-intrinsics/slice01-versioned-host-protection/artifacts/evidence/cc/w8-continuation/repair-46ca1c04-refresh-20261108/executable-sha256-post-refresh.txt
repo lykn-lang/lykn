@@ -1,0 +1,3 @@
+3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc  bin/lykn
+3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc  target/release/lykn
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

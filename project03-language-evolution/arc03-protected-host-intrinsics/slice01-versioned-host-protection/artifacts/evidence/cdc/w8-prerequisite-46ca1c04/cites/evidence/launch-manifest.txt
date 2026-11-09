@@ -1,0 +1,13 @@
+Independent CDC prospective standalone cited paths. No execution yet.
+Source: codex/public-macro-numeric-literals clean 46ca1c04b41e19385bc2867125bf4c816b7be31e, tree d483d56d7f807237e6248d5b05cbd8ad8e4a3e17.
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+executable: /usr/bin/make; argv: ["check-cited-paths"]
+env TMPDIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/cites/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/cites/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/cites/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make check-cited-paths > /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/cites/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/cites/evidence/stderr.raw
+Actual status after direct tool return: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/cites/evidence/exit-status.txt
+All 21 scratch config names absent. Exact named argv and raw in this evidence directory. Checkout source config readback and inherited env/tool locators are in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1. Normal default flags. No LYKN_TEST_DENO or Cargo overrides.
+Actual post-Make pins:
+3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn
+3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+7aaaed9af785f77b5597a4d84cf8a49be41e466d0ae1740df6fe89d6508f667b  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+Expected committed-source citation gate exit 0.

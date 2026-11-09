@@ -1,0 +1,3 @@
+0c3aebe9e6a415cc04aadda88d2dc91c40d32fbc0d82ee7da7657965d2e8faa1  target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/stdout.raw
+a5e3e935f6d8ccada54ddbd5cdaffeee0cfd5d2b87d1088d1d5fd1249b84e599  target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/stderr.raw
+4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865  target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/exit-status.txt

@@ -1,0 +1,23 @@
+Arc03 S01 numeric repair — prospective strict Deno child receipt
+Invocation: repair-native-runtime-46ca1c04-20261108
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and exact invocation.
+
+Source checkout remains clean on codex/public-macro-numeric-literals@46ca1c04b41e19385bc2867125bf4c816b7be31e, tree d483d56d7f807237e6248d5b05cbd8ad8e4a3e17.
+Runtime executable: /opt/homebrew/bin/deno 2.9.6; SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Input: /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/program.js, 16 bytes, SHA-256 f3f83584dc18aaf271e18bc7edd41caf627d40b2ff78b7355e66b562b3fbb440. It is the exact stdout artifact from the released CLI compile (console.log(0); plus LF).
+
+Cwd: /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture
+Args: ["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/program.js"]
+Exact command to run only after release (redirect-only; actual Deno exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-46ca1c04-native-run-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-native-run-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-46ca1c04-native-run-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/program.js > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-runtime-46ca1c04-20261108/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-runtime-46ca1c04-20261108/stderr.raw
+After tool return, record the actual returned status verbatim at /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-runtime-46ca1c04-20261108/exit-status.txt.
+
+Fresh runtime environment: TMPDIR=/private/tmp/arc03-s01-46ca1c04-native-run-20261108/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-native-run-20261108/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-46ca1c04-native-run-20261108/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno. Inherited relevant environment readback: NO_COLOR=1, PATH; inherited TMPDIR is replaced. No XDG config/data is assigned.
+
+The one exact-name preflight command was `ls -ld` with these explicit paths:
+/private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/project.json /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/deno.json /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/deno.jsonc /private/tmp/arc03-s01-46ca1c04-native-20261108/project.json /private/tmp/arc03-s01-46ca1c04-native-20261108/deno.json /private/tmp/arc03-s01-46ca1c04-native-20261108/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc
+This checks the fixture root and fixed ancestors `/private/tmp/arc03-s01-46ca1c04-native-20261108`, `/private/tmp`, `/private`, `/`. Status 1 is expected: all 15 exact names are absent. Raw stdout/stderr/status are named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt. No traversal was used.
+
+Expected runtime stdout: `0\n`; expected stderr empty; expected status 0.
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-native-runtime-46ca1c04-20261108
+Raw destinations: stdout.raw, stderr.raw; actual status: exit-status.txt.

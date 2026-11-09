@@ -1,0 +1,3 @@
+7416e8e050d6e821491927566b3e619a34a94ff6328c66f0885f8eaa6dd003d3  target/arc03-s01/cc/repair-macro-basic-46ca1c04-20261108/stdout.raw
+0b6998750419705f4f0c0ce94dd84a816a64242af42a1b4196692b314099fa13  target/arc03-s01/cc/repair-macro-basic-46ca1c04-20261108/stderr.raw
+9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa  target/arc03-s01/cc/repair-macro-basic-46ca1c04-20261108/exit-status.txt

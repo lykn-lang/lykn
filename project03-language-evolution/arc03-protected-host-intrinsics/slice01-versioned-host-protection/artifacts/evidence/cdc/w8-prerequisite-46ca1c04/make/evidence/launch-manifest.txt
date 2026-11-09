@@ -1,0 +1,8 @@
+Independent CDC prospective make gate; no execution yet.
+Source: codex/public-macro-numeric-literals clean 46ca1c04b41e19385bc2867125bf4c816b7be31e, tree d483d56d7f807237e6248d5b05cbd8ad8e4a3e17.
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+executable: /usr/bin/make; argv: ["check"]
+env TMPDIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/make/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/make/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/make/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make check > /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/make/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/make/evidence/stderr.raw
+Actual status after direct tool return: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/make/evidence/exit-status.txt
+All 21 named config paths absent. See /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/make/evidence/named-config.command.txt and raw. Effective inherited PATH/NO_COLOR and actual tools/env in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/tool-preflight.txt and build-tool-preflight.txt. Scoped fresh caches and fixed DENO_DIR above.
+Default full unfiltered gates; no LYKN_TEST_DENO override, no Cargo target or offline override. Source project.json is present and selected by the artifact refresh child. Source named config readback in source-config.stdout.raw / stderr.raw. Expected terminal exit 0.

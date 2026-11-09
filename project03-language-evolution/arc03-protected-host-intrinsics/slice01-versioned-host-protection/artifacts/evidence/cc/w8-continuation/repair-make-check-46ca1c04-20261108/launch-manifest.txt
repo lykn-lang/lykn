@@ -1,0 +1,25 @@
+Arc03 S01 numeric repair — prospective normal full Make receipt
+Invocation: repair-make-check-46ca1c04-20261108
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and exact invocation.
+
+Source cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/public-macro-numeric-literals
+HEAD: 46ca1c04b41e19385bc2867125bf4c816b7be31e
+Tree: d483d56d7f807237e6248d5b05cbd8ad8e4a3e17
+Working tree clean after source freeze and released focused/native gates.
+
+Executable: /usr/bin/make, GNU Make 3.81; argv ["check"]. Normal unfiltered command with default gate flags: `make check`.
+Exact command to run only after release (redirect-only; actual Make exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-46ca1c04-make-check-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-make-check-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-46ca1c04-make-check-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno make check > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-make-check-46ca1c04-20261108/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-make-check-46ca1c04-20261108/stderr.raw
+After tool return, write the actual exit status verbatim to /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-make-check-46ca1c04-20261108/exit-status.txt.
+
+Fresh invocation environment: TMPDIR=/private/tmp/arc03-s01-46ca1c04-make-check-20261108/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-46ca1c04-make-check-20261108/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-46ca1c04-make-check-20261108/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno. PATH is retained and resolves `deno` to `/opt/homebrew/bin/deno` (2.9.6, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74). Do not set LYKN_TEST_DENO; it is absent from inherited environment and the normal fallback/default is retained. Inherited relevant CARGO_NET_GIT_FETCH_WITH_CLI=true and RUST_LOG=warn remain unchanged; no command-level global Cargo/Rust overrides. Full inherited relevant env and tool versions are adjacent.
+
+Config: Make's `fresh-artifacts` child `bin/lykn build` intentionally uses source-root project.json; source-root deno.json and deno.jsonc are absent. The owned TMPDIR root and fixed ancestors are checked separately below.
+
+Single exact-name check argv:
+ls -ld /private/tmp/arc03-s01-46ca1c04-make-check-20261108/TMPDIR/project.json /private/tmp/arc03-s01-46ca1c04-make-check-20261108/TMPDIR/deno.json /private/tmp/arc03-s01-46ca1c04-make-check-20261108/TMPDIR/deno.jsonc /private/tmp/arc03-s01-46ca1c04-make-check-20261108/project.json /private/tmp/arc03-s01-46ca1c04-make-check-20261108/deno.json /private/tmp/arc03-s01-46ca1c04-make-check-20261108/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+This covers TMPDIR root, its fixed parent `/private/tmp/arc03-s01-46ca1c04-make-check-20261108`, `/private/tmp`, `/private`, `/`, and the three source-root config names. No traversal. Status 1 is expected: 15 scratch ancestry names and source-root deno.json/deno.jsonc absent; source-root project.json present. Actual raw check paths: named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt.
+
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/repair-make-check-46ca1c04-20261108
+Raw output/status destinations: stdout.raw, stderr.raw, exit-status.txt.

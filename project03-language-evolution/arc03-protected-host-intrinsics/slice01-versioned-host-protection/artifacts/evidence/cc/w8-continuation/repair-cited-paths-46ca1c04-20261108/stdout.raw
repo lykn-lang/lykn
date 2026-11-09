@@ -1,0 +1,2 @@
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (63 documents on codex/public-macro-numeric-literals; 601 historical citations accepted via scripts/cited-paths-census.tsv)

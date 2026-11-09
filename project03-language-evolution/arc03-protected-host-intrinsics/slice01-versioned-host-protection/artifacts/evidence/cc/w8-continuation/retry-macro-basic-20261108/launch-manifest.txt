@@ -1,0 +1,43 @@
+Arc03 S01 W8 prerequisite — prospective Deno red receipt
+Invocation ID: macro-basic-17d7018-retry-20261108
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and exact invocation.
+
+SOURCE AND STATUS
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/public-macro-numeric-literals
+HEAD: 17d7018fe679fcc75e1912fcd336af133e5c9cd4
+Tree: 718af9ecb77bcf4f750b61a5720b92cdaf98c2e8
+Status: clean after released refresh.
+Protected-host ref remains codex/protected-host-contract @ a71536496ab8ee858cafdc319deea2e0d483077f.
+
+EXECUTABLE AND ARGV
+Executable: /opt/homebrew/bin/deno 2.9.6.
+Test argv: ["test", "--config", "project.json", "-A", "test/expander/macro-basic.test.js"]
+Exact launch command to run only after release (redirect-only; retain real process exit):
+env TMPDIR=/private/tmp/arc03-s01-17d7018-macro-basic-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-17d7018-macro-basic-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-17d7018-macro-basic-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno test --config project.json -A test/expander/macro-basic.test.js > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/stderr.raw
+After the tool returns, record its actual returned status verbatim at /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/exit-status.txt. Do not mask the process exit.
+
+SCOPED ENVIRONMENT
+TMPDIR=/private/tmp/arc03-s01-17d7018-macro-basic-20261108/TMPDIR
+XDG_CACHE_HOME=/private/tmp/arc03-s01-17d7018-macro-basic-20261108/XDG_CACHE_HOME
+npm_config_cache=/private/tmp/arc03-s01-17d7018-macro-basic-20261108/npm-cache
+DENO_DIR=/Users/oubiwann/Library/Caches/deno (fixed approved location)
+Inherited relevant environment is captured in inherited-relevant-env.txt: NO_COLOR=1, PATH retained; inherited TMPDIR is replaced by the fresh scoped TMPDIR. No XDG config/data variables are assigned.
+
+CONFIG SELECTION AND EXACT-NAME CHECK
+This Deno command explicitly selects source-root `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json` via `--config project.json` from the recorded cwd.
+The owned scratch root is `/private/tmp/arc03-s01-17d7018-macro-basic-20261108/TMPDIR`; exact fixed ancestors checked: that root, `/private/tmp/arc03-s01-17d7018-macro-basic-20261108`, `/private/tmp`, `/private`, and `/`. The single exact-name check was `ls -ld` with 18 explicit paths: each of `project.json`, `deno.json`, `deno.jsonc` at all five scratch ancestry directories, plus the three exact source-root names. No traversal was used. The actual exact argv result has status 1, expected because the 15 scratch-ancestry files and source-root deno.json/deno.jsonc are absent; source-root project.json is present. Raw outputs/status are in named-config-ls.stdout.raw, named-config-ls.stderr.raw, and named-config-ls.exit-status.txt.
+
+POST-REFRESH PINS
+`bin/lykn` SHA-256: e722a22016cc791173788d0bb7c0afb2547cff78c6b32f35e8f1d78647bda65e
+`target/release/lykn` SHA-256: e722a22016cc791173788d0bb7c0afb2547cff78c6b32f35e8f1d78647bda65e
+`/opt/homebrew/bin/deno` SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Deno version output is in deno-version.txt.
+
+DESTINATIONS
+Scratch root: /private/tmp/arc03-s01-17d7018-macro-basic-20261108
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108
+Raw stdout: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/stdout.raw
+Raw stderr: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/stderr.raw
+Actual exit status: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/prerequisite-17d7018/retry-macro-basic-20261108/exit-status.txt
+Post-refresh executable identities: executable-sha256-post-refresh.txt

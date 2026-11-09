@@ -1,5 +1,50 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## W8 numeric prerequisite accepted independently
+
+Under [iteration04](cc-prompt-iteration04.md), Luna6 High CC replayed the
+same frozen red at `17d7018` with a fresh XDG cache and actual prospective
+receipts. Refresh exited 0 and the focused target exited 1 with seven
+existing passes and the two predicted missing-node-type failures. Each
+released command had an actual named config check, scoped argv/env/cwd
+readback and separate raw outputs/status. The earlier red and its missed
+preflight remain preserved below.
+
+CC then froze `46ca1c04b41e19385bc2867125bf4c816b7be31e`, tree
+`d483d56d7f807237e6248d5b05cbd8ad8e4a3e17`. I reviewed the immutable
+three-path diff from `f2cd8139`, the actual commit body, and unchanged
+frozen tests. The two expander copies add one private numeric strategy
+operation for root and nested quasiquote templates. Compiled templates
+construct a typed number node and ordinary expansion preserves its
+existing node. No string/keyword behavior or public API change was
+introduced.
+
+CC returned clean exclusive ownership before my separate Sol6.1 High
+execution. Each role observed refresh exit 0, focused nine passes,
+and safe native compile exit 0 with exact 16-byte
+`console.log(0);\n` and empty stderr. The actual newly materialized
+expander in each native XDG root matched the canonical and embedded
+source bytes (SHA-256 `239bbdcf5b50d7168b0e477bc940d6b1da0a46452ac715d833e76b3baa280c0b`).
+Each strict Deno execution printed exact `0\n` with exit 0 and empty
+stderr. Both full normal Make gates exited 0 with all Rust targets,
+1,473 suite tests and 15 steps, and 482 documentation tests. Both
+standalone citation gates exited 0 (63 documents, 601 historical
+citations). The independent refresh and post-Make release and bin
+SHA-256 were `3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc`.
+
+[CC raw and prospective receipts](artifacts/evidence/cc/w8-continuation/)
+and [CDC independent receipts](artifacts/evidence/cdc/w8-prerequisite-46ca1c04/)
+retain the distinct invocations. Their source directories compared
+byte-for-byte before archival. The evidence diff check exits 2 on the
+original runner headings/EOF and two byte-dump whitespace records.
+Prose is checked separately. Source diff check passed.
+
+**Disposition.** Accept only the numeric prerequisite at `46ca1c04`.
+Its immutable branch remains distinct from the Arc03 baseline branch.
+The authorized exact local composition and original pre-policy baseline
+are next. All six HC rows and the linked PHI/CV obligations remain open.
+Source refinement 03 of 5 remains spent. Release `62e9531e` is unchanged.
+
 ## W8 repair prerequisite stopped before production
 
 Source refinement 03 of 5 followed [iteration03](cc-prompt-iteration03.md).

@@ -1,0 +1,15 @@
+ls: /deno.json: No such file or directory
+ls: /deno.jsonc: No such file or directory
+ls: /private/deno.json: No such file or directory
+ls: /private/deno.jsonc: No such file or directory
+ls: /private/project.json: No such file or directory
+ls: /private/tmp/arc03-s01-46ca1c04-native-20261108/deno.json: No such file or directory
+ls: /private/tmp/arc03-s01-46ca1c04-native-20261108/deno.jsonc: No such file or directory
+ls: /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/deno.json: No such file or directory
+ls: /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/deno.jsonc: No such file or directory
+ls: /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/project.json: No such file or directory
+ls: /private/tmp/arc03-s01-46ca1c04-native-20261108/project.json: No such file or directory
+ls: /private/tmp/deno.json: No such file or directory
+ls: /private/tmp/deno.jsonc: No such file or directory
+ls: /private/tmp/project.json: No such file or directory
+ls: /project.json: No such file or directory

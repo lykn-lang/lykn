@@ -1,0 +1,4 @@
+/usr/bin/make
+/Users/oubiwann/.cargo/bin/cargo
+/Users/oubiwann/.cargo/bin/rustc
+/opt/homebrew/bin/deno

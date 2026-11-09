@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+The [W8 numeric prerequisite](cdc-verification.md#w8-numeric-prerequisite-accepted-independently)
+is independently accepted at `46ca1c04`. Exact local composition and
+original pre-policy baseline are pending. All HC rows remain open and
+source refinement 03 of 5 stays spent.
+
 Operator authorizes the [prospective replay continuation](cc-prompt-iteration04.md)
 at frozen `17d7018`. Source refinement remains 03 of 5. Every validation
 command requires its own CDC prelaunch release. All HC rows remain open.

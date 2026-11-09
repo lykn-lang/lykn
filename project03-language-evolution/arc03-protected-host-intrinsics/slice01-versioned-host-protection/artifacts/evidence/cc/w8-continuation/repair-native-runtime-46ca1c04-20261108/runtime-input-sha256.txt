@@ -1,0 +1,2 @@
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+f3f83584dc18aaf271e18bc7edd41caf627d40b2ff78b7355e66b562b3fbb440  /private/tmp/arc03-s01-46ca1c04-native-20261108/fixture/program.js

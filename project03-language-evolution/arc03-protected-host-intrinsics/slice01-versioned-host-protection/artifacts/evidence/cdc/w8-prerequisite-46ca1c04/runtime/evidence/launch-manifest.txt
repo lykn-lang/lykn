@@ -1,0 +1,11 @@
+Independent CDC prospective runtime gate; no execution yet.
+Source: codex/public-macro-numeric-literals clean 46ca1c04b41e19385bc2867125bf4c816b7be31e, tree d483d56d7f807237e6248d5b05cbd8ad8e4a3e17.
+cwd: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/fixture
+executable: /opt/homebrew/bin/deno; argv: ["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/fixture/program.js"]
+env TMPDIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/fixture/program.js > /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/evidence/stderr.raw
+Actual status after direct tool return: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/evidence/exit-status.txt
+All 21 named config paths absent. See /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/evidence/named-config.command.txt and raw. Effective inherited PATH/NO_COLOR and actual tools/env in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/tool-preflight.txt and build-tool-preflight.txt. Scoped fresh caches and fixed DENO_DIR above.
+Actual runtime pins
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+f3f83584dc18aaf271e18bc7edd41caf627d40b2ff78b7355e66b562b3fbb440  /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/runtime/fixture/program.js
+Expected exit 0, exact 0 LF, empty stderr.

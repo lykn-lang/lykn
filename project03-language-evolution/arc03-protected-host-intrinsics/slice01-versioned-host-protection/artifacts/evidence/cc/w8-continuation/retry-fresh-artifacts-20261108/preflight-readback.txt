@@ -1,0 +1,2 @@
+Readback request: launch-manifest.txt plus inherited-relevant-env.txt and the named-config-ls raw outputs/status.
+No top-level build or refresh command has been executed for this receipt.

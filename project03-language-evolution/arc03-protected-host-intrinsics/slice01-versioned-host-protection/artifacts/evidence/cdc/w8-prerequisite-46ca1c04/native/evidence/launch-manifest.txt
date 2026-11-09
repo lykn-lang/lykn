@@ -1,0 +1,12 @@
+Independent CDC prospective native gate; no execution yet.
+Source: codex/public-macro-numeric-literals clean 46ca1c04b41e19385bc2867125bf4c816b7be31e, tree d483d56d7f807237e6248d5b05cbd8ad8e4a3e17.
+cwd: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/fixture
+executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn; argv: ["compile","/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/fixture/program.lykn"]
+env TMPDIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn compile /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/fixture/program.lykn > /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/evidence/stderr.raw
+Actual status after direct tool return: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/evidence/exit-status.txt
+All 21 named config paths absent. See /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/native/evidence/named-config.command.txt and its raw streams. Effective inherited PATH/NO_COLOR and build env in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/tool-preflight.txt and build-tool-preflight.txt. Scoped fresh caches and fixed DENO_DIR above.
+The 49-byte source fixture is the exact approved harmless nested case, with no LF, SHA256 50c14d12d5b8cf2f2ee6cf637639ed4cb223ba6501d952fefba98b5f6ec328a5. Expected exact console.log(0); followed by LF, empty stderr, exit 0.
+Actual post-refresh pin readback:
+3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn
+3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

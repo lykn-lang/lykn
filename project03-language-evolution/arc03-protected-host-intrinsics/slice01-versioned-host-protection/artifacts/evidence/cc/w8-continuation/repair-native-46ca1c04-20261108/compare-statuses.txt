@@ -1,0 +1,3 @@
+compile-output-exact-match=0
+materialized-vs-canonical-cmp=0
+materialized-vs-embedded-cmp=0
