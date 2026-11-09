@@ -125,7 +125,8 @@ fn compile_recorded(
     xdg: &Path,
 ) -> (Output, Option<Vec<u8>>, Option<Vec<u8>>) {
     save_receipt(name, "source.bin", source);
-    let mut command = cli()
+    let mut command = cli();
+    command
         .current_dir(fixture)
         .env("XDG_CACHE_HOME", xdg)
         .arg("compile")
@@ -480,7 +481,8 @@ fn m5_blocked_xdg_materialization_returns_io_error_without_output() {
     let output_path = fixture.path().join("m5.js");
 
     save_receipt("m5-blocked-xdg", "source.bin", &source);
-    let mut command = cli()
+    let mut command = cli();
+    command
         .current_dir(fixture.path())
         .env("XDG_CACHE_HOME", &blocked_xdg)
         .arg("compile")
