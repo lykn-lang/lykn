@@ -75,7 +75,7 @@
 (test-compiles
   "or: inside if"
   "(if (or a b) (console:log 1))"
-  "if (a || b) console.log(1);")
+  "if (a || b) {\n  console.log(1);\n}")
 
 (test-compiles
   "=: inside match"
