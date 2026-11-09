@@ -17,6 +17,10 @@ preserved at test-only `1118b8fd`; native validation stopped before
 generation, public dangling-else trace reproduced. [Iteration 03](cc-prompt-iteration03.md)
 adds its explicit-wrapper role adapter (refinement 02/5), with no oracle change.
 
+[Iteration 04](cc-prompt-iteration04.md) reconciles the exact resolved-head
+gate found at the first production freeze `45df1093` before any dependent
+validation. Refinement 03/5, same I1 fixture/verification population.
+
 Current2026-11-08: Operator resolves H1 POLICY with protected intrinsics; Arc03
 owns actual source contract/facility/proof. I3 waits specifically accepted
 Arc03/S02, while I1 can be independent; no circular dependency. All6CV OPEN,
