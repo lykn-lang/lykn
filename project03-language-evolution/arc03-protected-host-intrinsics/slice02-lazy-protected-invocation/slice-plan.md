@@ -9,6 +9,11 @@ depends-on: [slice01-versioned-host-protection]
 
 # S02 — Lazy protected invocation
 
+[Refinement 02](cc-prompt-iteration02.md) follows clean `27eeef0`.
+The normal commit used the correct dot-path fixed message after a failed
+hyphen-path attempt that created no commit. Static review found request
+shape/identity and fixture implementation gaps. No execution claim.
+
 [Refinement 01](cc-prompt-iteration01.md) follows the exact
 `c945bca8` source freeze. No source gate ran at that revision.
 It preserves the disclosed commit-command deviation and assigns the

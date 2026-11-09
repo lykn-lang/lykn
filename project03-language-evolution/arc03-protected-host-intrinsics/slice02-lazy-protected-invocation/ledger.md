@@ -2,6 +2,10 @@
 
 Opened 2026-11-09 at accepted S01 `e7b44c1`. No S02 observation yet.
 
+[Refinement 02](cc-prompt-iteration02.md) preserves the normal successor
+`27eeef0` and corrects source-proven request and fixture gaps. No validation
+has run. The original semantic/result oracles and HI-05 hold are retained.
+
 Initial candidate `c945bca8` is preserved. [Refinement 01](cc-prompt-iteration01.md)
 records static corrections and the nonconforming Git command. No validation
 ran and no criterion was upgraded.
