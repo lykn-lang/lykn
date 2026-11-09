@@ -1,13 +1,19 @@
 ---
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results, arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
 related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity, project07-core-library-research]
 ---
 
 # Protected host intrinsics
+
+S01's numeric macro prerequisite is accepted at `46ca1c04`. Exact local
+composition and the original baseline are independently accepted at
+`5a2e569`. [Verification](slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced).
+All PHI/HC/CV rows remain open. S01 v1 source protection and typed dist
+wiring require separate continuation authority.
 
 W8 prerequisite source refinement 03 stopped before repair at the
 prospective launch evidence gate. The expected focused red is preserved.

@@ -1,0 +1,27 @@
+{
+  "name": "v4",
+  "source": "(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))",
+  "generated": "const action = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return n + 1;\n};\naction.call = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return 99;\n};\nconsole.log(JSON.stringify(action.call(1)));\n",
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": [
+      "run",
+      "--no-config",
+      "--cached-only",
+      "--no-npm",
+      "--no-remote",
+      "--deny-net",
+      "--no-prompt",
+      "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR/4568d01b5d870a3e/v4.js"
+    ],
+    "cwd": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR/4568d01b5d870a3e",
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+      "XDG_CACHE_HOME": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/XDG_CACHE_HOME",
+      "TMPDIR": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/observations"
+    }
+  },
+  "runtime": null
+}

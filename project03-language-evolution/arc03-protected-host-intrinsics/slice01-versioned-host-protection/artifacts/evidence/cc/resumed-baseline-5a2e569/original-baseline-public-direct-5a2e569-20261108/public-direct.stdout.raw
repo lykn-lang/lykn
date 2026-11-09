@@ -1,0 +1,196 @@
+running 1 test from ./test/forms/protected-host.test.js
+public JavaScript compiler rejects nine writes and runs four legal controls ...
+  w1 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w1 {"name":"w1","source":"(set! Reflect:apply 0)","generated":"Reflect.apply = 0;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w1 ... ok (5ms)
+  w2 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w2 {"name":"w2","source":"(set-symbol! Reflect \"apply\" 0)","generated":"Reflect[\"apply\"] = 0;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w2 ... ok (0ms)
+  w3 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w3 {"name":"w3","source":"(++ Reflect)","generated":"++Reflect;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w3 ... ok (1ms)
+  w4 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w4 {"name":"w4","source":"(set! globalThis:Reflect 0)","generated":"globalThis.Reflect = 0;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w4 ... ok (0ms)
+  w5 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w5 {"name":"w5","source":"(set! globalThis:Reflect:apply 0)","generated":"globalThis.Reflect.apply = 0;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w5 ... ok (0ms)
+  w6 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w6 {"name":"w6","source":"(++ Reflect:apply)","generated":"++Reflect.apply;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w6 ... ok (0ms)
+  w7 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w7 {"name":"w7","source":"(kernel:delete Reflect:apply)","generated":"delete Reflect.apply;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w7 ... ok (1ms)
+  w8 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w8 {"name":"w8","source":"(macro stomp () `(set! Reflect:apply 0)) (stomp)","generated":"Reflect.apply = 0;\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w8 ... ok (1ms)
+  w9 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w9 {"name":"w9","source":"(func guarded :args () :returns :number :pre (do (set! Reflect:apply 0) true) :body 1)","generated":"function guarded() {\n  if (!(() => {\n    Reflect.apply = 0;\n    return true;\n  })()) throw new Error(\"guarded: pre-condition failed: (do (set! Reflect:apply 0) true) — caller blame\");\n  const result__gensym0 = 1;\n  if (typeof result__gensym0 !== \"number\" || Number.isNaN(result__gensym0)) throw new TypeError(\"guarded: return value expected number, got \" + typeof result__gensym0);\n  return result__gensym0;\n}\n","command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+----- output end -----
+  w9 ... ok (1ms)
+  v1 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v1 {"name":"v1","source":"(console:log (JSON:stringify (typeof Reflect:apply)))","generated":"console.log(JSON.stringify(typeof Reflect.apply));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/7ca9d560cafc0396/v1.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/7ca9d560cafc0396","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v1 {"name":"v1","source":"(console:log (JSON:stringify (typeof Reflect:apply)))","generated":"console.log(JSON.stringify(typeof Reflect.apply));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/7ca9d560cafc0396/v1.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/7ca9d560cafc0396","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":{"success":true,"code":0,"stdout":[34,102,117,110,99,116,105,111,110,34,10],"stderr":[]}}
+----- output end -----
+  v1 ... ok (28ms)
+  v2 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v2 {"name":"v2","source":"(func local :args (:any Reflect :any globalThis) :returns :array :body\n  (set! Reflect:apply 7)\n  (set! globalThis:Reflect:apply 8)\n  (array Reflect:apply globalThis:Reflect:apply))\n(console:log (JSON:stringify (local (obj :apply 0) (obj :Reflect (obj :apply 0)))))","generated":"function local(Reflect, globalThis) {\n  Reflect.apply = 7;\n  globalThis.Reflect.apply = 8;\n  const result__gensym1 = [Reflect.apply, globalThis.Reflect.apply];\n  if (!Array.isArray(result__gensym1)) throw new TypeError(\"local: return value expected array, got \" + typeof result__gensym1);\n  return result__gensym1;\n}\nconsole.log(JSON.stringify(local({\n  apply: 0\n}, {\n  Reflect: {\n    apply: 0\n  }\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/bcb3dbf95402cae0/v2.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/bcb3dbf95402cae0","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v2 {"name":"v2","source":"(func local :args (:any Reflect :any globalThis) :returns :array :body\n  (set! Reflect:apply 7)\n  (set! globalThis:Reflect:apply 8)\n  (array Reflect:apply globalThis:Reflect:apply))\n(console:log (JSON:stringify (local (obj :apply 0) (obj :Reflect (obj :apply 0)))))","generated":"function local(Reflect, globalThis) {\n  Reflect.apply = 7;\n  globalThis.Reflect.apply = 8;\n  const result__gensym1 = [Reflect.apply, globalThis.Reflect.apply];\n  if (!Array.isArray(result__gensym1)) throw new TypeError(\"local: return value expected array, got \" + typeof result__gensym1);\n  return result__gensym1;\n}\nconsole.log(JSON.stringify(local({\n  apply: 0\n}, {\n  Reflect: {\n    apply: 0\n  }\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/bcb3dbf95402cae0/v2.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/bcb3dbf95402cae0","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":{"success":true,"code":0,"stdout":[91,55,44,56,93,10],"stderr":[]}}
+----- output end -----
+  v2 ... ok (17ms)
+  v3 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v3 {"name":"v3","source":"(func normalized :args (:any Reflect!) :returns :any :body\n  (set! Reflect!:apply 9)\n  Reflect!:apply)\n(console:log (JSON:stringify (normalized (obj :apply 0))))","generated":"function normalized(Reflect) {\n  Reflect.apply = 9;\n  return Reflect.apply;\n}\nconsole.log(JSON.stringify(normalized({\n  apply: 0\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/6758c9ec17c085e5/v3.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/6758c9ec17c085e5","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v3 {"name":"v3","source":"(func normalized :args (:any Reflect!) :returns :any :body\n  (set! Reflect!:apply 9)\n  Reflect!:apply)\n(console:log (JSON:stringify (normalized (obj :apply 0))))","generated":"function normalized(Reflect) {\n  Reflect.apply = 9;\n  return Reflect.apply;\n}\nconsole.log(JSON.stringify(normalized({\n  apply: 0\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/6758c9ec17c085e5/v3.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/6758c9ec17c085e5","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":{"success":true,"code":0,"stdout":[57,10],"stderr":[]}}
+----- output end -----
+  v3 ... ok (16ms)
+  v4 ...
+------- output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v4 {"name":"v4","source":"(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))","generated":"const action = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return n + 1;\n};\naction.call = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return 99;\n};\nconsole.log(JSON.stringify(action.call(1)));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/9a46565c374ce12b/v4.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/9a46565c374ce12b","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v4 {"name":"v4","source":"(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))","generated":"const action = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return n + 1;\n};\naction.call = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  return 99;\n};\nconsole.log(JSON.stringify(action.call(1)));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/9a46565c374ce12b/v4.js"],"cwd":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR/9a46565c374ce12b","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":"/opt/homebrew/bin/deno","XDG_CACHE_HOME":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME","TMPDIR":"/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR","LYKN_PROTECTED_HOST_EVIDENCE_DIR":"/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence"}},"runtime":{"success":true,"code":0,"stdout":[57,57,10],"stderr":[]}}
+----- output end -----
+  v4 ... ok (17ms)
+public JavaScript compiler rejects nine writes and runs four legal controls ... FAILED (97ms)
+
+ ERRORS 
+
+public JavaScript compiler rejects nine writes and runs four legal controls => ./test/forms/protected-host.test.js:60:6
+error: AssertionError: Values are not equal: all nine rejection and four runtime steps must pass
+
+
+    [Diff] Actual / Expected
+
+
+-   [
+-     "w1: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)",
+-     "w2: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-     "w3: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-     "w4: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-     "w5: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-     "w6: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-     "w7: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-     "w8: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-     "w9: AssertionError: Expected function to throw.\n" +
+-       "    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:76:9\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:65:15\n" +
+-       "    at innerWrapped (ext:cli/40_test.js:300:11)\n" +
+-       "    at exitSanitizer (ext:cli/40_test.js:201:33)\n" +
+-       "    at Object.outerWrapped [as fn] (ext:cli/40_test.js:239:28)\n" +
+-       "    at TestContext.step (ext:cli/40_test.js:855:37)\n" +
+-       "    at captureStep (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:63:13)\n" +
+-       "    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:73:11\n" +
+-       "    at async innerWrapped (ext:cli/40_test.js:300:5)",
+-   ]
++   []
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/protected-host.test.js:121:3
+
+ FAILURES 
+
+public JavaScript compiler rejects nine writes and runs four legal controls => ./test/forms/protected-host.test.js:60:6
+
+FAILED | 0 passed (13 steps) | 1 failed (100ms)
+

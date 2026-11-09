@@ -1,5 +1,67 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Original pre-policy baseline independently reproduced
+
+At clean local composite `5a2e569852fa88181498c18d28cdfb26f70e2dae`,
+Luna6 High CC and separate Sol6.1 High CDC ran the original frozen
+baseline after the composition review below. Each execution used its
+own prospective argv/cwd/env/pins, named-file checks and raw destinations.
+CC returned clean ownership before my separate build and runtime pass.
+Both no-run builds exited 0. The post-build test SHA-256 was
+`7431c1d06f40d9873895b6ee6871acbf6113d7ff4954f001d2b44db2f135fb9e`
+and debug CLI SHA-256 was
+`40b47fb877f8cdce1ac177104eed1a80535e907a6d726307da9dc548c05cfd45`.
+Deno 2.9.6 retained the assigned binary identity.
+
+| Gate | Reconciled result in each execution |
+| --- | --- |
+| Native predicate controls | 15 of 15 exact verdicts, one accept and 14 rejects |
+| Native pre-policy routes | 29 of 29 exit 0, each exact rejection predicate false, including W8 on all three routes |
+| Native legal controls | Four strict children exit 0, exact outputs and empty stderr |
+| Dist | Actual `Ok` for the typed fixture, with source newer than both epoch outputs and both JS/DTS bytes and mtimes changed |
+| Native parent | Exit 101 with one pass and two expected policy failures, zero ignored or filtered |
+| Public pre-policy cases | Nine generated modules with no write-case runtime. W8 emitted exact `Reflect.apply = 0;\n`. Four legal before/after pairs have strict child exit 0, exact outputs and empty stderr |
+| Public parent | Exit 1 with 0 passed, 13 caught step statuses marked ok and one failed parent. Its actual failure list has nine missing rejections, compared with expected empty |
+
+Legal outputs were exact `"function"\n`, `[7,8]\n`, `9\n` and
+`99\n` in both pipelines. The runners are intentionally red because
+v1 rejection is unimplemented. No protected-write artifact was executed.
+The native Homebrew fallback remains a future portability issue for the
+normal Arc03 suite. These baseline runs explicitly set the Deno path.
+
+[CC baseline evidence](artifacts/evidence/cc/resumed-baseline-5a2e569/)
+and [CDC independent baseline evidence](artifacts/evidence/cdc/resumed-baseline-5a2e569/)
+preserve the raw statuses, case artifacts and file-effect receipts.
+My runs use the shared tool/source-config readbacks in the earlier
+[independent prerequisite archive](artifacts/evidence/cdc/w8-prerequisite-46ca1c04/).
+The prelaunch hold caught missing original native flags and missing
+public Deno/evidence exports in CC drafts. Both drafts are preserved
+unexecuted, with separate corrected readbacks preceding the actual
+launches. The archived run directories compared byte-for-byte. The raw
+evidence diff check exits 2 on native EOF blank lines and public runner
+heading spaces/EOF. Prose-only and source checks pass.
+
+**Disposition.** Accept the exact local composition and reproduced
+pre-policy baseline. This fulfills AM-04's explicit bounded re-entry
+condition alongside the earlier accepted Arc02 MR rows. HC, PHI and CV
+remain open. Source refinement 03 of 5 is spent. V1 and typed dist
+production remain separate from this authorization. No full Make was
+run on the intentionally red composite. Release `62e9531e` is clean
+and unchanged.
+
+## Local composition verified before baseline
+
+Luna6 High CC performed the authorized normal two-parent merge at
+`5a2e569852fa88181498c18d28cdfb26f70e2dae`, tree
+`7a9f29b2a312e4b3d1a20bee3cd14fdadddb4a79`. I independently read the
+actual commit and trailers, parent order `a7153649`, `46ca1c04`, clean
+status and the exact five-path union over `f2cd8139`. Both owning-parent
+path comparisons and the source diff check exited 0. The two original
+host fixture files and the three prerequisite paths are byte-identical
+to their respective parents. This releases only baseline preparation.
+Each build, native executable and public target still requires a
+separate prospective release. Release `62e9531e` remains unchanged.
+
 ## W8 numeric prerequisite accepted independently
 
 Under [iteration04](cc-prompt-iteration04.md), Luna6 High CC replayed the

@@ -1,0 +1,16 @@
+Independent CDC prospective original native baseline. No execution yet.
+Source: codex/protected-host-contract clean 5a2e569852fa88181498c18d28cdfb26f70e2dae, tree 7a9f29b2a312e4b3d1a20bee3cd14fdadddb4a79.
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb; argv: ["--nocapture","--test-threads=1"]
+env TMPDIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_PROTECTED_HOST_EVIDENCE_DIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/observations /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb --nocapture --test-threads=1 > /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/evidence/stderr.raw
+Actual status after direct tool return: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/evidence/exit-status.txt
+All 21 exact named config paths absent. See /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-native/evidence/named-config.command.txt and adjacent raw. Source project.json is present; fixtures use their separate temporary cwd and the dist fixture owns its config. Source config raw and selected inherited PATH/NO_COLOR/build env in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1.
+Actual readback after own no-run build; no Cargo between pins and direct execution:
+7431c1d06f40d9873895b6ee6871acbf6113d7ff4954f001d2b44db2f135fb9e  target/debug/deps/protected_host-365226f479af5deb
+40b47fb877f8cdce1ac177104eed1a80535e907a6d726307da9dc548c05cfd45  target/debug/lykn
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+5a2e569852fa88181498c18d28cdfb26f70e2dae
+7a9f29b2a312e4b3d1a20bee3cd14fdadddb4a79
+## codex/protected-host-contract
+Expected native: 15 predicate control verdicts, all 29 actual old CLI exit0 and predicate false, four legal exact runtimes, typed dist Ok and both JS/DTS sentinel overwrites, parent exit101 one pass/two expected failures.
+No protected-write generated module executes.

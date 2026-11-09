@@ -1,0 +1,1 @@
+case=reject-unrelated-astring-macro-error matched=false expected=false

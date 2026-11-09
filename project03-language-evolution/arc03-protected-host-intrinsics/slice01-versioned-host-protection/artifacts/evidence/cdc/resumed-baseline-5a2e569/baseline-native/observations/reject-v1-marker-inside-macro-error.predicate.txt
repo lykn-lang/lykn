@@ -1,0 +1,1 @@
+case=reject-v1-marker-inside-macro-error matched=false expected=false

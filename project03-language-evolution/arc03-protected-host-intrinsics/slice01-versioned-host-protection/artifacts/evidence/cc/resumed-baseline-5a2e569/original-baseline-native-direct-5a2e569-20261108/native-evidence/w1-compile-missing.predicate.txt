@@ -1,0 +1,6 @@
+route=compile-missing matched=false
+expected_stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+actual_code=Some(0)
+actual_stdout=[]
+actual_stderr=[]
+effects=Absent { js: ArtifactPair { before: Missing, after: Present { bytes: [82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 32, 61, 32, 48, 59, 10], modified: SystemTime { tv_sec: 1794197672, tv_nsec: 537105500 } }, expected_bytes: [], expected_modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }, dts: ArtifactPair { before: Missing, after: Missing, expected_bytes: [], expected_modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } }

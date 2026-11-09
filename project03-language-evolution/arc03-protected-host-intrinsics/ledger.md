@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+The [original pre-policy baseline](slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
+was independently reproduced at exact local composite `5a2e569`. All
+PHI/HC/CV rows remain open and source refinement 03 of 5 stays spent.
+
 S01 source refinement 03 of 5 is spent. The W8 test-only prerequisite
 stopped at missing prospective launch evidence. All PHI rows stay open.
 [Review](slice01-versioned-host-protection/cdc-verification.md#w8-repair-prerequisite-stopped-before-production).

@@ -1,0 +1,11 @@
+Independent CDC prospective original public baseline. No execution yet; first requires accepted CC observations and exact independent native disposition.
+Source: codex/protected-host-contract clean 5a2e569852fa88181498c18d28cdfb26f70e2dae, tree 7a9f29b2a312e4b3d1a20bee3cd14fdadddb4a79.
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+executable: /opt/homebrew/bin/deno; argv: ["test","--config","project.json","-A","test/forms/protected-host.test.js"]
+env TMPDIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_PROTECTED_HOST_EVIDENCE_DIR=/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/observations /opt/homebrew/bin/deno test --config project.json -A test/forms/protected-host.test.js > /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/evidence/stderr.raw
+Actual status after direct tool return: /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/evidence/exit-status.txt
+All 21 exact named config paths absent. See /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/evidence/named-config.command.txt and adjacent raw. This invocation explicitly selects the checkout project.json. Source config raw and inherited PATH/NO_COLOR/selected env in /private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1.
+Deno pinned 2.9.6, SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Exact preserved test source pins:
+f8a93bcc9223f59826ddd3a5f01ceb40fe38a96ee6e76c10fef34b6b55651ef7  crates/lykn-cli/tests/protected_host.rs
+c4e98cfa2c53605187f158821469623be882b83351bbc9ebad208242dca189e4  test/forms/protected-host.test.js
+Expected baseline: nine generated write artifacts, zero write-module executions, four legal strict Deno phase pairs and exact outputs. Captured 13 step statuses separately from expected failed parent exit 1.

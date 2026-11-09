@@ -2,12 +2,20 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice01-versioned-host-protection
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: []
 ---
 
 # S01 — versioned host contract and provable-write errors
+
+## Bounded baseline return accepted
+
+The original pre-policy baseline was independently reproduced at local
+composite `5a2e569` after the accepted numeric prerequisite and exact
+composition. [Verification](cdc-verification.md#original-pre-policy-baseline-independently-reproduced).
+All six HC rows remain open. V1 and typed dist source implementation
+require separate continuation authority. Source refinement stays 03 of 5.
 
 ## Accepted W8 prerequisite, composition pending
 

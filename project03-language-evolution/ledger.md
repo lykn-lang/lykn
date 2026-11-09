@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Arc03's [bounded baseline return](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
+was independently accepted at `5a2e569`. Arc02 AM-04 is done for that
+re-entry. HC/PHI/CV stay open. The earlier stops below are preserved.
+
 Arc03 W8 prerequisite is held at test-only `17d7018`. Source refinement
 03 of 5 is spent. The earlier public W8 stop and all HC/PHI/CV rows remain.
 [New stop record](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#w8-repair-prerequisite-stopped-before-production).

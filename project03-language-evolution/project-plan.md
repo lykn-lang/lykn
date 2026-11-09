@@ -9,6 +9,12 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Arc03 S01 independently accepted the numeric macro repair `46ca1c04`,
+exact local composition `5a2e569` and the original pre-policy baseline.
+[Verification](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced).
+This fulfills Arc02 AM-04's bounded re-entry. HC/PHI/CV remain open and
+v1 source protection requires separate authority.
+
 The Arc03 W8 prerequisite reproduced the expected red and stopped before
 repair because the required prospective launch evidence was incomplete.
 [Review](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#w8-repair-prerequisite-stopped-before-production).

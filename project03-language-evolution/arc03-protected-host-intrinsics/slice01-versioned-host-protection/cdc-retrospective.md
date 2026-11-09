@@ -1,4 +1,17 @@
-# CDC retrospective — initial attempt stopped, 2026-11-08
+# CDC retrospective — S01 attempts, 2026-11-08
+
+## Prospective hold through the bounded baseline return
+
+Separate command-level readback exposed the omitted native flags and
+public receipt environment before either baseline launch. The retained
+drafts show which inputs would have differed. This mattered because a
+top-level failure status or caught step count could otherwise look
+plausible while child evidence was missing. The corrected runs retained
+all case records, and the independent pass compared those observations
+with the original oracles. For later re-entry, start each manifest from
+the existing exact argv and environment record, then substitute only
+the actual new roots and producer identities. Retain the old uncontrolled
+red as observed history. The prospective replay is its own condition.
 
 ## W8 prerequisite prelaunch gap
 

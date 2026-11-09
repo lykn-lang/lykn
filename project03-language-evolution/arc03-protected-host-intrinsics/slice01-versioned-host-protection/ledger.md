@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+The [bounded baseline return](cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
+is independently accepted at `5a2e569`. All six HC rows remain open.
+Refinement 03 of 5 is spent. V1 and typed dist production remain held.
+
 The [W8 numeric prerequisite](cdc-verification.md#w8-numeric-prerequisite-accepted-independently)
 is independently accepted at `46ca1c04`. Exact local composition and
 original pre-policy baseline are pending. All HC rows remain open and

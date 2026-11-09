@@ -1,0 +1,5 @@
+(func local :args (:any Reflect :any globalThis) :returns :array :body
+  (set! Reflect:apply 7)
+  (set! globalThis:Reflect:apply 8)
+  (array Reflect:apply globalThis:Reflect:apply))
+(console:log (JSON:stringify (local (obj :apply 0) (obj :Reflect (obj :apply 0)))))

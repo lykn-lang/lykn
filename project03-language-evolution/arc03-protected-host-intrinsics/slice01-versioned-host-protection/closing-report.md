@@ -1,4 +1,21 @@
-# S01 attempts — current baseline STOP, 2026-11-08
+# S01 attempt dispositions — 2026-11-08
+
+## Accepted numeric prerequisite and bounded baseline return
+
+The public numeric macro-literal repair at `46ca1c04` passed the focused
+9-test target, native compile/strict runtime, full normal Make and
+standalone citations under separate CC and CDC execution. The exact
+local composition at `5a2e569` preserves both original host test files.
+The two fresh pre-policy baselines observed all 15 native predicate
+controls, all 29 native legacy exit-0 routes, native and public legal4,
+the expected dist overwrites, and all nine public generated write cases
+with zero write-case runtimes. Native parent exit 101 and public parent
+exit 1 are expected policy reds. [Independent review](cdc-verification.md#original-pre-policy-baseline-independently-reproduced).
+
+The bounded return fulfills AM-04. All six HC rows, all PHI rows and
+linked CV rows stay open for their actual source gates. Refinement 03 of
+5 remains spent. V1 implementation and typed dist wiring remain held.
+Earlier stops, omissions and raw results remain part of this record.
 
 ## W8 prerequisite stopped at the red evidence gate
 

@@ -1,0 +1,11 @@
+function guarded() {
+  if (!(() => {
+    Reflect.apply = 0;
+    return true;
+  })()) throw new Error("guarded: pre-condition failed: (do (set! Reflect:apply 0) true) — caller blame");
+
+  const result__gensym0 = 1;
+  if (typeof result__gensym0 !== "number" || Number.isNaN(result__gensym0)) throw new TypeError("guarded: return value expected number, got " + typeof result__gensym0);
+
+  return result__gensym0;
+}

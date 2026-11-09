@@ -1,0 +1,39 @@
+{
+  "name": "v2",
+  "source": "(func local :args (:any Reflect :any globalThis) :returns :array :body\n  (set! Reflect:apply 7)\n  (set! globalThis:Reflect:apply 8)\n  (array Reflect:apply globalThis:Reflect:apply))\n(console:log (JSON:stringify (local (obj :apply 0) (obj :Reflect (obj :apply 0)))))",
+  "generated": "function local(Reflect, globalThis) {\n  Reflect.apply = 7;\n  globalThis.Reflect.apply = 8;\n  const result__gensym1 = [Reflect.apply, globalThis.Reflect.apply];\n  if (!Array.isArray(result__gensym1)) throw new TypeError(\"local: return value expected array, got \" + typeof result__gensym1);\n  return result__gensym1;\n}\nconsole.log(JSON.stringify(local({\n  apply: 0\n}, {\n  Reflect: {\n    apply: 0\n  }\n})));\n",
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": [
+      "run",
+      "--no-config",
+      "--cached-only",
+      "--no-npm",
+      "--no-remote",
+      "--deny-net",
+      "--no-prompt",
+      "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR/22915654475d99ab/v2.js"
+    ],
+    "cwd": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR/22915654475d99ab",
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+      "XDG_CACHE_HOME": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/XDG_CACHE_HOME",
+      "TMPDIR": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/observations"
+    }
+  },
+  "runtime": {
+    "success": true,
+    "code": 0,
+    "stdout": [
+      91,
+      55,
+      44,
+      56,
+      93,
+      10
+    ],
+    "stderr": []
+  }
+}

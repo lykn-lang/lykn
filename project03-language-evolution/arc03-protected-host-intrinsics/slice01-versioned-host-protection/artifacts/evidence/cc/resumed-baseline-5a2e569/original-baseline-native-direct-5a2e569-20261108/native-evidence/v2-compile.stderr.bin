@@ -1,0 +1,4 @@
+1:25: warning: unused binding 'Reflect'
+  suggestion: prefix with underscore: _Reflect
+1:38: warning: unused binding 'globalThis'
+  suggestion: prefix with underscore: _globalThis

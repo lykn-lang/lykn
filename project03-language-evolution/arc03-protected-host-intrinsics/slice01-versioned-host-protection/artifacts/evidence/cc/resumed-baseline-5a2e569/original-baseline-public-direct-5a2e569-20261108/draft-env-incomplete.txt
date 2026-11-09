@@ -1,0 +1,16 @@
+Invocation: original-public-direct-5a2e569-20261108
+Purpose: run the exact original public protected-host Deno test target for the Arc03 S01 baseline.
+Source checkout: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch / HEAD: codex/protected-host-contract / 5a2e569852fa88181498c18d28cdfb26f70e2dae
+Tree / ordered parents: 7a9f29b2a312e4b3d1a20bee3cd14fdadddb4a79 / a71536496ab8ee858cafdc319deea2e0d483077f then 46ca1c04b41e19385bc2867125bf4c816b7be31e
+Source status before launch: clean, `git status --short --branch` output `## codex/protected-host-contract`.
+Deno: /opt/homebrew/bin/deno, version 2.9.6; SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Exact argv: `test --config project.json -A test/forms/protected-host.test.js`
+Exact command, when separately released:
+env TMPDIR=/private/tmp/arc03-s01-5a2e569-public-direct-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-5a2e569-public-direct-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-5a2e569-public-direct-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno test --config project.json -A test/forms/protected-host.test.js > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-direct.stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-direct.stderr.raw
+The actual command exit is to be returned by the tool and written separately to `public-direct.exit-status.txt`; do not mask it in the launch command.
+Scratch roots: TMPDIR, XDG_CACHE_HOME, npm-cache under `/private/tmp/arc03-s01-5a2e569-public-direct-20261108/`; distinct observation root `target/arc03-s01/cc/original-baseline-public-direct-5a2e569-20261108/public-evidence/`.
+Named config-path preflight: exact `ls -ld` argv was the 27 explicit project.json/deno.json/deno.jsonc paths listed in the tool invocation; stdout/stderr are `named-config-paths.stdout.raw` and `named-config-paths.stderr.raw`, actual exit 1 in `named-config-paths.exit-status.txt`. Source checkout `project.json` is present intentionally; the other 26 named paths are absent, including all 15 scratch-root names.
+Public target: `test/forms/protected-host.test.js`, invoked exactly as above. No manually launched protected-write generated module. Raw destinations are `public-direct.stdout.raw`, `public-direct.stderr.raw`, and `public-direct.exit-status.txt`; the distinct public-evidence directory is available for target-produced evidence.
+No public test launch has occurred. Awaiting independent release naming this invocation and receipt.

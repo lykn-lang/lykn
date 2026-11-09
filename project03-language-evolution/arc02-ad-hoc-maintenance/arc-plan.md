@@ -9,9 +9,13 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+The explicit [bounded Arc03 source re-entry](../arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
+is independently accepted at `5a2e569`. With the earlier six MR rows,
+this fulfills AM-04. Arc03 v1 and typed dist wiring keep their own gates.
+
 S02's compiler-owned macro dependency repair is independently accepted at
 `f2cd8139`, with all six MR rows done. [Acceptance](slice02-embedded-macro-dependency-resolution/cdc-verification.md).
-AM-04's separate Arc03 re-entry decision remains open.
+AM-04's separate Arc03 re-entry was pending at that source acceptance.
 
 Iteration02 repaired the test ownership issue and captured the old macro
 failures. Candidate `7777cd71` stopped before validation on a platform-specific

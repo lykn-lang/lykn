@@ -1,0 +1,25 @@
+Arc03 S01 original baseline — prospective native no-run receipt
+Invocation: original-native-no-run-5a2e569-20261108
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and exact invocation.
+
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD: 5a2e569852fa88181498c18d28cdfb26f70e2dae
+Tree: 7a9f29b2a312e4b3d1a20bee3cd14fdadddb4a79
+Parents in order: a71536496ab8ee858cafdc319deea2e0d483077f, 46ca1c04b41e19385bc2867125bf4c816b7be31e
+Status: clean.
+
+Executable: /Users/oubiwann/.cargo/bin/cargo; argv ["test", "--offline", "--locked", "-p", "lykn-cli", "--test", "protected_host", "--no-run"]
+Exact command to run only after release (redirect-only; actual Cargo exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-5a2e569-native-no-run-20261108/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-5a2e569-native-no-run-20261108/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-5a2e569-native-no-run-20261108/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/.cargo/bin/cargo test --offline --locked -p lykn-cli --test protected_host --no-run > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-no-run-5a2e569-20261108/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-no-run-5a2e569-20261108/stderr.raw
+After tool return, record the actual status verbatim at /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-no-run-5a2e569-20261108/exit-status.txt.
+
+Fresh invocation roots: TMPDIR=/private/tmp/arc03-s01-5a2e569-native-no-run-20261108/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-5a2e569-native-no-run-20261108/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-5a2e569-native-no-run-20261108/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno; explicit pinned LYKN_TEST_DENO=/opt/homebrew/bin/deno. Cargo and rustc are 1.97.0; exact tool version readbacks are adjacent. Inherited CARGO_NET_GIT_FETCH_WITH_CLI=true is recorded; `--offline --locked` are explicit and no global Cargo target/flags are assigned. This is compile-only; it will not execute the baseline test binary.
+
+The one exact-name preflight used `ls -ld` on these exact names at TMPDIR and each fixed ancestor, plus source root:
+/private/tmp/arc03-s01-5a2e569-native-no-run-20261108/TMPDIR/project.json /private/tmp/arc03-s01-5a2e569-native-no-run-20261108/TMPDIR/deno.json /private/tmp/arc03-s01-5a2e569-native-no-run-20261108/TMPDIR/deno.jsonc /private/tmp/arc03-s01-5a2e569-native-no-run-20261108/project.json /private/tmp/arc03-s01-5a2e569-native-no-run-20261108/deno.json /private/tmp/arc03-s01-5a2e569-native-no-run-20261108/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+No traversal was used. Status 1 is expected: 15 scratch-ancestry names and source deno.json/deno.jsonc absent; source project.json exists but this Cargo no-run does not select it. Actual stdout/stderr/status: named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt.
+
+Deno pin: /opt/homebrew/bin/deno 2.9.6; SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-no-run-5a2e569-20261108
+Raw output/status destinations: stdout.raw, stderr.raw, exit-status.txt.

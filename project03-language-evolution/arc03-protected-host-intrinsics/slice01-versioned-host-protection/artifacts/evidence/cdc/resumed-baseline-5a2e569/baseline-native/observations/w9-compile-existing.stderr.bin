@@ -1,0 +1,2 @@
+1:7: warning: unused binding 'guarded'
+  suggestion: prefix with underscore: _guarded

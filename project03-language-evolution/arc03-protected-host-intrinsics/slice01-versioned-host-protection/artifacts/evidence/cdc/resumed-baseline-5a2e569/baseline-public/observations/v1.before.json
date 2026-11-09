@@ -1,0 +1,27 @@
+{
+  "name": "v1",
+  "source": "(console:log (JSON:stringify (typeof Reflect:apply)))",
+  "generated": "console.log(JSON.stringify(typeof Reflect.apply));\n",
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": [
+      "run",
+      "--no-config",
+      "--cached-only",
+      "--no-npm",
+      "--no-remote",
+      "--deny-net",
+      "--no-prompt",
+      "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR/86fefd36b2ee5b99/v1.js"
+    ],
+    "cwd": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR/86fefd36b2ee5b99",
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+      "XDG_CACHE_HOME": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/XDG_CACHE_HOME",
+      "TMPDIR": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/TMPDIR",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/private/tmp/lykn-arc03-s01-w8-cdc-zOa90kw1/baseline-public/observations"
+    }
+  },
+  "runtime": null
+}
