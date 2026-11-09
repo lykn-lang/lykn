@@ -854,12 +854,12 @@ pure expressions, or an IIFE when a branch is a statement form
 (`throw`, `return`, etc.). `if` in statement position emits a
 standard `if`-statement. A no-else `if` in expression position is
 also a compile/check error — use `?` explicitly, add an else branch, or
-restructure as a statement. In statement position, each arm has its own
-lexical block: declarations stay inside that arm, and the consequent and
-alternate each start from the same incoming scope. Grouped bindings are
-sequential within one arm, so later initializers can use earlier names in
-that group. These blocks do not add functions, so `return`, `break`, and
-`continue` still reach their surrounding function or loop.
+restructure as a statement. Each statement arm is emitted in its own lexical
+block. An arm can see incoming names, and declarations inside it stay in that
+arm. The alternate starts from the same incoming scope as the consequent. In a
+grouped `bind`, later initializers can use earlier names in that group. These
+blocks do not add functions, so `return`, `break`, and `continue` still reach
+their surrounding function or loop.
 
 **Style:** Prefer `?` for expression position; prefer `if` for
 statement position. The compiler treats them as functionally

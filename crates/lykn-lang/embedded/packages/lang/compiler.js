@@ -710,7 +710,7 @@ const macros = {
       return buildIfIIFE(test, consequent, alternate,
         [test, consequent, alternate].some(containsCurrentAwaitNode));
     }
-    // Statement position: unchanged
+    // Statement arms stay in lexical blocks, preserving direct control targets.
     return {
       type: 'IfStatement',
       test: compileExpr(args[0], 'expression'),

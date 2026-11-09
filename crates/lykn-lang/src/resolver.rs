@@ -94,16 +94,19 @@ pub(crate) fn scope_plan(form: &SExpr, scope: &[String]) -> ScopePlan {
     };
     let head = values.first().and_then(|e| e.as_atom());
     let dispatch_head = values.first().and_then(SExpr::as_form_head);
+    if matches!(dispatch_head, Some("if" | "kernel:if"))
+        && !scope
+            .iter()
+            .any(|name| Some(name.as_str()) == dispatch_head)
+    {
+        return ScopePlan::Conditional;
+    }
     let body_names: Vec<String> = bindings_introduced(form)
         .into_iter()
         .filter(|s| s.kind.shadows_values() && !is_enclosing_only(s.kind))
         .map(|s| s.name)
         .collect();
     match head {
-        Some("if") if dispatch_head == Some("if") && !scope.iter().any(|name| name == "if") => {
-            ScopePlan::Conditional
-        }
-        Some("kernel:if") => ScopePlan::Conditional,
         Some("bind") if let Some(slots) = grouped_bind_slots(values) => {
             ScopePlan::GroupedBind { slots }
         }
@@ -632,6 +635,14 @@ mod tests {
             scope_plan(&kernel[0], &[]),
             ScopePlan::Conditional
         ));
+        assert!(matches!(
+            scope_plan(&kernel[0], &["if".to_string()]),
+            ScopePlan::Conditional
+        ));
+        assert!(matches!(
+            scope_plan(&kernel[0], &["kernel:if".to_string()]),
+            ScopePlan::Sequence
+        ));
 
         let mut bound = read("(if true 1 2)").expect("parse bound call");
         let SExpr::List { values, .. } = &mut bound[0] else {
@@ -639,6 +650,15 @@ mod tests {
         };
         values[0] = values[0].clone().with_name_res(NameRes::BindingRef);
         assert!(matches!(scope_plan(&bound[0], &[]), ScopePlan::Sequence));
+        let mut bound_kernel = kernel.clone();
+        let SExpr::List { values, .. } = &mut bound_kernel[0] else {
+            panic!("kernel conditional is a list")
+        };
+        values[0] = values[0].clone().with_name_res(NameRes::BindingRef);
+        assert!(matches!(
+            scope_plan(&bound_kernel[0], &[]),
+            ScopePlan::Sequence
+        ));
         assert!(matches!(
             scope_plan(&ordinary[0], &["if".to_string()]),
             ScopePlan::Sequence

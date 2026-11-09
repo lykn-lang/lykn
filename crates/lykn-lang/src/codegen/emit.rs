@@ -710,7 +710,7 @@ fn emit_if(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
     Ok(())
 }
 
-/// Emit a single statement as either a block `{ ... }` or inline `stmt;`.
+/// Emit an if arm in its own block, retaining an explicit source block once.
 fn emit_if_branch(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
     // DD-61 §A6: a lexically bound `block` head is a call, not the block form.
     if let SExpr::List { values, .. } = expr
