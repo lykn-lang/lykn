@@ -193,13 +193,13 @@ fn object_executable_children(arg: &SExpr) -> Vec<&SExpr> {
         return values.get(1).into_iter().collect();
     }
     let mut children = Vec::new();
-    if let Some(key) = values.first() {
-        if let Some(key_values) = key.as_list() {
-            if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
-                children.extend(key_values.get(1));
-            } else {
-                children.push(key);
-            }
+    if let Some(key) = values.first()
+        && let Some(key_values) = key.as_list()
+    {
+        if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
+            children.extend(key_values.get(1));
+        } else {
+            children.push(key);
         }
     }
     children.extend(values.get(1));
@@ -353,10 +353,10 @@ impl Walker {
 
     fn record_write(&mut self, target: &SExpr) {
         let proof = self.path(target);
-        if let RootProof::GlobalKnown(path) = &proof {
-            if is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]) {
-                self.invalidates_aliases = true;
-            }
+        if let RootProof::GlobalKnown(path) = &proof
+            && (is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]))
+        {
+            self.invalidates_aliases = true;
         }
         let span = target.span();
         self.sites.push(WriteSite { proof, span });
@@ -373,10 +373,10 @@ impl Walker {
             },
             other => other,
         };
-        if let RootProof::GlobalKnown(path) = &proof {
-            if is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]) {
-                self.invalidates_aliases = true;
-            }
+        if let RootProof::GlobalKnown(path) = &proof
+            && (is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]))
+        {
+            self.invalidates_aliases = true;
         }
         self.sites.push(WriteSite {
             proof,
@@ -541,15 +541,15 @@ impl Walker {
                     }
                     continue;
                 }
-                if let Some(key) = values.first() {
-                    if let Some(key_values) = key.as_list() {
-                        if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
-                            if let Some(expression) = key_values.get(1) {
-                                self.visit(expression, dialect);
-                            }
-                        } else {
-                            self.visit(key, dialect);
+                if let Some(key) = values.first()
+                    && let Some(key_values) = key.as_list()
+                {
+                    if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
+                        if let Some(expression) = key_values.get(1) {
+                            self.visit(expression, dialect);
                         }
+                    } else {
+                        self.visit(key, dialect);
                     }
                 }
                 if let Some(value) = values.get(1) {
@@ -663,14 +663,13 @@ impl Walker {
                 .and_then(SExpr::as_list)
                 .unwrap_or(&[]);
             let mut param_names = kernel_param_names(params);
-            if params_index == 1 {
-                if let Some(name) = args
+            if params_index == 1
+                && let Some(name) = args
                     .first()
                     .and_then(SExpr::as_atom)
                     .filter(|name| !name.is_empty())
-                {
-                    param_names.insert(to_js_identifier(name));
-                }
+            {
+                param_names.insert(to_js_identifier(name));
             }
             let body = args.get(params_index + 1..).unwrap_or_default();
             self.visit_kernel_param_defaults(params, &param_names, dialect);
@@ -785,9 +784,10 @@ impl Walker {
             }
             return;
         }
-        if matches!(head, "if-let" | "when-let") {
-            if let Ok(surface) = crate::classifier::classify_expr(expr) {
-                match surface {
+        if matches!(head, "if-let" | "when-let")
+            && let Ok(surface) = crate::classifier::classify_expr(expr)
+        {
+            match surface {
                     SurfaceForm::IfLet {
                         pattern,
                         expr: value,
@@ -817,25 +817,23 @@ impl Walker {
                         return;
                     }
                     _ => {}
-                }
             }
         }
-        if head == "match" {
-            if let Ok(SurfaceForm::Match {
+        if head == "match"
+            && let Ok(SurfaceForm::Match {
                 target, clauses, ..
             }) = crate::classifier::classify_expr(expr)
-            {
-                self.visit(&target, dialect);
-                for clause in clauses {
-                    self.with_pattern_scope(&clause.pattern, |walker| {
-                        if let Some(guard) = &clause.guard {
-                            walker.visit(guard, dialect);
-                        }
-                        walker.visit_lexical_body(&clause.body, dialect);
-                    });
-                }
-                return;
+        {
+            self.visit(&target, dialect);
+            for clause in clauses {
+                self.with_pattern_scope(&clause.pattern, |walker| {
+                    if let Some(guard) = &clause.guard {
+                        walker.visit(guard, dialect);
+                    }
+                    walker.visit_lexical_body(&clause.body, dialect);
+                });
             }
+            return;
         }
         if head == "block" {
             self.scopes.push(scope_names(args, false));
@@ -860,10 +858,10 @@ impl Walker {
                 .collect();
             self.scopes.push(scope_names(&bodies, false));
             for case in cases {
-                if let Some(test) = case.first() {
-                    if test.as_atom() != Some("default") {
-                        self.visit(test, dialect);
-                    }
+                if let Some(test) = case.first()
+                    && test.as_atom() != Some("default")
+                {
+                    self.visit(test, dialect);
                 }
                 for body in case.iter().skip(1) {
                     self.visit(body, dialect);
