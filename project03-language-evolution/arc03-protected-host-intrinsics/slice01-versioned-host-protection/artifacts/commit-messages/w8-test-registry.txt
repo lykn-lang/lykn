@@ -1,0 +1,6 @@
+Reset the public macro regression registry
+
+Keep the canonical public compiler and its test resets in the same module instance.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

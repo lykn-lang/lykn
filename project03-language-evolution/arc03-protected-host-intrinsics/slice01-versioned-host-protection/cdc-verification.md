@@ -1,5 +1,16 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## W8 regression prelaunch review
+
+The tests-only freeze `533fe76ee62f4f196fddd56e79c04aae527d77e7` adds
+the two approved canonical-public-compiler cases. Its calls to the old
+reset helpers resolve through the built package, a different registry
+from the canonical compiler. CDC's clarification arrived after the
+freeze. The two new names are distinct and no gate has run. Before
+release, use canonical aliased reset imports only for the two new cases
+with [the supplied message](artifacts/commit-messages/w8-test-registry.txt).
+Preserve the original freeze, fixtures, assertions and static hold.
+
 ## Correction02 public baseline stop
 
 Operator authorized the one-file native-oracle correction and finite
