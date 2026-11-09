@@ -1,5 +1,35 @@
 # CDC verification — embedded macro dependency resolution
 
+## Local candidate composition assignment — 2026-11-08
+
+Operator “let's do it!” authorizes the exact local composition gate.
+Luna6 High CC `/root/cdc/macro_dependency_design_luna` performs the merge
+after exclusive source/index handoff. Sol6.1 High CDC independently verifies
+the resulting history and exact tree union. Autonomous Mode stops at the
+first substantive failure or real gap.
+
+Use the existing task checkout `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering`. After confirming clean source,
+switch normally to `codex/protected-host-contract` at `e2f29597ab677346abc6e17ec3616d4a340b7861`. Merge only
+`f2cd813908649d5b58253c75d0eda61b029fc6ff`, the independently accepted prerequisite, with normal Git
+`git merge --no-ff --no-edit -F <absolute composition.txt> <exact prerequisite>`.
+Read the [supplied message](artifacts/commit-messages/composition.txt) before
+merge. Check the common base `62e9531e6183b3762a9ff326fdc07439db33f31f`, exact branch tips, clean
+worktree/index, scoped path collisions and active hooks before changing the
+branch. Stop on conflicts and report the exact state. Preserve both parents.
+
+The prerequisite contributes exactly five paths:
+`crates/lykn-cli/tests/macro_dependencies.rs`,
+`crates/lykn-lang/src/expander/deno.rs`,
+`crates/lykn-lang/src/expander/embedded.rs`,
+`docs/guides/15-lykn-cli.md` and `skills/lykn/SKILL.md`. Arc03 contributes
+only `crates/lykn-cli/tests/protected_host.rs` and
+`test/forms/protected-host.test.js`. Return actual command/status, raw
+commit message, exact parent order, tree, raw mode/blob diff against base,
+and clean ownership. CDC will compare every union path and each parent
+delta. The acceptance boundary is Git composition. The intentionally red
+pre-policy tests and old receipts retain their evidence status. Arc03
+oracle correction02, v1 and release integration remain separate decisions.
+
 ## Final acceptance — source iteration03
 
 CDC Sol6.1 High independently accepts all six MR rows for

@@ -1,0 +1,6 @@
+Compose macro prerequisite with protected host tests
+
+Preserve the accepted compiler repair and the original Arc03 test baseline.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
