@@ -1,0 +1,7 @@
+source: 8e122ad2ec2d1543981b4f870584e389fc74feca (clean source tree; task branch codex/lazy-protected-invocation)
+working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+exact argv: /usr/bin/make check
+scoped environment: DENO_DIR=/Users/oubiwann/Library/Caches/deno; inherited TMPDIR=/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/; no LYKN_TEST_DENO, no LYKN_PROTECTED_HOST_EVIDENCE_DIR, no CARGO_HOME, no CARGO_TARGET_DIR, no XDG_CACHE_HOME, no npm_config_cache overrides.
+source/tool pins: Makefile sha256 d79a7f657021bf0097687d548d87ec49ef77b4d59c7133f8aa0d0785098737a0; Deno 2.9.6 sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; cargo 1.97.0; rustc 1.97.0.
+preflight named check: `ls -ld project.json deno.json deno.jsonc Cargo.toml Cargo.lock Makefile /usr/bin/make /opt/homebrew/bin/deno /Users/oubiwann/Library/Caches/deno` from working directory. Raw stdout/stderr/status are named-check.stdout.txt, named-check.stderr.txt, named-check.exit-status.txt.
+launch output: stdout.txt, stderr.txt, exit-status.txt. Preserve actual process exit.

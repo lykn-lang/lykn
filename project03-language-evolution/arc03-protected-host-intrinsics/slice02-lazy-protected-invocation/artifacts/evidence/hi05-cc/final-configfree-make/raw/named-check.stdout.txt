@@ -1,0 +1,11 @@
+drwxr-xr-x@   24 oubiwann  staff     768 Nov  5 21:40 /Users/oubiwann/Library/Caches/deno
+lrwxr-xr-x@    1 oubiwann  admin      29 Sep 13 10:33 /opt/homebrew/bin/deno -> ../Cellar/deno/2.9.6/bin/deno
+drwxrwxrwt  1276 root      wheel   40832 Nov  9 15:51 /private/tmp
+drwxr-xr-x@    2 oubiwann  wheel      64 Nov  9 15:51 /private/tmp/lykn-hi05-d73601a5/make-check-retry-2/npm
+drwxr-xr-x@    2 oubiwann  wheel      64 Nov  9 15:51 /private/tmp/lykn-hi05-d73601a5/make-check-retry-2/tmp
+drwxr-xr-x@    2 oubiwann  wheel      64 Nov  9 15:51 /private/tmp/lykn-hi05-d73601a5/make-check-retry-2/xdg
+-rwxr-xr-x    78 root      wheel  118864 Aug  1 11:31 /usr/bin/make
+-rw-r--r--@    1 oubiwann  staff   19697 Nov  6 01:15 Cargo.lock
+-rw-r--r--@    1 oubiwann  staff     600 Nov  6 01:15 Cargo.toml
+-rw-r--r--@    1 oubiwann  staff   25591 Nov  6 01:15 Makefile
+-rw-r--r--@    1 oubiwann  staff     533 Nov  5 20:11 project.json

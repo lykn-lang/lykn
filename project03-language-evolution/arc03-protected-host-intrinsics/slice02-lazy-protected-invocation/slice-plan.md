@@ -2,12 +2,23 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice02-lazy-protected-invocation
-status: in-progress
+status: complete
 planned-release: unassigned
 depends-on: [slice01-versioned-host-protection]
 ---
 
 # S02 — Lazy protected invocation
+
+## Final source acceptance — 2026-11-09
+
+[Independent verification](cdc-verification.md#full-s02-acceptance--2026-11-09)
+accepts all six S02 rows at `d73601a5`. The approved inline ESM
+fallback supplies the remaining HI-05 capability. Actual source scopes,
+default bytes and direct-eval interop are preserved in the tested
+conditions. Full normal gates, 14 optimizer outputs and 20 strict
+runtimes were independently reproduced. The final CC return,
+retrospective, arc composition and every numbered attempt are retained.
+Ten assignments were numbered; earlier counts are unchanged.
 
 ## HI-05 re-entry authority — 2026-11-09
 
@@ -107,7 +118,7 @@ accepted S01 `e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214`, tree
 `407aba5e00b53ea682f073e6742a6de7324abaa7`. The S01 and local release
 refs stay protected. No K, S04 production, release propagation, push or publication.
 
-## Deliverable and real semantic boundary
+## Initial deliverable and semantic boundary — retained history
 
 Implement one compiler-private request for the already saved callable,
 receiver and fully materialized argument list. A feature-local module function

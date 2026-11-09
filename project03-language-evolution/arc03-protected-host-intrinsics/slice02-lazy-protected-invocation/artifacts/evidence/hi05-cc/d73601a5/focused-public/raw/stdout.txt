@@ -1,0 +1,8 @@
+running 4 tests from ./test/forms/lazy-protected-invocation.test.js
+lazy protected invocation preserves the no-request compiler path ... ok (3ms)
+lazy protected invocation validates plans and recovers after rejection ... ok (985µs)
+lazy protected invocation checks source module binding roles ... ok (1ms)
+lazy protected invocation materializes all four public proof inputs ... ok (5ms)
+
+ok | 4 passed | 0 failed (13ms)
+

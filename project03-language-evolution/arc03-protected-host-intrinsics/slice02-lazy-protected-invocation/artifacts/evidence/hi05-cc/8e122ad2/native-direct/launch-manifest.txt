@@ -1,0 +1,9 @@
+name: native-private-direct-8e122ad2
+source: 8e122ad2ec2d1543981b4f870584e389fc74feca; Rust test producer commit: 0af53e8deaf439fe6df44a90f8ca9329f82e8696; Rust source unchanged between producer and current source (only test/forms/lazy-protected-invocation.test.js changed)
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: target/debug/deps/lykn_lang-660f810f98f77866 private_host_invocation --nocapture --test-threads=1
+scoped env: TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/tmp XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/xdg npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/npm LYKN_INTRINSIC_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/evidence
+pinned executable sha256: 51426f25d4471c6f236622aa55925909f3fe728a75b5a3188a5f90ac894c3871 (raw/lykn-lang-tests.sha256), produced by no-run command at 0af53e8 (raw output/status there)
+named check argv: ls -ld Cargo.toml crates/lykn-lang/Cargo.toml target/debug/deps/lykn_lang-660f810f98f77866 test/fixtures/lazy-protected-invocation/fallback-provider.lisp test/fixtures/lazy-protected-invocation/fallback-eval.lisp test/fixtures/lazy-protected-invocation/fallback-state.lisp
+raw named check: raw/named-check.stdout.txt, raw/named-check.stderr.txt, raw/named-check.exit-status.txt
+raw command: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt

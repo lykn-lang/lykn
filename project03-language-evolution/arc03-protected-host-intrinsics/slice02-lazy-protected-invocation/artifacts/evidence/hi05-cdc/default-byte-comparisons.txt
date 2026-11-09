@@ -1,0 +1,29 @@
+Independent default materialized output comparison. Prior eligible-module source 801fcd83 against current d73601a5; all arguments are actual original and new generated files.
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/native/absent/absent.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/native/absent/absent.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/native/shaken/provider.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/native/shaken/provider.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/native/shaken/entry.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/native/shaken/entry.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/native/retained/provider.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/native/retained/provider.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/native/retained/observer.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/native/retained/observer.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/native/live/provider.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/native/live/provider.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/native/live/entry.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/native/live/entry.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/public/absent/absent.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/public/absent/absent.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/public/shaken/provider.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/public/shaken/provider.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/public/shaken/entry.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/public/shaken/entry.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/public/retained/provider.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/public/retained/provider.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/public/retained/observer.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/public/retained/observer.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/public/live/provider.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/public/live/provider.js
+exit 0
+cmp /private/tmp/lykn-s02-cdc.gadeVma9/independent/generated/public/live/entry.js /private/tmp/lykn-hi05-cdc.Goin1Htz/independent/generated/public/live/entry.js
+exit 0

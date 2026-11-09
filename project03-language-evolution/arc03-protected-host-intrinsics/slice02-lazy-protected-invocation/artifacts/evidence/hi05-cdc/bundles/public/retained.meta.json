@@ -1,0 +1,25 @@
+{
+  "inputs": {
+    "provider.js": {
+      "bytes": 457,
+      "imports": [],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../../../bundles/public/retained.js": {
+      "imports": [],
+      "exports": [
+        "invoke",
+        "marker"
+      ],
+      "entryPoint": "provider.js",
+      "inputs": {
+        "provider.js": {
+          "bytesInOutput": 418
+        }
+      },
+      "bytes": 464
+    }
+  }
+}

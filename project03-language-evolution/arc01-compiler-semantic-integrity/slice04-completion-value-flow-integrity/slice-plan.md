@@ -9,6 +9,14 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+The [Arc03 composition review](../../arc03-protected-host-intrinsics/cdc-verification.md)
+accepts the private protected invocation facility at task source
+`d73601a5`. This satisfies the facility evidence dependency for future
+I3 planning. A production ordered-reference consumer and its CV/CI-04
+proof remain S04 work, with separate execution and integration scope.
+
+## Earlier dependency status
+
 [Arc03 S01 source protection](../../arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
 is independently accepted at `e7b44c1`. Ordered-reference I3 still needs
 the private S02 facility and its optimized-output/runtime proof. S04

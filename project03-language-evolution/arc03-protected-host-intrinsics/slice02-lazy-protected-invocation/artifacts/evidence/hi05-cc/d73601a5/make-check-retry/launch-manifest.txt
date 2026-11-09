@@ -1,0 +1,7 @@
+source: d73601a57fcf9294389eb5283e173ec0eca40091 (clean; branch codex/lazy-protected-invocation)
+working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+exact argv: /usr/bin/make check
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/d73601a5/make-check-retry/tmp XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/d73601a5/make-check-retry/xdg npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/d73601a5/make-check-retry/npm. No LYKN_TEST_DENO, LYKN_PROTECTED_HOST_EVIDENCE_DIR, CARGO_HOME, or CARGO_TARGET_DIR overrides.
+source/tool pins: Makefile sha256 d79a7f657021bf0097687d548d87ec49ef77b4d59c7133f8aa0d0785098737a0; Deno 2.9.6 sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; Cargo 1.97.0; rustc 1.97.0.
+preflight named check argv: `ls -ld project.json deno.json deno.jsonc Cargo.toml Cargo.lock Makefile /usr/bin/make /opt/homebrew/bin/deno /Users/oubiwann/Library/Caches/deno <retry TMPDIR> <retry XDG_CACHE_HOME> <retry npm_config_cache>` from working directory. Raw stdout/stderr/status are raw/named-check.stdout.txt, raw/named-check.stderr.txt, raw/named-check.exit-status.txt. Expected exit1 only for absent deno.json and deno.jsonc.
+launch raw: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt. The actual command exit is captured directly.

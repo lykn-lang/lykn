@@ -1,0 +1,14 @@
+ls: /deno.json: No such file or directory
+ls: /deno.jsonc: No such file or directory
+ls: /private/deno.json: No such file or directory
+ls: /private/deno.jsonc: No such file or directory
+ls: /private/project.json: No such file or directory
+ls: /private/tmp/deno.json: No such file or directory
+ls: /private/tmp/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-hi05-d73601a5/make-check-retry-2/deno.json: No such file or directory
+ls: /private/tmp/lykn-hi05-d73601a5/make-check-retry-2/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-hi05-d73601a5/make-check-retry-2/project.json: No such file or directory
+ls: /private/tmp/project.json: No such file or directory
+ls: /project.json: No such file or directory
+ls: deno.json: No such file or directory
+ls: deno.jsonc: No such file or directory

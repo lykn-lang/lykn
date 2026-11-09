@@ -1,0 +1,7 @@
+source: d73601a57fcf9294389eb5283e173ec0eca40091 (clean; branch codex/lazy-protected-invocation)
+working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+exact argv: /usr/bin/make check-cited-paths
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno; inherited TMPDIR=/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/; no LYKN or Cargo overrides.
+Deno: /opt/homebrew/bin/deno 2.9.6 sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+preflight named check argv: `ls -ld project.json deno.json deno.jsonc /opt/homebrew/bin/deno /Users/oubiwann/Library/Caches/deno scripts/check-cited-paths.js` from working directory. Expected exit1 only for absent deno.json and deno.jsonc. Raw preflight files are raw/named-check.{stdout,stderr,exit-status}.txt.
+launch raw: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt.

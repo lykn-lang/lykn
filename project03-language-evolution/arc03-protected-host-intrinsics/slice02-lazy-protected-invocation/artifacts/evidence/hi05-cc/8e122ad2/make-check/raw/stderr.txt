@@ -1,0 +1,41 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 6.73s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error: you seem to be trying to use `match` for destructuring a single pattern. Consider using `if let`
+  --> crates/lykn-lang/src/codegen/mod.rs:76:5
+   |
+76 | /     match support {
+77 | |         Some(item) => {
+78 | |             let name = item.name;
+79 | |             match item.strategy {
+...  |
+90 | |         None => {}
+91 | |     }
+   | |_____^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#single_match
+   = note: `-D clippy::single-match` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::single_match)]`
+help: try
+   |
+76 ~     if let Some(item) = support {
+77 +         let name = item.name;
+78 +         match item.strategy {
+79 +             host_invocation::SupportStrategy::LocalFunction => w.write(&format!(
+80 +                 "function {name}(fn, receiver, argv) {{ return {slot}(fn, receiver, argv); }}"
+81 +             )),
+82 +             host_invocation::SupportStrategy::InlineModuleImport => w.write(&format!(
+83 +                 "import {{apply as {name}}} from \"{}\";",
+84 +                 host_invocation::INLINE_APPLY_MODULE
+85 +             )),
+86 +         }
+87 +         w.newline();
+88 +     }
+   |
+
+error: could not compile `lykn-lang` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 1 previous error
+make: *** [lint] Error 101

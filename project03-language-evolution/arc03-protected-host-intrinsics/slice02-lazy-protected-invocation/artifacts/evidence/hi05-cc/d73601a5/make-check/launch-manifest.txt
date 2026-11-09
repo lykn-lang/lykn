@@ -1,0 +1,6 @@
+source: d73601a57fcf9294389eb5283e173ec0eca40091 (clean; branch codex/lazy-protected-invocation)
+working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+exact argv: /usr/bin/make check
+scoped environment: DENO_DIR=/Users/oubiwann/Library/Caches/deno; inherited TMPDIR=/var/folders/dt/kc8ndn6d3kx8c1jnxr05drsh0000gn/T/; no LYKN_TEST_DENO, no LYKN_PROTECTED_HOST_EVIDENCE_DIR, no CARGO_HOME, no CARGO_TARGET_DIR, no XDG_CACHE_HOME, no npm_config_cache overrides.
+Exact inherited preflight config/tool checks are preserved at target/arc03-s02/cc/d879783c/make-check/raw/named-check.{stdout,stderr,exit-status}.txt. Deno remains pinned sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; Cargo 1.97.0 and rustc 1.97.0.
+launch output: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt. Actual process exit is captured without masking.

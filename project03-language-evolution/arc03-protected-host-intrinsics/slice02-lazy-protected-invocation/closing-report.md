@@ -26,3 +26,28 @@
 ## Proposed bubble-up to Arc03
 
 S02 has CC-proposed passes for HI-01 through HI-04, subject to independent CDC review. HI-05 remains held on the unresolved module-level Reflect/direct-eval choice, so neither S02 complete acceptance nor Arc03 closure is proposed. HI-06 remains open for CDC reconciliation. No S04 production work, merge, push, or release was performed.
+
+## HI-05 re-entry — 2026-11-09
+
+Luna 6 High CC returned the clean final task source
+`d73601a57fcf9294389eb5283e173ec0eca40091`. Its
+[corrected six-row proposal](artifacts/evidence/hi05-cc/cc-closing-addendum-corrected.md)
+records the approved inline ESM choice and observed raw proof. The
+[original addendum](artifacts/evidence/hi05-cc/cc-closing-addendum-original.md)
+is preserved. It mistakenly carried forward the prior HI-05 hold and
+misattributed the Clippy attempt and hook override. CC corrected those
+claims in a separate attestation. Source reports and attempt bytes
+retain original worktree paths; the adjacent evidence trees retain the
+actual observed files. Independent status is in
+[CDC verification](cdc-verification.md#full-s02-acceptance--2026-11-09).
+[CDC retrospective](cdc-retrospective.md#fallback-delivery-retrospective--2026-11-09)
+examines the continuation.
+
+### Bubble-up to Arc03
+
+The private facility now supports the approved affected-module case
+with an inline ESM loader requirement and the existing default route.
+The raw kernel role correction composes S01 write enforcement with S02
+support selection. Source evidence is final on the task branch.
+[Arc composition](../closing-report.md) owns the assembled verdict;
+Arc01 S04 retains any actual ordered-reference consumer.

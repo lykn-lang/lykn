@@ -1,0 +1,14 @@
+## codex/lazy-protected-invocation
+d73601a57fcf9294389eb5283e173ec0eca40091
+86e05ce1e2f9c23267bcc93faa9bd458af1c6cdf
+/opt/homebrew/bin/deno
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)
+0.25.5
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f  /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild
+## HEAD (no branch)
+ea453bf687c8e5cf3c5f11aae372c5ca33be0c98

@@ -1,0 +1,2 @@
+ls: deno.json: No such file or directory
+ls: deno.jsonc: No such file or directory

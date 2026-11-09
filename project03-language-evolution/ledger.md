@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+[Arc03 composition](arc03-protected-host-intrinsics/cdc-verification.md)
+closes P-HI and all six PHI rows at `d73601a5` task source. S04
+consumer, CV and CI-04 criteria remain separate. S07/S08 retain the
+actual integration-range documentation and API disposition.
+
 [Arc03 S02](arc03-protected-host-intrinsics/slice02-lazy-protected-invocation/cdc-verification.md)
 has independent eligible-module delivery and PHI-04's exact optimizer
 proof at `801fcd83`. PHI-03, PHI-05, PHI-06, P-HI, CV and CI-04 remain
@@ -306,7 +311,7 @@ No project/F/Project07 row inherits completion; retrospective closes this scope.
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | P-1 | Project composition is independently evaluated against its plan | Review project plan and original child evidence | correctness-grade | historical planning | open | | Reorganization is not software acceptance. |
-| P-HI | Protected-host contract/source diagnostics and lazy private access compose with source-first optimized output | Accepted Arc03 PHI01–06, actual native/public/esbuild/Deno proof and exact S04/API/doc handoff | correctness-grade | Operator/Arc03 | open | arc03-protected-host-intrinsics/ledger.md | No new runtime/AST/integration or old-tool allowance |
+| P-HI | Protected-host contract/source diagnostics and lazy private access compose with source-first optimized output | Accepted Arc03 PHI01–06, actual native/public/esbuild/Deno proof and exact S04/API/doc handoff | correctness-grade | Operator/Arc03 | done | arc03-protected-host-intrinsics/cdc-verification.md | Exact task source `d73601a5`; S04 consumer and later audit remain separate |
 
 2026-11-06: [Slice14 endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 independently accepts task-only NE-C08/NE-C07 repairs and full canonical product

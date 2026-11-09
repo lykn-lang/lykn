@@ -1,0 +1,17 @@
+source: 8e122ad2ec2d1543981b4f870584e389fc74feca
+Deno: /opt/homebrew/bin/deno 2.9.6 sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+DENO_DIR: /Users/oubiwann/Library/Caches/deno
+cwd for all four: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv pattern: /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt ABS
+Per-run environment: DENO_DIR=/Users/oubiwann/Library/Caches/deno; TMPDIR, XDG_CACHE_HOME, npm_config_cache each point to the matching fresh runtime-retry/<backend>/<case>/{tmp,xdg,npm} directory.
+Native retained observer input: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/evidence/native/retained/observer.js
+Native fallback observer input: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/evidence/native/fallback-retained/observer.js
+Public retained observer input: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/public-focused-retry/evidence/public/retained/observer.js
+Public fallback observer input: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/public-focused-retry/evidence/public/fallback-retained/observer.js
+Before run, each observer's sibling retained.js was created by /bin/cp from that same directory's bundle.js; /usr/bin/cmp returned 0. Ordinary retained hashes: native/public 6a071a9c905f7fcf04c68321281028b4471540286f439b4865d86aa5d62fff84. Fallback retained hashes: native/public fc9f8aed0bfd22d197f6aac6f532368fa3c5a73cd013bf650e88a07c4af04b84.
+All four named checks: `ls -ld project.json deno.json deno.jsonc /opt/homebrew/bin/deno /Users/oubiwann/Library/Caches/deno <run TMPDIR> <run XDG_CACHE_HOME> <run npm_config_cache> <observer.js> <retained.js> <provider.js>`, cwd as above. Each actual check exit was 1 only because task-root deno.json and deno.jsonc are absent; raw stdout/stderr/status are under matching raw/named-check.*.
+Commands and expected outcomes:
+- native retained observer.js: expected stdout `provider\n0\n1\n`, empty stderr, exit 0; raw under runtime-retry/native/retained-observer/raw.
+- native fallback-retained observer.js: expected stdout `provider\n0\n1\n`, empty stderr, exit 0; raw under runtime-retry/native/fallback-observer/raw.
+- public retained observer.js: expected stdout `provider\n0\n1\n`, empty stderr, exit 0; raw under runtime-retry/public/retained-observer/raw.
+- public fallback-retained observer.js: expected stdout `provider\n0\n1\n`, empty stderr, exit 0; raw under runtime-retry/public/fallback-observer/raw.

@@ -1,5 +1,93 @@
 # S02 independent verification
 
+## Full S02 acceptance — 2026-11-09
+
+Sol 6.1 High CDC independently accepts task source
+`d73601a57fcf9294389eb5283e173ec0eca40091`, tree
+`86e05ce1e2f9c23267bcc93faa9bd458af1c6cdf`. This supersedes the
+prior bounded verdict below. The Operator approved an inline ESM exception
+for an actual request with a real normalized module-level Reflect binding.
+The [pinned feasibility evidence](artifacts/evidence/hi05-feasibility/)
+selected the fixed inline encoding, then
+[iteration 05](cc-prompt-iteration05.md) through
+[iteration 10](cc-prompt-iteration10.md) implemented and corrected it.
+The numbered count is ten, including five beyond the ordinary five
+under recorded standard Autonomous Mode authority. No previous count
+or source history was reset.
+
+| Row | Independent disposition | Evidence and limit |
+| --- | --- | --- |
+| HI-01 | Done | Actual private requests use checked exact node identity, closed operation, owned final-unit consumption and three saved operands. Both public focused 4/4 and native 5/5 passed after fresh producer verification. Compiler/package interfaces remain at their existing boundaries. |
+| HI-02 | Done | A genuine normalized module-scope Reflect selects one reserved named import. Ordinary call, re-export, nested-only and globalThis-only controls select the local helper. The paired compile-only tests require the exact real-global write diagnostic and accept the same local write under a named export/async declaration. No rejected output was executed. |
+| HI-03 | Done | Complete independent 14 real optimizer outputs/metafiles and 20 strict runtime results. All exact outputs matched, all exits 0 and stderr empty. Complete codes/metafiles and actual effect conditions are below. |
+| HI-04 | Done | S01 `e7b44c1` is the exact accepted ancestor. Source delta is 22 paths from S01 and 12 from the earlier S02 verdict. All three canonical/embedded JS pairs compare equal. Fresh full Make and separate citations pass on the assembled task candidate. |
+| HI-05 | Done for approved fallback | Both emitted imports have identical encoded URL bytes and the public focused test decodes the actual specifier. Actual unbundled eval reads a live imported Reflect before and after exporter update. Host CSP/loader and bundled-eval limits remain documented. |
+| HI-06 | Done | Actual CC return, independent row walk, retrospective, source/docs boundary and downstream/API audit handoff reconcile. See [arc composition](../closing-report.md). |
+
+The [default input byte comparisons](artifacts/evidence/hi05-cdc/default-byte-comparisons.txt)
+match all 14 regenerated files against the independently accepted
+`801fcd83` condition. The [current generated inputs](artifacts/evidence/hi05-cdc/generated/)
+contain all 30 files. The [optimizer outputs and metafiles](artifacts/evidence/hi05-cdc/bundles/)
+cover seven actual outputs per backend. Each no-request/default case
+reproduces the earlier behavior. In fallback-shaken, the data module
+appears as a metafile input and contributes no bytes to the output.
+The provider effect, exported marker value and entry effect remain.
+In retained/live fallback bundles the data module contributes 83 bytes.
+The protected lookup occurs only in the helper body. The retained export
+survives and the observer's startup read count is zero, with a deliberate
+read establishing the counter's positive control. The first case is
+ordinary; the observer's changed host slot is a separate condition.
+
+Each backend's normal and fallback live traces preserve getter, spread,
+later argument, original callable and receiver order. The deliberately
+throwing getter and argument stop before call. Current native/public
+live bundle bytes differ in generator formatting, with matching
+effects and stdout. Each unbundled eval entry receives the external
+text `Reflect` and prints `first`, `first!`, and
+`["receiver",7]` on separate lines. The binding is unbundled language
+interop evidence. esbuild 0.25.5 disclaims arbitrary top-level ESM
+binding preservation for direct eval in bundle mode.
+
+Independent [Make](artifacts/evidence/hi05-cdc/make/exit-status.txt)
+and [citations](artifacts/evidence/hi05-cdc/cites/exit-status.txt)
+both exited 0. Normal Make includes build, Clippy, formatting,
+1,157 Rust library tests and the remaining Rust suites (including
+native protected-host exact route/typed dist/legacy controls),
+1,480 Deno tests with 28 steps including public S01 and S02, and 482
+documentation tests. Separate citations checked 64 documents and 601
+historical citations. [Producer pins](artifacts/evidence/hi05-cdc/producer-pins-d73601a5.txt)
+and [post-Make CLI hashes](artifacts/evidence/hi05-cdc/post-make-producers.sha256)
+record actual binaries. Independent strict runs use exact prospective
+named-file probes, isolated cwd/TMP/XDG/npm and fixed approved DENO_DIR.
+
+### Attempt and evidence reconciliation
+
+CC's original and corrected returns are retained. CC regenerated 30
+final files equal to its original `8e122ad2` artifact sets, so the
+earlier CC 14/20 evidence retains that actual source attribution.
+Independent CDC ran all 14 and 20 directly from `d73601a5` materialized
+inputs. CC first reported that all three fallback bundle pairs were
+byte-identical. Retained raw live pairs are 1,691 and 1,749 bytes,
+consistent with the actual backend-specific code. The byte identity
+that supports reuse is across revisions within each backend.
+
+Preserved attempts include the initial specimen kernel setup fixes
+before the feasibility runtime, two prelaunch writer/test fixes,
+actual stale public assertion 3/4, the public green run using the
+wrong cache root and separate fresh replay, four observer basename
+failures and four fresh verified retries, normal Clippy then Rust
+format exits 2, and the final two Make launch failures (inherited npm
+EPERM, then an ancestor config under a checkout TMPDIR). The successful
+CC/CDC gates use fresh configfree roots. The original successful
+`c945bca8` commit used a prohibited hook override. Existing raw records,
+normal successors and fresh runs remain distinct. No retrospective
+compliance, overwritten-receipt repair or source history rewrite.
+
+The scoped planning prose and product source diff checks passed. The
+staged planning archive diff check exited 2 on preserved original
+stdout spacing, final blank lines and CC Markdown hard breaks.
+The archived raw bytes and author reports were left intact.
+
 ## Eligible-module delivery — 2026-11-09
 
 Sol 6.1 High CDC independently accepts the finite eligible-module delivery at

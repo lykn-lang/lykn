@@ -1,5 +1,10 @@
 # S02 lazy protected invocation ledger
 
+[Final independent acceptance](cdc-verification.md#full-s02-acceptance--2026-11-09)
+closes all six S02 rows at task source `d73601a5`. The final
+CC proposal and independent evidence are separate. The earlier
+eligible-only result and five beyond-ceiling passes are preserved.
+
 [Iteration 10](cc-prompt-iteration10.md) records two source-derived
 composed kernel scope findings and their exact focused correction
 assignment. No final candidate execution yet at `aa6fa30`.
@@ -46,9 +51,9 @@ ran and no criterion was upgraded.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| HI-01 | Native and public private typed request is actual, lazy and closed to source forgery | Exact identity consumption, stable existing interfaces, directive/no-request checks, full source and generated review | correctness-grade | H05/H06 | done | cdc-verification.md | Eligible modules only |
-| HI-02 | Hygienic reserved identifiers preserve source name behavior | Normalized and free collision, nested Reflect/globalThis, preservation of export/property names | correctness-grade | H05 | done | cdc-verification.md | Module-level shadow has an explicit internal unavailable outcome |
-| HI-03 | Four bounded native esbuild/Deno conditions independently pass on both backends | Actual full input/output and metafiles plus strict runtime, selective lookup observation and meaningful live traces | correctness-grade | H06/PHI-04 | done | cdc-verification.md | Exact finite eligible-module cases |
-| HI-04 | Source and S01 compatibility pass separate independent gates | Accepted S01 ancestor, exact changed paths, mirrors, focused/full Make and citations | correctness-grade | PHI-05 | done | cdc-verification.md | No release mutation |
-| HI-05 | Module-scope Reflect and direct-eval interop contract is resolved for complete S02 | Approved semantic mechanism with source preservation and separate evidence | correctness-grade | PHI-03/S04 I3 | open | cc-prompt-iteration05.md | Approved fallback selected after finite feasibility; actual product proof pending |
-| HI-06 | Actual handoff, retrospective, source/API and composition ownership reconcile | Actual CC return, CDC row walk, durable pins and result, explicit remainder | correctness-grade | PHI-06 | done | closing-report.md; cdc-verification.md; cdc-retrospective.md | Bounded handoff; arc closure waits HI-05 |
+| HI-01 | Native and public private typed request is actual, lazy and closed to source forgery | Exact identity consumption, stable existing interfaces, directive/no-request checks, full source and generated review | correctness-grade | H05/H06 | done | cdc-verification.md | Local and approved inline ESM support |
+| HI-02 | Hygienic reserved identifiers preserve source name behavior | Normalized and free collision, nested Reflect/globalThis, preservation of export/property names | correctness-grade | H05 | done | cdc-verification.md | Actual normalized module declarations distinguished from ordinary raw calls |
+| HI-03 | Bounded native esbuild/Deno conditions independently pass on both backends | Actual full input/output and metafiles plus strict runtime, selective lookup observation and meaningful live traces | correctness-grade | H06/PHI-04 | done | cdc-verification.md | 14 optimizer outputs and 20 strict conditions |
+| HI-04 | Source and S01 compatibility pass separate independent gates | Accepted S01 ancestor, exact changed paths, mirrors, focused/full Make and citations | correctness-grade | PHI-05 | done | cdc-verification.md | Assembled exact task source |
+| HI-05 | Module-scope Reflect and direct-eval interop contract is resolved for complete S02 | Approved semantic mechanism with source preservation and separate evidence | correctness-grade | PHI-03/S04 I3 | done | cdc-verification.md | Approved fallback, live unbundled direct eval and tested host limits |
+| HI-06 | Actual handoff, retrospective, source/API and composition ownership reconcile | Actual CC return, CDC row walk, durable pins and result, explicit remainder | correctness-grade | PHI-06 | done | closing-report.md; cdc-verification.md; cdc-retrospective.md | S04 consumer and S07/S08 audit retain separate ownership |

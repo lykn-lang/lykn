@@ -1,0 +1,7 @@
+source: d73601a57fcf9294389eb5283e173ec0eca40091; native test producer is post-Make d736 build
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: target/debug/deps/lykn_lang-60c4a58c1162abbf private_host_invocation --nocapture --test-threads=1
+executable sha256 after final Make: 497ea580425b0dd663fc5bd7a50aaa8b5bf092bb0c3c0387879a45b0125b8181
+scoped env: TMPDIR=/private/tmp/lykn-hi05-d73601a5/focused-native/tmp XDG_CACHE_HOME=/private/tmp/lykn-hi05-d73601a5/focused-native/xdg npm_config_cache=/private/tmp/lykn-hi05-d73601a5/focused-native/npm LYKN_INTRINSIC_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/d73601a5/focused-native/evidence
+named check argv: `ls -ld Cargo.toml crates/lykn-lang/Cargo.toml target/debug/deps/lykn_lang-60c4a58c1162abbf target/arc03-s02/cc/d73601a5/focused-native/evidence /private/tmp /private/tmp/lykn-hi05-d73601a5/focused-native/tmp /private/tmp/lykn-hi05-d73601a5/focused-native/xdg /private/tmp/lykn-hi05-d73601a5/focused-native/npm test/fixtures/lazy-protected-invocation/fallback-provider.lisp test/fixtures/lazy-protected-invocation/fallback-eval.lisp test/fixtures/lazy-protected-invocation/fallback-state.lisp` from task root.
+raw: raw/named-check.{stdout,stderr,exit-status}.txt and raw/{stdout,stderr,exit-status}.txt.

@@ -1,5 +1,12 @@
 # Arc03 protected host intrinsics ledger
 
+[Arc03 source composition](closing-report.md) is accepted at `d73601a5`
+by the [fresh independent review](cdc-verification.md). All six PHI rows
+are done. Both slices, all original attempts, and distinct CC/CDC evidence
+are retained. This acceptance covers task source.
+
+## Earlier dispositions
+
 [Independent S02 review](slice02-lazy-protected-invocation/cdc-verification.md)
 accepted the eligible delivery at `801fcd83`. PHI-04 is done for the exact
 measured conditions. Complete facility, composition and arc handoff
@@ -57,7 +64,7 @@ own real source units, first substantive failure/REAL gap stops.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | PHI-01 | Stable versioned v1 protected-host contract is shipped and scoped | Normative source doc/catalog/profile/version and exact policy independent of optimization/use | correctness-grade | Operator/H1 | done | slice01-versioned-host-protection/closing-report.md | Only ReflectApply profile/required slots, no broad builtin ban |
 | PHI-02 | Provable protected writes reject through real pipelines with legal source controls preserved | Native/public direct/normalized/local/import/macro/alias/removal controls and precise actual diagnostic/output behavior | correctness-grade | S01 | done | slice01-versioned-host-protection/cdc-verification.md | Source proof only; no universal alias/reflection/host detection |
-| PHI-03 | Private typed lazy backend invocation is hygienic and usable | Actual backend request API/output/receiver/order/name tests; no public AST/source primitive or mandatory runtime | correctness-grade | S02/S04 consumer | open | | S04 caller not claimed before its own implementation |
-| PHI-04 | Exact optimized artifact/effect conditions hold | Pinned native-esbuild + strict Deno absent/unused-shaken/retained-uncalled/live proof, full code/metafiles/raw results | correctness-grade | source-first/Project07 | done | slice02-lazy-protected-invocation/cdc-verification.md | Finite eligible-module proof; no claim for HI-05 |
-| PHI-05 | Both source slices compose with independent real gates | Accepted exact source/diff/full normal/focused/runtime/citations and fresh independent composition proof | correctness-grade | work-verification | open | | CC proposal is not CDC acceptance |
-| PHI-06 | Docs/book/LLM/CC/API/S04/history/retro ownership reconciles | One normative source, actual refs/ranges/rowwalk/CDC retro, S07S08 book/human crosslinks and clean handoff | correctness-grade | PM/Operator | open | | No release integration/push or automatic unrelated scope |
+| PHI-03 | Private typed lazy backend invocation is hygienic and usable | Actual backend request API/output/receiver/order/name tests; no public AST/source primitive or mandatory runtime | correctness-grade | S02/S04 consumer | done | cdc-verification.md | Default and approved inline ESM fallback; S04 owns its caller |
+| PHI-04 | Exact optimized artifact/effect conditions hold | Pinned native-esbuild + strict Deno absent/unused-shaken/retained-uncalled/live proof, full code/metafiles/raw results | correctness-grade | source-first/Project07 | done | slice02-lazy-protected-invocation/cdc-verification.md | 14 actual bundles and 20 strict conditions including unbundled eval |
+| PHI-05 | Both source slices compose with independent real gates | Accepted exact source/diff/full normal/focused/runtime/citations and fresh independent composition proof | correctness-grade | work-verification | done | cdc-verification.md | Exact raw-kernel role cases and both source slices at final task pin |
+| PHI-06 | Docs/book/LLM/CC/API/S04/history/retro ownership reconciles | One normative source, actual refs/ranges/rowwalk/CDC retro, S07S08 book/human crosslinks and clean handoff | correctness-grade | PM/Operator | done | closing-report.md; cdc-verification.md; cdc-retrospective.md | Final source contract and later audit ownership linked |

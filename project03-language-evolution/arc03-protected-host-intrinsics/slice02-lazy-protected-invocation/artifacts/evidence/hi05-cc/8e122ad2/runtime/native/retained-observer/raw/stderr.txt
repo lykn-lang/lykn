@@ -1,0 +1,4 @@
+error: Uncaught (in promise) TypeError: Module not found "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/evidence/native/retained/retained.js".
+await import("./retained.js");
+^
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/evidence/native/retained/observer.js:7:1

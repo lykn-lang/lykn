@@ -1,0 +1,21 @@
+running 4 tests from ./test/forms/lazy-protected-invocation.test.js
+lazy protected invocation preserves the no-request compiler path ... ok (4ms)
+lazy protected invocation validates plans and recovers after rejection ... FAILED (783µs)
+lazy protected invocation checks source module binding roles ... ok (1ms)
+lazy protected invocation materializes all four public proof inputs ... ok (6ms)
+
+ ERRORS 
+
+lazy protected invocation validates plans and recovers after rejection => ./test/forms/lazy-protected-invocation.test.js:79:6
+error: AssertionError: Expected function to throw.
+    throw new AssertionError(msg);
+          ^
+    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/lazy-protected-invocation.test.js:82:3
+
+ FAILURES 
+
+lazy protected invocation validates plans and recovers after rejection => ./test/forms/lazy-protected-invocation.test.js:79:6
+
+FAILED | 3 passed | 1 failed (15ms)
+

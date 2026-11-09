@@ -1,0 +1,7 @@
+drwxr-xr-x@ 24 oubiwann  staff   768 Nov  5 21:40 /Users/oubiwann/Library/Caches/deno
+-rw-r--r--@  1 oubiwann  staff  1649 Nov  9 15:21 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/native-direct/evidence/native/live/bundle.js
+drwxr-xr-x@  2 oubiwann  staff    64 Nov  9 15:25 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/runtime/native/live/npm
+drwxr-xr-x@  2 oubiwann  staff    64 Nov  9 15:25 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/runtime/native/live/tmp
+drwxr-xr-x@  2 oubiwann  staff    64 Nov  9 15:25 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/8e122ad2/runtime/native/live/xdg
+lrwxr-xr-x@  1 oubiwann  admin    29 Sep 13 10:33 /opt/homebrew/bin/deno -> ../Cellar/deno/2.9.6/bin/deno
+-rw-r--r--@  1 oubiwann  staff   533 Nov  5 20:11 project.json

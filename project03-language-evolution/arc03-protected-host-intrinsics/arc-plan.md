@@ -1,13 +1,25 @@
 ---
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
-status: in-progress
+status: complete
 planned-release: unassigned
 depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results, arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
 related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity, project07-core-library-research]
 ---
 
 # Protected host intrinsics
+
+## Arc03 task-source acceptance — 2026-11-09
+
+[Composition and closing report](closing-report.md) and
+[fresh independent arc verification](cdc-verification.md) accept all
+six PHI rows at `d73601a5`. Both slices compose on the exact S01 ancestor.
+The approved output exception is one inline ESM import for an actual
+request with a genuine normalized module-scope Reflect binding. Default
+and absent routes preserve earlier bytes. The tested fallback is lazy and
+preserves unbundled lexical direct eval under the documented loader policy.
+Arc01 S04 owns any future production consumer. S07/S08 own the actual
+integration-range audit. Local release remains accepted S01 `e7b44c1`.
 
 ## S02 fallback re-entry — 2026-11-09
 
@@ -185,7 +197,7 @@ is versioned and MUST NOT vary with optimization or whether a helper is used.
 | H03 | Resolve actual roots/scopes after macro expansion, including colon paths and normalized JS identifiers; NameRes::Unresolved alone is NOT proof a colon root is global. Scope/TDZ, params/imports/declarations/patterns/property namespaces matter. |
 | H04 | Direct unshadowed globalThis.Reflect paths may prove the global alias only under the initial canonical-host alias precondition. Whole-unit conservative invalidation on any identifiable real-globalThis replacement/update/destructuring write (even nested/conditional) makes ALL such alias paths unknown; globalThis replacement itself is not banned. Reflection/dynamic/foreign alias mutations remain declared detection limits. Bare real Reflect remains independently protected. |
 | H05 | Compiler requests use private typed IntrinsicId/one central backend access route, hygienic against source/macro/normalized names. Bare Reflect recipe does not automatically protect all globalThis or every Reflect property. Preserve source export/property names; generated/debugger/inferred function-name impacts are explicitly audited rather than promising unsupported reflection identity. |
-| H06 | Lazy feature-local support is default: no mandatory module-startup capture, imported runtime/dependency or unconditional support/lookup. Absent feature emits none; unused function shaken removes helper/init; retained uncalled function performs no eager lookup; live request preserves receiver/getter/argument/control behavior. |
+| H06 | Lazy support is feature-local. An actual request with a true module-scope Reflect binding may use the approved single-file inline ESM import. Lookup occurs on invocation, and the output needs no external runtime package or eager capture. Absent feature emits none; unused function shaken removes helper/init; retained uncalled function performs no eager lookup; live request preserves receiver/getter/argument/control behavior. |
 | H07 | Native/public policies agree; optimization/assertion stripping cannot erase source-write errors. Whole-unit validation must preserve enclosing bindings; never naively validate each recursive emit_form/compileExpr without context. Low-level partial-context versus full-unit contracts are explicit. |
 | H08 | One normative shipped source document (`docs/host-contract.md`) owns policy/profile/limits; guides, source skill, CC contracts and book/API audit reference it rather than fork the rules. S07/S08 retain exact public/doc/book/human obligations. |
 
@@ -251,6 +263,10 @@ The new normative document and references land with code; audit crosslinks do
 not postpone required source-user guidance or fabricate a book update.
 
 ## Version history
+
+- 2026-11-09 v0.9: Closed the assembled task-source arc after independently
+  reproduced gates and a fresh composition review. Retained the approved
+  H06 exception and explicit S04/API/docs handoff.
 
 - 2026-11-09 v0.8: Recorded the approved affected-module ESM exception,
   pinned feasibility and implementation re-entry within S02.
