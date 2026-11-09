@@ -1,0 +1,6 @@
+Recognize native object rest bindings
+
+Collect the actual atom target emitted by the native object spread pattern.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,5 +1,20 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Sixth-pass static return — 2026-11-09
+
+CC froze `dd0360cb96c6ec042947ae7a28cb55b0bf7d7506`, tree
+`6508d73477db52a949d0097e6629f505f044eb25`, on the exact two
+assigned paths. The private JS proof uses distinct slots and actual
+messages and generated text. Native raw default, rest and alias
+binding cases are retained. The native collector still skips object
+spread explicitly, although the native writer emits its atom operand
+as a rest binding. The new scope-name branches for the two kernel
+function heads are identical. Both are bounded by the existing role
+contract. [Iteration09](cc-prompt-iteration09.md) records the narrow
+seventh pass under current Operator steering. No build, formatter,
+runtime or product validation ran on this freeze. CC disclosed the
+pre-review clean `git diff HEAD^ HEAD --check` separately.
+
 ## Correction05 static return and bounded continuation
 
 The immutable fifth candidate is `c51beb7148dcc1f291d7225f3397ee2cd2b46ec2`,

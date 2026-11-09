@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+[Iteration09](cc-prompt-iteration09.md) is the second bounded pass beyond
+the normal five. Exact sixth freeze `dd0360cb` retains the JS oracle
+repair and reveals one incomplete native object binding slot.
+All HC rows and runtime gates remain open.
+
 [Iteration08](cc-prompt-iteration08.md) is the recorded bounded
 sixth pass under direct Operator steering. Normal source refinements
 05 of 5 are spent. All HC rows and original gates remain open.

@@ -9,6 +9,12 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+The [sixth-pass static return](cdc-verification.md#sixth-pass-static-return--2026-11-09)
+preserves `dd0360cb` and its incomplete object rest binding role.
+[Iteration09](cc-prompt-iteration09.md) assigns a seventh bounded
+source pass under current Operator steering. The normal five remain
+spent. All execution and independent acceptance gates remain open.
+
 ## Bounded continuation beyond normal refinement allowance
 
 The normal five source refinements are spent. Under the Operator's
