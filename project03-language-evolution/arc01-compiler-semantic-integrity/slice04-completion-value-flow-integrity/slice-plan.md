@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice04-completion-value-flow-integrity
-status: planning
+status: in-progress
 planned-release: unassigned
 depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-integration]
 ---
@@ -16,6 +16,18 @@ The Operator authorized direct S04 continuation after independently
 at `d73601a5`. Same Luna 6 High CC and Sol 6.1 High CDC, standard
 Autonomous Mode. I1 is the first bounded source increment. Earlier
 design-only and strict-stop instructions below remain historical.
+
+[I1 executable assignment](cc-prompt-iteration01.md) uses dedicated
+`codex/completion-value-flow` from exact validated `d73601a5`.
+CDC readiness inspected all actual scope plan consumers and both
+kernel if writers. The selected private region role has real
+resolution/expansion consumers. Conditional branch scope, grouping
+and direct abrupt transfers through lexical blocks have separate
+frozen old/current fixtures. The source rule, named routes, exact
+oracles and domain guidance are explicit in the assignment.
+I2–I4 retain generalized target/provenance, consumed-flow, references
+and checked-exit work. Current authority is standard Autonomous Mode,
+with no pre-emptive stop on a clear in-scope issue.
 
 The [Arc03 composition review](../../arc03-protected-host-intrinsics/cdc-verification.md)
 accepts the private protected invocation facility at task source

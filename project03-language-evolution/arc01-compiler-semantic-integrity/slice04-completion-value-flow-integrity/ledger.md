@@ -1,5 +1,11 @@
 # S04 completion/value-flow ledger
 
+[I1 executable assignment](cc-prompt-iteration01.md) is issued on the
+validated release baseline `d73601a5`. This is a bounded first increment
+and supplies actual conditional branch and direct-transfer controls.
+The earlier design-only assignment remains intact. All CV rows start
+open. Later readiness and source budgets retain their own accounting.
+
 Current2026-11-08: Operator resolves H1 POLICY with protected intrinsics; Arc03
 owns actual source contract/facility/proof. I3 waits specifically accepted
 Arc03/S02, while I1 can be independent; no circular dependency. All6CV OPEN,
