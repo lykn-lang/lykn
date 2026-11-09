@@ -8,7 +8,7 @@ const CASES = [
   { name: "boundaries", expected: "[4,6,[2]]\n" },
   { name: "if-arm-scope", expected: "[101,14,15]\n" },
   { name: "if-declaration", expected: "" },
-  { name: "if-direct-transfers", expected: "[7,9,[0,2],4]\n" },
+  { name: "if-direct-transfers-literal", expected: "[7,9,[0,2],4]\n" },
 ];
 
 Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", async (t) => {
