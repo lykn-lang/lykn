@@ -1,0 +1,5 @@
+drwxr-xr-x@ 7 oubiwann  wheel  224 Nov  8 21:09 /private/tmp/arc03-s01-17d7018
+drwxr-xr-x@ 2 oubiwann  wheel   64 Nov  8 21:09 /private/tmp/arc03-s01-17d7018/fresh-artifacts
+drwxr-xr-x@ 2 oubiwann  wheel   64 Nov  8 21:09 /private/tmp/arc03-s01-17d7018/npm
+drwxr-xr-x@ 2 oubiwann  wheel   64 Nov  8 21:09 /private/tmp/arc03-s01-17d7018/xdg-config
+drwxr-xr-x@ 2 oubiwann  wheel   64 Nov  8 21:09 /private/tmp/arc03-s01-17d7018/xdg-data

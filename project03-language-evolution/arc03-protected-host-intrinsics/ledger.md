@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+S01 source refinement 03 of 5 is spent. The W8 test-only prerequisite
+stopped at missing prospective launch evidence. All PHI rows stay open.
+[Review](slice01-versioned-host-protection/cdc-verification.md#w8-repair-prerequisite-stopped-before-production).
+
 S01 source 02 of 5 is spent. [Correction02 stopped on public W8](slice01-versioned-host-protection/cdc-verification.md#correction02-public-baseline-stop).
 Native pre-policy results match expectations. All PHI rows stay open.
 

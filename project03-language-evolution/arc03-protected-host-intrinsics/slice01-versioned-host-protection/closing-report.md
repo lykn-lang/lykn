@@ -1,5 +1,17 @@
 # S01 attempts — current baseline STOP, 2026-11-08
 
+## W8 prerequisite stopped at the red evidence gate
+
+Clean CC return at `17d7018`, with the two safe numeric regressions only.
+The refresh succeeded and the focused raw showed seven passes and both
+predicted canonical expansion failures. The required prelaunch named-file
+checks and command/environment readback were omitted. CDC stopped before
+production or the original Arc03 baseline resumed.
+[Independent review](cdc-verification.md#w8-repair-prerequisite-stopped-before-production)
+separates the observed red from the evidence gap and names the next
+prospective gate. [Raw archive](artifacts/evidence/cc/prerequisite-17d7018/).
+All HC rows stay open and source refinement 03 of 5 is spent.
+
 ## Correction02 stopped on public W8
 
 CC returned clean at test-only `a7153649`. The exact oracle uses one

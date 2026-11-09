@@ -9,6 +9,10 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+W8 prerequisite source refinement 03 stopped before repair at the
+prospective launch evidence gate. The expected focused red is preserved.
+[Review](slice01-versioned-host-protection/cdc-verification.md#w8-repair-prerequisite-stopped-before-production).
+
 S01 correction02 stopped at public W8 on `a7153649`. The macro prerequisite
 enabled all 29 planned native observations. The public baseline needs a
 separate W8 disposition before source continuation.

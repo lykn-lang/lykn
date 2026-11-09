@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+The Arc03 W8 prerequisite reproduced the expected red and stopped before
+repair because the required prospective launch evidence was incomplete.
+[Review](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#w8-repair-prerequisite-stopped-before-production).
+
 Arc03 S01 correction02 verified the planned native baseline and stopped
 on a separate public W8 expansion error.
 [Review](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#correction02-public-baseline-stop).

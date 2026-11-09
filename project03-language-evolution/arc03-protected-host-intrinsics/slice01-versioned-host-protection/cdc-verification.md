@@ -1,5 +1,61 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## W8 repair prerequisite stopped before production
+
+Source refinement 03 of 5 followed [iteration03](cc-prompt-iteration03.md).
+The source trace accounts for the earlier public W8 failure. The compiled
+template's number node becomes primitive `0` inside the public macro
+result. Expansion expects a node with a type, while the native JSON decoder
+turns a raw number into `SExpr::Number`. The proposed repair stays numeric.
+Adjacent string and keyword behavior has no new execution evidence.
+
+Luna6 High CC froze the two harmless regressions at `533fe76`, then aligned
+the canonical reset helpers at `17d7018fe679fcc75e1912fcd336af133e5c9cd4`,
+tree `718af9ecb77bcf4f750b61a5720b92cdaf98c2e8`. Sol6.1 High CDC
+independently reviewed both commits and released only the red gate.
+The prerequisite branch is `codex/public-macro-numeric-literals` based on
+accepted `f2cd8139`, with a one-file delta in `test/expander/macro-basic.test.js`.
+The clean CC handoff retained `codex/protected-host-contract@a7153649`
+and release `62e9531e`.
+
+The [original raw red](artifacts/evidence/cc/prerequisite-17d7018/) shows
+refresh exit 0 and a focused test exit 1. Seven existing tests passed.
+Both new safe numeric cases failed with
+`expandExpr: unexpected node type 'undefined'` through the canonical
+expander. CDC independently inspected those actual streams and hashes.
+The W8 fixture and its earlier stopped baseline remain preserved.
+The archive matches the original directory byte-for-byte. The planning
+diff check exits 2 on two original runner headings with trailing spaces
+and one EOF blank line in `macro-basic/stdout.raw`. Prose-only exits 0.
+
+**Mandatory launch evidence is incomplete.** CC confirmed the individual
+named configuration paths were never inspected before either launch.
+The files named `named-ancestor-checks.txt` contain only directory
+metadata. No durable prelaunch argv/environment record and readback were
+made. CC attested the following original tool invocation strings from
+its transcript, with cwd the source checkout. This is a post-run report
+of the originals, separate from the missing prospective records.
+
+```text
+env TMPDIR=/private/tmp/arc03-s01-17d7018/fresh-artifacts DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CONFIG_HOME=/private/tmp/arc03-s01-17d7018/xdg-config XDG_DATA_HOME=/private/tmp/arc03-s01-17d7018/xdg-data npm_config_cache=/private/tmp/arc03-s01-17d7018/npm make fresh-artifacts
+env TMPDIR=/private/tmp/arc03-s01-17d7018/macro-basic DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CONFIG_HOME=/private/tmp/arc03-s01-17d7018/xdg-config XDG_DATA_HOME=/private/tmp/arc03-s01-17d7018/xdg-data npm_config_cache=/private/tmp/arc03-s01-17d7018/npm /opt/homebrew/bin/deno test --config project.json -A test/expander/macro-basic.test.js
+```
+
+Those overrides omit `XDG_CACHE_HOME`. Fresh embedded materialization
+cannot be inferred from the config and data directories. The actual red
+is retained as an observation. The promised controlled gate remains
+incomplete. CC returned all ownership clean at `17d7018`. Under the
+Operator stop rule, production, independent acceptance, composition and
+the resumed Arc03 baseline remain held. This attempt executed no W8
+protected-write module. All HC/PHI/CV rows remain open.
+
+**Next bounded gate.** Keep the same two frozen regressions. Once resumed,
+use fresh owned TMPDIR, XDG cache and npm roots. Inspect the exact named
+configuration files prospectively and write/read the actual argv/cwd/env
+and raw locators before each launch. Repeat only the same refresh and
+focused red with those conditions. Its raw result will be a separate
+observation. Source refinement 03 of 5 is spent.
+
 ## W8 regression prelaunch review
 
 The tests-only freeze `533fe76ee62f4f196fddd56e79c04aae527d77e7` adds

@@ -1,5 +1,11 @@
 # Arc03 S01 host protection ledger
 
+W8 prerequisite stopped before production at `17d7018`. The focused
+raw result was 7 passes and 2 expected failures, with incomplete
+prospective launch evidence.
+[Disposition](cdc-verification.md#w8-repair-prerequisite-stopped-before-production).
+All HC rows remain open. Source refinement 03 of 5 is spent.
+
 Operator authorizes [iteration03](cc-prompt-iteration03.md), source
 refinement 03 of 5. Scope is the bounded W8 repair, independent prerequisite
 validation and original baseline. All six HC rows remain open.

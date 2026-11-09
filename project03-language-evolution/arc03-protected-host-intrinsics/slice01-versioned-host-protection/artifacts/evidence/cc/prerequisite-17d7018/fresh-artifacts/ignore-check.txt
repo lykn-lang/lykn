@@ -1,0 +1,2 @@
+.gitignore:3:target/	target/arc03-s01/cc/prerequisite-17d7018/fresh-artifacts
+.gitignore:3:target/	target/arc03-s01/cc/prerequisite-17d7018/macro-basic

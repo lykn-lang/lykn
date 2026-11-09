@@ -1,0 +1,3 @@
+b63c03dd069be0e89670392ca4e28508376d2657cd6b6326e4997678a0455246  packages/lang/expander.js
+b63c03dd069be0e89670392ca4e28508376d2657cd6b6326e4997678a0455246  crates/lykn-lang/embedded/packages/lang/expander.js
+d708f7893b22ebd2c3c82a49c36d673c5f8573119ed51d9139c815fe00632a7c  test/expander/macro-basic.test.js

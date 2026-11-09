@@ -9,6 +9,15 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Latest stop — W8 prerequisite launch evidence
+
+The exact tests-only `17d7018` prerequisite reproduced two expected
+numeric macro failures. Required prospective named-file checks and saved
+command/environment readback were absent, so work stopped before
+production, composition or resumed Arc03 baseline.
+[Review and next bounded gate](cdc-verification.md#w8-repair-prerequisite-stopped-before-production).
+Source refinement 03 of 5 is spent. All HC rows stay open.
+
 ## Authorized W8 repair and baseline continuation
 
 Operator authorizes the bounded public W8 repair, independent validation,

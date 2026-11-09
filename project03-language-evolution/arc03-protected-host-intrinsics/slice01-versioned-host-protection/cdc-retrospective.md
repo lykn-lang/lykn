@@ -1,5 +1,15 @@
 # CDC retrospective — initial attempt stopped, 2026-11-08
 
+## W8 prerequisite prelaunch gap
+
+The canonical source trace and two bounded regressions produced the
+expected red. The file labeled as an ancestor check recorded directory
+metadata instead of the specified configuration paths. The execution
+also omitted the saved/read prelaunch command and environment record.
+Next review should see the actual named paths and readable launch record
+before authorizing each invocation. This prevents provenance checks from
+arriving after a tool result. Earlier observed evidence stays preserved.
+
 ## Correction02/public baseline
 
 The macro prerequisite removed the earlier obstacle for all three native

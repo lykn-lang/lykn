@@ -1,0 +1,6 @@
+06d8d794519ba7a0789a90fb3f517a4d1a1f92c2c4529a441899d4614a83831e  target/arc03-s01/cc/prerequisite-17d7018/fresh-artifacts/stdout.raw
+69be4dc3c4f6b8431508b67b4ca65d3704100de56c7f1dcd0777d420d2a279ec  target/arc03-s01/cc/prerequisite-17d7018/fresh-artifacts/stderr.raw
+82455cd2e705e5de4c8cb5c22df9a5052cb72eee94c79f3f1e4c850e9113e367  target/arc03-s01/cc/prerequisite-17d7018/macro-basic/stdout.raw
+a5e3e935f6d8ccada54ddbd5cdaffeee0cfd5d2b87d1088d1d5fd1249b84e599  target/arc03-s01/cc/prerequisite-17d7018/macro-basic/stderr.raw
+4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865  target/arc03-s01/cc/prerequisite-17d7018/macro-basic/exit-status.txt
+e317faa3b60b86f2b11b62eb71a97a86e71a37f9485c025d84e4b249cafa1fe4  target/arc03-s01/cc/prerequisite-17d7018/macro-basic/executable-sha256-post-build.txt
