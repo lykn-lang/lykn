@@ -57,12 +57,14 @@ pub(crate) fn emit_module_with_invocations(
         return Err(LyknError::Codegen(diagnostic));
     }
     let invocation = host_invocation::prepare(forms, requests)?;
-    let helper_name = invocation.helper_name;
     let slot = invocation.slot;
     let support = invocation.support;
     let mut w = JsWriter::with_invocations(
         invocation.request_names,
-        helper_name.clone().unwrap_or_default(),
+        support
+            .as_ref()
+            .map_or("", |item| item.name.as_str())
+            .to_string(),
     );
     let directives = forms
         .iter()
@@ -71,25 +73,21 @@ pub(crate) fn emit_module_with_invocations(
     for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
     }
-    match (helper_name.as_deref(), support) {
-        (Some(name), Some(strategy)) => {
-            match strategy {
+    match support {
+        Some(item) => {
+            let name = item.name;
+            match item.strategy {
                 host_invocation::SupportStrategy::LocalFunction => w.write(&format!(
                     "function {name}(fn, receiver, argv) {{ return {slot}(fn, receiver, argv); }}"
                 )),
                 host_invocation::SupportStrategy::InlineModuleImport => w.write(&format!(
-                    "import {{ apply as {name} }} from \"{}\";",
+                    "import {{apply as {name}}} from \"{}\";",
                     host_invocation::INLINE_APPLY_MODULE
                 )),
             }
             w.newline();
         }
-        (None, None) => {}
-        _ => {
-            return Err(host_invocation::invalid_request(
-                "invocation support strategy did not match the request plan",
-            ));
-        }
+        None => {}
     }
     for form in &forms[directives..] {
         emit_statement(&mut w, form)?;
@@ -255,7 +253,7 @@ mod tests {
         };
         let js = emit_module_with_invocations(&forms, &[request]).unwrap();
         let import = format!(
-            "import {{ apply as lyknHostReflectApply0 }} from \"{}\";",
+            "import {{apply as lyknHostReflectApply0}} from \"{}\";",
             host_invocation::INLINE_APPLY_MODULE
         );
         assert_eq!(js.matches(host_invocation::INLINE_APPLY_MODULE).count(), 1);
@@ -345,7 +343,7 @@ mod tests {
                 1,
                 "expected one inline module import for {source}"
             );
-            assert!(requested.contains("import { apply as lyknHostReflectApply0 }"));
+            assert!(requested.contains("import {apply as lyknHostReflectApply0}"));
             assert!(requested.contains("lyknHostReflectApply0(saved, receiver, argv);"));
             assert!(!requested.contains("function lyknHostReflectApply0"));
             if source.starts_with("(import") {
@@ -545,12 +543,12 @@ mod tests {
         );
         assert!(fallback_provider.contains("const Reflect = \"provider\";"));
         assert!(fallback_provider.contains("const marker = Reflect;"));
-        assert!(fallback_provider.contains("import { apply as lyknHostReflectApply2 }"));
+        assert!(fallback_provider.contains("import {apply as lyknHostReflectApply2}"));
         assert!(fallback_provider.contains("lyknHostReflectApply2(saved, receiver, argv)"));
         assert!(!fallback_provider.contains("function lyknHostReflectApply2"));
         assert!(
             fallback_provider.find("\"use strict\";").unwrap()
-                < fallback_provider.find("import { apply as").unwrap()
+                < fallback_provider.find("import {apply as").unwrap()
         );
 
         let fallback_eval = compile_fallback_eval_fixture();
@@ -561,45 +559,38 @@ mod tests {
             1
         );
         assert!(
-            fallback_eval.contains("import { current as Reflect, advance } from \"./state.js\";")
+            fallback_eval.contains("import {current as Reflect, advance} from \"./state.js\";")
         );
-        assert!(fallback_eval.contains("import { apply as lyknHostReflectApply0 }"));
+        assert!(fallback_eval.contains("import {apply as lyknHostReflectApply0}"));
         assert!(fallback_eval.contains("lyknHostReflectApply0(saved, receiver, argv)"));
 
-        let fallback_root = &root;
-        let shaken_entry =
-            emit_module_js(&fixture_forms(native_fixture_source("shaken-entry"))).unwrap();
         write_fixture(
-            &fallback_root.join("fallback-shaken"),
+            &root.join("fallback-shaken"),
             "provider.js",
             &fallback_provider,
         );
         write_fixture(
-            &fallback_root.join("fallback-shaken"),
+            &root.join("fallback-shaken"),
             "entry.js",
             &shaken_entry,
         );
         write_fixture(
-            &fallback_root.join("fallback-retained"),
+            &root.join("fallback-retained"),
             "provider.js",
             &fallback_provider,
         );
-        let observer =
-            emit_module_js(&fixture_forms(native_fixture_source("retained-observer"))).unwrap();
         write_fixture(
-            &fallback_root.join("fallback-retained"),
+            &root.join("fallback-retained"),
             "observer.js",
             &observer,
         );
         write_fixture(
-            &fallback_root.join("fallback-live"),
+            &root.join("fallback-live"),
             "provider.js",
             &fallback_provider,
         );
-        let live_entry =
-            emit_module_js(&fixture_forms(native_fixture_source("live-entry"))).unwrap();
         write_fixture(
-            &fallback_root.join("fallback-live"),
+            &root.join("fallback-live"),
             "entry.js",
             &live_entry,
         );
@@ -607,12 +598,12 @@ mod tests {
             "../../../../test/fixtures/lazy-protected-invocation/fallback-state.lisp"
         ));
         write_fixture(
-            &fallback_root.join("fallback-eval"),
+            &root.join("fallback-eval"),
             "eval.js",
             &fallback_eval,
         );
         write_fixture(
-            &fallback_root.join("fallback-eval"),
+            &root.join("fallback-eval"),
             "state.js",
             &emit_module_js(&state).unwrap(),
         );

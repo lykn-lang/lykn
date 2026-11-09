@@ -142,8 +142,6 @@ Deno.test("lazy protected invocation validates plans and recovers after rejectio
 });
 
 Deno.test("lazy protected invocation checks source module binding roles", () => {
-  assertEquals(decodeURIComponent(INLINE_APPLY_MODULE.slice("data:text/javascript,".length)),
-    INLINE_APPLY_SOURCE);
   const moduleReflectSources = [
     '(const Reflect! local) (saved receiver argv)',
     '(import "./remote.js" ((alias remote Reflect!))) (saved receiver argv)',
@@ -161,7 +159,7 @@ Deno.test("lazy protected invocation checks source module binding roles", () => 
     const output = compileWithHostInvocations(forms, compile,
       [hostInvocationRequest(newHostInvocationId(), anchor)]);
     assertEquals((output.match(/data:text\/javascript,/g) ?? []).length, 1);
-    assertStringIncludes(output, "import { apply as lyknHostReflectApply0 }");
+    assertStringIncludes(output, "import {apply as lyknHostReflectApply0}");
     assertStringIncludes(output, "lyknHostReflectApply0(saved, receiver, argv);");
     assertEquals(output.includes("function lyknHostReflectApply0"), false);
     if (source.startsWith('(import')) {
@@ -238,11 +236,18 @@ Deno.test("lazy protected invocation materializes all four public proof inputs",
   assertEquals((fallbackProvider.match(/data:text\/javascript,/g) ?? []).length, 1);
   assertStringIncludes(fallbackProvider, 'const Reflect = "provider";');
   assertStringIncludes(fallbackProvider, "const marker = Reflect;");
-  assertStringIncludes(fallbackProvider, "import { apply as lyknHostReflectApply2 }");
+  assertStringIncludes(fallbackProvider,
+    `import {apply as lyknHostReflectApply2} from "${INLINE_APPLY_MODULE}";`);
+  const emittedSpecifier = fallbackProvider.match(
+    /import \{apply as lyknHostReflectApply2\} from "([^"]+)";/,
+  )[1];
+  assertEquals(emittedSpecifier, INLINE_APPLY_MODULE);
+  assertEquals(decodeURIComponent(emittedSpecifier.slice("data:text/javascript,".length)),
+    INLINE_APPLY_SOURCE);
   assertStringIncludes(fallbackProvider, "lyknHostReflectApply2(saved, receiver, argv)");
   assertEquals(fallbackProvider.includes("function lyknHostReflectApply2"), false);
   assertEquals(fallbackProvider.indexOf('"use strict";') <
-    fallbackProvider.indexOf("import { apply as"), true);
+    fallbackProvider.indexOf("import {apply as"), true);
   const fallbackSource = fixture("fallback-provider.lisp");
   const fallbackOrdinary = compile(fallbackSource);
   assertEquals(fallbackOrdinary.includes(INLINE_APPLY_MODULE), false);
@@ -263,7 +268,7 @@ Deno.test("lazy protected invocation materializes all four public proof inputs",
   const fallbackEvalRoot = caseRoot("fallback-eval", evidenceRoot);
   const fallbackEval = compileRequestedFixture("fallback-eval.lisp");
   assertEquals((fallbackEval.match(/data:text\/javascript,/g) ?? []).length, 1);
-  assertStringIncludes(fallbackEval, 'import { current as Reflect, advance } from "./state.js";');
+  assertStringIncludes(fallbackEval, 'import {current as Reflect, advance} from "./state.js";');
   assertStringIncludes(fallbackEval, "lyknHostReflectApply0(saved, receiver, argv)");
   assertEquals(fallbackEval.indexOf(INLINE_APPLY_MODULE) <
     fallbackEval.indexOf('"./state.js"'), true);

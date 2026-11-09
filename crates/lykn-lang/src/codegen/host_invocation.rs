@@ -18,16 +18,20 @@ pub(crate) enum SupportStrategy {
     InlineModuleImport,
 }
 
+pub(crate) struct InvocationSupport {
+    pub(crate) name: String,
+    pub(crate) strategy: SupportStrategy,
+}
+
 pub(crate) struct InvocationRequest<'a> {
     pub(crate) id: IntrinsicId,
     pub(crate) anchor: &'a SExpr,
 }
 
 pub(crate) struct PreparedInvocations {
-    pub(crate) helper_name: Option<String>,
     pub(crate) request_names: HashMap<usize, bool>,
     pub(crate) slot: &'static str,
-    pub(crate) support: Option<SupportStrategy>,
+    pub(crate) support: Option<InvocationSupport>,
 }
 
 pub(crate) fn prepare(
@@ -36,7 +40,6 @@ pub(crate) fn prepare(
 ) -> Result<PreparedInvocations, LyknError> {
     if requests.is_empty() {
         return Ok(PreparedInvocations {
-            helper_name: None,
             request_names: HashMap::new(),
             slot: IntrinsicId::ReflectApply.slot(),
             support: None,
@@ -81,10 +84,12 @@ pub(crate) fn prepare(
         .map(|request| (request.anchor as *const SExpr as usize, false))
         .collect();
     Ok(PreparedInvocations {
-        helper_name: Some(helper_name),
         request_names,
         slot: requests[0].id.slot(),
-        support: Some(support),
+        support: Some(InvocationSupport {
+            name: helper_name,
+            strategy: support,
+        }),
     })
 }
 

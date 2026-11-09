@@ -45,7 +45,7 @@ the compiler emits the existing lazy local helper. When a requested module
 does bind `Reflect`, the compiler preserves that binding and any direct
 `eval` lookup of its live value. It emits one feature-local static named
 import for the protected operation from a fixed inline JavaScript data module.
-The generated import is placed after leading directives; requested calls use
+The generated import is placed after leading directives. Requested calls use
 its collision-free local name. Multiple requests in one module share that
 single import. This is an internal compiler path, not a new Lykn form or
 package export.

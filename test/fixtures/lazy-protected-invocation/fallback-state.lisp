@@ -1,3 +1,3 @@
-(kernel:let current "first")
-(kernel:function advance () (+= current "!"))
+(let current "first")
+(function advance () (+= current "!"))
 (export (names current advance))
