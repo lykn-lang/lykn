@@ -2,6 +2,9 @@
 
 Opened 2026-11-09 at accepted S01 `e7b44c1`. No S02 observation yet.
 
+[Refinement 04](cc-prompt-iteration04.md) retains `c3035f7` and requires
+an actually owned temporary evidence directory before replay.
+
 [Refinement 03](cc-prompt-iteration03.md) follows native focused 5/5
 at `b7dde69c` and public 2/4 after correcting the runner condition.
 The first public launch discovered no tests. No optimizer/runtime result.
