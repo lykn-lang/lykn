@@ -9,13 +9,19 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+## S01 local release integration — 2026-11-09
+
+Local `release/0.6.x` now points to the accepted S01 `e7b44c1`.
+[Independent release validation](slice01-versioned-host-protection/cdc-verification.md#independent-local-release-validation--2026-11-09)
+passed. PHI-03–06 and the S02 facility remain open.
+
 ## S01 accepted — 2026-11-09
 
 [S01](slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
 independently accepted the v1 contract and provable-write errors at
 `e7b44c1`. PHI-01 and PHI-02 are done. PHI-03 through PHI-06 retain the
 S02 invocation, optimization, composition and arc closure gates.
-Release is still `62e9531e`. S04 I3 depends on the future accepted
+Release was still `62e9531e` at source acceptance. S04 I3 depends on the future accepted
 facility, and Arc01 S07/S08 retain the final API and documentation audit.
 Historical holds below describe their respective source freezes.
 
@@ -217,6 +223,10 @@ The new normative document and references land with code; audit crosslinks do
 not postpone required source-user guidance or fabricate a book update.
 
 ## Version history
+
+- 2026-11-09 v0.5: Recorded S01's independently validated local release
+  fast-forward. The prior source acceptance and remaining arc gates retain
+  their dispositions.
 
 - 2026-11-08 v0.4: Native baseline STOP at e2f; original raw byte-preserved,
   unexpected macro dependency phase and separate native policy-oracle gap owned,

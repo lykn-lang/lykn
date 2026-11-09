@@ -9,12 +9,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+The accepted Arc03 S01 source is now on local `release/0.6.x` at
+`e7b44c1`. [Independent release receipt](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#independent-local-release-validation--2026-11-09).
+S02 remains the open protected-intrinsic facility increment.
+
 Arc03 [S01 v1 source protection](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
 is independently accepted at `e7b44c1`. This adds compiler errors for
 provable protected-slot writes and typed dist classifier diagnostics.
 The ordered-reference facility, optimized-output proof, and final
-integration-range API and documentation audit remain separate. Release
-remains at `62e9531e`. The holds below are historical.
+integration-range API and documentation audit remain separate. Release was
+at `62e9531e` at source acceptance. The holds below are historical.
 
 Arc03 S01 consolidated correction04 is held before assignment on a
 [computed-key false rejection](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09).
@@ -889,6 +893,9 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-09 v1.59: Recorded the independently validated Arc03 S01 local
+  fast-forward into `release/0.6.x` at the accepted source.
 
 - 2026-11-08 v1.58: Opened explicitly authorized named Arc03 protected-host
   delivery and S01 source-ready assignment, resolving H1 policy without source

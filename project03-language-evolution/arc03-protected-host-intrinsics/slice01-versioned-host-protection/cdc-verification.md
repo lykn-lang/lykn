@@ -1,5 +1,33 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Independent local release validation — 2026-11-09
+
+The Operator authorized local integration into `release/0.6.x`.
+`/root` fast-forwarded from `62e9531e6183b3762a9ff326fdc07439db33f31f`
+to the already accepted `e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214`,
+tree `407aba5e00b53ea682f073e6742a6de7324abaa7`. Separate reviewer
+`/root/cdc` verified the release reflog, ancestry and clean checkout.
+The release and task refs were 0/0 apart and their tracked trees matched.
+
+In the actual `.worktrees/0.6.x` checkout, the independent normal
+`make check` and standalone `make check-cited-paths` each exited 0.
+The full gate passed build, Clippy, format and workspace Rust, including
+1,152 language-library tests and all three native host-protection tests.
+The Deno suite passed 1,476 tests with 28 steps and the documentation
+suite passed 482 tests. Each citation invocation checked 64 current
+documents and accepted 601 historical citations via the census.
+Both commands used fresh owned temp/XDG/npm paths and ordinary PATH
+Deno 2.9.6, with no test Deno override. The release remained clean.
+
+The release-local `bin/lykn` and `target/release/lykn` matched
+byte-for-byte at SHA-256
+`4962c5a0e67d595ca343975e0f96b3c20c7030eee811852b44155a10f222c70e`.
+The separate task-build pin below remains evidence for its own checkout.
+This receipt verifies local integration. Source acceptance and open
+Arc03 S02 obligations are unchanged. [Raw evidence](artifacts/evidence/cdc/release-0.6.x-e7b44c1/).
+The prose whitespace check passed. The full staged check reported the
+trailing blank line in the original Make output, which is kept verbatim.
+
 ## Final independent v1 acceptance — 2026-11-09
 
 Luna6 High CC `/root/cdc/macro_dependency_design_luna` returned clean

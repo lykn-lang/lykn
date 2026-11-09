@@ -1,0 +1,11 @@
+Independent release validation by /root/cdc after /root fast-forward.
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+Source: e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214
+Tree: 407aba5e00b53ea682f073e6742a6de7324abaa7
+Preflight, PATH Deno 2.9.6, compiler versions, config hash and inherited env: /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/preflight.txt
+LYKN_TEST_DENO and LYKN_PROTECTED_HOST_EVIDENCE_DIR unset. No Cargo target/offline override.
+Named config preflight (source project.json expected; isolated ancestors absent):
+/bin/ls -ld /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/tmp/project.json /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/tmp/deno.json /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/tmp/deno.jsonc /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/project.json /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/deno.json /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/deno.jsonc /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/project.json /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/deno.json /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/deno.jsonc > /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/named-config.stdout.raw 2> /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/named-config.stderr.raw
+Exact invocation:
+/usr/bin/env TMPDIR=/private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/tmp XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/xdg npm_config_cache=/private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make check-cited-paths > /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/stdout.raw 2> /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/stderr.raw
+Process status destination: /private/tmp/lykn-arc03-s01-release-cdc.KBBphZZA/cites/exit-status.txt

@@ -1,5 +1,10 @@
 # S01 attempt dispositions — 2026-11-08
 
+The accepted S01 source is now on local `release/0.6.x` at
+`e7b44c1` following an independently validated fast-forward.
+[Release receipt](cdc-verification.md#independent-local-release-validation--2026-11-09).
+The source acceptance below records its original release state.
+
 ## Accepted v1 source protection — 2026-11-09
 
 S01 is complete on `codex/protected-host-contract@e7b44c1`.
@@ -28,7 +33,7 @@ the actual integration-range API and docs audit, including the new
 compile/check rejection behavior, typed dist classifier errors and
 any separate book or human review. Arc03 S02 retains the private
 invocation and optimized-output proof. S04 completion/value-flow
-criteria are open. Release remains clean at `62e9531e`.
+criteria are open. Release was clean at `62e9531e` at source acceptance.
 [Retrospective](cdc-retrospective.md#accepted-execution-retrospective--2026-11-09).
 
 ## Consolidated correction04 path-identity hold — 2026-11-09

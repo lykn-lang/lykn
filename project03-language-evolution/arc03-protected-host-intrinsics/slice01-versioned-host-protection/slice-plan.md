@@ -9,6 +9,9 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+Local `release/0.6.x` was subsequently fast-forwarded to the
+accepted `e7b44c1` and [independently validated](cdc-verification.md#independent-local-release-validation--2026-11-09).
+
 ## Independent acceptance — 2026-11-09
 
 All six HC rows are done at
@@ -17,7 +20,7 @@ All six HC rows are done at
 and [retrospective](cdc-retrospective.md). Five normal refinements
 plus three bounded continuations are retained. Source protection and
 typed dist diagnostics are accepted on the dedicated task branch.
-Release remains at `62e9531e`. Arc03 S02, release integration, and the
+Release was at `62e9531e` at source acceptance. Arc03 S02, release integration, and the
 S04 ordered-reference consumer are outside this close.
 
 The [sixth-pass static return](cdc-verification.md#sixth-pass-static-return--2026-11-09)
