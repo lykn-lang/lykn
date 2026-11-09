@@ -63,7 +63,10 @@ pub(crate) fn emit_module_with_invocations(
         invocation.request_names,
         helper_name.clone().unwrap_or_default(),
     );
-    let directives = forms.iter().take_while(|form| matches!(form, SExpr::String { .. })).count();
+    let directives = forms
+        .iter()
+        .take_while(|form| matches!(form, SExpr::String { .. }))
+        .count();
     for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
     }
@@ -77,7 +80,9 @@ pub(crate) fn emit_module_with_invocations(
         emit_statement(&mut w, form)?;
     }
     if !w.all_invocations_consumed() {
-        return Err(host_invocation::invalid_request("unconsumed invocation request"));
+        return Err(host_invocation::invalid_request(
+            "unconsumed invocation request",
+        ));
     }
     Ok(w.finish())
 }
@@ -239,7 +244,11 @@ mod tests {
 
     #[test]
     fn private_host_invocation_requires_stable_atoms_and_owned_anchor() {
-        let nested = list(vec![atom("saved"), list(vec![atom("receiver")]), atom("argv")]);
+        let nested = list(vec![
+            atom("saved"),
+            list(vec![atom("receiver")]),
+            atom("argv"),
+        ]);
         let nested_forms = vec![nested];
         let nested_request = host_invocation::InvocationRequest {
             id: crate::protected_host::IntrinsicId::ReflectApply,
@@ -294,9 +303,7 @@ mod tests {
         ];
         for source in rejects {
             assert!(
-                crate::protected_host::invocation_unavailable_for_reflect(
-                    &fixture_forms(source)
-                ),
+                crate::protected_host::invocation_unavailable_for_reflect(&fixture_forms(source)),
                 "expected module Reflect binding in {source}"
             );
         }
@@ -306,9 +313,7 @@ mod tests {
         ];
         for source in allowed {
             assert!(
-                !crate::protected_host::invocation_unavailable_for_reflect(
-                    &fixture_forms(source)
-                ),
+                !crate::protected_host::invocation_unavailable_for_reflect(&fixture_forms(source)),
                 "external or nested name must not bind module Reflect: {source}"
             );
         }
@@ -340,11 +345,21 @@ mod tests {
 
     fn native_fixture_source(name: &str) -> &'static str {
         match name {
-            "absent" => include_str!("../../../../test/fixtures/lazy-protected-invocation/absent.lisp"),
-            "provider" => include_str!("../../../../test/fixtures/lazy-protected-invocation/provider.lisp"),
-            "shaken-entry" => include_str!("../../../../test/fixtures/lazy-protected-invocation/shaken-entry.lisp"),
-            "live-entry" => include_str!("../../../../test/fixtures/lazy-protected-invocation/live-entry.lisp"),
-            "retained-observer" => include_str!("../../../../test/fixtures/lazy-protected-invocation/retained-observer.lisp"),
+            "absent" => {
+                include_str!("../../../../test/fixtures/lazy-protected-invocation/absent.lisp")
+            }
+            "provider" => {
+                include_str!("../../../../test/fixtures/lazy-protected-invocation/provider.lisp")
+            }
+            "shaken-entry" => include_str!(
+                "../../../../test/fixtures/lazy-protected-invocation/shaken-entry.lisp"
+            ),
+            "live-entry" => {
+                include_str!("../../../../test/fixtures/lazy-protected-invocation/live-entry.lisp")
+            }
+            "retained-observer" => include_str!(
+                "../../../../test/fixtures/lazy-protected-invocation/retained-observer.lisp"
+            ),
             _ => unreachable!(),
         }
     }
@@ -360,7 +375,9 @@ mod tests {
     }
 
     fn compile_collision_fixture() -> String {
-        let forms = fixture_forms(include_str!("../../../../test/fixtures/lazy-protected-invocation/collision.lisp"));
+        let forms = fixture_forms(include_str!(
+            "../../../../test/fixtures/lazy-protected-invocation/collision.lisp"
+        ));
         let anchor = forms.iter().find_map(find_saved_call).unwrap();
         let request = host_invocation::InvocationRequest {
             id: crate::protected_host::IntrinsicId::ReflectApply,
@@ -378,7 +395,9 @@ mod tests {
     fn private_host_invocation_materializes_four_native_proof_inputs() {
         let evidence_root = std::env::var_os("LYKN_INTRINSIC_EVIDENCE_DIR")
             .map(PathBuf::from)
-            .unwrap_or_else(|| std::env::temp_dir().join(format!("lykn-intrinsic-native-{}", std::process::id())));
+            .unwrap_or_else(|| {
+                std::env::temp_dir().join(format!("lykn-intrinsic-native-{}", std::process::id()))
+            });
         let root = evidence_root.join("native");
 
         let absent = emit_module_js(&fixture_forms(native_fixture_source("absent"))).unwrap();
@@ -389,15 +408,18 @@ mod tests {
         let provider = compile_provider_fixture();
         assert!(provider.contains("function lyknHostReflectApply2"));
         assert!(provider.contains("lyknHostReflectApply2(saved, receiver, argv)"));
-        let shaken_entry = emit_module_js(&fixture_forms(native_fixture_source("shaken-entry"))).unwrap();
+        let shaken_entry =
+            emit_module_js(&fixture_forms(native_fixture_source("shaken-entry"))).unwrap();
         write_fixture(&root.join("shaken"), "provider.js", &provider);
         write_fixture(&root.join("shaken"), "entry.js", &shaken_entry);
 
         write_fixture(&root.join("retained"), "provider.js", &provider);
-        let observer = emit_module_js(&fixture_forms(native_fixture_source("retained-observer"))).unwrap();
+        let observer =
+            emit_module_js(&fixture_forms(native_fixture_source("retained-observer"))).unwrap();
         write_fixture(&root.join("retained"), "observer.js", &observer);
 
-        let live_entry = emit_module_js(&fixture_forms(native_fixture_source("live-entry"))).unwrap();
+        let live_entry =
+            emit_module_js(&fixture_forms(native_fixture_source("live-entry"))).unwrap();
         write_fixture(&root.join("live"), "provider.js", &provider);
         write_fixture(&root.join("live"), "entry.js", &live_entry);
         assert!(live_entry.contains("invoke("));

@@ -143,7 +143,9 @@ pub(crate) fn invocation_unavailable_for_reflect(forms: &[SExpr]) -> bool {
     let mut names = scope_names(forms, true);
     fn add_decl(candidate: Option<&SExpr>, names: &mut HashSet<String>) {
         let Some(form) = candidate else { return };
-        let Some((head, args)) = head_and_args(form) else { return };
+        let Some((head, args)) = head_and_args(form) else {
+            return;
+        };
         let head = head.strip_prefix("kernel:").unwrap_or(head);
         if head == "async" {
             add_decl(args.first(), names);
@@ -151,14 +153,25 @@ pub(crate) fn invocation_unavailable_for_reflect(forms: &[SExpr]) -> bool {
         }
         if matches!(
             head,
-            "bind" | "import" | "const" | "let" | "var" | "function" | "function*"
-                | "func" | "genfunc" | "class" | "type"
+            "bind"
+                | "import"
+                | "const"
+                | "let"
+                | "var"
+                | "function"
+                | "function*"
+                | "func"
+                | "genfunc"
+                | "class"
+                | "type"
         ) {
             names.extend(scope_names(std::slice::from_ref(form), false));
         }
     }
     for form in forms {
-        let Some((head, args)) = head_and_args(form) else { continue };
+        let Some((head, args)) = head_and_args(form) else {
+            continue;
+        };
         match head.strip_prefix("kernel:").unwrap_or(head) {
             "export" => {
                 if args.first().and_then(SExpr::as_atom) == Some("default") {
