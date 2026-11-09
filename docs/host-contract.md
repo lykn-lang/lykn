@@ -51,12 +51,11 @@ single import. This is an internal compiler path, not a new Lykn form or
 package export.
 
 The data module is contained in the emitted JavaScript file, so the compiler
-does not add an external package, sidecar file or runtime library. Loading the
-file still requires an ESM host that permits importing a `data:` module. A
-host's Content Security Policy, import policy, or loader may disallow inline
+does not add an external package, sidecar file or runtime library. A fallback
+file requires an ESM loader and application policy that permit data-module
+imports. A host's Content Security Policy or import policy may disallow inline
 data-module imports; applications using such a host must account for that
-restriction. No loader registration or policy override is performed by
-Lykn.
+restriction. No loader registration or policy override is performed by Lykn.
 
 The fallback and its tree-shaking behavior were exercised with Deno 2.9.6 and
 esbuild 0.25.5. The direct-eval live-binding behavior is exercised on emitted

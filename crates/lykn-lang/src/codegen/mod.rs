@@ -73,21 +73,18 @@ pub(crate) fn emit_module_with_invocations(
     for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
     }
-    match support {
-        Some(item) => {
-            let name = item.name;
-            match item.strategy {
-                host_invocation::SupportStrategy::LocalFunction => w.write(&format!(
-                    "function {name}(fn, receiver, argv) {{ return {slot}(fn, receiver, argv); }}"
-                )),
-                host_invocation::SupportStrategy::InlineModuleImport => w.write(&format!(
-                    "import {{apply as {name}}} from \"{}\";",
-                    host_invocation::INLINE_APPLY_MODULE
-                )),
-            }
-            w.newline();
+    if let Some(item) = support {
+        let name = item.name;
+        match item.strategy {
+            host_invocation::SupportStrategy::LocalFunction => w.write(&format!(
+                "function {name}(fn, receiver, argv) {{ return {slot}(fn, receiver, argv); }}"
+            )),
+            host_invocation::SupportStrategy::InlineModuleImport => w.write(&format!(
+                "import {{apply as {name}}} from \"{}\";",
+                host_invocation::INLINE_APPLY_MODULE
+            )),
         }
-        None => {}
+        w.newline();
     }
     for form in &forms[directives..] {
         emit_statement(&mut w, form)?;
