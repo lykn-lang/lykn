@@ -6,8 +6,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use lykn_cli::dist::{DistError, build_project};
 use lykn_lang::diagnostics::{Diagnostic, Severity};
-use lykn_lang::reader::source_loc::Span;
 use lykn_lang::error::LyknError;
+use lykn_lang::reader::source_loc::Span;
 use tempfile::TempDir;
 
 const INVALID: &[(&str, &str)] = &[
@@ -167,13 +167,13 @@ fn matches_policy_rejection(observation: &PredicateInput<'_>) -> bool {
 
 fn exact_diagnostic(case: &str, source: &str, path: &Path, route: &str) -> Vec<u8> {
     let forms = lykn_lang::reader::read(source).expect("parse unchanged protected-host fixture");
-    let form = forms.first().expect("protected-host fixture has a first form");
+    let form = forms
+        .first()
+        .expect("protected-host fixture has a first form");
     let values = form.as_list().expect("protected-host first form is a list");
     let span = match case {
         "w8" => Span::default(),
-        "w9" => values[7]
-            .as_list()
-            .expect("pre clause is a list")[1]
+        "w9" => values[7].as_list().expect("pre clause is a list")[1]
             .as_list()
             .expect("pre body is a list")[1]
             .span(),
@@ -276,7 +276,9 @@ fn run_predicate_controls() {
             name: "reject-v1-marker-inside-macro-error",
             code: Some(1),
             stdout: Vec::new(),
-            stderr: b"macro expansion error: host-contract v1: write to protected slot Reflect.apply\n".to_vec(),
+            stderr:
+                b"macro expansion error: host-contract v1: write to protected slot Reflect.apply\n"
+                    .to_vec(),
             expected_stderr: correct.clone(),
             effects: baseline_effects.clone(),
             expected_match: false,
@@ -294,7 +296,8 @@ fn run_predicate_controls() {
             name: "reject-wrong-severity",
             code: Some(1),
             stdout: Vec::new(),
-            stderr: b"1:7: warning: host-contract v1: write to protected slot Reflect.apply\n".to_vec(),
+            stderr: b"1:7: warning: host-contract v1: write to protected slot Reflect.apply\n"
+                .to_vec(),
             expected_stderr: correct.clone(),
             effects: baseline_effects.clone(),
             expected_match: false,
@@ -303,7 +306,8 @@ fn run_predicate_controls() {
             name: "reject-wrong-span",
             code: Some(1),
             stdout: Vec::new(),
-            stderr: b"1:8: error: host-contract v1: write to protected slot Reflect.apply\n".to_vec(),
+            stderr: b"1:8: error: host-contract v1: write to protected slot Reflect.apply\n"
+                .to_vec(),
             expected_stderr: correct.clone(),
             effects: baseline_effects.clone(),
             expected_match: false,
@@ -394,7 +398,11 @@ fn run_predicate_controls() {
         expected_match: false,
     });
 
-    assert_eq!(controls.len(), 15, "all private predicate controls retained");
+    assert_eq!(
+        controls.len(),
+        15,
+        "all private predicate controls retained"
+    );
     for control in &controls {
         let observation = PredicateInput {
             code: control.code,
@@ -410,7 +418,11 @@ fn run_predicate_controls() {
         );
         eprintln!("PROTECTED_HOST_PREDICATE_CONTROL {verdict}");
         save_receipt(control.name, "predicate.txt", verdict.as_bytes());
-        assert_eq!(matched, control.expected_match, "predicate control {}", control.name);
+        assert_eq!(
+            matched, control.expected_match,
+            "predicate control {}",
+            control.name
+        );
     }
 }
 
@@ -502,7 +514,14 @@ fn write_source(root: &Path, source: &str) -> PathBuf {
 fn existing_sentinels(
     root: &Path,
     name: &str,
-) -> (PathBuf, PathBuf, ArtifactState, ArtifactState, Vec<u8>, Vec<u8>) {
+) -> (
+    PathBuf,
+    PathBuf,
+    ArtifactState,
+    ArtifactState,
+    Vec<u8>,
+    Vec<u8>,
+) {
     let output = root.join(format!("{name}.js"));
     let declaration = output.with_extension("d.ts");
     let js = format!("existing {name} JavaScript sentinel\n").into_bytes();
@@ -517,14 +536,7 @@ fn existing_sentinels(
         .expect("set declaration sentinel epoch mtime");
     let js_before = snapshot_artifact(&output);
     let dts_before = snapshot_artifact(&declaration);
-    (
-        output,
-        declaration,
-        js_before,
-        dts_before,
-        js,
-        dts,
-    )
+    (output, declaration, js_before, dts_before, js, dts)
 }
 
 #[test]
@@ -941,10 +953,7 @@ fn protected_host_dist_error_preserves_typed_path_and_stale_outputs() {
         panic!("dist must preserve the classifier diagnostic");
     };
     let forms = lykn_lang::reader::read(DIST_SOURCE).expect("parse typed dist fixture");
-    let target_span = forms[1]
-        .as_list()
-        .expect("second dist form is a list")[1]
-        .span();
+    let target_span = forms[1].as_list().expect("second dist form is a list")[1].span();
     let expected = Diagnostic {
         severity: Severity::Error,
         message: "host-contract v1: write to protected slot Reflect.apply".to_string(),
