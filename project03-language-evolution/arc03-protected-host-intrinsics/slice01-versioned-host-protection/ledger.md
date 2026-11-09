@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+All six HC rows are independently done at `e7b44c1` on 2026-11-09.
+[Row walk](closing-report.md#accepted-v1-source-protection--2026-11-09)
+and [verification](cdc-verification.md#final-independent-v1-acceptance--2026-11-09).
+Five normal refinements and three bounded continuations were used.
+
 [Iteration10](cc-prompt-iteration10.md) assigns the observed Clippy
 repairs as the third pass beyond the normal five. At `629fb671` the
 focused gates passed and normal Make stopped at Clippy. All HC rows
@@ -109,9 +114,9 @@ yet, old allowances/release62e preserved.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| HC-01 | Stable v1 contract/catalog shipped without broad builtin ban | Normative source doc/profile and exact protected slots, optimization/use-independent policy | correctness-grade | Operator/PHI01 | open | slice-plan.md | Only ReflectApply/globalReflect; host precondition/detection limits explicit |
-| HC-02 | Full-unit source and backend checks reject provable writes | Nine bad sources/native29routes/dist/public9 and kernel/source dialect controls | correctness-grade | PHI02 | open | | No invalid generated output executed; no recursive partial-context guessing |
-| HC-03 | True root identity/normalization/shadows/alias limits preserved | Scope/name/unit controls, native/public legal4 actual runtimes, whole-unit alias invalidation | correctness-grade | PHI02/H03H04 | open | | NameRes alone not global proof; unknown not guessed |
-| HC-04 | Source failures preserve actual outputs/diagnostics and valid source | Parsed span + unknown-origin honesty, real missing/existing/dist mtime/data, exact runtime/status | correctness-grade | S02/PHI02 | open | | Optional DTS not a fictional obligation; typed dist fixture declares it |
-| HC-05 | Both backends/materialized mirror/full gates independently pass | Actual Git/pins/focused/full normal/cites/strict runtime/module review and separate CDC replay | correctness-grade | PHI05 | open | | New embedded file +compiler byte equality/fresh XDG proof |
-| HC-06 | Actual source/docs/rowwalk/retro/parents/handoff reconcile | CC proposals vs independent acceptance, canonical CDC retro/clean refs, S02/S04/S07S08/book owners | correctness-grade | PM/PHI06 | open | | No next source/integration/K automatically outside Arc03 |
+| HC-01 | Stable v1 contract/catalog shipped without broad builtin ban | Normative source doc/profile and exact protected slots, optimization/use-independent policy | correctness-grade | Operator/PHI01 | done | closing-report.md | Only ReflectApply/globalReflect; host precondition/detection limits explicit |
+| HC-02 | Full-unit source and backend checks reject provable writes | Nine bad sources/native29routes/dist/public9 and kernel/source dialect controls | correctness-grade | PHI02 | done | closing-report.md | No invalid generated output executed; no recursive partial-context guessing |
+| HC-03 | True root identity/normalization/shadows/alias limits preserved | Scope/name/unit controls, native/public legal4 actual runtimes, whole-unit alias invalidation | correctness-grade | PHI02/H03H04 | done | closing-report.md | NameRes alone not global proof; unknown not guessed |
+| HC-04 | Source failures preserve actual outputs/diagnostics and valid source | Parsed span + unknown-origin honesty, real missing/existing/dist mtime/data, exact runtime/status | correctness-grade | S02/PHI02 | done | closing-report.md | Optional DTS not a fictional obligation; typed dist fixture declares it |
+| HC-05 | Both backends/materialized mirror/full gates independently pass | Actual Git/pins/focused/full normal/cites/strict runtime/module review and separate CDC replay | correctness-grade | PHI05 | done | cdc-verification.md | New embedded file +compiler byte equality/fresh XDG proof |
+| HC-06 | Actual source/docs/rowwalk/retro/parents/handoff reconcile | CC proposals vs independent acceptance, canonical CDC retro/clean refs, S02/S04/S07S08/book owners | correctness-grade | PM/PHI06 | done | closing-report.md | S02 facility and release remain separate |

@@ -1,0 +1,19 @@
+Arc03 S01 — prospective mechanical Rust formatting
+Invocation: format-write-1d27-20261109
+State: PREPARED / NOT EXECUTED. CDC pre-released this exact formatter step after accepting the one-file semantic freeze.
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch/HEAD/tree: codex/protected-host-contract / 1d27e126680e16d79c9c8f5715ff28f646e85b54 / 07f9cdedf96024853797278e2b6978bde5a02c16
+Working tree clean. Formatter is expected to affect only `crates/lykn-lang/src/protected_host.rs`; this is a mechanical formatting step with no tests/build.
+Executable /Users/oubiwann/.cargo/bin/cargo, cargo 1.97.0 (c980f4866 2026-06-30); rustfmt 1.9.0-stable (2d8144b788 2026-07-07). Repository formatter config and exact relevant env were read under `target/arc03-s01/cc/format-check-8223877e-20261109/`; that check found the same one-file diff's visible indentation. No Deno/npm involved.
+Argv: ["fmt", "--all"]. Exact command:
+env TMPDIR=/private/tmp/arc03-s01-format-write-1d27-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-format-write-1d27-20261109/XDG_CACHE_HOME /Users/oubiwann/.cargo/bin/cargo fmt --all > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-write-1d27-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-write-1d27-20261109/stderr.raw
+Record the actual tool exit verbatim to exit-status.txt after the command returns. Fixed roots were freshly created in this receipt setup readback.
+Source freeze used actual planning fixed message `/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/format-v1-message.txt`; full body was read back:
+Format protected host validation sources
+
+Apply repository formatting to the reviewed v1 candidate.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+After formatter, review full source diff; commit only any mechanical change with that supplied message.
+Raw formatter outputs/status: stdout.raw, stderr.raw, exit-status.txt.

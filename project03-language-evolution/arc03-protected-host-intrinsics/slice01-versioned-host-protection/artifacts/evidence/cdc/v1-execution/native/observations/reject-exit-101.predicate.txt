@@ -1,0 +1,1 @@
+case=reject-exit-101 matched=false expected=false

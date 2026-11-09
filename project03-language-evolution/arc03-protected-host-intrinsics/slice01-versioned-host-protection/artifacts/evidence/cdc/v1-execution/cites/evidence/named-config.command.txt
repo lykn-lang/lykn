@@ -1,0 +1,4 @@
+cwd: /private/tmp
+ls -ld /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/cites/TMPDIR/project.json /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/cites/TMPDIR/deno.json /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/cites/TMPDIR/deno.jsonc /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/cites/project.json /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/cites/deno.json /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/cites/deno.jsonc /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/project.json /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/deno.json /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/project.json /private/deno.json /private/deno.jsonc /project.json /deno.json /deno.jsonc
+actual exit: 1
+Actual raw: 18 named path absence diagnostics, no other diagnostics, stdout empty.

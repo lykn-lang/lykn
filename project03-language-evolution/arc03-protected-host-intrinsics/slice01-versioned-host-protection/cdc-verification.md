@@ -1,5 +1,58 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Final independent v1 acceptance — 2026-11-09
+
+Luna6 High CC `/root/cdc/macro_dependency_design_luna` returned clean
+source, index, build and raw ownership at
+`e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214`, tree
+`407aba5e00b53ea682f073e6742a6de7324abaa7`. The actual proposal covered
+native 15/29, legal4 and typed dist, public nine rejections and legal4,
+private Rust12, macro10 and full normal gates. The separate policy test
+also passed. [CC raw archive](artifacts/evidence/cc/v1-execution/).
+
+Sol6.1 High CDC `/root/cdc` verified the exact 18-path source delta
+from pre-policy `5a2e569` and the narrow reviewed corrections. Public
+behavior fixtures are byte-identical. The native original test changed
+only its permitted Deno PATH fallback. The `629fb671`→`1d27e126` delta
+applies the eight actual Clippy let-chain recommendations, and
+`1d27e126`→`e7b44c1` is one-file whitespace only.
+
+After the handoff CDC used separate owned temporary, XDG and npm roots,
+the approved Deno cache and actual producer pins. The independent Cargo
+no-run pair, direct native 3 and private 12, refresh, public 1 plus 13
+steps, macro 10, policy 1, unfiltered normal Make and standalone cited
+paths all exited 0. Full Make passed Clippy and format, workspace Rust
+including 1,152 language-library tests, 1,476 Deno tests with 28 steps,
+and 482 docs tests. Both citation invocations report 64 current
+documents and 601 historical citations. Refreshed and post-Make task
+release producers have SHA-256
+`25c1dd708a098ce943c1a3c12910c270c8c468ae2ca37b3c2a818ef2878c4cd1`.
+[Independent raw archive](artifacts/evidence/cdc/v1-execution/).
+
+The native run observed 15 predicate controls, 29 matching exit-1 route
+records and exact artifact effects, plus a typed dist Classify
+diagnostic at 2:7–2:20 with unchanged JS/DTS bytes and epoch mtimes.
+Macro-produced W8 uses the source-derived unknown-origin 0:0.
+The public cases recorded nine rejections with no generated code or
+runtime. Both producers' four legal modules were read in full and
+executed with strict Deno conditions. Their JSON outputs plus LF are
+`"function"`, `[7,8]`, `9`, and `99`, with exit 0 and empty runtime
+stderr. Native legal compiler warnings are preserved separately.
+Canonical, embedded and freshly materialized compiler, expander and
+policy files matched in all six direct byte comparisons. The
+match describes finite verified cases and the reviewed policy scope.
+
+The first receipt-directory launch, incomplete preflight captures,
+first normal Make lint failure, and preceding source-only findings
+remain in their own records. All six HC rows are accepted at the
+final source. [Row walk](closing-report.md#accepted-v1-source-protection--2026-11-09).
+
+Source diff whitespace check and staged planning prose check exited 0.
+The full staged planning check exited 2 on original runner/formatter
+output, receipt manifests and a raw Git-body readback. The 22 EOF and
+31 trailing-whitespace notices apply to those preserved bytes.
+The evidence archive retains them verbatim.
+
 ## First v1 execution and bounded lint repair — 2026-11-09
 
 The exact seventh candidate `8223877e` passed static review. Native

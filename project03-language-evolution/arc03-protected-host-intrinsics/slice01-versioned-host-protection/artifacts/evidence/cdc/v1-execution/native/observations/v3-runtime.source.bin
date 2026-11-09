@@ -1,0 +1,4 @@
+(func normalized :args (:any Reflect!) :returns :any :body
+  (set! Reflect!:apply 9)
+  Reflect!:apply)
+(console:log (JSON:stringify (normalized (obj :apply 0))))

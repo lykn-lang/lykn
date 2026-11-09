@@ -1,0 +1,24 @@
+Arc03 S01 iteration08 — prospective all-workspace formatting check
+Invocation: format-check-8223877e-20261109
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and exact invocation.
+
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD: 8223877e4a214b0ed2bdfb0b1ec775fd4c4a8172
+Tree: 57b988208f2baac2c96004e531d84ee3c2d7b8d8
+Working tree: clean at receipt preparation.
+
+Executable: /Users/oubiwann/.cargo/bin/cargo; version cargo 1.97.0 (c980f4866 2026-06-30).
+Rustfmt: /Users/oubiwann/.cargo/bin/rustfmt; version 1.9.0-stable (2d8144b788 2026-07-07).
+Argv: ["fmt", "--all", "--", "--check"]. Exact command below; read-only check only.
+env TMPDIR=/private/tmp/arc03-s01-format-check-8223877e-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-format-check-8223877e-20261109/XDG_CACHE_HOME /Users/oubiwann/.cargo/bin/cargo fmt --all -- --check > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-check-8223877e-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-check-8223877e-20261109/stderr.raw
+After tool return, record its actual exit in exit-status.txt. Output redirection preserves the real command status.
+
+Relevant environment readback: CARGO_HOME, RUSTUP_HOME, RUSTUP_TOOLCHAIN, CARGO_TARGET_DIR, RUSTFLAGS, and RUSTC_WRAPPER were unset at preparation; see relevant-env.*. No target-dir or rustflags override. Cargo and rustfmt version/path readbacks are in their named raw files.
+
+Exact config/workspace preflight argv is in corrected-named-config-ls.argv.txt; actual stdout/stderr/status are corrected-named-config-ls.stdout.raw, corrected-named-config-ls.stderr.raw, and corrected-named-config-ls.exit-status.txt. It found the workspace Cargo.toml and Cargo.lock present and no Cargo config or rustfmt.toml/.rustfmt.toml at the checked workspace/ancestor/package paths. The earlier named-config-ls.* probe omitted two highest ancestors and is preserved as superseded; it is not used as the final preflight.
+
+Fresh temporary/cache roots were absent in named-scratch-ls.* (status 1), then created by the exact mkdir command recorded in setup-command.txt (status 0). No formatter/build/test has run under this receipt.
+
+Raw formatter output/status destinations: stdout.raw, stderr.raw, exit-status.txt.
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-check-8223877e-20261109

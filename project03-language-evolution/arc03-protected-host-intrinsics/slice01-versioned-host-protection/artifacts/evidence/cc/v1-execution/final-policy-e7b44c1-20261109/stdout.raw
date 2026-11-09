@@ -1,0 +1,5 @@
+running 1 test from ./test/forms/protected-host-policy.test.js
+protected host policy compares computed path segments exactly ... ok (3ms)
+
+ok | 1 passed | 0 failed (5ms)
+

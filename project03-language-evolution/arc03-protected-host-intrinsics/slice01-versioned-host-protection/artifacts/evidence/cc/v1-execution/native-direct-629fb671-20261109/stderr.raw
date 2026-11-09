@@ -1,0 +1,19 @@
+PROTECTED_HOST_SOURCE name=v1-compile source_path="/private/tmp/arc03-s01-native-direct-629fb671-20261109/TMPDIR/.tmpVKdZXU/program.lykn"
+bytes=[40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 116, 121, 112, 101, 111, 102, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41, 41, 41]
+
+thread 'legal_protected_host_controls_run_as_separate_programs' (99184795) panicked at crates/lykn-cli/tests/protected_host.rs:442:14:
+write protected-host evidence receipt: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+PROTECTED_HOST_DIST_BEFORE source=SystemTime { tv_sec: 1794214869, tv_nsec: 644335906 }
+js=SystemTime { tv_sec: 0, tv_nsec: 0 }
+dts=SystemTime { tv_sec: 0, tv_nsec: 0 }
+source_newer_than_both=true
+
+
+thread 'protected_host_dist_error_preserves_typed_path_and_stale_outputs' (99184796) panicked at crates/lykn-cli/tests/protected_host.rs:442:14:
+write protected-host evidence receipt: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+PROTECTED_HOST_PREDICATE_CONTROL case=accept-exact-policy-diagnostic-and-preservation matched=true expected=true
+
+
+thread 'protected_writes_are_captured_across_cli_routes_before_rejection_assertions' (99184797) panicked at crates/lykn-cli/tests/protected_host.rs:442:14:
+write protected-host evidence receipt: Os { code: 2, kind: NotFound, message: "No such file or directory" }

@@ -1,0 +1,22 @@
+Arc03 S01 - prospective native protected-host private unit tests
+Invocation: native-lib-direct-629fb671-20261109
+State: PREPARED / NOT EXECUTED. CDC released both no-run compiles; this direct invocation still awaits release after its exact receipt readback.
+
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD: 629fb6712954a7bc61bad0ec7ef5ce1001d82ce7
+Tree: e1c79e8520d571cadfc62fe0f456da7c0c74216e
+Source status: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-lib-direct-629fb671-20261109/source-status.txt (clean).
+Pinned test executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866; SHA-256 58ced92105d24ce15985c1af0c40f552f2f9879abb1e7690437614b6049666ab. Actual post-build hashes for both test binaries and debug CLI are in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-cli-no-run-629fb671-20261109/post-build-executable-sha256.txt.
+Args: ["protected_host::tests::", "--nocapture", "--test-threads=1"]. This selects the private policy unit module only.
+Exact command to run only after named release (redirect-only; actual test exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866 protected_host::tests:: --nocapture --test-threads=1 > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-lib-direct-629fb671-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-lib-direct-629fb671-20261109/stderr.raw
+After tool return, write actual status to exit-status.txt.
+
+Fresh TMPDIR=/private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno. LYKN_TEST_DENO is pinned as in the accepted native gate, though the lib-only tests do not launch Deno. No shared Cargo target override.
+
+The exact 27-name preflight argv is in named-config-paths-retry.argv.txt; raw stdout/stderr/status are named-config-paths-retry.stdout.raw, named-config-paths-retry.stderr.raw, named-config-paths-retry.exit-status.txt. Status 1 is expected: 26 scratch/ancestor/evidence names are absent; source project.json is present; source deno.json/deno.jsonc are absent. This preserves the common gate path checks.
+
+Raw output/status: stdout.raw, stderr.raw, exit-status.txt.
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-lib-direct-629fb671-20261109
+

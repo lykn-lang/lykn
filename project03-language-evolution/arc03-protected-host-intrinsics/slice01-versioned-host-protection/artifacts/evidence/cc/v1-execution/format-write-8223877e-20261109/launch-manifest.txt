@@ -1,0 +1,21 @@
+Arc03 S01 iteration08 — prospective mechanical Rust formatting
+Invocation: format-write-8223877e-20261109
+State: PREPARED / NOT EXECUTED. Authorized by CDC after the format-check receipt; this manifest is the specific write readback.
+
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD before formatter: 8223877e4a214b0ed2bdfb0b1ec775fd4c4a8172
+Tree before formatter: 57b988208f2baac2c96004e531d84ee3c2d7b8d8
+Working tree before formatter: clean.
+
+The preceding read-only `cargo fmt --all -- --check` exited 1 and reported ordinary formatting differences in exactly these seven unique paths: `crates/lykn-cli/src/dist.rs`, `crates/lykn-cli/tests/protected_host.rs`, `crates/lykn-lang/src/classifier/mod.rs`, `crates/lykn-lang/src/codegen/mod.rs`, `crates/lykn-lang/src/emitter/mod.rs`, `crates/lykn-lang/src/lib.rs`, `crates/lykn-lang/src/protected_host.rs`. No JS path is in the formatter scope. CDC confirmed these exact seven paths.
+
+Executable: /Users/oubiwann/.cargo/bin/cargo; cargo 1.97.0 (c980f4866 2026-06-30); rustfmt 1.9.0-stable (2d8144b788 2026-07-07). Reuse exact task checkout and formatter configuration confirmed in the preceding `format-check-8223877e-20261109` receipt. No Deno or npm involvement.
+Argv: ["fmt", "--all"]. Exact command to invoke only after this receipt is read back:
+env TMPDIR=/private/tmp/arc03-s01-format-write-8223877e-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-format-write-8223877e-20261109/XDG_CACHE_HOME /Users/oubiwann/.cargo/bin/cargo fmt --all > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-write-8223877e-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-write-8223877e-20261109/stderr.raw
+After tool return, record its actual status verbatim in exit-status.txt. Review the full post-format Git diff and freeze only the seven confirmed paths with the supplied format-only message. No build or test is part of this invocation.
+
+Fresh TMPDIR and XDG_CACHE_HOME were absent in named-scratch-ls.* (status 1), then created by setup-command.txt (status 0). Exact previous config/preflight record: `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-check-8223877e-20261109/`.
+
+Raw output/status destinations: stdout.raw, stderr.raw, exit-status.txt.
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/format-write-8223877e-20261109

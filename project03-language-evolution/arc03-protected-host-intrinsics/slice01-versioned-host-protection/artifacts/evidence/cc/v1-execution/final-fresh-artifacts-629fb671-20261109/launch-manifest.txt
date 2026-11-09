@@ -1,0 +1,24 @@
+Arc03 S01 v1 — prospective fresh-artifacts receipt
+Invocation: final-fresh-artifacts-629fb671-20261109
+State: PREPARED / NOT EXECUTED. This is the existing refresh gate before the three focused Deno targets.
+
+Source cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD: 629fb6712954a7bc61bad0ec7ef5ce1001d82ce7
+Tree: e1c79e8520d571cadfc62fe0f456da7c0c74216e
+Status: clean. Source remains frozen at the reviewed candidate.
+Deno: /opt/homebrew/bin/deno 2.9.6, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Existing release/debug producer pins before refresh: target/release/lykn and bin/lykn SHA-256 3c96663e9dab5d51cdf12b8cf816e8819e9e20793e19dac8f700bc4f4383e5dc.
+Inherited Make environment is retained; no CARGO globals or LYKN_TEST_DENO override. Fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno.
+
+Executable /usr/bin/make. Exact argv: ["fresh-artifacts"]. Exact command:
+env TMPDIR=/private/tmp/arc03-s01-629fb671-refresh-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-629fb671-refresh-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-629fb671-refresh-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make fresh-artifacts > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-fresh-artifacts-629fb671-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-fresh-artifacts-629fb671-20261109/stderr.raw
+The tool's actual returned exit is recorded separately in exit-status.txt; no shell status masking.
+
+Fresh roots: TMPDIR=/private/tmp/arc03-s01-629fb671-refresh-20261109/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-629fb671-refresh-20261109/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-629fb671-refresh-20261109/npm-cache; fixed DENO_DIR as above. The Make recipe builds release CLI, copies it to bin/lykn, then runs bin/lykn build. That subprocess intentionally reads source-root project.json via cmd_build -> build_project('.'); it has no explicit Deno --config argument.
+
+Preflight exact argv recorded by contemporaneous tool invocation:
+ls -ld /private/tmp/arc03-s01-629fb671-refresh-20261109/TMPDIR/project.json /private/tmp/arc03-s01-629fb671-refresh-20261109/TMPDIR/deno.json /private/tmp/arc03-s01-629fb671-refresh-20261109/TMPDIR/deno.jsonc /private/tmp/arc03-s01-629fb671-refresh-20261109/project.json /private/tmp/arc03-s01-629fb671-refresh-20261109/deno.json /private/tmp/arc03-s01-629fb671-refresh-20261109/deno.jsonc /private/tmp/project.json /private/tmp/deno.json /private/tmp/deno.jsonc /private/deno.json /private/deno.jsonc /private/project.json /deno.json /deno.jsonc /project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+The owned TMPDIR and fixed ancestors checked are TMPDIR root, its parent, /private/tmp, /private, and /. Actual named-path raw: named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt. Exit 1 is expected: all 15 scratch ancestry exact names are absent; source-root project.json is present and used by the recipe; source-root deno.json/jsonc are absent. No path traversal.
+
+Invocation raw destinations: stdout.raw, stderr.raw; actual process status destination: exit-status.txt.

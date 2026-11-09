@@ -1,0 +1,12 @@
+Arc03 S01 final-source public macro-basic Deno target
+Invocation: final-macro-basic-e7b44c1-20261109
+State: PREPARED / NOT EXECUTED; included in released original final-source sequence.
+Source: codex/protected-host-contract@e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214, tree 407aba5e00b53ea682f073e6742a6de7324abaa7, clean.
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering. Deno /opt/homebrew/bin/deno 2.9.6 SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Refreshed bin/lykn and target/release/lykn both SHA-256 25c1dd708a098ce943c1a3c12910c270c8c468ae2ca37b3c2a818ef2878c4cd1.
+Target argv: ["test", "--config", "project.json", "-A", "test/expander/macro-basic.test.js"].
+Fresh TMPDIR=/private/tmp/arc03-s01-final-macro-basic-e7b44c1-20261109/TMPDIR, XDG_CACHE_HOME=/private/tmp/arc03-s01-final-macro-basic-e7b44c1-20261109/XDG_CACHE_HOME, npm cache=/private/tmp/arc03-s01-final-macro-basic-e7b44c1-20261109/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno; no LYKN_TEST_DENO override.
+Exact command:
+env TMPDIR=/private/tmp/arc03-s01-final-macro-basic-e7b44c1-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-final-macro-basic-e7b44c1-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-final-macro-basic-e7b44c1-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno test --config project.json -A test/expander/macro-basic.test.js > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-macro-basic-e7b44c1-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-macro-basic-e7b44c1-20261109/stderr.raw
+Record actual tool exit verbatim in exit-status.txt.
+Exact 18-path config preflight argv and named raw results are in named-config-ls.argv.txt, named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt. Exit1 expected: source project.json present and other 17 names absent. No traversal.
+Raw test output/status: stdout.raw, stderr.raw, exit-status.txt.

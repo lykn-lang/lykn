@@ -2,12 +2,23 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice01-versioned-host-protection
-status: blocked
+status: complete
 planned-release: unassigned
 depends-on: []
 ---
 
 # S01 — versioned host contract and provable-write errors
+
+## Independent acceptance — 2026-11-09
+
+All six HC rows are done at
+`e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214`. See the
+[closing report](closing-report.md), [verification](cdc-verification.md)
+and [retrospective](cdc-retrospective.md). Five normal refinements
+plus three bounded continuations are retained. Source protection and
+typed dist diagnostics are accepted on the dedicated task branch.
+Release remains at `62e9531e`. Arc03 S02, release integration, and the
+S04 ordered-reference consumer are outside this close.
 
 The [sixth-pass static return](cdc-verification.md#sixth-pass-static-return--2026-11-09)
 preserves `dd0360cb` and its incomplete object rest binding role.

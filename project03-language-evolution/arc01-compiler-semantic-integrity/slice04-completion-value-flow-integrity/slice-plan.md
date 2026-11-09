@@ -9,6 +9,11 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+[Arc03 S01 source protection](../../arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
+is independently accepted at `e7b44c1`. Ordered-reference I3 still needs
+the private S02 facility and its optimized-output/runtime proof. S04
+completion criteria and release state are unchanged.
+
 ## H1 policy resolved; protected-call dependency explicit — 2026-11-08
 
 Operator adopts a small versioned protected-host contract: identifiable writes

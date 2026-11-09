@@ -1,0 +1,175 @@
+    Finished `release` profile [optimized] target(s) in 0.07s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:196:5
+    |
+196 | /     if let Some(key) = values.first() {
+197 | |         if let Some(key_values) = key.as_list() {
+198 | |             if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
+199 | |                 children.extend(key_values.get(1));
+...   |
+204 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+196 ~     if let Some(key) = values.first()
+197 ~         && let Some(key_values) = key.as_list() {
+198 |             if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
+...
+202 |             }
+203 ~         }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:356:9
+    |
+356 | /         if let RootProof::GlobalKnown(path) = &proof {
+357 | |             if is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]) {
+358 | |                 self.invalidates_aliases = true;
+359 | |             }
+360 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+356 ~         if let RootProof::GlobalKnown(path) = &proof
+357 ~             && (is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"])) {
+358 |                 self.invalidates_aliases = true;
+359 ~             }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:376:9
+    |
+376 | /         if let RootProof::GlobalKnown(path) = &proof {
+377 | |             if is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]) {
+378 | |                 self.invalidates_aliases = true;
+379 | |             }
+380 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+376 ~         if let RootProof::GlobalKnown(path) = &proof
+377 ~             && (is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"])) {
+378 |                 self.invalidates_aliases = true;
+379 ~             }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:544:17
+    |
+544 | /                 if let Some(key) = values.first() {
+545 | |                     if let Some(key_values) = key.as_list() {
+546 | |                         if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
+547 | |                             if let Some(expression) = key_values.get(1) {
+...   |
+554 | |                 }
+    | |_________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+544 ~                 if let Some(key) = values.first()
+545 ~                     && let Some(key_values) = key.as_list() {
+546 |                         if key_values.first().and_then(SExpr::as_atom) == Some("computed") {
+...
+552 |                         }
+553 ~                     }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:666:13
+    |
+666 | /             if params_index == 1 {
+667 | |                 if let Some(name) = args
+668 | |                     .first()
+669 | |                     .and_then(SExpr::as_atom)
+...   |
+674 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+666 ~             if params_index == 1
+667 ~                 && let Some(name) = args
+668 |                     .first()
+...
+672 |                     param_names.insert(to_js_identifier(name));
+673 ~                 }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:788:9
+    |
+788 | /         if matches!(head, "if-let" | "when-let") {
+789 | |             if let Ok(surface) = crate::classifier::classify_expr(expr) {
+790 | |                 match surface {
+791 | |                     SurfaceForm::IfLet {
+...   |
+822 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+788 ~         if matches!(head, "if-let" | "when-let")
+789 ~             && let Ok(surface) = crate::classifier::classify_expr(expr) {
+790 |                 match surface {
+...
+820 |                 }
+821 ~             }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:823:9
+    |
+823 | /         if head == "match" {
+824 | |             if let Ok(SurfaceForm::Match {
+825 | |                 target, clauses, ..
+826 | |             }) = crate::classifier::classify_expr(expr)
+...   |
+839 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+823 ~         if head == "match"
+824 ~             && let Ok(SurfaceForm::Match {
+825 |                 target, clauses, ..
+...
+837 |                 return;
+838 ~             }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/protected_host.rs:863:17
+    |
+863 | /                 if let Some(test) = case.first() {
+864 | |                     if test.as_atom() != Some("default") {
+865 | |                         self.visit(test, dialect);
+866 | |                     }
+867 | |                 }
+    | |_________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+863 ~                 if let Some(test) = case.first()
+864 ~                     && test.as_atom() != Some("default") {
+865 |                         self.visit(test, dialect);
+866 ~                     }
+    |
+
+error: could not compile `lykn-lang` (lib) due to 8 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 8 previous errors
+make: *** [lint] Error 101

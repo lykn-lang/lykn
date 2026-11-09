@@ -1,0 +1,2 @@
+mkdir -p target/arc03-s01/cc/native-lib-direct-629fb671-20261109 /private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/TMPDIR /private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/XDG_CACHE_HOME /private/tmp/arc03-s01-native-lib-direct-629fb671-20261109/npm-cache
+Actual tool exit: 0

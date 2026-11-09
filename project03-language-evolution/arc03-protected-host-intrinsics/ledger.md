@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+[S01 acceptance](slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
+at `e7b44c1` closes PHI-01 and PHI-02. PHI-03 through PHI-06 remain open.
+S02 has not started. Source history and release `62e9531e` are retained.
+
 The [consolidated correction04 hold](slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09)
 preserves `cabfc621` and the unchanged refinement count. PHI remains open.
 
@@ -42,8 +46,8 @@ own real source units, first substantive failure/REAL gap stops.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| PHI-01 | Stable versioned v1 protected-host contract is shipped and scoped | Normative source doc/catalog/profile/version and exact policy independent of optimization/use | correctness-grade | Operator/H1 | open | arc-plan.md H01–H08 | Only ReflectApply profile/required slots, no broad builtin ban |
-| PHI-02 | Provable protected writes reject through real pipelines with legal source controls preserved | Native/public direct/normalized/local/import/macro/alias/removal controls and precise actual diagnostic/output behavior | correctness-grade | S01 | open | | Source proof only; no universal alias/reflection/host detection |
+| PHI-01 | Stable versioned v1 protected-host contract is shipped and scoped | Normative source doc/catalog/profile/version and exact policy independent of optimization/use | correctness-grade | Operator/H1 | done | slice01-versioned-host-protection/closing-report.md | Only ReflectApply profile/required slots, no broad builtin ban |
+| PHI-02 | Provable protected writes reject through real pipelines with legal source controls preserved | Native/public direct/normalized/local/import/macro/alias/removal controls and precise actual diagnostic/output behavior | correctness-grade | S01 | done | slice01-versioned-host-protection/cdc-verification.md | Source proof only; no universal alias/reflection/host detection |
 | PHI-03 | Private typed lazy backend invocation is hygienic and usable | Actual backend request API/output/receiver/order/name tests; no public AST/source primitive or mandatory runtime | correctness-grade | S02/S04 consumer | open | | S04 caller not claimed before its own implementation |
 | PHI-04 | Exact optimized artifact/effect conditions hold | Pinned native-esbuild + strict Deno absent/unused-shaken/retained-uncalled/live proof, full code/metafiles/raw results | correctness-grade | source-first/Project07 | open | | No PURE assertion/K edit/size-only proof |
 | PHI-05 | Both source slices compose with independent real gates | Accepted exact source/diff/full normal/focused/runtime/citations and fresh independent composition proof | correctness-grade | work-verification | open | | CC proposal is not CDC acceptance |

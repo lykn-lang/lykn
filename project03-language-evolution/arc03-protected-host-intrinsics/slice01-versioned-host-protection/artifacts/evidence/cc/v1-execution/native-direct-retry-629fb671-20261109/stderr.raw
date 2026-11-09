@@ -1,0 +1,681 @@
+PROTECTED_HOST_SOURCE name=v1-compile source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpfxHvpC/program.lykn"
+bytes=[40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 116, 121, 112, 101, 111, 102, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v1-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpfxHvpC/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpfxHvpC/v1.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpfxHvpC")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v1-compile success=true code=Some(0)
+stdout=[] stderr=[]
+PROTECTED_HOST_LEGAL_PREASSERT name=v1 compile_status=Some(0) compile_stdout=[] compile_stderr=[] generated=Some([99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 116, 121, 112, 101, 111, 102, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 41, 41, 59, 10])
+PROTECTED_HOST_SOURCE name=v1-runtime source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpfxHvpC/program.lykn"
+bytes=[40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 116, 121, 112, 101, 111, 102, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v1-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpfxHvpC/v1.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpfxHvpC")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v1-runtime success=true code=Some(0)
+stdout=[34, 102, 117, 110, 99, 116, 105, 111, 110, 34, 10] stderr=[]
+PROTECTED_HOST_SOURCE name=v2-compile source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpHJvitq/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 108, 111, 99, 97, 108, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 82, 101, 102, 108, 101, 99, 116, 32, 58, 97, 110, 121, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 114, 114, 97, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 55, 41, 10, 32, 32, 40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 56, 41, 10, 32, 32, 40, 97, 114, 114, 97, 121, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 108, 111, 99, 97, 108, 32, 40, 111, 98, 106, 32, 58, 97, 112, 112, 108, 121, 32, 48, 41, 32, 40, 111, 98, 106, 32, 58, 82, 101, 102, 108, 101, 99, 116, 32, 40, 111, 98, 106, 32, 58, 97, 112, 112, 108, 121, 32, 48, 41, 41, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v2-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpHJvitq/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpHJvitq/v2.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpHJvitq")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v2-compile success=true code=Some(0)
+stdout=[] stderr=[49, 58, 51, 56, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 10, 49, 58, 50, 53, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 82, 101, 102, 108, 101, 99, 116, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 82, 101, 102, 108, 101, 99, 116, 10]
+PROTECTED_HOST_LEGAL_PREASSERT name=v2 compile_status=Some(0) compile_stdout=[] compile_stderr=[49, 58, 51, 56, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 10, 49, 58, 50, 53, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 82, 101, 102, 108, 101, 99, 116, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 82, 101, 102, 108, 101, 99, 116, 10] generated=Some([102, 117, 110, 99, 116, 105, 111, 110, 32, 108, 111, 99, 97, 108, 40, 82, 101, 102, 108, 101, 99, 116, 44, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 41, 32, 123, 10, 32, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 32, 61, 32, 55, 59, 10, 32, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 46, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 32, 61, 32, 56, 59, 10, 32, 32, 99, 111, 110, 115, 116, 32, 114, 101, 115, 117, 108, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 32, 61, 32, 91, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 44, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 46, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 93, 59, 10, 32, 32, 105, 102, 32, 40, 33, 65, 114, 114, 97, 121, 46, 105, 115, 65, 114, 114, 97, 121, 40, 114, 101, 115, 117, 108, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 41, 41, 32, 116, 104, 114, 111, 119, 32, 110, 101, 119, 32, 84, 121, 112, 101, 69, 114, 114, 111, 114, 40, 34, 108, 111, 99, 97, 108, 58, 32, 114, 101, 116, 117, 114, 110, 32, 118, 97, 108, 117, 101, 32, 101, 120, 112, 101, 99, 116, 101, 100, 32, 97, 114, 114, 97, 121, 44, 32, 103, 111, 116, 32, 34, 32, 43, 32, 116, 121, 112, 101, 111, 102, 32, 114, 101, 115, 117, 108, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 41, 59, 10, 10, 32, 32, 114, 101, 116, 117, 114, 110, 32, 114, 101, 115, 117, 108, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 59, 10, 125, 10, 99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 108, 111, 99, 97, 108, 40, 123, 32, 97, 112, 112, 108, 121, 58, 32, 48, 32, 125, 44, 32, 123, 32, 82, 101, 102, 108, 101, 99, 116, 58, 32, 123, 32, 97, 112, 112, 108, 121, 58, 32, 48, 32, 125, 32, 125, 41, 41, 41, 59, 10])
+PROTECTED_HOST_SOURCE name=v2-runtime source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpHJvitq/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 108, 111, 99, 97, 108, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 82, 101, 102, 108, 101, 99, 116, 32, 58, 97, 110, 121, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 114, 114, 97, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 55, 41, 10, 32, 32, 40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 56, 41, 10, 32, 32, 40, 97, 114, 114, 97, 121, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 108, 111, 99, 97, 108, 32, 40, 111, 98, 106, 32, 58, 97, 112, 112, 108, 121, 32, 48, 41, 32, 40, 111, 98, 106, 32, 58, 82, 101, 102, 108, 101, 99, 116, 32, 40, 111, 98, 106, 32, 58, 97, 112, 112, 108, 121, 32, 48, 41, 41, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v2-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpHJvitq/v2.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpHJvitq")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v2-runtime success=true code=Some(0)
+stdout=[91, 55, 44, 56, 93, 10] stderr=[]
+PROTECTED_HOST_SOURCE name=v3-compile source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0SL4pY/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 110, 111, 114, 109, 97, 108, 105, 122, 101, 100, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 82, 101, 102, 108, 101, 99, 116, 33, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 33, 58, 97, 112, 112, 108, 121, 32, 57, 41, 10, 32, 32, 82, 101, 102, 108, 101, 99, 116, 33, 58, 97, 112, 112, 108, 121, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 110, 111, 114, 109, 97, 108, 105, 122, 101, 100, 32, 40, 111, 98, 106, 32, 58, 97, 112, 112, 108, 121, 32, 48, 41, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v3-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0SL4pY/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0SL4pY/v3.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0SL4pY")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v3-compile success=true code=Some(0)
+stdout=[] stderr=[49, 58, 51, 48, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 82, 101, 102, 108, 101, 99, 116, 33, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 82, 101, 102, 108, 101, 99, 116, 33, 10]
+PROTECTED_HOST_LEGAL_PREASSERT name=v3 compile_status=Some(0) compile_stdout=[] compile_stderr=[49, 58, 51, 48, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 82, 101, 102, 108, 101, 99, 116, 33, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 82, 101, 102, 108, 101, 99, 116, 33, 10] generated=Some([102, 117, 110, 99, 116, 105, 111, 110, 32, 110, 111, 114, 109, 97, 108, 105, 122, 101, 100, 40, 82, 101, 102, 108, 101, 99, 116, 41, 32, 123, 10, 32, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 32, 61, 32, 57, 59, 10, 32, 32, 114, 101, 116, 117, 114, 110, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 59, 10, 125, 10, 99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 110, 111, 114, 109, 97, 108, 105, 122, 101, 100, 40, 123, 32, 97, 112, 112, 108, 121, 58, 32, 48, 32, 125, 41, 41, 41, 59, 10])
+PROTECTED_HOST_SOURCE name=v3-runtime source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0SL4pY/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 110, 111, 114, 109, 97, 108, 105, 122, 101, 100, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 82, 101, 102, 108, 101, 99, 116, 33, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 33, 58, 97, 112, 112, 108, 121, 32, 57, 41, 10, 32, 32, 82, 101, 102, 108, 101, 99, 116, 33, 58, 97, 112, 112, 108, 121, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 110, 111, 114, 109, 97, 108, 105, 122, 101, 100, 32, 40, 111, 98, 106, 32, 58, 97, 112, 112, 108, 121, 32, 48, 41, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v3-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0SL4pY/v3.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0SL4pY")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v3-runtime success=true code=Some(0)
+stdout=[57, 10] stderr=[]
+PROTECTED_HOST_SOURCE name=v4-compile source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpuZSiDx/program.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 97, 99, 116, 105, 111, 110, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 40, 43, 32, 110, 32, 49, 41, 41, 41, 10, 40, 115, 101, 116, 33, 32, 97, 99, 116, 105, 111, 110, 58, 99, 97, 108, 108, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 57, 57, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 99, 116, 105, 111, 110, 58, 99, 97, 108, 108, 32, 49, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v4-compile
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpuZSiDx/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpuZSiDx/v4.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpuZSiDx")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v4-compile success=true code=Some(0)
+stdout=[] stderr=[49, 58, 49, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 97, 99, 116, 105, 111, 110, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 97, 99, 116, 105, 111, 110, 10]
+PROTECTED_HOST_LEGAL_PREASSERT name=v4 compile_status=Some(0) compile_stdout=[] compile_stderr=[49, 58, 49, 58, 32, 119, 97, 114, 110, 105, 110, 103, 58, 32, 117, 110, 117, 115, 101, 100, 32, 98, 105, 110, 100, 105, 110, 103, 32, 39, 97, 99, 116, 105, 111, 110, 39, 10, 32, 32, 115, 117, 103, 103, 101, 115, 116, 105, 111, 110, 58, 32, 112, 114, 101, 102, 105, 120, 32, 119, 105, 116, 104, 32, 117, 110, 100, 101, 114, 115, 99, 111, 114, 101, 58, 32, 95, 97, 99, 116, 105, 111, 110, 10] generated=Some([99, 111, 110, 115, 116, 32, 97, 99, 116, 105, 111, 110, 32, 61, 32, 110, 32, 61, 62, 32, 123, 10, 32, 32, 105, 102, 32, 40, 116, 121, 112, 101, 111, 102, 32, 110, 32, 33, 61, 61, 32, 34, 110, 117, 109, 98, 101, 114, 34, 32, 124, 124, 32, 78, 117, 109, 98, 101, 114, 46, 105, 115, 78, 97, 78, 40, 110, 41, 41, 32, 116, 104, 114, 111, 119, 32, 110, 101, 119, 32, 84, 121, 112, 101, 69, 114, 114, 111, 114, 40, 34, 97, 110, 111, 110, 121, 109, 111, 117, 115, 58, 32, 97, 114, 103, 32, 39, 110, 39, 32, 101, 120, 112, 101, 99, 116, 101, 100, 32, 110, 117, 109, 98, 101, 114, 44, 32, 103, 111, 116, 32, 34, 32, 43, 32, 116, 121, 112, 101, 111, 102, 32, 110, 41, 59, 10, 10, 32, 32, 114, 101, 116, 117, 114, 110, 32, 110, 32, 43, 32, 49, 59, 10, 125, 59, 10, 97, 99, 116, 105, 111, 110, 46, 99, 97, 108, 108, 32, 61, 32, 110, 32, 61, 62, 32, 123, 10, 32, 32, 105, 102, 32, 40, 116, 121, 112, 101, 111, 102, 32, 110, 32, 33, 61, 61, 32, 34, 110, 117, 109, 98, 101, 114, 34, 32, 124, 124, 32, 78, 117, 109, 98, 101, 114, 46, 105, 115, 78, 97, 78, 40, 110, 41, 41, 32, 116, 104, 114, 111, 119, 32, 110, 101, 119, 32, 84, 121, 112, 101, 69, 114, 114, 111, 114, 40, 34, 97, 110, 111, 110, 121, 109, 111, 117, 115, 58, 32, 97, 114, 103, 32, 39, 110, 39, 32, 101, 120, 112, 101, 99, 116, 101, 100, 32, 110, 117, 109, 98, 101, 114, 44, 32, 103, 111, 116, 32, 34, 32, 43, 32, 116, 121, 112, 101, 111, 102, 32, 110, 41, 59, 10, 10, 32, 32, 114, 101, 116, 117, 114, 110, 32, 57, 57, 59, 10, 125, 59, 10, 99, 111, 110, 115, 111, 108, 101, 46, 108, 111, 103, 40, 74, 83, 79, 78, 46, 115, 116, 114, 105, 110, 103, 105, 102, 121, 40, 97, 99, 116, 105, 111, 110, 46, 99, 97, 108, 108, 40, 49, 41, 41, 41, 59, 10])
+PROTECTED_HOST_SOURCE name=v4-runtime source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpuZSiDx/program.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 97, 99, 116, 105, 111, 110, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 40, 43, 32, 110, 32, 49, 41, 41, 41, 10, 40, 115, 101, 116, 33, 32, 97, 99, 116, 105, 111, 110, 58, 99, 97, 108, 108, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 57, 57, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 99, 116, 105, 111, 110, 58, 99, 97, 108, 108, 32, 49, 41, 41, 41]
+PROTECTED_HOST_COMMAND name=v4-runtime
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpuZSiDx/v4.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpuZSiDx")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=v4-runtime success=true code=Some(0)
+stdout=[57, 57, 10] stderr=[]
+PROTECTED_HOST_DIST_BEFORE source=SystemTime { tv_sec: 1794215050, tv_nsec: 667013224 }
+js=SystemTime { tv_sec: 0, tv_nsec: 0 }
+dts=SystemTime { tv_sec: 0, tv_nsec: 0 }
+source_newer_than_both=true
+
+PROTECTED_HOST_DIST_AFTER result=Err(Language { path: "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIawXcl/packages/fixture/mod.lykn", source: Classify(Diagnostic { severity: Error, message: "host-contract v1: write to protected slot Reflect.apply", span: Span { start: SourceLoc { line: 2, column: 7 }, end: SourceLoc { line: 2, column: 20 } }, suggestion: None }) }) js_after=Some([101, 120, 105, 115, 116, 105, 110, 103, 32, 112, 97, 99, 107, 97, 103, 101, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10]) dts_after=Some([101, 120, 105, 115, 116, 105, 110, 103, 32, 112, 97, 99, 107, 97, 103, 101, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10]) js_mtime_after=Some(SystemTime { tv_sec: 0, tv_nsec: 0 }) dts_mtime_after=Some(SystemTime { tv_sec: 0, tv_nsec: 0 })
+PROTECTED_HOST_PREDICATE_CONTROL case=accept-exact-policy-diagnostic-and-preservation matched=true expected=true
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-syntax-error matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-io-error matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-unrelated-astring-macro-error matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-v1-marker-inside-macro-error matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-wrong-slot matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-wrong-severity matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-wrong-span matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-exit-zero matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-exit-101 matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-no-exit-code matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-stdout-payload matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-javascript-mutation matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-declaration-mutation matched=false expected=false
+
+PROTECTED_HOST_PREDICATE_CONTROL case=reject-mtime-only-mutation matched=false expected=false
+
+PROTECTED_HOST_SOURCE name=w1-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w1-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w1-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 55, 66, 117, 109, 107, 101, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w1-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w1-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w1-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w1-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w1-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke/w1.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp7Bumke")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w1-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w1-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 49, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 49, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w2-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8/program.lykn"
+bytes=[40, 115, 101, 116, 45, 115, 121, 109, 98, 111, 108, 33, 32, 82, 101, 102, 108, 101, 99, 116, 32, 34, 97, 112, 112, 108, 121, 34, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w2-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w2-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 103, 89, 55, 119, 102, 56, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 49, 52, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w2-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8/program.lykn"
+bytes=[40, 115, 101, 116, 45, 115, 121, 109, 98, 111, 108, 33, 32, 82, 101, 102, 108, 101, 99, 116, 32, 34, 97, 112, 112, 108, 121, 34, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w2-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w2-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 49, 52, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w2-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8/program.lykn"
+bytes=[40, 115, 101, 116, 45, 115, 121, 109, 98, 111, 108, 33, 32, 82, 101, 102, 108, 101, 99, 116, 32, 34, 97, 112, 112, 108, 121, 34, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w2-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8/w2.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpgY7wf8")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w2-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 49, 52, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w2-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 50, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 50, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w3-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I/program.lykn"
+bytes=[40, 43, 43, 32, 82, 101, 102, 108, 101, 99, 116, 41]
+PROTECTED_HOST_COMMAND name=w3-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w3-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 108, 114, 70, 119, 57, 73, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 10]
+PROTECTED_HOST_SOURCE name=w3-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I/program.lykn"
+bytes=[40, 43, 43, 32, 82, 101, 102, 108, 101, 99, 116, 41]
+PROTECTED_HOST_COMMAND name=w3-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w3-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 10]
+PROTECTED_HOST_SOURCE name=w3-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I/program.lykn"
+bytes=[40, 43, 43, 32, 82, 101, 102, 108, 101, 99, 116, 41]
+PROTECTED_HOST_COMMAND name=w3-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I/w3.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmplrFw9I")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w3-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 10]
+PROTECTED_HOST_FILES name=w3-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 51, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 51, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w4-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w4-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w4-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 48, 69, 90, 105, 106, 85, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 10]
+PROTECTED_HOST_SOURCE name=w4-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w4-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w4-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 10]
+PROTECTED_HOST_SOURCE name=w4-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w4-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU/w4.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp0EZijU")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w4-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 10]
+PROTECTED_HOST_FILES name=w4-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 52, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 52, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w5-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w5-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w5-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 66, 80, 108, 72, 85, 106, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w5-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w5-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w5-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w5-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 103, 108, 111, 98, 97, 108, 84, 104, 105, 115, 58, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w5-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj/w5.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpBPlHUj")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w5-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w5-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 53, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 53, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w6-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6/program.lykn"
+bytes=[40, 43, 43, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41]
+PROTECTED_HOST_COMMAND name=w6-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w6-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 73, 106, 103, 68, 80, 54, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w6-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6/program.lykn"
+bytes=[40, 43, 43, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41]
+PROTECTED_HOST_COMMAND name=w6-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w6-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w6-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6/program.lykn"
+bytes=[40, 43, 43, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41]
+PROTECTED_HOST_COMMAND name=w6-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6/w6.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpIjgDP6")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w6-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w6-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 54, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 54, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w7-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv/program.lykn"
+bytes=[40, 107, 101, 114, 110, 101, 108, 58, 100, 101, 108, 101, 116, 101, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41]
+PROTECTED_HOST_COMMAND name=w7-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w7-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 54, 109, 71, 106, 82, 118, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 49, 54, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w7-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv/program.lykn"
+bytes=[40, 107, 101, 114, 110, 101, 108, 58, 100, 101, 108, 101, 116, 101, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41]
+PROTECTED_HOST_COMMAND name=w7-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w7-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 49, 54, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w7-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv/program.lykn"
+bytes=[40, 107, 101, 114, 110, 101, 108, 58, 100, 101, 108, 101, 116, 101, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 41]
+PROTECTED_HOST_COMMAND name=w7-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv/w7.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp6mGjRv")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w7-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 49, 54, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w7-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 55, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 55, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w8-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8/program.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 115, 116, 111, 109, 112, 32, 40, 41, 32, 96, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41, 41, 32, 40, 115, 116, 111, 109, 112, 41]
+PROTECTED_HOST_COMMAND name=w8-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w8-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 107, 118, 55, 107, 107, 56, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 48, 58, 48, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w8-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8/program.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 115, 116, 111, 109, 112, 32, 40, 41, 32, 96, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41, 41, 32, 40, 115, 116, 111, 109, 112, 41]
+PROTECTED_HOST_COMMAND name=w8-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w8-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[48, 58, 48, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w8-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8/program.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 115, 116, 111, 109, 112, 32, 40, 41, 32, 96, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41, 41, 32, 40, 115, 116, 111, 109, 112, 41]
+PROTECTED_HOST_COMMAND name=w8-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8/w8.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpkv7kk8")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w8-compile-existing success=false code=Some(1)
+stdout=[] stderr=[48, 58, 48, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w8-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 56, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 56, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w9-check source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 103, 117, 97, 114, 100, 101, 100, 32, 58, 97, 114, 103, 115, 32, 40, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 110, 117, 109, 98, 101, 114, 32, 58, 112, 114, 101, 32, 40, 100, 111, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41, 32, 116, 114, 117, 101, 41, 32, 58, 98, 111, 100, 121, 32, 49, 41]
+PROTECTED_HOST_COMMAND name=w9-check
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w9-check success=false code=Some(1)
+stdout=[] stderr=[47, 112, 114, 105, 118, 97, 116, 101, 47, 116, 109, 112, 47, 97, 114, 99, 48, 51, 45, 115, 48, 49, 45, 110, 97, 116, 105, 118, 101, 45, 100, 105, 114, 101, 99, 116, 45, 114, 101, 116, 114, 121, 45, 54, 50, 57, 102, 98, 54, 55, 49, 45, 50, 48, 50, 54, 49, 49, 48, 57, 47, 84, 77, 80, 68, 73, 82, 47, 46, 116, 109, 112, 52, 53, 122, 110, 101, 54, 47, 112, 114, 111, 103, 114, 97, 109, 46, 108, 121, 107, 110, 58, 32, 101, 114, 114, 111, 114, 58, 32, 49, 58, 53, 54, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w9-compile-stdout source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 103, 117, 97, 114, 100, 101, 100, 32, 58, 97, 114, 103, 115, 32, 40, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 110, 117, 109, 98, 101, 114, 32, 58, 112, 114, 101, 32, 40, 100, 111, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41, 32, 116, 114, 117, 101, 41, 32, 58, 98, 111, 100, 121, 32, 49, 41]
+PROTECTED_HOST_COMMAND name=w9-compile-stdout
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6/program.lykn"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w9-compile-stdout success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 54, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_SOURCE name=w9-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 103, 117, 97, 114, 100, 101, 100, 32, 58, 97, 114, 103, 115, 32, 40, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 110, 117, 109, 98, 101, 114, 32, 58, 112, 114, 101, 32, 40, 100, 111, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41, 32, 116, 114, 117, 101, 41, 32, 58, 98, 111, 100, 121, 32, 49, 41]
+PROTECTED_HOST_COMMAND name=w9-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6/w9.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmp45zne6")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w9-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 54, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w9-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 57, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 57, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_SOURCE name=w1-compile-missing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpim5hv1/program.lykn"
+bytes=[40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41]
+PROTECTED_HOST_COMMAND name=w1-compile-missing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpim5hv1/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpim5hv1/missing.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmpim5hv1")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w1-compile-missing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 55, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w1-compile-missing js_after=Missing dts_after=Missing
+PROTECTED_HOST_SOURCE name=w9-strip-compile-existing source_path="/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmppQsbf2/program.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 103, 117, 97, 114, 100, 101, 100, 32, 58, 97, 114, 103, 115, 32, 40, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 110, 117, 109, 98, 101, 114, 32, 58, 112, 114, 101, 32, 40, 100, 111, 32, 40, 115, 101, 116, 33, 32, 82, 101, 102, 108, 101, 99, 116, 58, 97, 112, 112, 108, 121, 32, 48, 41, 32, 116, 114, 117, 101, 41, 32, 58, 98, 111, 100, 121, 32, 49, 41]
+PROTECTED_HOST_COMMAND name=w9-strip-compile-existing
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "--strip-assertions", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmppQsbf2/program.lykn", "-o", "/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmppQsbf2/w9-strip.js"]
+cwd=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR/.tmppQsbf2")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME")
+TMPDIR=Some("/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence")
+
+PROTECTED_HOST_OUTPUT name=w9-strip-compile-existing success=false code=Some(1)
+stdout=[] stderr=[49, 58, 53, 54, 58, 32, 101, 114, 114, 111, 114, 58, 32, 104, 111, 115, 116, 45, 99, 111, 110, 116, 114, 97, 99, 116, 32, 118, 49, 58, 32, 119, 114, 105, 116, 101, 32, 116, 111, 32, 112, 114, 111, 116, 101, 99, 116, 101, 100, 32, 115, 108, 111, 116, 32, 82, 101, 102, 108, 101, 99, 116, 46, 97, 112, 112, 108, 121, 10]
+PROTECTED_HOST_FILES name=w9-strip-compile-existing js_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 57, 45, 115, 116, 114, 105, 112, 32, 74, 97, 118, 97, 83, 99, 114, 105, 112, 116, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } } dts_after=Present { bytes: [101, 120, 105, 115, 116, 105, 110, 103, 32, 119, 57, 45, 115, 116, 114, 105, 112, 32, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 32, 115, 101, 110, 116, 105, 110, 101, 108, 10], modified: SystemTime { tv_sec: 0, tv_nsec: 0 } }
+PROTECTED_HOST_PREASSERT observations=29

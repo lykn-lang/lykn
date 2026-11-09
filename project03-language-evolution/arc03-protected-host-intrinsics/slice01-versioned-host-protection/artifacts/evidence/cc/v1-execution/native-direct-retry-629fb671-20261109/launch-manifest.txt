@@ -1,0 +1,23 @@
+Arc03 S01 - prospective native protected_host setup retry
+Invocation: native-direct-retry-629fb671-20261109
+State: PREPARED / NOT EXECUTED. CDC authorizes an in-scope setup correction after the preserved initial exit 101.
+
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD: 629fb6712954a7bc61bad0ec7ef5ce1001d82ce7
+Tree: e1c79e8520d571cadfc62fe0f456da7c0c74216e
+Source status: clean at the same tree as the failed initial attempt; previous source readback: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/source-status.txt. No source or test file changed.
+
+Cause being corrected: the initial receipt passed an absent LYKN_PROTECTED_HOST_EVIDENCE_DIR; all three parent tests exited 101 at evidence-file creation before assertions. The exact failed attempt is retained at /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/.
+
+Pinned test executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb; SHA-256 eca5ba5b81f2242e01874319c12159196b984b25e7b23eff9509d6f9bd3381ad. Child CLI: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn; SHA-256 c04c468a2f50fe21aa1a56121722b6b3d85e9ba397996dee6417f99ab517b8c3. Both are post-last-build pins in native-cli-no-run-629fb671-20261109. Deno: /opt/homebrew/bin/deno 2.9.6, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; actual current raw version/hash in native-direct-629fb671-20261109/.
+Args: ["--nocapture", "--test-threads=1"].
+Exact command to invoke only after receipt readback (redirect-only; actual test exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_PROTECTED_HOST_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb --nocapture --test-threads=1 > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/stderr.raw
+After tool return, record actual exit in exit-status.txt. Generated protected-write modules are captured only and are not executed.
+
+Fresh TMPDIR=/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-native-direct-retry-629fb671-20261109/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno; LYKN_PROTECTED_HOST_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109/native-evidence.
+The evidence directory was explicitly precreated by setup-command.txt and independently read via native-evidence-dir.stdout.raw/status. Exact 27-name Deno/project preflight argv is in named-config-paths.argv.txt with raw stdout/stderr/status. Status 1 is expected: all 26 scratch/ancestor/evidence names absent; source project.json present; source deno.json/deno.jsonc absent. The evidence directory itself exists and contains no named config files. No traversal was used.
+
+Raw command outputs/status: stdout.raw, stderr.raw, exit-status.txt. Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-retry-629fb671-20261109
+

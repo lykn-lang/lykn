@@ -1,0 +1,12 @@
+Arc03 S01 final-source native library no-run
+Invocation: final-lib-no-run-e7b44c1-20261109
+State: PREPARED / NOT EXECUTED; included in the released final-source original gate sequence.
+Source: codex/protected-host-contract@e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214, tree 407aba5e00b53ea682f073e6742a6de7324abaa7, clean.
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Cargo: /Users/oubiwann/.cargo/bin/cargo 1.97.0; rustc 1.97.0. Deno /opt/homebrew/bin/deno 2.9.6 SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Exact argv: ["test", "--offline", "--locked", "-p", "lykn-lang", "--lib", "--no-run"] (compile only).
+Exact command:
+env TMPDIR=/private/tmp/arc03-s01-final-lib-no-run-e7b44c1-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-final-lib-no-run-e7b44c1-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-final-lib-no-run-e7b44c1-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/.cargo/bin/cargo test --offline --locked -p lykn-lang --lib --no-run > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-lib-no-run-e7b44c1-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-lib-no-run-e7b44c1-20261109/stderr.raw
+Record actual exit in exit-status.txt. Fresh roots: TMPDIR and XDG_CACHE_HOME and npm cache under /private/tmp/arc03-s01-final-lib-no-run-e7b44c1-20261109; fixed DENO_DIR above; LYKN_TEST_DENO pin retained. Cargo target/config/global flags not overridden; offline and locked explicit.
+Exact 18-name preflight argv is in named-config-ls.argv.txt; raw stdout/stderr/status are named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt. Exit 1 expected: source project.json present and other 17 absent. No traversal.
+Raw command output/status: stdout.raw, stderr.raw, exit-status.txt.

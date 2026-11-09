@@ -1,0 +1,13 @@
+Arc03 S01 final-source normal full Make check
+Invocation: final-make-check-e7b44c1-20261109
+State: PREPARED / NOT EXECUTED. The final-source pre-release is active after every focused gate was green.
+Source: codex/protected-host-contract@e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214, tree 407aba5e00b53ea682f073e6742a6de7324abaa7, clean.
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Executable /usr/bin/make GNU Make 3.81; exact argv ["check"]. Deno from inherited PATH resolves to /opt/homebrew/bin/deno 2.9.6 SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Preserve PATH and inherited CARGO_NET_GIT_FETCH_WITH_CLI=true and RUST_LOG=warn. No LYKN_TEST_DENO or Cargo/Rust globals. Fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno.
+Current precheck producer `bin/lykn` and `target/release/lykn` both SHA-256 25c1dd708a098ce943c1a3c12910c270c8c468ae2ca37b3c2a818ef2878c4cd1; normal Make rebuilds them.
+Exact command:
+env TMPDIR=/private/tmp/arc03-s01-final-make-check-e7b44c1-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-final-make-check-e7b44c1-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-final-make-check-e7b44c1-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make check > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-make-check-e7b44c1-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-make-check-e7b44c1-20261109/stderr.raw
+Record the real returned command exit separately in exit-status.txt.
+Fresh TMPDIR, XDG_CACHE_HOME, npm cache are under `/private/tmp/arc03-s01-final-make-check-e7b44c1-20261109/`; DENO_DIR fixed as above. Make build's bin/lykn child intentionally reads source-root project.json via cmd_build -> build_project('.').
+Exact 18-name preflight argv and actual named raw statuses are `named-config-ls.argv.txt`, `named-config-ls.stdout.raw`, `named-config-ls.stderr.raw`, and `named-config-ls.exit-status.txt`. Exit1 expected: source project.json present and remaining 17 names absent. No traversal.
+Raw Make outputs/status: stdout.raw, stderr.raw, exit-status.txt.

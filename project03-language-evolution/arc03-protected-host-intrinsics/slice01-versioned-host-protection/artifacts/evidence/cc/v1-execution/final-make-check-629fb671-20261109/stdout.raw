@@ -1,0 +1,18 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/protected-host-contract; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 2.9M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m

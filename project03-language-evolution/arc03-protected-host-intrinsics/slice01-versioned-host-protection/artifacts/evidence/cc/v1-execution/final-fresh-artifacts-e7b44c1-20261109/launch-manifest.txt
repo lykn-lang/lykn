@@ -1,0 +1,11 @@
+Arc03 S01 final-source fresh-artifacts
+Invocation: final-fresh-artifacts-e7b44c1-20261109
+State: PREPARED / NOT EXECUTED; released original sequence prerequisite before final Deno targets.
+Source: codex/protected-host-contract@e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214, tree 407aba5e00b53ea682f073e6742a6de7324abaa7, clean.
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering. /usr/bin/make GNU Make 3.81, Deno /opt/homebrew/bin/deno 2.9.6 SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Inherited PATH and Cargo/Rust settings preserved; no LYKN_TEST_DENO override or global Cargo flags.
+Exact argv ["fresh-artifacts"]. Command:
+env TMPDIR=/private/tmp/arc03-s01-final-refresh-e7b44c1-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-final-refresh-e7b44c1-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-final-refresh-e7b44c1-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make fresh-artifacts > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-fresh-artifacts-e7b44c1-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-fresh-artifacts-e7b44c1-20261109/stderr.raw
+Record actual exit to exit-status.txt after return, unmasked.
+Fresh roots are the three command roots under /private/tmp above; fixed DENO_DIR above. `bin/lykn build` intentionally reads checkout project.json through cmd_build -> build_project('.'); source-root deno.json/jsonc absent.
+Preflight exact argv and raw output/status: named-config-ls.argv.txt, named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt. Exit 1 expected: source project.json present and other 17 paths absent. No traversal.
+Raw outputs/status: stdout.raw, stderr.raw, exit-status.txt.

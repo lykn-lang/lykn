@@ -1,0 +1,14 @@
+running 10 tests from ./test/expander/macro-basic.test.js
+macro: simple when macro ... ok (2ms)
+macro: unless via when ... ok (642µs)
+macro: erased from output ... ok (226µs)
+macro: duplicate name throws ... ok (678µs)
+macro: no body throws ... ok (341µs)
+macro: produces correct expansion ... ok (147µs)
+macro: body without quasiquote ... ok (164µs)
+macro: nested numeric literal through public compiler ... ok (2ms)
+macro: direct numeric literal through public compiler ... ok (175µs)
+macro: dormant protected-host body compiles without invocation ... ok (165µs)
+
+ok | 10 passed | 0 failed (10ms)
+

@@ -1,0 +1,25 @@
+Arc03 S01 - prospective native protected_host direct test
+Invocation: native-direct-629fb671-20261109
+State: PREPARED / NOT EXECUTED. CDC released both no-run compiles; this direct invocation still awaits release after its exact receipt readback.
+
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD: 629fb6712954a7bc61bad0ec7ef5ce1001d82ce7
+Tree: e1c79e8520d571cadfc62fe0f456da7c0c74216e
+Source status: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/source-status.txt (clean).
+
+Pinned test executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb; SHA-256 eca5ba5b81f2242e01874319c12159196b984b25e7b23eff9509d6f9bd3381ad.
+Pinned child CLI: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn; SHA-256 c04c468a2f50fe21aa1a56121722b6b3d85e9ba397996dee6417f99ab517b8c3.
+Deno: /opt/homebrew/bin/deno 2.9.6, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Current Deno version/hash raw readback: deno-version-retry.txt, deno-sha256-retry.txt; both exited 0. Test and child pins came from the two released no-run compiles and their post-build-executable-sha256.txt.
+Args: ["--nocapture", "--test-threads=1"] (original accepted direct-test flags).
+Exact command to run only after named release (redirect-only; actual direct test exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-native-direct-629fb671-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-native-direct-629fb671-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-native-direct-629fb671-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_PROTECTED_HOST_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/native-evidence /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb --nocapture --test-threads=1 > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/stderr.raw
+After tool return, write actual status to exit-status.txt. Native evidence root /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/native-evidence is passed to the runner; invalid generated write modules are not executed.
+
+Fresh TMPDIR=/private/tmp/arc03-s01-native-direct-629fb671-20261109/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-native-direct-629fb671-20261109/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-native-direct-629fb671-20261109/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno; LYKN_PROTECTED_HOST_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109/native-evidence. No shared Cargo target override.
+
+The exact 27-name config preflight argv is in named-config-paths-retry.argv.txt; raw stdout/stderr/status are named-config-paths-retry.stdout.raw, named-config-paths-retry.stderr.raw, named-config-paths-retry.exit-status.txt. Status 1 is expected: 26 scratch/ancestor/evidence names are absent; source project.json is present; source deno.json/deno.jsonc are absent. The earlier incomplete, unawaited preflight raw names are retained separately and are not used as the readback.
+
+Raw output/status: stdout.raw, stderr.raw, exit-status.txt.
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-direct-629fb671-20261109
+

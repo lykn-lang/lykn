@@ -1,0 +1,1 @@
+(macro stomp () `(set! Reflect:apply 0)) (stomp)

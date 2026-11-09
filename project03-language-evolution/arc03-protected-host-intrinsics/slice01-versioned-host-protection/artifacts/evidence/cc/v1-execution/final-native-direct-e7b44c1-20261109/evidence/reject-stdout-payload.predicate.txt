@@ -1,0 +1,1 @@
+case=reject-stdout-payload matched=false expected=false

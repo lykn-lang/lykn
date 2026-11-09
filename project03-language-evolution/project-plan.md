@@ -9,6 +9,13 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Arc03 [S01 v1 source protection](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
+is independently accepted at `e7b44c1`. This adds compiler errors for
+provable protected-slot writes and typed dist classifier diagnostics.
+The ordered-reference facility, optimized-output proof, and final
+integration-range API and documentation audit remain separate. Release
+remains at `62e9531e`. The holds below are historical.
+
 Arc03 S01 consolidated correction04 is held before assignment on a
 [computed-key false rejection](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09).
 The previous baseline remains accepted.
@@ -119,7 +126,7 @@ All6PHI/6HC open, source62e/release62e protected; no source started at planning.
 | --- | --- | --- |
 | Arc01 compiler semantic integrity | Completion/control meaning and later diagnostic/tool/API/doc composition | S04 source principle selected; ordered-reference implementation depends only on accepted Arc03/S02 facility/proof, not plan alone |
 | Arc02 ad hoc maintenance | Individually approved miscellany; accepted harness baseline history | Existing bounded S01 retained, no miscellaneous sweep |
-| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | S01 stopped at native macro dependency/oracle boundary after correction01; no implementation/facility accepted |
+| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | [S01 independently accepted](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09) at `e7b44c1`. S02 facility and optimized-output proof remain open. |
 
 S04-H1 policy uncertainty is resolved by Operator's stronger source contract;
 implementation/proof dependencies remain. Original H1 alternatives/history and

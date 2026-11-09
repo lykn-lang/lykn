@@ -1,0 +1,1 @@
+case=reject-javascript-mutation matched=false expected=false

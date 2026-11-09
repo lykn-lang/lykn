@@ -1,5 +1,36 @@
 # S01 attempt dispositions — 2026-11-08
 
+## Accepted v1 source protection — 2026-11-09
+
+S01 is complete on `codex/protected-host-contract@e7b44c1`.
+The compiler rejects provable writes to global `Reflect` and its
+exact `apply` slot. Full native and public inputs are checked at
+their recorded dialect boundaries. Native source checks run before
+stripping. The package build preserves the original path and typed
+classifier diagnostic. The separate independent verdict follows
+the actual CC return and new execution.
+[Verification](cdc-verification.md#final-independent-v1-acceptance--2026-11-09).
+
+| Row | Independent disposition |
+| --- | --- |
+| HC-01 | Done. The v1 catalog and normative host-contract doc limit the profile to Reflect and its apply slot and define host and detection limits. |
+| HC-02 | Done. Native 29 routes and public nine cases rejected. Native and public private checks distinguish source/kernel roles, and macro-output and pre-strip checks ran. No rejected output was executed. |
+| HC-03 | Done. Scope and path controls cover normalized names, lexical bindings, exact computed segments and alias invalidation. Four legal programs per backend ran with the expected outcomes. |
+| HC-04 | Done. Fifteen predicate controls discriminate diagnostics and file effects. Typed dist preserved source path, diagnostic span, and both stale output bytes and mtimes. W8 unknown-origin spans are recorded as such. |
+| HC-05 | Done. CC and CDC each passed focused, full normal Make and standalone cited-path gates. Canonical, embedded and fresh native macro materialization bytes agree. |
+| HC-06 | Done. Actual CC proposals, independent verification, retained attempts, retrospective and parent handoff are reconciled. |
+
+Five standard refinements and three explicitly tracked continuations
+were used. The source includes the permitted PATH fallback in the
+native test. Normative policy is in source `docs/host-contract.md`,
+with the source guide and Lykn skill updated. Arc01 S07/S08 retain
+the actual integration-range API and docs audit, including the new
+compile/check rejection behavior, typed dist classifier errors and
+any separate book or human review. Arc03 S02 retains the private
+invocation and optimized-output proof. S04 completion/value-flow
+criteria are open. Release remains clean at `62e9531e`.
+[Retrospective](cdc-retrospective.md#accepted-execution-retrospective--2026-11-09).
+
 ## Consolidated correction04 path-identity hold — 2026-11-09
 
 The six approved corrections stopped before dispatch on a distinct

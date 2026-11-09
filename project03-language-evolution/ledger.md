@@ -2,6 +2,12 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Arc03 [S01 source protection](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
+is independently accepted at `e7b44c1`. HC-01–06 and PHI-01/02 are
+done. PHI-03–06, P-HI, CV and CI-04 retain their facility/completion
+criteria. Arc01 S07/S08 own actual integration-range API/doc/book impact.
+Release remains `62e9531e`. Earlier stop records remain historical.
+
 Arc03's [exact path-identity hold](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09)
 leaves all HC/PHI/CV open and refinement 03 of 5 spent.
 

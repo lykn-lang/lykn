@@ -1,0 +1,3 @@
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+ls -ld /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+actual exit: 1

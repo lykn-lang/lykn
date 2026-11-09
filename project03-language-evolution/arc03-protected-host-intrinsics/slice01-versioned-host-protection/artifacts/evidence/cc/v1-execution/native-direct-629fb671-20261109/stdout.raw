@@ -1,0 +1,15 @@
+
+running 3 tests
+test legal_protected_host_controls_run_as_separate_programs ... FAILED
+test protected_host_dist_error_preserves_typed_path_and_stale_outputs ... FAILED
+test protected_writes_are_captured_across_cli_routes_before_rejection_assertions ... FAILED
+
+failures:
+
+failures:
+    legal_protected_host_controls_run_as_separate_programs
+    protected_host_dist_error_preserves_typed_path_and_stale_outputs
+    protected_writes_are_captured_across_cli_routes_before_rejection_assertions
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

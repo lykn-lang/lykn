@@ -1,13 +1,23 @@
 ---
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
-status: blocked
+status: in-progress
 planned-release: unassigned
 depends-on: [arc01-compiler-semantic-integrity/slice02-checked-emission-results, arc01-compiler-semantic-integrity/slice03-shared-semantic-roles]
 related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity, project07-core-library-research]
 ---
 
 # Protected host intrinsics
+
+## S01 accepted — 2026-11-09
+
+[S01](slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)
+independently accepted the v1 contract and provable-write errors at
+`e7b44c1`. PHI-01 and PHI-02 are done. PHI-03 through PHI-06 retain the
+S02 invocation, optimization, composition and arc closure gates.
+Release is still `62e9531e`. S04 I3 depends on the future accepted
+facility, and Arc01 S07/S08 retain the final API and documentation audit.
+Historical holds below describe their respective source freezes.
 
 The Operator authorizes the [S01 consolidated correction](slice01-versioned-host-protection/cc-prompt-iteration06.md)
 and its original validation. Same models and stop rule. No subsequent

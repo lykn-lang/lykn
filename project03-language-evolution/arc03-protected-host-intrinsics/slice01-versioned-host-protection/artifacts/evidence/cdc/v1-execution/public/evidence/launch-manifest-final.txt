@@ -1,0 +1,14 @@
+Independent CDC launch record, public
+Branch codex/protected-host-contract
+Source e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214
+Tree 407aba5e00b53ea682f073e6742a6de7324abaa7
+Cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Tool pins and inherited scope /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/tools-and-inherited-env.txt, /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/current-inherited-env.txt
+Current Deno 2.9.6 /opt/homebrew/bin/deno SHA256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Rust/Cargo 1.97.0 in task cwd
+Actual named fixture checks /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/evidence/named-config.command.txt, named-config.stdout.raw, named-config.stderr.raw (18 expected absent; check exit1)
+Intentional checkout config /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/source-config.command.txt, source-config.stdout.raw, source-config.stderr.raw
+Exact launch:
+/usr/bin/env TMPDIR=/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/TMPDIR XDG_CACHE_HOME=/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/XDG_CACHE_HOME npm_config_cache=/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_PROTECTED_HOST_EVIDENCE_DIR=/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/observations /opt/homebrew/bin/deno test --config project.json -A test/forms/protected-host.test.js > /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/evidence/stdout.raw 2> /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/evidence/stderr.raw
+Retain actual returned status in /private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/evidence/exit-status.txt separately.
+Clean exclusive ownership return/current source and any producer readback are required before launch.

@@ -1,0 +1,22 @@
+Arc03 S01 - prospective native no-run compile (lykn-lang)
+Invocation: native-lib-no-run-629fb671-20261109
+State: PREPARED / NOT EXECUTED. Awaiting CDC release naming this receipt and invocation.
+
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch: codex/protected-host-contract
+HEAD: 629fb6712954a7bc61bad0ec7ef5ce1001d82ce7
+Tree: e1c79e8520d571cadfc62fe0f456da7c0c74216e
+Working tree: clean after reviewed format commit.
+
+Executable: /Users/oubiwann/.cargo/bin/cargo; cargo 1.97.0 (c980f4866 2026-06-30); rustc 1.97.0 (2d8144b78 2026-07-07). Reused actual Deno pin from accepted original baseline: /opt/homebrew/bin/deno 2.9.6, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Original raw pins: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/original-baseline-no-run-5a2e569-20261108/.
+Argv: ["test", "--offline", "--locked", "-p", "lykn-lang", "--lib", "--no-run"]. This compiles the target only and will not run it.
+Exact command to invoke only after release (redirect-only; actual Cargo exit reaches tool):
+env TMPDIR=/private/tmp/arc03-s01-native-lib-no-run-629fb671-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-native-lib-no-run-629fb671-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-native-lib-no-run-629fb671-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno /Users/oubiwann/.cargo/bin/cargo test --offline --locked -p lykn-lang --lib --no-run > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-lib-no-run-629fb671-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-lib-no-run-629fb671-20261109/stderr.raw
+After tool return, record its actual exit in exit-status.txt.
+
+Fresh invocation roots: TMPDIR=/private/tmp/arc03-s01-native-lib-no-run-629fb671-20261109/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-native-lib-no-run-629fb671-20261109/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-native-lib-no-run-629fb671-20261109/npm-cache; fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno; explicit LYKN_TEST_DENO=/opt/homebrew/bin/deno (unused in no-run). Cargo target dir and Rust flags are not overridden; --offline --locked are explicit. Cargo does not select the checkout project.json.
+
+Exact 18-name Deno/project preflight argv is in named-config-ls.argv.txt; raw stdout/stderr/status are named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt. It returned status 1 as expected: 17 scratch/fixed-ancestor names absent; source-root project.json present and deno.json/deno.jsonc absent. No traversal was used. Setup argv/status are in setup-command.txt.
+
+Raw command output/status destinations: stdout.raw, stderr.raw, exit-status.txt.
+Evidence root: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/native-lib-no-run-629fb671-20261109

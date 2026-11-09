@@ -1,0 +1,13 @@
+Arc03 S01 v1 — prospective normal full Make receipt
+Invocation: final-make-check-629fb671-20261109
+State: PREPARED / NOT EXECUTED. Conditional release is active after green focused group; run original unfiltered normal Make.
+Source cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch/HEAD/tree: codex/protected-host-contract / 629fb6712954a7bc61bad0ec7ef5ce1001d82ce7 / e1c79e8520d571cadfc62fe0f456da7c0c74216e
+Source status is clean. No LYKN_TEST_DENO override and no Cargo globals are assigned. Inherited PATH retained and resolves deno to /opt/homebrew/bin/deno 2.9.6, SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Inherited CARGO_NET_GIT_FETCH_WITH_CLI=true and RUST_LOG=warn retained. Fixed DENO_DIR=/Users/oubiwann/Library/Caches/deno.
+Current producer pins after refresh: bin/lykn and target/release/lykn both SHA-256 f6ce3ec997ffd9903f148115605ce5192e5513cc4c7e9a361d43eb2990ba87e6.
+Executable /usr/bin/make, GNU Make 3.81. Exact argv ["check"].
+Exact command:
+env TMPDIR=/private/tmp/arc03-s01-629fb671-make-check-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s01-629fb671-make-check-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s01-629fb671-make-check-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make check > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-make-check-629fb671-20261109/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s01/cc/final-make-check-629fb671-20261109/stderr.raw
+The tool's actual process exit is recorded verbatim to exit-status.txt after return; no status masking.
+Fresh roots: TMPDIR=/private/tmp/arc03-s01-629fb671-make-check-20261109/TMPDIR; XDG_CACHE_HOME=/private/tmp/arc03-s01-629fb671-make-check-20261109/XDG_CACHE_HOME; npm_config_cache=/private/tmp/arc03-s01-629fb671-make-check-20261109/npm-cache. Preflight exact argv is in named-config-ls.argv.txt; it checks 18 names at TMPDIR, its parent, /private/tmp, /private, /, and source root. Actual stdout/stderr/status are named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt; exit 1 expected, source project.json present and remaining 17 absent. All raw outcomes read back. No traversal.
+Raw command outputs/status: stdout.raw, stderr.raw, exit-status.txt.

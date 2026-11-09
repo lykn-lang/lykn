@@ -1,0 +1,68 @@
+diff --git a/crates/lykn-lang/src/protected_host.rs b/crates/lykn-lang/src/protected_host.rs
+index f48d1cfa..e581b366 100644
+--- a/crates/lykn-lang/src/protected_host.rs
++++ b/crates/lykn-lang/src/protected_host.rs
+@@ -788,35 +788,35 @@ impl Walker {
+             && let Ok(surface) = crate::classifier::classify_expr(expr)
+         {
+             match surface {
+-                    SurfaceForm::IfLet {
+-                        pattern,
+-                        expr: value,
+-                        then_body,
+-                        else_body,
+-                        ..
+-                    } => {
+-                        self.visit(&value, dialect);
+-                        self.with_pattern_scope(&pattern, |walker| {
+-                            walker.visit_lexical_body(std::slice::from_ref(&then_body), dialect);
+-                        });
+-                        if let Some(other) = else_body {
+-                            self.visit_lexical_body(std::slice::from_ref(&other), dialect);
+-                        }
+-                        return;
+-                    }
+-                    SurfaceForm::WhenLet {
+-                        pattern,
+-                        expr: value,
+-                        body,
+-                        ..
+-                    } => {
+-                        self.visit(&value, dialect);
+-                        self.with_pattern_scope(&pattern, |walker| {
+-                            walker.visit_lexical_body(&body, dialect);
+-                        });
+-                        return;
++                SurfaceForm::IfLet {
++                    pattern,
++                    expr: value,
++                    then_body,
++                    else_body,
++                    ..
++                } => {
++                    self.visit(&value, dialect);
++                    self.with_pattern_scope(&pattern, |walker| {
++                        walker.visit_lexical_body(std::slice::from_ref(&then_body), dialect);
++                    });
++                    if let Some(other) = else_body {
++                        self.visit_lexical_body(std::slice::from_ref(&other), dialect);
+                     }
+-                    _ => {}
++                    return;
++                }
++                SurfaceForm::WhenLet {
++                    pattern,
++                    expr: value,
++                    body,
++                    ..
++                } => {
++                    self.visit(&value, dialect);
++                    self.with_pattern_scope(&pattern, |walker| {
++                        walker.visit_lexical_body(&body, dialect);
++                    });
++                    return;
++                }
++                _ => {}
+             }
+         }
+         if head == "match"

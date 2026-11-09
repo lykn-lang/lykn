@@ -1,0 +1,18 @@
+{
+  "name": "w9",
+  "source": "(func guarded :args () :returns :number :pre (do (set! Reflect:apply 0) true) :body 1)",
+  "generated": null,
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": null,
+    "cwd": null,
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+      "XDG_CACHE_HOME": "/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/XDG_CACHE_HOME",
+      "TMPDIR": "/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/TMPDIR",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/private/tmp/lykn-arc03-s01-v1-cdc-gqK83bHa/public/observations"
+    }
+  },
+  "runtime": null
+}

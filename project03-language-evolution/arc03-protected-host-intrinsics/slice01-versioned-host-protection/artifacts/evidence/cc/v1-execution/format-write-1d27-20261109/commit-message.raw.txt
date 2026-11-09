@@ -1,0 +1,7 @@
+Format protected host validation sources
+
+Apply repository formatting to the reviewed v1 candidate.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

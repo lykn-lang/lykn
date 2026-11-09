@@ -1,5 +1,29 @@
 # CDC retrospective — S01 attempts, 2026-11-08
 
+## Accepted execution retrospective — 2026-11-09
+
+Independent immutable review caught real scope and key-identity errors
+before execution. The ordinary five refinements were exhausted. Direct
+Operator steering enabled three further bounded passes in the same
+slice, preserving the failed candidates and evidence. A native
+if-let control I initially proposed used a constructor rather than a
+binding. It was corrected before execution using the actual pattern
+grammar. The public reader's lack of spans likewise required distinct
+observable slots and exact messages rather than equality of missing
+metadata. These are authoring and review observations from this slice.
+
+The first external native attempt reached receipt writes before
+assertions and failed because its destination did not exist. The
+separate retry confirmed that exact directory before launch. The
+first normal Make exposed eight lint issues after focused tests
+passed. The let-chain-only repair and final format freeze restored
+the full gate. Keep exact manifest, directory and producer readback
+but batch genuinely independent checks and separate outcomes rather
+than waiting for serial acknowledgments. The useful next default is
+to verify all declared output destinations along with input roots and
+run the repository lint early on a reviewed source freeze. This is a
+local practice recommendation. No workflow comparison was measured.
+
 ## Exact path identity preflight — 2026-11-09
 
 The source stored a literal computed key in a segment and then lost

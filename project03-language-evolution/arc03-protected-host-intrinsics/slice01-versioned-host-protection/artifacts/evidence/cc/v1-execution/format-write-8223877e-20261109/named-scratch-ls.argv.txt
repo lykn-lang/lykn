@@ -1,0 +1,1 @@
+ls -ld /private/tmp/arc03-s01-format-write-8223877e-20261109/TMPDIR /private/tmp/arc03-s01-format-write-8223877e-20261109/XDG_CACHE_HOME
