@@ -71,8 +71,12 @@ cp target/release/lykn bin/
 ./bin/lykn --version
 ```
 
-The lykn binary is self-contained. No runtime dependencies, no Deno
-or Node.js required for compilation.
+The lykn binary is self-contained for compilation that does not evaluate
+user-defined macros. When compilation expands a user-defined macro, the CLI
+starts Deno with Lykn's embedded `packages/lang/deno.json` and `deno.lock`,
+using the frozen lock that pins `astring` 1.9.0. The caller's arbitrary Deno
+configuration is not passed through to this evaluator. Lykn's own
+`import-macros` resolution tiers remain in effect.
 
 ---
 
