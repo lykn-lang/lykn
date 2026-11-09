@@ -232,11 +232,9 @@ fn compile_lykn_sources(
                 kernel_only: false,
             };
             let classified = lykn_lang::classifier::classify_with_options(&resolved, classify_opts)
-                .map_err(|mut diags| {
-                    DistError::Language {
-                        path: path.clone(),
-                        source: lykn_lang::error::LyknError::Classify(diags.remove(0)),
-                    }
+                .map_err(|mut diags| DistError::Language {
+                    path: path.clone(),
+                    source: lykn_lang::error::LyknError::Classify(diags.remove(0)),
                 })?;
             let analysis_result = lykn_lang::analysis::analyze(&classified);
             if analysis_result.has_errors {
