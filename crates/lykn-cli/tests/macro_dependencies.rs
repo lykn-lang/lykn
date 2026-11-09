@@ -9,7 +9,8 @@ use tempfile::TempDir;
 const TWICE_SOURCE: &str =
     "(macro twice (x) `(+ ,x ,x))\n(console:log (JSON:stringify (twice 21)))\n";
 const ALIAS_MODULE_SOURCE: &str = "(macro alias-twice (x) `(+ ,x ,x))\n";
-const ALIAS_CONSUMER_SOURCE: &str = "(import-macros \"astring\" (alias-twice))\n(console:log (JSON:stringify (alias-twice 21)))\n";
+const ALIAS_CONSUMER_SOURCE: &str =
+    "(import-macros \"astring\" (alias-twice))\n(console:log (JSON:stringify (alias-twice 21)))\n";
 const EXPECTED_RUNTIME: &[u8] = b"42\n";
 const STRICT_DENO_ARGS: &[&str] = &[
     "run",
@@ -193,16 +194,14 @@ struct ProjectFiles {
 
 fn package_lock_bytes() -> Vec<u8> {
     fs::read(
-        Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../lykn-lang/embedded/packages/lang/deno.lock"),
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../lykn-lang/embedded/packages/lang/deno.lock"),
     )
     .expect("read existing embedded package lock bytes")
 }
 
 fn package_config_bytes() -> Vec<u8> {
     fs::read(
-        Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../lykn-lang/embedded/packages/lang/deno.json"),
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../lykn-lang/embedded/packages/lang/deno.json"),
     )
     .expect("read existing embedded package config bytes")
 }
@@ -274,13 +273,30 @@ fn assert_successful_runtime(
         None
     };
 
-    assert_eq!(compiled.status.code(), Some(0), "{name} compile stderr: {:?}", compiled.stderr);
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "{name} compile stderr: {:?}",
+        compiled.stderr
+    );
     assert!(generated.is_some(), "{name} compile produced no JavaScript");
-    assert!(declaration.is_none(), "{name} unexpectedly emitted declarations");
+    assert!(
+        declaration.is_none(),
+        "{name} unexpectedly emitted declarations"
+    );
     let runtime = runtime.expect("successful compile must have a runtime observation");
-    assert_eq!(runtime.status.code(), Some(0), "{name} runtime stderr: {:?}", runtime.stderr);
+    assert_eq!(
+        runtime.status.code(),
+        Some(0),
+        "{name} runtime stderr: {:?}",
+        runtime.stderr
+    );
     assert_eq!(runtime.stdout, EXPECTED_RUNTIME, "{name} runtime stdout");
-    assert!(runtime.stderr.is_empty(), "{name} runtime stderr: {:?}", runtime.stderr);
+    assert!(
+        runtime.stderr.is_empty(),
+        "{name} runtime stderr: {:?}",
+        runtime.stderr
+    );
 }
 
 #[test]
@@ -310,7 +326,8 @@ fn m2_project_without_astring_keeps_caller_files_unchanged() {
     let source_path = write_source(fixture.path(), "twice.lykn", TWICE_SOURCE);
     let source = fs::read(&source_path).expect("read no-astring source fixture");
     let output_path = fixture.path().join("m2.js");
-    let (config_before, lock_before) = record_project_state("m2-no-astring-project", "before", &project);
+    let (config_before, lock_before) =
+        record_project_state("m2-no-astring-project", "before", &project);
     let caller_mtimes_before = project_mtimes(&project);
 
     let (compiled, generated, declaration) = compile_recorded(
@@ -322,21 +339,39 @@ fn m2_project_without_astring_keeps_caller_files_unchanged() {
         &xdg,
     );
     let runtime = generated.as_ref().map(|_| {
-        run_strict_recorded("m2-no-astring-project-runtime", fixture.path(), &output_path)
+        run_strict_recorded(
+            "m2-no-astring-project-runtime",
+            fixture.path(),
+            &output_path,
+        )
     });
-    let (config_after, lock_after) = record_project_state("m2-no-astring-project", "after", &project);
+    let (config_after, lock_after) =
+        record_project_state("m2-no-astring-project", "after", &project);
     let caller_mtimes_after = project_mtimes(&project);
 
-    assert_eq!(compiled.status.code(), Some(0), "M2 compile stderr: {:?}", compiled.stderr);
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "M2 compile stderr: {:?}",
+        compiled.stderr
+    );
     assert!(generated.is_some(), "M2 compile produced no JavaScript");
-    assert!(declaration.is_none(), "M2 unexpectedly emitted declarations");
+    assert!(
+        declaration.is_none(),
+        "M2 unexpectedly emitted declarations"
+    );
     assert_eq!(config_before, project.config_bytes);
     assert_eq!(lock_before, project.lock_bytes);
     assert_eq!(config_after, config_before);
     assert_eq!(lock_after, lock_before);
     assert_eq!(caller_mtimes_after, caller_mtimes_before);
     let runtime = runtime.expect("successful M2 compile must have a runtime observation");
-    assert_eq!(runtime.status.code(), Some(0), "M2 runtime stderr: {:?}", runtime.stderr);
+    assert_eq!(
+        runtime.status.code(),
+        Some(0),
+        "M2 runtime stderr: {:?}",
+        runtime.stderr
+    );
     assert_eq!(runtime.stdout, EXPECTED_RUNTIME);
     assert!(runtime.stderr.is_empty());
 }
@@ -360,7 +395,8 @@ fn m3_astring_alias_still_resolves_unique_imported_macro() {
     let source_path = write_source(fixture.path(), "consumer.lykn", ALIAS_CONSUMER_SOURCE);
     let source = fs::read(&source_path).expect("read alias consumer source");
     let output_path = fixture.path().join("m3.js");
-    let (config_before, lock_before) = record_project_state("m3-astring-alias-unique-macro", "before", &project);
+    let (config_before, lock_before) =
+        record_project_state("m3-astring-alias-unique-macro", "before", &project);
     let caller_mtimes_before = project_mtimes(&project);
 
     let (compiled, generated, declaration) = compile_recorded(
@@ -378,19 +414,33 @@ fn m3_astring_alias_still_resolves_unique_imported_macro() {
             &output_path,
         )
     });
-    let (config_after, lock_after) = record_project_state("m3-astring-alias-unique-macro", "after", &project);
+    let (config_after, lock_after) =
+        record_project_state("m3-astring-alias-unique-macro", "after", &project);
     let caller_mtimes_after = project_mtimes(&project);
 
-    assert_eq!(compiled.status.code(), Some(0), "M3 compile stderr: {:?}", compiled.stderr);
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "M3 compile stderr: {:?}",
+        compiled.stderr
+    );
     assert!(generated.is_some(), "M3 compile produced no JavaScript");
-    assert!(declaration.is_none(), "M3 unexpectedly emitted declarations");
+    assert!(
+        declaration.is_none(),
+        "M3 unexpectedly emitted declarations"
+    );
     assert_eq!(config_before, project.config_bytes);
     assert_eq!(lock_before, project.lock_bytes);
     assert_eq!(config_after, config_before);
     assert_eq!(lock_after, lock_before);
     assert_eq!(caller_mtimes_after, caller_mtimes_before);
     let runtime = runtime.expect("successful M3 compile must have a runtime observation");
-    assert_eq!(runtime.status.code(), Some(0), "M3 runtime stderr: {:?}", runtime.stderr);
+    assert_eq!(
+        runtime.status.code(),
+        Some(0),
+        "M3 runtime stderr: {:?}",
+        runtime.stderr
+    );
     assert_eq!(runtime.stdout, EXPECTED_RUNTIME);
     assert!(runtime.stderr.is_empty());
 }
@@ -415,9 +465,14 @@ fn m4_same_version_cache_reextracts_missing_config() {
     let owned_root = owned_embedded_root(&xdg);
     let config_path = owned_root.join("packages/lang/deno.json");
     let lock_path = owned_root.join("packages/lang/deno.lock");
-    let config_before = fs::read(&config_path).expect("capture materialized config before deletion");
+    let config_before =
+        fs::read(&config_path).expect("capture materialized config before deletion");
     let lock_before = fs::read(&lock_path).expect("capture materialized lock before deletion");
-    save_receipt("m4-cache-recovery", "owned-config-before.bin", &config_before);
+    save_receipt(
+        "m4-cache-recovery",
+        "owned-config-before.bin",
+        &config_before,
+    );
     save_receipt("m4-cache-recovery", "owned-lock-before.bin", &lock_before);
     fs::remove_file(&config_path).expect("remove only materialized package config");
     let config_missing_before_recovery = !config_path.exists();
@@ -425,8 +480,11 @@ fn m4_same_version_cache_reextracts_missing_config() {
     save_receipt(
         "m4-cache-recovery",
         "owned-config-missing.txt",
-        format!("config_exists={}\nlock_exists={}\n", !config_missing_before_recovery, lock_present_before_recovery)
-            .as_bytes(),
+        format!(
+            "config_exists={}\nlock_exists={}\n",
+            !config_missing_before_recovery, lock_present_before_recovery
+        )
+        .as_bytes(),
     );
 
     let (recovered, recovered_js, recovered_dts) = compile_recorded(
@@ -437,9 +495,9 @@ fn m4_same_version_cache_reextracts_missing_config() {
         &recovered_output,
         &xdg,
     );
-    let runtime = recovered_js.as_ref().map(|_| {
-        run_strict_recorded("m4-recovered-runtime", fixture.path(), &recovered_output)
-    });
+    let runtime = recovered_js
+        .as_ref()
+        .map(|_| run_strict_recorded("m4-recovered-runtime", fixture.path(), &recovered_output));
     let config_after = fs::read(&config_path).ok();
     let lock_after = fs::read(&lock_path).ok();
     save_receipt(
@@ -453,20 +511,47 @@ fn m4_same_version_cache_reextracts_missing_config() {
         lock_after.as_deref().unwrap_or_default(),
     );
 
-    assert_eq!(warmup.status.code(), Some(0), "M4 warmup stderr: {:?}", warmup.stderr);
+    assert_eq!(
+        warmup.status.code(),
+        Some(0),
+        "M4 warmup stderr: {:?}",
+        warmup.stderr
+    );
     assert!(warmup_js.is_some(), "M4 warmup produced no JavaScript");
-    assert!(warmup_dts.is_none(), "M4 warmup unexpectedly emitted declarations");
-    assert!(config_missing_before_recovery, "M4 config was not absent before recovery");
-    assert!(lock_present_before_recovery, "M4 lock was absent before recovery");
-    assert_eq!(recovered.status.code(), Some(0), "M4 recovery stderr: {:?}", recovered.stderr);
+    assert!(
+        warmup_dts.is_none(),
+        "M4 warmup unexpectedly emitted declarations"
+    );
+    assert!(
+        config_missing_before_recovery,
+        "M4 config was not absent before recovery"
+    );
+    assert!(
+        lock_present_before_recovery,
+        "M4 lock was absent before recovery"
+    );
+    assert_eq!(
+        recovered.status.code(),
+        Some(0),
+        "M4 recovery stderr: {:?}",
+        recovered.stderr
+    );
     assert!(recovered_js.is_some(), "M4 recovery produced no JavaScript");
-    assert!(recovered_dts.is_none(), "M4 recovery unexpectedly emitted declarations");
+    assert!(
+        recovered_dts.is_none(),
+        "M4 recovery unexpectedly emitted declarations"
+    );
     assert_eq!(config_after, Some(config_before));
     assert_eq!(lock_after, Some(lock_before));
     assert_eq!(config_after, Some(package_config_bytes()));
     assert_eq!(lock_after, Some(package_lock_bytes()));
     let runtime = runtime.expect("successful M4 recovery must have a runtime observation");
-    assert_eq!(runtime.status.code(), Some(0), "M4 runtime stderr: {:?}", runtime.stderr);
+    assert_eq!(
+        runtime.status.code(),
+        Some(0),
+        "M4 runtime stderr: {:?}",
+        runtime.stderr
+    );
     assert_eq!(runtime.stdout, EXPECTED_RUNTIME);
     assert!(runtime.stderr.is_empty());
 }
@@ -475,7 +560,8 @@ fn m4_same_version_cache_reextracts_missing_config() {
 fn m5_blocked_xdg_materialization_returns_io_error_without_output() {
     let fixture = TempDir::new().expect("create blocked-cache fixture");
     let blocked_xdg = fixture.path().join("xdg-cache-is-a-file");
-    fs::write(&blocked_xdg, b"owned blocked cache path\n").expect("create regular-file XDG blocker");
+    fs::write(&blocked_xdg, b"owned blocked cache path\n")
+        .expect("create regular-file XDG blocker");
     let source_path = write_source(fixture.path(), "twice.lykn", TWICE_SOURCE);
     let source = fs::read(&source_path).expect("read blocked-cache source fixture");
     let output_path = fixture.path().join("m5.js");
@@ -490,7 +576,9 @@ fn m5_blocked_xdg_materialization_returns_io_error_without_output() {
         .arg("-o")
         .arg(&output_path);
     record_command("m5-blocked-xdg", &command, Some(&blocked_xdg));
-    let result = command.output().expect("start blocked-cache compile process");
+    let result = command
+        .output()
+        .expect("start blocked-cache compile process");
     record_output("m5-blocked-xdg", &result);
     let generated = fs::read(&output_path).ok();
     let declaration_path = output_path.with_extension("d.ts");
@@ -506,7 +594,12 @@ fn m5_blocked_xdg_materialization_returns_io_error_without_output() {
         .as_bytes(),
     );
 
-    assert_eq!(result.status.code(), Some(1), "M5 stderr: {:?}", result.stderr);
+    assert_eq!(
+        result.status.code(),
+        Some(1),
+        "M5 stderr: {:?}",
+        result.stderr
+    );
     assert!(
         String::from_utf8_lossy(&result.stderr).contains("I/O error"),
         "M5 must render typed I/O failure, got {:?}",
