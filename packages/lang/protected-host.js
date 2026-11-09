@@ -125,26 +125,26 @@ function objectExecutableChildren(property) {
   return children;
 }
 
-function collectVarNames(forms, names, toJsIdentifier, formHead) {
+function collectVarNames(forms, names, toJsIdentifier, formHead, rawKernel = false) {
   for (const form of forms) {
     if (form?.type !== 'list') continue;
     const head = formHead(form.values[0]);
     if (head === null) {
-      collectVarNames(form.values, names, toJsIdentifier, formHead);
+      collectVarNames(form.values, names, toJsIdentifier, formHead, rawKernel);
       continue;
     }
     if (['quote', 'quasiquote', 'syntax-quote'].includes(head) || isFunctionBoundary(form, formHead)) continue;
     if (head === 'object') {
       for (const property of form.values.slice(1)) {
-        collectVarNames(objectExecutableChildren(property), names, toJsIdentifier, formHead);
+        collectVarNames(objectExecutableChildren(property), names, toJsIdentifier, formHead, rawKernel);
       }
-    } else if (isVarDeclaration(form, formHead)) {
+    } else if (isVarDeclaration(form, formHead) && (!rawKernel || head === 'var')) {
       for (const binding of bindingsIntroduced(form)) {
         if (binding.kind === 'bind') names.add(toJsIdentifier(binding.name));
       }
-      for (const child of form.values.slice(2)) collectVarNames([child], names, toJsIdentifier, formHead);
+      for (const child of form.values.slice(2)) collectVarNames([child], names, toJsIdentifier, formHead, rawKernel);
     } else {
-      collectVarNames(form.values.slice(1), names, toJsIdentifier, formHead);
+      collectVarNames(form.values.slice(1), names, toJsIdentifier, formHead, rawKernel);
     }
   }
 }
@@ -163,6 +163,40 @@ function directScopeNames(forms, toJsIdentifier, formHead, moduleScope = false) 
     }
   }
   if (moduleScope) collectVarNames(forms, names, toJsIdentifier, formHead);
+  return names;
+}
+
+function addKernelModuleDeclaration(form, names, toJsIdentifier, formHead) {
+  if (form?.type !== 'list' || form.values.length === 0) return;
+  const head = formHead(form.values[0]);
+  const args = form.values.slice(1);
+  if (head === 'export') {
+    const candidate = args[0]?.type === 'atom' && args[0].value === 'default'
+      ? args[1]
+      : args[0];
+    if (candidate) addKernelModuleDeclaration(candidate, names, toJsIdentifier, formHead);
+    return;
+  }
+  if (head === 'async') {
+    const payload = args[0];
+    const payloadHead = payload?.type === 'list' ? formHead(payload.values[0]) : null;
+    if (payloadHead === 'function' || payloadHead === 'function*') {
+      addKernelModuleDeclaration(payload, names, toJsIdentifier, formHead);
+    }
+    return;
+  }
+  if (!['const', 'let', 'function', 'function*', 'class', 'import'].includes(head)) return;
+  for (const binding of bindingsIntroduced(form)) {
+    if (binding.kind === 'bind' || binding.kind === 'import-local') {
+      names.add(toJsIdentifier(binding.name));
+    }
+  }
+}
+
+function kernelModuleNames(forms, toJsIdentifier, formHead) {
+  const names = new Set();
+  for (const form of forms) addKernelModuleDeclaration(form, names, toJsIdentifier, formHead);
+  collectVarNames(forms, names, toJsIdentifier, formHead, true);
   return names;
 }
 
@@ -443,7 +477,7 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
     for (const arg of args) visit(arg, scopes, dialect);
   };
 
-  const moduleNames = directScopeNames(exprs, toJsIdentifier, formHead, true);
+  const moduleNames = kernelModuleNames(exprs, toJsIdentifier, formHead);
   visitMany(exprs, [moduleNames], 'kernel', visit);
 
   let invalidatesAliases = false;

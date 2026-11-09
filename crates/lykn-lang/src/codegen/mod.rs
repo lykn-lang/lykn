@@ -374,6 +374,59 @@ mod tests {
             assert!(!requested.contains(host_invocation::INLINE_APPLY_MODULE));
         }
 
+        let ordinary_call = fixture_forms("(bind Reflect! local) (saved receiver argv)");
+        assert!(!crate::protected_host::module_binds_reflect(&ordinary_call));
+        let ordinary_anchor = ordinary_call.iter().find_map(find_saved_call).unwrap();
+        let ordinary_request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: ordinary_anchor,
+        };
+        let ordinary_output =
+            emit_module_with_invocations(&ordinary_call, &[ordinary_request]).unwrap();
+        assert!(ordinary_output.contains("bind(Reflect, local);"));
+        assert!(ordinary_output.contains("function lyknHostReflectApply0"));
+        assert!(!ordinary_output.contains(host_invocation::INLINE_APPLY_MODULE));
+
+        let ordinary_write =
+            fixture_forms("(bind Reflect! local) (saved receiver argv) (= Reflect:apply 0)");
+        let expected = "host-contract v1: write to protected slot Reflect.apply";
+        assert!(matches!(
+            emit_module_js(&ordinary_write),
+            Err(crate::error::LyknError::Codegen(diagnostic)) if diagnostic.message == expected
+        ));
+        let write_anchor = ordinary_write.iter().find_map(find_saved_call).unwrap();
+        let write_request = host_invocation::InvocationRequest {
+            id: crate::protected_host::IntrinsicId::ReflectApply,
+            anchor: write_anchor,
+        };
+        assert!(matches!(
+            emit_module_with_invocations(&ordinary_write, &[write_request]),
+            Err(crate::error::LyknError::Codegen(diagnostic)) if diagnostic.message == expected
+        ));
+
+        for source in [
+            "(export (function Reflect! () (return 1))) (= Reflect:apply 0) (saved receiver argv)",
+            "(export (async (function Reflect! () (return 1)))) (= Reflect:apply 0) (saved receiver argv)",
+        ] {
+            let forms = fixture_forms(source);
+            assert!(crate::protected_host::module_binds_reflect(&forms));
+            let ordinary = emit_module_js(&forms).unwrap();
+            assert!(ordinary.contains("Reflect.apply = 0;"));
+            assert!(!ordinary.contains(host_invocation::INLINE_APPLY_MODULE));
+            let anchor = forms.iter().find_map(find_saved_call).unwrap();
+            let request = host_invocation::InvocationRequest {
+                id: crate::protected_host::IntrinsicId::ReflectApply,
+                anchor,
+            };
+            let requested = emit_module_with_invocations(&forms, &[request]).unwrap();
+            assert_eq!(
+                requested
+                    .matches(host_invocation::INLINE_APPLY_MODULE)
+                    .count(),
+                1
+            );
+        }
+
         let multiple =
             fixture_forms("(const Reflect local) (saved receiver argv) (other target args)");
         let requests = multiple

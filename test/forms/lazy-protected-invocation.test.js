@@ -188,6 +188,35 @@ Deno.test("lazy protected invocation checks source module binding roles", () => 
   assertEquals(compileWithHostInvocations(globalThisOnly, compile,
     [hostInvocationRequest(newHostInvocationId(), findSavedCall(globalThisOnly))])
     .includes("function lyknHostReflectApply0"), true);
+
+  const ordinaryCall = read('(bind Reflect! local) (saved receiver argv)');
+  const ordinaryRequest = hostInvocationRequest(newHostInvocationId(), findSavedCall(ordinaryCall));
+  const ordinaryOutput = compileWithHostInvocations(ordinaryCall, compile, [ordinaryRequest]);
+  assertStringIncludes(ordinaryOutput, 'bind(Reflect, local);');
+  assertStringIncludes(ordinaryOutput, 'function lyknHostReflectApply0');
+  assertEquals(ordinaryOutput.includes(INLINE_APPLY_MODULE), false);
+
+  const ordinaryWrite = read(
+    '(bind Reflect! local) (saved receiver argv) (= Reflect:apply 0)',
+  );
+  const expected = 'host-contract v1: write to protected slot Reflect.apply';
+  assertThrows(() => compile(ordinaryWrite), Error, expected);
+  assertThrows(() => compileWithHostInvocations(ordinaryWrite, compile, [
+    hostInvocationRequest(newHostInvocationId(), findSavedCall(ordinaryWrite)),
+  ]), Error, expected);
+
+  for (const source of [
+    '(export (function Reflect! () (return 1))) (= Reflect:apply 0) (saved receiver argv)',
+    '(export (async (function Reflect! () (return 1)))) (= Reflect:apply 0) (saved receiver argv)',
+  ]) {
+    const forms = read(source);
+    const normal = compile(forms);
+    assertStringIncludes(normal, 'Reflect.apply = 0;');
+    assertEquals(normal.includes(INLINE_APPLY_MODULE), false);
+    const output = compileWithHostInvocations(forms, compile,
+      [hostInvocationRequest(newHostInvocationId(), findSavedCall(forms))]);
+    assertEquals((output.match(/data:text\/javascript,/g) ?? []).length, 1);
+  }
 });
 
 Deno.test("lazy protected invocation materializes all four public proof inputs", () => {

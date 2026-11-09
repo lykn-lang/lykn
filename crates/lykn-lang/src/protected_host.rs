@@ -47,7 +47,10 @@ struct WriteSite {
 /// `globalThis` disables alias-based proofs throughout the unit, as the
 /// language does not attempt flow-sensitive alias analysis.
 pub(crate) fn validate_program(forms: &[SExpr], dialect: InputDialect) -> Vec<Diagnostic> {
-    let names = scope_names(forms, true);
+    let names = match dialect {
+        InputDialect::Surface => scope_names(forms, true),
+        InputDialect::Kernel => kernel_module_names(forms),
+    };
     let mut walker = Walker {
         scopes: vec![names],
         sites: Vec::new(),
@@ -140,59 +143,84 @@ fn scope_names(forms: &[SExpr], module: bool) -> HashSet<String> {
 }
 
 pub(crate) fn module_binds_reflect(forms: &[SExpr]) -> bool {
-    let mut names = scope_names(forms, true);
-    fn add_decl(candidate: Option<&SExpr>, names: &mut HashSet<String>) {
-        let Some(form) = candidate else { return };
-        let Some((head, args)) = head_and_args(form) else {
-            return;
-        };
-        let head = head.strip_prefix("kernel:").unwrap_or(head);
-        if head == "async" {
-            add_decl(args.first(), names);
-            return;
-        }
-        if matches!(
-            head,
-            "bind"
-                | "import"
-                | "const"
-                | "let"
-                | "var"
-                | "function"
-                | "function*"
-                | "func"
-                | "genfunc"
-                | "class"
-                | "type"
-        ) {
-            names.extend(scope_names(std::slice::from_ref(form), false));
-        }
-    }
+    kernel_module_names(forms).contains("Reflect")
+}
+
+fn kernel_module_names(forms: &[SExpr]) -> HashSet<String> {
+    let mut names = HashSet::new();
     for form in forms {
-        let Some((head, args)) = head_and_args(form) else {
-            continue;
+        add_kernel_module_declaration(form, &mut names);
+    }
+    collect_var_hoists_mode(forms, &mut names, true);
+    names
+}
+
+fn add_kernel_module_declaration(form: &SExpr, names: &mut HashSet<String>) {
+    let Some((head, args)) = head_and_args(form) else {
+        return;
+    };
+    if head == "export" {
+        let candidate = if args.first().and_then(SExpr::as_atom) == Some("default") {
+            args.get(1)
+        } else {
+            args.first()
         };
-        match head.strip_prefix("kernel:").unwrap_or(head) {
-            "export" => {
-                if args.first().and_then(SExpr::as_atom) == Some("default") {
-                    add_decl(args.get(1), &mut names);
-                } else {
-                    add_decl(args.first(), &mut names);
+        if let Some(candidate) = candidate {
+            add_kernel_module_declaration(candidate, names);
+        }
+        return;
+    }
+    if head == "async" {
+        let Some(payload) = args.first() else { return };
+        let Some(values) = payload.as_list() else {
+            return;
+        };
+        // emit_async reads this payload head as structural syntax.
+        if matches!(
+            values.first().and_then(SExpr::as_atom),
+            Some("function" | "function*")
+        ) {
+            add_kernel_module_declaration(payload, names);
+        }
+        return;
+    }
+    match head {
+        "const" | "let" => {
+            if let Some(pattern) = args.first() {
+                kernel_pattern_names(pattern, names);
+            }
+        }
+        "function" => {
+            if let Some(name) = args.first() {
+                kernel_pattern_names(name, names);
+            }
+        }
+        "function*" => {
+            if let Some(name) = args.first().filter(|name| name.as_atom().is_some()) {
+                kernel_pattern_names(name, names);
+            }
+        }
+        "class" | "import" => {
+            for binding in bindings_introduced(form) {
+                if matches!(binding.kind, BindingKind::Bind | BindingKind::ImportLocal) {
+                    names.insert(to_js_identifier(&binding.name));
                 }
             }
-            "async" => add_decl(args.first(), &mut names),
-            _ => {}
         }
+        _ => {}
     }
-    names.contains("Reflect")
 }
 
 fn collect_var_hoists(forms: &[SExpr], names: &mut HashSet<String>) {
+    collect_var_hoists_mode(forms, names, false);
+}
+
+fn collect_var_hoists_mode(forms: &[SExpr], names: &mut HashSet<String>, raw_kernel: bool) {
     for form in forms {
         let Some((head, args)) = head_and_args(form) else {
             if let Some(values) = form.as_list() {
                 for value in values {
-                    collect_var_hoists(std::slice::from_ref(value), names);
+                    collect_var_hoists_mode(std::slice::from_ref(value), names, raw_kernel);
                 }
             }
             continue;
@@ -217,18 +245,18 @@ fn collect_var_hoists(forms: &[SExpr], names: &mut HashSet<String>) {
         if head == "object" {
             for child in args {
                 for expr in object_executable_children(child) {
-                    collect_var_hoists(std::slice::from_ref(expr), names);
+                    collect_var_hoists_mode(std::slice::from_ref(expr), names, raw_kernel);
                 }
             }
-        } else if head == "var" || head == "kernel:var" {
+        } else if head == "var" || (!raw_kernel && head == "kernel:var") {
             if let Some(pattern) = args.first() {
                 kernel_pattern_names(pattern, names);
             }
             for child in args.iter().skip(1) {
-                collect_var_hoists(std::slice::from_ref(child), names);
+                collect_var_hoists_mode(std::slice::from_ref(child), names, raw_kernel);
             }
         } else {
-            collect_var_hoists(args, names);
+            collect_var_hoists_mode(args, names, raw_kernel);
         }
     }
 }
