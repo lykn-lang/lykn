@@ -788,35 +788,35 @@ impl Walker {
             && let Ok(surface) = crate::classifier::classify_expr(expr)
         {
             match surface {
-                    SurfaceForm::IfLet {
-                        pattern,
-                        expr: value,
-                        then_body,
-                        else_body,
-                        ..
-                    } => {
-                        self.visit(&value, dialect);
-                        self.with_pattern_scope(&pattern, |walker| {
-                            walker.visit_lexical_body(std::slice::from_ref(&then_body), dialect);
-                        });
-                        if let Some(other) = else_body {
-                            self.visit_lexical_body(std::slice::from_ref(&other), dialect);
-                        }
-                        return;
+                SurfaceForm::IfLet {
+                    pattern,
+                    expr: value,
+                    then_body,
+                    else_body,
+                    ..
+                } => {
+                    self.visit(&value, dialect);
+                    self.with_pattern_scope(&pattern, |walker| {
+                        walker.visit_lexical_body(std::slice::from_ref(&then_body), dialect);
+                    });
+                    if let Some(other) = else_body {
+                        self.visit_lexical_body(std::slice::from_ref(&other), dialect);
                     }
-                    SurfaceForm::WhenLet {
-                        pattern,
-                        expr: value,
-                        body,
-                        ..
-                    } => {
-                        self.visit(&value, dialect);
-                        self.with_pattern_scope(&pattern, |walker| {
-                            walker.visit_lexical_body(&body, dialect);
-                        });
-                        return;
-                    }
-                    _ => {}
+                    return;
+                }
+                SurfaceForm::WhenLet {
+                    pattern,
+                    expr: value,
+                    body,
+                    ..
+                } => {
+                    self.visit(&value, dialect);
+                    self.with_pattern_scope(&pattern, |walker| {
+                        walker.visit_lexical_body(&body, dialect);
+                    });
+                    return;
+                }
+                _ => {}
             }
         }
         if head == "match"
