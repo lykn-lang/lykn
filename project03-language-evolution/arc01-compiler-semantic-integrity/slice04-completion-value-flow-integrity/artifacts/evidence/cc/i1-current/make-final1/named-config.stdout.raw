@@ -1,0 +1,12 @@
+ABSENT deno.json
+ABSENT deno.jsonc
+-rw-r--r--@ 1 oubiwann  staff  533 Nov  5 20:11 project.json
+ABSENT package.json
+ABSENT ../deno.json
+ABSENT ../deno.jsonc
+ABSENT ../project.json
+ABSENT ../package.json
+ABSENT ../../deno.json
+ABSENT ../../deno.jsonc
+-rw-r--r--@ 1 oubiwann  staff  533 Aug  8 18:14 ../../project.json
+ABSENT ../../package.json

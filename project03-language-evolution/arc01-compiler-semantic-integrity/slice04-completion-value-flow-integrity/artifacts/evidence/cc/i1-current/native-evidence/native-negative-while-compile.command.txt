@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/native-tmp/.tmpY0ElGV/while.lykn", "-o", "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/native-tmp/.tmpY0ElGV/while.js"]
+cwd=Some("/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/native-tmp/.tmpY0ElGV")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/native-xdg")
+TMPDIR=Some("/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/native-tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/native-evidence")

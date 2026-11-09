@@ -1,0 +1,6 @@
+Source c202e55c20410f58c950343531f003cd6453650d tree 871b78721e3ee221c7ca66433cc60a7e0691ff2a
+Working directory /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Actual pinned tool versions and ordinary PATH in /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/producer-preflight.txt
+Named config absence in /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/config-ancestors.stderr and /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/named-package-config.stderr
+/usr/bin/env TMPDIR=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/cites/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/cites/xdg npm_config_cache=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/cites/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make check-cited-paths > /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/cites/stdout.raw 2> /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/cites/stderr.raw
+Terminal status /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/cites/exit-status.txt

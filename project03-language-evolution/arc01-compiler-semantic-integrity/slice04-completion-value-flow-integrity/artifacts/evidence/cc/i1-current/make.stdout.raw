@@ -1,0 +1,221 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.0M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+[1;32m✓ Format check passed[0m
+[1;36m• Checking lykn syntax...[0m
+[1;32m✓ lykn syntax check passed[0m
+[1;36m• Running lykn lint (source anti-patterns)...[0m
+[1;32m✓ lykn lint passed[0m
+[1;36m• Refreshing test artifacts (release binary + build dir)...[0m
+[1;32m✓ Test artifacts fresh[0m
+[1;34mRunning Rust tests...[0m
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 99 tests
+test add::tests::kind_from_str_maps_kebab ... ok
+test add::tests::parse_rejects_malformed ... ok
+test add::tests::parse_npm_scoped_and_unscoped ... ok
+test add::tests::parse_jsr_scoped_with_and_without_version ... ok
+test add::tests::import_pair_is_exact_and_paired ... ok
+test config::tests::absolutize_relative_leaves_registry_and_absolute ... ok
+test add::tests::upsert_is_idempotent_updates_in_place ... FAILED
+test config::tests::build_effective_config_lands_overlay_without_base_imports_and_drops_workspace ... FAILED
+test add::tests::upsert_appends_new_pair_preserving_everything_else ... FAILED
+test config::tests::build_effective_config_malformed_imports_is_none ... FAILED
+test config::tests::build_effective_config_absolutizes_base_and_preserves_registry_absolute ... FAILED
+test config::tests::build_effective_config_empty_imports_object_takes_overlay ... FAILED
+test config::tests::effective_merge_local_wins_over_base ... FAILED
+test config::tests::overlay_remove_deletes_file_when_empty_and_errors_on_absent ... FAILED
+test config::tests::overlay_write_read_roundtrip_updates_in_place_preserving_order ... FAILED
+test config::tests::test_extract_npm_deps_empty ... ok
+test config::tests::test_extract_npm_deps_ignores_non_npm_non_workspace ... ok
+test config::tests::test_extract_npm_deps_mixed ... ok
+test config::tests::test_extract_npm_deps_npm_specifier ... ok
+test config::tests::test_extract_npm_deps_scoped_npm ... ok
+test config::tests::test_extract_npm_deps_workspace_import ... ok
+test config::tests::test_lykn_metadata_default ... ok
+test config::tests::test_package_kind_default ... ok
+test config::tests::test_lykn_metadata_serialization_skips_none ... ok
+test config::tests::test_package_kind_kebab_case_serialization ... ok
+test config::tests::test_lykn_metadata_serialization_includes_macro_entry ... ok
+test config::tests::test_parse_package_config_default_version ... ok
+test config::tests::test_parse_package_config_object_exports ... ok
+test config::tests::test_parse_package_config_full ... ok
+test config::tests::test_parse_package_config_tooling_kind ... ok
+test config::tests::test_parse_package_config_with_lykn_metadata ... ok
+test config::tests::test_parse_project_config_empty ... ok
+test config::tests::test_parse_project_config_no_imports ... ok
+test config::tests::test_parse_project_config ... ok
+test config::tests::test_read_package_config_nonexistent ... ok
+test config::tests::test_read_package_config_from_tempfile ... FAILED
+test config::tests::test_read_package_config_invalid_json ... FAILED
+test config::tests::test_read_project_config_from_tempfile ... FAILED
+test config::tests::test_read_project_config_invalid_json ... FAILED
+test config::tests::test_read_project_config_nonexistent ... ok
+test config::tests::test_short_name_empty ... ok
+test config::tests::test_read_project_config_optional_returns_none_for_nonexistent ... ok
+test config::tests::test_short_name_scoped ... ok
+test config::tests::test_short_name_scoped_lang ... ok
+test config::tests::test_short_name_unscoped ... ok
+test config::tests::test_workspace_members_empty ... ok
+test config::tests::test_workspace_members_no_prefix ... ok
+test config::tests::test_workspace_members_strips_dot_slash ... ok
+test config::tests::test_read_project_config_optional_from_tempdir ... ok
+test dist::tests::test_build_dist_copies_js_files ... ok
+test dist::tests::test_build_dist_browser_deps_include_workspace ... ok
+test dist::tests::test_build_dist_built_package_fields ... ok
+test dist::tests::snapshot_import_rewriter_output ... ok
+test dist::tests::test_build_dist_empty_workspace_errors ... ok
+test dist::tests::snapshot_macro_module_package_json ... ok
+test dist::tests::snapshot_macro_module_mod_js_stub ... ok
+test dist::tests::snapshot_macro_module_deno_json ... ok
+test dist::tests::snapshot_workspace_project_json ... ok
+test dist::tests::snapshot_runtime_pkg_deno_json ... ok
+test dist::tests::snapshot_runtime_pkg_package_json ... ok
+test dist::tests::test_build_dist_missing_project_json_errors ... ok
+test dist::tests::test_rewrite_imports_double_quote ... ok
+test dist::tests::test_rewrite_imports_empty_map ... ok
+test dist::tests::test_rewrite_imports_empty_source ... ok
+test dist::tests::test_rewrite_imports_ignores_npm ... ok
+test dist::tests::test_rewrite_imports_mixed_quotes_same_line ... ok
+test dist::tests::test_rewrite_imports_multiple_entries ... ok
+test dist::tests::test_rewrite_imports_no_match ... ok
+test dist::tests::test_rewrite_imports_single_quote ... ok
+test formatter::tests::escape_string_all_special ... ok
+test formatter::tests::escape_string_empty ... ok
+test formatter::tests::escape_string_no_special ... ok
+test formatter::tests::format_bool_false ... ok
+test formatter::tests::format_bool_true ... ok
+test formatter::tests::format_cons ... ok
+test formatter::tests::format_empty_list ... ok
+test formatter::tests::format_float_number ... ok
+test formatter::tests::format_indented_children ... ok
+test formatter::tests::format_integer_number ... ok
+test formatter::tests::format_keyword ... ok
+test formatter::tests::format_list_with_keywords ... ok
+test formatter::tests::format_long_list_wraps ... ok
+test formatter::tests::format_multiple_top_level_exprs ... ok
+test formatter::tests::format_nested_list ... ok
+test formatter::tests::format_null ... ok
+test formatter::tests::format_short_list ... ok
+test formatter::tests::format_single_atom ... ok
+test formatter::tests::format_string_simple ... ok
+test formatter::tests::format_string_with_escapes ... ok
+test validation::tests::first_nonempty_compile_group_keeps_the_established_priority ... ok
+test dist::tests::test_build_dist_copies_readme_and_license ... ok
+test dist::tests::test_build_dist_macro_module ... ok
+test dist::tests::test_build_dist_creates_build_stamp ... ok
+test dist::tests::test_build_dist_creates_packages ... ok
+test dist::tests::test_build_dist_generates_deno_json ... ok
+test dist::tests::test_build_dist_generates_package_json ... ok
+test dist::tests::test_build_dist_generates_project_json ... ok
+test dist::tests::test_build_dist_rewrites_imports_in_js ... ok
+test dist::tests::test_build_dist_idempotent ... ok
+
+failures:
+
+---- add::tests::upsert_is_idempotent_updates_in_place stdout ----
+
+thread 'add::tests::upsert_is_idempotent_updates_in_place' (100262854) panicked at crates/lykn-cli/src/add.rs:433:39:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmpJXBO8n", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- config::tests::build_effective_config_lands_overlay_without_base_imports_and_drops_workspace stdout ----
+
+thread 'config::tests::build_effective_config_lands_overlay_without_base_imports_and_drops_workspace' (100262858) panicked at crates/lykn-cli/src/config.rs:812:44:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmpDR3rj1", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- add::tests::upsert_appends_new_pair_preserving_everything_else stdout ----
+
+thread 'add::tests::upsert_appends_new_pair_preserving_everything_else' (100262853) panicked at crates/lykn-cli/src/add.rs:433:39:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmpiHhyIm", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- config::tests::build_effective_config_malformed_imports_is_none stdout ----
+
+thread 'config::tests::build_effective_config_malformed_imports_is_none' (100262859) panicked at crates/lykn-cli/src/config.rs:869:44:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmpxue8u1", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- config::tests::build_effective_config_absolutizes_base_and_preserves_registry_absolute stdout ----
+
+thread 'config::tests::build_effective_config_absolutizes_base_and_preserves_registry_absolute' (100262856) panicked at crates/lykn-cli/src/config.rs:831:44:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmpefz3NQ", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- config::tests::build_effective_config_empty_imports_object_takes_overlay stdout ----
+
+thread 'config::tests::build_effective_config_empty_imports_object_takes_overlay' (100262857) panicked at crates/lykn-cli/src/config.rs:859:44:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmp2FqbFC", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- config::tests::effective_merge_local_wins_over_base stdout ----
+
+thread 'config::tests::effective_merge_local_wins_over_base' (100262860) panicked at crates/lykn-cli/src/config.rs:752:39:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmp6EztCv", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- config::tests::overlay_remove_deletes_file_when_empty_and_errors_on_absent stdout ----
+
+thread 'config::tests::overlay_remove_deletes_file_when_empty_and_errors_on_absent' (100262861) panicked at crates/lykn-cli/src/config.rs:735:39:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmpfIo5Bb", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- config::tests::overlay_write_read_roundtrip_updates_in_place_preserving_order stdout ----
+
+thread 'config::tests::overlay_write_read_roundtrip_updates_in_place_preserving_order' (100262862) panicked at crates/lykn-cli/src/config.rs:720:39:
+called `Result::unwrap()` on an `Err` value: Custom { kind: NotFound, error: PathError { path: "/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-tmp/.tmpgXK8La", err: Os { code: 2, kind: NotFound, message: "No such file or directory" } } }
+
+---- config::tests::test_read_package_config_from_tempfile stdout ----
+
+thread 'config::tests::test_read_package_config_from_tempfile' (100262882) panicked at crates/lykn-cli/src/config.rs:641:80:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+
+---- config::tests::test_read_package_config_invalid_json stdout ----
+
+thread 'config::tests::test_read_package_config_invalid_json' (100262883) panicked at crates/lykn-cli/src/config.rs:618:44:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+
+---- config::tests::test_read_project_config_from_tempfile stdout ----
+
+thread 'config::tests::test_read_project_config_from_tempfile' (100262885) panicked at crates/lykn-cli/src/config.rs:632:10:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+
+---- config::tests::test_read_project_config_invalid_json stdout ----
+
+thread 'config::tests::test_read_project_config_invalid_json' (100262886) panicked at crates/lykn-cli/src/config.rs:607:49:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+
+
+failures:
+    add::tests::upsert_appends_new_pair_preserving_everything_else
+    add::tests::upsert_is_idempotent_updates_in_place
+    config::tests::build_effective_config_absolutizes_base_and_preserves_registry_absolute
+    config::tests::build_effective_config_empty_imports_object_takes_overlay
+    config::tests::build_effective_config_lands_overlay_without_base_imports_and_drops_workspace
+    config::tests::build_effective_config_malformed_imports_is_none
+    config::tests::effective_merge_local_wins_over_base
+    config::tests::overlay_remove_deletes_file_when_empty_and_errors_on_absent
+    config::tests::overlay_write_read_roundtrip_updates_in_place_preserving_order
+    config::tests::test_read_package_config_from_tempfile
+    config::tests::test_read_package_config_invalid_json
+    config::tests::test_read_project_config_from_tempfile
+    config::tests::test_read_project_config_invalid_json
+
+test result: FAILED. 86 passed; 13 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+

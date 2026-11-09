@@ -1,0 +1,69 @@
+commit c202e55c20410f58c950343531f003cd6453650d
+tree 871b78721e3ee221c7ca66433cc60a7e0691ff2a
+parent 487c9551fc105efb37eae5f1f62817b33cc07b88
+author Duncan McGreggor <oubiwann@gmail.com> 1794264607 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794264607 -0600
+
+    Assert braced statement conditional output
+    
+    Preserve the existing logical-or compilation assertion with the
+    conditional arm's required block shape.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit 487c9551fc105efb37eae5f1f62817b33cc07b88
+tree 0e6b089e38368ed9412fbe069911eb2e5c523993
+parent 45df1093f109f7a27bf002c553f7d76cdfdc4125
+author Duncan McGreggor <oubiwann@gmail.com> 1794264088 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794264088 -0600
+
+    Respect the resolved head in conditional scope
+    
+    Keep explicit kernel conditionals isolated while preserving the
+    ordinary-call role of a tagged bound head.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit 45df1093f109f7a27bf002c553f7d76cdfdc4125
+tree a3c4e10300ffbfa7dce11bde2eb4c45265dd2756
+parent 1118b8fd85f41e78b424d2ffb02f7d5acbba281d
+author Duncan McGreggor <oubiwann@gmail.com> 1794263963 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794263963 -0600
+
+    Isolate and brace statement conditional arms
+    
+    Keep declaration scope and branch slots separate while preserving
+    direct abrupt targets and existing expression conditionals.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit 1118b8fd85f41e78b424d2ffb02f7d5acbba281d
+tree f22600c9cfc4d8981b3cd719846ac98cdff1a655
+parent 7cc78d673ab229f2cde29d2a41d23a762107cf7a
+author Duncan McGreggor <oubiwann@gmail.com> 1794263423 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794263423 -0600
+
+    Separate the literal conditional transfer regression
+    
+    Keep the original macro-introduced boundary witness for resolver
+    occurrence identity and exercise the same direct transfer path.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit 7cc78d673ab229f2cde29d2a41d23a762107cf7a
+tree 2845f604d55a2481e10a4df68c0fe1a3f15cb8b1
+parent d73601a57fcf9294389eb5283e173ec0eca40091
+author Duncan McGreggor <oubiwann@gmail.com> 1794262985 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794262985 -0600
+
+    Freeze statement conditional region regressions
+    
+    Exercise branch bindings, macro scope, and direct control transfers
+    through both existing compiler routes.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

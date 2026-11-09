@@ -11,6 +11,12 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 ## Implementation re-entry — 2026-11-09
 
+[Independent I1 acceptance](cdc-verification.md#i1-conditional-branch-regions-accepted--2026-11-09)
+covers CV-02 at task `c202e55c`. Five CV rows and parent CI-04
+remain open. The next prerequisite is native macro occurrence identity
+(NE-C14) with the unchanged original F3. I2–I4 retain their separate
+readiness and composed proof. Release remains d736. I1 refinements 04/5.
+
 The Operator authorized direct S04 continuation after independently
 [validated local release integration](../../arc03-protected-host-intrinsics/artifacts/release-integration-d736.md)
 at `d73601a5`. Same Luna 6 High CC and Sol 6.1 High CDC, standard

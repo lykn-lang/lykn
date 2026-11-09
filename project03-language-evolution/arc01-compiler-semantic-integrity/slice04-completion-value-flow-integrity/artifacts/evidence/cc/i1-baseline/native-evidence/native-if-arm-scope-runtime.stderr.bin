@@ -1,0 +1,4 @@
+error: Uncaught (in promise) ReferenceError: pick is not defined
+} else trace.push(pick(4));
+             ^
+    at file:///private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-baseline/native-tmp/.tmp5gxqOc/if-arm-scope.js:18:14

@@ -1,0 +1,99 @@
+make: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+make: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+warning: output of `xcrun` while finding MacOSX.sdk
+  |
+  = note: xcrun: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+
+warning: linker stderr: cc: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `lykn-cli` (bin "lykn") generated 2 warnings
+    Finished `release` profile [optimized] target(s) in 6.54s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Checking lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.37s
+test/surface/func_test.lykn: ok (12 top-level expressions)
+test/surface/class_test.lykn: ok (21 top-level expressions)
+test/surface/contract_predicates_test.lykn: ok (3 top-level expressions)
+test/surface/js-interop_test.lykn: ok (20 top-level expressions)
+test/surface/immutable-updates_test.lykn: ok (17 top-level expressions)
+test/surface/threading_test.lykn: ok (14 top-level expressions)
+test/surface/some-threading_test.lykn: ok (9 top-level expressions)
+test/surface/match_test.lykn: ok (13 top-level expressions)
+test/surface/conditional-binding_test.lykn: ok (11 top-level expressions)
+test/surface/cell_test.lykn: ok (15 top-level expressions)
+test/surface/type_test.lykn: ok (20 top-level expressions)
+test/surface/language-surface-runway_test.lykn: ok (6 top-level expressions)
+test/surface/class-runtime_test.lykn: ok (19 top-level expressions)
+test/surface/equality_test.lykn: ok (30 top-level expressions)
+test/surface/genfunc_test.lykn: ok (13 top-level expressions)
+test/surface/func-destructuring_test.lykn: ok (45 top-level expressions)
+test/surface/obj_test.lykn: ok (12 top-level expressions)
+test/surface/integration_test.lykn: ok (8 top-level expressions)
+test/surface/fn-lambda_test.lykn: ok (17 top-level expressions)
+test/surface/bind_test.lykn: ok (13 top-level expressions)
+test/surface/kernel-in-surface_test.lykn: ok (32 top-level expressions)
+✓ no lint findings (141 file(s))
+warning: output of `xcrun` while finding MacOSX.sdk
+  |
+  = note: xcrun: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+
+warning: linker stderr: cc: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `lykn-cli` (bin "lykn") generated 2 warnings
+    Finished `release` profile [optimized] target(s) in 0.06s
+@lykn/lang built in target/lykn/build/lang/
+@lykn/browser built in target/lykn/build/browser/
+@lykn/testing built in target/lykn/build/testing/
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+warning: output of `xcrun` while finding MacOSX.sdk
+  |
+  = note: xcrun: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+
+warning: linker stderr: cc: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `lykn` (lib test) generated 2 warnings
+warning: `lykn-lang` (test "emission_results") generated 2 warnings (2 duplicates)
+warning: `lykn-lang` (test "icu_cross_compiler_tests") generated 2 warnings (2 duplicates)
+warning: `lykn-lang` (test "macro_expansion") generated 2 warnings (2 duplicates)
+warning: `lykn-lang` (test "cross_compiler") generated 2 warnings (2 duplicates)
+warning: `lykn-lang` (test "e2e_tests") generated 2 warnings (2 duplicates)
+warning: `lykn-lang` (test "a6_dispatch_conformance") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "contract_predicate_lowering") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "match_clause_validation") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "publishing_cross_package") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (bin "lykn" test) generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "run_permissions") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "macro_dependencies") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "template_string_boundary") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "publishing_dry_run") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "compile_validation_parity") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "p11_lint_corpus") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "emission_failures") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "publishing_build_each_kind") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "async_expression_values") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "publishing_real_packages") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "variadic_for_bodies") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "binding_scan_shadows_macros") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "scaffold_runway") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "async_exports") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "docs_pattern_gating") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "source_context_path_routing") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "lyk_runner_kernel_only") generated 2 warnings (2 duplicates)
+warning: `lykn-cli` (test "protected_host") generated 2 warnings (2 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.89s
+     Running unittests src/lib.rs (target/debug/deps/lykn-2ae8974d4173c4ab)
+     Running unittests src/lib.rs (target/debug/deps/lykn_cli-8a470da61c5d1dbe)
+error: test failed, to rerun pass `-p lykn-cli --lib`
+make: *** [test-rust] Error 101

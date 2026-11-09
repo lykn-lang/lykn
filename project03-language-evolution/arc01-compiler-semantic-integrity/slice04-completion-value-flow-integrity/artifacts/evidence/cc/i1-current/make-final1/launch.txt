@@ -1,0 +1,5 @@
+Program: /usr/bin/env
+Argv: -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/tmp XDG_CACHE_HOME=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/xdg npm_config_cache=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno make check
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch/HEAD: codex/completion-value-flow c202e55c20410f58c950343531f003cd6453650d
+Scoped environment: TMPDIR=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/tmp; XDG_CACHE_HOME=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/xdg; npm_config_cache=/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/npm; DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno; CARGO_NET_GIT_FETCH_WITH_CLI=unset; RUST_LOG=unset

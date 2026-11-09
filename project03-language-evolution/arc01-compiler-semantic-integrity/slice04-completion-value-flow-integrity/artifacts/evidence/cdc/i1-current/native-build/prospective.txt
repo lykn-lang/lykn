@@ -1,0 +1,6 @@
+Source c202e55c20410f58c950343531f003cd6453650d tree 871b78721e3ee221c7ca66433cc60a7e0691ff2a
+Working directory /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Actual pinned tool versions and ordinary PATH in /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/producer-preflight.txt
+Named config absence in /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/config-ancestors.stderr and /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/named-package-config.stderr
+/usr/bin/env TMPDIR=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native-build/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native-build/xdg npm_config_cache=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native-build/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno /Users/oubiwann/.cargo/bin/cargo test -p lykn-cli -p lykn-lang --test semantic_roles --lib --no-run > /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native-build/stdout.raw 2> /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native-build/stderr.raw
+Terminal status /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native-build/exit-status.txt

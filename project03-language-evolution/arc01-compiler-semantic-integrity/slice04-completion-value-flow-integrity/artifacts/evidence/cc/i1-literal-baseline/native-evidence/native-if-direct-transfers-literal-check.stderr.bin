@@ -1,0 +1,2 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/if-direct-transfers-literal.lykn: error: 2:3: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement

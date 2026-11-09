@@ -1,0 +1,7 @@
+Source c202e55c20410f58c950343531f003cd6453650d tree 871b78721e3ee221c7ca66433cc60a7e0691ff2a
+Working directory /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Ordinary pinned PATH and no LYKN_TEST_DENO, CARGO_TARGET_DIR, RUSTFLAGS overrides.
+Actual version, SHA and post-build focused pins: /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/producer-preflight.txt and /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/focused-producers-before.sha256
+Named absence receipts /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/config-ancestors.stderr and /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/named-package-config.stderr
+/usr/bin/env TMPDIR=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/printer/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/printer/xdg npm_config_cache=/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/printer/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-60c4a58c1162abbf codegen::emit::tests::test_if > /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/printer/stdout.raw 2> /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/printer/stderr.raw
+Terminal status /private/tmp/lykn-s04-i1-cdc.CL8iMHVY/printer/exit-status.txt

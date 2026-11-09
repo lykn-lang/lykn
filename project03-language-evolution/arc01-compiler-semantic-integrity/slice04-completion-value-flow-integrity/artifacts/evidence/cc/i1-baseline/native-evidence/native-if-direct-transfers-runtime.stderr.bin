@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+  |
+1 | kernel.function(select, flag(), if(flag, return(7)), return(9));
+  |                                 ~~
+    at file:///private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-baseline/native-tmp/.tmpfFtCLM/if-direct-transfers.js:1:33

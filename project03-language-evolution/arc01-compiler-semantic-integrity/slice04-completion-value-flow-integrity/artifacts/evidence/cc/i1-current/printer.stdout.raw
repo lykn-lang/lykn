@@ -1,0 +1,17 @@
+
+running 12 tests
+test emitter::forms::tests::test_if_let_value_no_else ... ok
+test emitter::forms::tests::test_if_let_wildcard_pattern ... ok
+test emitter::forms::tests::test_if_let_obj_pattern ... ok
+test emitter::forms::tests::test_if_let_statement_no_else ... ok
+test emitter::forms::tests::test_if_let_literal_pattern ... ok
+test codegen::emit::tests::test_if_simple ... ok
+test codegen::emit::tests::test_if_block ... ok
+test emitter::forms::tests::test_if_let_constructor_pattern ... ok
+test codegen::emit::tests::test_if_else ... ok
+test analysis::tests::test_if_let_introduces_pattern_bindings ... ok
+test emitter::forms::tests::test_if_let_with_await_in_body ... ok
+test emitter::forms::tests::test_if_let_with_await_in_expr ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 1147 filtered out; finished in 0.00s
+

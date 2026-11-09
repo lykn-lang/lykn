@@ -1,0 +1,10 @@
+(macro pick (x) `(+ ,x 10))
+(bind trace (array))
+(if true
+  (bind pick (fn (:number n) (+ n 100)) saved (trace:push (pick 1)))
+  (trace:push (pick 2)))
+(if false
+  (bind pick (fn (:number n) (+ n 200)) saved (trace:push (pick 3)))
+  (trace:push (pick 4)))
+(trace:push (pick 5))
+(console:log (JSON:stringify trace))

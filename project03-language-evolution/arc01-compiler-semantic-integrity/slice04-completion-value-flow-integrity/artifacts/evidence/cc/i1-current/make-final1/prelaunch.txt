@@ -1,0 +1,12 @@
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Branch/HEAD: codex/completion-value-flow
+c202e55c20410f58c950343531f003cd6453650d
+Status: ## codex/completion-value-flow
+Roots:
+drwxr-xr-x@ 2 oubiwann  wheel  64 Nov  9 16:50 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/npm
+drwxr-xr-x@ 2 oubiwann  wheel  64 Nov  9 16:50 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/tmp
+drwxr-xr-x@ 2 oubiwann  wheel  64 Nov  9 16:50 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-final1/xdg
+Deno: deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+  |
+1 | if (true) const followingStatement = 99;
+  |           ~~~~~
+    at file:///private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-literal-baseline/public-tmp/4eb2cc44394e88a1/if-declaration.js:1:11

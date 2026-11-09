@@ -1,0 +1,62 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+codex/completion-value-flow
+487c9551fc105efb37eae5f1f62817b33cc07b88
+## codex/completion-value-flow
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+drwxr-xr-x@ 24 oubiwann  staff  768 Nov  5 21:40 /Users/oubiwann/Library/Caches/deno
+drwxr-xr-x@  2 oubiwann  wheel   64 Nov  9 16:46 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/npm
+drwxr-xr-x@  2 oubiwann  wheel   64 Nov  9 16:46 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/tmp
+drwxr-xr-x@  2 oubiwann  wheel   64 Nov  9 16:46 /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/xdg
+CARGO_NET_GIT_FETCH_WITH_CLI
+RUST_LOG
+ls: /Users/oubiwann/lab/lykn/deno.json: No such file or directory
+ls: /Users/oubiwann/lab/lykn/deno.jsonc: No such file or directory
+ls: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json: No such file or directory
+ls: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc: No such file or directory
+ls: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/package.json: No such file or directory
+ls: /Users/oubiwann/lab/lykn/lang/deno.json: No such file or directory
+ls: /Users/oubiwann/lab/lykn/lang/deno.jsonc: No such file or directory
+ls: /Users/oubiwann/lab/lykn/lang/package.json: No such file or directory
+ls: /Users/oubiwann/lab/lykn/package.json: No such file or directory
+ls: /Users/oubiwann/lab/lykn/project.json: No such file or directory
+ls: /deno.json: No such file or directory
+ls: /deno.jsonc: No such file or directory
+ls: /package.json: No such file or directory
+ls: /private/deno.json: No such file or directory
+ls: /private/deno.jsonc: No such file or directory
+ls: /private/package.json: No such file or directory
+ls: /private/project.json: No such file or directory
+ls: /private/tmp/deno.json: No such file or directory
+ls: /private/tmp/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/deno.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/deno.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/deno.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/npm/deno.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/npm/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/npm/package.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/npm/project.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/package.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/project.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/tmp/deno.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/tmp/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/tmp/package.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/tmp/project.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/xdg/deno.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/xdg/deno.jsonc: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/xdg/package.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/make-retry1/xdg/project.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/package.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-current/project.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/package.json: No such file or directory
+ls: /private/tmp/lykn-d736-release-cdc.Gdv7dxje/project.json: No such file or directory
+ls: /private/tmp/package.json: No such file or directory
+ls: /private/tmp/project.json: No such file or directory
+ls: /project.json: No such file or directory
+-rw-r--r--@ 1 oubiwann  staff  533 Nov  5 20:11 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json
+-rw-r--r--@ 1 oubiwann  staff  533 Aug  8 18:14 /Users/oubiwann/lab/lykn/lang/project.json

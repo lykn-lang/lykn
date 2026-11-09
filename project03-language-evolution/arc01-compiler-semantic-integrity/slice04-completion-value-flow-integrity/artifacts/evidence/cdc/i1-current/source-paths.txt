@@ -1,0 +1,16 @@
+crates/lykn-cli/tests/semantic_roles.rs
+crates/lykn-lang/embedded/packages/lang/compiler.js
+crates/lykn-lang/embedded/packages/lang/expander.js
+crates/lykn-lang/src/classifier/forms.rs
+crates/lykn-lang/src/codegen/emit.rs
+crates/lykn-lang/src/expander/pass2.rs
+crates/lykn-lang/src/resolver.rs
+docs/guides/00-lykn-surface-forms.md
+packages/lang/compiler.js
+packages/lang/expander.js
+test/fixtures/semantic-roles/if-arm-scope.lykn
+test/fixtures/semantic-roles/if-declaration.lykn
+test/fixtures/semantic-roles/if-direct-transfers-literal.lykn
+test/fixtures/semantic-roles/if-direct-transfers.lykn
+test/forms/semantic-roles.test.js
+test/surface/equality_test.lykn

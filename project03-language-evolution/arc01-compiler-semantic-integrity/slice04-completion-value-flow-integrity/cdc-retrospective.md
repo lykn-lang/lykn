@@ -1,5 +1,26 @@
 # S04 design-phase retrospective — 2026-11-08
 
+## I1 implementation checkpoint — 2026-11-09
+
+The original shared fixture included a macro-introduced function in a
+conditional printer proof. Native expansion exposed a binder identity
+defect before printing. Retaining that exact red and using a separate
+literal fixture isolated the first deliverable. Its early native
+validator also needed the explicit wrapper's existing role. The two
+separate baseline receipts distinguish both effects. NE-C14 owns the
+first failure and remains required for later macro-boundary proof.
+
+The full gate caught two practical omissions: a first launch without
+precreated temp roots, and one existing exact compiler output expectation
+for unbraced conditionals. The eventual complete gate used precreated
+roots and the precise braced golden. Independent reproduction recorded
+outer commands prospectively and qualified test selectors by module.
+These checks belong before source-dependent launches. The earlier
+raw, zero-selection and missing launch metadata limits are preserved.
+See the [I1 independent verification](cdc-verification.md).
+
+## Earlier design checkpoint — 2026-11-08
+
 This records the completed bounded design activity at a real contract gate;
 S04 implementation is NOT closed or accepted. All six CV rows/CI04 remain open.
 No source/build/test/probe or new compiler failure was observed.

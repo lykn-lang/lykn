@@ -1,0 +1,11 @@
+
+running 1 test
+test if_direct_transfers_keep_source_targets ... FAILED
+
+failures:
+
+failures:
+    if_direct_transfers_keep_source_targets
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.23s
+

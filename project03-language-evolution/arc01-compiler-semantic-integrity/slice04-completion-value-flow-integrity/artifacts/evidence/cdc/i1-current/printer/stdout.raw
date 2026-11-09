@@ -1,0 +1,8 @@
+
+running 3 tests
+test codegen::emit::tests::test_if_block ... ok
+test codegen::emit::tests::test_if_simple ... ok
+test codegen::emit::tests::test_if_else ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1156 filtered out; finished in 0.00s
+

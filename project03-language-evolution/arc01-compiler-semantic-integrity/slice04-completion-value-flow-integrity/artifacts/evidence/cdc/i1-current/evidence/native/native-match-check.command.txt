@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match.lykn"]
+cwd=Some("/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native/tmp/.tmpNGnfQe")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native/xdg")
+TMPDIR=Some("/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/native/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s04-i1-cdc.CL8iMHVY/evidence/native")

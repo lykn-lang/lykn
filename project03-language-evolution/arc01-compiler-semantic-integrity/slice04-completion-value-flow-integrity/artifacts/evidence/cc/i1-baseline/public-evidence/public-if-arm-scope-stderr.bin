@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+  |
+2 | if (true) const pick = n => {
+  |           ~~~~~
+    at file:///private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-baseline/public-tmp/e7135762846bccb5/if-arm-scope.js:2:11
