@@ -35,6 +35,18 @@ accepts the private protected invocation facility at task source
 I3 planning. A production ordered-reference consumer and its CV/CI-04
 proof remain S04 work, with separate execution and integration scope.
 
+### First I1 baseline and scope refinement — 2026-11-09
+
+The [actual first baseline](artifacts/i1-baseline-disposition.md)
+reproduced both conditional failures and exposed NE-C14, native macro
+binding occurrence corruption before conditional printing.
+[Iteration 02](cc-prompt-iteration02.md) freezes and runs a distinct
+literal function witness with the unchanged transfer oracle before the
+original I1 production work. Source refinement 01 of the normal five.
+I1 retains both routes, branch behavior and genuine macro-bearing F2.
+Original macro-introduced F3 remains the prerequisite witness for later
+macro-boundary proof. No CV row has been accepted.
+
 ## Earlier dependency status
 
 [Arc03 S01 source protection](../../arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)

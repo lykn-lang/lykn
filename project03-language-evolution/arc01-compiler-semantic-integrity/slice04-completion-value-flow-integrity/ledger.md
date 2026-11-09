@@ -6,6 +6,12 @@ and supplies actual conditional branch and direct-transfer controls.
 The earlier design-only assignment remains intact. All CV rows start
 open. Later readiness and source budgets retain their own accounting.
 
+[First focused baseline](artifacts/i1-baseline-disposition.md) retained at
+test-only `7cc78d6`. [Iteration 02](cc-prompt-iteration02.md) separates
+the direct conditional transfer proof from NE-C14, a native macro
+binding identity prerequisite for later boundary proof. Refinement 01/5
+issued. All six CV rows stay open pending verified source.
+
 Current2026-11-08: Operator resolves H1 POLICY with protected intrinsics; Arc03
 owns actual source contract/facility/proof. I3 waits specifically accepted
 Arc03/S02, while I1 can be independent; no circular dependency. All6CV OPEN,

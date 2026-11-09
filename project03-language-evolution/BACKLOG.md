@@ -846,6 +846,22 @@ addresses the VALUE-IIFE guarded-irrefutable continuation needed by its already
 frozen fixture/oracle, alongside guard/tail child lowering. Do not conflate that
 finite result with this untested statement path or new async/abrupt semantics.
 
+#### NE-C14 — native macro expansion conflates binder occurrences
+
+**Observed 2026-11-09.** At production `d73601a5` with test freeze
+`7cc78d6`, the original I1 macro-introduced function passes native check
+and strict compile but generates an ordinary `kernel.function` call
+containing bare `if` and `return` calls. The strict child exits 1 with
+SyntaxError at 1:33. The macro protocol's default spans collide in the
+resolver's subtree-wide definition lookup.
+
+**Owner/re-entry.** Arc01 S04 owns occurrence identity before accepting
+its macro-introduced function boundary. Retain the
+[original baseline and exact source trace](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/artifacts/i1-baseline-disposition.md).
+I1's separate literal fixture proves direct transfers without resolving
+NE-C14. A later private resolver correction must preserve public binding
+and diagnostic locations and replay the unchanged original witness.
+
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 
 **Source-only observation,2026-11-07.** At source5408,
