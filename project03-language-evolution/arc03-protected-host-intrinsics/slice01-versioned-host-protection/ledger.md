@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+[Iteration10](cc-prompt-iteration10.md) assigns the observed Clippy
+repairs as the third pass beyond the normal five. At `629fb671` the
+focused gates passed and normal Make stopped at Clippy. All HC rows
+remain open pending final candidate and independent verification.
+
 [Iteration09](cc-prompt-iteration09.md) is the second bounded pass beyond
 the normal five. Exact sixth freeze `dd0360cb` retains the JS oracle
 repair and reveals one incomplete native object binding slot.

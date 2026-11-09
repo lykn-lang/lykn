@@ -1,5 +1,25 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## First v1 execution and bounded lint repair — 2026-11-09
+
+The exact seventh candidate `8223877e` passed static review. Native
+format check exited 1 with style changes in seven owned files. Actual
+format write exited 0 and the reviewed mechanical commit is `629fb671`.
+The first direct native launch exited 101 because the optional receipt
+directory was absent. The fresh retry precreated its own directory and
+passed all three parent tests, with the 15 predicate controls, 29 route
+rejections, four legal runtimes and typed dist effect proof. The
+private native selection passed 12. Fresh artifacts and all three
+public focused targets passed: the original nine rejections and four
+legal runs, ten macro tests and one separate policy test. All three
+canonical, embedded and fresh XDG materialized JS files agree.
+
+Normal Make at the same source exited 2 on eight `collapsible_if`
+diagnostics, before the full test suite. Existing gates and the first
+failed launch retain their original provenance. [Iteration10](cc-prompt-iteration10.md)
+assigns the exact let-chain changes under current Operator steering.
+No independent acceptance has been reached.
+
 ## Sixth-pass static return — 2026-11-09
 
 CC froze `dd0360cb96c6ec042947ae7a28cb55b0bf7d7506`, tree
