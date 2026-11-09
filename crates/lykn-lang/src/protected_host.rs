@@ -8,7 +8,7 @@ use std::collections::HashSet;
 
 use crate::ast::sexpr::SExpr;
 use crate::ast::surface::{Pattern, SurfaceForm};
-use crate::binding::{binding_names_in_pattern, bindings_introduced, BindingKind};
+use crate::binding::{bindings_introduced, BindingKind};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::codegen::names::to_js_identifier;
 use crate::reader::source_loc::Span;
@@ -104,9 +104,28 @@ fn scope_names(forms: &[SExpr], module: bool) -> HashSet<String> {
             _ => false,
         };
         if !declaration { continue; }
-        for binding in bindings_introduced(form) {
-            if matches!(binding.kind, BindingKind::Bind | BindingKind::ImportLocal) {
-                names.insert(to_js_identifier(&binding.name));
+        let raw_head = head.strip_prefix("kernel:").unwrap_or(head);
+        if matches!(raw_head, "const" | "let" | "var") {
+            if let Some(pattern) = form.as_list().and_then(|values| values.get(1)) {
+                kernel_pattern_names(pattern, &mut names);
+            }
+        } else if raw_head == "function" {
+            if let Some(name) = form.as_list().and_then(|values| values.get(1))
+                && name.as_atom().is_some()
+            {
+                kernel_pattern_names(name, &mut names);
+            }
+        } else if raw_head == "function*" {
+            if let Some(name) = form.as_list().and_then(|values| values.get(1))
+                && name.as_atom().is_some()
+            {
+                kernel_pattern_names(name, &mut names);
+            }
+        } else {
+            for binding in bindings_introduced(form) {
+                if matches!(binding.kind, BindingKind::Bind | BindingKind::ImportLocal) {
+                    names.insert(to_js_identifier(&binding.name));
+                }
             }
         }
     }
@@ -135,7 +154,9 @@ fn collect_var_hoists(forms: &[SExpr], names: &mut HashSet<String>) {
                 }
             }
         } else if head == "var" || head == "kernel:var" {
-            names.extend(bindings_introduced(form).into_iter().filter(|b| b.kind == BindingKind::Bind).map(|b| to_js_identifier(&b.name)));
+            if let Some(pattern) = args.first() {
+                kernel_pattern_names(pattern, names);
+            }
             for child in args.iter().skip(1) { collect_var_hoists(std::slice::from_ref(child), names); }
         } else {
             collect_var_hoists(args, names);
@@ -180,10 +201,64 @@ fn function_scope_names(body: &[SExpr], params: HashSet<String>) -> HashSet<Stri
 }
 
 fn kernel_param_names(params: &[SExpr]) -> HashSet<String> {
-    params.iter()
-        .flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Param))
-        .map(|binding| to_js_identifier(&binding.name))
-        .collect()
+    let mut names = HashSet::new();
+    for pattern in params {
+        kernel_pattern_names(pattern, &mut names);
+    }
+    names
+}
+
+/// Collect names from the structural binding slots accepted by the kernel
+/// pattern emitter. Property keys and default expressions are executable
+/// values, never binders.
+fn kernel_pattern_names(pattern: &SExpr, names: &mut HashSet<String>) {
+    fn add_atom(atom: &str, names: &mut HashSet<String>) {
+        if !atom.contains(':')
+            && !matches!(atom, "true" | "false" | "null" | "undefined" | "this" | "super")
+        {
+            names.insert(to_js_identifier(atom));
+        }
+    }
+
+    let Some(values) = pattern.as_list() else {
+        if let Some(atom) = pattern.as_atom() {
+            add_atom(atom, names);
+        }
+        return;
+    };
+    let Some(kind) = values.first().and_then(SExpr::as_atom) else { return };
+    let args = &values[1..];
+    match kind {
+        "default" | "rest" => {
+            if let Some(target) = args.first() {
+                kernel_pattern_names(target, names);
+            }
+        }
+        "alias" => {
+            if let Some(target) = args.get(1) {
+                kernel_pattern_names(target, names);
+            }
+        }
+        "array" => {
+            for child in args {
+                if child.as_atom() != Some("_") {
+                    kernel_pattern_names(child, names);
+                }
+            }
+        }
+        "object" => {
+            for member in args {
+                if member.as_list()
+                    .and_then(|values| values.first())
+                    .and_then(SExpr::as_atom) == Some("spread")
+                {
+                    continue;
+                }
+                kernel_pattern_names(member, names);
+            }
+        }
+        _ => {}
+    }
 }
 
 struct Walker {
@@ -332,6 +407,7 @@ impl Walker {
             },
             "alias" => {
                 if let Some(target) = args.get(1) { self.visit_kernel_pattern_defaults(target, dialect); }
+                if let Some(default) = args.get(2) { self.visit(default, dialect); }
             }
             _ => {}
         }
@@ -485,8 +561,16 @@ impl Walker {
         }
         if matches!(head, "for-of" | "for-in" | "for-await-of") {
             if let Some(iterable) = args.get(1) { self.visit(iterable, dialect); }
-            let names: HashSet<String> = bindings_introduced(expr)
-                .into_iter().map(|b| to_js_identifier(&b.name)).collect();
+            let names: HashSet<String> = if dialect == InputDialect::Kernel {
+                let mut names = HashSet::new();
+                if let Some(pattern) = args.first() {
+                    kernel_pattern_names(pattern, &mut names);
+                }
+                names
+            } else {
+                bindings_introduced(expr)
+                    .into_iter().map(|b| to_js_identifier(&b.name)).collect()
+            };
             self.scopes.push(names);
             if let Some(pattern) = args.first() { self.visit(pattern, dialect); }
             self.visit_lexical_body(args.get(2..).unwrap_or_default(), dialect);
@@ -652,7 +736,7 @@ impl Walker {
         let mut params = HashSet::new();
         if let Some(patterns) = parts.get(params_index).and_then(SExpr::as_list) {
             for pattern in patterns {
-                params.extend(binding_names_in_pattern(pattern, BindingKind::ClassMethodParam).into_iter().map(|b| to_js_identifier(&b.name)));
+                kernel_pattern_names(pattern, &mut params);
             }
         }
         let body = parts.get(body_index..).unwrap_or_default();
@@ -805,6 +889,25 @@ mod tests {
             "(class C () (m (Reflect (default x (++ Reflect))) (let Reflect 0) x))",
             InputDialect::Kernel,
         ).is_empty());
+    }
+
+    #[test]
+    fn kernel_pattern_scope_uses_emitted_binding_slots() {
+        for source in [
+            "(function f ((default Reflect 0)) (++ Reflect))",
+            "(function f ((rest Reflect)) (++ Reflect))",
+            "(function f ((object (alias field Reflect))) (++ Reflect))",
+        ] {
+            assert!(check(source, InputDialect::Kernel).is_empty(), "{source}");
+        }
+
+        let source = "(function f ((object (alias Reflect local))) (++ Reflect))";
+        let forms = read(source).expect("test source parses");
+        let target_span = forms[0].as_list().unwrap()[3].as_list().unwrap()[1].span();
+        let errors = validate_program(&forms, InputDialect::Kernel);
+        assert_eq!(errors.len(), 1);
+        assert_eq!(errors[0].message, "host-contract v1: write to protected slot Reflect");
+        assert_eq!(errors[0].span, target_span);
     }
 
     #[test]
