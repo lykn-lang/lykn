@@ -1,0 +1,6 @@
+Correct protected host proof boundaries
+
+Preserve dialect, lexical scope, delete targets, and exact member identity.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

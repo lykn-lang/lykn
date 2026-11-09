@@ -9,6 +9,16 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Consolidated correction04 authorized
+
+The Operator authorizes all seven recorded static repairs and the
+original S01 validation. [Iteration06](cc-prompt-iteration06.md)
+is the active correction from clean `cabfc621`. Same Luna6 High CC
+and Sol6.1 High CDC, Autonomous Mode and first-further-substantive-
+failure/real-gap stop. This dispatch is source refinement 04 of 5.
+Original frozen tests, prospective releases and independent review
+remain binding. Earlier unissued preflight holds remain history.
+
 ## Consolidated correction04 held before dispatch
 
 The Operator authorized all six recorded corrections. Preflight found
@@ -350,6 +360,11 @@ and their tests are explicitly allowed. Source commits exact paths/provided -F
 body/readback; CC raw only, CDC canonical prose/index after handoff.
 
 ## Assignment history
+
+- 2026-11-09 [iteration06](cc-prompt-iteration06.md), predecessor
+  [iteration05](cc-prompt-iteration05.md). Active consolidated
+  refinement04 for the seven source findings at cabfc621. Review and
+  any execution follow actual intake and immutable freeze.
 
 - 2026-11-08 iteration01 baseline return: one no-run0 and one direct native
   launch at e2f; unexpected W8 dependency phase triggered STOP before public/

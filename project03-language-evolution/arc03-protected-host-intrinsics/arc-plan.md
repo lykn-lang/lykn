@@ -9,6 +9,10 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+The Operator authorizes the [S01 consolidated correction](slice01-versioned-host-protection/cc-prompt-iteration06.md)
+and its original validation. Same models and stop rule. No subsequent
+slice or release action is authorized.
+
 S01's consolidated correction04 is held before dispatch on a separate
 [public path-identity defect](slice01-versioned-host-protection/cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09).
 The six authorized repairs and original gates remain pending.

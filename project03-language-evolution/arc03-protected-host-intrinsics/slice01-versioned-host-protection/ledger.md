@@ -1,5 +1,9 @@
 # Arc03 S01 host protection ledger
 
+[Iteration06](cc-prompt-iteration06.md) authorizes the consolidated
+seven-finding correction and the original gates. All HC rows remain
+open. Source refinement 04 of 5 is assigned, with no acceptance yet.
+
 The [consolidated correction04 hold](cdc-verification.md#consolidated-correction04-held-on-exact-path-identity--2026-11-09)
 records a separate literal computed-key false rejection. All six
 approved repairs stay pending. No source refinement or validation ran.
