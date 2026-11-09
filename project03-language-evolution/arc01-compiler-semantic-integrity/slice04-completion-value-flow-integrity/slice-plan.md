@@ -47,6 +47,13 @@ I1 retains both routes, branch behavior and genuine macro-bearing F2.
 Original macro-introduced F3 remains the prerequisite witness for later
 macro-boundary proof. No CV row has been accepted.
 
+The [literal replay](artifacts/i1-baseline-disposition.md#literal-function-replay-at-1118b8fd)
+confirmed public dangling else and exposed a separate native early
+validation discrepancy at the genuine explicit function wrapper.
+[Iteration 03](cc-prompt-iteration03.md) adds its existing function role
+before stripping. Source refinement 02/5. The original I1 implementation,
+same literal oracle and all remaining verification obligations continue.
+
 ## Earlier dependency status
 
 [Arc03 S01 source protection](../../arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09)

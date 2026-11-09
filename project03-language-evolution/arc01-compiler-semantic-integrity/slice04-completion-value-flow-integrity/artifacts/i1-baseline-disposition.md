@@ -46,3 +46,23 @@ must identify binder occurrences privately, retain authentic/unknown
 locations for diagnostics, and test macro-generated bindings and equal-name
 references, real form heads and ordinary bound calls. No new architecture
 choice or resolver implementation is authorized by the I1 correction.
+
+## Literal function replay at `1118b8fd`
+
+This distinct clean test-only freeze leaves original F3 byte-identical.
+The public literal fixture's child exits 0, with empty stderr and exact
+stdout `[7,9,[0,2,901],4]\n`. The parent again has four passing and three
+failing steps. Native exact selection exits 101, zero pass, one fail,
+seven filtered. Native `check` and strict compile both exit 1 at source
+2:3, `if in expression position requires an else branch`. There is no
+generated native module and no native child for this literal condition.
+The planned native dangling-else prediction did not occur. Raw streams
+and per-observation records remain in `/private/tmp/lykn-d736-release-cdc.Gdv7dxje/i1-literal-baseline/`.
+
+The native `walk_no_else_if_expression` sees resolved raw source before
+strict classification strips the explicit `kernel:` prefix. Its bare
+`function` arm forwards the current use, whereas raw `kernel:function`
+falls through to the ordinary Value-call default. This is a separate
+operator-local validation adapter on the literal path. Iteration 03
+adds the genuine explicit wrapper to the existing function arm without
+changing the fixture, other role rules or observed baseline.

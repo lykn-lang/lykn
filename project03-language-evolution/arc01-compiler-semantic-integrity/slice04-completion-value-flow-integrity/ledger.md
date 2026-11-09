@@ -12,6 +12,11 @@ the direct conditional transfer proof from NE-C14, a native macro
 binding identity prerequisite for later boundary proof. Refinement 01/5
 issued. All six CV rows stay open pending verified source.
 
+[Literal replay](artifacts/i1-baseline-disposition.md#literal-function-replay-at-1118b8fd)
+preserved at test-only `1118b8fd`; native validation stopped before
+generation, public dangling-else trace reproduced. [Iteration 03](cc-prompt-iteration03.md)
+adds its explicit-wrapper role adapter (refinement 02/5), with no oracle change.
+
 Current2026-11-08: Operator resolves H1 POLICY with protected intrinsics; Arc03
 owns actual source contract/facility/proof. I3 waits specifically accepted
 Arc03/S02, while I1 can be independent; no circular dependency. All6CV OPEN,
