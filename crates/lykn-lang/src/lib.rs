@@ -9,4 +9,5 @@ pub mod error;
 pub mod expander;
 pub mod reader;
 pub mod resolver;
+mod protected_host;
 mod semantic_roles;

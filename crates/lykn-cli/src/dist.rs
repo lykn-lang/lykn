@@ -232,15 +232,10 @@ fn compile_lykn_sources(
                 kernel_only: false,
             };
             let classified = lykn_lang::classifier::classify_with_options(&resolved, classify_opts)
-                .map_err(|diags| {
-                    let msg = diags
-                        .iter()
-                        .map(|d| format!("{d}"))
-                        .collect::<Vec<_>>()
-                        .join("\n");
-                    DistError::Io {
+                .map_err(|mut diags| {
+                    DistError::Language {
                         path: path.clone(),
-                        source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
+                        source: lykn_lang::error::LyknError::Classify(diags.remove(0)),
                     }
                 })?;
             let analysis_result = lykn_lang::analysis::analyze(&classified);

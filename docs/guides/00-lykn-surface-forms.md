@@ -8,6 +8,9 @@ output, lykn/surface syntax throughout.
 
 All examples verified by `lykn test --docs`.
 
+The compiler's protected host write rules are documented in the
+[Protected host contract v1](../host-contract.md).
+
 ---
 
 ## How to Read This Guide

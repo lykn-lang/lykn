@@ -5,7 +5,8 @@
  * quote, sugar forms (cons/list/car/cdr), macros, and as patterns.
  */
 
-import { compile } from './compiler.js';
+import { compileExpr } from './compiler.js';
+import { generate } from 'astring';
 import { read } from './reader.js';
 import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm } from './classifier.js';
@@ -543,7 +544,11 @@ function compileMacroBody(_paramNames, paramPattern, bodyForms) {
   const fnForm = array(sym('lambda'), array(...jsParams), ...bodyStatements);
 
   // Compile to JS using the compiler
-  const jsCode = compile([fnForm]);
+  const jsCode = generate({
+    type: 'Program',
+    body: [{ type: 'ExpressionStatement', expression: compileExpr(fnForm) }],
+    sourceType: 'module',
+  }, { indent: '  ' });
   return `return ${jsCode.trim()};`;
 }
 

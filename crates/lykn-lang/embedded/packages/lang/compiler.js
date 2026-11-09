@@ -4,6 +4,7 @@
 
 import { generate } from 'astring';
 import { parseIcu, collectSlotNames, IcuParseError } from './icu-parser.js';
+import { validateProtectedHost } from './protected-host.js';
 
 // DD-61 §A6 — the resolution-aware dispatch accessor (JS twin of Rust's
 // `SExpr::as_form_head`). Returns a head atom's name ONLY when the atom is
@@ -2268,6 +2269,7 @@ function compileMethodDef(node, kind, isStatic) {
 
 // Compile an array of top-level s-expressions to a JS program string
 export function compile(exprs) {
+  validateProtectedHost(exprs, { toJsIdentifier, formHead });
   const program = {
     type: 'Program',
     body: exprs.map(e => toStatement(compileExpr(e))),

@@ -41,6 +41,12 @@ use format::JsWriter;
 /// Each top-level form is emitted as a statement. The resulting string is
 /// ready to be written to a `.js` file.
 pub fn emit_module_js(forms: &[SExpr]) -> Result<String, LyknError> {
+    if let Some(diagnostic) = crate::protected_host::validate_program(
+        forms,
+        crate::protected_host::InputDialect::Kernel,
+    ).into_iter().next() {
+        return Err(LyknError::Codegen(diagnostic));
+    }
     let mut w = JsWriter::new();
     for form in forms {
         emit_statement(&mut w, form)?;

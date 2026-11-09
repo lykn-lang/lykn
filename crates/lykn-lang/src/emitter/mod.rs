@@ -35,6 +35,12 @@ pub fn emit(
     for form in forms {
         result.extend(emit_form(form, &mut ctx, registry)?);
     }
+    if let Some(diagnostic) = crate::protected_host::validate_program(
+        &result,
+        crate::protected_host::InputDialect::Kernel,
+    ).into_iter().next() {
+        return Err(crate::error::LyknError::Codegen(diagnostic));
+    }
     Ok(result)
 }
 

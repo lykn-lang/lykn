@@ -819,7 +819,7 @@ fn legal_protected_host_controls_run_as_separate_programs() {
         }
 
         let deno =
-            std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "/opt/homebrew/bin/deno".into());
+            std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
         let runtime = execute_recorded(
             &format!("{name}-runtime"),
             &source_path,

@@ -20,6 +20,8 @@ lykn is a Lisp-flavoured JavaScript — s-expression syntax compiling to clean, 
 
 **Toolchain**: Deno (not Node.js), `deno lint` + `deno fmt` on compiled JS output, ESM-only modules. Lykn workflows do not require a user-managed npm install; the CLI macro evaluator uses its compiler-owned, frozen dependency lock.
 
+For compiler-enforced protected host writes, see the [Protected host contract v1](../../docs/host-contract.md).
+
 **Strength indicators** used throughout:
 
 | Indicator | Meaning | Action |

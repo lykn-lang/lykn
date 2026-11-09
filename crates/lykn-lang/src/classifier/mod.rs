@@ -45,7 +45,13 @@ pub fn classify_with_options(
     }
 
     if errors.is_empty() {
-        Ok(results)
+        let dialect = if opts.kernel_only {
+            crate::protected_host::InputDialect::Kernel
+        } else {
+            crate::protected_host::InputDialect::Surface
+        };
+        let policy = crate::protected_host::validate_program(forms, dialect);
+        if policy.is_empty() { Ok(results) } else { Err(policy) }
     } else {
         Err(errors)
     }

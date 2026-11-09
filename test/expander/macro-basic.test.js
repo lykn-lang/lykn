@@ -99,3 +99,17 @@ Deno.test("macro: direct numeric literal through public compiler", () => {
     "0;",
   );
 });
+
+Deno.test("macro: dormant protected-host body compiles without invocation", () => {
+  resetPublicMacros();
+  resetPublicGensym();
+  try {
+    assertEquals(
+      publicLykn("(macro dormant-host-write () (++ Reflect)) 0").trim(),
+      "0;",
+    );
+  } finally {
+    resetPublicMacros();
+    resetPublicGensym();
+  }
+});
