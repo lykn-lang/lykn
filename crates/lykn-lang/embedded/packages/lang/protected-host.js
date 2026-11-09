@@ -1,124 +1,422 @@
 // Versioned, whole-unit proof for writes to protected host intrinsics.
 // Unknown roots and computed keys deliberately remain unproved.
-import { bindingsIntroduced } from './binding.js';
+import { bindingNamesInPattern, bindingsIntroduced } from './binding.js';
 
-function normalizedPath(node, locals, toJsIdentifier) {
+const WRITES = new Set([
+  'set!', 'set-symbol!', 'assign', '++', '--', 'delete', '=', '+=', '-=', '*=',
+  '/=', '%=', '**=', '<<=', '>>=', '>>>=', '&=', '|=', '^=', '&&=', '||=', '??=',
+]);
+const COMPOUND = new Set([
+  '+=', '-=', '*=', '/=', '%=', '**=', '<<=', '>>=', '>>>=', '&=', '|=', '^=',
+  '&&=', '||=', '??=',
+]);
+
+function pathIs(path, wanted) {
+  return path.length === wanted.length && path.every((part, i) => part === wanted[i]);
+}
+
+function normalizedPath(node, locals, toJsIdentifier, formHead) {
   if (node?.type === 'atom') {
     const parts = node.value.split(':').map(toJsIdentifier);
     if (locals.has(parts[0])) return null;
-    return ['Reflect', 'globalThis'].includes(parts[0]) ? parts : null;
+    return parts[0] === 'Reflect' || parts[0] === 'globalThis' ? parts : null;
   }
-  if (node?.type === 'list' && node.values[0]?.type === 'atom' && node.values[0].value === 'get' && node.values.length === 3) {
-    const path = normalizedPath(node.values[1], locals, toJsIdentifier);
+  if (node?.type === 'list' && node.values.length === 3 && formHead(node.values[0]) === 'get') {
+    const base = normalizedPath(node.values[1], locals, toJsIdentifier, formHead);
     const key = node.values[2]?.type === 'string' ? node.values[2].value : null;
-    return path && key !== null ? [...path, key] : null;
+    return base && key !== null ? [...base, key] : null;
   }
   return null;
 }
 
-/** Validate one complete expanded unit before compiler generation. */
-export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
-  let invalidatesAliases = false;
-  const writes = [];
-  const recordTarget = (target, locals, toJsIdentifier, visit) => {
-    if (target?.type === 'list' && ['array', 'object', 'rest', 'default'].includes(target.values[0]?.value)) {
-      const kind = target.values[0].value;
-      if (kind === 'default') {
-        if (target.values[1]) recordTarget(target.values[1], locals, toJsIdentifier, visit);
-        if (target.values[2]) visit(target.values[2], locals);
-      } else {
-        for (const child of target.values.slice(1)) {
-          if (kind === 'object' && child?.type === 'list') {
-            for (const value of child.values.slice(1)) recordTarget(value, locals, toJsIdentifier, visit);
-          } else recordTarget(child, locals, toJsIdentifier, visit);
-        }
-      }
-      return;
+function addPatternNames(pattern, names, toJsIdentifier) {
+  if (pattern?.type === 'atom') {
+    if (!['_', 'true', 'false', 'null', 'undefined'].includes(pattern.value)) {
+      for (const binding of bindingNamesInPattern(pattern, 'param')) names.add(toJsIdentifier(binding.name));
     }
-    writes.push({ path: normalizedPath(target, locals, toJsIdentifier), span: target?.span });
+    return;
+  }
+  if (pattern?.type !== 'list' || pattern.values[0]?.type !== 'atom') return;
+  const [head, ...parts] = pattern.values;
+  if (head.value === 'array') {
+    for (const part of parts) addPatternNames(part, names, toJsIdentifier);
+  } else if (head.value === 'object') {
+    for (const part of parts) {
+      if (part.type === 'atom') {
+        addPatternNames(part, names, toJsIdentifier);
+      } else if (part.type === 'list') {
+        const kind = part.values[0]?.value;
+        if (kind === 'rest') addPatternNames(part.values[1], names, toJsIdentifier);
+        else if (kind === 'default') {
+          if (part.values[1]?.type === 'atom') names.add(toJsIdentifier(part.values[1].value));
+        } else if (kind === 'alias') {
+          addPatternNames(part.values[2], names, toJsIdentifier);
+        } else addPatternNames(part, names, toJsIdentifier);
+      }
+    }
+  } else if (head.value === 'default') {
+    addPatternNames(parts[0], names, toJsIdentifier);
+  } else if (head.value === 'rest') {
+    addPatternNames(parts[0], names, toJsIdentifier);
+  } else {
+    // Use the shared binder for any other supported pattern form.
+    for (const binding of bindingNamesInPattern(pattern, 'param')) names.add(toJsIdentifier(binding.name));
+  }
+}
+
+function patternNames(patterns, toJsIdentifier) {
+  const names = new Set();
+  for (const pattern of patterns) addPatternNames(pattern, names, toJsIdentifier);
+  return names;
+}
+
+function visitPatternDefaults(pattern, visit) {
+  if (pattern?.type !== 'list') return;
+  const [head, ...parts] = pattern.values;
+  if (head?.type !== 'atom') return;
+  if (head.value === 'default') {
+    if (parts[1]) visit(parts[1]);
+    return;
+  }
+  if (head.value === 'rest') {
+    visitPatternDefaults(parts[0], visit);
+  } else if (head.value === 'array') {
+    for (const part of parts) visitPatternDefaults(part, visit);
+  } else if (head.value === 'object') {
+    for (const part of parts) {
+      if (part?.type !== 'list') continue;
+      const kind = part.values[0]?.value;
+      if (kind === 'rest') visitPatternDefaults(part.values[1], visit);
+      else if (kind === 'default') {
+        if (part.values[2]) visit(part.values[2]);
+      } else if (kind === 'alias') {
+        visitPatternDefaults(part.values[2], visit);
+        if (part.values[3]) visit(part.values[3]);
+      } else visitPatternDefaults(part, visit);
+    }
+  }
+}
+
+function isVarDeclaration(node, formHead) {
+  const head = node?.type === 'list' ? formHead(node.values[0]) : null;
+  return head === 'var' || head === 'kernel:var';
+}
+
+function isFunctionBoundary(node, formHead) {
+  if (node?.type !== 'list') return false;
+  return ['function', 'function*', 'fn', 'lambda', 'genfn', 'func', 'genfunc', '=>', 'class', 'class-expr']
+    .includes(formHead(node.values[0]));
+}
+
+function collectVarNames(forms, names, toJsIdentifier, formHead) {
+  for (const form of forms) {
+    if (form?.type !== 'list') continue;
+    const head = formHead(form.values[0]);
+    if (['quote', 'quasiquote', 'syntax-quote'].includes(head) || isFunctionBoundary(form, formHead)) continue;
+    if (isVarDeclaration(form, formHead)) {
+      for (const binding of bindingsIntroduced(form)) {
+        if (binding.kind === 'bind') names.add(toJsIdentifier(binding.name));
+      }
+      for (const child of form.values.slice(2)) collectVarNames([child], names, toJsIdentifier, formHead);
+    } else {
+      collectVarNames(form.values.slice(1), names, toJsIdentifier, formHead);
+    }
+  }
+}
+
+function directScopeNames(forms, toJsIdentifier, formHead, moduleScope = false) {
+  const names = new Set();
+  for (const form of forms) {
+    if (form?.type !== 'list') continue;
+    const head = formHead(form.values[0]);
+    if (head === null) continue;
+    if (!moduleScope && (head === 'var' || head === 'kernel:var')) continue;
+    for (const binding of bindingsIntroduced(form)) {
+      if (binding.kind === 'bind' || binding.kind === 'import-local') {
+        names.add(toJsIdentifier(binding.name));
+      }
+    }
+  }
+  if (moduleScope) collectVarNames(forms, names, toJsIdentifier, formHead);
+  return names;
+}
+
+function functionScope(body, params, inherited, toJsIdentifier, formHead) {
+  const names = directScopeNames(body, toJsIdentifier, formHead);
+  for (const name of params) names.add(name);
+  collectVarNames(body, names, toJsIdentifier, formHead);
+  for (const name of inherited) names.add(name);
+  return names;
+}
+
+function matchPatternNames(pattern, names, toJsIdentifier) {
+  if (pattern?.type === 'atom') {
+    const name = pattern.value;
+    if (!['_', 'true', 'false', 'null', 'undefined'].includes(name) && !/^[A-Z]/.test(name)) {
+      names.add(toJsIdentifier(name));
+    }
+    return;
+  }
+  if (pattern?.type !== 'list') return;
+  const [head, ...parts] = pattern.values;
+  if (head?.type !== 'atom') return;
+  if (head.value === 'obj') {
+    for (let i = 1; i < parts.length; i += 2) matchPatternNames(parts[i], names, toJsIdentifier);
+  } else if (/^[A-Z]/.test(head.value)) {
+    for (const part of parts) matchPatternNames(part, names, toJsIdentifier);
+  }
+}
+
+/** Validate one complete expanded/kernel unit before compiler generation. */
+export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
+  const writes = [];
+  const visitBody = (forms, scopes, dialect) => {
+    const names = directScopeNames(forms, toJsIdentifier, formHead);
+    visitMany(forms, [...scopes.slice(0, -1), new Set([...scopes.at(-1), ...names])], dialect, visit);
   };
-  const visit = (node, locals, dialect = 'surface') => {
+  const visit = (node, scopes, dialect = 'kernel') => {
     if (node?.type !== 'list') return;
     const [headNode, ...args] = node.values;
     const head = formHead(headNode);
-    if (head === 'quote' || head === 'quasiquote' || head === 'syntax-quote') return;
-    const childLocals = new Set(locals);
+    if (['quote', 'quasiquote', 'syntax-quote'].includes(head)) return;
+    const locals = scopes[scopes.length - 1];
+
     if (head === 'block') {
-      for (const form of args) {
-        for (const site of bindingsIntroduced(form)) {
-          if (site.kind === 'bind' || site.kind === 'import-local') childLocals.add(toJsIdentifier(site.name));
-        }
-      }
-    }
-    if (['lambda', 'fn', 'genfn', 'function'].includes(head)) {
-      for (const site of bindingsIntroduced(node)) {
-        if (site.kind !== 'label') childLocals.add(toJsIdentifier(site.name));
-      }
-      for (const arg of args) visit(arg, childLocals, dialect);
+      visitBody(args, scopes, dialect);
       return;
     }
-    if (['for-of', 'for-in', 'for-await-of'].includes(head)) {
-      if (args[1]) visit(args[1], childLocals, dialect);
-      const loopLocals = new Set(childLocals);
-      for (const site of bindingsIntroduced(node)) loopLocals.add(toJsIdentifier(site.name));
-      for (const arg of args.slice(2)) visit(arg, loopLocals, dialect);
+    if (head === 'function' || head === 'function*') {
+      let paramsIndex;
+      let bodyIndex;
+      if (head === 'function') {
+        paramsIndex = 1;
+        bodyIndex = 2;
+      } else if (args[0]?.type === 'list') {
+        paramsIndex = 0;
+        bodyIndex = 1;
+      } else {
+        paramsIndex = 1;
+        bodyIndex = 2;
+      }
+      const params = args[paramsIndex]?.type === 'list' ? args[paramsIndex].values : [];
+      const paramNames = patternNames(params, toJsIdentifier);
+      const body = args.slice(bodyIndex);
+      const nextScope = functionScope(body, paramNames, locals, toJsIdentifier, formHead);
+      const next = [...scopes.slice(0, -1), nextScope];
+      for (const param of params) visitPatternDefaults(param, (value) => visit(value, next, dialect));
+      for (const form of body) visit(form, next, dialect);
+      return;
+    }
+    if (head === 'lambda' || head === 'fn' || head === 'genfn' || head === '=>') {
+      const params = args[0]?.type === 'list' ? args[0].values : [];
+      const paramNames = patternNames(params, toJsIdentifier);
+      const body = args.slice(1);
+      const nextScope = functionScope(body, paramNames, locals, toJsIdentifier, formHead);
+      const next = [...scopes.slice(0, -1), nextScope];
+      for (const param of params) visitPatternDefaults(param, (value) => visit(value, next, dialect));
+      for (const form of body) visit(form, next, dialect);
+      return;
+    }
+    if (head === 'func' || head === 'genfunc') {
+      // Public source has already been expanded to function/function* forms.
+      // If one remains, traverse executable children without inventing a scope.
+      for (const arg of args) visit(arg, scopes, dialect);
+      return;
+    }
+    if (head === 'class' || head === 'class-expr') {
+      const classNames = new Set(locals);
+      const namedClass = head === 'class';
+      if (namedClass && args[0]?.type === 'atom') classNames.add(toJsIdentifier(args[0].value));
+      const baseIndex = namedClass ? 1 : 0;
+      const memberIndex = namedClass ? 2 : 1;
+      const next = [...scopes.slice(0, -1), classNames];
+      for (const base of args[baseIndex]?.values ?? []) visit(base, next, dialect);
+      for (const member of args.slice(memberIndex)) {
+        const visitMember = (entry) => {
+          if (entry?.type !== 'list' || entry.values.length === 0) return;
+          const memberHead = entry.values[0]?.value;
+          if (memberHead === 'static' || memberHead === 'async') {
+            if (entry.values[1]) visitMember(entry.values[1]);
+            return;
+          }
+          if (memberHead === 'field') {
+            if (entry.values[2]) visit(entry.values[2], next, dialect);
+            return;
+          }
+          const accessor = memberHead === 'get' || memberHead === 'set';
+          const paramsIndex = accessor ? 2 : 1;
+          const bodyIndex = accessor ? 3 : 2;
+          const params = entry.values[paramsIndex]?.type === 'list' ? entry.values[paramsIndex].values : [];
+          const methodLocals = patternNames(params, toJsIdentifier);
+          for (const name of classNames) methodLocals.add(name);
+          const body = entry.values.slice(bodyIndex);
+          const methodScope = functionScope(body, methodLocals, classNames, toJsIdentifier, formHead);
+          const methodScopes = [...next.slice(0, -1), methodScope];
+          for (const param of params) visitPatternDefaults(param, (value) => visit(value, methodScopes, dialect));
+          for (const form of body) visit(form, methodScopes, dialect);
+        };
+        visitMember(member);
+      }
+      return;
+    }
+    if (head === 'switch') {
+      if (args[0]) visit(args[0], scopes, dialect);
+      const cases = args.slice(1).filter((clause) => clause?.type === 'list');
+      const forms = cases.flatMap((clause) => clause.values.slice(1));
+      const caseLocals = directScopeNames(forms, toJsIdentifier, formHead);
+      const next = [...scopes.slice(0, -1), new Set([...locals, ...caseLocals])];
+      for (const clause of cases) {
+        const test = clause.values[0];
+        if (test?.value !== 'default') visit(test, next, dialect);
+        for (const form of clause.values.slice(1)) visit(form, next, dialect);
+      }
+      return;
+    }
+    if (head === 'for-of' || head === 'for-in' || head === 'for-await-of') {
+      if (args[1]) visit(args[1], scopes, dialect);
+      const loopLocals = patternNames(args[0]?.type === 'list' ? [args[0]] : [args[0]], toJsIdentifier);
+      const next = [...scopes.slice(0, -1), new Set([...locals, ...loopLocals])];
+      if (args[0]) visit(args[0], next, dialect);
+      visitBody(args.slice(2), next, dialect);
+      return;
+    }
+    if (head === 'for') {
+      const init = args[0];
+      const loopLocals = directScopeNames(init ? [init] : [], toJsIdentifier, formHead);
+      const next = [...scopes.slice(0, -1), new Set([...locals, ...loopLocals])];
+      for (const arg of args.slice(0, 3)) visit(arg, next, dialect);
+      visitBody(args.slice(3), next, dialect);
+      return;
+    }
+    if (head === 'while' || head === 'do-while') {
+      if (args[0]) visit(args[0], scopes, dialect);
+      visitBody(args.slice(1), scopes, dialect);
+      return;
+    }
+    if (head === 'try') {
+      const body = [];
+      for (const arg of args) {
+        const clauseHead = arg?.type === 'list' ? formHead(arg.values[0]) : null;
+        if (clauseHead === 'catch') visit(arg, scopes, dialect);
+        else if (clauseHead === 'finally') visitBody(arg.values.slice(1), scopes, dialect);
+        else body.push(arg);
+      }
+      visitBody(body, scopes, dialect);
+      return;
+    }
+    if (head === 'finally') {
+      visitBody(args, scopes, dialect);
       return;
     }
     if (head === 'catch') {
-      const catchLocals = new Set(childLocals);
-      for (const site of bindingsIntroduced(node)) catchLocals.add(toJsIdentifier(site.name));
-      for (const arg of args.slice(1)) visit(arg, catchLocals, dialect);
+      const catchNames = patternNames(args[0]?.type === 'list' ? [args[0]] : [args[0]], toJsIdentifier);
+      const next = [...scopes.slice(0, -1), new Set([...locals, ...catchNames])];
+      for (const arg of args.slice(1)) visit(arg, next, dialect);
       return;
     }
-    if (head === 'class') {
-      const classLocals = new Set(childLocals);
-      if (args[0]?.type === 'atom') classLocals.add(toJsIdentifier(args[0].value));
-      for (const member of args.slice(2)) {
-        if (member?.type !== 'list') continue;
-        const methodLocals = new Set(classLocals);
-        for (const param of member.values[1]?.values ?? []) {
-          if (param.type === 'atom') methodLocals.add(toJsIdentifier(param.value));
+    if (head === 'if-let' || head === 'when-let') {
+      const pair = args[0];
+      if (pair?.type === 'list') {
+        const pattern = pair.values[0];
+        const scrutinee = pair.values[1];
+        const names = new Set();
+        matchPatternNames(pattern, names, toJsIdentifier);
+        if (scrutinee) visit(scrutinee, scopes, dialect);
+        const thenScope = [...scopes.slice(0, -1), new Set([...locals, ...names])];
+        if (head === 'if-let') {
+          if (args[1]) visit(args[1], thenScope, dialect);
+          if (args[2]) visit(args[2], scopes, dialect);
+        } else {
+          for (const form of args.slice(1)) visit(form, thenScope, dialect);
         }
-        if (member.values[1]) visit(member.values[1], methodLocals, dialect);
-        for (const body of member.values.slice(2)) visit(body, methodLocals, dialect);
       }
       return;
     }
-    const opDialect = head?.startsWith('kernel:') ? 'kernel' : dialect;
-    const op = head?.startsWith('kernel:') ? head.slice(7) : head;
-    if (op === 'set-symbol!' && args[0] && args[1]) {
-      const base = normalizedPath(args[0], childLocals, toJsIdentifier);
-      const key = args[1]?.type === 'string' ? args[1].value : null;
+    if (head === 'match') {
+      if (args[0]) visit(args[0], scopes, dialect);
+      for (const clause of args.slice(1)) {
+        if (clause?.type !== 'list') continue;
+        const names = new Set();
+        matchPatternNames(clause.values[0], names, toJsIdentifier);
+        const next = [...scopes.slice(0, -1), new Set([...locals, ...names])];
+        for (const form of clause.values.slice(1)) visit(form, next, dialect);
+      }
+      return;
+    }
+
+    const operationDialect = head?.startsWith('kernel:') ? 'kernel' : dialect;
+    const operation = head?.startsWith('kernel:') ? head.slice(7) : head;
+    const addWrite = (target, span = target?.span) => {
+      writes.push({ path: normalizedPath(target, locals, toJsIdentifier, formHead), span });
+    };
+    const addPatternWrites = (target) => {
+      if (target?.type === 'list') {
+        const [patternHead, ...parts] = target.values;
+        if (['array', 'object'].includes(patternHead?.value)) {
+          for (const part of parts) {
+            if (patternHead.value === 'object' && part?.type === 'list') {
+              const kind = part.values[0]?.value;
+              if (kind === 'alias') addPatternWrites(part.values[2]);
+              else if (kind === 'default') addWrite(part.values[1]);
+              else if (kind === 'rest') addPatternWrites(part.values[1]);
+              else for (const child of part.values.slice(1)) addPatternWrites(child);
+            } else addPatternWrites(part);
+          }
+          return;
+        }
+        if (patternHead?.value === 'rest') { addPatternWrites(parts[0]); return; }
+        if (patternHead?.value === 'default') {
+          addPatternWrites(parts[0]);
+          if (parts[1]) visit(parts[1], scopes, dialect);
+          return;
+        }
+      }
+      addWrite(target);
+    };
+
+    if (operation === 'set-symbol!' && args[0] && args[1]) {
+      const base = normalizedPath(args[0], locals, toJsIdentifier, formHead);
+      const key = args[1].type === 'string' ? args[1].value : null;
       writes.push({ path: base && key !== null ? [...base, key] : null, span: args[0].span });
-    } else if (['set!', 'assign', '++', '--', '+=', '-=', '*=', '/=', '%='].includes(op)) {
-      if (args[0]) recordTarget(args[0], childLocals, toJsIdentifier, (expr, scope) => visit(expr, scope, opDialect));
-    } else if (op === '=' && opDialect === 'kernel' && args[0]) {
-      recordTarget(args[0], childLocals, toJsIdentifier, (expr, scope) => visit(expr, scope, opDialect));
+    } else if (WRITES.has(operation) && operation !== 'delete' && operation !== '=' && !COMPOUND.has(operation)) {
+      if (args[0]) addPatternWrites(args[0]);
+    } else if (COMPOUND.has(operation) && args[0]) {
+      addPatternWrites(args[0]);
+    } else if (operation === '=' && operationDialect === 'kernel' && args[0]) {
+      addPatternWrites(args[0]);
+    } else if (operation === 'delete' && operationDialect === 'kernel' && args[0]) {
+      addWrite(args[0]);
     }
-    for (const arg of args) visit(arg, childLocals, opDialect);
+    // For explicit kernel: forms, only the selected operator changes dialect;
+    // all unprefixed children keep their surrounding interpretation.
+    for (const arg of args) visit(arg, scopes, dialect);
   };
-  const moduleLocals = new Set();
-  for (const form of exprs) {
-    for (const site of bindingsIntroduced(form)) {
-      if (site.kind === 'bind' || site.kind === 'import-local') moduleLocals.add(toJsIdentifier(site.name));
+
+  const moduleNames = directScopeNames(exprs, toJsIdentifier, formHead, true);
+  visitMany(exprs, [moduleNames], 'kernel', visit);
+
+  let invalidatesAliases = false;
+  for (const write of writes) {
+    if (pathIs(write.path ?? [], ['globalThis']) || pathIs(write.path ?? [], ['globalThis', 'globalThis'])) {
+      invalidatesAliases = true;
     }
   }
-  for (const expr of exprs) visit(expr, moduleLocals);
-  // Any identifiable write to the globalThis binding invalidates every alias
-  // proof in this unit, independent of source order.
   for (const write of writes) {
-    if (write.path?.join('.') === 'globalThis' || write.path?.join('.') === 'globalThis.globalThis') invalidatesAliases = true;
-  }
-  for (const write of writes) {
-    if (!write.path) continue;
-    const path = write.path.join('.');
-    const protectedSlot = path === 'Reflect' || path === 'Reflect.apply'
-      || (!invalidatesAliases && (path === 'globalThis.Reflect' || path === 'globalThis.Reflect.apply'));
-    if (protectedSlot) {
-      const slot = path.endsWith('.apply') ? 'Reflect.apply' : path.endsWith('Reflect') ? 'Reflect' : path;
+    const path = write.path;
+    if (!path) continue;
+    const directReflect = pathIs(path, ['Reflect']);
+    const directApply = pathIs(path, ['Reflect', 'apply']);
+    const aliasReflect = pathIs(path, ['globalThis', 'Reflect']);
+    const aliasApply = pathIs(path, ['globalThis', 'Reflect', 'apply']);
+    if (directReflect || directApply || (!invalidatesAliases && (aliasReflect || aliasApply))) {
+      const slot = directApply || aliasApply ? 'Reflect.apply' : 'Reflect';
       const error = new Error(`host-contract v1: write to protected slot ${slot}`);
       if (write.span) error.span = write.span;
       throw error;
     }
   }
+}
+
+function visitMany(forms, scopes, dialect, visit) {
+  for (const form of forms) visit(form, scopes, dialect);
 }

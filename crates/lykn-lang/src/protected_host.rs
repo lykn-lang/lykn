@@ -18,7 +18,6 @@ pub(crate) enum InputDialect {
     Surface,
     Kernel,
 }
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum IntrinsicId {
     ReflectApply,
@@ -49,7 +48,7 @@ struct WriteSite {
 /// `globalThis` disables alias-based proofs throughout the unit, as the
 /// language does not attempt flow-sensitive alias analysis.
 pub(crate) fn validate_program(forms: &[SExpr], dialect: InputDialect) -> Vec<Diagnostic> {
-    let names = direct_scope_names(forms);
+    let names = scope_names(forms, true);
     let mut walker = Walker {
         scopes: vec![names],
         sites: Vec::new(),
@@ -65,17 +64,14 @@ pub(crate) fn validate_program(forms: &[SExpr], dialect: InputDialect) -> Vec<Di
             let RootProof::GlobalKnown(path) = site.proof else {
                 return None;
             };
-            if path == ["Reflect", "apply"]
-                || (path == ["globalThis", "Reflect", "apply"]
-                    && !walker.invalidates_aliases)
-                || path == ["Reflect"]
-                || (path == ["globalThis", "Reflect"] && !walker.invalidates_aliases)
-            {
-                let slot = if path.ends_with(&["apply".to_owned()]) {
+            let direct_apply = is_path(&path, &["Reflect", "apply"]);
+            let direct_reflect = is_path(&path, &["Reflect"]);
+            let alias_apply = is_path(&path, &["globalThis", "Reflect", "apply"]);
+            let alias_reflect = is_path(&path, &["globalThis", "Reflect"]);
+            if direct_apply || direct_reflect || ((!walker.invalidates_aliases) && (alias_apply || alias_reflect)) {
+                let slot = if direct_apply || alias_apply {
                     IntrinsicId::ReflectApply.slot()
-                } else {
-                    "Reflect"
-                };
+                } else { "Reflect" };
                 Some(Diagnostic {
                     severity: Severity::Error,
                     message: format!("host-contract v1: write to protected slot {slot}"),
@@ -89,15 +85,68 @@ pub(crate) fn validate_program(forms: &[SExpr], dialect: InputDialect) -> Vec<Di
         .collect()
 }
 
-fn direct_scope_names(forms: &[SExpr]) -> HashSet<String> {
+fn is_path(path: &[String], wanted: &[&str]) -> bool {
+    path.len() == wanted.len() && path.iter().zip(wanted).all(|(got, want)| got == want)
+}
+
+fn head_and_args(form: &SExpr) -> Option<(&str, &[SExpr])> {
+    let values = form.as_list()?;
+    let head = values.first()?.as_form_head()?;
+    Some((head, &values[1..]))
+}
+
+fn scope_names(forms: &[SExpr], module: bool) -> HashSet<String> {
     let mut names = HashSet::new();
     for form in forms {
+        let Some((head, _)) = head_and_args(form) else { continue };
+        let declaration = match head.strip_prefix("kernel:").unwrap_or(head) {
+            "bind" | "import" | "const" | "let" | "function" | "function*" | "func" | "genfunc" | "class" | "type" => true,
+            "var" => module,
+            _ => false,
+        };
+        if !declaration { continue; }
         for binding in bindings_introduced(form) {
             if matches!(binding.kind, BindingKind::Bind | BindingKind::ImportLocal) {
                 names.insert(to_js_identifier(&binding.name));
             }
         }
     }
+    if module {
+        collect_var_hoists(forms, &mut names);
+    }
+    names
+}
+
+fn collect_var_hoists(forms: &[SExpr], names: &mut HashSet<String>) {
+    for form in forms {
+        let Some((head, args)) = head_and_args(form) else { continue };
+        if matches!(head, "quote" | "quasiquote" | "syntax-quote") { continue; }
+        if matches!(head, "fn" | "lambda" | "genfn" | "func" | "genfunc" | "function" | "function*" | "=>" | "class" | "class-expr") {
+            continue;
+        }
+        if head == "var" || head == "kernel:var" {
+            names.extend(bindings_introduced(form).into_iter().filter(|b| b.kind == BindingKind::Bind).map(|b| to_js_identifier(&b.name)));
+            for child in args.iter().skip(1) { collect_var_hoists(std::slice::from_ref(child), names); }
+        } else {
+            collect_var_hoists(args, names);
+        }
+    }
+}
+
+fn param_scope_names(params: &[crate::ast::surface::ParamShape]) -> HashSet<String> {
+    params.iter().flat_map(|param| param.bound_names()).map(to_js_identifier).collect()
+}
+
+fn visit_param_defaults(walker: &mut Walker, params: &[crate::ast::surface::ParamShape], dialect: InputDialect) {
+    for default in params.iter().flat_map(|param| param.typed_params()).filter_map(|param| param.default_value.as_ref()) {
+        walker.visit(default, dialect);
+    }
+}
+
+fn function_scope_names(body: &[SExpr], params: HashSet<String>) -> HashSet<String> {
+    let mut names = scope_names(body, false);
+    names.extend(params);
+    collect_var_hoists(body, &mut names);
     names
 }
 
@@ -150,10 +199,7 @@ impl Walker {
     fn record_write(&mut self, target: &SExpr) {
         let proof = self.path(target);
         if let RootProof::GlobalKnown(path) = &proof {
-            if path.is_empty()
-                || path == &["globalThis".to_owned()]
-                || path == &["globalThis".to_owned(), "globalThis".to_owned()]
-            {
+            if is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]) {
                 self.invalidates_aliases = true;
             }
         }
@@ -173,9 +219,7 @@ impl Walker {
             other => other,
         };
         if let RootProof::GlobalKnown(path) = &proof {
-            if path == &["globalThis".to_owned()]
-                || path == &["globalThis".to_owned(), "globalThis".to_owned()]
-            {
+            if is_path(path, &["globalThis"]) || is_path(path, &["globalThis", "globalThis"]) {
                 self.invalidates_aliases = true;
             }
         }
@@ -228,44 +272,94 @@ impl Walker {
         };
         let args = &values[1..];
         if matches!(head, "quote" | "quasiquote" | "syntax-quote") { return; }
+        if dialect == InputDialect::Surface && matches!(head, "func" | "genfunc") {
+            match crate::classifier::classify_expr(expr) {
+                Ok(SurfaceForm::Func { clauses, .. }) => {
+                    for clause in clauses {
+                        let names = function_scope_names(&clause.body, param_scope_names(&clause.args));
+                        self.scopes.push(names);
+                        visit_param_defaults(self, &clause.args, dialect);
+                        if let Some(pre) = &clause.pre { self.visit(pre, dialect); }
+                        if let Some(post) = &clause.post { self.visit(post, dialect); }
+                        for body in &clause.body { self.visit(body, dialect); }
+                        self.scopes.pop();
+                    }
+                    return;
+                }
+                Ok(SurfaceForm::Genfunc { clauses, .. }) => {
+                    for clause in clauses {
+                        let names = function_scope_names(&clause.body, param_scope_names(&clause.args));
+                        self.scopes.push(names);
+                        visit_param_defaults(self, &clause.args, dialect);
+                        if let Some(pre) = &clause.pre { self.visit(pre, dialect); }
+                        if let Some(post) = &clause.post { self.visit(post, dialect); }
+                        for body in &clause.body { self.visit(body, dialect); }
+                        self.scopes.pop();
+                    }
+                    return;
+                }
+                _ => {}
+            }
+        }
         if matches!(head, "fn" | "lambda" | "genfn") {
-            let names: HashSet<String> = args.first().map(|params| {
-                params.as_list().unwrap_or(&[]).iter()
-                    .flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Param))
-                    .map(|binding| to_js_identifier(&binding.name)).collect()
-            }).unwrap_or_default();
+            let params: &[SExpr] = args.first().and_then(SExpr::as_list).unwrap_or(&[]);
+            let param_names = params.iter()
+                .flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Param))
+                .map(|binding| to_js_identifier(&binding.name)).collect();
+            let body = args.get(1..).unwrap_or_default();
+            let names = function_scope_names(body, param_names);
             self.scopes.push(names);
             if let Some(params) = args.first() { self.visit(params, dialect); }
-            for arg in args.iter().skip(1) { self.visit(arg, dialect); }
+            for arg in body { self.visit(arg, dialect); }
             self.scopes.pop();
             return;
         }
         if head == "function" {
-            let mut names = HashSet::new();
-            if let Some(name) = args.first().and_then(SExpr::as_atom) { names.insert(to_js_identifier(name)); }
-            if let Some(params) = args.get(1).and_then(SExpr::as_list) {
-                for pattern in params { names.extend(binding_names_in_pattern(pattern, BindingKind::Param).into_iter().map(|b| to_js_identifier(&b.name))); }
-            }
+            let params = args.get(1).and_then(SExpr::as_list).unwrap_or(&[]);
+            let param_names = params.iter().flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Param)).map(|b| to_js_identifier(&b.name)).collect();
+            let body = args.get(2..).unwrap_or_default();
+            let names = function_scope_names(body, param_names);
             self.scopes.push(names);
             if let Some(params) = args.get(1) { self.visit(params, dialect); }
-            for arg in args.iter().skip(2) { self.visit(arg, dialect); }
+            for arg in body { self.visit(arg, dialect); }
             self.scopes.pop();
             return;
         }
-        if head == "class" {
+        if head == "function*" {
+            let params_index = if args.first().is_some_and(SExpr::is_list) { 0 } else { 1 };
+            let params = args.get(params_index).and_then(SExpr::as_list).unwrap_or(&[]);
+            let param_names = params.iter().flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Param)).map(|b| to_js_identifier(&b.name)).collect();
+            let body = args.get(params_index + 1..).unwrap_or_default();
+            let names = function_scope_names(body, param_names);
+            self.scopes.push(names);
+            if let Some(params) = args.get(params_index) { self.visit(params, dialect); }
+            for arg in body { self.visit(arg, dialect); }
+            self.scopes.pop();
+            return;
+        }
+        if head == "=>" {
+            let params = args.first().and_then(SExpr::as_list).unwrap_or(&[]);
+            let param_names = params.iter().flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Param)).map(|b| to_js_identifier(&b.name)).collect();
+            let body = args.get(1..).unwrap_or_default();
+            let names = function_scope_names(body, param_names);
+            self.scopes.push(names);
+            if let Some(params) = args.first() { self.visit(params, dialect); }
+            for arg in body { self.visit(arg, dialect); }
+            self.scopes.pop();
+            return;
+        }
+        if head == "class" || head == "class-expr" {
             let mut class_scope = HashSet::new();
-            if let Some(name) = args.first().and_then(SExpr::as_atom) { class_scope.insert(to_js_identifier(name)); }
+            let (base_index, member_index) = if head == "class" {
+                if let Some(name) = args.first().and_then(SExpr::as_atom) { class_scope.insert(to_js_identifier(name)); }
+                (1, 2)
+            } else { (0, 1) };
             self.scopes.push(class_scope);
-            for member in args.iter().skip(2) {
-                let Some(parts) = member.as_list() else { self.visit(member, dialect); continue };
-                let mut method_scope = HashSet::new();
-                if let Some(params) = parts.get(1).and_then(SExpr::as_list) {
-                    for pattern in params { method_scope.extend(binding_names_in_pattern(pattern, BindingKind::ClassMethodParam).into_iter().map(|b| to_js_identifier(&b.name))); }
-                }
-                self.scopes.push(method_scope);
-                if let Some(params) = parts.get(1) { self.visit(params, dialect); }
-                for body in parts.iter().skip(2) { self.visit(body, dialect); }
-                self.scopes.pop();
+            if let Some(bases) = args.get(base_index).and_then(SExpr::as_list) {
+                for base in bases { self.visit(base, dialect); }
+            }
+            for member in args.iter().skip(member_index) {
+                self.visit_class_member(member, dialect);
             }
             self.scopes.pop();
             return;
@@ -275,8 +369,39 @@ impl Walker {
             let names: HashSet<String> = bindings_introduced(expr)
                 .into_iter().map(|b| to_js_identifier(&b.name)).collect();
             self.scopes.push(names);
-            for arg in args.iter().skip(2) { self.visit(arg, dialect); }
+            if let Some(pattern) = args.first() { self.visit(pattern, dialect); }
+            self.visit_lexical_body(args.get(2..).unwrap_or_default(), dialect);
             self.scopes.pop();
+            return;
+        }
+        if head == "for" {
+            let mut names = HashSet::new();
+            if let Some(init) = args.first() { names.extend(scope_names(std::slice::from_ref(init), false)); }
+            self.scopes.push(names);
+            for arg in args.iter().take(3) { self.visit(arg, dialect); }
+            self.visit_lexical_body(args.get(3..).unwrap_or_default(), dialect);
+            self.scopes.pop();
+            return;
+        }
+        if head == "while" || head == "do-while" {
+            if let Some(test) = args.first() { self.visit(test, dialect); }
+            self.visit_lexical_body(args.get(1..).unwrap_or_default(), dialect);
+            return;
+        }
+        if head == "try" {
+            let mut body = Vec::new();
+            for arg in args {
+                match head_and_args(arg) {
+                    Some(("catch", _)) => self.visit(arg, dialect),
+                    Some(("finally", forms)) => self.visit_lexical_body(forms, dialect),
+                    _ => body.push(arg.clone()),
+                }
+            }
+            self.visit_lexical_body(&body, dialect);
+            return;
+        }
+        if head == "finally" {
+            self.visit_lexical_body(args, dialect);
             return;
         }
         if head == "catch" {
@@ -292,15 +417,15 @@ impl Walker {
                 match surface {
                     SurfaceForm::IfLet { pattern, expr: value, then_body, else_body, .. } => {
                         self.visit(&value, dialect);
-                        self.with_pattern_scope(&pattern, dialect, |walker| {
+                        self.with_pattern_scope(&pattern, |walker| {
                             walker.visit(&then_body, dialect);
-                            if let Some(other) = else_body { walker.visit(&other, dialect); }
                         });
+                        if let Some(other) = else_body { self.visit(&other, dialect); }
                         return;
                     }
                     SurfaceForm::WhenLet { pattern, expr: value, body, .. } => {
                         self.visit(&value, dialect);
-                        self.with_pattern_scope(&pattern, dialect, |walker| {
+                        self.with_pattern_scope(&pattern, |walker| {
                             for form in &body { walker.visit(form, dialect); }
                         });
                         return;
@@ -313,7 +438,7 @@ impl Walker {
             if let Ok(SurfaceForm::Match { target, clauses, .. }) = crate::classifier::classify_expr(expr) {
                 self.visit(&target, dialect);
                 for clause in clauses {
-                    self.with_pattern_scope(&clause.pattern, dialect, |walker| {
+                    self.with_pattern_scope(&clause.pattern, |walker| {
                         if let Some(guard) = &clause.guard { walker.visit(guard, dialect); }
                         for form in &clause.body { walker.visit(form, dialect); }
                     });
@@ -322,17 +447,31 @@ impl Walker {
             }
         }
         if head == "block" {
-            self.scopes.push(direct_scope_names(args));
+            self.scopes.push(scope_names(args, false));
             for arg in args { self.visit(arg, dialect); }
+            self.scopes.pop();
+            return;
+        }
+        if head == "switch" {
+            if let Some(discriminant) = args.first() { self.visit(discriminant, dialect); }
+            let cases: Vec<&[SExpr]> = args.iter().skip(1).filter_map(SExpr::as_list).collect();
+            let bodies: Vec<SExpr> = cases.iter().flat_map(|case| case.iter().skip(1).cloned()).collect();
+            self.scopes.push(scope_names(&bodies, false));
+            for case in cases {
+                if let Some(test) = case.first() {
+                    if test.as_atom() != Some("default") { self.visit(test, dialect); }
+                }
+                for body in case.iter().skip(1) { self.visit(body, dialect); }
+            }
             self.scopes.pop();
             return;
         }
         let explicit_dialect = head.strip_prefix("kernel:").map(|_| InputDialect::Kernel).unwrap_or(dialect);
         let op = head.strip_prefix("kernel:").unwrap_or(head);
         match op {
-            "set!" | "assign" | "++" | "--" | "+=" | "-=" | "*=" | "/=" | "%=" => {
+            "set!" | "assign" | "++" | "--" | "+=" | "-=" | "*=" | "/=" | "%=" | "**=" | "<<=" | ">>=" | ">>>=" | "&=" | "|=" | "^=" | "&&=" | "||=" | "??=" => {
                 if let Some(target) = args.first() {
-                    self.record_pattern_writes(target, explicit_dialect);
+                    self.record_pattern_writes(target, dialect);
                 }
             }
             "set-symbol!" => {
@@ -340,22 +479,58 @@ impl Walker {
                     self.record_symbol_write(receiver, key);
                 }
             }
+            "delete" if explicit_dialect == InputDialect::Kernel => {
+                if let Some(target) = args.first() { self.record_write(target); }
+            }
             "=" if explicit_dialect == InputDialect::Kernel => {
-                if let Some(target) = args.first() { self.record_pattern_writes(target, explicit_dialect); }
+                if let Some(target) = args.first() { self.record_pattern_writes(target, dialect); }
             }
             _ => {}
         }
         // Check computed keys, defaults, and RHS expressions independently.
-        for arg in args { self.visit(arg, explicit_dialect); }
+        for arg in args { self.visit(arg, dialect); }
     }
 
-    fn with_pattern_scope(&mut self, pattern: &Pattern, dialect: InputDialect, visit: impl FnOnce(&mut Self)) {
+    fn with_pattern_scope(&mut self, pattern: &Pattern, visit: impl FnOnce(&mut Self)) {
         let mut names = HashSet::new();
         collect_pattern_names(pattern, &mut names);
         self.scopes.push(names);
         visit(self);
         self.scopes.pop();
-        let _ = dialect;
+    }
+
+    fn visit_lexical_body(&mut self, forms: &[SExpr], dialect: InputDialect) {
+        self.scopes.push(scope_names(forms, false));
+        for form in forms { self.visit(form, dialect); }
+        self.scopes.pop();
+    }
+
+    fn visit_class_member(&mut self, member: &SExpr, dialect: InputDialect) {
+        let Some(parts) = member.as_list() else { self.visit(member, dialect); return };
+        let Some(member_head) = parts.first().and_then(SExpr::as_atom) else { return };
+        if matches!(member_head, "static" | "async") {
+            if let Some(inner) = parts.get(1) { self.visit_class_member(inner, dialect); }
+            return;
+        }
+        if member_head == "field" {
+            if let Some(value) = parts.get(2) { self.visit(value, dialect); }
+            return;
+        }
+        let accessor = matches!(member_head, "get" | "set");
+        let params_index = if accessor { 2 } else { 1 };
+        let body_index = if accessor { 3 } else { 2 };
+        let mut params = HashSet::new();
+        if let Some(patterns) = parts.get(params_index).and_then(SExpr::as_list) {
+            for pattern in patterns {
+                params.extend(binding_names_in_pattern(pattern, BindingKind::ClassMethodParam).into_iter().map(|b| to_js_identifier(&b.name)));
+            }
+        }
+        let body = parts.get(body_index..).unwrap_or_default();
+        let method_scope = function_scope_names(body, params);
+        self.scopes.push(method_scope);
+        if let Some(patterns) = parts.get(params_index) { self.visit(patterns, dialect); }
+        for form in body { self.visit(form, dialect); }
+        self.scopes.pop();
     }
 }
 
@@ -380,9 +555,12 @@ mod tests {
     #[test]
     fn source_equality_is_not_a_write_but_kernel_assignment_is() {
         assert!(check("(= Reflect:apply 0)", InputDialect::Surface).is_empty());
-        let errors = check("(= Reflect:apply 0)", InputDialect::Kernel);
+        let forms = read("(= Reflect:apply 0)").expect("test source parses");
+        let target_span = forms[0].as_list().unwrap()[1].span();
+        let errors = validate_program(&forms, InputDialect::Kernel);
         assert_eq!(errors.len(), 1);
         assert_eq!(errors[0].message, "host-contract v1: write to protected slot Reflect.apply");
+        assert_eq!(errors[0].span, target_span);
     }
 
     #[test]
@@ -435,6 +613,32 @@ mod tests {
             InputDialect::Kernel,
         );
         assert!(invalidated.is_empty());
+    }
+
+    #[test]
+    fn if_let_pattern_binds_then_only_and_else_global_write_invalidates_aliases() {
+        let first_source = "(if-let (globalThis source) (++ globalThis) 0) (set! globalThis:Reflect:apply 0)";
+        let first = read(first_source).expect("test source parses");
+        let target_span = first[1].as_list().unwrap()[1].span();
+        let errors = validate_program(&first, InputDialect::Surface);
+        assert_eq!(errors.len(), 1);
+        assert_eq!(errors[0].message, "host-contract v1: write to protected slot Reflect.apply");
+        assert_eq!(errors[0].span, target_span);
+
+        let second = read("(if-let (globalThis source) 0 (++ globalThis)) (set! globalThis:Reflect:apply 0)")
+            .expect("test source parses");
+        assert!(validate_program(&second, InputDialect::Surface).is_empty());
+    }
+
+    #[test]
+    fn kernel_escape_changes_only_its_own_operator_dialect() {
+        assert!(check("(kernel:array (= Reflect:apply 0))", InputDialect::Surface).is_empty());
+        let source = "(kernel:array (kernel:= Reflect:apply 0))";
+        let forms = read(source).expect("test source parses");
+        let target_span = forms[0].as_list().unwrap()[2].as_list().unwrap()[1].span();
+        let errors = validate_program(&forms, InputDialect::Surface);
+        assert_eq!(errors.len(), 1);
+        assert_eq!(errors[0].span, target_span);
     }
 }
 
