@@ -1,5 +1,51 @@
 # CDC verification — S01 attempts, 2026-11-08
 
+## Correction04 held at preflight — 2026-11-09
+
+The Operator approved correcting the four findings below and resuming
+the original S01 gates, with the same Luna6 High CC and separate
+Sol6.1 High CDC in Autonomous Mode. The stop rule covers any further
+substantive failure or real evidence gap. At clean
+`cabfc621dd28331aafe1315292bd830be2dd459d` (tree
+`1809cdaa7918c0cd2c24fa6e5a9d878161fc59cf`), the source-only
+preflight established two further scope defects.
+
+- **Native if-let sibling scope.** `crates/lykn-lang/src/protected_host.rs:293–298`
+  visits both arms within `with_pattern_scope`. The actual statement and
+  value lowerings in `crates/lykn-lang/src/emitter/forms.rs:2613–2623`
+  and `2662–2680` put the bindings only in the then block and construct
+  a separate else block. A pattern named Reflect can hide a real global
+  write in else from the whole-source policy. In particular, the
+  classifier-only check route cannot rely on a later kernel pass.
+- **Public kernel function parameter scope.** The accepted legal V2/V3
+  Surface functions use the keyword clause builder
+  (`packages/lang/classifier.js:757–758,963–968`), which produces
+  `(function name (params) body...)`. `packages/lang/compiler.js:833–852`
+  consumes the parameter list from `args[1]`. The frozen policy walker
+  at `packages/lang/protected-host.js:53–57` uses
+  `bindingsIntroduced(node)` to populate the function scope. For kernel
+  declarations the binder only extracts `args[0]`
+  (`packages/lang/binding.js:89–95`). Thus correcting the public entry
+  dialect activates false global classification for the protected-name
+  parameter writes in V2/V3 unless the separate scope gap is corrected.
+
+These are static findings. No code, formatter, build, test or specimen
+command ran for this authorization. The next prompt was neither
+created nor issued. CC received no assignment or ownership, and source
+and planning ownership stayed with CDC. The four approved corrections
+remain pending. Refinement 03 of 5 is still spent and 04 was unexecuted.
+All HC/PHI/CV criteria remain open. The accepted pre-policy baseline
+and AM-04 are unchanged.
+
+A revised correction04 would retain the original four changes and
+scope if-let bindings to the then arm only, visiting the scrutinee and
+else in the outer scope. The JS walker would extract normalized
+parameter bindings from the actual kernel function grammar, keeping
+the declaration name's enclosing binding separate. Any resumed
+implementation would retain the frozen tests, macro-time boundary,
+typed dist and existing validation/independent gates. The revised
+scope is a proposal and requires the Operator's decision.
+
 ## V1 production candidate stopped at static review — 2026-11-09
 
 [Iteration05](cc-prompt-iteration05.md) authorized the original production

@@ -9,6 +9,15 @@ depends-on: []
 
 # S01 — versioned host contract and provable-write errors
 
+## Approved correction04 held before assignment
+
+The Operator approved the four original static corrections with the
+same models, Autonomous Mode and first-substantive-failure stop.
+[Preflight](cdc-verification.md#correction04-held-at-preflight--2026-11-09)
+found two further scope defects on unchanged `cabfc621`. No prompt
+was issued and CC received no assignment. Refinement 04 was unexecuted
+and 03 of 5 remains spent. All HC rows and original gates remain open.
+
 ## V1 production held after static review
 
 The frozen `cabfc621` implementation stopped on four source-derived

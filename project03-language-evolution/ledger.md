@@ -2,6 +2,10 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+Arc03 [correction04 preflight](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#correction04-held-at-preflight--2026-11-09)
+held assignment and validation on unchanged `cabfc621`. Refinement
+03 of 5 stays spent. HC/PHI/CV remain open and AM-04 stays done.
+
 The Arc03 [v1 production stop](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09)
 retains unaccepted `cabfc621`, with no v1 runtime or full-gate evidence.
 HC/PHI/CV stay open. AM-04 remains done for the earlier bounded baseline.

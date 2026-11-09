@@ -1,5 +1,16 @@
 # CDC retrospective — S01 attempts, 2026-11-08
 
+## Correction04 preflight — 2026-11-09
+
+The preflight compared the frozen walk with the actual lowering of
+if-let arms and keyword function parameters. This exposed a sibling
+binding leak in native and a missing parameter boundary in public JS
+before another assignment consumed source budget. The latter defect
+would affect the original legal controls once assignment detection
+started working. These traces were missing from the previous static
+stop record. There is no new runtime observation. The revised scope
+remains for the Operator to decide.
+
 ## V1 production static review — 2026-11-09
 
 The immutable freeze let review trace exact W1 and W7 lowering from

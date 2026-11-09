@@ -1,5 +1,10 @@
 # Arc03 S01 host protection ledger
 
+[Correction04 preflight](cdc-verification.md#correction04-held-at-preflight--2026-11-09)
+found two additional scope defects. The approved four corrections and
+all v1 gates remain held. No prompt issued or source work began. All
+six HC rows stay open and refinement 03 of 5 remains spent.
+
 V1 production candidate `cabfc621` stopped before validation on
 [independent static findings](cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09).
 All six HC rows remain open. Source refinement 03 of 5 is spent.

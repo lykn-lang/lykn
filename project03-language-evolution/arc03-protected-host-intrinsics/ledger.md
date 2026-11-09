@@ -1,5 +1,9 @@
 # Arc03 protected host intrinsics ledger
 
+S01 [correction04 preflight](slice01-versioned-host-protection/cdc-verification.md#correction04-held-at-preflight--2026-11-09)
+held the source assignment before dispatch. PHI remains open. No
+source refinement or v1 gate was executed under this authorization.
+
 The S01 [v1 production static stop](slice01-versioned-host-protection/cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09)
 preserves candidate `cabfc621` before validation. No PHI row closes.
 The exact accepted baseline and prior refinement count are unchanged.

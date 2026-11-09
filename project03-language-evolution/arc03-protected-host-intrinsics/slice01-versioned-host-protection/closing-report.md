@@ -1,5 +1,17 @@
 # S01 attempt dispositions — 2026-11-08
 
+## Correction04 preflight hold — 2026-11-09
+
+The Operator approved the previous four findings. Before prompt
+issuance or CC handoff, read-only preflight found a native if-let
+sibling-scope defect and a public kernel function parameter-scope
+defect activated by the proposed Kernel entry correction.
+[Source traces and disposition](cdc-verification.md#correction04-held-at-preflight--2026-11-09).
+The clean candidate `cabfc621` is unchanged. No implementation or
+validation ran under this authorization. All six HC rows stay open,
+and refinement 04 remains unexecuted. The original four corrections
+and the proposed additional scope changes remain held.
+
 ## V1 production static STOP — 2026-11-09
 
 CDC stopped [iteration05](cc-prompt-iteration05.md) at the clean frozen

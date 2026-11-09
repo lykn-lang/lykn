@@ -9,6 +9,12 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+S01 correction04 is held before assignment on two new static scope
+findings at unchanged `cabfc621`.
+[Verification](slice01-versioned-host-protection/cdc-verification.md#correction04-held-at-preflight--2026-11-09).
+The original four repairs remain pending. No change to the arc
+sequence, earlier baseline acceptance or open HC/PHI/CV obligations.
+
 S01's V1 production candidate `cabfc621` stopped in independent static
 review before any build or test.
 [Source findings](slice01-versioned-host-protection/cdc-verification.md#v1-production-candidate-stopped-at-static-review--2026-11-09).
