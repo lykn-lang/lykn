@@ -391,26 +391,15 @@ mod tests {
         fs::write(root.join(filename), contents).unwrap();
     }
 
-    struct RemoveOnDrop(PathBuf);
-
-    impl Drop for RemoveOnDrop {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
-        }
-    }
-
     #[test]
     fn private_host_invocation_materializes_four_native_proof_inputs() {
-        let configured_evidence = std::env::var_os("LYKN_INTRINSIC_EVIDENCE_DIR");
-        let evidence_root = configured_evidence
-            .as_ref()
-            .map(PathBuf::from)
-            .unwrap_or_else(|| {
-                std::env::temp_dir().join(format!("lykn-intrinsic-native-{}", std::process::id()))
-            });
-        let _cleanup = configured_evidence
-            .is_none()
-            .then(|| RemoveOnDrop(evidence_root.clone()));
+        let (evidence_root, _temporary) = match std::env::var_os("LYKN_INTRINSIC_EVIDENCE_DIR") {
+            Some(path) => (PathBuf::from(path), None),
+            None => {
+                let temporary = tempfile::tempdir().unwrap();
+                (temporary.path().to_path_buf(), Some(temporary))
+            }
+        };
         let root = evidence_root.join("native");
 
         let absent = emit_module_js(&fixture_forms(native_fixture_source("absent"))).unwrap();
