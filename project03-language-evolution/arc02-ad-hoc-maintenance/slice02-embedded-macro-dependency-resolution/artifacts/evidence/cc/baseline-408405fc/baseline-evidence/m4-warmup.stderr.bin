@@ -1,0 +1,3 @@
+macro expansion error: Import "astring" not a dependency
+  hint: If you want to use the npm package, try running `deno add npm:astring`
+    at file:///private/tmp/lykn-arc02-s02-cc/.tmpmPdhiw/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js:5:26 at 0:0

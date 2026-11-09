@@ -1,5 +1,9 @@
 # Arc02 ad hoc maintenance ledger
 
+S02 iteration02 observed six legacy compile failures, 0/4 runtimes, then
+stopped at static review of candidate `7777cd71`. All six MR rows and AM-04
+remain open. Source refinement 01 of 5 is spent.
+
 2026-11-08 S02 stopped at [static source review](slice02-embedded-macro-dependency-resolution/cdc-verification.md),
 test-only d7c7c733, zero builds or behavioral launches. All six MR rows and
 AM-04 remain open; source refinements 0/5 and no correction issued.

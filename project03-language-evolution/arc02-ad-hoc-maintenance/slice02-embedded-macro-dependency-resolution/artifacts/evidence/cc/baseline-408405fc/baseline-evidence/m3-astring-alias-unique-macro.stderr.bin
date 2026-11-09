@@ -1,0 +1,3 @@
+macro expansion error: Expected a JavaScript or TypeScript module, but identified a Unknown module. Importing these types of modules is currently not supported.
+  Specifier: file:///private/tmp/lykn-arc02-s02-cc/.tmpLPoXms/macros/mod.lykn
+    at file:///private/tmp/lykn-arc02-s02-cc/.tmpLPoXms/xdg-cache/lykn/embedded/0.6.0/packages/lang/compiler.js:5:26 at 0:0

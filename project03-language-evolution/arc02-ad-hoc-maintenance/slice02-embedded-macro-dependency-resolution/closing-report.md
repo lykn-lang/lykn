@@ -36,3 +36,21 @@ baseline until a separately authorized, one-file test correction owns each
 Review its immutable diff before the existing baseline. No compiler patch,
 Arc03 re-entry or release action follows from this stopped report. Initial
 planned source attempt only; no source refinement consumed (0/5).
+
+## Iteration02 stopped handoff
+
+CC froze the two ownership edits at `a95817dc` and formatting at `408405fc`.
+The legacy build and six compile observations ran. The five parent tests
+failed as expected and the four runtime children were unlaunched. Actual CC
+return and [independent review](cdc-verification.md#source-iteration02--candidate-review-stopped)
+preserve the observed caller-lock rewrites and baseline isolation limit.
+[Raw evidence](artifacts/evidence/cc/baseline-408405fc/) was copied
+byte-for-byte from the CC evidence directory.
+
+CC returned clean source/index/build/raw ownership at `7777cd71` after a
+static finding in the test's Homebrew-only default executable. The production
+repair is committed on the task branch and unvalidated. All six row
+dispositions above remain open. MR-04 now has the meaningful old baseline.
+MR-01/03/05 have authored repair and guide changes awaiting candidate gates.
+AM-04 and the explicit Arc03 composition gate still apply. The first source
+refinement is spent. The proposed PATH fallback and gates await authorization.

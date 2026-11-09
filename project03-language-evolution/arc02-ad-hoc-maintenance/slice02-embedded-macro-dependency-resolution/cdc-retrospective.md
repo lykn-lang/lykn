@@ -45,3 +45,15 @@ the immutable prebuild hold. The new evidence flow, isolation conditions
 and compiler repair remain untested; do not infer their success from the
 static stop or create a new harness to compensate. The
 [verification](cdc-verification.md) carries the precise proposed correction.
+
+## Iteration02
+
+Owning the commands restored the test build. The old compiler receipts
+discriminated missing dependency configuration, alias collision, missing
+cache file and materialization panic. Direct byte comparison also caught
+an inaccurate lock attestation. Earlier static review had missed the
+Homebrew-only runtime default because the verification path supplies a
+local pin. Compare test defaults with the normal runner as well as the
+explicit verification setup. Preserve actual named ancestor checks before
+launch. The baseline omitted higher ancestors and a later check could only
+corroborate. The repair's candidate gates are still outstanding.

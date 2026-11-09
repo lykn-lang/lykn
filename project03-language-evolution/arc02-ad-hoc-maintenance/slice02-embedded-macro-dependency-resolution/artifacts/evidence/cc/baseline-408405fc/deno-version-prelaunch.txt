@@ -1,0 +1,9 @@
+Gate: identify prescribed Deno runtime before direct baseline
+argv: /opt/homebrew/bin/deno --version
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+scoped_environment: DENO_DIR=/Users/oubiwann/Library/Caches/deno
+executable_sha256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+CLI_executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn
+CLI_sha256: ec97c00a0910e623db67d5d9341c04bb0b643077456f1aaadef755dafcb81d7c
+Rust_test_executable: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/macro_dependencies-c2da4081568226dd
+Rust_test_sha256: bfca43426596af739cb81b6214cf2397e069a31c634eeee72e3fb1a86742af1e

@@ -9,6 +9,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Latest Arc02 S02 disposition: the baseline ran and candidate validation
+stopped at a platform-specific runtime test default.
+[Candidate review](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).
+The original Arc03 dependency and release boundary still apply.
+
 2026-11-08 latest: Arc02 S02 [stopped at static test review](arc02-ad-hoc-maintenance/slice02-embedded-macro-dependency-resolution/cdc-verification.md).
 No build, baseline, compiler repair or release change. All MR/AM-04 remain open;
 the bounded test correction requires renewed approval. Arc03 remains held.

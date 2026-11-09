@@ -37,3 +37,64 @@ fixtures and existing assertions. Only with Operator approval, issue the
 preserved test-only correction01 (next source refinement, currently 0/5),
 freeze and review it, then continue the original TDD baseline and repair
 gates. No Arc03 composition, policy oracle edits or release action.
+
+## Source iteration02 — candidate review stopped
+
+Operator “Go for it” approved [iteration02](cc-prompt-iteration02.md), the first
+source refinement. Same CC and independent CDC. Actual commit `a95817dc`
+corrected exactly the two command sites. Separate `408405fc` is rustfmt-only
+by full diff inspection. CC reported leaf formatter exit 0 and empty streams.
+The tests-only file SHA-256 is
+`2cb62e8ed07edb5a3b9bda91a9f44ee768d678809f2fd8bee7f6b3877b463c8b`.
+
+[Byte-preserved CC baseline](artifacts/evidence/cc/baseline-408405fc/)
+contains launch metadata and tool pins, no-run exit 0, one direct test
+exit 101 (0 passed, 5 failed, 0 ignored or filtered), and all six compile
+observations. CDC checked the raw outcomes and did not rerun this baseline.
+
+| Condition | Observed legacy result |
+| --- | --- |
+| M1 | Exit 1, compiler import `astring` unresolved. |
+| M2 | Exit 1, `astring` absent from dependencies and the supplied map. |
+| M3 | Exit 1, compiler tried to import the caller alias's Lykn file as a JS/TS module. |
+| M4 warmup and recovery | Both exit 1 on unresolved `astring`. The owned config was removed with lock present, and remained absent after the second compile. |
+| M5 | Exit 101, materialization panicked with NotADirectory. |
+
+No JS or declarations were observed. The four runtime children were
+unlaunched. The empty JS/DTS receipt files are placeholders paired with the
+false artifact flags. M2/M3 caller config bytes and mtimes match. Both caller locks
+changed from the supplied package lock to a version-only object and their
+mtimes moved off the epoch. CDC compared the raw bytes and CC explicitly
+withdrew an inaccurate equality attestation. Only the fixture root was
+checked for configs before launch. CDC's later exact path inspection found
+no project.json, deno.json or deno.jsonc at the higher ancestors. This
+corroborates the isolation setup after the fact. It cannot establish
+contemporaneous higher-ancestor absence. The exact fixture and outcome
+receipts establish meaningful old behavior with that limit. The explicit
+M2/M3 configs and M5 owned path supply separate controls.
+
+The evidence copy matched the source directory byte-for-byte by `diff -qr`.
+The full planning diff check exited 2 for the original blank line at EOF
+in `baseline.stdout:56`. Prose-only diff check exited 0. The raw stdout
+bytes are preserved.
+
+**Current stop.** Clean `codex/embedded-macro-dependencies` candidate
+`7777cd718cf5f7799845bd49fa988cc281432377`, tree
+`2de689bda24c23a04e5df0dea44913a7829a6813`, changed exactly the five
+allowed paths from release base `62e9531e`. Static inspection found that
+`crates/lykn-cli/tests/macro_dependencies.rs:168`–169 falls back to
+`/opt/homebrew/bin/deno` when `LYKN_TEST_DENO` is unset. The repository's
+Ubuntu jobs install Deno on PATH and run `make test` and workspace
+`cargo test` without that override (`.github/workflows/ci.yml:30`–69).
+Thus the four positive runtime cases depend on a host-specific path under
+the ordinary runner. A local pin override would hide the defect. This is a
+static compatibility finding. Candidate formatter/build/test/Make/cites and
+independent execution all remain unrun. CC returned clean ownership.
+
+All MR rows remain open. Proposed test-only refinement 02 of 5 changes
+`OsString::from("/opt/homebrew/bin/deno")` to `OsString::from("deno")`.
+It keeps the recorded explicit executable override and strict flags.
+The baseline remains applicable because the runtime selector never ran.
+After approval and review of the immutable change, resume the original
+candidate gates with prospective exact ancestor checks. Release remains
+at `62e9531e` and the Arc03 tests-only ref remains at `e2f2959`.

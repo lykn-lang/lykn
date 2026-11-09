@@ -9,6 +9,11 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+Iteration02 repaired the test ownership issue and captured the old macro
+failures. Candidate `7777cd71` stopped before validation on a platform-specific
+test default. [Review and re-entry](slice02-embedded-macro-dependency-resolution/cdc-verification.md).
+AM-04 stays open and the Arc03 dependency is still held.
+
 ## S02 source readiness stopped — 2026-11-08
 
 The tests-only freeze d7c7c733 stopped before the first build on two borrowed

@@ -1,5 +1,10 @@
 # Embedded macro dependency repair ledger
 
+Iteration02 stopped at [candidate review](cdc-verification.md). Tests built
+at `408405fc`. Six legacy compiles exposed expected defects, with 0/4 runtime
+children launched. Candidate `7777cd71` remains unaccepted. All six MR rows
+and AM-04 stay open. Source refinement 01 of 5 is spent.
+
 Operator “Go for it” authorizes [iteration02](cc-prompt-iteration02.md),
 the first source refinement (01 of 5), and the original finite S02 gates.
 All six MR rows remain open pending actual observations and review.

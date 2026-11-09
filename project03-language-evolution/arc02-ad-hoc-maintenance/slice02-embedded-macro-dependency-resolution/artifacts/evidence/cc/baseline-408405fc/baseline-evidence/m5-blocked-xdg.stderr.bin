@@ -1,0 +1,4 @@
+
+thread 'main' (98503055) panicked at crates/lykn-lang/src/expander/deno.rs:61:49:
+materializing embedded packages failed: Os { code: 20, kind: NotADirectory, message: "Not a directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

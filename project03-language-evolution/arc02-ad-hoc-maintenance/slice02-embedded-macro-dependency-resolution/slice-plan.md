@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice02-embedded-macro-dependency-resolution
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: []
 related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
@@ -10,7 +10,18 @@ related: [arc03-protected-host-intrinsics/slice01-versioned-host-protection]
 
 # S02 — compiler-owned embedded macro dependency resolution
 
-## Current continuation
+## Current disposition — candidate validation held
+
+Iteration02 corrected the two ownership sites. The original test target built
+and the baseline produced six old-compiler failures. The four runtime children
+were unlaunched. Independent review of candidate `7777cd71` stopped before its
+first gate because the tests' default runtime executable is Homebrew-specific.
+See [verification](cdc-verification.md) and [raw baseline](artifacts/evidence/cc/baseline-408405fc/).
+All six MR rows stay open. Source refinement 01 of 5 is spent. Proposed
+refinement 02 changes just the runtime fallback to the established PATH lookup,
+preserving the explicit verification override. The proposal awaits approval.
+
+## Approved iteration02 continuation
 
 Operator “Go for it” approves the exact two test-only ownership fixes and
 continuation of the original S02 gates. [Iteration02](cc-prompt-iteration02.md)

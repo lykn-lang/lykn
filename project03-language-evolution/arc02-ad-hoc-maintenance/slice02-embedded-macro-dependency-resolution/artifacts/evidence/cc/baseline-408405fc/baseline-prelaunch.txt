@@ -1,0 +1,19 @@
+Gate: original five-condition macro_dependencies baseline (direct prebuilt test executable; no rebuild)
+argv: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/macro_dependencies-c2da4081568226dd
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch/source_head: codex/embedded-macro-dependencies @ 408405fc0ac7c34bc41b033106b8ec4164e0e04d
+executable SHA-256: bfca43426596af739cb81b6214cf2397e069a31c634eeee72e3fb1a86742af1e
+CLI child: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn
+CLI SHA-256: ec97c00a0910e623db67d5d9341c04bb0b643077456f1aaadef755dafcb81d7c
+scoped environment:
+  TMPDIR=/private/tmp/lykn-arc02-s02-cc
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  NPM_CONFIG_CACHE=/private/tmp/lykn-arc02-s02-cc/npm-cache
+  LYKN_TEST_DENO=/opt/homebrew/bin/deno
+  LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc02-s02/cc/baseline-evidence
+PATH: inherited; command -v deno resolved /opt/homebrew/bin/deno
+Deno executable SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Deno version: 2.9.6 (stable, release, aarch64-apple-darwin), verified with prescribed DENO_DIR
+Cached locked dependency: astring@1.9.0 at /Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0
+Cargo: no further Cargo invocation after this pin; CARGO_TARGET_DIR not overridden
+Network: no install/fetch command; direct test invocation only

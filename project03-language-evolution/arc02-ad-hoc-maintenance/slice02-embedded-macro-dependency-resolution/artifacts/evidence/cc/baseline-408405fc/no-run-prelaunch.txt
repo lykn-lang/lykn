@@ -1,0 +1,10 @@
+Gate: test target compilation only (no-run)
+argv: cargo test --offline --locked -p lykn-cli --test macro_dependencies --no-run
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+branch: codex/embedded-macro-dependencies
+source_head: 408405fc0ac7c34bc41b033106b8ec4164e0e04d
+scoped_environment: TMPDIR=/private/tmp/lykn-arc02-s02-cc
+inherited DENO_DIR: not overridden
+inherited LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR: not overridden for no-run build
+CARGO_TARGET_DIR: not overridden
+network mode: Cargo --offline flag
