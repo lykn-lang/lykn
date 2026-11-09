@@ -1,0 +1,28 @@
+# Arc03 S02 CC closing report
+
+**Author:** CC (Luna 6 High)  
+**Candidate:** `codex/lazy-protected-invocation@801fcd83f7a79dd945ac109c55d636dd512e8b64`  
+**Tree/result scope:** S02 separable private lazy backend, exact-node request plumbing, native/public generated proofs, and four bounded optimizer conditions. This is a CC-proposed disposition for CDC review; no row is claimed independently accepted.
+
+## HI dispositions
+
+| Row | CC-proposed status | Finite evidence and limit |
+| --- | --- | --- |
+| HI-01 — Native and public private typed request is actual, lazy and closed to source forgery | Proposed pass | At the exact candidate, native focused selection passed 5 tests (0 failed); public focused Deno suite passed 4 (0 failed). The Rust and JS tests cover exact-node consumption, stable operand shape, no-request/directive behavior, and module-binding unavailability. Native/private raw: `target/arc03-s02/cc/801fcd83/native-direct/`; public raw: `target/arc03-s02/cc/801fcd83/public-focused/`. This is not an independent reproduction or approval of the wider module-scope policy. |
+| HI-02 — Hygienic reserved identifiers preserve source name behavior | Proposed pass | The frozen tests cover normalized/free-name collisions and nested Reflect/globalThis cases. Live native and public strict runtime each produced exactly: `provider\n[["get","spread","arg","call"],["receiver",7,8],"localReflect","localGlobal",3,"undefined","property"]\n[["get"],"getter"]\n[["get","spread","arg"],"arg"]\n`. Retained observer traces read `provider\n0\n1\n`; retained bundles each produced `provider\n`. Replay raw is under `target/arc03-s02/cc/801fcd83/runtime-replay/{native,public}/`. Evidence covers the named fixtures only. |
+| HI-03 — Four bounded native esbuild/Deno conditions independently pass on both backends | Proposed pass | Eight actual esbuild invocations at 801fcd83 (native/public × absent/shaken/retained/live) exited 0 and retained their actual output/metafiles and pins under `target/arc03-s02/cc/801fcd83/optimizer/`. Ten strict Deno runs then passed: those eight conditions plus ordinary retained-bundle runs for each backend; all exit 0, expected stdout, empty stderr. The original eight runtime attempts are preserved under each optimizer case; the ten-run fresh replay and exact named config probes are under `target/arc03-s02/cc/801fcd83/runtime-replay/`. Replay inputs were byte-preserving copies checked with cmp/SHA; no esbuild rerun occurred. These are CC observations, not CDC’s independent replay. |
+| HI-04 — Source and S01 compatibility pass separate independent gates | Proposed pass | Candidate ancestry includes accepted S01 at e7b44c1; focused native/public gates passed; the three embedded JS mirrors were compared during implementation; normal unfiltered `/usr/bin/make check` exited 0, including build, Clippy, format, Rust tests, 1,480 Deno integration tests and 482 documentation blocks with zero failures. Standalone `/usr/bin/make check-cited-paths` retained run exited 0 (64 documents; 601 historical citations accepted). Make raw: `target/arc03-s02/cc/801fcd83/final-make-check-20261109/raw/`; cited raw: `target/arc03-s02/cc/801fcd83/final-cited-paths-20261109/raw/`. The cited command was accidentally invoked twice against the same output locators; the second exit-0 run overwrote the first run’s stdout/stderr. Only the second raw result is retained, so do not count these as two retained receipts. |
+| HI-05 — Module-scope Reflect and direct-eval interop contract is resolved for complete S02 | Blocked / held | No policy was selected for module-scope Reflect and documented direct-eval compatibility. Eligible-module lowering returns the checked internal unavailable outcome. This separable candidate does not resolve the row; no S04 production or policy change was made. |
+| HI-06 — Actual handoff, retrospective, source/API and composition ownership reconcile | Open | CC returned clean source/build/index/raw ownership at 801fcd83 and supplied this finite row report. CDC still owns independent disposition, retrospective, source/API and composition reconciliation. No Arc03 close is claimed. |
+
+## Preserved process and evidence limitations
+
+- The initial semantic freeze `c945bca8` used a per-command `core.hooksPath=/dev/null` override. It is preserved, was not repeated, and is not represented as a compliant normal commit. Later source commits used normal Git.
+- One source-message invocation used the hyphenated path; the actual file path used a dot. The failed attempt was preserved, then the normal commit used the actual dot-path file.
+- The first Deno product-test invocation used strict generated-runtime flags and a package config; it was the wrong runner and is retained as failed raw. The corrected product runner was `/opt/homebrew/bin/deno test --config project.json -A test/forms/lazy-protected-invocation.test.js` and passed.
+- The original eight runtime manifests checked fixture/tool names but omitted Deno config ancestors. They remain unchanged. A separate fresh `/private/tmp` replay added exact named config checks and passed all ten runtime cases; it did not repeat bundling.
+- The final cited-path result has one retained raw run because the accidental second command overwrote the first command’s raw files, as described under HI-04.
+
+## Proposed bubble-up to Arc03
+
+S02 has CC-proposed passes for HI-01 through HI-04, subject to independent CDC review. HI-05 remains held on the unresolved module-level Reflect/direct-eval choice, so neither S02 complete acceptance nor Arc03 closure is proposed. HI-06 remains open for CDC reconciliation. No S04 production work, merge, push, or release was performed.

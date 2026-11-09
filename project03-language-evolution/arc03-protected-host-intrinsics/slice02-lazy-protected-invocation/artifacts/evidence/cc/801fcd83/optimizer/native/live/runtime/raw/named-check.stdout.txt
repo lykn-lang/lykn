@@ -1,0 +1,2 @@
+-rw-r--r--@ 1 oubiwann  staff  1649 Nov  9 14:09 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/live/bundle.js
+lrwxr-xr-x@ 1 oubiwann  admin    29 Sep 13 10:33 /opt/homebrew/bin/deno -> ../Cellar/deno/2.9.6/bin/deno

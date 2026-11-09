@@ -9,6 +9,17 @@ related: [arc01-compiler-semantic-integrity/slice04-completion-value-flow-integr
 
 # Protected host intrinsics
 
+## S02 eligible-module delivery — 2026-11-09
+
+[Independent S02 review](slice02-lazy-protected-invocation/cdc-verification.md)
+accepts the private eligible-module implementation and finite optimizer
+proof at task-only `801fcd83`. PHI-04 is done for the exact measured
+conditions. PHI-03, PHI-05 and PHI-06 remain open. Module-level Reflect plus
+direct eval still needs a generated-output or language-interop contract
+decision under HI-05. The current design pass changes neither. Arc01 S04
+I3 continues to depend on the complete facility. S07/S08 retain the real
+API/guide/book/LLM disposition. Local release remains accepted S01 `e7b44c1`.
+
 ## S02 opened — 2026-11-09
 
 [S02](slice02-lazy-protected-invocation/slice-plan.md) proceeds with the
@@ -231,6 +242,10 @@ The new normative document and references land with code; audit crosslinks do
 not postpone required source-user guidance or fabricate a book update.
 
 ## Version history
+
+- 2026-11-09 v0.7: Recorded independent eligible-module delivery and exact
+  optimizer proof. Preserved HI-05 as an explicit design gate and retained
+  composition and downstream ownership.
 
 - 2026-11-09 v0.6: Opened S02 under Operator implementation authority and
   recorded the separable delivery and unresolved module-scope interop.

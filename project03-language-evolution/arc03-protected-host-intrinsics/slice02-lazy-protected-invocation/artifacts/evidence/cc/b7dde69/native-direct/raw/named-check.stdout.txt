@@ -1,0 +1,2 @@
+-rwxr-xr-x@ 1 oubiwann  staff  9409144 Nov  9 13:57 target/debug/deps/lykn_lang-660f810f98f77866
+drwxr-xr-x@ 8 oubiwann  staff      256 Nov  9 13:42 test/fixtures/lazy-protected-invocation

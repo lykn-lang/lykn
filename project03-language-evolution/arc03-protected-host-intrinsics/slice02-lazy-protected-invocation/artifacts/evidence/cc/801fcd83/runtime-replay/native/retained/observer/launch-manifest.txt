@@ -1,0 +1,16 @@
+Arc03 S02 immutable strict runtime replay
+Invocation: native-retained-observer-801fcd83-replay-20261109
+State: PREPARED / NOT EXECUTED
+Source: 801fcd83f7a79dd945ac109c55d636dd512e8b64
+Original eight esbuild invocations/metafiles remain unchanged; this replay executes byte-preserving /private/tmp copies only.
+Backend/case: native/retained
+Working directory: /private/tmp/arc03-s02-801fcd83-runtime-replay-20261109/native/retained
+Deno: /opt/homebrew/bin/deno 2.9.6 SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Input: /private/tmp/arc03-s02-801fcd83-runtime-replay-20261109/native/retained/observer.js
+Copy verification: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/runtime-replay/native/retained/copy-verification/observer.js.stdout.raw and exit-status.txt; all compared with /usr/bin/cmp against original materialized input, status 0.
+Exact argv: /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/arc03-s02-801fcd83-runtime-replay-20261109/native/retained/observer.js
+Scoped environment: DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/private/tmp/arc03-s02-801fcd83-runtime-replay-20261109/native/retained/runs/observer/tmp XDG_CACHE_HOME=/private/tmp/arc03-s02-801fcd83-runtime-replay-20261109/native/retained/runs/observer/xdg npm_config_cache=/private/tmp/arc03-s02-801fcd83-runtime-replay-20261109/native/retained/runs/observer/npm
+Named config check argv and raw are at /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/runtime-replay/native/retained/raw/named-check.argv.txt and named-check.{stdout,stderr,exit-status}.txt. It checks project.json, deno.json, deno.jsonc at the fixture root, TMPDIR, replay root, /private/tmp, /private, /, and checkout root. Actual exit 1 due expected absent names; checkout project.json is present. Captured stderr lists missing names.
+Expected stdout bytes (escaped): "provider\n0\n1\n"
+Expected stderr: empty
+Raw command stdout: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/runtime-replay/native/retained/observer/raw/stdout.txt; stderr: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/runtime-replay/native/retained/observer/raw/stderr.txt; actual tool status to /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/runtime-replay/native/retained/observer/raw/exit-status.txt

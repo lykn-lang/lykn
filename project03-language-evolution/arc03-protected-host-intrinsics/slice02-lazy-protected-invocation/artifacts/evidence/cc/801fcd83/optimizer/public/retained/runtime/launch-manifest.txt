@@ -1,0 +1,10 @@
+name: runtime-public-retained-801fcd83
+source: 801fcd83f7a79dd945ac109c55d636dd512e8b64
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/evidence/public/retained
+argv: /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/evidence/public/retained/observer.js
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/public/retained/runtime/tmp XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/public/retained/runtime/xdg npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/public/retained/runtime/npm
+pins: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/evidence/public/retained/retained.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/evidence/public/retained/observer.js; Deno sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+named check argv: ls -ld /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/evidence/public/retained/retained.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/evidence/public/retained/observer.js /opt/homebrew/bin/deno
+raw named check: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/public/retained/runtime/raw/named-check.stdout.txt, stderr.txt, exit-status.txt
+raw command: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/public/retained/runtime/raw/stdout.txt, stderr.txt, exit-status.txt
+expected stdout begins: provider\\n0\\n1\\n

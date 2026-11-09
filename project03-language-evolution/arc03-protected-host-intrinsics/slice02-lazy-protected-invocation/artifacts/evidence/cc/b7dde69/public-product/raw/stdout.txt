@@ -1,0 +1,84 @@
+running 4 tests from ./test/forms/lazy-protected-invocation.test.js
+lazy protected invocation preserves the no-request compiler path ... ok (3ms)
+lazy protected invocation validates plans and recovers after rejection ... FAILED (1ms)
+lazy protected invocation checks source module binding roles ... ok (922µs)
+lazy protected invocation materializes all four public proof inputs ... FAILED (3ms)
+
+ ERRORS 
+
+lazy protected invocation validates plans and recovers after rejection => ./test/forms/lazy-protected-invocation.test.js:71:6
+error: AssertionError: Expected error message to include "three-part call", but got "host invocation operands must be stable atom references".
+    throw new AssertionError(msg);
+          ^
+    at assertIsError (https://jsr.io/@std/assert/1.0.19/is_error.ts:63:11)
+    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:96:7)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/lazy-protected-invocation.test.js:81:3
+
+lazy protected invocation materializes all four public proof inputs => ./test/forms/lazy-protected-invocation.test.js:139:6
+error: AssertionError: Expected actual: "import {invoke} from "./provider.js";
+function run(mode) {
+  const events = [];
+  const original = function (a, b) {
+    events.push("call");
+    return [this.id, a, b];
+  };
+  const receiver = {
+    id: "receiver",
+    Reflect: "property"
+  };
+  Object.defineProperty(receiver, "method", {
+    get: function () {
+      events.push("get");
+      if (mode === "getter") throw new Error("getter");
+      return original;
+    },
+    configurable: true
+  });
+  const replacement = function () {
+    throw new Error("replacement");
+  };
+  original.call = function () {
+    throw new Error("call touched");
+  };
+  original.apply = function () {
+    throw new Error("apply touched");
+  };
+  const iter = function* () {
+    events.push("spread");
+    yield 7;
+  };
+  function update() {
+    events.push("arg");
+    if (mode === "arg") throw new Error("arg");
+    Object.defineProperty(receiver, "method", {
+      value: replacement
+    });
+    return 8;
+  }
+  try {
+    const result = invoke(receiver["method"], receiver, [...iter(), update()], {
+      id: "localReflect"
+    }, {
+      id: "localGlobal"
+    }, 3);
+    return [events, ...result];
+  } catch (error) {
+    return [events, error.message];
+  }
+}
+console.log(JSON.stringify(run("live")));
+console.log(JSON.stringify(run("getter")));
+console.log(JSON.stringify(run("arg")));
+" to contain: "function*() {".
+  throw new AssertionError(msg);
+        ^
+    at assertStringIncludes (https://jsr.io/@std/assert/1.0.19/string_includes.ts:29:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/lazy-protected-invocation.test.js:176:3
+
+ FAILURES 
+
+lazy protected invocation validates plans and recovers after rejection => ./test/forms/lazy-protected-invocation.test.js:71:6
+lazy protected invocation materializes all four public proof inputs => ./test/forms/lazy-protected-invocation.test.js:139:6
+
+FAILED | 2 passed | 2 failed (11ms)
+

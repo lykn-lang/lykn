@@ -1,0 +1,2 @@
+error: JSR package manifest for '@std/assert' failed to load. A remote specifier was requested: "https://jsr.io/@std/assert/meta.json", but --no-remote is specified.
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/lazy-protected-invocation.test.js:1:66

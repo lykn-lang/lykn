@@ -1,0 +1,36 @@
+{
+  "inputs": {
+    "provider.js": {
+      "bytes": 455,
+      "imports": [],
+      "format": "esm"
+    },
+    "entry.js": {
+      "bytes": 1270,
+      "imports": [
+        {
+          "path": "provider.js",
+          "kind": "import-statement",
+          "original": "./provider.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "../../../bundles/native/live.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "entry.js",
+      "inputs": {
+        "provider.js": {
+          "bytesInOutput": 393
+        },
+        "entry.js": {
+          "bytesInOutput": 1228
+        }
+      },
+      "bytes": 1649
+    }
+  }
+}

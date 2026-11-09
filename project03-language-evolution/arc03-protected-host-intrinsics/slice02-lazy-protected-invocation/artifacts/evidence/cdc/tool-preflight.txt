@@ -1,0 +1,17 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+## codex/lazy-protected-invocation
+e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214
+407aba5e00b53ea682f073e6742a6de7324abaa7
+ea453bf687c8e5cf3c5f11aae372c5ca33be0c98
+b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f  /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild
+2d48dbed6151e653adc9ab5d8869cba012d167f13352e45880e59104e1e02b9b  /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/source/go.mod
+f2881c3c2d9d03858770bf7713c82ff7564c0893685cf708e49a111e5fd66ab2  /Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/source/go.sum
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269  project.json
+0.25.5
+/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild: Mach-O 64-bit executable arm64
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07)

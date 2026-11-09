@@ -1,0 +1,7 @@
+name: format-e6548178
+source: e654817870e6ba914cba9ca3847370c6c7627f5a
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: cargo fmt --all
+scoped env: inherited normal Rust toolchain; no Deno/npm/cache override
+outputs: target/arc03-s02/cc/e6548178/format/stdout.txt, stderr.txt, exit-status.txt
+scope reviewed: Rust workspace formatter; expected only authorized source Rust paths to change

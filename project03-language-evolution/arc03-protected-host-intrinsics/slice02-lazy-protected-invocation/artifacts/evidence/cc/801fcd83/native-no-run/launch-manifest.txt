@@ -1,0 +1,8 @@
+name: native-no-run-801fcd83
+source: 801fcd83f7a79dd945ac109c55d636dd512e8b64
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: cargo test -p lykn-lang --lib --no-run
+scoped env: TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-no-run/tmp XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-no-run/xdg npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-no-run/npm; inherited Rust/Cargo paths, no target override
+named check argv: ls -ld Cargo.toml crates/lykn-lang/Cargo.toml
+raw named check: raw/named-check.stdout.txt, raw/named-check.stderr.txt, raw/named-check.exit-status.txt
+raw command: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt

@@ -1,0 +1,9 @@
+Independent S02 native
+Source 801fcd83f7a79dd945ac109c55d636dd512e8b64 tree 1f714d151b82087a2a4abc7f853a265aad28315b
+Cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Tool preflight /private/tmp/lykn-s02-cdc.gadeVma9/tool-preflight.txt
+Require separate exclusive ownership return and actual current producer pins before dependent launch.
+Exact fixture/project config preflight in /private/tmp/lykn-s02-cdc.gadeVma9/independent/native/named-config.*
+Exact launch
+/usr/bin/env TMPDIR=/private/tmp/lykn-s02-cdc.gadeVma9/independent/native/tmp XDG_CACHE_HOME=/private/tmp/lykn-s02-cdc.gadeVma9/independent/native/xdg npm_config_cache=/private/tmp/lykn-s02-cdc.gadeVma9/independent/native/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_INTRINSIC_EVIDENCE_DIR=/private/tmp/lykn-s02-cdc.gadeVma9/independent/generated /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-660f810f98f77866 private_host_invocation --nocapture --test-threads=1 > /private/tmp/lykn-s02-cdc.gadeVma9/independent/native/stdout.raw 2> /private/tmp/lykn-s02-cdc.gadeVma9/independent/native/stderr.raw
+Process exit captured separately in /private/tmp/lykn-s02-cdc.gadeVma9/independent/native/exit-status.txt

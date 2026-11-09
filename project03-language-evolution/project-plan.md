@@ -9,6 +9,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+Arc03 [S02 eligible-module delivery](arc03-protected-host-intrinsics/slice02-lazy-protected-invocation/cdc-verification.md)
+is independently accepted at task-only `801fcd83`. The finite optimizer
+proof passed. Module-level Reflect plus direct eval still holds complete
+S02, Arc03 and S04 I3. Local release remains accepted S01 `e7b44c1`.
+
 The accepted Arc03 S01 source is now on local `release/0.6.x` at
 `e7b44c1`. [Independent release receipt](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#independent-local-release-validation--2026-11-09).
 S02 remains the open protected-intrinsic facility increment.
@@ -130,7 +135,7 @@ All6PHI/6HC open, source62e/release62e protected; no source started at planning.
 | --- | --- | --- |
 | Arc01 compiler semantic integrity | Completion/control meaning and later diagnostic/tool/API/doc composition | S04 source principle selected; ordered-reference implementation depends only on accepted Arc03/S02 facility/proof, not plan alone |
 | Arc02 ad hoc maintenance | Individually approved miscellany; accepted harness baseline history | Existing bounded S01 retained, no miscellaneous sweep |
-| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | [S01 independently accepted](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09) at `e7b44c1`. S02 facility and optimized-output proof remain open. |
+| Arc03 protected host intrinsics | Stable v1 host/source-error policy, typed hygienic access and zero-unused proof | [S01 independently accepted](arc03-protected-host-intrinsics/slice01-versioned-host-protection/closing-report.md#accepted-v1-source-protection--2026-11-09) at `e7b44c1`. [S02 eligible proof](arc03-protected-host-intrinsics/slice02-lazy-protected-invocation/cdc-verification.md) accepted; complete facility held on HI-05. |
 
 S04-H1 policy uncertainty is resolved by Operator's stronger source contract;
 implementation/proof dependencies remain. Original H1 alternatives/history and

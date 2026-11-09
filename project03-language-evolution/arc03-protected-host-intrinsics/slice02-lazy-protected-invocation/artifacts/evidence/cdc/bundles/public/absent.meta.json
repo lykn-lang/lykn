@@ -1,0 +1,21 @@
+{
+  "inputs": {
+    "absent.js": {
+      "bytes": 23,
+      "imports": []
+    }
+  },
+  "outputs": {
+    "../../../bundles/public/absent.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "absent.js",
+      "inputs": {
+        "absent.js": {
+          "bytesInOutput": 23
+        }
+      },
+      "bytes": 36
+    }
+  }
+}

@@ -1,0 +1,11 @@
+Arc03 S02 normal full Make validation
+Invocation: final-make-check-801fcd83-20261109
+State: PREPARED / NOT EXECUTED; conditional stage release already active after runtime proof.
+Source: branch codex/lazy-protected-invocation, commit 801fcd83f7a79dd945ac109c55d636dd512e8b64.
+Cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Exact argv: /usr/bin/make check
+Command: env TMPDIR=/private/tmp/arc03-s02-801fcd83-make-check-20261109/TMPDIR XDG_CACHE_HOME=/private/tmp/arc03-s02-801fcd83-make-check-20261109/XDG_CACHE_HOME npm_config_cache=/private/tmp/arc03-s02-801fcd83-make-check-20261109/npm-cache DENO_DIR=/Users/oubiwann/Library/Caches/deno /usr/bin/make check > /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/final-make-check-20261109/raw/stdout.raw 2> /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/final-make-check-20261109/raw/stderr.raw
+Environment: no LYKN_TEST_DENO override, no Cargo global flags; inherited PATH, CARGO_NET_GIT_FETCH_WITH_CLI and RUST_LOG retained. DENO_DIR fixed as stated; TMPDIR/XDG/npm roots are fresh.
+Deno pin: /opt/homebrew/bin/deno sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74. Pre-run product pins: bin/lykn and target/release/lykn both sha256 25c1dd708a098ce943c1a3c12910c270c8c468ae2ca37b3c2a818ef2878c4cd1.
+Named config preflight exact argv is named-config-ls.argv.txt. Actual stdout/stderr/status are named-config-ls.stdout.raw, named-config-ls.stderr.raw, named-config-ls.exit-status.txt. Result: exit 1 expected due absent named configs; source project.json present; remaining names absent. All actual raw files read back.
+Raw command stdout/stderr: raw/stdout.raw and raw/stderr.raw. The actual returned tool exit is written separately to raw/exit-status.txt.

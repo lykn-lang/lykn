@@ -1,0 +1,23 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+warning: unused import: `HashSet`
+ --> crates/lykn-lang/src/codegen/format.rs:7:33
+  |
+7 | use std::collections::{HashMap, HashSet};
+  |                                 ^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `invocation_helper_name` is never used
+  --> crates/lykn-lang/src/codegen/format.rs:62:19
+   |
+18 | impl JsWriter {
+   | ------------- method in this implementation
+...
+62 |     pub(crate) fn invocation_helper_name(&self) -> &str {
+   |                   ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `lykn-lang` (lib test) generated 2 warnings (run `cargo fix --lib -p lykn-lang --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.88s
+  Executable unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)

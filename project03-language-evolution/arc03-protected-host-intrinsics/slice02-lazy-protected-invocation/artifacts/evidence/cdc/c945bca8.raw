@@ -1,0 +1,12 @@
+commit c945bca8f35c7beba0e298edf036a2dc9b9b8f30
+tree 1c3fa4374708562a92a232837b4533aee858ab92
+parent e7b44c1cc8b36dc19c2faf6e9667b3f82d87c214
+author Duncan McGreggor <oubiwann@gmail.com> 1794252741 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794252741 -0600
+
+    Add private lazy protected invocation
+    
+    Lower compiler-owned saved calls through a feature-local hygienic helper.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

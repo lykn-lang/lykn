@@ -1,0 +1,9 @@
+name: retained-runtime-locator-native-801fcd83
+source: 801fcd83f7a79dd945ac109c55d636dd512e8b64
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/retained
+copy argv: /bin/cp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/retained/bundle.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/retained/retained.js
+compare argv: /usr/bin/cmp /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/retained/bundle.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/retained/retained.js
+hash argv: shasum -a 256 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/retained/bundle.js /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence/native/retained/retained.js
+raw copy stdout/stderr/status: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/native/retained/retained-alias/raw/cp.stdout.txt, cp.stderr.txt, cp.exit-status.txt
+raw compare stdout/stderr/status: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/native/retained/retained-alias/raw/cmp.stdout.txt, cmp.stderr.txt, cmp.exit-status.txt
+raw hash: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/optimizer/native/retained/retained-alias/raw/hash.txt

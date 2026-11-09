@@ -2,6 +2,11 @@
 
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
+[Arc03 S02](arc03-protected-host-intrinsics/slice02-lazy-protected-invocation/cdc-verification.md)
+has independent eligible-module delivery and PHI-04's exact optimizer
+proof at `801fcd83`. PHI-03, PHI-05, PHI-06, P-HI, CV and CI-04 remain
+open. The source-only HI-05 disposition preserves S04 I3's gate.
+
 Arc03 S01 local release integration at `e7b44c1` passed
 [independent validation](arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#independent-local-release-validation--2026-11-09).
 This adds release-checkout evidence without closing any further row.

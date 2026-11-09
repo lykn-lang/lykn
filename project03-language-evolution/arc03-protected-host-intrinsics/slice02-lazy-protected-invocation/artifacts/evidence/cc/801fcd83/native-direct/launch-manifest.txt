@@ -1,0 +1,9 @@
+name: native-private-direct-801fcd83
+source: 801fcd83f7a79dd945ac109c55d636dd512e8b64
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: target/debug/deps/lykn_lang-660f810f98f77866 private_host_invocation --nocapture --test-threads=1
+scoped env: TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/tmp XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/xdg npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/npm LYKN_INTRINSIC_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/native-direct/evidence
+pinned executable: raw/pin.txt
+named check argv: ls -ld target/debug/deps/lykn_lang-660f810f98f77866 test/fixtures/lazy-protected-invocation
+raw named check: raw/named-check.stdout.txt, raw/named-check.stderr.txt, raw/named-check.exit-status.txt
+raw command: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt

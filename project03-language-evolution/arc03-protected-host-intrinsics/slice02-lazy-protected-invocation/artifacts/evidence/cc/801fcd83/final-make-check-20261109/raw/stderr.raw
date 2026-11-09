@@ -1,0 +1,183 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 6.83s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Checking lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.60s
+test/surface/func_test.lykn: ok (12 top-level expressions)
+test/surface/class_test.lykn: ok (21 top-level expressions)
+test/surface/contract_predicates_test.lykn: ok (3 top-level expressions)
+test/surface/js-interop_test.lykn: ok (20 top-level expressions)
+test/surface/immutable-updates_test.lykn: ok (17 top-level expressions)
+test/surface/threading_test.lykn: ok (14 top-level expressions)
+test/surface/some-threading_test.lykn: ok (9 top-level expressions)
+test/surface/match_test.lykn: ok (13 top-level expressions)
+test/surface/conditional-binding_test.lykn: ok (11 top-level expressions)
+test/surface/cell_test.lykn: ok (15 top-level expressions)
+test/surface/type_test.lykn: ok (20 top-level expressions)
+test/surface/language-surface-runway_test.lykn: ok (6 top-level expressions)
+test/surface/class-runtime_test.lykn: ok (19 top-level expressions)
+test/surface/equality_test.lykn: ok (30 top-level expressions)
+test/surface/genfunc_test.lykn: ok (13 top-level expressions)
+test/surface/func-destructuring_test.lykn: ok (45 top-level expressions)
+test/surface/obj_test.lykn: ok (12 top-level expressions)
+test/surface/integration_test.lykn: ok (8 top-level expressions)
+test/surface/fn-lambda_test.lykn: ok (17 top-level expressions)
+test/surface/bind_test.lykn: ok (13 top-level expressions)
+test/surface/kernel-in-surface_test.lykn: ok (32 top-level expressions)
+✓ no lint findings (137 file(s))
+    Finished `release` profile [optimized] target(s) in 0.06s
+@lykn/lang built in target/lykn/build/lang/
+@lykn/browser built in target/lykn/build/browser/
+@lykn/testing built in target/lykn/build/testing/
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.62s
+     Running unittests src/lib.rs (target/debug/deps/lykn-2ae8974d4173c4ab)
+     Running unittests src/lib.rs (target/debug/deps/lykn_cli-8a470da61c5d1dbe)
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+     Running tests/async_exports.rs (target/debug/deps/async_exports-c55362a2e44ad97d)
+     Running tests/async_expression_values.rs (target/debug/deps/async_expression_values-ca9664e9a5eacb46)
+     Running tests/binding_scan_shadows_macros.rs (target/debug/deps/binding_scan_shadows_macros-fd50d569470d5725)
+     Running tests/compile_validation_parity.rs (target/debug/deps/compile_validation_parity-ed5da4aecd278839)
+     Running tests/contract_predicate_lowering.rs (target/debug/deps/contract_predicate_lowering-5224edfea80a9408)
+     Running tests/docs_pattern_gating.rs (target/debug/deps/docs_pattern_gating-ae4b027e538366e3)
+     Running tests/emission_failures.rs (target/debug/deps/emission_failures-ee1302ddd95a417d)
+     Running tests/lyk_runner_kernel_only.rs (target/debug/deps/lyk_runner_kernel_only-73b3a50bf9a68f89)
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)
+     Running tests/match_clause_validation.rs (target/debug/deps/match_clause_validation-7d8f7aa58e91c201)
+     Running tests/p11_lint_corpus.rs (target/debug/deps/p11_lint_corpus-16227e5fd02a4176)
+     Running tests/protected_host.rs (target/debug/deps/protected_host-365226f479af5deb)
+     Running tests/publishing_build_each_kind.rs (target/debug/deps/publishing_build_each_kind-4efe993a0ca4efc4)
+     Running tests/publishing_cross_package.rs (target/debug/deps/publishing_cross_package-0bd68c20a48f6e3a)
+     Running tests/publishing_dry_run.rs (target/debug/deps/publishing_dry_run-232f1d30250d8883)
+     Running tests/publishing_real_packages.rs (target/debug/deps/publishing_real_packages-17fce93296b0fb41)
+     Running tests/run_permissions.rs (target/debug/deps/run_permissions-cb745d231e220f77)
+     Running tests/scaffold_runway.rs (target/debug/deps/scaffold_runway-f848069633a8204d)
+     Running tests/semantic_roles.rs (target/debug/deps/semantic_roles-cb18f482652d85e9)
+     Running tests/source_context_path_routing.rs (target/debug/deps/source_context_path_routing-38c3f56ba114d909)
+     Running tests/template_string_boundary.rs (target/debug/deps/template_string_boundary-7a0f5808c52261b8)
+     Running tests/variadic_for_bodies.rs (target/debug/deps/variadic_for_bodies-dc06f81c033262f2)
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-60c4a58c1162abbf)
+     Running tests/a6_dispatch_conformance.rs (target/debug/deps/a6_dispatch_conformance-c588e4385d448d0b)
+     Running tests/cross_compiler.rs (target/debug/deps/cross_compiler-96b6423de30a094c)
+     Running tests/e2e_tests.rs (target/debug/deps/e2e_tests-5ed3bd71e89717e5)
+     Running tests/emission_results.rs (target/debug/deps/emission_results-ec634af31c6c32ab)
+     Running tests/icu_cross_compiler_tests.rs (target/debug/deps/icu_cross_compiler_tests-503643f8d131568f)
+     Running tests/macro_expansion.rs (target/debug/deps/macro_expansion-3f637ca9986c2625)
+   Doc-tests lykn
+   Doc-tests lykn_cli
+   Doc-tests lykn_lang
+  test/expander/auto-gensym_test.lykn -> target/lykn/test/test/expander/auto-gensym_test.js
+  test/expander/gensym-fn_test.lykn -> target/lykn/test/test/expander/gensym-fn_test.js
+  test/expander/import-macros_test.lykn -> target/lykn/test/test/expander/import-macros_test.js
+  test/expander/macro-errors_test.lykn -> target/lykn/test/test/expander/macro-errors_test.js
+  test/expander/macro-module-chain_test.lykn -> target/lykn/test/test/expander/macro-module-chain_test.js
+  test/expander/macro-module-errors_test.lykn -> target/lykn/test/test/expander/macro-module-errors_test.js
+  test/expander/macro-params_test.lykn -> target/lykn/test/test/expander/macro-params_test.js
+  test/expander/pipeline_test.lykn -> target/lykn/test/test/expander/pipeline_test.js
+  test/expander/sym-escape_test.lykn -> target/lykn/test/test/expander/sym-escape_test.js
+  test/forms/async-await_test.lykn -> target/lykn/test/test/forms/async-await_test.js
+  test/forms/break-continue_test.lykn -> target/lykn/test/test/forms/break-continue_test.js
+  test/forms/camel-case_test.lykn -> target/lykn/test/test/forms/camel-case_test.js
+  test/forms/class-async_test.lykn -> target/lykn/test/test/forms/class-async_test.js
+  test/forms/class-expr_test.lykn -> target/lykn/test/test/forms/class-expr_test.js
+  test/forms/class-fields_test.lykn -> target/lykn/test/test/forms/class-fields_test.js
+  test/forms/class-methods_test.lykn -> target/lykn/test/test/forms/class-methods_test.js
+  test/forms/class_test.lykn -> target/lykn/test/test/forms/class_test.js
+  test/forms/colon-syntax_test.lykn -> target/lykn/test/test/forms/colon-syntax_test.js
+  test/forms/compound-assignment_test.lykn -> target/lykn/test/test/forms/compound-assignment_test.js
+  test/forms/dd-37-batch1-mutation_test.lykn -> target/lykn/test/test/forms/dd-37-batch1-mutation_test.js
+  test/forms/dd-37-batch2-collections_test.lykn -> target/lykn/test/test/forms/dd-37-batch2-collections_test.js
+  test/forms/dd-37-batch3-threading_test.lykn -> target/lykn/test/test/forms/dd-37-batch3-threading_test.js
+  test/forms/dd-37-batch4-binding-macros_test.lykn -> target/lykn/test/test/forms/dd-37-batch4-binding-macros_test.js
+  test/forms/dd-37-batch56-fn-logical_test.lykn -> target/lykn/test/test/forms/dd-37-batch56-fn-logical_test.js
+  test/forms/dd-37-batch7-small-forms_test.lykn -> target/lykn/test/test/forms/dd-37-batch7-small-forms_test.js
+  test/forms/dd-37-batch8-large-forms_test.lykn -> target/lykn/test/test/forms/dd-37-batch8-large-forms_test.js
+  test/forms/dd-37-helper-extraction_test.lykn -> target/lykn/test/test/forms/dd-37-helper-extraction_test.js
+  test/forms/dd-37-not-pilot_test.lykn -> target/lykn/test/test/forms/dd-37-not-pilot_test.js
+  test/forms/dd-49_test.lykn -> target/lykn/test/test/forms/dd-49_test.js
+  test/forms/dd-50.6_test.lykn -> target/lykn/test/test/forms/dd-50.6_test.js
+  test/forms/dd-50_test.lykn -> target/lykn/test/test/forms/dd-50_test.js
+  test/forms/dd-52-import-macros-convergence_test.lykn -> target/lykn/test/test/forms/dd-52-import-macros-convergence_test.js
+  test/forms/dd-52-import-path-convergence_test.lykn -> target/lykn/test/test/forms/dd-52-import-path-convergence_test.js
+  test/forms/dd-58-kernel-escape_test.lykn -> target/lykn/test/test/forms/dd-58-kernel-escape_test.js
+  test/forms/dd-58-strict-mode-enforcement_test.lykn -> target/lykn/test/test/forms/dd-58-strict-mode-enforcement_test.js
+  test/forms/debugger_test.lykn -> target/lykn/test/test/forms/debugger_test.js
+  test/forms/default-params_test.lykn -> target/lykn/test/test/forms/default-params_test.js
+  test/forms/destructuring-array_test.lykn -> target/lykn/test/test/forms/destructuring-array_test.js
+  test/forms/destructuring-assignment_test.lykn -> target/lykn/test/test/forms/destructuring-assignment_test.js
+  test/forms/destructuring-nested_test.lykn -> target/lykn/test/test/forms/destructuring-nested_test.js
+  test/forms/destructuring-object_test.lykn -> target/lykn/test/test/forms/destructuring-object_test.js
+  test/forms/destructuring-params_test.lykn -> target/lykn/test/test/forms/destructuring-params_test.js
+  test/forms/do-while_test.lykn -> target/lykn/test/test/forms/do-while_test.js
+  test/forms/dynamic-import_test.lykn -> target/lykn/test/test/forms/dynamic-import_test.js
+  test/forms/export_test.lykn -> target/lykn/test/test/forms/export_test.js
+  test/forms/for-in_test.lykn -> target/lykn/test/test/forms/for-in_test.js
+  test/forms/for-of_test.lykn -> target/lykn/test/test/forms/for-of_test.js
+  test/forms/for_test.lykn -> target/lykn/test/test/forms/for_test.js
+  test/forms/function_test.lykn -> target/lykn/test/test/forms/function_test.js
+  test/forms/generator_test.lykn -> target/lykn/test/test/forms/generator_test.js
+  test/forms/get_test.lykn -> target/lykn/test/test/forms/get_test.js
+  test/forms/import_test.lykn -> target/lykn/test/test/forms/import_test.js
+  test/forms/kernel-escape_test.lykn -> target/lykn/test/test/forms/kernel-escape_test.js
+  test/forms/label_test.lykn -> target/lykn/test/test/forms/label_test.js
+  test/forms/object_test.lykn -> target/lykn/test/test/forms/object_test.js
+  test/forms/regex_test.lykn -> target/lykn/test/test/forms/regex_test.js
+  test/forms/seq_test.lykn -> target/lykn/test/test/forms/seq_test.js
+  test/forms/spread_test.lykn -> target/lykn/test/test/forms/spread_test.js
+  test/forms/switch_test.lykn -> target/lykn/test/test/forms/switch_test.js
+  test/forms/tag_test.lykn -> target/lykn/test/test/forms/tag_test.js
+  test/forms/template-escape-convergence_test.lykn -> target/lykn/test/test/forms/template-escape-convergence_test.js
+  test/forms/template_test.lykn -> target/lykn/test/test/forms/template_test.js
+  test/forms/ternary_test.lykn -> target/lykn/test/test/forms/ternary_test.js
+  test/forms/throw_test.lykn -> target/lykn/test/test/forms/throw_test.js
+  test/forms/try-catch_test.lykn -> target/lykn/test/test/forms/try-catch_test.js
+  test/forms/update-operators_test.lykn -> target/lykn/test/test/forms/update-operators_test.js
+  test/forms/while_test.lykn -> target/lykn/test/test/forms/while_test.js
+  test/integration/control-flow-macros_test.lykn -> target/lykn/test/test/integration/control-flow-macros_test.js
+  test/integration/data-structure-macros_test.lykn -> target/lykn/test/test/integration/data-structure-macros_test.js
+  test/integration/gensym-hygiene_test.lykn -> target/lykn/test/test/integration/gensym-hygiene_test.js
+  test/integration/macro-module_test.lykn -> target/lykn/test/test/integration/macro-module_test.js
+  test/integration/testing-dsl_test.lykn -> target/lykn/test/test/integration/testing-dsl_test.js
+  test/kernel/const_test.lyk -> target/lykn/test/test/kernel/const_test.js
+  test/kernel/function_star_test.lyk -> target/lykn/test/test/kernel/function_star_test.js
+  test/kernel/function_test.lyk -> target/lykn/test/test/kernel/function_test.js
+  test/kernel/let_test.lyk -> target/lykn/test/test/kernel/let_test.js
+  test/kernel/passthrough_test.lyk -> target/lykn/test/test/kernel/passthrough_test.js
+  test/kernel/var_test.lyk -> target/lykn/test/test/kernel/var_test.js
+  test/surface/bind_test.lykn -> target/lykn/test/test/surface/bind_test.js
+  test/surface/cell_test.lykn -> target/lykn/test/test/surface/cell_test.js
+  test/surface/class-runtime_test.lykn -> target/lykn/test/test/surface/class-runtime_test.js
+  test/surface/class_test.lykn -> target/lykn/test/test/surface/class_test.js
+  test/surface/conditional-binding_test.lykn -> target/lykn/test/test/surface/conditional-binding_test.js
+  test/surface/contract_predicates_test.lykn -> target/lykn/test/test/surface/contract_predicates_test.js
+  test/surface/equality_test.lykn -> target/lykn/test/test/surface/equality_test.js
+  test/surface/fn-lambda_test.lykn -> target/lykn/test/test/surface/fn-lambda_test.js
+  test/surface/func-destructuring_test.lykn -> target/lykn/test/test/surface/func-destructuring_test.js
+  test/surface/func_test.lykn -> target/lykn/test/test/surface/func_test.js
+  test/surface/genfunc_test.lykn -> target/lykn/test/test/surface/genfunc_test.js
+  test/surface/immutable-updates_test.lykn -> target/lykn/test/test/surface/immutable-updates_test.js
+  test/surface/integration_test.lykn -> target/lykn/test/test/surface/integration_test.js
+  test/surface/js-interop_test.lykn -> target/lykn/test/test/surface/js-interop_test.js
+  test/surface/kernel-in-surface_test.lykn -> target/lykn/test/test/surface/kernel-in-surface_test.js
+  test/surface/language-surface-runway_test.lykn -> target/lykn/test/test/surface/language-surface-runway_test.js
+  test/surface/match_test.lykn -> target/lykn/test/test/surface/match_test.js
+  test/surface/obj_test.lykn -> target/lykn/test/test/surface/obj_test.js
+  test/surface/some-threading_test.lykn -> target/lykn/test/test/surface/some-threading_test.js
+  test/surface/threading_test.lykn -> target/lykn/test/test/surface/threading_test.js
+  test/surface/type_test.lykn -> target/lykn/test/test/surface/type_test.js
+Compiled 99 .lykn test file(s) to target/lykn/test.
+info: no lykn blocks in docs/guides/12-deno/12-02-testing.md
+info: no lykn blocks in docs/guides/12-deno/12-03-task-runner.md
+info: no lykn blocks in docs/guides/12-deno/12-04-publishing.md
+info: no lykn blocks in examples/surface/browser-api.html
+info: no lykn blocks in examples/surface/browser-quotes.html
+info: no lykn blocks in examples/surface/browser-src.html
+info: no lykn blocks in examples/kernel/browser-api.html
+info: no lykn blocks in examples/kernel/browser-quotes.html
+info: no lykn blocks in examples/kernel/browser-src.html
+Generated 22 test file(s) with 482 block(s) (15 skipped)

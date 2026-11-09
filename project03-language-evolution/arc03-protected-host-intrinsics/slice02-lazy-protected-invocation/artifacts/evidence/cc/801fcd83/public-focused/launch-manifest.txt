@@ -1,0 +1,9 @@
+name: public-focused-product-801fcd83
+source: 801fcd83f7a79dd945ac109c55d636dd512e8b64
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: /opt/homebrew/bin/deno test --config project.json -A test/forms/lazy-protected-invocation.test.js
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/tmp XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/xdg npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/npm LYKN_INTRINSIC_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/801fcd83/public-focused/evidence
+pins: Deno 2.9.6 sha256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74; esbuild 0.25.5 sha256 b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f
+named check argv: ls -ld project.json test/forms/lazy-protected-invocation.test.js test/fixtures/lazy-protected-invocation
+raw named check: raw/named-check.stdout.txt, raw/named-check.stderr.txt, raw/named-check.exit-status.txt
+raw command: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt

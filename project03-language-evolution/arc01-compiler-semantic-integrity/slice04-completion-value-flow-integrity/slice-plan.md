@@ -26,6 +26,12 @@ does not prove the facility or completed S04 lowering. Ordered-reference I3
 waits specifically for accepted Arc03/S02; C02/boundary I1 can be independent.
 Arc03 consumes accepted62e, not unfinished S04: no circular dependency.
 
+[Arc03 S02](../../arc03-protected-host-intrinsics/slice02-lazy-protected-invocation/cdc-verification.md)
+has an independently accepted private request and finite proof for eligible
+modules. HI-05 keeps complete S02 and this slice's I3 ordered-reference
+consumer held. No S04 production or criterion changes follow from the
+partial result.
+
 All6CV/CI04 remain open; earlier H1 record below is preserved history. S04 source
 and unrelated completion stages do not gain execution authority from this new
 arc. Old budgets/tooling8/K0 unchanged, no rename/row transfer or release merge.

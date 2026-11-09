@@ -1,5 +1,10 @@
 # Arc03 protected host intrinsics ledger
 
+[Independent S02 review](slice02-lazy-protected-invocation/cdc-verification.md)
+accepted the eligible delivery at `801fcd83`. PHI-04 is done for the exact
+measured conditions. Complete facility, composition and arc handoff
+remain open under PHI-03, PHI-05 and PHI-06.
+
 [S02 is active](slice02-lazy-protected-invocation/ledger.md) with four-case
 proof for eligible modules and an explicit module-level interop hold.
 PHI-03–06 remain open pending their actual criteria.
@@ -53,6 +58,6 @@ own real source units, first substantive failure/REAL gap stops.
 | PHI-01 | Stable versioned v1 protected-host contract is shipped and scoped | Normative source doc/catalog/profile/version and exact policy independent of optimization/use | correctness-grade | Operator/H1 | done | slice01-versioned-host-protection/closing-report.md | Only ReflectApply profile/required slots, no broad builtin ban |
 | PHI-02 | Provable protected writes reject through real pipelines with legal source controls preserved | Native/public direct/normalized/local/import/macro/alias/removal controls and precise actual diagnostic/output behavior | correctness-grade | S01 | done | slice01-versioned-host-protection/cdc-verification.md | Source proof only; no universal alias/reflection/host detection |
 | PHI-03 | Private typed lazy backend invocation is hygienic and usable | Actual backend request API/output/receiver/order/name tests; no public AST/source primitive or mandatory runtime | correctness-grade | S02/S04 consumer | open | | S04 caller not claimed before its own implementation |
-| PHI-04 | Exact optimized artifact/effect conditions hold | Pinned native-esbuild + strict Deno absent/unused-shaken/retained-uncalled/live proof, full code/metafiles/raw results | correctness-grade | source-first/Project07 | open | | No PURE assertion/K edit/size-only proof |
+| PHI-04 | Exact optimized artifact/effect conditions hold | Pinned native-esbuild + strict Deno absent/unused-shaken/retained-uncalled/live proof, full code/metafiles/raw results | correctness-grade | source-first/Project07 | done | slice02-lazy-protected-invocation/cdc-verification.md | Finite eligible-module proof; no claim for HI-05 |
 | PHI-05 | Both source slices compose with independent real gates | Accepted exact source/diff/full normal/focused/runtime/citations and fresh independent composition proof | correctness-grade | work-verification | open | | CC proposal is not CDC acceptance |
 | PHI-06 | Docs/book/LLM/CC/API/S04/history/retro ownership reconciles | One normative source, actual refs/ranges/rowwalk/CDC retro, S07S08 book/human crosslinks and clean handoff | correctness-grade | PM/Operator | open | | No release integration/push or automatic unrelated scope |

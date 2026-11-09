@@ -1,0 +1,9 @@
+name: public-focused-product-test-b7dde69c
+source: b7dde69c9c120bf0606fb8aaccf5552ecc3678b7
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv: /opt/homebrew/bin/deno test --config project.json -A test/forms/lazy-protected-invocation.test.js
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/b7dde69/public-product/tmp XDG_CACHE_HOME=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/b7dde69/public-product/xdg npm_config_cache=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/b7dde69/public-product/npm LYKN_INTRINSIC_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc03-s02/cc/b7dde69/public-product/evidence
+pinned Deno sha256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+named check argv: ls -ld project.json test/forms/lazy-protected-invocation.test.js test/fixtures/lazy-protected-invocation
+raw named check: raw/named-check.stdout.txt, raw/named-check.stderr.txt, raw/named-check.exit-status.txt
+raw command: raw/stdout.txt, raw/stderr.txt, raw/exit-status.txt

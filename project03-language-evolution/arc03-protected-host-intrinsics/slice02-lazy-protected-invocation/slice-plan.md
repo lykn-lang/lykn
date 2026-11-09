@@ -2,12 +2,24 @@
 project: project03-language-evolution
 arc: arc03-protected-host-intrinsics
 slice: slice02-lazy-protected-invocation
-status: in-progress
+status: blocked
 planned-release: unassigned
 depends-on: [slice01-versioned-host-protection]
 ---
 
 # S02 — Lazy protected invocation
+
+## Current disposition — 2026-11-09
+
+The [independent review](cdc-verification.md) accepts the eligible-module
+delivery and exact four-case proof at `801fcd83`. It retains the actual
+[CC return](closing-report.md) and [CDC retrospective](cdc-retrospective.md).
+Refinement 04 of 5 is spent. HI-05 blocks complete S02; the Operator's
+authorization to plan and implement the next source-ready step was applied
+to the [bounded design pass](cdc-verification.md#hi-05-design-disposition).
+The source is unchanged at this gate. The outstanding decision concerns
+generated module imports or direct-eval lexical behavior. No S04 production,
+release propagation or original tooling advance.
 
 [Refinement 03](cc-prompt-iteration03.md) assigns the observed focused
 assertion and unused Rust corrections. Normal refinement 03 of 5 is

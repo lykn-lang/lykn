@@ -1,0 +1,10 @@
+
+running 5 tests
+test codegen::tests::private_host_invocation_declines_module_reflect_binding ... ok
+test codegen::tests::private_host_invocation_is_lazy_backend_and_uses_exact_node ... ok
+test codegen::tests::private_host_invocation_materializes_four_native_proof_inputs ... ok
+test codegen::tests::private_host_invocation_requires_stable_atoms_and_owned_anchor ... ok
+test codegen::tests::private_host_invocation_uses_module_binding_roles ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 1152 filtered out; finished in 0.00s
+
