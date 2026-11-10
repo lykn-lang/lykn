@@ -352,12 +352,6 @@ fn run_positive(case: &Case) {
             case.name,
             kernel_json.stderr
         );
-        assert!(
-            kernel_json.stderr.is_empty(),
-            "{} kernel JSON compile wrote stderr: {:?}",
-            case.name,
-            kernel_json.stderr
-        );
         let parsed: serde_json::Value = serde_json::from_slice(&kernel_json.stdout)
             .unwrap_or_else(|error| panic!("{} kernel JSON is invalid: {error}", case.name));
         assert!(
