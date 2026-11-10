@@ -3435,6 +3435,47 @@ mod tests {
     }
 
     #[test]
+    fn nested_unknown_kernel_escape_is_a_checked_classification_failure() {
+        let source = "(bind result (kernel:objec (key 7)))";
+        let forms = crate::reader::read(source).expect("parse source");
+        let form = SurfaceForm::KernelPassthrough {
+            raw: forms[0].clone(),
+            span: forms[0].span(),
+        };
+        let error = emit_form(&form, &mut ctx(), &reg()).expect_err("unknown escape must fail");
+        let LyknError::Classify(diagnostic) = error else {
+            panic!("expected checked classifier error");
+        };
+        assert_eq!(diagnostic.severity, Severity::Error);
+        assert_eq!(diagnostic.span.start.line, 1);
+        assert_eq!(diagnostic.span.start.column, 14);
+        assert_eq!(diagnostic.suggestion.as_deref(), Some("kernel:object"));
+        assert_eq!(
+            diagnostic.message,
+            "unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?"
+        );
+    }
+
+    #[test]
+    fn tagged_kernel_escape_lookalike_remains_an_ordinary_call() {
+        let source = "(kernel:objec (key 7))";
+        let mut forms = crate::reader::read(source).expect("parse source");
+        let SExpr::List { values, .. } = &mut forms[0] else {
+            panic!("expected parsed list");
+        };
+        values[0] = values[0].clone().with_name_res(NameRes::BindingRef);
+        let span = forms[0].span();
+        let form = SurfaceForm::KernelPassthrough {
+            raw: forms[0].clone(),
+            span,
+        };
+        let emitted = emit_form(&form, &mut ctx(), &reg()).expect("tagged call should emit");
+        let values = emitted[0].as_list().expect("ordinary call list");
+        assert_eq!(values[0].as_atom(), Some("kernel:objec"));
+        assert_eq!(values[0].name_res(), NameRes::BindingRef);
+    }
+
+    #[test]
     fn variadic_loop_and_switch_bodies_keep_grouped_bindings_as_siblings() {
         let grouped_bind = list(vec![
             atom("bind"),

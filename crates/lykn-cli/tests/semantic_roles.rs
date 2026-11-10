@@ -75,6 +75,22 @@ const FIXTURES: &[Case] = &[
         name: "match-structural-pattern-macros",
         expected: b"[7]\n",
     },
+    Case {
+        name: "original-match-reserved-role",
+        expected: b"[11,22,14]\n",
+    },
+    Case {
+        name: "original-match-kernel-object",
+        expected: b"[7]\n",
+    },
+    Case {
+        name: "bound-match-conditional-operand",
+        expected: b"[7,8]\n",
+    },
+    Case {
+        name: "nested-kernel-object-roles",
+        expected: b"[11,11,7,9,6]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -370,6 +386,63 @@ fn match_clauses_keep_bindings_local_to_guard_and_body() {
 #[test]
 fn match_patterns_stay_structural_while_clause_macros_expand() {
     run_positive(&FIXTURES[15]);
+}
+
+#[test]
+fn original_match_reserved_role_is_preserved() {
+    run_positive(&FIXTURES[16]);
+}
+
+#[test]
+fn original_match_kernel_object_is_preserved() {
+    run_positive(&FIXTURES[17]);
+}
+
+#[test]
+fn bound_match_conditional_operand_is_a_value() {
+    run_positive(&FIXTURES[18]);
+}
+
+#[test]
+fn nested_kernel_object_retains_structural_and_executable_roles() {
+    run_positive(&FIXTURES[19]);
+}
+
+#[test]
+fn unknown_nested_kernel_escape_fails_compile_without_outputs() {
+    let source = b"(bind result (kernel:objec (key 7)))\n";
+    let temp = TempDir::new().expect("create unknown-kernel output directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated XDG cache");
+    let source_path = temp.path().join("unknown.lykn");
+    fs::write(&source_path, source).expect("write exact unknown-kernel source");
+    let output_path = temp.path().join("unknown.js");
+    let compile = execute_recorded(
+        "native-unknown-kernel-compile",
+        &source_path,
+        source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&output_path),
+    );
+    let generated = fs::read(&output_path).ok();
+    let dts = fs::read(output_path.with_extension("d.ts")).ok();
+    record_generated(
+        "native-unknown-kernel-compile",
+        generated.as_deref(),
+        dts.as_deref(),
+    );
+
+    assert_eq!(compile.status.code(), Some(1));
+    let stderr = String::from_utf8_lossy(&compile.stderr);
+    assert!(stderr.contains("unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?"));
+    assert!(stderr.contains("1:14"), "missing parsed source position: {stderr}");
+    assert!(generated.is_none(), "failed compile emitted JavaScript");
+    assert!(dts.is_none(), "failed compile emitted declarations");
 }
 
 #[test]

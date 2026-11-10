@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert";
+import { assertEquals, assertThrows } from "jsr:@std/assert";
 import { lykn } from "../../packages/lang/mod.js";
 import { resetGensym } from "../../packages/lang/expander.js";
 
@@ -19,6 +19,17 @@ const CASES = [
   { name: "statement-match-protected-preservation", expected: "[7,[7]]\n" },
   { name: "match-clause-scope", expected: "[11,22,14]\n" },
   { name: "match-structural-pattern-macros", expected: "[7]\n" },
+  { name: "original-match-reserved-role", expected: "[11,22,14]\n" },
+  { name: "original-match-kernel-object", expected: "[7]\n" },
+  { name: "bound-match-conditional-operand", expected: "[7,8]\n" },
+  { name: "nested-kernel-object-roles", expected: "[11,11,7,9,6]\n" },
+];
+
+const RESERVED_MATCH_CASES = [
+  ["(match 0 (if 1) (_ 0))", "pattern binding"],
+  ["(match 0 (_ :when (do (bind if 0) true) 1))", "binding name"],
+  ["(match 0 (_ (bind if 0) 1))", "binding name"],
+  ["(match (do (bind for 0) 0) (if 1) (_ 0))", "pattern binding"],
 ];
 
 Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", async (t) => {
@@ -100,4 +111,22 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
       }
     });
   }
+});
+
+Deno.test("public D2 sees match binders and executable regions in source order", () => {
+  for (const [source, kind] of RESERVED_MATCH_CASES) {
+    const error = assertThrows(() => lykn(source));
+    assertEquals(
+      error.message,
+      `'if' is a JavaScript reserved word and cannot be used as a lykn ${kind}; rename it (e.g. \`if_\`)`,
+    );
+  }
+});
+
+Deno.test("public compiler rejects unknown nested kernel escape", () => {
+  const error = assertThrows(() => lykn("(bind result (kernel:objec (key 7)))\n"));
+  assertEquals(
+    error.message,
+    "unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?",
+  );
 });
