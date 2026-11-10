@@ -1562,10 +1562,67 @@ fn is_direct_computed_member_call_head(head: &SExpr) -> bool {
         )
 }
 
-fn is_normalized_spread_argument(value: &SExpr) -> bool {
-    value
-        .as_list()
-        .is_some_and(|values| values.first().and_then(SExpr::as_form_head) == Some("spread"))
+struct OrderedCallArgumentPlan {
+    prefix: Vec<SExpr>,
+    value: SExpr,
+    spread_operand: Option<SExpr>,
+}
+
+fn direct_call_argument_plan(
+    expr: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Option<OrderedCallArgumentPlan> {
+    let spread_root = expr.as_list().and_then(|values| {
+        let head = values.first().and_then(SExpr::as_form_head)?;
+        matches!(head, "spread" | "kernel:spread").then_some((head, values))
+    });
+    let Some((head, values)) = spread_root else {
+        let (prefix, value) = emit_direct_header_value(expr, ctx, registry);
+        return Some(OrderedCallArgumentPlan {
+            prefix,
+            value,
+            spread_operand: None,
+        });
+    };
+    let normalized = if head == "kernel:spread" {
+        match crate::classifier::forms::classify_kernel_escape("spread", values, expr.span()) {
+            Ok(normalized) => normalized,
+            Err(error) => {
+                ctx.record_fatal(LyknError::Classify(error));
+                return None;
+            }
+        }
+    } else {
+        expr.clone()
+    };
+    let normalized_values = normalized.as_list().unwrap_or_default();
+    if normalized_values.len() != 2 {
+        ctx.record_fatal(codegen_error("spread takes exactly one argument", expr.span()));
+        return None;
+    }
+    let spread_head = normalized_values[0].clone();
+    let operand = normalized_values[1].clone();
+    let (prefix, operand) = emit_direct_header_value(&operand, ctx, registry);
+    let value = SExpr::List {
+        values: vec![spread_head, operand.clone()],
+        span: expr.span(),
+    };
+    Some(OrderedCallArgumentPlan {
+        prefix,
+        value,
+        spread_operand: Some(operand),
+    })
+}
+
+fn direct_call_argument_plans(
+    args: &[SExpr],
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Option<Vec<OrderedCallArgumentPlan>> {
+    args.iter()
+        .map(|arg| direct_call_argument_plan(arg, ctx, registry))
+        .collect()
 }
 
 enum OrderedCallPlan {
@@ -1574,11 +1631,10 @@ enum OrderedCallPlan {
         statements: Vec<SExpr>,
         values: Vec<SExpr>,
     },
-    Invalid,
+    LiftedSpread {
+        arguments: Vec<OrderedCallArgumentPlan>,
+    },
 }
-
-const COMPUTED_MEMBER_SPREAD_ERROR: &str =
-    "ordered computed member call with spread and lifted operands is not supported";
 
 struct ComputedMemberReferencePlan {
     get_head: SExpr,
@@ -1594,10 +1650,72 @@ struct MemberInvocationPlan {
     receiver: SExpr,
     key_prefix: Vec<SExpr>,
     key: SExpr,
-    argument_prefix: Vec<SExpr>,
-    arguments: Vec<SExpr>,
+    arguments: MemberInvocationArguments,
     call_span: Span,
     member_span: Span,
+}
+
+enum MemberInvocationArguments {
+    Values { prefix: Vec<SExpr>, values: Vec<SExpr> },
+    Spread(Vec<OrderedCallArgumentPlan>),
+}
+
+fn append_materialized_argument(
+    statements: &mut Vec<SExpr>,
+    argv: &SExpr,
+    cursor: &SExpr,
+    value: SExpr,
+) {
+    statements.push(list(vec![
+        atom("="),
+        list(vec![atom("get"), argv.clone(), cursor.clone()]),
+        value,
+    ]));
+    statements.push(list(vec![
+        atom("="),
+        cursor.clone(),
+        list(vec![atom("+"), cursor.clone(), num(1.0)]),
+    ]));
+    statements.push(list(vec![
+        atom("="),
+        list(vec![atom("get"), argv.clone(), str_lit("length")]),
+        cursor.clone(),
+    ]));
+}
+
+fn materialize_spread_call_arguments(
+    arguments: Vec<OrderedCallArgumentPlan>,
+    span: Span,
+    ctx: &mut EmitterContext,
+) -> (Vec<SExpr>, SExpr) {
+    let argv = SExpr::completion_value_atom(ctx.next_completion_value_id(), span);
+    let cursor = SExpr::completion_value_atom(ctx.next_completion_value_id(), span);
+    let object = list(vec![
+        atom("object"),
+        list(vec![str_lit("__proto__"), atom("null")]),
+        list(vec![atom("length"), num(0.0)]),
+    ]);
+    let mut statements = vec![
+        list(vec![atom("const"), argv.clone(), object]),
+        list(vec![atom("let"), cursor.clone(), num(0.0)]),
+    ];
+    for argument in arguments {
+        statements.extend(argument.prefix);
+        if let Some(operand) = argument.spread_operand {
+            let item = SExpr::completion_value_atom(ctx.next_completion_value_id(), operand.span());
+            let mut body = Vec::new();
+            append_materialized_argument(&mut body, &argv, &cursor, item.clone());
+            statements.push(list(
+                std::iter::once(atom("for-of"))
+                    .chain([item, operand])
+                    .chain(body)
+                    .collect(),
+            ));
+        } else {
+            append_materialized_argument(&mut statements, &argv, &cursor, argument.value);
+        }
+    }
+    (statements, argv)
 }
 
 fn computed_member_call_parts(
@@ -1648,23 +1766,17 @@ fn computed_member_call_parts(
 }
 
 fn plan_ordered_call_arguments(
-    plans: Vec<(Vec<SExpr>, SExpr)>,
-    span: Span,
-    error_message: &str,
+    plans: Vec<OrderedCallArgumentPlan>,
     force_lift: bool,
     ctx: &mut EmitterContext,
 ) -> OrderedCallPlan {
-    let last_prefix = plans.iter().rposition(|(prefix, _)| !prefix.is_empty());
-    if (force_lift || last_prefix.is_some())
-        && plans
-            .iter()
-            .any(|(_, value)| is_normalized_spread_argument(value))
-    {
-        ctx.record_fatal(codegen_error(error_message, span));
-        return OrderedCallPlan::Invalid;
-    }
+    let last_prefix = plans.iter().rposition(|plan| !plan.prefix.is_empty());
+    let has_spread = plans.iter().any(|plan| plan.spread_operand.is_some());
     let Some(last_prefix) = last_prefix else {
-        let values = plans.into_iter().map(|(_, value)| value).collect();
+        let values = plans.into_iter().map(|plan| plan.value).collect();
+        if has_spread {
+            return OrderedCallPlan::Unlifted(values);
+        }
         return if force_lift {
             OrderedCallPlan::Lifted {
                 statements: Vec::new(),
@@ -1674,22 +1786,26 @@ fn plan_ordered_call_arguments(
             OrderedCallPlan::Unlifted(values)
         };
     };
+    if has_spread {
+        return OrderedCallPlan::LiftedSpread { arguments: plans };
+    }
     let mut statements = Vec::new();
     let mut values = Vec::with_capacity(plans.len());
-    for (index, (prefix, value)) in plans.into_iter().enumerate() {
+    for (index, plan) in plans.into_iter().enumerate() {
         if index > last_prefix {
-            values.push(value);
-        } else if prefix.is_empty() {
-            let saved = SExpr::completion_value_atom(ctx.next_completion_value_id(), value.span());
+            values.push(plan.value);
+        } else if plan.prefix.is_empty() {
+            let saved =
+                SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.value.span());
             statements.push(list(vec![
                 atom("const"),
                 saved.clone(),
-                preserve_anonymous_name(value),
+                preserve_anonymous_name(plan.value),
             ]));
             values.push(saved);
         } else {
-            statements.extend(prefix);
-            values.push(value);
+            statements.extend(plan.prefix);
+            values.push(plan.value);
         }
     }
     OrderedCallPlan::Lifted { statements, values }
@@ -1704,7 +1820,6 @@ fn member_invocation_statements(
         SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.member_span);
     let callable_temp =
         SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.member_span);
-    let argv_temp = SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.member_span);
     let mut statements = plan.receiver_prefix;
     statements.push(list(vec![
         atom("const"),
@@ -1720,21 +1835,62 @@ fn member_invocation_statements(
             span: plan.member_span,
         },
     ]));
-    statements.extend(plan.argument_prefix);
-    statements.push(list(vec![
-        atom("const"),
-        argv_temp.clone(),
-        list(
-            std::iter::once(atom("array"))
-                .chain(plan.arguments)
-                .collect(),
-        ),
-    ]));
+    let argv = match plan.arguments {
+        MemberInvocationArguments::Values { prefix, values } => {
+            let argv_temp =
+                SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.member_span);
+            statements.extend(prefix);
+            statements.push(list(vec![
+                atom("const"),
+                argv_temp.clone(),
+                list(std::iter::once(atom("array")).chain(values).collect()),
+            ]));
+            argv_temp
+        }
+        MemberInvocationArguments::Spread(arguments) => {
+            let (materialization, argv) =
+                materialize_spread_call_arguments(arguments, plan.call_span, ctx);
+            statements.extend(materialization);
+            argv
+        }
+    };
     let mut callable_reference = callable_temp;
     callable_reference.mark_host_invocation();
     let invocation = SExpr::List {
-        values: vec![callable_reference, receiver_temp, argv_temp],
+        values: vec![callable_reference, receiver_temp, argv],
         span: plan.call_span,
+    };
+    statements.push(match destination {
+        Some(destination) => consume_direct_value(destination, invocation),
+        None => invocation,
+    });
+    statements
+}
+
+fn lexical_spread_invocation_statements(
+    head: &SExpr,
+    arguments: Vec<OrderedCallArgumentPlan>,
+    span: Span,
+    destination: Option<&DirectDestination>,
+    ctx: &mut EmitterContext,
+) -> Vec<SExpr> {
+    let callee = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
+    let receiver = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
+    let mut statements = vec![
+        list(vec![atom("const"), callee.clone(), head.clone()]),
+        list(vec![
+            atom("const"),
+            receiver.clone(),
+            list(vec![atom("void"), num(0.0)]),
+        ]),
+    ];
+    let (materialization, argv) = materialize_spread_call_arguments(arguments, span, ctx);
+    statements.extend(materialization);
+    let mut callable_reference = callee;
+    callable_reference.mark_host_invocation();
+    let invocation = SExpr::List {
+        values: vec![callable_reference, receiver, argv],
+        span,
     };
     statements.push(match destination {
         Some(destination) => consume_direct_value(destination, invocation),
@@ -1776,18 +1932,35 @@ fn emit_direct_computed_member_call(
         key_prefix,
         key,
     };
-    let argument_plans = args
-        .iter()
-        .map(|arg| emit_direct_header_value(arg, ctx, registry))
-        .collect::<Vec<_>>();
+    let Some(argument_plans) = direct_call_argument_plans(args, ctx, registry) else {
+        return DirectTailResult::Value(atom("undefined"));
+    };
     let force_lift = !reference.receiver_prefix.is_empty() || !reference.key_prefix.is_empty();
-    match plan_ordered_call_arguments(
-        argument_plans,
-        span,
-        COMPUTED_MEMBER_SPREAD_ERROR,
-        force_lift,
-        ctx,
-    ) {
+    match plan_ordered_call_arguments(argument_plans, force_lift, ctx) {
+        OrderedCallPlan::Unlifted(arguments) if force_lift => {
+            let receiver_temp =
+                SExpr::completion_value_atom(ctx.next_completion_value_id(), reference.member_span);
+            let mut statements = reference.receiver_prefix;
+            statements.push(list(vec![
+                atom("const"),
+                receiver_temp.clone(),
+                preserve_anonymous_name(reference.receiver),
+            ]));
+            statements.extend(reference.key_prefix);
+            let member = SExpr::List {
+                values: vec![reference.get_head, receiver_temp, reference.key],
+                span: reference.member_span,
+            };
+            let call = SExpr::List {
+                values: std::iter::once(member).chain(arguments).collect(),
+                span,
+            };
+            statements.push(match destination {
+                Some(destination) => consume_direct_value(destination, call),
+                None => call,
+            });
+            DirectTailResult::Statements(statements)
+        }
         OrderedCallPlan::Unlifted(arguments) => DirectTailResult::Value(SExpr::List {
             values: std::iter::once(SExpr::List {
                 values: vec![reference.get_head, reference.receiver, reference.key],
@@ -1806,15 +1979,31 @@ fn emit_direct_computed_member_call(
                 receiver: reference.receiver,
                 key_prefix: reference.key_prefix,
                 key: reference.key,
-                argument_prefix,
-                arguments,
+                arguments: MemberInvocationArguments::Values {
+                    prefix: argument_prefix,
+                    values: arguments,
+                },
                 call_span: span,
                 member_span: reference.member_span,
             },
             destination,
             ctx,
         )),
-        OrderedCallPlan::Invalid => DirectTailResult::Value(atom("undefined")),
+        OrderedCallPlan::LiftedSpread { arguments } => {
+            DirectTailResult::Statements(member_invocation_statements(
+                MemberInvocationPlan {
+                    receiver_prefix: reference.receiver_prefix,
+                    receiver: reference.receiver,
+                    key_prefix: reference.key_prefix,
+                    key: reference.key,
+                    arguments: MemberInvocationArguments::Spread(arguments),
+                    call_span: span,
+                    member_span: reference.member_span,
+                },
+                destination,
+                ctx,
+            ))
+        }
     }
 }
 
@@ -1829,17 +2018,10 @@ fn emit_direct_lexical_call(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> DirectTailResult {
-    let plans = args
-        .iter()
-        .map(|arg| emit_direct_header_value(arg, ctx, registry))
-        .collect::<Vec<_>>();
-    let (mut statements, values) = match plan_ordered_call_arguments(
-        plans,
-        span,
-        "ordered lexical call with spread and lifted arguments is not supported",
-        false,
-        ctx,
-    ) {
+    let Some(plans) = direct_call_argument_plans(args, ctx, registry) else {
+        return DirectTailResult::Value(atom("undefined"));
+    };
+    let (mut statements, values) = match plan_ordered_call_arguments(plans, false, ctx) {
         OrderedCallPlan::Unlifted(values) => {
             return DirectTailResult::Value(SExpr::List {
                 values: std::iter::once(head.clone()).chain(values).collect(),
@@ -1847,7 +2029,15 @@ fn emit_direct_lexical_call(
             });
         }
         OrderedCallPlan::Lifted { statements, values } => (statements, values),
-        OrderedCallPlan::Invalid => return DirectTailResult::Value(atom("undefined")),
+        OrderedCallPlan::LiftedSpread { arguments } => {
+            return DirectTailResult::Statements(lexical_spread_invocation_statements(
+                head,
+                arguments,
+                span,
+                destination,
+                ctx,
+            ));
+        }
     };
     let callee = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
     statements.insert(0, list(vec![atom("const"), callee.clone(), head.clone()]));
@@ -1881,25 +2071,23 @@ fn emit_direct_member_call(
             span,
         });
     };
-    let plans = args
-        .iter()
-        .map(|arg| emit_direct_header_value(arg, ctx, registry))
-        .collect::<Vec<_>>();
-    let (argument_statements, planned_args) = match plan_ordered_call_arguments(
-        plans,
-        span,
-        "ordered member call with spread and lifted arguments is not supported",
-        false,
-        ctx,
-    ) {
+    let Some(plans) = direct_call_argument_plans(args, ctx, registry) else {
+        return DirectTailResult::Value(atom("undefined"));
+    };
+    let arguments = match plan_ordered_call_arguments(plans, false, ctx) {
         OrderedCallPlan::Unlifted(values) => {
             return DirectTailResult::Value(SExpr::List {
                 values: std::iter::once(head.clone()).chain(values).collect(),
                 span,
             });
         }
-        OrderedCallPlan::Lifted { statements, values } => (statements, values),
-        OrderedCallPlan::Invalid => return DirectTailResult::Value(atom("undefined")),
+        OrderedCallPlan::Lifted { statements, values } => {
+            MemberInvocationArguments::Values {
+                prefix: statements,
+                values,
+            }
+        }
+        OrderedCallPlan::LiftedSpread { arguments } => MemberInvocationArguments::Spread(arguments),
     };
     DirectTailResult::Statements(member_invocation_statements(
         MemberInvocationPlan {
@@ -1907,8 +2095,7 @@ fn emit_direct_member_call(
             receiver: atom(base),
             key_prefix: Vec::new(),
             key: str_lit(&to_js_identifier(property)),
-            argument_prefix: argument_statements,
-            arguments: planned_args,
+            arguments,
             call_span: span,
             member_span: head.span(),
         },

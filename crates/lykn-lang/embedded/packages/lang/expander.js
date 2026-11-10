@@ -1221,10 +1221,7 @@ function isDirectResultRegion(result) {
     isDirectTransfer(result) || isExpandedStatement(result);
 }
 
-function expandDirectValuePlan(form, env) {
-  const identity = {};
-  const use = { kind: "Assign", identity };
-  const result = expandAt(form, env, use);
+function directValuePlanFromResult(result, identity, use) {
   if (!isDirectResultRegion(result)) return { prefix: [], value: result };
   const destination = completionValueAtom(identity);
   const statements = directResultStatements(result, use);
@@ -1235,6 +1232,38 @@ function expandDirectValuePlan(form, env) {
     prefix: [array(sym("let"), destination), body],
     value: destination,
   };
+}
+
+function expandDirectValuePlan(form, env) {
+  const identity = {};
+  const use = { kind: "Assign", identity };
+  return directValuePlanFromResult(expandAt(form, env, use), identity, use);
+}
+
+function expandDirectSpreadArgument(form, env, directCallArgumentRequest) {
+  if (form.values.length !== 2) {
+    throw new Error("spread takes exactly one argument");
+  }
+  const operand = expandDirectValuePlan(form.values[1], env);
+  const ordinaryValue = markKernel({ ...form, values: [form.values[0], operand.value] });
+  directCallArgumentRequest.result = {
+    kind: "spread",
+    prefix: operand.prefix,
+    value: operand.value,
+    ordinaryValue,
+  };
+  directCallArgumentRequest.handled = true;
+  return ordinaryValue;
+}
+
+function expandDirectCallArgument(form, env) {
+  const identity = {};
+  const use = { kind: "Assign", identity };
+  const request = { handled: false, result: null };
+  const result = expandAt(form, env, use, null, request);
+  if (request.handled) return request.result;
+  const plan = directValuePlanFromResult(result, identity, use);
+  return { kind: "value", ...plan };
 }
 
 function directWriteNameIsAdmitted(name) {
@@ -1339,25 +1368,68 @@ function isDirectLexicalCallHead(head) {
   return !["eval", "super", "new"].includes(toJsIdentifier(head.value));
 }
 
-function isNormalizedSpreadArgument(value) {
-  return value?.type === "list" && value.values.length === 2 &&
-    formHead(value.values[0]) === "spread";
+function callArgumentValue(plan) {
+  return plan.kind === "spread" ? plan.ordinaryValue : plan.value;
 }
 
-function planDirectCallArguments(plans, errorMessage, forceLift = false) {
+function appendMaterializedArgument(statements, argv, cursor, value) {
+  statements.push(markKernel(array(
+    sym("="),
+    markKernel(array(sym("get"), argv, cursor)),
+    value,
+  )));
+  statements.push(markKernel(array(
+    sym("="),
+    cursor,
+    markKernel(array(sym("+"), cursor, { type: "number", value: 1 })),
+  )));
+  statements.push(markKernel(array(
+    sym("="),
+    markKernel(array(sym("get"), argv, { type: "string", value: "length" })),
+    cursor,
+  )));
+}
+
+function materializeSpreadArguments(argumentsPlan) {
+  const argv = completionValueAtom({});
+  const cursor = completionValueAtom({});
+  const object = markKernel(array(
+    sym("object"),
+    array({ type: "string", value: "__proto__" }, sym("null")),
+    array(sym("length"), { type: "number", value: 0 }),
+  ));
+  const statements = [
+    array(sym("const"), argv, object),
+    array(sym("let"), cursor, { type: "number", value: 0 }),
+  ];
+  for (const argument of argumentsPlan) {
+    statements.push(...argument.prefix);
+    if (argument.kind === "spread") {
+      const item = completionValueAtom({});
+      const body = [];
+      appendMaterializedArgument(body, argv, cursor, item);
+      statements.push(markKernel(array(sym("for-of"), item, argument.value, ...body)));
+    } else {
+      appendMaterializedArgument(statements, argv, cursor, argument.value);
+    }
+  }
+  return { statements, argv };
+}
+
+function planDirectCallArguments(plans, forceLift = false) {
   let lastPrefix = -1;
   for (let index = 0; index < plans.length; index++) {
     if (plans[index].prefix.length > 0) lastPrefix = index;
   }
-  if ((forceLift || lastPrefix >= 0) &&
-      plans.some(plan => isNormalizedSpreadArgument(plan.value))) {
-    throw new Error(errorMessage);
-  }
+  const hasSpread = plans.some(plan => plan.kind === "spread");
   if (lastPrefix < 0) {
+    const values = plans.map(callArgumentValue);
+    if (hasSpread && forceLift) return { kind: "reference-only", values };
     return forceLift
-      ? { kind: "lifted", prefix: [], values: plans.map(plan => plan.value) }
-      : { kind: "unlifted", values: plans.map(plan => plan.value) };
+      ? { kind: "lifted", prefix: [], values }
+      : { kind: "unlifted", values };
   }
+  if (hasSpread) return { kind: "lifted-spread", arguments: plans };
   const prefix = [];
   const values = [];
   for (let index = 0; index < plans.length; index++) {
@@ -1396,11 +1468,8 @@ function directMemberCallParts(head) {
 
 function expandDirectMemberCall(form, env, use, memberParts) {
   const { base, property } = memberParts;
-  const plans = form.values.slice(1).map(argument => expandDirectValuePlan(argument, env));
-  const argumentPlan = planDirectCallArguments(
-    plans,
-    "ordered member call with spread and lifted arguments is not supported",
-  );
+  const plans = form.values.slice(1).map(argument => expandDirectCallArgument(argument, env));
+  const argumentPlan = planDirectCallArguments(plans);
   if (argumentPlan.kind === "unlifted") {
     return { type: "list", values: [form.values[0], ...argumentPlan.values] };
   }
@@ -1415,7 +1484,6 @@ function expandSavedMemberInvocation(receiverPrefix, receiverValue, keyPrefix, k
   argumentPlan, use, sanctionedGet = false) {
   const receiver = completionValueAtom({});
   const callee = completionValueAtom({});
-  const argv = completionValueAtom({});
   const getCall = array(sym("get"), receiver, keyValue);
   if (sanctionedGet) markKernel(getCall);
   const statements = [
@@ -1423,10 +1491,18 @@ function expandSavedMemberInvocation(receiverPrefix, receiverValue, keyPrefix, k
     array(sym("const"), receiver, preserveAnonymousName(receiverValue)),
     ...keyPrefix,
     array(sym("const"), callee, getCall),
-    ...argumentPlan.prefix,
   ];
-  statements.push(array(sym("const"), argv, array(sym("array"), ...argumentPlan.values)));
-  const invocation = markExpandedHostCall(array(callee, receiver, argv));
+  let actualArgv;
+  if (argumentPlan.kind === "lifted-spread") {
+    const materialized = materializeSpreadArguments(argumentPlan.arguments);
+    statements.push(...materialized.statements);
+    actualArgv = materialized.argv;
+  } else {
+    actualArgv = completionValueAtom({});
+    statements.push(...argumentPlan.prefix);
+    statements.push(array(sym("const"), actualArgv, array(sym("array"), ...argumentPlan.values)));
+  }
+  const invocation = markExpandedHostCall(array(callee, receiver, actualArgv));
   statements.push(use === "DirectStatement" ? invocation : resultValueStatement(use, invocation));
   return directBlock(statements);
 }
@@ -1448,18 +1524,30 @@ function expandDirectComputedMemberCall(form, request, env) {
   const getForm = form;
   const receiver = expandDirectValuePlan(getForm.values[1], env);
   const key = expandDirectValuePlan(getForm.values[2], env);
-  const argumentPlans = request.args.map(argument => expandDirectValuePlan(argument, env));
+  const argumentPlans = request.args.map(argument => expandDirectCallArgument(argument, env));
   const referenceLifted = receiver.prefix.length > 0 || key.prefix.length > 0;
-  const argumentPlan = planDirectCallArguments(
-    argumentPlans,
-    "ordered computed member call with spread and lifted operands is not supported",
-    referenceLifted,
-  );
+  const argumentPlan = planDirectCallArguments(argumentPlans, referenceLifted);
 
   if (!referenceLifted && argumentPlan.kind === "unlifted") {
     const member = { ...getForm, values: [getForm.values[0], receiver.value, key.value] };
     if (isKernel(getForm)) markKernel(member);
     request.result = { ...request.outerForm, values: [member, ...argumentPlan.values] };
+    request.handled = true;
+    return request.result;
+  }
+
+  if (argumentPlan.kind === "reference-only") {
+    const savedReceiver = completionValueAtom({});
+    const statements = [
+      ...receiver.prefix,
+      array(sym("const"), savedReceiver, preserveAnonymousName(receiver.value)),
+      ...key.prefix,
+    ];
+    const member = array(sym("get"), savedReceiver, key.value);
+    if (isKernel(getForm)) markKernel(member);
+    const call = array(member, ...argumentPlan.values);
+    statements.push(request.use === "DirectStatement" ? call : resultValueStatement(request.use, call));
+    request.result = directBlock(statements);
     request.handled = true;
     return request.result;
   }
@@ -1474,13 +1562,24 @@ function expandDirectComputedMemberCall(form, request, env) {
 
 function expandDirectLexicalCall(form, env, use) {
   const [head, ...args] = form.values;
-  const plans = args.map((argument) => expandDirectValuePlan(argument, env));
-  const argumentPlan = planDirectCallArguments(
-    plans,
-    "ordered lexical call with spread and lifted arguments is not supported",
-  );
+  const plans = args.map((argument) => expandDirectCallArgument(argument, env));
+  const argumentPlan = planDirectCallArguments(plans);
   if (argumentPlan.kind === "unlifted") {
     return { type: "list", values: [head, ...argumentPlan.values] };
+  }
+
+  if (argumentPlan.kind === "lifted-spread") {
+    const callee = completionValueAtom({});
+    const receiver = completionValueAtom({});
+    const statements = [
+      array(sym("const"), callee, head),
+      array(sym("const"), receiver, array(sym("void"), { type: "number", value: 0 })),
+    ];
+    const materialized = materializeSpreadArguments(argumentPlan.arguments);
+    statements.push(...materialized.statements);
+    const invocation = markExpandedHostCall(array(callee, receiver, materialized.argv));
+    statements.push(use === "DirectStatement" ? invocation : resultValueStatement(use, invocation));
+    return directBlock(statements);
   }
 
   const callee = completionValueAtom({});
@@ -1605,15 +1704,23 @@ export function expandExpr(form, env = EMPTY_ENV) {
   return expandAt(form, env, "Legacy");
 }
 
-function expandAt(form, env, use, computedMemberCallRequest = null) {
+function expandAt(form, env, use, computedMemberCallRequest = null,
+  directCallArgumentRequest = null) {
   // Propagate the sanctioned-kernel mark across expansion: if the input was
   // sanctioned (compiler-produced kernel), so is the output — even though the
   // inner walk rebuilds nodes (e.g. `expand-binding` returns a fresh list).
   // This is what lets the post-pass2 DD-58 sweep tell compiler-emitted kernel
   // (`bind`→`const`, the `kernel:` escape) from user-macro-emitted kernel.
   const sanctioned = isKernel(form);
-  const result = expandExprInner(form, env, use, computedMemberCallRequest);
+  const result = expandExprInner(
+    form,
+    env,
+    use,
+    computedMemberCallRequest,
+    directCallArgumentRequest,
+  );
   if (computedMemberCallRequest?.handled) return computedMemberCallRequest.result;
+  if (directCallArgumentRequest?.handled) return directCallArgumentRequest.result;
   if (sanctioned) {
     if (Array.isArray(result)) {
       for (const r of result) markKernel(r);
@@ -1624,7 +1731,8 @@ function expandAt(form, env, use, computedMemberCallRequest = null) {
   return result;
 }
 
-function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = null) {
+function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = null,
+  directCallArgumentRequest = null) {
   if (form === null || form === undefined) return form;
   if (form.type === 'atom' || form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
     return form;
@@ -1683,6 +1791,9 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
       type: 'list',
       values: [{ type: 'atom', value: kernelForm }, ...form.values.slice(1)],
     });
+    if (kernelForm === "spread" && directCallArgumentRequest) {
+      return expandDirectSpreadArgument(stripped, env, directCallArgumentRequest);
+    }
     if ((kernelForm === "=" || kernelForm === "+=") &&
       (use === "DirectStatement" || isResultOperandUse(use)) &&
       stripped.values.length === 3) {
@@ -1698,7 +1809,7 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
     if (computedMemberCallRequest) {
       computedMemberCallRequest.explicitEscape = true;
     }
-    return expandAt(stripped, env, use, computedMemberCallRequest);
+    return expandAt(stripped, env, use, computedMemberCallRequest, directCallArgumentRequest);
   }
 
   // Resolution gate (DD-60 D1 / DD-61 §A3). A head atom that is lexically bound
@@ -1837,7 +1948,11 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
     if (Array.isArray(current)) {
       return current.map((r) => expandAt(r, env, use));
     }
-    return expandAt(current, env, use);
+    return expandAt(current, env, use, null, directCallArgumentRequest);
+  }
+
+  if (directCallArgumentRequest && formHead(head) === "spread") {
+    return expandDirectSpreadArgument(form, env, directCallArgumentRequest);
   }
 
   if (computedMemberCallRequest && formHead(head) === "get" &&
