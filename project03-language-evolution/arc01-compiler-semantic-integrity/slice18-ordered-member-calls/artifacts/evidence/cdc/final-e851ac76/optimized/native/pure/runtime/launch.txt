@@ -1,0 +1,7 @@
+cwd=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/native-pure-runtime
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/native-pure-runtime/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/native-pure-runtime/xdg' 'npm_config_cache=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/native-pure-runtime/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/opt/homebrew/bin/deno' 'run' '--no-config' '--cached-only' '--no-npm' '--no-remote' '--deny-net' '--no-prompt' 'out.js'
+stdout=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/native-pure-runtime/stdout.raw
+stderr=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/native-pure-runtime/stderr.raw
+exit_status=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/native-pure-runtime/exit-status.txt
+source=e851ac761a48ee1563583ee7df51cf8b750a8487
+tree=49d961f42b9935d12573aa1773c182757546271b

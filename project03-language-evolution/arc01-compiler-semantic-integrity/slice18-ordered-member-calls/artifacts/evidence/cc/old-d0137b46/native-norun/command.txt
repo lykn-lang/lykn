@@ -1,0 +1,13 @@
+source_commit=d0137b46a09e33068c443d2b381c480d1943fd80
+source_tree=618d1879dd04c9f4434313305296bfd57d344e0e
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=cargo test -p lykn-cli --test semantic_roles --no-run
+inherited_test_overrides=unset LYKN_TEST_DENO,LYKN_SEMANTIC_ROLE_EVIDENCE_DIR
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/native-norun/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/native-norun/xdg
+npm_config_cache=/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/native-norun/npm
+PATH=/opt/homebrew/bin:<inherited PATH>
+stdout=stdout.raw
+stderr=stderr.raw
+exit_status=status.txt

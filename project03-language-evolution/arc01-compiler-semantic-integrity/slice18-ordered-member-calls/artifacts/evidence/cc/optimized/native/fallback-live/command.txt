@@ -1,0 +1,9 @@
+argv=esbuild entry.js --bundle --format=esm --tree-shaking=true --metafile=meta.json --outfile=out.js
+cwd=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/fallback-live
+TMPDIR=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/fallback-live/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/fallback-live/xdg
+npm_config_cache=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/fallback-live/npm
+PATH=/opt/homebrew/bin:<inherited PATH>
+stdout=stdout.raw
+stderr=stderr.raw
+exit_status=status.txt

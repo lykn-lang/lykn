@@ -1,0 +1,1 @@
+{"message":null,"output":"function mixedSpread(receiver, items) {\n  return receiver.readEntry(...items, (() => {\n    return 7;\n    return 8;\n  })());\n}\n"}

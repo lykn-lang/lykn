@@ -199,3 +199,10 @@ opens the next I3 delivery with actual static member references and
 ordinary kernel across exported module boundaries. It reuses the
 accepted Arc03 invocation contract. Computed references, assignment
 and iterator transport stay open. No CV or CI row changes status.
+
+2026-11-10 [S18 independent acceptance](slice18-ordered-member-calls/cdc-verification.md)
+closes the static member tranche at `e851ac76`. Actual receiver
+order and ordinary exported kernel work in both backends. Both
+approved support strategies passed separate no-eager and unused
+provider output proofs. S07 owns the loader and single-form API
+effects. Remaining I3 and I4 keep CV-04 and CI-04 open.

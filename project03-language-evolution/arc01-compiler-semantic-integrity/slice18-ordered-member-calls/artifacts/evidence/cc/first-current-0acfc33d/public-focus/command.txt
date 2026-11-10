@@ -1,0 +1,14 @@
+source_commit=0acfc33da05b246030bed8b287fd18ba966a7bb6
+source_tree=aced4e48b269246c4f017f46f8576f31eb5c9f93
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=deno test --config project.json -A test/forms/semantic-roles.test.js
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-01/current/public-focus/evidence
+TMPDIR=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-01/current/public-focus/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-01/current/public-focus/xdg
+npm_config_cache=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-01/current/public-focus/npm
+PATH=/opt/homebrew/bin:<inherited PATH>
+stdout=stdout.raw
+stderr=stderr.raw
+exit_status=status.txt

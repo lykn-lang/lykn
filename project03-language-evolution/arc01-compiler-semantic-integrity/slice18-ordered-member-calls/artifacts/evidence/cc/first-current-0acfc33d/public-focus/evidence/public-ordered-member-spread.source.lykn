@@ -1,0 +1,2 @@
+(func mixed-spread :args (:any receiver :any items) :returns :any :body
+  (receiver:read-entry (spread items) (do (return 7) 8)))

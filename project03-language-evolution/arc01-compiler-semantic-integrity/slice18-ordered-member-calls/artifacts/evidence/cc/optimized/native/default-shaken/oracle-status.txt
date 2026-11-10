@@ -1,0 +1,4 @@
+stdout_exact=0
+stderr_empty=0
+runtime_exit_zero=0
+support_structure=0

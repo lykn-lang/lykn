@@ -1,0 +1,2 @@
+/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-live-runtime/out.js: OK
+/opt/homebrew/bin/deno: OK

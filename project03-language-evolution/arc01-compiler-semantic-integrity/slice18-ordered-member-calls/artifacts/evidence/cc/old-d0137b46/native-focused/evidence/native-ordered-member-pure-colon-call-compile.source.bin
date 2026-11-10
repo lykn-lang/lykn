@@ -1,0 +1,4 @@
+(func probe :args (:any receiver) :returns :any :body
+  (receiver:read-entry 3))
+(bind receiver (obj :read-entry (fn (:any value) (+ value 1))))
+(console:log (probe receiver))

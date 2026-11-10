@@ -1,0 +1,5 @@
+1:32: warning: unused binding 'receiver'
+  suggestion: prefix with underscore: _receiver
+1:7: warning: unused binding 'mixed-spread'
+  suggestion: prefix with underscore: _mixed-spread
+2:3: error: ordered member call with spread and lifted arguments is not supported

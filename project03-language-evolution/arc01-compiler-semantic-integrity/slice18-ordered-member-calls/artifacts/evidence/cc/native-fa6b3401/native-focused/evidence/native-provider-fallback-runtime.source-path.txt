@@ -1,0 +1,1 @@
+source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/ordered-member-calls/provider-fallback.lykn"

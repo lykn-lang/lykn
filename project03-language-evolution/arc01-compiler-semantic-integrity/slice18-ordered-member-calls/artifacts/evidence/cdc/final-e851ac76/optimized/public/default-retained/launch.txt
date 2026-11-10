@@ -1,0 +1,7 @@
+cwd=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-retained-bundle
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-retained-bundle/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-retained-bundle/xdg' 'npm_config_cache=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-retained-bundle/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild' 'provider.js' '--bundle' '--format=esm' '--tree-shaking=true' '--metafile=meta.json' '--outfile=out.js'
+stdout=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-retained-bundle/stdout.raw
+stderr=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-retained-bundle/stderr.raw
+exit_status=/private/tmp/lykn-s18-cdc-independent.BvjfEQSO/public-default-retained-bundle/exit-status.txt
+source=e851ac761a48ee1563583ee7df51cf8b750a8487
+tree=49d961f42b9935d12573aa1773c182757546271b

@@ -1,0 +1,17 @@
+backend=public
+role=pure
+producer_commit=0acfc33da05b246030bed8b287fd18ba966a7bb6
+producer_tree=aced4e48b269246c4f017f46f8576f31eb5c9f93
+source_evidence_root=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-01/current/public-focus/evidence
+source_provider=none
+source_entry=public-ordered-member-pure-colon-call-generated.js
+bundle_input=pure.js
+source_kind=public-expanded-compiled-generated
+source_sha256:
+837a42874b33882d1caae30742cf0db7eedcbdecc0deb9234d4d6d2529e85080  /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/pure/pure.js
+esbuild_binary=/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild
+esbuild_sha256=b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f
+esbuild_version=0.25.5
+esbuild_source_commit=ea453bf687c8e5cf3c5f11aae372c5ca33be0c98
+esbuild_source_tree=00a3368c9eabfd4fa5c51c9c354321fc296ba1cd
+esbuild_source_status=clean

@@ -1,0 +1,29 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 7.13s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+error: you seem to be trying to use `match` for an equality check. Consider using `if`
+   --> crates/lykn-cli/tests/semantic_roles.rs:157:5
+    |
+157 | /     match name {
+158 | |         "ordered-member-pure-colon-call" => {
+159 | |             return ordered_member_fixture_path("pure-colon-call");
+...   |
+162 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#single_match
+    = note: `-D clippy::single-match` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::single_match)]`
+help: try
+    |
+157 ~     if name == "ordered-member-pure-colon-call" {
+158 +         return ordered_member_fixture_path("pure-colon-call");
+159 +     }
+    |
+
+error: could not compile `lykn-cli` (test "semantic_roles") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+make: *** [lint] Error 101

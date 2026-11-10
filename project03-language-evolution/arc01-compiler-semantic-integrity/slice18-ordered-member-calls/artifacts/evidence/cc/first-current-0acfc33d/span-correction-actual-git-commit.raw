@@ -1,0 +1,11 @@
+tree 62572ad902524b42ab1ca0c6a528bb8b6df2d88d
+parent 0acfc33da05b246030bed8b287fd18ba966a7bb6
+author Duncan McGreggor <oubiwann@gmail.com> 1794325794 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794325794 -0600
+
+Use the marked call source span for standalone emission errors
+
+Keep checked whole-module boundary diagnostics tied to the actual ordered member call site.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

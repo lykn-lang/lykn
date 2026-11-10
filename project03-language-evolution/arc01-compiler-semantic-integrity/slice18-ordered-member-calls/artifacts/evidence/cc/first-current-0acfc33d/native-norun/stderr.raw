@@ -1,0 +1,9 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0599]: no method named `span` found for reference `&surface::SurfaceForm` in the current scope
+   --> crates/lykn-lang/src/emitter/forms.rs:286:18
+    |
+286 |             form.span(),
+    |                  ^^^^ method not found in `&surface::SurfaceForm`
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `lykn-lang` (lib) due to 1 previous error

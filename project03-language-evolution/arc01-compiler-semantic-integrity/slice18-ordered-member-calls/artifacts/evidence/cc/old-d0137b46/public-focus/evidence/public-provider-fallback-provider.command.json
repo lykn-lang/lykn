@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/public-focus/tmp/d3890e3bcd093f89/provider.js"
+  ],
+  "cwd": "/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/public-focus/tmp/d3890e3bcd093f89",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/ordered-member-calls/provider-fallback.lykn",
+  "source": "(exports probe)\n(bind Reflect! \"inline\")\n(bind trace (array))\n(func original-method :args (:any earlier :any middle :any later) :returns :any :body\n  (trace:push \"call\")\n  (array this:label middle))\n(func wrong-method :returns :any :body\n  (throw (new Error \"unexpected method\")))\n(Object:defineProperty original-method \"call\" (obj :value wrong-method))\n(Object:defineProperty original-method \"apply\" (obj :value wrong-method))\n(func use-member-call :args (:any stop) :returns :any :body\n  (bind Reflect (obj :label \"receiver\"))\n  (bind receiver Reflect)\n  (bind lykn-host-reflect-apply0 \"earlier\")\n  (Object:defineProperty receiver \"readEntry\"\n    (obj :configurable true :get (fn () (trace:push \"get\") original-method)))\n  (bind result\n    (receiver:read-entry\n      (trace:push lykn-host-reflect-apply0)\n      (do\n        (trace:push \"middle\")\n        (Object:defineProperty receiver \"readEntry\" (obj :value wrong-method))\n        (if stop (return 92))\n        8)\n      (trace:push \"later\")))\n  (trace:push \"after\")\n  result)\n(func probe :returns :any :body\n  (array Reflect! (use-member-call true) (use-member-call false) trace))\n(console:log \"provider\")\n",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/public-focus/xdg",
+    "TMPDIR": "/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/public-focus/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s18-ordered-member-baseline-cc-20261110-01/baseline/public-focus/evidence"
+  }
+}

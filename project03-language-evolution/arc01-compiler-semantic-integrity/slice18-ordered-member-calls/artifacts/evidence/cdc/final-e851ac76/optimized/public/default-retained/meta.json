@@ -1,0 +1,24 @@
+{
+  "inputs": {
+    "provider.js": {
+      "bytes": 1761,
+      "imports": [],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "out.js": {
+      "imports": [],
+      "exports": [
+        "probe"
+      ],
+      "entryPoint": "provider.js",
+      "inputs": {
+        "provider.js": {
+          "bytesInOutput": 1743
+        }
+      },
+      "bytes": 1778
+    }
+  }
+}

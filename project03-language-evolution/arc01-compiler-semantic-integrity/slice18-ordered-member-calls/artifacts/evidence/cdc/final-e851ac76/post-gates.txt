@@ -1,0 +1,25 @@
+e851ac761a48ee1563583ee7df51cf8b750a8487
+49d961f42b9935d12573aa1773c182757546271b
+6c9dbd5c38f16674c7b95315bd32bfee9fd131e5
+d9ce3a36e164252740d9ac29f712c85add99a0de
+ea453bf687c8e5cf3c5f11aae372c5ca33be0c98
+6516f538067f77fc775a77160a56d740cf0c6514b5b5065b34985ac60a2cf5f9  bin/lykn
+6516f538067f77fc775a77160a56d740cf0c6514b5b5065b34985ac60a2cf5f9  target/release/lykn
+ea922178b5edade1848b87c755e75cb1e21f9045e4b80fe6a69dc896ddd3b810  /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn
+cfabe6a33a619725efef42b2c10cf2a93c70fa9415db3a95c3f81384f4ca0260  packages/lang/expander.js
+cfabe6a33a619725efef42b2c10cf2a93c70fa9415db3a95c3f81384f4ca0260  crates/lykn-lang/embedded/packages/lang/expander.js
+cfabe6a33a619725efef42b2c10cf2a93c70fa9415db3a95c3f81384f4ca0260  /private/tmp/lykn-s18-cdc-independent.BvjfEQSO/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js
+3490d25747ece3b310f61a7147db2d6c46eaa7e9e6c8589d29eeae20e5ba6ecf  packages/lang/host-invocation.js
+3490d25747ece3b310f61a7147db2d6c46eaa7e9e6c8589d29eeae20e5ba6ecf  crates/lykn-lang/embedded/packages/lang/host-invocation.js
+3490d25747ece3b310f61a7147db2d6c46eaa7e9e6c8589d29eeae20e5ba6ecf  /private/tmp/lykn-s18-cdc-independent.BvjfEQSO/make/xdg/lykn/embedded/0.6.0/packages/lang/host-invocation.js
+76cae2b7cc26a361484ee953b0979afc79a0842029d7fc55eaba0c2517f0538f  packages/lang/protected-host.js
+76cae2b7cc26a361484ee953b0979afc79a0842029d7fc55eaba0c2517f0538f  crates/lykn-lang/embedded/packages/lang/protected-host.js
+76cae2b7cc26a361484ee953b0979afc79a0842029d7fc55eaba0c2517f0538f  /private/tmp/lykn-s18-cdc-independent.BvjfEQSO/make/xdg/lykn/embedded/0.6.0/packages/lang/protected-host.js
+0
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+success=false code=Some(1)
+present=false
+present=false
+5:2:3: error: ordered member call with spread and lifted arguments is not supported
+{"message":"ordered member call with spread and lifted arguments is not supported","output":null}

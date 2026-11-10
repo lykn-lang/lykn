@@ -1,0 +1,30 @@
+case=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/default-retained
+config_ancestor_candidates_prelaunch
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/default-retained/project.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/default-retained/deno.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/default-retained/deno.jsonc
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/default-retained/package.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/project.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/deno.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/deno.jsonc
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/public/package.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/project.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/deno.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/deno.jsonc
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/package.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/project.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/deno.json
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/deno.jsonc
+absent /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/package.json
+absent /private/tmp/project.json
+absent /private/tmp/deno.json
+absent /private/tmp/deno.jsonc
+absent /private/tmp/package.json
+absent /private/project.json
+absent /private/deno.json
+absent /private/deno.jsonc
+absent /private/package.json
+absent //project.json
+absent //deno.json
+absent //deno.jsonc
+absent //package.json

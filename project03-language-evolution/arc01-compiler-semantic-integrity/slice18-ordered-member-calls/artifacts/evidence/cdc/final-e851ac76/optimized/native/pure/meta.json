@@ -1,0 +1,21 @@
+{
+  "inputs": {
+    "pure.js": {
+      "bytes": 143,
+      "imports": []
+    }
+  },
+  "outputs": {
+    "out.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "pure.js",
+      "inputs": {
+        "pure.js": {
+          "bytesInOutput": 145
+        }
+      },
+      "bytes": 156
+    }
+  }
+}

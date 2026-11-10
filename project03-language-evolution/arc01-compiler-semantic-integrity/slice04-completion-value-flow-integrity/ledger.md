@@ -164,3 +164,9 @@ and CI-04 stay open.
 opens the bounded static member receiver tranche. It owns actual
 provider/entry runtime and optimization evidence. The remaining
 computed/assignment/iterator and I4 obligations retain their owners.
+
+2026-11-10 [S18 independent acceptance](../slice18-ordered-member-calls/cdc-verification.md)
+closes static member calls at `e851ac76`, including actual local
+and inline support through ordinary emitted kernel. Computed
+callee/header roles, assignment and iterator transport remain I3.
+All existing CV and CI-04 statuses remain.

@@ -1,0 +1,13 @@
+source_backend=native
+source_role=default-shaken
+input_bundle=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/default-shaken/out.js
+argv=/opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt out.js
+cwd=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/default-shaken/runtime
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/default-shaken/runtime/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/default-shaken/runtime/xdg
+npm_config_cache=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/default-shaken/runtime/npm
+PATH=/opt/homebrew/bin:<inherited PATH>
+stdout=stdout.raw
+stderr=stderr.raw
+exit_status=status.txt

@@ -1,0 +1,50 @@
+{
+  "inputs": {
+    "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>": {
+      "bytes": 79,
+      "imports": [],
+      "format": "esm"
+    },
+    "provider.js": {
+      "bytes": 1820,
+      "imports": [
+        {
+          "path": "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>",
+          "kind": "import-statement",
+          "original": "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D"
+        }
+      ],
+      "format": "esm"
+    },
+    "entry.js": {
+      "bytes": 75,
+      "imports": [
+        {
+          "path": "provider.js",
+          "kind": "import-statement",
+          "original": "./provider.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "out.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "entry.js",
+      "inputs": {
+        "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>": {
+          "bytesInOutput": 83
+        },
+        "provider.js": {
+          "bytesInOutput": 1621
+        },
+        "entry.js": {
+          "bytesInOutput": 38
+        }
+      },
+      "bytes": 1844
+    }
+  }
+}

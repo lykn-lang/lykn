@@ -1,0 +1,13 @@
+source_commit=fa6b34019253c04828dd505bda7051f2f4a2dd28
+source_tree=62572ad902524b42ab1ca0c6a528bb8b6df2d88d
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=make check
+inherited_test_overrides=unset LYKN_TEST_DENO,LYKN_SEMANTIC_ROLE_EVIDENCE_DIR
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/make-check/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/make-check/xdg
+npm_config_cache=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/make-check/npm
+PATH=/opt/homebrew/bin:<inherited PATH>
+stdout=stdout.raw
+stderr=stderr.raw
+exit_status=status.txt

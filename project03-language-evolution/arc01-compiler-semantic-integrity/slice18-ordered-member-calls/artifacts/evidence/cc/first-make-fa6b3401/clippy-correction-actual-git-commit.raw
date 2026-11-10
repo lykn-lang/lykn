@@ -1,0 +1,11 @@
+tree 49d961f42b9935d12573aa1773c182757546271b
+parent fa6b34019253c04828dd505bda7051f2f4a2dd28
+author Duncan McGreggor <oubiwann@gmail.com> 1794326112 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794326112 -0600
+
+Use an if for the pure member fixture route
+
+Keep the focused fixture path selection clippy-clean without changing its behavior.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

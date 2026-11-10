@@ -1,0 +1,36 @@
+{
+  "inputs": {
+    "provider.js": {
+      "bytes": 1677,
+      "imports": [],
+      "format": "esm"
+    },
+    "entry.js": {
+      "bytes": 75,
+      "imports": [
+        {
+          "path": "provider.js",
+          "kind": "import-statement",
+          "original": "./provider.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "out.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "entry.js",
+      "inputs": {
+        "provider.js": {
+          "bytesInOutput": 1659
+        },
+        "entry.js": {
+          "bytesInOutput": 38
+        }
+      },
+      "bytes": 1725
+    }
+  }
+}

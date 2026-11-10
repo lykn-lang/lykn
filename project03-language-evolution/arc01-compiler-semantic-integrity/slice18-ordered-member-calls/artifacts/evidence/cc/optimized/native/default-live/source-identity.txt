@@ -1,0 +1,18 @@
+backend=native
+role=default-live
+producer_commit=fa6b34019253c04828dd505bda7051f2f4a2dd28
+producer_tree=62572ad902524b42ab1ca0c6a528bb8b6df2d88
+source_evidence_root=/private/tmp/lykn-s18-ordered-member-current-cc-20261110-02/current/native-focused/evidence
+source_provider=native-provider-default.generated.js
+source_entry=native-provider-default-live.generated.js
+bundle_input=entry.js
+source_kind=native-test-generated
+source_sha256:
+e024a2896728ece3b87c500ac43433dee31b3fd1072ba9ee371e737c164042ec  /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/default-live/provider.js
+e5f102fb8ffe44f55b7a3c87e44326d9776f13b392873c578665c92fabca3f83  /private/tmp/lykn-s18-ordered-member-current-cc-20261110-03/optimized/native/default-live/entry.js
+esbuild_binary=/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild
+esbuild_sha256=b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f
+esbuild_version=0.25.5
+esbuild_source_commit=ea453bf687c8e5cf3c5f11aae372c5ca33be0c98
+esbuild_source_tree=00a3368c9eabfd4fa5c51c9c354321fc296ba1cd
+esbuild_source_status=clean

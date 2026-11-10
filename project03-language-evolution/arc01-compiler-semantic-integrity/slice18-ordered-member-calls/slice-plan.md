@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice18-ordered-member-calls
-status: in-progress
+status: closed
 depends-on: [slice17-ordered-lexical-calls]
 ---
 
@@ -48,3 +48,7 @@ Computed references, assignment keys and iterator transport stay
 in I3. Checked/deferred completions, I4, K and release propagation
 are outside this delivery. CV-04 and CI-04 remain open. S18 gets
 its own source refinement count only on opening.
+
+2026-11-10 [independent verification](cdc-verification.md) closes all
+four OM rows at `e851ac76`. Four source refinements were used.
+See [closing report](closing-report.md) and [retrospective](cdc-retrospective.md).

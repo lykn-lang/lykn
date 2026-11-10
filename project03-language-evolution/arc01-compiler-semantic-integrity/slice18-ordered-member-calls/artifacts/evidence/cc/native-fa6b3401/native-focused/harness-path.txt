@@ -1,0 +1,1 @@
+harness=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9
