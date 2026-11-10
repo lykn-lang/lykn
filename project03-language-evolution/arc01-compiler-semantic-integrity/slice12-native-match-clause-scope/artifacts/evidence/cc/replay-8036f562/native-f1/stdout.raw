@@ -1,0 +1,11 @@
+
+running 1 test
+test match_clauses_keep_bindings_local_to_guard_and_body ... FAILED
+
+failures:
+
+failures:
+    match_clauses_keep_bindings_local_to_guard_and_body
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.38s
+

@@ -1,0 +1,5 @@
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=<root>/tmp
+XDG_CACHE_HOME=<root>/xdg
+NPM_CONFIG_CACHE=<root>/npm
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=<root>/receipts

@@ -1,0 +1,12 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+## codex/completion-value-flow
+b5c22b63029f394d8a12b8b8afd98ce051420258
+78369d6fe65a727a90a40e07bef60557bcff5ebb
+Makefile 25591 bytes
+test/forms/semantic-roles.test.js 4858 bytes
+crates/lykn-lang/src/resolver.rs 50054 bytes
+/Users/oubiwann/Library/Caches/deno 768 bytes
+/opt/homebrew/bin/deno 29 bytes
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3

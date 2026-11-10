@@ -1,0 +1,6 @@
+7:3: warning: unreachable match clause
+  suggestion: remove this clause or reorder patterns
+8:3: warning: unreachable match clause
+  suggestion: remove this clause or reorder patterns
+6:4: warning: unused binding 'clause-push'
+  suggestion: prefix with underscore: _clause-push

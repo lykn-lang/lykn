@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/public16/tmp/a92af04000f36c7c/match-clause-scope.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/public16/tmp/a92af04000f36c7c",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/match-clause-scope.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/public16/tmp/a92af04000f36c7c/match-clause-scope.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/public16/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/public16/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/public16/receipts"
+  }
+}

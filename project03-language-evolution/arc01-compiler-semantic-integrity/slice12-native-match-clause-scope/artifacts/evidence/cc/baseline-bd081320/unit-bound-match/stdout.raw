@@ -1,0 +1,20 @@
+
+running 1 test
+test resolver::tests::bound_match_has_no_pattern_definition_sites ... FAILED
+
+failures:
+
+---- resolver::tests::bound_match_has_no_pattern_definition_sites stdout ----
+
+thread 'resolver::tests::bound_match_has_no_pattern_definition_sites' (100693613) panicked at crates/lykn-lang/src/resolver.rs:787:13:
+assertion `left == right` failed
+  left: BindingDef
+ right: Unresolved
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    resolver::tests::bound_match_has_no_pattern_definition_sites
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1163 filtered out; finished in 0.00s
+

@@ -829,6 +829,12 @@ and release5408 unchanged; all Project07/future package/type/human duties persis
 
 #### NE-C13 — statement-position guarded match continuation (source-only)
 
+**Native clause scope accepted 2026-11-09.** S12 reproduces the
+former sibling dispatch and structural macro failures, then verifies
+the borrowed per-clause plan in resolver, Pass2 and shadow lint at
+task `b5c22b63`. Existing warning analysis and wider consumed/
+checked completion remain open. [Independent scope verification](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/cdc-verification.md).
+
 **Direct tranche accepted 2026-11-09.** The original observation
 below now has both actual old failures and independent current
 reproduction at task `7b17a784`. Subject-once, guard progression,
@@ -909,6 +915,41 @@ concurrent-start investigation before any product cache change.
 This is distinct from NE-C04's same-version cache identity. S04's
 accepted per-fixture isolation retains parallel test behavior and
 leaves the product question open. [Exact observed and repaired test conditions](arc01-compiler-semantic-integrity/slice04-completion-value-flow-integrity/cdc-verification.md#ne-c14-independently-accepted--2026-11-09).
+
+#### NE-C16 — public reserved-name scan misreads a match clause
+
+**Observed 2026-11-09.** With accepted production `7b17a784`
+and exact test-only `bd081320`, S12's original F1 public
+`lykn(source)` rejects a real `do` guard as a reserved pattern
+binder before module creation. The recursive `walkBindings` in
+`packages/lang/binding.js` treats a clause whose first pattern
+atom is `match` as a new match form. Its guard list's head then
+enters `validateReservedNames` as a false pattern occurrence.
+[Original public parent](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/artifacts/evidence/cc/baseline-bd081320/public16/stdout.raw).
+
+**Owner and re-entry.** Future bounded public DD-61 structural
+binding-walk work owns the unchanged original F1. Preserve genuine
+reserved-binder diagnostics and ordinary bound-call behavior.
+S12 repairs the native clause routes and isolates its shared
+runtime comparison without changing public production.
+
+#### NE-C17 — native consumed kernel object escape retains its prefix
+
+**Observed 2026-11-09.** At the same production and test freeze,
+S12 original F2 native check and strict compile exit 0. The
+consumed `(kernel:object (key 7))` match subject is emitted as
+`kernel.object(key(7))`, and strict Deno exits 1 on
+`ReferenceError: kernel is not defined`. Its public fixture passes.
+The native nested `emitter/forms.rs::emit_expr` route recognizes
+surface forms and some kernel shapes but leaves this escape head
+for member-chain emission. [Original module](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/artifacts/evidence/cc/baseline-bd081320/native17/receipts/native-match-structural-pattern-macros.generated.js)
+and [runtime error](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/artifacts/evidence/cc/baseline-bd081320/native17/receipts/native-match-structural-pattern-macros-runtime.stderr.bin).
+
+**Owner and re-entry.** Future bounded native kernel-escape
+lowering owns the exact consumed witness, ordinary member-call
+preservation and supported escape diagnostics. S12 uses a
+surface JSON.parse subject to isolate its separate macro scope
+oracle. The original native escape behavior remains open.
 
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 

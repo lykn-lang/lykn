@@ -1,0 +1,11 @@
+
+running 1 test
+test match_patterns_stay_structural_while_clause_macros_expand ... FAILED
+
+failures:
+
+failures:
+    match_patterns_stay_structural_while_clause_macros_expand
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.40s
+

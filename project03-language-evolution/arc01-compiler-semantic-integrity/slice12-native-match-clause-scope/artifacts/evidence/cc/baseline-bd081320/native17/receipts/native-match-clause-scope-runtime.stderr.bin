@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+   |
+10 |     if (do(trace.push(match(1)), false)) {
+   |         ~~
+    at file:///private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/native17/tmp/.tmp6EZXtX/match-clause-scope.js:10:9

@@ -1,0 +1,8 @@
+
+running 3 tests
+test resolver::tests::match_shadowing_is_clause_local ... ok
+test resolver::tests::match_scope_separates_subject_guard_body_and_siblings ... ok
+test resolver::tests::bound_match_has_no_pattern_definition_sites ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1161 filtered out; finished in 0.00s
+

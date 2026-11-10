@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-09 [S12](slice12-native-match-clause-scope/cdc-verification.md)
+independently accepts native clause scope at task `b5c22b63`.
+All four MC rows are done. CV-04 and CI-04 remain open for
+composition. Release validation is separate at `7b17a784`.
+
 2026-11-09 [S09](slice09-statement-match-completion/cdc-verification.md)
 independently accepts direct statement match at task `7b17a784`.
 All five SM rows are done. Native clause scope and the other S04

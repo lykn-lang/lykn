@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Native clause-local scope accepted — 2026-11-09
+
+[S12](slice12-native-match-clause-scope/closing-report.md) closes its
+four criteria at task `b5c22b63`. The two inherited limits observed
+in the first baseline have separate backlog owners. The prior
+stack remains locally integrated at `7b17a784`. Wider completion,
+ordered references and checked exits retain their existing scope.
+
 ## Native clause-local match scope opened — 2026-11-09
 
 The [local release fast-forward](slice09-statement-match-completion/artifacts/release-integration-7b17a784.md)

@@ -1,0 +1,9 @@
+program=/Users/oubiwann/.cargo/bin/cargo
+argv=test -p lykn-cli -p lykn-lang --test semantic_roles --lib --no-run
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/no-run/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/no-run/xdg
+npm_config_cache=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/no-run/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/no-run/receipts
+LYKN_TEST_DENO=/opt/homebrew/bin/deno

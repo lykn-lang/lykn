@@ -1,0 +1,9 @@
+program=/opt/homebrew/bin/deno
+argv=test --config project.json -A test/forms/semantic-roles.test.js
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/xdg
+npm_config_cache=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/receipts
+Deno test process gets -A from existing project test target; strict children retain --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt.

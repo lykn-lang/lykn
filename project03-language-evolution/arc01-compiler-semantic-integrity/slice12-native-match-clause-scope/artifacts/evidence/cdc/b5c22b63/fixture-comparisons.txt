@@ -1,0 +1,26 @@
+
+match-clause-scope
+native generated cmp=0
+public generated cmp=0
+success=true code=Some(0)
+[11,22,14]
+present=false
+success=true code=0
+[11,22,14]
+       0 /private/tmp/lykn-s12-cdc.n0EVzJpc/evidence/native/native-match-clause-scope-runtime.stderr.bin
+       0 /private/tmp/lykn-s12-cdc.n0EVzJpc/evidence/public/public-match-clause-scope-stderr.bin
+       0 total
+
+match-structural-pattern-macros
+native generated cmp=0
+public generated cmp=0
+success=true code=Some(0)
+[7]
+present=false
+success=true code=0
+[7]
+       0 /private/tmp/lykn-s12-cdc.n0EVzJpc/evidence/native/native-match-structural-pattern-macros-runtime.stderr.bin
+       0 /private/tmp/lykn-s12-cdc.n0EVzJpc/evidence/public/public-match-structural-pattern-macros-stderr.bin
+       0 total
+native F1 compile warnings cmp=0
+native F2 compile warnings cmp=0

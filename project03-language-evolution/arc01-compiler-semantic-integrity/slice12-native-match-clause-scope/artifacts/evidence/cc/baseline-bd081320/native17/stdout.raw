@@ -1,0 +1,28 @@
+
+running 17 tests
+test match_clauses_keep_bindings_local_to_guard_and_body ... FAILED
+test if_declaration_is_emitted_inside_a_branch_block ... ok
+test if_direct_transfers_keep_source_targets ... ok
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... ok
+test match_consumes_value_tail_after_statement_prefix ... ok
+test do_while_uses_value_test_and_statement_sequence_body ... ok
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... ok
+test statement_match_guarded_exhaustion_throws_into_the_enclosing_try ... ok
+test statement_match_loop_transfers_keep_their_source_targets ... ok
+test statement_match_return_keeps_the_enclosing_function_target ... ok
+test statement_match_preserves_protected_function_exit_checks ... ok
+test statement_match_guards_progress_in_source_order ... ok
+test while_uses_value_test_and_statement_sequence_body ... ok
+test if_direct_transfers_keep_macro_introduced_function_targets ... ok
+test if_arm_scope_and_macro_expansion_are_preserved ... ok
+test match_patterns_stay_structural_while_clause_macros_expand ... FAILED
+test statement_match_preserves_macro_hygiene_and_consumed_controls ... ok
+
+failures:
+
+failures:
+    match_clauses_keep_bindings_local_to_guard_and_body
+    match_patterns_stay_structural_while_clause_macros_expand
+
+test result: FAILED. 15 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+

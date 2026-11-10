@@ -1,0 +1,16 @@
+(bind trace (array))
+(func plus-ten :args (:any n) :returns :any :body (+ n 10))
+(func trace-false :args (:any value) :returns :any :body
+  (trace:push value)
+  false)
+(match plus-ten
+  (match :when (trace-false (match 1))
+    (trace:push "wrong"))
+  (_
+    (match 2
+      (1 (trace:push "wrong-inner"))
+      (_ (trace:push 22)))))
+(do
+  (bind match (fn (:any a :any b) (+ a b)))
+  (trace:push (match 3 (plus-ten 1))))
+(console:log (JSON:stringify trace))

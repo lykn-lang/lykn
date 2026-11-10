@@ -1,0 +1,12 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+## codex/completion-value-flow
+b5c22b63029f394d8a12b8b8afd98ce051420258
+78369d6fe65a727a90a40e07bef60557bcff5ebb
+drwxr-xr-x@   24 oubiwann  staff    768 Nov  5 21:40 /Users/oubiwann/Library/Caches/deno
+drwxr-xr-x@   29 oubiwann  staff    928 Nov  9 20:04 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+drwxrwxrwt  1288 root      wheel  41216 Nov  9 21:45 /private/tmp
+drwxr-xr-x@    6 oubiwann  wheel    192 Nov  9 21:57 /private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/unit-bound-match
+drwxr-xr-x@    2 oubiwann  wheel     64 Nov  9 21:57 /private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/unit-bound-match/npm
+drwxr-xr-x@    2 oubiwann  wheel     64 Nov  9 21:57 /private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/unit-bound-match/tmp
+drwxr-xr-x@    2 oubiwann  wheel     64 Nov  9 21:57 /private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/unit-bound-match/xdg
+5a1f9019b30462d7c1aa8196c450c0a95dfd47095eb56ef35809150be7978a68  target/debug/deps/lykn_lang-60c4a58c1162abbf

@@ -1,0 +1,3 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+error: test failed, to rerun pass `-p lykn-lang --lib`

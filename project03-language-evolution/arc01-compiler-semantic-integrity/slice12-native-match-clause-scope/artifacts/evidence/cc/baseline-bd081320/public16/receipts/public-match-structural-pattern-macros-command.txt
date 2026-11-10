@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/tmp/f31d34723d574612/match-structural-pattern-macros.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/tmp/f31d34723d574612",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/match-structural-pattern-macros.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/tmp/f31d34723d574612/match-structural-pattern-macros.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/public16/receipts"
+  }
+}

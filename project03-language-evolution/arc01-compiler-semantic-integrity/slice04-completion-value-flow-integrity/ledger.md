@@ -1,5 +1,10 @@
 # S04 completion/value-flow ledger
 
+[S12 independent verification](../slice12-native-match-clause-scope/cdc-verification.md)
+accepts native clause scope at task `b5c22b63`. The four MC rows
+close. The other I2 composition, I3/I4 and the five open CV rows
+remain. CV-02 retains prior acceptance. Local release is `7b17a784`.
+
 [First I2 tranche independently accepted](../slice09-statement-match-completion/cdc-verification.md)
 at task `7b17a784`. S09 closes its five bounded SM rows.
 CV-02 retains prior I1 acceptance. The other five CV rows and CI-04

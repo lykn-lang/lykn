@@ -1,0 +1,4 @@
+error: Uncaught (in promise) ReferenceError: match is not defined
+      match(2, (1)(trace.push("wrong-inner")), _(trace.push(22)));
+      ^
+    at file:///private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f1/tmp/.tmpKpwbTI/match-clause-scope.js:22:7

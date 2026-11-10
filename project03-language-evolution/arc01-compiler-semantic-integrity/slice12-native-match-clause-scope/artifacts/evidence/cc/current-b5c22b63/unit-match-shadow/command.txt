@@ -1,0 +1,7 @@
+program=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/lykn_lang-60c4a58c1162abbf
+argv=resolver::tests::match_shadowing_is_clause_local --exact --nocapture
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/unit-match-shadow/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/unit-match-shadow/xdg
+npm_config_cache=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-current/unit-match-shadow/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno

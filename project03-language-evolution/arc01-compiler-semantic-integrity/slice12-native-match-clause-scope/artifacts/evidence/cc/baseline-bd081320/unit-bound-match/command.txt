@@ -1,0 +1,7 @@
+program=/Users/oubiwann/.cargo/bin/cargo
+argv=test -p lykn-lang --lib resolver::tests::bound_match_has_no_pattern_definition_sites -- --exact
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/unit-bound-match/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/unit-bound-match/xdg
+npm_config_cache=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/unit-bound-match/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno

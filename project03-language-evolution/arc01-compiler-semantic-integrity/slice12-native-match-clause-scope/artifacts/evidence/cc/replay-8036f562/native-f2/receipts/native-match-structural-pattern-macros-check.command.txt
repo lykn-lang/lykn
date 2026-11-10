@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match-structural-pattern-macros.lykn"]
+cwd=Some("/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f2/tmp/.tmpJNW4n9")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f2/tmp/.tmpJNW4n9/xdg-cache")
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f2/xdg")
+TMPDIR=Some("/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f2/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f2/receipts")

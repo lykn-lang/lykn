@@ -1,5 +1,10 @@
 # project03-language-evolution ledger
 
+[Arc01 S12](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/cdc-verification.md)
+accepts four native clause-scope rows at task `b5c22b63`.
+The previously accepted S04 tranche is independently validated on
+local release `7b17a784`. Parent completion remains open.
+
 [Arc01 S09](arc01-compiler-semantic-integrity/slice09-statement-match-completion/cdc-verification.md)
 accepts five finite statement-match rows at task `7b17a784`.
 CV-04, CI-04 and project composition remain open.

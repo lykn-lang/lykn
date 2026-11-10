@@ -1,0 +1,8 @@
+program=/Users/oubiwann/.cargo/bin/cargo
+argv=test -p lykn-lang --lib --no-run
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/no-run-unit/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/no-run-unit/xdg
+npm_config_cache=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-baseline/no-run-unit/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+PATH inherited; CARGO_TARGET_DIR inherited

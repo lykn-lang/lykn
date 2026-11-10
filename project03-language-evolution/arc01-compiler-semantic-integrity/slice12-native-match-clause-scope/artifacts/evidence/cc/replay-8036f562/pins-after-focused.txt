@@ -1,0 +1,14 @@
+source_commit=8036f5621b0a2651eb19d3d40d61340585ecc336
+tree=348a541d8135fb0a64625993613f74b3bbed7120
+cargo 1.97.0 (c980f4866 2026-06-30)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+184c2efaf1ee9c735e6ec412009980b4e239283a29bab681ed9bc997355ac7eb  target/debug/lykn
+cc4851028c447b95a2b75e8570985a6cad499bcfc470bcbd92f472efc7b52231  target/debug/deps/lykn_lang-660f810f98f77866
+c2c52c149b0996b7db5dded3d6c6531ce46518c4fc6c1d9409d512a9f1a18e53  target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+target/debug/lykn:                                 Mach-O 64-bit executable arm64
+target/debug/deps/lykn_lang-660f810f98f77866:      Mach-O 64-bit executable arm64
+target/debug/deps/semantic_roles-cb18f482652d85e9: Mach-O 64-bit executable arm64
+/opt/homebrew/bin/deno:                            Mach-O 64-bit executable arm64

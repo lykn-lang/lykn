@@ -11,6 +11,12 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 ## Implementation re-entry — 2026-11-09
 
+[S12 independently accepted](../slice12-native-match-clause-scope/closing-report.md)
+native match clause-local scope at task `b5c22b63`. The earlier
+I1/NE-C14/S09 stack is locally integrated and validated at
+`7b17a784`. Wider consumed completion, I3 and I4 retain their
+owners. CV-02 stays done and five CV rows plus CI-04 stay open.
+
 [S12](../slice12-native-match-clause-scope/slice-plan.md) starts
 the native clause-scope follow-up from independently integrated
 `7b17a784`. It is a finite I2 prerequisite with separate acceptance.

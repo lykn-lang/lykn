@@ -1,0 +1,9 @@
+program=/Users/oubiwann/.cargo/bin/cargo
+argv=test -p lykn-cli --test semantic_roles match_clauses_keep_bindings_local_to_guard_and_body -- --exact --nocapture
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f1/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f1/xdg
+npm_config_cache=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f1/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s12-isolation-replay/native-f1/receipts
+LYKN_TEST_DENO=/opt/homebrew/bin/deno

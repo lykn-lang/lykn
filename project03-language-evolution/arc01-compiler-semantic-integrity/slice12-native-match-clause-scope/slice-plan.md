@@ -2,11 +2,15 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice12-native-match-clause-scope
-status: in-progress
+status: complete
 depends-on: [slice04-completion-value-flow-integrity, slice09-statement-match-completion]
 ---
 
 # S12 — native match clause scope
+
+Independently accepted on 2026-11-09 at task `b5c22b63`.
+[Close](closing-report.md), [verification](cdc-verification.md) and
+[retrospective](cdc-retrospective.md) record all four completed rows.
 
 The Operator authorized the exact S09 local fast-forward and this
 bounded I2 follow-up. [Release validation](../slice09-statement-match-completion/artifacts/release-integration-7b17a784.md)
@@ -71,3 +75,7 @@ source has changed.
 old fixture replay and frozen production `e96ab03c`. Complete
 the single-slot shadow guard and optional capture before current
 validation. The exact runtime fixtures and predicates are unchanged.
+
+The initial assignment and both refinements have returned. Current
+source `b5c22b63` is accepted. Two refinements were spent in S12.
+The current release remains `7b17a784`.

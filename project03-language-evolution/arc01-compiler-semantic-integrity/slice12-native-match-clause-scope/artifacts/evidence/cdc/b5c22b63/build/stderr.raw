@@ -1,0 +1,4 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+  Executable unittests src/lib.rs (target/debug/deps/lykn_cli-8a470da61c5d1dbe)
+  Executable tests/semantic_roles.rs (target/debug/deps/semantic_roles-cb18f482652d85e9)
+  Executable unittests src/lib.rs (target/debug/deps/lykn_lang-60c4a58c1162abbf)
