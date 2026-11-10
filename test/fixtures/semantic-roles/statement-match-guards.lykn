@@ -8,5 +8,6 @@
   (2 :when (gate "literal-false" false) (trace:push "wrong-literal"))
   (captured :when (gate captured false) (trace:push "wrong-binding"))
   (_ :when (gate "chosen" true) (trace:push "body"))
-  (_ :when (gate "late" true) (trace:push "late-body")))
+  (_ :when (gate "late" true) (trace:push "late-body"))
+  (_ (trace:push "fallback")))
 (console:log (JSON:stringify trace))
