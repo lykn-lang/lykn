@@ -175,6 +175,14 @@ const FIXTURES: &[Case] = &[
         name: "ordinary-assignment-preservation",
         expected: b"[[2,5,6,5,6],[7,7]]\n",
     },
+    Case {
+        name: "ordered-argument-spread",
+        expected: b"[[0,1,2,3],7,[true],[0,1,2,3],[0,1,2,3],7,[\"before\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",\"lexical\",\"before\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",\"before\",\"iterator\",\"next0\",\"next1\",\"getter\",\"before\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",[\"method\",\"receiver\"],\"key\",\"getter\",\"before\",\"operand\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",[\"method\",\"receiver\"]]]\n",
+    },
+    Case {
+        name: "pure-argument-spread",
+        expected: b"[1,2,3]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -369,6 +377,8 @@ fn run_positive(case: &Case) {
             | "ordered-simple-assignment"
             | "ordered-literal-compound-assignment"
             | "ordinary-assignment-preservation"
+            | "ordered-argument-spread"
+            | "pure-argument-spread"
     ) {
         let kernel_json = execute_recorded(
             &format!("native-{}-kernel-json", case.name),
@@ -448,6 +458,72 @@ fn run_positive(case: &Case) {
         .expect("computed pure JavaScript is UTF-8");
         assert!(!generated.contains("lyknHostReflectApply"));
         assert!(!generated.contains("import "));
+    }
+    if case.name == "pure-argument-spread" {
+        let generated = std::str::from_utf8(
+            generated
+                .as_deref()
+                .expect("pure spread JavaScript exists"),
+        )
+        .expect("pure spread JavaScript is UTF-8");
+        assert!(!generated.contains("lyknHostReflectApply"));
+        assert!(!generated.contains("Reflect.apply"));
+    }
+}
+
+fn run_spread_hold(name: &str, source: &[u8]) {
+    let temp = TempDir::new().expect("create spread-hold output directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated spread-hold XDG cache");
+    let source_path = temp.path().join(format!("{name}.lykn"));
+    let output_path = temp.path().join(format!("{name}.js"));
+    fs::write(&source_path, source).expect("write exact spread-hold source");
+    let exact_source = fs::read(&source_path).expect("read exact spread-hold source");
+    let compile = execute_recorded(
+        &format!("native-{name}-compile"),
+        &source_path,
+        &exact_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&output_path),
+    );
+    let generated = output_path
+        .try_exists()
+        .expect("check spread-hold JavaScript")
+        .then(|| fs::read(&output_path).expect("read spread-hold JavaScript"));
+    let dts_path = output_path.with_extension("d.ts");
+    let dts = dts_path
+        .try_exists()
+        .expect("check spread-hold DTS")
+        .then(|| fs::read(&dts_path).expect("read spread-hold DTS"));
+    record_generated(&format!("native-{name}"), generated.as_deref(), dts.as_deref());
+    eprintln!(
+        "SPREAD_HOLD_PREASSERT name={name} status={:?} stdout={:?} stderr={:?} generated={generated:?} dts={dts:?}",
+        compile.status.code(), compile.stdout, compile.stderr
+    );
+    assert!(compile.status.success(), "{name} compile: {:?}", compile.stderr);
+    assert!(generated.is_some(), "{name} omitted JavaScript");
+    assert!(dts.is_none(), "{name} unexpectedly emitted DTS: {dts:?}");
+    let generated = std::str::from_utf8(generated.as_deref().expect("JavaScript exists"))
+        .expect("JavaScript is UTF-8");
+
+    if name == "ordered-computed-call-spread-hold" {
+        assert!(!generated.contains("lyknHostReflectApply"));
+        assert!(!generated.contains("Reflect.apply"));
+        assert!(!generated.contains("import "));
+        let source_return = generated.find("return 7").expect("source return is emitted");
+        let ordinary_call = generated
+            .find("](...items)")
+            .expect("ordinary computed spread call is emitted");
+        assert!(source_return < ordinary_call);
+    } else {
+        let iteration = generated.find("for (").expect("native for-of is emitted");
+        let source_return = generated.find("return 7").expect("source return is emitted");
+        assert!(iteration < source_return);
     }
 }
 
@@ -700,62 +776,23 @@ fn native_pure_static_member_call_keeps_the_ordinary_route() {
 }
 
 #[test]
-fn native_static_member_spread_with_lifted_arguments_fails_closed() {
-    const MESSAGE: &str = "ordered member call with spread and lifted arguments is not supported";
+fn ordered_argument_spread_preserves_iteration_and_completion_order() {
+    run_positive(&FIXTURES[41]);
+}
+
+#[test]
+fn pure_argument_spread_preserves_the_ordinary_call_route() {
+    run_positive(&FIXTURES[42]);
+}
+
+#[test]
+fn native_static_member_spread_precedes_a_later_return() {
     let source = concat!(
         "(func mixed-spread :args (:any receiver :any items) :returns :any :body\n",
         "  (receiver:read-entry (spread items) (do (return 7) 8)))\n",
     )
     .as_bytes();
-    let temp = TempDir::new().expect("create static-member spread negative directory");
-    let xdg_cache_home = temp.path().join("xdg-cache");
-    fs::create_dir(&xdg_cache_home).expect("create isolated static-member XDG cache");
-    let source_path = temp.path().join("mixed-spread.lykn");
-    let output_path = temp.path().join("mixed-spread.js");
-    fs::write(&source_path, source).expect("write frozen static-member spread source");
-    let exact_source = fs::read(&source_path).expect("read exact static-member spread source");
-    let compile = execute_recorded(
-        "native-ordered-member-call-spread-compile",
-        &source_path,
-        &exact_source,
-        Command::new(env!("CARGO_BIN_EXE_lykn"))
-            .current_dir(temp.path())
-            .env("XDG_CACHE_HOME", &xdg_cache_home)
-            .arg("compile")
-            .arg(&source_path)
-            .arg("-o")
-            .arg(&output_path),
-    );
-    let generated = output_path
-        .try_exists()
-        .expect("check static-member spread JavaScript")
-        .then(|| fs::read(&output_path).expect("read static-member spread JavaScript"));
-    let dts_path = output_path.with_extension("d.ts");
-    let dts = dts_path
-        .try_exists()
-        .expect("check static-member spread DTS")
-        .then(|| fs::read(&dts_path).expect("read static-member spread DTS"));
-    record_generated(
-        "native-ordered-member-call-spread",
-        generated.as_deref(),
-        dts.as_deref(),
-    );
-    let stderr = String::from_utf8_lossy(&compile.stderr);
-    eprintln!(
-        "ORDERED_MEMBER_SPREAD_PREASSERT status={:?} stdout={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
-        compile.status.code(),
-        compile.stdout,
-    );
-    assert_eq!(compile.status.code(), Some(1));
-    assert!(
-        stderr.contains(&format!("2:3: error: {MESSAGE}")),
-        "missing exact mixed-spread diagnostic at call span: {stderr}"
-    );
-    assert!(
-        generated.is_none(),
-        "failed compile wrote JavaScript: {generated:?}"
-    );
-    assert!(dts.is_none(), "failed compile wrote declarations: {dts:?}");
+    run_spread_hold("ordered-static-call-spread-hold", source);
 }
 
 #[test]
@@ -1037,81 +1074,37 @@ fn lifted_direct_protected_write_fails_compile_without_outputs() {
 }
 
 #[test]
-fn computed_member_call_with_lifted_spread_fails_closed_without_outputs() {
-    const MESSAGE: &str =
-        "ordered computed member call with spread and lifted operands is not supported";
+fn computed_member_header_return_keeps_the_ordinary_no_helper_route() {
     let source = concat!(
         "(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n",
         "  ((get receiver (do (return 7) \"method\")) (spread items)))\n",
     )
     .as_bytes();
-    let temp = TempDir::new().expect("create computed-spread negative directory");
-    let xdg_cache_home = temp.path().join("xdg-cache");
-    fs::create_dir(&xdg_cache_home).expect("create isolated computed-spread XDG cache");
-    let source_path = temp.path().join("mixed-computed-spread.lykn");
-    let output_path = temp.path().join("mixed-computed-spread.js");
-    fs::write(&source_path, source).expect("write exact computed-spread source");
-    let exact_source = fs::read(&source_path).expect("read exact computed-spread source");
-    let compile = execute_recorded(
-        "native-ordered-computed-call-spread-compile",
-        &source_path,
-        &exact_source,
-        Command::new(env!("CARGO_BIN_EXE_lykn"))
-            .current_dir(temp.path())
-            .env("XDG_CACHE_HOME", &xdg_cache_home)
-            .arg("compile")
-            .arg(&source_path)
-            .arg("-o")
-            .arg(&output_path),
-    );
-    let generated = output_path
-        .try_exists()
-        .expect("check computed-spread JavaScript output")
-        .then(|| fs::read(&output_path).expect("read computed-spread JavaScript"));
-    let dts_path = output_path.with_extension("d.ts");
-    let dts = dts_path
-        .try_exists()
-        .expect("check computed-spread declaration output")
-        .then(|| fs::read(&dts_path).expect("read computed-spread declaration"));
-    record_generated(
-        "native-ordered-computed-call-spread",
-        generated.as_deref(),
-        dts.as_deref(),
-    );
-    let stderr = String::from_utf8_lossy(&compile.stderr);
-    eprintln!(
-        "SEMANTIC_ROLE_NEGATIVE_PREASSERT name=ordered-computed-call-spread status={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
-        compile.status.code()
-    );
-    assert_eq!(compile.status.code(), Some(1));
-    assert!(
-        stderr.contains(&format!("2:3: error: {MESSAGE}")),
-        "missing exact computed-spread diagnostic at call span: {stderr}"
-    );
-    assert!(
-        generated.is_none(),
-        "failed compile wrote JavaScript: {generated:?}"
-    );
-    assert!(dts.is_none(), "failed compile wrote declarations: {dts:?}");
+    run_spread_hold("ordered-computed-call-spread-hold", source);
 }
 
 #[test]
-fn lexical_call_with_lifted_spread_fails_closed_without_outputs() {
-    const MESSAGE: &str = "ordered lexical call with spread and lifted arguments is not supported";
+fn lexical_call_spread_precedes_a_later_return() {
     let source = concat!(
         "(func mixed-spread :args (:any callable :any items) :returns :any :body\n",
         "  (callable (spread items) (do (return 7) 8)))\n",
     )
     .as_bytes();
-    let temp = TempDir::new().expect("create lexical-spread negative directory");
+    run_spread_hold("ordered-lexical-call-spread-hold", source);
+}
+
+#[test]
+fn malformed_actual_spread_is_checked_at_the_argument_root() {
+    let source = b"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
+    let temp = TempDir::new().expect("create malformed-spread output directory");
     let xdg_cache_home = temp.path().join("xdg-cache");
-    fs::create_dir(&xdg_cache_home).expect("create isolated lexical-spread XDG cache");
-    let source_path = temp.path().join("mixed-spread.lykn");
-    let output_path = temp.path().join("mixed-spread.js");
-    fs::write(&source_path, source).expect("write exact lexical-spread source");
-    let exact_source = fs::read(&source_path).expect("read exact lexical-spread source");
+    fs::create_dir(&xdg_cache_home).expect("create isolated malformed-spread XDG cache");
+    let source_path = temp.path().join("malformed-spread.lykn");
+    let output_path = temp.path().join("malformed-spread.js");
+    fs::write(&source_path, source).expect("write exact malformed-spread source");
+    let exact_source = fs::read(&source_path).expect("read exact malformed-spread source");
     let compile = execute_recorded(
-        "native-ordered-lexical-call-spread-compile",
+        "native-malformed-argument-spread-compile",
         &source_path,
         &exact_source,
         Command::new(env!("CARGO_BIN_EXE_lykn"))
@@ -1124,33 +1117,28 @@ fn lexical_call_with_lifted_spread_fails_closed_without_outputs() {
     );
     let generated = output_path
         .try_exists()
-        .expect("check mixed-spread JavaScript output")
-        .then(|| fs::read(&output_path).expect("read mixed-spread JavaScript"));
+        .expect("check malformed-spread JavaScript")
+        .then(|| fs::read(&output_path).expect("read malformed-spread JavaScript"));
     let dts_path = output_path.with_extension("d.ts");
     let dts = dts_path
         .try_exists()
-        .expect("check mixed-spread declaration output")
-        .then(|| fs::read(&dts_path).expect("read mixed-spread declaration"));
+        .expect("check malformed-spread DTS")
+        .then(|| fs::read(&dts_path).expect("read malformed-spread DTS"));
     record_generated(
-        "native-ordered-lexical-call-spread",
+        "native-malformed-argument-spread",
         generated.as_deref(),
         dts.as_deref(),
     );
     let stderr = String::from_utf8_lossy(&compile.stderr);
     eprintln!(
-        "SEMANTIC_ROLE_NEGATIVE_PREASSERT name=ordered-lexical-call-spread status={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
-        compile.status.code()
+        "MALFORMED_SPREAD_PREASSERT status={:?} stdout={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
+        compile.status.code(), compile.stdout
     );
     assert_eq!(compile.status.code(), Some(1));
-    assert!(
-        stderr.contains(&format!("2:3: error: {MESSAGE}")),
-        "missing exact mixed-spread diagnostic at call span: {stderr}"
-    );
-    assert!(
-        generated.is_none(),
-        "failed compile wrote JavaScript: {generated:?}"
-    );
-    assert!(dts.is_none(), "failed compile wrote declarations: {dts:?}");
+    assert!(compile.stdout.is_empty());
+    assert_eq!(stderr, "2:11: error: spread takes exactly one argument\n");
+    assert!(generated.is_none(), "malformed source emitted JavaScript: {generated:?}");
+    assert!(dts.is_none(), "malformed source emitted DTS: {dts:?}");
 }
 
 #[test]

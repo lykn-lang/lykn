@@ -44,6 +44,11 @@ const CASES = [
   { name: "ordered-simple-assignment", expected: '[95,[10,40],5,5,40,96,50,8,8,["key","rhs","key","rhs","string","after","statement-rhs","statement-rhs","statement-after"]]\n' },
   { name: "ordered-literal-compound-assignment", expected: '[91,[10,40],14,14,40,["get","rhs","get","rhs",["convert","default"],["set",14],"after"]]\n' },
   { name: "ordinary-assignment-preservation", expected: '[[2,5,6,5,6],[7,7]]\n' },
+  {
+    name: "ordered-argument-spread",
+    expected: '[[0,1,2,3],7,[true],[0,1,2,3],[0,1,2,3],7,["before","iterator","next0","next1","done","late","lexical","before","iterator","next0","next1","done","late","before","iterator","next0","next1","getter","before","iterator","next0","next1","done","late",["method","receiver"],"key","getter","before","operand","iterator","next0","next1","done","late",["method","receiver"]]]\n',
+  },
+  { name: "pure-argument-spread", expected: "[1,2,3]\n" },
 ];
 
 const RESERVED_MATCH_CASES = [
@@ -88,7 +93,9 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
         fixture.name === "anonymous-completion-names" ||
         fixture.name === "ordered-simple-assignment" ||
         fixture.name === "ordered-literal-compound-assignment" ||
-        fixture.name === "ordinary-assignment-preservation"
+        fixture.name === "ordinary-assignment-preservation" ||
+        fixture.name === "ordered-argument-spread" ||
+        fixture.name === "pure-argument-spread"
       ) {
         const expanded = expand(read(source));
         assertEquals(compile(expanded), generated, `${fixture.name} expanded compile differs`);
@@ -178,6 +185,10 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
         if (fixture.name === "computed-member-no-prefix") {
           assertEquals(generated.includes("lyknHostReflectApply"), false);
           assertEquals(generated.includes("import "), false);
+        }
+        if (fixture.name === "pure-argument-spread") {
+          assertEquals(generated.includes("lyknHostReflectApply"), false);
+          assertEquals(generated.includes("Reflect.apply"), false);
         }
       } finally {
         await Deno.remove(temp, { recursive: true });
@@ -331,6 +342,50 @@ async function runPublicOrderedMemberProvider(providerName, expectedProviderKind
   }
 }
 
+async function runPublicSpreadHold(name, source, noHelper = false) {
+  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
+  const save = async (suffix, bytes) => {
+    if (evidenceRoot !== undefined) {
+      await Deno.writeFile(`${evidenceRoot}/public-${name}-${suffix}`, bytes, {
+        createNew: true,
+      });
+    }
+  };
+  const saveText = async (suffix, value) =>
+    save(suffix, new TextEncoder().encode(value));
+  let generated = null;
+  let caughtError = null;
+  try {
+    generated = lykn(source);
+  } catch (error) {
+    caughtError = error;
+  }
+  const observation = {
+    source,
+    errorName: caughtError?.name ?? null,
+    errorMessage: caughtError?.message ?? null,
+    generated,
+  };
+  await saveText("source.lykn", source);
+  await saveText("preassert.json", `${JSON.stringify(observation)}\n`);
+  if (generated !== null) await saveText("generated.js", generated);
+  console.log(`PUBLIC_SPREAD_HOLD_PREASSERT ${name} ${JSON.stringify(observation)}`);
+  assertEquals(caughtError, null, `${name} compilation threw`);
+  assertEquals(typeof generated, "string", `${name} compilation omitted JavaScript`);
+  if (noHelper) {
+    assertEquals(generated.includes("lyknHostReflectApply"), false);
+    assertEquals(generated.includes("Reflect.apply"), false);
+    assertEquals(generated.includes("import "), false);
+    const sourceReturn = generated.indexOf("return 7");
+    const ordinaryCall = generated.indexOf("](...items)");
+    assertEquals(sourceReturn >= 0 && sourceReturn < ordinaryCall, true);
+  } else {
+    const iteration = generated.indexOf("for (");
+    const sourceReturn = generated.indexOf("return 7");
+    assertEquals(iteration >= 0 && iteration < sourceReturn, true);
+  }
+}
+
 Deno.test("public static member calls use the default lazy helper", async () => {
   await runPublicOrderedMemberProvider("provider-default", "local");
 });
@@ -339,39 +394,11 @@ Deno.test("public static member calls use the Reflect fallback", async () => {
   await runPublicOrderedMemberProvider("provider-fallback", "inline");
 });
 
-Deno.test("public member spread plus lifted arguments fails closed", () => {
+Deno.test("public static member spread completes before a later return", async () => {
   const source =
     "(func mixed-spread :args (:any receiver :any items) :returns :any :body\n" +
     "  (receiver:read-entry (spread items) (do (return 7) 8)))\n";
-  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
-  let message = null;
-  let output = null;
-  try {
-    output = lykn(source);
-  } catch (error) {
-    message = error.message;
-  }
-  console.log(
-    `ORDERED_MEMBER_SPREAD_PREASSERT ${
-      JSON.stringify({ source, message, output })
-    }`,
-  );
-  if (evidenceRoot !== undefined) {
-    Deno.writeTextFileSync(
-      `${evidenceRoot}/public-ordered-member-spread.source.lykn`,
-      source,
-      { createNew: true },
-    );
-    Deno.writeTextFileSync(
-      `${evidenceRoot}/public-ordered-member-spread.preassert.json`,
-      `${JSON.stringify({ message, output })}\n`,
-      { createNew: true },
-    );
-  }
-  assertEquals(
-    message,
-    "ordered member call with spread and lifted arguments is not supported",
-  );
+  await runPublicSpreadHold("ordered-static-call-spread-hold", source);
 });
 
 for (const testCase of RESERVED_MATCH_CASES) {
@@ -402,58 +429,51 @@ Deno.test("public direct return preserves nested no-else diagnostic", () => {
   );
 });
 
-Deno.test("public lexical calls reject lifted mixed spread with the exact diagnostic", () => {
+Deno.test("public lexical spread completes before a later return", async () => {
   const source =
     "(func mixed-spread :args (:any callable :any items) :returns :any :body\n" +
     "  (callable (spread items) (do (return 7) 8)))\n";
-  const error = assertThrows(() => lykn(source));
-  assertEquals(
-    error.message,
-    "ordered lexical call with spread and lifted arguments is not supported",
-  );
+  await runPublicSpreadHold("ordered-lexical-call-spread-hold", source);
 });
 
-Deno.test("public computed member calls reject lifted mixed spread with the exact diagnostic", () => {
+Deno.test("public computed header return keeps the ordinary no-helper route", async () => {
   const source =
     "(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n" +
     "  ((get receiver (do (return 7) \"method\")) (spread items)))\n";
-  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
-  let message = null;
+  await runPublicSpreadHold(
+    "ordered-computed-call-spread-hold",
+    source,
+    true,
+  );
+});
+
+Deno.test("public malformed actual spread reports the checked argument-root error", () => {
+  const source = "(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
   let output = null;
   let caughtError = null;
   try {
     output = lykn(source);
   } catch (error) {
     caughtError = error;
-    message = error.message;
   }
-  console.log(
-    `ORDERED_COMPUTED_SPREAD_PREASSERT ${
-      JSON.stringify({ source, message, output })
-    }`,
-  );
+  const observation = {
+    source,
+    errorName: caughtError?.name ?? null,
+    errorMessage: caughtError?.message ?? null,
+    output,
+  };
+  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
+  console.log(`MALFORMED_SPREAD_PREASSERT ${JSON.stringify(observation)}`);
   if (evidenceRoot !== undefined) {
     Deno.writeTextFileSync(
-      `${evidenceRoot}/public-ordered-computed-spread.source.lykn`,
-      source,
-      { createNew: true },
-    );
-    Deno.writeTextFileSync(
-      `${evidenceRoot}/public-ordered-computed-spread.preassert.json`,
-      `${JSON.stringify({ message, output })}\n`,
+      `${evidenceRoot}/public-malformed-argument-spread.preassert.json`,
+      `${JSON.stringify(observation)}\n`,
       { createNew: true },
     );
   }
-  assertEquals(
-    caughtError instanceof Error,
-    true,
-    "computed spread compile did not throw an Error",
-  );
-  assertEquals(
-    message,
-    "ordered computed member call with spread and lifted operands is not supported",
-  );
-  assertEquals(output, null, "computed spread compile returned output");
+  assertEquals(caughtError instanceof Error, true);
+  assertEquals(caughtError.message, "spread takes exactly one argument");
+  assertEquals(output, null, "malformed spread returned compiled output");
 });
 
 Deno.test("public direct lifted protected writes retain the v1 rejection", () => {
