@@ -186,3 +186,8 @@ CV/CI dispositions remain.
 the reproduced private anonymous-name change in I2 result storage and I3
 earlier-argument or receiver storage. Ordered assignment and spread
 remain separately open.
+
+2026-11-10 [S20 acceptance](../slice20-anonymous-value-names/cdc-verification.md)
+closes private anonymous value naming at `125a1f29`. The actual invalid
+single-body lambda output remains a distinct completion/body carryover.
+Ordered assignment, iteration and special reference boundaries stay I3.

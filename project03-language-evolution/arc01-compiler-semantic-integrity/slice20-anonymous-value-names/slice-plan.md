@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice20-anonymous-value-names
-status: in-progress
+status: closed
 depends-on: [slice19-ordered-computed-calls]
 ---
 
@@ -36,7 +36,7 @@ generated private names plus the real source binding name.
 Actual native/public focused gates, full normal Make, standalone
 cites and independent replay close only this issue. Assignment,
 spread/iterator and special references remain I3. I4, K and
-release propagation stay outside this delivery. S20 starts
+release propagation stay outside this delivery. S20 started
 with zero refinements.
 
 The [native source and generated evidence](artifacts/evidence/preliminary-native)
@@ -45,3 +45,8 @@ uses the accepted task CLI with SHA-256
 Both preliminary source files have SHA-256
 `2b57d907e4a5bc09c442d2272bbef6655a815e2e05fc5f5a599ff14f4e3fa916`.
 The original native warning is retained separately from runtime stderr.
+
+Accepted at `125a1f29` after the
+[independent current replay](cdc-verification.md).
+The [closing report](closing-report.md) preserves the two
+refinements and remaining I3 boundaries.

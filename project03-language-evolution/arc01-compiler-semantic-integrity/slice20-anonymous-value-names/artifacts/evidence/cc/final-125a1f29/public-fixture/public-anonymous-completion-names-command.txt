@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s20-cdc.lKECBUrJ/current/env/public-focus/tmp/3d7e237804015d30/anonymous-completion-names.js"
+  ],
+  "cwd": "/private/tmp/lykn-s20-cdc.lKECBUrJ/current/env/public-focus/tmp/3d7e237804015d30",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/anonymous-completion-names.lykn",
+  "modulePath": "/private/tmp/lykn-s20-cdc.lKECBUrJ/current/env/public-focus/tmp/3d7e237804015d30/anonymous-completion-names.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s20-cdc.lKECBUrJ/current/env/public-focus/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s20-cdc.lKECBUrJ/current/env/public-focus/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s20-cdc.lKECBUrJ/current/receipts/public"
+  }
+}

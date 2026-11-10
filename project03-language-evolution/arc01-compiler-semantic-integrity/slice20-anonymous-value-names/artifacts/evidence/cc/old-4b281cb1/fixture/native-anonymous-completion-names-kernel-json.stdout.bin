@@ -1,0 +1,1370 @@
+[
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "lyknHostReflectApply0"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "fn"
+          },
+          {
+            "type": "atom",
+            "value": "receiver"
+          },
+          {
+            "type": "atom",
+            "value": "argv"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "Reflect:apply"
+              },
+              {
+                "type": "atom",
+                "value": "fn"
+              },
+              {
+                "type": "atom",
+                "value": "receiver"
+              },
+              {
+                "type": "atom",
+                "value": "argv"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "name-of"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "callback"
+          },
+          {
+            "type": "atom",
+            "value": "_other"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "atom",
+            "value": "callback:name"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "names"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "callee"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "ordinary"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "callee"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "=>"
+                  },
+                  {
+                    "type": "list",
+                    "values": []
+                  },
+                  {
+                    "type": "number",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "type": "number",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym0"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym1"
+              },
+              {
+                "type": "atom",
+                "value": "callee"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym2"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "=>"
+                  },
+                  {
+                    "type": "list",
+                    "values": []
+                  },
+                  {
+                    "type": "number",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym3"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym3"
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym0"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym1"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym2"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "lifted"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym0"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym4"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym4"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "=>"
+                      },
+                      {
+                        "type": "list",
+                        "values": []
+                      },
+                      {
+                        "type": "number",
+                        "value": 1
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "value"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym4"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "named-callback"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "=>"
+              },
+              {
+                "type": "list",
+                "values": []
+              },
+              {
+                "type": "number",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym5"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym6"
+              },
+              {
+                "type": "atom",
+                "value": "callee"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym7"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "=>"
+                  },
+                  {
+                    "type": "list",
+                    "values": []
+                  },
+                  {
+                    "type": "number",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym8"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym8"
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym5"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym6"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym7"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym8"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "lifted-lambda"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym5"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym9"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym10"
+              },
+              {
+                "type": "atom",
+                "value": "callee"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym11"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "function*"
+                  },
+                  {
+                    "type": "list",
+                    "values": []
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "yield"
+                      },
+                      {
+                        "type": "number",
+                        "value": 1
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym12"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym12"
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym9"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym10"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym11"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym12"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "lifted-generator"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym9"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym13"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym14"
+              },
+              {
+                "type": "atom",
+                "value": "callee"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym15"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "class-expr"
+                  },
+                  {
+                    "type": "list",
+                    "values": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym16"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym16"
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym13"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym14"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym15"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym16"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "lifted-class"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym13"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym17"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym18"
+              },
+              {
+                "type": "atom",
+                "value": "callee"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym19"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "async"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "=>"
+                      },
+                      {
+                        "type": "list",
+                        "values": []
+                      },
+                      {
+                        "type": "number",
+                        "value": 1
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym20"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym20"
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym17"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym18"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym19"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym20"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "lifted-async"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym17"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym21"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym22"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "=>"
+                  },
+                  {
+                    "type": "list",
+                    "values": []
+                  },
+                  {
+                    "type": "number",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym23"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "get"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym22"
+                  },
+                  {
+                    "type": "string",
+                    "value": "bind"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym24"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym24"
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym25"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "array"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym24"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym21"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "lyknHostReflectApply0"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym23"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym22"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym25"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "bound-result"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym21"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "atom",
+                "value": "ordinary"
+              },
+              {
+                "type": "atom",
+                "value": "lifted"
+              },
+              {
+                "type": "atom",
+                "value": "value:name"
+              },
+              {
+                "type": "atom",
+                "value": "named-callback:name"
+              },
+              {
+                "type": "atom",
+                "value": "lifted-lambda"
+              },
+              {
+                "type": "atom",
+                "value": "lifted-generator"
+              },
+              {
+                "type": "atom",
+                "value": "lifted-class"
+              },
+              {
+                "type": "atom",
+                "value": "lifted-async"
+              },
+              {
+                "type": "atom",
+                "value": "bound-result:name"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "console:log"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "JSON:stringify"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "names"
+              },
+              {
+                "type": "atom",
+                "value": "name-of"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

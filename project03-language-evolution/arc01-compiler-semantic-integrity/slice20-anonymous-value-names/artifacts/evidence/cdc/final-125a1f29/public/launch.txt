@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s20-cdc-verify.2crmAYlj/public/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s20-cdc-verify.2crmAYlj/public/xdg' 'npm_config_cache=/private/tmp/lykn-s20-cdc-verify.2crmAYlj/public/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s20-cdc-verify.2crmAYlj/evidence/public' '/opt/homebrew/bin/deno' 'test' '--config' 'project.json' '-A' 'test/forms/semantic-roles.test.js'
+stdout=/private/tmp/lykn-s20-cdc-verify.2crmAYlj/public/stdout.raw
+stderr=/private/tmp/lykn-s20-cdc-verify.2crmAYlj/public/stderr.raw
+exit_status=/private/tmp/lykn-s20-cdc-verify.2crmAYlj/public/exit-status.txt

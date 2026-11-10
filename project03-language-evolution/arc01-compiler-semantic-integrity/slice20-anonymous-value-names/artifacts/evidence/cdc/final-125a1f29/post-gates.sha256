@@ -1,0 +1,5 @@
+2f27ec5cbcdfa90d818eb57357ff8f08404f69c9ca63a92fce4357a51317076e  bin/lykn
+2f27ec5cbcdfa90d818eb57357ff8f08404f69c9ca63a92fce4357a51317076e  target/release/lykn
+85a68b0f2b50744325cc26ab5d2fa84d55be6b1d5e12dbdfb5dfde0ab7c02852  packages/lang/expander.js
+85a68b0f2b50744325cc26ab5d2fa84d55be6b1d5e12dbdfb5dfde0ab7c02852  crates/lykn-lang/embedded/packages/lang/expander.js
+85a68b0f2b50744325cc26ab5d2fa84d55be6b1d5e12dbdfb5dfde0ab7c02852  /private/tmp/lykn-s20-cdc-verify.2crmAYlj/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js

@@ -1,0 +1,24 @@
+{
+  "cwd": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering",
+  "program": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9",
+  "argv": ["--nocapture"],
+  "commit": "329fa5850140cec434f6a381be920801b97df5ec",
+  "tree": "dd329ec7494159fc8f74c6f66b0b34dc44de43ce",
+  "environment": {
+    "HOME": "/Users/oubiwann",
+    "PATH": "/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/lykn-s20-cdc.lKECBUrJ/old-focus/env/native-direct/tmp",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s20-cdc.lKECBUrJ/old-focus/env/native-direct/xdg-cache",
+    "XDG_CONFIG_HOME": "/private/tmp/lykn-s20-cdc.lKECBUrJ/old-focus/env/native-direct/xdg-config",
+    "NPM_CONFIG_CACHE": "/private/tmp/lykn-s20-cdc.lKECBUrJ/old-focus/env/native-direct/npm-cache",
+    "NPM_CONFIG_USERCONFIG": "/private/tmp/lykn-s20-cdc.lKECBUrJ/old-focus/env/native-direct/npm-cache/userconfig",
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s20-cdc.lKECBUrJ/receipts"
+  },
+  "toolchain": {
+    "deno": "deno 2.9.6 (stable, release, aarch64-apple-darwin)",
+    "deno_sha256": "2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74",
+    "native_binary_sha256": "74f97de91fb327d4a50988d269775936c719fb6660a196a7ea802949d575c9b1"
+  }
+}

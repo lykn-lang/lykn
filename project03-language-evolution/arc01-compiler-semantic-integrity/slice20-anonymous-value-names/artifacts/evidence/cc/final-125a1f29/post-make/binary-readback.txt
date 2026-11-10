@@ -1,0 +1,4 @@
+bin/lykn:            Mach-O 64-bit executable arm64
+target/release/lykn: Mach-O 64-bit executable arm64
+2f27ec5cbcdfa90d818eb57357ff8f08404f69c9ca63a92fce4357a51317076e  bin/lykn
+2f27ec5cbcdfa90d818eb57357ff8f08404f69c9ca63a92fce4357a51317076e  target/release/lykn

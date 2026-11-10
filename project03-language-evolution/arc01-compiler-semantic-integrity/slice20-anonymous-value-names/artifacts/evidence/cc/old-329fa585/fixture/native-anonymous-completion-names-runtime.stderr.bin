@@ -1,0 +1,5 @@
+[0m[1m[31merror[0m: SyntaxError: Expression expected
+   |
+32 |     const completionValue__gensym7 = () => return 1;
+   |                                            ~~~~~~
+    at file:///private/tmp/lykn-s20-cdc.lKECBUrJ/old-focus/env/native-direct/tmp/.tmpP7jOsr/anonymous-completion-names.js:32:44
