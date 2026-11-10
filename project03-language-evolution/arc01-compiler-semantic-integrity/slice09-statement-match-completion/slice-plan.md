@@ -32,3 +32,10 @@ CV-04 and parent CI-04 remain open for composition.
 shared fixtures, specific old/current outcomes, preserved case families,
 whole generated modules and repository-native gate requirements. Neither
 a release integration nor a new K trial is within this increment.
+
+The pre-production role clarification keeps public classified Cond's
+nested match in Legacy. Its public emitted if chain and native synthetic
+function differ. This increment leaves that mixed wrapper outside the
+shared transparent set. The try adapter follows the actual trailing
+catch/finally structure in compiler.js. Neither clarification changes
+the frozen fixture population.
