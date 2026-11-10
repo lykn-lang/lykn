@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/hosted-ci-repair
+source=fcc786bf70ddc7a7913892a7ed5bcfd71581a627
+tree=47ebb0207e47c020ec64f8cbbb278c9908519491
+argv=/usr/bin/env -u LYKN_TEST_DENO -u CARGO_TARGET_DIR TMPDIR=/private/tmp/lykn-hosted-ci-cdc.EiBY2znd/tmp XDG_CACHE_HOME=/private/tmp/lykn-hosted-ci-cdc.EiBY2znd/xdg npm_config_cache=/private/tmp/lykn-hosted-ci-cdc.EiBY2znd/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin /Users/oubiwann/.cargo/bin/cargo test -p lykn-cli --test binding_scan_shadows_macros --test match_clause_validation
+stdout=/private/tmp/lykn-hosted-ci-cdc.EiBY2znd/stdout.raw
+stderr=/private/tmp/lykn-hosted-ci-cdc.EiBY2znd/stderr.raw
+exit_status=/private/tmp/lykn-hosted-ci-cdc.EiBY2znd/exit-status.txt

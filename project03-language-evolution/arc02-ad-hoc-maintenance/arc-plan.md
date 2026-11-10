@@ -125,3 +125,7 @@ All original F1–F12, Project07/library/book/guide/human/licensing and other co
   fresh Luna6 High CC/separate Sol6.1 High CDC; S02/later work still held.
 
 - 2026-11-07 v0.1: Operator-requested planning-only maintenance home and one finite local-test/baseline slice; preserved S02 pause, expected product reds, history and shared correction allowance.
+
+2026-11-10 [CLI test portability and isolation](artifacts/hosted-ci-test-isolation-2026-11-10.md)
+is independently accepted on the clean I3 task composition. It adds
+two test-only changes and leaves the browser DD-37 size issue open.

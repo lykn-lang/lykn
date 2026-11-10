@@ -1,0 +1,4 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.91s
+     Running tests/binding_scan_shadows_macros.rs (target/debug/deps/binding_scan_shadows_macros-fd50d569470d5725)
+     Running tests/match_clause_validation.rs (target/debug/deps/match_clause_validation-7d8f7aa58e91c201)

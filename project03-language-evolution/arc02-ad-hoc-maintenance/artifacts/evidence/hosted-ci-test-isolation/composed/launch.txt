@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source=e9eeee3d49ee42268a1d6d082e39b357ea47a079
+tree=2fa18ac7de07cf7cec266cd99fe2b4e14ee1a8b9
+argv=/usr/bin/env -u LYKN_TEST_DENO -u CARGO_TARGET_DIR TMPDIR=/private/tmp/lykn-ci-composed-cdc.rsV5QuyK/tmp XDG_CACHE_HOME=/private/tmp/lykn-ci-composed-cdc.rsV5QuyK/xdg npm_config_cache=/private/tmp/lykn-ci-composed-cdc.rsV5QuyK/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin /Users/oubiwann/.cargo/bin/cargo test -p lykn-cli --test binding_scan_shadows_macros --test match_clause_validation
+stdout=/private/tmp/lykn-ci-composed-cdc.rsV5QuyK/stdout.raw
+stderr=/private/tmp/lykn-ci-composed-cdc.rsV5QuyK/stderr.raw
+exit_status=/private/tmp/lykn-ci-composed-cdc.rsV5QuyK/exit-status.txt

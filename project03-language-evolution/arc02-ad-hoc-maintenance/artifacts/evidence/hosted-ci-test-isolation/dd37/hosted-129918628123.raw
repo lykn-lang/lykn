@@ -1,0 +1,105 @@
+Bundle size check (DD-37)	Run make bundle-size-check	﻿2026-11-10T15:11:47.1440900Z ##[group]Run make bundle-size-check
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:47.1441287Z [36;1mmake bundle-size-check[0m
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:47.1486491Z shell: /usr/bin/bash -e {0}
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:47.1486709Z env:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:47.1486856Z   CARGO_TERM_COLOR: always
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:47.1487024Z ##[endgroup]
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.4983509Z DD-37 baseline source: 4b9546cdba6bdcd4e5dd82d7cdf6cf58da9edde0
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5021253Z deno 2.7.7 (stable, release, x86_64-unknown-linux-gnu)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5021675Z v8 14.6.202.9-rusty
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5021880Z typescript 5.9.2
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5291729Z [0m[32mDownload[0m https://registry.npmjs.org/esbuild/-/esbuild-0.27.4.tgz
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5292384Z [0m[32mDownload[0m https://registry.npmjs.org/acorn/-/acorn-8.17.0.tgz
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5292886Z [0m[32mDownload[0m https://registry.npmjs.org/astring/-/astring-1.9.0.tgz
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5293408Z [0m[32mDownload[0m https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.27.4.tgz
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.5294093Z [0m[32mDownload[0m https://registry.npmjs.org/esbuild
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7824304Z ▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7824677Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7824829Z     ../../home/runner/.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7825128Z       12 │     "browser": "./dist/astring.min.js"
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7825314Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7825395Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7825525Z   The "import" condition comes earlier and will be used for all "import" statements:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7825704Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7825830Z     ../../home/runner/.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7826089Z       10 │     "import": "./dist/astring.mjs",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7826535Z          ╵     ~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7826837Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7827025Z   The "require" condition comes earlier and will be used for all "require" calls:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7827204Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7827347Z     ../../home/runner/.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7827964Z       11 │     "require": "./dist/astring.js",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7828145Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7828339Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7945585Z ▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7946124Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7946355Z     ../../home/runner/.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7946796Z       12 │     "browser": "./dist/astring.min.js"
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7947079Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7947209Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7947403Z   The "import" condition comes earlier and will be used for all "import" statements:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7947701Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7947907Z     ../../home/runner/.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7948338Z       10 │     "import": "./dist/astring.mjs",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7948601Z          ╵     ~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7948725Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7948924Z   The "require" condition comes earlier and will be used for all "require" calls:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7949188Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7949382Z     ../../home/runner/.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7949663Z       11 │     "require": "./dist/astring.js",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7949828Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.7949909Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8062334Z Raw:      217667 bytes (212.6 KB)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8062645Z Minified: 105439 bytes (103.0 KB)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8062879Z Gzipped:  27906 bytes (27.3 KB)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8086971Z Current source, measured with the same tools:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8098071Z make[1]: Entering directory '/home/runner/work/lykn/lykn'
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8377799Z [1;34mMeasuring browser bundle size...[0m
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8718807Z ▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8719389Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8719594Z     ../../../.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8720048Z       12 │     "browser": "./dist/astring.min.js"
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8720454Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8720585Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8720799Z   The "import" condition comes earlier and will be used for all "import" statements:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8721094Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8721280Z     ../../../.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8721672Z       10 │     "import": "./dist/astring.mjs",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8721966Z          ╵     ~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8722086Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8722249Z   The "require" condition comes earlier and will be used for all "require" calls:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8722451Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8722646Z     ../../../.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8723050Z       11 │     "require": "./dist/astring.js",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8723327Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8723454Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8881911Z ▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8882239Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8882372Z     ../../../.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8882709Z       12 │     "browser": "./dist/astring.min.js"
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8882893Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8882983Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8883112Z   The "import" condition comes earlier and will be used for all "import" statements:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8883283Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8883474Z     ../../../.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8883725Z       10 │     "import": "./dist/astring.mjs",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8883921Z          ╵     ~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8884002Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8884119Z   The "require" condition comes earlier and will be used for all "require" calls:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8884636Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8884747Z     ../../../.cache/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8884989Z       11 │     "require": "./dist/astring.js",
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8885162Z          ╵     ~~~~~~~~~
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8885240Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8979787Z Raw:      316997 bytes (309.6 KB)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8980163Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8980375Z Minified: 153264 bytes (149.7 KB)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8980781Z Gzipped:  41830 bytes (40.8 KB)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8980990Z 
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8981747Z Baseline: 27906 bytes
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.8981984Z Delta:    +13924 bytes (+13.6 KB)
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.9000887Z ❌ HARD FAIL: gzipped delta exceeds +5KB threshold
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.9008408Z make[1]: *** [Makefile:579: bundle-size] Error 1
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.9010362Z make[1]: Leaving directory '/home/runner/work/lykn/lykn'
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.9031177Z make: *** [Makefile:583: bundle-size-check] Error 2
+Bundle size check (DD-37)	Run make bundle-size-check	2026-11-10T15:11:54.9046458Z ##[error]Process completed with exit code 2.

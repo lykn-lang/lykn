@@ -1,0 +1,19 @@
+
+running 4 tests
+test bound_name_does_not_fire_user_macro ... ok
+test sibling_binding_shadows_following_desugar ... ok
+test bound_name_does_not_fire_desugar ... ok
+test out_of_scope_use_still_expands ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+
+running 5 tests
+test ordinary_fn_body_yields_keyword_does_not_hide_no_else_if ... ok
+test ordinary_lambda_body_yields_keyword_does_not_hide_no_else_if ... ok
+test genfn_yields_header_keeps_statement_body_policy ... ok
+test consumed_match_tail_if_is_rejected_without_writing_outputs ... ok
+test match_clause_validation_preserves_context_and_runtime_behavior ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
