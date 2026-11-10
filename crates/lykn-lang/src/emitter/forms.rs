@@ -676,7 +676,7 @@ fn emit_kernel_object_property(
         ObjectPropertyRole::Shorthand => property.clone(),
         ObjectPropertyRole::Value => emit_in_context(property, ExprContext::Value, ctx, registry),
         ObjectPropertyRole::Pair | ObjectPropertyRole::Dynamic | ObjectPropertyRole::Computed => {
-            let Some(SExpr::List { values, span }) = property else {
+            let SExpr::List { values, span } = property else {
                 return property.clone();
             };
             let mut emitted = values.clone();
