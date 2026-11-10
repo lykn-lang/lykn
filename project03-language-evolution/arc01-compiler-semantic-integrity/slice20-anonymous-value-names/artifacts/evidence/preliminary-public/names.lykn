@@ -1,0 +1,8 @@
+(func name-of :args (:any callback :any other) :returns :any :body
+  callback:name)
+(func names :args (:any callee) :returns :any :body
+  (bind ordinary (callee (fn () 1) 0))
+  (bind lifted (callee (fn () 1) (do 0 0)))
+  (bind value (do (fn () 1)))
+  (array ordinary lifted value:name))
+(console:log (JSON:stringify (names name-of)))

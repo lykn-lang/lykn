@@ -698,3 +698,8 @@ closes actual computed member order and throw preservation at
 `c729a0df`. The separately observed anonymous temporary naming
 issue, assignment, iterator and special reference obligations
 remain. CV-04 and CI-04 stay open.
+
+2026-11-10 [S20](slice20-anonymous-value-names/slice-plan.md) owns
+the reproduced private anonymous-name change in I2 result storage and I3
+earlier-argument or receiver storage. Ordered assignment and spread
+remain separately open.

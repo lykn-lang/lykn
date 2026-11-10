@@ -1,0 +1,4 @@
+(import "./source/packages/lang/mod.js" (lykn))
+(bind input-path (get Deno:args 0))
+(bind output-path (get Deno:args 1))
+(Deno:writeTextFileSync output-path (lykn (Deno:readTextFileSync input-path)))

@@ -181,3 +181,8 @@ closes bounded computed receiver/key execution on both backends.
 Further private temporary naming, assignment, iterator and
 special reference obligations retain I3 owners. All existing
 CV/CI dispositions remain.
+
+2026-11-10 [S20](../slice20-anonymous-value-names/slice-plan.md) owns
+the reproduced private anonymous-name change in I2 result storage and I3
+earlier-argument or receiver storage. Ordered assignment and spread
+remain separately open.

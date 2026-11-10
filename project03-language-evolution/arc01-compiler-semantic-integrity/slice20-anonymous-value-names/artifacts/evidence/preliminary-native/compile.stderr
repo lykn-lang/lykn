@@ -1,0 +1,4 @@
+1:27: warning: unused binding 'callback'
+  suggestion: prefix with underscore: _callback
+1:41: warning: unused binding 'other'
+  suggestion: prefix with underscore: _other
