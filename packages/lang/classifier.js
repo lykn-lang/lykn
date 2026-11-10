@@ -57,6 +57,7 @@ import {
   wrapReturnLast,
 } from "./surface-helpers.js";
 import { markKernel } from "./kernel-mark.js";
+import { isMatchGuardSlot } from "./binding.js";
 
 /**
  * Classify a surface form head atom. Returns a typed AST node if the
@@ -1299,11 +1300,7 @@ function parseMatchClause(clause, i) {
   const pattern = clause.values[0];
   let guard = null;
   let bodyStart = 1;
-  if (
-    clause.values.length >= 3 &&
-    isKeyword(clause.values[1]) &&
-    clause.values[1].value === "when"
-  ) {
+  if (isMatchGuardSlot(clause)) {
     guard = clause.values[2];
     bodyStart = 3;
   }

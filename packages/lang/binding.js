@@ -22,6 +22,8 @@ import { RESERVED_WORDS } from "./reserved-words.js";
  */
 
 const DECL_HEADS = new Set(["const", "let", "var", "function", "function*"]);
+const ENCLOSING_KINDS = new Set(["bind", "import-local"]);
+const SEQUENCE = { kind: "seq" };
 
 /**
  * Recursively walk `forms`, collecting every binding site in source order.
@@ -30,14 +32,145 @@ const DECL_HEADS = new Set(["const", "let", "var", "function", "function*"]);
  */
 export function walkBindings(forms) {
   const out = [];
-  for (const form of forms) walk(form, out);
+  walkSequence(forms, out, false);
   return out;
 }
 
-function walk(form, out) {
+function withMatchName(inScope, names) {
+  return inScope || names.includes("match");
+}
+
+function walkSequence(forms, out, matchInScope) {
+  let current = matchInScope;
+  for (const form of forms) {
+    walk(form, out, current);
+    const hoisted = form?.type === "list" ? hoistedNames(form) : [];
+    current = withMatchName(current, hoisted);
+  }
+}
+
+function walk(form, out, matchInScope) {
   if (form?.type !== "list") return;
+
+  const head = form.values[0];
+  const headName = head?.type === "atom" && head.binding === undefined
+    ? head.value
+    : null;
+  if (head?.type === "atom" && head.value === "match") {
+    if (headName === null || matchInScope) {
+      // A bound or tagged `match` is a call. Its arguments are ordinary
+      // expressions in the incoming environment; call operands do not hoist.
+      for (const argument of form.values.slice(1)) walk(argument, out, matchInScope);
+      return;
+    }
+
+    // Patterns and :when markers are structure. Project every real pattern
+    // site exactly once before visiting executable source regions.
+    out.push(...bindingsIntroduced(form));
+    const args = form.values.slice(1);
+    if (args.length > 0) walk(args[0], out, matchInScope);
+    for (const clause of args.slice(1)) {
+      if (clause?.type !== "list" || clause.values.length === 0) continue;
+      const patternSites = matchPatternNames(clause.values[0]);
+      const clauseScope = withMatchName(
+        matchInScope,
+        patternSites.map((site) => site.name),
+      );
+      const guard = isMatchGuardSlot(clause) ? clause.values[2] : null;
+      if (guard !== null) walk(guard, out, clauseScope);
+      const bodyStart = guard === null ? 1 : 3;
+      walkSequence(clause.values.slice(bodyStart), out, clauseScope);
+    }
+    return;
+  }
+
   out.push(...bindingsIntroduced(form));
-  for (const child of form.values) walk(child, out);
+  if (headName === null) {
+    // Preserve traversal of a computed list callee; atom heads themselves are
+    // names, not nested forms.
+    const children = head?.type === "atom" ? form.values.slice(1) : form.values;
+    for (const child of children) walk(child, out, matchInScope);
+    return;
+  }
+
+  const plan = bindingScopePlan(form, headName);
+  const children = form.values;
+  if (plan.kind === "conditional") {
+    if (children.length > 1) walk(children[1], out, matchInScope);
+    for (const branch of children.slice(2)) walk(branch, out, matchInScope);
+    return;
+  }
+  if (plan.kind === "seq") {
+    walkSequence(children, out, matchInScope);
+    return;
+  }
+
+  const split = Math.min(plan.bodyStart, children.length);
+  for (const child of children.slice(0, split)) walk(child, out, matchInScope);
+  walkSequence(
+    children.slice(split),
+    out,
+    withMatchName(matchInScope, plan.names),
+  );
+}
+
+/** Extend an immutable source environment with a collection of names. */
+export function extendBindingEnv(env, names) {
+  if (names.length === 0) return env;
+  const next = new Set(env);
+  for (const name of names) next.add(name);
+  return next;
+}
+
+/** Value-scope names introduced by a form, excluding labels. */
+export function bodyScopeNames(form) {
+  return bindingsIntroduced(form)
+    .filter((site) => site.kind !== "label")
+    .map((site) => site.name);
+}
+
+/** Names visible to following siblings (`bind` and import locals). */
+export function hoistedNames(form) {
+  return bindingsIntroduced(form)
+    .filter((site) => site.kind !== "label" && ENCLOSING_KINDS.has(site.kind))
+    .map((site) => site.name);
+}
+
+/**
+ * Describe the source binding scope for a form. The caller supplies the
+ * already resolution-checked head name so this module stays independent of
+ * compiler dispatch and tagged/bound heads can pass null.
+ */
+export function bindingScopePlan(form, headName) {
+  if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
+  switch (headName) {
+    case "if":
+      return { kind: "conditional" };
+    case "for-of":
+    case "for-in":
+    case "for-await-of":
+      return { kind: "body", names: bodyScopeNames(form), bodyStart: 3 };
+    case "if-let":
+    case "when-let":
+    case "match":
+      return { kind: "body", names: bodyScopeNames(form), bodyStart: 2 };
+    default: {
+      const kernel = headName?.startsWith("kernel:")
+        ? headName.slice("kernel:".length)
+        : headName;
+      if (headName === "bind" || DECL_HEADS.has(kernel)) return SEQUENCE;
+      const names = bodyScopeNames(form);
+      return names.length === 0
+        ? SEQUENCE
+        : { kind: "body", names, bodyStart: 0 };
+    }
+  }
+}
+
+/** Whether a match clause has the classifier-owned optional guard slot. */
+export function isMatchGuardSlot(clause) {
+  return clause?.type === "list" && clause.values.length >= 3 &&
+    clause.values[1]?.type === "keyword" && clause.values[1].value === "when";
 }
 
 /**

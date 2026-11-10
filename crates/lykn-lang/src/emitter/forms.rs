@@ -10,8 +10,8 @@ use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
 use crate::reader::source_loc::Span;
 use crate::semantic_roles::{
-    BodyPolicy, ChildRole, ExprUse, child_use, function_body_use, is_statement_form,
-    normalized_child_role, sequence_use,
+    BodyPolicy, ChildRole, ExprUse, ObjectPropertyRole, child_use, function_body_use,
+    is_statement_form, normalized_child_role, object_property_role, sequence_use,
 };
 use std::collections::HashSet;
 
@@ -447,7 +447,16 @@ fn emit_form_inner(
             ..
         } => vec![emit_class_form(None, superclass, members, ctx, registry)],
         SurfaceForm::Do { body, .. } => vec![emit_do(body, ctx, registry)],
-        SurfaceForm::KernelPassthrough { raw, .. } => vec![emit_expr(raw, ctx, registry)],
+        SurfaceForm::KernelPassthrough { raw, .. } => {
+            let emitted = if matches!(raw, SExpr::List { values, .. }
+                if values.first().and_then(SExpr::as_form_head) == Some("object"))
+            {
+                emit_kernel_root(raw, ctx, registry)
+            } else {
+                emit_expr(raw, ctx, registry)
+            };
+            vec![emitted]
+        }
         SurfaceForm::FunctionCall { head, args, span } => {
             // Check for js: namespace interop. DD-61 §A6: dispatch on the form
             // head — a lexically bound `assign`/`js:…` head is a plain call, not
@@ -498,6 +507,19 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                 // js: namespace interop (DD-15) — handle before surface form check
                 if head_name.starts_with("js:") {
                     return emit_js_interop(head_name, &values[1..], ctx, registry);
+                }
+                if let Some(kernel_form) = head_name.strip_prefix("kernel:") {
+                    return match crate::classifier::forms::classify_kernel_escape(
+                        kernel_form,
+                        values,
+                        *span,
+                    ) {
+                        Ok(raw) => emit_kernel_root(&raw, ctx, registry),
+                        Err(error) => {
+                            ctx.record_fatal(LyknError::Classify(error));
+                            atom("undefined")
+                        }
+                    };
                 }
                 // assign — only valid inside class bodies (DD-27)
                 if head_name == "assign" {
@@ -553,27 +575,7 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                 } else {
                     // Not a surface form — recursively process subexpressions
                     // with per-form child context profile (DD-50.5).
-                    let saved_ctx = ctx.expr_context;
-                    let mut new_values = Vec::with_capacity(values.len());
-                    new_values.push(values[0].clone()); // head atom unchanged
-                    for (i, v) in values[1..].iter().enumerate() {
-                        let role = normalized_child_role(&values[0], i);
-                        let inherited_statement_sequence = role == ChildRole::InheritedSequence
-                            && saved_ctx == ExprContext::Statement;
-                        if role == ChildRole::StatementSequence || inherited_statement_sequence {
-                            ctx.expr_context = ExprContext::Statement;
-                            new_values.extend(emit_body(&values[i + 1..], ctx, registry));
-                            break;
-                        }
-                        ctx.expr_context = child_use(role, ExprUse::from_expr_context(saved_ctx))
-                            .to_expr_context();
-                        new_values.push(emit_expr(v, ctx, registry));
-                    }
-                    ctx.expr_context = saved_ctx;
-                    SExpr::List {
-                        values: new_values,
-                        span: *span,
-                    }
+                    emit_kernel_children(values, *span, ctx, registry)
                 }
             } else {
                 // Head is not an atom (computed call) — recurse on all elements
@@ -589,6 +591,130 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
             }
         }
         _ => expr.clone(),
+    }
+}
+
+/// Emit a checked kernel escape root directly, bypassing surface dispatch for
+/// its stripped head while retaining the normal context-sensitive kernel roles.
+fn emit_kernel_root(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
+    let SExpr::List { values, span } = expr else {
+        return expr.clone();
+    };
+    match values.first().and_then(SExpr::as_atom) {
+        Some("object") => emit_kernel_object(values, *span, ctx, registry),
+        Some("switch") => emit_switch_children(values, *span, ctx, registry),
+        Some("if") if matches!(ctx.expr_context, ExprContext::Value | ExprContext::Tail) => {
+            emit_if_expression(&values[1..], *span, ctx, registry)
+        }
+        _ => emit_kernel_children(values, *span, ctx, registry),
+    }
+}
+
+fn emit_kernel_children(
+    values: &[SExpr],
+    span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let Some(head) = values.first() else {
+        return SExpr::List {
+            values: Vec::new(),
+            span,
+        };
+    };
+    let saved_ctx = ctx.expr_context;
+    let mut new_values = Vec::with_capacity(values.len());
+    new_values.push(head.clone());
+    for (index, child) in values[1..].iter().enumerate() {
+        let role = normalized_child_role(head, index);
+        let inherited_statement_sequence =
+            role == ChildRole::InheritedSequence && saved_ctx == ExprContext::Statement;
+        if role == ChildRole::StatementSequence || inherited_statement_sequence {
+            ctx.expr_context = ExprContext::Statement;
+            new_values.extend(emit_body(&values[index + 1..], ctx, registry));
+            break;
+        }
+        ctx.expr_context = child_use(role, ExprUse::from_expr_context(saved_ctx)).to_expr_context();
+        new_values.push(emit_expr(child, ctx, registry));
+    }
+    ctx.expr_context = saved_ctx;
+    SExpr::List {
+        values: new_values,
+        span,
+    }
+}
+
+fn emit_kernel_object(
+    values: &[SExpr],
+    span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let mut emitted = Vec::with_capacity(values.len());
+    if let Some(head) = values.first() {
+        emitted.push(head.clone());
+    }
+    emitted.extend(
+        values
+            .iter()
+            .skip(1)
+            .map(|property| emit_kernel_object_property(property, ctx, registry)),
+    );
+    SExpr::List {
+        values: emitted,
+        span,
+    }
+}
+
+fn emit_kernel_object_property(
+    property: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let role = object_property_role(property);
+    match role {
+        ObjectPropertyRole::Shorthand => property.clone(),
+        ObjectPropertyRole::Value => emit_in_context(property, ExprContext::Value, ctx, registry),
+        ObjectPropertyRole::Pair | ObjectPropertyRole::Dynamic | ObjectPropertyRole::Computed => {
+            let Some(SExpr::List { values, span }) = property else {
+                return property.clone();
+            };
+            let mut emitted = values.clone();
+            match role {
+                ObjectPropertyRole::Dynamic => {
+                    if let Some(key) = emitted.first_mut() {
+                        *key = emit_in_context(key, ExprContext::Value, ctx, registry);
+                    }
+                }
+                ObjectPropertyRole::Computed => {
+                    if let Some((mut marker, marker_span)) = emitted.first().and_then(|item| {
+                        if let SExpr::List { values, span } = item {
+                            Some((values.clone(), *span))
+                        } else {
+                            None
+                        }
+                    }) {
+                        if let Some(key) = marker.get_mut(1) {
+                            *key = emit_in_context(key, ExprContext::Value, ctx, registry);
+                        }
+                        emitted[0] = SExpr::List {
+                            values: marker,
+                            span: marker_span,
+                        };
+                    }
+                }
+                ObjectPropertyRole::Pair
+                | ObjectPropertyRole::Shorthand
+                | ObjectPropertyRole::Value => {}
+            }
+            if let Some(value) = emitted.get_mut(1) {
+                *value = emit_in_context(value, ExprContext::Value, ctx, registry);
+            }
+            SExpr::List {
+                values: emitted,
+                span: *span,
+            }
+        }
     }
 }
 

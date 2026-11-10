@@ -26,6 +26,44 @@ pub(crate) enum BodyPolicy {
     FunctionValueTail,
 }
 
+/// Executable slots in one native-kernel object property, matching the codegen
+/// writer's raw `spread` and `(computed key)` markers.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum ObjectPropertyRole {
+    Shorthand,
+    Value,
+    Pair,
+    Dynamic,
+    Computed,
+}
+
+pub(crate) fn object_property_role(property: &SExpr) -> ObjectPropertyRole {
+    let SExpr::List { values, .. } = property else {
+        return if matches!(property, SExpr::Atom { .. }) {
+            ObjectPropertyRole::Shorthand
+        } else {
+            ObjectPropertyRole::Value
+        };
+    };
+    if values.is_empty() {
+        return ObjectPropertyRole::Value;
+    }
+    if values[0].as_atom() == Some("spread") {
+        return ObjectPropertyRole::Pair;
+    }
+    if let Some(SExpr::List { values: marker, .. }) = values.first()
+        && marker.first().and_then(SExpr::as_atom) == Some("computed")
+        && marker.len() >= 2
+    {
+        return ObjectPropertyRole::Computed;
+    }
+    match values.first() {
+        Some(SExpr::List { .. }) => ObjectPropertyRole::Dynamic,
+        Some(_) => ObjectPropertyRole::Pair,
+        None => ObjectPropertyRole::Value,
+    }
+}
+
 impl ExprUse {
     pub(crate) fn is_consumed(self) -> bool {
         matches!(self, Self::Value | Self::Tail)

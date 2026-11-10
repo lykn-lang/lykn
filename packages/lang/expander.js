@@ -12,7 +12,15 @@ import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm, emitMatchStatementMacro, funcBodyProtectsStatementExit } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
-import { validateReservedNames, bindingsIntroduced, bindingNamesInPattern } from './binding.js';
+import {
+  bindingScopePlan,
+  bodyScopeNames,
+  extendBindingEnv as extendEnv,
+  hoistedNames,
+  validateReservedNames,
+  bindingsIntroduced,
+  bindingNamesInPattern,
+} from './binding.js';
 
 // node:path is used intentionally here and CANNOT be replaced with jsr:@std/path.
 //
@@ -746,22 +754,6 @@ const EMPTY_ENV = new Set();
 /** Surface heads whose lowering hides their params — env-extended at surface. */
 const FUNCTION_FAMILY = new Set(["func", "genfunc", "fn", "lambda", "genfn"]);
 
-/** Kernel declaration heads (mirror of binding.js `DECL_HEADS`). */
-const DECL_HEADS = new Set(["const", "let", "var", "function", "function*"]);
-
-/** Binding kinds that declare into the enclosing sibling scope (hoist forward). */
-const ENCLOSING_KINDS = new Set(["bind", "import-local"]);
-
-const SEQUENCE = { kind: "seq" };
-
-/** Extend an env with `names`; returns a new Set (immutable threading). */
-function extendEnv(env, names) {
-  if (names.length === 0) return env;
-  const next = new Set(env);
-  for (const n of names) next.add(n);
-  return next;
-}
-
 /**
  * Tag every binder atom this form introduces with `binding: 'def'` (mirror of
  * Rust's `NameRes::BindingDef`). Consumes `bindingsIntroduced` only. Def sites
@@ -775,61 +767,6 @@ function tagDefSites(form) {
   }
 }
 
-/** Value-env names a form introduces — every binding kind except `label`. */
-function bodyScopeNames(form) {
-  return bindingsIntroduced(form)
-    .filter((s) => s.kind !== "label")
-    .map((s) => s.name);
-}
-
-/** Names a form declares to FOLLOWING siblings (`bind` / import locals). */
-function hoistedNames(form) {
-  return bindingsIntroduced(form)
-    .filter((s) => s.kind !== "label" && ENCLOSING_KINDS.has(s.kind))
-    .map((s) => s.name);
-}
-
-/** Whether a head is a declaration whose name is NOT in its own value scope. */
-function isDeclHead(h) {
-  if (h === null) return false;
-  if (h === "bind") return true;
-  const kernel = h.startsWith("kernel:") ? h.slice("kernel:".length) : h;
-  return DECL_HEADS.has(kernel);
-}
-
-/**
- * How a list form distributes its body-scoped bindings over its children —
- * mirror of Rust `resolver::scope_plan`. `Sequence` = plain sibling sequence
- * (enclosing decls hoist between siblings; values stay outside their own scope);
- * `Body { names, bodyStart }` = `names` are in scope from `bodyStart` onward,
- * while earlier children (a loop iterable / `if-let` scrutinee / `match`
- * subject) are evaluated OUTSIDE the binding's scope. Head dispatch works on
- * both surface and kernel heads.
- * @returns {{kind:'seq'} | {kind:'body', names: string[], bodyStart: number} | {kind:'conditional'}}
- */
-function scopePlan(form) {
-  if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
-  const head = form.values[0];
-  const h = formHead(head);
-  switch (h) {
-    case "if":
-      return { kind: "conditional" };
-    case "for-of":
-    case "for-in":
-    case "for-await-of":
-      return { kind: "body", names: bodyScopeNames(form), bodyStart: 3 };
-    case "if-let":
-    case "when-let":
-    case "match":
-      return { kind: "body", names: bodyScopeNames(form), bodyStart: 2 };
-    default: {
-      if (isDeclHead(h)) return SEQUENCE; // name scopes over siblings, not value
-      const names = bodyScopeNames(form);
-      if (names.length === 0) return SEQUENCE;
-      return { kind: "body", names, bodyStart: 0 };
-    }
-  }
-}
 
 /** Push an expandExpr result (single, array, or null) preserving old semantics. */
 function pushExpanded(out, result) {
@@ -868,7 +805,7 @@ function expandChildrenSeq(children, env, use = "Legacy") {
  * a sequence. Mirror of Rust `resolver::resolve_split_at` + `resolve_seq`.
  */
 function expandChildrenPlan(form, env, use = "Legacy") {
-  const plan = scopePlan(form);
+  const plan = bindingScopePlan(form, formHead(form.values[0]));
   const children = form.values;
   if (use === "Statement" && formHead(children[0]) === "try") {
     return expandTryStatement(form, env);
@@ -1089,9 +1026,12 @@ function expandExprInner(form, env, use = "Legacy") {
 
   const head = form.values[0];
 
+  const boundOrTaggedMatch = head.type === 'atom' && head.value === 'match' &&
+    (head.binding !== undefined || env.has('match'));
+
   // Tag this form's binder atoms `def` (no-op for non-binding forms). Inert for
   // output — def sites are read structurally, never at the dispatch door.
-  tagDefSites(form);
+  if (!boundOrTaggedMatch) tagDefSites(form);
 
   // Quasiquote
   if (head.type === 'atom' && head.value === 'quasiquote') {

@@ -8,7 +8,8 @@ use crate::binding::{
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 use crate::semantic_roles::{
-    BodyPolicy, ExprUse, child_use, function_body_use, normalized_child_role, sequence_use,
+    BodyPolicy, ExprUse, ObjectPropertyRole, child_use, function_body_use, normalized_child_role,
+    object_property_role, sequence_use,
 };
 
 use super::dispatch;
@@ -38,6 +39,38 @@ fn closest_kernel_form(name: &str) -> Option<&'static str> {
         }
     }
     if best_dist <= 2 { best } else { None }
+}
+
+/// Classify one explicit `kernel:` escape while preserving the original
+/// expression children, source root span, and existing unknown-form diagnostic.
+pub(crate) fn classify_kernel_escape(
+    kernel_form: &str,
+    original_values: &[SExpr],
+    span: Span,
+) -> Result<SExpr, Diagnostic> {
+    if dispatch::is_kernel_form(kernel_form) {
+        let root_span = original_values.first().map(SExpr::span).unwrap_or(span);
+        let mut stripped_values = Vec::with_capacity(original_values.len());
+        stripped_values.push(SExpr::atom(kernel_form, root_span));
+        stripped_values.extend(original_values.iter().skip(1).cloned());
+        return Ok(SExpr::List {
+            values: stripped_values,
+            span,
+        });
+    }
+
+    let hint = closest_kernel_form(kernel_form);
+    let suffix = hint
+        .map(|name| format!("; did you mean '{name}'?"))
+        .unwrap_or_default();
+    Err(Diagnostic {
+        message: format!(
+            "unknown kernel form '{kernel_form}' in (kernel:{kernel_form} ...){suffix}"
+        ),
+        severity: Severity::Error,
+        span,
+        suggestion: hint.map(|name| format!("kernel:{name}")),
+    })
 }
 
 /// DD-64 (arc15): reject method-call sugar on a **parenthesized expression** —
@@ -389,6 +422,7 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprUse, out: &mut Vec<Dia
                     walk_fn_like_args(&values[1..], BodyPolicy::FunctionValueTail, out)
                 }
                 "match" => walk_match_args(&values[1..], position, out),
+                "kernel:object" => walk_kernel_object(&values[1..], out),
                 "obj" => walk_keyword_value_pairs(&values[1..], out),
                 "cell" | "express" | "conj" | "dissoc" | "=" | "!=" | "and" | "or" | "not" => {
                     walk_args(&values[1..], ExprUse::Value, out);
@@ -447,6 +481,47 @@ fn walk_no_else_if_expression(expr: &SExpr, position: ExprUse, out: &mut Vec<Dia
             walk_no_else_if_expression(cdr, position, out);
         }
         _ => {}
+    }
+}
+
+fn walk_kernel_object(properties: &[SExpr], out: &mut Vec<Diagnostic>) {
+    for property in properties {
+        let role = object_property_role(property);
+        let Some(values) = property.as_list() else {
+            if role == ObjectPropertyRole::Value {
+                walk_no_else_if_expression(property, ExprUse::Value, out);
+            }
+            continue;
+        };
+        match role {
+            ObjectPropertyRole::Shorthand => {}
+            ObjectPropertyRole::Value => {
+                walk_no_else_if_expression(property, ExprUse::Value, out);
+            }
+            ObjectPropertyRole::Pair => {
+                if let Some(value) = values.get(1) {
+                    walk_no_else_if_expression(value, ExprUse::Value, out);
+                }
+            }
+            ObjectPropertyRole::Dynamic => {
+                if let Some(key) = values.first() {
+                    walk_no_else_if_expression(key, ExprUse::Value, out);
+                }
+                if let Some(value) = values.get(1) {
+                    walk_no_else_if_expression(value, ExprUse::Value, out);
+                }
+            }
+            ObjectPropertyRole::Computed => {
+                if let Some(marker) = values.first()
+                    && let Some(key) = marker.as_list().and_then(|items| items.get(1))
+                {
+                    walk_no_else_if_expression(key, ExprUse::Value, out);
+                }
+                if let Some(value) = values.get(1) {
+                    walk_no_else_if_expression(value, ExprUse::Value, out);
+                }
+            }
+        }
     }
 }
 
@@ -794,29 +869,8 @@ fn classify_form_inner<'tree>(
                 // against kernel whitelist, emit KernelPassthrough with
                 // the stripped form. Takes precedence over all other dispatch.
                 if let Some(kernel_form) = head_name.strip_prefix("kernel:") {
-                    if dispatch::is_kernel_form(kernel_form) {
-                        let mut stripped_values = Vec::with_capacity(values.len());
-                        stripped_values.push(SExpr::atom(kernel_form, values[0].span()));
-                        stripped_values.extend(values[1..].iter().cloned());
-                        return Ok(SurfaceForm::KernelPassthrough {
-                            raw: SExpr::List {
-                                values: stripped_values,
-                                span: *span,
-                            },
-                            span: *span,
-                        });
-                    }
-                    let hint = closest_kernel_form(kernel_form)
-                        .map(|s| format!("; did you mean '{s}'?"))
-                        .unwrap_or_default();
-                    return Err(Diagnostic {
-                        message: format!(
-                            "unknown kernel form '{kernel_form}' in (kernel:{kernel_form} ...){hint}"
-                        ),
-                        severity: Severity::Error,
-                        span: *span,
-                        suggestion: closest_kernel_form(kernel_form).map(|s| format!("kernel:{s}")),
-                    });
+                    return classify_kernel_escape(kernel_form, values, *span)
+                        .map(|raw| SurfaceForm::KernelPassthrough { raw, span: *span });
                 }
                 if dispatch::is_surface_form(head_name) {
                     classify_surface_form_with_capture(head_name, args, *span, capture)
@@ -873,29 +927,8 @@ pub fn classify_form_strict(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
                 let args = &values[1..];
                 // DD-58 §"The kernel: escape syntax" — same logic as lax mode (M17)
                 if let Some(kernel_form) = head_name.strip_prefix("kernel:") {
-                    if dispatch::is_kernel_form(kernel_form) {
-                        let mut stripped_values = Vec::with_capacity(values.len());
-                        stripped_values.push(SExpr::atom(kernel_form, values[0].span()));
-                        stripped_values.extend(values[1..].iter().cloned());
-                        return Ok(SurfaceForm::KernelPassthrough {
-                            raw: SExpr::List {
-                                values: stripped_values,
-                                span: *span,
-                            },
-                            span: *span,
-                        });
-                    }
-                    let hint = closest_kernel_form(kernel_form)
-                        .map(|s| format!("; did you mean '{s}'?"))
-                        .unwrap_or_default();
-                    return Err(Diagnostic {
-                        message: format!(
-                            "unknown kernel form '{kernel_form}' in (kernel:{kernel_form} ...){hint}"
-                        ),
-                        severity: Severity::Error,
-                        span: *span,
-                        suggestion: closest_kernel_form(kernel_form).map(|s| format!("kernel:{s}")),
-                    });
+                    return classify_kernel_escape(kernel_form, values, *span)
+                        .map(|raw| SurfaceForm::KernelPassthrough { raw, span: *span });
                 }
                 // DD-58 §"Per-layer form enumeration" — kernel-only namespace.
                 // Strict-mode rejection: kernel-only forms without prefix.
