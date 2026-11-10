@@ -107,6 +107,26 @@ const FIXTURES: &[Case] = &[
         name: "return-consumed-macro-boundaries",
         expected: b"[\"inside\",[\"nested\"]]\n",
     },
+    Case {
+        name: "bind-consumed-early-return",
+        expected: b"[\"early\",7,[\"body\",\"after\"]]\n",
+    },
+    Case {
+        name: "bind-consumed-group-match",
+        expected: b"[81,8,[\"match\",8]]\n",
+    },
+    Case {
+        name: "bind-consumed-loop-transfer",
+        expected: b"[0,2]\n",
+    },
+    Case {
+        name: "bind-consumed-name-hygiene",
+        expected: b"[[7,99,41],[\"result\"]]\n",
+    },
+    Case {
+        name: "bind-consumed-native-typed",
+        expected: b"[\"early\",9,[9]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -442,6 +462,31 @@ fn direct_return_match_preserves_guarded_exhaustion() {
 #[test]
 fn direct_return_macro_keeps_nested_function_boundaries() {
     run_positive(&FIXTURES[23]);
+}
+
+#[test]
+fn bind_consumed_early_return_skips_the_original_const_continuation() {
+    run_positive(&FIXTURES[24]);
+}
+
+#[test]
+fn bind_consumed_group_match_keeps_order_and_source_return_target() {
+    run_positive(&FIXTURES[25]);
+}
+
+#[test]
+fn bind_consumed_loop_transfers_keep_their_source_targets() {
+    run_positive(&FIXTURES[26]);
+}
+
+#[test]
+fn bind_consumed_result_temp_preserves_later_name_hygiene() {
+    run_positive(&FIXTURES[27]);
+}
+
+#[test]
+fn native_typed_bind_check_follows_normal_result_initialization() {
+    run_positive(&FIXTURES[28]);
 }
 
 #[test]

@@ -1,0 +1,11 @@
+(bind trace (array))
+(func bind-loop :returns :any :body
+  (for (let i 0) (< i 4) (++ i)
+    (bind value
+      (do
+        (if (= i 1) (continue))
+        (if (= i 3) (break))
+        i))
+    (trace:push value))
+  trace)
+(console:log (JSON:stringify (bind-loop)))

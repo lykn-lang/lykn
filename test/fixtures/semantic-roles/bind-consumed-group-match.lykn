@@ -1,0 +1,9 @@
+(bind trace (array))
+(func choose-binding :args (:any flag) :returns :any :body
+  (bind first (match flag
+                (true (return 81))
+                (_ (do (trace:push "match") 7)))
+        second (if false (do (trace:push "wrong") 0) (+ first 1)))
+  (trace:push second)
+  second)
+(console:log (JSON:stringify (array (choose-binding true) (choose-binding false) trace)))

@@ -27,6 +27,10 @@ const CASES = [
   { name: "return-consumed-loop", expected: '["done",[1,"skip"]]\n' },
   { name: "return-consumed-guard-exhaustion", expected: '["guard","match: no matching pattern"]\n' },
   { name: "return-consumed-macro-boundaries", expected: '["inside",["nested"]]\n' },
+  { name: "bind-consumed-early-return", expected: '["early",7,["body","after"]]\n' },
+  { name: "bind-consumed-group-match", expected: '[81,8,["match",8]]\n' },
+  { name: "bind-consumed-loop-transfer", expected: "[0,2]\n" },
+  { name: "bind-consumed-name-hygiene", expected: '[[7,99,41],["result"]]\n' },
 ];
 
 const RESERVED_MATCH_CASES = [
