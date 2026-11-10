@@ -473,6 +473,7 @@ Deno.test("public direct lifted protected writes retain the v1 rejection", () =>
     source,
     errorName: caughtError?.name ?? null,
     errorMessage: caughtError?.message ?? null,
+    output,
     outputReturned: caughtError === null,
   };
   const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
@@ -494,6 +495,7 @@ Deno.test("public direct lifted protected writes retain the v1 rejection", () =>
     observation.errorMessage,
     "host-contract v1: write to protected slot Reflect.apply",
   );
+  assertEquals(observation.output, null, "protected write returned output");
   assertEquals(observation.outputReturned, false, "protected write returned output");
 });
 
