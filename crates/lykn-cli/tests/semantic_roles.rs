@@ -519,7 +519,8 @@ fn run_ordered_member_provider(provider_name: &str, expected_provider_kind: &str
     );
 
     let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
-    let provider_runtime = if compile.status.success() && provider_js.is_some() {
+    let provider_ready = compile.status.success() && provider_js.is_some();
+    let provider_runtime = if provider_ready {
         Some(execute_recorded(
             &format!("native-{provider_name}-runtime"),
             &provider_path,
@@ -547,7 +548,7 @@ fn run_ordered_member_provider(provider_name: &str, expected_provider_kind: &str
         );
         None
     };
-    let live_runtime = if live_compile.status.success() && live_js.is_some() {
+    let live_runtime = if provider_ready && live_compile.status.success() && live_js.is_some() {
         Some(execute_recorded(
             &format!("native-{provider_name}-live-runtime"),
             &live_path,
@@ -567,7 +568,7 @@ fn run_ordered_member_provider(provider_name: &str, expected_provider_kind: &str
         ))
     } else {
         let message =
-            b"skipped: live entry compile did not produce a successful JavaScript artifact\n";
+            b"skipped: provider compile/artifact or live entry compile/artifact unavailable\n";
         save_receipt(
             &format!("native-{provider_name}-live-runtime"),
             "status.txt",
