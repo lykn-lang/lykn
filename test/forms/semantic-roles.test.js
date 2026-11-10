@@ -1,5 +1,5 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert";
-import { lykn } from "../../packages/lang/mod.js";
+import { compile, expand, lykn, read } from "../../packages/lang/mod.js";
 import { resetGensym, resetMacros } from "../../packages/lang/expander.js";
 
 const CASES = [
@@ -35,6 +35,8 @@ const CASES = [
   { name: "completion-match-headers", expected: '[80,81,82,83,84,["discarded","discarded",3,"discarded",3,"discarded-fallback","consumed","discarded",3,"discarded-fallback","consumed",4,"discarded",3,"discarded-fallback","consumed",4,"consumed-fallback"]]\n' },
   { name: "completion-logical-operands", expected: '[7,[0,"kept"],[10,11],"pure",["first","second",0,"kept","first","second",0,"kept","last","arg1","arg2"]]\n' },
   { name: "completion-nullish-operands", expected: '[0,false,"early","early",["left","after","left","after","left","right","left","right"]]\n' },
+  { name: "ordered-lexical-bind-call", expected: '[91,["old",8],["earlier","middle","earlier","middle","later","old","after"]]\n' },
+  { name: "ordered-lexical-statement-call", expected: '[90,91,["first","middle","first","middle",4,"after","first","middle",true]]\n' },
 ];
 
 const RESERVED_MATCH_CASES = [
@@ -68,6 +70,23 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
       if (fixture.name === "statement-match-preservation") resetGensym();
       if (fixture.name === "original-match-kernel-object") resetMacros();
       const generated = lykn(source);
+      if (
+        fixture.name === "ordered-lexical-bind-call" ||
+        fixture.name === "ordered-lexical-statement-call"
+      ) {
+        const expanded = expand(read(source));
+        assertEquals(compile(expanded), generated, `${fixture.name} expanded compile differs`);
+        assertEquals(
+          compile(structuredClone(expanded)),
+          generated,
+          `${fixture.name} structured clone compile differs`,
+        );
+        assertEquals(
+          compile(JSON.parse(JSON.stringify(expanded))),
+          generated,
+          `${fixture.name} JSON round-trip compile differs`,
+        );
+      }
       const temp = await Deno.makeTempDir();
       const modulePath = `${temp}/${fixture.name}.js`;
       try {
@@ -167,6 +186,17 @@ Deno.test("public direct return preserves nested no-else diagnostic", () => {
   assertEquals(
     error.message,
     "if in expression position requires an else branch — add an else branch, or restructure as a statement",
+  );
+});
+
+Deno.test("public lexical calls reject lifted mixed spread with the exact diagnostic", () => {
+  const source =
+    "(func mixed-spread :args (:any callable :any items) :returns :any :body\n" +
+    "  (callable (spread items) (do (return 7) 8)))\n";
+  const error = assertThrows(() => lykn(source));
+  assertEquals(
+    error.message,
+    "ordered lexical call with spread and lifted arguments is not supported",
   );
 });
 

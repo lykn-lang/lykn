@@ -143,6 +143,14 @@ const FIXTURES: &[Case] = &[
         name: "completion-nullish-operands",
         expected: b"[0,false,\"early\",\"early\",[\"left\",\"after\",\"left\",\"after\",\"left\",\"right\",\"left\",\"right\"]]\n",
     },
+    Case {
+        name: "ordered-lexical-bind-call",
+        expected: b"[91,[\"old\",8],[\"earlier\",\"middle\",\"earlier\",\"middle\",\"later\",\"old\",\"after\"]]\n",
+    },
+    Case {
+        name: "ordered-lexical-statement-call",
+        expected: b"[90,91,[\"first\",\"middle\",\"first\",\"middle\",4,\"after\",\"first\",\"middle\",true]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -322,6 +330,42 @@ fn run_positive(case: &Case) {
         "{} successful compile omitted JavaScript",
         case.name
     );
+
+    if matches!(
+        case.name,
+        "ordered-lexical-bind-call" | "ordered-lexical-statement-call"
+    ) {
+        let kernel_json = execute_recorded(
+            &format!("native-{}-kernel-json", case.name),
+            &source_path,
+            &source,
+            Command::new(env!("CARGO_BIN_EXE_lykn"))
+                .current_dir(temp.path())
+                .env("XDG_CACHE_HOME", &xdg_cache_home)
+                .arg("compile")
+                .arg(&source_path)
+                .arg("--kernel-json"),
+        );
+        assert!(
+            kernel_json.status.success(),
+            "{} kernel JSON compile failed: {:?}",
+            case.name,
+            kernel_json.stderr
+        );
+        assert!(
+            kernel_json.stderr.is_empty(),
+            "{} kernel JSON compile wrote stderr: {:?}",
+            case.name,
+            kernel_json.stderr
+        );
+        let parsed: serde_json::Value = serde_json::from_slice(&kernel_json.stdout)
+            .unwrap_or_else(|error| panic!("{} kernel JSON is invalid: {error}", case.name));
+        assert!(
+            parsed.is_array() && !parsed.as_array().unwrap().is_empty(),
+            "{} kernel JSON is not a non-empty ordinary module array: {parsed}",
+            case.name
+        );
+    }
 
     let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
     let runtime = execute_recorded(
@@ -523,6 +567,78 @@ fn logical_operands_are_lazy_and_preserve_results() {
 #[test]
 fn nullish_operands_preserve_strict_selection_and_completion() {
     run_positive(&FIXTURES[32]);
+}
+
+#[test]
+fn lexical_bind_calls_preserve_callee_and_argument_evaluation_order() {
+    run_positive(&FIXTURES[33]);
+}
+
+#[test]
+fn lexical_statement_calls_preserve_source_exits_and_late_call_errors() {
+    run_positive(&FIXTURES[34]);
+}
+
+#[test]
+fn lexical_call_with_lifted_spread_fails_closed_without_outputs() {
+    const MESSAGE: &str =
+        "ordered lexical call with spread and lifted arguments is not supported";
+    let source = concat!(
+        "(func mixed-spread :args (:any callable :any items) :returns :any :body\n",
+        "  (callable (spread items) (do (return 7) 8)))\n",
+    )
+    .as_bytes();
+    let temp = TempDir::new().expect("create lexical-spread negative directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated lexical-spread XDG cache");
+    let source_path = temp.path().join("mixed-spread.lykn");
+    let output_path = temp.path().join("mixed-spread.js");
+    fs::write(&source_path, source).expect("write exact lexical-spread source");
+    let exact_source = fs::read(&source_path).expect("read exact lexical-spread source");
+    let compile = execute_recorded(
+        "native-ordered-lexical-call-spread-compile",
+        &source_path,
+        &exact_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&output_path),
+    );
+    let generated = output_path
+        .try_exists()
+        .expect("check mixed-spread JavaScript output")
+        .then(|| fs::read(&output_path).expect("read mixed-spread JavaScript"));
+    let dts_path = output_path.with_extension("d.ts");
+    let dts = dts_path
+        .try_exists()
+        .expect("check mixed-spread declaration output")
+        .then(|| fs::read(&dts_path).expect("read mixed-spread declaration"));
+    record_generated(
+        "native-ordered-lexical-call-spread",
+        generated.as_deref(),
+        dts.as_deref(),
+    );
+    let stderr = String::from_utf8_lossy(&compile.stderr);
+    eprintln!(
+        "SEMANTIC_ROLE_NEGATIVE_PREASSERT name=ordered-lexical-call-spread status={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
+        compile.status.code()
+    );
+    assert_eq!(compile.status.code(), Some(1));
+    assert!(
+        stderr.contains(&format!("2:3: error: {MESSAGE}")),
+        "missing exact mixed-spread diagnostic at call span: {stderr}"
+    );
+    assert!(
+        generated.is_none(),
+        "failed compile wrote JavaScript: {generated:?}"
+    );
+    assert!(
+        dts.is_none(),
+        "failed compile wrote declarations: {dts:?}"
+    );
 }
 
 #[test]

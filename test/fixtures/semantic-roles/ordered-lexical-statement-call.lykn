@@ -1,0 +1,14 @@
+(bind trace (array))
+(func observe-call :args (:any earlier :any middle) :returns :any :body
+  (trace:push middle))
+(func use-statement-call :args (:any and :any stop) :returns :any :body
+  (and (trace:push "first")
+       (do (trace:push "middle") (if stop (return 90)) 4))
+  (trace:push "after")
+  91)
+(bind early (use-statement-call observe-call true))
+(bind normal (use-statement-call observe-call false))
+(try
+  (use-statement-call 0 false)
+  (catch problem (trace:push (instanceof problem TypeError))))
+(console:log (JSON:stringify (array early normal trace)))
