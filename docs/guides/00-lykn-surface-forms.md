@@ -196,10 +196,11 @@ type checks, and pre/post contracts.
 (func now (Date:now))
 ```
 
-In an ordinary, unprotected single-clause `func`, explicit `return` and the
-implicit final result return directly from that function. Returns inside a
-nested function still belong to the nested function; checked contracts,
-generators, and multi-clause functions keep their own lowering rules.
+In a single-clause `func` with no postcondition and no return annotation (or
+`:returns :any`), explicit `return` and the implicit final result return
+directly from that function. Returns inside a nested function still belong to
+the nested function; typed returns, postconditions, generators, and
+multi-clause functions keep their own lowering rules.
 
 Multi-expression body:
 

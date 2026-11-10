@@ -556,6 +556,12 @@ fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegist
                     // lexically bound `switch` head (which never reaches here).
                     return emit_switch_children(values, *span, ctx, registry);
                 }
+                if head_name == "try"
+                    && ctx.direct_return_region
+                    && ctx.expr_context == ExprContext::Statement
+                {
+                    return emit_direct_try_children(values, *span, ctx, registry);
+                }
                 if crate::classifier::dispatch::is_surface_form(head_name)
                     || head_name == "class"
                     || head_name == "class-expr"
@@ -629,6 +635,9 @@ fn emit_kernel_root(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegis
     match values.first().and_then(SExpr::as_atom) {
         Some("object") => emit_kernel_object(values, *span, ctx, registry),
         Some("switch") => emit_switch_children(values, *span, ctx, registry),
+        Some("try") if ctx.direct_return_region && ctx.expr_context == ExprContext::Statement => {
+            emit_direct_try_children(values, *span, ctx, registry)
+        }
         Some("return")
             if ctx.direct_return_region && ctx.expr_context == ExprContext::Statement =>
         {
@@ -650,6 +659,57 @@ fn emit_kernel_root(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegis
             ctx.direct_return_region = saved_direct_region;
             emitted
         }
+    }
+}
+
+/// Preserve the exact try writer layout while assigning statement use to its
+/// body, catch statements, and finally statements. The catch binder stays a
+/// value slot.
+fn emit_direct_try_children(
+    values: &[SExpr],
+    span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let mut emitted = Vec::with_capacity(values.len());
+    if let Some(head) = values.first() {
+        emitted.push(head.clone());
+    }
+    for child in values.iter().skip(1) {
+        if let Some(items) = child.as_list()
+            && let Some(marker) = items.first().and_then(SExpr::as_atom)
+            && matches!(marker, "catch" | "finally")
+        {
+            let mut clause = vec![items[0].clone()];
+            let body_start = if marker == "catch" && items.len() > 1 {
+                clause.push(emit_in_context(
+                    &items[1],
+                    ExprContext::Value,
+                    ctx,
+                    registry,
+                ));
+                2
+            } else {
+                1
+            };
+            let saved_context = ctx.expr_context;
+            ctx.expr_context = ExprContext::Statement;
+            clause.extend(emit_body(&items[body_start..], ctx, registry));
+            ctx.expr_context = saved_context;
+            emitted.push(SExpr::List {
+                values: clause,
+                span: child.span(),
+            });
+        } else {
+            let saved_context = ctx.expr_context;
+            ctx.expr_context = ExprContext::Statement;
+            emitted.extend(emit_body(std::slice::from_ref(child), ctx, registry));
+            ctx.expr_context = saved_context;
+        }
+    }
+    SExpr::List {
+        values: emitted,
+        span,
     }
 }
 
@@ -880,8 +940,16 @@ fn emit_direct_if_tail(
         (then_result, else_result) => DirectTailResult::Statements(vec![list(vec![
             atom("if"),
             condition,
-            list(std::iter::once(atom("block")).chain(direct_return_arm(then_result)).collect()),
-            list(std::iter::once(atom("block")).chain(direct_return_arm(else_result)).collect()),
+            list(
+                std::iter::once(atom("block"))
+                    .chain(direct_return_arm(then_result))
+                    .collect(),
+            ),
+            list(
+                std::iter::once(atom("block"))
+                    .chain(direct_return_arm(else_result))
+                    .collect(),
+            ),
         ])]),
     }
 }
@@ -895,20 +963,10 @@ fn emit_direct_tail(
     registry: &TypeRegistry,
 ) -> DirectTailResult {
     let Some(values) = expr.as_list() else {
-        return DirectTailResult::Value(emit_in_context(
-            expr,
-            ExprContext::Value,
-            ctx,
-            registry,
-        ));
+        return DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry));
     };
     let Some(head) = values.first().and_then(SExpr::as_form_head) else {
-        return DirectTailResult::Value(emit_in_context(
-            expr,
-            ExprContext::Value,
-            ctx,
-            registry,
-        ));
+        return DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry));
     };
 
     match head {
@@ -926,40 +984,30 @@ fn emit_direct_tail(
                     std::iter::once(atom("block")).chain(body).collect(),
                 )])
             }
-            _ => DirectTailResult::Value(emit_in_context(
-                expr,
-                ExprContext::Value,
-                ctx,
-                registry,
-            )),
+            _ => DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry)),
         },
         "match" => match crate::classifier::classify_expr(expr) {
-            Ok(SurfaceForm::Match { target, clauses, .. }) => DirectTailResult::Statements(vec![
-                emit_match_statement_inner(&target, &clauses, true, ctx, registry),
-            ]),
-            _ => DirectTailResult::Value(emit_in_context(
-                expr,
-                ExprContext::Value,
-                ctx,
-                registry,
-            )),
+            Ok(SurfaceForm::Match {
+                target, clauses, ..
+            }) => DirectTailResult::Statements(vec![emit_match_statement_inner(
+                &target, &clauses, true, ctx, registry,
+            )]),
+            _ => DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry)),
         },
-        "kernel:if" => match crate::classifier::forms::classify_kernel_escape(
-            "if",
-            values,
-            expr.span(),
-        ) {
-            Ok(raw) => emit_direct_if_tail(
-                &raw.as_list().unwrap_or_default()[1..],
-                expr.span(),
-                ctx,
-                registry,
-            ),
-            Err(error) => {
-                ctx.record_fatal(LyknError::Classify(error));
-                DirectTailResult::Statements(vec![list(vec![atom("return")])])
+        "kernel:if" => {
+            match crate::classifier::forms::classify_kernel_escape("if", values, expr.span()) {
+                Ok(raw) => emit_direct_if_tail(
+                    &raw.as_list().unwrap_or_default()[1..],
+                    expr.span(),
+                    ctx,
+                    registry,
+                ),
+                Err(error) => {
+                    ctx.record_fatal(LyknError::Classify(error));
+                    DirectTailResult::Statements(vec![list(vec![atom("return")])])
+                }
             }
-        },
+        }
         _ if is_statement_form(expr) => {
             let statement = emit_in_context(expr, ExprContext::Statement, ctx, registry);
             let mut statements = vec![statement.clone()];
@@ -968,12 +1016,7 @@ fn emit_direct_tail(
             }
             DirectTailResult::Statements(statements)
         }
-        _ => DirectTailResult::Value(emit_in_context(
-            expr,
-            ExprContext::Value,
-            ctx,
-            registry,
-        )),
+        _ => DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry)),
     }
 }
 
@@ -1055,7 +1098,7 @@ fn emit_direct_function_body(
         }
     }
     if body.is_empty() {
-        statements.push(list(vec![atom("return")]));
+        statements.push(list(vec![atom("return"), atom("undefined")]));
     }
     statements
 }
@@ -2082,7 +2125,9 @@ fn emit_func_single(
     ctx.legacy_statement_match = saved_legacy_match;
     ctx.direct_return_region = saved_direct_region;
 
-    if has_post && !ctx.strip_assertions {
+    if direct_return {
+        items.extend(body);
+    } else if has_post && !ctx.strip_assertions {
         // Capture result in gensym, check post, return
         let result_var = ctx.gensym.next("result");
         let last_expr = if body.len() == 1 {
