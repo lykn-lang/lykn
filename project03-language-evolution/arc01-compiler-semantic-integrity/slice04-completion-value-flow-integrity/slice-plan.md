@@ -11,6 +11,12 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 ## Implementation re-entry — 2026-11-09
 
+Operator approved starting I2 with direct statement match guard
+progression and source return targets. [S09](../slice09-statement-match-completion/slice-plan.md)
+owns that finite delivery from accepted f348. General consumed
+completion, ordered references and checked exits retain their owners.
+CV-04 stays open for composition.
+
 [NE-C14 independently accepted](cdc-verification.md#ne-c14-independently-accepted--2026-11-09)
 at task `f348ae42`, completing the bounded I1 prerequisite. Original
 macro F3 and separate literal transfers both pass. The next design

@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S09 first I2 delivery opened — 2026-11-09
+
+[Direct statement-match completion](slice09-statement-match-completion/slice-plan.md)
+starts from accepted task f348 under Operator authority. First
+delivery covers subject-once, guard progression and exhaustion
+plus direct return and loop transfers. General consumed completion,
+ordered references and checked exits remain future composition.
+
 ## S04 first implementation checkpoint — 2026-11-09
 
 [Independent I1 and NE-C14 verification](slice04-completion-value-flow-integrity/cdc-verification.md)
