@@ -193,3 +193,9 @@ lexical calls now preserve callee and argument order, direct
 source exits and ordinary kernel seams. Member and other ordered
 references, assignment, iterator and I4 composition remain open.
 CI-04 and CV-04 stay open. Release is still `6c9dbd5c`.
+
+2026-11-10 [S18](slice18-ordered-member-calls/slice-plan.md)
+opens the next I3 delivery with actual static member references and
+ordinary kernel across exported module boundaries. It reuses the
+accepted Arc03 invocation contract. Computed references, assignment
+and iterator transport stay open. No CV or CI row changes status.

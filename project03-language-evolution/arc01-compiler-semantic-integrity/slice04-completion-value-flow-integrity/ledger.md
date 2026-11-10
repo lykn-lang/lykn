@@ -159,3 +159,8 @@ I3 member and computed references, assignments and iterator
 transport retain their distinct owners. I4 and final composition
 remain pending. CV-02 retains acceptance. All five other CV rows
 and CI-04 stay open.
+
+2026-11-10 [S18](../slice18-ordered-member-calls/slice-plan.md)
+opens the bounded static member receiver tranche. It owns actual
+provider/entry runtime and optimization evidence. The remaining
+computed/assignment/iterator and I4 obligations retain their owners.
