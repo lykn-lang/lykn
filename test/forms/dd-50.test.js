@@ -19,9 +19,14 @@ Deno.test("DD-50 Rule 2: no-else in expression position throws compile error", (
   );
 });
 
-Deno.test("DD-50: statement-branch in if expr-position → IIFE wrap", () => {
+Deno.test("DD-50: direct bind preserves statement-branch control", () => {
   const out = lykn('(func test :args (:any x) :body (bind y (if (= x 1) "a" (throw (new Error "e")))) y)');
-  assertStringIncludes(out, "(() =>");
+  assertStringIncludes(out, "if (x === 1) {");
+  assertStringIncludes(out, 'completionValue__gensym0 = "a";');
+  assertStringIncludes(out, 'throw new Error("e");');
+  assertStringIncludes(out, "const y = completionValue__gensym0;");
+  assertStringIncludes(out, "return y;");
+  assertEquals(out.includes("(() =>"), false);
 });
 
 Deno.test("DD-50: do in expression position → IIFE", () => {

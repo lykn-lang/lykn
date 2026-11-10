@@ -44,13 +44,17 @@
   "DD-50 Rule 2: if with no else in expression position triggers compile error"
   (is-thrown (compile "(bind x (if true 1))") Error "if in expression position requires an else branch"))
 
-;; ── Statement-branch IIFE ───────────────────────────────────────
+;; ── Direct bind statement-branch control ─────────────────────────
 
 (test
-  "DD-50 Rule 1c: statement-branch in if expression-position triggers IIFE"
+  "DD-50 Rule 1c: direct bind preserves statement-branch control"
   (bind r (compile "(func test :args (:any x) :body (bind y (if (= x 1) \"a\" (throw (new Error \"e\")))) y)"))
-  (includes r "(() =>")
-  (includes r "throw"))
+  (includes r "if (x === 1) {")
+  (includes r "completionValue__gensym0 = \"a\";")
+  (includes r "throw new Error(\"e\");")
+  (includes r "const y = completionValue__gensym0;")
+  (includes r "return y;")
+  (ok (not (r:includes "(() =>")))
 
 ;; ── Compile-then-check ──────────────────────────────────────────
 
