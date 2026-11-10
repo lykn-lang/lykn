@@ -1,5 +1,10 @@
 # project03-language-evolution ledger
 
+[Arc01 S13](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md)
+closes all five structural match and nested escape rows at task
+`31893710`. NE-C16 and NE-C17 are accepted. Parent completion
+remains open and local release stays at `7b17a784`.
+
 [Arc01 S12](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/cdc-verification.md)
 accepts four native clause-scope rows at task `b5c22b63`.
 The previously accepted S04 tranche is independently validated on

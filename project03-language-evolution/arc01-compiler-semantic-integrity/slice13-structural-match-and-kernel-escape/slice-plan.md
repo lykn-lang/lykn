@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice13-structural-match-and-kernel-escape
-status: in-progress
+status: completed
 depends-on: [slice12-native-match-clause-scope]
 ---
 
@@ -53,3 +53,10 @@ Exact nine-path production freeze `afdb7d77` passed static review.
 The first grouped build exited 101 with E0308 at the native
 object-property list pattern. No native tests ran. Correct only
 the pattern and retain the separate unchanged public condition.
+
+2026-11-10 [independent acceptance](cdc-verification.md) at
+clean task `31893710`. Refinement 03 corrected the one pattern.
+All five rows close with the exact original witnesses, full
+focused and normal gates, and materialized mirror evidence.
+See the [closing report](closing-report.md) and
+[CDC retrospective](cdc-retrospective.md). Release remains `7b17a784`.

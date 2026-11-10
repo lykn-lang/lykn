@@ -1,0 +1,3 @@
+argv: /opt/homebrew/bin/deno fmt --config project.json packages/lang/binding.js packages/lang/classifier.js packages/lang/expander.js crates/lykn-lang/embedded/packages/lang/binding.js crates/lykn-lang/embedded/packages/lang/classifier.js crates/lykn-lang/embedded/packages/lang/expander.js
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env: TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-source/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-source/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-source/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=<inherited ordinary PATH>

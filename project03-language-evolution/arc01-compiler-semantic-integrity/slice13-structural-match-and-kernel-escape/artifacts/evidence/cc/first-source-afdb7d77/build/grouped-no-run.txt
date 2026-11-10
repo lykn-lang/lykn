@@ -1,0 +1,27 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0308]: mismatched types
+   --> crates/lykn-lang/src/emitter/forms.rs:679:17
+    |
+679 |             let Some(SExpr::List { values, span }) = property else {
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   -------- this expression has type `&SExpr`
+    |                 |
+    |                 expected `SExpr`, found `Option<_>`
+    |
+    = note: expected enum `SExpr`
+               found enum `Option<_>`
+
+error[E0308]: mismatched types
+   --> crates/lykn-lang/src/emitter/forms.rs:679:17
+    |
+679 |             let Some(SExpr::List { values, span }) = property else {
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   -------- this expression has type `&sexpr::SExpr`
+    |                 |
+    |                 expected `SExpr`, found `Option<_>`
+    |
+    = note: expected enum `sexpr::SExpr`
+               found enum `Option<_>`
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `lykn-lang` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 1 previous error

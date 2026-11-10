@@ -1,0 +1,2 @@
+6:3: warning: unreachable match clause
+  suggestion: remove this clause or reorder patterns

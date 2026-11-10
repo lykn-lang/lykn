@@ -1,5 +1,10 @@
 # S04 completion/value-flow ledger
 
+[S13 independent verification](../slice13-structural-match-and-kernel-escape/cdc-verification.md) closes the two S12
+carryovers NE-C16 and NE-C17 at task `31893710`. CV-02 retains
+prior acceptance. The other five CV rows, CI-04, wider consumed
+completion and I3/I4 retain their owners. Release stays `7b17a784`.
+
 [S12 independent verification](../slice12-native-match-clause-scope/cdc-verification.md)
 accepts native clause scope at task `b5c22b63`. The four MC rows
 close. The other I2 composition, I3/I4 and the five open CV rows

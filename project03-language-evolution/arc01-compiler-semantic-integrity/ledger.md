@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-10 [S13](slice13-structural-match-and-kernel-escape/cdc-verification.md) independently accepts
+NE-C16 and NE-C17 at task `31893710`. All five MK rows are done.
+CI-04 and CV-04 stay open. Release stays `7b17a784`.
+
 2026-11-09 [S12](slice12-native-match-clause-scope/cdc-verification.md)
 independently accepts native clause scope at task `b5c22b63`.
 All four MC rows are done. CV-04 and CI-04 remain open for

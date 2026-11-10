@@ -9,6 +9,13 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Structural match and nested escape accepted — 2026-11-10
+
+[S13](slice13-structural-match-and-kernel-escape/cdc-verification.md) closes NE-C16 and NE-C17 at task `31893710`.
+The exact original public F1 and native F2 now pass. All five
+bounded criteria are independently accepted. CV-04 and CI-04
+remain open for wider completion. Release remains `7b17a784`.
+
 ## Structural match and nested escape work opened — 2026-11-09
 
 Operator authorized [S13](slice13-structural-match-and-kernel-escape/slice-plan.md)

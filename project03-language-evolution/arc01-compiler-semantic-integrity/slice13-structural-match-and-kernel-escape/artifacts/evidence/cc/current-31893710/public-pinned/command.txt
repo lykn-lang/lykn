@@ -1,0 +1,4 @@
+argv: /opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env: TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/public-pinned/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/public-pinned/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/public-pinned/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/public-pinned/evidence PATH=<inherited ordinary PATH>
+Deno SHA-256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74

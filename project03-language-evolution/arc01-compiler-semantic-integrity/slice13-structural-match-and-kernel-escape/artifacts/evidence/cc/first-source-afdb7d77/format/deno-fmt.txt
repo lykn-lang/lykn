@@ -1,0 +1,7 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/embedded/packages/lang/binding.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/embedded/packages/lang/classifier.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/embedded/packages/lang/expander.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/binding.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js
+Checked 6 files

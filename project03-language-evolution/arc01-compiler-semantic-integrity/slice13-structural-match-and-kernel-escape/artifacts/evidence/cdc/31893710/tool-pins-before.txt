@@ -1,0 +1,8 @@
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+f7c7e11eb2e07f006e532a8aaac77b32f4527d305ac386c0c633ca6133d35ca9  /Users/oubiwann/.cargo/bin/cargo
+f7c7e11eb2e07f006e532a8aaac77b32f4527d305ac386c0c633ca6133d35ca9  /Users/oubiwann/.cargo/bin/rustc
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07)

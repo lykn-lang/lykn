@@ -1,0 +1,9 @@
+(bind payload (kernel:object
+  (key 5)
+  (if (kernel:if true 7 8))
+  ((computed (if true "dynamic" "other")) (if false 0 9))
+  (spread (obj :extra 6))))
+(bind assigned (kernel:= (get payload "key") (if false 10 11)))
+(console:log (JSON:stringify
+  (array assigned (get payload "key") (get payload "if")
+         (get payload "dynamic") (get payload "extra"))))

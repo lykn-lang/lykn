@@ -1,0 +1,6 @@
+
+running 1 test
+test emitter::forms::tests::nested_unknown_kernel_escape_is_a_checked_classification_failure ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1165 filtered out; finished in 0.01s
+

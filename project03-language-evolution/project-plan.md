@@ -9,6 +9,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+[Arc01 structural match and nested escape](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md)
+is independently accepted at task `31893710`. NE-C16 and NE-C17
+are closed on that branch. Wider completion stays open.
+Local release remains `7b17a784`.
+
 The [local release](arc01-compiler-semantic-integrity/slice09-statement-match-completion/artifacts/release-integration-7b17a784.md)
 passed independent validation at `7b17a784`. Arc01's
 [native clause-scope slice](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/slice-plan.md)

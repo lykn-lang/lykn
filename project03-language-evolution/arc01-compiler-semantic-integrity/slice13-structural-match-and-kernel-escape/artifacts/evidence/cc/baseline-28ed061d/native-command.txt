@@ -1,0 +1,3 @@
+argv: target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env: TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/evidence/native PATH=<inherited ordinary PATH>

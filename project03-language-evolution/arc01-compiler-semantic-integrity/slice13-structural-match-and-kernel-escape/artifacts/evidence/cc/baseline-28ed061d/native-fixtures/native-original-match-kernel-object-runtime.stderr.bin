@@ -1,0 +1,4 @@
+error: Uncaught (in promise) ReferenceError: kernel is not defined
+  const target__gensym0 = kernel.object(key(7));
+                          ^
+    at file:///private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/tmp/.tmpqVS4Ss/original-match-kernel-object.js:3:27

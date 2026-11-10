@@ -1,0 +1,3 @@
+argv: target/debug/deps/lykn_lang-60c4a58c1162abbf emitter::forms::tests::nested_unknown_kernel_escape_is_a_checked_classification_failure --exact --nocapture
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env: TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=<inherited ordinary PATH>

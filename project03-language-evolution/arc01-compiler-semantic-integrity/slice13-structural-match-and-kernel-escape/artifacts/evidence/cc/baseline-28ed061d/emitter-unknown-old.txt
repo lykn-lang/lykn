@@ -1,0 +1,15 @@
+
+running 1 test
+
+thread 'emitter::forms::tests::nested_unknown_kernel_escape_is_a_checked_classification_failure' (100858865) panicked at crates/lykn-lang/src/emitter/forms.rs:3445:58:
+unknown escape must fail: [List { values: [Atom(AtomData { value: "const", span: Span { start: SourceLoc { line: 0, column: 0 }, end: SourceLoc { line: 0, column: 0 } }, binding: Unresolved }), Atom(AtomData { value: "result", span: Span { start: SourceLoc { line: 1, column: 7 }, end: SourceLoc { line: 1, column: 13 } }, binding: Unresolved }), List { values: [Atom(AtomData { value: "kernel:objec", span: Span { start: SourceLoc { line: 1, column: 15 }, end: SourceLoc { line: 1, column: 27 } }, binding: Unresolved }), List { values: [Atom(AtomData { value: "key", span: Span { start: SourceLoc { line: 1, column: 29 }, end: SourceLoc { line: 1, column: 32 } }, binding: Unresolved }), Number { value: 7.0, span: Span { start: SourceLoc { line: 1, column: 33 }, end: SourceLoc { line: 1, column: 34 } } }], span: Span { start: SourceLoc { line: 1, column: 28 }, end: SourceLoc { line: 1, column: 35 } } }], span: Span { start: SourceLoc { line: 1, column: 14 }, end: SourceLoc { line: 1, column: 36 } } }], span: Span { start: SourceLoc { line: 0, column: 0 }, end: SourceLoc { line: 0, column: 0 } } }]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test emitter::forms::tests::nested_unknown_kernel_escape_is_a_checked_classification_failure ... FAILED
+
+failures:
+
+failures:
+    emitter::forms::tests::nested_unknown_kernel_escape_is_a_checked_classification_failure
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1165 filtered out; finished in 0.00s
+

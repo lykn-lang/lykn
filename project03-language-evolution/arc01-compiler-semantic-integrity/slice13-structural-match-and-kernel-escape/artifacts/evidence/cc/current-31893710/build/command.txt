@@ -1,0 +1,3 @@
+argv: cargo test --workspace --no-run
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env: TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/build/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/build/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/build/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=<inherited ordinary PATH>

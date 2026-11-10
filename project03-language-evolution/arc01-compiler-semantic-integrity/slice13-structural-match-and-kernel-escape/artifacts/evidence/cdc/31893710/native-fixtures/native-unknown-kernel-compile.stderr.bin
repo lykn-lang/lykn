@@ -1,0 +1,4 @@
+1:1: warning: unused binding 'result'
+  suggestion: prefix with underscore: _result
+1:14: error: unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?
+  suggestion: kernel:object

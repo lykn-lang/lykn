@@ -1,0 +1,4 @@
+argv: bin/lykn compile test/fixtures/semantic-roles/original-match-kernel-object.lykn -o /private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/materialize/tmp/original-match-kernel-object.js
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env: TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/materialize/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/materialize/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/materialize/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno PATH=<inherited ordinary PATH>
+bin/lykn SHA-256: fa7b7f62f4a837503174a4dcde2d6a0c12f60f6bcb96ec06b665922d65765e95

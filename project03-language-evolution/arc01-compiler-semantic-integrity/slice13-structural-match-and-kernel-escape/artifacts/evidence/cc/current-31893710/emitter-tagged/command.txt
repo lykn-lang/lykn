@@ -1,0 +1,4 @@
+argv: target/debug/deps/lykn_lang-60c4a58c1162abbf emitter::forms::tests::tagged_kernel_escape_lookalike_remains_an_ordinary_call --exact --nocapture
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env: TMPDIR=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/emitter-tagged/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/emitter-tagged/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-s04-i2.tBlMBxu9/s13-current/31893710/emitter-tagged/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=<inherited ordinary PATH>
+executable SHA-256: b5a74dfd5908ef1d609c9f7d620973db4429ae73dd42b0ff5be2ac94242d4dd2

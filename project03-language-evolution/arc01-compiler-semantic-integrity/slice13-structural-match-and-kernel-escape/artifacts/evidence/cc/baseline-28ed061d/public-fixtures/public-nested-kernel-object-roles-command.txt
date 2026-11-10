@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/tmp/c3a08cf4492de02e/nested-kernel-object-roles.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/tmp/c3a08cf4492de02e",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/nested-kernel-object-roles.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/tmp/c3a08cf4492de02e/nested-kernel-object-roles.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/evidence/public"
+  }
+}

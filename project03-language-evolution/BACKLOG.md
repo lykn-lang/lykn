@@ -933,6 +933,11 @@ reserved-binder diagnostics and ordinary bound-call behavior.
 S12 repairs the native clause routes and isolates its shared
 runtime comparison without changing public production.
 
+**Accepted 2026-11-10.** S13 restores exact original F1 and the
+ordinary bound-call control on the public route, with independent
+runtime and genuine diagnostic evidence at task `31893710`.
+[Verification](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md).
+
 #### NE-C17 — native consumed kernel object escape retains its prefix
 
 **Observed 2026-11-09.** At the same production and test freeze,
@@ -950,6 +955,11 @@ lowering owns the exact consumed witness, ordinary member-call
 preservation and supported escape diagnostics. S12 uses a
 surface JSON.parse subject to isolate its separate macro scope
 oracle. The original native escape behavior remains open.
+
+**Accepted 2026-11-10.** S13 restores exact original F2 through
+native strict compile and runtime, with separate object-role,
+assignment, checked unknown-escape and tagged-call proof at
+task `31893710`. [Verification](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md).
 
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 

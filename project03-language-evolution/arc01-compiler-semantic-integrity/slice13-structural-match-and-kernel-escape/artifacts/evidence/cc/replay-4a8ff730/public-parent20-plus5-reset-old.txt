@@ -1,0 +1,590 @@
+Check test/forms/semantic-roles.test.js
+running 6 tests from ./test/forms/semantic-roles.test.js
+public JavaScript compiler preserves shared semantic-role fixtures ...
+  while ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN while {"source":"(bind trace (array))\n(bind count (cell 0))\n(while (< count:value 2)\n  (if true (trace:push (+ count:value 1)))\n  (bind first (+ count:value 10) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\nwhile (count.value < 2) {\n  if (true) {\n    trace.push(count.value + 1);\n  }\n  const first = count.value + 10;\n  const second = first + 1;\n  if (true) {\n    trace.push(second);\n  }\n  count.value = count.value + 1;\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/a888149c6af34402/while.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/a888149c6af34402",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/while.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/a888149c6af34402/while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":44,"3":49,"4":49,"5":44,"6":50,"7":44,"8":49,"9":50,"10":93,"11":10},"stderr":{}}
+----- output end -----
+  while ... ok (73ms)
+  do-while ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN do-while {"source":"(bind trace (array))\n(bind count (cell 0))\n(do-while (< count:value 2)\n  (if true (trace:push (+ count:value 100)))\n  (bind first (+ count:value 20) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\ndo {\n  if (true) {\n    trace.push(count.value + 100);\n  }\n  const first = count.value + 20;\n  const second = first + 1;\n  if (true) {\n    trace.push(second);\n  }\n  count.value = count.value + 1;\n} while (count.value < 2);\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND do-while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/86afaeab59e0a4ac/do-while.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/86afaeab59e0a4ac",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/do-while.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/86afaeab59e0a4ac/do-while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT do-while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":48,"3":48,"4":44,"5":50,"6":49,"7":44,"8":49,"9":48,"10":49,"11":44,"12":50,"13":50,"14":93,"15":10},"stderr":{}}
+----- output end -----
+  do-while ... ok (34ms)
+  match ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match {"source":"(bind trace (array))\n(func choose :args (:number n) :returns :any :body\n  (match n\n    (captured :when (= captured 1)\n      (if true (trace:push \"guard\"))\n      (if true 7 8))\n    (_\n      (if true (trace:push \"fallback\"))\n      (if false 9 10))))\n(console:log (JSON:stringify (array (array (choose 1) (choose 2)) trace)))\n","generated":"const trace = [];\nfunction choose(n) {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"choose: arg 'n' expected number, got \" + typeof n);\n  }\n  return (() => {\n    const target__gensym0 = n;\n    {\n      const captured = target__gensym0;\n      if (captured === 1) {\n        if (true) {\n          trace.push(\"guard\");\n        }\n        return true ? 7 : 8;\n      }\n    }\n    {\n      if (true) {\n        trace.push(\"fallback\");\n      }\n      return false ? 9 : 10;\n    }\n  })();\n}\nconsole.log(JSON.stringify([[choose(1), choose(2)], trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/8eb440c6c937f58d/match.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/8eb440c6c937f58d",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/match.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/8eb440c6c937f58d/match.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":55,"3":44,"4":49,"5":48,"6":93,"7":44,"8":91,"9":34,"10":103,"11":117,"12":97,"13":114,"14":100,"15":34,"16":44,"17":34,"18":102,"19":97,"20":108,"21":108,"22":98,"23":97,"24":99,"25":107,"26":34,"27":93,"28":93,"29":10},"stderr":{}}
+----- output end -----
+  match ... ok (35ms)
+  boundaries ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN boundaries {"source":"(bind match (fn (:number n) n))\n(bind picked (match (if true 4 5)))\n(bind target (fn (:number n) n))\n(bind computed ((get (array target) 0) (if true 6 7)))\n(bind trace (array))\n(switch 1\n  (1\n    (bind first 1 second (+ first 1))\n    (if true (trace:push second))\n    (break))\n  (default (trace:push \"bad\")))\n(console:log (JSON:stringify (array picked computed trace)))\n","generated":"const match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst picked = match(true ? 4 : 5);\nconst target = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst computed = [target][0](true ? 6 : 7);\nconst trace = [];\nswitch (1) {\n  case 1:\n    const first = 1;\n    const second = first + 1;\n    if (true) {\n      trace.push(second);\n    }\n    break;\n  default:\n    trace.push(\"bad\");\n}\nconsole.log(JSON.stringify([picked, computed, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND boundaries {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/51fae9cf37b824be/boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/51fae9cf37b824be",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/51fae9cf37b824be/boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT boundaries {"status":0,"success":true,"stdout":{"0":91,"1":52,"2":44,"3":54,"4":44,"5":91,"6":50,"7":93,"8":93,"9":10},"stderr":{}}
+----- output end -----
+  boundaries ... ok (21ms)
+  if-arm-scope ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-arm-scope {"source":"(macro pick (x) `(+ ,x 10))\n(bind trace (array))\n(if true\n  (bind pick (fn (:number n) (+ n 100)) saved (trace:push (pick 1)))\n  (trace:push (pick 2)))\n(if false\n  (bind pick (fn (:number n) (+ n 200)) saved (trace:push (pick 3)))\n  (trace:push (pick 4)))\n(trace:push (pick 5))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nif (true) {\n  const pick = n => {\n    if (typeof n !== \"number\" || Number.isNaN(n)) {\n      throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n    }\n    return n + 100;\n  };\n  const saved = trace.push(pick(1));\n} else {\n  trace.push(2 + 10);\n}\nif (false) {\n  const pick = n => {\n    if (typeof n !== \"number\" || Number.isNaN(n)) {\n      throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n    }\n    return n + 200;\n  };\n  const saved = trace.push(pick(3));\n} else {\n  trace.push(4 + 10);\n}\ntrace.push(5 + 10);\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-arm-scope {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/80d1abb10154ce8e/if-arm-scope.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/80d1abb10154ce8e",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-arm-scope.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/80d1abb10154ce8e/if-arm-scope.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-arm-scope {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":48,"3":49,"4":44,"5":49,"6":52,"7":44,"8":49,"9":53,"10":93,"11":10},"stderr":{}}
+----- output end -----
+  if-arm-scope ... ok (20ms)
+  if-declaration ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-declaration {"source":"(if true (bind following-statement 99))\n","generated":"if (true) {\n  const followingStatement = 99;\n}\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-declaration {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/caf72883bc449548/if-declaration.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/caf72883bc449548",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-declaration.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/caf72883bc449548/if-declaration.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-declaration {"status":0,"success":true,"stdout":{},"stderr":{}}
+----- output end -----
+  if-declaration ... ok (19ms)
+  if-direct-transfers-literal ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-direct-transfers-literal {"source":"(kernel:function select (flag)\n  (if flag (return 7))\n  (return 9))\n(bind match (fn (:number n) n))\n(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (if (= i 1) (continue))\n  (if (= i 3) (break))\n  (trace:push i))\n(if true (if false (trace:push 900)) (trace:push 901))\n(console:log (JSON:stringify (array (select true) (select false) trace\n  (match (if true 4 5)))))\n","generated":"function select(flag) {\n  if (flag) {\n    return 7;\n  }\n  return 9;\n}\nconst match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst trace = [];\nfor (let i = 0; i < 4; ++i) {\n  if (i === 1) {\n    continue;\n  }\n  if (i === 3) {\n    break;\n  }\n  trace.push(i);\n}\nif (true) {\n  if (false) {\n    trace.push(900);\n  }\n} else {\n  trace.push(901);\n}\nconsole.log(JSON.stringify([select(true), select(false), trace, match(true ? 4 : 5)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-direct-transfers-literal {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/6d4ad9df01ebacfd/if-direct-transfers-literal.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/6d4ad9df01ebacfd",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-direct-transfers-literal.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/6d4ad9df01ebacfd/if-direct-transfers-literal.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-direct-transfers-literal {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":57,"4":44,"5":91,"6":48,"7":44,"8":50,"9":93,"10":44,"11":52,"12":93,"13":10},"stderr":{}}
+----- output end -----
+  if-direct-transfers-literal ... ok (20ms)
+  if-direct-transfers ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-direct-transfers {"source":"(macro make-pick () `(kernel:function select (flag)\n  (if flag (return 7))\n  (return 9)))\n(make-pick)\n(bind match (fn (:number n) n))\n(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (if (= i 1) (continue))\n  (if (= i 3) (break))\n  (trace:push i))\n(if true (if false (trace:push 900)) (trace:push 901))\n(console:log (JSON:stringify (array (select true) (select false) trace\n  (match (if true 4 5)))))\n","generated":"function select(flag) {\n  if (flag) {\n    return 7;\n  }\n  return 9;\n}\nconst match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst trace = [];\nfor (let i = 0; i < 4; ++i) {\n  if (i === 1) {\n    continue;\n  }\n  if (i === 3) {\n    break;\n  }\n  trace.push(i);\n}\nif (true) {\n  if (false) {\n    trace.push(900);\n  }\n} else {\n  trace.push(901);\n}\nconsole.log(JSON.stringify([select(true), select(false), trace, match(true ? 4 : 5)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-direct-transfers {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/5887a0159522f21/if-direct-transfers.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/5887a0159522f21",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/if-direct-transfers.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/5887a0159522f21/if-direct-transfers.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-direct-transfers {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":57,"4":44,"5":91,"6":48,"7":44,"8":50,"9":93,"10":44,"11":52,"12":93,"13":10},"stderr":{}}
+----- output end -----
+  if-direct-transfers ... ok (22ms)
+  statement-match-guards ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-guards {"source":"(bind trace (array))\n(func subject :returns :any :body (trace:push \"subject\") 2)\n(func gate :args (:any mark :any result) :returns :any :body\n  (trace:push mark)\n  result)\n(match (subject)\n  (1 :when (gate \"wrong-pattern\" true) (trace:push \"wrong-body\"))\n  (2 :when (gate \"literal-false\" false) (trace:push \"wrong-literal\"))\n  (captured :when (gate captured false) (trace:push \"wrong-binding\"))\n  (_ :when (gate \"chosen\" true) (trace:push \"body\"))\n  (_ :when (gate \"late\" true) (trace:push \"late-body\"))\n  (_ (trace:push \"fallback\")))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfunction subject() {\n  trace.push(\"subject\");\n  return 2;\n}\nfunction gate(mark, result) {\n  trace.push(mark);\n  return result;\n}\n{\n  const target__gensym1 = subject();\n  let matched__gensym2 = false;\n  if (!matched__gensym2 && target__gensym1 === 1) {\n    if (gate(\"wrong-pattern\", true)) {\n      matched__gensym2 = true;\n      trace.push(\"wrong-body\");\n    }\n  }\n  if (!matched__gensym2 && target__gensym1 === 2) {\n    if (gate(\"literal-false\", false)) {\n      matched__gensym2 = true;\n      trace.push(\"wrong-literal\");\n    }\n  }\n  if (!matched__gensym2) {\n    const captured = target__gensym1;\n    if (gate(captured, false)) {\n      matched__gensym2 = true;\n      trace.push(\"wrong-binding\");\n    }\n  }\n  if (!matched__gensym2) {\n    if (gate(\"chosen\", true)) {\n      matched__gensym2 = true;\n      trace.push(\"body\");\n    }\n  }\n  if (!matched__gensym2) {\n    if (gate(\"late\", true)) {\n      matched__gensym2 = true;\n      trace.push(\"late-body\");\n    }\n  }\n  if (!matched__gensym2) {\n    {\n      matched__gensym2 = true;\n      trace.push(\"fallback\");\n    }\n  }\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-guards {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/29d0a6812ad7a259/statement-match-guards.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/29d0a6812ad7a259",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/statement-match-guards.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/29d0a6812ad7a259/statement-match-guards.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-guards {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":115,"3":117,"4":98,"5":106,"6":101,"7":99,"8":116,"9":34,"10":44,"11":34,"12":108,"13":105,"14":116,"15":101,"16":114,"17":97,"18":108,"19":45,"20":102,"21":97,"22":108,"23":115,"24":101,"25":34,"26":44,"27":50,"28":44,"29":34,"30":99,"31":104,"32":111,"33":115,"34":101,"35":110,"36":34,"37":44,"38":34,"39":98,"40":111,"41":100,"42":121,"43":34,"44":93,"45":10},"stderr":{}}
+----- output end -----
+  statement-match-guards ... ok (23ms)
+  statement-match-return ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-return {"source":"(kernel:function choose (input)\n  (match input\n    (_ :when false (return \"wrong\"))\n    (_ (return \"inside\")))\n  (return \"after\"))\n(console:log (choose 0))\n","generated":"function choose(input) {\n  {\n    const target__gensym3 = input;\n    let matched__gensym4 = false;\n    if (!matched__gensym4) {\n      if (false) {\n        matched__gensym4 = true;\n        return \"wrong\";\n      }\n    }\n    if (!matched__gensym4) {\n      {\n        matched__gensym4 = true;\n        return \"inside\";\n      }\n    }\n  }\n  return \"after\";\n}\nconsole.log(choose(0));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-return {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/efff3ef6de05cf37/statement-match-return.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/efff3ef6de05cf37",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/statement-match-return.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/efff3ef6de05cf37/statement-match-return.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-return {"status":0,"success":true,"stdout":{"0":105,"1":110,"2":115,"3":105,"4":100,"5":101,"6":10},"stderr":{}}
+----- output end -----
+  statement-match-return ... ok (21ms)
+  statement-match-loop ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-loop {"source":"(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (match i\n    (1 (continue))\n    (3 (break))\n    (_ (trace:push i)))\n  (trace:push (+ i 10)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfor (let i = 0; i < 4; ++i) {\n  {\n    const target__gensym5 = i;\n    let matched__gensym6 = false;\n    if (!matched__gensym6 && target__gensym5 === 1) {\n      {\n        matched__gensym6 = true;\n        continue;\n      }\n    }\n    if (!matched__gensym6 && target__gensym5 === 3) {\n      {\n        matched__gensym6 = true;\n        break;\n      }\n    }\n    if (!matched__gensym6) {\n      {\n        matched__gensym6 = true;\n        trace.push(i);\n      }\n    }\n  }\n  trace.push(i + 10);\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-loop {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/cc4e445e0d9901a4/statement-match-loop.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/cc4e445e0d9901a4",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/statement-match-loop.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/cc4e445e0d9901a4/statement-match-loop.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-loop {"status":0,"success":true,"stdout":{"0":91,"1":48,"2":44,"3":49,"4":48,"5":44,"6":50,"7":44,"8":49,"9":50,"10":93,"11":10},"stderr":{}}
+----- output end -----
+  statement-match-loop ... ok (24ms)
+  statement-match-exhaustion ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-exhaustion {"source":"(bind trace (array))\n(try\n  (match 2\n    (_ :when (do (trace:push \"guard\") false) (trace:push \"wrong\")))\n  (trace:push \"after\")\n  (catch err (trace:push err:message)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\ntry {\n  {\n    const target__gensym7 = 2;\n    let matched__gensym8 = false;\n    if (!matched__gensym8) {\n      if ((() => {\n        trace.push(\"guard\");\n        return false;\n      })()) {\n        matched__gensym8 = true;\n        trace.push(\"wrong\");\n      }\n    }\n    if (!matched__gensym8) {\n      throw new Error(\"match: no matching pattern\");\n    }\n  }\n  trace.push(\"after\");\n} catch (err) {\n  trace.push(err.message);\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-exhaustion {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/6a2c203ef2e84038/statement-match-exhaustion.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/6a2c203ef2e84038",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/statement-match-exhaustion.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/6a2c203ef2e84038/statement-match-exhaustion.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-exhaustion {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":103,"3":117,"4":97,"5":114,"6":100,"7":34,"8":44,"9":34,"10":109,"11":97,"12":116,"13":99,"14":104,"15":58,"16":32,"17":110,"18":111,"19":32,"20":109,"21":97,"22":116,"23":99,"24":104,"25":105,"26":110,"27":103,"28":32,"29":112,"30":97,"31":116,"32":116,"33":101,"34":114,"35":110,"36":34,"37":93,"38":10},"stderr":{}}
+----- output end -----
+  statement-match-exhaustion ... ok (26ms)
+  statement-match-preservation ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-preservation {"source":"(macro read-target () `target__gensym0)\n(macro emitted-match () `(match 0 (_ (trace:push 7))))\n(bind target__gensym0 101)\n(bind matched__gensym1 201)\n(bind matched__gensym2 202)\n(bind matched__gensym3 203)\n(bind trace (array))\n(match 0\n  (_\n    (trace:push (read-target))\n    (trace:push matched__gensym1)\n    (trace:push matched__gensym2)\n    (trace:push matched__gensym3)))\n(emitted-match)\n(bind keep\n  (do (match 0 (_ (trace:push 8))) (match 1 (_ 41))))\n(bind match (fn (:any n) n))\n(console:log (JSON:stringify (array trace keep (match 42))))\n","generated":"const target__gensym0 = 101;\nconst matched__gensym1 = 201;\nconst matched__gensym2 = 202;\nconst matched__gensym3 = 203;\nconst trace = [];\n{\n  const target__gensym1 = 0;\n  let matched__gensym4 = false;\n  if (!matched__gensym4) {\n    {\n      matched__gensym4 = true;\n      trace.push(target__gensym0);\n      trace.push(matched__gensym1);\n      trace.push(matched__gensym2);\n      trace.push(matched__gensym3);\n    }\n  }\n}\n{\n  const target__gensym5 = 0;\n  let matched__gensym6 = false;\n  if (!matched__gensym6) {\n    {\n      matched__gensym6 = true;\n      trace.push(7);\n    }\n  }\n}\nconst keep = (() => {\n  (() => {\n    const target__gensym7 = 0;\n    {\n      return trace.push(8);\n    }\n  })();\n  return (() => {\n    const target__gensym8 = 1;\n    {\n      return 41;\n    }\n  })();\n})();\nconst match = n => n;\nconsole.log(JSON.stringify([trace, keep, match(42)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-preservation {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/35b1638ee191c273/statement-match-preservation.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/35b1638ee191c273",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/statement-match-preservation.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/35b1638ee191c273/statement-match-preservation.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-preservation {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":49,"3":48,"4":49,"5":44,"6":50,"7":48,"8":49,"9":44,"10":50,"11":48,"12":50,"13":44,"14":50,"15":48,"16":51,"17":44,"18":55,"19":44,"20":56,"21":93,"22":44,"23":52,"24":49,"25":44,"26":52,"27":50,"28":93,"29":10},"stderr":{}}
+----- output end -----
+  statement-match-preservation ... ok (22ms)
+  statement-match-protected-preservation ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-protected-preservation {"source":"(bind trace (array))\n(func verify-result :args (:any n) :returns :any :body\n  (trace:push n)\n  (= n 7))\n(func checked :returns :number :post (verify-result ~) :body\n  (match 0\n    (_ :when false (return 99))\n    (_ (return \"bad\")))\n  7)\n(console:log (JSON:stringify (array (checked) trace)))\n","generated":"const trace = [];\nfunction verifyResult(n) {\n  trace.push(n);\n  return n === 7;\n}\nfunction checked() {\n  (() => {\n    const target__gensym10 = 0;\n    {\n      if (false) {\n        return 99;\n      }\n    }\n    {\n      return \"bad\";\n    }\n  })();\n  const result__gensym9 = 7;\n  if (typeof result__gensym9 !== \"number\" || Number.isNaN(result__gensym9)) {\n    throw new TypeError(\"checked: return value expected number, got \" + typeof result__gensym9);\n  }\n  if (!verifyResult(result__gensym9)) {\n    throw new Error(\"checked: post-condition failed: (verify-result ~) — callee blame\");\n  }\n  return result__gensym9;\n}\nconsole.log(JSON.stringify([checked(), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-protected-preservation {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/5a7bd1c872b790da/statement-match-protected-preservation.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/5a7bd1c872b790da",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/statement-match-protected-preservation.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/5a7bd1c872b790da/statement-match-protected-preservation.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-protected-preservation {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":91,"4":55,"5":93,"6":93,"7":10},"stderr":{}}
+----- output end -----
+  statement-match-protected-preservation ... ok (21ms)
+  match-clause-scope ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match-clause-scope {"source":"(bind trace (array))\n(func plus-ten :args (:any n) :returns :any :body (+ n 10))\n(func trace-false :args (:any value) :returns :any :body\n  (trace:push value)\n  false)\n(match plus-ten\n  (match :when (trace-false (match 1))\n    (trace:push \"wrong\"))\n  (_\n    (match 2\n      (1 (trace:push \"wrong-inner\"))\n      (_ (trace:push 22)))))\n(do\n  (bind match (fn (:any a :any b) (+ a b)))\n  (trace:push (match 3 (plus-ten 1))))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfunction plusTen(n) {\n  return n + 10;\n}\nfunction traceFalse(value) {\n  trace.push(value);\n  return false;\n}\n{\n  const target__gensym11 = plusTen;\n  let matched__gensym14 = false;\n  if (!matched__gensym14) {\n    const match = target__gensym11;\n    if (traceFalse(match(1))) {\n      matched__gensym14 = true;\n      trace.push(\"wrong\");\n    }\n  }\n  if (!matched__gensym14) {\n    {\n      matched__gensym14 = true;\n      {\n        const target__gensym12 = 2;\n        let matched__gensym13 = false;\n        if (!matched__gensym13 && target__gensym12 === 1) {\n          {\n            matched__gensym13 = true;\n            trace.push(\"wrong-inner\");\n          }\n        }\n        if (!matched__gensym13) {\n          {\n            matched__gensym13 = true;\n            trace.push(22);\n          }\n        }\n      }\n    }\n  }\n}\n{\n  const match = (a, b) => a + b;\n  trace.push(match(3, plusTen(1)));\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match-clause-scope {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/a28289f481b8a07b/match-clause-scope.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/a28289f481b8a07b",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/match-clause-scope.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/a28289f481b8a07b/match-clause-scope.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match-clause-scope {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":49,"3":44,"4":50,"5":50,"6":44,"7":49,"8":52,"9":93,"10":10},"stderr":{}}
+----- output end -----
+  match-clause-scope ... ok (21ms)
+  match-structural-pattern-macros ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match-structural-pattern-macros {"source":"(macro obj (key binder) `0)\n(macro clause-guard (value) `(= ,value 7))\n(macro clause-push (value) `(trace:push ,value))\n(bind trace (array))\n(match (JSON:parse \"{\\\"key\\\":7}\")\n  (clause-push :when false (trace:push \"wrong\"))\n  ((obj :key n) :when (clause-guard n) (clause-push n))\n  (_ (trace:push \"fallback\")))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\n{\n  const target__gensym15 = JSON.parse(\"{\\\"key\\\":7}\");\n  let matched__gensym16 = false;\n  if (!matched__gensym16) {\n    const clausePush = target__gensym15;\n    if (false) {\n      matched__gensym16 = true;\n      trace.push(\"wrong\");\n    }\n  }\n  if (!matched__gensym16 && typeof target__gensym15 === \"object\" && target__gensym15 !== null && (\"key\" in target__gensym15)) {\n    const n = target__gensym15.key;\n    if (n === 7) {\n      matched__gensym16 = true;\n      trace.push(n);\n    }\n  }\n  if (!matched__gensym16) {\n    {\n      matched__gensym16 = true;\n      trace.push(\"fallback\");\n    }\n  }\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match-structural-pattern-macros {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/625187d2df02a788/match-structural-pattern-macros.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/625187d2df02a788",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/match-structural-pattern-macros.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/625187d2df02a788/match-structural-pattern-macros.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match-structural-pattern-macros {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":93,"3":10},"stderr":{}}
+----- output end -----
+  match-structural-pattern-macros ... ok (23ms)
+  original-match-reserved-role ... FAILED (1ms)
+  original-match-kernel-object ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN original-match-kernel-object {"source":"(macro obj (key binder) `0)\n(macro clause-guard (value) `(= ,value 7))\n(macro clause-push (value) `(trace:push ,value))\n(bind trace (array))\n(match (kernel:object (key 7))\n  (clause-push :when false (trace:push \"wrong\"))\n  ((obj :key n) :when (clause-guard n) (clause-push n))\n  (_ (trace:push \"fallback\")))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\n{\n  const target__gensym17 = {\n    key: 7\n  };\n  let matched__gensym18 = false;\n  if (!matched__gensym18) {\n    const clausePush = target__gensym17;\n    if (false) {\n      matched__gensym18 = true;\n      trace.push(\"wrong\");\n    }\n  }\n  if (!matched__gensym18 && typeof target__gensym17 === \"object\" && target__gensym17 !== null && (\"key\" in target__gensym17)) {\n    const n = target__gensym17.key;\n    if (n === 7) {\n      matched__gensym18 = true;\n      trace.push(n);\n    }\n  }\n  if (!matched__gensym18) {\n    {\n      matched__gensym18 = true;\n      trace.push(\"fallback\");\n    }\n  }\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND original-match-kernel-object {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/24329496b40bce18/original-match-kernel-object.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/24329496b40bce18",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/original-match-kernel-object.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/24329496b40bce18/original-match-kernel-object.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT original-match-kernel-object {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":93,"3":10},"stderr":{}}
+----- output end -----
+  original-match-kernel-object ... ok (22ms)
+  bound-match-conditional-operand ... FAILED (1ms)
+  nested-kernel-object-roles ...
+------- output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN nested-kernel-object-roles {"source":"(bind payload (kernel:object\n  (key 5)\n  (if (kernel:if true 7 8))\n  ((computed (if true \"dynamic\" \"other\")) (if false 0 9))\n  (spread (obj :extra 6))))\n(bind assigned (kernel:= (get payload \"key\") (if false 10 11)))\n(console:log (JSON:stringify\n  (array assigned (get payload \"key\") (get payload \"if\")\n         (get payload \"dynamic\") (get payload \"extra\"))))\n","generated":"const payload = {\n  key: 5,\n  if: true ? 7 : 8,\n  [true ? \"dynamic\" : \"other\"]: false ? 0 : 9,\n  ...{\n    extra: 6\n  }\n};\nconst assigned = payload[\"key\"] = false ? 10 : 11;\nconsole.log(JSON.stringify([assigned, payload[\"key\"], payload[\"if\"], payload[\"dynamic\"], payload[\"extra\"]]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND nested-kernel-object-roles {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/da753ccc2e5d0a90/nested-kernel-object-roles.js"
+  ],
+  "cwd": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/da753ccc2e5d0a90",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/nested-kernel-object-roles.lykn",
+  "modulePath": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp/da753ccc2e5d0a90/nested-kernel-object-roles.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/xdg",
+    "TMPDIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s04-i2.tBlMBxu9/s13-baseline/public-replay/evidence"
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT nested-kernel-object-roles {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":49,"3":44,"4":49,"5":49,"6":44,"7":55,"8":44,"9":57,"10":44,"11":54,"12":93,"13":10},"stderr":{}}
+----- output end -----
+  nested-kernel-object-roles ... ok (19ms)
+public JavaScript compiler preserves shared semantic-role fixtures ... FAILED (due to 2 failed steps) (495ms)
+public D2 rejects reserved match pattern binder ... ok (255µs)
+public D2 rejects reserved match guard declaration ... ok (53µs)
+public D2 rejects reserved match body declaration ... ok (276µs)
+public D2 rejects reserved match subject order ... ok (237µs)
+public compiler rejects unknown nested kernel escape ... ok (1ms)
+
+ ERRORS 
+
+public JavaScript compiler preserves shared semantic-role fixtures ... original-match-reserved-role => ./test/forms/semantic-roles.test.js:53:13
+error: Error: 'do' is a JavaScript reserved word and cannot be used as a lykn pattern binding; rename it (e.g. `do_`)
+      throw new Error(
+            ^
+    at validateReservedNames (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/binding.js:373:13)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:2067:3)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/semantic-roles.test.js:58:25
+    at async innerWrapped (ext:cli/40_test.js:300:5)
+    at async exitSanitizer (ext:cli/40_test.js:201:27)
+    at async Object.outerWrapped [as fn] (ext:cli/40_test.js:239:22)
+    at async TestContext.step (ext:cli/40_test.js:855:22)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/semantic-roles.test.js:53:5
+
+public JavaScript compiler preserves shared semantic-role fixtures ... bound-match-conditional-operand => ./test/forms/semantic-roles.test.js:53:13
+error: Error: 'if' is a JavaScript reserved word and cannot be used as a lykn pattern binding; rename it (e.g. `if_`)
+      throw new Error(
+            ^
+    at validateReservedNames (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/binding.js:373:13)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:2067:3)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/semantic-roles.test.js:58:25
+    at async innerWrapped (ext:cli/40_test.js:300:5)
+    at async exitSanitizer (ext:cli/40_test.js:201:27)
+    at async Object.outerWrapped [as fn] (ext:cli/40_test.js:239:22)
+    at async TestContext.step (ext:cli/40_test.js:855:22)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/semantic-roles.test.js:53:5
+
+ FAILURES 
+
+public JavaScript compiler preserves shared semantic-role fixtures ... original-match-reserved-role => ./test/forms/semantic-roles.test.js:53:13
+public JavaScript compiler preserves shared semantic-role fixtures ... bound-match-conditional-operand => ./test/forms/semantic-roles.test.js:53:13
+
+FAILED | 5 passed (18 steps) | 1 failed (2 steps) (502ms)
+
+error: Test failed

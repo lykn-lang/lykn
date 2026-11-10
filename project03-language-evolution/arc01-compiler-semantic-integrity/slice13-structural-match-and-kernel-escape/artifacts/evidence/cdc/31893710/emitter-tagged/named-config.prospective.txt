@@ -1,0 +1,20 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+/usr/bin/stat
+-f
+%N %HT
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/project.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/deno.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/deno.jsonc
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/package.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/tmp/project.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/tmp/deno.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/tmp/deno.jsonc
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/tmp/package.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/xdg/project.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/xdg/deno.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/xdg/deno.jsonc
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/xdg/package.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/npm/project.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/npm/deno.json
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/npm/deno.jsonc
+/private/tmp/lykn-s13-cdc.cjyrR78s/emitter-tagged/npm/package.json

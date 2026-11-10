@@ -1,0 +1,40 @@
+original-match-reserved-role
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+[11,22,14]
+original-match-kernel-object
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+[7]
+bound-match-conditional-operand
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+[7,8]
+nested-kernel-object-roles
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+[11,11,7,9,6]
+unknown nested escape
+success=false code=Some(1)
+present=false
+present=false
+1:1: warning: unused binding 'result'
+  suggestion: prefix with underscore: _result
+1:14: error: unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?
+  suggestion: kernel:object

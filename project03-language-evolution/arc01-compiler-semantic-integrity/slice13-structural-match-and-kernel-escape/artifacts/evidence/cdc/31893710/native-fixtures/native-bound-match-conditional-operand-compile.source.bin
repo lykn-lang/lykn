@@ -1,0 +1,3 @@
+(func choose :args (:any match) :returns :any :body (match 0 (if false 7 8)))
+(bind match (fn (:any target :any value) value))
+(console:log (JSON:stringify (array (match 0 (if true 7 8)) (choose match))))
