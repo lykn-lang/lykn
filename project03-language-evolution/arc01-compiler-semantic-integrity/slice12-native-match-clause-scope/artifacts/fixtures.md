@@ -38,6 +38,7 @@ Record the actual phase/error. Public is expected to pass unchanged.
 (macro clause-push (value) `(trace:push ,value))
 (bind trace (array))
 (match (kernel:object (key 7))
+  (clause-push :when false (trace:push "wrong"))
   ((obj :key n) :when (clause-guard n) (clause-push n))
   (_ (trace:push "fallback")))
 (console:log (JSON:stringify trace))
@@ -46,9 +47,19 @@ Record the actual phase/error. Public is expected to pass unchanged.
 Final exact stdout `[7]\n`. Native old Pass2 is predicted to
 run the `obj` macro in the pattern, leaving a literal 0 candidate
 and printing `["fallback"]\n`. This is an actual macro-bearing
-compiler route. The guard and body are executable macro uses and
-must still expand. Public is expected to pass unchanged. Review
+compiler route. The first guarded binder deliberately shares the
+body macro's name. Its false guard makes the sibling reachable,
+where the same name must dispatch as a macro. Fixing only pattern
+opacity while retaining aggregate Pass2 scope would miss this
+dispatch. The guard and body are executable macro uses and must
+still expand. Public is expected to pass unchanged. Review
 the complete modules, actual command and strict runtime evidence.
 Both final natives require actual check/strict compile success, no
 DTS and exact runtime exit 0 with empty stderr. Public strict
 runtime has the same stdout and exit/stderr oracle.
+
+Intake amendment before test authoring. The first guarded clause
+was added to F2 after issued plan `fd400666` to discriminate the
+two Pass2 responsibilities with one fixture. Its original planned
+bytes remain in that commit. The stdout oracle and population stay
+the same. No earlier source fixture was executed.

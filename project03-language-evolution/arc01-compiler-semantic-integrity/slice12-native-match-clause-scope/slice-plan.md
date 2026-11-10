@@ -54,3 +54,9 @@ head on the ordinary-call route so downstream classification cannot
 reinterpret it as syntax. The frozen tagged-head control also checks
 the original outer head, alongside its untouched operand roles.
 No general tag policy or acceptance change.
+
+Before source handoff, F2 also gained a first false-guard clause
+whose binder shares the body macro's name. This makes the same
+runtime fixture discriminate sibling Pass2 isolation as well as
+structural pattern opacity. The prior exact plan is `fd400666`.
+No source fixture or baseline had run. Counts and stdout stay fixed.
