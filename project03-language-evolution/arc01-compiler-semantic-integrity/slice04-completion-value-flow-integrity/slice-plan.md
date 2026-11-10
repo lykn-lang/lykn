@@ -9,6 +9,12 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+2026-11-10 [S16](../slice16-completion-headers-and-lazy-operands/slice-plan.md)
+opens the remaining selected direct header and lazy result
+routes from accepted S15. It retains the explicit I3
+ordered-reference hold and I4 checked-exit ownership.
+
+
 2026-11-10 [S15 acceptance](../slice15-consumed-bind-completion/cdc-verification.md)
 closes the finite ordinary simple-bind result destination at
 `0526910d`. Transfer-bearing if/match headers and lazy

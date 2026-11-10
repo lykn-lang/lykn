@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-10 [S16](slice16-completion-headers-and-lazy-operands/slice-plan.md)
+opens the finite direct header and lazy result delivery.
+The four HL rows and composition stay open.
+
+
 2026-11-10 [S15](slice15-consumed-bind-completion/cdc-verification.md)
 independently closes four direct-bind rows at `0526910d`.
 Remaining headers/lazy operands and I3/I4 composition keep

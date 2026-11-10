@@ -1,5 +1,10 @@
 # S04 completion/value-flow ledger
 
+2026-11-10 [S16](../slice16-completion-headers-and-lazy-operands/slice-plan.md)
+owns selected direct if/match headers and lazy operands.
+Other compositions and parent criteria retain their status.
+
+
 2026-11-10 [S15](../slice15-consumed-bind-completion/cdc-verification.md)
 independently closes four direct-bind rows at task `0526910d`.
 CV-02 retains acceptance. The other five CV rows stay open

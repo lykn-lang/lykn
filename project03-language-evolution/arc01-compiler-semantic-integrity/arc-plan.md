@@ -9,6 +9,15 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Completion headers and lazy operands opened — 2026-11-10
+
+[S16](slice16-completion-headers-and-lazy-operands/slice-plan.md)
+continues I2 from accepted S15 with direct if tests, match
+subjects and guards, and lazy operand destinations. The
+ordered-reference and checked-exit owners remain I3/I4.
+CV-04 and CI-04 stay open.
+
+
 ## Direct bind completion accepted — 2026-11-10
 
 [S15](slice15-consumed-bind-completion/cdc-verification.md)
