@@ -517,7 +517,7 @@ fn run_spread_hold(name: &str, source: &[u8]) {
         assert!(!generated.contains("import "));
         let source_return = generated.find("return 7").expect("source return is emitted");
         let ordinary_call = generated
-            .find("](...items)")
+            .find("])(...items)")
             .expect("ordinary computed spread call is emitted");
         assert!(source_return < ordinary_call);
     } else {
@@ -1095,7 +1095,7 @@ fn lexical_call_spread_precedes_a_later_return() {
 
 #[test]
 fn malformed_actual_spread_is_checked_at_the_argument_root() {
-    let source = b"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
+    let source = b"(func _malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
     let temp = TempDir::new().expect("create malformed-spread output directory");
     let xdg_cache_home = temp.path().join("xdg-cache");
     fs::create_dir(&xdg_cache_home).expect("create isolated malformed-spread XDG cache");
