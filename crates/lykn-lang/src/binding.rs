@@ -162,7 +162,7 @@ pub(crate) struct BindingOccurrence<'a> {
 }
 
 impl BindingOccurrence<'_> {
-    fn project(self) -> BindingSite {
+    pub(crate) fn project(self) -> BindingSite {
         let (name, span) = self
             .atom
             .atom_parts()

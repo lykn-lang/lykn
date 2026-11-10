@@ -1993,6 +1993,97 @@ fn classify_genfn<'tree>(
     })
 }
 
+pub(crate) struct MatchClauseScope<'tree> {
+    pub(crate) pattern_input: &'tree SExpr,
+    pub(crate) guard: Option<(&'tree SExpr, &'tree SExpr)>,
+    pub(crate) body: &'tree [SExpr],
+    pub(crate) span: Span,
+    pub(crate) occurrences: Vec<BindingOccurrence<'tree>>,
+}
+
+struct ParsedMatchClause<'tree> {
+    pattern_input: &'tree SExpr,
+    pattern: Pattern,
+    guard: Option<(&'tree SExpr, &'tree SExpr)>,
+    body: &'tree [SExpr],
+    span: Span,
+    occurrences: Vec<BindingOccurrence<'tree>>,
+}
+
+fn parse_match_clause<'tree>(
+    clause: &'tree SExpr,
+    match_span: Span,
+) -> Result<ParsedMatchClause<'tree>, Diagnostic> {
+    let SExpr::List { values, span } = clause else {
+        return Err(err(
+            "match clause must be a list with at least a pattern and body",
+            match_span,
+        ));
+    };
+    if values.len() < 2 {
+        return Err(err(
+            "match clause must be a list with at least a pattern and body",
+            match_span,
+        ));
+    }
+
+    let pattern_input = &values[0];
+    let mut occurrences = Vec::new();
+    let mut capture = Some(&mut occurrences);
+    let pattern = classify_pattern_captured(pattern_input, &mut capture)?;
+    let mut guard = None;
+    let mut body_start = 1;
+
+    if values.len() >= 3
+        && let SExpr::Keyword { value, .. } = &values[1]
+        && value == "when"
+    {
+        guard = Some((&values[1], &values[2]));
+        body_start = 3;
+    }
+
+    let body = &values[body_start..];
+    if body.is_empty() {
+        return Err(err("match clause must have a body", *span));
+    }
+
+    Ok(ParsedMatchClause {
+        pattern_input,
+        pattern,
+        guard,
+        body,
+        span: *span,
+        occurrences,
+    })
+}
+
+/// Parse only complete native match clauses for the scope-sensitive compiler
+/// walks. Invalid clauses stay opaque here so the regular classifier can keep
+/// issuing its existing diagnostic.
+pub(crate) fn match_clause_scopes<'tree>(
+    form: &'tree SExpr,
+) -> Vec<Option<MatchClauseScope<'tree>>> {
+    let SExpr::List { values, span } = form else {
+        return Vec::new();
+    };
+    let mut clauses = Vec::with_capacity(values.len().saturating_sub(2));
+    for clause in values.iter().skip(2) {
+        match parse_match_clause(clause, *span) {
+            Ok(parsed) => {
+                clauses.push(Some(MatchClauseScope {
+                    pattern_input: parsed.pattern_input,
+                    guard: parsed.guard,
+                    body: parsed.body,
+                    span: parsed.span,
+                    occurrences: parsed.occurrences,
+                }));
+            }
+            Err(_) => clauses.push(None),
+        }
+    }
+    clauses
+}
+
 fn classify_match<'tree>(
     args: &'tree [SExpr],
     span: Span,
@@ -2005,43 +2096,16 @@ fn classify_match<'tree>(
     let mut clauses = Vec::new();
 
     for clause_expr in &args[1..] {
-        match clause_expr {
-            SExpr::List {
-                values,
-                span: cspan,
-            } if values.len() >= 2 => {
-                let pattern = classify_pattern_captured(&values[0], capture)?;
-                let mut guard = None;
-                let mut body_start = 1;
-
-                // Check for :when guard
-                if values.len() >= 3
-                    && let SExpr::Keyword { value, .. } = &values[1]
-                    && value == "when"
-                {
-                    guard = Some(values[2].clone());
-                    body_start = 3;
-                }
-
-                let body = values[body_start..].to_vec();
-                if body.is_empty() {
-                    return Err(err("match clause must have a body", *cspan));
-                }
-
-                clauses.push(MatchClause {
-                    pattern,
-                    guard,
-                    body,
-                    span: *cspan,
-                });
-            }
-            _ => {
-                return Err(err(
-                    "match clause must be a list with at least a pattern and body",
-                    span,
-                ));
-            }
+        let parsed = parse_match_clause(clause_expr, span)?;
+        if let Some(out) = capture.as_deref_mut() {
+            out.extend(parsed.occurrences.iter().copied());
         }
+        clauses.push(MatchClause {
+            pattern: parsed.pattern,
+            guard: parsed.guard.map(|(_, guard)| guard.clone()),
+            body: parsed.body.to_vec(),
+            span: parsed.span,
+        });
     }
 
     Ok(SurfaceForm::Match {

@@ -483,6 +483,11 @@ clause selects, direct statement-position `match` throws
 makes the match exhaustive. Matches inside existing consumed wrappers and
 checked-exit function bodies keep their current path.
 
+The subject is evaluated in the incoming scope. Each clause's pattern is
+structural syntax, and its bindings scope only over that clause's guard and
+ordered body; body declarations are visible to later expressions in the same
+clause.
+
 **Literal patterns:**
 
 ```lykn

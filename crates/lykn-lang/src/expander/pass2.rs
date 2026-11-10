@@ -93,7 +93,8 @@ fn expand_expr(
                 // neither a desugar, a user macro, nor the `macro` definition
                 // form — it is a plain call to the binding (DD-60 D1). Skip all
                 // three dispatch paths when bound.
-                let bound = scope.iter().any(|n| n.as_str() == head_name);
+                let bound = scope.iter().any(|n| n.as_str() == head_name)
+                    || (head_name == "match" && head.as_form_head().is_none());
 
                 // A leaked `(macro name …)` definition in pass 2 is an error —
                 // they should have been consumed in pass 1. The guard is narrow
@@ -250,7 +251,59 @@ fn expand_children_scoped(
             }
             Ok(out)
         }
+        crate::resolver::ScopePlan::Match { subject, clauses } => {
+            let Some(subject) = subject else {
+                return Ok(values.to_vec());
+            };
+            let mut out = Vec::with_capacity(values.len());
+            out.push(values[0].clone());
+            out.push(
+                expand_expr(subject.clone(), deno, env, scope)?.unwrap_or_else(|| subject.clone()),
+            );
+            for (clause, plan) in values[2..].iter().zip(clauses) {
+                match plan {
+                    Some(plan) => out.push(expand_match_clause(&plan, deno, env, scope)?),
+                    None => out.push(clause.clone()),
+                }
+            }
+            Ok(out)
+        }
     }
+}
+
+fn expand_match_clause(
+    clause: &crate::classifier::forms::MatchClauseScope<'_>,
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    scope: &mut Vec<String>,
+) -> Result<SExpr, LyknError> {
+    let mark = scope.len();
+    scope.extend(
+        clause
+            .occurrences
+            .iter()
+            .filter(|occurrence| occurrence.kind.shadows_values())
+            .map(|occurrence| occurrence.project().name),
+    );
+
+    let result = (|| {
+        let mut values = Vec::with_capacity(clause.body.len() + 3);
+        values.push(clause.pattern_input.clone());
+        if let Some((marker, guard)) = clause.guard {
+            values.push(marker.clone());
+            values.push(
+                expand_expr(guard.clone(), deno, env, scope)?.unwrap_or_else(|| guard.clone()),
+            );
+        }
+        values.extend(expand_seq(clause.body, deno, env, scope)?);
+        Ok(SExpr::List {
+            values,
+            span: clause.span,
+        })
+    })();
+
+    scope.truncate(mark);
+    result
 }
 
 /// Expand a run of sibling forms, hoisting each one's enclosing-scope

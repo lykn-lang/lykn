@@ -60,7 +60,7 @@ pub(crate) fn hoisted_names(form: &SExpr) -> Vec<String> {
 /// the single source of scoping truth, shared by the resolver (tagging) and the
 /// expander's light binding-scan (dispatch gating). Head dispatch mirrors
 /// [`bindings_introduced`]'s own dispatch.
-pub(crate) enum ScopePlan {
+pub(crate) enum ScopePlan<'tree> {
     /// No body-scoped names: children are a plain sibling sequence (their own
     /// enclosing declarations hoist between them). Covers calls, `block`,
     /// `import`, and the declaration escapes (`bind`, `const`/`let`/…), whose
@@ -81,6 +81,12 @@ pub(crate) enum ScopePlan {
     /// A conditional's test, consequent, and optional alternate each see the
     /// same incoming scope; declarations in one operand do not leak to another.
     Conditional,
+    /// A genuine native match: the subject is outside every clause and each
+    /// complete clause has its own structural pattern, guard and body scope.
+    Match {
+        subject: Option<&'tree SExpr>,
+        clauses: Vec<Option<crate::classifier::forms::MatchClauseScope<'tree>>>,
+    },
 }
 
 #[derive(Clone, Copy)]
@@ -90,16 +96,48 @@ pub(crate) struct BindGroupSlot {
 }
 
 /// Compute a form's [`ScopePlan`]. Non-list or non-binding forms → `Sequence`.
-pub(crate) fn scope_plan(form: &SExpr, scope: &[String]) -> ScopePlan {
-    let occurrences = binding_occurrences(form);
-    scope_plan_with_occurrences(form, scope, &occurrences)
+pub(crate) fn scope_plan<'tree>(form: &'tree SExpr, scope: &[String]) -> ScopePlan<'tree> {
+    scope_plan_and_occurrences(form, scope).plan
 }
 
-fn scope_plan_with_occurrences(
-    form: &SExpr,
+struct ScopeWork<'tree> {
+    plan: ScopePlan<'tree>,
+    occurrences: Vec<BindingOccurrence<'tree>>,
+}
+
+fn scope_plan_and_occurrences<'tree>(form: &'tree SExpr, scope: &[String]) -> ScopeWork<'tree> {
+    if let SExpr::List { values, .. } = form
+        && let Some(head) = values.first()
+        && head.as_atom() == Some("match")
+    {
+        let is_native_match =
+            head.as_form_head() == Some("match") && !scope.iter().any(|name| name == "match");
+        if is_native_match {
+            let clauses = crate::classifier::forms::match_clause_scopes(form);
+            return ScopeWork {
+                plan: ScopePlan::Match {
+                    subject: values.get(1),
+                    clauses,
+                },
+                occurrences: Vec::new(),
+            };
+        }
+        return ScopeWork {
+            plan: ScopePlan::Sequence,
+            occurrences: Vec::new(),
+        };
+    }
+
+    let occurrences = binding_occurrences(form);
+    let plan = scope_plan_with_occurrences(form, scope, &occurrences);
+    ScopeWork { plan, occurrences }
+}
+
+fn scope_plan_with_occurrences<'tree>(
+    form: &'tree SExpr,
     scope: &[String],
-    occurrences: &[BindingOccurrence<'_>],
-) -> ScopePlan {
+    occurrences: &[BindingOccurrence<'tree>],
+) -> ScopePlan<'tree> {
     let SExpr::List { values, .. } = form else {
         return ScopePlan::Sequence;
     };
@@ -128,7 +166,7 @@ fn scope_plan_with_occurrences(
             names: body_names,
             body_start: 3,
         },
-        Some("if-let" | "when-let" | "match") => ScopePlan::Body {
+        Some("if-let" | "when-let") => ScopePlan::Body {
             names: body_names,
             body_start: 2,
         },
@@ -195,13 +233,22 @@ fn resolve_form(
             form.clone().with_name_res(res)
         }
         SExpr::List { values, span } => {
-            // This form's own binder occurrences, accumulated so deep
-            // param/pattern atoms are still recognised within this subtree.
-            let sites = binding_occurrences(form);
+            // One plan computation owns both the scope route and this form's
+            // borrowed binder occurrences, so match classification is shared.
+            let ScopeWork { plan, occurrences } = scope_plan_and_occurrences(form, scope);
             let mut child_defs = def_occurrences.to_vec();
-            child_defs.extend(sites.iter().copied());
+            child_defs.extend(occurrences.iter().copied());
 
-            let new_values = match scope_plan_with_occurrences(form, scope, &sites) {
+            let tagged_match_head = values.first().is_some_and(|head| {
+                head.as_atom() == Some("match") && head.name_res() != NameRes::Unresolved
+            });
+            let new_values = match plan {
+                ScopePlan::Sequence if tagged_match_head => {
+                    let mut resolved = Vec::with_capacity(values.len());
+                    resolved.push(values[0].clone());
+                    resolved.extend(resolve_seq(&values[1..], scope, &child_defs));
+                    resolved
+                }
                 ScopePlan::Sequence => resolve_seq(values, scope, &child_defs),
                 ScopePlan::Body { names, body_start } => {
                     resolve_split_at(values, scope, &child_defs, names, body_start)
@@ -213,6 +260,23 @@ fn resolve_form(
                     .iter()
                     .map(|child| resolve_form(child, scope, &child_defs))
                     .collect(),
+                ScopePlan::Match { subject, clauses } => {
+                    let Some(subject) = subject else {
+                        return form.clone();
+                    };
+                    let mut resolved = Vec::with_capacity(values.len());
+                    resolved.push(resolve_form(&values[0], scope, &child_defs));
+                    resolved.push(resolve_form(subject, scope, &child_defs));
+                    for (clause, plan) in values[2..].iter().zip(clauses) {
+                        match plan {
+                            Some(plan) => {
+                                resolved.push(resolve_match_clause(&plan, scope, &child_defs))
+                            }
+                            None => resolved.push(clause.clone()),
+                        }
+                    }
+                    resolved
+                }
             };
             SExpr::List {
                 values: new_values,
@@ -225,6 +289,64 @@ fn resolve_form(
             span: *span,
         },
         // Leaves with no name to resolve.
+        other => other.clone(),
+    }
+}
+
+fn resolve_match_clause(
+    clause: &crate::classifier::forms::MatchClauseScope<'_>,
+    scope: &mut Vec<String>,
+    def_occurrences: &[BindingOccurrence<'_>],
+) -> SExpr {
+    let mark = scope.len();
+    scope.extend(
+        clause
+            .occurrences
+            .iter()
+            .filter(|occurrence| occurrence.kind.shadows_values())
+            .map(|occurrence| occurrence.project().name),
+    );
+
+    let mut values = Vec::with_capacity(clause.body.len() + 3);
+    values.push(resolve_pattern(&clause.pattern_input, &clause.occurrences));
+    if let Some((marker, guard)) = clause.guard {
+        values.push(marker.clone());
+        values.push(resolve_form(guard, scope, def_occurrences));
+    }
+    values.extend(resolve_seq(clause.body, scope, def_occurrences));
+    scope.truncate(mark);
+    SExpr::List {
+        values,
+        span: clause.span,
+    }
+}
+
+/// Copy native pattern syntax without dispatching it as executable forms.
+/// Only atoms captured as actual binders are tagged, by node identity.
+fn resolve_pattern(pattern: &SExpr, occurrences: &[BindingOccurrence<'_>]) -> SExpr {
+    match pattern {
+        atom @ SExpr::Atom { .. } => {
+            if occurrences
+                .iter()
+                .any(|occurrence| std::ptr::eq(occurrence.atom, atom))
+            {
+                atom.clone().with_name_res(NameRes::BindingDef)
+            } else {
+                atom.clone()
+            }
+        }
+        SExpr::List { values, span } => SExpr::List {
+            values: values
+                .iter()
+                .map(|value| resolve_pattern(value, occurrences))
+                .collect(),
+            span: *span,
+        },
+        SExpr::Cons { car, cdr, span } => SExpr::Cons {
+            car: Box::new(resolve_pattern(car, occurrences)),
+            cdr: Box::new(resolve_pattern(cdr, occurrences)),
+            span: *span,
+        },
         other => other.clone(),
     }
 }
@@ -457,6 +579,35 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
             ScopePlan::Conditional => {
                 for child in values {
                     shadow_seq(std::slice::from_ref(child), scope, out);
+                }
+            }
+            ScopePlan::Match { subject, clauses } => {
+                let Some(subject) = subject else {
+                    return;
+                };
+                shadow_form(subject, scope, out);
+                for (_clause, plan) in values[2..].iter().zip(clauses) {
+                    let Some(plan) = plan else {
+                        continue;
+                    };
+                    for occurrence in &plan.occurrences {
+                        let site = occurrence.project();
+                        if scope.iter().any(|name| name == &site.name) {
+                            out.push(site);
+                        }
+                    }
+                    let mark = scope.len();
+                    scope.extend(
+                        plan.occurrences
+                            .iter()
+                            .filter(|occurrence| occurrence.kind.shadows_values())
+                            .map(|occurrence| occurrence.project().name),
+                    );
+                    if let Some((_, guard)) = plan.guard {
+                        shadow_form(guard, scope, out);
+                    }
+                    shadow_seq(plan.body, scope, out);
+                    scope.truncate(mark);
                 }
             }
         },
@@ -736,7 +887,8 @@ mod tests {
 
     #[test]
     fn match_scope_separates_subject_guard_body_and_siblings() {
-        let source = "(match (match 1 (_ 2)) (match :when (match 3) (match 4)) (_ (match 5 (_ 6))))";
+        let source =
+            "(match (match 1 (_ 2)) (match :when (match 3) (match 4)) (_ (match 5 (_ 6))))";
         let forms = read(source).expect("parse match scopes");
         let resolved = resolve(&forms);
         assert_eq!(resolved, forms, "resolution preserves syntax and spans");
@@ -744,12 +896,19 @@ mod tests {
         let SExpr::List { values, .. } = &resolved[0] else {
             panic!("outer match is a list")
         };
-        let SExpr::List { values: subject, .. } = &values[1] else {
+        let SExpr::List {
+            values: subject, ..
+        } = &values[1]
+        else {
             panic!("subject match is a list")
         };
         assert_eq!(subject[0].name_res(), NameRes::Unresolved);
 
-        let SExpr::List { values: first_clause, .. } = &values[2] else {
+        let SExpr::List {
+            values: first_clause,
+            ..
+        } = &values[2]
+        else {
             panic!("first clause is a list")
         };
         assert_eq!(first_clause[0].name_res(), NameRes::BindingDef);
@@ -762,10 +921,17 @@ mod tests {
         };
         assert_eq!(body[0].name_res(), NameRes::BindingRef);
 
-        let SExpr::List { values: second_clause, .. } = &values[3] else {
+        let SExpr::List {
+            values: second_clause,
+            ..
+        } = &values[3]
+        else {
             panic!("second clause is a list")
         };
-        let SExpr::List { values: sibling, .. } = &second_clause[1] else {
+        let SExpr::List {
+            values: sibling, ..
+        } = &second_clause[1]
+        else {
             panic!("sibling match is a list")
         };
         assert_eq!(sibling[0].name_res(), NameRes::Unresolved);
@@ -787,8 +953,8 @@ mod tests {
             assert_eq!(values[0].name_res(), NameRes::Unresolved);
         }
 
-        let mut tagged = read("(match 0 (phantom 7) (ordinary 8))")
-            .expect("parse explicitly tagged call");
+        let mut tagged =
+            read("(match 0 (phantom 7) (ordinary 8))").expect("parse explicitly tagged call");
         let SExpr::List { values, .. } = &mut tagged[0] else {
             panic!("tagged match call is a list")
         };
@@ -810,21 +976,28 @@ mod tests {
     fn match_shadowing_is_clause_local() {
         let source = "(match 0 (slot :when false (bind slot 1) slot) (_ (bind slot 2) slot))";
         let forms = read(source).expect("parse match shadowing");
-        let expected_span = {
-            fn find_declaration(form: &SExpr) -> Option<Span> {
-                match form {
-                    SExpr::List { values, .. } if form.to_string() == "(bind slot 1)" => {
-                        Some(values[1].span())
-                    }
-                    SExpr::List { values, .. } => values.iter().find_map(find_declaration),
-                    SExpr::Cons { car, cdr, .. } => {
-                        find_declaration(car).or_else(|| find_declaration(cdr))
-                    }
-                    _ => None,
-                }
-            }
-            find_declaration(&forms[0]).expect("first clause nested declaration")
+        let SExpr::List {
+            values: match_values,
+            ..
+        } = &forms[0]
+        else {
+            panic!("match is a list")
         };
+        let SExpr::List {
+            values: clause_values,
+            ..
+        } = &match_values[2]
+        else {
+            panic!("first clause is a list")
+        };
+        let SExpr::List {
+            values: declaration_values,
+            ..
+        } = &clause_values[3]
+        else {
+            panic!("first clause declaration is a list")
+        };
+        let expected_span = declaration_values[1].span();
         let shadows = shadowing_sites(&forms);
         assert_eq!(shadows.len(), 1);
         assert_eq!(shadows[0].name, "slot");
