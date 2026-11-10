@@ -451,8 +451,8 @@ fn m4_same_version_cache_reextracts_missing_config() {
     let old_root = xdg
         .join("lykn")
         .join("embedded")
-        .join(env!("CARGO_PKG_VERSION"));
-    fs::create_dir_all(&old_root).expect("create old same-version cache sibling");
+        .join(format!("{}-expander-split", env!("CARGO_PKG_VERSION")));
+    fs::create_dir_all(&old_root).expect("create S04 expander-split cache sibling");
     let old_marker = old_root.join("old-cache-preservation.txt");
     fs::write(&old_marker, b"old cache sibling remains intact\n")
         .expect("seed old same-version cache sibling");
@@ -472,7 +472,7 @@ fn m4_same_version_cache_reextracts_missing_config() {
     assert_eq!(
         fs::read(&old_marker).expect("read old cache marker after cold compile"),
         b"old cache sibling remains intact\n",
-        "cold compilation must preserve the old same-version cache sibling",
+        "cold compilation must preserve the S04 cache sibling",
     );
     let owned_root = owned_embedded_root(&xdg);
     let config_path = owned_root.join("packages/lang/deno.json");
@@ -510,7 +510,7 @@ fn m4_same_version_cache_reextracts_missing_config() {
     assert_eq!(
         fs::read(&old_marker).expect("read old cache marker after warm compile"),
         b"old cache sibling remains intact\n",
-        "warm compilation and config recovery must preserve the old cache sibling",
+        "warm compilation and config recovery must preserve the S04 cache sibling",
     );
     let runtime = recovered_js
         .as_ref()

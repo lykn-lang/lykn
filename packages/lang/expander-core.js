@@ -11,7 +11,7 @@ import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm, emitMatchStatementMacro, funcBodyProtectsStatementExit, parseKeywordClauses } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
-import { markExpandedHostCall, materializeExpandedHostCalls } from './host-invocation.js';
+import { markExpandedHostCall, materializeExpandedHostCalls } from './host-invocation-kernel.js';
 import { moduleBindsReflect, validateProtectedHost } from './protected-host.js';
 import { isStatementOnlyForm } from './surface-helpers.js';
 import {

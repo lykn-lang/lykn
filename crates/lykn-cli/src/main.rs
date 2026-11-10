@@ -1950,6 +1950,17 @@ const lyknImportPlugin = {
       const rel = args.path.replace(/^lang\//, "packages/lang/");
       return { path: Deno.cwd() + "/" + rel };
     });
+    build.onResolve({ filter: /^\.\/host-invocation\.js$/ }, (args) => {
+      if (args.importer !== Deno.cwd() + "/packages/lang/compiler.js") return;
+      const browserInvocation = Deno.cwd() + "/packages/lang/host-invocation-browser.js";
+      try {
+        Deno.statSync(browserInvocation);
+        return { path: browserInvocation };
+      } catch (error) {
+        if (!(error instanceof Deno.errors.NotFound)) throw error;
+        /* historical source tree: retain the private invocation bridge */
+      }
+    });
   },
 };
 const shared = {
