@@ -280,25 +280,25 @@ pub fn emit_form(
 ) -> Result<Vec<SExpr>, LyknError> {
     let mut result = emit_form_raw_checked(form, ctx, registry)?;
     finalize_completion_value_markers(&mut result, ctx);
-    if result.iter().any(contains_host_invocation_marker) {
+    if let Some(span) = result.iter().find_map(host_invocation_marker_span) {
         return Err(codegen_error(
             "ordered member call requires whole-module emission; use emitter::emit",
-            form.span(),
+            span,
         ));
     }
     Ok(result)
 }
 
-fn contains_host_invocation_marker(expr: &SExpr) -> bool {
+fn host_invocation_marker_span(expr: &SExpr) -> Option<Span> {
     if expr.is_host_invocation() {
-        return true;
+        return Some(expr.span());
     }
     match expr {
-        SExpr::List { values, .. } => values.iter().any(contains_host_invocation_marker),
+        SExpr::List { values, .. } => values.iter().find_map(host_invocation_marker_span),
         SExpr::Cons { car, cdr, .. } => {
-            contains_host_invocation_marker(car) || contains_host_invocation_marker(cdr)
+            host_invocation_marker_span(car).or_else(|| host_invocation_marker_span(cdr))
         }
-        _ => false,
+        _ => None,
     }
 }
 
