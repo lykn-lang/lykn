@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/ordered-member-calls/entry-shaken.lykn", "-o", "/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/native/tmp/.tmpoaouXd/shaken.js", "--source-context-path", "/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/native/tmp/.tmpoaouXd"]
+cwd=Some("/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/native/tmp/.tmpoaouXd")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/native/tmp/.tmpoaouXd/xdg-cache")
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/native/xdg")
+TMPDIR=Some("/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/native/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/evidence/native")

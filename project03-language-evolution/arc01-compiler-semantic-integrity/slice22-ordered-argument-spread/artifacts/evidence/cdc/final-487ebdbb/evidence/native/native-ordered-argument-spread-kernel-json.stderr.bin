@@ -1,0 +1,2 @@
+30:33: warning: unused binding 'receiver'
+  suggestion: prefix with underscore: _receiver

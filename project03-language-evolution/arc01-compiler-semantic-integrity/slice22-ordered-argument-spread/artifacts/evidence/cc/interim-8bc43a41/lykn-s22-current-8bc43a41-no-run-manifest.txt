@@ -1,0 +1,5 @@
+prospective cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=cargo test -p lykn-cli --test semantic_roles --no-run
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno; TMPDIR=/private/tmp/lykn-s22-current-1abb8946/evidence/tmp; CARGO_NET_GIT_FETCH_WITH_CLI=true (inherited); PATH inherited ordinary
+config candidates: same exact ten Cargo paths listed in /private/tmp/lykn-s22-current-1abb8946/no-run/config-checks.txt, all absence results retained there
+source revision=8bc43a41758a68ad5324158cf9bbe27947b4eba9 tree=67b5de422c4b85799de8c4131211cc0e9f156ebf

@@ -1,0 +1,5 @@
+prospective cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno; TMPDIR=/private/tmp/lykn-s22-current-1abb8946/evidence/tmp; PATH inherited ordinary
+config candidates: none (direct native test binary)
+producer SHA256 from build: recorded in ../evidence/producer-pins.txt

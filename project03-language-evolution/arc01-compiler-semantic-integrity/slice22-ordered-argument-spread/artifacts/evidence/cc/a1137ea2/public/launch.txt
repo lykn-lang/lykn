@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s22-current-a1137ea2/public/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s22-current-a1137ea2/public/xdg' 'npm_config_cache=/private/tmp/lykn-s22-current-a1137ea2/public/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/opt/homebrew/bin/deno' 'test' '--config' 'project.json' '-A' 'test/forms/semantic-roles.test.js'
+source_revision=a1137ea223b2b7a23dc1b1e0dfcb641b60777007
+deno_version=2.9.6 sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+stdout=/private/tmp/lykn-s22-current-a1137ea2/public/stdout.raw
+stderr=/private/tmp/lykn-s22-current-a1137ea2/public/stderr.raw
+exit_status=/private/tmp/lykn-s22-current-a1137ea2/public/exit-status.txt

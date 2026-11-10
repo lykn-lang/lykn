@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/ordered-argument-spread.lykn", "--kernel-json"]
+cwd=Some("/private/tmp/lykn-s22-current-a1137ea2/native/tmp/.tmpWZ31o3")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-s22-current-a1137ea2/native/tmp/.tmpWZ31o3/xdg-cache")
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s22-current-a1137ea2/native/xdg")
+TMPDIR=Some("/private/tmp/lykn-s22-current-a1137ea2/native/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s22-current-a1137ea2/evidence/native")

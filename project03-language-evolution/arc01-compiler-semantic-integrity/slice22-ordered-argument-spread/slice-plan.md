@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice22-ordered-argument-spread
-status: in-progress
+status: closed
 depends-on: [slice21-ordered-assignment-references]
 ---
 
@@ -43,3 +43,7 @@ independent exact source/runtime/shape replay required.
 Arbitrary effectful-key compounds, lifted direct eval and other
 special references stay explicitly outside this accepted tranche
 pending their own contract. No I4/K, release integration or push.
+
+Independently accepted at task `487ebdbb`. All four OS rows
+are done. See [review](cdc-verification.md) and [close](closing-report.md)
+for source identity, exact proof and I3 composition boundaries.

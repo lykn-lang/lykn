@@ -1,0 +1,2 @@
+(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body
+  ((get receiver (do (return 7) "method")) (spread items)))

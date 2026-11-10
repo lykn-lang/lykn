@@ -1,0 +1,5 @@
+prospective cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+scoped env: DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_TEST_DENO=/opt/homebrew/bin/deno (Deno 2.9.6 pinned SHA 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74); LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-current-1abb8946/native-retry-evidence; TMPDIR=/private/tmp/lykn-s22-current-1abb8946/evidence/tmp; PATH inherited ordinary
+config candidates: none (direct native test binary)
+producer SHA256 from build: c8505621bee907ab890f08ab139b9d4be8efb1bfb577a8ff4d6bdf9f6e8acc2b

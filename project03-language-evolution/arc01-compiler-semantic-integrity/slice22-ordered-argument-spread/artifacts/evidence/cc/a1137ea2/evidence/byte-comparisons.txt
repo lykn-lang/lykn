@@ -1,0 +1,10 @@
+native-public provider-default=1
+native-public provider-fallback=1
+public provider-default direct=0
+public provider-fallback clone=0
+public provider-fallback json=0
+pure F2 native JS old-current=0
+pure F2 kernel JSON old-current=0
+pure F2 runtime stdout old-current=0
+pure F2 public JS old-current=0
+pure F2 public runtime stdout old-current=0

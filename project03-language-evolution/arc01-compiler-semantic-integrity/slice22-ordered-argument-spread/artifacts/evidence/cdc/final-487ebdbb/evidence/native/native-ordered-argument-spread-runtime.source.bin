@@ -1,0 +1,51 @@
+(bind trace (array))
+(bind iteration-error (new Error "iteration"))
+(genfunc produce-items :args (:any fail) :yields :any :body
+  (trace:push "next0")
+  (yield 1)
+  (trace:push "next1")
+  (if fail (throw iteration-error))
+  (yield 2)
+  (trace:push "done"))
+(func make-items :args (:any fail) :returns :any :body
+  (bind iterable (obj))
+  (Object:defineProperty iterable Symbol:iterator
+    (obj :value (fn () (trace:push "iterator") (produce-items fail))))
+  iterable)
+(func lexical-target :args (:any a :any b :any c :any d) :returns :any :body
+  (trace:push "lexical")
+  (array a b c d))
+(func invoke-lexical :args (:any target :any fail :any stop) :returns :any :body
+  (target (do (trace:push "before") 0)
+          (spread (make-items fail))
+          (do (trace:push "late") (if stop (return 7)) 3)))
+(func method-target :args (:any a :any b :any c :any d) :returns :any :body
+  (trace:push (array "method" this:marker))
+  (array a b c d))
+(func make-receiver :returns :any :body
+  (bind receiver (obj :marker "receiver"))
+  (Object:defineProperty receiver "run"
+    (obj :get (fn () (trace:push "getter") method-target)))
+  receiver)
+(func invoke-static :args (:any receiver) :returns :any :body
+  (receiver:run (do (trace:push "before") 0)
+                (spread (make-items false))
+                (do (trace:push "late") 3)))
+(func invoke-computed :args (:any receiver) :returns :any :body
+  ((get receiver (do (trace:push "key") "run"))
+   (do (trace:push "before") 0)
+   (kernel:spread (do (trace:push "operand") (make-items false)))
+   (do (trace:push "late") 3)))
+(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body
+  ((get receiver (do (return 7) "method")) (spread items)))
+(func observe-failure :returns :any :body
+  (try (return (invoke-lexical lexical-target true false))
+       (catch problem (return (array (= problem iteration-error))))))
+(bind normal (invoke-lexical lexical-target false false))
+(bind early (invoke-lexical lexical-target false true))
+(bind failed (observe-failure))
+(bind static-result (invoke-static (make-receiver)))
+(bind computed-result (invoke-computed (make-receiver)))
+(bind header-return (mixed-computed-spread (make-receiver) (make-items false)))
+(console:log (JSON:stringify
+  (array normal early failed static-result computed-result header-return trace)))

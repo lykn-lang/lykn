@@ -1,0 +1,4 @@
+revision 1abb8946727db79ef52a34db76642e4343fe62b7
+cwd /private/tmp/lykn-ci-bundle-1abb8946.lTtXKKnw
+argv env -u BASELINE_GZIPPED deno run -A --frozen --config /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/scripts/bundle-size.js
+DENO_DIR /Users/oubiwann/Library/Caches/deno

@@ -1,0 +1,3 @@
+30:33: warning: unused binding 'receiver'
+  suggestion: prefix with underscore: _receiver
+19:3: error: ordered lexical call with spread and lifted arguments is not supported

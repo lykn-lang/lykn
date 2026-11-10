@@ -1,0 +1,2 @@
+(func malformed-spread :args (:any target) :returns :any :body
+  (target (spread)))

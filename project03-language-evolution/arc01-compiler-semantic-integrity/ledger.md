@@ -238,3 +238,10 @@ Iteration and unsupported reference shapes retain I3 ownership.
 2026-11-10 [S22](slice22-ordered-argument-spread/slice-plan.md) owns
 ordered argument iteration in the existing admitted I3 call routes.
 Arbitrary effectful compound keys and special references remain held.
+
+2026-11-10 [S22 acceptance](slice22-ordered-argument-spread/cdc-verification.md)
+closes bounded ordered argument iteration at `487ebdbb`.
+
+The bounded I3 work closes through S22. Lifted direct eval,
+effectful compound keys, I4 and final composition remain open.
+CV-04 and CI-04 stay open. Release remains `6c9dbd5c`.

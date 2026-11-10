@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+commands=cmp -s exact captured current public/native provider modules and pure F2 prior/current JavaScript/kernel JSON/runtime stdout; no source execution
+old root=/private/tmp/lykn-s22-old-387617f3/evidence
+current native root=/private/tmp/lykn-s22-current-a1137ea2/evidence/native
+current public root=/private/tmp/lykn-s22-current-a1137ea2/public-evidence/evidence

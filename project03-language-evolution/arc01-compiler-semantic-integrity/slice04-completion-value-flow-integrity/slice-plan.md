@@ -359,3 +359,27 @@ Iteration and unsupported reference shapes retain I3 ownership.
 2026-11-10 [S22](../slice22-ordered-argument-spread/slice-plan.md) owns
 ordered argument iteration in the existing admitted I3 call routes.
 Arbitrary effectful compound keys and special references remain held.
+
+2026-11-10 [S22 acceptance](../slice22-ordered-argument-spread/cdc-verification.md)
+closes bounded ordered argument iteration at `487ebdbb`.
+
+The bounded I3 checkpoint covers saved lexical calls, single
+static members, computed receivers, private anonymous-value
+naming, simple writes, literal-string `+=` and mixed argument
+spread. S22 uses actual iteration in argument order. A receiver
+whose header alone needs lifting keeps ordinary bracket-call
+spread. Existing default and inline providers retain their finite
+S18 optimization proof by exact generated-input identity.
+
+Direct eval with lifted arguments and arbitrary effectful-key
+compound assignment remain design holds. Saving the direct-eval
+callee changes the syntactic Reference; delaying lookup can move
+it across lifted effects. The retained Deno 2.9.6 compound probe
+coerced one object key twice and wrote a different property than it
+read. The paired simple probe coerced once after the RHS. A
+generalization must preserve actual key effects and live-reference
+behavior. Other compound operators, special references and
+unchecked routes are outside the proven subset. CV-04 and CI-04
+stay open alongside checked exits, finally/deferred/async and
+composition work in I4. S07/S08 retain public-surface and
+documentation ownership. Release remains `6c9dbd5c`.

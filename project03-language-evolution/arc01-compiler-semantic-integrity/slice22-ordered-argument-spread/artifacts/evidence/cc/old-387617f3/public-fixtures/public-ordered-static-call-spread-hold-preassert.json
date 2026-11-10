@@ -1,0 +1,1 @@
+{"source":"(func mixed-spread :args (:any receiver :any items) :returns :any :body\n  (receiver:read-entry (spread items) (do (return 7) 8)))\n","errorName":"Error","errorMessage":"ordered member call with spread and lifted arguments is not supported","generated":null}

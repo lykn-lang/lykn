@@ -1,0 +1,1 @@
+{"source":"(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n  ((get receiver (do (return 7) \"method\")) (spread items)))\n","errorName":"Error","errorMessage":"ordered computed member call with spread and lifted operands is not supported","generated":null}

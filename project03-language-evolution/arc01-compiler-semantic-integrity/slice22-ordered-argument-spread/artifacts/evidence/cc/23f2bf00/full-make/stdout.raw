@@ -1,0 +1,116 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.1M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:460:
+         assert!(!generated.contains("import "));
+     }
+     if case.name == "pure-argument-spread" {
+-        let generated = std::str::from_utf8(
+-            generated
+-                .as_deref()
+-                .expect("pure spread JavaScript exists"),
+-        )
+-        .expect("pure spread JavaScript is UTF-8");
++        let generated =
++            std::str::from_utf8(generated.as_deref().expect("pure spread JavaScript exists"))
++                .expect("pure spread JavaScript is UTF-8");
+         assert!(!generated.contains("lyknHostReflectApply"));
+         assert!(!generated.contains("Reflect.apply"));
+     }
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:500:
+         .try_exists()
+         .expect("check spread-hold DTS")
+         .then(|| fs::read(&dts_path).expect("read spread-hold DTS"));
+-    record_generated(&format!("native-{name}"), generated.as_deref(), dts.as_deref());
++    record_generated(
++        &format!("native-{name}"),
++        generated.as_deref(),
++        dts.as_deref(),
++    );
+     eprintln!(
+         "SPREAD_HOLD_PREASSERT name={name} status={:?} stdout={:?} stderr={:?} generated={generated:?} dts={dts:?}",
+-        compile.status.code(), compile.stdout, compile.stderr
++        compile.status.code(),
++        compile.stdout,
++        compile.stderr
+     );
+-    assert!(compile.status.success(), "{name} compile: {:?}", compile.stderr);
++    assert!(
++        compile.status.success(),
++        "{name} compile: {:?}",
++        compile.stderr
++    );
+     assert!(generated.is_some(), "{name} omitted JavaScript");
+     assert!(dts.is_none(), "{name} unexpectedly emitted DTS: {dts:?}");
+     let generated = std::str::from_utf8(generated.as_deref().expect("JavaScript exists"))
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:515:
+         assert!(!generated.contains("lyknHostReflectApply"));
+         assert!(!generated.contains("Reflect.apply"));
+         assert!(!generated.contains("import "));
+-        let source_return = generated.find("return 7").expect("source return is emitted");
++        let source_return = generated
++            .find("return 7")
++            .expect("source return is emitted");
+         let ordinary_call = generated
+             .find("])(...items)")
+             .expect("ordinary computed spread call is emitted");
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:522:
+         assert!(source_return < ordinary_call);
+     } else {
+         let iteration = generated.find("for (").expect("native for-of is emitted");
+-        let source_return = generated.find("return 7").expect("source return is emitted");
++        let source_return = generated
++            .find("return 7")
++            .expect("source return is emitted");
+         assert!(iteration < source_return);
+     }
+ }
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:1095:
+ 
+ #[test]
+ fn malformed_actual_spread_is_checked_at_the_argument_root() {
+-    let source = b"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
++    let source =
++        b"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
+     let temp = TempDir::new().expect("create malformed-spread output directory");
+     let xdg_cache_home = temp.path().join("xdg-cache");
+     fs::create_dir(&xdg_cache_home).expect("create isolated malformed-spread XDG cache");
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:1132:
+     let stderr = String::from_utf8_lossy(&compile.stderr);
+     eprintln!(
+         "MALFORMED_SPREAD_PREASSERT status={:?} stdout={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
+-        compile.status.code(), compile.stdout
++        compile.status.code(),
++        compile.stdout
+     );
+     assert_eq!(compile.status.code(), Some(1));
+     assert!(compile.stdout.is_empty());
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:1140:
+         stderr,
+         "1:7: warning: unused binding 'malformed-spread'\n  suggestion: prefix with underscore: _malformed-spread\n2:11: error: spread takes exactly one argument\n"
+     );
+-    assert!(generated.is_none(), "malformed source emitted JavaScript: {generated:?}");
++    assert!(
++        generated.is_none(),
++        "malformed source emitted JavaScript: {generated:?}"
++    );
+     assert!(dts.is_none(), "malformed source emitted DTS: {dts:?}");
+ }
+ 

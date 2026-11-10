@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s22-current-a1137ea2/public-evidence/tmp/63fb9ddb793ab018/ordered-argument-spread.js"
+  ],
+  "cwd": "/private/tmp/lykn-s22-current-a1137ea2/public-evidence/tmp/63fb9ddb793ab018",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/ordered-argument-spread.lykn",
+  "modulePath": "/private/tmp/lykn-s22-current-a1137ea2/public-evidence/tmp/63fb9ddb793ab018/ordered-argument-spread.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s22-current-a1137ea2/public-evidence/xdg",
+    "TMPDIR": "/private/tmp/lykn-s22-current-a1137ea2/public-evidence/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s22-current-a1137ea2/public-evidence/evidence"
+  }
+}

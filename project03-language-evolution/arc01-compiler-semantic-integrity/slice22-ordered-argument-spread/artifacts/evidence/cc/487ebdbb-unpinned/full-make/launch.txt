@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'DENO_DIR' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s22-current-487ebdbb/full-make/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s22-current-487ebdbb/full-make/xdg' 'npm_config_cache=/private/tmp/lykn-s22-current-487ebdbb/full-make/npm' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/usr/bin/make' 'check'
+source_revision=487ebdbbae1758228f81383210eba419d64cc8ed
+env: DENO_DIR, LYKN_TEST_DENO, evidence roots and Cargo override vars unset; ordinary PATH
+stdout=/private/tmp/lykn-s22-current-487ebdbb/full-make/stdout.raw
+stderr=/private/tmp/lykn-s22-current-487ebdbb/full-make/stderr.raw
+exit_status=/private/tmp/lykn-s22-current-487ebdbb/full-make/exit-status.txt

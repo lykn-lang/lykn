@@ -1,0 +1,30 @@
+(exports probe)
+(bind provider-kind "local")
+(bind trace (array))
+(func original-method :args (:any earlier :any middle :any later) :returns :any :body
+  (trace:push "call")
+  (array this:label middle))
+(func wrong-method :returns :any :body
+  (throw (new Error "unexpected method")))
+(Object:defineProperty original-method "call" (obj :value wrong-method))
+(Object:defineProperty original-method "apply" (obj :value wrong-method))
+(func use-member-call :args (:any stop) :returns :any :body
+  (bind Reflect (obj :label "receiver"))
+  (bind receiver Reflect)
+  (bind lykn-host-reflect-apply0 "earlier")
+  (Object:defineProperty receiver "readEntry"
+    (obj :configurable true :get (fn () (trace:push "get") original-method)))
+  (bind result
+    (receiver:read-entry
+      (trace:push lykn-host-reflect-apply0)
+      (do
+        (trace:push "middle")
+        (Object:defineProperty receiver "readEntry" (obj :value wrong-method))
+        (if stop (return 92))
+        8)
+      (trace:push "later")))
+  (trace:push "after")
+  result)
+(func probe :returns :any :body
+  (array provider-kind (use-member-call true) (use-member-call false) trace))
+(console:log "provider")

@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source_revision=487ebdbbae1758228f81383210eba419d64cc8ed
+observations: SHA256 target/release/lykn and bin/lykn; exact cmp among fresh target/lykn/build/lang/expander.js, package source and tracked embedded mirror; exact tracked native embedded file bytes and final git status
+no source execution

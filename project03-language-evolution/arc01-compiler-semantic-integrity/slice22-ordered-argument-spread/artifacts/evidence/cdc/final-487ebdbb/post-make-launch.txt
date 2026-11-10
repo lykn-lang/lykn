@@ -1,0 +1,14 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+stdout=/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/post-make.stdout
+stderr=/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/post-make.stderr
+exit_status=/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/post-make.status
+set -e
+shasum -a 256 target/release/lykn bin/lykn /opt/homebrew/bin/deno packages/lang/expander.js crates/lykn-lang/embedded/packages/lang/expander.js '/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js'
+cmp target/release/lykn bin/lykn
+cmp packages/lang/expander.js crates/lykn-lang/embedded/packages/lang/expander.js
+cmp packages/lang/expander.js '/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js'
+diff -qr crates/lykn-lang/embedded/packages '/private/tmp/lykn-s22-cdc-verify.3OYl8VXM/make/xdg/lykn/embedded/0.6.0/packages'
+git rev-parse HEAD 'HEAD^{tree}'
+git diff --check b1937050 HEAD
+git diff --exit-code 1abb8946 HEAD -- packages
+git status --short --branch

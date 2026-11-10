@@ -1,0 +1,13 @@
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:508:
+         compile.stdout,
+         compile.stderr
+     );
+-    assert!(compile.status.success(), "{name} compile: {:?}", compile.stderr);
++    assert!(
++        compile.status.success(),
++        "{name} compile: {:?}",
++        compile.stderr
++    );
+     assert!(generated.is_some(), "{name} omitted JavaScript");
+     assert!(dts.is_none(), "{name} unexpectedly emitted DTS: {dts:?}");
+     let generated = std::str::from_utf8(generated.as_deref().expect("JavaScript exists"))

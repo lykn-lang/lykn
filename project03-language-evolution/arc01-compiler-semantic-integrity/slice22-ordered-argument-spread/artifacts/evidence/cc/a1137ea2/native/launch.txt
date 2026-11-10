@@ -1,0 +1,6 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s22-current-a1137ea2/native/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s22-current-a1137ea2/native/xdg' 'npm_config_cache=/private/tmp/lykn-s22-current-a1137ea2/native/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' 'LYKN_TEST_DENO=/opt/homebrew/bin/deno' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s22-current-a1137ea2/evidence/native' '/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9' '--nocapture'
+producer SHA256=/private/tmp/lykn-s22-current-a1137ea2/evidence/producer-before.sha256
+stdout=/private/tmp/lykn-s22-current-a1137ea2/native/stdout.raw
+stderr=/private/tmp/lykn-s22-current-a1137ea2/native/stderr.raw
+exit_status=/private/tmp/lykn-s22-current-a1137ea2/native/exit-status.txt

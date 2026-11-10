@@ -1,0 +1,1 @@
+{"source":"(func mixed-spread :args (:any callable :any items) :returns :any :body\n  (callable (spread items) (do (return 7) 8)))\n","errorName":"Error","errorMessage":"ordered lexical call with spread and lifted arguments is not supported","generated":null}
