@@ -2007,12 +2007,12 @@ struct ParsedMatchClause<'tree> {
     guard: Option<(&'tree SExpr, &'tree SExpr)>,
     body: &'tree [SExpr],
     span: Span,
-    occurrences: Vec<BindingOccurrence<'tree>>,
 }
 
 fn parse_match_clause<'tree>(
     clause: &'tree SExpr,
     match_span: Span,
+    capture: &mut Option<&mut Vec<BindingOccurrence<'tree>>>,
 ) -> Result<ParsedMatchClause<'tree>, Diagnostic> {
     let SExpr::List { values, span } = clause else {
         return Err(err(
@@ -2028,9 +2028,7 @@ fn parse_match_clause<'tree>(
     }
 
     let pattern_input = &values[0];
-    let mut occurrences = Vec::new();
-    let mut capture = Some(&mut occurrences);
-    let pattern = classify_pattern_captured(pattern_input, &mut capture)?;
+    let pattern = classify_pattern_captured(pattern_input, capture)?;
     let mut guard = None;
     let mut body_start = 1;
 
@@ -2053,7 +2051,6 @@ fn parse_match_clause<'tree>(
         guard,
         body,
         span: *span,
-        occurrences,
     })
 }
 
@@ -2068,14 +2065,16 @@ pub(crate) fn match_clause_scopes<'tree>(
     };
     let mut clauses = Vec::with_capacity(values.len().saturating_sub(2));
     for clause in values.iter().skip(2) {
-        match parse_match_clause(clause, *span) {
+        let mut occurrences = Vec::new();
+        let mut capture = Some(&mut occurrences);
+        match parse_match_clause(clause, *span, &mut capture) {
             Ok(parsed) => {
                 clauses.push(Some(MatchClauseScope {
                     pattern_input: parsed.pattern_input,
                     guard: parsed.guard,
                     body: parsed.body,
                     span: parsed.span,
-                    occurrences: parsed.occurrences,
+                    occurrences,
                 }));
             }
             Err(_) => clauses.push(None),
@@ -2096,10 +2095,7 @@ fn classify_match<'tree>(
     let mut clauses = Vec::new();
 
     for clause_expr in &args[1..] {
-        let parsed = parse_match_clause(clause_expr, span)?;
-        if let Some(out) = capture.as_deref_mut() {
-            out.extend(parsed.occurrences.iter().copied());
-        }
+        let parsed = parse_match_clause(clause_expr, span, capture)?;
         clauses.push(MatchClause {
             pattern: parsed.pattern,
             guard: parsed.guard.map(|(_, guard)| guard.clone()),

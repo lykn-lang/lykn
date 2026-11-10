@@ -308,7 +308,7 @@ fn resolve_match_clause(
     );
 
     let mut values = Vec::with_capacity(clause.body.len() + 3);
-    values.push(resolve_pattern(&clause.pattern_input, &clause.occurrences));
+    values.push(resolve_pattern(clause.pattern_input, &clause.occurrences));
     if let Some((marker, guard)) = clause.guard {
         values.push(marker.clone());
         values.push(resolve_form(guard, scope, def_occurrences));
@@ -586,10 +586,7 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
                     return;
                 };
                 shadow_form(subject, scope, out);
-                for (_clause, plan) in values[2..].iter().zip(clauses) {
-                    let Some(plan) = plan else {
-                        continue;
-                    };
+                for plan in clauses.into_iter().flatten() {
                     for occurrence in &plan.occurrences {
                         let site = occurrence.project();
                         if scope.iter().any(|name| name == &site.name) {
@@ -604,7 +601,7 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
                             .map(|occurrence| occurrence.project().name),
                     );
                     if let Some((_, guard)) = plan.guard {
-                        shadow_form(guard, scope, out);
+                        shadow_seq(std::slice::from_ref(guard), scope, out);
                     }
                     shadow_seq(plan.body, scope, out);
                     scope.truncate(mark);
