@@ -687,3 +687,8 @@ order and ordinary exported kernel work in both backends. Both
 approved support strategies passed separate no-eager and unused
 provider output proofs. S07 owns the loader and single-form API
 effects. Remaining I3 and I4 keep CV-04 and CI-04 open.
+
+2026-11-10 [S19](slice19-ordered-computed-calls/slice-plan.md)
+opens the genuine computed receiver/key I3 tranche on clean
+`e9eeee3d`, including source throws and transfer from the key.
+The earlier static member and CI test acceptance remains separate.

@@ -170,3 +170,8 @@ closes static member calls at `e851ac76`, including actual local
 and inline support through ordinary emitted kernel. Computed
 callee/header roles, assignment and iterator transport remain I3.
 All existing CV and CI-04 statuses remain.
+
+2026-11-10 [S19](../slice19-ordered-computed-calls/slice-plan.md)
+owns actual computed member evaluation and throw-order proof.
+Assignment, iterator and special reference work stays separate.
+All CV/CI statuses retain their prior dispositions.
