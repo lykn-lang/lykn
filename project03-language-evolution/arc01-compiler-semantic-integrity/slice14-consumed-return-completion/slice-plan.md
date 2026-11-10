@@ -46,3 +46,12 @@ independent F4 macro literal issue at exact test-only `0a17dda5`.
 Native 23/26 and public 21/24 steps with all five separate
 negatives green. Preserve both observed quoted string failures
 as NE-C18. Same runtime oracle and real macro control region.
+
+2026-11-10 [refinement 02](cc-prompt-iteration02.md) corrects
+actual first-source static findings at `75d286e2`. The native
+function applied its prior tail wrapper again, and the public
+private use lacked actual direct if/do and return materialization.
+No behavioral checks ran against that freeze. The old isolated
+F4 passed both runtimes at `40c37d3d`, with the old synthetic
+arrow boundary still present. All original tests and oracles
+remain fixed after the first fixture-only isolation.
