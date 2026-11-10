@@ -234,3 +234,7 @@ unsupported reference forms keep separate I3 dispositions.
 2026-11-10 [S21 acceptance](slice21-ordered-assignment-references/cdc-verification.md)
 closes bounded simple and literal compound write order at `b1937050`.
 Iteration and unsupported reference shapes retain I3 ownership.
+
+2026-11-10 [S22](slice22-ordered-argument-spread/slice-plan.md) owns
+ordered argument iteration in the existing admitted I3 call routes.
+Arbitrary effectful compound keys and special references remain held.
