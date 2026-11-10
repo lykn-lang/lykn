@@ -1178,7 +1178,10 @@ fn is_direct_computed_member_call_head(head: &SExpr) -> bool {
         return false;
     };
     values.len() == 3
-        && values.get(1).and_then(SExpr::as_atom) != Some("super")
+        && !values
+            .get(1)
+            .and_then(SExpr::as_atom)
+            .is_some_and(|base| to_js_identifier(base) == "super")
         && matches!(
             values.first().and_then(SExpr::as_form_head),
             Some("get" | "kernel:get")
@@ -1202,16 +1205,6 @@ enum OrderedCallPlan {
 
 const COMPUTED_MEMBER_SPREAD_ERROR: &str =
     "ordered computed member call with spread and lifted operands is not supported";
-
-enum ComputedMemberCallPlan {
-    Unlifted(ComputedMemberReferencePlan, Vec<SExpr>),
-    Lifted {
-        reference: ComputedMemberReferencePlan,
-        argument_prefix: Vec<SExpr>,
-        arguments: Vec<SExpr>,
-    },
-    Invalid,
-}
 
 struct ComputedMemberReferencePlan {
     get_head: SExpr,
@@ -1242,7 +1235,11 @@ fn computed_member_call_parts(
     if values.len() != 3 {
         return Ok(None);
     }
-    if values.get(1).and_then(SExpr::as_atom) == Some("super") {
+    if values
+        .get(1)
+        .and_then(SExpr::as_atom)
+        .is_some_and(|base| to_js_identifier(base) == "super")
+    {
         return Ok(None);
     }
     match values.first().and_then(SExpr::as_form_head) {
@@ -1284,15 +1281,15 @@ fn plan_ordered_call_arguments(
     ctx: &mut EmitterContext,
 ) -> OrderedCallPlan {
     let last_prefix = plans.iter().rposition(|(prefix, _)| !prefix.is_empty());
+    if (force_lift || last_prefix.is_some())
+        && plans
+            .iter()
+            .any(|(_, value)| is_normalized_spread_argument(value))
+    {
+        ctx.record_fatal(codegen_error(error_message, span));
+        return OrderedCallPlan::Invalid;
+    }
     let Some(last_prefix) = last_prefix else {
-        if force_lift
-            && plans
-                .iter()
-                .any(|(_, value)| is_normalized_spread_argument(value))
-        {
-            ctx.record_fatal(codegen_error(error_message, span));
-            return OrderedCallPlan::Invalid;
-        }
         let values = plans.into_iter().map(|(_, value)| value).collect();
         return if force_lift {
             OrderedCallPlan::Lifted {
@@ -1303,13 +1300,6 @@ fn plan_ordered_call_arguments(
             OrderedCallPlan::Unlifted(values)
         };
     };
-    if plans
-        .iter()
-        .any(|(_, value)| is_normalized_spread_argument(value))
-    {
-        ctx.record_fatal(codegen_error(error_message, span));
-        return OrderedCallPlan::Invalid;
-    }
     let mut statements = Vec::new();
     let mut values = Vec::with_capacity(plans.len());
     for (index, (prefix, value)) in plans.into_iter().enumerate() {
@@ -1375,32 +1365,6 @@ fn member_invocation_statements(
     statements
 }
 
-fn plan_computed_member_call(
-    reference: ComputedMemberReferencePlan,
-    argument_plans: Vec<(Vec<SExpr>, SExpr)>,
-    span: Span,
-    ctx: &mut EmitterContext,
-) -> ComputedMemberCallPlan {
-    let force_lift = !reference.receiver_prefix.is_empty() || !reference.key_prefix.is_empty();
-    match plan_ordered_call_arguments(
-        argument_plans,
-        span,
-        COMPUTED_MEMBER_SPREAD_ERROR,
-        force_lift,
-        ctx,
-    ) {
-        OrderedCallPlan::Unlifted(arguments) => {
-            ComputedMemberCallPlan::Unlifted(reference, arguments)
-        }
-        OrderedCallPlan::Lifted { statements, values } => ComputedMemberCallPlan::Lifted {
-            reference,
-            argument_prefix: statements,
-            arguments: values,
-        },
-        OrderedCallPlan::Invalid => ComputedMemberCallPlan::Invalid,
-    }
-}
-
 fn emit_direct_computed_member_call(
     head: &SExpr,
     args: &[SExpr],
@@ -1438,23 +1402,26 @@ fn emit_direct_computed_member_call(
         .iter()
         .map(|arg| emit_direct_header_value(arg, ctx, registry))
         .collect::<Vec<_>>();
-    let plan = plan_computed_member_call(reference, argument_plans, span, ctx);
-    match plan {
-        ComputedMemberCallPlan::Unlifted(reference, arguments) => {
-            DirectTailResult::Value(SExpr::List {
-                values: std::iter::once(SExpr::List {
-                    values: vec![reference.get_head, reference.receiver, reference.key],
-                    span: reference.member_span,
-                })
-                .chain(arguments)
-                .collect(),
-                span,
+    let force_lift = !reference.receiver_prefix.is_empty() || !reference.key_prefix.is_empty();
+    match plan_ordered_call_arguments(
+        argument_plans,
+        span,
+        COMPUTED_MEMBER_SPREAD_ERROR,
+        force_lift,
+        ctx,
+    ) {
+        OrderedCallPlan::Unlifted(arguments) => DirectTailResult::Value(SExpr::List {
+            values: std::iter::once(SExpr::List {
+                values: vec![reference.get_head, reference.receiver, reference.key],
+                span: reference.member_span,
             })
-        }
-        ComputedMemberCallPlan::Lifted {
-            reference,
-            argument_prefix,
-            arguments,
+            .chain(arguments)
+            .collect(),
+            span,
+        }),
+        OrderedCallPlan::Lifted {
+            statements: argument_prefix,
+            values: arguments,
         } => DirectTailResult::Statements(member_invocation_statements(
             MemberInvocationPlan {
                 receiver_prefix: reference.receiver_prefix,
@@ -1469,7 +1436,7 @@ fn emit_direct_computed_member_call(
             destination,
             ctx,
         )),
-        ComputedMemberCallPlan::Invalid => DirectTailResult::Value(atom("undefined")),
+        OrderedCallPlan::Invalid => DirectTailResult::Value(atom("undefined")),
     }
 }
 

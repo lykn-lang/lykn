@@ -241,7 +241,7 @@ A computed member call can use the same paths by grouping `get` as the callee,
 for example `((get receiver key) arg)`. When receiver, key, or argument
 evaluation needs a statement sequence, the receiver is saved before the key,
 the property is read once, and the method keeps its receiver when called. A
-spread argument is rejected if any part of that call needs lifting; an
+spread argument is rejected when any part of the call needs lifting. An
 unlifted call keeps its ordinary computed-access form.
 
 Multi-expression body:

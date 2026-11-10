@@ -1218,16 +1218,14 @@ function planDirectCallArguments(plans, errorMessage, forceLift = false) {
   for (let index = 0; index < plans.length; index++) {
     if (plans[index].prefix.length > 0) lastPrefix = index;
   }
+  if ((forceLift || lastPrefix >= 0) &&
+      plans.some(plan => isNormalizedSpreadArgument(plan.value))) {
+    throw new Error(errorMessage);
+  }
   if (lastPrefix < 0) {
-    if (forceLift && plans.some(plan => isNormalizedSpreadArgument(plan.value))) {
-      throw new Error(errorMessage);
-    }
     return forceLift
       ? { kind: "lifted", prefix: [], values: plans.map(plan => plan.value) }
       : { kind: "unlifted", values: plans.map(plan => plan.value) };
-  }
-  if (plans.some(plan => isNormalizedSpreadArgument(plan.value))) {
-    throw new Error(errorMessage);
   }
   const prefix = [];
   const values = [];
@@ -1304,7 +1302,7 @@ function expandSavedMemberInvocation(receiverPrefix, receiverValue, keyPrefix, k
 
 function directComputedMemberCallParts(head, env) {
   if (head?.type !== "list" || head.values.length !== 3) return null;
-  if (head.values[1]?.type === "atom" && head.values[1].value === "super") return null;
+  if (head.values[1]?.type === "atom" && toJsIdentifier(head.values[1].value) === "super") return null;
   const getHead = head.values[0];
   if (getHead?.type !== "atom") return null;
   if (getHead.value === "kernel:get" && getHead.binding === undefined && !isKernel(head)) {
