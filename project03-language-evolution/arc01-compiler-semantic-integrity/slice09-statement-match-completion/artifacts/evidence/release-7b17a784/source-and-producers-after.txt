@@ -1,0 +1,6 @@
+## release/0.6.x
+7b17a7841cc4d749276467ec2bcec7ed9faed7b2
+da690cba4b3e2d35feec0ac5853f279ffa83e664
+9f227e9c7f3504776352f8f93ab76b03d22ccfe5f7ee6dcc04bdf42f44d219c6  bin/lykn
+9f227e9c7f3504776352f8f93ab76b03d22ccfe5f7ee6dcc04bdf42f44d219c6  target/release/lykn
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

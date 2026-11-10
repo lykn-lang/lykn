@@ -1,5 +1,8 @@
 # Direct statement match accepted
 
+The Operator-authorized local release fast-forward subsequently passed
+independent validation at `7b17a784`. [Release record](artifacts/release-integration-7b17a784.md).
+
 The first S04 I2 delivery is accepted at task `7b17a784` on
 `codex/completion-value-flow`. All five SM rows are done after the
 actual CC proposed-done return and separate CDC replay. A direct,

@@ -1,0 +1,34 @@
+binary_cmp=0
+source/embedded classifier.js cmp=0
+source/materialized classifier.js cmp=0
+source/embedded expander.js cmp=0
+source/materialized expander.js cmp=0
+0	15
+crates/lykn-cli/tests/semantic_roles.rs
+crates/lykn-lang/embedded/packages/lang/classifier.js
+crates/lykn-lang/embedded/packages/lang/compiler.js
+crates/lykn-lang/embedded/packages/lang/expander.js
+crates/lykn-lang/src/binding.rs
+crates/lykn-lang/src/classifier/forms.rs
+crates/lykn-lang/src/codegen/emit.rs
+crates/lykn-lang/src/emitter/context.rs
+crates/lykn-lang/src/emitter/forms.rs
+crates/lykn-lang/src/expander/pass2.rs
+crates/lykn-lang/src/resolver.rs
+docs/guides/00-lykn-surface-forms.md
+packages/lang/classifier.js
+packages/lang/compiler.js
+packages/lang/expander.js
+test/fixtures/semantic-roles/if-arm-scope.lykn
+test/fixtures/semantic-roles/if-declaration.lykn
+test/fixtures/semantic-roles/if-direct-transfers-literal.lykn
+test/fixtures/semantic-roles/if-direct-transfers.lykn
+test/fixtures/semantic-roles/statement-match-exhaustion.lykn
+test/fixtures/semantic-roles/statement-match-guards.lykn
+test/fixtures/semantic-roles/statement-match-loop.lykn
+test/fixtures/semantic-roles/statement-match-preservation.lykn
+test/fixtures/semantic-roles/statement-match-protected-preservation.lykn
+test/fixtures/semantic-roles/statement-match-return.lykn
+test/forms/semantic-roles.test.js
+test/surface/equality_test.lykn
+test/surface/match_test.lykn
