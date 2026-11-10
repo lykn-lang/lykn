@@ -1,0 +1,26 @@
+diff --git a/crates/lykn-lang/src/emitter/forms.rs b/crates/lykn-lang/src/emitter/forms.rs
+index 04cdd0e8..5ec7e4a8 100644
+--- a/crates/lykn-lang/src/emitter/forms.rs
++++ b/crates/lykn-lang/src/emitter/forms.rs
+@@ -1077,9 +1077,7 @@ fn direct_assignment_request(expr: &SExpr) -> Option<DirectAssignmentRequest> {
+             span: expr.span(),
+         });
+     }
+-    let Some(kernel_form) = head.strip_prefix("kernel:") else {
+-        return None;
+-    };
++    let kernel_form = head.strip_prefix("kernel:")?;
+     if !matches!(kernel_form, "=" | "+=") {
+         return None;
+     }
+@@ -1311,9 +1309,7 @@ fn direct_write_target(target: &SExpr) -> Option<DirectWriteTarget> {
+     if direct_write_base_is_admitted(target) {
+         return Some(DirectWriteTarget::Lexical(target.clone()));
+     }
+-    let Some((get_head, span, receiver, key)) = computed_member_call_parts(target).ok()? else {
+-        return None;
+-    };
++    let (get_head, span, receiver, key) = computed_member_call_parts(target).ok()??;
+     if !direct_write_base_is_admitted(&receiver) {
+         return None;
+     }

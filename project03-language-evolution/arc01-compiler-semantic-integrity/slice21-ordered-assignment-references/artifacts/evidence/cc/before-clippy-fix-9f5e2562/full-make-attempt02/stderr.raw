@@ -1,0 +1,31 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 7.07s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error: this `let...else` may be rewritten with the `?` operator
+    --> crates/lykn-lang/src/emitter/forms.rs:1080:5
+     |
+1080 | /     let Some(kernel_form) = head.strip_prefix("kernel:") else {
+1081 | |         return None;
+1082 | |     };
+     | |______^ help: replace it with: `let kernel_form = head.strip_prefix("kernel:")?;`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#question_mark
+     = note: `-D clippy::question-mark` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::question_mark)]`
+
+error: this `let...else` may be rewritten with the `?` operator
+    --> crates/lykn-lang/src/emitter/forms.rs:1314:5
+     |
+1314 | /     let Some((get_head, span, receiver, key)) = computed_member_call_parts(target).ok()? else {
+1315 | |         return None;
+1316 | |     };
+     | |______^ help: replace it with: `let (get_head, span, receiver, key) = computed_member_call_parts(target).ok()??;`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#question_mark
+
+error: could not compile `lykn-lang` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 2 previous errors
+make: *** [lint] Error 101

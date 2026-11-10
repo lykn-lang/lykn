@@ -1,0 +1,16 @@
+d79a7f657021bf0097687d548d87ec49ef77b4d59c7133f8aa0d0785098737a0  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/Makefile
+eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/package.json
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/.cargo/config
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/.cargo/config.toml
+absent /private/tmp/lykn-s21-final.b1937050/citations/project.json
+absent /private/tmp/lykn-s21-final.b1937050/citations/deno.json
+absent /private/tmp/lykn-s21-final.b1937050/citations/deno.jsonc
+absent /private/tmp/lykn-s21-final.b1937050/citations/package.json
+CARGO_TARGET_DIR=<unset>
+CARGO_NET_GIT_FETCH_WITH_CLI=true
+RUST_LOG=warn
+LYKN_TEST_DENO=<unset>
+DENO_DIR=<unset>

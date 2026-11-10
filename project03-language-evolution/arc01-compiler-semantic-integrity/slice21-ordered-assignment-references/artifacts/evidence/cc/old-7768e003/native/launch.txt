@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+commit=7768e003ec0b9c2a1429eb8948c7cab1412665f4
+tree=d5bd89e05aaa92671e52e1d75be8c3af989d2fb6
+argv=/usr/bin/env -u CARGO_TARGET_DIR -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-s21-cdc.ZPt9YExg/old/native/tmp XDG_CACHE_HOME=/private/tmp/lykn-s21-cdc.ZPt9YExg/old/native/xdg npm_config_cache=/private/tmp/lykn-s21-cdc.ZPt9YExg/old/native/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s21-cdc.ZPt9YExg/old/evidence/native /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+stdout=/private/tmp/lykn-s21-cdc.ZPt9YExg/old/native/stdout.raw
+stderr=/private/tmp/lykn-s21-cdc.ZPt9YExg/old/native/stderr.raw
+exit_status=/private/tmp/lykn-s21-cdc.ZPt9YExg/old/native/exit-status.txt

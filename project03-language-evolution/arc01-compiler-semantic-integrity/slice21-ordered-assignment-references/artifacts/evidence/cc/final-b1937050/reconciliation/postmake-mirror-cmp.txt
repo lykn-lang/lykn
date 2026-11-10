@@ -1,0 +1,15 @@
+canonical = embedded expander bytes
+canonical = post-Make dist expander bytes
+canonical = post-Make build expander bytes
+canonical = post-Make dist kernel-forms bytes
+canonical = post-Make build kernel-forms bytes
+post-Make release CLI = copied bin/lykn bytes
+72e9b716d3f35027f32e464a2bad4b0fc0b30b46ed85117c3c32019701d0c52f  packages/lang/expander.js
+72e9b716d3f35027f32e464a2bad4b0fc0b30b46ed85117c3c32019701d0c52f  crates/lykn-lang/embedded/packages/lang/expander.js
+72e9b716d3f35027f32e464a2bad4b0fc0b30b46ed85117c3c32019701d0c52f  target/lykn/dist/lang/expander.js
+72e9b716d3f35027f32e464a2bad4b0fc0b30b46ed85117c3c32019701d0c52f  target/lykn/build/lang/expander.js
+285db3648980258a43ac2d05b51e6c17d0a3250dfe028c00bd70a8dd5cd0e068  target/release/lykn
+285db3648980258a43ac2d05b51e6c17d0a3250dfe028c00bd70a8dd5cd0e068  bin/lykn
+public expander and public semantic test unchanged between 9f5e and b193
+72e9b716d3f35027f32e464a2bad4b0fc0b30b46ed85117c3c32019701d0c52f  packages/lang/expander.js
+5a3a93329f41d8c23cd3f67f8699bb7902caf2b901e85693d7ba1e74f5b5a275  test/forms/semantic-roles.test.js

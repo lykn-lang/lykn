@@ -1,0 +1,366 @@
+[
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "plain-writes"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "box"
+          },
+          {
+            "type": "atom",
+            "value": "local"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "first"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "get"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "box"
+                  },
+                  {
+                    "type": "string",
+                    "value": "a"
+                  }
+                ]
+              },
+              {
+                "type": "number",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "second"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "+="
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "get"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "box"
+                  },
+                  {
+                    "type": "string",
+                    "value": "a"
+                  }
+                ]
+              },
+              {
+                "type": "number",
+                "value": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "third"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "local"
+              },
+              {
+                "type": "number",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "atom",
+                "value": "first"
+              },
+              {
+                "type": "atom",
+                "value": "second"
+              },
+              {
+                "type": "atom",
+                "value": "third"
+              },
+              {
+                "type": "atom",
+                "value": "box:a"
+              },
+              {
+                "type": "atom",
+                "value": "local"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "local-protected"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "Reflect"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "result"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "get"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "Reflect"
+                  },
+                  {
+                    "type": "string",
+                    "value": "apply"
+                  }
+                ]
+              },
+              {
+                "type": "number",
+                "value": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "atom",
+                "value": "result"
+              },
+              {
+                "type": "atom",
+                "value": "Reflect:apply"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "console:log"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "JSON:stringify"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "plain-writes"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "object"
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "a"
+                          },
+                          {
+                            "type": "number",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "local-protected"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "object"
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "apply"
+                          },
+                          {
+                            "type": "number",
+                            "value": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

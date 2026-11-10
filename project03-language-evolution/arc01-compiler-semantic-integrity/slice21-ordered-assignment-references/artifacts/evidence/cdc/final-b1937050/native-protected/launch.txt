@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s21-cdc-verify.Nc00oFlZ/native-protected/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s21-cdc-verify.Nc00oFlZ/native-protected/xdg' 'npm_config_cache=/private/tmp/lykn-s21-cdc-verify.Nc00oFlZ/native-protected/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' 'LYKN_TEST_DENO=/opt/homebrew/bin/deno' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR=/private/tmp/lykn-s21-cdc-verify.Nc00oFlZ/evidence/native-protected' '/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb' '--nocapture'
+stdout=/private/tmp/lykn-s21-cdc-verify.Nc00oFlZ/native-protected/stdout.raw
+stderr=/private/tmp/lykn-s21-cdc-verify.Nc00oFlZ/native-protected/stderr.raw
+exit_status=/private/tmp/lykn-s21-cdc-verify.Nc00oFlZ/native-protected/exit-status.txt

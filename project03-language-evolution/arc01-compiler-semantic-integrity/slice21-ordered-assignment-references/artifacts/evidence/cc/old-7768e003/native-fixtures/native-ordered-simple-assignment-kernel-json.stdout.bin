@@ -1,0 +1,835 @@
+[
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "trace"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "array"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "original"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "object"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "a"
+              },
+              {
+                "type": "number",
+                "value": 10
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "replacement"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "object"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "a"
+              },
+              {
+                "type": "number",
+                "value": 40
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "c"
+              },
+              {
+                "type": "number",
+                "value": 50
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "key"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "object"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "Object:defineProperty"
+      },
+      {
+        "type": "atom",
+        "value": "key"
+      },
+      {
+        "type": "atom",
+        "value": "Symbol:toPrimitive"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "object"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "value"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "=>"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "hint"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "trace:push"
+                      },
+                      {
+                        "type": "atom",
+                        "value": "hint"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "return"
+                      },
+                      {
+                        "type": "string",
+                        "value": "a"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "assign-target"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "target"
+          },
+          {
+            "type": "atom",
+            "value": "stop"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "result"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "get"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "target"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "=>"
+                          },
+                          {
+                            "type": "list",
+                            "values": []
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "block"
+                              },
+                              {
+                                "type": "list",
+                                "values": [
+                                  {
+                                    "type": "atom",
+                                    "value": "trace:push"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "value": "key"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "list",
+                                "values": [
+                                  {
+                                    "type": "atom",
+                                    "value": "return"
+                                  },
+                                  {
+                                    "type": "atom",
+                                    "value": "key"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "=>"
+                      },
+                      {
+                        "type": "list",
+                        "values": []
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "block"
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "trace:push"
+                              },
+                              {
+                                "type": "string",
+                                "value": "rhs"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "="
+                              },
+                              {
+                                "type": "atom",
+                                "value": "target"
+                              },
+                              {
+                                "type": "atom",
+                                "value": "replacement"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "if"
+                              },
+                              {
+                                "type": "atom",
+                                "value": "stop"
+                              },
+                              {
+                                "type": "list",
+                                "values": [
+                                  {
+                                    "type": "atom",
+                                    "value": "return"
+                                  },
+                                  {
+                                    "type": "number",
+                                    "value": 95
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "return"
+                              },
+                              {
+                                "type": "number",
+                                "value": 5
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "trace:push"
+          },
+          {
+            "type": "string",
+            "value": "after"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "atom",
+            "value": "result"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "write-statement"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "target"
+          },
+          {
+            "type": "atom",
+            "value": "stop"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "="
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "get"
+              },
+              {
+                "type": "atom",
+                "value": "target"
+              },
+              {
+                "type": "string",
+                "value": "c"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "=>"
+                  },
+                  {
+                    "type": "list",
+                    "values": []
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "block"
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "trace:push"
+                          },
+                          {
+                            "type": "string",
+                            "value": "statement-rhs"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "if"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "stop"
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "return"
+                              },
+                              {
+                                "type": "number",
+                                "value": 96
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "return"
+                          },
+                          {
+                            "type": "number",
+                            "value": 8
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "trace:push"
+          },
+          {
+            "type": "string",
+            "value": "statement-after"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "atom",
+            "value": "target:c"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "early"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "assign-target"
+          },
+          {
+            "type": "atom",
+            "value": "original"
+          },
+          {
+            "type": "atom",
+            "value": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "before"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "array"
+          },
+          {
+            "type": "atom",
+            "value": "original:a"
+          },
+          {
+            "type": "atom",
+            "value": "replacement:a"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "normal"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "assign-target"
+          },
+          {
+            "type": "atom",
+            "value": "original"
+          },
+          {
+            "type": "atom",
+            "value": "false"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "early-statement"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "write-statement"
+          },
+          {
+            "type": "atom",
+            "value": "replacement"
+          },
+          {
+            "type": "atom",
+            "value": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "statement-before"
+      },
+      {
+        "type": "atom",
+        "value": "replacement:c"
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "normal-statement"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "write-statement"
+          },
+          {
+            "type": "atom",
+            "value": "replacement"
+          },
+          {
+            "type": "atom",
+            "value": "false"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "console:log"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "JSON:stringify"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "atom",
+                "value": "early"
+              },
+              {
+                "type": "atom",
+                "value": "before"
+              },
+              {
+                "type": "atom",
+                "value": "normal"
+              },
+              {
+                "type": "atom",
+                "value": "original:a"
+              },
+              {
+                "type": "atom",
+                "value": "replacement:a"
+              },
+              {
+                "type": "atom",
+                "value": "early-statement"
+              },
+              {
+                "type": "atom",
+                "value": "statement-before"
+              },
+              {
+                "type": "atom",
+                "value": "normal-statement"
+              },
+              {
+                "type": "atom",
+                "value": "replacement:c"
+              },
+              {
+                "type": "atom",
+                "value": "trace"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

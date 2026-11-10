@@ -1,0 +1,22 @@
+(bind trace (array))
+(bind original (obj :stored 10))
+(bind replacement (obj :stored 40))
+(bind previous (obj))
+(Object:defineProperty previous Symbol:toPrimitive
+  (obj :value (fn (:any hint) (trace:push (array "convert" hint)) original:stored)))
+(Object:defineProperty original "slot"
+  (obj :get (fn () (trace:push "get") previous)
+       :set (fn (:any next) (trace:push (array "set" next))
+              (set! original:stored next))))
+(func add-slot :args (:any target :any stop) :returns :any :body
+  (bind result
+    (kernel:+= (kernel:get target "slot")
+      (do (trace:push "rhs") (kernel:= target replacement)
+          (if stop (return 91)) 4)))
+  (trace:push "after")
+  result)
+(bind early (add-slot original true))
+(bind before (array original:stored replacement:stored))
+(bind normal (add-slot original false))
+(console:log (JSON:stringify
+  (array early before normal original:stored replacement:stored trace)))

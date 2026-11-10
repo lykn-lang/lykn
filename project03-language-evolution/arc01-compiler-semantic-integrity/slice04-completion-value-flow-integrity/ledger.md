@@ -195,3 +195,7 @@ Ordered assignment, iteration and special reference boundaries stay I3.
 2026-11-10 [S21](../slice21-ordered-assignment-references/slice-plan.md) owns
 bounded ordered simple and literal compound writes. Iteration and
 unsupported reference forms keep separate I3 dispositions.
+
+2026-11-10 [S21 acceptance](../slice21-ordered-assignment-references/cdc-verification.md)
+closes bounded simple and literal compound write order at `b1937050`.
+Iteration and unsupported reference shapes retain I3 ownership.

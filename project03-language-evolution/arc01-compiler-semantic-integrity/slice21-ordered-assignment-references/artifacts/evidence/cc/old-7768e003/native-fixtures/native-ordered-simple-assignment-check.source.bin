@@ -1,0 +1,27 @@
+(bind trace (array))
+(bind original (obj :a 10))
+(bind replacement (obj :a 40 :c 50))
+(bind key (obj))
+(Object:defineProperty key Symbol:toPrimitive
+  (obj :value (fn (:any hint) (trace:push hint) "a")))
+(func assign-target :args (:any target :any stop) :returns :any :body
+  (bind result
+    (set-symbol! target (do (trace:push "key") key)
+      (do (trace:push "rhs") (kernel:= target replacement)
+          (if stop (return 95)) 5)))
+  (trace:push "after")
+  result)
+(func write-statement :args (:any target :any stop) :returns :any :body
+  (kernel:= (get target "c")
+    (do (trace:push "statement-rhs") (if stop (return 96)) 8))
+  (trace:push "statement-after")
+  target:c)
+(bind early (assign-target original true))
+(bind before (array original:a replacement:a))
+(bind normal (assign-target original false))
+(bind early-statement (write-statement replacement true))
+(bind statement-before replacement:c)
+(bind normal-statement (write-statement replacement false))
+(console:log (JSON:stringify
+  (array early before normal original:a replacement:a early-statement
+         statement-before normal-statement replacement:c trace)))

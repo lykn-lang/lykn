@@ -1,0 +1,61 @@
+
+running 50 tests
+test computed_member_call_with_lifted_spread_fails_closed_without_outputs ... ok
+test bound_match_conditional_operand_is_a_value ... ok
+test bind_consumed_group_match_keeps_order_and_source_return_target ... ok
+test bind_consumed_loop_transfers_keep_their_source_targets ... ok
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... ok
+test bind_consumed_early_return_skips_the_original_const_continuation ... ok
+test computed_member_no_prefix_calls_preserve_bound_get_and_kernel_escape ... ok
+test computed_member_calls_preserve_reference_and_argument_order_and_throws ... ok
+test anonymous_completion_values_preserve_source_names ... ok
+test bind_consumed_result_temp_preserves_later_name_hygiene ... ok
+test direct_return_match_preserves_guarded_exhaustion ... ok
+test direct_return_consumes_do_without_retargeting_loop_transfers ... ok
+test do_while_uses_value_test_and_statement_sequence_body ... ok
+test direct_return_consumes_match_in_the_named_function_region ... ok
+test if_declaration_is_emitted_inside_a_branch_block ... ok
+test lexical_call_with_lifted_spread_fails_closed_without_outputs ... ok
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... ok
+test if_direct_transfers_keep_source_targets ... ok
+test lifted_direct_protected_write_fails_compile_without_outputs ... ok
+test direct_return_macro_keeps_nested_function_boundaries ... ok
+test lexical_bind_calls_preserve_callee_and_argument_evaluation_order ... ok
+test logical_operands_are_lazy_and_preserve_results ... ok
+test if_arm_scope_and_macro_expansion_are_preserved ... ok
+test lexical_statement_calls_preserve_source_exits_and_late_call_errors ... ok
+test match_clauses_keep_bindings_local_to_guard_and_body ... ok
+test match_consumes_value_tail_after_statement_prefix ... ok
+test literal_compound_assignment_preserves_get_conversion_and_write_order ... FAILED
+test if_direct_transfers_keep_macro_introduced_function_targets ... ok
+test native_static_member_spread_with_lifted_arguments_fails_closed ... ok
+test match_subject_and_guard_headers_preserve_completion ... ok
+test native_pure_static_member_call_keeps_the_ordinary_route ... ok
+test match_patterns_stay_structural_while_clause_macros_expand ... ok
+test native_typed_bind_check_follows_normal_result_initialization ... ok
+test nullish_operands_preserve_strict_selection_and_completion ... ok
+test nested_kernel_object_retains_structural_and_executable_roles ... ok
+test ordinary_assignment_output_and_local_protected_control_are_preserved ... ok
+test original_match_reserved_role_is_preserved ... ok
+test original_match_kernel_object_is_preserved ... ok
+test selected_if_headers_preserve_completion_and_values ... ok
+test statement_match_guarded_exhaustion_throws_into_the_enclosing_try ... ok
+test unknown_nested_kernel_escape_fails_compile_without_outputs ... ok
+test statement_match_loop_transfers_keep_their_source_targets ... ok
+test statement_match_guards_progress_in_source_order ... ok
+test simple_assignment_preserves_reference_order_and_source_exits ... FAILED
+test native_static_member_calls_use_the_default_lazy_helper ... ok
+test native_static_member_calls_use_the_reflect_fallback ... ok
+test statement_match_preserves_protected_function_exit_checks ... ok
+test statement_match_return_keeps_the_enclosing_function_target ... ok
+test while_uses_value_test_and_statement_sequence_body ... ok
+test statement_match_preserves_macro_hygiene_and_consumed_controls ... ok
+
+failures:
+
+failures:
+    literal_compound_assignment_preserves_get_conversion_and_write_order
+    simple_assignment_preserves_reference_order_and_source_exits
+
+test result: FAILED. 48 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.56s
+

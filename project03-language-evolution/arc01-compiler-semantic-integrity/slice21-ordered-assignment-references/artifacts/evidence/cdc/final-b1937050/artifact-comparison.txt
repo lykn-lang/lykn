@@ -1,0 +1,1 @@
+All F1–F3 native JS/kernel and public JS compare equal to CC. F3 ordinary native JS/kernel and public JS compare equal to exact old same-source bytes.

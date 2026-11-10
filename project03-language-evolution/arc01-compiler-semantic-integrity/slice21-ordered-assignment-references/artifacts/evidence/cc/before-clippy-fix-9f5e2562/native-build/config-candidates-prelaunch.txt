@@ -1,0 +1,9 @@
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/.cargo/config
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/.cargo/config.toml
+eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+absent /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/package.json
+CARGO_TARGET_DIR=<unset>
+CARGO_NET_GIT_FETCH_WITH_CLI=true
+RUST_LOG=warn

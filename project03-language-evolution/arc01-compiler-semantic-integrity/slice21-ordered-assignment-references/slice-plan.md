@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice21-ordered-assignment-references
-status: in-progress
+status: closed
 depends-on: [slice20-anonymous-value-names]
 ---
 
@@ -55,3 +55,7 @@ and standalone citations. The separate CDC replays current full
 gates and inspects complete artifacts before acceptance. Ordered
 argument iteration and special references remain I3. I4, K and
 release propagation stay outside this slice.
+
+Accepted at `b1937050` after
+[independent current replay](cdc-verification.md).
+[Close](closing-report.md) preserves exact scope and follow-up.

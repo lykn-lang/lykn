@@ -1,0 +1,8 @@
+native F3 old/current whole JS byte-equal
+public F3 old/current whole JS byte-equal
+native/public current cross-backend bytes differ (expected backend formatting distinction; not an acceptance comparison)
+native F3 kernel JSON old/current byte-equal
+92b09bb357872c57dc6dfa688513db30467836fcab3aabe4cf25daeda1d582e9  /private/tmp/lykn-s21-cdc.ZPt9YExg/old/evidence/native/native-ordinary-assignment-preservation.generated.js
+92b09bb357872c57dc6dfa688513db30467836fcab3aabe4cf25daeda1d582e9  /private/tmp/lykn-s21-final.b1937050/native-semantic-focus/receipts/native-ordinary-assignment-preservation.generated.js
+1492df7d7728562d7e2b1937fa6b8ba402a7a3e2908e0c51413b07220fbc0c93  /private/tmp/lykn-s21-cdc.ZPt9YExg/old/evidence/public/public-ordinary-assignment-preservation-generated.js
+1492df7d7728562d7e2b1937fa6b8ba402a7a3e2908e0c51413b07220fbc0c93  /private/tmp/lykn-s21-current.9f5e2562/public-semantic/receipts/public-ordinary-assignment-preservation-generated.js

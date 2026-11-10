@@ -1,0 +1,8 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+commit=9f5e25620efc19d1e062c5bba968614d887d9ce5
+tree=39fe7827230d9ee39dd94000a5acf563c9d0666f
+make_path=/usr/bin/make
+argv=/usr/bin/env -u CARGO_TARGET_DIR -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG -u LYKN_TEST_DENO -u LYKN_SEMANTIC_ROLE_EVIDENCE_DIR -u LYKN_PROTECTED_HOST_EVIDENCE_DIR TMPDIR=/private/tmp/lykn-s21-current.9f5e2562/full-make/tmp XDG_CACHE_HOME=/private/tmp/lykn-s21-current.9f5e2562/full-make/xdg npm_config_cache=/private/tmp/lykn-s21-current.9f5e2562/full-make/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin make make check
+stdout=/private/tmp/lykn-s21-current.9f5e2562/full-make/stdout.raw
+stderr=/private/tmp/lykn-s21-current.9f5e2562/full-make/stderr.raw
+exit_status=/private/tmp/lykn-s21-current.9f5e2562/full-make/exit-status.txt

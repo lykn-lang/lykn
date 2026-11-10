@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s21-current.9f5e2562/public-semantic/tmp/766a608e04d2db19/ordered-literal-compound-assignment.js"
+  ],
+  "cwd": "/private/tmp/lykn-s21-current.9f5e2562/public-semantic/tmp/766a608e04d2db19",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/ordered-literal-compound-assignment.lykn",
+  "modulePath": "/private/tmp/lykn-s21-current.9f5e2562/public-semantic/tmp/766a608e04d2db19/ordered-literal-compound-assignment.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s21-current.9f5e2562/public-semantic/xdg",
+    "TMPDIR": "/private/tmp/lykn-s21-current.9f5e2562/public-semantic/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s21-current.9f5e2562/public-semantic/receipts"
+  }
+}

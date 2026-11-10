@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+commit=b1937050a2c25fa1a385410a05a45aa22b9f2843
+tree=54c04540942581d66d471c881e630d1792ab4cdd
+argv=/usr/bin/env -u CARGO_TARGET_DIR -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-s21-final.b1937050/native-no-run/tmp XDG_CACHE_HOME=/private/tmp/lykn-s21-final.b1937050/native-no-run/xdg npm_config_cache=/private/tmp/lykn-s21-final.b1937050/native-no-run/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin /Users/oubiwann/.cargo/bin/cargo test -p lykn-cli --test semantic_roles --test protected_host --no-run
+stdout=/private/tmp/lykn-s21-final.b1937050/native-no-run/stdout.raw
+stderr=/private/tmp/lykn-s21-final.b1937050/native-no-run/stderr.raw
+exit_status=/private/tmp/lykn-s21-final.b1937050/native-no-run/exit-status.txt

@@ -1,0 +1,2 @@
+(func blocked :args () :returns :any :body
+  (kernel:= (get Reflect "apply") (do 0 0)))

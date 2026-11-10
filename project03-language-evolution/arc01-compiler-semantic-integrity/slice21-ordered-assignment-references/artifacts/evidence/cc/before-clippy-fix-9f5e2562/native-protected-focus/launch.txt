@@ -1,0 +1,9 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+commit=9f5e25620efc19d1e062c5bba968614d887d9ce5
+tree=39fe7827230d9ee39dd94000a5acf563c9d0666f
+cli_sha256=eb8779602cddd046e850581d918db8c9083497bb1bcd9fb5f5dd56127ac8878e  target/debug/lykn
+test_binary_sha256=34f7b187189f13d6489f626cd4b74af8d91fd1e1a4ce62258478b6851b8eadfc  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb
+argv=/usr/bin/env -u CARGO_TARGET_DIR -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-s21-current.9f5e2562/native-protected-focus/tmp XDG_CACHE_HOME=/private/tmp/lykn-s21-current.9f5e2562/native-protected-focus/xdg npm_config_cache=/private/tmp/lykn-s21-current.9f5e2562/native-protected-focus/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_PROTECTED_HOST_EVIDENCE_DIR=/private/tmp/lykn-s21-current.9f5e2562/native-protected-focus/receipts /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/protected_host-365226f479af5deb --nocapture
+stdout=/private/tmp/lykn-s21-current.9f5e2562/native-protected-focus/stdout.raw
+stderr=/private/tmp/lykn-s21-current.9f5e2562/native-protected-focus/stderr.raw
+exit_status=/private/tmp/lykn-s21-current.9f5e2562/native-protected-focus/exit-status.txt
