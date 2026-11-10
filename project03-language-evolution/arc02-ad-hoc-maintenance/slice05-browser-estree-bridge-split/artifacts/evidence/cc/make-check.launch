@@ -1,0 +1,2 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=env DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/normal/tmp XDG_CACHE_HOME=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/normal/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/normal/npm PATH=/opt/homebrew/bin:/Users/oubiwann/.cargo/bin:/usr/bin:/bin:/usr/sbin:/sbin make check

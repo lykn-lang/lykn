@@ -1,0 +1,1417 @@
+running 4 tests from ./test/forms/lazy-protected-invocation.test.js
+lazy protected invocation preserves the no-request compiler path ... ok (3ms)
+lazy protected invocation validates plans and recovers after rejection ... ok (951µs)
+lazy protected invocation checks source module binding roles ... ok (1ms)
+lazy protected invocation materializes all four public proof inputs ... ok (5ms)
+running 1 test from ./test/forms/protected-host.test.js
+public JavaScript compiler rejects nine writes and runs four legal controls ...
+  w1 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w1 {"name":"w1","source":"(set! Reflect:apply 0)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w1 ... ok (3ms)
+  w2 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w2 {"name":"w2","source":"(set-symbol! Reflect \"apply\" 0)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w2 ... ok (0ms)
+  w3 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w3 {"name":"w3","source":"(++ Reflect)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w3 ... ok (1ms)
+  w4 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w4 {"name":"w4","source":"(set! globalThis:Reflect 0)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w4 ... ok (0ms)
+  w5 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w5 {"name":"w5","source":"(set! globalThis:Reflect:apply 0)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w5 ... ok (0ms)
+  w6 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w6 {"name":"w6","source":"(++ Reflect:apply)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w6 ... ok (0ms)
+  w7 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w7 {"name":"w7","source":"(kernel:delete Reflect:apply)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w7 ... ok (0ms)
+  w8 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w8 {"name":"w8","source":"(macro stomp () `(set! Reflect:apply 0)) (stomp)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w8 ... ok (1ms)
+  w9 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT w9 {"name":"w9","source":"(func guarded :args () :returns :number :pre (do (set! Reflect:apply 0) true) :body 1)","generated":null,"command":{"program":"/opt/homebrew/bin/deno","args":null,"cwd":null,"selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+----- post-test output end -----
+  w9 ... ok (1ms)
+  v1 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v1 {"name":"v1","source":"(console:log (JSON:stringify (typeof Reflect:apply)))","generated":"console.log(JSON.stringify(typeof Reflect.apply));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/8a82222e85d45906/v1.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/8a82222e85d45906","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v1 {"name":"v1","source":"(console:log (JSON:stringify (typeof Reflect:apply)))","generated":"console.log(JSON.stringify(typeof Reflect.apply));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/8a82222e85d45906/v1.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/8a82222e85d45906","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":{"success":true,"code":0,"stdout":[34,102,117,110,99,116,105,111,110,34,10],"stderr":[]}}
+----- post-test output end -----
+  v1 ... ok (20ms)
+  v2 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v2 {"name":"v2","source":"(func local :args (:any Reflect :any globalThis) :returns :array :body\n  (set! Reflect:apply 7)\n  (set! globalThis:Reflect:apply 8)\n  (array Reflect:apply globalThis:Reflect:apply))\n(console:log (JSON:stringify (local (obj :apply 0) (obj :Reflect (obj :apply 0)))))","generated":"function local(Reflect, globalThis) {\n  Reflect.apply = 7;\n  globalThis.Reflect.apply = 8;\n  const result__gensym1 = [Reflect.apply, globalThis.Reflect.apply];\n  if (!Array.isArray(result__gensym1)) {\n    throw new TypeError(\"local: return value expected array, got \" + typeof result__gensym1);\n  }\n  return result__gensym1;\n}\nconsole.log(JSON.stringify(local({\n  apply: 0\n}, {\n  Reflect: {\n    apply: 0\n  }\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/68eb42c0fc670da9/v2.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/68eb42c0fc670da9","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v2 {"name":"v2","source":"(func local :args (:any Reflect :any globalThis) :returns :array :body\n  (set! Reflect:apply 7)\n  (set! globalThis:Reflect:apply 8)\n  (array Reflect:apply globalThis:Reflect:apply))\n(console:log (JSON:stringify (local (obj :apply 0) (obj :Reflect (obj :apply 0)))))","generated":"function local(Reflect, globalThis) {\n  Reflect.apply = 7;\n  globalThis.Reflect.apply = 8;\n  const result__gensym1 = [Reflect.apply, globalThis.Reflect.apply];\n  if (!Array.isArray(result__gensym1)) {\n    throw new TypeError(\"local: return value expected array, got \" + typeof result__gensym1);\n  }\n  return result__gensym1;\n}\nconsole.log(JSON.stringify(local({\n  apply: 0\n}, {\n  Reflect: {\n    apply: 0\n  }\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/68eb42c0fc670da9/v2.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/68eb42c0fc670da9","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":{"success":true,"code":0,"stdout":[91,55,44,56,93,10],"stderr":[]}}
+----- post-test output end -----
+  v2 ... ok (14ms)
+  v3 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v3 {"name":"v3","source":"(func normalized :args (:any Reflect!) :returns :any :body\n  (set! Reflect!:apply 9)\n  Reflect!:apply)\n(console:log (JSON:stringify (normalized (obj :apply 0))))","generated":"function normalized(Reflect) {\n  Reflect.apply = 9;\n  return Reflect.apply;\n}\nconsole.log(JSON.stringify(normalized({\n  apply: 0\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3beaad78f0e821da/v3.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3beaad78f0e821da","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v3 {"name":"v3","source":"(func normalized :args (:any Reflect!) :returns :any :body\n  (set! Reflect!:apply 9)\n  Reflect!:apply)\n(console:log (JSON:stringify (normalized (obj :apply 0))))","generated":"function normalized(Reflect) {\n  Reflect.apply = 9;\n  return Reflect.apply;\n}\nconsole.log(JSON.stringify(normalized({\n  apply: 0\n})));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3beaad78f0e821da/v3.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3beaad78f0e821da","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":{"success":true,"code":0,"stdout":[57,10],"stderr":[]}}
+----- post-test output end -----
+  v3 ... ok (13ms)
+  v4 ...
+------- post-test output -------
+PROTECTED_HOST_PUBLIC_PREASSERT v4 {"name":"v4","source":"(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))","generated":"const action = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n + 1;\n};\naction.call = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return 99;\n};\nconsole.log(JSON.stringify(action.call(1)));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a086bb539eff1763/v4.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a086bb539eff1763","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":null}
+PROTECTED_HOST_PUBLIC_PREASSERT v4 {"name":"v4","source":"(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))","generated":"const action = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n + 1;\n};\naction.call = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return 99;\n};\nconsole.log(JSON.stringify(action.call(1)));\n","command":{"program":"/opt/homebrew/bin/deno","args":["run","--no-config","--cached-only","--no-npm","--no-remote","--deny-net","--no-prompt","/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a086bb539eff1763/v4.js"],"cwd":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a086bb539eff1763","selectedEnv":{"DENO_DIR":"/Users/oubiwann/Library/Caches/deno","LYKN_TEST_DENO":null,"XDG_CACHE_HOME":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg","TMPDIR":"/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp","LYKN_PROTECTED_HOST_EVIDENCE_DIR":null}},"runtime":{"success":true,"code":0,"stdout":[57,57,10],"stderr":[]}}
+----- post-test output end -----
+  v4 ... ok (13ms)
+public JavaScript compiler rejects nine writes and runs four legal controls ... ok (67ms)
+running 1 test from ./test/forms/protected-host-policy.test.js
+protected host policy compares computed path segments exactly ... ok (3ms)
+running 15 tests from ./test/forms/semantic-roles.test.js
+public JavaScript compiler preserves shared semantic-role fixtures ...
+  while ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN while {"source":"(bind trace (array))\n(bind count (cell 0))\n(while (< count:value 2)\n  (if true (trace:push (+ count:value 1)))\n  (bind first (+ count:value 10) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\nwhile (count.value < 2) {\n  if (true) {\n    trace.push(count.value + 1);\n  }\n  const first = count.value + 10;\n  const second = first + 1;\n  if (true) {\n    trace.push(second);\n  }\n  count.value = count.value + 1;\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/521d31deb12f96b5/while.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/521d31deb12f96b5",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/while.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/521d31deb12f96b5/while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":44,"3":49,"4":49,"5":44,"6":50,"7":44,"8":49,"9":50,"10":93,"11":10},"stderr":{}}
+----- post-test output end -----
+  while ... ok (23ms)
+  do-while ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN do-while {"source":"(bind trace (array))\n(bind count (cell 0))\n(do-while (< count:value 2)\n  (if true (trace:push (+ count:value 100)))\n  (bind first (+ count:value 20) second (+ first 1))\n  (if true (trace:push second))\n  (reset! count (+ count:value 1)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nconst count = {\n  value: 0\n};\ndo {\n  if (true) {\n    trace.push(count.value + 100);\n  }\n  const first = count.value + 20;\n  const second = first + 1;\n  if (true) {\n    trace.push(second);\n  }\n  count.value = count.value + 1;\n} while (count.value < 2);\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND do-while {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/8142583cf78d7483/do-while.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/8142583cf78d7483",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/do-while.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/8142583cf78d7483/do-while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT do-while {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":48,"3":48,"4":44,"5":50,"6":49,"7":44,"8":49,"9":48,"10":49,"11":44,"12":50,"13":50,"14":93,"15":10},"stderr":{}}
+----- post-test output end -----
+  do-while ... ok (14ms)
+  match ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match {"source":"(bind trace (array))\n(func choose :args (:number n) :returns :any :body\n  (match n\n    (captured :when (= captured 1)\n      (if true (trace:push \"guard\"))\n      (if true 7 8))\n    (_\n      (if true (trace:push \"fallback\"))\n      (if false 9 10))))\n(console:log (JSON:stringify (array (array (choose 1) (choose 2)) trace)))\n","generated":"const trace = [];\nfunction choose(n) {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"choose: arg 'n' expected number, got \" + typeof n);\n  }\n  {\n    const target__gensym0 = n;\n    let matched__gensym1 = false;\n    if (!matched__gensym1) {\n      const captured = target__gensym0;\n      if (captured === 1) {\n        matched__gensym1 = true;\n        if (true) {\n          trace.push(\"guard\");\n        }\n        return true ? 7 : 8;\n      }\n    }\n    if (!matched__gensym1) {\n      {\n        matched__gensym1 = true;\n        if (true) {\n          trace.push(\"fallback\");\n        }\n        return false ? 9 : 10;\n      }\n    }\n  }\n}\nconsole.log(JSON.stringify([[choose(1), choose(2)], trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/c4dbf18a0bbf5f46/match.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/c4dbf18a0bbf5f46",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/match.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/c4dbf18a0bbf5f46/match.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":55,"3":44,"4":49,"5":48,"6":93,"7":44,"8":91,"9":34,"10":103,"11":117,"12":97,"13":114,"14":100,"15":34,"16":44,"17":34,"18":102,"19":97,"20":108,"21":108,"22":98,"23":97,"24":99,"25":107,"26":34,"27":93,"28":93,"29":10},"stderr":{}}
+----- post-test output end -----
+  match ... ok (16ms)
+  boundaries ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN boundaries {"source":"(bind match (fn (:number n) n))\n(bind picked (match (if true 4 5)))\n(bind target (fn (:number n) n))\n(bind computed ((get (array target) 0) (if true 6 7)))\n(bind trace (array))\n(switch 1\n  (1\n    (bind first 1 second (+ first 1))\n    (if true (trace:push second))\n    (break))\n  (default (trace:push \"bad\")))\n(console:log (JSON:stringify (array picked computed trace)))\n","generated":"const match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst picked = match(true ? 4 : 5);\nconst target = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst computed = [target][0](true ? 6 : 7);\nconst trace = [];\nswitch (1) {\n  case 1:\n    const first = 1;\n    const second = first + 1;\n    if (true) {\n      trace.push(second);\n    }\n    break;\n  default:\n    trace.push(\"bad\");\n}\nconsole.log(JSON.stringify([picked, computed, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND boundaries {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/cf20dbe95ddb6ce9/boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/cf20dbe95ddb6ce9",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/cf20dbe95ddb6ce9/boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT boundaries {"status":0,"success":true,"stdout":{"0":91,"1":52,"2":44,"3":54,"4":44,"5":91,"6":50,"7":93,"8":93,"9":10},"stderr":{}}
+----- post-test output end -----
+  boundaries ... ok (15ms)
+  if-arm-scope ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-arm-scope {"source":"(macro pick (x) `(+ ,x 10))\n(bind trace (array))\n(if true\n  (bind pick (fn (:number n) (+ n 100)) saved (trace:push (pick 1)))\n  (trace:push (pick 2)))\n(if false\n  (bind pick (fn (:number n) (+ n 200)) saved (trace:push (pick 3)))\n  (trace:push (pick 4)))\n(trace:push (pick 5))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nif (true) {\n  const pick = n => {\n    if (typeof n !== \"number\" || Number.isNaN(n)) {\n      throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n    }\n    return n + 100;\n  };\n  const saved = trace.push(pick(1));\n} else {\n  trace.push(2 + 10);\n}\nif (false) {\n  const pick = n => {\n    if (typeof n !== \"number\" || Number.isNaN(n)) {\n      throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n    }\n    return n + 200;\n  };\n  const saved = trace.push(pick(3));\n} else {\n  trace.push(4 + 10);\n}\ntrace.push(5 + 10);\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-arm-scope {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/ed13fc43373516b6/if-arm-scope.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/ed13fc43373516b6",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/if-arm-scope.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/ed13fc43373516b6/if-arm-scope.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-arm-scope {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":48,"3":49,"4":44,"5":49,"6":52,"7":44,"8":49,"9":53,"10":93,"11":10},"stderr":{}}
+----- post-test output end -----
+  if-arm-scope ... ok (15ms)
+  if-declaration ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-declaration {"source":"(if true (bind following-statement 99))\n","generated":"if (true) {\n  const followingStatement = 99;\n}\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-declaration {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3bd20df0c77b88ea/if-declaration.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3bd20df0c77b88ea",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/if-declaration.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3bd20df0c77b88ea/if-declaration.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-declaration {"status":0,"success":true,"stdout":{},"stderr":{}}
+----- post-test output end -----
+  if-declaration ... ok (13ms)
+  if-direct-transfers-literal ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-direct-transfers-literal {"source":"(kernel:function select (flag)\n  (if flag (return 7))\n  (return 9))\n(bind match (fn (:number n) n))\n(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (if (= i 1) (continue))\n  (if (= i 3) (break))\n  (trace:push i))\n(if true (if false (trace:push 900)) (trace:push 901))\n(console:log (JSON:stringify (array (select true) (select false) trace\n  (match (if true 4 5)))))\n","generated":"function select(flag) {\n  if (flag) {\n    return 7;\n  }\n  return 9;\n}\nconst match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst trace = [];\nfor (let i = 0; i < 4; ++i) {\n  if (i === 1) {\n    continue;\n  }\n  if (i === 3) {\n    break;\n  }\n  trace.push(i);\n}\nif (true) {\n  if (false) {\n    trace.push(900);\n  }\n} else {\n  trace.push(901);\n}\nconsole.log(JSON.stringify([select(true), select(false), trace, match(true ? 4 : 5)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-direct-transfers-literal {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/744e96f1ad874d08/if-direct-transfers-literal.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/744e96f1ad874d08",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/if-direct-transfers-literal.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/744e96f1ad874d08/if-direct-transfers-literal.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-direct-transfers-literal {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":57,"4":44,"5":91,"6":48,"7":44,"8":50,"9":93,"10":44,"11":52,"12":93,"13":10},"stderr":{}}
+----- post-test output end -----
+  if-direct-transfers-literal ... ok (14ms)
+  if-direct-transfers ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN if-direct-transfers {"source":"(macro make-pick () `(kernel:function select (flag)\n  (if flag (return 7))\n  (return 9)))\n(make-pick)\n(bind match (fn (:number n) n))\n(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (if (= i 1) (continue))\n  (if (= i 3) (break))\n  (trace:push i))\n(if true (if false (trace:push 900)) (trace:push 901))\n(console:log (JSON:stringify (array (select true) (select false) trace\n  (match (if true 4 5)))))\n","generated":"function select(flag) {\n  if (flag) {\n    return 7;\n  }\n  return 9;\n}\nconst match = n => {\n  if (typeof n !== \"number\" || Number.isNaN(n)) {\n    throw new TypeError(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n;\n};\nconst trace = [];\nfor (let i = 0; i < 4; ++i) {\n  if (i === 1) {\n    continue;\n  }\n  if (i === 3) {\n    break;\n  }\n  trace.push(i);\n}\nif (true) {\n  if (false) {\n    trace.push(900);\n  }\n} else {\n  trace.push(901);\n}\nconsole.log(JSON.stringify([select(true), select(false), trace, match(true ? 4 : 5)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND if-direct-transfers {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/59c4af75b9ef5b7e/if-direct-transfers.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/59c4af75b9ef5b7e",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/if-direct-transfers.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/59c4af75b9ef5b7e/if-direct-transfers.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT if-direct-transfers {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":57,"4":44,"5":91,"6":48,"7":44,"8":50,"9":93,"10":44,"11":52,"12":93,"13":10},"stderr":{}}
+----- post-test output end -----
+  if-direct-transfers ... ok (14ms)
+  statement-match-guards ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-guards {"source":"(bind trace (array))\n(func subject :returns :any :body (trace:push \"subject\") 2)\n(func gate :args (:any mark :any result) :returns :any :body\n  (trace:push mark)\n  result)\n(match (subject)\n  (1 :when (gate \"wrong-pattern\" true) (trace:push \"wrong-body\"))\n  (2 :when (gate \"literal-false\" false) (trace:push \"wrong-literal\"))\n  (captured :when (gate captured false) (trace:push \"wrong-binding\"))\n  (_ :when (gate \"chosen\" true) (trace:push \"body\"))\n  (_ :when (gate \"late\" true) (trace:push \"late-body\"))\n  (_ (trace:push \"fallback\")))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfunction subject() {\n  trace.push(\"subject\");\n  return 2;\n}\nfunction gate(mark, result) {\n  trace.push(mark);\n  return result;\n}\n{\n  const target__gensym2 = subject();\n  let matched__gensym3 = false;\n  if (!matched__gensym3 && target__gensym2 === 1) {\n    if (gate(\"wrong-pattern\", true)) {\n      matched__gensym3 = true;\n      trace.push(\"wrong-body\");\n    }\n  }\n  if (!matched__gensym3 && target__gensym2 === 2) {\n    if (gate(\"literal-false\", false)) {\n      matched__gensym3 = true;\n      trace.push(\"wrong-literal\");\n    }\n  }\n  if (!matched__gensym3) {\n    const captured = target__gensym2;\n    if (gate(captured, false)) {\n      matched__gensym3 = true;\n      trace.push(\"wrong-binding\");\n    }\n  }\n  if (!matched__gensym3) {\n    if (gate(\"chosen\", true)) {\n      matched__gensym3 = true;\n      trace.push(\"body\");\n    }\n  }\n  if (!matched__gensym3) {\n    if (gate(\"late\", true)) {\n      matched__gensym3 = true;\n      trace.push(\"late-body\");\n    }\n  }\n  if (!matched__gensym3) {\n    {\n      matched__gensym3 = true;\n      trace.push(\"fallback\");\n    }\n  }\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-guards {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a2c61d6d5c7f0851/statement-match-guards.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a2c61d6d5c7f0851",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/statement-match-guards.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a2c61d6d5c7f0851/statement-match-guards.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-guards {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":115,"3":117,"4":98,"5":106,"6":101,"7":99,"8":116,"9":34,"10":44,"11":34,"12":108,"13":105,"14":116,"15":101,"16":114,"17":97,"18":108,"19":45,"20":102,"21":97,"22":108,"23":115,"24":101,"25":34,"26":44,"27":50,"28":44,"29":34,"30":99,"31":104,"32":111,"33":115,"34":101,"35":110,"36":34,"37":44,"38":34,"39":98,"40":111,"41":100,"42":121,"43":34,"44":93,"45":10},"stderr":{}}
+----- post-test output end -----
+  statement-match-guards ... ok (14ms)
+  statement-match-return ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-return {"source":"(kernel:function choose (input)\n  (match input\n    (_ :when false (return \"wrong\"))\n    (_ (return \"inside\")))\n  (return \"after\"))\n(console:log (choose 0))\n","generated":"function choose(input) {\n  {\n    const target__gensym4 = input;\n    let matched__gensym5 = false;\n    if (!matched__gensym5) {\n      if (false) {\n        matched__gensym5 = true;\n        return \"wrong\";\n      }\n    }\n    if (!matched__gensym5) {\n      {\n        matched__gensym5 = true;\n        return \"inside\";\n      }\n    }\n  }\n  return \"after\";\n}\nconsole.log(choose(0));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-return {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/483a5fe4a92ddee/statement-match-return.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/483a5fe4a92ddee",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/statement-match-return.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/483a5fe4a92ddee/statement-match-return.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-return {"status":0,"success":true,"stdout":{"0":105,"1":110,"2":115,"3":105,"4":100,"5":101,"6":10},"stderr":{}}
+----- post-test output end -----
+  statement-match-return ... ok (14ms)
+  statement-match-loop ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-loop {"source":"(bind trace (array))\n(for (let i 0) (< i 4) (++ i)\n  (match i\n    (1 (continue))\n    (3 (break))\n    (_ (trace:push i)))\n  (trace:push (+ i 10)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfor (let i = 0; i < 4; ++i) {\n  {\n    const target__gensym6 = i;\n    let matched__gensym7 = false;\n    if (!matched__gensym7 && target__gensym6 === 1) {\n      {\n        matched__gensym7 = true;\n        continue;\n      }\n    }\n    if (!matched__gensym7 && target__gensym6 === 3) {\n      {\n        matched__gensym7 = true;\n        break;\n      }\n    }\n    if (!matched__gensym7) {\n      {\n        matched__gensym7 = true;\n        trace.push(i);\n      }\n    }\n  }\n  trace.push(i + 10);\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-loop {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/c9c05ed364b561de/statement-match-loop.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/c9c05ed364b561de",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/statement-match-loop.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/c9c05ed364b561de/statement-match-loop.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-loop {"status":0,"success":true,"stdout":{"0":91,"1":48,"2":44,"3":49,"4":48,"5":44,"6":50,"7":44,"8":49,"9":50,"10":93,"11":10},"stderr":{}}
+----- post-test output end -----
+  statement-match-loop ... ok (14ms)
+  statement-match-exhaustion ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-exhaustion {"source":"(bind trace (array))\n(try\n  (match 2\n    (_ :when (do (trace:push \"guard\") false) (trace:push \"wrong\")))\n  (trace:push \"after\")\n  (catch err (trace:push err:message)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\ntry {\n  {\n    const target__gensym8 = 2;\n    let matched__gensym9 = false;\n    if (!matched__gensym9) {\n      if ((() => {\n        trace.push(\"guard\");\n        return false;\n      })()) {\n        matched__gensym9 = true;\n        trace.push(\"wrong\");\n      }\n    }\n    if (!matched__gensym9) {\n      throw new Error(\"match: no matching pattern\");\n    }\n  }\n  trace.push(\"after\");\n} catch (err) {\n  trace.push(err.message);\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-exhaustion {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/1a6de9571c4defac/statement-match-exhaustion.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/1a6de9571c4defac",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/statement-match-exhaustion.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/1a6de9571c4defac/statement-match-exhaustion.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-exhaustion {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":103,"3":117,"4":97,"5":114,"6":100,"7":34,"8":44,"9":34,"10":109,"11":97,"12":116,"13":99,"14":104,"15":58,"16":32,"17":110,"18":111,"19":32,"20":109,"21":97,"22":116,"23":99,"24":104,"25":105,"26":110,"27":103,"28":32,"29":112,"30":97,"31":116,"32":116,"33":101,"34":114,"35":110,"36":34,"37":93,"38":10},"stderr":{}}
+----- post-test output end -----
+  statement-match-exhaustion ... ok (14ms)
+  statement-match-preservation ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-preservation {"source":"(macro read-target () `target__gensym0)\n(macro emitted-match () `(match 0 (_ (trace:push 7))))\n(bind target__gensym0 101)\n(bind matched__gensym1 201)\n(bind matched__gensym2 202)\n(bind matched__gensym3 203)\n(bind trace (array))\n(match 0\n  (_\n    (trace:push (read-target))\n    (trace:push matched__gensym1)\n    (trace:push matched__gensym2)\n    (trace:push matched__gensym3)))\n(emitted-match)\n(bind keep\n  (do (match 0 (_ (trace:push 8))) (match 1 (_ 41))))\n(bind match (fn (:any n) n))\n(console:log (JSON:stringify (array trace keep (match 42))))\n","generated":"const target__gensym0 = 101;\nconst matched__gensym1 = 201;\nconst matched__gensym2 = 202;\nconst matched__gensym3 = 203;\nconst trace = [];\n{\n  const target__gensym1 = 0;\n  let matched__gensym4 = false;\n  if (!matched__gensym4) {\n    {\n      matched__gensym4 = true;\n      trace.push(target__gensym0);\n      trace.push(matched__gensym1);\n      trace.push(matched__gensym2);\n      trace.push(matched__gensym3);\n    }\n  }\n}\n{\n  const target__gensym5 = 0;\n  let matched__gensym6 = false;\n  if (!matched__gensym6) {\n    {\n      matched__gensym6 = true;\n      trace.push(7);\n    }\n  }\n}\nconst keep = (() => {\n  (() => {\n    const target__gensym7 = 0;\n    {\n      return trace.push(8);\n    }\n  })();\n  return (() => {\n    const target__gensym8 = 1;\n    {\n      return 41;\n    }\n  })();\n})();\nconst match = n => n;\nconsole.log(JSON.stringify([trace, keep, match(42)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-preservation {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/849b01b53ec7de19/statement-match-preservation.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/849b01b53ec7de19",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/statement-match-preservation.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/849b01b53ec7de19/statement-match-preservation.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-preservation {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":49,"3":48,"4":49,"5":44,"6":50,"7":48,"8":49,"9":44,"10":50,"11":48,"12":50,"13":44,"14":50,"15":48,"16":51,"17":44,"18":55,"19":44,"20":56,"21":93,"22":44,"23":52,"24":49,"25":44,"26":52,"27":50,"28":93,"29":10},"stderr":{}}
+----- post-test output end -----
+  statement-match-preservation ... ok (14ms)
+  statement-match-protected-preservation ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN statement-match-protected-preservation {"source":"(bind trace (array))\n(func verify-result :args (:any n) :returns :any :body\n  (trace:push n)\n  (= n 7))\n(func checked :returns :number :post (verify-result ~) :body\n  (match 0\n    (_ :when false (return 99))\n    (_ (return \"bad\")))\n  7)\n(console:log (JSON:stringify (array (checked) trace)))\n","generated":"const trace = [];\nfunction verifyResult(n) {\n  trace.push(n);\n  return n === 7;\n}\nfunction checked() {\n  (() => {\n    const target__gensym10 = 0;\n    {\n      if (false) {\n        return 99;\n      }\n    }\n    {\n      return \"bad\";\n    }\n  })();\n  const result__gensym9 = 7;\n  if (typeof result__gensym9 !== \"number\" || Number.isNaN(result__gensym9)) {\n    throw new TypeError(\"checked: return value expected number, got \" + typeof result__gensym9);\n  }\n  if (!verifyResult(result__gensym9)) {\n    throw new Error(\"checked: post-condition failed: (verify-result ~) — callee blame\");\n  }\n  return result__gensym9;\n}\nconsole.log(JSON.stringify([checked(), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND statement-match-protected-preservation {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/82ac399bc4c08a8c/statement-match-protected-preservation.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/82ac399bc4c08a8c",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/statement-match-protected-preservation.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/82ac399bc4c08a8c/statement-match-protected-preservation.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT statement-match-protected-preservation {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":91,"4":55,"5":93,"6":93,"7":10},"stderr":{}}
+----- post-test output end -----
+  statement-match-protected-preservation ... ok (14ms)
+  match-clause-scope ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match-clause-scope {"source":"(bind trace (array))\n(func plus-ten :args (:any n) :returns :any :body (+ n 10))\n(func trace-false :args (:any value) :returns :any :body\n  (trace:push value)\n  false)\n(match plus-ten\n  (match :when (trace-false (match 1))\n    (trace:push \"wrong\"))\n  (_\n    (match 2\n      (1 (trace:push \"wrong-inner\"))\n      (_ (trace:push 22)))))\n(do\n  (bind match (fn (:any a :any b) (+ a b)))\n  (trace:push (match 3 (plus-ten 1))))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfunction plusTen(n) {\n  return n + 10;\n}\nfunction traceFalse(value) {\n  trace.push(value);\n  return false;\n}\n{\n  const target__gensym11 = plusTen;\n  let matched__gensym14 = false;\n  if (!matched__gensym14) {\n    const match = target__gensym11;\n    if (traceFalse(match(1))) {\n      matched__gensym14 = true;\n      trace.push(\"wrong\");\n    }\n  }\n  if (!matched__gensym14) {\n    {\n      matched__gensym14 = true;\n      {\n        const target__gensym12 = 2;\n        let matched__gensym13 = false;\n        if (!matched__gensym13 && target__gensym12 === 1) {\n          {\n            matched__gensym13 = true;\n            trace.push(\"wrong-inner\");\n          }\n        }\n        if (!matched__gensym13) {\n          {\n            matched__gensym13 = true;\n            trace.push(22);\n          }\n        }\n      }\n    }\n  }\n}\n{\n  const match = (a, b) => a + b;\n  trace.push(match(3, plusTen(1)));\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match-clause-scope {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/eb4fab9e65603aad/match-clause-scope.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/eb4fab9e65603aad",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/match-clause-scope.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/eb4fab9e65603aad/match-clause-scope.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match-clause-scope {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":49,"3":44,"4":50,"5":50,"6":44,"7":49,"8":52,"9":93,"10":10},"stderr":{}}
+----- post-test output end -----
+  match-clause-scope ... ok (14ms)
+  match-structural-pattern-macros ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN match-structural-pattern-macros {"source":"(macro obj (key binder) `0)\n(macro clause-guard (value) `(= ,value 7))\n(macro clause-push (value) `(trace:push ,value))\n(bind trace (array))\n(match (JSON:parse \"{\\\"key\\\":7}\")\n  (clause-push :when false (trace:push \"wrong\"))\n  ((obj :key n) :when (clause-guard n) (clause-push n))\n  (_ (trace:push \"fallback\")))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\n{\n  const target__gensym15 = JSON.parse(\"{\\\"key\\\":7}\");\n  let matched__gensym16 = false;\n  if (!matched__gensym16) {\n    const clausePush = target__gensym15;\n    if (false) {\n      matched__gensym16 = true;\n      trace.push(\"wrong\");\n    }\n  }\n  if (!matched__gensym16 && typeof target__gensym15 === \"object\" && target__gensym15 !== null && (\"key\" in target__gensym15)) {\n    const n = target__gensym15.key;\n    if (n === 7) {\n      matched__gensym16 = true;\n      trace.push(n);\n    }\n  }\n  if (!matched__gensym16) {\n    {\n      matched__gensym16 = true;\n      trace.push(\"fallback\");\n    }\n  }\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND match-structural-pattern-macros {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fc3954f69862ae0b/match-structural-pattern-macros.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fc3954f69862ae0b",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/match-structural-pattern-macros.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fc3954f69862ae0b/match-structural-pattern-macros.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT match-structural-pattern-macros {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":93,"3":10},"stderr":{}}
+----- post-test output end -----
+  match-structural-pattern-macros ... ok (14ms)
+  original-match-reserved-role ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN original-match-reserved-role {"source":"(bind trace (array))\n(func plus-ten :args (:any n) :returns :any :body (+ n 10))\n(match plus-ten\n  (match :when (do (trace:push (match 1)) false)\n    (trace:push \"wrong\"))\n  (_\n    (match 2\n      (1 (trace:push \"wrong-inner\"))\n      (_ (trace:push 22)))))\n(do\n  (bind match (fn (:any a :any b) (+ a b)))\n  (trace:push (match 3 (plus-ten 1))))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfunction plusTen(n) {\n  return n + 10;\n}\n{\n  const target__gensym17 = plusTen;\n  let matched__gensym20 = false;\n  if (!matched__gensym20) {\n    const match = target__gensym17;\n    if ((() => {\n      trace.push(match(1));\n      return false;\n    })()) {\n      matched__gensym20 = true;\n      trace.push(\"wrong\");\n    }\n  }\n  if (!matched__gensym20) {\n    {\n      matched__gensym20 = true;\n      {\n        const target__gensym18 = 2;\n        let matched__gensym19 = false;\n        if (!matched__gensym19 && target__gensym18 === 1) {\n          {\n            matched__gensym19 = true;\n            trace.push(\"wrong-inner\");\n          }\n        }\n        if (!matched__gensym19) {\n          {\n            matched__gensym19 = true;\n            trace.push(22);\n          }\n        }\n      }\n    }\n  }\n}\n{\n  const match = (a, b) => a + b;\n  trace.push(match(3, plusTen(1)));\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND original-match-reserved-role {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/5184992fc2a3b85a/original-match-reserved-role.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/5184992fc2a3b85a",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/original-match-reserved-role.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/5184992fc2a3b85a/original-match-reserved-role.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT original-match-reserved-role {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":49,"3":44,"4":50,"5":50,"6":44,"7":49,"8":52,"9":93,"10":10},"stderr":{}}
+----- post-test output end -----
+  original-match-reserved-role ... ok (14ms)
+  original-match-kernel-object ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN original-match-kernel-object {"source":"(macro obj (key binder) `0)\n(macro clause-guard (value) `(= ,value 7))\n(macro clause-push (value) `(trace:push ,value))\n(bind trace (array))\n(match (kernel:object (key 7))\n  (clause-push :when false (trace:push \"wrong\"))\n  ((obj :key n) :when (clause-guard n) (clause-push n))\n  (_ (trace:push \"fallback\")))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\n{\n  const target__gensym21 = {\n    key: 7\n  };\n  let matched__gensym22 = false;\n  if (!matched__gensym22) {\n    const clausePush = target__gensym21;\n    if (false) {\n      matched__gensym22 = true;\n      trace.push(\"wrong\");\n    }\n  }\n  if (!matched__gensym22 && typeof target__gensym21 === \"object\" && target__gensym21 !== null && (\"key\" in target__gensym21)) {\n    const n = target__gensym21.key;\n    if (n === 7) {\n      matched__gensym22 = true;\n      trace.push(n);\n    }\n  }\n  if (!matched__gensym22) {\n    {\n      matched__gensym22 = true;\n      trace.push(\"fallback\");\n    }\n  }\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND original-match-kernel-object {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/6643763b641439fc/original-match-kernel-object.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/6643763b641439fc",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/original-match-kernel-object.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/6643763b641439fc/original-match-kernel-object.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT original-match-kernel-object {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":93,"3":10},"stderr":{}}
+----- post-test output end -----
+  original-match-kernel-object ... ok (14ms)
+  bound-match-conditional-operand ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN bound-match-conditional-operand {"source":"(func choose :args (:any match) :returns :any :body (match 0 (if false 7 8)))\n(bind match (fn (:any target :any value) value))\n(console:log (JSON:stringify (array (match 0 (if true 7 8)) (choose match))))\n","generated":"function choose(match) {\n  return match(0, false ? 7 : 8);\n}\nconst match = (target, value) => value;\nconsole.log(JSON.stringify([match(0, true ? 7 : 8), choose(match)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND bound-match-conditional-operand {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/460ab01d1acc4cbc/bound-match-conditional-operand.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/460ab01d1acc4cbc",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/bound-match-conditional-operand.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/460ab01d1acc4cbc/bound-match-conditional-operand.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT bound-match-conditional-operand {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":56,"4":93,"5":10},"stderr":{}}
+----- post-test output end -----
+  bound-match-conditional-operand ... ok (13ms)
+  nested-kernel-object-roles ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN nested-kernel-object-roles {"source":"(bind payload (kernel:object\n  (key 5)\n  (if (kernel:if true 7 8))\n  ((computed (if true \"dynamic\" \"other\")) (if false 0 9))\n  (spread (obj :extra 6))))\n(bind assigned (kernel:= (get payload \"key\") (if false 10 11)))\n(console:log (JSON:stringify\n  (array assigned (get payload \"key\") (get payload \"if\")\n         (get payload \"dynamic\") (get payload \"extra\"))))\n","generated":"const payload = {\n  key: 5,\n  if: true ? 7 : 8,\n  [true ? \"dynamic\" : \"other\"]: false ? 0 : 9,\n  ...{\n    extra: 6\n  }\n};\nconst assigned = payload[\"key\"] = false ? 10 : 11;\nconsole.log(JSON.stringify([assigned, payload[\"key\"], payload[\"if\"], payload[\"dynamic\"], payload[\"extra\"]]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND nested-kernel-object-roles {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/f69cc2bbb6a75341/nested-kernel-object-roles.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/f69cc2bbb6a75341",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/nested-kernel-object-roles.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/f69cc2bbb6a75341/nested-kernel-object-roles.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT nested-kernel-object-roles {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":49,"3":44,"4":49,"5":49,"6":44,"7":55,"8":44,"9":57,"10":44,"11":54,"12":93,"13":10},"stderr":{}}
+----- post-test output end -----
+  nested-kernel-object-roles ... ok (14ms)
+  return-consumed-match ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN return-consumed-match {"source":"(bind trace (array))\n(func read-value :args (:any input) :returns :any :body\n  (return\n    (match (do (trace:push \"subject\") input)\n      (_ :when (do (trace:push \"guard\") false) (return \"wrong\"))\n      (1 \"normal\")\n      (_ (return \"inside\")))))\n(console:log (JSON:stringify (array (read-value 0) (read-value 1) trace)))\n","generated":"const trace = [];\nfunction readValue(input) {\n  {\n    let completionValue__gensym0;\n    {\n      trace.push(\"subject\");\n      completionValue__gensym0 = input;\n    }\n    const target__gensym23 = completionValue__gensym0;\n    let matched__gensym24 = false;\n    if (!matched__gensym24) {\n      let completionValue__gensym1;\n      {\n        trace.push(\"guard\");\n        completionValue__gensym1 = false;\n      }\n      if (completionValue__gensym1) {\n        matched__gensym24 = true;\n        return \"wrong\";\n      }\n    }\n    if (!matched__gensym24 && target__gensym23 === 1) {\n      {\n        matched__gensym24 = true;\n        return \"normal\";\n      }\n    }\n    if (!matched__gensym24) {\n      {\n        matched__gensym24 = true;\n        return \"inside\";\n      }\n    }\n  }\n}\nconsole.log(JSON.stringify([readValue(0), readValue(1), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND return-consumed-match {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/25d7935eff2a0ed/return-consumed-match.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/25d7935eff2a0ed",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/return-consumed-match.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/25d7935eff2a0ed/return-consumed-match.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT return-consumed-match {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":105,"3":110,"4":115,"5":105,"6":100,"7":101,"8":34,"9":44,"10":34,"11":110,"12":111,"13":114,"14":109,"15":97,"16":108,"17":34,"18":44,"19":91,"20":34,"21":115,"22":117,"23":98,"24":106,"25":101,"26":99,"27":116,"28":34,"29":44,"30":34,"31":103,"32":117,"33":97,"34":114,"35":100,"36":34,"37":44,"38":34,"39":115,"40":117,"41":98,"42":106,"43":101,"44":99,"45":116,"46":34,"47":44,"48":34,"49":103,"50":117,"51":97,"52":114,"53":100,"54":34,"55":93,"56":93,"57":10},"stderr":{}}
+----- post-test output end -----
+  return-consumed-match ... ok (15ms)
+  return-consumed-loop ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN return-consumed-loop {"source":"(bind trace (array))\n(func iterate :returns :any :body\n  (for (let i 0) (< i 4) (++ i)\n    (return\n      (do\n        (if (= i 0) (continue))\n        (if (= i 2) (break))\n        (trace:push i)\n        (if (= i 1) (do (trace:push \"skip\") (continue)) \"wrong\"))))\n  \"done\")\n(console:log (JSON:stringify (array (iterate) trace)))\n","generated":"const trace = [];\nfunction iterate() {\n  for (let i = 0; i < 4; ++i) {\n    {\n      if (i === 0) {\n        continue;\n      }\n      if (i === 2) {\n        break;\n      }\n      trace.push(i);\n      {\n        if (i === 1) {\n          {\n            trace.push(\"skip\");\n            continue;\n          }\n        } else {\n          return \"wrong\";\n        }\n      }\n    }\n  }\n  return \"done\";\n}\nconsole.log(JSON.stringify([iterate(), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND return-consumed-loop {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/7a28c8d9947670e8/return-consumed-loop.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/7a28c8d9947670e8",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/return-consumed-loop.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/7a28c8d9947670e8/return-consumed-loop.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT return-consumed-loop {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":100,"3":111,"4":110,"5":101,"6":34,"7":44,"8":91,"9":49,"10":44,"11":34,"12":115,"13":107,"14":105,"15":112,"16":34,"17":93,"18":93,"19":10},"stderr":{}}
+----- post-test output end -----
+  return-consumed-loop ... ok (13ms)
+  return-consumed-guard-exhaustion ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN return-consumed-guard-exhaustion {"source":"(bind trace (array))\n(func exhausted :returns :any :body\n  (match 0 (_ :when (do (trace:push \"guard\") false) 1)))\n(try\n  (trace:push (exhausted))\n  (catch e (trace:push e:message)))\n(console:log (JSON:stringify trace))\n","generated":"const trace = [];\nfunction exhausted() {\n  {\n    const target__gensym25 = 0;\n    let matched__gensym26 = false;\n    if (!matched__gensym26) {\n      let completionValue__gensym0;\n      {\n        trace.push(\"guard\");\n        completionValue__gensym0 = false;\n      }\n      if (completionValue__gensym0) {\n        matched__gensym26 = true;\n        return 1;\n      }\n    }\n    if (!matched__gensym26) {\n      throw new Error(\"match: no matching pattern\");\n    }\n  }\n}\ntry {\n  trace.push(exhausted());\n} catch (e) {\n  trace.push(e.message);\n}\nconsole.log(JSON.stringify(trace));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND return-consumed-guard-exhaustion {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a923e5f79b46c544/return-consumed-guard-exhaustion.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a923e5f79b46c544",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/return-consumed-guard-exhaustion.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/a923e5f79b46c544/return-consumed-guard-exhaustion.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT return-consumed-guard-exhaustion {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":103,"3":117,"4":97,"5":114,"6":100,"7":34,"8":44,"9":34,"10":109,"11":97,"12":116,"13":99,"14":104,"15":58,"16":32,"17":110,"18":111,"19":32,"20":109,"21":97,"22":116,"23":99,"24":104,"25":105,"26":110,"27":103,"28":32,"29":112,"30":97,"31":116,"32":116,"33":101,"34":114,"35":110,"36":34,"37":93,"38":10},"stderr":{}}
+----- post-test output end -----
+  return-consumed-guard-exhaustion ... ok (14ms)
+  return-consumed-macro-boundaries ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN return-consumed-macro-boundaries {"source":"(macro i2-return-body (early later) `(do (return ,early) ,later))\n(bind trace (array))\n(func choose :returns :any :body\n  (bind nested (fn () (return \"nested\") \"wrong-inner\"))\n  (trace:push (nested))\n  (if true (i2-return-body \"inside\" \"wrong\") (do (trace:push \"wrong-else\") \"not-chosen\")))\n(console:log (JSON:stringify (array (choose) trace)))\n","generated":"const trace = [];\nfunction choose() {\n  const nested = () => {\n    return \"nested\";\n    return \"wrong-inner\";\n  };\n  trace.push(nested());\n  {\n    if (true) {\n      {\n        return \"inside\";\n        return \"wrong\";\n      }\n    } else {\n      {\n        trace.push(\"wrong-else\");\n        return \"not-chosen\";\n      }\n    }\n  }\n}\nconsole.log(JSON.stringify([choose(), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND return-consumed-macro-boundaries {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/ed818870d3dcf033/return-consumed-macro-boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/ed818870d3dcf033",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/return-consumed-macro-boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/ed818870d3dcf033/return-consumed-macro-boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT return-consumed-macro-boundaries {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":105,"3":110,"4":115,"5":105,"6":100,"7":101,"8":34,"9":44,"10":91,"11":34,"12":110,"13":101,"14":115,"15":116,"16":101,"17":100,"18":34,"19":93,"20":93,"21":10},"stderr":{}}
+----- post-test output end -----
+  return-consumed-macro-boundaries ... ok (14ms)
+  bind-consumed-early-return ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN bind-consumed-early-return {"source":"(bind trace (array))\n(func choose-bound :args (:any flag) :returns :any :body\n  (bind answer\n    (do\n      (if flag (return \"early\"))\n      (trace:push \"body\")\n      7))\n  (trace:push \"after\")\n  answer)\n(console:log (JSON:stringify (array (choose-bound true) (choose-bound false) trace)))\n","generated":"const trace = [];\nfunction chooseBound(flag) {\n  let completionValue__gensym0;\n  {\n    {\n      if (flag) {\n        return \"early\";\n      }\n      trace.push(\"body\");\n      completionValue__gensym0 = 7;\n    }\n  }\n  const answer = completionValue__gensym0;\n  trace.push(\"after\");\n  return answer;\n}\nconsole.log(JSON.stringify([chooseBound(true), chooseBound(false), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND bind-consumed-early-return {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/d900b3538a0bdb72/bind-consumed-early-return.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/d900b3538a0bdb72",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/bind-consumed-early-return.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/d900b3538a0bdb72/bind-consumed-early-return.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT bind-consumed-early-return {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":101,"3":97,"4":114,"5":108,"6":121,"7":34,"8":44,"9":55,"10":44,"11":91,"12":34,"13":98,"14":111,"15":100,"16":121,"17":34,"18":44,"19":34,"20":97,"21":102,"22":116,"23":101,"24":114,"25":34,"26":93,"27":93,"28":10},"stderr":{}}
+----- post-test output end -----
+  bind-consumed-early-return ... ok (13ms)
+  bind-consumed-group-match ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN bind-consumed-group-match {"source":"(bind trace (array))\n(func choose-binding :args (:any flag) :returns :any :body\n  (bind first (match flag\n                (true (return 81))\n                (_ (do (trace:push \"match\") 7)))\n        second (if false (do (trace:push \"wrong\") 0) (+ first 1)))\n  (trace:push second)\n  second)\n(console:log (JSON:stringify (array (choose-binding true) (choose-binding false) trace)))\n","generated":"const trace = [];\nfunction chooseBinding(flag) {\n  let completionValue__gensym0;\n  {\n    {\n      const target__gensym27 = flag;\n      let matched__gensym28 = false;\n      if (!matched__gensym28 && target__gensym27 === true) {\n        {\n          matched__gensym28 = true;\n          return 81;\n        }\n      }\n      if (!matched__gensym28) {\n        {\n          matched__gensym28 = true;\n          {\n            trace.push(\"match\");\n            completionValue__gensym0 = 7;\n          }\n        }\n      }\n    }\n  }\n  const first = completionValue__gensym0;\n  let completionValue__gensym1;\n  {\n    {\n      if (false) {\n        {\n          trace.push(\"wrong\");\n          completionValue__gensym1 = 0;\n        }\n      } else {\n        completionValue__gensym1 = first + 1;\n      }\n    }\n  }\n  const second = completionValue__gensym1;\n  trace.push(second);\n  return second;\n}\nconsole.log(JSON.stringify([chooseBinding(true), chooseBinding(false), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND bind-consumed-group-match {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/b25c33860404d56e/bind-consumed-group-match.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/b25c33860404d56e",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/bind-consumed-group-match.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/b25c33860404d56e/bind-consumed-group-match.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT bind-consumed-group-match {"status":0,"success":true,"stdout":{"0":91,"1":56,"2":49,"3":44,"4":56,"5":44,"6":91,"7":34,"8":109,"9":97,"10":116,"11":99,"12":104,"13":34,"14":44,"15":56,"16":93,"17":93,"18":10},"stderr":{}}
+----- post-test output end -----
+  bind-consumed-group-match ... ok (14ms)
+  bind-consumed-loop-transfer ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN bind-consumed-loop-transfer {"source":"(bind trace (array))\n(func bind-loop :returns :any :body\n  (for (let i 0) (< i 4) (++ i)\n    (bind value\n      (do\n        (if (= i 1) (continue))\n        (if (= i 3) (break))\n        i))\n    (trace:push value))\n  trace)\n(console:log (JSON:stringify (bind-loop)))\n","generated":"const trace = [];\nfunction bindLoop() {\n  for (let i = 0; i < 4; ++i) {\n    let completionValue__gensym0;\n    {\n      {\n        if (i === 1) {\n          continue;\n        }\n        if (i === 3) {\n          break;\n        }\n        completionValue__gensym0 = i;\n      }\n    }\n    const value = completionValue__gensym0;\n    trace.push(value);\n  }\n  return trace;\n}\nconsole.log(JSON.stringify(bindLoop()));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND bind-consumed-loop-transfer {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/81951a67372930e0/bind-consumed-loop-transfer.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/81951a67372930e0",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/bind-consumed-loop-transfer.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/81951a67372930e0/bind-consumed-loop-transfer.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT bind-consumed-loop-transfer {"status":0,"success":true,"stdout":{"0":91,"1":48,"2":44,"3":50,"4":93,"5":10},"stderr":{}}
+----- post-test output end -----
+  bind-consumed-loop-transfer ... ok (14ms)
+  bind-consumed-name-hygiene ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN bind-consumed-name-hygiene {"source":"(macro s15-read-later () `completionValue__gensym0!:value)\n(macro s15-read-external () `completionValue__gensym1:value)\n(bind completionValue__gensym1 (obj :value 41))\n(bind trace (array))\n(func hygienic-bind :returns :any :body\n  (bind answer (do (trace:push \"result\") 7))\n  (bind completionValue__gensym0! (obj :value 99))\n  (array answer (s15-read-later) (s15-read-external)))\n(console:log (JSON:stringify (array (hygienic-bind) trace)))\n","generated":"const completionValue__gensym1 = {\n  value: 41\n};\nconst trace = [];\nfunction hygienicBind() {\n  let completionValue__gensym2;\n  {\n    {\n      trace.push(\"result\");\n      completionValue__gensym2 = 7;\n    }\n  }\n  const answer = completionValue__gensym2;\n  const completionValue__gensym0 = {\n    value: 99\n  };\n  return [answer, completionValue__gensym0.value, completionValue__gensym1.value];\n}\nconsole.log(JSON.stringify([hygienicBind(), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND bind-consumed-name-hygiene {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/7b719e7d729437e5/bind-consumed-name-hygiene.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/7b719e7d729437e5",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/bind-consumed-name-hygiene.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/7b719e7d729437e5/bind-consumed-name-hygiene.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT bind-consumed-name-hygiene {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":55,"3":44,"4":57,"5":57,"6":44,"7":52,"8":49,"9":93,"10":44,"11":91,"12":34,"13":114,"14":101,"15":115,"16":117,"17":108,"18":116,"19":34,"20":93,"21":93,"22":10},"stderr":{}}
+----- post-test output end -----
+  bind-consumed-name-hygiene ... ok (14ms)
+  completion-if-headers ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN completion-if-headers {"source":"(bind trace (array))\n(func choose-header :args (:any mode) :returns :any :body\n  (if (do\n        (trace:push \"statement\")\n        (if (= mode 0) (return 80))\n        false)\n    (trace:push \"wrong\"))\n  (bind result\n    (if (do\n          (trace:push \"value\")\n          (if (= mode 1) (return 81))\n          (= mode 2))\n      (do (trace:push \"then\") 7)\n      (do (trace:push \"else\") 8)))\n  (trace:push \"after\")\n  result)\n(console:log (JSON:stringify\n  (array (choose-header 0) (choose-header 1) (choose-header 2) (choose-header 3) trace)))\n","generated":"const trace = [];\nfunction chooseHeader(mode) {\n  {\n    let completionValue__gensym0;\n    {\n      trace.push(\"statement\");\n      if (mode === 0) {\n        return 80;\n      }\n      completionValue__gensym0 = false;\n    }\n    if (completionValue__gensym0) {\n      trace.push(\"wrong\");\n    }\n  }\n  let completionValue__gensym1;\n  {\n    {\n      let completionValue__gensym2;\n      {\n        trace.push(\"value\");\n        if (mode === 1) {\n          return 81;\n        }\n        completionValue__gensym2 = mode === 2;\n      }\n      if (completionValue__gensym2) {\n        {\n          trace.push(\"then\");\n          completionValue__gensym1 = 7;\n        }\n      } else {\n        {\n          trace.push(\"else\");\n          completionValue__gensym1 = 8;\n        }\n      }\n    }\n  }\n  const result = completionValue__gensym1;\n  trace.push(\"after\");\n  return result;\n}\nconsole.log(JSON.stringify([chooseHeader(0), chooseHeader(1), chooseHeader(2), chooseHeader(3), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND completion-if-headers {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/9a339b12ecb129ba/completion-if-headers.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/9a339b12ecb129ba",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/completion-if-headers.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/9a339b12ecb129ba/completion-if-headers.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT completion-if-headers {"status":0,"success":true,"stdout":{"0":91,"1":56,"2":48,"3":44,"4":56,"5":49,"6":44,"7":55,"8":44,"9":56,"10":44,"11":91,"12":34,"13":115,"14":116,"15":97,"16":116,"17":101,"18":109,"19":101,"20":110,"21":116,"22":34,"23":44,"24":34,"25":115,"26":116,"27":97,"28":116,"29":101,"30":109,"31":101,"32":110,"33":116,"34":34,"35":44,"36":34,"37":118,"38":97,"39":108,"40":117,"41":101,"42":34,"43":44,"44":34,"45":115,"46":116,"47":97,"48":116,"49":101,"50":109,"51":101,"52":110,"53":116,"54":34,"55":44,"56":34,"57":118,"58":97,"59":108,"60":117,"61":101,"62":34,"63":44,"64":34,"65":116,"66":104,"67":101,"68":110,"69":34,"70":44,"71":34,"72":97,"73":102,"74":116,"75":101,"76":114,"77":34,"78":44,"79":34,"80":115,"81":116,"82":97,"83":116,"84":101,"85":109,"86":101,"87":110,"88":116,"89":34,"90":44,"91":34,"92":118,"93":97,"94":108,"95":117,"96":101,"97":34,"98":44,"99":34,"100":101,"101":108,"102":115,"103":101,"104":34,"105":44,"106":34,"107":97,"108":102,"109":116,"110":101,"111":114,"112":34,"113":93,"114":93,"115":10},"stderr":{}}
+----- post-test output end -----
+  completion-if-headers ... ok (14ms)
+  completion-match-headers ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN completion-match-headers {"source":"(bind trace (array))\n(func choose-match-header :args (:any mode) :returns :any :body\n  (match (do\n           (trace:push \"discarded\")\n           (if (= mode 0) (return 80))\n           3)\n    (seen :when (do\n                  (trace:push seen)\n                  (if (= mode 1) (return 81))\n                  false)\n      (trace:push \"wrong\"))\n    (_ (trace:push \"discarded-fallback\")))\n  (return\n    (match (do\n             (trace:push \"consumed\")\n             (if (= mode 2) (return 82))\n             4)\n      (seen :when (do\n                    (trace:push seen)\n                    (if (= mode 3) (return 83))\n                    false)\n        (do (trace:push \"wrong\") 90))\n      (_ (do (trace:push \"consumed-fallback\") 84)))))\n(console:log (JSON:stringify\n  (array (choose-match-header 0) (choose-match-header 1)\n    (choose-match-header 2) (choose-match-header 3) (choose-match-header 4) trace)))\n","generated":"const trace = [];\nfunction chooseMatchHeader(mode) {\n  {\n    let completionValue__gensym0;\n    {\n      trace.push(\"discarded\");\n      if (mode === 0) {\n        return 80;\n      }\n      completionValue__gensym0 = 3;\n    }\n    const target__gensym29 = completionValue__gensym0;\n    let matched__gensym30 = false;\n    if (!matched__gensym30) {\n      const seen = target__gensym29;\n      let completionValue__gensym1;\n      {\n        trace.push(seen);\n        if (mode === 1) {\n          return 81;\n        }\n        completionValue__gensym1 = false;\n      }\n      if (completionValue__gensym1) {\n        matched__gensym30 = true;\n        trace.push(\"wrong\");\n      }\n    }\n    if (!matched__gensym30) {\n      {\n        matched__gensym30 = true;\n        trace.push(\"discarded-fallback\");\n      }\n    }\n  }\n  {\n    let completionValue__gensym2;\n    {\n      trace.push(\"consumed\");\n      if (mode === 2) {\n        return 82;\n      }\n      completionValue__gensym2 = 4;\n    }\n    const target__gensym31 = completionValue__gensym2;\n    let matched__gensym32 = false;\n    if (!matched__gensym32) {\n      const seen = target__gensym31;\n      let completionValue__gensym3;\n      {\n        trace.push(seen);\n        if (mode === 3) {\n          return 83;\n        }\n        completionValue__gensym3 = false;\n      }\n      if (completionValue__gensym3) {\n        matched__gensym32 = true;\n        {\n          trace.push(\"wrong\");\n          return 90;\n        }\n      }\n    }\n    if (!matched__gensym32) {\n      {\n        matched__gensym32 = true;\n        {\n          trace.push(\"consumed-fallback\");\n          return 84;\n        }\n      }\n    }\n  }\n}\nconsole.log(JSON.stringify([chooseMatchHeader(0), chooseMatchHeader(1), chooseMatchHeader(2), chooseMatchHeader(3), chooseMatchHeader(4), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND completion-match-headers {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fd577415f2f6f6cc/completion-match-headers.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fd577415f2f6f6cc",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/completion-match-headers.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fd577415f2f6f6cc/completion-match-headers.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT completion-match-headers {"status":0,"success":true,"stdout":{"0":91,"1":56,"2":48,"3":44,"4":56,"5":49,"6":44,"7":56,"8":50,"9":44,"10":56,"11":51,"12":44,"13":56,"14":52,"15":44,"16":91,"17":34,"18":100,"19":105,"20":115,"21":99,"22":97,"23":114,"24":100,"25":101,"26":100,"27":34,"28":44,"29":34,"30":100,"31":105,"32":115,"33":99,"34":97,"35":114,"36":100,"37":101,"38":100,"39":34,"40":44,"41":51,"42":44,"43":34,"44":100,"45":105,"46":115,"47":99,"48":97,"49":114,"50":100,"51":101,"52":100,"53":34,"54":44,"55":51,"56":44,"57":34,"58":100,"59":105,"60":115,"61":99,"62":97,"63":114,"64":100,"65":101,"66":100,"67":45,"68":102,"69":97,"70":108,"71":108,"72":98,"73":97,"74":99,"75":107,"76":34,"77":44,"78":34,"79":99,"80":111,"81":110,"82":115,"83":117,"84":109,"85":101,"86":100,"87":34,"88":44,"89":34,"90":100,"91":105,"92":115,"93":99,"94":97,"95":114,"96":100,"97":101,"98":100,"99":34,"100":44,"101":51,"102":44,"103":34,"104":100,"105":105,"106":115,"107":99,"108":97,"109":114,"110":100,"111":101,"112":100,"113":45,"114":102,"115":97,"116":108,"117":108,"118":98,"119":97,"120":99,"121":107,"122":34,"123":44,"124":34,"125":99,"126":111,"127":110,"128":115,"129":117,"130":109,"131":101,"132":100,"133":34,"134":44,"135":52,"136":44,"137":34,"138":100,"139":105,"140":115,"141":99,"142":97,"143":114,"144":100,"145":101,"146":100,"147":34,"148":44,"149":51,"150":44,"151":34,"152":100,"153":105,"154":115,"155":99,"156":97,"157":114,"158":100,"159":101,"160":100,"161":45,"162":102,"163":97,"164":108,"165":108,"166":98,"167":97,"168":99,"169":107,"170":34,"171":44,"172":34,"173":99,"174":111,"175":110,"176":115,"177":117,"178":109,"179":101,"180":100,"181":34,"182":44,"183":52,"184":44,"185":34,"186":99,"187":111,"188":110,"189":115,"190":117,"191":109,"192":101,"193":100,"194":45,"195":102,"196":97,"197":108,"198":108,"199":98,"200":97,"201":99,"202":107,"203":34,"204":93,"205":93,"206":10},"stderr":{}}
+----- post-test output end -----
+  completion-match-headers ... ok (14ms)
+  completion-logical-operands ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN completion-logical-operands {"source":"(bind trace (array))\n(func lazy-results :args (:any stop) :returns :any :body\n  (bind first (and (do (trace:push \"first\") 0)\n                   (do (trace:push \"wrong-and\") (return 91))\n                   92))\n  (bind second (or (do (trace:push \"second\") \"kept\")\n                   (do (trace:push \"wrong-or\") (return 93))))\n  (return (and (do (trace:push first) true)\n               (do (trace:push second) (if stop (return 7)) \"next\")\n               (do (trace:push \"last\") (array first second)))))\n(func bound-logical :returns :any :body\n  (bind and (fn (:any a :any b) (array a b)))\n  (return (and (trace:push \"arg1\") (trace:push \"arg2\"))))\n(func pure-logical :returns :any :body\n  (or (and false \"wrong\") (and true \"pure\")))\n(console:log (JSON:stringify (array (lazy-results true) (lazy-results false)\n  (bound-logical) (pure-logical) trace)))\n","generated":"const trace = [];\nfunction lazyResults(stop) {\n  let completionValue__gensym0;\n  {\n    {\n      let completionValue__gensym1;\n      {\n        trace.push(\"first\");\n        completionValue__gensym1 = 0;\n      }\n      if (completionValue__gensym1) {\n        {\n          trace.push(\"wrong-and\");\n          return 91;\n        }\n      }\n      if (completionValue__gensym1) {\n        completionValue__gensym1 = 92;\n      }\n      completionValue__gensym0 = completionValue__gensym1;\n    }\n  }\n  const first = completionValue__gensym0;\n  let completionValue__gensym2;\n  {\n    {\n      let completionValue__gensym3;\n      {\n        trace.push(\"second\");\n        completionValue__gensym3 = \"kept\";\n      }\n      if (!completionValue__gensym3) {\n        {\n          trace.push(\"wrong-or\");\n          return 93;\n        }\n      }\n      completionValue__gensym2 = completionValue__gensym3;\n    }\n  }\n  const second = completionValue__gensym2;\n  {\n    let completionValue__gensym4;\n    {\n      trace.push(first);\n      completionValue__gensym4 = true;\n    }\n    if (completionValue__gensym4) {\n      {\n        trace.push(second);\n        if (stop) {\n          return 7;\n        }\n        completionValue__gensym4 = \"next\";\n      }\n    }\n    if (completionValue__gensym4) {\n      {\n        trace.push(\"last\");\n        completionValue__gensym4 = [first, second];\n      }\n    }\n    return completionValue__gensym4;\n  }\n}\nfunction boundLogical() {\n  const and = (a, b) => [a, b];\n  return and(trace.push(\"arg1\"), trace.push(\"arg2\"));\n}\nfunction pureLogical() {\n  return false && \"wrong\" || true && \"pure\";\n}\nconsole.log(JSON.stringify([lazyResults(true), lazyResults(false), boundLogical(), pureLogical(), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND completion-logical-operands {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/b044508d1c8509c6/completion-logical-operands.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/b044508d1c8509c6",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/completion-logical-operands.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/b044508d1c8509c6/completion-logical-operands.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT completion-logical-operands {"status":0,"success":true,"stdout":{"0":91,"1":55,"2":44,"3":91,"4":48,"5":44,"6":34,"7":107,"8":101,"9":112,"10":116,"11":34,"12":93,"13":44,"14":91,"15":49,"16":48,"17":44,"18":49,"19":49,"20":93,"21":44,"22":34,"23":112,"24":117,"25":114,"26":101,"27":34,"28":44,"29":91,"30":34,"31":102,"32":105,"33":114,"34":115,"35":116,"36":34,"37":44,"38":34,"39":115,"40":101,"41":99,"42":111,"43":110,"44":100,"45":34,"46":44,"47":48,"48":44,"49":34,"50":107,"51":101,"52":112,"53":116,"54":34,"55":44,"56":34,"57":102,"58":105,"59":114,"60":115,"61":116,"62":34,"63":44,"64":34,"65":115,"66":101,"67":99,"68":111,"69":110,"70":100,"71":34,"72":44,"73":48,"74":44,"75":34,"76":107,"77":101,"78":112,"79":116,"80":34,"81":44,"82":34,"83":108,"84":97,"85":115,"86":116,"87":34,"88":44,"89":34,"90":97,"91":114,"92":103,"93":49,"94":34,"95":44,"96":34,"97":97,"98":114,"99":103,"100":50,"101":34,"102":93,"103":93,"104":10},"stderr":{}}
+----- post-test output end -----
+  completion-logical-operands ... ok (16ms)
+  completion-nullish-operands ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN completion-nullish-operands {"source":"(bind trace (array))\n(func nullish-result :args (:any input) :returns :any :body\n  (bind result\n    (kernel:?? (do (trace:push \"left\") input)\n               (do (trace:push \"right\") (return \"early\") \"unreachable\")\n               (do (trace:push \"wrong\") 91)))\n  (trace:push \"after\")\n  result)\n(console:log (JSON:stringify (array (nullish-result 0) (nullish-result false)\n  (nullish-result null) (nullish-result undefined) trace)))\n","generated":"const trace = [];\nfunction nullishResult(input) {\n  let completionValue__gensym0;\n  {\n    {\n      let completionValue__gensym1;\n      {\n        trace.push(\"left\");\n        completionValue__gensym1 = input;\n      }\n      if (completionValue__gensym1 === null || completionValue__gensym1 === void 0) {\n        {\n          trace.push(\"right\");\n          return \"early\";\n          completionValue__gensym1 = \"unreachable\";\n        }\n      }\n      if (completionValue__gensym1 === null || completionValue__gensym1 === void 0) {\n        {\n          trace.push(\"wrong\");\n          completionValue__gensym1 = 91;\n        }\n      }\n      completionValue__gensym0 = completionValue__gensym1;\n    }\n  }\n  const result = completionValue__gensym0;\n  trace.push(\"after\");\n  return result;\n}\nconsole.log(JSON.stringify([nullishResult(0), nullishResult(false), nullishResult(null), nullishResult(undefined), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND completion-nullish-operands {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/e426e9483ea5fc29/completion-nullish-operands.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/e426e9483ea5fc29",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/completion-nullish-operands.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/e426e9483ea5fc29/completion-nullish-operands.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT completion-nullish-operands {"status":0,"success":true,"stdout":{"0":91,"1":48,"2":44,"3":102,"4":97,"5":108,"6":115,"7":101,"8":44,"9":34,"10":101,"11":97,"12":114,"13":108,"14":121,"15":34,"16":44,"17":34,"18":101,"19":97,"20":114,"21":108,"22":121,"23":34,"24":44,"25":91,"26":34,"27":108,"28":101,"29":102,"30":116,"31":34,"32":44,"33":34,"34":97,"35":102,"36":116,"37":101,"38":114,"39":34,"40":44,"41":34,"42":108,"43":101,"44":102,"45":116,"46":34,"47":44,"48":34,"49":97,"50":102,"51":116,"52":101,"53":114,"54":34,"55":44,"56":34,"57":108,"58":101,"59":102,"60":116,"61":34,"62":44,"63":34,"64":114,"65":105,"66":103,"67":104,"68":116,"69":34,"70":44,"71":34,"72":108,"73":101,"74":102,"75":116,"76":34,"77":44,"78":34,"79":114,"80":105,"81":103,"82":104,"83":116,"84":34,"85":93,"86":93,"87":10},"stderr":{}}
+----- post-test output end -----
+  completion-nullish-operands ... ok (14ms)
+  ordered-lexical-bind-call ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN ordered-lexical-bind-call {"source":"(bind trace (array))\n(func original-call :args (:any earlier :any middle :any later) :returns :any :body\n  (trace:push \"old\")\n  (array \"old\" middle))\n(func replacement-call :args (:any earlier :any middle :any later) :returns :any :body\n  (trace:push \"new\")\n  (array \"new\" middle))\n(func use-lexical-call :args (:any callable :any stop) :returns :any :body\n  (bind answer\n    (callable\n      (trace:push \"earlier\")\n      (do\n        (trace:push \"middle\")\n        (kernel:= callable replacement-call)\n        (if stop (return 91))\n        8)\n      (trace:push \"later\")))\n  (trace:push \"after\")\n  answer)\n(console:log (JSON:stringify\n  (array (use-lexical-call original-call true) (use-lexical-call original-call false) trace)))\n","generated":"const trace = [];\nfunction originalCall(earlier, middle, later) {\n  trace.push(\"old\");\n  return [\"old\", middle];\n}\nfunction replacementCall(earlier, middle, later) {\n  trace.push(\"new\");\n  return [\"new\", middle];\n}\nfunction useLexicalCall(callable, stop) {\n  let completionValue__gensym0;\n  {\n    {\n      const completionValue__gensym1 = callable;\n      const completionValue__gensym2 = trace.push(\"earlier\");\n      let completionValue__gensym3;\n      {\n        trace.push(\"middle\");\n        callable = replacementCall;\n        if (stop) {\n          return 91;\n        }\n        completionValue__gensym3 = 8;\n      }\n      completionValue__gensym0 = completionValue__gensym1(completionValue__gensym2, completionValue__gensym3, trace.push(\"later\"));\n    }\n  }\n  const answer = completionValue__gensym0;\n  trace.push(\"after\");\n  return answer;\n}\nconsole.log(JSON.stringify([useLexicalCall(originalCall, true), useLexicalCall(originalCall, false), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND ordered-lexical-bind-call {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3f10ea81be9bf973/ordered-lexical-bind-call.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3f10ea81be9bf973",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/ordered-lexical-bind-call.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/3f10ea81be9bf973/ordered-lexical-bind-call.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT ordered-lexical-bind-call {"status":0,"success":true,"stdout":{"0":91,"1":57,"2":49,"3":44,"4":91,"5":34,"6":111,"7":108,"8":100,"9":34,"10":44,"11":56,"12":93,"13":44,"14":91,"15":34,"16":101,"17":97,"18":114,"19":108,"20":105,"21":101,"22":114,"23":34,"24":44,"25":34,"26":109,"27":105,"28":100,"29":100,"30":108,"31":101,"32":34,"33":44,"34":34,"35":101,"36":97,"37":114,"38":108,"39":105,"40":101,"41":114,"42":34,"43":44,"44":34,"45":109,"46":105,"47":100,"48":100,"49":108,"50":101,"51":34,"52":44,"53":34,"54":108,"55":97,"56":116,"57":101,"58":114,"59":34,"60":44,"61":34,"62":111,"63":108,"64":100,"65":34,"66":44,"67":34,"68":97,"69":102,"70":116,"71":101,"72":114,"73":34,"74":93,"75":93,"76":10},"stderr":{}}
+----- post-test output end -----
+  ordered-lexical-bind-call ... ok (16ms)
+  ordered-lexical-statement-call ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN ordered-lexical-statement-call {"source":"(bind trace (array))\n(func observe-call :args (:any earlier :any middle) :returns :any :body\n  (trace:push middle))\n(func use-statement-call :args (:any and :any stop) :returns :any :body\n  (and (trace:push \"first\")\n       (do (trace:push \"middle\") (if stop (return 90)) 4))\n  (trace:push \"after\")\n  91)\n(bind early (use-statement-call observe-call true))\n(bind normal (use-statement-call observe-call false))\n(try\n  (use-statement-call 0 false)\n  (catch problem (trace:push (instanceof problem TypeError))))\n(console:log (JSON:stringify (array early normal trace)))\n","generated":"const trace = [];\nfunction observeCall(earlier, middle) {\n  return trace.push(middle);\n}\nfunction useStatementCall(and, stop) {\n  {\n    const completionValue__gensym0 = and;\n    const completionValue__gensym1 = trace.push(\"first\");\n    let completionValue__gensym2;\n    {\n      trace.push(\"middle\");\n      if (stop) {\n        return 90;\n      }\n      completionValue__gensym2 = 4;\n    }\n    completionValue__gensym0(completionValue__gensym1, completionValue__gensym2);\n  }\n  trace.push(\"after\");\n  return 91;\n}\nconst early = useStatementCall(observeCall, true);\nconst normal = useStatementCall(observeCall, false);\ntry {\n  useStatementCall(0, false);\n} catch (problem) {\n  trace.push(problem instanceof TypeError);\n}\nconsole.log(JSON.stringify([early, normal, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND ordered-lexical-statement-call {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/2f50c1045da0f78b/ordered-lexical-statement-call.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/2f50c1045da0f78b",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/ordered-lexical-statement-call.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/2f50c1045da0f78b/ordered-lexical-statement-call.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT ordered-lexical-statement-call {"status":0,"success":true,"stdout":{"0":91,"1":57,"2":48,"3":44,"4":57,"5":49,"6":44,"7":91,"8":34,"9":102,"10":105,"11":114,"12":115,"13":116,"14":34,"15":44,"16":34,"17":109,"18":105,"19":100,"20":100,"21":108,"22":101,"23":34,"24":44,"25":34,"26":102,"27":105,"28":114,"29":115,"30":116,"31":34,"32":44,"33":34,"34":109,"35":105,"36":100,"37":100,"38":108,"39":101,"40":34,"41":44,"42":52,"43":44,"44":34,"45":97,"46":102,"47":116,"48":101,"49":114,"50":34,"51":44,"52":34,"53":102,"54":105,"55":114,"56":115,"57":116,"58":34,"59":44,"60":34,"61":109,"62":105,"63":100,"64":100,"65":108,"66":101,"67":34,"68":44,"69":116,"70":114,"71":117,"72":101,"73":93,"74":93,"75":10},"stderr":{}}
+----- post-test output end -----
+  ordered-lexical-statement-call ... ok (16ms)
+  computed-member-ordered-throws ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN computed-member-ordered-throws {"source":"(bind trace (array))\n(bind getter-error (new Error \"getter\"))\n(bind argument-error (new Error \"argument\"))\n(func actual-method :args (:any earlier :any middle :any later) :returns :any :body\n  (trace:push \"call\")\n  (array this:label middle))\n(func make-target :args (:any mode) :returns :any :body\n  (bind target (obj :label \"receiver\"))\n  (Object:defineProperty target \"method\"\n    (obj :get (fn ()\n      (trace:push \"getter\")\n      (if (= mode 1) (throw getter-error))\n      actual-method)))\n  target)\n(func invoke-computed :args (:any mode) :returns :any :body\n  (bind key (obj))\n  (Object:defineProperty key Symbol:toPrimitive\n    (obj :value (fn (:any hint) (trace:push hint) \"method\")))\n  (bind answer\n    ((get\n       (do (trace:push \"base\") (make-target mode))\n       (do (trace:push \"key\") (if (= mode 3) (return 93)) key))\n     (trace:push \"first\")\n     (do (trace:push \"arg\") (if (= mode 2) (throw argument-error)) 8)\n     (trace:push \"last\")))\n  (trace:push \"after\")\n  answer)\n(func observe :args (:any mode) :returns :any :body\n  (try\n    (return (invoke-computed mode))\n    (catch problem\n      (return (array (= problem getter-error)\n                     (= problem argument-error)\n                     (instanceof problem TypeError))))))\n(console:log (JSON:stringify\n  (array (observe 0) (observe 1) (observe 2) (observe 3) trace)))\n","generated":"function lyknHostReflectApply0(fn, receiver, argv) {\n  return Reflect.apply(fn, receiver, argv);\n}\nconst trace = [];\nconst getterError = new Error(\"getter\");\nconst argumentError = new Error(\"argument\");\nfunction actualMethod(earlier, middle, later) {\n  trace.push(\"call\");\n  return [this.label, middle];\n}\nfunction makeTarget(mode) {\n  const target = {\n    label: \"receiver\"\n  };\n  Object.defineProperty(target, \"method\", {\n    get: () => {\n      trace.push(\"getter\");\n      if (mode === 1) {\n        throw getterError;\n      }\n      return actualMethod;\n    }\n  });\n  return target;\n}\nfunction invokeComputed(mode) {\n  const key = {};\n  Object.defineProperty(key, Symbol.toPrimitive, {\n    value: hint => {\n      trace.push(hint);\n      return \"method\";\n    }\n  });\n  let completionValue__gensym0;\n  {\n    {\n      let completionValue__gensym1;\n      {\n        trace.push(\"base\");\n        completionValue__gensym1 = makeTarget(mode);\n      }\n      const completionValue__gensym2 = completionValue__gensym1;\n      let completionValue__gensym3;\n      {\n        trace.push(\"key\");\n        if (mode === 3) {\n          return 93;\n        }\n        completionValue__gensym3 = key;\n      }\n      const completionValue__gensym4 = completionValue__gensym2[completionValue__gensym3];\n      const completionValue__gensym5 = trace.push(\"first\");\n      let completionValue__gensym6;\n      {\n        trace.push(\"arg\");\n        if (mode === 2) {\n          throw argumentError;\n        }\n        completionValue__gensym6 = 8;\n      }\n      const completionValue__gensym7 = [completionValue__gensym5, completionValue__gensym6, trace.push(\"last\")];\n      completionValue__gensym0 = lyknHostReflectApply0(completionValue__gensym4, completionValue__gensym2, completionValue__gensym7);\n    }\n  }\n  const answer = completionValue__gensym0;\n  trace.push(\"after\");\n  return answer;\n}\nfunction observe(mode) {\n  try {\n    return invokeComputed(mode);\n  } catch (problem) {\n    return [problem === getterError, problem === argumentError, problem instanceof TypeError];\n  }\n}\nconsole.log(JSON.stringify([observe(0), observe(1), observe(2), observe(3), trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND computed-member-ordered-throws {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/e84510d13d8db63d/computed-member-ordered-throws.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/e84510d13d8db63d",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/computed-member-ordered-throws.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/e84510d13d8db63d/computed-member-ordered-throws.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT computed-member-ordered-throws {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":34,"3":114,"4":101,"5":99,"6":101,"7":105,"8":118,"9":101,"10":114,"11":34,"12":44,"13":56,"14":93,"15":44,"16":91,"17":116,"18":114,"19":117,"20":101,"21":44,"22":102,"23":97,"24":108,"25":115,"26":101,"27":44,"28":102,"29":97,"30":108,"31":115,"32":101,"33":93,"34":44,"35":91,"36":102,"37":97,"38":108,"39":115,"40":101,"41":44,"42":116,"43":114,"44":117,"45":101,"46":44,"47":102,"48":97,"49":108,"50":115,"51":101,"52":93,"53":44,"54":57,"55":51,"56":44,"57":91,"58":34,"59":98,"60":97,"61":115,"62":101,"63":34,"64":44,"65":34,"66":107,"67":101,"68":121,"69":34,"70":44,"71":34,"72":115,"73":116,"74":114,"75":105,"76":110,"77":103,"78":34,"79":44,"80":34,"81":103,"82":101,"83":116,"84":116,"85":101,"86":114,"87":34,"88":44,"89":34,"90":102,"91":105,"92":114,"93":115,"94":116,"95":34,"96":44,"97":34,"98":97,"99":114,"100":103,"101":34,"102":44,"103":34,"104":108,"105":97,"106":115,"107":116,"108":34,"109":44,"110":34,"111":99,"112":97,"113":108,"114":108,"115":34,"116":44,"117":34,"118":97,"119":102,"120":116,"121":101,"122":114,"123":34,"124":44,"125":34,"126":98,"127":97,"128":115,"129":101,"130":34,"131":44,"132":34,"133":107,"134":101,"135":121,"136":34,"137":44,"138":34,"139":115,"140":116,"141":114,"142":105,"143":110,"144":103,"145":34,"146":44,"147":34,"148":103,"149":101,"150":116,"151":116,"152":101,"153":114,"154":34,"155":44,"156":34,"157":98,"158":97,"159":115,"160":101,"161":34,"162":44,"163":34,"164":107,"165":101,"166":121,"167":34,"168":44,"169":34,"170":115,"171":116,"172":114,"173":105,"174":110,"175":103,"176":34,"177":44,"178":34,"179":103,"180":101,"181":116,"182":116,"183":101,"184":114,"185":34,"186":44,"187":34,"188":102,"189":105,"190":114,"191":115,"192":116,"193":34,"194":44,"195":34,"196":97,"197":114,"198":103,"199":34,"200":44,"201":34,"202":98,"203":97,"204":115,"205":101,"206":34,"207":44,"208":34,"209":107,"210":101,"211":121,"212":34,"213":93,"214":93,"215":10},"stderr":{}}
+----- post-test output end -----
+  computed-member-ordered-throws ... ok (18ms)
+  computed-member-no-prefix ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN computed-member-no-prefix {"source":"(func call-bound :args (:any get) :returns :any :body\n  ((get 1 2) 3))\n(bind bound\n  (fn (:any first :any second)\n    (fn (:any third) (array first second third))))\n(bind pure-receiver (obj :read-entry (fn (:any n) (+ n 1))))\n(func call-pure :args (:any receiver) :returns :any :body\n  ((kernel:get receiver \"readEntry\") 3))\n(console:log (JSON:stringify (array (call-bound bound) (call-pure pure-receiver))))\n","generated":"function callBound(get) {\n  return get(1, 2)(3);\n}\nconst bound = (first, second) => third => [first, second, third];\nconst pureReceiver = {\n  readEntry: n => n + 1\n};\nfunction callPure(receiver) {\n  return receiver[\"readEntry\"](3);\n}\nconsole.log(JSON.stringify([callBound(bound), callPure(pureReceiver)]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND computed-member-no-prefix {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/db32bb8d2ec9cad1/computed-member-no-prefix.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/db32bb8d2ec9cad1",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/computed-member-no-prefix.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/db32bb8d2ec9cad1/computed-member-no-prefix.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT computed-member-no-prefix {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":49,"3":44,"4":50,"5":44,"6":51,"7":93,"8":44,"9":52,"10":93,"11":10},"stderr":{}}
+----- post-test output end -----
+  computed-member-no-prefix ... ok (15ms)
+  ordered-member-pure-colon-call ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN ordered-member-pure-colon-call {"source":"(func probe :args (:any receiver) :returns :any :body\n  (receiver:read-entry 3))\n(bind receiver (obj :read-entry (fn (:any value) (+ value 1))))\n(console:log (probe receiver))\n","generated":"function probe(receiver) {\n  return receiver.readEntry(3);\n}\nconst receiver = {\n  readEntry: value => value + 1\n};\nconsole.log(probe(receiver));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND ordered-member-pure-colon-call {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fedb5a690a4c76aa/ordered-member-pure-colon-call.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fedb5a690a4c76aa",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/ordered-member-calls/pure-colon-call.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fedb5a690a4c76aa/ordered-member-pure-colon-call.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT ordered-member-pure-colon-call {"status":0,"success":true,"stdout":{"0":52,"1":10},"stderr":{}}
+----- post-test output end -----
+  ordered-member-pure-colon-call ... ok (15ms)
+  anonymous-completion-names ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN anonymous-completion-names {"source":"(func name-of :args (:any callback :any _other) :returns :any :body\n  callback:name)\n(func names :args (:any callee) :returns :any :body\n  (bind ordinary (callee (fn () 1) 0))\n  (bind lifted (callee (fn () 1) (do 0 0)))\n  (bind value (do (fn () 1)))\n  (bind named-callback (fn () 1))\n  (bind lifted-lambda (callee (lambda () 1) (do 0 0)))\n  (bind lifted-generator (callee (kernel:function* () (yield 1)) (do 0 0)))\n  (bind lifted-class (callee (class-expr ()) (do 0 0)))\n  (bind lifted-async (callee (kernel:async (kernel:=> () 1)) (do 0 0)))\n  (bind bound-result ((get (fn () 1) \"bind\") (do 0 0)))\n  (array ordinary lifted value:name named-callback:name\n         lifted-lambda lifted-generator lifted-class lifted-async bound-result:name))\n(console:log (JSON:stringify (names name-of)))\n","generated":"function lyknHostReflectApply0(fn, receiver, argv) {\n  return Reflect.apply(fn, receiver, argv);\n}\nfunction nameOf(callback, _other) {\n  return callback.name;\n}\nfunction names(callee) {\n  const ordinary = callee(() => 1, 0);\n  let completionValue__gensym0;\n  {\n    {\n      const completionValue__gensym1 = callee;\n      const completionValue__gensym2 = true ? () => 1 : void 0;\n      let completionValue__gensym3;\n      {\n        0;\n        completionValue__gensym3 = 0;\n      }\n      completionValue__gensym0 = completionValue__gensym1(completionValue__gensym2, completionValue__gensym3);\n    }\n  }\n  const lifted = completionValue__gensym0;\n  let completionValue__gensym4;\n  {\n    {\n      completionValue__gensym4 = true ? () => 1 : void 0;\n    }\n  }\n  const value = completionValue__gensym4;\n  const namedCallback = () => 1;\n  let completionValue__gensym5;\n  {\n    {\n      const completionValue__gensym6 = callee;\n      const completionValue__gensym7 = true ? () => 1 : void 0;\n      let completionValue__gensym8;\n      {\n        0;\n        completionValue__gensym8 = 0;\n      }\n      completionValue__gensym5 = completionValue__gensym6(completionValue__gensym7, completionValue__gensym8);\n    }\n  }\n  const liftedLambda = completionValue__gensym5;\n  let completionValue__gensym9;\n  {\n    {\n      const completionValue__gensym10 = callee;\n      const completionValue__gensym11 = true ? function* () {\n        yield 1;\n      } : void 0;\n      let completionValue__gensym12;\n      {\n        0;\n        completionValue__gensym12 = 0;\n      }\n      completionValue__gensym9 = completionValue__gensym10(completionValue__gensym11, completionValue__gensym12);\n    }\n  }\n  const liftedGenerator = completionValue__gensym9;\n  let completionValue__gensym13;\n  {\n    {\n      const completionValue__gensym14 = callee;\n      const completionValue__gensym15 = true ? class {} : void 0;\n      let completionValue__gensym16;\n      {\n        0;\n        completionValue__gensym16 = 0;\n      }\n      completionValue__gensym13 = completionValue__gensym14(completionValue__gensym15, completionValue__gensym16);\n    }\n  }\n  const liftedClass = completionValue__gensym13;\n  let completionValue__gensym17;\n  {\n    {\n      const completionValue__gensym18 = callee;\n      const completionValue__gensym19 = true ? async () => 1 : void 0;\n      let completionValue__gensym20;\n      {\n        0;\n        completionValue__gensym20 = 0;\n      }\n      completionValue__gensym17 = completionValue__gensym18(completionValue__gensym19, completionValue__gensym20);\n    }\n  }\n  const liftedAsync = completionValue__gensym17;\n  let completionValue__gensym21;\n  {\n    {\n      const completionValue__gensym22 = true ? () => 1 : void 0;\n      const completionValue__gensym23 = completionValue__gensym22[\"bind\"];\n      let completionValue__gensym24;\n      {\n        0;\n        completionValue__gensym24 = 0;\n      }\n      const completionValue__gensym25 = [completionValue__gensym24];\n      completionValue__gensym21 = lyknHostReflectApply0(completionValue__gensym23, completionValue__gensym22, completionValue__gensym25);\n    }\n  }\n  const boundResult = completionValue__gensym21;\n  return [ordinary, lifted, value.name, namedCallback.name, liftedLambda, liftedGenerator, liftedClass, liftedAsync, boundResult.name];\n}\nconsole.log(JSON.stringify(names(nameOf)));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND anonymous-completion-names {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/9b48dbc9dc1f20a2/anonymous-completion-names.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/9b48dbc9dc1f20a2",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/anonymous-completion-names.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/9b48dbc9dc1f20a2/anonymous-completion-names.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT anonymous-completion-names {"status":0,"success":true,"stdout":{"0":91,"1":34,"2":34,"3":44,"4":34,"5":34,"6":44,"7":34,"8":34,"9":44,"10":34,"11":110,"12":97,"13":109,"14":101,"15":100,"16":67,"17":97,"18":108,"19":108,"20":98,"21":97,"22":99,"23":107,"24":34,"25":44,"26":34,"27":34,"28":44,"29":34,"30":34,"31":44,"32":34,"33":34,"34":44,"35":34,"36":34,"37":44,"38":34,"39":98,"40":111,"41":117,"42":110,"43":100,"44":32,"45":34,"46":93,"47":10},"stderr":{}}
+----- post-test output end -----
+  anonymous-completion-names ... ok (20ms)
+  ordered-simple-assignment ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN ordered-simple-assignment {"source":"(bind trace (array))\n(bind original (obj :a 10))\n(bind replacement (obj :a 40 :c 50))\n(bind key (obj))\n(Object:defineProperty key Symbol:toPrimitive\n  (obj :value (fn (:any hint) (trace:push hint) \"a\")))\n(func assign-target :args (:any target :any stop) :returns :any :body\n  (bind result\n    (set-symbol! target (do (trace:push \"key\") key)\n      (do (trace:push \"rhs\") (kernel:= target replacement)\n          (if stop (return 95)) 5)))\n  (trace:push \"after\")\n  result)\n(func write-statement :args (:any target :any stop) :returns :any :body\n  (kernel:= (get target \"c\")\n    (do (trace:push \"statement-rhs\") (if stop (return 96)) 8))\n  (trace:push \"statement-after\")\n  target:c)\n(bind early (assign-target original true))\n(bind before (array original:a replacement:a))\n(bind normal (assign-target original false))\n(bind early-statement (write-statement replacement true))\n(bind statement-before replacement:c)\n(bind normal-statement (write-statement replacement false))\n(console:log (JSON:stringify\n  (array early before normal original:a replacement:a early-statement\n         statement-before normal-statement replacement:c trace)))\n","generated":"const trace = [];\nconst original = {\n  a: 10\n};\nconst replacement = {\n  a: 40,\n  c: 50\n};\nconst key = {};\nObject.defineProperty(key, Symbol.toPrimitive, {\n  value: hint => {\n    trace.push(hint);\n    return \"a\";\n  }\n});\nfunction assignTarget(target, stop) {\n  let completionValue__gensym0;\n  {\n    {\n      const completionValue__gensym1 = target;\n      let completionValue__gensym2;\n      {\n        trace.push(\"key\");\n        completionValue__gensym2 = key;\n      }\n      const completionValue__gensym3 = completionValue__gensym2;\n      let completionValue__gensym4;\n      {\n        trace.push(\"rhs\");\n        target = replacement;\n        if (stop) {\n          return 95;\n        }\n        completionValue__gensym4 = 5;\n      }\n      completionValue__gensym0 = completionValue__gensym1[completionValue__gensym3] = completionValue__gensym4;\n    }\n  }\n  const result = completionValue__gensym0;\n  trace.push(\"after\");\n  return result;\n}\nfunction writeStatement(target, stop) {\n  {\n    const completionValue__gensym5 = target;\n    const completionValue__gensym6 = \"c\";\n    let completionValue__gensym7;\n    {\n      trace.push(\"statement-rhs\");\n      if (stop) {\n        return 96;\n      }\n      completionValue__gensym7 = 8;\n    }\n    completionValue__gensym5[completionValue__gensym6] = completionValue__gensym7;\n  }\n  trace.push(\"statement-after\");\n  return target.c;\n}\nconst early = assignTarget(original, true);\nconst before = [original.a, replacement.a];\nconst normal = assignTarget(original, false);\nconst earlyStatement = writeStatement(replacement, true);\nconst statementBefore = replacement.c;\nconst normalStatement = writeStatement(replacement, false);\nconsole.log(JSON.stringify([early, before, normal, original.a, replacement.a, earlyStatement, statementBefore, normalStatement, replacement.c, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND ordered-simple-assignment {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fb44f7512fe39233/ordered-simple-assignment.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fb44f7512fe39233",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/ordered-simple-assignment.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/fb44f7512fe39233/ordered-simple-assignment.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT ordered-simple-assignment {"status":0,"success":true,"stdout":{"0":91,"1":57,"2":53,"3":44,"4":91,"5":49,"6":48,"7":44,"8":52,"9":48,"10":93,"11":44,"12":53,"13":44,"14":53,"15":44,"16":52,"17":48,"18":44,"19":57,"20":54,"21":44,"22":53,"23":48,"24":44,"25":56,"26":44,"27":56,"28":44,"29":91,"30":34,"31":107,"32":101,"33":121,"34":34,"35":44,"36":34,"37":114,"38":104,"39":115,"40":34,"41":44,"42":34,"43":107,"44":101,"45":121,"46":34,"47":44,"48":34,"49":114,"50":104,"51":115,"52":34,"53":44,"54":34,"55":115,"56":116,"57":114,"58":105,"59":110,"60":103,"61":34,"62":44,"63":34,"64":97,"65":102,"66":116,"67":101,"68":114,"69":34,"70":44,"71":34,"72":115,"73":116,"74":97,"75":116,"76":101,"77":109,"78":101,"79":110,"80":116,"81":45,"82":114,"83":104,"84":115,"85":34,"86":44,"87":34,"88":115,"89":116,"90":97,"91":116,"92":101,"93":109,"94":101,"95":110,"96":116,"97":45,"98":114,"99":104,"100":115,"101":34,"102":44,"103":34,"104":115,"105":116,"106":97,"107":116,"108":101,"109":109,"110":101,"111":110,"112":116,"113":45,"114":97,"115":102,"116":116,"117":101,"118":114,"119":34,"120":93,"121":93,"122":10},"stderr":{}}
+----- post-test output end -----
+  ordered-simple-assignment ... ok (16ms)
+  ordered-literal-compound-assignment ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN ordered-literal-compound-assignment {"source":"(bind trace (array))\n(bind original (obj :stored 10))\n(bind replacement (obj :stored 40))\n(bind previous (obj))\n(Object:defineProperty previous Symbol:toPrimitive\n  (obj :value (fn (:any hint) (trace:push (array \"convert\" hint)) original:stored)))\n(Object:defineProperty original \"slot\"\n  (obj :get (fn () (trace:push \"get\") previous)\n       :set (fn (:any next) (trace:push (array \"set\" next))\n              (set! original:stored next))))\n(func add-slot :args (:any target :any stop) :returns :any :body\n  (bind result\n    (kernel:+= (kernel:get target \"slot\")\n      (do (trace:push \"rhs\") (kernel:= target replacement)\n          (if stop (return 91)) 4)))\n  (trace:push \"after\")\n  result)\n(bind early (add-slot original true))\n(bind before (array original:stored replacement:stored))\n(bind normal (add-slot original false))\n(console:log (JSON:stringify\n  (array early before normal original:stored replacement:stored trace)))\n","generated":"const trace = [];\nconst original = {\n  stored: 10\n};\nconst replacement = {\n  stored: 40\n};\nconst previous = {};\nObject.defineProperty(previous, Symbol.toPrimitive, {\n  value: hint => {\n    trace.push([\"convert\", hint]);\n    return original.stored;\n  }\n});\nObject.defineProperty(original, \"slot\", {\n  get: () => {\n    trace.push(\"get\");\n    return previous;\n  },\n  set: next => {\n    trace.push([\"set\", next]);\n    return original.stored = next;\n  }\n});\nfunction addSlot(target, stop) {\n  let completionValue__gensym0;\n  {\n    {\n      const completionValue__gensym1 = target;\n      const completionValue__gensym2 = completionValue__gensym1[\"slot\"];\n      let completionValue__gensym3;\n      {\n        trace.push(\"rhs\");\n        target = replacement;\n        if (stop) {\n          return 91;\n        }\n        completionValue__gensym3 = 4;\n      }\n      completionValue__gensym0 = completionValue__gensym1[\"slot\"] = completionValue__gensym2 + completionValue__gensym3;\n    }\n  }\n  const result = completionValue__gensym0;\n  trace.push(\"after\");\n  return result;\n}\nconst early = addSlot(original, true);\nconst before = [original.stored, replacement.stored];\nconst normal = addSlot(original, false);\nconsole.log(JSON.stringify([early, before, normal, original.stored, replacement.stored, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND ordered-literal-compound-assignment {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/15a709ca48703b5c/ordered-literal-compound-assignment.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/15a709ca48703b5c",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/ordered-literal-compound-assignment.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/15a709ca48703b5c/ordered-literal-compound-assignment.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT ordered-literal-compound-assignment {"status":0,"success":true,"stdout":{"0":91,"1":57,"2":49,"3":44,"4":91,"5":49,"6":48,"7":44,"8":52,"9":48,"10":93,"11":44,"12":49,"13":52,"14":44,"15":49,"16":52,"17":44,"18":52,"19":48,"20":44,"21":91,"22":34,"23":103,"24":101,"25":116,"26":34,"27":44,"28":34,"29":114,"30":104,"31":115,"32":34,"33":44,"34":34,"35":103,"36":101,"37":116,"38":34,"39":44,"40":34,"41":114,"42":104,"43":115,"44":34,"45":44,"46":91,"47":34,"48":99,"49":111,"50":110,"51":118,"52":101,"53":114,"54":116,"55":34,"56":44,"57":34,"58":100,"59":101,"60":102,"61":97,"62":117,"63":108,"64":116,"65":34,"66":93,"67":44,"68":91,"69":34,"70":115,"71":101,"72":116,"73":34,"74":44,"75":49,"76":52,"77":93,"78":44,"79":34,"80":97,"81":102,"82":116,"83":101,"84":114,"85":34,"86":93,"87":93,"88":10},"stderr":{}}
+----- post-test output end -----
+  ordered-literal-compound-assignment ... ok (15ms)
+  ordinary-assignment-preservation ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN ordinary-assignment-preservation {"source":"(func plain-writes :args (:any box :any local) :returns :any :body\n  (bind first (set-symbol! box \"a\" 2))\n  (bind second (kernel:+= (get box \"a\") 3))\n  (bind third (kernel:= local 6))\n  (array first second third box:a local))\n(func local-protected :args (:any Reflect) :returns :any :body\n  (bind result (set-symbol! Reflect \"apply\" 7))\n  (array result Reflect:apply))\n(console:log (JSON:stringify\n  (array (plain-writes (obj :a 1) 0) (local-protected (obj :apply 0)))))\n","generated":"function plainWrites(box, local) {\n  const first = box[\"a\"] = 2;\n  const second = box[\"a\"] += 3;\n  const third = local = 6;\n  return [first, second, third, box.a, local];\n}\nfunction localProtected(Reflect) {\n  const result = Reflect[\"apply\"] = 7;\n  return [result, Reflect.apply];\n}\nconsole.log(JSON.stringify([plainWrites({\n  a: 1\n}, 0), localProtected({\n  apply: 0\n})]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND ordinary-assignment-preservation {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/179bf5d435b38ecb/ordinary-assignment-preservation.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/179bf5d435b38ecb",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/ordinary-assignment-preservation.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/179bf5d435b38ecb/ordinary-assignment-preservation.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT ordinary-assignment-preservation {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":50,"3":44,"4":53,"5":44,"6":54,"7":44,"8":53,"9":44,"10":54,"11":93,"12":44,"13":91,"14":55,"15":44,"16":55,"17":93,"18":93,"19":10},"stderr":{}}
+----- post-test output end -----
+  ordinary-assignment-preservation ... ok (14ms)
+  ordered-argument-spread ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN ordered-argument-spread {"source":"(bind trace (array))\n(bind iteration-error (new Error \"iteration\"))\n(genfunc produce-items :args (:any fail) :yields :any :body\n  (trace:push \"next0\")\n  (yield 1)\n  (trace:push \"next1\")\n  (if fail (throw iteration-error))\n  (yield 2)\n  (trace:push \"done\"))\n(func make-items :args (:any fail) :returns :any :body\n  (bind iterable (obj))\n  (Object:defineProperty iterable Symbol:iterator\n    (obj :value (fn () (trace:push \"iterator\") (produce-items fail))))\n  iterable)\n(func lexical-target :args (:any a :any b :any c :any d) :returns :any :body\n  (trace:push \"lexical\")\n  (array a b c d))\n(func invoke-lexical :args (:any target :any fail :any stop) :returns :any :body\n  (target (do (trace:push \"before\") 0)\n          (spread (make-items fail))\n          (do (trace:push \"late\") (if stop (return 7)) 3)))\n(func method-target :args (:any a :any b :any c :any d) :returns :any :body\n  (trace:push (array \"method\" this:marker))\n  (array a b c d))\n(func make-receiver :returns :any :body\n  (bind receiver (obj :marker \"receiver\"))\n  (Object:defineProperty receiver \"run\"\n    (obj :get (fn () (trace:push \"getter\") method-target)))\n  receiver)\n(func invoke-static :args (:any receiver) :returns :any :body\n  (receiver:run (do (trace:push \"before\") 0)\n                (spread (make-items false))\n                (do (trace:push \"late\") 3)))\n(func invoke-computed :args (:any receiver) :returns :any :body\n  ((get receiver (do (trace:push \"key\") \"run\"))\n   (do (trace:push \"before\") 0)\n   (kernel:spread (do (trace:push \"operand\") (make-items false)))\n   (do (trace:push \"late\") 3)))\n(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n  ((get receiver (do (return 7) \"method\")) (spread items)))\n(func observe-failure :returns :any :body\n  (try (return (invoke-lexical lexical-target true false))\n       (catch problem (return (array (= problem iteration-error))))))\n(bind normal (invoke-lexical lexical-target false false))\n(bind early (invoke-lexical lexical-target false true))\n(bind failed (observe-failure))\n(bind static-result (invoke-static (make-receiver)))\n(bind computed-result (invoke-computed (make-receiver)))\n(bind header-return (mixed-computed-spread (make-receiver) (make-items false)))\n(console:log (JSON:stringify\n  (array normal early failed static-result computed-result header-return trace)))\n","generated":"function lyknHostReflectApply0(fn, receiver, argv) {\n  return Reflect.apply(fn, receiver, argv);\n}\nconst trace = [];\nconst iterationError = new Error(\"iteration\");\nfunction* produceItems(fail) {\n  trace.push(\"next0\");\n  yield 1;\n  trace.push(\"next1\");\n  if (fail) {\n    throw iterationError;\n  }\n  yield 2;\n  trace.push(\"done\");\n}\nfunction makeItems(fail) {\n  const iterable = {};\n  Object.defineProperty(iterable, Symbol.iterator, {\n    value: () => {\n      trace.push(\"iterator\");\n      return produceItems(fail);\n    }\n  });\n  return iterable;\n}\nfunction lexicalTarget(a, b, c, d) {\n  trace.push(\"lexical\");\n  return [a, b, c, d];\n}\nfunction invokeLexical(target, fail, stop) {\n  {\n    const completionValue__gensym0 = target;\n    const completionValue__gensym1 = void 0;\n    const completionValue__gensym2 = {\n      \"__proto__\": null,\n      length: 0\n    };\n    let completionValue__gensym3 = 0;\n    let completionValue__gensym4;\n    {\n      trace.push(\"before\");\n      completionValue__gensym4 = 0;\n    }\n    completionValue__gensym2[completionValue__gensym3] = completionValue__gensym4;\n    completionValue__gensym3 = completionValue__gensym3 + 1;\n    completionValue__gensym2[\"length\"] = completionValue__gensym3;\n    for (const completionValue__gensym5 of makeItems(fail)) {\n      completionValue__gensym2[completionValue__gensym3] = completionValue__gensym5;\n      completionValue__gensym3 = completionValue__gensym3 + 1;\n      completionValue__gensym2[\"length\"] = completionValue__gensym3;\n    }\n    let completionValue__gensym6;\n    {\n      trace.push(\"late\");\n      if (stop) {\n        return 7;\n      }\n      completionValue__gensym6 = 3;\n    }\n    completionValue__gensym2[completionValue__gensym3] = completionValue__gensym6;\n    completionValue__gensym3 = completionValue__gensym3 + 1;\n    completionValue__gensym2[\"length\"] = completionValue__gensym3;\n    return lyknHostReflectApply0(completionValue__gensym0, completionValue__gensym1, completionValue__gensym2);\n  }\n}\nfunction methodTarget(a, b, c, d) {\n  trace.push([\"method\", this.marker]);\n  return [a, b, c, d];\n}\nfunction makeReceiver() {\n  const receiver = {\n    marker: \"receiver\"\n  };\n  Object.defineProperty(receiver, \"run\", {\n    get: () => {\n      trace.push(\"getter\");\n      return methodTarget;\n    }\n  });\n  return receiver;\n}\nfunction invokeStatic(receiver) {\n  {\n    const completionValue__gensym7 = receiver;\n    const completionValue__gensym8 = completionValue__gensym7[\"run\"];\n    const completionValue__gensym9 = {\n      \"__proto__\": null,\n      length: 0\n    };\n    let completionValue__gensym10 = 0;\n    let completionValue__gensym11;\n    {\n      trace.push(\"before\");\n      completionValue__gensym11 = 0;\n    }\n    completionValue__gensym9[completionValue__gensym10] = completionValue__gensym11;\n    completionValue__gensym10 = completionValue__gensym10 + 1;\n    completionValue__gensym9[\"length\"] = completionValue__gensym10;\n    for (const completionValue__gensym12 of makeItems(false)) {\n      completionValue__gensym9[completionValue__gensym10] = completionValue__gensym12;\n      completionValue__gensym10 = completionValue__gensym10 + 1;\n      completionValue__gensym9[\"length\"] = completionValue__gensym10;\n    }\n    let completionValue__gensym13;\n    {\n      trace.push(\"late\");\n      completionValue__gensym13 = 3;\n    }\n    completionValue__gensym9[completionValue__gensym10] = completionValue__gensym13;\n    completionValue__gensym10 = completionValue__gensym10 + 1;\n    completionValue__gensym9[\"length\"] = completionValue__gensym10;\n    return lyknHostReflectApply0(completionValue__gensym8, completionValue__gensym7, completionValue__gensym9);\n  }\n}\nfunction invokeComputed(receiver) {\n  {\n    const completionValue__gensym14 = receiver;\n    let completionValue__gensym15;\n    {\n      trace.push(\"key\");\n      completionValue__gensym15 = \"run\";\n    }\n    const completionValue__gensym16 = completionValue__gensym14[completionValue__gensym15];\n    const completionValue__gensym17 = {\n      \"__proto__\": null,\n      length: 0\n    };\n    let completionValue__gensym18 = 0;\n    let completionValue__gensym19;\n    {\n      trace.push(\"before\");\n      completionValue__gensym19 = 0;\n    }\n    completionValue__gensym17[completionValue__gensym18] = completionValue__gensym19;\n    completionValue__gensym18 = completionValue__gensym18 + 1;\n    completionValue__gensym17[\"length\"] = completionValue__gensym18;\n    let completionValue__gensym20;\n    {\n      trace.push(\"operand\");\n      completionValue__gensym20 = makeItems(false);\n    }\n    for (const completionValue__gensym21 of completionValue__gensym20) {\n      completionValue__gensym17[completionValue__gensym18] = completionValue__gensym21;\n      completionValue__gensym18 = completionValue__gensym18 + 1;\n      completionValue__gensym17[\"length\"] = completionValue__gensym18;\n    }\n    let completionValue__gensym22;\n    {\n      trace.push(\"late\");\n      completionValue__gensym22 = 3;\n    }\n    completionValue__gensym17[completionValue__gensym18] = completionValue__gensym22;\n    completionValue__gensym18 = completionValue__gensym18 + 1;\n    completionValue__gensym17[\"length\"] = completionValue__gensym18;\n    return lyknHostReflectApply0(completionValue__gensym16, completionValue__gensym14, completionValue__gensym17);\n  }\n}\nfunction mixedComputedSpread(receiver, items) {\n  {\n    const completionValue__gensym23 = receiver;\n    let completionValue__gensym24;\n    {\n      return 7;\n      completionValue__gensym24 = \"method\";\n    }\n    return completionValue__gensym23[completionValue__gensym24](...items);\n  }\n}\nfunction observeFailure() {\n  try {\n    return invokeLexical(lexicalTarget, true, false);\n  } catch (problem) {\n    return [problem === iterationError];\n  }\n}\nconst normal = invokeLexical(lexicalTarget, false, false);\nconst early = invokeLexical(lexicalTarget, false, true);\nconst failed = observeFailure();\nconst staticResult = invokeStatic(makeReceiver());\nconst computedResult = invokeComputed(makeReceiver());\nconst headerReturn = mixedComputedSpread(makeReceiver(), makeItems(false));\nconsole.log(JSON.stringify([normal, early, failed, staticResult, computedResult, headerReturn, trace]));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND ordered-argument-spread {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/cba2c5f67b56d3fa/ordered-argument-spread.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/cba2c5f67b56d3fa",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/ordered-argument-spread.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/cba2c5f67b56d3fa/ordered-argument-spread.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT ordered-argument-spread {"status":0,"success":true,"stdout":{"0":91,"1":91,"2":48,"3":44,"4":49,"5":44,"6":50,"7":44,"8":51,"9":93,"10":44,"11":55,"12":44,"13":91,"14":116,"15":114,"16":117,"17":101,"18":93,"19":44,"20":91,"21":48,"22":44,"23":49,"24":44,"25":50,"26":44,"27":51,"28":93,"29":44,"30":91,"31":48,"32":44,"33":49,"34":44,"35":50,"36":44,"37":51,"38":93,"39":44,"40":55,"41":44,"42":91,"43":34,"44":98,"45":101,"46":102,"47":111,"48":114,"49":101,"50":34,"51":44,"52":34,"53":105,"54":116,"55":101,"56":114,"57":97,"58":116,"59":111,"60":114,"61":34,"62":44,"63":34,"64":110,"65":101,"66":120,"67":116,"68":48,"69":34,"70":44,"71":34,"72":110,"73":101,"74":120,"75":116,"76":49,"77":34,"78":44,"79":34,"80":100,"81":111,"82":110,"83":101,"84":34,"85":44,"86":34,"87":108,"88":97,"89":116,"90":101,"91":34,"92":44,"93":34,"94":108,"95":101,"96":120,"97":105,"98":99,"99":97,"100":108,"101":34,"102":44,"103":34,"104":98,"105":101,"106":102,"107":111,"108":114,"109":101,"110":34,"111":44,"112":34,"113":105,"114":116,"115":101,"116":114,"117":97,"118":116,"119":111,"120":114,"121":34,"122":44,"123":34,"124":110,"125":101,"126":120,"127":116,"128":48,"129":34,"130":44,"131":34,"132":110,"133":101,"134":120,"135":116,"136":49,"137":34,"138":44,"139":34,"140":100,"141":111,"142":110,"143":101,"144":34,"145":44,"146":34,"147":108,"148":97,"149":116,"150":101,"151":34,"152":44,"153":34,"154":98,"155":101,"156":102,"157":111,"158":114,"159":101,"160":34,"161":44,"162":34,"163":105,"164":116,"165":101,"166":114,"167":97,"168":116,"169":111,"170":114,"171":34,"172":44,"173":34,"174":110,"175":101,"176":120,"177":116,"178":48,"179":34,"180":44,"181":34,"182":110,"183":101,"184":120,"185":116,"186":49,"187":34,"188":44,"189":34,"190":103,"191":101,"192":116,"193":116,"194":101,"195":114,"196":34,"197":44,"198":34,"199":98,"200":101,"201":102,"202":111,"203":114,"204":101,"205":34,"206":44,"207":34,"208":105,"209":116,"210":101,"211":114,"212":97,"213":116,"214":111,"215":114,"216":34,"217":44,"218":34,"219":110,"220":101,"221":120,"222":116,"223":48,"224":34,"225":44,"226":34,"227":110,"228":101,"229":120,"230":116,"231":49,"232":34,"233":44,"234":34,"235":100,"236":111,"237":110,"238":101,"239":34,"240":44,"241":34,"242":108,"243":97,"244":116,"245":101,"246":34,"247":44,"248":91,"249":34,"250":109,"251":101,"252":116,"253":104,"254":111,"255":100,"256":34,"257":44,"258":34,"259":114,"260":101,"261":99,"262":101,"263":105,"264":118,"265":101,"266":114,"267":34,"268":93,"269":44,"270":34,"271":107,"272":101,"273":121,"274":34,"275":44,"276":34,"277":103,"278":101,"279":116,"280":116,"281":101,"282":114,"283":34,"284":44,"285":34,"286":98,"287":101,"288":102,"289":111,"290":114,"291":101,"292":34,"293":44,"294":34,"295":111,"296":112,"297":101,"298":114,"299":97,"300":110,"301":100,"302":34,"303":44,"304":34,"305":105,"306":116,"307":101,"308":114,"309":97,"310":116,"311":111,"312":114,"313":34,"314":44,"315":34,"316":110,"317":101,"318":120,"319":116,"320":48,"321":34,"322":44,"323":34,"324":110,"325":101,"326":120,"327":116,"328":49,"329":34,"330":44,"331":34,"332":100,"333":111,"334":110,"335":101,"336":34,"337":44,"338":34,"339":108,"340":97,"341":116,"342":101,"343":34,"344":44,"345":91,"346":34,"347":109,"348":101,"349":116,"350":104,"351":111,"352":100,"353":34,"354":44,"355":34,"356":114,"357":101,"358":99,"359":101,"360":105,"361":118,"362":101,"363":114,"364":34,"365":93,"366":93,"367":93,"368":10},"stderr":{}}
+----- post-test output end -----
+  ordered-argument-spread ... ok (21ms)
+  pure-argument-spread ...
+------- post-test output -------
+SEMANTIC_ROLE_PUBLIC_SOURCE_PRESPAWN pure-argument-spread {"source":"(func collect-three :args (:any a :any b :any c) :returns :any :body\n  (array a b c))\n(func invoke-plain :args (:any callee :any items) :returns :any :body\n  (callee (spread items) 3))\n(console:log (JSON:stringify (invoke-plain collect-three (array 1 2))))\n","generated":"function collectThree(a, b, c) {\n  return [a, b, c];\n}\nfunction invokePlain(callee, items) {\n  return callee(...items, 3);\n}\nconsole.log(JSON.stringify(invokePlain(collectThree, [1, 2])));\n"}
+SEMANTIC_ROLE_PUBLIC_COMMAND pure-argument-spread {
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/76eb1fe2ddfeb4dc/pure-argument-spread.js"
+  ],
+  "cwd": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/76eb1fe2ddfeb4dc",
+  "sourcePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source/test/fixtures/semantic-roles/pure-argument-spread.lykn",
+  "modulePath": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp/76eb1fe2ddfeb4dc/pure-argument-spread.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/xdg",
+    "TMPDIR": "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/focused-archive/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": null
+  }
+}
+
+SEMANTIC_ROLE_PUBLIC_PREASSERT pure-argument-spread {"status":0,"success":true,"stdout":{"0":91,"1":49,"2":44,"3":50,"4":44,"5":51,"6":93,"7":10},"stderr":{}}
+----- post-test output end -----
+  pure-argument-spread ... ok (14ms)
+public JavaScript compiler preserves shared semantic-role fixtures ... ok (642ms)
+public static member calls use the default lazy helper ...
+------- post-test output -------
+ORDERED_MEMBER_PUBLIC_PREASSERT provider-default provider {"status":0,"success":true,"stdout":[112,114,111,118,105,100,101,114,10],"stderr":[]}
+ORDERED_MEMBER_PUBLIC_PREASSERT provider-default live {"status":0,"success":true,"stdout":[112,114,111,118,105,100,101,114,10,91,34,108,111,99,97,108,34,44,57,50,44,91,34,114,101,99,101,105,118,101,114,34,44,56,93,44,91,34,103,101,116,34,44,34,101,97,114,108,105,101,114,34,44,34,109,105,100,100,108,101,34,44,34,103,101,116,34,44,34,101,97,114,108,105,101,114,34,44,34,109,105,100,100,108,101,34,44,34,108,97,116,101,114,34,44,34,99,97,108,108,34,44,34,97,102,116,101,114,34,93,93,10],"stderr":[]}
+ORDERED_MEMBER_PUBLIC_MODULE_EQUALITY provider-default {"direct":true,"clone":true,"json":true}
+----- post-test output end -----
+public static member calls use the default lazy helper ... ok (30ms)
+public static member calls use the Reflect fallback ...
+------- post-test output -------
+ORDERED_MEMBER_PUBLIC_PREASSERT provider-fallback provider {"status":0,"success":true,"stdout":[112,114,111,118,105,100,101,114,10],"stderr":[]}
+ORDERED_MEMBER_PUBLIC_PREASSERT provider-fallback live {"status":0,"success":true,"stdout":[112,114,111,118,105,100,101,114,10,91,34,105,110,108,105,110,101,34,44,57,50,44,91,34,114,101,99,101,105,118,101,114,34,44,56,93,44,91,34,103,101,116,34,44,34,101,97,114,108,105,101,114,34,44,34,109,105,100,100,108,101,34,44,34,103,101,116,34,44,34,101,97,114,108,105,101,114,34,44,34,109,105,100,100,108,101,34,44,34,108,97,116,101,114,34,44,34,99,97,108,108,34,44,34,97,102,116,101,114,34,93,93,10],"stderr":[]}
+ORDERED_MEMBER_PUBLIC_MODULE_EQUALITY provider-fallback {"direct":true,"clone":true,"json":true}
+----- post-test output end -----
+public static member calls use the Reflect fallback ... ok (29ms)
+public static member spread completes before a later return ...
+------- post-test output -------
+PUBLIC_SPREAD_HOLD_PREASSERT ordered-static-call-spread-hold {"source":"(func mixed-spread :args (:any receiver :any items) :returns :any :body\n  (receiver:read-entry (spread items) (do (return 7) 8)))\n","errorName":null,"errorMessage":null,"generated":"function lyknHostReflectApply0(fn, receiver, argv) {\n  return Reflect.apply(fn, receiver, argv);\n}\nfunction mixedSpread(receiver, items) {\n  {\n    const completionValue__gensym0 = receiver;\n    const completionValue__gensym1 = completionValue__gensym0[\"readEntry\"];\n    const completionValue__gensym2 = {\n      \"__proto__\": null,\n      length: 0\n    };\n    let completionValue__gensym3 = 0;\n    for (const completionValue__gensym4 of items) {\n      completionValue__gensym2[completionValue__gensym3] = completionValue__gensym4;\n      completionValue__gensym3 = completionValue__gensym3 + 1;\n      completionValue__gensym2[\"length\"] = completionValue__gensym3;\n    }\n    let completionValue__gensym5;\n    {\n      return 7;\n      completionValue__gensym5 = 8;\n    }\n    completionValue__gensym2[completionValue__gensym3] = completionValue__gensym5;\n    completionValue__gensym3 = completionValue__gensym3 + 1;\n    completionValue__gensym2[\"length\"] = completionValue__gensym3;\n    return lyknHostReflectApply0(completionValue__gensym1, completionValue__gensym0, completionValue__gensym2);\n  }\n}\n"}
+----- post-test output end -----
+public static member spread completes before a later return ... ok (589µs)
+public D2 rejects reserved match pattern binder ... ok (272µs)
+public D2 rejects reserved match guard declaration ... ok (33µs)
+public D2 rejects reserved match body declaration ... ok (45µs)
+public D2 rejects reserved match subject order ... ok (31µs)
+public compiler rejects unknown nested kernel escape ... ok (814µs)
+public direct return preserves nested no-else diagnostic ... ok (249µs)
+public lexical spread completes before a later return ...
+------- post-test output -------
+PUBLIC_SPREAD_HOLD_PREASSERT ordered-lexical-call-spread-hold {"source":"(func mixed-spread :args (:any callable :any items) :returns :any :body\n  (callable (spread items) (do (return 7) 8)))\n","errorName":null,"errorMessage":null,"generated":"function lyknHostReflectApply0(fn, receiver, argv) {\n  return Reflect.apply(fn, receiver, argv);\n}\nfunction mixedSpread(callable, items) {\n  {\n    const completionValue__gensym0 = callable;\n    const completionValue__gensym1 = void 0;\n    const completionValue__gensym2 = {\n      \"__proto__\": null,\n      length: 0\n    };\n    let completionValue__gensym3 = 0;\n    for (const completionValue__gensym4 of items) {\n      completionValue__gensym2[completionValue__gensym3] = completionValue__gensym4;\n      completionValue__gensym3 = completionValue__gensym3 + 1;\n      completionValue__gensym2[\"length\"] = completionValue__gensym3;\n    }\n    let completionValue__gensym5;\n    {\n      return 7;\n      completionValue__gensym5 = 8;\n    }\n    completionValue__gensym2[completionValue__gensym3] = completionValue__gensym5;\n    completionValue__gensym3 = completionValue__gensym3 + 1;\n    completionValue__gensym2[\"length\"] = completionValue__gensym3;\n    return lyknHostReflectApply0(completionValue__gensym0, completionValue__gensym1, completionValue__gensym2);\n  }\n}\n"}
+----- post-test output end -----
+public lexical spread completes before a later return ... ok (317µs)
+public computed header return keeps the ordinary no-helper route ...
+------- post-test output -------
+PUBLIC_SPREAD_HOLD_PREASSERT ordered-computed-call-spread-hold {"source":"(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n  ((get receiver (do (return 7) \"method\")) (spread items)))\n","errorName":null,"errorMessage":null,"generated":"function mixedComputedSpread(receiver, items) {\n  {\n    const completionValue__gensym0 = receiver;\n    let completionValue__gensym1;\n    {\n      return 7;\n      completionValue__gensym1 = \"method\";\n    }\n    return completionValue__gensym0[completionValue__gensym1](...items);\n  }\n}\n"}
+----- post-test output end -----
+public computed header return keeps the ordinary no-helper route ... ok (167µs)
+public malformed actual spread reports the checked argument-root error ...
+------- post-test output -------
+MALFORMED_SPREAD_PREASSERT {"source":"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n","errorName":"Error","errorMessage":"spread takes exactly one argument","output":null}
+----- post-test output end -----
+public malformed actual spread reports the checked argument-root error ... ok (268µs)
+public direct lifted protected writes retain the v1 rejection ... ok (375µs)
+public grouped statements materialize before a bare direct return ... ok (102µs)
+
+ok | 21 passed (56 steps) | 0 failed (898ms)
+

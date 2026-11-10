@@ -1,0 +1,5 @@
+cwd=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/source
+argv='/usr/bin/env' '-u' 'BASELINE_GZIPPED' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/driver/artifact-size/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/driver/artifact-size/xdg' 'npm_config_cache=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/driver/artifact-size/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/lykn-candidate-debug' 'compile' 'artifact-size.lykn' '-o' 'artifact-size.js'
+stdout=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/driver/artifact-size/stdout.raw
+stderr=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/driver/artifact-size/stderr.raw
+exit_status=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/driver/artifact-size/exit-status.txt

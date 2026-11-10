@@ -1,0 +1,382 @@
+{
+  "inputs": {
+    "packages/lang/reader.js": {
+      "bytes": 10648,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs": {
+      "bytes": 35359,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/icu-parser.js": {
+      "bytes": 9759,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/reserved-words.js": {
+      "bytes": 1317,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/binding.js": {
+      "bytes": 17541,
+      "imports": [
+        {
+          "path": "packages/lang/reserved-words.js",
+          "kind": "import-statement",
+          "original": "./reserved-words.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/protected-host.js": {
+      "bytes": 22107,
+      "imports": [
+        {
+          "path": "packages/lang/binding.js",
+          "kind": "import-statement",
+          "original": "./binding.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/host-invocation-browser.js": {
+      "bytes": 127,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/compiler.js": {
+      "bytes": 71984,
+      "imports": [
+        {
+          "path": "../../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs",
+          "kind": "import-statement",
+          "original": "astring"
+        },
+        {
+          "path": "packages/lang/icu-parser.js",
+          "kind": "import-statement",
+          "original": "./icu-parser.js"
+        },
+        {
+          "path": "packages/lang/protected-host.js",
+          "kind": "import-statement",
+          "original": "./protected-host.js"
+        },
+        {
+          "path": "packages/lang/host-invocation-browser.js",
+          "kind": "import-statement",
+          "original": "./host-invocation.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/kernel-mark.js": {
+      "bytes": 1505,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/surface-helpers.js": {
+      "bytes": 18701,
+      "imports": [
+        {
+          "path": "packages/lang/expander-core.js",
+          "kind": "import-statement",
+          "original": "./expander-core.js"
+        },
+        {
+          "path": "packages/lang/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        },
+        {
+          "path": "packages/lang/kernel-mark.js",
+          "kind": "import-statement",
+          "original": "./kernel-mark.js"
+        },
+        {
+          "path": "packages/lang/surface.js",
+          "kind": "import-statement",
+          "original": "./surface.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/surface.js": {
+      "bytes": 12477,
+      "imports": [
+        {
+          "path": "packages/lang/expander-core.js",
+          "kind": "import-statement",
+          "original": "./expander-core.js"
+        },
+        {
+          "path": "packages/lang/surface-helpers.js",
+          "kind": "import-statement",
+          "original": "./surface-helpers.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/surface-ast.js": {
+      "bytes": 2947,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/classifier.js": {
+      "bytes": 52459,
+      "imports": [
+        {
+          "path": "packages/lang/surface-ast.js",
+          "kind": "import-statement",
+          "original": "./surface-ast.js"
+        },
+        {
+          "path": "packages/lang/surface-helpers.js",
+          "kind": "import-statement",
+          "original": "./surface-helpers.js"
+        },
+        {
+          "path": "packages/lang/kernel-mark.js",
+          "kind": "import-statement",
+          "original": "./kernel-mark.js"
+        },
+        {
+          "path": "packages/lang/binding.js",
+          "kind": "import-statement",
+          "original": "./binding.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/kernel-forms.js": {
+      "bytes": 3682,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/host-invocation-shared.js": {
+      "bytes": 877,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/host-invocation-kernel.js": {
+      "bytes": 3311,
+      "imports": [
+        {
+          "path": "packages/lang/kernel-mark.js",
+          "kind": "import-statement",
+          "original": "./kernel-mark.js"
+        },
+        {
+          "path": "packages/lang/host-invocation-shared.js",
+          "kind": "import-statement",
+          "original": "./host-invocation-shared.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/expander-core.js": {
+      "bytes": 85827,
+      "imports": [
+        {
+          "path": "packages/lang/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        },
+        {
+          "path": "../../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs",
+          "kind": "import-statement",
+          "original": "astring"
+        },
+        {
+          "path": "packages/lang/surface.js",
+          "kind": "import-statement",
+          "original": "./surface.js"
+        },
+        {
+          "path": "packages/lang/classifier.js",
+          "kind": "import-statement",
+          "original": "./classifier.js"
+        },
+        {
+          "path": "packages/lang/kernel-forms.js",
+          "kind": "import-statement",
+          "original": "./kernel-forms.js"
+        },
+        {
+          "path": "packages/lang/kernel-mark.js",
+          "kind": "import-statement",
+          "original": "./kernel-mark.js"
+        },
+        {
+          "path": "packages/lang/host-invocation-kernel.js",
+          "kind": "import-statement",
+          "original": "./host-invocation-kernel.js"
+        },
+        {
+          "path": "packages/lang/protected-host.js",
+          "kind": "import-statement",
+          "original": "./protected-host.js"
+        },
+        {
+          "path": "packages/lang/surface-helpers.js",
+          "kind": "import-statement",
+          "original": "./surface-helpers.js"
+        },
+        {
+          "path": "packages/lang/binding.js",
+          "kind": "import-statement",
+          "original": "./binding.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/macro-import-form.js": {
+      "bytes": 777,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/expander-browser.js": {
+      "bytes": 1286,
+      "imports": [
+        {
+          "path": "packages/lang/expander-core.js",
+          "kind": "import-statement",
+          "original": "./expander-core.js"
+        },
+        {
+          "path": "packages/lang/macro-import-form.js",
+          "kind": "import-statement",
+          "original": "./macro-import-form.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/browser/compiler.js": {
+      "bytes": 1427,
+      "imports": [
+        {
+          "path": "packages/lang/reader.js",
+          "kind": "import-statement",
+          "original": "lang/reader.js"
+        },
+        {
+          "path": "packages/lang/expander-browser.js",
+          "kind": "import-statement",
+          "original": "lang/expander.js"
+        },
+        {
+          "path": "packages/lang/compiler.js",
+          "kind": "import-statement",
+          "original": "lang/compiler.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/browser/scripts.js": {
+      "bytes": 752,
+      "imports": [
+        {
+          "path": "packages/browser/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/browser/mod.js": {
+      "bytes": 580,
+      "imports": [
+        {
+          "path": "packages/browser/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        },
+        {
+          "path": "packages/browser/scripts.js",
+          "kind": "import-statement",
+          "original": "./scripts.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "mod.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "packages/browser/mod.js",
+      "inputs": {
+        "packages/browser/mod.js": {
+          "bytesInOutput": 57
+        },
+        "packages/lang/reader.js": {
+          "bytesInOutput": 4867
+        },
+        "../../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs": {
+          "bytesInOutput": 15809
+        },
+        "packages/lang/icu-parser.js": {
+          "bytesInOutput": 5071
+        },
+        "packages/lang/reserved-words.js": {
+          "bytesInOutput": 327
+        },
+        "packages/lang/binding.js": {
+          "bytesInOutput": 6800
+        },
+        "packages/lang/protected-host.js": {
+          "bytesInOutput": 9216
+        },
+        "packages/lang/host-invocation-browser.js": {
+          "bytesInOutput": 50
+        },
+        "packages/lang/compiler.js": {
+          "bytesInOutput": 33487
+        },
+        "packages/lang/kernel-mark.js": {
+          "bytesInOutput": 143
+        },
+        "packages/lang/surface-helpers.js": {
+          "bytesInOutput": 7092
+        },
+        "packages/lang/surface.js": {
+          "bytesInOutput": 5805
+        },
+        "packages/lang/surface-ast.js": {
+          "bytesInOutput": 1558
+        },
+        "packages/lang/classifier.js": {
+          "bytesInOutput": 23443
+        },
+        "packages/lang/kernel-forms.js": {
+          "bytesInOutput": 1366
+        },
+        "packages/lang/host-invocation-shared.js": {
+          "bytesInOutput": 618
+        },
+        "packages/lang/host-invocation-kernel.js": {
+          "bytesInOutput": 1745
+        },
+        "packages/lang/expander-core.js": {
+          "bytesInOutput": 31951
+        },
+        "packages/lang/macro-import-form.js": {
+          "bytesInOutput": 465
+        },
+        "packages/lang/expander-browser.js": {
+          "bytesInOutput": 702
+        },
+        "packages/browser/compiler.js": {
+          "bytesInOutput": 310
+        },
+        "packages/browser/scripts.js": {
+          "bytesInOutput": 330
+        }
+      },
+      "bytes": 151673
+    }
+  }
+}

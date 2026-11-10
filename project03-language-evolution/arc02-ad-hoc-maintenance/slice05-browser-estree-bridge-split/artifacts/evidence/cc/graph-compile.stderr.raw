@@ -1,0 +1,10 @@
+4:36: warning: unused binding 'request'
+  suggestion: prefix with underscore: _request
+9:34: warning: unused binding 'request'
+  suggestion: prefix with underscore: _request
+13:25: warning: unused binding 'builder'
+  suggestion: prefix with underscore: _builder
+16:1: warning: unused binding 'result'
+  suggestion: prefix with underscore: _result
+28:1: warning: unused binding 'output'
+  suggestion: prefix with underscore: _output

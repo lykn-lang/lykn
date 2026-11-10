@@ -1,0 +1,12 @@
+tree 8d795b2be794eea25f764fc7707c388ad080ccaa
+parent cc806c844c5540d3b536d5a7397f0ad5b1c1387b
+author Duncan McGreggor <oubiwann@gmail.com> 1794351838 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794351838 -0600
+
+Split browser host invocation bridge
+
+Separate private ESTree request handling from kernel materialization while preserving the Deno request path and browser ordinary lowering.
+
+Co-authored-by: Codex <noreply@openai.com>
+
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

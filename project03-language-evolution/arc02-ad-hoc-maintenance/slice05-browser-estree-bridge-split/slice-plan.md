@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice05-browser-estree-bridge-split
-status: in-progress
+status: closed
 depends-on: [slice04-browser-macro-loader-split]
 ---
 
@@ -25,3 +25,8 @@ incrementally and against the fixed historical source under the
 The [assignment](cc-prompt.md) specifies the test and artifact
 boundary. Retain original process receipts and actual product
 proof under `artifacts/`.
+
+2026-11-10. S05 is independently accepted at task `685bbe1d`
+after the one-line M4 path correction. All four criteria are done.
+The [close](closing-report.md) records the verified composition and
+separate release gate.

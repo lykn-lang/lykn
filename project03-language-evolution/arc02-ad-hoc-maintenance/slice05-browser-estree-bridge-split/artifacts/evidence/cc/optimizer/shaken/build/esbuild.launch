@@ -1,0 +1,2 @@
+cwd=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/optimizer/shaken
+argv=/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild entry.js --bundle --format=esm --platform=neutral --target=es2022 --tree-shaking=true --metafile=build/bundle.js.meta.json --outfile=build/bundle.js

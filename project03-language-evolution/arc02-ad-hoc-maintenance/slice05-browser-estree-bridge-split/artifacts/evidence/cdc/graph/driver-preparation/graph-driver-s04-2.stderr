@@ -1,0 +1,13 @@
+error: Uncaught (in promise) NotCapable: Requires env access to "ESBUILD_WORKER_THREADS", run again with the --allow-env flag
+if (process.env.ESBUILD_WORKER_THREADS !== "0") {
+                ^
+    at Object.getEnv [as get] (ext:deno_os/30_os.js:124:10)
+    at denoEnvGet (ext:deno_node/_process/process.ts:30:21)
+    at Object.get (ext:deno_node/_process/process.ts:47:22)
+    at Object.<anonymous> (file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/esbuild/0.27.4/lib/main.js:2084:17)
+    at Module._compile (node:module:803:34)
+    at loadMaybeCjs (node:module:828:10)
+    at Object..js (node:module:813:12)
+    at Module.load (node:module:680:32)
+    at Module._load (node:module:538:12)
+    at Module.require (node:module:699:19)

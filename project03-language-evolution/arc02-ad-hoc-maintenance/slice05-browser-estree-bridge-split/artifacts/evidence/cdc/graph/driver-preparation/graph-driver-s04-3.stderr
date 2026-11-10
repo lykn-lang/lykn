@@ -1,0 +1,9 @@
+error: Uncaught (in promise) NotCapable: Requires env access, run again with the --allow-env flag
+  let child = child_process.spawn(command, args.concat(`--service=${"0.27.4"}`, "--ping"), {
+                            ^
+    at Object.toObject (ext:deno_os/30_os.js:134:12)
+    at normalizeSpawnArguments (ext:deno_node/internal/child_process.ts:866:39)
+    at Object.spawn (node:child_process:139:13)
+    at ensureServiceIsRunning (file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/esbuild/0.27.4/lib/main.js:2268:29)
+    at build (file:///Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/esbuild/0.27.4/lib/main.js:2166:26)
+    at file:///private/tmp/lykn-split-cdc.WZ395kwC/browser-graph.js:16:22

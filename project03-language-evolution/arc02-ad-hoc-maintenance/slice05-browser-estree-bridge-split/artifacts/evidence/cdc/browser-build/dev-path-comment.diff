@@ -1,0 +1,11 @@
+--- chromium-input/dist/lykn-browser.dev.js	2026-11-10 17:10:54
++++ source/dist/lykn-browser.dev.js	2026-11-10 17:23:05
+@@ -342,7 +342,7 @@
+     return exprs;
+   }
+ 
+-  // ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs
++  // ../../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs
+   var { stringify } = JSON;
+   if (!String.prototype.repeat) {
+     throw new Error(

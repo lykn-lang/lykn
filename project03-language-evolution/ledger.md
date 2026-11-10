@@ -1,5 +1,9 @@
 # project03-language-evolution ledger
 
+[Arc02 S04 and S05](arc02-ad-hoc-maintenance/slice05-browser-estree-bridge-split/cdc-verification.md)
+are independently accepted at task `685bbe1d`. AM-06 and AM-07
+are done. AM-05 still owns the separate release gate.
+
 [Arc01 S13](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md)
 closes all five structural match and nested escape rows at task
 `31893710`. NE-C16 and NE-C17 are accepted. Parent completion

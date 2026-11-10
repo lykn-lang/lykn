@@ -162,3 +162,9 @@ remaining product work under the approved release policy above.
 accepted at `cc806c84`. AM-06 closes with 2,623 bytes of measured
 gzip savings and the existing browser, staged ESM and native
 contracts. S05 starts on this exact task source.
+
+2026-11-10 [S05](slice05-browser-estree-bridge-split/cdc-verification.md)
+accepted on the composed task at `685bbe1d`. AM-07 closes after
+real browser, Deno, native and optimizer reproduction. The browser
+is 41,338 gzip bytes, a 3,506-byte saving across S04 and S05.
+AM-05 retains the release integration and verification gate.

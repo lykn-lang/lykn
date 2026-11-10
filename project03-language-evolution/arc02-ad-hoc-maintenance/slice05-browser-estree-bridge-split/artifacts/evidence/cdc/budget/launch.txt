@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'BASELINE_GZIPPED' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/budget/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/budget/xdg' 'npm_config_cache=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/budget/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/private/tmp/lykn-dd37-deno277.610gtfPO:/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/usr/bin/make' 'bundle-size-check'
+stdout=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/budget/stdout.raw
+stderr=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/budget/stderr.raw
+exit_status=/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/budget/exit-status.txt

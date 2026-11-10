@@ -1,0 +1,2 @@
+4:1: warning: unused binding 'specimens'
+  suggestion: prefix with underscore: _specimens

@@ -1,0 +1,25 @@
+{
+  "inputs": {
+    "provider-input.js": {
+      "bytes": 457,
+      "imports": [],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "build/retained.js": {
+      "imports": [],
+      "exports": [
+        "invoke",
+        "marker"
+      ],
+      "entryPoint": "provider-input.js",
+      "inputs": {
+        "provider-input.js": {
+          "bytesInOutput": 418
+        }
+      },
+      "bytes": 470
+    }
+  }
+}

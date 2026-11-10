@@ -1,0 +1,13 @@
+error: Uncaught (in promise) Error: import-macros: no macro entry found in /private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/scoped-macros/
+  checked: lykn.macroEntry, mod.lykn, mod.lyk, macros.lykn, macros.lyk, index.lykn, index.lyk
+  hint: add lykn.macroEntry to the package's deno.json
+  throw new Error(noMacroEntryMessage(pkgDir));
+        ^
+    at findMacroEntry (file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/target/lykn/dist/lang/macro-imports-deno.js:113:9)
+    at resolveImportMacrosSpecifier (file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/target/lykn/dist/lang/macro-imports-deno.js:286:16)
+    at pass0ImportMacros (file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/target/lykn/dist/lang/macro-imports-deno.js:397:26)
+    at file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/target/lykn/dist/lang/expander.js:23:5
+    at expandWithMacroImports (file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/target/lykn/dist/lang/expander-core.js:2273:22)
+    at expand (file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/target/lykn/dist/lang/expander.js:22:10)
+    at compileLykn (file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/target/lykn/dist/browser/compiler.js:15:18)
+    at file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source/staged-scope.js:2:28

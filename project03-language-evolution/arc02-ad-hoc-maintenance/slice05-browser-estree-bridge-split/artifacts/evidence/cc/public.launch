@@ -1,0 +1,2 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=env DENO_DIR=... TMPDIR=... XDG_CACHE_HOME=... NPM_CONFIG_CACHE=... /opt/homebrew/bin/deno test --config project.json -A test/forms/protected-host.test.js test/forms/protected-host-policy.test.js test/forms/semantic-roles.test.js

@@ -1,0 +1,36 @@
+{
+  "inputs": {
+    "generated/public/shaken/provider.js": {
+      "bytes": 457,
+      "imports": [],
+      "format": "esm"
+    },
+    "generated/public/shaken/entry.js": {
+      "bytes": 68,
+      "imports": [
+        {
+          "path": "generated/public/shaken/provider.js",
+          "kind": "import-statement",
+          "original": "./provider.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "optimizer/shaken/shaken.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "generated/public/shaken/entry.js",
+      "inputs": {
+        "generated/public/shaken/provider.js": {
+          "bytesInOutput": 50
+        },
+        "generated/public/shaken/entry.js": {
+          "bytesInOutput": 30
+        }
+      },
+      "bytes": 156
+    }
+  }
+}

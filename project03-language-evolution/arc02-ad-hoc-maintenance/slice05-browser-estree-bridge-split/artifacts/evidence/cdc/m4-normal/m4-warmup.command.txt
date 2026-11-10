@@ -1,0 +1,17 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/make/tmp/.tmp5fCsk3/twice.lykn", "-o", "/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/make/tmp/.tmp5fCsk3/m4-warmup.js"]
+cwd=Some("/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/make/tmp/.tmp5fCsk3")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/make/tmp/.tmp5fCsk3/xdg-cache")
+selected_inherited_env=
+PATH=Some("/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin")
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/make/xdg")
+TMPDIR=Some("/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/make/tmp")
+NPM_CONFIG_CACHE=None
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=Some("/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/macro-make-receipts")
+macro_child_program=deno
+macro_child_resolved_executable=Some("/opt/homebrew/Cellar/deno/2.9.6/bin/deno")
+macro_child_xdg_cache=Some("/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/make/tmp/.tmp5fCsk3/xdg-cache")
+macro_child_argv=not separately traced

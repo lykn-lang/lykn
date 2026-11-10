@@ -1,0 +1,14 @@
+M	crates/lykn-cli/src/main.rs
+M	crates/lykn-cli/tests/macro_dependencies.rs
+M	crates/lykn-lang/embedded/packages/lang/expander-core.js
+A	crates/lykn-lang/embedded/packages/lang/host-invocation-browser.js
+A	crates/lykn-lang/embedded/packages/lang/host-invocation-kernel.js
+A	crates/lykn-lang/embedded/packages/lang/host-invocation-shared.js
+M	crates/lykn-lang/embedded/packages/lang/host-invocation.js
+M	crates/lykn-lang/src/expander/embedded.rs
+M	packages/lang/expander-core.js
+A	packages/lang/host-invocation-browser.js
+A	packages/lang/host-invocation-kernel.js
+A	packages/lang/host-invocation-shared.js
+M	packages/lang/host-invocation.js
+M	scripts/bundle-size.js

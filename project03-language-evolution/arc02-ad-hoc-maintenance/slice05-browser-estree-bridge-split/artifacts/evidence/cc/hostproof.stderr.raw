@@ -1,0 +1,4 @@
+[1110/170719.106677:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+[1110/170719.110512:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+[1110/170719.111695:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+[1110/170719.113145:FATAL:content/browser/sandbox_parameters_mac.mm:87] Check failed: . : Input/output error (5)

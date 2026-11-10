@@ -1,0 +1,2 @@
+cwd=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/diag-min
+argv=/Users/oubiwann/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell --headless --disable-background-networking --no-first-run --user-data-dir=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/diag-min/profile --dump-dom file:///private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/diag-min/diagnostics.html

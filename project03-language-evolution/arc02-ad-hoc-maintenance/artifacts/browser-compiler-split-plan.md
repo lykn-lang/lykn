@@ -126,3 +126,14 @@ on that exact candidate and satisfy the
 Record the hard-cap decision separately from actual byte savings.
 The [0.7.x AOT roadmap](../../BACKLOG.md#ahead-of-time-application-builds-07x)
 owns application packaging and application-size acceptance.
+
+## Accepted task composition
+
+S04 `cc806c84` and S05 `685bbe1d` have independent source and
+product acceptance. The fixed meter reports 42,221 gzip bytes
+after S04 and 41,338 after S05 against 44,844 at `b0c97f4e`.
+The original 27,906-byte baseline remains part of the report.
+[Actual composition evidence](../slice05-browser-estree-bridge-split/cdc-verification.md).
+
+The accepted task composition awaits release integration and checks
+under the separate release gate above.

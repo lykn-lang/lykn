@@ -1,0 +1,2 @@
+cwd=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/optimizer/shaken/build
+argv=env DENO_DIR=... TMPDIR=... XDG_CACHE_HOME=... NPM_CONFIG_CACHE=... deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt bundle.js

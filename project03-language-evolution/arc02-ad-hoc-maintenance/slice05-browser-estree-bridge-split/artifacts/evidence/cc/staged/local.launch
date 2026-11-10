@@ -1,0 +1,2 @@
+cwd=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/local/source
+argv=env DENO_DIR=... TMPDIR=... XDG_CACHE_HOME=... NPM_CONFIG_CACHE=... /opt/homebrew/bin/deno run --cached-only --frozen --config staged-proof-config.json --lock deno.lock --allow-read ... staged-proof.js

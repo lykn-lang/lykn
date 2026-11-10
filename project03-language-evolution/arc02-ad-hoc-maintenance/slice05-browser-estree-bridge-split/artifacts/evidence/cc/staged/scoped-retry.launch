@@ -1,0 +1,2 @@
+cwd=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source
+argv=env DENO_DIR=... TMPDIR=... XDG_CACHE_HOME=... NPM_CONFIG_CACHE=... deno run --cached-only --frozen --config staged-scope-config.json --lock staged-proof.lock --allow-read=/private/tmp/lykn-split-cdc.WZ395kwC/s05-cc/staged/scoped/source staged-scope.js

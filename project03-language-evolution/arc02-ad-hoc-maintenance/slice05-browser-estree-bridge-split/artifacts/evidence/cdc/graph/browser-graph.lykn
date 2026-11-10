@@ -1,0 +1,31 @@
+(import "npm:esbuild@^0.27" (build stop))
+(bind source-root (Deno:cwd))
+(bind bridge-path (get Deno:args 0))
+(func resolve-language :args (:any request) :returns :any :body
+  (if (and (= request:path "lang/expander.js")
+           (= request:importer (+ source-root "/packages/browser/compiler.js")))
+    (obj :path (+ source-root "/packages/lang/expander-browser.js"))
+    (obj :path (+ source-root "/packages/lang/" (request:path:slice 5)))))
+(func resolve-bridge :args (:any request) :returns :any :body
+  (if (and (not (= bridge-path ""))
+           (= request:importer (+ source-root "/packages/lang/compiler.js")))
+    (return (obj :path (+ source-root "/packages/lang/" bridge-path)))))
+(func setup :args (:any builder) :returns :any :body
+  (builder:on-resolve (obj :filter (new RegExp "^lang/")) resolve-language)
+  (builder:on-resolve (obj :filter (new RegExp "^\\./host-invocation\\.js$")) resolve-bridge))
+(bind result
+  (await
+    (build
+      (obj :entryPoints (array "packages/browser/mod.js")
+           :bundle true
+           :format "iife"
+           :globalName "lykn"
+           :alias (obj :astring "/Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0")
+           :plugins (array (obj :name "lykn-import-map" :setup setup))
+           :minify true
+           :metafile true
+           :write false))))
+(bind output (get result:output-files 0))
+(Deno:write-file-sync (get Deno:args 1) output:contents)
+(Deno:write-text-file-sync (get Deno:args 2) (JSON:stringify result:metafile null 2))
+(stop)

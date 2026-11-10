@@ -1,0 +1,47 @@
+{
+  "inputs": {
+    "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>": {
+      "bytes": 79,
+      "imports": [],
+      "format": "esm"
+    },
+    "generated/public/fallback-shaken/provider.js": {
+      "bytes": 550,
+      "imports": [
+        {
+          "path": "<data:text/javascript,export%20function%20apply(fn%2Creceiver%2Ca...>",
+          "kind": "import-statement",
+          "original": "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D"
+        }
+      ],
+      "format": "esm"
+    },
+    "generated/public/fallback-shaken/entry.js": {
+      "bytes": 68,
+      "imports": [
+        {
+          "path": "generated/public/fallback-shaken/provider.js",
+          "kind": "import-statement",
+          "original": "./provider.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "optimizer/fallback-shaken/shaken.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "generated/public/fallback-shaken/entry.js",
+      "inputs": {
+        "generated/public/fallback-shaken/provider.js": {
+          "bytesInOutput": 75
+        },
+        "generated/public/fallback-shaken/entry.js": {
+          "bytesInOutput": 30
+        }
+      },
+      "bytes": 199
+    }
+  }
+}

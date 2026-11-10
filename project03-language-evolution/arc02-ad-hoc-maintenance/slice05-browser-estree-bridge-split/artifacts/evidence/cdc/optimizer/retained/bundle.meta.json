@@ -1,0 +1,25 @@
+{
+  "inputs": {
+    "generated/public/retained/provider.js": {
+      "bytes": 457,
+      "imports": [],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "optimizer/retained/retained.js": {
+      "imports": [],
+      "exports": [
+        "invoke",
+        "marker"
+      ],
+      "entryPoint": "generated/public/retained/provider.js",
+      "inputs": {
+        "generated/public/retained/provider.js": {
+          "bytesInOutput": 418
+        }
+      },
+      "bytes": 490
+    }
+  }
+}

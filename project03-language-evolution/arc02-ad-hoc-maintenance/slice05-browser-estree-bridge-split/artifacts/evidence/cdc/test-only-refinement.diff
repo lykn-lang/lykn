@@ -1,0 +1,13 @@
+diff --git a/crates/lykn-cli/tests/macro_dependencies.rs b/crates/lykn-cli/tests/macro_dependencies.rs
+index f03fe5af..a2e1017e 100644
+--- a/crates/lykn-cli/tests/macro_dependencies.rs
++++ b/crates/lykn-cli/tests/macro_dependencies.rs
+@@ -114,7 +114,7 @@ fn write_xdg(root: &Path) -> PathBuf {
+ fn owned_embedded_root(xdg: &Path) -> PathBuf {
+     xdg.join("lykn")
+         .join("embedded")
+-        .join(format!("{}-expander-split", env!("CARGO_PKG_VERSION")))
++        .join(format!("{}-compiler-split", env!("CARGO_PKG_VERSION")))
+ }
+ 
+ fn compile_recorded(

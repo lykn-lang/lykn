@@ -1,0 +1,2 @@
+import {compile} from "@lykn/browser";
+console.log(JSON.stringify(compile("(import-macros \"npm:lykn-s04-scoped-witness\" ((as double scoped-double))) (scoped-double 21)")));

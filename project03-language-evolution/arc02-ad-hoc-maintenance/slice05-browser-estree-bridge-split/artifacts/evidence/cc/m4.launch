@@ -1,0 +1,2 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=env DENO_DIR=... TMPDIR=... XDG_CACHE_HOME=... NPM_CONFIG_CACHE=... cargo test --locked -p lykn-cli --test macro_dependencies m4_same_version_cache_reextracts_missing_config -- --exact --nocapture

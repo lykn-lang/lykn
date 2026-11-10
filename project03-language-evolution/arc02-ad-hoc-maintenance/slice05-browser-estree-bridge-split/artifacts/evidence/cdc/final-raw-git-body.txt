@@ -1,0 +1,12 @@
+tree f53a818928d752b842f8af2c3933aad4d82f9117
+parent 1562e1d3a583818b9eae8d2320462ad3a8327f9d
+author Duncan McGreggor <oubiwann@gmail.com> 1794352661 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794352661 -0600
+
+Point M4 recovery at compiler cache
+
+Keep the accepted S04 expander-split cache as the preserved old sibling while exercising the new compiler-split cache.
+
+Co-authored-by: Codex <noreply@openai.com>
+
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
