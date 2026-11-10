@@ -3,7 +3,7 @@
 (bind bound
   (fn (:any first :any second)
     (fn (:any third) (array first second third))))
-(bind receiver (obj :read-entry (fn (:any n) (+ n 1))))
+(bind pure-receiver (obj :read-entry (fn (:any n) (+ n 1))))
 (func call-pure :args (:any receiver) :returns :any :body
   ((kernel:get receiver "readEntry") 3))
-(console:log (JSON:stringify (array (call-bound bound) (call-pure receiver))))
+(console:log (JSON:stringify (array (call-bound bound) (call-pure pure-receiver))))
