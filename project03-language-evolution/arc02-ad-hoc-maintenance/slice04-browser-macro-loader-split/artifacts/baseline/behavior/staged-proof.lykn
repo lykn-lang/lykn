@@ -1,0 +1,17 @@
+(import "@lykn/browser" (compile run load))
+(set-symbol! globalThis "fetch"
+  (fn (:any url)
+    (Promise:resolve
+      (new Response
+        (if (url:ends-with ".lyk")
+          "(const value 19) value"
+          "(bind value 23) value")))))
+(bind pending (load "controlled.lyk"))
+(bind async-load (= (js:typeof pending:then) "function"))
+(console:log
+  (JSON:stringify
+    (array (compile "(import-macros \"./staged-proof-module.lykn\" (double)) (double 21)")
+           (run "(+ 1 2)")
+           async-load
+           (await pending)
+           (await (load "controlled.lykn")))))

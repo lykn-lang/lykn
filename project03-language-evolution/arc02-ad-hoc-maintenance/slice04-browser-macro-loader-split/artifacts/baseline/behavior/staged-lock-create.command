@@ -1,0 +1,2 @@
+cwd=/private/tmp/lykn-s04-baseline.dE8n5OTZ/source
+argv=env DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/private/tmp/lykn-s04-baseline.dE8n5OTZ/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-baseline.dE8n5OTZ/xdg npm_config_cache=/private/tmp/lykn-s04-baseline.dE8n5OTZ/npm /opt/homebrew/bin/deno run --cached-only --frozen=false --config staged-proof-config.json --lock staged-proof.lock --allow-read=/private/tmp/lykn-s04-baseline.dE8n5OTZ/source staged-proof.js

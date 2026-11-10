@@ -1,0 +1,28 @@
+running 2 tests from ./test/integration/macro-module.test.js
+integration: import macros from module ... ok (6ms)
+integration: cross-module macro chain ... ok (1ms)
+running 4 tests from ./test/expander/import-macros.test.js
+import-macros: basic import and use ... ok (5ms)
+import-macros: multiple bindings ... ok (891µs)
+import-macros: with as renaming ... ok (664µs)
+import-macros: erased from output ... ok (602µs)
+running 1 test from ./test/expander/macro-module-chain.test.js
+macro-module-chain: A imports from B which imports from C ... ok (6ms)
+running 8 tests from ./test/expander/macro-module-errors.test.js
+import-macros error: file not found ... ok (1ms)
+import-macros error: macro not exported ... ok (1ms)
+import-macros error: circular dependency ... ok (501µs)
+import-macros error: duplicate import of same path ... ok (756µs)
+import-macros error: missing binding list ... ok (101µs)
+import-macros error: bare name not found ... ok (331µs)
+import-macros error: invalid path (no .lykn extension) ... ok (157µs)
+import-macros error: shadowing imported macro ... ok (609µs)
+running 3 tests from ./test/expander/macro-entry-diagnostics.test.js
+M-1: missing package directory is not the lykn.macroEntry hint ... ok (737µs)
+M-2: directory present with no entry keeps the good hint (regression guard) ... ok (1ms)
+M-3: overlay provenance names the specifier and both exits ... ok (549µs)
+running 1 test from ./test/expander/macro-entry-diagnostics-parity.test.js
+macro-entry diagnostics parity: every canonical phrase is in both compilers ... ok (461µs)
+
+ok | 19 passed | 0 failed (342ms)
+

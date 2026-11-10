@@ -1,0 +1,61 @@
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+CLI minified bytes: identical to meter output
+Browser graph inputs:
+  ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs
+  packages/browser/compiler.js
+  packages/browser/mod.js
+  packages/browser/scripts.js
+  packages/lang/binding.js
+  packages/lang/classifier.js
+  packages/lang/compiler.js
+  packages/lang/expander-browser.js
+  packages/lang/expander-core.js
+  packages/lang/host-invocation.js
+  packages/lang/icu-parser.js
+  packages/lang/kernel-forms.js
+  packages/lang/kernel-mark.js
+  packages/lang/macro-import-form.js
+  packages/lang/protected-host.js
+  packages/lang/reader.js
+  packages/lang/reserved-words.js
+  packages/lang/surface-ast.js
+  packages/lang/surface-helpers.js
+  packages/lang/surface.js
+Raw:      324311 bytes (316.7 KB)
+Minified: 155089 bytes (151.5 KB)
+Gzipped:  42221 bytes (41.2 KB)

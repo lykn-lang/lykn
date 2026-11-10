@@ -1,0 +1,6 @@
+Check test/integration/macro-module.test.js
+Check test/expander/import-macros.test.js
+Check test/expander/macro-module-chain.test.js
+Check test/expander/macro-module-errors.test.js
+Check test/expander/macro-entry-diagnostics.test.js
+Check test/expander/macro-entry-diagnostics-parity.test.js

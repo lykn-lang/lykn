@@ -1,0 +1,6 @@
+(set-symbol! globalThis "splitTrace" (array))
+(set-symbol! globalThis "fetch"
+  (fn (:any url)
+    (globalThis:splitTrace:push "fetch")
+    (Promise:resolve
+      (new Response "(const value 19) (splitTrace:push value) value"))))

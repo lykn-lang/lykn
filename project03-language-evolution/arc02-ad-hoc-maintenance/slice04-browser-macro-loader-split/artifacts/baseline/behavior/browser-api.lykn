@@ -1,0 +1,10 @@
+(func capture-strict :returns :any :body
+  (try (return (array "ok" (lykn:compile "(const native 19)")))
+       (catch caught (return (array caught:name caught:message)))))
+(set-symbol! (document:getElementById "api") "textContent"
+  (JSON:stringify
+    (array (lykn:compile "(+ 1 2)")
+           (lykn:run "(+ 1 2)")
+           (lykn:compile "(macro double (x) `(+ ,x ,x)) (double 2)")
+           (lykn:run "(const native 19) native" (obj :strict false))
+           (capture-strict))))

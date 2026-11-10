@@ -1,0 +1,12 @@
+error: The lockfile is out of date. Run `deno install --frozen=false`, or rerun with `--frozen=false` to update it.
+changes:
+370 | -      "packages/lang": {
+370 | +      "target/lykn/dist/lang": {
+371 | -        "dependencies": [
+371 | +        "packageJson": {
+372 | -          "npm:astring@^1.9.0"
+372 | +          "dependencies": [
+373 | -        ]
+373 | +            "npm:astring@^1.9.0"
+374 | +          ]
+375 | +        }

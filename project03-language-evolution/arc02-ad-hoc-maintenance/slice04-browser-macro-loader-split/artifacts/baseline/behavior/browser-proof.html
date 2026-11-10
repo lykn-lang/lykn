@@ -1,0 +1,14 @@
+<!doctype html>
+<html><meta charset="utf-8"><body>
+<pre id="api">pending</pre>
+<pre id="ordering">pending</pre>
+<script src="browser-setup.js"></script>
+<script src="dist/lykn-browser.js"></script>
+<script src="browser-api.js"></script>
+<script type="text/lykn">(splitTrace:push "first")</script>
+<script type="text/lykn" src="./controlled.lyk"></script>
+<script type="text/lykn">
+  (splitTrace:push "last")
+  (set-symbol! (document:getElementById "ordering") "textContent" (JSON:stringify splitTrace))
+</script>
+</body></html>

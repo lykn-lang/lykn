@@ -1,0 +1,2 @@
+cwd=/private/tmp/lykn-s04-baseline.dE8n5OTZ/source
+argv=env DENO_DIR=/Users/oubiwann/Library/Caches/deno TMPDIR=/private/tmp/lykn-s04-baseline.dE8n5OTZ/tmp XDG_CACHE_HOME=/private/tmp/lykn-s04-baseline.dE8n5OTZ/xdg npm_config_cache=/private/tmp/lykn-s04-baseline.dE8n5OTZ/npm /private/tmp/lykn-dd37-deno277.610gtfPO/deno run --no-config --cached-only --allow-read=/private/tmp/lykn-s04-baseline.dE8n5OTZ/source/dist artifact-size.js dist/lykn-browser.js dist/lykn-browser.dev.js

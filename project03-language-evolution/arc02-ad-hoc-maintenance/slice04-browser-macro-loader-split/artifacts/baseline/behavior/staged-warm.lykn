@@ -1,0 +1,21 @@
+(import "@lykn/lang/reader.js" (read))
+(import "@lykn/lang/expander.js" (expand reset-macros reset-module-cache))
+(import "@lykn/lang/compiler.js" (compile))
+(bind macro-path "./warm-fixture/witness.lykn")
+(bind mtime (new Date 0))
+(func write-module :args (:string body) :returns :any :body
+  (Deno:write-text-file-sync macro-path body)
+  (Deno:utime-sync macro-path mtime mtime))
+(func witness :returns :any :body
+  (reset-macros)
+  (compile
+    (expand (read "(import-macros \"./warm-fixture/witness.lykn\" (twice)) (twice 21)")
+            (obj :filePath (+ (Deno:cwd) "/staged-warm.lykn")))))
+(reset-module-cache)
+(write-module "(export (macro twice (x) `(+ ,x ,x)))")
+(bind cold (witness))
+(write-module "(export (macro twice (x) `(+ ,x 3)))")
+(bind warm (witness))
+(reset-module-cache)
+(bind reset (witness))
+(console:log (JSON:stringify (array cold warm reset)))

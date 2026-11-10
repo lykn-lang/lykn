@@ -157,3 +157,8 @@ whole browser compiler is 11,818 bytes over. Both experimental
 cuts together left 7,875 bytes over the S03 ceiling. AM-05 owns the
 remaining product work under the approved release policy above.
 [S03 verification](slice03-dd37-browser-bundle/cdc-verification.md).
+
+2026-11-10 [S04](slice04-browser-macro-loader-split/cdc-verification.md)
+accepted at `cc806c84`. AM-06 closes with 2,623 bytes of measured
+gzip savings and the existing browser, staged ESM and native
+contracts. S05 starts on this exact task source.

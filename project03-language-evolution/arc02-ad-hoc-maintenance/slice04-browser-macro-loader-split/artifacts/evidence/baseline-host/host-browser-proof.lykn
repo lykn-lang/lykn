@@ -1,0 +1,29 @@
+(func source-from :args (:string id) :returns :string :body
+  (get (document:get-element-by-id id) "textContent"))
+(func capture-error :args (:any action) :returns :any :body
+  (try (return (array "ok" (action)))
+       (catch caught (return (array caught:name caught:message)))))
+(func capture-output :args (:string source) :returns :any :body
+  (bind saved-log console:log)
+  (bind trace (array))
+  (try
+    (set-symbol! console "log" (fn (:any value) (trace:push value)))
+    (lykn:run source)
+    (return trace)
+    (finally (set-symbol! console "log" saved-log))))
+(bind ordinary (lykn:compile "(+ 1 2)"))
+(bind live-source (source-from "live"))
+(bind live-js (lykn:compile live-source))
+(bind fallback-source (source-from "fallback"))
+(bind fallback-js (lykn:compile fallback-source))
+(bind protected-error
+  (capture-error (fn () (lykn:compile "(kernel:= (get (get globalThis \"Reflect\") \"apply\") 0)"))))
+(set-symbol! (document:get-element-by-id "result") "textContent"
+  (JSON:stringify
+    (array ordinary (live-js:includes "Reflect.apply")
+           (capture-output live-source)
+           (fallback-js:includes "data:text/javascript,")
+           (capture-error (fn () (lykn:run fallback-source)))
+           protected-error)))
+(set-symbol! (document:getElementById "live-js") "textContent" live-js)
+(set-symbol! (document:getElementById "fallback-js") "textContent" fallback-js)

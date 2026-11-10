@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc02-ad-hoc-maintenance
 slice: slice04-browser-macro-loader-split
-status: in-progress
+status: closed
 depends-on: [slice03-dd37-browser-bundle]
 ---
 
@@ -27,3 +27,6 @@ fixtures and proof. Durable original outputs and measurements
 live under `artifacts/`. Scope includes independently verified
 normal Make, citations and fixed-pin budget. The task endpoint is
 accepted S04 followed by the commissioned S05 composition.
+
+Accepted source `cc806c84`. The [EOF-only iteration](cc-prompt-iteration01.md)
+preserves the initial assignment. [All five rows](ledger.md) are done.

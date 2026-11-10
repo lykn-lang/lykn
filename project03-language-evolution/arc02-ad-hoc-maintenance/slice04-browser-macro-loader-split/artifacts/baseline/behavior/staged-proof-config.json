@@ -1,0 +1,4 @@
+{
+  "workspace": ["./target/lykn/dist/lang", "./target/lykn/dist/browser", "./target/lykn/dist/testing"],
+  "imports": { "astring": "npm:astring@^1.9.0" }
+}

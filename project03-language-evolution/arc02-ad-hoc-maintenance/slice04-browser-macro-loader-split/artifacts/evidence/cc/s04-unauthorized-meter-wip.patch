@@ -1,0 +1,57 @@
+diff --git a/scripts/bundle-size.js b/scripts/bundle-size.js
+index 696b58b8..72b418ce 100644
+--- a/scripts/bundle-size.js
++++ b/scripts/bundle-size.js
+@@ -26,6 +26,17 @@ const lyknImportPlugin = {
+   name: "lykn-import-map",
+   setup(build) {
+     build.onResolve({ filter: /^lang\// }, (args) => {
++      if (args.path === "lang/expander.js" &&
++          args.importer === Deno.cwd() + "/packages/browser/compiler.js") {
++        const browserExpander = Deno.cwd() + "/packages/lang/expander-browser.js";
++        try {
++          Deno.statSync(browserExpander);
++          return { path: browserExpander };
++        } catch (error) {
++          if (!(error instanceof Deno.errors.NotFound)) throw error;
++          /* legacy source tree: retain the historical expander route */
++        }
++      }
+       const rel = args.path.replace(/^lang\//, "packages/lang/");
+       return { path: Deno.cwd() + "/" + rel };
+     });
+@@ -39,6 +50,7 @@ const shared = {
+   globalName: "lykn",
+   alias: { "astring": astringPkg },
+   plugins: [nodePathShimPlugin, lyknImportPlugin],
++  metafile: true,
+   write: false,
+ };
+ 
+@@ -50,6 +62,26 @@ const rawBytes = rawResult.outputFiles[0].contents;
+ const minResult = await esbuild.build({ ...shared, minify: true });
+ const minBytes = minResult.outputFiles[0].contents;
+ 
++if (Deno.env.get("VERIFY_CLI_BUNDLE") === "1") {
++  const cliBytes = await Deno.readFile("dist/lykn-browser.js");
++  const identical = cliBytes.length === minBytes.length &&
++    cliBytes.every((byte, index) => byte === minBytes[index]);
++  if (!identical) {
++    throw new Error("meter minified output differs from actual CLI dist/lykn-browser.js");
++  }
++  const inputs = Object.keys(minResult.metafile.inputs).sort();
++  const forbidden = inputs.filter((input) =>
++    input.includes("macro-imports-deno") || input.includes("node:path") ||
++    input.includes("node-path-shim")
++  );
++  if (forbidden.length > 0) {
++    throw new Error(`browser graph retains Deno loader or node:path shim: ${forbidden.join(", ")}`);
++  }
++  console.log("CLI minified bytes: identical to meter output");
++  console.log("Browser graph inputs:");
++  for (const input of inputs) console.log(`  ${input}`);
++}
++
+ // Gzip the minified output
+ const gzStream = new CompressionStream("gzip");
+ const writer = gzStream.writable.getWriter();

@@ -1,0 +1,9 @@
+{
+  "workspace": ["./target/lykn/dist/lang", "./target/lykn/dist/browser", "./target/lykn/dist/testing"],
+  "imports": { "astring": "npm:astring@^1.9.0" },
+  "scopes": {
+    "./target/lykn/dist/lang/expander.js": {
+      "npm:lykn-s04-scoped-witness": "./scoped-macros/"
+    }
+  }
+}

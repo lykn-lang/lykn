@@ -1,0 +1,10 @@
+(async
+  (func measure :args (:string path) :returns :any :body
+    (bind bytes (Deno:read-file-sync path))
+    (bind raw (new Response bytes))
+    (bind compressed
+      (new Response (raw:body:pipe-through (new CompressionStream "gzip"))))
+    (bind gzipped (await (compressed:array-buffer)))
+    (obj :path path :bytes bytes:byte-length :gzip gzipped:byte-length)))
+(kernel:for-of path Deno:args
+  (console:log (JSON:stringify (await (measure path)))))
