@@ -161,3 +161,17 @@ Deno.test("public direct return preserves nested no-else diagnostic", () => {
     "if in expression position requires an else branch — add an else branch, or restructure as a statement",
   );
 });
+
+Deno.test("public grouped statements materialize before a bare direct return", () => {
+  const generated = lykn(
+    "(func grouped :returns :any :body (return (do (bind x 1 y 2))))",
+  );
+  const functionStart = generated.indexOf("function grouped()");
+  const xDeclaration = generated.indexOf("const x = 1;", functionStart);
+  const yDeclaration = generated.indexOf("const y = 2;", functionStart);
+  const bareReturn = generated.indexOf("return;", yDeclaration);
+  assertEquals(functionStart >= 0, true);
+  assertEquals(xDeclaration > functionStart, true);
+  assertEquals(yDeclaration > xDeclaration, true);
+  assertEquals(bareReturn > yDeclaration, true);
+});

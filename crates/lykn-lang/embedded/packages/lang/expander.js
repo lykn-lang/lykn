@@ -12,6 +12,7 @@ import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm, emitMatchStatementMacro, funcBodyProtectsStatementExit, parseKeywordClauses } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
+import { isStatementOnlyForm } from './surface-helpers.js';
 import {
   bindingScopePlan,
   bodyScopeNames,
@@ -1078,11 +1079,19 @@ function isDirectTransfer(node) {
 function isExpandedStatement(node) {
   if (node && typeof node === "object" && returnOperandValues.has(node)) return false;
   const h = node?.type === "list" && node.values.length ? formHead(node.values[0]) : null;
-  return ["const", "let", "if", "while", "do-while", "for", "for-of", "for-in",
-    "for-await-of", "switch", "try", "block", "throw", "return", "break", "continue"].includes(h);
+  if (h === null) return false;
+  if (h === "for-await-of") return true;
+  return isStatementOnlyForm(node);
 }
 
 function directResultStatements(result) {
+  if (Array.isArray(result)) {
+    const statements = [...result];
+    if (statements.length === 0 || !isDirectTransfer(statements[statements.length - 1])) {
+      statements.push(array(sym("return")));
+    }
+    return statements;
+  }
   if (result && typeof result === "object" && directResultBlocks.has(result)) {
     return [result];
   }
@@ -1120,10 +1129,12 @@ function expandReturnOperand(form, env) {
       return value;
     }
     const condition = expandSingle(form.values[1], env, "Value", "if condition");
-    const consequent = expandSingle(form.values[2], env, "ReturnOperand", "if consequent");
-    const alternate = expandSingle(form.values[3], env, "ReturnOperand", "if alternate");
-    if (!directResultBlocks.has(consequent) && !isExpandedStatement(consequent) &&
-        !directResultBlocks.has(alternate) && !isExpandedStatement(alternate)) {
+    const consequent = expandAt(form.values[2], env, "ReturnOperand");
+    const alternate = expandAt(form.values[3], env, "ReturnOperand");
+    const isValue = (result) => !Array.isArray(result) &&
+      !directResultBlocks.has(result) && !isDirectTransfer(result) &&
+      !isExpandedStatement(result);
+    if (isValue(consequent) && isValue(alternate)) {
       const value = { ...form, values: [form.values[0], condition, consequent, alternate] };
       returnOperandValues.add(value);
       return value;
@@ -1138,11 +1149,6 @@ function expandReturnOperand(form, env) {
     return directBlock(prefix);
   }
   const value = expandAt(form, env, "Value");
-  if (Array.isArray(value)) {
-    const statements = [...value];
-    if (!isDirectTransfer(statements[statements.length - 1])) statements.push(array(sym("return")));
-    return directBlock(statements);
-  }
   if (isExpandedStatement(value)) return directBlock(directResultStatements(value));
   return value;
 }
@@ -1348,6 +1354,9 @@ function expandExprInner(form, env, use = "Legacy") {
       formHead(head) === "return" && form.values.length === 2) {
     const value = expandAt(form.values[1], env, "ReturnOperand");
     if (directResultBlocks.has(value)) return value;
+    if (Array.isArray(value) || isDirectTransfer(value) || isExpandedStatement(value)) {
+      return directBlock(directResultStatements(value));
+    }
     return { ...form, values: [head, value] };
   }
   if (use === "ReturnOperand" && (formHead(head) === "if" || formHead(head) === "do")) {
