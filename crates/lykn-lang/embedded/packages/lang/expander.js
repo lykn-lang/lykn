@@ -765,6 +765,42 @@ function completionValueAtom(identity) {
   return atom;
 }
 
+function preserveAnonymousName(value) {
+  const isAnonymousDefinition = (node) => {
+    if (node?.type !== 'list' || node.values.length === 0) return false;
+    const head = formHead(node.values[0]);
+    switch (head) {
+      case '=>':
+      case 'lambda':
+      case 'class-expr':
+        return node.values[1]?.type === 'list';
+      case 'function*':
+        return (node.values.length >= 3 && node.values[1]?.type === 'list') ||
+          (node.values.length >= 4 && node.values[1]?.type === 'atom' &&
+            node.values[1].value === '' && node.values[2]?.type === 'list');
+      case 'async': {
+        if (node.values.length !== 2) return false;
+        const child = node.values[1];
+        const childHead = child?.type === 'list' && child.values.length > 0
+          ? formHead(child.values[0])
+          : null;
+        return ['=>', 'lambda', 'function*'].includes(childHead) &&
+          isAnonymousDefinition(child);
+      }
+      default:
+        return false;
+    }
+  };
+
+  if (!isAnonymousDefinition(value)) return value;
+  return markKernel(array(
+    sym('?'),
+    sym('true'),
+    value,
+    array(sym('void'), { type: 'number', value: 0 }),
+  ));
+}
+
 function isAssignResultUse(use) {
   return use !== null && typeof use === 'object' && use.kind === 'Assign';
 }
@@ -775,7 +811,7 @@ function isResultOperandUse(use) {
 
 function resultValueStatement(use, value) {
   if (use === 'ReturnOperand') return array(sym('return'), value);
-  return array(sym('='), completionValueAtom(use.identity), value);
+  return array(sym('='), completionValueAtom(use.identity), preserveAnonymousName(value));
 }
 
 function resultNoValueStatement(use) {
@@ -1235,7 +1271,7 @@ function planDirectCallArguments(plans, errorMessage, forceLift = false) {
       values.push(value);
     } else if (argumentPrefix.length === 0) {
       const saved = completionValueAtom({});
-      prefix.push(array(sym("const"), saved, value));
+      prefix.push(array(sym("const"), saved, preserveAnonymousName(value)));
       values.push(saved);
     } else {
       prefix.push(...argumentPrefix);
@@ -1289,7 +1325,7 @@ function expandSavedMemberInvocation(receiverPrefix, receiverValue, keyPrefix, k
   if (sanctionedGet) markKernel(getCall);
   const statements = [
     ...receiverPrefix,
-    array(sym("const"), receiver, receiverValue),
+    array(sym("const"), receiver, preserveAnonymousName(receiverValue)),
     ...keyPrefix,
     array(sym("const"), callee, getCall),
     ...argumentPlan.prefix,

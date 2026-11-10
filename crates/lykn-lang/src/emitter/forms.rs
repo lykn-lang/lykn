@@ -1074,10 +1074,55 @@ enum DirectDestination {
     Assign(SExpr),
 }
 
+fn preserve_anonymous_name(value: SExpr) -> SExpr {
+    fn is_anonymous_definition(value: &SExpr) -> bool {
+        let Some(values) = value.as_list() else {
+            return false;
+        };
+        let Some(head) = values.first().and_then(SExpr::as_form_head) else {
+            return false;
+        };
+        match head {
+            "=>" | "lambda" | "class-expr" => values.get(1).is_some_and(SExpr::is_list),
+            "function*" => values.len() >= 3 && values.get(1).is_some_and(SExpr::is_list),
+            "async" => {
+                let Some(child) = values.get(1).filter(|_| values.len() == 2) else {
+                    return false;
+                };
+                let child_head = child
+                    .as_list()
+                    .and_then(|items| items.first())
+                    .and_then(SExpr::as_form_head);
+                matches!(child_head, Some("=>" | "lambda" | "function*"))
+                    && is_anonymous_definition(child)
+            }
+            _ => false,
+        }
+    }
+
+    if !is_anonymous_definition(&value) {
+        return value;
+    }
+    let span = value.span();
+    SExpr::List {
+        values: vec![
+            atom("?"),
+            bool_lit(true),
+            value,
+            list(vec![atom("void"), num(0.0)]),
+        ],
+        span,
+    }
+}
+
 fn consume_direct_value(destination: &DirectDestination, value: SExpr) -> SExpr {
     match destination {
         DirectDestination::Return => list(vec![atom("return"), value]),
-        DirectDestination::Assign(target) => list(vec![atom("="), target.clone(), value]),
+        DirectDestination::Assign(target) => list(vec![
+            atom("="),
+            target.clone(),
+            preserve_anonymous_name(value),
+        ]),
     }
 }
 
@@ -1307,7 +1352,11 @@ fn plan_ordered_call_arguments(
             values.push(value);
         } else if prefix.is_empty() {
             let saved = SExpr::completion_value_atom(ctx.next_completion_value_id(), value.span());
-            statements.push(list(vec![atom("const"), saved.clone(), value]));
+            statements.push(list(vec![
+                atom("const"),
+                saved.clone(),
+                preserve_anonymous_name(value),
+            ]));
             values.push(saved);
         } else {
             statements.extend(prefix);
@@ -1331,7 +1380,7 @@ fn member_invocation_statements(
     statements.push(list(vec![
         atom("const"),
         receiver_temp.clone(),
-        plan.receiver,
+        preserve_anonymous_name(plan.receiver),
     ]));
     statements.extend(plan.key_prefix);
     statements.push(list(vec![
