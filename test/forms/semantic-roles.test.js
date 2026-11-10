@@ -1,6 +1,6 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert";
 import { lykn } from "../../packages/lang/mod.js";
-import { resetGensym } from "../../packages/lang/expander.js";
+import { resetGensym, resetMacros } from "../../packages/lang/expander.js";
 
 const CASES = [
   { name: "while", expected: "[1,11,2,12]\n" },
@@ -54,6 +54,7 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
       const sourcePath = `${Deno.cwd()}/test/fixtures/semantic-roles/${fixture.name}.lykn`;
       const source = await Deno.readTextFile(sourcePath);
       if (fixture.name === "statement-match-preservation") resetGensym();
+      if (fixture.name === "original-match-kernel-object") resetMacros();
       const generated = lykn(source);
       const temp = await Deno.makeTempDir();
       const modulePath = `${temp}/${fixture.name}.js`;
