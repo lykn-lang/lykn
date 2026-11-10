@@ -133,6 +133,15 @@ scope. The public JavaScript direct-bind path currently covers untyped and
 `:any` simple names. Other typed public binds and destructuring keep their
 existing paths.
 
+In the same eligible function region, an `if` test and a `match` subject or
+guard may also run a statement prefix before producing their value. A subject
+prefix runs before candidate selection; a guard prefix runs after that
+candidate's pattern bindings. Source returns still exit the original function.
+The surface `and` and `or` forms, and recognized `kernel:&&`, `kernel:||`, and
+`kernel:??` forms, evaluate later operands only when selected and preserve the
+selected operand's value. Pure value-only forms keep their ordinary expression
+output.
+
 ### cell / express / swap! / reset! (surface)
 
 Controlled mutation via cell containers. A cell wraps a value in an

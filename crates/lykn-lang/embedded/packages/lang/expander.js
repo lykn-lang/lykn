@@ -1116,6 +1116,7 @@ function emitSurfaceMatchDirect(args, env) {
   return emitMatchStatementMacro(args, {
     env,
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
+    expandHeader: (form, scope) => expandDirectValuePlan(form, scope),
     expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "DirectStatement"),
     reserveNames: emittedNames,
   });
@@ -1169,11 +1170,71 @@ function emitSurfaceMatchResult(args, env, use) {
   const result = emitMatchStatementMacro(args, {
     env,
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
+    expandHeader: (form, scope) => expandDirectValuePlan(form, scope),
     expandBody: (forms, scope) => expandResultClause(forms, scope, use),
     reserveNames: emittedNames,
   });
   directResultBlocks.add(result);
   return result;
+}
+
+function isDirectResultRegion(result) {
+  return Array.isArray(result) || directResultBlocks.has(result) ||
+    isDirectTransfer(result) || isExpandedStatement(result);
+}
+
+function expandDirectValuePlan(form, env) {
+  const identity = {};
+  const use = { kind: "Assign", identity };
+  const result = expandAt(form, env, use);
+  if (!isDirectResultRegion(result)) return { prefix: [], value: result };
+  const destination = completionValueAtom(identity);
+  const statements = directResultStatements(result, use);
+  const body = statements.length === 1 && directResultBlocks.has(statements[0])
+    ? statements[0]
+    : directBlock(statements);
+  return {
+    prefix: [array(sym("let"), destination), body],
+    value: destination,
+  };
+}
+
+function logicalBranchCondition(operator, value) {
+  if (operator === "&&") return value;
+  if (operator === "||") return array(sym("!"), value);
+  return array(sym("||"),
+    array(sym("==="), value, sym("null")),
+    array(sym("==="), value, array(sym("void"), { type: "number", value: 0 })));
+}
+
+function expandLogicalResultOperand(operands, operator, env, use, preserveVariadic = false) {
+  const identity = {};
+  const logicalUse = { kind: "Assign", identity };
+  const plans = operands.map((operand) => expandAt(operand, env, logicalUse));
+  const isValue = (plan) => !isDirectResultRegion(plan);
+  if (plans.every(isValue)) {
+    if (preserveVariadic) return markKernel(array(sym(operator), ...plans));
+    let result = plans[0];
+    for (const plan of plans.slice(1)) result = array(sym(operator), result, plan);
+    return markKernel(result);
+  }
+
+  const destination = completionValueAtom(identity);
+  const statements = [array(sym("let"), destination)];
+  for (let index = 0; index < plans.length; index++) {
+    const plan = plans[index];
+    const branch = directResultStatements(plan, logicalUse);
+    if (index === 0) {
+      statements.push(branch.length === 1 && directResultBlocks.has(branch[0])
+        ? branch[0]
+        : directBlock(branch));
+      continue;
+    }
+    statements.push(array(sym("if"), logicalBranchCondition(operator, destination),
+      array(sym("block"), ...branch)));
+  }
+  statements.push(resultValueStatement(use, destination));
+  return directBlock(statements);
 }
 
 function expandResultOperand(form, env, use) {
@@ -1363,6 +1424,14 @@ function expandExprInner(form, env, use = "Legacy") {
       const childEnv = FUNCTION_FAMILY.has(surfaceHead)
         ? extendEnv(env, bodyScopeNames(form))
         : env;
+      if (isResultOperandUse(use) && (astNode.type === "And" || astNode.type === "Or")) {
+        return expandLogicalResultOperand(
+          astNode.args,
+          astNode.type === "And" ? "&&" : "||",
+          env,
+          use,
+        );
+      }
       if (astNode.type === "Match" && use === "Statement") {
         return emitSurfaceMatchStatement([astNode.expr, ...astNode.clauses], env);
       }
@@ -1443,6 +1512,26 @@ function expandExprInner(form, env, use = "Legacy") {
       return current.map((r) => expandAt(r, env, use));
     }
     return expandAt(current, env, use);
+  }
+
+  if (use === "DirectStatement" && formHead(head) === "if" && form.values.length >= 2) {
+    const conditionPlan = expandDirectValuePlan(form.values[1], env);
+    const branches = form.values.slice(2).map((branch) =>
+      expandConditionalChild(branch, env, false, "DirectStatement")
+    );
+    const conditional = markKernel({
+      type: "list",
+      values: [head, conditionPlan.value, ...branches],
+    });
+    return conditionPlan.prefix.length
+      ? directBlock([...conditionPlan.prefix, conditional])
+      : conditional;
+  }
+
+  if (isResultOperandUse(use) && ["&&", "||", "??"].includes(formHead(head)) &&
+      form.values.length >= 3) {
+    const operator = formHead(head);
+    return expandLogicalResultOperand(form.values.slice(1), operator, env, use, true);
   }
 
   // Private direct return materialization runs after resolution and user macro

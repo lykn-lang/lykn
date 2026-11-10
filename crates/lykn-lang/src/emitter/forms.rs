@@ -635,6 +635,12 @@ fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegist
                 {
                     return emit_direct_try_children(values, *span, ctx, registry);
                 }
+                if head_name == "if"
+                    && ctx.direct_return_region
+                    && ctx.expr_context == ExprContext::Statement
+                {
+                    return emit_direct_if_statement(&values[1..], *span, ctx, registry);
+                }
                 if crate::classifier::dispatch::is_surface_form(head_name)
                     || head_name == "class"
                     || head_name == "class-expr"
@@ -718,6 +724,9 @@ fn emit_kernel_root(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegis
         }
         Some("if") if matches!(ctx.expr_context, ExprContext::Value | ExprContext::Tail) => {
             emit_if_expression(&values[1..], *span, ctx, registry)
+        }
+        Some("if") if ctx.direct_return_region && ctx.expr_context == ExprContext::Statement => {
+            emit_direct_if_statement(&values[1..], *span, ctx, registry)
         }
         _ => {
             let is_function_boundary = matches!(
@@ -1014,6 +1023,161 @@ fn consume_direct_no_value(destination: &DirectDestination) -> SExpr {
     }
 }
 
+/// Evaluate a direct-region header as an ordinary value or as a statement
+/// prefix followed by a private value. The private atom is finalized across
+/// the complete emitted unit by the existing completion-value pass.
+fn emit_direct_header_value(
+    expr: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> (Vec<SExpr>, SExpr) {
+    let id = ctx.next_completion_value_id();
+    let destination_atom = SExpr::completion_value_atom(id, expr.span());
+    let destination = DirectDestination::Assign(destination_atom.clone());
+    match emit_direct_tail(expr, &destination, ctx, registry) {
+        DirectTailResult::Value(value) => (Vec::new(), value),
+        DirectTailResult::Statements(statements) => {
+            let body = if statements.len() == 1
+                && statements[0]
+                    .as_list()
+                    .and_then(|items| items.first())
+                    .and_then(SExpr::as_atom)
+                    == Some("block")
+            {
+                statements.into_iter().next().unwrap()
+            } else {
+                list(std::iter::once(atom("block")).chain(statements).collect())
+            };
+            (
+                vec![list(vec![atom("let"), destination_atom.clone()]), body],
+                destination_atom,
+            )
+        }
+    }
+}
+
+fn emit_direct_logical(
+    args: &[SExpr],
+    operator: &str,
+    destination: &DirectDestination,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+    preserve_variadic: bool,
+) -> DirectTailResult {
+    if args.len() < 2 {
+        return emit_direct_value_tail(
+            &list(
+                std::iter::once(atom(operator))
+                    .chain(args.iter().cloned())
+                    .collect(),
+            ),
+            destination,
+            ctx,
+            registry,
+        );
+    }
+
+    let id = ctx.next_completion_value_id();
+    let value_atom = SExpr::completion_value_atom(id, args[0].span());
+    let value_destination = DirectDestination::Assign(value_atom.clone());
+    let plans: Vec<_> = args
+        .iter()
+        .map(|arg| emit_direct_tail(arg, &value_destination, ctx, registry))
+        .collect();
+
+    if plans
+        .iter()
+        .all(|plan| matches!(plan, DirectTailResult::Value(_)))
+    {
+        let values = plans
+            .into_iter()
+            .map(|plan| match plan {
+                DirectTailResult::Value(value) => value,
+                DirectTailResult::Statements(_) => unreachable!(),
+            })
+            .collect::<Vec<_>>();
+        if preserve_variadic {
+            return DirectTailResult::Value(list(
+                std::iter::once(atom(operator)).chain(values).collect(),
+            ));
+        }
+        let mut logical = values[0].clone();
+        for value in &values[1..] {
+            logical = list(vec![atom(operator), logical, value.clone()]);
+        }
+        return DirectTailResult::Value(logical);
+    }
+
+    let mut statements = vec![list(vec![atom("let"), value_atom.clone()])];
+    for (index, plan) in plans.into_iter().enumerate() {
+        let branch = match plan {
+            DirectTailResult::Value(value) => {
+                vec![consume_direct_value(&value_destination, value)]
+            }
+            DirectTailResult::Statements(statements) => statements,
+        };
+        if index == 0 {
+            statements.extend(branch);
+            continue;
+        }
+        let condition = match operator {
+            "&&" => value_atom.clone(),
+            "||" => list(vec![atom("!"), value_atom.clone()]),
+            "??" => list(vec![
+                atom("||"),
+                list(vec![atom("==="), value_atom.clone(), atom("null")]),
+                list(vec![
+                    atom("==="),
+                    value_atom.clone(),
+                    list(vec![atom("void"), num(0.0)]),
+                ]),
+            ]),
+            _ => unreachable!("only recognized logical operators reach this path"),
+        };
+        statements.push(list(vec![
+            atom("if"),
+            condition,
+            list(std::iter::once(atom("block")).chain(branch).collect()),
+        ]));
+    }
+    statements.push(consume_direct_value(destination, value_atom));
+    DirectTailResult::Statements(statements)
+}
+
+fn emit_direct_if_statement(
+    args: &[SExpr],
+    span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let Some(condition_expr) = args.first() else {
+        return list(vec![atom("if")]);
+    };
+    let (prefix, condition) = emit_direct_header_value(condition_expr, ctx, registry);
+    let mut statement = vec![atom("if"), condition];
+    for branch in args.iter().skip(1) {
+        statement.push(emit_in_context(
+            branch,
+            ExprContext::Statement,
+            ctx,
+            registry,
+        ));
+    }
+    if prefix.is_empty() {
+        return SExpr::List {
+            values: statement,
+            span,
+        };
+    }
+    let mut block = vec![atom("block")];
+    block.extend(prefix);
+    block.push(SExpr::List {
+        values: statement,
+        span,
+    });
+    list(block)
+}
+
 fn emit_direct_if_tail(
     args: &[SExpr],
     span: Span,
@@ -1028,27 +1192,59 @@ fn emit_direct_if_tail(
         ));
         return DirectTailResult::Value(atom("undefined"));
     }
-    let condition = emit_in_context(&args[0], ExprContext::Value, ctx, registry);
+    let (condition_prefix, condition) = emit_direct_header_value(&args[0], ctx, registry);
     let consequent = emit_direct_tail(&args[1], destination, ctx, registry);
     let alternate = emit_direct_tail(&args[2], destination, ctx, registry);
     match (consequent, alternate) {
         (DirectTailResult::Value(then_value), DirectTailResult::Value(else_value)) => {
-            DirectTailResult::Value(list(vec![atom("?"), condition, then_value, else_value]))
+            if condition_prefix.is_empty() {
+                DirectTailResult::Value(list(vec![atom("?"), condition, then_value, else_value]))
+            } else {
+                DirectTailResult::Statements(vec![list(
+                    std::iter::once(atom("block"))
+                        .chain(condition_prefix)
+                        .chain(std::iter::once(list(vec![
+                            atom("if"),
+                            condition,
+                            list(vec![
+                                atom("block"),
+                                consume_direct_value(destination, then_value),
+                            ]),
+                            list(vec![
+                                atom("block"),
+                                consume_direct_value(destination, else_value),
+                            ]),
+                        ])))
+                        .collect(),
+                )])
+            }
         }
-        (then_result, else_result) => DirectTailResult::Statements(vec![list(vec![
-            atom("if"),
-            condition,
-            list(
-                std::iter::once(atom("block"))
-                    .chain(direct_destination_arm(then_result, destination))
-                    .collect(),
-            ),
-            list(
-                std::iter::once(atom("block"))
-                    .chain(direct_destination_arm(else_result, destination))
-                    .collect(),
-            ),
-        ])]),
+        (then_result, else_result) => {
+            let conditional = list(vec![
+                atom("if"),
+                condition,
+                list(
+                    std::iter::once(atom("block"))
+                        .chain(direct_destination_arm(then_result, destination))
+                        .collect(),
+                ),
+                list(
+                    std::iter::once(atom("block"))
+                        .chain(direct_destination_arm(else_result, destination))
+                        .collect(),
+                ),
+            ]);
+            if condition_prefix.is_empty() {
+                DirectTailResult::Statements(vec![conditional])
+            } else {
+                DirectTailResult::Statements(vec![list(
+                    std::iter::once(atom("block"))
+                        .chain(condition_prefix)
+                        .chain(std::iter::once(conditional))
+                        .collect(),
+                )])
+            }
+        }
     }
 }
 
@@ -1088,6 +1284,15 @@ fn emit_direct_tail(
 
     match head {
         "if" => emit_direct_if_tail(&values[1..], expr.span(), destination, ctx, registry),
+        "and" | "or" => match crate::classifier::classify_expr(expr) {
+            Ok(SurfaceForm::And { args, .. }) => {
+                emit_direct_logical(&args, "&&", destination, ctx, registry, false)
+            }
+            Ok(SurfaceForm::Or { args, .. }) => {
+                emit_direct_logical(&args, "||", destination, ctx, registry, false)
+            }
+            _ => emit_direct_value_tail(expr, destination, ctx, registry),
+        },
         "return" => DirectTailResult::Statements(vec![emit_direct_return(
             &values[1..],
             expr.span(),
@@ -1115,10 +1320,29 @@ fn emit_direct_tail(
             )]),
             _ => emit_direct_value_tail(expr, destination, ctx, registry),
         },
-        "kernel:if" | "kernel:return" | "kernel:throw" | "kernel:break" | "kernel:continue" => {
+        "&&" | "||" | "??" if values.len() >= 3 => {
+            emit_direct_logical(&values[1..], head, destination, ctx, registry, true)
+        }
+        "kernel:if" | "kernel:return" | "kernel:throw" | "kernel:break" | "kernel:continue"
+        | "kernel:&&" | "kernel:||" | "kernel:??" => {
             let kernel_form = head.strip_prefix("kernel:").unwrap();
             match crate::classifier::forms::classify_kernel_escape(kernel_form, values, expr.span())
             {
+                Ok(raw) if matches!(kernel_form, "&&" | "||" | "??") => {
+                    let raw_values = raw.as_list().unwrap_or_default();
+                    if raw_values.len() >= 3 {
+                        emit_direct_logical(
+                            &raw_values[1..],
+                            kernel_form,
+                            destination,
+                            ctx,
+                            registry,
+                            true,
+                        )
+                    } else {
+                        emit_direct_value_tail(expr, destination, ctx, registry)
+                    }
+                }
                 Ok(raw) => emit_direct_tail(&raw, destination, ctx, registry),
                 Err(error) => {
                     ctx.record_fatal(LyknError::Classify(error));
@@ -2853,6 +3077,8 @@ fn emit_match_statement_inner(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    let completion_enabled =
+        direct_destination.is_some() || (ctx.direct_return_region && !ctx.legacy_statement_match);
     let mut reserved = HashSet::new();
     reserve_emitted_names(target, &mut reserved);
     for clause in clauses {
@@ -2867,16 +3093,19 @@ fn emit_match_statement_inner(
 
     let target_var = next_unreserved_gensym(ctx, "target", &mut reserved);
     let matched_var = next_unreserved_gensym(ctx, "matched", &mut reserved);
-    let target_binding = list(vec![
-        atom("const"),
-        atom(&target_var),
-        emit_in_context(target, ExprContext::Value, ctx, registry),
-    ]);
-    let mut statements = vec![
-        atom("block"),
-        target_binding,
-        list(vec![atom("let"), atom(&matched_var), bool_lit(false)]),
-    ];
+    let (subject_prefix, subject_value) = if completion_enabled {
+        emit_direct_header_value(target, ctx, registry)
+    } else {
+        (
+            Vec::new(),
+            emit_in_context(target, ExprContext::Value, ctx, registry),
+        )
+    };
+    let target_binding = list(vec![atom("const"), atom(&target_var), subject_value]);
+    let mut statements = vec![atom("block")];
+    statements.extend(subject_prefix);
+    statements.push(target_binding);
+    statements.push(list(vec![atom("let"), atom(&matched_var), bool_lit(false)]));
     let mut terminal = false;
 
     for clause in clauses {
@@ -2899,8 +3128,17 @@ fn emit_match_statement_inner(
         let selected_body = list(selected_items);
 
         if let Some(guard) = &clause.guard {
-            let guard = emit_in_context(guard, ExprContext::Value, ctx, registry);
-            candidate_items.push(list(vec![atom("if"), guard, selected_body]));
+            if completion_enabled {
+                let saved_context = ctx.expr_context;
+                ctx.expr_context = ExprContext::Statement;
+                let (guard_prefix, guard_value) = emit_direct_header_value(guard, ctx, registry);
+                ctx.expr_context = saved_context;
+                candidate_items.extend(guard_prefix);
+                candidate_items.push(list(vec![atom("if"), guard_value, selected_body]));
+            } else {
+                let guard = emit_in_context(guard, ExprContext::Value, ctx, registry);
+                candidate_items.push(list(vec![atom("if"), guard, selected_body]));
+            }
         } else {
             candidate_items.push(selected_body);
         }

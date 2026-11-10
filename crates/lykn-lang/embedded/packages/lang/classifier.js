@@ -1402,12 +1402,19 @@ export function emitMatchMacro(args) {
 }
 
 /** Emit a direct statement-position match; value-position Match remains above. */
-export function emitMatchStatementMacro(args, { expandValue, expandBody, env, reserveNames }) {
+export function emitMatchStatementMacro(args, {
+  expandValue,
+  expandHeader,
+  expandBody,
+  env,
+  reserveNames,
+}) {
   if (args.length < 2) throw new Error("match requires an expression and at least one clause");
   const reserved = reserveNames(args);
   let provisional = gensym("target");
   while (reserved.has(toJsIdentifier(provisional.value))) provisional = gensym("target");
-  const expr = expandValue(args[0], env);
+  const header = expandHeader ?? ((form, scope) => ({ prefix: [], value: expandValue(form, scope) }));
+  const subject = header(args[0], env);
   const clauses = [];
   for (let i = 0; i < args.length - 1; i++) {
     const { pattern, guard, bodyForms } = parseMatchClause(args[i + 1], i);
@@ -1418,11 +1425,19 @@ export function emitMatchStatementMacro(args, { expandValue, expandBody, env, re
     );
     const clauseEnv = new Set([...env, ...names]);
     clauses.push({ pattern, compiled, provisional,
-      guard: guard ? expandValue(guard, clauseEnv) : null,
+      guard: guard ? header(guard, clauseEnv) : null,
       body: expandBody(bodyForms, clauseEnv) });
   }
 
-  reserveNames([expr, ...clauses.flatMap((c) => [c.guard, ...c.body])], reserved);
+  reserveNames([
+    subject.value,
+    ...subject.prefix,
+    ...clauses.flatMap((c) => [
+      c.guard?.value,
+      ...(c.guard?.prefix ?? []),
+      ...c.body,
+    ]),
+  ], reserved);
   let target = provisional;
   if (reserved.has(toJsIdentifier(provisional.value))) {
     target = gensym("target");
@@ -1445,7 +1460,8 @@ export function emitMatchStatementMacro(args, { expandValue, expandBody, env, re
     if (node.type === "cons") return { ...node, car: retarget(node.car, oldTarget), cdr: retarget(node.cdr, oldTarget) };
     return node;
   };
-  const out = [sym("block"), array(sym("const"), target, expr), array(sym("let"), matched, sym("false"))];
+  const out = [sym("block"), ...subject.prefix,
+    array(sym("const"), target, subject.value), array(sym("let"), matched, sym("false"))];
   let terminal = false;
   for (const clause of clauses) {
     const oldTarget = clause.provisional.value;
@@ -1453,7 +1469,8 @@ export function emitMatchStatementMacro(args, { expandValue, expandBody, env, re
     const bindings = clause.compiled.bindings.map((n) => retarget(n, oldTarget));
     const candidate = [sym("block"), ...bindings];
     const selected = array(sym("block"), array(sym("="), matched, sym("true")), ...clause.body);
-    if (clause.guard) candidate.push(array(sym("if"), clause.guard, selected));
+    if (clause.guard) candidate.push(...clause.guard.prefix,
+      array(sym("if"), clause.guard.value, selected));
     else candidate.push(selected);
     out.push(array(sym("if"), andChain([array(sym("!"), matched), ...checks]), array(...candidate)));
     const p = clause.pattern;
