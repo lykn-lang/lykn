@@ -5,7 +5,7 @@
   (bind lifted (callee (fn () 1) (do 0 0)))
   (bind value (do (fn () 1)))
   (bind named-callback (fn () 1))
-  (bind lifted-lambda (callee (lambda () (return 1)) (do 0 0)))
+  (bind lifted-lambda (callee (lambda () 1) (do 0 0)))
   (bind lifted-generator (callee (kernel:function* () (yield 1)) (do 0 0)))
   (bind lifted-class (callee (class-expr ()) (do 0 0)))
   (bind lifted-async (callee (kernel:async (kernel:=> () 1)) (do 0 0)))

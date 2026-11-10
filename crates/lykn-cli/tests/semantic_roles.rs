@@ -353,6 +353,7 @@ fn run_positive(case: &Case) {
             | "ordered-member-pure-colon-call"
             | "computed-member-ordered-throws"
             | "computed-member-no-prefix"
+            | "anonymous-completion-names"
     ) {
         let kernel_json = execute_recorded(
             &format!("native-{}-kernel-json", case.name),
