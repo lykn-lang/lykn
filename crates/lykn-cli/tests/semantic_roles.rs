@@ -154,6 +154,12 @@ const FIXTURES: &[Case] = &[
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
+    match name {
+        "ordered-member-pure-colon-call" => {
+            return ordered_member_fixture_path("pure-colon-call");
+        }
+        _ => {}
+    }
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../test/fixtures/semantic-roles")
         .join(format!("{name}.lykn"))
@@ -333,7 +339,9 @@ fn run_positive(case: &Case) {
 
     if matches!(
         case.name,
-        "ordered-lexical-bind-call" | "ordered-lexical-statement-call"
+        "ordered-lexical-bind-call"
+            | "ordered-lexical-statement-call"
+            | "ordered-member-pure-colon-call"
     ) {
         let kernel_json = execute_recorded(
             &format!("native-{}-kernel-json", case.name),
@@ -396,6 +404,319 @@ fn run_positive(case: &Case) {
         "{} runtime JSON differs",
         case.name
     );
+    if case.name == "ordered-member-pure-colon-call" {
+        let generated = String::from_utf8(generated.expect("pure call JavaScript exists"))
+            .expect("pure call JavaScript is UTF-8");
+        assert!(generated.contains("receiver.readEntry(3)"));
+        assert!(!generated.contains("lyknHostReflectApply"));
+        assert!(!generated.contains("Reflect.apply"));
+    }
+}
+
+fn ordered_member_fixture_path(name: &str) -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../test/fixtures/ordered-member-calls")
+        .join(format!("{name}.lykn"))
+}
+
+fn run_ordered_member_provider(provider_name: &str, expected_provider_kind: &str) {
+    let temp = TempDir::new().expect("create ordered-member output directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated ordered-member XDG cache");
+    let provider_path = ordered_member_fixture_path(provider_name);
+    let provider_source = fs::read(&provider_path).expect("read frozen ordered-member provider");
+    let provider_output = temp.path().join("provider.js");
+
+    let check = execute_recorded(
+        &format!("native-{provider_name}-check"),
+        &provider_path,
+        &provider_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("check")
+            .arg(&provider_path),
+    );
+    let compile = execute_recorded(
+        &format!("native-{provider_name}-compile"),
+        &provider_path,
+        &provider_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&provider_path)
+            .arg("-o")
+            .arg(&provider_output),
+    );
+    let kernel_json = execute_recorded(
+        &format!("native-{provider_name}-kernel-json"),
+        &provider_path,
+        &provider_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&provider_path)
+            .arg("--kernel-json"),
+    );
+    let provider_js = fs::read(&provider_output).ok();
+    let provider_dts = fs::read(provider_output.with_extension("d.ts")).ok();
+    record_generated(
+        &format!("native-{provider_name}"),
+        provider_js.as_deref(),
+        provider_dts.as_deref(),
+    );
+
+    let live_path = ordered_member_fixture_path("entry-live");
+    let live_source = fs::read(&live_path).expect("read frozen ordered-member live entry");
+    let live_output = temp.path().join("live.js");
+    let live_compile = execute_recorded(
+        &format!("native-{provider_name}-live-compile"),
+        &live_path,
+        &live_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&live_path)
+            .arg("-o")
+            .arg(&live_output)
+            .arg("--source-context-path")
+            .arg(temp.path()),
+    );
+    let live_js = fs::read(&live_output).ok();
+    let live_dts = fs::read(live_output.with_extension("d.ts")).ok();
+    record_generated(
+        &format!("native-{provider_name}-live"),
+        live_js.as_deref(),
+        live_dts.as_deref(),
+    );
+
+    let shaken_path = ordered_member_fixture_path("entry-shaken");
+    let shaken_source = fs::read(&shaken_path).expect("read frozen ordered-member shaken entry");
+    let shaken_output = temp.path().join("shaken.js");
+    let shaken_compile = execute_recorded(
+        &format!("native-{provider_name}-shaken-compile"),
+        &shaken_path,
+        &shaken_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&shaken_path)
+            .arg("-o")
+            .arg(&shaken_output)
+            .arg("--source-context-path")
+            .arg(temp.path()),
+    );
+    let shaken_js = fs::read(&shaken_output).ok();
+    let shaken_dts = fs::read(shaken_output.with_extension("d.ts")).ok();
+    record_generated(
+        &format!("native-{provider_name}-shaken"),
+        shaken_js.as_deref(),
+        shaken_dts.as_deref(),
+    );
+
+    let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
+    let provider_runtime = if compile.status.success() && provider_js.is_some() {
+        Some(execute_recorded(
+            &format!("native-{provider_name}-runtime"),
+            &provider_path,
+            &provider_source,
+            Command::new(&deno)
+                .current_dir(temp.path())
+                .args([
+                    "run",
+                    "--no-config",
+                    "--cached-only",
+                    "--no-npm",
+                    "--no-remote",
+                    "--deny-net",
+                    "--no-prompt",
+                ])
+                .arg(&provider_output),
+        ))
+    } else {
+        let message =
+            b"skipped: provider compile did not produce a successful JavaScript artifact\n";
+        save_receipt(
+            &format!("native-{provider_name}-runtime"),
+            "status.txt",
+            message,
+        );
+        None
+    };
+    let live_runtime = if live_compile.status.success() && live_js.is_some() {
+        Some(execute_recorded(
+            &format!("native-{provider_name}-live-runtime"),
+            &live_path,
+            &live_source,
+            Command::new(&deno)
+                .current_dir(temp.path())
+                .args([
+                    "run",
+                    "--no-config",
+                    "--cached-only",
+                    "--no-npm",
+                    "--no-remote",
+                    "--deny-net",
+                    "--no-prompt",
+                ])
+                .arg(&live_output),
+        ))
+    } else {
+        let message =
+            b"skipped: live entry compile did not produce a successful JavaScript artifact\n";
+        save_receipt(
+            &format!("native-{provider_name}-live-runtime"),
+            "status.txt",
+            message,
+        );
+        None
+    };
+
+    assert!(
+        check.status.success(),
+        "provider check failed: {:?}",
+        check.stderr
+    );
+    assert!(
+        compile.status.success(),
+        "provider compile failed: {:?}",
+        compile.stderr
+    );
+    assert!(
+        kernel_json.status.success(),
+        "provider kernel JSON failed: {:?}",
+        kernel_json.stderr
+    );
+    let parsed: serde_json::Value = serde_json::from_slice(&kernel_json.stdout)
+        .expect("provider kernel JSON is a valid ordinary module");
+    assert!(parsed.is_array() && !parsed.as_array().unwrap().is_empty());
+    assert!(provider_js.is_some(), "provider JavaScript is missing");
+    assert_eq!(
+        provider_dts.as_deref(),
+        Some(b"export function probe(): unknown;\n".as_slice()),
+        "provider export DTS differs"
+    );
+    assert!(
+        live_compile.status.success(),
+        "live entry compile failed: {:?}",
+        live_compile.stderr
+    );
+    assert!(live_js.is_some(), "live entry JavaScript is missing");
+    assert!(live_dts.is_none(), "live entry unexpectedly emitted DTS");
+    assert!(
+        shaken_compile.status.success(),
+        "shaken entry compile failed: {:?}",
+        shaken_compile.stderr
+    );
+    assert!(shaken_js.is_some(), "shaken entry JavaScript is missing");
+    assert!(
+        shaken_dts.is_none(),
+        "shaken entry unexpectedly emitted DTS"
+    );
+    let provider_runtime = provider_runtime.expect("provider runtime was not eligible to run");
+    assert!(
+        provider_runtime.status.success(),
+        "provider runtime failed: {:?}",
+        provider_runtime.stderr
+    );
+    assert!(provider_runtime.stderr.is_empty());
+    assert_eq!(provider_runtime.stdout, b"provider\n");
+    let live_runtime = live_runtime.expect("live runtime was not eligible to run");
+    assert!(
+        live_runtime.status.success(),
+        "live runtime failed: {:?}",
+        live_runtime.stderr
+    );
+    assert!(live_runtime.stderr.is_empty());
+    let expected = format!(
+        "provider\n[\"{expected_provider_kind}\",92,[\"receiver\",8],[\"get\",\"earlier\",\"middle\",\"get\",\"earlier\",\"middle\",\"later\",\"call\",\"after\"]]\n"
+    );
+    assert_eq!(live_runtime.stdout, expected.as_bytes());
+}
+
+#[test]
+fn native_static_member_calls_use_the_default_lazy_helper() {
+    run_ordered_member_provider("provider-default", "local");
+}
+
+#[test]
+fn native_static_member_calls_use_the_reflect_fallback() {
+    run_ordered_member_provider("provider-fallback", "inline");
+}
+
+#[test]
+fn native_pure_static_member_call_keeps_the_ordinary_route() {
+    let source = fs::read(ordered_member_fixture_path("pure-colon-call"))
+        .expect("read frozen pure static-member source");
+    let case = Case {
+        name: "ordered-member-pure-colon-call",
+        expected: b"4\n",
+    };
+    assert!(source.ends_with(b"\n"));
+    run_positive(&case);
+}
+
+#[test]
+fn native_static_member_spread_with_lifted_arguments_fails_closed() {
+    const MESSAGE: &str = "ordered member call with spread and lifted arguments is not supported";
+    let source = concat!(
+        "(func mixed-spread :args (:any receiver :any items) :returns :any :body\n",
+        "  (receiver:read-entry (spread items) (do (return 7) 8)))\n",
+    )
+    .as_bytes();
+    let temp = TempDir::new().expect("create static-member spread negative directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated static-member XDG cache");
+    let source_path = temp.path().join("mixed-spread.lykn");
+    let output_path = temp.path().join("mixed-spread.js");
+    fs::write(&source_path, source).expect("write frozen static-member spread source");
+    let exact_source = fs::read(&source_path).expect("read exact static-member spread source");
+    let compile = execute_recorded(
+        "native-ordered-member-call-spread-compile",
+        &source_path,
+        &exact_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&output_path),
+    );
+    let generated = output_path
+        .try_exists()
+        .expect("check static-member spread JavaScript")
+        .then(|| fs::read(&output_path).expect("read static-member spread JavaScript"));
+    let dts_path = output_path.with_extension("d.ts");
+    let dts = dts_path
+        .try_exists()
+        .expect("check static-member spread DTS")
+        .then(|| fs::read(&dts_path).expect("read static-member spread DTS"));
+    record_generated(
+        "native-ordered-member-call-spread",
+        generated.as_deref(),
+        dts.as_deref(),
+    );
+    let stderr = String::from_utf8_lossy(&compile.stderr);
+    eprintln!(
+        "ORDERED_MEMBER_SPREAD_PREASSERT status={:?} stdout={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
+        compile.status.code(),
+        compile.stdout,
+    );
+    assert_eq!(compile.status.code(), Some(1));
+    assert!(
+        stderr.contains(&format!("2:3: error: {MESSAGE}")),
+        "missing exact mixed-spread diagnostic at call span: {stderr}"
+    );
+    assert!(
+        generated.is_none(),
+        "failed compile wrote JavaScript: {generated:?}"
+    );
+    assert!(dts.is_none(), "failed compile wrote declarations: {dts:?}");
 }
 
 #[test]

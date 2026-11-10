@@ -37,6 +37,7 @@ const CASES = [
   { name: "completion-nullish-operands", expected: '[0,false,"early","early",["left","after","left","after","left","right","left","right"]]\n' },
   { name: "ordered-lexical-bind-call", expected: '[91,["old",8],["earlier","middle","earlier","middle","later","old","after"]]\n' },
   { name: "ordered-lexical-statement-call", expected: '[90,91,["first","middle","first","middle",4,"after","first","middle",true]]\n' },
+  { name: "ordered-member-pure-colon-call", expected: "4\n" },
 ];
 
 const RESERVED_MATCH_CASES = [
@@ -65,14 +66,17 @@ const RESERVED_MATCH_CASES = [
 Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", async (t) => {
   for (const fixture of CASES) {
     await t.step(fixture.name, async () => {
-      const sourcePath = `${Deno.cwd()}/test/fixtures/semantic-roles/${fixture.name}.lykn`;
+      const sourcePath = fixture.name === "ordered-member-pure-colon-call"
+        ? `${Deno.cwd()}/test/fixtures/ordered-member-calls/pure-colon-call.lykn`
+        : `${Deno.cwd()}/test/fixtures/semantic-roles/${fixture.name}.lykn`;
       const source = await Deno.readTextFile(sourcePath);
       if (fixture.name === "statement-match-preservation") resetGensym();
       if (fixture.name === "original-match-kernel-object") resetMacros();
       const generated = lykn(source);
       if (
         fixture.name === "ordered-lexical-bind-call" ||
-        fixture.name === "ordered-lexical-statement-call"
+        fixture.name === "ordered-lexical-statement-call" ||
+        fixture.name === "ordered-member-pure-colon-call"
       ) {
         const expanded = expand(read(source));
         assertEquals(compile(expanded), generated, `${fixture.name} expanded compile differs`);
@@ -154,11 +158,204 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
         assertEquals(runtime.success, true, `${fixture.name} strict runtime failed`);
         assertEquals(runtime.stderr.length, 0, `${fixture.name} wrote stderr`);
         assertEquals(new TextDecoder().decode(runtime.stdout), fixture.expected);
+        if (fixture.name === "ordered-member-pure-colon-call") {
+          assertEquals(generated.includes("receiver.readEntry(3)"), true);
+          assertEquals(generated.includes("lyknHostReflectApply"), false);
+          assertEquals(generated.includes("Reflect.apply"), false);
+        }
       } finally {
         await Deno.remove(temp, { recursive: true });
       }
     });
   }
+});
+
+async function runPublicOrderedMemberProvider(providerName, expectedProviderKind) {
+  resetGensym();
+  resetMacros();
+  const fixtureRoot = `${Deno.cwd()}/test/fixtures/ordered-member-calls`;
+  const providerPath = `${fixtureRoot}/${providerName}.lykn`;
+  const livePath = `${fixtureRoot}/entry-live.lykn`;
+  const shakenPath = `${fixtureRoot}/entry-shaken.lykn`;
+  const providerSource = await Deno.readTextFile(providerPath);
+  const liveSource = await Deno.readTextFile(livePath);
+  const shakenSource = await Deno.readTextFile(shakenPath);
+  const temp = await Deno.makeTempDir();
+  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
+  const save = async (suffix, bytes) => {
+    if (evidenceRoot !== undefined) {
+      await Deno.writeFile(`${evidenceRoot}/public-${providerName}-${suffix}`, bytes, {
+        createNew: true,
+      });
+    }
+  };
+  const saveText = async (suffix, value) =>
+    save(suffix, new TextEncoder().encode(value));
+
+  try {
+    await saveText("provider.source.lykn", providerSource);
+    await saveText("entry-live.source.lykn", liveSource);
+    await saveText("entry-shaken.source.lykn", shakenSource);
+    const provider = lykn(providerSource);
+    const live = lykn(liveSource);
+    const shaken = lykn(shakenSource);
+    await saveText("provider.generated.js", provider);
+    await saveText("entry-live.generated.js", live);
+    await saveText("entry-shaken.generated.js", shaken);
+
+    const expanded = expand(read(providerSource));
+    const direct = compile(expanded);
+    const cloned = compile(structuredClone(expanded));
+    const roundTripped = compile(JSON.parse(JSON.stringify(expanded)));
+    await saveText("provider.expanded.json", `${JSON.stringify(expanded)}\n`);
+    await saveText("provider.direct.js", direct);
+    await saveText("provider.clone.js", cloned);
+    await saveText("provider.json-roundtrip.js", roundTripped);
+
+    await Deno.writeTextFile(`${temp}/provider.js`, provider);
+    await Deno.writeTextFile(`${temp}/live.js`, live);
+    await Deno.writeTextFile(`${temp}/shaken.js`, shaken);
+    const envNames = [
+      "DENO_DIR",
+      "LYKN_TEST_DENO",
+      "XDG_CACHE_HOME",
+      "TMPDIR",
+      "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR",
+    ];
+    const selectedEnv = Object.fromEntries(
+      envNames.map((name) => [name, Deno.env.get(name) ?? null]),
+    );
+    const run = async (name, outputPath, sourcePath, source) => {
+      const args = [
+        "run",
+        "--no-config",
+        "--cached-only",
+        "--no-npm",
+        "--no-remote",
+        "--deny-net",
+        "--no-prompt",
+        `${temp}/${outputPath}`,
+      ];
+      const commandDescription = {
+        program: Deno.execPath(),
+        args,
+        cwd: temp,
+        sourcePath,
+        source,
+        selectedEnv,
+      };
+      await saveText(
+        `${name}.command.json`,
+        `${JSON.stringify(commandDescription, null, 2)}\n`,
+      );
+      const output = await new Deno.Command(Deno.execPath(), {
+        args,
+        cwd: temp,
+        stdout: "piped",
+        stderr: "piped",
+      }).output();
+      const observation = {
+        status: output.code,
+        success: output.success,
+        stdout: Array.from(output.stdout),
+        stderr: Array.from(output.stderr),
+      };
+      await save(`${name}.stdout.bin`, output.stdout);
+      await save(`${name}.stderr.bin`, output.stderr);
+      await saveText(`${name}.status.txt`, `success=${output.success} code=${output.code}\n`);
+      console.log(
+        `ORDERED_MEMBER_PUBLIC_PREASSERT ${providerName} ${name} ${JSON.stringify(observation)}`,
+      );
+      return observation;
+    };
+
+    const providerRun = await run("provider", "provider.js", providerPath, providerSource);
+    const liveRun = await run("live", "live.js", livePath, liveSource);
+    console.log(
+      `ORDERED_MEMBER_PUBLIC_MODULE_EQUALITY ${providerName} ${
+        JSON.stringify({
+          direct: direct === provider,
+          clone: cloned === provider,
+          json: roundTripped === provider,
+        })
+      }`,
+    );
+
+    assertEquals(direct, provider);
+    assertEquals(cloned, provider);
+    assertEquals(roundTripped, provider);
+    assertEquals(
+      providerRun.success,
+      true,
+      "provider strict runtime failed",
+    );
+    assertEquals(
+      providerRun.stderr,
+      [],
+      "provider strict runtime wrote stderr",
+    );
+    assertEquals(
+      new TextDecoder().decode(new Uint8Array(providerRun.stdout)),
+      "provider\n",
+    );
+    assertEquals(liveRun.success, true, "live entry strict runtime failed");
+    assertEquals(
+      liveRun.stderr,
+      [],
+      "live entry strict runtime wrote stderr",
+    );
+    const expected =
+      `provider\n["${expectedProviderKind}",92,["receiver",8],["get","earlier","middle","get","earlier","middle","later","call","after"]]\n`;
+    assertEquals(
+      new TextDecoder().decode(new Uint8Array(liveRun.stdout)),
+      expected,
+    );
+  } finally {
+    await Deno.remove(temp, { recursive: true });
+  }
+}
+
+Deno.test("public static member calls use the default lazy helper", async () => {
+  await runPublicOrderedMemberProvider("provider-default", "local");
+});
+
+Deno.test("public static member calls use the Reflect fallback", async () => {
+  await runPublicOrderedMemberProvider("provider-fallback", "inline");
+});
+
+Deno.test("public member spread plus lifted arguments fails closed", () => {
+  const source =
+    "(func mixed-spread :args (:any receiver :any items) :returns :any :body\n" +
+    "  (receiver:read-entry (spread items) (do (return 7) 8)))\n";
+  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
+  let message = null;
+  let output = null;
+  try {
+    output = lykn(source);
+  } catch (error) {
+    message = error.message;
+  }
+  console.log(
+    `ORDERED_MEMBER_SPREAD_PREASSERT ${
+      JSON.stringify({ source, message, output })
+    }`,
+  );
+  if (evidenceRoot !== undefined) {
+    Deno.writeTextFileSync(
+      `${evidenceRoot}/public-ordered-member-spread.source.lykn`,
+      source,
+      { createNew: true },
+    );
+    Deno.writeTextFileSync(
+      `${evidenceRoot}/public-ordered-member-spread.preassert.json`,
+      `${JSON.stringify({ message, output })}\n`,
+      { createNew: true },
+    );
+  }
+  assertEquals(
+    message,
+    "ordered member call with spread and lifted arguments is not supported",
+  );
 });
 
 for (const testCase of RESERVED_MATCH_CASES) {
