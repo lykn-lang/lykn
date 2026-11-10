@@ -2,7 +2,7 @@
 (macro clause-guard (value) `(= ,value 7))
 (macro clause-push (value) `(trace:push ,value))
 (bind trace (array))
-(match (kernel:object (key 7))
+(match (JSON:parse "{\"key\":7}")
   (clause-push :when false (trace:push "wrong"))
   ((obj :key n) :when (clause-guard n) (clause-push n))
   (_ (trace:push "fallback")))
