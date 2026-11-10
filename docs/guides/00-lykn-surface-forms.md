@@ -220,14 +220,14 @@ directly from that function. Returns inside a nested function still belong to
 the nested function; typed returns, postconditions, generators, and
 multi-clause functions keep their own lowering rules.
 
-Within this same function region, a call through a bare lexical binding is an
+On these direct statement, simple-name `bind` initializer, and explicit
+return-operand paths, a call through a bare lexical binding remains an
 ordinary call even when its name matches a surface form, such as a parameter
-named `and`. The callable is evaluated before its arguments, and arguments
-run left-to-right. A direct `return`, `break`, or `continue` in an argument
-keeps its surrounding function or loop target and skips later arguments and
-the call. A call that combines a spread argument with an argument whose
-evaluation needs a statement sequence is rejected; plain spreads and member
-or computed calls keep their existing behavior.
+named `and`. The callable is evaluated before its arguments, which run
+left-to-right. In an argument lowered as a statement sequence, a direct
+`return`, `break`, or `continue` keeps its surrounding function or loop target
+and skips later arguments and the call. A lexical call with a spread argument
+and an argument whose evaluation needs a statement sequence is rejected.
 
 Multi-expression body:
 

@@ -1200,9 +1200,10 @@ function expandDirectValuePlan(form, env) {
 }
 
 function isDirectLexicalCallHead(head) {
-  return head?.type === "atom" && head.binding === "ref" &&
-    !head.value.includes(":") &&
-    !["eval", "super", "new", "dynamic-import"].includes(head.value);
+  if (head?.type !== "atom" || head.binding !== "ref" || head.value.includes(":")) {
+    return false;
+  }
+  return !["eval", "super", "new"].includes(toJsIdentifier(head.value));
 }
 
 function isNormalizedSpreadArgument(value) {
