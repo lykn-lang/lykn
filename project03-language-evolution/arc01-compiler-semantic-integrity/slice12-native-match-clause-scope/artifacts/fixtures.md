@@ -10,8 +10,11 @@ tests, public one parent and 16 steps.
 ```lykn
 (bind trace (array))
 (func plus-ten :args (:any n) :returns :any :body (+ n 10))
+(func trace-false :args (:any value) :returns :any :body
+  (trace:push value)
+  false)
 (match plus-ten
-  (match :when (do (trace:push (match 1)) false)
+  (match :when (trace-false (match 1))
     (trace:push "wrong"))
   (_
     (match 2
@@ -37,7 +40,7 @@ Record the actual phase/error. Public is expected to pass unchanged.
 (macro clause-guard (value) `(= ,value 7))
 (macro clause-push (value) `(trace:push ,value))
 (bind trace (array))
-(match (kernel:object (key 7))
+(match (JSON:parse "{\"key\":7}")
   (clause-push :when false (trace:push "wrong"))
   ((obj :key n) :when (clause-guard n) (clause-push n))
   (_ (trace:push "fallback")))
@@ -62,4 +65,11 @@ Intake amendment before test authoring. The first guarded clause
 was added to F2 after issued plan `fd400666` to discriminate the
 two Pass2 responsibilities with one fixture. Its original planned
 bytes remain in that commit. The stdout oracle and population stay
-the same. No earlier source fixture was executed.
+the same. No earlier source fixture was executed before that amendment.
+
+Refinement 01 isolates the actual runtime comparison. The first
+executed inputs remain at `bd081320`. Native F1 emitted a raw reserved
+`do` call and public misclassified its guard as a pattern before any
+module ran. Native F2 emitted the nested explicit object escape as
+a call through `kernel`. The successor uses the ordinary helper and
+JSON.parse subject shown above. Scope oracles and population stay fixed.

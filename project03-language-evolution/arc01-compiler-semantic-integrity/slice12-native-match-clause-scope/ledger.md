@@ -1,5 +1,11 @@
 # Native match-clause scope ledger
 
+First old baseline at test freeze `bd081320`: native 15/17 and
+public 15/16 steps passed. Three private discriminators failed on
+the expected wrong scope. The runtime fixtures also exposed two
+separate product limits before completing their intended comparisons.
+[Refinement 01](cc-prompt-iteration01.md) isolates the same oracles.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | MC-01 | Native resolver isolates incoming, structural and each clause's executable scope | Exact occurrence tags, same-clause bound call and sibling nested match, real F1 current runtime | correctness-grade | NE-C13/14, DD60/61 | open | cc-prompt.md | Keep source/span/shape |

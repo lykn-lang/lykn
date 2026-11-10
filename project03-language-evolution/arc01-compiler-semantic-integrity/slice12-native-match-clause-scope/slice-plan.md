@@ -60,3 +60,9 @@ whose binder shares the body macro's name. This makes the same
 runtime fixture discriminate sibling Pass2 isolation as well as
 structural pattern opacity. The prior exact plan is `fd400666`.
 No source fixture or baseline had run. Counts and stdout stay fixed.
+
+2026-11-09 [refinement 01](cc-prompt-iteration01.md), active after
+test-only `bd081320` and the actual old native/private/public gates.
+Two source fixture isolation edits retain the same oracles. The first
+assignment returned the full original observations. No compiler
+source has changed.
