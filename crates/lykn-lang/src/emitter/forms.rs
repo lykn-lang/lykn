@@ -1023,6 +1023,20 @@ fn consume_direct_no_value(destination: &DirectDestination) -> SExpr {
     }
 }
 
+fn direct_statement_block(statements: Vec<SExpr>) -> SExpr {
+    if statements.len() == 1
+        && statements[0]
+            .as_list()
+            .and_then(|items| items.first())
+            .and_then(SExpr::as_atom)
+            == Some("block")
+    {
+        statements.into_iter().next().unwrap()
+    } else {
+        list(std::iter::once(atom("block")).chain(statements).collect())
+    }
+}
+
 /// Evaluate a direct-region header as an ordinary value or as a statement
 /// prefix followed by a private value. The private atom is finalized across
 /// the complete emitted unit by the existing completion-value pass.
@@ -1037,17 +1051,7 @@ fn emit_direct_header_value(
     match emit_direct_tail(expr, &destination, ctx, registry) {
         DirectTailResult::Value(value) => (Vec::new(), value),
         DirectTailResult::Statements(statements) => {
-            let body = if statements.len() == 1
-                && statements[0]
-                    .as_list()
-                    .and_then(|items| items.first())
-                    .and_then(SExpr::as_atom)
-                    == Some("block")
-            {
-                statements.into_iter().next().unwrap()
-            } else {
-                list(std::iter::once(atom("block")).chain(statements).collect())
-            };
+            let body = direct_statement_block(statements);
             (
                 vec![list(vec![atom("let"), destination_atom.clone()]), body],
                 destination_atom,
@@ -1110,14 +1114,18 @@ fn emit_direct_logical(
 
     let mut statements = vec![list(vec![atom("let"), value_atom.clone()])];
     for (index, plan) in plans.into_iter().enumerate() {
-        let branch = match plan {
+        let (branch, is_statement_plan) = match plan {
             DirectTailResult::Value(value) => {
-                vec![consume_direct_value(&value_destination, value)]
+                (vec![consume_direct_value(&value_destination, value)], false)
             }
-            DirectTailResult::Statements(statements) => statements,
+            DirectTailResult::Statements(statements) => (statements, true),
         };
         if index == 0 {
-            statements.extend(branch);
+            if is_statement_plan {
+                statements.push(direct_statement_block(branch));
+            } else {
+                statements.extend(branch);
+            }
             continue;
         }
         let condition = match operator {

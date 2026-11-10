@@ -1245,19 +1245,20 @@ function expandResultOperand(form, env, use) {
       if (value && typeof value === "object" && !Array.isArray(value)) returnOperandValues.add(value);
       return value;
     }
-    const condition = expandSingle(form.values[1], env, "Value", "if condition");
+    const { prefix: conditionPrefix, value: condition } = expandDirectValuePlan(form.values[1], env);
     const consequent = expandAt(form.values[2], env, use);
     const alternate = expandAt(form.values[3], env, use);
     const isValue = (result) => !Array.isArray(result) &&
       !directResultBlocks.has(result) && !isDirectTransfer(result) &&
       !isExpandedStatement(result);
-    if (isValue(consequent) && isValue(alternate)) {
+    if (isValue(consequent) && isValue(alternate) && conditionPrefix.length === 0) {
       const value = { ...form, values: [form.values[0], condition, consequent, alternate] };
       returnOperandValues.add(value);
       return value;
     }
     const branch = (result) => array(sym("block"), ...directResultStatements(result, use));
-    return directBlock([array(sym("if"), condition, branch(consequent), branch(alternate))]);
+    const conditional = array(sym("if"), condition, branch(consequent), branch(alternate));
+    return directBlock([...conditionPrefix, conditional]);
   }
   if (h === "do") {
     const { prefix, tail } = expandChildrenTail(form.values.slice(1), env, "DirectStatement", use);
