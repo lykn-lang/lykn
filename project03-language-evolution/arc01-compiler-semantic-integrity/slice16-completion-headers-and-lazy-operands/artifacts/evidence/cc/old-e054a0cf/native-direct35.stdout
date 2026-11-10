@@ -1,0 +1,48 @@
+
+running 35 tests
+test direct_return_consumes_do_without_retargeting_loop_transfers ... ok
+test bind_consumed_early_return_skips_the_original_const_continuation ... ok
+test bind_consumed_group_match_keeps_order_and_source_return_target ... ok
+test bound_match_conditional_operand_is_a_value ... ok
+test bind_consumed_loop_transfers_keep_their_source_targets ... ok
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... ok
+test direct_return_consumes_match_in_the_named_function_region ... ok
+test direct_return_match_preserves_guarded_exhaustion ... ok
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... ok
+test if_declaration_is_emitted_inside_a_branch_block ... ok
+test logical_operands_are_lazy_and_preserve_results ... FAILED
+test if_direct_transfers_keep_source_targets ... ok
+test do_while_uses_value_test_and_statement_sequence_body ... ok
+test match_consumes_value_tail_after_statement_prefix ... ok
+test match_clauses_keep_bindings_local_to_guard_and_body ... ok
+test native_typed_bind_check_follows_normal_result_initialization ... ok
+test bind_consumed_result_temp_preserves_later_name_hygiene ... ok
+test nested_kernel_object_retains_structural_and_executable_roles ... ok
+test match_subject_and_guard_headers_preserve_completion ... FAILED
+test direct_return_macro_keeps_nested_function_boundaries ... ok
+test nullish_operands_preserve_strict_selection_and_completion ... FAILED
+test original_match_reserved_role_is_preserved ... ok
+test selected_if_headers_preserve_completion_and_values ... FAILED
+test statement_match_guards_progress_in_source_order ... ok
+test statement_match_loop_transfers_keep_their_source_targets ... ok
+test unknown_nested_kernel_escape_fails_compile_without_outputs ... ok
+test statement_match_guarded_exhaustion_throws_into_the_enclosing_try ... ok
+test if_direct_transfers_keep_macro_introduced_function_targets ... ok
+test statement_match_preserves_protected_function_exit_checks ... ok
+test statement_match_return_keeps_the_enclosing_function_target ... ok
+test while_uses_value_test_and_statement_sequence_body ... ok
+test if_arm_scope_and_macro_expansion_are_preserved ... ok
+test match_patterns_stay_structural_while_clause_macros_expand ... ok
+test original_match_kernel_object_is_preserved ... ok
+test statement_match_preserves_macro_hygiene_and_consumed_controls ... ok
+
+failures:
+
+failures:
+    logical_operands_are_lazy_and_preserve_results
+    match_subject_and_guard_headers_preserve_completion
+    nullish_operands_preserve_strict_selection_and_completion
+    selected_if_headers_preserve_completion_and_values
+
+test result: FAILED. 31 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+

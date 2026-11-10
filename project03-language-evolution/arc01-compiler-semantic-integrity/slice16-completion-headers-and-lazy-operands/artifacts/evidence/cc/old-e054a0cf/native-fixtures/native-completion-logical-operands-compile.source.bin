@@ -1,0 +1,17 @@
+(bind trace (array))
+(func lazy-results :args (:any stop) :returns :any :body
+  (bind first (and (do (trace:push "first") 0)
+                   (do (trace:push "wrong-and") (return 91))
+                   92))
+  (bind second (or (do (trace:push "second") "kept")
+                   (do (trace:push "wrong-or") (return 93))))
+  (return (and (do (trace:push first) true)
+               (do (trace:push second) (if stop (return 7)) "next")
+               (do (trace:push "last") (array first second)))))
+(func bound-logical :returns :any :body
+  (bind and (fn (:any a :any b) (array a b)))
+  (return (and (trace:push "arg1") (trace:push "arg2"))))
+(func pure-logical :returns :any :body
+  (or (and false "wrong") "pure"))
+(console:log (JSON:stringify (array (lazy-results true) (lazy-results false)
+  (bound-logical) (pure-logical) trace)))

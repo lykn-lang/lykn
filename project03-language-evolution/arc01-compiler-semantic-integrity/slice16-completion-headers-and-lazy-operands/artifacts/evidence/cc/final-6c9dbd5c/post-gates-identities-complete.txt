@@ -1,0 +1,45 @@
+6c9dbd5c38f16674c7b95315bd32bfee9fd131e5
+d9ce3a36e164252740d9ac29f712c85add99a0de
+e9d4c9a12d9653f85f5a3673e5895eb02b972b94bc6be781d712bb449be7da44  bin/lykn
+e9d4c9a12d9653f85f5a3673e5895eb02b972b94bc6be781d712bb449be7da44  target/release/lykn
+53a60c2faf24042a6edd981f00b0458cd7a776c59367a0b861f0c79d0ea45dcb  target/debug/lykn
+5f111c639ecb156d47e0c4a571864656f80eecd93a21ae66b4fcfb3d02250658  target/debug/deps/semantic_roles-cb18f482652d85e9
+87325f35b836f09806e05ef8fff3d09176d8c8ab28429408e53b1c692c5da249  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/native/native-completion-if-headers.generated.js
+87325f35b836f09806e05ef8fff3d09176d8c8ab28429408e53b1c692c5da249  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/public/public-completion-if-headers-generated.js
+present=true
+present=false
+success=true code=Some(0)
+       0
+success=true code=0
+       0
+6815168221c2a6860da5b2d54be712e17490af47aa49e452c3d25406ac830be0  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/native/native-completion-logical-operands.generated.js
+5666d04aac8d689997d900c5049f0682aa41a24023aae9511d1f7990ce41ba75  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/public/public-completion-logical-operands-generated.js
+present=true
+present=false
+success=true code=Some(0)
+       0
+success=true code=0
+       0
+35e7ca636c6cd5e97d2f60f03ec996ae81e26a84c2a6a8b9f169aac1f4bb6a3d  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/native/native-completion-match-headers.generated.js
+fed4b60aa9614094412893dba55797fceb024edbb27584053a575a4b8d7ff31f  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/public/public-completion-match-headers-generated.js
+present=true
+present=false
+success=true code=Some(0)
+       0
+success=true code=0
+       0
+9f6de90c16d37fb38c176c47bae881d07bf97aff7aac2dc4701d2fe32788f8ed  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/native/native-completion-nullish-operands.generated.js
+4e9830d05a07155001e2a7177f3f419d7fbec5ed424347d532277ab7f3a12ea9  /private/tmp/lykn-s16-cc-final.pT7WpC/evidence/public/public-completion-nullish-operands-generated.js
+present=true
+present=false
+success=true code=Some(0)
+       0
+success=true code=0
+       0
+/private/tmp/lykn-s16-cc-final.pT7WpC/lint/xdg Directory 64 bytes Nov 10 04:24:48 2026
+/private/tmp/lykn-s16-cc-final.pT7WpC/build/xdg Directory 64 bytes Nov 10 04:24:48 2026
+/private/tmp/lykn-s16-cc-final.pT7WpC/cli-build/xdg Directory 64 bytes Nov 10 04:24:48 2026
+/private/tmp/lykn-s16-cc-final.pT7WpC/native/xdg Directory 64 bytes Nov 10 04:24:35 2026
+/private/tmp/lykn-s16-cc-final.pT7WpC/public/xdg Directory 64 bytes Nov 10 04:24:35 2026
+/private/tmp/lykn-s16-cc-final.pT7WpC/make/xdg Directory 96 bytes Nov 10 04:26:30 2026
+/private/tmp/lykn-s16-cc-final.pT7WpC/cites/xdg Directory 64 bytes Nov 10 04:24:35 2026

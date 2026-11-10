@@ -1,0 +1,8 @@
+native completion-if-headers check/strict compile/runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC, DTS absent
+public completion-if-headers runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC
+native completion-match-headers check/strict compile/runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC, DTS absent
+public completion-match-headers runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC
+native completion-logical-operands check/strict compile/runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC, DTS absent
+public completion-logical-operands runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC
+native completion-nullish-operands check/strict compile/runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC, DTS absent
+public completion-nullish-operands runtime 0, exact JSON+LF, empty runtime stderr, source matches fixture, JS matches CC

@@ -1,0 +1,14 @@
+S16 old baseline public Deno runner
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+program=/opt/homebrew/bin/deno
+argv=test --config project.json -A test/forms/semantic-roles.test.js
+PATH=/opt/homebrew/bin:/Users/oubiwann/.cargo/bin:/usr/bin:/bin:/usr/sbin:/sbin
+TMPDIR=/private/tmp/lykn-s16-old.oM4h5w/public-run/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s16-old.oM4h5w/public-run/xdg-cache
+npm_config_cache=/private/tmp/lykn-s16-old.oM4h5w/public-run/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=unset
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s16-old.oM4h5w/raw/public-run-evidence
+stdout=/private/tmp/lykn-s16-old.oM4h5w/raw/public32plus7.stdout
+stderr=/private/tmp/lykn-s16-old.oM4h5w/raw/public32plus7.stderr
+exit=/private/tmp/lykn-s16-old.oM4h5w/raw/public32plus7.exit

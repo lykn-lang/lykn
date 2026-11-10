@@ -9,6 +9,16 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Bounded direct I2 delivery accepted — 2026-11-10
+
+[S16 verification](slice16-completion-headers-and-lazy-operands/cdc-verification.md)
+accepts selected if/match headers and lazy operands at
+`6c9dbd5c`, completing the direct I2 tranche together with
+earlier statement match and consumed return/bind work.
+Ordered-reference and checked/finally/deferred composition
+remain I3/I4, and CV-04 and CI-04 stay open. Local release
+remains `31893710`.
+
 ## Completion headers and lazy operands opened — 2026-11-10
 
 [S16](slice16-completion-headers-and-lazy-operands/slice-plan.md)

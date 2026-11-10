@@ -1,0 +1,10 @@
+009894b69091f1b3c3ebdad8dd27457f765a9521
+4fd01e29d37222e602875e21e5835151279d4a36
+06e9f9b1207961f14652e63da50d690a4d98521e530b143199c720a10b6d9c64  crates/lykn-lang/src/emitter/forms.rs
+93d9d11c619a4d806c08f68f3eee612dd3ac610249169945c8840ebf392a2101  packages/lang/expander.js
+93d9d11c619a4d806c08f68f3eee612dd3ac610249169945c8840ebf392a2101  crates/lykn-lang/embedded/packages/lang/expander.js
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)

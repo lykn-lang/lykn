@@ -1,0 +1,79 @@
+
+running 35 tests
+test bind_consumed_early_return_skips_the_original_const_continuation ... FAILED
+test bind_consumed_group_match_keeps_order_and_source_return_target ... FAILED
+test bind_consumed_loop_transfers_keep_their_source_targets ... FAILED
+test bind_consumed_result_temp_preserves_later_name_hygiene ... FAILED
+test bound_match_conditional_operand_is_a_value ... FAILED
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... FAILED
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... FAILED
+test direct_return_consumes_do_without_retargeting_loop_transfers ... FAILED
+test direct_return_consumes_match_in_the_named_function_region ... FAILED
+test direct_return_macro_keeps_nested_function_boundaries ... FAILED
+test direct_return_match_preserves_guarded_exhaustion ... FAILED
+test do_while_uses_value_test_and_statement_sequence_body ... FAILED
+test if_arm_scope_and_macro_expansion_are_preserved ... FAILED
+test if_declaration_is_emitted_inside_a_branch_block ... FAILED
+test if_direct_transfers_keep_macro_introduced_function_targets ... FAILED
+test if_direct_transfers_keep_source_targets ... FAILED
+test logical_operands_are_lazy_and_preserve_results ... FAILED
+test match_clauses_keep_bindings_local_to_guard_and_body ... FAILED
+test match_consumes_value_tail_after_statement_prefix ... FAILED
+test match_patterns_stay_structural_while_clause_macros_expand ... FAILED
+test match_subject_and_guard_headers_preserve_completion ... FAILED
+test native_typed_bind_check_follows_normal_result_initialization ... FAILED
+test nested_kernel_object_retains_structural_and_executable_roles ... FAILED
+test nullish_operands_preserve_strict_selection_and_completion ... FAILED
+test original_match_kernel_object_is_preserved ... FAILED
+test original_match_reserved_role_is_preserved ... FAILED
+test selected_if_headers_preserve_completion_and_values ... FAILED
+test statement_match_guarded_exhaustion_throws_into_the_enclosing_try ... FAILED
+test statement_match_guards_progress_in_source_order ... FAILED
+test statement_match_loop_transfers_keep_their_source_targets ... FAILED
+test statement_match_preserves_macro_hygiene_and_consumed_controls ... FAILED
+test statement_match_preserves_protected_function_exit_checks ... FAILED
+test statement_match_return_keeps_the_enclosing_function_target ... FAILED
+test unknown_nested_kernel_escape_fails_compile_without_outputs ... FAILED
+test while_uses_value_test_and_statement_sequence_body ... FAILED
+
+failures:
+
+failures:
+    bind_consumed_early_return_skips_the_original_const_continuation
+    bind_consumed_group_match_keeps_order_and_source_return_target
+    bind_consumed_loop_transfers_keep_their_source_targets
+    bind_consumed_result_temp_preserves_later_name_hygiene
+    bound_match_conditional_operand_is_a_value
+    boundaries_preserve_bound_calls_and_switch_sibling_visibility
+    consumed_no_else_if_is_rejected_in_all_four_value_positions
+    direct_return_consumes_do_without_retargeting_loop_transfers
+    direct_return_consumes_match_in_the_named_function_region
+    direct_return_macro_keeps_nested_function_boundaries
+    direct_return_match_preserves_guarded_exhaustion
+    do_while_uses_value_test_and_statement_sequence_body
+    if_arm_scope_and_macro_expansion_are_preserved
+    if_declaration_is_emitted_inside_a_branch_block
+    if_direct_transfers_keep_macro_introduced_function_targets
+    if_direct_transfers_keep_source_targets
+    logical_operands_are_lazy_and_preserve_results
+    match_clauses_keep_bindings_local_to_guard_and_body
+    match_consumes_value_tail_after_statement_prefix
+    match_patterns_stay_structural_while_clause_macros_expand
+    match_subject_and_guard_headers_preserve_completion
+    native_typed_bind_check_follows_normal_result_initialization
+    nested_kernel_object_retains_structural_and_executable_roles
+    nullish_operands_preserve_strict_selection_and_completion
+    original_match_kernel_object_is_preserved
+    original_match_reserved_role_is_preserved
+    selected_if_headers_preserve_completion_and_values
+    statement_match_guarded_exhaustion_throws_into_the_enclosing_try
+    statement_match_guards_progress_in_source_order
+    statement_match_loop_transfers_keep_their_source_targets
+    statement_match_preserves_macro_hygiene_and_consumed_controls
+    statement_match_preserves_protected_function_exit_checks
+    statement_match_return_keeps_the_enclosing_function_target
+    unknown_nested_kernel_escape_fails_compile_without_outputs
+    while_uses_value_test_and_statement_sequence_body
+
+test result: FAILED. 0 passed; 35 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+

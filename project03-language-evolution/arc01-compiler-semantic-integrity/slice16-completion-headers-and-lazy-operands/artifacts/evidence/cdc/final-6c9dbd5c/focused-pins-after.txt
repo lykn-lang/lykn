@@ -1,0 +1,3 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn: OK
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9: OK
+/opt/homebrew/bin/deno: OK

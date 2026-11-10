@@ -2,11 +2,16 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice16-completion-headers-and-lazy-operands
-status: in-progress
+status: completed
 depends-on: [slice15-consumed-bind-completion]
 ---
 
 # S16 — completion through headers and lazy operands
+
+[Independent acceptance](cdc-verification.md) closes HL-01
+through HL-04 at task `6c9dbd5c`. Three source refinements
+were used. [Closing report](closing-report.md) and
+[retrospective](cdc-retrospective.md).
 
 Continue the Operator's remaining I2 scope in standard Autonomous
 Mode with Luna 6 High CC and separate Sol 6.1 High CDC. Start

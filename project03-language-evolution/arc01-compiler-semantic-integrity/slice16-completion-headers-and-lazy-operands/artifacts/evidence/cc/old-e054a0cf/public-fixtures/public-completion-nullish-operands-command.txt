@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s16-old.oM4h5w/public-run/tmp/1e9888853b7823d/completion-nullish-operands.js"
+  ],
+  "cwd": "/private/tmp/lykn-s16-old.oM4h5w/public-run/tmp/1e9888853b7823d",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/completion-nullish-operands.lykn",
+  "modulePath": "/private/tmp/lykn-s16-old.oM4h5w/public-run/tmp/1e9888853b7823d/completion-nullish-operands.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s16-old.oM4h5w/public-run/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s16-old.oM4h5w/public-run/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s16-old.oM4h5w/raw/public-run-evidence"
+  }
+}

@@ -9,6 +9,13 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+2026-11-10 [S16 acceptance](../slice16-completion-headers-and-lazy-operands/cdc-verification.md)
+completes the selected direct I2 tranche at `6c9dbd5c`.
+I3 owns transfer-bearing ordered calls/references/spread
+and I4 owns checked outgoing results/finally/deferred/async
+composition. The ordered leaf remains an explicit static
+hold. No I3/I4 source or diagnostic acceptance is implied.
+
 2026-11-10 [S16](../slice16-completion-headers-and-lazy-operands/slice-plan.md)
 opens the remaining selected direct header and lazy result
 routes from accepted S15. It retains the explicit I3

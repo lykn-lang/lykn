@@ -1,0 +1,18 @@
+009894b69091f1b3c3ebdad8dd27457f765a9521
+4fd01e29d37222e602875e21e5835151279d4a36
+06e9f9b1207961f14652e63da50d690a4d98521e530b143199c720a10b6d9c64  crates/lykn-lang/src/emitter/forms.rs
+shasum: packages/lykn-lang/expander.js: No such file or directory
+shasum: packages/lykn-lang/classifier.js: No such file or directory
+shasum: packages/lykn-lang/expander.ts: No such file or directory
+shasum: packages/lykn-lang/classifier.ts: No such file or directory
+shasum: guides/00-compiler-overview.md: No such file or directory
+309fffd58756585fc8f4c1041df3802fd3b2b00dff787f1e631b261b6606420e  target/debug/lykn
+5f111c639ecb156d47e0c4a571864656f80eecd93a21ae66b4fcfb3d02250658  target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269  project.json
+672c8bf62e441cfaa6ec22bd511d55e002812d8f18814faea0e99d4c5e2813ce  Cargo.lock
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3

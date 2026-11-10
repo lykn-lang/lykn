@@ -1,5 +1,11 @@
 # S04 completion/value-flow ledger
 
+2026-11-10 [S16 verification](../slice16-completion-headers-and-lazy-operands/cdc-verification.md)
+accepts all four HL rows and the remaining selected direct I2
+tranche at `6c9dbd5c`. CV-02 remains done. The other five CV
+rows remain open through I3/I4 and composition. Release
+remains `31893710`.
+
 2026-11-10 [S16](../slice16-completion-headers-and-lazy-operands/slice-plan.md)
 owns selected direct if/match headers and lazy operands.
 Other compositions and parent criteria retain their status.
@@ -137,6 +143,6 @@ and all prior budgets/history remain unchanged.
 | CV-01 | Supported completion contracts/current applicability explicitly resolved | Source/evidence reconciliation, Operator match-target decision, final bounded readiness recipe | correctness-grade | C02/C05/NE-C13 | open | artifacts/incremental-completion-design.md; artifacts/completion-decision.md | Source targets and protected-host policy resolved. I1 is verified and I2–I4 need their bounded readiness. |
 | CV-02 | Supported if branches preserve lexical scope/selection/order | Native/public declaration, sibling visibility, arm isolation, dangling-else and bound-call regressions | correctness-grade | C02/DD50/DD60/guide06 | done | cdc-verification.md I1 and NE-C14 | Independent native/public branch, direct literal and original macro-function witnesses through f348ae42. |
 | CV-03 | Typed/post function results preserve explicit/implicit completion | Real outgoing-value/type/post/effects/finally and nested-function controls, exact diagnostics/runtime | correctness-grade | C05 | open | artifacts/incremental-completion-design.md sections4/5 | I4 retains region/finally/TDZ/post-scope/async obligations, no simple epilogue claim |
-| CV-04 | Statement-match progression and abrupt target follow selected contract | Guard true/false/exhaustion, subject once/binding scope/selected return target under both pipelines | correctness-grade | source-onlyNE-C13 | open | artifacts/incremental-completion-design.md I2/I4 | Uniform source-target principle selected; partial destinations cannot close this globally |
+| CV-04 | Statement-match progression and abrupt target follow selected contract | Guard true/false/exhaustion, subject once/binding scope/selected return target under both pipelines | correctness-grade | source-onlyNE-C13 | open | cdc-verification.md bounded I2 and artifacts/incremental-completion-design.md | Direct I2 accepted through S16. Ordered leaf and checked/finally/deferred composition remain held. |
 | CV-05 | Accepted source composes through real public routes and full gates | Frozen baseline/regressions/full generated modules, full normal Make/cites and separate CDC replay | correctness-grade | Arc01/AGENTS | open | cdc-verification.md; artifacts/incremental-completion-design.md I1–I4 | I1 and NE-C14 full gates passed. Final S04 composition and K carryover remain separate. |
 | CV-06 | Actual rowwalk/docs/history/retro/parents preserve obligations | CC proposal vs independent acceptance, canonical close/CDC retro and S07/S08/book/human ownership | correctness-grade | PM/Operator | open | cdc-retrospective.md; artifacts/incremental-completion-design.md | Bounded I1 and NE-C14 checkpoint recorded. Final S04 close and documentation-impact reconciliation remain. |

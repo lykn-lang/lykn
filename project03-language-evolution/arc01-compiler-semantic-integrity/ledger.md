@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-10 [S16 acceptance](slice16-completion-headers-and-lazy-operands/cdc-verification.md)
+closes the remaining bounded direct I2 rows at `6c9dbd5c`.
+Ordered-reference and checked exits/finally/deferred
+composition keep CI-04 and CV-04 open. Release is `31893710`.
+
 2026-11-10 [S16](slice16-completion-headers-and-lazy-operands/slice-plan.md)
 opens the finite direct header and lazy result delivery.
 The four HL rows and composition stay open.
@@ -170,7 +175,7 @@ is approved/closed by that authorization.
 | CI-01 | Numeric-for headers/body roles faithfully compile supported variadic statements | Meaningful red/green native/kernel/CLI and runtime regressions; full source gates and independent review | correctness-grade | NE-C12 / S01 | done | slice01-variadic-for-context/cdc-verification.md; source8f5d199 | Narrow task-only delivery; no other loop/API/tooling claim |
 | CI-02 | Structured fatal lowering failures reach public APIs and all production routes before successful artifacts | Approved compatibility policy; caller/route tests, unchanged pre-existing output-file contents and no new JS/DTS on compiler failure, successful JS/DTS and legitimate runtime/user-text controls; independent full gates | correctness-grade | NE-C06 static channel / S02 | done | slice02-checked-emission-results/cdc-verification.md; taskc9e0d7e | Independently reproduced checked API/route capability; no text grep/legacy success, not release integration or arc composition |
 | CI-03 | Shared roles compose across validation/lowering with resolution and syntax boundaries intact | Role/counter regressions, native/JS comparison where equivalent, accepted historical controls and independent full gates | correctness-grade | A6 / accepted NE stack / S03 | done | slice03-shared-semantic-roles/cdc-verification.md; ../slice22-shared-roles-release-integration/cdc-verification.md | Private incremental contract independently delivered and integrated at release62e; no recursive/public AST migration or arc-wide theorem |
-| CI-04 | C02/C05 current-source validity and completion behavior are explicitly dispositioned and supported behavior correct | Source-contract decisions, actual generated/runtime witnesses and regressions, independent gates | correctness-grade | NE-C02/05 / S04 | open | slice04-completion-value-flow-integrity/cdc-verification.md and slice-plan.md | C02 branch regions and NE-C14 macro prerequisite accepted. Remaining completion behavior and final composition stay open. |
+| CI-04 | C02/C05 current-source validity and completion behavior are explicitly dispositioned and supported behavior correct | Source-contract decisions, actual generated/runtime witnesses and regressions, independent gates | correctness-grade | NE-C02/05 / S04 | open | slice04-completion-value-flow-integrity/cdc-verification.md and slice-plan.md | I1 and bounded direct I2 accepted through S16. Ordered references, checked exits and final composition stay open. |
 | CI-05 | Actual warnings and diagnostics faithfully distinguish used/unused and internal failures | Meaningful positive/negative diagnostic controls and independent gates | correctness-grade | NE-C06 observed warning / S05 | open | | Static nested-classifier concern separately owned CI-02 |
 | CI-06 | Accepted compiler composition supports delivered Lykn tooling and unchanged bounded K13 capability | Full tool prerequisites/generated/guard review, exact offline/raw per-row proof, fresh independent replay | correctness-grade | Slice11/17/19 / S06 | open | | K0/13 now; eight tooling passes spent; no F/audit inheritance |
 | CI-07 | All actual public API and documentation impacts are audited against explicit ranges | Reviewed register of deltas/no-changes, compatibility/audiences/doc locations including prior unmerged stack | correctness-grade | Operator request / S07 | open | | Upfront breaking choices remain in affected coding slices |

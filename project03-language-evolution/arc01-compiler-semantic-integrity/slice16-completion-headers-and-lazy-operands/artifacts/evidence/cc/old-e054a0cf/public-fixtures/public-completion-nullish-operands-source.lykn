@@ -1,0 +1,10 @@
+(bind trace (array))
+(func nullish-result :args (:any input) :returns :any :body
+  (bind result
+    (kernel:?? (do (trace:push "left") input)
+               (do (trace:push "right") (return "early") "unreachable")
+               (do (trace:push "wrong") 91)))
+  (trace:push "after")
+  result)
+(console:log (JSON:stringify (array (nullish-result 0) (nullish-result false)
+  (nullish-result null) (nullish-result undefined) trace)))

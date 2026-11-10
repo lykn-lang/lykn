@@ -1,5 +1,27 @@
 # S04 independent verification
 
+## Bounded direct I2 accepted — 2026-11-10
+
+[S16 independent verification](../slice16-completion-headers-and-lazy-operands/cdc-verification.md)
+accepts the remaining selected if/match headers and lazy
+operands at `6c9dbd5c`, with exact native/public modules and
+runtime evidence. Earlier accepted I2 work covers
+[statement match](../slice09-statement-match-completion/cdc-verification.md),
+[native clause scope](../slice12-native-match-clause-scope/cdc-verification.md),
+[consumed returns](../slice14-consumed-return-completion/cdc-verification.md)
+and [consumed binds](../slice15-consumed-bind-completion/cdc-verification.md).
+[S13](../slice13-structural-match-and-kernel-escape/cdc-verification.md)
+closes the structural prerequisites.
+
+The supported direct routes are bounded to the established
+ordinary named-function scope and those verified roles.
+Source transfer inside an ordered call/member/reference,
+assignment or spread still waits I3. This is a static hold
+with no ordered-leaf execution or accepted emitted diagnostic.
+Checked outgoing values and finally/deferred/async composition
+retain I4 ownership. CV-04, CV-05, CI-04 and wider S04
+acceptance remain open. Local release stays at `31893710`.
+
 ## I1 conditional branch regions accepted — 2026-11-09
 
 Luna 6 High CC proposed bounded CV-02 done and returned clean exclusive

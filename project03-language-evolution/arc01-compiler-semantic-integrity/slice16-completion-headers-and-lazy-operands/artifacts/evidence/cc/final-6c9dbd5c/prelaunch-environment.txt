@@ -1,0 +1,47 @@
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)
+drwxr-xr-x   22 root      wheel    704 Aug  1 11:31 /
+drwxr-xr-x    7 root      admin    224 Sep  7 12:07 /Users
+drwxr-xr-x+ 147 oubiwann  staff   4704 Nov  7 19:28 /Users/oubiwann
+drwx------@ 119 oubiwann  staff   3808 Oct  4 21:50 /Users/oubiwann/Library
+drwx------+ 334 oubiwann  staff  10688 Nov 10 00:59 /Users/oubiwann/Library/Caches
+drwxr-xr-x@  24 oubiwann  staff    768 Nov  5 21:40 /Users/oubiwann/Library/Caches/deno
+drwx------@  15 oubiwann  wheel    480 Nov 10 04:24 /private/tmp/lykn-s16-cc-final.pT7WpC
+/private/tmp/lykn-s16-cc-final.pT7WpC
+/private/tmp/lykn-s16-cc-final.pT7WpC/build
+/private/tmp/lykn-s16-cc-final.pT7WpC/build/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/build/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/build/xdg
+/private/tmp/lykn-s16-cc-final.pT7WpC/cites
+/private/tmp/lykn-s16-cc-final.pT7WpC/cites/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/cites/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/cites/xdg
+/private/tmp/lykn-s16-cc-final.pT7WpC/cli-build
+/private/tmp/lykn-s16-cc-final.pT7WpC/cli-build/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/cli-build/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/cli-build/xdg
+/private/tmp/lykn-s16-cc-final.pT7WpC/evidence
+/private/tmp/lykn-s16-cc-final.pT7WpC/evidence/native
+/private/tmp/lykn-s16-cc-final.pT7WpC/evidence/public
+/private/tmp/lykn-s16-cc-final.pT7WpC/lint
+/private/tmp/lykn-s16-cc-final.pT7WpC/lint/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/lint/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/lint/xdg
+/private/tmp/lykn-s16-cc-final.pT7WpC/make
+/private/tmp/lykn-s16-cc-final.pT7WpC/make/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/make/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/make/xdg
+/private/tmp/lykn-s16-cc-final.pT7WpC/native
+/private/tmp/lykn-s16-cc-final.pT7WpC/native/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/native/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/native/xdg
+/private/tmp/lykn-s16-cc-final.pT7WpC/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/public
+/private/tmp/lykn-s16-cc-final.pT7WpC/public/npm
+/private/tmp/lykn-s16-cc-final.pT7WpC/public/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/public/xdg
+/private/tmp/lykn-s16-cc-final.pT7WpC/tmp
+/private/tmp/lykn-s16-cc-final.pT7WpC/xdg

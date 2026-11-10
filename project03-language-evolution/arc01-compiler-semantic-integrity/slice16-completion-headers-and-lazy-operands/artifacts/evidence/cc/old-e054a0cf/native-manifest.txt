@@ -1,0 +1,14 @@
+S16 old baseline native direct pinned harness
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+program=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9
+argv=--nocapture
+PATH=/opt/homebrew/bin:/Users/oubiwann/.cargo/bin:/usr/bin:/bin:/usr/sbin:/sbin
+TMPDIR=/private/tmp/lykn-s16-old.oM4h5w/native-direct/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s16-old.oM4h5w/native-direct/xdg-cache
+npm_config_cache=/private/tmp/lykn-s16-old.oM4h5w/native-direct/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s16-old.oM4h5w/raw/native-direct-evidence
+stdout=/private/tmp/lykn-s16-old.oM4h5w/raw/native-direct35.stdout
+stderr=/private/tmp/lykn-s16-old.oM4h5w/raw/native-direct35.stderr
+exit=/private/tmp/lykn-s16-old.oM4h5w/raw/native-direct35.exit

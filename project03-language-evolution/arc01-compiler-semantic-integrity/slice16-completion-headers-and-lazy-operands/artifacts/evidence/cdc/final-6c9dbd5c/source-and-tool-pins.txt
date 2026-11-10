@@ -1,0 +1,30 @@
+6c9dbd5c38f16674c7b95315bd32bfee9fd131e5
+d9ce3a36e164252740d9ac29f712c85add99a0de
+codex/completion-value-flow
+crates/lykn-cli/tests/semantic_roles.rs
+crates/lykn-lang/embedded/packages/lang/classifier.js
+crates/lykn-lang/embedded/packages/lang/expander.js
+crates/lykn-lang/src/emitter/forms.rs
+docs/guides/00-lykn-surface-forms.md
+packages/lang/classifier.js
+packages/lang/expander.js
+test/fixtures/semantic-roles/completion-if-headers.lykn
+test/fixtures/semantic-roles/completion-logical-operands.lykn
+test/fixtures/semantic-roles/completion-match-headers.lykn
+test/fixtures/semantic-roles/completion-nullish-operands.lykn
+test/forms/semantic-roles.test.js
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269  project.json
+93d9d11c619a4d806c08f68f3eee612dd3ac610249169945c8840ebf392a2101  packages/lang/expander.js
+b52c7b71d8b04d3edf3568ceb5ad405b9837b2f5c1123a38a8bb10b96cc6d57b  packages/lang/classifier.js
+93d9d11c619a4d806c08f68f3eee612dd3ac610249169945c8840ebf392a2101  crates/lykn-lang/embedded/packages/lang/expander.js
+b52c7b71d8b04d3edf3568ceb5ad405b9837b2f5c1123a38a8bb10b96cc6d57b  crates/lykn-lang/embedded/packages/lang/classifier.js
+971287397037dd151ed18489db85284d30201c2010f5f89d0d2192b54a6f8caf  test/fixtures/semantic-roles/completion-if-headers.lykn
+8c33f4630f61fe4e49fd0801fd035c5bf9237e31c63f3a60d6fcd44d099ad00b  test/fixtures/semantic-roles/completion-match-headers.lykn
+b83bf2b6e77054145bbe7d8aac89088bed4ad02b9152bb46235d92e7769de060  test/fixtures/semantic-roles/completion-logical-operands.lykn
+e5b9b90454c61617123a1818af99c12c1a52879233d5a64a00a02b6968a46234  test/fixtures/semantic-roles/completion-nullish-operands.lykn
