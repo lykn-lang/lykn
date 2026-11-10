@@ -40,6 +40,7 @@ const CASES = [
   { name: "computed-member-ordered-throws", expected: '[["receiver",8],[true,false,false],[false,true,false],93,["base","key","string","getter","first","arg","last","call","after","base","key","string","getter","base","key","string","getter","first","arg","base","key"]]\n' },
   { name: "computed-member-no-prefix", expected: "[[1,2,3],4]\n" },
   { name: "ordered-member-pure-colon-call", expected: "4\n" },
+  { name: "anonymous-completion-names", expected: '["","","","namedCallback","","","","","bound "]\n' },
 ];
 
 const RESERVED_MATCH_CASES = [
@@ -80,7 +81,8 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
         fixture.name === "ordered-lexical-statement-call" ||
         fixture.name === "computed-member-ordered-throws" ||
         fixture.name === "computed-member-no-prefix" ||
-        fixture.name === "ordered-member-pure-colon-call"
+        fixture.name === "ordered-member-pure-colon-call" ||
+        fixture.name === "anonymous-completion-names"
       ) {
         const expanded = expand(read(source));
         assertEquals(compile(expanded), generated, `${fixture.name} expanded compile differs`);

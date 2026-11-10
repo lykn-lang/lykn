@@ -159,6 +159,10 @@ const FIXTURES: &[Case] = &[
         name: "computed-member-no-prefix",
         expected: b"[[1,2,3],4]\n",
     },
+    Case {
+        name: "anonymous-completion-names",
+        expected: b"[\"\",\"\",\"\",\"namedCallback\",\"\",\"\",\"\",\"\",\"bound \"]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
