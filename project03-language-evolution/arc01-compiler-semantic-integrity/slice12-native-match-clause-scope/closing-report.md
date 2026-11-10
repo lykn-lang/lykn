@@ -1,6 +1,6 @@
 # Native match clause scope accepted
 
-All four MC rows are accepted at task `b5c22b63) after actual CC
+All four MC rows are accepted at task `b5c22b63` after actual CC
 proposed-done and independent CDC review. Native match subject
 resolution uses incoming scope, structural patterns keep their
 own bindings, and only that clause's guard and ordered body see
