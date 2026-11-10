@@ -1015,14 +1015,17 @@ fn lifted_direct_protected_write_fails_compile_without_outputs() {
         dts.as_deref(),
     );
 
-    for (name, output) in [("check", &check), ("compile", &compile)] {
-        assert_eq!(output.status.code(), Some(1), "protected {name} status");
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        assert!(
-            stderr.contains("2:3: error: host-contract v1: write to protected slot Reflect.apply"),
-            "protected {name} omitted anchored v1 diagnostic: {stderr}"
-        );
-    }
+    let check_stderr = format!(
+        "{}: error: 2:13: error: host-contract v1: write to protected slot Reflect.apply\n",
+        source_path.display()
+    );
+    let compile_stderr = "2:13: error: host-contract v1: write to protected slot Reflect.apply\n";
+    assert_eq!(check.status.code(), Some(1), "protected check status");
+    assert!(check.stdout.is_empty(), "protected check wrote stdout");
+    assert_eq!(check.stderr, check_stderr.as_bytes());
+    assert_eq!(compile.status.code(), Some(1), "protected compile status");
+    assert!(compile.stdout.is_empty(), "protected compile wrote stdout");
+    assert_eq!(compile.stderr, compile_stderr.as_bytes());
     assert!(
         generated.is_none(),
         "protected compile wrote JavaScript: {generated:?}"

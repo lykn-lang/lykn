@@ -462,11 +462,39 @@ Deno.test("public direct lifted protected writes retain the v1 rejection", () =>
     "  (kernel:= (get Reflect \"apply\") (do 0 0)))",
     "",
   ].join("\n");
-  assertThrows(
-    () => lykn(source),
-    Error,
+  let output = null;
+  let caughtError = null;
+  try {
+    output = lykn(source);
+  } catch (error) {
+    caughtError = error;
+  }
+  const observation = {
+    source,
+    errorName: caughtError?.name ?? null,
+    errorMessage: caughtError?.message ?? null,
+    outputReturned: caughtError === null,
+  };
+  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
+  if (evidenceRoot !== undefined) {
+    Deno.writeTextFileSync(
+      `${evidenceRoot}/public-protected-write.source.lykn`,
+      source,
+      { createNew: true },
+    );
+    Deno.writeTextFileSync(
+      `${evidenceRoot}/public-protected-write.preassert.json`,
+      `${JSON.stringify(observation)}\n`,
+      { createNew: true },
+    );
+  }
+  assertEquals(caughtError instanceof Error, true, "protected write did not throw Error");
+  assertEquals(observation.errorName, "Error");
+  assertEquals(
+    observation.errorMessage,
     "host-contract v1: write to protected slot Reflect.apply",
   );
+  assertEquals(observation.outputReturned, false, "protected write returned output");
 });
 
 Deno.test("public grouped statements materialize before a bare direct return", () => {
