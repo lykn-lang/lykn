@@ -1,5 +1,11 @@
 # S04 completion/value-flow ledger
 
+2026-11-10 [S14](../slice14-consumed-return-completion/slice-plan.md)
+starts the first consumed I2 destination on accepted `31893710`.
+Direct named-function return and tail are the bounded delivery.
+Bind, lazy value and held ordered compositions remain in the
+remaining I2 plan. Parent row dispositions stay unchanged.
+
 [S13 independent verification](../slice13-structural-match-and-kernel-escape/cdc-verification.md) closes the two S12
 carryovers NE-C16 and NE-C17 at task `31893710`. CV-02 retains
 prior acceptance. The other five CV rows, CI-04, wider consumed

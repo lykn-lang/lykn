@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Direct consumed return opened — 2026-11-10
+
+[S14](slice14-consumed-return-completion/slice-plan.md) delivers
+ordinary named-function result tails first. Remaining I2 bind and
+lazy-value destinations follow with expanded-unit hygiene and
+explicit held-route disposition. I3 and I4 retain their own
+scope. No accepted parent criteria change.
+
 ## S12/S13 integrated locally — 2026-11-10
 
 [Release verification](slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
