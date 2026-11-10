@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s17-cdc-independent.cMx4zfcR/norun/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s17-cdc-independent.cMx4zfcR/norun/xdg' 'npm_config_cache=/private/tmp/lykn-s17-cdc-independent.cMx4zfcR/norun/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/Users/oubiwann/.cargo/bin/cargo' 'test' '-p' 'lykn-cli' '--test' 'semantic_roles' '--no-run'
+stdout=/private/tmp/lykn-s17-cdc-independent.cMx4zfcR/norun/stdout.raw
+stderr=/private/tmp/lykn-s17-cdc-independent.cMx4zfcR/norun/stderr.raw
+exit_status=/private/tmp/lykn-s17-cdc-independent.cMx4zfcR/norun/exit-status.txt
+source=b6df89685b2c9cdddd665da20895f17a560624b6
+tree=a83600b8fd5d12c236b8673ec73eaf00ae4a8d58

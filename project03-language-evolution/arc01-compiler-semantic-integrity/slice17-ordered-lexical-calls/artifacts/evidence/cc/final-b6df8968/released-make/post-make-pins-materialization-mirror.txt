@@ -1,0 +1,34 @@
+b6df89685b2c9cdddd665da20895f17a560624b6
+a83600b8fd5d12c236b8673ec73eaf00ae4a8d58
+-rwxr-xr-x@ 1 oubiwann  staff  3225776 Nov 10 08:52 bin/lykn
+-rwxr-xr-x@ 1 oubiwann  staff  3225776 Nov 10 08:52 target/release/lykn
+d65b3e8f747d59f8e9a10320ef0c568ce45a47b8efa8c1f61c3d4b1be4a19301  bin/lykn
+d65b3e8f747d59f8e9a10320ef0c568ce45a47b8efa8c1f61c3d4b1be4a19301  target/release/lykn
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+materialized_root=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/_embedded/.lykn-version
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/binding.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/classifier.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/compiler.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/deno.json
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/deno.lock
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/host-invocation.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/icu-parser.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/kernel-forms.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/kernel-mark.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/mod.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/protected-host.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/reader.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/reserved-words.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/surface-ast.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/surface-helpers.js
+/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/surface.js
+0.6.0da335806f57d23172268133e3dd796dd88251b8fcd680cf0e7fda70304a9e4e7  packages/lang/expander.js
+da335806f57d23172268133e3dd796dd88251b8fcd680cf0e7fda70304a9e4e7  crates/lykn-lang/embedded/packages/lang/expander.js
+da335806f57d23172268133e3dd796dd88251b8fcd680cf0e7fda70304a9e4e7  /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js

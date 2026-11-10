@@ -1,0 +1,53 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.1M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:575:
+ 
+ #[test]
+ fn lexical_call_with_lifted_spread_fails_closed_without_outputs() {
+[31m-    const MESSAGE: &str =
+(B[m[31m-        "ordered lexical call with spread and lifted arguments is not supported";
+(B[m[32m+    const MESSAGE: &str = "ordered lexical call with spread and lifted arguments is not supported";
+(B[m     let source = concat!(
+         "(func mixed-spread :args (:any callable :any items) :returns :any :body\n",
+         "  (callable (spread items) (do (return 7) 8)))\n",
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/semantic_roles.rs:629:
+         generated.is_none(),
+         "failed compile wrote JavaScript: {generated:?}"
+     );
+[31m-    assert!(
+(B[m[31m-        dts.is_none(),
+(B[m[31m-        "failed compile wrote declarations: {dts:?}"
+(B[m[31m-    );
+(B[m[32m+    assert!(dts.is_none(), "failed compile wrote declarations: {dts:?}");
+(B[m }
+ 
+ #[test]
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:584:
+         SExpr::List { values, span } if !values.is_empty() => {
+             if ctx.direct_return_region
+                 && ctx.expr_context == ExprContext::Statement
+[31m-                && values
+(B[m[31m-                    .first()
+(B[m[31m-                    .is_some_and(is_direct_lexical_call_head)
+(B[m[32m+                && values.first().is_some_and(is_direct_lexical_call_head)
+(B[m             {
+                 return match emit_direct_lexical_call(
+                     &values[0],

@@ -1,0 +1,7 @@
+make check-cited-paths
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source commit/tree: b6df89685b2c9cdddd665da20895f17a560624b6 / a83600b8fd5d12c236b8673ec73eaf00ae4a8d58
+TMPDIR=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-citations/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-citations/xdg
+npm_config_cache=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/released-citations/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno

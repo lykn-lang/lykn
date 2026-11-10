@@ -1,0 +1,2 @@
+2:32: warning: unused binding 'earlier'
+  suggestion: prefix with underscore: _earlier

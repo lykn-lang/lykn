@@ -1,0 +1,11 @@
+program: /opt/homebrew/bin/deno
+argv: test --config project.json -A test/forms/semantic-roles.test.js
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR: /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/public/tmp
+XDG_CACHE_HOME: /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/public/xdg
+npm_config_cache: /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/public/npm
+DENO_DIR: /Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO: /opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR: /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/public/evidence/runner
+Deno SHA256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+scope: complete public semantic-role runner under project.json and its existing permissions

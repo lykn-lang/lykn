@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice17-ordered-lexical-calls
-status: in-progress
+status: closed
 depends-on: [slice16-completion-headers-and-lazy-operands]
 ---
 
@@ -44,3 +44,8 @@ CV-04 and CI-04 stay open.
 The [proof cases](artifacts/fixtures.md) and [assignment](cc-prompt.md)
 bind the finite scope. S17 starts with zero source refinements.
 Earlier source and tooling counts remain with their recorded slices.
+
+2026-11-10 [independent acceptance](cdc-verification.md) closes all
+four OC rows at `b6df8968`. See [closing report](closing-report.md)
+and [CDC retrospective](cdc-retrospective.md). Four refinements
+were used. Release remains `6c9dbd5c`.

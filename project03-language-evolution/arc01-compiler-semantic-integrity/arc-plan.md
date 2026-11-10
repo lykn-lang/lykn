@@ -667,3 +667,10 @@ publication, hosted CI, new dependencies, corpus scan or next unit is authorized
   standalone units and accepted/task-versus-release boundaries. Split Cfor and
   fatal API delivery, assigned every finding, and added the Operator-requested
   final API audit and conditional documentation implementation gates.
+
+2026-11-10 [S17 independent acceptance](slice17-ordered-lexical-calls/cdc-verification.md)
+closes the first I3 delivery at task `b6df8968`. Genuine bare
+lexical calls now preserve callee and argument order, direct
+source exits and ordinary kernel seams. Member and other ordered
+references, assignment, iterator and I4 composition remain open.
+CI-04 and CV-04 stay open. Release is still `6c9dbd5c`.

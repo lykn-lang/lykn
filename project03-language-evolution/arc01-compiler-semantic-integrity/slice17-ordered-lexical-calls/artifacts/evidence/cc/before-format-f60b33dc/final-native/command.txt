@@ -1,0 +1,11 @@
+program: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9
+argv: --nocapture
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source commit/tree: f60b33dcafdceda19bd2d479c2fc3797aff49800 / a175ef4f6cb89b7b73f9fd4048e6a74fb7fb1f50
+TMPDIR=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/final-native/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/final-native/xdg
+npm_config_cache=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/final-native/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/final-native/evidence/runner
+scope: complete native semantic_roles test binary

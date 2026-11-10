@@ -1,0 +1,21 @@
+(bind trace (array))
+(func original-call :args (:any earlier :any middle :any later) :returns :any :body
+  (trace:push "old")
+  (array "old" middle))
+(func replacement-call :args (:any earlier :any middle :any later) :returns :any :body
+  (trace:push "new")
+  (array "new" middle))
+(func use-lexical-call :args (:any callable :any stop) :returns :any :body
+  (bind answer
+    (callable
+      (trace:push "earlier")
+      (do
+        (trace:push "middle")
+        (kernel:= callable replacement-call)
+        (if stop (return 91))
+        8)
+      (trace:push "later")))
+  (trace:push "after")
+  answer)
+(console:log (JSON:stringify
+  (array (use-lexical-call original-call true) (use-lexical-call original-call false) trace)))

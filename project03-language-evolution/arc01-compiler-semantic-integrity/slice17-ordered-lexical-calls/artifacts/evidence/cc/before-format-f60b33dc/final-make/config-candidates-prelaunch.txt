@@ -1,0 +1,32 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/package.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/project.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/deno.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/deno.jsonc
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/package.json
+/Users/oubiwann/lab/lykn/lang/project.json
+ABSENT /Users/oubiwann/lab/lykn/lang/deno.json
+ABSENT /Users/oubiwann/lab/lykn/lang/deno.jsonc
+ABSENT /Users/oubiwann/lab/lykn/lang/package.json
+ABSENT /Users/oubiwann/lab/lykn/project.json
+ABSENT /Users/oubiwann/lab/lykn/deno.json
+ABSENT /Users/oubiwann/lab/lykn/deno.jsonc
+ABSENT /Users/oubiwann/lab/lykn/package.json
+ABSENT /Users/oubiwann/lab/project.json
+ABSENT /Users/oubiwann/lab/deno.json
+ABSENT /Users/oubiwann/lab/deno.jsonc
+ABSENT /Users/oubiwann/lab/package.json
+ABSENT /Users/oubiwann/project.json
+ABSENT /Users/oubiwann/deno.json
+ABSENT /Users/oubiwann/deno.jsonc
+ABSENT /Users/oubiwann/package.json
+ABSENT /Users/project.json
+ABSENT /Users/deno.json
+ABSENT /Users/deno.jsonc
+ABSENT /Users/package.json
+ABSENT //project.json
+ABSENT //deno.json
+ABSENT //deno.jsonc
+ABSENT //package.json

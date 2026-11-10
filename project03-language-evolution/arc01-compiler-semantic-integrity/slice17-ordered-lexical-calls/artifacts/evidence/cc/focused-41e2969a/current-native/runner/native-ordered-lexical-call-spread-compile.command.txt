@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/current-native/tmp/.tmpc2Ol1K/mixed-spread.lykn", "-o", "/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/current-native/tmp/.tmpc2Ol1K/mixed-spread.js"]
+cwd=Some("/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/current-native/tmp/.tmpc2Ol1K")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/current-native/tmp/.tmpc2Ol1K/xdg-cache")
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/current-native/xdg")
+TMPDIR=Some("/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/current-native/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/current-native/evidence/runner")

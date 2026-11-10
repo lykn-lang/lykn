@@ -1,0 +1,7 @@
+cargo test -p lykn-cli --test semantic_roles --no-run
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+source commit/tree: f60b33dcafdceda19bd2d479c2fc3797aff49800 / a175ef4f6cb89b7b73f9fd4048e6a74fb7fb1f50
+TMPDIR=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/final-norun/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/final-norun/xdg
+npm_config_cache=/private/tmp/lykn-s17-ordered-calls-luna-20261110-01/final-norun/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno

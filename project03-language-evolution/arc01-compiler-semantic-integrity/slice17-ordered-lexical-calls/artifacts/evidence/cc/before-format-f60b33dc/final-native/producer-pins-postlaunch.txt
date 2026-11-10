@@ -1,0 +1,10 @@
+f60b33dcafdceda19bd2d479c2fc3797aff49800
+a175ef4f6cb89b7b73f9fd4048e6a74fb7fb1f50
+f784f2358464a9de5b199d7dbd57c59cd9cef2a2d9445ac08fe3fee5824d6397  target/debug/lykn
+fad821c18ebaef7ffae35d49167572ca2eb47a77066170febb498442b8a7809c  target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07)

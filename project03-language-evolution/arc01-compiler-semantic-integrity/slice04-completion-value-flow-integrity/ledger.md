@@ -152,3 +152,10 @@ and all prior budgets/history remain unchanged.
 | CV-04 | Statement-match progression and abrupt target follow selected contract | Guard true/false/exhaustion, subject once/binding scope/selected return target under both pipelines | correctness-grade | source-onlyNE-C13 | open | cdc-verification.md bounded I2 and artifacts/incremental-completion-design.md | Direct I2 accepted through S16. Ordered leaf and checked/finally/deferred composition remain held. |
 | CV-05 | Accepted source composes through real public routes and full gates | Frozen baseline/regressions/full generated modules, full normal Make/cites and separate CDC replay | correctness-grade | Arc01/AGENTS | open | cdc-verification.md; artifacts/incremental-completion-design.md I1–I4 | I1 and NE-C14 full gates passed. Final S04 composition and K carryover remain separate. |
 | CV-06 | Actual rowwalk/docs/history/retro/parents preserve obligations | CC proposal vs independent acceptance, canonical close/CDC retro and S07/S08/book/human ownership | correctness-grade | PM/Operator | open | cdc-retrospective.md; artifacts/incremental-completion-design.md | Bounded I1 and NE-C14 checkpoint recorded. Final S04 close and documentation-impact reconciliation remain. |
+
+2026-11-10 [S17 independent acceptance](../slice17-ordered-lexical-calls/cdc-verification.md)
+closes only the bare lexical ordered-call delivery at `b6df8968`.
+I3 member and computed references, assignments and iterator
+transport retain their distinct owners. I4 and final composition
+remain pending. CV-02 retains acceptance. All five other CV rows
+and CI-04 stay open.

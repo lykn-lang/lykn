@@ -1,0 +1,18 @@
+b6df89685b2c9cdddd665da20895f17a560624b6
+a83600b8fd5d12c236b8673ec73eaf00ae4a8d58
+6c9dbd5c38f16674c7b95315bd32bfee9fd131e5
+d9ce3a36e164252740d9ac29f712c85add99a0de
+d65b3e8f747d59f8e9a10320ef0c568ce45a47b8efa8c1f61c3d4b1be4a19301  bin/lykn
+d65b3e8f747d59f8e9a10320ef0c568ce45a47b8efa8c1f61c3d4b1be4a19301  target/release/lykn
+ea922178b5edade1848b87c755e75cb1e21f9045e4b80fe6a69dc896ddd3b810  /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+da335806f57d23172268133e3dd796dd88251b8fcd680cf0e7fda70304a9e4e7  packages/lang/expander.js
+da335806f57d23172268133e3dd796dd88251b8fcd680cf0e7fda70304a9e4e7  crates/lykn-lang/embedded/packages/lang/expander.js
+da335806f57d23172268133e3dd796dd88251b8fcd680cf0e7fda70304a9e4e7  /private/tmp/lykn-s17-cdc-independent.cMx4zfcR/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js
+0
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+19:[1;32m✓ Clippy passed[0m
+1713:test result: ok. 1166 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+4706:ok | 1488 passed (58 steps) | 0 failed (10s)
+5215:ok | 482 passed | 0 failed (1s)

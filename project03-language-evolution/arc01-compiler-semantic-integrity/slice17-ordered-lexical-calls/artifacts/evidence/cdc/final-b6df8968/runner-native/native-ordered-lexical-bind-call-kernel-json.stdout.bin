@@ -1,0 +1,499 @@
+[
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "trace"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "array"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "original-call"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "earlier"
+          },
+          {
+            "type": "atom",
+            "value": "middle"
+          },
+          {
+            "type": "atom",
+            "value": "later"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "trace:push"
+          },
+          {
+            "type": "string",
+            "value": "old"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "string",
+                "value": "old"
+              },
+              {
+                "type": "atom",
+                "value": "middle"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "replacement-call"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "earlier"
+          },
+          {
+            "type": "atom",
+            "value": "middle"
+          },
+          {
+            "type": "atom",
+            "value": "later"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "trace:push"
+          },
+          {
+            "type": "string",
+            "value": "new"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "string",
+                "value": "new"
+              },
+              {
+                "type": "atom",
+                "value": "middle"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "use-lexical-call"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "callable"
+          },
+          {
+            "type": "atom",
+            "value": "stop"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym0"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym1"
+              },
+              {
+                "type": "atom",
+                "value": "callable"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym2"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "trace:push"
+                  },
+                  {
+                    "type": "string",
+                    "value": "earlier"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym3"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "trace:push"
+                  },
+                  {
+                    "type": "string",
+                    "value": "middle"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "callable"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "replacement-call"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "if"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "stop"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "return"
+                      },
+                      {
+                        "type": "number",
+                        "value": 91
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym3"
+                  },
+                  {
+                    "type": "number",
+                    "value": 8
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym0"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym1"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym2"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym3"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "trace:push"
+                      },
+                      {
+                        "type": "string",
+                        "value": "later"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "answer"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym0"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "trace:push"
+          },
+          {
+            "type": "string",
+            "value": "after"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "atom",
+            "value": "answer"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "console:log"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "JSON:stringify"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "use-lexical-call"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "original-call"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "true"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "use-lexical-call"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "original-call"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "type": "atom",
+                "value": "trace"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,4 @@
+ABSENT /Users/oubiwann/Library/Caches/deno/project.json
+ABSENT /Users/oubiwann/Library/Caches/deno/deno.json
+ABSENT /Users/oubiwann/Library/Caches/deno/deno.jsonc
+ABSENT /Users/oubiwann/Library/Caches/deno/package.json

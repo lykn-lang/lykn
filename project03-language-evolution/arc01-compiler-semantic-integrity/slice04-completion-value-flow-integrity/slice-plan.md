@@ -308,3 +308,10 @@ guards and guide00's always-IIFE claim are explicit documentation inputs, not
 silently repaired now. S07/S08 retain exact final public/API/guide/LLM/book/human
 impact and any conditional documentation implementation. CI04/all six CV rows
 remain open; no source completion, formal close or retrospective is claimed.
+
+2026-11-10 [S17 independent acceptance](../slice17-ordered-lexical-calls/cdc-verification.md)
+closes only the bare lexical ordered-call delivery at `b6df8968`.
+I3 member and computed references, assignments and iterator
+transport retain their distinct owners. I4 and final composition
+remain pending. CV-02 retains acceptance. All five other CV rows
+and CI-04 stay open.

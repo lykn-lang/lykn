@@ -186,3 +186,10 @@ is approved/closed by that authorization.
 | CI-07 | All actual public API and documentation impacts are audited against explicit ranges | Reviewed register of deltas/no-changes, compatibility/audiences/doc locations including prior unmerged stack | correctness-grade | Operator request / S07 | open | | Upfront breaking choices remain in affected coding slices |
 | CI-08 | Required documentation is delivered or explicitly not needed, with book/human disposition | S07 evidence; actual updates and validations/independent review, or evidence-based not-needed record | correctness-grade | Operator request / S08 | open | | Conditional implementation placeholder, not pre-completed |
 | CI-09 | Arc composition and inherited obligations are independently evaluated | Final row walk, change/range/provenance review and explicit book/human acceptance accounting | correctness-grade | Project03 P-1 | open | | Plan review is not arc/project acceptance; original F1–F12 stay open |
+
+2026-11-10 [S17 independent acceptance](slice17-ordered-lexical-calls/cdc-verification.md)
+closes the first I3 delivery at task `b6df8968`. Genuine bare
+lexical calls now preserve callee and argument order, direct
+source exits and ordinary kernel seams. Member and other ordered
+references, assignment, iterator and I4 composition remain open.
+CI-04 and CV-04 stay open. Release is still `6c9dbd5c`.

@@ -1,0 +1,14 @@
+41e2969a288c660b751c7c0ee65373d4fb6b353f
+b19cf997649600b3a5602e9c02d8f414198fd172
+## codex/completion-value-flow
+lrwxr-xr-x@ 1 oubiwann  admin        29 Sep 13 10:33 /opt/homebrew/bin/deno -> ../Cellar/deno/2.9.6/bin/deno
+-rwxr-xr-x@ 1 oubiwann  staff   1876448 Nov 10 08:43 target/debug/deps/semantic_roles-cb18f482652d85e9
+-rwxr-xr-x@ 1 oubiwann  staff  11139464 Nov 10 08:44 target/debug/lykn
+3d7c687a4307f684220ce6b0758d954fe09c723664d65ceb78a5c0f5698aaa82  target/debug/lykn
+24fcb97cda313d767bcbd6bfefd59a471a8cad4751be61c445c863a201da0a79  target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07)

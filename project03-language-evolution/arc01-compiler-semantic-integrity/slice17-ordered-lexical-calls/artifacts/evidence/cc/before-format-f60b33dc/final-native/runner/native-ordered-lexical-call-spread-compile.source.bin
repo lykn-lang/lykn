@@ -1,0 +1,2 @@
+(func mixed-spread :args (:any callable :any items) :returns :any :body
+  (callable (spread items) (do (return 7) 8)))

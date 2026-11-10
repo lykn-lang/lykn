@@ -1,0 +1,12 @@
+program: cargo
+argv: build -p lykn-cli --bin lykn
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+TMPDIR: /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/build/tmp
+XDG_CACHE_HOME: /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/build/xdg
+npm_config_cache: /private/tmp/lykn-s17-ordered-calls-luna-20261110-01/build/npm
+DENO_DIR: /Users/oubiwann/Library/Caches/deno
+PATH: inherited and recorded in norun/evidence/tool-pins-preflight.txt
+CARGO_TARGET_DIR: inherited default (no override)
+CARGO_NET_OFFLINE: inherited (no override)
+LYKN_TEST_DENO and LYKN_SEMANTIC_ROLE_EVIDENCE_DIR: unset for this build
+scope: exact lykn CLI build after semantic_roles --no-run
