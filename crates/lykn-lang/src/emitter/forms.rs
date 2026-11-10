@@ -603,6 +603,24 @@ fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegist
         SExpr::List { values, span } if !values.is_empty() => {
             if ctx.direct_return_region
                 && ctx.expr_context == ExprContext::Statement
+                && values
+                    .first()
+                    .is_some_and(is_direct_computed_member_call_head)
+            {
+                return match emit_direct_computed_member_call(
+                    &values[0],
+                    &values[1..],
+                    *span,
+                    None,
+                    ctx,
+                    registry,
+                ) {
+                    DirectTailResult::Value(value) => value,
+                    DirectTailResult::Statements(statements) => direct_statement_block(statements),
+                };
+            }
+            if ctx.direct_return_region
+                && ctx.expr_context == ExprContext::Statement
                 && values.first().is_some_and(is_direct_member_call_head)
             {
                 return match emit_direct_member_call(
@@ -1155,6 +1173,18 @@ fn is_direct_member_call_head(head: &SExpr) -> bool {
     direct_member_call_parts(head).is_some()
 }
 
+fn is_direct_computed_member_call_head(head: &SExpr) -> bool {
+    let Some(values) = head.as_list() else {
+        return false;
+    };
+    values.len() == 3
+        && values.get(1).and_then(SExpr::as_atom) != Some("super")
+        && matches!(
+            values.first().and_then(SExpr::as_form_head),
+            Some("get" | "kernel:get")
+        )
+}
+
 fn is_normalized_spread_argument(value: &SExpr) -> bool {
     value
         .as_list()
@@ -1170,15 +1200,108 @@ enum OrderedCallPlan {
     Invalid,
 }
 
+const COMPUTED_MEMBER_SPREAD_ERROR: &str =
+    "ordered computed member call with spread and lifted operands is not supported";
+
+enum ComputedMemberCallPlan {
+    Unlifted(ComputedMemberReferencePlan, Vec<SExpr>),
+    Lifted {
+        reference: ComputedMemberReferencePlan,
+        argument_prefix: Vec<SExpr>,
+        arguments: Vec<SExpr>,
+    },
+    Invalid,
+}
+
+struct ComputedMemberReferencePlan {
+    get_head: SExpr,
+    member_span: Span,
+    receiver_prefix: Vec<SExpr>,
+    receiver: SExpr,
+    key_prefix: Vec<SExpr>,
+    key: SExpr,
+}
+
+struct MemberInvocationPlan {
+    receiver_prefix: Vec<SExpr>,
+    receiver: SExpr,
+    key_prefix: Vec<SExpr>,
+    key: SExpr,
+    argument_prefix: Vec<SExpr>,
+    arguments: Vec<SExpr>,
+    call_span: Span,
+    member_span: Span,
+}
+
+fn computed_member_call_parts(
+    head: &SExpr,
+) -> Result<Option<(SExpr, Span, SExpr, SExpr)>, crate::diagnostics::Diagnostic> {
+    let Some(values) = head.as_list() else {
+        return Ok(None);
+    };
+    if values.len() != 3 {
+        return Ok(None);
+    }
+    if values.get(1).and_then(SExpr::as_atom) == Some("super") {
+        return Ok(None);
+    }
+    match values.first().and_then(SExpr::as_form_head) {
+        Some("get") => Ok(Some((
+            values[0].clone(),
+            head.span(),
+            values[1].clone(),
+            values[2].clone(),
+        ))),
+        Some("kernel:get") => {
+            let normalized =
+                crate::classifier::forms::classify_kernel_escape("get", values, head.span())?;
+            let Some(normalized_values) = normalized.as_list() else {
+                return Ok(None);
+            };
+            let (Some(get_head), Some(receiver), Some(key)) = (
+                normalized_values.first(),
+                normalized_values.get(1),
+                normalized_values.get(2),
+            ) else {
+                return Ok(None);
+            };
+            Ok(Some((
+                get_head.clone(),
+                normalized.span(),
+                receiver.clone(),
+                key.clone(),
+            )))
+        }
+        _ => Ok(None),
+    }
+}
+
 fn plan_ordered_call_arguments(
     plans: Vec<(Vec<SExpr>, SExpr)>,
     span: Span,
     error_message: &str,
+    force_lift: bool,
     ctx: &mut EmitterContext,
 ) -> OrderedCallPlan {
     let last_prefix = plans.iter().rposition(|(prefix, _)| !prefix.is_empty());
     let Some(last_prefix) = last_prefix else {
-        return OrderedCallPlan::Unlifted(plans.into_iter().map(|(_, value)| value).collect());
+        if force_lift
+            && plans
+                .iter()
+                .any(|(_, value)| is_normalized_spread_argument(value))
+        {
+            ctx.record_fatal(codegen_error(error_message, span));
+            return OrderedCallPlan::Invalid;
+        }
+        let values = plans.into_iter().map(|(_, value)| value).collect();
+        return if force_lift {
+            OrderedCallPlan::Lifted {
+                statements: Vec::new(),
+                values,
+            }
+        } else {
+            OrderedCallPlan::Unlifted(values)
+        };
     };
     if plans
         .iter()
@@ -1204,6 +1327,152 @@ fn plan_ordered_call_arguments(
     OrderedCallPlan::Lifted { statements, values }
 }
 
+fn member_invocation_statements(
+    plan: MemberInvocationPlan,
+    destination: Option<&DirectDestination>,
+    ctx: &mut EmitterContext,
+) -> Vec<SExpr> {
+    let receiver_temp =
+        SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.member_span);
+    let callable_temp =
+        SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.member_span);
+    let argv_temp = SExpr::completion_value_atom(ctx.next_completion_value_id(), plan.member_span);
+    let mut statements = plan.receiver_prefix;
+    statements.push(list(vec![
+        atom("const"),
+        receiver_temp.clone(),
+        plan.receiver,
+    ]));
+    statements.extend(plan.key_prefix);
+    statements.push(list(vec![
+        atom("const"),
+        callable_temp.clone(),
+        SExpr::List {
+            values: vec![atom("get"), receiver_temp.clone(), plan.key],
+            span: plan.member_span,
+        },
+    ]));
+    statements.extend(plan.argument_prefix);
+    statements.push(list(vec![
+        atom("const"),
+        argv_temp.clone(),
+        list(
+            std::iter::once(atom("array"))
+                .chain(plan.arguments)
+                .collect(),
+        ),
+    ]));
+    let mut callable_reference = callable_temp;
+    callable_reference.mark_host_invocation();
+    let invocation = SExpr::List {
+        values: vec![callable_reference, receiver_temp, argv_temp],
+        span: plan.call_span,
+    };
+    statements.push(match destination {
+        Some(destination) => consume_direct_value(destination, invocation),
+        None => invocation,
+    });
+    statements
+}
+
+fn plan_computed_member_call(
+    reference: ComputedMemberReferencePlan,
+    argument_plans: Vec<(Vec<SExpr>, SExpr)>,
+    span: Span,
+    ctx: &mut EmitterContext,
+) -> ComputedMemberCallPlan {
+    let force_lift = !reference.receiver_prefix.is_empty() || !reference.key_prefix.is_empty();
+    match plan_ordered_call_arguments(
+        argument_plans,
+        span,
+        COMPUTED_MEMBER_SPREAD_ERROR,
+        force_lift,
+        ctx,
+    ) {
+        OrderedCallPlan::Unlifted(arguments) => {
+            ComputedMemberCallPlan::Unlifted(reference, arguments)
+        }
+        OrderedCallPlan::Lifted { statements, values } => ComputedMemberCallPlan::Lifted {
+            reference,
+            argument_prefix: statements,
+            arguments: values,
+        },
+        OrderedCallPlan::Invalid => ComputedMemberCallPlan::Invalid,
+    }
+}
+
+fn emit_direct_computed_member_call(
+    head: &SExpr,
+    args: &[SExpr],
+    span: Span,
+    destination: Option<&DirectDestination>,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> DirectTailResult {
+    let (get_head, member_span, receiver, key) = match computed_member_call_parts(head) {
+        Ok(Some(parts)) => parts,
+        Ok(None) => {
+            return DirectTailResult::Value(SExpr::List {
+                values: std::iter::once(head.clone())
+                    .chain(args.iter().cloned())
+                    .collect(),
+                span,
+            });
+        }
+        Err(error) => {
+            ctx.record_fatal(LyknError::Classify(error));
+            return DirectTailResult::Value(atom("undefined"));
+        }
+    };
+    let (receiver_prefix, receiver) = emit_direct_header_value(&receiver, ctx, registry);
+    let (key_prefix, key) = emit_direct_header_value(&key, ctx, registry);
+    let reference = ComputedMemberReferencePlan {
+        get_head,
+        member_span,
+        receiver_prefix,
+        receiver,
+        key_prefix,
+        key,
+    };
+    let argument_plans = args
+        .iter()
+        .map(|arg| emit_direct_header_value(arg, ctx, registry))
+        .collect::<Vec<_>>();
+    let plan = plan_computed_member_call(reference, argument_plans, span, ctx);
+    match plan {
+        ComputedMemberCallPlan::Unlifted(reference, arguments) => {
+            DirectTailResult::Value(SExpr::List {
+                values: std::iter::once(SExpr::List {
+                    values: vec![reference.get_head, reference.receiver, reference.key],
+                    span: reference.member_span,
+                })
+                .chain(arguments)
+                .collect(),
+                span,
+            })
+        }
+        ComputedMemberCallPlan::Lifted {
+            reference,
+            argument_prefix,
+            arguments,
+        } => DirectTailResult::Statements(member_invocation_statements(
+            MemberInvocationPlan {
+                receiver_prefix: reference.receiver_prefix,
+                receiver: reference.receiver,
+                key_prefix: reference.key_prefix,
+                key: reference.key,
+                argument_prefix,
+                arguments,
+                call_span: span,
+                member_span: reference.member_span,
+            },
+            destination,
+            ctx,
+        )),
+        ComputedMemberCallPlan::Invalid => DirectTailResult::Value(atom("undefined")),
+    }
+}
+
 /// Preserve the callee and earlier arguments when a lexical call needs direct
 /// prefixes for one or more later arguments. With no prefixes, the ordinary
 /// call stays in its existing expression form, including plain spreads.
@@ -1223,6 +1492,7 @@ fn emit_direct_lexical_call(
         plans,
         span,
         "ordered lexical call with spread and lifted arguments is not supported",
+        false,
         ctx,
     ) {
         OrderedCallPlan::Unlifted(values) => {
@@ -1274,6 +1544,7 @@ fn emit_direct_member_call(
         plans,
         span,
         "ordered member call with spread and lifted arguments is not supported",
+        false,
         ctx,
     ) {
         OrderedCallPlan::Unlifted(values) => {
@@ -1285,39 +1556,20 @@ fn emit_direct_member_call(
         OrderedCallPlan::Lifted { statements, values } => (statements, values),
         OrderedCallPlan::Invalid => return DirectTailResult::Value(atom("undefined")),
     };
-
-    let receiver = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
-    let callee = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
-    let argv = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
-    let mut callee_reference = callee.clone();
-    callee_reference.mark_host_invocation();
-    let mut statements = vec![
-        list(vec![atom("const"), receiver.clone(), atom(base)]),
-        list(vec![
-            atom("const"),
-            callee.clone(),
-            list(vec![
-                atom("get"),
-                receiver.clone(),
-                str_lit(&to_js_identifier(property)),
-            ]),
-        ]),
-    ];
-    statements.extend(argument_statements);
-    statements.push(list(vec![
-        atom("const"),
-        argv.clone(),
-        list(std::iter::once(atom("array")).chain(planned_args).collect()),
-    ]));
-    let invocation = SExpr::List {
-        values: vec![callee_reference, receiver, argv],
-        span,
-    };
-    statements.push(match destination {
-        Some(destination) => consume_direct_value(destination, invocation),
-        None => invocation,
-    });
-    DirectTailResult::Statements(statements)
+    DirectTailResult::Statements(member_invocation_statements(
+        MemberInvocationPlan {
+            receiver_prefix: Vec::new(),
+            receiver: atom(base),
+            key_prefix: Vec::new(),
+            key: str_lit(&to_js_identifier(property)),
+            argument_prefix: argument_statements,
+            arguments: planned_args,
+            call_span: span,
+            member_span: head.span(),
+        },
+        destination,
+        ctx,
+    ))
 }
 
 fn emit_direct_logical(
@@ -1546,6 +1798,19 @@ fn emit_direct_tail(
     let Some(values) = expr.as_list() else {
         return emit_direct_value_tail(expr, destination, ctx, registry);
     };
+    if let Some(head) = values
+        .first()
+        .filter(|head| is_direct_computed_member_call_head(head))
+    {
+        return emit_direct_computed_member_call(
+            head,
+            &values[1..],
+            expr.span(),
+            Some(destination),
+            ctx,
+            registry,
+        );
+    }
     if let Some(head) = values
         .first()
         .filter(|head| is_direct_member_call_head(head))
