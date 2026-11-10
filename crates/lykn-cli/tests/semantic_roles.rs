@@ -575,8 +575,7 @@ fn lexical_statement_calls_preserve_source_exits_and_late_call_errors() {
 
 #[test]
 fn lexical_call_with_lifted_spread_fails_closed_without_outputs() {
-    const MESSAGE: &str =
-        "ordered lexical call with spread and lifted arguments is not supported";
+    const MESSAGE: &str = "ordered lexical call with spread and lifted arguments is not supported";
     let source = concat!(
         "(func mixed-spread :args (:any callable :any items) :returns :any :body\n",
         "  (callable (spread items) (do (return 7) 8)))\n",
@@ -629,10 +628,7 @@ fn lexical_call_with_lifted_spread_fails_closed_without_outputs() {
         generated.is_none(),
         "failed compile wrote JavaScript: {generated:?}"
     );
-    assert!(
-        dts.is_none(),
-        "failed compile wrote declarations: {dts:?}"
-    );
+    assert!(dts.is_none(), "failed compile wrote declarations: {dts:?}");
 }
 
 #[test]

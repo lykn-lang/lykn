@@ -584,9 +584,7 @@ fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegist
         SExpr::List { values, span } if !values.is_empty() => {
             if ctx.direct_return_region
                 && ctx.expr_context == ExprContext::Statement
-                && values
-                    .first()
-                    .is_some_and(is_direct_lexical_call_head)
+                && values.first().is_some_and(is_direct_lexical_call_head)
             {
                 return match emit_direct_lexical_call(
                     &values[0],
