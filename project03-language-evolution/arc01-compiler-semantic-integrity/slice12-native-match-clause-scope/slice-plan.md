@@ -66,3 +66,8 @@ test-only `bd081320` and the actual old native/private/public gates.
 Two source fixture isolation edits retain the same oracles. The first
 assignment returned the full original observations. No compiler
 source has changed.
+
+2026-11-09 [refinement 02](cc-prompt-iteration02.md), active after
+old fixture replay and frozen production `e96ab03c`. Complete
+the single-slot shadow guard and optional capture before current
+validation. The exact runtime fixtures and predicates are unchanged.
