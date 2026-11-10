@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-10 [S17](slice17-ordered-lexical-calls/slice-plan.md)
+opens I3 after the [independent local integration](slice16-completion-headers-and-lazy-operands/artifacts/release-integration-6c9dbd5c.md).
+OC-01 through OC-04 and broader reference composition remain open.
+
+
 2026-11-10 [S16 acceptance](slice16-completion-headers-and-lazy-operands/cdc-verification.md)
 closes the remaining bounded direct I2 rows at `6c9dbd5c`.
 Ordered-reference and checked exits/finally/deferred

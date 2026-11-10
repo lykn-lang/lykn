@@ -9,6 +9,16 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Ordered lexical calls opened — 2026-11-10
+
+The [independent local release gate](slice16-completion-headers-and-lazy-operands/artifacts/release-integration-6c9dbd5c.md)
+passes at `6c9dbd5c`. [S17](slice17-ordered-lexical-calls/slice-plan.md)
+starts I3 with ordered calls through genuine lexical bindings.
+Member receivers, computed references, assignment and spread
+retain distinct I3 implementation and proof. CV-04 and CI-04
+remain open.
+
+
 ## Bounded direct I2 delivery accepted — 2026-11-10
 
 [S16 verification](slice16-completion-headers-and-lazy-operands/cdc-verification.md)

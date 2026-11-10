@@ -1,5 +1,11 @@
 # S04 completion/value-flow ledger
 
+2026-11-10 [S17](../slice17-ordered-lexical-calls/slice-plan.md)
+opens the first ordered I3 scope, with ordinary lexical-call
+order and finalized kernel seam evidence. CV-02 remains done.
+The remaining CV rows and CI-04 stay open.
+
+
 2026-11-10 [S16 verification](../slice16-completion-headers-and-lazy-operands/cdc-verification.md)
 accepts all four HL rows and the remaining selected direct I2
 tranche at `6c9dbd5c`. CV-02 remains done. The other five CV

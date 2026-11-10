@@ -9,6 +9,14 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+2026-11-10 [S17](../slice17-ordered-lexical-calls/slice-plan.md)
+starts I3 after independent local release `6c9dbd5c` verification.
+It covers genuine lexical bare calls first. Arc03's accepted
+private invocation facility is a receiver input, with its host
+and loader bounds retained. Receiver and assignment/spread
+increments retain their own source readiness. I4 stays held.
+
+
 2026-11-10 [S16 acceptance](../slice16-completion-headers-and-lazy-operands/cdc-verification.md)
 completes the selected direct I2 tranche at `6c9dbd5c`.
 I3 owns transfer-bearing ordered calls/references/spread
