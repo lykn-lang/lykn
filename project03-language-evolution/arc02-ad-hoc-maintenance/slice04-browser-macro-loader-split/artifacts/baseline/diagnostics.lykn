@@ -1,0 +1,21 @@
+(func diagnose :args (:string source) :returns :any :body
+  (try (return (array "ok" (lykn:compile source)))
+       (catch caught (return (array caught:name caught:message)))))
+(bind specimens
+  (array "(import-macros)"
+         "(import-macros 1 (witness))"
+         "(import-macros \"./x.lykn\" witness)"
+         "(import-macros \"./x.lykn\" (witness))"
+         "(import-macros \"../x.lykn\" (witness))"
+         "(import-macros \"/x.lykn\" (witness))"
+         "(import-macros \"bare\" (witness))"
+         "(import-macros \"file:///x.lykn\" (witness))"
+         "(import-macros \"file://%\" (witness))"
+         "(import-macros \"jsr:@fixture/witness\" (witness))"
+         "(import-macros \"npm:witness\" (witness))"
+         "(import-macros \"http://127.0.0.1/witness.lykn\" (witness))"
+         "(import-macros \"https://example.invalid/witness.lykn\" (witness))"
+         "(import-macros \"FILE:///x.lykn\" (witness))"
+         "(+ 1 2)"))
+(set-symbol! (document:getElementById "report") "textContent"
+  (JSON:stringify (specimens:map diagnose)))
