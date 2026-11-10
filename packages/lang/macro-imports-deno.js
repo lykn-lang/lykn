@@ -576,4 +576,3 @@ function loadMacroModule(resolvedPath, displayPath, compilationStack, resolveSpe
     }
   }
 }
-
