@@ -9,6 +9,13 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Structural match and nested escape work opened — 2026-11-09
+
+Operator authorized [S13](slice13-structural-match-and-kernel-escape/slice-plan.md)
+for NE-C16 and NE-C17 before other work. The accepted S12 task
+`b5c22b63` is the baseline. Release stays `7b17a784`.
+No parent completion criteria change.
+
 ## Native clause-local scope accepted — 2026-11-09
 
 [S12](slice12-native-match-clause-scope/closing-report.md) closes its
