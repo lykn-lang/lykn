@@ -135,3 +135,17 @@ checked exit lowering could newly return `"bad"` and skip the actual
 post effect. Preserve current backend-specific output routes inside
 protected bodies. The complete output must still contain actual
 number and post checks for the selected tail.
+
+## F1 successor for strict top-level analysis
+
+The original F1 bytes above stay part of the first frozen baseline.
+Iteration 03 replaces its last match line with the following two lines
+and retains the exact current trace oracle.
+
+```lykn
+  (_ :when (gate "late" true) (trace:push "late-body"))
+  (_ (trace:push "fallback")))
+```
+
+The final unguarded fallback preserves strict static exhaustiveness.
+It is not selected in the current expected execution.
