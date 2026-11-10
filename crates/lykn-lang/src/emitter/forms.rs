@@ -1598,7 +1598,10 @@ fn direct_call_argument_plan(
     };
     let normalized_values = normalized.as_list().unwrap_or_default();
     if normalized_values.len() != 2 {
-        ctx.record_fatal(codegen_error("spread takes exactly one argument", expr.span()));
+        ctx.record_fatal(codegen_error(
+            "spread takes exactly one argument",
+            expr.span(),
+        ));
         return None;
     }
     let spread_head = normalized_values[0].clone();
@@ -1656,7 +1659,10 @@ struct MemberInvocationPlan {
 }
 
 enum MemberInvocationArguments {
-    Values { prefix: Vec<SExpr>, values: Vec<SExpr> },
+    Values {
+        prefix: Vec<SExpr>,
+        values: Vec<SExpr>,
+    },
     Spread(Vec<OrderedCallArgumentPlan>),
 }
 
@@ -2081,12 +2087,10 @@ fn emit_direct_member_call(
                 span,
             });
         }
-        OrderedCallPlan::Lifted { statements, values } => {
-            MemberInvocationArguments::Values {
-                prefix: statements,
-                values,
-            }
-        }
+        OrderedCallPlan::Lifted { statements, values } => MemberInvocationArguments::Values {
+            prefix: statements,
+            values,
+        },
         OrderedCallPlan::LiftedSpread { arguments } => MemberInvocationArguments::Spread(arguments),
     };
     DirectTailResult::Statements(member_invocation_statements(
