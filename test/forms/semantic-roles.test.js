@@ -31,6 +31,10 @@ const CASES = [
   { name: "bind-consumed-group-match", expected: '[81,8,["match",8]]\n' },
   { name: "bind-consumed-loop-transfer", expected: "[0,2]\n" },
   { name: "bind-consumed-name-hygiene", expected: '[[7,99,41],["result"]]\n' },
+  { name: "completion-if-headers", expected: '[80,81,7,8,["statement","statement","value","statement","value","then","after","statement","value","else","after"]]\n' },
+  { name: "completion-match-headers", expected: '[80,81,82,83,84,["discarded","discarded",3,"discarded",3,"discarded-fallback","consumed","discarded",3,"discarded-fallback","consumed",4,"discarded",3,"discarded-fallback","consumed",4,"consumed-fallback"]]\n' },
+  { name: "completion-logical-operands", expected: '[7,[0,"kept"],[10,11],"pure",["first","second",0,"kept","first","second",0,"kept","last","arg1","arg2"]]\n' },
+  { name: "completion-nullish-operands", expected: '[0,false,"early","early",["left","after","left","after","left","right","left","right"]]\n' },
 ];
 
 const RESERVED_MATCH_CASES = [

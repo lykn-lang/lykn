@@ -127,6 +127,22 @@ const FIXTURES: &[Case] = &[
         name: "bind-consumed-native-typed",
         expected: b"[\"early\",9,[9]]\n",
     },
+    Case {
+        name: "completion-if-headers",
+        expected: b"[80,81,7,8,[\"statement\",\"statement\",\"value\",\"statement\",\"value\",\"then\",\"after\",\"statement\",\"value\",\"else\",\"after\"]]\n",
+    },
+    Case {
+        name: "completion-match-headers",
+        expected: b"[80,81,82,83,84,[\"discarded\",\"discarded\",3,\"discarded\",3,\"discarded-fallback\",\"consumed\",\"discarded\",3,\"discarded-fallback\",\"consumed\",4,\"discarded\",3,\"discarded-fallback\",\"consumed\",4,\"consumed-fallback\"]]\n",
+    },
+    Case {
+        name: "completion-logical-operands",
+        expected: b"[7,[0,\"kept\"],[10,11],\"pure\",[\"first\",\"second\",0,\"kept\",\"first\",\"second\",0,\"kept\",\"last\",\"arg1\",\"arg2\"]]\n",
+    },
+    Case {
+        name: "completion-nullish-operands",
+        expected: b"[0,false,\"early\",\"early\",[\"left\",\"after\",\"left\",\"after\",\"left\",\"right\",\"left\",\"right\"]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
