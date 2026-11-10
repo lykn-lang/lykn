@@ -26,6 +26,9 @@ pub struct EmitterContext {
     /// Keep statement-position matches on their legacy path while a checked
     /// function exit still owns the value returned by its body.
     pub(super) legacy_statement_match: bool,
+    /// Permit direct return destinations only inside a selected ordinary
+    /// single-clause function body.
+    pub(super) direct_return_region: bool,
     pub(super) first_fatal: Option<LyknError>,
 }
 
@@ -37,6 +40,7 @@ impl EmitterContext {
             strip_assertions,
             in_class_body: false,
             legacy_statement_match: false,
+            direct_return_region: false,
             first_fatal: None,
         }
     }

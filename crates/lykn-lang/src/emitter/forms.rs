@@ -497,6 +497,16 @@ fn emit_form_inner(
 /// are expanded correctly. Non-surface-form lists are recursed into so that
 /// deeply nested surface forms are still discovered.
 fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
+    let saved_direct_region = ctx.direct_return_region;
+    if saved_direct_region && ctx.expr_context != ExprContext::Statement {
+        ctx.direct_return_region = false;
+    }
+    let emitted = emit_expr_inner(expr, ctx, registry);
+    ctx.direct_return_region = saved_direct_region;
+    emitted
+}
+
+fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
             // DD-61 §A6: dispatch on the *form head*. A lexically bound head
@@ -504,6 +514,12 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
             // surface/kernel/inline dispatch below and is recursed as a plain
             // list, so codegen emits the readable call.
             if let Some(head_name) = values[0].as_form_head() {
+                if ctx.direct_return_region
+                    && matches!(ctx.expr_context, ExprContext::Statement)
+                    && head_name == "return"
+                {
+                    return emit_direct_return(&values[1..], *span, ctx, registry);
+                }
                 // js: namespace interop (DD-15) — handle before surface form check
                 if head_name.starts_with("js:") {
                     return emit_js_interop(head_name, &values[1..], ctx, registry);
@@ -575,7 +591,17 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
                 } else {
                     // Not a surface form — recursively process subexpressions
                     // with per-form child context profile (DD-50.5).
-                    emit_kernel_children(values, *span, ctx, registry)
+                    let function_boundary = matches!(
+                        head_name,
+                        "function" | "function*" | "=>" | "lambda" | "async"
+                    );
+                    let saved_direct_region = ctx.direct_return_region;
+                    if function_boundary {
+                        ctx.direct_return_region = false;
+                    }
+                    let emitted = emit_kernel_children(values, *span, ctx, registry);
+                    ctx.direct_return_region = saved_direct_region;
+                    emitted
                 }
             } else {
                 // Head is not an atom (computed call) — recurse on all elements
@@ -603,10 +629,27 @@ fn emit_kernel_root(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegis
     match values.first().and_then(SExpr::as_atom) {
         Some("object") => emit_kernel_object(values, *span, ctx, registry),
         Some("switch") => emit_switch_children(values, *span, ctx, registry),
+        Some("return")
+            if ctx.direct_return_region && ctx.expr_context == ExprContext::Statement =>
+        {
+            emit_direct_return(&values[1..], *span, ctx, registry)
+        }
         Some("if") if matches!(ctx.expr_context, ExprContext::Value | ExprContext::Tail) => {
             emit_if_expression(&values[1..], *span, ctx, registry)
         }
-        _ => emit_kernel_children(values, *span, ctx, registry),
+        _ => {
+            let is_function_boundary = matches!(
+                values.first().and_then(SExpr::as_atom),
+                Some("function" | "function*" | "=>" | "lambda" | "async")
+            );
+            let saved_direct_region = ctx.direct_return_region;
+            if is_function_boundary {
+                ctx.direct_return_region = false;
+            }
+            let emitted = emit_kernel_children(values, *span, ctx, registry);
+            ctx.direct_return_region = saved_direct_region;
+            emitted
+        }
     }
 }
 
@@ -807,6 +850,214 @@ fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) 
         out.push(emit_expr(expr, ctx, registry));
     }
     out
+}
+
+enum DirectTailResult {
+    Value(SExpr),
+    Statements(Vec<SExpr>),
+}
+
+fn emit_direct_if_tail(
+    args: &[SExpr],
+    span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> DirectTailResult {
+    if args.len() < 3 {
+        ctx.record_fatal(codegen_error(
+            "if in expression position requires an else branch",
+            span,
+        ));
+        return DirectTailResult::Value(atom("undefined"));
+    }
+    let condition = emit_in_context(&args[0], ExprContext::Value, ctx, registry);
+    let consequent = emit_direct_tail(&args[1], ctx, registry);
+    let alternate = emit_direct_tail(&args[2], ctx, registry);
+    match (consequent, alternate) {
+        (DirectTailResult::Value(then_value), DirectTailResult::Value(else_value)) => {
+            DirectTailResult::Value(list(vec![atom("?"), condition, then_value, else_value]))
+        }
+        (then_result, else_result) => DirectTailResult::Statements(vec![list(vec![
+            atom("if"),
+            condition,
+            list(std::iter::once(atom("block")).chain(direct_return_arm(then_result)).collect()),
+            list(std::iter::once(atom("block")).chain(direct_return_arm(else_result)).collect()),
+        ])]),
+    }
+}
+
+/// Emit an ordinary source result directly to the selected function's return
+/// destination. Statement results stay in lexical regions, preserving loop
+/// transfers and source function exits.
+fn emit_direct_tail(
+    expr: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> DirectTailResult {
+    let Some(values) = expr.as_list() else {
+        return DirectTailResult::Value(emit_in_context(
+            expr,
+            ExprContext::Value,
+            ctx,
+            registry,
+        ));
+    };
+    let Some(head) = values.first().and_then(SExpr::as_form_head) else {
+        return DirectTailResult::Value(emit_in_context(
+            expr,
+            ExprContext::Value,
+            ctx,
+            registry,
+        ));
+    };
+
+    match head {
+        "if" => emit_direct_if_tail(&values[1..], expr.span(), ctx, registry),
+        "return" => DirectTailResult::Statements(vec![emit_direct_return(
+            &values[1..],
+            expr.span(),
+            ctx,
+            registry,
+        )]),
+        "do" => match crate::classifier::classify_expr(expr) {
+            Ok(SurfaceForm::Do { body, .. }) => {
+                let body = emit_direct_consumed_body(&body, ctx, registry);
+                DirectTailResult::Statements(vec![list(
+                    std::iter::once(atom("block")).chain(body).collect(),
+                )])
+            }
+            _ => DirectTailResult::Value(emit_in_context(
+                expr,
+                ExprContext::Value,
+                ctx,
+                registry,
+            )),
+        },
+        "match" => match crate::classifier::classify_expr(expr) {
+            Ok(SurfaceForm::Match { target, clauses, .. }) => DirectTailResult::Statements(vec![
+                emit_match_statement_inner(&target, &clauses, true, ctx, registry),
+            ]),
+            _ => DirectTailResult::Value(emit_in_context(
+                expr,
+                ExprContext::Value,
+                ctx,
+                registry,
+            )),
+        },
+        "kernel:if" => match crate::classifier::forms::classify_kernel_escape(
+            "if",
+            values,
+            expr.span(),
+        ) {
+            Ok(raw) => emit_direct_if_tail(
+                &raw.as_list().unwrap_or_default()[1..],
+                expr.span(),
+                ctx,
+                registry,
+            ),
+            Err(error) => {
+                ctx.record_fatal(LyknError::Classify(error));
+                DirectTailResult::Statements(vec![list(vec![atom("return")])])
+            }
+        },
+        _ if is_statement_form(expr) => {
+            let statement = emit_in_context(expr, ExprContext::Statement, ctx, registry);
+            let mut statements = vec![statement.clone()];
+            if !is_control_transfer_last_expr(&statement) {
+                statements.push(list(vec![atom("return")]));
+            }
+            DirectTailResult::Statements(statements)
+        }
+        _ => DirectTailResult::Value(emit_in_context(
+            expr,
+            ExprContext::Value,
+            ctx,
+            registry,
+        )),
+    }
+}
+
+fn direct_return_arm(result: DirectTailResult) -> Vec<SExpr> {
+    match result {
+        DirectTailResult::Value(value) => vec![list(vec![atom("return"), value])],
+        DirectTailResult::Statements(statements) => statements,
+    }
+}
+
+fn emit_direct_return(
+    args: &[SExpr],
+    _span: Span,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let Some(value) = args.first() else {
+        return list(vec![atom("return")]);
+    };
+    match emit_direct_tail(value, ctx, registry) {
+        DirectTailResult::Value(value) => list(vec![atom("return"), value]),
+        DirectTailResult::Statements(statements) => {
+            if statements.len() == 1
+                && statements[0]
+                    .as_list()
+                    .and_then(|items| items.first())
+                    .and_then(SExpr::as_atom)
+                    == Some("block")
+            {
+                statements.into_iter().next().unwrap()
+            } else {
+                list(std::iter::once(atom("block")).chain(statements).collect())
+            }
+        }
+    }
+}
+
+fn emit_direct_consumed_body(
+    body: &[SExpr],
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Vec<SExpr> {
+    if body.is_empty() {
+        return vec![list(vec![atom("return")])];
+    }
+    let mut statements = Vec::new();
+    let saved_context = ctx.expr_context;
+    ctx.expr_context = ExprContext::Statement;
+    statements.extend(emit_body(&body[..body.len() - 1], ctx, registry));
+    ctx.expr_context = saved_context;
+    match emit_direct_tail(body.last().unwrap(), ctx, registry) {
+        DirectTailResult::Value(value) => statements.push(list(vec![atom("return"), value])),
+        DirectTailResult::Statements(tail) => statements.extend(tail),
+    }
+    statements
+}
+
+fn emit_direct_function_body(
+    body: &[SExpr],
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Vec<SExpr> {
+    let mut statements = Vec::new();
+    for (index, expr) in body.iter().enumerate() {
+        if function_body_use(expr, index, body.len(), BodyPolicy::FunctionValueTail)
+            == ExprUse::Statement
+        {
+            let saved_context = ctx.expr_context;
+            ctx.expr_context = ExprContext::Statement;
+            statements.extend(emit_body(std::slice::from_ref(expr), ctx, registry));
+            ctx.expr_context = saved_context;
+        } else {
+            match emit_direct_tail(expr, ctx, registry) {
+                DirectTailResult::Value(value) => {
+                    statements.push(list(vec![atom("return"), value]));
+                }
+                DirectTailResult::Statements(tail) => statements.extend(tail),
+            }
+        }
+    }
+    if body.is_empty() {
+        statements.push(list(vec![atom("return")]));
+    }
+    statements
 }
 
 fn emit_function_body(
@@ -1721,6 +1972,8 @@ fn emit_fn_expr(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    let saved_direct_region = ctx.direct_return_region;
+    ctx.direct_return_region = false;
     let param_names: Vec<SExpr> = params.iter().flat_map(param_to_kernel_names).collect();
 
     let mut items = vec![atom("=>"), list(param_names)];
@@ -1754,6 +2007,7 @@ fn emit_fn_expr(
     } else {
         items.extend(emitted_body);
     }
+    ctx.direct_return_region = saved_direct_region;
     list(items)
 }
 
@@ -1816,9 +2070,17 @@ fn emit_func_single(
         !ctx.strip_assertions && (has_post || (has_returns && !returns_any && !returns_void));
     // Function prefixes are statements; a non-void implicit tail is a value.
     let saved_legacy_match = ctx.legacy_statement_match;
+    let direct_return = !has_post && !returns_void && (!has_returns || returns_any);
+    let saved_direct_region = ctx.direct_return_region;
     ctx.legacy_statement_match |= protect_statement_match;
-    let body = emit_function_body(&clause.body, !returns_void, ctx, registry);
+    ctx.direct_return_region = direct_return;
+    let body = if direct_return {
+        emit_direct_function_body(&clause.body, ctx, registry)
+    } else {
+        emit_function_body(&clause.body, !returns_void, ctx, registry)
+    };
     ctx.legacy_statement_match = saved_legacy_match;
+    ctx.direct_return_region = saved_direct_region;
 
     if has_post && !ctx.strip_assertions {
         // Capture result in gensym, check post, return
@@ -1946,6 +2208,8 @@ fn emit_func_multi(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    let saved_direct_region = ctx.direct_return_region;
+    ctx.direct_return_region = false;
     // Sort clauses: longer arity first, more typed first
     let mut sorted_indices: Vec<usize> = (0..clauses.len()).collect();
     sorted_indices.sort_by(|&a, &b| {
@@ -2127,6 +2391,7 @@ fn emit_func_multi(
         ]),
     ]));
 
+    ctx.direct_return_region = saved_direct_region;
     list(items)
 }
 
@@ -2212,6 +2477,8 @@ fn emit_genfunc_single(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    let saved_direct_region = ctx.direct_return_region;
+    ctx.direct_return_region = false;
     let param_names: Vec<SExpr> = clause.args.iter().flat_map(param_to_kernel_names).collect();
 
     let mut items = vec![atom("function*"), atom(name), list(param_names)];
@@ -2257,6 +2524,7 @@ fn emit_genfunc_single(
 
     items.extend(body);
 
+    ctx.direct_return_region = saved_direct_region;
     list(items)
 }
 
@@ -2267,6 +2535,8 @@ fn emit_genfn_expr(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    let saved_direct_region = ctx.direct_return_region;
+    ctx.direct_return_region = false;
     let param_names: Vec<SExpr> = params.iter().flat_map(param_to_kernel_names).collect();
 
     let mut items = vec![atom("function*"), list(param_names)];
@@ -2301,6 +2571,7 @@ fn emit_genfn_expr(
 
     items.extend(emitted_body);
 
+    ctx.direct_return_region = saved_direct_region;
     list(items)
 }
 
@@ -2388,6 +2659,18 @@ fn emit_match_statement(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
+    emit_match_statement_inner(target, clauses, false, ctx, registry)
+}
+
+/// Reuse the ordered S09 candidates while directing each selected clause tail
+/// to the surrounding source function's return destination.
+fn emit_match_statement_inner(
+    target: &SExpr,
+    clauses: &[MatchClause],
+    direct_return: bool,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
     let mut reserved = HashSet::new();
     reserve_emitted_names(target, &mut reserved);
     for clause in clauses {
@@ -2418,7 +2701,11 @@ fn emit_match_statement(
         let (condition, bindings) = compile_pattern(&clause.pattern, &target_var, registry);
         let saved_body_ctx = ctx.expr_context;
         ctx.expr_context = ExprContext::Statement;
-        let body = emit_body(&clause.body, ctx, registry);
+        let body = if direct_return {
+            emit_direct_consumed_body(&clause.body, ctx, registry)
+        } else {
+            emit_body(&clause.body, ctx, registry)
+        };
         ctx.expr_context = saved_body_ctx;
 
         let mut candidate_items = vec![atom("block")];
@@ -3273,11 +3560,14 @@ fn emit_class_member_form(
                 prefix.iter().map(|e| emit_expr(e, ctx, registry)).collect();
 
             let saved = ctx.in_class_body;
+            let saved_direct_region = ctx.direct_return_region;
             ctx.in_class_body = true;
+            ctx.direct_return_region = false;
             for expr in body {
                 member_items.push(emit_expr(expr, ctx, registry));
             }
             ctx.in_class_body = saved;
+            ctx.direct_return_region = saved_direct_region;
 
             let mut result = list(member_items);
 

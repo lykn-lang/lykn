@@ -792,7 +792,11 @@ function expandChildrenSeq(children, env, use = "Legacy") {
   const out = [];
   let cur = env;
   for (const child of children) {
-    pushExpanded(out, expandAt(child, cur, use));
+    const h = child?.type === "list" && child.values.length ? formHead(child.values[0]) : null;
+    const childUse = use === "DirectStatement" && ["function", "function*", "=>", "lambda", "async"].includes(h)
+      ? "Statement"
+      : use;
+    pushExpanded(out, expandAt(child, cur, childUse));
     const hoist = child?.type === "list" ? hoistedNames(child) : [];
     if (hoist.length) cur = extendEnv(cur, hoist);
   }
@@ -830,7 +834,7 @@ function expandChildrenPlan(form, env, use = "Legacy") {
   if (plan.kind === "conditional") {
     const out = [children[0]];
     if (children.length > 1) {
-      out.push(expandConditionalChild(children[1], env, true, use === "Statement" ? "Value" : use));
+      out.push(expandConditionalChild(children[1], env, true, "Value"));
     }
     for (let i = 2; i < children.length; i++) {
       out.push(expandConditionalChild(children[i], env, false, use === "Statement" ? "Statement" : use));
@@ -842,7 +846,13 @@ function expandChildrenPlan(form, env, use = "Legacy") {
     const out = [];
     let cur = env;
     for (let i = 0; i < children.length; i++) {
-      const role = roles[i] ?? "Legacy";
+      const requestedRole = roles[i] ?? "Legacy";
+      const childHead = children[i]?.type === "list" && children[i].values.length
+        ? formHead(children[i].values[0])
+        : null;
+      const role = requestedRole === "DirectStatement" && ["function", "function*", "=>", "lambda", "async"].includes(childHead)
+        ? "Statement"
+        : requestedRole;
       pushExpanded(out, role === "Value"
         ? expandSingle(children[i], cur, role, "expression slot")
         : expandAt(children[i], cur, role));
@@ -862,11 +872,17 @@ function expandChildrenPlan(form, env, use = "Legacy") {
   }
   if (split < children.length) {
     const bodyEnv = extendEnv(env, plan.names);
-    const bodyUse = use === "Statement" || use === "Protected" ? use : "Legacy";
+    const bodyUse = use === "Statement" || use === "Protected" || use === "DirectStatement" ? use : "Legacy";
     let cur = bodyEnv;
     for (let i = split; i < children.length; i++) {
       const child = children[i];
-      const role = roles[i] ?? bodyUse;
+      const requestedRole = roles[i] ?? bodyUse;
+      const childHead = child?.type === "list" && child.values.length
+        ? formHead(child.values[0])
+        : null;
+      const role = requestedRole === "DirectStatement" && ["function", "function*", "=>", "lambda", "async"].includes(childHead)
+        ? "Statement"
+        : requestedRole;
       pushExpanded(out, role === "Value"
         ? expandSingle(child, cur, role, "expression slot")
         : expandAt(child, cur, role));
@@ -924,16 +940,45 @@ function childRoles(form, use) {
   const roles = Array(form.values.length).fill("Legacy");
   if (form.values.length === 0) return roles;
   const h = formHead(form.values[0]);
+  if ((use === "DirectStatement" || use === "ReturnOperand") && h === "return") {
+    if (roles.length > 1) roles[1] = "ReturnOperand";
+    return roles;
+  }
+  if (use === "DirectStatement" || use === "ReturnOperand") {
+    if (h === "block" || h === "do") {
+      for (let i = 1; i < roles.length; i++) {
+        roles[i] = use === "DirectStatement"
+          ? "DirectStatement"
+          : i === roles.length - 1 ? "ReturnOperand" : "Statement";
+      }
+      return roles;
+    }
+    if (h === "while" || h === "do-while") {
+      roles[1] = "Value";
+      for (let i = 2; i < roles.length; i++) roles[i] = "DirectStatement";
+      return roles;
+    }
+    if (h === "for") {
+      for (let i = 1; i <= 3 && i < roles.length; i++) roles[i] = "Value";
+      for (let i = 4; i < roles.length; i++) roles[i] = "DirectStatement";
+      return roles;
+    }
+    if (["for-of", "for-in", "for-await-of"].includes(h)) {
+      roles[2] = "Value";
+      for (let i = 3; i < roles.length; i++) roles[i] = "DirectStatement";
+      return roles;
+    }
+  }
   if (use === "Protected") return roles.fill("Protected");
   if (use === "Legacy") return roles;
   if (h === "function" || h === "function*") {
     const start = form.values[1]?.type === "atom" ? 3 : 2;
-    for (let i = start; i < roles.length; i++) roles[i] = "Statement";
+    for (let i = start; i < roles.length; i++) roles[i] = use === "DirectStatement" ? "DirectStatement" : "Statement";
     return roles;
   }
-  if (h === "lambda") { for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; return roles; }
+  if (h === "lambda") { for (let i = 2; i < roles.length; i++) roles[i] = use === "DirectStatement" ? "DirectStatement" : "Statement"; return roles; }
   if (h === "=>") {
-    for (let i = 2; i < roles.length; i++) roles[i] = roles.length === 3 ? "Value" : "Statement";
+    for (let i = 2; i < roles.length; i++) roles[i] = use === "DirectStatement" ? "DirectStatement" : roles.length === 3 ? "Value" : "Statement";
     return roles;
   }
   if (h === "async") { if (roles.length > 1) roles[1] = "Value"; return roles; }
@@ -974,6 +1019,36 @@ function emitSurfaceMatchStatement(args, env) {
     env,
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
     expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "Statement"),
+    reserveNames: emittedNames,
+  });
+}
+
+function emitSurfaceMatchDirect(args, env) {
+  return emitMatchStatementMacro(args, {
+    env,
+    expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
+    expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "DirectStatement"),
+    reserveNames: emittedNames,
+  });
+}
+
+function expandReturnClause(forms, env) {
+  if (forms.length === 0) return [array(sym("return"))];
+  const out = expandChildrenSeq(forms.slice(0, -1), env, "Statement");
+  const tail = expandSingle(forms[forms.length - 1], env, "ReturnOperand", "match clause result");
+  if (tail?.type === "list" && ["return", "throw", "break", "continue"].includes(formHead(tail.values[0]))) {
+    out.push(tail);
+  } else {
+    out.push(array(sym("return"), tail));
+  }
+  return out;
+}
+
+function emitSurfaceMatchReturn(args, env) {
+  return emitMatchStatementMacro(args, {
+    env,
+    expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
+    expandBody: expandReturnClause,
     reserveNames: emittedNames,
   });
 }
@@ -1105,6 +1180,12 @@ function expandExprInner(form, env, use = "Legacy") {
       if (astNode.type === "Match" && use === "Statement") {
         return emitSurfaceMatchStatement([astNode.expr, ...astNode.clauses], env);
       }
+      if (astNode.type === "Match" && use === "DirectStatement") {
+        return emitSurfaceMatchDirect([astNode.expr, ...astNode.clauses], env);
+      }
+      if (astNode.type === "Match" && use === "ReturnOperand") {
+        return emitSurfaceMatchReturn([astNode.expr, ...astNode.clauses], env);
+      }
       if (astNode.type === "BindGroup") {
         const out = [];
         let cur = env;
@@ -1131,7 +1212,7 @@ function expandExprInner(form, env, use = "Legacy") {
         : FUNCTION_FAMILY.has(surfaceHead)
         ? (astNode.type === "Func" && funcBodyProtectsStatementExit(astNode)
           ? "Protected"
-          : "Statement")
+          : astNode.type === "Func" ? "DirectStatement" : "Statement")
         : "Legacy";
       if (Array.isArray(kernel)) {
         return kernel.map(k => expandAt(markKernel(k), childEnv, kernelUse));
