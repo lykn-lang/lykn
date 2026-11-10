@@ -26,10 +26,26 @@ const CASES = [
 ];
 
 const RESERVED_MATCH_CASES = [
-  ["(match 0 (if 1) (_ 0))", "pattern binding"],
-  ["(match 0 (_ :when (do (bind if 0) true) 1))", "binding name"],
-  ["(match 0 (_ (bind if 0) 1))", "binding name"],
-  ["(match (do (bind for 0) 0) (if 1) (_ 0))", "pattern binding"],
+  {
+    name: "pattern binder",
+    source: "(match 0 (if 1) (_ 0))",
+    kind: "pattern binding",
+  },
+  {
+    name: "guard declaration",
+    source: "(match 0 (_ :when (do (bind if 0) true) 1))",
+    kind: "binding name",
+  },
+  {
+    name: "body declaration",
+    source: "(match 0 (_ (bind if 0) 1))",
+    kind: "binding name",
+  },
+  {
+    name: "subject order",
+    source: "(match (do (bind for 0) 0) (if 1) (_ 0))",
+    kind: "pattern binding",
+  },
 ];
 
 Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", async (t) => {
@@ -113,15 +129,15 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
   }
 });
 
-Deno.test("public D2 sees match binders and executable regions in source order", () => {
-  for (const [source, kind] of RESERVED_MATCH_CASES) {
-    const error = assertThrows(() => lykn(source));
+for (const testCase of RESERVED_MATCH_CASES) {
+  Deno.test(`public D2 rejects reserved match ${testCase.name}`, () => {
+    const error = assertThrows(() => lykn(testCase.source));
     assertEquals(
       error.message,
-      `'if' is a JavaScript reserved word and cannot be used as a lykn ${kind}; rename it (e.g. \`if_\`)`,
+      `'if' is a JavaScript reserved word and cannot be used as a lykn ${testCase.kind}; rename it (e.g. \`if_\`)`,
     );
-  }
-});
+  });
+}
 
 Deno.test("public compiler rejects unknown nested kernel escape", () => {
   const error = assertThrows(() => lykn("(bind result (kernel:objec (key 7)))\n"));

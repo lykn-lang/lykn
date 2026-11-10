@@ -429,8 +429,17 @@ fn unknown_nested_kernel_escape_fails_compile_without_outputs() {
             .arg("-o")
             .arg(&output_path),
     );
-    let generated = fs::read(&output_path).ok();
-    let dts = fs::read(output_path.with_extension("d.ts")).ok();
+    let generated_exists = output_path
+        .try_exists()
+        .expect("check whether unknown-kernel JavaScript exists");
+    let generated = generated_exists
+        .then(|| fs::read(&output_path).expect("read erroneous unknown-kernel JavaScript"));
+    let dts_path = output_path.with_extension("d.ts");
+    let dts_exists = dts_path
+        .try_exists()
+        .expect("check whether unknown-kernel declarations exist");
+    let dts = dts_exists
+        .then(|| fs::read(&dts_path).expect("read erroneous unknown-kernel declarations"));
     record_generated(
         "native-unknown-kernel-compile",
         generated.as_deref(),
@@ -439,10 +448,17 @@ fn unknown_nested_kernel_escape_fails_compile_without_outputs() {
 
     assert_eq!(compile.status.code(), Some(1));
     let stderr = String::from_utf8_lossy(&compile.stderr);
-    assert!(stderr.contains("unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?"));
-    assert!(stderr.contains("1:14"), "missing parsed source position: {stderr}");
-    assert!(generated.is_none(), "failed compile emitted JavaScript");
-    assert!(dts.is_none(), "failed compile emitted declarations");
+    assert!(
+        stderr.contains(
+            "1:14: error: unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?\n  suggestion: kernel:object"
+        ),
+        "missing exact parsed diagnostic: {stderr}"
+    );
+    assert!(
+        !generated_exists,
+        "failed compile emitted JavaScript: {generated:?}"
+    );
+    assert!(!dts_exists, "failed compile emitted declarations: {dts:?}");
 }
 
 #[test]

@@ -3469,10 +3469,14 @@ mod tests {
             raw: forms[0].clone(),
             span,
         };
-        let emitted = emit_form(&form, &mut ctx(), &reg()).expect("tagged call should emit");
+        let mut context = ctx_value();
+        context.in_class_body = true;
+        let emitted = emit_form(&form, &mut context, &reg()).expect("tagged call should emit");
         let values = emitted[0].as_list().expect("ordinary call list");
         assert_eq!(values[0].as_atom(), Some("kernel:objec"));
         assert_eq!(values[0].name_res(), NameRes::BindingRef);
+        assert_eq!(context.expr_context, ExprContext::Value);
+        assert!(context.in_class_body);
     }
 
     #[test]
