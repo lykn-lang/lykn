@@ -23,6 +23,10 @@ const CASES = [
   { name: "original-match-kernel-object", expected: "[7]\n" },
   { name: "bound-match-conditional-operand", expected: "[7,8]\n" },
   { name: "nested-kernel-object-roles", expected: "[11,11,7,9,6]\n" },
+  { name: "return-consumed-match", expected: '["inside","normal",["subject","guard","subject","guard"]]\n' },
+  { name: "return-consumed-loop", expected: '["done",[1,"skip"]]\n' },
+  { name: "return-consumed-guard-exhaustion", expected: '["guard","match: no matching pattern"]\n' },
+  { name: "return-consumed-macro-boundaries", expected: '["inside",["nested"]]\n' },
 ];
 
 const RESERVED_MATCH_CASES = [

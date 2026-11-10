@@ -91,6 +91,22 @@ const FIXTURES: &[Case] = &[
         name: "nested-kernel-object-roles",
         expected: b"[11,11,7,9,6]\n",
     },
+    Case {
+        name: "return-consumed-match",
+        expected: b"[\"inside\",\"normal\",[\"subject\",\"guard\",\"subject\",\"guard\"]]\n",
+    },
+    Case {
+        name: "return-consumed-loop",
+        expected: b"[\"done\",[1,\"skip\"]]\n",
+    },
+    Case {
+        name: "return-consumed-guard-exhaustion",
+        expected: b"[\"guard\",\"match: no matching pattern\"]\n",
+    },
+    Case {
+        name: "return-consumed-macro-boundaries",
+        expected: b"[\"inside\",[\"nested\"]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -406,6 +422,26 @@ fn bound_match_conditional_operand_is_a_value() {
 #[test]
 fn nested_kernel_object_retains_structural_and_executable_roles() {
     run_positive(&FIXTURES[19]);
+}
+
+#[test]
+fn direct_return_consumes_match_in_the_named_function_region() {
+    run_positive(&FIXTURES[20]);
+}
+
+#[test]
+fn direct_return_consumes_do_without_retargeting_loop_transfers() {
+    run_positive(&FIXTURES[21]);
+}
+
+#[test]
+fn direct_return_match_preserves_guarded_exhaustion() {
+    run_positive(&FIXTURES[22]);
+}
+
+#[test]
+fn direct_return_macro_keeps_nested_function_boundaries() {
+    run_positive(&FIXTURES[23]);
 }
 
 #[test]
