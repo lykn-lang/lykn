@@ -1,0 +1,8 @@
+(bind trace (array))
+(for (let i 0) (< i 4) (++ i)
+  (match i
+    (1 (continue))
+    (3 (break))
+    (_ (trace:push i)))
+  (trace:push (+ i 10)))
+(console:log (JSON:stringify trace))

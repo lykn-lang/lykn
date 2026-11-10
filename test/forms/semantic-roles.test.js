@@ -10,6 +10,12 @@ const CASES = [
   { name: "if-declaration", expected: "" },
   { name: "if-direct-transfers-literal", expected: "[7,9,[0,2],4]\n" },
   { name: "if-direct-transfers", expected: "[7,9,[0,2],4]\n" },
+  { name: "statement-match-guards", expected: '["subject","literal-false",2,"chosen","body"]\n' },
+  { name: "statement-match-return", expected: "inside\n" },
+  { name: "statement-match-loop", expected: "[0,10,2,12]\n" },
+  { name: "statement-match-exhaustion", expected: '["guard","match: no matching pattern"]\n' },
+  { name: "statement-match-preservation", expected: "[[101,201,202,203,7,8],41,42]\n" },
+  { name: "statement-match-protected-preservation", expected: "[7,[7]]\n" },
 ];
 
 Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", async (t) => {

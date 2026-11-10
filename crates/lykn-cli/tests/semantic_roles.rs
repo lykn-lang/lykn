@@ -43,6 +43,30 @@ const FIXTURES: &[Case] = &[
         name: "if-direct-transfers",
         expected: b"[7,9,[0,2],4]\n",
     },
+    Case {
+        name: "statement-match-guards",
+        expected: b"[\"subject\",\"literal-false\",2,\"chosen\",\"body\"]\n",
+    },
+    Case {
+        name: "statement-match-return",
+        expected: b"inside\n",
+    },
+    Case {
+        name: "statement-match-loop",
+        expected: b"[0,10,2,12]\n",
+    },
+    Case {
+        name: "statement-match-exhaustion",
+        expected: b"[\"guard\",\"match: no matching pattern\"]\n",
+    },
+    Case {
+        name: "statement-match-preservation",
+        expected: b"[[101,201,202,203,7,8],41,42]\n",
+    },
+    Case {
+        name: "statement-match-protected-preservation",
+        expected: b"[7,[7]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -298,6 +322,36 @@ fn if_direct_transfers_keep_source_targets() {
 #[test]
 fn if_direct_transfers_keep_macro_introduced_function_targets() {
     run_positive(&FIXTURES[7]);
+}
+
+#[test]
+fn statement_match_guards_progress_in_source_order() {
+    run_positive(&FIXTURES[8]);
+}
+
+#[test]
+fn statement_match_return_keeps_the_enclosing_function_target() {
+    run_positive(&FIXTURES[9]);
+}
+
+#[test]
+fn statement_match_loop_transfers_keep_their_source_targets() {
+    run_positive(&FIXTURES[10]);
+}
+
+#[test]
+fn statement_match_guarded_exhaustion_throws_into_the_enclosing_try() {
+    run_positive(&FIXTURES[11]);
+}
+
+#[test]
+fn statement_match_preserves_macro_hygiene_and_consumed_controls() {
+    run_positive(&FIXTURES[12]);
+}
+
+#[test]
+fn statement_match_preserves_protected_function_exit_checks() {
+    run_positive(&FIXTURES[13]);
 }
 
 #[test]
