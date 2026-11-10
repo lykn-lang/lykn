@@ -1095,7 +1095,7 @@ fn lexical_call_spread_precedes_a_later_return() {
 
 #[test]
 fn malformed_actual_spread_is_checked_at_the_argument_root() {
-    let source = b"(func _malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
+    let source = b"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
     let temp = TempDir::new().expect("create malformed-spread output directory");
     let xdg_cache_home = temp.path().join("xdg-cache");
     fs::create_dir(&xdg_cache_home).expect("create isolated malformed-spread XDG cache");
@@ -1136,7 +1136,10 @@ fn malformed_actual_spread_is_checked_at_the_argument_root() {
     );
     assert_eq!(compile.status.code(), Some(1));
     assert!(compile.stdout.is_empty());
-    assert_eq!(stderr, "2:11: error: spread takes exactly one argument\n");
+    assert_eq!(
+        stderr,
+        "1:7: warning: unused binding 'malformed-spread'\n  suggestion: prefix with underscore: _malformed-spread\n2:11: error: spread takes exactly one argument\n"
+    );
     assert!(generated.is_none(), "malformed source emitted JavaScript: {generated:?}");
     assert!(dts.is_none(), "malformed source emitted DTS: {dts:?}");
 }
