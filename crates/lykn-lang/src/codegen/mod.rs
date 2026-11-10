@@ -26,7 +26,7 @@
 
 pub mod emit;
 pub mod format;
-mod host_invocation;
+pub(crate) mod host_invocation;
 pub mod icu;
 pub mod names;
 pub mod precedence;

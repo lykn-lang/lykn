@@ -280,7 +280,26 @@ pub fn emit_form(
 ) -> Result<Vec<SExpr>, LyknError> {
     let mut result = emit_form_raw_checked(form, ctx, registry)?;
     finalize_completion_value_markers(&mut result, ctx);
+    if result.iter().any(contains_host_invocation_marker) {
+        return Err(codegen_error(
+            "ordered member call requires whole-module emission; use emitter::emit",
+            form.span(),
+        ));
+    }
     Ok(result)
+}
+
+fn contains_host_invocation_marker(expr: &SExpr) -> bool {
+    if expr.is_host_invocation() {
+        return true;
+    }
+    match expr {
+        SExpr::List { values, .. } => values.iter().any(contains_host_invocation_marker),
+        SExpr::Cons { car, cdr, .. } => {
+            contains_host_invocation_marker(car) || contains_host_invocation_marker(cdr)
+        }
+        _ => false,
+    }
 }
 
 /// Emit one form through the existing checked/fatal wrapper without resolving
@@ -582,6 +601,22 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
 fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
+            if ctx.direct_return_region
+                && ctx.expr_context == ExprContext::Statement
+                && values.first().is_some_and(is_direct_member_call_head)
+            {
+                return match emit_direct_member_call(
+                    &values[0],
+                    &values[1..],
+                    *span,
+                    None,
+                    ctx,
+                    registry,
+                ) {
+                    DirectTailResult::Value(value) => value,
+                    DirectTailResult::Statements(statements) => direct_statement_block(statements),
+                };
+            }
             if ctx.direct_return_region
                 && ctx.expr_context == ExprContext::Statement
                 && values.first().is_some_and(is_direct_lexical_call_head)
@@ -1087,10 +1122,86 @@ fn is_direct_lexical_call_head(head: &SExpr) -> bool {
     !matches!(emitted_name.as_str(), "eval" | "super" | "new")
 }
 
+fn direct_member_call_parts(head: &SExpr) -> Option<(&str, &str)> {
+    let name = head.as_atom()?;
+    if name.starts_with("js:") || name.starts_with("kernel:") {
+        return None;
+    }
+    let (base, property) = name.split_once(':')?;
+    if base.is_empty()
+        || property.is_empty()
+        || property.contains(':')
+        || base.contains(':')
+        || matches!(to_js_identifier(base).as_str(), "this" | "super")
+        || property.starts_with('-')
+        || property.as_bytes()[0].is_ascii_digit()
+        || !is_ordinary_member_identifier(&to_js_identifier(base))
+        || !is_ordinary_member_identifier(&to_js_identifier(property))
+    {
+        return None;
+    }
+    Some((base, property))
+}
+
+fn is_ordinary_member_identifier(value: &str) -> bool {
+    let mut chars = value.chars();
+    chars
+        .next()
+        .is_some_and(|first| first.is_ascii_alphabetic() || matches!(first, '_' | '$'))
+        && chars.all(|ch| ch.is_ascii_alphanumeric() || matches!(ch, '_' | '$'))
+}
+
+fn is_direct_member_call_head(head: &SExpr) -> bool {
+    direct_member_call_parts(head).is_some()
+}
+
 fn is_normalized_spread_argument(value: &SExpr) -> bool {
     value
         .as_list()
         .is_some_and(|values| values.first().and_then(SExpr::as_form_head) == Some("spread"))
+}
+
+enum OrderedCallPlan {
+    Unlifted(Vec<SExpr>),
+    Lifted {
+        statements: Vec<SExpr>,
+        values: Vec<SExpr>,
+    },
+    Invalid,
+}
+
+fn plan_ordered_call_arguments(
+    plans: Vec<(Vec<SExpr>, SExpr)>,
+    span: Span,
+    error_message: &str,
+    ctx: &mut EmitterContext,
+) -> OrderedCallPlan {
+    let last_prefix = plans.iter().rposition(|(prefix, _)| !prefix.is_empty());
+    let Some(last_prefix) = last_prefix else {
+        return OrderedCallPlan::Unlifted(plans.into_iter().map(|(_, value)| value).collect());
+    };
+    if plans
+        .iter()
+        .any(|(_, value)| is_normalized_spread_argument(value))
+    {
+        ctx.record_fatal(codegen_error(error_message, span));
+        return OrderedCallPlan::Invalid;
+    }
+    let mut statements = Vec::new();
+    let mut values = Vec::with_capacity(plans.len());
+    for (index, (prefix, value)) in plans.into_iter().enumerate() {
+        if index > last_prefix {
+            values.push(value);
+        } else if prefix.is_empty() {
+            let saved = SExpr::completion_value_atom(ctx.next_completion_value_id(), value.span());
+            statements.push(list(vec![atom("const"), saved.clone(), value]));
+            values.push(saved);
+        } else {
+            statements.extend(prefix);
+            values.push(value);
+        }
+    }
+    OrderedCallPlan::Lifted { statements, values }
 }
 
 /// Preserve the callee and earlier arguments when a lexical call needs direct
@@ -1108,50 +1219,103 @@ fn emit_direct_lexical_call(
         .iter()
         .map(|arg| emit_direct_header_value(arg, ctx, registry))
         .collect::<Vec<_>>();
-    let last_prefix = plans.iter().rposition(|(prefix, _)| !prefix.is_empty());
-    let Some(last_prefix) = last_prefix else {
-        return DirectTailResult::Value(SExpr::List {
-            values: std::iter::once(head.clone())
-                .chain(plans.into_iter().map(|(_, value)| value))
-                .collect(),
-            span,
-        });
-    };
-
-    if plans
-        .iter()
-        .any(|(_, value)| is_normalized_spread_argument(value))
-    {
-        ctx.record_fatal(codegen_error(
-            "ordered lexical call with spread and lifted arguments is not supported",
-            span,
-        ));
-        return DirectTailResult::Value(atom("undefined"));
-    }
-
-    let callee = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
-    let mut statements = vec![list(vec![atom("const"), callee.clone(), head.clone()])];
-    let mut planned_args = Vec::with_capacity(plans.len());
-    for (index, (prefix, value)) in plans.into_iter().enumerate() {
-        if index > last_prefix {
-            planned_args.push(value);
-        } else if prefix.is_empty() {
-            let saved = SExpr::completion_value_atom(ctx.next_completion_value_id(), value.span());
-            statements.push(list(vec![atom("const"), saved.clone(), value]));
-            planned_args.push(saved);
-        } else {
-            statements.extend(prefix);
-            planned_args.push(value);
+    let (mut statements, values) = match plan_ordered_call_arguments(
+        plans,
+        span,
+        "ordered lexical call with spread and lifted arguments is not supported",
+        ctx,
+    ) {
+        OrderedCallPlan::Unlifted(values) => {
+            return DirectTailResult::Value(SExpr::List {
+                values: std::iter::once(head.clone()).chain(values).collect(),
+                span,
+            });
         }
-    }
+        OrderedCallPlan::Lifted { statements, values } => (statements, values),
+        OrderedCallPlan::Invalid => return DirectTailResult::Value(atom("undefined")),
+    };
+    let callee = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
+    statements.insert(0, list(vec![atom("const"), callee.clone(), head.clone()]));
 
     let call = SExpr::List {
-        values: std::iter::once(callee).chain(planned_args).collect(),
+        values: std::iter::once(callee).chain(values).collect(),
         span,
     };
     statements.push(match destination {
         Some(destination) => consume_direct_value(destination, call),
         None => call,
+    });
+    DirectTailResult::Statements(statements)
+}
+
+/// Lower a static colon member call only when direct argument prefixes make
+/// ordinary call syntax reorder its receiver lookup or argument evaluation.
+fn emit_direct_member_call(
+    head: &SExpr,
+    args: &[SExpr],
+    span: Span,
+    destination: Option<&DirectDestination>,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> DirectTailResult {
+    let Some((base, property)) = direct_member_call_parts(head) else {
+        return DirectTailResult::Value(SExpr::List {
+            values: std::iter::once(head.clone())
+                .chain(args.iter().cloned())
+                .collect(),
+            span,
+        });
+    };
+    let plans = args
+        .iter()
+        .map(|arg| emit_direct_header_value(arg, ctx, registry))
+        .collect::<Vec<_>>();
+    let (argument_statements, planned_args) = match plan_ordered_call_arguments(
+        plans,
+        span,
+        "ordered member call with spread and lifted arguments is not supported",
+        ctx,
+    ) {
+        OrderedCallPlan::Unlifted(values) => {
+            return DirectTailResult::Value(SExpr::List {
+                values: std::iter::once(head.clone()).chain(values).collect(),
+                span,
+            });
+        }
+        OrderedCallPlan::Lifted { statements, values } => (statements, values),
+        OrderedCallPlan::Invalid => return DirectTailResult::Value(atom("undefined")),
+    };
+
+    let receiver = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
+    let callee = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
+    let argv = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
+    let mut callee_reference = callee.clone();
+    callee_reference.mark_host_invocation();
+    let mut statements = vec![
+        list(vec![atom("const"), receiver.clone(), atom(base)]),
+        list(vec![
+            atom("const"),
+            callee.clone(),
+            list(vec![
+                atom("get"),
+                receiver.clone(),
+                str_lit(&to_js_identifier(property)),
+            ]),
+        ]),
+    ];
+    statements.extend(argument_statements);
+    statements.push(list(vec![
+        atom("const"),
+        argv.clone(),
+        list(std::iter::once(atom("array")).chain(planned_args).collect()),
+    ]));
+    let invocation = SExpr::List {
+        values: vec![callee_reference, receiver, argv],
+        span,
+    };
+    statements.push(match destination {
+        Some(destination) => consume_direct_value(destination, invocation),
+        None => invocation,
     });
     DirectTailResult::Statements(statements)
 }
@@ -1382,6 +1546,19 @@ fn emit_direct_tail(
     let Some(values) = expr.as_list() else {
         return emit_direct_value_tail(expr, destination, ctx, registry);
     };
+    if let Some(head) = values
+        .first()
+        .filter(|head| is_direct_member_call_head(head))
+    {
+        return emit_direct_member_call(
+            head,
+            &values[1..],
+            expr.span(),
+            Some(destination),
+            ctx,
+            registry,
+        );
+    }
     if let Some(head) = values
         .first()
         .filter(|head| is_direct_lexical_call_head(head))

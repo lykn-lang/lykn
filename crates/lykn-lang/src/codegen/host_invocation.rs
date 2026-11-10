@@ -93,7 +93,7 @@ pub(crate) fn prepare(
     })
 }
 
-fn validate_anchor(anchor: &SExpr) -> Result<(), LyknError> {
+pub(crate) fn validate_anchor(anchor: &SExpr) -> Result<(), LyknError> {
     let Some(values) = anchor.as_list() else {
         return Err(invalid_request("invocation anchor is not a call"));
     };

@@ -229,6 +229,14 @@ left-to-right. In an argument lowered as a statement sequence, a direct
 and skips later arguments and the call. A lexical call with a spread argument
 and an argument whose evaluation needs a statement sequence is rejected.
 
+On the same paths, a single ordinary static colon member call such as
+`(receiver:read-entry arg)` also preserves JavaScript evaluation order when an
+argument needs a statement sequence: the receiver is evaluated first, its
+property is read once before the arguments, and the saved method is invoked
+with the original receiver. A direct transfer in an argument skips the later
+arguments and invocation. A lifted member call with a spread argument is
+rejected; a member call without lifted arguments keeps its ordinary form.
+
 Multi-expression body:
 
 ```lykn

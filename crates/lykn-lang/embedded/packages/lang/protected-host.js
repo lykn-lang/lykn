@@ -207,6 +207,12 @@ function kernelModuleNames(forms, toJsIdentifier, formHead) {
   return names;
 }
 
+// Shared with the expander's private invocation materializer so it makes the
+// same whole-module Reflect decision as protected-host validation.
+export function moduleBindsReflect(forms, { toJsIdentifier, formHead }) {
+  return kernelModuleNames(forms, toJsIdentifier, formHead).has('Reflect');
+}
+
 function functionScope(body, params, inherited, toJsIdentifier, formHead) {
   const names = directScopeNames(body, toJsIdentifier, formHead);
   for (const name of params) names.add(name);

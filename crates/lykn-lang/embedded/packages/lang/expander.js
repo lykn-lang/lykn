@@ -12,6 +12,8 @@ import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm, emitMatchStatementMacro, funcBodyProtectsStatementExit, parseKeywordClauses } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
+import { markExpandedHostCall, materializeExpandedHostCalls } from './host-invocation.js';
+import { moduleBindsReflect, validateProtectedHost } from './protected-host.js';
 import { isStatementOnlyForm } from './surface-helpers.js';
 import {
   bindingScopePlan,
@@ -1211,39 +1213,91 @@ function isNormalizedSpreadArgument(value) {
     formHead(value.values[0]) === "spread";
 }
 
-function expandDirectLexicalCall(form, env, use) {
-  const [head, ...args] = form.values;
-  const plans = args.map((argument) => expandDirectValuePlan(argument, env));
+function planDirectCallArguments(plans, errorMessage) {
   let lastPrefix = -1;
   for (let index = 0; index < plans.length; index++) {
     if (plans[index].prefix.length > 0) lastPrefix = index;
   }
-  if (lastPrefix < 0) {
-    return { type: "list", values: [head, ...plans.map((plan) => plan.value)] };
+  if (lastPrefix < 0) return { kind: "unlifted", values: plans.map(plan => plan.value) };
+  if (plans.some(plan => isNormalizedSpreadArgument(plan.value))) {
+    throw new Error(errorMessage);
+  }
+  const prefix = [];
+  const values = [];
+  for (let index = 0; index < plans.length; index++) {
+    const { prefix: argumentPrefix, value } = plans[index];
+    if (index > lastPrefix) {
+      values.push(value);
+    } else if (argumentPrefix.length === 0) {
+      const saved = completionValueAtom({});
+      prefix.push(array(sym("const"), saved, value));
+      values.push(saved);
+    } else {
+      prefix.push(...argumentPrefix);
+      values.push(value);
+    }
+  }
+  return { kind: "lifted", prefix, values };
+}
+
+function directMemberCallParts(head) {
+  if (head?.type !== "atom" || head.value.startsWith("js:") || head.value.startsWith("kernel:")) {
+    return null;
+  }
+  const separator = head.value.indexOf(":");
+  if (separator <= 0 || separator !== head.value.lastIndexOf(":")) return null;
+  const base = head.value.slice(0, separator);
+  const property = head.value.slice(separator + 1);
+  const normalizedBase = toJsIdentifier(base);
+  const isOrdinaryIdentifier = value => /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(value);
+  if (!property || ["js", "kernel"].includes(base) || normalizedBase === "this" ||
+      normalizedBase === "super" || property.startsWith("-") || /^\d/.test(property) ||
+      !isOrdinaryIdentifier(normalizedBase) || !isOrdinaryIdentifier(toJsIdentifier(property))) {
+    return null;
+  }
+  return { base, property };
+}
+
+function expandDirectMemberCall(form, env, use) {
+  const { base, property } = directMemberCallParts(form.values[0]);
+  const plans = form.values.slice(1).map(argument => expandDirectValuePlan(argument, env));
+  const argumentPlan = planDirectCallArguments(
+    plans,
+    "ordered member call with spread and lifted arguments is not supported",
+  );
+  if (argumentPlan.kind === "unlifted") {
+    return { type: "list", values: [form.values[0], ...argumentPlan.values] };
   }
 
-  if (plans.some((plan) => isNormalizedSpreadArgument(plan.value))) {
-    throw new Error("ordered lexical call with spread and lifted arguments is not supported");
+  const receiver = completionValueAtom({});
+  const callee = completionValueAtom({});
+  const argv = completionValueAtom({});
+  const statements = [
+    array(sym("const"), receiver, sym(base)),
+    array(sym("const"), callee, array(sym("get"), receiver, { type: "string", value: toJsIdentifier(property) })),
+    ...argumentPlan.prefix,
+  ];
+  statements.push(array(sym("const"), argv, array(sym("array"), ...argumentPlan.values)));
+  const invocation = markExpandedHostCall(array(callee, receiver, argv));
+  statements.push(use === "DirectStatement" ? invocation : resultValueStatement(use, invocation));
+  return directBlock(statements);
+}
+
+function expandDirectLexicalCall(form, env, use) {
+  const [head, ...args] = form.values;
+  const plans = args.map((argument) => expandDirectValuePlan(argument, env));
+  const argumentPlan = planDirectCallArguments(
+    plans,
+    "ordered lexical call with spread and lifted arguments is not supported",
+  );
+  if (argumentPlan.kind === "unlifted") {
+    return { type: "list", values: [head, ...argumentPlan.values] };
   }
 
   const callee = completionValueAtom({});
-  const statements = [array(sym("const"), callee, head)];
-  const callArgs = [];
-  for (let index = 0; index < plans.length; index++) {
-    const { prefix, value } = plans[index];
-    if (index > lastPrefix) {
-      callArgs.push(value);
-    } else if (prefix.length === 0) {
-      const saved = completionValueAtom({});
-      statements.push(array(sym("const"), saved, value));
-      callArgs.push(saved);
-    } else {
-      statements.push(...prefix);
-      callArgs.push(value);
-    }
-  }
+  const statements = [array(sym("const"), callee, head), ...argumentPlan.prefix];
 
-  const call = array(callee, ...callArgs);
+  const call = array(callee, ...argumentPlan.values);
   statements.push(use === "DirectStatement" ? call : resultValueStatement(use, call));
   return directBlock(statements);
 }
@@ -2452,6 +2506,12 @@ export function expand(forms, context = {}) {
   const afterPass0 = pass0ImportMacros(forms, filePath, compilationStack);
   const afterPass1 = pass1RegisterMacros(afterPass0);
   const expanded = pass2ExpandAll(afterPass1);
+  materializeExpandedHostCalls(expanded, {
+    toJsIdentifier,
+    formHead,
+    moduleBindsReflect,
+    validateProtectedHost,
+  });
   // DD-58 strict (default-on): reject unsanctioned top-level kernel-only decls
   // in the fully-expanded output — covers user-written bare decls and
   // user-macro-emitted ones (A-6). Explicit `{ strict: false }` opt-out for

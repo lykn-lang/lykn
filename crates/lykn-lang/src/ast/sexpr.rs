@@ -42,6 +42,9 @@ pub struct AtomData {
     /// Private compiler-owned result destination identity. Clones retain it;
     /// ordinary reader/source constructors always leave it absent.
     completion_value: Option<CompletionValueId>,
+    /// Private marker for a saved callee occurrence awaiting whole-unit host
+    /// invocation materialization.
+    host_invocation: bool,
 }
 
 /// Identity for one private direct-bind result destination.
@@ -179,6 +182,7 @@ impl SExpr {
             span,
             binding: NameRes::Unresolved,
             completion_value: None,
+            host_invocation: false,
         })
     }
 
@@ -189,6 +193,7 @@ impl SExpr {
             span,
             binding: NameRes::Unresolved,
             completion_value: Some(id),
+            host_invocation: false,
         })
     }
 
@@ -197,6 +202,22 @@ impl SExpr {
         match self {
             SExpr::Atom(atom) => atom.completion_value,
             _ => None,
+        }
+    }
+
+    pub(crate) fn mark_host_invocation(&mut self) {
+        if let SExpr::Atom(atom) = self {
+            atom.host_invocation = true;
+        }
+    }
+
+    pub(crate) fn is_host_invocation(&self) -> bool {
+        matches!(self, SExpr::Atom(atom) if atom.host_invocation)
+    }
+
+    pub(crate) fn clear_host_invocation(&mut self) {
+        if let SExpr::Atom(atom) = self {
+            atom.host_invocation = false;
         }
     }
 
