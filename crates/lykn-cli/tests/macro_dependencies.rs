@@ -114,7 +114,7 @@ fn write_xdg(root: &Path) -> PathBuf {
 fn owned_embedded_root(xdg: &Path) -> PathBuf {
     xdg.join("lykn")
         .join("embedded")
-        .join(format!("{}-expander-split", env!("CARGO_PKG_VERSION")))
+        .join(format!("{}-compiler-split", env!("CARGO_PKG_VERSION")))
 }
 
 fn compile_recorded(
