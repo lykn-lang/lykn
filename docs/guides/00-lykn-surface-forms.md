@@ -124,6 +124,15 @@ compile errors. Typed pairs are supported inside the group:
 
 The binding position may still use destructuring patterns for untyped pairs.
 
+In an eligible ordinary named function, a simple-name `bind` initializer can
+consume a result-producing `do`, `if`, or `match` without moving source
+`return`, `break`, or `continue` into an extra function. A transfer keeps its
+original function or loop target and skips the original `const` and following
+statements; a normally completed path initializes that `const` in its original
+scope. The public JavaScript direct-bind path currently covers untyped and
+`:any` simple names. Other typed public binds and destructuring keep their
+existing paths.
+
 ### cell / express / swap! / reset! (surface)
 
 Controlled mutation via cell containers. A cell wraps a value in an

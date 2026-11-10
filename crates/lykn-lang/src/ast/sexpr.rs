@@ -39,6 +39,19 @@ pub struct AtomData {
     span: Span,
     /// Resolution tag (DD-61 §A1). Reader → [`NameRes::Unresolved`].
     binding: NameRes,
+    /// Private compiler-owned result destination identity. Clones retain it;
+    /// ordinary reader/source constructors always leave it absent.
+    completion_value: Option<CompletionValueId>,
+}
+
+/// Identity for one private direct-bind result destination.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub(crate) struct CompletionValueId(u64);
+
+impl CompletionValueId {
+    pub(crate) fn new(value: u64) -> Self {
+        Self(value)
+    }
 }
 
 /// `SExpr` derives no `PartialEq` — the `binding` tag is dispatch metadata, not
@@ -84,12 +97,12 @@ pub enum SExpr {
 /// Tag-insensitive structural equality (tension #2, decided at scoping). The
 /// `binding` tag is dispatch metadata, not identity — ignoring it keeps every
 /// existing `SExpr` comparison (tests, cache keys, macro fixed-point checks)
-/// stable whether or not the resolver has run. Every other field compares
-/// exactly as the former `#[derive(PartialEq)]` did (`span` included).
+/// stable whether or not the resolver has run. The private completion-value
+/// identity is also metadata; source name and span remain structural identity.
 impl PartialEq for SExpr {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            // Tag-insensitive: compare value + span, skip `binding`.
+            // Metadata-insensitive: compare value + span, skip both private tags.
             (SExpr::Atom(a), SExpr::Atom(b)) => a.value == b.value && a.span == b.span,
             (SExpr::Keyword { value: a, span: sa }, SExpr::Keyword { value: b, span: sb }) => {
                 a == b && sa == sb
@@ -156,16 +169,48 @@ impl std::fmt::Display for SExpr {
 }
 
 impl SExpr {
-    /// Construct an unresolved atom — the single §A4 invariant point: an atom
-    /// enters the tree [`NameRes::Unresolved`] and is tagged only by the
-    /// resolver pass. This is the **only** construction door for an atom now
-    /// that [`AtomData`]'s fields are private (arc13/slice09).
+    /// Construct an ordinary unresolved source atom — the §A4 invariant point:
+    /// reader-created atoms enter as [`NameRes::Unresolved`] and unmarked. The
+    /// resolver pass may tag them; only private compiler constructors can add
+    /// metadata now that [`AtomData`]'s fields are private (arc13/slice09).
     pub fn atom(value: impl Into<String>, span: Span) -> Self {
         SExpr::Atom(AtomData {
             value: value.into(),
             span,
             binding: NameRes::Unresolved,
+            completion_value: None,
         })
+    }
+
+    /// Construct a private compiler-owned result destination atom.
+    pub(crate) fn completion_value_atom(id: CompletionValueId, span: Span) -> Self {
+        SExpr::Atom(AtomData {
+            value: String::new(),
+            span,
+            binding: NameRes::Unresolved,
+            completion_value: Some(id),
+        })
+    }
+
+    /// Return the private identity carried by a generated destination atom.
+    pub(crate) fn completion_value_id(&self) -> Option<CompletionValueId> {
+        match self {
+            SExpr::Atom(atom) => atom.completion_value,
+            _ => None,
+        }
+    }
+
+    /// Replace a private generated destination with its finalized emitted name.
+    pub(crate) fn finalize_completion_value(&mut self, value: String) -> bool {
+        if let SExpr::Atom(atom) = self
+            && atom.completion_value.is_some()
+        {
+            atom.completion_value = None;
+            atom.value = value;
+            true
+        } else {
+            false
+        }
     }
 
     /// The resolution tag on this node ([`NameRes::Unresolved`] for non-atoms).

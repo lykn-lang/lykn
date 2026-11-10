@@ -1,4 +1,5 @@
 use super::gensym::EmitterGensym;
+use crate::ast::sexpr::CompletionValueId;
 use crate::error::LyknError;
 
 /// Describes how the result of an emitted expression will be used.
@@ -30,6 +31,8 @@ pub struct EmitterContext {
     /// single-clause function body.
     pub(super) direct_return_region: bool,
     pub(super) first_fatal: Option<LyknError>,
+    pub(super) completion_value_counter: u64,
+    pub(super) completion_value_name_counter: u64,
 }
 
 impl EmitterContext {
@@ -42,7 +45,18 @@ impl EmitterContext {
             legacy_statement_match: false,
             direct_return_region: false,
             first_fatal: None,
+            completion_value_counter: 0,
+            completion_value_name_counter: 0,
         }
+    }
+
+    pub(super) fn next_completion_value_id(&mut self) -> CompletionValueId {
+        let id = CompletionValueId::new(self.completion_value_counter);
+        self.completion_value_counter = self
+            .completion_value_counter
+            .checked_add(1)
+            .expect("completion value identity space exhausted");
+        id
     }
 
     pub(super) fn record_fatal(&mut self, error: LyknError) {

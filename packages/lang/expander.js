@@ -753,6 +753,33 @@ const dispatchTable = Object.assign(Object.create(null), {
 const EMPTY_ENV = new Set();
 const directResultBlocks = new WeakSet();
 const returnOperandValues = new WeakSet();
+const completionValueAtoms = new WeakMap();
+let completionValueAtomCount = 0;
+
+function completionValueAtom(identity) {
+  const atom = sym('completionValue__private');
+  completionValueAtoms.set(atom, identity);
+  completionValueAtomCount++;
+  return atom;
+}
+
+function isAssignResultUse(use) {
+  return use !== null && typeof use === 'object' && use.kind === 'Assign';
+}
+
+function isResultOperandUse(use) {
+  return use === 'ReturnOperand' || isAssignResultUse(use);
+}
+
+function resultValueStatement(use, value) {
+  if (use === 'ReturnOperand') return array(sym('return'), value);
+  return array(sym('='), completionValueAtom(use.identity), value);
+}
+
+function resultNoValueStatement(use) {
+  if (use === 'ReturnOperand') return array(sym('return'));
+  return array(sym('='), completionValueAtom(use.identity), array(sym('void'), { type: 'number', value: 0 }));
+}
 
 function isDirectReturnFunc(node) {
   if (!node || node.type !== "Func") return false;
@@ -868,7 +895,7 @@ function expandChildrenPlan(form, env, use = "Legacy") {
   if (plan.kind === "conditional") {
     const out = [children[0]];
     if (children.length > 1) {
-      const conditionUse = use === "Statement" || use === "DirectStatement" || use === "ReturnOperand"
+      const conditionUse = use === "Statement" || use === "DirectStatement" || isResultOperandUse(use)
         ? "Value"
         : use;
       out.push(expandConditionalChild(children[1], env, true, conditionUse));
@@ -969,16 +996,16 @@ function childRoles(form, use) {
   const roles = Array(form.values.length).fill("Legacy");
   if (form.values.length === 0) return roles;
   const h = formHead(form.values[0]);
-  if ((use === "DirectStatement" || use === "ReturnOperand") && h === "return" && form.values.length === 2) {
+  if ((use === "DirectStatement" || isResultOperandUse(use)) && h === "return" && form.values.length === 2) {
     roles[1] = "ReturnOperand";
     return roles;
   }
-  if (use === "DirectStatement" || use === "ReturnOperand") {
+  if (use === "DirectStatement" || isResultOperandUse(use)) {
     if (h === "block" || h === "do") {
       for (let i = 1; i < roles.length; i++) {
         roles[i] = use === "DirectStatement"
           ? "DirectStatement"
-          : i === roles.length - 1 ? "ReturnOperand" : "Statement";
+          : i === roles.length - 1 ? use : "Statement";
       }
       return roles;
     }
@@ -1038,6 +1065,9 @@ function emittedNames(nodes, reserved = new Set()) {
   const walk = (node) => {
     if (!node || typeof node !== "object") return;
     if (node.type === "atom") {
+      if (completionValueAtoms.has(node)) {
+        return;
+      }
       reserved.add(toJsIdentifier(node.value));
       for (const part of node.value.split(":").filter(Boolean)) reserved.add(toJsIdentifier(part));
     } else if (node.type === "list") node.values.forEach(walk);
@@ -1045,6 +1075,32 @@ function emittedNames(nodes, reserved = new Set()) {
   };
   for (const node of nodes) walk(node);
   return reserved;
+}
+
+function finalizeCompletionValueMarkers(forms) {
+  const reserved = emittedNames(forms);
+  const names = new Map();
+  let next = 0;
+  const rename = (node) => {
+    if (!node || typeof node !== 'object') return;
+    if (node.type === 'atom') {
+      const identity = completionValueAtoms.get(node);
+      if (identity === undefined) return;
+      let name = names.get(identity);
+      if (name === undefined) {
+        do { name = `completionValue__gensym${next++}`; }
+        while (reserved.has(toJsIdentifier(name)));
+        reserved.add(toJsIdentifier(name));
+        names.set(identity, name);
+      }
+      node.value = name;
+      completionValueAtoms.delete(node);
+      return;
+    }
+    if (node.type === 'list') node.values.forEach(rename);
+    else if (node.type === 'cons') { rename(node.car); rename(node.cdr); }
+  };
+  forms.forEach(rename);
 }
 
 function emitSurfaceMatchStatement(args, env) {
@@ -1084,11 +1140,11 @@ function isExpandedStatement(node) {
   return isStatementOnlyForm(node);
 }
 
-function directResultStatements(result) {
+function directResultStatements(result, use = 'ReturnOperand') {
   if (Array.isArray(result)) {
     const statements = [...result];
     if (statements.length === 0 || !isDirectTransfer(statements[statements.length - 1])) {
-      statements.push(array(sym("return")));
+      statements.push(resultNoValueStatement(use));
     }
     return statements;
   }
@@ -1096,31 +1152,31 @@ function directResultStatements(result) {
     return [result];
   }
   if (result && typeof result === "object" && returnOperandValues.has(result)) {
-    return [array(sym("return"), result)];
+    return [resultValueStatement(use, result)];
   }
   if (isDirectTransfer(result)) return [result];
-  if (isExpandedStatement(result)) return [result, array(sym("return"))];
-  return [array(sym("return"), result)];
+  if (isExpandedStatement(result)) return [result, resultNoValueStatement(use)];
+  return [resultValueStatement(use, result)];
 }
 
-function expandReturnClause(forms, env) {
-  if (forms.length === 0) return [array(sym("return"))];
-  const { prefix, tail } = expandChildrenTail(forms, env, "DirectStatement", "ReturnOperand");
-  return [...prefix, ...directResultStatements(tail)];
+function expandResultClause(forms, env, use) {
+  if (forms.length === 0) return [resultNoValueStatement(use)];
+  const { prefix, tail } = expandChildrenTail(forms, env, "DirectStatement", use);
+  return [...prefix, ...directResultStatements(tail, use)];
 }
 
-function emitSurfaceMatchReturn(args, env) {
+function emitSurfaceMatchResult(args, env, use) {
   const result = emitMatchStatementMacro(args, {
     env,
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
-    expandBody: expandReturnClause,
+    expandBody: (forms, scope) => expandResultClause(forms, scope, use),
     reserveNames: emittedNames,
   });
   directResultBlocks.add(result);
   return result;
 }
 
-function expandReturnOperand(form, env) {
+function expandResultOperand(form, env, use) {
   const h = formHead(form.values[0]);
   if (h === "if") {
     if (form.values.length < 4) {
@@ -1129,8 +1185,8 @@ function expandReturnOperand(form, env) {
       return value;
     }
     const condition = expandSingle(form.values[1], env, "Value", "if condition");
-    const consequent = expandAt(form.values[2], env, "ReturnOperand");
-    const alternate = expandAt(form.values[3], env, "ReturnOperand");
+    const consequent = expandAt(form.values[2], env, use);
+    const alternate = expandAt(form.values[3], env, use);
     const isValue = (result) => !Array.isArray(result) &&
       !directResultBlocks.has(result) && !isDirectTransfer(result) &&
       !isExpandedStatement(result);
@@ -1139,18 +1195,48 @@ function expandReturnOperand(form, env) {
       returnOperandValues.add(value);
       return value;
     }
-    const branch = (result) => array(sym("block"), ...directResultStatements(result));
+    const branch = (result) => array(sym("block"), ...directResultStatements(result, use));
     return directBlock([array(sym("if"), condition, branch(consequent), branch(alternate))]);
   }
   if (h === "do") {
-    const { prefix, tail } = expandChildrenTail(form.values.slice(1), env, "DirectStatement", "ReturnOperand");
-    if (tail === null) prefix.push(array(sym("return")));
-    else prefix.push(...directResultStatements(tail));
+    const { prefix, tail } = expandChildrenTail(form.values.slice(1), env, "DirectStatement", use);
+    if (tail === null) prefix.push(resultNoValueStatement(use));
+    else prefix.push(...directResultStatements(tail, use));
     return directBlock(prefix);
   }
   const value = expandAt(form, env, "Value");
-  if (isExpandedStatement(value)) return directBlock(directResultStatements(value));
+  if (isExpandedStatement(value)) return directBlock(directResultStatements(value, use));
   return value;
+}
+
+function simpleDirectBind(args) {
+  let nameNode;
+  let valueNode;
+  if (args.length === 2) [nameNode, valueNode] = args;
+  else if (args.length === 3 && args[0]?.type === 'keyword' && args[0].value === 'any') {
+    [, nameNode, valueNode] = args;
+  } else return null;
+  if (nameNode?.type !== 'atom' || nameNode.value === '_' || nameNode.value.includes(':')) return null;
+  return { nameNode, valueNode };
+}
+
+function expandDirectBind(args, env) {
+  const { nameNode, valueNode } = simpleDirectBind(args);
+  const kernel = emitSurfaceForm({ type: 'Bind', args }, { sym, array, gensym, isKeyword });
+  const identity = {};
+  const use = { kind: 'Assign', identity };
+  const value = expandAt(valueNode, env, use);
+  const isRegion = Array.isArray(value) || directResultBlocks.has(value) ||
+    isDirectTransfer(value) || isExpandedStatement(value);
+  if (!isRegion) {
+    kernel.values[2] = value;
+    return markKernel(kernel);
+  }
+  return [
+    markKernel(array(sym('let'), completionValueAtom(identity))),
+    directBlock(directResultStatements(value, use)),
+    markKernel(array(sym('const'), nameNode, completionValueAtom(identity))),
+  ];
 }
 
 // --- Expansion Walk ---
@@ -1284,7 +1370,13 @@ function expandExprInner(form, env, use = "Legacy") {
         return emitSurfaceMatchDirect([astNode.expr, ...astNode.clauses], env);
       }
       if (astNode.type === "Match" && use === "ReturnOperand") {
-        return emitSurfaceMatchReturn([astNode.expr, ...astNode.clauses], env);
+        return emitSurfaceMatchResult([astNode.expr, ...astNode.clauses], env, use);
+      }
+      if (astNode.type === "Match" && isAssignResultUse(use)) {
+        return emitSurfaceMatchResult([astNode.expr, ...astNode.clauses], env, use);
+      }
+      if (astNode.type === "Bind" && use === "DirectStatement" && simpleDirectBind(astNode.args)) {
+        return expandDirectBind(astNode.args, env);
       }
       if (astNode.type === "BindGroup") {
         const out = [];
@@ -1293,6 +1385,12 @@ function expandExprInner(form, env, use = "Legacy") {
           const args = binding.typeKw
             ? [binding.typeKw, binding.nameNode, binding.valueNode]
             : [binding.nameNode, binding.valueNode];
+          if (use === "DirectStatement" && simpleDirectBind(args)) {
+            pushExpanded(out, expandDirectBind(args, cur));
+            const names = bindingNamesInPattern(binding.nameNode).map((site) => site.name);
+            if (names.length) cur = extendEnv(cur, names);
+            continue;
+          }
           const kernel = emitSurfaceForm(
             { type: "Bind", args },
             { sym, array, gensym, isKeyword },
@@ -1350,17 +1448,17 @@ function expandExprInner(form, env, use = "Legacy") {
   // Private direct return materialization runs after resolution and user macro
   // fixed point, so its operand is expanded once under the source function's
   // return destination.
-  if ((use === "DirectStatement" || use === "ReturnOperand") &&
+  if ((use === "DirectStatement" || isResultOperandUse(use)) &&
       formHead(head) === "return" && form.values.length === 2) {
     const value = expandAt(form.values[1], env, "ReturnOperand");
     if (directResultBlocks.has(value)) return value;
     if (Array.isArray(value) || isDirectTransfer(value) || isExpandedStatement(value)) {
-      return directBlock(directResultStatements(value));
+      return directBlock(directResultStatements(value, "ReturnOperand"));
     }
     return { ...form, values: [head, value] };
   }
-  if (use === "ReturnOperand" && (formHead(head) === "if" || formHead(head) === "do")) {
-    return expandReturnOperand(form, env);
+  if (isResultOperandUse(use) && (formHead(head) === "if" || formHead(head) === "do")) {
+    return expandResultOperand(form, env, use);
   }
 
   // Dispatch table
@@ -1551,6 +1649,7 @@ function findSymbolRefs(forms, names) {
  */
 function pass2ExpandAll(forms) {
   const result = [];
+  const completionValueAtomsAtStart = completionValueAtomCount;
   // Top-level forms are a sibling SEQUENCE: a `bind`/`import` at top level is in
   // scope for the following top-level forms (mirror of Rust's outermost
   // `resolve_seq`), so a later `(array 987)` after `(bind array 0)` resolves to
@@ -1567,6 +1666,9 @@ function pass2ExpandAll(forms) {
     }
     const hoist = form?.type === "list" ? hoistedNames(form) : [];
     if (hoist.length) env = extendEnv(env, hoist);
+  }
+  if (completionValueAtomCount !== completionValueAtomsAtStart) {
+    finalizeCompletionValueMarkers(result);
   }
   return result;
 }

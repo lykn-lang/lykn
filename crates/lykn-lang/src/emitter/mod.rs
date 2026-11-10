@@ -17,7 +17,7 @@ use crate::ast::sexpr::SExpr;
 use crate::ast::surface::SurfaceForm;
 
 use context::EmitterContext;
-use forms::emit_form;
+use forms::{emit_form_raw_checked, finalize_completion_value_markers};
 use json::emit_module_json;
 
 /// Emit a slice of surface forms to kernel `SExpr` nodes.
@@ -33,8 +33,9 @@ pub fn emit(
     let mut ctx = EmitterContext::new(strip_assertions);
     let mut result = Vec::new();
     for form in forms {
-        result.extend(emit_form(form, &mut ctx, registry)?);
+        result.extend(emit_form_raw_checked(form, &mut ctx, registry)?);
     }
+    finalize_completion_value_markers(&mut result, &mut ctx);
     if let Some(diagnostic) = crate::protected_host::validate_program(
         &result,
         crate::protected_host::InputDialect::Kernel,
