@@ -154,11 +154,8 @@ const FIXTURES: &[Case] = &[
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
-    match name {
-        "ordered-member-pure-colon-call" => {
-            return ordered_member_fixture_path("pure-colon-call");
-        }
-        _ => {}
+    if name == "ordered-member-pure-colon-call" {
+        return ordered_member_fixture_path("pure-colon-call");
     }
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../test/fixtures/semantic-roles")
