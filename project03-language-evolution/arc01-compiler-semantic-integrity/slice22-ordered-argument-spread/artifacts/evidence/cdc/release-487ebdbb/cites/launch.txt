@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-release-487ebdbb-cdc.MegLDjB2/cites/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-release-487ebdbb-cdc.MegLDjB2/cites/xdg' 'npm_config_cache=/private/tmp/lykn-release-487ebdbb-cdc.MegLDjB2/cites/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/usr/bin/make' 'check-cited-paths'
+stdout=/private/tmp/lykn-release-487ebdbb-cdc.MegLDjB2/cites/stdout.raw
+stderr=/private/tmp/lykn-release-487ebdbb-cdc.MegLDjB2/cites/stderr.raw
+exit_status=/private/tmp/lykn-release-487ebdbb-cdc.MegLDjB2/cites/exit-status.txt
