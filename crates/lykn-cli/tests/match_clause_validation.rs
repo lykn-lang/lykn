@@ -137,9 +137,9 @@ fn match_clause_validation_preserves_context_and_runtime_behavior() {
             .any(|window| window == b"statement")
     );
 
-    let deno = "/opt/homebrew/bin/deno";
+    let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
     let runtime = execute(
-        Command::new(deno)
+        Command::new(&deno)
             .args([
                 "run",
                 "--no-config",

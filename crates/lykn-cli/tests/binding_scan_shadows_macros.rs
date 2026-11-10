@@ -9,6 +9,8 @@
 use std::fs;
 use std::process::Command;
 
+use tempfile::TempDir;
+
 fn lykn_bin() -> String {
     env!("CARGO_BIN_EXE_lykn").to_string()
 }
@@ -16,14 +18,17 @@ fn lykn_bin() -> String {
 /// Compile `src` (written to a temp `.lykn`) via the freshly built binary and
 /// return stdout (the generated JS). Panics on a non-zero exit.
 fn compile(src: &str) -> String {
-    let dir = std::env::temp_dir();
-    let path = dir.join(format!("lykn_f2_{}.lykn", src.len()));
-    fs::write(&path, src).unwrap();
+    let fixture = TempDir::new().expect("create binding scan fixture directory");
+    let path = fixture.path().join("binding-scan.lykn");
+    fs::write(&path, src).expect("write binding scan fixture");
+    // Each parallel compiler process materializes its own embedded packages.
     let output = Command::new(lykn_bin())
-        .args(["compile", "--no-strict", path.to_str().unwrap()])
+        .current_dir(fixture.path())
+        .env("XDG_CACHE_HOME", fixture.path().join("cache"))
+        .args(["compile", "--no-strict"])
+        .arg(&path)
         .output()
         .expect("run lykn compile");
-    let _ = fs::remove_file(&path);
     assert!(
         output.status.success(),
         "compile failed: {}",
