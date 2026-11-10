@@ -191,3 +191,7 @@ remain separately open.
 closes private anonymous value naming at `125a1f29`. The actual invalid
 single-body lambda output remains a distinct completion/body carryover.
 Ordered assignment, iteration and special reference boundaries stay I3.
+
+2026-11-10 [S21](../slice21-ordered-assignment-references/slice-plan.md) owns
+bounded ordered simple and literal compound writes. Iteration and
+unsupported reference forms keep separate I3 dispositions.

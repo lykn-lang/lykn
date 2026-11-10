@@ -1,0 +1,15 @@
+(bind trace (array))
+(bind target (obj :x 10 :y 20))
+(bind count (cell 0))
+(bind key (obj))
+(Object:defineProperty key Symbol:toPrimitive
+  (obj :value (fn (:any hint)
+    (swap! count (fn (:any n) (+ n 1)))
+    (trace:push (array hint (express count)))
+    (if (= (express count) 1) "x" "y"))))
+(func rhs :returns :any :body
+  (trace:push "rhs")
+  5)
+(bind updated (kernel:= (get target key) (rhs)))
+(console:log (JSON:stringify
+  (array updated target:x target:y (express count) trace)))
