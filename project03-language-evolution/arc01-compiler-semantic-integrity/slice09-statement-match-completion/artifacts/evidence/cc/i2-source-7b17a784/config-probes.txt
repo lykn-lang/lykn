@@ -1,0 +1,54 @@
+
+PROBE_DIR /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+-rw-r--r--@ 1 oubiwann  staff  533 Nov  5 20:11 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/deno.jsonc
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/package.json
+
+PROBE_DIR /Users/oubiwann/lab/lykn/lang/.worktrees
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/project.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/deno.json
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/deno.jsonc
+ABSENT /Users/oubiwann/lab/lykn/lang/.worktrees/package.json
+
+PROBE_DIR /Users/oubiwann/lab/lykn/lang
+-rw-r--r--@ 1 oubiwann  staff  533 Aug  8 18:14 /Users/oubiwann/lab/lykn/lang/project.json
+ABSENT /Users/oubiwann/lab/lykn/lang/deno.json
+ABSENT /Users/oubiwann/lab/lykn/lang/deno.jsonc
+ABSENT /Users/oubiwann/lab/lykn/lang/package.json
+
+PROBE_DIR /private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp/project.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp/deno.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp/deno.jsonc
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp/package.json
+
+PROBE_DIR /private/tmp/lykn-s09-i2-7b17a784-r1/native/xdg-cache
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/xdg-cache/project.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/xdg-cache/deno.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/xdg-cache/deno.jsonc
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/xdg-cache/package.json
+
+PROBE_DIR /private/tmp/lykn-s09-i2-7b17a784-r1/native/npm
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/npm/project.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/npm/deno.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/npm/deno.jsonc
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/native/npm/package.json
+
+PROBE_DIR /private/tmp/lykn-s09-i2-7b17a784-r1/public/tmp
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/tmp/project.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/tmp/deno.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/tmp/deno.jsonc
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/tmp/package.json
+
+PROBE_DIR /private/tmp/lykn-s09-i2-7b17a784-r1/public/xdg-cache
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/xdg-cache/project.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/xdg-cache/deno.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/xdg-cache/deno.jsonc
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/xdg-cache/package.json
+
+PROBE_DIR /private/tmp/lykn-s09-i2-7b17a784-r1/public/npm
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/npm/project.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/npm/deno.json
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/npm/deno.jsonc
+ABSENT /private/tmp/lykn-s09-i2-7b17a784-r1/public/npm/package.json

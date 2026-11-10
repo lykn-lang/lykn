@@ -1,0 +1,4 @@
+Program: /usr/bin/env
+Argv: -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp XDG_CACHE_HOME=/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/xdg npm_config_cache=/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/evidence /opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Outer Deno test uses repository project.json import map. Each public fixture child uses --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt.

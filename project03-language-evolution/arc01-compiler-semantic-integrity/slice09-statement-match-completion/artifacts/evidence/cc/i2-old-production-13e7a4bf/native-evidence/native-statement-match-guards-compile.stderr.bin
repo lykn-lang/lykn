@@ -1,0 +1,2 @@
+6:1: error: non-exhaustive match: missing '_'
+  suggestion: add a wildcard `_` clause or cover all variants

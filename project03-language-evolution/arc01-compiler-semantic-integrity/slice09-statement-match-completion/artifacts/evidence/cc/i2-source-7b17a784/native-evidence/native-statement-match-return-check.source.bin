@@ -1,0 +1,6 @@
+(kernel:function choose (input)
+  (match input
+    (_ :when false (return "wrong"))
+    (_ (return "inside")))
+  (return "after"))
+(console:log (choose 0))

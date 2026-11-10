@@ -11,6 +11,14 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 ## Implementation re-entry — 2026-11-09
 
+[S09 independently accepted](../slice09-statement-match-completion/closing-report.md)
+at task `7b17a784`. Direct unprotected statement-match guard
+progression, exhaustion and enclosing transfers pass both routes.
+Native clause-local pattern scope is the next bounded I2 readiness
+item. CV-02 remains done. The other five CV rows and CI-04 stay open
+for native clause scope, consumed completion, I3/I4 and composition.
+Release remains `d73601a5`.
+
 Operator approved starting I2 with direct statement match guard
 progression and source return targets. [S09](../slice09-statement-match-completion/slice-plan.md)
 owns that finite delivery from accepted f348. General consumed

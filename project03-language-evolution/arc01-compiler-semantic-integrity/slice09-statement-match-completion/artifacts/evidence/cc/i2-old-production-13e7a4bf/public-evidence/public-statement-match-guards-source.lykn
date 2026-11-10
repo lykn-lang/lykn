@@ -1,0 +1,12 @@
+(bind trace (array))
+(func subject :returns :any :body (trace:push "subject") 2)
+(func gate :args (:any mark :any result) :returns :any :body
+  (trace:push mark)
+  result)
+(match (subject)
+  (1 :when (gate "wrong-pattern" true) (trace:push "wrong-body"))
+  (2 :when (gate "literal-false" false) (trace:push "wrong-literal"))
+  (captured :when (gate captured false) (trace:push "wrong-binding"))
+  (_ :when (gate "chosen" true) (trace:push "body"))
+  (_ :when (gate "late" true) (trace:push "late-body")))
+(console:log (JSON:stringify trace))

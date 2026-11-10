@@ -1,0 +1,12 @@
+(bind match (fn (:number n) n))
+(bind picked (match (if true 4 5)))
+(bind target (fn (:number n) n))
+(bind computed ((get (array target) 0) (if true 6 7)))
+(bind trace (array))
+(switch 1
+  (1
+    (bind first 1 second (+ first 1))
+    (if true (trace:push second))
+    (break))
+  (default (trace:push "bad")))
+(console:log (JSON:stringify (array picked computed trace)))

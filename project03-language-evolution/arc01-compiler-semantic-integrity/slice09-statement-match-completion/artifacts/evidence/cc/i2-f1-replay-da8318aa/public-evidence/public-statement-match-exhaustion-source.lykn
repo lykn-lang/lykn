@@ -1,0 +1,7 @@
+(bind trace (array))
+(try
+  (match 2
+    (_ :when (do (trace:push "guard") false) (trace:push "wrong")))
+  (trace:push "after")
+  (catch err (trace:push err:message)))
+(console:log (JSON:stringify trace))

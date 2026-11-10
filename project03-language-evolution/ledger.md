@@ -1,5 +1,9 @@
 # project03-language-evolution ledger
 
+[Arc01 S09](arc01-compiler-semantic-integrity/slice09-statement-match-completion/cdc-verification.md)
+accepts five finite statement-match rows at task `7b17a784`.
+CV-04, CI-04 and project composition remain open.
+
 Created during the planning migration. Historical scope and child ledgers are retained without upgrading their acceptance status.
 
 [Arc03 composition](arc03-protected-host-intrinsics/cdc-verification.md)

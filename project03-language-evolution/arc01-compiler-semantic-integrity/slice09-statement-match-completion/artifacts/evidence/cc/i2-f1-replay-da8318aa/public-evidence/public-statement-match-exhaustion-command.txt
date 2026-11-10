@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp/5defeadf1fa1f4b4/statement-match-exhaustion.js"
+  ],
+  "cwd": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp/5defeadf1fa1f4b4",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/statement-match-exhaustion.lykn",
+  "modulePath": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp/5defeadf1fa1f4b4/statement-match-exhaustion.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/xdg",
+    "TMPDIR": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/evidence"
+  }
+}

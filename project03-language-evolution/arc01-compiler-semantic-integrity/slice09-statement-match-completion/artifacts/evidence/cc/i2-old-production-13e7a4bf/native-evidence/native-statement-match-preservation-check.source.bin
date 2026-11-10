@@ -1,0 +1,18 @@
+(macro read-target () `target__gensym0)
+(macro emitted-match () `(match 0 (_ (trace:push 7))))
+(bind target__gensym0 101)
+(bind matched__gensym1 201)
+(bind matched__gensym2 202)
+(bind matched__gensym3 203)
+(bind trace (array))
+(match 0
+  (_
+    (trace:push (read-target))
+    (trace:push matched__gensym1)
+    (trace:push matched__gensym2)
+    (trace:push matched__gensym3)))
+(emitted-match)
+(bind keep
+  (do (match 0 (_ (trace:push 8))) (match 1 (_ 41))))
+(bind match (fn (:any n) n))
+(console:log (JSON:stringify (array trace keep (match 42))))

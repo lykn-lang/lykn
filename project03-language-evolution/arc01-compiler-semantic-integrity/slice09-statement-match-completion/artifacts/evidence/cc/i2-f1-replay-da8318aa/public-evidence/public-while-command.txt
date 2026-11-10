@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp/7b534a5662d38287/while.js"
+  ],
+  "cwd": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp/7b534a5662d38287",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/while.lykn",
+  "modulePath": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp/7b534a5662d38287/while.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/xdg",
+    "TMPDIR": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s09-i2-f1-replay.vaeYV6/public/evidence"
+  }
+}

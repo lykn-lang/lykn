@@ -1,0 +1,17 @@
+Released source: 7b17a7841cc4d749276467ec2bcec7ed9faed7b2
+
+Toolchains:
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+
+Native CLI:
+20e4c510e5774d208d5b8b6470c58f5c63a22a024ca27e52889280f28e7fb37a  /private/tmp/lykn-s09-i2-7b17a784-r1/native/cargo-target/debug/lykn
+
+Native semantic_roles test binary:
+f84ea00e2195164aa0b1939da8ff902647091830bed14237be765346a30faa5c  /private/tmp/lykn-s09-i2-7b17a784-r1/native/cargo-target/debug/deps/semantic_roles-cb18f482652d85e9
+
+Deno executable:
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

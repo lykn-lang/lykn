@@ -1,0 +1,6 @@
+S09 I2 F1 old-production replay observations
+- Source/test HEAD da8318aa600a7fbbd2ec3208e6433972f77b300f; production remains f348ae4239c45e21b730e66cc229875f06ed6e8e.
+- Native exact F1 test command exit 101: 0 passed, 1 failed, 14 filtered. Native check and strict compile both exit 0; JS module present, DTS absent; strict child exit 0, empty stderr, actual stdout ["subject","literal-false"] plus LF. This is the frozen old-native prediction and differs from current expected F1 stdout.
+- Public parent command exit 1: F1 passes with exact stdout ["subject","literal-false",2,"chosen","body"] plus LF, empty child stderr. Parent has 10 steps passed and 4 failed (old F2/F3/F4/F5 outcomes already captured in full baseline).
+- Full module and all F1 source/command/status/stdout/stderr receipts are preserved in native-evidence/ and public-evidence/. Outer raw outputs/status are alongside this record.
+- Native/public producer pins before and after are recorded; exact runtime roots and named config probes are recorded.

@@ -2,11 +2,16 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice09-statement-match-completion
-status: in-progress
+status: complete
 depends-on: [slice04-completion-value-flow-integrity]
 ---
 
 # S09 first I2 delivery — direct statement match
+
+Independently accepted on 2026-11-09 at task `7b17a784`.
+[Close](closing-report.md), [verification](cdc-verification.md) and
+[retrospective](cdc-retrospective.md) record all five completed rows.
+S04 composition remains open.
 
 Operator approved starting I2 on 2026-11-09, with statement guard
 progression and the enclosing source-function return target first.

@@ -1,0 +1,11 @@
+program="/private/tmp/lykn-s09-i2-7b17a784-r1/native/cargo-target/debug/lykn"
+args=["compile", "/private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp/.tmpEOStD4/while.lykn", "-o", "/private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp/.tmpEOStD4/while.js"]
+cwd=Some("/private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp/.tmpEOStD4")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s09-i2-7b17a784-r1/native/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s09-i2-7b17a784-r1/native/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s09-i2-7b17a784-r1/native/evidence")

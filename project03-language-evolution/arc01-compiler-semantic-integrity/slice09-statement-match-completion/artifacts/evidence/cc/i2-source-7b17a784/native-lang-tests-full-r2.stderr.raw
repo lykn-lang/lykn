@@ -1,0 +1,34 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.45
+   Compiling libc v0.2.185
+   Compiling serde_core v1.0.228
+   Compiling zmij v1.0.21
+   Compiling serde_json v1.0.150
+   Compiling thiserror v2.0.18
+   Compiling rustix v1.1.4
+   Compiling serde v1.0.228
+   Compiling getrandom v0.4.2
+   Compiling cfg-if v1.0.4
+   Compiling itoa v1.0.18
+   Compiling bitflags v2.11.1
+   Compiling memchr v2.8.0
+   Compiling fastrand v2.4.1
+   Compiling once_cell v1.21.4
+   Compiling syn v2.0.117
+   Compiling include_dir_macros v0.7.4
+   Compiling include_dir v0.7.4
+   Compiling errno v0.3.14
+   Compiling tempfile v3.27.0
+   Compiling thiserror-impl v2.0.18
+   Compiling serde_derive v1.0.228
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.60s
+     Running unittests src/lib.rs (/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target/debug/deps/lykn_lang-660f810f98f77866)
+     Running tests/a6_dispatch_conformance.rs (/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target/debug/deps/a6_dispatch_conformance-71c5f1e628f2cc9a)
+     Running tests/cross_compiler.rs (/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target/debug/deps/cross_compiler-7270e8ccefc96ab3)
+     Running tests/e2e_tests.rs (/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target/debug/deps/e2e_tests-a10fc2c08ad95c63)
+     Running tests/emission_results.rs (/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target/debug/deps/emission_results-2e81a494c1439a4b)
+     Running tests/icu_cross_compiler_tests.rs (/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target/debug/deps/icu_cross_compiler_tests-1835a3c7f031ad84)
+     Running tests/macro_expansion.rs (/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target/debug/deps/macro_expansion-e3348c8f3018cee3)
+   Doc-tests lykn_lang

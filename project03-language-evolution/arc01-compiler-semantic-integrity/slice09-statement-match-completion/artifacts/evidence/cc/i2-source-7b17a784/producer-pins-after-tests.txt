@@ -1,0 +1,3 @@
+639852682bb3e8b0a4f980984c44fec173dc35fb865042166c710f43fd54107d  /private/tmp/lykn-s09-i2-7b17a784-r1/native/cargo-target/debug/lykn
+f84ea00e2195164aa0b1939da8ff902647091830bed14237be765346a30faa5c  /private/tmp/lykn-s09-i2-7b17a784-r1/native/cargo-target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

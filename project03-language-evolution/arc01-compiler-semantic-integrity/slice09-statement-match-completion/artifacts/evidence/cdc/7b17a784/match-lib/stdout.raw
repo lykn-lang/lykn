@@ -1,0 +1,9 @@
+
+running 4 tests
+test emitter::forms::tests::test_emit_match_literal_value_context ... ok
+test emitter::forms::tests::test_emit_statement_match_target_in_value_context ... ok
+test emitter::forms::tests::test_match_statement_multiple_literals_ordered_candidates ... ok
+test emitter::forms::tests::test_emit_match_literal ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1157 filtered out; finished in 0.00s
+

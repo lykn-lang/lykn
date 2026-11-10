@@ -1,0 +1,3 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.74s
+  Executable tests/semantic_roles.rs (target/debug/deps/semantic_roles-cb18f482652d85e9)

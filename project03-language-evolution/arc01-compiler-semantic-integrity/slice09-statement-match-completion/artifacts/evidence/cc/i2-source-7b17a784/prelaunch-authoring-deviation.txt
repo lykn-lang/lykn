@@ -1,0 +1,4 @@
+Prelaunch source state reconciliation
+
+Released candidate: 7b17a7841cc4d749276467ec2bcec7ed9faed7b2.
+The only post-release local WIP was in packages/lang/expander.js and its embedded mirror, uncommitted and never behavior-tested. It added a catch tagDefSites call; Value child slots for return/throw/yield and const/let/var; and Statement forwarding through generated Bind/BindGroup const forms. Deno check, cargo fmt check, diff check, and mirror comparison had run while that WIP was present. At CDC direction I restored only those two source files to the released HEAD; the intermediate bytes were not retained. Current worktree is clean at the released hash. No behavior gate ran before this record.

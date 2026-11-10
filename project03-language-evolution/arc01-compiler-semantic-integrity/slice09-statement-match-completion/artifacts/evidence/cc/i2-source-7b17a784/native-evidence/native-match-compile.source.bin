@@ -1,0 +1,10 @@
+(bind trace (array))
+(func choose :args (:number n) :returns :any :body
+  (match n
+    (captured :when (= captured 1)
+      (if true (trace:push "guard"))
+      (if true 7 8))
+    (_
+      (if true (trace:push "fallback"))
+      (if false 9 10))))
+(console:log (JSON:stringify (array (array (choose 1) (choose 2)) trace)))

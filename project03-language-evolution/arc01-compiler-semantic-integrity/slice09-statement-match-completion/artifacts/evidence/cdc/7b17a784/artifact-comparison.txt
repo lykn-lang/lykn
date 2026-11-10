@@ -1,0 +1,38 @@
+classifier.js
+canonical-embedded cmp=0
+canonical-materialized cmp=0
+404bf37082f4bf106698effff07640d298e5d7895e1f6fcc4005c1e28ca7e4d4  packages/lang/classifier.js
+404bf37082f4bf106698effff07640d298e5d7895e1f6fcc4005c1e28ca7e4d4  crates/lykn-lang/embedded/packages/lang/classifier.js
+404bf37082f4bf106698effff07640d298e5d7895e1f6fcc4005c1e28ca7e4d4  /private/tmp/lykn-i2-cdc.84x9kCSo/make/xdg/lykn/embedded/0.6.0/packages/lang/classifier.js
+expander.js
+canonical-embedded cmp=0
+canonical-materialized cmp=0
+79965bc815df2d4b2934d5d4151aada72a8ce77488d2b4bce09405ca4ce4867c  packages/lang/expander.js
+79965bc815df2d4b2934d5d4151aada72a8ce77488d2b4bce09405ca4ce4867c  crates/lykn-lang/embedded/packages/lang/expander.js
+79965bc815df2d4b2934d5d4151aada72a8ce77488d2b4bce09405ca4ce4867c  /private/tmp/lykn-i2-cdc.84x9kCSo/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js
+
+guards
+native generated cmp=0
+public generated cmp=0
+
+return
+native generated cmp=0
+public generated cmp=0
+
+loop
+native generated cmp=0
+public generated cmp=0
+
+exhaustion
+native generated cmp=0
+public generated cmp=0
+
+preservation
+native generated cmp=0
+public generated cmp=0
+
+protected-preservation
+native generated cmp=0
+public generated cmp=0
+old/current native F6 module cmp=0
+task release/bin cmp=0

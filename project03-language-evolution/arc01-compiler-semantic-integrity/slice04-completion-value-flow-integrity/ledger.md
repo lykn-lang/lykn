@@ -1,5 +1,12 @@
 # S04 completion/value-flow ledger
 
+[First I2 tranche independently accepted](../slice09-statement-match-completion/cdc-verification.md)
+at task `7b17a784`. S09 closes its five bounded SM rows.
+CV-02 retains prior I1 acceptance. The other five CV rows and CI-04
+remain open. The native inherited shared clause-scope adapter is the
+next bounded I2 readiness item. S09 used three refinements without
+resetting the existing S04 or tooling history.
+
 [NE-C14 independently accepted](cdc-verification.md#ne-c14-independently-accepted--2026-11-09)
 at clean `f348ae42`. Same-span native controls, exact original macro
 boundary and complete current independent gates pass. CV-02 remains

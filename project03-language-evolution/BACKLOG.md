@@ -829,6 +829,33 @@ and release5408 unchanged; all Project07/future package/type/human duties persis
 
 #### NE-C13 — statement-position guarded match continuation (source-only)
 
+**Direct tranche accepted 2026-11-09.** The original observation
+below now has both actual old failures and independent current
+reproduction at task `7b17a784`. Subject-once, guard progression,
+exhaustion and direct enclosing transfers pass for the frozen
+unprotected regions. [S09 verification](arc01-compiler-semantic-integrity/slice09-statement-match-completion/cdc-verification.md).
+F1 still emits three guard-unaware usefulness warnings at 10:3, 11:3
+and 12:3. Its fallback and selected trace are correct. Keep this
+diagnostic-analysis input distinct from the runtime repair.
+
+**Native clause scope remains source-only.** At the accepted task,
+`binding.rs::binding_occurrences` obtains all match pattern occurrences
+through the shared classifier. `resolver.rs::scope_plan_with_occurrences`
+applies their combined names through one `ScopePlan::Body` starting at
+child 2. Both `resolve_split_at` and `expander/pass2.rs::expand_children_scoped`
+therefore use the same aggregate environment across distinct clauses.
+A binder spelled `match` in one pattern can suppress genuine nested
+match dispatch in a different clause. No new specimen ran.
+
+**Next bounded I2 readiness.** Use the existing NE-C14 borrowed
+occurrence identities to assign each pattern's bindings only to its
+own guard and body. Preserve subject scope, structural pattern slots,
+actual bound calls and existing public diagnostic sites. Freeze a
+cross-clause same-spelling binder and genuine nested match control
+with separate native expansion and resolver coverage before editing.
+Retain ordered references, general consumed lowering and I4 as
+separate composition obligations. CV-04 stays open.
+
 **Source-only candidate,2026-11-07.** S03 readiness inspected exact acceptedc9
 `crates/lykn-lang/src/emitter/forms.rs::emit_match_statement` (roughly2224–2293).
 It builds a pattern-condition chain, puts the guard inside the selected block,

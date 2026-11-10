@@ -1,0 +1,31 @@
+S09 I2 old-production focused baseline observations
+
+Source/test state
+- Task branch codex/completion-value-flow, test source HEAD 13e7a4bf3688891a6b39924db5cb314c9a7f2990.
+- Production source remains exact f348ae4239c45e21b730e66cc229875f06ed6e8e.
+- Worktree was clean before launch; test-only commits are 37934afb and 13e7a4bf.
+- Native focused test binary built with --no-run, exit 0; pins before/after are recorded.
+- Native command exit 101: 11 passed, 4 failed, 0 ignored, 0 filtered out (15 tests).
+- Public command exit 1: 10 steps passed, 4 failed (14 fixture steps).
+
+Frozen fixture outcomes
+F1 statement-match-guards
+- Native check exit 0. Strict compile exit 1 with non-exhaustive match: missing '_'; no JS or DTS output. The compiler's static match analysis does not count guarded wildcard clauses as exhaustive.
+- Public strict child exit 0, stdout ["subject","literal-false",2,"chosen","body"] plus LF, empty stderr.
+F2 statement-match-return
+- Native strict child exit 0, stdout after plus LF, empty stderr.
+- Public strict child exit 0, stdout after plus LF, empty stderr.
+F3 statement-match-loop
+- Native strict child exit 0, stdout [0,10,2,12] plus LF, empty stderr.
+- Public strict child exit 1 with SyntaxError: Illegal continue statement: no surrounding iteration statement.
+F4 statement-match-exhaustion
+- Native strict child exit 0, stdout ["guard","after"] plus LF, empty stderr.
+- Public strict child exit 0, stdout ["guard","after"] plus LF, empty stderr.
+F5 statement-match-preservation (public resetGensym only before this fixture)
+- Native strict child exit 0, stdout [[0,201,202,203,7,8],41,42] plus LF, empty stderr.
+- Public strict child exit 0, stdout [[0,201,202,203,7,8],41,42] plus LF, empty stderr.
+F6 statement-match-protected-preservation
+- Native and public strict children exit 0, stdout [7,[7]] plus LF, empty stderr.
+- Both native and public complete generated modules retain the selected tail's number and post checks.
+
+Raw outer stdout/stderr/status, full modules, per-child commands/source/status/stdout/stderr, and native optional-DTS outcomes are preserved beside this summary and in native-evidence/ and public-evidence/.

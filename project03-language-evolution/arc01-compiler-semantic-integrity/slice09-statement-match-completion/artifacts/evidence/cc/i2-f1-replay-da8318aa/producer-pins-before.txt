@@ -1,0 +1,13 @@
+Source HEAD: da8318aa600a7fbbd2ec3208e6433972f77b300f
+Production source baseline: f348ae4239c45e21b730e66cc229875f06ed6e8e
+Focused native test binary: target/debug/deps/semantic_roles-cb18f482652d85e9
+39ad2da3ed96c3d0eab64d1710540bdec9a229e928221d82bb8c7e78430afa5c  target/debug/deps/semantic_roles-cb18f482652d85e9
+Native CLI binary: target/debug/lykn
+d5b235bc6ecaba4b49e832c29c7fadc7abb0e8790fde0023b961516266bb11d2  target/debug/lykn
+Deno executable: /opt/homebrew/bin/deno
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3

@@ -1,0 +1,2 @@
+argv: env -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/tmp XDG_CACHE_HOME=/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/xdg-cache npm_config_cache=/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno CARGO_TARGET_DIR=/private/tmp/lykn-s09-i2-7b17a784-r1/native-lang-tests-r2/cargo-target cargo test -p lykn-lang
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering

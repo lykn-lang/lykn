@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-09 [S09](slice09-statement-match-completion/cdc-verification.md)
+independently accepts direct statement match at task `7b17a784`.
+All five SM rows are done. Native clause scope and the other S04
+composition work keep CV-04 and CI-04 open.
+
 2026-11-09 S04 I1 and NE-C14 independently accepted at `f348ae42`.
 CV-02 done. CI-04 and five completion rows remain open through
 I2–I4 and composition. See [current verification](slice04-completion-value-flow-integrity/cdc-verification.md#ne-c14-independently-accepted--2026-11-09).

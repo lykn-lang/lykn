@@ -1,0 +1,4 @@
+Program: /usr/bin/env
+Argv: -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG TMPDIR=/private/tmp/lykn-s09-i2-baseline.jXX1mo/native/tmp XDG_CACHE_HOME=/private/tmp/lykn-s09-i2-baseline.jXX1mo/native/xdg npm_config_cache=/private/tmp/lykn-s09-i2-baseline.jXX1mo/native/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno LYKN_TEST_DENO=/opt/homebrew/bin/deno LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s09-i2-baseline.jXX1mo/native/evidence cargo test -p lykn-cli --test semantic_roles --no-run
+CWD: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Purpose: compile exact native focused test binary only; do not execute test cases

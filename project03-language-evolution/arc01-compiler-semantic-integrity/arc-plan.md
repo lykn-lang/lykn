@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S09 first I2 delivery accepted — 2026-11-09
+
+[Direct statement-match completion](slice09-statement-match-completion/closing-report.md)
+is independently accepted at task `7b17a784`. All five finite
+criteria pass. Native clause-local scope, consumed completion, ordered
+references and checked exits retain their owners. CV-04 and CI-04
+remain open. The validated release remains `d73601a5`.
+
 ## S09 first I2 delivery opened — 2026-11-09
 
 [Direct statement-match completion](slice09-statement-match-completion/slice-plan.md)

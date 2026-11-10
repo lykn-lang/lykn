@@ -9,6 +9,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+[S09 statement-match completion](arc01-compiler-semantic-integrity/slice09-statement-match-completion/closing-report.md)
+is independently accepted at task `7b17a784`. The first Arc01
+I2 tranche is complete. Native clause scope and broader completion
+composition remain open. Local release remains `d73601a5`.
+
 [Arc03 local release validation](arc03-protected-host-intrinsics/artifacts/release-integration-d736.md)
 passed at `d73601a5`. The Operator directed continuation into S04
 on the accepted release baseline.

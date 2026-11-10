@@ -1,0 +1,15 @@
+Source HEAD: 13e7a4bf3688891a6b39924db5cb314c9a7f2990
+Production source baseline: f348ae4239c45e21b730e66cc229875f06ed6e8e
+Focused native binary: target/debug/deps/semantic_roles-cb18f482652d85e9
+Focused native binary sha256: 39ad2da3ed96c3d0eab64d1710540bdec9a229e928221d82bb8c7e78430afa5c
+Native CLI binary: target/debug/lykn
+Native CLI sha256: d5b235bc6ecaba4b49e832c29c7fadc7abb0e8790fde0023b961516266bb11d2
+Deno executable: /opt/homebrew/bin/deno
+Deno sha256: 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+Rustc: rustc 1.97.0 (2d8144b78 2026-07-07)
+Cargo: cargo 1.97.0 (c980f4866 2026-06-30)
+Deno: deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+Build command: cargo test -p lykn-cli --test semantic_roles --no-run
+Build exit: 0

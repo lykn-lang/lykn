@@ -1,0 +1,12 @@
+S09 I2 F1 old-production replay
+Task checkout: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Expected task branch: codex/completion-value-flow
+Expected HEAD: da8318aa600a7fbbd2ec3208e6433972f77b300f
+Production source baseline: f348ae4239c45e21b730e66cc229875f06ed6e8e
+Test freeze: 37934afb4dcb014228ebb646bd50694ae9e6f1c0
+F5 reset correction: 13e7a4bf3688891a6b39924db5cb314c9a7f2990
+F1 strict-exhaustiveness reconciliation: da8318aa600a7fbbd2ec3208e6433972f77b300f
+Native scope: exact F1 test statement_match_guards_progress_in_source_order
+Public scope: full semantic_roles.test.js parent (14 fixture steps)
+Prior six-fixture aggregate baseline: ../i2-old-production-13e7a4bf/
+No production changes authorized before baseline reconciliation.

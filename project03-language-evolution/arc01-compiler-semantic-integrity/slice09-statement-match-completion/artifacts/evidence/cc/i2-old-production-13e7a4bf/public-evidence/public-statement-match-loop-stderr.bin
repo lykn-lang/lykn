@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Illegal continue statement: no surrounding iteration statement
+      continue;
+      ^
+    at <anonymous> (file:///private/tmp/lykn-s09-i2-baseline.jXX1mo/public/tmp/4b7dc63e6fc2cb01/statement-match-loop.js:6:7)
