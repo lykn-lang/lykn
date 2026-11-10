@@ -63,3 +63,9 @@ roles. Exact prior `6e406654` grouped build and focused native
 26/public 24 plus five independent negatives passed. Full gates
 were held. The original four runtime inputs and oracles stay
 unchanged, with one new exact diagnostic regression.
+
+2026-11-10 [refinement 04](cc-prompt-iteration04.md) completes
+the public statement sequence materializer missing from the
+static `1e5203b7` freeze. No launch consumed that freeze.
+The new control compiles a grouped bind tail. Original four
+runtime fixtures, native gates and all earlier checks remain.
