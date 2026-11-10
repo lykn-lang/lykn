@@ -111,3 +111,27 @@ reference from generated target, guard the matched-bit name,
 recognize the user macro's genuine match output once, retain the
 consumed value and mixed do-prefix effects, and preserve the
 ordinary bound call.
+
+## F6 — statement-match-protected-preservation.lykn
+
+```lykn
+(bind trace (array))
+(func verify-result :args (:any n) :returns :any :body
+  (trace:push n)
+  (= n 7))
+(func checked :returns :number :post (verify-result ~) :body
+  (match 0
+    (_ :when false (return 99))
+    (_ (return "bad")))
+  7)
+(console:log (JSON:stringify (array (checked) trace)))
+```
+
+Old and current native/public `[7,[7]]` with empty stderr. Old native
+stops at its matching guarded catch-all and reaches the checked tail.
+Old public handles the second clause inside the match IIFE, then
+reaches the checked tail. Making that return transparent here without
+checked exit lowering could newly return `"bad"` and skip the actual
+post effect. Preserve current backend-specific output routes inside
+protected bodies. The complete output must still contain actual
+number and post checks for the selected tail.

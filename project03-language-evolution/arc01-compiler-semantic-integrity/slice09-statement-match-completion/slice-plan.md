@@ -28,7 +28,8 @@ behavior in the bounded controls. Remaining consumed destinations,
 ordered references, and protected exits retain their owners. S04's
 CV-04 and parent CI-04 remain open for composition.
 
-[Executable source recipe and actual proof](cc-prompt.md) give five
+[Executable source recipe](cc-prompt.md) and [protected-exit addendum](cc-prompt-iteration01.md)
+give six
 shared fixtures, specific old/current outcomes, preserved case families,
 whole generated modules and repository-native gate requirements. Neither
 a release integration nor a new K trial is within this increment.
