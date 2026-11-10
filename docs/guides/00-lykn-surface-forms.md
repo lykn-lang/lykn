@@ -473,7 +473,13 @@ fields without a preceding `type` declaration.
 
 ### match (surface) — exhaustive pattern matching
 
-Pattern match on values. Always wraps in an IIFE.
+Pattern match on values. In value position, `match` wraps in an IIFE and
+returns the selected clause value. In statement position, it evaluates the
+subject once, tries clauses in order, and continues after a guard fails. A
+selected clause runs in the surrounding function and loop, so `return`,
+`break`, and `continue` keep their ordinary targets. If no clause selects,
+statement-position `match` throws `match: no matching pattern` unless an
+unguarded wildcard or binding clause makes the match exhaustive.
 
 **Literal patterns:**
 

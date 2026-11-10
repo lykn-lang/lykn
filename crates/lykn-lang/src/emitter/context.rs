@@ -23,6 +23,9 @@ pub struct EmitterContext {
     pub gensym: EmitterGensym,
     /// Whether we're currently inside a class body (enables `assign`).
     pub in_class_body: bool,
+    /// Keep statement-position matches on their legacy path while a checked
+    /// function exit still owns the value returned by its body.
+    pub(super) legacy_statement_match: bool,
     pub(super) first_fatal: Option<LyknError>,
 }
 
@@ -33,6 +36,7 @@ impl EmitterContext {
             gensym: EmitterGensym::new(),
             strip_assertions,
             in_class_body: false,
+            legacy_statement_match: false,
             first_fatal: None,
         }
     }

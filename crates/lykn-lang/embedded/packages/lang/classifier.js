@@ -51,6 +51,7 @@ import {
   paramTypeChecks,
   parseTypedParams,
   sym,
+  toJsIdentifier,
   typeMatchesLiteral,
   typeRegistry,
   wrapReturnLast,
@@ -808,6 +809,25 @@ export function emitSurfaceForm(node, h) {
   }
 }
 
+/** Whether this parsed public func body owns a checked result in its wrapper. */
+export function funcBodyProtectsStatementExit(node) {
+  if (!node || node.type !== "Func") return false;
+  const { restArgs } = node;
+  const first = restArgs[0];
+  const multi = first?.type === "list" && first.values.length > 0 &&
+    first.values[0].type === "keyword";
+  if (multi) {
+    return restArgs.some((clause) =>
+      clause?.type === "list" && (parseKeywordClauses(clause.values).get("post")?.length ?? 0) > 0
+    );
+  }
+  const parsed = parseKeywordClauses(restArgs);
+  if ((parsed.get("post")?.length ?? 0) > 0) return true;
+  const declared = parsed.get("returns")?.[0];
+  return declared?.type === "keyword" &&
+    !["any", "void"].includes(declared.value);
+}
+
 export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
   const clauses = parseKeywordClauses(clauseArgs);
   const argsClause = clauses.get("args");
@@ -1270,6 +1290,30 @@ export function emitGenfuncMacro(args) {
 
 // DD-37 M22: match and type macros extracted as top-level exports.
 // Exact copies of the original macro bodies, de-indented.
+function parseMatchClause(clause, i) {
+  if (!isArray(clause) || clause.values.length < 2) {
+    throw new Error(
+      `match: clause ${i} must be (pattern body...) or (pattern :when guard body...)`,
+    );
+  }
+  const pattern = clause.values[0];
+  let guard = null;
+  let bodyStart = 1;
+  if (
+    clause.values.length >= 3 &&
+    isKeyword(clause.values[1]) &&
+    clause.values[1].value === "when"
+  ) {
+    guard = clause.values[2];
+    bodyStart = 3;
+  }
+  const bodyForms = clause.values.slice(bodyStart);
+  if (bodyForms.length === 0) {
+    throw new Error(`match: clause ${i} has no body`);
+  }
+  return { pattern, guard, bodyForms };
+}
+
 export function emitMatchMacro(args) {
   if (args.length < 2) {
     throw new Error("match requires an expression and at least one clause");
@@ -1280,31 +1324,7 @@ export function emitMatchMacro(args) {
   const stmts = [array(sym("const"), targetVar, expr)];
 
   for (let i = 0; i < clauses.length; i++) {
-    const clause = clauses[i];
-    if (!isArray(clause) || clause.values.length < 2) {
-      throw new Error(
-        `match: clause ${i} must be (pattern body...) or (pattern :when guard body...)`,
-      );
-    }
-
-    const pattern = clause.values[0];
-    let guard = null;
-    let bodyStart = 1;
-
-    // Check for :when guard
-    if (
-      clause.values.length >= 3 &&
-      isKeyword(clause.values[1]) &&
-      clause.values[1].value === "when"
-    ) {
-      guard = clause.values[2];
-      bodyStart = 3;
-    }
-
-    const bodyForms = clause.values.slice(bodyStart);
-    if (bodyForms.length === 0) {
-      throw new Error(`match: clause ${i} has no body`);
-    }
+    const { pattern, guard, bodyForms } = parseMatchClause(clauses[i], i);
 
     const { checks, bindings } = compilePattern(pattern, targetVar);
 
@@ -1383,6 +1403,66 @@ export function emitMatchMacro(args) {
   const arrowFn = array(sym("=>"), array(), ...stmts);
   return array(arrowFn);
 }
+
+/** Emit a direct statement-position match; value-position Match remains above. */
+export function emitMatchStatementMacro(args, { expandValue, expandBody, env, reserveNames }) {
+  if (args.length < 2) throw new Error("match requires an expression and at least one clause");
+  const expr = expandValue(args[0], env);
+  const reserved = reserveNames(args);
+  const clauses = [];
+  for (let i = 0; i < args.length - 1; i++) {
+    const { pattern, guard, bodyForms } = parseMatchClause(args[i + 1], i);
+    let provisional = gensym("provisional");
+    while (reserved.has(toJsIdentifier(provisional.value))) provisional = gensym("provisional");
+    reserved.add(toJsIdentifier(provisional.value));
+    const compiled = compilePattern(pattern, provisional);
+    const names = compiled.bindings.flatMap((binding) =>
+      binding?.type === "list" && binding.values[0]?.value === "const" &&
+        binding.values[1]?.type === "atom" ? [binding.values[1].value] : []
+    );
+    const clauseEnv = new Set([...env, ...names]);
+    clauses.push({ pattern, compiled, provisional,
+      guard: guard ? expandValue(guard, clauseEnv) : null,
+      body: expandBody(bodyForms, clauseEnv) });
+  }
+
+  reserveNames([expr, ...clauses.flatMap((c) => [c.guard, ...c.body])], reserved);
+  let target = gensym("target");
+  while (reserved.has(toJsIdentifier(target.value))) target = gensym("target");
+  reserved.add(toJsIdentifier(target.value));
+  let matched = gensym("matched");
+  while (reserved.has(toJsIdentifier(matched.value))) matched = gensym("matched");
+
+  const retarget = (node, oldTarget) => {
+    if (!node || typeof node !== "object") return node;
+    if (node.type === "atom" && (node.value === oldTarget || node.value.startsWith(`${oldTarget}:`))) {
+      return { ...node, value: `${target.value}${node.value.slice(oldTarget.length)}` };
+    }
+    if (node.type === "list") return { ...node, values: node.values.map((n) => retarget(n, oldTarget)) };
+    if (node.type === "cons") return { ...node, car: retarget(node.car, oldTarget), cdr: retarget(node.cdr, oldTarget) };
+    return node;
+  };
+  const out = [sym("block"), array(sym("const"), target, expr), array(sym("let"), matched, sym("false"))];
+  let terminal = false;
+  for (const clause of clauses) {
+    const oldTarget = clause.provisional.value;
+    const checks = clause.compiled.checks.map((n) => retarget(n, oldTarget));
+    const bindings = clause.compiled.bindings.map((n) => retarget(n, oldTarget));
+    const candidate = [sym("block"), ...bindings];
+    const selected = array(sym("block"), array(sym("="), matched, sym("true")), ...clause.body);
+    if (clause.guard) candidate.push(array(sym("if"), clause.guard, selected));
+    else candidate.push(selected);
+    out.push(array(sym("if"), andChain([array(sym("!"), matched), ...checks]), array(...candidate)));
+    const p = clause.pattern;
+    const irrefutable = p?.type === "atom" && (p.value === "_" ||
+      (!isPascalCase(p.value) && !["true", "false", "null", "undefined"].includes(p.value)));
+    if (!clause.guard && irrefutable) { terminal = true; break; }
+  }
+  if (!terminal) out.push(array(sym("if"), array(sym("!"), matched),
+    array(sym("throw"), array(sym("new"), sym("Error"), { type: "string", value: "match: no matching pattern" }))));
+  return markKernel(array(...out));
+}
+
 
 export function emitTypeMacro(args) {
   if (args.length < 2) {

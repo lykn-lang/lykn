@@ -70,8 +70,8 @@
   (includes result "> 0"))
 
 (test
-  "match: always produces IIFE"
-  (bind result (compile "(match x (1 \"one\") (_ \"other\"))"))
+  "match: value position produces IIFE"
+  (bind result (compile "(bind result (match x (1 \"one\") (_ \"other\")))"))
   (includes result "(() =>")
   (includes result "return"))
 

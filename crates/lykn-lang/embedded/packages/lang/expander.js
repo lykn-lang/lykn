@@ -5,11 +5,11 @@
  * quote, sugar forms (cons/list/car/cdr), macros, and as patterns.
  */
 
-import { compileExpr } from './compiler.js';
+import { compileExpr, formHead, toJsIdentifier } from './compiler.js';
 import { generate } from 'astring';
 import { read } from './reader.js';
 import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
-import { classifySurfaceForm, emitSurfaceForm } from './classifier.js';
+import { classifySurfaceForm, emitSurfaceForm, emitMatchStatementMacro, funcBodyProtectsStatementExit } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
 import { validateReservedNames, bindingsIntroduced, bindingNamesInPattern } from './binding.js';
@@ -810,7 +810,7 @@ function isDeclHead(h) {
 function scopePlan(form) {
   if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
   const head = form.values[0];
-  const h = head?.type === "atom" ? head.value : null;
+  const h = formHead(head);
   switch (h) {
     case "if":
       return { kind: "conditional" };
@@ -842,11 +842,11 @@ function pushExpanded(out, result) {
  * declarations (`bind`/import locals) become visible to the FOLLOWING siblings.
  * Mirror of Rust `resolver::resolve_seq`.
  */
-function expandChildrenSeq(children, env) {
+function expandChildrenSeq(children, env, use = "Legacy") {
   const out = [];
   let cur = env;
   for (const child of children) {
-    pushExpanded(out, expandExpr(child, cur));
+    pushExpanded(out, expandAt(child, cur, use));
     const hoist = child?.type === "list" ? hoistedNames(child) : [];
     if (hoist.length) cur = extendEnv(cur, hoist);
   }
@@ -858,38 +858,129 @@ function expandChildrenSeq(children, env) {
  * the outer env, then body children (from `bodyStart`) under the extended env as
  * a sequence. Mirror of Rust `resolver::resolve_split_at` + `resolve_seq`.
  */
-function expandChildrenPlan(form, env) {
+function expandChildrenPlan(form, env, use = "Legacy") {
   const plan = scopePlan(form);
   const children = form.values;
-  if (plan.kind === "conditional") {
+  if (use === "Statement" && formHead(children[0]) === "switch") {
     const out = [children[0]];
-    if (children.length > 1) {
-      out.push(expandConditionalChild(children[1], env, true));
-    }
-    for (let i = 2; i < children.length; i++) {
-      out.push(expandConditionalChild(children[i], env, false));
+    if (children.length > 1) pushExpanded(out, expandAt(children[1], env, "Value"));
+    for (const clause of children.slice(2)) {
+      if (clause?.type !== "list" || clause.values.length === 0) {
+        pushExpanded(out, expandAt(clause, env, "Legacy"));
+        continue;
+      }
+      const isDefault = clause.values[0]?.type === "atom" && clause.values[0].value === "default";
+      const prefix = isDefault ? [clause.values[0]] : [expandAt(clause.values[0], env, "Value")];
+      out.push({ type: "list", values: [...prefix, ...expandChildrenSeq(clause.values.slice(1), env, "Statement")] });
     }
     return out;
   }
-  if (plan.kind === "seq") return expandChildrenSeq(children, env);
+  if (plan.kind === "conditional") {
+    const out = [children[0]];
+    if (children.length > 1) {
+      out.push(expandConditionalChild(children[1], env, true, use === "Statement" ? "Value" : use));
+    }
+    for (let i = 2; i < children.length; i++) {
+      out.push(expandConditionalChild(children[i], env, false, use === "Statement" ? "Statement" : use));
+    }
+    return out;
+  }
+  if (plan.kind === "seq") {
+    const roles = childRoles(form, use);
+    const out = [];
+    let cur = env;
+    for (let i = 0; i < children.length; i++) {
+      pushExpanded(out, expandAt(children[i], cur, roles[i] ?? "Legacy"));
+      const hoist = children[i]?.type === "list" ? hoistedNames(children[i]) : [];
+      if (hoist.length) cur = extendEnv(cur, hoist);
+    }
+    return out;
+  }
   const split = Math.min(plan.bodyStart, children.length);
   const out = [];
-  for (let i = 0; i < split; i++) pushExpanded(out, expandExpr(children[i], env));
+  for (let i = 0; i < split; i++) pushExpanded(out, expandAt(children[i], env, use === "Protected" ? "Protected" : "Legacy"));
   if (split < children.length) {
     const bodyEnv = extendEnv(env, plan.names);
-    for (const v of expandChildrenSeq(children.slice(split), bodyEnv)) out.push(v);
+    const bodyUse = use === "Statement" || use === "Protected" ? use : "Legacy";
+    let cur = bodyEnv;
+    for (const child of children.slice(split)) {
+      pushExpanded(out, expandAt(child, cur, bodyUse));
+      const hoist = child?.type === "list" ? hoistedNames(child) : [];
+      if (hoist.length) cur = extendEnv(cur, hoist);
+    }
   }
   return out;
 }
 
-function expandConditionalChild(child, env, isCondition) {
-  const expanded = expandExpr(child, env);
+function expandConditionalChild(child, env, isCondition, use = "Legacy") {
+  const expanded = expandAt(child, env, use);
   if (!Array.isArray(expanded)) return expanded;
   if (isCondition && expanded.length > 1) {
     throw new Error('if condition must expand to a single form');
   }
   if (expanded.length > 1) return markKernel(array(sym("block"), ...expanded));
   return expanded[0] ?? null;
+}
+
+function childRoles(form, use) {
+  const roles = Array(form.values.length).fill("Legacy");
+  if (form.values.length === 0) return roles;
+  const h = formHead(form.values[0]);
+  if (use === "Protected") return roles.fill("Protected");
+  if (h === "function" || h === "function*") {
+    const start = form.values[1]?.type === "atom" ? 3 : 2;
+    for (let i = start; i < roles.length; i++) roles[i] = "Statement";
+    return roles;
+  }
+  if (h === "lambda") { for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; return roles; }
+  if (h === "=>") {
+    for (let i = 2; i < roles.length; i++) roles[i] = roles.length === 3 ? "Value" : "Statement";
+    return roles;
+  }
+  if (h === "async") { if (roles.length > 1) roles[1] = "Value"; return roles; }
+  if (use !== "Statement") return roles;
+  if (h === "block" || h === "do") return roles.fill("Statement");
+  if (h === "while" || h === "do-while") { roles[1] = "Value"; for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
+  else if (h === "for") { for (let i = 1; i <= 3 && i < roles.length; i++) roles[i] = "Value"; for (let i = 4; i < roles.length; i++) roles[i] = "Statement"; }
+  else if (["for-of", "for-in", "for-await-of"].includes(h)) { roles[2] = "Value"; for (let i = 3; i < roles.length; i++) roles[i] = "Statement"; }
+  else if (h === "label") { for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
+  else if (h === "try") {
+    let bodyEnd = roles.length;
+    const last = form.values[bodyEnd - 1];
+    if (last?.type === "list" && last.values[0]?.type === "atom" && last.values[0].value === "finally") bodyEnd--;
+    const maybeCatch = form.values[bodyEnd - 1];
+    if (maybeCatch?.type === "list" && maybeCatch.values[0]?.type === "atom" && maybeCatch.values[0].value === "catch") bodyEnd--;
+    for (let i = 1; i < bodyEnd; i++) roles[i] = "Statement";
+    if (bodyEnd < roles.length && maybeCatch?.values?.[0]?.value === "catch") roles[bodyEnd] = "Statement";
+    if (last?.values?.[0]?.value === "finally") roles[roles.length - 1] = "Statement";
+  }
+  else if (h === "catch") { for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
+  else if (h === "finally") { for (let i = 1; i < roles.length; i++) roles[i] = "Statement"; }
+  else if (h === "case" || h === "default") { roles[1] = "Value"; for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
+  else if (h === "export") { for (let i = 1; i < roles.length; i++) roles[i] = "Statement"; }
+  return roles;
+}
+
+function emittedNames(nodes, reserved = new Set()) {
+  const walk = (node) => {
+    if (!node || typeof node !== "object") return;
+    if (node.type === "atom") {
+      reserved.add(toJsIdentifier(node.value));
+      for (const part of node.value.split(":").filter(Boolean)) reserved.add(toJsIdentifier(part));
+    } else if (node.type === "list") node.values.forEach(walk);
+    else if (node.type === "cons") { walk(node.car); walk(node.cdr); }
+  };
+  for (const node of nodes) walk(node);
+  return reserved;
+}
+
+function emitSurfaceMatchStatement(args, env) {
+  return emitMatchStatementMacro(args, {
+    env,
+    expandValue: (form, scope) => expandAt(form, scope, "Value"),
+    expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "Statement"),
+    reserveNames: emittedNames,
+  });
 }
 
 // --- Expansion Walk ---
@@ -901,13 +992,17 @@ function expandConditionalChild(child, env, isCondition) {
  * @returns {* | *[]} Expanded form(s)
  */
 export function expandExpr(form, env = EMPTY_ENV) {
+  return expandAt(form, env, "Legacy");
+}
+
+function expandAt(form, env, use) {
   // Propagate the sanctioned-kernel mark across expansion: if the input was
   // sanctioned (compiler-produced kernel), so is the output — even though the
   // inner walk rebuilds nodes (e.g. `expand-binding` returns a fresh list).
   // This is what lets the post-pass2 DD-58 sweep tell compiler-emitted kernel
   // (`bind`→`const`, the `kernel:` escape) from user-macro-emitted kernel.
   const sanctioned = isKernel(form);
-  const result = expandExprInner(form, env);
+  const result = expandExprInner(form, env, use);
   if (sanctioned) {
     if (Array.isArray(result)) {
       for (const r of result) markKernel(r);
@@ -918,14 +1013,14 @@ export function expandExpr(form, env = EMPTY_ENV) {
   return result;
 }
 
-function expandExprInner(form, env) {
+function expandExprInner(form, env, use = "Legacy") {
   if (form === null || form === undefined) return form;
   if (form.type === 'atom' || form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
     return form;
   }
 
   if (form.type === 'cons') {
-    return { type: 'cons', car: expandExpr(form.car, env), cdr: expandExpr(form.cdr, env) };
+    return { type: 'cons', car: expandAt(form.car, env, "Legacy"), cdr: expandAt(form.cdr, env, "Legacy") };
   }
 
   if (form.type !== 'list') {
@@ -944,7 +1039,7 @@ function expandExprInner(form, env) {
   if (head.type === 'atom' && head.value === 'quasiquote') {
     if (form.values.length !== 2) throw new Error('quasiquote requires exactly one argument');
     const expanded = expandQuasiquote(form.values[1], 0);
-    return expandExpr(expanded, env);
+    return expandAt(expanded, env, use);
   }
 
   // Unquote/splice outside quasiquote
@@ -974,7 +1069,7 @@ function expandExprInner(form, env) {
       type: 'list',
       values: [{ type: 'atom', value: kernelForm }, ...form.values.slice(1)],
     });
-    return expandExpr(stripped, env);
+    return expandAt(stripped, env, use);
   }
 
   // Resolution gate (DD-60 D1 / DD-61 §A3). A head atom that is lexically bound
@@ -990,7 +1085,7 @@ function expandExprInner(form, env) {
     head.binding = 'ref';
     const values = [head];
     for (const sub of form.values.slice(1)) {
-      pushExpanded(values, expandExpr(sub, env));
+      pushExpanded(values, expandAt(sub, env, use === "Protected" ? "Protected" : "Value"));
     }
     return { type: 'list', values };
   }
@@ -998,16 +1093,20 @@ function expandExprInner(form, env) {
   // Fixed-point macro expansion
   // DD-37: try the new classifier first. If it handles the form, emit
   // the kernel form directly and skip macro expansion.
-  if (head.type === 'atom' && !isKernel(form)) {
-    const astNode = classifySurfaceForm(head.value, form.values.slice(1));
+  const surfaceHead = formHead(head);
+  if (surfaceHead !== null && !isKernel(form)) {
+    const astNode = classifySurfaceForm(surfaceHead, form.values.slice(1));
     if (astNode) {
       // Function-family bindings vanish into `=>`/`function` param lists at the
       // kernel level, so extend the value env at the surface level, before
       // lowering. All other binding forms re-expose their binders at the kernel
       // level (handled by the default branch's `scopePlan`).
-      const childEnv = FUNCTION_FAMILY.has(head.value)
+      const childEnv = FUNCTION_FAMILY.has(surfaceHead)
         ? extendEnv(env, bodyScopeNames(form))
         : env;
+      if (astNode.type === "Match" && use === "Statement") {
+        return emitSurfaceMatchStatement([astNode.expr, ...astNode.clauses], env);
+      }
       if (astNode.type === "BindGroup") {
         const out = [];
         let cur = env;
@@ -1019,7 +1118,7 @@ function expandExprInner(form, env) {
             { type: "Bind", args },
             { sym, array, gensym, isKeyword },
           );
-          pushExpanded(out, expandExpr(markKernel(kernel), cur));
+          pushExpanded(out, expandAt(markKernel(kernel), cur, "Legacy"));
           const names = bindingNamesInPattern(binding.nameNode).map((site) => site.name);
           if (names.length) cur = extendEnv(cur, names);
         }
@@ -1027,10 +1126,15 @@ function expandExprInner(form, env) {
       }
 
       const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword });
+      const kernelUse = use === "Protected"
+        ? "Protected"
+        : astNode.type === "Func"
+        ? (funcBodyProtectsStatementExit(astNode) ? "Protected" : "Statement")
+        : "Legacy";
       if (Array.isArray(kernel)) {
-        return kernel.map(k => expandExpr(markKernel(k), childEnv));
+        return kernel.map(k => expandAt(markKernel(k), childEnv, kernelUse));
       }
-      return expandExpr(markKernel(kernel), childEnv);
+      return expandAt(markKernel(kernel), childEnv, kernelUse);
     }
   }
 
@@ -1053,9 +1157,9 @@ function expandExprInner(form, env) {
       }
     }
     if (Array.isArray(current)) {
-      return current.map((r) => expandExpr(r, env));
+      return current.map((r) => expandAt(r, env, use));
     }
-    return expandExpr(current, env);
+    return expandAt(current, env, use);
   }
 
   // Dispatch table
@@ -1073,9 +1177,9 @@ function expandExprInner(form, env) {
           const args = form.values.slice(1);
           const result = entry.transform(args);
           if (Array.isArray(result)) {
-            return result.map((r) => expandExpr(r, env));
+            return result.map((r) => expandAt(r, env, use));
           }
-          return expandExpr(result, env);
+          return expandAt(result, env, use);
         }
 
         case 'expand-binding': {
@@ -1147,7 +1251,7 @@ function expandExprInner(form, env) {
   // introduced binding over exactly the child positions where it is lexically
   // visible (never an initializer / iterable / scrutinee) and hoists enclosing
   // declarations across siblings — the kernel-level half of resolution.
-  return { type: 'list', values: expandChildrenPlan(form, env) };
+  return { type: 'list', values: expandChildrenPlan(form, env, use) };
 }
 
 /**
@@ -1252,7 +1356,7 @@ function pass2ExpandAll(forms) {
   // the binding.
   let env = EMPTY_ENV;
   for (const form of forms) {
-    const expanded = expandExpr(form, env);
+    const expanded = expandAt(form, env, "Statement");
     if (expanded !== null && expanded !== undefined) {
       if (Array.isArray(expanded)) {
         result.push(...expanded.filter((e) => e !== null && e !== undefined));

@@ -5,6 +5,7 @@ use crate::ast::surface::{
     FuncClause, GenfuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
     TypeAnnotation,
 };
+use crate::codegen::names::to_js_identifier;
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
 use crate::reader::source_loc::Span;
@@ -12,6 +13,7 @@ use crate::semantic_roles::{
     BodyPolicy, ChildRole, ExprUse, child_use, function_body_use, is_statement_form,
     normalized_child_role, sequence_use,
 };
+use std::collections::HashSet;
 
 use super::context::{EmitterContext, ExprContext};
 use super::contracts::{
@@ -1684,8 +1686,13 @@ fn emit_func_single(
     let returns_void = clause.returns.as_ref().is_some_and(|r| r.name == "void");
     let returns_any = clause.returns.as_ref().is_some_and(|r| r.name == "any");
     let has_returns = clause.returns.is_some();
+    let protect_statement_match =
+        !ctx.strip_assertions && (has_post || (has_returns && !returns_any && !returns_void));
     // Function prefixes are statements; a non-void implicit tail is a value.
+    let saved_legacy_match = ctx.legacy_statement_match;
+    ctx.legacy_statement_match |= protect_statement_match;
     let body = emit_function_body(&clause.body, !returns_void, ctx, registry);
+    ctx.legacy_statement_match = saved_legacy_match;
 
     if has_post && !ctx.strip_assertions {
         // Capture result in gensym, check post, return
@@ -1912,9 +1919,12 @@ fn emit_func_multi(
 
         // DD-50.7: func body children are statements, not expressions
         let saved_body_ctx = ctx.expr_context;
+        let saved_legacy_match = ctx.legacy_statement_match;
+        ctx.legacy_statement_match |= !ctx.strip_assertions && clause.post.is_some();
         ctx.expr_context = ExprContext::Statement;
         let body = emit_body(&clause.body, ctx, registry);
         ctx.expr_context = saved_body_ctx;
+        ctx.legacy_statement_match = saved_legacy_match;
         let has_post = clause.post.is_some();
 
         if has_post && !ctx.strip_assertions {
@@ -2236,13 +2246,111 @@ fn emit_match(
     registry: &TypeRegistry,
 ) -> SExpr {
     match ctx.expr_context {
+        ExprContext::Statement if ctx.legacy_statement_match => {
+            emit_match_statement_legacy(target, clauses, ctx, registry)
+        }
         ExprContext::Statement => emit_match_statement(target, clauses, ctx, registry),
         _ => emit_match_iife(target, clauses, ctx, registry),
     }
 }
 
-/// Emit a match as a bare if/else chain (statement position — result unused).
+/// Emit a statement match as ordered candidates in the surrounding lexical
+/// region, preserving source return, break, and continue targets.
 fn emit_match_statement(
+    target: &SExpr,
+    clauses: &[MatchClause],
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> SExpr {
+    let mut reserved = HashSet::new();
+    reserve_emitted_names(target, &mut reserved);
+    for clause in clauses {
+        reserve_pattern_names(&clause.pattern, &mut reserved);
+        if let Some(guard) = &clause.guard {
+            reserve_emitted_names(guard, &mut reserved);
+        }
+        for body_expr in &clause.body {
+            reserve_emitted_names(body_expr, &mut reserved);
+        }
+    }
+
+    let target_var = next_unreserved_gensym(ctx, "target", &mut reserved);
+    let matched_var = next_unreserved_gensym(ctx, "matched", &mut reserved);
+    let target_binding = list(vec![
+        atom("const"),
+        atom(&target_var),
+        emit_in_context(target, ExprContext::Value, ctx, registry),
+    ]);
+    let mut statements = vec![
+        atom("block"),
+        target_binding,
+        list(vec![atom("let"), atom(&matched_var), bool_lit(false)]),
+    ];
+    let mut terminal = false;
+
+    for clause in clauses {
+        let (condition, bindings) = compile_pattern(&clause.pattern, &target_var, registry);
+        let saved_body_ctx = ctx.expr_context;
+        ctx.expr_context = ExprContext::Statement;
+        let body = emit_body(&clause.body, ctx, registry);
+        ctx.expr_context = saved_body_ctx;
+
+        let mut candidate = list(vec![atom("block")]);
+        let SExpr::List {
+            values: candidate_items,
+            ..
+        } = &mut candidate
+        else {
+            unreachable!();
+        };
+        candidate_items.extend(bindings);
+
+        let selection = list(vec![atom("="), atom(&matched_var), bool_lit(true)]);
+        let mut selected_items = vec![atom("block"), selection];
+        selected_items.extend(body);
+        let selected_body = list(selected_items);
+
+        if let Some(guard) = &clause.guard {
+            let guard = emit_in_context(guard, ExprContext::Value, ctx, registry);
+            candidate_items.push(list(vec![atom("if"), guard, selected_body]));
+        } else {
+            candidate_items.push(selected_body);
+        }
+
+        let unmatched = list(vec![atom("!"), atom(&matched_var)]);
+        let condition = if let Some(pattern_check) = condition {
+            list(vec![atom("&&"), unmatched, pattern_check])
+        } else {
+            unmatched
+        };
+        statements.push(list(vec![atom("if"), condition, candidate]));
+
+        if clause.guard.is_none() && pattern_is_irrefutable(&clause.pattern) {
+            terminal = true;
+            break;
+        }
+    }
+
+    if !terminal {
+        statements.push(list(vec![
+            atom("if"),
+            list(vec![atom("!"), atom(&matched_var)]),
+            list(vec![
+                atom("throw"),
+                list(vec![
+                    atom("new"),
+                    atom("Error"),
+                    str_lit("match: no matching pattern"),
+                ]),
+            ]),
+        ]));
+    }
+
+    list(statements)
+}
+
+/// Emit a match using the pre-I2 statement algorithm inside protected bodies.
+fn emit_match_statement_legacy(
     target: &SExpr,
     clauses: &[MatchClause],
     ctx: &mut EmitterContext,
@@ -2255,13 +2363,11 @@ fn emit_match_statement(
         emit_in_context(target, ExprContext::Value, ctx, registry),
     ]);
 
-    // Collect (condition, block) tuples; stop at wildcard
     let mut clause_data: Vec<(Option<SExpr>, SExpr)> = Vec::new();
     let mut wildcard_block: Option<SExpr> = None;
 
     for clause in clauses {
         let (condition, bindings) = compile_pattern(&clause.pattern, &target_var, registry);
-        // DD-50.7: match clause bodies are statement sequences
         let saved_body_ctx = ctx.expr_context;
         ctx.expr_context = ExprContext::Statement;
         let clause_body = emit_body(&clause.body, ctx, registry);
@@ -2313,6 +2419,81 @@ fn emit_match_statement(
     list(vec![atom("block"), target_binding, chain])
 }
 
+fn next_unreserved_gensym(
+    ctx: &mut EmitterContext,
+    prefix: &str,
+    reserved: &mut HashSet<String>,
+) -> String {
+    loop {
+        let candidate = ctx.gensym.next(prefix);
+        let emitted = to_js_identifier(&candidate);
+        if reserved.insert(emitted) {
+            return candidate;
+        }
+    }
+}
+
+fn reserve_emitted_names(expr: &SExpr, reserved: &mut HashSet<String>) {
+    match expr {
+        SExpr::Atom(_) => {
+            let name = expr.as_atom().unwrap_or_default();
+            reserved.insert(to_js_identifier(name));
+            if let Some((root, members)) = name.split_once(':') {
+                if !root.is_empty() {
+                    reserved.insert(to_js_identifier(root));
+                }
+                for member in members.split(':') {
+                    if !member.is_empty() {
+                        reserved.insert(to_js_identifier(member));
+                    }
+                }
+            } else {
+                reserved.insert(to_js_identifier(name));
+            }
+        }
+        SExpr::List { values, .. } => {
+            for child in values {
+                reserve_emitted_names(child, reserved);
+            }
+        }
+        SExpr::Cons { car, cdr, .. } => {
+            reserve_emitted_names(car, reserved);
+            reserve_emitted_names(cdr, reserved);
+        }
+        SExpr::Keyword { .. }
+        | SExpr::String { .. }
+        | SExpr::Number { .. }
+        | SExpr::Bool { .. }
+        | SExpr::Null { .. } => {}
+    }
+}
+
+fn reserve_pattern_names(pattern: &Pattern, reserved: &mut HashSet<String>) {
+    match pattern {
+        Pattern::Wildcard(_) => {}
+        Pattern::Literal(expr) => reserve_emitted_names(expr, reserved),
+        Pattern::Binding { name, .. } => {
+            reserved.insert(to_js_identifier(name));
+        }
+        Pattern::Constructor { name, bindings, .. } => {
+            reserved.insert(to_js_identifier(name));
+            for binding in bindings {
+                reserve_pattern_names(binding, reserved);
+            }
+        }
+        Pattern::Obj { pairs, .. } => {
+            for (key, value) in pairs {
+                reserved.insert(to_js_identifier(key));
+                reserve_pattern_names(value, reserved);
+            }
+        }
+    }
+}
+
+fn pattern_is_irrefutable(pattern: &Pattern) -> bool {
+    matches!(pattern, Pattern::Wildcard(_) | Pattern::Binding { .. })
+}
+
 /// Emit a match as an IIFE (value position — result needed).
 fn emit_match_iife(
     target: &SExpr,
@@ -2355,9 +2536,12 @@ fn emit_match_iife(
         let (condition, bindings) = compile_pattern(&clause.pattern, &target_var, registry);
         // DD-50.7: match clause bodies are statement sequences
         let saved_body_ctx = ctx.expr_context;
+        let saved_legacy_match = ctx.legacy_statement_match;
+        ctx.legacy_statement_match = true;
         ctx.expr_context = ExprContext::Statement;
         let clause_body = emit_sequence_body(&clause.body, ExprUse::Tail, ctx, registry);
         ctx.expr_context = saved_body_ctx;
+        ctx.legacy_statement_match = saved_legacy_match;
 
         let mut block_items = vec![atom("block")];
         block_items.extend(bindings);
@@ -2780,9 +2964,12 @@ fn emit_when_let_iife(
 
     // DD-50.7: when-let body is a statement sequence
     let saved_body_ctx = ctx.expr_context;
+    let saved_legacy_match = ctx.legacy_statement_match;
+    ctx.legacy_statement_match = true;
     ctx.expr_context = ExprContext::Statement;
     let emitted = emit_body(body_exprs, ctx, registry);
     ctx.expr_context = saved_body_ctx;
+    ctx.legacy_statement_match = saved_legacy_match;
     for (i, expr) in emitted.iter().enumerate() {
         if i == emitted.len() - 1 {
             then_block.push(list(vec![atom("return"), expr.clone()]));
@@ -3140,12 +3327,15 @@ fn emit_do(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) ->
             list(items)
         }
         _ => {
+            let saved_legacy_match = ctx.legacy_statement_match;
+            ctx.legacy_statement_match = true;
             let mut emitted = emit_sequence_body(
                 body,
                 ExprUse::from_expr_context(ctx.expr_context),
                 ctx,
                 registry,
             );
+            ctx.legacy_statement_match = saved_legacy_match;
             let is_async = any_current_await(&emitted);
             if is_async {
                 emitted = emitted.iter().map(box_current_scope_returns).collect();
