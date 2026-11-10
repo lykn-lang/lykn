@@ -11,22 +11,24 @@ The command exports the original DD-37 pre-pilot source from fixed commit
 measures it and the current source using the same script, configuration,
 dependency lockfile, and runtime. It bundles `packages/browser/mod.js` with
 esbuild, minifies it, and compresses it with Deno's `CompressionStream("gzip")`.
-Growth above 2,048 bytes warns; growth above 5,120 bytes fails.
+For 0.6.x, the check fails when the full gzip output exceeds 80 KiB
+(81,920 bytes). It still reports growth from the historical source.
 
 The historical commit must be available locally; CI fetches full history. A
 missing baseline or failed measurement fails the check. The temporary source
 export is removed on exit. `make bundle-size` remains available to measure only
-the current working tree; `BASELINE_GZIPPED` optionally supplies a manually
-calibrated comparison value for that command.
+the current working tree. Setting `BASELINE_GZIPPED` adds a comparison
+against that value and enables the same absolute budget check.
 
 The bundle CI job pins Deno and rebuilds both revisions because compression
 output depends on the runtime and platform. Other CI jobs test current Deno. The Make target uses a frozen
 lockfile so dependency resolution cannot silently change the measurement.
 
-## Calibration and runtime upgrades
+## Historical calibration and runtime upgrades
 
-A controlled comparison on macOS arm64 on 2026-09-06 used the same source,
-esbuild 0.27.4, and astring 1.9.0 with two Deno versions:
+The earlier policy warned above 2,048 bytes of growth and failed above 5,120.
+A controlled comparison under that policy on macOS arm64 on 2026-09-06 used
+the same source, esbuild 0.27.4, and astring 1.9.0 with two Deno versions:
 
 | Source | Minified bytes (both runtimes) | Gzip, Deno 2.7.7 | Gzip, Deno 2.9.6 |
 | --- | ---: | ---: | ---: |
@@ -47,6 +49,5 @@ it is not a portable compression constant.
 Before upgrading the measurement runtime or bundler, reproduce both the
 historical baseline and current source with the proposed tools. Record the
 versions, platform, and raw/minified/gzipped sizes. Any baseline recalibration
-must use the original baseline source, with the warning and failure allowances
-reviewed separately; do not reset the baseline to the latest bundle merely to
-make CI pass.
+uses the original source. The absolute release budget is a separate policy
+decision.

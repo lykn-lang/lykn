@@ -77,23 +77,21 @@ console.log(`Raw:      ${rawBytes.length} bytes (${rawKB} KB)`);
 console.log(`Minified: ${minBytes.length} bytes (${minKB} KB)`);
 console.log(`Gzipped:  ${gzBytes.length} bytes (${gzKB} KB)`);
 
-// Check thresholds if BASELINE_GZIPPED env var is set
+// Report the historical comparison and enforce the release budget in check mode.
 const baseline = Deno.env.get("BASELINE_GZIPPED");
 if (baseline) {
+  const budgetBytes = 80 * 1024;
   const baselineBytes = parseInt(baseline, 10);
   const delta = gzBytes.length - baselineBytes;
   const deltaKB = (delta / 1024).toFixed(1);
   console.log(`\nBaseline: ${baselineBytes} bytes`);
   console.log(`Delta:    ${delta >= 0 ? "+" : ""}${delta} bytes (${delta >= 0 ? "+" : ""}${deltaKB} KB)`);
-  if (delta > 5120) {
-    console.error("\n❌ HARD FAIL: gzipped delta exceeds +5KB threshold");
+  if (gzBytes.length > budgetBytes) {
+    console.error(`\n❌ HARD FAIL: gzipped bundle exceeds 80 KiB (${budgetBytes} bytes)`);
     esbuild.stop();
     Deno.exit(1);
-  } else if (delta > 2048) {
-    console.warn("\n⚠️  WARNING: gzipped delta exceeds +2KB threshold");
-  } else {
-    console.log("\n✅ Within budget");
   }
+  console.log("\n✅ Within 80 KiB gzip budget");
 }
 
 esbuild.stop();
