@@ -35,3 +35,22 @@ original current focused, full normal and cited gates follow
 only after release. Prepare actual prelaunch evidence and
 fresh roots while authoring. No product or evidence from the
 unexecuted first freeze is claimed.
+
+## Consolidated native lexical barrier before dispatch
+
+This addendum replaces the native byte-unchanged sentence above
+only for the exact first-operand block in `emit_direct_logical`
+in `crates/lykn-lang/src/emitter/forms.rs`. Current code extends
+the surrounding logical region with a raw first statement plan.
+Keep the private result `let` outside, and put the first actual
+statement plan in its own lexical block, as already required for
+header prefixes and done in public logical lowering. Reuse a single
+existing block as-is. A first ordinary Value remains one assignment,
+and all-value expression lowering and later branches stay unchanged.
+A tiny shared native block adapter may reuse the existing header
+wrapper. Preserve all other native code.
+
+Exact correction paths are forms.rs and the two expander copies.
+Use the updated prepared `/private/tmp/lykn-s16-cdc.B22ECt81/correction02-message.txt`
+only after reading its body. Same correction 02, original
+finite proof, no fixture change or further scope.
