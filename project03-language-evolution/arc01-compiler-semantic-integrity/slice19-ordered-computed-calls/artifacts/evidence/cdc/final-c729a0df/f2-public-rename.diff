@@ -1,0 +1,15 @@
+--- /private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/public-focus/evidence/public-computed-member-no-prefix-generated.js	2026-11-10 10:52:32
++++ /private/tmp/lykn-s19-cdc-independent.KFtwRbT8/evidence/public/public-computed-member-no-prefix-generated.js	2026-11-10 11:04:51
+@@ -2,10 +2,10 @@
+   return get(1, 2)(3);
+ }
+ const bound = (first, second) => third => [first, second, third];
+-const receiver = {
++const pureReceiver = {
+   readEntry: n => n + 1
+ };
+ function callPure(receiver) {
+   return receiver["readEntry"](3);
+ }
+-console.log(JSON.stringify([callBound(bound), callPure(receiver)]));
++console.log(JSON.stringify([callBound(bound), callPure(pureReceiver)]));

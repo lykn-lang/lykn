@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["check", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/computed-member-no-prefix.lykn"]
+cwd=Some("/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/native-focused/tmp/.tmpqqvWvA")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/native-focused/tmp/.tmpqqvWvA/xdg-cache")
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/native-focused/xdg")
+TMPDIR=Some("/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/native-focused/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/native-focused/evidence")

@@ -175,3 +175,9 @@ All existing CV and CI-04 statuses remain.
 owns actual computed member evaluation and throw-order proof.
 Assignment, iterator and special reference work stays separate.
 All CV/CI statuses retain their prior dispositions.
+
+2026-11-10 [S19 acceptance](../slice19-ordered-computed-calls/cdc-verification.md)
+closes bounded computed receiver/key execution on both backends.
+Further private temporary naming, assignment, iterator and
+special reference obligations retain I3 owners. All existing
+CV/CI dispositions remain.

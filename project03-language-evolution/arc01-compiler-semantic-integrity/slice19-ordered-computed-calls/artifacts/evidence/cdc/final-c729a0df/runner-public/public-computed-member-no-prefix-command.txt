@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s19-cdc-independent.KFtwRbT8/public/tmp/f9888bf7fd4e89f7/computed-member-no-prefix.js"
+  ],
+  "cwd": "/private/tmp/lykn-s19-cdc-independent.KFtwRbT8/public/tmp/f9888bf7fd4e89f7",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/computed-member-no-prefix.lykn",
+  "modulePath": "/private/tmp/lykn-s19-cdc-independent.KFtwRbT8/public/tmp/f9888bf7fd4e89f7/computed-member-no-prefix.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s19-cdc-independent.KFtwRbT8/public/xdg",
+    "TMPDIR": "/private/tmp/lykn-s19-cdc-independent.KFtwRbT8/public/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s19-cdc-independent.KFtwRbT8/evidence/public"
+  }
+}

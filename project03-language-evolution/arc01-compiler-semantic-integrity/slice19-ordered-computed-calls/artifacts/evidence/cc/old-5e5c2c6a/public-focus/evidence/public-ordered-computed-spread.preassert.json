@@ -1,0 +1,1 @@
+{"message":null,"output":"function mixedComputedSpread(receiver, items) {\n  return receiver[(() => {\n    return 7;\n    return \"method\";\n  })()](...items);\n}\n"}

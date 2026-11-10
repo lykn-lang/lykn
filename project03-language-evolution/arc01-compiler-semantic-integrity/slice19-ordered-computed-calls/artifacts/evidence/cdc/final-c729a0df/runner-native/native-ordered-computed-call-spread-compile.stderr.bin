@@ -1,0 +1,3 @@
+1:7: warning: unused binding 'mixed-computed-spread'
+  suggestion: prefix with underscore: _mixed-computed-spread
+2:3: error: ordered computed member call with spread and lifted operands is not supported

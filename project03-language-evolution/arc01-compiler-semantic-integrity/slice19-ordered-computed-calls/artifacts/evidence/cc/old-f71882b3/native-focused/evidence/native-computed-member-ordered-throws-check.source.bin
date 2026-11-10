@@ -1,0 +1,36 @@
+(bind trace (array))
+(bind getter-error (new Error "getter"))
+(bind argument-error (new Error "argument"))
+(func actual-method :args (:any earlier :any middle :any later) :returns :any :body
+  (trace:push "call")
+  (array this:label middle))
+(func make-target :args (:any mode) :returns :any :body
+  (bind target (obj :label "receiver"))
+  (Object:defineProperty target "method"
+    (obj :get (fn ()
+      (trace:push "getter")
+      (if (= mode 1) (throw getter-error))
+      actual-method)))
+  target)
+(func invoke-computed :args (:any mode) :returns :any :body
+  (bind key (obj))
+  (Object:defineProperty key Symbol:toPrimitive
+    (obj :value (fn (:any hint) (trace:push hint) "method")))
+  (bind answer
+    ((get
+       (do (trace:push "base") (make-target mode))
+       (do (trace:push "key") (if (= mode 3) (return 93)) key))
+     (trace:push "first")
+     (do (trace:push "arg") (if (= mode 2) (throw argument-error)) 8)
+     (trace:push "last")))
+  (trace:push "after")
+  answer)
+(func observe :args (:any mode) :returns :any :body
+  (try
+    (return (invoke-computed mode))
+    (catch problem
+      (return (array (= problem getter-error)
+                     (= problem argument-error)
+                     (instanceof problem TypeError))))))
+(console:log (JSON:stringify
+  (array (observe 0) (observe 1) (observe 2) (observe 3) trace)))

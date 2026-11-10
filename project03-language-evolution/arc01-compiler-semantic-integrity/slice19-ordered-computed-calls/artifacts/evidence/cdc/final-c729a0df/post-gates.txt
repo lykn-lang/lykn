@@ -1,0 +1,14 @@
+c729a0df3547336307795fd8d345a3562902e3f2
+4a0b3a56e55710f1762d2142ce673c0189d81433
+6c9dbd5c38f16674c7b95315bd32bfee9fd131e5
+d9ce3a36e164252740d9ac29f712c85add99a0de
+9f602bcb664c7114d702380fd454885647c483d6b526b1a17ea8cf4a12b4c0b8  bin/lykn
+9f602bcb664c7114d702380fd454885647c483d6b526b1a17ea8cf4a12b4c0b8  target/release/lykn
+ea922178b5edade1848b87c755e75cb1e21f9045e4b80fe6a69dc896ddd3b810  /Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+aefe2bd341b2c2d93959ce31e69711134a0604bb14de829a5956cd5a7cc214ba  packages/lang/expander.js
+aefe2bd341b2c2d93959ce31e69711134a0604bb14de829a5956cd5a7cc214ba  crates/lykn-lang/embedded/packages/lang/expander.js
+aefe2bd341b2c2d93959ce31e69711134a0604bb14de829a5956cd5a7cc214ba  /private/tmp/lykn-s19-cdc-independent.KFtwRbT8/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js
+0
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)

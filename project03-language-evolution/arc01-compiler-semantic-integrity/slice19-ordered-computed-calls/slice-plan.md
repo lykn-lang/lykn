@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice19-ordered-computed-calls
-status: in-progress
+status: closed
 depends-on: [slice18-ordered-member-calls]
 ---
 
@@ -40,3 +40,7 @@ transport, lifted direct eval and other reference/special shapes
 retain separate I3 dispositions. No changed protected host policy,
 I4, K or release propagation. All existing CV and CI statuses
 remain. This new source increment starts at zero refinements.
+
+2026-11-10 [independent acceptance](cdc-verification.md) closes
+all four CM rows at `c729a0df`. Four refinements were used.
+See [closing report](closing-report.md) and [retrospective](cdc-retrospective.md).

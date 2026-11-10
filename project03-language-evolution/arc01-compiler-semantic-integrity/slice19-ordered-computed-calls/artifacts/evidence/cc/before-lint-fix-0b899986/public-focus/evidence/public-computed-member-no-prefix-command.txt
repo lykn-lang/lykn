@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/public-focus/tmp/1590831ae8878667/computed-member-no-prefix.js"
+  ],
+  "cwd": "/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/public-focus/tmp/1590831ae8878667",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/computed-member-no-prefix.lykn",
+  "modulePath": "/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/public-focus/tmp/1590831ae8878667/computed-member-no-prefix.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/public-focus/xdg",
+    "TMPDIR": "/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/public-focus/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-0b899986/public-focus/evidence"
+  }
+}

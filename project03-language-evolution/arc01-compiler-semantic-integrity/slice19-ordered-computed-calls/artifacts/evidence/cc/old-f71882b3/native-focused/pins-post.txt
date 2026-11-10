@@ -1,0 +1,16 @@
+commit=f71882b33f3da6367ea1f269746679f9fb64a5eb
+tree=17a4f3ce3505859d75b89d8cb4a9c58b9b1b4f7c
+branch=codex/completion-value-flow
+status=
+--- source/test/producer pins ---
+ede85f2b9809f9574bbd25838c2724453b4d8a7b4da3b2f31ff982d693c883f3  crates/lykn-lang/src/emitter/forms.rs
+cfabe6a33a619725efef42b2c10cf2a93c70fa9415db3a95c3f81384f4ca0260  packages/lang/expander.js
+cfabe6a33a619725efef42b2c10cf2a93c70fa9415db3a95c3f81384f4ca0260  crates/lykn-lang/embedded/packages/lang/expander.js
+cf546fda440473edc9a0565d83e36bd2acb4d16777a6cfcb55195dd5a77b5306  crates/lykn-cli/src/main.rs
+aa224069f79ff2170630d244154d493346a2d539df1a2a6b370fff40059f2ffb  crates/lykn-cli/tests/semantic_roles.rs
+7d618af4712e29af10ed2280e51ec5715351982e515cb640dd4b5c5e94e1e0e0  test/forms/semantic-roles.test.js
+d41099548be2e055acbf94e5db413dd833741500c44359e8b09ad420ff4a30ed  test/fixtures/semantic-roles/computed-member-ordered-throws.lykn
+49e4af0480d1fc8b0c2dfe563d79f2c6963ed832583da826135e25a827fa80fe  test/fixtures/semantic-roles/computed-member-no-prefix.lykn
+ddca9be40abb3791330e45a1c44c930f03a1df714fb07fb1d17800feab62002c  target/debug/lykn
+b9d6b940c3d9200067a81738a91f8ac778639c82db02ad07ca65e4e881f4d085  target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno

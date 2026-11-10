@@ -1,0 +1,26 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.1M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+[1;32m✓ Format check passed[0m
+[1;36m• Checking lykn syntax...[0m
+[1;32m✓ lykn syntax check passed[0m
+[1;36m• Running lykn lint (source anti-patterns)...[0m
+test/fixtures/semantic-roles/computed-member-no-prefix.lykn:7:29: warning [shadowing]: `receiver` shadows a binding of the same name in an enclosing scope
+  suggestion: rename the inner binding — a distinct name avoids silently masking the outer one

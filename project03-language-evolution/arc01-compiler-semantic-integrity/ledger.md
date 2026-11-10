@@ -211,3 +211,9 @@ effects. Remaining I3 and I4 keep CV-04 and CI-04 open.
 opens the genuine computed receiver/key I3 tranche on clean
 `e9eeee3d`, including source throws and transfer from the key.
 The earlier static member and CI test acceptance remains separate.
+
+2026-11-10 [S19 acceptance](slice19-ordered-computed-calls/cdc-verification.md)
+closes actual computed member order and throw preservation at
+`c729a0df`. The separately observed anonymous temporary naming
+issue, assignment, iterator and special reference obligations
+remain. CV-04 and CI-04 stay open.

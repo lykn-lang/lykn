@@ -1,0 +1,15 @@
+source_commit=c729a0df3547336307795fd8d345a3562902e3f2
+source_tree=4a0b3a56e55710f1762d2142ce673c0189d81433
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+program_sha256=710a01967c1c1fdeab0b2bb658ca0c627cf717b390d01a98d00afc14d82fa67c
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-c729a0df/native-focused/evidence
+TMPDIR=/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-c729a0df/native-focused/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-c729a0df/native-focused/xdg
+npm_config_cache=/private/tmp/lykn-s19-cdc.OPnp9nfQ/current-c729a0df/native-focused/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+stdout=stdout.raw
+stderr=stderr.raw
+exit_status=status.txt
