@@ -47,3 +47,9 @@ Initial measured old baseline at `28ed061d` matches planned native
 reds and public F1/F3. F2 hit a separate duplicate macro fixture
 setup failure. Isolate only that public fixture's macro state and
 keep the same tested source bytes.
+
+2026-11-10 [refinement 03](cc-prompt-iteration03.md), active.
+Exact nine-path production freeze `afdb7d77` passed static review.
+The first grouped build exited 101 with E0308 at the native
+object-property list pattern. No native tests ran. Correct only
+the pattern and retain the separate unchanged public condition.
