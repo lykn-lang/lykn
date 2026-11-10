@@ -1090,9 +1090,9 @@ fn is_direct_lexical_call_head(head: &SExpr) -> bool {
 }
 
 fn is_normalized_spread_argument(value: &SExpr) -> bool {
-    value.as_list().is_some_and(|values| {
-        values.len() == 2 && values[0].as_form_head() == Some("spread")
-    })
+    value
+        .as_list()
+        .is_some_and(|values| values.first().and_then(SExpr::as_form_head) == Some("spread"))
 }
 
 /// Preserve the callee and earlier arguments when a lexical call needs direct
@@ -1386,7 +1386,7 @@ fn emit_direct_tail(
     };
     if let Some(head) = values
         .first()
-        .filter(|head| is_direct_lexical_call_head(*head))
+        .filter(|head| is_direct_lexical_call_head(head))
     {
         return emit_direct_lexical_call(
             head,
