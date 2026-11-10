@@ -41,3 +41,9 @@ all test/build launches. Fixture inputs and oracles stay frozen.
 The [excluded process incident](artifacts/evidence/cc/initial-raw-handoff.txt)
 records the unauthorized read-only Python invocation during authoring.
 Acceptance uses independent native Git/blob checks.
+
+2026-11-09 [refinement 02](cc-prompt-iteration02.md), active.
+Initial measured old baseline at `28ed061d` matches planned native
+reds and public F1/F3. F2 hit a separate duplicate macro fixture
+setup failure. Isolate only that public fixture's macro state and
+keep the same tested source bytes.

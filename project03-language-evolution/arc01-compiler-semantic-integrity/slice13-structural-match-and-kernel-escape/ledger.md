@@ -1,5 +1,12 @@
 # Structural match and nested escape ledger
 
+Old `28ed061d` actual native 19/22 and the expected private unknown
+red, with tagged-call preservation green. Public 17/20 fixture
+steps and all five independent negatives passed. Expected F1/F3
+were red, alongside F2 duplicate macro state.
+[Refinement 02](cc-prompt-iteration02.md) preserves the baseline
+and isolates only the repeated public fixture.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | MK-01 | Public reserved-name walk reads genuine match structure and retains true diagnostics | Exact original F1, pattern/guard/body and diagnostic-order negatives | correctness-grade | NE-C16/DD61 | open | artifacts/fixtures.md | Canonical and embedded parity |
