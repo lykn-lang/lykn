@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp/ed88e61c8a1681f0/bind-consumed-name-hygiene.js"
+  ],
+  "cwd": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp/ed88e61c8a1681f0",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/bind-consumed-name-hygiene.lykn",
+  "modulePath": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp/ed88e61c8a1681f0/bind-consumed-name-hygiene.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/xdg",
+    "TMPDIR": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/evidence/public"
+  }
+}

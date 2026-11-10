@@ -9,6 +9,15 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Direct bind completion accepted — 2026-11-10
+
+[S15](slice15-consumed-bind-completion/cdc-verification.md)
+independently closes DB-01 through DB-04 at `0526910d`.
+Transfer-bearing value headers and lazy operands remain the
+next I2 delivery. CV-04 and CI-04 remain open for composition.
+Local release remains `31893710`.
+
+
 ## Hygienic direct bind opened — 2026-11-10
 
 [S15](slice15-consumed-bind-completion/slice-plan.md) follows

@@ -1,0 +1,15 @@
+phase=old-baseline-direct-native31
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+producer=/Users/oubiwann/.cargo/bin/cargo test -p lykn-cli --test semantic_roles --no-run; exit=0; source commit 22f3b950eba5b0ab2fd9303c78296944e8794339
+test_binary_sha256=1856d4fd3e95f5057bf83b62076e4b0754f99b55cfcc831131b12a39bb119fa6
+cli=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn
+cli_sha256=d14f4419db1fd3411c723dca119dbce3834db04c59daf47338e50c250380f569
+LYKN_TEST_DENO=/opt/homebrew/bin/deno; sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+DENO_DIR=/Users/oubiwann/Library/Caches/deno (fixed existing cache)
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/evidence/native
+TMPDIR=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/native31/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/native31/xdg-cache
+npm_config_cache=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/native31/npm-cache
+PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+HOME=/Users/oubiwann; CARGO_HOME=/Users/oubiwann/.cargo; RUSTUP_HOME=/Users/oubiwann/.rustup; RUSTC=/Users/oubiwann/.cargo/bin/rustc

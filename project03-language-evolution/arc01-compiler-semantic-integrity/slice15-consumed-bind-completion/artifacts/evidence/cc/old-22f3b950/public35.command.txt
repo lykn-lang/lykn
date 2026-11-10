@@ -1,0 +1,15 @@
+phase=old-baseline-public-parent-28-plus-seven-controls
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/opt/homebrew/bin/deno test --config project.json -A test/forms/semantic-roles.test.js
+tool=/opt/homebrew/bin/deno; deno 2.9.6 stable aarch64-apple-darwin; sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+config=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json (hash recorded in public35.config.sha256)
+DENO_DIR=/Users/oubiwann/Library/Caches/deno (fixed existing cache)
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/evidence/public
+TMPDIR=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/public35/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/public35/xdg-cache
+npm_config_cache=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/public35/npm-cache
+PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+LYKN_TEST_DENO unset
+source_commit=22f3b950eba5b0ab2fd9303c78296944e8794339
+tree=b2f711998b43d053db5c6d19a0d853551a8935e5
+The semantic-roles.test.js child flags remain unchanged: --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt.

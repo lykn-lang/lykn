@@ -1,0 +1,33 @@
+0526910d5241c99ffe865c6b2c1c62414e4fa50f
+a7a73bfc3bca5d98a1e44978fb733a835ca7975b
+codex/completion-value-flow
+crates/lykn-cli/tests/semantic_roles.rs
+crates/lykn-lang/embedded/packages/lang/expander.js
+crates/lykn-lang/src/ast/sexpr.rs
+crates/lykn-lang/src/emitter/context.rs
+crates/lykn-lang/src/emitter/forms.rs
+crates/lykn-lang/src/emitter/mod.rs
+docs/guides/00-lykn-surface-forms.md
+packages/lang/expander.js
+test/fixtures/semantic-roles/bind-consumed-early-return.lykn
+test/fixtures/semantic-roles/bind-consumed-group-match.lykn
+test/fixtures/semantic-roles/bind-consumed-loop-transfer.lykn
+test/fixtures/semantic-roles/bind-consumed-name-hygiene.lykn
+test/fixtures/semantic-roles/bind-consumed-native-typed.lykn
+test/forms/dd-50.test.js
+test/forms/dd-50_test.lykn
+test/forms/semantic-roles.test.js
+cargo 1.97.0 (c980f4866 2026-06-30)
+rustc 1.97.0 (2d8144b78 2026-07-07)
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269  project.json
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  packages/lang/expander.js
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  crates/lykn-lang/embedded/packages/lang/expander.js
+1f0be6cc0d99aa90c6fd62995f5add02512e914df5a47d3ae983d89f424aadcd  test/fixtures/semantic-roles/bind-consumed-early-return.lykn
+602f81b995427b12d047e6cd2ee58e4778c90620d424849b136ca627870ea37d  test/fixtures/semantic-roles/bind-consumed-group-match.lykn
+61bf52da430c98d6df2fa96a315b4c103962a0e50ca5e0f8489dd7971af01d32  test/fixtures/semantic-roles/bind-consumed-loop-transfer.lykn
+d0a3bb0d4665abd7f2c0211b5f8a97b1ae047f858c94cfebafab7371d691ac63  test/fixtures/semantic-roles/bind-consumed-name-hygiene.lykn
+43ac3100a3ba975a67a8ab8f1a52877267394cdea5dc231a270a3685f75d3249  test/fixtures/semantic-roles/bind-consumed-native-typed.lykn

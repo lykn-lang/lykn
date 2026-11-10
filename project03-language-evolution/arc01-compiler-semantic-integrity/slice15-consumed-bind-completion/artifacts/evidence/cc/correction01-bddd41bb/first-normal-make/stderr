@@ -1,0 +1,25 @@
+    Finished `release` profile [optimized] target(s) in 0.08s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
+test/surface/func_test.lykn: ok (12 top-level expressions)
+test/surface/class_test.lykn: ok (21 top-level expressions)
+test/surface/contract_predicates_test.lykn: ok (3 top-level expressions)
+test/surface/js-interop_test.lykn: ok (20 top-level expressions)
+test/surface/immutable-updates_test.lykn: ok (17 top-level expressions)
+test/surface/threading_test.lykn: ok (14 top-level expressions)
+test/surface/some-threading_test.lykn: ok (9 top-level expressions)
+test/surface/match_test.lykn: ok (13 top-level expressions)
+test/surface/conditional-binding_test.lykn: ok (11 top-level expressions)
+test/surface/cell_test.lykn: ok (15 top-level expressions)
+test/surface/type_test.lykn: ok (20 top-level expressions)
+test/surface/language-surface-runway_test.lykn: ok (6 top-level expressions)
+test/surface/class-runtime_test.lykn: ok (19 top-level expressions)
+test/surface/equality_test.lykn: ok (30 top-level expressions)
+test/surface/genfunc_test.lykn: ok (13 top-level expressions)
+test/surface/func-destructuring_test.lykn: ok (45 top-level expressions)
+test/surface/obj_test.lykn: ok (12 top-level expressions)
+test/surface/integration_test.lykn: ok (8 top-level expressions)
+test/surface/fn-lambda_test.lykn: ok (17 top-level expressions)
+test/surface/bind_test.lykn: ok (13 top-level expressions)
+test/surface/kernel-in-surface_test.lykn: ok (32 top-level expressions)
+test/forms/dd-50_test.lykn: cannot lint (parse error): unterminated list at 49:1
+make: *** [lint] Error 1

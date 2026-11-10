@@ -1,0 +1,6 @@
+(bind trace (array))
+(func typed-pick :args (:any flag) :returns :any :body
+  (bind :number x (do (if flag (return "early")) 9))
+  (trace:push x)
+  x)
+(console:log (JSON:stringify (array (typed-pick true) (typed-pick false) trace)))

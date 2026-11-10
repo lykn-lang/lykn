@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp/a59f5c13bf299c78/bind-consumed-group-match.js"
+  ],
+  "cwd": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp/a59f5c13bf299c78",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/bind-consumed-group-match.lykn",
+  "modulePath": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp/a59f5c13bf299c78/bind-consumed-group-match.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": "/opt/homebrew/bin/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/xdg",
+    "TMPDIR": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/public/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/evidence/public"
+  }
+}

@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Illegal continue statement: no surrounding iteration statement
+        continue;
+        ^
+    at <anonymous> (file:///private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/native31/tmp/.tmpPyJfjl/bind-consumed-loop-transfer.js:6:9)

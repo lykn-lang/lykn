@@ -1,5 +1,11 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-10 [S15](slice15-consumed-bind-completion/cdc-verification.md)
+independently closes four direct-bind rows at `0526910d`.
+Remaining headers/lazy operands and I3/I4 composition keep
+CV-04 and CI-04 open. Release remains `31893710`.
+
+
 2026-11-10 [S14](slice14-consumed-return-completion/cdc-verification.md) independently accepts
 four direct consumed-return rows at task `84bc88b6`.
 CI-04 and CV-04 remain open through wider I2 and composition.

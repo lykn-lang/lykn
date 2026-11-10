@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: bind: binding 'x' expected number, got string
+    throw new TypeError("bind: binding 'x' expected number, got " + typeof x);
+          ^
+    at typedPick (file:///private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/native31/tmp/.tmp1uASJu/bind-consumed-native-typed.js:10:11)
+    at file:///private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/native31/tmp/.tmp1uASJu/bind-consumed-native-typed.js:15:29

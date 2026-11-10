@@ -2,11 +2,16 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice15-consumed-bind-completion
-status: in-progress
+status: completed
 depends-on: [slice14-consumed-return-completion]
 ---
 
 # S15 — hygienic direct bind completion
+
+[Independent acceptance](cdc-verification.md) closes all
+four finite DB rows at task `0526910d`. Two source refinements
+were used. Local release remains `31893710`. See the
+[closing report](closing-report.md) and [CDC retrospective](cdc-retrospective.md).
 
 The Operator's remaining I2 authorization continues in standard
 Autonomous Mode, Luna 6 High CC and separate Sol 6.1 High CDC.

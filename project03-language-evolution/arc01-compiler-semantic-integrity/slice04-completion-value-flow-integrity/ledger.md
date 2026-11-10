@@ -1,5 +1,11 @@
 # S04 completion/value-flow ledger
 
+2026-11-10 [S15](../slice15-consumed-bind-completion/cdc-verification.md)
+independently closes four direct-bind rows at task `0526910d`.
+CV-02 retains acceptance. The other five CV rows stay open
+through the remaining I2/I3/I4 work and composition.
+
+
 2026-11-10 [S15](../slice15-consumed-bind-completion/slice-plan.md)
 opens direct ordinary bind completion from accepted `84bc88b6`.
 The next I2 increment retains lazy logical destinations and

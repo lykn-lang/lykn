@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/cites/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/cites/xdg' 'npm_config_cache=/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/cites/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/usr/bin/make' 'check-cited-paths'
+stdout=/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/cites/stdout.raw
+stderr=/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/cites/stderr.raw
+exit_status=/private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/cites/exit-status.txt

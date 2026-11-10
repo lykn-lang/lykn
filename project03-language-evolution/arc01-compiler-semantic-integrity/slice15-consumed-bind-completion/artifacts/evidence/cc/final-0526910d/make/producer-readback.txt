@@ -1,0 +1,56 @@
+terminal status=0
+
+Gate summaries:
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:4:[1;32m✓ All dependencies up to date[0m
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:6:[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:19:[1;32m✓ Clippy passed[0m
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:21:[1;32m✓ Format check passed[0m
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:23:[1;32m✓ lykn syntax check passed[0m
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:25:[1;32m✓ lykn lint passed[0m
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:1832:[1;32m✓ Rust tests passed[0m
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:2045:DD-50 Rule 1c: direct bind preserves statement-branch control ... ok (783µs)
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:3075:DD-50: direct bind preserves statement-branch control ... ok (976µs)
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:5029:[1;32m✓ Documentation tests passed[0m
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/stdout:5031:[1;32m✓ All checks passed (build + lint + test)[0m
+
+Post-Make producer pins:
+target/release/lykn size=3188288 mtime=2026-11-10 03:30:05 -0600
+3162415db776ba367d275fae64a80ca12a849cc4f53245a94f3737e36213ee19  target/release/lykn
+bin/lykn size=3188288 mtime=2026-11-10 03:38:57 -0600
+3162415db776ba367d275fae64a80ca12a849cc4f53245a94f3737e36213ee19  bin/lykn
+target/lykn/build/lang/expander.js size=86904 mtime=2026-11-10 03:19:40 -0600
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  target/lykn/build/lang/expander.js
+packages/lang/expander.js size=86904 mtime=2026-11-10 03:19:40 -0600
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  packages/lang/expander.js
+crates/lykn-lang/embedded/packages/lang/expander.js size=86904 mtime=2026-11-10 03:19:58 -0600
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  crates/lykn-lang/embedded/packages/lang/expander.js
+
+Comparisons:
+bin/lykn == target/release/lykn
+fresh target/lykn/build/lang/expander.js == canonical
+fresh materialized == embedded mirror
+canonical == embedded mirror
+
+Source pin after Make:
+0526910d5241c99ffe865c6b2c1c62414e4fa50f
+a7a73bfc3bca5d98a1e44978fb733a835ca7975b
+actual fresh XDG materialization:
+/private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/xdg-cache/lykn/embedded/0.6.0/packages/lang/expander.js size=86904 mtime=2026-11-10 03:38:53 -0600
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  /private/tmp/lykn-s15-direct-bind-correction01-m0Wt5YRs/final-make-check/xdg-cache/lykn/embedded/0.6.0/packages/lang/expander.js
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  packages/lang/expander.js
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  crates/lykn-lang/embedded/packages/lang/expander.js
+fresh XDG embedded expander == canonical
+fresh XDG embedded expander == repository mirror
+
+Built package copy (readback only):
+target/lykn/build/lang/expander.js size=86904 mtime=2026-11-10 03:19:40 -0600 birth=1793931079
+target/lykn/build/lang/expander.js == canonical
+target/lykn/build/lang/expander.js == repository mirror
+target/lykn/build/lang/expander.js mtime predates this Make launch; this is byte equality for the build copy, not a claim of a newly written target copy.
+
+Release/bin producer comparison:
+target/release/lykn size=3188288 mtime=2026-11-10 03:30:05 -0600
+bin/lykn size=3188288 mtime=2026-11-10 03:38:57 -0600
+3162415db776ba367d275fae64a80ca12a849cc4f53245a94f3737e36213ee19  target/release/lykn
+3162415db776ba367d275fae64a80ca12a849cc4f53245a94f3737e36213ee19  bin/lykn
+bin/lykn == target/release/lykn

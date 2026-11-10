@@ -1,0 +1,12 @@
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+3162415db776ba367d275fae64a80ca12a849cc4f53245a94f3737e36213ee19  bin/lykn
+3162415db776ba367d275fae64a80ca12a849cc4f53245a94f3737e36213ee19  target/release/lykn
+c631d1359a2c95dd32e539ab3ba76fbb80fcc6db08d51fb990838c6ec90afd65  target/debug/lykn
+9e5e42ffb1836eec72ffdbcc0e7ef1022a52fdfacc00d8ff50eafecc35919eb9  target/debug/deps/semantic_roles-cb18f482652d85e9
+2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74  /opt/homebrew/bin/deno
+0526910d5241c99ffe865c6b2c1c62414e4fa50f
+a7a73bfc3bca5d98a1e44978fb733a835ca7975b
+31893710bbba8999e936fade2d79ae6f6aee929c
+3a5e2505d991896016fb1a20070487325c37d19c
+release/0.6.x

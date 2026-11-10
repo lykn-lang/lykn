@@ -1,0 +1,16 @@
+phase=current-pinned-native31
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9 --nocapture
+harness_sha256=9e5e42ffb1836eec72ffdbcc0e7ef1022a52fdfacc00d8ff50eafecc35919eb9  /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9
+cli=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn
+cli_sha256=5de7a91a8b5ed2fbddeeb99581537bc4d39c9699e561184cd3053f7b2f8a2095  target/debug/lykn
+source=dcd007f574c96622ee0eb8f990903edf5fbe9e09 tree=1bd3d76b07154d1a6ee25ff13747ba9d014b5559
+PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+HOME=/Users/oubiwann
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO unset
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s15-direct-bind-zqq6BJfM/evidence/native
+TMPDIR=/private/tmp/lykn-s15-direct-bind-zqq6BJfM/native31/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s15-direct-bind-zqq6BJfM/native31/xdg-cache
+npm_config_cache=/private/tmp/lykn-s15-direct-bind-zqq6BJfM/native31/npm-cache
+child runtime flags=run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt

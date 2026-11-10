@@ -1,0 +1,17 @@
+phase=old-baseline-cargo-test-no-run
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/.cargo/bin/cargo test -p lykn-cli --test semantic_roles --no-run
+tool=/Users/oubiwann/.cargo/bin/cargo; cargo -Vv recorded at intake as cargo 1.97.0 (c980f4866 2026-06-30)
+rustc=/Users/oubiwann/.cargo/bin/rustc; rustc -Vv recorded at intake as rustc 1.97.0 (2d8144b78 2026-07-07)
+PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+HOME=/Users/oubiwann
+CARGO_HOME=/Users/oubiwann/.cargo
+RUSTUP_HOME=/Users/oubiwann/.rustup
+RUSTC=/Users/oubiwann/.cargo/bin/rustc
+TMPDIR=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/cargo-test/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/cargo-test/xdg-cache
+npm_config_cache=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/cargo-test/npm-cache
+DENO_DIR=/private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/deno-dir
+unset LYKN_TEST_DENO, LYKN_SEMANTIC_ROLE_EVIDENCE_DIR
+source_commit=22f3b950eba5b0ab2fd9303c78296944e8794339
+tree=b2f711998b43d053db5c6d19a0d853551a8935e5

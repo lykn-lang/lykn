@@ -1,0 +1,9 @@
+native bind-consumed-early-return check/compile/runtime 0, exact JSON+LF, empty stderr, original source, JS present and matches CC, DTS absent
+public bind-consumed-early-return runtime 0, exact JSON+LF, empty stderr, original source and JS matches CC
+native bind-consumed-group-match check/compile/runtime 0, exact JSON+LF, empty stderr, original source, JS present and matches CC, DTS absent
+public bind-consumed-group-match runtime 0, exact JSON+LF, empty stderr, original source and JS matches CC
+native bind-consumed-loop-transfer check/compile/runtime 0, exact JSON+LF, empty stderr, original source, JS present and matches CC, DTS absent
+public bind-consumed-loop-transfer runtime 0, exact JSON+LF, empty stderr, original source and JS matches CC
+native bind-consumed-name-hygiene check/compile/runtime 0, exact JSON+LF, empty stderr, original source, JS present and matches CC, DTS absent
+public bind-consumed-name-hygiene runtime 0, exact JSON+LF, empty stderr, original source and JS matches CC
+native bind-consumed-native-typed check/compile/runtime 0, exact JSON+LF, empty stderr, original source, JS present and matches CC, DTS absent

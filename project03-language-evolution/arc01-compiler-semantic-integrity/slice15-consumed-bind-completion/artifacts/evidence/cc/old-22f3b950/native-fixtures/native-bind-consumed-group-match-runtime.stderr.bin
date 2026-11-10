@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+  |
+6 |       return return 81;
+  |              ~~~~~~
+    at file:///private/tmp/lykn-s15-cdc.i8haO4zE/old-baseline/native31/tmp/.tmpKUURx4/bind-consumed-group-match.js:6:14

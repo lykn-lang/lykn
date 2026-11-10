@@ -1,0 +1,18 @@
+phase=current-explicit-cli-build
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv=/Users/oubiwann/.cargo/bin/cargo build -p lykn-cli --bin lykn
+source=dcd007f574c96622ee0eb8f990903edf5fbe9e09 tree=1bd3d76b07154d1a6ee25ff13747ba9d014b5559
+cargo=/Users/oubiwann/.cargo/bin/cargo; cargo 1.97.0 (c980f4866 2026-06-30)
+rustc=/Users/oubiwann/.cargo/bin/rustc; rustc 1.97.0 (2d8144b78 2026-07-07)
+PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+HOME=/Users/oubiwann
+CARGO_HOME=/Users/oubiwann/.cargo
+RUSTUP_HOME=/Users/oubiwann/.rustup
+RUSTC=/Users/oubiwann/.cargo/bin/rustc
+TMPDIR=/private/tmp/lykn-s15-direct-bind-zqq6BJfM/cargo-build/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s15-direct-bind-zqq6BJfM/cargo-build/xdg-cache
+npm_config_cache=/private/tmp/lykn-s15-direct-bind-zqq6BJfM/cargo-build/npm-cache
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO unset
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR unset
+CARGO_TARGET_DIR=default at /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target

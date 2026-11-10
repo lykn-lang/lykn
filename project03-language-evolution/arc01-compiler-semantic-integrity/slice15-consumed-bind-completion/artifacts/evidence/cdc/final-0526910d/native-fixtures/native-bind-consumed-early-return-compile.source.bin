@@ -1,0 +1,10 @@
+(bind trace (array))
+(func choose-bound :args (:any flag) :returns :any :body
+  (bind answer
+    (do
+      (if flag (return "early"))
+      (trace:push "body")
+      7))
+  (trace:push "after")
+  answer)
+(console:log (JSON:stringify (array (choose-bound true) (choose-bound false) trace)))

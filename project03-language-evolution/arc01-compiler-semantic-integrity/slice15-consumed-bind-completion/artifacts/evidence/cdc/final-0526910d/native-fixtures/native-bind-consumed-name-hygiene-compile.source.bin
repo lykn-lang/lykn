@@ -1,0 +1,9 @@
+(macro s15-read-later () `completionValue__gensym0!:value)
+(macro s15-read-external () `completionValue__gensym1:value)
+(bind completionValue__gensym1 (obj :value 41))
+(bind trace (array))
+(func hygienic-bind :returns :any :body
+  (bind answer (do (trace:push "result") 7))
+  (bind completionValue__gensym0! (obj :value 99))
+  (array answer (s15-read-later) (s15-read-external)))
+(console:log (JSON:stringify (array (hygienic-bind) trace)))

@@ -1,0 +1,5 @@
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  packages/lang/expander.js
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  crates/lykn-lang/embedded/packages/lang/expander.js
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  /private/tmp/lykn-s15-direct-bind-cdc.F35mkP0L/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js
+28331b9eeea3dfc8808d72be75af86aa022d3075f86a01b1854349f89ebb4eb7  target/lykn/build/lang/expander.js
+Complete embedded package directory equals the fresh Make XDG materialization. All four expander copies are byte equal.

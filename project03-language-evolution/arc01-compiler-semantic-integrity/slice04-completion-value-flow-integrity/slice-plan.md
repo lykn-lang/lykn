@@ -9,6 +9,13 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+2026-11-10 [S15 acceptance](../slice15-consumed-bind-completion/cdc-verification.md)
+closes the finite ordinary simple-bind result destination at
+`0526910d`. Transfer-bearing if/match headers and lazy
+logical operands remain the next I2 delivery. Ordered
+references and protected exits retain I3/I4 ownership.
+
+
 2026-11-10 [local integration verified](../slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
 at release `31893710`. The Operator authorizes remaining I2
 consumed completion, in standard Autonomous Mode with the same
