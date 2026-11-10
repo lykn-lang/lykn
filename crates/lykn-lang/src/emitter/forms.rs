@@ -603,6 +603,15 @@ fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegist
         SExpr::List { values, span } if !values.is_empty() => {
             if ctx.direct_return_region
                 && ctx.expr_context == ExprContext::Statement
+                && let Some(result) = emit_direct_assignment_request(expr, None, ctx, registry)
+            {
+                return match result {
+                    DirectTailResult::Value(value) => value,
+                    DirectTailResult::Statements(statements) => direct_statement_block(statements),
+                };
+            }
+            if ctx.direct_return_region
+                && ctx.expr_context == ExprContext::Statement
                 && values
                     .first()
                     .is_some_and(is_direct_computed_member_call_head)
@@ -1047,11 +1056,94 @@ fn emit_contract_predicate(
     emitted
 }
 
+fn direct_assignment_request(expr: &SExpr) -> Option<DirectAssignmentRequest> {
+    let values = expr.as_list()?;
+    let head = values.first()?.as_form_head()?;
+    if head == "set-symbol!" {
+        let SurfaceForm::SetSymbol {
+            obj, key, value, ..
+        } = crate::classifier::classify_expr(expr).ok()?
+        else {
+            return None;
+        };
+        let target = SExpr::List {
+            values: vec![atom("get"), obj, key],
+            span: expr.span(),
+        };
+        return Some(DirectAssignmentRequest {
+            target,
+            value,
+            operator: DirectWriteOperator::Assign,
+            span: expr.span(),
+        });
+    }
+    let Some(kernel_form) = head.strip_prefix("kernel:") else {
+        return None;
+    };
+    if !matches!(kernel_form, "=" | "+=") {
+        return None;
+    }
+    let raw =
+        crate::classifier::forms::classify_kernel_escape(kernel_form, values, expr.span()).ok()?;
+    let raw_values = raw.as_list()?;
+    if raw_values.len() != 3 {
+        return None;
+    }
+    Some(DirectAssignmentRequest {
+        target: raw_values[1].clone(),
+        value: raw_values[2].clone(),
+        operator: if kernel_form == "+=" {
+            DirectWriteOperator::AddAssign
+        } else {
+            DirectWriteOperator::Assign
+        },
+        span: raw.span(),
+    })
+}
+
+fn emit_direct_assignment_request(
+    expr: &SExpr,
+    destination: Option<&DirectDestination>,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Option<DirectTailResult> {
+    let request = direct_assignment_request(expr)?;
+    emit_direct_assignment_write(
+        &request.target,
+        &request.value,
+        request.operator,
+        request.span,
+        destination,
+        ctx,
+        registry,
+    )
+}
+
+fn emit_direct_statement_write(
+    expr: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Option<Vec<SExpr>> {
+    let result = emit_direct_assignment_request(expr, None, ctx, registry)?;
+
+    Some(match result {
+        DirectTailResult::Value(value) => vec![value],
+        DirectTailResult::Statements(statements) => statements,
+    })
+}
+
 /// Emit a body (list of expressions), recursively expanding any nested surface
 /// forms.
 fn emit_body(body: &[SExpr], ctx: &mut EmitterContext, registry: &TypeRegistry) -> Vec<SExpr> {
     let mut out = Vec::new();
     for expr in body {
+        if ctx.direct_return_region
+            && matches!(ctx.expr_context, ExprContext::Statement)
+            && let Some(statements) = emit_direct_statement_write(expr, ctx, registry)
+        {
+            out.extend(statements);
+            continue;
+        }
         if matches!(ctx.expr_context, ExprContext::Statement)
             && let Some(surface_form) = classify_statement_surface(expr)
         {
@@ -1072,6 +1164,34 @@ enum DirectTailResult {
 enum DirectDestination {
     Return,
     Assign(SExpr),
+}
+
+#[derive(Clone, Copy)]
+enum DirectWriteOperator {
+    Assign,
+    AddAssign,
+}
+
+enum DirectWriteTarget {
+    Lexical(SExpr),
+    Computed {
+        get_head: SExpr,
+        receiver: SExpr,
+        key: SExpr,
+        span: Span,
+    },
+}
+
+struct DirectWriteValuePlan {
+    prefix: Vec<SExpr>,
+    value: SExpr,
+}
+
+struct DirectAssignmentRequest {
+    target: SExpr,
+    value: SExpr,
+    operator: DirectWriteOperator,
+    span: Span,
 }
 
 fn preserve_anonymous_name(value: SExpr) -> SExpr {
@@ -1172,6 +1292,219 @@ fn emit_direct_header_value(
             )
         }
     }
+}
+
+fn direct_write_base_is_admitted(value: &SExpr) -> bool {
+    let Some(name) = value.as_atom() else {
+        return false;
+    };
+    if value.name_res() != NameRes::BindingRef || name.contains(':') {
+        return false;
+    }
+    !matches!(
+        to_js_identifier(name).as_str(),
+        "Reflect" | "globalThis" | "eval" | "super" | "new" | "this" | "arguments"
+    )
+}
+
+fn direct_write_target(target: &SExpr) -> Option<DirectWriteTarget> {
+    if direct_write_base_is_admitted(target) {
+        return Some(DirectWriteTarget::Lexical(target.clone()));
+    }
+    let Some((get_head, span, receiver, key)) = computed_member_call_parts(target).ok()? else {
+        return None;
+    };
+    if !direct_write_base_is_admitted(&receiver) {
+        return None;
+    }
+    Some(DirectWriteTarget::Computed {
+        get_head,
+        receiver,
+        key,
+        span,
+    })
+}
+
+fn emit_direct_assignment_write(
+    target: &SExpr,
+    value: &SExpr,
+    operator: DirectWriteOperator,
+    span: Span,
+    destination: Option<&DirectDestination>,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> Option<DirectTailResult> {
+    let target = direct_write_target(target)?;
+    if matches!(operator, DirectWriteOperator::AddAssign)
+        && !matches!(
+            &target,
+            DirectWriteTarget::Computed {
+                key: SExpr::String { .. },
+                ..
+            }
+        )
+    {
+        return None;
+    }
+
+    match target {
+        DirectWriteTarget::Lexical(target) => {
+            let DirectWriteValuePlan { prefix, value } =
+                direct_write_value_plan(value, ctx, registry);
+            if prefix.is_empty() {
+                return Some(DirectTailResult::Value(SExpr::List {
+                    values: vec![
+                        atom(match operator {
+                            DirectWriteOperator::Assign => "=",
+                            DirectWriteOperator::AddAssign => "+=",
+                        }),
+                        target,
+                        value,
+                    ],
+                    span,
+                }));
+            }
+            Some(direct_write_statements(
+                prefix,
+                target,
+                value,
+                None,
+                operator,
+                span,
+                destination,
+            ))
+        }
+        DirectWriteTarget::Computed {
+            get_head,
+            receiver,
+            key,
+            span: member_span,
+        } => {
+            let receiver_plan = direct_write_value_plan(&receiver, ctx, registry);
+            let key_plan = direct_write_value_plan(&key, ctx, registry);
+            let DirectWriteValuePlan {
+                prefix: value_prefix,
+                value: value_result,
+            } = direct_write_value_plan(value, ctx, registry);
+            let lifted = !receiver_plan.prefix.is_empty()
+                || !key_plan.prefix.is_empty()
+                || !value_prefix.is_empty();
+            let normal_target = SExpr::List {
+                values: vec![
+                    get_head,
+                    receiver_plan.value.clone(),
+                    key_plan.value.clone(),
+                ],
+                span: member_span,
+            };
+            if !lifted {
+                return Some(DirectTailResult::Value(SExpr::List {
+                    values: vec![
+                        atom(match operator {
+                            DirectWriteOperator::Assign => "=",
+                            DirectWriteOperator::AddAssign => "+=",
+                        }),
+                        normal_target,
+                        value_result,
+                    ],
+                    span,
+                }));
+            }
+
+            let mut statements = receiver_plan.prefix;
+            let receiver_temp =
+                SExpr::completion_value_atom(ctx.next_completion_value_id(), member_span);
+            statements.push(list(vec![
+                atom("const"),
+                receiver_temp.clone(),
+                preserve_anonymous_name(receiver_plan.value),
+            ]));
+            statements.extend(key_plan.prefix);
+
+            let (key_temp, compound_value) = match operator {
+                DirectWriteOperator::Assign => {
+                    let key_temp =
+                        SExpr::completion_value_atom(ctx.next_completion_value_id(), member_span);
+                    statements.push(list(vec![
+                        atom("const"),
+                        key_temp.clone(),
+                        preserve_anonymous_name(key_plan.value),
+                    ]));
+                    (key_temp, None)
+                }
+                DirectWriteOperator::AddAssign => {
+                    let key_temp = key_plan.value;
+                    let old_temp =
+                        SExpr::completion_value_atom(ctx.next_completion_value_id(), member_span);
+                    let old_value = SExpr::List {
+                        values: vec![atom("get"), receiver_temp.clone(), key_temp.clone()],
+                        span: member_span,
+                    };
+                    statements.push(list(vec![
+                        atom("const"),
+                        old_temp.clone(),
+                        preserve_anonymous_name(old_value),
+                    ]));
+                    (key_temp, Some(old_temp))
+                }
+            };
+
+            statements.extend(value_prefix);
+            let write_target = SExpr::List {
+                values: vec![atom("get"), receiver_temp, key_temp],
+                span: member_span,
+            };
+            Some(direct_write_statements(
+                statements,
+                write_target,
+                value_result,
+                compound_value,
+                DirectWriteOperator::Assign,
+                span,
+                destination,
+            ))
+        }
+    }
+}
+
+fn direct_write_statements(
+    mut statements: Vec<SExpr>,
+    target: SExpr,
+    value: SExpr,
+    old_value: Option<SExpr>,
+    operator: DirectWriteOperator,
+    span: Span,
+    destination: Option<&DirectDestination>,
+) -> DirectTailResult {
+    let assignment_value = match old_value {
+        Some(old_value) => list(vec![atom("+"), old_value, value]),
+        None => value,
+    };
+    let assignment = SExpr::List {
+        values: vec![
+            atom(match operator {
+                DirectWriteOperator::Assign => "=",
+                DirectWriteOperator::AddAssign => "+=",
+            }),
+            target,
+            assignment_value,
+        ],
+        span,
+    };
+    statements.push(match destination {
+        Some(destination) => consume_direct_value(destination, assignment),
+        None => assignment,
+    });
+    DirectTailResult::Statements(vec![direct_statement_block(statements)])
+}
+
+fn direct_write_value_plan(
+    expr: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> DirectWriteValuePlan {
+    let (prefix, value) = emit_direct_header_value(expr, ctx, registry);
+    DirectWriteValuePlan { prefix, value }
 }
 
 fn is_direct_lexical_call_head(head: &SExpr) -> bool {
@@ -1814,6 +2147,9 @@ fn emit_direct_tail(
     let Some(values) = expr.as_list() else {
         return emit_direct_value_tail(expr, destination, ctx, registry);
     };
+    if let Some(result) = emit_direct_assignment_request(expr, Some(destination), ctx, registry) {
+        return result;
+    }
     if let Some(head) = values
         .first()
         .filter(|head| is_direct_computed_member_call_head(head))

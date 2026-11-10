@@ -1237,6 +1237,101 @@ function expandDirectValuePlan(form, env) {
   };
 }
 
+function directWriteNameIsAdmitted(name) {
+  if (name.includes(":")) return false;
+  return ![
+    "Reflect",
+    "globalThis",
+    "eval",
+    "super",
+    "new",
+    "this",
+    "arguments",
+  ].includes(toJsIdentifier(name));
+}
+
+function directWriteTargetParts(target, env, internalComputedTarget = false) {
+  if (target?.type === "atom" && directWriteNameIsAdmitted(target.value) &&
+    (target.binding === "ref" || env.has(target.value))) {
+    return { kind: "lexical", target };
+  }
+  if (internalComputedTarget) {
+    const { receiver, key } = internalComputedTarget;
+    if (receiver?.type !== "atom" || !directWriteNameIsAdmitted(receiver.value) ||
+      !(receiver.binding === "ref" || env.has(receiver.value))) return null;
+    return { kind: "computed", receiver, key, memberHead: sym("get") };
+  }
+  if (target?.type !== "list" || target.values.length !== 3) return null;
+  const [getHead, receiver, key] = target.values;
+  if (receiver?.type !== "atom" || !directWriteNameIsAdmitted(receiver.value) ||
+    !(receiver.binding === "ref" || env.has(receiver.value))) return null;
+  if (getHead?.type !== "atom") return null;
+  if (getHead.value === "kernel:get" && getHead.binding === undefined &&
+    !isKernel(target) && KERNEL_FORMS.has("get")) {
+    return { kind: "computed", receiver, key, memberHead: markKernel(sym("get")) };
+  }
+  if (formHead(getHead) !== "get" || isKernel(target) ||
+    env.has("get") || macroEnv.has("get")) return null;
+  return { kind: "computed", receiver, key, memberHead: getHead };
+}
+
+function expandDirectAssignment(target, value, operator, env, use, internalComputedTarget = false) {
+  const targetPlan = directWriteTargetParts(target, env, internalComputedTarget);
+  if (!targetPlan) return null;
+  if (operator === "+=" &&
+    (targetPlan.kind !== "computed" || targetPlan.key?.type !== "string")) return null;
+
+  const statements = [];
+  if (targetPlan.kind === "lexical") {
+    const valuePlan = expandDirectValuePlan(value, env);
+    const assignment = markKernel(array(sym(operator), targetPlan.target, valuePlan.value));
+    if (valuePlan.prefix.length === 0) return assignment;
+    statements.push(...valuePlan.prefix);
+    statements.push(use === "DirectStatement" ? assignment : resultValueStatement(use, assignment));
+    return directBlock(statements);
+  }
+
+  const receiverPlan = expandDirectValuePlan(targetPlan.receiver, env);
+  const keyPlan = expandDirectValuePlan(targetPlan.key, env);
+  const valuePlan = expandDirectValuePlan(value, env);
+  const lifted = receiverPlan.prefix.length > 0 || keyPlan.prefix.length > 0 ||
+    valuePlan.prefix.length > 0;
+  const ordinaryTarget = markKernel(array(
+    targetPlan.memberHead,
+    receiverPlan.value,
+    keyPlan.value,
+  ));
+  if (!lifted) {
+    return markKernel(array(sym(operator), ordinaryTarget, valuePlan.value));
+  }
+
+  statements.push(...receiverPlan.prefix);
+  const receiver = completionValueAtom({});
+  statements.push(array(sym("const"), receiver, preserveAnonymousName(receiverPlan.value)));
+  statements.push(...keyPlan.prefix);
+
+  let key;
+  let oldValue = null;
+  if (operator === "+=") {
+    key = keyPlan.value;
+    oldValue = completionValueAtom({});
+    const oldGet = markKernel(array(sym("get"), receiver, key));
+    statements.push(array(sym("const"), oldValue, preserveAnonymousName(oldGet)));
+  } else {
+    key = completionValueAtom({});
+    statements.push(array(sym("const"), key, preserveAnonymousName(keyPlan.value)));
+  }
+  statements.push(...valuePlan.prefix);
+
+  const writeTarget = markKernel(array(sym("get"), receiver, key));
+  const rightHandSide = oldValue === null
+    ? valuePlan.value
+    : array(sym("+"), oldValue, valuePlan.value);
+  const assignment = markKernel(array(sym("="), writeTarget, rightHandSide));
+  statements.push(use === "DirectStatement" ? assignment : resultValueStatement(use, assignment));
+  return directBlock(statements);
+}
+
 function isDirectLexicalCallHead(head) {
   if (head?.type !== "atom" || head.binding !== "ref" || head.value.includes(":")) {
     return false;
@@ -1588,6 +1683,18 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
       type: 'list',
       values: [{ type: 'atom', value: kernelForm }, ...form.values.slice(1)],
     });
+    if ((kernelForm === "=" || kernelForm === "+=") &&
+      (use === "DirectStatement" || isResultOperandUse(use)) &&
+      stripped.values.length === 3) {
+      const assignment = expandDirectAssignment(
+        stripped.values[1],
+        stripped.values[2],
+        kernelForm,
+        env,
+        use,
+      );
+      if (assignment !== null) return assignment;
+    }
     if (computedMemberCallRequest) {
       computedMemberCallRequest.explicitEscape = true;
     }
@@ -1675,6 +1782,19 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
           if (names.length) cur = extendEnv(cur, names);
         }
         return out;
+      }
+
+      if (astNode.type === "SetSymbol" &&
+        (use === "DirectStatement" || isResultOperandUse(use))) {
+        const assignment = expandDirectAssignment(
+          null,
+          astNode.value,
+          "=",
+          childEnv,
+          use,
+          { receiver: astNode.obj, key: astNode.key },
+        );
+        if (assignment !== null) return assignment;
       }
 
       const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword });
