@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Hygienic direct bind opened — 2026-11-10
+
+[S15](slice15-consumed-bind-completion/slice-plan.md) follows
+accepted S14 with ordinary bind destinations and private
+whole-unit name hygiene. Lazy values and transfer-bearing
+headers remain a separate I2 increment. Ordered/reference
+composition and checked exits keep their existing owners.
+
 ## Direct consumed return accepted — 2026-11-10
 
 [S14](slice14-consumed-return-completion/cdc-verification.md) is independently accepted at task `84bc88b6`.
