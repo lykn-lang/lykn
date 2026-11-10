@@ -837,6 +837,15 @@ function pushExpanded(out, result) {
   else out.push(result);
 }
 
+function expandSingle(form, env, use, context) {
+  const result = expandAt(form, env, use);
+  if (Array.isArray(result)) {
+    if (result.length !== 1) throw new Error(`${context} must expand to a single form`);
+    return result[0];
+  }
+  return result;
+}
+
 /**
  * Resolve+expand `children` as a sibling SEQUENCE: each child's enclosing-scope
  * declarations (`bind`/import locals) become visible to the FOLLOWING siblings.
@@ -861,17 +870,23 @@ function expandChildrenSeq(children, env, use = "Legacy") {
 function expandChildrenPlan(form, env, use = "Legacy") {
   const plan = scopePlan(form);
   const children = form.values;
+  if (use === "Statement" && formHead(children[0]) === "try") {
+    return expandTryStatement(form, env);
+  }
   if (use === "Statement" && formHead(children[0]) === "switch") {
     const out = [children[0]];
-    if (children.length > 1) pushExpanded(out, expandAt(children[1], env, "Value"));
+    let cur = plan.kind === "body" ? extendEnv(env, plan.names) : env;
+    if (children.length > 1) out.push(expandSingle(children[1], cur, "Value", "switch discriminant"));
     for (const clause of children.slice(2)) {
       if (clause?.type !== "list" || clause.values.length === 0) {
-        pushExpanded(out, expandAt(clause, env, "Legacy"));
+        pushExpanded(out, expandAt(clause, cur, "Legacy"));
         continue;
       }
       const isDefault = clause.values[0]?.type === "atom" && clause.values[0].value === "default";
-      const prefix = isDefault ? [clause.values[0]] : [expandAt(clause.values[0], env, "Value")];
-      out.push({ type: "list", values: [...prefix, ...expandChildrenSeq(clause.values.slice(1), env, "Statement")] });
+      const prefix = isDefault ? [clause.values[0]] : [expandSingle(clause.values[0], cur, "Value", "switch test")];
+      out.push({ type: "list", values: [...prefix, ...expandChildrenSeq(clause.values.slice(1), cur, "Statement")] });
+      const hoist = hoistedNames(clause);
+      if (hoist.length) cur = extendEnv(cur, hoist);
     }
     return out;
   }
@@ -890,7 +905,10 @@ function expandChildrenPlan(form, env, use = "Legacy") {
     const out = [];
     let cur = env;
     for (let i = 0; i < children.length; i++) {
-      pushExpanded(out, expandAt(children[i], cur, roles[i] ?? "Legacy"));
+      const role = roles[i] ?? "Legacy";
+      pushExpanded(out, role === "Value"
+        ? expandSingle(children[i], cur, role, "expression slot")
+        : expandAt(children[i], cur, role));
       const hoist = children[i]?.type === "list" ? hoistedNames(children[i]) : [];
       if (hoist.length) cur = extendEnv(cur, hoist);
     }
@@ -898,13 +916,23 @@ function expandChildrenPlan(form, env, use = "Legacy") {
   }
   const split = Math.min(plan.bodyStart, children.length);
   const out = [];
-  for (let i = 0; i < split; i++) pushExpanded(out, expandAt(children[i], env, use === "Protected" ? "Protected" : "Legacy"));
+  const roles = childRoles(form, use);
+  for (let i = 0; i < split; i++) {
+    const role = roles[i] ?? (use === "Protected" ? "Protected" : "Legacy");
+    pushExpanded(out, role === "Value"
+      ? expandSingle(children[i], env, role, "expression slot")
+      : expandAt(children[i], env, role));
+  }
   if (split < children.length) {
     const bodyEnv = extendEnv(env, plan.names);
     const bodyUse = use === "Statement" || use === "Protected" ? use : "Legacy";
     let cur = bodyEnv;
-    for (const child of children.slice(split)) {
-      pushExpanded(out, expandAt(child, cur, bodyUse));
+    for (let i = split; i < children.length; i++) {
+      const child = children[i];
+      const role = roles[i] ?? bodyUse;
+      pushExpanded(out, role === "Value"
+        ? expandSingle(child, cur, role, "expression slot")
+        : expandAt(child, cur, role));
       const hoist = child?.type === "list" ? hoistedNames(child) : [];
       if (hoist.length) cur = extendEnv(cur, hoist);
     }
@@ -922,11 +950,45 @@ function expandConditionalChild(child, env, isCondition, use = "Legacy") {
   return expanded[0] ?? null;
 }
 
+function expandTryStatement(form, env) {
+  const values = form.values;
+  let bodyEnd = values.length;
+  const finalizer = values[bodyEnd - 1];
+  const hasFinally = finalizer?.type === "list" && finalizer.values[0]?.type === "atom" &&
+    finalizer.values[0].value === "finally";
+  if (hasFinally) bodyEnd--;
+  const catcher = values[bodyEnd - 1];
+  const hasCatch = catcher?.type === "list" && catcher.values[0]?.type === "atom" &&
+    catcher.values[0].value === "catch";
+  if (hasCatch) bodyEnd--;
+
+  const out = [values[0]];
+  let cur = env;
+  for (let i = 1; i < bodyEnd; i++) {
+    const child = values[i];
+    const head = child?.type === "list" ? child.values[0] : null;
+    const structuralElsewhere = head?.type === "atom" &&
+      (head.value === "catch" || head.value === "finally");
+    pushExpanded(out, expandAt(child, cur, structuralElsewhere ? "Legacy" : "Statement"));
+    const hoist = child?.type === "list" ? hoistedNames(child) : [];
+    if (hoist.length) cur = extendEnv(cur, hoist);
+  }
+  if (hasCatch) {
+    const catchEnv = extendEnv(env, bodyScopeNames(catcher));
+    out.push({ type: "list", values: [catcher.values[0], catcher.values[1], ...expandChildrenSeq(catcher.values.slice(2), catchEnv, "Statement")] });
+  }
+  if (hasFinally) {
+    out.push({ type: "list", values: [finalizer.values[0], ...expandChildrenSeq(finalizer.values.slice(1), env, "Statement")] });
+  }
+  return out;
+}
+
 function childRoles(form, use) {
   const roles = Array(form.values.length).fill("Legacy");
   if (form.values.length === 0) return roles;
   const h = formHead(form.values[0]);
   if (use === "Protected") return roles.fill("Protected");
+  if (use === "Legacy") return roles;
   if (h === "function" || h === "function*") {
     const start = form.values[1]?.type === "atom" ? 3 : 2;
     for (let i = start; i < roles.length; i++) roles[i] = "Statement";
@@ -938,26 +1000,22 @@ function childRoles(form, use) {
     return roles;
   }
   if (h === "async") { if (roles.length > 1) roles[1] = "Value"; return roles; }
-  if (use !== "Statement") return roles;
+  if (use !== "Statement" && use !== "Value") return roles;
+  if (use === "Value" && h !== "function" && h !== "function*" && h !== "lambda" && h !== "=>" && h !== "async") return roles;
   if (h === "block" || h === "do") return roles.fill("Statement");
   if (h === "while" || h === "do-while") { roles[1] = "Value"; for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
   else if (h === "for") { for (let i = 1; i <= 3 && i < roles.length; i++) roles[i] = "Value"; for (let i = 4; i < roles.length; i++) roles[i] = "Statement"; }
   else if (["for-of", "for-in", "for-await-of"].includes(h)) { roles[2] = "Value"; for (let i = 3; i < roles.length; i++) roles[i] = "Statement"; }
   else if (h === "label") { for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
-  else if (h === "try") {
-    let bodyEnd = roles.length;
-    const last = form.values[bodyEnd - 1];
-    if (last?.type === "list" && last.values[0]?.type === "atom" && last.values[0].value === "finally") bodyEnd--;
-    const maybeCatch = form.values[bodyEnd - 1];
-    if (maybeCatch?.type === "list" && maybeCatch.values[0]?.type === "atom" && maybeCatch.values[0].value === "catch") bodyEnd--;
-    for (let i = 1; i < bodyEnd; i++) roles[i] = "Statement";
-    if (bodyEnd < roles.length && maybeCatch?.values?.[0]?.value === "catch") roles[bodyEnd] = "Statement";
-    if (last?.values?.[0]?.value === "finally") roles[roles.length - 1] = "Statement";
+  else if (h === "export" && use === "Statement") {
+    const args = form.values.slice(1);
+    if (args[0]?.type === "atom" && args[0].value === "default") {
+      if (roles.length > 2) roles[2] = "Value";
+    } else if (args.length === 1 && args[0]?.type === "list" &&
+      !(args[0].values[0]?.type === "atom" && args[0].values[0].value === "names")) {
+      roles[1] = "Value";
+    }
   }
-  else if (h === "catch") { for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
-  else if (h === "finally") { for (let i = 1; i < roles.length; i++) roles[i] = "Statement"; }
-  else if (h === "case" || h === "default") { roles[1] = "Value"; for (let i = 2; i < roles.length; i++) roles[i] = "Statement"; }
-  else if (h === "export") { for (let i = 1; i < roles.length; i++) roles[i] = "Statement"; }
   return roles;
 }
 
@@ -977,7 +1035,7 @@ function emittedNames(nodes, reserved = new Set()) {
 function emitSurfaceMatchStatement(args, env) {
   return emitMatchStatementMacro(args, {
     env,
-    expandValue: (form, scope) => expandAt(form, scope, "Value"),
+    expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
     expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "Statement"),
     reserveNames: emittedNames,
   });
@@ -1039,7 +1097,7 @@ function expandExprInner(form, env, use = "Legacy") {
   if (head.type === 'atom' && head.value === 'quasiquote') {
     if (form.values.length !== 2) throw new Error('quasiquote requires exactly one argument');
     const expanded = expandQuasiquote(form.values[1], 0);
-    return expandAt(expanded, env, use);
+    return expandAt(expanded, env, "Legacy");
   }
 
   // Unquote/splice outside quasiquote
@@ -1085,7 +1143,7 @@ function expandExprInner(form, env, use = "Legacy") {
     head.binding = 'ref';
     const values = [head];
     for (const sub of form.values.slice(1)) {
-      pushExpanded(values, expandAt(sub, env, use === "Protected" ? "Protected" : "Value"));
+      pushExpanded(values, expandAt(sub, env, use === "Legacy" || use === "Protected" ? use : "Value"));
     }
     return { type: 'list', values };
   }
@@ -1128,8 +1186,12 @@ function expandExprInner(form, env, use = "Legacy") {
       const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword });
       const kernelUse = use === "Protected"
         ? "Protected"
-        : astNode.type === "Func"
-        ? (funcBodyProtectsStatementExit(astNode) ? "Protected" : "Statement")
+        : use === "Legacy"
+        ? "Legacy"
+        : FUNCTION_FAMILY.has(surfaceHead)
+        ? (astNode.type === "Func" && funcBodyProtectsStatementExit(astNode)
+          ? "Protected"
+          : "Statement")
         : "Legacy";
       if (Array.isArray(kernel)) {
         return kernel.map(k => expandAt(markKernel(k), childEnv, kernelUse));

@@ -2295,14 +2295,7 @@ fn emit_match_statement(
         let body = emit_body(&clause.body, ctx, registry);
         ctx.expr_context = saved_body_ctx;
 
-        let mut candidate = list(vec![atom("block")]);
-        let SExpr::List {
-            values: candidate_items,
-            ..
-        } = &mut candidate
-        else {
-            unreachable!();
-        };
+        let mut candidate_items = vec![atom("block")];
         candidate_items.extend(bindings);
 
         let selection = list(vec![atom("="), atom(&matched_var), bool_lit(true)]);
@@ -2316,6 +2309,7 @@ fn emit_match_statement(
         } else {
             candidate_items.push(selected_body);
         }
+        let candidate = list(candidate_items);
 
         let unmatched = list(vec![atom("!"), atom(&matched_var)]);
         let condition = if let Some(pattern_check) = condition {
@@ -2447,8 +2441,6 @@ fn reserve_emitted_names(expr: &SExpr, reserved: &mut HashSet<String>) {
                         reserved.insert(to_js_identifier(member));
                     }
                 }
-            } else {
-                reserved.insert(to_js_identifier(name));
             }
         }
         SExpr::List { values, .. } => {
@@ -4249,7 +4241,7 @@ mod tests {
             ],
             span: s(),
         };
-        // Statement context: bare if/else chain
+        // Statement context: target const, shared match bit and ordered candidates
         let mut c = ctx();
         let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
@@ -4261,18 +4253,90 @@ mod tests {
             } = &values[1]
             {
                 assert_eq!(binding[0].as_atom(), Some("const"));
+                assert_eq!(binding[2].as_atom(), Some("x"));
             } else {
                 panic!("expected const binding");
             }
-            // Third element: (if ...)
+            // The shared bit begins false before the ordered candidate tests.
+            let SExpr::List {
+                values: matched, ..
+            } = &values[2]
+            else {
+                panic!("expected matched-bit declaration");
+            };
+            assert_eq!(matched[0].as_atom(), Some("let"));
+            assert!(matches!(&matched[2], SExpr::Bool { value: false, .. }));
+            assert_eq!(values.len(), 5);
+            // First candidate checks the literal only while no clause selected.
             if let SExpr::List {
                 values: if_form, ..
-            } = &values[2]
+            } = &values[3]
             {
                 assert_eq!(if_form[0].as_atom(), Some("if"));
+                let SExpr::List {
+                    values: condition, ..
+                } = &if_form[1]
+                else {
+                    panic!("expected unmatched and pattern condition");
+                };
+                assert_eq!(condition[0].as_atom(), Some("&&"));
+                let SExpr::List {
+                    values: pattern_check,
+                    ..
+                } = &condition[2]
+                else {
+                    panic!("expected literal pattern check");
+                };
+                assert_eq!(pattern_check[0].as_atom(), Some("==="));
+                assert!(matches!(
+                    &pattern_check[2],
+                    SExpr::Number { value: 1.0, .. }
+                ));
+                let SExpr::List {
+                    values: candidate, ..
+                } = &if_form[2]
+                else {
+                    panic!("expected first candidate block");
+                };
+                let SExpr::List {
+                    values: selected, ..
+                } = &candidate[1]
+                else {
+                    panic!("expected selected clause body");
+                };
+                let selection = selected[1].as_list().unwrap();
+                assert_eq!(selection[0].as_atom(), Some("="));
+                assert!(matches!(&selection[2], SExpr::Bool { value: true, .. }));
+                assert!(matches!(&selected[2], SExpr::String { value, .. } if value == "one"));
             } else {
                 panic!("expected if form");
             }
+            let SExpr::List {
+                values: fallback, ..
+            } = &values[4]
+            else {
+                panic!("expected wildcard candidate");
+            };
+            assert_eq!(fallback[0].as_atom(), Some("if"));
+            let SExpr::List { values: guard, .. } = &fallback[1] else {
+                panic!("expected unmatched check");
+            };
+            assert_eq!(guard[0].as_atom(), Some("!"));
+            let SExpr::List {
+                values: fallback_block,
+                ..
+            } = &fallback[2]
+            else {
+                panic!("expected fallback body block");
+            };
+            let SExpr::List {
+                values: fallback_body,
+                ..
+            } = &fallback_block[1]
+            else {
+                panic!("expected selected fallback body");
+            };
+            assert!(matches!(&fallback_body[2], SExpr::String { value, .. } if value == "other"));
         } else {
             panic!("expected block");
         }
@@ -7512,11 +7576,11 @@ mod tests {
     }
 
     // =======================================================================
-    // Match statement with multiple literal clauses (builds else-chain)
+    // Match statement with multiple literals uses ordered candidates and a shared bit.
     // =======================================================================
 
     #[test]
-    fn test_match_statement_multiple_literals_else_chain() {
+    fn test_match_statement_multiple_literals_ordered_candidates() {
         let form = SurfaceForm::Match {
             target: atom("x"),
             clauses: vec![
@@ -7544,27 +7608,37 @@ mod tests {
         let mut c = ctx();
         let result = emit_form(&form, &mut c, &reg()).unwrap();
         assert_eq!(result.len(), 1);
-        // Should be nested if/else chain
         if let SExpr::List { values, .. } = &result[0] {
             assert_eq!(values[0].as_atom(), Some("block"));
-            // The chain element should be (if ... ... (if ... ... ...))
-            if let SExpr::List {
-                values: if_form, ..
-            } = &values[2]
-            {
-                assert_eq!(if_form[0].as_atom(), Some("if"));
-                // The else branch should also be an if
-                if let SExpr::List {
-                    values: else_form, ..
-                } = &if_form[3]
-                {
-                    assert_eq!(else_form[0].as_atom(), Some("if"));
-                } else {
-                    panic!("expected nested if in else");
-                }
-            } else {
-                panic!("expected if form");
+            assert_eq!(values.len(), 6);
+            let binding = values[1].as_list().unwrap();
+            assert_eq!(binding[2].as_atom(), Some("x"));
+            assert_eq!(values[2].as_list().unwrap()[0].as_atom(), Some("let"));
+            for (index, literal, body_text) in [(3, 1.0, "one"), (4, 2.0, "two")] {
+                let candidate = values[index].as_list().unwrap();
+                assert_eq!(candidate[0].as_atom(), Some("if"));
+                let condition = candidate[1].as_list().unwrap();
+                assert_eq!(condition[0].as_atom(), Some("&&"));
+                assert_eq!(condition[1].as_list().unwrap()[0].as_atom(), Some("!"));
+                let pattern_check = condition[2].as_list().unwrap();
+                assert_eq!(pattern_check[0].as_atom(), Some("==="));
+                assert!(
+                    matches!(&pattern_check[2], SExpr::Number { value, .. } if *value == literal)
+                );
+                let candidate_body = candidate[2].as_list().unwrap();
+                let selected_body = candidate_body[1].as_list().unwrap();
+                let selection = selected_body[1].as_list().unwrap();
+                assert_eq!(selection[0].as_atom(), Some("="));
+                assert!(matches!(&selection[2], SExpr::Bool { value: true, .. }));
+                assert!(
+                    matches!(&selected_body[2], SExpr::String { value, .. } if value == body_text)
+                );
             }
+            let fallback = values[5].as_list().unwrap();
+            assert_eq!(fallback[0].as_atom(), Some("if"));
+            assert_eq!(fallback[1].as_list().unwrap()[0].as_atom(), Some("!"));
+            let fallback_body = fallback[2].as_list().unwrap()[1].as_list().unwrap();
+            assert!(matches!(&fallback_body[2], SExpr::String { value, .. } if value == "other"));
         } else {
             panic!("expected block");
         }

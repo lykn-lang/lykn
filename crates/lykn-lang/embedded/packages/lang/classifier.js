@@ -1407,14 +1407,13 @@ export function emitMatchMacro(args) {
 /** Emit a direct statement-position match; value-position Match remains above. */
 export function emitMatchStatementMacro(args, { expandValue, expandBody, env, reserveNames }) {
   if (args.length < 2) throw new Error("match requires an expression and at least one clause");
-  const expr = expandValue(args[0], env);
   const reserved = reserveNames(args);
+  let provisional = gensym("target");
+  while (reserved.has(toJsIdentifier(provisional.value))) provisional = gensym("target");
+  const expr = expandValue(args[0], env);
   const clauses = [];
   for (let i = 0; i < args.length - 1; i++) {
     const { pattern, guard, bodyForms } = parseMatchClause(args[i + 1], i);
-    let provisional = gensym("provisional");
-    while (reserved.has(toJsIdentifier(provisional.value))) provisional = gensym("provisional");
-    reserved.add(toJsIdentifier(provisional.value));
     const compiled = compilePattern(pattern, provisional);
     const names = compiled.bindings.flatMap((binding) =>
       binding?.type === "list" && binding.values[0]?.value === "const" &&
@@ -1427,18 +1426,25 @@ export function emitMatchStatementMacro(args, { expandValue, expandBody, env, re
   }
 
   reserveNames([expr, ...clauses.flatMap((c) => [c.guard, ...c.body])], reserved);
-  let target = gensym("target");
-  while (reserved.has(toJsIdentifier(target.value))) target = gensym("target");
+  let target = provisional;
+  if (reserved.has(toJsIdentifier(provisional.value))) {
+    target = gensym("target");
+    while (reserved.has(toJsIdentifier(target.value))) target = gensym("target");
+  }
   reserved.add(toJsIdentifier(target.value));
   let matched = gensym("matched");
   while (reserved.has(toJsIdentifier(matched.value))) matched = gensym("matched");
 
-  const retarget = (node, oldTarget) => {
+  const retarget = (node, oldTarget, declarationName = false) => {
     if (!node || typeof node !== "object") return node;
-    if (node.type === "atom" && (node.value === oldTarget || node.value.startsWith(`${oldTarget}:`))) {
+    if (!declarationName && node.type === "atom" &&
+        (node.value === oldTarget || node.value.startsWith(`${oldTarget}:`))) {
       return { ...node, value: `${target.value}${node.value.slice(oldTarget.length)}` };
     }
-    if (node.type === "list") return { ...node, values: node.values.map((n) => retarget(n, oldTarget)) };
+    if (node.type === "list") {
+      const isConst = node.values[0]?.type === "atom" && node.values[0].value === "const";
+      return { ...node, values: node.values.map((n, i) => retarget(n, oldTarget, isConst && i === 1)) };
+    }
     if (node.type === "cons") return { ...node, car: retarget(node.car, oldTarget), cdr: retarget(node.cdr, oldTarget) };
     return node;
   };
