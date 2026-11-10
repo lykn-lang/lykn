@@ -54,7 +54,7 @@
   (includes r "throw new Error(\"e\");")
   (includes r "const y = completionValue__gensym0;")
   (includes r "return y;")
-  (ok (not (r:includes "(() =>")))
+  (ok (not (r:includes "(() =>"))))
 
 ;; ── Compile-then-check ──────────────────────────────────────────
 
