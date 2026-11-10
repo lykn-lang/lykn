@@ -460,12 +460,9 @@ fn run_positive(case: &Case) {
         assert!(!generated.contains("import "));
     }
     if case.name == "pure-argument-spread" {
-        let generated = std::str::from_utf8(
-            generated
-                .as_deref()
-                .expect("pure spread JavaScript exists"),
-        )
-        .expect("pure spread JavaScript is UTF-8");
+        let generated =
+            std::str::from_utf8(generated.as_deref().expect("pure spread JavaScript exists"))
+                .expect("pure spread JavaScript is UTF-8");
         assert!(!generated.contains("lyknHostReflectApply"));
         assert!(!generated.contains("Reflect.apply"));
     }
@@ -500,12 +497,22 @@ fn run_spread_hold(name: &str, source: &[u8]) {
         .try_exists()
         .expect("check spread-hold DTS")
         .then(|| fs::read(&dts_path).expect("read spread-hold DTS"));
-    record_generated(&format!("native-{name}"), generated.as_deref(), dts.as_deref());
+    record_generated(
+        &format!("native-{name}"),
+        generated.as_deref(),
+        dts.as_deref(),
+    );
     eprintln!(
         "SPREAD_HOLD_PREASSERT name={name} status={:?} stdout={:?} stderr={:?} generated={generated:?} dts={dts:?}",
-        compile.status.code(), compile.stdout, compile.stderr
+        compile.status.code(),
+        compile.stdout,
+        compile.stderr
     );
-    assert!(compile.status.success(), "{name} compile: {:?}", compile.stderr);
+    assert!(
+        compile.status.success(),
+        "{name} compile: {:?}",
+        compile.stderr
+    );
     assert!(generated.is_some(), "{name} omitted JavaScript");
     assert!(dts.is_none(), "{name} unexpectedly emitted DTS: {dts:?}");
     let generated = std::str::from_utf8(generated.as_deref().expect("JavaScript exists"))
@@ -515,14 +522,18 @@ fn run_spread_hold(name: &str, source: &[u8]) {
         assert!(!generated.contains("lyknHostReflectApply"));
         assert!(!generated.contains("Reflect.apply"));
         assert!(!generated.contains("import "));
-        let source_return = generated.find("return 7").expect("source return is emitted");
+        let source_return = generated
+            .find("return 7")
+            .expect("source return is emitted");
         let ordinary_call = generated
             .find("])(...items)")
             .expect("ordinary computed spread call is emitted");
         assert!(source_return < ordinary_call);
     } else {
         let iteration = generated.find("for (").expect("native for-of is emitted");
-        let source_return = generated.find("return 7").expect("source return is emitted");
+        let source_return = generated
+            .find("return 7")
+            .expect("source return is emitted");
         assert!(iteration < source_return);
     }
 }
@@ -1095,7 +1106,8 @@ fn lexical_call_spread_precedes_a_later_return() {
 
 #[test]
 fn malformed_actual_spread_is_checked_at_the_argument_root() {
-    let source = b"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
+    let source =
+        b"(func malformed-spread :args (:any target) :returns :any :body\n  (target (spread)))\n";
     let temp = TempDir::new().expect("create malformed-spread output directory");
     let xdg_cache_home = temp.path().join("xdg-cache");
     fs::create_dir(&xdg_cache_home).expect("create isolated malformed-spread XDG cache");
@@ -1132,7 +1144,8 @@ fn malformed_actual_spread_is_checked_at_the_argument_root() {
     let stderr = String::from_utf8_lossy(&compile.stderr);
     eprintln!(
         "MALFORMED_SPREAD_PREASSERT status={:?} stdout={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
-        compile.status.code(), compile.stdout
+        compile.status.code(),
+        compile.stdout
     );
     assert_eq!(compile.status.code(), Some(1));
     assert!(compile.stdout.is_empty());
@@ -1140,7 +1153,10 @@ fn malformed_actual_spread_is_checked_at_the_argument_root() {
         stderr,
         "1:7: warning: unused binding 'malformed-spread'\n  suggestion: prefix with underscore: _malformed-spread\n2:11: error: spread takes exactly one argument\n"
     );
-    assert!(generated.is_none(), "malformed source emitted JavaScript: {generated:?}");
+    assert!(
+        generated.is_none(),
+        "malformed source emitted JavaScript: {generated:?}"
+    );
     assert!(dts.is_none(), "malformed source emitted DTS: {dts:?}");
 }
 
