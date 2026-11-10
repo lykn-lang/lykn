@@ -47,3 +47,10 @@ Predecessor is S09's accepted statement tranche. The source-ready
 recipe and exact test freezes are in the assignment and fixture
 record. This opens clause scope only, with no unresolved choice in
 the approved boundary.
+
+Intake precision. The existing atom resolver recomputes tags from
+its current environment. Preserve an already tagged raw `match`
+head on the ordinary-call route so downstream classification cannot
+reinterpret it as syntax. The frozen tagged-head control also checks
+the original outer head, alongside its untouched operand roles.
+No general tag policy or acceptance change.
