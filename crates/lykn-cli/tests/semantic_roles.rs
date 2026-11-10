@@ -928,6 +928,11 @@ fn computed_member_no_prefix_calls_preserve_bound_get_and_kernel_escape() {
 }
 
 #[test]
+fn anonymous_completion_values_preserve_source_names() {
+    run_positive(&FIXTURES[37]);
+}
+
+#[test]
 fn computed_member_call_with_lifted_spread_fails_closed_without_outputs() {
     const MESSAGE: &str =
         "ordered computed member call with spread and lifted operands is not supported";
