@@ -506,6 +506,26 @@ fn native_typed_bind_check_follows_normal_result_initialization() {
 }
 
 #[test]
+fn selected_if_headers_preserve_completion_and_values() {
+    run_positive(&FIXTURES[29]);
+}
+
+#[test]
+fn match_subject_and_guard_headers_preserve_completion() {
+    run_positive(&FIXTURES[30]);
+}
+
+#[test]
+fn logical_operands_are_lazy_and_preserve_results() {
+    run_positive(&FIXTURES[31]);
+}
+
+#[test]
+fn nullish_operands_preserve_strict_selection_and_completion() {
+    run_positive(&FIXTURES[32]);
+}
+
+#[test]
 fn unknown_nested_kernel_escape_fails_compile_without_outputs() {
     let source = b"(bind result (kernel:objec (key 7)))\n";
     let temp = TempDir::new().expect("create unknown-kernel output directory");
