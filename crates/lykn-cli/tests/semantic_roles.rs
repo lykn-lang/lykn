@@ -412,15 +412,20 @@ fn run_positive(case: &Case) {
         case.name
     );
     if case.name == "ordered-member-pure-colon-call" {
-        let generated = String::from_utf8(generated.expect("pure call JavaScript exists"))
-            .expect("pure call JavaScript is UTF-8");
+        let generated =
+            std::str::from_utf8(generated.as_deref().expect("pure call JavaScript exists"))
+                .expect("pure call JavaScript is UTF-8");
         assert!(generated.contains("receiver.readEntry(3)"));
         assert!(!generated.contains("lyknHostReflectApply"));
         assert!(!generated.contains("Reflect.apply"));
     }
     if case.name == "computed-member-no-prefix" {
-        let generated = String::from_utf8(generated.expect("computed pure JavaScript exists"))
-            .expect("computed pure JavaScript is UTF-8");
+        let generated = std::str::from_utf8(
+            generated
+                .as_deref()
+                .expect("computed pure JavaScript exists"),
+        )
+        .expect("computed pure JavaScript is UTF-8");
         assert!(!generated.contains("lyknHostReflectApply"));
         assert!(!generated.contains("import "));
     }
