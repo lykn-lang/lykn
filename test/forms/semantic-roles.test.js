@@ -41,6 +41,9 @@ const CASES = [
   { name: "computed-member-no-prefix", expected: "[[1,2,3],4]\n" },
   { name: "ordered-member-pure-colon-call", expected: "4\n" },
   { name: "anonymous-completion-names", expected: '["","","","namedCallback","","","","","bound "]\n' },
+  { name: "ordered-simple-assignment", expected: '[95,[10,40],5,5,40,96,50,8,8,["key","rhs","key","rhs","string","after","statement-rhs","statement-rhs","statement-after"]]\n' },
+  { name: "ordered-literal-compound-assignment", expected: '[91,[10,40],14,14,40,["get","rhs","get","rhs",["convert","default"],["set",14],"after"]]\n' },
+  { name: "ordinary-assignment-preservation", expected: '[[2,5,6,5,6],[7,7]]\n' },
 ];
 
 const RESERVED_MATCH_CASES = [
@@ -82,7 +85,10 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
         fixture.name === "computed-member-ordered-throws" ||
         fixture.name === "computed-member-no-prefix" ||
         fixture.name === "ordered-member-pure-colon-call" ||
-        fixture.name === "anonymous-completion-names"
+        fixture.name === "anonymous-completion-names" ||
+        fixture.name === "ordered-simple-assignment" ||
+        fixture.name === "ordered-literal-compound-assignment" ||
+        fixture.name === "ordinary-assignment-preservation"
       ) {
         const expanded = expand(read(source));
         assertEquals(compile(expanded), generated, `${fixture.name} expanded compile differs`);
@@ -448,6 +454,19 @@ Deno.test("public computed member calls reject lifted mixed spread with the exac
     "ordered computed member call with spread and lifted operands is not supported",
   );
   assertEquals(output, null, "computed spread compile returned output");
+});
+
+Deno.test("public direct lifted protected writes retain the v1 rejection", () => {
+  const source = [
+    "(func blocked :args () :returns :any :body",
+    "  (kernel:= (get Reflect \"apply\") (do 0 0)))",
+    "",
+  ].join("\n");
+  assertThrows(
+    () => lykn(source),
+    Error,
+    "host-contract v1: write to protected slot Reflect.apply",
+  );
 });
 
 Deno.test("public grouped statements materialize before a bare direct return", () => {

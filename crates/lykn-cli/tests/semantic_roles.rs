@@ -163,6 +163,18 @@ const FIXTURES: &[Case] = &[
         name: "anonymous-completion-names",
         expected: b"[\"\",\"\",\"\",\"namedCallback\",\"\",\"\",\"\",\"\",\"bound \"]\n",
     },
+    Case {
+        name: "ordered-simple-assignment",
+        expected: b"[95,[10,40],5,5,40,96,50,8,8,[\"key\",\"rhs\",\"key\",\"rhs\",\"string\",\"after\",\"statement-rhs\",\"statement-rhs\",\"statement-after\"]]\n",
+    },
+    Case {
+        name: "ordered-literal-compound-assignment",
+        expected: b"[91,[10,40],14,14,40,[\"get\",\"rhs\",\"get\",\"rhs\",[\"convert\",\"default\"],[\"set\",14],\"after\"]]\n",
+    },
+    Case {
+        name: "ordinary-assignment-preservation",
+        expected: b"[[2,5,6,5,6],[7,7]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -354,6 +366,9 @@ fn run_positive(case: &Case) {
             | "computed-member-ordered-throws"
             | "computed-member-no-prefix"
             | "anonymous-completion-names"
+            | "ordered-simple-assignment"
+            | "ordered-literal-compound-assignment"
+            | "ordinary-assignment-preservation"
     ) {
         let kernel_json = execute_recorded(
             &format!("native-{}-kernel-json", case.name),
@@ -931,6 +946,91 @@ fn computed_member_no_prefix_calls_preserve_bound_get_and_kernel_escape() {
 #[test]
 fn anonymous_completion_values_preserve_source_names() {
     run_positive(&FIXTURES[37]);
+}
+
+#[test]
+fn simple_assignment_preserves_reference_order_and_source_exits() {
+    run_positive(&FIXTURES[38]);
+}
+
+#[test]
+fn literal_compound_assignment_preserves_get_conversion_and_write_order() {
+    run_positive(&FIXTURES[39]);
+}
+
+#[test]
+fn ordinary_assignment_output_and_local_protected_control_are_preserved() {
+    run_positive(&FIXTURES[40]);
+}
+
+#[test]
+fn lifted_direct_protected_write_fails_compile_without_outputs() {
+    let source = concat!(
+        "(func blocked :args () :returns :any :body\n",
+        "  (kernel:= (get Reflect \"apply\") (do 0 0)))\n",
+    )
+    .as_bytes();
+    let temp = TempDir::new().expect("create protected-write negative directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated protected-write XDG cache");
+    let source_path = temp.path().join("protected-write.lykn");
+    let output_path = temp.path().join("protected-write.js");
+    fs::write(&source_path, source).expect("write exact protected-write source");
+    let exact_source = fs::read(&source_path).expect("read exact protected-write source");
+
+    let check = execute_recorded(
+        "native-protected-write-check",
+        &source_path,
+        &exact_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("check")
+            .arg(&source_path),
+    );
+    let compile = execute_recorded(
+        "native-protected-write-compile",
+        &source_path,
+        &exact_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&output_path),
+    );
+    let generated = output_path
+        .try_exists()
+        .expect("check protected-write JavaScript output")
+        .then(|| fs::read(&output_path).expect("read protected-write JavaScript"));
+    let dts_path = output_path.with_extension("d.ts");
+    let dts = dts_path
+        .try_exists()
+        .expect("check protected-write declaration output")
+        .then(|| fs::read(&dts_path).expect("read protected-write declaration"));
+    record_generated(
+        "native-protected-write",
+        generated.as_deref(),
+        dts.as_deref(),
+    );
+
+    for (name, output) in [("check", &check), ("compile", &compile)] {
+        assert_eq!(output.status.code(), Some(1), "protected {name} status");
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        assert!(
+            stderr.contains("2:3: error: host-contract v1: write to protected slot Reflect.apply"),
+            "protected {name} omitted anchored v1 diagnostic: {stderr}"
+        );
+    }
+    assert!(
+        generated.is_none(),
+        "protected compile wrote JavaScript: {generated:?}"
+    );
+    assert!(
+        dts.is_none(),
+        "protected compile wrote declarations: {dts:?}"
+    );
 }
 
 #[test]
