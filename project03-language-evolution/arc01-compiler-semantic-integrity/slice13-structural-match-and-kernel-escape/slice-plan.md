@@ -34,3 +34,10 @@ Release propagation, new dependencies, K, other I2 and I3/I4 stay out.
 2026-11-09 [initial assignment](cc-prompt.md), active. Predecessor is
 independently accepted S12. First freeze exact tests, then observe the
 old condition before source. No unresolved Operator choice in scope.
+
+2026-11-09 [refinement 01](cc-prompt-iteration01.md), active after
+initial test-only freeze `d80959e7`. Static review held it before
+all test/build launches. Fixture inputs and oracles stay frozen.
+The [excluded process incident](artifacts/evidence/cc/initial-raw-handoff.txt)
+records the unauthorized read-only Python invocation during authoring.
+Acceptance uses independent native Git/blob checks.

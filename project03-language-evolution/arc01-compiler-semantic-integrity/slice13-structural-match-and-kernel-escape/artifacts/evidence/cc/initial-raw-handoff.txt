@@ -1,0 +1,14 @@
+S13 CC initial test freeze raw handoff
+
+Unplanned prohibited Python invocation during F4 fixture authoring:
+
+Exact command text:
+python3 - <<'PY'
+from pathlib import Path
+p=Path('test/fixtures/semantic-roles/nested-kernel-object-roles.lykn')
+b=p.read_bytes()
+assert b.endswith(b'\n') and b'\r' not in b
+PY
+
+Observed exec result: exit_code=0; stdout empty; stderr empty.
+Effect: read only the authored F4 fixture bytes and assert final LF/no CR. No files were written or modified by this command. This output is explicitly excluded as fixture validation evidence. Fixture checks are repeated using permitted native commands only.
