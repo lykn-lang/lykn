@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## S12/S13 integrated locally — 2026-11-10
+
+[Release verification](slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
+accepts the exact local fast-forward to `31893710`. Operator
+authorizes continuing the remaining consumed-completion I2 work
+with the same Luna 6 High CC and Sol 6.1 High CDC in standard
+Autonomous Mode. CV-04 and CI-04 remain open.
+
 ## Structural match and nested escape accepted — 2026-11-10
 
 [S13](slice13-structural-match-and-kernel-escape/cdc-verification.md) closes NE-C16 and NE-C17 at task `31893710`.

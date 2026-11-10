@@ -19,3 +19,6 @@ excluded Python authoring command are preserved with their actual
 scope. See the [CDC retrospective](cdc-retrospective.md).
 Release stays at `7b17a784`. Wider completion and diagnostic
 work retain their existing owners.
+
+Subsequent Operator-authorized [local integration](artifacts/release-integration-31893710.md)
+fast-forwards and independently validates release `31893710`.

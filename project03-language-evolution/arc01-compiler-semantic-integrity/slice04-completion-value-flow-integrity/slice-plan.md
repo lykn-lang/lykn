@@ -9,6 +9,12 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 # S04 — completion and value-flow integrity
 
+2026-11-10 [local integration verified](../slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
+at release `31893710`. The Operator authorizes remaining I2
+consumed completion, in standard Autonomous Mode with the same
+Luna 6 High CC and Sol 6.1 High CDC. I3, I4 and other work stay
+separate. CV-02 remains done and the other five CV rows stay open.
+
 ## Implementation re-entry — 2026-11-09
 
 [S12 independently accepted](../slice12-native-match-clause-scope/closing-report.md)

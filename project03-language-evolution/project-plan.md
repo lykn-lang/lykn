@@ -9,6 +9,10 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+[S12/S13 local release verification](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
+accepts the fast-forward to `31893710`. Arc01 resumes remaining
+I2 consumed completion under the Operator's authority.
+
 [Arc01 structural match and nested escape](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md)
 is independently accepted at task `31893710`. NE-C16 and NE-C17
 are closed on that branch. Wider completion stays open.

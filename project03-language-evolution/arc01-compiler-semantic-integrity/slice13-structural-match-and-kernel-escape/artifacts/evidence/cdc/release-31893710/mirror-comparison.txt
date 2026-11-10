@@ -1,0 +1,9 @@
+2e8e8c309b52dd8a662d1ad38626ca35de6583c88a0a2b2b85de229f83eb4f60  packages/lang/binding.js
+2e8e8c309b52dd8a662d1ad38626ca35de6583c88a0a2b2b85de229f83eb4f60  crates/lykn-lang/embedded/packages/lang/binding.js
+2e8e8c309b52dd8a662d1ad38626ca35de6583c88a0a2b2b85de229f83eb4f60  /private/tmp/lykn-s13-release-cdc.ovKWFaY3/make/xdg/lykn/embedded/0.6.0/packages/lang/binding.js
+74043ea95b3d3c78ac170f9996562eb56a1705f4081cb48dd893d2d0fc2a6f48  packages/lang/classifier.js
+74043ea95b3d3c78ac170f9996562eb56a1705f4081cb48dd893d2d0fc2a6f48  crates/lykn-lang/embedded/packages/lang/classifier.js
+74043ea95b3d3c78ac170f9996562eb56a1705f4081cb48dd893d2d0fc2a6f48  /private/tmp/lykn-s13-release-cdc.ovKWFaY3/make/xdg/lykn/embedded/0.6.0/packages/lang/classifier.js
+4001b085ab93d5d090ab34ad51b78924af148550e75e476eea2bf52b2c01c5c0  packages/lang/expander.js
+4001b085ab93d5d090ab34ad51b78924af148550e75e476eea2bf52b2c01c5c0  crates/lykn-lang/embedded/packages/lang/expander.js
+4001b085ab93d5d090ab34ad51b78924af148550e75e476eea2bf52b2c01c5c0  /private/tmp/lykn-s13-release-cdc.ovKWFaY3/make/xdg/lykn/embedded/0.6.0/packages/lang/expander.js

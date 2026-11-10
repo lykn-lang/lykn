@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+[Local integration verified](slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
+at release `31893710`. S12/S13 remain accepted and remaining
+I2 proceeds under Operator authority. CV-04 and CI-04 stay open.
+
 2026-11-10 [S13](slice13-structural-match-and-kernel-escape/cdc-verification.md) independently accepts
 NE-C16 and NE-C17 at task `31893710`. All five MK rows are done.
 CI-04 and CV-04 stay open. Release stays `7b17a784`.
