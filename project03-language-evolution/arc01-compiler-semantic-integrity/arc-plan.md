@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Native clause-local match scope opened — 2026-11-09
+
+The [local release fast-forward](slice09-statement-match-completion/artifacts/release-integration-7b17a784.md)
+to `7b17a784` passed independent validation. Operator-authorized
+[S12](slice12-native-match-clause-scope/slice-plan.md) now takes the
+bounded native match-clause binding prerequisite. S10 and S11
+retain their proposed composition homes. CV-04 and CI-04 stay open.
+
 ## S09 first I2 delivery accepted — 2026-11-09
 
 [Direct statement-match completion](slice09-statement-match-completion/closing-report.md)

@@ -9,6 +9,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+The [local release](arc01-compiler-semantic-integrity/slice09-statement-match-completion/artifacts/release-integration-7b17a784.md)
+passed independent validation at `7b17a784`. Arc01's
+[native clause-scope slice](arc01-compiler-semantic-integrity/slice12-native-match-clause-scope/slice-plan.md)
+continues on the dedicated task branch.
+
 [S09 statement-match completion](arc01-compiler-semantic-integrity/slice09-statement-match-completion/closing-report.md)
 is independently accepted at task `7b17a784`. The first Arc01
 I2 tranche is complete. Native clause scope and broader completion

@@ -11,6 +11,11 @@ depends-on: [slice03-shared-semantic-roles, ../../slice22-shared-roles-release-i
 
 ## Implementation re-entry — 2026-11-09
 
+[S12](../slice12-native-match-clause-scope/slice-plan.md) starts
+the native clause-scope follow-up from independently integrated
+`7b17a784`. It is a finite I2 prerequisite with separate acceptance.
+The original S09 record, I3/I4 ownership and open parent rows persist.
+
 [S09 independently accepted](../slice09-statement-match-completion/closing-report.md)
 at task `7b17a784`. Direct unprotected statement-match guard
 progression, exhaustion and enclosing transfers pass both routes.
