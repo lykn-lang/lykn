@@ -1,5 +1,5 @@
 use crate::analysis::type_registry::TypeRegistry;
-use crate::ast::sexpr::{CompletionValueId, SExpr};
+use crate::ast::sexpr::{CompletionValueId, NameRes, SExpr};
 use crate::ast::surface::{
     ArrayParamElement, BindBinding, ClassMemberForm, CondClause, Constructor, DestructuredField,
     FuncClause, GenfuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
@@ -582,6 +582,17 @@ fn emit_expr(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) ->
 fn emit_expr_inner(expr: &SExpr, ctx: &mut EmitterContext, registry: &TypeRegistry) -> SExpr {
     match expr {
         SExpr::List { values, span } if !values.is_empty() => {
+            if ctx.direct_return_region
+                && ctx.expr_context == ExprContext::Statement
+                && values
+                    .first()
+                    .is_some_and(is_direct_lexical_call_head)
+            {
+                return match emit_direct_lexical_call(expr, None, ctx, registry) {
+                    DirectTailResult::Value(value) => value,
+                    DirectTailResult::Statements(statements) => direct_statement_block(statements),
+                };
+            }
             // DD-61 §A6: dispatch on the *form head*. A lexically bound head
             // (`as_form_head` → `None`) is a call to the binding — it skips every
             // surface/kernel/inline dispatch below and is recursed as a plain
@@ -1060,6 +1071,85 @@ fn emit_direct_header_value(
     }
 }
 
+fn is_direct_lexical_call_head(head: &SExpr) -> bool {
+    let Some(name) = head.as_atom() else {
+        return false;
+    };
+    head.name_res() == NameRes::BindingRef
+        && !name.contains(':')
+        && !matches!(name, "eval" | "super" | "new" | "dynamic-import")
+}
+
+fn is_normalized_spread_argument(value: &SExpr) -> bool {
+    value.as_list().is_some_and(|values| {
+        values.len() == 2 && values[0].as_form_head() == Some("spread")
+    })
+}
+
+/// Preserve the callee and earlier arguments when a lexical call needs direct
+/// prefixes for one or more later arguments. With no prefixes, the ordinary
+/// call stays in its existing expression form, including plain spreads.
+fn emit_direct_lexical_call(
+    expr: &SExpr,
+    destination: Option<&DirectDestination>,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> DirectTailResult {
+    let Some(values) = expr.as_list() else {
+        return DirectTailResult::Value(atom("undefined"));
+    };
+    let Some(head) = values.first() else {
+        return DirectTailResult::Value(atom("undefined"));
+    };
+
+    let plans = values[1..]
+        .iter()
+        .map(|arg| emit_direct_header_value(arg, ctx, registry))
+        .collect::<Vec<_>>();
+    let last_prefix = plans.iter().rposition(|(prefix, _)| !prefix.is_empty());
+    let Some(last_prefix) = last_prefix else {
+        return DirectTailResult::Value(list(
+            std::iter::once(head.clone())
+                .chain(plans.into_iter().map(|(_, value)| value))
+                .collect(),
+        ));
+    };
+
+    if plans
+        .iter()
+        .any(|(_, value)| is_normalized_spread_argument(value))
+    {
+        ctx.record_fatal(codegen_error(
+            "ordered lexical call with spread and lifted arguments is not supported",
+            expr.span(),
+        ));
+        return DirectTailResult::Value(atom("undefined"));
+    }
+
+    let callee = SExpr::completion_value_atom(ctx.next_completion_value_id(), head.span());
+    let mut statements = vec![list(vec![atom("const"), callee.clone(), head.clone()])];
+    let mut args = Vec::with_capacity(plans.len());
+    for (index, (prefix, value)) in plans.into_iter().enumerate() {
+        if index > last_prefix {
+            args.push(value);
+        } else if prefix.is_empty() {
+            let saved = SExpr::completion_value_atom(ctx.next_completion_value_id(), value.span());
+            statements.push(list(vec![atom("const"), saved.clone(), value]));
+            args.push(saved);
+        } else {
+            statements.extend(prefix);
+            args.push(value);
+        }
+    }
+
+    let call = list(std::iter::once(callee).chain(args).collect());
+    statements.push(match destination {
+        Some(destination) => consume_direct_value(destination, call),
+        None => call,
+    });
+    DirectTailResult::Statements(statements)
+}
+
 fn emit_direct_logical(
     args: &[SExpr],
     operator: &str,
@@ -1286,6 +1376,9 @@ fn emit_direct_tail(
     let Some(values) = expr.as_list() else {
         return emit_direct_value_tail(expr, destination, ctx, registry);
     };
+    if values.first().is_some_and(is_direct_lexical_call_head) {
+        return emit_direct_lexical_call(expr, Some(destination), ctx, registry);
+    }
     let Some(head) = values.first().and_then(SExpr::as_form_head) else {
         return emit_direct_value_tail(expr, destination, ctx, registry);
     };

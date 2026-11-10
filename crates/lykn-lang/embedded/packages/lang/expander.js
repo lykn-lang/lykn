@@ -1199,6 +1199,54 @@ function expandDirectValuePlan(form, env) {
   };
 }
 
+function isDirectLexicalCallHead(head) {
+  return head?.type === "atom" && head.binding === "ref" &&
+    !head.value.includes(":") &&
+    !["eval", "super", "new", "dynamic-import"].includes(head.value);
+}
+
+function isNormalizedSpreadArgument(value) {
+  return value?.type === "list" && value.values.length === 2 &&
+    formHead(value.values[0]) === "spread";
+}
+
+function expandDirectLexicalCall(form, env, use) {
+  const [head, ...args] = form.values;
+  const plans = args.map((argument) => expandDirectValuePlan(argument, env));
+  let lastPrefix = -1;
+  for (let index = 0; index < plans.length; index++) {
+    if (plans[index].prefix.length > 0) lastPrefix = index;
+  }
+  if (lastPrefix < 0) {
+    return { type: "list", values: [head, ...plans.map((plan) => plan.value)] };
+  }
+
+  if (plans.some((plan) => isNormalizedSpreadArgument(plan.value))) {
+    throw new Error("ordered lexical call with spread and lifted arguments is not supported");
+  }
+
+  const callee = completionValueAtom({});
+  const statements = [array(sym("const"), callee, head)];
+  const callArgs = [];
+  for (let index = 0; index < plans.length; index++) {
+    const { prefix, value } = plans[index];
+    if (index > lastPrefix) {
+      callArgs.push(value);
+    } else if (prefix.length === 0) {
+      const saved = completionValueAtom({});
+      statements.push(array(sym("const"), saved, value));
+      callArgs.push(saved);
+    } else {
+      statements.push(...prefix);
+      callArgs.push(value);
+    }
+  }
+
+  const call = array(callee, ...callArgs);
+  statements.push(use === "DirectStatement" ? call : resultValueStatement(use, call));
+  return directBlock(statements);
+}
+
 function logicalBranchCondition(operator, value) {
   if (operator === "&&") return value;
   if (operator === "||") return array(sym("!"), value);
@@ -1404,6 +1452,10 @@ function expandExprInner(form, env, use = "Legacy") {
   if (head.type === 'atom' && !isKernel(form) &&
       (head.binding === 'ref' || env.has(head.value))) {
     head.binding = 'ref';
+    if (isDirectLexicalCallHead(head) &&
+        (use === "DirectStatement" || isResultOperandUse(use))) {
+      return expandDirectLexicalCall(form, env, use);
+    }
     const values = [head];
     for (const sub of form.values.slice(1)) {
       pushExpanded(values, expandAt(sub, env, use === "Legacy" || use === "Protected" ? use : "Value"));
