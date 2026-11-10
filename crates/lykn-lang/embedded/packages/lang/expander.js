@@ -1258,8 +1258,8 @@ function directMemberCallParts(head) {
   return { base, property };
 }
 
-function expandDirectMemberCall(form, env, use) {
-  const { base, property } = directMemberCallParts(form.values[0]);
+function expandDirectMemberCall(form, env, use, memberParts) {
+  const { base, property } = memberParts;
   const plans = form.values.slice(1).map(argument => expandDirectValuePlan(argument, env));
   const argumentPlan = planDirectCallArguments(
     plans,
@@ -1742,6 +1742,12 @@ function expandExprInner(form, env, use = "Legacy") {
       }
     }
   }
+
+  const memberParts = !isKernel(form) &&
+    (use === "DirectStatement" || isResultOperandUse(use))
+    ? directMemberCallParts(head)
+    : null;
+  if (memberParts) return expandDirectMemberCall(form, env, use, memberParts);
 
   // Default: expand all sub-forms, region-aware. `scopePlan` places each
   // introduced binding over exactly the child positions where it is lexically
@@ -2506,12 +2512,6 @@ export function expand(forms, context = {}) {
   const afterPass0 = pass0ImportMacros(forms, filePath, compilationStack);
   const afterPass1 = pass1RegisterMacros(afterPass0);
   const expanded = pass2ExpandAll(afterPass1);
-  materializeExpandedHostCalls(expanded, {
-    toJsIdentifier,
-    formHead,
-    moduleBindsReflect,
-    validateProtectedHost,
-  });
   // DD-58 strict (default-on): reject unsanctioned top-level kernel-only decls
   // in the fully-expanded output — covers user-written bare decls and
   // user-macro-emitted ones (A-6). Explicit `{ strict: false }` opt-out for
@@ -2520,5 +2520,11 @@ export function expand(forms, context = {}) {
   if (strict) {
     enforceStrictTopLevel(expanded);
   }
+  materializeExpandedHostCalls(expanded, {
+    toJsIdentifier,
+    formHead,
+    moduleBindsReflect,
+    validateProtectedHost,
+  });
   return expanded;
 }
