@@ -67,6 +67,14 @@ const FIXTURES: &[Case] = &[
         name: "statement-match-protected-preservation",
         expected: b"[7,[7]]\n",
     },
+    Case {
+        name: "match-clause-scope",
+        expected: b"[11,22,14]\n",
+    },
+    Case {
+        name: "match-structural-pattern-macros",
+        expected: b"[7]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -352,6 +360,16 @@ fn statement_match_preserves_macro_hygiene_and_consumed_controls() {
 #[test]
 fn statement_match_preserves_protected_function_exit_checks() {
     run_positive(&FIXTURES[13]);
+}
+
+#[test]
+fn match_clauses_keep_bindings_local_to_guard_and_body() {
+    run_positive(&FIXTURES[14]);
+}
+
+#[test]
+fn match_patterns_stay_structural_while_clause_macros_expand() {
+    run_positive(&FIXTURES[15]);
 }
 
 #[test]

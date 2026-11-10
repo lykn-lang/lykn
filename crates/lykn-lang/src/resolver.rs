@@ -735,6 +735,104 @@ mod tests {
     }
 
     #[test]
+    fn match_scope_separates_subject_guard_body_and_siblings() {
+        let source = "(match (match 1 (_ 2)) (match :when (match 3) (match 4)) (_ (match 5 (_ 6))))";
+        let forms = read(source).expect("parse match scopes");
+        let resolved = resolve(&forms);
+        assert_eq!(resolved, forms, "resolution preserves syntax and spans");
+
+        let SExpr::List { values, .. } = &resolved[0] else {
+            panic!("outer match is a list")
+        };
+        let SExpr::List { values: subject, .. } = &values[1] else {
+            panic!("subject match is a list")
+        };
+        assert_eq!(subject[0].name_res(), NameRes::Unresolved);
+
+        let SExpr::List { values: first_clause, .. } = &values[2] else {
+            panic!("first clause is a list")
+        };
+        assert_eq!(first_clause[0].name_res(), NameRes::BindingDef);
+        let SExpr::List { values: guard, .. } = &first_clause[2] else {
+            panic!("guard match is a list")
+        };
+        assert_eq!(guard[0].name_res(), NameRes::BindingRef);
+        let SExpr::List { values: body, .. } = &first_clause[3] else {
+            panic!("body match is a list")
+        };
+        assert_eq!(body[0].name_res(), NameRes::BindingRef);
+
+        let SExpr::List { values: second_clause, .. } = &values[3] else {
+            panic!("second clause is a list")
+        };
+        let SExpr::List { values: sibling, .. } = &second_clause[1] else {
+            panic!("sibling match is a list")
+        };
+        assert_eq!(sibling[0].name_res(), NameRes::Unresolved);
+    }
+
+    #[test]
+    fn bound_match_has_no_pattern_definition_sites() {
+        let forms = read("(bind match f) (match 0 (phantom 7) (ordinary 8))")
+            .expect("parse bound match call");
+        let resolved = resolve(&forms);
+        let SExpr::List { values, .. } = &resolved[1] else {
+            panic!("bound match call is a list")
+        };
+        assert_eq!(values[0].name_res(), NameRes::BindingRef);
+        for clause in &values[2..] {
+            let SExpr::List { values, .. } = clause else {
+                panic!("clause-shaped call argument is a list")
+            };
+            assert_eq!(values[0].name_res(), NameRes::Unresolved);
+        }
+
+        let mut tagged = read("(match 0 (phantom 7) (ordinary 8))")
+            .expect("parse explicitly tagged call");
+        let SExpr::List { values, .. } = &mut tagged[0] else {
+            panic!("tagged match call is a list")
+        };
+        values[0] = values[0].clone().with_name_res(NameRes::BindingRef);
+        let resolved = resolve(&tagged);
+        let SExpr::List { values, .. } = &resolved[0] else {
+            panic!("tagged match call remains a list")
+        };
+        assert_eq!(values[0].name_res(), NameRes::BindingRef);
+        for clause in &values[2..] {
+            let SExpr::List { values, .. } = clause else {
+                panic!("clause-shaped call argument is a list")
+            };
+            assert_eq!(values[0].name_res(), NameRes::Unresolved);
+        }
+    }
+
+    #[test]
+    fn match_shadowing_is_clause_local() {
+        let source = "(match 0 (slot :when false (bind slot 1) slot) (_ (bind slot 2) slot))";
+        let forms = read(source).expect("parse match shadowing");
+        let expected_span = {
+            fn find_declaration(form: &SExpr) -> Option<Span> {
+                match form {
+                    SExpr::List { values, .. } if form.to_string() == "(bind slot 1)" => {
+                        Some(values[1].span())
+                    }
+                    SExpr::List { values, .. } => values.iter().find_map(find_declaration),
+                    SExpr::Cons { car, cdr, .. } => {
+                        find_declaration(car).or_else(|| find_declaration(cdr))
+                    }
+                    _ => None,
+                }
+            }
+            find_declaration(&forms[0]).expect("first clause nested declaration")
+        };
+        let shadows = shadowing_sites(&forms);
+        assert_eq!(shadows.len(), 1);
+        assert_eq!(shadows[0].name, "slot");
+        assert_eq!(shadows[0].kind, BindingKind::Bind);
+        assert_eq!(shadows[0].span, expected_span);
+    }
+
+    #[test]
     fn same_span_bind_name_does_not_capture_initializer_form_head() {
         let forms = protocol_forms(json!([
             {"type":"list","values":[
