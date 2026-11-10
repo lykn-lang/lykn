@@ -12,6 +12,6 @@
   (bind and (fn (:any a :any b) (array a b)))
   (return (and (trace:push "arg1") (trace:push "arg2"))))
 (func pure-logical :returns :any :body
-  (or (and false "wrong") "pure"))
+  (or (and false "wrong") (and true "pure")))
 (console:log (JSON:stringify (array (lazy-results true) (lazy-results false)
   (bound-logical) (pure-logical) trace)))
