@@ -961,6 +961,24 @@ native strict compile and runtime, with separate object-role,
 assignment, checked unknown-escape and tagged-call proof at
 task `31893710`. [Verification](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md).
 
+#### NE-C18 — quoted string loses its AST type in compiled macro templates
+
+**Observed 2026-11-10.** S14 original F4 at test-only
+`0a17dda5`, production `31893710`, passes native check and
+strict compile. The generated function evaluates `return inside`
+as a reference, then strict Deno exits 1. Public `lykn` fails
+during expansion on an unexpected node type before generating a
+module. The shared `walkQQElement` passes the string literal
+directly to the compiled template, which evaluates to a JS
+string rather than the original typed AST node. Native protocol
+conversion treats the returned raw JSON string as an atom.
+
+**Owner and re-entry.** Bounded macro literal preservation
+owns the original frozen F4 and both distinct backend outcomes.
+S14 [isolates the completion witness](arc01-compiler-semantic-integrity/slice14-consumed-return-completion/cc-prompt-iteration01.md)
+by carrying the same strings through ordinary unquote arguments.
+Macro production behavior remains open.
+
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 
 **Source-only observation,2026-11-07.** At source5408,

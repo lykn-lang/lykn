@@ -40,3 +40,9 @@ parent rows remain open through composition.
 define the source and verification boundary. This slice's refinement
 accounting starts separately and does not erase S04/I1, S09, S12,
 S13 or tooling history.
+
+2026-11-10 [refinement 01](cc-prompt-iteration01.md) isolates the
+independent F4 macro literal issue at exact test-only `0a17dda5`.
+Native 23/26 and public 21/24 steps with all five separate
+negatives green. Preserve both observed quoted string failures
+as NE-C18. Same runtime oracle and real macro control region.
