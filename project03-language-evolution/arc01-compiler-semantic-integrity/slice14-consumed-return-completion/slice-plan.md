@@ -55,3 +55,11 @@ No behavioral checks ran against that freeze. The old isolated
 F4 passed both runtimes at `40c37d3d`, with the old synthetic
 arrow boundary still present. All original tests and oracles
 remain fixed after the first fixture-only isolation.
+
+2026-11-10 [refinement 03](cc-prompt-iteration03.md) preserves
+the original consumed no-else diagnostic and aligns the
+result materializer with actual statement and checked kernel
+roles. Exact prior `6e406654` grouped build and focused native
+26/public 24 plus five independent negatives passed. Full gates
+were held. The original four runtime inputs and oracles stay
+unchanged, with one new exact diagnostic regression.
