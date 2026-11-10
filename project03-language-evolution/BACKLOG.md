@@ -184,6 +184,29 @@ spans 0.7.0 → 0.8.0+ *(operator decides the split, informed by the survey)*.
 (build output) are downstream of a batteries-included build tool; `lykn add`
 (arc06, 0.6.0) is its first dependency-management primitive.
 
+#### Ahead-of-time application builds (0.7.x)
+
+**Disposition.** Operator placed AOT application compilation on the 0.7.x
+roadmap on 2026-11-10. The existing `lykn compile` already emits JavaScript.
+The roadmap work is to define a repeatable project build and deployment
+contract on top of that compiler.
+
+**Delivery.** Build from Lykn source and explicit application entry points
+before deployment. A fresh consumer runs the emitted JavaScript without
+downloading the browser compiler or requiring a Lykn runtime. Keep the
+standard library opt-in through selective static imports. For the optional
+optimized bundle, prove unused exports and their private helpers disappear
+while live behavior and deliberate module effects survive. Measure raw,
+minified, and gzip sizes for representative application fixtures.
+
+**Re-entry.** Scope the CLI and artifact contract with
+[packaging strategy](slice02-packaging-strategy/slice-plan.md) and
+[the tree-shaking audit](slice01-treeshake-audit/slice-plan.md).
+Decide the command surface, supported targets, dependency handling, and
+bundling defaults at design time. The
+[0.6.x browser compiler split](arc02-ad-hoc-maintenance/artifacts/browser-compiler-split-plan.md)
+is a separate release prerequisite with its own artifact and size evidence.
+
 #### A1.1 · Dependency version management — Mix/rebar3-style `~>` *(research + decision, 2026-07-22)*
 
 **Origin.** The DD-63 (`lykn add`) version-pinning question. Operator prefers the

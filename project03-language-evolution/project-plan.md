@@ -9,6 +9,18 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+## 0.7.x roadmap
+
+Ahead-of-time application compilation is a 0.7.x build-tooling
+deliverable. Extend the existing source-to-JavaScript compiler into a
+project build that emits deployable JavaScript without the Lykn compiler
+or a mandatory Lykn runtime in the deployed application. Preserve static
+ESM imports, opt-in standard-library entry points, and observable module
+initialization. Design the CLI and packaging contract alongside the
+tree-shaking audit, with separate measurements for emitted application
+artifacts and the full browser compiler.
+[AOT roadmap entry](BACKLOG.md#ahead-of-time-application-builds-07x).
+
 [S12/S13 local release verification](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
 accepts the fast-forward to `31893710`. Arc01 resumes remaining
 I2 consumed completion under the Operator's authority.

@@ -326,6 +326,7 @@ No project/F/Project07 row inherits completion; retrospective closes this scope.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | P-1 | Project composition is independently evaluated against its plan | Review project plan and original child evidence | correctness-grade | historical planning | open | | Reorganization is not software acceptance. |
 | P-HI | Protected-host contract/source diagnostics and lazy private access compose with source-first optimized output | Accepted Arc03 PHI01–06, actual native/public/esbuild/Deno proof and exact S04/API/doc handoff | correctness-grade | Operator/Arc03 | done | arc03-protected-host-intrinsics/cdc-verification.md | Exact task source `d73601a5`; S04 consumer and later audit remain separate |
+| P-AOT | 0.7.x builds deployable applications ahead of time from explicit Lykn entry points | Fresh consumer of emitted JavaScript, exact dependency and initialization controls, and raw/minified/gzip application measurements | correctness-grade | Operator 0.7.x roadmap | open | [AOT roadmap entry](BACKLOG.md#ahead-of-time-application-builds-07x) | CLI and packaging design pending. |
 
 2026-11-06: [Slice14 endpoint](slice14-compile-validation-and-parser/cdc-verification.md)
 independently accepts task-only NE-C08/NE-C07 repairs and full canonical product

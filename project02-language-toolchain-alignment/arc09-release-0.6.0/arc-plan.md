@@ -33,6 +33,10 @@ publication, release tags, and pushes.
 
 **Release-prep checklist items captured along the way:**
 - **Green CI on `release/0.6.x`** and a clean `make check` before publication.
+- **Browser compiler split:** independently accept and integrate the
+  browser/Deno macro-loader split and private ESTree invocation split
+  before publication. Verify both on the final release candidate.
+  [Project03 split plan](../../project03-language-evolution/arc02-ad-hoc-maintenance/artifacts/browser-compiler-split-plan.md).
 - **CI maintenance:** bump `actions/checkout@v4 → v5` where compatible. Treat as
   release-prep chore, not a blocker unless CI proves otherwise.
 - **No-bypass dry-runs:** slice02 repaired `make publish-dry-run` to call

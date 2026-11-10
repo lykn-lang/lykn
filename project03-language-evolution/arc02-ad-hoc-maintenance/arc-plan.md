@@ -9,6 +9,21 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+## Browser compiler split for 0.6.x
+
+The Operator added two compatibility-preserving compiler refactors before
+0.6.0 publication. Plan S04 to separate the Deno macro loader from the
+browser compiler, then S05 to separate the private ESTree invocation
+bridge. AM-06 and AM-07 track the two deliveries. The
+[split plan](artifacts/browser-compiler-split-plan.md) defines their
+design, measurements, and release composition checks. Open each
+implementation slice from its actual accepted baseline.
+
+The local release policy change `b0c97f4e` sets the 80 KiB hard
+cap for the full gzip output. The fixed DD-37 historical delta
+remains visible. S03's old ceiling and failure remain historical
+evidence.
+
 The explicit [bounded Arc03 source re-entry](../arc03-protected-host-intrinsics/slice01-versioned-host-protection/cdc-verification.md#original-pre-policy-baseline-independently-reproduced)
 is independently accepted at `5a2e569`. With the earlier six MR rows,
 this fulfills AM-04. Arc03 v1 and typed dist wiring keep their own gates.
@@ -115,6 +130,9 @@ All original F1–F12, Project07/library/book/guide/human/licensing and other co
 
 ## Version history
 
+- 2026-11-10 v0.6: Planned the two pre-release browser compiler
+  splits in measured order and recorded the approved absolute cap.
+
 - 2026-11-10 v0.5: S03 independently reproduces the fixed DD-37 regression. AM-05 owns the outstanding product budget decision.
 
 - 2026-11-08 v0.4: New bounded S02 DESIGN intake after Arc03 W8; generic repair
@@ -136,6 +154,6 @@ two test-only changes and leaves the browser DD-37 size issue open.
 reproduced the exact fixed-source budget failure and measured
 the two source-graph cuts. At the CI pin on this platform the
 whole browser compiler is 11,818 bytes over. Both experimental
-cuts together still leave 7,875 bytes over. AM-05 owns the held
-product decision. The historical source and allowance still
-govern the gate. [S03 verification](slice03-dd37-browser-bundle/cdc-verification.md).
+cuts together left 7,875 bytes over the S03 ceiling. AM-05 owns the
+remaining product work under the approved release policy above.
+[S03 verification](slice03-dd37-browser-bundle/cdc-verification.md).
