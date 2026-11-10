@@ -1,0 +1,13 @@
+program=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn
+args=["compile","test/fixtures/semantic-roles/return-consumed-macro-boundaries.lykn","-o","/private/tmp/lykn-s14-cc-84bc88b6/mirror/return-consumed-macro-boundaries.js"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+launcher=/usr/bin/env -u LYKN_TEST_DENO -u LYKN_SEMANTIC_ROLE_EVIDENCE_DIR
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=/private/tmp/lykn-s14-cc-84bc88b6/mirror/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s14-cc-84bc88b6/mirror/xdg-cache
+XDG_CONFIG_HOME=/private/tmp/lykn-s14-cc-84bc88b6/mirror/xdg-config
+NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-cc-84bc88b6/mirror/npmrc
+NPM_CONFIG_CACHE=/private/tmp/lykn-s14-cc-84bc88b6/mirror/npm-cache
+PATH inherited ordinary shell PATH
+CLI sha256=a5376c8ac8d46cbc7509e7331ed4e7e9be151bbfd461d247ace7907963ee6bcd
+Deno sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74

@@ -1,0 +1,31 @@
+
+running 26 tests
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... ok
+test bound_match_conditional_operand_is_a_value ... ok
+test do_while_uses_value_test_and_statement_sequence_body ... ok
+test direct_return_consumes_match_in_the_named_function_region ... ok
+test if_declaration_is_emitted_inside_a_branch_block ... ok
+test direct_return_match_preserves_guarded_exhaustion ... ok
+test direct_return_consumes_do_without_retargeting_loop_transfers ... ok
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... ok
+test match_clauses_keep_bindings_local_to_guard_and_body ... ok
+test nested_kernel_object_retains_structural_and_executable_roles ... ok
+test match_consumes_value_tail_after_statement_prefix ... ok
+test if_direct_transfers_keep_source_targets ... ok
+test original_match_reserved_role_is_preserved ... ok
+test direct_return_macro_keeps_nested_function_boundaries ... ok
+test if_arm_scope_and_macro_expansion_are_preserved ... ok
+test unknown_nested_kernel_escape_fails_compile_without_outputs ... ok
+test statement_match_guarded_exhaustion_throws_into_the_enclosing_try ... ok
+test statement_match_loop_transfers_keep_their_source_targets ... ok
+test statement_match_guards_progress_in_source_order ... ok
+test statement_match_preserves_protected_function_exit_checks ... ok
+test statement_match_return_keeps_the_enclosing_function_target ... ok
+test if_direct_transfers_keep_macro_introduced_function_targets ... ok
+test while_uses_value_test_and_statement_sequence_body ... ok
+test match_patterns_stay_structural_while_clause_macros_expand ... ok
+test original_match_kernel_object_is_preserved ... ok
+test statement_match_preserves_macro_hygiene_and_consumed_controls ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+

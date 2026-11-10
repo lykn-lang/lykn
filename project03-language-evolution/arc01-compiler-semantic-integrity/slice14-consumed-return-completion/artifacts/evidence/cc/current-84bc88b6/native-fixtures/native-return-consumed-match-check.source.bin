@@ -1,0 +1,8 @@
+(bind trace (array))
+(func read-value :args (:any input) :returns :any :body
+  (return
+    (match (do (trace:push "subject") input)
+      (_ :when (do (trace:push "guard") false) (return "wrong"))
+      (1 "normal")
+      (_ (return "inside")))))
+(console:log (JSON:stringify (array (read-value 0) (read-value 1) trace)))

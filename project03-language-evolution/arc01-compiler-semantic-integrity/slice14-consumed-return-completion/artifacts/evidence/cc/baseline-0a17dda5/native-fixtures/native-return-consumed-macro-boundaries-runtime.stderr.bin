@@ -1,0 +1,6 @@
+error: Uncaught (in promise) ReferenceError: inside is not defined
+    return inside;
+    ^
+    at file:///private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmpwRffAL/return-consumed-macro-boundaries.js:9:5
+    at choose (file:///private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmpwRffAL/return-consumed-macro-boundaries.js:11:5)
+    at file:///private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmpwRffAL/return-consumed-macro-boundaries.js:16:29

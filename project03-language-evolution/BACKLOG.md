@@ -975,6 +975,7 @@ conversion treats the returned raw JSON string as an atom.
 
 **Owner and re-entry.** Bounded macro literal preservation
 owns the original frozen F4 and both distinct backend outcomes.
+[Exact raw](arc01-compiler-semantic-integrity/slice14-consumed-return-completion/artifacts/evidence/cc/baseline-0a17dda5/).
 S14 [isolates the completion witness](arc01-compiler-semantic-integrity/slice14-consumed-return-completion/cc-prompt-iteration01.md)
 by carrying the same strings through ordinary unquote arguments.
 Macro production behavior remains open.

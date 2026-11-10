@@ -1,0 +1,32 @@
+return-consumed-match
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+["inside","normal",["subject","guard","subject","guard"]]
+return-consumed-loop
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+["done",[1,"skip"]]
+return-consumed-guard-exhaustion
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+["guard","match: no matching pattern"]
+return-consumed-macro-boundaries
+success=true code=Some(0)
+success=true code=Some(0)
+success=true code=Some(0)
+present=true
+present=false
+success=true code=0
+["inside",["nested"]]

@@ -1,0 +1,20 @@
+program: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9
+argv: --nocapture
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+scoped env:
+  TMPDIR=/private/tmp/lykn-s14-old-baseline-0a17dda5/tmp
+  XDG_CACHE_HOME=/private/tmp/lykn-s14-old-baseline-0a17dda5/xdg-cache
+  XDG_CONFIG_HOME=/private/tmp/lykn-s14-old-baseline-0a17dda5/xdg-config
+  NPM_CONFIG_CACHE=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-cache
+  NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-userconfig (absent; neutralizes existing ~/.npmrc)
+  NPM_CONFIG_GLOBALCONFIG=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-globalconfig (absent)
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  LYKN_TEST_DENO=/opt/homebrew/bin/deno
+  LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s14-old-baseline-0a17dda5/native-evidence
+PATH: inherited ordinary PATH
+CLI child: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn sha256=9c601cab7e08eaa24a7b2d816101d4797a89c87bed6d11939047628d346ae322
+Test executable sha256=8d55a89306f4fcadf7f323dfe1be1f64da681ef6343edc031621c40b2be8ba7c
+Deno sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74
+raw stdout: stdout.bin
+raw stderr: stderr.bin
+raw exit code: status.txt

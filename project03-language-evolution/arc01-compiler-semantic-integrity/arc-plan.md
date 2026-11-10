@@ -9,6 +9,14 @@ related: [project07-core-library-research]
 
 # Compiler semantic integrity
 
+## Direct consumed return accepted — 2026-11-10
+
+[S14](slice14-consumed-return-completion/cdc-verification.md) is independently accepted at task `84bc88b6`.
+The ordinary named-function return destination covers the finite
+if/do/match routes. Remaining I2 bind, lazy values and held
+ordered compositions stay with their planned work. CV-04 and
+CI-04 remain open. Release stays `31893710`.
+
 ## Direct consumed return opened — 2026-11-10
 
 [S14](slice14-consumed-return-completion/slice-plan.md) delivers

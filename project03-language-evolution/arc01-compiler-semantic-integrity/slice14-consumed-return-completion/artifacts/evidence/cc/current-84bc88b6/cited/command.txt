@@ -1,0 +1,10 @@
+program=make
+args=["check-cited-paths"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+TMPDIR=/private/tmp/lykn-s14-cc-84bc88b6/cited/tmp
+XDG_CONFIG_HOME=/private/tmp/lykn-s14-cc-84bc88b6/cited/xdg
+NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-cc-84bc88b6/cited/npmrc
+NPM_CONFIG_CACHE=/private/tmp/lykn-s14-cc-84bc88b6/cited/npm-cache
+PATH inherited ordinary shell PATH

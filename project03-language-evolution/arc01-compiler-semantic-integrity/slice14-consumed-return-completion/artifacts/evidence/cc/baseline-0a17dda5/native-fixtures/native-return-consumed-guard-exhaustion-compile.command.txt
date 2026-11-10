@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/return-consumed-guard-exhaustion.lykn", "-o", "/private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmp6xEYpA/return-consumed-guard-exhaustion.js"]
+cwd=Some("/private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmp6xEYpA")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmp6xEYpA/xdg-cache")
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s14-old-baseline-0a17dda5/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s14-old-baseline-0a17dda5/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s14-old-baseline-0a17dda5/native-evidence")

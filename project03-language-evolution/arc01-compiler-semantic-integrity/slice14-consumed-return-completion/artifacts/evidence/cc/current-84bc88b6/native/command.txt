@@ -1,0 +1,14 @@
+program=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/deps/semantic_roles-cb18f482652d85e9
+args=["--nocapture"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s14-cc-84bc88b6/native/evidence
+TMPDIR=/private/tmp/lykn-s14-cc-84bc88b6/native/tmp
+XDG_CONFIG_HOME=/private/tmp/lykn-s14-cc-84bc88b6/native/xdg
+NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-cc-84bc88b6/native/npmrc
+npm_config_userconfig=/private/tmp/lykn-s14-cc-84bc88b6/native/npmrc
+PATH inherited ordinary shell PATH
+test runner sha256=81dc7bf74dcc8e3c768d6a75550cab24e1055a4b2f91874ec3ade24413f9200e
+CLI sha256=d14f4419db1fd3411c723dca119dbce3834db04c59daf47338e50c250380f569
+Deno sha256=2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74

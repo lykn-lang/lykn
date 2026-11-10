@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+   |
+13 |         return return "wrong";
+   |                ~~~~~~
+    at file:///private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmpCYxeLq/return-consumed-match.js:13:16

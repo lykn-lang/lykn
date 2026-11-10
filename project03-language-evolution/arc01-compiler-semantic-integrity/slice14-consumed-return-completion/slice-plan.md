@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc01-compiler-semantic-integrity
 slice: slice14-consumed-return-completion
-status: in-progress
+status: completed
 depends-on: [slice04-completion-value-flow-integrity, slice13-structural-match-and-kernel-escape]
 ---
 
@@ -69,3 +69,10 @@ the public statement sequence materializer missing from the
 static `1e5203b7` freeze. No launch consumed that freeze.
 The new control compiles a grouped bind tail. Original four
 runtime fixtures, native gates and all earlier checks remain.
+
+2026-11-10 [independent acceptance](cdc-verification.md) closes
+all four CR rows at clean task `84bc88b6`. The separate
+[closing report](closing-report.md) and
+[retrospective](cdc-retrospective.md) retain the exact scope
+and execution limits. Remaining I2 proceeds through the next
+bind/lazy-value readiness work. Release stays `31893710`.

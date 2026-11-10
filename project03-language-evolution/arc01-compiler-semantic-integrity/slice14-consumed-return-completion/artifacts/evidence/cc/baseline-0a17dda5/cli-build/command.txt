@@ -1,0 +1,16 @@
+program: /Users/oubiwann/.cargo/bin/cargo
+argv: build -p lykn-cli --bin lykn
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+scoped env:
+  TMPDIR=/private/tmp/lykn-s14-old-baseline-0a17dda5/tmp
+  XDG_CACHE_HOME=/private/tmp/lykn-s14-old-baseline-0a17dda5/xdg-cache
+  XDG_CONFIG_HOME=/private/tmp/lykn-s14-old-baseline-0a17dda5/xdg-config
+  NPM_CONFIG_CACHE=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-cache
+  NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-userconfig (absent; neutralizes existing ~/.npmrc)
+  NPM_CONFIG_GLOBALCONFIG=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-globalconfig (absent)
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  LYKN_TEST_DENO=/opt/homebrew/bin/deno
+PATH: inherited ordinary PATH
+raw stdout: stdout.bin
+raw stderr: stderr.bin
+raw exit code: status.txt

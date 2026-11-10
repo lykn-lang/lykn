@@ -1,0 +1,11 @@
+program=/Users/oubiwann/.cargo/bin/cargo
+args=["build","-p","lykn-cli","--bin","lykn"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s14-cc-84bc88b6/cli-build/evidence
+TMPDIR=/private/tmp/lykn-s14-cc-84bc88b6/cli-build/tmp
+XDG_CONFIG_HOME=/private/tmp/lykn-s14-cc-84bc88b6/cli-build/xdg
+NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-cc-84bc88b6/cli-build/npmrc
+npm_config_userconfig=/private/tmp/lykn-s14-cc-84bc88b6/cli-build/npmrc
+PATH inherited ordinary shell PATH

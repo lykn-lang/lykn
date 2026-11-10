@@ -1,0 +1,7 @@
+Source: commit 84bc88b6f99c421b5251bde0ae58a8422d93f7b2 tree 5b77022a16ab104876b751428edc6dca37646cfb; final git status clean.
+Focused debug CLI: target/debug/lykn SHA-256 d14f4419db1fd3411c723dca119dbce3834db04c59daf47338e50c250380f569.
+Focused direct test runner: target/debug/deps/semantic_roles-cb18f482652d85e9 SHA-256 81dc7bf74dcc8e3c768d6a75550cab24e1055a4b2f91874ec3ade24413f9200e.
+Post-Make release CLI: bin/lykn SHA-256 a5376c8ac8d46cbc7509e7331ed4e7e9be151bbfd461d247ace7907963ee6bcd.
+Deno: /opt/homebrew/bin/deno 2.9.6 SHA-256 2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74.
+Rust/Cargo: rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30).
+Intentional task config: project.json at source cwd SHA-256 eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269.

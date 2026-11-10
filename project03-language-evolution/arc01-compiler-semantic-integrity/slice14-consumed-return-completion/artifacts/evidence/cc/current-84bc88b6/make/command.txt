@@ -1,0 +1,13 @@
+program=make
+args=["check"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO=/opt/homebrew/bin/deno
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s14-cc-84bc88b6/make/evidence
+TMPDIR=/private/tmp/lykn-s14-cc-84bc88b6/make/tmp
+XDG_CONFIG_HOME=/private/tmp/lykn-s14-cc-84bc88b6/make/xdg
+NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-cc-84bc88b6/make/npmrc
+npm_config_userconfig=/private/tmp/lykn-s14-cc-84bc88b6/make/npmrc
+NPM_CONFIG_CACHE=/private/tmp/lykn-s14-cc-84bc88b6/make/npm-cache
+npm_config_cache=/private/tmp/lykn-s14-cc-84bc88b6/make/npm-cache
+PATH inherited ordinary shell PATH

@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Illegal continue statement: no surrounding iteration statement
+        continue;
+        ^
+    at <anonymous> (file:///private/tmp/lykn-s14-old-baseline-0a17dda5/tmp/.tmpTFvCNl/return-consumed-loop.js:6:9)

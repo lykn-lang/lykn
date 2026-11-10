@@ -1,0 +1,16 @@
+program=make
+args=["check"]
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno
+LYKN_TEST_DENO unset
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR unset
+TMPDIR=/private/tmp/lykn-s14-cc-84bc88b6/make2/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-s14-cc-84bc88b6/make2/xdg-cache
+XDG_CONFIG_HOME=/private/tmp/lykn-s14-cc-84bc88b6/make2/xdg-config
+NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-cc-84bc88b6/make2/npmrc
+npm_config_userconfig=/private/tmp/lykn-s14-cc-84bc88b6/make2/npmrc
+NPM_CONFIG_CACHE=/private/tmp/lykn-s14-cc-84bc88b6/make2/npm-cache
+npm_config_cache=/private/tmp/lykn-s14-cc-84bc88b6/make2/npm-cache
+PATH inherited ordinary shell PATH
+project.json intentionally present at task cwd; sha256=eaf238e2aa7246c9b6ae4e0b11b410f641e867271d3ef7b70b8b275a6c097269
+absent config-path receipt=./config-absence.txt

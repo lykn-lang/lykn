@@ -1,0 +1,7 @@
+(macro i2-return-body (early later) `(do (return ,early) ,later))
+(bind trace (array))
+(func choose :returns :any :body
+  (bind nested (fn () (return "nested") "wrong-inner"))
+  (trace:push (nested))
+  (if true (i2-return-body "inside" "wrong") (do (trace:push "wrong-else") "not-chosen")))
+(console:log (JSON:stringify (array (choose) trace)))

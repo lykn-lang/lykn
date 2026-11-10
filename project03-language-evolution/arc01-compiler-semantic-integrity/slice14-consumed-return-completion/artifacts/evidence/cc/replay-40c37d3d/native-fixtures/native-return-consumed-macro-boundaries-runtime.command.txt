@@ -1,0 +1,11 @@
+program="/opt/homebrew/bin/deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-s14-f4-isolation-40c37d3d/tmp/.tmp6uJvkx/return-consumed-macro-boundaries.js"]
+cwd=Some("/private/tmp/lykn-s14-f4-isolation-40c37d3d/tmp/.tmp6uJvkx")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=Some("/opt/homebrew/bin/deno")
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s14-f4-isolation-40c37d3d/xdg-cache")
+TMPDIR=Some("/private/tmp/lykn-s14-f4-isolation-40c37d3d/tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/private/tmp/lykn-s14-f4-isolation-40c37d3d/native-evidence")

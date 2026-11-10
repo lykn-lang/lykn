@@ -1,0 +1,16 @@
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/project.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/deno.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/deno.jsonc: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/package.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/project.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/deno.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/deno.jsonc: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/package.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/project.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/deno.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/deno.jsonc: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/package.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/project.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/deno.json: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/deno.jsonc: stat: No such file or directory
+stat: /private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/package.json: stat: No such file or directory

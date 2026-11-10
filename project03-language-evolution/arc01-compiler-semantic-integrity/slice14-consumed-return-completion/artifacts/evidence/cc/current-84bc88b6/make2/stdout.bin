@@ -1,0 +1,723 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/completion-value-flow; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.0M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+[1;32m✓ Format check passed[0m
+[1;36m• Checking lykn syntax...[0m
+[1;32m✓ lykn syntax check passed[0m
+[1;36m• Running lykn lint (source anti-patterns)...[0m
+[1;32m✓ lykn lint passed[0m
+[1;36m• Refreshing test artifacts (release binary + build dir)...[0m
+[1;32m✓ Test artifacts fresh[0m
+[1;34mRunning Rust tests...[0m
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 99 tests
+test add::tests::kind_from_str_maps_kebab ... ok
+test add::tests::parse_rejects_malformed ... ok
+test add::tests::parse_npm_scoped_and_unscoped ... ok
+test add::tests::parse_jsr_scoped_with_and_without_version ... ok
+test config::tests::absolutize_relative_leaves_registry_and_absolute ... ok
+test add::tests::import_pair_is_exact_and_paired ... ok
+test config::tests::test_extract_npm_deps_empty ... ok
+test config::tests::test_extract_npm_deps_ignores_non_npm_non_workspace ... ok
+test config::tests::test_extract_npm_deps_mixed ... ok
+test config::tests::test_extract_npm_deps_npm_specifier ... ok
+test config::tests::build_effective_config_lands_overlay_without_base_imports_and_drops_workspace ... ok
+test config::tests::build_effective_config_absolutizes_base_and_preserves_registry_absolute ... ok
+test config::tests::test_extract_npm_deps_scoped_npm ... ok
+test config::tests::build_effective_config_malformed_imports_is_none ... ok
+test config::tests::test_extract_npm_deps_workspace_import ... ok
+test config::tests::test_lykn_metadata_default ... ok
+test config::tests::build_effective_config_empty_imports_object_takes_overlay ... ok
+test config::tests::test_lykn_metadata_serialization_includes_macro_entry ... ok
+test config::tests::test_lykn_metadata_serialization_skips_none ... ok
+test config::tests::test_package_kind_default ... ok
+test add::tests::upsert_appends_new_pair_preserving_everything_else ... ok
+test config::tests::test_package_kind_kebab_case_serialization ... ok
+test config::tests::test_parse_package_config_default_version ... ok
+test config::tests::test_parse_package_config_full ... ok
+test config::tests::test_parse_package_config_object_exports ... ok
+test config::tests::overlay_write_read_roundtrip_updates_in_place_preserving_order ... ok
+test config::tests::effective_merge_local_wins_over_base ... ok
+test add::tests::upsert_is_idempotent_updates_in_place ... ok
+test config::tests::overlay_remove_deletes_file_when_empty_and_errors_on_absent ... ok
+test config::tests::test_parse_package_config_tooling_kind ... ok
+test config::tests::test_parse_package_config_with_lykn_metadata ... ok
+test config::tests::test_parse_project_config ... ok
+test config::tests::test_parse_project_config_empty ... ok
+test config::tests::test_parse_project_config_no_imports ... ok
+test config::tests::test_read_package_config_nonexistent ... ok
+test config::tests::test_read_project_config_nonexistent ... ok
+test config::tests::test_read_package_config_from_tempfile ... ok
+test config::tests::test_read_project_config_from_tempfile ... ok
+test config::tests::test_short_name_empty ... ok
+test config::tests::test_read_project_config_optional_returns_none_for_nonexistent ... ok
+test config::tests::test_read_package_config_invalid_json ... ok
+test config::tests::test_short_name_scoped ... ok
+test config::tests::test_read_project_config_invalid_json ... ok
+test config::tests::test_short_name_scoped_lang ... ok
+test config::tests::test_short_name_unscoped ... ok
+test config::tests::test_workspace_members_empty ... ok
+test config::tests::test_workspace_members_no_prefix ... ok
+test config::tests::test_workspace_members_strips_dot_slash ... ok
+test config::tests::test_read_project_config_optional_from_tempdir ... ok
+test dist::tests::test_build_dist_copies_js_files ... ok
+test dist::tests::test_build_dist_browser_deps_include_workspace ... ok
+test dist::tests::test_build_dist_built_package_fields ... ok
+test dist::tests::snapshot_import_rewriter_output ... ok
+test dist::tests::test_build_dist_empty_workspace_errors ... ok
+test dist::tests::snapshot_macro_module_package_json ... ok
+test dist::tests::snapshot_macro_module_mod_js_stub ... ok
+test dist::tests::snapshot_macro_module_deno_json ... ok
+test dist::tests::snapshot_workspace_project_json ... ok
+test dist::tests::snapshot_runtime_pkg_package_json ... ok
+test dist::tests::test_build_dist_missing_project_json_errors ... ok
+test dist::tests::snapshot_runtime_pkg_deno_json ... ok
+test dist::tests::test_rewrite_imports_double_quote ... ok
+test dist::tests::test_rewrite_imports_empty_map ... ok
+test dist::tests::test_rewrite_imports_empty_source ... ok
+test dist::tests::test_rewrite_imports_ignores_npm ... ok
+test dist::tests::test_rewrite_imports_mixed_quotes_same_line ... ok
+test dist::tests::test_rewrite_imports_multiple_entries ... ok
+test dist::tests::test_rewrite_imports_no_match ... ok
+test dist::tests::test_rewrite_imports_single_quote ... ok
+test formatter::tests::escape_string_all_special ... ok
+test formatter::tests::escape_string_empty ... ok
+test formatter::tests::escape_string_no_special ... ok
+test formatter::tests::format_bool_false ... ok
+test formatter::tests::format_bool_true ... ok
+test formatter::tests::format_cons ... ok
+test formatter::tests::format_empty_list ... ok
+test formatter::tests::format_float_number ... ok
+test formatter::tests::format_indented_children ... ok
+test formatter::tests::format_integer_number ... ok
+test formatter::tests::format_keyword ... ok
+test formatter::tests::format_list_with_keywords ... ok
+test formatter::tests::format_long_list_wraps ... ok
+test formatter::tests::format_multiple_top_level_exprs ... ok
+test formatter::tests::format_nested_list ... ok
+test formatter::tests::format_null ... ok
+test formatter::tests::format_short_list ... ok
+test formatter::tests::format_single_atom ... ok
+test formatter::tests::format_string_simple ... ok
+test formatter::tests::format_string_with_escapes ... ok
+test validation::tests::first_nonempty_compile_group_keeps_the_established_priority ... ok
+test dist::tests::test_build_dist_creates_build_stamp ... ok
+test dist::tests::test_build_dist_copies_readme_and_license ... ok
+test dist::tests::test_build_dist_creates_packages ... ok
+test dist::tests::test_build_dist_macro_module ... ok
+test dist::tests::test_build_dist_generates_deno_json ... ok
+test dist::tests::test_build_dist_generates_package_json ... ok
+test dist::tests::test_build_dist_generates_project_json ... ok
+test dist::tests::test_build_dist_rewrites_imports_in_js ... ok
+test dist::tests::test_build_dist_idempotent ... ok
+
+test result: ok. 99 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+
+running 180 tests
+test compile::tests::compile_file_nonexistent_errors ... ok
+test compile::tests::check_strict_rejects_no_else_if_in_expression_position ... ok
+test compile::tests::compile_source_allows_if_expression_with_else_branch ... ok
+test compile::tests::compile_source_allows_no_else_if_in_statement_position ... ok
+test compile::tests::compile_source_allows_bound_fn_head_call ... ok
+test compile::tests::check_strict_rejects_nested_bare_parameter_fn ... ok
+test compile::tests::compile_source_cell_express ... ok
+test compile::tests::compile_source_bind_kernel_json ... ok
+test compile::tests::compile_file_with_temp_file ... ok
+test compile::tests::compile_source_empty_input ... ok
+test compile::tests::compile_source_context_path_synthetic_parent ... ok
+test compile::tests::compile_source_cond_expression ... ok
+test compile::tests::compile_source_invalid_syntax_errors ... ok
+test compile::tests::compile_source_lyk_exempt_from_strict ... ok
+test compile::tests::compile_source_grouped_bind_keeps_sequential_visibility ... ok
+test compile::tests::compile_source_rejects_cond_expression_without_else ... ok
+test compile::tests::compile_source_multiple_binds ... ok
+test compile::tests::compile_source_obj_form ... ok
+test compile::tests::compile_source_none_path_is_strict ... ok
+test compile::tests::compile_source_exports_declaration ... ok
+test compile::tests::compile_source_func_kernel_json ... ok
+test compile::tests::compile_source_rejects_missing_exports_name ... ok
+test compile::tests::compile_source_rejects_duplicate_exports_name ... ok
+test compile::tests::compile_source_rejects_nested_bare_parameter_fn ... ok
+test compile::tests::compile_source_rejects_no_else_if_in_expression_position ... ok
+test compile::tests::compile_routes_reject_the_same_validation_inputs ... ok
+test compile::tests::compile_source_strict_kernel_escape_compiles_in_lykn ... ok
+test compile::tests::compile_source_strip_assertions_preserves_fn_implicit_return ... ok
+test compile::tests::compile_source_threading ... ok
+test compile::tests::compile_typed_bind_any_no_check ... ok
+test compile::tests::compile_source_strict_rejects_bare_kernel_in_lykn ... ok
+test compile::tests::compile_typed_bind_literal_match ... ok
+test compile::tests::compile_typed_bind_literal_mismatch_errors ... ok
+test doctest::tests::test_annotation_display ... ok
+test compile::tests::compile_validation_preserves_all_messages_in_the_first_group ... ok
+test doctest::tests::test_assign_sections_basic ... ok
+test doctest::tests::test_assign_sections_continue_same_section ... ok
+test doctest::tests::test_extract_blocks_compile_fail ... ok
+test compile::tests::compile_source_strict_allows_operators_and_surface ... ok
+test doctest::tests::test_extract_blocks_continue_annotation ... ok
+test doctest::tests::test_extract_blocks_crlf_handling ... ok
+test doctest::tests::test_extract_blocks_empty_block_skipped ... ok
+test doctest::tests::test_extract_blocks_html_fence_in_markdown_ignored ... ok
+test doctest::tests::test_extract_blocks_js_block_not_paired_when_another_fence_intervenes ... ok
+test doctest::tests::test_extract_blocks_js_block_not_paired_when_far ... ok
+test doctest::tests::test_extract_blocks_js_block_preferred_over_plain ... ok
+test doctest::tests::test_extract_blocks_lisp_compile_fail_annotation ... ok
+test doctest::tests::test_extract_blocks_lisp_ignored_by_default ... ok
+test compile::tests::compile_typed_bind_strip_assertions ... ok
+test doctest::tests::test_extract_blocks_lisp_prefix_tag_ignored ... ok
+test doctest::tests::test_extract_blocks_lisp_run_annotation ... ok
+test doctest::tests::test_extract_blocks_lisp_with_opt_in_fence ... ok
+test doctest::tests::test_extract_blocks_mixed_lykn_and_html ... ok
+test doctest::tests::test_extract_blocks_multiline_js_output ... ok
+test doctest::tests::test_extract_blocks_multiline_source ... ok
+test doctest::tests::test_extract_blocks_multiple_blocks ... ok
+test doctest::tests::test_extract_blocks_no_blocks ... ok
+test compile::tests::compile_source_strip_assertions ... ok
+test doctest::tests::test_extract_blocks_non_lykn_blocks_ignored ... ok
+test compile::tests::compile_source_type_and_match ... ok
+test doctest::tests::test_extract_blocks_only_whitespace_content ... ok
+test doctest::tests::test_extract_blocks_plain_output_block ... ok
+test doctest::tests::test_extract_blocks_preserves_indentation ... ok
+test doctest::tests::test_extract_blocks_quad_backtick_fence_ignored ... ok
+test doctest::tests::test_extract_blocks_repeated_fence_tags_compose ... ok
+test doctest::tests::test_extract_blocks_single_lykn_block ... ok
+test doctest::tests::test_extract_blocks_skip_and_fragment ... ok
+test doctest::tests::test_extract_blocks_text_output_block ... ok
+test doctest::tests::test_extract_blocks_with_annotation ... ok
+test doctest::tests::test_extract_blocks_with_js_output_matching ... ok
+test doctest::tests::test_extract_lykn_from_html_empty_script ... ok
+test doctest::tests::test_extract_lykn_from_html_multiple_scripts ... ok
+test doctest::tests::test_extract_lykn_from_html_no_lykn_scripts ... ok
+test doctest::tests::test_extract_lykn_from_html_single_script ... ok
+test doctest::tests::test_extract_lykn_from_html_with_offset ... ok
+test doctest::tests::test_generate_test_file_compile_block ... ok
+test doctest::tests::test_generate_test_file_compile_fail_block ... ok
+test doctest::tests::test_generate_test_file_continue_accumulation ... ok
+test doctest::tests::test_generate_test_file_continue_resets_at_section ... ok
+test doctest::tests::test_generate_test_file_execution_output ... ok
+test doctest::tests::test_generate_test_file_opt_in_continue_resets_at_section ... ok
+test doctest::tests::test_generate_test_file_output_matching_multiline ... ok
+test doctest::tests::test_generate_test_file_output_matching_single_line ... ok
+test doctest::tests::test_generate_test_file_run_annotation ... ok
+test doctest::tests::test_generate_test_file_skip_blocks_omitted ... ok
+test doctest::tests::test_js_escape_template_backslash ... ok
+test doctest::tests::test_js_escape_template_backticks ... ok
+test doctest::tests::test_js_escape_template_dollar_brace ... ok
+test doctest::tests::test_parse_annotation_known_values ... ok
+test doctest::tests::test_parse_annotation_trims_whitespace ... ok
+test doctest::tests::test_parse_annotation_unknown_defaults_to_compile ... ok
+test doctest::tests::test_sanitize_filename_backslashes ... ok
+test doctest::tests::test_sanitize_filename_basic ... ok
+test lint::tests::clean_source_is_silent ... ok
+test lint::tests::findings_sorted_by_position ... ok
+test lint::tests::global_isnan_flags_bare_isnan ... ok
+test lint::tests::global_isnan_silent_on_number_isnan ... ok
+test lint::tests::for_in_on_arrays_silent_on_object_and_ambiguous ... ok
+test lint::tests::for_in_on_arrays_flags_array_literal ... ok
+test lint::tests::no_arguments_flags_the_atom ... ok
+test lint::tests::nested_calls_are_walked ... ok
+test lint::tests::no_arguments_silent_on_rest ... ok
+test lint::tests::no_delete_on_array_flags_numeric_index ... ok
+test lint::tests::no_delete_on_array_silent_on_property_delete ... ok
+test lint::tests::no_dirname_fixtures_flags_in_test_file ... ok
+test lint::tests::no_dirname_fixtures_silent_outside_test_and_on_cwd ... ok
+test lint::tests::no_eval_silent_on_normal_call ... ok
+test lint::tests::no_eval_flags_eval_and_js_eval ... ok
+test lint::tests::no_iife_flags_immediately_invoked_fn ... ok
+test lint::tests::no_iife_silent_on_named_call ... ok
+test lint::tests::no_json_deep_copy_silent_on_plain_parse ... ok
+test lint::tests::no_json_deep_copy_flags_roundtrip ... ok
+test lint::tests::no_method_on_expression_flags_nested_and_deep ... ok
+test doctest::tests::test_generate_test_file_imports_correct_path ... ok
+test doctest::tests::test_find_checkout_root_from_ancestors ... ok
+test lint::tests::no_new_wrappers_flags_boxed_primitives ... ok
+test lint::tests::no_method_on_expression_flags_receiver_shapes ... ok
+test lint::tests::no_new_wrappers_silent_on_real_class ... ok
+test lint::tests::no_relative_source_imports_flags_in_test_file ... ok
+test lint::tests::no_relative_source_imports_silent_outside_test_files_and_on_bare ... ok
+test compile::tests::compile_with_dts_keeps_positive_output_contracts ... ok
+test lint::tests::no_require_flags_require_call ... ok
+test lint::tests::no_require_silent_on_import ... ok
+test lint::tests::no_method_on_expression_match_clause_structural_exemption ... ok
+test lint::tests::or_for_defaults_silent_on_boolean_logic ... ok
+test lint::tests::no_method_on_expression_silent_on_positives ... ok
+test lint::tests::or_for_defaults_flags_literal_default ... ok
+test lint::tests::parseint_radix_flags_missing_radix ... ok
+test doctest::tests::test_lang_mod_path_prefers_config_root ... ok
+test lint::tests::parseint_radix_silent_with_radix ... ok
+test lint::tests::prefer_surface_operators_flags_kernel_ops ... ok
+test lint::tests::prefer_surface_operators_silent_on_surface_forms ... ok
+test lint::tests::resolution_delete_bound_via_bind ... ok
+test lint::tests::resolution_eval_bound_via_bind ... ok
+test lint::tests::resolution_import_relative_bound_head_is_silent_in_test_file ... ok
+test lint::tests::resolution_new_wrappers_bound_via_bind ... ok
+test lint::tests::resolution_for_in_bound_via_bind ... ok
+test lint::tests::resolution_isnan_bound_via_param ... ok
+test lint::tests::resolution_no_arguments_bound_atom_is_silent ... ok
+test lint::tests::resolution_no_require_bound_via_bind ... ok
+test lint::tests::resolution_no_dirname_bound_atom_is_silent ... ok
+test lint::tests::resolution_or_for_defaults_bound_via_bind ... ok
+test lint::tests::resolution_sort_bound_head_is_silent ... ok
+test lint::tests::resolution_parseint_bound_via_param ... ok
+test lint::tests::shadowing_flags_nested_shadow_at_inner_def_site ... ok
+test lint::tests::shadowing_flags_param_shadowing_enclosing_bind ... ok
+test lint::tests::shadowing_silent_on_non_shadowing_binds ... ok
+test lint::tests::shadowing_silent_on_form_shadowing_d1 ... ok
+test tests::compiled_path_lyk_extension ... ok
+test lint::tests::sort_without_comparator_flags_bare_sort ... ok
+test tests::compiled_path_no_out_dir ... ok
+test tests::compiled_path_strips_dot_prefix ... ok
+test lint::tests::sort_with_comparator_silent ... ok
+test tests::compiled_path_with_out_dir ... ok
+test tests::deno_json_template_includes_name ... ok
+test tests::empty_name_rejected ... ok
+test tests::leading_digit_rejected ... ok
+test tests::leading_hyphen_rejected ... ok
+test tests::mod_lykn_template_includes_name ... ok
+test tests::project_json_template_includes_name ... ok
+test tests::find_config_in_returns_none_for_empty ... ok
+test tests::publish_both ... ok
+test tests::publish_defaults_to_jsr ... ok
+test tests::publish_jsr_only ... ok
+test tests::publish_npm_only ... ok
+test tests::find_config_in_finds_project_json ... ok
+test tests::special_chars_rejected ... ok
+test tests::test_file_in_tests_dir ... ok
+test tests::test_file_patterns ... ok
+test tests::uppercase_rejected ... ok
+test tests::valid_project_names ... ok
+test tests::find_config_in_prefers_first_filename ... ok
+test tests::test_command_parses_repeated_fence_flags ... ok
+test validation::tests::first_nonempty_compile_group_keeps_the_established_priority ... ok
+test tests::find_config_in_walks_parents ... ok
+test lint::tests::snapshot_no_method_on_expression ... ok
+test lint::tests::snapshot_text_output ... ok
+test lint::tests::snapshot_json_output ... ok
+test lint::tests::snapshot_shape_corpus_text ... ok
+test lint::tests::snapshot_shadowing_text_and_json ... ok
+
+test result: ok. 180 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 2 tests
+test async_exports_keep_unknown_nested_and_reserved_names_rejected ... ok
+test async_named_export_checks_compiles_and_imports_with_await ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+
+running 1 test
+test native_compiler_preserves_async_expression_values ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+
+running 4 tests
+test sibling_binding_shadows_following_desugar ... ok
+test bound_name_does_not_fire_desugar ... ok
+test bound_name_does_not_fire_user_macro ... ok
+test out_of_scope_use_still_expands ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+
+running 3 tests
+test rejected_file_compile_preserves_existing_js_and_dts_sentinels ... ok
+test stdout_and_file_compile_keep_typed_export_output_and_runtime_behavior ... ok
+test stdout_and_file_routes_reject_the_same_validation_inputs ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 1 test
+test strict_native_contract_predicates_lower_and_preserve_blame ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+
+running 1 test
+test docs_without_patterns_skips_corpus_but_with_patterns_runs_it ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+
+
+running 4 tests
+test runtime_predicates_reject_independent_control_mutations ... ok
+test package_error_keeps_language_diagnostic_and_failing_file_bytes ... ok
+test checked_emission_failure_blocks_cli_and_dist_outputs ... ok
+test valid_runtime_exceptions_and_resolved_dissoc_remain_ordinary_programs ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+
+running 2 tests
+test lykn_file_rejects_bare_kernel_only_form ... ok
+test lyk_file_rejects_surface_form_at_top_level ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 5 tests
+test m5_blocked_xdg_materialization_returns_io_error_without_output ... ok
+test m2_project_without_astring_keeps_caller_files_unchanged ... ok
+test m1_no_project_cold_xdg_uses_compiler_owned_dependencies ... ok
+test m3_astring_alias_still_resolves_unique_imported_macro ... ok
+test m4_same_version_cache_reextracts_missing_config ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+
+running 5 tests
+test ordinary_fn_body_yields_keyword_does_not_hide_no_else_if ... ok
+test ordinary_lambda_body_yields_keyword_does_not_hide_no_else_if ... ok
+test genfn_yields_header_keeps_statement_body_policy ... ok
+test consumed_match_tail_if_is_rejected_without_writing_outputs ... ok
+test match_clause_validation_preserves_context_and_runtime_behavior ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 2 tests
+test clean_corpus_is_silent_and_exits_zero ... ok
+test seeded_corpus_fires_every_rule_and_exits_nonzero ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test protected_host_dist_error_preserves_typed_path_and_stale_outputs ... ok
+test legal_protected_host_controls_run_as_separate_programs ... ok
+test protected_writes_are_captured_across_cli_routes_before_rejection_assertions ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+
+running 6 tests
+test build_invalid_no_config_errors ... ok
+test build_macro_module_produces_correct_dist ... ok
+test build_tooling_produces_correct_dist ... ok
+test build_runtime_minimal_produces_correct_dist ... ok
+test build_runtime_with_imports_rewrites_correctly ... ok
+test build_project_recurses_runtime_sources_and_preserves_ownership_boundary ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+test consumer_resolves_file_specifier_to_built_dist ... ok
+test consumer_resolves_workspace_import_map_entry ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test jsr_dry_run_rejects_invalid_fixture ... ok
+test jsr_dry_run_accepts_macro_module_fixture ... ok
+test jsr_dry_run_accepts_tooling_fixture ... ok
+test jsr_dry_run_accepts_runtime_fixture ... ok
+test npm_dry_run_produces_expected_file_list ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+
+running 3 tests
+test real_packages_build_dist_succeeds ... ok
+test real_packages_dry_run_jsr ... ok
+test real_packages_dry_run_npm ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+
+running 16 tests
+test help_lists_the_explicit_contract ... ok
+test non_file_entries_and_local_path_spelling_are_preserved_at_child_boundary ... ok
+test real_deno_overlay_resolves_local_import_without_runtime_read_grant ... ok
+test real_deno_no_import_program_and_explicit_all_grants_work_on_all_routes ... ok
+test real_deno_receives_script_flags_and_nonzero_exit ... ok
+test real_deno_stdin_executes_compiled_input_and_preserves_arguments ... ok
+test real_deno_repeated_scopes_and_bare_mixture_match_native_semantics ... ok
+test effective_config_overlay_is_used_with_runtime_controls ... ok
+test flags_after_file_are_script_args_with_or_without_separator ... ok
+test invalid_options_are_rejected_before_launch_and_bare_flags_do_not_eat_file ... ok
+test filename_starting_with_hyphen_is_not_a_runtime_option ... ok
+test real_deno_local_imports_symlinks_and_file_specifiers_keep_their_base ... ok
+test real_deno_enforces_read_and_write_scopes_on_all_routes ... ok
+test every_permission_supports_bare_scoped_repeated_and_explicit_empty_values ... ok
+test all_routes_have_no_implicit_grants_and_preserve_build_paths ... ok
+test runtime_options_and_child_exit_are_preserved_on_all_routes ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.89s
+
+
+running 1 test
+test fresh_scaffold_supports_local_bin_tests_nested_build_and_source_run ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+
+
+running 26 tests
+test do_while_uses_value_test_and_statement_sequence_body ... FAILED
+test bound_match_conditional_operand_is_a_value ... FAILED
+test if_arm_scope_and_macro_expansion_are_preserved ... FAILED
+test boundaries_preserve_bound_calls_and_switch_sibling_visibility ... FAILED
+test consumed_no_else_if_is_rejected_in_all_four_value_positions ... FAILED
+test if_declaration_is_emitted_inside_a_branch_block ... FAILED
+test direct_return_consumes_match_in_the_named_function_region ... FAILED
+test direct_return_consumes_do_without_retargeting_loop_transfers ... FAILED
+test direct_return_match_preserves_guarded_exhaustion ... FAILED
+test direct_return_macro_keeps_nested_function_boundaries ... FAILED
+test match_clauses_keep_bindings_local_to_guard_and_body ... FAILED
+test if_direct_transfers_keep_macro_introduced_function_targets ... FAILED
+test match_patterns_stay_structural_while_clause_macros_expand ... FAILED
+test match_consumes_value_tail_after_statement_prefix ... FAILED
+test if_direct_transfers_keep_source_targets ... FAILED
+test original_match_kernel_object_is_preserved ... FAILED
+test statement_match_guarded_exhaustion_throws_into_the_enclosing_try ... FAILED
+test original_match_reserved_role_is_preserved ... FAILED
+test nested_kernel_object_retains_structural_and_executable_roles ... FAILED
+test statement_match_guards_progress_in_source_order ... FAILED
+test statement_match_loop_transfers_keep_their_source_targets ... FAILED
+test statement_match_preserves_macro_hygiene_and_consumed_controls ... FAILED
+test statement_match_preserves_protected_function_exit_checks ... FAILED
+test statement_match_return_keeps_the_enclosing_function_target ... FAILED
+test while_uses_value_test_and_statement_sequence_body ... FAILED
+test unknown_nested_kernel_escape_fails_compile_without_outputs ... FAILED
+
+failures:
+
+---- do_while_uses_value_test_and_statement_sequence_body stdout ----
+SEMANTIC_ROLE_SOURCE name=native-do-while-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/do-while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 100, 111, 45, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 48, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'do_while_uses_value_test_and_statement_sequence_body' (101234733) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- bound_match_conditional_operand_is_a_value stdout ----
+SEMANTIC_ROLE_SOURCE name=native-bound-match-conditional-operand-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/bound-match-conditional-operand.lykn"
+bytes=[40, 102, 117, 110, 99, 32, 99, 104, 111, 111, 115, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 109, 97, 116, 99, 104, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 32, 40, 109, 97, 116, 99, 104, 32, 48, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 55, 32, 56, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 116, 97, 114, 103, 101, 116, 32, 58, 97, 110, 121, 32, 118, 97, 108, 117, 101, 41, 32, 118, 97, 108, 117, 101, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 109, 97, 116, 99, 104, 32, 48, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 55, 32, 56, 41, 41, 32, 40, 99, 104, 111, 111, 115, 101, 32, 109, 97, 116, 99, 104, 41, 41, 41, 41, 10]
+
+thread 'bound_match_conditional_operand_is_a_value' (101234726) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- if_arm_scope_and_macro_expansion_are_preserved stdout ----
+SEMANTIC_ROLE_SOURCE name=native-if-arm-scope-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/if-arm-scope.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 112, 105, 99, 107, 32, 40, 120, 41, 32, 96, 40, 43, 32, 44, 120, 32, 49, 48, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 105, 102, 32, 116, 114, 117, 101, 10, 32, 32, 40, 98, 105, 110, 100, 32, 112, 105, 99, 107, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 40, 43, 32, 110, 32, 49, 48, 48, 41, 41, 32, 115, 97, 118, 101, 100, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 112, 105, 99, 107, 32, 49, 41, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 112, 105, 99, 107, 32, 50, 41, 41, 41, 10, 40, 105, 102, 32, 102, 97, 108, 115, 101, 10, 32, 32, 40, 98, 105, 110, 100, 32, 112, 105, 99, 107, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 40, 43, 32, 110, 32, 50, 48, 48, 41, 41, 32, 115, 97, 118, 101, 100, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 112, 105, 99, 107, 32, 51, 41, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 112, 105, 99, 107, 32, 52, 41, 41, 41, 10, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 112, 105, 99, 107, 32, 53, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'if_arm_scope_and_macro_expansion_are_preserved' (101234734) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- boundaries_preserve_bound_calls_and_switch_sibling_visibility stdout ----
+SEMANTIC_ROLE_SOURCE name=native-boundaries-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/boundaries.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 112, 105, 99, 107, 101, 100, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 52, 32, 53, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 97, 114, 103, 101, 116, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 40, 40, 103, 101, 116, 32, 40, 97, 114, 114, 97, 121, 32, 116, 97, 114, 103, 101, 116, 41, 32, 48, 41, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 54, 32, 55, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 115, 119, 105, 116, 99, 104, 32, 49, 10, 32, 32, 40, 49, 10, 32, 32, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 49, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 32, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 40, 100, 101, 102, 97, 117, 108, 116, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 98, 97, 100, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 112, 105, 99, 107, 101, 100, 32, 99, 111, 109, 112, 117, 116, 101, 100, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+
+thread 'boundaries_preserve_bound_calls_and_switch_sibling_visibility' (101234727) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- consumed_no_else_if_is_rejected_in_all_four_value_positions stdout ----
+SEMANTIC_ROLE_SOURCE name=native-negative-while-check source_path="/private/tmp/lykn-s14-cc-84bc88b6/make2/tmp/.tmp8w09FL/while.lykn"
+bytes=[40, 119, 104, 105, 108, 101, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 116, 114, 117, 101, 41, 32, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 34, 110, 101, 118, 101, 114, 34, 41, 41]
+
+thread 'consumed_no_else_if_is_rejected_in_all_four_value_positions' (101234728) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- if_declaration_is_emitted_inside_a_branch_block stdout ----
+SEMANTIC_ROLE_SOURCE name=native-if-declaration-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/if-declaration.lykn"
+bytes=[40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 98, 105, 110, 100, 32, 102, 111, 108, 108, 111, 119, 105, 110, 103, 45, 115, 116, 97, 116, 101, 109, 101, 110, 116, 32, 57, 57, 41, 41, 10]
+
+thread 'if_declaration_is_emitted_inside_a_branch_block' (101234735) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- direct_return_consumes_match_in_the_named_function_region stdout ----
+SEMANTIC_ROLE_SOURCE name=native-return-consumed-match-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/return-consumed-match.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 114, 101, 97, 100, 45, 118, 97, 108, 117, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 105, 110, 112, 117, 116, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 114, 101, 116, 117, 114, 110, 10, 32, 32, 32, 32, 40, 109, 97, 116, 99, 104, 32, 40, 100, 111, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 115, 117, 98, 106, 101, 99, 116, 34, 41, 32, 105, 110, 112, 117, 116, 41, 10, 32, 32, 32, 32, 32, 32, 40, 95, 32, 58, 119, 104, 101, 110, 32, 40, 100, 111, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 103, 117, 97, 114, 100, 34, 41, 32, 102, 97, 108, 115, 101, 41, 32, 40, 114, 101, 116, 117, 114, 110, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 49, 32, 34, 110, 111, 114, 109, 97, 108, 34, 41, 10, 32, 32, 32, 32, 32, 32, 40, 95, 32, 40, 114, 101, 116, 117, 114, 110, 32, 34, 105, 110, 115, 105, 100, 101, 34, 41, 41, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 114, 101, 97, 100, 45, 118, 97, 108, 117, 101, 32, 48, 41, 32, 40, 114, 101, 97, 100, 45, 118, 97, 108, 117, 101, 32, 49, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+
+thread 'direct_return_consumes_match_in_the_named_function_region' (101234730) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- direct_return_consumes_do_without_retargeting_loop_transfers stdout ----
+SEMANTIC_ROLE_SOURCE name=native-return-consumed-loop-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/return-consumed-loop.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 105, 116, 101, 114, 97, 116, 101, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 102, 111, 114, 32, 40, 108, 101, 116, 32, 105, 32, 48, 41, 32, 40, 60, 32, 105, 32, 52, 41, 32, 40, 43, 43, 32, 105, 41, 10, 32, 32, 32, 32, 40, 114, 101, 116, 117, 114, 110, 10, 32, 32, 32, 32, 32, 32, 40, 100, 111, 10, 32, 32, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 40, 61, 32, 105, 32, 48, 41, 32, 40, 99, 111, 110, 116, 105, 110, 117, 101, 41, 41, 10, 32, 32, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 40, 61, 32, 105, 32, 50, 41, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 32, 32, 32, 32, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 105, 41, 10, 32, 32, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 40, 61, 32, 105, 32, 49, 41, 32, 40, 100, 111, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 115, 107, 105, 112, 34, 41, 32, 40, 99, 111, 110, 116, 105, 110, 117, 101, 41, 41, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 41, 41, 10, 32, 32, 34, 100, 111, 110, 101, 34, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 105, 116, 101, 114, 97, 116, 101, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+
+thread 'direct_return_consumes_do_without_retargeting_loop_transfers' (101234729) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- direct_return_match_preserves_guarded_exhaustion stdout ----
+SEMANTIC_ROLE_SOURCE name=native-return-consumed-guard-exhaustion-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/return-consumed-guard-exhaustion.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 101, 120, 104, 97, 117, 115, 116, 101, 100, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 48, 32, 40, 95, 32, 58, 119, 104, 101, 110, 32, 40, 100, 111, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 103, 117, 97, 114, 100, 34, 41, 32, 102, 97, 108, 115, 101, 41, 32, 49, 41, 41, 41, 10, 40, 116, 114, 121, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 101, 120, 104, 97, 117, 115, 116, 101, 100, 41, 41, 10, 32, 32, 40, 99, 97, 116, 99, 104, 32, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 101, 58, 109, 101, 115, 115, 97, 103, 101, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'direct_return_match_preserves_guarded_exhaustion' (101234732) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- direct_return_macro_keeps_nested_function_boundaries stdout ----
+SEMANTIC_ROLE_SOURCE name=native-return-consumed-macro-boundaries-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/return-consumed-macro-boundaries.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 105, 50, 45, 114, 101, 116, 117, 114, 110, 45, 98, 111, 100, 121, 32, 40, 101, 97, 114, 108, 121, 32, 108, 97, 116, 101, 114, 41, 32, 96, 40, 100, 111, 32, 40, 114, 101, 116, 117, 114, 110, 32, 44, 101, 97, 114, 108, 121, 41, 32, 44, 108, 97, 116, 101, 114, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 99, 104, 111, 111, 115, 101, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 98, 105, 110, 100, 32, 110, 101, 115, 116, 101, 100, 32, 40, 102, 110, 32, 40, 41, 32, 40, 114, 101, 116, 117, 114, 110, 32, 34, 110, 101, 115, 116, 101, 100, 34, 41, 32, 34, 119, 114, 111, 110, 103, 45, 105, 110, 110, 101, 114, 34, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 110, 101, 115, 116, 101, 100, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 105, 50, 45, 114, 101, 116, 117, 114, 110, 45, 98, 111, 100, 121, 32, 34, 105, 110, 115, 105, 100, 101, 34, 32, 34, 119, 114, 111, 110, 103, 34, 41, 32, 40, 100, 111, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 45, 101, 108, 115, 101, 34, 41, 32, 34, 110, 111, 116, 45, 99, 104, 111, 115, 101, 110, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 99, 104, 111, 111, 115, 101, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+
+thread 'direct_return_macro_keeps_nested_function_boundaries' (101234731) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- match_clauses_keep_bindings_local_to_guard_and_body stdout ----
+SEMANTIC_ROLE_SOURCE name=native-match-clause-scope-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match-clause-scope.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 112, 108, 117, 115, 45, 116, 101, 110, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 110, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 32, 40, 43, 32, 110, 32, 49, 48, 41, 41, 10, 40, 102, 117, 110, 99, 32, 116, 114, 97, 99, 101, 45, 102, 97, 108, 115, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 118, 97, 108, 117, 101, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 118, 97, 108, 117, 101, 41, 10, 32, 32, 102, 97, 108, 115, 101, 41, 10, 40, 109, 97, 116, 99, 104, 32, 112, 108, 117, 115, 45, 116, 101, 110, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 58, 119, 104, 101, 110, 32, 40, 116, 114, 97, 99, 101, 45, 102, 97, 108, 115, 101, 32, 40, 109, 97, 116, 99, 104, 32, 49, 41, 41, 10, 32, 32, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 10, 32, 32, 40, 95, 10, 32, 32, 32, 32, 40, 109, 97, 116, 99, 104, 32, 50, 10, 32, 32, 32, 32, 32, 32, 40, 49, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 45, 105, 110, 110, 101, 114, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 50, 50, 41, 41, 41, 41, 41, 10, 40, 100, 111, 10, 32, 32, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 97, 32, 58, 97, 110, 121, 32, 98, 41, 32, 40, 43, 32, 97, 32, 98, 41, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 109, 97, 116, 99, 104, 32, 51, 32, 40, 112, 108, 117, 115, 45, 116, 101, 110, 32, 49, 41, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'match_clauses_keep_bindings_local_to_guard_and_body' (101234738) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- if_direct_transfers_keep_macro_introduced_function_targets stdout ----
+SEMANTIC_ROLE_SOURCE name=native-if-direct-transfers-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/if-direct-transfers.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 109, 97, 107, 101, 45, 112, 105, 99, 107, 32, 40, 41, 32, 96, 40, 107, 101, 114, 110, 101, 108, 58, 102, 117, 110, 99, 116, 105, 111, 110, 32, 115, 101, 108, 101, 99, 116, 32, 40, 102, 108, 97, 103, 41, 10, 32, 32, 40, 105, 102, 32, 102, 108, 97, 103, 32, 40, 114, 101, 116, 117, 114, 110, 32, 55, 41, 41, 10, 32, 32, 40, 114, 101, 116, 117, 114, 110, 32, 57, 41, 41, 41, 10, 40, 109, 97, 107, 101, 45, 112, 105, 99, 107, 41, 10, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 111, 114, 32, 40, 108, 101, 116, 32, 105, 32, 48, 41, 32, 40, 60, 32, 105, 32, 52, 41, 32, 40, 43, 43, 32, 105, 41, 10, 32, 32, 40, 105, 102, 32, 40, 61, 32, 105, 32, 49, 41, 32, 40, 99, 111, 110, 116, 105, 110, 117, 101, 41, 41, 10, 32, 32, 40, 105, 102, 32, 40, 61, 32, 105, 32, 51, 41, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 105, 41, 41, 10, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 57, 48, 48, 41, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 57, 48, 49, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 115, 101, 108, 101, 99, 116, 32, 116, 114, 117, 101, 41, 32, 40, 115, 101, 108, 101, 99, 116, 32, 102, 97, 108, 115, 101, 41, 32, 116, 114, 97, 99, 101, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 52, 32, 53, 41, 41, 41, 41, 41, 10]
+
+thread 'if_direct_transfers_keep_macro_introduced_function_targets' (101234736) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- match_patterns_stay_structural_while_clause_macros_expand stdout ----
+SEMANTIC_ROLE_SOURCE name=native-match-structural-pattern-macros-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match-structural-pattern-macros.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 111, 98, 106, 32, 40, 107, 101, 121, 32, 98, 105, 110, 100, 101, 114, 41, 32, 96, 48, 41, 10, 40, 109, 97, 99, 114, 111, 32, 99, 108, 97, 117, 115, 101, 45, 103, 117, 97, 114, 100, 32, 40, 118, 97, 108, 117, 101, 41, 32, 96, 40, 61, 32, 44, 118, 97, 108, 117, 101, 32, 55, 41, 41, 10, 40, 109, 97, 99, 114, 111, 32, 99, 108, 97, 117, 115, 101, 45, 112, 117, 115, 104, 32, 40, 118, 97, 108, 117, 101, 41, 32, 96, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 44, 118, 97, 108, 117, 101, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 109, 97, 116, 99, 104, 32, 40, 74, 83, 79, 78, 58, 112, 97, 114, 115, 101, 32, 34, 123, 92, 34, 107, 101, 121, 92, 34, 58, 55, 125, 34, 41, 10, 32, 32, 40, 99, 108, 97, 117, 115, 101, 45, 112, 117, 115, 104, 32, 58, 119, 104, 101, 110, 32, 102, 97, 108, 115, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 10, 32, 32, 40, 40, 111, 98, 106, 32, 58, 107, 101, 121, 32, 110, 41, 32, 58, 119, 104, 101, 110, 32, 40, 99, 108, 97, 117, 115, 101, 45, 103, 117, 97, 114, 100, 32, 110, 41, 32, 40, 99, 108, 97, 117, 115, 101, 45, 112, 117, 115, 104, 32, 110, 41, 41, 10, 32, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'match_patterns_stay_structural_while_clause_macros_expand' (101234740) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- match_consumes_value_tail_after_statement_prefix stdout ----
+SEMANTIC_ROLE_SOURCE name=native-match-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/match.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 99, 104, 111, 111, 115, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 110, 10, 32, 32, 32, 32, 40, 99, 97, 112, 116, 117, 114, 101, 100, 32, 58, 119, 104, 101, 110, 32, 40, 61, 32, 99, 97, 112, 116, 117, 114, 101, 100, 32, 49, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 103, 117, 97, 114, 100, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 55, 32, 56, 41, 41, 10, 32, 32, 32, 32, 40, 95, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 57, 32, 49, 48, 41, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 99, 104, 111, 111, 115, 101, 32, 49, 41, 32, 40, 99, 104, 111, 111, 115, 101, 32, 50, 41, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+
+thread 'match_consumes_value_tail_after_statement_prefix' (101234739) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- if_direct_transfers_keep_source_targets stdout ----
+SEMANTIC_ROLE_SOURCE name=native-if-direct-transfers-literal-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/if-direct-transfers-literal.lykn"
+bytes=[40, 107, 101, 114, 110, 101, 108, 58, 102, 117, 110, 99, 116, 105, 111, 110, 32, 115, 101, 108, 101, 99, 116, 32, 40, 102, 108, 97, 103, 41, 10, 32, 32, 40, 105, 102, 32, 102, 108, 97, 103, 32, 40, 114, 101, 116, 117, 114, 110, 32, 55, 41, 41, 10, 32, 32, 40, 114, 101, 116, 117, 114, 110, 32, 57, 41, 41, 10, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 110, 117, 109, 98, 101, 114, 32, 110, 41, 32, 110, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 111, 114, 32, 40, 108, 101, 116, 32, 105, 32, 48, 41, 32, 40, 60, 32, 105, 32, 52, 41, 32, 40, 43, 43, 32, 105, 41, 10, 32, 32, 40, 105, 102, 32, 40, 61, 32, 105, 32, 49, 41, 32, 40, 99, 111, 110, 116, 105, 110, 117, 101, 41, 41, 10, 32, 32, 40, 105, 102, 32, 40, 61, 32, 105, 32, 51, 41, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 105, 41, 41, 10, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 57, 48, 48, 41, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 57, 48, 49, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 115, 101, 108, 101, 99, 116, 32, 116, 114, 117, 101, 41, 32, 40, 115, 101, 108, 101, 99, 116, 32, 102, 97, 108, 115, 101, 41, 32, 116, 114, 97, 99, 101, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 52, 32, 53, 41, 41, 41, 41, 41, 10]
+
+thread 'if_direct_transfers_keep_source_targets' (101234737) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- original_match_kernel_object_is_preserved stdout ----
+SEMANTIC_ROLE_SOURCE name=native-original-match-kernel-object-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/original-match-kernel-object.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 111, 98, 106, 32, 40, 107, 101, 121, 32, 98, 105, 110, 100, 101, 114, 41, 32, 96, 48, 41, 10, 40, 109, 97, 99, 114, 111, 32, 99, 108, 97, 117, 115, 101, 45, 103, 117, 97, 114, 100, 32, 40, 118, 97, 108, 117, 101, 41, 32, 96, 40, 61, 32, 44, 118, 97, 108, 117, 101, 32, 55, 41, 41, 10, 40, 109, 97, 99, 114, 111, 32, 99, 108, 97, 117, 115, 101, 45, 112, 117, 115, 104, 32, 40, 118, 97, 108, 117, 101, 41, 32, 96, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 44, 118, 97, 108, 117, 101, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 109, 97, 116, 99, 104, 32, 40, 107, 101, 114, 110, 101, 108, 58, 111, 98, 106, 101, 99, 116, 32, 40, 107, 101, 121, 32, 55, 41, 41, 10, 32, 32, 40, 99, 108, 97, 117, 115, 101, 45, 112, 117, 115, 104, 32, 58, 119, 104, 101, 110, 32, 102, 97, 108, 115, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 10, 32, 32, 40, 40, 111, 98, 106, 32, 58, 107, 101, 121, 32, 110, 41, 32, 58, 119, 104, 101, 110, 32, 40, 99, 108, 97, 117, 115, 101, 45, 103, 117, 97, 114, 100, 32, 110, 41, 32, 40, 99, 108, 97, 117, 115, 101, 45, 112, 117, 115, 104, 32, 110, 41, 41, 10, 32, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'original_match_kernel_object_is_preserved' (101234742) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- statement_match_guarded_exhaustion_throws_into_the_enclosing_try stdout ----
+SEMANTIC_ROLE_SOURCE name=native-statement-match-exhaustion-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/statement-match-exhaustion.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 116, 114, 121, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 50, 10, 32, 32, 32, 32, 40, 95, 32, 58, 119, 104, 101, 110, 32, 40, 100, 111, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 103, 117, 97, 114, 100, 34, 41, 32, 102, 97, 108, 115, 101, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 97, 102, 116, 101, 114, 34, 41, 10, 32, 32, 40, 99, 97, 116, 99, 104, 32, 101, 114, 114, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 101, 114, 114, 58, 109, 101, 115, 115, 97, 103, 101, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'statement_match_guarded_exhaustion_throws_into_the_enclosing_try' (101234744) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- original_match_reserved_role_is_preserved stdout ----
+SEMANTIC_ROLE_SOURCE name=native-original-match-reserved-role-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/original-match-reserved-role.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 112, 108, 117, 115, 45, 116, 101, 110, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 110, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 32, 40, 43, 32, 110, 32, 49, 48, 41, 41, 10, 40, 109, 97, 116, 99, 104, 32, 112, 108, 117, 115, 45, 116, 101, 110, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 58, 119, 104, 101, 110, 32, 40, 100, 111, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 109, 97, 116, 99, 104, 32, 49, 41, 41, 32, 102, 97, 108, 115, 101, 41, 10, 32, 32, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 10, 32, 32, 40, 95, 10, 32, 32, 32, 32, 40, 109, 97, 116, 99, 104, 32, 50, 10, 32, 32, 32, 32, 32, 32, 40, 49, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 45, 105, 110, 110, 101, 114, 34, 41, 41, 10, 32, 32, 32, 32, 32, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 50, 50, 41, 41, 41, 41, 41, 10, 40, 100, 111, 10, 32, 32, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 97, 32, 58, 97, 110, 121, 32, 98, 41, 32, 40, 43, 32, 97, 32, 98, 41, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 109, 97, 116, 99, 104, 32, 51, 32, 40, 112, 108, 117, 115, 45, 116, 101, 110, 32, 49, 41, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'original_match_reserved_role_is_preserved' (101234743) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- nested_kernel_object_retains_structural_and_executable_roles stdout ----
+SEMANTIC_ROLE_SOURCE name=native-nested-kernel-object-roles-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/nested-kernel-object-roles.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 112, 97, 121, 108, 111, 97, 100, 32, 40, 107, 101, 114, 110, 101, 108, 58, 111, 98, 106, 101, 99, 116, 10, 32, 32, 40, 107, 101, 121, 32, 53, 41, 10, 32, 32, 40, 105, 102, 32, 40, 107, 101, 114, 110, 101, 108, 58, 105, 102, 32, 116, 114, 117, 101, 32, 55, 32, 56, 41, 41, 10, 32, 32, 40, 40, 99, 111, 109, 112, 117, 116, 101, 100, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 34, 100, 121, 110, 97, 109, 105, 99, 34, 32, 34, 111, 116, 104, 101, 114, 34, 41, 41, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 48, 32, 57, 41, 41, 10, 32, 32, 40, 115, 112, 114, 101, 97, 100, 32, 40, 111, 98, 106, 32, 58, 101, 120, 116, 114, 97, 32, 54, 41, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 97, 115, 115, 105, 103, 110, 101, 100, 32, 40, 107, 101, 114, 110, 101, 108, 58, 61, 32, 40, 103, 101, 116, 32, 112, 97, 121, 108, 111, 97, 100, 32, 34, 107, 101, 121, 34, 41, 32, 40, 105, 102, 32, 102, 97, 108, 115, 101, 32, 49, 48, 32, 49, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 10, 32, 32, 40, 97, 114, 114, 97, 121, 32, 97, 115, 115, 105, 103, 110, 101, 100, 32, 40, 103, 101, 116, 32, 112, 97, 121, 108, 111, 97, 100, 32, 34, 107, 101, 121, 34, 41, 32, 40, 103, 101, 116, 32, 112, 97, 121, 108, 111, 97, 100, 32, 34, 105, 102, 34, 41, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 40, 103, 101, 116, 32, 112, 97, 121, 108, 111, 97, 100, 32, 34, 100, 121, 110, 97, 109, 105, 99, 34, 41, 32, 40, 103, 101, 116, 32, 112, 97, 121, 108, 111, 97, 100, 32, 34, 101, 120, 116, 114, 97, 34, 41, 41, 41, 41, 10]
+
+thread 'nested_kernel_object_retains_structural_and_executable_roles' (101234741) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- statement_match_guards_progress_in_source_order stdout ----
+SEMANTIC_ROLE_SOURCE name=native-statement-match-guards-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/statement-match-guards.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 115, 117, 98, 106, 101, 99, 116, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 115, 117, 98, 106, 101, 99, 116, 34, 41, 32, 50, 41, 10, 40, 102, 117, 110, 99, 32, 103, 97, 116, 101, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 109, 97, 114, 107, 32, 58, 97, 110, 121, 32, 114, 101, 115, 117, 108, 116, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 109, 97, 114, 107, 41, 10, 32, 32, 114, 101, 115, 117, 108, 116, 41, 10, 40, 109, 97, 116, 99, 104, 32, 40, 115, 117, 98, 106, 101, 99, 116, 41, 10, 32, 32, 40, 49, 32, 58, 119, 104, 101, 110, 32, 40, 103, 97, 116, 101, 32, 34, 119, 114, 111, 110, 103, 45, 112, 97, 116, 116, 101, 114, 110, 34, 32, 116, 114, 117, 101, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 45, 98, 111, 100, 121, 34, 41, 41, 10, 32, 32, 40, 50, 32, 58, 119, 104, 101, 110, 32, 40, 103, 97, 116, 101, 32, 34, 108, 105, 116, 101, 114, 97, 108, 45, 102, 97, 108, 115, 101, 34, 32, 102, 97, 108, 115, 101, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 45, 108, 105, 116, 101, 114, 97, 108, 34, 41, 41, 10, 32, 32, 40, 99, 97, 112, 116, 117, 114, 101, 100, 32, 58, 119, 104, 101, 110, 32, 40, 103, 97, 116, 101, 32, 99, 97, 112, 116, 117, 114, 101, 100, 32, 102, 97, 108, 115, 101, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 119, 114, 111, 110, 103, 45, 98, 105, 110, 100, 105, 110, 103, 34, 41, 41, 10, 32, 32, 40, 95, 32, 58, 119, 104, 101, 110, 32, 40, 103, 97, 116, 101, 32, 34, 99, 104, 111, 115, 101, 110, 34, 32, 116, 114, 117, 101, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 98, 111, 100, 121, 34, 41, 41, 10, 32, 32, 40, 95, 32, 58, 119, 104, 101, 110, 32, 40, 103, 97, 116, 101, 32, 34, 108, 97, 116, 101, 34, 32, 116, 114, 117, 101, 41, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 108, 97, 116, 101, 45, 98, 111, 100, 121, 34, 41, 41, 10, 32, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 34, 102, 97, 108, 108, 98, 97, 99, 107, 34, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'statement_match_guards_progress_in_source_order' (101234745) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- statement_match_loop_transfers_keep_their_source_targets stdout ----
+SEMANTIC_ROLE_SOURCE name=native-statement-match-loop-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/statement-match-loop.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 111, 114, 32, 40, 108, 101, 116, 32, 105, 32, 48, 41, 32, 40, 60, 32, 105, 32, 52, 41, 32, 40, 43, 43, 32, 105, 41, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 105, 10, 32, 32, 32, 32, 40, 49, 32, 40, 99, 111, 110, 116, 105, 110, 117, 101, 41, 41, 10, 32, 32, 32, 32, 40, 51, 32, 40, 98, 114, 101, 97, 107, 41, 41, 10, 32, 32, 32, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 105, 41, 41, 41, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 105, 32, 49, 48, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'statement_match_loop_transfers_keep_their_source_targets' (101234746) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- statement_match_preserves_macro_hygiene_and_consumed_controls stdout ----
+SEMANTIC_ROLE_SOURCE name=native-statement-match-preservation-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/statement-match-preservation.lykn"
+bytes=[40, 109, 97, 99, 114, 111, 32, 114, 101, 97, 100, 45, 116, 97, 114, 103, 101, 116, 32, 40, 41, 32, 96, 116, 97, 114, 103, 101, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 41, 10, 40, 109, 97, 99, 114, 111, 32, 101, 109, 105, 116, 116, 101, 100, 45, 109, 97, 116, 99, 104, 32, 40, 41, 32, 96, 40, 109, 97, 116, 99, 104, 32, 48, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 55, 41, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 116, 97, 114, 103, 101, 116, 95, 95, 103, 101, 110, 115, 121, 109, 48, 32, 49, 48, 49, 41, 10, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 101, 100, 95, 95, 103, 101, 110, 115, 121, 109, 49, 32, 50, 48, 49, 41, 10, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 101, 100, 95, 95, 103, 101, 110, 115, 121, 109, 50, 32, 50, 48, 50, 41, 10, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 101, 100, 95, 95, 103, 101, 110, 115, 121, 109, 51, 32, 50, 48, 51, 41, 10, 40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 109, 97, 116, 99, 104, 32, 48, 10, 32, 32, 40, 95, 10, 32, 32, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 114, 101, 97, 100, 45, 116, 97, 114, 103, 101, 116, 41, 41, 10, 32, 32, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 109, 97, 116, 99, 104, 101, 100, 95, 95, 103, 101, 110, 115, 121, 109, 49, 41, 10, 32, 32, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 109, 97, 116, 99, 104, 101, 100, 95, 95, 103, 101, 110, 115, 121, 109, 50, 41, 10, 32, 32, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 109, 97, 116, 99, 104, 101, 100, 95, 95, 103, 101, 110, 115, 121, 109, 51, 41, 41, 41, 10, 40, 101, 109, 105, 116, 116, 101, 100, 45, 109, 97, 116, 99, 104, 41, 10, 40, 98, 105, 110, 100, 32, 107, 101, 101, 112, 10, 32, 32, 40, 100, 111, 32, 40, 109, 97, 116, 99, 104, 32, 48, 32, 40, 95, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 56, 41, 41, 41, 32, 40, 109, 97, 116, 99, 104, 32, 49, 32, 40, 95, 32, 52, 49, 41, 41, 41, 41, 10, 40, 98, 105, 110, 100, 32, 109, 97, 116, 99, 104, 32, 40, 102, 110, 32, 40, 58, 97, 110, 121, 32, 110, 41, 32, 110, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 116, 114, 97, 99, 101, 32, 107, 101, 101, 112, 32, 40, 109, 97, 116, 99, 104, 32, 52, 50, 41, 41, 41, 41, 10]
+
+thread 'statement_match_preserves_macro_hygiene_and_consumed_controls' (101234747) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- statement_match_preserves_protected_function_exit_checks stdout ----
+SEMANTIC_ROLE_SOURCE name=native-statement-match-protected-preservation-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/statement-match-protected-preservation.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 102, 117, 110, 99, 32, 118, 101, 114, 105, 102, 121, 45, 114, 101, 115, 117, 108, 116, 32, 58, 97, 114, 103, 115, 32, 40, 58, 97, 110, 121, 32, 110, 41, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 97, 110, 121, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 110, 41, 10, 32, 32, 40, 61, 32, 110, 32, 55, 41, 41, 10, 40, 102, 117, 110, 99, 32, 99, 104, 101, 99, 107, 101, 100, 32, 58, 114, 101, 116, 117, 114, 110, 115, 32, 58, 110, 117, 109, 98, 101, 114, 32, 58, 112, 111, 115, 116, 32, 40, 118, 101, 114, 105, 102, 121, 45, 114, 101, 115, 117, 108, 116, 32, 126, 41, 32, 58, 98, 111, 100, 121, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 48, 10, 32, 32, 32, 32, 40, 95, 32, 58, 119, 104, 101, 110, 32, 102, 97, 108, 115, 101, 32, 40, 114, 101, 116, 117, 114, 110, 32, 57, 57, 41, 41, 10, 32, 32, 32, 32, 40, 95, 32, 40, 114, 101, 116, 117, 114, 110, 32, 34, 98, 97, 100, 34, 41, 41, 41, 10, 32, 32, 55, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 40, 97, 114, 114, 97, 121, 32, 40, 99, 104, 101, 99, 107, 101, 100, 41, 32, 116, 114, 97, 99, 101, 41, 41, 41, 10]
+
+thread 'statement_match_preserves_protected_function_exit_checks' (101234748) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- statement_match_return_keeps_the_enclosing_function_target stdout ----
+SEMANTIC_ROLE_SOURCE name=native-statement-match-return-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/statement-match-return.lykn"
+bytes=[40, 107, 101, 114, 110, 101, 108, 58, 102, 117, 110, 99, 116, 105, 111, 110, 32, 99, 104, 111, 111, 115, 101, 32, 40, 105, 110, 112, 117, 116, 41, 10, 32, 32, 40, 109, 97, 116, 99, 104, 32, 105, 110, 112, 117, 116, 10, 32, 32, 32, 32, 40, 95, 32, 58, 119, 104, 101, 110, 32, 102, 97, 108, 115, 101, 32, 40, 114, 101, 116, 117, 114, 110, 32, 34, 119, 114, 111, 110, 103, 34, 41, 41, 10, 32, 32, 32, 32, 40, 95, 32, 40, 114, 101, 116, 117, 114, 110, 32, 34, 105, 110, 115, 105, 100, 101, 34, 41, 41, 41, 10, 32, 32, 40, 114, 101, 116, 117, 114, 110, 32, 34, 97, 102, 116, 101, 114, 34, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 99, 104, 111, 111, 115, 101, 32, 48, 41, 41, 10]
+
+thread 'statement_match_return_keeps_the_enclosing_function_target' (101234749) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- while_uses_value_test_and_statement_sequence_body stdout ----
+SEMANTIC_ROLE_SOURCE name=native-while-check source_path="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/semantic-roles/while.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 116, 114, 97, 99, 101, 32, 40, 97, 114, 114, 97, 121, 41, 41, 10, 40, 98, 105, 110, 100, 32, 99, 111, 117, 110, 116, 32, 40, 99, 101, 108, 108, 32, 48, 41, 41, 10, 40, 119, 104, 105, 108, 101, 32, 40, 60, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 50, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 32, 32, 40, 98, 105, 110, 100, 32, 102, 105, 114, 115, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 48, 41, 32, 115, 101, 99, 111, 110, 100, 32, 40, 43, 32, 102, 105, 114, 115, 116, 32, 49, 41, 41, 10, 32, 32, 40, 105, 102, 32, 116, 114, 117, 101, 32, 40, 116, 114, 97, 99, 101, 58, 112, 117, 115, 104, 32, 115, 101, 99, 111, 110, 100, 41, 41, 10, 32, 32, 40, 114, 101, 115, 101, 116, 33, 32, 99, 111, 117, 110, 116, 32, 40, 43, 32, 99, 111, 117, 110, 116, 58, 118, 97, 108, 117, 101, 32, 49, 41, 41, 41, 10, 40, 99, 111, 110, 115, 111, 108, 101, 58, 108, 111, 103, 32, 40, 74, 83, 79, 78, 58, 115, 116, 114, 105, 110, 103, 105, 102, 121, 32, 116, 114, 97, 99, 101, 41, 41, 10]
+
+thread 'while_uses_value_test_and_statement_sequence_body' (101234751) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+---- unknown_nested_kernel_escape_fails_compile_without_outputs stdout ----
+SEMANTIC_ROLE_SOURCE name=native-unknown-kernel-compile source_path="/private/tmp/lykn-s14-cc-84bc88b6/make2/tmp/.tmpdMkzRq/unknown.lykn"
+bytes=[40, 98, 105, 110, 100, 32, 114, 101, 115, 117, 108, 116, 32, 40, 107, 101, 114, 110, 101, 108, 58, 111, 98, 106, 101, 99, 32, 40, 107, 101, 121, 32, 55, 41, 41, 41, 10]
+
+thread 'unknown_nested_kernel_escape_fails_compile_without_outputs' (101234750) panicked at crates/lykn-cli/tests/semantic_roles.rs:120:5:
+semantic-role evidence directory must be absolute
+
+
+failures:
+    bound_match_conditional_operand_is_a_value
+    boundaries_preserve_bound_calls_and_switch_sibling_visibility
+    consumed_no_else_if_is_rejected_in_all_four_value_positions
+    direct_return_consumes_do_without_retargeting_loop_transfers
+    direct_return_consumes_match_in_the_named_function_region
+    direct_return_macro_keeps_nested_function_boundaries
+    direct_return_match_preserves_guarded_exhaustion
+    do_while_uses_value_test_and_statement_sequence_body
+    if_arm_scope_and_macro_expansion_are_preserved
+    if_declaration_is_emitted_inside_a_branch_block
+    if_direct_transfers_keep_macro_introduced_function_targets
+    if_direct_transfers_keep_source_targets
+    match_clauses_keep_bindings_local_to_guard_and_body
+    match_consumes_value_tail_after_statement_prefix
+    match_patterns_stay_structural_while_clause_macros_expand
+    nested_kernel_object_retains_structural_and_executable_roles
+    original_match_kernel_object_is_preserved
+    original_match_reserved_role_is_preserved
+    statement_match_guarded_exhaustion_throws_into_the_enclosing_try
+    statement_match_guards_progress_in_source_order
+    statement_match_loop_transfers_keep_their_source_targets
+    statement_match_preserves_macro_hygiene_and_consumed_controls
+    statement_match_preserves_protected_function_exit_checks
+    statement_match_return_keeps_the_enclosing_function_target
+    unknown_nested_kernel_escape_fails_compile_without_outputs
+    while_uses_value_test_and_statement_sequence_body
+
+test result: FAILED. 0 passed; 26 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

@@ -1,0 +1,2 @@
+2:7: warning: unused binding 'exhausted'
+  suggestion: prefix with underscore: _exhausted

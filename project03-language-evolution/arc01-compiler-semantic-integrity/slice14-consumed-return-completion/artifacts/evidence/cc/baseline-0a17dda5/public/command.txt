@@ -1,0 +1,18 @@
+program: /opt/homebrew/bin/deno
+argv: test --config project.json -A test/forms/semantic-roles.test.js
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+scoped env:
+  TMPDIR=/private/tmp/lykn-s14-old-baseline-0a17dda5/tmp
+  XDG_CACHE_HOME=/private/tmp/lykn-s14-old-baseline-0a17dda5/xdg-cache
+  XDG_CONFIG_HOME=/private/tmp/lykn-s14-old-baseline-0a17dda5/xdg-config
+  NPM_CONFIG_CACHE=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-cache
+  NPM_CONFIG_USERCONFIG=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-userconfig (absent; neutralizes existing ~/.npmrc)
+  NPM_CONFIG_GLOBALCONFIG=/private/tmp/lykn-s14-old-baseline-0a17dda5/npm-globalconfig (absent)
+  DENO_DIR=/Users/oubiwann/Library/Caches/deno
+  LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=/private/tmp/lykn-s14-old-baseline-0a17dda5/public-evidence
+PATH: inherited ordinary PATH
+child program: Deno.execPath() -> /opt/homebrew/bin/deno
+child args: run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <modulePath>
+raw stdout: stdout.bin
+raw stderr: stderr.bin
+raw exit code: status.txt

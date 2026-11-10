@@ -1,5 +1,10 @@
 # S04 completion/value-flow ledger
 
+2026-11-10 [S14 acceptance](../slice14-consumed-return-completion/cdc-verification.md) closes
+four bounded direct-return rows at task `84bc88b6`. CV-02
+retains acceptance. The other five CV rows and CI-04 stay open
+for remaining I2, I3/I4 and composition.
+
 2026-11-10 [S14](../slice14-consumed-return-completion/slice-plan.md)
 starts the first consumed I2 destination on accepted `31893710`.
 Direct named-function return and tail are the bounded delivery.

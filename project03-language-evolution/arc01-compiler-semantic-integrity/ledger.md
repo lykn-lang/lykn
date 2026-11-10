@@ -1,5 +1,9 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-10 [S14](slice14-consumed-return-completion/cdc-verification.md) independently accepts
+four direct consumed-return rows at task `84bc88b6`.
+CI-04 and CV-04 remain open through wider I2 and composition.
+
 [Local integration verified](slice13-structural-match-and-kernel-escape/artifacts/release-integration-31893710.md)
 at release `31893710`. S12/S13 remain accepted and remaining
 I2 proceeds under Operator authority. CV-04 and CI-04 stay open.

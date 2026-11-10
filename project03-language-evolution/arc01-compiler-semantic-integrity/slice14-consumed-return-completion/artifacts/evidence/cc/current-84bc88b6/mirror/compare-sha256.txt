@@ -1,0 +1,2 @@
+82c945489a977c1c345e47a075e15c1df9ceee85a518e5fe86a61c2d6ff85609  packages/lang/expander.js
+82c945489a977c1c345e47a075e15c1df9ceee85a518e5fe86a61c2d6ff85609  /private/tmp/lykn-s14-cc-84bc88b6/mirror/xdg-cache/lykn/embedded/0.6.0/packages/lang/expander.js

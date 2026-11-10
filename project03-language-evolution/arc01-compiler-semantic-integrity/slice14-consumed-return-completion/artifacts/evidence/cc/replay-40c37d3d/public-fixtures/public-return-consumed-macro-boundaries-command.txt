@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-s14-f4-isolation-40c37d3d/tmp/20b55ba3f5cd906/return-consumed-macro-boundaries.js"
+  ],
+  "cwd": "/private/tmp/lykn-s14-f4-isolation-40c37d3d/tmp/20b55ba3f5cd906",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/return-consumed-macro-boundaries.lykn",
+  "modulePath": "/private/tmp/lykn-s14-f4-isolation-40c37d3d/tmp/20b55ba3f5cd906/return-consumed-macro-boundaries.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-s14-f4-isolation-40c37d3d/xdg-cache",
+    "TMPDIR": "/private/tmp/lykn-s14-f4-isolation-40c37d3d/tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/private/tmp/lykn-s14-f4-isolation-40c37d3d/public-evidence"
+  }
+}

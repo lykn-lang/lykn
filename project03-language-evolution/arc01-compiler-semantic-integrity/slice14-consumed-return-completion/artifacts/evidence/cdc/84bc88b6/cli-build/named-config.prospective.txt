@@ -1,0 +1,20 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+/usr/bin/stat
+-f
+%N %HT
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/project.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/deno.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/deno.jsonc
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/package.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/project.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/deno.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/deno.jsonc
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/tmp/package.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/project.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/deno.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/deno.jsonc
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/xdg/package.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/project.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/deno.json
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/deno.jsonc
+/private/tmp/lykn-s14-cdc.vdHPkSMK/cli-build/npm/package.json
