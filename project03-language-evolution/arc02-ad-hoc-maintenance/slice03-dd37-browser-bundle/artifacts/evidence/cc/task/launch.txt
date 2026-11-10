@@ -1,0 +1,13 @@
+receipt=/private/tmp/lykn-dd37-cc-run.T4YGup
+source=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+commit=487ebdbbae1758228f81383210eba419d64cc8ed
+tree=05b5aa7a52cca1a32e65c5bd378c3a24ac12f5a7
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+command=make bundle-size-check
+DENO=/private/tmp/lykn-dd37-deno277.610gtfPO/deno
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=/private/tmp/lykn-dd37-cc-run.T4YGup/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-dd37-cc-run.T4YGup/xdg
+npm_config_cache=/private/tmp/lykn-dd37-cc-run.T4YGup/npm
+DENO_CONFIG=ABSENT
+Attempt 1 failed before Make: env treated -u as a command because options followed assignments.

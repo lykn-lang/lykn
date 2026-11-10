@@ -1,0 +1,52 @@
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+
+  attribution.js ────────────────────────────────────────────────────────────────────────────────────────── 103.3kb ─ 100.0%
+   ├ packages/lang/compiler.js ───────────────────────────────────────────────────────────────────────────── 30.3kb ── 29.4%
+   │  └ packages/browser/compiler.js
+   │     └ packages/browser/mod.js
+   ├ packages/lang/surface.js ────────────────────────────────────────────────────────────────────────────── 28.1kb ── 27.2%
+   │  └ packages/lang/expander.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/expander.js ───────────────────────────────────────────────────────────────────────────── 19.5kb ── 18.9%
+   │  └ packages/browser/compiler.js
+   │     └ packages/browser/mod.js
+   ├ ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs ── 15.4kb ── 14.9%
+   │  └ packages/lang/compiler.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/icu-parser.js ──────────────────────────────────────────────────────────────────────────── 5.0kb ─── 4.8%
+   │  └ packages/lang/compiler.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/reader.js ──────────────────────────────────────────────────────────────────────────────── 3.7kb ─── 3.5%
+   │  └ packages/browser/compiler.js
+   │     └ packages/browser/mod.js
+   ├ packages/browser/scripts.js ──────────────────────────────────────────────────────────────────────────── 330b ──── 0.3%
+   │  └ packages/browser/mod.js
+   ├ packages/browser/compiler.js ─────────────────────────────────────────────────────────────────────────── 225b ──── 0.2%
+   │  └ packages/browser/mod.js
+   └ packages/browser/mod.js ───────────────────────────────────────────────────────────────────────────────── 57b ──── 0.1%
+
+1 warning
+
+  attribution.js  103.3kb
+
+⚡ Done in 15ms

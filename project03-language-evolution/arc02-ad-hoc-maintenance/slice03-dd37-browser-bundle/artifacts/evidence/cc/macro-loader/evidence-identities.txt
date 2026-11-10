@@ -1,0 +1,4 @@
+3823c4dff86aef8aed746e054dc2fd1ddaa98ab46745e8aacd86f9a34f32efa5  /private/tmp/lykn-dd37-pass0.3zf4LL/receipts/variant.patch
+9a32958f9d9cc13007f5a14d1828fcf9108d063281259db6e480e54c025f330b  /private/tmp/lykn-dd37-pass0.3zf4LL/receipts/stdout.raw
+623cbe2d4421645ea21d94785612f5761cb9668819af7670ab09cd9c3cbe9983  /private/tmp/lykn-dd37-pass0.3zf4LL/receipts/stderr.raw
+4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865  /private/tmp/lykn-dd37-pass0.3zf4LL/receipts/exit.raw

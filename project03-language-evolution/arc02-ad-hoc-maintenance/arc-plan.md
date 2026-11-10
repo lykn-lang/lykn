@@ -115,6 +115,8 @@ All original F1–F12, Project07/library/book/guide/human/licensing and other co
 
 ## Version history
 
+- 2026-11-10 v0.5: S03 independently reproduces the fixed DD-37 regression. AM-05 owns the outstanding product budget decision.
+
 - 2026-11-08 v0.4: New bounded S02 DESIGN intake after Arc03 W8; generic repair
   home distinct from Arc03 policy/oracles, original accepted S01 not reopened.
 - 2026-11-07 v0.3: First finite slice independently accepted as faithful c129
@@ -129,3 +131,11 @@ All original F1–F12, Project07/library/book/guide/human/licensing and other co
 2026-11-10 [CLI test portability and isolation](artifacts/hosted-ci-test-isolation-2026-11-10.md)
 is independently accepted on the clean I3 task composition. It adds
 two test-only changes and leaves the browser DD-37 size issue open.
+
+2026-11-10 [S03 — DD-37 browser compiler](slice03-dd37-browser-bundle/slice-plan.md)
+reproduced the exact fixed-source budget failure and measured
+the two source-graph cuts. At the CI pin on this platform the
+whole browser compiler is 11,818 bytes over. Both experimental
+cuts together still leave 7,875 bytes over. AM-05 owns the held
+product decision. The historical source and allowance still
+govern the gate. [S03 verification](slice03-dd37-browser-bundle/cdc-verification.md).

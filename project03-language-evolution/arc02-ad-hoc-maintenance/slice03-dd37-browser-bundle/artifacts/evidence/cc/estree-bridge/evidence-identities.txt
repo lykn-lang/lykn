@@ -1,0 +1,4 @@
+ec20a91a6afa88c81677cf2d8d8774454c739fdb23819bb8beac724ada479c75  /private/tmp/lykn-dd37-hostbridge.Q2G83g/receipts/variant.patch
+f84e2d1625db0049316b0aa43718a275e2e7d0e449bc106d0fa8f9e32e8bed4a  /private/tmp/lykn-dd37-hostbridge.Q2G83g/receipts/stdout.raw
+623cbe2d4421645ea21d94785612f5761cb9668819af7670ab09cd9c3cbe9983  /private/tmp/lykn-dd37-hostbridge.Q2G83g/receipts/stderr.raw
+4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865  /private/tmp/lykn-dd37-hostbridge.Q2G83g/receipts/exit.raw

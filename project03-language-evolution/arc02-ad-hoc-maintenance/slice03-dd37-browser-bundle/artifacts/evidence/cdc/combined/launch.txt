@@ -1,0 +1,6 @@
+source=487ebdbbae1758228f81383210eba419d64cc8ed
+cwd=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/source
+argv='/usr/bin/env' '-u' 'BASELINE_GZIPPED' '-u' 'LYKN_TEST_DENO' '-u' 'CARGO_TARGET_DIR' '-u' 'GIT_DIR' '-u' 'GIT_WORK_TREE' 'TMPDIR=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/xdg' 'npm_config_cache=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/private/tmp/lykn-dd37-deno277.610gtfPO:/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' 'GIT_DIR=/Users/oubiwann/lab/lykn/lang/.git/worktrees/contract-predicate-lowering' 'GIT_WORK_TREE=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/source' '/usr/bin/make' 'bundle-size-check'
+stdout=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/stdout.raw
+stderr=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/stderr.raw
+status=/private/tmp/lykn-dd37-cdc.tOWYVDJd/combined/exit-status.txt

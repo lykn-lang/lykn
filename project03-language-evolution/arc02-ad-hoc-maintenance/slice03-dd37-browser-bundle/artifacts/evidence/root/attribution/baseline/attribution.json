@@ -1,0 +1,168 @@
+{
+  "inputs": {
+    "packages/lang/reader.js": {
+      "bytes": 8676,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs": {
+      "bytes": 35359,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/icu-parser.js": {
+      "bytes": 9758,
+      "imports": [],
+      "format": "esm"
+    },
+    "packages/lang/compiler.js": {
+      "bytes": 64103,
+      "imports": [
+        {
+          "path": "../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs",
+          "kind": "import-statement",
+          "original": "astring"
+        },
+        {
+          "path": "packages/lang/icu-parser.js",
+          "kind": "import-statement",
+          "original": "./icu-parser.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/surface.js": {
+      "bytes": 67383,
+      "imports": [
+        {
+          "path": "packages/lang/expander.js",
+          "kind": "import-statement",
+          "original": "./expander.js"
+        },
+        {
+          "path": "packages/lang/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/lang/expander.js": {
+      "bytes": 51176,
+      "imports": [
+        {
+          "path": "packages/lang/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        },
+        {
+          "path": "packages/lang/reader.js",
+          "kind": "import-statement",
+          "original": "./reader.js"
+        },
+        {
+          "path": "packages/lang/surface.js",
+          "kind": "import-statement",
+          "original": "./surface.js"
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/browser/compiler.js": {
+      "bytes": 926,
+      "imports": [
+        {
+          "path": "packages/lang/reader.js",
+          "kind": "import-statement",
+          "original": "lang/reader.js"
+        },
+        {
+          "path": "packages/lang/expander.js",
+          "kind": "import-statement",
+          "original": "lang/expander.js"
+        },
+        {
+          "path": "packages/lang/compiler.js",
+          "kind": "import-statement",
+          "original": "lang/compiler.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/browser/scripts.js": {
+      "bytes": 752,
+      "imports": [
+        {
+          "path": "packages/browser/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "packages/browser/mod.js": {
+      "bytes": 580,
+      "imports": [
+        {
+          "path": "packages/browser/compiler.js",
+          "kind": "import-statement",
+          "original": "./compiler.js"
+        },
+        {
+          "path": "packages/browser/scripts.js",
+          "kind": "import-statement",
+          "original": "./scripts.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "attribution.js": {
+      "imports": [
+        {
+          "path": "node:path",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "exports": [],
+      "entryPoint": "packages/browser/mod.js",
+      "inputs": {
+        "packages/browser/mod.js": {
+          "bytesInOutput": 57
+        },
+        "packages/lang/reader.js": {
+          "bytesInOutput": 3754
+        },
+        "../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs": {
+          "bytesInOutput": 15809
+        },
+        "packages/lang/icu-parser.js": {
+          "bytesInOutput": 5071
+        },
+        "packages/lang/compiler.js": {
+          "bytesInOutput": 31076
+        },
+        "packages/lang/surface.js": {
+          "bytesInOutput": 28741
+        },
+        "packages/lang/expander.js": {
+          "bytesInOutput": 20015
+        },
+        "packages/browser/compiler.js": {
+          "bytesInOutput": 225
+        },
+        "packages/browser/scripts.js": {
+          "bytesInOutput": 330
+        }
+      },
+      "bytes": 105789
+    }
+  }
+}

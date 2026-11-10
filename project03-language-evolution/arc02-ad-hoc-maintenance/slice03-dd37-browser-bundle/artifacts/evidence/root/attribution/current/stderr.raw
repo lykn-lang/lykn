@@ -1,0 +1,90 @@
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+
+  attribution.js ────────────────────────────────────────────────────────────────────────────────────────── 159.7kb ─ 100.0%
+   ├ packages/lang/expander.js ───────────────────────────────────────────────────────────────────────────── 40.3kb ── 25.2%
+   │  └ packages/browser/compiler.js
+   │     └ packages/browser/mod.js
+   ├ packages/lang/compiler.js ───────────────────────────────────────────────────────────────────────────── 32.7kb ── 20.5%
+   │  └ packages/browser/compiler.js
+   │     └ packages/browser/mod.js
+   ├ packages/lang/classifier.js ─────────────────────────────────────────────────────────────────────────── 22.9kb ── 14.3%
+   │  └ packages/lang/expander.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs ── 15.4kb ─── 9.7%
+   │  └ packages/lang/compiler.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/protected-host.js ──────────────────────────────────────────────────────────────────────── 9.0kb ─── 5.6%
+   │  └ packages/lang/compiler.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/surface-helpers.js ─────────────────────────────────────────────────────────────────────── 6.9kb ─── 4.3%
+   │  └ packages/lang/expander.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/binding.js ─────────────────────────────────────────────────────────────────────────────── 6.6kb ─── 4.2%
+   │  └ packages/lang/expander.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/host-invocation.js ─────────────────────────────────────────────────────────────────────── 5.7kb ─── 3.6%
+   │  └ packages/lang/compiler.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/surface.js ─────────────────────────────────────────────────────────────────────────────── 5.7kb ─── 3.6%
+   │  └ packages/lang/expander.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/icu-parser.js ──────────────────────────────────────────────────────────────────────────── 5.0kb ─── 3.1%
+   │  └ packages/lang/compiler.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/lang/reader.js ──────────────────────────────────────────────────────────────────────────────── 4.8kb ─── 3.0%
+   │  └ packages/browser/compiler.js
+   │     └ packages/browser/mod.js
+   ├ packages/lang/surface-ast.js ─────────────────────────────────────────────────────────────────────────── 1.5kb ─── 1.0%
+   │  └ packages/lang/classifier.js
+   │     └ packages/lang/expander.js
+   │        └ packages/browser/compiler.js
+   │           └ packages/browser/mod.js
+   ├ packages/lang/kernel-forms.js ────────────────────────────────────────────────────────────────────────── 1.3kb ─── 0.8%
+   │  └ packages/lang/expander.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   ├ packages/browser/scripts.js ──────────────────────────────────────────────────────────────────────────── 330b ──── 0.2%
+   │  └ packages/browser/mod.js
+   ├ packages/lang/reserved-words.js ──────────────────────────────────────────────────────────────────────── 327b ──── 0.2%
+   │  └ packages/lang/binding.js
+   │     └ packages/lang/expander.js
+   │        └ packages/browser/compiler.js
+   │           └ packages/browser/mod.js
+   ├ packages/browser/compiler.js ─────────────────────────────────────────────────────────────────────────── 310b ──── 0.2%
+   │  └ packages/browser/mod.js
+   ├ packages/lang/kernel-mark.js ─────────────────────────────────────────────────────────────────────────── 143b ──── 0.1%
+   │  └ packages/lang/expander.js
+   │     └ packages/browser/compiler.js
+   │        └ packages/browser/mod.js
+   └ packages/browser/mod.js ───────────────────────────────────────────────────────────────────────────────── 57b ──── 0.0%
+
+1 warning
+
+  attribution.js  159.7kb
+
+⚡ Done in 15ms

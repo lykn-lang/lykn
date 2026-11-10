@@ -1,0 +1,5 @@
+Producer /Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/@esbuild/darwin-arm64/0.27.4/bin/esbuild
+Cwd separately /private/tmp/lykn-dd37-native-attribution.XCJcdq1H/{baseline,current}
+Archive source 4b9546cdba6bdcd4e5dd82d7cdf6cf58da9edde0 and 487ebdbbae1758228f81383210eba419d64cc8ed respectively
+Both exit 0
+/Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/@esbuild/darwin-arm64/0.27.4/bin/esbuild packages/browser/mod.js --bundle --minify --format=iife --global-name=lykn --alias:lang="$PWD/packages/lang" --alias:astring=/Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0 --external:node:path --outfile=attribution.js --metafile=attribution.json --analyze=verbose > stdout.raw 2> stderr.raw

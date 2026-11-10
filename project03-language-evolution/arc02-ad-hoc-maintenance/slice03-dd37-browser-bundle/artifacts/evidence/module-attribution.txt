@@ -1,0 +1,31 @@
+
+/private/tmp/lykn-dd37-native-attribution.XCJcdq1H/baseline/attribution.json
+packages/lang/compiler.js	31076
+packages/lang/surface.js	28741
+packages/lang/expander.js	20015
+../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs	15809
+packages/lang/icu-parser.js	5071
+packages/lang/reader.js	3754
+packages/browser/scripts.js	330
+packages/browser/compiler.js	225
+packages/browser/mod.js	57
+
+/private/tmp/lykn-dd37-native-attribution.XCJcdq1H/current/attribution.json
+packages/lang/expander.js	41269
+packages/lang/compiler.js	33498
+packages/lang/classifier.js	23448
+../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/dist/astring.mjs	15809
+packages/lang/protected-host.js	9216
+packages/lang/surface-helpers.js	7097
+packages/lang/binding.js	6800
+packages/lang/host-invocation.js	5819
+packages/lang/surface.js	5805
+packages/lang/icu-parser.js	5071
+packages/lang/reader.js	4867
+packages/lang/surface-ast.js	1558
+packages/lang/kernel-forms.js	1366
+packages/browser/scripts.js	330
+packages/lang/reserved-words.js	327
+packages/browser/compiler.js	310
+packages/lang/kernel-mark.js	143
+packages/browser/mod.js	57

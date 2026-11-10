@@ -1,0 +1,7 @@
+variant=hostbridge
+root=/private/tmp/lykn-dd37-hostbridge.Q2G83g
+commit=487ebdbbae1758228f81383210eba419d64cc8ed
+GIT_DIR=/Users/oubiwann/lab/lykn/lang/.git/worktrees/contract-predicate-lowering
+GIT_WORK_TREE=/private/tmp/lykn-dd37-hostbridge.Q2G83g
+argv=deno run -A --frozen --config project.json scripts/bundle-size.js
+BASELINE_GZIPPED=27906

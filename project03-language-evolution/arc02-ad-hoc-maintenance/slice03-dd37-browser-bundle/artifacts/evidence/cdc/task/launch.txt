@@ -1,0 +1,6 @@
+source=487ebdbbae1758228f81383210eba419d64cc8ed
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+argv='/usr/bin/env' '-u' 'BASELINE_GZIPPED' '-u' 'LYKN_TEST_DENO' '-u' 'CARGO_TARGET_DIR' '-u' 'GIT_DIR' '-u' 'GIT_WORK_TREE' 'TMPDIR=/private/tmp/lykn-dd37-cdc.tOWYVDJd/task/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-dd37-cdc.tOWYVDJd/task/xdg' 'npm_config_cache=/private/tmp/lykn-dd37-cdc.tOWYVDJd/task/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/private/tmp/lykn-dd37-deno277.610gtfPO:/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/usr/bin/make' 'bundle-size-check'
+stdout=/private/tmp/lykn-dd37-cdc.tOWYVDJd/task/stdout.raw
+stderr=/private/tmp/lykn-dd37-cdc.tOWYVDJd/task/stderr.raw
+status=/private/tmp/lykn-dd37-cdc.tOWYVDJd/task/exit-status.txt

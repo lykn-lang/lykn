@@ -1,0 +1,7 @@
+cwd=/private/tmp/lykn-dd37-timeline277.v1OJtDUu/8f5d1990
+argv=/private/tmp/lykn-dd37-deno277.610gtfPO/deno run -A --frozen --config /private/tmp/lykn-dd37-release-pinned.l7eGLjlV/source/project.json /private/tmp/lykn-dd37-release-pinned.l7eGLjlV/source/scripts/bundle-size.js
+BASELINE_GZIPPED=unset
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=/private/tmp/lykn-dd37-timeline277.v1OJtDUu/8f5d1990/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-dd37-timeline277.v1OJtDUu/8f5d1990/xdg
+npm_config_cache=/private/tmp/lykn-dd37-timeline277.v1OJtDUu/8f5d1990/npm

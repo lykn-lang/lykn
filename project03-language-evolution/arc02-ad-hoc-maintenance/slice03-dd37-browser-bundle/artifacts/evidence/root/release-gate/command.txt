@@ -1,0 +1,10 @@
+revision=487ebdbbae1758228f81383210eba419d64cc8ed
+cwd=/private/tmp/lykn-dd37-release-pinned.l7eGLjlV/source
+command=make bundle-size-check
+PATH prefix=/private/tmp/lykn-dd37-deno277.610gtfPO
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+GIT_DIR=/Users/oubiwann/lab/lykn/lang/.git/worktrees/0.6.x
+GIT_WORK_TREE=/private/tmp/lykn-dd37-release-pinned.l7eGLjlV/source
+TMPDIR=/private/tmp/lykn-dd37-release-pinned.l7eGLjlV/tmp
+XDG_CACHE_HOME=/private/tmp/lykn-dd37-release-pinned.l7eGLjlV/xdg
+npm_config_cache=/private/tmp/lykn-dd37-release-pinned.l7eGLjlV/npm

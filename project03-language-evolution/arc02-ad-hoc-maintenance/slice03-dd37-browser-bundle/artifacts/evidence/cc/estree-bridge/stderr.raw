@@ -1,0 +1,38 @@
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+
+❌ HARD FAIL: gzipped delta exceeds +5KB threshold

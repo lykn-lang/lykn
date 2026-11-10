@@ -1,0 +1,4 @@
+Independent and CC scratch variants have identical packages/lang/expander.js
+and packages/lang/compiler.js bytes. Actual cmp exit 0 for each file.
+The independent task and scratch measurement input hash manifests compare
+byte-for-byte, cmp exit 0.

@@ -36,3 +36,7 @@ This is a bounded maintenance slice. The inherited release,
 I3 acceptance, historical DD-37 calibration, and compiler provider
 proof retain separate meanings. Current CI policy, generated user
 program proof and publication are outside this investigation.
+
+The bounded inquiry is complete. DB-01, DB-02 and DB-04 are
+accepted. The product gate remains open under DB-03 and parent
+AM-05. [Disposition and remaining choice](cdc-verification.md).

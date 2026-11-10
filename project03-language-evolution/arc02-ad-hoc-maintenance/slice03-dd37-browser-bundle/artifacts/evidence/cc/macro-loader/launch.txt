@@ -1,0 +1,7 @@
+variant=pass0
+root=/private/tmp/lykn-dd37-pass0.3zf4LL
+commit=487ebdbbae1758228f81383210eba419d64cc8ed
+GIT_DIR=/Users/oubiwann/lab/lykn/lang/.git/worktrees/contract-predicate-lowering
+GIT_WORK_TREE=/private/tmp/lykn-dd37-pass0.3zf4LL
+argv=deno run -A --frozen --config project.json scripts/bundle-size.js
+BASELINE_GZIPPED=27906

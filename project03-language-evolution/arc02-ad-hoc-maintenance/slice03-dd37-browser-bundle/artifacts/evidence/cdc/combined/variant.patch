@@ -1,0 +1,35 @@
+--- packages/lang/expander.js
++++ packages/lang/expander.js
+@@ -2868,7 +2868,7 @@
+   // surface forms to kernel during expansion). Covers `export`ed names and the
+   // `kernel:` name slot.
+   validateReservedNames(forms);
+-  const afterPass0 = pass0ImportMacros(forms, filePath, compilationStack);
++  const afterPass0 = forms;
+   const afterPass1 = pass1RegisterMacros(afterPass0);
+   const expanded = pass2ExpandAll(afterPass1);
+   // DD-58 strict (default-on): reject unsanctioned top-level kernel-only decls
+--- packages/lang/compiler.js
++++ packages/lang/compiler.js
+@@ -5,6 +5,5 @@
+ import { generate } from 'astring';
+ import { parseIcu, collectSlotNames, IcuParseError } from './icu-parser.js';
+ import { validateProtectedHost } from './protected-host.js';
+-import { requestedHostCall, finalizeHostInvocations } from './host-invocation.js';
+ 
+ // DD-61 §A6 — the resolution-aware dispatch accessor (JS twin of Rust's
+@@ -1810,8 +1809,5 @@
+ export function compileExpr(node, position = 'statement') {
+   if (!node) return { type: 'Literal', value: null };
+ 
+-  const requested = requestedHostCall(node, compileExpr);
+-  if (requested) return requested;
+-
+   switch (node.type) {
+     case 'number':
+@@ -2289,4 +2285,4 @@
+     sourceType: 'module',
+   };
+-  return generate(finalizeHostInvocations(program, exprs), { indent: '  ' });
++  return generate(program, { indent: '  ' });
+ }
