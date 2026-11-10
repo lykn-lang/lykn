@@ -409,11 +409,43 @@ Deno.test("public computed member calls reject lifted mixed spread with the exac
   const source =
     "(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n" +
     "  ((get receiver (do (return 7) \"method\")) (spread items)))\n";
-  const error = assertThrows(() => lykn(source));
+  const evidenceRoot = Deno.env.get("LYKN_SEMANTIC_ROLE_EVIDENCE_DIR");
+  let message = null;
+  let output = null;
+  let caughtError = null;
+  try {
+    output = lykn(source);
+  } catch (error) {
+    caughtError = error;
+    message = error.message;
+  }
+  console.log(
+    `ORDERED_COMPUTED_SPREAD_PREASSERT ${
+      JSON.stringify({ source, message, output })
+    }`,
+  );
+  if (evidenceRoot !== undefined) {
+    Deno.writeTextFileSync(
+      `${evidenceRoot}/public-ordered-computed-spread.source.lykn`,
+      source,
+      { createNew: true },
+    );
+    Deno.writeTextFileSync(
+      `${evidenceRoot}/public-ordered-computed-spread.preassert.json`,
+      `${JSON.stringify({ message, output })}\n`,
+      { createNew: true },
+    );
+  }
   assertEquals(
-    error.message,
+    caughtError instanceof Error,
+    true,
+    "computed spread compile did not throw an Error",
+  );
+  assertEquals(
+    message,
     "ordered computed member call with spread and lifted operands is not supported",
   );
+  assertEquals(output, null, "computed spread compile returned output");
 });
 
 Deno.test("public grouped statements materialize before a bare direct return", () => {
