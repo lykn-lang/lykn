@@ -26,6 +26,17 @@ const lyknImportPlugin = {
   name: "lykn-import-map",
   setup(build) {
     build.onResolve({ filter: /^lang\// }, (args) => {
+      if (args.path === "lang/expander.js" &&
+          args.importer === Deno.cwd() + "/packages/browser/compiler.js") {
+        const browserExpander = Deno.cwd() + "/packages/lang/expander-browser.js";
+        try {
+          Deno.statSync(browserExpander);
+          return { path: browserExpander };
+        } catch (error) {
+          if (!(error instanceof Deno.errors.NotFound)) throw error;
+          /* legacy source tree: retain the historical expander route */
+        }
+      }
       const rel = args.path.replace(/^lang\//, "packages/lang/");
       return { path: Deno.cwd() + "/" + rel };
     });

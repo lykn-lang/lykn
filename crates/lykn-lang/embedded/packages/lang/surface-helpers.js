@@ -9,7 +9,7 @@ import {
   isArray,
   isKeyword,
   sym,
-} from "./expander.js";
+} from "./expander-core.js";
 import { toJsIdentifier } from "./compiler.js";
 import { markKernel } from "./kernel-mark.js";
 // Param-shape sub-parsers (still in surface.js, not in this extraction set);

@@ -11,7 +11,7 @@ import {
 	array,
 	isKeyword,
 	isArray,
-} from "./expander.js";
+} from "./expander-core.js";
 import { typeRegistry } from "./surface-helpers.js";
 
 

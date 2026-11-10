@@ -114,7 +114,7 @@ fn write_xdg(root: &Path) -> PathBuf {
 fn owned_embedded_root(xdg: &Path) -> PathBuf {
     xdg.join("lykn")
         .join("embedded")
-        .join(env!("CARGO_PKG_VERSION"))
+        .join(format!("{}-expander-split", env!("CARGO_PKG_VERSION")))
 }
 
 fn compile_recorded(
@@ -448,6 +448,14 @@ fn m3_astring_alias_still_resolves_unique_imported_macro() {
 fn m4_same_version_cache_reextracts_missing_config() {
     let fixture = TempDir::new().expect("create warm-cache fixture");
     let xdg = write_xdg(fixture.path());
+    let old_root = xdg
+        .join("lykn")
+        .join("embedded")
+        .join(env!("CARGO_PKG_VERSION"));
+    fs::create_dir_all(&old_root).expect("create old same-version cache sibling");
+    let old_marker = old_root.join("old-cache-preservation.txt");
+    fs::write(&old_marker, b"old cache sibling remains intact\n")
+        .expect("seed old same-version cache sibling");
     let source_path = write_source(fixture.path(), "twice.lykn", TWICE_SOURCE);
     let source = fs::read(&source_path).expect("read warm-cache source fixture");
     let warmup_output = fixture.path().join("m4-warmup.js");
@@ -460,6 +468,11 @@ fn m4_same_version_cache_reextracts_missing_config() {
         &source,
         &warmup_output,
         &xdg,
+    );
+    assert_eq!(
+        fs::read(&old_marker).expect("read old cache marker after cold compile"),
+        b"old cache sibling remains intact\n",
+        "cold compilation must preserve the old same-version cache sibling",
     );
     let owned_root = owned_embedded_root(&xdg);
     let config_path = owned_root.join("packages/lang/deno.json");
@@ -493,6 +506,11 @@ fn m4_same_version_cache_reextracts_missing_config() {
         &source,
         &recovered_output,
         &xdg,
+    );
+    assert_eq!(
+        fs::read(&old_marker).expect("read old cache marker after warm compile"),
+        b"old cache sibling remains intact\n",
+        "warm compilation and config recovery must preserve the old cache sibling",
     );
     let runtime = recovered_js
         .as_ref()

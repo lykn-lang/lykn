@@ -26,7 +26,7 @@ const RUST = Deno.readTextFileSync(
   resolve(root, "crates/lykn-lang/src/expander/pass0.rs"),
 );
 const JS = Deno.readTextFileSync(
-  resolve(root, "packages/lang/expander.js"),
+  resolve(root, "packages/lang/macro-imports-deno.js"),
 );
 
 // The canonical phrases. Each must appear verbatim in BOTH implementations.

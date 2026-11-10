@@ -25,7 +25,7 @@ fn embedded_cache_dir() -> PathBuf {
     cache_root
         .join("lykn")
         .join("embedded")
-        .join(EMBEDDED_VERSION)
+        .join(format!("{EMBEDDED_VERSION}-expander-split"))
 }
 
 fn cache_is_ready(root: &Path) -> bool {
