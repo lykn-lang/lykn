@@ -489,6 +489,12 @@ clause selects, direct statement-position `match` throws
 makes the match exhaustive. Matches inside existing consumed wrappers and
 checked-exit function bodies keep their current path.
 
+In an ordinary named function with no postcondition and no return annotation
+(or `:returns :any`), a match used as an explicit return operand or implicit
+final result keeps its clauses in the function's lexical region and returns
+the selected result directly from that function. Other value-position matches
+retain their existing wrapper.
+
 The subject is evaluated in the incoming scope. Each clause's pattern is
 structural syntax, and its bindings scope only over that clause's guard and
 ordered body; body declarations are visible to later expressions in the same
@@ -834,6 +840,13 @@ yields the value of the final expression.
 - **Expression position:** IIFE-wrapped, with the final expression
   returned.
 
+In an ordinary named function with no postcondition and no return annotation
+(or `:returns :any`), a `do` used as an explicit return operand or implicit
+final result keeps its sequence in the function's lexical region. Its final
+value returns from that function; loop transfers in its statements keep their
+surrounding loop target. Other value-position `do` forms retain their existing
+wrapper.
+
 ```lykn
 ;; Statement position — sequence with no value flow
 (do
@@ -879,6 +892,12 @@ arm. The alternate starts from the same incoming scope as the consequent. In a
 grouped `bind`, later initializers can use earlier names in that group. These
 blocks do not add functions, so `return`, `break`, and `continue` still reach
 their surrounding function or loop.
+
+In an ordinary named function with no postcondition and no return annotation
+(or `:returns :any`), a returned or implicit-tail `if` with a statement arm
+keeps its branches in that function's lexical region and returns each selected
+value directly. Pure value arms remain a ternary; other value-position `if`
+forms retain their existing wrapper.
 
 **Style:** Prefer `?` for expression position; prefer `if` for
 statement position. The compiler treats them as functionally

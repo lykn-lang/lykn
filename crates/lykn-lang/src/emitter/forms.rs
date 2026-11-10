@@ -954,6 +954,23 @@ fn emit_direct_if_tail(
     }
 }
 
+fn emit_direct_value_tail(
+    expr: &SExpr,
+    ctx: &mut EmitterContext,
+    registry: &TypeRegistry,
+) -> DirectTailResult {
+    let value = emit_in_context(expr, ExprContext::Value, ctx, registry);
+    if is_statement_form(&value) {
+        let mut statements = vec![value.clone()];
+        if !is_control_transfer_last_expr(&value) {
+            statements.push(list(vec![atom("return")]));
+        }
+        DirectTailResult::Statements(statements)
+    } else {
+        DirectTailResult::Value(value)
+    }
+}
+
 /// Emit an ordinary source result directly to the selected function's return
 /// destination. Statement results stay in lexical regions, preserving loop
 /// transfers and source function exits.
@@ -963,10 +980,10 @@ fn emit_direct_tail(
     registry: &TypeRegistry,
 ) -> DirectTailResult {
     let Some(values) = expr.as_list() else {
-        return DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry));
+        return emit_direct_value_tail(expr, ctx, registry);
     };
     let Some(head) = values.first().and_then(SExpr::as_form_head) else {
-        return DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry));
+        return emit_direct_value_tail(expr, ctx, registry);
     };
 
     match head {
@@ -984,7 +1001,7 @@ fn emit_direct_tail(
                     std::iter::once(atom("block")).chain(body).collect(),
                 )])
             }
-            _ => DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry)),
+            _ => emit_direct_value_tail(expr, ctx, registry),
         },
         "match" => match crate::classifier::classify_expr(expr) {
             Ok(SurfaceForm::Match {
@@ -992,16 +1009,13 @@ fn emit_direct_tail(
             }) => DirectTailResult::Statements(vec![emit_match_statement_inner(
                 &target, &clauses, true, ctx, registry,
             )]),
-            _ => DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry)),
+            _ => emit_direct_value_tail(expr, ctx, registry),
         },
-        "kernel:if" => {
-            match crate::classifier::forms::classify_kernel_escape("if", values, expr.span()) {
-                Ok(raw) => emit_direct_if_tail(
-                    &raw.as_list().unwrap_or_default()[1..],
-                    expr.span(),
-                    ctx,
-                    registry,
-                ),
+        "kernel:if" | "kernel:return" | "kernel:throw" | "kernel:break" | "kernel:continue" => {
+            let kernel_form = head.strip_prefix("kernel:").unwrap();
+            match crate::classifier::forms::classify_kernel_escape(kernel_form, values, expr.span())
+            {
+                Ok(raw) => emit_direct_tail(&raw, ctx, registry),
                 Err(error) => {
                     ctx.record_fatal(LyknError::Classify(error));
                     DirectTailResult::Statements(vec![list(vec![atom("return")])])
@@ -1016,7 +1030,7 @@ fn emit_direct_tail(
             }
             DirectTailResult::Statements(statements)
         }
-        _ => DirectTailResult::Value(emit_in_context(expr, ExprContext::Value, ctx, registry)),
+        _ => emit_direct_value_tail(expr, ctx, registry),
     }
 }
 

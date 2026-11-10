@@ -968,8 +968,8 @@ function childRoles(form, use) {
   const roles = Array(form.values.length).fill("Legacy");
   if (form.values.length === 0) return roles;
   const h = formHead(form.values[0]);
-  if ((use === "DirectStatement" || use === "ReturnOperand") && h === "return") {
-    if (roles.length > 1) roles[1] = "ReturnOperand";
+  if ((use === "DirectStatement" || use === "ReturnOperand") && h === "return" && form.values.length === 2) {
+    roles[1] = "ReturnOperand";
     return roles;
   }
   if (use === "DirectStatement" || use === "ReturnOperand") {
@@ -1114,7 +1114,11 @@ function emitSurfaceMatchReturn(args, env) {
 function expandReturnOperand(form, env) {
   const h = formHead(form.values[0]);
   if (h === "if") {
-    if (form.values.length < 4) return expandAt(form, env, "Value");
+    if (form.values.length < 4) {
+      const value = expandAt(form, env, "Value");
+      if (value && typeof value === "object" && !Array.isArray(value)) returnOperandValues.add(value);
+      return value;
+    }
     const condition = expandSingle(form.values[1], env, "Value", "if condition");
     const consequent = expandSingle(form.values[2], env, "ReturnOperand", "if consequent");
     const alternate = expandSingle(form.values[3], env, "ReturnOperand", "if alternate");
@@ -1341,14 +1345,12 @@ function expandExprInner(form, env, use = "Legacy") {
   // fixed point, so its operand is expanded once under the source function's
   // return destination.
   if ((use === "DirectStatement" || use === "ReturnOperand") &&
-      head.type === "atom" && head.value === "return" &&
-      form.values.length > 1) {
+      formHead(head) === "return" && form.values.length === 2) {
     const value = expandAt(form.values[1], env, "ReturnOperand");
     if (directResultBlocks.has(value)) return value;
     return { ...form, values: [head, value] };
   }
-  if (use === "ReturnOperand" && head.type === "atom" &&
-      (head.value === "if" || head.value === "do")) {
+  if (use === "ReturnOperand" && (formHead(head) === "if" || formHead(head) === "do")) {
     return expandReturnOperand(form, env);
   }
 

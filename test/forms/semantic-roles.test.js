@@ -151,3 +151,13 @@ Deno.test("public compiler rejects unknown nested kernel escape", () => {
     "unknown kernel form 'objec' in (kernel:objec ...); did you mean 'object'?",
   );
 });
+
+Deno.test("public direct return preserves nested no-else diagnostic", () => {
+  const error = assertThrows(() =>
+    lykn("(func bad :returns :any :body (return (do (if true 1))))")
+  );
+  assertEquals(
+    error.message,
+    "if in expression position requires an else branch — add an else branch, or restructure as a statement",
+  );
+});
