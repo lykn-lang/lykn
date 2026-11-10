@@ -151,6 +151,14 @@ const FIXTURES: &[Case] = &[
         name: "ordered-lexical-statement-call",
         expected: b"[90,91,[\"first\",\"middle\",\"first\",\"middle\",4,\"after\",\"first\",\"middle\",true]]\n",
     },
+    Case {
+        name: "computed-member-ordered-throws",
+        expected: b"[[\"receiver\",8],[true,false,false],[false,true,false],93,[\"base\",\"key\",\"string\",\"getter\",\"first\",\"arg\",\"last\",\"call\",\"after\",\"base\",\"key\",\"string\",\"getter\",\"base\",\"key\",\"string\",\"getter\",\"first\",\"arg\",\"base\",\"key\"]]\n",
+    },
+    Case {
+        name: "computed-member-no-prefix",
+        expected: b"[[1,2,3],4]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -339,6 +347,8 @@ fn run_positive(case: &Case) {
         "ordered-lexical-bind-call"
             | "ordered-lexical-statement-call"
             | "ordered-member-pure-colon-call"
+            | "computed-member-ordered-throws"
+            | "computed-member-no-prefix"
     ) {
         let kernel_json = execute_recorded(
             &format!("native-{}-kernel-json", case.name),
@@ -407,6 +417,12 @@ fn run_positive(case: &Case) {
         assert!(generated.contains("receiver.readEntry(3)"));
         assert!(!generated.contains("lyknHostReflectApply"));
         assert!(!generated.contains("Reflect.apply"));
+    }
+    if case.name == "computed-member-no-prefix" {
+        let generated = String::from_utf8(generated.expect("computed pure JavaScript exists"))
+            .expect("computed pure JavaScript is UTF-8");
+        assert!(!generated.contains("lyknHostReflectApply"));
+        assert!(!generated.contains("import "));
     }
 }
 
@@ -890,6 +906,75 @@ fn lexical_bind_calls_preserve_callee_and_argument_evaluation_order() {
 #[test]
 fn lexical_statement_calls_preserve_source_exits_and_late_call_errors() {
     run_positive(&FIXTURES[34]);
+}
+
+#[test]
+fn computed_member_calls_preserve_reference_and_argument_order_and_throws() {
+    run_positive(&FIXTURES[35]);
+}
+
+#[test]
+fn computed_member_no_prefix_calls_preserve_bound_get_and_kernel_escape() {
+    run_positive(&FIXTURES[36]);
+}
+
+#[test]
+fn computed_member_call_with_lifted_spread_fails_closed_without_outputs() {
+    const MESSAGE: &str =
+        "ordered computed member call with spread and lifted operands is not supported";
+    let source = concat!(
+        "(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n",
+        "  ((get receiver (do (return 7) \"method\")) (spread items)))\n",
+    )
+    .as_bytes();
+    let temp = TempDir::new().expect("create computed-spread negative directory");
+    let xdg_cache_home = temp.path().join("xdg-cache");
+    fs::create_dir(&xdg_cache_home).expect("create isolated computed-spread XDG cache");
+    let source_path = temp.path().join("mixed-computed-spread.lykn");
+    let output_path = temp.path().join("mixed-computed-spread.js");
+    fs::write(&source_path, source).expect("write exact computed-spread source");
+    let exact_source = fs::read(&source_path).expect("read exact computed-spread source");
+    let compile = execute_recorded(
+        "native-ordered-computed-call-spread-compile",
+        &source_path,
+        &exact_source,
+        Command::new(env!("CARGO_BIN_EXE_lykn"))
+            .current_dir(temp.path())
+            .env("XDG_CACHE_HOME", &xdg_cache_home)
+            .arg("compile")
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&output_path),
+    );
+    let generated = output_path
+        .try_exists()
+        .expect("check computed-spread JavaScript output")
+        .then(|| fs::read(&output_path).expect("read computed-spread JavaScript"));
+    let dts_path = output_path.with_extension("d.ts");
+    let dts = dts_path
+        .try_exists()
+        .expect("check computed-spread declaration output")
+        .then(|| fs::read(&dts_path).expect("read computed-spread declaration"));
+    record_generated(
+        "native-ordered-computed-call-spread",
+        generated.as_deref(),
+        dts.as_deref(),
+    );
+    let stderr = String::from_utf8_lossy(&compile.stderr);
+    eprintln!(
+        "SEMANTIC_ROLE_NEGATIVE_PREASSERT name=ordered-computed-call-spread status={:?} stderr={stderr:?} generated={generated:?} dts={dts:?}",
+        compile.status.code()
+    );
+    assert_eq!(compile.status.code(), Some(1));
+    assert!(
+        stderr.contains(&format!("2:3: error: {MESSAGE}")),
+        "missing exact computed-spread diagnostic at call span: {stderr}"
+    );
+    assert!(
+        generated.is_none(),
+        "failed compile wrote JavaScript: {generated:?}"
+    );
+    assert!(dts.is_none(), "failed compile wrote declarations: {dts:?}");
 }
 
 #[test]

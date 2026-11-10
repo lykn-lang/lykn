@@ -37,6 +37,8 @@ const CASES = [
   { name: "completion-nullish-operands", expected: '[0,false,"early","early",["left","after","left","after","left","right","left","right"]]\n' },
   { name: "ordered-lexical-bind-call", expected: '[91,["old",8],["earlier","middle","earlier","middle","later","old","after"]]\n' },
   { name: "ordered-lexical-statement-call", expected: '[90,91,["first","middle","first","middle",4,"after","first","middle",true]]\n' },
+  { name: "computed-member-ordered-throws", expected: '[["receiver",8],[true,false,false],[false,true,false],93,["base","key","string","getter","first","arg","last","call","after","base","key","string","getter","base","key","string","getter","first","arg","base","key"]]\n' },
+  { name: "computed-member-no-prefix", expected: "[[1,2,3],4]\n" },
   { name: "ordered-member-pure-colon-call", expected: "4\n" },
 ];
 
@@ -76,6 +78,8 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
       if (
         fixture.name === "ordered-lexical-bind-call" ||
         fixture.name === "ordered-lexical-statement-call" ||
+        fixture.name === "computed-member-ordered-throws" ||
+        fixture.name === "computed-member-no-prefix" ||
         fixture.name === "ordered-member-pure-colon-call"
       ) {
         const expanded = expand(read(source));
@@ -162,6 +166,10 @@ Deno.test("public JavaScript compiler preserves shared semantic-role fixtures", 
           assertEquals(generated.includes("receiver.readEntry(3)"), true);
           assertEquals(generated.includes("lyknHostReflectApply"), false);
           assertEquals(generated.includes("Reflect.apply"), false);
+        }
+        if (fixture.name === "computed-member-no-prefix") {
+          assertEquals(generated.includes("lyknHostReflectApply"), false);
+          assertEquals(generated.includes("import "), false);
         }
       } finally {
         await Deno.remove(temp, { recursive: true });
@@ -394,6 +402,17 @@ Deno.test("public lexical calls reject lifted mixed spread with the exact diagno
   assertEquals(
     error.message,
     "ordered lexical call with spread and lifted arguments is not supported",
+  );
+});
+
+Deno.test("public computed member calls reject lifted mixed spread with the exact diagnostic", () => {
+  const source =
+    "(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body\n" +
+    "  ((get receiver (do (return 7) \"method\")) (spread items)))\n";
+  const error = assertThrows(() => lykn(source));
+  assertEquals(
+    error.message,
+    "ordered computed member call with spread and lifted operands is not supported",
   );
 });
 
