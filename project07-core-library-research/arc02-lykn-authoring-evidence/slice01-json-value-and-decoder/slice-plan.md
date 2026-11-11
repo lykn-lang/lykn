@@ -66,6 +66,13 @@ the inspected conditional-expression rule, explicit runtime constructors
 and shallow traversal/match structure to the extension. Iteration01's
 assessment remains the execution scope, with every attempt preserved.
 
+Current directive [iteration04](cc-prompt-iteration04.md) gives exact fixes
+for the fifth draft's two unclosed function forms and expression if. The
+five failed checks remain evidence. The coordinator's default five-pass
+stop is superseded by the operator's standing instruction to continue
+obvious repairs autonomously. Compiler/design gaps still receive explicit
+disposition and independent review.
+
 ## Permissions restart checkpoint
 
 At the operator's request, both contributors stopped during intake for the
