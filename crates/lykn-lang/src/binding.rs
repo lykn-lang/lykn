@@ -1334,6 +1334,12 @@ mod tests {
                 .iter()
                 .any(|d| d.message.contains("eval"))
         );
+        assert_eq!(
+            names(
+                "(kernel:const (object (default value (bind local (fn (:any inner) inner)))) source)"
+            ),
+            vec!["value", "local", "inner"]
+        );
     }
 
     #[test]

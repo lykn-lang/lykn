@@ -696,14 +696,40 @@ mod tests {
             .expect_err("check path must share the compile binding gate");
         assert!(error.to_string().contains("package"), "{error}");
 
-        let generated = compile_source(
-            "(macro make-function (name) `(function (,name) value)) (bind f (make-function package))",
-            Some(path),
-            false,
-            false,
-        )
-        .expect_err("actual macro output must be validated");
-        assert!(generated.to_string().contains("package"), "{generated}");
+        let restricted_macro =
+            "(macro restricted (params) `(fn ,params 0)) (bind f (restricted (:any package)))";
+        for stripped in [false, true] {
+            let generated = compile_source(restricted_macro, Some(path), stripped, false)
+                .expect_err("supported macro output with a reserved param must reject");
+            assert!(generated.to_string().contains("package"), "{generated}");
+        }
+        let checked = check_strict(restricted_macro, path)
+            .expect_err("check must validate supported macro-generated fn params");
+        assert!(checked.to_string().contains("package"), "{checked}");
+
+        let legal_macro = "(macro restricted-safe (params) `(fn ,params 0)) (bind f (restricted-safe (:any safe))) (console:log (f 7))";
+        let generated = compile_source(legal_macro, Some(path), false, false)
+            .expect("renamed supported macro output compiles");
+        let directory = tempfile::tempdir().expect("create valid macro output fixture");
+        let output_path = directory.path().join("macro-safe.mjs");
+        std::fs::write(&output_path, generated).expect("write generated valid macro module");
+        let executed = std::process::Command::new("deno")
+            .args([
+                "run",
+                "--cached-only",
+                "--no-config",
+                "--no-prompt",
+                "--no-npm",
+            ])
+            .arg(&output_path)
+            .output()
+            .expect("run valid supported macro output");
+        assert!(
+            executed.status.success(),
+            "{}",
+            String::from_utf8_lossy(&executed.stderr)
+        );
+        assert_eq!(String::from_utf8_lossy(&executed.stdout), "0\n");
     }
 
     #[test]

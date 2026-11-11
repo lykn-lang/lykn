@@ -178,6 +178,11 @@ Deno.test("typed and kernel parameter slots project their actual local names", (
     Error,
     "eval",
   );
+  assertEquals(
+    walkBindings(read("(kernel:const (object (default value (bind local (fn (:any inner) inner)))) source)"))
+      .map((site) => site.name),
+    ["value", "local", "inner"],
+  );
   assertThrows(
     () => validateReservedNames(read("(kernel:lambda (package) package)")),
     Error,
