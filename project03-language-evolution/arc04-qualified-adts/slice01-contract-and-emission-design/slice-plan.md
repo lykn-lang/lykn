@@ -76,7 +76,23 @@ these two protocol clarifications in a6a328f8. They are now explicit in the
 open set. This is readiness for design drafting, with QD/QA criteria still
 open and the concrete experiment proposal awaiting agreement.
 
-Current [CC assignment](cc-prompt.md) is the contract/protocol draft.
+Current [CC assignment](cc-prompt-iteration01.md) settles the contract and
+makes the protocol concrete after the initial not-accepted independent review
+at 1615547d. The [initial assignment](cc-prompt.md), proposal 4bd224fc and
+review findings RV-01–06 remain preserved. Root supplies explicit PL decisions
+for independent review; this is still design-only and no gate is executed.
+
+Iteration01 author readiness: root inspected the current native registry,
+patterns, emitter/type guards/declarations, CLI compilation pipeline, source
+module rules and protected-host v1, and applied the Rust semantic-type/API
+and JavaScript options/property-descriptor guidance named in the prompt.
+The corrective assignment supplies generative owner identity, explicit
+metadata delivery and ABI, migration/prelude policy and worked layout routes
+instead of delegating those architecture choices. It retains every QD row
+and the 24-cell proposal, with unrun design examples and later operator
+agreement separated from implementation proof. Independent review checks
+the resulting decisions and protocol; contradictions are corrected before
+any dependent source work.
 Coordination retains PL design authority and resolves consequential choices
 before dependent implementation. Use the established Luna 6 High CC and
 Sol 6.1 High independent review settings. Source and release remain read-only
