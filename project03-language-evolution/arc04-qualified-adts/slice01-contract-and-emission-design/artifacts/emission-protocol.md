@@ -1,150 +1,184 @@
-# Qualified ADT emission comparison protocol — proposal
+# Qualified ADT emission protocol — iteration02 proposal
 
-**State:** initial proposal retained for provenance; superseded and not
-executable. This file still contains only the initial L1/L2 sketches. The
-iteration01-required L2 case/identity-sidecar candidate was not completed:
-root found that separate producer evaluations can import the same cached
-identity sidecar and thereby share a token, violating generative runtime
-identity. Do not execute these initial sketches or mistake them for the
-iteration01 gate. Root will issue iteration02 with a coherent same-module
-facade versus direct-case-lowering comparison. QD-04 remains open; no cells
-ran.
+**Status:** bounded proposal for review. No candidate compiler, fixture, esbuild cell, gzip, or replay was run. QD-04 remains open; implementation readiness and operator agreement precede execution.
 
-## Question and controlled scope
+## Comparison boundary
 
-Compare whether qualified ADT emission supports useful tree shaking while
-preserving owner identity, values, effects, exports and escaping namespace
-behavior. The bounded population is fixed at two layouts × six consumers ×
-two output settings = **24 unique bundle cells per contributor**. A separate
-independent replay, if authorized later, is reported separately and does not
-inflate or replace those 24 cells. No cell or replay was executed for this
-draft.
+Compare only qualified-case reference lowering/linkage. Both candidates use the same single physical producer module, fresh per-evaluated-owner `Symbol()` token, case functions and unit values, frozen namespace facade, representation/descriptors, initialization position, metadata schema, runtime predicates, public exports and DTS. No separately cached case/identity sidecars: separate evaluations such as `producer.js?one` and `producer.js?two` must receive separate tokens.
 
-Use exactly these consumer families for each layout:
+- **L1 — facade access:** local and imported statically resolved references read the actual namespace member. A fielded call has the semantic evaluation order of `(Label, Label.Text)(arg())`; extracted and unit cases likewise read `Label` before yielding the member/value.
+- **L2 — selective linkage:** statically resolved references use local case bindings or named `__lykn_adt_v1_case_Label_Text` imports from the same producer. Keep the actual qualifier read before arguments: `(Label, importedText)(arg())`; extraction and unit values sequence `(Label, importedCase)` first. The facade remains exported and supports escapes/dynamic access. `(get Label key)` and unknown runtime objects use ordinary member access; no general object property optimization is added.
 
-| Consumer | Frozen demand | Primary oracle |
+The independent variable is reference lowering, not owner encoding, namespace, or package ABI. Both layouts export the same names from the same producer: `Label`, `__lykn_adt_v1_owner_Label`, and `__lykn_adt_v1_case_Label_{MissingField,NullField,Text}`. No helper member is added to `Label`. Public namespace imports and `export *` remain banned; no compiler-owned namespace import is needed. Both layouts work for single-file `lykn(source)`/stdout compilation and compiler-produced modules. L2 selectivity applies to statically resolved Lykn source, not arbitrary handwritten JS `Label.Text` clients. Package output retains public ABI exports; application bundling may remove only unobserved code with effects preserved.
+
+Illustrative imported reference, using Lykn's actual import syntax:
+
+```lykn
+(import "./label.js" (Label))
+(Label:Text "hello")
+```
+
+```js
+// L1 illustrative only
+(Label, Label.Text)("hello");
+// L2 illustrative only
+(Label, __lykn_adt_v1_case_Label_Text)("hello");
+```
+
+Lowercase alias resolution is mandatory:
+
+```lykn
+(import "./label.js" ((alias Label label)))
+label:MissingField
+```
+
+Here `label:MissingField` is a zero-field **value**, not a call.
+
+## Fixture sources, graph, and observations
+
+Every consumer has `entry.lykn`; imported cases also have producer files. The common public producer `label.lykn` is exactly:
+
+```lykn
+(export (type Label MissingField NullField (Text :string value)))
+```
+
+All examples are uncompiled design inputs. Fixture source bytes, interface JSON and hashes are frozen after the compiler supports this syntax. `console:log` is used for visible results; no unspecified `print` helper is assumed. For C3/C4, patterns expose result strings without relying on object-print formatting.
+
+### C1 — unused pure producer
+
+Graph: `entry.lykn` imports `label.lykn`; no other producer exists.
+
+```lykn
+(import "./label.js" (Label))
+(console:log "ok")
+```
+
+Expected stdout: `ok`. Retain zero producer ADT contribution (owner token, cases, facade, or case-membership data attributable only to the unused ADT); account for ordinary entry wrapper separately. Compiler-owned initialization-purity provenance is prerequisite. If initialization remains effectful and the target is missed, the candidate fails; no extra baseline cell is allowed.
+
+### C2 — one statically selected case across an import
+
+Graph: `entry.lykn` imports the single `label.lykn` producer.
+
+```lykn
+(import "./label.js" (Label))
+(func text-arg ()
+  (console:log "argument")
+  "hello")
+(console:log
+  (match (Label:Text (text-arg))
+    ((Label:Text value) value)
+    (_ "bad")))
+```
+
+Expected stdout lines: `argument`, `hello`. Keep Text constructor and match behavior; L2 must remove unused MissingField and NullField constructor bodies without dropping/reordering the effectful argument. L1 is measured and may fail this fixed target. Itemize retained closed-owner/case guard strings separately from constructor bodies; string absence alone does not prove body removal.
+
+### C3 — all cases used
+
+Graph: `entry.lykn` imports `label.lykn`.
+
+```lykn
+(import "./label.js" (Label))
+(console:log
+  (match Label:MissingField
+    ((Label:MissingField) "missing") (_ "bad")))
+(console:log
+  (match Label:NullField
+    ((Label:NullField) "null") (_ "bad")))
+(console:log
+  (match (Label:Text "hello")
+    ((Label:Text value) value) (_ "bad")))
+```
+
+Expected stdout lines: `missing`, `null`, `hello`. All case behavior and required owner/match support remain. The zero-field construction expressions are values.
+
+### C4 — same spelling, distinct owners
+
+Graph: `left.lykn`, `right.lykn` each declare/export their own `Label`; `entry.lykn` imports both.
+
+```lykn
+(import "./left.js" ((alias Label Left)))
+(import "./right.js" ((alias Label Right)))
+(bind left (Left:Text "left"))
+(bind right (Right:Text "right"))
+(console:log
+  (match left
+    ((Left:Text value) value)
+    ((Right:Text _) "wrong-owner")
+    (_ "no-match")))
+(console:log
+  (match right
+    ((Right:Text value) value)
+    ((Left:Text _) "wrong-owner")
+    (_ "no-match")))
+(console:log "separate")
+```
+
+Expected stdout lines: `left`, `right`, `separate`; no cross-owner arm fires. The negative control is inside this consumer, not another cell. Both tokens and consumed cases remain.
+
+### C5 — escaped and dynamic namespace with effects
+
+Graph: `entry.lykn` imports `label.lykn`; the entry exports the namespace and performs an effectful key computation.
+
+```lykn
+(import "./label.js" (Label))
+(func effectfulKey ()
+  (console:log "key-effect")
+  "Text")
+(exports Label)
+(bind dynamicCase (get Label (effectfulKey)))
+(bind dynamicValue (dynamicCase "hello"))
+(console:log
+  (match dynamicValue
+    ((Label:Text value) value) (_ "bad")))
+```
+
+Expected stdout lines: `key-effect`, `hello`; the effectful key computation runs exactly once. Invoking the dynamically obtained fielded case yields a Label Text value with `tag` Text and `value` hello; the exported Label facade can still reveal all three declared members. The harness records the actual generated value/own properties and effects without assuming default console object formatting. Preserve ordering and all escaped/dynamic members. This is compiler-produced Lykn, not an extra handwritten-JS cell.
+
+### C6 — two aliases, including lowercase
+
+Graph: `entry.lykn` imports the same `label.lykn` owner twice under different local names.
+
+```lykn
+(import "./label.js" ((alias Label label)))
+(import "./label.js" ((alias Label Renamed)))
+(bind first (label:Text "same-owner"))
+(console:log
+  (match first
+    ((Renamed:Text value) value)
+    (_ "wrong-owner")))
+```
+
+Expected stdout: `same-owner`; the second alias matches the first alias's value because both retain the same `OwnerRef` and runtime token. L1 uses each facade; L2 uses the same named case ABI imports while preserving each actual qualifier read.
+
+The separate semantic-regression population must cover alias TDZ before argument effects, raw/null/primitive subjects, stripped dispatch, foreign getters, normalization/reserved-name collisions, serialization/reconstruction and repeated-call isolation. Those cases do not increase the bundle denominator. Package export and DTS checks are also separately scoped, not hidden bundle cells.
+
+## Frozen population: exactly 24 unique cells
+
+`2 layouts × 6 consumers × 2 settings = 24 bundle cells per contributor`, one esbuild invocation per key. The full manifest keys are:
+
+| Layout | Unminified keys | Minified keys |
 | --- | --- | --- |
-| C1 unused ADT | Import/declare an ADT that is not observed; include a pure control | Zero retained ADT contribution, while unrelated wrapper/control remains accounted for |
-| C2 one static case | Statically construct/match one case; other cases are unused | Used case and behavior retained; unused case code removed from full unminified output and attributable metafile/output bytes |
-| C3 all cases | Statically use every declared case | All case constructors and selected behaviors retained |
-| C4 same names | Two module owners both declare `Label.Text`; consume both | Values and match branches remain owner-distinct |
-| C5 escaping/dynamic namespace | Export/return/store the namespace, then access members dynamically; include observable effects | All observable members, effects and exports retained |
-| C6 imported alias | Import `Label` through an alias, including a lower-case alias | Alias resolves the same owner and statically selected behavior remains correct |
+| L1 | L1-C1-unminified, L1-C2-unminified, L1-C3-unminified, L1-C4-unminified, L1-C5-unminified, L1-C6-unminified | L1-C1-minified, L1-C2-minified, L1-C3-minified, L1-C4-minified, L1-C5-minified, L1-C6-minified |
+| L2 | L2-C1-unminified, L2-C2-unminified, L2-C3-unminified, L2-C4-unminified, L2-C5-unminified, L2-C6-unminified | L2-C1-minified, L2-C2-minified, L2-C3-minified, L2-C4-minified, L2-C5-minified, L2-C6-minified |
 
-Freeze exact source files/bytes, owner IDs, public exports, build entrypoints,
-expected value/effect traces and fixture checksums before execution. The
-fixtures must make “unused” genuinely pure and distinguish wrapper/common
-code from ADT-specific code. Preserve effectful constructor/guard/control
-cases where applicable so removal cannot be manufactured by dropping an
-observable effect. Test both Lykn-produced modules and the consumer boundary;
-do not broaden the matrix with extra stimulus after observing outcomes.
+Independent replay is reported separately. No extra baseline or hidden negative-control bundle is added. Zero unused ADT code and unused statically unselected case-body removal are fixed pass targets; a miss remains a miss. C5's escaped/dynamic members and application effects must remain observable.
 
-## Candidate layouts (neither selected)
+## Tools, routes, command template, and evidence
 
-**L1: owner namespace object.** Emit a named owner binding whose members are
-the cases, e.g. `export const Label = ...; Label.Text(...)`. This makes the
-public namespace a first-class value and may retain members when the namespace
-escapes. Static property access may or may not permit member elimination;
-measure it. Any freeze/descriptor operation is a separate namespace mutation
-decision and host-intrinsic concern.
+Read-only receipts available from earlier preparation: pinned native esbuild 0.25.5 executable `/Users/oubiwann/lab/lykn/lang/.worktrees/native-esbuild-controls/target/lykn/tools/esbuild-0.25.5/bin/esbuild`, source commit `ea453bf687c8e5cf3c5f11aae372c5ca33be0c98`, executable SHA-256 `b26c07a69bc734c1661ee3180bc2a8b71ee860826a866393e94c519cda46fe1f`; `/usr/bin/gzip` was available. Deno 2.9.6 was `/opt/homebrew/bin/deno`, SHA-256 `2ad84f9e678ce12600a56772e0bed999938556153bf4da9b71cac7e365e5ce74`. Slice plan's native CLI digest is `0cf695212c617b413f0d54fbfc1d0134da1361c33eba4bf627c13f9cb550e4a2`. These are provenance/availability receipts, not gate execution. Reconfirm tool identity and freeze both implemented candidate commits/binary hashes before execution.
 
-**L2: flat case bindings plus namespace facade.** Emit owner-scoped private
-case bindings and build a named `Label` facade for public/dynamic access. Static
-compiler-generated references can target a case binding directly; escaping
-facade use must retain every observable member. The facade must preserve the
-same owner/case identity semantics as L1. Do not equate a renamed flat binding
-with owner identity.
+Compile each source through the ordinary route `lykn compile <absolute fixture input> -o <absolute generated output>`; `main.rs` accepts the input path immediately after `compile` and `-o` output, without a preceding separator. Use normal `lykn build` for the graph build and `lykn dist` for package staging. Do not invent a launcher option. Use the accepted run-02 Deno 2.9.6 command shape: `env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DENO_DIR=<frozen-cache> DENO_NO_UPDATE_CHECK=1 NO_COLOR=1 /opt/homebrew/bin/deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt --allow-read=<workspace>,<out> --allow-write=<out> --allow-run=<absolute-esbuild>,/usr/bin/gzip,/opt/homebrew/bin/deno <workspace>/target/lykn/build/driver.js <workspace> <out> <absolute-esbuild> /usr/bin/gzip /opt/homebrew/bin/deno gate`. This uses the accepted invocation profile with gzip explicitly added because the harness derives gzip. Freeze the actual cache path and argv. Candidate CLI compilation occurs before the driver and therefore does not need a driver run permission; the driver captures child code/stdout/stderr before assertions. This remains an unexecuted template.
 
-Both layouts must expose equivalent approved qualified public access and
-named module exports. Lykn surface namespace imports and `export *` remain
-banned. If either candidate uses a compiler-internal ESM namespace import,
-label it as generated implementation detail and explicitly specify the module
-boundary, package export map and `.d.ts` behavior; current source has no
-`ImportNamespaceSpecifier` support. Any need to introduce it is a prerequisite
-and expands/changes the candidate, requiring CDC agreement before execution.
+For every generated entry and output setting, the future esbuild argv is:
 
-The identity encoding must be selected independently or held byte/semantically
-constant across both layouts. If it differs, this comparison confounds layout
-with representation and cannot attribute results. Namespace mutability,
-payload mutability, guard policy and hygiene must also be identical across the
-two candidate fixtures or reported as uncontrolled and the comparison stopped.
+```text
+<absolute-esbuild> --bundle --tree-shaking=true --format=esm --platform=neutral --target=es2022 --metafile=<absolute-out>/<key>.meta.json --outfile=<absolute-out>/<key>.js <absolute-workspace>/<entry.js>
+```
 
-## Cell construction and output measures
+The paired minified invocation adds only `--minify`, with distinct output/metafile paths. Freeze argv, cwd and environment. Capture tool identity, candidate pins, fixture/interface hashes, input/module sizes, exit/stdout/stderr, emitted bytes/hash, full metafile and runtime/effect/export oracles. Derive gzip from minified bytes only: `/usr/bin/gzip -n -9 -c < /absolute/path/to/minified.js > /absolute/path/to/minified.js.gz`; record exit and gzip hash. Report unminified bytes, minified bytes, and gzip-of-minified bytes.
 
-The cell key is `(layout, consumer, setting)`; no retries overwrite a cell.
-Settings are one non-minified and one minified bundle for each of the 12
-layout/consumer pairs. Record raw unminified bytes, raw minified bytes, and
-gzip length computed from those exact minified bytes. Gzip is derived data,
-not a third input or another compile. Do not gzip the unminified output. Record
-the gzip executable/version and deterministic options in the frozen plan.
+At a pre-execution checkpoint freeze actual candidate revisions/binaries, complete fixture and interface bytes/hashes, all 24 keys, tools/full hashes, exact argv/cwd/permissions, expected values/effects/exports, source-body classification and independent oracles. Operator agreement precedes execution. Keep full unminified output, source bodies, metafile and runtime/effect/export evidence. A byte count or absent minified name is insufficient. Account for guard case-name strings separately from constructor bodies. Both public ABI exports and DTS are checked at their later package conformance boundary.
 
-Use the already-built native esbuild 0.25.5 from
-`slice06-native-esbuild-controls` with its recorded source/build receipt; do
-not use a PATH-resolved substitute or rebuild. The existing pinned executable
-was confirmed available read-only; `esbuild` is not on the current PATH and
-`/usr/bin/gzip` is available. The prior source/build receipt records source
-commit `ea453bf687c8e5cf3c5f11aae372c5ca33be0c98` and binary SHA-256
-`b26c07a…fe1f` (use the full committed receipt when freezing commands). The
-prior experiment stopped after C4 and a C5 parse failure; it supplies tool
-provenance only, not evidence about either ADT layout.
+## Increment sequencing recommendation
 
-Proposed esbuild controls, to be finalized with exact argv and paths before
-execution, are bundle + tree shaking + ESM + neutral platform + ES2022 target
-+ metafile + explicit output path, with minification toggled only for the
-paired setting. Preserve complete stdout/stderr/exit, command/environment,
-resolved input list, output files, metafile and hashes. The exact gzip
-command/options must consume the captured minified output bytes. A fresh
-directory and unique filenames per cell prevent stale-output contamination.
-An independent replay uses a separate population directory and receipts.
-
-## Falsifiable gates and inspection
-
-**PR-01: unused and selective retention.** C1 passes only when complete
-unminified emitted code/source bodies and metafile evidence show zero retained
-ADT-specific contribution for the unused pure ADT, with common wrappers and
-unrelated control code separately identified. C2 passes only when the used
-case remains and unused case code is absent from the complete unminified
-output/source body and attributable `bytesInOutput` or equivalent output
-accounting. Then run the frozen behavior/effect oracle. A resolved-input list,
-smaller byte count, absent minified identifier or minifier-only removal does
-not prove tree shaking. A layout that cannot meet a predeclared retention
-target fails honestly; do not change the target after results.
-
-**PR-02: bounded cells and independent replay.** Count all 24 unique cells
-with unique keys and both settings. Report independent replay separately with
-its own exact denominator. A failed command still occupies its cell and is
-reported; correction/new stimulus requires a separately approved plan and
-must preserve the failed receipt.
-
-For every cell, inspect complete unminified code, emitted source bodies,
-metafile inputs/outputs and associated byte attribution. For every applicable
-consumer, execute the frozen runtime behavior/effect controls only after
-operator agreement: returned values and owner distinctions, exit/stdout/
-stderr, retained effects, named exports and package entrypoints. C3 proves all
-cases are usable. C4 proves identically named cases do not alias. C5 proves
-escaping or dynamic access retains all members that remain observable. C6
-proves import alias spelling does not affect identity or selection. Capture
-the full export and declaration surfaces and compare them across layouts.
-
-Record baseline and layout output differences by code region: ADT namespace,
-case constructor, payload/guard helper, pattern dispatch, ordinary consumer,
-shared wrapper and package glue. State limitations for bundler metafile
-attribution where it cannot identify semantic contribution. Do not claim
-effect preservation from byte comparison; use explicit effect oracle. Do not
-claim namespace/payload mutation or host-intrinsic safety unless those policies
-are frozen and their checks are included. Protected-host v1 only covers global
-`Reflect` and exact `Reflect.apply`; `Object`, `Symbol`, freeze/descriptor
-operations and other intrinsics require their own stated assumptions or a
-separate contract decision.
-
-## Stop conditions and reporting
-
-Stop before running if operator agreement on the concrete protocol, layouts,
-identity parity, source fixtures, exact commands or oracles is absent; if the
-pinned binary receipt cannot be verified; if package exports/declarations
-cannot be represented without unapproved surface syntax; or if a required
-fixture is effectful when designated unused. On any unexpected parse, build,
-metafile or behavior result, preserve the raw cell and stop the affected
-continuation for disposition; do not rebuild, alter pins, switch tools or
-weaken a gate. Report all planned, launched, failed and completed cells with
-denominators. No experimental result is claimed by this protocol draft.
+Recommend seven arc increments for root's disposition: S01 this design; S02 existing NPAT/ZVAR repairs; S03 local qualified nominal core, host-contract and compiler-owned purity foundation, per-unit state and native/public single-file parity; S04 imported interface graph/ABI plus the two same-module emitters and agreed 24-cell gate; S05 actual build/package plus repinned JSON-decoder composition; S06 full API/docs audit; S07 conditional documentation implementation. The current source has no PURE/PureCall facility: S03 must add and verify typed/private purity provenance rather than hand comments or a public purity form. Root owns arc-plan updates. This sequence is not itself a plan edit or permission to execute the gate.
