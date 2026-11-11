@@ -150,3 +150,49 @@ separate source-readiness review before writing the numbered implementation
 assignment. It closes no LC row on its own. Native owner-resolution metadata,
 nominal runtime activation, precise declarations, migration and private purity
 remain the rest of B/C rather than being dropped by this additional boundary.
+
+### Preparation-review consequences
+
+Separate Sol lookup/review of immutable 0829e892 identified the following
+concrete obligations. Root agrees they must be resolved in the recipe, rather
+than leaving CC to discover/select language behavior:
+
+- Macro arguments are raw and lazy. Invoke a macro head before walking its
+  arguments. A discard macro can suppress a nested invocation; a duplicating
+  macro can cause two expansions of the same returned syntax occurrence.
+  Identity-based memoization of macro execution would be wrong.
+- The existing inner macro fixed-point loop omits renewed lexical/surface
+  priority checks. Root selects the already documented lexical dispatch rule
+  at every step, including a macro result whose head names a lexical binding
+  or known surface form. This deliberately repairs that inconsistency; it is
+  not byte-preservation of the defective inner-loop behavior. Include exact
+  chain controls and retain their baseline evidence when implemented.
+- Lexical scope plans do not supply all source-role information. Protect type
+  cases, patterns, parameter declarations, object/member names and import/export
+  grammar from call expansion, while visiting executable default initializers.
+  Match clauses require individual environments.
+- Function macro expansion currently follows emitted semantic order: defaults,
+  precondition, body, postcondition, not arbitrary textual keyword order. Valid
+  program expansion must retain this ordering. Earlier malformed-form checks
+  currently live partly in emission; any changed first-error/macro-effect
+  ordering needs an explicit disposition and test, not a preservation claim.
+- Array/null expansion results have slot-specific meanings. Preserve a macro's
+  multiple-form result until the existing statement/value/return/assignment
+  consumer decides whether to splice, reject, or build a result region.
+  Flattening every nested result or rewriting every result as source `do` is
+  not justified. The exact private prepared-region representation and its
+  lowering/fragment-rejection boundary remain to be source-checked before issue.
+- Rebuilt syntax occurrences need explicit authority/identity treatment.
+  Kernel marks, private atoms, A's host refs and Reflect request anchors are
+  different metadata facilities. Do not grant compiler authority from an
+  ordinary property/spelling, silently drop an owned request, or deduplicate
+  two semantic occurrences because a macro shared an input object.
+- Full debug macroexpand currently lowers, prints and erases its target;
+  macroexpand-1 invokes only one head. Keep these distinct and avoid replay.
+  Ordinary expandExpr must not acquire complete expand's import/registration
+  side effects. Type-unit isolation remains separate from existing explicit
+  global macro-state/reset behavior.
+
+These are source-grounded preparation constraints, not software findings with
+executed repros or approval of a concrete implementation. A is still separate
+and has priority for independent review when handed off.
