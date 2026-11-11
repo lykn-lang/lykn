@@ -1,0 +1,10 @@
+123:3: warning: unreachable match clause
+  suggestion: remove this clause or reorder patterns
+122:23: warning: unused binding 'value'
+  suggestion: prefix with underscore: _value
+3:7: warning: unused binding 'ZeroForms'
+  suggestion: prefix with underscore: _ZeroForms
+1:7: warning: unused binding 'Option'
+  suggestion: prefix with underscore: _Option
+2:7: warning: unused binding 'InnerValue'
+  suggestion: prefix with underscore: _InnerValue

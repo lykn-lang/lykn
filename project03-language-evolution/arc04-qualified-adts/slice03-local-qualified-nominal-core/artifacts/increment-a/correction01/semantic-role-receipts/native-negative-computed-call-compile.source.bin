@@ -1,0 +1,1 @@
+(bind target (fn (:any x) x)) ((get (array target) 0) (if true 1))

@@ -1,0 +1,18 @@
+(bind Number 0)
+(bind Array 0)
+(bind TypeError 0)
+(bind Error 0)
+(func check-number :args (:number value) :returns :number :body value)
+(func check-array :args (:array value) :body value)
+(func capture-number :args () :body
+  (try (return (check-number "wrong"))
+    (catch error (return (array error:name error:message)))))
+(func capture-array :args () :body
+  (try (return (check-array 1))
+    (catch error (return (array error:name error:message)))))
+(func capture-match :args () :body
+  (try (return (match 1 (2 "matched")))
+    (catch error (return (array error:name error:message)))))
+(bind observed
+  (array (capture-number) (capture-array) (capture-match)))
+(console:log (JSON:stringify observed))

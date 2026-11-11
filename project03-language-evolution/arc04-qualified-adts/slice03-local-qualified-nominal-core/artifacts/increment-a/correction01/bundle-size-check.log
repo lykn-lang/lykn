@@ -1,0 +1,91 @@
+DD-37 baseline source: 4b9546cdba6bdcd4e5dd82d7cdf6cf58da9edde0
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+Download https://registry.npmjs.org/esbuild
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../Users/oubiwann/Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+Raw:      217684 bytes (212.6 KB)
+Minified: 105439 bytes (103.0 KB)
+Gzipped:  27630 bytes (27.0 KB)
+Current source, measured with the same tools:
+[1;34mMeasuring browser bundle size...[0m
+Download https://registry.npmjs.org/esbuild
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+▲ [WARNING] The condition "browser" here will never be used as it comes after both "import" and "require" [package.json]
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:12:4:
+      12 │     "browser": "./dist/astring.min.js"
+         ╵     ~~~~~~~~~
+
+  The "import" condition comes earlier and will be used for all "import" statements:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:10:4:
+      10 │     "import": "./dist/astring.mjs",
+         ╵     ~~~~~~~~
+
+  The "require" condition comes earlier and will be used for all "require" calls:
+
+    ../../../../../Library/Caches/deno/npm/registry.npmjs.org/astring/1.9.0/package.json:11:4:
+      11 │     "require": "./dist/astring.js",
+         ╵     ~~~~~~~~~
+
+Raw:      326291 bytes (318.6 KB)
+Minified: 155891 bytes (152.2 KB)
+Gzipped:  42269 bytes (41.3 KB)
+
+Baseline: 27630 bytes
+Delta:    +14639 bytes (+14.3 KB)
+
+✅ Within 80 KiB gzip budget

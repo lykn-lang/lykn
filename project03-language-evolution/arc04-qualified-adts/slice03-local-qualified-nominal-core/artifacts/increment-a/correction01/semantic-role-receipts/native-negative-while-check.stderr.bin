@@ -1,0 +1,2 @@
+/private/tmp/lykn-correction01-tmp/.tmpChNur3/while.lykn: error: 1:8: error: if in expression position requires an else branch
+  suggestion: add an else branch, or restructure as a statement

@@ -1,0 +1,8 @@
+4:1: warning: unused binding 'Error'
+  suggestion: prefix with underscore: _Error
+1:1: warning: unused binding 'Number'
+  suggestion: prefix with underscore: _Number
+3:1: warning: unused binding 'TypeError'
+  suggestion: prefix with underscore: _TypeError
+2:1: warning: unused binding 'Array'
+  suggestion: prefix with underscore: _Array

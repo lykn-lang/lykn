@@ -1,0 +1,10 @@
+(func plain-writes :args (:any box :any local) :returns :any :body
+  (bind first (set-symbol! box "a" 2))
+  (bind second (kernel:+= (get box "a") 3))
+  (bind third (kernel:= local 6))
+  (array first second third box:a local))
+(func local-protected :args (:any Reflect) :returns :any :body
+  (bind result (set-symbol! Reflect "apply" 7))
+  (array result Reflect:apply))
+(console:log (JSON:stringify
+  (array (plain-writes (obj :a 1) 0) (local-protected (obj :apply 0)))))

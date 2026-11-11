@@ -1,0 +1,26 @@
+(bind trace (array))
+(func choose-match-header :args (:any mode) :returns :any :body
+  (match (do
+           (trace:push "discarded")
+           (if (= mode 0) (return 80))
+           3)
+    (seen :when (do
+                  (trace:push seen)
+                  (if (= mode 1) (return 81))
+                  false)
+      (trace:push "wrong"))
+    (_ (trace:push "discarded-fallback")))
+  (return
+    (match (do
+             (trace:push "consumed")
+             (if (= mode 2) (return 82))
+             4)
+      (seen :when (do
+                    (trace:push seen)
+                    (if (= mode 3) (return 83))
+                    false)
+        (do (trace:push "wrong") 90))
+      (_ (do (trace:push "consumed-fallback") 84)))))
+(console:log (JSON:stringify
+  (array (choose-match-header 0) (choose-match-header 1)
+    (choose-match-header 2) (choose-match-header 3) (choose-match-header 4) trace)))

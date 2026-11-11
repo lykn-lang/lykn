@@ -1,0 +1,29 @@
+(bind trace (array))
+(bind patternField__gensym0 90)
+(bind patternField__gensym1 91)
+(macro read-fields () `(array patternField__gensym0 patternField__gensym1))
+(macro patternField__private () `42)
+(type Option (Some :any value) None)
+
+(match (Some 5)
+  ((Some payload) (trace:push (array (read-fields) payload (patternField__private))))
+  (_ (trace:push "statement-fallback")))
+
+(bind value-result
+  (match (Some 6)
+    ((Some payload) (array (read-fields) payload (patternField__private)))
+    (_ (array "value-fallback"))))
+
+(func valid-result :args (:any result) :returns :boolean :body true)
+(func protected-result :returns :array :post (valid-result ~) :body
+  (match (Some 7)
+    ((Some payload) (array (read-fields) payload (patternField__private)))
+    (_ (array "protected-fallback"))))
+
+(bind if-let-result
+  (if-let ((Some payload) (Some 8)) (array (read-fields) payload (patternField__private)) (array "if-fallback")))
+(bind when-let-result
+  (when-let ((Some payload) (Some 9)) (array (read-fields) payload (patternField__private))))
+
+(console:log (JSON:stringify
+  (array trace value-result (protected-result) if-let-result when-let-result)))

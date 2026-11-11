@@ -1,0 +1,11 @@
+program="deno"
+args=["run", "--no-config", "--cached-only", "--no-npm", "--no-remote", "--deny-net", "--no-prompt", "/private/tmp/lykn-correction01-tmp/.tmpVhdqOv/statement-match-guards.js"]
+cwd=Some("/private/tmp/lykn-correction01-tmp/.tmpVhdqOv")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-correction01-make-check-xdg")
+TMPDIR=Some("/private/tmp/lykn-correction01-tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-a/correction01/semantic-role-receipts")

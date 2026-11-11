@@ -1,0 +1,1 @@
+(bind result (kernel:objec (key 7)))

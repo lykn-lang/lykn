@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-correction01-tmp/bbebb2606b56a89/pure-argument-spread.js"
+  ],
+  "cwd": "/private/tmp/lykn-correction01-tmp/bbebb2606b56a89",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/pure-argument-spread.lykn",
+  "modulePath": "/private/tmp/lykn-correction01-tmp/bbebb2606b56a89/pure-argument-spread.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-correction01-make-check-xdg",
+    "TMPDIR": "/private/tmp/lykn-correction01-tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-a/correction01/semantic-role-receipts"
+  }
+}

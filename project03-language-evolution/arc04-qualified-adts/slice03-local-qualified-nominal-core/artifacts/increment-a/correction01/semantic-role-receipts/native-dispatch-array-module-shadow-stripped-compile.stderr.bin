@@ -1,0 +1,6 @@
+3:18: warning: unused binding 'value'
+  suggestion: prefix with underscore: _value
+4:19: warning: unused binding 'value'
+  suggestion: prefix with underscore: _value
+1:1: warning: unused binding 'Array'
+  suggestion: prefix with underscore: _Array

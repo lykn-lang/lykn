@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/../../test/fixtures/ordered-member-calls/entry-live.lykn", "-o", "/private/tmp/lykn-correction01-tmp/.tmphjVQmG/live.js", "--source-context-path", "/private/tmp/lykn-correction01-tmp/.tmphjVQmG"]
+cwd=Some("/private/tmp/lykn-correction01-tmp/.tmphjVQmG")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-correction01-tmp/.tmphjVQmG/xdg-cache")
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-correction01-make-check-xdg")
+TMPDIR=Some("/private/tmp/lykn-correction01-tmp")
+LYKN_SEMANTIC_ROLE_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-a/correction01/semantic-role-receipts")

@@ -1,0 +1,9 @@
+(bind Array 0)
+(func choose-value
+  (:args (:array value) :body "array")
+  (:args (:string value) :body "string"))
+(func capture-unknown :args () :body
+  (try (return (choose-value 1))
+    (catch error (return (array error:name error:message)))))
+(console:log (JSON:stringify
+  (array (choose-value #a(1)) (choose-value "kept") (capture-unknown))))

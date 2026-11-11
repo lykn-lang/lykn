@@ -1,0 +1,11 @@
+(bind trace (array))
+(func iterate :returns :any :body
+  (for (let i 0) (< i 4) (++ i)
+    (return
+      (do
+        (if (= i 0) (continue))
+        (if (= i 2) (break))
+        (trace:push i)
+        (if (= i 1) (do (trace:push "skip") (continue)) "wrong"))))
+  "done")
+(console:log (JSON:stringify (array (iterate) trace)))

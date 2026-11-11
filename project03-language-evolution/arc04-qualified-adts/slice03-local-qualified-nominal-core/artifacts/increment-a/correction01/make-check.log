@@ -1,0 +1,58 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/qualified-adt-core; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 8.14s
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.2M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Checking lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.75s
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/forms.rs:8495:
+         let result = build_dispatch_check("array", &expr);
+         assert!(result.is_some());
+         if let Some(SExpr::List { values, .. }) = result {
+-            assert_eq!(values[0].host_reference(), Some(HostReference::ArrayIsArray));
++            assert_eq!(
++                values[0].host_reference(),
++                Some(HostReference::ArrayIsArray)
++            );
+         }
+     }
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/emission_results.rs:168:
+     let source = "(func accepts-array :args (:array value) :body value)";
+     let forms = classify(source);
+     let reference_span = lykn_lang::reader::source_loc::Span::new(
+-        lykn_lang::reader::source_loc::SourceLoc { line: 1, column: 35 },
+-        lykn_lang::reader::source_loc::SourceLoc { line: 1, column: 40 },
++        lykn_lang::reader::source_loc::SourceLoc {
++            line: 1,
++            column: 35,
++        },
++        lykn_lang::reader::source_loc::SourceLoc {
++            line: 1,
++            column: 40,
++        },
+     );
+ 
+     let mut ctx = emitter::context::EmitterContext::new(false);
+make: *** [lint] Error 1

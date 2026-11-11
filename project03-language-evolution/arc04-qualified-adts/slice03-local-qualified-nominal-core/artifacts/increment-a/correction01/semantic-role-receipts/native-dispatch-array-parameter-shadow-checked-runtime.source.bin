@@ -1,0 +1,9 @@
+(func run-with-shadow :args (:any Array) :body
+  (func choose-value
+    (:args (:array value) :body "array")
+    (:args (:string value) :body "string"))
+  (func capture-unknown :args () :body
+    (try (return (choose-value 1))
+      (catch error (return (array error:name error:message)))))
+  (array (choose-value #a(1)) (choose-value "kept") (capture-unknown)))
+(console:log (JSON:stringify (run-with-shadow 0)))

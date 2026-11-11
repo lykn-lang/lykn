@@ -1,0 +1,2 @@
+1:7: warning: unused binding 'mixed-spread'
+  suggestion: prefix with underscore: _mixed-spread

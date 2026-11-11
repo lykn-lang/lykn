@@ -1,0 +1,6 @@
+(bind trace (array))
+(bind short-circuited (and false (kernel:seq (trace:push "skipped") true)))
+(bind once (and true (kernel:seq (trace:push "once") 9)))
+(bind args (Array:of (kernel:seq (trace:push "argument") 7)))
+(bind initialized (kernel:seq (trace:push "initializer") 11))
+(console:log (JSON:stringify (array short-circuited once args initialized trace)))

@@ -1,0 +1,171 @@
+[
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "collect-three"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "a"
+          },
+          {
+            "type": "atom",
+            "value": "b"
+          },
+          {
+            "type": "atom",
+            "value": "c"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "atom",
+                "value": "a"
+              },
+              {
+                "type": "atom",
+                "value": "b"
+              },
+              {
+                "type": "atom",
+                "value": "c"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "invoke-plain"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "callee"
+          },
+          {
+            "type": "atom",
+            "value": "items"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "callee"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "spread"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "items"
+                  }
+                ]
+              },
+              {
+                "type": "number",
+                "value": 3
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "console:log"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "JSON:stringify"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "invoke-plain"
+              },
+              {
+                "type": "atom",
+                "value": "collect-three"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "array"
+                  },
+                  {
+                    "type": "number",
+                    "value": 1
+                  },
+                  {
+                    "type": "number",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,1195 @@
+[
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "lyknHostReflectApply0"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "fn"
+          },
+          {
+            "type": "atom",
+            "value": "receiver"
+          },
+          {
+            "type": "atom",
+            "value": "argv"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "Reflect:apply"
+              },
+              {
+                "type": "atom",
+                "value": "fn"
+              },
+              {
+                "type": "atom",
+                "value": "receiver"
+              },
+              {
+                "type": "atom",
+                "value": "argv"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "trace"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "array"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "getter-error"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "new"
+          },
+          {
+            "type": "atom",
+            "value": "Error"
+          },
+          {
+            "type": "string",
+            "value": "getter"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "argument-error"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "new"
+          },
+          {
+            "type": "atom",
+            "value": "Error"
+          },
+          {
+            "type": "string",
+            "value": "argument"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "actual-method"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "earlier"
+          },
+          {
+            "type": "atom",
+            "value": "middle"
+          },
+          {
+            "type": "atom",
+            "value": "later"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "trace:push"
+          },
+          {
+            "type": "string",
+            "value": "call"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "atom",
+                "value": "this:label"
+              },
+              {
+                "type": "atom",
+                "value": "middle"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "make-target"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "mode"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "target"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "object"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "label"
+                  },
+                  {
+                    "type": "string",
+                    "value": "receiver"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "Object:defineProperty"
+          },
+          {
+            "type": "atom",
+            "value": "target"
+          },
+          {
+            "type": "string",
+            "value": "method"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "object"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "get"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "=>"
+                      },
+                      {
+                        "type": "list",
+                        "values": []
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "trace:push"
+                          },
+                          {
+                            "type": "string",
+                            "value": "getter"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "if"
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "==="
+                              },
+                              {
+                                "type": "atom",
+                                "value": "mode"
+                              },
+                              {
+                                "type": "number",
+                                "value": 1
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "throw"
+                              },
+                              {
+                                "type": "atom",
+                                "value": "getter-error"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "return"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "actual-method"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "atom",
+            "value": "target"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "invoke-computed"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "mode"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "key"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "Object:defineProperty"
+          },
+          {
+            "type": "atom",
+            "value": "key"
+          },
+          {
+            "type": "atom",
+            "value": "Symbol:toPrimitive"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "object"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "value"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "=>"
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "hint"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "trace:push"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "hint"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "return"
+                          },
+                          {
+                            "type": "string",
+                            "value": "method"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "let"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym0"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "block"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym1"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "trace:push"
+                  },
+                  {
+                    "type": "string",
+                    "value": "base"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym1"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "make-target"
+                      },
+                      {
+                        "type": "atom",
+                        "value": "mode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym2"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym1"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym3"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "trace:push"
+                  },
+                  {
+                    "type": "string",
+                    "value": "key"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "if"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "==="
+                      },
+                      {
+                        "type": "atom",
+                        "value": "mode"
+                      },
+                      {
+                        "type": "number",
+                        "value": 3
+                      }
+                    ]
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "return"
+                      },
+                      {
+                        "type": "number",
+                        "value": 93
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym3"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "key"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym4"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "get"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym2"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym5"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "trace:push"
+                  },
+                  {
+                    "type": "string",
+                    "value": "first"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "let"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym6"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "block"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "trace:push"
+                  },
+                  {
+                    "type": "string",
+                    "value": "arg"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "if"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "==="
+                      },
+                      {
+                        "type": "atom",
+                        "value": "mode"
+                      },
+                      {
+                        "type": "number",
+                        "value": 2
+                      }
+                    ]
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "throw"
+                      },
+                      {
+                        "type": "atom",
+                        "value": "argument-error"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "="
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym6"
+                  },
+                  {
+                    "type": "number",
+                    "value": 8
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "const"
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym7"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "array"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym5"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym6"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "trace:push"
+                      },
+                      {
+                        "type": "string",
+                        "value": "last"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "="
+              },
+              {
+                "type": "atom",
+                "value": "completionValue__gensym0"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "lyknHostReflectApply0"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym4"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym2"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "completionValue__gensym7"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "const"
+          },
+          {
+            "type": "atom",
+            "value": "answer"
+          },
+          {
+            "type": "atom",
+            "value": "completionValue__gensym0"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "trace:push"
+          },
+          {
+            "type": "string",
+            "value": "after"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "atom",
+            "value": "answer"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "observe"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "mode"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "try"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "return"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "invoke-computed"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "mode"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "catch"
+              },
+              {
+                "type": "atom",
+                "value": "problem"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "return"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "array"
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "==="
+                          },
+                          {
+                            "type": "atom",
+                            "value": "problem"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "getter-error"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "==="
+                          },
+                          {
+                            "type": "atom",
+                            "value": "problem"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "argument-error"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "instanceof"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "problem"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "TypeError"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "console:log"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "JSON:stringify"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "array"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "observe"
+                  },
+                  {
+                    "type": "number",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "observe"
+                  },
+                  {
+                    "type": "number",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "observe"
+                  },
+                  {
+                    "type": "number",
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "observe"
+                  },
+                  {
+                    "type": "number",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "type": "atom",
+                "value": "trace"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,5 @@
+(func collect-three :args (:any a :any b :any c) :returns :any :body
+  (array a b c))
+(func invoke-plain :args (:any callee :any items) :returns :any :body
+  (callee (spread items) 3))
+(console:log (JSON:stringify (invoke-plain collect-three (array 1 2))))

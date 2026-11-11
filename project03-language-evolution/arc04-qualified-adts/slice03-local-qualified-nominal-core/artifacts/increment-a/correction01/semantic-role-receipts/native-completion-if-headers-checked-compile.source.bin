@@ -1,0 +1,18 @@
+(bind trace (array))
+(func choose-header :args (:any mode) :returns :any :body
+  (if (do
+        (trace:push "statement")
+        (if (= mode 0) (return 80))
+        false)
+    (trace:push "wrong"))
+  (bind result
+    (if (do
+          (trace:push "value")
+          (if (= mode 1) (return 81))
+          (= mode 2))
+      (do (trace:push "then") 7)
+      (do (trace:push "else") 8)))
+  (trace:push "after")
+  result)
+(console:log (JSON:stringify
+  (array (choose-header 0) (choose-header 1) (choose-header 2) (choose-header 3) trace)))

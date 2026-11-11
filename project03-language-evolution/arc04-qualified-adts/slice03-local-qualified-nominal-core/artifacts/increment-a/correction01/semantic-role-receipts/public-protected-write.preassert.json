@@ -1,0 +1,1 @@
+{"source":"(func blocked :args () :returns :any :body\n  (kernel:= (get Reflect \"apply\") (do 0 0)))\n","errorName":"Error","errorMessage":"host-contract v2: write to protected slot Reflect.apply","output":null,"outputReturned":false}

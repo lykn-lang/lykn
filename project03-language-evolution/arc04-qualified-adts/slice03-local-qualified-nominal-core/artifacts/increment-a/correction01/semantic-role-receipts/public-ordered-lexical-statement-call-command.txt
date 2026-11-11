@@ -1,0 +1,23 @@
+{
+  "program": "/opt/homebrew/bin/deno",
+  "args": [
+    "run",
+    "--no-config",
+    "--cached-only",
+    "--no-npm",
+    "--no-remote",
+    "--deny-net",
+    "--no-prompt",
+    "/private/tmp/lykn-correction01-tmp/ad9f2dc4efcf8d0f/ordered-lexical-statement-call.js"
+  ],
+  "cwd": "/private/tmp/lykn-correction01-tmp/ad9f2dc4efcf8d0f",
+  "sourcePath": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/fixtures/semantic-roles/ordered-lexical-statement-call.lykn",
+  "modulePath": "/private/tmp/lykn-correction01-tmp/ad9f2dc4efcf8d0f/ordered-lexical-statement-call.js",
+  "selectedEnv": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "LYKN_TEST_DENO": null,
+    "XDG_CACHE_HOME": "/private/tmp/lykn-correction01-make-check-xdg",
+    "TMPDIR": "/private/tmp/lykn-correction01-tmp",
+    "LYKN_SEMANTIC_ROLE_EVIDENCE_DIR": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-a/correction01/semantic-role-receipts"
+  }
+}

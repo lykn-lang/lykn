@@ -1,0 +1,7 @@
+(bind trace (array))
+(func exhausted :returns :any :body
+  (match 0 (_ :when (do (trace:push "guard") false) 1)))
+(try
+  (trace:push (exhausted))
+  (catch e (trace:push e:message)))
+(console:log (JSON:stringify trace))

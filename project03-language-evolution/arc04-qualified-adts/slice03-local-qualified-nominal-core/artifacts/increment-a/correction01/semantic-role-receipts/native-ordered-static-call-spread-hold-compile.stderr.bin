@@ -1,0 +1,4 @@
+1:32: warning: unused binding 'receiver'
+  suggestion: prefix with underscore: _receiver
+1:7: warning: unused binding 'mixed-spread'
+  suggestion: prefix with underscore: _mixed-spread

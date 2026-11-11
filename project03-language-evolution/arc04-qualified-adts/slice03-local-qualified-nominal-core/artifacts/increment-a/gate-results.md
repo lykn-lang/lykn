@@ -36,35 +36,48 @@ No new dependency was added. The browser ESM compile/consumer path is exercised.
 The following records early attempts recalled from this CC session and the
 available tool output/context. No raw terminal log for these early failures was
 saved under `artifacts/increment-a/`; they are explicitly narrative evidence,
-not verbatim log excerpts. The retained raw evidence above remains unchanged.
+not verbatim log excerpts. The exact commands and error fragments below are
+included only where they remain available in that session context; missing
+assertion text has not been reconstructed. The retained raw evidence above
+remains unchanged.
 
 1. **Native marked-reference/form-head dispatch.** The first focused native
    command was `cargo test -p lykn-lang owned_host_references -- --nocapture`.
    It exposed that an unlowered marked atom with an empty marker value was still
    visible to form-head dispatch, so the writer treated it as a kernel head and
-   did not emit the typed reference. The exact assertion/error text was not
-   retained. The correction made marked references ineligible for form-head
-   dispatch; rerunning that focused command passed both codegen tests.
+   did not emit the typed reference. The exact failing assertion/error text was
+   not retained, so none is quoted here. The correction made marked references
+   ineligible for form-head dispatch; rerunning the same focused command passed
+   both codegen tests.
 2. **Public `set!` output oracle.** The first focused public command was
    `deno test --config project.json -A test/forms/host-reference-lowering.test.js test/forms/protected-host-policy.test.js`.
    One assertion for `(set! Object:freeze:prototype 0)` expected the wrong
-   spelling. The exact initial expected/actual diagnostic text was not
-   retained. The oracle was corrected to the compiler's actual
+   spelling. The exact assertion diff/expected text was not retained and is not
+   reproduced. The available correction was to expect the compiler's actual
    `set(Object.freeze.prototype, 0);` output; the focused public tests then
    passed.
 3. **CLI test API visibility.** The first `make check` failed while compiling
    the new `crates/lykn-cli/tests/protected_host.rs` test because it called the
    private binary module `lykn_cli::compile::compile_source` (reported at
-   lines 872 and 881 as `error[E0433]: cannot find compile in lykn_cli`). The
-   correction exercised the actual `lykn compile` binary against temporary
-   source fixtures in both assertion modes and for legal local/deeper controls.
-   `cargo test -p lykn-cli --test protected_host v2_protected_roots_and_slots_reject_before_assertion_stripping -- --nocapture`
+   lines 872 and 881 as `error[E0433]: cannot find compile in lykn_cli`). This
+   available compiler diagnostic fragment is recorded as reported; no separate
+   raw log was retained. The correction exercised the actual `lykn compile`
+   binary against temporary source fixtures in both assertion modes and for
+   legal local/deeper controls. The corrected focused command,
+   `cargo test -p lykn-cli --test protected_host v2_protected_roots_and_slots_reject_before_assertion_stripping -- --nocapture`,
    then passed.
 
 ## Commit trailer note
 
-The source commit's trailers are present, but Git formatted a blank line
-between `Co-authored-by: Codex <noreply@openai.com>` and
-`Co-authored-by: Billo AI <ai-engineering@billo.systems>`. This is recorded as a
-commit-format deviation only. Commit `5a8aedc5dcd6329da7b5f33a5397126a45891bac`
-is preserved without amend or history rewrite.
+`git show -s --format=%B 5a8aedc5dcd6329da7b5f33a5397126a45891bac` confirms
+the source commit's trailers are present but separated by a blank line:
+
+```text
+Co-authored-by: Codex <noreply@openai.com>
+
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+```
+
+This is recorded as a commit-format deviation only. Commit
+`5a8aedc5dcd6329da7b5f33a5397126a45891bac` is preserved without amend or
+history rewrite.

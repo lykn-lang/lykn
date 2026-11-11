@@ -1,0 +1,6 @@
+10:3: warning: unreachable match clause
+  suggestion: remove this clause or reorder patterns
+11:3: warning: unreachable match clause
+  suggestion: remove this clause or reorder patterns
+12:3: warning: unreachable match clause
+  suggestion: remove this clause or reorder patterns
