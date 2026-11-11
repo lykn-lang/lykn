@@ -105,7 +105,12 @@ then obtain Sol's separate preparation review. The eventual prompt must state
 the required builtin-guard parity limits, migration census and focused runtime
 oracles explicitly. This preparation record is not a claim of readiness.
 
-## Public macro-phase prerequisite selected after topology inspection
+## Public macro-phase proposal — withdrawn before issue
+
+The following proposal was selected provisionally during preparation, then
+withdrawn before an implementation prompt was issued. See the source-grounded
+counterexamples and current incremental direction below. It is retained as
+design history, not an active prerequisite or authority to change macro behavior.
 
 Sol's second immutable-source lookup confirmed that no existing mode returns
 macro-expanded, unlowered surface syntax. `strict:false` only changes policy;
@@ -196,3 +201,75 @@ than leaving CC to discover/select language behavior:
 These are source-grounded preparation constraints, not software findings with
 executed repros or approval of a concrete implementation. A is still separate
 and has priority for independent review when handed off.
+
+## Why that proposal is withdrawn
+
+Further root inspection of candidate 5a8aedc5 exposed valid-program behavior
+that a source-role walk alone would not preserve. In classifier.js,
+`emitSurfaceForm`'s Thread branch inserts the threaded operand into a step before
+the step's possible macro invocation. Its Eq branch for three or more operands
+duplicates middle operands into adjacent comparisons, which the existing
+expansion walk then encounters separately. Expanding those nested macros first
+would change their arguments or invocation count. Function pre/body/post
+reordering, multi-form macro results and malformed-program failure timing add
+further contracts. These are inspected control-flow facts, not executed runtime
+repros, and no claim is made that every historical behavior is desirable.
+
+A wholesale macro-before-surface phase would therefore be a separate language
+design change, with its own compatibility decisions. S03 does not need to
+choose those decisions to deliver qualified ADTs. Root withdraws that proposed
+prerequisite and retains the existing macro/lowering ordering for this slice.
+No implementation was started and no issued prompt needs replacement.
+
+## Current incremental direction — semantic plans before final ADT lowering
+
+Keep the actual public expansion walk and its completion/use modes. Introduce
+an explicitly passed fresh unit context for ADT collection/resolution. Surface
+ADT producers build compiler-private semantic requests/plans; final ADT
+resolution/lowering runs once the actual expanded unit's declarations are
+known. This is typed intermediate compiler data, not a source-spelling
+postprocessor or a new public kernel form. Native expansion already retains
+surface syntax and can resolve the same semantic identities before emission.
+
+The source-ready recipe still needs exact signatures and callers, but its
+binding constraints are:
+
+- A unit records typed owner declarations, lexical scope/binding identities,
+  immutable direct alias relations and ordinary-binding shadow entries.
+  References capture the actual lexical binding query at their occurrence.
+  Resolution may consult the unit's complete top-level owner definitions for
+  forward type references; it cannot discover an ordinary alias that was not
+  lexically visible there. Queries resolve to OwnerRef/CaseRef, not strings as
+  identity. Each actual declaration keeps its original runtime position.
+- A pending named-type predicate carries a type query, value and diagnostic
+  context. A pending pattern plan carries the actual qualifier, owner/case
+  query, subject, child-field positions and clause-local temporaries. Final
+  resolution validates arity, owner universes and nested field types, then
+  supplies exact field keys and nominal gates. Bodies/guards have already been
+  expanded under the existing clause scope and completion use; finalizing the
+  plan must not replay user macros or user expressions.
+- Owner declarations contain only static case/field metadata, so their owned
+  namespace/token/constructor initialization can be built after type resolution
+  while being inserted at the original declaration position. No source payload
+  expression or application call becomes initialization work.
+- Direct qualified call/extraction checks retain source qualifier/case syntax,
+  binding query and argument count, even if completion lowering restructures
+  their surroundings. L1 runtime member access keeps its existing qualifier-
+  before-arguments behavior. Ordinary object members remain ordinary when the
+  binding query does not identify an ADT owner.
+- Private plans have explicit whole-unit consumption and unfinished-fragment
+  errors. Readers, JSON spelling, source properties and macros cannot create
+  their authority. All such plans are consumed before public expand returns
+  ordinary self-contained kernel forms and before A's final host-reference
+  support is materialized. Preserve Reflect request anchor identity and private
+  completion destinations when rebuilding; do not borrow a global active unit.
+- The context is a per-call object passed to actual producers/recursive entry
+  points, so nested/re-entrant calls do not share type state. Existing macro
+  environment/reset behavior remains separate. No new generic prepared-macro
+  region or broad macro contract is needed by this direction.
+
+This is preparation, not a source-ready or independently accepted design.
+Root must inspect the corrected accepted A candidate, finish the concrete
+native/public plan/metadata types and lifecycle, and obtain the separate
+readiness review before issue. The earlier macro-phase proposal must not be
+implemented from this historical memo.

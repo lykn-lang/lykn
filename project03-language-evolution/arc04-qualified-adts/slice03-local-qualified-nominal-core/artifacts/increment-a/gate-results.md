@@ -1,7 +1,8 @@
 # S03 increment A gate receipts
 
-Source branch: `codex/qualified-adt-core`  
-Source commit: `5a8aedc5dcd6329da7b5f33a5397126a45891bac`  
+Source branch: `codex/qualified-adt-core`
+
+Source commit: `5a8aedc5dcd6329da7b5f33a5397126a45891bac`
 Baseline: `0829e892999890e8877dec5e35cd249753e1be5d`
 
 ## Final gates

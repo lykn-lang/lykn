@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -102,3 +102,23 @@ under later LC-06 proof; it selects no final optimizer strategy.
 2026-11-11 final read-only preparation review by the separate Sol 6.1 High
 context supports issuing increment A after those clarifications. This is
 assignment readiness only; no LC implementation criterion is closed.
+
+2026-11-11 increment A candidate 5a8aedc5 passed CC and fresh independent full
+gates, but independent focused controls exposed native multi-clause Array
+dispatch capture in all four module/parameter checked/stripped conditions.
+The public native fragment boundary, repeated private-atom mutation and M6's
+changed-module/runtime oracle also require correction. [Independent HOLD](cdc-verification.md)
+and original evidence remain intact. [Correction01](cc-prompt-iteration01.md)
+implements those four bounded repairs; separate Sol source-readiness review
+supports issue. LC-01 and all other rows stay open pending corrected software
+verification. The fixed nine-value inline module is explicitly provisional;
+only aliases/import specifiers, not its module body, are sparse.
+
+B preparation is retained in [the owner-resolution memo](artifacts/local-owner-preparation.md).
+Its provisional macro-before-surface proposal was withdrawn before issue:
+actual Thread/Eq lowering changes macro arguments/occurrences, so a new macro
+phase would require a separate language contract. Current preparation keeps
+existing macro behavior and considers explicit per-unit ADT semantic plans
+finalized after actual expanded declarations are collected. Exact B types,
+APIs, lifecycle and source-readiness review remain unissued; A correction
+authorizes none of that work.
