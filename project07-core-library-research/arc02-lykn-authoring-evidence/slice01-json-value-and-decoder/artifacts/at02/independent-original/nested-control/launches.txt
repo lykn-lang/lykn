@@ -1,0 +1,9 @@
+All runs use /usr/bin/env -u BASELINE_GZIPPED -u CARGO_TARGET_DIR -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG -u LYKN_TEST_DENO -u LYKN_SEMANTIC_ROLE_EVIDENCE_DIR -u LYKN_PROTECTED_HOST_EVIDENCE_DIR TMPDIR=/private/tmp/lykn-at02-cdc-original.Hycvxeck/tmp XDG_CACHE_HOME=/private/tmp/lykn-at02-cdc-original.Hycvxeck/xdg npm_config_cache=/private/tmp/lykn-at02-cdc-original.Hycvxeck/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+Native cwd=/private/tmp/lykn-at02-cdc-original.Hycvxeck/nested-control
+compile-native argv: ../case/lykn compile nested.lykn -o target/native.js
+run-native argv: ../case/lykn run --cached-only --no-prompt target/native.js
+Public cwd=/private/tmp/lykn-at02-cdc-original.Hycvxeck/nested-control/public
+compile-public-driver argv: ../../case/lykn compile compile-probe.lykn -o target/compile-probe.js
+compile-public argv: ../../case/lykn run --cached-only --frozen --no-prompt --allow-read=probe.lykn target/compile-probe.js
+run-public argv: ../../case/lykn run --cached-only --frozen --no-prompt target/public.js
+Retained driver/config/lock copied unchanged. packages/lang copied unchanged from Stage1 export at 685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95. Public compiler stdout copied unchanged to target/public.js for runtime. Predictions frozen before compilation: both successful compilers must emit nested tag tests and bind the inner field; known input prints 7. A static rejection, runtime exception, or wrong output is a separate outcome, not an expected Result.

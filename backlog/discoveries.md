@@ -1365,3 +1365,78 @@ tooling explicitly. The YAML split preserves all families and the YNOD gate.
   2.9.6 condition. Preserve all R families, 36 unsupported resource
   cells, 28 document cases and original PERM closure provenance. No silent grants,
   installation/downgrade, source-pin mutation, PATH shim or package adoption.
+
+### `D-2611-RDEO` — public reader accepts EOF inside an ordinary list
+
+- **What:** At source `685bbe1d`, `packages/lang/reader.js:166–221`
+  allows readList to reach EOF without requiring a closing parenthesis.
+  The unchanged original AT-02 source fails native check and compile at
+  line64, while the public compiler accepts it. Its generated module moves
+  the four demonstrations inside an uncalled function and runs with empty
+  stdout. Exit zero therefore conceals the missing demonstrations.
+- **How found:** probe and independent review of Project07 Arc02/S01.
+- **Guess:** correctness-grade, because malformed source can silently change
+  statement placement and differ between the compilers.
+- **Kind:** bug. **Status:** routed, correction open.
+- **Owner and destination:** Project07 CDC, language correction under
+  [Arc03 A3-04](../project07-core-library-research/arc03-findings-and-integration/arc-plan.md).
+  Detail a bounded reader repair with the original source and balanced
+  neighbors, then validate both readers and normal public/native callers.
+- **Evidence:** [Independent unchanged-source report and raw packet](../project07-core-library-research/arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/metadata/stage1-report.md).
+
+### `D-2611-NPAT` — nested constructor patterns emit unbound references
+
+- **What:** At `685bbe1d`, a balanced explicit Option/InnerValue source
+  matches `Some(InnerNumber(7))` and selects the inner field. Both compilers
+  accept it and both runtime paths raise ReferenceError. Native output
+  omits the inner tag check and field binding. Public output checks an
+  inner temporary outside the block that declares it.
+- **How found:** independent balanced L-03 control after AT-02 authoring.
+- **Guess:** correctness-grade, because documented nested matching fails
+  on a known valid constructor input. The two emitted causes are retained.
+- **Kind:** bug. **Status:** routed, correction open.
+- **Owner and destination:** Project07 CDC, language correction under
+  [Arc03 A3-04](../project07-core-library-research/arc03-findings-and-integration/arc-plan.md).
+  Prepare ordered nested check/binding lowering with positive and negative
+  patterns, guards and caller-scope validation. The research specimen's
+  sequential matches leave this correction obligation open.
+- **Evidence:** [Independent exact source, JS and runtime report](../project07-core-library-research/arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/nested-control/report.md).
+
+### `D-2611-RTCK` — guide return-check timing is contradictory
+
+- **What:** At `685bbe1d`, guide05 ID-02 lines67–68 describes compile-time
+  return checking, while lines90–93 describe an inserted runtime check.
+  A function declared to return number with literal string body compiles
+  in default and stripped modes. Default execution throws a return-type
+  TypeError and stripped execution prints the string. The original AT-02
+  answer repeated an overly broad static-check claim. Typed bind literals
+  have their own static behavior and are outside this witness's conclusion.
+- **How found:** guide/answer review and independent discriminating control.
+- **Guess:** serious, because users can infer an absent static guarantee.
+- **Kind:** trap. **Status:** routed, guide correction open.
+- **Owner and destination:** Project07 CDC, guide consistency under
+  [Arc03 A3-03](../project07-core-library-research/arc03-findings-and-integration/arc-plan.md).
+  Clarify exact static and runtime guarantees and retest the retained source
+  before any claim that the guide or the original authoring task is repaired.
+- **Evidence:** [Independent typed-return witness and classification](../project07-core-library-research/arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/metadata/stage1-report.md).
+
+### `D-2611-ZVAR` — public parenthesized zero-field variants become functions
+
+- **What:** At `685bbe1d`, guide00 lines497–516 documents `(Point)` in
+  a type declaration as a zero-field constant. A balanced independent
+  ZeroForms type with both `(ListZero)` and bare `BareZero`
+  compiles and runs in both paths. Native emits two tagged
+  constants. Public emits a function for ListZero and a constant for
+  BareZero, changing typeof and serialization when the values are used
+  according to the guide. Bare syntax remains usable in both paths.
+- **How found:** authoring trial and independent isolated syntax control.
+- **Guess:** correctness-grade, because using the documented value form
+  changes serialization despite successful compilation. Further matching
+  effects are a risk inferred from the constructor/value discrepancy.
+- **Kind:** bug. **Status:** routed, correction open.
+- **Owner and destination:** Project07 CDC, ADT language correction under
+  [Arc03 A3-04](../project07-core-library-research/arc03-findings-and-integration/arc-plan.md).
+  Reconcile constructor declaration forms and validate value use, matching
+  and serialization in both compilers. This differs from NE-D02's
+  erroneous call of an already declared zero-field constant.
+- **Evidence:** [Independent exact source, outputs and report](../project07-core-library-research/arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/zero-control/report.md).

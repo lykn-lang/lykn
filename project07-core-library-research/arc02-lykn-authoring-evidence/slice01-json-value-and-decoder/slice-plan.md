@@ -73,6 +73,11 @@ stop is superseded by the operator's standing instruction to continue
 obvious repairs autonomously. Compiler/design gaps still receive explicit
 disposition and independent review.
 
+Current handoff directive [iteration05](cc-prompt-iteration05.md) corrects
+the report's canonical placement and ledger links to committed raw evidence.
+Candidate 5be740da preserves the original artifact report and source pin.
+All five JV rows await the independent reviewer's final reconciliation.
+
 ## Permissions restart checkpoint
 
 At the operator's request, both contributors stopped during intake for the

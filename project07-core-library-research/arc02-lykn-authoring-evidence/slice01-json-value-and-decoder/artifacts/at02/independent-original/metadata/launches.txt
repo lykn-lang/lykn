@@ -1,0 +1,18 @@
+Common cwd=/private/tmp/lykn-at02-cdc-original.Hycvxeck/case
+Common env: /usr/bin/env -u BASELINE_GZIPPED -u CARGO_TARGET_DIR -u CARGO_NET_GIT_FETCH_WITH_CLI -u RUST_LOG -u LYKN_TEST_DENO -u LYKN_SEMANTIC_ROLE_EVIDENCE_DIR -u LYKN_PROTECTED_HOST_EVIDENCE_DIR TMPDIR=/private/tmp/lykn-at02-cdc-original.Hycvxeck/tmp XDG_CACHE_HOME=/private/tmp/lykn-at02-cdc-original.Hycvxeck/xdg npm_config_cache=/private/tmp/lykn-at02-cdc-original.Hycvxeck/npm DENO_DIR=/Users/oubiwann/Library/Caches/deno PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+check argv: ./lykn check decoder.lykn
+lint argv: ./lykn lint decoder.lykn
+compile-default argv: ./lykn compile decoder.lykn -o target/default.js
+compile-stripped argv: ./lykn compile --strip-assertions decoder.lykn -o target/stripped.js
+Each run writes ../<cell>/stdout.raw and stderr.raw and exit-status.txt. Native compile has no dependency acquisition for this source. Runtime, if accepted, uses --cached-only --no-prompt without grants.
+Public cwd=/private/tmp/lykn-at02-cdc-original.Hycvxeck/public; same common env.
+public-driver-compile argv: ../case/lykn compile compile-probe.lykn -o target/compile-probe.js
+public-compile argv: ../case/lykn run --cached-only --frozen --no-prompt --allow-read=probe.lykn target/compile-probe.js
+Public packages/lang exported with git archive 685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95 packages/lang. Config/deno.lock/driver copied unchanged from artifacts/adt-preflight/public. Frozen source copied unchanged as probe.lykn to satisfy retained driver. No compiler source modification or dependency acquisition.
+Classification witness authorized by coordinator after original rejection, separate from original task. cwd=/private/tmp/lykn-at02-cdc-original.Hycvxeck/classification; same common env.
+classification/compile-default argv: ../case/lykn compile typed-return.lykn -o target/default.js
+classification/compile-stripped argv: ../case/lykn compile --strip-assertions typed-return.lykn -o target/stripped.js
+classification/run-default argv: ../case/lykn run --cached-only --no-prompt target/default.js
+classification/run-stripped argv: ../case/lykn run --cached-only --no-prompt target/stripped.js
+public-run argv: ../case/lykn run --cached-only --frozen --no-prompt target/public-output.js
+public-compile stdout copied byte-for-byte to target/public-output.js; no output repair. Public accepted original unmatched delimiter and emitted all original demo calls inside decodeConfig, so runtime output remains a required observation.

@@ -1,5 +1,36 @@
 # Arc03 — Findings and integration
 
+2026-11-10 authoring-research findings from Arc02/S01 have independent
+minimal reproductions at source `685bbe1d`. Correction ownership is
+recorded here for the next detailed source/guide assignments. These
+observations do not close an implementation criterion.
+
+- `D-2611-RDEO` belongs to the language-correction work under A3-04.
+  Require both readers to reject an unclosed ordinary list. The exact
+  original AT-02 source is rejected natively and accepted by public ESM,
+  where its demonstrations become uncalled nested code. Retain the
+  [independent original replay](../arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/metadata/stage1-report.md).
+- `D-2611-NPAT` belongs to the language-correction work under A3-04.
+  Nested constructor patterns need correct ordered checks and bound-field
+  scope in both compilers. The balanced known input fails at runtime in
+  each, with different emitted causes. Retain the
+  [isolated nested control](../arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/nested-control/report.md).
+- `D-2611-ZVAR` belongs to the ADT language-correction work under A3-04.
+  The documented parenthesized zero-field variant emits a constant
+  natively and a function publicly. The working specimen uses the bare
+  declaration form. Keep the [independent syntax control](../arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/zero-control/report.md)
+  and distinguish it from the existing NE-D02 zero-field call example.
+- `D-2611-RTCK` belongs to guide consistency under A3-03. Guide05 ID-02's
+  compile-time-return wording conflicts with its runtime-check rationale.
+  The wrong literal return compiles, throws in default execution and
+  returns the wrong value when stripped. Preserve the
+  [witness and original classification](../arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/metadata/stage1-report.md).
+
+CDC will detail the bounded correction slices against the inspected source
+and original controls before implementation. Existing guide, book and
+human acceptance owners remain. Arc02's working sequential-match specimen
+is an authoring result, and the nested-pattern defect stays open.
+
 ## Capability and status
 
 2026-09-14 CDC: [Slice08 partial verification](slice08-document-route-design/cdc-verification.md)
@@ -150,6 +181,13 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-11-10 v1.16: Arc02/S01 independently reproduced public EOF acceptance,
+  two nested-pattern emission failures and contradictory return-check
+  guidance at 685bbe1d, plus divergent zero-field declaration output.
+  Added D-2611-RDEO/NPAT/ZVAR/RTCK to the existing
+  language and guide correction owners. Source repair remains to be
+  detailed against the retained original controls.
 
 - 2026-09-14 v1.15: Independently verified Slice08 design/crosswalk and staged
   proof contract, closing three DR rows. Retained licence and final creation-

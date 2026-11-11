@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: wrongReturn: return value expected number, got string
+    throw new TypeError("wrongReturn: return value expected number, got " + typeof result__gensym0);
+          ^
+    at wrongReturn (file:///private/tmp/lykn-at02-cdc-original.Hycvxeck/classification/target/default.js:4:11)
+    at file:///private/tmp/lykn-at02-cdc-original.Hycvxeck/classification/target/default.js:8:13

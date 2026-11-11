@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: value is not defined
+        return value;
+        ^
+    at selectInner (file:///private/tmp/lykn-at02-cdc-original.Hycvxeck/nested-control/target/native.js:18:9)
+    at file:///private/tmp/lykn-at02-cdc-original.Hycvxeck/nested-control/target/native.js:29:13

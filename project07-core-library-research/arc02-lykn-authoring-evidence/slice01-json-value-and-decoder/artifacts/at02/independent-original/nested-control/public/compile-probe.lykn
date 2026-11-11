@@ -1,0 +1,4 @@
+(import "lang/mod.js" (lykn))
+
+(bind source (Deno:read-text-file-sync "probe.lykn"))
+(console:log (lykn source))

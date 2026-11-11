@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: t__gensym1 is not defined
+    if (!matched__gensym2 && target__gensym0.tag === "Some" && t__gensym1.tag === "InnerNumber") {
+                                                               ^
+    at selectInner (file:///private/tmp/lykn-at02-cdc-original.Hycvxeck/nested-control/public/target/public.js:23:64)
+    at file:///private/tmp/lykn-at02-cdc-original.Hycvxeck/nested-control/public/target/public.js:39:13

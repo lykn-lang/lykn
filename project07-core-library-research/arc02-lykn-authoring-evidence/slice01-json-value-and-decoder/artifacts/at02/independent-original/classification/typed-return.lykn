@@ -1,0 +1,9 @@
+;; Independent classification witness, separate from unchanged AT-02 source.
+;; Prediction: either reject a literal wrong return statically, or emit a
+;; runtime return guard. Stripped execution discriminates generated checks.
+(func wrong-return
+  :args ()
+  :returns :number
+  :body "wrong")
+
+(console:log (wrong-return))
