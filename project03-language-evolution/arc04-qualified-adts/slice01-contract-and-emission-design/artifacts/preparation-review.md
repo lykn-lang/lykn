@@ -154,3 +154,33 @@ operator-discussion receipt. It did not perform an exhaustive code audit,
 run tests/builds/prototypes/bundles, author research helpers or change source.
 No present layout, contract draft, guard repair, size result or QD/QA criterion
 is accepted by this preparation review.
+
+## Delta review — 2026-11-10
+
+Reviewed only the actual three-file amendments in
+`f0fd9776ac5d1bce0961714d8d2f70c6253ff46b` and spacing correction
+`77a2fe963a078a187ca0c1d5c4ff7f95a680749e`, against this review's
+`834baf8e29f27e9cf40c39e6b2eb516f01cdb0e7` baseline.
+
+**PR-01 and PR-02 are addressed for design-draft readiness.** The amended plan,
+QD-04 verification text and prompt consistently require zero retained unused
+ADT contribution and selective unused-case elimination. Complete unminified
+output/source-body/metafile inspection and runtime values/effects must support
+the claims; ordinary wrapper overhead is separate, used behavior and effects
+remain, package exports stay intact, and escaping namespaces retain observable
+members. Resolved-input lists, absent minified names and byte counts alone are
+explicitly insufficient. Retention targets must be settled before execution.
+
+The proposed population is now unambiguous: twelve layout/consumer pairs with
+unminified and minified settings give **24 unique bundle cells per contributor**.
+Gzip derives from minified bytes; independent replay is counted separately.
+The packet still requires operator agreement on the concrete protocol before
+execution and does not present the proposed population as approved or run.
+
+No new preparation finding arises from this delta. The verdict remains ready
+for the authorized contract/protocol draft, with concrete experiment execution,
+production-layout selection and dependent implementation held behind their
+existing gates. All QD and QA rows remain open. This delta review performed no
+source inspection beyond the retained baseline, experiment, build, prototype,
+helper or source change; earlier independent interface/tool evidence remains
+applicable because these amendments only clarify planning requirements.
