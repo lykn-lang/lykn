@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice02-existing-adt-correctness
 status: active
-version: "1.3"
+version: "1.4"
 depends-on: [slice01-contract-and-emission-design]
 ---
 
@@ -73,6 +73,15 @@ original failing source/output/gate receipt. The replacement finite regression
 uses a traced fallback and tail `7` to prove guard continuation and retained
 tail postcondition execution. PC-03 acceptance must disclose this limit; it
 cannot claim general checked early-return correctness or cross-backend parity.
+
+Independent exact-pin review of initial candidate `7b09a4e` found RV-01: the
+separately embedded public compiler payload still contained baseline source.
+Iteration03 synchronizes the actual packaged payload and requires fresh-cache
+materialization/delivery regressions before S02 acceptance. Original CC gate
+results are attested prose; unavailable raw historical logs are explicitly
+distinguished from newly captured final and independent receipts. All PC rows
+remain open. This correction does not claim a same-version warm-cache upgrade
+or content-addressed cache redesign.
 
 Use product tests and exact runtime oracles for positive and discriminating
 negative cases, all affected routes, evaluation order, falsy payloads and name
