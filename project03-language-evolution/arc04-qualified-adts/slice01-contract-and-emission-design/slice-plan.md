@@ -76,13 +76,14 @@ these two protocol clarifications in a6a328f8. They are now explicit in the
 open set. This is readiness for design drafting, with QD/QA criteria still
 open and the concrete experiment proposal awaiting agreement.
 
-Current [CC assignment](cc-prompt-iteration03.md) completes the contract and
-same-module selective emission protocol after independent review 1ab4cdb6
-of candidate 2e94b49f. It corrects source examples, owner-universe controls,
-metadata/schema and case declarations, observer accessibility and stop rules.
+Current [CC assignment](cc-prompt-iteration04.md) makes the narrow RV-14/15
+corrections after independent review 0ee6496e of candidate 28f540d4. RV-01–13
+are supported at design level; the remaining edits remove a redundant
+declaration alias and use ? in the five observer value expressions.
 The [initial assignment](cc-prompt.md), proposal 4bd224fc, not-accepted review
 1615547d, [iteration01](cc-prompt-iteration01.md) and
-[iteration02](cc-prompt-iteration02.md) remain preserved. Root's
+[iteration02](cc-prompt-iteration02.md) and
+[iteration03](cc-prompt-iteration03.md) remain preserved. Root's
 sidecar design could violate generative identity through module caching;
 iteration02 replaces it with same-producer case-export linkage and preserves
 actual source qualifier evaluation, including alias TDZ. This is still
