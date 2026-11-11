@@ -535,3 +535,79 @@ unaffected observer/identity/schema reasoning when it verifies that only these
 two narrow corrections changed. It must identify the exact amended candidate,
 check the actual reexport and five ? forms, and preserve this intermediate
 verdict. No ledger status is changed in this pass, at root's explicit handoff.
+
+## Iteration04 final design acceptance — 2026-11-11
+
+**Current verdict: accept the S01 contract and bounded protocol proposal.**
+QD-01–QD-05 and arc QA-01 are done at independent design-review evidence
+strength. This is not source implementation, parser/compiler/type/runtime
+validation, experiment execution, production-layout selection or release
+acceptance. Arc QA-02–QA-06 remain open. Operator agreement on the actual
+source-ready experiment checkpoint remains required before launch.
+
+Reviewed exact candidate `4d4aef29976779d0b2853962d94e72a9db4b4612` under
+`cc-prompt-iteration04.md` at `37b503f53ea060e75bf8aa133c78445f449015ae`.
+Actual reviewer remains the independent Sol 6.1 High context. Root retains
+PL authority and parent bookkeeping. This was the authorized minimal delta
+review; no source census or behavioral execution was repeated.
+
+### Delta verification and retained evidence
+
+The actual candidate commit changes only the two existing artifacts and
+appends the iteration04 return. Comparing the artifacts directly with
+`28f540d486792a1a486b6f55a2c8acce99dc0893` shows exactly the prescribed scope:
+
+- **RV-14 resolved:** the redundant Renamed type alias is deleted. One
+  selective reexport carries the producer's merged Label type/value under
+  Renamed and keeps the real owner-token/case ABI aliases and original nominal
+  type. The surrounding explanation is corrected; no second brand/type is
+  synthesized. This is an accepted declaration design, not a TypeScript-tested
+  artifact. Actual type-consumer validation remains in the later source gate.
+- **RV-15 resolved:** exactly five bind-value conditionals change from if to ?:
+  brand-ok, tag-ok, payload-ok, missing-ok and null-ok. Conditions, all arms,
+  short-circuit symbol/object/undefined checks and expected output are unchanged.
+  The final statement-position family if remains. No runtime bug is claimed.
+
+Under work-verification's correction-review retention rule, the complete
+independent record at `0ee6496e5aa8b36a0d636d09ecdcdf22fc8c0ce4` remains
+applicable to RV-01–13 and all unaffected design claims: it identifies the
+claim, source state, method and result; the current diff changes neither
+architecture nor behavioral predicates/fixtures/oracles, dependencies or
+execution conditions; no new finding undermines that reasoning; and this
+assignment explicitly requests a minimal delta with no code execution. Its
+historical date and design-only strength are retained, not relabeled as a fresh
+run. The source drift check still reports a clean
+`codex/completion-value-flow` at `685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95`.
+
+Retained evidence includes source grammar/resolution and owner-universe fit,
+metadata-only prelude and intentional migration, loader-distinct graph rebasing,
+actual alias/reexport/ABI links, representation/guard/strip/serialization/mutation
+contracts, host/purity prerequisites, per-call public state and stage defaults,
+precise producer DTS, C4 rejecting tag-only dispatch, C5 descriptor/symbol/unit
+logic, all 24 bundle keys and separate 24 observation processes, and the
+freeze/stop/re-entry rules. The previously corrected sidecar and alias-TDZ
+design/review history remains attached. No future implementation hash, runtime
+result, size number or operator experiment approval is inferred from this
+retention decision.
+
+### Final row walk and arc contract gate
+
+Opening slice rows: five. Final slice rows: five done; none deferred, no-op or
+dropped. The current exact design artifacts and this independent record supply
+the criterion-specific evidence:
+
+| Row | Final design disposition |
+| --- | --- |
+| QD-01 | Done. Explicit canonical/equivalent zero patterns, zero value/call distinction, direct versus detached arity, declared owner/case resolution, aliases/shadowing, top-level scope, source-order TDZ and one-root OwnerRef universe are source-reconciled and have discriminating future checks. |
+| QD-02 | Done. Fresh runtime owner identity is separate from compile-time references and loader-instance graph identity. Guard/strip, mutable payloads, readonly metadata/namespace, reconstruction and metadata-only prelude decisions are coherent and bounded. Host/purity mechanisms remain named implementation prerequisites. |
+| QD-03 | Done. The concrete schema/lookup/errors, real producer/barrel linkage, per-call public/native context and lower-stage defaults, exact case DTS and corrected selective reexport account for actual migration routes. Future source/API/type tests remain required. |
+| QD-04 | Done. The fixed two-strategy/six-family/two-setting proposal has concrete Lykn sources and observer, meaningful positive/negative and descriptor oracles, exact tool/command templates, separate 24-build/24-runtime counts, evidence, eligibility and stop/re-entry policies. Its actual source-ready freeze and operator agreement remain before execution. |
+| QD-05 | Done. Actual arc v1.1 preserves seven ordered increments, source-ready host/interface/purity dependencies, prototype versus integrated composition evidence, and existing reader/guide/book/API/JSON/human duties. No requirement is silently removed by the split. |
+| QA-01 | Done as the arc's S01 design-contract criterion only: constructor, pattern, identity and emission-contract/proposal decisions and limits are independently settled. This does not discharge QA-02–06 or accept either production strategy before its gate. |
+
+All RV-01–15 have a disposition across the preserved reviews. The final review
+introduces no new finding. Only this record, the five S01 ledger dispositions
+and QA-01 are changed by the reviewer. Root owns retrospective/status/parent
+bubble-up. No product source, experiment, dependency, package, publication or
+human acceptance action occurred. The authored Markdown diff check passes;
+no parser/compiler/TypeScript/runtime/bundle/gzip check was run or implied.
