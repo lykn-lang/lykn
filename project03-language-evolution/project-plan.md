@@ -13,7 +13,8 @@ related: ["project04-c-lang", "project07-core-library-research"]
 is open from [independently validated local release 0829e892](arc04-qualified-adts/slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md).
 The finite host/reference prerequisite is independently accepted at 5caf3d87,
 and per-call public type isolation at 3f197340 is accepted as partial LC-02.
-Root is preparing IC-01 emitted-binding validation before nominal activation. Local
+The revised binding-role contract and IC-01 implementation/independent validation
+are authorized and active before nominal activation. Local
 qualified nominal behavior, private purity and final consumer gates remain to
 be implemented and verified; the active plan retains all eight LC criteria.
 Luna 6 High CC / separate Sol 6.1 High CDC and Autonomous Mode continue.

@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.5"
+version: "1.6"
 related: [project07-core-library-research]
 ---
 
@@ -12,7 +12,10 @@ related: [project07-core-library-research]
 is open from independently integrated release `0829e892`. The finite protected-
 host/reference prerequisite is independently accepted at 5caf3d87 (LC-01),
 and per-call public type isolation at 3f197340 is accepted as partial LC-02.
-Root is preparing IC-01 emitted-binding validation before nominal activation; the
+The operator authorized the revised binding-role contract and bounded IC-01
+implementation/independent validation before nominal activation. Its
+[iteration05](slice03-local-qualified-nominal-core/cc-prompt-iteration05.md)
+is active on the task branch; the
 eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
@@ -107,6 +110,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-11 v1.6. Settle the IC-01 binding-role recipe after source-readiness
+  corrections and issue iteration05 under explicit operator authority. Preserve
+  source Func/class scope carryovers for B2 and all original nominal/API gates.
 
 - 2026-11-11 v1.5. Record accepted S03 host foundation and per-call metadata
   isolation with their exact pins. Keep LC-02–08 open and prepare the observed
