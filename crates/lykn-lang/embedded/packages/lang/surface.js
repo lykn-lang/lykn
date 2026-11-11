@@ -12,24 +12,6 @@ import {
 	isKeyword,
 	isArray,
 } from "./expander-core.js";
-import { typeRegistry } from "./surface-helpers.js";
-
-
-export function resetTypeRegistry() {
-	typeRegistry.clear();
-	// Pre-populate with blessed prelude types (DD-17)
-	typeRegistry.set("Some", ["value"]);
-	typeRegistry.set("None", []);
-	typeRegistry.set("Ok", ["value"]);
-	typeRegistry.set("Err", ["error"]);
-}
-
-
-
-
-
-
-
 /**
  * Parse a destructuring pattern list: (object :type name ...) or (array :type name ...)
  * Returns { destructured: true, kind, fields, rest? }

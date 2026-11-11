@@ -54,7 +54,6 @@ import {
   sym,
   toJsIdentifier,
   typeMatchesLiteral,
-  typeRegistry,
   wrapReturnLast,
 } from "./surface-helpers.js";
 import { isKernel, markKernel } from "./kernel-mark.js";
@@ -499,7 +498,7 @@ function emitCondChain(clauses, h) {
 }
 
 export function emitSurfaceForm(node, h) {
-  const { sym, array, gensym } = h;
+  const { sym, array, gensym, typeContext } = h;
   switch (node.type) {
     case "Not":
       return array(sym("!"), node.operand);
@@ -622,7 +621,7 @@ export function emitSurfaceForm(node, h) {
       while (reserved.has(toJsIdentifier(tempVar.value))) tempVar = gensym("t");
       reserved.add(toJsIdentifier(tempVar.value));
       const stmts = [array(sym("const"), tempVar, expr)];
-      const result = compileLetPattern(pattern, tempVar);
+      const result = compileLetPattern(pattern, tempVar, { typeContext });
       if (!result) {
         throw new Error(
           `if-let: unrecognized pattern: ${formatSExpr(pattern)}`,
@@ -655,7 +654,7 @@ export function emitSurfaceForm(node, h) {
       while (reserved.has(toJsIdentifier(tempVar.value))) tempVar = gensym("t");
       reserved.add(toJsIdentifier(tempVar.value));
       const stmts = [array(sym("const"), tempVar, expr)];
-      const result = compileLetPattern(pattern, tempVar);
+      const result = compileLetPattern(pattern, tempVar, { typeContext });
       if (!result) {
         throw new Error(
           `when-let: unrecognized pattern: ${formatSExpr(pattern)}`,
@@ -811,9 +810,9 @@ export function emitSurfaceForm(node, h) {
       );
     }
     case "Match":
-      return emitMatchMacro([node.expr, ...node.clauses]);
+      return emitMatchMacro([node.expr, ...node.clauses], { typeContext });
     case "TypeDef":
-      return emitTypeMacro([node.typeName, ...node.constructors]);
+      return emitTypeMacro([node.typeName, ...node.constructors], { typeContext });
     default:
       throw new Error(`Unknown surface AST node type: ${node.type}`);
   }
@@ -1316,7 +1315,7 @@ function parseMatchClause(clause, i) {
   return { pattern, guard, bodyForms };
 }
 
-export function emitMatchMacro(args) {
+export function emitMatchMacro(args, { typeContext } = {}) {
   if (args.length < 2) {
     throw new Error("match requires an expression and at least one clause");
   }
@@ -1331,7 +1330,7 @@ export function emitMatchMacro(args) {
   for (let i = 0; i < clauses.length; i++) {
     const { pattern, guard, bodyForms } = parseMatchClause(clauses[i], i);
 
-    const { checks, bindings, declarations } = compilePattern(pattern, targetVar);
+    const { checks, bindings, declarations } = compilePattern(pattern, targetVar, { typeContext });
     stmts.push(...declarations);
 
     // Add guard to checks
@@ -1437,6 +1436,8 @@ export function emitMatchStatementMacro(args, {
   expandHeader,
   expandBody,
   env,
+  extendEnv,
+  typeContext,
   reserveNames,
 }) {
   if (args.length < 2) throw new Error("match requires an expression and at least one clause");
@@ -1448,12 +1449,12 @@ export function emitMatchStatementMacro(args, {
   const clauses = [];
   for (let i = 0; i < args.length - 1; i++) {
     const { pattern, guard, bodyForms } = parseMatchClause(args[i + 1], i);
-    const compiled = compilePattern(pattern, provisional);
+    const compiled = compilePattern(pattern, provisional, { typeContext });
     const names = compiled.bindings.flatMap((binding) =>
       binding?.type === "list" && binding.values[0]?.value === "const" &&
         binding.values[1]?.type === "atom" ? [binding.values[1].value] : []
     );
-    const clauseEnv = new Set([...env, ...names]);
+    const clauseEnv = extendEnv(env, names);
     clauses.push({ pattern, compiled, provisional,
       guard: guard ? header(guard, clauseEnv) : null,
       body: expandBody(bodyForms, clauseEnv) });
@@ -1517,13 +1518,16 @@ export function emitMatchStatementMacro(args, {
 }
 
 
-export function emitTypeMacro(args) {
+export function emitTypeMacro(args, { typeContext } = {}) {
   if (args.length < 2) {
     throw new Error("type requires a name and at least one constructor");
   }
   const typeName = args[0];
   if (typeName.type !== "atom") {
     throw new Error("type: first argument must be a type name");
+  }
+  if (!typeContext?.constructors) {
+    throw new TypeError("emitTypeMacro: typeContext is required for type declarations");
   }
 
   const constructors = args.slice(1);
@@ -1533,7 +1537,7 @@ export function emitTypeMacro(args) {
     if (ctor.type === "atom") {
       // Zero-field constructor: (const None (object (tag "None")))
       const ctorName = ctor.value;
-      typeRegistry.set(ctorName, []);
+      typeContext.constructors.set(ctorName, []);
       forms.push(
         array(
           sym("const"),
@@ -1552,7 +1556,7 @@ export function emitTypeMacro(args) {
         values: ctor.values.slice(1),
       });
       const fieldNames = fields.map((f) => f.name.value);
-      typeRegistry.set(ctorName, fieldNames);
+      typeContext.constructors.set(ctorName, fieldNames);
 
       if (fields.length === 0) {
         forms.push(array(sym("const"), sym(ctorName),

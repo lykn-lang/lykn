@@ -349,7 +349,7 @@ export function paramTypeChecks(p, funcName) {
  * checks are conditions (to be &&'d together).
  * bindings are (const ...) forms.
  */
-export function compilePattern(pattern, targetSym) {
+export function compilePattern(pattern, targetSym, { typeContext } = {}) {
   const declarations = [];
   const checks = [];
   const bindings = [];
@@ -399,7 +399,10 @@ export function compilePattern(pattern, targetSym) {
     }
     if (head.type === "atom" && isPascalCase(head.value)) {
       const ctorName = head.value;
-      const fields = typeRegistry.get(ctorName);
+      if (!typeContext?.constructors) {
+        throw new TypeError("compilePattern: typeContext is required for constructor patterns");
+      }
+      const fields = typeContext.constructors.get(ctorName);
       const children = node.values.slice(1);
       if (!fields) {
         // Compatibility: unregistered constructors retain positional Object.values mapping.
@@ -435,7 +438,7 @@ export function compilePattern(pattern, targetSym) {
   return { checks, bindings, declarations };
 }
 
-export function compileLetPattern(pattern, tempVar) {
+export function compileLetPattern(pattern, tempVar, { typeContext } = {}) {
   const isLiteral = ["number", "string", "keyword", "null"].includes(pattern.type) ||
     (pattern.type === "atom" && ["true", "false", "null", "undefined"].includes(pattern.value));
   const isObject = isArray(pattern) && pattern.values[0]?.type === "atom" && pattern.values[0].value === "obj";
@@ -443,14 +446,14 @@ export function compileLetPattern(pattern, tempVar) {
   if (pattern.type === "atom" && !isPascalCase(pattern.value) && !isObject && !isConstructor) {
     if (pattern.value === "_") return { condition: sym("true"), bindings: [], declarations: [] };
     if (["true", "false", "null", "undefined"].includes(pattern.value)) {
-      const plan = compilePattern(pattern, tempVar);
+      const plan = compilePattern(pattern, tempVar, { typeContext });
       return { condition: andChain(plan.checks) ?? sym("true"), ...plan };
     }
     const condition = kernelArray(sym("!="), tempVar, sym("null"));
     return { condition, bindings: [array(sym("const"), pattern, tempVar)], declarations: [] };
   }
   if (isLiteral || (pattern.type === "atom" && isPascalCase(pattern.value)) || isObject || isConstructor) {
-    const plan = compilePattern(pattern, tempVar);
+    const plan = compilePattern(pattern, tempVar, { typeContext });
     return { condition: andChain(plan.checks) ?? sym("true"), ...plan };
   }
   return null;
@@ -512,8 +515,3 @@ export function parseTypedParams(paramList) {
   }
   return params;
 }
-
-// --- Type Registry ---
-// Maps constructor names to their field names, populated by `type` macro.
-// Used by `match` and `if-let`/`when-let` to resolve ADT pattern field bindings.
-export const typeRegistry = new Map();

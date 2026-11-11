@@ -7,7 +7,8 @@
 
 import { compileExpr, formHead, lowerHostReferences, toJsIdentifier } from './compiler.js';
 import { generate } from 'astring';
-import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
+import { registerSurfaceMacros } from './surface.js';
+import { createSurfaceTypeContext } from './surface-type-context.js';
 import { classifySurfaceForm, emitSurfaceForm, emitMatchStatementMacro, funcBodyProtectsStatementExit, parseKeywordClauses } from './classifier.js';
 import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage } from './kernel-forms.js';
 import { markKernel, isKernel } from './kernel-mark.js';
@@ -22,7 +23,7 @@ import {
 import {
   bindingScopePlan,
   bodyScopeNames,
-  extendBindingEnv as extendEnv,
+  extendBindingEnv,
   hoistedNames,
   validateReservedNames,
   bindingsIntroduced,
@@ -657,7 +658,6 @@ function extractParamNames(pattern) {
  */
 export function resetMacros() {
   macroEnv.clear();
-  resetTypeRegistry();
   registerSurfaceMacros(macroEnv);
 }
 
@@ -734,6 +734,17 @@ const dispatchTable = Object.assign(Object.create(null), {
 
 /** Shared empty environment (never mutated — `extendEnv` copies). */
 const EMPTY_ENV = new Set();
+
+function createExpansionEnvironment(bindings, typeContext) {
+  return { bindings: new Set(bindings), typeContext };
+}
+
+function extendEnv(env, names) {
+  return {
+    bindings: extendBindingEnv(env.bindings, names),
+    typeContext: env.typeContext,
+  };
+}
 const directResultBlocks = new WeakSet();
 const returnOperandValues = new WeakSet();
 let compilerPrivateAtomCount = 0;
@@ -1131,6 +1142,8 @@ function finalizeCompilerPrivateAtoms(forms) {
 function emitSurfaceMatchStatement(args, env) {
   return emitMatchStatementMacro(args, {
     env,
+    extendEnv,
+    typeContext: env.typeContext,
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
     expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "Statement"),
     reserveNames: emittedNames,
@@ -1140,6 +1153,8 @@ function emitSurfaceMatchStatement(args, env) {
 function emitSurfaceMatchDirect(args, env) {
   return emitMatchStatementMacro(args, {
     env,
+    extendEnv,
+    typeContext: env.typeContext,
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
     expandHeader: (form, scope) => expandDirectValuePlan(form, scope),
     expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "DirectStatement"),
@@ -1194,6 +1209,8 @@ function expandResultClause(forms, env, use) {
 function emitSurfaceMatchResult(args, env, use) {
   const result = emitMatchStatementMacro(args, {
     env,
+    extendEnv,
+    typeContext: env.typeContext,
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
     expandHeader: (form, scope) => expandDirectValuePlan(form, scope),
     expandBody: (forms, scope) => expandResultClause(forms, scope, use),
@@ -1268,26 +1285,26 @@ function directWriteNameIsAdmitted(name) {
 
 function directWriteTargetParts(target, env, internalComputedTarget = false) {
   if (target?.type === "atom" && directWriteNameIsAdmitted(target.value) &&
-    (target.binding === "ref" || env.has(target.value))) {
+    (target.binding === "ref" || env.bindings.has(target.value))) {
     return { kind: "lexical", target };
   }
   if (internalComputedTarget) {
     const { receiver, key } = internalComputedTarget;
     if (receiver?.type !== "atom" || !directWriteNameIsAdmitted(receiver.value) ||
-      !(receiver.binding === "ref" || env.has(receiver.value))) return null;
+      !(receiver.binding === "ref" || env.bindings.has(receiver.value))) return null;
     return { kind: "computed", receiver, key, memberHead: sym("get") };
   }
   if (target?.type !== "list" || target.values.length !== 3) return null;
   const [getHead, receiver, key] = target.values;
   if (receiver?.type !== "atom" || !directWriteNameIsAdmitted(receiver.value) ||
-    !(receiver.binding === "ref" || env.has(receiver.value))) return null;
+    !(receiver.binding === "ref" || env.bindings.has(receiver.value))) return null;
   if (getHead?.type !== "atom") return null;
   if (getHead.value === "kernel:get" && getHead.binding === undefined &&
     !isKernel(target) && KERNEL_FORMS.has("get")) {
     return { kind: "computed", receiver, key, memberHead: markKernel(sym("get")) };
   }
   if (formHead(getHead) !== "get" || isKernel(target) ||
-    env.has("get") || macroEnv.has("get")) return null;
+    env.bindings.has("get") || macroEnv.has("get")) return null;
   return { kind: "computed", receiver, key, memberHead: getHead };
 }
 
@@ -1503,7 +1520,7 @@ function directComputedMemberCallParts(head, env) {
     return { explicitEscape: true };
   }
   if (getHead.value !== "get" || getHead.binding !== undefined ||
-      env.has("get") || macroEnv.has("get") || isKernel(head)) return null;
+      env.bindings.has("get") || macroEnv.has("get") || isKernel(head)) return null;
   return { explicitEscape: false };
 }
 
@@ -1662,7 +1679,7 @@ function simpleDirectBind(args) {
 
 function expandDirectBind(args, env) {
   const { nameNode, valueNode } = simpleDirectBind(args);
-  const kernel = emitSurfaceForm({ type: 'Bind', args }, { sym, array, gensym, isKeyword });
+  const kernel = emitSurfaceForm({ type: 'Bind', args }, { sym, array, gensym, isKeyword, typeContext: env.typeContext });
   const identity = {};
   const use = { kind: 'Assign', identity };
   const value = expandAt(valueNode, env, use);
@@ -1689,7 +1706,8 @@ function expandDirectBind(args, env) {
  */
 export function expandExpr(form, env = EMPTY_ENV) {
   const privateCountAtStart = compilerPrivateAtomCount;
-  const result = expandAt(form, env, "Legacy");
+  const expansionEnv = createExpansionEnvironment(env, createSurfaceTypeContext());
+  const result = expandAt(form, expansionEnv, "Legacy");
   if (compilerPrivateAtomCount !== privateCountAtStart) {
     finalizeCompilerPrivateAtoms(Array.isArray(result) ? result : [result]);
   }
@@ -1746,7 +1764,7 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
   const head = form.values[0];
 
   const boundOrTaggedMatch = head.type === 'atom' && head.value === 'match' &&
-    (head.binding !== undefined || env.has('match'));
+    (head.binding !== undefined || env.bindings.has('match'));
 
   // Tag this form's binder atoms `def` (no-op for non-binding forms). Inert for
   // output — def sites are read structurally, never at the dispatch door.
@@ -1816,7 +1834,7 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
   // output and is never re-read as a bound reference (e.g. a `conj`-emitted
   // `(array …)` stays an array literal even when `array` is bound).
   if (head.type === 'atom' && !isKernel(form) &&
-      (head.binding === 'ref' || env.has(head.value))) {
+      (head.binding === 'ref' || env.bindings.has(head.value))) {
     head.binding = 'ref';
     if (isDirectLexicalCallHead(head) &&
         (use === "DirectStatement" || isResultOperandUse(use))) {
@@ -1881,7 +1899,7 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
           }
           const kernel = emitSurfaceForm(
             { type: "Bind", args },
-            { sym, array, gensym, isKeyword },
+            { sym, array, gensym, isKeyword, typeContext: cur.typeContext },
           );
           pushExpanded(out, expandAt(markKernel(kernel), cur, "Legacy"));
           const names = bindingNamesInPattern(binding.nameNode).map((site) => site.name);
@@ -1903,7 +1921,7 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
         if (assignment !== null) return assignment;
       }
 
-      const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword });
+      const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword, typeContext: env.typeContext });
       const kernelUse = use === "Protected"
         ? "Protected"
         : use === "Legacy"
@@ -2211,7 +2229,7 @@ function pass2ExpandAll(forms) {
   // scope for the following top-level forms (mirror of Rust's outermost
   // `resolve_seq`), so a later `(array 987)` after `(bind array 0)` resolves to
   // the binding.
-  let env = EMPTY_ENV;
+  let env = createExpansionEnvironment(EMPTY_ENV, createSurfaceTypeContext());
   for (const form of forms) {
     const expanded = expandAt(form, env, "Statement");
     if (expanded !== null && expanded !== undefined) {

@@ -719,6 +719,8 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         "expander-core.js",
         "protected-host.js",
         "surface-helpers.js",
+        "surface.js",
+        "surface-type-context.js",
     ];
     for name in package_names {
         let canonical = repository.join("packages/lang").join(name);
@@ -763,14 +765,17 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         .expect("serialize materialized-package import map"),
     )
     .expect("write strict public Deno import map");
-    let public_test = repository.join("test/forms/embedded-adt-pattern.test.js");
+    let public_tests = [
+        repository.join("test/forms/embedded-adt-pattern.test.js"),
+        repository.join("test/forms/surface-type-context.test.js"),
+    ];
     let mut strict_public = Command::new(deno);
     strict_public
         .current_dir(&repository)
         .env("DENO_DIR", &deno_dir)
         .args(["test", "-A", "--cached-only", "--no-prompt", "--config"])
         .arg(&config_path)
-        .arg(&public_test);
+        .args(&public_tests);
     record_command("m6-embedded-public-strict", &strict_public, None);
     let public_result = strict_public
         .output()
@@ -787,5 +792,13 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         "M6 materialized strict public tests failed: {:?}",
         public_result.stderr
     );
-    assert!(public_result.stderr.is_empty());
+    let public_output = format!(
+        "{}{}",
+        String::from_utf8_lossy(&public_result.stdout),
+        String::from_utf8_lossy(&public_result.stderr)
+    );
+    assert!(
+        public_output.contains("ok | 11 passed | 0 failed"),
+        "M6 must execute all eleven strict public cases, output: {public_output}"
+    );
 }
