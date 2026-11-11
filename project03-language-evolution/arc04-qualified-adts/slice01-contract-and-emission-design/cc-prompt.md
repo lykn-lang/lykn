@@ -60,7 +60,7 @@ emitted code, metafiles, behavior and size will be compared. The concrete
 protocol's operator agreement precedes its execution.
 
 Apply preparation-review PR-01/02 explicitly. Twelve layout/consumer pairs
-have two proposed bundle settings each, giving24 unique build cells per
+have two proposed bundle settings each, giving 24 unique build cells per
 contributor. Report unminified bytes, minified bytes and gzip of the minified
 bytes, with independent replay separate. The gate must demonstrate zero
 retained ADT contribution when unused, elimination of unused case code for
