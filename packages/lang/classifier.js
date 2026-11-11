@@ -1025,7 +1025,6 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
 
   for (const clause of parsed) {
     const { clauses, params } = clause;
-    const returnsClause = clauses.get("returns");
     const preClause = clauses.get("pre");
     const postClause = clauses.get("post");
     const bodyClause = clauses.get("body");
@@ -1155,7 +1154,6 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
     }
 
     // Body + return
-    const hasReturns = returnsClause && returnsClause.length > 0;
     const hasPost = postClause && postClause.length > 0;
 
     if (hasPost) {
@@ -1187,10 +1185,8 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
         ),
       );
       clauseBody.push(array(sym("return"), resultVar));
-    } else if (hasReturns) {
-      clauseBody.push(...wrapReturnLast(bodyClause));
     } else {
-      clauseBody.push(...bodyClause);
+      clauseBody.push(...wrapReturnLast(bodyClause));
     }
 
     stmts.push(

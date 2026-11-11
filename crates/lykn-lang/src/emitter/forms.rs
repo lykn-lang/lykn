@@ -3784,7 +3784,7 @@ fn emit_func_multi(
             let dtype = param.dispatch_type();
             if dtype != "any" {
                 let arg_access = list(vec![atom("get"), atom("args"), num(i as f64)]);
-                let dispatch_check = build_dispatch_check(dtype, &arg_access);
+                let dispatch_check = build_dispatch_check(dtype, &arg_access, param.span());
                 if let Some(check) = dispatch_check {
                     conditions.push(check);
                 }
@@ -3927,7 +3927,7 @@ fn emit_func_multi(
 ///
 /// This is a simpler check than the full type check — it only tests the
 /// typeof for dispatch purposes, without building an error message.
-fn build_dispatch_check(type_keyword: &str, expr: &SExpr) -> Option<SExpr> {
+fn build_dispatch_check(type_keyword: &str, expr: &SExpr, span: Span) -> Option<SExpr> {
     match type_keyword {
         "any" => None,
         "number" => Some(list(vec![
@@ -3960,7 +3960,7 @@ fn build_dispatch_check(type_keyword: &str, expr: &SExpr) -> Option<SExpr> {
             list(vec![atom("!=="), expr.clone(), atom("null")]),
         ])),
         "array" => Some(list(vec![
-            SExpr::host_reference_atom(HostReference::ArrayIsArray, expr.span()),
+            SExpr::host_reference_atom(HostReference::ArrayIsArray, span),
             expr.clone(),
         ])),
         // User-defined type: check it's a tagged object
@@ -8474,7 +8474,7 @@ mod tests {
     #[test]
     fn test_dispatch_check_boolean() {
         let expr = atom("x");
-        let result = build_dispatch_check("boolean", &expr);
+        let result = build_dispatch_check("boolean", &expr, s());
         assert!(result.is_some());
         if let Some(SExpr::List { values, .. }) = result {
             assert_eq!(values[0].as_atom(), Some("==="));
@@ -8484,14 +8484,14 @@ mod tests {
     #[test]
     fn test_dispatch_check_function() {
         let expr = atom("x");
-        let result = build_dispatch_check("function", &expr);
+        let result = build_dispatch_check("function", &expr, s());
         assert!(result.is_some());
     }
 
     #[test]
     fn test_dispatch_check_object() {
         let expr = atom("x");
-        let result = build_dispatch_check("object", &expr);
+        let result = build_dispatch_check("object", &expr, s());
         assert!(result.is_some());
         // Should be (&& (=== typeof "object") (!== x null))
         if let Some(SExpr::List { values, .. }) = result {
@@ -8502,26 +8502,34 @@ mod tests {
     #[test]
     fn test_dispatch_check_array() {
         let expr = atom("x");
-        let result = build_dispatch_check("array", &expr);
+        let span = Span::new(
+            crate::reader::source_loc::SourceLoc { line: 4, column: 7 },
+            crate::reader::source_loc::SourceLoc {
+                line: 4,
+                column: 12,
+            },
+        );
+        let result = build_dispatch_check("array", &expr, span);
         assert!(result.is_some());
         if let Some(SExpr::List { values, .. }) = result {
             assert_eq!(
                 values[0].host_reference(),
                 Some(HostReference::ArrayIsArray)
             );
+            assert_eq!(values[0].span(), span);
         }
     }
 
     #[test]
     fn test_dispatch_check_any() {
-        let result = build_dispatch_check("any", &atom("x"));
+        let result = build_dispatch_check("any", &atom("x"), s());
         assert!(result.is_none());
     }
 
     #[test]
     fn test_dispatch_check_user_type() {
         let expr = atom("x");
-        let result = build_dispatch_check("MyType", &expr);
+        let result = build_dispatch_check("MyType", &expr, s());
         assert!(result.is_some());
         // User-defined: typeof "object" && !== null && "tag" in x
         if let Some(SExpr::List { values, .. }) = result {

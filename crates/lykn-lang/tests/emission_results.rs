@@ -197,3 +197,42 @@ fn public_form_boundary_rejects_owned_references_but_whole_emission_lowers_them(
     let mut plain_ctx = emitter::context::EmitterContext::new(false);
     assert!(emitter::forms::emit_form(&plain[0], &mut plain_ctx, &registry).is_ok());
 }
+
+#[test]
+fn public_multi_clause_form_boundary_anchors_array_dispatch_to_parsed_parameter() {
+    let source = "(func choose-value\n  (:args (:array value) :body value)\n  (:args (:string value) :body value))";
+    let parsed = lykn_lang::reader::read(source).expect("source reads");
+    let resolved = lykn_lang::resolver::resolve(&parsed);
+    let forms = lykn_lang::classifier::classify(&resolved).expect("source classifies");
+    let SurfaceForm::Func { clauses, .. } = &forms[0] else {
+        panic!("expected parsed multi-clause function");
+    };
+    assert_eq!(clauses.len(), 2);
+    let expected_span = clauses[0].args[0].span();
+    assert_ne!(expected_span, Default::default());
+    assert_eq!(
+        expected_span,
+        lykn_lang::reader::source_loc::Span::new(
+            lykn_lang::reader::source_loc::SourceLoc {
+                line: 2,
+                column: 18,
+            },
+            lykn_lang::reader::source_loc::SourceLoc {
+                line: 2,
+                column: 23,
+            },
+        )
+    );
+
+    let mut ctx = emitter::context::EmitterContext::new(false);
+    let error = emitter::forms::emit_form(&forms[0], &mut ctx, &TypeRegistry::default())
+        .expect_err("public fragment cannot return the owned dispatch reference");
+    let lykn_lang::error::LyknError::Codegen(diagnostic) = error else {
+        panic!("unfinished owned reference must use the codegen diagnostic channel");
+    };
+    assert_eq!(
+        diagnostic.message,
+        "compiler-owned host reference requires whole-module emission; use emitter::emit"
+    );
+    assert_eq!(diagnostic.span, expected_span);
+}

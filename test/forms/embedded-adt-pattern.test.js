@@ -19,6 +19,9 @@ async function assertRuntimeFixture(fixture, expected) {
     }).output();
     const stderr = new TextDecoder().decode(result.stderr);
     if (result.code !== 0) throw new Error(stderr);
+    if (stderr !== "") {
+      throw new Error(`unexpected ${fixture} stderr: ${stderr}`);
+    }
     const stdout = new TextDecoder().decode(result.stdout);
     if (stdout !== expected) {
       throw new Error(`unexpected ${fixture} output: ${stdout}`);
@@ -39,9 +42,23 @@ Deno.test("embedded public compiler preserves private-name macro hygiene", async
   );
 });
 
-Deno.test("embedded public compiler owns shadowed guard and dispatch intrinsics", async () => {
+Deno.test("embedded public compiler owns shadowed single-clause guard intrinsics", async () => {
   await assertRuntimeFixture(
     "host-reference-shadowing",
     '[["TypeError","checkNumber: arg \'value\' expected number, got string"],["TypeError","checkArray: arg \'value\' expected array, got number"],["Error","match: no matching pattern"]]\n',
+  );
+});
+
+Deno.test("embedded public compiler dispatches multi-clause with module Array shadow", async () => {
+  await assertRuntimeFixture(
+    "dispatch-array-module-shadow",
+    '["array","string",["TypeError","choose-value: no matching clause for arguments"]]\n',
+  );
+});
+
+Deno.test("embedded public compiler dispatches multi-clause with parameter Array shadow", async () => {
+  await assertRuntimeFixture(
+    "dispatch-array-parameter-shadow",
+    '["array","string",["TypeError","choose-value: no matching clause for arguments"]]\n',
   );
 });

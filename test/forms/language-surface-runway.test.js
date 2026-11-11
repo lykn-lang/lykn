@@ -94,6 +94,68 @@ Deno.test("language surface runway: multi-clause func rejects destructured overl
   );
 });
 
+Deno.test("language surface runway: multi-clause funcs return their last body value", async () => {
+  const generated = lykn(`
+    (bind effects (array))
+    (func unannotated
+      (:args (:array value) :body "array")
+      (:args (:string value) :body "string"))
+    (func annotated
+      (:args (:array value) :returns :string :body "array")
+      (:args (:string value) :returns :string :body "string"))
+    (func unannotated-sequence
+      (:args (:array value) :body (effects:push "unannotated-array-prefix") "array-final")
+      (:args (:string value) :body (effects:push "unannotated-string-prefix") "string-final"))
+    (func annotated-sequence
+      (:args (:array value) :returns :string :body (effects:push "annotated-array-prefix") "array-final")
+      (:args (:string value) :returns :string :body (effects:push "annotated-string-prefix") "string-final"))
+    (func explicit-tail
+      (:args (:number value) :body (effects:push "explicit-number-prefix") (return (+ value 1)))
+      (:args (:string value) :body (effects:push "explicit-string-prefix") (return value)))
+    (func post-branch
+      (:args (:string value) :post (= ~ "accepted") :body value)
+      (:args (:number value) :body value))
+    (func no-match :args () :body
+      (try (return (unannotated 7))
+           (catch error (return (array error:name error:message))))
+      "unexpected")
+    (func post-failure :args () :body
+      (try (return (post-branch "rejected"))
+           (catch error (return (array error:name error:message))))
+      "unexpected")
+    (console:log (JSON:stringify
+      (array
+        (array (unannotated #a(1)) (unannotated "kept"))
+        (array (annotated #a(1)) (annotated "kept"))
+        (array (unannotated-sequence #a(1)) (unannotated-sequence "kept"))
+        (array (annotated-sequence #a(1)) (annotated-sequence "kept"))
+        (array (explicit-tail 41) (explicit-tail "kept"))
+        (post-branch "accepted")
+        (no-match)
+        (post-failure)
+        effects)))
+  `);
+  const directory = await Deno.makeTempDir({ prefix: "lykn-multi-clause-returns-" });
+  const outputPath = `${directory}/probe.js`;
+  try {
+    await Deno.writeTextFile(outputPath, generated);
+    const result = await new Deno.Command(Deno.execPath(), {
+      args: ["run", "--no-config", "--cached-only", "--no-prompt", outputPath],
+      cwd: directory,
+      stdout: "piped",
+      stderr: "piped",
+    }).output();
+    assertEquals(result.code, 0, new TextDecoder().decode(result.stderr));
+    assertEquals(new TextDecoder().decode(result.stderr), "");
+    assertEquals(
+      new TextDecoder().decode(result.stdout),
+      '[["array","string"],["array","string"],["array-final","string-final"],["array-final","string-final"],[42,"kept"],"accepted",["TypeError","unannotated: no matching clause for arguments"],["Error","post-branch: post-condition failed: (= ~ \\"accepted\\") — callee blame"],["unannotated-array-prefix","unannotated-string-prefix","annotated-array-prefix","annotated-string-prefix","explicit-number-prefix","explicit-string-prefix"]]\n',
+    );
+  } finally {
+    await Deno.remove(directory, { recursive: true });
+  }
+});
+
 Deno.test("language surface runway: strict public compiler runs recursive ADT patterns", async () => {
   const source = await Deno.readTextFile(
     "test/fixtures/semantic-roles/adt-pattern-correctness.lykn",
