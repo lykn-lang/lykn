@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head><body>
+<pre id="result">["1 + 2;\n",true,["[[0,1,2,3],7,[true],[0,1,2,3],[0,1,2,3],7,[\"before\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",\"lexical\",\"before\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",\"before\",\"iterator\",\"next0\",\"next1\",\"getter\",\"before\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",[\"method\",\"receiver\"],\"key\",\"getter\",\"before\",\"operand\",\"iterator\",\"next0\",\"next1\",\"done\",\"late\",[\"method\",\"receiver\"]]]"],true,["SyntaxError","Cannot use import statement outside a module"],["Error","host-contract v1: write to protected slot Reflect.apply"]]</pre>
+<pre id="live-js">function lyknHostReflectApply0(fn, receiver, argv) {
+  return Reflect.apply(fn, receiver, argv);
+}
+const trace = [];
+const iterationError = new Error("iteration");
+function* produceItems(fail) {
+  trace.push("next0");
+  yield 1;
+  trace.push("next1");
+  if (fail) {
+    throw iterationError;
+  }
+  yield 2;
+  trace.push("done");
+}
+function makeItems(fail) {
+  const iterable = {};
+  Object.defineProperty(iterable, Symbol.iterator, {
+    value: () =&gt; {
+      trace.push("iterator");
+      return produceItems(fail);
+    }
+  });
+  return iterable;
+}
+function lexicalTarget(a, b, c, d) {
+  trace.push("lexical");
+  return [a, b, c, d];
+}
+function invokeLexical(target, fail, stop) {
+  {
+    const completionValue__gensym0 = target;
+    const completionValue__gensym1 = void 0;
+    const completionValue__gensym2 = {
+      "__proto__": null,
+      length: 0
+    };
+    let completionValue__gensym3 = 0;
+    let completionValue__gensym4;
+    {
+      trace.push("before");
+      completionValue__gensym4 = 0;
+    }
+    completionValue__gensym2[completionValue__gensym3] = completionValue__gensym4;
+    completionValue__gensym3 = completionValue__gensym3 + 1;
+    completionValue__gensym2["length"] = completionValue__gensym3;
+    for (const completionValue__gensym5 of makeItems(fail)) {
+      completionValue__gensym2[completionValue__gensym3] = completionValue__gensym5;
+      completionValue__gensym3 = completionValue__gensym3 + 1;
+      completionValue__gensym2["length"] = completionValue__gensym3;
+    }
+    let completionValue__gensym6;
+    {
+      trace.push("late");
+      if (stop) {
+        return 7;
+      }
+      completionValue__gensym6 = 3;
+    }
+    completionValue__gensym2[completionValue__gensym3] = completionValue__gensym6;
+    completionValue__gensym3 = completionValue__gensym3 + 1;
+    completionValue__gensym2["length"] = completionValue__gensym3;
+    return lyknHostReflectApply0(completionValue__gensym0, completionValue__gensym1, completionValue__gensym2);
+  }
+}
+function methodTarget(a, b, c, d) {
+  trace.push(["method", this.marker]);
+  return [a, b, c, d];
+}
+function makeReceiver() {
+  const receiver = {
+    marker: "receiver"
+  };
+  Object.defineProperty(receiver, "run", {
+    get: () =&gt; {
+      trace.push("getter");
+      return methodTarget;
+    }
+  });
+  return receiver;
+}
+function invokeStatic(receiver) {
+  {
+    const completionValue__gensym7 = receiver;
+    const completionValue__gensym8 = completionValue__gensym7["run"];
+    const completionValue__gensym9 = {
+      "__proto__": null,
+      length: 0
+    };
+    let completionValue__gensym10 = 0;
+    let completionValue__gensym11;
+    {
+      trace.push("before");
+      completionValue__gensym11 = 0;
+    }
+    completionValue__gensym9[completionValue__gensym10] = completionValue__gensym11;
+    completionValue__gensym10 = completionValue__gensym10 + 1;
+    completionValue__gensym9["length"] = completionValue__gensym10;
+    for (const completionValue__gensym12 of makeItems(false)) {
+      completionValue__gensym9[completionValue__gensym10] = completionValue__gensym12;
+      completionValue__gensym10 = completionValue__gensym10 + 1;
+      completionValue__gensym9["length"] = completionValue__gensym10;
+    }
+    let completionValue__gensym13;
+    {
+      trace.push("late");
+      completionValue__gensym13 = 3;
+    }
+    completionValue__gensym9[completionValue__gensym10] = completionValue__gensym13;
+    completionValue__gensym10 = completionValue__gensym10 + 1;
+    completionValue__gensym9["length"] = completionValue__gensym10;
+    return lyknHostReflectApply0(completionValue__gensym8, completionValue__gensym7, completionValue__gensym9);
+  }
+}
+function invokeComputed(receiver) {
+  {
+    const completionValue__gensym14 = receiver;
+    let completionValue__gensym15;
+    {
+      trace.push("key");
+      completionValue__gensym15 = "run";
+    }
+    const completionValue__gensym16 = completionValue__gensym14[completionValue__gensym15];
+    const completionValue__gensym17 = {
+      "__proto__": null,
+      length: 0
+    };
+    let completionValue__gensym18 = 0;
+    let completionValue__gensym19;
+    {
+      trace.push("before");
+      completionValue__gensym19 = 0;
+    }
+    completionValue__gensym17[completionValue__gensym18] = completionValue__gensym19;
+    completionValue__gensym18 = completionValue__gensym18 + 1;
+    completionValue__gensym17["length"] = completionValue__gensym18;
+    let completionValue__gensym20;
+    {
+      trace.push("operand");
+      completionValue__gensym20 = makeItems(false);
+    }
+    for (const completionValue__gensym21 of completionValue__gensym20) {
+      completionValue__gensym17[completionValue__gensym18] = completionValue__gensym21;
+      completionValue__gensym18 = completionValue__gensym18 + 1;
+      completionValue__gensym17["length"] = completionValue__gensym18;
+    }
+    let completionValue__gensym22;
+    {
+      trace.push("late");
+      completionValue__gensym22 = 3;
+    }
+    completionValue__gensym17[completionValue__gensym18] = completionValue__gensym22;
+    completionValue__gensym18 = completionValue__gensym18 + 1;
+    completionValue__gensym17["length"] = completionValue__gensym18;
+    return lyknHostReflectApply0(completionValue__gensym16, completionValue__gensym14, completionValue__gensym17);
+  }
+}
+function mixedComputedSpread(receiver, items) {
+  {
+    const completionValue__gensym23 = receiver;
+    let completionValue__gensym24;
+    {
+      return 7;
+      completionValue__gensym24 = "method";
+    }
+    return completionValue__gensym23[completionValue__gensym24](...items);
+  }
+}
+function observeFailure() {
+  try {
+    return invokeLexical(lexicalTarget, true, false);
+  } catch (problem) {
+    return [problem === iterationError];
+  }
+}
+const normal = invokeLexical(lexicalTarget, false, false);
+const early = invokeLexical(lexicalTarget, false, true);
+const failed = observeFailure();
+const staticResult = invokeStatic(makeReceiver());
+const computedResult = invokeComputed(makeReceiver());
+const headerReturn = mixedComputedSpread(makeReceiver(), makeItems(false));
+console.log(JSON.stringify([normal, early, failed, staticResult, computedResult, headerReturn, trace]));
+</pre>
+<pre id="fallback-js">import {apply as lyknHostReflectApply1} from "data:text/javascript,export%20function%20apply(fn%2Creceiver%2Cargv)%7Breturn%20Reflect.apply(fn%2Creceiver%2Cargv)%7D";
+export {probe};
+const Reflect = "inline";
+const trace = [];
+function originalMethod(earlier, middle, later) {
+  trace.push("call");
+  return [this.label, middle];
+}
+function wrongMethod() {
+  throw new Error("unexpected method");
+}
+Object.defineProperty(originalMethod, "call", {
+  value: wrongMethod
+});
+Object.defineProperty(originalMethod, "apply", {
+  value: wrongMethod
+});
+function useMemberCall(stop) {
+  const Reflect = {
+    label: "receiver"
+  };
+  const receiver = Reflect;
+  const lyknHostReflectApply0 = "earlier";
+  Object.defineProperty(receiver, "readEntry", {
+    configurable: true,
+    get: () =&gt; {
+      trace.push("get");
+      return originalMethod;
+    }
+  });
+  let completionValue__gensym0;
+  {
+    {
+      const completionValue__gensym1 = receiver;
+      const completionValue__gensym2 = completionValue__gensym1["readEntry"];
+      const completionValue__gensym3 = trace.push(lyknHostReflectApply0);
+      let completionValue__gensym4;
+      {
+        trace.push("middle");
+        Object.defineProperty(receiver, "readEntry", {
+          value: wrongMethod
+        });
+        if (stop) {
+          return 92;
+        }
+        completionValue__gensym4 = 8;
+      }
+      const completionValue__gensym5 = [completionValue__gensym3, completionValue__gensym4, trace.push("later")];
+      completionValue__gensym0 = lyknHostReflectApply1(completionValue__gensym2, completionValue__gensym1, completionValue__gensym5);
+    }
+  }
+  const result = completionValue__gensym0;
+  trace.push("after");
+  return result;
+}
+function probe() {
+  return [Reflect, useMemberCall(true), useMemberCall(false), trace];
+}
+console.log("provider");
+</pre>
+<script type="text/plain" id="live">
+(bind trace (array))
+(bind iteration-error (new Error "iteration"))
+(genfunc produce-items :args (:any fail) :yields :any :body
+  (trace:push "next0")
+  (yield 1)
+  (trace:push "next1")
+  (if fail (throw iteration-error))
+  (yield 2)
+  (trace:push "done"))
+(func make-items :args (:any fail) :returns :any :body
+  (bind iterable (obj))
+  (Object:defineProperty iterable Symbol:iterator
+    (obj :value (fn () (trace:push "iterator") (produce-items fail))))
+  iterable)
+(func lexical-target :args (:any a :any b :any c :any d) :returns :any :body
+  (trace:push "lexical")
+  (array a b c d))
+(func invoke-lexical :args (:any target :any fail :any stop) :returns :any :body
+  (target (do (trace:push "before") 0)
+          (spread (make-items fail))
+          (do (trace:push "late") (if stop (return 7)) 3)))
+(func method-target :args (:any a :any b :any c :any d) :returns :any :body
+  (trace:push (array "method" this:marker))
+  (array a b c d))
+(func make-receiver :returns :any :body
+  (bind receiver (obj :marker "receiver"))
+  (Object:defineProperty receiver "run"
+    (obj :get (fn () (trace:push "getter") method-target)))
+  receiver)
+(func invoke-static :args (:any receiver) :returns :any :body
+  (receiver:run (do (trace:push "before") 0)
+                (spread (make-items false))
+                (do (trace:push "late") 3)))
+(func invoke-computed :args (:any receiver) :returns :any :body
+  ((get receiver (do (trace:push "key") "run"))
+   (do (trace:push "before") 0)
+   (kernel:spread (do (trace:push "operand") (make-items false)))
+   (do (trace:push "late") 3)))
+(func mixed-computed-spread :args (:any receiver :any items) :returns :any :body
+  ((get receiver (do (return 7) "method")) (spread items)))
+(func observe-failure :returns :any :body
+  (try (return (invoke-lexical lexical-target true false))
+       (catch problem (return (array (= problem iteration-error))))))
+(bind normal (invoke-lexical lexical-target false false))
+(bind early (invoke-lexical lexical-target false true))
+(bind failed (observe-failure))
+(bind static-result (invoke-static (make-receiver)))
+(bind computed-result (invoke-computed (make-receiver)))
+(bind header-return (mixed-computed-spread (make-receiver) (make-items false)))
+(console:log (JSON:stringify
+  (array normal early failed static-result computed-result header-return trace)))
+</script>
+<script type="text/plain" id="fallback">
+(exports probe)
+(bind Reflect! "inline")
+(bind trace (array))
+(func original-method :args (:any earlier :any middle :any later) :returns :any :body
+  (trace:push "call")
+  (array this:label middle))
+(func wrong-method :returns :any :body
+  (throw (new Error "unexpected method")))
+(Object:defineProperty original-method "call" (obj :value wrong-method))
+(Object:defineProperty original-method "apply" (obj :value wrong-method))
+(func use-member-call :args (:any stop) :returns :any :body
+  (bind Reflect (obj :label "receiver"))
+  (bind receiver Reflect)
+  (bind lykn-host-reflect-apply0 "earlier")
+  (Object:defineProperty receiver "readEntry"
+    (obj :configurable true :get (fn () (trace:push "get") original-method)))
+  (bind result
+    (receiver:read-entry
+      (trace:push lykn-host-reflect-apply0)
+      (do
+        (trace:push "middle")
+        (Object:defineProperty receiver "readEntry" (obj :value wrong-method))
+        (if stop (return 92))
+        8)
+      (trace:push "later")))
+  (trace:push "after")
+  result)
+(func probe :returns :any :body
+  (array Reflect! (use-member-call true) (use-member-call false) trace))
+(console:log "provider")
+</script>
+<script src="dist/lykn-browser.js"></script>
+<script src="host-browser-proof.js"></script>
+
+</body></html>

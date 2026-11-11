@@ -1,0 +1,5 @@
+cwd=/private/tmp/lykn-browser-release.jZw1fa8C/native
+argv='/usr/bin/env' '-u' 'BASELINE_GZIPPED' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-browser-release.jZw1fa8C/native-legacy/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-browser-release.jZw1fa8C/native-legacy/xdg' 'npm_config_cache=/private/tmp/lykn-browser-release.jZw1fa8C/native-legacy/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' 'XDG_CACHE_HOME=/private/tmp/lykn-browser-release.jZw1fa8C/native/cache' '/private/tmp/lykn-split-cdc.WZ395kwC/lykn-s04' 'compile' 'twice.lykn' '-o' 'legacy.js'
+stdout=/private/tmp/lykn-browser-release.jZw1fa8C/native-legacy/stdout.raw
+stderr=/private/tmp/lykn-browser-release.jZw1fa8C/native-legacy/stderr.raw
+exit_status=/private/tmp/lykn-browser-release.jZw1fa8C/native-legacy/exit-status.txt

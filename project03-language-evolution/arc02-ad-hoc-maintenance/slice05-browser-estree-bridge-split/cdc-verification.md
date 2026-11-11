@@ -48,3 +48,10 @@ planning diff check returned 2 for whitespace inside preserved command
 streams, raw Git output and literal diffs. Their original bytes remain
 unchanged. The full checker output is retained at
 `/private/tmp/lykn-split-cdc.WZ395kwC/s05-independent/staged-whitespace.stdout.raw`.
+
+## Subsequent local release integration
+
+The Operator-authorized fast-forward to `685bbe1d` passed the
+[fresh release-checkout gates](../artifacts/release-integration-685bbe1d.md).
+AM-05 is done. The source-acceptance chronology above remains the
+original task result.

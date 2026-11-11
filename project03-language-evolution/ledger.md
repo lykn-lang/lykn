@@ -2,7 +2,8 @@
 
 [Arc02 S04 and S05](arc02-ad-hoc-maintenance/slice05-browser-estree-bridge-split/cdc-verification.md)
 are independently accepted at task `685bbe1d`. AM-06 and AM-07
-are done. AM-05 still owns the separate release gate.
+are done. AM-05 also closes with [independent local release verification](arc02-ad-hoc-maintenance/artifacts/release-integration-685bbe1d.md)
+at `685bbe1d`.
 
 [Arc01 S13](arc01-compiler-semantic-integrity/slice13-structural-match-and-kernel-escape/cdc-verification.md)
 closes all five structural match and nested escape rows at task

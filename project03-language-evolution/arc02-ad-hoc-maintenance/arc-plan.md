@@ -168,3 +168,8 @@ accepted on the composed task at `685bbe1d`. AM-07 closes after
 real browser, Deno, native and optimizer reproduction. The browser
 is 41,338 gzip bytes, a 3,506-byte saving across S04 and S05.
 AM-05 retains the release integration and verification gate.
+
+2026-11-10 [local release integration](artifacts/release-integration-685bbe1d.md)
+accepts the fast-forward to `685bbe1d` with fresh exact release
+checks. AM-05 closes at 41,338 gzip bytes. The external release
+gates stay with Project02.

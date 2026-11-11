@@ -1,0 +1,17 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-browser-release.jZw1fa8C/make/tmp/.tmppKt7iU/twice.lykn", "-o", "/private/tmp/lykn-browser-release.jZw1fa8C/make/tmp/.tmppKt7iU/m4-warmup.js"]
+cwd=Some("/private/tmp/lykn-browser-release.jZw1fa8C/make/tmp/.tmppKt7iU")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-browser-release.jZw1fa8C/make/tmp/.tmppKt7iU/xdg-cache")
+selected_inherited_env=
+PATH=Some("/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin")
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-browser-release.jZw1fa8C/make/xdg")
+TMPDIR=Some("/private/tmp/lykn-browser-release.jZw1fa8C/make/tmp")
+NPM_CONFIG_CACHE=None
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=Some("/private/tmp/lykn-browser-release.jZw1fa8C/m4")
+macro_child_program=deno
+macro_child_resolved_executable=Some("/opt/homebrew/Cellar/deno/2.9.6/bin/deno")
+macro_child_xdg_cache=Some("/private/tmp/lykn-browser-release.jZw1fa8C/make/tmp/.tmppKt7iU/xdg-cache")
+macro_child_argv=not separately traced

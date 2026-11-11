@@ -1,0 +1,5 @@
+cwd=/private/tmp/lykn-browser-release.jZw1fa8C/archive
+argv='/usr/bin/env' '-u' 'BASELINE_GZIPPED' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-browser-release.jZw1fa8C/browser/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-browser-release.jZw1fa8C/browser/xdg' 'npm_config_cache=/private/tmp/lykn-browser-release.jZw1fa8C/browser/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/private/tmp/lykn-dd37-deno277.610gtfPO:/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/bin/lykn' 'build' '--browser'
+stdout=/private/tmp/lykn-browser-release.jZw1fa8C/browser/stdout.raw
+stderr=/private/tmp/lykn-browser-release.jZw1fa8C/browser/stderr.raw
+exit_status=/private/tmp/lykn-browser-release.jZw1fa8C/browser/exit-status.txt

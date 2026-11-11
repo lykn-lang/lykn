@@ -12,7 +12,8 @@ related: ["project04-c-lang", "project07-core-library-research"]
 [Arc02 browser compiler composition](arc02-ad-hoc-maintenance/slice05-browser-estree-bridge-split/cdc-verification.md)
 is independently accepted on task `685bbe1d`. The two splits
 save 3,506 gzip bytes and keep the 81,920-byte release cap.
-Local release remains `b0c97f4e` pending separate integration.
+[Local release integration](arc02-ad-hoc-maintenance/artifacts/release-integration-685bbe1d.md)
+independently verified `685bbe1d`.
 
 ## 0.7.x roadmap
 

@@ -135,5 +135,13 @@ after S04 and 41,338 after S05 against 44,844 at `b0c97f4e`.
 The original 27,906-byte baseline remains part of the report.
 [Actual composition evidence](../slice05-browser-estree-bridge-split/cdc-verification.md).
 
-The accepted task composition awaits release integration and checks
+At task acceptance, the composition awaited release integration and checks
 under the separate release gate above.
+
+## Accepted local release integration
+
+The Operator-authorized fast-forward to `685bbe1d` passed
+independent verification on local `release/0.6.x`.
+[Release integration and receipts](release-integration-685bbe1d.md).
+The final candidate's hosted and publication gates retain their
+separate evidence and authority.
