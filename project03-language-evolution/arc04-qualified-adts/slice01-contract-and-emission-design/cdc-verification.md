@@ -374,3 +374,164 @@ explicit consolidation choices must enter the next preserved iteration; the
 next independent pass must identify its actual candidate and affected claims.
 The 24-cell population is still proposed, not operator agreement or experimental
 success. This record accepts no product implementation or layout winner.
+
+## Iteration03 independent review — 2026-11-11, candidate 28f540d4
+
+**Current verdict: design acceptance held for two narrow corrections.** All
+QD rows and QA-01 remain open in the actual ledgers; this pass changes only
+this verification record. The substantive RV-01–13 corrections are supported
+by independent source/design review. RV-14/15 below prevent accepting the
+current exact artifact bytes. No software or experiment is accepted.
+
+Reviewed candidate `28f540d486792a1a486b6f55a2c8acce99dc0893` against
+`cc-prompt-iteration03.md` and actual arc v1.1 at
+`c574a26c2c61319dc99a5b0277dd0770d116ec63`, carrying the unchanged iteration02
+architecture. Actual reviewer remains the independently assigned Sol 6.1 High
+context. Root retains PL authority. Both complete artifacts, all of the
+iteration03 report/readback, current five QD rows, revised arc and QA-01 were
+read. The report diff appends the dated iteration03 return and preserves the
+prior returns. Earlier dates and not-accepted verdicts remain untouched.
+
+Source is still clean at `685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95` on the
+assigned `codex/completion-value-flow` worktree. This pass reread the relevant
+source grammar/guard/analysis references and checked the actual final observer,
+not a description of fixes. No parser, compiler, TypeScript checker, runtime,
+prototype, bundle, gzip or experiment was executed. Source-backed deductions
+below are design-review evidence, not machine results.
+
+### RV-01–13 reconciliation
+
+| Finding | Independent disposition at this candidate |
+| --- | --- |
+| RV-01 | Addressed in the selected design. Contract:26,138,225–227 preserves the explicit 0.6 migration: no automatic flat constructors or runtime prelude, ordinary short-name functions remain ordinary, and cross-module values share a declared/imported owner. Same-name Box/Box is qualified; namespace/function collisions and unsupported local type scopes are explicit. No implicit global prelude or structural-tag compatibility is invented. |
+| RV-02 | Addressed. Contract:190–196 separates the new bounded host/hygiene and typed-purity prerequisites from existing Reflect-only protection. It includes the transitive Number/Array/error/Promise guard dependencies and does not claim existing complete backend keyword parity or an already implemented facility. |
+| RV-03 | Addressed. Protocol:7–12 uses actual same-producer case ABI exports/imports, identical exports in L1/L2 and actual qualifier evaluation. The selectivity claim is restricted to statically resolved Lykn source; dynamic/ordinary JS namespace clients receive no unproved equal retention guarantee. |
+| RV-04 | Addressed at design level. Protocol supplies real producer/consumer graphs, common-frontend two-candidate compilation, tool/argv templates, exact keys and source/observer oracles. Future candidate/fixture hashes are explicit freeze fields, not invented present proof. No current-baseline support for new qualified syntax is claimed. |
+| RV-05 | Addressed. Contract:20–28,159–173 distinguishes imported/direct immutable aliases, ordinary colon/get, detached functions, dynamic values and actual qualifier TDZ. Static collection does not hoist runtime initialization. Namespace-import syntax is not introduced. |
+| RV-06 | Addressed. Contract:138,225 correctly distinguishes explicit resetMacros from fresh per-compilation state and preserves raw lowered-kernel stage use without a mandatory new metadata context. |
+| RV-07 | Addressed. Keyword args/body functions are used in C2/C5 and the TDZ specimen. The alias is introduced before the later function body resolves, while the earlier call occurs before alias initialization. Reconstruction covers all three cases, and the nested Envelope/Label false-guard example declares its field owner and wildcard. These are uncompiled design inputs, not executed cases. |
+| RV-08 | Addressed. Contract:24 and protocol:85–112 preserve one root OwnerRef universe and migrate native string-based Maranget/diagnostic identity. Separate positive matches and opposite-owner-only negative matches make a tag-only implementation print wrong-owner instead of the required fallbacks. No mixed-owner match is used to obtain that evidence. |
+| RV-09 | Addressed as an observation design. Protocol:114–237 exports escaped and observed, gives an outside-graph Lykn observer, expected scalar transcript and exact child invocation. ImportLocal exports are correctly treated as valid. The actual descriptor/unit/brand logic is reviewed below; it has a remaining source-idiom correction under RV-15. |
+| RV-10 | Addressed. Contract:36–138 defines required schema/records, exact current-unit/specifier/target/export lookup, OwnerRef-qualified field types, consistency rules/errors, native typed failure and synchronous public TypeError behavior, and the real three-module renamed-barrel ABI mapping. Runtime export validation remains separate from trusted public metadata validation. |
+| RV-11 | Producer case precision addressed. Contract:198–221 preserves public type/value Label, types unit/case exports precisely, readonly tag/brand and mutable Text payload, with explicit later type-consumer oracles. The barrel's redundant declaration is a distinct remaining sketch defect, RV-14. |
+| RV-12 | Addressed. Contract:20–26 explicitly retains bare canonical and parenthesized equivalent zero patterns, including lowercase aliases, distinguishes invalid zero-value calls, and preserves direct qualified-call static arity in both assertion modes while detached calls keep ordinary JS arity. |
+| RV-13 | Addressed. Protocol:276–286 separates missing launch prerequisites, expected comparative retention misses, unexpected failures, affected-continuation stop, original denominators, non-overwriting retries/re-entry and no-winner eligibility. It does not authorize changed experiments through retry accounting. |
+
+### Identity, schema, stages and source fit
+
+The contract now distinguishes compile-time declaration references from runtime
+fresh Symbol tokens. Canonical graph identity retains actual loader distinctions
+such as queries/fragments and separate resolved copies; package templates are
+instantiated/rebased to that graph. Runtime namespace/token/case imports stay
+linked through the actual producer or barrel boundary, not deduplicated solely
+by template/package declaration IDs. The worked barrel keeps the defining
+OwnerRef while mapping its real Renamed namespace and ABI exports. This directly
+addresses the earlier cached-sidecar design error. Its future query/fragment
+conformance case is separately scoped, not a seventh bundle family.
+
+Source fit remains grounded in native top-level collection and lexical resolver
+ordering, bare-name TypeRegistry and current string-based pattern universe,
+flat emitter/guard/declaration paths, and public mod/expand/classify/compile
+routes. Existing source behavior is distinguished from required new plumbing.
+Public synchronous options/defaults, current module record consistency, trusted
+remote interfaces, non-executing graph validation and fresh state are explicit.
+The native/public lower-level kernel program/ESTree results are preserved; raw
+kernel callers do not acquire an ambient ADT registry dependency.
+
+The chosen mutation/serialization contract is coherent: immutable own metadata
+and namespaces, mutable shallowly checked payloads, no anti-forgery guarantee,
+owner/case dispatch retained under stripping, safe raw-subject fallback and
+ordinary propagated getter exceptions. Enumerable-copy/assoc/JSON/clone results
+are raw data requiring explicit reconstruction. A field mutation can violate
+its original payload annotation; no recursive soundness claim is made. None of
+these deductions is a claim that the unmodified source implements the design.
+
+### Actual C4/C5 and population review
+
+C4's four matches are each single-owner. With correct membership they emit
+left, right, left-is-not-right, right-is-not-left. A tag-only matcher necessarily
+selects the first/only constructor arm of each wrong-owner negative match and
+emits wrong-owner, so the old rejected implementation cannot pass this oracle.
+The two producer source bodies remain distinct loader instances with equal case
+spellings. Existing native mixed-root restriction and future OwnerRef migration
+are preserved rather than silently introducing a heterogeneous matcher.
+
+The final C5 code exports the values the observer actually reads. The dynamic
+key effect occurs once on module import; the observer imports once per fresh
+process, constructs its own control, and adds the fixed projection. It observes
+all three sorted own string namespace members, actual value/tag, frozen status
+and own metadata/payload descriptors. The actual code now:
+
+- requires observed-brand to have type symbol before equality with control-brand,
+  preventing undefined-equals-undefined from passing the owner check;
+- makes absent descriptor branches false before dereferencing descriptor fields;
+- requires each unit to be a real non-null object with the expected tag, the
+  same symbol owner and frozen status, so Object.isFrozen(undefined/null) alone
+  cannot supply a passing unit result;
+- requires exact enumerable/writable/configurable flags, with boolean comparisons
+  and short-circuiting that retain a false result for missing/wrong inputs.
+
+This verifies the logical strength of the proposed observer, not its runtime
+execution. A missing namespace/constructor can instead cause an actual observer
+error; the protocol preserves that failure and stops rather than accepting it.
+The brand is deliberately not a security boundary. No stronger forgery or
+arbitrary host-object guarantee is inferred from this finite projection.
+
+The plan has exactly 24 proposed esbuild keys and separately 24 proposed fresh
+Deno observer processes per contributor. Observer compilation is a pre-driver
+common-compiler action, and the observer is outside all bundled graphs with no
+run/write grants. Non-C5 observers add no output; C5's effect and projection are
+in one child transcript. Gzip derives only from captured minified bytes. Replay,
+semantic regression and package/type consumers have separate populations.
+Operator agreement on the actual source-ready freeze still precedes execution.
+
+### RV-14 — Medium: the barrel declaration redundantly introduces the merged export name
+
+Location: contract:118–125; QD-03 and therefore QA-01 acceptance held.
+
+The barrel sketch declares `export type Renamed = import("./label.js").Label`
+and also reexports `Label as Renamed` from the producer. Label already has both
+type and value meanings in the producer's declaration. The selective reexport
+must carry that merged symbol and original nominal type; the extra local type
+alias redundantly declares the same exported type name and creates a potential
+export/declaration conflict. This is not an executed TypeScript diagnostic,
+and the sketch must not be described as tested syntax.
+
+Use one unambiguous selective reexport of the producer's merged Label plus
+actual ABI aliases, without the redundant Renamed type declaration. Preserve
+the schema's real boundary names and original brand/type identity. Root agrees
+this is a narrow correction; no metadata/runtime architecture change or
+TypeScript execution is needed in this S01 review.
+
+### RV-15 — Low: five observer value conditionals violate the required source idiom
+
+Locations: protocol:170–209; source `skills/lykn/SKILL.md:599`; QD-04 held.
+
+The brand-ok, tag-ok, payload-ok, missing-ok and null-ok bind initializers use
+if to choose expression values. The source skill makes ? in expression position
+a hard rule for LLM-authored code. Semantic equivalence does not waive that
+instruction. Replace those five value conditionals with ? while preserving
+all predicates, short-circuiting and false branches. The outer family dispatch
+is in statement position and is not part of this finding.
+
+No parse or runtime failure is claimed: the observer's boolean/descriptor
+reasoning above remains applicable. This is an authored source-idiom correction
+before its exact proposed bytes are accepted, not permission to alter emitted
+code or run a probe.
+
+### Supported versus held row accounting
+
+| Row | Current independent evidence and actual status |
+| --- | --- |
+| QD-01 | Design reasoning supports the resolved source/arity/pattern/alias/scope/diagnostic contract. Actual row remains open pending the final consolidated verdict. |
+| QD-02 | Design reasoning supports generative identity, loader graph rebasing, guards/strip, metadata-only prelude, mutation/serialization and bounded host/purity prerequisites. Actual row remains open; no source implementation or experiment is accepted. |
+| QD-03 | Supported schema/ABI/default/stage and precise producer-case decisions, but held for RV-14's barrel declaration correction. Actual row remains open. |
+| QD-04 | Supported fixed candidates, discriminating controls, observer logic, counts and stop policy, but held for RV-15's five source-value conditionals. Actual row remains open; no launch is authorized. |
+| QD-05 | The actual seven-increment arc retains and orders S02 repairs, S03 local core/host/purity, S04 graph/two emitters/gate, S05 composition, S06 audit and S07 documentation. Review reasoning supports that decomposition. Actual row remains open pending consolidation. |
+| QA-01 | Held until the exact final contract/protocol is accepted. QA-02–06 remain open and unchanged; S01 design review supplies no software, package, experiment or human acceptance. |
+
+A minimal delta review may retain the source census, RV-01–13 dispositions and
+unaffected observer/identity/schema reasoning when it verifies that only these
+two narrow corrections changed. It must identify the exact amended candidate,
+check the actual reexport and five ? forms, and preserve this intermediate
+verdict. No ledger status is changed in this pass, at root's explicit handoff.
