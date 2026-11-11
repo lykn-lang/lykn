@@ -1,0 +1,3 @@
+Check test/forms/embedded-adt-pattern.test.js
+Check test/forms/surface-type-context.test.js
+Check test/forms/reserved-binding-output.test.js

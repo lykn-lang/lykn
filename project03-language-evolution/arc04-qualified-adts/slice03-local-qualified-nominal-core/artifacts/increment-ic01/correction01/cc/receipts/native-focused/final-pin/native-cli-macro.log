@@ -1,0 +1,9 @@
+    Blocking waiting for file lock on build directory
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+
+running 1 test
+test compile::tests::reserved_binding_gate_covers_compile_check_and_stripped_modes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 181 filtered out; finished in 0.20s
+

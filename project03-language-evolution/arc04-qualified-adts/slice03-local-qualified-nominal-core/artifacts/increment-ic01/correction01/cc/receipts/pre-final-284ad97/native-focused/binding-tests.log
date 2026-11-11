@@ -1,0 +1,74 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.41s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 30 tests
+test binding::tests::catch_binding ... ok
+test binding::tests::bind_typed ... ok
+test binding::tests::bind_atom ... ok
+test binding::tests::bind_group ... ok
+test binding::tests::class_method_params ... ok
+test binding::tests::bind_destructuring_array ... ok
+test binding::tests::export_wrapped_binding_is_found ... ok
+test binding::tests::emitted_kernel_parameter_and_role_projection_is_precise ... ok
+test binding::tests::defaults_use_actual_typed_or_untyped_slots_and_visit_alias_expressions ... ok
+test binding::tests::fn_and_lambda_params ... ok
+test binding::tests::func_multi_clause_params ... ok
+test binding::tests::func_params ... ok
+test binding::tests::function_and_class_name_slots ... ok
+test binding::tests::genfunc_and_genfn_params ... ok
+test binding::tests::if_let_binding ... ok
+test binding::tests::import_default_named_and_alias_locals ... ok
+test binding::tests::kernel_decl_name_slot ... ok
+test binding::tests::kernel_lambda_parameters_are_validated_as_kernel_slots ... ok
+test binding::tests::label_is_its_own_namespace ... ok
+test binding::tests::loop_binding_atom_and_destructure ... ok
+test binding::tests::correction07_walks_selected_function_regions_and_recursive_kernel_defaults ... ok
+test binding::tests::match_clause_patterns_bind_constructor_vars ... ok
+test binding::tests::match_literal_and_wildcard_bind_nothing ... ok
+test binding::tests::nested_bindings_are_found ... ok
+test binding::tests::non_binding_forms_yield_nothing ... ok
+test binding::tests::underscore_is_not_a_binding ... ok
+test binding::tests::type_constructor_names_and_fields ... ok
+test binding::tests::source_func_validation_scopes_each_clause_separately ... ok
+test binding::tests::when_let_binding ... ok
+test binding::tests::validates_emitted_names_and_keeps_strict_bindings_separate_from_labels ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 1154 filtered out; finished in 0.00s
+
+     Running tests/a6_dispatch_conformance.rs (target/debug/deps/a6_dispatch_conformance-71c5f1e628f2cc9a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/cross_compiler.rs (target/debug/deps/cross_compiler-7270e8ccefc96ab3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 22 filtered out; finished in 0.00s
+
+     Running tests/e2e_tests.rs (target/debug/deps/e2e_tests-a10fc2c08ad95c63)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 0.00s
+
+     Running tests/emission_results.rs (target/debug/deps/emission_results-2e81a494c1439a4b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/icu_cross_compiler_tests.rs (target/debug/deps/icu_cross_compiler_tests-1835a3c7f031ad84)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 0.00s
+
+     Running tests/macro_expansion.rs (target/debug/deps/macro_expansion-e3348c8f3018cee3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+

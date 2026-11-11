@@ -1,0 +1,31 @@
+running 5 tests from ./test/forms/embedded-adt-pattern.test.js
+embedded public compiler handles recursive patterns and zero variants ... ok (41ms)
+embedded public compiler preserves private-name macro hygiene ... ok (17ms)
+embedded public compiler owns shadowed single-clause guard intrinsics ... ok (15ms)
+embedded public compiler dispatches multi-clause with module Array shadow ... ok (14ms)
+embedded public compiler dispatches multi-clause with parameter Array shadow ... ok (13ms)
+running 6 tests from ./test/forms/surface-type-context.test.js
+cold prelude metadata selects named fields without runtime bindings ... ok (23ms)
+successful and late-failing declarations cannot leak pattern metadata ... ok (43ms)
+a late Pass-2 failure cannot leak the type it already emitted ... ok (29ms)
+successful and failed nested compiles preserve the outer metadata ... ok (14ms)
+public expandExpr isolates metadata and preserves binding Sets ... ok (14ms)
+browser compile-to-ESM keeps each compilation type context private ... ok (27ms)
+running 14 tests from ./test/forms/reserved-binding-output.test.js
+emitted reserved bindings reject in public compile and expandExpr ... ok (1ms)
+normalized DD-49 output is checked as the emitted binding ... ok (150µs)
+macro output is checked as a real binding and legal structural slots stay legal ... ok (38ms)
+source function groups visit selected tails and preserve last-group semantics ... ok (730µs)
+public postconditions see body declarations in either textual order ... ok (30ms)
+public expandExpr respects supplied binding names ... ok (130µs)
+trusted forms retain dispatch authority and calls do not hoist binders ... ok (154µs)
+grouped bind initializers use sequential binding visibility ... ok (84µs)
+kernel parameters have inner scope and class methods stay separate ... ok (457µs)
+typed and kernel parameter slots project their actual local names ... ok (689µs)
+typed nested alias keys stay data and locals execute ... ok (15ms)
+nullary constructor binders differ from erased type names ... ok (381µs)
+labels and contextual syntax stay distinct from strict bindings ... ok (14ms)
+browser compile rejects binders and emits legal module output ... ok (13ms)
+
+ok | 25 passed | 0 failed (458ms)
+

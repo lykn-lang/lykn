@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.11"
+version: "1.12"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -223,7 +223,7 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration04.md | 2026-11-11 | iteration03 | B1 per-call metadata isolation | Accepted3f197340 as partial LC-02 only |
 | cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
-| cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Active correction; independent acceptance pending |
+| cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Returned for independent review atb8a1fa17/treed3e604b2; three correction commits retained |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -274,3 +274,15 @@ shared-parser wiring and twelve-file delivery union are now explicit. This
 is IC-01's second refinement (the first was its guide migration), preserving
 the earlier A loop's three passes and all original holds. Luna owns source/
 build until clean corrected handoff; Sol will then independently revalidate.
+
+Iteration07 returns a clean three-commit correction:284ad97b, b6536e0d and
+b8a1fa17cf9543c22a52228d17f0dd19e3fcf0a1, final tree
+d3e604b206cfedac1ec97a5932ba8b1bb5fca61f. Root checked the eleven authorized
+changed paths and final clean pin, then transferred exclusive source/build
+execution to Sol for independent review. The self-review follow-ups remove
+duplicate default traversal and add once-only occurrence counting plus the
+supported native macro oracle. CC attests final full1533/482, cold twelve-byte-
+comparison/25-case M6, public14/binding30, size43828 and committed citations64/601.
+These remain proposed evidence; IC-01 is open until corrected software review.
+Intermediate284 gate receipts and original5bdb HOLD remain historical. Root
+owns planning index/records; current assignment is returned for review.

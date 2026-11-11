@@ -140,3 +140,22 @@ supplies that missing check and retains compile's diagnostic priority. The
 internal kernel lambda checks do not claim a new public kernel:lambda escape,
 which the existing whitelist does not accept. Original candidate/attempt
 records keep their original evidentiary strength and scope.
+
+Root's iteration07 handoff check verifies final source b8a1fa17/tree d3e604b2,
+eleven changed paths from5bdb and the clean dedicated task branch. Separate Sol
+owns fresh corrected software review; IC-01 and LC-02–08 remain open. The CC
+index's Clippy attempt has no retained raw log or exact failed source-tree
+hash, so its reference to284ad97 is not evidence that the committed284 tree
+was the failed input. Treat that condition as disclosed transcript-only
+pre-final history, not a reconstructed pinned failure. Final pinned gate logs
+and intermediate284 successful receipts are separately identified by the index.
+
+## IC-01 correction01 iteration07 — CC proposed-done
+
+**Independent Sol software verification is pending; IC-01, LC-02–08 and S03 remain open.** The corrected source candidate is committed on `codex/qualified-adt-core` at `b8a1fa17cf9543c22a52228d17f0dd19e3fcf0a1`, tree `d3e604b206cfedac1ec97a5932ba8b1bb5fca61f`; the assigned source worktree is clean. Iteration07 preserves `5bdbfe3c` and its HOLD. Its exact implementation is the explicit commit chain `284ad97b` → `b6536e0d` → `b8a1fa17`, with the final occurrence-count test and supported native macro oracle in the last commit. The authorized 11-path diff, final role decisions, actual command evidence, denominators, preserved earlier candidate receipts and missing-raw-log disclosure are indexed in [`artifacts/increment-ic01/correction01/cc/index.md`](artifacts/increment-ic01/correction01/cc/index.md).
+
+The correction reuses canonical function-group parsers, validates selected complete bodies and recursively visits actual source/kernel default regions. Public postconditions see outgoing own-level body bindings in both textual orders; native retains physical order and the prior post-before-body B2 limitation. Typed alias keys remain data, kernel keyword alias keys still check their local slot, and exact occurrence-count controls prove one traversal. The supported AST-unquote macro fails for the restricted caller parameter and runs after legal renaming. Legacy D1 class aggregation and public kernel:lambda support remain unchanged.
+
+Final `make check` passed at `b8a1fa17`: JS+Lykn 1533/1533 across 67 steps, docs 482/482 in one run. Actual cold M6 passed 12 byte comparisons and 25/25 materialized strict public tests. Post-commit citations passed for 64 documents/601 accepted historical citations. Browser bundle check passed at 43,828 gzip bytes, +16,198 from its 27,630 baseline, within 80 KiB. Focused Rust binding tests passed 30/30; native macro compile/check/stripped plus legal runtime passed 1/1; public focused output tests passed 14/14. Final raw logs and streams are preserved under `artifacts/increment-ic01/correction01/cc/receipts/`.
+
+An earlier full check on intermediate `284ad97b` surfaced two Clippy `collapsible_if` diagnostics. That initial invocation was preserved only in the tool transcript; no raw log was captured, so none is reconstructed. The conditions were corrected, and the final complete gate is green. The original iteration05 481/1 documentation failure and iteration06 independent HOLD remain unchanged. No LC criterion closes, no nominal semantics or release integration are claimed, and source/build ownership is returned for separate Sol review.

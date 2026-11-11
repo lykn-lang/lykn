@@ -1,0 +1,2 @@
+config_exists=false
+lock_exists=true

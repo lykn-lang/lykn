@@ -1,0 +1,2 @@
+2:15: error: 'eval' is forbidden as a strict-mode binding identifier
+  suggestion: rename the binding name (e.g. `eval_`)
