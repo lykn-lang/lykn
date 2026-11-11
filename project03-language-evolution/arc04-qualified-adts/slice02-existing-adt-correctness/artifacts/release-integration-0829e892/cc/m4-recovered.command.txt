@@ -1,0 +1,17 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-s02-cc-0829/tmp/.tmpeKyd5E/twice.lykn", "-o", "/private/tmp/lykn-s02-cc-0829/tmp/.tmpeKyd5E/m4-recovered.js"]
+cwd=Some("/private/tmp/lykn-s02-cc-0829/tmp/.tmpeKyd5E")
+env_overrides=
+"XDG_CACHE_HOME"=Some("/private/tmp/lykn-s02-cc-0829/tmp/.tmpeKyd5E/xdg-cache")
+selected_inherited_env=
+PATH=Some("/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/gcloud/369.0.0/bin:/opt/go/1.24.3/bin:/opt/homebrew/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/oubiwann/.ghcup/bin:/Users/oubiwann/.local/bin:/Users/oubiwann/.cargo/bin:/usr/local/sbin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/usr/local/go/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/oubiwann/Library/Application Support/ChatGPT-Profiles/personal/codex-home/tmp/arg0-macos/codex-arg0fnd6mh:/Users/oubiwann/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/gcloud/369.0.0/bin:/opt/go/1.24.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/oubiwann/.ghcup/bin:/Users/oubiwann/.local/bin:/Users/oubiwann/.cargo/bin:/usr/local/sbin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/oubiwann/.sdkman/candidates/gradle/current/bin:/Users/oubiwann/.rvm/bin:/Users/oubiwann/.npm-global/bin:/Users/oubiwann/.radicle/bin:/Users/oubiwann/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS:/Users/oubiwann/.cargo/bin:/Users/oubiwann/.rvm/bin:/Users/oubiwann/.npm-global/bin:/Users/oubiwann/.radicle/bin")
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-s02-cc-0829/xdg")
+TMPDIR=Some("/private/tmp/lykn-s02-cc-0829/tmp")
+NPM_CONFIG_CACHE=None
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice02-existing-adt-correctness/artifacts/release-integration-0829e892/cc")
+macro_child_program=deno
+macro_child_resolved_executable=Some("/opt/homebrew/Cellar/deno/2.9.6/bin/deno")
+macro_child_xdg_cache=Some("/private/tmp/lykn-s02-cc-0829/tmp/.tmpeKyd5E/xdg-cache")
+macro_child_argv=not separately traced

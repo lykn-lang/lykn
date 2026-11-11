@@ -1,0 +1,4 @@
+17:32: warning: unused binding 'result'
+  suggestion: prefix with underscore: _result
+6:7: warning: unused binding 'Option'
+  suggestion: prefix with underscore: _Option

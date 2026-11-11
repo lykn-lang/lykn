@@ -1,0 +1,2 @@
+(macro twice (x) `(+ ,x ,x))
+(console:log (JSON:stringify (twice 21)))

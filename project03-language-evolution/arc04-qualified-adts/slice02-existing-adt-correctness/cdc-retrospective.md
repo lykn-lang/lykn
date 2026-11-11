@@ -76,3 +76,13 @@ Closing follow-through: Sol's independent final metadata review of planning
 b61c9968 accepted the actual retrospective and parent handoff and supports
 PC-05/S02/QA-02 closure. This completes the documentary step that was pending
 when the analysis above was written; it introduces no new software verdict.
+
+Subsequent release follow-through: the operator authorized fast-forward to the
+accepted source before S03. Luna performed the exact FF and release checks;
+a fresh Sol context reproduced full gates, actual release-profile and copied
+installed-CLI cold-cache runtimes, and equal source trees. The record preserves
+the source-versus-release and different build-profile binary identities.
+An incidental tool lookup outside the workdir was excluded from the real
+release toolchain pins. No product repair, source edit, push or publication
+was needed. S03 consumes that validated state; no new process-effectiveness
+claim is inferred from this bounded integration.

@@ -1,0 +1,5 @@
+program=deno
+args=[run, --no-config, --cached-only, --no-prompt, adt-pattern-macro-hygiene.js]
+cwd=/private/tmp/lykn-s02-cc-0829/standalone
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+XDG_CACHE_HOME=/private/tmp/lykn-s02-cc-0829/xdg

@@ -1,0 +1,4 @@
+fresh_XDG=/private/tmp/lykn-s02-cc-0829/xdg
+first_compile_triggered_materialization=true
+materialized_package=/private/tmp/lykn-s02-cc-0829/xdg/lykn/embedded/0.6.0-compiler-split/packages/lang
+canonical_embedded_materialized_all_five_files_byte_equal=true

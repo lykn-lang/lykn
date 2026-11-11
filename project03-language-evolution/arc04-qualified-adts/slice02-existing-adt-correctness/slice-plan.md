@@ -9,6 +9,10 @@ depends-on: [slice01-contract-and-emission-design]
 
 # Existing ADT correctness
 
+Subsequent integration: the operator-authorized [local release fast-forward](artifacts/release-integration-0829e892.md)
+to 0829e892 is independently accepted. S03 is now open separately. The original
+source-close boundary below describes the earlier pre-integration state.
+
 2026-11-11: closed with all five PC rows done. Corrected software candidate
 `0829e892` has independent runtime acceptance, and the final metadata review of
 planning `b61c9968` accepts the retrospective, history and parent handoff.

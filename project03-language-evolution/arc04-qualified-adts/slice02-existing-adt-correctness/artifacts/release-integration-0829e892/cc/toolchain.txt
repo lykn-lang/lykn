@@ -1,0 +1,15 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x
+branch=release/0.6.x
+head=0829e892999890e8877dec5e35cd249753e1be5d
+tree=d0f802ca4eb1847400c7395f1c203ada3263403b
+rustc=rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo=cargo 1.97.0 (c980f4866 2026-06-30)
+deno=deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+node=v26.9.0
+npm=11.19.1
+cargo_binstall=/Users/oubiwann/.cargo/bin/cargo-binstall
+npm_config_cache=/private/tmp/lykn-s02-cc-0829/npm
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+repo_status=clean

@@ -1,0 +1,134 @@
+(type Option (Some :any value) None)
+(type InnerValue (InnerNumber :any value) InnerFlag)
+(type ZeroForms (ListZero) BareZero)
+
+(bind nested-success
+  (match (Some (InnerNumber 7))
+    ((Some (InnerNumber value)) value)
+    (_ -1)))
+(bind nested-literal-match
+  (match (Some (InnerNumber 7))
+    ((Some (InnerNumber 7)) "literal")
+    (_ "wrong")))
+(bind nested-literal-mismatch
+  (match (Some (InnerNumber 8))
+    ((Some (InnerNumber 7)) "wrong")
+    (_ "safe")))
+(bind wrong-outer
+  (match None
+    ((Some (InnerNumber _)) "wrong")
+    (_ "outer")))
+(bind wrong-inner
+  (match (Some InnerFlag)
+    ((Some (InnerNumber _)) "wrong")
+    (_ "inner")))
+(bind null-child
+  (match (Some null)
+    ((Some (InnerNumber _)) "wrong")
+    (_ "null")))
+(bind missing-child
+  (match (obj)
+    ((obj :child (Some _)) "wrong")
+    (_ "missing")))
+(bind literal-false
+  (match (obj :value false)
+    ((obj :value false) "false")
+    (_ "wrong")))
+(bind literal-null
+  (match (obj :value null)
+    ((obj :value null) "null")
+    (_ "wrong")))
+(bind literal-undefined
+  (match (obj :value undefined)
+    ((obj :value undefined) "undefined")
+    (_ "wrong")))
+(bind nested-object-adt
+  (match (obj :child (Some (InnerNumber 9)))
+    ((obj :child (Some (InnerNumber value))) value)
+    (_ -1)))
+(bind falsy-payload
+  (match (Some false)
+    ((Some value) value)
+    (_ true)))
+(bind zero-payload (match (Some 0) ((Some value) value) (_ -1)))
+(bind empty-payload (match (Some "") ((Some value) value) (_ "wrong")))
+(bind guard-fallthrough
+  (match (Some (InnerNumber 4))
+    ((Some (InnerNumber value)) :when false "wrong")
+    ((Some (InnerNumber value)) value)
+    (_ -1)))
+(bind bound-value-guard
+  (match (Some (InnerNumber 6))
+    ((Some (InnerNumber value)) :when (= value 6) value)
+    (_ -1)))
+(bind guarded-final-true (match 1 (_ :when true "selected")))
+(bind guarded-final-results (array))
+(try
+  (bind guarded-final-result (match 1 (_ :when false "wrong")))
+  (guarded-final-results:push guarded-final-result)
+  (catch err (guarded-final-results:push err:message)))
+(bind list-zero-match (match ListZero (ListZero true) (_ false)))
+(bind bare-zero-match (match BareZero (BareZero true) (_ false)))
+(bind if-let-zero (if-let (ListZero ListZero) "list" "wrong"))
+(bind if-let-zero-mismatch (if-let (BareZero ListZero) "wrong" "safe"))
+(bind when-let-zero (when-let (BareZero BareZero) "bare"))
+(bind when-let-zero-mismatch (when-let (BareZero ListZero) "wrong"))
+(bind if-let-root-false (if-let (value false) value "wrong"))
+(bind if-let-nested-false (if-let ((Some value) (Some false)) value "wrong"))
+(bind when-let-nested-null (when-let ((Some value) (Some null)) value))
+(bind if-let-number-literal (if-let (7 7) "number" "wrong"))
+(bind if-let-number-literal-mismatch (if-let (7 8) "wrong" "safe"))
+(bind when-let-string-literal (when-let ("ready" "ready") "string"))
+
+(bind reads (array))
+(bind nested-getter (obj :tag "InnerNumber"))
+(Object:defineProperty nested-getter "value"
+  (obj :get (fn () (reads:push "inner.value") 7)))
+(bind outer-getter (obj :tag "Some"))
+(Object:defineProperty outer-getter "value"
+  (obj :get (fn () (reads:push "outer.value") nested-getter)))
+(bind getter-match
+  (match outer-getter
+    ((Some (InnerNumber value)) value)
+    (_ -1)))
+(bind wildcard-match (match outer-getter ((Some _) "wildcard") (_ "wrong")))
+(bind wrong-tag-getter (obj :tag "Other"))
+(Object:defineProperty wrong-tag-getter "value"
+  (obj :get (fn () (reads:push "wrong.outer.value") nested-getter)))
+(bind wrong-tag-match
+  (match wrong-tag-getter ((Some (InnerNumber _)) "wrong") (_ "safe")))
+(bind wrong-inner-getter (obj :tag "Some"))
+(bind invalid-inner (obj :tag "Other"))
+(Object:defineProperty invalid-inner "value"
+  (obj :get (fn () (reads:push "invalid.inner.value") 7)))
+(Object:defineProperty wrong-inner-getter "value"
+  (obj :get (fn () (reads:push "wrong.inner.value") invalid-inner)))
+(bind wrong-inner-getter-match
+  (match wrong-inner-getter
+    ((Some (InnerNumber 7)) "wrong")
+    (_ "safe")))
+(bind object-reads (array))
+(bind object-getter (obj))
+(Object:defineProperty object-getter "child"
+  (obj :get (fn () (object-reads:push "object.child") (Some (InnerNumber 8)))))
+(bind object-getter-match
+  (match object-getter
+    ((obj :child (Some (InnerNumber value))) value)
+    (_ -1)))
+(bind object-wildcard-match
+  (match object-getter ((obj :child _) "wildcard") (_ "wrong")))
+(bind statement-trace (array))
+(match (Some (InnerNumber 5))
+  ((Some (InnerNumber value)) :when false (statement-trace:push "wrong"))
+  ((Some (InnerNumber value)) (statement-trace:push value))
+  (_ (statement-trace:push "fallback")))
+
+(console:log (JSON:stringify
+  (array nested-success wrong-outer wrong-inner null-child missing-child
+    nested-literal-match nested-literal-mismatch literal-false literal-null literal-undefined nested-object-adt falsy-payload zero-payload empty-payload
+    guard-fallthrough bound-value-guard guarded-final-true guarded-final-results
+    list-zero-match bare-zero-match if-let-zero if-let-zero-mismatch when-let-zero when-let-zero-mismatch
+    if-let-root-false if-let-nested-false when-let-nested-null
+    if-let-number-literal if-let-number-literal-mismatch when-let-string-literal getter-match
+    wildcard-match wrong-tag-match wrong-inner-getter-match reads object-getter-match object-wildcard-match
+    object-reads statement-trace)))

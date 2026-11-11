@@ -1,5 +1,10 @@
 # S02 CC close report
 
+Subsequent delivery: [local release integration](artifacts/release-integration-0829e892.md)
+to 0829e892 has passed fresh independent release validation. S03 is open on its
+own task branch. The source-only scope statements below retain their original
+closure context; no push, publication or later feature acceptance follows.
+
 Current coordinator disposition: **S02 is independently accepted and closed**
 at `0829e892999890e8877dec5e35cd249753e1be5d`, with all five PC rows done.
 The final metadata review of planning b61c9968 accepts the documentary handoff

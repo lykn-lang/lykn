@@ -4,7 +4,9 @@
 Project03 [Arc04 S02](../../project03-language-evolution/arc04-qualified-adts/slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
 at task `0829e892`, including final documentary acceptance. Unchanged original
 controls pass native default/stripped and canonical/materialized public paths.
-Release remains `685bbe1d`; original research observations/pins are unchanged.
+Release now equals `0829e892` after the [independent local integration](../../project03-language-evolution/arc04-qualified-adts/slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md).
+Original research observations/pins are unchanged; S03 is open for local
+qualified nominal implementation, not yet accepted.
 Qualified ADT work, final decoder re-pin/composition and guide/book/human review
 remain later gates. RDEO/RTCK and the existing I4 checked-exit owner are not
 discharged by these two source corrections.

@@ -1,0 +1,104 @@
+---
+project: project03-language-evolution
+arc: arc04-qualified-adts
+slice: slice03-local-qualified-nominal-core
+status: active
+version: "1.0"
+depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
+---
+
+# Local qualified nominal core
+
+The operator authorized the S02 local release fast-forward, independent
+validation, then S03 on 2026-11-11, same Luna 6 High CC and separate Sol 6.1
+High CDC, Autonomous Mode. [Release integration](../slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
+is independently accepted at 0829e892999890e8877dec5e35cd249753e1be5d, tree
+d0f802ca4eb1847400c7395f1c203ada3263403b. No push, publication or later source
+integration is authorized by this S03 assignment.
+
+Implementation reuses `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering`
+on dedicated `codex/qualified-adt-core`, created clean from that accepted pin.
+Release stays separate at `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x`.
+Canonical planning is the existing orphan planning worktree. Root owns design,
+parent plans and planning index; CC owns task source/build during assigned
+implementation; Sol owns independent checks after explicit handoff.
+
+Deliver the local/single-file part of the [accepted S01 contract](../slice01-contract-and-emission-design/artifacts/qualified-adt-contract.md).
+That complete contract governs syntax, static ownership, runtime descriptors,
+qualified guard/call/TDZ rules, declaration shape, serialization loss and the
+intended migration. Same-module facade access is the semantic baseline, not a
+winner of the later reference-lowering experiment. Imported graph/interfaces,
+reexports and the two-layout comparison remain S04; actual build/JSON composition
+is S05; the full API/docs/book/human gates remain S06/S07. Existing I4 protected
+early-return work is separate. Do not silently keep flat constructor dispatch
+as the new language contract or select a production optimizer strategy here.
+
+Use bounded engineering increments, preserving all eight LC criteria:
+
+1. **A: protected host foundation.** Independently review and implement the
+   finite v2 host contract and hygienic compiler-owned intrinsic references,
+   including transitive existing guard/error operations. Existing typed guard
+   production paths consume it; no ADT syntax migration yet. This is the initial
+   `cc-prompt.md` assignment. Its private lowerer must coexist with protected
+   Reflect invocation and preserve ordinary no-request output. A's independent
+   acceptance is required before dependent nominal initialization uses it.
+2. **B: local metadata and nominal semantics.** Prepare the source-ready
+   iteration against accepted A. Fresh per-unit state, typed OwnerRef/CaseRef,
+   lexical owners/immutable aliases, static validation and same-module runtime
+   namespace/brand/case construction and recursive matching. Preserve real
+   qualifier reads and declaration-position TDZ. Migrate the necessary corpus
+   rather than maintaining accidental flat global-case lookup.
+3. **C: complete consumers and initialization proof.** Finish precise DTS,
+   API/CLI/browser-compile/embedded consumers, scoped compiler-owned initialization
+   purity provenance (including feature-local support initializers in the ADT
+   dependency graph) and its serialization/codegen boundaries, required
+   migration and full single-file proof. Typed purity is reviewed before use;
+   source-shaped annotations and application constructor calls are not trusted.
+
+These are implementation checkpoints within S03, not reduced scope, extra
+acceptance claims or authority to skip later gates. Root issues preserved
+numbered prompts after source inspection/readiness for B/C; CC does not invent
+their public semantics from the brief. Each usable checkpoint is committed and
+independently checked; LC rows close only when their full stated verifier is met.
+
+All new research probes/helpers use Lykn. No Python execution or Python/Ruby/
+Fennel/handwritten JS research helper is permitted; product Rust/JS and normal
+product tests are in scope. Use existing product harnesses, direct native CLI
+and useful bounded receipts; no reconstruction framework, source/binary cache
+archives or arbitrary artifact caps. Keep useful failures and issued prompts.
+Do not reformat legacy JS whole files or amend already committed evidence.
+
+The source-ready A recipe fixes the finite protected set and capture/alias
+policy, preserves unknown/dynamic/foreign limits, and supplies discriminating
+runtime and source-write tests. Later initialization-proof work must distinguish
+trusted declaration initialization from effectful user expressions. Per-unit
+metadata and local nominal changes do not imply all existing builtin keyword
+guards are already coherent: public symbol/bigint and native promise behavior
+are concrete pre-existing differences to record and route, not hide.
+
+Final S03 validation includes focused native/public default/stripped semantics,
+normal CLI, actual embedded delivery and browser path, declaration consumers,
+fresh state/alias/TDZ/collision/descriptor/serialization negative controls,
+`make check`, committed-HEAD citation and 80 KiB browser gates. No repeated docs
+outside make check. A passing intermediate substrate test is not S03 closure.
+
+The browser contract here is compileLykn/the normal compile adapter returning
+ESM text, as S01 specifies. Existing browser run/load use indirect eval and
+cannot execute emitted fallback imports. Record their expanded affected cases
+and route the execution-policy/API impact to S06; this slice does not promise
+a new run/load, CSP or module-loader policy. Test browser-compiled output in an
+ESM-capable consumer without disguising that distinction.
+
+Root's preparation inspected the actual native/public guard/error producers,
+private atom/writer and pointer-anchored Reflect request path, whole/fragment
+JSON signatures, browser compile/eval split, CLI call sites and duplicate
+embedded package. Sol's separate read-only readiness review confirmed the
+finite operations and identified two ambiguities, resolved before issue:
+whole-unit JSON lowers refs and returns Result<String,LyknError>, fragment
+JSON returns Result<Value,LyknError> and rejects unfinished refs; browser
+compile is distinct from existing eval execution. A's alias shape may evolve
+under later LC-06 proof; it selects no final optimizer strategy.
+
+2026-11-11 final read-only preparation review by the separate Sol 6.1 High
+context supports issuing increment A after those clarifications. This is
+assignment readiness only; no LC implementation criterion is closed.

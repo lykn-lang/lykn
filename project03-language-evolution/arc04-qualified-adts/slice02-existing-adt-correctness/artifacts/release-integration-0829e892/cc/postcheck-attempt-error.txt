@@ -1,0 +1,1 @@
+Failed postcheck diagnostic: `git merge-base --left-right --count OLD HEAD` used unsupported options; no repository state was changed. Replaced by `git rev-list --left-right --count OLD..HEAD`.

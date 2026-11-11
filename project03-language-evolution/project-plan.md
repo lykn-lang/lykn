@@ -9,11 +9,18 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
-2026-11-11 current gate. [Arc04 S02](arc04-qualified-adts/slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
+2026-11-11 current work: [Arc04 S03](arc04-qualified-adts/slice03-local-qualified-nominal-core/slice-plan.md)
+is open from [independently validated local release 0829e892](arc04-qualified-adts/slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md).
+The first bounded increment is the finite host/reference prerequisite. Local
+qualified nominal behavior, private purity and final consumer gates remain to
+be implemented and verified; the active plan retains all eight LC criteria.
+Luna 6 High CC / separate Sol 6.1 High CDC and Autonomous Mode continue.
+
+Prior source gate. [Arc04 S02](arc04-qualified-adts/slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
 is independently closed at task 0829e892 for the original nested/
 zero-field repairs, shared pattern semantics and actual embedded delivery.
-Final metadata review accepts all five PC rows and QA-02. Release remains 685bbe1d. S03 local
-qualified nominal core is next, followed by imported metadata/emission proof,
+Final metadata review accepts all five PC rows and QA-02. Release was 685bbe1d
+at source closure; its later integration and S03 opening are above. Imported metadata/emission proof,
 actual build/JSON composition and full API/docs/book/human gates. S01's accepted
 contract remains the design authority; P-QADT stays open. The 24-cell emission
 experiment is unrun and retains its source-ready/operator checkpoint. Existing
