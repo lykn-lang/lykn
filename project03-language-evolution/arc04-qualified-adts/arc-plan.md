@@ -2,11 +2,18 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.1"
+version: "1.2"
 related: [project07-core-library-research]
 ---
 
 # Qualified ADTs
+
+2026-11-11 current gate: [S01 is independently accepted](slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+at design-review strength, with all five QD rows and QA-01 done. The accepted
+contract/protocol candidate is 4d4aef29, verified in 30a7c78d. Source remains
+685bbe1d; no new compiler behavior, experiment or production strategy is
+accepted. S02's source-ready existing-ADT repair is next. The seven-increment
+v1.1 decomposition below is unchanged by this status-only v1.2 closeout.
 
 Deliver coherent type-qualified construction, matching and public JavaScript
 access, grounded in the operator's 2026-11-10 approval. The agreed source
@@ -78,6 +85,9 @@ survive this detour, including every YAML and human-review obligation.
 
 ## Version history
 
+- 2026-11-11 v1.2. Record S01's independent design acceptance, source-unchanged
+  boundary and next S02 handoff. No change to the v1.1 scope, sequencing,
+  criteria, source gates or operator experiment/human-review duties.
 - 2026-11-10 v1.1. S01's design/review exposed separate local semantics,
   imported-interface/ABI and emission-proof prerequisites. Split former S03,
   move comparison to new S04 and composition to S05, and retain the audit and

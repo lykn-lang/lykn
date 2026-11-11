@@ -1,6 +1,11 @@
-# Qualified ADT contract — iteration03 proposal
+# Qualified ADT contract — accepted S01 design
 
-**Status:** CC proposal for independent review; all QD rows remain open. This version replaces the current contract text while preserving earlier candidate and review history in Git and the slice-root report. Examples are design inputs and were not compiled or run.
+**Status, 2026-11-11:** independently accepted as the S01 design at candidate
+4d4aef29, with [final verification](../cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+committed in 30a7c78d. All five QD design rows are done. Implementation and
+its source/runtime/type validation remain later gates. Examples were not
+compiled or run. Earlier proposals and reviews remain preserved in Git and
+the slice-root report.
 
 ## Source forms, binding resolution, and diagnostics
 

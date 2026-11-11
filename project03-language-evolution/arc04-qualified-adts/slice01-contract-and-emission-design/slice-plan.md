@@ -2,10 +2,29 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice01-contract-and-emission-design
-status: active
+status: closed
 ---
 
 # Qualified ADT contract and emission design
+
+## Accepted design closeout, 2026-11-11
+
+All five QD rows and arc QA-01 are independently accepted at design-review
+strength. Candidate 4d4aef29 was verified by the separate Sol 6.1 High
+context in 30a7c78d; see the [final verdict](cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+and [retrospective](cdc-retrospective.md). Luna 6 High authored the artifact
+corrections; the root context coordinated PL decisions and this closeout.
+The completed final assignment was [iteration04](cc-prompt-iteration04.md).
+The historical activation and readiness records below remain provenance.
+
+The delivered capability is a settled contract and an executable proposed
+protocol for later implementation. Source and release remain clean at
+685bbe1d, with CLI digest unchanged from activation. No compiler feature,
+prototype, runtime result, bundle measurement or layout winner is claimed.
+S02 is next for source-ready NPAT/ZVAR repair. The actual arc retains local
+core, imported-interface/emission, final composition, API audit and conditional
+documentation increments. Experiment execution still requires source-ready
+pins and agreement on the frozen checkpoint; human source review remains.
 
 ## Authorized execution preflight, 2026-11-10
 
@@ -76,9 +95,10 @@ these two protocol clarifications in a6a328f8. They are now explicit in the
 open set. This is readiness for design drafting, with QD/QA criteria still
 open and the concrete experiment proposal awaiting agreement.
 
-Current [CC assignment](cc-prompt-iteration04.md) makes the narrow RV-14/15
-corrections after independent review 0ee6496e of candidate 28f540d4. RV-01–13
-are supported at design level; the remaining edits remove a redundant
+Final [CC assignment](cc-prompt-iteration04.md) completed the narrow RV-14/15
+corrections after independent review 0ee6496e of candidate 28f540d4. Final
+review 30a7c78d accepts all five design criteria at 4d4aef29; there is no
+active CC assignment in this closed slice. The edits remove a redundant
 declaration alias and use ? in the five observer value expressions.
 The [initial assignment](cc-prompt.md), proposal 4bd224fc, not-accepted review
 1615547d, [iteration01](cc-prompt-iteration01.md) and

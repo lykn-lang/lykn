@@ -1,3 +1,41 @@
+# S01 current closeout — 2026-11-11
+
+Root coordination records S01 closed following separate Sol 6.1 High
+[independent design acceptance](cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+in 30a7c78d of Luna 6 High's final candidate 4d4aef29. Five opening QD rows
+are five done design rows, with no drop, deferral or no-op; arc QA-01 is
+done and QA-02–06 remain open. Earlier contributor returns below retain their
+original proposed/open dispositions and are historical rather than current.
+
+Delivered artifacts are the [contract](artifacts/qualified-adt-contract.md)
+and [protocol proposal](artifacts/emission-protocol.md). The existing
+preparation review is retained under artifacts; the root
+[retrospective](cdc-retrospective.md) is a first-class closing record.
+The final coordination changes update status/evidence pointers and parent
+handoffs, with no semantic change to the independently reviewed design.
+
+Scope as specified was a settled design/protocol, not compiler implementation
+or experiment execution; scope as delivered matches that endpoint. Root's
+rejected sidecar direction, alias-TDZ correction, all RV-01–15 findings and
+issued iterations remain identifiable in Git and the review/report history.
+The arc was explicitly re-sliced from six to seven increments so local core
+precedes imported metadata/ABI and the gate; final composition, API/docs audit
+and conditional documentation remain required.
+
+Closing read-only checks confirm source and release are clean at
+685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95 and the task CLI still hashes to
+0cf695212c617b413f0d54fbfc1d0134da1361c33eba4bf627c13f9cb550e4a2.
+Authored Markdown whitespace checks passed. No parser, compiler, TypeScript,
+runtime, observer, bundle, gzip or replay check was run or implied by S01.
+No source integration, registry publication or licence decision occurred.
+
+Next usable increment is Arc04 S02's original NPAT/ZVAR repair, after its
+source-ready assignment. Project07's queued file/module authoring trial still
+requires the later accepted ADT source and refreshed guide/book/compiler pins.
+The 24-cell proposal requires source-ready candidates and frozen-checkpoint
+agreement before execution. Human code-shape review and final JSON/YAML
+research synthesis/library handoff obligations remain with their owners.
+
 # S01 CC design return — 2026-11-10
 
 CC returns the [qualified ADT contract](artifacts/qualified-adt-contract.md)

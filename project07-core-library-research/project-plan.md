@@ -9,6 +9,14 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-11 current handoff. [Project03 Arc04 S01](../project03-language-evolution/arc04-qualified-adts/slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+settles the qualified ADT contract and proposed emission protocol at independent
+design-review strength. Its source is still 685bbe1d; original ADT repairs,
+qualified implementation and final build/decoder composition remain next.
+The file/module authoring trial stays queued until that accepted source and
+its compiler/guide/book pins are refreshed. Library implementation, YAML and
+final research synthesis/human-review obligations remain open.
+
 2026-11-10 current re-entry. [S01 authoring evidence](arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/cdc-verification.md)
 is independently accepted with 105 ordinary row-condition outcomes and
 36 characterized control cells, including six nested-pattern failures.

@@ -9,6 +9,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+2026-11-11 current gate. [Arc04 S01](arc04-qualified-adts/slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+is independently accepted for its qualified ADT contract and concrete emission
+protocol proposal. Implementation starts with the original nested/zero-field
+repairs in S02; the arc now separates local nominal core, imported metadata
+and emission proof, final build/JSON composition, API audit and conditional
+documentation. The compiler/release remain 685bbe1d and P-QADT stays open.
+The proposed 24-cell gate is unrun and requires its source-ready checkpoint.
+
 2026-11-10. The operator approved qualified ADT construction and pattern
 syntax, declared-constructor resolution, distinct owning-type identity and
 tree-shaking validation. [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md)

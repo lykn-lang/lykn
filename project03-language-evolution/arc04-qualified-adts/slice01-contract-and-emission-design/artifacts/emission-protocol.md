@@ -1,6 +1,12 @@
-# Qualified ADT emission protocol — iteration03 proposal
+# Qualified ADT emission protocol — reviewed S01 proposal
 
-**Status:** CC protocol proposal for independent review. QD-04 remains open. No fixture was compiled and no esbuild, Deno observer, runtime, gzip, or replay command was executed. Operator agreement and source-ready candidates are prerequisites.
+**Status, 2026-11-11:** independently accepted as S01's concrete protocol
+proposal at candidate 4d4aef29, with [final verification](../cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+committed in 30a7c78d. QD-04 is done at design-review strength. No fixture was
+compiled and no esbuild, Deno observer, runtime, gzip or replay command was
+executed. Source-ready candidates and operator agreement on the frozen
+checkpoint remain prerequisites to execution. No production strategy is
+selected by this review.
 
 ## Fixed candidate comparison
 
