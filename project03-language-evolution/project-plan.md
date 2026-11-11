@@ -10,9 +10,9 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 2026-11-11 current gate. [Arc04 S02](arc04-qualified-adts/slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
-has independent software acceptance at task 0829e892 for the original nested/
+is independently closed at task 0829e892 for the original nested/
 zero-field repairs, shared pattern semantics and actual embedded delivery.
-Final documentary closure is pending. Release remains 685bbe1d. S03 local
+Final metadata review accepts all five PC rows and QA-02. Release remains 685bbe1d. S03 local
 qualified nominal core is next, followed by imported metadata/emission proof,
 actual build/JSON composition and full API/docs/book/human gates. S01's accepted
 contract remains the design authority; P-QADT stays open. The 24-cell emission

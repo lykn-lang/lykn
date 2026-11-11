@@ -9,8 +9,8 @@ related: [project07-core-library-research]
 # Qualified ADTs
 
 2026-11-11 current gate: [S02 existing ADT correctness](slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
-has independent software acceptance at task `0829e892`. Its last documentary
-row is pending metadata review. The repair preserves flat constructors and
+is independently closed at task `0829e892`, with all five PC rows and QA-02
+done after final metadata review of planning b61c9968. The repair preserves flat constructors and
 adds recursive match/conditional correctness, zero-field parity, necessary
 sequence/hygiene dependencies and actual embedded delivery. Initial candidate
 7b09a4e's embedded-payload hold and all evidence remain preserved. Release
@@ -98,8 +98,8 @@ survive this detour, including every YAML and human-review obligation.
 
 ## Version history
 
-- 2026-11-11 v1.3. Record S02 software acceptance at task 0829e892, pending
-  documentary close, actual embedded delivery and explicit existing limits.
+- 2026-11-11 v1.3. Record S02 source and documentary acceptance at task 0829e892,
+  actual embedded delivery and explicit existing limits.
   Release stays 685bbe1d and the seven-increment scope/gates are retained.
 
 - 2026-11-11 v1.2. Record S01's independent design acceptance, source-unchanged

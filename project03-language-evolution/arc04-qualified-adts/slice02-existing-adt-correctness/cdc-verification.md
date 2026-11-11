@@ -1,5 +1,12 @@
 # S02 independent verification
 
+**Current verdict — 2026-11-11:** corrected source `0829e892` and the S02
+documentary close are independently accepted. The final metadata review of
+planning `b61c9968` below supports PC-05 done, slice closed and arc QA-02 done.
+Those clerical updates remain root-owned. All five PC criteria are satisfied;
+release integration and QA-03–QA-06/P-QADT remain open. The initial RV-01 hold
+below is preserved historical evidence for the rejected `7b09a4e` candidate.
+
 ## Initial exact-pin source review — 2026-11-11
 
 **Verdict: candidate 7b09a4e is not accepted. All five PC rows remain open.**
@@ -137,7 +144,7 @@ The same independent Sol 6.1 High context received explicit source/build and
 execution ownership after CC finished source work. CC's planning handoff is
 `e24804da5a9282e43d2fdddf5369e8d5499f989f`. Reviewed the actual initial and
 corrected CC reports, iteration03 at `87ad086c`, its retained raw evidence,
-plan v1.3 and all five PC criteria, then independently executed the checks
+plan v1.4 and all five PC criteria, then independently executed the checks
 below. This is not acceptance by copying CC's summary.
 
 Exact source stayed clean on `codex/adt-pattern-correctness` at
@@ -290,3 +297,64 @@ ADT feature, emission experiment, production strategy, book/human or higher
 arc/project acceptance follows. Root owns ledger changes and the remaining
 documentary close. The reviewer returns exclusive source/build and review-file
 ownership now; no staging or commit occurred.
+
+## Final documentary metadata acceptance — 2026-11-11
+
+**Verdict: PC-05 is independently satisfied; support final S02 closure.**
+Reviewed actual planning delta
+`e24804da5a9282e43d2fdddf5369e8d5499f989f` through
+`b61c9968c6c7bf920be9a8984c6366d8e70810af`. Root authored the handoff
+reconciliation, retrospective and parent bookkeeping; Luna 6 High CC authored
+the preserved implementation/close records. This assigned Sol 6.1 High context
+independently reviewed those actual documents and status relationships. The
+retrospective remains root's self-analysis, not independent acceptance of its
+own work. This section supplies the separate documentary verdict.
+
+The reconciliation accurately enumerates all 24 source paths and the two
+scoped source commits. Issued initial/three iteration prompts, original and
+corrected CC reports, initial RV-01 hold, fresh independent evidence and failed
+attempt distinctions remain present. The retrospective owns preparation gaps
+in sequence grouping, phase-aware hygiene and duplicate embedded delivery;
+it preserves the existing protected-return owner and unavailable historical
+raw-log limit. It derives bounded follow-up lessons without claiming a measured
+process improvement, a model limitation or a framework/memory change.
+
+The five-row slice ledger currently has PC-01–PC-04 done and PC-05 open pending
+this check. No row was removed, weakened, deferred or added. The implemented
+dependencies and API/documentation audit implications are explicitly carried:
+flat ADT correctness, sequence grammar, literal conditional patterns, private
+compiler helpers, changed emitted shape and actual embedded delivery. S03 must
+start from the accepted repair or independently validated integration. S04's
+source-ready/operator experiment checkpoint, S05 composition/re-pin and
+S06/S07 API/docs/book/human work remain open.
+
+Arc04 currently has six QA rows: only QA-01 is done; QA-02 awaits this slice's
+documentary closure; QA-03–QA-06 remain open. Project03 P-QADT remains open.
+Project07's correction note records NPAT/ZVAR task-source acceptance without
+rewriting original research pins or claiming decoder re-pin, RDEO/RTCK, library
+or human acceptance. Parent and slice status pointers link to the actual
+independent software record and retained evidence/retrospective; the cited
+slice records and relative targets inspected resolve. No broader completion
+is smuggled into this bubble-up.
+
+Source was checked read-only again: task HEAD remains clean `0829e892`,
+release/0.6.x remains `685bbe1d`, and their left/right count remains `0 2`.
+No source, execution condition or behavioral contract changed, so the earlier
+independent runtime/full/citation/size evidence remains applicable at its
+original date/pins; no source gate was rerun for this metadata-only delta.
+The corrected section's plan-version reference above is repaired to v1.4:
+`git show 87ad086c:.../slice-plan.md` confirms that was the actual iteration03
+assignment boundary. Initial source review's v1.3/16b8d039 reference remains
+historically correct and unchanged.
+
+All five PC criteria now have final independent support: PC-01–PC-04 from the
+software verification above and PC-05 from the actual scoped records,
+retrospective, history and parent reconciliation checked here. Root may apply
+the intended clerical transition PC-05 done, S02 closed and arc QA-02 done,
+with matching current-status prose. Keep QA-03–QA-06 and P-QADT open, retain
+the I4/unregistered/warm-cache limits, and preserve release `685bbe1d`. No new
+source, integration, publication or later-slice authority follows.
+
+Only this verification record was edited by the reviewer. Authored Markdown
+diff checks have no whitespace diagnostics. No source test/build/probe, stage,
+commit or parent/ledger edit occurred. File ownership returns to root.

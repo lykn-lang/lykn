@@ -2,17 +2,18 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice02-existing-adt-correctness
-status: active
-version: "1.4"
+status: closed
+version: "1.5"
 depends-on: [slice01-contract-and-emission-design]
 ---
 
 # Existing ADT correctness
 
-2026-11-11: corrected software candidate `0829e892` is independently accepted
-within the stated limits. PC-01 through PC-04 are done; PC-05 remains open for
-the actual retrospective/parent metadata check. Source is task-only; release
-`685bbe1d`, qualified ADTs and later arc gates remain unchanged.
+2026-11-11: closed with all five PC rows done. Corrected software candidate
+`0829e892` has independent runtime acceptance, and the final metadata review of
+planning `b61c9968` accepts the retrospective, history and parent handoff.
+Source is task-only; release `685bbe1d`, qualified ADTs and later arc gates
+remain unchanged. Earlier open/held stages below retain their dated context.
 
 Repair D-2611-NPAT and D-2611-ZVAR in the native and public compilers before
 changing ADT representation. This increment preserves flat constructors and

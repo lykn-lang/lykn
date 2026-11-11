@@ -1,8 +1,8 @@
 # Arc03 — Findings and integration
 
-2026-11-11 NPAT/ZVAR source correction has independent software acceptance in
+2026-11-11 NPAT/ZVAR source correction is independently closed in
 Project03 [Arc04 S02](../../project03-language-evolution/arc04-qualified-adts/slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
-at task `0829e892`, with final documentary closure pending. Unchanged original
+at task `0829e892`, including final documentary acceptance. Unchanged original
 controls pass native default/stripped and canonical/materialized public paths.
 Release remains `685bbe1d`; original research observations/pins are unchanged.
 Qualified ADT work, final decoder re-pin/composition and guide/book/human review
@@ -209,8 +209,8 @@ CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
 
-- 2026-11-11 v1.18: Record independently accepted NPAT/ZVAR software repair at
-  Project03 Arc04 S02 task 0829e892, pending documentary close. Preserve original
+- 2026-11-11 v1.18: Record independently closed NPAT/ZVAR repair at
+  Project03 Arc04 S02 task 0829e892. Preserve original
   research, separate correction owners and later composition/human gates.
 
 - 2026-11-10 v1.17: Operator approved qualified construction and matching.
