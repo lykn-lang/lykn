@@ -203,8 +203,8 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration07](cc-prompt-iteration07.md), consolidated IC-01 correction after iteration06's HOLD;
-implementation at accepted B1 3f197340/tree9ee95765. The preserved initial
+**Current assignment:** [iteration07](cc-prompt-iteration07.md), consolidated IC-01 correction after iteration06's HOLD,
+starting at5bdbfe3c/treee0a95d74 (the accepted B1 ancestor remains3f197340). The preserved initial
 design remains historical where superseded by the role contract. Root owns
 architecture/planning; Luna owns task source/build until clean handoff; Sol
 then independently validates actual software. IC-01 has its own ledger row,
