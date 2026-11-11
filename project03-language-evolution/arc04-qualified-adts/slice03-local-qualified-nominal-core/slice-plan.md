@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.12"
+version: "1.13"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,8 +203,9 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration07](cc-prompt-iteration07.md), consolidated IC-01 correction after iteration06's HOLD,
-starting at5bdbfe3c/treee0a95d74 (the accepted B1 ancestor remains3f197340). The preserved initial
+**Current assignment:** [iteration08](cc-prompt-iteration08.md), explicit pattern grammar,
+single function-default traversal and safe malformed headers after iteration07's HOLD,
+starting atb8a1fa17/treed3e604b2 (the accepted B1 ancestor remains3f197340). The preserved initial
 design remains historical where superseded by the role contract. Root owns
 architecture/planning; Luna owns task source/build until clean handoff; Sol
 then independently validates actual software. IC-01 has its own ledger row,
@@ -223,7 +224,8 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration04.md | 2026-11-11 | iteration03 | B1 per-call metadata isolation | Accepted3f197340 as partial LC-02 only |
 | cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
-| cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Returned for independent review atb8a1fa17/treed3e604b2; three correction commits retained |
+| cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
+| cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Active CC implementation; reviewer returned source/build; root verified pin and archive26d6d7c9 |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -286,3 +288,18 @@ comparison/25-case M6, public14/binding30, size43828 and committed citations64/6
 These remain proposed evidence; IC-01 is open until corrected software review.
 Intermediate284 gate receipts and original5bdb HOLD remain historical. Root
 owns planning index/records; current assignment is returned for review.
+
+Independent corrected-candidate review holds b8a1fa17 on R06 wrong non-parameter
+pattern grammar (actual bind/loop alias locals), R07 repeated public function
+default traversal and R08 native empty func/genfunc header panic. Old R01–05
+witnesses now behave as required. No independent full gates ran after the new
+substantive failures; prior CC full results remain attested. Root's
+[correction02 design](artifacts/ic01-correction02-design.md) changes the causal
+method: every private projection/default caller selects an actual producer
+grammar explicitly, function headers no longer fall through to generic walking,
+and malformed source returns to normal classification. Typed surface lambda
+and actual kernel lambda remain distinct. This is IC refinement3, with all
+earlier passes/failures and the five-pass limit retained. Source/build ownership
+transfers only after the reviewer finishes its durable HOLD; Luna then executes
+iteration08 and returns a clean candidate to separate Sol review. IC-01 stays
+open; qualified-constructor implementation does not resume on CC attestation.

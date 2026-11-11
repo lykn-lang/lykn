@@ -534,3 +534,83 @@ carryovers, I4, warm-cache, legacy fallback and browser run/load limits remain.
 Source/build execution and CDC record/evidence ownership return to root for
 the bounded correction. Root owns architecture, planning Git/index and status;
 no next implementation authority follows from this review.
+
+## IC-01 correction01 independent software review — HOLD at b8a1fa17
+
+Reviewed clean candidate `b8a1fa17cf9543c22a52228d17f0dd19e3fcf0a1`, tree
+`d3e604b206cfedac1ec97a5932ba8b1bb5fca61f`, on codex/qualified-adt-core,
+against issued iteration07/correction design and the eleven-path source delta
+from 5bdbfe3c. The old HOLD archive and findings are preserved. Source/index
+were diagnosis-only and remain unchanged; git diff --check passes.
+
+Three independently reproduced findings prevent IC-01 acceptance:
+
+- **IC-R06, correctness:** typed-parameter grammar is still selected at real
+  non-parameter binding-pattern consumers. `(for-of (object (alias :value
+  package)) (array (obj :value 1)) (console:log 1))` passes native checked and
+  stripped compile/check, public direct validation, complete compilation and
+  expandExpr. Actual native and public emitted ESM fail strict parsing at the
+  real local package binding. `(bind (object (alias :value package)) (obj
+  :value 1)) (console:log 1)` has the same native compile/check escape; public
+  direct validation misses it but final/expandExpr gates reject after lowering.
+  Corresponding safe-local loop and bind both pass all native modes and public
+  compilation and actually print `1\n` with empty stderr. Thus these are
+  supported grammar, not malformed fixtures. Native loop_names/catch_names and
+  public loop/catch bindingsIntroduced call the default source projector;
+  source-bind projection/default callers likewise require explicit binding
+  grammar. The catch analogue is retained only as a confounded observation:
+  its safe counterpart also fails existing lowering, so no catch runtime
+  repair is inferred from it.
+- **IC-R07, traversal contract:** public function defaults are visited twice.
+  Direct walkBindings on `(function example ((default value (do (bind local
+  (fn (:any inner) inner)) local))) (return value))` returns
+  `[example,value,local,inner,local,inner]`. Typed fn and kernel arrow variants
+  return `[value,local,inner,local,inner]`. Matched class-member and kernel
+  declaration controls visit the defaults once. Public binding.js:179–184
+  explicitly walks defaults, then the generic scope-plan traversal re-enters
+  the header. This is not a claim that emitted runtime defaults execute twice.
+- **IC-R08, diagnostic regression:** standalone `(func)` and `(genfunc)` each
+  panic with exit 101 through native checked compile, stripped compile and
+  check. binding.rs:538 slices `&args[1..]` when args is empty, preventing the
+  established classifier missing-name/body diagnostic. Public compilation
+  retains an ordinary error.
+
+The old IC-R01–05 concrete witnesses now behave as intended at this pin:
+late body, computed callee, parameter/class/declaration/nested-alias defaults,
+and supported macro-produced typed fn receive reserved-binding diagnostics
+through the applicable native/public gates. Both public body/post textual
+orders actually execute `true\n`. Native body-before-post executes `true\n`
+in both modes and passes check; its explicitly retained post-before-body
+ordering limit rejects eval and is not claimed repaired. Positive actual
+modules prove safe supported macro output (`0\n`), typed external package
+alias key (`local-value\n`), last-wins body groups (`1\n`), and locally bound
+class-method bind call (`function\n`). The macro definition alone remains an
+inapplicable expandExpr first-form unit, not a new failure.
+
+Canonical focused product tests pass **17/17** (3 parity + 14 role), native
+binding units **30/30** (1,154 filtered), permanent native supported-macro
+compile/check/stripped oracle **1/1** (181 filtered). The direct public parser
+and clause-key Set reexport identities both compare equal. All seven
+changed/new canonical–embedded comparisons pass. DD49 algorithm comparison
+still matches apart from the known blank line. Focused public imports explicitly
+map lang/ to current packages/lang, avoiding stale target staging. Both explicit
+existing DENO_DIR and owned npm/XDG/tmp are recorded. Rust/Cargo 1.97.0 and
+Deno 2.9.6; handed-off target/release and bin binaries share SHA-256
+`ff84481bb13c29da730bde2fb1cdc937d85713907d19f3ad2e65ca192a2a9935`.
+
+[Receipt index](artifacts/increment-ic01/correction01/cdc/README.md) maps all
+sources, generated modules, launch conditions/status/streams, censuses and
+inventory. [Archive](artifacts/increment-ic01/correction01/cdc/receipts-b8a1fa17.tar.gz)
+SHA-256 is `26d6d7c93e21bd8830ff36dc5c59de668f0e142a3c74d64f740120856244d380`.
+CC's missing historical Clippy raw stream remains disclosed as transcript-only;
+intermediate 284ad97 gates are not relabelled final candidate evidence. No raw
+history was reconstructed.
+
+No new full make check/docs, committed citation check, browser budget gate,
+cold M6 twelve-file/25-case delivery, or freshly rebuilt/copied release CLI
+proof was started after the substantive failures. These remain unrun final
+acceptance gates, not inherited independent passes. IC-01 remains HOLD; A/B1
+acceptance is unchanged, LC02–08/S03 and B2 D1/native-ordering carryovers remain
+open, and release0829 is unchanged. Source/build and CDC record/evidence
+ownership return to root for correction; root retains planning Git/index/status
+and architecture. This review grants no further implementation authority.
