@@ -8,7 +8,12 @@ related: [project07-core-library-research]
 
 # Qualified ADTs
 
-2026-11-11 current gate: [S01 is independently accepted](slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+2026-11-11 current gate: [S02 existing ADT correctness](slice02-existing-adt-correctness/slice-plan.md)
+is active under the operator's Autonomous Mode request. Its source-ready
+assignment preserves the flat representation and covers shared conditional
+binding paths. No source acceptance or release integration is claimed.
+
+[S01 is independently accepted](slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
 at design-review strength, with all five QD rows and QA-01 done. The accepted
 contract/protocol candidate is 4d4aef29, verified in 30a7c78d. Source remains
 685bbe1d; no new compiler behavior, experiment or production strategy is
@@ -35,7 +40,7 @@ validation. Integration and publication retain their existing authority.
 | Order | Usable increment | Required proof |
 | --- | --- | --- |
 | [S01 contract and emission design](slice01-contract-and-emission-design/slice-plan.md) | Reviewed source/runtime contract, affected-route map and a fixed emission-gate protocol | Resolve identity, scope, imports, guards, serialization, mutability and compatibility before dependent implementation. Prepare bounded native-esbuild comparison. |
-| S02 existing ADT correctness | Correct nested constructor checks/bindings and zero-field declaration behavior in both compilers | Reproduce D-2611-NPAT and D-2611-ZVAR with original inputs and meaningful positive/negative regressions. |
+| [S02 existing ADT correctness](slice02-existing-adt-correctness/slice-plan.md) | Correct nested constructor checks/bindings and zero-field declaration behavior in both compilers | Reproduce D-2611-NPAT and D-2611-ZVAR with original inputs and meaningful positive/negative regressions. |
 | S03 local qualified nominal core | Execute qualified local construction and nested matching in native/public single-file output and the normal CLI | Fresh per-unit metadata, OwnerRef/CaseRef static universes, guarded/stripped behavior, declarations, diagnostics, initialization order and necessary migration. Review the finite host-dependency extension and private initialization-purity provenance before using them. |
 | S04 imported interfaces and selective emission | Qualified imported owners/aliases resolve through actual module metadata and preserve identity | Implement the non-executing graph and real namespace/token/case ABI, then compare the two agreed same-module lowering strategies with 24 bundle cells per contributor. Operator agreement on the frozen checkpoint precedes execution; no winner is assumed. |
 | S05 build and research composition | Accepted production lowering remains usable and selective in actual build/package consumers | Verify integrated selective/escaping namespace, public exports, declarations and final artifacts at their real source pins; re-pin/replay the JSON decoder with explicit representation changes. Prototype evidence alone cannot close this. |
