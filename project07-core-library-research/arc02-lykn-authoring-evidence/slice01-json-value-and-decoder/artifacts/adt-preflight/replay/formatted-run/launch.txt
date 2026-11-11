@@ -1,0 +1,5 @@
+cwd=/private/tmp/lykn-project07-adt-cdc.MIMxUnfx/case
+argv='/usr/bin/env' '-u' 'BASELINE_GZIPPED' '-u' 'CARGO_TARGET_DIR' '-u' 'CARGO_NET_GIT_FETCH_WITH_CLI' '-u' 'RUST_LOG' '-u' 'LYKN_TEST_DENO' '-u' 'LYKN_SEMANTIC_ROLE_EVIDENCE_DIR' '-u' 'LYKN_PROTECTED_HOST_EVIDENCE_DIR' 'TMPDIR=/private/tmp/lykn-project07-adt-cdc.MIMxUnfx/formatted-run/tmp' 'XDG_CACHE_HOME=/private/tmp/lykn-project07-adt-cdc.MIMxUnfx/formatted-run/xdg' 'npm_config_cache=/private/tmp/lykn-project07-adt-cdc.MIMxUnfx/formatted-run/npm' 'DENO_DIR=/Users/oubiwann/Library/Caches/deno' 'PATH=/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin' '/opt/homebrew/bin/deno' 'run' '--no-config' '--cached-only' '--no-npm' '--no-remote' '--deny-net' '--no-prompt' 'output/formatted.js'
+stdout=/private/tmp/lykn-project07-adt-cdc.MIMxUnfx/formatted-run/stdout.raw
+stderr=/private/tmp/lykn-project07-adt-cdc.MIMxUnfx/formatted-run/stderr.raw
+exit_status=/private/tmp/lykn-project07-adt-cdc.MIMxUnfx/formatted-run/exit-status.txt

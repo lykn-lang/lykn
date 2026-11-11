@@ -9,6 +9,14 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-10 re-entry. Local `release/0.6.x` at `685bbe1d` passed
+[independent release validation](../project03-language-evolution/arc02-ad-hoc-maintenance/artifacts/release-integration-685bbe1d.md).
+The next library work is [Arc02 authoring evidence](arc02-lykn-authoring-evidence/arc-plan.md).
+The first JSON value probe has actual native and public compiler results.
+S01 will turn those observations into the decoder trial. The original
+JSON/YAML evidence and synthesis obligations remain the inputs for the
+separate library projects.
+
 2026-11-05 operator-approved approach amendment: core library source will live
 under `lang/lib/` in the language repository, as independently opt-in `@lykn/*`
 JSR packages with selective entrypoints. No standard-library imports means zero
@@ -242,7 +250,7 @@ source edits.
 | Arc | Capability | Dependencies | Status |
 | --- | --- | --- | --- |
 | [arc01-format-runtime-evidence](arc01-format-runtime-evidence/arc-plan.md) | Versioned JSON/YAML/Deno capability and dependency evidence, with reproducible probes and unresolved policy questions | None; existing planning substrate is usable | Active; Slices01–06/08–10 CDC closed; Slice04 closed by separate composition preserving partial history; document and arc composition gates remain |
-| arc02-lykn-authoring-evidence | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Roadmap only |
+| [arc02-lykn-authoring-evidence](arc02-lykn-authoring-evidence/arc-plan.md) | Representative Lykn trials connect ADT behavior, guide usability, book consistency, and operator code review | Arc01 baseline and format tasks; carry later Arc01 changes forward | Opened with S01 JSON value preflight |
 | [arc03-findings-and-integration](arc03-findings-and-integration/arc-plan.md) | Correct, validate, and independently verify accepted guide/book/language/tooling findings, with regression comparisons | Arc02 findings and any earlier urgent findings | Active early; Slices01/06/07 CDC closed; Slice08 qualified approvals recorded, new-code licence and CDC pending; Slice02 and source/guide/book work retained |
 | arc04-library-handoff | Recompose research into explicit library contracts and individual JSON/YAML project openings | Arcs01–03 and operator disposition of open design choices | Roadmap only |
 

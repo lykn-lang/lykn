@@ -1,0 +1,4 @@
+error: Error reading config file 'file:///private/tmp/lykn-project07-adt.Q2MAqPSb/project.json'.
+
+Caused by:
+    No such file or directory (os error 2)

@@ -1,0 +1,6 @@
+10:7: warning: unused binding 'JsonEntry'
+  suggestion: prefix with underscore: _JsonEntry
+12:7: warning: unused binding 'OtherValue'
+  suggestion: prefix with underscore: _OtherValue
+2:3: warning: unused binding 'JsonValue'
+  suggestion: prefix with underscore: _JsonValue

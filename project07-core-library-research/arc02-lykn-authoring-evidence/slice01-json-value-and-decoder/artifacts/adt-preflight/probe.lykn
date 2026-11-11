@@ -1,0 +1,62 @@
+(type JsonValue
+  JsonNull
+  (JsonBoolean :boolean value)
+  (JsonNumber :number value)
+  (JsonString :string value)
+  (JsonArray :array items)
+  (JsonObject :array entries))
+
+(type JsonEntry
+  (JsonField :string key :JsonValue value))
+
+(type OtherValue Other)
+
+(func value-tag :args (:JsonValue value) :returns :string :body
+  (get value "tag"))
+
+(func number-payload :args (:any value) :returns :any :body
+  (match value
+    ((JsonNumber payload) payload)))
+
+(func observe :args (:string name :function exercise) :returns :void :body
+  (try
+    (console:log (JSON:stringify #a(name "ok" (exercise))))
+    (catch problem
+      (console:log
+        (JSON:stringify
+          #a(name (get problem "name") (get problem "message")))))))
+
+(observe "six-variants"
+  (fn ()
+    #a(JsonNull
+       (JsonBoolean false)
+       (JsonNumber 0)
+       (JsonString "")
+       (JsonArray #a(JsonNull))
+       (JsonObject #a((JsonField "__proto__" JsonNull))))))
+
+(observe "exact-key"
+  (fn () (JsonField "a.b" JsonNull)))
+
+(observe "wrong-scalar"
+  (fn () (JsonNumber "bad")))
+
+(observe "wrong-array-shape"
+  (fn () (JsonArray (JsonNumber 1))))
+
+(observe "wrong-nested-array-member"
+  (fn () (JsonArray #a((JsonNumber 1) "bad"))))
+
+(observe "wrong-variant"
+  (fn () (JsonField "field" Other)))
+
+(observe "forged-tag"
+  (fn ()
+    (bind forged (obj :tag "JsonNumber" :value "bad"))
+    #a((value-tag forged) (number-payload forged))))
+
+(observe "missing-tag"
+  (fn () (value-tag (obj :value 0))))
+
+(observe "missing-match-arm"
+  (fn () (number-payload JsonNull)))
