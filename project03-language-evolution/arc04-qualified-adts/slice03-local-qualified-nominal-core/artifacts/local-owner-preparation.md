@@ -104,3 +104,49 @@ lowering/finalization interfaces, enumerate all changed API/caller signatures,
 then obtain Sol's separate preparation review. The eventual prompt must state
 the required builtin-guard parity limits, migration census and focused runtime
 oracles explicitly. This preparation record is not a claim of readiness.
+
+## Public macro-phase prerequisite selected after topology inspection
+
+Sol's second immutable-source lookup confirmed that no existing mode returns
+macro-expanded, unlowered surface syntax. `strict:false` only changes policy;
+`macroexpand` prints full lowering, and `macroexpand-1` prints one head step.
+The current head loop immediately re-enters lowering. An extra head scan that
+then reruns ordinary expansion is therefore not an acceptable collection pass.
+
+Root selects a bounded source-preserving macro-expansion prerequisite within
+B, before owner metadata and nominal activation. Separate macro expansion from
+surface lowering in the public compiler so both compilers can hand a complete
+expanded unit to semantic resolution. Keep the existing public expand/compile
+result contracts. This is private phase separation, not a new source form or
+public macroexpand API. It also avoids an active global type context.
+
+The source-ready recipe must extract the existing macro invocation/error/limit
+behavior and reuse binding-aware dispatch, quotation/quasiquotation handling,
+and source-role walkers. A generic recursion through every list is incorrect:
+patterns, parameter declarations, import/export names and type declarations
+contain syntax/data positions rather than ordinary calls. Match clauses need
+separate environments, grouped bind initializers need sequential visibility,
+and conditional arms must not leak bindings. Macro-produced declarations must
+update the actual following-sibling environment. Known surface forms retain
+priority over same-spelled macros, and lexical references retain priority over
+both. Preserve sanctioned-kernel authority when rebuilding nodes and retain
+existing private atom/request identities rather than copying their spelling.
+
+The macro stage executes each encountered user macro once per expansion step,
+including nested and array-returning expansions, and retains its expanded
+result. Lowering then consumes that result without reinvoking user macros.
+Existing registration and explicit resetMacros behavior remain a distinct
+contract; this work must not silently add global macro-state rollback/isolation.
+Preserve debug macroexpand's actual printing/erasure behavior and failure
+channels. Test source-order invocation, quote opacity, active unquotes,
+macro-generated top-level types and nested-type syntax retention, same-spelled
+bindings, per-clause/grouped/conditional scopes, kernel authority, expanded
+array results, and re-entrant calls. Real A host-support finalization and S02
+completion/Reflect/private-pattern controls must remain green.
+
+This prerequisite is not yet issued. Root will inspect accepted A, settle its
+exact producer/consumer signatures and preservation rules, and request the
+separate source-readiness review before writing the numbered implementation
+assignment. It closes no LC row on its own. Native owner-resolution metadata,
+nominal runtime activation, precise declarations, migration and private purity
+remain the rest of B/C rather than being dropped by this additional boundary.
