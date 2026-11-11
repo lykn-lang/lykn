@@ -199,7 +199,7 @@ Deno.test("lazy protected invocation checks source module binding roles", () => 
   const ordinaryWrite = read(
     '(bind Reflect! local) (saved receiver argv) (= Reflect:apply 0)',
   );
-  const expected = 'host-contract v1: write to protected slot Reflect.apply';
+  const expected = 'host-contract v2: write to protected slot Reflect.apply';
   assertThrows(() => compile(ordinaryWrite), Error, expected);
   assertThrows(() => compileWithHostInvocations(ordinaryWrite, compile, [
     hostInvocationRequest(newHostInvocationId(), findSavedCall(ordinaryWrite)),

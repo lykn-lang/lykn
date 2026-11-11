@@ -13,6 +13,7 @@ import {
 } from "./expander-core.js";
 import { toJsIdentifier } from "./compiler.js";
 import { markKernel } from "./kernel-mark.js";
+import { markHostReference } from "./compiler-private-atoms.js";
 // Param-shape sub-parsers (still in surface.js, not in this extraction set);
 // parseTypedParams delegates to them, so import them to satisfy the move.
 import {
@@ -23,6 +24,10 @@ import {
 
 // Re-export expander helpers for classifier.js convenience
 export { array, formatSExpr, gensym, isArray, isKeyword, sym, toJsIdentifier };
+
+export function hostReference(reference) {
+  return markHostReference(sym(""), reference);
+}
 
 const STATEMENT_ONLY_HEADS = [
   "while",
@@ -178,7 +183,7 @@ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
   const errorMsg = array(sym("+"), msg, typeofParam);
   const throwStmt = array(
     sym("throw"),
-    array(sym("new"), sym("TypeError"), errorMsg),
+    array(sym("new"), hostReference("TypeError"), errorMsg),
   );
 
   let check;
@@ -187,7 +192,7 @@ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
       check = array(
         sym("||"),
         array(sym("!=="), typeofParam, { type: "string", value: "number" }),
-        array(sym("Number:isNaN"), paramNode),
+        array(hostReference("NumberIsNaN"), paramNode),
       );
       break;
     case "string":
@@ -216,7 +221,7 @@ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
       );
       break;
     case "array":
-      check = array(sym("!"), array(sym("Array:isArray"), paramNode));
+      check = array(sym("!"), array(hostReference("ArrayIsArray"), paramNode));
       break;
     case "symbol":
       check = array(sym("!=="), typeofParam, {

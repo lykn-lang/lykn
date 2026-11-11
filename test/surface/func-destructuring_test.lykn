@@ -11,7 +11,7 @@
   (includes result "function process({name, age}, action)")
   (includes result "typeof name !== \"string\"")
   (includes result "typeof age !== \"number\"")
-  (includes result "Number.isNaN(age)")
+  (includes result "lyknIntrinsicNumberIsNaN0(age)")
   (includes result "typeof action !== \"string\"")
   (includes result "return"))
 
@@ -93,7 +93,7 @@
     (compile
       "(func transform (:args ((object :string name)) :body name) (:args ((array :number first)) :body first))"))
   (includes result "=== \"object\"")
-  (includes result "Array.isArray(")
+  (includes result "lyknIntrinsicArrayIsArray0(")
   (includes result "const {name}")
   (includes result "const [first]"))
 

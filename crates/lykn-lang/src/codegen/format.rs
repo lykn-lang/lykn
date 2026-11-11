@@ -13,6 +13,7 @@ pub struct JsWriter {
     at_line_start: bool,
     invocations: HashMap<usize, bool>,
     invocation_helper_name: String,
+    host_references: HashMap<usize, String>,
 }
 
 impl JsWriter {
@@ -24,16 +25,19 @@ impl JsWriter {
             at_line_start: true,
             invocations: HashMap::new(),
             invocation_helper_name: String::new(),
+            host_references: HashMap::new(),
         }
     }
 
     pub(crate) fn with_invocations(
         invocations: HashMap<usize, bool>,
         invocation_helper_name: String,
+        host_references: HashMap<usize, String>,
     ) -> Self {
         Self {
             invocations,
             invocation_helper_name,
+            host_references,
             ..Self::new()
         }
     }
@@ -62,6 +66,23 @@ impl JsWriter {
     pub(crate) fn write_invocation_helper_name(&mut self) {
         let name = self.invocation_helper_name.clone();
         self.write(&name);
+    }
+
+    pub(crate) fn write_host_reference(
+        &mut self,
+        node: &crate::ast::sexpr::SExpr,
+    ) -> Result<bool, crate::error::LyknError> {
+        let address = node as *const _ as usize;
+        if let Some(name) = self.host_references.get(&address).cloned() {
+            self.write(&name);
+            Ok(true)
+        } else if node.host_reference().is_some() {
+            Err(crate::codegen::host_references::invalid_reference(
+                "unfinished reference escaped complete-unit lowering",
+            ))
+        } else {
+            Ok(false)
+        }
     }
 
     /// Write a string fragment. If at the start of a line, prepend indentation

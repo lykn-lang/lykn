@@ -5,7 +5,7 @@ import { read } from "../../packages/lang/reader.js";
 function expectPolicyError(source, slot) {
   const forms = read(source);
   const error = assertThrows(() => compile(forms), Error);
-  assertEquals(error.message, `host-contract v1: write to protected slot ${slot}`);
+  assertEquals(error.message, `host-contract v2: write to protected slot ${slot}`);
 }
 
 Deno.test("protected host policy compares computed path segments exactly", () => {
@@ -18,7 +18,7 @@ Deno.test("protected host policy compares computed path segments exactly", () =>
     () => compile(read('(= (get (get globalThis "Reflect") "apply") 0)')),
     Error,
   );
-  assertEquals(error.message, "host-contract v1: write to protected slot Reflect.apply");
+  assertEquals(error.message, "host-contract v2: write to protected slot Reflect.apply");
 
   const defaultSource = "(function f ((default x (++ Reflect))) (let Reflect 0) x)";
   expectPolicyError(defaultSource, "Reflect");
@@ -56,4 +56,27 @@ Deno.test("protected host policy compares computed path segments exactly", () =>
 
   const catchSource = "(try 0 (catch err (let Reflect 0) (++ Reflect:apply))) (++ Reflect)";
   expectPolicyError(catchSource, "Reflect");
+});
+
+Deno.test("protected host v2 rejects exact roots and slots while allowing deeper members", () => {
+  for (const [source, slot] of [
+    ['(set! Symbol 0)', 'Symbol'],
+    ['(set! Symbol:for 0)', 'Symbol.for'],
+    ['(set! Object 0)', 'Object'],
+    ['(set! Object:freeze 0)', 'Object.freeze'],
+    ['(set! Object:defineProperties 0)', 'Object.defineProperties'],
+    ['(set! Number:isNaN 0)', 'Number.isNaN'],
+    ['(set! Array:isArray 0)', 'Array.isArray'],
+    ['(set! Promise 0)', 'Promise'],
+    ['(set! TypeError 0)', 'TypeError'],
+    ['(set! Error 0)', 'Error'],
+  ]) expectPolicyError(source, slot);
+
+  assertStringIncludes(compile(read('(set! Object:freeze:prototype 0)')), 'set(Object.freeze.prototype, 0);');
+  assertStringIncludes(compile(read('(function f (Number) (set! Number:isNaN 0))')), 'set(Number.isNaN, 0);');
+  expectPolicyError('(set! globalThis:Number:isNaN 0)', 'Number.isNaN');
+  assertStringIncludes(
+    compile(read('(set! globalThis:globalThis 0) (set! globalThis:Number:isNaN 1)')),
+    'set(globalThis.Number.isNaN, 1);',
+  );
 });

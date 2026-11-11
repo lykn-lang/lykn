@@ -184,7 +184,7 @@ fn exact_diagnostic(case: &str, source: &str, path: &Path, route: &str) -> Vec<u
     } else {
         "Reflect.apply"
     };
-    let message = format!("host-contract v1: write to protected slot {slot}");
+    let message = format!("host-contract v2: write to protected slot {slot}");
     let rendered = format!(
         "{}:{}: error: {message}\n",
         span.start.line, span.start.column
@@ -219,7 +219,7 @@ fn run_predicate_controls() {
         modified: UNIX_EPOCH,
     };
     let expected_stderr =
-        b"1:7: error: host-contract v1: write to protected slot Reflect.apply\n".to_vec();
+        b"1:7: error: host-contract v2: write to protected slot Reflect.apply\n".to_vec();
     let baseline_effects = ArtifactEffects::Preserve {
         js: ArtifactPair {
             before: js_state.clone(),
@@ -277,7 +277,7 @@ fn run_predicate_controls() {
             code: Some(1),
             stdout: Vec::new(),
             stderr:
-                b"macro expansion error: host-contract v1: write to protected slot Reflect.apply\n"
+                b"macro expansion error: host-contract v2: write to protected slot Reflect.apply\n"
                     .to_vec(),
             expected_stderr: correct.clone(),
             effects: baseline_effects.clone(),
@@ -287,7 +287,7 @@ fn run_predicate_controls() {
             name: "reject-wrong-slot",
             code: Some(1),
             stdout: Vec::new(),
-            stderr: b"1:7: error: host-contract v1: write to protected slot Reflect\n".to_vec(),
+            stderr: b"1:7: error: host-contract v2: write to protected slot Reflect\n".to_vec(),
             expected_stderr: correct.clone(),
             effects: baseline_effects.clone(),
             expected_match: false,
@@ -296,7 +296,7 @@ fn run_predicate_controls() {
             name: "reject-wrong-severity",
             code: Some(1),
             stdout: Vec::new(),
-            stderr: b"1:7: warning: host-contract v1: write to protected slot Reflect.apply\n"
+            stderr: b"1:7: warning: host-contract v2: write to protected slot Reflect.apply\n"
                 .to_vec(),
             expected_stderr: correct.clone(),
             effects: baseline_effects.clone(),
@@ -306,7 +306,7 @@ fn run_predicate_controls() {
             name: "reject-wrong-span",
             code: Some(1),
             stdout: Vec::new(),
-            stderr: b"1:8: error: host-contract v1: write to protected slot Reflect.apply\n"
+            stderr: b"1:8: error: host-contract v2: write to protected slot Reflect.apply\n"
                 .to_vec(),
             expected_stderr: correct.clone(),
             effects: baseline_effects.clone(),
@@ -853,6 +853,62 @@ fn legal_protected_host_controls_run_as_separate_programs() {
 }
 
 #[test]
+fn v2_protected_roots_and_slots_reject_before_assertion_stripping() {
+    let fixture = TempDir::new().expect("create protected-host compile fixture");
+    let invalid = [
+        "(set! Symbol 0)",
+        "(set! Symbol:for 0)",
+        "(set! Object 0)",
+        "(set! Object:freeze 0)",
+        "(set! Object:defineProperties 0)",
+        "(set! Number:isNaN 0)",
+        "(set! Array:isArray 0)",
+        "(set! Promise 0)",
+        "(set! TypeError 0)",
+        "(set! Error 0)",
+    ];
+    for (index, source) in invalid.into_iter().enumerate() {
+        let path = fixture.path().join(format!("invalid-{index}.lykn"));
+        fs::write(&path, source).expect("write protected-host rejection fixture");
+        for strip_assertions in [false, true] {
+            let mut command = cli();
+            command.arg("compile").arg(&path);
+            if strip_assertions {
+                command.arg("--strip-assertions");
+            }
+            let output = command.output().expect("run protected-host compile CLI");
+            assert!(
+                !output.status.success(),
+                "host write compiled (strip_assertions={strip_assertions}): {source}; stdout={:?} stderr={:?}",
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr),
+            );
+        }
+    }
+    for (index, source) in [
+        "(set! Object:freeze:prototype 0)",
+        "(func local :args (:any Number) :body (set! Number:isNaN 0))",
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let path = fixture.path().join(format!("control-{index}.lykn"));
+        fs::write(&path, source).expect("write protected-host legal control");
+        let output = cli()
+            .arg("compile")
+            .arg(&path)
+            .output()
+            .expect("run protected-host control CLI");
+        assert!(
+            output.status.success(),
+            "legal control rejected: {source}; stdout={:?} stderr={:?}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr),
+        );
+    }
+}
+
+#[test]
 fn protected_host_dist_error_preserves_typed_path_and_stale_outputs() {
     let fixture = TempDir::new().expect("create protected-host dist fixture");
     let package = fixture.path().join("packages/fixture");
@@ -955,7 +1011,7 @@ fn protected_host_dist_error_preserves_typed_path_and_stale_outputs() {
     let target_span = forms[1].as_list().expect("second dist form is a list")[1].span();
     let expected = Diagnostic {
         severity: Severity::Error,
-        message: "host-contract v1: write to protected slot Reflect.apply".to_string(),
+        message: "host-contract v2: write to protected slot Reflect.apply".to_string(),
         span: target_span,
         suggestion: None,
     };

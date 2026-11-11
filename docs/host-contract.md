@@ -1,9 +1,12 @@
-# Protected host contract v1
+# Protected host contract v2
 
 Lykn's compiler protects selected JavaScript host bindings from source-level
-writes. Version 1 protects the global `Reflect` binding and the exact
-`Reflect.apply` slot. It does not freeze `Reflect`, validate calls, or constrain
-other host objects.
+writes. Version 2 protects the global roots `Reflect`, `Symbol`, `Object`,
+`Number`, `Array`, `Promise`, `TypeError`, and `Error`, plus the exact slots
+`Reflect.apply`, `Symbol.for`, `Object.freeze`, `Object.defineProperties`,
+`Number.isNaN`, and `Array.isArray`. It does not freeze these objects, validate
+calls, or constrain other host objects. The versioned diagnostic is
+`host-contract v2: write to protected slot <path>`.
 
 The compiler rejects writes it can prove target those names. Proof follows
 Lykn member paths and literal computed string keys, uses JavaScript identifier
@@ -21,6 +24,18 @@ outside that fragment. Macro bodies are compiled as compiler-owned functions;
 their implementation text is not itself treated as runtime program code. A
 macro body that emits a protected write is still rejected when that emitted
 program is compiled.
+
+Generated code also uses a finite set of compiler-owned references to these
+host values. Those references are represented with private compiler metadata,
+then lowered as a complete unit into collision-free local bindings. If a
+module binds one of the referenced roots, the compiler instead emits a named
+import from a fixed inline data module, after leading directives. Public
+source-shaped names and ordinary compiler fragments do not select this path.
+An unfinished private reference passed to fragment compilation fails with a
+typed compiler error; complete `compile` and expansion outputs lower all such
+references before emission. The inline import requires an ESM loader and host
+policy that allow data-module imports, as described below for the protected
+invocation fallback.
 
 The diagnostic has Error severity and identifies the protected slot. The
 compiler does not emit output for a rejected unit. During `lykn build --dist`,

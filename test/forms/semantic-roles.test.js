@@ -513,7 +513,7 @@ Deno.test("public direct lifted protected writes retain the v1 rejection", () =>
   assertEquals(observation.errorName, "Error");
   assertEquals(
     observation.errorMessage,
-    "host-contract v1: write to protected slot Reflect.apply",
+    "host-contract v2: write to protected slot Reflect.apply",
   );
   assertEquals(observation.output, null, "protected write returned output");
   assertEquals(observation.outputReturned, false, "protected write returned output");

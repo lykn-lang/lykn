@@ -10,6 +10,9 @@ const COMPOUND = new Set([
   '+=', '-=', '*=', '/=', '%=', '**=', '<<=', '>>=', '>>>=', '&=', '|=', '^=',
   '&&=', '||=', '??=',
 ]);
+const PROTECTED_ROOTS = new Set([
+  'Reflect', 'Symbol', 'Object', 'Number', 'Array', 'Promise', 'TypeError', 'Error',
+]);
 
 function pathIs(path, wanted) {
   return path.length === wanted.length && path.every((part, i) => part === wanted[i]);
@@ -19,7 +22,7 @@ function normalizedPath(node, locals, toJsIdentifier, formHead) {
   if (node?.type === 'atom') {
     const parts = node.value.split(':').map(toJsIdentifier);
     if (locals.has(parts[0])) return null;
-    return parts[0] === 'Reflect' || parts[0] === 'globalThis' ? parts : null;
+    return PROTECTED_ROOTS.has(parts[0]) || parts[0] === 'globalThis' ? parts : null;
   }
   if (node?.type === 'list' && node.values.length === 3 && formHead(node.values[0]) === 'get') {
     const base = normalizedPath(node.values[1], locals, toJsIdentifier, formHead);
@@ -211,6 +214,10 @@ function kernelModuleNames(forms, toJsIdentifier, formHead) {
 // same whole-module Reflect decision as protected-host validation.
 export function moduleBindsReflect(forms, { toJsIdentifier, formHead }) {
   return kernelModuleNames(forms, toJsIdentifier, formHead).has('Reflect');
+}
+
+export function moduleBindsRoot(forms, root, { toJsIdentifier, formHead }) {
+  return kernelModuleNames(forms, toJsIdentifier, formHead).has(toJsIdentifier(root));
 }
 
 function functionScope(body, params, inherited, toJsIdentifier, formHead) {
@@ -502,17 +509,28 @@ export function validateProtectedHost(exprs, { toJsIdentifier, formHead }) {
   for (const write of writes) {
     const path = write.path;
     if (!path) continue;
-    const directReflect = pathIs(path, ['Reflect']);
-    const directApply = pathIs(path, ['Reflect', 'apply']);
-    const aliasReflect = pathIs(path, ['globalThis', 'Reflect']);
-    const aliasApply = pathIs(path, ['globalThis', 'Reflect', 'apply']);
-    if (directReflect || directApply || (!invalidatesAliases && (aliasReflect || aliasApply))) {
-      const slot = directApply || aliasApply ? 'Reflect.apply' : 'Reflect';
-      const error = new Error(`host-contract v1: write to protected slot ${slot}`);
+    const rooted = path[0] === 'globalThis' ? path.slice(1) : path;
+    const aliasPath = path[0] === 'globalThis';
+    const slot = protectedSlot(rooted);
+    if (slot && (!aliasPath || !invalidatesAliases)) {
+      const error = new Error(`host-contract v2: write to protected slot ${slot}`);
       if (write.span) error.span = write.span;
       throw error;
     }
   }
+}
+
+function protectedSlot(path) {
+  const [root, member] = path;
+  if (path.length === 1 && PROTECTED_ROOTS.has(root)) return root;
+  if (path.length !== 2) return null;
+  if (root === 'Reflect' && member === 'apply') return 'Reflect.apply';
+  if (root === 'Symbol' && member === 'for') return 'Symbol.for';
+  if (root === 'Object' && member === 'freeze') return 'Object.freeze';
+  if (root === 'Object' && member === 'defineProperties') return 'Object.defineProperties';
+  if (root === 'Number' && member === 'isNaN') return 'Number.isNaN';
+  if (root === 'Array' && member === 'isArray') return 'Array.isArray';
+  return null;
 }
 
 function visitMany(forms, scopes, dialect, visit) {

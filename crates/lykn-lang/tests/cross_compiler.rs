@@ -59,7 +59,7 @@ fn rust_compile(source: &str) -> String {
     }
 
     let kernel = emitter::emit(&forms, &registry, false).unwrap();
-    emitter::json::emit_module_json(&kernel)
+    emitter::json::emit_module_json(&kernel).unwrap()
 }
 
 /// Run lykn source through the JS pipeline via deno

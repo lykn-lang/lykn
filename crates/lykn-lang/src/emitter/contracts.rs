@@ -1,4 +1,4 @@
-use crate::ast::sexpr::SExpr;
+use crate::ast::sexpr::{HostReference, SExpr};
 use crate::diagnostics::serializer::serialize_sexpr;
 use crate::reader::source_loc::Span;
 
@@ -29,7 +29,11 @@ pub(super) fn emit_pre_check_with_predicate(
         list(vec![atom("!"), predicate]),
         list(vec![
             atom("throw"),
-            list(vec![atom("new"), atom("Error"), str_lit(&message)]),
+            list(vec![
+                atom("new"),
+                SExpr::host_reference_atom(HostReference::Error, _span),
+                str_lit(&message),
+            ]),
         ]),
     ])
 }
@@ -61,7 +65,11 @@ pub(super) fn emit_post_check_with_predicate(
         list(vec![atom("!"), predicate]),
         list(vec![
             atom("throw"),
-            list(vec![atom("new"), atom("Error"), str_lit(&message)]),
+            list(vec![
+                atom("new"),
+                SExpr::host_reference_atom(HostReference::Error, _span),
+                str_lit(&message),
+            ]),
         ]),
     ])
 }

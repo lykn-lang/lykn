@@ -66,22 +66,13 @@ pub(crate) fn validate_program(forms: &[SExpr], dialect: InputDialect) -> Vec<Di
             let RootProof::GlobalKnown(path) = site.proof else {
                 return None;
             };
-            let direct_apply = is_path(&path, &["Reflect", "apply"]);
-            let direct_reflect = is_path(&path, &["Reflect"]);
-            let alias_apply = is_path(&path, &["globalThis", "Reflect", "apply"]);
-            let alias_reflect = is_path(&path, &["globalThis", "Reflect"]);
-            if direct_apply
-                || direct_reflect
-                || ((!walker.invalidates_aliases) && (alias_apply || alias_reflect))
-            {
-                let slot = if direct_apply || alias_apply {
-                    IntrinsicId::ReflectApply.slot()
-                } else {
-                    "Reflect"
-                };
+            let direct_slot = protected_slot(&path);
+            let alias_path = path.first().is_some_and(|root| root == "globalThis");
+            if direct_slot.is_some() && (!alias_path || !walker.invalidates_aliases) {
+                let slot = direct_slot.unwrap_or("<unknown>");
                 Some(Diagnostic {
                     severity: Severity::Error,
-                    message: format!("host-contract v1: write to protected slot {slot}"),
+                    message: format!("host-contract v2: write to protected slot {slot}"),
                     span: site.span,
                     suggestion: None,
                 })
@@ -90,6 +81,33 @@ pub(crate) fn validate_program(forms: &[SExpr], dialect: InputDialect) -> Vec<Di
             }
         })
         .collect()
+}
+
+fn protected_slot(path: &[String]) -> Option<&'static str> {
+    let path = if path.first().is_some_and(|part| part == "globalThis") {
+        path.get(1..)?
+    } else {
+        path
+    };
+    let root = path.first()?.as_str();
+    let member = path.get(1).map(String::as_str);
+    match (root, member, path.len()) {
+        ("Reflect", None, 1) => Some("Reflect"),
+        ("Reflect", Some("apply"), 2) => Some("Reflect.apply"),
+        ("Symbol", None, 1) => Some("Symbol"),
+        ("Symbol", Some("for"), 2) => Some("Symbol.for"),
+        ("Object", None, 1) => Some("Object"),
+        ("Object", Some("freeze"), 2) => Some("Object.freeze"),
+        ("Object", Some("defineProperties"), 2) => Some("Object.defineProperties"),
+        ("Number", None, 1) => Some("Number"),
+        ("Number", Some("isNaN"), 2) => Some("Number.isNaN"),
+        ("Array", None, 1) => Some("Array"),
+        ("Array", Some("isArray"), 2) => Some("Array.isArray"),
+        ("Promise", None, 1) => Some("Promise"),
+        ("TypeError", None, 1) => Some("TypeError"),
+        ("Error", None, 1) => Some("Error"),
+        _ => None,
+    }
 }
 
 fn is_path(path: &[String], wanted: &[&str]) -> bool {
@@ -153,6 +171,10 @@ fn kernel_module_names(forms: &[SExpr]) -> HashSet<String> {
     }
     collect_var_hoists_mode(forms, &mut names, true);
     names
+}
+
+pub(crate) fn module_binds_root(forms: &[SExpr], root: &str) -> bool {
+    kernel_module_names(forms).contains(root)
 }
 
 fn add_kernel_module_declaration(form: &SExpr, names: &mut HashSet<String>) {
@@ -402,7 +424,18 @@ impl Walker {
             if self.is_local(&parts[0]) {
                 return RootProof::Local;
             }
-            return if matches!(parts[0].as_str(), "Reflect" | "globalThis") {
+            return if matches!(
+                parts[0].as_str(),
+                "globalThis"
+                    | "Reflect"
+                    | "Symbol"
+                    | "Object"
+                    | "Number"
+                    | "Array"
+                    | "Promise"
+                    | "TypeError"
+                    | "Error"
+            ) {
                 RootProof::GlobalKnown(parts)
             } else {
                 RootProof::Unknown
@@ -1094,9 +1127,54 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect.apply"
+            "host-contract v2: write to protected slot Reflect.apply"
         );
         assert_eq!(errors[0].span, target_span);
+    }
+
+    #[test]
+    fn v2_protects_only_the_named_roots_and_exact_members() {
+        for (source, slot) in [
+            ("(set! Symbol 0)", "Symbol"),
+            ("(set! (get Symbol \"for\") 0)", "Symbol.for"),
+            ("(set! Object:freeze 0)", "Object.freeze"),
+            (
+                "(set! Object:defineProperties 0)",
+                "Object.defineProperties",
+            ),
+            ("(set! Number:isNaN 0)", "Number.isNaN"),
+            ("(set! Array:isArray 0)", "Array.isArray"),
+            ("(set! Promise 0)", "Promise"),
+            ("(set! TypeError 0)", "TypeError"),
+            ("(set! Error 0)", "Error"),
+        ] {
+            let errors = check(source, InputDialect::Kernel);
+            assert_eq!(errors.len(), 1, "{source}");
+            assert_eq!(
+                errors[0].message,
+                format!("host-contract v2: write to protected slot {slot}")
+            );
+        }
+        assert!(check("(set! Object:freeze:prototype 0)", InputDialect::Kernel).is_empty());
+        assert!(check("(set! Object:other 0)", InputDialect::Kernel).is_empty());
+        assert!(
+            check(
+                "(function f (Number) (set! Number:isNaN 0))",
+                InputDialect::Kernel
+            )
+            .is_empty()
+        );
+        assert_eq!(
+            check("(set! globalThis:Number:isNaN 0)", InputDialect::Kernel).len(),
+            1
+        );
+        assert!(
+            check(
+                "(set! globalThis:globalThis 0) (set! globalThis:Number:isNaN 1)",
+                InputDialect::Kernel
+            )
+            .is_empty()
+        );
     }
 
     #[test]
@@ -1114,7 +1192,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect"
+            "host-contract v2: write to protected slot Reflect"
         );
     }
 
@@ -1185,7 +1263,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect.apply"
+            "host-contract v2: write to protected slot Reflect.apply"
         );
         assert_eq!(errors[0].span, target_span);
 
@@ -1206,7 +1284,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect.apply"
+            "host-contract v2: write to protected slot Reflect.apply"
         );
         assert_eq!(errors[0].span, target_span);
     }
@@ -1222,7 +1300,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect"
+            "host-contract v2: write to protected slot Reflect"
         );
         assert_eq!(errors[0].span, target_span);
 
@@ -1246,7 +1324,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect"
+            "host-contract v2: write to protected slot Reflect"
         );
         assert_eq!(errors[0].span, target_span);
 
@@ -1277,7 +1355,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect"
+            "host-contract v2: write to protected slot Reflect"
         );
         assert_eq!(errors[0].span, target_span);
     }
@@ -1299,7 +1377,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect"
+            "host-contract v2: write to protected slot Reflect"
         );
         assert_eq!(errors[0].span, target_span);
 
@@ -1314,7 +1392,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect"
+            "host-contract v2: write to protected slot Reflect"
         );
         assert_eq!(errors[0].span, target_span);
     }
@@ -1329,7 +1407,7 @@ mod tests {
         assert_eq!(errors.len(), 1);
         assert_eq!(
             errors[0].message,
-            "host-contract v1: write to protected slot Reflect"
+            "host-contract v2: write to protected slot Reflect"
         );
         assert_eq!(errors[0].span, target_span);
     }
@@ -1348,7 +1426,7 @@ mod tests {
             assert_eq!(errors.len(), 1, "{source}");
             assert_eq!(
                 errors[0].message,
-                "host-contract v1: write to protected slot Reflect"
+                "host-contract v2: write to protected slot Reflect"
             );
             assert_eq!(errors[0].span, target_span, "{source}");
         }

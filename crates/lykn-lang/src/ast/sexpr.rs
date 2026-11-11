@@ -45,6 +45,62 @@ pub struct AtomData {
     /// Private marker for a saved callee occurrence awaiting whole-unit host
     /// invocation materialization.
     host_invocation: bool,
+    /// Compiler-owned reference to one finite host value. Ordinary source
+    /// constructors never set this metadata.
+    host_reference: Option<HostReference>,
+}
+
+/// A compiler-owned host value used by generated guards and errors.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub(crate) enum HostReference {
+    Symbol,
+    SymbolFor,
+    ObjectFreeze,
+    ObjectDefineProperties,
+    NumberIsNaN,
+    ArrayIsArray,
+    Promise,
+    TypeError,
+    Error,
+}
+
+impl HostReference {
+    pub(crate) fn root(self) -> &'static str {
+        match self {
+            Self::Symbol | Self::SymbolFor => "Symbol",
+            Self::ObjectFreeze | Self::ObjectDefineProperties => "Object",
+            Self::NumberIsNaN => "Number",
+            Self::ArrayIsArray => "Array",
+            Self::Promise => "Promise",
+            Self::TypeError => "TypeError",
+            Self::Error => "Error",
+        }
+    }
+
+    pub(crate) fn member(self) -> Option<&'static str> {
+        match self {
+            Self::SymbolFor => Some("for"),
+            Self::ObjectFreeze => Some("freeze"),
+            Self::ObjectDefineProperties => Some("defineProperties"),
+            Self::NumberIsNaN => Some("isNaN"),
+            Self::ArrayIsArray => Some("isArray"),
+            Self::Symbol | Self::Promise | Self::TypeError | Self::Error => None,
+        }
+    }
+
+    pub(crate) fn alias_stem(self) -> &'static str {
+        match self {
+            Self::Symbol => "Symbol",
+            Self::SymbolFor => "SymbolFor",
+            Self::ObjectFreeze => "ObjectFreeze",
+            Self::ObjectDefineProperties => "ObjectDefineProperties",
+            Self::NumberIsNaN => "NumberIsNaN",
+            Self::ArrayIsArray => "ArrayIsArray",
+            Self::Promise => "Promise",
+            Self::TypeError => "TypeError",
+            Self::Error => "Error",
+        }
+    }
 }
 
 /// Identity for one private direct-bind result destination.
@@ -183,6 +239,7 @@ impl SExpr {
             binding: NameRes::Unresolved,
             completion_value: None,
             host_invocation: false,
+            host_reference: None,
         })
     }
 
@@ -194,7 +251,38 @@ impl SExpr {
             binding: NameRes::Unresolved,
             completion_value: Some(id),
             host_invocation: false,
+            host_reference: None,
         })
+    }
+
+    /// Construct a private atom representing one compiler-owned host value.
+    pub(crate) fn host_reference_atom(reference: HostReference, span: Span) -> Self {
+        SExpr::Atom(AtomData {
+            value: String::new(),
+            span,
+            binding: NameRes::Unresolved,
+            completion_value: None,
+            host_invocation: false,
+            host_reference: Some(reference),
+        })
+    }
+
+    pub(crate) fn host_reference(&self) -> Option<HostReference> {
+        match self {
+            SExpr::Atom(atom) => atom.host_reference,
+            _ => None,
+        }
+    }
+
+    pub(crate) fn finalize_host_reference(&mut self, value: String) -> bool {
+        if let SExpr::Atom(atom) = self
+            && atom.host_reference.take().is_some()
+        {
+            atom.value = value;
+            true
+        } else {
+            false
+        }
     }
 
     /// Return the private identity carried by a generated destination atom.
@@ -311,6 +399,7 @@ impl SExpr {
             SExpr::Atom(AtomData {
                 value,
                 binding: NameRes::Unresolved,
+                host_reference: None,
                 ..
             }) => Some(value),
             _ => None,

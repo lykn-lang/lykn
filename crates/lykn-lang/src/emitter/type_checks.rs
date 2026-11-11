@@ -1,4 +1,4 @@
-use crate::ast::sexpr::SExpr;
+use crate::ast::sexpr::{HostReference, SExpr};
 use crate::codegen::names::to_js_identifier;
 use crate::reader::source_loc::Span;
 
@@ -16,6 +16,10 @@ fn display_name(lykn_name: &str) -> String {
     } else {
         js_name
     }
+}
+
+fn intrinsic(reference: HostReference) -> SExpr {
+    SExpr::host_reference_atom(reference, Span::default())
 }
 
 /// Emit a runtime type-check assertion for a parameter.
@@ -39,7 +43,11 @@ pub fn emit_type_check(
         check,
         list(vec![
             atom("throw"),
-            list(vec![atom("new"), atom("TypeError"), message]),
+            list(vec![
+                atom("new"),
+                intrinsic(HostReference::TypeError),
+                message,
+            ]),
         ]),
     ]))
 }
@@ -58,7 +66,7 @@ fn build_check(param_name: &str, type_keyword: &str) -> Option<SExpr> {
                 list(vec![atom("typeof"), p.clone()]),
                 str_lit("number"),
             ]),
-            list(vec![atom("Number:isNaN"), p]),
+            list(vec![intrinsic(HostReference::NumberIsNaN), p]),
         ])),
         "string" => Some(list(vec![
             atom("!=="),
@@ -84,7 +92,10 @@ fn build_check(param_name: &str, type_keyword: &str) -> Option<SExpr> {
             ]),
             list(vec![atom("==="), p, atom("null")]),
         ])),
-        "array" => Some(list(vec![atom("!"), list(vec![atom("Array:isArray"), p])])),
+        "array" => Some(list(vec![
+            atom("!"),
+            list(vec![intrinsic(HostReference::ArrayIsArray), p]),
+        ])),
         "promise" => Some(list(vec![
             atom("||"),
             list(vec![
@@ -97,7 +108,11 @@ fn build_check(param_name: &str, type_keyword: &str) -> Option<SExpr> {
                 list(vec![atom("==="), p.clone(), atom("null")]),
                 list(vec![
                     atom("!"),
-                    list(vec![atom("instanceof"), p, atom("Promise")]),
+                    list(vec![
+                        atom("instanceof"),
+                        p,
+                        intrinsic(HostReference::Promise),
+                    ]),
                 ]),
             ]),
         ])),
@@ -145,7 +160,11 @@ pub fn emit_return_type_check(
         check,
         list(vec![
             atom("throw"),
-            list(vec![atom("new"), atom("TypeError"), message]),
+            list(vec![
+                atom("new"),
+                intrinsic(HostReference::TypeError),
+                message,
+            ]),
         ]),
     ]))
 }

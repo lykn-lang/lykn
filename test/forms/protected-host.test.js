@@ -75,7 +75,7 @@ Deno.test("public JavaScript compiler rejects nine writes and runs four legal co
       try {
         assertThrows(() => {
           generated = lykn(source);
-        }, Error, "host-contract v1");
+        }, Error, "host-contract v2");
       } catch (error) {
         record(name, source, generated ?? null, null, null, undefined);
         throw error;

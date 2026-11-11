@@ -17,8 +17,13 @@ use crate::ast::sexpr::SExpr;
 /// - `Null`    -> `{"type": "atom",   "value": "null"}`
 /// - `List`    -> `{"type": "list",   "values": [...]}`
 /// - `Cons`    -> `{"type": "cons",   "car": ..., "cdr": ...}`
-pub fn sexpr_to_json(expr: &SExpr) -> Value {
-    match expr {
+pub fn sexpr_to_json(expr: &SExpr) -> Result<Value, crate::error::LyknError> {
+    if expr.host_reference().is_some() {
+        return Err(crate::codegen::host_references::invalid_reference(
+            "unfinished reference cannot be serialized as a fragment",
+        ));
+    }
+    Ok(match expr {
         a @ SExpr::Atom { .. } => {
             serde_json::json!({"type": "atom", "value": a.as_atom().unwrap()})
         }
@@ -46,19 +51,24 @@ pub fn sexpr_to_json(expr: &SExpr) -> Value {
             serde_json::json!({"type": "atom", "value": "null"})
         }
         SExpr::List { values, .. } => {
-            let children: Vec<Value> = values.iter().map(sexpr_to_json).collect();
+            let children: Vec<Value> =
+                values.iter().map(sexpr_to_json).collect::<Result<_, _>>()?;
             serde_json::json!({"type": "list", "values": children})
         }
         SExpr::Cons { car, cdr, .. } => {
-            serde_json::json!({"type": "cons", "car": sexpr_to_json(car), "cdr": sexpr_to_json(cdr)})
+            serde_json::json!({"type": "cons", "car": sexpr_to_json(car)?, "cdr": sexpr_to_json(cdr)?})
         }
-    }
+    })
 }
 
 /// Serialize a slice of kernel `SExpr` forms to a pretty-printed JSON string.
-pub fn emit_module_json(forms: &[SExpr]) -> String {
-    let arr: Vec<Value> = forms.iter().map(sexpr_to_json).collect();
-    serde_json::to_string_pretty(&arr).expect("JSON serialization should not fail for SExpr")
+pub fn emit_module_json(forms: &[SExpr]) -> Result<String, crate::error::LyknError> {
+    let lowered = crate::codegen::host_references::lower_forms(forms)?;
+    let arr: Vec<Value> = lowered
+        .iter()
+        .map(sexpr_to_json)
+        .collect::<Result<_, _>>()?;
+    Ok(serde_json::to_string_pretty(&arr).expect("JSON serialization should not fail for SExpr"))
 }
 
 #[cfg(test)]
@@ -74,7 +84,7 @@ mod tests {
     fn test_atom_to_json() {
         let expr = SExpr::atom("foo", s());
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({"type": "atom", "value": "foo"})
         );
     }
@@ -86,7 +96,7 @@ mod tests {
             span: s(),
         };
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({"type": "string", "value": "name"})
         );
     }
@@ -98,7 +108,7 @@ mod tests {
             span: s(),
         };
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({"type": "string", "value": "hello"})
         );
     }
@@ -110,7 +120,7 @@ mod tests {
             span: s(),
         };
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({"type": "number", "value": 42})
         );
     }
@@ -126,11 +136,11 @@ mod tests {
             span: s(),
         };
         assert_eq!(
-            sexpr_to_json(&t),
+            sexpr_to_json(&t).unwrap(),
             serde_json::json!({"type": "atom", "value": "true"})
         );
         assert_eq!(
-            sexpr_to_json(&f),
+            sexpr_to_json(&f).unwrap(),
             serde_json::json!({"type": "atom", "value": "false"})
         );
     }
@@ -139,7 +149,7 @@ mod tests {
     fn test_null_to_json() {
         let expr = SExpr::Null { span: s() };
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({"type": "atom", "value": "null"})
         );
     }
@@ -161,7 +171,7 @@ mod tests {
             span: s(),
         };
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({
                 "type": "list",
                 "values": [
@@ -181,7 +191,7 @@ mod tests {
             span: s(),
         };
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({
                 "type": "cons",
                 "car": {"type": "atom", "value": "a"},
@@ -203,7 +213,7 @@ mod tests {
             ],
             span: s(),
         }];
-        let json_str = emit_module_json(&forms);
+        let json_str = emit_module_json(&forms).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&json_str).unwrap();
         assert!(parsed.is_array());
         let arr = parsed.as_array().unwrap();
@@ -219,6 +229,26 @@ mod tests {
                 ]
             })
         );
+    }
+
+    #[test]
+    fn fragment_json_rejects_owned_references_and_module_json_lowers_them() {
+        let reference = SExpr::host_reference_atom(crate::ast::sexpr::HostReference::Error, s());
+        assert!(sexpr_to_json(&reference).is_err());
+        let forms = vec![SExpr::List {
+            values: vec![
+                reference,
+                SExpr::String {
+                    value: "failure".into(),
+                    span: s(),
+                },
+            ],
+            span: s(),
+        }];
+        let json = emit_module_json(&forms).unwrap();
+        assert!(json.contains("lyknIntrinsicError0"));
+        assert!(json.contains("Error"));
+        assert!(!json.contains("\"value\": \"\""));
     }
 
     #[test]
@@ -244,7 +274,7 @@ mod tests {
             span: s(),
         };
         assert_eq!(
-            sexpr_to_json(&expr),
+            sexpr_to_json(&expr).unwrap(),
             serde_json::json!({
                 "type": "list",
                 "values": [

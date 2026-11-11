@@ -6,7 +6,7 @@
   "fn: typed params with type checks"
   (bind result (compile "(fn (:number x) (+ x 1))"))
   (includes result "typeof x !== \"number\"")
-  (includes result "Number.isNaN(x)")
+  (includes result "lyknIntrinsicNumberIsNaN0(x)")
   (includes result "return x + 1"))
 
 (test-compiles "fn: :any params skip type check" "(fn (:any x) x)" "(x => x);")
@@ -28,7 +28,7 @@
 (test
   "fn: array type check"
   (bind result (compile "(fn (:array a) a)"))
-  (includes result "Array.isArray(a)")
+  (includes result "lyknIntrinsicArrayIsArray0(a)")
   (includes result "return a"))
 
 (test

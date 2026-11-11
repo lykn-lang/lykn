@@ -5,7 +5,7 @@
  * quote, sugar forms (cons/list/car/cdr), macros, and as patterns.
  */
 
-import { compileExpr, formHead, toJsIdentifier } from './compiler.js';
+import { compileExpr, formHead, lowerHostReferences, toJsIdentifier } from './compiler.js';
 import { generate } from 'astring';
 import { registerSurfaceMacros, resetTypeRegistry } from './surface.js';
 import { classifySurfaceForm, emitSurfaceForm, emitMatchStatementMacro, funcBodyProtectsStatementExit, parseKeywordClauses } from './classifier.js';
@@ -1693,7 +1693,10 @@ export function expandExpr(form, env = EMPTY_ENV) {
   if (compilerPrivateAtomCount !== privateCountAtStart) {
     finalizeCompilerPrivateAtoms(Array.isArray(result) ? result : [result]);
   }
-  return result;
+  if (result === null || result === undefined) return result;
+  const forms = Array.isArray(result) ? result : [result];
+  lowerHostReferences(forms);
+  return Array.isArray(result) || forms.length > 1 ? forms : forms[0];
 }
 
 function expandAt(form, env, use, computedMemberCallRequest = null,
@@ -2303,5 +2306,5 @@ export function expandWithMacroImports(forms, context = {}, processImports) {
     moduleBindsReflect,
     validateProtectedHost,
   });
-  return expanded;
+  return lowerHostReferences(expanded);
 }

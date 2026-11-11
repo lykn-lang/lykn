@@ -4,8 +4,78 @@
 
 import { generate } from 'astring';
 import { parseIcu, collectSlotNames, IcuParseError } from './icu-parser.js';
-import { validateProtectedHost } from './protected-host.js';
+import { moduleBindsRoot, validateProtectedHost } from './protected-host.js';
 import { requestedHostCall, finalizeHostInvocations } from './host-invocation.js';
+import { clearHostReference, hostReferenceOf } from './compiler-private-atoms.js';
+
+const HOST_REFERENCE_DEFINITIONS = [
+  ['Symbol', 'Symbol', null, 'symbol'],
+  ['SymbolFor', 'Symbol', 'for', 'symbolFor'],
+  ['ObjectFreeze', 'Object', 'freeze', 'objectFreeze'],
+  ['ObjectDefineProperties', 'Object', 'defineProperties', 'objectDefineProperties'],
+  ['NumberIsNaN', 'Number', 'isNaN', 'numberIsNaN'],
+  ['ArrayIsArray', 'Array', 'isArray', 'arrayIsArray'],
+  ['Promise', 'Promise', null, 'promise'],
+  ['TypeError', 'TypeError', null, 'typeError'],
+  ['Error', 'Error', null, 'error'],
+];
+const INLINE_HOST_REFERENCE_MODULE = 'data:text/javascript,export%20const%20symbol%3DSymbol%3Bexport%20const%20symbolFor%3DSymbol.for%3Bexport%20const%20objectFreeze%3DObject.freeze%3Bexport%20const%20objectDefineProperties%3DObject.defineProperties%3Bexport%20const%20numberIsNaN%3DNumber.isNaN%3Bexport%20const%20arrayIsArray%3DArray.isArray%3Bexport%20const%20promise%3DPromise%3Bexport%20const%20typeError%3DTypeError%3Bexport%20const%20error%3DError%3B';
+
+/** Lower private host references into hygienic ordinary kernel bindings. */
+export function lowerHostReferences(forms) {
+  const requests = new Set();
+  const reserved = new Set();
+  const marked = [];
+  const visit = (node) => {
+    if (!node || typeof node !== 'object') return;
+    if (node.type === 'atom') {
+      const reference = hostReferenceOf(node);
+      if (reference !== undefined) { requests.add(reference); marked.push(node); }
+      for (const segment of node.value.split(':')) reserved.add(toJsIdentifier(segment));
+    }
+    if (node.type === 'list') for (const child of node.values) visit(child);
+    if (node.type === 'cons') { visit(node.car); visit(node.cdr); }
+  };
+  for (const form of forms) visit(form);
+  if (requests.size === 0) return forms;
+
+  const aliases = new Map();
+  const localForms = [];
+  const inlineImports = [];
+  const formHeadOptions = { toJsIdentifier, formHead };
+  for (const [reference, root, member, exportName] of HOST_REFERENCE_DEFINITIONS) {
+    if (!requests.has(reference)) continue;
+    const base = `lyknIntrinsic${reference}`;
+    let suffix = 0;
+    let alias = `${base}${suffix}`;
+    while (reserved.has(alias)) alias = `${base}${++suffix}`;
+    reserved.add(alias);
+    aliases.set(reference, alias);
+    if (moduleBindsRoot(forms, root, formHeadOptions)) {
+      inlineImports.push({ type: 'list', values: [
+        { type: 'atom', value: 'alias' }, { type: 'atom', value: exportName }, { type: 'atom', value: alias },
+      ] });
+    } else {
+      localForms.push({ type: 'list', values: [
+        { type: 'atom', value: 'const' }, { type: 'atom', value: alias },
+        { type: 'atom', value: member ? `${root}:${member}` : root },
+      ] });
+    }
+  }
+  for (const node of marked) {
+    const alias = aliases.get(hostReferenceOf(node));
+    if (!alias) throw new Error('invalid compiler-owned host reference');
+    node.value = alias;
+    clearHostReference(node);
+  }
+  if (inlineImports.length) localForms.push({ type: 'list', values: [
+    { type: 'atom', value: 'import' }, { type: 'string', value: INLINE_HOST_REFERENCE_MODULE },
+    { type: 'list', values: inlineImports },
+  ] });
+  const directives = forms.findIndex((form) => form.type !== 'string');
+  forms.splice(directives < 0 ? forms.length : directives, 0, ...localForms);
+  return forms;
+}
 
 // DD-61 §A6 — the resolution-aware dispatch accessor (JS twin of Rust's
 // `SExpr::as_form_head`). Returns a head atom's name ONLY when the atom is
@@ -19,7 +89,7 @@ import { requestedHostCall, finalizeHostInvocations } from './host-invocation.js
 // kernel-form sub-structure), each marked `A6-exempt`. Enforced by the
 // `make check` static check `test/expander/a6-dispatch-conformance.test.js`.
 export function formHead(node) {
-  return node && node.type === 'atom' && node.binding === undefined
+  return node && node.type === 'atom' && hostReferenceOf(node) === undefined && node.binding === undefined
     ? node.value
     : null;
 }
@@ -1809,6 +1879,9 @@ function toStatement(node) {
 // Compile a single s-expression node to an ESTree node
 export function compileExpr(node, position = 'statement') {
   if (!node) return { type: 'Literal', value: null };
+  if (node.type === 'atom' && hostReferenceOf(node) !== undefined) {
+    throw new Error('unfinished compiler-owned host reference in fragment compilation');
+  }
 
   const requested = requestedHostCall(node, compileExpr);
   if (requested) return requested;
@@ -2282,6 +2355,7 @@ function compileMethodDef(node, kind, isStatic) {
 
 // Compile an array of top-level s-expressions to a JS program string
 export function compile(exprs) {
+  lowerHostReferences(exprs);
   validateProtectedHost(exprs, { toJsIdentifier, formHead });
   const program = {
     type: 'Program',

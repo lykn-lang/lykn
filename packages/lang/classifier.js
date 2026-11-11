@@ -42,6 +42,7 @@ import {
   compilePattern,
   formatSExpr,
   gensym,
+  hostReference,
   getLiteralType,
   isArray,
   isKeyword,
@@ -876,7 +877,7 @@ export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
         array(sym("!"), preExpr),
         array(
           sym("throw"),
-          array(sym("new"), sym("Error"), { type: "string", value: preMsg }),
+          array(sym("new"), hostReference("Error"), { type: "string", value: preMsg }),
         ),
       ),
     );
@@ -939,7 +940,7 @@ export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
         array(sym("!"), postWithResult),
         array(
           sym("throw"),
-          array(sym("new"), sym("Error"), { type: "string", value: postMsg }),
+          array(sym("new"), hostReference("Error"), { type: "string", value: postMsg }),
         ),
       ),
     );
@@ -1096,7 +1097,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
           );
           break;
         case "array":
-          conditions.push(array(sym("Array:isArray"), argAccess));
+          conditions.push(array(hostReference("ArrayIsArray"), argAccess));
           break;
         default:
           break;
@@ -1144,7 +1145,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
           array(sym("!"), preExpr),
           array(
             sym("throw"),
-            array(sym("new"), sym("Error"), {
+            array(sym("new"), hostReference("Error"), {
               type: "string",
               value: preMsg,
             }),
@@ -1178,7 +1179,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
           array(sym("!"), postWithResult),
           array(
             sym("throw"),
-            array(sym("new"), sym("Error"), {
+            array(sym("new"), hostReference("Error"), {
               type: "string",
               value: postMsg,
             }),
@@ -1201,7 +1202,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
   stmts.push(
     array(
       sym("throw"),
-      array(sym("new"), sym("TypeError"), {
+      array(sym("new"), hostReference("TypeError"), {
         type: "string",
         value: `${funcName}: no matching clause for arguments`,
       }),
@@ -1270,7 +1271,7 @@ export function emitGenfuncMacro(args) {
         array(sym("!"), preExpr),
         array(
           sym("throw"),
-          array(sym("new"), sym("Error"), { type: "string", value: preMsg }),
+          array(sym("new"), hostReference("Error"), { type: "string", value: preMsg }),
         ),
       ),
     );
@@ -1401,7 +1402,7 @@ export function emitMatchMacro(args) {
     stmts.push(
       array(
         sym("throw"),
-        array(sym("new"), sym("Error"), {
+        array(sym("new"), hostReference("Error"), {
           type: "string",
           value: "match: no matching pattern",
         }),
@@ -1515,7 +1516,7 @@ export function emitMatchStatementMacro(args, {
     if (!clause.guard && irrefutable) { terminal = true; break; }
   }
   if (!terminal) out.push(array(sym("if"), array(sym("!"), matched),
-    array(sym("throw"), array(sym("new"), sym("Error"), { type: "string", value: "match: no matching pattern" }))));
+    array(sym("throw"), array(sym("new"), hostReference("Error"), { type: "string", value: "match: no matching pattern" }))));
   return markKernel(array(...out));
 }
 

@@ -252,7 +252,7 @@ fn compile_source_inner(
 
     // 6. Output
     if kernel_json_only {
-        Ok(emitter::json::emit_module_json(&kernel))
+        Ok(emitter::json::emit_module_json(&kernel)?)
     } else {
         Ok(codegen::emit_module_js(&kernel)?)
     }
@@ -320,7 +320,7 @@ pub fn compile_source_with_dts(
     )?;
 
     let js = if kernel_json_only {
-        emitter::json::emit_module_json(&kernel)
+        emitter::json::emit_module_json(&kernel)?
     } else {
         codegen::emit_module_js(&kernel)?
     };

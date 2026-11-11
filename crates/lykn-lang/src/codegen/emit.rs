@@ -87,7 +87,11 @@ pub fn emit_expr(w: &mut JsWriter, expr: &SExpr, parent_prec: u8) -> Result<(), 
             w.write(if *value { "true" } else { "false" });
         }
         SExpr::Null { .. } => w.write("null"),
-        a @ SExpr::Atom { .. } => emit_atom(w, a.as_atom().unwrap()),
+        a @ SExpr::Atom { .. } => {
+            if !w.write_host_reference(a)? {
+                emit_atom(w, a.as_atom().unwrap());
+            }
+        }
         SExpr::Keyword { value, .. } => {
             // Keywords emit as string literals with camelCase conversion.
             w.write("\"");

@@ -61,7 +61,7 @@ fn rust_pipeline(source: &str) -> String {
     }
 
     let kernel = emitter::emit(&forms, &registry, false).unwrap();
-    emitter::json::emit_module_json(&kernel)
+    emitter::json::emit_module_json(&kernel).unwrap()
 }
 
 /// Run lykn source through the JS pipeline via Deno.
@@ -114,6 +114,19 @@ console.log(JSON.stringify(json, null, 2));
 /// Parse JSON for structural comparison, ignoring whitespace differences.
 fn normalize_json(json: &str) -> serde_json::Value {
     serde_json::from_str(json).unwrap_or_else(|e| panic!("Invalid JSON: {e}\n{json}"))
+}
+
+fn assert_host_reference_bindings(forms: &[serde_json::Value], expected: &[&str]) {
+    let bindings = forms
+        .iter()
+        .filter_map(|form| {
+            let values = form["values"].as_array()?;
+            (values.first()?["value"] == "const")
+                .then(|| values.get(1)?["value"].as_str())
+                .flatten()
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(bindings, expected, "complete-unit support bindings");
 }
 
 macro_rules! e2e_test {
@@ -228,8 +241,16 @@ fn e2e_export_func() {
     let val = normalize_json(&json);
     // Should be [(export (function add ...))]
     let arr = val.as_array().expect("expected array");
-    assert_eq!(arr.len(), 1);
-    let export_list = arr[0]["values"].as_array().expect("expected export list");
+    assert_eq!(arr.len(), 3);
+    assert_host_reference_bindings(
+        arr,
+        &["lyknIntrinsicNumberIsNaN0", "lyknIntrinsicTypeError0"],
+    );
+    let export = arr
+        .iter()
+        .find(|form| form["values"][0]["value"] == "export")
+        .expect("expected export form");
+    let export_list = export["values"].as_array().expect("expected export list");
     assert_eq!(export_list[0]["value"], "export");
     let func_list = export_list[1]["values"]
         .as_array()
@@ -252,8 +273,15 @@ fn e2e_async_func() {
     );
     let val = normalize_json(&json);
     let arr = val.as_array().expect("expected array");
-    assert_eq!(arr.len(), 1);
-    let async_list = arr[0]["values"].as_array().expect("expected async list");
+    assert_eq!(arr.len(), 2);
+    assert_host_reference_bindings(arr, &["lyknIntrinsicTypeError0"]);
+    let async_form = arr
+        .iter()
+        .find(|form| form["values"][0]["value"] == "async")
+        .expect("expected async form");
+    let async_list = async_form["values"]
+        .as_array()
+        .expect("expected async list");
     assert_eq!(async_list[0]["value"], "async");
     let func_list = async_list[1]["values"]
         .as_array()
@@ -269,8 +297,13 @@ fn e2e_export_async_func() {
     );
     let val = normalize_json(&json);
     let arr = val.as_array().expect("expected array");
-    assert_eq!(arr.len(), 1);
-    let export_list = arr[0]["values"].as_array().expect("expected export list");
+    assert_eq!(arr.len(), 2);
+    assert_host_reference_bindings(arr, &["lyknIntrinsicTypeError0"]);
+    let export = arr
+        .iter()
+        .find(|form| form["values"][0]["value"] == "export")
+        .expect("expected export form");
+    let export_list = export["values"].as_array().expect("expected export list");
     assert_eq!(export_list[0]["value"], "export");
     let async_list = export_list[1]["values"]
         .as_array()

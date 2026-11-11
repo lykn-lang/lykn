@@ -195,6 +195,10 @@ const FIXTURES: &[Case] = &[
         name: "adt-pattern-macro-hygiene",
         expected: b"[[[[90,91],5,42]],[[90,91],6,42],[[90,91],7,42],[[90,91],8,42],[[90,91],9,42]]\n",
     },
+    Case {
+        name: "host-reference-shadowing",
+        expected: b"[[\"TypeError\",\"checkNumber: arg 'value' expected number, got string\"],[\"TypeError\",\"checkArray: arg 'value' expected array, got number\"],[\"Error\",\"match: no matching pattern\"]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -226,6 +230,11 @@ fn save_receipt(name: &str, suffix: &str, bytes: &[u8]) {
         file.write_all(bytes)
             .expect("write semantic-role evidence receipt");
     }
+}
+
+#[test]
+fn native_owned_intrinsics_survive_module_shadowing() {
+    run_positive(&FIXTURES[46]);
 }
 
 fn record_source(name: &str, source_path: &Path, source: &[u8]) {
@@ -1096,10 +1105,10 @@ fn lifted_direct_protected_write_fails_compile_without_outputs() {
     );
 
     let check_stderr = format!(
-        "{}: error: 2:13: error: host-contract v1: write to protected slot Reflect.apply\n",
+        "{}: error: 2:13: error: host-contract v2: write to protected slot Reflect.apply\n",
         source_path.display()
     );
-    let compile_stderr = "2:13: error: host-contract v1: write to protected slot Reflect.apply\n";
+    let compile_stderr = "2:13: error: host-contract v2: write to protected slot Reflect.apply\n";
     assert_eq!(check.status.code(), Some(1), "protected check status");
     assert!(check.stdout.is_empty(), "protected check wrote stdout");
     assert_eq!(check.stderr, check_stderr.as_bytes());

@@ -46,7 +46,7 @@ pub fn emit(
         return Err(crate::error::LyknError::Codegen(diagnostic));
     }
     materialize_host_invocations(&mut result)?;
-    Ok(result)
+    crate::codegen::host_references::lower_forms(&result)
 }
 
 fn materialize_host_invocations(forms: &mut Vec<SExpr>) -> Result<(), crate::error::LyknError> {
@@ -216,7 +216,7 @@ pub fn emit_json(
     strip_assertions: bool,
 ) -> Result<String, crate::error::LyknError> {
     let kernel = emit(forms, registry, strip_assertions)?;
-    Ok(emit_module_json(&kernel))
+    emit_module_json(&kernel)
 }
 
 #[cfg(test)]

@@ -1,5 +1,5 @@
 use crate::analysis::type_registry::TypeRegistry;
-use crate::ast::sexpr::{CompletionValueId, NameRes, SExpr};
+use crate::ast::sexpr::{CompletionValueId, HostReference, NameRes, SExpr};
 use crate::ast::surface::{
     ArrayParamElement, BindBinding, ClassMemberForm, CondClause, Constructor, DestructuredField,
     FuncClause, GenfuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
@@ -3890,7 +3890,7 @@ fn emit_func_multi(
         atom("throw"),
         list(vec![
             atom("new"),
-            atom("TypeError"),
+            SExpr::host_reference_atom(HostReference::TypeError, Span::default()),
             str_lit(&format!("{name}: no matching clause for arguments")),
         ]),
     ]));
@@ -4265,7 +4265,7 @@ fn emit_match_statement_inner(
                 atom("throw"),
                 list(vec![
                     atom("new"),
-                    atom("Error"),
+                    SExpr::host_reference_atom(HostReference::Error, Span::default()),
                     str_lit("match: no matching pattern"),
                 ]),
             ]),
@@ -4475,7 +4475,7 @@ fn emit_match_iife(
             atom("throw"),
             list(vec![
                 atom("new"),
-                atom("Error"),
+                SExpr::host_reference_atom(HostReference::Error, Span::default()),
                 str_lit("match: no matching pattern"),
             ]),
         ]));

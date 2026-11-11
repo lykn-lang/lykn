@@ -27,6 +27,7 @@
 pub mod emit;
 pub mod format;
 pub(crate) mod host_invocation;
+pub(crate) mod host_references;
 pub mod icu;
 pub mod names;
 pub mod precedence;
@@ -57,6 +58,7 @@ pub(crate) fn emit_module_with_invocations(
         return Err(LyknError::Codegen(diagnostic));
     }
     let invocation = host_invocation::prepare(forms, requests)?;
+    let references = host_references::prepare(forms)?;
     let slot = invocation.slot;
     let support = invocation.support;
     let mut w = JsWriter::with_invocations(
@@ -65,6 +67,7 @@ pub(crate) fn emit_module_with_invocations(
             .as_ref()
             .map_or("", |item| item.name.as_str())
             .to_string(),
+        references.names,
     );
     let directives = forms
         .iter()
@@ -72,6 +75,10 @@ pub(crate) fn emit_module_with_invocations(
         .count();
     for form in &forms[..directives] {
         emit_statement(&mut w, form)?;
+    }
+    for statement in references.statements {
+        w.write(&statement);
+        w.newline();
     }
     if let Some(item) = support {
         let name = item.name;
@@ -126,10 +133,135 @@ mod tests {
         }
     }
 
+    fn host_ref(reference: crate::ast::sexpr::HostReference) -> SExpr {
+        SExpr::host_reference_atom(reference, s())
+    }
+
     fn list(items: Vec<SExpr>) -> SExpr {
         SExpr::List {
             values: items,
             span: s(),
+        }
+    }
+
+    #[test]
+    fn owned_host_references_lower_through_kernel_and_raw_writers() {
+        use crate::ast::sexpr::HostReference;
+
+        let forms = vec![list(vec![
+            host_ref(HostReference::SymbolFor),
+            str_lit("key"),
+        ])];
+        let lowered = host_references::lower_forms(&forms).unwrap();
+        let kernel_js = emit_module_js(&lowered).unwrap();
+        assert_eq!(
+            kernel_js,
+            "const lyknIntrinsicSymbolFor0 = Symbol.for;\nlyknIntrinsicSymbolFor0(\"key\");\n"
+        );
+
+        let raw_js = emit_module_js(&forms).unwrap();
+        assert_eq!(raw_js, kernel_js);
+    }
+
+    #[test]
+    fn owned_host_reference_fallback_follows_directives_and_preserves_user_root() {
+        use crate::ast::sexpr::HostReference;
+
+        let forms = vec![
+            str_lit("use strict"),
+            list(vec![atom("const"), atom("Symbol"), num(1.0)]),
+            list(vec![host_ref(HostReference::Symbol), str_lit("key")]),
+        ];
+        let js = emit_module_js(&forms).unwrap();
+        assert!(js.starts_with(
+            "\"use strict\";\nimport {symbol as lyknIntrinsicSymbol0} from \"data:text/javascript,"
+        ));
+        assert!(js.contains("const Symbol = 1;"));
+        assert!(js.contains("lyknIntrinsicSymbol0(\"key\");"));
+    }
+
+    #[test]
+    fn owned_references_compose_with_pointer_anchored_reflect_invocations() {
+        use crate::ast::sexpr::HostReference;
+        use crate::codegen::host_invocation::InvocationRequest;
+        use crate::protected_host::IntrinsicId;
+
+        let mut saved = list(vec![atom("saved"), atom("receiver"), atom("argv")]);
+        if let SExpr::List { values, .. } = &mut saved {
+            values[0].mark_host_invocation();
+        }
+        let forms = vec![
+            list(vec![host_ref(HostReference::SymbolFor), str_lit("key")]),
+            saved,
+        ];
+        let request = InvocationRequest {
+            id: IntrinsicId::ReflectApply,
+            anchor: &forms[1],
+        };
+        let js = emit_module_with_invocations(&forms, &[request]).unwrap();
+        assert!(js.contains("const lyknIntrinsicSymbolFor0 = Symbol.for;"));
+        assert!(js.contains("lyknIntrinsicSymbolFor0(\"key\");"));
+        assert!(js.contains("function lyknHostReflectApply0(fn, receiver, argv) { return Reflect.apply(fn, receiver, argv); }"));
+        assert!(js.contains("lyknHostReflectApply0(saved, receiver, argv);"));
+    }
+
+    #[test]
+    fn finite_host_reference_set_has_only_owned_aliases_and_fallback_exports() {
+        use crate::ast::sexpr::HostReference;
+
+        let mut forms = Vec::new();
+        for root in [
+            "Symbol",
+            "Object",
+            "Number",
+            "Array",
+            "Promise",
+            "TypeError",
+            "Error",
+        ] {
+            forms.push(list(vec![atom("const"), atom(root), num(0.0)]));
+        }
+        for reference in [
+            HostReference::Symbol,
+            HostReference::SymbolFor,
+            HostReference::ObjectFreeze,
+            HostReference::ObjectDefineProperties,
+            HostReference::NumberIsNaN,
+            HostReference::ArrayIsArray,
+        ] {
+            forms.push(list(vec![host_ref(reference), num(1.0)]));
+        }
+        for reference in [
+            HostReference::Promise,
+            HostReference::TypeError,
+            HostReference::Error,
+        ] {
+            forms.push(list(vec![
+                atom("new"),
+                host_ref(reference),
+                str_lit("failure"),
+            ]));
+        }
+        let js = emit_module_js(&forms).unwrap();
+        for (export, alias) in [
+            ("symbol", "lyknIntrinsicSymbol0"),
+            ("symbolFor", "lyknIntrinsicSymbolFor0"),
+            ("objectFreeze", "lyknIntrinsicObjectFreeze0"),
+            (
+                "objectDefineProperties",
+                "lyknIntrinsicObjectDefineProperties0",
+            ),
+            ("numberIsNaN", "lyknIntrinsicNumberIsNaN0"),
+            ("arrayIsArray", "lyknIntrinsicArrayIsArray0"),
+            ("promise", "lyknIntrinsicPromise0"),
+            ("typeError", "lyknIntrinsicTypeError0"),
+            ("error", "lyknIntrinsicError0"),
+        ] {
+            assert!(
+                js.contains(&format!("{export} as {alias}")),
+                "missing {export}: {js}"
+            );
+            assert!(js.contains(alias), "missing alias {alias}");
         }
     }
 
@@ -389,7 +521,7 @@ mod tests {
 
         let ordinary_write =
             fixture_forms("(bind Reflect! local) (saved receiver argv) (= Reflect:apply 0)");
-        let expected = "host-contract v1: write to protected slot Reflect.apply";
+        let expected = "host-contract v2: write to protected slot Reflect.apply";
         assert!(matches!(
             emit_module_js(&ordinary_write),
             Err(crate::error::LyknError::Codegen(diagnostic)) if diagnostic.message == expected
