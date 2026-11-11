@@ -61,6 +61,11 @@ receipt treated a prior contributor's reads as reusable. The new context
 must load the specified source guidance itself before extension edits and
 retain the earlier receipt as a disclosed coverage error.
 
+Current source directive [iteration03](cc-prompt-iteration03.md) applies
+the inspected conditional-expression rule, explicit runtime constructors
+and shallow traversal/match structure to the extension. Iteration01's
+assessment remains the execution scope, with every attempt preserved.
+
 ## Permissions restart checkpoint
 
 At the operator's request, both contributors stopped during intake for the
