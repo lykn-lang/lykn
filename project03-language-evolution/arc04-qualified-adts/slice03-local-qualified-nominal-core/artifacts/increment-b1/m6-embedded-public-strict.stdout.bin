@@ -1,0 +1,16 @@
+running 5 tests from ./test/forms/embedded-adt-pattern.test.js
+embedded public compiler handles recursive patterns and zero variants ... ok (39ms)
+embedded public compiler preserves private-name macro hygiene ... ok (17ms)
+embedded public compiler owns shadowed single-clause guard intrinsics ... ok (16ms)
+embedded public compiler dispatches multi-clause with module Array shadow ... ok (15ms)
+embedded public compiler dispatches multi-clause with parameter Array shadow ... ok (14ms)
+running 6 tests from ./test/forms/surface-type-context.test.js
+cold prelude metadata selects named fields without runtime bindings ... ok (23ms)
+successful and late-failing declarations cannot leak pattern metadata ... ok (43ms)
+a late Pass-2 failure cannot leak the type it already emitted ... ok (28ms)
+successful and failed nested compiles preserve the outer metadata ... ok (14ms)
+public expandExpr isolates metadata and preserves binding Sets ... ok (14ms)
+browser compile-to-ESM keeps each compilation type context private ... ok (28ms)
+
+ok | 11 passed | 0 failed (299ms)
+

@@ -1,0 +1,31 @@
+Check test/forms/surface-type-context.test.js
+running 1 test from ./test/forms/surface-type-context.test.js
+successful and late-failing declarations cannot leak pattern metadata ... FAILED (45ms)
+
+ ERRORS 
+
+successful and late-failing declarations cannot leak pattern metadata => ./test/forms/surface-type-context.test.js:54:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   value\n
++   decoy\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at assertOutput (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/surface-type-context.test.js:38:3)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/surface-type-context.test.js:60:3
+
+ FAILURES 
+
+successful and late-failing declarations cannot leak pattern metadata => ./test/forms/surface-type-context.test.js:54:6
+
+FAILED | 0 passed | 1 failed | 4 filtered out (47ms)
+
+error: Test failed

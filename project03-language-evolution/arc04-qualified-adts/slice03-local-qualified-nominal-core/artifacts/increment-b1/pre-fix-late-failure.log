@@ -1,0 +1,31 @@
+Check test/forms/surface-type-context.test.js
+running 1 test from ./test/forms/surface-type-context.test.js
+a late Pass-2 failure cannot leak the type it already emitted ... FAILED (45ms)
+
+ ERRORS 
+
+a late Pass-2 failure cannot leak the type it already emitted => ./test/forms/surface-type-context.test.js:71:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   value\n
++   decoy\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at assertOutput (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/surface-type-context.test.js:38:3)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/surface-type-context.test.js:85:3
+
+ FAILURES 
+
+a late Pass-2 failure cannot leak the type it already emitted => ./test/forms/surface-type-context.test.js:71:6
+
+FAILED | 0 passed | 1 failed | 5 filtered out (48ms)
+
+error: Test failed

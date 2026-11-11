@@ -71,3 +71,41 @@ Root opens B1 through iteration04's reviewed per-call type-context recipe.
 This starts the actual public-state isolation repair while preserving the
 original typed/nominal B/C remainder. There is no new source integration or
 release action: release/0.6.x remains independently accepted at 0829e892.
+
+## B1 — per-call public type metadata isolation
+
+**CC proposed-done, pending separate Sol verification; S03 remains open.** The
+B1 source candidate is committed on `codex/qualified-adt-core` at
+`3f197340dd4765df7cccb3858ef97faccb5df9fc`, tree
+`9ee95765b3475c84c5f537834ecceb6b476dc794`; the source worktree was clean at
+handoff. It replaces the process-global public constructor field registry
+with fresh per-call metadata, explicitly threads it through complete expansion,
+`expandExpr`, recursive binding environments, and all match and conditional
+pattern paths, while preserving macro/lowering order. The context starts with
+fresh prelude field metadata matching the old explicit-reset baseline. The cold
+control confirms this intentionally selects the named `value` field for an
+ordered Some-shaped object without creating runtime constructor bindings.
+Successful, late-Pass-2-failing, re-entrant successful/failed-inner-compile,
+`expandExpr` and supplied-binding-set cases execute generated output. Browser
+compile-to-ESM is separately imported and run. The global `resetTypeRegistry`
+export was removed; record this public surface change for S06. The existing
+legacy syntax and positional fallback remain interim migration obligations.
+
+Final source gates passed: `make check` reports product corpus 1,519/0 across
+67 steps and documentation 482/0 (once); `make bundle-size-check` reports
+42,405 gzip bytes, +14,775 over its 27,630-byte baseline, within 80 KiB; and
+post-commit `make check-cited-paths` checks 64 current documents with 601
+accepted historical citations. M6 passed its cold standalone CLI/materialized
+package route, byte-checking all nine compiler files and running 11 strict
+public cases (five existing runtime controls plus six new context regressions).
+The browser receipt retains existing astring package-condition warnings.
+
+The accepted baseline's successful and late-failing leak differences are
+retained in `artifacts/increment-b1/pre-fix-leak.log` and
+`pre-fix-late-failure.log`. Full command outputs, pins, actual denominators,
+API migration and limitations are indexed in
+[`artifacts/increment-b1/README.md`](artifacts/increment-b1/README.md). B1 is
+only a partial LC-02 foundation: typed OwnerRef/CaseRef, lexical owner/alias
+rules, qualified/nominal activation, precise DTS, purity, complete migration,
+and S03 acceptance remain open. No release integration, push, publication,
+remote CI or next-increment authority follows.
