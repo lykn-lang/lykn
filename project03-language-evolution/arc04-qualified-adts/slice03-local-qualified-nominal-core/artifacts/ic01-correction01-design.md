@@ -87,10 +87,15 @@ it does not evaluate them. Keep binder projection separate from that visit.
 | Rest | Recurse the actual source/kernel binding pattern, not a type marker |
 | Nested array/object | Recurse each complete nested pattern/member, not just its first child |
 | Kernel object alias (alias key local [default]) | Key is data; recurse local at2; visit optional default at3 as expression |
-| Typed nested alias (alias :type name pattern) | Project alias name and recurse pattern at3; that pattern is not a default expression |
+| Typed nested alias (alias :type key pattern) | Key at2 is data, not a binding; project/recurse only nested locals in pattern at3, not a default expression |
 
 Use explicit private grammar state/helper names where necessary; do not guess
-all default positions from length alone. Reuse binder/projection helpers and
+all default positions from length alone. A kernel alias key may itself be a
+keyword, so keyword presence alone is not the source/kernel discriminator:
+use the actual parameter/binding producer's grammar. Correct projection as
+well as default traversal, including any new shared helper's false key binding;
+this does not authorize widening legacy class/clause scope aggregation.
+Reuse binder/projection helpers and
 actual codegen grammar. Wire default-region visiting into kernel function/
 lambda/arrow parameter lists **including the first parameter**, every class
 member/accessor/wrapper parameter list before its body, source typed parameter
@@ -125,6 +130,16 @@ the distinct B2 limitation, not silently counted as a successful public parity
 case. The nested alias witness's prior native parse result is confounded by
 unlowered do: use it as a direct-gate regression, not an independent runtime
 reserved-declaration proof or permission to repair that emitter.
+
+Add the source-readiness alias positive: typed function parameter
+(object (alias :any package (object :any local))) binds only local, not the
+external key package. Execute the function with matching data and assert its
+local value. Pair with a real kernel alias having a keyword external key and
+an invalid local name, so a heuristic that mistakes every keyword key for a
+type annotation cannot pass. Follow actual supported writer grammar; no new
+source alias form is added. Sol's readiness lookup confirmed this key/local
+distinction from classifier capture and both parameter lowerers; root adopted
+it before source issue.
 
 The reviewer retained actual5bdb failing sources/results and immutable B1
 ordering baselines. Use them as immutable witnesses rather than reconstructing

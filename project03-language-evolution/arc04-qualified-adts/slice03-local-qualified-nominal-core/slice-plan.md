@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.10"
+version: "1.11"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,7 +203,7 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration06](cc-prompt-iteration06.md), continuing iteration05's IC-01 source
+**Current assignment:** [iteration07](cc-prompt-iteration07.md), consolidated IC-01 correction after iteration06's HOLD;
 implementation at accepted B1 3f197340/tree9ee95765. The preserved initial
 design remains historical where superseded by the role contract. Root owns
 architecture/planning; Luna owns task source/build until clean handoff; Sol
@@ -223,6 +223,7 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration04.md | 2026-11-11 | iteration03 | B1 per-call metadata isolation | Accepted3f197340 as partial LC-02 only |
 | cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
+| cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Active correction; independent acceptance pending |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -265,3 +266,11 @@ limit at B1. Public B1 handled both keyword orders; IC-R04 must restore that
 public behavior. Native body-before-post success and newer fail-fast rejection
 of the older invalid native ordering must survive this bounded correction;
 general native ordering repair is retained with B2, not silently added here.
+
+Root issues iteration07 after read-only correction readiness. The review's
+one blocking recipe clarification is adopted: typed nested alias names are
+external property keys, not bindings; project only nested locals. The bounded
+shared-parser wiring and twelve-file delivery union are now explicit. This
+is IC-01's second refinement (the first was its guide migration), preserving
+the earlier A loop's three passes and all original holds. Luna owns source/
+build until clean corrected handoff; Sol will then independently revalidate.
