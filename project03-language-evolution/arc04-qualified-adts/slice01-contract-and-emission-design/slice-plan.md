@@ -32,12 +32,30 @@ Prepare a small comparison for the pinned native esbuild 0.25.5 tool already
 built under slice06-native-esbuild-controls. Propose at most two concrete
 emission layouts and six consumers: unused ADT, one case, all cases,
 same-named cases in two types, escaping/dynamic namespace, and imported alias.
-That is a proposed ceiling of twelve bundles. Freeze exact sources, expected
-behavior, exports/effects, tool identities and raw/minified/gzip measures
-before execution. Verify tool availability and the representation each
+That is twelve layout/consumer pairs. The proposed unique build population
+is twenty-four bundle cells per contributor, one unminified and one minified
+output for each pair. Derive gzip size from the minified bytes and count
+independent replay separately. Freeze exact sources, expected behavior,
+exports/effects, tool identities and these three byte measures before
+execution. Verify tool availability and the representation each
 prototype actually establishes. Operator agreement on the concrete protocol
 precedes experiment execution. This design assignment does not acquire or
 rebuild dependencies or execute that proposed matrix.
+
+The protocol must require zero retained ADT contribution for the unused-pure
+case and removal of unused case code for a statically selective consumer.
+Inspect complete unminified output, source bodies and metafiles, alongside
+runtime values and effects. Separate ordinary program/wrapper code from ADT
+contribution. A resolved input, size number or absent minified name alone
+cannot establish elimination. Escaping/dynamic namespace use must retain
+its observable members and behavior. Public package exports remain intact.
+Record a layout's failure honestly and settle the retention targets before
+execution. These constraints refine the existing six consumers.
+
+The independent [preparation review](artifacts/preparation-review.md) found
+these two protocol clarifications in a6a328f8. They are now explicit in the
+open set. This is readiness for design drafting, with QD/QA criteria still
+open and the concrete experiment proposal awaiting agreement.
 
 Current [CC assignment](cc-prompt.md) is the contract/protocol draft.
 Coordination retains PL design authority and resolves consequential choices

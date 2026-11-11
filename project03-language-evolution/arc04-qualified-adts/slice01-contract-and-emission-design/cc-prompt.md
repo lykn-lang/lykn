@@ -59,6 +59,16 @@ outcomes. State what each proposed prototype can establish and how actual
 emitted code, metafiles, behavior and size will be compared. The concrete
 protocol's operator agreement precedes its execution.
 
+Apply preparation-review PR-01/02 explicitly. Twelve layout/consumer pairs
+have two proposed bundle settings each, giving24 unique build cells per
+contributor. Report unminified bytes, minified bytes and gzip of the minified
+bytes, with independent replay separate. The gate must demonstrate zero
+retained ADT contribution when unused, elimination of unused case code for
+static selection, and preservation of used behavior, effects, exports and
+observable escaping-namespace members. Complete unminified code/source-body
+and metafile inspection must support those claims. Do not infer elimination
+from an absent minified identifier, a resolved-input list or byte counts.
+
 All authored research/tool logic must be Lykn. Shell is limited to direct
 native invocation, Git and simple file lifecycle. No Python execution or
 temporary parity exception is authorized. No handwritten JS/Node, Ruby,
