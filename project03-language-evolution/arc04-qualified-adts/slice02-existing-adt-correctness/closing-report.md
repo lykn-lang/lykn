@@ -1,5 +1,11 @@
 # S02 CC close report
 
+Current coordinator disposition: independent source execution supports
+`0829e892999890e8877dec5e35cd249753e1be5d`; root documentary closure is pending
+the final metadata check. See [independent verification](cdc-verification.md)
+and [coordination retrospective](cdc-retrospective.md). The initial and
+corrected CC records below keep their original evidence strength and scope.
+
 Coordinator status: the initial `7b09a4e` candidate below is **not accepted**.
 Sol's exact-pin read-only review found RV-01, stale embedded compiler payload;
 [iteration03](cc-prompt-iteration03.md) owns the delivery correction. This
@@ -278,3 +284,68 @@ The planning worktree remains on `planning`; only this slice closing report and
 its `artifacts/corrected-candidate/` evidence are changed by this close. The
 slice ledger and parent plans are not edited. Sol owns independent CDC and
 replay; root owns final acceptance, parent status, and retrospective.
+
+## Root handoff reconciliation
+
+Source worktree/branch and exact base/candidate are those recorded above.
+`git diff --name-only 685bbe1d 0829e892` identifies these 24 source paths;
+they are delivered by the two scoped commits `7b09a4e` and `0829e892`, not by
+merging planning into source:
+
+```text
+crates/lykn-cli/tests/macro_dependencies.rs
+crates/lykn-cli/tests/semantic_roles.rs
+crates/lykn-lang/embedded/packages/lang/binding.js
+crates/lykn-lang/embedded/packages/lang/classifier.js
+crates/lykn-lang/embedded/packages/lang/compiler-private-atoms.js
+crates/lykn-lang/embedded/packages/lang/expander-core.js
+crates/lykn-lang/embedded/packages/lang/surface-helpers.js
+crates/lykn-lang/src/classifier/forms.rs
+crates/lykn-lang/src/codegen/emit.rs
+crates/lykn-lang/src/emitter/forms.rs
+packages/lang/binding.js
+packages/lang/classifier.js
+packages/lang/compiler-private-atoms.js
+packages/lang/expander-core.js
+packages/lang/surface-helpers.js
+test/fixtures/semantic-roles/adt-pattern-correctness.lykn
+test/fixtures/semantic-roles/adt-pattern-macro-hygiene.lykn
+test/fixtures/semantic-roles/seq-expression-contexts.lykn
+test/fixtures/semantic-roles/statement-match-protected-preservation.lykn
+test/forms/embedded-adt-pattern.test.js
+test/forms/language-surface-runway.test.js
+test/forms/semantic-roles.test.js
+test/surface/conditional-binding_test.lykn
+test/surface/match_test.lykn
+```
+
+Planning history: `e6671ae0` opens S02; `be1a477b` records sequence grouping;
+`a351809e` consolidates draft dispatch/hygiene corrections; `16b8d039` retains
+I4 ownership; `87ad086c` preserves the initial CC report, independent RV-01 hold
+and embedded correction assignment. `e24804da` adds the corrected CC report and
+raw evidence. Its original process receipts remain intact, without amendment
+or a file-count-driven consolidation. Earlier setup/filter/assertion corrections
+reported during work also included a rejected two-filter Cargo invocation,
+an expected newline adjustment, wrong temporary CLI/config/lock setup and an
+expanded-fixture expected-vector correction; these are attested history, not
+newly recreated raw failures.
+
+The slice inventory is its plan, five-row ledger, initial/three iteration
+prompts, canonical closing/verification/retrospective records and the bounded
+`artifacts/corrected-candidate/` plus `artifacts/cdc-independent/` evidence homes.
+The raw corrected packet is enumerated by planning commit `e24804da`; the
+reviewer record identifies the independent receipt archive and integrity data.
+Root's final named planning changes reconcile this slice, Arc04's plan/ledger,
+Project03's plan/ledger and Project07 Arc03's correction status. No research
+archive, original finding payload or accepted S01 contract is rewritten.
+
+The delivered scope includes the necessary sequence grouping, recursive literal
+classification, conditional-binding, guard-exhaustion, identity-based hygiene
+and embedded-payload dependencies. It retains the flat representation. S03 is
+the next implementation increment for local qualified nominal ADTs; imported
+resolution, emission experiments, actual build/JSON composition and S06/S07
+API/documentation/book/human obligations remain open. S06 must account for the
+changed emitted shape, newly accepted literal conditional patterns and internal
+private-atom helpers as well as later qualified APIs. This source acceptance
+does not integrate `release/0.6.x`, which remains `685bbe1d`, or authorize push,
+publication, a library licence, repository creation or a warm-cache redesign.

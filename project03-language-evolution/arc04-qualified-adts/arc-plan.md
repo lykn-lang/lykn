@@ -2,23 +2,28 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.2"
+version: "1.3"
 related: [project07-core-library-research]
 ---
 
 # Qualified ADTs
 
-2026-11-11 current gate: [S02 existing ADT correctness](slice02-existing-adt-correctness/slice-plan.md)
-is active under the operator's Autonomous Mode request. Its source-ready
-assignment preserves the flat representation and covers shared conditional
-binding paths. No source acceptance or release integration is claimed.
+2026-11-11 current gate: [S02 existing ADT correctness](slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
+has independent software acceptance at task `0829e892`. Its last documentary
+row is pending metadata review. The repair preserves flat constructors and
+adds recursive match/conditional correctness, zero-field parity, necessary
+sequence/hygiene dependencies and actual embedded delivery. Initial candidate
+7b09a4e's embedded-payload hold and all evidence remain preserved. Release
+remains `685bbe1d`; no integration is claimed.
 
-[S01 is independently accepted](slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
-at design-review strength, with all five QD rows and QA-01 done. The accepted
-contract/protocol candidate is 4d4aef29, verified in 30a7c78d. Source remains
-685bbe1d; no new compiler behavior, experiment or production strategy is
-accepted. S02's source-ready existing-ADT repair is next. The seven-increment
-v1.1 decomposition below is unchanged by this status-only v1.2 closeout.
+[S01 design](slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
+remains accepted at candidate 4d4aef29, verified in 30a7c78d against source
+685bbe1d. S03 local qualified nominal core is the next implementation increment;
+it is not started here. The seven-increment decomposition remains unchanged.
+S02's cold materialization proof does not establish same-version warm-cache
+content invalidation. Existing Arc01 S04 I4/CV-03 retains checked early-return
+work; S06/S07 still own the full API/docs/book/human obligations. No qualified
+feature, emission experiment or production strategy is accepted by S02.
 
 Deliver coherent type-qualified construction, matching and public JavaScript
 access, grounded in the operator's 2026-11-10 approval. The agreed source
@@ -29,9 +34,12 @@ receive the corresponding Label.Text access. The compiler resolves declared
 constructor identity through bindings and imports, and distinguishes equal
 case names belonging to different types.
 
-Use clean source 685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95 as the inspected
-baseline, currently on codex/completion-value-flow and release/0.6.x.
-Planning lives on its separate branch. Design work consumes source read-only.
+Historical inspected baseline is 685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95;
+release/0.6.x remains there. Accepted S02 software is 0829e892 on dedicated
+codex/adt-pattern-correctness. S03's source-ready assignment must pin that
+accepted state or its independently validated integration, rather than silently
+return to the pre-repair baseline. Planning lives on its separate branch.
+Design work consumes source read-only.
 Implementation uses a dedicated non-default task branch when activated.
 The established Luna 6 High CC and separate Sol 6.1 High review arrangement
 continues. Each slice includes appropriate source, compiler and consumer
@@ -89,6 +97,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-11 v1.3. Record S02 software acceptance at task 0829e892, pending
+  documentary close, actual embedded delivery and explicit existing limits.
+  Release stays 685bbe1d and the seven-increment scope/gates are retained.
 
 - 2026-11-11 v1.2. Record S01's independent design acceptance, source-unchanged
   boundary and next S02 handoff. No change to the v1.1 scope, sequencing,

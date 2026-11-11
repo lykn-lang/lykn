@@ -9,6 +9,11 @@ depends-on: [slice01-contract-and-emission-design]
 
 # Existing ADT correctness
 
+2026-11-11: corrected software candidate `0829e892` is independently accepted
+within the stated limits. PC-01 through PC-04 are done; PC-05 remains open for
+the actual retrospective/parent metadata check. Source is task-only; release
+`685bbe1d`, qualified ADTs and later arc gates remain unchanged.
+
 Repair D-2611-NPAT and D-2611-ZVAR in the native and public compilers before
 changing ADT representation. This increment preserves flat constructors and
 string tags. It does not implement qualified ownership, nominal branding,
