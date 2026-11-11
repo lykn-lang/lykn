@@ -2,7 +2,7 @@
 project: project07-core-library-research
 arc: arc02-lykn-authoring-evidence
 slice: slice01-json-value-and-decoder
-status: preparation
+status: active
 ---
 
 # JSON value and decoder
@@ -30,3 +30,21 @@ formatting idempotence and behavior. Present representative source
 for operator review after technical evidence. The package API,
 dependency and publication decisions belong to the later library
 handoff.
+
+## 2026-11-10 restart and assignment
+
+Resume the authorized S01 trial in the established Autonomous Mode roles:
+OpenAI Codex GPT-6 Luna High for CC, GPT-6.1 Sol High for independent
+reproduction, with the main context coordinating. Reuse the clean
+`codex/completion-value-flow` source worktree at `685bbe1d` as a read-only
+input. The planning worktree is the sole durable write home. Source and
+book worktrees, package licensing, and release and publication actions are
+outside this assignment.
+
+[Initial assignment](cc-prompt.md) captures one original AT-02 answer
+before compiler feedback. The two book chapters were copied byte-for-byte
+at the pinned book revision before capture. Keep the preflight and
+[assessment population](artifacts/at02/assessment.md) out of the fresh
+author's context until the original answer is committed. The independent
+review checks both the first attempt and the completed matrix. User
+readability feedback is recorded separately under the AE01 protocol.
