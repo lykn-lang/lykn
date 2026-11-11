@@ -2,15 +2,17 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.4"
+version: "1.5"
 related: [project07-core-library-research]
 ---
 
 # Qualified ADTs
 
 2026-11-11 current work: [S03 local qualified nominal core](slice03-local-qualified-nominal-core/slice-plan.md)
-is open from independently integrated release `0829e892`. Its initial bounded
-increment establishes the finite protected-host/reference prerequisite; the
+is open from independently integrated release `0829e892`. The finite protected-
+host/reference prerequisite is independently accepted at 5caf3d87 (LC-01),
+and per-call public type isolation at 3f197340 is accepted as partial LC-02.
+Root is preparing IC-01 emitted-binding validation before nominal activation; the
 eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
@@ -105,6 +107,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-11 v1.5. Record accepted S03 host foundation and per-call metadata
+  isolation with their exact pins. Keep LC-02–08 open and prepare the observed
+  emitted-binding prerequisite; no new release integration or nominal claim.
 
 - 2026-11-11 v1.4. Independently integrate S02 to local release 0829e892 and
   open S03 with preserved eight-row delivery and bounded host foundation first.

@@ -317,3 +317,107 @@ The compileLykn evidence proves ESM compilation/consumer execution only.
 
 This reviewer returns exclusive task source/build and CDC record/evidence
 ownership to root. No implementation authority for B follows from this result.
+
+## B1 candidate 3f197340 — 2026-11-11
+
+**Verdict: ACCEPT the bounded B1 per-call public-state repair only.** LC-02–08
+and S03 remain open. Independent review inspected the exact 12-path delta from
+accepted A, iteration04, the selected design, CC handoff and original pre-fix
+receipts. Candidate `3f197340dd4765df7cccb3858ef97faccb5df9fc`, tree
+`9ee95765b3475c84c5f537834ecceb6b476dc794`, remained clean on
+`codex/qualified-adt-core` in the named task worktree. No source/index edit,
+stage or commit occurred; commit trailers are contiguous. No B2, identifier
+carryover, release or remote action was undertaken.
+
+### Source and behavioral verification
+
+The fresh creator allocates one Map and fresh prelude arrays per call. Complete
+expansion creates its context at Pass 2; public expandExpr independently wraps
+and copies its existing Set input. All seven lexical reads, all three ordinary
+surface-producer sites, three statement/direct/result match adapters and the
+separate clause extension preserve the explicit context through existing
+recursion. TypeDef writes and recursive Match/IfLet/WhenLet pattern reads use
+that context. No global active/save-restore context, macro-order change, AST
+transport clone, new public option or native typed-API change was introduced.
+Macro reset/registration and gensym behavior remain separate. All five changed
+or new canonical modules compare byte-for-byte with their embedded copies.
+
+The actual surface.js JSR entrypoint remains exported by unchanged deno.json;
+its resetTypeRegistry export is now absent. The global typeRegistry is removed.
+This intentional API removal stays a S06 migration obligation. Private metadata
+consumers reject missing context with a descriptive TypeError; a direct Not
+emitter and context-free wildcard pattern remain valid. The unchanged Not
+pilot also passes; the supplementary probe checks its actual emitted node.
+
+Independent negative controls use an immutable git-archived accepted-A public
+package at 5caf3d87, not a rebuilt or edited task checkout. They reproduce both
+the successful-declaration leak and the distinct late-Pass-2 failure leak:
+named value differs from the cold positional decoy. Both corresponding B1
+controls pass. Fresh-process cold-prelude behavior is also discriminating:
+old cold extraction selects decoy, while B1 selects the named value field
+without runtime constructor bindings. This is root's explicit normalization
+to the old reset/native metadata baseline, not byte-preserved old cold fallback.
+
+Fresh canonical focused tests pass **31/31**: B1 six, unchanged Not pilot one,
+runway twelve, owned references seven, browser compile/ESM one and lazy Reflect
+four. The cold-prelude test also passes alone in a fresh process (five filtered).
+An additional reviewer-authored Lykn driver passes seven reported rows:
+successful and late-failed compile isolation against independently observed
+baseline outputs; **separate** successful-inner and failed-inner re-entry
+oracles; expression-to-expression isolation; nested value/statement match,
+if-let and when-let extraction; and helper/export/fresh-array boundaries.
+Each emitted runtime checks exact output, success and empty stderr. The failing
+inner variant verifies that its intended late error actually occurred.
+Caller binding-Set preservation and same-spelled macro gating execute in the
+product regression. Current legacy decoy fixture expectations are migration
+inputs; the supplementary equality controls do not canonize that fallback.
+
+### Delivery and required gates
+
+Fresh M6 passes the actual cold copied-built-CLI route with no canonical package
+in its cwd, all **nine** canonical/embedded/materialized module byte comparisons,
+and **11 actual materialized public tests** (five retained runtimes plus all
+six B1 cases). Its explicit lang/ mapping selects the extracted package, including
+the private macroEnv used by re-entry tests. The new browser test uses the normal
+compile adapter and executes emitted ESM; this does not solve eval-based run/load.
+The M6 parent-stderr assertion change is justified by observed Deno Check progress:
+status and the actual 11/11 summary are verified, and runtime children still
+assert empty stderr. This is not permission to ignore failed process status.
+
+A further Lykn witness copies the freshly built release CLI into a separate
+empty standalone cwd, starts from empty owned XDG, and executes a macro plus
+real shadowed number/array/error guards. All nine module bytes plus embedded
+config and lock bytes match extraction. The retained all-nine driver also
+passes 27 runtime assertions, three unfinished public fragment rejections and
+shared-value compilation at this candidate.
+
+Fresh **make check passes**, including build/lint/format, **1,176 language unit
+tests**, product corpus **1,519/0 across 67 steps**, and docs **482/0**, once
+inside the standard gate. Committed citations pass **64 documents / 601 frozen
+historical citations**. Browser gzip is **42,405 bytes**, baseline 27,630,
+delta +14,775, below 80 KiB. Existing astring condition warnings and registry
+metadata output are retained. Required full gates needed no independent retry.
+Built release, bin/lykn and the standalone copy share SHA-256
+`091c78283a3fda26ef106dda04bff109adc32a50138d11c175ff460d82f1e87c`.
+Rust/Cargo 1.97.0 and Deno 2.9.6; all commands use both explicit existing DENO_DIR
+and owned npm/XDG/tmp. Focused M6 receipt variables stay command-local.
+
+[Raw archive](artifacts/increment-b1/cdc/receipts-3f197340.tar.gz) and
+[navigation/digest](artifacts/increment-b1/cdc/README.md) preserve launch data,
+statuses, streams, immutable baseline/configs, generated probes and comparison
+receipts. Four supplementary-helper corrections and their initial failures
+are retained: expression-context if missing else, an imported AST factory
+shadowing array, redundant wrapping of multi-form expandExpr output, and Map
+indexing instead of Map.get. They did not alter candidate source or require
+repeating a full gate. No missing historical transcript was reconstructed.
+
+No unresolved B1 software finding remains. Root retains planning Git/index,
+ledger and parent status. This partial repair does not establish typed
+OwnerRef/CaseRef, lexical owner/alias/forward semantics, qualified nominal
+activation, precise DTS, purity or final migrations. The separate accepted-A
+package-binding carryover is unchanged. S02 I4, historical fallback,
+version-sentinel warm-cache, fixed-nine support-layout and browser run/load
+limitations remain explicit. B1 acceptance closes neither LC-02 nor S03.
+
+This reviewer returns source/build execution and CDC record/evidence ownership
+to root. No subsequent implementation authority follows from this verification.

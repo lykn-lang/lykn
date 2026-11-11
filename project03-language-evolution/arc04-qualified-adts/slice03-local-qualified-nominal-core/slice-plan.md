@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.4"
+version: "1.5"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -163,3 +163,22 @@ baseline, not introduced as runtime bindings. The actual changed M6 union is
 nine files. No new dependency or public context injection is added; removal
 of surface.js resetTypeRegistry is carried to S06. This is a partial LC-02
 foundation, not replacement for typed owners, aliases, nominal values or C.
+
+B1 is independently accepted at source 3f197340dd4765df7cccb3858ef97faccb5df9fc,
+tree 9ee95765b3475c84c5f537834ecceb6b476dc794. Root verified the source pin,
+clean task/release state and independent archive SHA-256
+7dfbceef5749cd5ba2212cb78bf5d5d3821364c551b2793b72c3596d660a8e11.
+Actual old successful/late-failure leaks reproduce; fresh independent focused,
+full, actual embedded and cold CLI gates pass. LC-02 remains open because
+isolated legacy field metadata is not typed OwnerRef/CaseRef resolution.
+The removed public reset export and prior Rust JSON signature changes stay
+explicit S06 inputs. Release remains 0829e892, with no later integration.
+
+Before qualified namespace activation, root prepares the bounded
+[IC-01 emitted-binding prerequisite](artifacts/reserved-binding-repair-design.md).
+It addresses the observed package compile/run failure, the raw/emitted name
+gap, actual ESM oracles and existing check/expansion gate differences. This
+design is unissued pending separate readiness review; it does not replace B2
+or close any LC row. Current legacy metadata-only type names and future
+namespace/data keys remain distinct. All original B/C and downstream gates
+are preserved.

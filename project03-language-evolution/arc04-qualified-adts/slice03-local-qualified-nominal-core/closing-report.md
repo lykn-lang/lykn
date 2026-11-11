@@ -109,3 +109,17 @@ only a partial LC-02 foundation: typed OwnerRef/CaseRef, lexical owner/alias
 rules, qualified/nominal activation, precise DTS, purity, complete migration,
 and S03 acceptance remain open. No release integration, push, publication,
 remote CI or next-increment authority follows.
+
+## Root disposition — partial B1 accepted
+
+Separate Sol verification accepts source 3f197340/tree9ee95765 for the bounded
+state-isolation repair only. Root independently checked the clean source pin,
+unchanged release 0829e892 and archive digest
+7dfbceef5749cd5ba2212cb78bf5d5d3821364c551b2793b72c3596d660a8e11.
+The independent record contains old-leak negative controls, separate successful
+and failed re-entry, expression boundaries, all nine actual delivery bytes,
+eleven materialized cases, cold CLI and fresh full/citation/size gates.
+LC-01 remains done; LC-02–08 and S03 remain open. No typed owner, nominal,
+purity, declaration or final migration acceptance follows. IC-01's bounded
+binding-legality design is the next prerequisite preparation; it has not yet
+been issued for source implementation.
