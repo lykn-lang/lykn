@@ -59,3 +59,20 @@ have not been selected through this discussion. Keep the optional-package
 and tree-shaking requirements in the design. This response supplies a
 specific language-direction decision, rather than overall acceptance of
 the complete research specimen's readability.
+
+The subsequent qualified-match example received the operator's response:
+
+> Oh yeah, I like this much better :-) Question for you about this, though ... is this good design? Will this cause confusion? Are there other PLs that have established a good precedent doing something like this?
+
+After the precedent and semantic discussion, the operator approved proceeding:
+
+> yup, 100% — let's do that!
+>
+> what's next?
+
+The approved direction includes qualified construction and matching,
+declared-constructor resolution through scope/imports, distinguishable owner
+identity and a tree-shaking-aware emission design. Its named engineering
+home is [Project03 Arc04](../../../project03-language-evolution/arc04-qualified-adts/arc-plan.md).
+This is a disposition of the discussed language forms. The complete source
+review and remaining authoring/book tasks remain under their original rows.

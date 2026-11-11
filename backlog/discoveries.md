@@ -1440,3 +1440,14 @@ tooling explicitly. The YAML split preserves all families and the YNOD gate.
   and serialization in both compilers. This differs from NE-D02's
   erroneous call of an already declared zero-field constant.
 - **Evidence:** [Independent exact source, outputs and report](../project07-core-library-research/arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/artifacts/at02/independent-original/zero-control/report.md).
+
+### 2026-11-10 ADT engineering destination
+
+The operator approved qualified constructor/match forms and the associated
+scope, identity and emission design work. D-2611-NPAT and D-2611-ZVAR now
+have their source-correction home in Project03
+[Arc04 qualified ADTs](../project03-language-evolution/arc04-qualified-adts/arc-plan.md),
+which explicitly contains both findings and the existing NE-T02 design input.
+Project07 Arc03 retains its research/correction coordination. Earlier owner
+entries remain provenance. RDEO and RTCK retain their reader/guide destinations.
+All source corrections remain open.

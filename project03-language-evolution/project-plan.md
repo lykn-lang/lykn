@@ -9,6 +9,15 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+2026-11-10. The operator approved qualified ADT construction and pattern
+syntax, declared-constructor resolution, distinct owning-type identity and
+tree-shaking validation. [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md)
+is the dedicated engineering home. Its first slice prepares the concrete
+contract and emission protocol against source 685bbe1d before implementation.
+It owns the NPAT/ZVAR corrections discovered by Project07 and the adjacent
+T02 contract work. Original research, other correction and final API/docs
+audit obligations remain. The existing 0.7.x AOT roadmap is separate.
+
 [Arc02 browser compiler composition](arc02-ad-hoc-maintenance/slice05-browser-estree-bridge-split/cdc-verification.md)
 is independently accepted on task `685bbe1d`. The two splits
 save 3,506 gzip bytes and keep the 81,920-byte release cap.

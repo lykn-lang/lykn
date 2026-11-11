@@ -2,10 +2,18 @@
 project: project07-core-library-research
 arc: arc02-lykn-authoring-evidence
 slice: slice01-json-value-and-decoder
-status: active
+status: closed
 ---
 
 # JSON value and decoder
+
+2026-11-10 current disposition. Independent b00ae36b accepts all five JV
+criteria at reproduced strength. The [verification](cdc-verification.md)
+is the technical close. Human review is ongoing under Arc02 AE-05. The
+operator has now approved qualified constructor and pattern spelling,
+with binding/owner semantics and emitted-size proof. Its engineering
+destination is [Project03 Arc04](../../../project03-language-evolution/arc04-qualified-adts/arc-plan.md).
+Earlier open/checkpoint statements below preserve the actual sequence.
 
 The [ADT preflight](artifacts/adt-preflight/results.md) ran nine
 observations on the actual `685bbe1d` compiler. Use it to inform

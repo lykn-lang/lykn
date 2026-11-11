@@ -1005,6 +1005,13 @@ Macro production behavior remains open.
 
 #### NE-T02 — user-type annotation guard is only tagged-object shaped
 
+**2026-11-10 current design owner.** Operator-approved qualified ADT work
+now has its concrete home in [Arc04](arc04-qualified-adts/arc-plan.md).
+S01 owns the membership/identity contract before dependent implementation.
+Project07's executed controls reproduce unrelated and forged tag acceptance
+at 685bbe1d. Original source-only observations below remain historical.
+No guard correction or static exhaustiveness guarantee is claimed.
+
 **Source-only observation,2026-11-07.** At source5408,
 emitter/type_checks.rs104–117 user-defined fallback checks non-null object with a
 tag property, not exact membership in the declared variant set. Slice17's private

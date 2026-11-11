@@ -9,6 +9,15 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-10 current re-entry. [S01 authoring evidence](arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/cdc-verification.md)
+is independently accepted with 105 ordinary row-condition outcomes and
+36 characterized control cells, including six nested-pattern failures.
+Operator source review selected qualified constructors and patterns.
+[Project03 Arc04](../project03-language-evolution/arc04-qualified-adts/arc-plan.md)
+owns that language work before the queued file/module trial is activated.
+The original failed authoring condition, correction history, compiler/guide
+findings and overall research/library/synthesis obligations remain visible.
+
 2026-11-10 re-entry. Local `release/0.6.x` at `685bbe1d` passed
 [independent release validation](../project03-language-evolution/arc02-ad-hoc-maintenance/artifacts/release-integration-685bbe1d.md).
 The next library work is [Arc02 authoring evidence](arc02-lykn-authoring-evidence/arc-plan.md).

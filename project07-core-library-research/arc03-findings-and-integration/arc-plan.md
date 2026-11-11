@@ -1,5 +1,13 @@
 # Arc03 — Findings and integration
 
+2026-11-10 current language-design destination is Project03
+[Arc04 qualified ADTs](../../project03-language-evolution/arc04-qualified-adts/arc-plan.md).
+It owns the qualified source/match/runtime contract, NPAT/ZVAR source
+corrections and guard-identity design. This supersedes the provisional
+source-design home under A3-04 below. Project07 retains the discovery,
+research, guide/book coordination and correction-composition obligations.
+RDEO remains its separate reader correction and RTCK its guide owner.
+
 2026-11-10 operator source review selects qualified JavaScript ADT
 constructors, with source ergonomics as the main interest. The
 [exact discussion and technical S01 disposition](../arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/closing-report.md#independent-disposition-and-operator-discussion-2026-11-10)
@@ -191,6 +199,10 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-11-10 v1.17: Operator approved qualified construction and matching.
+  Project03 Arc04 is now the concrete language-design and NPAT/ZVAR source
+  correction home. Reader/guide and Project07 research owners survive.
 
 - 2026-11-10 v1.16: Arc02/S01 independently reproduced public EOF acceptance,
   two nested-pattern emission failures and contradictory return-check
