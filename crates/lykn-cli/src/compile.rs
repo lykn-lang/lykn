@@ -92,48 +92,7 @@ pub fn check_strict(source: &str, file_path: &Path) -> Result<(), CompileError> 
     // DD-61 §A1/§A3: resolve names (tag atoms) so dispatch sites consume the
     // tag via `as_form_head` — a lexically bound head is no longer a form.
     let forms = resolver::resolve(&forms);
-    // DD-64 (arc15 slice02): check ≡ compile — reject the method-on-expression
-    // trap at any nesting depth (classify alone sees only top-level forms).
-    let method_errs = lykn_lang::classifier::validate_method_calls(&forms);
-    if !method_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            method_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-    let fn_param_errs = lykn_lang::classifier::validate_nested_fn_params(&forms);
-    if !fn_param_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            fn_param_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-    let no_else_if_errs = lykn_lang::classifier::validate_no_else_if_expressions(&forms);
-    if !no_else_if_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            no_else_if_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
-    let exports_errs = lykn_lang::classifier::validate_exports_declarations(&forms);
-    if !exports_errs.is_empty() {
-        return Err(CompileError::Analysis(
-            exports_errs
-                .iter()
-                .map(|d| format!("{d}"))
-                .collect::<Vec<_>>()
-                .join("\n"),
-        ));
-    }
+    validate_compile_forms(&forms)?;
     classifier::classify_with_options(&forms, classifier_options_for(Some(file_path))).map_err(
         |diags| {
             CompileError::Analysis(
@@ -722,6 +681,71 @@ mod tests {
         assert!(
             msg.contains("exports references unknown top-level binding 'missing'"),
             "expected missing export diagnostic, got: {msg}"
+        );
+    }
+
+    #[test]
+    fn reserved_binding_gate_covers_compile_check_and_stripped_modes() {
+        let path = Path::new("surface.lykn");
+        for stripped in [false, true] {
+            let error = compile_source("(fn (:any package) package)", Some(path), stripped, false)
+                .expect_err("reserved function parameter must reject");
+            assert!(error.to_string().contains("package"), "{error}");
+        }
+        let error = check_strict("(fn (:any package) package)", path)
+            .expect_err("check path must share the compile binding gate");
+        assert!(error.to_string().contains("package"), "{error}");
+
+        let generated = compile_source(
+            "(macro make-function (name) `(function (,name) value)) (bind f (make-function package))",
+            Some(path),
+            false,
+            false,
+        )
+        .expect_err("actual macro output must be validated");
+        assert!(generated.to_string().contains("package"), "{generated}");
+    }
+
+    #[test]
+    fn legal_property_eval_and_bound_bind_call_remain_valid() {
+        use std::process::Command;
+
+        let path = Path::new("surface.lykn");
+        let source = "(console:log (typeof (obj :const eval))) (bind bind (fn (:any value) (typeof value))) (console:log (bind eval))";
+        let generated = compile_source(source, Some(path), false, false)
+            .expect("bound call to bind with global eval argument is legal");
+        assert!(generated.contains("typeof"), "{generated}");
+        assert!(check_strict(source, path).is_ok());
+
+        let directory = tempfile::tempdir().expect("create native output fixture");
+        let module = directory.path().join("compiled.mjs");
+        std::fs::write(&module, format!("{generated}\nexport {{}};\n"))
+            .expect("write compiled native output");
+        let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
+        let result = Command::new(deno)
+            .args([
+                "run",
+                "--no-config",
+                "--no-prompt",
+                "--no-npm",
+                "--cached-only",
+            ])
+            .arg(&module)
+            .output()
+            .expect("execute native output with Deno");
+        assert!(
+            result.status.success(),
+            "native output failed: {}",
+            String::from_utf8_lossy(&result.stderr)
+        );
+        assert_eq!(
+            String::from_utf8_lossy(&result.stdout),
+            "object\nfunction\n"
+        );
+        assert!(
+            result.stderr.is_empty(),
+            "{}",
+            String::from_utf8_lossy(&result.stderr)
         );
     }
 

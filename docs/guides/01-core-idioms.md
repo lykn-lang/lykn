@@ -863,9 +863,9 @@ the top level of indentation.
 (console:log user:first-name)
 (bind updated (assoc user :age 31))
 (console:log updated:age)
-(bind public (dissoc user :age))
-(console:log public:first-name)
-(console:log public:age)
+(bind public-user (dissoc user :age))
+(console:log public-user:first-name)
+(console:log public-user:age)
 ```
 
 ```

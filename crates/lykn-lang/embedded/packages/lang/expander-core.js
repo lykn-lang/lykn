@@ -1705,6 +1705,7 @@ function expandDirectBind(args, env) {
  * @returns {* | *[]} Expanded form(s)
  */
 export function expandExpr(form, env = EMPTY_ENV) {
+  validateReservedNames([form], { bindings: env });
   const privateCountAtStart = compilerPrivateAtomCount;
   const expansionEnv = createExpansionEnvironment(env, createSurfaceTypeContext());
   const result = expandAt(form, expansionEnv, "Legacy");
@@ -1713,6 +1714,7 @@ export function expandExpr(form, env = EMPTY_ENV) {
   }
   if (result === null || result === undefined) return result;
   const forms = Array.isArray(result) ? result : [result];
+  validateReservedNames(forms, { bindings: env });
   lowerHostReferences(forms);
   return Array.isArray(result) || forms.length > 1 ? forms : forms[0];
 }
@@ -2310,6 +2312,7 @@ export function expandWithMacroImports(forms, context = {}, processImports) {
   const afterPass0 = processImports(forms, { filePath, compilationStack });
   const afterPass1 = pass1RegisterMacros(afterPass0);
   const expanded = pass2ExpandAll(afterPass1);
+  validateReservedNames(expanded);
   // DD-58 strict (default-on): reject unsanctioned top-level kernel-only decls
   // in the fully-expanded output — covers user-written bare decls and
   // user-macro-emitted ones (A-6). Explicit `{ strict: false }` opt-out for

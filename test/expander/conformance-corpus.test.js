@@ -21,7 +21,7 @@
 //      → calls-binding on both ......... "D1: control name shadows in every position"
 //   2. surface-form legal ident (fn/cell/obj/match/and/…) → calls-binding both
 //      ................................. "D1: surface-form names shadow (skip dispatch)"
-//   3. kernel-head legal ident (array/await/get/async/assign) → calls-binding both
+//   3. kernel-head legal idents (array/get/async/assign) → calls-binding both
 //      ................................. "D1: kernel-head names shadow (skip dispatch)"
 //   4. `macro` (the DD-60-D1 form-name; slice11 F-3 Rust convergence) → both
 //      ................................. "D1/F-3: bound `macro` calls the binding on both backends"
@@ -142,7 +142,7 @@ Deno.test("D1: surface-form names shadow (skip dispatch)", () => {
 });
 
 Deno.test("D1: kernel-head names shadow (skip dispatch)", () => {
-  for (const name of ["array", "await", "get", "async", "assign"]) {
+  for (const name of ["array", "get", "async", "assign"]) {
     for (const rpos of REF_ORDER) {
       assertShadowsBoth(name, "func-param", rpos);
     }

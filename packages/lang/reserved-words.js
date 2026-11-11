@@ -10,6 +10,7 @@
 
 /** @type {ReadonlyArray<string>} */
 export const RESERVED_WORDS = Object.freeze([
+  "await",
   "break",
   "case",
   "catch",
@@ -21,6 +22,7 @@ export const RESERVED_WORDS = Object.freeze([
   "delete",
   "do",
   "else",
+  "enum",
   "export",
   "extends",
   "false",
@@ -29,13 +31,20 @@ export const RESERVED_WORDS = Object.freeze([
   "function",
   "if",
   "import",
+  "implements",
+  "interface",
   "in",
   "instanceof",
   "let",
   "new",
   "null",
+  "package",
+  "private",
+  "protected",
+  "public",
   "return",
   "super",
+  "static",
   "switch",
   "this",
   "throw",
@@ -46,6 +55,7 @@ export const RESERVED_WORDS = Object.freeze([
   "void",
   "while",
   "with",
+  "yield",
 ]);
 
 const RESERVED_SET = new Set(RESERVED_WORDS);

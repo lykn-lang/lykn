@@ -717,7 +717,9 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         "compiler.js",
         "compiler-private-atoms.js",
         "expander-core.js",
+        "identifier.js",
         "protected-host.js",
+        "reserved-words.js",
         "surface-helpers.js",
         "surface.js",
         "surface-type-context.js",
@@ -768,6 +770,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
     let public_tests = [
         repository.join("test/forms/embedded-adt-pattern.test.js"),
         repository.join("test/forms/surface-type-context.test.js"),
+        repository.join("test/forms/reserved-binding-output.test.js"),
     ];
     let mut strict_public = Command::new(deno);
     strict_public
@@ -798,7 +801,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 11 passed | 0 failed"),
-        "M6 must execute all eleven strict public cases, output: {public_output}"
+        public_output.contains("ok | 22 passed | 0 failed"),
+        "M6 must execute all eleven retained and eleven IC-01 public cases, output: {public_output}"
     );
 }

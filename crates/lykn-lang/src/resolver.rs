@@ -158,6 +158,13 @@ fn scope_plan_with_occurrences<'tree>(
         .filter_map(|occurrence| occurrence.atom.as_atom().map(str::to_string))
         .collect();
     match head {
+        Some(
+            "function" | "function*" | "=>" | "lambda" | "kernel:function" | "kernel:function*"
+            | "kernel:=>" | "kernel:lambda",
+        ) => ScopePlan::Body {
+            names: body_names,
+            body_start: 0,
+        },
         Some("bind") if let Some(slots) = grouped_bind_slots(values) => {
             ScopePlan::GroupedBind { slots }
         }
@@ -880,6 +887,39 @@ mod tests {
             scope_plan(&ordinary[0], &["if".to_string()]),
             ScopePlan::Sequence
         ));
+    }
+
+    #[test]
+    fn kernel_function_parameters_are_inner_and_named_function_alone_hoists() {
+        let source = "(bind fn-local (function fn-local (bind) (bind 987))) (bind after 0)";
+        let forms = read(source).expect("parse kernel function expression");
+        let SExpr::List { values, .. } = &forms[0] else {
+            panic!("outer binding is a list")
+        };
+        let function = values.get(2).expect("function initializer");
+        let plan = scope_plan(function, &[]);
+        assert!(matches!(plan, ScopePlan::Body { body_start: 0, .. }));
+        assert_eq!(hoisted_names(function), vec!["fn-local"]);
+        let resolved = resolve(&forms);
+        let rendered = resolved
+            .iter()
+            .map(ToString::to_string)
+            .collect::<Vec<_>>()
+            .join("\n");
+        assert_eq!(call_head_tag(&rendered, "bind"), Some(NameRes::BindingRef));
+    }
+
+    #[test]
+    fn kernel_lambda_parameters_are_inner_scope() {
+        let forms =
+            read("(bind f (kernel:lambda (bind) (bind 987)))").expect("parse kernel lambda");
+        let resolved = resolve(&forms);
+        let rendered = resolved
+            .iter()
+            .map(ToString::to_string)
+            .collect::<Vec<_>>()
+            .join("\n");
+        assert_eq!(call_head_tag(&rendered, "bind"), Some(NameRes::BindingRef));
     }
 
     #[test]

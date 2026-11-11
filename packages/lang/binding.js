@@ -12,7 +12,9 @@
 // *identifies* positions — it changes no expansion behavior (that is slice05).
 
 import { RESERVED_WORDS } from "./reserved-words.js";
+import { toJsIdentifier } from "./identifier.js";
 import { isCompilerPrivateAtom } from "./compiler-private-atoms.js";
+import { isKernel } from "./kernel-mark.js";
 
 /** @typedef {'param'|'bind'|'loop-binding'|'class-method-param'} BindingKind */
 /**
@@ -31,37 +33,49 @@ const SEQUENCE = { kind: "seq" };
  * @param {Array<object>} forms
  * @returns {BindingSite[]}
  */
-export function walkBindings(forms) {
+export function walkBindings(forms, { bindings = new Set() } = {}) {
   const out = [];
-  walkSequence(forms, out, false);
+  walkSequence(forms, out, new Set(bindings));
   return out;
 }
 
-function withMatchName(inScope, names) {
-  return inScope || names.includes("match");
+function extendNames(inScope, names) {
+  if (names.length === 0) return inScope;
+  const next = new Set(inScope);
+  for (const name of names) next.add(name);
+  return next;
 }
 
-function walkSequence(forms, out, matchInScope) {
-  let current = matchInScope;
+function walkSequence(forms, out, inScope) {
+  let current = inScope;
   for (const form of forms) {
     walk(form, out, current);
-    const hoisted = form?.type === "list" ? hoistedNames(form) : [];
-    current = withMatchName(current, hoisted);
+    const head = form?.type === "list" ? form.values[0] : null;
+    const rawHead = head?.type === "atom" && head.binding === undefined ? head.value : null;
+    const dispatches = isKernel(form) || (rawHead !== null && !current.has(rawHead));
+    const hoisted = dispatches ? hoistedNames(form) : [];
+    current = extendNames(current, hoisted);
   }
 }
 
-function walk(form, out, matchInScope) {
+function walk(form, out, inScope) {
+  if (form?.type === "cons") {
+    walk(form.car, out, inScope);
+    walk(form.cdr, out, inScope);
+    return;
+  }
   if (form?.type !== "list") return;
 
   const head = form.values[0];
-  const headName = head?.type === "atom" && head.binding === undefined
+  const rawHead = head?.type === "atom" && head.binding === undefined
     ? head.value
     : null;
-  if (head?.type === "atom" && head.value === "match") {
-    if (headName === null || matchInScope) {
+  const headName = rawHead !== null && (isKernel(form) || !inScope.has(rawHead)) ? rawHead : null;
+  if (head?.type === "atom" && rawHead === "match") {
+    if (headName === null) {
       // A bound or tagged `match` is a call. Its arguments are ordinary
       // expressions in the incoming environment; call operands do not hoist.
-      for (const argument of form.values.slice(1)) walk(argument, out, matchInScope);
+      for (const argument of form.values.slice(1)) walk(argument, out, inScope);
       return;
     }
 
@@ -69,14 +83,11 @@ function walk(form, out, matchInScope) {
     // site exactly once before visiting executable source regions.
     out.push(...bindingsIntroduced(form));
     const args = form.values.slice(1);
-    if (args.length > 0) walk(args[0], out, matchInScope);
+    if (args.length > 0) walk(args[0], out, inScope);
     for (const clause of args.slice(1)) {
       if (clause?.type !== "list" || clause.values.length === 0) continue;
       const patternSites = matchPatternNames(clause.values[0]);
-      const clauseScope = withMatchName(
-        matchInScope,
-        patternSites.map((site) => site.name),
-      );
+      const clauseScope = extendNames(inScope, patternSites.map((site) => site.name));
       const guard = isMatchGuardSlot(clause) ? clause.values[2] : null;
       if (guard !== null) walk(guard, out, clauseScope);
       const bodyStart = guard === null ? 1 : 3;
@@ -85,34 +96,214 @@ function walk(form, out, matchInScope) {
     return;
   }
 
-  out.push(...bindingsIntroduced(form));
+  if (headName === "quote" || headName === "kernel:quote") return;
+  if (headName === "quasiquote" || headName === "kernel:quasiquote") {
+    if (form.values[1]) walkTemplate(form.values[1], out, inScope, 1);
+    return;
+  }
+  if (headName === "obj") {
+    const args = form.values.slice(1);
+    for (let i = 0; i < args.length; i += 2) {
+      const key = args[i];
+      const value = args[i + 1];
+      if (key?.type === "list") walk(key, out, inScope);
+      if (value) walk(value, out, inScope);
+    }
+    return;
+  }
+  if (headName === "object" || headName === "kernel:object") {
+    for (const property of form.values.slice(1)) {
+      if (property?.type !== "list") continue;
+      const marker = property.values[0];
+      const propertyHead = marker?.type === "atom" ? marker.value : "";
+      if (propertyHead === "spread") {
+        for (const value of property.values.slice(1)) walk(value, out, inScope);
+      } else if (marker?.type === "list" && marker.values[0]?.type === "atom" && marker.values[0].value === "computed") {
+        for (const key of marker.values.slice(1)) walk(key, out, inScope);
+        if (property.values[1]) walk(property.values[1], out, inScope);
+      } else if (marker?.type === "list") {
+        for (const value of property.values) walk(value, out, inScope);
+      } else if (property.values.length > 1) {
+        for (const value of property.values.slice(1)) walk(value, out, inScope);
+      }
+    }
+    return;
+  }
+  if (headName === "class") {
+    out.push(...bindingsIntroduced(form).filter((site) => site.kind === "bind"));
+    const classScope = extendNames(inScope, bindingsIntroduced(form)
+      .filter((site) => site.kind === "bind").map((site) => site.name));
+    const bases = form.values[2];
+    if (bases?.type === "list") {
+      for (const base of bases.values) walk(base, out, classScope);
+    }
+    for (const member of form.values.slice(3)) {
+      walkClassMember(member, out, classScope);
+    }
+    return;
+  }
+
+  if (headName === "func" || headName === "genfunc") {
+    walkSourceFunction(form, out, inScope);
+    return;
+  }
+
   if (headName === null) {
-    // Preserve traversal of a computed list callee; atom heads themselves are
-    // names, not nested forms.
+    // A lexical call is not a declaration even when its spelling names a form.
     const children = head?.type === "atom" ? form.values.slice(1) : form.values;
-    for (const child of children) walk(child, out, matchInScope);
+    for (const child of children) walk(child, out, inScope);
+    return;
+  }
+
+  out.push(...bindingsIntroduced(form));
+  if (headName === "bind") {
+    walkBindOperands(form.values.slice(1), out, inScope);
     return;
   }
 
   const plan = bindingScopePlan(form, headName);
   const children = form.values;
   if (plan.kind === "conditional") {
-    if (children.length > 1) walk(children[1], out, matchInScope);
-    for (const branch of children.slice(2)) walk(branch, out, matchInScope);
+    if (children.length > 1) walk(children[1], out, inScope);
+    for (const branch of children.slice(2)) walk(branch, out, inScope);
     return;
   }
   if (plan.kind === "seq") {
-    walkSequence(children, out, matchInScope);
+    walkSequence(children, out, inScope);
     return;
   }
 
   const split = Math.min(plan.bodyStart, children.length);
-  for (const child of children.slice(0, split)) walk(child, out, matchInScope);
+  for (const child of children.slice(0, split)) walk(child, out, inScope);
   walkSequence(
     children.slice(split),
     out,
-    withMatchName(matchInScope, plan.names),
+    extendNames(inScope, plan.names),
   );
+}
+
+function walkBindOperands(args, out, inScope) {
+  const current = new Set(inScope);
+  if (args.length === 2 || args.length === 3) {
+    const patternIndex = args.length === 2 ? 0 : 1;
+    walkPatternDefaults(args[patternIndex], out, current);
+    walk(args[patternIndex + 1], out, current);
+    return;
+  }
+  if (args.length < 4) return;
+  for (let i = 0; i < args.length;) {
+    let patternIndex = i;
+    if (args[i]?.type === "keyword") patternIndex++;
+    const valueIndex = patternIndex + 1;
+    if (valueIndex >= args.length) return;
+    walkPatternDefaults(args[patternIndex], out, current);
+    walk(args[valueIndex], out, current);
+    for (const site of patternNames(args[patternIndex], "bind")) current.add(site.name);
+    i = valueIndex + 1;
+  }
+}
+
+function walkPatternDefaults(pattern, out, inScope) {
+  if (pattern?.type !== "list") return;
+  const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
+  if (head !== "array" && head !== "object") return;
+  for (const member of pattern.values.slice(1)) {
+    if (member?.type !== "list") continue;
+    const memberHead = member.values[0]?.type === "atom" ? member.values[0].value : "";
+    if (memberHead === "default") {
+      const value = member.values.at(-1);
+      if (value) walk(value, out, inScope);
+    } else if (memberHead === "alias") {
+      if (member.values[3]) walk(member.values[3], out, inScope);
+    } else if (memberHead === "rest" || memberHead === "array" || memberHead === "object") {
+      walkPatternDefaults(member.values[1], out, inScope);
+    }
+  }
+}
+
+function walkClassMember(member, out, classScope) {
+  if (member?.type !== "list" || member.values.length === 0) return;
+  const head = member.values[0]?.type === "atom" ? member.values[0].value : "";
+  if (head === "static" || head === "async") {
+    for (const nested of member.values.slice(1)) walkClassMember(nested, out, classScope);
+    return;
+  }
+  const paramsIndex = head === "get" || head === "set" ? 2 : 1;
+  const params = member.values[paramsIndex];
+  if (params?.type !== "list") {
+    for (const child of member.values.slice(1)) walk(child, out, classScope);
+    return;
+  }
+  const sites = kernelParamNames(params).map((site) => ({ ...site, kind: "class-method-param" }));
+  out.push(...sites);
+  const methodScope = extendNames(classScope, sites.map((site) => site.name));
+  for (const child of member.values.slice(paramsIndex + 1)) walk(child, out, methodScope);
+}
+
+function walkSourceFunction(form, out, inScope) {
+  const args = form.values.slice(1);
+  const name = args[0]?.type === "atom" && args[0].value !== "_"
+    ? [{ name: args[0].value, kind: "bind", node: args[0] }]
+    : [];
+  out.push(...name);
+  const functionScope = extendNames(inScope, name.map((site) => site.name));
+  const multiClauses = args.slice(1).filter((value) =>
+    value?.type === "list" && value.values[0]?.type === "keyword" &&
+    FUNC_CLAUSE_KEYS.has(value.values[0].value)
+  );
+  const clauses = multiClauses.length > 0 ? multiClauses : [args.slice(1)];
+  for (const clause of clauses) {
+    const values = Array.isArray(clause) ? clause : clause.values;
+    let params = null;
+    for (let i = 0; i + 1 < values.length; i++) {
+      if (values[i]?.type === "keyword" && values[i].value === "args" && values[i + 1]?.type === "list") {
+        params = values[i + 1];
+        break;
+      }
+    }
+    const sites = params ? paramListNames(params) : [];
+    out.push(...sites);
+    const clauseScope = extendNames(functionScope, sites.map((site) => site.name));
+    if (params) walkParamDefaults(params, out, clauseScope);
+    for (let i = 0; i + 1 < values.length; i++) {
+      const key = values[i];
+      const value = values[i + 1];
+      if (key?.type !== "keyword" || !["body", "pre", "post"].includes(key.value)) continue;
+      walk(value, out, clauseScope);
+    }
+  }
+}
+
+function walkParamDefaults(params, out, inScope) {
+  if (params?.type !== "list") return;
+  for (const param of params.values) {
+    if (param?.type !== "list") continue;
+    const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
+    if (head === "default") {
+      const value = param.values.at(-1);
+      if (value) walk(value, out, inScope);
+    } else if (head === "array" || head === "object") {
+      walkPatternDefaults(param, out, inScope);
+    }
+  }
+}
+
+function walkTemplate(node, out, inScope, depth) {
+  if (node?.type !== "list") return;
+  const head = node.values[0]?.type === "atom" ? node.values[0].value : null;
+  if (head === "quasiquote") {
+    if (node.values[1]) walkTemplate(node.values[1], out, inScope, depth + 1);
+    return;
+  }
+  if (head === "unquote" || head === "unquote-splicing") {
+    if (depth === 1) {
+      if (node.values[1]) walk(node.values[1], out, inScope);
+    } else if (node.values[1]) {
+      walkTemplate(node.values[1], out, inScope, depth - 1);
+    }
+    return;
+  }
+  for (const child of node.values) walkTemplate(child, out, inScope, depth);
 }
 
 /** Extend an immutable source environment with a collection of names. */
@@ -144,6 +335,12 @@ export function hoistedNames(form) {
  */
 export function bindingScopePlan(form, headName) {
   if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
+  const kernel = headName?.startsWith("kernel:")
+    ? headName.slice("kernel:".length)
+    : headName;
+  if (["function", "function*", "=>", "lambda"].includes(kernel)) {
+    return { kind: "body", names: bodyScopeNames(form), bodyStart: 0 };
+  }
   switch (headName) {
     case "if":
       return { kind: "conditional" };
@@ -156,9 +353,6 @@ export function bindingScopePlan(form, headName) {
     case "match":
       return { kind: "body", names: bodyScopeNames(form), bodyStart: 2 };
     default: {
-      const kernel = headName?.startsWith("kernel:")
-        ? headName.slice("kernel:".length)
-        : headName;
       if (headName === "bind" || DECL_HEADS.has(kernel)) return SEQUENCE;
       const names = bodyScopeNames(form);
       return names.length === 0
@@ -196,6 +390,8 @@ export function bindingsIntroduced(form) {
     case "lambda":
     case "genfn":
       return args.length > 0 ? paramListNames(args[0]) : [];
+    case "kernel:lambda":
+      return args.length > 0 ? kernelParamNames(args[0]) : [];
     case "for-of":
     case "for-in":
     case "for-await-of":
@@ -204,6 +400,14 @@ export function bindingsIntroduced(form) {
       return classNames(args);
     case "type":
       return typeConstructorNames(args);
+    case "function":
+    case "function*":
+    case "kernel:function":
+    case "kernel:function*":
+      return kernelFunctionNames(args);
+    case "=>":
+    case "kernel:=>":
+      return args.length > 0 ? kernelParamNames(args[0]) : [];
     // DD-60 refinement (2026-07-06): if-let/when-let binding patterns and match
     // clause patterns bind names too.
     case "if-let":
@@ -217,6 +421,7 @@ export function bindingsIntroduced(form) {
     case "import":
       return importLocalNames(args);
     case "label":
+    case "kernel:label":
       return args[0]?.type === "atom" && args[0].value !== "_"
         ? [{ name: args[0].value, kind: "label", node: args[0] }]
         : [];
@@ -305,12 +510,44 @@ function paramListNames(list) {
     } else if (el.type === "list") {
       const h = el.values[0]?.type === "atom" ? el.values[0].value : "";
       if (h === "rest" && el.values[1]) {
-        out.push(...patternNames(el.values[1], "param"));
-      } else if (h === "default" && el.values[2]) {
-        out.push(...patternNames(el.values[2], "param"));
+        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
+        if (binding) out.push(...patternNames(binding, "param"));
+      } else if (h === "default") {
+        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
+        if (binding) out.push(...patternNames(binding, "param"));
       } else if (h === "array" || h === "object") {
         out.push(...patternNames(el, "param"));
       }
+    }
+  }
+  return out;
+}
+
+function kernelFunctionNames(args) {
+  if (args[0]?.type === "list") return kernelParamNames(args[0]);
+  const out = args[0]?.type === "atom" && args[0].value !== "_"
+    ? [{ name: args[0].value, kind: "bind", node: args[0] }]
+    : [];
+  if (args[1]?.type === "list") out.push(...kernelParamNames(args[1]));
+  return out;
+}
+
+function kernelParamNames(list) {
+  if (list?.type !== "list") return [];
+  const out = [];
+  for (const param of list.values) {
+    if (param?.type === "atom") {
+      if (param.value !== "_") out.push({ name: param.value, kind: "param", node: param });
+      continue;
+    }
+    if (param?.type !== "list") continue;
+    const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
+    if (head === "rest" && param.values[1]) {
+      out.push(...patternNames(param.values[1], "param"));
+    } else if (head === "default" && param.values[1]) {
+      out.push(...patternNames(param.values[1], "param"));
+    } else if (head === "array" || head === "object") {
+      out.push(...patternNames(param, "param"));
     }
   }
   return out;
@@ -383,6 +620,11 @@ function importSpecs(specs, out) {
  */
 function typeConstructorNames(args) {
   const out = [];
+  for (const ctor of args.slice(1)) {
+    if (ctor?.type === "atom" && ctor.value !== "_") {
+      out.push({ name: ctor.value, kind: "bind", node: ctor });
+    }
+  }
   for (const ctor of args.slice(1)) {
     if (ctor?.type !== "list" || ctor.values.length === 0) continue;
     const head = ctor.values[0];
@@ -474,9 +716,13 @@ function patternNames(pat, kind) {
     } else if (el.type === "list") {
       const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
       if (ih === "rest" && el.values[1]) {
-        out.push(...patternNames(el.values[1], kind));
-      } else if (ih === "default" && el.values[2]) {
+        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
+        if (binding) out.push(...patternNames(binding, kind));
+      } else if (ih === "alias" && el.values[2]) {
         out.push(...patternNames(el.values[2], kind));
+      } else if (ih === "default") {
+        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
+        if (binding) out.push(...patternNames(binding, kind));
       } else if (ih === "array" || ih === "object") {
         out.push(...patternNames(el, kind));
       }
@@ -503,12 +749,20 @@ const KIND_PHRASE = {
  * `export`ed names and `kernel:` declaration name slots (walkBindings sees all).
  * @param {Array<object>} forms
  */
-export function validateReservedNames(forms) {
-  for (const site of walkBindings(forms)) {
-    if (RESERVED_SET.has(site.name)) {
+export function validateReservedNames(forms, options = {}) {
+  for (const site of walkBindings(forms, options)) {
+    const emittedName = toJsIdentifier(site.name);
+    if (RESERVED_SET.has(emittedName) ||
+      (site.kind !== "label" && (emittedName === "eval" || emittedName === "arguments"))) {
+      const strictName = emittedName === "eval" || emittedName === "arguments";
+      const changed = emittedName !== site.name;
+      const reason = strictName
+        ? `'${site.name}'${changed ? ` (emits '${emittedName}')` : ""} is forbidden as a strict-mode binding identifier`
+        : changed
+        ? `'${site.name}' emits the JavaScript reserved word '${emittedName}' and cannot be used as a lykn ${KIND_PHRASE[site.kind]}`
+        : `'${site.name}' is a JavaScript reserved word and cannot be used as a lykn ${KIND_PHRASE[site.kind]}`;
       throw new Error(
-        `'${site.name}' is a JavaScript reserved word and cannot be used as a ` +
-          `lykn ${KIND_PHRASE[site.kind]}; rename it (e.g. \`${site.name}_\`)`,
+        `${reason}; rename it (e.g. \`${site.name}_\`)`,
       );
     }
   }
