@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 arc: arc04-qualified-adts
-status: preparation
+status: active
 related: [project07-core-library-research]
 ---
 

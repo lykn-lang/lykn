@@ -2,10 +2,29 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice01-contract-and-emission-design
-status: preparation
+status: active
 ---
 
 # Qualified ADT contract and emission design
+
+## Authorized execution preflight, 2026-11-10
+
+The operator explicitly authorized Arc04 S01 to settle the contract and
+emission protocol in Autonomous Mode, with OpenAI Codex Luna 6 High CC and
+Sol 6.1 High CDC review. This turn's endpoint is the reviewed S01 design
+and protocol. The main context coordinates and resolves design judgments.
+The implementer owns the two assigned artifacts and contributor report.
+The separate reviewer owns independent verification and ledger disposition
+after a serialized handoff. Requested model settings are recorded here;
+unreported backend metadata remains unknown.
+
+Planning starts clean at abd4922b on planning. Source is clean at
+685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95 on codex/completion-value-flow.
+The read-only CLI digest is
+0cf695212c617b413f0d54fbfc1d0134da1361c33eba4bf627c13f9cb550e4a2.
+Current assignment is cc-prompt.md, including the preparation-review
+clarifications. The source checkout and release are read-only inputs.
+The concrete protocol is a deliverable for later execution agreement.
 
 Produce the contract that makes the operator-approved Label example a
 responsible compiler change. Deliver a concrete design and source/consumer
