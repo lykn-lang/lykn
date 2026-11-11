@@ -76,11 +76,14 @@ these two protocol clarifications in a6a328f8. They are now explicit in the
 open set. This is readiness for design drafting, with QD/QA criteria still
 open and the concrete experiment proposal awaiting agreement.
 
-Current [CC assignment](cc-prompt-iteration01.md) settles the contract and
-makes the protocol concrete after the initial not-accepted independent review
-at 1615547d. The [initial assignment](cc-prompt.md), proposal 4bd224fc and
-review findings RV-01–06 remain preserved. Root supplies explicit PL decisions
-for independent review; this is still design-only and no gate is executed.
+Current [CC assignment](cc-prompt-iteration02.md) settles the contract and
+same-module selective emission protocol after partial return 75f845e3.
+The [initial assignment](cc-prompt.md), proposal 4bd224fc, not-accepted review
+1615547d and [iteration01](cc-prompt-iteration01.md) remain preserved. Root's
+sidecar design could violate generative identity through module caching;
+iteration02 replaces it with same-producer case-export linkage and preserves
+actual source qualifier evaluation, including alias TDZ. This is still
+design-only and no gate is executed.
 
 Iteration01 author readiness: root inspected the current native registry,
 patterns, emitter/type guards/declarations, CLI compilation pipeline, source
