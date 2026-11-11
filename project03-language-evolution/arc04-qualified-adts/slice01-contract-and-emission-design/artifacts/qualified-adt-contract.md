@@ -113,10 +113,9 @@ Its metadata records these three modules and the actual specifier routes:
 }
 ```
 
-The consumer's L2 case ABI import is from the actual barrel specifier `./barrel.js`, using `__lykn_adt_v1_case_Renamed_Text`; its OwnerRef remains `pkg/label/Label`. Runtime reexports preserve the defining token. The barrel declaration reuses the original type:
+The consumer's L2 case ABI import is from the actual barrel specifier `./barrel.js`, using `__lykn_adt_v1_case_Renamed_Text`; its OwnerRef remains `pkg/label/Label`. Runtime reexports preserve the defining token. The selective reexport below carries the producer's merged `Label` type and value under `Renamed`, reuses the original nominal type/brand, and exposes actual token/case ABI aliases without declaring `Renamed` a second time:
 
 ```ts
-export type Renamed = import("./label.js").Label;
 export { Label as Renamed,
   __lykn_adt_v1_owner_Label as __lykn_adt_v1_owner_Renamed,
   __lykn_adt_v1_case_Label_MissingField as __lykn_adt_v1_case_Renamed_MissingField,

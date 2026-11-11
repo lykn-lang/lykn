@@ -168,7 +168,7 @@ The effectful key runs exactly once. The full Lykn observer source is:
   (members:sort)
   (bind member-list (members:join ","))
   (bind brand-ok
-    (if brand-desc
+    (? brand-desc
       (and same-owner
         (= brand-desc:value observed-brand)
         (= brand-desc:enumerable false)
@@ -176,21 +176,21 @@ The effectful key runs exactly once. The full Lykn observer source is:
         (= brand-desc:configurable false))
       false))
   (bind tag-ok
-    (if tag-desc
+    (? tag-desc
       (and (= tag-desc:value "Text")
         (= tag-desc:enumerable true)
         (= tag-desc:writable false)
         (= tag-desc:configurable false))
       false))
   (bind payload-ok
-    (if payload-desc
+    (? payload-desc
       (and (= payload-desc:value "hello")
         (= payload-desc:enumerable true)
         (= payload-desc:writable true)
         (= payload-desc:configurable true))
       false))
   (bind missing-ok
-    (if missing-unit
+    (? missing-unit
       (and (= (typeof missing-unit) "object")
         (!= missing-unit null)
         (= missing-unit:tag "MissingField")
@@ -199,7 +199,7 @@ The effectful key runs exactly once. The full Lykn observer source is:
         (Object:isFrozen missing-unit))
       false))
   (bind null-ok
-    (if null-unit
+    (? null-unit
       (and (= (typeof null-unit) "object")
         (!= null-unit null)
         (= null-unit:tag "NullField")

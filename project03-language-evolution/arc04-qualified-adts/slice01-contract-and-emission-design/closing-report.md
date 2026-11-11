@@ -242,3 +242,62 @@ Root additionally clarified that actual module-graph identity must preserve quer
 ### Scope and handoff
 
 Only `artifacts/qualified-adt-contract.md`, `artifacts/emission-protocol.md`, and this canonical `closing-report.md` were edited. `git diff --check` and path/status review are the only local checks; no source tests, compile, parser probe, observer compile/run, bundle, gzip, replay, or acquisition occurred. The source worktree remains clean at `685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95`; the planning candidate is for independent Sol 6.1 High review and remains non-accepted. All five QD rows are open. Git ownership returns to root after the scoped commit; no unrelated paths may be staged.
+
+## Iteration04 narrow correction return — 2026-11-11
+
+This pass started at planning `37b503f53ea060e75bf8aa133c78445f449015ae` on
+`planning`, correcting candidate `28f540d486792a1a486b6f55a2c8acce99dc0893`
+under `cc-prompt-iteration04.md` (lines 1–45), which addresses only RV-14 and
+RV-15 from independent review `0ee6496e`. Planning was clean before these edits.
+The assigned source remains read-only and clean at
+`685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95` on
+`codex/completion-value-flow`.
+
+### Readback and two corrections
+
+Required intake read: planning `AGENTS.md` lines 1–186, `slice-plan.md` lines
+1–115 and `ledger.md` lines 1–9. The assigned iteration04 prompt was read in
+full. Targeted review read `cdc-verification.md` lines 378–537, including the
+full iteration03 verdict and RV-14/15; contract lines 112–130, including the
+barrel declaration sketch and nominal-type explanation; and the complete C5
+protocol/observer/output block at lines 114–237.
+
+Source readback from the assigned source worktree found the LLM-authored source
+rule at `skills/lykn/SKILL.md:599`: `?` is required in value position and `if`
+in statement position. Guide `docs/guides/00-lykn-surface-forms.md:911–946`
+shows the corresponding ternary form and explains its expression semantics.
+The observer's five descriptor/unit boolean initializers are value expressions;
+the final family dispatch is a statement. The correction therefore changes
+only those five initializer forms to `?`, retaining each condition, short-
+circuit predicate, false result and expected transcript. The observer still
+has one final statement-position `if`. This is a source-idiom correction; no
+runtime failure is claimed or probed.
+
+The barrel DTS sketch now has one selective reexport of merged `Label` as
+`Renamed`, alongside its real owner-token/case ABI aliases. The redundant
+`export type Renamed = import("./label.js").Label` is removed. The explanation
+now says the selective reexport carries both type and value and retains the
+original nominal type/brand; it does not rebuild or duplicate the declaration.
+This is an unambiguous design sketch, not a TypeScript-checked result.
+
+### Five-row proposal status
+
+| Row | Iteration04 delta | Actual status |
+| --- | --- | --- |
+| QD-01 | No change; prior source, pattern, arity and owner-scope proposal retained. | Open |
+| QD-02 | No change; prior identity, guards, serialization, mutability and host proposal retained. | Open |
+| QD-03 | Corrected barrel reexport has one merged `Renamed` export and preserves the original owner/type identity. | Open |
+| QD-04 | Five observer value conditionals now use `?`; outer statement `if`, predicates, transcript, observer counts and 24-cell protocol remain unchanged. | Open; no launch authorized |
+| QD-05 | No change; prior seven-increment ordering and later API/docs/JSON obligations retained. | Open |
+
+### Scope and handoff
+
+Only `artifacts/qualified-adt-contract.md`, `artifacts/emission-protocol.md`,
+and this canonical closing report changed. The delta was inspected for the two
+specified corrections and Markdown whitespace; `git diff --check` is the only
+validation command. No source edit, prototype, compiler/type/parser/runtime
+execution, test, bundle, gzip, replay, acquisition or new artifact was made.
+The six consumers, two layouts, original 24 unique bundle cells, separate 24
+observer processes, source pins, semantic/effect/export oracles and all prior
+RV-01–13 dispositions remain as before. All QD rows remain open for independent
+disposition. Git ownership returns to root after the scoped commit.
