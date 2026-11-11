@@ -1,0 +1,103 @@
+running 5 tests from ./test/forms/embedded-adt-pattern.test.js
+embedded public compiler handles recursive patterns and zero variants ... ok (39ms)
+embedded public compiler preserves private-name macro hygiene ... ok (17ms)
+embedded public compiler owns shadowed single-clause guard intrinsics ... ok (15ms)
+embedded public compiler dispatches multi-clause with module Array shadow ... FAILED (16ms)
+embedded public compiler dispatches multi-clause with parameter Array shadow ... FAILED (14ms)
+
+ ERRORS 
+
+embedded public compiler dispatches multi-clause with module Array shadow => ./test/forms/embedded-adt-pattern.test.js:53:6
+error: Error: error: Uncaught (in promise) TypeError: choose-value: no matching clause for arguments
+  throw new lyknIntrinsicTypeError0("choose-value: no matching clause for arguments");
+        ^
+    at chooseValue (file:///private/tmp/lykn-correction02-tmp/lykn-embedded-adt-41b93b03d5a389b9/probe.js:19:9)
+    at file:///private/tmp/lykn-correction02-tmp/lykn-embedded-adt-41b93b03d5a389b9/probe.js:28:29
+
+Generated module:
+const lyknIntrinsicTypeError0 = TypeError;
+import {arrayIsArray as lyknIntrinsicArrayIsArray0} from "data:text/javascript,export%20const%20symbol%3DSymbol%3Bexport%20const%20symbolFor%3DSymbol.for%3Bexport%20const%20objectFreeze%3DObject.freeze%3Bexport%20const%20objectDefineProperties%3DObject.defineProperties%3Bexport%20const%20numberIsNaN%3DNumber.isNaN%3Bexport%20const%20arrayIsArray%3DArray.isArray%3Bexport%20const%20promise%3DPromise%3Bexport%20const%20typeError%3DTypeError%3Bexport%20const%20error%3DError%3B";
+const Array = 0;
+function chooseValue(...args__gensym49) {
+  if (args__gensym49.length === 1 && lyknIntrinsicArrayIsArray0(args__gensym49[0])) {
+    const value = args__gensym49[0];
+    if (!lyknIntrinsicArrayIsArray0(value)) {
+      throw new lyknIntrinsicTypeError0("chooseValue: arg 'value' expected array, got " + typeof value);
+    }
+    "array";
+  }
+  if (args__gensym49.length === 1 && typeof args__gensym49[0] === "string") {
+    const value = args__gensym49[0];
+    if (typeof value !== "string") {
+      throw new lyknIntrinsicTypeError0("chooseValue: arg 'value' expected string, got " + typeof value);
+    }
+    "string";
+  }
+  throw new lyknIntrinsicTypeError0("choose-value: no matching clause for arguments");
+}
+function captureUnknown() {
+  try {
+    return chooseValue(1);
+  } catch (error) {
+    return [error.name, error.message];
+  }
+}
+console.log(JSON.stringify([chooseValue([1]), chooseValue("kept"), captureUnknown()]));
+
+    if (result.code !== 0) throw new Error(`${stderr}\nGenerated module:\n${generated}`);
+                                 ^
+    at assertRuntimeFixture (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:22:34)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:54:3
+
+embedded public compiler dispatches multi-clause with parameter Array shadow => ./test/forms/embedded-adt-pattern.test.js:60:6
+error: Error: error: Uncaught (in promise) TypeError: choose-value: no matching clause for arguments
+    throw new lyknIntrinsicTypeError0("choose-value: no matching clause for arguments");
+          ^
+    at chooseValue (file:///private/tmp/lykn-correction02-tmp/lykn-embedded-adt-5468fabc1d227283/probe.js:19:11)
+    at runWithShadow (file:///private/tmp/lykn-correction02-tmp/lykn-embedded-adt-5468fabc1d227283/probe.js:28:11)
+    at file:///private/tmp/lykn-correction02-tmp/lykn-embedded-adt-5468fabc1d227283/probe.js:30:28
+
+Generated module:
+const lyknIntrinsicArrayIsArray0 = Array.isArray;
+const lyknIntrinsicTypeError0 = TypeError;
+function runWithShadow(Array) {
+  function chooseValue(...args__gensym50) {
+    if (args__gensym50.length === 1 && lyknIntrinsicArrayIsArray0(args__gensym50[0])) {
+      const value = args__gensym50[0];
+      if (!lyknIntrinsicArrayIsArray0(value)) {
+        throw new lyknIntrinsicTypeError0("chooseValue: arg 'value' expected array, got " + typeof value);
+      }
+      "array";
+    }
+    if (args__gensym50.length === 1 && typeof args__gensym50[0] === "string") {
+      const value = args__gensym50[0];
+      if (typeof value !== "string") {
+        throw new lyknIntrinsicTypeError0("chooseValue: arg 'value' expected string, got " + typeof value);
+      }
+      "string";
+    }
+    throw new lyknIntrinsicTypeError0("choose-value: no matching clause for arguments");
+  }
+  function captureUnknown() {
+    try {
+      return chooseValue(1);
+    } catch (error) {
+      return [error.name, error.message];
+    }
+  }
+  return [chooseValue([1]), chooseValue("kept"), captureUnknown()];
+}
+console.log(JSON.stringify(runWithShadow(0)));
+
+    if (result.code !== 0) throw new Error(`${stderr}\nGenerated module:\n${generated}`);
+                                 ^
+    at assertRuntimeFixture (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:22:34)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:61:3
+
+ FAILURES 
+
+embedded public compiler dispatches multi-clause with module Array shadow => ./test/forms/embedded-adt-pattern.test.js:53:6
+embedded public compiler dispatches multi-clause with parameter Array shadow => ./test/forms/embedded-adt-pattern.test.js:60:6
+
+FAILED | 3 passed | 2 failed (104ms)
+

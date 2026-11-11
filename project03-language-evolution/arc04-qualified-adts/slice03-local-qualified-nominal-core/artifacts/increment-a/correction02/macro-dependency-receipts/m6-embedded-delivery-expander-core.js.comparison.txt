@@ -1,0 +1,3 @@
+canonical_equals_embedded=true
+canonical_equals_materialized=true
+bytes=86780

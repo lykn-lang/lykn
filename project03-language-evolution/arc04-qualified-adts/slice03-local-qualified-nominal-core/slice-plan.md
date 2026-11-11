@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.2"
+version: "1.3"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -134,3 +134,16 @@ The test census is 44 redirected internal-producer sections, 125 remaining
 sections containing public emit_form calls, and 33 other sections (202 total);
 158 denotes the untouched remainder, not public API coverage. Original CC
 attestation and independent clarification retain their original pins.
+
+The completed correction02 M6 oracle then exposed a concrete public compiler
+defect: both unchanged dispatch fixtures fall through after a selected
+unannotated expression body and throw no-match. CC preserved three passing/two
+failing materialized cases; root inspected the actual hasReturns gate, existing
+wrapReturnLast helper, native counterpart and source guide ID-19. The dirty
+three-file correction02 state is retained as an exact patch with its own hash.
+[Correction03](cc-prompt-iteration03.md) keeps that work and repairs public
+implicit returns in canonical/embedded classifiers, with direct runtime
+controls. Optional type annotations do not select successful function control
+flow. A separate Sol preparation review supports issue after tightening the
+explicit-return/postcondition runtime oracles. No fixture annotation workaround,
+public macro redesign or broader return-guard guarantee is authorized.

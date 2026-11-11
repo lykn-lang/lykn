@@ -1,0 +1,8 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/semantic_roles.rs (target/debug/deps/semantic_roles-cb18f482652d85e9)
+
+running 1 test
+test array_dispatch_uses_owned_intrinsics_under_module_and_parameter_shadowing ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 58 filtered out; finished in 0.34s
+

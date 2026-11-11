@@ -1,0 +1,23 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)
+
+running 1 test
+test m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache ... FAILED
+
+failures:
+
+---- m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache stdout ----
+
+thread 'm6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache' (104081329) panicked at crates/lykn-cli/tests/macro_dependencies.rs:784:5:
+assertion `left == right` failed: M6 materialized strict public tests failed: [101, 114, 114, 111, 114, 58, 32, 84, 101, 115, 116, 32, 102, 97, 105, 108, 101, 100, 10]
+  left: Some(1)
+ right: Some(0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.51s
+
+error: test failed, to rerun pass `-p lykn-cli --test macro_dependencies`

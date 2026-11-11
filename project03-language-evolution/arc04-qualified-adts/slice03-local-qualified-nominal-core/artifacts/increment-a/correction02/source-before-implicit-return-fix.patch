@@ -1,0 +1,181 @@
+diff --git a/crates/lykn-lang/src/emitter/forms.rs b/crates/lykn-lang/src/emitter/forms.rs
+index 555e9a64..7c10ee47 100644
+--- a/crates/lykn-lang/src/emitter/forms.rs
++++ b/crates/lykn-lang/src/emitter/forms.rs
+@@ -3784,7 +3784,7 @@ fn emit_func_multi(
+             let dtype = param.dispatch_type();
+             if dtype != "any" {
+                 let arg_access = list(vec![atom("get"), atom("args"), num(i as f64)]);
+-                let dispatch_check = build_dispatch_check(dtype, &arg_access);
++                let dispatch_check = build_dispatch_check(dtype, &arg_access, param.span());
+                 if let Some(check) = dispatch_check {
+                     conditions.push(check);
+                 }
+@@ -3927,7 +3927,7 @@ fn emit_func_multi(
+ ///
+ /// This is a simpler check than the full type check — it only tests the
+ /// typeof for dispatch purposes, without building an error message.
+-fn build_dispatch_check(type_keyword: &str, expr: &SExpr) -> Option<SExpr> {
++fn build_dispatch_check(type_keyword: &str, expr: &SExpr, span: Span) -> Option<SExpr> {
+     match type_keyword {
+         "any" => None,
+         "number" => Some(list(vec![
+@@ -3960,7 +3960,7 @@ fn build_dispatch_check(type_keyword: &str, expr: &SExpr) -> Option<SExpr> {
+             list(vec![atom("!=="), expr.clone(), atom("null")]),
+         ])),
+         "array" => Some(list(vec![
+-            SExpr::host_reference_atom(HostReference::ArrayIsArray, expr.span()),
++            SExpr::host_reference_atom(HostReference::ArrayIsArray, span),
+             expr.clone(),
+         ])),
+         // User-defined type: check it's a tagged object
+@@ -8474,7 +8474,7 @@ mod tests {
+     #[test]
+     fn test_dispatch_check_boolean() {
+         let expr = atom("x");
+-        let result = build_dispatch_check("boolean", &expr);
++        let result = build_dispatch_check("boolean", &expr, s());
+         assert!(result.is_some());
+         if let Some(SExpr::List { values, .. }) = result {
+             assert_eq!(values[0].as_atom(), Some("==="));
+@@ -8484,14 +8484,14 @@ mod tests {
+     #[test]
+     fn test_dispatch_check_function() {
+         let expr = atom("x");
+-        let result = build_dispatch_check("function", &expr);
++        let result = build_dispatch_check("function", &expr, s());
+         assert!(result.is_some());
+     }
+ 
+     #[test]
+     fn test_dispatch_check_object() {
+         let expr = atom("x");
+-        let result = build_dispatch_check("object", &expr);
++        let result = build_dispatch_check("object", &expr, s());
+         assert!(result.is_some());
+         // Should be (&& (=== typeof "object") (!== x null))
+         if let Some(SExpr::List { values, .. }) = result {
+@@ -8502,26 +8502,34 @@ mod tests {
+     #[test]
+     fn test_dispatch_check_array() {
+         let expr = atom("x");
+-        let result = build_dispatch_check("array", &expr);
++        let span = Span::new(
++            crate::reader::source_loc::SourceLoc { line: 4, column: 7 },
++            crate::reader::source_loc::SourceLoc {
++                line: 4,
++                column: 12,
++            },
++        );
++        let result = build_dispatch_check("array", &expr, span);
+         assert!(result.is_some());
+         if let Some(SExpr::List { values, .. }) = result {
+             assert_eq!(
+                 values[0].host_reference(),
+                 Some(HostReference::ArrayIsArray)
+             );
++            assert_eq!(values[0].span(), span);
+         }
+     }
+ 
+     #[test]
+     fn test_dispatch_check_any() {
+-        let result = build_dispatch_check("any", &atom("x"));
++        let result = build_dispatch_check("any", &atom("x"), s());
+         assert!(result.is_none());
+     }
+ 
+     #[test]
+     fn test_dispatch_check_user_type() {
+         let expr = atom("x");
+-        let result = build_dispatch_check("MyType", &expr);
++        let result = build_dispatch_check("MyType", &expr, s());
+         assert!(result.is_some());
+         // User-defined: typeof "object" && !== null && "tag" in x
+         if let Some(SExpr::List { values, .. }) = result {
+diff --git a/crates/lykn-lang/tests/emission_results.rs b/crates/lykn-lang/tests/emission_results.rs
+index ebda0a72..3a3e8ba1 100644
+--- a/crates/lykn-lang/tests/emission_results.rs
++++ b/crates/lykn-lang/tests/emission_results.rs
+@@ -197,3 +197,42 @@ fn public_form_boundary_rejects_owned_references_but_whole_emission_lowers_them(
+     let mut plain_ctx = emitter::context::EmitterContext::new(false);
+     assert!(emitter::forms::emit_form(&plain[0], &mut plain_ctx, &registry).is_ok());
+ }
++
++#[test]
++fn public_multi_clause_form_boundary_anchors_array_dispatch_to_parsed_parameter() {
++    let source = "(func choose-value\n  (:args (:array value) :body value)\n  (:args (:string value) :body value))";
++    let parsed = lykn_lang::reader::read(source).expect("source reads");
++    let resolved = lykn_lang::resolver::resolve(&parsed);
++    let forms = lykn_lang::classifier::classify(&resolved).expect("source classifies");
++    let SurfaceForm::Func { clauses, .. } = &forms[0] else {
++        panic!("expected parsed multi-clause function");
++    };
++    assert_eq!(clauses.len(), 2);
++    let expected_span = clauses[0].args[0].span();
++    assert_ne!(expected_span, Default::default());
++    assert_eq!(
++        expected_span,
++        lykn_lang::reader::source_loc::Span::new(
++            lykn_lang::reader::source_loc::SourceLoc {
++                line: 2,
++                column: 18,
++            },
++            lykn_lang::reader::source_loc::SourceLoc {
++                line: 2,
++                column: 23,
++            },
++        )
++    );
++
++    let mut ctx = emitter::context::EmitterContext::new(false);
++    let error = emitter::forms::emit_form(&forms[0], &mut ctx, &TypeRegistry::default())
++        .expect_err("public fragment cannot return the owned dispatch reference");
++    let lykn_lang::error::LyknError::Codegen(diagnostic) = error else {
++        panic!("unfinished owned reference must use the codegen diagnostic channel");
++    };
++    assert_eq!(
++        diagnostic.message,
++        "compiler-owned host reference requires whole-module emission; use emitter::emit"
++    );
++    assert_eq!(diagnostic.span, expected_span);
++}
+diff --git a/test/forms/embedded-adt-pattern.test.js b/test/forms/embedded-adt-pattern.test.js
+index a72422d4..37b6d994 100644
+--- a/test/forms/embedded-adt-pattern.test.js
++++ b/test/forms/embedded-adt-pattern.test.js
+@@ -19,6 +19,9 @@ async function assertRuntimeFixture(fixture, expected) {
+     }).output();
+     const stderr = new TextDecoder().decode(result.stderr);
+     if (result.code !== 0) throw new Error(stderr);
++    if (stderr !== "") {
++      throw new Error(`unexpected ${fixture} stderr: ${stderr}`);
++    }
+     const stdout = new TextDecoder().decode(result.stdout);
+     if (stdout !== expected) {
+       throw new Error(`unexpected ${fixture} output: ${stdout}`);
+@@ -39,9 +42,23 @@ Deno.test("embedded public compiler preserves private-name macro hygiene", async
+   );
+ });
+ 
+-Deno.test("embedded public compiler owns shadowed guard and dispatch intrinsics", async () => {
++Deno.test("embedded public compiler owns shadowed single-clause guard intrinsics", async () => {
+   await assertRuntimeFixture(
+     "host-reference-shadowing",
+     '[["TypeError","checkNumber: arg \'value\' expected number, got string"],["TypeError","checkArray: arg \'value\' expected array, got number"],["Error","match: no matching pattern"]]\n',
+   );
+ });
++
++Deno.test("embedded public compiler dispatches multi-clause with module Array shadow", async () => {
++  await assertRuntimeFixture(
++    "dispatch-array-module-shadow",
++    '["array","string",["TypeError","choose-value: no matching clause for arguments"]]\n',
++  );
++});
++
++Deno.test("embedded public compiler dispatches multi-clause with parameter Array shadow", async () => {
++  await assertRuntimeFixture(
++    "dispatch-array-parameter-shadow",
++    '["array","string",["TypeError","choose-value: no matching clause for arguments"]]\n',
++  );
++});

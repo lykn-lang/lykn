@@ -1,0 +1,14 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.68s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 6 tests
+test emitter::forms::tests::test_dispatch_check_any ... ok
+test emitter::forms::tests::test_dispatch_check_boolean ... ok
+test emitter::forms::tests::test_dispatch_check_object ... ok
+test emitter::forms::tests::test_dispatch_check_array ... ok
+test emitter::forms::tests::test_dispatch_check_user_type ... ok
+test emitter::forms::tests::test_dispatch_check_function ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 1170 filtered out; finished in 0.00s
+
