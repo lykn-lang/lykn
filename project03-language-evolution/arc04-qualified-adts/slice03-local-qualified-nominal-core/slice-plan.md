@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.7"
+version: "1.8"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,7 +203,7 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration05](cc-prompt-iteration05.md), IC-01 source
+**Current assignment:** [iteration06](cc-prompt-iteration06.md), continuing iteration05's IC-01 source
 implementation at accepted B1 3f197340/tree9ee95765. The preserved initial
 design remains historical where superseded by the role contract. Root owns
 architecture/planning; Luna owns task source/build until clean handoff; Sol
@@ -221,8 +221,16 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration02.md | 2026-11-11 | iteration01 | Actual materialized dispatch coverage/span | Superseded by03 after public implicit-return finding; failed patch retained |
 | cc-prompt-iteration03.md | 2026-11-11 | iteration02 | Public multi-clause implicit-return correction | Accepted5caf3d87; LC-01 done |
 | cc-prompt-iteration04.md | 2026-11-11 | iteration03 | B1 per-call metadata isolation | Accepted3f197340 as partial LC-02 only |
-| cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Active implementation; independent software review pending |
+| cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
+| cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | Active; independent software review pending |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
 renumbering or erasure of those failures. Keep future refinements explicit.
+
+IC-01's first full gate reached documentation and retained481 passed/1 failed:
+the existing core-idioms dissoc example binds public. Root inspected the exact
+block and issues the three-token binding/reference rename to public-user through
+iteration06, preserving data/output/teaching and all correctness gates. This is
+the first IC-01 refinement; it does not reopen A/B1 or authorize general docs
+work. The broader S06/S07 guide/book obligations remain intact.
