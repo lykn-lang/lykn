@@ -611,3 +611,29 @@ and QA-01 are changed by the reviewer. Root owns retrospective/status/parent
 bubble-up. No product source, experiment, dependency, package, publication or
 human acceptance action occurred. The authored Markdown diff check passes;
 no parser/compiler/TypeScript/runtime/bundle/gzip check was run or implied.
+
+## Closure consistency check — 2026-11-11
+
+Reviewed root closeout `1c6734907b0568b19fe46cf7e657125cd8246cab` against
+independent acceptance `30a7c78d41732a4cbe6f3db18ed7104cc199509f`.
+The actual delta is coherent: artifact edits change titles/status pointers
+only; accepted contract/protocol bodies, criteria and expected observations
+are unchanged. Arc v1.2 adds status/history without changing v1.1's seven
+increments. The five QD rows and QA-01 alone are done at design-review
+strength; QA-02–06 and project P-QADT remain open. No source, experiment,
+production-layout or human acceptance is inherited.
+
+S02's source-ready original NPAT/ZVAR repair remains next. S03 prerequisites,
+S04's frozen-checkpoint/operator agreement, S05 integrated build/JSON proof,
+S06 API/docs audit and S07 conditional documentation/operator review remain
+explicit. Project03/07 pointers preserve refreshed source/guide/book pins,
+queued file/module research, YAML and final synthesis/library obligations.
+The retrospective candidly records root's sidecar and value-if advice errors,
+the initial review miss and subsequent alias-TDZ/oracle corrections without
+recasting them as observed runtime failures or contributor disobedience.
+
+No mismatch found. The final design verdict and earlier evidence retain their
+original strength. Source/release cleanliness and unchanged CLI digest are
+root's separately reported closing checks, not fresh execution by this review.
+This pass inspected documentation/Git deltas only, added this note only and
+passed the authored Markdown diff check; no code, probe or experiment ran.
