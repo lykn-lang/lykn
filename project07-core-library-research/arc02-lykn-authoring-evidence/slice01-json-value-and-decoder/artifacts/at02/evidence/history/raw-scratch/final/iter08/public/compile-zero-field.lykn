@@ -1,0 +1,3 @@
+(import "lang/mod.js" (lykn))
+(bind source (Deno:read-text-file-sync "zero-field-control.lykn"))
+(console:log (lykn source))

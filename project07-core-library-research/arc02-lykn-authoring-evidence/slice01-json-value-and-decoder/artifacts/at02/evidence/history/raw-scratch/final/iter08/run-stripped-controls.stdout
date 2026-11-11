@@ -1,0 +1,12 @@
+T01-valid-scalar {"tag":"ControlNumber","value":3}
+T02-zero-field {"tag":"ControlNull"}
+T03-wrong-scalar {"tag":"ControlNumber","value":"wrong"}
+T04-wrong-outer-array {"tag":"ControlArray","values":"wrong"}
+T05-wrong-nested-array-member {"tag":"ControlArray","values":["bad"]}
+T06-unrelated-tag {"tag":"OtherTag","id":9}
+T07-missing-tag {"value":1}
+T08-forged-known-tag-match "wrong"
+T09-omitted-arm {"thrown":"Error","message":"match: no matching pattern"}
+T10-wildcard "wildcard"
+T11-nested-positive {"thrown":"ReferenceError","message":"number is not defined"}
+T12-nested-negative {"thrown":"ReferenceError","message":"number is not defined"}

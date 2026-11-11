@@ -1,0 +1,16 @@
+59:17: warning: unused binding 'entries'
+  suggestion: prefix with underscore: _entries
+19:7: warning: unused binding 'Config'
+  suggestion: prefix with underscore: _Config
+10:7: warning: unused binding 'JsonEntry'
+  suggestion: prefix with underscore: _JsonEntry
+18:7: warning: unused binding 'Label'
+  suggestion: prefix with underscore: _Label
+12:7: warning: unused binding 'Option'
+  suggestion: prefix with underscore: _Option
+1:7: warning: unused binding 'JsonValue'
+  suggestion: prefix with underscore: _JsonValue
+17:7: warning: unused binding 'DecodeResult'
+  suggestion: prefix with underscore: _DecodeResult
+13:7: warning: unused binding 'DecodeFailure'
+  suggestion: prefix with underscore: _DecodeFailure

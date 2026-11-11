@@ -1,0 +1,6 @@
+5:7: warning: binding 'OtherTag' shadows an outer binding
+7:7: warning: binding 'InnerNumber' shadows an outer binding
+6:7: warning: unused binding 'NestedResult'
+  suggestion: prefix with underscore: _NestedResult
+1:7: warning: unused binding 'ControlJson'
+  suggestion: prefix with underscore: _ControlJson

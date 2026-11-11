@@ -1,0 +1,104 @@
+(type JsonValue
+  (JNull)
+  (JUndefined)
+  (JBoolean :boolean value)
+  (JNumber :number value)
+  (JString :string value)
+  (JArray :array values)
+  (JObject :array entries))
+
+(type JsonEntry
+  (Entry :string key :any value))
+
+(type Label
+  (LabelMissing)
+  (LabelUndefined)
+  (LabelNull)
+  (LabelText :string value))
+
+(type Config
+  (ServerConfig :number port :any label))
+
+(type DecodeFailure
+  (MissingField :string path)
+  (WrongValue :string path :string expected)
+  (InvalidPort :string path :number value))
+
+(type DecodeResult
+  (Decoded :any value)
+  (Rejected :any failure))
+
+;; The option result marks whether an entry exists, independently of its value.
+(func lookup
+  :args (:array entries :string key)
+  :returns :any
+  :body
+  (bind found (entries:find (fn (:any entry) (= entry:key key))))
+  (if (= found undefined)
+    None
+    (Some found:value)))
+
+(func decode-port
+  :args (:any found :string path)
+  :returns :any
+  :body
+  (match found
+    ((None) (Rejected (MissingField path)))
+    ((Some (JNumber n))
+      :when (and (Number:isInteger n) (>= n 0) (<= n 65535))
+      (Decoded n))
+    ((Some (JNumber n)) (Rejected (InvalidPort path n)))
+    ((Some _) (Rejected (WrongValue path "integer 0..65535")))))
+
+(func decode-label
+  :args (:any found)
+  :returns :any
+  :body
+  (match found
+    ((None) (Decoded LabelMissing))
+    ((Some (JUndefined)) (Decoded LabelUndefined))
+    ((Some (JNull)) (Decoded LabelNull))
+    ((Some (JString text)) (Decoded (LabelText text)))
+    ((Some _) (Rejected (WrongValue "label" "string or null")))))
+
+(func decode-config
+  :args (:any input)
+  :returns :any
+  :body
+  (match input
+    ((JObject config-entries)
+      (match (lookup config-entries "server")
+        ((None) (Rejected (MissingField "server")))
+        ((Some (JObject server-entries))
+          (match (decode-port (lookup server-entries "port") "server.port")
+            ((Rejected failure) (Rejected failure))
+            ((Decoded port)
+              (match (decode-label (lookup config-entries "label"))
+                ((Rejected failure) (Rejected failure))
+                ((Decoded label) (Decoded (ServerConfig port label)))))))
+        ((Some _) (Rejected (WrongValue "server" "object"))))
+    (_ (Rejected (WrongValue "$" "object")))))
+
+;; Empty string is a present label; port zero is within range.
+(bind valid-empty-label
+  (JObject #a(
+    (Entry "server" (JObject #a((Entry "port" (JNumber 0)))))
+    (Entry "label" (JString "")))))
+(console:log (decode-config valid-empty-label))
+
+;; A missing label stays distinct from explicit JSON null.
+(bind absent-label
+  (JObject #a((Entry "server" (JObject #a((Entry "port" (JNumber 8080))))))))
+(bind null-label
+  (JObject #a(
+    (Entry "server" (JObject #a((Entry "port" (JNumber 8080)))))
+    (Entry "label" JNull))))
+(console:log (decode-config absent-label))
+(console:log (decode-config null-label))
+
+;; Wrong nested value: the port is a boolean, not an integer.
+(bind wrong-nested-port
+  (JObject #a(
+    (Entry "server" (JObject #a((Entry "port" (JBoolean false)))))
+    (Entry "label" (JString "edge")))))
+(console:log (decode-config wrong-nested-port))

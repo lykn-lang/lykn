@@ -1,0 +1,4 @@
+2:7: warning: unused binding 'BareDeclared'
+  suggestion: prefix with underscore: _BareDeclared
+1:7: warning: unused binding 'ListDeclared'
+  suggestion: prefix with underscore: _ListDeclared

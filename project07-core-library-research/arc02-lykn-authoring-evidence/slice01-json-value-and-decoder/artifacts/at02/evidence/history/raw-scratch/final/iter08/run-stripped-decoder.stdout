@@ -1,0 +1,40 @@
+J02-null {"tag":"Decoded","value":{"tag":"JNull"}}
+J02-bool {"tag":"Decoded","value":{"tag":"JBoolean","value":false}}
+J02-number {"tag":"Decoded","value":{"tag":"JNumber","value":0}}
+J02-string {"tag":"Decoded","value":{"tag":"JString","value":""}}
+J02-array {"tag":"Decoded","value":{"tag":"JArray","values":[]}}
+J02-object {"tag":"Decoded","value":{"tag":"JObject","entries":[]}}
+J01-nested {"tag":"Decoded","value":{"tag":"JObject","entries":[{"tag":"Entry","key":"name","value":{"tag":"JString","value":"Ada"}},{"tag":"Entry","key":"n","value":{"tag":"JNumber","value":1}},{"tag":"Entry","key":"flags","value":{"tag":"JArray","values":[{"tag":"JBoolean","value":true},{"tag":"JBoolean","value":false}]}},{"tag":"Entry","key":"nil","value":{"tag":"JNull"}}]}}
+L01-injected-undefined {"tag":"Rejected","failure":{"tag":"WrongValue","path":"$[1]","expected":"JSON value"}}
+J07-raw-own-undefined-label {"tag":"Rejected","failure":{"tag":"WrongValue","path":"$[\"label\"]","expected":"JSON value"}}
+port-0 {"tag":"Decoded","value":{"tag":"ServerConfig","port":0,"label":{"tag":"LabelMissing"}}}
+port-max {"tag":"Decoded","value":{"tag":"ServerConfig","port":65535,"label":{"tag":"LabelMissing"}}}
+port-negative {"tag":"Rejected","failure":{"tag":"InvalidPort","path":"server.port","value":-1}}
+port-too-large {"tag":"Rejected","failure":{"tag":"InvalidPort","path":"server.port","value":65536}}
+port-fraction {"tag":"Rejected","failure":{"tag":"InvalidPort","path":"server.port","value":1.5}}
+port-string {"tag":"Rejected","failure":{"tag":"WrongValue","path":"server.port","expected":"integer 0..65535"}}
+port-missing {"tag":"Rejected","failure":{"tag":"MissingField","path":"server.port"}}
+port-null {"tag":"Rejected","failure":{"tag":"WrongValue","path":"server.port","expected":"integer 0..65535"}}
+label-missing {"tag":"Decoded","value":{"tag":"ServerConfig","port":8080,"label":{"tag":"LabelMissing"}}}
+label-null {"tag":"Decoded","value":{"tag":"ServerConfig","port":8080,"label":{"tag":"LabelNull"}}}
+label-empty {"tag":"Decoded","value":{"tag":"ServerConfig","port":0,"label":{"tag":"LabelText","value":""}}}
+label-text {"tag":"Decoded","value":{"tag":"ServerConfig","port":8080,"label":{"tag":"LabelText","value":"edge"}}}
+label-false {"tag":"Rejected","failure":{"tag":"WrongValue","path":"label","expected":"string or null"}}
+label-zero {"tag":"Rejected","failure":{"tag":"WrongValue","path":"label","expected":"string or null"}}
+label-own-undefined-present {"tag":"Some","value":{"tag":"JUndefined"}}
+label-own-undefined-result {"tag":"Rejected","failure":{"tag":"WrongValue","path":"label","expected":"string or null"}}
+J08-exact-key-data {"tag":"Decoded","value":{"tag":"JObject","entries":[{"tag":"Entry","key":"first-name","value":{"tag":"JNumber","value":0}},{"tag":"Entry","key":"firstName","value":{"tag":"JNumber","value":1}},{"tag":"Entry","key":"","value":{"tag":"JNumber","value":2}},{"tag":"Entry","key":"a:b","value":{"tag":"JNumber","value":3}},{"tag":"Entry","key":"a/b","value":{"tag":"JNumber","value":4}},{"tag":"Entry","key":"~","value":{"tag":"JNumber","value":5}},{"tag":"Entry","key":"__proto__","value":{"tag":"JNumber","value":6}},{"tag":"Entry","key":"constructor","value":{"tag":"JNumber","value":7}},{"tag":"Entry","key":"toString","value":{"tag":"JNumber","value":8}}]}}
+K02-first-name {"tag":"Some","value":{"tag":"JNumber","value":0}}
+K03-firstName {"tag":"Some","value":{"tag":"JNumber","value":1}}
+K04-empty {"tag":"Some","value":{"tag":"JNumber","value":2}}
+K05-colon {"tag":"Some","value":{"tag":"JNumber","value":3}}
+K06-slash {"tag":"Some","value":{"tag":"JNumber","value":4}}
+K07-tilde {"tag":"Some","value":{"tag":"JNumber","value":5}}
+K08-proto {"tag":"Some","value":{"tag":"JNumber","value":6}}
+K09-constructor {"tag":"Some","value":{"tag":"JNumber","value":7}}
+K10-toString {"tag":"Some","value":{"tag":"JNumber","value":8}}
+edit-original-alias {"tag":"JObject","entries":[{"tag":"Entry","key":"first-name","value":{"tag":"JNumber","value":0}},{"tag":"Entry","key":"firstName","value":{"tag":"JNumber","value":1}},{"tag":"Entry","key":"","value":{"tag":"JNumber","value":2}},{"tag":"Entry","key":"a:b","value":{"tag":"JNumber","value":3}},{"tag":"Entry","key":"a/b","value":{"tag":"JNumber","value":4}},{"tag":"Entry","key":"~","value":{"tag":"JNumber","value":5}},{"tag":"Entry","key":"__proto__","value":{"tag":"JNumber","value":6}},{"tag":"Entry","key":"constructor","value":{"tag":"JNumber","value":7}},{"tag":"Entry","key":"toString","value":{"tag":"JNumber","value":8}},{"tag":"Entry","key":"nested","value":{"tag":"JObject","entries":[{"tag":"Entry","key":"first-name","value":{"tag":"JNumber","value":0}},{"tag":"Entry","key":"firstName","value":{"tag":"JNumber","value":1}},{"tag":"Entry","key":"","value":{"tag":"JNumber","value":2}},{"tag":"Entry","key":"a:b","value":{"tag":"JNumber","value":3}},{"tag":"Entry","key":"a/b","value":{"tag":"JNumber","value":4}},{"tag":"Entry","key":"~","value":{"tag":"JNumber","value":5}},{"tag":"Entry","key":"__proto__","value":{"tag":"JNumber","value":6}},{"tag":"Entry","key":"constructor","value":{"tag":"JNumber","value":7}},{"tag":"Entry","key":"toString","value":{"tag":"JNumber","value":8}}]}}]}
+edit-updated {"tag":"JObject","entries":[{"tag":"Entry","key":"first-name","value":{"tag":"JNumber","value":0}},{"tag":"Entry","key":"firstName","value":{"tag":"JNumber","value":1}},{"tag":"Entry","key":"","value":{"tag":"JNumber","value":2}},{"tag":"Entry","key":"a:b","value":{"tag":"JNumber","value":3}},{"tag":"Entry","key":"a/b","value":{"tag":"JNumber","value":4}},{"tag":"Entry","key":"~","value":{"tag":"JNumber","value":5}},{"tag":"Entry","key":"__proto__","value":{"tag":"JNumber","value":6}},{"tag":"Entry","key":"constructor","value":{"tag":"JNumber","value":7}},{"tag":"Entry","key":"toString","value":{"tag":"JNumber","value":8}},{"tag":"Entry","key":"nested","value":{"tag":"JObject","entries":[{"tag":"Entry","key":"first-name","value":{"tag":"JNumber","value":0}},{"tag":"Entry","key":"firstName","value":{"tag":"JNumber","value":1}},{"tag":"Entry","key":"","value":{"tag":"JNumber","value":2}},{"tag":"Entry","key":"a:b","value":{"tag":"JNumber","value":3}},{"tag":"Entry","key":"a/b","value":{"tag":"JNumber","value":4}},{"tag":"Entry","key":"~","value":{"tag":"JNumber","value":5}},{"tag":"Entry","key":"__proto__","value":{"tag":"JNumber","value":55}},{"tag":"Entry","key":"constructor","value":{"tag":"JNumber","value":7}},{"tag":"Entry","key":"toString","value":{"tag":"JNumber","value":8}}]}}]}
+edit-alias-identity false
+edit-path-nested-proto {"tag":"Some","value":{"tag":"JNumber","value":55}}
+edit-untouched-constructor {"tag":"Some","value":{"tag":"JNumber","value":7}}

@@ -1,0 +1,223 @@
+(type JsonValue
+  (JNull)
+  (JUndefined)
+  (JBoolean :boolean value)
+  (JNumber :number value)
+  (JString :string value)
+  (JArray :array values)
+  (JObject :array entries))
+
+(type JsonEntry
+  (Entry :string key :any value))
+(type Option (Some :any value) None)
+(type DecodeFailure
+  (WrongValue :string path :string expected)
+  (MissingField :string path)
+  (InvalidPort :string path :number value))
+(type DecodeResult (Decoded :any value) (Rejected :any failure))
+(type Label (LabelMissing) (LabelNull) (LabelText :string value))
+(type Config (ServerConfig :number port :any label))
+
+;; The supported raw domain is JSON:parse output. JUndefined is a separate
+;; host-value sentinel used only by the direct constructor control below.
+(func decode-array
+  :args (:array raw :number index :string path :array values)
+  :returns :any
+  :body
+  (if (= index raw:length) (return (Decoded (JArray values))))
+  (match (decode-json (get raw index) (template path "[" index "]"))
+    ((Rejected failure) (Rejected failure))
+    ((Decoded value)
+      (decode-array raw (+ index 1) path (conj values value)))))
+
+(func decode-object
+  :args (:array pairs :number index :string path :array entries)
+  :returns :any
+  :body
+  (if (= index pairs:length) (return (Decoded (JObject entries))))
+  (match (decode-json (get (get pairs index) 1)
+      (template path "[" (JSON:stringify (get (get pairs index) 0)) "]"))
+    ((Rejected failure) (Rejected failure))
+    ((Decoded value)
+      (decode-object pairs (+ index 1) path
+        (conj entries (Entry (get (get pairs index) 0) value))))))
+
+(func decode-json
+  :args (:any raw :string path)
+  :returns :any
+  :body
+  (if (= raw null) (return (Decoded JNull)))
+  (if (= (js:typeof raw) "boolean") (return (Decoded (JBoolean raw))))
+  (if (= (js:typeof raw) "number") (return (Decoded (JNumber raw))))
+  (if (= (js:typeof raw) "string") (return (Decoded (JString raw))))
+  (if (Array:isArray raw) (return (decode-array raw 0 path #a())))
+  (if (= (js:typeof raw) "object")
+    (return (decode-object (Object:entries raw) 0 path #a())))
+  (Rejected (WrongValue path "JSON value")))
+
+(func lookup
+  :args (:array entries :string key)
+  :returns :any
+  :body
+  (bind found (entries:find (fn (:any entry) (= entry:key key))))
+  (if (= found undefined) (return None))
+  (Some found:value))
+
+(func decode-port
+  :args (:any found :string path)
+  :returns :any
+  :body
+  (match found
+    ((None) (Rejected (MissingField path)))
+    ((Some raw-value)
+      (match raw-value
+        ((JNumber value)
+          (? (and (Number:isInteger value) (>= value 0) (<= value 65535))
+            (Decoded value)
+            (Rejected (InvalidPort path value))))
+        (_ (Rejected (WrongValue path "integer 0..65535")))))))
+
+(func decode-label
+  :args (:any found)
+  :returns :any
+  :body
+  (match found
+    ((None) (Decoded LabelMissing))
+    ((Some raw-value)
+      (match raw-value
+        ((JNull) (Decoded LabelNull))
+        ((JString value) (Decoded (LabelText value)))
+        (_ (Rejected (WrongValue "label" "string or null")))))))
+
+(func decode-config-port
+  :args (:array config-entries :array server-entries)
+  :returns :any
+  :body
+  (match (decode-port (lookup server-entries "port") "server.port")
+    ((Rejected failure) (Rejected failure))
+    ((Decoded port)
+      (match (decode-label (lookup config-entries "label"))
+        ((Rejected failure) (Rejected failure))
+        ((Decoded label) (Decoded (ServerConfig port label)))))))
+
+(func decode-config-server
+  :args (:array config-entries)
+  :returns :any
+  :body
+  (match (lookup config-entries "server")
+    ((None) (Rejected (MissingField "server")))
+    ((Some server-value)
+      (match server-value
+        ((JObject server-entries)
+          (decode-config-port config-entries server-entries))
+        (_ (Rejected (WrongValue "server" "object")))))))
+
+(func decode-config
+  :args (:any input)
+  :returns :any
+  :body
+  (match input
+    ((JObject config-entries) (decode-config-server config-entries))
+    (_ (Rejected (WrongValue "$" "object")))))
+
+(func run-raw-case
+  :args (:string name :any raw)
+  :returns :void
+  :body (console:log name (decode-json raw "$")))
+
+(func run-config-case
+  :args (:string name :string text)
+  :returns :void
+  :body
+  (match (decode-json (JSON:parse text) "$")
+    ((Rejected failure) (console:log name failure))
+    ((Decoded value) (console:log name (decode-config value)))))
+
+(func replace-entry
+  :args (:any entry :string key :any replacement)
+  :returns :any
+  :body
+  (match entry
+    ((Entry found-key old-value)
+      (if (= found-key key) (return (Entry found-key replacement)))
+      (Entry found-key old-value))))
+
+(func replace-key
+  :args (:any value :string key :any replacement)
+  :returns :any
+  :body
+  (match value
+    ((JObject entries)
+      (JObject (entries:map
+        (fn (:any entry) (replace-entry entry key replacement)))))
+    (_ value)))
+
+(func edit-nested-prototype-key
+  :args (:any root :any replacement)
+  :returns :any
+  :body
+  (match root
+    ((JObject outer)
+      (match (lookup outer "nested")
+        ((Some inner)
+          (match inner
+            ((JObject inner-entries)
+              (replace-key root "nested"
+                (replace-key inner "__proto__" replacement)))
+            (_ root)))
+        ((None) root)))
+    (_ root)))
+
+;; J-02: all six JSON kinds; J-01 adds the nested object/array fixture.
+(run-raw-case "J02-null" (JSON:parse "null"))
+(run-raw-case "J02-bool" (JSON:parse "false"))
+(run-raw-case "J02-number" (JSON:parse "0"))
+(run-raw-case "J02-string" (JSON:parse "\"\""))
+(run-raw-case "J02-array" (JSON:parse "[]"))
+(run-raw-case "J02-object" (JSON:parse "{}"))
+(run-raw-case "J01-nested"
+  (JSON:parse "{\"name\":\"Ada\",\"n\":1,\"flags\":[true,false],\"nil\":null}"))
+(run-raw-case "L01-injected-undefined"
+  #a((JSON:parse "1") undefined (JSON:parse "3")))
+
+;; J-07 and the complete config boundary matrix.
+(run-config-case "port-0" "{\"server\":{\"port\":0}}")
+(run-config-case "port-max" "{\"server\":{\"port\":65535}}")
+(run-config-case "port-negative" "{\"server\":{\"port\":-1}}")
+(run-config-case "port-too-large" "{\"server\":{\"port\":65536}}")
+(run-config-case "port-fraction" "{\"server\":{\"port\":1.5}}")
+(run-config-case "port-string" "{\"server\":{\"port\":\"8\"}}")
+(run-config-case "port-missing" "{\"server\":{}}")
+(run-config-case "port-null" "{\"server\":{\"port\":null}}")
+(run-config-case "label-missing" "{\"server\":{\"port\":8080}}")
+(run-config-case "label-null" "{\"server\":{\"port\":8080},\"label\":null}")
+(run-config-case "label-empty" "{\"server\":{\"port\":0},\"label\":\"\"}")
+(run-config-case "label-text" "{\"server\":{\"port\":8080},\"label\":\"edge\"}")
+(run-config-case "label-false" "{\"server\":{\"port\":8080},\"label\":false}")
+(run-config-case "label-zero" "{\"server\":{\"port\":8080},\"label\":0}")
+
+;; Own undefined is present in an Entry but outside the strict JSON domain.
+(bind own-undefined-config
+  (JObject #a(
+    (Entry "server" (JObject #a((Entry "port" (JNumber 8080)))))
+    (Entry "label" JUndefined))))
+(console:log "label-own-undefined-present" (lookup own-undefined-config:entries "label"))
+(console:log "label-own-undefined-result" (decode-config own-undefined-config))
+
+;; J-08 exact key set plus an identically keyed nested object for the edit.
+(bind key-object
+  (JSON:parse "{\"first-name\":0,\"firstName\":1,\"\":2,\"a:b\":3,\"a/b\":4,\"~\":5,\"__proto__\":6,\"constructor\":7,\"toString\":8}"))
+(bind key-value (decode-json key-object "$"))
+(console:log "J08-exact-key-data" key-value)
+(bind edit-source
+  (decode-json
+    (JSON:parse "{\"first-name\":0,\"firstName\":1,\"\":2,\"a:b\":3,\"a/b\":4,\"~\":5,\"__proto__\":6,\"constructor\":7,\"toString\":8,\"nested\":{\"first-name\":0,\"firstName\":1,\"\":2,\"a:b\":3,\"a/b\":4,\"~\":5,\"__proto__\":6,\"constructor\":7,\"toString\":8}}")
+    "$"))
+(match edit-source
+  ((Decoded original)
+    (bind updated (edit-nested-prototype-key original (JNumber 55)))
+    (console:log "edit-original-alias" original)
+    (console:log "edit-updated" updated)
+    (console:log "edit-untouched-constructor"
+      (lookup (get (get updated:entries 0) 0) "constructor")))
+  ((Rejected failure) (console:log "edit-input-failure" failure)))

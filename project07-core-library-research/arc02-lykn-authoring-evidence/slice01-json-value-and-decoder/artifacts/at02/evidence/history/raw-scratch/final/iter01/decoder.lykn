@@ -1,0 +1,135 @@
+(type JsonValue
+  (JNull)
+  (JUndefined)
+  (JBoolean :boolean value)
+  (JNumber :number value)
+  (JString :string value)
+  (JArray :array values)
+  (JObject :array entries))
+
+(type JsonEntry
+  (Entry :string key :any value))
+
+(type DecodeFailure
+  (WrongValue :string path :string expected)
+  (MissingField :string path)
+  (InvalidPort :string path :number value))
+
+(type DecodeResult
+  (Decoded :any value)
+  (Rejected :any failure))
+
+(type Label
+  (LabelMissing)
+  (LabelNull)
+  (LabelText :string value))
+
+(type Config
+  (ServerConfig :number port :any label))
+
+;; Raw input is restricted to values returned by JSON:parse. JUndefined is a
+;; host-value sentinel for direct constructor controls, never a JSON kind.
+(func decode-array
+  :args (:array raw :number index :string path :array values)
+  :returns :any
+  :body
+  (if (= index raw:length)
+    (Decoded (JArray values))
+    (match (decode-json (get raw index) (template path "[" index "]"))
+      ((Rejected failure) (Rejected failure))
+      ((Decoded value)
+        (decode-array raw (+ index 1) path (conj values value)))))
+
+(func decode-object
+  :args (:array raw-entries :number index :string path :array entries)
+  :returns :any
+  :body
+  (if (= index raw-entries:length)
+    (Decoded (JObject entries))
+    (bind pair (get raw-entries index))
+    (bind key (get pair 0))
+    (bind raw-value (get pair 1))
+    (match (decode-json raw-value (template path "[" (JSON:stringify key) "]"))
+      ((Rejected failure) (Rejected failure))
+      ((Decoded value)
+        (decode-object raw-entries (+ index 1) path
+          (conj entries (Entry key value))))))
+
+(func decode-json
+  :args (:any raw :string path)
+  :returns :any
+  :body
+  (if (= raw null)
+    (Decoded JNull)
+    (if (= (js:typeof raw) "boolean")
+      (Decoded (JBoolean raw))
+      (if (= (js:typeof raw) "number")
+        (Decoded (JNumber raw))
+        (if (= (js:typeof raw) "string")
+          (Decoded (JString raw))
+          (if (Array:isArray raw)
+            (decode-array raw 0 path #a())
+            (if (= (js:typeof raw) "object")
+              (decode-object (Object:entries raw) 0 path #a())
+              (Rejected (WrongValue path "JSON value"))))))))
+
+(func lookup
+  :args (:array entries :string key)
+  :returns :any
+  :body
+  (bind found (entries:find (fn (:any entry) (= entry:key key)))
+  (if (= found undefined)
+    None
+    (Some found:value)))
+
+(func decode-port
+  :args (:any found :string path)
+  :returns :any
+  :body
+  (match found
+    ((None) (Rejected (MissingField path)))
+    ((Some (JNumber value))
+      :when (and (Number:isInteger value) (>= value 0) (<= value 65535))
+      (Decoded value))
+    ((Some (JNumber value)) (Rejected (InvalidPort path value)))
+    ((Some _) (Rejected (WrongValue path "integer 0..65535")))))
+
+(func decode-label
+  :args (:any found)
+  :returns :any
+  :body
+  (match found
+    ((None) (Decoded LabelMissing))
+    ((Some JNull) (Decoded LabelNull))
+    ((Some (JString value)) (Decoded (LabelText value)))
+    ((Some _) (Rejected (WrongValue "label" "string or null")))))
+
+(func decode-config
+  :args (:any input)
+  :returns :any
+  :body
+  (match input
+    ((JObject config-entries)
+      (match (lookup config-entries "server")
+        ((None) (Rejected (MissingField "server")))
+        ((Some (JObject server-entries))
+          (match (decode-port (lookup server-entries "port") "server.port")
+            ((Rejected failure) (Rejected failure))
+            ((Decoded port)
+              (match (decode-label (lookup config-entries "label"))
+                ((Rejected failure) (Rejected failure))
+                ((Decoded label) (Decoded (ServerConfig port label)))))))
+        ((Some _) (Rejected (WrongValue "server" "object"))))
+    (_ (Rejected (WrongValue "$" "object")))))
+
+(func run-config-case
+  :args (:string name :string text)
+  :returns :void
+  :body
+  (bind parsed (JSON:parse text))
+  (match (decode-json parsed "$" )
+    ((Rejected failure) (console:log name failure))
+    ((Decoded value) (console:log name (decode-config value)))))
+
+;; Six raw JSON kinds and the full nested J-01 object come from JSON:parse.
+(bind-kind-controls)
