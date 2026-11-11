@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice02-existing-adt-correctness
 status: active
-version: "1.1"
+version: "1.2"
 depends-on: [slice01-contract-and-emission-design]
 ---
 
@@ -54,6 +54,13 @@ adds the necessary bounded codegen correction and grammar-context regressions,
 retaining the simple ordered capture rather than a value-tautology workaround.
 All five criteria remain; this is an in-scope implementation dependency, with
 its actual failed attempts retained in the close record.
+
+Iteration02 consolidates early independent draft-review findings: public bare
+zero-variant conditional dispatch and new field temporaries capturing names
+introduced by later macro expansion. Reuse/generalize the existing private
+completion-identity finalization so new field names are assigned against the
+complete expanded unit, with actual macro-capture regressions across affected
+routes. This remains compiler-internal hygiene, not S03 nominal ADT identity.
 
 Use product tests and exact runtime oracles for positive and discriminating
 negative cases, all affected routes, evaluation order, falsy payloads and name
