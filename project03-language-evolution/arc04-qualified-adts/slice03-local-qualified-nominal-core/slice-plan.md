@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.13"
+version: "1.14"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -225,7 +225,7 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
 | cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
-| cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Active CC implementation; reviewer returned source/build; root verified pin and archive26d6d7c9 |
+| cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Returned for independent review at e80f613b/tree7376b33d; root verified six-path delta and clean source |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -303,3 +303,14 @@ earlier passes/failures and the five-pass limit retained. Source/build ownership
 transfers only after the reviewer finishes its durable HOLD; Luna then executes
 iteration08 and returns a clean candidate to separate Sol review. IC-01 stays
 open; qualified-constructor implementation does not resume on CC attestation.
+
+Iteration08 returns clean e80f613baf8f52d7b8f42e05ac38e99c69513d46, tree
+7376b33d7ca8e66942afd88036599e9e5e4bae35. Root verified the six authorized
+changed paths and contiguous trailers, preserving the CC index, raw final gate
+logs and explicit missing-numeric-exit limitation for its full make check.
+The raw log reports1536 product/482 docs and the all-checks-passed marker; this
+is CC attestation pending Sol's own run. CC cold M6 asserts twelve comparisons
+and28 public cases, citations64/601 and size43996 pass. Early expectation,
+filter and stale-map attempts remain disclosed transcript-only. Root transfers
+exclusive source/build execution to Sol; IC-01 and LC-02–08 stay open until
+independent disposition. Prior A/B1 and release0829 remain unchanged.

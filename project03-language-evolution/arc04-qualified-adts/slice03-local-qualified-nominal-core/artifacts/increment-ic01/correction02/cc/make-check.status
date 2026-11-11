@@ -1,0 +1,4 @@
+result=successful final marker in raw log
+numeric_exit_code=not retained by first writer
+raw_log=make-check.log
+notes=Final log contains `All checks passed (build + lint + test)` after the main and documentation success markers. Do not reconstruct a numeric status; no rerun was made.
