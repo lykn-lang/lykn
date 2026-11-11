@@ -56,7 +56,7 @@ import {
   typeRegistry,
   wrapReturnLast,
 } from "./surface-helpers.js";
-import { markKernel } from "./kernel-mark.js";
+import { isKernel, markKernel } from "./kernel-mark.js";
 import { isMatchGuardSlot } from "./binding.js";
 
 /**
@@ -616,7 +616,10 @@ export function emitSurfaceForm(node, h) {
     case "IfLet": {
       const pattern = node.bindingPair.values[0];
       const expr = node.bindingPair.values[1];
-      const tempVar = gensym("t");
+      const reserved = reserveNodeNames([pattern, expr, node.thenBody, node.elseBody]);
+      let tempVar = gensym("t");
+      while (reserved.has(toJsIdentifier(tempVar.value))) tempVar = gensym("t");
+      reserved.add(toJsIdentifier(tempVar.value));
       const stmts = [array(sym("const"), tempVar, expr)];
       const result = compileLetPattern(pattern, tempVar);
       if (!result) {
@@ -624,7 +627,8 @@ export function emitSurfaceForm(node, h) {
           `if-let: unrecognized pattern: ${formatSExpr(pattern)}`,
         );
       }
-      const { condition, bindings } = result;
+      const { condition, bindings, declarations = [] } = result;
+      stmts.push(...declarations);
       const thenBlock = [...bindings, array(sym("return"), node.thenBody)];
       if (node.elseBody) {
         stmts.push(
@@ -645,7 +649,10 @@ export function emitSurfaceForm(node, h) {
     case "WhenLet": {
       const pattern = node.bindingPair.values[0];
       const expr = node.bindingPair.values[1];
-      const tempVar = gensym("t");
+      const reserved = reserveNodeNames([pattern, expr, ...node.bodyForms]);
+      let tempVar = gensym("t");
+      while (reserved.has(toJsIdentifier(tempVar.value))) tempVar = gensym("t");
+      reserved.add(toJsIdentifier(tempVar.value));
       const stmts = [array(sym("const"), tempVar, expr)];
       const result = compileLetPattern(pattern, tempVar);
       if (!result) {
@@ -653,7 +660,8 @@ export function emitSurfaceForm(node, h) {
           `when-let: unrecognized pattern: ${formatSExpr(pattern)}`,
         );
       }
-      const { condition, bindings } = result;
+      const { condition, bindings, declarations = [] } = result;
+      stmts.push(...declarations);
       const wrapped = wrapReturnLast(node.bodyForms);
       const returnBody = wrapped.length === 1
         ? wrapped[0]
@@ -1317,13 +1325,17 @@ export function emitMatchMacro(args) {
   }
   const expr = args[0];
   const clauses = args.slice(1);
-  const targetVar = gensym("target");
+  const reserved = reserveNodeNames(args);
+  let targetVar = gensym("target");
+  while (reserved.has(toJsIdentifier(targetVar.value))) targetVar = gensym("target");
+  reserved.add(toJsIdentifier(targetVar.value));
   const stmts = [array(sym("const"), targetVar, expr)];
 
   for (let i = 0; i < clauses.length; i++) {
     const { pattern, guard, bodyForms } = parseMatchClause(clauses[i], i);
 
-    const { checks, bindings } = compilePattern(pattern, targetVar);
+    const { checks, bindings, declarations } = compilePattern(pattern, targetVar);
+    stmts.push(...declarations);
 
     // Add guard to checks
     if (guard) {
@@ -1375,6 +1387,7 @@ export function emitMatchMacro(args) {
   // If last clause is not a wildcard/binding, add throw
   const lastClause = clauses[clauses.length - 1];
   const lastPattern = lastClause.values[0];
+  const lastGuarded = isMatchGuardSlot(lastClause);
   const isLastWildcard = lastPattern.type === "atom" &&
     lastPattern.value === "_";
   const isLastBinding = lastPattern.type === "atom" &&
@@ -1384,7 +1397,7 @@ export function emitMatchMacro(args) {
     lastPattern.value !== "null" &&
     lastPattern.value !== "undefined";
 
-  if (!isLastWildcard && !isLastBinding) {
+  if (lastGuarded || (!isLastWildcard && !isLastBinding)) {
     stmts.push(
       array(
         sym("throw"),
@@ -1399,6 +1412,26 @@ export function emitMatchMacro(args) {
   // Wrap in IIFE
   const arrowFn = array(sym("=>"), array(), ...stmts);
   return array(arrowFn);
+}
+
+function reserveNodeNames(nodes, reserved = new Set()) {
+  const visit = (node) => {
+    if (!node || typeof node !== "object") return;
+    if (Array.isArray(node)) {
+      for (const child of node) visit(child);
+      return;
+    }
+    if (node.type === "atom" && typeof node.value === "string") {
+      for (const part of node.value.split(":")) {
+        if (part) reserved.add(toJsIdentifier(part));
+      }
+    }
+    for (const [key, value] of Object.entries(node)) {
+      if (key !== "type" && key !== "value") visit(value);
+    }
+  };
+  visit(nodes);
+  return reserved;
 }
 
 /** Emit a direct statement-position match; value-position Match remains above. */
@@ -1454,8 +1487,9 @@ export function emitMatchStatementMacro(args, {
       return { ...node, value: `${target.value}${node.value.slice(oldTarget.length)}` };
     }
     if (node.type === "list") {
-      const isConst = node.values[0]?.type === "atom" && node.values[0].value === "const";
-      return { ...node, values: node.values.map((n, i) => retarget(n, oldTarget, isConst && i === 1)) };
+      const isDeclaration = ["const", "let"].includes(node.values[0]?.value);
+      const cloned = { ...node, values: node.values.map((n, i) => retarget(n, oldTarget, isDeclaration && i === 1)) };
+      return isKernel(node) ? markKernel(cloned) : cloned;
     }
     if (node.type === "cons") return { ...node, car: retarget(node.car, oldTarget), cdr: retarget(node.cdr, oldTarget) };
     return node;
@@ -1466,7 +1500,9 @@ export function emitMatchStatementMacro(args, {
   for (const clause of clauses) {
     const oldTarget = clause.provisional.value;
     const checks = clause.compiled.checks.map((n) => retarget(n, oldTarget));
+    const declarations = clause.compiled.declarations.map((n) => retarget(n, oldTarget));
     const bindings = clause.compiled.bindings.map((n) => retarget(n, oldTarget));
+    out.push(...declarations);
     const candidate = [sym("block"), ...bindings];
     const selected = array(sym("block"), array(sym("="), matched, sym("true")), ...clause.body);
     if (clause.guard) candidate.push(...clause.guard.prefix,
@@ -1520,6 +1556,12 @@ export function emitTypeMacro(args) {
       });
       const fieldNames = fields.map((f) => f.name.value);
       typeRegistry.set(ctorName, fieldNames);
+
+      if (fields.length === 0) {
+        forms.push(array(sym("const"), sym(ctorName),
+          array(sym("object"), array(sym("tag"), { type: "string", value: ctorName }))));
+        continue;
+      }
 
       const paramNames = fields.map((f) => f.name);
       const typeChecks = [];

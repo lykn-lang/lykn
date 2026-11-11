@@ -11,6 +11,8 @@ const TWICE_SOURCE: &str =
 const ALIAS_MODULE_SOURCE: &str = "(macro alias-twice (x) `(+ ,x ,x))\n";
 const ALIAS_CONSUMER_SOURCE: &str =
     "(import-macros \"astring\" (alias-twice))\n(console:log (JSON:stringify (alias-twice 21)))\n";
+const M6_EMBEDDED_TRIGGER: &str =
+    "(macro delivery-twice (x) `(+ ,x ,x))\n(console:log (JSON:stringify (delivery-twice 21)))\n";
 const EXPECTED_RUNTIME: &[u8] = b"42\n";
 const STRICT_DENO_ARGS: &[&str] = &[
     "run",
@@ -24,6 +26,21 @@ const STRICT_DENO_ARGS: &[&str] = &[
 
 fn cli() -> Command {
     Command::new(env!("CARGO_BIN_EXE_lykn"))
+}
+
+fn deno_cache_dir() -> OsString {
+    std::env::var_os("DENO_DIR").unwrap_or_else(|| {
+        let home = PathBuf::from(std::env::var_os("HOME").expect("DENO requires HOME"));
+        if cfg!(target_os = "macos") {
+            home.join("Library/Caches/deno").into_os_string()
+        } else {
+            std::env::var_os("XDG_CACHE_HOME")
+                .map(PathBuf::from)
+                .unwrap_or_else(|| home.join(".cache"))
+                .join("deno")
+                .into_os_string()
+        }
+    })
 }
 
 fn evidence_root() -> Option<PathBuf> {
@@ -630,4 +647,143 @@ fn m5_blocked_xdg_materialization_returns_io_error_without_output() {
     assert!(result.stdout.is_empty(), "M5 stdout: {:?}", result.stdout);
     assert!(generated.is_none(), "M5 created JavaScript output");
     assert!(declaration.is_none(), "M5 created declaration output");
+}
+
+#[test]
+fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+    let fixture = TempDir::new().expect("create standalone embedded compiler fixture");
+    let standalone = fixture.path().join("standalone");
+    fs::create_dir_all(&standalone).expect("create standalone CLI directory");
+    let copied_cli = standalone.join("lykn");
+    fs::copy(env!("CARGO_BIN_EXE_lykn"), &copied_cli).expect("copy built standalone CLI");
+    let xdg = write_xdg(fixture.path());
+    let embedded_root = owned_embedded_root(&xdg);
+    let materialized_package = embedded_root.join("packages/lang");
+    assert!(
+        !embedded_root.exists(),
+        "M6 must start with a cold owned XDG cache"
+    );
+    assert!(
+        !standalone.join("packages/lang").exists(),
+        "M6 standalone cwd must not contain canonical package fallback"
+    );
+
+    let repository = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let fixture_source =
+        repository.join("test/fixtures/semantic-roles/adt-pattern-correctness.lykn");
+    let mut source = M6_EMBEDDED_TRIGGER.as_bytes().to_vec();
+    source.extend(fs::read(&fixture_source).expect("read nested and zero-field product fixture"));
+    let source_path = standalone.join("embedded-delivery.lykn");
+    fs::write(&source_path, &source).expect("write embedded delivery trigger source");
+    let output_path = standalone.join("embedded-delivery.js");
+    save_receipt("m6-embedded-delivery", "source.bin", &source);
+    let mut compile = Command::new(&copied_cli);
+    compile
+        .current_dir(&standalone)
+        .env("XDG_CACHE_HOME", &xdg)
+        .env("DENO_DIR", deno_cache_dir())
+        .arg("compile")
+        .arg(&source_path)
+        .arg("-o")
+        .arg(&output_path);
+    record_command("m6-embedded-delivery", &compile, Some(&xdg));
+    let compiled = compile.output().expect("run copied standalone CLI");
+    record_output("m6-embedded-delivery", &compiled);
+    let generated = fs::read(&output_path).ok();
+    save_receipt(
+        "m6-embedded-delivery",
+        "generated.js",
+        generated.as_deref().unwrap_or_default(),
+    );
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "M6 compile stderr: {:?}",
+        compiled.stderr
+    );
+    assert!(
+        generated.is_some(),
+        "M6 standalone CLI omitted generated JavaScript"
+    );
+    assert!(
+        materialized_package
+            .join("compiler-private-atoms.js")
+            .is_file()
+    );
+
+    let package_names = [
+        "binding.js",
+        "classifier.js",
+        "expander-core.js",
+        "surface-helpers.js",
+        "compiler-private-atoms.js",
+    ];
+    for name in package_names {
+        let canonical = repository.join("packages/lang").join(name);
+        let embedded = repository
+            .join("crates/lykn-lang/embedded/packages/lang")
+            .join(name);
+        let materialized = materialized_package.join(name);
+        let canonical_bytes = fs::read(&canonical).expect("read canonical compiler file");
+        let embedded_bytes = fs::read(&embedded).expect("read embedded compiler file");
+        let materialized_bytes = fs::read(&materialized).expect("read materialized compiler file");
+        assert_eq!(embedded_bytes, canonical_bytes, "embedded drift in {name}");
+        assert_eq!(
+            materialized_bytes, canonical_bytes,
+            "materialized drift in {name}"
+        );
+        save_receipt(
+            &format!("m6-embedded-delivery-{name}"),
+            "comparison.txt",
+            format!(
+                "canonical_equals_embedded=true\ncanonical_equals_materialized=true\nbytes={}\n",
+                canonical_bytes.len()
+            )
+            .as_bytes(),
+        );
+    }
+
+    let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| OsString::from("deno"));
+    let deno_dir = deno_cache_dir();
+    let config_path = fixture.path().join("embedded-public-deno.json");
+    let materialized_url = format!(
+        "file://{}/",
+        materialized_package
+            .canonicalize()
+            .expect("canonicalize materialized package")
+            .display()
+    );
+    fs::write(
+        &config_path,
+        serde_json::to_vec(&serde_json::json!({
+            "imports": { "lang/": materialized_url }
+        }))
+        .expect("serialize materialized-package import map"),
+    )
+    .expect("write strict public Deno import map");
+    let public_test = repository.join("test/forms/embedded-adt-pattern.test.js");
+    let mut strict_public = Command::new(deno);
+    strict_public
+        .current_dir(&repository)
+        .env("DENO_DIR", &deno_dir)
+        .args(["test", "-A", "--cached-only", "--no-prompt", "--config"])
+        .arg(&config_path)
+        .arg(&public_test);
+    record_command("m6-embedded-public-strict", &strict_public, None);
+    let public_result = strict_public
+        .output()
+        .expect("run materialized strict public tests");
+    record_output("m6-embedded-public-strict", &public_result);
+    save_receipt(
+        "m6-embedded-public-strict",
+        "config.json",
+        &fs::read(&config_path).expect("read strict public import map"),
+    );
+    assert_eq!(
+        public_result.status.code(),
+        Some(0),
+        "M6 materialized strict public tests failed: {:?}",
+        public_result.stderr
+    );
+    assert!(public_result.stderr.is_empty());
 }
