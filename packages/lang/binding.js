@@ -28,6 +28,10 @@ import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
 const DECL_HEADS = new Set(["const", "let", "var", "function", "function*"]);
 const ENCLOSING_KINDS = new Set(["bind", "import-local"]);
 const SEQUENCE = { kind: "seq" };
+const PatternGrammar = Object.freeze({
+  TYPED_PARAMETER: "typed-parameter",
+  BINDING_PATTERN: "binding-pattern",
+});
 
 /**
  * Recursively walk `forms`, collecting every binding site in source order.
@@ -160,28 +164,55 @@ function walk(form, out, inScope) {
     return;
   }
 
-  out.push(...bindingsIntroduced(form));
   if (headName === "bind") {
+    out.push(...bindingsIntroduced(form));
     walkBindOperands(form.values.slice(1), out, inScope);
     return;
   }
 
-  const isKernelDeclaration = headName.startsWith("kernel:") || isKernel(form);
+  if (["for-of", "for-in", "for-await-of"].includes(headName)) {
+    const sites = bindingsIntroduced(form);
+    out.push(...sites);
+    const args = form.values.slice(1);
+    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
+    if (args[1]) walk(args[1], out, inScope);
+    walkSequence(args.slice(2), out, extendNames(inScope, sites.map((site) => site.name)));
+    return;
+  }
+
+  if (headName === "catch") {
+    const sites = bindingsIntroduced(form);
+    out.push(...sites);
+    const args = form.values.slice(1);
+    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
+    walkSequence(args.slice(1), out, extendNames(inScope, sites.map((site) => site.name)));
+    return;
+  }
+
   if (headName === "const" || headName === "let" || headName === "var" ||
       headName === "kernel:const" || headName === "kernel:let" || headName === "kernel:var") {
+    out.push(...bindingsIntroduced(form));
     const pattern = form.values[1];
-    if (pattern) walkPatternDefaults(pattern, out, inScope, isKernelDeclaration ? "kernel" : "source");
+    if (pattern) walkPatternDefaults(pattern, out, inScope, PatternGrammar.BINDING_PATTERN);
     for (const initializer of form.values.slice(2)) walk(initializer, out, inScope);
     return;
   }
 
-  const kernelFunction = ["function", "function*", "kernel:function", "kernel:function*", "=>", "kernel:=>", "kernel:lambda"].includes(headName);
-  const sourceFunction = ["fn", "lambda", "genfn"].includes(headName);
+  const kernelFunction = ["function", "function*", "kernel:function", "kernel:function*", "=>", "kernel:=>", "kernel:lambda"].includes(headName) || (headName === "lambda" && isKernel(form));
+  const sourceFunction = ["fn", "genfn"].includes(headName) || (headName === "lambda" && !isKernel(form));
   if (kernelFunction || sourceFunction) {
     const args = form.values.slice(1);
-    const params = args[0]?.type === "list" ? args[0] : args[1]?.type === "list" ? args[1] : null;
-    if (params) walkParamDefaults(params, out, extendNames(inScope, bindingsIntroduced(form).map((site) => site.name)), kernelFunction ? "kernel" : "source");
+    const paramsIndex = kernelFunction && !["=>", "kernel:=>", "kernel:lambda"].includes(headName) && args[0]?.type !== "list" ? 1 : 0;
+    const params = args[paramsIndex]?.type === "list" ? args[paramsIndex] : null;
+    const sites = bindingsIntroduced(form);
+    out.push(...sites);
+    const functionScope = extendNames(inScope, sites.map((site) => site.name));
+    if (params) walkParamDefaults(params, out, functionScope, kernelFunction ? PatternGrammar.BINDING_PATTERN : PatternGrammar.TYPED_PARAMETER);
+    walkSequence(args.slice(params ? paramsIndex + 1 : 0), out, functionScope);
+    return;
   }
+
+  out.push(...bindingsIntroduced(form));
 
   const plan = bindingScopePlan(form, headName);
   const children = form.values;
@@ -208,7 +239,7 @@ function walkBindOperands(args, out, inScope) {
   const current = new Set(inScope);
   if (args.length === 2 || args.length === 3) {
     const patternIndex = args.length === 2 ? 0 : 1;
-    walkPatternDefaults(args[patternIndex], out, current, "source");
+    walkPatternDefaults(args[patternIndex], out, current, PatternGrammar.BINDING_PATTERN);
     walk(args[patternIndex + 1], out, current);
     return;
   }
@@ -218,26 +249,26 @@ function walkBindOperands(args, out, inScope) {
     if (args[i]?.type === "keyword") patternIndex++;
     const valueIndex = patternIndex + 1;
     if (valueIndex >= args.length) return;
-    walkPatternDefaults(args[patternIndex], out, current, "source");
+    walkPatternDefaults(args[patternIndex], out, current, PatternGrammar.BINDING_PATTERN);
     walk(args[valueIndex], out, current);
-    for (const site of patternNames(args[patternIndex], "bind", "source")) current.add(site.name);
+    for (const site of patternNames(args[patternIndex], "bind", PatternGrammar.BINDING_PATTERN)) current.add(site.name);
     i = valueIndex + 1;
   }
 }
 
-function walkPatternDefaults(pattern, out, inScope, dialect = "kernel") {
+function walkPatternDefaults(pattern, out, inScope, grammar) {
   if (pattern?.type !== "list") return;
   const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
   if (head === "default") {
-    const typed = dialect === "source" && pattern.values[1]?.type === "keyword";
-    if (dialect === "kernel") walkPatternDefaults(pattern.values[1], out, inScope, dialect);
+    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+    if (grammar === PatternGrammar.BINDING_PATTERN) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
     const value = pattern.values[typed ? 3 : 2];
     if (value) walk(value, out, inScope);
     return;
   }
   if (head === "rest") {
-    const typed = dialect === "source" && pattern.values[1]?.type === "keyword";
-    walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, dialect);
+    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+    walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, grammar);
     return;
   }
   if (head !== "array" && head !== "object") return;
@@ -245,11 +276,11 @@ function walkPatternDefaults(pattern, out, inScope, dialect = "kernel") {
     if (member?.type !== "list") continue;
     const memberHead = member.values[0]?.type === "atom" ? member.values[0].value : "";
     if (memberHead === "alias") {
-      const typed = dialect === "source" && member.values[1]?.type === "keyword";
-      walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, dialect);
+      const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+      walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, grammar);
       if (!typed && member.values[3]) walk(member.values[3], out, inScope);
     } else if (["default", "rest", "array", "object"].includes(memberHead)) {
-      walkPatternDefaults(member, out, inScope, dialect);
+      walkPatternDefaults(member, out, inScope, grammar);
     }
   }
 }
@@ -270,7 +301,7 @@ function walkClassMember(member, out, classScope, validation = false) {
   const sites = kernelParamNames(params).map((site) => ({ ...site, kind: "class-method-param" }));
   out.push(...sites);
   const methodScope = extendNames(classScope, sites.map((site) => site.name));
-  if (validation) walkParamDefaults(params, out, methodScope, "kernel");
+  if (validation) walkParamDefaults(params, out, methodScope, PatternGrammar.BINDING_PATTERN);
   for (const child of member.values.slice(paramsIndex + 1)) walk(child, out, methodScope);
 }
 
@@ -297,7 +328,7 @@ function walkSourceFunction(form, out, inScope) {
     const sites = params ? paramListNames(params) : [];
     out.push(...sites);
     let clauseScope = extendNames(functionScope, sites.map((site) => site.name));
-    if (params) walkParamDefaults(params, out, clauseScope, "source");
+    if (params) walkParamDefaults(params, out, clauseScope, PatternGrammar.TYPED_PARAMETER);
     const pre = groups.get("pre")?.[0];
     const post = groups.get("post")?.[0];
     if (pre) walk(pre, out, clauseScope);
@@ -306,13 +337,13 @@ function walkSourceFunction(form, out, inScope) {
   }
 }
 
-function walkParamDefaults(params, out, inScope, dialect = "kernel") {
+function walkParamDefaults(params, out, inScope, grammar) {
   if (params?.type !== "list") return;
   for (const param of params.values) {
     if (param?.type !== "list") continue;
     const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
     if (["default", "rest", "array", "object"].includes(head)) {
-      walkPatternDefaults(param, out, inScope, dialect);
+      walkPatternDefaults(param, out, inScope, grammar);
     }
   }
 }
@@ -416,15 +447,20 @@ export function bindingsIntroduced(form) {
     case "genfunc":
       return funcClauseParamNames(args);
     case "fn":
-    case "lambda":
     case "genfn":
       return args.length > 0 ? paramListNames(args[0]) : [];
+    case "lambda":
+      return args.length > 0
+        ? isKernel(form)
+          ? kernelParamNames(args[0])
+          : paramListNames(args[0])
+        : [];
     case "kernel:lambda":
       return args.length > 0 ? kernelParamNames(args[0]) : [];
     case "for-of":
     case "for-in":
     case "for-await-of":
-      return args.length > 0 ? patternNames(args[0], "loop-binding") : [];
+      return args.length > 0 ? patternNames(args[0], "loop-binding", PatternGrammar.BINDING_PATTERN) : [];
     case "class":
       return classNames(args);
     case "type":
@@ -446,7 +482,7 @@ export function bindingsIntroduced(form) {
       return matchClauseNames(args);
     // DD-60 refinement #2 (2026-07-06): catch bindings, import locals, labels.
     case "catch":
-      return args.length > 0 ? patternNames(args[0], "catch-binding") : [];
+      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.BINDING_PATTERN) : [];
     case "import":
       return importLocalNames(args);
     case "label":
@@ -459,7 +495,7 @@ export function bindingsIntroduced(form) {
         ? name.slice("kernel:".length)
         : name;
       if (DECL_HEADS.has(kernel) && args.length > 0) {
-        return patternNames(args[0], "bind", name.startsWith("kernel:") || isKernel(form) ? "kernel" : "source");
+        return patternNames(args[0], "bind", PatternGrammar.BINDING_PATTERN);
       }
       return [];
     }
@@ -469,8 +505,8 @@ export function bindingsIntroduced(form) {
 /** (bind name value) / (bind :type name value) / grouped bind pairs. */
 function bindNames(args) {
   const out = [];
-  if (args.length === 2) return patternNames(args[0], "bind");
-  if (args.length === 3) return patternNames(args[1], "bind");
+  if (args.length === 2) return patternNames(args[0], "bind", PatternGrammar.BINDING_PATTERN);
+  if (args.length === 3) return patternNames(args[1], "bind", PatternGrammar.BINDING_PATTERN);
   if (args.length < 4) return [];
 
   let i = 0;
@@ -485,7 +521,7 @@ function bindNames(args) {
       slot = args[i];
       i += 2;
     }
-    out.push(...patternNames(slot, "bind"));
+    out.push(...patternNames(slot, "bind", PatternGrammar.BINDING_PATTERN));
   }
   return out;
 }
@@ -530,13 +566,13 @@ function paramListNames(list) {
     } else if (el.type === "list") {
       const h = el.values[0]?.type === "atom" ? el.values[0].value : "";
       if (h === "rest" && el.values[1]) {
-        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
-        if (binding) out.push(...patternNames(binding, "param"));
+        const binding = el.values[2];
+        if (binding) out.push(...patternNames(binding, "param", PatternGrammar.TYPED_PARAMETER));
       } else if (h === "default") {
-        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
-        if (binding) out.push(...patternNames(binding, "param"));
+        const binding = el.values[2];
+        if (binding) out.push(...patternNames(binding, "param", PatternGrammar.TYPED_PARAMETER));
       } else if (h === "array" || h === "object") {
-        out.push(...patternNames(el, "param"));
+        out.push(...patternNames(el, "param", PatternGrammar.TYPED_PARAMETER));
       }
     }
   }
@@ -563,11 +599,11 @@ function kernelParamNames(list) {
     if (param?.type !== "list") continue;
     const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
     if (head === "rest" && param.values[1]) {
-      out.push(...patternNames(param.values[1], "param", "kernel"));
+      out.push(...patternNames(param.values[1], "param", PatternGrammar.BINDING_PATTERN));
     } else if (head === "default" && param.values[1]) {
-      out.push(...patternNames(param.values[1], "param", "kernel"));
+      out.push(...patternNames(param.values[1], "param", PatternGrammar.BINDING_PATTERN));
     } else if (head === "array" || head === "object") {
-      out.push(...patternNames(param, "param", "kernel"));
+      out.push(...patternNames(param, "param", PatternGrammar.BINDING_PATTERN));
     }
   }
   return out;
@@ -717,10 +753,10 @@ function matchPatternNames(pat) {
 
 /** Leaf names bound by a pattern: an atom or an (array …)/(object …) form. */
 export function bindingNamesInPattern(pat, kind = "bind") {
-  return patternNames(pat, kind);
+  return patternNames(pat, kind, PatternGrammar.BINDING_PATTERN);
 }
 
-function patternNames(pat, kind, dialect = "source") {
+function patternNames(pat, kind, grammar) {
   if (pat?.type === "atom") {
     if (isCompilerPrivateAtom(pat)) return [];
     return pat.value === "_" ? [] : [{ name: pat.value, kind, node: pat }];
@@ -736,19 +772,17 @@ function patternNames(pat, kind, dialect = "source") {
     } else if (el.type === "list") {
       const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
       if (ih === "rest" && el.values[1]) {
-        const typed = dialect === "source" && el.values[1]?.type === "keyword";
-        const binding = el.values[typed ? 2 : 1];
-        if (binding) out.push(...patternNames(binding, kind, dialect));
+        const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+        if (binding) out.push(...patternNames(binding, kind, grammar));
       } else if (ih === "alias") {
-        const typed = dialect === "source" && el.values[1]?.type === "keyword";
+        const typed = grammar === PatternGrammar.TYPED_PARAMETER;
         const binding = el.values[typed ? 3 : 2];
-        if (binding) out.push(...patternNames(binding, kind, dialect));
+        if (binding) out.push(...patternNames(binding, kind, grammar));
       } else if (ih === "default") {
-        const typed = dialect === "source" && el.values[1]?.type === "keyword";
-        const binding = el.values[typed ? 2 : 1];
-        if (binding) out.push(...patternNames(binding, kind, dialect));
+        const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+        if (binding) out.push(...patternNames(binding, kind, grammar));
       } else if (ih === "array" || ih === "object") {
-        out.push(...patternNames(el, kind, dialect));
+        out.push(...patternNames(el, kind, grammar));
       }
     }
   }

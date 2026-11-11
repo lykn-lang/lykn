@@ -733,6 +733,86 @@ mod tests {
     }
 
     #[test]
+    fn empty_source_function_headers_keep_classifier_errors_without_panicking() {
+        let path = Path::new("surface.lykn");
+        for (source, expected) in [
+            ("(func)", "func requires at least a name"),
+            ("(genfunc)", "genfunc requires at least a name"),
+        ] {
+            for stripped in [false, true] {
+                let error = compile_source(source, Some(path), stripped, false)
+                    .expect_err("empty source function header must fail normally");
+                assert!(error.to_string().contains(expected), "{error}");
+                assert!(!error.to_string().contains("panicked"), "{error}");
+            }
+            let error = check_strict(source, path)
+                .expect_err("check must report the ordinary missing-header error");
+            assert!(error.to_string().contains(expected), "{error}");
+            assert!(!error.to_string().contains("panicked"), "{error}");
+        }
+    }
+
+    #[test]
+    fn binding_pattern_aliases_gate_loop_and_bind_outputs_in_all_modes() {
+        use std::process::Command;
+
+        let path = Path::new("surface.lykn");
+        let pairs = [
+            (
+                "(for-of (object (alias :value package)) (array (obj :value 1)) (console:log 1))",
+                "(for-of (object (alias :value local)) (array (obj :value 1)) (console:log 1))",
+            ),
+            (
+                "(bind (object (alias :value package)) (obj :value 1)) (console:log 1)",
+                "(bind (object (alias :value local)) (obj :value 1)) (console:log 1)",
+            ),
+        ];
+        for (invalid, valid) in pairs {
+            for stripped in [false, true] {
+                let error = compile_source(invalid, Some(path), stripped, false)
+                    .expect_err("reserved alias local must fail compile");
+                assert!(error.to_string().contains("package"), "{error}");
+            }
+            let error =
+                check_strict(invalid, path).expect_err("check must reject reserved alias local");
+            assert!(error.to_string().contains("package"), "{error}");
+
+            for stripped in [false, true] {
+                let generated = compile_source(valid, Some(path), stripped, false)
+                    .expect("renamed alias local must compile");
+                assert!(check_strict(valid, path).is_ok());
+                let directory = tempfile::tempdir().expect("create alias output fixture");
+                let module = directory.path().join("alias-safe.mjs");
+                std::fs::write(&module, format!("{generated}\nexport {{}};\n"))
+                    .expect("write renamed alias module");
+                let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
+                let result = Command::new(deno)
+                    .args([
+                        "run",
+                        "--no-config",
+                        "--no-prompt",
+                        "--no-npm",
+                        "--cached-only",
+                    ])
+                    .arg(&module)
+                    .output()
+                    .expect("execute renamed alias module");
+                assert!(
+                    result.status.success(),
+                    "alias module failed: {}",
+                    String::from_utf8_lossy(&result.stderr)
+                );
+                assert_eq!(String::from_utf8_lossy(&result.stdout), "1\n");
+                assert!(
+                    result.stderr.is_empty(),
+                    "{}",
+                    String::from_utf8_lossy(&result.stderr)
+                );
+            }
+        }
+    }
+
+    #[test]
     fn legal_property_eval_and_bound_bind_call_remain_valid() {
         use std::process::Command;
 

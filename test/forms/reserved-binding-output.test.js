@@ -1,7 +1,7 @@
 import { assertEquals, assertThrows, assertStringIncludes } from "jsr:@std/assert";
 import { expandExpr, lykn, read } from "lang/mod.js";
 import { compileLykn } from "../../packages/browser/compiler.js";
-import { validateReservedNames, walkBindings } from "lang/binding.js";
+import { bindingNamesInPattern, validateReservedNames, walkBindings } from "lang/binding.js";
 import { markKernel } from "lang/kernel-mark.js";
 
 async function executeModule(source, expected = "") {
@@ -220,4 +220,83 @@ Deno.test("browser compile rejects binders and emits legal module output", async
   assertThrows(() => compileLykn("(fn (:any package) package)"), Error, "package");
   const generated = compileLykn(`(console:log (obj :const "browser-ok"))`);
   await executeModule(generated, "{ const: \"browser-ok\" }\n");
+});
+
+Deno.test("binding-pattern aliases validate local loop and bind names", async () => {
+  const loopBad = `(for-of (object (alias :value package)) (array (obj :value 1)) (console:log 1))`;
+  const bindBad = `(bind (object (alias :value package)) (obj :value 1)) (console:log 1)`;
+  for (const source of [loopBad, bindBad]) {
+    assertThrows(() => validateReservedNames(read(source)), Error, "package");
+    assertThrows(() => lykn(source), Error, "package");
+    assertThrows(() => expandExpr(read(source)[0]), Error, "package");
+  }
+
+  const loopSafe = `(for-of (object (alias :value local)) (array (obj :value 1)) (console:log 1))`;
+  const bindSafe = `(bind (object (alias :value local)) (obj :value 1)) (console:log 1)`;
+  await executeModule(lykn(loopSafe), "1\n");
+  await executeModule(lykn(bindSafe), "1\n");
+
+  const kernelAlias = read("(kernel:const (object (alias :package local)) (object))");
+  assertEquals(walkBindings(kernelAlias).map((site) => site.name), ["local"]);
+  assertEquals(
+    walkBindings(read("(const (object (alias :value package)) source)"))
+      .map((site) => site.name),
+    ["package"],
+  );
+  assertEquals(bindingNamesInPattern(read("(object (alias :value local))")[0]).map((site) => site.name), ["local"]);
+
+  for (const source of [
+    `(for-of (object (alias :value local (bind package 1))) (array (obj :value 1)) 1)`,
+    `(catch (object (alias :value local (bind package 1))) 1)`,
+  ]) assertThrows(() => validateReservedNames(read(source)), Error, "package");
+
+  assertEquals(
+    walkBindings(read("(catch (object (alias :value local)) (return local))"))
+      .map((site) => site.name),
+    ["local"],
+  );
+});
+
+Deno.test("function defaults are traversed once with producer-specific lambda grammar", async () => {
+  const defaultBody = `(do (bind local (fn (:any inner) inner)) local)`;
+  const cases = [
+    [`(function example ((default value ${defaultBody})) (return value))`, ["example", "value", "local", "inner"]],
+    [`(func example :args ((default :any value ${defaultBody})) :body value)`, ["example", "value", "local", "inner"]],
+    [`(genfunc example :args ((default :any value ${defaultBody})) :body (yield value))`, ["example", "value", "local", "inner"]],
+    [`(function* ((default value ${defaultBody})) (yield value))`, ["value", "local", "inner"]],
+    [`(fn ((default :any value ${defaultBody})) value)`, ["value", "local", "inner"]],
+    [`(lambda ((default :any value ${defaultBody})) value)`, ["value", "local", "inner"]],
+    [`(genfn ((default :any value ${defaultBody})) (yield value))`, ["value", "local", "inner"]],
+    [`(=> ((default value ${defaultBody})) value)`, ["value", "local", "inner"]],
+    [`(kernel:lambda ((default value ${defaultBody})) value)`, ["value", "local", "inner"]],
+  ];
+  for (const [source, expected] of cases) {
+    assertEquals(walkBindings(read(source)).map((site) => site.name), expected, source);
+  }
+  assertEquals(
+    walkBindings(read("(function example (same same) (return same))"))
+      .map((site) => site.name),
+    ["example", "same", "same"],
+  );
+  const typedLambda = read("(lambda (:any local) local)");
+  assertEquals(walkBindings(typedLambda).map((site) => site.name), ["local"]);
+  const escapedKernelLambda = read("(lambda ((object (alias :package package))) package)");
+  markKernel(escapedKernelLambda[0]);
+  assertEquals(walkBindings(escapedKernelLambda).map((site) => site.name), ["package"]);
+  assertThrows(() => validateReservedNames(escapedKernelLambda), Error, "package");
+  assertThrows(() => validateReservedNames(read("(fn ((default :any package 0)) package)")), Error, "package");
+  const executable = `(func defaulted :args ((default :any value (do (bind local (fn (:any inner) inner)) 1))) :body value) (console:log (defaulted))`;
+  await executeModule(lykn(executable), "1\n");
+});
+
+Deno.test("empty public source function headers retain ordinary diagnostics", () => {
+  for (const [source, expected] of [
+    ["(func)", "func requires at least a name and body"],
+    ["(genfunc)", "genfunc requires at least a name and :yields/:body"],
+  ]) {
+    assertThrows(() => lykn(source), Error, expected);
+    assertThrows(() => expandExpr(read(source)[0]), Error, expected);
+  }
+  assertEquals(walkBindings(read("(func)")).length, 0);
+  assertEquals(walkBindings(read("(genfunc)")).length, 0);
 });
