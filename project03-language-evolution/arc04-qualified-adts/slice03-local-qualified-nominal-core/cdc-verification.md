@@ -421,3 +421,116 @@ limitations remain explicit. B1 acceptance closes neither LC-02 nor S03.
 
 This reviewer returns source/build execution and CDC record/evidence ownership
 to root. No subsequent implementation authority follows from this verification.
+
+## IC-01 candidate 5bdbfe3c — 2026-11-11
+
+**Verdict: HOLD for executable-region misses and a public scope regression.**
+Candidate `5bdbfe3c27c58bdcbf93471d1c469c53ef2eaabe`, tree
+`e0a95d7452f3a33529fb7bd7a75ab46289d7349e`, remains clean on
+`codex/qualified-adt-core`. Independent review read the governing role contract,
+issued iterations05/06, the 18-path inventory and relevant implementation/test
+deltas, and CC index/failure disclosures.
+No source/index repair, stage, commit, release or remote action occurred.
+
+### Confirmed findings
+
+- **IC-R01, correctness: function executable groups are truncated.** Native
+  binding.rs::walk_source_function (~451) and public
+  binding.js::walkSourceFunction (~243) visit only the first form following
+  body/pre/post markers instead of the actual group grammar. The normal source
+  `(func example :args () :body 1 (bind package 2) 3)` is accepted by native
+  checked/stripped compile and check. Its actual emitted modules contain
+  `const package = 2` and fail strict ESM parsing. Both direct binding validators
+  accept the source; public final compile/expandExpr catch the later lowered
+  declaration and reject correctly. Zero-argument shorthand and repeated-group
+  last-wins behavior also require the actual existing parser semantics, not a
+  second keyword-window approximation; those extensions are source-inspected
+  obligations, not separately executed cases in this review.
+- **IC-R02, correctness: native computed callee is omitted.** The fallback in
+  native binding.rs::walk (~255) visits values.skip(1) even when the first value
+  is a computed list callee. `(bind result ((do (bind package 1) (fn () 2))))`
+  therefore compiles/checks successfully in both native modes, and both emitted
+  modules fail strict parsing at a real const package declaration. Public
+  validation/compile/expandExpr reject it correctly.
+- **IC-R03, correctness: executable default regions remain unvisited.** Native
+  first kernel-parameter defaults and kernel const destructuring defaults
+  escape the gate. More seriously, class method parameter defaults escape
+  **both backends**: `(class Example () (method ((default value (do (bind package
+  1) 2))) (return value)))` succeeds in native checked/stripped compile/check and
+  public validation/lykn/expandExpr. All emitted modules fail strict parsing
+  at const package. Native/public walk_class_member/walkClassMember project
+  parameter leaves but do not visit their executable defaults. Kernel parameter
+  lists and declaration patterns also need their real pattern/default roles.
+  A nested alias-local default is accepted by both direct validators; public
+  final compilation catches it. Its native artifact contains older unlowered
+  do/bind syntax, so that extra parse failure is not presented as an independent
+  reserved-declaration oracle or a new emitter-repair assignment.
+- **IC-R04, correctness: new public body-to-post scope rejection.** At root's
+  request, the reviewer compared supported functions whose body declares bind
+  as a callable and whose post predicate is `(bind eval 1)`, in both textual
+  keyword orders. Both immutable B1 public versions compile and run true;
+  candidate public validation, lykn and expandExpr reject both as an eval
+  declaration. The new validation must follow actual body sequence scope and
+  lowering order rather than textual group windows. Native body-before-post
+  compiles/checks and runs true in baseline and candidate (checked/stripped at
+  candidate). Native post-before-body already compiled to invalid predicate
+  syntax at B1, `if (!const eval = 1;`, while candidate rejects it at the new
+  gate. That separate preexisting native resolution/lowering limit is retained;
+  this review does not silently make its general repair part of IC-01.
+- **IC-R05, verification gap: macro fixture uses unsupported grammar.** The
+  product/native macro negatives emit `(function (package) value)`, an anonymous
+  plain-function shape unsupported by the established writer. They do not
+  establish the required valid macro-produced function-parameter path. The
+  reviewer additionally executed a supported macro that unquotes its caller's
+  typed parameter AST into fn; actual checked/stripped native compile, native
+  check and public compile reject it with the intended package parameter
+  diagnostic. Retain this valid control in the corrected product oracle.
+
+### Focused evidence and preserved scope
+
+Canonical focused execution explicitly maps lang/ to current packages/lang,
+not target/lykn/build. Existing public/parity tests pass **14/14**, native
+binding units **29/29** (1,154 filtered), and kernel resolver controls **2/2**
+(1,181 filtered). Green reported populations do not cover the new misses.
+The five primary prohibited-region inputs above each pass native compile in
+checked/stripped modes and check, then fail actual emitted ESM parsing. The
+class-default case also proves a public complete/single-form expansion boundary
+failure.
+A legal class method that declares bind then calls it with global eval executes
+and prints function through native checked/stripped and public output, with
+empty stderr. Supplied-Set/trusted-marker/quote/template/label/type-role product
+controls remain in the passing focused suite; no broader acceptance is inferred.
+
+The actual DD-49 algorithm/tables are unchanged apart from one added blank line,
+and compiler.js imports/reexports its existing name from the dependency-free
+leaf. All five changed/new canonical/embedded module comparisons pass. The
+guide diff is exactly the three authorized public-user replacements with
+expected output unchanged. Internal kernel-lambda validation/resolver evidence
+does not imply that the public escape whitelist accepts kernel:lambda; no new
+lambda syntax is claimed.
+
+Useful [raw receipts](artifacts/increment-ic01/cdc/receipts-5bdbfe3c.tar.gz) and
+[navigation/digest](artifacts/increment-ic01/cdc/README.md) retain actual launch
+conditions/status/streams, concrete sources/generated modules, first and second
+bounded census, candidate ordering and immutable B1 ordering comparisons, pins
+and mirror checks. The candidate release/bin hash is
+`83b9b783d9e541c5dbcff90ac65b1ae2216f97122a381bb3ee24d7c7f358f60a`.
+Baseline native ordering used the retained B1 copied release CLI with its
+independently recorded `091c7828…` digest, not a rebuilt baseline. The public
+baseline was git-archived from 3f197340. Rust/Cargo 1.97.0, Deno 2.9.6; both
+explicit existing DENO_DIR and owned npm/XDG/tmp were used. A first macro probe
+hit an existing quoted-keyword parameter-shape limitation; it was replaced by
+the supported AST-argument macro, with both sources/observations retained.
+One inventory helper's method-on-expression mistake and passing retry are
+preserved. No historical raw transcript was reconstructed.
+
+Following the substantive failure, no new full make check, docs, citation/size
+gate or actual cold M6 delivery run was started on this known-failing candidate.
+Those corrected-candidate independent gates remain required; CC's reported
+gates retain their original attested status. IC-01 receives no acceptance.
+Accepted A/B1, LC-02–08/S03 open status, original D1 source Func/class aggregate
+carryovers, I4, warm-cache, legacy fallback and browser run/load limits remain.
+
+Source/build execution and CDC record/evidence ownership return to root for
+the bounded correction. Root owns architecture, planning Git/index and status;
+no next implementation authority follows from this review.

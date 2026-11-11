@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.9"
+version: "1.10"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -222,7 +222,7 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration03.md | 2026-11-11 | iteration02 | Public multi-clause implicit-return correction | Accepted5caf3d87; LC-01 done |
 | cc-prompt-iteration04.md | 2026-11-11 | iteration03 | B1 per-call metadata isolation | Accepted3f197340 as partial LC-02 only |
 | cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
-| cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | Returned for independent review at5bdbfe3c/treee0a95d74 |
+| cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -249,3 +249,19 @@ existing public escape whitelist: kernel:lambda is not accepted by that
 whitelist. CC retained the unsupported fixture attempt and uses direct
 validator/resolver checks for the internal representation. No new lambda
 source syntax is introduced or claimed. Review must judge that actual boundary.
+
+Independent review holds5bdb for executable body-tail, computed-callee and
+default-region misses plus new public body-to-post scope rejection; the macro
+fixture also used unsupported anonymous plain-function grammar. Existing
+focused suites were green despite these concrete actual ESM failures. No full
+independent gates were run on the known-bad candidate. Root verified archive
+f8a6a9fc81cf5ac0a72d79853c9816a6eb40ca5e2a70e395c6e84ae513eeceeb.
+IC-01 remains open; A/B1 acceptance is unchanged. Source/build ownership is
+back with root while [the consolidated correction](artifacts/ic01-correction01-design.md)
+receives a read-only readiness check, before a new numbered source assignment.
+
+The reviewer separately reproduced an older native post-before-body resolution
+limit at B1. Public B1 handled both keyword orders; IC-R04 must restore that
+public behavior. Native body-before-post success and newer fail-fast rejection
+of the older invalid native ordering must survive this bounded correction;
+general native ordering repair is retained with B2, not silently added here.

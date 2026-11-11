@@ -351,3 +351,14 @@ The same IC-01 preparation observes legacy D1 classNames/class_names aggregates
 bare method parameters into the whole class. New member-role queries in IC-01
 are validation-only and must not widen that aggregate. B2 retains the proper
 per-member lexical-scope disposition; IC-01 claims no general class D1 repair.
+
+Independent IC-01 review at5bdb compared both post/body keyword orders against
+immutable B1. Public B1 compiles/runs both; the new public rejection is IC-R04
+and belongs to the immediate correction. Native B1 already mishandled the
+post-before-body case when its predicate references a body-local callable:
+compile/check returned zero but emitted invalid `if (!const eval = 1;` syntax.
+Candidate5bdb rejects it at the new gate and retains native body-before-post
+success. The general native post/body name-resolution/lowering order issue is
+a concrete B2 input, separate from restoring the previously valid public path.
+The [review record](../cdc-verification.md#ic-01-candidate-5bdbfe3c--2026-11-11)
+and original source/output/ordering baselines preserve the distinction.
