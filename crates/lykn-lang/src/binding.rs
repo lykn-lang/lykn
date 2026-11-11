@@ -229,9 +229,34 @@ fn walk_sequence(forms: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<St
     let mark = scope.len();
     for form in forms {
         walk(form, out, scope);
-        scope.extend(crate::resolver::hoisted_names(form));
+        let dispatches = match form {
+            SExpr::List { values, .. } => values
+                .first()
+                .and_then(SExpr::as_form_head)
+                .is_some_and(|head| !scope.iter().any(|bound| bound == head)),
+            _ => false,
+        };
+        if dispatches {
+            scope.extend(crate::resolver::hoisted_names(form));
+        }
     }
     scope.truncate(mark);
+}
+
+fn walk_sequence_refs(forms: &[&SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
+    for form in forms {
+        walk(form, out, scope);
+        let dispatches = match form {
+            SExpr::List { values, .. } => values
+                .first()
+                .and_then(SExpr::as_form_head)
+                .is_some_and(|head| !scope.iter().any(|bound| bound == head)),
+            _ => false,
+        };
+        if dispatches {
+            scope.extend(crate::resolver::hoisted_names(form));
+        }
+    }
 }
 
 fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
@@ -251,6 +276,9 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
         .as_form_head()
         .filter(|name| !scope.iter().any(|bound| bound == name))
     else {
+        if head.as_atom().is_none() {
+            walk(head, out, scope);
+        }
         for child in values.iter().skip(1) {
             walk(child, out, scope);
         }
@@ -357,9 +385,35 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
         walk_bind_operands(&values[1..], out, scope);
         return;
     }
+    let kernel_head = name.strip_prefix("kernel:").unwrap_or(name);
+    if matches!(kernel_head, "const" | "let" | "var")
+        && let Some(pattern) = values.get(1)
+    {
+        walk_pattern_defaults(pattern, out, scope, PatternDialect::Kernel);
+    }
+    if matches!(kernel_head, "function" | "function*" | "=>" | "lambda") {
+        let args = &values[1..];
+        let params = if matches!(kernel_head, "=>" | "lambda")
+            || matches!(args.first(), Some(SExpr::List { .. }))
+        {
+            args.first()
+        } else {
+            args.get(1)
+        };
+        if let Some(params) = params.filter(|p| matches!(p, SExpr::List { .. })) {
+            let mut param_scope = scope.clone();
+            param_scope.extend(
+                sites
+                    .iter()
+                    .filter(|site| site.kind.shadows_values())
+                    .map(|site| site.name.clone()),
+            );
+            walk_param_defaults(params, out, &mut param_scope, PatternDialect::Kernel);
+        }
+    }
     if matches!(
         name.strip_prefix("kernel:").unwrap_or(name),
-        "function" | "function*" | "=>"
+        "function" | "function*" | "=>" | "lambda"
     ) {
         let mark = scope.len();
         scope.extend(
@@ -368,8 +422,18 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
                 .filter(|s| s.kind.shadows_values())
                 .map(|s| s.name.clone()),
         );
-        for child in values.iter().skip(1) {
-            walk(child, out, scope);
+        let args = &values[1..];
+        let params_index = if matches!(kernel_head, "=>" | "lambda")
+            || matches!(args.first(), Some(SExpr::List { .. }))
+        {
+            0
+        } else {
+            1
+        };
+        for (index, child) in args.iter().enumerate() {
+            if index != params_index {
+                walk(child, out, scope);
+            }
         }
         scope.truncate(mark);
         return;
@@ -382,7 +446,8 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
                 .filter(|s| s.kind.shadows_values())
                 .map(|s| s.name.clone()),
         );
-        for child in values.iter().skip(1) {
+        let args = &values[1..];
+        for child in args.iter().skip(1) {
             walk(child, out, scope);
         }
         scope.truncate(mark);
@@ -438,6 +503,7 @@ fn walk_class_member(member: &SExpr, out: &mut Vec<BindingSite>, class_scope: &m
             .collect::<Vec<_>>();
         method_scope.extend(sites.iter().map(|site| site.name.clone()));
         out.extend(sites);
+        walk_param_defaults(params, out, &mut method_scope, PatternDialect::Kernel);
         for body in values.iter().skip(params_index + 1) {
             walk(body, out, &mut method_scope);
         }
@@ -465,40 +531,41 @@ fn walk_source_function(form: &SExpr, out: &mut Vec<BindingSite>, scope: &[Strin
         function_scope.push(site.name.clone());
         out.push(site);
     }
-    let is_clause = |value: &SExpr| {
-        matches!(value, SExpr::List { values, .. }
-        if matches!(values.first().and_then(SExpr::as_keyword), Some("args" | "yields" | "returns" | "pre" | "post" | "body")))
-    };
-    let clauses: Vec<&[SExpr]> = if args.iter().skip(1).any(&is_clause) {
-        args.iter()
-            .skip(1)
-            .filter_map(|value| match value {
-                SExpr::List { values, .. } if is_clause(value) => Some(values.as_slice()),
+    let rest = &args[1..];
+    let multi = matches!(rest.first(), Some(SExpr::List { values, .. })
+        if values.first().and_then(SExpr::as_keyword).is_some_and(crate::classifier::forms::is_func_clause_key));
+    let keyword_mode = !multi
+        && rest
+            .first()
+            .and_then(SExpr::as_keyword)
+            .is_some_and(crate::classifier::forms::is_func_clause_key);
+    let clauses: Vec<&[SExpr]> = if multi {
+        rest.iter()
+            .filter_map(|clause| match clause {
+                SExpr::List { values, .. }
+                    if values
+                        .first()
+                        .and_then(SExpr::as_keyword)
+                        .is_some_and(crate::classifier::forms::is_func_clause_key) =>
+                {
+                    Some(values.as_slice())
+                }
                 _ => None,
             })
             .collect()
+    } else if keyword_mode {
+        vec![rest]
     } else {
-        vec![args]
+        let mut body_scope = function_scope.clone();
+        walk_sequence(rest, out, &mut body_scope);
+        return;
     };
     for clause in clauses {
-        let pairs: Vec<(&SExpr, &SExpr)> = if clause.first().is_some_and(is_clause) {
-            clause
-                .chunks_exact(2)
-                .filter_map(|pair| Some((pair.first()?, pair.get(1)?)))
-                .collect()
-        } else {
-            clause
-                .windows(2)
-                .filter_map(|pair| match pair.first() {
-                    Some(SExpr::Keyword { .. }) => Some((&pair[0], &pair[1])),
-                    _ => None,
-                })
-                .collect()
-        };
-        let params = pairs
-            .iter()
-            .find(|(key, _)| key.as_keyword() == Some("args"))
-            .map(|(_, value)| *value);
+        let groups = crate::classifier::forms::parse_keyword_clauses(clause);
+        let params = groups
+            .get("args")
+            .and_then(|values| values.first())
+            .copied();
         let mut clause_scope = function_scope.clone();
         if let Some(params) = params {
             let param_sites = typed_param_names(params);
@@ -509,11 +576,35 @@ fn walk_source_function(form: &SExpr, out: &mut Vec<BindingSite>, scope: &[Strin
                     .filter(|site| site.kind.shadows_values())
                     .map(|site| site.atom.as_atom().unwrap().to_string()),
             );
-            walk_param_defaults(params, out, &mut clause_scope);
+            walk_param_defaults(params, out, &mut clause_scope, PatternDialect::Source);
         }
-        for (key, value) in pairs {
-            if matches!(key.as_keyword(), Some("body" | "pre" | "post")) {
-                walk(value, out, &mut clause_scope);
+        let pre = groups.get("pre").and_then(|values| values.first()).copied();
+        let post = groups
+            .get("post")
+            .and_then(|values| values.first())
+            .copied();
+        let body = groups.get("body").map(Vec::as_slice).unwrap_or(&[]);
+        let body_pos = clause
+            .iter()
+            .rposition(|item| item.as_keyword() == Some("body"));
+        let post_pos = clause
+            .iter()
+            .rposition(|item| item.as_keyword() == Some("post"));
+        if let Some(pre) = pre {
+            walk(pre, out, &mut clause_scope);
+        }
+        if post_pos
+            .zip(body_pos)
+            .is_some_and(|(post, body)| post < body)
+        {
+            if let Some(post) = post {
+                walk(post, out, &mut clause_scope);
+            }
+            walk_sequence_refs(body, out, &mut clause_scope);
+        } else {
+            walk_sequence_refs(body, out, &mut clause_scope);
+            if let Some(post) = post {
+                walk(post, out, &mut clause_scope);
             }
         }
     }
@@ -549,7 +640,12 @@ fn typed_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
     out
 }
 
-fn walk_param_defaults(params: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
+fn walk_param_defaults(
+    params: &SExpr,
+    out: &mut Vec<BindingSite>,
+    scope: &mut Vec<String>,
+    dialect: PatternDialect,
+) {
     let SExpr::List { values, .. } = params else {
         return;
     };
@@ -557,15 +653,11 @@ fn walk_param_defaults(params: &SExpr, out: &mut Vec<BindingSite>, scope: &mut V
         let SExpr::List { values, .. } = param else {
             continue;
         };
-        if values.first().and_then(SExpr::as_atom) == Some("default") {
-            if let Some(value) = values.last() {
-                walk(value, out, scope);
-            }
-        } else if matches!(
+        if matches!(
             values.first().and_then(SExpr::as_atom),
-            Some("array" | "object")
+            Some("default" | "rest" | "array" | "object")
         ) {
-            walk_pattern_defaults(param, out, scope);
+            walk_pattern_defaults(param, out, scope, dialect);
         }
     }
 }
@@ -574,7 +666,7 @@ fn walk_bind_operands(args: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Ve
     let mark = scope.len();
     if args.len() == 2 || args.len() == 3 {
         let pattern_index = usize::from(args.len() == 3);
-        walk_pattern_defaults(&args[pattern_index], out, scope);
+        walk_pattern_defaults(&args[pattern_index], out, scope, PatternDialect::Source);
         walk(&args[pattern_index + 1], out, scope);
         scope.truncate(mark);
         return;
@@ -589,7 +681,7 @@ fn walk_bind_operands(args: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Ve
         if value_index >= args.len() {
             break;
         }
-        walk_pattern_defaults(&args[pattern_index], out, scope);
+        walk_pattern_defaults(&args[pattern_index], out, scope, PatternDialect::Source);
         walk(&args[value_index], out, scope);
         scope.extend(
             binding_names_in_pattern(&args[pattern_index], BindingKind::Bind)
@@ -601,14 +693,38 @@ fn walk_bind_operands(args: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Ve
     scope.truncate(mark);
 }
 
-fn walk_pattern_defaults(pattern: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
+fn walk_pattern_defaults(
+    pattern: &SExpr,
+    out: &mut Vec<BindingSite>,
+    scope: &mut Vec<String>,
+    dialect: PatternDialect,
+) {
     let SExpr::List { values, .. } = pattern else {
         return;
     };
-    if !matches!(
-        values.first().and_then(SExpr::as_atom),
-        Some("array" | "object")
-    ) {
+    let head = values.first().and_then(SExpr::as_atom).unwrap_or("");
+    if head == "default" {
+        let typed = dialect == PatternDialect::Source
+            && matches!(values.get(1), Some(SExpr::Keyword { .. }));
+        if dialect == PatternDialect::Kernel
+            && let Some(nested) = values.get(1)
+        {
+            walk_pattern_defaults(nested, out, scope, dialect);
+        }
+        if let Some(value) = values.get(if typed { 3 } else { 2 }) {
+            walk(value, out, scope);
+        }
+        return;
+    }
+    if head == "rest" {
+        let typed = dialect == PatternDialect::Source
+            && matches!(values.get(1), Some(SExpr::Keyword { .. }));
+        if let Some(nested) = values.get(if typed { 2 } else { 1 }) {
+            walk_pattern_defaults(nested, out, scope, dialect);
+        }
+        return;
+    }
+    if !matches!(Some(head), Some("array" | "object")) {
         return;
     }
     for member in values.iter().skip(1) {
@@ -616,20 +732,18 @@ fn walk_pattern_defaults(pattern: &SExpr, out: &mut Vec<BindingSite>, scope: &mu
             continue;
         };
         match values.first().and_then(SExpr::as_atom) {
-            Some("default") => {
-                if let Some(value) = values.last() {
-                    walk(value, out, scope);
-                }
-            }
-            Some("rest" | "array" | "object") => {
-                if let Some(nested) = values.get(1) {
-                    walk_pattern_defaults(nested, out, scope);
-                }
-            }
             Some("alias") => {
-                if let Some(default) = values.get(3) {
+                let typed = dialect == PatternDialect::Source
+                    && matches!(values.get(1), Some(SExpr::Keyword { .. }));
+                if let Some(nested) = values.get(if typed { 3 } else { 2 }) {
+                    walk_pattern_defaults(nested, out, scope, dialect);
+                }
+                if !typed && let Some(default) = values.get(3) {
                     walk(default, out, scope);
                 }
+            }
+            Some("default" | "rest" | "array" | "object") => {
+                walk_pattern_defaults(member, out, scope, dialect)
             }
             _ => {}
         }
@@ -772,12 +886,20 @@ fn kernel_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
                     let binding_index =
                         usize::from(matches!(values.get(1), Some(SExpr::Keyword { .. }))) + 1;
                     if let Some(binding) = values.get(binding_index) {
-                        pattern_occurrences(binding, BindingKind::Param, &mut out);
+                        pattern_occurrences_with_dialect(
+                            binding,
+                            BindingKind::Param,
+                            PatternDialect::Kernel,
+                            &mut out,
+                        );
                     }
                 }
-                Some("array" | "object") => {
-                    pattern_occurrences(param, BindingKind::Param, &mut out)
-                }
+                Some("array" | "object") => pattern_occurrences_with_dialect(
+                    param,
+                    BindingKind::Param,
+                    PatternDialect::Kernel,
+                    &mut out,
+                ),
                 _ => {}
             },
             _ => {}
@@ -849,7 +971,12 @@ fn kernel_decl_names<'a>(kernel_form: &str, args: &'a [SExpr]) -> Vec<BindingOcc
         return Vec::new();
     };
     let mut out = Vec::new();
-    pattern_occurrences(name_slot, BindingKind::Bind, &mut out);
+    pattern_occurrences_with_dialect(
+        name_slot,
+        BindingKind::Bind,
+        PatternDialect::Kernel,
+        &mut out,
+    );
     out
 }
 
@@ -972,6 +1099,21 @@ fn pattern_occurrences<'a>(
     kind: BindingKind,
     out: &mut Vec<BindingOccurrence<'a>>,
 ) {
+    pattern_occurrences_with_dialect(pat, kind, PatternDialect::Source, out);
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum PatternDialect {
+    Source,
+    Kernel,
+}
+
+fn pattern_occurrences_with_dialect<'a>(
+    pat: &'a SExpr,
+    kind: BindingKind,
+    dialect: PatternDialect,
+    out: &mut Vec<BindingOccurrence<'a>>,
+) {
     match pat {
         a @ SExpr::Atom { .. } if a.as_atom() != Some("_") => {
             out.push(BindingOccurrence { atom: a, kind })
@@ -989,8 +1131,15 @@ fn pattern_occurrences<'a>(
                                 let ih = inner.first().and_then(|e| e.as_atom()).unwrap_or("");
                                 match ih {
                                     "rest" => {
-                                        if let Some(n) = inner.get(1) {
-                                            pattern_occurrences(n, kind, out);
+                                        let index = usize::from(
+                                            dialect == PatternDialect::Source
+                                                && matches!(
+                                                    inner.get(1),
+                                                    Some(SExpr::Keyword { .. })
+                                                ),
+                                        ) + 1;
+                                        if let Some(n) = inner.get(index) {
+                                            pattern_occurrences_with_dialect(n, kind, dialect, out);
                                         }
                                     }
                                     "default" => {
@@ -999,15 +1148,21 @@ fn pattern_occurrences<'a>(
                                             Some(SExpr::Keyword { .. })
                                         )) + 1;
                                         if let Some(n) = inner.get(index) {
-                                            pattern_occurrences(n, kind, out);
+                                            pattern_occurrences_with_dialect(n, kind, dialect, out);
                                         }
                                     }
                                     "alias" => {
-                                        if let Some(local) = inner.get(2) {
-                                            pattern_occurrences(local, kind, out);
+                                        let typed = dialect == PatternDialect::Source
+                                            && matches!(inner.get(1), Some(SExpr::Keyword { .. }));
+                                        if let Some(local) = inner.get(if typed { 3 } else { 2 }) {
+                                            pattern_occurrences_with_dialect(
+                                                local, kind, dialect, out,
+                                            );
                                         }
                                     }
-                                    "array" | "object" => pattern_occurrences(el, kind, out),
+                                    "array" | "object" => {
+                                        pattern_occurrences_with_dialect(el, kind, dialect, out)
+                                    }
                                     _ => {}
                                 }
                             }
@@ -1133,6 +1288,48 @@ mod tests {
                 .message
                 .contains("strict-mode binding identifier")
         }));
+    }
+
+    #[test]
+    fn correction07_walks_selected_function_regions_and_recursive_kernel_defaults() {
+        for source in [
+            "(func example :args () :body 1 (bind package 2) 3)",
+            "(func example 1 (bind package 2) 3)",
+            "(genfunc example :args () :body (yield 1) (bind package 2))",
+            "(bind result ((do (bind package 1) (fn () 2))))",
+            "(kernel:function example ((default value (do (bind package 1) 2))) (return value))",
+            "(kernel:const (object (default value (do (bind package 1) 2))) (object))",
+            "(class Example () (method ((default value (do (bind package 1) 2))) (return value)))",
+            "(bind (object (alias data (object (default value (do (bind package 1) 2))))) (object))",
+        ] {
+            let forms = read(source).expect("parse correction witness");
+            assert!(
+                validate_reserved_names(&forms)
+                    .iter()
+                    .any(|d| d.message.contains("package")),
+                "{source}"
+            );
+        }
+        let repeated = read("(func f :args () :body (bind package 1) :body 1)").unwrap();
+        assert!(validate_reserved_names(&repeated).is_empty());
+        let typed_alias =
+            read("(func f :args ((object (alias :any package (object :any local)))) :body local)")
+                .unwrap();
+        assert_eq!(
+            names("(func f :args ((object (alias :any package (object :any local)))) :body local)"),
+            vec!["f", "local"]
+        );
+        assert!(
+            !validate_reserved_names(&typed_alias)
+                .iter()
+                .any(|d| d.message.contains("package"))
+        );
+        let kernel_alias = read("(kernel:const (object (alias :package eval)) (object))").unwrap();
+        assert!(
+            validate_reserved_names(&kernel_alias)
+                .iter()
+                .any(|d| d.message.contains("eval"))
+        );
     }
 
     #[test]

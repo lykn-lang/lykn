@@ -58,6 +58,8 @@ import {
 } from "./surface-helpers.js";
 import { isKernel, markKernel } from "./kernel-mark.js";
 import { isMatchGuardSlot } from "./binding.js";
+import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
+export { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
 
 /**
  * Classify a surface form head atom. Returns a typed AST node if the
@@ -1600,28 +1602,6 @@ export function emitTypeMacro(args, { typeContext } = {}) {
  * Other keywords (like :string, :number) are treated as values.
  * Returns Map<string, any[]>.
  */
-export function parseKeywordClauses(args) {
-  const clauses = new Map();
-  let currentKey = null;
-  let currentValues = [];
-
-  for (const arg of args) {
-    if (isKeyword(arg) && FUNC_CLAUSE_KEYS.has(arg.value)) {
-      if (currentKey !== null) {
-        clauses.set(currentKey, currentValues);
-      }
-      currentKey = arg.value;
-      currentValues = [];
-    } else {
-      currentValues.push(arg);
-    }
-  }
-  if (currentKey !== null) {
-    clauses.set(currentKey, currentValues);
-  }
-  return clauses;
-}
-
 // DD-37 M22: extracted from registerSurfaceMacros inner scope.
 export function instrumentYields(node, yieldsType, funcName) {
   if (!node || node.type !== "list") return node;
@@ -1709,11 +1689,3 @@ function dispatchTypesOverlap(leftType, rightType) {
 }
 
 /** Valid clause keys for func/fn keyword parsing. */
-export const FUNC_CLAUSE_KEYS = new Set([
-  "args",
-  "returns",
-  "yields",
-  "pre",
-  "post",
-  "body",
-]);

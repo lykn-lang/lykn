@@ -1722,7 +1722,7 @@ fn classify_func<'tree>(
     })
 }
 
-fn is_func_clause_key(name: &str) -> bool {
+pub(crate) fn is_func_clause_key(name: &str) -> bool {
     matches!(
         name,
         "args" | "yields" | "returns" | "pre" | "post" | "body"
@@ -1800,7 +1800,7 @@ fn parse_func_clause_from_args<'tree>(
     })
 }
 
-fn parse_keyword_clauses(args: &[SExpr]) -> HashMap<&str, Vec<&SExpr>> {
+pub(crate) fn parse_keyword_clauses(args: &[SExpr]) -> HashMap<&str, Vec<&SExpr>> {
     let mut map = HashMap::new();
     let mut current_key: Option<&str> = None;
     let mut current_values: Vec<&SExpr> = Vec::new();

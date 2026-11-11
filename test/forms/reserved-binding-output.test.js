@@ -43,7 +43,13 @@ Deno.test("normalized DD-49 output is checked as the emitted binding", () => {
 });
 
 Deno.test("macro output is checked as a real binding and legal structural slots stay legal", async () => {
-  assertThrows(() => lykn("(macro bad (name) `(function (,name) value)) (bind f (bad package))"), Error, "package");
+  assertThrows(
+    () => lykn("(macro restricted-bad (params) `(fn ,params 0)) (bind example (restricted-bad (:any package)))"),
+    Error,
+    "package",
+  );
+  const renamedMacro = lykn("(macro restricted-safe (params) `(fn ,params 0)) (bind example (restricted-safe (:any safe))) (console:log (example 7))");
+  await executeModule(renamedMacro, "0\n");
   assertThrows(
     () => expandExpr(read("`(array ,(function (package) package))")[0]),
     Error,
@@ -60,6 +66,27 @@ Deno.test("macro output is checked as a real binding and legal structural slots 
     (console:log (bind eval))
   `);
   await executeModule(generated, "object\n{ const: \"property\", if: \"reserved-key\" }\nfunction\n");
+});
+
+Deno.test("source function groups visit selected tails and preserve last-group semantics", () => {
+  for (const source of [
+    "(func tail :args () :body 1 (bind package 2) 3)",
+    "(func tail 1 (bind package 2) 3)",
+    "(genfunc tail :args () :body (yield 1) (bind package 2))",
+    "(bind result ((do (bind package 1) (fn () 2))))",
+  ]) {
+    assertThrows(() => validateReservedNames(read(source)), Error, "package");
+    assertThrows(() => lykn(source), Error, "package");
+    assertThrows(() => expandExpr(read(source)[0]), Error, "package");
+  }
+  validateReservedNames(read("(func last :args () :body (bind package 1) :body 1)"));
+});
+
+Deno.test("public postconditions see body declarations in either textual order", async () => {
+  for (const source of [
+    `(func sample :args () :post (bind eval 1) :body (bind bind (fn (:any a :any b) (= a eval))) true) (console:log (sample))`,
+    `(func sample :args () :body (bind bind (fn (:any a :any b) (= a eval))) true :post (bind eval 1)) (console:log (sample))`,
+  ]) await executeModule(lykn(source), "true\n");
 });
 
 Deno.test("public expandExpr respects supplied binding names", () => {
@@ -140,10 +167,32 @@ Deno.test("typed and kernel parameter slots project their actual local names", (
     Error,
     "strict-mode binding identifier",
   );
+  for (const source of [
+    "(kernel:function example ((default value (do (bind package 1) 2))) (return value))",
+    "(kernel:const (object (default value (do (bind package 1) 2))) (object))",
+    "(class Example () (method ((default value (do (bind package 1) 2))) (return value)))",
+    "(bind (object (alias data (object (default value (do (bind package 1) 2))))) (object (data (object))))",
+  ]) assertThrows(() => validateReservedNames(read(source)), Error, "package");
+  assertThrows(
+    () => validateReservedNames(read("(kernel:const (object (alias :package eval)) (object))")),
+    Error,
+    "eval",
+  );
   assertThrows(
     () => validateReservedNames(read("(kernel:lambda (package) package)")),
     Error,
     "package",
+  );
+});
+
+Deno.test("typed nested alias keys stay data and locals execute", async () => {
+  const source = `(func read-local :args ((object (alias :any package (object :any local)))) :body local)
+(console:log (read-local (object (package (object (local "local-value"))))))`;
+  await executeModule(lykn(source), "local-value\n");
+  assertEquals(
+    walkBindings(read("(func read-local :args ((object (alias :any package (object :any local)))) :body local)"))
+      .map((site) => site.name),
+    ["read-local", "local"],
   );
 });
 

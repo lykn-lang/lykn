@@ -717,6 +717,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         "compiler.js",
         "compiler-private-atoms.js",
         "expander-core.js",
+        "function-clauses.js",
         "identifier.js",
         "protected-host.js",
         "reserved-words.js",
@@ -801,7 +802,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 22 passed | 0 failed"),
-        "M6 must execute all eleven retained and eleven IC-01 public cases, output: {public_output}"
+        public_output.contains("ok | 25 passed | 0 failed"),
+        "M6 must execute all eleven retained and fourteen IC-01 public cases, output: {public_output}"
     );
 }

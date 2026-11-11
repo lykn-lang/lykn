@@ -15,6 +15,7 @@ import { RESERVED_WORDS } from "./reserved-words.js";
 import { toJsIdentifier } from "./identifier.js";
 import { isCompilerPrivateAtom } from "./compiler-private-atoms.js";
 import { isKernel } from "./kernel-mark.js";
+import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
 
 /** @typedef {'param'|'bind'|'loop-binding'|'class-method-param'} BindingKind */
 /**
@@ -47,7 +48,11 @@ function extendNames(inScope, names) {
 }
 
 function walkSequence(forms, out, inScope) {
-  let current = inScope;
+  walkSequenceReturning(forms, out, inScope);
+}
+
+function walkSequenceReturning(forms, out, inScope) {
+  let current = new Set(inScope);
   for (const form of forms) {
     walk(form, out, current);
     const head = form?.type === "list" ? form.values[0] : null;
@@ -56,6 +61,7 @@ function walkSequence(forms, out, inScope) {
     const hoisted = dispatches ? hoistedNames(form) : [];
     current = extendNames(current, hoisted);
   }
+  return current;
 }
 
 function walk(form, out, inScope) {
@@ -138,7 +144,7 @@ function walk(form, out, inScope) {
       for (const base of bases.values) walk(base, out, classScope);
     }
     for (const member of form.values.slice(3)) {
-      walkClassMember(member, out, classScope);
+      walkClassMember(member, out, classScope, true);
     }
     return;
   }
@@ -149,9 +155,8 @@ function walk(form, out, inScope) {
   }
 
   if (headName === null) {
-    // A lexical call is not a declaration even when its spelling names a form.
-    const children = head?.type === "atom" ? form.values.slice(1) : form.values;
-    for (const child of children) walk(child, out, inScope);
+    // A computed callee and each operand are independent executable regions.
+    for (const child of form.values) walk(child, out, inScope);
     return;
   }
 
@@ -159,6 +164,21 @@ function walk(form, out, inScope) {
   if (headName === "bind") {
     walkBindOperands(form.values.slice(1), out, inScope);
     return;
+  }
+
+  const isKernelDeclaration = headName.startsWith("kernel:") || isKernel(form);
+  if (headName === "const" || headName === "let" || headName === "var" ||
+      headName === "kernel:const" || headName === "kernel:let" || headName === "kernel:var") {
+    const pattern = form.values[1];
+    if (pattern) walkPatternDefaults(pattern, out, inScope, isKernelDeclaration ? "kernel" : "source");
+  }
+
+  const kernelFunction = ["function", "function*", "kernel:function", "kernel:function*", "=>", "kernel:=>", "kernel:lambda"].includes(headName);
+  const sourceFunction = ["fn", "lambda", "genfn"].includes(headName);
+  if (kernelFunction || sourceFunction) {
+    const args = form.values.slice(1);
+    const params = args[0]?.type === "list" ? args[0] : args[1]?.type === "list" ? args[1] : null;
+    if (params) walkParamDefaults(params, out, extendNames(inScope, bindingsIntroduced(form).map((site) => site.name)), kernelFunction ? "kernel" : "source");
   }
 
   const plan = bindingScopePlan(form, headName);
@@ -186,7 +206,7 @@ function walkBindOperands(args, out, inScope) {
   const current = new Set(inScope);
   if (args.length === 2 || args.length === 3) {
     const patternIndex = args.length === 2 ? 0 : 1;
-    walkPatternDefaults(args[patternIndex], out, current);
+    walkPatternDefaults(args[patternIndex], out, current, "source");
     walk(args[patternIndex + 1], out, current);
     return;
   }
@@ -196,36 +216,47 @@ function walkBindOperands(args, out, inScope) {
     if (args[i]?.type === "keyword") patternIndex++;
     const valueIndex = patternIndex + 1;
     if (valueIndex >= args.length) return;
-    walkPatternDefaults(args[patternIndex], out, current);
+    walkPatternDefaults(args[patternIndex], out, current, "source");
     walk(args[valueIndex], out, current);
-    for (const site of patternNames(args[patternIndex], "bind")) current.add(site.name);
+    for (const site of patternNames(args[patternIndex], "bind", "source")) current.add(site.name);
     i = valueIndex + 1;
   }
 }
 
-function walkPatternDefaults(pattern, out, inScope) {
+function walkPatternDefaults(pattern, out, inScope, dialect = "kernel") {
   if (pattern?.type !== "list") return;
   const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
+  if (head === "default") {
+    const typed = dialect === "source" && pattern.values[1]?.type === "keyword";
+    if (dialect === "kernel") walkPatternDefaults(pattern.values[1], out, inScope, dialect);
+    const value = pattern.values[typed ? 3 : 2];
+    if (value) walk(value, out, inScope);
+    return;
+  }
+  if (head === "rest") {
+    const typed = dialect === "source" && pattern.values[1]?.type === "keyword";
+    walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, dialect);
+    return;
+  }
   if (head !== "array" && head !== "object") return;
   for (const member of pattern.values.slice(1)) {
     if (member?.type !== "list") continue;
     const memberHead = member.values[0]?.type === "atom" ? member.values[0].value : "";
-    if (memberHead === "default") {
-      const value = member.values.at(-1);
-      if (value) walk(value, out, inScope);
-    } else if (memberHead === "alias") {
-      if (member.values[3]) walk(member.values[3], out, inScope);
-    } else if (memberHead === "rest" || memberHead === "array" || memberHead === "object") {
-      walkPatternDefaults(member.values[1], out, inScope);
+    if (memberHead === "alias") {
+      const typed = dialect === "source" && member.values[1]?.type === "keyword";
+      walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, dialect);
+      if (!typed && member.values[3]) walk(member.values[3], out, inScope);
+    } else if (["default", "rest", "array", "object"].includes(memberHead)) {
+      walkPatternDefaults(member, out, inScope, dialect);
     }
   }
 }
 
-function walkClassMember(member, out, classScope) {
+function walkClassMember(member, out, classScope, validation = false) {
   if (member?.type !== "list" || member.values.length === 0) return;
   const head = member.values[0]?.type === "atom" ? member.values[0].value : "";
   if (head === "static" || head === "async") {
-    for (const nested of member.values.slice(1)) walkClassMember(nested, out, classScope);
+    for (const nested of member.values.slice(1)) walkClassMember(nested, out, classScope, validation);
     return;
   }
   const paramsIndex = head === "get" || head === "set" ? 2 : 1;
@@ -237,6 +268,7 @@ function walkClassMember(member, out, classScope) {
   const sites = kernelParamNames(params).map((site) => ({ ...site, kind: "class-method-param" }));
   out.push(...sites);
   const methodScope = extendNames(classScope, sites.map((site) => site.name));
+  if (validation) walkParamDefaults(params, out, methodScope, "kernel");
   for (const child of member.values.slice(paramsIndex + 1)) walk(child, out, methodScope);
 }
 
@@ -247,43 +279,38 @@ function walkSourceFunction(form, out, inScope) {
     : [];
   out.push(...name);
   const functionScope = extendNames(inScope, name.map((site) => site.name));
-  const multiClauses = args.slice(1).filter((value) =>
-    value?.type === "list" && value.values[0]?.type === "keyword" &&
-    FUNC_CLAUSE_KEYS.has(value.values[0].value)
-  );
-  const clauses = multiClauses.length > 0 ? multiClauses : [args.slice(1)];
-  for (const clause of clauses) {
-    const values = Array.isArray(clause) ? clause : clause.values;
-    let params = null;
-    for (let i = 0; i + 1 < values.length; i++) {
-      if (values[i]?.type === "keyword" && values[i].value === "args" && values[i + 1]?.type === "list") {
-        params = values[i + 1];
-        break;
-      }
+  const rest = args.slice(1);
+  const multi = rest[0]?.type === "list" && rest[0].values[0]?.type === "keyword" && FUNC_CLAUSE_KEYS.has(rest[0].values[0].value);
+  const keywordMode = !multi && rest[0]?.type === "keyword" && FUNC_CLAUSE_KEYS.has(rest[0].value);
+  const clauses = multi
+    ? rest.filter((value) => value?.type === "list" && value.values[0]?.type === "keyword" && FUNC_CLAUSE_KEYS.has(value.values[0].value)).map((value) => value.values)
+    : keywordMode ? [rest] : [null];
+  for (const values of clauses) {
+    if (values === null) {
+      walkSequenceReturning(rest, out, functionScope);
+      continue;
     }
+    const groups = parseKeywordClauses(values);
+    const params = groups.get("args")?.[0];
     const sites = params ? paramListNames(params) : [];
     out.push(...sites);
-    const clauseScope = extendNames(functionScope, sites.map((site) => site.name));
-    if (params) walkParamDefaults(params, out, clauseScope);
-    for (let i = 0; i + 1 < values.length; i++) {
-      const key = values[i];
-      const value = values[i + 1];
-      if (key?.type !== "keyword" || !["body", "pre", "post"].includes(key.value)) continue;
-      walk(value, out, clauseScope);
-    }
+    let clauseScope = extendNames(functionScope, sites.map((site) => site.name));
+    if (params) walkParamDefaults(params, out, clauseScope, "source");
+    const pre = groups.get("pre")?.[0];
+    const post = groups.get("post")?.[0];
+    if (pre) walk(pre, out, clauseScope);
+    clauseScope = walkSequenceReturning(groups.get("body") ?? [], out, clauseScope);
+    if (post) walk(post, out, clauseScope);
   }
 }
 
-function walkParamDefaults(params, out, inScope) {
+function walkParamDefaults(params, out, inScope, dialect = "kernel") {
   if (params?.type !== "list") return;
   for (const param of params.values) {
     if (param?.type !== "list") continue;
     const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
-    if (head === "default") {
-      const value = param.values.at(-1);
-      if (value) walk(value, out, inScope);
-    } else if (head === "array" || head === "object") {
-      walkPatternDefaults(param, out, inScope);
+    if (["default", "rest", "array", "object"].includes(head)) {
+      walkPatternDefaults(param, out, inScope, dialect);
     }
   }
 }
@@ -430,7 +457,7 @@ export function bindingsIntroduced(form) {
         ? name.slice("kernel:".length)
         : name;
       if (DECL_HEADS.has(kernel) && args.length > 0) {
-        return patternNames(args[0], "bind");
+        return patternNames(args[0], "bind", name.startsWith("kernel:") || isKernel(form) ? "kernel" : "source");
       }
       return [];
     }
@@ -460,15 +487,6 @@ function bindNames(args) {
   }
   return out;
 }
-
-const FUNC_CLAUSE_KEYS = new Set([
-  "args",
-  "yields",
-  "returns",
-  "pre",
-  "post",
-  "body",
-]);
 
 /** func/genfunc: the function NAME (a binder — sweep finding) + every param. */
 function funcClauseParamNames(args) {
@@ -543,11 +561,11 @@ function kernelParamNames(list) {
     if (param?.type !== "list") continue;
     const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
     if (head === "rest" && param.values[1]) {
-      out.push(...patternNames(param.values[1], "param"));
+      out.push(...patternNames(param.values[1], "param", "kernel"));
     } else if (head === "default" && param.values[1]) {
-      out.push(...patternNames(param.values[1], "param"));
+      out.push(...patternNames(param.values[1], "param", "kernel"));
     } else if (head === "array" || head === "object") {
-      out.push(...patternNames(param, "param"));
+      out.push(...patternNames(param, "param", "kernel"));
     }
   }
   return out;
@@ -700,7 +718,7 @@ export function bindingNamesInPattern(pat, kind = "bind") {
   return patternNames(pat, kind);
 }
 
-function patternNames(pat, kind) {
+function patternNames(pat, kind, dialect = "source") {
   if (pat?.type === "atom") {
     if (isCompilerPrivateAtom(pat)) return [];
     return pat.value === "_" ? [] : [{ name: pat.value, kind, node: pat }];
@@ -716,15 +734,19 @@ function patternNames(pat, kind) {
     } else if (el.type === "list") {
       const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
       if (ih === "rest" && el.values[1]) {
-        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
-        if (binding) out.push(...patternNames(binding, kind));
-      } else if (ih === "alias" && el.values[2]) {
-        out.push(...patternNames(el.values[2], kind));
+        const typed = dialect === "source" && el.values[1]?.type === "keyword";
+        const binding = el.values[typed ? 2 : 1];
+        if (binding) out.push(...patternNames(binding, kind, dialect));
+      } else if (ih === "alias") {
+        const typed = dialect === "source" && el.values[1]?.type === "keyword";
+        const binding = el.values[typed ? 3 : 2];
+        if (binding) out.push(...patternNames(binding, kind, dialect));
       } else if (ih === "default") {
-        const binding = el.values[1]?.type === "keyword" ? el.values[2] : el.values[1];
-        if (binding) out.push(...patternNames(binding, kind));
+        const typed = dialect === "source" && el.values[1]?.type === "keyword";
+        const binding = el.values[typed ? 2 : 1];
+        if (binding) out.push(...patternNames(binding, kind, dialect));
       } else if (ih === "array" || ih === "object") {
-        out.push(...patternNames(el, kind));
+        out.push(...patternNames(el, kind, dialect));
       }
     }
   }
