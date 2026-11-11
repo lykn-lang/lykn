@@ -301,3 +301,40 @@ relevant binding-path gap before its namespace/identifier claims close, or
 record an explicit owning follow-up. Keep valid property/data keys distinct
 from lexical bindings; this observation does not justify banning a payload or
 namespace member named package. No new source repair was made during review.
+
+### Root source follow-up at B1 candidate 3f197340
+
+The preceding uncertainty is retained as the original observation. Immutable
+source inspection now establishes a missing-table cause for that spelling:
+both `crates/lykn-lang/src/binding.rs::RESERVED_WORDS` and
+`packages/lang/reserved-words.js::RESERVED_WORDS` omit package. Both validators
+also compare the original source spelling, while code generation separately
+normalizes names. The latter is a distinct source-inspected risk (for example,
+the normalizer strips a trailing bang); an actual normalized-name failure has
+not yet been reproduced. Do not report it as a completed runtime observation.
+
+The existing ordinary product test
+`test/expander/reserved-words-parity.test.js::isLegalIdent` writes a temporary
+.js file containing a const declaration and invokes deno check. Its sentinels
+call await and yield legal. The hereditary research matrix uses the same
+check method and a candidate set that omits package. Thus neither exact table
+parity nor that candidate census establishes completeness or emitted-module
+runtime legality. The captured check/run discrepancy needs a controlled
+reproduction before selecting its precise tooling cause.
+
+The primary [ECMAScript lexical grammar](https://tc39.es/ecma262/multipage/ecmascript-language-lexical-grammar.html#sec-keywords-and-reserved-words)
+distinguishes unconditional words, contextual words and strict-mode restricted
+names. Its [identifier early errors](https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-identifiers-static-semantics-early-errors)
+add restrictions for module await, strict yield and strict bindings named eval
+or arguments. This supports checking actual emitted-module semantics rather
+than inheriting the current sentinels as authority. It does not yet establish
+which other Lykn sources or tests need migration.
+
+Before issuing a repair, root must settle the binding-only policy, the shared
+normalization dependency/call sites, macro-generated binding validation and a
+discriminating actual ESM parse/execution oracle. Preserve legal object/data
+keys and imported external names separately from their local binding names.
+Use a normal product test for compiler regressions; any new research probe or
+matrix logic must be authored in Lykn, not added to the hereditary handwritten
+JS research harness. Keep this prerequisite separate from B1's independent
+review. No IC-01 implementation prompt or source change has been issued.
