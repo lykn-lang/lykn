@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.3"
+version: "1.4"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -147,3 +147,19 @@ controls. Optional type annotations do not select successful function control
 flow. A separate Sol preparation review supports issue after tightening the
 explicit-return/postcondition runtime oracles. No fixture annotation workaround,
 public macro redesign or broader return-guard guarantee is authorized.
+
+Increment A is independently accepted at source
+5caf3d871a80a711c08dbda0db8c5f5446dffb56, tree
+115ce5ecc254ea9ed15263612bed67b6cec80ab2. Root verified the independent
+archive digest and actual source pin; LC-01 is done. This is not S03 closure
+or authority to integrate later source into release. Release remains 0829e892.
+
+The first usable B checkpoint is [per-call public type metadata isolation](artifacts/per-unit-type-context-design.md),
+issued as [iteration04](cc-prompt-iteration04.md) after separate Sol final
+source-readiness review. It removes actual global type state, preserving
+existing macro/lowering order and legacy syntax until the qualified migration.
+Cold prelude metadata is explicitly normalized to the old reset/native-analysis
+baseline, not introduced as runtime bindings. The actual changed M6 union is
+nine files. No new dependency or public context injection is added; removal
+of surface.js resetTypeRegistry is carried to S06. This is a partial LC-02
+foundation, not replacement for typed owners, aliases, nominal values or C.

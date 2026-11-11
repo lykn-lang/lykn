@@ -212,3 +212,108 @@ Fixed-nine inline layout remains approved/provisional, with sparse imports
 distinguished from its fixed body. I4, warm-cache and browser eval limitations
 remain explicit. Source/build execution and review-record ownership return
 to root for correction. No release, integration or remote action occurred.
+
+## Correction03 candidate 5caf3d87 — 2026-11-11
+
+**Verdict: ACCEPT increment A and its LC-01 host prerequisite only. S03 remains
+open.** Independent review inspected the exact six-path 16dcd64f-to-5caf3d87
+diff against issued corrections02/03, the CC handoff and retained failure
+receipts. The candidate is
+`5caf3d871a80a711c08dbda0db8c5f5446dffb56`, tree
+`115ce5ecc254ea9ed15263612bed67b6cec80ab2`, on `codex/qualified-adt-core` in
+the named task worktree. Source/index remained unchanged and clean; the commit
+has contiguous Codex/Billo AI trailers. No release or remote action occurred.
+
+The canonical and embedded classifier copies are byte-identical. Both original
+Array-shadow fixtures are unchanged from parent16. The public repair removes
+only the ordinary body's returns-annotation gate, reusing wrapReturnLast;
+the postcondition branch and helper's statement/control-transfer treatment
+remain intact. The new runtime control executes annotated/unannotated single
+values and prefix effects, explicit-return tails, multi-clause post success
+and failure, and unknown-type no-match behavior. It does not establish missing
+general multi-clause return-type guards or repair I4 early returns.
+
+### Findings resolved and focused evidence
+
+- **AF-01 verified:** native module/parameter Array shadowing executes all four
+  checked/stripped conditions, retaining exact array/string/unknown-clause
+  results. Both separate fixtures now also execute successfully through the
+  materialized public compiler, with exact stdout and empty runtime stderr.
+- **AF-02 verified:** real M6 runs a copied built CLI outside the canonical
+  package cwd from an absent owned versioned cache, compares all seven module
+  bytes, then imports the actual materialized lang/ mapping. All five runtime
+  cases pass: recursive ADTs, macro hygiene, single-clause guard/error paths,
+  module-shadowed dispatch and parameter-shadowed dispatch. These are actual
+  executed cases, not inferred from names. A further reviewer-authored Lykn
+  witness copies the freshly built release CLI to another empty standalone cwd,
+  starts with an empty separate XDG and runs a macro plus shadowed guards/errors.
+  Seven module and embedded config/lock byte comparisons all pass.
+- **AF-03 verified:** all eight emission-results integration tests pass. The
+  new parsed multi-clause test verifies Codegen rejection at the actual first
+  array parameter, line 2 columns 18–23. The helper receives param.span()
+  explicitly while keeping the synthetic argument-access expression separate.
+  Public native fragment rejection, raw producer/whole-unit lowering and JSON
+  Result boundaries remain intact. Existing raw writer/all-nine/Reflect
+  composition and fragment JSON tests pass within the full gate. A separate
+  actual native CLI kernel-JSON → public compiler → ESM runtime witness returns
+  the expected number/array TypeErrors and match Error, with empty runtime
+  stderr. The public fragment driver rejects unfinished atom, call-head and
+  new-constructor positions; these three controls are public-JS evidence, not
+  a claim that every native fragment position has a separate runtime test.
+- **AF-04 verified:** shared private value identity compiles once to one alias
+  across multiple occurrences. Its product runtime test executes matching
+  Symbol.for identity. Existing distinct pointer-anchored Reflect validation,
+  recovery and lazy invocation controls also pass.
+
+Focused populations pass: 202 emitter tests (974 other library tests filtered),
+8 emission-results tests, one native dispatch matrix containing four
+conditions, one native same-spelling macro test, and 24 public tests (runway
+12, owned references 7, browser compile/ESM consumer 1, lazy Reflect 4). The
+original reviewer Lykn all-nine driver passes 27 actual runtime assertions
+across unshadowed/module/parameter scopes and all three unfinished public
+fragment controls. This distinguishes future Symbol/Object/Promise support
+from the currently source-reachable number/array/error producer tests.
+Normalized-name collision, no-request output, sparse aliases/imports and
+directive placement retain their executed/source-inspected evidence.
+
+The fresh Lykn census confirms exactly 202 native emitter test sections:
+44 function-local raw-producer aliases, 125 remaining sections with direct
+public emit_form calls, and 33 other/helper sections. The remainder is 158;
+it is not a direct-public execution denominator. Correction03's additive
+closing-report clarification now says this accurately and leaves the old
+attestation historical. The six-path diff does not migrate additional tests.
+
+### Required gates, receipts and disposition
+
+Fresh full **make check passes**: build/lint/format and Rust suites, including
+1,176 language units, corpus **1,513 passed across 67 steps / 0 failed**, and
+docs **482 passed / 0 failed**, once through the standard combined gate.
+Committed-HEAD cited paths pass: 64 documents and 601 historical citations
+accepted. Browser gzip is **42,223 bytes**, baseline 27,630, delta +14,593,
+below the 80 KiB budget. Existing astring condition warnings and registry
+metadata output remain in the raw size log; no dependency changed.
+
+The built release, bin/lykn and retained standalone copy share SHA-256
+`5a226c7af5a79e91dc76464f02c7b40a24057bdbc4436b1bb0a5b7b988dcc476`.
+Rust/Cargo are 1.97.0; Deno 2.9.6. Every focused/gate process used explicit
+existing DENO_DIR plus owned npm/XDG/tmp. Useful
+[raw receipts](artifacts/increment-a/correction03/cdc/receipts-5caf3d87.tar.gz)
+and [navigation/digest](artifacts/increment-a/correction03/cdc/README.md)
+retain argv/cwd/environment, statuses, raw streams, generated probes, census,
+actual materialized comparisons and pins. The extra cold driver's first
+attempt used a strict-mode reserved binding and failed before any CLI child;
+both that source/output/failure and its probe-only rename/passing retry are
+preserved. No full gate failed or needed a retry. Prior failures and missing
+historical raw-log limits remain unaltered.
+
+No unresolved A software finding remains. Root may disposition LC-01 from this
+independent result; root owns ledger/parent status and planning Git/index.
+LC-02–LC-08, B/C, nominal/qualified activation, private purity and the later
+dependency-graph/removal proof remain open. The approved fixed-nine inline
+module body is provisional; sparse imports/aliases do not prove purity or
+zero ADT contribution. Accepted S02 I4, historical unregistered fallback,
+version-sentinel warm-cache and browser eval-based run/load limits are retained.
+The compileLykn evidence proves ESM compilation/consumer execution only.
+
+This reviewer returns exclusive task source/build and CDC record/evidence
+ownership to root. No implementation authority for B follows from this result.

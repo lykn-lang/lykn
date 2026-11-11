@@ -1,12 +1,12 @@
 # B1 — public per-call type context
 
-**Preparation only, not issued or accepted.** Root's bounded first B increment
+**Source-ready B1 recipe; software not implemented or accepted.** Root's bounded first B increment
 removes the actual shared public type registry before qualified activation.
 All LC-02 obligations stay open: typed OwnerRef/CaseRef, lexical owners/aliases,
 forward references and nominal runtime are later B work. This does not reduce
 S03 scope or substitute a mutable field-name Map for the final typed design.
-Implement only after A is independently accepted and root issues a numbered
-prompt against that corrected pin.
+A is independently accepted at 5caf3d87. Execute only under root's numbered
+iteration04 assignment against that exact corrected pin.
 
 ## Source facts and applied guidance
 
@@ -81,6 +81,17 @@ entries as before. Current legacy declaration/constructor syntax and fallback
 semantics remain for this checkpoint; qualified B later removes that fallback.
 There is no persistent context to reset.
 
+**Explicit normalization selected by root:** the old never-reset module starts
+with an empty Map; only resetMacros seeds the prelude metadata. Ordinary
+registerSurfaceMacros does not. Seed each fresh unit consistently from the
+old explicit-reset baseline, matching the existing native analysis metadata.
+This deliberately removes reset-history-dependent extraction behavior; it is
+not byte-preservation of old cold positional fallback. Add a focused fresh-
+process cold control with a prelude-shaped object whose inserted decoy property
+precedes value: extraction must select its named value field. Keep this legacy
+checkpoint's tests in the later qualified migration census; they do not promise
+that plain tagged data will remain nominally accepted after B2.
+
 At each complete expand boundary create one context and one private environment
 for pass2. At each public expandExpr boundary independently create one context
 and copy its supplied binding Set. Internal expandAt recursion and child scopes
@@ -150,7 +161,8 @@ state isolation or rollback is promised here.
    Retain the pre-fix discriminating failure rather than a claim inferred only
    from source deletion or a factory-new-Map test.
 5. Copy changed canonical modules and the new module into the actual embedded
-   package. M6's seven-file union grows to eight with surface-type-context.js;
+   package. M6's seven-file union grows to nine: add both changed surface.js
+   and new surface-type-context.js;
    retain config/lock, cold copied CLI and no-canonical-fallback assertions.
    Exercise per-call isolation through the materialized lang/ mapping as well
    as canonical source, and browser compile returning ESM text. Do not confuse
@@ -165,3 +177,34 @@ is independently checked as a partial LC-02 foundation; it cannot close LC-02
 or S03, and it chooses no optimizer layout. Exact source pin, test homes,
 source-role preservation and final author readiness are required before root
 issues implementation.
+
+## Bounded preparation review and package wiring
+
+Sol's separate immutable-source review found no fundamental scope/re-entry
+blocker and supplied the following corrections, adopted by root before issue:
+
+- The M6 union is nine, including changed surface.js as well as the new module.
+- Fresh seeding intentionally normalizes never-reset cold behavior; the
+  explicit disposition and ordered-object control above are binding.
+- Failed-compilation leak probes must fail in later Pass 2 after type emission,
+  such as a later malformed not form. An early reserved-name, import/Pass-0 or
+  macro-registration/Pass-1 failure does not prove the registry was populated.
+- Preserve the existing direct non-metadata Not emitter test at
+  dd-37-classifier-pilot.test.js: it passes only sym/array helpers and needs no
+  type context. Do not introduce a new error on that unrelated path.
+
+| Actual packaging route at 16dcd64f | Wiring for the new private module |
+| --- | --- |
+| embedded.rs recursively includes the crate-owned embedded directory | Add the byte-identical embedded copy |
+| CLI build/dist recursively copies .js files | Existing recursive route includes it |
+| npm dist file list includes *.js | Existing pattern includes it |
+| JSR deno.json exports explicit public entrypoints | Add no public entrypoint; retain it as a local compiler dependency |
+| browser bundle resolver follows relative dependencies | Use the existing relative import route |
+| M6 comparison list is explicit | Expand the actual union to nine files |
+
+Root verified the accepted A pin 5caf3d87 and the exact relevant JS delta from
+16: only the implicit-return branch changed, leaving this caller map valid.
+Final separate Sol preparation review supports iteration04 after the nine-file,
+cold-normalization, late-failure and context-free-helper clarifications.
+No software criterion follows from this readiness review; source authority is
+the issued numbered prompt. Typed/nominal B/C obligations remain open.

@@ -1,0 +1,17 @@
+Check test/forms/language-surface-runway.test.js
+running 12 tests from ./test/forms/language-surface-runway.test.js
+language surface runway: grouped bind emits sequential constants ... ok (3ms)
+language surface runway: cond expression emits valid value JS ... ok (888µs)
+language surface runway: cond expression without else rejects ... ok (515µs)
+language surface runway: exports emits named export list ... ok (442µs)
+language surface runway: multi-clause func rejects same typed overlap ... ok (1ms)
+language surface runway: multi-clause func rejects :any overlap ... ok (177µs)
+language surface runway: multi-clause func rejects destructured overlap ... ok (235µs)
+language surface runway: multi-clause funcs return their last body value ... ok (22ms)
+language surface runway: strict public compiler runs recursive ADT patterns ... ok (28ms)
+language surface runway: private fields preserve same-named user macros ... ok (16ms)
+language surface runway: public expandExpr finalizes private pattern fields ... ok (15ms)
+language surface runway: unregistered ADTs retain positional fallback ... ok (13ms)
+
+ok | 12 passed | 0 failed (107ms)
+

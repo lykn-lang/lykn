@@ -1,0 +1,9 @@
+running 5 tests from ./test/forms/embedded-adt-pattern.test.js
+embedded public compiler handles recursive patterns and zero variants ... ok (41ms)
+embedded public compiler preserves private-name macro hygiene ... ok (17ms)
+embedded public compiler owns shadowed single-clause guard intrinsics ... ok (16ms)
+embedded public compiler dispatches multi-clause with module Array shadow ... ok (16ms)
+embedded public compiler dispatches multi-clause with parameter Array shadow ... ok (14ms)
+
+ok | 5 passed | 0 failed (107ms)
+

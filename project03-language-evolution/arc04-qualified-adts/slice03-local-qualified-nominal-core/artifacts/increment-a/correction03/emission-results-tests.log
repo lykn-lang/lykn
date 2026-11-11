@@ -1,0 +1,16 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.95s
+     Running tests/emission_results.rs (target/debug/deps/emission_results-2e81a494c1439a4b)
+
+running 8 tests
+test checked_emission_boundaries_reject_value_if_without_else ... ok
+test nested_diagnostic_keeps_duplicate_binding_suggestion ... ok
+test valid_empty_and_literal_emission_remain_checked_successes ... ok
+test checked_form_failure_restores_modes_and_clears_error_for_reuse ... ok
+test nested_classification_failure_preserves_source_diagnostic ... ok
+test checked_emission_reports_assign_and_returns_mismatch ... ok
+test public_multi_clause_form_boundary_anchors_array_dispatch_to_parsed_parameter ... ok
+test public_form_boundary_rejects_owned_references_but_whole_emission_lowers_them ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

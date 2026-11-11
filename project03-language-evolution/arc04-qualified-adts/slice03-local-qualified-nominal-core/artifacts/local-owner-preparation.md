@@ -273,3 +273,31 @@ Root must inspect the corrected accepted A candidate, finish the concrete
 native/public plan/metadata types and lifecycle, and obtain the separate
 readiness review before issue. The earlier macro-phase proposal must not be
 implemented from this historical memo.
+
+## IC-01 — reserved-binding carryover for namespace validation
+
+Open input to B2's runtime-binding/identifier validation, distinct from the
+accepted A host prerequisite and B1's per-call state repair. During independent
+A verification, normal surface compilation of the cold-driver Lykn source at
+5caf3d87 exited zero but emitted `const package = ...`; Deno then rejected the
+strict-mode reserved identifier. The source binding was line 6:
+
+```lykn
+(bind package (+ cache "/lykn/embedded/0.6.0-compiler-split/packages/lang"))
+```
+
+Existing actual command was `bin/lykn compile <cold-cli.lykn> -o <cold-cli.js>`,
+with no --no-strict or kernel escape. The accepted compiler binary was SHA-256
+5a226c7af5a79e91dc76464f02c7b40a24057bdbc4436b1bb0a5b7b988dcc476.
+The [independent archive](increment-a/correction03/cdc/receipts-5caf3d87.tar.gz)
+retains cold-cli-first.lykn/js, receipts/cold-driver-compile and
+receipts/cold-cli. The probe-only rename allowed the verification driver to
+continue; it does not fix or dismiss the compiler's validation gap.
+
+Literal `(bind package 1)` and the public compiler route have not been
+separately executed. Root cause may involve the reserved set or traversal;
+neither is established by this observation. B2 must reproduce/resolve the
+relevant binding-path gap before its namespace/identifier claims close, or
+record an explicit owning follow-up. Keep valid property/data keys distinct
+from lexical bindings; this observation does not justify banning a payload or
+namespace member named package. No new source repair was made during review.

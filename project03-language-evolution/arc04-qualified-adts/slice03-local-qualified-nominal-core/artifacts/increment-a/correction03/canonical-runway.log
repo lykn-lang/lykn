@@ -1,0 +1,58 @@
+Check test/forms/language-surface-runway.test.js
+running 12 tests from ./test/forms/language-surface-runway.test.js
+language surface runway: grouped bind emits sequential constants ... ok (3ms)
+language surface runway: cond expression emits valid value JS ... ok (888µs)
+language surface runway: cond expression without else rejects ... ok (523µs)
+language surface runway: exports emits named export list ... ok (442µs)
+language surface runway: multi-clause func rejects same typed overlap ... ok (1ms)
+language surface runway: multi-clause func rejects :any overlap ... ok (145µs)
+language surface runway: multi-clause func rejects destructured overlap ... ok (222µs)
+language surface runway: multi-clause funcs return their last body value ... FAILED (4ms)
+language surface runway: strict public compiler runs recursive ADT patterns ... FAILED (12ms)
+language surface runway: private fields preserve same-named user macros ... FAILED (2ms)
+language surface runway: public expandExpr finalizes private pattern fields ... FAILED (650µs)
+language surface runway: unregistered ADTs retain positional fallback ... FAILED (435µs)
+
+ ERRORS 
+
+language surface runway: multi-clause funcs return their last body value => ./test/forms/language-surface-runway.test.js:97:6
+error: NotFound: No such file or directory (os error 2): tmpdir
+  const directory = await Deno.makeTempDir({ prefix: "lykn-multi-clause-returns-" });
+                    ^
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/language-surface-runway.test.js:138:21
+
+language surface runway: strict public compiler runs recursive ADT patterns => ./test/forms/language-surface-runway.test.js:159:6
+error: NotFound: No such file or directory (os error 2): tmpdir
+  const directory = await Deno.makeTempDir({ prefix: "lykn-public-adt-pattern-" });
+                    ^
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/language-surface-runway.test.js:164:21
+
+language surface runway: private fields preserve same-named user macros => ./test/forms/language-surface-runway.test.js:184:6
+error: NotFound: No such file or directory (os error 2): tmpdir
+  const directory = await Deno.makeTempDir({ prefix: "lykn-public-adt-hygiene-" });
+                    ^
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/language-surface-runway.test.js:189:21
+
+language surface runway: public expandExpr finalizes private pattern fields => ./test/forms/language-surface-runway.test.js:209:6
+error: NotFound: No such file or directory (os error 2): tmpdir
+  const directory = await Deno.makeTempDir({ prefix: "lykn-expand-expr-adt-" });
+                    ^
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/language-surface-runway.test.js:223:21
+
+language surface runway: unregistered ADTs retain positional fallback => ./test/forms/language-surface-runway.test.js:240:6
+error: NotFound: No such file or directory (os error 2): tmpdir
+  const directory = await Deno.makeTempDir({ prefix: "lykn-legacy-adt-" });
+                    ^
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/language-surface-runway.test.js:246:21
+
+ FAILURES 
+
+language surface runway: multi-clause funcs return their last body value => ./test/forms/language-surface-runway.test.js:97:6
+language surface runway: strict public compiler runs recursive ADT patterns => ./test/forms/language-surface-runway.test.js:159:6
+language surface runway: private fields preserve same-named user macros => ./test/forms/language-surface-runway.test.js:184:6
+language surface runway: public expandExpr finalizes private pattern fields => ./test/forms/language-surface-runway.test.js:209:6
+language surface runway: unregistered ADTs retain positional fallback => ./test/forms/language-surface-runway.test.js:240:6
+
+FAILED | 7 passed | 5 failed (30ms)
+
+error: Test failed
