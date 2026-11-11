@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.8"
+version: "1.9"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -222,7 +222,7 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration03.md | 2026-11-11 | iteration02 | Public multi-clause implicit-return correction | Accepted5caf3d87; LC-01 done |
 | cc-prompt-iteration04.md | 2026-11-11 | iteration03 | B1 per-call metadata isolation | Accepted3f197340 as partial LC-02 only |
 | cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
-| cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | Active; independent software review pending |
+| cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | Returned for independent review at5bdbfe3c/treee0a95d74 |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -234,3 +234,18 @@ block and issues the three-token binding/reference rename to public-user through
 iteration06, preserving data/output/teaching and all correctness gates. This is
 the first IC-01 refinement; it does not reopen A/B1 or authorize general docs
 work. The broader S06/S07 guide/book obligations remain intact.
+
+CC's clean candidate is5bdbfe3c27c58bdcbf93471d1c469c53ef2eaabe, tree
+e0a95d7452f3a33529fb7bd7a75ab46289d7349e. Root verified the exact18-path
+scope, contiguous trailers and clean source pin, read the CC receipt index and
+transferred exclusive source/build execution to separate Sol for independent
+software verification. CC attests fresh full1530/482, focused14/29 and actual
+cold M6 eleven comparisons/22cases, size43625 and committed citations64/601;
+these do not close IC-01 pending that review. Current iteration06 is returned
+for review, not authority for more source edits. Root owns planning Git/index.
+
+The raw writer/validator kernel lambda representation is distinct from the
+existing public escape whitelist: kernel:lambda is not accepted by that
+whitelist. CC retained the unsupported fixture attempt and uses direct
+validator/resolver checks for the internal representation. No new lambda
+source syntax is introduced or claimed. Review must judge that actual boundary.

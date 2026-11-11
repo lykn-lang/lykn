@@ -123,3 +123,20 @@ LC-01 remains done; LC-02–08 and S03 remain open. No typed owner, nominal,
 purity, declaration or final migration acceptance follows. IC-01's bounded
 binding-legality design is the next prerequisite preparation; it has not yet
 been issued for source implementation.
+
+## IC-01 — emitted-binding legality (CC proposed-done)
+
+**S03 and LC-02–08 remain open; IC-01 awaits separate Sol software verification.** The source candidate is committed on `codex/qualified-adt-core` at `5bdbfe3c27c58bdcbf93471d1c469c53ef2eaabe`, tree `e0a95d7452f3a33529fb7bd7a75ab46289d7349e`; the source worktree was clean at handoff. The bounded repair validates actual binding occurrences according to executable syntax roles and lexical scope, compares DD-49 emitted names against the finite JavaScript reserved table, distinguishes strict `eval`/`arguments` binding errors from labels, and extracts the unchanged converter into the dependency-free `identifier.js` leaf. Public checks validate actual final expansion and `expandExpr` input/result with an optional incoming Set. Native strict checking shares `validate_compile_forms`. Kernel function/lambda/arrow inner scopes are corrected without widening the legacy aggregate class adapter; validation gives source function clauses and class members their own scopes. The guide change is only the `public` → `public-user` binding/reference rename in the dissoc example, with data and output unchanged.
+
+The immutable baseline package and normalized-name negative witnesses are retained under [`artifacts/increment-ic01/cc/`](artifacts/increment-ic01/cc/README.md). The first iteration05 fresh full gate reported 481 passed/1 failed in docs because that guide example bound the now-reserved `public`; iteration06 fixed only that sample and reran the full gate. The final `make check` passed product corpus 1530/0 across 67 steps and docs 482/0 once. M6's cold copied CLI/materialized package route compared all eleven module files and ran 22 public cases (the 11 retained plus 11 IC-01 cases). Final bundle size was 43,625 gzip bytes, +15,995 over the 27,630-byte baseline and within 80 KiB; the log retains existing `astring` package-condition warnings. Post-commit cited paths passed for 64 documents with 601 historical citations accepted.
+
+Focused native binding tests passed 29/29; kernel-lambda resolver scope 1/1; focused public/parity tests 14/14; native compile/check/stripped, macro output and ESM runtime controls passed. The native positive ESM witness prints `object` for `(obj :const eval)` and `function` for the bound `bind` call with global `eval`. The complete caller map, role contract readback, launch conditions, denominators, M6 comparisons, baseline evidence and scope/API limitations are indexed in [`artifacts/increment-ic01/cc/README.md`](artifacts/increment-ic01/cc/README.md). Public incoming-Set API and emitted-name diagnostics are S06 inputs; existing eval-based browser run/load limits and source Func/class aggregate B2 scope carryovers remain explicit. No LC row closes, no qualified nominal semantics are claimed, and release integration/push/publication did not occur. Root owns planning staging/index and acceptance; source/build ownership is returned for separate Sol review.
+
+Root checked the exact candidate/tree/clean state and18-path scope and handed
+exclusive source/build execution to Sol. IC-01 remains open during independent
+review. For caller-map precision, check_strict previously duplicated the other
+validation groups while omitting the reserved-name group; the shared helper now
+supplies that missing check and retains compile's diagnostic priority. The
+internal kernel lambda checks do not claim a new public kernel:lambda escape,
+which the existing whitelist does not accept. Original candidate/attempt
+records keep their original evidentiary strength and scope.

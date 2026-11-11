@@ -1,0 +1,18 @@
+running 1 test from ./test/forms/reserved-binding-output.test.js
+emitted reserved bindings reject in public compile and expandExpr ... FAILED (1ms)
+
+ ERRORS 
+
+emitted reserved bindings reject in public compile and expandExpr => ./test/forms/reserved-binding-output.test.js:27:6
+error: AssertionError: Expected function to throw.
+    throw new AssertionError(msg);
+          ^
+    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/reserved-binding-output.test.js:30:3
+
+ FAILURES 
+
+emitted reserved bindings reject in public compile and expandExpr => ./test/forms/reserved-binding-output.test.js:27:6
+
+FAILED | 0 passed | 1 failed | 6 filtered out (4ms)
+

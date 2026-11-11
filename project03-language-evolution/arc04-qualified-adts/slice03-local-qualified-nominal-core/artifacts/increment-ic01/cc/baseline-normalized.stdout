@@ -1,0 +1,18 @@
+running 1 test from ./test/forms/reserved-binding-output.test.js
+normalized DD-49 output is checked as the emitted binding ... FAILED (3ms)
+
+ ERRORS 
+
+normalized DD-49 output is checked as the emitted binding => ./test/forms/reserved-binding-output.test.js:40:6
+error: AssertionError: Expected function to throw.
+    throw new AssertionError(msg);
+          ^
+    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/reserved-binding-output.test.js:41:3
+
+ FAILURES 
+
+normalized DD-49 output is checked as the emitted binding => ./test/forms/reserved-binding-output.test.js:40:6
+
+FAILED | 0 passed | 1 failed | 9 filtered out (5ms)
+
