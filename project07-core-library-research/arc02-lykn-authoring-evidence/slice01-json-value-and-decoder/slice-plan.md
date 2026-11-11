@@ -54,3 +54,21 @@ The initial capture is `de33d6bf`. Current assignment
 completes the matrix. The initial reference receipt reports an incomplete
 read of guide 09. Preserve that deviation in the initial condition and
 complete the reading for the correction condition.
+
+## Permissions restart checkpoint
+
+At the operator's request, both contributors stopped during intake for the
+evaluation stage. Neither ran the original decoder, started the extension,
+nor changed planning during that stage. All five JV rows stay open.
+The first answer and source are frozen in `de33d6bf`; no fresh authoring
+run is needed. Resume the already issued iteration01, then independently
+review the original and extended evidence under the recorded model settings.
+If a contributor context is unavailable after restart, re-read the exact
+assignment and relevant references in its replacement before execution.
+
+Before dispatch, recheck the planning and read-only source/CLI/Deno/book
+pins. The coordinator independently checked the public fixture setup in
+owned scratch using the pinned packages/lang tree, cached-only/frozen
+execution and a read grant scoped to the driver input. It reproduced the
+old preflight JS and stdout byte-for-byte. This was a prerequisite check;
+the AT-02 original and all extension runs remain pending.
