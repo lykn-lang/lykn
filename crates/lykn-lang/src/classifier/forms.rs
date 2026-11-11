@@ -2184,6 +2184,7 @@ fn classify_pattern_captured<'tree>(
         }
         SExpr::Number { .. }
         | SExpr::String { .. }
+        | SExpr::Null { .. }
         | SExpr::Keyword { .. }
         | SExpr::Bool { .. } => Ok(Pattern::Literal(expr.clone())),
         SExpr::List { values, span } if !values.is_empty() => {
@@ -4500,8 +4501,7 @@ mod tests {
     fn test_classify_pattern_null_sexpr() {
         let expr = SExpr::Null { span: s() };
         let pat = classify_pattern(&expr);
-        assert!(pat.is_err());
-        assert!(pat.unwrap_err().message.contains("invalid pattern"));
+        assert!(matches!(pat, Ok(Pattern::Literal(SExpr::Null { .. }))));
     }
 
     // ---------------------------------------------------------------

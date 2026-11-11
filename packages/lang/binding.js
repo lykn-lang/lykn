@@ -12,6 +12,7 @@
 // *identifies* positions — it changes no expansion behavior (that is slice05).
 
 import { RESERVED_WORDS } from "./reserved-words.js";
+import { isCompilerPrivateAtom } from "./compiler-private-atoms.js";
 
 /** @typedef {'param'|'bind'|'loop-binding'|'class-method-param'} BindingKind */
 /**
@@ -423,6 +424,7 @@ function matchClauseNames(args) {
  */
 function matchPatternNames(pat) {
   if (pat?.type === "atom") {
+    if (isCompilerPrivateAtom(pat)) return [];
     const v = pat.value;
     if (
       v === "_" || v === "true" || v === "false" || v === "null" ||
@@ -458,6 +460,7 @@ export function bindingNamesInPattern(pat, kind = "bind") {
 
 function patternNames(pat, kind) {
   if (pat?.type === "atom") {
+    if (isCompilerPrivateAtom(pat)) return [];
     return pat.value === "_" ? [] : [{ name: pat.value, kind, node: pat }];
   }
   if (pat?.type !== "list") return [];

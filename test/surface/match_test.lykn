@@ -37,9 +37,9 @@
     result
     (compile
       "\n    (type Option (Some :any value) None)\n    (match opt\n      ((Some v) v)\n      (None 0))"))
-  (includes result ".tag === \"Some\"")
-  (includes result ".tag === \"None\"")
-  (includes result ".value"))
+  (includes result "[\"tag\"] === \"Some\"")
+  (includes result "[\"tag\"] === \"None\"")
+  (includes result "[\"value\"]"))
 
 (test
   "match: zero-field ADT constructor"
@@ -47,7 +47,7 @@
     result
     (compile
       "\n    (type Option (Some :any value) None)\n    (match opt\n      ((Some v) (use v))\n      (None (default-val)))"))
-  (includes result ".tag === \"None\""))
+  (includes result "[\"tag\"] === \"None\""))
 
 (test
   "match: structural obj pattern"
@@ -58,7 +58,8 @@
   (includes result "typeof")
   (includes result "\"ok\" in")
   (includes result "\"data\" in")
-  (includes result ".ok === true"))
+  (includes result "[\"ok\"]")
+  (includes result "=== true"))
 
 (test
   "match: guarded pattern"
@@ -66,7 +67,7 @@
     result
     (compile
       "\n    (type Option (Some :any value) None)\n    (match opt\n      ((Some v) :when (> v 0) (use-positive v))\n      ((Some v) (use-other v))\n      (None 0))"))
-  (includes result ".tag === \"Some\"")
+  (includes result "[\"tag\"] === \"Some\"")
   (includes result "> 0"))
 
 (test

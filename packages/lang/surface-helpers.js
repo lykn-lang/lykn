@@ -4,6 +4,7 @@
 
 import {
   array,
+  compilerPrivateAtom,
   formatSExpr,
   gensym,
   isArray,
@@ -344,211 +345,108 @@ export function paramTypeChecks(p, funcName) {
  * bindings are (const ...) forms.
  */
 export function compilePattern(pattern, targetSym) {
-  // Wildcard
-  if (pattern.type === "atom" && pattern.value === "_") {
-    return { checks: [], bindings: [] };
-  }
-
-  // Literal: number
-  if (pattern.type === "number") {
-    return {
-      checks: [array(sym("==="), targetSym, pattern)],
-      bindings: [],
-    };
-  }
-
-  // Literal: string
-  if (pattern.type === "string") {
-    return {
-      checks: [array(sym("==="), targetSym, pattern)],
-      bindings: [],
-    };
-  }
-
-  // Literal: keyword → string comparison
-  if (pattern.type === "keyword") {
-    return {
-      checks: [
-        array(sym("==="), targetSym, { type: "string", value: pattern.value }),
-      ],
-      bindings: [],
-    };
-  }
-
-  // Literal atoms: true, false, null, undefined
-  if (
-    pattern.type === "atom" &&
-    (pattern.value === "true" ||
-      pattern.value === "false" ||
-      pattern.value === "null" ||
-      pattern.value === "undefined")
-  ) {
-    return {
-      checks: [array(sym("==="), targetSym, pattern)],
-      bindings: [],
-    };
-  }
-
-  // Zero-field ADT constructor (PascalCase bare atom)
-  if (pattern.type === "atom" && isPascalCase(pattern.value)) {
-    return {
-      checks: [
-        array(sym("==="), sym(`${targetSym.value}:tag`), {
-          type: "string",
-          value: pattern.value,
-        }),
-      ],
-      bindings: [],
-    };
-  }
-
-  // Simple binding (lowercase bare atom, not wildcard)
-  if (pattern.type === "atom") {
-    return {
-      checks: [],
-      bindings: [array(sym("const"), pattern, targetSym)],
-    };
-  }
-
-  // List patterns
-  if (pattern.type === "list" && pattern.values.length > 0) {
-    const head = pattern.values[0];
-
-    // Structural obj pattern: (obj :key binding :key binding ...)
-    if (head.type === "atom" && head.value === "obj") {
-      const checks = [
-        array(sym("==="), array(sym("typeof"), targetSym), {
-          type: "string",
-          value: "object",
-        }),
-        array(sym("!=="), targetSym, sym("null")),
-      ];
-      const bindings = [];
-      const pairs = pattern.values.slice(1);
-      for (let i = 0; i < pairs.length; i += 2) {
-        const key = pairs[i];
-        const binding = pairs[i + 1];
-        if (!isKeyword(key)) {
-          throw new Error(
-            `match obj pattern: expected keyword, got ${key?.type}`,
-          );
-        }
-        const keyStr = { type: "string", value: key.value };
-        checks.push(array(sym("in"), keyStr, targetSym));
-        // If binding is a literal, add equality check instead of binding
-        if (
-          binding.type === "number" ||
-          binding.type === "string" ||
-          (binding.type === "atom" &&
-            (binding.value === "true" ||
-              binding.value === "false" ||
-              binding.value === "null"))
-        ) {
-          checks.push(
-            array(sym("==="), sym(`${targetSym.value}:${key.value}`), binding),
-          );
-        } else if (binding.type === "atom" && binding.value !== "_") {
-          bindings.push(
-            array(
-              sym("const"),
-              binding,
-              sym(`${targetSym.value}:${key.value}`),
-            ),
-          );
-        }
-        // _ in obj pattern — just check key exists, no binding
-      }
-      return { checks, bindings };
+  const declarations = [];
+  const checks = [];
+  const bindings = [];
+  const member = (target, key) => kernelArray(sym("get"), target,
+    { type: "string", value: toJsIdentifier(key) });
+  const capture = (target, key) => {
+    const identity = {};
+    const temp = compilerPrivateAtom(identity, "patternField");
+    declarations.push(kernelArray(sym("let"), compilerPrivateAtom(identity, "patternField")));
+    checks.push(kernelArray(sym("seq"), kernelArray(sym("="), temp,
+      member(target, key)), sym("true")));
+    return temp;
+  };
+  const literal = (node) => node.type === "number" || node.type === "string" || node.type === "null" ||
+    node.type === "keyword" || (node.type === "atom" &&
+      ["true", "false", "null", "undefined"].includes(node.value));
+  const visit = (node, target) => {
+    if (node.type === "atom" && node.value === "_") return;
+    if (literal(node)) {
+      const value = node.type === "keyword" ? { type: "string", value: node.value } : node;
+      checks.push(array(sym("==="), target, value));
+      return;
     }
-
-    // ADT constructor pattern: (ConstructorName binding1 binding2 ...)
+    if (node.type === "atom" && isPascalCase(node.value)) {
+      checks.push(array(sym("!="), target, sym("null")));
+      checks.push(array(sym("==="), member(target, "tag"), { type: "string", value: node.value }));
+      return;
+    }
+    if (node.type === "atom") {
+      bindings.push(array(sym("const"), node, target));
+      return;
+    }
+    if (node.type !== "list" || !node.values.length) throw new Error(`match: unrecognized pattern: ${formatSExpr(node)}`);
+    const head = node.values[0];
+    if (head.type === "atom" && head.value === "obj") {
+      checks.push(array(sym("==="), array(sym("typeof"), target), { type: "string", value: "object" }));
+      checks.push(array(sym("!=="), target, sym("null")));
+      for (let i = 1; i < node.values.length; i += 2) {
+        const key = node.values[i], child = node.values[i + 1];
+        if (!isKeyword(key) || !child) throw new Error(`match obj pattern: expected keyword/value pair`);
+        checks.push(array(sym("in"), { type: "string", value: key.value }, target));
+        if (child.type === "atom" && child.value === "_") continue;
+        const cached = capture(target, key.value);
+        visit(child, cached);
+      }
+      return;
+    }
     if (head.type === "atom" && isPascalCase(head.value)) {
       const ctorName = head.value;
-      const fieldNames = typeRegistry.get(ctorName);
-      const patternBindings = pattern.values.slice(1);
-
-      const checks = [
-        array(sym("==="), sym(`${targetSym.value}:tag`), {
-          type: "string",
-          value: ctorName,
-        }),
-      ];
-      const bindings = [];
-
-      if (fieldNames) {
-        // Type registry available — use named field access
-        for (let i = 0; i < patternBindings.length; i++) {
-          const fieldName = fieldNames[i];
-          if (!fieldName) break;
-          const binding = patternBindings[i];
-          const fieldAccess = sym(`${targetSym.value}:${fieldName}`);
-
-          if (binding.type === "atom" && binding.value === "_") {
-            // Wildcard — no binding
-          } else if (
-            binding.type === "list" &&
-            binding.values.length > 0 &&
-            isPascalCase(binding.values[0].value)
-          ) {
-            // Nested ADT pattern
-            const nestedTarget = gensym("t");
-            bindings.push(array(sym("const"), nestedTarget, fieldAccess));
-            const nested = compilePattern(binding, nestedTarget);
-            checks.push(...nested.checks);
-            bindings.push(...nested.bindings);
-          } else if (binding.type === "atom") {
-            bindings.push(array(sym("const"), binding, fieldAccess));
-          } else {
-            // Literal in pattern position — equality check
-            checks.push(array(sym("==="), fieldAccess, binding));
-          }
+      const fields = typeRegistry.get(ctorName);
+      const children = node.values.slice(1);
+      if (!fields) {
+        // Compatibility: unregistered constructors retain positional Object.values mapping.
+        checks.push(array(sym("!="), target, sym("null")));
+        checks.push(array(sym("==="), member(target, "tag"), { type: "string", value: ctorName }));
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i];
+          if (child.type === "atom" && child.value === "_") continue;
+          const identity = {};
+          const temp = compilerPrivateAtom(identity, "patternField");
+          declarations.push(kernelArray(sym("let"), compilerPrivateAtom(identity, "patternField")));
+          checks.push(kernelArray(sym("seq"), kernelArray(sym("="), temp,
+            array(sym("get"), array(sym("Object:values"), target), { type: "number", value: i + 1 })), sym("true")));
+          if (child.type === "atom" && !literal(child)) bindings.push(array(sym("const"), child, temp));
+          else if (child.type === "list") visit(child, temp);
+          else if (literal(child)) visit(child, temp);
         }
-      } else {
-        // No type registry — positional field access via Object.values
-        // This is a fallback; with type registry it shouldn't happen for well-typed code
-        for (let i = 0; i < patternBindings.length; i++) {
-          const binding = patternBindings[i];
-          const fieldAccess = array(
-            sym("get"),
-            array(sym("Object:values"), targetSym),
-            { type: "number", value: i + 1 },
-          ); // +1 to skip tag
-          if (binding.type === "atom" && binding.value !== "_") {
-            bindings.push(array(sym("const"), binding, fieldAccess));
-          }
-        }
+        return;
       }
-
-      return { checks, bindings };
+      checks.push(array(sym("!="), target, sym("null")));
+      checks.push(array(sym("==="), member(target, "tag"), { type: "string", value: ctorName }));
+      for (let i = 0; i < children.length && i < fields.length; i++) {
+        const child = children[i];
+        if (child.type === "atom" && child.value === "_") continue;
+        const cached = capture(target, fields[i]);
+        visit(child, cached);
+      }
+      return;
     }
-  }
-
-  throw new Error(`match: unrecognized pattern: ${formatSExpr(pattern)}`);
+    throw new Error(`match: unrecognized pattern: ${formatSExpr(node)}`);
+  };
+  visit(pattern, targetSym);
+  return { checks, bindings, declarations };
 }
 
 export function compileLetPattern(pattern, tempVar) {
-  if (
-    isArray(pattern) &&
-    pattern.values.length > 0 &&
-    pattern.values[0].type === "atom" &&
-    isPascalCase(pattern.values[0].value)
-  ) {
-    const { checks, bindings } = compilePattern(pattern, tempVar);
-    return { condition: andChain(checks), bindings };
-  }
-  if (
-    isArray(pattern) &&
-    pattern.values.length > 0 &&
-    pattern.values[0].type === "atom" &&
-    pattern.values[0].value === "obj"
-  ) {
-    const { checks, bindings } = compilePattern(pattern, tempVar);
-    return { condition: andChain(checks), bindings };
-  }
-  if (pattern.type === "atom" && !isPascalCase(pattern.value)) {
+  const isLiteral = ["number", "string", "keyword", "null"].includes(pattern.type) ||
+    (pattern.type === "atom" && ["true", "false", "null", "undefined"].includes(pattern.value));
+  const isObject = isArray(pattern) && pattern.values[0]?.type === "atom" && pattern.values[0].value === "obj";
+  const isConstructor = isArray(pattern) && pattern.values[0]?.type === "atom" && isPascalCase(pattern.values[0].value);
+  if (pattern.type === "atom" && !isPascalCase(pattern.value) && !isObject && !isConstructor) {
+    if (pattern.value === "_") return { condition: sym("true"), bindings: [], declarations: [] };
+    if (["true", "false", "null", "undefined"].includes(pattern.value)) {
+      const plan = compilePattern(pattern, tempVar);
+      return { condition: andChain(plan.checks) ?? sym("true"), ...plan };
+    }
     const condition = kernelArray(sym("!="), tempVar, sym("null"));
-    const bindings = [array(sym("const"), pattern, tempVar)];
-    return { condition, bindings };
+    return { condition, bindings: [array(sym("const"), pattern, tempVar)], declarations: [] };
+  }
+  if (isLiteral || (pattern.type === "atom" && isPascalCase(pattern.value)) || isObject || isConstructor) {
+    const plan = compilePattern(pattern, tempVar);
+    return { condition: andChain(plan.checks) ?? sym("true"), ...plan };
   }
   return null;
 }

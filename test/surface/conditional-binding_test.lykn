@@ -25,8 +25,8 @@
     result
     (compile
       "(type Option (Some :any value) None)\n    (if-let ((Some v) (find-user id)) (greet v) (console:log \"none\"))"))
-  (includes result ".tag === \"Some\"")
-  (includes result ".value")
+  (includes result "[\"tag\"] === \"Some\"")
+  (includes result "[\"value\"]")
   (includes result "greet(v)"))
 
 (test
@@ -58,7 +58,7 @@
     result
     (compile
       "(type Option (Some :any value) None)\n    (when-let ((Some v) (find-user id)) (greet v))"))
-  (includes result ".tag === \"Some\"")
+  (includes result "[\"tag\"] === \"Some\"")
   (includes result "greet(v)"))
 
 (test

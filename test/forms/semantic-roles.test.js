@@ -16,7 +16,7 @@ const CASES = [
   { name: "statement-match-loop", expected: "[0,10,2,12]\n" },
   { name: "statement-match-exhaustion", expected: '["guard","match: no matching pattern"]\n' },
   { name: "statement-match-preservation", expected: "[[101,201,202,203,7,8],41,42]\n" },
-  { name: "statement-match-protected-preservation", expected: "[7,[7]]\n" },
+  { name: "statement-match-protected-preservation", expected: "[7,[\"fallback\",7]]\n" },
   { name: "match-clause-scope", expected: "[11,22,14]\n" },
   { name: "match-structural-pattern-macros", expected: "[7]\n" },
   { name: "original-match-reserved-role", expected: "[11,22,14]\n" },

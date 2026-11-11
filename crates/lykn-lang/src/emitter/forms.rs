@@ -4207,7 +4207,8 @@ fn emit_match_statement_inner(
     let mut terminal = false;
 
     for clause in clauses {
-        let (condition, bindings) = compile_pattern(&clause.pattern, &target_var, registry);
+        let plan = compile_pattern(&clause.pattern, &target_var, registry, ctx, &mut reserved);
+        statements.extend(plan.declarations.clone());
         let saved_body_ctx = ctx.expr_context;
         ctx.expr_context = ExprContext::Statement;
         let body = if let Some(destination) = direct_destination {
@@ -4218,7 +4219,7 @@ fn emit_match_statement_inner(
         ctx.expr_context = saved_body_ctx;
 
         let mut candidate_items = vec![atom("block")];
-        candidate_items.extend(bindings);
+        candidate_items.extend(plan.bindings);
 
         let selection = list(vec![atom("="), atom(&matched_var), bool_lit(true)]);
         let mut selected_items = vec![atom("block"), selection];
@@ -4243,7 +4244,7 @@ fn emit_match_statement_inner(
         let candidate = list(candidate_items);
 
         let unmatched = list(vec![atom("!"), atom(&matched_var)]);
-        let condition = if let Some(pattern_check) = condition {
+        let condition = if let Some(pattern_check) = pattern_condition(&plan.checks) {
             list(vec![atom("&&"), unmatched, pattern_check])
         } else {
             unmatched
@@ -4274,74 +4275,21 @@ fn emit_match_statement_inner(
     list(statements)
 }
 
-/// Emit a match using the pre-I2 statement algorithm inside protected bodies.
+/// Keep protected-body completion handling on the legacy route while sharing
+/// ordered candidate selection and recursive pattern plans with normal match.
 fn emit_match_statement_legacy(
     target: &SExpr,
     clauses: &[MatchClause],
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
-    let target_var = ctx.gensym.next("target");
-    let target_binding = list(vec![
-        atom("const"),
-        atom(&target_var),
-        emit_in_context(target, ExprContext::Value, ctx, registry),
-    ]);
+    emit_match_statement_inner(target, clauses, None, ctx, registry)
+}
 
-    let mut clause_data: Vec<(Option<SExpr>, SExpr)> = Vec::new();
-    let mut wildcard_block: Option<SExpr> = None;
-
-    for clause in clauses {
-        let (condition, bindings) = compile_pattern(&clause.pattern, &target_var, registry);
-        let saved_body_ctx = ctx.expr_context;
-        ctx.expr_context = ExprContext::Statement;
-        let clause_body = emit_body(&clause.body, ctx, registry);
-        ctx.expr_context = saved_body_ctx;
-
-        let mut block_items = vec![atom("block")];
-        block_items.extend(bindings);
-
-        if let Some(ref guard) = clause.guard {
-            let mut inner_block = vec![atom("block")];
-            inner_block.extend(clause_body);
-            let guard = emit_in_context(guard, ExprContext::Value, ctx, registry);
-            block_items.push(list(vec![atom("if"), guard, list(inner_block)]));
-        } else {
-            block_items.extend(clause_body);
-        }
-
-        let block = list(block_items);
-
-        if condition.is_some() {
-            clause_data.push((condition, block));
-        } else {
-            wildcard_block = Some(block);
-            break;
-        }
-    }
-
-    // Build the else-chain fallback
-    let fallback = wildcard_block.unwrap_or_else(|| {
-        list(vec![
-            atom("block"),
-            list(vec![
-                atom("throw"),
-                list(vec![
-                    atom("new"),
-                    atom("Error"),
-                    str_lit("match: no matching pattern"),
-                ]),
-            ]),
-        ])
-    });
-
-    // Build nested if/else from the end
-    let mut chain = fallback;
-    for (cond, block) in clause_data.into_iter().rev() {
-        chain = list(vec![atom("if"), cond.unwrap(), block, chain]);
-    }
-
-    list(vec![atom("block"), target_binding, chain])
+fn pattern_condition(checks: &[SExpr]) -> Option<SExpr> {
+    let mut checks = checks.iter().cloned();
+    let first = checks.next()?;
+    Some(checks.fold(first, |left, right| list(vec![atom("&&"), left, right])))
 }
 
 fn next_unreserved_gensym(
@@ -4453,7 +4401,18 @@ fn emit_match_iife(
         )
     };
 
-    let target_var = ctx.gensym.next("target");
+    let mut reserved = HashSet::new();
+    reserve_emitted_names(target, &mut reserved);
+    for clause in clauses {
+        reserve_pattern_names(&clause.pattern, &mut reserved);
+        if let Some(guard) = &clause.guard {
+            reserve_emitted_names(guard, &mut reserved);
+        }
+        for expr in &clause.body {
+            reserve_emitted_names(expr, &mut reserved);
+        }
+    }
+    let target_var = next_unreserved_gensym(ctx, "target", &mut reserved);
     let mut body = vec![
         atom("=>"),
         list(vec![]),
@@ -4463,7 +4422,8 @@ fn emit_match_iife(
     let mut has_wildcard = false;
 
     for clause in clauses {
-        let (condition, bindings) = compile_pattern(&clause.pattern, &target_var, registry);
+        let plan = compile_pattern(&clause.pattern, &target_var, registry, ctx, &mut reserved);
+        body.extend(plan.declarations.clone());
         // DD-50.7: match clause bodies are statement sequences
         let saved_body_ctx = ctx.expr_context;
         let saved_legacy_match = ctx.legacy_statement_match;
@@ -4474,7 +4434,7 @@ fn emit_match_iife(
         ctx.legacy_statement_match = saved_legacy_match;
 
         let mut block_items = vec![atom("block")];
-        block_items.extend(bindings);
+        block_items.extend(plan.bindings);
 
         if let Some(ref guard) = clause.guard {
             let mut inner_block = vec![atom("block")];
@@ -4497,7 +4457,7 @@ fn emit_match_iife(
             }
         }
 
-        if let Some(cond) = condition {
+        if let Some(cond) = pattern_condition(&plan.checks) {
             body.push(list(vec![atom("if"), cond, list(block_items)]));
         } else if clause.guard.is_some() {
             // A guarded wildcard is only a candidate. If it fails, continue
@@ -4542,93 +4502,96 @@ fn compile_pattern(
     pattern: &Pattern,
     target_var: &str,
     registry: &TypeRegistry,
-) -> (Option<SExpr>, Vec<SExpr>) {
+    ctx: &mut EmitterContext,
+    reserved: &mut HashSet<String>,
+) -> PatternPlan {
+    let mut plan = PatternPlan::default();
+    compile_pattern_node(pattern, target_var, registry, ctx, reserved, &mut plan);
+    plan
+}
+
+#[derive(Default)]
+struct PatternPlan {
+    declarations: Vec<SExpr>,
+    checks: Vec<SExpr>,
+    bindings: Vec<SExpr>,
+}
+
+fn compile_pattern_node(
+    pattern: &Pattern,
+    target: &str,
+    registry: &TypeRegistry,
+    ctx: &mut EmitterContext,
+    reserved: &mut HashSet<String>,
+    plan: &mut PatternPlan,
+) {
     match pattern {
-        Pattern::Wildcard(_) => (None, vec![]),
+        Pattern::Wildcard(_) => {}
         Pattern::Literal(expr) => {
-            let condition = list(vec![atom("==="), atom(target_var), expr.clone()]);
-            (Some(condition), vec![])
+            plan.checks
+                .push(list(vec![atom("==="), atom(target), expr.clone()]))
         }
         Pattern::Binding { name, .. } => {
-            let binding = list(vec![atom("const"), atom(name), atom(target_var)]);
-            (None, vec![binding])
+            plan.bindings
+                .push(list(vec![atom("const"), atom(name), atom(target)]))
         }
         Pattern::Constructor { name, bindings, .. } => {
-            // Check: (=== target:tag "Name")
-            let condition = list(vec![
+            plan.checks
+                .push(list(vec![atom("!="), atom(target), atom("null")]));
+            plan.checks.push(list(vec![
                 atom("==="),
-                atom(&format!("{target_var}:tag")),
+                atom(&format!("{target}:tag")),
                 str_lit(name),
-            ]);
-
-            // Bind fields using registry field names
-            let mut field_bindings = Vec::new();
-            if let Some(ctor_def) = registry.lookup_constructor(name) {
-                for (i, binding_pat) in bindings.iter().enumerate() {
-                    if i < ctor_def.fields.len() {
-                        let field_name = &ctor_def.fields[i].name;
-                        match binding_pat {
-                            Pattern::Binding {
-                                name: bind_name, ..
-                            } => {
-                                field_bindings.push(list(vec![
-                                    atom("const"),
-                                    atom(bind_name),
-                                    atom(&format!("{target_var}:{field_name}")),
-                                ]));
-                            }
-                            Pattern::Wildcard(_) => {
-                                // Skip binding for wildcards
-                            }
-                            _ => {
-                                // Nested patterns would need recursive compilation
-                                // For now, treat as binding
-                            }
+            ]));
+            if let Some(def) = registry.lookup_constructor(name) {
+                for (i, child) in bindings.iter().enumerate() {
+                    if let Some(field) = def.fields.get(i) {
+                        if matches!(child, Pattern::Wildcard(_)) {
+                            continue;
                         }
+                        let temp = next_unreserved_gensym(ctx, "pattern_field", reserved);
+                        plan.declarations.push(list(vec![atom("let"), atom(&temp)]));
+                        plan.checks.push(list(vec![
+                            atom("seq"),
+                            list(vec![
+                                atom("="),
+                                atom(&temp),
+                                atom(&format!("{target}:{}", field.name)),
+                            ]),
+                            bool_lit(true),
+                        ]));
+                        compile_pattern_node(child, &temp, registry, ctx, reserved, plan);
                     }
                 }
             }
-
-            (Some(condition), field_bindings)
         }
         Pattern::Obj { pairs, .. } => {
-            // Check: typeof/null/in checks for each key
-            let mut conditions = vec![
-                list(vec![
-                    atom("==="),
-                    list(vec![atom("typeof"), atom(target_var)]),
-                    str_lit("object"),
-                ]),
-                list(vec![atom("!=="), atom(target_var), atom("null")]),
-            ];
-
-            let mut bindings = Vec::new();
-
-            for (key, pat) in pairs {
-                conditions.push(list(vec![atom("in"), str_lit(key), atom(target_var)]));
-
-                match pat {
-                    Pattern::Binding { name, .. } => {
-                        bindings.push(list(vec![
-                            atom("const"),
-                            atom(name),
-                            atom(&format!("{target_var}:{key}")),
-                        ]));
-                    }
-                    Pattern::Wildcard(_) => {}
-                    _ => {}
+            plan.checks.push(list(vec![
+                atom("==="),
+                list(vec![atom("typeof"), atom(target)]),
+                str_lit("object"),
+            ]));
+            plan.checks
+                .push(list(vec![atom("!=="), atom(target), atom("null")]));
+            for (key, child) in pairs {
+                plan.checks
+                    .push(list(vec![atom("in"), str_lit(key), atom(target)]));
+                if matches!(child, Pattern::Wildcard(_)) {
+                    continue;
                 }
+                let temp = next_unreserved_gensym(ctx, "pattern_field", reserved);
+                plan.declarations.push(list(vec![atom("let"), atom(&temp)]));
+                plan.checks.push(list(vec![
+                    atom("seq"),
+                    list(vec![
+                        atom("="),
+                        atom(&temp),
+                        atom(&format!("{target}:{key}")),
+                    ]),
+                    bool_lit(true),
+                ]));
+                compile_pattern_node(child, &temp, registry, ctx, reserved, plan);
             }
-
-            let condition = if conditions.len() == 1 {
-                conditions.into_iter().next().unwrap()
-            } else {
-                let mut and_expr = vec![atom("&&")];
-                and_expr.extend(conditions);
-                list(and_expr)
-            };
-
-            (Some(condition), bindings)
         }
     }
 }
@@ -4717,17 +4680,25 @@ fn emit_if_let_statement(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
-    let t = ctx.gensym.next("t");
+    let mut reserved = HashSet::new();
+    reserve_pattern_names(pattern, &mut reserved);
+    reserve_emitted_names(expr, &mut reserved);
+    reserve_emitted_names(then_body, &mut reserved);
+    if let Some(other) = else_body {
+        reserve_emitted_names(other, &mut reserved);
+    }
+    let t = next_unreserved_gensym(ctx, "t", &mut reserved);
     let binding = list(vec![
         atom("const"),
         atom(&t),
         emit_expr(expr, ctx, registry),
     ]);
 
-    let (condition, bindings) = compile_let_pattern(pattern, &t, registry);
+    let plan = compile_let_pattern(pattern, &t, registry, ctx, &mut reserved);
+    let condition = pattern_condition(&plan.checks).unwrap_or_else(|| bool_lit(true));
 
     let mut then_block = vec![atom("block")];
-    then_block.extend(bindings);
+    then_block.extend(plan.bindings);
     then_block.push(emit_expr(then_body, ctx, registry));
 
     let if_form = if let Some(else_expr) = else_body {
@@ -4737,7 +4708,10 @@ fn emit_if_let_statement(
         list(vec![atom("if"), condition, list(then_block)])
     };
 
-    list(vec![atom("block"), binding, if_form])
+    let mut outer = vec![atom("block"), binding];
+    outer.extend(plan.declarations);
+    outer.push(if_form);
+    list(outer)
 }
 
 /// Emit if-let as an IIFE (value position).
@@ -4754,6 +4728,13 @@ fn emit_if_let_iife(
     let body_has_await = contains_await(then_body) || else_body.is_some_and(contains_await);
 
     // Strategy 1: hoist expr if it contains await
+    let mut reserved = HashSet::new();
+    reserve_pattern_names(pattern, &mut reserved);
+    reserve_emitted_names(expr, &mut reserved);
+    reserve_emitted_names(then_body, &mut reserved);
+    if let Some(other) = else_body {
+        reserve_emitted_names(other, &mut reserved);
+    }
     let (hoist_stmt, init_expr) = if expr_has_await {
         let hoisted_var = ctx.gensym.next("await");
         let hoist = list(vec![
@@ -4766,17 +4747,18 @@ fn emit_if_let_iife(
         (None, emit_expr(expr, ctx, registry))
     };
 
-    let t = ctx.gensym.next("t");
+    let t = next_unreserved_gensym(ctx, "t", &mut reserved);
     let mut body = vec![
         atom("=>"),
         list(vec![]),
         list(vec![atom("const"), atom(&t), init_expr]),
     ];
 
-    let (condition, bindings) = compile_let_pattern(pattern, &t, registry);
+    let plan = compile_let_pattern(pattern, &t, registry, ctx, &mut reserved);
+    let condition = pattern_condition(&plan.checks).unwrap_or_else(|| bool_lit(true));
 
     let mut then_block = vec![atom("block")];
-    then_block.extend(bindings);
+    then_block.extend(plan.bindings);
     then_block.push(list(vec![
         atom("return"),
         emit_expr(then_body, ctx, registry),
@@ -4787,6 +4769,7 @@ fn emit_if_let_iife(
             atom("block"),
             list(vec![atom("return"), emit_expr(else_expr, ctx, registry)]),
         ]);
+        body.extend(plan.declarations);
         body.push(list(vec![
             atom("if"),
             condition,
@@ -4794,6 +4777,7 @@ fn emit_if_let_iife(
             else_block,
         ]));
     } else {
+        body.extend(plan.declarations);
         body.push(list(vec![atom("if"), condition, list(then_block)]));
     }
 
@@ -4831,28 +4815,34 @@ fn emit_when_let_statement(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
-    let t = ctx.gensym.next("t");
+    let mut reserved = HashSet::new();
+    reserve_pattern_names(pattern, &mut reserved);
+    reserve_emitted_names(expr, &mut reserved);
+    for expr in body_exprs {
+        reserve_emitted_names(expr, &mut reserved);
+    }
+    let t = next_unreserved_gensym(ctx, "t", &mut reserved);
     let binding = list(vec![
         atom("const"),
         atom(&t),
         emit_expr(expr, ctx, registry),
     ]);
 
-    let (condition, bindings) = compile_let_pattern(pattern, &t, registry);
+    let plan = compile_let_pattern(pattern, &t, registry, ctx, &mut reserved);
+    let condition = pattern_condition(&plan.checks).unwrap_or_else(|| bool_lit(true));
 
     let mut then_block = vec![atom("block")];
-    then_block.extend(bindings);
+    then_block.extend(plan.bindings);
     // DD-50.7: when-let body is a statement sequence
     let saved_body_ctx = ctx.expr_context;
     ctx.expr_context = ExprContext::Statement;
     then_block.extend(emit_body(body_exprs, ctx, registry));
     ctx.expr_context = saved_body_ctx;
 
-    list(vec![
-        atom("block"),
-        binding,
-        list(vec![atom("if"), condition, list(then_block)]),
-    ])
+    let mut outer = vec![atom("block"), binding];
+    outer.extend(plan.declarations);
+    outer.push(list(vec![atom("if"), condition, list(then_block)]));
+    list(outer)
 }
 
 /// Emit when-let as an IIFE (value position).
@@ -4866,10 +4856,16 @@ fn emit_when_let_iife(
     // Await detection
     let expr_has_await = contains_await(expr);
     let body_has_await = any_contains_await(body_exprs);
+    let mut reserved = HashSet::new();
+    reserve_pattern_names(pattern, &mut reserved);
+    reserve_emitted_names(expr, &mut reserved);
+    for expr in body_exprs {
+        reserve_emitted_names(expr, &mut reserved);
+    }
 
     // Strategy 1: hoist expr if it contains await
     let (hoist_stmt, init_expr) = if expr_has_await {
-        let hoisted_var = ctx.gensym.next("await");
+        let hoisted_var = next_unreserved_gensym(ctx, "await", &mut reserved);
         let hoist = list(vec![
             atom("const"),
             atom(&hoisted_var),
@@ -4880,17 +4876,18 @@ fn emit_when_let_iife(
         (None, emit_expr(expr, ctx, registry))
     };
 
-    let t = ctx.gensym.next("t");
+    let t = next_unreserved_gensym(ctx, "t", &mut reserved);
     let mut body = vec![
         atom("=>"),
         list(vec![]),
         list(vec![atom("const"), atom(&t), init_expr]),
     ];
 
-    let (condition, bindings) = compile_let_pattern(pattern, &t, registry);
+    let plan = compile_let_pattern(pattern, &t, registry, ctx, &mut reserved);
+    let condition = pattern_condition(&plan.checks).unwrap_or_else(|| bool_lit(true));
 
     let mut then_block = vec![atom("block")];
-    then_block.extend(bindings);
+    then_block.extend(plan.bindings);
 
     // DD-50.7: when-let body is a statement sequence
     let saved_body_ctx = ctx.expr_context;
@@ -4908,6 +4905,7 @@ fn emit_when_let_iife(
         }
     }
 
+    body.extend(plan.declarations);
     body.push(list(vec![atom("if"), condition, list(then_block)]));
 
     let iife = if body_has_await {
@@ -4931,86 +4929,16 @@ fn compile_let_pattern(
     pattern: &Pattern,
     target_var: &str,
     registry: &TypeRegistry,
-) -> (SExpr, Vec<SExpr>) {
-    match pattern {
-        Pattern::Constructor { name, bindings, .. } => {
-            // ADT pattern: tag check + field bindings
-            let condition = list(vec![
-                atom("==="),
-                atom(&format!("{target_var}:tag")),
-                str_lit(name),
-            ]);
-
-            let mut field_bindings = Vec::new();
-            if let Some(ctor_def) = registry.lookup_constructor(name) {
-                for (i, binding_pat) in bindings.iter().enumerate() {
-                    if i < ctor_def.fields.len() {
-                        let field_name = &ctor_def.fields[i].name;
-                        if let Pattern::Binding {
-                            name: bind_name, ..
-                        } = binding_pat
-                        {
-                            field_bindings.push(list(vec![
-                                atom("const"),
-                                atom(bind_name),
-                                atom(&format!("{target_var}:{field_name}")),
-                            ]));
-                        }
-                    }
-                }
-            }
-
-            (condition, field_bindings)
-        }
-        Pattern::Obj { pairs, .. } => {
-            // Object pattern: typeof/null/in checks
-            let mut conditions = vec![
-                list(vec![
-                    atom("==="),
-                    list(vec![atom("typeof"), atom(target_var)]),
-                    str_lit("object"),
-                ]),
-                list(vec![atom("!=="), atom(target_var), atom("null")]),
-            ];
-
-            let mut bindings = Vec::new();
-
-            for (key, pat) in pairs {
-                conditions.push(list(vec![atom("in"), str_lit(key), atom(target_var)]));
-                if let Pattern::Binding { name, .. } = pat {
-                    bindings.push(list(vec![
-                        atom("const"),
-                        atom(name),
-                        atom(&format!("{target_var}:{key}")),
-                    ]));
-                }
-            }
-
-            let condition = if conditions.len() == 1 {
-                conditions.into_iter().next().unwrap()
-            } else {
-                let mut and_expr = vec![atom("&&")];
-                and_expr.extend(conditions);
-                list(and_expr)
-            };
-
-            (condition, bindings)
-        }
-        Pattern::Binding { name, .. } => {
-            // Simple binding: (!= t null) check
-            let condition = list(vec![atom("!="), atom(target_var), atom("null")]);
-            let binding = list(vec![atom("const"), atom(name), atom(target_var)]);
-            (condition, vec![binding])
-        }
-        Pattern::Wildcard(_) => {
-            // Always true
-            (bool_lit(true), vec![])
-        }
-        Pattern::Literal(expr) => {
-            let condition = list(vec![atom("==="), atom(target_var), expr.clone()]);
-            (condition, vec![])
-        }
+    ctx: &mut EmitterContext,
+    reserved: &mut HashSet<String>,
+) -> PatternPlan {
+    let mut plan = PatternPlan::default();
+    if let Pattern::Binding { .. } = pattern {
+        plan.checks
+            .push(list(vec![atom("!="), atom(target_var), atom("null")]));
     }
+    compile_pattern_node(pattern, target_var, registry, ctx, reserved, &mut plan);
+    plan
 }
 
 // ---------------------------------------------------------------------------

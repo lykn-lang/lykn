@@ -65,7 +65,7 @@ const FIXTURES: &[Case] = &[
     },
     Case {
         name: "statement-match-protected-preservation",
-        expected: b"[7,[7]]\n",
+        expected: b"[7,[\"fallback\",7]]\n",
     },
     Case {
         name: "match-clause-scope",
@@ -182,6 +182,18 @@ const FIXTURES: &[Case] = &[
     Case {
         name: "pure-argument-spread",
         expected: b"[1,2,3]\n",
+    },
+    Case {
+        name: "seq-expression-contexts",
+        expected: b"[false,9,[7],11,[\"once\",\"argument\",\"initializer\"]]\n",
+    },
+    Case {
+        name: "adt-pattern-correctness",
+        expected: b"[7,\"outer\",\"inner\",\"null\",\"missing\",\"literal\",\"safe\",\"false\",\"null\",\"undefined\",9,false,0,\"\",4,6,\"selected\",[\"match: no matching pattern\"],true,true,\"list\",\"safe\",\"bare\",null,false,false,null,\"number\",\"safe\",\"string\",7,\"wildcard\",\"safe\",\"safe\",[\"outer.value\",\"inner.value\",\"wrong.inner.value\"],8,\"wildcard\",[\"object.child\"],[5]]\n",
+    },
+    Case {
+        name: "adt-pattern-macro-hygiene",
+        expected: b"[[[[90,91],5,42]],[[90,91],6,42],[[90,91],7,42],[[90,91],8,42],[[90,91],9,42]]\n",
     },
 ];
 
@@ -306,6 +318,10 @@ fn record_generated(name: &str, generated: Option<&[u8]>, dts: Option<&[u8]>) {
 }
 
 fn run_positive(case: &Case) {
+    run_positive_with_declarations(case, false);
+}
+
+fn run_positive_with_declarations(case: &Case, expect_declarations: bool) {
     let source_path = fixture_path(case.name);
     let source = fs::read(&source_path).expect("read frozen semantic-role source");
     let temp = TempDir::new().expect("create semantic-role output directory");
@@ -354,9 +370,10 @@ fn run_positive(case: &Case) {
         case.name,
         compile.stderr
     );
-    assert!(
-        dts.is_none(),
-        "{} unexpectedly generated declarations: {:?}",
+    assert_eq!(
+        dts.is_some(),
+        expect_declarations,
+        "{} declaration output disposition differs: {:?}",
         case.name,
         dts
     );
@@ -794,6 +811,21 @@ fn ordered_argument_spread_preserves_iteration_and_completion_order() {
 #[test]
 fn pure_argument_spread_preserves_the_ordinary_call_route() {
     run_positive(&FIXTURES[42]);
+}
+
+#[test]
+fn seq_expressions_keep_single_expression_boundaries() {
+    run_positive(&FIXTURES[43]);
+}
+
+#[test]
+fn recursive_adt_patterns_preserve_guards_reads_and_conditional_bindings() {
+    run_positive_with_declarations(&FIXTURES[44], true);
+}
+
+#[test]
+fn compiler_private_pattern_fields_do_not_shadow_user_macros() {
+    run_positive_with_declarations(&FIXTURES[45], true);
 }
 
 #[test]

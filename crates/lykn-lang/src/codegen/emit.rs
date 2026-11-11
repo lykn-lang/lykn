@@ -1097,12 +1097,18 @@ fn emit_method_call(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
 }
 
 fn emit_seq(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError> {
+    // A sequence is a comma expression, whose lowest precedence makes it
+    // unsafe as an ungrouped operand or inside comma-delimited contexts.
+    // Parenthesize it uniformly so calls, initializers, conditions and other
+    // consumers all observe one expression with the intended value.
+    w.write("(");
     for (i, arg) in args.iter().enumerate() {
         if i > 0 {
             w.write(", ");
         }
         emit_expr(w, arg, 0)?;
     }
+    w.write(")");
     Ok(())
 }
 
@@ -2181,7 +2187,36 @@ mod tests {
     #[test]
     fn test_seq() {
         let expr = list(vec![atom("seq"), atom("a"), atom("b"), atom("c")]);
-        assert_eq!(emit_to_string(&expr), "a, b, c");
+        assert_eq!(emit_to_string(&expr), "(a, b, c)");
+    }
+
+    #[test]
+    fn test_seq_is_one_call_argument() {
+        let expr = list(vec![
+            atom("Array:of"),
+            list(vec![atom("seq"), atom("a"), atom("b")]),
+        ]);
+        assert_eq!(emit_to_string(&expr), "Array.of((a, b))");
+    }
+
+    #[test]
+    fn test_seq_is_one_initializer_expression() {
+        let expr = list(vec![
+            atom("const"),
+            atom("value"),
+            list(vec![atom("seq"), atom("a"), atom("b")]),
+        ]);
+        assert_eq!(emit_to_string(&expr), "const value = (a, b);\n");
+    }
+
+    #[test]
+    fn test_seq_is_grouped_under_short_circuit_operator() {
+        let expr = list(vec![
+            atom("&&"),
+            atom("ready"),
+            list(vec![atom("seq"), atom("capture"), atom("true")]),
+        ]);
+        assert_eq!(emit_to_string(&expr), "ready && (capture, true)");
     }
 
     #[test]

@@ -15,6 +15,11 @@ import { markExpandedHostCall, materializeExpandedHostCalls } from './host-invoc
 import { moduleBindsReflect, validateProtectedHost } from './protected-host.js';
 import { isStatementOnlyForm } from './surface-helpers.js';
 import {
+  clearCompilerPrivateAtom,
+  compilerPrivateAtomInfo,
+  markCompilerPrivateAtom,
+} from './compiler-private-atoms.js';
+import {
   bindingScopePlan,
   bodyScopeNames,
   extendBindingEnv as extendEnv,
@@ -731,13 +736,17 @@ const dispatchTable = Object.assign(Object.create(null), {
 const EMPTY_ENV = new Set();
 const directResultBlocks = new WeakSet();
 const returnOperandValues = new WeakSet();
-const completionValueAtoms = new WeakMap();
-let completionValueAtomCount = 0;
+let compilerPrivateAtomCount = 0;
 
 function completionValueAtom(identity) {
-  const atom = sym('completionValue__private');
-  completionValueAtoms.set(atom, identity);
-  completionValueAtomCount++;
+  return compilerPrivateAtom(identity, 'completionValue');
+}
+
+/** Create a compiler-only identity atom finalized after macro expansion. */
+export function compilerPrivateAtom(identity, prefix = 'compilerPrivate') {
+  const atom = sym(`${prefix}__private`);
+  markCompilerPrivateAtom(atom, identity, prefix);
+  compilerPrivateAtomCount++;
   return atom;
 }
 
@@ -1079,7 +1088,7 @@ function emittedNames(nodes, reserved = new Set()) {
   const walk = (node) => {
     if (!node || typeof node !== "object") return;
     if (node.type === "atom") {
-      if (completionValueAtoms.has(node)) {
+      if (compilerPrivateAtomInfo(node) !== undefined) {
         return;
       }
       reserved.add(toJsIdentifier(node.value));
@@ -1091,24 +1100,26 @@ function emittedNames(nodes, reserved = new Set()) {
   return reserved;
 }
 
-function finalizeCompletionValueMarkers(forms) {
+function finalizeCompilerPrivateAtoms(forms) {
   const reserved = emittedNames(forms);
   const names = new Map();
   let next = 0;
   const rename = (node) => {
     if (!node || typeof node !== 'object') return;
     if (node.type === 'atom') {
-      const identity = completionValueAtoms.get(node);
-      if (identity === undefined) return;
-      let name = names.get(identity);
+      const marker = compilerPrivateAtomInfo(node);
+      if (marker === undefined) return;
+      let groups = names.get(marker.identity);
+      if (groups === undefined) { groups = new Map(); names.set(marker.identity, groups); }
+      let name = groups.get(marker.prefix);
       if (name === undefined) {
-        do { name = `completionValue__gensym${next++}`; }
+        do { name = `${marker.prefix}__gensym${next++}`; }
         while (reserved.has(toJsIdentifier(name)));
         reserved.add(toJsIdentifier(name));
-        names.set(identity, name);
+        groups.set(marker.prefix, name);
       }
       node.value = name;
-      completionValueAtoms.delete(node);
+      clearCompilerPrivateAtom(node);
       return;
     }
     if (node.type === 'list') node.values.forEach(rename);
@@ -1677,7 +1688,12 @@ function expandDirectBind(args, env) {
  * @returns {* | *[]} Expanded form(s)
  */
 export function expandExpr(form, env = EMPTY_ENV) {
-  return expandAt(form, env, "Legacy");
+  const privateCountAtStart = compilerPrivateAtomCount;
+  const result = expandAt(form, env, "Legacy");
+  if (compilerPrivateAtomCount !== privateCountAtStart) {
+    finalizeCompilerPrivateAtoms(Array.isArray(result) ? result : [result]);
+  }
+  return result;
 }
 
 function expandAt(form, env, use, computedMemberCallRequest = null,
@@ -2004,15 +2020,15 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
               const whole = asArgs[1];
               const initExpr = args[1];
               return [
-                expandExpr(array(sym(entry.keyword), whole, initExpr), env),
-                expandExpr(array(sym(entry.keyword), pattern, whole), env),
+                expandAt(array(sym(entry.keyword), whole, initExpr), env, 'Legacy'),
+                expandAt(array(sym(entry.keyword), pattern, whole), env, 'Legacy'),
               ];
             }
           }
           // No as pattern — default recursive expansion. The declared name is
           // not in scope over its own value (the value sees `env` unchanged);
           // it hoists to following siblings via the enclosing sequence walk.
-          return { type: 'list', values: form.values.map((sub) => expandExpr(sub, env)) };
+          return { type: 'list', values: form.values.map((sub) => expandAt(sub, env, 'Legacy')) };
         }
 
         case 'import-macros':
@@ -2043,7 +2059,7 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
             }
           } else {
             // macroexpand: full expansion
-            result = expandExpr(targetForm, env);
+            result = expandAt(targetForm, env, 'Legacy');
           }
 
           // Print to stderr
@@ -2187,7 +2203,7 @@ function findSymbolRefs(forms, names) {
  */
 function pass2ExpandAll(forms) {
   const result = [];
-  const completionValueAtomsAtStart = completionValueAtomCount;
+  const compilerPrivateAtomsAtStart = compilerPrivateAtomCount;
   // Top-level forms are a sibling SEQUENCE: a `bind`/`import` at top level is in
   // scope for the following top-level forms (mirror of Rust's outermost
   // `resolve_seq`), so a later `(array 987)` after `(bind array 0)` resolves to
@@ -2205,8 +2221,8 @@ function pass2ExpandAll(forms) {
     const hoist = form?.type === "list" ? hoistedNames(form) : [];
     if (hoist.length) env = extendEnv(env, hoist);
   }
-  if (completionValueAtomCount !== completionValueAtomsAtStart) {
-    finalizeCompletionValueMarkers(result);
+  if (compilerPrivateAtomCount !== compilerPrivateAtomsAtStart) {
+    finalizeCompilerPrivateAtoms(result);
   }
   return result;
 }
