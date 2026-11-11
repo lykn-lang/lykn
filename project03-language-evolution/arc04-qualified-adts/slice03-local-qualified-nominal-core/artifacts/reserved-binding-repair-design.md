@@ -2,8 +2,11 @@
 
 Root design against B1 candidate 3f197340, tree 9ee95765. This is a bounded
 identifier-validation prerequisite inside S03, not qualified ADT activation.
-Implementation is unissued pending B1 acceptance and a separate source-readiness
-review. All LC-02–08 obligations remain; this work alone closes none of them.
+**NOT SOURCE-READY: separate preparation review found source-role gaps in the
+proposed gates.** B1 is independently accepted, but implementation is unissued
+pending the revisions recorded below. All LC-02–08 obligations remain; this
+work alone closes none of them. The original recipe below is retained as the
+reviewed draft, not authority to implement its incomplete post-expansion walk.
 
 ## Observed defect and inspected paths
 
@@ -160,3 +163,62 @@ module target instead of merely changing goldens. Actual counts are derived
 from executed tests, not the populations or filenames above. No release
 integration, publication, dependency, purity, nominal feature or row closure
 is implied by this prerequisite.
+
+## Preparation review — source-role prerequisites before issue
+
+Separate Sol read-only review against immutable 3f197340 found concrete gaps;
+root inspected the cited producer and walker paths. These are source-inspected
+counterexamples, not executed IC-01 runtime observations. No source change or
+IC-01 implementation assignment was issued.
+
+1. **Lowered parameter roles are missing.** Public bindingsIntroduced's
+   DECL_HEADS branch projects only the first argument of function/function*;
+   arrow parameter lists are not projected. Native kernel_decl_names likewise
+   projects a name slot only. A source macro can return an fn or function
+   whose restricted parameter appears only after the existing early check.
+   The draft's public post-Pass-2 walker would miss it after lowering. Adding
+   parameter sites also affects D1 clients, so root must settle body versus
+   enclosing scope and hoisting rather than adding names indiscriminately.
+2. **Quoted syntax is data.** Existing binding walks recurse into quote while
+   native expansion explicitly leaves quote untouched and public dispatch
+   declares quote walk:none. The proposed normalization would reject quoted
+   `(bind if! 1)` even though it creates no runtime binding. A revised walk
+   must respect quote and the executable-depth rules of quasiquote/unquote;
+   skipping every quasiquote subtree is not a general active-unquote proof.
+3. **Object property pairs are structure.** classifier.js lowers
+   `(obj :const eval)` to kernel `(object (const eval))`, with the pair marked
+   as kernel. The generic binding walk then interprets the property pair as a
+   const declaration and projects eval as a binder. It would falsely reject
+   a legal property/value expression under the draft's new strict-binding gate.
+   Properties need executable value/computed-key traversal without dispatching
+   the structural pair as a declaration. Preserve imported external names and
+   class/member structural roles under the same distinction.
+4. **Bound form names are calls.** The new expandExpr validation must respect
+   its supplied binding Set: `(bind eval 1)` with bind already in scope is a
+   call, not an eval declaration. The complete expansion counterpart first
+   binds bind to a function, then calls it. Current walkBindings starts with
+   no incoming scope and only special-cases bound match; other tagged/ref heads
+   can still reach bindingsIntroduced. Rejecting eval at that call would be a
+   false positive. The revised role contract must use actual source lexical
+   dispatch and preserve bound/tagged form-name positive controls, including
+   the native resolver's corresponding binding identities.
+5. **Nullary legacy constructors still bind.** Public typeConstructorNames
+   currently projects list constructors but omits atom-form nullary ones.
+   `(type Metadata package)` must be distinguished from `(type package Safe)`:
+   the former emits a restricted value binding, while the latter's type name
+   is currently metadata-only. The shared projection/gates must cover that
+   distinction without pre-implementing qualified namespaces.
+
+The finite table, strict BindingIdentifier versus label distinction and shared
+DD-49 converter remain design inputs, not software claims. Root must finish
+the actual source/kernel role contract and concrete shared API/callers before
+issuing the numbered CC prompt. Keep the primary package observation, B1
+acceptance, all LC rows and original qualified B/C scope intact. A source
+presence/table parity test is not a substitute for the missing role proof.
+
+Sol's final read-only readiness verdict found no additional gap in the finite
+table/label policy, dependency-free converter extraction/reexport, check_strict
+reuse, executable .mjs oracle or eleven-file delivery union. It does require a
+narrow source-role correction allowance in place of the draft's instruction
+not to refactor source-role walks. Finish that concrete contract, then review
+and issue; do not implement the known-incomplete draft from this record.

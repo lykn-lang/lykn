@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.5"
+version: "1.6"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -182,3 +182,14 @@ design is unissued pending separate readiness review; it does not replace B2
 or close any LC row. Current legacy metadata-only type names and future
 namespace/data keys remain distinct. All original B/C and downstream gates
 are preserved.
+
+IC-01's separate read-only preparation review is complete and requires revision
+before issue. Its proposed gates must first cover lowered function/arrow
+parameters and atom-form nullary constructors, respect actual bound form-head
+dispatch, and distinguish quoted/property structure from executable forms.
+These concrete source-inspected counterexamples are recorded in the design;
+they are not B1 failures or executed IC-01 observations. No IC-01 source edit
+or numbered implementation prompt was issued. Root owns the concrete source-
+role contract and subsequent readiness/assignment, retaining all qualified B/C
+and S06 audit obligations. The task stays clean at accepted B1 3f197340 and
+release stays clean at independently accepted 0829e892.
