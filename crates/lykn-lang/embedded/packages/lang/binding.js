@@ -171,6 +171,8 @@ function walk(form, out, inScope) {
       headName === "kernel:const" || headName === "kernel:let" || headName === "kernel:var") {
     const pattern = form.values[1];
     if (pattern) walkPatternDefaults(pattern, out, inScope, isKernelDeclaration ? "kernel" : "source");
+    for (const initializer of form.values.slice(2)) walk(initializer, out, inScope);
+    return;
   }
 
   const kernelFunction = ["function", "function*", "kernel:function", "kernel:function*", "=>", "kernel:=>", "kernel:lambda"].includes(headName);

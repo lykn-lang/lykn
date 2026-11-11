@@ -390,6 +390,10 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
         && let Some(pattern) = values.get(1)
     {
         walk_pattern_defaults(pattern, out, scope, PatternDialect::Kernel);
+        for initializer in values.iter().skip(2) {
+            walk(initializer, out, scope);
+        }
+        return;
     }
     if matches!(kernel_head, "function" | "function*" | "=>" | "lambda") {
         let args = &values[1..];
