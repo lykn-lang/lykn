@@ -1,0 +1,4 @@
+30:7: warning: unused binding 'check-decoder'
+  suggestion: prefix with underscore: _check-decoder
+99:7: warning: unused binding 'check-controls'
+  suggestion: prefix with underscore: _check-controls

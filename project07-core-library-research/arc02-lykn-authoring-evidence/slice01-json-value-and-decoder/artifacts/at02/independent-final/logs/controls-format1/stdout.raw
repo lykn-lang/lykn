@@ -1,0 +1,111 @@
+(type
+  ControlJson
+  ControlNull
+  (ControlNumber :number value)
+  (ControlArray :array values))
+
+(type OtherTag (OtherTag :number id))
+
+(type NestedResult (NestedSome :any value) NestedNone)
+
+(type InnerNumber (InnerNumber :number value))
+
+(func expect-control :args (:ControlJson value) :returns :any :body value)
+
+(func
+  read-control-number
+  :args
+  (:any value)
+  :returns
+  :any
+  :body
+  (match value ((ControlNumber number) number) (_ "other")))
+
+(func
+  only-control-number
+  :args
+  (:any value)
+  :returns
+  :any
+  :body
+  (match value ((ControlNumber number) number)))
+
+(func
+  wildcard-control
+  :args
+  (:any value)
+  :returns
+  :string
+  :body
+  (match value ((ControlNumber _) "number") (_ "wildcard")))
+
+(func
+  nested-control
+  :args
+  (:any value)
+  :returns
+  :any
+  :body
+  (match
+    value
+    ((NestedSome (InnerNumber number)) number)
+    ((NestedSome _) "not-number")
+    (NestedNone "none")))
+
+(func
+  observe-control
+  :args
+  (:string name :function action)
+  :returns
+  :void
+  :body
+  (try
+    (bind result (action))
+    (console:log name (JSON:stringify result))
+    (catch
+      err
+      (console:log
+        name
+        (JSON:stringify (obj :thrown err:name :message err:message))))))
+
+(bind wrong-scalar (JSON:parse "\"wrong\""))
+
+(bind wrong-array (JSON:parse "\"wrong\""))
+
+(bind missing-tag (JSON:parse "{\"value\":1}"))
+
+(bind
+  forged-number
+  (JSON:parse "{\"tag\":\"ControlNumber\",\"value\":\"wrong\"}"))
+
+(observe-control "T01-valid-scalar" (fn () (ControlNumber 3)))
+
+(observe-control "T02-zero-field" (fn () ControlNull))
+
+(observe-control "T03-wrong-scalar" (fn () (ControlNumber wrong-scalar)))
+
+(observe-control "T04-wrong-outer-array" (fn () (ControlArray wrong-array)))
+
+(observe-control
+  "T05-wrong-nested-array-member"
+  (fn () (ControlArray (array "bad"))))
+
+(observe-control "T06-unrelated-tag" (fn () (expect-control (OtherTag 9))))
+
+(observe-control "T07-missing-tag" (fn () (expect-control missing-tag)))
+
+(observe-control
+  "T08-forged-known-tag-match"
+  (fn () (read-control-number (expect-control forged-number))))
+
+(observe-control "T09-omitted-arm" (fn () (only-control-number ControlNull)))
+
+(observe-control "T10-wildcard" (fn () (wildcard-control ControlNull)))
+
+(observe-control
+  "T11-nested-positive"
+  (fn () (nested-control (NestedSome (InnerNumber 7)))))
+
+(observe-control
+  "T12-nested-negative"
+  (fn () (nested-control (NestedSome ControlNull))))

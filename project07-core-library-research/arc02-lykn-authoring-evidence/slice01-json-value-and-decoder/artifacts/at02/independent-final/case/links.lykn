@@ -1,0 +1,19 @@
+;; Review-only local-link/index verification; no repository mutations.
+(bind planning "/Users/oubiwann/lab/lykn/lang/.worktrees/planning")
+(bind slice "project07-core-library-research/arc02-lykn-authoring-evidence/slice01-json-value-and-decoder")
+(for-of doc (array "cdc-verification.md" "ledger.md" "closing-report.md")
+  (bind relative (template slice "/" doc))
+  (bind text (Deno:read-text-file-sync (template planning "/" relative)))
+  (bind matches (text:match-all (new RegExp "\\[[^\\]]*\\]\\(([^)]+)\\)" "g")))
+  (for-of match matches
+    (bind target (get match 1))
+    (if (or (target:starts-with "#") (target:includes "://")) (continue))
+    (bind url (new URL target (template "file://" planning "/" relative)))
+    (Deno:stat-sync url)
+    (bind file (url:pathname:slice (+ planning:length 1)))
+    (bind command
+      (new Deno:Command "/usr/bin/git"
+        (obj :args (array "-C" planning "ls-files" "--error-unmatch" file) :stdout "piped" :stderr "piped")))
+    (bind output (command:output-sync))
+    (if (not (= output:code 0)) (throw (new Error (template "untracked target " file))))
+    (console:log doc target "tracked")))

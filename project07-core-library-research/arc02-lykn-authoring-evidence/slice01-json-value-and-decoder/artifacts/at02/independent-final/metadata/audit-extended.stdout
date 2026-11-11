@@ -1,0 +1,14 @@
+decoder-run-default 40/40 exact observations
+decoder-run-stripped 40/40 exact observations
+decoder-public-run 40/40 exact observations
+decoder-formatted-run-default 40/40 exact observations
+decoder-formatted-run-stripped 40/40 exact observations
+decoder-formatted-public-run 40/40 exact observations
+all 3 specimens formatter-idempotent, emitted-byte stable and runtime stable
+controls-run-default 12/12 characterized observations; nested 2/12 remain implementation failures
+controls-run-stripped 12/12 characterized observations; nested 2/12 remain implementation failures
+controls-public-run 12/12 characterized observations; nested 2/12 remain implementation failures
+controls-formatted-run-default 12/12 characterized observations; nested 2/12 remain implementation failures
+controls-formatted-run-stripped 12/12 characterized observations; nested 2/12 remain implementation failures
+controls-formatted-public-run 12/12 characterized observations; nested 2/12 remain implementation failures
+all 18 raw/formatted runtime commands exit 0; no uncaught stderr

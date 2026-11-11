@@ -1,0 +1,2 @@
+10:16: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)
+  suggestion: thread the method call: (-> <expr> (:trim-end:split …)); or bind first: (bind v <expr>) (v:trim-end:split …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> "trim-end:split" …)

@@ -1,0 +1,7 @@
+decoder-run-default 40/40 exact observations
+decoder-run-stripped 40/40 exact observations
+decoder-public-run 40/40 exact observations
+decoder-formatted-run-default 40/40 exact observations
+decoder-formatted-run-stripped 40/40 exact observations
+decoder-formatted-public-run 40/40 exact observations
+all 3 specimens formatter-idempotent, emitted-byte stable and runtime stable

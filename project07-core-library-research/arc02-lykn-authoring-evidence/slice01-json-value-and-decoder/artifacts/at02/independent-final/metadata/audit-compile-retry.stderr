@@ -1,0 +1,2 @@
+30:7: warning: unused binding 'check-decoder'
+  suggestion: prefix with underscore: _check-decoder

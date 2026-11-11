@@ -1,0 +1,80 @@
+;; Independent review orchestration; all authored logic is Lykn.
+(bind root "/private/tmp/lykn-at02-cdc-final.XeqVk0cQ")
+(bind cli (template root "/case/lykn"))
+(bind fixture-env
+  (obj
+    :PATH "/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    :TMPDIR (template root "/tmp")
+    :XDG_CACHE_HOME (template root "/xdg")
+    :npm_config_cache (template root "/npm")
+    :DENO_DIR "/Users/oubiwann/Library/Caches/deno"))
+
+(func run-cell :args (:string name :string cwd :array args) :returns :number :body
+  (bind dir (template root "/logs/" name))
+  (Deno:mkdir-sync dir (obj :recursive true))
+  (Deno:write-text-file-sync
+    (template dir "/launch.json")
+    (JSON:stringify (obj :executable cli :cwd cwd :argv args :clear-env true :env fixture-env) null 2))
+  (bind command
+    (new Deno:Command cli
+      (obj :args args :cwd cwd :clear-env true :env fixture-env :stdout "piped" :stderr "piped")))
+  (bind output (command:output-sync))
+  (Deno:write-file-sync (template dir "/stdout.raw") output:stdout)
+  (Deno:write-file-sync (template dir "/stderr.raw") output:stderr)
+  (Deno:write-text-file-sync (template dir "/exit-status.txt") (template output:code "\n"))
+  (console:log name output:code)
+  output:code)
+
+(func require-success :args (:number code :string cell) :returns :void :body
+  (if (not (= code 0)) (throw (new Error (template cell " failed: " code)))))
+
+(bind native-cwd (template root "/case"))
+(bind public-cwd (template root "/public"))
+(for-of name (array "decoder" "controls" "zero-field-control")
+  (bind source (template name ".lykn"))
+  (run-cell (template name "-check") native-cwd (array "check" source))
+  (run-cell (template name "-lint") native-cwd (array "lint" source))
+  (for-of mode (array "default" "stripped")
+    (bind output (template "target/" name "-" mode ".js"))
+    (bind argv (? (= mode "stripped")
+      (array "compile" "--strip-assertions" source "-o" output)
+      (array "compile" source "-o" output)))
+    (bind code (run-cell (template name "-compile-" mode) native-cwd argv))
+    (if (= code 0)
+      (run-cell (template name "-run-" mode) native-cwd
+        (array "run" "--cached-only" "--no-prompt" output))))
+  (require-success
+    (run-cell (template name "-format1") native-cwd (array "fmt" source)) "format1")
+  (Deno:copy-file-sync (template root "/logs/" name "-format1/stdout.raw")
+    (template native-cwd "/" name "-formatted.lykn"))
+  (require-success
+    (run-cell (template name "-format2") native-cwd (array "fmt" (template name "-formatted.lykn"))) "format2")
+  (Deno:copy-file-sync (template root "/logs/" name "-format2/stdout.raw")
+    (template native-cwd "/" name "-formatted-again.lykn"))
+  (for-of mode (array "default" "stripped")
+    (bind output (template "target/" name "-formatted-" mode ".js"))
+    (bind argv (? (= mode "stripped")
+      (array "compile" "--strip-assertions" (template name "-formatted.lykn") "-o" output)
+      (array "compile" (template name "-formatted.lykn") "-o" output)))
+    (bind code (run-cell (template name "-formatted-compile-" mode) native-cwd argv))
+    (if (= code 0)
+      (run-cell (template name "-formatted-run-" mode) native-cwd
+        (array "run" "--cached-only" "--no-prompt" output)))))
+
+(require-success
+  (run-cell "public-driver-compile" public-cwd
+    (array "compile" "compile-probe.lykn" "-o" "target/compile-probe.js")) "driver compile")
+(for-of name (array "decoder" "controls" "zero-field-control")
+  (for-of spelling (array "" "-formatted")
+    (Deno:copy-file-sync (template native-cwd "/" name spelling ".lykn")
+      (template public-cwd "/probe.lykn"))
+    (bind cell (template name spelling "-public-compile"))
+    (bind code
+      (run-cell cell public-cwd
+        (array "run" "--cached-only" "--frozen" "--no-prompt" "--allow-read=probe.lykn" "target/compile-probe.js")))
+    (if (= code 0)
+      (block
+        (bind generated (template "target/" name spelling "-public.js"))
+        (Deno:copy-file-sync (template root "/logs/" cell "/stdout.raw") (template public-cwd "/" generated))
+        (run-cell (template name spelling "-public-run") public-cwd
+          (array "run" "--cached-only" "--frozen" "--no-prompt" generated))))))

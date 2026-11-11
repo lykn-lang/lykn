@@ -1,0 +1,2 @@
+31:1: warning: unused binding 'native-cwd'
+  suggestion: prefix with underscore: _native-cwd

@@ -1,0 +1,19 @@
+{
+  "executable": "/private/tmp/lykn-at02-cdc-final.XeqVk0cQ/case/lykn",
+  "cwd": "/private/tmp/lykn-at02-cdc-final.XeqVk0cQ/public",
+  "argv": [
+    "run",
+    "--cached-only",
+    "--frozen",
+    "--no-prompt",
+    "target/decoder-formatted-public.js"
+  ],
+  "clearEnv": true,
+  "env": {
+    "PATH": "/Users/oubiwann/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/lykn-at02-cdc-final.XeqVk0cQ/tmp",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-at02-cdc-final.XeqVk0cQ/xdg",
+    "npm_config_cache": "/private/tmp/lykn-at02-cdc-final.XeqVk0cQ/npm",
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno"
+  }
+}

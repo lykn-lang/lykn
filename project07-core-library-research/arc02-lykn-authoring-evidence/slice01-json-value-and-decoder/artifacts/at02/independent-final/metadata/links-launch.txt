@@ -1,0 +1,4 @@
+cwd=/private/tmp/lykn-at02-cdc-final.XeqVk0cQ/case
+argv=./lykn compile links.lykn -o target/links.js
+argv=./lykn run --cached-only --no-prompt --allow-read=/Users/oubiwann/lab/lykn/lang/.worktrees/planning --allow-run=/usr/bin/git target/links.js
+Helper reads current canonical verification, ledger and root closing report; resolves each local Markdown target and asks Git ls-files --error-unmatch for index membership. It is read-only. Source and compiler output are preserved with normal target-to-output mapping.

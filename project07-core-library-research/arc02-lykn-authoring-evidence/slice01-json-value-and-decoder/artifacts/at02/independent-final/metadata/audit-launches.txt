@@ -1,0 +1,6 @@
+cwd=/private/tmp/lykn-at02-cdc-final.XeqVk0cQ/case
+argv=./lykn compile audit.lykn -o target/audit.js
+argv=./lykn run --cached-only --no-prompt --allow-read=/private/tmp/lykn-at02-cdc-final.XeqVk0cQ target/audit.js
+argv=./lykn compile audit.lykn -o target/audit-extended.js
+argv=./lykn run --cached-only --no-prompt --allow-read=/private/tmp/lykn-at02-cdc-final.XeqVk0cQ target/audit-extended.js
+The first oracle compile failed on a parenthesized expression receiver. Exact first helper source retained as audit-attempt01.lykn and original diagnostics in metadata/audit-compile.*. Corrected by binding text and trimmed before split; no specimen alteration. Earlier successful decoder/format oracle retained as audit-decoder-and-format.lykn. Extended oracle adds explicit guard-outcome comparisons, preserving caught implementation errors as failures rather than positive successes.
