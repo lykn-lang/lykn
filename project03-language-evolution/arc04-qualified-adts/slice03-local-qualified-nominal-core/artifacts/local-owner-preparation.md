@@ -338,3 +338,16 @@ Use a normal product test for compiler regressions; any new research probe or
 matrix logic must be authored in Lykn, not added to the hereditary handwritten
 JS research harness. Keep this prerequisite separate from B1's independent
 review. No IC-01 implementation prompt or source change has been issued.
+
+2026-11-11 revised role-contract preparation identifies the public Func
+preextension at expander-core's function-family lowering: bodyScopeNames uses
+funcClauseParamNames, whose source multi-clause projection unions parameters.
+IC-01's validation scopes must not repeat that union, but its narrow kernel
+function-scope repair is not a general surface macro-dispatch repair. B2 must
+settle actual per-clause lexical identity/dispatch before claiming LC-02/04/07;
+retain this source-inspected input and do not infer it is fixed by role checks.
+
+The same IC-01 preparation observes legacy D1 classNames/class_names aggregates
+bare method parameters into the whole class. New member-role queries in IC-01
+are validation-only and must not widen that aggregate. B2 retains the proper
+per-member lexical-scope disposition; IC-01 claims no general class D1 repair.

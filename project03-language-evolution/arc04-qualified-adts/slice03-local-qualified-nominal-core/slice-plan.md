@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.6"
+version: "1.7"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -193,3 +193,36 @@ or numbered implementation prompt was issued. Root owns the concrete source-
 role contract and subsequent readiness/assignment, retaining all qualified B/C
 and S06 audit obligations. The task stays clean at accepted B1 3f197340 and
 release stays clean at independently accepted 0829e892.
+
+2026-11-11 the operator authorizes settling the binding-role contract,
+implementing and independently validating the bounded IC-01 repair before
+resuming qualified constructors, same Luna 6 High CC / Sol 6.1 High CDC,
+Autonomous Mode. Root's [revised role contract](artifacts/binding-role-contract.md)
+settles every preparation ambiguity: actual parameter grammar, quoted-template
+depth, supported native quotation paths, kernel-only D1 scope corrections and
+validation-only class-member queries. Existing source Func/class aggregate
+scope issues are explicit B2 inputs, not new IC-01 expansion claims.
+
+**Current assignment:** [iteration05](cc-prompt-iteration05.md), IC-01 source
+implementation at accepted B1 3f197340/tree9ee95765. The preserved initial
+design remains historical where superseded by the role contract. Root owns
+architecture/planning; Luna owns task source/build until clean handoff; Sol
+then independently validates actual software. IC-01 has its own ledger row,
+and LC-02–08 remain open. No release edits/integration or external actions.
+After acceptance resume concrete qualified-constructor preparation against the
+new exact source, preserving the original B/C and downstream gates.
+
+## Assignment history
+
+| Prompt | Issued | Predecessor | Reason | Disposition |
+| --- | --- | --- | --- | --- |
+| cc-prompt.md | 2026-11-11 | S02 independent release acceptance | A finite host prerequisite | Superseded by corrections; original candidate/HOLD retained |
+| cc-prompt-iteration01.md | 2026-11-11 | cc-prompt.md | Four host-reference findings | Superseded by02; source16dcd64f retained |
+| cc-prompt-iteration02.md | 2026-11-11 | iteration01 | Actual materialized dispatch coverage/span | Superseded by03 after public implicit-return finding; failed patch retained |
+| cc-prompt-iteration03.md | 2026-11-11 | iteration02 | Public multi-clause implicit-return correction | Accepted5caf3d87; LC-01 done |
+| cc-prompt-iteration04.md | 2026-11-11 | iteration03 | B1 per-call metadata isolation | Accepted3f197340 as partial LC-02 only |
+| cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Active implementation; independent software review pending |
+
+The A correction loop used three refinement passes; B1 required no software
+correction. IC-01 is a distinct authorized usable prerequisite, not a retry
+renumbering or erasure of those failures. Keep future refinements explicit.
