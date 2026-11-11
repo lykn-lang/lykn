@@ -199,6 +199,18 @@ const FIXTURES: &[Case] = &[
         name: "host-reference-shadowing",
         expected: b"[[\"TypeError\",\"checkNumber: arg 'value' expected number, got string\"],[\"TypeError\",\"checkArray: arg 'value' expected array, got number\"],[\"Error\",\"match: no matching pattern\"]]\n",
     },
+    Case {
+        name: "dispatch-array-module-shadow",
+        expected: b"[\"array\",\"string\",[\"TypeError\",\"choose-value: no matching clause for arguments\"]]\n",
+    },
+    Case {
+        name: "dispatch-array-parameter-shadow",
+        expected: b"[\"array\",\"string\",[\"TypeError\",\"choose-value: no matching clause for arguments\"]]\n",
+    },
+    Case {
+        name: "host-reference-same-spelling-macro",
+        expected: b"[\"source-macro\",[2]]\n",
+    },
 ];
 
 fn fixture_path(name: &str) -> PathBuf {
@@ -235,6 +247,19 @@ fn save_receipt(name: &str, suffix: &str, bytes: &[u8]) {
 #[test]
 fn native_owned_intrinsics_survive_module_shadowing() {
     run_positive(&FIXTURES[46]);
+}
+
+#[test]
+fn native_owned_guard_does_not_call_same_spelling_source_macro() {
+    run_positive(&FIXTURES[49]);
+}
+
+#[test]
+fn array_dispatch_uses_owned_intrinsics_under_module_and_parameter_shadowing() {
+    for case in &FIXTURES[47..49] {
+        run_positive_mode(case, false, false);
+        run_positive_mode(case, false, true);
+    }
 }
 
 fn record_source(name: &str, source_path: &Path, source: &[u8]) {
@@ -331,14 +356,19 @@ fn run_positive(case: &Case) {
 }
 
 fn run_positive_with_declarations(case: &Case, expect_declarations: bool) {
+    run_positive_mode(case, expect_declarations, false);
+}
+
+fn run_positive_mode(case: &Case, expect_declarations: bool, stripped: bool) {
     let source_path = fixture_path(case.name);
     let source = fs::read(&source_path).expect("read frozen semantic-role source");
     let temp = TempDir::new().expect("create semantic-role output directory");
     let xdg_cache_home = temp.path().join("xdg-cache");
     fs::create_dir(&xdg_cache_home).expect("create isolated semantic-role XDG cache");
     let output_path = temp.path().join(format!("{}.js", case.name));
+    let mode = if stripped { "stripped" } else { "checked" };
     let check = execute_recorded(
-        &format!("native-{}-check", case.name),
+        &format!("native-{}-{mode}-check", case.name),
         &source_path,
         &source,
         Command::new(env!("CARGO_BIN_EXE_lykn"))
@@ -347,22 +377,27 @@ fn run_positive_with_declarations(case: &Case, expect_declarations: bool) {
             .arg("check")
             .arg(&source_path),
     );
+    let mut compile_command = Command::new(env!("CARGO_BIN_EXE_lykn"));
+    compile_command
+        .current_dir(temp.path())
+        .env("XDG_CACHE_HOME", &xdg_cache_home)
+        .arg("compile")
+        .arg(&source_path)
+        .arg("-o")
+        .arg(&output_path);
+    if stripped {
+        compile_command.arg("--strip-assertions");
+    }
     let compile = execute_recorded(
-        &format!("native-{}-compile", case.name),
+        &format!("native-{}-{mode}-compile", case.name),
         &source_path,
         &source,
-        Command::new(env!("CARGO_BIN_EXE_lykn"))
-            .current_dir(temp.path())
-            .env("XDG_CACHE_HOME", &xdg_cache_home)
-            .arg("compile")
-            .arg(&source_path)
-            .arg("-o")
-            .arg(&output_path),
+        &mut compile_command,
     );
     let generated = fs::read(&output_path).ok();
     let dts = fs::read(output_path.with_extension("d.ts")).ok();
     record_generated(
-        &format!("native-{}", case.name),
+        &format!("native-{}-{mode}", case.name),
         generated.as_deref(),
         dts.as_deref(),
     );
@@ -434,7 +469,7 @@ fn run_positive_with_declarations(case: &Case, expect_declarations: bool) {
 
     let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| "deno".into());
     let runtime = execute_recorded(
-        &format!("native-{}-runtime", case.name),
+        &format!("native-{}-{mode}-runtime", case.name),
         &source_path,
         &source,
         Command::new(deno)

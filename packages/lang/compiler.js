@@ -25,12 +25,15 @@ const INLINE_HOST_REFERENCE_MODULE = 'data:text/javascript,export%20const%20symb
 export function lowerHostReferences(forms) {
   const requests = new Set();
   const reserved = new Set();
-  const marked = [];
+  const referenceOccurrences = [];
   const visit = (node) => {
     if (!node || typeof node !== 'object') return;
     if (node.type === 'atom') {
       const reference = hostReferenceOf(node);
-      if (reference !== undefined) { requests.add(reference); marked.push(node); }
+      if (reference !== undefined) {
+        requests.add(reference);
+        referenceOccurrences.push(node);
+      }
       for (const segment of node.value.split(':')) reserved.add(toJsIdentifier(segment));
     }
     if (node.type === 'list') for (const child of node.values) visit(child);
@@ -62,7 +65,9 @@ export function lowerHostReferences(forms) {
       ] });
     }
   }
-  for (const node of marked) {
+  // Keep occurrence census for the complete walk, but mutate each owned atom
+  // identity once because a single call head can occur in multiple places.
+  for (const node of new Set(referenceOccurrences)) {
     const alias = aliases.get(hostReferenceOf(node));
     if (!alias) throw new Error('invalid compiler-owned host reference');
     node.value = alias;

@@ -30,12 +30,50 @@ Deno.test('no-request output and source-shaped names do not select private refer
   );
 });
 
+Deno.test('normalized source identifiers reserve generated reference aliases', () => {
+  const generated = compile(expand(read(
+    '(bind lykn-intrinsic-array-is-array0 0) (func accepts-array :args (:array value) :body value)',
+  )));
+  assertStringIncludes(generated, 'const lyknIntrinsicArrayIsArray1 = Array.isArray;');
+  assertEquals(generated.includes('const lyknIntrinsicArrayIsArray0 = Array.isArray;'), false);
+});
+
 Deno.test('unfinished private host references fail on the fragment compiler path', () => {
   assertThrows(
     () => compileExpr(hostReference('Error')),
     Error,
     'unfinished compiler-owned host reference',
   );
+});
+
+Deno.test('one owned value reference can head multiple calls and shares one alias', async () => {
+  const forms = expand(read(
+    '(exports observed) (bind observed (array (lookup "lykn:shared") (lookup "lykn:shared")))',
+  ));
+  const shared = hostReference('SymbolFor');
+  const replaceCalls = (node) => {
+    if (!node || typeof node !== 'object') return;
+    if (node.type === 'list' && node.values[0]?.type === 'atom' && node.values[0].value === 'lookup') {
+      node.values[0] = shared;
+    }
+    if (node.type === 'list') for (const child of node.values) replaceCalls(child);
+    if (node.type === 'cons') { replaceCalls(node.car); replaceCalls(node.cdr); }
+  };
+  for (const form of forms) replaceCalls(form);
+  const generated = compile(forms);
+  assertEquals((generated.match(/const lyknIntrinsicSymbolFor0 = Symbol\.for;/g) ?? []).length, 1);
+  assertEquals((generated.match(/lyknIntrinsicSymbolFor0\("lykn:shared"\)/g) ?? []).length, 2);
+
+  const dir = await Deno.makeTempDir();
+  const path = `${dir}/shared-host-reference.js`;
+  try {
+    await Deno.writeTextFile(path, generated);
+    const module = await import(`file://${path}`);
+    assertEquals(module.observed[0], module.observed[1]);
+    assertEquals(module.observed[0], Symbol.for('lykn:shared'));
+  } finally {
+    await Deno.remove(dir, { recursive: true });
+  }
 });
 
 Deno.test('expandExpr materializes owned references as complete multi-form output', () => {

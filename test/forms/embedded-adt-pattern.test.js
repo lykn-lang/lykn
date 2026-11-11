@@ -38,3 +38,10 @@ Deno.test("embedded public compiler preserves private-name macro hygiene", async
     "[[[[90,91],5,42]],[[90,91],6,42],[[90,91],7,42],[[90,91],8,42],[[90,91],9,42]]\n",
   );
 });
+
+Deno.test("embedded public compiler owns shadowed guard and dispatch intrinsics", async () => {
+  await assertRuntimeFixture(
+    "host-reference-shadowing",
+    '[["TypeError","checkNumber: arg \'value\' expected number, got string"],["TypeError","checkArray: arg \'value\' expected array, got number"],["Error","match: no matching pattern"]]\n',
+  );
+});

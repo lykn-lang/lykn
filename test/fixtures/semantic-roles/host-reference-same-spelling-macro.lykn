@@ -1,0 +1,4 @@
+(macro Array:isArray (value) value)
+(func accepts-array :args (:array value) :body value)
+(console:log (JSON:stringify
+  (array (Array:isArray "source-macro") (accepts-array #a(2)))))

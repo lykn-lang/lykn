@@ -714,9 +714,11 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
     let package_names = [
         "binding.js",
         "classifier.js",
-        "expander-core.js",
-        "surface-helpers.js",
+        "compiler.js",
         "compiler-private-atoms.js",
+        "expander-core.js",
+        "protected-host.js",
+        "surface-helpers.js",
     ];
     for name in package_names {
         let canonical = repository.join("packages/lang").join(name);

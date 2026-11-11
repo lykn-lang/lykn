@@ -161,3 +161,39 @@ fn valid_empty_and_literal_emission_remain_checked_successes() {
     let forms = classify("(bind answer 42)");
     assert!(!emitter::emit(&forms, &registry, false).unwrap().is_empty());
 }
+
+#[test]
+fn public_form_boundary_rejects_owned_references_but_whole_emission_lowers_them() {
+    let registry = TypeRegistry::default();
+    let source = "(func accepts-array :args (:array value) :body value)";
+    let forms = classify(source);
+    let reference_span = lykn_lang::reader::source_loc::Span::new(
+        lykn_lang::reader::source_loc::SourceLoc {
+            line: 1,
+            column: 35,
+        },
+        lykn_lang::reader::source_loc::SourceLoc {
+            line: 1,
+            column: 40,
+        },
+    );
+
+    let mut ctx = emitter::context::EmitterContext::new(false);
+    let error = emitter::forms::emit_form(&forms[0], &mut ctx, &registry).unwrap_err();
+    let lykn_lang::error::LyknError::Codegen(diagnostic) = error else {
+        panic!("unfinished owned reference must use the codegen diagnostic channel");
+    };
+    assert_eq!(
+        diagnostic.message,
+        "compiler-owned host reference requires whole-module emission; use emitter::emit"
+    );
+    assert_eq!(diagnostic.span, reference_span);
+
+    let whole_unit = emitter::emit(&forms, &registry, false).unwrap();
+    let json = emitter::json::emit_module_json(&whole_unit).unwrap();
+    assert!(json.contains("lyknIntrinsicArrayIsArray0"));
+
+    let plain = classify("(bind answer 42)");
+    let mut plain_ctx = emitter::context::EmitterContext::new(false);
+    assert!(emitter::forms::emit_form(&plain[0], &mut plain_ctx, &registry).is_ok());
+}

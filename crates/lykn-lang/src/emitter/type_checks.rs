@@ -18,8 +18,8 @@ fn display_name(lykn_name: &str) -> String {
     }
 }
 
-fn intrinsic(reference: HostReference) -> SExpr {
-    SExpr::host_reference_atom(reference, Span::default())
+fn intrinsic(reference: HostReference, span: Span) -> SExpr {
+    SExpr::host_reference_atom(reference, span)
 }
 
 /// Emit a runtime type-check assertion for a parameter.
@@ -34,9 +34,9 @@ pub fn emit_type_check(
     type_keyword: &str,
     func_name: &str,
     label: &str,
-    _span: Span,
+    span: Span,
 ) -> Option<SExpr> {
-    let check = build_check(param_name, type_keyword)?;
+    let check = build_check(param_name, type_keyword, span)?;
     let message = build_error_message(param_name, type_keyword, func_name, label);
     Some(list(vec![
         atom("if"),
@@ -45,7 +45,7 @@ pub fn emit_type_check(
             atom("throw"),
             list(vec![
                 atom("new"),
-                intrinsic(HostReference::TypeError),
+                intrinsic(HostReference::TypeError, span),
                 message,
             ]),
         ]),
@@ -55,7 +55,7 @@ pub fn emit_type_check(
 /// Build the negated type-check condition for the given type keyword.
 ///
 /// Returns `None` for `:any`.
-fn build_check(param_name: &str, type_keyword: &str) -> Option<SExpr> {
+fn build_check(param_name: &str, type_keyword: &str, span: Span) -> Option<SExpr> {
     let p = atom(param_name);
     match type_keyword {
         "any" => None,
@@ -66,7 +66,7 @@ fn build_check(param_name: &str, type_keyword: &str) -> Option<SExpr> {
                 list(vec![atom("typeof"), p.clone()]),
                 str_lit("number"),
             ]),
-            list(vec![intrinsic(HostReference::NumberIsNaN), p]),
+            list(vec![intrinsic(HostReference::NumberIsNaN, span), p]),
         ])),
         "string" => Some(list(vec![
             atom("!=="),
@@ -94,7 +94,7 @@ fn build_check(param_name: &str, type_keyword: &str) -> Option<SExpr> {
         ])),
         "array" => Some(list(vec![
             atom("!"),
-            list(vec![intrinsic(HostReference::ArrayIsArray), p]),
+            list(vec![intrinsic(HostReference::ArrayIsArray, span), p]),
         ])),
         "promise" => Some(list(vec![
             atom("||"),
@@ -111,7 +111,7 @@ fn build_check(param_name: &str, type_keyword: &str) -> Option<SExpr> {
                     list(vec![
                         atom("instanceof"),
                         p,
-                        intrinsic(HostReference::Promise),
+                        intrinsic(HostReference::Promise, span),
                     ]),
                 ]),
             ]),
@@ -145,7 +145,7 @@ pub fn emit_return_type_check(
     func_name: &str,
     span: Span,
 ) -> Option<SExpr> {
-    let check = build_check(result_var, type_keyword)?;
+    let check = build_check(result_var, type_keyword, span)?;
     let message = list(vec![
         atom("+"),
         str_lit(&format!(
@@ -154,7 +154,6 @@ pub fn emit_return_type_check(
         )),
         list(vec![atom("typeof"), atom(result_var)]),
     ]);
-    let _ = span;
     Some(list(vec![
         atom("if"),
         check,
@@ -162,7 +161,7 @@ pub fn emit_return_type_check(
             atom("throw"),
             list(vec![
                 atom("new"),
-                intrinsic(HostReference::TypeError),
+                intrinsic(HostReference::TypeError, span),
                 message,
             ]),
         ]),

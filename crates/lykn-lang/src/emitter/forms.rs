@@ -273,6 +273,11 @@ fn wrap_iife_async(arrow_body: Vec<SExpr>) -> SExpr {
 // ---------------------------------------------------------------------------
 
 /// Emit one `SurfaceForm` to one or more kernel `SExpr` nodes.
+///
+/// # Errors
+/// Returns a structured code-generation diagnostic when emission needs
+/// whole-module context, including for unfinished compiler-owned host
+/// references. Use [`crate::emitter::emit`] to lower a complete unit.
 pub fn emit_form(
     form: &SurfaceForm,
     ctx: &mut EmitterContext,
@@ -286,7 +291,26 @@ pub fn emit_form(
             span,
         ));
     }
+    if let Some(span) = result.iter().find_map(host_reference_marker_span) {
+        return Err(codegen_error(
+            "compiler-owned host reference requires whole-module emission; use emitter::emit",
+            span,
+        ));
+    }
     Ok(result)
+}
+
+fn host_reference_marker_span(expr: &SExpr) -> Option<Span> {
+    if expr.host_reference().is_some() {
+        return Some(expr.span());
+    }
+    match expr {
+        SExpr::List { values, .. } => values.iter().find_map(host_reference_marker_span),
+        SExpr::Cons { car, cdr, .. } => {
+            host_reference_marker_span(car).or_else(|| host_reference_marker_span(cdr))
+        }
+        _ => None,
+    }
 }
 
 fn host_invocation_marker_span(expr: &SExpr) -> Option<Span> {
@@ -3708,7 +3732,7 @@ fn emit_func_single(
 fn emit_func_multi(
     name: &str,
     clauses: &[FuncClause],
-    _span: Span,
+    span: Span,
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
@@ -3890,7 +3914,7 @@ fn emit_func_multi(
         atom("throw"),
         list(vec![
             atom("new"),
-            SExpr::host_reference_atom(HostReference::TypeError, Span::default()),
+            SExpr::host_reference_atom(HostReference::TypeError, span),
             str_lit(&format!("{name}: no matching clause for arguments")),
         ]),
     ]));
@@ -3935,7 +3959,10 @@ fn build_dispatch_check(type_keyword: &str, expr: &SExpr) -> Option<SExpr> {
             ]),
             list(vec![atom("!=="), expr.clone(), atom("null")]),
         ])),
-        "array" => Some(list(vec![atom("Array:isArray"), expr.clone()])),
+        "array" => Some(list(vec![
+            SExpr::host_reference_atom(HostReference::ArrayIsArray, expr.span()),
+            expr.clone(),
+        ])),
         // User-defined type: check it's a tagged object
         _ => Some(list(vec![
             atom("&&"),
@@ -4265,7 +4292,7 @@ fn emit_match_statement_inner(
                 atom("throw"),
                 list(vec![
                     atom("new"),
-                    SExpr::host_reference_atom(HostReference::Error, Span::default()),
+                    SExpr::host_reference_atom(HostReference::Error, target.span()),
                     str_lit("match: no matching pattern"),
                 ]),
             ]),
@@ -4475,7 +4502,7 @@ fn emit_match_iife(
             atom("throw"),
             list(vec![
                 atom("new"),
-                SExpr::host_reference_atom(HostReference::Error, Span::default()),
+                SExpr::host_reference_atom(HostReference::Error, target.span()),
                 str_lit("match: no matching pattern"),
             ]),
         ]));
@@ -5661,6 +5688,7 @@ mod tests {
 
     #[test]
     fn test_emit_bind_typed_non_literal_emits_check() {
+        use super::emit_form_raw_checked as emit_form;
         // (bind :number x (compute)) — non-literal → const + type check
         let form = SurfaceForm::Bind {
             name: atom("x"),
@@ -5765,6 +5793,7 @@ mod tests {
 
     #[test]
     fn test_emit_bind_typed_array_check() {
+        use super::emit_form_raw_checked as emit_form;
         // (bind :array xs (get-items)) — non-literal → const + array check
         let form = SurfaceForm::Bind {
             name: atom("xs"),
@@ -5976,6 +6005,7 @@ mod tests {
 
     #[test]
     fn test_emit_type_with_fields() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Type {
             name: "Pair".into(),
             name_span: s(),
@@ -6042,6 +6072,7 @@ mod tests {
 
     #[test]
     fn test_emit_fn() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Fn {
             params: vec![sp("number", "x")],
             body: vec![list(vec![atom("+"), atom("x"), num(1.0)])],
@@ -6061,6 +6092,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_single_clause() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "add".into(),
             name_span: s(),
@@ -6089,6 +6121,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_multi_clause() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -7806,6 +7839,7 @@ mod tests {
 
     #[test]
     fn test_func_returns_void() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "log".into(),
             name_span: s(),
@@ -7839,6 +7873,7 @@ mod tests {
 
     #[test]
     fn test_func_returns_typed() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "double".into(),
             name_span: s(),
@@ -7938,6 +7973,7 @@ mod tests {
 
     #[test]
     fn test_func_with_pre_condition() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "sqrt".into(),
             name_span: s(),
@@ -7971,6 +8007,7 @@ mod tests {
 
     #[test]
     fn test_func_with_post_condition() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "abs".into(),
             name_span: s(),
@@ -8004,6 +8041,7 @@ mod tests {
 
     #[test]
     fn test_func_with_post_and_if_body_uses_ternary() {
+        use super::emit_form_raw_checked as emit_form;
         // When the body is an (if ...) form and the function has a :post condition,
         // the result capture must use a ternary (? ...) instead of an if statement,
         // because `const x = if (...)` is invalid JavaScript.
@@ -8057,6 +8095,7 @@ mod tests {
 
     #[test]
     fn test_func_with_post_and_multi_body() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "process".into(),
             name_span: s(),
@@ -8086,6 +8125,7 @@ mod tests {
 
     #[test]
     fn test_func_returns_typed_multi_body() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "process".into(),
             name_span: s(),
@@ -8109,6 +8149,7 @@ mod tests {
 
     #[test]
     fn test_func_returns_typed_empty_body() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "noop".into(),
             name_span: s(),
@@ -8199,6 +8240,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_different_arity() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -8241,6 +8283,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_with_post() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -8271,6 +8314,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_with_pre() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -8301,6 +8345,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_empty_body() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -8331,6 +8376,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_multi_body() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -8361,6 +8407,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_post_empty_body() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -8391,6 +8438,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_post_multi_body() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -8457,7 +8505,10 @@ mod tests {
         let result = build_dispatch_check("array", &expr);
         assert!(result.is_some());
         if let Some(SExpr::List { values, .. }) = result {
-            assert_eq!(values[0].as_atom(), Some("Array:isArray"));
+            assert_eq!(
+                values[0].host_reference(),
+                Some(HostReference::ArrayIsArray)
+            );
         }
     }
 
@@ -8521,6 +8572,7 @@ mod tests {
 
     #[test]
     fn test_match_obj_pattern_value() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Match {
             target: atom("x"),
             clauses: vec![MatchClause {
@@ -8607,6 +8659,7 @@ mod tests {
 
     #[test]
     fn test_match_with_guard_multi_body_value() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Match {
             target: atom("x"),
             clauses: vec![MatchClause {
@@ -8634,6 +8687,7 @@ mod tests {
 
     #[test]
     fn test_match_no_wildcard_statement() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Match {
             target: atom("x"),
             clauses: vec![MatchClause {
@@ -8652,6 +8706,7 @@ mod tests {
 
     #[test]
     fn test_match_no_wildcard_value() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Match {
             target: atom("x"),
             clauses: vec![MatchClause {
@@ -9062,6 +9117,7 @@ mod tests {
 
     #[test]
     fn test_match_constructor_wildcard_binding() {
+        use super::emit_form_raw_checked as emit_form;
         let mut r = reg();
         r.register_type(TypeDef {
             name: "Pair".into(),
@@ -9241,6 +9297,7 @@ mod tests {
 
     #[test]
     fn test_fn_control_transfer_last_forms_are_not_wrapped() {
+        use super::emit_form_raw_checked as emit_form;
         for head in ["return", "throw", "break", "continue"] {
             let form = SurfaceForm::Fn {
                 params: vec![sp("number", "x")],
@@ -9269,6 +9326,7 @@ mod tests {
 
     #[test]
     fn test_fn_typed_returns_last_expression() {
+        use super::emit_form_raw_checked as emit_form;
         // (fn (:number x) (* x 2)) should emit (=> (x) <type-check> (return (* x 2)))
         let form = SurfaceForm::Fn {
             params: vec![sp("number", "x")],
@@ -9304,6 +9362,7 @@ mod tests {
 
     #[test]
     fn test_fn_typed_multi_body_returns_last() {
+        use super::emit_form_raw_checked as emit_form;
         // (fn (:number x) (console:log x) (+ x 1)) should return last expr
         let form = SurfaceForm::Fn {
             params: vec![sp("number", "x")],
@@ -9403,6 +9462,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_strip_assertions() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -9437,6 +9497,7 @@ mod tests {
 
     #[test]
     fn test_func_multi_clause_any_types_single_condition() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "f".into(),
             name_span: s(),
@@ -9886,6 +9947,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_single_clause_object_destructure() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "greet".into(),
             name_span: s(),
@@ -9946,6 +10008,7 @@ mod tests {
 
     #[test]
     fn test_emit_fn_object_destructure() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Fn {
             params: vec![ParamShape::DestructuredObject {
                 fields: vec![
@@ -9985,6 +10048,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_multi_clause_mixed_destructure_dispatch() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Func {
             name: "process".into(),
             name_span: s(),
@@ -10113,6 +10177,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_single_clause_object_default() {
+        use super::emit_form_raw_checked as emit_form;
         // Build a func with a DestructuredObject containing a field with a default value.
         let form = SurfaceForm::Func {
             name: "greet".into(),
@@ -10181,6 +10246,7 @@ mod tests {
 
     #[test]
     fn test_emit_fn_object_default() {
+        use super::emit_form_raw_checked as emit_form;
         // Arrow function with default: (fn ((object (default :string name "anon"))) x)
         let form = SurfaceForm::Fn {
             params: vec![ParamShape::DestructuredObject {
@@ -10239,6 +10305,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_nested_object_with_alias() {
+        use super::emit_form_raw_checked as emit_form;
         // Build with DestructuredField::Nested. Verify kernel output contains
         // (alias c (object name)).
         let form = SurfaceForm::Func {
@@ -10312,6 +10379,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_nested_in_array() {
+        use super::emit_form_raw_checked as emit_form;
         // Build with ArrayParamElement::Nested. Verify kernel output contains
         // (object name) directly inside (array ...).
         let form = SurfaceForm::Func {
@@ -10381,6 +10449,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_toplevel_default() {
+        use super::emit_form_raw_checked as emit_form;
         // Build a func with a Simple param that has a default_value.
         // Expect kernel output to contain (default greeting "Hello").
         let form = SurfaceForm::Func {
@@ -10438,6 +10507,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_toplevel_rest() {
+        use super::emit_form_raw_checked as emit_form;
         // Build a func with a Simple param that has is_rest: true.
         // Expect kernel output to contain (rest messages).
         let form = SurfaceForm::Func {
@@ -10491,6 +10561,7 @@ mod tests {
 
     #[test]
     fn test_emit_func_typed_rest_for_of_check() {
+        use super::emit_form_raw_checked as emit_form;
         // Build a func with a rest param typed :number (not :any).
         // Expect the output to contain a for-of loop for per-element type checking.
         let form = SurfaceForm::Func {
@@ -10559,6 +10630,7 @@ mod tests {
 
     #[test]
     fn test_emit_export_func() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Export {
             inner: Box::new(SurfaceForm::Func {
                 name: "add".into(),
@@ -10664,6 +10736,7 @@ mod tests {
 
     #[test]
     fn test_emit_genfunc_with_yields_instrumentation() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Genfunc {
             name: "gen".into(),
             name_span: s(),
@@ -10807,6 +10880,7 @@ mod tests {
 
     #[test]
     fn test_emit_genfn_with_yields() {
+        use super::emit_form_raw_checked as emit_form;
         let form = SurfaceForm::Genfn {
             params: vec![ParamShape::Simple(tp("any", "x"))],
             yields: Some(ta("string")),
