@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.1"
+version: "1.2"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -122,3 +122,15 @@ existing macro behavior and considers explicit per-unit ADT semantic plans
 finalized after actual expanded declarations are collected. Exact B types,
 APIs, lifecycle and source-readiness review remain unissued; A correction
 authorizes none of that work.
+
+Correction01 source 16dcd64f repaired the dispatch capture and shared-reference
+mutation; independent focused controls passed. Acceptance remains held because
+M6's actual public runtime set omitted both new dispatch fixtures, and the
+dispatch reference inherited a generated default span. [Correction02](cc-prompt-iteration02.md)
+adds those materialized tests and threads the real parameter span. Root
+verified the exact fixture oracle; separate Sol preparation review supports
+issue. No full independent gates were spent on the known-incomplete candidate.
+The test census is 44 redirected internal-producer sections, 125 remaining
+sections containing public emit_form calls, and 33 other sections (202 total);
+158 denotes the untouched remainder, not public API coverage. Original CC
+attestation and independent clarification retain their original pins.

@@ -137,3 +137,78 @@ status. The reviewer returns exclusive task source/build execution and this
 verification/evidence ownership now. Further source correction belongs to CC,
 followed by separate review of the actual corrected candidate and required
 gates. No B/C implementation authority follows from this record.
+
+## Correction01 candidate 16dcd64f — 2026-11-11
+
+**Verdict: HOLD for remaining materialized dispatch and diagnostic-span work.**
+This separate reviewer inspected all 12 changed paths, the issued correction01
+prompt, CC handoff/results and available logs. Source stayed clean at
+`16dcd64f09946b6bd484a893dcefa16c01e1b431`, tree
+`6f36076d83c0f87b5e038be99604b8bc7eb5d531`, on `codex/qualified-adt-core`.
+No source/index edit, stage or commit occurred. The corrected commit has the
+required contiguous trailers; the earlier spacing deviation stays historical.
+
+- **AF-01 software repair verified.** Owned ArrayIsArray dispatch passes four
+  independent module/parameter × checked/stripped conditions. Each retains
+  array selection, string selection and existing unknown-clause TypeError.
+  Generated output distinguishes module inline fallback from parameter-only
+  local capture. The native same-spelling source-macro test also passes.
+- **AF-03 rejection implemented, span completion remains.** Public emit_form
+  recursively rejects owned references through the specified Codegen channel;
+  internal raw production and whole-unit/JSON lowering remain viable. All
+  seven emission-results tests pass, including exact non-default span for a
+  typed single-clause source and plain fragment success. However, the array
+  dispatch caller builds arg_access with the default-span list helper
+  (~3786), then build_dispatch_check attaches expr.span() (~3963). Its first
+  dispatch reference therefore remains synthetic-default. The single-clause
+  span test does not establish multi-clause anchoring. Root confirmed this
+  source-inspected gap and requires actual param.span() threading plus a
+  parsed multi-clause public-fragment span test. This is not relabelled as an
+  executed native API failure.
+- **AF-04 verified.** Unique marked atoms are mutated once; the normal public
+  product test executes two shared SymbolFor calls with one alias and matching
+  runtime registry identity. The reviewer driver now compiles its formerly
+  rejected shared-node case. Reflect's separate anchor/recovery controls pass.
+- **AF-02 partly verified, still open.** Fresh copied-CLI M6 starts from an
+  absent owned versioned cache and compares all seven modules, including the
+  previously omitted compiler/policy bytes. Its three materialized public
+  runtimes pass: recursive ADTs, private macro hygiene and single-clause
+  shadowed host guards/errors. Neither separate multi-clause dispatch fixture
+  runs through materialized lang/. The test's guard/dispatch name does not
+  change its fixture contents. Root requires both explicit materialized
+  dispatch controls before acceptance. Public source stripping remains absent;
+  native checked/stripped proof is separate.
+
+The complete 202-test emitter module passes (974 other library tests filtered).
+Exactly 44 tests locally select the raw producer, with existing assertions
+preserved apart from intentional dispatch identity inspection; no global
+alias was introduced. The unchanged remainder is 158 tests, but CC's statement
+that all 158 exercise public emit_form is too broad. A Lykn source census
+identifies 125 test sections with direct public calls and 33 testing other
+helpers/internals. This arithmetic remainder is not promoted into public API
+execution coverage; exact names are retained in the census receipt.
+
+Fresh focused public tests pass 12/12: seven host-reference, one browser
+compile/ESM consumer and four lazy protected-invocation tests. The original
+reviewer Lykn driver was rerun at the corrected pin: 27 all-nine runtime
+assertions across unshadowed/module/parameter scopes and three unfinished
+atom/call-head/new fragment controls pass. Normalized-name reservation and
+shared-reference runtime behavior are executed product assertions.
+
+Fresh [raw receipts](artifacts/increment-a/correction01/cdc/receipts-16dcd64f.tar.gz)
+and [navigation/digest](artifacts/increment-a/correction01/cdc/README.md)
+preserve populations, argv/cwd/environment, raw streams/status, generated
+modules, census and pins. Rust/Cargo 1.97.0, Deno 2.9.6; installed/release CLI
+SHA-256 `9e3d716177cff6c9167efd4d45a0a99a5d0fe62be2f20ea1839a1c554830a300`.
+
+Root explicitly required bounded completion and return once the missing
+product oracle was identified. No fresh full make check, citation/size gate or
+redundant docs run was started on this known-incomplete candidate. CC's gates
+retain their original attested strength; corrected-final independent full,
+committed citation, 80 KiB and complete delivery evidence remain required.
+
+LC-01 remains open; no A acceptance or LC-02–LC-08/B/C completion follows.
+Fixed-nine inline layout remains approved/provisional, with sparse imports
+distinguished from its fixed body. I4, warm-cache and browser eval limitations
+remain explicit. Source/build execution and review-record ownership return
+to root for correction. No release, integration or remote action occurred.
