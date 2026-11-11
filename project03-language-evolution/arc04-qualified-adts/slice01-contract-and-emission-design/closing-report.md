@@ -107,3 +107,43 @@ contract and implementation; Project07 retains book and human review duties.
 The proposed emission protocol is not permission to execute the comparison.
 The handoff includes exact planning changes only and preserves earlier
 preparation and source evidence unchanged.
+
+## Iteration01 partial return — 2026-11-10
+
+Iteration01 began from planning `811b944bd7d3100dad5ed11e1779f7c94f8efab1`
+with source still clean at
+`685bbe1dbbfdaf34ecf49017c22e43f7dc8adb95`. Its prompt names `1615547d` for
+the complete initial review and report sections; those retained review
+sections were read from the current tree, including all six RV findings and
+the initial five-row disposition. Required reads were repeated in the
+specified order: planning `AGENTS.md`, iteration prompt, slice plan/ledger,
+both artifacts and the full `cdc-verification.md`; initial aggregate output
+truncated and was recovered with bounded complete reads. The original prompt,
+arc increment/emission sequencing and initial report sections were reread.
+The source and planning ownership/status were verified before edits.
+
+The contract was partially revised to formalize root's supplied decisions:
+compile-time OwnerRef/CaseRef versus per-evaluated-module Symbol token;
+explicit v1 interfaces and synchronous API input; top-level scope and export
+wrapper behavior; nominal brand/tag predicate and descriptors; guard/strip,
+clone/spread/assoc and mutation behavior; protected-host and PURE prerequisites;
+prelude metadata-only status, migration and DTS/ABI expectations. Standards
+links support symbol, descriptor and enumerable-copy semantics; no runtime
+experiment is implied. The native `analysis/prelude.rs` inspection confirms
+blessed Option/Result metadata only, with no installed runtime constructors.
+
+Before the L2 protocol draft was completed, root found a design contradiction:
+the iteration01 sidecar owner-token module can be cached once while two
+separate producer-module evaluations create distinct compile-time/runtime
+instances, accidentally making both instances share one token. This violates
+the supplied generative owner identity. No workaround or architecture change
+was invented. The emission artifact is explicitly marked as initial,
+superseded and non-executable; it is not represented as an iteration01
+protocol. Root will issue iteration02 with same-module facade versus direct
+case-reference lowering. Root retains the arc sequencing update.
+
+No source edit, prototype, compile, test, bundle, replay, dependency operation
+or network action occurred. Only the three authorized paths are changed in
+the partial commit. QD-01 through QD-05 remain open; this is not slice
+completion or acceptance. The initial proposal and its not-accepted verdict
+remain intact in Git and in the report above.

@@ -1,8 +1,14 @@
 # Qualified ADT emission comparison protocol — proposal
 
-**State:** concrete CC proposal; not operator-approved and not executed. The
-operator must agree to exact layouts, fixtures, tool invocation and oracle
-before any bundle is run. QD-04 remains open.
+**State:** initial proposal retained for provenance; superseded and not
+executable. This file still contains only the initial L1/L2 sketches. The
+iteration01-required L2 case/identity-sidecar candidate was not completed:
+root found that separate producer evaluations can import the same cached
+identity sidecar and thereby share a token, violating generative runtime
+identity. Do not execute these initial sketches or mistake them for the
+iteration01 gate. Root will issue iteration02 with a coherent same-module
+facade versus direct-case-lowering comparison. QD-04 remains open; no cells
+ran.
 
 ## Question and controlled scope
 
