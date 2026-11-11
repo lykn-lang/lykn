@@ -76,10 +76,13 @@ these two protocol clarifications in a6a328f8. They are now explicit in the
 open set. This is readiness for design drafting, with QD/QA criteria still
 open and the concrete experiment proposal awaiting agreement.
 
-Current [CC assignment](cc-prompt-iteration02.md) settles the contract and
-same-module selective emission protocol after partial return 75f845e3.
+Current [CC assignment](cc-prompt-iteration03.md) completes the contract and
+same-module selective emission protocol after independent review 1ab4cdb6
+of candidate 2e94b49f. It corrects source examples, owner-universe controls,
+metadata/schema and case declarations, observer accessibility and stop rules.
 The [initial assignment](cc-prompt.md), proposal 4bd224fc, not-accepted review
-1615547d and [iteration01](cc-prompt-iteration01.md) remain preserved. Root's
+1615547d, [iteration01](cc-prompt-iteration01.md) and
+[iteration02](cc-prompt-iteration02.md) remain preserved. Root's
 sidecar design could violate generative identity through module caching;
 iteration02 replaces it with same-producer case-export linkage and preserves
 actual source qualifier evaluation, including alias TDZ. This is still
@@ -96,6 +99,15 @@ and the 24-cell proposal, with unrun design examples and later operator
 agreement separated from implementation proof. Independent review checks
 the resulting decisions and protocol; contradictions are corrected before
 any dependent source work.
+
+Iteration03 author readiness: root read the actual guide00 function,
+pattern, object and module syntax; native function/export classification,
+matching owner-universe inference and existing dynamic-import emitters;
+the independent findings; and testing's behavior/proportionate-proof rules.
+The assignment includes a resolver-safe TDZ example, tag-only-rejecting
+C4 control, concrete metadata lookup and observer/type-consumer oracles.
+The existing 24-cell budget is unchanged. No new implementation or
+experimental evidence is claimed by this source-grounded correction.
 Coordination retains PL design authority and resolves consequential choices
 before dependent implementation. Use the established Luna 6 High CC and
 Sol 6.1 High independent review settings. Source and release remain read-only
