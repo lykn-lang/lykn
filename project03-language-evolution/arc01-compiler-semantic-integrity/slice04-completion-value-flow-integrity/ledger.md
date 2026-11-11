@@ -1,5 +1,13 @@
 # S04 completion/value-flow ledger
 
+2026-11-11 [Arc04 S02](../../arc04-qualified-adts/slice02-existing-adt-correctness/slice-plan.md)
+corrected false-guard continuation exposes the existing C05/I4 checked-prefix
+early-return limitation in its old protected fixture. Baseline source already
+emits function prefixes outside tail-result/post checks. CV-03 retains this
+owner; CV-04/CV-05 and CI-04 composition stay open. S02 preserves the original
+failure and tests bounded fallback plus tail-post behavior; it does not claim
+general checked early-return correctness or backend parity.
+
 2026-11-10 [S17](../slice17-ordered-lexical-calls/slice-plan.md)
 opens the first ordered I3 scope, with ordinary lexical-call
 order and finalized kernel seam evidence. CV-02 remains done.

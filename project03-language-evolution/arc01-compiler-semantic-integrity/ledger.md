@@ -1,5 +1,10 @@
 # Arc01 compiler semantic integrity ledger
 
+2026-11-11 [Arc04 S02 interaction](../arc04-qualified-adts/slice02-existing-adt-correctness/slice-plan.md)
+is retained under S04 I4/CV-03: correcting guarded-match continuation exposes
+the baseline checked-prefix early-return bypass. CI-04 remains open; bounded
+S02 pattern/tail-post acceptance does not discharge protected-exit composition.
+
 2026-11-10 [S17](slice17-ordered-lexical-calls/slice-plan.md)
 opens I3 after the [independent local integration](slice16-completion-headers-and-lazy-operands/artifacts/release-integration-6c9dbd5c.md).
 OC-01 through OC-04 and broader reference composition remain open.

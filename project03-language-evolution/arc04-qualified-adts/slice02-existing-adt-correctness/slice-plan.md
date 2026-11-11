@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice02-existing-adt-correctness
 status: active
-version: "1.2"
+version: "1.3"
 depends-on: [slice01-contract-and-emission-design]
 ---
 
@@ -61,6 +61,18 @@ introduced by later macro expansion. Reuse/generalize the existing private
 completion-identity finalization so new field names are assigned against the
 complete expanded unit, with actual macro-capture regressions across affected
 routes. This remains compiler-internal hygiene, not S03 nominal ADT identity.
+
+The full gate exposed an existing protected-exit interaction: the old protected
+match fixture's second wildcard returned `"bad"`, previously unreachable because
+of incorrect false-guard continuation. Correct continuation reaches that return
+and reveals the baseline function-prefix early-return bypass of tail checks.
+Independent source triage identifies existing ownership in Arc01 S04 I4,
+CV-03, with CV-04/CV-05 and CI-04 composition open. S02 adds no new bypass
+mechanism and does not implement that separate completion work. Retain the
+original failing source/output/gate receipt. The replacement finite regression
+uses a traced fallback and tail `7` to prove guard continuation and retained
+tail postcondition execution. PC-03 acceptance must disclose this limit; it
+cannot claim general checked early-return correctness or cross-backend parity.
 
 Use product tests and exact runtime oracles for positive and discriminating
 negative cases, all affected routes, evaluation order, falsy payloads and name
