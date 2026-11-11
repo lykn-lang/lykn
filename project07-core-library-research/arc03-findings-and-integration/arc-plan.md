@@ -1,5 +1,15 @@
 # Arc03 — Findings and integration
 
+2026-11-10 operator source review selects qualified JavaScript ADT
+constructors, with source ergonomics as the main interest. The
+[exact discussion and technical S01 disposition](../arc02-lykn-authoring-evidence/slice01-json-value-and-decoder/closing-report.md#independent-disposition-and-operator-discussion-2026-11-10)
+retain the decision. CDC owns the bounded language-design follow-up under
+A3-04, covering the type's runtime binding, existing colon member-call
+syntax, qualified pattern resolution, imports/exports, tag identity and
+tree-shaking. The source conversation is active and the detailed public
+contract remains to be settled. This is a selected direction with no
+compiler implementation claim.
+
 2026-11-10 authoring-research findings from Arc02/S01 have independent
 minimal reproductions at source `685bbe1d`. Correction ownership is
 recorded here for the next detailed source/guide assignments. These

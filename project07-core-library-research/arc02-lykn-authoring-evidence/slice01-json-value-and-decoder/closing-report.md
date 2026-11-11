@@ -27,3 +27,35 @@ All five JV rows remain **open** pending independent reviewer disposition. Contr
 This was a known-valid JSON text decoder trial, not a safe parsing API claim. Malformed JSON parse exceptions, general numeric fidelity and lossless token fidelity were not characterized. No source checkout, package API, dependency, release or publication changes were made.
 
 The candidate commit is `5be740daf857ec6a3529a6196caf4e8b70a7d432`; this canonical closeout and the durable ledger-link correction are a separate follow-up. The parent should reconcile the independent reviewer packet with the five open ledger rows and retain the nested-match failures in the final disposition.
+
+## Independent disposition and operator discussion, 2026-11-10
+
+Independent commit b00ae36b accepts JV-01–05 at reproduced strength. The
+[verification record](cdc-verification.md) and current ledger supersede
+the contributor's earlier pending technical statuses above. The
+[retrospective](cdc-retrospective.md) retains coordination and correction
+observations. Actual human discussion has begun and AE-05 remains open.
+
+The operator asked to examine source examples one at a time in chat after
+the original broad source-shape question lacked sufficient context. The
+first example was the optional label ADT. A suggested declaration with
+MissingField, NullField and Text was compiled and run successfully in
+both paths. The operator then observed that LabelText conveys context
+when variants are used without type qualification.
+
+After seeing actual flat native constructor output, the operator selected
+qualified emitted constructors and asked about the existing Lykn syntax:
+
+> hrm, yeah ... I think that would be more idiomatic/expected emitted JS. So we should definitely do that. My big interest is in how it looks to write the Lykn code ... remind me what Clojure does in an example like this?
+>
+> Oh, wait ... if we switch to qualified constructors for emitted JS, doesn't that already have a syntax in Lykn? We didn't go the route that Clojure did for Java, but I forget what we *did* do ...
+
+Qualified JavaScript constructor emission is the selected design direction.
+The source-syntax discussion is ongoing. Existing colon member access gives
+the general call spelling Label:Text, while ADT runtime bindings and
+qualified constructor patterns require a design and compiler change.
+Final variant names, tag identity, import/export and compatibility policy
+have not been selected through this discussion. Keep the optional-package
+and tree-shaking requirements in the design. This response supplies a
+specific language-direction decision, rather than overall acceptance of
+the complete research specimen's readability.
