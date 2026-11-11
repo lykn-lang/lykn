@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice02-existing-adt-correctness
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice01-contract-and-emission-design]
 ---
 
@@ -47,6 +47,13 @@ fallback retains its historical positional `Object.values` mapping and reads;
 it is not a field-selective interface. Test its retained flat-binding behavior
 and record that limitation rather than silently changing enumeration semantics.
 Qualified/imported constructor resolution belongs to later increments.
+
+The first focused runtime run exposed native sequence-expression grouping:
+`emit_seq` printed an ungrouped comma expression inside conditions. Iteration01
+adds the necessary bounded codegen correction and grammar-context regressions,
+retaining the simple ordered capture rather than a value-tautology workaround.
+All five criteria remain; this is an in-scope implementation dependency, with
+its actual failed attempts retained in the close record.
 
 Use product tests and exact runtime oracles for positive and discriminating
 negative cases, all affected routes, evaluation order, falsy payloads and name
