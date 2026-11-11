@@ -49,11 +49,17 @@ author's context until the original answer is committed. The independent
 review checks both the first attempt and the completed matrix. User
 readability feedback is recorded separately under the AE01 protocol.
 
-The initial capture is `de33d6bf`. Current assignment
+The initial capture is `de33d6bf`. Execution assignment
 [iteration01](cc-prompt-iteration01.md) executes the retained answer and
 completes the matrix. The initial reference receipt reports an incomplete
 read of guide 09. Preserve that deviation in the initial condition and
 complete the reading for the correction condition.
+
+Current directive [iteration02](cc-prompt-iteration02.md) carries iteration01
+forward and corrects the replacement context's reference intake. Its initial
+receipt treated a prior contributor's reads as reusable. The new context
+must load the specified source guidance itself before extension edits and
+retain the earlier receipt as a disclosed coverage error.
 
 ## Permissions restart checkpoint
 
