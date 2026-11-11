@@ -1,0 +1,4 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn compile zero.lykn -o target/final-native.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn run --cached-only --no-prompt target/final-native.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn compile --strip-assertions zero.lykn -o target/final-stripped.js
+/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn run --cached-only --no-prompt target/final-stripped.js

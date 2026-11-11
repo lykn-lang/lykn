@@ -1,0 +1,2 @@
+cd /private/tmp/lykn-arc04-s02-corrected-replay/seed
+DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/private/tmp/lykn-arc04-s02-corrected-replay/xdg-cache /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn compile /private/tmp/lykn-arc04-s02-corrected-replay/seed/materialize.lykn -o /private/tmp/lykn-arc04-s02-corrected-replay/seed/materialize.js

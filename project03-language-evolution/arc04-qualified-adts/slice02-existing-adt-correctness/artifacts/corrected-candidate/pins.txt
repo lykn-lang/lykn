@@ -1,0 +1,8 @@
+source_commit=0829e892999890e8877dec5e35cd249753e1be5d
+source_parent=7b09a4e119fb841f950111217a07d5d8e833c220
+source_branch=codex/adt-pattern-correctness
+source_binary=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn
+source_binary_sha256=d2319c8a27d987a0aa781eeb2b27eeb988f737629ce1208cefd5f3e1af4bdfc5
+source_binary_build=make check, corrected source content before commit (tree unchanged at commit)
+final_cold_xdg=/private/tmp/lykn-arc04-s02-corrected-replay/xdg-cache
+final_materialized_package=/private/tmp/lykn-arc04-s02-corrected-replay/xdg-cache/lykn/embedded/0.6.0-compiler-split/packages/lang

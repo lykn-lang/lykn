@@ -1,0 +1,55 @@
+[1;34mChecking for outdated dependencies...[0m
+lykn-cli
+================
+Name        Project  Compat  Latest   Kind         Platform
+----        -------  ------  ------   ----         --------
+clap        4.6.1    ---     4.6.7    Normal       ---
+indexmap    2.14.0   ---     2.14.2   Normal       ---
+insta       1.48.0   ---     1.49.0   Development  ---
+serde       1.0.228  ---     1.0.229  Normal       ---
+serde_json  1.0.150  ---     1.0.154  Normal       ---
+thiserror   2.0.18   ---     2.0.21   Normal       ---
+
+lykn-lang
+================
+Name        Project  Compat  Latest   Kind    Platform
+----        -------  ------  ------   ----    --------
+serde       1.0.228  ---     1.0.229  Normal  ---
+serde_json  1.0.150  ---     1.0.154  Normal  ---
+thiserror   2.0.18   ---     2.0.21   Normal  ---
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/adt-pattern-correctness; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 7.27s
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.1M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Checking lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+error: the borrowed expression implements the required traits
+   --> crates/lykn-cli/tests/macro_dependencies.rs:684:26
+    |
+684 |         .env("DENO_DIR", &deno_cache_dir())
+    |                          ^^^^^^^^^^^^^^^^^ help: change this to: `deno_cache_dir()`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#needless_borrows_for_generic_args
+    = note: `-D clippy::needless-borrows-for-generic-args` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_borrows_for_generic_args)]`
+
+error: could not compile `lykn-cli` (test "macro_dependencies") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+make: *** [lint] Error 101

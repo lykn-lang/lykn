@@ -1,0 +1,9 @@
+;; Independent L-03 zero-field declaration control.
+;; Expected: ["object",{"tag":"ListZero"},"object",{"tag":"BareZero"}]
+(type ZeroForms
+  (ListZero)
+  BareZero)
+
+(console:log
+  (JSON:stringify
+    #a((js:typeof ListZero) ListZero (js:typeof BareZero) BareZero)))

@@ -1,0 +1,23 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.11s
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)
+
+running 1 test
+test m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache ... FAILED
+
+failures:
+
+---- m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache stdout ----
+
+thread 'm6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache' (103489093) panicked at crates/lykn-cli/tests/macro_dependencies.rs:686:5:
+assertion failed: materialized_package.join("compiler-private-atoms.js").is_file()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.24s
+
+error: test failed, to rerun pass `-p lykn-cli --test macro_dependencies`

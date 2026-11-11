@@ -1,0 +1,2 @@
+3:7: warning: unused binding 'ZeroForms'
+  suggestion: prefix with underscore: _ZeroForms

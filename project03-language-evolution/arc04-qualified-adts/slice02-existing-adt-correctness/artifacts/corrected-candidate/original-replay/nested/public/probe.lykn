@@ -1,0 +1,18 @@
+;; Independent balanced L-03 nested-constructor control.
+;; Expected observation: the known nested input yields the inner number 7.
+(type Option
+  (Some :any value)
+  None)
+
+(type InnerValue
+  (InnerNumber :number value))
+
+(func select-inner
+  :args (:any input)
+  :returns :any
+  :body
+  (match input
+    ((Some (InnerNumber value)) value)
+    (_ "no match")))
+
+(console:log (select-inner (Some (InnerNumber 7))))

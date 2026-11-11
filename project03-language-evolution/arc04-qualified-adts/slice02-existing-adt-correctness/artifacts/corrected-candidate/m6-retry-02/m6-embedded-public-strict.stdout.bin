@@ -1,0 +1,29 @@
+running 2 tests from ./test/forms/embedded-adt-pattern.test.js
+embedded public compiler handles recursive patterns and zero variants ... FAILED (1ms)
+embedded public compiler preserves private-name macro hygiene ... FAILED (197µs)
+
+ ERRORS 
+
+embedded public compiler handles recursive patterns and zero variants => ./test/forms/embedded-adt-pattern.test.js:31:6
+error: NotCapable: Requires read access to "test/fixtures/semantic-roles/adt-pattern-correctness.lykn", run again with the --allow-read flag
+  const source = await Deno.readTextFile(
+                            ^
+    at Object.readTextFile (ext:deno_fs/30_fs.js:866:24)
+    at assertRuntimeFixture (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:7:29)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:32:9
+
+embedded public compiler preserves private-name macro hygiene => ./test/forms/embedded-adt-pattern.test.js:35:6
+error: NotCapable: Requires read access to "test/fixtures/semantic-roles/adt-pattern-macro-hygiene.lykn", run again with the --allow-read flag
+  const source = await Deno.readTextFile(
+                            ^
+    at Object.readTextFile (ext:deno_fs/30_fs.js:866:24)
+    at assertRuntimeFixture (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:7:29)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/embedded-adt-pattern.test.js:36:9
+
+ FAILURES 
+
+embedded public compiler handles recursive patterns and zero variants => ./test/forms/embedded-adt-pattern.test.js:31:6
+embedded public compiler preserves private-name macro hygiene => ./test/forms/embedded-adt-pattern.test.js:35:6
+
+FAILED | 0 passed | 2 failed (4ms)
+

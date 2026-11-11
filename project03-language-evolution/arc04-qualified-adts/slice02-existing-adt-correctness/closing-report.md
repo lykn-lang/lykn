@@ -8,6 +8,13 @@ raw logs were not saved; fresh corrected/independent receipts will be labeled
 as such. Root moved the uncommitted CC report to its canonical filename while
 preserving its content below. All five PC rows remain open.
 
+Corrected CC candidate: source commit `0829e892999890e8877dec5e35cd249753e1be5d`
+adds the missing self-contained embedded delivery and a cold-cache materialized
+public-path regression. Its full gates and committed-HEAD cited-path check pass.
+All five PC rows remain open pending Sol CDC and root acceptance; see the
+corrected-candidate record appended below. The initial `7b09a4e` report and
+Sol's RV-01 hold remain preserved as history.
+
 Date: 2026-11-11
 Mode: Autonomous Mode, Luna 6 High CC; separate Sol 6.1 High CDC remains pending.
 
@@ -136,3 +143,138 @@ These are CC proposed-done recommendations only. The ledger remains unchanged wi
 ## Downstream boundary
 
 Sol should review the committed diff, independently replay the original controls, and disposition all five PC rows. Root retains parent-plan/ledger writes and final closure. Track the protected prefix-return/postcondition behavior under its Arc01 S04 I4/CV-03 owner; S02 does not claim to resolve it. The unregistered positional fallback remains explicitly non-selective. Qualified/imported constructor ownership and S03 representation work remain later work.
+
+## Corrected-candidate record: embedded package delivery
+
+Date: 2026-11-11. This is a fresh CC verification record for the corrected
+candidate, not a replacement for the initial `7b09a4e` report above. Source
+worktree `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering`,
+branch `codex/adt-pattern-correctness`, is clean at
+`0829e892999890e8877dec5e35cd249753e1be5d` (`fix: embed recursive pattern
+compiler`), parent `7b09a4e119fb841f950111217a07d5d8e833c220`. The source binary
+used for the final direct replay is `bin/lykn`, SHA-256
+`d2319c8a27d987a0aa781eeb2b27eeb988f737629ce1208cefd5f3e1af4bdfc5`.
+
+The correction synchronizes canonical `packages/lang/{binding.js,
+classifier.js,expander-core.js,surface-helpers.js,compiler-private-atoms.js}`
+into the real include root `crates/lykn-lang/embedded/packages/lang/`. It adds
+the M6 CLI delivery test in `crates/lykn-cli/tests/macro_dependencies.rs` and
+strict public runtime tests in `test/forms/embedded-adt-pattern.test.js`. The
+existing `include_dir!` crate-owned packaging remains intact; no config, lock,
+version, dependency, or warm-cache policy changed.
+
+Sol's RV-01 was correct: the source-ready recipe and initial implementation
+missed this duplicate delivery home. Commit `7b09a4e` repaired canonical
+`packages/lang` only, leaving `include_dir!` materialization stale; its passing
+canonical public tests therefore did not establish the installed route. The
+new integration test exercises that boundary directly and the correction
+brings the payload into sync.
+
+M6 starts with an owned XDG cache whose versioned embedded directory does not
+exist, copies `CARGO_BIN_EXE_lykn` into a standalone working directory with no
+`packages/lang` fallback, and runs a Lykn macro trigger through that copied
+binary. It asserts materialization, then compares canonical, embedded, and
+materialized bytes for all five changed modules, including the private helper
+transitive import. A strict Deno product test uses an import map to the actual
+materialized package and executes the nested/literal/zero-field fixture plus
+same-name macro-hygiene fixture. The test passes both nested and zero-field
+controls and private macro value 42. Fresh-XDG behavior is established; the
+existing cache sentinel remains version-based, and this work makes no claim
+that a same-version warm cache is content-invalidated.
+
+Focused corrected-delivery command and captured receipt:
+
+```text
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice02-existing-adt-correctness/artifacts/corrected-candidate/m6-final \
+  cargo test -p lykn-cli --test macro_dependencies \
+  m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache -- --exact
+exit 0; 1 Rust integration test passed; its strict Deno subprocess reported 2 passed, 0 failed.
+```
+
+The focused test's exact process receipts are in
+`artifacts/corrected-candidate/m6-final/`; the full gate log is
+`artifacts/corrected-candidate/make-check-postformat.log`, and the committed
+HEAD cited-path log is `artifacts/corrected-candidate/cited-paths-final-head.log`.
+
+The final full-gate command on the exact formatted corrected source tree was
+`cargo fmt --all -- --check && git diff --check && make check`, exit 0. The log
+ends `ok | 482 passed | 0 failed` and `All checks passed (build + lint + test)`.
+On committed HEAD `0829e892999890e8877dec5e35cd249753e1be5d`,
+`make check-cited-paths` exits 0 with 64 documents and 601 accepted historical
+citations. The earlier `make bundle-size-check` result at initial candidate
+`7b09a4e` is retained: this correction changes only the embedded Rust
+include-dir payload, CLI integration test, and a new test module; canonical
+`packages/lang` and browser bundle inputs are byte-unchanged, so repeating that
+measurement would measure the same inputs. Its prior result was baseline gzip
+27,630 bytes, current gzip 41,349 bytes, delta +13,719 bytes, within the 80 KiB
+budget. The esbuild warning and prior gate pass are described in the initial
+report; no historical raw log was saved.
+
+The original NPAT/ZVAR controls were copied byte-for-byte from the cited
+Project07 original-control artifacts into
+`artifacts/corrected-candidate/original-replay/`; each public work directory
+retains its original driver, probe, lock, and original project config alongside
+the new project config that maps `lang/` to the materialized package. The
+release binary built by the successful full gate first materialized the
+embedded package in fresh `/private/tmp/lykn-arc04-s02-corrected-replay/xdg-cache`
+using a macro-trigger compile. Native NPAT default and stripped runs each
+printed exactly `7\n`. Native ZVAR default and stripped runs each printed
+exactly `["object",{"tag":"ListZero"},"object",{"tag":"BareZero"}]\n`. Both original
+public drivers then compiled and ran through the materialized embedded public
+package: NPAT printed `7\n`; ZVAR printed the same exact tagged-object JSON
+output. All captured compile/run exit statuses are zero. The command files,
+status, stdout, stderr, generated JS and public configs are retained under
+`artifacts/corrected-candidate/original-replay/`; the M6 process receipts and
+final gate logs are under `artifacts/corrected-candidate/`.
+
+New corrected-candidate failures and setup corrections are retained as bounded
+logs under `artifacts/corrected-candidate/`:
+
+1. The first M6 attempt compiled a fixture with no macro invocation, so the
+   CLI correctly never materialized the embedded package; the test then failed
+   its materialization assertion. The source was updated to include a simple
+   macro trigger before the unchanged recursive-pattern fixture.
+2. The first triggered retry used fresh `XDG_CACHE_HOME` for both embedded and
+   Deno's npm cache. The macro expander tried to fetch cached `astring` from
+   npm, but network DNS was unavailable. The test now pins `DENO_DIR` to the
+   host's normal Deno cache while keeping the embedded XDG cache fresh.
+3. The next strict public run reached both tests but lacked `-A`, so its reads
+   of the committed Lykn fixtures failed with `NotCapable`. The runner now
+   grants test permissions; both public tests pass under that import map.
+4. The first corrected full gate caught a Clippy `needless_borrows_for_generic_args`
+   in the new test harness. Removing the unnecessary borrow fixed it; the
+   final full gate passes.
+5. The first original-public replay setup double-redirected stdout and left the
+   generated JS file empty; it was not counted as a product result. Re-running
+   with a single output redirect and copying the bytes to the receipt produced
+   the recorded passing outputs above. A path typo also prevented one initial
+   receipt redirect; corrected command receipts are the ones retained.
+
+Historical limitations and failures remain as stated in the initial report.
+In particular, the protected prefix explicit-return observation
+`stdout=["bad",[]]\n` versus `[7,[7]]\n` is an attested historical result, not a
+raw log and not resolved by this packaging correction; the Arc01 S04 I4/CV-03
+owner remains responsible. The unregistered public flat-pattern path keeps
+historical positional `Object.values` behavior. A prior focused null unit
+command using `--exact` matched zero tests because its test name was shortened;
+the full unit suite passed. The old canonical-browser-size and earlier run
+receipts were not reconstructed.
+
+## Corrected PC dispositions
+
+CC retains the same proposed dispositions; all rows remain `open` in the
+ledger. The embedding correction closes the RV-01 delivery gap for this CC
+candidate but does not confer CDC or root acceptance.
+
+| PC | CC disposition | Corrected evidence boundary |
+| --- | --- | --- |
+| PC-01 | proposed-done | Original NPAT prints `7` through native default/stripped and strict public materialized-package paths; recursive negative and literal controls remain in product fixtures. |
+| PC-02 | proposed-done | Original ZVAR exact tagged-object output passes native default/stripped and strict public materialized-package paths; list and bare zero variants are covered. |
+| PC-03 | proposed-done with disclosed limits | Shared recursive ordering, guard/read/hygiene/control tests pass in native and canonical public routes; embedded strict public path exercises nested, zero and same-name macro cases. Unregistered positional fallback and Arc01 protected prefix-return limit remain disclosed. |
+| PC-04 | proposed-done | Corrected full `make check`, committed-HEAD cited-path gate, and retained earlier bundle-size pass on unchanged canonical/browser inputs. |
+| PC-05 | proposed-done for CC handoff | Corrected source commit and this report/artifacts preserve exact pins, failures, receipts, and downstream owners. CDC/root review and methodology follow-up remain open. |
+
+The planning worktree remains on `planning`; only this slice closing report and
+its `artifacts/corrected-candidate/` evidence are changed by this close. The
+slice ledger and parent plans are not edited. Sol owns independent CDC and
+replay; root owns final acceptance, parent status, and retrospective.

@@ -1,0 +1,4 @@
+7:7: warning: unused binding 'InnerValue'
+  suggestion: prefix with underscore: _InnerValue
+3:7: warning: unused binding 'Option'
+  suggestion: prefix with underscore: _Option

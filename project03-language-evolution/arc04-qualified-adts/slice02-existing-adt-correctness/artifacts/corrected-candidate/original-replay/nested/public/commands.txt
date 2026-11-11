@@ -1,0 +1,4 @@
+DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/private/tmp/lykn-arc04-s02-corrected-replay/xdg-cache /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn compile compile-probe.lykn -o target/final-compile-probe.js
+DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/private/tmp/lykn-arc04-s02-corrected-replay/xdg-cache /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/bin/lykn run --cached-only --no-prompt --allow-read=probe.lykn target/final-compile-probe.js > target/final-public.js
+DENO_DIR=/Users/oubiwann/Library/Caches/deno /opt/homebrew/bin/deno run --config project.json --cached-only --no-prompt target/final-public.js
+Correction after a double-redirect setup mistake: save CLI stdout to target/final-public.js, then copy those bytes to public-generate.stdout.bin before strict runtime.

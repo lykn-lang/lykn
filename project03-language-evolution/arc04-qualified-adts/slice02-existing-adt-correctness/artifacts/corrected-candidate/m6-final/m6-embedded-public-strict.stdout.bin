@@ -1,0 +1,6 @@
+running 2 tests from ./test/forms/embedded-adt-pattern.test.js
+embedded public compiler handles recursive patterns and zero variants ... ok (42ms)
+embedded public compiler preserves private-name macro hygiene ... ok (18ms)
+
+ok | 2 passed | 0 failed (62ms)
+
