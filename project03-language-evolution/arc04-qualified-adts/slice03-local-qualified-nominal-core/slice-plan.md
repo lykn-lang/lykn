@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.14"
+version: "1.15"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,15 +203,14 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration08](cc-prompt-iteration08.md), explicit pattern grammar,
-single function-default traversal and safe malformed headers after iteration07's HOLD,
-starting atb8a1fa17/treed3e604b2 (the accepted B1 ancestor remains3f197340). The preserved initial
-design remains historical where superseded by the role contract. Root owns
-architecture/planning; Luna owns task source/build until clean handoff; Sol
-then independently validates actual software. IC-01 has its own ledger row,
-and LC-02–08 remain open. No release edits/integration or external actions.
-After acceptance resume concrete qualified-constructor preparation against the
-new exact source, preserving the original B/C and downstream gates.
+**Current assignment:** [iteration08](cc-prompt-iteration08.md) is independently
+accepted for IC-01 at e80f613b/tree7376b33d. Its explicit pattern grammar,
+single function-default traversal and ordinary malformed-header diagnostics
+close this prerequisite only. Root resumes B2 qualified-constructor preparation
+against this accepted source; no next CC source assignment has been issued.
+The preserved initial design remains historical where superseded by the role
+contract/corrections. LC-02–08 remain open. No release edits/integration or
+external actions; original B/C, purity, API and downstream gates survive.
 
 ## Assignment history
 
@@ -225,7 +224,7 @@ new exact source, preserving the original B/C and downstream gates.
 | cc-prompt-iteration05.md | 2026-11-11 | iteration04 | IC-01 binding-role/emitted-name prerequisite | Continued by06 after first full gate exposed a necessary guide-example rename |
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
 | cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
-| cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Returned for independent review at e80f613b/tree7376b33d; root verified six-path delta and clean source |
+| cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -314,3 +313,15 @@ and28 public cases, citations64/601 and size43996 pass. Early expectation,
 filter and stale-map attempts remain disclosed transcript-only. Root transfers
 exclusive source/build execution to Sol; IC-01 and LC-02–08 stay open until
 independent disposition. Prior A/B1 and release0829 remain unchanged.
+
+Independent Sol review accepts IC-01 at that exact pin. The
+[correction02 verification](artifacts/increment-ic01/correction02/cdc/README.md)
+reproduces repaired R06–08 and retained R01–05 behavior, fresh numeric-exit0
+full checks (1187 language units,1536 corpus/67 steps,482 docs once), cold
+twelve-module/28-case M6, citations64/601, browser43996 and isolated copied
+CLI/browser-compiled ESM controls. Its own setup/helper failures and both actual
+native binary hashes are preserved distinctly. Root verified archive
+a889c79e0a1fb50847b9a0dbe8edd975a45096b1a0bd9d75eaef46c32c93fd7a.
+Only IC-01 closes. The B2 preparation handoff records the accepted source,
+remaining lexical identity/clause/member/native-order design inputs and the
+requirement for a source-ready next numbered assignment before implementation.

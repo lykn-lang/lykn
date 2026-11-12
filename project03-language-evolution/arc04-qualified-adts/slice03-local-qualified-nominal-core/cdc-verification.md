@@ -614,3 +614,106 @@ acceptance is unchanged, LC02–08/S03 and B2 D1/native-ordering carryovers rema
 open, and release0829 is unchanged. Source/build and CDC record/evidence
 ownership return to root for correction; root retains planning Git/index/status
 and architecture. This review grants no further implementation authority.
+
+## IC-01 correction02 candidate e80f613b — independent acceptance
+
+**Accept IC-01 only** at clean source
+`e80f613baf8f52d7b8f42e05ac38e99c69513d46`, tree
+`7376b33d7ca8e66942afd88036599e9e5e4bae35`, codex/qualified-adt-core in the
+assigned contract-predicate-lowering worktree. Reviewed the six authorized
+changed paths against issued iteration08, correction02 design, role contract
+and slice plan v1.14. Source/index were diagnosis-only and remain clean;
+git diff --check passes. The earlier two HOLD records remain historical.
+
+### Corrected findings and preservation
+
+R06's original keyword-key/package-local loop and bind inputs now reject
+through actual native checked compile, stripped compile and check, and public
+direct validation/complete/expandExpr. Their safe-local counterparts actually
+execute `1\n` with empty stderr in both native modes and public output. Typed
+nested-alias external package key remains legal and executes `local-value\n`.
+Every inspected private projection/default caller explicitly selects the
+producer's TypedParameter or BindingPattern grammar; public pattern helper
+signatures remain fixed-grammar adapters and match grammar remains separate.
+Loop/catch optional alias defaults have direct negative role controls. The
+older catch safe-input emitter failure remains a limitation, not runtime proof.
+
+R07's retained independent direct count driver now reports
+`[example,value,local,inner]` for the named kernel function, corresponding
+once-only fn/arrow counts, and unchanged once-only class/declaration counts.
+Product/native controls additionally cover func/genfunc, anonymous generator,
+fn/lambda/genfn, arrow and escaped kernel lambda. The public trusted-marked
+lambda is distinguished from source typed lambda. Distinct same-name
+parameters remain two occurrences; there is no global deduplication. The public
+function branch now returns after its one parameter/default/body traversal.
+
+R08's actual `(func)` and `(genfunc)` native checked/stripped compile/check
+invocations exit1 with normal missing-name diagnostics, never101. Checked
+splitting creates no invented binding; public complete/expandExpr retain
+ordinary diagnostics. Reserved-name validation alone is not a grammar parser.
+
+Prior independent R01–05 repairs remain applicable to unchanged shared parser
+and computed-callee behavior and stay green in this pin's focused/full product
+checks. The independent census also replays supported restricted/renamed macro,
+typed alias, last-wins groups and body/post orders. Both public orders actually
+execute `true\n`; native body-before-post does likewise checked/stripped and
+passes check. Its explicitly retained post-before-body rejection is unchanged.
+No new product blocker was found in this bounded independent review.
+
+### Fresh independent gates and delivery
+
+Canonical mapping targets actual packages/lang, avoiding stale target staging.
+Focused public checks pass **20/20** (3 parity + 17 role), native binding units
+**33/33** (1,154 filtered), and native CLI compile controls **43/43**
+(141 filtered). Fresh full `make check` records numeric **exit0**, raw streams
+and all-checks-passed marker: **1,187 language units**, **1,536 product tests
+across67 steps**, **482 documentation tests once**. Committed-HEAD citations
+pass exit0 with **64 documents/601 historical citations**. Browser gate passes
+exit0 at **43,996 gzip bytes**, +16,366 over27,630, within80KiB.
+
+Cold release-profile M6 passes **1/1 integration test** (5 filtered), all
+**12 canonical/embedded/materialized byte comparisons** and actual **28/28
+materialized public cases** (11 retained +17 role), through its recorded real
+lang/ map. A separate copied fresh full-built bin CLI uses an empty standalone
+directory and fresh owned XDG, proving macro42 delivery and actual shadowed
+guard/error output. Twelve compiler files plus deno metadata match embedded
+bytes. Copied package/normalized-if!/loop-alias/supported-macro negatives reject
+in all twelve checked/stripped/check invocations. Legal property/global-eval/
+bound-bind output compiles both modes, executes `property-ok\nfunction\n` with
+empty stderr and passes check.
+
+The normal browser compile adapter, explicitly mapped to the browser expander,
+rejects package/normalized-if!/loop locals. Its actual fallback-import ESM runs
+the expected TypeError/TypeError/Error results in an ESM-capable no-network
+consumer. This is compileLykn output proof; indirect-eval run/load, CSP and
+module-loader policy remain S06 limits. Seven changed/new IC mirror comparisons
+also pass, DD49 algorithm comparison retains its known blank-line-only change,
+and parser/Set reexport identities remain equal.
+
+Fresh full-built bin and copied CLI SHA-256 is
+`67dc1b6ad2881b9b80fabfc36544db90f7eb6f4d1c8577b5aff32f1189e75106`.
+Later release-profile M6 compilation leaves target/release/lykn at distinct
+`36fe67a4ae7e26d5df01245110b2a117ea2d8109fe682cd9ed2cbae4c3bd905f`;
+both are recorded against the same source, without a false byte-equality claim.
+Rust/Cargo1.97.0, Deno2.9.6, explicit existing DENO_DIR and owned npm/XDG/tmp
+were used from focused launch onward. Existing warnings remain in raw streams.
+
+[Independent evidence index](artifacts/increment-ic01/correction02/cdc/README.md)
+and [archive](artifacts/increment-ic01/correction02/cdc/receipts-e80f613b.tar.gz)
+preserve actual commands/statuses, sources, emitted modules, full/cold/browser
+proof, counts and final pins. Archive SHA-256:
+`a889c79e0a1fb50847b9a0dbe8edd975a45096b1a0bd9d75eaef46c32c93fd7a`.
+First M6 launch101 was the reviewer's missing precreated evidence-directory
+condition; the subsequent fresh cold fixture passes. A browser research helper
+first failed because bare set! is unsupported; its original source/raw error
+and corrected property mutation/pass are retained. Neither is a product
+regression. CC's missing historical wrapped full status and transcript-only
+failures/Clippy log remain disclosed; no historical raw log was reconstructed.
+
+IC-01 is independently accepted. Accepted A/B1 are unchanged; LC02–08/S03 and
+the retained B2 D1/native-ordering/catch-emitter obligations remain open. No
+qualified syntax/purity or general resolver repair is accepted here. Browser
+run/load, I4, warm-cache and legacy fallback limits remain explicit; release0829
+is untouched. Source/build and CDC record/evidence ownership return to root;
+root owns planning Git/index/ledger/status and architecture. No further
+implementation, integration or release authority follows from this review.

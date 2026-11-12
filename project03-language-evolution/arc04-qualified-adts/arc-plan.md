@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.6"
+version: "1.7"
 related: [project07-core-library-research]
 ---
 
@@ -12,11 +12,11 @@ related: [project07-core-library-research]
 is open from independently integrated release `0829e892`. The finite protected-
 host/reference prerequisite is independently accepted at 5caf3d87 (LC-01),
 and per-call public type isolation at 3f197340 is accepted as partial LC-02.
-The operator authorized the revised binding-role contract and bounded IC-01
-implementation/independent validation before nominal activation. Its
-[iteration05](slice03-local-qualified-nominal-core/cc-prompt-iteration05.md)
-is active on the task branch; the
-eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
+The binding-role prerequisite IC-01 is independently accepted at e80f613b,
+tree7376b33d after preserved iterations05–08 and both software HOLDs.
+[Independent verification](slice03-local-qualified-nominal-core/artifacts/increment-ic01/correction02/cdc/README.md)
+closes the bounded repair only. Root resumes B2 preparation against this pin;
+no next source assignment has been issued. The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
 passes all three independent gates, including fresh release full checks and
@@ -110,6 +110,11 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-11 v1.7. Accept S03's bounded IC-01 binding-role repair at e80f613b
+  after independent actual source/runtime/full/delivery verification. Resume B2
+  preparation; retain LC-02–08, native ordering/class/clause and API obligations,
+  historical failures and unchanged release0829.
 
 - 2026-11-11 v1.6. Settle the IC-01 binding-role recipe after source-readiness
   corrections and issue iteration05 under explicit operator authority. Preserve

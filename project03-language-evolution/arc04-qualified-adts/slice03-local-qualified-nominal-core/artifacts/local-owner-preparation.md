@@ -362,3 +362,30 @@ success. The general native post/body name-resolution/lowering order issue is
 a concrete B2 input, separate from restoring the previously valid public path.
 The [review record](../cdc-verification.md#ic-01-candidate-5bdbfe3c--2026-11-11)
 and original source/output/ordering baselines preserve the distinction.
+
+### B2 preparation resumes after accepted IC-01
+
+IC-01 is independently accepted at e80f613baf8f52d7b8f42e05ac38e99c69513d46,
+tree7376b33d7ca8e66942afd88036599e9e5e4bae35 on codex/qualified-adt-core.
+The [verification](increment-ic01/correction02/cdc/README.md) closes actual
+emitted-binding validation and delivery, not typed owner/case metadata or
+nominal semantics. BindingPattern and TypedParameter are now explicit private
+producer choices; their public adapter signatures remain unchanged. Preserve
+the finite DD49/strict-binding policy and data/member-key distinctions when
+introducing future namespace members and hygienic constructor parameters.
+
+The next engineering increment is B2's source-ready local owner/case recipe,
+not another IC correction. Root must connect lexical declaration ownership and
+immutable aliases to per-unit typed OwnerRef/CaseRef requests and finalization
+after actual expanded declarations, without moving or replaying macro phases.
+Resolve declaration-position TDZ, generated-namespace hygiene and real qualifier
+reads through construction/matching before issuing the next numbered prompt.
+The earlier withdrawn macro-first proposal stays withdrawn. Existing source
+Func clause-union, class-member aggregate and native post-before-body ordering
+inputs above must receive concrete dispositions before broad lexical-identity
+claims; IC-01 does not close them. Private initialization-purity provenance
+requires its own reviewed recipe before use. LC-02–08 and later imported
+graph/emission, composition and API/docs/book/human obligations remain open.
+
+No qualified implementation assignment, library repository creation, release
+integration, publication or licence selection follows from this checkpoint.

@@ -169,3 +169,43 @@ Both binding walkers now select mandatory TypedParameter or BindingPattern gramm
 Committed-pin `make check` reports 1,536/0 product tests across 67 steps and 482/0 documentation tests run once, with the final all-checks-passed marker. The wrapped numeric exit code was not retained by its first writer; raw output is preserved and no historical status was reconstructed. Cold M6 passed 1/1 integration tests across the actual 12-file module union and asserts 28/28 public cases. Post-commit citations passed for 64 documents/601 accepted historical citations. Browser size is 43,996 gzip bytes, +16,366 from the 27,630-byte baseline, within 80 KiB; existing astring package-condition warnings are preserved in the log. Focused results and all raw receipts are in the CC index directory.
 
 The clean source/build worktree is returned to Sol for fresh independent review. Root retains planning index/staging and disposition. No LC row closes, no broader B2 ordering or class aggregation repair is claimed, and release integration/push/publication did not occur.
+
+## IC-01 root disposition after independent correction02 acceptance
+
+Root accepts the bounded IC-01 prerequisite at e80f613baf8f52d7b8f42e05ac38e99c69513d46,
+tree7376b33d7ca8e66942afd88036599e9e5e4bae35, after Sol's
+[independent verification](artifacts/increment-ic01/correction02/cdc/README.md).
+Root rechecked clean source/pin, six authorized changed paths, and archive
+SHA-256 a889c79e0a1fb50847b9a0dbe8edd975a45096b1a0bd9d75eaef46c32c93fd7a.
+IC-01 is done; LC-01 stays done and LC-02–08/S03 remain open. All earlier HOLDs,
+candidate commits, disclosed missing historical raw logs and failed attempts
+remain preserved. The independent run supplies actual numeric-exit0 full,
+citation, size and cold delivery evidence; it does not reconstruct CC's missing
+historical status. Release/0.6.x remains clean0829e892, with no integration,
+push or publication.
+
+The settled contract uses actual binding roles and producer-selected pattern
+grammar, DD49 emitted-name validation, one visit per executable default region,
+ordinary malformed-source diagnostics, legal external-key preservation and
+separate source/kernel lambda identity. Existing public helper signatures are
+unchanged; corrected validation/projection behavior remains an S06 audit input.
+Fresh independent proof is1187 language units,1536 product cases/67 steps,
+482 docs once,20 public focused,33 binding and43 CLI controls, twelve cold
+module comparisons/28 materialized public cases, citations64/601 and43996 gzip
+bytes within80KiB, plus actual isolated CLI/browser-compiled ESM execution.
+
+Checkpoint observations for the eventual S03 retrospective: green broad tests
+did not expose producer-grammar defaults or repeated header traversal. The
+successful method made the semantic grammar mandatory at every private caller,
+separated structural headers from executable regions, and paired invalid cases
+with valid actual ESM plus occurrence-count oracles. Both review HOLDs changed
+the causal recipe rather than just adding a spelling blacklist. Future B2
+commands must retain raw status/streams from their first attempt; missing old
+logs stay explicit. The full slice retrospective is still due at S03 closure.
+
+B2 preparation resumes at the accepted source as recorded in
+[local-owner-preparation.md](artifacts/local-owner-preparation.md). Root owes a
+source-ready typed owner/case and lexical-identity recipe before a new numbered
+CC assignment. No new qualified-constructor implementation is inferred from
+this acceptance; original clause/member/native-ordering, purity, imported-graph,
+build/JSON and API/docs/book/human gates retain their owners and remain open.
