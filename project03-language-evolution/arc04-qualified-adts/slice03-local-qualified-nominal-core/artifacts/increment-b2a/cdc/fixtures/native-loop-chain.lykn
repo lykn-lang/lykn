@@ -1,0 +1,3 @@
+(macro alpha () `(beta))
+(macro beta () `(alpha))
+(alpha)

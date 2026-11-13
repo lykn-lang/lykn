@@ -1,0 +1,3 @@
+(import "/tmp/lykn-b2a-cdc-e80/packages/lang/mod.js" (lykn))
+(bind source (Deno:readTextFileSync (get Deno:args 0)))
+(console:log (lykn source))

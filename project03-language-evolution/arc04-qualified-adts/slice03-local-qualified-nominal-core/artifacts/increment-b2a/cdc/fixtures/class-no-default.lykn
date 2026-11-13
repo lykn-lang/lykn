@@ -1,0 +1,4 @@
+(class Sample ()
+  (value (amount) (return (+ amount 1))))
+(bind sample (new Sample))
+(console:log (sample:value 41))

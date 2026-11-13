@@ -736,3 +736,53 @@ explicit, preserving macro phases/private metadata. Root issues iteration09;
 B2-LX, B2b and LC-02–08 remain open. The review is source-readiness only and
 does not settle B2b's eventual storage/consumer API or accept typed owners,
 nominal runtime, purity, release integration or the later emission experiment.
+
+## B2a candidate bcb98482 — 2026-11-12 independent HOLD
+
+Separate Sol6.1High CDC independently reviewed the clean task source at
+bcb98482fa9b32aa6f58df3e2249123e16924271,
+tree72adf0ee9beb51eb6b0a9166ad9448b8103cfbb9, and freshly checked its native
+release build. No source edits were made. Root's dedicated source/build
+ownership is returned clean after the bounded review. Full independent gates
+were deliberately not run on the known-bad candidate.
+
+**B2-LX: HOLD.** Three causal repair areas are reproduced in
+[the independent index](artifacts/increment-b2a/cdc/README.md):
+
+1. Native fixed-point macro results bypass renewed lexical/try_desugar
+   priority: chained bound and car/cons witnesses execute99 while paired direct
+   controls execute41. Adjacent pre-binding genfunc rejection also makes an
+   ordinary bound call change from compile0 to compile1 when an unrelated macro
+   activates pass2. This violates iteration09, although the inner loop itself
+   predates B2a.
+2. Public class defaults pass an Array to a list-node path helper and throw
+   TypeError. The same valid source compiles and executes42 with immutable e80
+   public code; candidate's no-default control also executes42.
+3. Native named kernel:function loses its parameter role through incomplete
+   prefix normalization. The escaped witness executes[7]; ordinary native and
+   current public escaped controls execute7.
+
+Actual emitted ESM, native/public Lykn fixtures/drivers, numeric command exits,
+stdout/stderr, source/binary identities and the reviewed diff are retained.
+The genuine dynamic alpha/beta chain retains its normal1000-limit diagnostic
+and original alpha name; raw discard remains lazy. Failed loop/probe attempts
+and authored-but-unrun fixtures are explicitly separated from findings in the
+index. No fourth malformed-header finding is claimed from an unsuitable
+throw-shaped macro-expression attempt.
+
+[Evidence archive](artifacts/increment-b2a/cdc/receipts-bcb98482.tar.gz) SHA-256:
+`d9d1b02c8ace3d9777f292e8e56eacd736f242b97858e27c2134182f668e2963`.
+The archive contains the index, fixtures, generated outputs and raw receipts;
+its external digest is retained at `artifacts/increment-b2a/cdc/archive.sha256`.
+
+Root and CDC reconciled the original CC full log:1546 product passes/67steps/
+0failures, docs482/0. Original1536 attestation text remains historical; the
+raw excerpt/log digest identify the correction. This is not a fresh independent
+full-gate claim. Full make/check/docs, cold M6, copied CLI/browser, citations,
+size and complete prior-control disposition remain pending corrected software.
+
+The current root iteration10 R01–03 correction mechanics, including bound
+unsupported-form gating, were separately source-readiness reviewed and are
+ready for issue. That verdict does not accept future software. Earlier A/B1/
+IC acceptance remains unchanged; B2b, LC-02–08 and S03 stay open, with
+B2-ID-NAME pending. No release integration or remote action occurred.

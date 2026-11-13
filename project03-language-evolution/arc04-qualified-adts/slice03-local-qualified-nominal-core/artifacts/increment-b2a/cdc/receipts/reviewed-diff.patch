@@ -1,0 +1,1205 @@
+diff --git a/crates/lykn-lang/src/expander/pass2.rs b/crates/lykn-lang/src/expander/pass2.rs
+index 3f88d938..d5909edc 100644
+--- a/crates/lykn-lang/src/expander/pass2.rs
++++ b/crates/lykn-lang/src/expander/pass2.rs
+@@ -33,13 +33,10 @@ pub fn expand_all(
+     let mut scope: Vec<String> = Vec::new();
+     let mut result = Vec::new();
+     for form in forms {
+-        let hoist = crate::resolver::hoisted_names(&form);
+         if let Some(expr) = expand_expr(form, deno, env, &mut scope)? {
++            scope.extend(actual_expanded_hoists(&expr, &scope));
+             result.push(expr);
+         }
+-        // Top-level declarations (`bind`, `import` locals) shadow in the forms
+-        // that follow them.
+-        scope.extend(hoist);
+     }
+     Ok(result)
+ }
+@@ -83,6 +80,16 @@ fn expand_expr(
+         SExpr::List { values, span } => {
+             let head = &values[0];
+ 
++            if head.as_form_head() == Some("genfunc")
++                && let Some(layout) = crate::lexical_regions::source_function_regions(&form, true)
++                && layout.clauses.len() > 1
++            {
++                return Err(LyknError::Read {
++                    message: "genfunc: multiple clauses are not supported".to_string(),
++                    location: span.start,
++                });
++            }
++
+             if let Some(head_name) = head.as_atom() {
+                 // `(quote ...)` suppresses all expansion.
+                 if head_name == "quote" {
+@@ -251,6 +258,13 @@ fn expand_children_scoped(
+             }
+             Ok(out)
+         }
++        crate::resolver::ScopePlan::Call => values
++            .iter()
++            .map(|child| {
++                expand_expr(child.clone(), deno, env, scope)
++                    .map(|form| form.unwrap_or_else(|| child.clone()))
++            })
++            .collect(),
+         crate::resolver::ScopePlan::Match { subject, clauses } => {
+             let Some(subject) = subject else {
+                 return Ok(values.to_vec());
+@@ -268,7 +282,209 @@ fn expand_children_scoped(
+             }
+             Ok(out)
+         }
++        crate::resolver::ScopePlan::SourceFunction(Some(layout)) => {
++            expand_source_function(form, values, &layout, deno, env, scope)
++        }
++        crate::resolver::ScopePlan::SourceFunction(None)
++        | crate::resolver::ScopePlan::Class(None) => Ok(values.to_vec()),
++        crate::resolver::ScopePlan::Class(Some(layout)) => {
++            expand_class(form, values, &layout, deno, env, scope)
++        }
++    }
++}
++
++fn expand_source_function(
++    form: &SExpr,
++    _values: &[SExpr],
++    layout: &crate::lexical_regions::FunctionRegions,
++    deno: &mut DenoSubprocess,
++    env: &MacroEnv,
++    scope: &mut Vec<String>,
++) -> Result<Vec<SExpr>, LyknError> {
++    let mark = scope.len();
++    if let Some(path) = &layout.name_path
++        && let Some(name) = crate::lexical_regions::at_path(form, path).and_then(SExpr::as_atom)
++    {
++        scope.push(name.to_string());
++    }
++    let mut out = form.clone();
++    for clause in &layout.clauses {
++        let clause_mark = scope.len();
++        if let Some(path) = &clause.params_path
++            && let Some(params) = crate::lexical_regions::at_path(form, path)
++        {
++            let occurrences = if layout.grammar == crate::lexical_regions::FunctionGrammar::Kernel {
++                crate::binding::kernel_param_names(params)
++            } else {
++                crate::binding::typed_param_names(params)
++            };
++            scope.extend(
++                occurrences
++                    .into_iter()
++                    .filter(|site| site.kind.shadows_values())
++                    .filter_map(|site| site.atom.as_atom().map(str::to_string)),
++            );
++        }
++        for path in &clause.default_paths {
++            expand_selected_path(form, &mut out, path, deno, env, scope)?;
++        }
++        if let Some(path) = clause.pre_paths.first() {
++            expand_selected_path(form, &mut out, path, deno, env, scope)?;
++        }
++        for path in &clause.body_paths {
++            if let Some(expanded) = expand_selected_path(form, &mut out, path, deno, env, scope)? {
++                scope.extend(actual_expanded_hoists(&expanded, scope));
++            }
++        }
++        if layout.grammar != crate::lexical_regions::FunctionGrammar::SourceGenfunc
++            && let Some(path) = clause.post_paths.first()
++        {
++            expand_selected_path(form, &mut out, path, deno, env, scope)?;
++        }
++        scope.truncate(clause_mark);
++    }
++    scope.truncate(mark);
++    Ok(match out {
++        SExpr::List { values, .. } => values,
++        _ => Vec::new(),
++    })
++}
++
++fn expand_class(
++    form: &SExpr,
++    _values: &[SExpr],
++    layout: &crate::lexical_regions::ClassRegions,
++    deno: &mut DenoSubprocess,
++    env: &MacroEnv,
++    scope: &mut Vec<String>,
++) -> Result<Vec<SExpr>, LyknError> {
++    let mark = scope.len();
++    if let Some(path) = &layout.name_path
++        && let Some(name) = crate::lexical_regions::at_path(form, path).and_then(SExpr::as_atom)
++    {
++        scope.push(name.to_string());
++    }
++    let mut out = form.clone();
++    for path in &layout.base_paths {
++        expand_selected_path(form, &mut out, path, deno, env, scope)?;
++    }
++    for member in &layout.members {
++        expand_class_member(form, &mut out, member, deno, env, scope)?;
++    }
++    scope.truncate(mark);
++    Ok(match out {
++        SExpr::List { values, .. } => values,
++        _ => Vec::new(),
++    })
++}
++
++fn expand_class_member(
++    root: &SExpr,
++    out: &mut SExpr,
++    layout: &crate::lexical_regions::ClassMemberRegions,
++    deno: &mut DenoSubprocess,
++    env: &MacroEnv,
++    class_scope: &mut Vec<String>,
++) -> Result<(), LyknError> {
++    let Some(member) = crate::lexical_regions::at_path(root, &layout.path) else {
++        return Ok(());
++    };
++    let Some(values) = member.as_list() else {
++        return Ok(());
++    };
++    let head = values.first().and_then(SExpr::as_atom).unwrap_or("");
++    if matches!(head, "static" | "async") {
++        if let Some(inner) = &layout.inner {
++            return expand_class_member(root, out, inner, deno, env, class_scope);
++        }
++        return Ok(());
++    }
++    if layout.grammar == crate::lexical_regions::ClassMemberGrammar::Field {
++        for init in &layout.init_paths {
++            expand_selected_path(root, out, init, deno, env, class_scope)?;
++        }
++        return Ok(());
++    }
++    let Some(params_path) = &layout.params_path else {
++        return Ok(());
++    };
++    let params = crate::lexical_regions::at_path(root, params_path).unwrap_or(member);
++    let mark = class_scope.len();
++    class_scope.extend(
++        crate::binding::kernel_param_names(params)
++            .into_iter()
++            .filter(|site| site.kind.shadows_values())
++            .filter_map(|site| site.atom.as_atom().map(str::to_string)),
++    );
++    for path in &layout.default_paths {
++        expand_selected_path(root, out, path, deno, env, class_scope)?;
++    }
++    for path in &layout.body_paths {
++        if let Some(expanded) = expand_selected_path(root, out, path, deno, env, class_scope)? {
++            class_scope.extend(actual_expanded_hoists(&expanded, class_scope));
++        }
++    }
++    class_scope.truncate(mark);
++    Ok(())
++}
++
++fn expand_selected_path(
++    root: &SExpr,
++    out: &mut SExpr,
++    path: &crate::lexical_regions::OccurrencePath,
++    deno: &mut DenoSubprocess,
++    env: &MacroEnv,
++    scope: &mut Vec<String>,
++) -> Result<Option<SExpr>, LyknError> {
++    let Some(node) = crate::lexical_regions::at_path(root, path) else {
++        return Ok(None);
++    };
++    let expanded = expand_expr(node.clone(), deno, env, scope)?;
++    if let Some(replacement) = expanded.clone() {
++        *out = replace_at_path(out, &path.0, replacement);
++    }
++    Ok(expanded)
++}
++
++fn replace_at_path(root: &SExpr, path: &[usize], replacement: SExpr) -> SExpr {
++    if path.is_empty() {
++        return replacement;
++    }
++    let SExpr::List { values, span } = root else {
++        return root.clone();
++    };
++    let Some(child) = values.get(path[0]) else {
++        return root.clone();
++    };
++    let mut rebuilt = values.clone();
++    rebuilt[path[0]] = replace_at_path(child, &path[1..], replacement);
++    SExpr::List {
++        values: rebuilt,
++        span: *span,
++    }
++}
++
++fn actual_expanded_hoists(form: &SExpr, scope: &[String]) -> Vec<String> {
++    let Some(values) = form.as_list() else {
++        return Vec::new();
++    };
++    let Some(head) = values.first() else {
++        return Vec::new();
++    };
++    let Some(name) = head.as_form_head() else {
++        return Vec::new();
++    };
++    if scope.iter().any(|bound| bound == name) {
++        return Vec::new();
++    }
++    if matches!(name, "export" | "async") {
++        return values
++            .iter()
++            .skip(1)
++            .flat_map(|child| actual_expanded_hoists(child, scope))
++            .collect();
+     }
++    crate::resolver::hoisted_names(form)
+ }
+ 
+ fn expand_match_clause(
+@@ -317,11 +533,10 @@ fn expand_seq(
+     let mark = scope.len();
+     let mut out = Vec::with_capacity(values.len());
+     for sub in values {
+-        let hoist = crate::resolver::hoisted_names(sub);
+         if let Some(e) = expand_expr(sub.clone(), deno, env, scope)? {
++            scope.extend(actual_expanded_hoists(&e, scope));
+             out.push(e);
+         }
+-        scope.extend(hoist);
+     }
+     scope.truncate(mark);
+     Ok(out)
+diff --git a/crates/lykn-lang/src/lexical_regions.rs b/crates/lykn-lang/src/lexical_regions.rs
+new file mode 100644
+index 00000000..4d11e801
+--- /dev/null
++++ b/crates/lykn-lang/src/lexical_regions.rs
+@@ -0,0 +1,491 @@
++//! Structural lexical regions for source functions and class members.
++//!
++//! Paths are child indexes in the original syntax tree. They identify an
++//! occurrence in this traversal only; they are not spans or binding identity.
++
++use crate::ast::sexpr::SExpr;
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub(crate) enum FunctionGrammar {
++    SourceFunc,
++    SourceGenfunc,
++    TypedSource,
++    Kernel,
++}
++
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub(crate) struct OccurrencePath(pub(crate) Vec<usize>);
++
++#[derive(Clone, Debug)]
++pub(crate) struct FunctionClauseRegions {
++    pub(crate) params_path: Option<OccurrencePath>,
++    pub(crate) default_paths: Vec<OccurrencePath>,
++    pub(crate) pre_paths: Vec<OccurrencePath>,
++    pub(crate) body_paths: Vec<OccurrencePath>,
++    pub(crate) post_paths: Vec<OccurrencePath>,
++}
++
++#[derive(Clone, Debug)]
++pub(crate) struct FunctionRegions {
++    pub(crate) grammar: FunctionGrammar,
++    pub(crate) name_path: Option<OccurrencePath>,
++    pub(crate) clauses: Vec<FunctionClauseRegions>,
++}
++
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub(crate) enum ClassMemberGrammar {
++    Method,
++    Constructor,
++    Getter,
++    Setter,
++    Field,
++    Wrapper,
++    Opaque,
++}
++
++#[derive(Clone, Debug)]
++pub(crate) struct ClassMemberRegions {
++    pub(crate) path: OccurrencePath,
++    pub(crate) grammar: ClassMemberGrammar,
++    pub(crate) inner: Option<Box<ClassMemberRegions>>,
++    pub(crate) params_path: Option<OccurrencePath>,
++    pub(crate) default_paths: Vec<OccurrencePath>,
++    pub(crate) body_paths: Vec<OccurrencePath>,
++    pub(crate) init_paths: Vec<OccurrencePath>,
++}
++
++#[derive(Clone, Debug)]
++pub(crate) struct ClassRegions {
++    pub(crate) name_path: Option<OccurrencePath>,
++    pub(crate) base_paths: Vec<OccurrencePath>,
++    pub(crate) members: Vec<ClassMemberRegions>,
++}
++
++#[derive(Clone, Copy, Debug)]
++pub(crate) struct KeywordRange<'a> {
++    pub(crate) key: &'a str,
++    pub(crate) value_start: usize,
++    pub(crate) value_end: usize,
++}
++
++/// Retain each selected keyword group's original indexes, with last occurrence
++/// winning just like `parse_keyword_clauses`.
++pub(crate) fn keyword_group_ranges(args: &[SExpr]) -> Vec<KeywordRange<'_>> {
++    let mut selected = Vec::<KeywordRange<'_>>::new();
++    let mut current: Option<(&str, usize)> = None;
++    for (index, arg) in args.iter().enumerate() {
++        if let Some(key) = arg.as_keyword().filter(|key| is_func_clause_key(key)) {
++            if let Some((old_key, value_start)) = current.take() {
++                insert_last(
++                    &mut selected,
++                    KeywordRange {
++                        key: old_key,
++                        value_start,
++                        value_end: index,
++                    },
++                );
++            }
++            current = Some((key, index + 1));
++        }
++    }
++    if let Some((key, value_start)) = current {
++        insert_last(
++            &mut selected,
++            KeywordRange {
++                key,
++                value_start,
++                value_end: args.len(),
++            },
++        );
++    }
++    selected
++}
++
++fn insert_last<'a>(ranges: &mut Vec<KeywordRange<'a>>, range: KeywordRange<'a>) {
++    if let Some(previous) = ranges.iter_mut().find(|previous| previous.key == range.key) {
++        *previous = range;
++    } else {
++        ranges.push(range);
++    }
++}
++
++pub(crate) fn is_func_clause_key(name: &str) -> bool {
++    matches!(
++        name,
++        "args" | "yields" | "returns" | "pre" | "post" | "body"
++    )
++}
++
++/// Describe the actual supported source `func`/`genfunc` header shape. A
++/// malformed or unrecognized layout returns `None` for the classifier to
++/// report through its established diagnostic path.
++pub(crate) fn source_function_regions(form: &SExpr, generator: bool) -> Option<FunctionRegions> {
++    let SExpr::List { values, .. } = form else {
++        return None;
++    };
++    if values.first().and_then(SExpr::as_atom) != Some(if generator { "genfunc" } else { "func" }) {
++        return None;
++    }
++    let name_path = values.get(1).map(|_| OccurrencePath(vec![1]));
++    let rest = values.get(2..)?;
++    if rest.is_empty() {
++        return None;
++    }
++
++    let multi = matches!(rest.first(), Some(SExpr::List { values, .. })
++        if values.first().and_then(SExpr::as_keyword).is_some_and(is_func_clause_key));
++    let keyword = !multi
++        && rest
++            .first()
++            .and_then(SExpr::as_keyword)
++            .is_some_and(is_func_clause_key);
++    let mut clauses = Vec::new();
++    if multi {
++        for (relative_index, clause) in rest.iter().enumerate() {
++            let SExpr::List { values: items, .. } = clause else {
++                return None;
++            };
++            if !items
++                .first()
++                .and_then(SExpr::as_keyword)
++                .is_some_and(is_func_clause_key)
++            {
++                return None;
++            }
++            clauses.push(source_clause_regions(items, vec![relative_index + 2], 0)?);
++        }
++    } else if keyword {
++        clauses.push(source_clause_regions(rest, Vec::new(), 2)?);
++    } else {
++        clauses.push(FunctionClauseRegions {
++            params_path: None,
++            default_paths: Vec::new(),
++            pre_paths: Vec::new(),
++            body_paths: (2..values.len())
++                .map(|index| OccurrencePath(vec![index]))
++                .collect(),
++            post_paths: Vec::new(),
++        });
++    }
++    Some(FunctionRegions {
++        grammar: if generator {
++            FunctionGrammar::SourceGenfunc
++        } else {
++            FunctionGrammar::SourceFunc
++        },
++        name_path,
++        clauses,
++    })
++}
++
++pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
++    let SExpr::List { values, .. } = form else {
++        return None;
++    };
++    let head = values.first().and_then(SExpr::as_atom)?;
++    if matches!(head, "func" | "genfunc") {
++        return source_function_regions(form, head == "genfunc");
++    }
++    let (grammar, named) = match head {
++        "fn" | "genfn" | "lambda" => (FunctionGrammar::TypedSource, false),
++        "function" | "function*" | "=>" | "kernel:function" | "kernel:function*" | "kernel:=>"
++        | "kernel:lambda" => (FunctionGrammar::Kernel, true),
++        _ => return None,
++    };
++    let args_start = 1;
++    let name_path = (named
++        && matches!(head, "function" | "function*")
++        && values.get(1).is_some_and(|value| value.as_atom().is_some()))
++    .then(|| OccurrencePath(vec![1]));
++    let params_index = if name_path.is_some() { 2 } else { args_start };
++    let params_path = values
++        .get(params_index)
++        .filter(|value| matches!(value, SExpr::List { .. }))
++        .map(|_| OccurrencePath(vec![params_index]));
++    let default_paths = params_path
++        .as_ref()
++        .and_then(|path| at_path(form, path).map(|params| (params, path)))
++        .map(|(params, path)| {
++            if grammar == FunctionGrammar::Kernel {
++                binding_default_paths(params, path)
++            } else {
++                typed_default_paths(params, path)
++            }
++        })
++        .unwrap_or_default();
++    let body_start = params_index + usize::from(params_path.is_some());
++    let body_paths = (body_start..values.len())
++        .map(|index| OccurrencePath(vec![index]))
++        .collect();
++    Some(FunctionRegions {
++        grammar,
++        name_path,
++        clauses: vec![FunctionClauseRegions {
++            params_path,
++            default_paths,
++            pre_paths: Vec::new(),
++            body_paths,
++            post_paths: Vec::new(),
++        }],
++    })
++}
++
++fn source_clause_regions(
++    items: &[SExpr],
++    clause_path: Vec<usize>,
++    root_offset: usize,
++) -> Option<FunctionClauseRegions> {
++    let ranges = keyword_group_ranges(items);
++    let value_paths = |key: &str| -> Vec<OccurrencePath> {
++        ranges
++            .iter()
++            .find(|range| range.key == key)
++            .map_or_else(Vec::new, |range| {
++                (range.value_start..range.value_end)
++                    .map(|index| {
++                        let mut path = clause_path.clone();
++                        path.push(index + root_offset);
++                        OccurrencePath(path)
++                    })
++                    .collect()
++            })
++    };
++    let params_path = ranges
++        .iter()
++        .find(|range| range.key == "args")
++        .filter(|range| range.value_start < range.value_end)
++        .map(|range| {
++            let mut path = clause_path.clone();
++            path.push(range.value_start + root_offset);
++            OccurrencePath(path)
++        });
++    let default_paths = params_path.as_ref().map_or_else(Vec::new, |path| {
++        at_path_from_items(items, path, &clause_path, root_offset)
++            .map(|params| typed_default_paths(params, path))
++            .unwrap_or_default()
++    });
++    let body_paths = value_paths("body");
++    if body_paths.is_empty() {
++        return None;
++    }
++    Some(FunctionClauseRegions {
++        params_path,
++        default_paths,
++        pre_paths: value_paths("pre"),
++        body_paths,
++        post_paths: value_paths("post"),
++    })
++}
++
++fn at_path_from_items<'a>(
++    items: &'a [SExpr],
++    full_path: &OccurrencePath,
++    clause_path: &[usize],
++    root_offset: usize,
++) -> Option<&'a SExpr> {
++    let group_index = *full_path.0.get(clause_path.len())?;
++    let relative_index = group_index.checked_sub(root_offset)?;
++    items.get(relative_index)
++}
++
++fn typed_default_paths(params: &SExpr, params_path: &OccurrencePath) -> Vec<OccurrencePath> {
++    let SExpr::List { values, .. } = params else {
++        return Vec::new();
++    };
++    let mut out = Vec::new();
++    for (index, param) in values.iter().enumerate() {
++        let mut path = params_path.0.clone();
++        path.push(index);
++        collect_default_paths(param, &path, true, &mut out);
++    }
++    out
++}
++
++fn collect_default_paths(node: &SExpr, path: &[usize], typed: bool, out: &mut Vec<OccurrencePath>) {
++    let SExpr::List { values, .. } = node else {
++        return;
++    };
++    match values.first().and_then(SExpr::as_atom) {
++        Some("default") => {
++            let value_index = if typed { 3 } else { 2 };
++            if values.get(value_index).is_some() {
++                let mut value_path = path.to_vec();
++                value_path.push(value_index);
++                out.push(OccurrencePath(value_path));
++            }
++            if !typed && values.get(1).is_some() {
++                let mut nested = path.to_vec();
++                nested.push(1);
++                collect_default_paths(&values[1], &nested, typed, out);
++            }
++        }
++        Some("rest") => {
++            let nested_index = if typed { 2 } else { 1 };
++            if let Some(nested) = values.get(nested_index) {
++                let mut nested_path = path.to_vec();
++                nested_path.push(nested_index);
++                collect_default_paths(nested, &nested_path, typed, out);
++            }
++        }
++        Some("array" | "object") => {
++            for (index, member) in values.iter().enumerate().skip(1) {
++                let SExpr::List { values: parts, .. } = member else {
++                    continue;
++                };
++                let mut member_path = path.to_vec();
++                member_path.push(index);
++                match parts.first().and_then(SExpr::as_atom) {
++                    Some("default" | "rest" | "array" | "object") => {
++                        collect_default_paths(member, &member_path, typed, out)
++                    }
++                    Some("alias") => {
++                        let nested_index = if typed { 3 } else { 2 };
++                        if let Some(nested) = parts.get(nested_index) {
++                            let mut nested_path = member_path.clone();
++                            nested_path.push(nested_index);
++                            collect_default_paths(nested, &nested_path, typed, out);
++                        }
++                        if !typed && parts.get(3).is_some() {
++                            let mut value_path = member_path;
++                            value_path.push(3);
++                            out.push(OccurrencePath(value_path));
++                        }
++                    }
++                    _ => {}
++                }
++            }
++        }
++        _ => {}
++    }
++}
++
++pub(crate) fn class_regions(form: &SExpr) -> Option<ClassRegions> {
++    let SExpr::List { values, .. } = form else {
++        return None;
++    };
++    let head = values.first().and_then(SExpr::as_atom)?;
++    let (name_path, base_index, member_index) = match head {
++        "class" => (values.get(1).map(|_| OccurrencePath(vec![1])), 2, 3),
++        "class-expr" => (None, 1, 2),
++        _ => return None,
++    };
++    let base_paths = match values.get(base_index) {
++        Some(SExpr::List { values: bases, .. }) => bases
++            .iter()
++            .enumerate()
++            .map(|(index, _)| OccurrencePath(vec![base_index, index]))
++            .collect(),
++        _ => Vec::new(),
++    };
++    let members = values
++        .get(member_index..)?
++        .iter()
++        .enumerate()
++        .map(|(index, member)| class_member_regions(member, vec![member_index + index]))
++        .collect();
++    Some(ClassRegions {
++        name_path,
++        base_paths,
++        members,
++    })
++}
++
++fn class_member_regions(member: &SExpr, path: Vec<usize>) -> ClassMemberRegions {
++    let SExpr::List { values, .. } = member else {
++        return ClassMemberRegions {
++            path: OccurrencePath(path),
++            grammar: ClassMemberGrammar::Opaque,
++            inner: None,
++            params_path: None,
++            default_paths: Vec::new(),
++            body_paths: Vec::new(),
++            init_paths: Vec::new(),
++        };
++    };
++    let head = values.first().and_then(SExpr::as_atom).unwrap_or("");
++    if matches!(head, "static" | "async") {
++        let inner = values.get(1).map(|member| {
++            let mut inner_path = path.clone();
++            inner_path.push(1);
++            Box::new(class_member_regions(member, inner_path))
++        });
++        return ClassMemberRegions {
++            path: OccurrencePath(path),
++            grammar: ClassMemberGrammar::Wrapper,
++            inner,
++            params_path: None,
++            default_paths: Vec::new(),
++            body_paths: Vec::new(),
++            init_paths: Vec::new(),
++        };
++    }
++    if head == "field" {
++        let init_paths = values
++            .get(2)
++            .map(|_| OccurrencePath([path.as_slice(), &[2]].concat()))
++            .into_iter()
++            .collect();
++        return ClassMemberRegions {
++            path: OccurrencePath(path),
++            grammar: ClassMemberGrammar::Field,
++            inner: None,
++            params_path: None,
++            default_paths: Vec::new(),
++            body_paths: Vec::new(),
++            init_paths,
++        };
++    }
++    let (grammar, params_index, body_start) = match head {
++        "constructor" => (ClassMemberGrammar::Constructor, 1, 2),
++        "get" => (ClassMemberGrammar::Getter, 2, 3),
++        "set" => (ClassMemberGrammar::Setter, 2, 3),
++        _ => (ClassMemberGrammar::Method, 1, 2),
++    };
++    let params_path = values
++        .get(params_index)
++        .filter(|params| matches!(params, SExpr::List { .. }))
++        .map(|_| OccurrencePath([path.as_slice(), &[params_index]].concat()));
++    let default_paths = params_path
++        .as_ref()
++        .and_then(|params_path| {
++            at_path(member, &OccurrencePath(vec![params_index]))
++                .map(|params| binding_default_paths(params, params_path))
++        })
++        .unwrap_or_default();
++    let body_paths = values
++        .iter()
++        .enumerate()
++        .skip(body_start)
++        .map(|(index, _)| OccurrencePath([path.as_slice(), &[index]].concat()))
++        .collect();
++    ClassMemberRegions {
++        path: OccurrencePath(path),
++        grammar,
++        inner: None,
++        params_path,
++        default_paths,
++        body_paths,
++        init_paths: Vec::new(),
++    }
++}
++
++fn binding_default_paths(params: &SExpr, params_path: &OccurrencePath) -> Vec<OccurrencePath> {
++    let SExpr::List { values, .. } = params else {
++        return Vec::new();
++    };
++    let mut out = Vec::new();
++    for (index, param) in values.iter().enumerate() {
++        let mut path = params_path.0.clone();
++        path.push(index);
++        collect_default_paths(param, &path, false, &mut out);
++    }
++    out
++}
++
++/// Resolve a path against the original tree without node-identity guessing.
++pub(crate) fn at_path<'a>(root: &'a SExpr, path: &OccurrencePath) -> Option<&'a SExpr> {
++    path.0.iter().try_fold(root, |node, index| match node {
++        SExpr::List { values, .. } => values.get(*index),
++        _ => None,
++    })
++}
+diff --git a/packages/lang/expander-core.js b/packages/lang/expander-core.js
+index 692c4adf..32cba18d 100644
+--- a/packages/lang/expander-core.js
++++ b/packages/lang/expander-core.js
+@@ -19,7 +19,10 @@ import {
+   clearCompilerPrivateAtom,
+   compilerPrivateAtomInfo,
+   markCompilerPrivateAtom,
++  isCompilerPrivateAtom,
++  hostReferenceOf,
+ } from './compiler-private-atoms.js';
++import { isExpandedHostCall } from './host-invocation-kernel.js';
+ import {
+   bindingScopePlan,
+   bodyScopeNames,
+@@ -28,7 +31,9 @@ import {
+   validateReservedNames,
+   bindingsIntroduced,
+   bindingNamesInPattern,
++  kernelParameterNames,
+ } from './binding.js';
++import { atOccurrencePath, classRegionLayout } from './lexical-regions.js';
+ 
+ // --- AST Node API ---
+ 
+@@ -39,6 +44,7 @@ let gensymCounter = 0;
+ export const macroEnv = new Map();
+ 
+ const MAX_EXPAND_ITERATIONS = 1000;
++const RESULT_SLOT = Object.freeze({ SINGLE: "Single", SEQUENCE: "Sequence" });
+ 
+ /**
+  * Create a symbol (atom) AST node.
+@@ -845,6 +851,18 @@ function tagDefSites(form) {
+   }
+ }
+ 
++/** Copy ordinary syntax by occurrence before mutable binding tags are added.
++ * Compiler-owned identity-bearing nodes retain their private capabilities. */
++function cloneOccurrenceSyntax(node) {
++  if (node === null || typeof node !== "object") return node;
++  if (isKernel(node) || isCompilerPrivateAtom(node) || hostReferenceOf(node) ||
++      isExpandedHostCall(node)) return node;
++  if (Array.isArray(node)) return node.map(cloneOccurrenceSyntax);
++  if (node.type === "list") return { ...node, values: node.values.map(cloneOccurrenceSyntax) };
++  if (node.type === "cons") return { ...node, car: cloneOccurrenceSyntax(node.car), cdr: cloneOccurrenceSyntax(node.cdr) };
++  return { ...node };
++}
++
+ 
+ /** Push an expandExpr result (single, array, or null) preserving old semantics. */
+ function pushExpanded(out, result) {
+@@ -878,9 +896,13 @@ function expandChildrenSeq(children, env, use = "Legacy") {
+   let cur = env;
+   for (const child of children) {
+     const childUse = useAtFunctionBoundary(child, use);
+-    pushExpanded(out, expandAt(child, cur, childUse));
+-    const hoist = child?.type === "list" ? hoistedNames(child) : [];
+-    if (hoist.length) cur = extendEnv(cur, hoist);
++    const expanded = expandAt(child, cur, childUse, null, null, RESULT_SLOT.SEQUENCE);
++    const siblings = Array.isArray(expanded) ? expanded : [expanded];
++    for (const sibling of siblings) {
++      if (sibling !== null && sibling !== undefined) out.push(sibling);
++      const hoist = actualExpandedHoists(sibling, cur);
++      if (hoist.length) cur = extendEnv(cur, hoist);
++    }
+   }
+   return out;
+ }
+@@ -890,9 +912,13 @@ function expandChildrenTail(children, env, prefixUse, tailUse) {
+   const prefix = [];
+   let cur = env;
+   for (const child of children.slice(0, -1)) {
+-    pushExpanded(prefix, expandAt(child, cur, useAtFunctionBoundary(child, prefixUse)));
+-    const hoist = child?.type === "list" ? hoistedNames(child) : [];
+-    if (hoist.length) cur = extendEnv(cur, hoist);
++    const expanded = expandAt(child, cur, useAtFunctionBoundary(child, prefixUse), null, null, RESULT_SLOT.SEQUENCE);
++    const siblings = Array.isArray(expanded) ? expanded : [expanded];
++    for (const sibling of siblings) {
++      if (sibling !== null && sibling !== undefined) prefix.push(sibling);
++      const hoist = actualExpandedHoists(sibling, cur);
++      if (hoist.length) cur = extendEnv(cur, hoist);
++    }
+   }
+   const tail = expandAt(children[children.length - 1], cur, tailUse);
+   return { prefix, tail };
+@@ -906,6 +932,9 @@ function expandChildrenTail(children, env, prefixUse, tailUse) {
+ function expandChildrenPlan(form, env, use = "Legacy") {
+   const plan = bindingScopePlan(form, formHead(form.values[0]));
+   const children = form.values;
++  if (plan.kind === "class") return expandClassRegions(form, env, plan.layout, use);
++  if (plan.kind === "function") return expandFunctionRegions(form, env, plan.layout, use);
++  if (plan.kind === "call") return children.map((child) => expandAt(child, env, "Legacy"));
+   if ((use === "Statement" || use === "DirectStatement") && formHead(children[0]) === "try") {
+     return expandTryStatement(form, env, use);
+   }
+@@ -921,7 +950,7 @@ function expandChildrenPlan(form, env, use = "Legacy") {
+       const isDefault = clause.values[0]?.type === "atom" && clause.values[0].value === "default";
+       const prefix = isDefault ? [clause.values[0]] : [expandSingle(clause.values[0], cur, "Value", "switch test")];
+       out.push({ type: "list", values: [...prefix, ...expandChildrenSeq(clause.values.slice(1), cur, use)] });
+-      const hoist = hoistedNames(clause);
++      const hoist = actualExpandedHoists(out[out.length - 1], cur);
+       if (hoist.length) cur = extendEnv(cur, hoist);
+     }
+     return out;
+@@ -947,11 +976,16 @@ function expandChildrenPlan(form, env, use = "Legacy") {
+     for (let i = 0; i < children.length; i++) {
+       const requestedRole = roles[i] ?? "Legacy";
+       const role = useAtFunctionBoundary(children[i], requestedRole);
+-      pushExpanded(out, role === "Value"
++      const expanded = role === "Value"
+         ? expandSingle(children[i], cur, role, "expression slot")
+-        : expandAt(children[i], cur, role));
+-      const hoist = children[i]?.type === "list" ? hoistedNames(children[i]) : [];
+-      if (hoist.length) cur = extendEnv(cur, hoist);
++        : expandAt(children[i], cur, role, null, null,
++          use === "Statement" || use === "DirectStatement" ? RESULT_SLOT.SEQUENCE : RESULT_SLOT.SINGLE);
++      pushExpanded(out, expanded);
++      const actual = Array.isArray(expanded) ? expanded : [expanded];
++      for (const sibling of actual) {
++        const hoist = actualExpandedHoists(sibling, cur);
++        if (hoist.length) cur = extendEnv(cur, hoist);
++      }
+     }
+     return out;
+   }
+@@ -960,9 +994,10 @@ function expandChildrenPlan(form, env, use = "Legacy") {
+   const roles = childRoles(form, use);
+   for (let i = 0; i < split; i++) {
+     const role = roles[i] ?? (use === "Protected" ? "Protected" : "Legacy");
+-    pushExpanded(out, role === "Value"
++      const expanded = role === "Value"
+       ? expandSingle(children[i], env, role, "expression slot")
+-      : expandAt(children[i], env, role));
++        : expandAt(children[i], env, role);
++      pushExpanded(out, expanded);
+   }
+   if (split < children.length) {
+     const bodyEnv = extendEnv(env, plan.names);
+@@ -972,16 +1007,143 @@ function expandChildrenPlan(form, env, use = "Legacy") {
+       const child = children[i];
+       const requestedRole = roles[i] ?? bodyUse;
+       const role = useAtFunctionBoundary(child, requestedRole);
+-      pushExpanded(out, role === "Value"
++      const expanded = role === "Value"
+         ? expandSingle(child, cur, role, "expression slot")
+-        : expandAt(child, cur, role));
+-      const hoist = child?.type === "list" ? hoistedNames(child) : [];
++        : expandAt(child, cur, role, null, null,
++          use === "Statement" || use === "DirectStatement" ? RESULT_SLOT.SEQUENCE : RESULT_SLOT.SINGLE);
++      pushExpanded(out, expanded);
++      const actual = Array.isArray(expanded) ? expanded : [expanded];
++      for (const sibling of actual) {
++        const hoist = actualExpandedHoists(sibling, cur);
++        if (hoist.length) cur = extendEnv(cur, hoist);
++      }
++    }
++  }
++  return out;
++}
++
++function expandFunctionRegions(form, env, layout, use) {
++  const name = layout.namePath ? atOccurrencePath(form, layout.namePath) : null;
++  const functionEnv = name?.type === "atom" ? extendEnv(env, [name.value]) : env;
++  const clause = layout.clauses[0];
++  if (!clause) return form.values.slice();
++  const params = clause.paramsPath ? atOccurrencePath(form, clause.paramsPath) : null;
++  const names = params ? kernelParameterNames(params).map((site) => site.name) : [];
++  const localEnv = extendEnv(functionEnv, names);
++  let values = form.values.slice();
++  for (const path of clause.defaultPaths) {
++    const expanded = expandAt(atOccurrencePath(form, path), localEnv, "Value");
++    values = replaceArrayPath(values, path, expanded);
++  }
++  let cur = localEnv;
++  const body = [];
++  const roles = childRoles(form, use);
++  for (const path of clause.bodyPaths) {
++    const child = atOccurrencePath(form, path);
++    const requestedRole = roles[path[0]] ?? "Legacy";
++    const role = useAtFunctionBoundary(child, requestedRole);
++    const expanded = role === "Value"
++      ? expandSingle(child, cur, role, "function body value")
++      : expandAt(child, cur, role, null, null,
++        role === "Statement" || role === "DirectStatement"
++          ? RESULT_SLOT.SEQUENCE
++          : RESULT_SLOT.SINGLE);
++    pushExpanded(body, expanded);
++    for (const sibling of Array.isArray(expanded) ? expanded : [expanded]) {
++      const hoist = actualExpandedHoists(sibling, cur);
+       if (hoist.length) cur = extendEnv(cur, hoist);
+     }
+   }
++  const bodyStart = clause.bodyPaths[0]?.[0] ?? values.length;
++  return [...values.slice(0, bodyStart), ...body];
++}
++
++function replaceArrayPath(values, path, replacement) {
++  const [index, ...rest] = path;
++  if (rest.length === 0) {
++    values[index] = replacement;
++    return values;
++  }
++  const parent = values[index];
++  if (parent?.type !== "list") return values;
++  const nested = parent.values.slice();
++  replaceArrayPath(nested, rest, replacement);
++  values[index] = { ...parent, values: nested };
++  return values;
++}
++
++function expandClassRegions(form, env, layout, use) {
++  const values = form.values;
++  const className = layout.namePath ? atOccurrencePath(form, layout.namePath) : null;
++  const classEnv = className?.type === "atom" ? extendEnv(env, [className.value]) : env;
++  const baseIndex = layout.grammar === "Class" ? 2 : 1;
++  const out = values.slice(0, baseIndex + 1);
++  if (values[baseIndex]?.type === "list") {
++    const bases = values[baseIndex];
++    out[baseIndex] = { ...bases, values: bases.values.map((base) => expandAt(base, classEnv, "Value")) };
++  }
++  for (const member of layout.members) {
++    out.push(expandClassMember(form, member, classEnv, use));
++  }
+   return out;
+ }
+ 
++function expandClassMember(root, layout, env, use) {
++  const member = atOccurrencePath(root, layout.path);
++  if (member?.type !== "list" || member.values.length === 0) return member;
++  const head = member.values[0]?.type === "atom" ? member.values[0].value : "";
++  if (head === "static" || head === "async") {
++    if (!layout.inner) return member;
++    const expanded = expandClassMember(root, layout.inner, env, use);
++    const values = member.values.slice();
++    values[1] = expanded;
++    return { ...member, values };
++  }
++  if (head === "field") {
++    const values = member.values.slice();
++    for (const path of layout.initPaths) values[path[path.length - 1]] = expandAt(atOccurrencePath(root, path), env, "Value");
++    return { ...member, values };
++  }
++  const paramsIndex = layout.paramsPath?.[layout.paramsPath.length - 1];
++  if (paramsIndex === undefined) return member;
++  const bodyStart = paramsIndex + 1;
++  const params = atOccurrencePath(root, layout.paramsPath);
++  const names = kernelParameterNames(params).map((site) => site.name);
++  const methodEnv = extendEnv(env, names);
++  const values = member.values.slice();
++  for (const path of layout.defaultPaths) {
++    const relativePath = path.slice(layout.path.length);
++    const original = atOccurrencePath(root, path);
++    replaceChildPath(values, relativePath, expandAt(original, methodEnv, "Value"));
++  }
++  const bodyChildren = layout.bodyPaths.map((path) => atOccurrencePath(root, path));
++  const body = expandChildrenSeq(bodyChildren, methodEnv, use);
++  return { ...member, values: [...values.slice(0, bodyStart), ...body] };
++}
++
++function replaceChildPath(root, path, replacement) {
++  if (path.length === 0) return replacement;
++  const [index, ...rest] = path;
++  const values = root.values.slice();
++  values[index] = rest.length ? replaceChildPath(values[index], rest, replacement) : replacement;
++  root.values = values;
++  return root;
++}
++
++/** Names introduced by actually expanded declarations under the incoming
++ * dispatch environment. Raw invocation spelling never supplies visibility. */
++function actualExpandedHoists(form, env) {
++  if (form?.type !== "list" || form.values.length === 0) return [];
++  const head = form.values[0];
++  if (head?.type !== "atom" || formHead(head) === null) return [];
++  if (isKernel(form)) return hoistedNames(form);
++  if (env.bindings.has(head.value)) return [];
++  if (head.value === "export" || head.value === "async") {
++    return form.values.slice(1).flatMap((child) => actualExpandedHoists(child, env));
++  }
++  return hoistedNames(form);
++}
++
+ function expandConditionalChild(child, env, isCondition, use = "Legacy") {
+   const expanded = expandAt(child, env, useAtFunctionBoundary(child, use));
+   if (!Array.isArray(expanded)) return expanded;
+@@ -1012,9 +1174,13 @@ function expandTryStatement(form, env, use = "Statement") {
+     const structuralElsewhere = head?.type === "atom" &&
+       (head.value === "catch" || head.value === "finally");
+     const childUse = structuralElsewhere ? "Legacy" : useAtFunctionBoundary(child, use);
+-    pushExpanded(out, expandAt(child, cur, childUse));
+-    const hoist = child?.type === "list" ? hoistedNames(child) : [];
+-    if (hoist.length) cur = extendEnv(cur, hoist);
++    const expanded = expandAt(child, cur, childUse, null, null, RESULT_SLOT.SEQUENCE);
++    const siblings = Array.isArray(expanded) ? expanded : [expanded];
++    for (const sibling of siblings) {
++      if (sibling !== null && sibling !== undefined) out.push(sibling);
++      const hoist = actualExpandedHoists(sibling, cur);
++      if (hoist.length) cur = extendEnv(cur, hoist);
++    }
+   }
+   if (hasCatch) {
+     const catchEnv = extendEnv(env, bodyScopeNames(catcher));
+@@ -1705,6 +1871,7 @@ function expandDirectBind(args, env) {
+  * @returns {* | *[]} Expanded form(s)
+  */
+ export function expandExpr(form, env = EMPTY_ENV) {
++  form = cloneOccurrenceSyntax(form);
+   validateReservedNames([form], { bindings: env });
+   const privateCountAtStart = compilerPrivateAtomCount;
+   const expansionEnv = createExpansionEnvironment(env, createSurfaceTypeContext());
+@@ -1720,7 +1887,7 @@ export function expandExpr(form, env = EMPTY_ENV) {
+ }
+ 
+ function expandAt(form, env, use, computedMemberCallRequest = null,
+-  directCallArgumentRequest = null) {
++  directCallArgumentRequest = null, resultSlot = RESULT_SLOT.SINGLE) {
+   // Propagate the sanctioned-kernel mark across expansion: if the input was
+   // sanctioned (compiler-produced kernel), so is the output — even though the
+   // inner walk rebuilds nodes (e.g. `expand-binding` returns a fresh list).
+@@ -1733,6 +1900,7 @@ function expandAt(form, env, use, computedMemberCallRequest = null,
+     use,
+     computedMemberCallRequest,
+     directCallArgumentRequest,
++    resultSlot,
+   );
+   if (computedMemberCallRequest?.handled) return computedMemberCallRequest.result;
+   if (directCallArgumentRequest?.handled) return directCallArgumentRequest.result;
+@@ -1747,7 +1915,7 @@ function expandAt(form, env, use, computedMemberCallRequest = null,
+ }
+ 
+ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = null,
+-  directCallArgumentRequest = null) {
++  directCallArgumentRequest = null, resultSlot = RESULT_SLOT.SINGLE) {
+   if (form === null || form === undefined) return form;
+   if (form.type === 'atom' || form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
+     return form;
+@@ -1856,13 +2024,9 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest =
+   if (surfaceHead !== null && !isKernel(form)) {
+     const astNode = classifySurfaceForm(surfaceHead, form.values.slice(1));
+     if (astNode) {
+-      // Function-family bindings vanish into `=>`/`function` param lists at the
+-      // kernel level, so extend the value env at the surface level, before
+-      // lowering. All other binding forms re-expose their binders at the kernel
+-      // level (handled by the default branch's `scopePlan`).
+-      const childEnv = FUNCTION_FAMILY.has(surfaceHead)
+-        ? extendEnv(env, bodyScopeNames(form))
+-        : env;
++      // Lower first; the emitted kernel function carries each actual parameter
++      // list and the ordinary scope walker handles its local body sequence.
++      const childEnv = env;
+       if (isResultOperandUse(use) && (astNode.type === "And" || astNode.type === "Or")) {
+         return expandLogicalResultOperand(
+           astNode.args,
+@@ -1943,16 +2107,20 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest =
+   }
+ 
+   // Skip re-expansion of forms marked as kernel output by surface macros
+-  if (head.type === 'atom' && macroEnv.has(head.value) && !isKernel(form)) {
++  if (head.type === 'atom' && macroEnv.has(head.value) && !env.bindings.has(head.value) &&
++      formHead(head) !== null && !isKernel(form)) {
+     let current = form;
+     let count = 0;
+     while (current.type === 'list' && current.values.length > 0 &&
+-           current.values[0].type === 'atom' && macroEnv.has(current.values[0].value) &&
+-           !isKernel(current)) {
++           current.values[0].type === 'atom' && !isKernel(current)) {
++      const currentHead = current.values[0];
++      if (env.bindings.has(currentHead.value) || formHead(currentHead) === null ||
++          !macroEnv.has(currentHead.value)) break;
++      if (classifySurfaceForm(currentHead.value, current.values.slice(1))) break;
+       const macroName = current.values[0].value;
+       const macroArgs = current.values.slice(1);
+       try {
+-        current = macroEnv.get(macroName)(...macroArgs);
++        current = cloneOccurrenceSyntax(macroEnv.get(macroName)(...macroArgs));
+       } catch (err) {
+         throw new Error(`error expanding macro '${macroName}': ${err.message}`, { cause: err });
+       }
+@@ -1961,6 +2129,20 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest =
+       }
+     }
+     if (Array.isArray(current)) {
++      if (resultSlot === RESULT_SLOT.SEQUENCE) {
++        const out = [];
++        let cur = env;
++        for (const item of current) {
++          const expanded = expandAt(item, cur, use, null, null, RESULT_SLOT.SEQUENCE);
++          const siblings = Array.isArray(expanded) ? expanded : [expanded];
++          for (const sibling of siblings) {
++            if (sibling !== null && sibling !== undefined) out.push(sibling);
++            const hoist = actualExpandedHoists(sibling, cur);
++            if (hoist.length) cur = extendEnv(cur, hoist);
++          }
++        }
++        return out;
++      }
+       return current.map((r) => expandAt(r, env, use));
+     }
+     return expandAt(current, env, use, null, directCallArgumentRequest);
+@@ -2233,16 +2415,13 @@ function pass2ExpandAll(forms) {
+   // the binding.
+   let env = createExpansionEnvironment(EMPTY_ENV, createSurfaceTypeContext());
+   for (const form of forms) {
+-    const expanded = expandAt(form, env, "Statement");
+-    if (expanded !== null && expanded !== undefined) {
+-      if (Array.isArray(expanded)) {
+-        result.push(...expanded.filter((e) => e !== null && e !== undefined));
+-      } else {
+-        result.push(expanded);
+-      }
++    const expanded = expandAt(form, env, "Statement", null, null, RESULT_SLOT.SEQUENCE);
++    const siblings = Array.isArray(expanded) ? expanded : [expanded];
++    for (const sibling of siblings) {
++      if (sibling !== null && sibling !== undefined) result.push(sibling);
++      const hoist = actualExpandedHoists(sibling, env);
++      if (hoist.length) env = extendEnv(env, hoist);
+     }
+-    const hoist = form?.type === "list" ? hoistedNames(form) : [];
+-    if (hoist.length) env = extendEnv(env, hoist);
+   }
+   if (compilerPrivateAtomCount !== compilerPrivateAtomsAtStart) {
+     finalizeCompilerPrivateAtoms(result);
+@@ -2308,8 +2487,9 @@ export function expandWithMacroImports(forms, context = {}, processImports) {
+   // lowering, so `func`/`fn` params are still visible (the JS expander lowers
+   // surface forms to kernel during expansion). Covers `export`ed names and the
+   // `kernel:` name slot.
+-  validateReservedNames(forms);
+-  const afterPass0 = processImports(forms, { filePath, compilationStack });
++  const ownedForms = cloneOccurrenceSyntax(forms);
++  validateReservedNames(ownedForms);
++  const afterPass0 = processImports(ownedForms, { filePath, compilationStack });
+   const afterPass1 = pass1RegisterMacros(afterPass0);
+   const expanded = pass2ExpandAll(afterPass1);
+   validateReservedNames(expanded);

@@ -1,0 +1,2 @@
+(macro car (value) `99)
+(console:log (car (cons 41 0)))

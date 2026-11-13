@@ -1,0 +1,3 @@
+(macro alpha () (obj :type "list" :values #a((obj :type "atom" :value "beta"))))
+(macro beta () (obj :type "list" :values #a((obj :type "atom" :value "alpha"))))
+(alpha)

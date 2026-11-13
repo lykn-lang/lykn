@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.17"
+version: "1.18"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,8 +203,8 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration09](cc-prompt-iteration09.md), B2a precise
-lexical regions against accepted e80f613b/tree7376b33d, under the operator's
+**Current assignment:** [iteration10](cc-prompt-iteration10.md), B2a correction01
+against held bcb98482/tree72adf0ee, under the operator's
 2026-11-12 B2 design/implementation/independent-validation authorization.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) settles typed owner/
 case, occurrence-scoped query and private finalization principles; its first
@@ -230,7 +230,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
 | cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
 | cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
-| cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | CC returned clean bcb98482/tree72adf0ee; separate Sol software review active |
+| cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Independent HOLD bcb98482/tree72adf0ee; R01–03 and raw controls retained |
+| cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Issued after separate Sol source-readiness; Luna owns source/build |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -367,3 +368,17 @@ The CC evidence is attested, not acceptance; B2-LX and LC-02–08 stay open.
 Root reconciled the raw final full-check denominator:1546 product cases/67 steps,
 not the1536 reported in CC's handoff;482 documentation cases passed once.
 The original attestation and raw streams are preserved with this correction.
+
+2026-11-12 v1.18: separate Sol software review holds B2-LX on three causal
+areas: native macro-result redispatch and pre-binding generator diagnostics,
+public class-default path replacement, and named escaped kernel-function
+parameter scope. [Independent evidence](artifacts/increment-b2a/cdc/README.md)
+includes actual ESM/direct controls, immutable-e80 class-default comparison,
+lazy arguments and genuine chain-limit control; no full known-bad gates ran.
+Root verified the archived receipt digest, read the source-grounded defects
+and supplies iteration10's concrete correction. Separate Sol read-only review
+finds R01–03 source-ready after generator gating is explicit. This is B2a's
+first formal correction; all earlier A/IC passes remain preserved. Luna now
+owns task source/build through clean committed return, followed by separate
+Sol software review. No row closes, B2-ID-NAME remains pending, and release0829
+is unchanged.

@@ -1,0 +1,1 @@
+macro expansion error: obj is not defined at 0:0

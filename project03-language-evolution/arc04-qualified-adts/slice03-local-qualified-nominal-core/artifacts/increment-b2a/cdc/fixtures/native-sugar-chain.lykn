@@ -1,0 +1,3 @@
+(macro from-chain () `(car (cons 41 0)))
+(macro car (value) `99)
+(console:log (from-chain))

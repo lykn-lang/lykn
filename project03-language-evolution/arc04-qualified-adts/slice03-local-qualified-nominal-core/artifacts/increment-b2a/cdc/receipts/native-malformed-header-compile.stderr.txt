@@ -1,0 +1,1 @@
+macro expansion error: Unexpected token 'throw' at 0:0

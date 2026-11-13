@@ -1,0 +1,3 @@
+(macro discard (unused) `41)
+(macro should-not-run () (throw (new Error "raw argument expanded")))
+(console:log (discard (should-not-run)))

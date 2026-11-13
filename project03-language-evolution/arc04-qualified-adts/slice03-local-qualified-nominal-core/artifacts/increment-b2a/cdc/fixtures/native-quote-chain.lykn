@@ -1,0 +1,4 @@
+(macro from-chain () `(quote (hush)))
+(macro quote (value) `99)
+(macro hush () (throw (new Error "raw payload expanded")))
+(console:log (from-chain))

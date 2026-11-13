@@ -1,0 +1,2 @@
+(macro fail-now () (throw (new Error "visited-invalid-header")))
+(func sample :args (:number 9) :body (fail-now))

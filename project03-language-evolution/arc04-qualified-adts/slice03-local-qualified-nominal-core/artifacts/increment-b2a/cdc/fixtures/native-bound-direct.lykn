@@ -1,0 +1,3 @@
+(macro already-bound (value) `99)
+(bind already-bound (fn (:any value) (+ value 40)))
+(console:log (already-bound 1))

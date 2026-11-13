@@ -1,0 +1,2 @@
+3:1: warning: unused binding 'already-bound'
+  suggestion: prefix with underscore: _already-bound

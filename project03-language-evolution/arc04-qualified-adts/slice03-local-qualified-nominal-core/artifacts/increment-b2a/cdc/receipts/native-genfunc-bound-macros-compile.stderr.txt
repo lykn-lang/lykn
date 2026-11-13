@@ -1,0 +1,1 @@
+genfunc: multiple clauses are not supported at 3:1

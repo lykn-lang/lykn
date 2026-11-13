@@ -1,0 +1,4 @@
+(macro from-chain () `(bind result 41))
+(macro bind (name value) `99)
+(from-chain)
+(console:log result)

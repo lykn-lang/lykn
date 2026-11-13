@@ -1,0 +1,3 @@
+(macro alpha () (object (type "list") (values (array (object (type "atom") (value "beta"))))))
+(macro beta () (object (type "list") (values (array (object (type "atom") (value "alpha"))))))
+(alpha)
