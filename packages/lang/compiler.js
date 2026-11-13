@@ -193,13 +193,68 @@ function templateConcat(args) {
   };
 }
 
-let _icuGensymCounter = 0;
-function freshIcuVar() {
-  return { type: 'Identifier', name: `_v${_icuGensymCounter++}` };
+function reserveIcuIdentifiers(node, occupied, visited = new WeakSet()) {
+  if (!node || typeof node !== 'object' || visited.has(node)) return;
+  visited.add(node);
+
+  if (node.type === 'Identifier') {
+    occupied.add(node.name);
+    return;
+  }
+  if (node.type === 'Literal') return;
+
+  for (const value of Object.values(node)) {
+    if (Array.isArray(value)) {
+      for (const child of value) reserveIcuIdentifiers(child, occupied, visited);
+    } else if (value && typeof value === 'object') {
+      reserveIcuIdentifiers(value, occupied, visited);
+    }
+  }
+}
+
+function createIcuNameAllocator(expressions) {
+  const occupied = new Set();
+  const visited = new WeakSet();
+  for (const expression of expressions) {
+    reserveIcuIdentifiers(expression, occupied, visited);
+  }
+
+  let nextSuffix = 0;
+  let nextSelectorIndex = 0;
+
+  function allocate(preferred) {
+    if (!occupied.has(preferred)) {
+      occupied.add(preferred);
+      return { type: 'Identifier', name: preferred };
+    }
+
+    while (true) {
+      if (!Number.isSafeInteger(nextSuffix)) {
+        throw new Error('template: generated identifier allocation exhausted');
+      }
+      const suffix = nextSuffix;
+      nextSuffix += 1;
+      const candidate = `${preferred}__lyknGenerated${suffix}`;
+      if (!occupied.has(candidate)) {
+        occupied.add(candidate);
+        return { type: 'Identifier', name: candidate };
+      }
+    }
+  }
+
+  function nextSelector() {
+    if (!Number.isSafeInteger(nextSelectorIndex)) {
+      throw new Error('template: generated selector allocation exhausted');
+    }
+    const preferred = `_v${nextSelectorIndex}`;
+    nextSelectorIndex += 1;
+    return allocate(preferred);
+  }
+
+  return { allocate, nextSelector };
 }
 
 function templateIcu(args) {
-  _icuGensymCounter = 0;
   const icuString = args[0].value;
   let mft;
   try {
@@ -257,6 +312,8 @@ function templateIcu(args) {
     }
   }
 
+  const names = createIcuNameAllocator(kwargs.values());
+
   // Hoist non-trivial kwarg expressions referenced more than once.
   const slotMultiplicity = countSlotReferences(mft);
   const hoistedDecls = [];
@@ -265,7 +322,7 @@ function templateIcu(args) {
     const refs = slotMultiplicity.get(key) ?? 0;
     const isTrivial = expr.type === 'Identifier' || expr.type === 'Literal';
     if (refs > 1 && !isTrivial) {
-      const local = { type: 'Identifier', name: `_${toJsIdentifier(key)}` };
+      const local = names.allocate(`_${toJsIdentifier(key)}`);
       hoistedDecls.push({
         type: 'VariableDeclaration',
         kind: 'const',
@@ -277,7 +334,7 @@ function templateIcu(args) {
     }
   }
 
-  const body = emitMft(mft, finalKwargs);
+  const body = emitMft(mft, finalKwargs, names);
 
   if (hoistedDecls.length === 0) {
     return body;
@@ -298,7 +355,7 @@ function templateIcu(args) {
   };
 }
 
-function emitMft(nodes, kwargs) {
+function emitMft(nodes, kwargs, names) {
   // If MFT is all literals, emit a simple template literal
   if (nodes.every((n) => n.type === 'literal')) {
     const text = nodes.map((n) => n.value).join('');
@@ -320,11 +377,11 @@ function emitMft(nodes, kwargs) {
     } else if (node.type === 'plural') {
       quasis.push(makeTemplateElement(currentSegment, false));
       currentSegment = '';
-      expressions.push(emitPluralIife(node, kwargs));
+      expressions.push(emitPluralIife(node, kwargs, names));
     } else if (node.type === 'select') {
       quasis.push(makeTemplateElement(currentSegment, false));
       currentSegment = '';
-      expressions.push(emitSelectIife(node, kwargs));
+      expressions.push(emitSelectIife(node, kwargs, names));
     }
   }
 
@@ -333,10 +390,10 @@ function emitMft(nodes, kwargs) {
   return { type: 'TemplateLiteral', quasis, expressions };
 }
 
-function emitPluralIife(node, kwargs) {
+function emitPluralIife(node, kwargs, names) {
   // (() => { const _v = <kwarg>; if (_v === N) return ...; if (_v === 1) return ...; return ...; })()
   const valueExpr = kwargs.get(node.name);
-  const vId = freshIcuVar();
+  const vId = names.nextSelector();
 
   const body = [];
   // const _v = <value>;
@@ -359,7 +416,7 @@ function emitPluralIife(node, kwargs) {
     body.push({
       type: 'IfStatement',
       test: { type: 'BinaryExpression', operator: '===', left: vId, right: { type: 'Literal', value: n } },
-      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId)) },
+      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId), names) },
     });
   }
 
@@ -371,7 +428,7 @@ function emitPluralIife(node, kwargs) {
       body.push({
         type: 'IfStatement',
         test,
-        consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId)) },
+        consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId), names) },
       });
     }
   }
@@ -380,7 +437,7 @@ function emitPluralIife(node, kwargs) {
   const otherBranch = categoryBranches.find((b) => b.key === 'other');
   body.push({
     type: 'ReturnStatement',
-    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId)),
+    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId), names),
   });
 
   return {
@@ -395,9 +452,9 @@ function emitPluralIife(node, kwargs) {
   };
 }
 
-function emitSelectIife(node, kwargs) {
+function emitSelectIife(node, kwargs, names) {
   const valueExpr = kwargs.get(node.name);
-  const vId = freshIcuVar();
+  const vId = names.nextSelector();
 
   const body = [];
   body.push({
@@ -415,14 +472,14 @@ function emitSelectIife(node, kwargs) {
     body.push({
       type: 'IfStatement',
       test: { type: 'BinaryExpression', operator: '===', left: vId, right: { type: 'Literal', value: branch.key } },
-      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId)) },
+      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId), names) },
     });
   }
 
   const otherBranch = node.branches.find((b) => b.key === 'other');
   body.push({
     type: 'ReturnStatement',
-    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId)),
+    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId), names),
   });
 
   return {
@@ -1335,7 +1392,7 @@ const macros = {
           );
         }
         // No slots — emit using the parsed MFT (resolves escape sequences)
-        return emitMft(mft, new Map());
+        return emitMft(mft, new Map(), createIcuNameAllocator([]));
       } else if (args.length >= 2 && args[1].type === 'keyword') {
         // Rule 2: literal string + keyword → ICU mode
         // Check ambiguous form: keyword with no value

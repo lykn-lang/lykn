@@ -1125,6 +1125,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         repository.join("test/forms/embedded-adt-pattern.test.js"),
         repository.join("test/forms/surface-type-context.test.js"),
         repository.join("test/forms/reserved-binding-output.test.js"),
+        repository.join("test/forms/icu-generated-names.test.js"),
         repository.join("test/expander/lexical-regions.test.js"),
     ];
     let mut strict_public = Command::new(deno);
@@ -1156,7 +1157,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 49 passed | 0 failed"),
-        "M6 must execute the derived 49-case retained, IC-01, and current B2a materialized population (5 + 6 + 17 + 21), output: {public_output}"
+        public_output.contains("ok | 55 passed | 0 failed"),
+        "M6 must execute the derived 55-case retained, IC-01, B2a, and B2b2 public ICU materialized population (5 + 6 + 17 + 21 + 6), output: {public_output}"
     );
 }

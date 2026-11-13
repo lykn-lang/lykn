@@ -594,3 +594,30 @@ fn native_icu_allocator_preserves_effects_and_is_per_template() {
     assert_eq!(first, recovered, "per-template allocation state leaked");
     assert_eq!(eval_js(&recovered, &[("_v0", "2")]), "2");
 }
+
+#[test]
+fn cross_icu_generated_names_keep_pure_values() {
+    assert!(deno_available(), "ICU generated-name parity requires Deno");
+
+    assert_cross_equiv(r#"(template "{n} {n}" :n (+ _n 1))"#, &[("_n", "2")], "3 3");
+    assert_cross_equiv(
+        r#"(template "{n, plural, one {one} other {#}}" :n _v0)"#,
+        &[("_v0", "2")],
+        "2",
+    );
+    assert_cross_equiv(
+        r#"(template "{role, select, owner {Owner} other {Guest}}" :role _v0)"#,
+        &[("_v0", r#""owner""#)],
+        "Owner",
+    );
+    assert_cross_equiv(
+        r#"(template "{n, plural, one {{v0} {v0}} other {{v0} {v0}}}" :n 2 :v0 (+ 3 4))"#,
+        &[],
+        "7 7",
+    );
+    assert_cross_equiv(
+        r#"(template "{x}-{x}" :x (template "{n, plural, one {one} other {#}}" :n _v0))"#,
+        &[("_v0", "2")],
+        "2-2",
+    );
+}
