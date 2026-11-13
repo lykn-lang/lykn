@@ -525,6 +525,61 @@ mod tests {
     }
 
     #[test]
+    fn compile_source_bound_macro_result_head_dispatches_as_call() {
+        let source = "(macro redirect () `(invoke 1)) (macro invoke (x) `99) (bind invoke (fn (:number x) (+ x 40))) (console:log (redirect))";
+        let emitted = compile_source(
+            source,
+            Some(Path::new("bound-macro-result.lykn")),
+            true,
+            false,
+        )
+        .unwrap();
+        assert!(emitted.contains("console.log(invoke(1));"), "{emitted}");
+        assert!(!emitted.contains("console.log(99);"), "{emitted}");
+    }
+
+    #[test]
+    fn compile_source_bound_genfunc_call_ignores_unrelated_macro_presence() {
+        let call = "(bind genfunc (fn (:any name :any left :any right) 41)) (genfunc ignored (:args () :body 1) (:args (:any value) :body 2))";
+        let plain =
+            compile_source(call, Some(Path::new("bound-genfunc.lykn")), true, false).unwrap();
+        let with_unrelated_macro = compile_source(
+            &format!("(macro unrelated () `0) {call}"),
+            Some(Path::new("bound-genfunc-macro.lykn")),
+            true,
+            false,
+        )
+        .unwrap();
+        assert_eq!(plain, with_unrelated_macro);
+    }
+
+    #[test]
+    fn compile_source_kernel_escaped_named_function_scopes_parameter() {
+        let source = "(bind apply (kernel:function apply (array) (return (array 7))))";
+        let emitted = compile_source(
+            source,
+            Some(Path::new("kernel-named-function.lykn")),
+            true,
+            false,
+        )
+        .unwrap();
+        assert!(emitted.contains("return array(7);"), "{emitted}");
+    }
+
+    #[test]
+    fn compile_source_kernel_escaped_named_generator_scopes_parameter() {
+        let source = "(bind stream (kernel:function* stream (array) (yield (array 7))))";
+        let emitted = compile_source(
+            source,
+            Some(Path::new("kernel-named-generator.lykn")),
+            true,
+            false,
+        )
+        .unwrap();
+        assert!(emitted.contains("yield array(7);"), "{emitted}");
+    }
+
+    #[test]
     fn compile_source_macro_returned_declaration_scopes_following_call() {
         let path = Path::new("macro-result-scope.lykn");
         let source = "(macro make-local () `(export (async (function local-value () (return 41))))) (make-local) (console:log (await (local-value)))";

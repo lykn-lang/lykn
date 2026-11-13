@@ -186,6 +186,7 @@ pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
     if matches!(head, "func" | "genfunc") {
         return source_function_regions(form, head == "genfunc");
     }
+    let base_kind = head.strip_prefix("kernel:").unwrap_or(head);
     let (grammar, named) = match head {
         "fn" | "genfn" | "lambda" => (FunctionGrammar::TypedSource, false),
         "function" | "function*" | "=>" | "kernel:function" | "kernel:function*" | "kernel:=>"
@@ -194,7 +195,7 @@ pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
     };
     let args_start = 1;
     let name_path = (named
-        && matches!(head, "function" | "function*")
+        && matches!(base_kind, "function" | "function*")
         && values.get(1).is_some_and(|value| value.as_atom().is_some()))
     .then(|| OccurrencePath(vec![1]));
     let params_index = if name_path.is_some() { 2 } else { args_start };

@@ -78,101 +78,125 @@ fn expand_expr(
 
         // Non-empty list — the interesting case.
         SExpr::List { values, span } => {
-            let head = &values[0];
-
-            if head.as_form_head() == Some("genfunc")
-                && let Some(layout) = crate::lexical_regions::source_function_regions(&form, true)
-                && layout.clauses.len() > 1
+            // Re-run the same actual entry policy after every root rewrite.
+            // This keeps one macro budget/location while ensuring a returned
+            // bound call or sugar form is treated like direct source entry.
+            let chain_name = values[0].as_atom().unwrap_or("").to_string();
+            let chain_location = span.start;
+            let mut current = form;
+            let mut count = 0usize;
+            while let SExpr::List {
+                values: current_values,
+                span: current_span,
+            } = &current
             {
-                return Err(LyknError::Read {
-                    message: "genfunc: multiple clauses are not supported".to_string(),
-                    location: span.start,
-                });
-            }
-
-            if let Some(head_name) = head.as_atom() {
-                // `(quote ...)` suppresses all expansion.
+                let Some(head) = current_values.first() else {
+                    break;
+                };
+                let Some(head_name) = head.as_atom() else {
+                    break;
+                };
                 if head_name == "quote" {
-                    return Ok(Some(form));
+                    return Ok(Some(current));
                 }
-
-                // DD-61 §A3 light binding-scan: a lexically bound head is
-                // neither a desugar, a user macro, nor the `macro` definition
-                // form — it is a plain call to the binding (DD-60 D1). Skip all
-                // three dispatch paths when bound.
-                let bound = scope.iter().any(|n| n.as_str() == head_name)
+                let bound = scope.iter().any(|name| name == head_name)
                     || (head_name == "match" && head.as_form_head().is_none());
 
-                // A leaked `(macro name …)` definition in pass 2 is an error —
-                // they should have been consumed in pass 1. The guard is narrow
-                // on purpose: it fires only for genuine *definition shape* (a
-                // `macro` head with an atom name), so a bound `macro` call
-                // (`(macro 987)`, DD-60 D1) and a `macro` binder atom in a
-                // declaration list (`(import "m" (macro))`) both fall through to
-                // the default branch as plain forms rather than erroring.
-                let is_macro_def_shape = values.len() >= 2 && values[1].as_atom().is_some();
+                if !bound
+                    && head_name == "genfunc"
+                    && let Some(layout) =
+                        crate::lexical_regions::source_function_regions(&current, true)
+                    && layout.clauses.len() > 1
+                {
+                    return Err(LyknError::Read {
+                        message: "genfunc: multiple clauses are not supported".to_string(),
+                        location: current_span.start,
+                    });
+                }
+
+                let is_macro_def_shape =
+                    current_values.len() >= 2 && current_values[1].as_atom().is_some();
                 if !bound && head_name == "macro" && is_macro_def_shape {
                     return Err(LyknError::Read {
                         message: "unexpected macro definition in expansion pass \
                                   (macros should be processed in Pass 1)"
                             .to_string(),
-                        location: span.start,
+                        location: current_span.start,
                     });
                 }
 
-                // Sugar form desugaring.
-                if !bound && let Some(desugared) = try_desugar(head_name, &values[1..], *span) {
-                    return expand_expr(desugared, deno, env, scope);
+                if !bound
+                    && let Some(desugared) =
+                        try_desugar(head_name, &current_values[1..], *current_span)
+                {
+                    current = desugared;
+                    continue;
                 }
 
-                // User-defined macro expansion (fixed-point).
-                if !bound && env.contains_key(head_name) {
-                    let mut current = form.clone();
-                    let mut count: usize = 0;
-
-                    loop {
-                        if let SExpr::List { values: ref cv, .. } = current
-                            && let Some(name) = cv.first().and_then(|e| e.as_atom())
-                            && let Some(macro_def) = env.get(name)
-                        {
-                            let args = &cv[1..];
-                            // DD-52: surface macros use eval-surface-macro action
-                            current = if macro_def.js_body.starts_with("__surface_macro__") {
-                                deno.eval_surface_macro(name, args)?
-                            } else {
-                                deno.eval_macro(&macro_def.js_body, args)?
-                            };
-                            count += 1;
-                            if count > MAX_EXPAND_ITERATIONS {
-                                return Err(LyknError::Read {
-                                    message: format!(
-                                        "expansion limit \
-                                                 ({MAX_EXPAND_ITERATIONS}) \
-                                                 exceeded expanding \
-                                                 '{head_name}'"
-                                    ),
-                                    location: span.start,
-                                });
-                            }
-                            continue;
-                        }
-                        break;
+                if !bound && let Some(macro_def) = env.get(head_name) {
+                    let args = &current_values[1..];
+                    current = if macro_def.js_body.starts_with("__surface_macro__") {
+                        deno.eval_surface_macro(head_name, args)?
+                    } else {
+                        deno.eval_macro(&macro_def.js_body, args)?
+                    };
+                    count += 1;
+                    if count > MAX_EXPAND_ITERATIONS {
+                        return Err(LyknError::Read {
+                            message: format!(
+                                "expansion limit ({MAX_EXPAND_ITERATIONS}) exceeded expanding '{chain_name}'"
+                            ),
+                            location: chain_location,
+                        });
                     }
-
-                    // Recursively expand the result.
-                    return expand_expr(current, deno, env, scope);
+                    continue;
                 }
+                break;
             }
 
-            // Default: recursively expand sub-forms, extending the scope over
-            // exactly the child positions each binding is lexically visible in
-            // (DD-61 §A3, via the shared `resolver::scope_plan`).
-            let expanded_values = expand_children_scoped(&form, values, deno, env, scope)?;
-            Ok(Some(SExpr::List {
-                values: expanded_values,
-                span: *span,
-            }))
+            // Do not restart root dispatch after reaching a terminal result:
+            // that would reset the chain budget. This helper expands only the
+            // terminal node's children; each child gets its own root budget.
+            expand_dispatched(current, deno, env, scope)
         }
+    }
+}
+
+fn expand_dispatched(
+    form: SExpr,
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    scope: &mut Vec<String>,
+) -> Result<Option<SExpr>, LyknError> {
+    match form {
+        SExpr::Cons { car, cdr, span } => {
+            let expanded_car = expand_expr(*car, deno, env, scope)?;
+            let expanded_cdr = expand_expr(*cdr, deno, env, scope)?;
+            Ok(match (expanded_car, expanded_cdr) {
+                (Some(car), Some(cdr)) => Some(SExpr::Cons {
+                    car: Box::new(car),
+                    cdr: Box::new(cdr),
+                    span,
+                }),
+                _ => None,
+            })
+        }
+        SExpr::List { values, span } if values.is_empty() => Ok(Some(SExpr::List { values, span })),
+        SExpr::List { values, span } => {
+            let terminal = SExpr::List { values, span };
+            match &terminal {
+                SExpr::List { values, .. } => {
+                    let expanded_values =
+                        expand_children_scoped(&terminal, values, deno, env, scope)?;
+                    Ok(Some(SExpr::List {
+                        values: expanded_values,
+                        span,
+                    }))
+                }
+                _ => Ok(Some(terminal)),
+            }
+        }
+        leaf => Ok(Some(leaf)),
     }
 }
 

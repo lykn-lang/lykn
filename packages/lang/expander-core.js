@@ -1110,24 +1110,15 @@ function expandClassMember(root, layout, env, use) {
   const params = atOccurrencePath(root, layout.paramsPath);
   const names = kernelParameterNames(params).map((site) => site.name);
   const methodEnv = extendEnv(env, names);
-  const values = member.values.slice();
+  let values = member.values.slice();
   for (const path of layout.defaultPaths) {
     const relativePath = path.slice(layout.path.length);
     const original = atOccurrencePath(root, path);
-    replaceChildPath(values, relativePath, expandAt(original, methodEnv, "Value"));
+    values = replaceArrayPath(values, relativePath, expandAt(original, methodEnv, "Value"));
   }
   const bodyChildren = layout.bodyPaths.map((path) => atOccurrencePath(root, path));
   const body = expandChildrenSeq(bodyChildren, methodEnv, use);
   return { ...member, values: [...values.slice(0, bodyStart), ...body] };
-}
-
-function replaceChildPath(root, path, replacement) {
-  if (path.length === 0) return replacement;
-  const [index, ...rest] = path;
-  const values = root.values.slice();
-  values[index] = rest.length ? replaceChildPath(values[index], rest, replacement) : replacement;
-  root.values = values;
-  return root;
 }
 
 /** Names introduced by actually expanded declarations under the incoming

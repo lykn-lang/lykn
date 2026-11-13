@@ -315,6 +315,118 @@ fn assert_successful_runtime(
     );
 }
 
+fn assert_scope_runtime(name: &str, source: &str, expected: &[u8]) -> Vec<u8> {
+    let fixture = TempDir::new().expect("create scope regression fixture");
+    let xdg = write_xdg(fixture.path());
+    let source_path = write_source(fixture.path(), "scope.lykn", source);
+    let output_path = fixture.path().join("scope.mjs");
+    let source_bytes = fs::read(&source_path).expect("read scope regression fixture");
+    let (compiled, generated, declaration) = compile_recorded(
+        name,
+        fixture.path(),
+        &source_path,
+        &source_bytes,
+        &output_path,
+        &xdg,
+    );
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "{name}: {:?}",
+        compiled.stderr
+    );
+    assert!(
+        declaration.is_none(),
+        "{name}: unexpected declaration output"
+    );
+    let generated = generated.expect("successful compile must produce ESM");
+    let runtime = run_strict_recorded(&format!("{name}-runtime"), fixture.path(), &output_path);
+    assert_eq!(
+        runtime.status.code(),
+        Some(0),
+        "{name}: {:?}",
+        runtime.stderr
+    );
+    assert_eq!(runtime.stdout, expected, "{name} runtime output");
+    assert!(runtime.stderr.is_empty(), "{name}: {:?}", runtime.stderr);
+    generated
+}
+
+#[test]
+fn b2a_native_macro_results_reenter_bound_and_sugar_priority() {
+    let bound = assert_scope_runtime(
+        "b2a-native-bound-result-head",
+        "(macro redirect () `(invoke 1)) (macro invoke (x) `99) (bind invoke (fn (:number x) (+ x 40))) (console:log (redirect))",
+        b"41\n",
+    );
+    assert!(String::from_utf8_lossy(&bound).contains("console.log(invoke(1));"));
+
+    let sugar = assert_scope_runtime(
+        "b2a-native-sugar-result-head",
+        "(macro redirect () `(car (cons 41 0))) (macro car (x) `99) (console:log (redirect))",
+        b"41\n",
+    );
+    assert!(!String::from_utf8_lossy(&sugar).contains("console.log(99);"));
+
+    assert_scope_runtime(
+        "b2a-native-multi-step-head-chain",
+        "(macro first () `(second)) (macro second () `(third)) (macro third () `41) (console:log (first))",
+        b"41\n",
+    );
+}
+
+#[test]
+fn b2a_native_macro_head_chain_limit_remains_a_diagnostic() {
+    let fixture = TempDir::new().expect("create runaway macro fixture");
+    let xdg = write_xdg(fixture.path());
+    let source_path = write_source(
+        fixture.path(),
+        "runaway.lykn",
+        "(macro alpha () (object (type \"list\") (values (array (object (type \"atom\") (value \"beta\")))))) (macro beta () (object (type \"list\") (values (array (object (type \"atom\") (value \"alpha\")))))) (alpha)",
+    );
+    let output_path = fixture.path().join("runaway.mjs");
+    let source = fs::read(&source_path).expect("read runaway macro fixture");
+    let (compiled, generated, _) = compile_recorded(
+        "b2a-native-head-chain-limit",
+        fixture.path(),
+        &source_path,
+        &source,
+        &output_path,
+        &xdg,
+    );
+    assert_eq!(compiled.status.code(), Some(1), "{:?}", compiled.stderr);
+    assert!(
+        String::from_utf8_lossy(&compiled.stderr)
+            .contains("expansion limit (1000) exceeded expanding 'alpha'"),
+        "{:?}",
+        compiled.stderr
+    );
+    assert!(
+        generated.is_none(),
+        "runaway expansion must not emit output"
+    );
+}
+
+#[test]
+fn b2a_native_kernel_named_function_executes_parameter_call() {
+    let generated = assert_scope_runtime(
+        "b2a-native-kernel-named-function-runtime",
+        "(bind apply (kernel:function apply (array) (return (array 7)))) (console:log (apply (kernel:function identity (value) (return value))))",
+        b"7\n",
+    );
+    assert!(String::from_utf8_lossy(&generated).contains("return array(7);"));
+}
+
+#[test]
+fn b2a_native_kernel_named_function_name_is_recursive_scope() {
+    let generated = assert_scope_runtime(
+        "b2a-native-kernel-function-self-name",
+        "(bind recurse (kernel:function array (n) (return (if (> n 0) (array (- n 1)) 7)))) (console:log (recurse 2))",
+        b"7\n",
+    );
+    assert!(String::from_utf8_lossy(&generated).contains("function array(n)"));
+}
+
 #[test]
 fn m1_no_project_cold_xdg_uses_compiler_owned_dependencies() {
     let fixture = TempDir::new().expect("create no-project macro fixture");
@@ -805,7 +917,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 38 passed | 0 failed"),
-        "M6 must execute all eleven retained, seventeen IC-01, and ten B2a lexical-region cases, output: {public_output}"
+        public_output.contains("ok | 39 passed | 0 failed"),
+        "M6 must execute all eleven retained, seventeen IC-01, and eleven B2a lexical-region cases, output: {public_output}"
     );
 }

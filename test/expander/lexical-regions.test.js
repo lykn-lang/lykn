@@ -44,6 +44,36 @@ Deno.test("B2a class methods isolate their parameter lists", async () => {
   await executeModule(lykn(source), "7\n42\n");
 });
 
+Deno.test("B2a class method defaults expand once and execute", async () => {
+  resetMacros();
+  let calls = 0;
+  macroEnv.set("count-default", () => {
+    calls++;
+    return read("41")[0];
+  });
+  try {
+    const forms = read(`
+      (class Defaults ()
+        (constructor ((default initial 40)) (assign this:initial initial))
+        (value ((default amount (count-default))) (return amount))
+        (static (static-value ((default amount 43)) (return amount))))
+      (bind omitted (new Defaults))
+      (bind supplied (new Defaults 42))
+      (console:log omitted:initial)
+      (console:log supplied:initial)
+      (console:log (omitted:value))
+      (console:log (supplied:value 42))
+      (console:log (Defaults:static-value))
+    `);
+    const expanded = expandWithMacroImports(forms, {}, (result) => result);
+    const { compile } = await import("lang/compiler.js");
+    await executeModule(compile(expanded), "40\n42\n41\n42\n43\n");
+    assertEquals(calls, 1);
+  } finally {
+    resetMacros();
+  }
+});
+
 Deno.test("B2a class field initializer stays outside method parameters", () => {
   const generated = lykn(`
     (class Scoped ()
