@@ -209,3 +209,23 @@ source-ready typed owner/case and lexical-identity recipe before a new numbered
 CC assignment. No new qualified-constructor implementation is inferred from
 this acceptance; original clause/member/native-ordering, purity, imported-graph,
 build/JSON and API/docs/book/human gates retain their owners and remain open.
+
+## B2a iteration09 in-progress implementation review — root scope note
+
+The issued shared-object occurrence control exposed ordinary source atom tags
+leaking between a parameter binder and a later real bind head returned by one
+macro. Root recommends occurrence-owned ordinary source syntax at public
+expansion entry and raw macro-result boundaries, not deep cloning on every
+recursive expansion. Existing compiler-owned kernel/private atoms, host refs
+and exact Reflect request lists retain their identities/capabilities. This is
+implementation guidance for iteration09's existing occurrence and private-
+metadata contract, not a new language form, result slot or macro invocation.
+
+Root explicitly authorizes the directly necessary additional private adapter
+paths packages/lang/host-invocation-kernel.js and its exact embedded mirror for
+an isExpandedHostCall predicate, if used to preserve owned request identity.
+The actual changed module must join M6 byte comparisons. CC records chosen
+mechanics, extra paths and tests in its existing index; the new deep-module
+export and expansion input-ownership behavior remain S06 audit inputs. No new
+public JSR entrypoint, permission or dependency is authorized. Source/build
+ownership remains Luna through clean handoff; no acceptance is claimed here.
