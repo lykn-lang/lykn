@@ -147,6 +147,29 @@ consumer proof. No source naming acceptance follows from this draft.
 
 ## Current language-contract gate — B2-ID-DISCARD
 
+**Resolution, 2026-11-13:** the operator answered “Make `_` a discard in
+binding patterns (Recommended)”. `_value` remains an ordinary named binding.
+The question/history below is retained; its pending wording is superseded by
+this actual response. B2-ID-NAME also remains resolved: distinct Lykn source
+spellings identify distinct bindings.
+
+Discard creates no source binding. It does not suppress initializer/argument
+evaluation, defaults, required destructuring operations or declared runtime
+type checks. Compiler-private storage may implement those operations; source
+body/default/pre/post occurrences of `_` must never resolve to that storage.
+Property/schema/API names are separate roles and retain their existing names.
+This decision does not introduce a global ban or new unbound-value policy for
+the expression `_`, and does not make named declarations/import API slots into
+discard patterns.
+
+Implementation is staged, not a reduction of this contract. First prepare a
+native Surface callable-parameter and Bind/BindGroup checkpoint with coherent
+private values and guards. Public Source, raw/kernel binding positions including
+catch/loops/callables, source diagnostics and downstream DTS/API/docs/book
+coverage remain explicit follow-through. General binding hygiene and the full
+typed owner/case graph retain their original scope. No checkpoint can close
+B2b or LC02–08 merely by passing its own tests.
+
 Root initially selected preservation of current catch grammar for a naming-only
 increment, leaving any catch-pattern unification separate. Source inspection
 then showed a broader underscore disagreement among binder projectors, semantic
