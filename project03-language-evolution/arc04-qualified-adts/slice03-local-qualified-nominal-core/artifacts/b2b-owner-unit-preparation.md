@@ -87,6 +87,20 @@ operator response remains required before either observable rule is implemented.
 
 ## Native resolved-unit boundary
 
+Read-only consumer refresh at f9be7cb8/tree0ea27d21 (2026-11-13), while Sol
+owns validation: analysis/mod.rs19–23 exposes diagnostics/registry/has_errors
+as independently accessible AnalysisResult fields; analyze387–415 receives a
+borrowed SurfaceForm slice and builds a separate registry. emitter/mod.rs28
+and213 independently accept forms plus registry for emit/emit_json. CLI
+compile.rs175–213 and246–277 and dist.rs234–258 construct that pairing; DTS
+module generation separately accepts forms/registry at emitter/dts.rs201.
+compile.rs84–108 check_strict resolves/validates/classifies and returns without
+analysis. These are actual migration consumers, not already unit-safe APIs.
+The later recipe must give check the same semantic-unit preparation while
+retaining its no-emission role. Native dev-path preliminary classification in
+main.rs1004 is another caller to account for; it is not evidence that check
+already performs analysis. No API or source changes result from this census.
+
 The canonical path must prepare one closed semantic unit from post-expansion
 source and use it in compile, check, DTS and dist, including inline exports.
 It must resolve nested raw annotations/matches/defaults before emission, not
