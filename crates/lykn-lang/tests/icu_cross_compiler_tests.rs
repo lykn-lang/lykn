@@ -56,6 +56,19 @@ console.log(compile(read(source)));
 }
 
 fn eval_js(js: &str, bindings: &[(&str, &str)]) -> String {
+    let output = eval_js_output(js, bindings);
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let stripped = js.trim().trim_end_matches(';');
+        panic!("JS eval failed:\n{stderr}\nexpression was:\n{stripped}");
+    }
+    String::from_utf8(output.stdout)
+        .expect("invalid utf8")
+        .trim()
+        .to_string()
+}
+
+fn eval_js_output(js: &str, bindings: &[(&str, &str)]) -> std::process::Output {
     let params = bindings
         .iter()
         .map(|(n, _)| *n)
@@ -68,20 +81,20 @@ fn eval_js(js: &str, bindings: &[(&str, &str)]) -> String {
         .join(", ");
     let stripped = js.trim().trim_end_matches(';');
     let script = format!(r#"console.log((function({params}) {{ return {stripped}; }})({args}));"#,);
-    let output = Command::new("deno")
+    Command::new("deno")
         .arg("eval")
         .arg("--ext=js")
         .arg(&script)
         .output()
-        .expect("failed to run deno");
-    if !output.status.success() {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        panic!("JS eval failed:\n{stderr}\nscript was:\n{script}");
-    }
-    String::from_utf8(output.stdout)
-        .expect("invalid utf8")
-        .trim()
-        .to_string()
+        .expect("failed to run deno")
+}
+
+fn assert_native_icu_runtime(source: &str, bindings: &[(&str, &str)], expected: &str) -> String {
+    let js = rust_compile(source)
+        .unwrap_or_else(|error| panic!("native compile failed for {source}: {error}"));
+    let output = eval_js(&js, bindings);
+    assert_eq!(output, expected, "source: {source}\ngenerated JS:\n{js}");
+    js
 }
 
 fn assert_cross_equiv(source: &str, bindings: &[(&str, &str)], expected: &str) {
@@ -439,4 +452,145 @@ fn cross_error_overlap() {
         r#"(template "{n, plural, =1 {a} one {b} other {c}}" :n n)"#,
         "overlapping branches",
     );
+}
+
+// ── Native generated-local capture regressions ───────────────────────
+
+#[test]
+fn native_icu_generated_names_avoid_source_capture() {
+    assert!(deno_available(), "native ICU runtime proof requires Deno");
+
+    assert_native_icu_runtime(r#"(template "{n} {n}" :n (+ _n 1))"#, &[("_n", "2")], "3 3");
+    assert_native_icu_runtime(
+        r#"(template "{n, plural, one {one} other {#}}" :n _v0)"#,
+        &[("_v0", "2")],
+        "2",
+    );
+    assert_native_icu_runtime(
+        r#"(template "{role, select, owner {Owner} other {Guest}}" :role _v0)"#,
+        &[("_v0", r#""owner""#)],
+        "Owner",
+    );
+    assert_native_icu_runtime(
+        r#"(template "{n, plural, one {{n, plural, one {deep-one} other {deep-other}}} other {outer-other}}" :n _v0)"#,
+        &[("_v0", "1")],
+        "deep-one",
+    );
+    assert_native_icu_runtime(
+        r#"(template "{role, select, owner {{n, plural, one {one} other {#}}} other {N/A}}" :role _v0 :n 3)"#,
+        &[("_v0", r#""owner""#)],
+        "3",
+    );
+
+    // Source mentions both the preferred stem and the first suffix candidate.
+    assert_native_icu_runtime(
+        r#"(template "{n} {n}" :n (+ _n _n__lyknGenerated0))"#,
+        &[("_n", "1"), ("_n__lyknGenerated0", "6")],
+        "7 7",
+    );
+    // `_n!` emits as `_n`; the member expression also reads its first segment.
+    assert_native_icu_runtime(
+        r#"(template "{n} {n}" :n (+ _n! 1))"#,
+        &[("_n", "8")],
+        "9 9",
+    );
+    assert_native_icu_runtime(
+        r#"(template "{n} {n}" :n (+ _n:value 1))"#,
+        &[("_n", "({value: 4})")],
+        "5 5",
+    );
+    assert_native_icu_runtime(
+        r#"(template "{a-b}|{a-b}|{aB}|{aB}" :a-b (+ left 1) :aB (+ right 10))"#,
+        &[("left", "10"), ("right", "30")],
+        "11|11|40|40",
+    );
+
+    let noncollision = assert_native_icu_runtime(
+        r#"(template "{x}-{x}" :x (next-id))"#,
+        &[("nextId", "(()=>{let calls=0;return ()=>++calls})()")],
+        "1-1",
+    );
+    assert!(
+        noncollision.contains("const _x = nextId()"),
+        "safe hoists should keep their preferred local name:\n{noncollision}"
+    );
+
+    assert_native_icu_runtime(
+        r#"(template "{n, plural, one {one} other {#}} {x} {x}" :n _v0 :x (next-id _v0))"#,
+        &[("_v0", "2"), ("nextId", "(value)=>value+1")],
+        "2 3 3",
+    );
+    // The selector and repeated-slot hoist both prefer `_v0`; sharing one
+    // allocator keeps the branch's source slot pointed at the hoist.
+    assert_native_icu_runtime(
+        r#"(template "{n, plural, one {{v0} {v0}} other {{v0} {v0}}}" :n 2 :v0 (+ 3 4))"#,
+        &[],
+        "7 7",
+    );
+
+    // A nested template is a separate allocator, while its borrowed source
+    // names remain visible to the enclosing repeated-slot hoist scan.
+    assert_native_icu_runtime(
+        r#"(template "{x}-{x}" :x (template "{n, plural, one {one} other {#}}" :n _v0))"#,
+        &[("_v0", "2")],
+        "2-2",
+    );
+}
+
+#[test]
+fn native_icu_allocator_preserves_effects_and_is_per_template() {
+    assert!(deno_available(), "native ICU runtime proof requires Deno");
+
+    assert_native_icu_runtime(
+        r#"(template "{x}-{x}" :x (next-id _x))"#,
+        &[
+            ("_x", "10"),
+            (
+                "nextId",
+                "(()=>{let calls=0;return (value)=>{calls+=1;return value+calls}})()",
+            ),
+        ],
+        "11-11",
+    );
+
+    // The once-referenced kwarg occurs only in the unselected branch and must
+    // stay lazy; this allocator change must not make it an eager hoist.
+    assert_native_icu_runtime(
+        r#"(template "{role, select, owner {Owner} other {{unused}}}" :role _v0 :unused (explode))"#,
+        &[
+            ("_v0", r#""owner""#),
+            ("explode", "()=>{throw new Error('unselected')}"),
+        ],
+        "Owner",
+    );
+
+    let throwing = rust_compile(r#"(template "{x}-{x}" :x (explode _n))"#)
+        .expect("throwing repeated-slot source should compile");
+    let failed = eval_js_output(
+        &throwing,
+        &[
+            ("_n", "5"),
+            ("explode", "(_value)=>{throw new Error('expected boom')}"),
+        ],
+    );
+    assert!(
+        !failed.status.success(),
+        "throwing kwarg unexpectedly succeeded"
+    );
+    assert!(
+        String::from_utf8_lossy(&failed.stderr).contains("expected boom"),
+        "expected original kwarg exception to propagate; stderr was:\n{}",
+        String::from_utf8_lossy(&failed.stderr)
+    );
+
+    let recovery_source = r#"(template "{n, plural, one {one} other {#}}" :n _v0)"#;
+    let first = rust_compile(recovery_source).expect("valid ICU compilation");
+    let rejected = rust_compile(r#"(template "{n, plural, one {missing other}}" :n _v0)"#);
+    assert!(
+        rejected.is_err(),
+        "invalid ICU source should remain rejected"
+    );
+    let recovered = rust_compile(recovery_source).expect("compilation after failure");
+    assert_eq!(first, recovered, "per-template allocation state leaked");
+    assert_eq!(eval_js(&recovered, &[("_v0", "2")]), "2");
 }

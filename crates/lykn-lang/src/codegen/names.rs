@@ -8,6 +8,69 @@
 //! Also provides colon-separated member chain emission (`console:log` → `console.log`).
 
 use super::format::JsWriter;
+use crate::ast::sexpr::SExpr;
+use std::collections::HashSet;
+
+/// Fresh local names for one generated expression, reserved against source
+/// identifiers that the expression will evaluate.
+#[derive(Debug, Default)]
+pub(crate) struct GeneratedNameAllocator {
+    occupied: HashSet<String>,
+    next_suffix: usize,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct GeneratedNameExhausted;
+
+impl GeneratedNameAllocator {
+    pub(crate) fn new() -> Self {
+        Self::default()
+    }
+
+    /// Reserve the emitted lexical root of every atom in a borrowed source
+    /// expression. Literal data nodes do not introduce JS variable reads.
+    pub(crate) fn reserve_expr(&mut self, expr: &SExpr) {
+        match expr {
+            SExpr::Atom(_) => {
+                if let Some(name) = expr.as_atom() {
+                    let root = name.split(':').next().unwrap_or(name);
+                    self.occupied.insert(to_js_identifier(root));
+                }
+            }
+            SExpr::List { values, .. } => {
+                for value in values {
+                    self.reserve_expr(value);
+                }
+            }
+            SExpr::Cons { car, cdr, .. } => {
+                self.reserve_expr(car);
+                self.reserve_expr(cdr);
+            }
+            SExpr::Keyword { .. }
+            | SExpr::String { .. }
+            | SExpr::Number { .. }
+            | SExpr::Bool { .. }
+            | SExpr::Null { .. } => {}
+        }
+    }
+
+    /// Allocate the preferred emitted name when available, otherwise use a
+    /// deterministic suffix. Every returned identifier is reserved at once.
+    pub(crate) fn allocate(&mut self, preferred: &str) -> Result<String, GeneratedNameExhausted> {
+        if self.occupied.insert(preferred.to_owned()) {
+            return Ok(preferred.to_owned());
+        }
+
+        loop {
+            let suffix = self.next_suffix;
+            self.next_suffix = suffix.checked_add(1).ok_or(GeneratedNameExhausted)?;
+            let candidate = format!("{preferred}__lyknGenerated{suffix}");
+            if self.occupied.insert(candidate.clone()) {
+                return Ok(candidate);
+            }
+        }
+    }
+}
 
 // ── DD-49 data tables ──────────────────────────────────────────────────
 

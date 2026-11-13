@@ -9,7 +9,7 @@ use std::fmt;
 
 use super::emit::{emit_expr, emit_template_text};
 use super::format::JsWriter;
-use super::names::to_js_identifier;
+use super::names::{GeneratedNameAllocator, to_js_identifier};
 use crate::ast::sexpr::SExpr;
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
@@ -490,10 +490,30 @@ fn coalesce_literals(nodes: Vec<MftNode>) -> Vec<MftNode> {
 
 // ── JS emitter ────────────────────────────────────────────────────────
 
-fn fresh_icu_var(counter: &mut usize) -> String {
+fn generated_name_error() -> LyknError {
+    codegen_err(
+        "template: generated ICU identifier space exhausted".into(),
+        Span::default(),
+        None,
+    )
+}
+
+fn allocate_generated_name(
+    allocator: &mut GeneratedNameAllocator,
+    preferred: &str,
+) -> Result<String, LyknError> {
+    allocator
+        .allocate(preferred)
+        .map_err(|_| generated_name_error())
+}
+
+fn fresh_icu_var(
+    counter: &mut usize,
+    allocator: &mut GeneratedNameAllocator,
+) -> Result<String, LyknError> {
     let n = *counter;
-    *counter += 1;
-    format!("_v{}", n)
+    *counter = counter.checked_add(1).ok_or_else(generated_name_error)?;
+    allocate_generated_name(allocator, &format!("_v{n}"))
 }
 
 /// Outcome of attempting ICU-mode dispatch for a `template` form.
@@ -526,7 +546,8 @@ pub fn try_emit_template_icu(w: &mut JsWriter, args: &[SExpr]) -> Result<IcuDisp
             return Err(missing_kwarg_err(&slot_names, &icu_string, anchor_span));
         }
         let mut counter = 0;
-        emit_mft(w, &mft, &HashMap::new(), &mut counter)?;
+        let mut allocator = GeneratedNameAllocator::new();
+        emit_mft(w, &mft, &HashMap::new(), &mut counter, &mut allocator)?;
         return Ok(IcuDispatch::Handled);
     }
 
@@ -558,6 +579,12 @@ pub fn try_emit_template_icu(w: &mut JsWriter, args: &[SExpr]) -> Result<IcuDisp
     let slot_names = collect_slot_names(&mft);
     let kwargs = parse_and_validate_kwargs(args, &slot_names, &icu_string)?;
 
+    // Reserve every source dependency before any generated local can shadow it.
+    let mut allocator = GeneratedNameAllocator::new();
+    for expr in kwargs.values() {
+        allocator.reserve_expr(expr);
+    }
+
     // R-4: hoist non-trivial kwargs referenced more than once
     let multiplicity = count_slot_references(&mft);
     let mut hoisted: Vec<(String, SExpr)> = Vec::new();
@@ -570,7 +597,8 @@ pub fn try_emit_template_icu(w: &mut JsWriter, args: &[SExpr]) -> Result<IcuDisp
             SExpr::Atom { .. } | SExpr::Number { .. } | SExpr::String { .. } | SExpr::Bool { .. }
         );
         if refs > 1 && !trivial {
-            let local_name = format!("_{}", to_js_identifier(&key));
+            let preferred = format!("_{}", to_js_identifier(&key));
+            let local_name = allocate_generated_name(&mut allocator, &preferred)?;
             let placeholder = SExpr::atom(local_name.clone(), Span::default());
             hoisted.push((local_name, expr));
             final_kwargs.insert(key, placeholder);
@@ -581,7 +609,7 @@ pub fn try_emit_template_icu(w: &mut JsWriter, args: &[SExpr]) -> Result<IcuDisp
 
     let mut counter = 0;
     if hoisted.is_empty() {
-        emit_mft(w, &mft, &final_kwargs, &mut counter)?;
+        emit_mft(w, &mft, &final_kwargs, &mut counter, &mut allocator)?;
     } else {
         w.write("(() => { ");
         for (name, expr) in &hoisted {
@@ -590,7 +618,7 @@ pub fn try_emit_template_icu(w: &mut JsWriter, args: &[SExpr]) -> Result<IcuDisp
             w.write("; ");
         }
         w.write("return ");
-        emit_mft(w, &mft, &final_kwargs, &mut counter)?;
+        emit_mft(w, &mft, &final_kwargs, &mut counter, &mut allocator)?;
         w.write("; })()");
     }
     Ok(IcuDispatch::Handled)
@@ -729,6 +757,7 @@ fn emit_mft(
     nodes: &[MftNode],
     kwargs: &HashMap<String, SExpr>,
     counter: &mut usize,
+    allocator: &mut GeneratedNameAllocator,
 ) -> Result<(), LyknError> {
     if nodes.iter().all(|n| matches!(n, MftNode::Literal(_))) {
         w.write("`");
@@ -756,12 +785,12 @@ fn emit_mft(
             }
             MftNode::Plural { name, branches } => {
                 w.write("${");
-                emit_plural_iife(w, name, branches, kwargs, counter)?;
+                emit_plural_iife(w, name, branches, kwargs, counter, allocator)?;
                 w.write("}");
             }
             MftNode::Select { name, branches } => {
                 w.write("${");
-                emit_select_iife(w, name, branches, kwargs, counter)?;
+                emit_select_iife(w, name, branches, kwargs, counter, allocator)?;
                 w.write("}");
             }
         }
@@ -786,8 +815,9 @@ fn emit_plural_iife(
     branches: &[PluralBranch],
     kwargs: &HashMap<String, SExpr>,
     counter: &mut usize,
+    allocator: &mut GeneratedNameAllocator,
 ) -> Result<(), LyknError> {
-    let var_name = fresh_icu_var(counter);
+    let var_name = fresh_icu_var(counter, allocator)?;
     let var_expr = SExpr::atom(var_name.clone(), Span::default());
 
     w.write("(() => {");
@@ -803,7 +833,7 @@ fn emit_plural_iife(
         if let PluralKey::Exact(n) = &branch.key {
             w.write(&format!(" if ({} === {}) return ", var_name, n));
             let inner_kwargs = make_slot_override(kwargs, name, var_expr.clone());
-            emit_mft(w, &branch.body, &inner_kwargs, counter)?;
+            emit_mft(w, &branch.body, &inner_kwargs, counter, allocator)?;
             w.write(";");
         }
     }
@@ -816,7 +846,7 @@ fn emit_plural_iife(
             if let Some(test) = plural_category_test(cat, &var_name) {
                 w.write(&format!(" if ({}) return ", test));
                 let inner_kwargs = make_slot_override(kwargs, name, var_expr.clone());
-                emit_mft(w, &branch.body, &inner_kwargs, counter)?;
+                emit_mft(w, &branch.body, &inner_kwargs, counter, allocator)?;
                 w.write(";");
             }
         }
@@ -828,7 +858,7 @@ fn emit_plural_iife(
     {
         w.write(" return ");
         let inner_kwargs = make_slot_override(kwargs, name, var_expr);
-        emit_mft(w, &other.body, &inner_kwargs, counter)?;
+        emit_mft(w, &other.body, &inner_kwargs, counter, allocator)?;
         w.write(";");
     }
 
@@ -842,8 +872,9 @@ fn emit_select_iife(
     branches: &[SelectBranch],
     kwargs: &HashMap<String, SExpr>,
     counter: &mut usize,
+    allocator: &mut GeneratedNameAllocator,
 ) -> Result<(), LyknError> {
-    let var_name = fresh_icu_var(counter);
+    let var_name = fresh_icu_var(counter, allocator)?;
     let var_expr = SExpr::atom(var_name.clone(), Span::default());
 
     w.write("(() => {");
@@ -864,14 +895,14 @@ fn emit_select_iife(
             var_name, branch.key
         ));
         let inner_kwargs = make_slot_override(kwargs, name, var_expr.clone());
-        emit_mft(w, &branch.body, &inner_kwargs, counter)?;
+        emit_mft(w, &branch.body, &inner_kwargs, counter, allocator)?;
         w.write(";");
     }
 
     if let Some(other) = branches.iter().find(|b| b.key == "other") {
         w.write(" return ");
         let inner_kwargs = make_slot_override(kwargs, name, var_expr);
-        emit_mft(w, &other.body, &inner_kwargs, counter)?;
+        emit_mft(w, &other.body, &inner_kwargs, counter, allocator)?;
         w.write(";");
     }
 
@@ -1095,7 +1126,11 @@ mod tests {
     fn emit_mft_str(mft: &[MftNode], kwargs: &HashMap<String, SExpr>) -> String {
         let mut w = JsWriter::new();
         let mut counter = 0;
-        emit_mft(&mut w, mft, kwargs, &mut counter).unwrap();
+        let mut allocator = GeneratedNameAllocator::new();
+        for expr in kwargs.values() {
+            allocator.reserve_expr(expr);
+        }
+        emit_mft(&mut w, mft, kwargs, &mut counter, &mut allocator).unwrap();
         w.finish()
     }
 
